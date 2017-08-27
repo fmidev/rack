@@ -1,0 +1,35 @@
+# mm/h
+# Rain rate
+
+# Markus.Peura@fmi.fi
+
+# undetect
+@ 0   0   0
+
+# nodata
+@ 255 255 255 
+
+
+# light
+0.1	10 155 225 
+
+# light
+0.2	5 205 170 
+
+# moderate
+0.5	140 230 20 
+
+# moderate
+1	240 240 20 
+
+# moderate
+2	255 205 20 
+
+# heavy
+4	255 150 50
+
+# heavy
+10 	255 80 60
+
+# heavy
+24	250 120 255

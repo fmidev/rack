@@ -1,0 +1,156 @@
+# CLASS
+
+
+# undetect
+@ 0   0   0
+
+# nodata
+@ 255 255 255
+
+
+# PRECIP 1-47
+# PRECIP (2=wet, 4=light?)
+
+# PRECIP = 8 64=0
+# 32 = RAIN
+# 16 = SNOW, else HAIL,  4=WET
+
+# Ice chrystals ?
+# 4 ... ... ...
+
+# Precip
+4	0 208 255
+
+# Hail
+8	208 144 255
+
+# Wet hail
+10	160 96 255
+
+# Graupel
+12	144 32 255
+
+# Snow
+16	80  0 255
+
+# Wet snow
+18	0 128 255
+
+
+# Rain
+32	0 192 255
+
+# Supercooled Rain
+36	16 240 255
+
+
+# PASSIVE 48-63
+
+# Dust
+56	0  255  170
+
+# Chaff
+58	128 255 144
+
+# 32+16+8+4
+# Insect
+60	144 255 0
+
+
+# LOCATED 0 - 127 
+# LOCATED non-met 64 - 127 -------------------
+
+
+# Clutter
+64	255 224  24
+
+# Ground clutter, Sea clutter
+# ??
+
+# 64 + 4+0+16 (peaklike fixed artefact)
+# Mast
+84	255  170 0 
+
+# Wind turbine
+# 85	255  170 0 
+
+# Chimney
+# 86	255  170 0 
+
+
+# 64 + 4+8+16 (peaklike moving artefact)
+# Vehicle 
+92  255  96 0
+
+# .Ship
+#93  255  96 0 
+
+# .Aircraft
+#94   255  96 0
+
+
+
+
+# 32+64 LIVE+ACTIVE < 48+64 = BIOMET+ACTIVE
+# Bird
+96	255  32 0
+
+# Bat
+104	255 0 144
+
+
+
+# MISLOCATED (64+128=192) 192-223
+
+# Attenuation (192 + 0...7)
+
+# Attenuated
+192	208 208 255
+
+# Attn in precip
+# 192	208 208 255
+
+# Radome attn
+# 192	208 208 255
+
+
+# Location error (64+128+ 8|16) 200-223
+
+# Specular
+200	170 255 208
+
+# Flare echo
+208	192 255 224
+
+# Second trip
+216	224 255 240
+
+# Attenuated?
+
+# 224 = 128+64+32
+# EXTERNAL  224-254
+
+# (non-peaklike non-moving non-artefact)
+# Sun
+224     255 255 208
+
+# 224 + 16 
+# (non-peaklike non-moving artefact)
+# Emitter
+240	255 240 224 
+
+# (non-peaklike non-moving artefact)
+# Jamming
+242	255 224 240
+
+
+# (peaklike non-moving artefact)
+# Noise
+244	224 224 255
+
+# Delay
+248	240 240 240
+
+
+
+

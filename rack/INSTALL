@@ -1,0 +1,115 @@
+RACK
+
+'RACK' is a C++ based program for weather radar data processing. It supports
+quality control of measurement volumes, product generation and compositing, for
+example. The program works on command line; there is no graphical interface.
+
+
+PREREQUISITES
+
+The package has been developed with Eclipse IDE.
+The involved Makefile and its components (*.d, and *.mk) are stored in make.zip. 
+
+Three libraries are required:
+
+      Hdf5	 (libhdf5.so)	HDF5 file support
+      Png    (libpng12.so)	png image files
+      Proj4  (libproj.so)	geographic projections  
+
+Optionally:
+
+      GeoTIFF (libtiff.so, libgeotiff.so)  Support for geolocated output images  
+
+In many systems the general libraries can be installed for example
+as follows:
+
+  sudo apt-get install libhdf5-dev libpng12-dev libproj-dev  libtiff4-dev
+
+
+DOWNLOADING RACK
+
+- Latest version: https://github.com/fmidev/rack
+- Old version:     http://baltrad.fmi.fi/software/rack/download.html
+
+In problems, contact Markus Peura (First.Last@fmi.fi)
+
+
+COMPILATION
+
+1. Run ./configure.sh
+   Edit the resulting install-rack.cnf if needed.
+   
+2. Run ./build.sh
+   The command unzips make.zip to Release/ directory and calls 'make all'
+   there. 
+
+
+After successful build, the script will prompt for a directory for installing
+the binary. If hdf5 or sz libraries raise errors, ensure that both libraries
+are available, for example with
+
+  export LD_RUN_PATH=$LD_RUN_PATH:/var/opt/lib
+
+The default version has image file I/O support for PNG only.
+For GeoTIFF support,
+
+If you encounter compilation problems after installing several versions,
+issue "make clean-all" and retry.
+
+
+NOTE ON ECLIPSE SETTINGS
+
+Rack has been developed using Eclipse IDE, with the following settings.
+
+All configurations:
+
+Exclude "examples" and "demo" dirs from build.
+
+C++ linker, libraries: 
+
+   hdf5
+   proj
+   png 
+   tiff, gtiff (optional)
+
+"Debug" configuration:
+
+C++ compiler, include paths:
+"${workspace_loc:}"
+
+C++ linker, library paths:
+"${workspace_loc:drain/Debug}"
+
+"Release" configuration:
+
+C++ build, environment (variables)
+drainroot=/opt (or other user-defined location)
+
+C++ compiler, include paths:
+$$drainroot/include
+$$hdfroot/include
+$$projroot/include
+
+C++ compiler, misc options:
+$$CCFLAGS
+
+C++ linker, misc options:
+$$LDFLAGS
+
+C++ linker, library search paths:
+$$drainroot/lib
+$$hdfroot/lib
+$$projroot/lib
+
+
+DOCUMENTATION
+
+A PDF manual may be shipped with this file, or can be generated with
+
+  cd demo
+  ./make-tests.sh
+  cd ..
+  make doc      # For html version
+  make doc-pdf  # For rack-doc.pdf
+
+

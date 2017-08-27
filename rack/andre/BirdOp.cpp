@@ -1,0 +1,293 @@
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
+
+#include "BirdOp.h"
+
+#include <drain/util/Fuzzy.h>
+//#include <drain/image/SlidingWindowMedianOp.h>
+#include <drain/image/File.h>
+//#include <drain/image/FuzzyThresholdOp.h>
+#include <drain/image/FunctorOp.h>
+//#include <drain/image/FuzzyOp.h>
+#include <drain/image/BasicOps.h>
+#include <drain/image/SequentialImageOp.h>
+#include <drain/image/SlidingWindowHistogramOp.h>
+
+
+//#include "hi5/Hi5Write.h"
+
+#include "data/ODIM.h"
+#include "data/Data.h"
+#include "radar/Geometry.h"
+#include "radar/Analysis.h"
+#include "radar/Doppler.h"
+
+
+using namespace drain;
+using namespace drain::image;
+
+namespace rack {
+
+// kludge
+void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight) {
+
+	dataSelector.path = "data[0-9]+/?$";
+	//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
+	dataSelector.quantity = "^(DBZH|VRAD|RHOHV|ZDR)$";
+	dataSelector.count = 1;
+
+	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
+	parameters.reference("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
+	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
+	parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
+	parameters.reference("zdrDevMin", this->zdrDevMin = zdrDevMin, "Minimum std.deviation of ZDR (fuzzy)");
+
+	parameters.reference("windowWidth", this->windowWidth = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+	parameters.reference("windowHeight", this->windowHeight = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+
+}
+
+/*
+void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+	Image & tmp = dstProductAux.getQualityData(feature);
+}
+*/
+
+/* Rename
+ *
+ *
+ */
+void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+
+	drain::MonitorSource mout(name+"::"+__FUNCTION__, feature);
+
+	const bool NEW = dstData.odim.prodpar.empty();
+
+	if (NEW){
+		mout.debug() << "creating dst image" << mout.endl;
+		op.filter(src.data, dstData.data);
+		dstData.odim.prodpar = feature;
+	}
+	else {
+		mout.debug() << "updating dst image" << mout.endl;
+		op.filter(src.data, tmp);
+		BinaryFunctorOp<MultiplicationFunctor>().filter(dstData.data, tmp, dstData.data);
+		//MultiplicationOp(1.0).filter(dstData.data, tmp, dstData.data);
+		// File::write(dstData.data, feature+".png");
+		dstData.odim.prodpar += ',';
+		dstData.odim.prodpar += feature;
+	}
+
+	if (ProductOp::outputDataVerbosity >= 1){
+		PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(feature);  // consider direct instead of copy?
+		const QuantityMap & qm = getQuantityMap();
+		//dstFeature.odim.setQuantityDefaults("PROB");
+		dstFeature.odim.quantity = feature;
+		qm.setQuantityDefaults(dstFeature, "PROB");
+		if (NEW)
+			drain::image::CopyOp().filter(dstData.data, dstFeature.data);
+		else
+			drain::image::CopyOp().filter(tmp, dstFeature.data);
+		// drain::image::CopyOp().filter(NEW ? dstData.data : tmp, dstFeature.data);
+		dstFeature.updateTree();
+	}
+
+}
+
+void BirdOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+
+	drain::MonitorSource mout(name, __FUNCTION__);
+	mout.debug(2) << "start" <<  mout.endl; //
+
+	//mout.error() << dstData <<  mout.endl; //
+	//MultiplicationOp mulOp(1.0);
+
+	Image tmp;
+	tmp.setLimits(dstData.data.getMin<double>(), dstData.data.getMax<double>());
+
+	const double MAX = dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
+
+	/// Reduction coefficient to compensate missing measurement data
+	double overallScale = 1.0;
+
+	const Data<PolarSrc> & dbzSrc = sweepSrc.getData("DBZH"); // VolumeOpNew::
+	const bool DBZ = !dbzSrc.data.isEmpty();  // or: || dbzParams.empty() ?
+	if (!DBZ){
+		mout.warn() << "DBZH missing" <<  mout.endl;
+		overallScale *= 0.75;
+	}
+	else {
+
+		//RadarDataFuzzifier<FuzzyStepsoid<double,double> > dbzFuzzifier;
+		//dbzFuzzifier.functor.set(dbzPeak, -2.5, 255); // negative width, ie. decreasing func
+		//RadarDataFuzzifier<FuzzyTriangle<double,double> > dbzFuzzifier;
+		// dbzFuzzifier.functor.set(-32, dbzPeak, dbzPeak+10.0, 255.0);
+		RadarFunctorOp<FuzzyBell<double> > dbzFuzzifier;
+		dbzFuzzifier.odimSrc = dbzSrc.odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		mout.debug() << "DBZ_LOW" << dbzFuzzifier.functor << mout.endl;
+
+		//dbzFuzzifier.filter(dbzSrc.data, dbzProb);
+		applyOperator(dbzFuzzifier, tmp, "DBZ_LOW", dbzSrc, dstData, dstProductAux);
+
+		/*
+		SlidingWindowOpT<RadarWindowStdDev<FuzzyStep<double,double> > > dbzDevOp;
+		const int w = static_cast<int>(windowWidth/dbzSrc.odim.rscale);
+		const int h = static_cast<double>(dbzSrc.odim.nrays) * windowHeight/360.0;
+		dbzDevOp.window.setSize(w, h);
+		dbzDevOp.window.functor.set( 5, 0, 255.0);
+		dbzDevOp.window.odimSrc = dbzSrc.odim;
+		applyOperator(dbzDevOp, tmp, "DBZ_DEV_LOW", dbzSrc, dstData, dstProductAux);
+		 */
+	}
+
+	const Data<PolarSrc> &  vradSrc = sweepSrc.getData("VRAD"); // VolumeOpNew::
+	const bool VRAD = !vradSrc.data.isEmpty();
+	if (!VRAD){
+		mout.warn() << "VRAD missing" <<  mout.endl;
+		overallScale *= 0.75;
+	}
+	else if (vradSrc.odim.NI == 0) {
+		mout.warn() << "vradSrc.odim: " << vradSrc.odim << mout.endl;
+		mout.warn() << "VRAD unusable, vradSrc.odim.NI == 0" <<  mout.endl;
+		overallScale *= 0.75;
+	}
+	else {
+
+		//typedef DopplerDevWindow DDW;
+		const int w = static_cast<int>(windowWidth/vradSrc.odim.rscale);
+		const int h = static_cast<double>(vradSrc.odim.nrays) * windowHeight/360.0;
+		FuzzyStep<double> fuzzyStep(0.5);
+		const double pos = vradDevMin/vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
+		if (pos > 0.0)
+			fuzzyStep.set( 0.8*pos, 1.2*pos, 255.0 );
+		else
+			fuzzyStep.set( 1.2*(-pos), 0.8*(-pos), MAX );
+
+		DopplerDevWindow::config conf(vradSrc.odim, fuzzyStep, w, h, (w*h)/5); // require 20% of samples
+		SlidingWindowOpT<DopplerDevWindow> vradDevOp(conf);
+
+		mout.debug() << "VRAD " << vradDevOp.conf.ftor <<  mout.endl;
+
+		applyOperator(vradDevOp, tmp, "VRAD_DEV", vradSrc, dstData, dstProductAux);
+
+	}
+
+	/*
+	const Data<PolarSrc> &  wradSrc = sweepSrc.getData("WRAD"); // VolumeOpNew::
+	const bool WRAD = !wradSrc.data.isEmpty();
+	if (!WRAD)
+		mout.warn() << "WRAD missing" <<  mout.endl;
+	else {
+
+		RadarDataFuzzifier<FuzzyStep<double,double> > wradFuzzifier;
+		wradFuzzifier.odimSrc = wradSrc.odim;
+		wradFuzzifier.functor.set(wradMin*0.75*wradSrc.odim.NI, wradMin*1.25*wradSrc.odim.NI, 255);
+		applyOperator(wradFuzzifier, tmp, "WRAD_HIGH", wradSrc, dstData, dstProductAux);
+
+		/// NOT NEEDED?
+		SlidingWindowOpT<RadarWindowStdDev<FuzzyStep<double,double> > > wradDevFuzzifier;
+		const int w = static_cast<int>(windowWidth/wradSrc.odim.rscale);
+		const int h = static_cast<double>(wradSrc.odim.nrays) * windowHeight/360.0;
+		wradDevFuzzifier.window.setSize(w, h);
+		wradDevFuzzifier.window.functor.set( 0.5, 0.95, 255.0);
+		wradDevFuzzifier.window.odimSrc = wradSrc.odim;
+		applyOperator(wradDevFuzzifier, tmp, "WRAD_DEV", wradSrc, dstData, dstProductAux);
+
+	}
+	 */
+
+
+	const Data<PolarSrc> &  rhohvSrc = sweepSrc.getData("RHOHV"); // VolumeOpNew::
+	const bool RHOHV = !rhohvSrc.data.isEmpty();
+	if (!RHOHV){
+		overallScale *= 0.5;
+		mout.warn() << "RHOHV missing" <<  mout.endl;
+	}
+	else {
+
+		//RadarFunctorOp<FuzzyStep<double> > rhohvFuzzifier;
+		RadarFunctorOp<FuzzyStep<double> > rhohvFuzzifier;
+		rhohvFuzzifier.odimSrc = rhohvSrc.odim;
+		rhohvFuzzifier.functor.set(rhoHVmax+(1.0-rhoHVmax)/2.0, rhoHVmax);
+		mout.debug() << "RHOHV_LOW" << rhohvFuzzifier.functor << mout.endl;
+		applyOperator(rhohvFuzzifier, tmp, "RHOHV_LOW", rhohvSrc, dstData, dstProductAux);
+
+	}
+
+	const Data<PolarSrc> &  zdrSrc = sweepSrc.getData("ZDR"); // VolumeOpNew::
+	const bool ZDR = !zdrSrc.data.isEmpty();
+	if (!ZDR){
+		overallScale *= 0.75;
+		mout.warn() << "ZDR missing" <<  mout.endl;
+	}
+	else {
+
+		mout.debug(1) << zdrSrc.odim << mout.endl;
+
+		//RadarDataFuzzifier<FuzzyStep<double,double> > zdrFuzzifier;
+		RadarFunctorOp<FuzzyTriangle<double> > zdrFuzzifier;
+		zdrFuzzifier.odimSrc = zdrSrc.odim;
+		zdrFuzzifier.functor.set(+zdrDevMin, 0.0, -zdrDevMin); // INVERSE //, -1.0, 1.0);
+		//zdrFuzzifier.functor.set(0.5, 2.0, 255);
+		mout.debug() << "ZDR_NONZERO" << zdrFuzzifier.functor << mout.endl;
+		applyOperator(zdrFuzzifier, tmp, "ZDR_NONZERO", zdrSrc, dstData, dstProductAux);
+		//applyOperator(zdrFuzzifier, tmp, "ZDR_HIGH", zdrSrc, dstData, dstProductAux);
+
+		/*
+		SlidingWindowOpT<RadarWindowStdDev<FuzzyStepsoid<double,double> > > stdDevOp;
+		const int w = static_cast<int>(windowWidth/zdrSrc.odim.rscale);
+		const int h = static_cast<double>(zdrSrc.odim.nrays) * windowHeight/360.0;
+		stdDevOp.window.setSize(w, h);
+		stdDevOp.window.functor.set( zdrDevMin, 0.25*zdrDevMin, 255.0);
+		stdDevOp.window.odimSrc = zdrSrc.odim;
+		applyOperator(stdDevOp, tmp, "ZDR_DEV", zdrSrc, dstData, dstProductAux);
+		*/
+
+	}
+
+	if (dstData.data.isEmpty()){
+		mout.error() << "could not find input data; quantity=" << dataSelector.quantity;
+	}
+	else {
+		//FunctorOp<FuzzyBell<double,double> > fuzzyBright(0.0,-8.0, dstData.odim.scaleInverse(overallScale));
+		//FuzzyBellOp fuzzyBright(0.0,-0.032, overallScale);
+		UnaryFunctorOp<FuzzyBell<double> > fuzzyBright;
+		fuzzyBright.functor.set(0.0,-0.032, overallScale);
+		fuzzyBright.filter(dstData.data, dstData.data);
+	}
+	DataSelector::updateAttributes(dstData.tree);
+}
+
+
+}
+
+// Rack

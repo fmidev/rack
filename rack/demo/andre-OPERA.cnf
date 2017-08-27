@@ -1,0 +1,40 @@
+## Example commands for anomaly detection and removal AnDRe
+
+# Store invidual detection results (useful mostly for debugging)
+# --aStore   
+
+# Limit to lowest scan only
+# This removes upper sweep (which is bad for CAPPI)
+# --delete 'dataset1?[02-9]' 
+# Use this?
+--aSelect '/dataset[12]/data[0-9]+$,elangleMax=1.5'
+
+
+# Detection: Birds/insects, Emitter lines of two sizes, radio jamming, ships and speckle noise  
+#--aBiomet 0dBZ,1000m,5dBZ,500m
+#--aBiomet -10dBZ,1000m,5dBZ,500m
+--aEmitter 5,15,0.5
+--aJamming 5,80,2
+--aRhoHVLow 0.6,0.1
+--aShip 25,15,1500,3
+--aSpeckle 0,9
+
+
+# Removal part: gapfilling and damping (or erasing) values.
+# --aSelect quantity=DBZH 
+--aGapFill 2500,3
+--aRemover 0.5      # Strong
+# --aDamper 0.5,0.0
+
+# Additional detection (post-removal detection, to be used in compositing)
+#--aBiomet -10dBZ,1000m,5dBZ,500m
+
+
+#--aBiomet '0,1000,5,500' \
+#--aEmitter '5,5,0.5' \
+#--aJamming '5,80,2,-1' \
+#--aShip '25,15,1500,3' \
+#--aSpeckle '0,9' \
+#-o volume-detected.h5 \
+#--aGapFill '1500,5' \
+#--aDamper '0.5,0.1,-40' \

@@ -1,0 +1,52 @@
+# This is general-purpose... 
+# Use with include
+
+
+PROJECT_NAME := `basename $$PWD`
+DOXYFILE = Doxyfile
+DOXYROOT = doc
+DOXYPATTERNS = '*.dox *.cpp *.h'
+
+
+
+
+$(DOXYROOT)/$(PROJECT_NAME):
+	mkdir -p $(DOXYROOT)/$(PROJECT_NAME)
+#	mkdir -p -m u+rwx $(DOXYROOT)/$(PROJECT_NAME)
+
+
+
+# Idea: generate here a minimal Doxyfile, then update it.
+$(DOXYFILE): $(DOXYROOT)/$(PROJECT_NAME) 
+	date +'# Created by $$USER on %Y %m %d %H:%M '	  > $(DOXYFILE)
+	echo PROJECT_NAME = $(PROJECT_NAME)		      >> $(DOXYFILE)
+	echo PROJECT_LOGO = $(PROJECT_LOGO)		      >> $(DOXYFILE)
+	echo OUTPUT_DIRECTORY = $(DOXYROOT)/$(PROJECT_NAME)   >> $(DOXYFILE)
+	echo FILE_PATTERNS    =  $(DOXYPATTERNS) 	      >> $(DOXYFILE)
+	echo LAYOUT_FILE = DoxygenLayout.xml >> $(DOXYFILE)
+	echo EXCLUDE_SYMLINKS = YES >> $(DOXYFILE)
+	cat Doxyfile.ini >> $(DOXYFILE)
+#	echo TAGFILES	 = $(DOXYROOT)/*.tag              >> $(DOXYFILE)
+#	echo GENERATE_TAGFILE = $(DOXYROOT)/$(PROJECT_NAME).tag >> $(DOXYFILE)
+	cp -v $(DOXYFILE) $(DOXYFILE).bak
+	doxygen -u $(DOXYFILE)
+
+doc-clean:
+	rm -vrf $(DOXYFILE) $(DOXYROOT)/$(PROJECT_NAME)/*
+
+
+doc: $(DOXYFILE)
+	echo PROJECT_NAME='' >> $^
+	doxygen $^
+
+
+
+doc-pdf: doc
+	cd ${DOXYROOT}/$(PROJECT_NAME)/latex/; pdflatex refman.tex; pdflatex refman.tex
+	ln -sfv ${DOXYROOT}/$(PROJECT_NAME)/latex/refman.pdf $(PROJECT_NAME)-doc.pdf
+
+doc-html: doc
+	cd ${DOXYROOT}/$(PROJECT_NAME)/html/; zip $(PROJECT_NAME)-doc-html.zip -rp .
+
+
+

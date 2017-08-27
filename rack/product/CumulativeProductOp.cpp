@@ -1,0 +1,145 @@
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
+#include <stdexcept>
+
+#include <drain/util/Variable.h>
+// #include <drain/util/Fuzzy.h>
+#include <drain/image/AccumulationMethods.h>
+// #include "RackOp.h"
+// #include "radar/Extractor.h"
+
+#include "CumulativeProductOp.h"
+#include "data/DataCoder.h"
+
+
+
+namespace rack {
+
+using namespace drain::image;
+
+
+
+void CumulativeProductOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDst> & dstProduct) const {
+
+	drain::MonitorSource mout(name+"(CumulativeProductOp::)", __FUNCTION__);
+	//mout.debug(2) << "starting (" << name << ") " << mout.endl;
+
+	if (srcSweeps.empty()){
+		mout.warn() << "no data found with selector: " << dataSelector << mout.endl;
+		return;
+	}
+
+	const DataSetSrc<PolarSrc> & firstSweep =  srcSweeps.begin()->second;
+	const Data<PolarSrc> & srcData = firstSweep.getFirstData();
+	const std::string & quantity = srcData.odim.quantity;
+	if (firstSweep.size() > 1){
+		mout.info() << "several quantities, using the first one :" << quantity << mout.endl;
+	}
+
+
+	// Consider EchoTop, with DBZH input and HGHT output.
+	const std::string dstQuantity = odim.quantity.empty() ? quantity : odim.quantity;
+
+	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity);
+	//mout.warn() << "dstOdim " << dstData.odim << mout.endl;
+
+	setEncoding(srcData.odim, dstData);
+	/*
+	ProductOp::applyDefaultODIM(dstData.odim, this->odim); // typically: type
+	ProductOp::applyODIM(dstData.odim, srcData.odim);
+	ProductOp::applyUserEncoding(dstData.odim, encodingRequest);
+	*/
+
+
+	deriveDstGeometry(srcSweeps, dstData.odim);
+	dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+
+
+
+	//PolarAccumulator accumulator;
+	RadarAccumulator<Accumulator,PolarODIM> accumulator;
+
+	/// Some product generators may have user defined accumulation methods.
+	accumulator.setMethod(drain::String::replace(accumulationMethod, ":",","));
+	accumulator.checkCompositingMethod(dstData.odim);
+	accumulator.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+	accumulator.odim.rscale = dstData.odim.rscale;
+
+	mout.debug() << (const Accumulator &) accumulator << mout.endl;
+
+	//
+	// dstData.odim.set(odim);
+	dstData.odim.prodpar = getParameters().getValues();
+
+	//mout.warn() << "'final' dstODIM " << dstData << mout.endl;
+
+	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
+
+	for (DataSetSrcMap::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+
+		//DataSrc & srcData = it->second.getFirstData();
+		const Data<PolarSrc> & srcData = it->second.getData(quantity);
+
+		if (srcData.data.isEmpty()){
+			mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << ", skipping" << mout.endl;
+			//mout.warn() << "Data in path '"<< path << "' was empty." << mout.endl;
+			//mout.warn() << "Data in elev '"<< it->first << "' was empty." << mout.endl;
+			//mout.debug() << srcData << mout.endl;
+			continue;
+		}
+		mout.debug(2) << "elangle=" << it->first << mout.endl;
+
+		processData(srcData, accumulator);
+		//mout.debug() << mout.endl;
+	}
+
+	//mout.warn() << "Time to update" << mout.endl;
+	//dstData.quality.odim.nodata = 257;
+
+	//HI5TREE & dstGroup = dstData.tree;  // OLD (old-fashioned to have HI5TREE here)
+
+	//Extractor e;
+	//e.extractPolar(accumulator, dstData.odim, dstProduct, "dw");
+	accumulator.extract(dstData.odim, dstProduct, "dw");
+
+	//mout.warn() << "dstProduct.updateTree" << dstData.odim << mout.endl;
+	//mout.warn() << "test polar odim:" << PolarODIM() << mout.endl;
+	dstProduct.updateTree(dstData.odim);
+
+
+}
+
+
+
+
+}  // namespace rack
+
+// Rack

@@ -1,0 +1,16 @@
+## Example commands for anomaly detection and removal AnDRe
+
+# Store invidual detection results (useful mostly for debugging)
+--aStore   
+
+# Detection: Birds/insects, Emitter lines of two sizes, ships and speckle noise  
+--aBiomet 0dBZ,1000m,5dBZ,500m
+--aEmitter 5000m,3.0deg,0.6
+--aEmitter 20000m,5.0deg,0.6
+--aShip 20dBZ,10dBZ,1500m,3deg
+--aSpeckle -10dbz,9pix
+
+# Removal part: gapfilling and damping (or erasing) values.
+--aGapFill 1500,5
+--aDamper 0.5,0.0
+# --aEraser 0.5   # use instead of aDamper, not together with it
