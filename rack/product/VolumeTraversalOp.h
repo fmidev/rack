@@ -77,7 +77,7 @@ public:
 	void processVolume(const HI5TREE &src, HI5TREE &dst) const;
 
 	virtual
-	void processDataSets(const DataSetSrcMap & srcVolume, DataSetDstMap<PolarDst> & dstVolume) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
 
 	virtual
 	inline
@@ -87,58 +87,6 @@ public:
 
 };
 
-/*
-template <class M>
-void VolumeTraversalOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
-
-	drain::MonitorSource mout(this->name+"(VolumeTraversalOpOp)", __FUNCTION__);
-	mout.debug(1) << "start" << mout.endl;
-
-	DataSetSrcMap srcDataSets;
-	DataSetDstMap<PolarDst> dstDataSets;
-
-	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src, this->dataSelector, dataPaths);
-
-	if (dataPaths.size() == 0)
-		mout.note() << "no dataPaths matching selector="  << this->dataSelector << mout.endl;
-
-	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
-	//drain::Variable elangles(typeid(double));
-	mout.warn() << "regExp: " << quantityRegExp << mout.endl;
-
-
-	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-
-		mout.debug() << "considering" << *it << mout.endl;
-
-		const std::string parent = DataSelector::getParent(*it);
-		const double elangle = src(parent)["where"].data.attributes["elangle"];
-
-		if (srcDataSets.find(elangle) == srcDataSets.end()){
-			mout.info() << "add "  << elangle << ':'  << parent << mout.endl;
-
-			/// its and itd for debugging
-			//DataSetSrcMap::const_iterator its = srcDataSets.insert(srcDataSets.begin(), DataSetSrcMap::value_type(elangle, DataSetSrc<>(src[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-			srcDataSets.insert(DataSetSrcMap::value_type(elangle, DataSetSrc<PolarSrc>(src(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-
-			//DataSetDstMap::iterator itd = dstDataSets.begin();
-			//itd = dstDataSets.insert(itd, DataSetDstMap::value_type(elangle, DataSetDst<>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-			dstDataSets.insert(DataSetDstMap<>::value_type(elangle, DataSetDst<PolarDst>(dst(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-
-			// elangles << elangle;
-
-		}
-
-	}
-
-	mout.debug() << "ok, calling processDataSets " << mout.endl;
-
-	//processDataSets(srcDataSets, dstDataSets);
-
-
-}
-*/
 
 }  // namespace rack
 

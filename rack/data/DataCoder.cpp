@@ -28,14 +28,14 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
+#include <drain/util/FunctorPack.h>
 #include <drain/util/Time.h>  // decayTime
 #include <drain/util/Variable.h>
-#include <drain/image/DistanceTransformFillOp.h>
-#include <drain/image/RecursiveRepairerOp.h>
-#include <drain/image/BasicOps.h>
 #include <drain/image/AccumulationMethods.h>
 #include <drain/image/File.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
 
 
 #include "DataCoder.h"
@@ -50,25 +50,33 @@ double DataCoder::undetectQualityCoeff(0.75);
 
 void DataCoder::init(){
 
-	drain::MonitorSource mout("DataCoder", __FUNCTION__);
+	drain::Logger mout("DataCoder", __FUNCTION__);
 
-	minCodeValue = drain::Type::getMin<double>(dataODIM.type); // consider embed in ODIM
+	minCodeValue = dataODIM.getMin(); //drain::Type::getMin<double>(dataODIM.type); // consider embed in ODIM
 	undetectValue = -std::numeric_limits<double>::max();
 
+	detectionThreshold = undetectValue; // NEW 2018
 
 
 	if (DataCoder::undetectQualityCoeff > 0.0){
 
 		const Quantity &q = getQuantityMap().get(dataODIM.quantity);
 		if (q.hasUndetectValue){
-			mout.info() << "using quantity-specific zero for undetect: " << q.undetectValue << " (quantity="<< dataODIM.quantity << ")" <<  mout.endl;
+			mout.info() << "using quantity-specific zero for undetectValue: " << q.undetectValue << " (quantity="<< dataODIM.quantity << ")" <<  mout.endl;
 			undetectValue = q.undetectValue;
-			/*
-			if (undetectValue < dataODIM.getMin()){
-				undetectValue = dataODIM.getMin();
-				mout.note() << "adjusting undetectValue up to minimum value: "  << undetectValue << mout.endl;
+			detectionThreshold = undetectValue+ 0.0001;
+
+			/// This has caused (and solved) problems? In compositing, zero = -32 dBZH may undeflow.
+			//if (undetectValue < dataODIM.getMin()){
+			if (detectionThreshold < dataODIM.getMin()){
+				//mout.debug(1) << "undetectValue(" << undetectValue << ") smaller than odim.getMin(): "  << dataODIM.getMin() << mout.endl;
+				// mout.warn() << "adjusting undetectValue(" << undetectValue << ") up to minimum supported value: "  << dataODIM.getMin() << mout.endl;
+				// undetectValue = dataODIM.getMin(); // This should not happen in accumulating. Say composite has min=0.0, but data_min=0.5 ?
+				// NOTE: undetectValue should not be tuned according to data, but to the host resource, like composite
+				mout.debug() << "tuning detectionThreshold " << detectionThreshold << ") to odim.getMin(): "  << dataODIM.getMin() << mout.endl;
+				detectionThreshold = dataODIM.getMin();
 			}
-			*/
+
 		}
 		else { //  no undetectValue, but undetectQualityCoeff>0
 			//mout.note() << "using default (storage type min) for undetectValue:" << converter.undetectValue << mout.endl;
@@ -82,7 +90,7 @@ void DataCoder::init(){
 
 	}
 
-	detectionThreshold = undetectValue+ 0.0001;
+	//detectionThreshold = undetectValue+ 0.0001;
 
 	mout.info() << " detectionThreshold: " << detectionThreshold << mout.endl;
 
@@ -147,7 +155,7 @@ void DataCoder::encode(double & value, double & weight) const {
 		//throw std::runtime_error("DataCoder::encode(double & value, double & weight) , weight <= 0.0");
 		value = dataODIM.nodata;
 	}
-	else if (value <= detectionThreshold) { // NEW IMPORTANT
+	else if (value <= detectionThreshold) { // NEW IMPORTANT (but could be < instead <= ?)
 		value = dataODIM.undetect;
 	}
 	else {

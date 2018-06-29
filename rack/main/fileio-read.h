@@ -58,10 +58,10 @@ class CmdInputFile : public SimpleCommand<std::string>  {
 public:
 
 	CmdInputFile() : SimpleCommand<std::string>(__FUNCTION__, "Read h5, txt or png file",
-			"filename", "", "<filename>.[h5|hdf5|png|txt]"), inputComplete(true) {
+			"filename", "", "<filename>.[h5|hdf5|png|txt]"){ //, inputComplete(true) {
 	};
 
-	mutable bool inputComplete;
+	//mutable bool inputComplete;
 
 	void exec() const;
 
@@ -69,16 +69,47 @@ protected:
 
 	void readFileH5(const std::string & fullFilename) const;
 
-	void readFileAndAppendH5(const std::string & fullFilename) const;
+	//void readFileAndAppendH5(const std::string & fullFilename) const;
+
+	void appendCartesianH5(HI5TREE & tmpSrc,  HI5TREE & dst) const;
+	void attachCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const;
+
+	void appendPolarH5(HI5TREE & tmpSrc, HI5TREE & dst) const;
+	//void appendPolarH5OLD(HI5TREE & tmpSrc, HI5TREE & dst) const;
+
 
 	void readTextFile(const std::string & fullFilename) const;
 
 	void readImageFile(const std::string & fullFilename) const;
 
+	template <class OD>  // const drain::VariableMap & rootProperties,
+	void deriveImageODIM( const drain::image::Image &srcImage,
+			OD & odim) const {
+		// See also EncodingODIM copyFro
+		const drain::image::Geometry & g = srcImage.getGeometry();
+		odim.setGeometry(g.getWidth(), g.getHeight());
+		odim.type = (char)srcImage.getType2();
+		//odim.updateFromMap(rootProperties);
+		odim.updateFromMap(srcImage.properties);
+		if (odim.gain == 0){
+			if (!odim.quantity.empty())
+				getQuantityMap().setQuantityDefaults(odim, odim.quantity);
+		}
 
-};
+		//odim.copyToData(dst);
+
+	}
+
+	};
+
 
 }
+
+/*
+template <class OD>
+void CmdInputFile::deriveImageODIM(){
+}
+*/
 
 #endif
 

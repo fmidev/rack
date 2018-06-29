@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define BIRD_H_
 
 //#include "PolarProductOp.h"
-#include <drain/image/ImageOp.h>
+#include <drain/imageops/ImageOp.h>
 #include "DetectorOp.h"
 
 using namespace drain::image;
@@ -83,7 +83,7 @@ public:
 
 
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSetDst<PolarDst> & dstAux) const;
+	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 
 
 protected:
@@ -95,13 +95,13 @@ protected:
 	// kludge
 	void init(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0);
 
-	/// Convenience function for "accumulating"
+	/// Convenience function for "accumulating" detection results.
 	/**
 	 *   \param tmp - image for latest result, in a sequence of operations
 	 *   \param dstData - actual result
 	 *   \param dstProductAux -
 	 */
-	void applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const;
+	void applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
 
 
 };

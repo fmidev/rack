@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <map>
 
+#include "util/TypeUtils.h"
 #include "util/String.h"
 #include "util/StringMapper.h"
 #include "CommandRegistry.h"
@@ -44,7 +45,7 @@ namespace drain {
 
 std::string CommandRegistry::resolveKey(const std::string & key) const {
 
-	MonitorSource mout("Registry", __FUNCTION__);
+	Logger mout("Registry", __FUNCTION__);
 
 	const size_t l = key.length();
 
@@ -77,7 +78,7 @@ int CommandRegistry::index(0);
 
 void CommandRegistry::add(const std::string & section, Command & r, const std::string & name, char alias){
 
-	// MonitorSource mout("CommandRegistry", __FUNCTION__); // warning, not initialized?
+	// Logger mout("CommandRegistry", __FUNCTION__); // warning, not initialized?
 	if (name == DEFAULT_HANDLER){
 		entryMap.insert(std::pair<std::string, Command &>(DEFAULT_HANDLER, r));
 		return;
@@ -97,15 +98,15 @@ void CommandRegistry::add(const std::string & section, Command & r, const std::s
 		const char lastPrefixChar = prefix.at(prefix.length()-1); //PREFIX_LENGTH-1);
 
 		if ((lastPrefixChar >= 'a') && (lastPrefixChar <= 'z')) // last char
-			String::upperCase(nameFinal,1);
+			StringTools::upperCase(nameFinal,1);
 		else if ((lastPrefixChar >= 'A') && (lastPrefixChar <= 'Z')) // last char
-			String::lowerCase(nameFinal,1);
+			StringTools::lowerCase(nameFinal,1);
 
 		nameFinal = prefix + nameFinal;
 
 	}
 	else {
-		String::lowerCase(nameFinal, 1);
+		StringTools::lowerCase(nameFinal, 1);
 	}
 
 	/*
@@ -141,6 +142,7 @@ drain::VariableMap & CommandRegistry::getStatusMap(bool update){
 				const drain::ReferenceMap & params = dit->second.getParameters();
 				drain::Variable & v = statusMap[dit->first];
 				v = params.getValues();
+				//vField = params.getKeys();
 			// }
 
 			//else
@@ -245,7 +247,7 @@ void CommandRegistry::helpSections(std::ostream & ostr) const {
 //template <class T>
 void CommandRegistry::helpSections(std::ostream & ostr, const std::string & section) const {
 
-	MonitorSource mout("CommandRegistry", __FUNCTION__);
+	Logger mout("CommandRegistry", __FUNCTION__);
 
 	SectionMap::const_iterator it = sections.find(section);
 	if (it == sections.end()){
@@ -260,15 +262,71 @@ void CommandRegistry::helpSections(std::ostream & ostr, const std::string & sect
 	}
 }
 
+void CommandRegistry::toJSON(std::ostream & ostr) const {
+
+	char sep = 0;
+	for (map_t::const_iterator it = entryMap.begin(); it != entryMap.end(); ++it){
+		// const Command & r = it->second;
+		if (sep)
+			ostr << sep << '\n';
+		else
+			sep = ',';
+		const drain::ReferenceMap & p = it->second.getParameters();
+		const bool SINGLE = (p.size() == 1);
+		ostr << "\"" << it->first << "\" : ";
+		if (!SINGLE)
+			ostr << '{';
+		char sep2 = 0;
+		for (drain::ReferenceMap::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+
+			if (sep2)
+				ostr << sep2;
+			else
+				sep2 = ',';
+			ostr << '\n';
+
+			drain::VariableMap m;
+
+			if (!SINGLE)
+				ostr << "  \"" << pit->first << "\" : ";
+			else
+				m["name"] = pit->first;
+
+			const std::type_info & t = pit->second.getType();
+			if (t == typeid(std::string)){
+				m["type"] = "string";
+			}
+			else if (t == typeid(void)){
+				m["type"]  = drain::Type::getTypeChar(t);
+			}
+			else if (drain::Type::call<drain::typeIsInteger>(t)){
+				m["type"] = "integer";
+			}
+			else
+				m["type"] = "float";
+
+			m["value"] = (const drain::Castable &)pit->second;
+			m.toJSON(ostr, 4);
+			//ostr << "\n";
+			//if (MULTIPLE)
+			//	ostr << ")";
+		}
+		//p.toJSON(ostr);
+		if (!SINGLE)
+			ostr << "\n}";
+	}
+
+}
+
 
 void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
-	MonitorSource mout("CommandRegistry",  __FUNCTION__);
+	Logger mout("CommandRegistry",  __FUNCTION__);
 
 	try {
 
 		if (expandVariables){
-			//mout.info() << "expanding. map: " << statusMap << mout.endl;
+			//mout.toOStr() << "expanding. map: " << statusMap << mout.endl;
 			statusFormatter.parse(params);
 			mout.debug() << "expanded: '" << params << "' => '" << statusFormatter.toStr(statusMap) << "'" << mout.endl;
 			//statusFormatter.debug(std::cerr, statusMap);
@@ -293,7 +351,7 @@ void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
 void CommandRegistry::run(const std::string & name, const std::string & params) const {
 
-	MonitorSource mout("CommandRegistry",  __FUNCTION__);
+	Logger mout("CommandRegistry",  __FUNCTION__);
 
 	const map_t::const_iterator it = find(name);
 	if (it != entryMap.end()){
@@ -319,7 +377,7 @@ void CommandRegistry::run(const std::string & name, const std::string & params) 
 
 void CommandRegistry::run(Script & script) const {
 
-	MonitorSource mout("CommandRegistry",  __FUNCTION__);
+	Logger mout("CommandRegistry",  __FUNCTION__);
 
 	/// Applied, if (expandVariables == true)
 	//  drain::StringMapper strmap("[a-zA-Z0-9_:]+");
@@ -341,7 +399,7 @@ void CommandRegistry::run(Script & script) const {
 void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
 		//Script & script = *this;
 
-	MonitorSource mout(std::string(__FUNCTION__) + "(argc,argv)");
+	Logger mout(std::string(__FUNCTION__) + "(argc,argv)");
 	mout.info() << mout.endl;
 
 	for (int i = 1; i < argc; ++i) {
@@ -357,7 +415,7 @@ void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
 
 void CommandRegistry::scriptify(const std::string & arg, Script & script) {
 
-	MonitorSource mout(std::string(__FUNCTION__) + "(std::string)");
+	Logger mout(std::string(__FUNCTION__) + "(std::string)");
 	//std::cerr << "ARGS: " << arg.substr(0, arg.find_last_not_of(" \t\n\r")+1) << std::endl;
 
 	const size_t n = arg.find_last_not_of(" \t\n\r");
@@ -407,7 +465,7 @@ void CommandRegistry::scriptify(const std::string & arg, Script & script) {
 
 bool CommandRegistry::appendCommand(const std::string & command, const std::string & arguments, Script & script) {
 
-	MonitorSource mout("CommandRegistry", __FUNCTION__);
+	Logger mout("CommandRegistry", __FUNCTION__);
 
 	std::string key = resolveKey(command);
 	map_t::iterator dit = find(key);

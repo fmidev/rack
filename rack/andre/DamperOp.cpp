@@ -46,7 +46,7 @@ namespace rack {
 /*
 void DamperOp::filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstRoot, const std::string &path) const {
 
-	drain::MonitorSource mout(drain::monitor,"DamperOp::filterDataGroup");
+	drain::Logger mout(drain::monitor,"DamperOp::filterDataGroup");
 
 	Image & data = dstRoot[path]["data"].data.dataSet;
 
@@ -67,7 +67,7 @@ void DamperOp::filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstRoot, const s
 
 		mout.debug(1) << " using quality"  << mout.endl;
 		if (mout.isDebug(5)){
-			quality.info(std::cerr);
+			quality.toOStr(std::cerr);
 		}
 		//Image<unsigned char> &dst = ((NodeHi5 &)dstRoot[path+"/data"]).data;
 
@@ -84,7 +84,7 @@ void DamperOp::filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstRoot, const s
 void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 //void DamperOp::filterImage(const PolarODIM & odim, Image &data, Image &quality) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	//drain::image::File::write(data,"Eras0.png");
 	//drain::image::File::write(quality,"Erasq.png");
@@ -105,15 +105,16 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 
 	const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
 
-	const std::type_info & t = dstData.data.getType();
-	const double min = drain::Type::getMin<double>(t);
-	const double max = drain::Type::getMax<double>(t);
+	//const std::type_info & t = dstData.data.getType();
+	const double min = dstData.data.getMin<double>();
+	const double max = dstData.data.getMax<double>();
 	/// NOTE: getMin returns 0 for unsigned integral and ~0 for floats, which is ok here.
-	if (drain::Type::isIntegralType(t))
-		dstData.data.setLimits( min+2.0, max-2.0);
+	/** 2018
+	if (drain::Type::call<drain::typeIsInteger>(t))
+		dstData.data.scaling.setLimits( min+2.0, max-2.0);
 	else
-		dstData.data.setLimits(-max+2.0, max-2.0);
-
+		dstData.data.scaling.setLimits(-max+2.0, max-2.0);
+	*/
 
 	Image::iterator d  = dstData.data.begin();  // fixme: const object allows non-const iterator
 	Image::const_iterator q = srcQuality.data.begin();
@@ -124,7 +125,9 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 
 	mout.debug(2) << "data, after limits: " << dstData.data << mout.endl;
 	mout.debug(2) << "limits: " << dstData.data.getMin<double>() << ',' << dstData.data.getMax<double>() << mout.endl;
-	//data.info(std::cout);
+	//data.toOStr(std::cout);
+
+	drain::typeLimiter<double>::value_t limit = dstData.data.getLimiter<double>();
 
 	while (d != dEnd){
 		x = *d;
@@ -140,7 +143,8 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 				if (x < dbzMin)
 					*d = dstData.odim.undetect;
 				else
-					*d = dstData.data.limit<double>(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
+					*d = limit(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
+							//dstData.data.scaling.limit<double>(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
 				//*d = scaleDBZ.inverse(x);
 				//*d = scaleDBZ.inverse(x);
 				//*d = static_cast<double>(*q)/255.0 * x;

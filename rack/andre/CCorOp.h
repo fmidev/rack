@@ -80,12 +80,12 @@ public:
 	/// NEW POLICY => DetectorOpNEW
 	/*
 	virtual
-	void processDataSets(const DataSetSrcMap & srcVolume, DataSetDstMap & dstVolume) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetDstMap & dstVolume) const;
 	*/
 
 	/// NEW POLICY
 	virtual
-	void processDataSet(const DataSetSrc<> & src, PlainData<PolarDst> & dst, DataSetDst<> & aux) const;  // DataSetDst & dst) const;
+	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;  // DataSetDst & dst) const;
 
 
 

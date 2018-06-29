@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 //#include <map>
 
-#include "Debug.h"
+#include "Log.h"
 #include "BeanLike.h"
 
 namespace drain
@@ -50,22 +50,20 @@ class Functor : public BeanLike {
 
 public:
 
-	/// Relative scale, typically 1. Optional.
-	double scale;
-
-	/// "Relative" bias, typically 0.  Optional.
-	double bias;
-
 	inline
 	void setScale(double scale, double bias=0.0) {
 		this->scale = scale;
 		this->bias  = bias;
+		update();
 	}
 
-	virtual
-	inline
+	virtual inline
 	void update() const {
+		drain::Logger mout(this->name+"(Functor)", __FUNCTION__);
+
 		updateScale();
+
+		mout.debug(1) << "final scale,bias: " << this->scaleFinal << ',' << this->biasFinal << mout.endl;
 	}
 
 	virtual
@@ -75,8 +73,8 @@ public:
 		update();
 	};
 
-
 protected:
+
 
 	Functor(const std::string & name, const std::string & description="", double scale=1.0, double bias=0.0) : BeanLike(name, description),
 		scale(scale), bias(bias), scaleFinal(scale), biasFinal(bias) {} // dstMax(0.0),
@@ -87,21 +85,26 @@ protected:
 	inline
 	virtual
 	void updateScale() const {
+
 		this->scaleFinal = scale; // * SCALE;
 		this->biasFinal  = bias;  // * SCALE;
+
 	}
 
+	/// Relative scale, typically 1. Optional.
+	double scale;
 
+	/// "Relative" bias, typically 0.  Optional.
+	double bias;
 
-
-	// mutable
-	//const double dstMax;
-
+	/// Scaling factor after encodings of src and dst images are known.
 	mutable
 	double scaleFinal;
 
+	/// Scaling factor after encodings of src and dst images are known.
 	mutable
 	double biasFinal;
+
 
 };
 

@@ -60,12 +60,14 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
 	 */
+	inline
 	SpeckleOp(double reflMin=0.0, int area=9) :
 		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input but applies to all data in a sweep group.", ECHO_CLASS_NOISE){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;
 		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");
 		parameters.reference("area", this->area = area, "bins");
+		REQUIRE_STANDARD_DATA = false;
 	};
 
 	double reflMin;
@@ -76,7 +78,6 @@ protected:
 
 	virtual
 	void processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const;
-	//void filterImage(const RadarODIM &odimIn, const Image &src, Image &dst) const;
 
 };
 

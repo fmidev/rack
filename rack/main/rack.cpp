@@ -35,8 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <exception>
 
-#include <drain/util/Debug.h>
-#include <drain/prog/Commands-ImageOps.h>
+#include <drain/util/Log.h>
 
 
 #include "hi5/Hi5.h"
@@ -53,7 +52,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre.h"
 #include "accumulation.h"
 #include "products.h"
-#include "compositing.h"
+#include "cartesian.h"
 #include "images.h"
 #include "rack.h"
 
@@ -66,7 +65,7 @@ namespace rack {
 int process(int argc, const char **argv) {
 
 
-	drain::MonitorSource mout("rack");
+	drain::Logger mout("rack");
 	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
 
 	if (argc == 1) {
@@ -79,13 +78,20 @@ int process(int argc, const char **argv) {
 	//registry.setSection("", "");
 	CommandModule commands;
 
+	registry.run("verbose", "5"); // LOG_NOTICE
+
+
+
 	FileModule fileio;
 
 
 	AnDReModule andre("andre", "a");
 
+
 	AccumulationModule accumulation("prod", "p");
 	ProductModule products("prod", "p");
+
+	//getResources().composite.setMethod("MAX");
 
 	registry.setSection("formulae", "");
 	BeanRefEntry<PrecipitationZ> rainZ(RainRateOp::precipZrain, "precipZrain");
@@ -95,14 +101,31 @@ int process(int argc, const char **argv) {
 	BeanRefEntry<PrecipitationKDPZDR> pKDPZDR(RainRateOp::precipKDPZDR, "precipKDPZDR");
 	BeanRefEntry<FreezingLevel> pFreezingLevel(RainRateOp::freezingLevel);
 	//pFreezingLevel.height =
+	/*
+
+	*/
 
 	CompositingModule compositing("cart", "c");
-	//getResources().composite.setMethod("MAX");
 
-	// ImageRackletModule imageOps("imageOps", "i");  // Causes bug in StatusMap
+	ImageRackletModule imageOps("imageOps", "i");  // Causes bug in StatusMap
 
 
-	registry.run("verbose", "5"); // LOG_NOTICE
+	//EncodingODIM().toOStr(std::cout)
+
+	//std::cout << "EncodingODIM" << EncodingODIM() << '\n';
+	/*
+	std::cout << "ODIM " << ODIM() << '\n';
+	PolarODIM odim;
+	std::cout << "PolarODIM0 " << odim << '\n';
+	odim.setTypeDefaults(typeid(unsigned short int));
+	std::cout << "PolarODIM2 " << odim << '\n';
+	getQuantityMap().setQuantityDefaults(odim, "ZDR", "C");
+	PolarODIM odimCopy(odim);
+	std::cout << "PolarODIMC " << odimCopy << '\n';
+	*/
+
+	//std::cout << "CartesianODIM" << CartesianODIM() << '\n';
+
 
 	/// Main "loop".
 	registry.runCommands(argc, argv);

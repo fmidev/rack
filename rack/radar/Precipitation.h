@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/util/BeanLike.h>
+#include <drain/util/RegExp.h>
 
 #ifndef PRECIPITATION_H_
 #define PRECIPITATION_H_
@@ -55,7 +56,7 @@ public:
 	inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 
-		drain::MonitorSource mout(name, __FUNCTION__);
+		drain::Logger mout(name, __FUNCTION__);
 
 		static drain::RegExp presetKey("^[a-zA-Z]+");
 		if (presetKey.test(p)){

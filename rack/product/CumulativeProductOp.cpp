@@ -47,9 +47,9 @@ using namespace drain::image;
 
 
 
-void CumulativeProductOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDst> & dstProduct) const {
+void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
-	drain::MonitorSource mout(name+"(CumulativeProductOp::)", __FUNCTION__);
+	drain::Logger mout(name+"(CumulativeProductOp::)", __FUNCTION__);
 	//mout.debug(2) << "starting (" << name << ") " << mout.endl;
 
 	if (srcSweeps.empty()){
@@ -57,7 +57,7 @@ void CumulativeProductOp::processDataSets(const DataSetSrcMap & srcSweeps, DataS
 		return;
 	}
 
-	const DataSetSrc<PolarSrc> & firstSweep =  srcSweeps.begin()->second;
+	const DataSet<PolarSrc> & firstSweep =  srcSweeps.begin()->second;
 	const Data<PolarSrc> & srcData = firstSweep.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
 	if (firstSweep.size() > 1){
@@ -72,67 +72,44 @@ void CumulativeProductOp::processDataSets(const DataSetSrcMap & srcSweeps, DataS
 	//mout.warn() << "dstOdim " << dstData.odim << mout.endl;
 
 	setEncoding(srcData.odim, dstData);
-	/*
-	ProductOp::applyDefaultODIM(dstData.odim, this->odim); // typically: type
-	ProductOp::applyODIM(dstData.odim, srcData.odim);
-	ProductOp::applyUserEncoding(dstData.odim, encodingRequest);
-	*/
-
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
 	dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
 
-
-
-	//PolarAccumulator accumulator;
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
 	/// Some product generators may have user defined accumulation methods.
-	accumulator.setMethod(drain::String::replace(accumulationMethod, ":",","));
+	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":",","));
 	accumulator.checkCompositingMethod(dstData.odim);
 	accumulator.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
 	mout.debug() << (const Accumulator &) accumulator << mout.endl;
 
-	//
-	// dstData.odim.set(odim);
+	dstData.odim.update(odim); // product
+	dstData.odim.update(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();
-
 	//mout.warn() << "'final' dstODIM " << dstData << mout.endl;
 
 	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
 
-	for (DataSetSrcMap::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+	for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 
-		//DataSrc & srcData = it->second.getFirstData();
 		const Data<PolarSrc> & srcData = it->second.getData(quantity);
 
 		if (srcData.data.isEmpty()){
 			mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << ", skipping" << mout.endl;
-			//mout.warn() << "Data in path '"<< path << "' was empty." << mout.endl;
-			//mout.warn() << "Data in elev '"<< it->first << "' was empty." << mout.endl;
-			//mout.debug() << srcData << mout.endl;
 			continue;
 		}
 		mout.debug(2) << "elangle=" << it->first << mout.endl;
 
 		processData(srcData, accumulator);
-		//mout.debug() << mout.endl;
 	}
 
-	//mout.warn() << "Time to update" << mout.endl;
-	//dstData.quality.odim.nodata = 257;
-
-	//HI5TREE & dstGroup = dstData.tree;  // OLD (old-fashioned to have HI5TREE here)
-
-	//Extractor e;
-	//e.extractPolar(accumulator, dstData.odim, dstProduct, "dw");
 	accumulator.extract(dstData.odim, dstProduct, "dw");
 
 	//mout.warn() << "dstProduct.updateTree" << dstData.odim << mout.endl;
-	//mout.warn() << "test polar odim:" << PolarODIM() << mout.endl;
-	dstProduct.updateTree(dstData.odim);
+	//@= dstProduct.updateTree(dstData.odim);
 
 
 }

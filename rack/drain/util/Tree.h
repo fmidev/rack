@@ -184,6 +184,7 @@ public:
 	/// inline 	operator const T &() const { return value; };
 
 	typedef typename map_type::iterator iterator;
+	typedef typename map_type::reverse_iterator reverse_iterator;
 	typedef typename map_type::const_iterator  const_iterator;
 
 
@@ -317,7 +318,7 @@ public:
 	};
 
 
-#ifdef DRAIN_PATH_H_
+#ifdef DRAIN_PATH_FOO_H_
 	inline
 	const Tree<T,C> &operator[](const Path & path) const {
 
@@ -361,6 +362,12 @@ public:
 	/// Returns the map containing the children.
 	inline
 	const map_type & getChildren() const { return children; };
+
+	/// Clears the children of this node.
+	inline
+	bool isEmpty(){
+		return (children.size()==0);
+	};
 
 	/// Clears the children of this node.
 	void clear(){
@@ -420,12 +427,14 @@ public:
 	}
 
 
-	/// Returns a list of the node names matching a pattern.
+	/// Returns a list of the node names matching a pattern. The trailing '/' is NOT appended ie. should not be tested by RegExp.
 	template <class L>
 	void getKeys(L & list, const RegExp & r, const std::string & path = "") const {
 		for (typename map_type::const_iterator it = begin(); it != end(); it++){
 			//std::string p = path.empty() ? (it->first) : (path + separator + it->first);  // without leading '/'
-			std::string p = path + separator + it->first;                                   // with   leading '/'
+			std::string p = path + separator + it->first;
+			// with   leading '/'
+			//std::cerr << "getKeys<>" << p << std::endl;
 			if (r.test(p))
 				list.push_back(p);
 			it->second.getKeys(list, r, p); // recursion

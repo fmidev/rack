@@ -61,11 +61,11 @@ using namespace drain::image;
 //template <class M>
 void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(this->name+"(VolumeTraversalOpOp)", __FUNCTION__);
+	drain::Logger mout(this->name+"(VolumeTraversalOpOp)", __FUNCTION__);
 	mout.debug(1) << "start" << mout.endl;
 
-	DataSetSrcMap srcDataSets;
-	DataSetDstMap<PolarDst> dstDataSets;
+	DataSetMap<PolarSrc> srcDataSets;
+	DataSetMap<PolarDst> dstDataSets;
 
 	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	DataSelector::getPaths(src, this->dataSelector, dataPaths);
@@ -82,19 +82,19 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 		mout.debug() << "considering" << *it << mout.endl;
 
-		const std::string parent = DataSelector::getParent(*it);
+		const std::string parent = DataTools::getParent(*it);
 		const double elangle = src(parent)["where"].data.attributes["elangle"];
 
 		if (srcDataSets.find(elangle) == srcDataSets.end()){
 			mout.info() << "add "  << elangle << ':'  << parent << mout.endl;
 
 			/// its and itd for debugging
-			//DataSetSrcMap::const_iterator its = srcDataSets.insert(srcDataSets.begin(), DataSetSrcMap::value_type(elangle, DataSetSrc<>(src[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-			srcDataSets.insert(DataSetSrcMap::value_type(elangle, DataSetSrc<PolarSrc>(src(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			//DataSetMap<PolarSrc>::const_iterator its = srcDataSets.insert(srcDataSets.begin(), DataSetMap<PolarSrc>::value_type(elangle, DataSet<>(src[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
-			//DataSetDstMap::iterator itd = dstDataSets.begin();
-			//itd = dstDataSets.insert(itd, DataSetDstMap::value_type(elangle, DataSetDst<>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-			dstDataSets.insert(DataSetDstMap<>::value_type(elangle, DataSetDst<PolarDst>(dst(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			//DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
+			//itd = dstDataSets.insert(itd, DataSetMap<PolarDst>::value_type(elangle, DataSet<>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
 			// elangles << elangle;
 
@@ -110,14 +110,14 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 }
 
 
-void VolumeTraversalOp::processDataSets(const DataSetSrcMap & srcDataSets, DataSetDstMap<PolarDst> & dstDataSets) const {
+void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::MonitorSource mout(name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
 
 	mout.debug(1) << "start1" << mout.endl;
 
-	DataSetSrcMap::const_iterator its = srcDataSets.begin();
-	DataSetDstMap<PolarDst>::iterator itd = dstDataSets.begin();
+	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
+	DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
 	while (its != srcDataSets.end()){
 
 		mout.info() << "processing elangle:" << its->first << mout.endl;
@@ -127,13 +127,13 @@ void VolumeTraversalOp::processDataSets(const DataSetSrcMap & srcDataSets, DataS
 		//if (its->first == itd->first){
 		if (itd != dstDataSets.end()){
 
-			const DataSetSrc<> & srcDataSet = its->second;
-			DataSetDst<> & dstDataSet = itd->second;
+			const DataSet<PolarSrc> & srcDataSet = its->second;
+			DataSet<PolarDst> & dstDataSet = itd->second;
 
 			/// MAIN COMMAND
 			processDataSet(srcDataSet, dstDataSet);
 			//dstDataSet.updateTree(); // create /what, /where etc.
-			//DataSelector::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
+			//DataTools::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
 			// update other trees?
 
 

@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include <drain/image/File.h>
 
 #include <drain/util/Fuzzy.h>
+#include <drain/util/Geo.h>
 
 //#include "data/Conversion.h"
 #include "radar/Constants.h"
@@ -45,7 +46,7 @@ using namespace drain::image;
 
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(2) << "start" << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
@@ -79,16 +80,12 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	mout.info() << "Freezing level: " << sweep.odim.freeze << mout.endl;
 
-	// In this context decoding only.
+	// In this context decoding only, ie form bytevalues to physical values.
 	DataCoder coder(sweep.odim, sweepQuality.odim);
-	//converter.undetectQualityCoeff = CumulativeProductOp::relativeUndetectWeight;
-	//converter.undetectValue = -100;
-
-	//converter.undetectQualityCoeff = 0.5;
-	//converter.init();
+	mout.info() << "decoder: " << coder << mout.endl;
 
 	// Elevation angle
-	const double eta = sweep.odim.elangle*DEG2RAD;
+	const double eta = sweep.odim.getElangleR();
 
 	/// Ground angle
 	double beta;
@@ -115,7 +112,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	double beamWeight; // 0.0...1.0;
 
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	drain::FuzzyBell<double> beamPower(0.0, 0.2*DEG2RAD, 1.0);
+	drain::FuzzyBell<double> beamPower(0.0, 0.2*drain::DEG2RAD, 1.0);
 
 	/// Measurement weight (quality)
 	double w;
@@ -151,7 +148,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.nrays) / accumulator.getHeight(); // todo ODIM.getSweep()
+			jSweep = (j * sweep.odim.nrays) / accumulator.getHeight();
 
 			value = sweep.data.get<double>(iSweep,jSweep);
 
@@ -164,16 +161,8 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 				w = beamWeight * w;
 			}
 			else {
-				// w = (value==sweep.odim.undetect) ? 0.5 : 1.0; // or default?
-				// if (!converter.decode(value, w))
 				if (value == sweep.odim.undetect){
 					w = beamWeight * DataCoder::undetectQualityCoeff; //converter.undetectQualityCoeff;
-					// --> value = coder.undetectValue
-					//if (j == 195){
-					//	std::cerr << "beam" << j << ",\t w=" << w << " ud=" << sweep.odim.undetect << '\n';
-						//w = 0.01;
-					//}
-					//value = sweep.odim.undetect;
 				}
 				else {
 					w = beamWeight;
@@ -181,7 +170,6 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 				if (!coder.decode(value))
 					continue;
 
-				// if (j == 195) std::cerr << "\t val" << value << '\n';
 			}
 
 			address = accumulator.data.address(i,j);

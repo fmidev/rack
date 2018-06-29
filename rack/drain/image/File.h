@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
+#include "ImageChannel.h"
 #include "Image.h"
 #include "ImageT.h"
 
@@ -54,10 +55,14 @@ public:
 
 	//virtual ~File();
 	inline
-	static void read(Image &img,const std::string &path){
-		FilePng::read(img,path);
+	static void read(Image &img, const std::string &path){
+		FilePng::read(img, path);
 	}
 
+	inline
+	static void read(ImageFrame &img, const std::string &path){
+		FilePng::read(img, path);
+	}
 
 	template <class T>
 	static void read(ImageT<T> &img,const std::string &path){
@@ -74,8 +79,8 @@ public:
 
 	//static void read(Image<unsigned char> &image,const std::string &path);
 	inline
-	static void write(const Image &img,const std::string &path){
-		FilePng::write(img,path);
+	static void write(const ImageFrame &img,const std::string &path){
+		FilePng::write(img, path);
 	}
 
 

@@ -33,9 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/SlidingWindowMedianOp.h>
 #include <drain/image/File.h>
-//#include <drain/image/SegmentAreaOp.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
+
+//#include <drain/imageops/SegmentAreaOp.h>
 //#include <drain/image/MathOpPack.h>
 
 using namespace drain::image;
@@ -47,19 +48,18 @@ namespace rack {
 void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	//mout.debug() << parameters << mout.endl;
 
 	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
 	//op.setParameter("max", src.getMax<double>()-2.0);
 
 	//drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
-	const double QMAX = dstProb.odim.scaleInverse(1.0);
-	//drain::FuzzyStepsoid<double, double> fuzzyStep(threshold, -abs(thresholdWidth), QMAX);
-	drain::FuzzyStep<double> fuzzyStep(threshold+thresholdWidth, threshold-thresholdWidth, QMAX);
+	const unsigned int QMAX = dstProb.odim.scaleInverse(1.0);
+	//drain::FuzzyStepsoid<double, double> fuzzyStep(threshold, -fabs(thresholdWidth), QMAX);
+	//drain::FuzzyStep<double> fuzzyStep(threshold+thresholdWidth, threshold-thresholdWidth, QMAX);
+	drain::FuzzyStep<double> fuzzyStep(threshold - thresholdWidth, threshold + thresholdWidth, QMAX);
 	mout.debug() << "fuzzy step:"  << mout.endl;
-
-
 
 	Image::const_iterator it = srcData.data.begin();
 	Image::iterator dit = dstProb.data.begin();
@@ -78,19 +78,43 @@ void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 	/// Morphological closing
 	if ((windowWidth>0) && (windowHeight>0)){
+		const CoordinatePolicy & coordPolicy = srcData.data.getCoordinatePolicy();
+		dstProb.data.setCoordinatePolicy(coordPolicy);
+
 		Image tmp;
+		tmp.setCoordinatePolicy(coordPolicy);
 		const int w = windowWidth / srcData.odim.rscale;
 		const int h = windowHeight * 360.0 / srcData.odim.nrays;
 		SlidingWindowMedianOp median;
 
 		median.setSize(w,h);
 		median.conf.percentage = medianPos;
-		median.filter(dstProb.data, tmp);
+		median.traverseChannel(dstProb.data.getChannel(0), dstProb.data.getChannel(0));
 
+		/*
+		median.filter(dstProb.data, tmp);
 		median.setSize(w*2,h*2);
 		median.conf.percentage = 1.0 - medianPos;
 		median.filter(tmp, dstProb.data);
+		*/
 	}
+
+	it = srcData.data.begin();
+	dit = dstProb.data.begin();
+	while (it != srcData.data.end()){
+		if (*it != srcData.odim.nodata){
+			if (*it != srcData.odim.undetect){
+				*dit = (QMAX - static_cast<int>(*dit));
+				//*dit = fuzzyStep(srcData.odim.scaleForward(*it));
+				//*dit = 64 + fuzzyStep(srcData.odim.scaleForward(*it))/ 2;
+			}
+			else {
+				*dit = 0.0;
+			}
+		}
+		++it; ++dit;
+	}
+
 }
 
 

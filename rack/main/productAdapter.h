@@ -44,12 +44,9 @@ namespace rack {
  */
 template <class T>
 class ProductAdapter : public Command {
-    public: //re 
-    /*
-	ProductAdapter(const std::string & name, const std::string & section = "prod") : Command(), adapterName(std::string("ProductAdapter<")+name+">") {
-		addEntry(section, *this, name, 0);
-	};
-	*/
+
+public:
+
 	ProductAdapter(bool add = true) : Command(), adapterName(std::string("ProductAdapter<")+productOp.getName()+">"){ // adapterName("test")
 
 		static RegExp nameCutter("^(.*)(Op|Functor)$");
@@ -121,7 +118,7 @@ class ProductAdapter : public Command {
 	 */
 	void run(const std::string & params = "") {
 
-		drain::MonitorSource mout(adapterName+"::"+__FUNCTION__);
+		drain::Logger mout(adapterName+"::"+__FUNCTION__);
 
 		mout.timestamp("BEGIN_PRODUCT");
 
@@ -154,8 +151,8 @@ class ProductAdapter : public Command {
 		//mout.warn() << dst << mout.endl;
 		productOp.processVolume(src, dst);
 
-		RackResources::updateCoordinatePolicy(dst, RackResources::polarLeft);
-		DataSelector::updateAttributes(dst);
+		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		DataTools::updateAttributes(dst);
 		resources.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		resources.currentHi5      = & dst;
 

@@ -38,52 +38,6 @@ namespace image
 {
 
 IdentityFunctor WindowConfig::idFtor;
-/*
-
-void Window::setSrc(const Image &image){
-	src.setView(image);
-	srcWidth = image.getWidth();
-	srcHeight = image.getHeight();
-	coordinateHandler.setLimits(srcWidth, srcHeight);
-	if (coordinateHandler.getPolicy().xOverFlowPolicy != CoordinatePolicy::UNDEFINED)
-		coordinateHandler.setPolicy(image.getCoordinatePolicy());
-	scaleResult = src.getMax<float>()/dst.getMax<float>(); // TODO change order?
-
-}
-
-void Window::setDst(Image &image){
-	dst.setView(image);
-	scaleResult = src.getMax<float>()/dst.getMax<float>();
-}
-
-// FIXME  VIRHE TÄSSÄ?
-void Window::setSrcWeight(const Image &image){
-	srcWeight.setView(image);
-}
-
-void Window::setDstWeight(Image & image){
-	dstWeight.setView(image);
-}
-
-void Window::toStream(std::ostream &ostr) const {
-	ostr << "Window: " << width << 'x' <<  height << ' ';
-	ostr << '[' << iMin << ',' << jMin << ',' << iMax << ',' << jMax << ']';
-	//ostr << " within " << srcWidth << 'x' <<  srcHeight << '\n';
-	ostr << '@' << location << '\n';
-	ostr << coordinateHandler << '\n';
-	ostr << "src: " << src << '\n';
-	ostr << "dst: " << dst << '\n';
-	ostr << "srcW:" << srcWeight << '\n';
-	ostr << "dstW:" << dstWeight << '\n';
-}
-*/
-
-
-
-
-
-
-
 
 }
 

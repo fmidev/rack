@@ -92,7 +92,7 @@ public:
 	/// Copied from RemoverOp
 	/// Updates QIND and QCLASS from global level (dataset) to local level (data). Conditional; checks if already done.
 	static
-	void updateLocalQuality(const DataSetSrc<> & srcDataSet, Data<PolarDst> & dstData);
+	void updateLocalQuality(const DataSet<PolarSrc> & srcDataSet, Data<PolarDst> & dstData);
 
 	/// Quality index value (0.5 by default) under which CLASS information is updated. Otherwise class is "meteorogical enough".
 	static
@@ -104,7 +104,7 @@ protected:
 	//std::string targetQuantity;
 
 	virtual
-	void processDataSet(const DataSetSrc<> & srcSweep, DataSetDst<> & dstProduct) const;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
 
 	/*

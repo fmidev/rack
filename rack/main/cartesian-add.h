@@ -58,7 +58,7 @@ class CompositeAdd : public BasicCommand {  // NEW 2017/06
 
 public:
 
-	CompositeAdd() : BasicCommand(__FUNCTION__, "Maps the current polar product to a Cartesian product."), weight(1.0) {};
+	CompositeAdd() : BasicCommand(__FUNCTION__, "Adds the current product to the composite."), weight(1.0) {};
 
 	void exec() const;
 
@@ -81,7 +81,7 @@ class CartesianAddWeighted : public CompositeAdd {
 
 public:
 
-	CartesianAddWeighted() : CompositeAdd(__FUNCTION__, "Adds current Cartesian product to the composite applying weight.") {
+	CartesianAddWeighted() : CompositeAdd(__FUNCTION__, "Adds the current product to the composite applying weight.") {
 		parameters.reference("weight", this->weight = weight, "0...1");
 	};
 

@@ -85,7 +85,7 @@ void PolarSector::adjustIndices(const PolarODIM & odim){
 
 void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1, int & bin2, int & ray2) const {
 
-	drain::MonitorSource mout("PolarWindow", __FUNCTION__);
+	drain::Logger mout("PolarWindow", __FUNCTION__);
 
 	if (this->ray2 != this->ray1 ){
 		ray1 = this->ray1;

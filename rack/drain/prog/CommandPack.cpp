@@ -48,7 +48,7 @@ void CmdHelp::helpOnModules(std::ostream & ostr, const std::string & excludeKey)
 
 	const CommandRegistry::SectionMap & sections = getRegistry().getSections();
 
-	ostr << "For help, type:\n";
+	ostr << "For help on separate modules, type:\n";
 	for (CommandRegistry::SectionMap::const_iterator it = sections.begin(); it != sections.end(); ++it){
 		if (it->first != excludeKey){
 			if (it->first.empty())
@@ -61,7 +61,7 @@ void CmdHelp::helpOnModules(std::ostream & ostr, const std::string & excludeKey)
 
 void CmdHelp::exec() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	const CommandRegistry r = getRegistry();
 
@@ -130,7 +130,7 @@ class CmdFormatFile : public SimpleCommand<std::string> {
 
 	void exec() const {
 
-		drain::MonitorSource mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
 
 		std::stringstream sstr;
 		std::ifstream ifstr;
@@ -153,7 +153,7 @@ CommandEntry<CmdFormatFile> cmdFormatFile("formatFile");
 
 void CommandLoader::run(const std::string & params){
 	// getRegistry().scriptify(params, script);
-	drain::MonitorSource mout(name, __FUNCTION__); // = getDrainage().mout;
+	drain::Logger mout(name, __FUNCTION__); // = getDrainage().mout;
 
 	Script script;
 

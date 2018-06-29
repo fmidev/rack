@@ -40,9 +40,9 @@ DopplerOp::~DopplerOp() {
 }
 
 
-void DopplerOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const {
+void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
 
@@ -67,28 +67,30 @@ void DopplerOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst
 	PlainData<PolarDst> & dstDataU = dstProduct.getData("X");
 	PlainData<PolarDst> & dstDataV = dstProduct.getData("Y");
 
-	const QuantityMap & qm = getQuantityMap();
+	//const QuantityMap & qm = getQuantityMap();
 	//qm.setTypeDefaults(dstDataU, "d"); //typeid(double));
-	dstDataU.setTypeDefaults("d"); //typeid(double));
+	//dstDataU.setTypeDefaults("d"); //typeid(double));
+	dstDataU.setEncoding(typeid(double));
 	//
 	dstDataU.data.setGeometry(count, 1);
-	dstDataU.odim.quantity = "X";
+	dstDataU.odim.quantity = "X"; // ???
 	//dstDataU.odim.gain = 1.0;
 	dstDataU.data.fill(dstDataU.odim.undetect);
 	//initDst(srcData, dstDataU);
 	//
 	//qm.setTypeDefaults(dstDataV, "d"); //typeid(double));
-	dstDataV.setTypeDefaults("d"); //typeid(double));
+	//dstDataV.setTypeDefaults("d"); //typeid(double));
+	dstDataV.setEncoding(typeid(double));
 	dstDataV.data.setGeometry(count, 1);
 	dstDataV.odim.quantity = "Y";
 	//dstDataV.odim.gain = 1.0;
 	dstDataV.data.fill(dstDataV.odim.undetect);
 	//initDst(srcData, dstDataV);
 
-	dstDataU.updateTree();
-	dstDataV.updateTree();
+	//@ dstDataU.updateTree();
+	//@ dstDataV.updateTree();
 
-	dstProduct.updateTree(odim);
+	//@? dstProduct.updateTree(odim);
 
 	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
 	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;

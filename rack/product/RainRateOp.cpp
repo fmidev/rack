@@ -57,7 +57,7 @@ FreezingLevel RainRateOp::freezingLevel;
 
 void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug(1) << "Start." << mout.endl;
 
@@ -68,7 +68,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	//const QuantityMap & qm = getQuantityMap();
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
 	//dstQuality.data.setGeometry(dstData.data.getGeometry());
-	dstQuality.updateTree();
+	//@ dstQuality.updateTree();
 
 	precipZrain.initParameters();
 	precipZsnow.initParameters();
@@ -76,7 +76,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	const double maxQuality = dstQuality.odim.scaleInverse(1.0);
 	//const double undetectQuality = 0.75 * maxQuality;
 
-	//srcData.odim.toOStream(std::cout, ':', '{','}','\n');
+	//srcData.odim.toOStr(std::cout, ':', '{','}','\n');
 	/*
 	mout.warn() << "---------------------\n" << srcData.data << "\n" << mout.endl;
 	mout.warn() << "---------------------\n" << srcData.odim << "\n" << mout.endl;
@@ -118,7 +118,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		mout.error() << "input data not of type SCAN " << mout.endl;
 	}
 
-	const double elangleR = srcData.odim.elangle * rack::DEG2RAD;
+	const double elangleR = srcData.odim.getElangleR();
 
 	double rain, rainQ;
 	double snow, snowQ;

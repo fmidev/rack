@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include "util/ReferenceMap.h"
-#include "util/DataScaling.h"
+//#include "util/DataScaling.h"
 
 #include "Point.h"
 #include "ImageT.h"
@@ -199,7 +199,7 @@ class OverwriteMethod : public AccumulationMethod {
 
 public:
 
-	OverwriteMethod(AccumulationArray & c) : AccumulationMethod("OVERWRITE", c) {};
+	OverwriteMethod(AccumulationArray & c) : AccumulationMethod("LATEST", c) {};
 
 	virtual
 	void add(const size_t &i, double value, double weight) const;
@@ -215,7 +215,7 @@ class MaximumMethod : public AccumulationMethod {
 
 public:
 
-	MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAX", c) {};
+	MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAXIMUM", c) {};
 
 	virtual
 	void add(const size_t &i, double value, double weight) const;
@@ -227,7 +227,7 @@ class MinimumMethod : public AccumulationMethod {
 
 public:
 
-	MinimumMethod(AccumulationArray & c) : AccumulationMethod("MIN", c) {};
+	MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
 
 	virtual
 	void add(const size_t &i, double value, double weight) const;
@@ -240,7 +240,7 @@ class AverageMethod : public AccumulationMethod {
 
 public:
 
-	AverageMethod(AccumulationArray & c) : AccumulationMethod("AVG", c) {};
+	AverageMethod(AccumulationArray & c) : AccumulationMethod("AVERAGE", c) {};
 
 	virtual
 	void add(const size_t &i, double value, double weight) const;

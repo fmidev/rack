@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 
 #include "resources.h"
+#include "data/SourceODIM.h"
 
 using namespace drain;
 using namespace drain::image;
@@ -42,7 +43,7 @@ const CoordinatePolicy RackResources::polarLeft(CoordinatePolicy::POLAR, Coordin
 
 const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT,CoordinatePolicy::LIMIT);
 
-//drain::MonitorSource RackResources::mout("racklet");
+//drain::Logger RackResources::mout("racklet");
 RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
 		currentGrayImage(NULL), inputSelect(0), scriptExec(scriptParser.script) {
 
@@ -50,7 +51,7 @@ RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputH
 
 void RackResources::setSource(HI5TREE & dst, const drain::Command & cmd){
 
-	drain::MonitorSource mout("RackResources", __FUNCTION__);
+	drain::Logger mout("RackResources", __FUNCTION__);
 
 	typedef std::map<void *, const drain::Command *> sourceMap;
 	static sourceMap m;
@@ -66,14 +67,14 @@ void RackResources::setSource(HI5TREE & dst, const drain::Command & cmd){
 
 drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
-	drain::MonitorSource mout("RackResources", __FUNCTION__);
+	drain::Logger mout("RackResources", __FUNCTION__);
 
 	//RackResources & resources = getResources();
 
 	// resources.select.clear(); don't clear, because status is used fro debugging.
 	//CommandRegistry & reg = getRegistry();
+	//VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
 	VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
-
 
 	/// Step 1: copy current H5 metadata (what, where, how)
 	DataSelector selector("data[0-9]+");
@@ -84,11 +85,12 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
 	if (path.empty()){
 		mout.note() << " currentHi5: no path for selector '" << select << "'" << mout.endl;
+		mout.warn() << " currentHi5:\n" << *currentHi5 << mout.endl;
 	}
 	else {
 		//const std::string & path = *l.begin();
 		mout.debug(1) << "RackResources" << " path=" << path << mout.endl;
-		DataSelector::getAttributes(*currentHi5, path, statusMap);
+		DataTools::getAttributes(*currentHi5, path, statusMap);
 		// mout.debug() << statusMap << mout.endl;
 	}
 	/// Split what:source to separate fields
@@ -107,23 +109,37 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 }
 
 
-void RackResources::updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy){
 
-	Image &data = src.data.dataSet;
-	if (!data.isEmpty()){
-		data.setCoordinatePolicy(policy);
-		//data.setName(path + ':' + data.properties["what:quantity"].toStr());
-		data.setName(data.properties["what:quantity"].toStr());
-	}
+bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
-		const std::string & key = it->first;
-		if ((key != "what" ) && (key != "where" ) && (key != "how" )){
-			updateCoordinatePolicy(it->second, policy);
+	drain::Logger mout("RackResources", __FUNCTION__);
+
+	std::list<std::string> l;
+	DataSelector::getPaths(*currentHi5, imageSelector, l); // todo getFirstData
+
+	if (!l.empty()){
+
+		const std::list<std::string>::const_iterator it = l.begin();
+		mout.info() << "selected: " << *it << mout.endl;
+		drain::image::Image & img = (*currentHi5)(*it).data.dataSet;
+		if (!img.isEmpty()){
+			DataTools::getAttributes(*currentHi5, *it, img.properties); // may be unneeded
+			currentImage = &img;
+			return true;
+		}
+		else {
+			mout.warn() << "empty data in path: " << *it << mout.endl;
+			return false;
 		}
 	}
-}
+	else {
+		// if EXIT_ON_DATA_FAIL
+		mout.warn() << "skipping, no image data found with selector " << imageSelector << mout.endl;
+		return false;
+	}
 
+
+}
 
 /// Default instance
 RackResources & getResources() {

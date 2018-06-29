@@ -31,9 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <drain/image/File.h>  // debugging
 
-#include "util/Debug.h"
-#include "util/DataScaling.h"
+#include "util/Log.h"
+//#include "util/DataScaling.h"
 #include "util/Type.h"
+#include "util/TypeUtils.h"
 
 #include "File.h"  // debugging
 
@@ -65,13 +66,13 @@ void AccumulationMethod::initDst(const AccumulationConverter & coder, Image & ds
 
 void AccumulationMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
 
-	MonitorSource mout("AccumulationMethod", __FUNCTION__);
+	Logger mout("AccumulationMethod", __FUNCTION__);
 
 	mout.debug() << name <<  " extracting..." << mout.endl;
 
 	initDst(coder, dst);
 
-	const double minValue = dst.getMin<double>();
+	const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
 	const double noData   = coder.getNoDataMarker();
 
 	double value;
@@ -116,7 +117,7 @@ void AccumulationMethod::extractWeight(const AccumulationConverter & coder, Imag
 
 void AccumulationMethod::extractCount(const AccumulationConverter & coder, Image & dst) const {
 
-	//DataScaling scaling(gain, offset);
+	//LinearScaling scaling(gain, offset);
 
 	double count;
 	const size_t s = dst.getVolume();
@@ -162,7 +163,7 @@ void AccumulationMethod::extractDevInv(const AccumulationConverter & coder, Imag
 
 void OverwriteMethod::add(const size_t &i, double value, double weight) const{
 	//coder.decode(value, weight);
-	//double value = v;
+	//double value = vField;
 	//double weight = w;
 	//if (w > 0.0){
 	unsigned int count = ++accumulationArray.count.at(i);
@@ -205,7 +206,7 @@ void MaximumMethod::add(const size_t &i, double value, double weight) const {
 		if ( (accumulationArray.weight.at(i) == 0.0) || (value > (accumulationArray.data.at(i))) ){
 			/*
 			if (i % (2*accumulationArray.getWidth()+2) == 0){
-				std::cerr << " v=" << value << ", w=" << weight << std::endl;
+				std::cerr << " vField=" << value << ", w=" << weight << std::endl;
 				accumulationArray.data.at(i)   = 100*weight;
 				accumulationArray.weight.at(i) = 0.80;
 			}
@@ -261,7 +262,7 @@ void AverageMethod::extractValue(const AccumulationConverter & coder, Image & ds
 	double value;
 	double weight;
 
-	const double minValue = dst.getMin<double>();
+	const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
 	const double noData   = coder.getNoDataMarker();
 
 
@@ -291,7 +292,7 @@ void AverageMethod::extractValue(const AccumulationConverter & coder, Image & ds
 
 void AverageMethod::extractWeight(const AccumulationConverter & coder, Image & dst) const {
 
-	//const DataScaling scaling(gain, offset);
+	//const LinearScaling scaling(gain, offset);
 
 	double count;
 	double weight = 0.0;
@@ -349,7 +350,7 @@ void WeightedAverageMethod::updateInternalParameters(){ //const std::string & pa
 
 	/// AccumulationMethod::setParameters(params);
 
-	MonitorSource mout(name, __FUNCTION__);
+	Logger mout(name, __FUNCTION__);
 
 	if (p<0.0){
 		mout.error() << "p negative" << mout.endl;
@@ -414,7 +415,7 @@ void WeightedAverageMethod::add(const size_t &i, double value, double weight) co
 
 void WeightedAverageMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
 
-	MonitorSource mout(name, __FUNCTION__);
+	Logger mout(name, __FUNCTION__);
 	// mout.warn() << " start..." << mout.endl;
 
 	initDst(coder, dst);
@@ -424,7 +425,7 @@ void WeightedAverageMethod::extractValue(const AccumulationConverter & coder, Im
 
 	const double minWeight = USE_R ? pow(0.0001, r) : 0.0001;
 	const double noDataCode   = coder.getNoDataMarker();
-	const double minCode = dst.getMin<double>();
+	const double minCode = Type::call<typeMin, double>(dst.getType()); //dst.scaling.getMin<double>();
 
 	const size_t s = dst.getVolume();
 

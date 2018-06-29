@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/Image.h>
-//#include <drain/util/String.h>
+//#include <drain/util/StringTools.h>
 #include <drain/util/Tree.h>
 
 /*
@@ -97,71 +97,12 @@ public:
 	/// Creates and writes scalar (non-std::string) attributes to group.
 	template <class T>
 	static
-	void dataToH5AttributeScalar(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute){
+	void dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute);
 
-		drain::MonitorSource mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
+	/// For std::string and characterArrays.
+	static
+	void dataToH5AttributeString(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute);
 
-		int status = 0;
-
-		const hid_t tid = getH5DataType(typeid(T));
-
-		// New
-		const hsize_t elements = d.getElementCount();
-		const bool isArray = (elements > 1); // && false;
-
-		//const hid_t sid = isArray ? H5Screate_simple(1, &elements, NULL) : H5Screate(H5S_SCALAR);
-		const hid_t sid = isArray ? H5Screate_simple(1, &elements, &elements) : H5Screate(H5S_SCALAR);
-		if (sid < 0){
-			mout.error() << ": H5Screate failed for attribute, path=" << path;
-			mout << ", size=" << elements << mout.endl;
-		}
-		//H5Sc
-
-		// NEW
-		/*
-		if (isArray){
-			mout.debug()  << ": creating array of size " << elements;
-			mout << ", path=" << path << mout.endl;
-			status = H5Sset_extent_simple(sid, 1, &elements, &elements); //NULL);
-			if (status < 0)
-				mout.error()  << ": H5Screate failed for ARRAY, path=" << path << mout.endl;
-			return;
-		}
-		*/
-
-		const hid_t oid = H5Oopen(fid, path.c_str(), H5P_DEFAULT);
-		if (oid < 0)
-			mout.error()  << "H5Oopen failed, path=" << path << mout.endl;
-		//const hid_t gid = H5Gopen2(fid,path.c_str(),H5P_DEFAULT);
-		//if (gid < 0)
-		//	mout.error()  << ": H5Gopen failed, path=" << path << mout.endl;
-
-		const hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
-		if (aid < 0)
-			mout.error()  << "H5Acreate failed, path=" << path << mout.endl;
-
-		// OLD const T x = d;
-		// status = H5Awrite(aid,tid,&x);
-		// New
-		 status = H5Awrite(aid, tid, d.getPtr());
-		if (status < 0)
-			mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
-
-
-		status = H5Aclose(aid);
-		if (status < 0)
-			mout.error()  << ": H5 close failed, path=" << path << mout.endl;
-
-		//status = H5Gclose(gid);
-		status = H5Oclose(oid);
-		if (status < 0)
-			mout.error()  << ": H5 close failed, path=" << path << mout.endl;
-
-		status = H5Sclose(sid);
-		if (status < 0)
-			mout.error()  << ": H5 close failed, path=" << path << mout.endl;
-
-	}
 
 	static
 	void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute);
@@ -170,13 +111,93 @@ public:
 	static
 	void imageToH5DataSet(const drain::image::Image &image ,hid_t fid, const std::string & path);
 
+	// deprecated (exclude from save marker)
+	//static char tempPathSuffix;
 
-	static
-	char tempPathSuffix;
-
-	//static	const std::string tempPathAttribute;
 
 };
+
+/*
+template <>
+inline
+void Writer::dataToH5AttributeT<std::string>(const drain::Variable & data, hid_t fid, const std::string & path, const std::string & attribute){
+	dataToH5AttributeString(d, fid, path, attribute);
+}
+*/
+
+template <class T>
+void Writer::dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute){
+
+	drain::Logger mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
+
+	if (d.isCharArrayString() || (d.getType() == typeid(std::string))){
+		dataToH5AttributeString(d, fid, path, attribute);
+		return;
+	}
+
+
+	int status = 0;
+
+	const hid_t tid = getH5DataType(typeid(T));
+
+	// New
+	const hsize_t elements = d.getElementCount();
+	const bool isArray = (elements > 1); // && false;
+
+	//const hid_t sid = isArray ? H5Screate_simple(1, &elements, NULL) : H5Screate(H5S_SCALAR);
+	const hid_t sid = isArray ? H5Screate_simple(1, &elements, &elements) : H5Screate(H5S_SCALAR);
+	if (sid < 0){
+		mout.error() << ": H5Screate failed for attribute, path=" << path;
+		mout << ", size=" << elements << mout.endl;
+	}
+	//H5Sc
+
+	// NEW
+	/*
+	if (isArray){
+		mout.debug()  << ": creating array of size " << elements;
+		mout << ", path=" << path << mout.endl;
+		status = H5Sset_extent_simple(sid, 1, &elements, &elements); //NULL);
+		if (status < 0)
+			mout.error()  << ": H5Screate failed for ARRAY, path=" << path << mout.endl;
+		return;
+	}
+	*/
+
+	const hid_t oid = H5Oopen(fid, path.c_str(), H5P_DEFAULT);
+	if (oid < 0)
+		mout.error()  << "H5Oopen failed, path=" << path << mout.endl;
+	//const hid_t gid = H5Gopen2(fid,path.c_str(),H5P_DEFAULT);
+	//if (gid < 0)
+	//	mout.error()  << ": H5Gopen failed, path=" << path << mout.endl;
+
+	const hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
+	if (aid < 0)
+		mout.error()  << "H5Acreate failed, path=" << path << mout.endl;
+
+	// OLD const T x = d;
+	// status = H5Awrite(aid,tid,&x);
+	// New
+	status = H5Awrite(aid, tid, d.getPtr());
+	if (status < 0)
+		mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
+
+
+	status = H5Aclose(aid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
+	//status = H5Gclose(gid);
+	status = H5Oclose(oid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
+	status = H5Sclose(sid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
+}
+
 
 
 

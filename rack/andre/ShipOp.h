@@ -32,17 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SHIPOP_H_
 #define SHIPOP_H_
 
-
-#include <drain/image/SlidingWindowMedianOp.h>
-
-#include <drain/image/FastAverageOp.h>
-#include <drain/image/HighPassOp.h>
-#include <drain/image/SegmentAreaOp.h>
-#include <drain/image/RunLengthOp.h>
-#include <drain/image/BasicOps.h>
-
-
-#include <drain/image/DistanceTransformOp.h>
 //#include <drain/image/FuzzyOp.h>
 
 #include "DetectorOp.h"
@@ -76,6 +65,8 @@ public:
 		parameters.reference("windowWidth", this->windowWidth = windowWidth, "m");
 		parameters.reference("windowHeight", this->windowHeight = windowHeight, "deg");
 		dataSelector.quantity = "^DBZH$";
+		REQUIRE_STANDARD_DATA = false;
+		//REQUIRE_STANDARD_DATA = true;  // HighPassOp
 	};
 
 

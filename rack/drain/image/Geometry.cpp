@@ -40,7 +40,45 @@ namespace drain
 
 namespace image
 {
-	
+
+
+void AreaGeometry::setWidth(size_t w){
+	width = w;
+	update();
+}
+
+void AreaGeometry::setHeight(size_t h){
+	height = h;
+	update();
+}
+
+void AreaGeometry::setArea(size_t w, size_t h){
+	width = w;
+	height = h;
+	update();
+}
+
+void AreaGeometry::update(){
+	area = width * height;
+}
+
+
+void ChannelGeometry::setChannelCount(size_t i, size_t a){
+	imageChannelCount = i;
+	alphaChannelCount = a;
+	update();
+}
+
+
+void ChannelGeometry::setAlphaChannelCount(size_t a){
+	alphaChannelCount = a;
+	update();
+}
+
+void ChannelGeometry::update(){
+	channelCount = imageChannelCount+alphaChannelCount;
+}
+
 // using namespace std;
 	
 // variableMap ei onnistunut (width, height, chC)
@@ -52,97 +90,72 @@ Geometry::Geometry() : width(0), height(0), channelCount(0), imageChannelCount(0
 */
 
 Geometry::Geometry(size_t width, size_t height, size_t imageChannelCount, size_t alphaChannelCount)
-: width(0), height(0), channelCount(0), imageChannelCount(0), alphaChannelCount(0)
 {
-	setGeometry(width,height,imageChannelCount,alphaChannelCount);
+	setGeometry(width, height, imageChannelCount, alphaChannelCount);
 }
 
-Geometry::~Geometry()
-{
+Geometry::Geometry(const Geometry & g){
+	setGeometry(g);
 }
 
-bool Geometry::setGeometry(const Geometry &g){
-	return setGeometry(g.getWidth(),g.getHeight(),g.getImageChannelCount(),g.getAlphaChannelCount());
-} 
+Geometry::~Geometry(){
+}
 
 
-bool Geometry::setGeometry(size_t width, size_t height, size_t imageChannelCount, size_t alphaChannelCount){
 
-	const bool change  = (this->width != width) || (this->height != height) ||
-			(this->imageChannelCount != imageChannelCount) || (this->alphaChannelCount != alphaChannelCount);
+void Geometry::setGeometry(size_t width, size_t height, size_t imageChannelCount, size_t alphaChannelCount){
 
+	setArea(width, height);
+	setChannelCount(imageChannelCount, alphaChannelCount);
+	//const bool change  = (this->width != width) || (this->height != height) ||
+	//		(this->imageChannelCount != imageChannelCount) || (this->alphaChannelCount != alphaChannelCount);
+
+	/*
 	this->width = width;
 	this->height = height;
 	this->imageChannelCount = imageChannelCount;
 	this->alphaChannelCount = alphaChannelCount;
 	this->channelCount = imageChannelCount + alphaChannelCount;
+	*/
 	update();
-	//area = width * height;
-	//volume = area*(imageChannelCount + alphaChannelCount);
-	return change;
+	//return change;
 } 
 	
-void Geometry::setWidth(size_t w){
-	//resize(std::max(3u,size()));
-	this->width = width;
-	//at(0) = w;
-	update();
-}
-
-void Geometry::setHeight(size_t h){
-	//resize(std::max(3u,size()));
-	this->height = height;
-	//at(1) = h;
-	update(); 
-}
-
-void Geometry::setChannelCount(size_t imageChannels, size_t alphaChannels){
-	
-	//resize(std::max(3u,size()));
-	this->imageChannelCount = imageChannels;
-	this->alphaChannelCount = alphaChannels;
-	this->channelCount = imageChannels + alphaChannels;
-	//at(2) = imageChannels + alphaChannels;
-	update();
-}
 
 
-void Geometry::setAlphaChannelCount(size_t alphaChannels){
-	setChannelCount(getImageChannelCount(),alphaChannels);
-}
+
 
 
 void Geometry::update(){
-	
-	//resize(std::max(3u,size()));
-	
-	//width = at(0);
-	//height = at(1);
-	//channelCount = at(2);
-	
-	imageChannelCount = channelCount - alphaChannelCount; 
-	area = width*height;
+	AreaGeometry::update();
+	ChannelGeometry::update();
 	volume = area * channelCount;
 }
 
 
-std::ostream & operator<<(std::ostream &ostr,const Geometry &geometry) {
+/*
+std::ostream & operator<<(std::ostream &ostr, const Geometry & g) {
 
-	std::string separator("");
 	
-	ostr << geometry.getWidth() << "×" << geometry.getHeight() << "×";
-	ostr << '(' << geometry.getImageChannelCount() << '+' << geometry.getAlphaChannelCount() << ')';
-	//ostr << "w=" << geometry.getWidth() << ", h=" <<  geometry.getHeight()  << ", ";
-	//ostr << "iC=" << geometry.getImageChannelCount() << ", aC=" <<  geometry.getAlphaChannelCount()  << ", ";
-    //ostr << " A=" << geometry.getArea() << ", V=" <<  geometry.getVolume()  << " ";
-		
+	ostr << g.getWidth() << "×" << g.getHeight();
+	if (g.getChannelCount() != 1){
+		ostr << "×";
+		if (g.getAlphaChannelCount() > 0){
+			ostr << '(' << g.getImageChannelCount() << '+' << g.getAlphaChannelCount() << ')';
+		}
+		else {
+			ostr << g.getImageChannelCount();
+		}
+	}
 	return ostr;
 }
+*/
  
 std::string &Geometry::toString(std::string & s) const
 {
     std::stringstream sstr;
-	sstr << *this;
+    toOStr(sstr);
+	//sstr << *this;
 	s = sstr.str();
     return s;
 }

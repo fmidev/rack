@@ -105,6 +105,18 @@ private:
 };
 
 
+class CartesianRange : public SimpleCommand<int> {
+
+public:
+
+	CartesianRange() : SimpleCommand<int>(__FUNCTION__, "Force range for single-radar cartesian products (0=use-metadata)", "range", 0, "km"){
+	}
+
+	inline
+	void exec() const {
+		getResources().composite.defaultRange = value;
+	}
+};
 
 } // rack::
 

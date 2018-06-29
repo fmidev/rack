@@ -33,19 +33,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Fuzzy.h>
 
 //#include <drain/image/FuzzyOp.h>
 
 #include <drain/util/Functor.h>
 #include <drain/util/FunctorBank.h>
+#include <drain/util/TypeUtils.h>
 
 #include <drain/image/Window.h>
 #include <drain/image/SegmentProber.h>
 #include <drain/image/SlidingWindow.h>
 #include <drain/image/GaussianWindow.h>
-#include <drain/image/GaussianBlurOp.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/GaussianAverageOp.h>
 
 //#include <drain/image/SequentialImageOp.h>
 
@@ -57,11 +59,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 using namespace drain::image;
 
+// file RadarFunctorOp?
+
 namespace rack {
 
 /// Checks \c nodata and \c undetect before calling the functor
 /**
- *  \tparam F - functor, e.g. drain::FuzzyTriange
+ *  \tparam F - unary functor, e.g. drain::FuzzyTriangeor other derived from UnaryFUnctor
  */
 // NOTE may be bad, because UnaryFunctorOp pre-scales etc.
 template <class F>
@@ -128,7 +132,7 @@ public:
 	double nodataValue;
 	double undetectValue;
 
-	RadarFunctorOp(bool limit = false) : LIMIT(limit), nodataValue(0.0), undetectValue(0.0) {
+	RadarFunctorOp(bool limit = true) : LIMIT(limit), nodataValue(0.0), undetectValue(0.0) {
 		//if (adaptParameters)
 		this->getParameters().append(this->functor.getParameters());
 	};
@@ -141,21 +145,17 @@ public:
 	 */
 	inline
 	virtual
-	void traverse(const Image &src, Image & dst) const {
+	void traverseChannel(const Channel &src, Channel & dst) const {
 
-		drain::MonitorSource mout(iMonitor, this->name+"(FunctorOp)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), this->name+"(FunctorOp)", __FUNCTION__);
 		mout.debug() << "start" << mout.endl;
 
-		/*
-		const double coeff  = src.getScale();
-		//const double dstMax = dst.getMax<double>();
-		const double scaleDst = dst.getScale();
-		const double coeffDst = (scaleDst != 0.0) ? 1.0/scaleDst : dst.getMax<double>();
-		if (scaleDst == 0.0)
-			mout.warn() << "undetectValue scaling coeff for dst" << mout.endl;
-		*/
-
+		// const double dstMax = dst.scaling.getMax<double>();
 		const double dstMax = dst.getMax<double>();
+				// drain::Type::call<drain::typeMax, double>(dst.getType());
+
+		typedef drain::typeLimiter<double> Limiter;
+		Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
 
 		Image::const_iterator s  = src.begin();
 		Image::iterator d = dst.begin();
@@ -168,7 +168,8 @@ public:
 				else if (s2 == odimSrc.undetect)
 					*d = undetectValue;
 				else
-					*d = dst.limit<double>(dstMax * this->functor(odimSrc.scaleForward(s2)));
+					//*d = dst.scaling.limit<double>(dstMax * this->functor(odimSrc.scaleForward(s2)));
+					*d = limit(dstMax * this->functor(odimSrc.scaleForward(s2)));
 				++s;
 				++d;
 			}
@@ -198,32 +199,74 @@ protected:
 
 
 
+// file RadarWindowOp?
+
+class RadarWindowCore : public drain::image::WeightedWindowCore {
+
+
+public:
+
+
+	/**
+	 *  \param odimSrc - metadata of the source data
+	 */
+	//RadarWindowCore(const PolarODIM & odimSrc) : odimSrc(odimSrc) {
+	//}
+
+	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
+	/**
+	 *
+	 */
+	RadarWindowCore() {
+	}
+
+	//const PolarODIM & odimSrc;
+	PolarODIM odimSrc;
+
+
+	/// Nyquist velocity of src. Derived, if not explicit in src metadata.
+	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
+	mutable double NI;
+
+};
+
 class RadarWindowConfig : public drain::image::WindowConfig {
-    public: //re 
-	const PolarODIM & odimSrc;
+
+public:
+
+	// Beam-directional window width in metres
+	int widthM;
+
+	// Azimuthal window height in degrees
+	double heightD;
 
 	/// Compensate the polar coordinate system to correspond the Cartesian one in computations
 	bool invertPolar;
 
 	double contributionThreshold;  //
 
+	/// If true, use speed up to -1.0...+1.0 instead of -Vnyq...+Vnyq.
+	bool relativeScale;  //
+
 	/**
 	 *  \param odimSrc - metadata of the source data
-	 */
 	RadarWindowConfig(const PolarODIM & odimSrc) :
 			drain::image::WindowConfig(1, 1),
 			odimSrc(odimSrc), invertPolar(false), contributionThreshold(1.0) {
 	}
+	 */
 
 	/**
 	 *  \param odimSrc - metadata of the source data
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
-	RadarWindowConfig(const PolarODIM & odimSrc, int widthM=500, double heightD=1.0, double contributionThreshold = 1.0) :
-			drain::image::WindowConfig(odimSrc.getBeamBins(widthM), odimSrc.getAzimuthalBins(heightD)),
-			odimSrc(odimSrc), invertPolar(false), contributionThreshold(contributionThreshold) {
+	//RadarWindowConfig(int width=3, int height=3, double contributionThreshold = 0.5) :
+	RadarWindowConfig(int widthM=1500, double heightD=3.0, double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
+		drain::image::WindowConfig(1, 1), // drain::image::WindowConfig(width, height),
+		widthM(widthM), heightD(heightD), invertPolar(invertPolar), contributionThreshold(contributionThreshold), relativeScale(relativeScale) {
 	}
+
 
 	/**
 	 *  \param odimSrc - metadata of the source data
@@ -231,10 +274,26 @@ class RadarWindowConfig : public drain::image::WindowConfig {
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
-	RadarWindowConfig(const PolarODIM & odimSrc, drain::UnaryFunctor & ftor, int widthM=500, double heightD=1.0, double contributionThreshold = 1.0) :
-			drain::image::WindowConfig(ftor, odimSrc.getBeamBins(widthM), odimSrc.getAzimuthalBins(heightD)),
-			odimSrc(odimSrc), invertPolar(false), contributionThreshold(contributionThreshold) {
+	//RadarWindowConfig(drain::UnaryFunctor & ftor, int width=3, int height=3, double contributionThreshold = 0.5) :
+	RadarWindowConfig(drain::UnaryFunctor & ftor, int widthM=1500, double heightD=3.0,
+			double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
+		drain::image::WindowConfig(ftor), 		//drain::image::WindowConfig(ftor, width, height),
+		widthM(widthM), heightD(heightD), invertPolar(invertPolar), contributionThreshold(contributionThreshold), relativeScale(relativeScale) {
+		// invertPolar(false), contributionThreshold(contributionThreshold) {
 	}
+
+	inline
+	void updatePixelSize(const PolarODIM & odimSrc){
+		drain::Logger mout("RadarWindowConfig", __FUNCTION__);
+		//mout.note() << odimSrc << mout.endl;
+		this->width  = odimSrc.getBeamBins(this->widthM);
+		this->height = odimSrc.getAzimuthalBins(this->heightD);
+		//mout.note() << this->width << '<' << this->widthM << mout.endl;
+		//mout.note() << this->height << '<' << this->heightD << mout.endl;
+	}
+
+protected:
+
 
 
 };
@@ -243,37 +302,75 @@ class RadarWindowConfig : public drain::image::WindowConfig {
 /// A two-dimensional image processing window that handles the special ODIM codes and scales the result. Template parameter for drain::SlidingWindowOpT
 /**
  *  \tparam C - configuration structure
- *  // functor, e.g. drain::Fuzzifier used for scaling the result
+ *  \tparam R - window core (input and output members)
+ *
+ *  drain::image::WindowCore supports single-src, single-dst (with respective weights).
  */
-template <class C>
-class SlidingRadarWindow : public SlidingWindow<C> {
+template <class C, class R=RadarWindowCore>
+class SlidingRadarWindow : public SlidingWindow<C, R> { // drain::image::WeightedWindowCore
 public:
 
-	// , F & ftor = drain::getFunctor("")
-	SlidingRadarWindow(int width=0, int height=0) : SlidingWindow<C>(width,height), rangeNorm(1), rangeNormEnd(2), countMin(0) {
+	SlidingRadarWindow(int width=0, int height=0) : SlidingWindow<C,R>(width,height), rangeNorm(1), rangeNormEnd(2), countMin(0) {
 		this->resetAtEdges = true;
 	};
 
-	SlidingRadarWindow(const C & conf) : SlidingWindow<C>(conf), rangeNorm(1), rangeNormEnd(2), countMin(0) {
+	SlidingRadarWindow(const C & conf) : SlidingWindow<C,R>(conf), rangeNorm(1), rangeNormEnd(2), countMin(0) {
 		this->resetAtEdges = conf.invertPolar;
 	};
 
+	virtual
+	~SlidingRadarWindow(){};
 
+	void setSrcFrame(const drain::image::ImageFrame & src){
+		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+		this->odimSrc.updateFromMap(src.getProperties());
+		mout.info()  << "NI=" << this->odimSrc.NI << mout.endl;
+		mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
+
+		SlidingWindow<C, R>::setSrcFrame(src);
+	}
+
+	/*
+	void setDst(drain::image::ImageFrame & dst){
+		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+		//this->odimSrc.updateFromMap(src.getProperties());
+		//mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
+		SlidingWindow<C, RadarWindowCore>::setDst(dst);
+	}
+	*/
 
 protected:
 
+	inline
+	void setImageLimits() const {
+		this->src.adjustCoordinateHandler(this->coordinateHandler);
+	}
+
 	virtual
 	void initialize(){
-		setRangeNorm();
+		setImageLimits();
+		setRangeNorm(); // replaced by reset() and setLoopLimits()
+		//if (drain::Type::call<drain::typeIsSmallInt>(this->src.getType()) && drain::Type::call<drain::drain::typeIsSmallInt>(this->dst.getType())){
+		if (drain::Type::call<drain::typeIsSmallInt>(this->dst.getType())){
+			drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+			//this->conf.ftor.setScale(1.0);
+			mout.info() << "(not implemented: functor scaling for small int dst)"  << mout.endl;  // << this->odimSrc
+		}
 	};
+
+
 
 	/// To compensate polar geometry, set applicable range for pixel area scaling.
 	void setRangeNorm(){
 
-		rangeNorm = static_cast<double>(this->conf.odimSrc.nrays) / (2.0*M_PI);
-		rangeNormEnd = (rangeNorm * this->conf.height);
-		if ((rangeNorm <= 0) || (rangeNormEnd >= this->conf.odimSrc.nbins)){
-			drain::MonitorSource mout("SlidingRadarWindow", __FUNCTION__);
+		/// Distance [bins] at which a bin is (nearly) square, ie. beam-perpendicular and beam-directional steps are equal.
+		const double r = static_cast<double>(this->odimSrc.nrays) / (2.0*M_PI);
+
+		rangeNorm    = static_cast<int>(r);
+		/// Distance [bins] at which a single azimuthal step is equal to conf.height steps at rangeNorm.
+		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.height));
+		if ((rangeNorm <= 0) || (rangeNormEnd >= this->odimSrc.nbins)){
+			drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 			mout.note() << rangeNorm << '-' << rangeNormEnd << mout.endl;
 		}
 		//
@@ -299,31 +396,29 @@ protected:
 		else {
 			this->setLoopLimits(this->conf.width, 1);
 		}
-		//drain::MonitorSource mout("SlidingRadarWindow", __FUNCTION__);
+		//drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//mout.warn() << this->iMax << ',' << this->jMax << '\t' << this->getSamplingArea( )<< mout.endl;
 		countMin = this->conf.contributionThreshold * this->getSamplingArea();
 
-		return SlidingWindow<C>::reset();
+		return SlidingWindow<C,R>::reset();
 	};
 
 
-	virtual
-	inline
+	virtual inline
 	void removePixel(Point2D<int> & p){
 		if (this->coordinateHandler.validate(p)){
 			double x = this->src.template get<double>(p);
-			if ((x != this->conf.odimSrc.nodata) && (x != this->conf.odimSrc.undetect))
-				removeTrailingValue(this->conf.odimSrc.scaleForward(x));
+			if ((x != this->odimSrc.nodata) && (x != this->odimSrc.undetect))
+				removeTrailingValue(this->odimSrc.scaleForward(x));
 		}
 	};
 
-	virtual
-	inline
+	virtual inline
 	void addPixel(Point2D<int> & p){
 		if (this->coordinateHandler.validate(p)){
 			double x = this->src.template get<double>(p);
-			if ((x != this->conf.odimSrc.nodata) && (x != this->conf.odimSrc.undetect))
-				addLeadingValue(this->conf.odimSrc.scaleForward(x));
+			if ((x != this->odimSrc.nodata) && (x != this->odimSrc.undetect))
+				addLeadingValue(this->odimSrc.scaleForward(x));
 		}
 	};
 
@@ -552,7 +647,7 @@ protected:
 class PolarSegmentProber : public drain::image::SegmentProber<int,int> {
 public:
 
-	PolarSegmentProber(const Image & src, Image & dst) : SegmentProber<int,int>(src, dst){};
+	PolarSegmentProber(const Image & src, Image & dst) : SegmentProber<int,int>(src.getChannel(0), dst.getChannel(0)){};
 
 	/// Operation performed in each segment location (i,j). A function to be redefined in derived classes.
 	virtual

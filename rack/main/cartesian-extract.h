@@ -52,7 +52,7 @@ class CartesianExtract : public SimpleCommand<std::string> {
 public:
 
 	CartesianExtract() : SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
-			"value", "dw", "Accumulation layers to be extracted") {
+			"value", "dw", "Layers: data,count,weight,std.deviation") {
 		//parameters.reference("channels", channels, "dw", "Accumulation layers to be extracted");
 	};
 

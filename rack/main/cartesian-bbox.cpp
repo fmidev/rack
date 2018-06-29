@@ -33,9 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/DistanceTransformFillOp.h>
 #include <drain/image/File.h>
-#include <drain/image/RecursiveRepairerOp.h>
+
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
+
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -54,7 +56,7 @@ namespace rack {
 
 void CartesianBBoxTest::exec() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 
@@ -147,7 +149,7 @@ void CartesianBBoxTest::exec() const {
 
 void CartesianBBoxTile::exec() const {
 
-	MonitorSource mout(name, __FUNCTION__);
+	Logger mout(name, __FUNCTION__);
 	// TODO PROJ CHECK! => error, warn?
 
 	Composite & composite = getResources().composite;

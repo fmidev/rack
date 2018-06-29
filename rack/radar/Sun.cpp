@@ -28,7 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +56,7 @@ void Sun::getSunPos(const std::string & datestr, double lon, double lat, double 
 	const double JD = JDate(datestr.c_str());
 
 	/* Tähtiaika radiaaneina auringon tuntikulman laskentaa varten */
-	const double Sd0 = Sidereal_GW(JD) * 15.0 * DEG2RAD;
+	const double Sd0 = Sidereal_GW(JD) * 15.0 * drain::DEG2RAD;
 
 	//std::cerr << "TIMESTAMP:" << datestr << std::endl;
 
@@ -155,29 +155,29 @@ void Sun::Solar_coords(double JD, Equatorial & equ)
 
 	/* printf("M=%.12f\nL=%.12f\ne=%.12f\n",M,L,e); */
 
-	M *= DEG2RAD;
+	M *= drain::DEG2RAD;
 
 	/* Auringon "equation of the center" */
-	C=(1.919460-0.004789*T-0.000014*TT)*sin(M);
-	C+=(0.020094-0.0001*T)*sin(2*M);
-	C+=0.000293*sin(3*M);
+	C  = (1.919460-0.004789*T-0.000014*TT) * sin(M);
+	C += (0.020094-0.0001*T) * sin(2*M);
+	C +=  0.000293 * sin(3*M);
 
 	/* Auringon longitudi */
 	OL=L+C;
 	/*   printf("OL=%.12f\nC=%.12f\n",OL,C); */
 
 	/* Maan nousevan solmun longitudi */
-	W=(259.18-1934.142*T)*DEG2RAD;
+	W = (259.18-1934.142*T) * drain::DEG2RAD;
 
 	/* Auringon longitudi korjattuna todelliseen epookkiin */
-	OA=OL-0.00569-0.00479*sin(W);
+	OA = OL-0.00569-0.00479*sin(W);
 	/* printf("Oapp=%.12f\n",OA); */
 
-	OA*=DEG2RAD;
+	OA *= drain::DEG2RAD;
 
 	/* ekliptikan kaltevuus */
-	ep=23.452294-0.0130125*T-0.00000164*TT+0.000000503*T*TT+0.00256*cos(W);
-	ep*=DEG2RAD;
+	ep = 23.452294-0.0130125*T-0.00000164*TT+0.000000503*T*TT+0.00256*cos(W);
+	ep *= drain::DEG2RAD;
 
 	/* Muunnos auringon ekliptikaalisista koordinaateista
       (longitudi lambda, latitudi beta (auringolle < 1.2"))

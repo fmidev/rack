@@ -40,32 +40,31 @@ using namespace hi5;
 
 DataSelector::DataSelector(const std::string & path, const std::string & quantity,
 		unsigned int index, unsigned int count,
-		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__) {
+		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__), elangle(2) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
-
-	_init();
-
+	init();
 	this->path = path;
 	this->quantity = quantity;
 	this->index = index;
 	this->count = count;
-	this->elangleMin = elangleMin;
-	this->elangleMax = elangleMax;
+	this->elangle[0] = elangleMin;
+	this->elangle[1] = elangleMax;
 
 	//std::cerr << 1 << *this << std::endl;
 }
 
 
-DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__) {
-	_init();
+DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__), elangle(2) {
+
+	init();
 	setParameters(parameters);
-	//std::cerr << 2 << *this << std::endl;
+
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__) {
-	_init();
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__), elangle(2) {
+	init();
 	copy(selector);
 }
 
@@ -73,122 +72,33 @@ DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION_
 DataSelector::~DataSelector() {
 }
 
-void DataSelector::_init() {
+void DataSelector::init() {
+	reset();
 	parameters.reference("path", path);
 	parameters.reference("quantity", quantity);
-	parameters.reference("index", index = 0);
-	parameters.reference("count", count = 1000);
-	parameters.reference("elangleMin", elangleMin = -90.0);
-	parameters.reference("elangleMax", elangleMax = +90.0);
+	parameters.reference("index", index);
+	parameters.reference("count", count);
+	parameters.reference("elangle", elangle);
+	//parameters["elangle"].toJSON(std::cout, '\n');
+	parameters.reference("elangleMin", elangle[0]);
+	parameters.reference("elangleMax", elangle[1]);
 }
 
 void DataSelector::reset() {
 	path = "";
-	// pathRegExp.clear();
 	quantity = "";
 	index = 0;
 	count = 1000;
-	elangleMin = -90;
-	elangleMax =  90;
+	elangle.resize(2);
+	elangle[0] = -90;
+	elangle[1] = +90;
 }
-
-/*
-void DataSelector::copy(const DataSelector & selector){
-	parameters.importMap(selector.parameters);
-}
-*/
-
-/*
-DataSelector & DataSelector::setParameters(const std::string &parameters, bool allowSpecific){
-	parameters.setValues(parameters, allowSpecific ? '=' : '\0');
-	return *this;
-}
-*/
-
-
-const drain::Variable & DataSelector::getAttribute(const HI5TREE &src, const std::string & path, const std::string & group, const std::string & attributeName){
-
-	static drain::Variable dummy;
-
-	const HI5TREE &g = src(path)[group];
-
-	//if (attributeName == "xscale")
-	//	std::cerr << path << '/' << group << ':' << attributeName << '=' << g.data.attributes[attributeName] << std::endl;
-
-	if (g.data.attributes.hasKey(attributeName))
-		return g.data.attributes[attributeName];
-	else {
-		if (path.empty())
-			return dummy;
-		else {
-			size_t i = path.rfind('/');
-			//if ((i != path.npos) && (i != 0))
-			if (i != path.npos)
-				return getAttribute(src, path.substr(0,i), group, attributeName);
-			else
-				return getAttribute(src, "", group, attributeName);
-			//else
-			//	return dummy;
-		}
-	}
-}
-
-
-//void DataSelector::_updateAttributes(HI5TREE & src, const drain::VariableMap & attributes){
-void DataSelector::updateAttributes(HI5TREE & src, const drain::VariableMap & attributes){
-
-	//drain::MonitorSource mout(drain::monitor, "DataSelector::updateAttributes");
-	drain::MonitorSource mout(__FILE__, __FUNCTION__);
-
-
-	drain::VariableMap & a = src.data.dataSet.properties;
-	a.importMap(attributes); // Copy
-
-	if (src.hasChild("data")){
-		const drain::image::Image & img = src["data"].data.dataSet;
-		if (img.typeIsSet())
-			a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
-	}
-
-
-	std::stringstream sstr; // For speed
-	for (std::set<std::string>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
-		if (src.hasChild(*git)){
-			const drain::VariableMap  & groupAttributes = src[*git].data.attributes;
-			for(drain::VariableMap::const_iterator it = groupAttributes.begin(); it != groupAttributes.end(); it++){
-				sstr.str("");
-				sstr << *git << ':' << it->first;
-				a[sstr.str()] = it->second;
-				// if (it->first == "quantity") mout.warn() << "quantity=" << it->second << mout.endl;
-			}
-		}
-	}
-
-
-	// Traverse children (recursion)
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
-		//const std::string & key = it->first;
-		//if ((key != "what" ) && (key != "where" ) && (key != "how" ))
-		//EncodingODIM::attributeGroups.
-		if (EncodingODIM::attributeGroups.find(it->first) == EncodingODIM::attributeGroups.end())
-			updateAttributes(it->second, a);
-	}
-
-	// std::cerr << "### updateAttributes"
-}
-
-
-/*
-bool DataSelector::getQualityPath(const HI5TREE & srcRoot, const std::string & datapath, std::string & qpath) {
-
-}
-*/
 
 
 bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & basePath, int & index){
 
-	drain::MonitorSource mout("DataSelector", __FUNCTION__);
-	//drain::MonitorSource mout(__FILE__, __FUNCTION__);
+	drain::Logger mout("DataSelector", __FUNCTION__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug(2) << "selector=" << selector << mout.endl;
 
@@ -204,12 +114,13 @@ bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & s
 	// skip leading '/'
 	drain::RegExp r("^/?([^/].*[^0-9])([0-9]+)([^0-9]*)$");  // 2nd item is the last numeric substd::string
 	index = -1;
-	drain::Variable v;
-	v.setType<int>();
-	v = 0;  //
+	drain::Variable v(0);
+	//vField.setType<int>();
+	//vField = 0;  //
 	for (std::list<std::string>::iterator it = l.begin(); it != l.end(); ++it){
 		/// std::cerr << "???" << *it << std::endl;
 		if (r.execute(*it) != REG_NOMATCH ){
+			mout.debug(2) << r.result[1] << '|' << r.result[2] << mout.endl;
 			v = r.result[2];
 			if (static_cast<int>(v) > index){
 				index = v;
@@ -227,9 +138,9 @@ bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & s
 
 bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const std::string & pathRegExp, std::string & path){
 
-	drain::MonitorSource mout("DataSelector", __FUNCTION__);
-	//drain::MonitorSource mout(__FILE__, __FUNCTION__);
-	//drain::MonitorSource mout(drain::monitor,"DataSelector::getNextOrdinalPath::filter");
+	drain::Logger mout("DataSelector", __FUNCTION__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
+	//drain::Logger mout(drain::monitor,"DataSelector::getNextOrdinalPath::filter");
 
 	mout.debug(2) << " selector=" << pathRegExp << mout.endl;
 
@@ -251,7 +162,7 @@ bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const std::string & pa
 
 bool DataSelector::getNextOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & path){
 
-	drain::MonitorSource mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug(1) << " selector=" << selector << mout.endl;
 

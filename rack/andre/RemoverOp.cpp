@@ -45,20 +45,20 @@ using namespace hi5;
 
 namespace rack {
 
-void RemoverOp::processDataSets(const DataSetSrcMap & srcDataSets, DataSetDstMap<PolarDst> & dstDataSets) const {
+void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::MonitorSource mout(name+"(RemoverOp)", __FUNCTION__);
+	drain::Logger mout(name+"(RemoverOp)", __FUNCTION__);
 
 	mout.debug(1) << "start" << mout.endl;
 
-	DataSetSrcMap::const_iterator its = srcDataSets.begin();
-	DataSetDstMap<>::iterator       itd = dstDataSets.begin();
+	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
+	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
 	while (its != srcDataSets.end()){
 		mout.info() << "processing elangle:" << its->first << mout.endl;
 		if (its->first == itd->first){
 
-			const DataSetSrc<PolarSrc> & srcDataSet = its->second;
-			DataSetDst<PolarDst> & dstDataSet = itd->second;
+			const DataSet<PolarSrc> & srcDataSet = its->second;
+			DataSet<PolarDst> & dstDataSet = itd->second;
 
 			/// MAIN COMMAND
 			processDataSet(srcDataSet, dstDataSet);
@@ -75,9 +75,9 @@ void RemoverOp::processDataSets(const DataSetSrcMap & srcDataSets, DataSetDstMap
 
 }
 
-void RemoverOp::processDataSet(const DataSetSrc<PolarSrc> & srcDataSet, DataSetDst<PolarDst> & dstDataSet) const {
+void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet) const {
 
-	drain::MonitorSource mout(name+"(RemoverOp)", __FUNCTION__);
+	drain::Logger mout(name+"(RemoverOp)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 
@@ -91,7 +91,7 @@ void RemoverOp::processDataSet(const DataSetSrc<PolarSrc> & srcDataSet, DataSetD
 		//const PlainData<PolarSrc> & srcDataSetQualityClass = srcDataSet.getQualityData("CLASS"); // TODO
 		const bool DATASETQUALITY = !srcDataSetQualityIndex.data.isEmpty();
 
-		for (DataSetSrc<>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
+		for (DataSet<PolarSrc>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
 			mout.info() << "calling processData() for " << it->first << " elangle=" << it->second.odim.elangle << mout.endl;
 
 			Data<PolarDst> & dstData = dstDataSet.getData(it->first);  // create or retrieve data
@@ -107,7 +107,7 @@ void RemoverOp::processDataSet(const DataSetSrc<PolarSrc> & srcDataSet, DataSetD
 			const bool LOCALQUALITY = srcData.hasQuality();
 			/*
 			if (LOCALQUALITY){
-				mout.info() << "quantity '"<< srcData.odim.quantity << "' has local quality" << mout.endl;
+				mout.toOStr() << "quantity '"<< srcData.odim.quantity << "' has local quality" << mout.endl;
 			}
 			*/
 			// principle: dstData always has own quality after this, because orig (perhaps global) q data will be modified
@@ -129,7 +129,7 @@ void RemoverOp::processDataSet(const DataSetSrc<PolarSrc> & srcDataSet, DataSetD
 
 void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug(1) << "start" << mout.endl;
 
@@ -139,6 +139,8 @@ void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 		mout.warn() << " src QIND emprty, skipping..." << mout.endl;
 		return;
 	}
+
+	// TODO FIX use QualityThresholdOp!
 
 	const double t = threshold * srcQIND.odim.scaleInverse(1.0);
 

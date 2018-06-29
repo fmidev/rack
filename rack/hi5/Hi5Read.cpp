@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include "Hi5Read.h"
 
@@ -48,7 +48,7 @@ namespace hi5 {
 
 void Reader::readFile(const std::string & filename, HI5TREE & tree, int mode) {
 
-	drain::MonitorSource mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
 
 	// mout.warn() << "Mode: " << mode << mout.endl;
 
@@ -75,7 +75,7 @@ void Reader::readFile(const std::string & filename, HI5TREE & tree, int mode) {
 
 /// Recursive traversal.
 
-herr_t Reader::_iterate(hid_t group_id, const char * member_name, void *operator_data){
+herr_t Reader::iterate(hid_t group_id, const char * member_name, void *operator_data){
 	HI5TREE &tree = *(HI5TREE *)operator_data;
 	tree[member_name];
 	return 0;
@@ -83,18 +83,15 @@ herr_t Reader::_iterate(hid_t group_id, const char * member_name, void *operator
 
 
 // It would be more elegant to hide this behind H5 class. Arrays not yet supported.const H5A_info_t *ainfo,
-herr_t Reader::_iterate_attribute(hid_t id, const char * attr_name, const H5A_info_t *ainfo, void *operator_data){
+herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_info_t *ainfo, void *operator_data){
 
-	drain::MonitorSource mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
-
-  //static const std::string func = "_iterate_attribute";
+	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, attr_name);
 
 	hi5::NodeHi5 &node = *(hi5::NodeHi5 *)operator_data;
 	drain::Variable & attribute = node.attributes[attr_name];
 
 	attribute.reset();  // TODO remove - should be unneeded
 
-	//std::cerr << ' ' << attr_name << '\n';
 
 	const hid_t a = H5Aopen_name(id, attr_name);
 	if (a < 0)
@@ -117,8 +114,8 @@ herr_t Reader::_iterate_attribute(hid_t id, const char * attr_name, const H5A_in
 		else {
 			//hsize_t dims = new hsize_t[2];
 			H5Sget_simple_extent_dims(aspace, &elements, NULL);
-			mout.debug() << " Reading attribute: " << attr_name << mout.endl;
-			mout.debug(1) << "  rank: " << rank;
+			mout.debug() << " Reading attribute: " << attr_name;
+			mout << "  rank: " << rank;
 			mout << "  elements: " << elements << mout.endl;
 		}
 	}
@@ -167,29 +164,43 @@ herr_t Reader::_iterate_attribute(hid_t id, const char * attr_name, const H5A_in
 	else {
 		// separate handler for std::strings
 		if (H5Tget_class(datatype) == H5T_STRING){
+
+			/*
+			char *str = new char[info.data_size+1];
+			str[info.data_size] = '\0';
+			H5Aread(a, datatype, str);
+			attribute = (const char *)str;
 			if (H5Tis_variable_str(datatype)){
-				//mout.warn() << " variable-length std::string: " << attr_name << '\n';
-				char *s;
+				mout.warn() << " string variable not H5T_VARIABLE, '" << str << "'" << mout.endl;
+			}
+			delete str;
+			*/
+
+			if (H5Tis_variable_str(datatype)){
+				// mout.warn() << " variable-length" << mout.endl;
+				char *s = 0;
+				//mout.warn() << (long int)s << '\t';
 				H5Aread(a, datatype, &s);
+				//mout << (long int)s << mout.endl;
 				attribute = std::string(s);
 			}
 			else {
 				H5A_info_t info;
 				H5Aget_info(a, &info);
-				std::string str(info.data_size+1, ' ');
-				H5Aread(a, datatype, &str[0]);
-				attribute = str;
+				//mout.warn() << " fixed-length [" << info.data_size <<  "]" << mout.endl;
+				char *str = new char[info.data_size+1];
+				//mout.warn() << (long int)str << '\t';
+				str[info.data_size] = '\0';
+				H5Aread(a, datatype, str);
+				//mout << (long int)str << mout.endl;
+				attribute = (const char *)str;
+				delete[] str;
 			}
 			/*
-			if (H5Tis_variable_str(datatype))
-				mout.warn() << " variable-length std::string: " << attr_name << ", length=" << info.data_size << " value=" << toStr << "\n";
-				*/
-			/*
-			attribute.setType<std::string>(info.data_size+1);
-			H5Aread(a, datatype, attribute.getPtr());
-			attribute << '\0';
+			H5A_info_t info;
+			H5Aget_info(a, &info);
+			mout.warn() << " '" << attribute << "'" <<"\t [" << info.data_size << "] variable-length=" << (int)H5Tis_variable_str(datatype) << mout.endl;
 			*/
-
 		}
 		else
 			mout.warn() << ": type not implemented, attr=" << attr_name << " *\n";
@@ -208,7 +219,7 @@ herr_t Reader::_iterate_attribute(hid_t id, const char * attr_name, const H5A_in
 ///
 void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::Image &image){
 
-	drain::MonitorSource mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
 	// consider local mout
 	//static const std::string _func = "h5DatasetToImage:";
 	// mout.setLocalName("Reader::h5DatasetToImage");
@@ -264,42 +275,42 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 
 	//if (H5Tequal(datatype, H5T_NATIVE_UCHAR) || H5Tequal(datatype, H5T_STD_U8BE)){
 	if (H5Tequal(datatype, H5T_NATIVE_UCHAR) ){
-		image.initialize<unsigned char>(width,height);
+		image.initialize(typeid(unsigned char), width,height);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_CHAR)){
-		image.initialize<char>(width,height);
+		image.initialize(typeid(char), width,height);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_USHORT)){
-		image.initialize<unsigned short>(width,height);
+		image.initialize(typeid(unsigned short), width,height);
 	}
 	else if (H5Tequal(datatype, H5T_STD_I16LE) && (sizeof(signed short) == 2) ){ // H5T_STD_I16LE
-		image.initialize<signed short>(width,height);
+		image.initialize(typeid(signed short), width,height);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_INT)){
-		image.initialize<int>(width,height);
+		image.initialize(typeid(int), width,height);
 	}
 	/// Added 2016 for sclutter
 	else if (H5Tequal(datatype, H5T_NATIVE_LONG)){
-		image.initialize<long int>(width,height);
+		image.initialize(typeid(long int), width,height);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_FLOAT)){
-		image.initialize<float>(width,height);
+		image.initialize(typeid(float), width,height);
 	}
 	else if (H5Tequal(datatype,H5T_NATIVE_DOUBLE)){
-		image.initialize<double>(width,height);
+		image.initialize(typeid(double), width,height);
 	}
 	// #ifdef  STDC99
 	// #endif
 	else {
-		image.initialize<char>(0,0);
+		image.initialize(typeid(char), 0,0);
 
-		//image.initialize<char>(width,height);
+		//image.initialize(typeid(char>(width,height);
 		typeOk = false;
 		mout.warn() << "image type (" << datatype << ") not implemented, path=" << path << mout.endl;
 		//std::cerr << "Warning: not implemented " << height << '\n';
 	}
 
-	//image.initialize<char>(1,1); // FOR valgrind
+	//image.initialize(typeid(char>(1,1); // FOR valgrind
 
 
     // koe kooe
@@ -307,13 +318,14 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 		mout.debug(2) << "calling H5Dread" << mout.endl;
 		H5O_info_t info;
 		H5Oget_info(dataset, &info);
-		//H5Oget_info(datatype, &info);
-		//H5Oget_info(memspace, &info);
-		//H5Oget_info(filespace, &info);
+		//H5Oget_info(datatype, &toOStr);
+		//H5Oget_info(memspace, &toOStr);
+		//H5Oget_info(filespace, &toOStr);
 		//long foo = (long)&(image.buffer[0]);
 		//image.getBuffer();
 		//status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, image.getBufferNEW()); // valgrind?
-		status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, &(image.buffer[0])); // valgrind?
+		//status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, &(image.buffer[0])); // valgrind?
+		status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, (void *)image.getBuffer()); // valgrind?
 		//status = 0;
 		//status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, image.getBuffer());
 		if (status < 0)
@@ -323,7 +335,7 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 		mout << '*' << image.getChannelCount() << '=' << image.getSize() << '\n';
 		mout << '*' << image.getGeometry() << '\n';
 		mout << image << mout.endl;
-		//image.info(std::cout);
+		//image.toOStr(std::cout);
 	}
 	else if (typeOk) {
 		mout.warn() << " trying to read empty image " << image.getGeometry() << mout.endl;
@@ -353,8 +365,8 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 /// Recursive
 void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,int mode){
 
-	drain::MonitorSource mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
-	// drain::MonitorSource mout(hi5monitor, "Reader::readFile");
+	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	// drain::Logger mout(hi5monitor, "Reader::readFile");
 
 	//static const std::string _func = "Reader::h5FileToTree";
 	int status = 0;
@@ -363,11 +375,11 @@ void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,
 
 	if (path=="/")
 		if (mode & ATTRIBUTES)
-			//H5Aiterate(file_id,NULL,&_iterate_attribute,&(hi5::NodeHi5 &)tree);
-			H5Aiterate2(file_id,H5_INDEX_NAME,H5_ITER_NATIVE, NULL, &_iterate_attribute,&(hi5::NodeHi5 &)tree);
+			//H5Aiterate(file_id,NULL,&iterate_attribute,&(hi5::NodeHi5 &)tree);
+			H5Aiterate2(file_id,H5_INDEX_NAME,H5_ITER_NATIVE, NULL, &iterate_attribute,&(hi5::NodeHi5 &)tree);
 	//herr_t H5Aiterate2( hid_t obj_id, H5_index_t idx_type, H5_iter_order_t order, hsize_t *n, H5A_operator2_t op, void *op_data, )
 
-	status = H5Giterate(file_id, path.c_str(), NULL, &_iterate, &tree);
+	status = H5Giterate(file_id, path.c_str(), NULL, &iterate, &tree);
 	if (status < 0)
 		mout.warn() << "H5Giterate failed, path=" << path << mout.endl;
 
@@ -394,8 +406,8 @@ void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,
 				if (g < 0)
 					mout.warn() << ": H5Gopen failed, path=" << p << mout.endl;
 				if (mode & ATTRIBUTES)
-					status = H5Aiterate2(g, H5_INDEX_NAME, H5_ITER_NATIVE, NULL, &_iterate_attribute,&(hi5::NodeHi5 &)subtree);
-					//status = H5Aiterate(g,NULL,&_iterate_attribute,&(hi5::NodeHi5 &)subtree);
+					status = H5Aiterate2(g, H5_INDEX_NAME, H5_ITER_NATIVE, NULL, &iterate_attribute,&(hi5::NodeHi5 &)subtree);
+					//status = H5Aiterate(g,NULL,&iterate_attribute,&(hi5::NodeHi5 &)subtree);
 				if (status < 0)
 					mout.warn() << ": H5Aiterate failed, path=" << p << mout.endl;
 

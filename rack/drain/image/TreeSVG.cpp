@@ -72,6 +72,7 @@ void NodeSVG::setType(type t) {
 		tag = "text";
 		reference("x", x = 0);
 		reference("y", y = 0);
+		reference("text-anchor", text_anchor = "");
 		break;
 	case RECT:
 		tag = "rect";
@@ -95,7 +96,12 @@ void NodeSVG::setType(type t) {
 		return;
 	}
 
+	//if ((t = TEXT)||(t == TEXT)){
 	reference("style", style = "");
+	reference("fill", fill = "");
+	reference("opacity", opacity = ""); // string, so silent if empty
+
+
 }
 
 std::ostream & NodeSVG::toOStr(std::ostream &ostr, const TreeSVG & tree){

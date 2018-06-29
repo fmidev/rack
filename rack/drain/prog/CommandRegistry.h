@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <set>
 
-#include "util/Debug.h"
+#include "util/Log.h"
 #include "util/ReferenceMap.h"
 #include "util/VariableMap.h"
 #include "util/StringMapper.h"
@@ -164,6 +164,9 @@ public:
 
 	mutable drain::StringMapper statusFormatter;
 
+	/// Cf with help
+	void toJSON(std::ostream & ostr) const;
+
 protected:
 
 	std::string prefix;
@@ -183,7 +186,7 @@ protected:
 
 	std::string resolveKey(const std::string & s) const;
 
-	static int index;  // todo rename?
+	static int index;
 
 };
 

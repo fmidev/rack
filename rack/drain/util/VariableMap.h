@@ -57,11 +57,13 @@ class VariableMap : public SmartMap<Variable> { //std::map<std::string,Variable>
 public:
 
 	inline  // strictness_t s=OPEN,
-	VariableMap(bool ordered=true, char separator='\0') : SmartMap<Variable>(ordered, separator){
+	//VariableMap(bool ordered=true, char separator='\0') : SmartMap<Variable>(ordered, separator){
+	VariableMap(char separator = '\0') : SmartMap<Variable>(separator){
 	};
 
 	inline
-	VariableMap(const VariableMap & v) : SmartMap<Variable>(v.ORDERED, v.separator){
+	// vField.ordered
+	VariableMap(const VariableMap & v) : SmartMap<Variable>(v.separator){ // vField.ordered,
 		importMap(v);
 	};
 
@@ -71,12 +73,6 @@ public:
 		return *this;
 	}
 
-	// TODO: getKeys, getValues(ostr) by generalizing methods of ReferenceMap
-
-
-protected:
-
-	//static const Variable _empty;
 };
 
 

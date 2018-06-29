@@ -32,8 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef PolarProduct_OP_H_
 #define PolarProduct_OP_H_
 
+//
 
 #include "VolumeOp.h"
+#include "../data/PolarODIM.h"
 
 namespace rack {
 
@@ -65,6 +67,9 @@ public:
 		allowedEncoding.reference("type", odim.type = "C");
 		allowedEncoding.reference("gain", odim.gain);
 		allowedEncoding.reference("offset", odim.offset);
+		// 2018
+		allowedEncoding.reference("undetect", odim.undetect);
+		allowedEncoding.reference("nodata", odim.nodata);
 
 		allowedEncoding.reference("rscale", odim.rscale);
 		allowedEncoding.reference("nrays", odim.nrays);
@@ -75,6 +80,8 @@ public:
 	virtual
 	~PolarProductOp(){};
 
+	static
+	const CoordinatePolicy polarCoordPolicy;
 
 protected:
 
@@ -109,7 +116,7 @@ protected:
      */
     //
 	virtual
-	void deriveDstGeometry(const DataSetSrcMap & srcSweeps, PolarODIM & dstOdim) const;
+	void deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const;
 
 
 

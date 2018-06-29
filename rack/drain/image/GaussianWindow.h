@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GaussianWindow_H_
 
 #include "Window.h"
-#include "WindowOp.h"
+//#include "WindowOp.h"
 //#include "SlidingWindow.h"
 
 namespace drain
@@ -41,112 +41,158 @@ namespace drain
 namespace image
 {
 
+/// Extends WindowConfig with \c radius
+class GaussianWindowConf : public WindowConfig {
 
-class GaussianWindowParams : public WindowConfig {
-    public: //re 
+public:
+
 	double radius;
 
 };
 
-class GaussianStripe : public Window<GaussianWindowParams> { // consider scaleWeight
-    public: //re 
+///
+/**
+ *  \tparam DIR - direction: true=horzizontal, false=vertical
+ *  \tparam R   - Core for window input & output images
+ */
+template <bool DIR=true, class R=WindowCore>
+class GaussianStripe : public Window<GaussianWindowConf,R> { // consider scaleWeight
 
+public:
+
+	typedef float value_t;
+
+	GaussianStripe(int n, double radius = 1.0) : Window<GaussianWindowConf,R>(DIR?n:1, DIR?1:n), weightSum(0), value(0), scaleResult(1.0) {
+		this->conf.radius = radius;
+		w = 0.0;
+		sumW = 0.0;
+	};
+
+	virtual
+	~GaussianStripe(){};
+
+	virtual inline
+	void setImageLimits() const {
+		this->src.adjustCoordinateHandler(this->coordinateHandler);
+	}
+
+
+	void initialize(){
+
+		drain::Logger mout(getImgLog(), "GaussianStripe", __FUNCTION__);
+
+		this->setImageLimits();
+		this->setLoopLimits();
+
+		//const int n = this->conf.width*this->conf.height; // width*1 or 1*height
+		// (DIR?this->conf.width:this->conf.height);
+		const int n    = std::max(this->conf.width, this->conf.height); // width*1 or 1*height
+		const int bias = std::min(this->iMin, this->jMin);
+		lookUp.resize(n);
+		//weightSum = 0.0;
+		value_t f;
+		const double radiusAbs  = this->conf.radius * static_cast<value_t>(n)*0.5;
+		const double radiusAbs2 = radiusAbs*radiusAbs;
+		if (radiusAbs <= 0.0){
+			mout.error() << "Zero radius2: " << radiusAbs << mout.endl;
+		}
+
+		int iNorm;
+		mout.debug() << this->conf.width << 'x' << this->conf.height << mout.endl;
+		for (int i = 0; i < n; ++i) {
+			iNorm = (i + bias);
+			f = exp2(-static_cast<double>(iNorm*iNorm) / radiusAbs2);
+			lookUp[i]  = f;
+			weightSum += f;
+			mout.debug() << i << '\t' << iNorm << '\t' << f << '\t' << weightSum << mout.endl;
+		}
+		mout.debug() << "weightSum = " << weightSum << mout.endl;
+
+		scaleResult = this->src.getScaling().getScale() / this->dst.getScaling().getScale();
+		mout.debug() << "scale = " << scaleResult << mout.endl;
+
+		//this->coordinateHandler.setLimits(srcWidth, srcHeight);
+		//this->coordinateHandler.setLimits(this->src.getWidth(), this->src.getHeight());
+
+	}
+
+
+	// Copied from sliding window
+	void setSize(size_t width = 1){
+		this->Window<GaussianWindowConf,R>::setSize(width, 1);
+	}
+
+protected:
+
+	virtual
+	void setSize(size_t width, size_t height){
+		drain::Logger mout("SlidingStripe", __FUNCTION__);
+		if (height > 1)
+			mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+		Window<GaussianWindowConf,R>::setSize(width, 1);
+	}
 
 
 protected:
 
-	std::vector<double> lookUp;
-
-	virtual
-	void initialize();
+	std::vector<value_t> lookUp;
 
 
 	virtual
-	void write(){
-		dst.put(location, value);
+	void write() {
+		this->dst.put(this->location, value);
 	};
 
 protected:
 
-	GaussianStripe(int width, int height, double radius = 1.0) : weightSum(0), value(0) {
-		setSize(width, height); // todo: drop origs
-		conf.radius = radius;
-	};
-
-	double weightSum;
+	// Truncated sum of the gaussian weights (typically close to 1.0)
+	value_t weightSum;
 
 	mutable
-	double value;
+	value_t value;
 
-	double scaleResult;
-	// double scaleResultWeight;  // consider!
+	value_t scaleResult;
+	// value_t scaleResultWeight;  // consider!
 
 	virtual
-	void update() = 0;
+	void update(); // = 0;
 
 	mutable
 	Point2D<int> locationTmp;
 
-};
-
-class GaussianStripeHorz : public GaussianStripe {
-    public: //re 
-
-	GaussianStripeHorz(int width = 1, double radius=1.0) : GaussianStripe(width, 1, radius) {};
-
-	void update();
-
-};
-
-class GaussianStripeVert : public GaussianStripe {
-    public: //re 
-
-	GaussianStripeVert(int height = 1, double radius=1.0) : GaussianStripe(1, height, radius) {};
-
-	void update();
+	// Weighted version only:
+	/// Current weight
+	value_t w;
+	/// Current weighted sum
+	value_t sumW;
 
 };
 
 
-class GaussianStripeWeighted : public GaussianStripe {
-    public: //re 
+///
+/**
+ *  \tparam DIR - direction: true=horzizontal, false=vertical
+ *  \tparam R   - Window input & output images
+ */
+template <bool DIR=true>
+class GaussianStripeWeighted : public GaussianStripe<DIR, WeightedWindowCore> {
+
+public:
+
+	GaussianStripeWeighted(int n, double radius=1.0) : GaussianStripe<DIR, WeightedWindowCore>(n, radius) {
+	};
 
 protected:
 
-	GaussianStripeWeighted(int width, int height, double radius=1.0) : GaussianStripe(width, height, radius) {
-	};
-
 	virtual
+	inline
 	void write(){
-		dst.put(location, value);
-		dstWeight.put(location, weightSum);
+		this->dst.put(this->location, this->value);
+		this->dstWeight.put(this->location, this->weightSum);
 	};
 
-	double w;
-	double sumW;
 
 };
-
-class GaussianStripeHorzWeighted : public GaussianStripeWeighted {
-    public: //re 
-
-	GaussianStripeHorzWeighted(int width = 1, double radius=1.0) : GaussianStripeWeighted(width, 1, radius) {};
-
-	void update();
-
-};
-
-
-class GaussianStripeVertWeighted : public GaussianStripeWeighted {
-    public: //re 
-
-	GaussianStripeVertWeighted(int height = 1, double radius=1.0) : GaussianStripeWeighted(1, height, radius) {};  // check
-
-	void update();
-
-};
-
-
 
 
 }  // image::

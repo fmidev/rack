@@ -32,15 +32,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ClutterMapOp.h"
 
 #include <drain/util/Fuzzy.h>
-#include <drain/image/SlidingWindowMedianOp.h>
 #include <drain/image/File.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
+
 
 #include "hi5/Hi5Write.h"
 #include "hi5/Hi5Read.h"
 //#include "odim/ODIM.h"
 //#include "main/rack.h"
 
-//#include <drain/image/SegmentAreaOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
 //#include <drain/image/MathOpPack.h>
 
 using namespace drain::image;
@@ -50,11 +51,11 @@ namespace rack {
 //void ClutterMapOp::setClutterMap(const HI5TREE & tree, const std::string & quantityRegExp) const {
 void ClutterMapOp::setClutterMap(const std::string & filename) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.info() << "reading " << filename << mout.endl;
 	try {
 		hi5::Reader::readFile(filename, clutterMap);
-		DataSelector::updateAttributes(clutterMap);
+		DataTools::updateAttributes(clutterMap);
 		// hi5::Hi5Base::writeText(clutterMap);
 	}
 	catch (std::runtime_error & e) {
@@ -66,19 +67,19 @@ void ClutterMapOp::setClutterMap(const std::string & filename) const {
 const Data<PolarSrc> & ClutterMapOp::getClutterMap() const {
 
 	if (clutterMap.getChildren().empty()){
-		drain::MonitorSource mout(name, __FUNCTION__);
+		drain::Logger mout(name, __FUNCTION__);
 		mout.warn() << "no clutterMap loaded" << mout.endl;
 	}
 
-	DataSetSrc<PolarSrc> src(clutterMap);
+	DataSet<PolarSrc> src(clutterMap);
 	return src.getFirstData();
 
 
 }
 
-void ClutterMapOp::processDataSet(const DataSetSrc<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSetDst<PolarDst> & aux) const {
+void ClutterMapOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	// const Data<PolarSrc> & srcMap =  getClutterMap();
 
@@ -88,7 +89,7 @@ void ClutterMapOp::processDataSet(const DataSetSrc<PolarSrc> & src, PlainData<Po
 		return;
 	}
 
-	DataSetSrc<PolarSrc> clutterDataSet(clutterMap["dataset1"]);  // or directly ? "data1"
+	DataSet<PolarSrc> clutterDataSet(clutterMap["dataset1"]);  // or directly ? "data1"
 	const Data<PolarSrc> & srcMap = clutterDataSet.getFirstData();
 	if (srcMap.data.isEmpty()){
 		//clutterMap.dumpContents(std::cerr);
@@ -131,7 +132,7 @@ void ClutterMapOp::processDataSet(const DataSetSrc<PolarSrc> & src, PlainData<Po
 		//}
 	}
 
-	dstProb.updateTree();
+	//@ dstProb.updateTree();
 
 	writeHow(dstProb);
 

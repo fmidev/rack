@@ -37,111 +37,98 @@ namespace drain
 namespace image
 {
 
-void GaussianStripe::initialize(){
-
-		drain::MonitorSource mout(iMonitor, "GaussianStripe", __FUNCTION__);
-
-		const int n = conf.width*conf.height; // width*1 or 1*height
-		int bias = std::min(iMin, jMin);
-		lookUp.resize(n);
-		weightSum = 0.0;
-		double f;
-		const double radius2 = conf.radius * conf.radius;
-		if (radius2 <= 0.0){
-			mout.error() << "Zero radius2: " << radius2 << mout.endl;
-		}
-		int iNorm;
-		mout.debug() << conf.width << 'x' << conf.height << mout.endl;
-		for (int i = 0; i < n; ++i) {
-			iNorm = (i + bias);
-			f = exp2(-static_cast<double>(iNorm*iNorm) / radius2);
-			lookUp[i] = f;
-			weightSum += f;
-			mout.debug() << i << '\t' << iNorm << '\t' << f << '\t' << weightSum << mout.endl;
-		}
-
-		scaleResult = this->src.getScale()/this->dst.getScale();
-		mout.debug() << "scale = " << scaleResult << mout.endl;
-
-		coordinateHandler.setLimits(srcWidth, srcHeight);
-}
-
-
-
-void GaussianStripeHorz::update() {
+template <> // HORIZONTAL
+void GaussianStripe<true,WindowCore>::update() {
 
 	value = 0.0;
-	for (int i = this->iMin; i <= this->iMax; i++) {
-		locationTmp.setLocation(location.x+i, location.y);
-		if (coordinateHandler.validate(locationTmp))
-			value += lookUp[i-iMin] * src.get<double>(locationTmp);
-	}
-	value = scaleResult * value / weightSum;
-
-}
-
-
-
-void GaussianStripeVert::update() {
-
-	value = 0.0;
-	for (int j = this->jMin; j <= this->jMax; j++) {
-		locationTmp.setLocation(location.x, location.y+j);
-		if (coordinateHandler.validate(locationTmp))
-			value += (lookUp[j-jMin] * src.get<double>(locationTmp));
-	}
-	value = scaleResult * value/weightSum;
-
-}
-
-
-void GaussianStripeHorzWeighted::update() {
-
-	value = 0.0;
-	sumW  = 0.0;
 	weightSum = 0.0;
 	for (int i = this->iMin; i <= this->iMax; i++) {
 		locationTmp.setLocation(location.x+i, location.y);
 		if (coordinateHandler.validate(locationTmp)){
 			w = lookUp[i-iMin];
-			sumW += w;
-			w *= srcWeight.get<double>(locationTmp);
+			//value += lookUp[i-iMin] * src.get<double>(locationTmp);
+			value     += w * src.get<value_t>(locationTmp);
 			weightSum += w;
-			value += w * src.get<double>(locationTmp);
 		}
 	}
-
-	if (weightSum > 0.0){
-		value = scaleResult * value/weightSum;
-		weightSum = scaleResult * weightSum/sumW;
-	}
+	//if (this->weightSum > 0.0) ?
+	value = scaleResult * value / weightSum;
 
 }
 
-void GaussianStripeVertWeighted::update() {
+
+template <> // VERTICAL
+void GaussianStripe<false,WindowCore>::update() {
 
 	value = 0.0;
-	sumW  = 0.0;
 	weightSum = 0.0;
 	for (int j = this->jMin; j <= this->jMax; j++) {
 		locationTmp.setLocation(location.x, location.y+j);
 		if (coordinateHandler.validate(locationTmp)){
 			w = lookUp[j-jMin];
-			sumW += w;
-			w *= srcWeight.get<double>(locationTmp);
+			//value += (lookUp[j-jMin] * src.get<value_t>(locationTmp));
+			value     += w * src.get<value_t>(locationTmp);
 			weightSum += w;
-			value += w * src.get<double>(locationTmp);
 		}
 	}
 
-	if (weightSum > 0.0){
-		value = scaleResult * value/weightSum;
-		weightSum = scaleResult * weightSum/sumW;
-	}
+	//if (this->weightSum > 0.0)
+	value = scaleResult * value/weightSum;
 
 }
 
 
+
+// Note base class (not Weighted)
+
+template <> // HORIZONTAL
+void GaussianStripe<true, WeightedWindowCore>::update() {
+
+	this->value = 0.0;
+	sumW  = 0.0;
+	this->weightSum = 0.0;
+	for (int i = this->iMin; i <= this->iMax; i++) {
+		this->locationTmp.setLocation(this->location.x+i, this->location.y);
+		if (this->coordinateHandler.validate(this->locationTmp)){
+			w = this->lookUp[i-iMin];
+			sumW += w;
+			w *= this->srcWeight.get<double>(this->locationTmp);
+			this->weightSum += w;
+			this->value += w * this->src.get<double>(this->locationTmp);
+		}
+	}
+
+	if (this->weightSum > 0.0){
+		this->value = this->scaleResult * this->value/this->weightSum;
+		this->weightSum = this->scaleResult * this->weightSum/sumW;
+	}
+
+}
+
+// Note base class (not Weighted)
+template <> // VERTICAL
+void GaussianStripe<false, WeightedWindowCore>::update() {
+
+	this->value = 0.0;
+	sumW  = 0.0;
+	this->weightSum = 0.0;
+	for (int j = this->jMin; j <= this->jMax; j++) {
+		this->locationTmp.setLocation(this->location.x, this->location.y+j);
+		if (this->coordinateHandler.validate(this->locationTmp)){
+			w = this->lookUp[j-this->jMin];
+			sumW += w;
+			w *= this->srcWeight.get<double>(this->locationTmp);
+			this->weightSum += w;
+			this->value += w * this->src.get<double>(this->locationTmp);
+		}
+	}
+
+	if (this->weightSum > 0.0){
+		this->value     = this->scaleResult * this->value/this->weightSum;
+		this->weightSum = this->scaleResult * this->weightSum/sumW;
+	}
+
+}
 
 
 }  // image::

@@ -45,10 +45,10 @@ namespace rack {
 
 // TODO: implement azSlots
 
-void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<VprDst> & dstProduct) const {
+void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
 	//void VerticalProfileOp::filterGroups(const HI5TREE &src, const std::list<std::string> & paths, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug() << *this << mout.endl;
 
@@ -75,7 +75,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 	dstHeight.data.setGeometry(1, odim.levels);
 	for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
 		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.minheight + static_cast<double>(odim.levels-1 - k) * interval));
-	dstHeight.updateTree();
+	//@ dstHeight.updateTree();
 
 	//setGeometry(dstHeight);
 
@@ -85,7 +85,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 	odimFinal.reference("interval", interval);
 	odimFinal.importMap(odim);
 	*/
-	dstProduct.updateTree(odim);  // check
+	//@? dstProduct.updateTree(odim);  // check
 
 	/// Common geometry for all the quantities.
 	const drain::image::Geometry geometry(odim.azSlots, odim.levels);
@@ -113,14 +113,14 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 	std::set<double> elangles;
 
 	/// Traverse elevation angles
-	for (DataSetSrcMap::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it) {
+	for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it) {
 
 		mout.debug(2) << "Sweep:" << it->first << mout.endl;
 
-		const DataSetSrc<> & sweep = it->second;
+		const DataSet<PolarSrc> & sweep = it->second;
 
 		/// Traverse quantities of this elevation angle
-		for (DataSetSrc<>::const_iterator dit = sweep.begin(); dit != sweep.end(); ++dit) {
+		for (DataSet<PolarSrc>::const_iterator dit = sweep.begin(); dit != sweep.end(); ++dit) {
 
 			const std::string & quantity = dit->first;
 			const Data<PolarSrc> & srcData = dit->second;
@@ -193,7 +193,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 
 
 			/// Elevation (in radians).
-			const double eta = srcData.odim.elangle * rack::DEG2RAD;
+			const double eta = srcData.odim.getElangleR();
 			if (elangles.find(srcData.odim.elangle) == elangles.end()){
 				//dst["where"].data.attributes["elangles"] << srcData.odim.elangle;  // todo renew
 				elangles.insert(srcData.odim.elangle);
@@ -312,7 +312,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 
 	/// Second loop: copy the profile(s), each quantity at a time.
 
-	for (DataSetDst<VprDst>::iterator it = dstProduct.begin(); it != dstProduct.end(); ++it) {
+	for (DataSet<VprDst>::iterator it = dstProduct.begin(); it != dstProduct.end(); ++it) {
 
 		const std::string & quantity = it->first;
 
@@ -362,7 +362,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 			dstCountData.data.setGeometry(geometry);  // why not geom?
 
 			long int n = 0;
-			long int c;
+			long int c;// = 0;
 			double w;
 			for (int j = 0; j < odim.azSlots; ++j) {
 				for (int k = 0; k < odim.levels; ++k) {
@@ -373,17 +373,17 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 							dstData.data.put(j, k, dstData.odim.scaleInverse( zToDbz(profile.get<double>(j,k)/w) ) );
 						else
 							dstData.data.put(j, k, dstData.odim.scaleInverse(        profile.get<double>(j,k)/w)  );
-						dstQualityData.data.put(j, k, dstQualityData.odim.scaleInverse(w/static_cast<double>(c)) );
 						c = profileCount.get<long int>(j,k);
+						dstQualityData.data.put(j, k, dstQualityData.odim.scaleInverse(w/static_cast<double>(c)) );
 						dstCountData.data.put(j, k, c);
 						n += c;
 					}
 				}
 			}
 
-			dstData.updateTree();
-			dstQualityData.updateTree();
-			dstCountData.updateTree();
+			//@ dstData.updateTree();
+			//@ dstQualityData.updateTree();
+			//@ dstCountData.updateTree();
 			// group.data.attributes["n"] = n;  // Number of samples
 
 		}
@@ -392,7 +392,7 @@ void VerticalProfileOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSet
 
 	}
 
-	dstProduct.updateTree(odimFinal);
+	// @? dstProduct.updateTree(odimFinal);
 	//mout.warn() << odimFinal << mout.endl;
 
 

@@ -193,21 +193,22 @@ public:
 	template <class T>
 	std::ostream &  debug(std::ostream & ostr, const std::map<std::string,T> &m ) const {
 		ostr << "StringMapper '"<< "', validChars='" << validChars << "', " <<  size() << " segments:\n";
-		StringMapper::const_iterator it;
+		//StringMapper::const_iterator it;
 		for (StringMapper::const_iterator it = begin(); it != end(); it++){
 			//ostr << *it;
 			if (it->isVariable()){
-				ostr << "VAR: ";
-				//ostr << "\t=";
+				//ostr << "VAR: ";
+				ostr << '\t';
 				typename std::map<std::string, T >::const_iterator mit = m.find(*it);
 				if (mit != m.end())
-					ostr << '"' <<  mit->second << '"';
+					ostr << '*' <<  mit->second << '*';
 				else
 					ostr << '<' << *it << '>';
 				ostr << '\n';
 			}
 			else {
-				ostr << "LIT: '" << *it << "'\n";
+				ostr << "\t'" << *it << "'\n";
+				//ostr << "LIT: '" << *it << "'\n";
 			}
 			//ostr << '\n';
 		}

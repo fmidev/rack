@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef CumulativePolarProduct_OP_H_
 #define CumulativePolarProduct_OP_H_
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Fuzzy.h>
 #include <drain/image/Accumulator.h>
 
@@ -62,13 +62,14 @@ public:
 
 	// Public for ConvOp
 	virtual
-	void processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDst> & dstProduct) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
 
 
 
 protected:
 
-	CumulativeProductOp(const std::string & name = "CumulativePolarProductOp", const std::string &description = "", const std::string & accumulationMethod = "OVERWRITE") :
+	CumulativeProductOp(const std::string & name = __FUNCTION__,
+			const std::string &description = "", const std::string & accumulationMethod = "LATEST") :
 		PolarProductOp(name, description), accumulationMethod(accumulationMethod){
 		//, undetectValue(-40), relativeUndetectWeight(0.95) {  // , method(method), p(p), q(q)
 		//dataSelector.path = "^.*/data[0-9]+$";
@@ -91,7 +92,7 @@ protected:
 	virtual
 	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		drain::MonitorSource mout(name+"(CumulativeProductOp)", __FUNCTION__);
+		drain::Logger mout(name+"(CumulativeProductOp)", __FUNCTION__);
 		mout.warn() << "setGeometry??" << mout.endl;
 		copyPolarGeometry(dstData.odim, dstData);
 	}

@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/ProjectionFrame.h>
 #include <drain/image/AccumulatorGeo.h>
 
@@ -91,7 +91,7 @@ using namespace drain;
 
 void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidth=0, int tileHeight = 0){
 
-	MonitorSource mout("FileGeoTIFF", __FUNCTION__);
+	Logger mout("FileGeoTIFF", __FUNCTION__);
 
 	const drain::VariableMap & prop = src.properties;
 
@@ -105,12 +105,12 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	TIFFSetField(tif,TIFFTAG_PLANARCONFIG,  PLANARCONFIG_CONTIG);
 
 	const drain::Type t(src.getType());
-	mout.debug() << " bytes=" << Type::getSize(t) << mout.endl;
+	mout.debug() << " bytes=" << Type::call<drain::sizeGetter>(t) << mout.endl;
 	switch ((const char)t) {
 		case 'C':
 			// no break
 		case 'S':
-			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*Type::getSize(t));
+			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*Type::call<drain::sizeGetter>(t));
 			break;
 		default:
 			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
@@ -164,7 +164,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	}
 
 
-	const std::string projdef = prop["where:projdef"];
+	std::string projdef = prop["where:projdef"];
 	if (projdef.empty()){
 		mout.note() << "where:projdef missing, no TIFF tags written" << mout.endl;
 		return;
@@ -248,7 +248,7 @@ void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
 void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 0, int tileHeight = 0)
 {
 
-	MonitorSource mout("FileGeoTIFF", __FUNCTION__);
+	Logger mout("FileGeoTIFF", __FUNCTION__);
 
 	const int width  = src.getWidth();
 	const int height = src.getHeight();
@@ -284,7 +284,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 		mout.info() << "tiled mode:"  << tile << ", bits=" << bitspersample << mout.endl;
 
 		if ((!UCHAR8) && (width % tileWidth)){
-			mout.warn() << "16bit image, width != N*tileWidth, errors may occur (libgeotiff problem?)" << mout.endl;
+			mout.warn() << "16bit image, width != N*tileWidth (" << tileWidth <<"), errors may occur (libgeotiff problem?)" << mout.endl;
 		}
 
 		/// current tile-widths
@@ -378,7 +378,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 //void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const std::list<std::string> & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
-	MonitorSource mout("FileGeoTIFF", __FUNCTION__);
+	Logger mout("FileGeoTIFF", __FUNCTION__);
 	//mout.note() << src.properties << mout.endl;
 
 	/// Open TIFF file for writing
@@ -396,7 +396,7 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 			WriteImage(tif, src); //, tileSize, tileSize/2);
 
 			//mout.note() << src.properties << mout.endl;
-			const std::string projstr = src.properties["where:projdef"];
+			std::string projstr = src.properties["where:projdef"];
 
 			if (!projstr.empty()){
 				mout.info() << "where:projdef= " << projstr << mout.endl;
@@ -404,7 +404,10 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 			else
 				mout.warn() << "where:projdef empty" << mout.endl;
 
-			Proj4 proj;
+			drain::Proj4 proj;
+
+			//pj_is_
+
 			proj.setProjectionDst(projstr);
 			if (proj.isLongLat()){
 				mout.info() << "writing 4326 longlat" << mout.endl;
@@ -422,7 +425,7 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 			// Non-standard http://www.gdal.org/frmt_gtiff.html
 			std::string nodata = src.properties["what:nodata"];
 			if (!nodata.empty()){
-				mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
+				mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
 				GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
 			}
 			 */

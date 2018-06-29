@@ -39,10 +39,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACKOP_H_
 
 
-#include <drain/util/DataScaling.h>
-#include <drain/util/StringMapper.h>
-#include <drain/util/Variable.h>
-#include <drain/util/Tree.h>
+//#include <drain/util/DataScaling.h>
+//#include <drain/util/StringMapper.h>
+//#include <drain/util/Variable.h>
+//#include <drain/util/Tree.h>
 #include <drain/util/ReferenceMap.h>
 
 
@@ -80,114 +80,38 @@ using namespace drain::image;
 /**
  *   \tparam M - ODIM type corresponding to products type (polar, vertical)
  */
+// TODO: generalize for Cart
 template <class M>
-class VolumeOp : public ProductOp {
+class VolumeOp : public ProductOp<const PolarODIM, M> {
 
 public:
 
-	VolumeOp(const std::string & name, const std::string &description="") : ProductOp(name, description){
+	VolumeOp(const std::string & name, const std::string &description="") : ProductOp<const PolarODIM, M>(name, description){
 	};
 
 	~VolumeOp(){};
 
-	/// The default data parameters for encoding.
-	M odim;
 
 	/// Traverse through given volume and create new, processed data (volume or polar product).
 	/**
-	 *  This default implementation converts the volume to DataSetSrcMap, creates an instance of
-	 *  DataSetDst<DstType<M> >
+	 *  This default implementation converts the volume to DataSetMap<PolarSrc>, creates an instance of
+	 *  DataSet<DstType<M> >
 	 *  and calls processDataSets().
 	 */
 	virtual
 	void processVolume(const HI5TREE &src, HI5TREE &dst) const;
 
-	/// Traverse the data applicable for this product and create new, processed data (volume or polar product).
-	/** The input data is stored in SweepMapSrc, as Map indexed with elevation angles, containing sweep data
-	 *  - typically reflectivity data (DBZH) but generally any parameter measured by radar. The applicable data
-	 *  is set by selector.quantity, typically in the constructor of a derived class.
-	 */
-	virtual
-	void processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<DstType<M> > & dstProduct) const;
 
-	/// Process the data of a single sweep and and write the result to given product
-	/**
-	 *  Notice:
-	 *  - several product data arrays may be generated
-	 *  - also quality field(s) may be added
-	 *  - overwriting original data may occur, if input data (src) is also given as output (dst); this is desired
-	 *    action esp. in anomaly removal
-	 */
-	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<DstType<M> > & dstProduct) const;
-
-	virtual
-	void processData(const Data<PolarSrc> & srcData, Data<DstType<M> > & dstData) const {
-		drain::MonitorSource mout(name, __FUNCTION__);
-		mout.warn() << "not implemented" << mout.endl;
-	};
-
-	// template <class OD>
-	//static 	void handleEncodingRequest(const std::string & encoding, OD & dstODIM);
 
 protected:
 
 
-	static
-	void handleEncodingRequest(const std::string & encoding, PlainData<DstType<M> > & dst);
-
-
-	/// initialises dst data by setting suitable ODIM metadata and geometry.
-	/**
-	 *
-	 */
-	virtual
-	inline
-	//void initDst(const PolarODIM & srcODIM, Data<DstType<M> > & dstData) const {
-	void initDst(const PolarODIM & srcODIM, PlainData<DstType<M> > & dstData) const {
-
-		drain::MonitorSource mout(name+"(VolumeOp<M>)", __FUNCTION__);
-
-		setEncoding(srcODIM, dstData);
-		setGeometry(srcODIM, dstData);
-
-		mout.debug() << "final dstData: " << dstData << mout.endl;
-	}
-
-
-	///
-	/**
-	 *   \return - tree, because there is no (automatic) conversion form DataSetDst to DataSetSrc
-	 */
-	//const HI5TREE & getNormalizedData(const DataSetSrc<SrcType<M> > & srcDataSet, DataSetDst< DstType<M> > & dstDataSet, const std::string & quantity) const;
-
-	/// Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.
-	/**
-	 *   Determines output encoding based on
-	 *   - input data (srcODIM)
-	 *   - output data (parameters already set in dstData)
-	 *   - this->odim (values set in constructor and encodingRequest)
-	 *   - encodingRequest
-	 *
-	 *   \see setGeometry
-	 */
-	virtual
-	void setEncoding(const ODIM & srcODIM, PlainData<DstType<M> > & dstData) const;
+	//static
+	//void handleEncodingRequest(const std::string & encoding, PlainData<DstType<M> > & dst);
 
 
 
 
-	/// Sets automagically the suitable dst parameters.
-	/**
-	 *   Derives geometry for the resulting dst from three sources of parameters:
-	 *   the implicit operator parameters this->odim and the two function parameters
-	 *   \param srcODIM - metadata of the incoming data
-	 *   \param dstODIM - metadata of the result (sometimes partially set).
-	 *
-	 *   Default implementation as an empty function, because some operators like VerticalProfileOp will not use?
-	 */
-	virtual
-	void setGeometry(const PolarODIM & srcODIM, PlainData<DstType<M> > & dstData) const = 0; // {};
 
 	/*
 	/// Copy nbins, nrays, rscale
@@ -209,35 +133,16 @@ protected:
 
 };
 
+
+
+
 /*
-template <class M>
-const QuantityMap & VolumeOp<M>::quantityMap(getQuantityMap());
-*/
-
-template <class M>
-void VolumeOp<M>::setEncoding(const ODIM & inputODIM, PlainData<DstType<M> > & dst) const {
-
-	//ProductOp::applyDefaultODIM(dst.odim, odim);
-	ProductOp::applyODIM(dst.odim, odim);
-
-	//ProductOp::applyODIM(dst.odim, inputODIM);
-	ProductOp::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
-
-
-	ProductOp::handleEncodingRequest(dst.odim, encodingRequest);
-
-	/// This applies always.
-	//dst.odim.product = odim.product;
-}
-
-
-
 template <class M>
 void VolumeOp<M>::handleEncodingRequest(const std::string & encoding, PlainData<DstType<M> > & dst){
 
-	drain::MonitorSource mout("VolumeOp<M>::", __FUNCTION__);
+	drain::Logger mout("VolumeOp<M>::", __FUNCTION__);
 
-	ProductOp::handleEncodingRequest(dst.odim, encoding);
+	ProductOp<PolarODIM,M>::handleEncodingRequest(dst.odim, encoding);
 
 	if (!dst.odim.type.empty())
 		dst.data.setType(dst.odim.type);
@@ -245,25 +150,25 @@ void VolumeOp<M>::handleEncodingRequest(const std::string & encoding, PlainData<
 		dst.odim.type = (const char)dst.data.getType2();
 
 }
-
+*/
 
 
 template <class M>
 void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug(2) << *this << mout.endl;
-	mout.debug(1) << "DataSelector: "  << dataSelector << mout.endl;
+	mout.debug(1) << "DataSelector: "  << this->dataSelector << mout.endl;
 
 	// Step 1: collect sweeps (/datasetN/)
-	DataSetSrcMap sweeps;
+	DataSetMap<PolarSrc> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
 	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src,  dataSelector, dataPaths);
+	DataSelector::getPaths(src,  this->dataSelector, dataPaths);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	drain::Variable elangles(typeid(double));
@@ -271,14 +176,14 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 		mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 
-		const std::string parent = DataSelector::getParent(*it);
+		const std::string parent = DataTools::getParent(*it);
 		const double elangle = src(parent)["where"].data.attributes["elangle"];  // PATH
 
 		mout.debug(2) << "check "  << *it << mout.endl;
 
 		if (sweeps.find(elangle) == sweeps.end()){
 			mout.debug(2) << "add "  << elangle << ':'  << parent << mout.endl;
-			sweeps.insert(DataSetSrcMap::value_type(elangle, DataSetSrc<PolarSrc>(src(parent), drain::RegExp(dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			elangles << elangle;
 		}
 	}
@@ -287,22 +192,40 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	dst["what"]  = src["what"];
 	dst["where"] = src["where"];
 	dst["how"]   = src["how"];
-	dst["what"].data.attributes["object"] = odim.object;
+	dst["what"].data.attributes["object"] = this->odim.object;
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
+	/*
 	std::string dataSetPath = "dataset1";
-	if (ProductOp::appendResults)
-		DataSelector::getNextOrdinalPath(dst, "dataset[0-9]+/?$", dataSetPath);
+	if (ProductBase::appendResults.getType() != BaseODIM::NONE)  // empty()) // data or dataset
+		DataSelector::getNextOrdinalPath(dst, ProductBase::appendResults+"[0-9]+/?$", dataSetPath);
+	*/
+	ODIMPathElem dataSetPath(BaseODIM::DATASET, 1);
+	//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))
 
-	mout.debug(2) << "storing product in path: "  << dataSetPath << mout.endl;
+	if (ProductBase::appendResults.is(BaseODIM::DATASET)){
+		if (ProductBase::appendResults.getIndex()){
+			dataSetPath.index = ProductBase::appendResults.getIndex();
+		}
+		else {
+			DataTools::getNextChild(dst, dataSetPath);
+		}
+	}
+	//++dataSetPath.index;
 
-	HI5TREE & dstProduct = dst(dataSetPath);
-	DataSetDst<DstType<M> > dstProductDataset(dstProduct); // PATH
+	//mout.warn() << "FAILED: "  << dataSetPath << mout.endl;
+		//dataSetPath.push_back(ODIMPathElem(BaseODIM::DATASET, 1));
+
+
+	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
+
+	HI5TREE & dstProduct = dst[dataSetPath];
+	DataSet<DstType<M> > dstProductDataset(dstProduct); // PATH
 
 	drain::VariableMap & how = dstProduct["how"].data.attributes;
 
 	/// Main operation
-	processDataSets(sweeps, dstProductDataset);
+	this->processDataSets(sweeps, dstProductDataset);
 
 	//
 	how["software"] = __RACK__;
@@ -313,57 +236,6 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	//what["source"] = src["what"].data.attributes["source"];
 	//what["object"] = odim.object;
 
-}
-
-
-template <class M>
-void VolumeOp<M>::processDataSets(const DataSetSrcMap & src, DataSetDst<DstType<M> > & dstProduct) const {
-
-	drain::MonitorSource mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
-	mout.debug(2) << "start" << mout.endl;
-
-	if (src.size() == 0)
-		mout.warn() << "no data" << mout.endl;
-
-	for (DataSetSrcMap::const_iterator it = src.begin(); it != src.end(); ++it) {
-
-		mout.debug(2) << "calling processDataSet for elev=" << it->first << " #datasets=" << it->second.size() << mout.endl;
-		processDataSet(it->second, dstProduct);
-		// TODO: detect first init?
-		// mout.warn() << "OK" << mout.endl;
-	}
-
-	/// Pick main product data and assign (modified) odim data
-	// mout.warn() << "getFirst data" << mout.endl;
-	Data<DstType<M> > & dstData = dstProduct.getFirstData(); // main data
-	/// mout.warn() << "updateTree " << mout.endl;
-	dstProduct.updateTree(dstData.odim);
-	// mout.warn() << "end" << mout.endl;
-}
-
-
-template <class M>
-void VolumeOp<M>::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<DstType<M> > & dstProduct) const {
-
-	drain::MonitorSource mout(name+"(VolumeOp<M>)", __FUNCTION__);
-
-	mout.debug() << "start" << mout.endl;
-
-	const Data<PolarSrc> & srcData = srcSweep.getFirstData();
-
-	Data<DstType<M> > & dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();
-
-	if (dstData.odim.quantity.empty())
-		dstData.odim.quantity = odim.quantity;
-
-	//mout.debug() << "calling setEncoding" << mout.endl;
-	//setEncoding(srcData.odim, dstData.odim);
-	initDst(srcData.odim, dstData);
-
-	//mout.warn() << "calling processData" << mout.endl;
-	processData(srcData, dstData);
-	//mout.warn() << "updateTree" << mout.endl;
-	dstData.updateTree();
 }
 
 

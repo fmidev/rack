@@ -40,19 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace hi5 {
 
 
-// Moved to EncodingODIM
-/*
-const std::set<std::string> & NodeHi5::attributeGroups(createAttributeGroups());
-
-//static
-const std::set<std::string> & NodeHi5::createAttributeGroups(){
-	static std::set<std::string> s;
-	s.insert("what");
-	s.insert("where");
-	s.insert("how");
-	return s;
-}
-*/
 
 void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
@@ -97,10 +84,10 @@ std::ostream &operator<<(std::ostream &ostr,const hi5::NodeHi5 &n){
 
 
 //Hi5Error Hi5Base::debug;
-//drain::Monitor Hi5Base::hi5monitor;
-//drain::MonitorSource Hi5Base::hi5mout(Hi5Base::hi5monitor,"hi5");
-drain::Monitor hi5monitor;
-drain::MonitorSource hi5mout(hi5monitor,"Hi5");
+//drain::Log Hi5Base::hi5monitor;
+//drain::Logger Hi5Base::hi5mout(Hi5Base::hi5monitor,"hi5");
+drain::Log hi5monitor;
+drain::Logger hi5mout(hi5monitor,"Hi5");
 
 
 const hid_t & Hi5Base::getH5DataType(const std::type_info &type){
@@ -188,14 +175,9 @@ void Hi5Base::linkPalette(const HI5TREE & palette, HI5TREE & dst){
 void Hi5Base::writeText(const HI5TREE &src, const std::list<std::string> & keys, std::ostream & ostr) {
 
 
-	//src.getKeys(keys);
-
-	//src.getKeys(keys,r,p);
-
 	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it) {
 
 		const std::string &key = *it;
-
 		src(key).data.writeText(ostr, key);
 
 	}
@@ -207,7 +189,7 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 	while ( std::getline(istr, line) ){
 
-		if (!line.empty()){
+		if (!line.empty() && (line.at(0)!='#')){
 
 			const size_t j = line.find('=');
 			if (j == std::string::npos)
@@ -223,6 +205,8 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 }
 
 void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std::string & value){
+
+	drain::Logger mout("Hi5Base", __FUNCTION__);
 
 	const size_t i = keyPath.find(':');
 
@@ -240,10 +224,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 
 
 	const size_t l = value.rfind(']');
-
 	const size_t k = value.rfind('[', l);
-
-	//const std::string type(value, k+1, l-k-1);
 
 	static const char stringTypeCode = drain::Type::getTypeChar(typeid(std::string));
 	char typeCode;
@@ -253,12 +234,9 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 	else
 		typeCode = 0;
 
-	//if (typeCode == std::stringTypeCode)
-	//	typeCode = 0;
-
 	// std::cerr << " l: " << l << ", k:" << k << '\n';
 	// std::cerr << " keyPath: " << keyPath << ", key:" << key << ", value=" << value << ", typeCode=" << (int)typeCode  << '\n';
-	if (key == "image"){ // TODO
+	if (key == "image"){
 
 		/// Set type
 		if (typeCode)
@@ -270,8 +248,9 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 		/// Set geometry (unless)
 		if (!value.empty() && (value.at(0) != '[')){
 			drain::Variable g;
-			g.setType<size_t>(2);
-			g.separator = ',';
+			g.setType(typeid(size_t));
+			g.resize(2);
+			g.setSeparator(',');
 			g = value.substr(0, k-1);
 			switch (g.getElementCount()){
 			case 2:
@@ -289,16 +268,32 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 		}
 		//std::cerr << "!IMAGE:" << n.dataSet << std::endl;
 	}
-	else {
+	else { // non-image
+
 		drain::Variable & a = n.attributes[key];
-		//if ((typeCode) && (typeCode == std::stringTypeCode))
 
-		if ((typeCode)&&(typeCode != stringTypeCode))
-			a.setType(drain::Type::getType(typeCode));
+
+
+		if ((typeCode) && (typeCode != stringTypeCode)){
+			//mout.warn() << "typeCode=" << typeCode << mout.endl;
+			a.setType(drain::Type::getTypeInfo(typeCode));
+			//mout.warn() << "typeCode=" << typeCode << " => " << drain::Type::getTypeChar(a.getType()) << mout.endl;
+		}
 		else if (! a.typeIsSet())
-			a.setType<std::string>();
+			a.setType(typeid(std::string));
 
-		a = value.substr(0, k-1);
+		/// Trim trailing spaces
+		const size_t k2 = value.find_last_not_of(" \t\r\n", k-1);
+		if (k2 == std::string::npos)
+			a = value.substr(0, k-1);
+		else
+			a = value.substr(0, k2+1);
+
+		/*
+		if (typeCode){
+			mout.warn() << "typeCode=" << typeCode << " >> " << drain::Type::getTypeChar(a.getType()) << mout.endl;
+		}
+		*/
 		//n.attributes[key]
 
 	}
@@ -307,6 +302,21 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 }
 
 
+void Hi5Base::deleteNoSave(HI5TREE &src){
+
+	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
+		if (it->second.data.noSave){
+			src.erase(it->first);
+		}
+	}
+
+	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
+		if (! it->second.data.noSave){ // needed?
+			deleteNoSave(it->second);
+		}
+	}
+
+}
 
 
 std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree){

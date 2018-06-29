@@ -32,8 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_SUN_H
 #define RACK_SUN_H
 
+
 #include <string>
 
+#include <drain/util/Geo.h>
 // // using namespace std;
 
 namespace rack {
@@ -84,7 +86,7 @@ public:
 		double jDate = JDate(datestr.c_str());
 
 		/* Tähtiaika radiaaneina auringon tuntikulman laskentaa varten */
-		starTime = Sidereal_GW(jDate) * 15.0 * DEG2RAD;
+		starTime = Sidereal_GW(jDate) * 15.0 * drain::DEG2RAD;
 		Solar_coords(jDate, equ);
 
 	}

@@ -66,6 +66,9 @@ public:
 	inline
     void setProjectionDst(const std::string &str){ _setProjection(str, projDst); };
    
+	//inline 	projPJ getProjectionSrc(){ return projSrc; };
+
+	//inline 	projPJ getProjectionDst(){ return projDst; };
 
 
 	/// Forward projection.
@@ -172,24 +175,33 @@ public:
    	 */
     inline
     const std::string & getProjectionSrc() const {
-    	if (projSrc == NULL)
-    		throw std::runtime_error("Proj4::project(): projSrc NULL");
-    	//projStrSrc.assign(pj_get_def(projSrc, 0));
-    	char *s = pj_get_def(projSrc, 0);
-    	projStrSrc.assign(s);
-    	//delete s;
-    	free(s);
+
+    	if (projSrc == NULL){
+    		projStrSrc.clear();
+    		//	throw std::runtime_error("Proj4::project(): projSrc NULL");
+    	}
+    	else {
+    		//projStrSrc.assign(pj_get_def(projSrc, 0));
+    		char *s = pj_get_def(projSrc, 0);
+    		projStrSrc.assign(s);
+    		//delete s;
+    		free(s);
+    	}
     	return projStrSrc;
     };
 
     inline
     const std::string & getProjectionDst() const {
-    	if (projDst == NULL)
-    		throw std::runtime_error("Proj4::project(): projDst NULL");
-    	char *s = pj_get_def(projDst, 0);
-    	projStrDst.assign(s);
-    	//delete s;
-    	free(s);
+    	if (projDst == NULL){
+    		projStrDst.clear();
+    		//throw std::runtime_error("Proj4::project(): projDst NULL");
+    	}
+    	else {
+    		char *s = pj_get_def(projDst, 0);
+    		projStrDst.assign(s);
+    		//delete s;
+    		free(s);
+    	}
        	return projStrDst;
     };
 
@@ -201,8 +213,7 @@ public:
     };
 
 	inline
-	bool
-	isLongLat(){
+	bool isLongLat() const {
 		return pj_is_latlong(projDst);
 		//return pj_is_geocent(projSrc);
 	}

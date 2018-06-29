@@ -150,10 +150,13 @@ public:
 		std::cerr << "H=" << this->tm_hour << ", DST="  << this->tm_isdst << '\n';
 	}
 
+	//int mika;
+
 protected:
 	//tm _tm;
 	//time_t _time;
 	mutable std::string timeStr;
+
 };
 
 }

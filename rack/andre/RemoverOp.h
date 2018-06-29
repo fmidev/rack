@@ -75,7 +75,7 @@ public:
 
 	/// NEW POLICY => DetectorOpNEW
 	virtual
-	void processDataSets(const DataSetSrcMap & srcVolume, DataSetDstMap<PolarDst> & dstVolume) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
 
 	/// Process as sweep (data in one elevation angle)
 	/**
@@ -84,7 +84,7 @@ public:
 	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
 	 */
 	virtual
-	void processDataSet(const DataSetSrc<> & srcDataSet, DataSetDst<PolarDst> & dstDataSet)  const;
+	void processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet)  const;
 
 	//Practically, qualityRoot == dstDataRoot
 	// void filterGroup(const HI5TREE &qualityRoot, const std::string &path, HI5TREE &dstDataRoot) const;

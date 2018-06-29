@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include "Quantity.h"
 
@@ -47,68 +47,12 @@ EncodingODIM & Quantity::set(char typecode) {
 
 	EncodingODIM & odim = (*this)[typecode];
 	odim.type = typecode;
+	if (!odim.isSet())
+		odim.setTypeDefaults();
 
 	return odim;
 }
 
-
-/*
-Quantity & Quantity::set(char typecode, double gain, double offset) {
-
-	return set(typecode, gain, offset,
-			drain::Type::getMin<double>(typecode),
-			drain::Type::getMax<double>(typecode));
-
-}
-
-
-Quantity & Quantity::set(char typecode, double gain, double offset, double undetect, double nodata) {
-
-		if (!typecode)
-			typecode = 'C';  // ???
-
-		EncodingODIM & odim = (*this)[typecode];
-		odim.type = std::string(1, typecode);
-		odim.gain = gain;
-		odim.offset = offset;
-		odim.undetect = undetect;
-		odim.nodata = nodata;
-
-		if (!defaultType)
-			defaultType = typecode;
-
-		return *this;
-
-}
-*/
-
-/*
-Quantity & Quantity::setRange(char typecode, double min, double max) {
-
-	if (!typecode)
-		typecode = 'C';
-
-	EncodingODIM & odim = (*this)[typecode];
-	odim.type = std::string(1, typecode);
-
-	//drain::Type t(typecode);
-	const double minByte = drain::Type::getMin<double>(typecode);
-	const double maxByte = drain::Type::getMax<double>(typecode);
-	odim.gain = (max-min)/(maxByte-1 - (minByte+1));
-	// min = minByte*gain + offset
-	odim.offset = min -odim.gain*minByte;
-	odim.undetect = minByte;
-	odim.nodata   = maxByte;
-
-	return *this; // ?
-
-}
-*/
-
-///
-/**
- *   \return true, if conf for this quantity was found, with desired type (or default type)
- */
 
 }  // namespace rack
 

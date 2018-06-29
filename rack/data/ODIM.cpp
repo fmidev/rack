@@ -29,71 +29,27 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include "ODIM.h"
 
 namespace rack {
 
 
-const std::string & SourceODIM::getSourceCode() const {
-
-	//sourceMap.setValues(source, ':');  // 2nd par: equal-sign
-
-    #define RETURN_ODIM_SRC(s) if (!s.empty()) return s
-	RETURN_ODIM_SRC(NOD); // TODO: add options for desired order
-	RETURN_ODIM_SRC(RAD);
-	RETURN_ODIM_SRC(WMO);
-	RETURN_ODIM_SRC(ORG);
-	RETURN_ODIM_SRC(CTY);
-	RETURN_ODIM_SRC(PLC);
-
-	static std::string empty;
-	return empty;
-}
-
-
-void SourceODIM::init(){
-	// Considered prefix "where:source", but gets complicated for default constructor.  (?)
-	reference("WMO", WMO);
-	reference("RAD", RAD);
-	reference("NOD", NOD);
-	reference("PLC", PLC);
-	reference("ORG", ORG);
-	reference("CTY", CTY);
-	reference("CMT", CMT);
-}
-
-/// Tries to resolve NOD code from partial or deprecated metadata
-/**
- *  Assigns NOD if empty, and CMT
- */
-void SourceODIM::setNOD(){
-
-	// drain::MonitorSource mout("SourceODIM", __FUNCTION__);
-	if (NOD.empty()){
-		switch (get("WMO", 0)){
-		case 26422:
-			NOD = "lvrix";
-			break;
-		default:
-			static drain::RegExp nodRegExp("^[a-z]{5}$");
-			if (nodRegExp.test(CMT)){
-				NOD = CMT;
-			}
-			else {
-				drain::MonitorSource mout("SourceODIM", __FUNCTION__);
-				//NOD = getSourceCode();
-				//mout.info() << "Site code 'NOD' not found, substituting with '" << NOD << "'" << mout.endl;
-				mout.info() << "Site code 'NOD' not found, using '" << getSourceCode() << "' as node indicator " << mout.endl;
-			}
-		}
-	}
-
-}
-
 
 const std::set<std::string> & EncodingODIM::attributeGroups(createAttributeGroups());
+
+/*
+EncodingODIM::EncodingODIM(group_t initialize = ALL){
+	init(initialize);
+};
+
+EncodingODIM::EncodingODIM(const EncodingODIM & odim){
+	init(ALL);
+	updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
+};
+*/
+
 
 //static
 const std::set<std::string> & EncodingODIM::createAttributeGroups(){
@@ -111,12 +67,15 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
 	if (type.empty())
 		type = "C";
 
-	char typecode = type.at(0);
+	//char typecode = type.at(0);
 
 	if (isnan(offset))
 		offset = -gain;
 
-	return setScaling(gain, offset, drain::Type::getMin<double>(typecode), drain::Type::getMax<double>(typecode));
+	const std::type_info & t = drain::Type::getTypeInfo(type.at(0));
+
+	return setScaling(gain, offset, drain::Type::call<drain::typeMin, double>(t), drain::Type::call<drain::typeMax, double>(t));
+	//return setScaling(gain, offset, drain::Type::getMin<double>(typecode), drain::Type::call<drain::typeMax,double>(typecode));
 
 }
 
@@ -133,21 +92,35 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 	return *this;
 }
 
+void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-void EncodingODIM::init(){
+	if (initialize & ROOT){
+	}
 
-	//std::set<std::string> & rootAttributes = getRootAttributes();
-	//std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	std::set<std::string> & dataAttributes = getDataAttributes();
+	if (initialize & DATASET){
+	}
 
-	declare(dataAttributes, "what:type", type = "C");
-
-	declare(dataAttributes, "what:gain",   gain = 0.0);
-	declare(dataAttributes, "what:offset", offset = 0.0);
-	declare(dataAttributes, "what:undetect", undetect = 0.0);
-	declare(dataAttributes, "what:nodata", nodata = 0.0);
+	if (initialize & DATA){
+		reference("what:type", type = "C");
+		reference("what:gain",   gain = 0.0);
+		reference("what:offset", offset = 0.0);
+		reference("what:undetect", undetect = 0.0);
+		reference("what:nodata", nodata = 0.0);
+	}
 
 }
+
+
+
+
+/*
+template <class F>
+void declare(std::set<std::string> & keys, const std::string & key, F &x){
+	keys.insert(key);
+	reference(key, x);
+}
+*/
+
 
 void EncodingODIM::clear(){
   for (ReferenceMap::iterator it = begin(); it != end(); ++it)
@@ -184,37 +157,38 @@ void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
 }
 
 void EncodingODIM::copyFrom(const drain::image::Image & data){
-	//declareMap::set(data.properties);  FAILS! double-double cast goes via sstream, dropping precision!?!
+
 	const drain::VariableMap & m = data.properties;
+
 	for (drain::VariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
 
 		const iterator oit = find(it->first);
-
 		if (oit != end()){
-			drain::Castable & myValue = oit->second;
-			const drain::Variable & value = it->second;
-			const std::type_info & t = value.getType();
+			const drain::Variable & srcValue = it->second;
+			const std::type_info & t = srcValue.getType();
+			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
 			if (t == typeid(double)){
-				//(*this)[key] = (double)value;
-				myValue = static_cast<double>(value);
+				//(*this)[key] = (double)srcValue;
+				dstValue = static_cast<double>(srcValue);
 				//std::cerr << "DOUBLE" << key << "\n\t";
 				/*
 					std::cerr.precision(20);
-					std::cerr << (double)value << "\n\t";
+					std::cerr << (double)srcValue << "\n\t";
 					std::cerr << undetect << "\n\t";
-					//std::cerr << (const double &)value << std::endl;
+					//std::cerr << (const double &)srcValue << std::endl;
 					std::cerr << (const double &)(*this)[key] << std::endl;
 				 */
 			}
 			else if (t == typeid(float))
-				myValue = static_cast<float>(value);
+				dstValue = static_cast<float>(srcValue);
 			else
-				myValue = value;
+				dstValue = srcValue;
 		}
 
 	}
-	type = std::string("") + drain::Type::getTypeChar(data.getType());
+	//type = std::string("") + drain::Type::getTypeChar(data.getType());
+	type = drain::Type::getTypeChar(data.getType());
 }
 
 
@@ -225,16 +199,16 @@ void EncodingODIM::setRange(double min, double max) {
 
 		const drain::Type t(type.at(0));
 
-		const double minData = drain::Type::getMin<double>(t);
-		const double maxData = drain::Type::getMax<double>(t);
+		const double minData = drain::Type::call<drain::typeMin, double>(t); // getMin<double>(type);
+		const double maxData = drain::Type::call<drain::typeMax, double>(t); // drain::Type::call<drain::typeMax,double>(t);
 
 		undetect = minData;
 		nodata   = maxData;
 
-		if (drain::Type::isIntegralType(t)){
+		if (drain::Type::call<drain::typeIsInteger>(t)){
 			gain = (max-min) / static_cast<double>((maxData-1) - (minData+1));
 			offset = min - gain*(minData+1);
-			//drain::MonitorSource mout("QuantityMap", __FUNCTION__);
+			//drain::Logger mout("QuantityMap", __FUNCTION__);
 		}
 		else {
 			gain = 1.0;
@@ -245,81 +219,21 @@ void EncodingODIM::setRange(double min, double max) {
 
 }
 
-
-
-void EncodingODIM::copyTo(const std::set<std::string> & keys, HI5TREE & dst) const {
-
-	drain::MonitorSource mout("BaseODIM", __FUNCTION__);
-
-	for (std::set<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
-	//for (ReferenceMap::const_iterator it = begin(); it != end(); ++it){
-
-		const std::string & key = *it;
-
-		if (hasKey(key)){
-
-			const size_t i  = key.find(':');
-
-			/// Determine if it is ATTRIBUTE at root or PATH:ATTRIBUTE
-			//drain::Data & attribute = (i==std::string::npos) ? dst.data.attributes[key] : dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
-			//drain::Variable & attribute = (i==std::string::npos) ? dst.data.attributes[key] : dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
-			if (i==std::string::npos){
-				throw std::runtime_error(key + ": key contains no semicolon ':' ?");
-			}
-
-
-			drain::Variable & attribute = dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
-
-			const drain::Castable & v = (*this)[key];
-			const std::type_info & t = v.getType();
-
-			if (t == typeid(void)){
-				mout.warn() << "no type info, skipping key=" << *it << mout.endl;
-				continue;
-			}
-
-			if (v.getByteSize() == 0){
-				mout.warn() << "empty source, skipping key=" << *it << mout.endl;
-				continue;
-			}
-
-
-			if ((t == typeid(int)) || (t == typeid(long))){
-				attribute.setType<long>();
-			}
-			else if ((t == typeid(float)) || (t == typeid(double))){
-				attribute.setType<double>();
-			}
-			else {
-
-				attribute.setType<std::string>();
-			}
-
-			//std::cerr << "EncodingODIM::" << __FUNCTION__ << ": " << key << " = " << v << '\n';
-
-			attribute = v;
-
-		}
-
-		//attribute.info(std::cerr); std::cerr << '\n';
-	}
-
-}
-
 void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
 
 
-	for (std::map<std::string,drain::Castable>::iterator it = odim.begin(); it != odim.end(); ++it){
+	for (std::map<std::string,drain::Referencer>::iterator it = odim.begin(); it != odim.end(); ++it){
 
 		const std::string & key = it->first;
 		const size_t i  = key.find(':');
 
 		/// Determine if it is ATTRIBUTE at root or PATH:ATTRIBUTE
-		//drain::Variable & attribute = (i==std::string::npos) ? dst.data.attributes[key] : dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
+		//  drain::Variable & attribute = (i==std::string::npos) ? dst.data.attributes[key] : dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
 		if (i==std::string::npos){
 			std::cerr << "_checkType no ODIM group? " << key << '\n';
 		}
 		else {
+
 			HI5TREE & dstGroup = dst[key.substr(0,i)];
 
 			std::cerr << "checkType: " << key << '\n';
@@ -349,54 +263,176 @@ void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
 }
 
 
-void ODIM::init(){
+void ODIM::copyTo(const std::list<std::string> & keys, HI5TREE & dst) const {
 
-	std::set<std::string> & rootAttributes =    getRootAttributes();
-	std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	std::set<std::string> & dataAttributes =    getDataAttributes();
+	drain::Logger mout("ODIM", __FUNCTION__);
 
+	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+	//for (ReferenceMap::const_iterator it = begin(); it != end(); ++it){
 
-	declare(dataAttributes, "what:quantity", quantity = "");
+		const std::string & key = *it;
 
-	declare(datasetAttributes, "what:product", product = "");
-	declare(datasetAttributes, "what:prodpar", prodpar = "");
+		if (hasKey(key)){
 
-	declare(rootAttributes, "what:object", object = "");
-	declare(rootAttributes, "what:version", version = "H5rad 2.2");
-	declare(rootAttributes, "what:date", date = "");
-	declare(rootAttributes, "what:time", time = "");
-	declare(rootAttributes, "what:source", source = "");
+			const drain::Castable & v = (*this)[key];
+			const std::type_info & t = v.getType();
 
-	declare(datasetAttributes, "what:starttime", starttime = "");
-	declare(datasetAttributes, "what:startdate", startdate = "");
-	declare(datasetAttributes, "what:endtime", endtime = "");
-	declare(datasetAttributes, "what:enddate", enddate = "");
+			// Mainly debugging
+			if (t == typeid(void)){
+				mout.warn() << "no type info, skipping key=" << *it << mout.endl;
+				continue;
+			}
+			if (v.getByteSize() == 0){
+				mout.warn() << "empty source, skipping key=" << *it << mout.endl;
+				continue;
+			}
 
-	declare(datasetAttributes, "how:NI", NI = 0);
+			// Target
+			// Split to PATH:ATTRIBUTE
+			const size_t i  = key.find(':');
+			if (i==std::string::npos){
+				throw std::runtime_error(key + ": key contains no semicolon ':' ?");
+			}
+			const std::string group = key.substr(0,i);  // groupName
+			const std::string name  = key.substr(i+1);  // attributeName
+			drain::Variable & attribute = dst[group].data.attributes[name];
+			//drain::Variable & attribute = dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
+
+			// DEPRECATED? ODIM contains correct types (but for some attributes only?)
+			if ((t == typeid(int)) || (t == typeid(long))){
+				attribute.setType(typeid(long));
+			}
+			else if ((t == typeid(float)) || (t == typeid(double))){
+				attribute.setType(typeid(double));
+			}
+			else {
+				//std::cerr << "setType: std::string" << std::endl;
+				attribute.setType(typeid(std::string));
+			}
+			//std::cerr << "EncodingODIM::" << __FUNCTION__ << ": " << key << " = " << vField << '\n';
+			attribute = v;
+
+			/*
+			if (v.getType() == typeid(std::string)){
+
+				mout.note() << "here v:" << mout.endl;
+				v.toJSON();
+				std::cout << std::endl;
+
+				mout.warn() << "here a:" << mout.endl;
+				attribute.toJSON();
+				std::cout << std::endl;
+
+			}*/
+			//mout << mout.endl;
+
+			// mout.warn() << "writing:" << key << " = " << attribute << mout.endl;
+		}
+		else {
+			mout.note() << "no key: " << key << mout.endl;
+		}
+		//attribute.toOStr(std::cerr); std::cerr << '\n';
+	}
 
 }
+
+
+
+
+const std::string ODIM::dateformat("%Y%m%d");
+const std::string ODIM::timeformat("%H%M%S");
+
+
+
+void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
+
+	if (initialize & ROOT){
+		reference("what:object", object = "");
+		reference("what:version", version = "H5rad 2.2");
+		reference("what:date", date = "");
+		reference("what:time", time = "");
+		reference("what:source", source = "");
+		reference("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
+	}
+
+	if (initialize & DATASET){
+		reference("what:product", product = "");
+		reference("what:prodpar", prodpar = "");
+		reference("what:starttime", starttime = "");
+		reference("what:startdate", startdate = "");
+		reference("what:endtime", endtime = "");
+		reference("what:enddate", enddate = "");
+		reference("how:NI", NI = 0);
+	}
+
+
+	if (initialize & DATA){
+		reference("what:quantity", quantity = "");
+	}
+
+}
+
+
+
+
+double ODIM::getNyquist() const {
+
+	if (NI != 0.0){
+		return NI;
+	}
+	else {
+		drain::Logger mout("ODIM", __FUNCTION__);
+		const std::type_info & t = drain::Type::getTypeInfo(type);
+		if (drain::Type::call<drain::typeIsSmallInt>(t)){
+			const double vMax = drain::Type::call<drain::typeMax, double>(t);
+			const double vMin = drain::Type::call<drain::typeMin, double>(t);
+			mout.info() << "no NI in metadata, guessing speed range [" << vMin << ',' << vMax << "]" << mout.endl;
+			return scaleForward(vMax);
+		}
+		else {
+			mout.warn() << " could not derive Nyquist speed (NI)" << mout.endl;
+			return 0.0;
+		}
+	}
+}
+
+
 
 
 bool ODIM::getTime(drain::Time & t) const {
 
+
 	try {
-		t.setTime(date, "%Y%m%d");
-		t.setTime(time, "%H%M%S");
+		t.setTime(date, ODIM::dateformat);
+		t.setTime(time, ODIM::timeformat);
 	} catch (std::exception &e) {
 		return false;
 	}
 	return true;
-	/*
-	if (!date.empty()){
-		t.setTime(date, "%Y%m%d");
-		if (time.empty())
-			t.setTime(time, "%H%M%S");
-		return true;
-	}
-		return false;
-	*/
-
 }
+
+bool ODIM::getStartTime(drain::Time & t) const {
+
+	try {
+		t.setTime(startdate, ODIM::dateformat);
+		t.setTime(starttime, ODIM::timeformat);
+	} catch (std::exception &e) {
+		return false;
+	}
+	return true;
+}
+
+bool ODIM::getEndTime(drain::Time & t) const {
+
+	try {
+		t.setTime(enddate, ODIM::dateformat);
+		t.setTime(endtime, ODIM::timeformat);
+	} catch (std::exception &e) {
+		return false;
+	}
+	return true;
+}
+
 
 void ODIM::update(const ODIM & odim){
 
@@ -452,74 +488,6 @@ void ODIM::update(const ODIM & odim){
 
 }
 
-
-
-void PolarODIM::init(){
-
-
-	object = "PVOL";
-
-	std::set<std::string> & rootAttributes    = getRootAttributes();
-	std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	//std::set<std::string> & dataAttributes = getDataAttributes();
-
-	// new
-	declare(datasetAttributes, "where:nbins",  nbins = 0L);
-	declare(datasetAttributes, "where:nrays",  nrays = 0L);
-	declare(datasetAttributes, "where:rscale", rscale = 0.0);
-
-
-	declare(rootAttributes, "where:lon", lon = 0.0);
-	declare(rootAttributes, "where:lat", lat = 0.0);
-	declare(rootAttributes, "where:height", height = 0.0);
-
-	declare(datasetAttributes, "where:elangle", elangle = 0.0);
-
-	declare(datasetAttributes, "where:rstart", rstart = 0.0);
-	declare(datasetAttributes, "where:a1gate", a1gate = 0L);
-
-	declare(datasetAttributes, "where:startaz", startaz = 0.0);
-	declare(datasetAttributes, "where:stopaz",   stopaz = 0.0);
-
-
-
-	// declare(datasetAttributes, "how:NI", NI = 0.0);
-	declare(datasetAttributes, "how:wavelength", wavelength = 0.0);
-	declare(datasetAttributes, "how:highprf", highprf = 0.0);
-	declare(datasetAttributes, "how:lowprf", lowprf = 0.0);
-
-	declare(rootAttributes, "how:freeze", freeze = 10.0);
-
-}
-
-
-
-void CartesianODIM::init(){
-
-	object = "COMP";
-
-	std::set<std::string> & rootAttributes = getRootAttributes();
-	//std::set<std::string> & datasetAttributes = getDatasetAttributes();
-
-	declare(rootAttributes, "where:projdef", projdef = "");
-	declare(rootAttributes, "where:xsize", xsize = 0L);
-	declare(rootAttributes, "where:ysize", ysize = 0L);
-	declare(rootAttributes, "where:xscale", xscale = 0.0);
-	declare(rootAttributes, "where:yscale", yscale = 0.0);
-	//
-	declare(rootAttributes, "where:UR_lon", UR_lon = 0.0);
-	declare(rootAttributes, "where:UR_lat", UR_lat = 0.0);
-	declare(rootAttributes, "where:UL_lon", UL_lon = 0.0);
-	declare(rootAttributes, "where:UL_lat", UL_lat = 0.0);
-	declare(rootAttributes, "where:LR_lon", LR_lon = 0.0);
-	declare(rootAttributes, "where:LR_lat", LR_lat = 0.0);
-	declare(rootAttributes, "where:LL_lon", LL_lon = 0.0);
-	declare(rootAttributes, "where:LL_lat", LL_lat = 0.0);
-	declare(rootAttributes, "how:camethod", camethod = "");
-	declare(rootAttributes, "how:nodes", nodes = "");
-	// declare(rootAttributes, "how:NI", NI = 0.0);
-
-}
 
 }  // namespace rack
 

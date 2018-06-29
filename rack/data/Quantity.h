@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/ReferenceMap.h>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Type.h>
 #include "ODIM.h"
 #include "Data.h"
@@ -90,7 +90,7 @@ public:
 			return it->second;
 		}
 		else {
-			//drain::MonitorSource mout("Quantity", __FUNCTION__);
+			//drain::Logger mout("Quantity", __FUNCTION__);
 			//mout.warn() << "undefined code for this quantity, code=" << typecode << mout.endl;
 			// TODO return default
 			static EncodingODIM empty;
@@ -139,11 +139,11 @@ public:
 
 	    if (!type.empty()){
 	    	dst.undetect = drain::Type::getMin<double>(type);
-	    	dst.nodata   = drain::Type::getMax<double>(type);
+	    	dst.nodata   = drain::Type::call<drain::typeMax,double>(type);
 	    }
 	    else {
 	    	dst.undetect = drain::Type::getMin<double>(dst.type);
-	    	dst.nodata   = drain::Type::getMax<double>(dst.type);
+	    	dst.nodata   = drain::Type::call<drain::typeMax,double>(dst.type);
 	    }
 
 		dst.setValues(values);
@@ -172,7 +172,7 @@ public:
 			if (it->first == defaultType)
 				ostr << " *";
 			ostr << '\t' << it->second;
-			if (drain::Type::isIntegralType(it->first)){
+			if (drain::Type::call<drain::typeIsInteger>(it->first)){
 				ostr << " (min=" << it->second.getMin() << ')';
 			}
 			ostr << '\n';

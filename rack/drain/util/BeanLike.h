@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-#include "Debug.h"
+#include "Log.h"
 #include "ReferenceMap.h"
 
 namespace drain
@@ -55,21 +55,15 @@ class BeanLike {
 
 public:
 
+	virtual inline
+	~BeanLike(){};
+
 	inline
 	const std::string & getName() const { return name; };
 
 
 	inline
 	const std::string & getDescription() const { return description; };
-
-	/* TODO rewrite to used at member initialisation (split parts)
-	static
-	inline
-	const std::string & getClassName(){
-		static std::string s(__PRETTY_FUNCTION__);
-		return s;
-	}*/
-
 
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
 	/**
@@ -87,6 +81,23 @@ public:
 	inline
 	void setParameters(const std::map<std::string,T> & p){ parameters.importMap(p); }
 
+	/// Sets a single parameter
+	template <class F>
+	inline
+	void setParameter(const std::string &p, const F &value){ parameters[p] = value; }
+
+	/// Gets a single parameter
+	template <class F>
+	F getParameter(const std::string & p) const {
+		if (parameters.hasKey(p))
+			return parameters[p];
+		else {
+			throw std::runtime_error(p + ": no such parameter (BeanLike::getParameter)");
+		}
+	}
+
+
+
 
 	inline
 	const ReferenceMap & getParameters() const { return parameters; };
@@ -97,7 +108,9 @@ public:
 
 	inline
 	void toOStream(std::ostream & ostr) const {
-		ostr << name << ':' << parameters;
+		//ostr << name << ':' << parameters;
+		ostr << name << ": " << description << '\n';
+		ostr << '\t' << parameters << '\n';
 	}
 
 	inline

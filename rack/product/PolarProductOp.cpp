@@ -46,10 +46,11 @@ namespace rack {
 
 using namespace drain::image;
 
+const CoordinatePolicy PolarProductOp::polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
 
-void PolarProductOp::deriveDstGeometry(const DataSetSrcMap & srcSweeps, PolarODIM & dstOdim) const {
+void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
 
-	drain::MonitorSource mout(name+"(CumulativeProductOp)", __FUNCTION__);
+	drain::Logger mout(name+"(CumulativeProductOp)", __FUNCTION__);
 
 	const bool MAXIMIZE_AZM_RESOLUTION = (dstOdim.nrays == 0);
 	const bool DERIVE_NBINS  = (dstOdim.nbins == 0); // ||(dstOdim.rscale == 0.0);
@@ -67,9 +68,9 @@ void PolarProductOp::deriveDstGeometry(const DataSetSrcMap & srcSweeps, PolarODI
 
 		double range;
 
-		for (DataSetSrcMap::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+		for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 
-			const DataSetSrc<PolarSrc> & srcDataSet = it->second;
+			const DataSet<PolarSrc> & srcDataSet = it->second;
 			const Data<PolarSrc>       & srcData    = srcDataSet.getFirstData();
 			const PolarODIM            & srcOdim    = srcData.odim;
 
@@ -78,6 +79,8 @@ void PolarProductOp::deriveDstGeometry(const DataSetSrcMap & srcSweeps, PolarODI
 				continue; // warning issued later, in the main loop.
 				//mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << mout.endl;
 			}
+
+			mout.debug(1) << "testing: " << srcOdim << mout.endl;
 
 			if (MAXIMIZE_AZM_RESOLUTION){
 				if (srcOdim.nrays > dstOdim.nrays){
@@ -114,7 +117,7 @@ void PolarProductOp::deriveDstGeometry(const DataSetSrcMap & srcSweeps, PolarODI
 			mout.debug() << "Adapting user-defined nbins and rscale" << mout.endl;
 		}
 
-		mout.info() << "Setting dst geometry:" << dstOdim.nbins << 'x' << dstOdim.rscale << " (" << (dstOdim.getMaxRange()/1000.0) << "km) " << mout.endl;
+		mout.info() << "Setting dst geometry:" << dstOdim.nbins << "bin x " << dstOdim.rscale << "m/bin (" << (dstOdim.getMaxRange()/1000.0) << "km) " << mout.endl;
 
 	}
 	else {

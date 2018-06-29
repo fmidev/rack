@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <math.h>
 #include <limits>
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include "Geometry.h"
 #include "Coordinates.h"
 
@@ -45,9 +45,9 @@ namespace rack {
 
 void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
 
-	drain::MonitorSource mout("RadarProj", __FUNCTION__);
+	drain::Logger mout("RadarProj", __FUNCTION__);
 
-	mout.debug(1) << "start " << *this << mout.endl;
+	mout.debug(1) << "start\n" << *this << mout.endl;
 
 	mout.debug(1) << "range=" << range << mout.endl;
 
@@ -56,15 +56,13 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 	xUR = -std::numeric_limits<double>::max();
 	yUR = -std::numeric_limits<double>::max();
 
-
-	const double D2R = M_PI/180.0;
 	double azimuth;
 	double x,y;
 
 	const unsigned int azimuthStep = 12;
 	for (int a = 0; a < 360; a += azimuthStep) {
 
-		azimuth = static_cast<double>(a) * D2R;
+		azimuth = static_cast<double>(a) * drain::DEG2RAD;
 		projectFwd(range*sin(azimuth), range*cos(azimuth), x, y);
 
 		mout.debug(5) << x << ',' << y << mout.endl;
@@ -80,11 +78,47 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 
 }
 
+void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
+
+	drain::Logger mout("RadarProj", __FUNCTION__);
+
+	mout.debug(1) << "start " << *this << mout.endl;
+
+	mout.debug(1) << "range=" << range << mout.endl;
+
+	xLL = +std::numeric_limits<double>::max();
+	yLL = +std::numeric_limits<double>::max();
+	xUR = -std::numeric_limits<double>::max();
+	yUR = -std::numeric_limits<double>::max();
+
+
+	double azimuth;
+	double x,y;
+
+	const unsigned int azimuthStep = 12;
+	for (int a = 0; a < 360; a += azimuthStep) {
+
+		azimuth = static_cast<double>(a) * drain::DEG2RAD;
+		x = range*sin(azimuth);
+		y = range*cos(azimuth);
+		//projectFwd(range*sin(azimuth), range*cos(azimuth), x, y);
+		mout.debug(5) << x << ',' << y << mout.endl;
+
+		xLL = std::min(x,xLL);
+		yLL = std::min(y,yLL);
+		xUR = std::max(x,xUR);
+		yUR = std::max(y,yUR);
+	}
+
+	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
+
+}
+
 
 
 Coordinates::Coordinates(){
 	std::stringstream sstr;
-	sstr << "+proj=longlat +R=" << EARTH_RADIUS << " +no_defs"; //std::string(" +no_defs");
+	sstr << "+proj=longlat +R=" << EARTH_RADIUS << " +no_defs";
 	proj.setProjectionSrc(sstr.str());
 	proj.setProjectionDst("+proj=longlat +datum=WGS84 +no_defs");
 }

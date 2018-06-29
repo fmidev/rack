@@ -94,7 +94,7 @@ protected:
 	// void drawWindow(int ray1, int ray2, int bin1, int bin2, int marker, PlainData<PolarDst> & dstData) const;
 
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const ;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
 
 
 	// virtual void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const ;

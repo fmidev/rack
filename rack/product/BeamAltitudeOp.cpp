@@ -46,7 +46,7 @@ using namespace drain::image;
 
 void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	drain::MonitorSource mout(name,__FUNCTION__);
+	drain::Logger mout(name,__FUNCTION__);
 
 	//if (odim.type.empty())
 	//	mout.error() << "Unset data storage type."  << mout.endl;
@@ -77,10 +77,10 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst
 	//mout.debug(1) << "target nbins:" << dst.odim.nbins << " rscale:" << dst.odim.rscale << mout.endl;
 
 	//dst.data.setGeometry(dst.odim.nbins, 1);
-	const double max = dst.data.getMax<double>();
+	const double max = drain::Type::call<drain::typeMax, double>(dst.data.getType());  //dst.data.scaling.getMax<double>();
 
 	const double gainMetres = 1000*odim.gain;
-	const double eta = src.odim.elangle * DEG2RAD;
+	const double eta = src.odim.elangle * drain::DEG2RAD;
 	double h;
 	for (long int i = 0; i < dst.odim.nbins; ++i) {
 		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.gain << " m\n";

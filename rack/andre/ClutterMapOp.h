@@ -74,7 +74,7 @@ public:
 
 	/// NEW POLICY
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & src, PlainData<PolarDst> & dst, DataSetDst<PolarDst> & aux) const;
+	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 
 
 	mutable HI5TREE clutterMap;

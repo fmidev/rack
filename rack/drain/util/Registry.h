@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <set>
 
-#include "../util/Debug.h"
+#include "../util/Log.h"
 #include "../util/ReferenceMap.h"
 #include "../util/VariableMap.h"
 //#include "../util/StringMapper.h"

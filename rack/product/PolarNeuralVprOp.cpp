@@ -28,8 +28,9 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include "PolarNeuralVprOp.h"
 #include <drain/image/File.h>
+
+#include "PolarNeuralVprOp.h"
 #include "radar/Constants.h"
 
 namespace rack
@@ -40,7 +41,7 @@ using namespace drain::image;
 
 void PolarNeuralVPROp::filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(drain::monitor,"PolarNeuralVPROp::filter");
+	drain::Logger mout(drain::getLog(),"PolarNeuralVPROp::filter");
 	mout.debug(1) << "start" << mout.endl;
 
 

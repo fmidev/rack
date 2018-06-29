@@ -28,6 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+
+#include "Log.h"
 #include "String.h"
 
 
@@ -36,147 +38,135 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/*
-#ifdef DRAIN_STRING_H_
+void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::string & dst){
 
-template <class T>
-void String::split(const std::string &str, T & sequence, const std::string &separators, const std::string & trimChars){
-
-	const std::string::size_type n = str.size();
-	const bool trimEach = trimChars.empty();
-
-	sequence.clear();
-
-	if (separators.empty()){
-		//sequence.push_back(trim(str, trimChars));
-		sequence.insert(sequence.end(), trim(str, trimChars));
+	if (&dst == &src){
+		std::string tmp;
+		StringTools::replace(src, search, to, tmp);
+		dst = tmp;
 		return;
 	}
 
-	std::string::size_type pos = 0;
-	std::string::size_type pos2 = 0;
-
-	do {
-
-		pos2 = str.find_first_of(separators, pos);
-
-		if (pos2 == std::string::npos)
-			pos2 = n; // last
-
-		// Pick std::string segment, notice +1 missing because separator
-		if (trimEach)
-			sequence.insert(sequence.end(), str.substr(pos, pos2 - pos)); // sequence.push_back(
-		else
-			sequence.insert(sequence.end(), trim(str.substr(pos, pos2 - pos), trimChars)); // sequence.push_back(
-
-		pos = pos2 + 1;
-
-	} while (pos2 != n);
-
-}
-
-#endif
-*/
-
-
-std::string String::replace(const std::string &src, const std::string &search, const std::string &to) { //,std::string &dst){
-
-	std::string result;
-
 	std::string::size_type i = 0;
 	std::string::size_type pos;
+	dst.clear();
 
 	while (true) {
-		pos = src.find(search,i);
+		pos = src.find(search, i);
 		if (pos == std::string::npos){
-			result.append(src,i,src.size()-i);
+			dst.append(src, i, src.size()-i);
 			//std::cerr << result << '\n';
-			return result;
+			return; // result;
 			//return;
 		}
-		result.append(src,i,pos-i);
+		dst.append(src, i, pos-i);
 		//std::cerr << result << " 2\n";
-		result.append(to);
+		dst.append(to);
 		//std::cerr << result << " 3\n";
 		i = pos + search.size();
 	}
 
 }
 
-std::string String::replace_regexp(const std::string &src, RegExp &search, const std::string & dst) { //,std::string &dst){
 
-	std::string result = src;
+bool StringTools::trim(const std::string &s, size_t & pos1, size_t & pos2, const std::string & trimChars){
 
-	while (search.execute(result) != REG_NOMATCH){
-		//std::cerr << "replace_searchexp: regexp "<< reg.regExpString << " found in " << result << '\n';
-		if (search.result.size()==4){
 
-			// Skip infinite loop. ('dst' would be matched infinitely)
-			if (search.result[2] == dst)
-				return result;
-			result = search.result[1] + dst + search.result[3];
+	if (s.empty()){
+		/*
+		//pos1 = pos2 = std::string::npos; // or s.size()?
+		if ((pos1 > 0)||(pos2 > 0)){
+
+			drain::Logger mout(getLog(), "StringTools", __FUNCTION__);
+			mout.warn() << "s='" << s << "', pos1=" << pos1 << ", pos2=" << pos2 << mout.endl;
+
+			throw std::runtime_error("StringTools::trim() with empty string but non-zero indices");
 		}
-		else {
-			throw std::runtime_error(search.toStr() + " [ERROR] regexp error");
-		}
+		*/
+		pos1 = pos2 = 0;
+		return false;
 	}
 
-	return result;
-}
+	if (pos2 == 0){ // by definition, pos2 is after the scanned segment, hence empty string segment  => return false
+		return false;
+	}
 
-/// Replaces std::string segment matching regExp to the given std::string.
-/*
-inline
-static std::string replace_regexp(const std::string &str,const std::string &regExp,const std::string &to){
-	//RegExp r(std::string("^(.*)(") + regExp + std::string(")(.*)$"));
-	// TODO: allow ends ?
-	RegExp r(std::string("(^.*)?(") + regExp + std::string(")(.*$)?"));
-	return replace_regexp(str,r,to);
-};
-*/
+	const size_t p1 = s.find_first_not_of(trimChars, pos1);
 
-std::string String::trim(const std::string &s, const std::string & trimChars ){ // =" \t\n") {
-
-	const std::string::size_type pos = s.find_first_not_of(trimChars);
-
-	// If trim characters found only, trim all.
-	if (pos == std::string::npos){
-		//s.clear();
-		return "";
+	if ((p1 == std::string::npos) || (p1 >= pos2)){
+		pos1 = pos2;  // strlen = 0
+		return false;
 	}
 	else {
-		const std::string::size_type lastPos = s.find_last_not_of(trimChars);
-		return s.substr(pos, lastPos-pos+1);
+		pos1 = p1;
+		size_t p2 = s.find_last_not_of(trimChars, pos2-1); // pos2 != 0 (checked above)
+		if ((p2 == std::string::npos)||(p2<=pos1)){
+			// = no _trailing_ trimchars
+			// So don't move, keep pos2!
+			// std::cerr << __FUNCTION__ << " success1: '" << s << "' [" << pos1 << ',' << pos2 << '[' << " = '" << s.substr(pos1, pos2-pos1) << "'\n";
+			return true;
+		}
+		else {
+			// Set pos2 after last non-trimChar
+			pos2 = p2+1;
+			// std::cerr << __FUNCTION__ << " success2: '" << s << "' [" << pos1 << ',' << pos2 << '[' << " = '" << s.substr(pos1, pos2-pos1) << "'\n";
+			return true;
+		}
 	}
 
+}
+
+
+std::string StringTools::trim(const std::string &s, const std::string & trimChars ){
+
+	std::string::size_type pos1 = 0;
+	std::string::size_type pos2 = std::string::npos;
+
+	if (trim(s, pos1, pos2, trimChars))
+		return s.substr(pos1, pos2-pos1);
+	else {
+		return "";
+	}
+
+}
+
+
+char StringTools::upperCase(char c){
+	static const int offset = 'A'-'a';
+	if ((c>='a') && (c<='z'))
+		c = c + offset;
+	return c;
 }
 
 /// Turns n first characters uppercase. Ascii only.
 /**
  *
  */
-std::string & String::upperCase(std::string & s, size_t n){ //  = std::numeric_limits<size_t>::max()) {
+std::string & StringTools::upperCase(std::string & s, size_t n){ //  = std::numeric_limits<size_t>::max()) {
 	n = std::min(s.length(), n);
-	static const int offset = 'A'-'a';
+	//static const int offset = 'A'-'a';
 	for (size_t i=0; i<n; ++i){
-		char & c = s[i];
-		if ((c>='a') && (c<='z'))
-			c = c + offset;
+		s[i] = StringTools::upperCase(s[i]);
 	}
 	return s;
+}
+
+
+char StringTools::lowerCase(char c){
+	static const int offset = 'a'-'A';
+	if ((c>='A') && (c<='Z'))
+		c = c + offset;
+	return c;
 }
 
 /// Turns n first characters lowercase. Ascii only.
 /**
  *
  */
-std::string & String::lowerCase(std::string & s, size_t n){ // = std::numeric_limits<size_t>::max()) {
+std::string & StringTools::lowerCase(std::string & s, size_t n){ // = std::numeric_limits<size_t>::max()) {
 	n = std::min(s.length(), n);
-	static const int offset = 'a'-'A';
 	for (size_t i=0; i<n; ++i){
-		char & c = s[i];
-		if ((c>='A') && (c<='Z'))
-			c = c + offset;
+		s[i] = StringTools::lowerCase(s[i]);
 	}
 	return s;
 }

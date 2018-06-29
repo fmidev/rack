@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <cmath>
 
-#include "Debug.h"
+#include "Log.h"
 #include "Functor.h"
 
 // using namespace std;
@@ -437,7 +437,7 @@ class FuzzySigmoid  : public Fuzzifier<T> {
 public:
 
 	FuzzySigmoid(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0) :
-		Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function.", scale, bias), absWidth(0.0) { // : location(location), width(abs(width)), scale(width<0.0 ? -scale : scale), bias(bias)
+		Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function.", scale, bias), absWidth(0.0) { // : location(location), width(fabs(width)), scale(width<0.0 ? -scale : scale), bias(bias)
 		this->setReferences();
 		set(location, width, scale, bias);
 	};
@@ -521,7 +521,7 @@ public:
 		set(location, width, scale, bias);
 	};
 
-	FuzzyStepsoid(const FuzzyStepsoid & f): Fuzzifier<T>(__FUNCTION__, "Fuzzy step function"), widthFinal(1.0) {
+	FuzzyStepsoid(const FuzzyStepsoid & f): Fuzzifier<T>(__FUNCTION__), widthFinal(1.0) {
 		this->setReferencesAndCopy(f);
 	}
 
@@ -537,7 +537,10 @@ public:
 	void update() const {
 		this->INVERSE = (width<0.0);
 		this->updateScale();
-		widthFinal = abs(width);
+		widthFinal = fabs(width);
+		//widthFinal = this->INVERSE ? -width : width; // abs(width) FOR INT!
+		//std::cerr << this->getName() << ' ' << this->getParameters() << '\n';
+		//std::cerr << location << ',' << width << ',' << widthFinal << ',' << (int)this->INVERSE << '\n';
 	}
 
 	inline

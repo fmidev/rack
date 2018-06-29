@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/Image.h>
 #include <drain/prog/Command.h>
-#include <drain/prog/Commands-ImageOps.h>
+#include <drain/prog/CommandAdapter.h>
 
 #include "data/DataSelector.h"
 
@@ -43,13 +43,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 #include "commands.h" // cmdSelect
 
+namespace drain {
+
+typedef BeanRefAdapter<drain::image::ImageOp> ImageOpAdapter;
+
+}
+
+
 namespace rack {
 
 /**
  *   Applied also by CartesianGrid
  */
 class CmdImage : public drain::BasicCommand {
-    public: //re 
+
+public: //re
+
 	mutable DataSelector imageSelector;
 
 	CmdImage() : BasicCommand(__FUNCTION__, "Copies data to a separate image object. Encoding can be changed with --target ."), imageSelector(".*/data/?$","") {
@@ -58,7 +67,7 @@ class CmdImage : public drain::BasicCommand {
 	inline
 	void exec() const {
 
-		//drain::MonitorSource & mout = resources.mout;
+		//drain::Logger & mout = resources.mout;
 		RackResources & resources = getResources();
 		imageSelector.setParameters(resources.select);
 		resources.select.clear();
@@ -73,110 +82,76 @@ class CmdImage : public drain::BasicCommand {
 	};
 
 	static
-	void convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters, drain::image::Image &dst);
+	void convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters,
+			drain::image::Image &dst);
 
 
 };
 extern CommandEntry<CmdImage> cmdImage;
+
+/**
+ *   Applied also by CartesianGrid
+ */
+class CmdPhysical : public drain::SimpleCommand<bool> {
+
+public:
+
+	CmdPhysical() : drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
+			"value", true, "0,1") {
+	};
+
+
+};
+extern CommandEntry<CmdPhysical> cmdPhysical;
+
 
 /// Designed for Rack
 class ImageOpRacklet : public drain::ImageOpAdapter {
 
 public:
 
+	/// Constructor that adapts an operator and its name.
 	/**
 	 *  \param op - image operator to be used
 	 *  \param key - command name
 	 */
-	ImageOpRacklet(drain::ImageOp & imageOp, const std::string & key) : ImageOpAdapter(imageOp), key(key) {
+	ImageOpRacklet(drain::image::ImageOp & imageOp, const std::string & key) : drain::ImageOpAdapter(imageOp), key(key) {
 	};
 
-	ImageOpRacklet(drain::ImageOp & imageOp) : ImageOpAdapter(imageOp), key(imageOp.getName()) {
+
+	/// Constructor that adapts an operator and its name.
+	/**
+	 *  \param op - image operator to be used througjh reference
+	 */
+	ImageOpRacklet(drain::image::ImageOp & imageOp) : drain::ImageOpAdapter(imageOp), key(imageOp.getName()) {
 	};
 
 
 	/// Copy constructor.
-	ImageOpRacklet(const ImageOpRacklet & a) : ImageOpAdapter(a.imageOp), key(a.key) {
+	ImageOpRacklet(const ImageOpRacklet & a) : ImageOpAdapter(a.bean), key(a.key) {
 		//imageOp.getParameters().updateFromMap(a.imageOp.getParameters());
 	}
 
 	virtual
 	void exec() const;
 
-	// static
-	// void populate(CommandRegistry & registry);
-
+	/// Name of this operator, to be recognized
 	const std::string key;
 
 	static std::string outputQuantity;
 
 protected:
 
-	/// Traverse the structure and process image data, saving results with <quantity_new> = <quantity>_<cmd> .
-	/*
-	 *  \tparam T
-	 */
-	template <class T>
-	void processDataSet(HI5TREE & root, const std::string & path, MonitorSource & mout) const {
-
-		Data<SrcType<T> > srcData(root(path));
-		const drain::image::Image & src = srcData.data;
-
-		RackResources & resources = getResources();
-
-
-		if (!src.isEmpty()){
-			mout.note() << " processing '" << srcData.odim.quantity << " (" << path << ')' << mout.endl;
-			mout.info() << this->imageOp.getName() << " (" << this->imageOp.getParameters() << ')' << mout.endl;
-			DataSetDst<DstType<T> > dstDataSet(root(DataSelector::getParent(path)));
-
-			std::string quantityDst;
-			if (false){ // future option if empty() // TODO
-				//resources.updateStatusMap();
-				drain::StringMapper formatter("[a-zA-Z0-9_:]+");
-				formatter.parse("{what:quantity}_"+key);
-				quantityDst = formatter.toStr(srcData.odim.getMap());
-				/*
-				std::map<std::string, std::string> m;
-				m["key"]    = key;
-				m["params"] = this->imageOp.getParameters().toStr();
-				formatter.expand(m);
-				formatter.expand(srcData.odim.getMap());
-				*/
-				// std::stringstream sstr;
-				// sstr << formatter;
-				// quantityDst = sstr. str();
-			}
-			else {
-				// quantityDst = srcData.odim.quantity+"_" + key;
-				quantityDst = srcData.odim.quantity;
-			}
-
-
-			Data<DstType<T> > & dstData = dstDataSet.getData(quantityDst); //this->imageOp.getName()); // consider cmdName
-			drain::image::Image & dst = dstData.data;
-			// TODO 1: use quality field
-			// TODO 2: Data<>::setGeometry()
-			const drain::image::Geometry originalGeometry(dst.getGeometry());
-			this->imageOp.filter(src, dst);
-			// TODO dstData.updateTree();
-			// TODO DataSelector::updateAttributes(root(path));
-			if (dst.getGeometry() != originalGeometry){
-				mout.warn() << " geometry changed: "<< originalGeometry << " => "<< dst.getGeometry() << mout.endl;
-			}
-
-			resources.currentGrayImage = & dst;
-			resources.currentImage     = & dst;
-		}
-		else
-			mout.note() << "skipping path: " << path << mout.endl;
-
-	}
-
 };
+
 
 class ImageRackletModule : public CommandGroup {
 public:
+
+	typedef std::list<ImageOpRacklet> list_t;
+
+	static
+	list_t rackletList;
 
 	ImageRackletModule(const std::string & section = "image", const std::string & prefix = "i");
 

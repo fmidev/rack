@@ -57,13 +57,13 @@ public:
 	/// Experimental parameter handling
 
 	/// Todo: rscale*,nbins*,nrays*,beamwidth*
-	MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAX"): //"WAVG,8,1,-32") :
+	MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
 		CumulativeProductOp("MaxEcho","Computes...", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
 		{
 
 		parameters.reference("altitude", this->altitude = altitude, "metres");
 		parameters.reference("devAltitude", this->devAltitude = devAltitude, "metres");
-		parameters.reference("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAX|AVG|WAVG:2:2|MAXW");
+		parameters.reference("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 		//dataSelector.path = "^.*/data[0-9]+/?$";  ///
 
 		dataSelector.quantity = "^DBZH$";

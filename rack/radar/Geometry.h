@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <vector>
 #include <drain/util/Proj4.h>
+#include <drain/image/GeoFrame.h>
 
 // // using namespace std;
 
@@ -44,10 +45,10 @@ namespace rack
 
 
 /// Equals M_PI/180.0
-extern double DEG2RAD;
+//extern double DEG2RAD;
 
 /// Equals 180.0/M_PI
-extern double RAD2DEG;
+//extern double RAD2DEG;
 
 class RadarProj4 : public drain::Proj4 {
 
@@ -85,10 +86,10 @@ public:
 	inline
 	void getBoundingBoxD(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
 		getBoundingBox(range, lonLL, latLL, lonUR, latUR);
-		lonLL *= RAD2DEG;
-		latLL *= RAD2DEG;
-		lonUR *= RAD2DEG;
-		latUR *= RAD2DEG;
+		lonLL *= drain::RAD2DEG;
+		latLL *= drain::RAD2DEG;
+		lonUR *= drain::RAD2DEG;
+		latUR *= drain::RAD2DEG;
 	}
 
 
@@ -138,17 +139,32 @@ public:
 	Geometry();
 	virtual ~Geometry();
 	
-	/// Altitude, given elevation [deg] and bin distance [m].
-	static double heightFromEtaBeam(float eta,float b);
+	/// Altitude, given elevation [rad] and bin distance [m].
+	static
+	double heightFromEtaBeam(double eta, double b);
 
-    static double heightFromEtaBeta(double eta,double beta);
-    static double heightFromEtaGround(double eta,double g);
+	/// Altitude, given elevation [rad] and ground angle [rad].
+    static
+    double heightFromEtaBeta(double eta, double beta);
 
-    inline static double betaFromGround(double g){ return g / EARTH_RADIUS_43; }; // SHOULD BE EARTH_RADIUS
-    static double beamFromBetaH(double beta,double h);
-    static double beamFromEtaH(double eta,double h);
-    static double beamFromEtaBeta(double eta,double beta);
-    static double beamFromEtaGround(float eta,float g);
+	/// Altitude, given elevation [rad] and ground distance [m].
+    static
+    double heightFromEtaGround(double eta, double g);
+
+    static inline
+    double betaFromGround(double g){ return g / EARTH_RADIUS_43; }; // SHOULD BE EARTH_RADIUS
+
+    static
+    double beamFromBetaH(double beta,double h);
+
+    static
+    double beamFromEtaH(double eta,double h);
+
+    static
+    double beamFromEtaBeta(double eta,double beta);
+
+    static
+    double beamFromEtaGround(float eta,float g);
 
     //inline unsigned int binFromEtaBeta(double eta,double beta){ 
     //	return static_cast<unsigned int>(binDepth/2 + binDepth*beamFromEtaBeta(beta,eta));};
@@ -176,8 +192,8 @@ public:
 	float beamWidth;
 	
 	// new
-	static int EARTH_RADIUSi;
-	static double EARTH_RADIUS;
+	//static int    EARTH_RADIUSi;
+	//static double EARTH_RADIUS;
     static double EARTH_RADIUS_43;
 
 

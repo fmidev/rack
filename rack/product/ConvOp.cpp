@@ -31,15 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <math.h>
 
 #include <drain/util/Fuzzy.h>
+#include <drain/util/FunctorBank.h>
 
 #include <drain/image/File.h> // debugging
-
-#include <drain/image/BasicOps.h>
-#include <drain/image/DistanceTransformOp.h>
-#include <drain/image/GammaOp.h>
-#include <drain/image/GaussianBlurOp.h>
-#include <drain/image/SegmentProber.h>
-#include <drain/image/SegmentAreaOp.h>
+//#include <drain/image/SegmentProber.h>
+#include <drain/imageops/DistanceTransformOp.h>
+#include <drain/imageops/GammaOp.h>
+#include <drain/imageops/GaussianAverageOp.h>
+#include <drain/imageops/SegmentAreaOp.h>
 
 #include "radar/Constants.h"
 #include "radar/Analysis.h"
@@ -62,13 +61,13 @@ using namespace drain::image;
 
 
 // void ConvOp::filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const {
-void ConvOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDst> & dstProduct) const {
+void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(1) << "start" << mout.endl;
 
-	const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
+	//const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
 
 	/// Use always maxEcho (consider changing to cappi?)
 	/// cell and echo top are optional, but used by default.
@@ -131,56 +130,57 @@ void ConvOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDs
 	const drain::image::Geometry g(dstData.odim.nbins, dstData.odim.nrays);
 	dstData.data.setGeometry(g);
 	dstData.data.clear();
-	dstData.updateTree();
+	//@ dstData.updateTree();
 	//mout.warn() << "Destination data:" << dstData << mout.endl;
 
 	dstQuality.data.setGeometry(g);
 	dstQuality.data.fill(dstQuality.odim.scaleInverse(1.0));
-	dstQuality.updateTree();
+	//@ dstQuality.updateTree();
 
-	dstProduct.updateTree(dstData.odim);
+	//@ dstProduct.updateTree(dstData.odim);
 
 
 	/// Step 2: fuzzification
 	Data<PolarDst> & fuzzyCore = dstProduct.getData("FMAX");
 	qm.setQuantityDefaults(fuzzyCore, "PROB");
-	fuzzyCore.updateTree();
+	//@ fuzzyCore.updateTree();
 	//
 	RadarFunctorOp<drain::FuzzyStepsoid<double> > fuzzyMaxEchoOp;
 	fuzzyMaxEchoOp.odimSrc = maxEcho.odim;
-	fuzzyMaxEchoOp.functor.set(maxEchoThreshold, abs(maxEchoThreshold)/20.0);
-	fuzzyMaxEchoOp.filter(maxEcho.data, fuzzyCore.data);
+	fuzzyMaxEchoOp.functor.set(maxEchoThreshold, fabs(maxEchoThreshold)/20.0);
+	fuzzyMaxEchoOp.process(maxEcho.data, fuzzyCore.data);
 
 
 	Data<PolarDst> & fuzzyCell = dstProduct.getData("FCELL");
 	qm.setQuantityDefaults(fuzzyCell, "PROB");
-	fuzzyCell.updateTree();  // if (ProductOp::outputDataVerbosity > 0){
+	//@ fuzzyCell.updateTree();  // if (ProductOp::outputDataVerbosity > 0){
 	//
 	if (USE_FCELL)
 		PolarSmoother::filter(dstData.odim, cappi.data, fuzzyCell.data, cellDiameter*1000.0);
 
 	Data<PolarDst> & fuzzyEchoTop = dstProduct.getData("FETOP");
 	qm.setQuantityDefaults(fuzzyEchoTop, "PROB");
-	fuzzyEchoTop.updateTree();  // if (ProductOp::outputDataVerbosity > 0){
+	//@ fuzzyEchoTop.updateTree();  // if (ProductOp::outputDataVerbosity > 0){
 	//
 	RadarFunctorOp<drain::FuzzyStepsoid<double> > fuzzyEchoTopOp;
 	fuzzyEchoTopOp.odimSrc = echoTop.odim;
 	fuzzyEchoTopOp.functor.set(echoTopThreshold, abs(echoTopThreshold)/20.0);
-	fuzzyEchoTopOp.filter(echoTop.data, fuzzyEchoTop.data);
+	fuzzyEchoTopOp.process(echoTop.data, fuzzyEchoTop.data);
 
 	drain::image::DistanceTransformExponentialOp smoothOp;
 	//smoothOp.distanceModel.setRadius(smoothRad * 1000.0 / srcData.odim.rscale, smoothAzm * static_cast<double>(srcData.odim.nbins) / 360.0);
-	smoothOp.horz = smoothRad * 1000.0 / dstData.odim.rscale;
-	smoothOp.vert = smoothAzm * static_cast<double>(dstData.odim.nbins) / 360.0;
+	double horz = smoothRad * 1000.0 / dstData.odim.rscale;
+	double vert = smoothAzm * static_cast<double>(dstData.odim.nbins) / 360.0;
+	smoothOp.setRadius(horz, vert);
 	// Consider GaussianPolar
-	if ((smoothOp.horz > 0) && (smoothOp.vert > 0)){
+	if ((horz > 0) && (vert > 0.0)){
 		//mout.warn() << "smoothing: " << smoothOp << mout.endl;
 		fuzzyCore.data.setCoordinatePolicy(polarCoordPolicy);
-		smoothOp.filter(fuzzyCore.data, fuzzyCore.data);
+		smoothOp.process(fuzzyCore.data, fuzzyCore.data);
 		fuzzyCell.data.setCoordinatePolicy(polarCoordPolicy);
-		smoothOp.filter(fuzzyCell.data, fuzzyCell.data);
+		smoothOp.process(fuzzyCell.data, fuzzyCell.data);
 		fuzzyEchoTop.data.setCoordinatePolicy(polarCoordPolicy);
-		smoothOp.filter(fuzzyEchoTop.data, fuzzyEchoTop.data);
+		smoothOp.process(fuzzyEchoTop.data, fuzzyEchoTop.data);
 	}
 
 	//int address;
@@ -203,23 +203,17 @@ void ConvOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDs
 		*it = probability;
 		++it;
 	}
-	/*
-	for (int j = 0; j < dstData.odim.nrays; j++){
-		for (int i = 0; i<dstData.odim.nbins; i++){
-			address = dstData.data.address(i, j);
-			probability = (fuzzyCore.data.get<double>(address) * fuzzyCell.data.get<double>(address) * fuzzyEchoTop.data.get<double>(address)) / 0xffff;
-			//probability = (fuzzyZCoreImg.at(address) * fuzzyEchoTopImg.at(address)) / 0xff;
-			//if (probability > dstData.data.get<unsigned char>(address)){
-				dstData.data.put(address, probability);
-			//}
-		}
-	}
-	*/
 
 
 	double gamma = 1.0 + (USE_FCELL?1.0:0.0) + (USE_FETOP?1.0:0.0);
 
-	drain::image::GammaOp(gamma).filter(dstData.data, dstData.data);
+	//drain::image::GammaOp
+	//drain::image::UnaryFunctorOpCloner<drain::image::GammaFunctor> gammaOp;
+	drain::image::UnaryFunctorOp<drain::image::GammaFunctor> gammaOp;
+	gammaOp.functor.gamma = gamma;
+	gammaOp.process(dstData.data, dstData.data);
+
+	//drain::image::GammaOp(gamma).process(dstData.data, dstData.data);
 
 	if (!encodingRequest.empty()){  // Larissa
 		const double gainOrig = dstData.odim.gain;
@@ -237,23 +231,7 @@ void ConvOp::processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<PolarDs
 		}
 
 	}
-	//drain::image::GammaOp g;
 
-
-
-
-
-
-	/*
-	if (mout.isDebug(20)){ //|| true){
-		std::stringstream sstr;
-		sstr << name << "_final_";
-		File::write(dstData.data, sstr.str() + "CB.png");
-		File::write(fuzzyZCoreImg, sstr.str() + "fuzzyReflectivity.png");
-		//File::write(fuzzyCellAreaImg, sstr.str() + "fuzzyCellArea.png");
-		File::write(fuzzyEchoTopImg, sstr.str() + "fuzzyEchoTop.png");
-	}
-	*/
 
 	mout.debug() << "Finished" << mout.endl;
 

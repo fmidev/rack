@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/SlidingWindowMedianOp.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
 #include <drain/image/File.h>
-//#include <drain/image/SegmentAreaOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
 //#include <drain/image/MathOpPack.h>
 
 using namespace drain::image;
@@ -46,7 +46,7 @@ namespace rack {
 //void ZDRvarOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 void ZDRvarOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	//mout.debug() << parameters << mout.endl;
 
 	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
@@ -83,11 +83,11 @@ void ZDRvarOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 		median.setSize(w,h);
 		median.conf.percentage = medianPos;
-		median.filter(dstProb.data, tmp);
+		median.process(dstProb.data, tmp);
 
 		median.setSize(w*2,h*2);
 		median.conf.percentage = 1.0 - medianPos;
-		median.filter(tmp, dstProb.data);
+		median.process(tmp, dstProb.data);
 	}
 }
 

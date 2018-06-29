@@ -29,100 +29,98 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include "VerticalODIM.h"
 
 namespace rack {
 
 
-void VerticalCrossSectionODIM::init(){
+void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-	//std::set<std::string> & rootAttributes = getRootAttributes();
-	std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	//std::set<std::string> & dataAttributes = getDatasetAttributes();
+	if (initialize & ROOT){
 
-	// compiler test...
+		// compiler test...
 #ifdef INT64_C
-	declare(datasetAttributes, "where:xsize", xsize = INT64_C(0));
-	declare(datasetAttributes, "where:ysize", ysize = INT64_C(0));
+		reference("where:xsize", xsize = INT64_C(0));
+		reference("where:ysize", ysize = INT64_C(0));
 #else
-	declare(datasetAttributes, "where:xsize", xsize = 0L);
-	declare(datasetAttributes, "where:ysize", ysize = 0L);
+		reference("where:xsize", xsize = 0L);
+		reference("where:ysize", ysize = 0L);
 #endif
 
-	declare(datasetAttributes, "where:xscale", xscale = 0.0);
-	declare(datasetAttributes, "where:yscale", yscale = 0.0);
+		reference("where:xscale", xscale = 0.0);
+		reference("where:yscale", yscale = 0.0);
+
+		reference("where:minheight",  minheight = 0.0);
+		reference("where:maxheight",  maxheight = 0.0);
+
+		reference("how:NI",  NI = 0.0);
+	}
+
+	if (initialize & DATASET){
+	}
 
 
-	declare(datasetAttributes, "where:minheight",  minheight = 0.0);
-	declare(datasetAttributes, "where:maxheight",  maxheight = 0.0);
-
-	declare(datasetAttributes, "how:NI",  NI = 0.0);
-
-	/*declare(datasetAttributes, "how:minRange", minRange, 0.0);
-	declare(datasetAttributes, "how:maxRange", maxRange, 0.0);
-
-	declare(datasetAttributes, "where:startaz", startaz, 0.0);
-	declare(datasetAttributes, "where:stopaz", stopaz,  0.0);
-	declare(datasetAttributes, "where:azSlots", azSlots, 1L);
-    */
-}
-
-
-void VerticalProfileODIM::init(){
-
-	object = "VP";
-
-	std::set<std::string> & rootAttributes = getRootAttributes();
-	std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	//std::set<std::string> & dataAttributes = getDatasetAttributes();
-
-	//ODIM::_init();
-
-	declare(rootAttributes, "where:lon", lon = 0.0);
-	declare(rootAttributes, "where:lat", lat = 0.0);
-	declare(rootAttributes, "where:height", height = 0.0);
-
-
-	declare(datasetAttributes, "where:levels",  levels = 0L);
-	declare(datasetAttributes, "where:interval",  interval = 0.0);
-
-	declare(datasetAttributes, "how:minRange", minRange = 0.0);
-	declare(datasetAttributes, "how:range", range = 0.0);
-
-	declare(datasetAttributes, "where:startaz", startaz = 0.0);
-	declare(datasetAttributes, "where:stopaz", stopaz = 0.0);
-	declare(datasetAttributes, "where:azSlots", azSlots = 1L);
-
+	if (initialize & DATA){
+	}
 
 }
 
 
-void RhiODIM::init(){
+
+
+void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 
 	object = "XSEC";
 
-	std::set<std::string> & rootAttributes = getRootAttributes();
-	std::set<std::string> & datasetAttributes = getDatasetAttributes();
-	//std::set<std::string> & dataAttributes = getDatasetAttributes();
+	if (initialize & ROOT){
+		reference("where:lon", lon = 0.0);
+		reference("where:lat", lat = 0.0);
+		reference("where:height", height = 0.0);
+	}
 
+	if (initialize & DATASET){
+		reference("where:levels",  levels = 0L);
+		reference("where:interval",  interval = 0.0);
 
-	declare(rootAttributes, "where:lon", lon = 0.0);
-	declare(rootAttributes, "where:lat", lat = 0.0);
+		reference("how:minRange", minRange = 0.0);// where or how??
+		reference("how:range", range = 0.0);// where or how??
 
-	declare(datasetAttributes, "where:minRange", minRange = 0.0);
-	declare(datasetAttributes, "where:range", range = 0.0);
+		reference("where:startaz", startaz = 0.0);
+		reference("where:stopaz", stopaz = 0.0);
+		reference("where:azSlots", azSlots = 1L);
+	}
 
-	declare(datasetAttributes, "where:az_angle", az_angle = 0.0);
-	declare(datasetAttributes, "where:angles", angles = 0.0);
+	if (initialize & DATA){
+	}
 
-	/*
-	declare(datasetAttributes, "where:startaz", startaz, 0.0);
-	declare(datasetAttributes, "where:stopaz", stopaz,  0.0);
-	declare(datasetAttributes, "where:azSlots", azSlots, 1L);
-    */
 }
+
+
+
+void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
+
+	object = "XSEC";
+
+	if (initialize & ROOT){
+		reference("where:lon", lon = 0.0);
+		reference("where:lat", lat = 0.0);
+	}
+
+	if (initialize & DATASET){
+		reference("where:minRange", minRange = 0.0);  // where or how??
+		reference("where:range", range = 0.0);// where or how??
+		reference("where:az_angle", az_angle = 0.0);
+		reference("where:angles", angles = 0.0);
+	}
+
+	if (initialize & DATA){
+	}
+
+}
+
+
 
 
 }  // namespace rack

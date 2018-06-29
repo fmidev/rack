@@ -32,19 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef HYDROCLASSBASED_H_
 #define HYDROCLASSBASED_H_
 
+#include <drain/util/FunctorPack.h>
 
-#include <drain/image/SlidingWindowMedianOp.h>
-
-#include <drain/image/FastAverageOp.h>
-#include <drain/image/HighPassOp.h>
-#include <drain/image/SegmentAreaOp.h>
-#include <drain/image/RunLengthOp.h>
-#include <drain/image/BasicOps.h>
-
-
-#include <drain/image/DistanceTransformOp.h>
-//#include <drain/image/FuzzyOp.h>
-//#include <drain/image/FuzzyThresholdOp.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
+#include <drain/imageops/FastAverageOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/SegmentAreaOp.h>
+#include <drain/imageops/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
 
 #include "DetectorOp.h"
 

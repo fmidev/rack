@@ -51,11 +51,9 @@ namespace drain {
 
 /// A base class for smart maps providing methods for importing and exporting values, among others
 /**
- *  Unlike with std::map, operator[] is defined const, too, returning reference to a static empty instance.
+ *  Unlike with std::map<>, operator[] is defined const, too, returning reference to a static empty instance.
  *
- *  Optionally, SmartMap can be
- *  -# \b ORDERED - comma-separated values can be assigned simultaneously with setValues() and updateValues()
- *  -# \b OPEN, CLOSED or STRICTLY_CLOSED  - adding new entries (keys) is allowed, silently skipped, or quit with exception.
+ *  Optionally, SmartMap can be \b ORDERED - comma-separated values can be assigned simultaneously with setValues() and updateValues()
  */
 template<class T>
 class SmartMap : public std::map<std::string, T> {
@@ -64,16 +62,26 @@ public:
 
 	typedef std::list<std::string> keylist_t;
 
-	const bool ORDERED;
+	// const bool ORDERED;
 
+	/// Default character used for splitting input and output. See setValues
 	char separator;
+
+	/// Default separator character for array elements (std::vector's)
+	char arraySeparator;
+
+	/**
+	 *   \param separator  - default character used for splitting input and output. See setValues
+	 *   \param arraySeparator - default character for inner elements that are array (std::vector's)
+	 */
+	SmartMap(char separator='\0', char arraySeparator=':') : separator(separator), arraySeparator(arraySeparator) {};
 
 	/**
 	 *   \param ordered   - several comma-separated values can be assigned with setValues() and updateValues()
 	 *   \param separator - default character used for splitting input and output. See setValues
 	 */
-	SmartMap(bool ordered=true, char separator='\0') : ORDERED(ordered), separator(separator){
-	};
+	// SmartMap(bool ordered=true, char separator='\0') : ORDERED(ordered), separator(separator){};
+
 
 	virtual
 	inline
@@ -84,11 +92,10 @@ public:
 	typedef typename std::map<std::string, T>::const_iterator const_iterator;
 
 	inline
-	bool isOrdered(){
-		return ORDERED;
-		//return (!orderedKeyList.empty());
+	void clear(){
+		std::map<std::string, T>::clear();
+		keyList.clear();
 	}
-
 
 	inline
 	bool hasKey(const std::string &key) const {
@@ -114,6 +121,7 @@ public:
 			// std::stringstream sstr; ?? FULL
 			// sstr << *this;
 			//return sstr.str();
+			//return it->second.toStr();
 			return it->second;
 		}
 	}
@@ -155,9 +163,12 @@ public:
 			return it->second;
 		}
 		else {
-			if (ORDERED)
-				keyList.push_back(key);
-			return std::map<std::string, T>::operator[](key);
+			// Create:
+			keyList.push_back(key);
+			T & element = std::map<std::string, T>::operator[](key);
+			//element.setSeparator(arraySeparator);
+			return element;
+			//return std::map<std::string, T>::operator[](key);
 		}
 	}
 
@@ -178,17 +189,10 @@ public:
 
 
 	/// Derived versions may produce an ordered set of keys.
-	virtual
+	//   (why virtual?)
+	virtual inline
 	const std::list<std::string> & getKeyList() const {
-		if (ORDERED)
-			return keyList;
-		else {
-			keyList.clear();
-			for (const_iterator it = this->begin(); it != this->end(); ++it){
-				keyList.push_back(it->first);
-			}
-			return keyList;
-		}
+		return keyList;
 	}
 
 
@@ -213,7 +217,7 @@ public:
 	void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
 		iterator rit = this->find(key);
 		if (rit != this->end()){
-			rit->second = value;  // Castable = Variable
+			rit->second = value;  // ? Castable = Variable  (T &)
 		}
 		else {
 
@@ -223,6 +227,7 @@ public:
 				// skip!
 			}
 			else {
+				//(*this)[key] = (T &)value;  // throws exception if STRICTLY CLOSED
 				(*this)[key] = value;  // throws exception if STRICTLY CLOSED
 			}
 
@@ -298,7 +303,7 @@ public:
 			if (this->find(*it) != this->end())
 				ostr <<	(*this)[*it]; //  << this->find(*it).getType();
 			else
-				ostr << "*SMFAIL*";
+				ostr << "*SMARTMAP::FAIL* " << __FUNCTION__;
 		}
 
 	}
@@ -319,8 +324,6 @@ public:
 	 *    \param end   - typically hyphen or trailing parenthesis ), }, [
 	 *    \param separator - typically comma or semicolon
 	 */
-	//void toOStream(std::ostream & ostr = std::cout, char equal='=', char start='{', char end='}', char separator=0) const {
-	//void toOStream(std::ostream & ostr = std::cout, char equal='=', char start=0, char end=0, char separator=0) const {
 	template <class S>
 	void toOStream(S & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const {
 
@@ -363,6 +366,43 @@ public:
 		return sstr.str();
 	}
 
+	void toJSON(std::ostream & ostr, size_t indent = 0) const {
+
+		const std::string space(indent, ' ');
+
+		char sep = 0;
+		ostr << "{";
+		//for (std::list<std::string>::const_iterator it = getKeyList().begin(); it != getKeyList().end(); ++it){
+		for (const_iterator it = this->begin(); it != this->end(); ++it){
+			//const string & key = *it;
+			const std::string & key = it->first;
+			if (sep){
+				ostr << sep;
+			}
+			else {
+				sep = ',';
+			}
+			ostr << '\n';
+			ostr << space << "\"" << key << "\" : ";
+			const T & item = it->second; //(*this)[key];
+			if (item.getType() == typeid(std::string)){
+				ostr << '"' << item << '"';
+			}
+			else {
+				if (item.T::getElementCount()>1){
+					// char sep2 = 0;
+					ostr << '[';
+					ostr << item;
+					ostr << ']';
+				}
+				else
+					ostr << item;
+			}
+		}
+		// ostr << "{\n  \"value\":" << *this << ",\n";
+		//ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
+		ostr << "\n" << space << "}\n";  // \n needed?
+	}
 
 protected:
 
@@ -381,7 +421,7 @@ protected:
 	void _setValues(const std::string & parameters, bool updateOnly = false, char assignmentSymbol='=', char separatorSymbol=0){
 		// void setValues(const std::string & parameters, char assignmentSymbol, bool updateOnly = false){
 
-		MonitorSource mout(__FILE__, __FUNCTION__);
+		Logger mout(__FILE__, __FUNCTION__);
 		//mout.debug(10) << parameters << mout.endl;
 
 		if (parameters.empty()){
@@ -392,7 +432,7 @@ protected:
 
 		// Input parameter assignments, separated by the separator: "a=1", "b=2", "c=3", ...
 		std::list<std::string> p;
-		drain::String::split(parameters, p, std::string(1, separatorSymbol));  // separators);
+		drain::StringTools::split(parameters, p, std::string(1, separatorSymbol));  // separators);
 
 		_setValues(p, updateOnly, assignmentSymbol);
 	}
@@ -400,7 +440,7 @@ protected:
 
 	void _setValues(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
 
-		MonitorSource mout(__FILE__, __FUNCTION__);
+		Logger mout(__FILE__, __FUNCTION__);
 
 		const std::list<std::string> & keys = getKeyList();
 		std::list<std::string>::const_iterator kit = keys.begin();
@@ -420,6 +460,7 @@ protected:
 
 			// Key and assignment symbol not given, ok.
 
+			/*
 			if (!ORDERED){
 				if (this->size() == 1){
 					this->begin()->second = *pit;
@@ -434,21 +475,23 @@ protected:
 			}
 			else { // ORDERED
 
-				if (kit != keys.end()){
-					// Assignment-by-order
-					(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
-				}
-				else {
-					if (!updateOnly)
-						mout.error() << "too many params for ORDERED map; has "<< this->size() << ", run out of keys with entry=" << *pit << mout.endl;
-					return;
-				}
+			*/
+
+			if (kit != keys.end()){
+				// Assignment-by-order
+				(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
+			}
+			else {
+				if (!updateOnly)
+					mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
+				return;
+			}
 
 				++kit;
 
-			}
+			// }
 
-			// ++pit;
+
 		}
 	}
 

@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/BeanLike.h>
 #include <drain/image/Image.h>
 
-#include "data/ODIM.h"
+#include "data/PolarODIM.h"
 
 // // using namespace std;
 
@@ -46,8 +46,11 @@ namespace rack {
 
 
 class PolarSmoother { //: public drain::BeanLike {
-    public: //re 
-	static void filter(const PolarODIM & odimSrc, const drain::image::Image & src, drain::image::Image & dst, double radiusMetres);
+
+public:
+
+	static
+	void filter(const PolarODIM & odimSrc, const drain::image::Image & src, drain::image::Image & dst, double radiusMetres);
 
 };
 

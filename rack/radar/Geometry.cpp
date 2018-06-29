@@ -28,19 +28,23 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include "Geometry.h"
 
 #include <math.h>
+
+#include <drain/util/Geo.h>
+#include "Geometry.h"
 
 namespace rack
 {
 
+/*
 double DEG2RAD(M_PI/180.0);
 double RAD2DEG(180.0/M_PI);
 
 int Geometry::EARTH_RADIUSi   = 6371000;
 double Geometry::EARTH_RADIUS = 6371000.0;
-double Geometry::EARTH_RADIUS_43 = 4.0/3.0 * EARTH_RADIUS;
+*/
+double Geometry::EARTH_RADIUS_43 = 4.0/3.0 * drain::EARTH_RADIUS;
 	
 Geometry::Geometry ()
 {
@@ -99,10 +103,13 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      *  and elevation (eta).
      *
      *  By cosine rule:
-     *   c² = a² + b² - 2ab·cos(gamma);
+     *  \f[
+     *   c^2 = a^2 + b^2 - 2ab\cos(\gamma);
+	 *  \f]
+     *
      */
-    double Geometry::heightFromEtaBeam(float eta,float b){
-    	double a = EARTH_RADIUS_43;
+    double Geometry::heightFromEtaBeam(double eta, double b){
+    	static const double a = EARTH_RADIUS_43;
     	return sqrt( a*a + b*b - 2.0*a*b*cos(M_PI/2.0 + eta) ) - a;
     }
 
@@ -147,7 +154,6 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      */
     double Geometry::heightFromEtaGround(double eta, double g){
     	double beta = g/EARTH_RADIUS_43;
-    	// a = EARTH_RADIUS_43
     	return EARTH_RADIUS_43 * (cos(eta)/cos(eta + beta) - 1.0);
     }
 
@@ -163,7 +169,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      */
     //  inline 
     double Geometry::beamFromBetaH(double beta,double h){
-    	double a = EARTH_RADIUS_43;
+    	static const double a = EARTH_RADIUS_43;
     	return sqrt((2.0*a)*(a+h)*(1.0-cos(beta)) + h*h);
     }
 
@@ -178,10 +184,10 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     //  static
     //  inline 
     double Geometry::beamFromEtaH(double eta,double h){
-    	double c = EARTH_RADIUS_43 + h;
-    	double a = EARTH_RADIUS_43;
-    	double gamma = eta + (M_PI/2.0);
-    	double beta = M_PI - gamma - asin(a*sin(gamma)/c);
+    	static const double a = EARTH_RADIUS_43;
+    	const double c = EARTH_RADIUS_43 + h;
+    	const double gamma = eta + (M_PI/2.0);
+    	const double beta = M_PI - gamma - asin(a*sin(gamma)/c);
     	return sin(beta) * c / sin(gamma); // / my_binDepth;
     }
 
@@ -196,11 +202,8 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      */
     //  inline
     double Geometry::beamFromEtaBeta(double eta,double beta){
-    	double a = EARTH_RADIUS_43;
-    	/// Angle(RADAR,BIN)
-    	//    double beta = g / EARTH_RADIUS_43; 
-    	/// Angle(BIN->RADAR,BIN->GROUND_POINT)
-    	double alpha = M_PI - (eta + (M_PI/2.0)) - beta;
+    	static const double a = EARTH_RADIUS_43;
+    	const double alpha = M_PI - (eta + (M_PI/2.0)) - beta;
     	return sin(beta) * a / sin(alpha);
     }
 

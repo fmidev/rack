@@ -33,9 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/DistanceTransformFillOp.h>
 #include <drain/image/File.h>
-#include <drain/image/RecursiveRepairerOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
+
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -55,7 +56,7 @@ namespace rack {
 
 void CartesianExtract::extract(const std::string & channels) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	RackResources & resources = getResources();
 
@@ -64,14 +65,41 @@ void CartesianExtract::extract(const std::string & channels) const {
 	// resources.cartesianHi5.clear();
 	resources.setSource(resources.cartesianHi5, *this);
 
-	std::string path = "dataset1";
-	if (ProductOp::appendResults){
-		if (DataSelector::getNextOrdinalPath(resources.cartesianHi5, "dataset([0-9]+)$", path))
-			mout.note() << "appended, path=" << path << mout.endl;
-	}
+	//ODIMPath path("dataset1");
+	ODIMPath path;
 
-	HI5TREE & dstGroup = resources.cartesianHi5[path];
-	DataSetDst<CartesianDst> dstProduct(dstGroup);
+	ODIMPathElem parent(BaseODIM::DATASET, 1);
+	if (ProductBase::appendResults.is(BaseODIM::DATASET))
+		DataTools::getNextChild(resources.cartesianHi5, parent);
+	else if (ProductBase::appendResults.is(BaseODIM::DATA))
+		DataTools::getLastChild(resources.cartesianHi5, parent);
+
+	path << parent;
+
+	//if (ProductBase::appendResults.is(BaseODIM::DATA))
+	//	DataTools::getNextChild(resources.cartesianHi5[parent], parent);
+
+
+	//if (!DataTools::getNextDescendant(resources.cartesianHi5, ProductBase::appendResults.getType(), path))
+	//	path.push_back(BaseODIM::DATASET);
+
+
+
+	/*
+	std::string path = "dataset1";
+	if (ProductBase::appendResults == "dataset"){
+		if (DataSelector::getNextOrdinalPath(resources.cartesianHi5, "dataset([0-9]+)$", path))
+			mout.note() << "appending, path=" << path << mout.endl;
+	}
+	else if (ProductBase::appendResults == "data"){
+		if (DataSelector::getLastOrdinalPath(resources.cartesianHi5, "dataset([0-9]+)$", path))
+			mout.note() << "appending, path=" << path << mout.endl;
+	}
+	*/
+
+
+	HI5TREE & dstGroup = resources.cartesianHi5(path);
+	DataSet<CartesianDst> dstProduct(dstGroup);
 
 
 	resources.composite.updateGeoData(); // TODO check if --plot cmds don't need
@@ -79,18 +107,20 @@ void CartesianExtract::extract(const std::string & channels) const {
 	CartesianODIM odim; // needed? yes, because Extract uses (Accumulator &), not Composite.
 	odim.updateFromMap(resources.composite.odim);
 
+	//mout.warn() << resources.composite.odim << mout.endl;
 
-
-	ProductOp::handleEncodingRequest(odim, resources.composite.getTargetEncoding());
+	ProductBase::handleEncodingRequest(odim, resources.composite.getTargetEncoding());
 
 
 	if (!resources.targetEncoding.empty()){
-		ProductOp::handleEncodingRequest(odim, resources.targetEncoding);
+		ProductBase::handleEncodingRequest(odim, resources.targetEncoding);
 		// odim.setValues(resources.targetEncoding, '=');
 		resources.targetEncoding.clear();
 	}
 
 
+	//
+	//mout.warn() << "composite: " << resources.composite.odim << mout.endl;
 	//mout.warn() << "composite: " << resources.composite << mout.endl;
 	//mout.note() << "dst odim: " << odim << mout.endl;
 	//mout.debug() << "extracting..." << mout.endl;
@@ -98,23 +128,33 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	//mout.warn() << "extracted data: " << dstProduct.getFirstData().data << mout.endl;
 
-	odim.copyToRoot(resources.cartesianHi5);
+	ODIM::copyToH5<ODIM::ROOT>(odim, resources.cartesianHi5); // odim.copyToRoot(resources.cartesianHi5);
 
-	dstGroup["how"].data.attributes["software"] = __RACK__;
+	drain::VariableMap & how = dstGroup["how"].data.attributes;
+	how["software"] = __RACK__;
 	// Non-standard
-	dstGroup["how"].data.attributes["tags"] = resources.composite.nodeMap.toStr(':');
-	dstGroup["where"].data.attributes["BBOX"]      = resources.composite.getBoundingBoxD().toStr();
-	dstGroup["where"].data.attributes["BBOX_data"] = resources.composite.getDataExtentD().toStr();
+	how["tags"] = resources.composite.nodeMap.toStr(':');
+
+	// Non-standard
+	drain::VariableMap & where = resources.cartesianHi5["where"].data.attributes; // dstGroup
+	where["BBOX"].setType(typeid(double));
+	where["BBOX"] = resources.composite.getBoundingBoxD().toStr();
+	where["BBOX_data"].setType(typeid(double));
+	where["BBOX_data"] = resources.composite.getDataExtentD().toStr();
+	where["BBOX_overlap"].setType(typeid(double));
+	where["BBOX_overlap"] = resources.composite.getDataOverlapD().toStr();
 
 
-	RackResources::updateCoordinatePolicy(resources.cartesianHi5, RackResources::limit);
-	DataSelector::updateAttributes(resources.cartesianHi5);
+	DataTools::updateCoordinatePolicy(resources.cartesianHi5, RackResources::limit);
+	DataTools::updateAttributes(resources.cartesianHi5);
 
 	resources.currentHi5 = &resources.cartesianHi5;
 	resources.currentImage = NULL;
 	resources.currentGrayImage = NULL;
 
-	resources.inputOk = true; // TODO
+	/// For successfull file io:
+	resources.inputOk = true;
+	resources.dataOk = true;
 	//mout.warn() << "created" << mout.endl;
 }
 

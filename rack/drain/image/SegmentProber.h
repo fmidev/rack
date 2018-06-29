@@ -33,9 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <ostream>
-#include "ImageOp.h"
 #include "Coordinates.h"
 #include "FilePng.h"
+
+//#include "ImageOp.h"
+
 
 namespace drain
 {
@@ -46,8 +48,8 @@ namespace image
 
 /// A helper class applied by FloodFillOp and SegmentAreaOp
 /**
- *   \tparam T  - type of the source image (int by default, but should be floating-type, if src is).
- *   \tparam T2 - type of the destination image, the image to be filled.
+ *   \tparam T  - storage type of the source image (int by default, but should be floating-type, if src is).
+ *   \tparam T2 - storage type of the destination image, the image to be filled.
  *
  *   \author Markus.Peura@fmi.fi
  */
@@ -56,20 +58,29 @@ class SegmentProber {  // TODO: rename to SegmentProber
 
 public:
 
-	SegmentProber(const Image &s) :
-		src(s), width(s.getWidth()), height(s.getHeight()), dst(NULL),
-		handler(width, height, s.getCoordinatePolicy()), mout(drain::image::iMonitor, "SegmentProber") {
+	typedef T  src_t;
+	typedef T2 dst_t;
+
+	SegmentProber(const Channel &s) :
+		// src(s), width(s.getWidth()), height(s.getHeight()), dst(NULL),
+		// handler(width, height, s.getCoordinatePolicy()), mout(getImgLog(), "SegmentProber") {
+		src(s), dst(NULL),
+		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
+		size = 0;
 	};
 
-	SegmentProber(const Image &s, Image &d) :
-		src(s), width(s.getWidth()), height(s.getHeight()), dst(&d),
-		handler(width, height, s.getCoordinatePolicy()), mout(drain::image::iMonitor, "SegmentProber") {
+	SegmentProber(const Channel &s, Channel &d) :
+		src(s), dst(&d),
+		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
+		// src(s), width(s.getWidth()), height(s.getHeight()), dst(&d),
+		// handler(width, height, s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
+		size = 0;
 	};
 
 	virtual
 	~SegmentProber(){};
 
-	void setDst(Image &d){
+	void setDst(Channel & d){
 		dst = &d;
 	}
 	/*
@@ -87,6 +98,13 @@ public:
 	/// Fills the segment having intensity between min and max.
 	void probe(size_t i, size_t j, T2 fillValue, T min, T max){
 
+		/*
+		if (fillValue > min){
+			Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
+			mout.error() << "markerValue (" << fillValue << ") > min(" << min << ")" << mout.endl;
+			return;
+		}
+		*/
 
 		value = fillValue;
 		anchorMin = min;
@@ -112,15 +130,16 @@ public:
 
 // TODO protected:
 
-	const Image & src;
-	const int width;
-	const int height;
-	Image *dst;
-	const CoordinateHandler2D handler;
+	const Channel & src;
+	//const int width;
+	//const int height;
+	Channel *dst;
+	//const
+	CoordinateHandler2D handler;
 
 protected:
 
-	drain::MonitorSource mout;
+	drain::Logger mout;
 
 
 	virtual
@@ -128,7 +147,7 @@ protected:
 		size = 0;
 	};
 
-	mutable long int _stack;
+	//mutable long int _stack;
 
 	/*
 	void test_8(unsigned int i,unsigned int j) const {
@@ -237,8 +256,8 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentProber<T,T2> &floodF
 	ostr << "anchorMin=" << (float)floodFill.anchorMin << ',';
 	ostr << "anchorMax=" << (float)floodFill.anchorMax << ',';
 	ostr << "size="      << (float)floodFill.size << ',';
-	ostr << "width="     << (float)floodFill.width << ',';
-	ostr << "height="    << (float)floodFill.height << ',';
+	//ostr << "width="     << (float)floodFill.width << ',';
+	//ostr << "height="    << (float)floodFill.height << ',';
 	ostr << "handler="   << floodFill.handler << ',';
 	//ostr << "p="         << floodFill.p;
 	return ostr;

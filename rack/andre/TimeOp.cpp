@@ -31,19 +31,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <algorithm>
 
-//#include <drain/image/SegmentAreaOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
 #include <drain/util/Fuzzy.h>
 //#include <drain/image/MathOpPack.h>
 
-#include <drain/image/FastAverageOp.h>
-#include <drain/image/MarginalStatisticOp.h>
-#include <drain/image/DistanceTransformFillOp.h>
-//#include <drain/image/FuzzyOp.h>
-//#include <drain/image/FuzzyThresholdOp.h>
-//#include <drain/image/SlidingWindowMedianOp.h>
+#include <drain/imageops/FastAverageOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+//#include <drain/imageops/FuzzyOp.h>
+//#include <drain/imageops/FuzzyThresholdOp.h>
+//#include <drain/imageops/SlidingWindowMedianOp.h>
 //#include "image/GammaOp.h"
-#include <drain/image/HighPassOp.h>
-#include <drain/image/RunLengthOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/RunLengthOp.h>
 
 //#include "radar/ODIM.h"
 #include "TimeOp.h"
@@ -62,7 +62,7 @@ namespace rack {
 void TimeOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	drain::Time timeRef;

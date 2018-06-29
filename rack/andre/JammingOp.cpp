@@ -31,27 +31,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <algorithm>
 
-
-
-//#include <drain/image/SegmentAreaOp.h>
 #include <drain/util/Math.h>
-
 #include <drain/util/Fuzzy.h>
-//#include <drain/image/MathOpPack.h>
-
-#include <drain/image/FastAverageOp.h>
-#include <drain/image/MarginalStatisticOp.h>
-#include <drain/image/DistanceTransformFillOp.h>
-//#include <drain/image/FuzzyPeakOp.h>
-//#include <drain/image/FuzzyThresholdOp.h>
-//#include <drain/image/SlidingWindowMedianOp.h>
-//#include "image/GammaOp.h"
-#include <drain/image/HighPassOp.h>
-#include <drain/image/SlidingWindowHistogramOp.h>
-//#include <drain/image/ThresholdOp.h>
-
 // debugging
 #include <drain/image/File.h>
+
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/FastAverageOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
+#include <drain/imageops/SlidingWindowHistogramOp.h>
+
 
 #include "data/ODIM.h"
 #include "JammingOp.h"
@@ -69,7 +59,7 @@ namespace rack {
 void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 //void JammingOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	//mout.debug() << *this << mout.endl;
 
 	mout.debug() << *this << mout.endl;
@@ -97,22 +87,21 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	// To handle nodata and undetect, a weight image has to be applied
 	// TODO: generalize this
 	Image srcWeight;
-	srcWeight.setGeometry(src.data.getGeometry());
-	Image::iterator  it = src.data.begin();
-	Image::iterator wit = srcWeight.begin();
-	while (it != src.data.end()){
-		if ((*it != src.odim.nodata) && (*it != src.odim.undetect))
-			*wit = 255;
-		else
-			*wit = 0;
-		++it;
-		++wit;
-	}
+	src.createSimpleQualityData(srcWeight, 255.0, 0.0);
 
-	Image stdDev;
-	//stdDev.setType<double>();
-	//stdDev.initialize(typeid(float), src.getGeometry());
-	SlidingWindowHistogramOp(7,1,"d").filter(src.data, srcWeight, stdDev, dst.data); // "d" = standard deviation
+	Image stdDev; //(typeid(float), src.getGeometry());
+
+	SlidingWindowHistogramOp slidingOp(7,1,"d");
+	slidingOp.makeCompatible(src.data, stdDev);
+
+	ImageTray<const Channel> srcTray;
+	srcTray.setChannels(src.data, srcWeight);
+
+	ImageTray<Channel> dstTray;
+	dstTray.setChannels(stdDev, dst.data);
+
+	slidingOp.traverseChannels(srcTray, dstTray);
+	//.(src.data, srcWeight, stdDev, dst.data); // "d" = standard deviation
 	//mout.writeImage(11, stdDev, "stdDev");
 	//mout.writeImage(11, dst, "stdDevW");
 
@@ -120,15 +109,21 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	/// STEP 1b: Convert std.deviation to fuzzy smoothness value. The largest response is around undetectValue deviation.
 	UnaryFunctorOp<FuzzyBell<double> > fuzzyBell;
 	fuzzyBell.functor.set(0.0, smoothnessThreshold*2.0, 255.0);
-	fuzzyBell.filter(stdDev, stdDev);
+	fuzzyBell.traverseChannel(stdDev.getChannel(0), stdDev.getChannel(0));
 	//FuzzyBellOp(0.0, smoothnessThreshold*2.0, 255.0).filter(stdDev, stdDev);
 	//mout.writeImage(11, stdDev, "stdDevFuzzy");
 
 	//Image srcSmooth(typeid(double));
 	Image srcSmooth;
 	const Image & srcSmoothWeight = dst.data; // weight of the weighted std.dev.
+
 	//SlidingWindowHistogramOp(21, 1, "m", 0.1).filter(src,  srcWeight, srcSmooth, dst); // "m" median
-	SlidingWindowHistogramOp(10000.0/src.odim.rscale, 1, "a", 0.1).filter(src.data,  srcWeight, srcSmooth, dst.data); // "a" => average in 10 km window
+	SlidingWindowHistogramOp slidingOp2(10000.0/src.odim.rscale, 1, "a", 0.1);
+	slidingOp2.makeCompatible(src.data, srcSmooth);
+	ImageTray<Channel> dstTray2;
+	dstTray2.setChannels(srcSmooth, dst.data);
+	slidingOp2.traverseChannels(srcTray, dstTray2);
+	//filter(src.data,  srcWeight, srcSmooth, dst.data); // "a" => average in 10 km window
 	//mout.writeImage(11, srcSmooth, "src-med");
 	//mout.writeImage(11, srcSmoothWeight, "src-med-w");
 
@@ -441,7 +436,7 @@ void JammingOp::fitCurve(const std::vector<double> &src, const std::vector<doubl
 /*
 void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Image &dst) const {
 
-	drain::MonitorSource mout(drain::monitor, "JammingOp::filterImage");
+	drain::Logger mout(drain::monitor, "JammingOp::filterImage");
 
 	const size_t width  = src.getWidth();
 	//const size_t height = src.getHeight();
@@ -591,10 +586,10 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 
 		/// Fit the samples, ie. derive coeffVector[0], coeffVector[1], coeffVector[2]
 		try {
-			std::vector<double> v;
-			//(s, w, v);
-			fitCurve(s, w, v);
-			coeffVector = v;
+			std::vector<double> vField;
+			//(s, w, vField);
+			fitCurve(s, w, vField);
+			coeffVector = vField;
 		}
 		catch (std::runtime_error &e){
 			//mout.debug(5) << "row" << j << ", " << (width-undetectCounter) << " samples,  error: " << e.what() << mout.endl;
@@ -622,9 +617,9 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 
 		try {
 			//fitCurve(s, w2, coeffVector2);
-			std::vector<double> v;
-			fitCurve(s, w2, v);
-			coeffVector2 = v;
+			std::vector<double> vField;
+			fitCurve(s, w2, vField);
+			coeffVector2 = vField;
 			//Curve(s, w2, coeffVector2);
 		}
 		catch (std::runtime_error &e){

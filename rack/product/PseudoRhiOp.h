@@ -95,7 +95,7 @@ public:
 
 	/// Implements VolumeOp::filter.
 	virtual
-	void processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> & dstProduct) const;
+	void processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const;
 
 protected:
 

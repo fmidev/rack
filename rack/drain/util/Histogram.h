@@ -39,6 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
+
+#include "LinearScaling.h"
+
 namespace drain
 {
 
@@ -54,20 +57,19 @@ namespace drain
 class Histogram : protected std::vector<unsigned long> {
 public:
 
-	Histogram(size_type size=256);
+	Histogram(size_t size=256);
 
-	//Histogram(size_type size=256);
-
-	/*!
-	 */
+	Histogram(const Histogram & histogram);
 
 	virtual ~Histogram(){};
 
+	LinearScaling scaling;
+
 	/// Sets the number of bins; the resolution of the histogram.
-	void setSize(const size_type &s);
+	void setSize(size_t s);
 
 	inline
-	int getSize() const { return _bins; };
+	int getSize() const { return bins; };
 
 	/// Does not change the size of the histogram.
 	void clearBins();
@@ -75,34 +77,42 @@ public:
 
 	/// Sets the expected sample count.
 	void setSampleCount(long int n){
-		_sampleCount = n;
-		_sampleCountMedian = static_cast<size_t>(_weight * _sampleCount);
+		//sampleCount = n;
+		sampleCountNEW = n;
+		sampleCountMedian = static_cast<size_t>(weight * static_cast<double>(n));
 	}
 
-	size_t getSampleCount(){
-		return _sampleCountNEW;
+	size_t getSampleCount() const {
+		return sampleCountNEW;
 	}
 
 	/// Max refers to upper limit.
-	void setScale(int inMin, int inMax, int outMin, int outMax);
+	//void setScale(int inMin, int inMax, int outMin, int outMax);
+	//void setScale(int inMin, int inMax, int outMin, int outMax){
+	//	scaling.setRange(0,inMax,outMin, outMax);
+	//}
 
-	/// Max refers to upper limit.
+	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
 	inline
-	void setScale(int inMin, int inMax){
-		setScale(inMin,inMax,inMin,inMax);
+	void setScale(double dataMin, double dataMax){
+		scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
 	};
 
-	inline
-	int getInMin() const { return _inMin; };
 
 	inline
-	int getInMax() const { return _inMax; };
+	int getInMin() const { return 0; };
+
+	/// Returns the upperLimit (exclusive)
+	inline
+	int getUpperBoundIn() const { return bins; };
 
 	inline
-	int getOutMin() const { return _outMin; };
+	int getOutMin() const { return scaling.forward(0); };
 
+	/// Returns the upperLimit (exclusive)
 	inline
-	int getOutMax() const { return _outMax; };
+	int getUpperBoundOut() const { return scaling.forward(bins); };
+
 
 
 	/// Set location of the median, if not in the middle (50%).
@@ -111,49 +121,54 @@ public:
 	 */
 	inline
 	void setMedianPosition(double pos){
-		_weight = pos;
-		_sampleCountMedian = static_cast<size_t>(_weight * _sampleCount);
+		weight = pos;
+		sampleCountMedian = static_cast<size_t>(weight * sampleCountNEW);
 	};
 
+	/*
 	template <class T>
 	inline
 	bool withinLimits(T i) const {
-		return  ((i >= _inMin) && (i <= _inMax));  // check if ok inMax is too much
+		return  ((i >= inMin) && (i <= inMax));  // check if ok inMax is too much
 	}
+	*/
 
 	template <class T>
 	inline
 	void increment(T i){
-		++(*this)[((i-_inMin)*_bins)/_inSpan];
-		++_sampleCountNEW;  // TODO: slow?
+		//++(*this)[((i-inMin)*bins)/inSpan];
+		++(*this)[scaling.inverse(i)];
+		++sampleCountNEW;  // TODO: slow?
 	}
 
 	template <class T>
 	inline
 	void increment(T i, int count){
-		(*this)[((i-_inMin)*_bins)/_inSpan] += count;
-		_sampleCountNEW += count;
+		(*this)[scaling.inverse(i)] += count;
+		//(*this)[((i-inMin)*bins)/inSpan] += count;
+		sampleCountNEW += count;
 	}
 
 	template <class T>
 	inline
 	void decrement(T i){
-		--(*this)[((i-_inMin)*_bins)/_inSpan];
-		--_sampleCountNEW;
+		--(*this)[scaling.inverse(i)]; // [((i-inMin)*bins)/inSpan];
+		--sampleCountNEW;
 	}
 
 	template <class T>
 	inline
 	void decrement(T i, int count){
-		(*this)[((i-_inMin)*_bins)/_inSpan] -= count;
-		_sampleCountNEW -= count;
+		(*this)[scaling.inverse(i)] -= count; //[((i-inMin)*bins)/inSpan] -= count;
+		sampleCountNEW -= count;
 	}
 
 
 	template <class T>
 	inline
 	T scaleOut(const size_type &i) const {
-		return static_cast<T>(_outMin + (i*_outSpan)/_bins);
+		//return static_cast<T>(outMin + (i*outSpan)/bins);
+		return static_cast<T>(scaling.forward(i));
 	}
 
 
@@ -167,7 +182,7 @@ public:
 
 	/// Returns average, min, Max, Sum, stdev, meDian
 	/**
-	 *  \par key - the letter of desired quantity: [a]verage, [s]um, std[d]ev, [v]ariance, [m]edian, mi[n], ma[x],
+	 *  \par key - the letter of desired quantity: [a]verage, [s]um, std[d]ev, [vField]ariance, [m]edian, mi[n], ma[x],
 	 */
 	// DEPRECATED, see getValue
 	template <class T>
@@ -189,7 +204,7 @@ public:
 		case 'N':
 			return getMin<T>();
 		default:
-			// Monitor
+			// Log
 			throw std::runtime_error(std::string("Histogram::get unimplemented type: ") + key);
 			return 0;
 		}
@@ -200,22 +215,22 @@ public:
 	template <class T>
 	inline
 	T getMax() const {
-		for (size_type i = _bins-1; i > 0; --i)
+		for (size_type i = bins-1; i > 0; --i)
 			if ((*this)[i] > 0)
 				return scaleOut<T>(i);
 		// cerr << "Warning: Histogram empty.\n";
-		return static_cast<T>(_outMax);
+		return  getUpperBoundOut(); //static_cast<T>(outMax);
 	}
 
 
 	template <class T>
 	inline
 	T getMin() const {
-		for (size_type i = 0; i < _bins; ++i)
+		for (size_type i = 0; i < bins; ++i)
 			if ((*this)[i] > 0)
 				return scaleOut<T>(i);
 		//cerr << "Warning: Histogram empty.\n";
-		return static_cast<T>(_outMax);
+		return  getUpperBoundOut(); //static_cast<T>(outMax);
 	}
 
 	/// Unscaled sum.
@@ -224,7 +239,7 @@ public:
 	T getSum() const {
 		size_type _sum;
 		_sum = 0;
-		for (size_type i = 0; i < _bins; i++){
+		for (size_type i = 0; i < bins; i++){
 			_sum += (*this)[i] * scaleOut<T>(i); // count * nominal (should be scaled to middle)
 		}
 		return _sum;
@@ -234,9 +249,9 @@ public:
 	template <class T>
 	inline
 	T getMean() const {
-		//return scaleOut(getSum()/_sampleCount);
-		if (_sampleCountNEW > 0)
-		  return getSum<T>()/_sampleCountNEW;
+		//return scaleOut(getSum()/sampleCount);
+		if (sampleCountNEW > 0)
+		  return getSum<T>()/sampleCountNEW;
 		else
 		  return 0;
 	}
@@ -247,13 +262,13 @@ public:
 	T getMedian() const {
 		size_type _sum;
 		_sum = 0;
-		for (size_type i = 0; i < _bins; ++i){
+		for (size_type i = 0; i < bins; ++i){
 			_sum += (*this)[i];
-			if (_sum >= _sampleCountMedian){
+			if (_sum >= sampleCountMedian){
 				return scaleOut<T>(i);
 			}
 		}
-		return  static_cast<T>(_outMax);
+		return getUpperBoundOut(); //static_cast<T>(outMax);
 	}
 
 
@@ -264,15 +279,15 @@ public:
 		if ((p < 0.0) || (p>1.0)){
 			throw std::runtime_error("Histogram<T>::getMedian: median point <0 or >1.0 .");
 		}
-		const size_t limit = static_cast<size_t>(p * _sampleCount);
+		const size_t limit =  sampleCountMedian; //   static_cast<size_t>(p * sampleCount);
 		_sum = 0;
-		for (size_type i = 0; i < _bins; i++){
+		for (size_type i = 0; i < bins; i++){
 			_sum += (*this)[i];
 			if (_sum >= limit){
 				return static_cast<T>(i);
 			}
 		}
-		return static_cast<T>(_bins);
+		return static_cast<T>(bins);
 	}
 
 
@@ -289,14 +304,14 @@ public:
 
 		sum = 0;
 		sum2 = 0;
-		for (size_type i = 0; i < _bins; i++){
+		for (size_type i = 0; i < bins; i++){
 			f = scaleOut<T>(i);
 			n = (*this)[i];
 			sum  += n * f;
 			sum2 += n * (f*f);
 		}
-		sumT = static_cast<T>(sum)/_sampleCountNEW;
-		return  static_cast<T>(sum2)/_sampleCountNEW - sumT*sumT;
+		sumT = static_cast<T>(sum)/sampleCountNEW;
+		return  static_cast<T>(sum2)/sampleCountNEW - sumT*sumT;
 	}
 
 
@@ -360,32 +375,35 @@ public:
 
 protected:
 
+	void initialize(size_t size);
+
 	double (Histogram::*getValuePtr)() const;
+
 
 private:
 	/// Resolution of the histogram.
-	size_t _bins;
+	size_t bins;
 
 	/// The expected sample count in the histogram.
-	size_type _sampleCount;
+	//size_type sampleCount;
 
 	/// The actual sample count in the histogram. FOR WEIGHTED
-	size_type _sampleCountNEW;
+	size_type sampleCountNEW;
 
 	// Half of sampleCount.
-	size_type _sampleCountMedian;
+	size_type sampleCountMedian;
 
 	// weight for weighted median;
-	float _weight;
+	float weight;
 
-	int _inMax;
-	int _inMin;
-	int _inSpan;
-	int _outMin;
-	int _outMax;
-	int _outSpan;
-
-
+	/*
+	int inMax;
+	int inMin;
+	int inSpan;
+	int outMin;
+	int outMax;
+	int outSpan;
+	*/
 
 };
 

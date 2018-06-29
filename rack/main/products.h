@@ -41,7 +41,9 @@ namespace rack {
  *
  */
 class ProductModule : public drain::CommandGroup {
-    public: //re 
+
+public:
+
 	ProductModule(const std::string & section = "prod", const std::string & prefix = "p"); // : drain::CommandGroup(section, prefix){};
 
 

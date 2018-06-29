@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/AccumulationConverter.h>
 
 #include <drain/image/AccumulatorGeo.h>
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Rectangle.h>
 #include <drain/util/Type.h>
 
@@ -72,7 +72,7 @@ public:
 	static
 	inline
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0){
-		drain::MonitorSource mout("FileGeoTIFF", __FUNCTION__);
+		drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 		mout.warn() << "binary compiled without TIFF/GeoTIFF support, skipping" << mout.endl;
 	};
 #else

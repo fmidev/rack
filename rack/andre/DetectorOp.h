@@ -70,20 +70,6 @@ public:
 	virtual
 	~DetectorOp(){};
 
-
-	/// OLD
-	//const drain::image::Image & getValidData(const HI5TREE &src, HI5TREE &dst, const std::string & path) const;
-
-	//drain::image::Image & getOrigData(HI5TREE &src, const std::string & path) const;
-	//enum Cumulation {NONE, MAX, OVERWRITE, UNDEFINED};
-	//static Cumulation cumulateDetections;
-
-
-	/// H5 start of the group name, typically "quality", in which the \em specific detection result will be stored.
-	//  OLD: If nonexistent, detection will not be stored?
-	//static
-	//std::string dstGroupPrefix;
-
 	/// Returns the quantity name, by default the name of the class in upper case letters.
 	virtual
 	const std::string & getQuantityName() const;
@@ -96,7 +82,7 @@ public:
 
 	/// NEW POLICY => DetectorOpNEW
 	virtual
-	void processDataSets(const DataSetSrcMap & srcVolume, DataSetDstMap<PolarDst> & dstVolume) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
 
 	/// Process as sweep (data in one elevation angle)
 	/**
@@ -105,7 +91,7 @@ public:
 	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
 	 */
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSetDst<PolarDst> & aux)  const;
+	void processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
 
 	/// Process using single data only (no quality "involved", because it is created here...)
 	/**
@@ -114,7 +100,7 @@ public:
 	 */
 	virtual
 	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
-		drain::MonitorSource mout(name, __FUNCTION__);
+		drain::Logger mout(name, __FUNCTION__);
 		mout.warn() << "not implemented" << mout.endl;
 	}
 
@@ -128,14 +114,13 @@ protected:
 
 
 	// This is difficult...
-	//const HI5TREE & getNormalizedData(const DataSetSrc<> & srcDataSet, DataSetDst<> & dstDataSet, const std::string & quantity) const;
+	//const HI5TREE & getNormalizedData(const DataSet<> & srcDataSet, DataSet<> & dstDataSet, const std::string & quantity) const;
 
-		//void initDataDst(PlainData<PolarDst> & dstData, const std::string & quantity, const ODIM & srcODIM);
+	// Consider raise to VolumeOp ?
+	void storeDebugData(int debugLevel, const ImageFrame & srcImage, const std::string & label) const;
 
-	void storeDebugData(int debugLevel, const Image & srcImage, const std::string & label) const;
-
-	///
-	void storeDebugData(const Image & srcImage, PlainData<PolarDst> & dstData, const std::string & quantityLabel) const;
+	// Consider raise
+	void storeDebugData(const ImageFrame & srcImage, PlainData<PolarDst> & dstData, const std::string & quantityLabel) const;
 
 
 	/// After running a cmd, write execution details.
@@ -149,32 +134,17 @@ protected:
 	mutable std::string upperCaseName;
 
 	/// Set to true if operator expects fixed background intensities instead of "nodata" defined by the PolarODIM. Affects getValidData().
+	/**
+	 *  Some AnDRe detectors require harmonized input data. If source is unsuitably scaled, a converted copy of the data is used.
+	 *  If a derived operator (detector) requires standardized source data, this function creates a converted copy.
+	 *  Otherwise, the original data is returned.
+	 *  The copy will be stored in dst for subsequent detectors to retrieve.
+	 *  \return "data" or "data"
+	 */
 	bool REQUIRE_STANDARD_DATA;
 
 	/// If true, applies also to quantities other than the one used in detection. The detection and the accumulation will be stored one step upwards.
 	bool UNIVERSAL;
-
-	///  Some AnDRe detectors require harmonized input data. If source is unsuitably scaled, a converted copy of the data is used.
-	/**  If a derived operator (detector) requires standardized source data, this function creates a converted copy.
-	 *   Otherwise, the original data is returned.
-	 *   The copy will be stored in dst for subsequent detectors to retrieve.
-	 *   \return "data" or "data"
-	 */
-	// const std::string & _getStdDataPath(const HI5TREE & src, const std::string & path, HI5TREE & dst) const;
-
-	//const PlainData<PolarSrc> & getNormlisedData(const DataSetSrc<> & src, PlainData<PolarDst> & dst) const;
-
-	/// Supports in handling /quality groups etc. Notice: dstRoot is used as source.
-	/*
-	 *  Notice that \b Rack (the executable) calls this with one singe HI5TREE, but for library extensions
-	 *  it has been a principle that src and dst are separate.
-	 */
-	/// OBSOLETE
-	// virtual 	void filterGroup(const HI5TREE &srcRoot, const std::string &path, HI5TREE &dstRoot) const; //  { filterGroup(dstRoot, path); };
-
-	//virtual
-	//void filterGroup(HI5TREE &dstRoot, const std::string &path) const;
-
 
 	/// Enhances the detection result by reinforcing sectors of strong response, attenuating others. Optional utility for derived classes.
 	/**
@@ -185,25 +155,6 @@ protected:
 	void _enhanceDirectionally(Image & data, float medianPos, int windowWidth) const;
 
 	void _infect(Image & data, int windowWidth, int windowHeight, double enhancement) const;
-
-
-	/// Updates the overall ie. maximum field.
-	// static, because external inputs like "sclutter"
-	/*
-	static
-	void updateOverallDetection(const PlainData<PolarDst> & probDetection, PlainData<PolarDst> & probMax, PlainData<PolarDst> & classification, const std::string &label, unsigned short classCode); // const;
-	*/
-
-
-	/// Updates the overall ie. maximum field. Book keeping of CLASS.
-	//  NOT static, because classCode.  , unsigned short int = 0
-	//void _cumulateDetection(const Image & detection, Image & probCumulation, Image & classCumulation) const;
-
-	/// Returns quality field, ie /data (unsigned char, given quality (if not QIND)). Creates a field if necessary. Does not set size.
-	/*  \param dst - group under which a new quality group ["quality1"] will be added.
-	 *
-	 */
-	//Image & _appendQualityField(HI5TREE & dst, const std::string & quantity = "") const ;
 
 
 };

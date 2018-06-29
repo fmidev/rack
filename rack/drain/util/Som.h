@@ -58,7 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 // Consider 
- typedef std::vector<double> SomVector;  // for operator(std::ostream &)
+typedef std::vector<double> SomVector;  // for operator(std::ostream &)
 
 /** The Self-Organising Map by Teuvo Kohonen.
  *
@@ -72,7 +72,7 @@ class Som {
 
 public:
 
-        Som(int width=0, int height=0);
+	Som(int width=0, int height=0);
 
 
 	/**
@@ -91,7 +91,7 @@ public:
 	/**  Set each neuron in the map to given value.
 	 *
 	 */
-        void fill(const T & sample){  // rename fill ?
+	void fill(const T & sample){  // rename fill ?
 
 		for (int i=0; i<width; i++){
 			for (int j=0; j<height; j++){
@@ -145,7 +145,7 @@ public:
 		return height;
 	}
 
-	 /// The number of columns in the map.
+	/// The number of columns in the map.
 	inline
 	int getWidth() const {
 		return width;
@@ -192,7 +192,7 @@ public:
 				(*mixingFunction)(map[j][i], x, f, map[j][i]);
 			}
 		}
-		*/
+		 */
 	};
 
 	/**  Training with a single sample.
@@ -208,7 +208,7 @@ public:
 			}
 		}
 	};
-	
+
 
 
 	void toStream(std::ostream &ostr) const{
@@ -281,7 +281,7 @@ protected:
 
 /*
     For vectors and other objects having 
-*/ 
+ */
 template <class T>
 double euclideanDistance2(const T & x1, const T & x2) {
 
@@ -306,9 +306,9 @@ void vectorMix(const T & x1, const T & x2, double coeff, T & m){ // todo iterate
 
 template <>
 Som<>::Som(int width, int height){
-  setGeometry(width, height);
-  setDistanceFunction( euclideanDistance2 );    // consider Som<double>
-  setMixingFunction( vectorMix ); // consider Som<double>
+	setGeometry(width, height);
+	setDistanceFunction( euclideanDistance2 );    // consider Som<double>
+	setMixingFunction( vectorMix ); // consider Som<double>
 }
 
 
@@ -317,10 +317,10 @@ Som<>::Som(int width, int height){
 template <class T>
 void uniformRandomVector256(std::vector<T> & x) {
 
-    for (int k = 0; k < x.size(); ++k)
-      x[k] = static_cast<T>(rand() & 0xff);
-    //x[k] = static_cast<T2>(rand() & 0xffff)/static_cast<T2>(0xf00);
-    
+	for (int k = 0; k < x.size(); ++k)
+		x[k] = static_cast<T>(rand() & 0xff);
+	//x[k] = static_cast<T2>(rand() & 0xffff)/static_cast<T2>(0xf00);
+
 }
 
 
@@ -334,9 +334,9 @@ static
 double Som<std::vector<T> >::defaultNeighborhoodFunction(const int & i, const int & j) const {
 	return radius2 / (radius2 + i*i + j*j);
 }
-*/
- 
- 
+ */
+
+
 
 /*
 template <class T>
@@ -352,7 +352,7 @@ double Som<T>::defaultDistanceMetric(const T & x1, const T & x2) {
 	return result;
 
 }
-*/
+ */
 
 //class Som< std::vector<T> >;
 /*
@@ -360,7 +360,7 @@ template <class T>
 double Som< std::vector<T> >::defaultDistanceMetric(const T & x1, const T & x2) {
 	return 123.456;
 }
-*/
+ */
 
 /*
 template <class T>
@@ -370,7 +370,7 @@ void Som<T>::defaultMixingFunction(const T & x1, const T & x2, double coeff, T &
 		m[k] = (1.0-coeff)*x1[k] + coeff*x2[k];
 
 }
-*/
+ */
 
 
 

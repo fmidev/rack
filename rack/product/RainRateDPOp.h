@@ -113,7 +113,7 @@ public:
 
 	virtual
 	//void processSweep(const SweepSrc & src, ProductDst & dst) const;
-	void processDataSet(const DataSetSrc<> & srcSweep, DataSetDst<> & dstProduct) const;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
 	double freezingLevel;
 	double freezingLevelThickness;

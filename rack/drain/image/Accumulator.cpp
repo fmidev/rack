@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <drain/image/File.h>  // debugging
 
-#include "util/Debug.h"
-#include "util/DataScaling.h"
+#include "util/Log.h"
+//#include "util/DataScaling.h"
 #include "util/Type.h"
 
 // #include "File.h"  // debugging
@@ -54,7 +54,32 @@ namespace image
 
 void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
+	Logger mout("Accumulator",__FUNCTION__);
+
+	if (name == "AVG"){
+		mout.warn() << "'AVG' deprecating, using 'AVERAGE'" << mout.endl;
+		setMethod("AVERAGE", params);
+		return;
+	}
+	else if (name == "MIN"){
+		mout.warn() << "'MIN' deprecating, using 'MINIMUM'" << mout.endl;
+		setMethod("MINIMUM", params);
+		return;
+	}
+	else if (name == "MAX"){
+		mout.warn() << "'MAX' deprecating, using 'MAXIMUM'" << mout.endl;
+		setMethod("MAXIMUM", params);
+		return;
+	}
+	else if (name == "OVERWRITE"){
+		mout.warn() << "'OVERWRITE' deprecating, using 'LATEST'" << mout.endl;
+		setMethod("LATEST", params);
+		return;
+	}
+
+
 	std::map<std::string, AccumulationMethod &>::iterator it = methods.find(name);
+
 	if (it != methods.end()){
 		methodPtr = &(it->second);
 		methodPtr->setParameters(params);
@@ -71,7 +96,7 @@ void Accumulator::setMethod(const std::string & method){
 	const size_t i = method.find(',');
 
 	if (i == std::string::npos)
-		setMethod(method.substr(0, i), "" );  // Variable()
+		setMethod(method, "" );  // Variable()
 	else
 		setMethod(method.substr(0, i), method.substr(i+1) );  // Variable(method.substr(i+1))
 
@@ -79,7 +104,7 @@ void Accumulator::setMethod(const std::string & method){
 
 void Accumulator::addData(const Image & srcData, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){
 
-	MonitorSource mout("Accumulator",__FUNCTION__);
+	Logger mout("Accumulator",__FUNCTION__);
 
 	const unsigned int width  = srcData.getWidth();
 	const unsigned int height = srcData.getHeight();
@@ -144,7 +169,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst) const {
 
-	MonitorSource mout("Accumulator",__FUNCTION__);
+	Logger mout("Accumulator",__FUNCTION__);
 
 
 	if ((dst.getWidth() != width) || (dst.getHeight() != height)){

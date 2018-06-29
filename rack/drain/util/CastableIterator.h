@@ -118,17 +118,17 @@ public:
 
 	inline
 	void setType(const std::type_info &type){
-		Castable::setType(type);
+		caster.setType(type);
 	};
 
 	inline
 	const std::type_info &getType() const {
-		return Castable::getType();
+		return caster.getType();
 	};
 
 	inline
-	const size_t & getByteSize() const {
-		return byteSize;
+	size_t getByteSize() const {
+		return caster.getByteSize();
 	};
 
 
@@ -155,7 +155,7 @@ public:
 	inline
 	CastableIterator & operator++(){
 		char *cptr = (char *)ptr;
-		ptr = (cptr + byteSize);
+		ptr = (cptr + caster.getByteSize());
 		return *this;
 	};
 
@@ -164,14 +164,14 @@ public:
 	CastableIterator operator++(int){
 		CastableIterator tmp = *this;
 		char *cptr = (char *)ptr;
-		ptr = (cptr + byteSize);
+		ptr = (cptr + caster.getByteSize());
 		return tmp;
 	};
 
 	inline
 	CastableIterator & operator--(){
 		char *cptr = (char *)ptr;
-		ptr = (cptr - byteSize);
+		ptr = (cptr - caster.getByteSize());
 		return *this;
 	};
 
@@ -180,7 +180,7 @@ public:
 	CastableIterator operator--(int){
 		CastableIterator tmp = *this;
 		char *cptr = (char *)ptr;
-		ptr = (cptr - byteSize);
+		ptr = (cptr - caster.getByteSize());
 		return tmp;
 	};
 

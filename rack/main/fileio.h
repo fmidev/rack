@@ -69,7 +69,9 @@ const drain::RegExp sampleFileExtension;
 
 
 class FileModule : public CommandGroup {
-    public: //re 
+
+public:
+
 	FileModule(const std::string & section = "", const std::string & prefix = "");
 
 };

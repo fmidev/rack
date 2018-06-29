@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <algorithm>
 
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 //#include <drain/image/MathOpPack.h>
 
@@ -57,7 +57,9 @@ double QualityCombinerOp::CLASS_UPDATE_THRESHOLD(0.5);
 //void QualityCombinerOp::updateOverallDetection(const PlainData<PolarDst> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 
-	drain::MonitorSource mout(label+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(label+"(DetectorOp)", __FUNCTION__);
+	mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
+	mout.debug(1) <<  EncodingODIM(dstQind.odim) << mout.endl;
 
 	if (dstQind.data.isEmpty()){
 		mout.note() << "Creating QIND data" << mout.endl;
@@ -83,14 +85,6 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	std::stringstream sstr;
 	sstr << label << ':' << index;
 	howClass["task_args"] << sstr.str();
-	//Variable & args = attributesClass["task_args"];
-	//Variable & args = attributesClass["task_args"];
-	//std::set<std::string> argSet;
-	//drain::VariableMap legend;
-	//legend.separator = ''
-	// legend =
-	//args.to();
-
 
 	Image::const_iterator  it = srcProb.data.begin();
 	Image::iterator pit = dstQind.data.begin();
@@ -128,7 +122,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind, const PlainData<PolarSrc> & srcClass, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass) { //const {
 
-	drain::MonitorSource mout("QualityCombinerOp", __FUNCTION__);
+	drain::Logger mout("QualityCombinerOp", __FUNCTION__);
 
 	if (dstQind.data.isEmpty()){
 		mout.debug() << "Creating QIND data" << mout.endl;
@@ -239,33 +233,34 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			classCodes.insert(*it);
 		}
 		mout.debug() << " Updating CLASS: " << task_args_class <<  " => ";
-		task_args_class.clear();
-		task_args_class.fromContainer(classCodes);
+		task_args_class = classCodes;
+		// task_args_class.clear();
+		// task_args_class = fromContainer(classCodes);
 		mout << task_args_class << mout.endl;
 
 
-		dstClass.updateTree();
-		DataSelector::updateAttributes(dstClass.tree);
+		//@ dstClass.updateTree();
+		//@ DataTools::updateAttributes(dstClass.tree);
 	}
 
-	dstQind.updateTree();
-	DataSelector::updateAttributes(dstQind.tree);
+	//@ dstQind.updateTree();
+	//@ DataTools::updateAttributes(dstQind.tree);
 
 
 
 	/*
 	case MAX:
 	case NONE:
-	case OVERWRITE:
+	case LATEST: ?
 	case UNDEFINED:
 	*/
 
 }
 
 
-void QualityCombinerOp::updateLocalQuality(const DataSetSrc<PolarSrc> & srcDataSet, Data<PolarDst> & dstData){
+void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet, Data<PolarDst> & dstData){
 
-	drain::MonitorSource mout("QualityCombinerOp", __FUNCTION__);
+	drain::Logger mout("QualityCombinerOp", __FUNCTION__);
 
 	// Create in order:
 	// quality1 => QIND
@@ -282,9 +277,9 @@ void QualityCombinerOp::updateLocalQuality(const DataSetSrc<PolarSrc> & srcDataS
  *
  */
 //void QualityCombinerOp::processSweep(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
-void QualityCombinerOp::processDataSet(const DataSetSrc<> & src, DataSetDst<> & dst) const {
+void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<PolarDst> & dst) const {
 
-	MonitorSource mout(name, __FUNCTION__);
+	Logger mout(name, __FUNCTION__);
 
 	//DataDst & dstData = dst.getFirstData("QIND"); //targetQuantity);
 	//PlainData<PolarDst> & dstData = dst.getQualityData("QIND"); //targetQuantity);
@@ -299,18 +294,18 @@ void QualityCombinerOp::processDataSet(const DataSetSrc<> & src, DataSetDst<> & 
 	}
 
 	/*
-	for (DataSetSrc<>::const_iterator it = src.begin(); it != src.end(); ++it){
+	for (DataSet<>::const_iterator it = src.begin(); it != src.end(); ++it){
 		mout.warn() << "src data quantity:" << it->first << mout.endl;
 	}
 
-	for (DataSetDst<>::iterator it = dst.begin(); it != dst.end(); ++it){
+	for (DataSet<>::iterator it = dst.begin(); it != dst.end(); ++it){
 		mout.warn() << "dst data quantity:" << it->first << mout.endl;
 	}
 	*/
 
 
 	/// Note: iteration in src dataset (keys), because data selector applies to it.
-	for (DataSetSrc<>::const_iterator it = src.begin(); it != src.end(); ++it){
+	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
 
 		Data<PolarDst> & dstData = dst.getData(it->first);
 

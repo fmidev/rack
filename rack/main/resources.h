@@ -38,15 +38,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/image/PaletteOp.h>
 //#include <drain/prog/CommandPack.h>
 //#include <drain/prog/Commands-ImageTools.h>
-//#include <drain/util/Debug.h>
+//#include <drain/util/Log.h>
 //#include <drain/util/ReferenceMap.h>
 #include <hi5/Hi5.h>
-#include <image/Coordinates.h>
-#include <image/Image.h>
-#include <image/PaletteOp.h>
+#include <drain/image/Coordinates.h>
+#include <drain/image/Image.h>
 #include <image/Sampler.h>
+#include <imageops/PaletteOp.h>
+#include <imageops/ImageModifierPack.h>
 #include <prog/CommandPack.h>
 #include <prog/CommandRegistry.h>
+
 #include <radar/Composite.h>
 #include <radar/RadarAccumulator.h>
 #include <util/Rectangle.h>
@@ -72,6 +74,15 @@ public:
 	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
 
 	// STATUS FLAGS
+	// TODO: OK=0,WARNING=1,ERROR=2,FATAL=3
+	// One at time: 8-2 = 6 bits = 64 events
+	// INPUT=0
+	// OUTPUT=4
+	// DATA=8
+	// PRODUCT=12
+	// PRODUCT=16
+	// All simultaneously: 8 = 2+2+2+2 bits => 4 events
+
 
 	/// True, if the last input file operation has been successful. Helps in skipping operations for null data.
 	bool inputOk;
@@ -79,12 +90,8 @@ public:
 	/// True, if the last retrieved data was found (and non-empty?). Helps in skipping operations for null data.
 	bool dataOk;
 
-	/// True, if the last retrieved data was found (and non-empty?). Helps in skipping operations for null data.
-	//bool productOk;
 
-	//typedef enum {ANDRE=1, PROD=2, ACCUMULATOR=4} SOURCE_CODE;
-
-
+	/// Clears dst if source command varies.
 	void setSource(HI5TREE & dst, const drain::Command & cmd);
 
 
@@ -111,18 +118,25 @@ public:
 	 */
 	HI5TREE *currentPolarHi5; // = &inputHi5;
 
+	/// Standard (?) orientation of polar coords in radar data
 	static
 	const CoordinatePolicy polarLeft;
 
+	/// Default coordinate policy; no wrapping or mirroring at edges.
 	static
 	const CoordinatePolicy limit;
 
 	//static bool inputOk;
 
-	static
-	void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+	//static 	void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
 	drain::VariableMap & getUpdatedStatusMap();
+
+	/// Retrieves image that matches a given selector.
+	/*
+	 *  \return true, if non-empty image was found
+	 */
+	bool setCurrentImage(const DataSelector & imageSelector);
 
 	drain::image::Image grayImage;
 	drain::image::Image colorImage;
@@ -132,18 +146,18 @@ public:
 	drain::image::Palette palette;  // Todo: drainize
 
 
+	// Accumulator for data in polar coordinates
 	RadarAccumulator<Accumulator,PolarODIM> polarAccumulator;
 
+	// Accumulator for data in Cartesian coordinates
 	Composite composite;
-	// double cDefaultQuality; // why separate? replaced with composite.defaultQuality,
 
 	drain::Rectangle<double> bbox;
 	std::string projStr;
 
-
 	/// Global values accessible more or less directly through commands.
 
-	/* FILE I/O  */
+	//  FILE I/O
 	int inputSelect; // see fileio.cpp and hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS
 
 	/// Path prefix for input files.
@@ -161,7 +175,7 @@ public:
 	drain::ScriptParser scriptParser;
 	drain::ScriptExec   scriptExec;
 
-	drain::image::Sampler sampler;
+	drain::image::ImageSampler sampler; // could be in ImageModPack?
 
 };
 
@@ -169,9 +183,15 @@ public:
 RackResources & getResources();
 
 
+
+/// Adapter for commands designed for Rack.
+/**
+ *    \tparam T - class derived from Command
+ */
 template <class T>
 class RackLetAdapter : public T {
-    public: //re 
+
+public:
 
 
 	RackLetAdapter(const std::string & key = "", char alias = 0){ // : Command("cart", name, alias) {

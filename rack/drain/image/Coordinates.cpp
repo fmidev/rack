@@ -29,7 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include "util/Log.h"
 #include "Coordinates.h"
+
 
 namespace drain {
 
@@ -41,6 +43,7 @@ const int CoordinatePolicy::WRAP(2);
 const int CoordinatePolicy::MIRROR(3);
 const int CoordinatePolicy::POLAR(4);
 
+/*
 CoordinatePolicy::CoordinatePolicy(int policy) : xUnderFlowPolicy(policy), xOverFlowPolicy(policy),
 		yUnderFlowPolicy(policy), yOverFlowPolicy(policy) {
 }
@@ -49,6 +52,7 @@ CoordinatePolicy::CoordinatePolicy(int xUnderFlow, int yUnderFlow, int xOverFlow
 		xUnderFlowPolicy(xUnderFlow), xOverFlowPolicy(xOverFlow),
 		yUnderFlowPolicy(yUnderFlow), yOverFlowPolicy(yOverFlow) {
 }
+*/
 
 /*
 void CoordinatePolicy::setPolicy(const int & xUnderFlowPolicy, const int & yUnderFlowPolicy,  const int & xOverFlowPolicy, const int & yOverFlowPolicy){
@@ -61,7 +65,7 @@ void CoordinatePolicy::setPolicy(const int & xUnderFlowPolicy, const int & yUnde
 
 
 CoordinateHandler2D::CoordinateHandler2D(){
-	setPolicy(CoordinatePolicy());
+	setPolicy(CoordinatePolicy()); // turha
 	setLimits(1,1);
 }
 
@@ -72,7 +76,7 @@ CoordinateHandler2D::CoordinateHandler2D(int xUpperLimit, int yUpperLimit, const
 
 
 CoordinateHandler2D::CoordinateHandler2D(const CoordinateHandler2D &h){
-	setPolicy(h.policy);
+	setPolicy(h.getPolicy());
 	setLimits(h._xMin, h._yMin, h._xMax, h._yMax);
 }
 
@@ -98,15 +102,18 @@ void CoordinateHandler2D::setLimits(int xMin, int yMin, int xUpperLimit, int yUp
 }
 
 
-void CoordinateHandler2D::setPolicy(const int & xUnderFlowPolicy, const int & yUnderFlowPolicy,  const int & xOverFlowPolicy, const int & yOverFlowPolicy){
+void CoordinateHandler2D::setPolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
 
-	/// For bookkeeping
-	//policy.setPolicy(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
-	//policy.setPolicy(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
+	Logger mout("CoordinateHandler2D", __FUNCTION__);
+
+	// For bookkeeping
+	CoordinatePolicy::set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
+	/*
 	policy.xUnderFlowPolicy = xUnderFlowPolicy;
 	policy.yUnderFlowPolicy = yUnderFlowPolicy;
 	policy.xOverFlowPolicy  = xOverFlowPolicy;
 	policy.yOverFlowPolicy  = yOverFlowPolicy;
+	*/
 
 	switch (xUnderFlowPolicy){
 	case LIMIT:
@@ -122,6 +129,7 @@ void CoordinateHandler2D::setPolicy(const int & xUnderFlowPolicy, const int & yU
 		_handleXUnderFlow = & CoordinateHandler2D::handleXUnderFlow_Polar;
 		break;
 	default:
+		mout.warn() << "undefined xUnderFlowPolicy" << xUnderFlowPolicy << mout.endl;
 		_handleXUnderFlow = & CoordinateHandler2D::handle_Undefined;
 		break;
 	}
@@ -140,6 +148,7 @@ void CoordinateHandler2D::setPolicy(const int & xUnderFlowPolicy, const int & yU
 		_handleYUnderFlow = & CoordinateHandler2D::handleYUnderFlow_Polar;
 		break;
 	default:
+		mout.warn() << "undefined yUnderFlowPolicy" << yUnderFlowPolicy<< mout.endl;
 		_handleYUnderFlow = & CoordinateHandler2D::handle_Undefined;
 		break;
 	}
@@ -158,6 +167,7 @@ void CoordinateHandler2D::setPolicy(const int & xUnderFlowPolicy, const int & yU
 		_handleXOverFlow = & CoordinateHandler2D::handleXOverFlow_Polar;
 		break;
 	default:
+		mout.warn() << "undefined xOverFlowPolicy" << xOverFlowPolicy << mout.endl;
 		_handleXOverFlow = & CoordinateHandler2D::handle_Undefined;
 		break;
 	}
@@ -176,8 +186,8 @@ void CoordinateHandler2D::setPolicy(const int & xUnderFlowPolicy, const int & yU
 		_handleYOverFlow = & CoordinateHandler2D::handleYOverFlow_Polar;
 		break;
 	default:
+		mout.warn() << "undefined yOverFlowPolicy" << yOverFlowPolicy << mout.endl;
 		_handleYOverFlow = & CoordinateHandler2D::handle_Undefined;
-		break;
 	}
 
 }

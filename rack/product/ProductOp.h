@@ -42,11 +42,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include <drain/util/BeanLike.h>
-#include <drain/util/DataScaling.h>
-#include <drain/util/StringMapper.h>
-#include <drain/util/Variable.h>
-#include <drain/util/Tree.h>
-#include <drain/util/ReferenceMap.h>
+//#include <drain/util/DataScaling.h>
+//#include <drain/util/StringMapper.h>
+//#include <drain/util/Variable.h>
+//#include <drain/util/Tree.h>
+//#include <drain/util/ReferenceMap.h>
 
 
 
@@ -55,6 +55,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "data/ODIM.h"
 #include "data/DataSelector.h"
+#include "data/DataTools.h"
 #include "data/Data.h"
 #include "data/QuantityMap.h" // NEW
 
@@ -63,28 +64,36 @@ namespace rack {
 using namespace drain::image;
 
 
-/// Base class for radar data processors.
-
-/// Base class for radar data processors.
+/// Base class for radar data processors. Input can be in polar or Cartesian coordinates.
 /** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree<NodeH5>.
+ *
+ *  Input can be
+ *  - polar sweeps, volumes or even other polar products
+ *  - Cartesian single-radar products or composites.
  *
  *  Basically, there are two kinds of polar processing
  *  - Cumulative: the volume is traversed, each sweep contributing to a single accumulation array, out of which the product layer(s) is extracted.
  *  - Sequential: each sweep generates new layer (/dataset) in the product; typically, the lowest only is applied.
  *
  *  TODO: Raise to RackOp
+ *  TODO: Consider common processDataSet for all data types, see ImageOpRacklet::exec()
+ *  \tparam TS - source (input) ODIM type
+ *  \tparam TD - destination (output) ODIM type
  */
-class ProductOp : public drain::BeanLike {
-public:
+//template <class TS, class TD>
+class ProductBase : public drain::BeanLike {
+
+protected:
 
 	/// Default constructor
-	ProductOp(const std::string &name, const std::string & description) : drain::BeanLike(name, description) {
+	ProductBase(const std::string &name, const std::string & description) : drain::BeanLike(name, description) {
 		dataSelector.path = "^.*/data[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
 	}
 
+public:
 
 	virtual
-	~ProductOp(){};
+	~ProductBase(){};
 
 
 	/// Copies the conditions of another selector.
@@ -110,7 +119,8 @@ public:
 	 *   -# "auto": according to operators
 	 */
 	static
-	bool appendResults;
+	//std::string appendResults;
+	ODIMPathElem appendResults;
 
 	/// Determines if also intermediate results (1) are saved. See --aStore
 	static
@@ -130,14 +140,14 @@ public:
 	virtual
 	inline
 	void setEncodingRequest(const std::string &p) {
-		drain::MonitorSource mout(name+"(VolumeBaseOp)", __FUNCTION__);
+		drain::Logger mout(name+"(VolumeBaseOp)", __FUNCTION__);
 		/// test validity
 		try {
 			mout.debug(1) << " modifying metadata" << mout.endl;
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {
-			drain::MonitorSource mout(name, __FUNCTION__);
+			drain::Logger mout(name, __FUNCTION__);
 			mout.warn() << " unsupported parameters in: '" << p << "', use: " << allowedEncoding.getKeys() << mout.endl;
 			return;
 		}
@@ -213,12 +223,281 @@ protected:
 
 
 
-
+//template <class TS, class TD>
 inline
-std::ostream & operator<<(std::ostream & ostr, const rack::ProductOp &op){
+std::ostream & operator<<(std::ostream & ostr, const rack::ProductBase &op){
 	op.help(ostr); // todo: name & params only
 	return ostr;
 }
+
+/**
+ *   \tparam MS - input (source) metadata type: PolarODIM or CartesianODIM.
+ *   \tparam MD - output (destination) metadata type: PolarODIM or CartesianODIM.
+ */
+template <class MS, class MD>
+class ProductOp : public ProductBase {
+
+public:
+
+	typedef SrcType<MS const> src_t;
+	typedef DstType<MD> dst_t;
+
+
+	/// Default constructor
+	ProductOp(const std::string &name, const std::string & description) : ProductBase(name, description) {
+		dataSelector.path = "^.*/data[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
+	}
+
+	/// The default data parameters for encoding output (the product).
+	MD odim;
+
+
+	//void processH5() // see MotionFill
+	void processH5(const HI5TREE &src, HI5TREE &dst) const;
+
+
+	/// Traverse the data applicable for this product and create new, processed data (volume or polar product).
+	/** The input data is stored in SweepMapSrc, as Map indexed with elevation angles, containing sweep data
+	 *  - typically reflectivity data (DBZH) but generally any parameter measured by radar. The applicable data
+	 *  is set by selector.quantity, typically in the constructor of a derived class.
+	 */
+	virtual
+	void processDataSets(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
+
+	/// Process the data of a single sweep and and write the result to given product
+	/**
+	 *  Notice:
+	 *  - several product data arrays may be generated
+	 *  - also quality field(s) may be added
+	 *  - overwriting original data may occur, if input data (src) is also given as output (dst); this is desired
+	 *    action esp. in anomaly removal
+	 */
+	virtual
+	void processDataSet(const DataSet<src_t > & srcSweep, DataSet<DstType<MD> > & dstProduct) const;
+
+	virtual
+	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
+		drain::Logger mout(this->name, __FUNCTION__);
+		mout.warn() << "not implemented" << mout.endl;
+	};
+
+protected:
+
+
+	/// Sets automagically the suitable dst parameters.
+	/**
+	 *   Derives geometry for the resulting dst from three sources of parameters:
+	 *   the implicit operator parameters this->odim and the two function parameters
+	 *   \param srcODIM - metadata of the incoming data
+	 *   \param dstODIM - metadata of the result (sometimes partially set).
+	 *
+	 *   Default implementation as an empty function, because some operators like VerticalProfileOp will not use?
+	 */
+	virtual
+	void setGeometry(const MS & srcODIM, PlainData<dst_t > & dstData) const = 0; // {};
+
+
+	/// initialises dst data by setting suitable ODIM metadata and geometry.
+	/**
+	 *
+	 */
+	virtual inline
+	void initDst(const MS & srcODIM, PlainData<dst_t > & dstData) const {
+
+		drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+
+		setEncoding(srcODIM, dstData);
+		setGeometry(srcODIM, dstData);
+
+		mout.debug() << "final dstData: " << dstData << mout.endl;
+	}
+
+
+	/// Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.
+	/**
+	 *   Determines output encoding based on
+	 *   - input data (srcODIM)
+	 *   - output data (parameters already set in dstData)
+	 *   - this->odim (values set in constructor and encodingRequest)
+	 *   - encodingRequest
+	 *
+	 *   \see setGeometry
+	 */
+	virtual
+	void setEncoding(const ODIM & srcODIM, PlainData<dst_t > & dstData) const;
+
+	static
+	void handleEncodingRequest(const std::string & encoding, PlainData<dst_t > & dst){
+
+		drain::Logger mout("VolumeOp<M>::", __FUNCTION__);
+
+		ProductBase::handleEncodingRequest(dst.odim, encoding);
+
+		if (!dst.odim.type.empty())
+			dst.data.setType(dst.odim.type);
+		else
+			dst.odim.type = (const char)dst.data.getType2();
+
+	}
+};
+
+// template <class M> void VolumeOp<M>::
+template <class MS, class MD>
+void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & dst) const {
+
+	//ProductOp::applyDefaultODIM(dst.odim, odim);
+	ProductBase::applyODIM(dst.odim, this->odim);
+
+	//ProductOp::applyODIM(dst.odim, inputODIM);
+	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
+
+
+	ProductBase::handleEncodingRequest(dst.odim, this->encodingRequest);
+
+	/// This applies always.
+	//dst.odim.product = odim.product;
+}
+
+
+template <class MS, class MD>  // copied from VolumeOp::processVolume
+void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
+
+	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+
+	mout.debug() << "start" << mout.endl;
+	mout.debug(2) << *this << mout.endl;
+	mout.debug(1) << "DataSelector: "  << this->dataSelector << mout.endl;
+
+	// Step 1: collect sweeps (/datasetN/)
+	DataSetMap<src_t> sweeps;
+
+	/// Usually, the operator does not need groups sorted by elevation.
+	mout.debug(2) << "collect the applicable paths"  << mout.endl;
+	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	DataSelector::getPaths(src,  this->dataSelector, dataPaths);
+
+	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	std::set<std::string> parents;
+	int index = 0;
+
+	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+
+		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
+
+		const std::string parent = DataTools::getParent(*it);
+		//const double elangle = src(parent)["where"].data.attributes["elangle"];  // PATH
+
+		mout.debug(2) << "check "  << *it << mout.endl;
+
+		if (parents.find(parent) == parents.end()){
+			mout.debug(2) << "add " << parent  << "=>" << index << mout.endl;
+			// kludge (index ~ elevation)
+			sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(parent), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+			//elangles << elangle;
+		}
+	}
+
+	// Copy metadata from the input volume (note that dst may have been cleared above)
+	dst["what"]  = src["what"];
+	dst["where"] = src["where"];
+	dst["how"]   = src["how"];
+	dst["what"].data.attributes["object"] = this->odim.object;
+	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
+
+	/*
+	std::string dataSetPath = "dataset1";
+	if (!ProductBase::appendResults.empty()) // data or dataset
+		DataSelector::getNextOrdinalPath(dst, ProductBase::appendResults+"[0-9]+/?$", dataSetPath);
+	*/
+
+	//ODIMPath dataSetPath;
+	ODIMPathElem parent(BaseODIM::DATASET, 1); // /dataset1
+	ODIMPathElem child(BaseODIM::DATA, 1); // /dataset1
+
+	mout.note() << "append selector" <<  ProductBase::appendResults << mout.endl;
+	if (ProductBase::appendResults.getType() == BaseODIM::DATASET){
+		DataTools::getNextChild(dst, parent);
+	}
+
+	DataTools::getNextChild(dst[parent], child);
+
+	mout.note() << "storing product in path: " <<  parent << '|' << child << mout.endl;
+	//mout.debug(2) << "storing product in path: "  << dataSetPath << mout.endl;
+
+	HI5TREE & dstProduct = dst[parent][child]; // (dataSetPath);
+	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
+
+	drain::VariableMap & how = dstProduct["how"].data.attributes;
+
+	/// Main operation
+	this->processDataSets(sweeps, dstProductDataset);
+
+	//
+	how["software"] = __RACK__;
+	how["sw_version"] = __RACK_VERSION__;
+	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
+
+	//DataTools::updateAttributes(dstProduct);
+	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
+	//what["source"] = src["what"].data.attributes["source"];
+	//what["object"] = odim.object;
+
+}
+
+
+//template <class M>
+template <class MS, class MD>
+void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
+
+	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+	mout.debug(2) << "start" << mout.endl;
+
+	if (src.size() == 0)
+		mout.warn() << "no data" << mout.endl;
+
+	for (typename DataSetMap<src_t >::const_iterator it = src.begin(); it != src.end(); ++it) {
+
+		mout.debug(2) << "calling processDataSet for elev=" << it->first << " #datasets=" << it->second.size() << mout.endl;
+		processDataSet(it->second, dstProduct);
+		// TODO: detect first init?
+		// mout.warn() << "OK" << mout.endl;
+	}
+
+	/// Pick main product data and assign (modified) odim data
+	// mout.warn() << "getFirst data" << mout.endl;
+	//@ Data<DstType<MD> > & dstData = dstProduct.getFirstData(); // main data
+	//@ dstProduct.updateTree(dstData.odim);
+	// mout.warn() << "end" << mout.endl;
+}
+
+
+//template <class M>
+template <class MS, class MD>
+void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<DstType<MD> > & dstProduct) const {
+
+	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+
+	mout.debug() << "start" << mout.endl;
+
+	const Data<src_t > & srcData = srcSweep.getFirstData();
+
+	Data<DstType<MD> > & dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();
+
+	if (dstData.odim.quantity.empty())
+		dstData.odim.quantity = odim.quantity;
+
+	//mout.debug() << "calling setEncoding" << mout.endl;
+	//setEncoding(srcData.odim, dstData.odim);
+	this->initDst(srcData.odim, dstData);
+
+	//mout.warn() << "calling processData" << mout.endl;
+	processData(srcData, dstData);
+	//mout.warn() << "updateTree" << mout.endl;
+	//@ dstData.updateTree();
+}
+
+
+
 
 
 }  // namespace rack

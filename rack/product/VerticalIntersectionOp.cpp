@@ -49,32 +49,6 @@ namespace rack {
 
 
 
-/*
-
-
-void VerticalIntersectionOp::filterGroups(const HI5TREE &src, const std::list<std::string> & paths, HI5TREE &dst) const {
-
-
-	drain::MonitorSource mout(drain::monitor, name + ".(RackOp::filter(src,list,dst))");
-
-	// *it = "/dataset1/data1/data"  jne
-	mout.debug() << *this << mout.endl;
-
-	/// Copy top level metadata, part I: product settings  (including undetectValue timestamps - so this must be before user's attributes)
-	odim.copyToDataSet(dst);
-
-	/// Copy top level metadata, part II: source data
-	PolarODIM odimBase;
-	DataSelector::getAttributes(src,"/", odimBase);
-	odimBase.copyToDataSet(dst);
-
-
-}
-
-*/
-
-
-
 }  // ::rack
 
 

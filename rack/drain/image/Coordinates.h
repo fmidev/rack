@@ -33,8 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define COORDINATES_H_
 
 #include <ostream>
+#include <stdexcept>
 
-//#include "ImageFrame.h"
+//#include "ImageLike.h"
 //#include "Image.h"
 
 #include "Point.h"
@@ -51,12 +52,6 @@ class CoordinatePolicy {
 
 public:
 
-	CoordinatePolicy(int policy = LIMIT);
-
-	CoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy);
-
-	//void setPolicy(const int & xUnderFlowPolicy, const int & yUnderFlowPolicy, const int & xOverFlowPolicy, const int & yOverFlowPolicy);
-
 	static const int UNDEFINED;
 	static const int LIMIT;
 	static const int WRAP;
@@ -64,10 +59,70 @@ public:
 	static const int POLAR;
 	//static const int DROP=4;
 
+	inline
+	CoordinatePolicy(int p = LIMIT){
+		set(p);
+	};
+
+	inline
+	CoordinatePolicy(const CoordinatePolicy & policy){
+		set(policy);
+	};
+
+	inline
+	CoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy) {
+		set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
+	};
+
+
+	inline
+	void set(const CoordinatePolicy & policy){
+		set(policy.xUnderFlowPolicy, policy.yUnderFlowPolicy, policy.xOverFlowPolicy, policy.yOverFlowPolicy);
+	}
+
+	inline
+	void set(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
+		this->xUnderFlowPolicy = xUnderFlowPolicy;
+		this->yUnderFlowPolicy = yUnderFlowPolicy;
+		this->xOverFlowPolicy  = xOverFlowPolicy;
+		this->yOverFlowPolicy  = yOverFlowPolicy;
+	}
+
+	inline
+	void set(int policy){
+		set(policy, policy, policy, policy);
+	}
+
+	inline
+	void set(const std::vector<int> & v){
+	// CoordinatePolicy & operator=(const std::vector<int> & v){
+		if (v.size()!=4){
+			throw std::runtime_error("CoordinatePolicy::set v size not 4");
+			return; //  *this;
+		}
+		set(v[0], v[1], v[2], v[3]);
+	}
+
+	inline
+	operator const std::vector<int> & (){
+		v.resize(4);
+		v[0] = xUnderFlowPolicy;
+		v[1] = yUnderFlowPolicy;
+		v[2] = xOverFlowPolicy;
+		v[3] = yOverFlowPolicy;
+		return v;
+	}
+
 	int xUnderFlowPolicy;
 	int xOverFlowPolicy;
 	int yUnderFlowPolicy;
 	int yOverFlowPolicy;
+
+
+protected:
+
+	mutable
+	std::vector<int> v;
 
 
 };
@@ -99,8 +154,6 @@ public:
 	/// Inverse move would not result original position.
 	static const int IRREVERSIBLE = 128;
 
-	//bool isReversible(return (result));
-
 	/// Sets minimum values and outer upper limits for x and y.
 	void setLimits(int xMin, int yMin, int xUpperLimit, int yUpperLimit);
 
@@ -118,17 +171,17 @@ public:
 	void setPolicy(const CoordinatePolicy &p) { setPolicy(p.xUnderFlowPolicy, p.yUnderFlowPolicy, p.xOverFlowPolicy, p.yOverFlowPolicy); };
 
 	/// Assigns internal function pointers.
-	void setPolicy(const int & xUnderFlowPolicy, const int & yUnderFlowPolicy,  const int & xOverFlowPolicy, const int & yOverFlowPolicy);
+	void setPolicy(int xUnderFlowPolicy, int yUnderFlowPolicy,  int xOverFlowPolicy, int yOverFlowPolicy);
 
 	/// Set the same policy in all the directions.
 	inline
-	void setPolicy(const int & policy){
-		setPolicy(policy, policy, policy, policy);
+	void setPolicy(int p){
+		setPolicy(p, p, p, p);
 	}
 
 
 	inline
-	const CoordinatePolicy & getPolicy() const { return policy; }
+	const CoordinatePolicy & getPolicy() const { return *this; }
 
 	/// Adopts to the coordinate policy and limits of the image.
 	/*
@@ -139,7 +192,15 @@ public:
 	};
 	*/
 
-	/// Ensures the validity of the coordinates. Returns undetectValue if inside limits. See CoordinateHandler2D::IRREVERSIBLE and other constants.
+	/// Ensures the validity of the coordinates. If inside limits, arguments (x,y) remain intact and 0 is returned.
+	/**
+	 *
+	 *   \return - value that describes overflow; zero if no limits crossed and hence, x and y intact.
+	 *
+	 *   \see CoordinateHandler2D::IRREVERSIBLE  and other constants.
+	 *   \see validate()
+	 *
+	 */
 	virtual
 	inline
 	int handle(int &x,int &y) const {
@@ -186,7 +247,7 @@ private:
 
 protected:
 
-	CoordinatePolicy policy;
+	//CoordinatePolicy policy;
 
 
 

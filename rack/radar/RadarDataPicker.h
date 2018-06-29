@@ -56,7 +56,9 @@ namespace rack {
  */
 template <class OD>
 class RadarDataPicker : public drain::image::SamplePicker {
-  public: // repl \n 
+
+public:
+
 	/// Default constructor
 	RadarDataPicker(drain::ReferenceMap & variableMap, const OD & odim) : drain::image::SamplePicker(variableMap), odim(odim) {
 
@@ -76,11 +78,13 @@ class RadarDataPicker : public drain::image::SamplePicker {
 	typedef PlainData<src_t> data_t;
 
 	/// Input dataSet type
-	typedef DataSetSrc<src_t> dataset_t;
+	typedef DataSet<src_t> dataset_t;
 
 	/// Map type compatible with Sampler
 	typedef std::map<std::string, const data_t &> map_t;
 
+
+	// Note: setPosition(int i, int j) defined in derived classes.
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
 	inline
@@ -96,6 +100,12 @@ class RadarDataPicker : public drain::image::SamplePicker {
 			return false;
 		}
 	}
+
+	/// Prints images geometry, buffer size and type information.
+	void toOStr(std::ostream &ostr = std::cout) const {
+		ostr << "RadarDataPicker " << this->width << "x" << this->height << "; " << this->ref << "; " <<  odim << '\n';
+	}
+
 
 
 protected:
@@ -117,6 +127,13 @@ protected:
 
 };
 
+template <class OD>
+inline
+std::ostream & operator<<(std::ostream &ostr, const RadarDataPicker<OD> & p){
+	p.toOStr(ostr);
+	return ostr;
+}
+
 class PolarDataPicker : public RadarDataPicker<PolarODIM> {
   public: // repl \n 
 
@@ -126,6 +143,8 @@ class PolarDataPicker : public RadarDataPicker<PolarODIM> {
 		RadarDataPicker<PolarODIM>(variableMap, odim), J2AZMDEG(360.0/static_cast<double>(odim.nrays)),
 		current_sin(0), current_cos(0), current_azm(0), current_range(0)
 		{
+
+		// drain::Logger mout(__FUNCTION__, __FUNCTION__);
 
 		proj.setLocation(odim.lon, odim.lat);
 		proj.setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84");
@@ -198,17 +217,38 @@ class PolarDataPicker : public RadarDataPicker<PolarODIM> {
 
 
 class CartesianDataPicker : public RadarDataPicker<CartesianODIM> {
-  public: // repl \n 
+
+public:
+
 	/// Default constructor
 	inline
 	CartesianDataPicker(drain::ReferenceMap & variableMap, const CartesianODIM & odim) : RadarDataPicker<CartesianODIM>(variableMap,odim) {
 
+		drain::Logger mout(__FUNCTION__, __FUNCTION__);
 		setSize(odim.xsize, odim.ysize);
-		frame.setProjection(odim.projdef);
+		if (!odim.projdef.empty()){
+			frame.setProjection(odim.projdef);
+		}
+		else {
+			mout.note() << odim << mout.endl;
+			mout.warn() << "no projdef in metadata, cannot derive geographical coords (LON,LAT)" << mout.endl;
+		}
 		frame.setGeometry(odim.xsize, odim.ysize);
 		frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
 
+		if (!frame.isDefined()){
+			mout.note() << odim << mout.endl;
+			mout.note() << frame << mout.endl;
+			mout.note() << frame.getBoundingBoxR() << mout.endl;
+			mout.warn() << "frame could not be defined, incomplete metadata? (above)" << mout.endl;
+		}
+
 		variableMap.reference("j2", this->current_j2 = 0);
+
+		variableMap.separator = ','; // bug? Was not initialized
+		mout.debug() << "variableMap: " << variableMap << mout.endl;
+		mout.debug() << "frame: " << frame << mout.endl;
+
 	}
 
 
@@ -220,9 +260,11 @@ class CartesianDataPicker : public RadarDataPicker<CartesianODIM> {
 		this->current_j  = j;
 		this->current_j2 = this->height-1 - j;
 
-		frame.pix2m(i,j, x,y);
-		frame.pix2deg(i, j, lon, lat);
-
+		//if (!frame.projR2M.isSet()){ // odim.projdef.empty()
+		if (frame.projR2M.isSet()){ // odim.projdef.empty()
+			frame.pix2m(i,j, x,y);
+			frame.pix2deg(i, j, lon, lat);
+		}
 	}
 
 	/// Frame for converting coordinates.
@@ -232,7 +274,10 @@ class CartesianDataPicker : public RadarDataPicker<CartesianODIM> {
 	inline
 	void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
 		ostr << commentPrefix << " proj='" <<  frame.getProjection()   << "'\n";
-		ostr << commentPrefix << " bbox='" <<  frame.getBoundingBoxD() << "'\n";
+		const drain::Rectangle<double> & bbox = frame.getBoundingBoxD();
+		ostr << commentPrefix << " BBOX='" << bbox << "'\n";
+		ostr << commentPrefix << " XRANGE='" <<  bbox.xLowerLeft << ':' <<  bbox.xUpperRight << "'\n";
+		ostr << commentPrefix << " YRANGE='" <<  bbox.yLowerLeft << ':' <<  bbox.yUpperRight << "'\n";
 	};
 
 };

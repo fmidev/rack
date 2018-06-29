@@ -52,8 +52,6 @@ public:
 
 	inline
 	void setSiteLocationDeg(double lon, double lat){
-		// static const double DEG2RAD = M_PI/180.0;
-		// setSiteLocation(lon*DEG2RAD, lat*DEG2RAD);
 		std::stringstream s;
 		s << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84";
 		setProjectionSrc(s.str());
@@ -61,13 +59,12 @@ public:
 
 	/// Sets the site in radians.
 	void setSiteLocation(double lon, double lat){
-		static const double RAD2DEG = 180.0/M_PI;
-		setSiteLocationDeg(lon*RAD2DEG, lat*RAD2DEG);
+		setSiteLocationDeg(lon*drain::RAD2DEG, lat*drain::RAD2DEG);
 	}
 
 	inline
 	void setLatLonProjection(){
-		setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84");
+		setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs");
 	}
 
 	/// Given radar's range, returns the metric bounding box using the current projection.
@@ -77,6 +74,18 @@ public:
 	inline
 	void determineBoundingBoxM(double range, drain::Rectangle<double> & bbox) const {
 		determineBoundingBoxM(range, bbox.xLowerLeft, bbox.yLowerLeft, bbox.xUpperRight, bbox.yUpperRight);
+	}
+
+
+
+	/// Given radar's range, returns the metric bounding box using the current projection.
+	void determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const;
+
+
+	/// Given radar's range, returns the metric bounding box using the current projection.
+	inline
+	void determineBoundingBoxD(double range, drain::Rectangle<double> & bbox) const {
+		determineBoundingBoxD(range, bbox.xLowerLeft, bbox.yLowerLeft, bbox.xUpperRight, bbox.yUpperRight);
 	}
 
 

@@ -44,9 +44,9 @@ DrawingOp::~DrawingOp() {
 
 
 
-void DrawingOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const {
+void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	const Data<PolarSrc> & srcData = srcSweep.getFirstData();
 
@@ -60,24 +60,8 @@ void DrawingOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst
 		mout.debug() << "copy dstData: " << EncodingODIM(dstData.odim) << mout.endl;
 	}
 
-	/*
-	int ray1, ray2;
-	int bin1, bin2;
-	w.deriveWindow(srcData.odim, ray1, bin1, ray2, bin2);
-	ray1 = (ray1+dstData.odim.nrays) % dstData.odim.nrays;
-	ray2 = (ray2+dstData.odim.nrays) % dstData.odim.nrays;
-	*/
-
 	PolarSector w;
-
 	//mout.warn() << "ray=" << ray1 << ',' << ray2 << ", bins=" << bin1 << ',' << bin2 << mout.endl;
-
-	/*
-	if (shape.empty()){
-		mout.error() << "no shape type given" << mout.endl;
-		return;
-	}
-	*/
 
 	if ((shape.length()>1) && (shape != "direction") && (shape != "range") && (shape != "arc") && (shape != "sector")){
 		mout.error() << "unknown shape type: " << shape << mout.endl;
@@ -147,18 +131,11 @@ void DrawingOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst
 		break;
 	}
 
-	dstData.updateTree();
-	dstProduct.updateTree(odim);
+	//@= dstData.updateTree();
+	//@= dstProduct.updateTree(odim);
 
 }
 
-/*
-void DrawingOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
-
-	MonitorSource mout(name, __FUNCTION__);
-
-}
-*/
 
 }  // rack::
 

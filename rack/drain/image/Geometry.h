@@ -40,7 +40,100 @@ namespace drain
 namespace image
 {
 
-// using namespace std;
+/// Rectangle of width x height .
+class AreaGeometry
+{
+public:
+
+	inline
+	AreaGeometry() : width(0), height(0), area(0){};
+
+    void setWidth(size_t weight);
+
+    void setHeight(size_t height);
+
+    void setArea(size_t width, size_t height);
+
+    void setArea(const AreaGeometry & g){
+    	setArea(g.getWidth(), g.getHeight());
+    }
+
+    inline
+    size_t getWidth() const { return width; };
+
+    inline
+    size_t getHeight() const { return height; };
+
+	inline
+	size_t getArea() const { return area; };
+
+	inline
+	void toOStr(std::ostream &ostr) const {
+		ostr << getWidth() << "×" << getHeight();
+	}
+
+protected:
+
+	size_t width;
+    size_t height;
+    size_t area;
+
+    virtual
+    void update();
+
+
+};
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const AreaGeometry & g){
+	g.toOStr(ostr);
+	return ostr;
+}
+
+
+class ChannelGeometry
+{
+public:
+
+	inline
+	ChannelGeometry() : imageChannelCount(0), alphaChannelCount(0), channelCount(0) {};
+
+    void setChannelCount(size_t imageChannelCount, size_t alphaChannelCount = 0);
+    void setAlphaChannelCount(size_t alphaChannelCount);
+
+	inline
+	size_t getChannelCount() const { return channelCount; };
+
+	inline
+	size_t getImageChannelCount() const { return imageChannelCount; };
+
+	inline
+	size_t getAlphaChannelCount() const { return alphaChannelCount; };
+
+	inline
+	void toOStr(std::ostream &ostr) const {
+		if (getAlphaChannelCount())
+			ostr << '(' << getImageChannelCount() << '+' << getAlphaChannelCount() << ')';
+		else
+			ostr << getImageChannelCount();
+	}
+
+protected:
+
+    size_t imageChannelCount;
+    size_t alphaChannelCount;
+    size_t channelCount;
+
+    virtual
+    void update();
+
+};
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const ChannelGeometry & g){
+	g.toOStr(ostr);
+	return ostr;
+}
 
 /*! The basic idea is to encode dimensions directly as a std::vector<int>; the number of elements is 
  *  the number of dimensions. Each element states the discrete coordinate space.
@@ -58,8 +151,8 @@ namespace image
  *  The size of the vector of unlimited, allowing hypermatrices of any size. 
  * 
  */
-class Geometry
-{
+class Geometry : public AreaGeometry, public ChannelGeometry {
+
 public:
 
 	/// Constructor with dimensions. Channel count is one by default, allowing construction with width and height.
@@ -67,37 +160,24 @@ public:
 	 */
     Geometry(size_t width=0, size_t height=0, size_t channelCount=1, size_t alphaChannelCount=0);
 	
-    Geometry(const Geometry &g){
-    	setGeometry(g);
-    }
+    Geometry(const Geometry &g);
 
 	//Geometry(const std::vector<int> &vector, int a = 0); 
 
     virtual ~Geometry();
 
-	bool setGeometry(const Geometry &g);
+	//bool
+    inline
+    void setGeometry(const Geometry &g){
+    	setGeometry(g.width, g.height, g.imageChannelCount, g.alphaChannelCount);
+    }
     
-    bool setGeometry(size_t width,size_t height,
-		size_t imageChannelCount = 1,size_t alphaChannelCount = 0);
+    //bool
+    void setGeometry(size_t width, size_t height, size_t imageChannelCount = 1,size_t alphaChannelCount = 0);
     
-    void setWidth(size_t weight);
-    void setHeight(size_t height);
-    void setChannelCount(size_t imageChannelCount, size_t alphaChannelCount = 0);
-    void setAlphaChannelCount(size_t alphaChannelCount);
-    
-
-
-    // SP: Miksi palautetaan referenssit? Eikö alkeistyypeillä riitä arvon palautus?
-    // Hyvä kommentti tämäkin. En muista. Liittyneekö siihen, että jos kuva elää
-    // kesken suoritusta, muuttujakin pysyy ajan tasalla.
-	inline const size_t & getWidth() const { return width; };
-	inline const size_t & getHeight() const { return height; };
-	inline const size_t & getChannelCount() const { return channelCount; };
-	inline const size_t & getImageChannelCount() const { return imageChannelCount; };
-	inline const size_t & getAlphaChannelCount() const { return alphaChannelCount; };
 	
-	inline const size_t & getArea() const { return area; };
-	inline const size_t & getVolume() const { return volume; };
+	inline
+	size_t getVolume() const { return volume; };
 
     // to-be-protected? :
 
@@ -119,27 +199,26 @@ public:
     	return !((*this)==g);
     };
     
-    //Geometry & operator=(const Geometry &g);
-    
-    
-    std::string & toString(std::string & s) const;
-    
-	
-    protected:
-    	// alphaChannelCount?
-    	// area and volume
-    	void update();
-    	
-    size_t width;
-    size_t height;
-    size_t channelCount;
-	
-	size_t imageChannelCount;
-	size_t alphaChannelCount;
+    inline
+    void toOStr(std::ostream &ostr) const {
+    	AreaGeometry::toOStr(ostr);
+    	if (getChannelCount() != 1){
+    		ostr << "×";
+    		ChannelGeometry::toOStr(ostr);
+		}
+	}
 
-    size_t area;
+    std::string & toString(std::string & s) const;
+
+
+protected:
+
+    /// area and volume
+    virtual
+    void update();
+
     size_t volume;
-    
+
     	
 };
 
@@ -171,7 +250,7 @@ Geometry & Geometry::operator=(const std::vector<T> &v){
 	/*
 	for (int i = 0; i < d; ++i) {
 		if (i<d)
-			(*this)[i] = v[i];
+			(*this)[i] = vField[i];
 		else
 			(*this)[i] = 0;
 	}
@@ -180,7 +259,11 @@ Geometry & Geometry::operator=(const std::vector<T> &v){
 	return (*this);
 }
     
-std::ostream & operator<<(std::ostream &ostr,const Geometry &geometry);
+inline
+std::ostream & operator<<(std::ostream &ostr, const Geometry &geometry){
+	geometry.toOStr(ostr);
+	return ostr;
+}
     
 
 }

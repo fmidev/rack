@@ -77,6 +77,9 @@ protected:
 	int height;
 	int radius;
 	std::string style;
+	std::string fill;
+	std::string opacity; // empty
+	std::string text_anchor;
 
 };
 

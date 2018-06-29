@@ -52,7 +52,7 @@ namespace rack {
 /**
 
     \tparam AC - accumulator type (plain drain::image::Accumulator or drain::image::AccumulatorGeo)
-    \tparam OD - odim type (PolarODIM or CartesianODIM)
+    \tparam OD - odim type (PolarODIM or CartesianODIM) metadata container
 
  */
 template <class AC, class OD>
@@ -68,6 +68,7 @@ public:
 	/// Default constructor
 	RadarAccumulator() : defaultQuality(0.5) { //, undetectValue(-52.0) {
 		odim.type.clear();
+		//odim.ACCnum = 0;
 	}
 
 	/// Adds data that is in the same coordinate system as the accumulator.
@@ -76,7 +77,7 @@ public:
 	 */
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0);
 
-	void extract(const OD & odimOut, DataSetDst<DstType<OD> > & dstProduct, const std::string & quantities) const;
+	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const;
 
 	/// Input data selector.
 	DataSelector dataSelector;
@@ -120,11 +121,7 @@ protected:
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0){
 
-	drain::MonitorSource mout("RadarAccumulator", __FUNCTION__);
-
-	// Product::applyODIM(this->odim, srcData.odim, targetEncoding); WRONG. should not change after init.
-	// this->odim.EncodingODIM::update(srcData.odim);
-	// this->odim.update(srcData.odim);
+	drain::Logger mout("RadarAccumulator", __FUNCTION__);
 
 	if (!srcQuality.data.isEmpty()){
 		mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
@@ -146,7 +143,9 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
-	// quantity
+	//++odim.ACCnum;
+	odim.update(srcData.odim); // Time, date, new
+	// quantity?
 
 	//mout.note() << "before: " << this->odim << mout.endl;
 	//mout.note() << "after:  " << this->odim << mout.endl;
@@ -158,7 +157,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 template  <class AC, class OD>
 bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) const {
 
-	drain::MonitorSource mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout("RadarAccumulator", __FUNCTION__);
 
 	mout.debug() << "start, quantity=" << dataODIM.quantity << mout.endl;
 
@@ -193,13 +192,13 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 
 template  <class AC, class OD>
-void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSetDst<DstType<OD> > & dstProduct, const std::string & quantities) const {
+void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const {
 
 
-	drain::MonitorSource mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout("RadarAccumulator", __FUNCTION__);
 	// mout.warn() << "is root?\n" << dst << mout.endl;
 
-	const std::type_info & t = drain::Type::getType(odimOut.type);
+	const std::type_info & t = drain::Type::getTypeInfo(odimOut.type);
 
 	typedef enum {DATA,QUALITY} datatype;
 	int dCounter=0;
@@ -221,18 +220,22 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSetDst<DstType<OD>
 		datatype type = DATA;
 		char field = quantities.at(i);
 		switch (field) {
-			case 'd':
 			case 'm': // ???
 			case 'D':
 			case 'p': // ???
+				mout.warn() << "non-standard layer code; use 'd' for 'data' instead" << mout.endl;
+				// no break
+			case 'd':
 				type = DATA;
 				odimFinal = odimOut; // consider update
 				// odimQuality.setQuantityDefaults("QIND");
 				qm.setQuantityDefaults(odimQuality, "QIND");  // note: will not SET quantity !
 				odimQuality.quantity = "QIND";
 				break;
-			case 'c':
 			case 'C':
+				mout.warn() << "non-standard layer code; use 'c' for 'count' instead" << mout.endl;
+				// no break
+			case 'c':
 				type = QUALITY;
 				// odimQuality.setQuantityDefaults("COUNT", "C"); ok
 				odimQuality.type = drain::Type::getTypeChar(typeid(unsigned char));
@@ -255,10 +258,10 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSetDst<DstType<OD>
 				type = QUALITY;
 				odimQuality = odimOut;
 				odimQuality.quantity += "DEV";
-				odimQuality.gain *= 10;  // ?
+				odimQuality.gain *= 20.0;  // ?
 				//const std::type_info & t = Type::getType(odimFinal.type);
-				odimQuality.offset = round(drain::Type::getMax<double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
-				//isQualityField = true;
+				odimQuality.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
+				//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
 				break;
 			default:
 				mout.error() << "Unsupported field code: '" << field << "'" << mout.endl;
@@ -313,7 +316,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSetDst<DstType<OD>
 		//mout.debug()  << "dstData: " << dstData.odim << mout.endl;
 		mout.debug()  << "updating local tree attributes" << mout.endl;
 		//hi5::Writer::writeFile("test0.h5", dstProduct.tree);
-		dstData.updateTree();
+		//@= dstData.updateTree();
 		//std::cerr << __FUNCTION__ << ':' << dstData.tree << std::endl;
 		//hi5::Writer::writeFile("test1.h5", dstProduct.tree);
 
@@ -324,7 +327,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSetDst<DstType<OD>
 
 	mout.debug()  << "updating local tree attributes" << mout.endl;
 	//odimFinal.
-	dstProduct.updateTree(odimFinal);
+	//@= dstProduct.updateTree(odimFinal);
 
 
 	//mout.debug() << "Finished " << accumulator.getMethod().name << mout.endl;

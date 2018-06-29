@@ -32,14 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "CCorOp.h"
 
 #include <drain/util/Fuzzy.h>
-#include <drain/image/SlidingWindowMedianOp.h>
 #include <drain/image/File.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
 
 #include "hi5/Hi5Write.h"
 //#include "data/ODIM.h"
 //#include "main/rack.h"
 
-//#include <drain/image/SegmentAreaOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
 //#include <drain/image/MathOpPack.h>
 
 using namespace drain::image;
@@ -49,9 +49,9 @@ namespace rack {
 
 
 //void CCorOp::processDataSet(const DataSetSrc & src, DataSetDst & dst) const {
-void CCorOp::processDataSet(const DataSetSrc<> & src, PlainData<PolarDst> & dstProb, DataSetDst<> & aux) const {
+void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	//mout.debug() << parameters << mout.endl;
 
 	const Data<PolarSrc> & srcTH   = src.getData("TH");

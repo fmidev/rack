@@ -58,7 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/RemoverOp.h"
 #include "andre/DamperOp.h"
 #include "andre/GapFillOp.h"
-#include "andre/ThresholdOp.h"
+//#include "andre/ThresholdOp.h"
 
 // Utils
 #include "andre/QualityCombinerOp.h"
@@ -79,18 +79,15 @@ public:
 	virtual
 	~AnDReLetAdapter(){};
 
-	virtual
-	//inline
+	virtual inline
 	HI5TREE & getTarget() const {
 		return getResources().inputHi5;
 	};
 
-	//std::string resources.andreSelect;
-
 	virtual
 	void run(const std::string & params = "") {
 
-		drain::MonitorSource mout(this->adapterName, __FUNCTION__);
+		drain::Logger mout(this->adapterName, __FUNCTION__);
 
 		mout.timestamp("BEGIN_ANDRE");
 
@@ -100,12 +97,9 @@ public:
 		RackResources & resources = getResources();
 
 		if (!resources.select.empty()){
-			mout.debug() << "Setting data selector: " << resources.select << mout.endl;
+			mout.debug() << "Setting AnDre data selector: " << resources.select << mout.endl;
 			resources.andreSelect = resources.select;
-			// op.dataSelector.setParameters(resources.select);
 			mout.debug(1) << "New values: " << op.getDataSelector() << mout.endl;
-			//mout.debug(1) << "New values: " << op.getDataSelector() << mout.endl;
-			// cmdSelect.rackLet.value.clear();  DONT CLEAR!
 			resources.select.clear();
 		}
 
@@ -114,15 +108,14 @@ public:
 		mout.debug() << "Running:  " << op << mout.endl;
 		mout.debug() << "Selector: " << resources.andreSelect << mout.endl;
 
-
 		const HI5TREE &src = resources.inputHi5;
 		HI5TREE & dst = getTarget();  //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
 
 		//mout.warn() << dst << mout.endl;
 		op.processVolume(src, dst);
 
-		RackResources::updateCoordinatePolicy(dst, RackResources::polarLeft);
-		DataSelector::updateAttributes(dst);
+		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		DataTools::updateAttributes(dst);
 		resources.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		resources.currentHi5      = & dst;
 

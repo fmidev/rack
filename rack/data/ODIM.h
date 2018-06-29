@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cmath>
 #include <string>
 #include <set>
+#include <algorithm>
 //#include <drain/util/Options.h>
 #include <drain/util/ReferenceMap.h>
 #include <drain/util/Rectangle.h>
@@ -42,61 +43,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "hi5/Hi5.h"
 #include "radar/Constants.h"
+#include "BaseODIM.h"
 
 namespace rack {
-
-class SourceODIM : public drain::ReferenceMap {
-
-public:
-
-	std::string source;
-	std::string WMO;
-	std::string RAD;
-	std::string NOD;
-	std::string PLC;
-	std::string ORG;
-	std::string CTY;
-	std::string CMT;
-
-	/// Sets NOD, WMO, RAD, CTY and ORG
-	/**
-	 *   \param source - ODIM source std::string separated with ':', eg. "what:source=WMO:02870,RAD:FI47,PLC:Utajärvi,NOD:fiuta"
-	 *
-	 *   Note: some radars have had semicolon as separator: RAD:NL51;PLC:nldhl
-	 */
-	inline
-	SourceODIM(const std::string & source = "") : source(source) {
-		init();
-		setValues(source, ':');
-		setNOD();
-	};
-
-
-	inline
-	SourceODIM(const SourceODIM & s){
-		init();
-		updateFromMap(s);
-		setNOD();
-	};
-
-	/// Sets NOD, WMO, RAD, CTY and ORG
-	// ----
-
-	/// Derives a most standard name. Returns the first-non empty value of WMO, RAD, NOD, PLC, ORG. CTY, CMT.
-	const std::string & getSourceCode() const;
-
-private:
-
-	//inline
-	void init();
-
-	/// Assigns NOD if empty, and CMT
-	//inline
-	void setNOD();
-
-};
-
-
 
 
 /**
@@ -119,25 +68,54 @@ private:
  *  -# native variables (double, long int, std::string)
  *
  *  Typically used in creating and writing a product.
- *
+ *  See also: LinearScaling (could be used as base class?)
  */
-class EncodingODIM : public drain::ReferenceMap {
+class EncodingODIM : public BaseODIM, public drain::ReferenceMap {
 
 public:
 
+	typedef unsigned char group_t;
+	/*
+	static const group_t NONE = 0;
+	static const group_t ROOT = 1;
+	static const group_t DATASET = 2;
+	static const group_t DATA = 4; // or quality
+	static const group_t ALL = (ROOT | DATASET | DATA);
+	*/
+	// data
+	/*
+	static const group_t ROOT = 0;
+	static const group_t IS_INDEXED = 1;
+	static const group_t DATASET = 2 | IS_INDEXED;
+	static const group_t DATA    = 4 | IS_INDEXED; // or quality
+	static const group_t QUALITY = 8 | DATA | IS_INDEXED; // or quality
+	static const group_t ARRAY = 16;
+	static const group_t OTHER = 32; // tmp, user defined, etc.
+	static const group_t OTHER_INDEXED = (OTHER | IS_INDEXED); // tmp, user defined, etc.
+	static const group_t ALL = (ROOT | DATASET | DATA | QUALITY);
+	static const group_t NONE = 128;
+	*/
 
-	EncodingODIM(){ init(); };
+	inline
+	EncodingODIM(group_t initialize = ALL){
+		init(initialize);
+	};
 
+	inline  // todo raise initFromMap (was: FromODIM)
 	EncodingODIM(const EncodingODIM & odim){
-		init();
+		init(ALL);
 		updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
 	};
 
+
+	inline
 	EncodingODIM & operator=(const EncodingODIM & odim) {
 		// std::cerr << "EncodingODIM & operator=" << std::endl;
 		updateFromMap(odim);
 		return *this;
 	}
+
+
 
 	/// This is non-standard (not in ODIM), but a practical means of handling storage type of datasets.
 	//  See drain::Type.
@@ -173,28 +151,44 @@ public:
 
 	void setRange(double min, double max);  // todo rename setRange
 
-	/// Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Sets type, if unset.
+	/// Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Note: sets type only if unset.
+	template <class T>
 	inline
-	void setTypeDefaults(const std::string & type = "", const std::string & values = ""){
+	void setTypeDefaults(const T & type, const std::string & values = ""){
 
+		drain::Logger mout("EncodingODIM", __FUNCTION__);
+
+		drain::Type t(type);
+		const char typechar = drain::Type::getTypeChar(t);
 		if (this->type.empty())
-			this->type = type;
+			this->type = typechar;
+		else {
+			if (this->type.at(0) != typechar)
+				mout.warn() << "different types: " << this->type << '/' << typechar << mout.endl;
+		}
 
 		gain = 1.0;
 	    offset = 0.0;
 
-	    if (!type.empty()){ // ?
-	    	undetect = drain::Type::getMin<double>(type);
-	    	nodata   = drain::Type::getMax<double>(type);
+	    //if (!type.empty()){ // ?
+	    if (typechar != '*'){
+	    	undetect = drain::Type::call<drain::typeMin, double>(t); //drain::Type::getMin<double>(t);
+	    	nodata   = drain::Type::call<drain::typeMax, double>(t); // drain::Type::call<drain::typeMax,double>(t);
 	    }
 	    else {
-	    	undetect = drain::Type::getMin<double>(this->type);
-	    	nodata   = drain::Type::getMax<double>(this->type);
+	    	undetect = drain::Type::call<drain::typeMin, double>(this->type); //drain::Type::getMin<double>(this->type);
+	    	nodata   = drain::Type::call<drain::typeMax, double>(this->type); //drain::Type::call<drain::typeMax,double>(this->type);
 	    }
 
 		setValues(values);
 
 	}
+
+	inline
+	void setTypeDefaults(){
+		setTypeDefaults(this->type);
+	}
+
 
 	/// Converts a quantity from storage scale: y = offset + gain*y .
 	inline
@@ -212,38 +206,44 @@ public:
 	inline
 	double getMin() const {
 
-		if (type.empty())
+		const std::type_info & t = drain::Type::getTypeInfo(type);
+
+		if (t == typeid(void))
 			throw std::runtime_error(std::string("ODIM")+__FUNCTION__+" type unset");
 
-		if (drain::Type::isIntegralType(type)){
-			long int i = drain::Type::getMin<long int>(type);
+		if (drain::Type::call<drain::typeIsInteger>(t)){
+			long int i = drain::Type::call<drain::typeMin, long int>(t);
 			if (static_cast<double>(i) != undetect)
 				return scaleForward(static_cast<double>(i));
 			else
 				return scaleForward(static_cast<double>(i+1));
 		}
 		else
-			return scaleForward(drain::Type::getMin<double>(type));
+			return scaleForward( drain::Type::call<drain::typeMin, double>(t) );
 
 	}
 
+	/// Returns the minimum value that can be returned using current storage type, gain and offset.
 	inline
 	double getMax() const {
 
-		if (type.empty())
+		const std::type_info & t = drain::Type::getTypeInfo(type);
+
+		if (t == typeid(void))
 			throw std::runtime_error(std::string("ODIM")+__FUNCTION__+" type unset");
 
-		if (drain::Type::isIntegralType(type)){
-			long int i = drain::Type::getMax<long int>(type);
-			if (static_cast<double>(i) != undetect)
+		if (drain::Type::call<drain::typeIsInteger>(t)){
+			long int i = drain::Type::call<drain::typeMax, long int>(t);
+			if (static_cast<double>(i) != nodata)  // or undetect ?
 				return scaleForward(static_cast<double>(i));
 			else
 				return scaleForward(static_cast<double>(i-1));
 		}
 		else
-			return scaleForward(drain::Type::getMax<double>(type));
+			return scaleForward( drain::Type::call<drain::typeMax, double>(t) );
 
 	}
+
 
 
 	/// Functor (why inverse?)
@@ -308,73 +308,29 @@ public:
 	 *  dataset1/data1/quality1
 	 */
 
-	/// Write top-level ODIM data, eg. \c /what
-	void copyToRoot(HI5TREE & dst) const { copyTo(EncodingODIM::getRootAttributes(), dst);};
-
-	/// Write ODIM data relevant for dataset level, eg. \c /dataset2/what
-	// virtual
-	inline
-	void copyToDataSet(HI5TREE & dst) const { copyTo(EncodingODIM::getDatasetAttributes(), dst);};
-
-	/// Write ODIM data relevant for data level, eg. \c /dataset2/what
-	//virtual
-	inline
-	void copyToData(HI5TREE & dst) const { copyTo(EncodingODIM::getDataAttributes(), dst);};
-
-	// Slow, because gets initialized for every object. C++ has no static initialization.
-	inline
-	static std::set<std::string> & getRootAttributes(){
-		static std::set<std::string> rootAttributes;
-		return rootAttributes;
-	}
-
-
-	// Slow, because gets initialized for every object. C++ has no static initialization.
-	inline
-	static std::set<std::string> & getDatasetAttributes(){
-		static std::set<std::string> datasetAttributes;
-		return datasetAttributes;
-	}
-
-	// Slow, because gets initialized for every object. C++ has no static initialization.
-	inline
-	static std::set<std::string> & getDataAttributes(){
-		static std::set<std::string> dataAttributes;
-		return dataAttributes;
-	}
-
 
 	/// A set containing "what", "where" and "how".
 	static
 	const std::set<std::string> & attributeGroups;
 
 
+
 protected:
 
 
-	virtual
-	void init();
-
-
-	template <class F>
-	void declare(std::set<std::string> & keys, const std::string & key, F &x){
-		keys.insert(key);
-		reference(key, x);
-	}
-
-
-	///
-	void copyTo(const std::set<std::string> & keys, HI5TREE & dst) const;
 
 	static
 	void checkType(HI5TREE & dst, EncodingODIM & odim); // SEE ABOVE?
 
 
-private:
-
 	static
 	const std::set<std::string> & createAttributeGroups();
 
+
+private:
+
+	virtual // must
+	void init(group_t initialize=ALL);
 
 
 
@@ -386,13 +342,22 @@ class ODIM : public EncodingODIM {
 
 public:
 
-	ODIM(){ init(); };
-
-	ODIM(const ODIM & odim){
-		init();
-		updateFromMap(odim);
+	inline
+	ODIM(group_t initialize=ALL) : EncodingODIM(initialize){
+		init(initialize);
 	};
 
+	inline
+	ODIM(const ODIM & odim){
+		initFromMap(odim);
+	};
+
+	inline
+	ODIM(const drain::image::Image & image, const std::string & quantity=""){
+		initFromImage(image, quantity);
+	};
+
+	inline
 	~ODIM(){};
 
 	/// /what (obligatory)
@@ -415,6 +380,17 @@ public:
 	// Maximum Nyquist velocity
 	double NI;
 
+	// Number of images used in precipitation accumulation (lenient, not linked)
+	long ACCnum;
+
+	/// Sets number of bins (nbins) and number of rays (nrays)
+	virtual
+	void setGeometry(size_t cols, size_t rows){
+		drain::Logger mout(__FUNCTION__,__FUNCTION__);
+		mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
+	};
+
+
 	/// Updates object, quantity, product and time information.
 	/*!
 	 *  Fills empty values. Updates time variables.
@@ -422,8 +398,22 @@ public:
 	virtual
 	void update(const ODIM & odim);
 
-	/// Retrieves the stored time. Returns true if successful.
+	/// Retrieves the stored time. Returns true if successful, throws error if fail.
 	bool getTime(drain::Time & t) const;
+
+	/// Retrieves the start time. Returns true if successful, throws error if fail.
+	bool getStartTime(drain::Time & t) const;
+
+	/// Retrieves the end time. Returns true if successful, throws error if fail.
+	bool getEndTime(drain::Time & t) const;
+
+	/// Returns recommended coordinate policy. Redefined in PolarODIM.
+	virtual inline
+	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
+		using namespace drain::image;
+		static const CoordinatePolicy p(CoordinatePolicy::LIMIT);
+		return p;
+	}
 
 	/// If nodata==undetect, set nodata=maxValue (hoping its not nodata...)
 	/**
@@ -436,7 +426,7 @@ public:
 		if (quantity.empty() || (quantity == this->quantity)){  // Fix Vaisala IRIS bug
 			//std::cerr << "setNodata" << quantity << '\n';
 			if (nodata == undetect){
-				nodata = drain::Type::getMax<double>(type);
+				nodata = drain::Type::call<drain::typeMax,double>(type);
 				return true;
 			}
 			//std::cerr << "nodata: " << nodata << '\n';
@@ -458,237 +448,78 @@ public:
 			return false;
 	}
 
+	// Returns NI, unless zero. Otherways, tries to derive it from scaling (gain, offset).
+	double getNyquist() const;
+
+	static
+	const std::string dateformat; //, "%Y%m%d");
+
+	static
+	const std::string timeformat; // "%H%M%S");
+
+	/// Write ODIM data relevant for data level, eg. \c /dataset2, \c data4, and root.
+	/**
+	 *  \tparam G - group selector
+	 *  \tparam T - ODIM class
+	 *
+	 *  Examples of usage:
+	 *
+	 * 	- ODIM::copyToH5<ODIM::ROOT>(odim, resources.inputHi5);
+	 *	- ODIM::copyToH5<ODIM::DATASET>(odim, resources.inputHi5(dataSetPath));
+	 *  - ODIM::copyToH5<ODIM::DATA>(odim, dst);
+	 *
+	 */
+	template <group_t G, class T>
+	static inline
+	void copyToH5(const T &odim, HI5TREE & dst) {
+		static T odimLimited(G);
+		odim.copyTo(odimLimited.getKeyList(), dst);
+	}
+
+	template <group_t G, class T>
+	static inline
+	void copyToH5(const T &odim, const HI5TREE & dst) {
+		//static T odimLimited(G);
+		//odim.copyTo(odimLimited.getKeyList(), dst);
+	}
+
 
 protected:
 
-	virtual void init();
+	///
+	void copyTo(const std::list<std::string> & keys, HI5TREE & dst) const;
 
 
-
-};
-
-/// Metadata structure for single-radar data (polar scans, volumes and products).
-/**
- *
- */
-//
-class PolarODIM : public ODIM {
-
-
-public:
-
-	PolarODIM(){ init(); };
-
-	PolarODIM(const PolarODIM & odim){
-		init();
-		updateFromMap(odim);
-	};
-
-	PolarODIM(const drain::image::Image & image){
-		init();
-		drain::MonitorSource mout(__FUNCTION__,__FUNCTION__);
-		copyFrom(image);
-		//mout.warn() << EncodingODIM(*this) << mout.endl;
-	};
-
-
-
-	/// Number of range bins in each ray
-	long   nbins;
-	long   nrays;
-	double rscale;
-
-
-	// datasetX/where:
-	/// Longitude position of the radar antenna (degrees), normalized to the WGS-84 reference ellipsoid and datum. Fractions of a degree are given in decimal notation.
-	double lon;
-	/// Latitude position of the radar antenna (degrees), normalized to the WGS-84 reference ellipsoid and datum. Fractions of a degree are given in decimal notation.
-	double lat;
-	/// Height of the centre of the antenna in meters above sea level.
-	double height;
-
-	/// Antenna elevation angle (degrees) above the horizon.
-	double elangle;
-	/// The range (km) of the start of the first range bin.
-	double rstart;
-	/// Index of the first azimuth gate radiated in the scan.
-	long   a1gate;
-
-
-	double startaz;
-	double stopaz;
-
-	//double NI; // Maximum Nyquist
-	double highprf; //
-	double lowprf;  //
-	double wavelength;
-
-	/// Freezing level
-	double freeze;
-
-	/// Returns the distance in metres to the start of the measurement volume (i.e. the end nearer to radar).
-	/*
-	inline
-	double getDistance(long binIndex) const {
-		return rstart + static_cast<double>(binIndex)*rscale;
-	};
-	*/
-
-	inline
-	void setGeometry(size_t cols, size_t rows){
-		nbins = cols;
-		nrays = rows;
-	}
-
-	/// Returns the distance along the beam to the center of the i'th bin.
-	inline
-	double getBinDistance(size_t i) const {
-		return rstart + (static_cast<double>(i)+0.5)*rscale;
-	}
-
-	/// Returns the index of bin at given (bin center) distance along the beam.
-	inline
-	int getBinIndex(double d) const {
-		return static_cast<int>((d-rstart)/rscale) ;
-	}
-
-	/// Returns the index of a ray at a given azimuth [radians].
-	inline
-	int getRayIndex(double d) const {
-		return static_cast<int>(d*static_cast<double>(nrays)/(2.0*M_PI)) ;
-	}
-
-	/// Returns the azimuth in radians of the bin with vertical index j.
 	template <class T>
 	inline
-	double getAzimuth(T j) const {
-		return static_cast<double>(j)*2.0*M_PI / static_cast<double>(nrays);
+	void initFromMap(const std::map<std::string,T> & m){
+		init(ALL);
+		updateFromMap(m);
 	}
 
-	/// Returns the span of bins for the given azimuthal span.
-	inline
-	int getAzimuthalBins(double degree) const {
-		return static_cast<int>(degree * static_cast<double>(nrays)/360.0 + 0.5) ;
+	virtual inline
+	void initFromImage(const drain::image::Image & img){  // =""
+		init(ALL);
+		this->quantity = img.getProperties().get("what:quantity", "");
+		copyFrom(img);
 	}
 
-	/// Returns the span of bins for the given distance range in meters.
-	inline
-	int getBeamBins(double spanM) const {
-		return static_cast<int>(spanM/rscale + 0.5) ;
+	// deprec
+	virtual inline
+	void initFromImage(const drain::image::Image & img, const std::string & quantity){  // =""
+		init(ALL);
+		this->quantity = quantity;
+		copyFrom(img);
 	}
-
-	/// Returns the range in metres (i.e. distance to the end of the last measurement volume).
-	inline
-	double getMaxRange() const {
-		return rstart + static_cast<double>(nbins)*rscale;
-		//return getBinDistance(nbins);
-	};
-
-
-	double getGroundAngle(size_t i) const {
-		return (static_cast<double>(i)+0.5) * rscale / EARTH_RADIUS_43;
-	}
-
-	/// Converts Doppler speed [-NI,NI] to unit circle.
-	inline
-	void mapDopplerSpeed(double d, double &x, double &y) const {
-		d = scaleForward(d) * M_PI/NI;
-		//std::cerr << d << '\n';
-		x = cos(d);
-		y = sin(d);
-	}
-
-
-protected:
-
-	virtual void init();
-
-};
-
-
-
-// Proj4 proj could be part of this? No...
-class CartesianODIM : public ODIM {
-
-public:
-
-	CartesianODIM(){
-		init();
-		object = "COMP";
-	};
-
-	CartesianODIM(const CartesianODIM & odim){
-		init();
-		updateFromMap(odim);
-		//object = "COMP";
-	};
-
-	CartesianODIM(const drain::image::Image & image){
-		// alert old?
-		init();
-		copyFrom(image);
-	};
-
-	template <class T>
-	CartesianODIM(const std::map<std::string,T> & m){
-		init();
-		updateFromMap(m);  // updatemap?
-	}
-
-	inline
-	void setGeometry(size_t cols, size_t rows){
-		xsize = cols;
-		ysize = rows;
-	}
-
-
-	/// WHERE
-	std::string projdef;
-	long xsize;
-	long ysize;
-	double xscale;
-	double yscale;
-	//drain::Rectangle<double> bboxD ?
-	double LL_lat;
-	double LL_lon;
-	double UL_lat;
-	double UL_lon;
-	double LR_lat;
-	double LR_lon;
-	double UR_lat;
-	double UR_lon;
-
-	/// How cartesian data are processed, according to Table 12
-	std::string camethod;
-
-	/// Radar nodes (Table 9) which have contributed data to the composite, e.g. “’searl’, ’noosl’, ’sease’, ’fikor”’
-	std::string nodes;
-
-	/// This is needed for palette operations (of single-radar Cartesian products).
-	//double NI;
-
-
-	inline
-	const drain::Rectangle<double> & getBoundingBoxD(){
-		bboxD.xLowerLeft  = LL_lon;
-		bboxD.yLowerLeft  = LL_lat;
-		bboxD.xUpperRight = UR_lon;
-		bboxD.yUpperRight = UR_lat;
-		return bboxD;
-	}
-
-protected:
-
-	virtual
-	void init();
 
 private:
 
-	mutable drain::Rectangle<double> bboxD;
+	virtual // must
+	void init(group_t initialize=ALL);
+
+
 
 };
-
-// Consider single-radar odim
 
 
 

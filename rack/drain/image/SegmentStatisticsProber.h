@@ -373,18 +373,6 @@ protected:
 inline
 std::ostream & operator<<(std::ostream & ostr, const SegmentStatistics & s){
 	s.toOstr(ostr);
-	/*
-	ostr << '('   << s.getMeanX() << ',' << s.getMeanY() << ')' << ' ';
-	ostr << "s="   << s.getSize() << ',';
-	ostr << "h="   << s.getHorizontality() << ',';
-	ostr << "v="   << s.getVerticality() << ',';
-	ostr << "S="   << s.getVariance() << ',';
-	ostr << "e12="   << s.getEigenValue1() << ',' << s.getEigenValue2() << ',';
-	ostr << "e="   << s.getElongation() << ',';
-	//ostr << "c="   << s.getAnnularity() << ',';
-	ostr << "l="   << s.getSlimness() << ',';
-		//ostr << "p="         << floodFill.p;
-	 */
 	return ostr;
 }
 
@@ -401,7 +389,7 @@ class SegmentStatisticsProber : public SegmentProber<T,T2> {
 
 public:
 
-	SegmentStatisticsProber(const Image &s, Image &d, const std::string statistics="s") : SegmentProber<T,T2>(s,d), stats(statistics) {
+	SegmentStatisticsProber(const Channel &s, Channel & d, const std::string statistics="s") : SegmentProber<T,T2>(s,d), stats(statistics) {
 	};
 
 	~SegmentStatisticsProber(){};
@@ -425,19 +413,6 @@ protected:
 		this->statistics.add(i,j);
 	}
 
-	/*
-	virtual inline
-	bool visit(const int &i, const int &j) {
-		if (!this->_check(i,j))
-			return false;
-		else {
-			/// Class-specific op. Consider deriving SegmentProber => SegmentAreaProber
-			/// Could be replaced with update(i,j)?
-			this->statistics.add(i,j);
-			return true;
-		}
-	}
-	*/
 
 };
 
@@ -445,16 +420,6 @@ protected:
 template <class T, class T2>
 std::ostream & operator<<(std::ostream & ostr, const SegmentStatisticsProber<T,T2> & prober){
 	ostr << (const SegmentProber<T,T2> &)prober << '\t';
-	/*
-	const SegmentStatistics & s = prober.statistics;
-	ostr << '('   << s.getMeanX() << ',' << s.getMeanY() << ')' << ' ';
-	ostr << "s="   << s.getSize() << ',';
-	ostr << "h="   << s.getHorizontality() << ',';
-	ostr << "v="   << s.getVerticality() << ',';
-	ostr << "S="   << s.getVariance() << ',';
-	ostr << "e="   << s.getElongation() << ',';
-		//ostr << "p="         << floodFill.p;
-	 */
 	ostr << prober.statistics;
 	return ostr;
 }

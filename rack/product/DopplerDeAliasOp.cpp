@@ -39,11 +39,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <cmath>
 
-#include <drain/image/SlidingWindowOp.h>
-#include <drain/image/File.h>
-
 #include <drain/util/FunctorBank.h>
 #include <drain/util/Fuzzy.h>
+#include <drain/util/Geo.h>
+
+#include <drain/image/File.h>
+#include <drain/imageops/SlidingWindowOp.h>
+
 
 #include "radar/Geometry.h"
 #include "radar/Doppler.h"
@@ -66,11 +68,14 @@ class DopplerDeal : public SlidingRadarWindow<F> {
 
  */
 
-class DopplerDeAliasConfig : public DopplerWindowConfig {
+class DopplerDeAliasConfig : public RadarWindowConfig {
 public:
 
-	DopplerDeAliasConfig(const PolarODIM & odimSrc, int width=1, int height=1) :
-		DopplerWindowConfig(odimSrc, width, height){
+	//DopplerDeAliasConfig(const PolarODIM & odimSrc, int widthM=1500, double heightD=3.0) :
+	DopplerDeAliasConfig(int widthM=1500, double heightD=3.0) :
+		//RadarWindowConfig(odimSrc, width, height){
+		RadarWindowConfig(widthM, heightD){
+		//RadarWindowConfig(odimSrc.getBeamBins(widthM), odimSrc.getAzimuthalBins(heightD)){
 	};
 
 };
@@ -85,17 +90,26 @@ public:
 		SlidingRadarWindow<DopplerDeAliasConfig>(conf) , odimOut(odimOut), functor(NULL), dSpan(3), dSpan2(2.0*dSpan) { };
 
 	inline
-	void setDst2(drain::image::Image &d2){
+	void setDstFrame2(drain::image::Image &d2){
 		dst2.setView(d2);
+	}
+
+	inline
+	void setImageLimits() const {
+		src.adjustCoordinateHandler(coordinateHandler);
 	}
 
 	virtual
 	void initialize(){
 
-		drain::MonitorSource mout("DopplerDeAliasWindow", __FUNCTION__);
+		drain::Logger mout("DopplerDeAliasWindow", __FUNCTION__);
 		//mout.warn() << mout.endl;
 
-		NI = (this->conf.odimSrc.NI != 0.0) ? this->conf.odimSrc.NI : 0.01*this->conf.odimSrc.wavelength * this->conf.odimSrc.lowprf / 4.0;
+		setImageLimits();
+		setLoopLimits();
+		this->location.setLocation(0,0);
+
+		NI = (this->odimSrc.NI != 0.0) ? this->odimSrc.NI : 0.01*this->odimSrc.wavelength * this->odimSrc.lowprf / 4.0;
 
 		mout.debug() << "NI=" << NI << mout.endl;
 
@@ -112,11 +126,10 @@ public:
 		area = static_cast<double>(conf.width * conf.height);
 
 		vMax = odimOut.getMax();
-		mout.warn() << "max abs wind: " << vMax << mout.endl;
+		if (drain::Type::call<drain::typeIsInteger>(odimOut.type))
+			mout.warn() << "max abs wind: " << vMax << mout.endl;
 
 		//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
-		coordinateHandler.setPolicy(CoordinatePolicy::LIMIT, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
-		coordinateHandler.setLimits(src.getWidth(), src.getHeight());
 
 		if (!functorSetup.empty()){
 			const drain::FunctorBank & functorBank = drain::getFunctorBank();
@@ -139,7 +152,9 @@ public:
 			}
 		}
 
-
+		if (functor){
+			mout.info() << "functor='" << *functor << "'" << mout.endl;
+		}
 
 	}
 
@@ -149,7 +164,7 @@ public:
 
 	const PolarODIM & odimOut;
 
-	std::string functorSetup;
+	std::string functorSetup; // TODO: use that of Window::
 
 	mutable double AZM2RAD;
 
@@ -191,12 +206,12 @@ protected:
 			return;
 		d2 = src.get<double>(locationTmp);
 
-		if ((d1 != conf.odimSrc.undetect) && (d1 != conf.odimSrc.nodata) && (d2 != conf.odimSrc.undetect) && (d2 != conf.odimSrc.nodata)){
+		if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata) && (d2 != odimSrc.undetect) && (d2 != odimSrc.nodata)){
 
 			w += 1.0;
 
-			d1 = conf.odimSrc.scaleForward(d1);
-			d2 = conf.odimSrc.scaleForward(d2);
+			d1 = odimSrc.scaleForward(d1);
+			d2 = odimSrc.scaleForward(d2);
 			deriveDifference(d1, d2, diff);
 
 			/// Consider LUT here
@@ -218,8 +233,8 @@ protected:
 			coordinateHandler.handle(locationTmp);
 			//if (coordinateHandler.validate(locationTmp)){ // always ok, because between span; but handling must be done!
 			d1 = src.get<double>(locationTmp);
-			if ((d1 != conf.odimSrc.undetect) && (d1 != conf.odimSrc.nodata)){
-				d1 = conf.odimSrc.scaleForward(d1)*M_PI/NI;
+			if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata)){
+				d1 = odimSrc.scaleForward(d1)*M_PI/this->NI;
 				sV += sin(d1);
 				cV += cos(d1);
 			}
@@ -249,12 +264,12 @@ protected:
 			return;
 		d2 = src.get<double>(locationTmp);
 
-		if ((d1 != conf.odimSrc.undetect) && (d1 != conf.odimSrc.nodata) && (d2 != conf.odimSrc.undetect) && (d2 != conf.odimSrc.nodata)){
+		if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata) && (d2 != odimSrc.undetect) && (d2 != odimSrc.nodata)){
 
 			w -= 1.0;
 
-			d1 = conf.odimSrc.scaleForward(d1);
-			d2 = conf.odimSrc.scaleForward(d2);
+			d1 = odimSrc.scaleForward(d1);
+			d2 = odimSrc.scaleForward(d2);
 			deriveDifference(d1, d2, diff);
 
 			/// Consider LUT here
@@ -276,8 +291,8 @@ protected:
 			coordinateHandler.handle(locationTmp);
 			//if (coordinateHandler.validate(locationTmp)){ // always ok, because between span; but handling must be done!
 			d1 = src.get<double>(locationTmp);
-			if ((d1 != conf.odimSrc.undetect) && (d1 != conf.odimSrc.nodata)){
-				d1 = conf.odimSrc.scaleForward(d1)*M_PI/NI;
+			if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata)){
+				d1 = odimSrc.scaleForward(d1)*M_PI/this->NI;
 				sV -= sin(d1);
 				cV -= cos(d1);
 			}
@@ -316,7 +331,7 @@ protected:
 		if ((abs(u) >= vMax) || (abs(v) >= vMax)){
 			dst.put(location.x,  location.y, odimOut.nodata);
 			dst2.put(location.x, location.y, odimOut.nodata);
-			dstWeight.put(location.x, location.y, 0);
+			dstWeight.put(location.x, location.y, 0.1);
 			return;
 		}
 
@@ -331,7 +346,7 @@ protected:
 		// quality *=  1.0/(1.0 + sqrt((sumDiff2 - sumDiff*sumDiff/w) /w));
 
 		if (functor){
-			quality *= (*functor)(Geometry::heightFromEtaBeam(conf.odimSrc.elangle*DEG2RAD, conf.odimSrc.getBinDistance(location.x)));
+			quality *= (*functor)(Geometry::heightFromEtaBeam(odimSrc.elangle*drain::DEG2RAD, odimSrc.getBinDistance(location.x)));
 			/*
 			quality = Geometry::heightFromEtaBeam(conf.odimSrc.elangle*DEG2RAD, conf.odimSrc.getBinDistance(location.x));
 			if (isDiag(50)){
@@ -358,12 +373,12 @@ protected:
 
 protected:
 
-	drain::image::Image dst2;
+	drain::image::ImageView dst2;
 
 	virtual
 	void clear(){
 
-		//drain::MonitorSource mout("DopplerDeAliasWindow", __FUNCTION__);
+		//drain::Logger mout("DopplerDeAliasWindow", __FUNCTION__);
 		//mout.warn() << mout.endl;
 
 		w = 0.0;
@@ -393,16 +408,16 @@ protected:
 
 		/// Raw value (m/s)
 		dOmega = v2 - v1;
-		if (dOmega < -NI)
+		if (dOmega < -this->NI)
 			dOmega += NI2;
-		else if (dOmega > NI)
+		else if (dOmega > this->NI)
 			dOmega -= NI2;
 
 		dOmega = dOmega/(dSpan2*AZM2RAD);
 	}
 
 
-	//drain::DataScaling velocityScaling;
+	//drain::LinearScaling velocityScaling;
 
 private:
 
@@ -421,7 +436,7 @@ private:
 	Point2D<int> locationTmp;
 
 	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
-	mutable double NI;
+	//mutable double NI;
 
 	/// Nyquist range = 2*NI.
 	mutable double NI2;
@@ -484,11 +499,11 @@ private:
 };
 
 
-void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const {
+void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
-	const Data<PolarSrc> & srcData = srcSweep.getData("VRAD");
+	const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
 
 	if (srcData.data.isEmpty()){
 		// Actually this should be in higher level
@@ -497,8 +512,8 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 	}
 
 	if (srcData.odim.NI == 0.0){
-		mout.warn() << "NI (Nyquist interval) zero or not found. Returning." << mout.endl;
-		return;
+		mout.warn() << "NI (Nyquist interval) zero or not found." << mout.endl;
+		//return;
 	}
 
 	//dstProduct.odim.prodpar = getParameters().getKeys();
@@ -510,14 +525,16 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
 	dstQuality.data.clear();
 
-	ProductOp::applyODIM(dstDataU.odim, odim, true);
-	ProductOp::handleEncodingRequest(dstDataU.odim, encodingRequest);
+	ProductBase::applyODIM(dstDataU.odim, odim, true);
+	mout.debug(1) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
+	ProductBase::handleEncodingRequest(dstDataU.odim, encodingRequest);
+	mout.debug(2) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 	dstDataU.data.setType(dstDataU.odim.type);
 	setGeometry(srcData.odim, dstDataU);
-	// mout.warn() << "dstDataU.odim" << dstDataU.odim << mout.endl;
+	mout.debug() << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 
-	ProductOp::applyODIM(dstDataV.odim, odim, true);
-	ProductOp::handleEncodingRequest(dstDataV.odim, encodingRequest);
+	ProductBase::applyODIM(dstDataV.odim, odim, true);
+	ProductBase::handleEncodingRequest(dstDataV.odim, encodingRequest);
 	dstDataV.data.setType(dstDataV.odim.type);
 	setGeometry(srcData.odim, dstDataV);
 
@@ -531,35 +548,37 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
 	mout.warn() << "QIND" << dstQuality << mout.endl;
 	*/
-	DopplerDeAliasConfig conf(srcData.odim, widthM, heightD);
+	DopplerDeAliasConfig conf(widthM, heightD);
+
 
 	DopplerDeAliasWindow window(conf, dstDataU.odim);
 
+	window.conf.updatePixelSize(srcData.odim);
 	//window.resetAtEdges = true;
 
 	// window.signCos = +1; //(testSigns & 1) ? +1 : -1;
 	// window.signSin = -1;(testSigns & 2) ? +1 : -1;
 
 	//window.setSize(width, height);
-	window.setSrc(srcData.data);
-
-	window.setDst(dstDataU.data);
-	window.setDst2(dstDataV.data);
-	window.setDstWeight(dstQuality.data);
+	window.setSrcFrame(srcData.data);
+	window.setDstFrame(dstDataU.data);
+	window.setDstFrame2(dstDataV.data);
+	window.setDstFrameWeight(dstQuality.data);
 
 	window.functorSetup = altitudeWeight;
 
-	window.slide();
-	//window.traverse();
+	// MAIN OPERATION
+	window.run();
 
 
-	dstDataU.updateTree();
-	dstDataV.updateTree();
-	dstQuality.updateTree();
+	//@ dstDataU.updateTree();
+	//@ dstDataV.updateTree();
+	//@ dstQuality.updateTree();
 	// mout.warn() << "dstDataU" << dstDataU << mout.endl;
 
 	dstDataU.odim.prodpar = getParameters().getKeys();
-	dstProduct.updateTree(dstDataU.odim);
+	dstDataU.odim.update(srcData.odim); // date, time, etc
+	//@ dstProduct.updateTree(dstDataU.odim);
 
 	/// If desired, compute VVP
 	if (VVP){
@@ -626,10 +645,10 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 			}
 		}
 		// mout.warn() << "computing VVP ended " << mout.endl;
-		dstDataVVPU.updateTree();
-		dstDataVVPV.updateTree();
-		dstDataVVPQ.updateTree();
-		dstDataHGHT.updateTree();
+		//@ dstDataVVPU.updateTree();
+		//@ dstDataVVPV.updateTree();
+		//@ dstDataVVPQ.updateTree();
+		//@ dstDataHGHT.updateTree();
 	}
 
 
@@ -660,7 +679,7 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 				}
 			}
 		}
-		dstDataVRAD.updateTree();
+		//@ dstDataVRAD.updateTree();
 	}
 
 
@@ -683,7 +702,7 @@ void DopplerDeAliasOp::processDataSet(const DataSetSrc<PolarSrc> & srcSweep, Dat
 	*/
 
 	//drain::image::File::write(dst,"DopplerDeAliasOp.png");
-	mout.debug(3) << window.conf.odimSrc << mout.endl;
+	mout.debug(3) << window.odimSrc << mout.endl;
 
 
 }

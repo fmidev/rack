@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/ReferenceMap.h>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Type.h>
 //#include "ODIM.h"
 #include "Data.h"
@@ -106,7 +106,7 @@ public:
 				return it->second;
 			}
 			else {
-				//drain::MonitorSource mout("Quantity", __FUNCTION__);
+				//drain::Logger mout("Quantity", __FUNCTION__);
 				//mout.warn() << "undefined quantity=" << key << mout.endl;
 				static Quantity empty;
 				return empty;
@@ -132,32 +132,64 @@ public:
 
 	/// Sets quantity with default values, optionally overridden with by user values.
 	/**
+	 *  \param quantity - the quantity according to which the encoding will be set.
+	 *  \param values - other values, comma-separated
 	 *
+	 *   \return - true, if type could be set / derived
 	 */
 	bool setQuantityDefaults(EncodingODIM & dst, const std::string & quantity, const std::string & values = "") const;
+
+	inline
+	bool setQuantityDefaults(ODIM & dst) const {
+		return setQuantityDefaults(dst, dst.quantity);
+	}
 
 	///
 	/**
 	 *  \param quantity - the quantity according to which the encoding will be set.
 	 *  \param values - other values, comma-separated
+
+	 *  \return - true, if type could be set / derived
 	 */
 	template <class D>
-	inline
 	bool setQuantityDefaults(PlainData<D> & dstData, const std::string & quantity = "", const std::string & values = "") const {
+
+		drain::Logger mout("QuantityMap", __FUNCTION__);
 
 		const std::string & q = !quantity.empty() ? quantity : dstData.odim.quantity;
 
-		bool result = setQuantityDefaults(dstData.odim, q, values);
+		const bool typeSet = setQuantityDefaults(dstData.odim, q, values);
 
 		if (dstData.odim.quantity.empty()){
 			dstData.odim.quantity = q;
 		}
 
-		if (result){
-			dstData.data.setType(dstData.odim.type);
+		if (!typeSet){
+			mout.warn() << "conf for " << quantity << "[" << dstData.odim.type << "] not found" << mout.endl;
+		}
+		// Redesign all this...
+		dstData.data.setType(dstData.odim.type);
+		dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+
+		if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
+			//dstData.data.setOptimalScale(0.0, 1.0);
+			dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
 
-		return result;
+		return typeSet;
+	}
+
+	/// Checks if data
+	template <class M>
+	inline
+	bool isNormalized(const M odim) const {
+		const Quantity & q = get(odim.quantity);
+		if (!q.defaultType){
+			drain::Logger mout("QuantityMap", __FUNCTION__);
+			mout.warn() << "no default type for quantity:" << odim.quantity << mout.endl;
+			return false;
+		}
+		return EncodingODIM::haveSimilarEncoding(odim, q.get(q.defaultType));
 	}
 
 	/*

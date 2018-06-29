@@ -30,74 +30,78 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include "Histogram.h"
 
+
 namespace drain
 {
 
 /*
 */
-Histogram::Histogram(size_type size) : _sampleCount(0),  _sampleCountMedian(0) {
-	delimiter = ", ";
-	setSize(size);
-	setMedianPosition(0.5);
-	setScale(0,256);
-	_sampleCountNEW = 0;
-	//getsy['m'] = &getMedian;
-	setValueFunc('a');
+Histogram::Histogram(size_t size){
+	initialize(size);
+}
+
+Histogram::Histogram(const Histogram & histogram){
+	initialize(histogram.getSize());
 }
 
 //	virtual ~Histogram(){};
+void Histogram::initialize(size_t size){
+	delimiter = ", ";
+	//setScale(0, size);
+	setSize(size);
+	//setMedianPosition(0.5);
+	sampleCountNEW = 0;
+	weight = 0.0;
+	sampleCountMedian = 0;
+	setValueFunc('a');
+}
 
-
-void Histogram::setSize(const size_type &s){
-	_bins = s;
-	resize(_bins,0);
-	setScale(_inMin,_inMax,_outMin,_outMax);
+void Histogram::setSize(size_t s){
+	bins = s;
+	//resize(bins,0);
+	resize(bins);
+	//setScale(inMin,inMax,outMin,outMax);
+	setScale(0, bins-1);
 }
 
 
 void Histogram::clearBins(){
-	for (size_type i = 0; i < _bins; i++)
+	for (size_type i = 0; i < bins; i++)
 		(*this)[i] = 0;
-	_sampleCountNEW = 0;
+	sampleCountNEW = 0;
 }
-
-
-/*
-void Histogram::setSampleCount(long int n){
-	_sampleCount = n;
-	_sampleCountMedian = static_cast<size_t>(weight * _sampleCount);
-}
-*/
 
 
 /// Max refers to upper limit.
+/*
 void Histogram::setScale(int inMin, int inMax, int outMin, int outMax){
 	// First, store the values for future re-scalings.
-	_inMin = inMin;
-	_inMax = inMax;
-	_outMin = outMin;
-	_outMax = outMax;
+	this->inMin = inMin;
+	this->inMax = inMax;
+	this->outMin = outMin;
+	this->outMax = outMax;
 	// Then, scaling information.
-	_bins = size();
-	_inSpan = inMax-inMin;
-	_outSpan = outMax-outMin;
+	bins = size();
+	this->inSpan = inMax-inMin;
+	this->outSpan = outMax-outMin;
 	//cout << *this;
 }
-
+*/
 
 void Histogram::dump(std::ostream & ostr){
-	for (size_type i = 0; i < _bins; i++)
+	for (size_type i = 0; i < bins; i++)
 		ostr << i << ':' << (*this)[i] << '\n';
 }
 
 
 std::ostream & operator<<(std::ostream & ostr, const Histogram &h){
 	ostr << "histogram(" << h.getSize() << ")\t";
-	ostr << '[' << h.getInMin() << ','  << h.getInMax() << '[';
+	ostr << '[' << h.getInMin() << ','  << h.getUpperBoundIn() << '[';
 	ostr << " => ";
-	ostr << '[' << h.getOutMin() << ','  << h.getOutMax() << '[' << '\n';
+	ostr << '[' << h.getOutMin() << ','  << h.getUpperBoundOut() << '[' << '\n';
 	ostr << " sum=" << h.getSum<double>() << ',';
 	if (h.getSum<double>()>0){
+		ostr << " n=" << h.getSampleCount() << ',';
 		ostr << " mean=" << h.getMean<double>() << ',';
 		ostr << " min=" << h.getMin<double>() << ',';
 		ostr << " max=" << h.getMax<double>() << ',';

@@ -37,8 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 //#include "util/Data.h"
-#include "util/Variable.h"
-#include "util/DataScaling.h"
+//#include "util/Variable.h"
+//#include "util/DataScaling.h"
 
 #include "Point.h"
 #include "ImageT.h"
@@ -112,28 +112,16 @@ class AccumulationArray
 public:
 
 	friend class AccumulationMethod;
-	//DataScaling dataScaling;
-	//DataScaling dataScaling;
+	//LinearScaling dataScaling;
+	//LinearScaling dataScaling;
 
 	//double MINIMUM_NEW;
 	//double NO_DATA_NEW;
 
 	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
-	AccumulationArray(unsigned int width = 0, unsigned int height = 0, const std::string & method="OVERWRITE",
-			double p=1.0, double r=1.0, double gain=1.0, double offset=0.0) { //: converter(&defaultConverter) {
-
-		 // Template types. This is unneeded?
-		data.setType<double>();
-		weight.setType<double>();
-		count.setType<unsigned int>();
-		data2.setType<double>();
-
+	AccumulationArray(unsigned int width = 0, unsigned int height = 0){
+		//, const std::string & method="OVERWRITE", double p=1.0, double r=1.0, double gain=1.0, double offset=0.0) {
 		setGeometry(width, height);
-		// setMethod(method, p, r, gain, offset);
-		//setInternalScaling();
-
-		//MINIMUM_NEW = 0.0;
-		//NO_DATA_NEW = 255.0;
 	};
 
 	/// Destructor.

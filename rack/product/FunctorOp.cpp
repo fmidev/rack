@@ -49,7 +49,7 @@ using namespace drain::image;
 
 void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	drain::MonitorSource mout(name,__FUNCTION__);
+	drain::Logger mout(name,__FUNCTION__);
 
 	drain::FunctorBank & functorBank = drain::getFunctorBank();
 
@@ -63,7 +63,10 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		drain::UnaryFunctor & ftor = functorBank.get(ftorName).clone();
 		ftor.setParameters(ftorParams, '=', ':');
 		//	ftors.push_back(ftor);
+
 		const double dstMax = dst.data.getMax<double>();
+		typedef drain::typeLimiter<double> Limiter;
+		Limiter::value_t limit = drain::Type::call<Limiter>(dst.data.getType());
 
 		Image::const_iterator s  = src.data.begin();
 		Image::iterator d = dst.data.begin();
@@ -76,7 +79,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 				else if (s2 == src.odim.undetect)
 					*d = dst.odim.nodata;
 				else
-					*d = dst.data.limit<double>(dstMax * ftor(src.odim.scaleForward(s2)));
+					*d = limit(dstMax * ftor(src.odim.scaleForward(s2)));
 				++s;
 				++d;
 			}

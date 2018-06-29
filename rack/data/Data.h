@@ -40,13 +40,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/ReferenceMap.h>
 #include <drain/util/RegExp.h>
 #include <drain/util/Variable.h>
-#include <drain/util/Path.h>
+// #include <drain/util/Path.h>
 
-#include "ODIM.h"
-#include "data/VerticalODIM.h"
+//#include "ODIM.h"
+#include "PolarODIM.h"
+#include "CartesianODIM.h"
+#include "VerticalODIM.h"
 //#include "product/DataConversionOp.h"
 
 #include "DataSelector.h"
+#include "DataTools.h"
 
 using namespace drain::image;
 
@@ -77,9 +80,10 @@ namespace rack {
 
 /// Container that couples together trees (drain::Tree) and images (drain::image::Image). Source or destinations types.
 /**
- *  \tparam T  - tree type
- *  \tparam TI - tree iterator: iterator for non-const, const_iterator for const
- *  \tparam D  - tree type
+ *  The template parameters are expected to be exactly the following, all of them const or non-const:
+ *  \tparam T - HDF5 tree, as HI5TREE
+ *  \tparam TI - two-dimensional data, as drain::image::Image
+ *  \tparam D - metadata, as rack::PolarODIM
  */
 template <typename T, typename TI, typename D>
 struct DataType {
@@ -95,7 +99,7 @@ struct DataType {
  */
 template <typename M = PolarODIM const>
 struct SrcType : public DataType<HI5TREE const, HI5TREE::const_iterator, Image const> {
-    typedef M odim_t;
+	typedef M odim_t;
 };
 
 
@@ -105,7 +109,7 @@ struct SrcType : public DataType<HI5TREE const, HI5TREE::const_iterator, Image c
  */
 template <typename M = PolarODIM>
 struct DstType : public DataType<HI5TREE, HI5TREE::iterator, Image> {
-    typedef M odim_t;
+	typedef M odim_t;
 };
 
 
@@ -129,7 +133,73 @@ typedef DstType<VerticalProfileODIM> VprDst;
 
 
 
-/// Tool for selecting datasets based on paths, quantities and min/max elevations.
+/// Base class for all kinds of radar data
+/**
+ *  \tparam DT - metadata using OPERA data information model
+ */
+template <typename DT>
+class DataObject {
+public:
+
+	typedef typename DT::tree_t tree_t;
+	// typedef typename DT::image_t image_t;
+	// typedef typename DT::odim_t odim_t;
+
+
+//protected:
+
+	/// General HDF5 data structure
+	tree_t & tree;
+
+public:
+
+	//image_t & data;
+	// Metadata structure
+	//odim_t odim;
+	//typename DT::odim_t odim;
+
+protected:
+
+
+	DataObject(tree_t & tree) :
+		tree(tree)
+		//data(tree["data"].data.dataSet),
+		//odim(data, data.properties.get("what:quantity",""))
+	{};
+
+	/*
+	DataObject(tree_t & tree, const std::string & quantity) :
+		tree(tree),
+		data(tree["data"].data.dataSet),
+		odim(data, quantity)
+	{};
+	*/
+
+	//DataObject(tree_t & tree, const odim_t & odim) tree(tree), odim(odim) {};
+	DataObject(const DataObject & d) : tree(d.tree){}; //, image(d.data), odim(d.odim) {};
+
+
+};
+
+template <typename DT>
+class RootData : public DataObject<DT> {
+
+public:
+
+	RootData(typename DT::tree_t & tree) : DataObject<DT>(tree) {
+		// todo: init odim
+	};
+
+	virtual inline
+	~RootData(){
+		ODIM::copyToH5<ODIM::ROOT>(this->odim, this->tree);
+		DataTools::updateAttributes(this->tree);
+	};
+
+	typename DT::odim_t odim;
+
+};
+
 
 
 /**
@@ -139,19 +209,28 @@ typedef DstType<VerticalProfileODIM> VprDst;
  *  \tparam M - metadata, as rack::PolarODIM
  */
 template <typename DT>
-class PlainData {
+class PlainData : public DataObject<DT> {
 public:
 
 	typedef typename DT::tree_t tree_t;
 	typedef typename DT::image_t image_t;
 	typedef typename DT::odim_t odim_t;
 
-	/// Constructor referring to HDF5 structure
-	PlainData(tree_t & tree) :
-			tree(tree),
+	// NEW
+	inline
+	PlainData(typename DT::tree_t & tree) : DataObject<DT>(tree),
 			data(tree["data"].data.dataSet),
-			odim(data)
+			odim(data, data.properties.get("what:quantity",""))
+			{
+	}
+
+	/// Constructor referring to HDF5 structure
+	PlainData(typename DT::tree_t & tree, const std::string & quantity) : DataObject<DT>(tree),
+		//tree(tree),
+		data(tree["data"].data.dataSet),
+		odim(data, quantity) // reads data.properties?
 	{
+		//odim.quantity = quantity;
 	}
 
 	/// Copy constructor, also for referencing non-const as const.
@@ -159,19 +238,37 @@ public:
 	 *   Compiler returns error if odim types ar incompatible.
 	 */
 	template <typename DT2>
-	PlainData(const PlainData<DT2> & d) :
-				tree(d.tree),
-				data(tree["data"].data.dataSet),
-				odim(data)
+	PlainData(const PlainData<DT2> & d) : DataObject<DT>(d.tree),
+		data(this->tree["data"].data.dataSet),
+		odim(d.odim)
+		//odim(data, data.properties.get("what:quantity",""))
 	{
+		//odim.updateFromMap(d.odim);
+	}
+
+	inline
+	~PlainData(){
+		//drain::Logger mout("PlainData", __FUNCTION__);
+		//mout.debug(1) << "calling updateTree2, odim: " << odim << mout.endl;
+		updateTree2();
 	}
 
 	/// Saves type and sets the type of the actual data array as well.
+	// TODO: rename to: setEncoding
 	template <class T>
 	inline
-	void setTypeDefaults(const T & type, const std::string & values = ""){
+	void setEncoding(const T & type, const std::string & values = ""){
+		odim.type = drain::Type::getTypeChar(type);
 		odim.setTypeDefaults(type, values);
 		data.setType(type);
+		//data.setGeometry(data.);
+	}
+
+	inline
+	void setPhysicalRange(double min, double max){
+		data.setPhysicalScale(min, max);
+		odim.gain   = data.getScaling().scale;
+		odim.offset = data.getScaling().offset;
 	}
 
 	/// Sets dimensions of data array and metadata.
@@ -181,32 +278,100 @@ public:
 		data.setGeometry(cols, rows);
 	}
 
+	/// Calls setTypeXX and setGeometry().
+	template <class T>
+	inline
+	void initialize(const T & type, size_t cols, size_t rows){
+		setEncoding(type);
+		setGeometry(cols, rows);
+	}
 
-	tree_t & tree;
+	// Mark this data temporary so that it will not be save by Hi5::write().
+	inline
+	void setNoSave(bool noSave = true){ this->tree.data.noSave = noSave;};
+
+
+	//tree_t & tree;
 
 	image_t & data;
 
 	// Metadata structure
 	odim_t odim;
 
-	/*
+	/// TODO: consider this to destructor
 	inline
-	image_t & getPalette(){
-		return tree["palette"].data.dataSet;
+	void updateTree2(){
+		//if (! DataTools::removeIfNoSave(this->tree)){
+		ODIM::copyToH5<ODIM::DATA>(odim, this->tree);
+		DataTools::updateAttributes(this->tree);
+		//}
+	}
+
+	/*
+	inline void updateTree2(const tree_t & t) const {
+		std::cerr << "destructing const PlainData\n";
+	}
+
+	inline void updateTree2(tree_t & t) const {
+		std::cerr << "destructing non-const PlainData\n";
 	}
 	*/
 
+	// Possibly this should be somewhere else? (Too specific here?)
+	void createSimpleQualityData(drain::image::Image & qualityImage, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const;
+
+	// Possibly this should be somewhere else? (Too specific here?)
 	inline
-	void updateTree(){
-		odim.copyToData(tree);
+	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
+		qualityData.setEncoding(typeid(unsigned char));
+		// qualityData.setGeometry(data.getWidth(), data.getHeight());
+		createSimpleQualityData(qualityData.data, dataQuality, nodataQuality, undetectQuality);
+		qualityData.odim.gain   = qualityData.data.getScaling().scale;
+		qualityData.odim.offset = qualityData.data.getScaling().offset;
 	}
+
 
 protected:
 
+	/*
+	virtual inline
+	const tree_t & getTree() const { return this->tree; };
+
+	virtual inline
+	tree_t & getTree(){ return this->tree; } ;
+	*/
 
 	// mutable Image palette;
 
 };
+
+template <typename DT>  // PlainData<DT> & quality
+void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double nodataQuality, double undetectQuality) const {
+
+	quality.setPhysicalScale(0.0, 1.0);
+	const drain::image::ImageScaling & scaling = quality.getScaling();
+	const double d  = scaling.inv(dataQuality);
+	const double nd = scaling.inv(nodataQuality);
+	const double un = scaling.inv(undetectQuality);
+
+	quality.setGeometry(data.getWidth(), data.getHeight());
+
+	Image::iterator  it = data.begin();
+	Image::iterator wit = quality.begin();
+	while (it != data.end()){
+		//if ((*it != odim.nodata) && (*it != odim.undetect))
+		if (*it == odim.nodata)
+			*wit = nd;
+		else if (*it == odim.undetect)
+			*wit = un;
+		else
+			*wit = d;
+		++it;
+		++wit;
+	}
+
+}
+
 
 
 
@@ -215,13 +380,129 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
 	ostr << d.data << ", ODIM:\t ";
 	ostr << d.odim << '\n';
-	ostr << d.data.properties << '\n';
+	ostr << "props: " << d.data.properties << '\n';
 	return ostr;
 }
 
 
 
+/// Base class providing quality support for Data<DT> and DataSet<DT>
+template <typename DT>
+class QualityDataSupport {
 
+public:
+
+	typedef PlainData<DT> plaindata_t;
+
+	virtual inline
+	~QualityDataSupport(){};
+
+	/// Returns true if non-empty, associated QIND data exists.
+	inline
+	bool hasQuality(const std::string & qualityQuantity = "QIND") const {
+		return hasQualityData(qualityDataMap, qualityQuantity, getTree());
+		//return !getQualityDataSupport(quantity).data.isEmpty();
+	};
+
+
+	/// Finds local quality data; maybe empty.
+	/*
+	 *  Returns local, "own" quality. Ie. if data is under data[i], returns data[i]/quality[j] for which quantity=[quantity]
+	 *  \param quantity - qua
+	 *  \param tmp - create temporary data array that will not be stored by Hi5Writer().
+	 */
+	plaindata_t & getQualityData(const std::string & quantity = "QIND") {
+		return retrieveQualityData(qualityDataMap, quantity, getTree());
+	}
+
+	/// Finds local quality data; maybe empty.
+	/*
+	 *  Returns local, "own" quality. Ie. if data is under data[i], returns data[i]/quality[j] for which quantity=[quantity]
+	 *  \param quantity - qua
+	 *  \param tmp - create temporary data array that will not be stored by Hi5Writer().
+	 */
+	const plaindata_t & getQualityData(const std::string & quantity = "QIND") const { // , bool tmp = false
+		return retrieveQualityData(qualityDataMap, quantity, getTree());  // , tmp
+	}
+
+	/// Retrieve general or quantity-specific quality data.
+	/**
+	 *  \param quantityQuality - name of the quality quantity to be searched, eg. "QIND".
+	 *  \param quantity - quantity (like "DBZH"), the quality of which is searched
+	 */
+
+protected:
+
+	static
+	void findExistingQualityPath(const std::string & quantity, const typename plaindata_t::tree_t & tree, std::string & path){
+		// "/quality.." =>
+		// "^/quality.." =>
+		DataSelector selector("^/quality[0-9]+$", std::string("^")+quantity+std::string("$"));
+		DataSelector::getPath(tree, selector, path);
+	}
+
+	static
+	bool hasQualityData(std::map<std::string, plaindata_t > & cacheMap, const std::string & quantity, const typename plaindata_t::tree_t & tree){
+
+		if (cacheMap.find(quantity) != cacheMap.end())
+			return true;
+		else {
+			std::string path = "";
+			findExistingQualityPath(quantity, tree, path);
+			return !path.empty();
+		}
+
+	}
+
+
+	static
+	plaindata_t & retrieveQualityData(std::map<std::string, plaindata_t > & cacheMap, const std::string & quantity, typename plaindata_t::tree_t & tree){ //  , bool tmp = false
+
+		typename std::map<std::string, plaindata_t >::iterator it = cacheMap.find(quantity);
+
+		if (it != cacheMap.end()){
+			// std::cerr << "static Data::getQualityData(): cacheMap had '"<< quantity << "' already cached, ok" << std::endl;
+			return it->second;
+		}
+		else {
+			// "/quality.." =>
+			// "^/quality.." =>
+			std::string path = "";
+			findExistingQualityPath(quantity, tree, path);
+			if (path.empty()){  // create it
+				// "/quality.." =>
+				// "^/quality.." =>
+				path = "quality1";
+				DataSelector::getNextOrdinalPath(tree, "^/?quality[0-9]+$", path);
+				// std::cerr << "PlainData::getQualityData(): creating '"<< quantity << "' in '"<< path <<"', caching" << std::endl;
+			}
+
+			it = cacheMap.insert(cacheMap.begin(), typename std::map<std::string, plaindata_t >::value_type(quantity, plaindata_t(tree(path), quantity)));  // WAS [path]
+			// it = cacheMap.insert(cacheMap.begin(), typename plaindata_t(quantity, plaindata_t(tree[path])));
+
+			return it->second;
+		}
+	}
+
+
+
+
+
+protected:
+
+	virtual
+	const typename DT::tree_t & getTree() const = 0;
+
+	virtual
+	typename DT::tree_t & getTree() = 0;
+
+	mutable
+	std::map<std::string, plaindata_t > qualityDataMap;
+
+
+
+
+};
 
 
 /*
@@ -240,7 +521,7 @@ std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
  */
 //template <typename T, typename D, typename M = PolarODIM>
 template <typename DT>
-class Data : public PlainData<DT> {
+class Data : public PlainData<DT>, public QualityDataSupport<DT> {
 public:
 
 	typedef PlainData<DT> plaindata_t;
@@ -248,91 +529,19 @@ public:
 	Data(typename DT::tree_t & tree) : PlainData<DT>(tree){
 	}
 
+	Data(typename DT::tree_t & tree, const std::string & quantity) : PlainData<DT>(tree, quantity){
+	}
+
 	// Data(const HI5TREE & src, const std::string & quantity = "^DBZH$");
 	virtual ~Data(){};
 
-	/// Finds local quality data; maybe empty.
-	/*
-	 *  Returns local, "own" quality. Ie. if data is under data[i], returns data[i]/quality[j] for which quantity=[quantity]
-	 *  \param quantity - qua
-	 *  \param tmp - create temporary data array that will not be stored by Hi5Writer().
-	 */
-	plaindata_t & getQualityData(const std::string & quantity = "QIND") const { // , bool tmp = false
-		return getQualityData(qualityDataMap, quantity, this->tree);  // , tmp
-	}
-
-
-
-
-	static
-	void findExistingQualityPath(const std::string & quantity, const typename plaindata_t::tree_t & tree, std::string & path){
-		// "/quality.." =>
-		// "^/quality.." =>
-		DataSelector selector("^/quality[0-9]+$", std::string("^")+quantity+std::string("$"));
-		DataSelector::getPath(tree, selector, path);
-	}
-
-	static
-	bool hasQualityData(std::map<std::string, plaindata_t > & cacheMap, const std::string & quantity, typename plaindata_t::tree_t & tree){
-
-		if (cacheMap.find(quantity) != cacheMap.end())
-			return true;
-		else {
-			std::string path = "";
-			findExistingQualityPath(quantity, tree, path);
-			return !path.empty();
-		}
-
-	}
-
-
-	static
-	plaindata_t & getQualityData(std::map<std::string, plaindata_t > & cacheMap, const std::string & quantity, typename plaindata_t::tree_t & tree){ //  , bool tmp = false
-		typename std::map<std::string, plaindata_t >::iterator it = cacheMap.find(quantity);
-		if (it != cacheMap.end()){
-			// std::cerr << "static Data::getQualityData(): cacheMap had '"<< quantity << "' already cached, ok" << std::endl;
-			return it->second;
-		}
-		else {
-			// "/quality.." =>
-			// "^/quality.." =>
-			std::string path = "";
-			findExistingQualityPath(quantity, tree, path);
-			//DataSelector selector("^/quality[0-9]+$", std::string("^")+quantity+std::string("$"));
-			//DataSelector::getPath(tree, selector, path);
-			if (path.empty()){  // create it
-				// "/quality.." =>
-				// "^/quality.." =>
-				path = "quality1";
-				DataSelector::getNextOrdinalPath(tree, "^/?quality[0-9]+$", path);
-				// std::cerr << "PlainData::getQualityData(): creating '"<< quantity << "' in '"<< path <<"', caching" << std::endl;
-			}
-
-			it = cacheMap.insert(cacheMap.begin(), typename std::map<std::string, plaindata_t >::value_type(quantity, plaindata_t(tree(path))));  // WAS [path]
-			// it = cacheMap.insert(cacheMap.begin(), typename plaindata_t(quantity, plaindata_t(tree[path])));
-
-			return it->second;
-		}
-	}
-
-
-	/// Returns true if non-empty, associated QIND data exists.
-	inline
-	bool hasQuality(const std::string & quantity = "QIND") const {
-		return hasQualityData(qualityDataMap, quantity, this->tree);
-		//return !getQualityData(quantity).data.isEmpty();
-	};
-	// static 	PlainData<T,D,M> & getQualityField(T & tree);
-
-	// TODO
-	// T & tree;
-	// T & parentTree;
-
 protected:
 
-	mutable
-	std::map<std::string, plaindata_t > qualityDataMap;
+	virtual inline
+	const typename PlainData<DT>::tree_t & getTree() const { return this->tree; };
 
+	virtual inline
+	typename PlainData<DT>::tree_t & getTree(){ return this->tree; } ;
 
 
 };
@@ -354,7 +563,7 @@ std::ostream & operator<<(std::ostream & ostr, const Data<DT> & d){
 		ostr << '\t' << q.data.getGeometry() << '\t';
 		ostr << q.odim << '\n';
 		ostr << '\t' << q.data.properties << '\n';
-		*/
+		 */
 	}
 	ostr << '\n';
 	return ostr;
@@ -368,8 +577,10 @@ std::ostream & operator<<(std::ostream & ostr, const Data<DT> & d){
    See SweepSrc and ProductDst below.
  */
 template <typename DT>
-class DataSet : public std::map<std::string, Data<DT> > { // typename T::data_t
+class DataSet : public std::map<std::string, Data<DT> >, public QualityDataSupport<DT> { // typename T::data_t
 public:
+
+	typedef PlainData<DT> plaindata_t;
 
 	typedef std::map<std::string, Data<DT> > map_type;
 
@@ -378,10 +589,201 @@ public:
 		tree(init(tree, quantityRegExp, *this)) {
 	}
 
+	virtual
+	~DataSet(){
+		drain::Logger mout("DataSet", __FUNCTION__);
+		switch (this->size()) {
+			case 0:
+				mout.warn() << "no data<n> groups" << mout.endl;
+				break;
+			default:
+				mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;
+				// no break;
+			case 1:
+				mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
+				updateTree3(getFirstData().odim); // tree
+		}
+	};
+
+
+	// Metadata structure (not needed, first data instead?)
+	//typename DT::odim_t odim;
+
 	typename DT::tree_t & tree;  // DON'T HACK. TO BE MOVED protected FOR SUBCLASSES?
+
+	// Mark this data temporary so that it will not be save by Hi5::write().
+	inline
+	void setNoSave(bool noSave = true){ this->tree.node.noSave = noSave;};
+
+	Data<DT> & getFirstData() {
+
+		const typename DataSet<DT>::iterator it = this->begin();
+
+		if (it == this->end()){
+			drain::Logger mout("DataSetDst", __FUNCTION__);
+			mout.error() << "no data" << mout.endl;
+			return getData("");
+		}
+		else
+			return it->second;
+
+	}
+
+	const Data<DT> & getFirstData() const {
+
+		const typename DataSet<DT>::const_iterator it = this->begin();
+
+		if (it == this->end()){
+			drain::Logger mout("DataSetSrc", __FUNCTION__);
+			mout.error() << "no data" << mout.endl;
+			return getEmpty();
+		}
+		else
+			return it->second;
+
+	}
+
+	/// Retrieves data containing the given quantity. If not found, returns an empty array.
+	const Data<DT> & getData(const std::string & quantityKey) const {
+
+		const DataSet<DT> & src = *this;
+
+		const typename DataSet<DT>::const_iterator it = src.find(quantityKey);
+
+		if (it != src.end()){
+			return it->second;
+		}
+		else {
+			return getEmpty();
+		}
+	}
+
+	const Data<DT> & getData(const drain::RegExp & quantity) const {
+
+		const DataSet<DT> & src = *this;
+		for (typename DataSet<DT>::const_iterator it = src.begin(); it != src.end(); ++it){
+			if (quantity.test(it->first)){
+				return it->second;
+			}
+		}
+
+		return getEmpty();
+
+	}
+
+	/// Retrieves data containing the given quantity. If not found, creates an array.
+	Data<DT> & getData(const std::string & quantityKey) { //
+
+		drain::Logger mout("DataSetDst", __FUNCTION__);
+
+		//DataSetDst<D> & dst = *this;
+		//typename DataSetDst<DT>::iterator it = this->find(quantityKey);
+		typename DataSet<DT>::iterator it = this->find(quantityKey);
+
+		if (it != this->end()){
+			return it->second;
+		}
+		else {
+			if (quantityKey.empty()){
+				mout.warn() << " quantityKey empty" << mout.endl;
+			}
+
+			std::string dataPath = "data1";  // hence finally "data<n>" //// or "quality<1>"
+			DataSelector::getNextOrdinalPath(this->tree, "data[0-9]+/?$", dataPath);
+
+			return add(dataPath, quantityKey);
+			/*
+			typename DT::tree_t & t = this->tree(dataPath);
+			it = this->insert(this->begin(), std::pair<std::string, Data<DT> >(quantityKey, Data<DT>(t, quantityKey)));
+			// TODO: it->second.odim.quantity = quantity ?
+			return it->second;
+			*/
+		}
+
+	}
+
+
+
+	plaindata_t & getQualityData2(const std::string & quantity = "QIND", const std::string & dataQuantity = ""){ // , bool tmp = false
+		if (dataQuantity.empty())
+			return this->getQualityData(quantity);
+		else {
+			return this->getData(dataQuantity).getQualityData(quantity);
+		}
+	}
+
+
+	const plaindata_t & getQualityData2(const std::string & quantity = "QIND", const std::string & dataQuantity = "") const { // , bool tmp = false
+		if (dataQuantity.empty())
+			return this->getQualityData(quantity);
+		else {
+			return this->getData(dataQuantity).getQualityData(quantity);
+		}
+	}
+
+
+	/*
+	Data<DT> & clone(const std::string & quantity) {
+		drain::Logger mout("DataSetDst", __FUNCTION__);
+		std::stringstream sstr;
+		sstr << '^' << quantity << '$';
+		const DataSelector selector("data[0-9]$", sstr.str());
+		std::string path;
+		if (!DataSelector::getPath(tree, selector, path)){
+			mout.error() << "failed, quantity " << quantity << " not found " << mout.endl;
+		}
+		return add(path, quantity);
+	}
+	*/
+
+	// TODO: consider this to destructor!
+	inline
+	void updateTree3(const typename DT::odim_t & odim){  //
+		//odim.copyToDataSet(this->tree);
+		//if (!DataTools::removeIfNoSave(this->tree))
+		ODIM::copyToH5<ODIM::DATASET>(odim, this->tree);
+		DataTools::updateAttributes(this->tree); // images, including DataSet.data, TODO: skip children
+	}
+
+	// TODO: consider this to destructor!
+	inline
+	void updateTree3(const typename DT::odim_t & odim) const {  //
+		std::cout << "updateTree3 const \n";
+		//ODIM::copyToH5<ODIM::DATASET>(odim, tree);
+	}
+
+
 
 
 protected:
+
+	static
+	const Data<DT> & getEmpty() {
+		static typename Data<DT>::tree_t t;
+		static Data<DT> empty(t);
+		return empty;
+	}
+
+	/// Adds Data<DT>
+	/**
+	 *   \param dataPath - "data1", "data2", etc
+	 *   \param quantityKey - "DBZH", "VRAD", etc.
+	 */
+	Data<DT> & add(const std::string & dataPath, const std::string & quantityKey){
+		typename DT::tree_t & t = this->tree(dataPath);
+		typename DataSet<DT>::iterator it;
+		it = this->insert(this->begin(), std::pair<std::string, Data<DT> >(quantityKey, Data<DT>(t, quantityKey)));
+		return it->second;
+	}
+
+
+	// For QualityData
+	virtual inline
+	const typename PlainData<DT>::tree_t & getTree() const { return this->tree; };
+
+	// For QualityData
+	virtual inline
+	typename PlainData<DT>::tree_t & getTree(){ return this->tree; } ;
 
 
 	/// Given a root, constructs a map of data sets of desired quantities.
@@ -420,24 +822,24 @@ protected:
 			const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
 
 			if (quantity.empty() && quantityRegExp.toStr().empty()){
-				drain::MonitorSource mout("DataSet", __FUNCTION__);
+				drain::Logger mout("DataSet", __FUNCTION__);
 				mout.warn() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
 				mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
 				// Assign by path component "data3"
-				dst.insert(typename map_type::value_type(it->first, Data<DT>(it->second)));
+				dst.insert(typename map_type::value_type(it->first, Data<DT>(it->second, it->first)));
 				//associate(dst, it->first, it->second);
 			}
 			else if (quantityRegExp.test(quantity) ){
 				if (dst.find(quantity) != dst.end()){ // already created
-					drain::MonitorSource mout("DataSet", __FUNCTION__);
+					drain::Logger mout("DataSet", __FUNCTION__);
 					mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
 				}
-				dst.insert(typename map_type::value_type(quantity, Data<DT>(it->second)));
+				dst.insert(typename map_type::value_type(quantity, Data<DT>(it->second, quantity)));
 				//dst[quantity] = T(it->second);
 				//associate(dst, quantity, it->second);
 			}
 			else if ((!quantity.empty() && (quantity.at(0) == '~') && quantityRegExp.test(quantity.substr(1)))){ // normalized  "~QUANTITY" experimental (scaled data standard)
-				dst.insert(typename map_type::value_type(quantity, Data<DT>(it->second)));
+				dst.insert(typename map_type::value_type(quantity, Data<DT>(it->second, quantity)));
 				//associate(dst, quantity, it->second);
 			}
 		}
@@ -445,230 +847,26 @@ protected:
 		return datasetTree;
 	};
 
-};
 
-
-
-
-/// A map containing the data arrays of a sweep; possibly several quantities DBZH, VRAD, ...
-/**
- *
- */
-template <typename S = PolarSrc>
-class DataSetSrc : public DataSet<S> {
-
-public:
-
-	//typedef Data<HI5TREE const, Image const, M> data_t;
-
-	inline
-	DataSetSrc(const HI5TREE & datasetGroup, const drain::RegExp & quantityRegExp = drain::RegExp()) : DataSet<S>(datasetGroup, quantityRegExp) {  // , typename S::tree_t::const_iterator
-	}
-
-	const Data<S> & getFirstData() const {
-
-		drain::MonitorSource mout("DataSetSrc", __FUNCTION__);
-
-		if (this->begin() == this->end())
-			mout.error() << "no data" << mout.endl;
-
-		return this->begin()->second;
-
-	}
-
-	const Data<S> & getData(const std::string & quantityKey) const {
-		const DataSetSrc & src = *this;
-		if (src.find(quantityKey) != src.end()){
-			return src.find(quantityKey)->second;
-				}
-			else	 {
-				static typename Data<S>::tree_t t;
-				static Data<S> empty(t);
-				return empty;
-			}
-	}
-
-	// experimental
-	// const drain::VariableMap & whatTEST;
-
-	///
-	/**
-	 *  \param quantity -
-	 *  \param tmp -
-	 */
-	PlainData<S> & getQualityData(const std::string & qualityQuantity = "QIND", const std::string & quantity = "") const {
-
-		if (quantity.empty()) // GLOBAL DATA
-			return Data<S>::getQualityData(qualityDataMap, qualityQuantity, this->tree);
-		else {
-			// if !hasData(quantity)
-			return getData(quantity).getQualityData(qualityQuantity);
-		}
-
-	}
-
-private:
-
-	//DataSet<PlainDataDst, PlainData<PolarDst>::tree_t::iterator> qualityDataMap;
-	mutable
-	std::map<std::string, PlainData<S> > qualityDataMap;
+	// Risen to QualityData
+	// mutable
+	// std::map<std::string, typename Data<DT>::plaindata_t > qualityDataMap;
 
 };
 
-
-
-/// A map of radar data (of a sweep or polar product), indexed by quantity code.
-template <typename D = PolarDst>
-class  DataSetDst : public DataSet<D> { //
-
-public:
-
-	inline
-	DataSetDst(HI5TREE & dst, const drain::RegExp & quantityRegExp = drain::RegExp()) :  DataSet<D>(dst, quantityRegExp) { // , typename D::tree_t::iterator
-
-	};
-
-	typedef Data<D> data_t;
-
-
-
-	Data<D> & getFirstData() {
-
-
-		if (this->begin() == this->end()){
-			drain::MonitorSource mout("DataSetDst", __FUNCTION__);
-			mout.error() << "no data" << mout.endl;
-		}
-
-		return this->begin()->second;
-
-	}
-
-	Data<D> & getData(const std::string & quantityKey) { //
-
-		drain::MonitorSource mout("DataSetDst", __FUNCTION__);
-
-		//DataSetDst<D> & dst = *this;
-
-		typename DataSetDst<D>::iterator it = this->find(quantityKey);
-
-		if (it != this->end()){
-			return it->second;
-		}
-		else {
-			if (quantityKey.empty()){
-				mout.warn() << " quantityKey empty" << mout.endl;
-			}
-
-			std::string dataPath = "data1";  // hence finally "data<n>" //// or "quality<1>"
-
-			//DataSelector::getNextOrdinalPath(this->tree, "data[0-9]+/[^0-9]+$", dataPath);
-			DataSelector::getNextOrdinalPath(this->tree, "data[0-9]+/?$", dataPath);
-
-			typename D::tree_t & t = this->tree(dataPath);
-
-			it = this->insert(this->begin(), std::pair<std::string, Data<D> >(quantityKey, Data<D>(t)));
-			t["what"].data.attributes["quantity"] = quantityKey;
-
-			if (it->second.odim.quantity.empty()){
-				it->second.odim.quantity = quantityKey;
-			}
-			/*
-			if (!it->second.odim.hasKey("quantity")){
-				mout.warn() << "asked for " << quantityKey << ", but odim" << it->second.odim << mout.endl;
-				//it->second.odim; //.quantity = quantity;
-			}
-			*/
-			//it->second.odim.gain;
-			//return this->find(quantityKey)->second;
-			// TODO: it->second.odim.quantity = quantity ?
-			return it->second;
-		}
-
-	}
-
-
-
-	PlainData<D> & getQualityData(const std::string & qualityQuantity = "QIND", const std::string & quantity = "") {  // raise / join with src
-
-		//drain::MonitorSource mout("DataSetDst", __FUNCTION__);
-		if (quantity.empty()) // GLOBAL DATA
-			return Data<D>::getQualityData(qualityDataMap, qualityQuantity, this->tree);
-		else {
-			// if !hasData(quantity)
-			return getData(quantity).getQualityData(qualityQuantity);
-		}
-		//return Data<D>::getQualityData(qualityDataMap, quantity, this->tree);
-	}
-
-	template <class T>
-	inline
-	void updateTree(const T & odim){  //
-		odim.copyToDataSet(this->tree);
-	}
-
-
-protected:
-
-	//DataSet<PlainDataDst, PlainData<PolarDst>::tree_t::iterator> qualityDataMap;
-	mutable
-	std::map<std::string, typename Data<D>::plaindata_t > qualityDataMap;
-
-};
-
-//#define ProductDst DataSetDst<DataDst> // TMP FIX
 
 /// Structure for storing sweeps by their elevation angle.
-/**  Note: this approach fails if a volume contains several azimuthal sweeps with a same elevation angle.
- *
- */
-
-//typedef std::map<double, DataSetSrc<PolarSrc> >  DataSetSrcMap;
-
-//TODO template <typename S = PolarSrc >
-class DataSetSrcMap : public std::map<double, DataSetSrc<PolarSrc> > {
-
+///  Note: this approach fails if a volume contains several azimuthal sweeps with a same elevation angle.
+// Becoming DEPRECATED
+template <typename DT>
+class DataSetMap : public std::map<double, DataSet<DT> > {
 };
 
-//#define SweepMapSrc DataSetSrcMap  // TMP FIX
 
-
-template <typename D=PolarDst>
-class DataSetDstMap : public std::map<double, DataSetDst<D> > {
-
-public:
-
-	typedef std::pair<double, DataSetDst<D> > value_type;
-
-	DataSetDstMap(){};
-
-	// Pics all the data fields but not (quality fields).
-	DataSetDstMap(HI5TREE & src, const DataSelector & selector = DataSelector("data[0-9]/?$")){
-
-		std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-		DataSelector::getPaths(src,  selector, dataPaths);
-
-		for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-
-			const std::string parent = DataSelector::getParent(*it);
-			HI5TREE & s = src(parent);
-			if (s.hasChild("where")){
-				const drain::VariableMap & a = s["where"].data.attributes;
-				if (a.hasKey("elangle")){
-					const double elangle = a["elangle"];
-					if (this->find(elangle) == this->end()){
-						//mout.debug(2) << "add "  << elangle << ':'  << parent << mout.endl;
-						this->insert( value_type(elangle, DataSetDst<D>(s, drain::RegExp(selector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
-					}
-				}
-
-			}
-		}
-	};
-
+template <typename DT>
+class DataSetList : public std::list<DataSet<DT> > {
 };
 
-//typedef std::map<double, DataSetDst<PolarDst> >  DataSetDstMap;
 
 
 

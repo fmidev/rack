@@ -38,12 +38,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
+
 #include "SpeckleOp.h"
 
-#include <drain/image/SegmentAreaOp.h>
+#include <drain/imageops/SegmentAreaOp.h>
 
-//#include <drain/image/MathOpPack.h>
+
 #include <drain/image/File.h>
+#include <drain/util/Fuzzy.h>
 
 using namespace drain::image;
 
@@ -53,44 +55,24 @@ namespace rack {
 //void SpeckleOp::filterImage(const RadarODIM &odimIn, const Image &src, Image &dst) const {
 void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << parameters << mout.endl;
 
-	SegmentAreaOp<SegmentProber<int,int> > op; 	//"min,max,mapping,mSlope,mPos"
-
-	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
-	op.setParameter("min", std::max(2.0, src.odim.scaleInverse(reflMin)));
-	op.setParameter("max", src.data.getMax<double>()-2.0);
-
-	op.setParameter("functor","FuzzyBell");
-	op.setParameter("functorParams", area); // slope
-
-	op.min = std::max(2.0, src.odim.scaleInverse(reflMin));
-	op.max = src.data.getMax<double>() - 2.0;
-	op.functorName = "FuzzyBell";
-	drain::Variable p(typeid(int));
-	p.separator = ':';
-	p << 0 << area;
-	mout.debug(1) << p << mout.endl;
-	op.setParameter("functorParams", p); // slope
-
-
-	/*
-	 op.setParameter("mapping","f");
-	op.setParameter("scale", area); // slope
-	op.setParameter("offset", 1);
-	 */
+	// Warn if below min dBZ?
+	const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
+	const double max = src.data.getMax<double>()-2.0;
+	drain::FuzzyBell<double> fuzzyBell;
+	fuzzyBell.set(0.0, area, dst.data.getMax<double>());
+	SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
 
 	mout.debug(1) << op << mout.endl;
 	mout.debug(2) << src.data.getCoordinatePolicy() << mout.endl;
 
-	if (mout.isDebug(10))
-		File::write(src.data,"SegmentAreaOp_src.png");
+	//if (mout.isDebug(10)) File::write(src.data,"SegmentAreaOp_src.png");
 
-	op.filter(src.data, dst.data);
+	op.process(src.data, dst.data);
 
-	if (mout.isDebug(10))
-		File::write(dst.data,"SegmentAreaOp_dst.png");
+	//if (mout.isDebug(10)) File::write(dst.data,"SegmentAreaOp_dst.png");
 
 }
 

@@ -33,9 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/DistanceTransformFillOp.h>
+
 #include <drain/image/File.h>
-#include <drain/image/RecursiveRepairerOp.h>
+//#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -54,15 +55,17 @@ namespace rack {
 
 void CartesianPlotFile::exec() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__); // = getResources().mout; = getResources().mout;
+	drain::Logger mout(name, __FUNCTION__); // = getResources().mout; = getResources().mout;
 
-	Composite & composite = getResources().composite;
+	RackResources & resources = getResources();
+
+	Composite & composite = resources.composite;
 
 	composite.allocate();
 	//composite.updateGeoData();
 
 	if (! composite.isMethodSet()){
-		composite.setMethod("OVERWRITE");
+		composite.setMethod("LATEST");
 		mout.note() << " no method set, using " << composite.getMethod() << " (see --cMethod) " << mout.endl;
 	}
 
@@ -89,7 +92,7 @@ void CartesianPlotFile::exec() const {
 	double w;
 
 	std::stringstream sstr;
-	//while ( !getline(istr,line).eof() ){
+
 	while ( getline(istr, line) ){
 
 		line = line.substr(0, line.find_first_of("%#"));
@@ -113,16 +116,18 @@ void CartesianPlotFile::exec() const {
 
 	ifstr.close();
 
+
+
 }
 
 
 void CartesianSpread::exec() const {  // TODO iDistanceFill
 
-	drain::MonitorSource mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 
-	DataSetDst<CartesianDst> dstDataSet((*resources.currentHi5)["dataset1"]);
+	DataSet<CartesianDst> dstDataSet((*resources.currentHi5)["dataset1"]);
 
 	Data<CartesianDst> & dst = dstDataSet.getFirstData(); // first data encountered; consider "DBZH"?
 
@@ -133,12 +138,13 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 
 	//mout.warn() << dst.odim << mout.endl;
 
-
+	/*
 	DistanceTransformFillLinearOp distLinear;
 	DistanceTransformFillExponentialOp distExp; // would need float-valued tmp image
 
 	//DistanceTransformFillOpBase  & dist = (key == "cSpread") ? distLinear : distExp;
 	DistanceTransformFillLinearOp  & dist = distLinear;
+	*/
 
 	RecursiveRepairerOp recOp;  // slow, smooth
 	recOp.width = 5;
@@ -146,11 +152,14 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	recOp.loops = loops;
 	//recOp.decay = decay;
 
-	dist.horz = horz*1000.0/dst.odim.xscale;
-	dist.vert = (vert > 0.0) ? vert*1000.0/dst.odim.yscale : dist.horz;
+	/*
+	double h = this->horz*1000.0/dst.odim.xscale;
+	double v = (this->vert > 0.0) ? this->vert*1000.0/dst.odim.yscale : h;
+	dist.setRadius(h, v);
+	*/
 
 	mout.debug(2) << name << ": pixel resolution: " << dst.odim.xscale << ',' << dst.odim.yscale << mout.endl;
-	mout.debug(2) << dist << mout.endl;
+	//mout.debug(2) << dist << mout.endl;
 
 
 
@@ -166,18 +175,31 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 		return;
 	}
 
+	/*
 	drain::image::Image tmpWeight;
-	//tmpWeight.setType<float>();
 	tmpWeight.setGeometry(dstQuality.data.getGeometry());
 	tmpWeight.fill(0);
 
 	//drain::image::File::write(dst.data,        "dstSpread-d0.png");
 	//drain::image::File::write(dstQuality.data, "dstSpread-q0.png");
-
-	dist.filter(dst.data, dstQuality.data, dst.data, tmpWeight);
+	//dist.filter(dst.data, dstQuality.data, dst.data, tmpWeight);
+	ImageTray<const Channel> srcImage(dst.data);
+	srcImage.appendAlpha(dstQuality.data);
+	ImageTray<Channel> dstImage(dst.data);
+	dstImage.appendAlpha(tmpWeight);
+	dist.traverseChannels(srcImage, dstImage);
+	*/
+	//dist.process(dst.data, dstQuality.data, dst.data, tmpWeight);
 	// drain::image::File::write(tmpWeight, "dstSpread-q1.png");
 	// drain::image::File::write(dst.data,  "dstSpread.png");
 
+	/*
+	ImageTray<Channel> dstChannels(dst.data, dstQuality.data);
+	const ImageTray<const Channel> srcChannels(dst.data, dstQuality.data);
+	recOp.traverseChannels(srcChannels, dstChannels);
+	*/
+	recOp.traverseChannel(dst.data.getChannel(0), dstQuality.data.getChannel(0), dst.data.getChannel(0), dstQuality.data.getChannel(0));
+	/*
 	if (recOp.loops > 0){
 		mout.debug(2) << recOp << mout.endl;
 		recOp.filter(dst.data, dstQuality.data, dst.data, dstQuality.data);
@@ -186,6 +208,7 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 		mout.debug(2) << "copying..." << mout.endl;
 		CopyOp().filter(tmpWeight, dstQuality.data); // ??
 	}
+	*/
 
 	//drain::image::File::write(dst.data,        "dstSpread-d2.png");
 	//drain::image::File::write(dstQuality.data, "dstSpread-q2.png");

@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include "Quantity.h"
 #include "QuantityMap.h"
@@ -57,7 +57,7 @@ void QuantityMap::set(const std::string & key, char typecode, double gain, doubl
 	if (isnan(offset))
 		offset = -gain;
 
-	return set(key, typecode, gain, offset, drain::Type::getMin<double>(typecode), drain::Type::getMax<double>(typecode));
+	return set(key, typecode, gain, offset, drain::Type::getMin<double>(typecode), drain::Type::call<drain::typeMax,double>(typecode));
 
 }
 */
@@ -85,6 +85,11 @@ void QuantityMap::initialize(){
 
 	set("VRAD", 'C').setScaling(0.5, -64.0);  // nodata = 0?  IRIS
 	set("VRAD", 'S').setScaling( 0.0025, -0.0025*(256.0*128.0)); // nodata = 0?
+	const Quantity & VRAD = get("VRAD");
+	copy("VRADH", VRAD);
+	copy("VRADV", VRAD);
+	copy("VRADDH", VRAD);
+	copy("VRADDV", VRAD);
 
 	set("RHOHV", 'C').setScaling(0.004); //
 	set("RHOHV", 'S').setScaling(0.0001); //
@@ -106,25 +111,32 @@ void QuantityMap::initialize(){
 
 	set("COUNT", 'S'); // default type short int
 	set("COUNT", 'C');   //
+	set("COUNT", 'I');   //
+	set("COUNT", 'L');   //
 
 	set("AMVU", 'C').setRange(-100,100);
 	set("AMVU", 'S').setRange(-200,200);
+	set("AMVU", 'd');
 	copy("AMVV", get("AMVU"));
 
+	set("CLASS", 'C');
+	set("CLASS", 'S');
 
 
 }
 
-bool QuantityMap::setQuantityDefaults(EncodingODIM & dst, const std::string & quantity, const std::string & values) const {  // TODO : should it add?
+bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string & quantity, const std::string & values) const {  // TODO : should it add?
 
-	drain::MonitorSource mout("QuantityMap", __FUNCTION__);
+	drain::Logger mout("QuantityMap", __FUNCTION__);
 
 	mout.debug(2) << "for quantity=" << quantity << ", values=" << values << mout.endl;
+	//if (quantity.empty())
+	//	quantity = dstODIM.quantity;
 
 	drain::ReferenceMap refMap;
 	if (!values.empty()){
-		dst.addShortKeys(refMap);
-		refMap.setValues(values);   // essentially, sets dst.type (other values will be reset, below)
+		dstODIM.addShortKeys(refMap);
+		refMap.setValues(values);   // essentially, sets dstODIM.type (other values will be reset, below)
 	}
 
 	mout.debug(2) << "searching for quantity=" << quantity << mout.endl;
@@ -134,21 +146,22 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dst, const std::string & qu
 		mout.debug(1) << "found quantity '"  << quantity << "'" << mout.endl;
 
 		/// Use user-defined type. If not supplied, use default type.
-		if (dst.type.empty()) {
+		if (dstODIM.type.empty()) {
 			if (it->second.defaultType)
-				dst.type = it->second.defaultType;
+				dstODIM.type = it->second.defaultType;
 			else {
-				mout.warn() << "no type or defaultType for quantity=" << quantity <<  mout.endl;
+				mout.warn() << "type unset, and no defaultType defined for quantity=" << quantity <<  mout.endl;
 				return false;
 			}
 		}
 
 		/// find type conf for this Quantity and basetype
-		const char typechar = dst.type.at(0);
+		const char typechar = dstODIM.type.at(0);
 		Quantity::const_iterator qit = it->second.find(typechar);
 		if (qit != it->second.end()){
 			//std::cerr << "OK q=" << quantity << ", type=" << typechar << std::endl;
-			dst = qit->second; // values initialized to defaults
+			// initialize values to defaults
+			dstODIM = qit->second;
 			// finally, set desired scaling values, overriding those just set...
 			if (!values.empty()){
 				refMap.setValues(values);
@@ -164,13 +177,14 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dst, const std::string & qu
 		mout.info() << "quantity=" << quantity << " not found" << mout.endl;
 	}
 
-	if (!dst.type.empty()) {
-		const char typechar = dst.type.at(0);
-		mout.debug() << "applying universal defaults (1,0,min,max) for typechar=" << typechar << mout.endl;
-		dst.gain   = 1.0;
-		dst.offset = 0.0;
-		dst.undetect = drain::Type::getMin<double>(typechar);
-		dst.nodata = drain::Type::getMax<double>(typechar);
+	if (!dstODIM.type.empty()) {
+		//const char typechar = dstODIM.type.at(0);
+		const drain::Type t(dstODIM.type);
+		mout.debug() << "applying universal defaults (1,0,min,max) for typechar=" << t << mout.endl;
+		dstODIM.gain   = 1.0;
+		dstODIM.offset = 0.0;
+		dstODIM.undetect = drain::Type::call<drain::typeMin, double>(t); //drain::Type::getMin<double>(typechar);
+		dstODIM.nodata =   drain::Type::call<drain::typeMax, double>(t); //drain::Type::call<drain::typeMax,double>(typechar);
 		// finally, set desired scaling values, overriding those just set...
 		if (!values.empty()){
 			refMap.setValues(values);

@@ -77,7 +77,7 @@ public:
 	// static std::string pathCombinedQuality;
 
 	virtual
-	void processDataSets(const DataSetSrcMap & srcVolume, DataSetDstMap<PolarDst> & dstVolume) const = 0;
+	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;
 
 protected:
 

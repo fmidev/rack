@@ -54,10 +54,10 @@ namespace rack {
 
 
 
-void RainRateDPSimpleOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, DataSetDst<PolarDst> & dstProduct) const {
+void RainRateDPSimpleOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<PolarDst> & dstProduct) const {
 
 	/// For monitoring cmd execution as text dump. Use --debug (or \c --verbose \c \<level\> to define verbosity.
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.info() << "start" <<  mout.endl;
 
 
@@ -136,7 +136,8 @@ void RainRateDPSimpleOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, D
 	PlainData<PolarDst> & rateQuality = rate.getQualityData("QIND");
 	//rateQuality.setQuantityDefaults("QIND");
 	rateQuality.data.setGeometry(nbins, nrays);
-	rateQuality.updateTree();
+	rateQuality.setGeometry(nbins, nrays);
+	// rateQuality.updateTree();
 
 	const double maxQuality = rateQuality.odim.scaleInverse(1.0);
 	//const double undetectQuality = 0.75 * maxQuality; // MP/ tuli unused warning
@@ -154,7 +155,7 @@ void RainRateDPSimpleOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, D
 
 	// Distance to the bin along the beam (in metres).
 	double beam;
-	const double elangleR = dbzSrc.odim.elangle * rack::DEG2RAD;
+	const double elangleR = dbzSrc.odim.getElangleR();
 	//## Data quality
 
 	double dbz;

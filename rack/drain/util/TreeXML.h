@@ -110,7 +110,12 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<N> & tree, 
 
 	/// iterate attributes
 	for (ReferenceMap::const_iterator it = tree->begin(); it != tree->end(); it++){
-		ostr << it->first << "=\"" << it->second << '"' << ' ';
+
+		std::stringstream sstr;
+		sstr << it->second;
+		if (!sstr.str().empty()){
+			ostr << it->first << "=\"" << it->second << '"' << ' ';
+		}
 	}
 
 	if ((children.size() == 0) && tree->ctext.empty() ){ // OR no ctext!

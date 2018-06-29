@@ -32,20 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef EMITTER_SEGMENT_OP_H_
 #define EMITTER_SEGMENT_OP_H_
 
-
-#include <drain/image/SegmentAreaOp.h>
-#include <drain/image/RunLengthOp.h>
-#include <drain/image/BasicOps.h>
-
-
-#include <drain/image/DistanceTransformOp.h>
-//#include <drain/image/FuzzyOp.h>
-//#include <drain/image/FuzzyThresholdOp.h>
-//#include "image/GammaOp.h"
-//#include "image/HighBoostOp.h"
-
+#include <drain/util/FunctorPack.h>
 
 #include <drain/image/File.h>
+
+#include <drain/imageops/SegmentAreaOp.h>
+#include <drain/imageops/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
 
 #include "DetectorOp.h"
 
@@ -63,17 +56,17 @@ class EmitterOp: public DetectorOp {
 public:
 
 	/** Default constructor
-	 *   \param widthMax - azimuthal width [degrees]
+	 *   \param thicknessMax - azimuthal width [degrees]
 	 *   \param samplingDistance - position [km] of fuzzy peak weighting the sampling
 	 *   \param samplingDistanceWidth - halfwidth of the weighting curve
 	 */
-	//EmitterOp(int windowWidth=5000, float widthMax=10.0, float sensitivity = 0.5, float eWidth = 1.0f, float eHeight = 0.0f) :
-	//EmitterOp(double widthMax=5.0, int samplingDistance = 100, int samplingDistanceWidth = 50) :
-	EmitterOp(double lengthMin=5.0, double widthMax=5.0, double sensitivity=0.5) :
+	//EmitterOp(int windowWidth=5000, float thicknessMax=10.0, float sensitivity = 0.5, float eWidth = 1.0f, float eHeight = 0.0f) :
+	//EmitterOp(double thicknessMax=5.0, int samplingDistance = 100, int samplingDistanceWidth = 50) :
+	EmitterOp(double lengthMin=5.0, double thicknessMax=5.0, double sensitivity=0.5) :
 		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", ECHO_CLASS_EMITTER)
 	{
 		parameters.reference("lengthMin", this->lengthMin = lengthMin, "km");
-		parameters.reference("widthMax",  this->widthMax = widthMax, "deg");
+		parameters.reference("thicknessMax",  this->thicknessMax = thicknessMax, "deg");
 		parameters.reference("sensitivity",  this->sensitivity = sensitivity, "0...1");
 		REQUIRE_STANDARD_DATA = true;
 	}
@@ -81,7 +74,7 @@ public:
 	// void computeAverageBeamDBZ();
 
 	double lengthMin;
-	double widthMax;
+	double thicknessMax;
 	double sensitivity;
 
 	int samplingDistance;

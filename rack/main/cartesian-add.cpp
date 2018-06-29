@@ -33,13 +33,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
 #include <drain/image/File.h>
-#include <drain/image/RecursiveRepairerOp.h>
 
-#include "data/DataCoder.h"
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
+
+#include "data/DataCoder.h"
+#include "data/DataTools.h"
 
 #include "radar/Coordinates.h"
 #include "radar/Composite.h"
@@ -55,7 +57,7 @@ namespace rack {
 
 void CompositeAdd::exec() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.timestamp("BEGIN_CART_EXEC");
 
@@ -77,8 +79,22 @@ void CompositeAdd::exec() const {
 
 	/// Set input data selector (typically, by quantity)
 	if (!resources.select.empty()){
+		const std::string quantityOrig(resources.composite.dataSelector.quantity);
 		resources.composite.dataSelector.setParameters(resources.select);
+		if (!quantityOrig.empty() && (quantityOrig != resources.composite.dataSelector.quantity)){
+			mout.info() << "quantity selector changed, resetting accumulation array" << mout.endl;
+			resources.composite.clear();
+			resources.composite.odim.quantity.clear();
+			resources.composite.odim.gain   = 0.0;
+			resources.composite.odim.offset = 0.0;
+		}
 		resources.select.clear(); //
+	}
+	else {
+		if (resources.composite.dataSelector.quantity.empty()){
+			mout.info() << "Setting selector for quantity=" << resources.composite.odim.quantity << mout.endl;
+			resources.composite.dataSelector.quantity = resources.composite.odim.quantity;
+		}
 	}
 
 	mout.info() << "using selector: " << resources.composite.dataSelector << mout.endl; // consider: if resources.composite.dataSelector...?
@@ -86,11 +102,11 @@ void CompositeAdd::exec() const {
 	/// Set default method, if unset.
 	if (!resources.composite.isMethodSet()){
 		mout.note() << " compositing method unset, setting MAX" << mout.endl;
-		resources.composite.setMethod("MAX");
+		resources.composite.setMethod("MAXIMUM");
 	}
 
-	/// Set encoding for final (extracted) product. Applied by RadarAccumulator.
-	// If needed, initialize with input metadata.
+	/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
+	//  If needed, initialize with input metadata.
 	if (!resources.targetEncoding.empty()){
 		resources.composite.setTargetEncoding(resources.targetEncoding);
 		resources.targetEncoding.clear();
@@ -100,7 +116,7 @@ void CompositeAdd::exec() const {
 	/// Main
 	//if (resources.currentHi5 == resources.currentPolarHi5){
 	//if (resources.currentPolarHi5 != NULL){  // to get polar AMVU and AMVV data converted
-	if ((resources.currentPolarHi5 != NULL) && !resources.currentPolarHi5->getChildren().empty()){  // to get polar AMVU and AMVV data converted
+	if ((resources.currentPolarHi5 != NULL) && !resources.currentPolarHi5->isEmpty()){  // to get polar AMVU and AMVV data converted
 		mout.info() << "polar input data, ok" << mout.endl;
 		addPolar();
 	}
@@ -120,7 +136,7 @@ void CompositeAdd::exec() const {
 // Originally crom create
 void CompositeAdd::addPolar() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.timestamp("BEGIN_CART_CREATE");
 
@@ -178,8 +194,8 @@ void CompositeAdd::addPolar() const {
 		// mout.warn() << "composite: " << resources.composite.odim << mout.endl;
 
 		if (resources.composite.odim.gain == 0.0){
-			ProductOp::applyODIM(resources.composite.odim, polarSrc.odim);
-			ProductOp::handleEncodingRequest(resources.composite.odim, resources.composite.getTargetEncoding());
+			ProductBase::applyODIM(resources.composite.odim, polarSrc.odim);
+			ProductBase::handleEncodingRequest(resources.composite.odim, resources.composite.getTargetEncoding());
 		}
 
 		//resources.composite.checkInputODIM(polarSrc.odim);
@@ -197,7 +213,7 @@ void CompositeAdd::addPolar() const {
 		//const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 		std::string parent;
 		std::string current;
-		DataSelector::getParentAndChild(dataPath, parent, current);
+		DataTools::getParentAndChild(dataPath, parent, current);
 
 
 
@@ -214,7 +230,7 @@ void CompositeAdd::addPolar() const {
 		}
 		else {
 			mout.info() << "using shared (dataset-level) qualitydata" << mout.endl;
-			DataSetSrc<PolarSrc> dataSetSrc((*resources.currentPolarHi5)(parent));
+			DataSet<PolarSrc> dataSetSrc((*resources.currentPolarHi5)(parent));
 			const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
 			if (!srcDataSetQuality.data.isEmpty()){
 				mout.info() << "using shared (dataset-level) quality data, path=" << parent << mout.endl;
@@ -246,12 +262,31 @@ void CompositeAdd::addPolar() const {
 // Originally crom create
 void CompositeAdd::addCartesian() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 
 
-	DataSetSrc<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
+	//DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
+	std::string dataPath;
+	DataSelector::getPath((resources.cartesianHi5), resources.composite.dataSelector, dataPath);
+	if (dataPath.empty()){
+		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
+		//resources.inputOk = false; // REMOVE?
+		resources.dataOk = false;
+		return;
+	}
+
+
+	ODIMPath p(dataPath);
+	if (p.back().is(BaseODIM::DATA)){
+		p.pop_back();
+	}
+	mout.info() << "using:" << p << mout.endl;
+
+	//const DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
+	const DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5(p), resources.composite.dataSelector.quantity);
+
 
 	if (cartDataSetSrc.empty()){
 		mout.warn() << "Empty dataset(s), skipping. Selector.quantity (regexp): '" << resources.composite.dataSelector.quantity << "'" << mout.endl;
@@ -338,7 +373,7 @@ void CompositeAdd::addCartesian() const {
 	// mout.warn() << "Defined composite: " << composite << mout.endl;
 
 	// Update source list, time stamp etc needed also for time decay
-	//resources.composite.updateMetadata(cartSrc.odim);
+	// => in addCartesian()
 
 	mout.debug() << "Composite initialized: " << resources.composite << mout.endl;
 
@@ -349,6 +384,7 @@ void CompositeAdd::addCartesian() const {
 
 
 	resources.composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
+
 
 	//mout.warn() << "composite: " << resources.composite << mout.endl;
 

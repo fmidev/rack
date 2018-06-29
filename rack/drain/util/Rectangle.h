@@ -59,6 +59,11 @@ public:
 		set(xLowerLeft, yLowerLeft, xUpperRight, yUpperRight);
 	};
 
+	Rectangle(const Rectangle & r){
+		set(r.xLowerLeft, r.yLowerLeft, r.xUpperRight, r.yUpperRight);
+	};
+
+
 	inline
 	void set(T xLowerLeft, T yLowerLeft, T xUpperRight, T yUpperRight){
 		this->xLowerLeft  = xLowerLeft;
@@ -91,8 +96,12 @@ public:
 		limit(bounds.yLowerLeft, bounds.yUpperRight, yUpperRight);
 	}
 
-	/// This becomes the union of r and this.
+	/// The instance extends to its union with r.
 	void extend(const Rectangle & r);
+
+	/// The instance reduces to itse intersection with r.
+	void contract(const Rectangle & r);
+
 
 	inline
 	bool isInside(const T &x,const T &y) const {
@@ -165,6 +174,14 @@ template<class T> inline void Rectangle<T>::extend(const Rectangle & r)
 	yLowerLeft  = std::min(yLowerLeft,r.yLowerLeft);
 	xUpperRight = std::max(xUpperRight,r.xUpperRight);
 	yUpperRight = std::max(yUpperRight,r.yUpperRight);
+}
+
+template<class T> inline void Rectangle<T>::contract(const Rectangle & r)
+{
+	xLowerLeft  = std::max(xLowerLeft,r.xLowerLeft);
+	yLowerLeft  = std::max(yLowerLeft,r.yLowerLeft);
+	xUpperRight = std::min(xUpperRight,r.xUpperRight);
+	yUpperRight = std::min(yUpperRight,r.yUpperRight);
 }
 
 

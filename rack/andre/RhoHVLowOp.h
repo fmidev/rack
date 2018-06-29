@@ -37,6 +37,7 @@ using namespace drain::image;
 
 namespace rack {
 
+///	Marks bins with low \em RhoHV value as probable anomalies.
 /**
  *
  */
@@ -44,26 +45,27 @@ class RhoHVLowOp: public DetectorOp {
 
 public:
 
-	///	Marks bins with low \em RhoHV value as probable anomalies.
+	///	Default constructor.
 	/**
 	 *  \param threshold - \c RhoHV values below this will be considered this anomalies
 	 *  \param thresholdWidth - steepness coefficient for the threshold
 	 *  \param windowWidth  - optional: median filtering window width in metres
 	 *  \param windowHeight - optional: median filtering height width in degrees
-	 *  \param medianPos    - optional: median position: 0.5 = normal median (morphology: 0.5 > opening; 0.5 < closing)
+	 *  \param medianPos    - optional: median position: 0.5 = normal median ( >0.5: conservative for precip)
+	 *  //(morphology: 0.5 > opening; 0.5 < closing)
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
 	 */
-	RhoHVLowOp(double threshold=0.5, double thresholdWidth=0.01, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.3) :
+	RhoHVLowOp(double threshold=0.85, double thresholdWidth=0.1, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
 		DetectorOp("RhoHVLow","Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", 131){
 		dataSelector.quantity = "RHOHV";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
-		parameters.reference("threshold", this->threshold = threshold, "[0...1]");
-		parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth, "[0...1]");
+		parameters.reference("threshold", this->threshold = threshold, "0...1");
+		parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
 		parameters.reference("windowWidth", this->windowWidth = windowWidth, "metres");
 		parameters.reference("windowHeight", this->windowHeight = windowHeight, "degrees");
-		parameters.reference("medianPos", this->medianPos = medianPos, "[0...1]");
+		parameters.reference("medianPos", this->medianPos = medianPos, "0...1");
 		//parameters.reference("area", this->area, area);
 	};
 

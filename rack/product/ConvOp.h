@@ -119,8 +119,8 @@ public:
 		parameters.reference("echoTopThreshold", this->echoTopThreshold = echoTopThreshold, "km");
 		parameters.reference("echoTopDBZ", this->echoTopDBZ = echoTopDBZ, "dBZ");
 
-		parameters.reference("smoothAzm", this->smoothAzm = smoothAzm, "?");
-		parameters.reference("smoothRad", this->smoothRad = smoothRad, "?");
+		parameters.reference("smoothAzm", this->smoothAzm = smoothAzm, "deg");
+		parameters.reference("smoothRad", this->smoothRad = smoothRad, "km");
 
 		allowedEncoding.reference("nbins", odim.nbins = 0l);
 		allowedEncoding.reference("rscale", odim.rscale = 0.0);
@@ -153,7 +153,7 @@ public:
 
 protected:
 
-	void processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<> & dstProduct) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
 	// virtual
 	// void filter(const HI5TREE & src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const;
 

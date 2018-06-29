@@ -31,16 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "BirdOp.h"
 
+#include <drain/util/FunctorPack.h>
 #include <drain/util/Fuzzy.h>
-//#include <drain/image/SlidingWindowMedianOp.h>
-#include <drain/image/File.h>
-//#include <drain/image/FuzzyThresholdOp.h>
-#include <drain/image/FunctorOp.h>
-//#include <drain/image/FuzzyOp.h>
-#include <drain/image/BasicOps.h>
-#include <drain/image/SequentialImageOp.h>
-#include <drain/image/SlidingWindowHistogramOp.h>
 
+#include <drain/image/File.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/SlidingWindowHistogramOp.h>
 
 //#include "hi5/Hi5Write.h"
 
@@ -61,7 +57,7 @@ void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdr
 
 	dataSelector.path = "data[0-9]+/?$";
 	//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
-	dataSelector.quantity = "^(DBZH|VRAD|RHOHV|ZDR)$";
+	dataSelector.quantity = "^(DBZH|VRAD|VRADH|RHOHV|ZDR)$";
 	dataSelector.count = 1;
 
 	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
@@ -76,7 +72,7 @@ void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdr
 }
 
 /*
-void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 	Image & tmp = dstProductAux.getQualityData(feature);
 }
 */
@@ -85,27 +81,39 @@ void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, cons
  *
  *
  */
-void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::MonitorSource mout(name+"::"+__FUNCTION__, feature);
+	drain::Logger mout(getName() + "::"+__FUNCTION__, feature);
 
-	const bool NEW = dstData.odim.prodpar.empty();
+	mout.debug() << "running " << feature << '/' << op.getName() << mout.endl;
 
+	const bool NEW = dstData.odim.prodpar.empty();  // or tmp.empty()
+
+	//Channel & channel = dstData.data;
+	//channel.properties.updateFromMap(dstData.data.getProperties());
+
+	/// Save directly to target (dstData), if this is the first applied detector
 	if (NEW){
-		mout.debug() << "creating dst image" << mout.endl;
-		op.filter(src.data, dstData.data);
+		mout.debug(1) << "creating dst image" << mout.endl;
+		//dstData.setPhysicalRange(0.0, 1.0);
+		op.traverseChannel(src.data, dstData.data);
 		dstData.odim.prodpar = feature;
+		tmp.copyShallow(dstData.data);
+		// tmp.initialize(dstData.data.getType(), dstData.data.getGeometry());
+		// tmp.adoptScaling(dstData.data);
 	}
 	else {
-		mout.debug() << "updating dst image" << mout.endl;
-		op.filter(src.data, tmp);
-		BinaryFunctorOp<MultiplicationFunctor>().filter(dstData.data, tmp, dstData.data);
-		//MultiplicationOp(1.0).filter(dstData.data, tmp, dstData.data);
+		mout.debug(1) << "tmp exists => accumulating detection" << mout.endl;
+		op.process(src.data, tmp);
+		//op.traverseChannel(src.data.getChannel(0), tmp.getChannel(0));
+		mout.debug(1) << "updating dst image" << mout.endl;
+		BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(dstData.data, tmp, dstData.data);
 		// File::write(dstData.data, feature+".png");
 		dstData.odim.prodpar += ',';
 		dstData.odim.prodpar += feature;
 	}
 
+	/// Debugging: save intermediate images.
 	if (ProductOp::outputDataVerbosity >= 1){
 		PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(feature);  // consider direct instead of copy?
 		const QuantityMap & qm = getQuantityMap();
@@ -113,25 +121,26 @@ void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & 
 		dstFeature.odim.quantity = feature;
 		qm.setQuantityDefaults(dstFeature, "PROB");
 		if (NEW)
-			drain::image::CopyOp().filter(dstData.data, dstFeature.data);
+			drain::image::CopyOp().process(dstData.data, dstFeature.data);
 		else
-			drain::image::CopyOp().filter(tmp, dstFeature.data);
-		// drain::image::CopyOp().filter(NEW ? dstData.data : tmp, dstFeature.data);
-		dstFeature.updateTree();
+			drain::image::CopyOp().process(tmp, dstFeature.data);
+		//@ dstFeature.updateTree();
 	}
 
 }
 
-void BirdOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSetDst<PolarDst> & dstProductAux) const {
+void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(2) << "start" <<  mout.endl; //
 
 	//mout.error() << dstData <<  mout.endl; //
-	//MultiplicationOp mulOp(1.0);
 
-	Image tmp;
-	tmp.setLimits(dstData.data.getMin<double>(), dstData.data.getMax<double>());
+	//dstData.setPhysicalRange(0.0, 1.0);
+
+	Image tmp(typeid(unsigned char));
+	//tmp.adoptScaling(dstData.data);
+	// 2018 ? tmp.scaling.setLimits(dstData.data.getMin<double>(), dstData.data.getMax<double>());
 
 	const double MAX = dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
 
@@ -155,49 +164,60 @@ void BirdOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, PlainData<Pol
 		dbzFuzzifier.functor.set(dbzPeak, +5.0);
 		mout.debug() << "DBZ_LOW" << dbzFuzzifier.functor << mout.endl;
 
-		//dbzFuzzifier.filter(dbzSrc.data, dbzProb);
 		applyOperator(dbzFuzzifier, tmp, "DBZ_LOW", dbzSrc, dstData, dstProductAux);
 
-		/*
-		SlidingWindowOpT<RadarWindowStdDev<FuzzyStep<double,double> > > dbzDevOp;
-		const int w = static_cast<int>(windowWidth/dbzSrc.odim.rscale);
-		const int h = static_cast<double>(dbzSrc.odim.nrays) * windowHeight/360.0;
-		dbzDevOp.window.setSize(w, h);
-		dbzDevOp.window.functor.set( 5, 0, 255.0);
-		dbzDevOp.window.odimSrc = dbzSrc.odim;
-		applyOperator(dbzDevOp, tmp, "DBZ_DEV_LOW", dbzSrc, dstData, dstProductAux);
-		 */
 	}
 
-	const Data<PolarSrc> &  vradSrc = sweepSrc.getData("VRAD"); // VolumeOpNew::
+	static drain::RegExp regExpVRAD("^VRAD[H]?$");
+	const Data<PolarSrc> &  vradSrc = sweepSrc.getData(regExpVRAD); // VolumeOpNew::
 	const bool VRAD = !vradSrc.data.isEmpty();
+	const double NI = vradSrc.odim.getNyquist();
 	if (!VRAD){
-		mout.warn() << "VRAD missing" <<  mout.endl;
-		overallScale *= 0.75;
+		mout.warn() << "VRAD missing, skipping..." <<  mout.endl;
+		overallScale *= 0.5;
 	}
-	else if (vradSrc.odim.NI == 0) {
-		mout.warn() << "vradSrc.odim: " << vradSrc.odim << mout.endl;
-		mout.warn() << "VRAD unusable, vradSrc.odim.NI == 0" <<  mout.endl;
-		overallScale *= 0.75;
+	else if (NI == 0) { //  if (vradSrc.odim.NI == 0) {
+		mout.note() << "vradSrc.odim (encoding): " << EncodingODIM(vradSrc.odim) << mout.endl;
+		mout.warn() << "vradSrc.odim.NI==0, and could not derive NI from encoding" <<  mout.endl;
+		mout.warn() << "skipping VRAD..." <<  mout.endl;
+		overallScale *= 0.5;
+	}
+	else if (vradDevMin > NI) {
+		mout.warn() << "vradDevMin (" << vradDevMin << ") exceeds NI of input: " << NI << mout.endl; // semi-fatal
+		mout.warn() << "skipping VRAD..." <<  mout.endl;
+		overallScale *= 0.5;
 	}
 	else {
 
-		//typedef DopplerDevWindow DDW;
-		const int w = static_cast<int>(windowWidth/vradSrc.odim.rscale);
-		const int h = static_cast<double>(vradSrc.odim.nrays) * windowHeight/360.0;
-		FuzzyStep<double> fuzzyStep(0.5);
-		const double pos = vradDevMin/vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
+		FuzzyStep<double> fuzzyStep; //(0.5);
+		const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
+
 		if (pos > 0.0)
 			fuzzyStep.set( 0.8*pos, 1.2*pos, 255.0 );
 		else
 			fuzzyStep.set( 1.2*(-pos), 0.8*(-pos), MAX );
 
-		DopplerDevWindow::config conf(vradSrc.odim, fuzzyStep, w, h, (w*h)/5); // require 20% of samples
-		SlidingWindowOpT<DopplerDevWindow> vradDevOp(conf);
+		DopplerDevWindow::conf_t conf(fuzzyStep, windowWidth, windowHeight, 0.05, true, false); // require 5% samples
+		conf.updatePixelSize(vradSrc.odim);
+		SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
 
-		mout.debug() << "VRAD " << vradDevOp.conf.ftor <<  mout.endl;
+		mout.warn() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
+		mout.debug(1)  << "VRAD op   " << vradDevOp <<  mout.endl;
+		mout.debug()  << vradDevOp.conf.width  << 'x' << vradDevOp.conf.height <<  mout.endl;
+		mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
+		mout.debug()  << "vradSrc NI=" << vradSrc.odim.NI <<  mout.endl;
+		mout.debug(1) << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
+
+		dstData.setPhysicalRange(0.0, 1.0);
+		/*
+		dstData.data.setOptimalScale(0.0, 1.0);
+		dstData.odim.gain   = dstData.data.getScaling().scale;
+		dstData.odim.offset = dstData.data.getScaling().offset;
+		*/
 
 		applyOperator(vradDevOp, tmp, "VRAD_DEV", vradSrc, dstData, dstProductAux);
+		//mout.debug() << dstData.data <<  mout.endl;
+		//mout.debug() << EncodingODIM(dstData.odim) <<  mout.endl;
 
 	}
 
@@ -282,9 +302,9 @@ void BirdOp::processDataSet(const DataSetSrc<PolarSrc> & sweepSrc, PlainData<Pol
 		//FuzzyBellOp fuzzyBright(0.0,-0.032, overallScale);
 		UnaryFunctorOp<FuzzyBell<double> > fuzzyBright;
 		fuzzyBright.functor.set(0.0,-0.032, overallScale);
-		fuzzyBright.filter(dstData.data, dstData.data);
+		fuzzyBright.process(dstData.data, dstData.data);
 	}
-	DataSelector::updateAttributes(dstData.tree);
+	DataTools::updateAttributes(dstData.tree);
 }
 
 

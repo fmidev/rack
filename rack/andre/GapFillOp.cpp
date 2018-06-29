@@ -32,17 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-//#include <drain/util/Fuzzy.h>
-#include <drain/image/CopyOp.h>
-#include <drain/image/DistanceTransformFillOp.h>
-//#include <drain/image/MathOpPack.h>
-#include <drain/image/RecursiveRepairerOp.h>
-#include <drain/image/Intensity.h>
-
-//#include "Geometry.h"
-
-//#include <drain/image/MathOpPack.h>
 #include <drain/image/File.h>
+#include <drain/image/Intensity.h>
+#include <drain/imageops/CopyOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
+
+
 
 #include "GapFillOp.h"
 
@@ -59,7 +55,7 @@ using namespace hi5;
 //void GapFillOp::filterImage(const PolarODIM & odim, Image &data, Image &quality) const {
 void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << *this << mout.endl;
 
 	//const drain::VariableMap &a = data.properties;
@@ -70,13 +66,20 @@ void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 	//File::write(quality,"GapFillOp-inq.png");
 
 	DistanceTransformFillLinearOp op; // op("5,5");
-	op.horz = width / srcData.odim.rscale;
-	op.vert = height * srcData.data.getHeight() / 360.0;
+	double h = width / srcData.odim.rscale;
+	double v = height * srcData.data.getHeight() / 360.0;
+	op.setRadius(h, v);
 
 	//mout.warn() << op << mout.endl;
 
-	op.filter(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
-	//op.filter(data, quality, data, quality);
+	ImageTray<const Channel> srcTray;
+	srcTray.setChannels(srcData.data, srcData.getQualityData().data);
+
+	ImageTray<Channel> dstTray;
+	dstTray.setChannels(dstData.data, dstData.getQualityData().data);
+
+	op.traverseChannels(srcTray, dstTray);
+	//op.traverseChannels(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
 	//File::write(data,"GapFillOp-out.png");
 	//File::write(quality,"GapFillOp-outq.png");
 
@@ -91,8 +94,12 @@ void GapFillRecOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & 
 	op.loops = loops;
 	//op.decay = decay;
 
-	op.filter(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
-
+	ImageTray<const Channel> srcTray;
+	srcTray.setChannels(srcData.data, srcData.getQualityData().data);
+	ImageTray<Channel> dstTray;
+	dstTray.setChannels(dstData.data, dstData.getQualityData().data);
+	//op.filter(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
+	op.traverseChannels(srcTray, dstTray);
 
 }
 

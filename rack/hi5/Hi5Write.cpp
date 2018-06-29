@@ -49,11 +49,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace hi5 {
 
-char Writer::tempPathSuffix = '~';
+//char Writer::tempPathSuffix = '~';
 
 void Writer::writeFile(const std::string &filename, const HI5TREE &tree){
 
-	drain::MonitorSource mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
 
 	const hid_t fid = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
@@ -72,11 +72,13 @@ void Writer::writeFile(const std::string &filename, const HI5TREE &tree){
 
 void Writer::treeToH5File(const HI5TREE &tree,hid_t fid, const std::string &path){
 
-	drain::MonitorSource mout(hi5::hi5monitor, "Writer", __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, "Writer", __FUNCTION__);
 
 	//mout.note() << "tempPathSuffix='" << tempPathSuffix << "' pathSize=" << path.size() << '\n';
 
 	/// Feature: do not convert paths ending with '~'.
+	/// DEPRECATED
+	/*
 	if ((tempPathSuffix!='\0') && (path.size() > 0)){
 		//if ((path.at(path.size()-1) == '~') || (path.find('~') != std::string::npos) ){
 		if (path.find('~') != std::string::npos){
@@ -84,7 +86,7 @@ void Writer::treeToH5File(const HI5TREE &tree,hid_t fid, const std::string &path
 			return;
 		}
 	}
-
+	*/
 
 	const hi5::NodeHi5 & node = tree.data;
 	const drain::VariableMap  & attributes = node.attributes;
@@ -152,7 +154,7 @@ void Writer::treeToH5File(const HI5TREE &tree,hid_t fid, const std::string &path
 
 void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute){
 
-	drain::MonitorSource mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
 
 	int status = 0;
 
@@ -217,7 +219,7 @@ void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std:
 
 void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const std::string & path){
 
-	drain::MonitorSource mout(hi5::hi5monitor, "Writer", __FUNCTION__ );
+	drain::Logger mout(hi5::hi5monitor, "Writer", __FUNCTION__ );
 
 	//static const std::string func = "Writer::imageToH5DataSet";
 	static int status;
@@ -226,7 +228,7 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	mout.debug(3) << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
-	const hsize_t rank = image.getChannelCount() == 1 ? 2 : 3;
+	const hsize_t rank = image.getChannelCount() <= 1 ? 2 : 3;
 	//hsize_t dims[rank];
 	hsize_t dims[3];
 
@@ -234,7 +236,7 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	case 3:
 		dims[2] = image.getChannelCount();
 		//std::cerr << "imageToH5DataSet: (Warning: range==3 experimental.)";
-		mout.warn() << ": range==3 experimental, path=" << path << mout.endl;
+		mout.warn() << "channels: " << image.getChannelCount() <<  " => rank==3 experimental, path=" << path << mout.endl;
 		// no break
 	case 2:
 		dims[1] = image.getWidth();
@@ -271,7 +273,7 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	if (status < 0)
 		mout.warn() << ": H5Pset_deflate failed, path=" << path << mout.endl;
 
-	/// PolarODIM
+	/// ODIM
 	/*
 		userblock = (hsize_t)0;
 		sizeof_size = (size_t)4;
@@ -287,7 +289,7 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 		status = H5Pset_userblock(pid,0);
 		if (status < 0) {
 			hi5monitor.warn() << ": H5Pset_userblock failed." << hi5monitor.endl;
-			hi5monitor.note() << ": (Causes deviation from PolarODIM specification).";
+			hi5monitor.note() << ": (Causes deviation from ODIM specification).";
 		}
 		else {
 			H5Pset_sizes(pid,4,4);
@@ -310,7 +312,8 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	 */
 	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(*image.begin()));
 	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );
-	H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBufferCONST() );
+	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBufferCONST() );
+	H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );
 	if (status < 0)
 		mout.warn() << ": H5Dwrite failed, path=" << path << mout.endl;
 
@@ -333,71 +336,59 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 		mout.warn() << ": H5P close failed." << mout.endl;
 }
 
+//void Writer::dataToH5AttributeT<std::string>(const drain::Variable & data, hid_t fid, const std::string & path, const std::string & attribute){
+void Writer::dataToH5AttributeString(const drain::Variable & data, hid_t fid, const std::string & path, const std::string & attribute){
+
+	drain::Logger mout(hi5::hi5monitor, "Writer", __FUNCTION__ );
+
+	const std::type_info & type = data.getType();
+	if (type != typeid(std::string)){
+		mout.note() << "converting attribute '" << attribute << "'=" << data << " (" << type.name() << ")' to string" << mout.endl;
+	}
+	//std::cerr << "StringTools attribute " << attribute << '\n';
+
+	const std::string dataStr = data.toStr();
+
+	hid_t tid = H5Tcopy(H5T_C_S1);
+	H5Tset_size(tid, dataStr.size() +1); // otherwise errors for empty std::strings
+	hid_t sid = H5Screate(H5S_SCALAR);
+
+	// Open group or dataset, whichever...
+	hid_t oid = H5Oopen(fid,path.c_str(),H5P_DEFAULT);
+	hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
+	H5Awrite (aid, tid, dataStr.c_str());
+
+	H5Aclose(aid);
+	H5Oclose(oid);
+	H5Sclose(sid);
+	H5Tclose(tid);
+
+}
+
+struct AttrWriter {
+
+	AttrWriter(const drain::Variable & data, hid_t fid, const std::string &path, const std::string & attribute) :
+		data(data), fid(fid), path(path), attribute(attribute)
+	{};
+
+	const drain::Variable &data;
+	hid_t fid;
+	const std::string &path;
+	const std::string &attribute;
+
+	template <class T>
+	static
+	void callback(AttrWriter & w){
+		Writer::dataToH5AttributeT<T>(w.data, w.fid, w.path, w.attribute);
+	}
+};
+
+
 void Writer::dataToH5Attribute(const drain::Variable &data, hid_t fid, const std::string &path, const std::string &attribute){
 
-	const std::type_info &type = data.getType();
-
-	if (type == typeid(char)){
-		dataToH5AttributeScalar<char>(data, fid, path, attribute);
-	}
-	else if (type == typeid(unsigned char)){
-		dataToH5AttributeScalar<unsigned char>(data, fid, path, attribute);
-	}
-	else if (type == typeid(short)){
-		dataToH5AttributeScalar<short>(data, fid, path, attribute);
-	}
-	else if (type == typeid(unsigned short)){
-		dataToH5AttributeScalar<unsigned short>(data, fid, path, attribute);
-	}
-	else if (type == typeid(int)){
-		dataToH5AttributeScalar<int>(data, fid, path, attribute);
-	}
-	else if (type == typeid(unsigned int)){
-		dataToH5AttributeScalar<unsigned int>(data, fid, path, attribute);
-	}
-	else if (type == typeid(long)){
-		dataToH5AttributeScalar<long>(data, fid, path, attribute);
-	}
-	else if (type == typeid(unsigned long)){
-		dataToH5AttributeScalar<unsigned long>(data, fid, path, attribute);
-	}
-#ifdef  STDC99
-	else if (type == typeid(long long)){
-		dataToH5AttributeScalar<long long>(data, fid, path, attribute);
-	}
-	else if (type == typeid(unsigned long long)){
-		dataToH5AttributeScalar<unsigned long long>(data, fid, path, attribute);
-	}
-#endif
-	else if (type == typeid(float)){
-		dataToH5AttributeScalar<float>(data, fid, path, attribute);
-	}
-	else if (type == typeid(double)){
-		dataToH5AttributeScalar<double>(data, fid, path, attribute);
-	}
-	else {
-		if (type != typeid(std::string)){
-			std::cerr << "Warning: converting attribute '" << attribute;
-			std::cerr << "'=" << data << " (" << type.name() << ")' to std::string.\n";
-		}
-		//std::cerr << "String attribute " << attribute << '\n';
-
-		const std::string dataStr = data.toStr();
-
-		hid_t tid = H5Tcopy(H5T_C_S1);
-		H5Tset_size(tid, dataStr.size() +1); // otherwise errors for empty std::strings
-		hid_t sid = H5Screate(H5S_SCALAR);
-
-		// Open group or dataset, whichever...
-		hid_t oid = H5Oopen(fid,path.c_str(),H5P_DEFAULT);
-		hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
-		H5Awrite (aid, tid, dataStr.c_str());
-
-		H5Aclose(aid);
-		H5Oclose(oid);
-		H5Sclose(sid);
-		H5Tclose(tid);
-	}
+	const std::type_info & type = data.getType();
+	AttrWriter a(data, fid, path, attribute);
+	drain::Type::call<AttrWriter>(a, type);
 }
 
 

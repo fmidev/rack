@@ -38,17 +38,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/GaussianWindow.h>
 
 
-#include "data/ODIM.h"
+#include "data/PolarODIM.h"
 
 // // using namespace std;
 
 namespace rack {
 
-class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeighted {
+class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeighted<false> { // true=horizontal, false=vertical
   public: // repl 
 
 
-	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : GaussianStripeWeighted(radius, 1, height), rangeNorm(10), rangeNormEnd(0) { // RANGE(0),
+	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : GaussianStripeWeighted<false>(height, radius), rangeNorm(10), rangeNormEnd(0) { // RANGE(0),
 		this->resetAtEdges = true;
 	};
 
@@ -91,7 +91,7 @@ class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeigh
 	inline
 	void setRangeNorm(const PolarODIM & odim){
 		//rangeNorm = i;
-		drain::MonitorSource mout("SlidingRadarWindow", __FUNCTION__);
+		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		rangeNorm = static_cast<double>(odim.nrays) / (2.0*M_PI);
 		//rangeNorm = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.nrays) / (2.0*M_PI);
 		rangeNormEnd = (rangeNorm * this->conf.height);

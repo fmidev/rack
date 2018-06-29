@@ -50,7 +50,7 @@ using namespace drain::image;
 
 void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug() << "Start"  << mout.endl;
 
@@ -137,7 +137,8 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 
 	dst.odim.product = odim.product;
 	dst.odim.prodpar = odim.prodpar;
-	dst.updateTree();
+
+	//@ dst.updateTree();
 
 	//mout.warn() << timestamp << mout.endl;
 

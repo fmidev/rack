@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/Debug.h>
 //#include <drain/util/ReferenceMap.h>
 
-#include "util/Debug.h"
+#include "util/Log.h"
 #include "util/BeanLike.h"
 #include "util/ReferenceMap.h"
 //#include "CommandRegistry.hsepa"
@@ -51,19 +51,18 @@ namespace drain {
 /**
  *
  */
-struct Command {  // Todo consider BeanLike
+struct Command {
 
-	//inline	Command(const std::string & name = __FUNCTION__) : name(name) {	};
-
-	inline	Command(){}; // : name("unnamed") {	};
+	inline
+	Command(){};
 
 	inline
 	virtual
 	~Command(){};
 
-	/// Returns the "C++ name" of this (derived) class. Typically not same as the command line command.
-	// TODO: consider if needed or not
-	//inline
+	// TODO: getFullName(), the "C++ name" of this (derived) class.
+	// Typically not same as the command line command.
+
 	virtual
 	const std::string & getName() const = 0; //{ return name; };
 
@@ -78,7 +77,7 @@ struct Command {  // Todo consider BeanLike
 
 	inline
 	bool hasArguments() const { // tODO rename
-		MonitorSource mout("Command", __FUNCTION__);
+		Logger mout("Command", __FUNCTION__);
 
 		const ReferenceMap & params = this->getParameters();
 		//mout.warn() << params << mout.endl;
@@ -94,46 +93,9 @@ struct Command {  // Todo consider BeanLike
 	virtual
 	void run(const std::string & params) = 0;
 
-	// Some overlap with Command::help()
-	/*
-	virtual
-	std::ostream & toOstream(std::ostream & ostr) const {
 
-		const ReferenceMap & params = getParameters();
-		const std::map<std::string,std::string> & units = params.getUnitMap();
 
-		ostr << "DrainLet #";
-		ostr << getName() << ' ';
-		params.getKeys(ostr);
-		ostr << '\n';
-
-		for (ReferenceMap::const_iterator it = params.begin(); it != params.end(); ++it){
-			ostr << '\t' << it->first << ' ' << it->second << ' ';
-			std::map<std::string,std::string>::const_iterator uit = units.find(it->first);
-			if (uit != units.end())
-				if (!uit->second.empty())
-					ostr << '[' << uit->second << ']';
-		}
-		return ostr;
-	}
-	 */
-
-protected:
-
-	/// Native C++ name of the class.
-	/**
-	 * This is not the name under which the drainlet can be called from the main program.
-	 */
-	//const std::string name;
-
-	/*
-	inline
-	Command(const Command & drainlet) : name(drainlet.name) {};  // unregistered ie "hidden"
-	*/
 };
-
-//inline
-//std::ostream & operator<<(std::ostream & ostr, const Command & d){ return d.toOstream(ostr); }
 
 typedef std::list<std::pair<Command &, std::string> > Script; // TODO: move
 
@@ -215,25 +177,26 @@ protected:
  */
 template <class T = std::string>
 class SimpleCommand : public BasicCommand {
-    public: //re 
+
+public:
 
 	T value;
 
 	SimpleCommand(const std::string & name, const std::string & description,
-			const std::string & paramName, const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
+			const std::string & key, const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
 
 		parameters.separator = '\0';
-		if (paramName.empty())
-			std::cerr << "warning: paramName empty for: " << name << std::endl;
+		if (key.empty())
+			std::cerr << "warning: param key empty for: " << name << std::endl;
 
-		parameters.reference(paramName, value = initValue, unit);
+		parameters.reference(key, value = initValue, unit);
 	};
 
 	inline
-	operator const T &(){ return value; };
+	operator const T &() const { return value; }; // needed?
 
 	inline
-	operator       T &(){ return value; };
+	operator       T &(){ return value; }; // needed?
 
 	inline
 	SimpleCommand<T> & operator =(const T &s){ value = s; return *this; };

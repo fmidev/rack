@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/util/Fuzzy.h>
+#include <drain/util/Geo.h>
 
 #include "SunOp.h"
 
@@ -46,23 +47,23 @@ namespace rack {
 //void SunOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 	// mout.debug() << *this << mout.endl;
 	// mout.debug(1) << "=>odimIn: " << srcData.odim << mout.endl;
 
 	double sunAzm = 0.0, sunElev = 0.0;
-	Sun::getSunPos(srcData.odim.date + srcData.odim.time, srcData.odim.lon*DEG2RAD, srcData.odim.lat*DEG2RAD, sunAzm, sunElev);
+	Sun::getSunPos(srcData.odim.date + srcData.odim.time, srcData.odim.lon*drain::DEG2RAD, srcData.odim.lat*drain::DEG2RAD, sunAzm, sunElev);
 
 	mout.info() << " sunAzm=" << sunAzm << ", sunElev=" << sunElev << mout.endl;
 
-	const drain::FuzzyBell<double> fuzzyPeak(0.0, (width*width)*(DEG2RAD*DEG2RAD), 250.0);
+	const drain::FuzzyBell<double> fuzzyPeak(0.0, (width*width)*(drain::DEG2RAD*drain::DEG2RAD), 250.0);
 
 	const size_t w = dstProb.data.getWidth();
 	const size_t h = dstProb.data.getHeight();
 	double a, e;
 
-	e = (srcData.odim.elangle*DEG2RAD - sunElev) ;
+	e = (srcData.odim.getElangleR() - sunElev) ;
 	e = e*e;
 
 	unsigned char c;
@@ -81,7 +82,7 @@ void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 
 
 	/*
-	const drain::DataScaling scaleDBZ(srcData.odim.gain, srcData.odim.offset);
+	const drain::LinearScaling scaleDBZ(srcData.odim.gain, srcData.odim.offset);
 	mout.debug(1) << "scaleDBZ: " << scaleDBZ << mout.endl;
 
 

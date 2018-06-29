@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "PolarProductOp.h"
 
-#include "radar/Doppler.h"
+//#include "radar/Doppler.h"
 #include "radar/PolarSector.h"
 
 
@@ -44,6 +44,7 @@ namespace rack {
 /// Base class for computing products from Doppler speed (VRAD) data.
 /** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree<NodeH5>.
  *
+ *  \see DopplerWindowOp
  */
 class DopplerOp : public PolarProductOp {
 public:
@@ -65,7 +66,7 @@ public:
 		parameters.reference("bin2", w.bin2 = 0, "index");
 		 */
 		// reference("draw", this->draw, 1, "0/1");
-		dataSelector.quantity = "VRAD";
+		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 	};
 
@@ -84,7 +85,7 @@ protected:
 	//void drawWindow(int ray1, int ray2, int bin1, int bin2, int marker, PlainData<PolarDst> & dstData) const;
 
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const ;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
 
 
 };

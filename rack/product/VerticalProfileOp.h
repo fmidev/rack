@@ -86,7 +86,7 @@ protected:
 	//virtual	void setGeometry(Data<VprDst> & dstData) const;
 
 	virtual
-	void processDataSets(const DataSetSrcMap & srcSweeps, DataSetDst<VprDst> & dstProduct) const;
+	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const;
 
 
 

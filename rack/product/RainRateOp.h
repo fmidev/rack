@@ -52,6 +52,9 @@ public:
 		parameters.reference("thickness", thickness = 0.1, "km");
 	}
 
+	virtual
+	~FreezingLevel(){};
+
 	double height;
 	double thickness;
 

@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <stdexcept>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Variable.h>
 
 //#include "main/rack.h"
@@ -69,10 +69,10 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 
 }
 
-void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> & dstProduct) const {
+void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const {
 //void PseudoRhiOp::processVolume(const HI5TREE & src, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	//mout.warn() << parameters  << mout.endl;
 	//mout.warn() << odim  << mout.endl;
 
@@ -81,7 +81,7 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 		return;
 	}
 
-	const DataSetSrc<PolarSrc> & srcDataSet = src.begin()->second;
+	const DataSet<PolarSrc> & srcDataSet = src.begin()->second;
 	const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
 
@@ -106,7 +106,7 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 		return;
 	}
 
-	dstData.updateTree(); // TODO later quantity?
+	//@ dstData.updateTree(); // TODO later quantity?
 
 	PlainData<RhiDst> & dstQuality = dstData.getQualityData("QIND");
 	dstQuality.odim.quantity = "QIND";
@@ -115,7 +115,7 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 	//dstQuality.data.setGeometry(odim.xsize, odim.ysize);
 	//quantityMap.setQuantityDefaults(dstQuality, "QIND");
 	//dstQuality.data.setGeometry(dstData.data.getGeometry());
-	dstQuality.updateTree();
+	//@ dstQuality.updateTree();
 	const double Q_MAX = dstQuality.odim.scaleInverse(1.0);  // 255
 
 	/// Todo: range (kms) already in dst odim?
@@ -197,7 +197,7 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 		double etaLower = -M_PI;
 		double etaUpper = -M_PI;
 		//std::map<double,const Image &>::const_iterator itStart = images.begin();
-		DataSetSrcMap::const_iterator itStart = src.begin();
+		DataSetMap<PolarSrc>::const_iterator itStart = src.begin();
 
 		//  Traverse altitude (vert dimension)
 		for (int k = 0; k < odim.ysize; ++k) {
@@ -210,14 +210,14 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 				/// Who knows, maybe there is no upper beam
 				USE_UPPER = false;
 
-				DataSetSrcMap::const_iterator it = itStart; // ??
+				DataSetMap<PolarSrc>::const_iterator it = itStart; // ??
 
 				/// Traverse the sweeps, derive upper and lower beams.
 				while (true){
 
 					// Virtual elevation angle
 					const double eta0 = it->first*(M_PI/180.0);
-					const DataSetSrc<> & srcDataSet = it->second;
+					const DataSet<PolarSrc> & srcDataSet = it->second;
 					const Data<PolarSrc>      & srcData = srcDataSet.getFirstData(); // todo 1) what if differs from quantity  2) control quantity?
 
 					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta0, beta) / srcData.odim.rscale - srcData.odim.rstart);
@@ -340,7 +340,7 @@ void PseudoRhiOp::processDataSets(const DataSetSrcMap & src, DataSetDst<RhiDst> 
 
 	} // for i
 
-	dstProduct.updateTree(odim);
+	//@? dstProduct.updateTree(odim);
 
 }
 

@@ -58,18 +58,19 @@ public:
 
 		parameters.reference("altitudeReference", this->aboveSeaLevel = true, "0=radar site|1=sea level");
 
-		odim.product = "ALTITUDE";
+		odim.product  = "ALTITUDE";
 		odim.quantity = "HGHT";
 
 		dataSelector.quantity = "";
 		dataSelector.path = "dataset[0-9]+/data[0-9]+/?$";  // NOTE! A dataset for each elevation groups; should suffit for nbins and rscale. However, if a user wants to use quantity, /dataN/ should be reached.
 		dataSelector.count = 1;
 
-
-		this->allowedEncoding.reference("type", odim.type = "C");
-		this->allowedEncoding.reference("gain", odim.gain = 0.1);
+		this->allowedEncoding.reference("type",   odim.type = "C");
+		this->allowedEncoding.reference("gain",   odim.gain = 0.1);
 		this->allowedEncoding.reference("offset", odim.offset = 0.0);
+
 		odim.nrays = 1;
+
 		// allowedEncoding.reference("type", odim.type, "S");
 		// allowedEncoding.reference("gain", odim.gain, 0.001);
 

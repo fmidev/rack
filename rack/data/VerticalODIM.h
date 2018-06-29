@@ -79,17 +79,25 @@ public:
 	/// Nyquist velocity
 	double NI;
 
-	VerticalCrossSectionODIM(){ init(); };
+	inline
+	VerticalCrossSectionODIM(group_t initialize = ALL) : ODIM(initialize) {
+		init(initialize);
+	};
 
 	VerticalCrossSectionODIM(const ODIM & odim){
-		init();
-		importMap(odim);
+		initFromMap(odim);
 	};
+
+	inline
+	void setGeometry(size_t cols, size_t rows){
+		xsize = cols;
+		ysize = rows;
+	}
 
 protected:
 
 	virtual
-	void init();
+	void init(group_t initialize=ALL);
 
 };
 
@@ -114,29 +122,29 @@ public:
 	long int azSlots;  // non-stardard
 
 
+	inline
+	VerticalProfileODIM(group_t initialize = ALL) : VerticalCrossSectionODIM(initialize) {
+		init(initialize);
+	}
 
-	VerticalProfileODIM(){ init(); };
-
+	inline
 	VerticalProfileODIM(const VerticalProfileODIM & odim){
-		init();
-		importMap(odim);
-	};
+		initFromMap(odim);
+	}
 
 	template <class T>
 	VerticalProfileODIM(const std::map<std::string,T> & m){
-		init();
-		importMap(m);
+		initFromMap(m);
 	}
 
-	VerticalProfileODIM(const drain::image::Image & image){
-		init();
-		copyFrom(image);
-	};
+	VerticalProfileODIM(const drain::image::Image & img, const std::string & quantity=""){
+		initFromImage(img, quantity);
+	}
 
 protected:
 
 	virtual
-	void init();
+	void init(group_t initialize=ALL);
 
 };
 
@@ -160,30 +168,28 @@ public:
 	double minRange; // nonstandard
 	double range;
 
-
-	RhiODIM(){ init(); };
+	inline
+	RhiODIM(group_t initialize = ALL) : VerticalCrossSectionODIM(initialize) {
+		init(initialize);
+	};
 
 	RhiODIM(const RhiODIM & odim){
-		init();
-		importMap(odim);
+		initFromMap(odim);
 	};
 
 	template <class T>
 	RhiODIM(const std::map<std::string,T> & m){
-		init();
-		importMap(m);
+		initFromMap(m);
 	}
 
-	RhiODIM(const drain::image::Image & image){
-		init();
-		copyFrom(image);
+	RhiODIM(const drain::image::Image & img, const std::string & quantity=""){
+		initFromImage(img, quantity);
 	};
 
 protected:
 
 	virtual
-	void init();
-
+	void init(group_t initialize=ALL);
 };
 
 

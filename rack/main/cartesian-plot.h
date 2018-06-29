@@ -46,6 +46,25 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+class CartesianQuantity : public BasicCommand {  //SimpleCommand<std::string> {
+
+public:
+
+	CartesianQuantity() : BasicCommand(__FUNCTION__, "Set quantity of the composite.") {
+		parameters.reference("quantity", getResources().composite.odim.quantity);
+	}
+	/*
+	inline
+	CartesianQuantity() : SimpleCommand<std::string>(__FUNCTION__, "Set quantity of the composite.", "quantity"){
+	};
+
+	inline
+	void exec() const {
+		getResources().composite.odim.quantity = value;
+	};
+	*/
+
+};
 
 class CartesianPlot : public BasicCommand {
 

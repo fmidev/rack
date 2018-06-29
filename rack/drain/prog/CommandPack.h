@@ -43,7 +43,8 @@ namespace drain {
 
 
 class CmdHelp : public SimpleCommand<std::string> { // public BasicCommand {//
-    public: //re 
+
+public:
 
 	inline
 	CmdHelp(const std::string & title, const std::string & usage = "") : SimpleCommand<std::string>(__FUNCTION__, "Dump help and exit.", "keyword"), title(title), usage(usage) { //BasicCommand("Dump help and exit") {
@@ -64,18 +65,18 @@ protected:
 
 /// A base class
 /**
- *  Typically, this wrapper is used for displaying version info etc. through defining
+ *  Typically, this wrapper is used for displaying version toOStr etc. through defining
  *
- *  Now member  std::string value is applied as info container.
+ *  Now member  std::string value is applied as toOStr container.
  */
 class CommandInfo : public BasicCommand { //public SimpleCommand<std::string> {
     public: //re 
 
 	const std::string info;
 
-	//CommandInfo(const std::string & description, const std::string & info) : SimpleCommand<std::string>(description) { value.assign(info); };
+	//CommandInfo(const std::string & description, const std::string & toOStr) : SimpleCommand<std::string>(description) { value.assign(toOStr); };
 	CommandInfo(const std::string & description, const std::string & info) : BasicCommand(__FUNCTION__, description), info(info) {
-		//value.assign(info);
+		//value.assign(toOStr);
 	};
 
 
@@ -169,7 +170,7 @@ class DefaultHandler : public BasicCommand {
 	inline
 	void run(const std::string & params){
 
-		MonitorSource mout(getName());
+		Logger mout(getName());
 
 		mout.debug(1) << "params: " << params << mout.endl;
 
@@ -192,22 +193,6 @@ class DefaultHandler : public BasicCommand {
 
 };
 //DefaultHandler defaultHandler;
-
-// GENERAL
-class CmdVerbose : public SimpleCommand<int> {
-    public: //re 
-
-	CmdVerbose() : SimpleCommand<int>(__FUNCTION__, "Set verbosity level", "level", 0) {
-	};
-
-	inline
-	void exec() const {
-		drain::monitor.setVerbosity(value);
-		// drain::image::iMonitor.setVerbosity(value-2);
-	};
-
-};
-
 
 class CmdDebug : public BasicCommand {
     public: //re 

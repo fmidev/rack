@@ -40,14 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DOPPLER_DEALIAS2_OP_H_
 #define DOPPLER_DEALIAS2_OP_H_
 
-//#include "PolarSlidingWindowOp.h"
-
-#include <drain/image/SlidingWindowOp.h>
-#include <drain/image/SlidingWindowHistogramOp.h>
-#include <drain/util/LookUp.h>
-
-//#include "DopplerOp.h"
-//#include "radar/Doppler.h"
 
 #include "DopplerWindowOp.h"
 
@@ -90,7 +82,7 @@ public:
 
 	// Outputs u and v both, so dst dataSET needed
 	virtual
-	void processDataSet(const DataSetSrc<PolarSrc> & srcSweep, DataSetDst<PolarDst> & dstProduct) const ;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
 
 	//@Override
 	virtual
@@ -104,11 +96,12 @@ public:
 	double heightD;
 	std::string altitudeWeight;  // Functor
 
+	/// Projects wind (u,v) to beam. Unit (typically m/s) is preserved.
 	// raise
 	inline
-	double project(double azm, double u, double v) const {
+	double project(double azmR, double u, double v) const {
 		// double speed = sqrt(u*u + v*v);
-		return u*sin(azm) + v*cos(azm);
+		return u*sin(azmR) + v*cos(azmR);
 	}
 
 	inline

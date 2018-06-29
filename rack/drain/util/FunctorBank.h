@@ -32,20 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_FUNCTOR_BANK_H_
 
 //
-#include <cmath>
 
-#include <vector>
-#include <iostream>
-#include <stdexcept>
-#include <map>
-
-#include "Debug.h"
+#include "Log.h"
 
 
 //#include "Registry.h"
 //#include "Cloner.h"
 #include "Functor.h"
-#include "Fuzzy.h"
+//#include "Fuzzy.h"
 #include "Bank.h"
 
 // using namespace std;
@@ -53,9 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-
-//typedef Registry<ClonerBase<UnaryFunctor> > UnaryFunctorCloner;
-//typedef Registry<ClonerBase<UnaryFunctor> > FunctorBank;
+// Note: there is probably need for Bank<BinaryFunctor>, too.
 typedef Bank<UnaryFunctor> FunctorBank;
 
 
@@ -72,51 +64,24 @@ public:
 };
 
 
-static
-inline
-FunctorBank & getFunctorBank() {
+extern
+FunctorBank & getFunctorBank();
 
-	/// Shared functor bank
-	static FunctorBank functorBank;
+/// Returns functor the parameters of which have been set.
+/**
+ *   \param separator -
+ */
+extern
+UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator=',');
 
-	if (functorBank.getMap().empty()){
-
-		typedef UnaryFunctor UF;
-		static FunctorCloner<UF, IdentityFunctor> identity;
-		functorBank.add(identity, "");
-
-		static FunctorCloner<UF, FuzzyStep<double> > step;
-		functorBank.add(step, step.getName(), 's');
-
-		static FunctorCloner<UF, FuzzyTriangle<double> > triangle;
-		functorBank.add(triangle, triangle.getName());
-
-		static FunctorCloner<UF, FuzzyBell<double> > bell;
-		functorBank.add(bell, bell.getName(), 'b');
-
-		static FunctorCloner<UF, FuzzyBell2<double> > bell2;
-		functorBank.add(bell2, bell2.getName());
-
-		static FunctorCloner<UF, FuzzyStepsoid<double> > stepsoid;
-		functorBank.add(stepsoid, stepsoid.getName());
-
-		static FunctorCloner<UF, FuzzySigmoid<double> > sigmoid;
-		functorBank.add(sigmoid, sigmoid.getName());
-
-	}
-
-	return functorBank;
-
-}
-
-static
-inline
+/*static inline
 UnaryFunctor & getFunctor(const std::string & key) {
 
 	FunctorBank & functorBank = getFunctorBank();
 	return functorBank.get(key).clone();
 
 }
+*/
 
 
 }

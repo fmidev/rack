@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <ostream>
 
-#include "util/Debug.h"
+#include "util/Log.h"
 //#include "util/Options.h"
 
 //#include "Geometry.h"
@@ -57,126 +57,76 @@ namespace drain
 namespace image
 {
 
-//template <class T> class ImageView;
 
-/// A class for images having using an own memory resource.
+/// A template class for images with static storage type.
 /*!
- *  Essentially, BufferedImage is a std::vector, hence a 1D structure in which
- *  further dimensions are implemented by Geometry.
  *
- *  @see BufferedView
+ *
+ *  @see Image
  * 
  */
 template <class T=unsigned char>
-class ImageT : public Image //ImageFrame
+class ImageT : public ModifiableImage
 {
 public:
 
 
 	ImageT(){
-		setType<T>();
-		//setCoordinateHandler(defaultCoordinateHandler);
+		initialize(typeid(T), 0, 0, 0, 0);
+		//setStorageType(typeid(T));
 	}
 
 	ImageT(size_t width, size_t height, size_t channelCount=1, size_t alphaChannelCount=0){
-		initialize<T>(width,height,channelCount,alphaChannelCount);
-		//setCoordinateHandler(defaultCoordinateHandler);
+		initialize(typeid(T), width,height,channelCount,alphaChannelCount);
 	}
 
 	// Creates a new image having the geometry of \code image. 
 	ImageT(const ImageT<T> &image){
-		initialize<T>(image.getWidth(),image.getHeight(),image.getImageChannelCount(),image.getAlphaChannelCount());
+		initialize(typeid(T), image.getWidth(),image.getHeight(),image.getImageChannelCount(),image.getAlphaChannelCount());
 		setCoordinatePolicy(image.getCoordinatePolicy());
 	}
 
 	inline
 	virtual ~ImageT(){};
 
-
-
-	/// FARMED & FRAMED
-
-	/*
-
-
-	/// For sequential (in-place) computations
-    virtual typename std::vector<T>::const_iterator begin() const {
-		typename std::vector<T>::const_iterator it = bufferOLD->begin();
-		advance(it, offset);
-    	return it;
-	}
-
-    virtual typename std::vector<T>::iterator begin() {
-    	typename std::vector<T>::iterator it = bufferOLD->begin();
-		advance(it, offset);
-    	return it;
-	}
-
-    virtual typename std::vector<T>::const_iterator end() const {
-    	typename std::vector<T>::const_iterator it = bufferOLD->begin();
-		advance(it, offset + geometry.getVolume());
-    	return it;
-	}
-
-    virtual typename std::vector<T>::iterator end() {
-    	typename std::vector<T>::iterator it = bufferOLD->begin();
-		advance(it, offset + geometry.getVolume());
-    	return it;
-	}
-
-
-	 */
-
-
-
-
-
 	inline
 	const T & at(const size_t &i) const {
 		return *(const T *)&buffer[ address(i)*byteSize ];
-		//(*bufferOLD)[ address(i) ];  // slow?
 	}
 
 	inline
 	T & at(const size_t &i) {
 		return *(T *)&buffer[ address(i)*byteSize ];
-		//return (*bufferOLD)[ address(i) ];  // slow?
 	}
 
 	inline
 	const T & at(const size_t &i, const size_t &j) const {
 		return *(const T *)&buffer[ address(i)*byteSize ];
-		//return (*bufferOLD)[ address(i,j) ];
 	};
 
 	inline
 	T & at(const size_t &i, const size_t &j){
 		return *(T *)&buffer[ address(i,j)*byteSize ];
-		//return (*bufferOLD)[ address(i,j) ];
 	};
 
 	inline
 	const T & at(const size_t &i, const size_t &j, const size_t &k) const {
 		return *(const T *)&buffer[ address(i,j,k)*byteSize ];
-		//return (*bufferOLD)[ address(i,j,k) ];
 	};
 
 	inline
 	T & at(const size_t &i, const size_t &j, const size_t &k) {
 		return *(T *)&buffer[ address(i,j,k)*byteSize ];
-		//return (*bufferOLD)[ address(i,j,k) ];
 	};
 
 	inline
 	const T & at(const Point2D<int> &p) const {
 		return (const T *)&buffer[ address(p.x,p.y) ];
-		//return (*bufferOLD)[ address(p.x,p.y) ];
 	};
 
 	inline
 	T & at(const Point2D<int> &p) {
 		return (T *) & buffer[ address(p.x,p.y) ];
-		//return (*bufferOLD)[ address(p.x,p.y) ];
 	};
 
 

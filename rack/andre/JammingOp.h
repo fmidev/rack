@@ -34,18 +34,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <limits>
 
-//#include <drain/image/AreaOp.h>
-#include <drain/image/RunLengthOp.h>
-#include <drain/image/BasicOps.h>
+//#include <drain/util/FunctorPack.h>
+//#include <drain/util/Math.h>
 
-
-#include <drain/image/DistanceTransformOp.h>
-//#include <drain/image/FuzzyOp.h>
-
-
+/*
 #include <drain/image/File.h>
+#include <drain/imageops/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
+*/
 
-#include <drain/util/Math.h>
 
 #include "DetectorOp.h"
 
@@ -139,8 +136,7 @@ public:
 	 *  \param distance - distance in metres
 	 *
 	 */
-	static
-	inline
+	static inline
 	double modelledEmitter(double dBZ0, double distance){
 		return dBZ0 + distance*(0.016/1000.0) + 20.0*log10(distance);
 	};

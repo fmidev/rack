@@ -37,9 +37,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Rectangle.h>
 
 #include "hi5/Hi5.h"
-#include "data/ODIM.h"
+#include "data/CartesianODIM.h"
 #include "data/Data.h"
-#include "data/DataSelector.h"
+//#include "data/DataSelector.h"
 //#include "Coordinates.h"
 
 #include "RadarAccumulator.h"
@@ -127,6 +127,10 @@ public:
 
 
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
+	/**
+	 *    Useful in tiling.
+	 *
+	 */
 	inline
 	void setCropping(bool cropping = true){ this->cropping = cropping; };
 
@@ -171,6 +175,9 @@ public:
 
 	//std::map<std::string, drain::Variable> nodeMap;
 	drain::VariableMap nodeMap;
+
+	/// Range [km] for single-radar products. Typically 250 km.
+	int defaultRange;
 
 protected:
 

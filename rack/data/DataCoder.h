@@ -52,7 +52,10 @@ using namespace drain::image;
 
 
 
-/// Converts encoded data (with markers) to natural values and backwards.
+/// Converts ODIM encoded data (with markers) to natural values and backwards.
+/**
+ *   Converts ODIM encoded data with \c nodata and \c undetect markers to natural values and backwards.
+ */
 class DataCoder : public AccumulationConverter {
 
 public:
@@ -108,6 +111,11 @@ public:
 	virtual
 	void encodeWeight(double & weight) const;
 
+	/// Creates a naive quality field: data=1.0, undetect/nodata=0.0
+	/**
+	 *   Class-specific extension, ie not inherited from base class.
+	void encodeDataToWeight(double value, double & weight) const;
+	 */
 
 
 	void init();

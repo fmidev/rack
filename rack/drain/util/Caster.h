@@ -48,34 +48,38 @@ namespace drain {
 
 
 
-/// Reads and writes scalar values in memory using desired base type.
-/**  Caster assumes that the user provides a pointer to a memory resource
+/// Reads and writes values in memory using stored type - base types (char, int, double...) or std::string.
+/**
+ *  Caster uses a pointer provided by the user. The pointer points to a memory segment
  *  that stores base type objects (char, int, ...). The type may change dynamically.
+ *
  *  The implementation is based on function pointers to predefined template functions performing casts between
  *  base types.
  *
- *  See also:
+ *  As such, does not support arrays. See derived classes:
  *  - Castable
  *  - CastableIterator
  *
  *  \example Caster-example.cpp
  */
-// Consider: "typedef unsigned char byte" to handle numeric values, leaving characters to char?
 class Caster {
 
 
-//protected:
+	//protected:
 public:
 
-	/// Leaves the type undefined.
-        /** Initially, type is void, which can be indentified
-         *  with an unset type or a type requiring storage of undetectValue length. 
-         */
+	/// Default constructor. Leaves the type undefined.
+	/** Initially, type is void, which can be indentified
+	 *  with an unset type or a type requiring storage of zero length.
+	 */
 	inline
 	Caster (){
-	  unsetType();
+		unsetType();
 	};
 
+	/// Copy constructor. Copies the type.
+	/**
+	 */
 	inline
 	Caster (const Caster &c){
 		std::cerr << "Caster::  warning: copy const;" << std::endl;
@@ -88,21 +92,20 @@ public:
 
 	inline
 	void setType(const std::type_info &t){
-	//void setType(const Type & t){ // allows std::type_info, char, std::string...
-	//	if (t.getType() == typeid(void))
 		if (t == typeid(void))
 			unsetType();
 		else {
-			Type::callFunc<typesetter>(*this, t);
+			Type::call<typesetter>(*this, t);
 		}
 	}
 
+	// Use Type::typesetter<Caster> instead?
 	class typesetter {
 	public:
 		template <class T>
 		static
 		inline
-		void call(Caster & c){
+		void callback(Caster & c){
 			c.setType<T>();
 		}
 
@@ -115,8 +118,8 @@ public:
 
 	/// VOID 
 	void unsetType();
-       
 
+	/// Returns type_info of the current type.
 	inline
 	const std::type_info & getType() const { return *type; };
 
@@ -125,23 +128,23 @@ public:
 
 	/// Returns the size of the base type (size of an element, not of element array).
 	inline
-	const size_t & getByteSize() const { return byteSize; };
+	size_t getByteSize() const { return byteSize; };
 
 
-	/// General conversion (slow, because uses std::stringstream for conversion).
-	// See the base type implementations below.
+	/// Default conversion (for unconventional types). Uses std::stringstream for conversion.
+	//  => See the base type implementations below.
 	template <class T>
 	void put(void *p, const T & x) const { 
 		if (typeIsSet()){
 			std::stringstream sstr;
 			sstr << x;
-			put(p,sstr.str());
+			put(p, sstr.str());
 		}
-		// TODO: alert if type unset?
+		else {
+			throw std::runtime_error(std::string("Caster::put(void *, const T & ), type unset"));
+		}
 	}
-		//throw std::runtime_error(std::string("Caster::put() unimplemented input type: ") + typeid(T).name());
 
-	
 
 	// Consider assigning default type (std::string?)
 	/*
@@ -153,35 +156,53 @@ public:
 	inline
 	void put(void *p, const char * x) const {
 		if (typeIsSet()){
-			if (getType() == typeid(std::string))
+			const std::type_info & t = getType();
+			if (t == typeid(std::string)){
+				//std::cout << "put(void *p, const char * x) => string\n";
 				*(std::string *)p = x;
+			}
 			else {
+				//std::cout << "put(void *p, const char * x=" << x <<") => double => "<< getType().name() << "\n";
 				// Initialization important, because x maybe empty or other non-numeric std::string.
-				double d = 0;
 				std::stringstream sstr;
 				sstr << x;
-				sstr >> d;
+
+				//if (Type::call<drain::typeIsInteger>(t)){
+				if ((t == typeid(float))|| (t == typeid(double))){
+					double y = 0.0;
+					sstr >> y;
+					(this->putDouble)(p, y);
+				}
+				else {
+					long y = 0;
+					sstr >> y;
+					(this->putLong)(p, y);
+				}
 				//std::cerr << "Caster::put(p, const char* x) d=" << d << std::endl;
 				//(this->*putDouble)(p, d);
-				(this->putDouble)(p, d);
+
 			}
 		}
-		// throw?
+		else {
+			throw std::runtime_error(std::string("Caster::put(void *, const char *), type unset"));
+		}
 	};
 
+	/// Default implementation throws an error. See specialized implementation below.
 	template <class T>
 	T get(const void *p) const {
 		throw std::runtime_error(std::string("Caster::get() unimplemented output type: ") + typeid(T).name());
 		return T();
 	}
 
-	
+
+	/// Convert from other pointer and Caster.
 	inline 
-	void cast(const Caster &c, const void *ptrC, void *ptr){
-	    (this->*castP)(c, ptrC, ptr);
+	void cast(const Caster &c, const void *ptrC, void *ptr) const {
+		(this->*castP)(c, ptrC, ptr);
 	};
-	
-	
+
+
 	/// New
 	inline
 	std::ostream & toOStream(std::ostream &ostr, const void *p) const {
@@ -199,7 +220,6 @@ protected:
 	void (* putInt)(void *p, const int &x);
 	void (* putChar)(void *p, const char &x);
 	void (* putUChar)(void *p, const unsigned char &x);
-	// void (* putInt)(void *p,; int &x);
 	void (* putUInt)(void *p, const unsigned int &x);
 	void (* putShort)(void *p, const short &x);
 	void (* putUShort)(void *p, const unsigned short &x);
@@ -211,7 +231,7 @@ protected:
 
 	char (* getChar)(const void *p);
 	unsigned char (* getUChar)(const void *p);
-	//int (* getInt)(const void *p);
+	int  (* getInt)(const void *p);
 	unsigned int (* getUInt)(const void *p);
 	short (* getShort)(const void *p);
 	unsigned short (* getUShort)(const void *p);
@@ -221,81 +241,75 @@ protected:
 	double (* getDouble)(const void *p);
 
 	bool (* getBool)(const void *p);
-	int  (* getInt)(const void *p);
 
 
-	/// New?
+	/// Convert from other pointer and Caster.
 	void (Caster::* castP)(const Caster &c, const void *ptrC, void *ptr) const;
 
-	/// New=
+	/// Write to stream.
 	std::ostream & (Caster::* toOStreamP)(std::ostream &ostr, const void *p) const;
-
-	
 
 
 	/*
-	 *  T - outer type
-	 *  F - inner type
+	 *  \tparam T - outer type
+	 *  \tparam F - inner type
 	 */
 	template <class T,class F>
-	static
-	inline
-	void putNEW(void *p, const T &x) {
+	static inline
+	void putT(void *p, const T &x) {
 		*(F*)p = static_cast<F>(x);
 	}
 
 
-	/// VOID - does nothing.
+	/// Void - does nothing, regardless of input type.
 	template <class T>
-	inline
-	static
-	void putToVoidNEW(void *p, const T &x) {
+	inline static
+	void putToVoidT(void *p, const T &x) {
 	}
 
 	/// A handler for converting input to a std::string.
 	/**
-	 *  T - outer type
-	 *  (inner type is std::string)
-	 *  TODO: specialize for std::string
+	 *  \tparam T - input type
+	 *
+	 *  The internal storage type is std::string.
 	 */
 	template <class T>
-	inline
-	static
-	void putToStringNEW(void *p, const T &x) {
-		//*(std::string*)p = Data(x);
+	inline static
+	void putToStringT(void *p, const T &x) {
 		std::stringstream sstr;
 		sstr << x;
-		*(std::string*)p = sstr.str();   // TODO: enough space?
+		*(std::string*)p = sstr.str();
 	}
 
-	
-
+	/// The main handler converting input to output.
+	/**
+	 *  \tparam T - output type
+	 *  \tparam F - internal storage type
+	 */
 	template <class T,class F>
-	static
-	inline
-	T getNEW(const void *p) {
+	static inline
+	T getT(const void *p) {
 		return static_cast<T>(*(F*)p);
 	}
 
-	/// VOID
+	/// Void - returns an empty/default value.
 	template <class T>
-	inline
-	static
-	T getFromVoidNEW(const void *p){
-	  static const T t(0);
-	  return t;
+	static inline
+	T getFromVoidT(const void *p){
+		static const T t(0);
+		return t;
 	}
 
+	/// The main handler converting input to output.
 	/*
-	 *  T - outer type
-	 *  (inner type is std::string)
+	 *  \tparam T - output type
 	 *
-	 *  TODO: specialize for std::string
+	 *  The internal storage type is std::string.
+	 *
 	 */
 	template <class T>
-	inline
-	static
-	T getFromStringNEW(const void *p) {
+	static inline
+	T getFromStringT(const void *p) {
 		T x(0); // why (0) ?
 		std::stringstream sstr;
 		sstr << *(const std::string *)p;
@@ -304,7 +318,6 @@ protected:
 	}
 
 
-	// New
 	/// Casts from ptrC to ptr
 	template <class F>
 	inline
@@ -320,10 +333,10 @@ protected:
 		return ostr;
 	}
 
-	
+	/// Current type.
 	const std::type_info *type;
 
-	/// Typically 1 or 2 (8 and 16 bits).  (??)
+	/// Typically 1 or 2 (8 and 16 bits).
 	size_t byteSize;
 
 };
@@ -348,38 +361,38 @@ void Caster::setType<void>();
 template <class F>
 void Caster::setType(){
 
-   type = & typeid(F);
-   byteSize = sizeof(F)/sizeof(char);
+	type = & typeid(F);
+	byteSize = sizeof(F)/sizeof(char);
 
-   /// NEW
-   putBool   = & Caster::putNEW<bool,F>;
-   putInt    = & Caster::putNEW<int,F>;
-   putChar   = & Caster::putNEW<char,F>;
-   putUChar  = & Caster::putNEW<unsigned char,F>;
-   putUInt   = & Caster::putNEW<unsigned int,F>;
-   putShort  = & Caster::putNEW<short,F>;
-   putUShort = & Caster::putNEW<unsigned short,F>;
-   putLong   = & Caster::putNEW<long int,F>;
-   putULong  = & Caster::putNEW<unsigned long,F>;
-   putFloat  = & Caster::putNEW<float,F>;
-   putDouble = & Caster::putNEW<double,F>;
+	/// NEW
+	putBool   = & Caster::putT<bool,F>;
+	putInt    = & Caster::putT<int,F>;
+	putChar   = & Caster::putT<char,F>;
+	putUChar  = & Caster::putT<unsigned char,F>;
+	putUInt   = & Caster::putT<unsigned int,F>;
+	putShort  = & Caster::putT<short,F>;
+	putUShort = & Caster::putT<unsigned short,F>;
+	putLong   = & Caster::putT<long int,F>;
+	putULong  = & Caster::putT<unsigned long,F>;
+	putFloat  = & Caster::putT<float,F>;
+	putDouble = & Caster::putT<double,F>;
 
-   getBool   = & Caster::getNEW<bool,F>;
-   getInt    = & Caster::getNEW<int,F>;
-   getChar   = & Caster::getNEW<char,F>;
-   getUChar  = & Caster::getNEW<unsigned char,F>;
-   getUInt   = & Caster::getNEW<unsigned int,F>;
-   getShort  = & Caster::getNEW<short,F>;
-   getUShort = & Caster::getNEW<unsigned short,F>;
-   getLong   = & Caster::getNEW<long,F>;
-   getULong  = & Caster::getNEW<unsigned long,F>;
-   getFloat  = & Caster::getNEW<float,F>;
-   getDouble = & Caster::getNEW<double,F>;
+	getBool   = & Caster::getT<bool,F>;
+	getInt    = & Caster::getT<int,F>;
+	getChar   = & Caster::getT<char,F>;
+	getUChar  = & Caster::getT<unsigned char,F>;
+	getUInt   = & Caster::getT<unsigned int,F>;
+	getShort  = & Caster::getT<short,F>;
+	getUShort = & Caster::getT<unsigned short,F>;
+	getLong   = & Caster::getT<long,F>;
+	getULong  = & Caster::getT<unsigned long,F>;
+	getFloat  = & Caster::getT<float,F>;
+	getDouble = & Caster::getT<double,F>;
 
 
 
-   toOStreamP = & Caster::_toOStream<F>;
-   castP      = & Caster::_cast<F>;
+	toOStreamP = & Caster::_toOStream<F>;
+	castP      = & Caster::_cast<F>;
 }
 
 // VOID
@@ -447,6 +460,16 @@ void Caster::put<std::string>(void *p, const std::string & x) const {
 	//std::cerr << "Laita std::string x=" << x << std::endl;
 	if (getType() == typeid(std::string))
 		*(std::string *)p = x;
+	else if (getType() == typeid(char)){
+		// std::cout << "note: experimental str to char\n";
+		if (x.empty())
+			p = NULL; //'\0'; // NULL, 0 ?
+		else {
+			if (x.size() > 1)
+				std::cerr << "Caster::put<std::string>() warning: single-char dst, assigned 1st of multi-char '"<< x << "'\n";
+			*(char *)p = x.at(0);
+		}
+	}
 	else
 		put(p, x.c_str());
 
@@ -454,10 +477,10 @@ void Caster::put<std::string>(void *p, const std::string & x) const {
 
 /*
 template <> inline
-void Caster::toOStream(std::ostream & ostr, void *p) const {
-	(this->*toOStream)(p,x);
+void Caster::toOStr(std::ostream & ostr, void *p) const {
+	(this->*toOStr)(p,x);
 }
-*/
+ */
 
 template <> inline
 bool Caster::get<bool>(const void *p) const {
@@ -521,20 +544,24 @@ double Caster::get<double>(const void *p) const {
 
 template <> inline
 std::string Caster::get<std::string>(const void *p) const {
-  // VOID
+
+	// void is handled by toOStr, but this is faster.
 	if (getType() == typeid(void)){
-	    static std::string empty;
-	    return empty;
+		static const std::string empty;
+		return empty;
+	}
+	else if (getType() == typeid(char)){
+		// std::cout << "note: experimental char to str\n";
+		return std::string(1, *(char *)p); // NOTE: this does not handle char array of more elements!
 	}
 	else if (getType() == typeid(std::string)){
 		return *(const std::string *)p;
 	}
 	else {
 		std::stringstream sstr;
-		sstr << (this->getDouble)(p);
+		toOStream(sstr, p);
+		// sstr << (this->getDouble)(p);
 		return sstr.str();
-		//return Data((this->*getDouble)(p));
-		//(this->*putDouble)(p, Data(std::string));
 	}
 }
 
@@ -545,11 +572,6 @@ void Caster::_cast<void>(const Caster &c, const void *ptrC, void *ptr) const {
 }
 
 
-/*
-class Caster : public CasterConst {
-public:
-};
-*/
 
 
 

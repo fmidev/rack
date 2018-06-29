@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 #include <stdexcept>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/util/Variable.h>
 #include <drain/image/File.h>
 
@@ -45,12 +45,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-bool ProductOp::appendResults(false);
+//std::string ProductBase::appendResults("");
+ODIMPathElem ProductBase::appendResults;
 
-int ProductOp::outputDataVerbosity(0);
+int ProductBase::outputDataVerbosity(0);
 
 
-void ProductOp::help(std::ostream &ostr, bool showDescription) const {
+void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 
 	if (showDescription)
 		ostr << name << ": " << description << '\n';
@@ -62,7 +63,7 @@ void ProductOp::help(std::ostream &ostr, bool showDescription) const {
 	ostr << "# Parameters:\n";
 	//char separator = '\0';
 	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
-		std::map<std::string, drain::Castable>::const_iterator pit = parameters.find(*it);
+		std::map<std::string, drain::Referencer>::const_iterator pit = parameters.find(*it);
 		if (pit != parameters.end()){
 			//ostr << separator << ' ' << *it;
 			ostr << "#   " << *it << ' ';
@@ -105,9 +106,9 @@ void ProductOp::help(std::ostream &ostr, bool showDescription) const {
 
 
 
-void ProductOp::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefaults){
+void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefaults){
 
-	drain::MonitorSource mout(RACK_PRODUCT_OP, __FUNCTION__);
+	drain::Logger mout(RACK_PRODUCT_OP, __FUNCTION__);
 
 	if (productODIM.quantity.empty()){
 		productODIM.quantity = srcODIM.quantity;
@@ -122,14 +123,14 @@ void ProductOp::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefa
 			mout.info() << "same quantity=" << productODIM.quantity << ", copying encoding: " << EncodingODIM(productODIM) << mout.endl;
 		}
 
-		//mout.info() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
+		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 		//	getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, encoding); // type may be unset
 		productODIM.NI = srcODIM.NI;
 	}
 
 	if ((!productODIM.isSet()) && useDefaults){
 		if (!productODIM.quantity.empty()){
-			mout.note() << "setting quantity defaults" << mout.endl;
+			mout.note() << "setting quantity defaults for " << productODIM.quantity << mout.endl;
 			getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, productODIM.type);
 			mout.info() << "setQuantityDefaults: quantity=" << productODIM.quantity << ", " << EncodingODIM(productODIM) << mout.endl;
 		}
@@ -148,20 +149,20 @@ void ProductOp::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefa
 	}
 	*/
 
-	// mout.info() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
+	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 	if (srcODIM.quantity == productODIM.quantity){
 		if (srcODIM.getMin() < productODIM.getMin()){
 			mout.warn() << "input range ("<< srcODIM.quantity << ", min="<< srcODIM.getMin() <<") possibly wider than target range (min="<< productODIM.getMin() << ")"<< mout.endl;
 		}
 	}
 
-	ProductOp::setODIMspecials(productODIM);
+	ProductBase::setODIMspecials(productODIM);
 
 }
 
-void ProductOp::handleEncodingRequest(ODIM & dstODIM, const std::string & encoding){
+void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & encoding){
 
-	drain::MonitorSource mout("ProductOp", __FUNCTION__);
+	drain::Logger mout("ProductBase", __FUNCTION__);
 
 	if (dstODIM.quantity.empty()){
 		mout.warn() << "quantity empty, odim=" << EncodingODIM(dstODIM) << mout.endl;
@@ -169,7 +170,7 @@ void ProductOp::handleEncodingRequest(ODIM & dstODIM, const std::string & encodi
 
 	drain::ReferenceMap typeRef;
 
-	/// If dstODIM gain unset, or type change requested, initialise with quantity defaults
+	/// If dstODIM gain unset or type change requested, initialise with quantity defaults
 	std::string type;
 	typeRef.reference("type", type = dstODIM.type);
 	typeRef.updateValues(encoding);
@@ -207,14 +208,14 @@ void ProductOp::handleEncodingRequest(ODIM & dstODIM, const std::string & encodi
 
 
 
-void ProductOp::setAllowedEncoding(const std::string & keys) {
+void ProductBase::setAllowedEncoding(const std::string & keys) {
 	std::list<std::string> l;
-	drain::String::split(keys, l);
+	drain::StringTools::split(keys, l);
 }
 
-void ProductOp::setODIMspecials(ODIM & dstODIM){
+void ProductBase::setODIMspecials(ODIM & dstODIM){
 
-	drain::MonitorSource mout(RACK_PRODUCT_OP, __FUNCTION__);
+	drain::Logger mout(RACK_PRODUCT_OP, __FUNCTION__);
 
 	if (dstODIM.distinguishNodata("VRAD")){
 		mout.note() << "setting nodata=" << dstODIM.nodata << mout.endl;

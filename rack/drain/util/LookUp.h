@@ -42,7 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <exception>
 
-#include "../util/Type.h"
+#include "util/Type.h"
+#include "util/TypeUtils.h"
 
 // // using namespace std;
 
@@ -80,7 +81,7 @@ protected:
 	static
 	inline
 	double getScale(){
-		return Type::isIntegralType(typeid(T)) ? Type::getMax<double>(typeid(T)) : 1.0;
+		return Type::call<drain::typeIsInteger>(typeid(T)) ? Type::call<drain::typeMax,double>(typeid(T)) : 1.0;
 	}
 
 	/*

@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/Debug.h>
 //#include <drain/util/ReferenceMap.h>
 
-#include "util/Debug.h"
+#include "util/Log.h"
 #include "util/ReferenceMap.h"
 
 #include "Command.h"
@@ -47,48 +47,101 @@ using namespace drain;
 
 namespace drain {
 
+/// Base for derived classes using member BeanLikes or referenced BeanLikes.
+/**
+ *   \tparam B  - bean class
+ *   \tparam BS - same as B, or reference of B
+ */
+template <class B, class BS>
+class BeanAdapter : public Command {
+
+public:
+
+	BeanAdapter(){};
+
+	BeanAdapter(B & bean) : bean(bean) {};
+
+	typedef B bean_t;
+
+	BS bean;
+
+	inline
+	const std::string & getName() const { return bean.getName(); };
+
+	inline
+	const std::string & getDescription() const { return bean.getDescription(); };
+
+	virtual
+	inline
+	const ReferenceMap & getParameters() const { return bean.getParameters(); };  // or getParameters
+
+	virtual
+	inline
+	void run(const std::string & params = ""){
+		bean.setParameters(params);
+		exec();
+	}
+
+	virtual
+	void exec() const = 0;
+
+
+};
+
+/// Wraps operators into commands
+template <class B>
+class BeanWrapper : public BeanAdapter<B, B> {
+};
+
+
+/// Applies a referenced bean.
+template <class B>
+class BeanRefAdapter : public BeanAdapter<B, B &> {
+
+public:
+
+	BeanRefAdapter(B & bean) : BeanAdapter<B,B&>(bean) { //
+	};
+
+	BeanRefAdapter(BeanRefAdapter<B> & a) : BeanAdapter<B,B&>(a.bean) { //
+	};
+};
+
+/// Adapter registered directly as a command entry upon construction.
 /*
  *  \tparam BeanLike
  */
 template <class B>
-class BeanRefEntry : public Command {
-    public: //re 
+class BeanRefEntry : public BeanRefAdapter<B> {
 
-	B & bean;
+public:
 
-	BeanRefEntry(B & bean) : bean(bean) { // : drainLet(defaultDrainLet) {
-		//this->parameters.append(bean.getParameters());
+	BeanRefEntry(B & bean) : BeanRefAdapter<B>(bean) {
 		getRegistry().add(*this, bean.getName(), 0);
 	};
 
-	BeanRefEntry(B & bean, const std::string & cmdName, char alias = 0) : bean(bean) { // : drainLet(defaultDrainLet) {
-		//this->parameters.append(bean.getParameters());
+	BeanRefEntry(B & bean, const std::string & cmdName, char alias = 0) : BeanRefAdapter<B>(bean) {
 		getRegistry().add(*this, cmdName, alias);
 	};
 
 
-	BeanRefEntry(B & bean, const std::string & section, const std::string & cmdName, char alias = 0) : bean(bean)  { // : drainLet(defaultDrainLet) {
-		//this->parameters.append(bean.getParameters());
+	BeanRefEntry(B & bean, const std::string & section, const std::string & cmdName, char alias = 0) : BeanRefAdapter<B>(bean) {
 		getRegistry().add(section, *this, cmdName, alias);
-		//add(section, drainLet, name, alias);
 	};
 
-
-	virtual inline
-	const std::string & getName() const { return bean.getName(); };
-
-	virtual inline
-	const std::string & getDescription() const { return bean.getDescription(); };
-
-	virtual inline
-	const ReferenceMap & getParameters() const { return bean.getParameters(); };
+	virtual
+	~BeanRefEntry(){};
 
 	/// Bean may be peaceful.
+	/*
 	virtual
 	void run(const std::string & params){
-		bean.setParameters(params);
+		this->bean.setParameters(params);
 	};
+	*/
 
+	virtual
+	void exec() const {};
 };
 
 
@@ -100,7 +153,8 @@ class BeanRefEntry : public Command {
  */
 template <class T>
 class CommandEntry : public T {
-    public: //re 
+
+public:
 
 	CommandEntry(char alias = 0) {
 		getRegistry().add(*this, T::getName(), alias);

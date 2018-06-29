@@ -44,7 +44,7 @@ namespace rack {
 
 void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << *this << mout.endl;
 	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
 
@@ -54,7 +54,7 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
 	dbzFuzzifier.odimSrc = srcData.odim;
 	dbzFuzzifier.functor.set(dbz, dbzSpan);
-	dbzFuzzifier.filter(srcData.data, dstData.data);
+	dbzFuzzifier.process(srcData.data, dstData.data);
 
 }
 

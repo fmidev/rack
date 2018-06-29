@@ -95,8 +95,8 @@ void MagickDrain::convert(const ImageT<T> &drainImage, Magick::ImageT &magickIma
 
 	const ImageT<T> *red = NULL, *green = NULL, *blue = NULL, *alpha = NULL;
 
-	//std::string info;
-	//drainImage.getGeometry().toString(info);
+	//std::string toOStr;
+	//drainImage.getGeometry().toString(toOStr);
 	//std::cout << "MagickDrain: " << drainImage.getGeometry() << std::endl;
 	/*
 	std::cerr << "img.chs:" << imageChannels  << std::endl;
@@ -299,8 +299,8 @@ void  MagickDrain::convert(Magick::ImageT &magickImage, ImageT<T> &drainImage) {
 	// TODO contradictory!
 	if (drainImage.getAlphaChannelCount()>0){
 		//Image<> & alpha = drainImage.getAlphaChannel();
-		//NegateOp<>().filter(alpha,alpha);  // Looks like Magick inverts alpha channel IN THIS DIRECTION.
-		//ScaleOp<>(-1.0,255).filter(alpha,alpha);  // Looks like Magick inverts alpha channel
+		//NegateOp<>().process(alpha,alpha);  // Looks like Magick inverts alpha channel IN THIS DIRECTION.
+		//ScaleOp<>(-1.0,255).process(alpha,alpha);  // Looks like Magick inverts alpha channel
 	}
 
 	std::stringstream sstr(magickImage.comment());  // dont touch sstr!!

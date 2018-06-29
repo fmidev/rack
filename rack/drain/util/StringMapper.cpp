@@ -42,7 +42,8 @@ void StringMapper::parse(const std::string &s) {
 	// NOTE: Dollar $ and curlies have to be consistent with variablePrefix/Postfix
 	// WARNING: BRACES cause problems with newlines. And especially \\$ = \\ + $ was wrong...
 	//sstr << "^([^\\$]*)\\$?\\{(" << validChars << ")\\}(.*)$";  // NOTE: has to be consistent with variablePrefix/Postfix
-	sstr << "^(.*[^$])?\\$?\\{(" << validChars << ")\\}(.*)$";
+	//sstr << "^(.*[^$])?\\$?\\{(" << validChars << ")\\}(.*)$";
+	sstr << "^([^${]*)\\$?\\{(" << validChars << ")\\}(.*)$";
 	RegExp r(sstr.str(), REG_EXTENDED); //  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 
 	parse(s,r);
@@ -69,8 +70,12 @@ void StringMapper::parse(const std::string &s, RegExp &r) {
 		push_front(Stringlet (variable, true));
 		parse(left, r);
 	}
-	else
-		std::cerr << " StringMapper warning: parsing oddity: " << s << "\n";
+	else {
+		StringTools::join(r.result, std::cerr, '|');
+		std::cerr << '\n';
+		std::cerr << " validChars: '" << validChars << "'\n";
+		std::cerr << " StringMapper warning: parsing oddity: " << s << " != " << r << "\n";
+	}
 
 
 }

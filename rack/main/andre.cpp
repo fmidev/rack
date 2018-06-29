@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <ostream>
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 #include <drain/prog/Command.h>
 
 #include "data/ODIM.h"
@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/RemoverOp.h"
 #include "andre/DamperOp.h"
 #include "andre/GapFillOp.h"
-#include "andre/ThresholdOp.h"
+//#include "andre/ThresholdOp.h"
 
 // Utils
 #include "andre/QualityCombinerOp.h"
@@ -80,7 +80,7 @@ class ClutterMapRead : public SimpleCommand<std::string> {
 	};
 
 	void exec() const {
-		drain::MonitorSource mout(name, __FUNCTION__);
+		drain::Logger mout(name, __FUNCTION__);
 		mout.info() << "reading " << value << mout.endl;
 		//clutter.productOp.setClutterMap(value);
 		clutterOp.setClutterMap(value);
@@ -92,8 +92,9 @@ class ClutterMapRead : public SimpleCommand<std::string> {
 
 
 class ClassThreshold : public BasicCommand {
-    public: //re 
-	// "Toggle the support for universal ie. Dataset-wide quality indices.") {
+
+public:
+
 	ClassThreshold() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
 		parameters.reference("threshold", QualityCombinerOp::CLASS_UPDATE_THRESHOLD = 0.5, "0...1");
 		getRegistry().add(*this, __FUNCTION__, 0);
@@ -103,7 +104,9 @@ class ClassThreshold : public BasicCommand {
 
 
 class Universal : public BasicCommand {
-    public: //re 
+
+public:
+
 	Universal() : BasicCommand(__FUNCTION__, "Toggle the support for universal ie. Dataset-wide quality indices."){
 		getRegistry().add(*this, __FUNCTION__, 0);
 	};

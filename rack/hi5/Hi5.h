@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 
-#include <drain/util/Debug.h>
+#include <drain/util/Log.h>
 
 #include <drain/util/Variable.h>
 #include <drain/image/Image.h>
@@ -219,8 +219,8 @@ struct lessAlphaNum {
 
 namespace hi5 {
 
-extern drain::Monitor hi5monitor;
-extern drain::MonitorSource hi5mout;
+extern drain::Log hi5monitor;
+extern drain::Logger hi5mout;
 
 
 /// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
@@ -280,12 +280,12 @@ class Hi5Base {
 public:
 
 	//static
-	// drain::Monitor hi5monitor;
+	// drain::Log hi5monitor;
 
 	// static
-	// drain::MonitorSource hi5mout; //(drain::monitor,"hi5");
+	// drain::Logger hi5mout; //(drain::monitor,"hi5");
 
-	/// Given type info of a native C++ type, returns a native HDF5 data type.
+	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
 	static
 	const hid_t & getH5DataType(const std::type_info &t);
 
@@ -332,6 +332,10 @@ public:
 	 */
 	static
 	void readTextLine(HI5TREE &src, const std::string & key, const std::string & value = "");
+
+	/// Delete branches that have been marked with noSave=true .
+	static
+	void deleteNoSave(HI5TREE &src);
 
 
 };

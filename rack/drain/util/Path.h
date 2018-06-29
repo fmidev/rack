@@ -38,249 +38,117 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PATH_H_
 #define DRAIN_PATH_H_
 
+#include <stdexcept>
 #include <iostream>
 #include <string>
 #include <list>
 #include <iterator>
 
-//#include "RegExp.h"
-//#include "Path.h"
+
+#include <util/String.h>
 
 
-// // using namespace std;
 
 namespace drain {
 
 
-/// Atomary element in a path; not containing a separator.
-/**  
- *  not to be separated
+/**
+ *   \tparam T - path element, eg. PathElement
  */
-struct PathElement : public std::string {
-
-	PathElement(const std::string & s = ""){
-		std::string::assign(s);
-	}
-
-	PathElement(const char *s){
-		std::string::assign(s);
-	}
-	/*
-	inline
-	PathElement & assign(const std::string & p){
-		std::string::assign(p);
-		return *this;
-	}
-	*/
-
-
-
-};
-
-typedef std::list<PathElement> PathList;
-
-struct PathSegment {
-
-	PathSegment(char separator='/') : separator(separator){
-	};
-
-	PathSegment(const PathSegment & segment) : separator(segment.separator), first(segment.first), last(segment.last){
-	};
-
-	PathSegment(PathList::const_iterator b, PathList::const_iterator e, char separator='/') :
-		separator(separator), first(b), last(e) {
-	};
-
-
-	char separator;
-
-	PathSegment parent() const {
-
-	  PathSegment p(first, last, separator);
-	  if (first != last)
-	    --p.last;
-	  /*
-	    else
-	    throw std::runtime_exeption("PathSegment parent root");
-	  }
-	  */
-  
-	  return p;
-	}
-
-	PathSegment child() const {
-
-	  PathSegment segment(last, last, separator);
-	  if (first != last){
-	    --segment.first;
-	    if (segment.first == first){ // no change
-	      ++segment.first;
-	    }
-	  }
-	  /*
-	    else
-	    throw std::runtime_exeption("PathSegment parent root");
-	  }
-	  */
-
-	  /*
-	  static PathSegment c;
-			c.separator = separator;
-			c.first = last;
-			--c.first;
-			c.last = last;
-	  */
-	  return segment;
-			
-	}
-
-
-	inline std::ostream & toOStream(std::ostream & ostr) const {
-		char sep = 0;
-		for (PathList::const_iterator it = first; it!=last; ++it){
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-			//ostr << '[' << *it << ']';
-			ostr << *it;
-		}
-		return ostr;
-	}
-
-
-protected:
-
-	PathList::const_iterator first;
-        PathList::const_iterator last;  // actually end (invalid)
-
-	void set(PathList::const_iterator b, PathList::const_iterator e, char separator='/'){
-		first = b;
-		last = e;
-		this->separator = separator;
-	}
-
-  //static
-  //const PathList dummy;
-
-};
-
-inline
-std::ostream & operator<<(std::ostream & ostr, const PathSegment & p) {
-	return p.toOStream(ostr);
-}
-
-
-class Path : public PathList  {
+template <class T>
+class Path : public std::list<T> {
 
 public:
 
-	/// Replaces instances of 'from' to 'to' in src, storing the result in dst.
-	/** Safe. Uses temporary Path.
-	 *
-	 */
-	Path (char separator = '/') : separator(separator){
-	}
-
-	Path (const Path & path) : separator(path.separator) {
-		for (const_iterator it = path.begin(); it != path.end(); ++it) {
-			push_back(*it);
-		}
-	}
-
-	Path (const std::string & p, char separator = '/') : separator(separator){
-		assign(p);
-	}
-
-	inline
-	Path & operator=(const std::string & p){
-		assign(p);
-		return *this;
+	Path(char separator='/') : separator(separator){
+		if (!separator)
+			throw std::runtime_error("Path(char separator): separator=0, did you mean empty init (\"\")");
 	};
 
-	inline
-	PathSegment segment() const {
-	  return PathSegment(begin(), end(), separator);
-	}
+	Path(const std::string &s, char separator='/') : separator(separator){
+		if (!separator)
+			throw std::runtime_error("Path(const string &s, char separator): separator=0");
+		set(s);
+	};
+
 
 	inline
-	PathSegment child() const {
-	  return segment().child();
-	}
+	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator) {
+	};
 
-	inline
-	PathSegment parent() const {
-	  return segment().parent();
-	}
-
+	virtual inline
+	~Path(){};
 
 	char separator;
 
 	inline
-	Path & assign(const std::string & s){
-  	   clear();
-	   return appendSubString(s);
+	void set(const std::string & p){
+			const std::string sep(1,separator);
+			StringTools::split(p, *this, sep); //, sep);
+			/*
+			const size_t length = path.length();
+			size_t i  = 0;
+			size_t i2 = 0;
+			this->clear();
+			while ((i2 = path.find(this->separator, i)) != std::string::npos){
+				//std::cout << (size_t)(i2) << '\n';
+				//std::cout << path.substr(i, i2-i) << '\n';
+				this->push_back(T(path.substr(i, i2-i)));
+				i = i2+1;
+				if (i == length) // last char was this->separator (warning?)
+					return;
+			}
+			this->push_back(path.substr(i));
+			*/
+		}
+
+	virtual inline
+	std::ostream & toOStr(std::ostream & ostr) const {
+		return drain::StringTools::join(*this, ostr, this->separator);
 	}
 
 	inline
-	Path & append(const std::string & s){
-	   return appendSubString(s);
+	void toStr(std::string & str) const {
+		std::stringstream sstr;
+		toOStr(sstr);
+		str = sstr.str();
 	}
 
-	/*
-	inline
-	Path & append(const PathElement & e){
-	   push_back(e);
-	   return *this;
+	operator std::string (){
+		std::stringstream sstr;
+		toOStr(sstr);
+		return sstr.str();
+	}
+
+		/*
+	Path<T> & operator=(const T & e){
+		this->clear();
+		push_front(e);
+	}
+
+	Path<T> & operator<<(const T & e){
+		push_back(e);
 	}
 	*/
 
-
-	/*
-	inline
-	std::ostream & toOStream(std::ostream & ostr) const {
-		char sep = 0;
-		for (const_iterator it = begin(); it!=end(); ++it){
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-			//ostr << '[' << *it << ']';
-			ostr << *it;
-		}
-		return ostr;
+	Path<T> & operator<<(const T & e){
+		this->push_back(e);
+		return *this;
 	}
-	*/
 
-protected:
-
-	inline
-	Path & appendSubString(const std::string & p, size_t i=0){
-		const size_t j = p.find(separator, i);
-		//cout << p << " => ";
-		if (j == std::string::npos){
-			//cout << p.substr(i) << endl;
-		  if (i != p.length())
-		    push_back(p.substr(i));
-		}
-		else {
-			//cout << p.substr(i,j-i) << endl;
-		  if (j != i){ // skip empty
-			push_back(p.substr(i,j-i));
-                  }
-			appendSubString(p, j+1);
-		}
+	Path<T> & operator>>(T & e){
+		//push_back(e);
+		e = this->back();
+		this->pop_back();
 		return *this;
 	}
 
 };
 
-
-
+template <class T>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Path & path) {
-	//return PathSegment()::toOStream(path.begin(), path.end(), path.separator);
-	return path.segment().toOStream(ostr);
+std::ostream & operator<<(std::ostream & ostr, const Path<T> & p) {
+	return p.toOStr(ostr);
 }
 
 }

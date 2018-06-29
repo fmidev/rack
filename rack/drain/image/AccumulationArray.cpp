@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <drain/image/File.h>  // debugging
 
-#include "util/Debug.h"
-#include "util/DataScaling.h"
-#include "util/Type.h"
+#include "util/Log.h"
+//#include "util/LinearScaling.h"
+//#include "util/Type.h"
 
 // #include "File.h"  // debugging
 
@@ -51,10 +51,8 @@ namespace drain
 namespace image
 {
 
-
-
-
 void AccumulationArray::setGeometry(unsigned int width, unsigned int height){
+
 	this->width = width;
 	this->height = height;
 

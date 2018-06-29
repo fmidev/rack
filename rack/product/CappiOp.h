@@ -61,20 +61,14 @@ public:
 		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
 
 		odim.product = "PCAPPI";
-		//odim.quantity = "DBZH"; // may use DBZHC, for example odim.offset
-
 		dataSelector.quantity = "^DBZH$";
-		// dataSelector.path = ".*/data[0-9]+/?$";
 
 	};
 
 	double altitude;
 	double weightExponent;
 	double weightMin;
-	//double devAltitude;
-	//bool aboveSeaLevel;
 
-	//void processData(const Data<PolarSrc> & data, PolarAccumulator & accumulator) const;
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 
 protected:

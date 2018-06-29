@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/Image.h>
-//#include <drain/util/String.h>
+//#include <drain/util/StringTools.h>
 #include <drain/util/Tree.h>
 
 
@@ -100,7 +100,8 @@ public:
 	static
 	void h5AttributeToData(hid_t aid, hid_t datatype, drain::Variable & attribute, size_t elements=1){
 
-		attribute.setType<T>(elements);
+		attribute.setType(typeid(T));
+		attribute.resize(elements);
 
 		int status = H5Aread(aid,datatype, attribute.getPtr());
 
@@ -129,10 +130,10 @@ public:
 protected:
 
 	static
-	herr_t  _iterate_attribute(hid_t id, const char * attr_name, const H5A_info_t *ainfo, void *operator_data);
+	herr_t  iterate_attribute(hid_t id, const char * attr_name, const H5A_info_t *ainfo, void *operator_data);
 
 	static
-	herr_t  _iterate(hid_t group_id, const char * member_name, void *operator_data);
+	herr_t  iterate(hid_t group_id, const char * member_name, void *operator_data);
 
 };
 

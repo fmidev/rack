@@ -32,19 +32,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <algorithm>
 
 
-//#include <drain/image/SegmentAreaOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
 #include <drain/util/Fuzzy.h>
-//#include <drain/image/MathOpPack.h>
+#include <drain/util/FunctorPack.h>
 
-#include <drain/image/FastAverageOp.h>
-#include <drain/image/MarginalStatisticOp.h>
-#include <drain/image/DistanceTransformFillOp.h>
-//#include <drain/image/FunctorOp.h>
-//#include <drain/image/FuzzyThresholdOp.h>
-//#include <drain/image/SlidingWindowMedianOp.h>
-//#include "image/GammaOp.h"
-#include <drain/image/HighPassOp.h>
-#include <drain/image/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/FastAverageOp.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
+#include <drain/imageops/RunLengthOp.h>
 
 // debugging
 #include <drain/image/File.h>
@@ -70,7 +67,7 @@ void NoiseOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst
 	//drainage em.png --median 10,1,0.25 -o blurH.png
 	//drainage em.png --median 1,10,0.75    blurH.png --sub 2 -o sub.png
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	// new
@@ -115,17 +112,17 @@ void NoiseOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst
 		File::write(dst, "andre-noise-3-highpass.png");
      */
 	RunLengthHorzOp rle(1.0);
-	rle.filter(srcData.data, dstData.data);
+	rle.process(srcData.data, dstData.data);
 	//RemapOp(0, 255).filter(dstData.data, dstData.data);
 	UnaryFunctorOp<RemappingFunctor> remap;
 	remap.functor.fromValue = 0;
 	remap.functor.toValue = 255;
-	remap.filter(dstData.data, dstData.data);
+	remap.traverseChannel(dstData.data.getChannel(0), dstData.data.getChannel(0));
 	//if (mout.isDebug(10))		File::write(dst, "andre-noise-3-rle.png");
 	//FuzzyBellOp(minLength/2, minLength/2+1, 255.0).filter(dstData.data,dstData.data);
 	UnaryFunctorOp<FuzzyBell<double> > fuzzyBell;
 	fuzzyBell.functor.set(minLength/2, minLength/2+1, 255.0);
-	fuzzyBell.filter(dstData.data,dstData.data);
+	fuzzyBell.traverseChannel(dstData.data.getChannel(0), dstData.data.getChannel(0));
 	//FuzzyBellOp(minLength/2, minLength/2+1, 255.0).filter(dstData.data,dstData.data);
 
 	//drainage mili.png --runLengthHorz 1 --remap 0,255 --fuzzyPeak 5,2  -o mili-2-seg.png; display mili-2-seg.png
@@ -133,13 +130,15 @@ void NoiseOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst
 	if (mout.isDebug(10))
 		File::write(dstData.data, "andre-noise-2.png");
 
-	DistanceTransformExponentialOp(minLength, 5).filter(dstData.data,dstData.data);
+	DistanceTransformExponentialOp(minLength, 5).traverseChannel(dstData.data.getChannel(0), dstData.data.getChannel(0));
 	if (mout.isDebug(10))
 		File::write(dstData.data, "andre-noise-4.png");
 
 	int countFlip;
 	int countData;
 	int length;
+
+	drain::typeLimiter<int>::value_t limit = dstData.data.getLimiter<int>();
 
 	for (size_t j = 0; j < srcData.data.getHeight(); ++j) {
 		countFlip = 0;
@@ -163,7 +162,7 @@ void NoiseOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst
 			//xx += x;
 		}
 
-		dstData.data.setLimits(0,250);
+		//dstData.data.scaling.setLimits(0,250); inside loop?
 		/// Maximally countData/(minLength + 1) segments may be found in the image.
 		if (countData > 0){
 			//  sensitivity tuning not needed?
@@ -175,7 +174,8 @@ void NoiseOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst
 					//dstData.data.put(i, j, (i*p)/i0);
 					dstData.data.put(i, j, p);
 				else
-					dstData.data.put(i, j, dstData.data.limit<int>((p0*p)/255));
+					//dstData.data.put(i, j, dstData.data.scaling.limit<int>((p0*p)/255));
+					dstData.data.put(i, j, limit((p0*p)/255));
 					//dst.put(i, j, ((p0*p)/255));
 			}
 

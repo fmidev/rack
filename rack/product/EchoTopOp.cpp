@@ -43,7 +43,7 @@ using namespace drain::image;
 
 void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(2) << "Start" << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
@@ -53,13 +53,18 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	//	mout.debug(5) << "data:\n" << sweep << mout.endl;
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
 
-	const bool W1 = ! srcQuality.data.isEmpty();
+	const bool USE_QUALITY = ! srcQuality.data.isEmpty();
 
-	mout.info() << "Using quality data: " << (W1?"YES":"NO") << mout.endl;
+	const QuantityMap & qm = getQuantityMap();
+	const Quantity & HGHT = qm.get("HGHT");
+	const double undetectWeight = HGHT.hasUndetectValue ? DataCoder::undetectQualityCoeff : 0.0;
+
+
+	mout.info() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
 
 
 	// Elevation angle
-	const double eta = sweep.odim.elangle*DEG2RAD;
+	const double eta = sweep.odim.elangle * drain::DEG2RAD;
 
 	//const double altitudeFinal = aboveSeaLevel ? (altitude - sweep.odim.height) : altitude;
 
@@ -116,14 +121,6 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 		// Ground angle
 		beta = accumulator.odim.getGroundAngle(i); // (static_cast<double>(i)+0.5) * accumulator.rscale / EARTH_RADIUS_43;
 
-		// Virtual elevation angle of the bin
-		/*
-		etaBin  = Geometry::etaFromBetaH(beta, altitude);
-		weight = beamPower( etaBin - eta );
-		if (weight < weightMin)
-			continue;
-		 */
-
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		if (binDistance < sweep.odim.rstart)
 			continue;
@@ -159,8 +156,8 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 						w = wHeight * dbzQuality(dbz) ;
 				}
 				else {
-					hTop = 0.0;
-					w = wUndetect;
+					hTop = HGHT.undetectValue;
+					w = undetectWeight; // DataCoder::undetectQualityCoeff;  //0.0; //wUndetect;
 					//hTop = i;
 				}
 
@@ -168,7 +165,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 				//	std::cerr << " h=" << h <<", dBZ=" << dbz <<":  height=" << hTop << ", w=" << w << std::endl;
 
 
-				if (W1)
+				if (USE_QUALITY)
 					w = w * srcQuality.odim.scaleForward(srcQuality.data.get<double>(iSweep,jSweep));
 
 				address = accumulator.data.address(i,j);
@@ -184,13 +181,9 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		}
 
-		// }
-		//else
-			//mout.warn() << "skipping range b=" << binDistance << " i1=" << iSweep << mout.endl;
 
 	}
 
-	//_mout.writeImage(11, dstData, "max");
 }
 
 

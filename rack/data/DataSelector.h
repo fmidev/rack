@@ -43,11 +43,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Variable.h>
 #include "ODIM.h"
+#include "PolarODIM.h" // elangle
 
 namespace rack {
 
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
 /**
+ *    Future version will use:
+ *    - data=
+ *    - dataset=
  *
  *    Applies drain::RegExp in matching.
  */
@@ -81,12 +85,12 @@ public:
 	unsigned int count;
 
 	/// The minimum elevation angle (when applicable).
-	double elangleMin;
+	//double elangleMin;
 
 	/// The maximum elevation angle (when applicable).
-	double elangleMax;
+	//double elangleMax;
 
-
+	std::vector<double> elangle;
 
 	/// Sets the default values.
 	void reset();
@@ -230,73 +234,6 @@ public:
 
 
 
-	/// Traverses upward in hierachy to find the value of the given PolarODIM where, what, or how attribute.
-	/**
-	 *  \param src   - structure to be searched
-	 *  \param path  - starting path, to be continued upwards
-	 *  \param group - "what", "where", or "how"
-	 *  \param attributeName - name of the attribute
-	 */
-	static
-	const drain::Variable & getAttribute(const HI5TREE &src, const std::string & path, const std::string & group, const std::string & attributeName);
-
-	/// Collects PolarODIM /where, /what and /how attributes recursively along the path and stores them in a std::map<std::string,T> (e.g. VariableMap or ReferenceMap, ODIM).
-	/**
-	 *   Does not change attributes of src.
-	 *   \see updateAttributes()
-	 */
-	template <class M>
-	static
-	void getAttributes(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly = false);
-
-	/// Traverses the whole h5 structure, updates the data (image) attributes along the path.
-	/**!
-	 *    Typically, this is called on the root.
-	 *
-	 */
-	// combined
-	static
-	void updateAttributes(HI5TREE & src, const drain::VariableMap & attributes = drain::VariableMap());
-	/*
-	static
-	inline
-	void updateAttributes(HI5TREE & src){
-		_updateAttributes(src, drain::VariableMap());
-	}
-
-	static
-	void _updateAttributes(HI5TREE & src, const drain::VariableMap & attributes);
-     */
-
-
-	/// Returns the path std::string one step upwards, ie. up to the preceding '/'.
-	static
-	inline
-	std::string getParent(const std::string &path) { return path.substr(0,path.rfind('/')); };
-
-	static
-	inline
-	void getParentAndChild(const std::string & path, std::string & parent, std::string & child) {
-		//const size_t n = path.length();
-		const size_t i = path.rfind('/');
-		parent.assign(path,0,i);
-		child.assign(path,i+1, path.length());
-		//return path.substr(0,path.rfind('/'));
-	};
-
-
-	/// Returns the path std::string one step upwards, ie. up to the preceding '/'.
-	static
-	inline
-	std::string getChild(const std::string &path) {
-		const size_t i = path.rfind('/');
-		if (i != std::string::npos)
-			return path.substr(i+1);
-		else
-			return std::string("");
-	};
-
-
 	static
 	inline
 	const hi5::NodeHi5 & getNode(const HI5TREE & src, const DataSelector & selector){
@@ -362,6 +299,23 @@ public:
 	static
 	bool getQualityPaths(const HI5TREE &srcRoot, const std::string & datapath, T & qualityPaths);
 
+	/// Returns the path to associated quality data.
+	/**
+	    \return empty string, if no quality data found.
+	 */
+	static
+	inline
+	bool getQualityPath(HI5TREE &srcGroup, std::string & path){
+		std::string qualityPath;
+		if (getQualityPaths(srcGroup, path, qualityPath)){
+			path = qualityPath;
+			return true;
+		}
+		else {
+			path.clear();
+			return false;
+		}
+	}
 
 
 	static
@@ -413,7 +367,7 @@ protected:
 	//drain::ReferenceMap _parameters;
 
 	/// Sets the default values.
-	void _init();
+	void init();
 
 	/// Traverses down the tree and returns matching paths as a list or map (ordered by elevation).
 	/**
@@ -426,7 +380,7 @@ protected:
 	void getPathsT(const HI5TREE &src, const DataSelector & selector, T & container){
 		getPaths(src, container, selector.path, selector.quantity,
 				selector.index, selector.count,
-				selector.elangleMin, selector.elangleMax);
+				selector.elangle[0], selector.elangle[1]); // min, max
 	}
 
 
@@ -484,7 +438,7 @@ template <class T>
 void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string & path, const std::string &quantity,
 		unsigned int index, unsigned int count, double elangleMin, double elangleMax) {
 
-	drain::MonitorSource mout("DataSelector", __FUNCTION__);
+	drain::Logger mout("DataSelector", __FUNCTION__);
 
 	//const drain::RegExp quantityRE(std::string("^")+quantity+std::string("$"));
 	const drain::RegExp quantityRE(quantity);
@@ -492,7 +446,7 @@ void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string
 	std::list<std::string> l0;
 
 	/// Step 1: get paths that match pathRegExp TreeT
-	mout.debug(10) << "getKeys" << path << mout.endl;
+	mout.debug(10) << "getKeys " << path << mout.endl;
 	src.getKeys(l0, path);
 	//src.getKeys(l0, pathRegExp);
 
@@ -504,14 +458,18 @@ void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string
 	for (std::list<std::string>::iterator it = l0.begin(); it != l0.end(); ++it) {
 
 		//mout.debug(2) << *it << mout.endl;
+		const hi5::NodeHi5 & node = src(*it).data;
+		if (node.noSave){
+			mout.debug() << "noSave data, ok: " << *it << mout.endl;
+			//continue;
+		}
 
-		const drain::image::Image & d = src(*it).data.dataSet;
+		const drain::image::Image & d = node.dataSet;
 		odim.clear();
 		odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
 		// odim.set() would be bad! Looses precision in RefMap/Castable << (std::string) << Variable
 
-		if (!quantityRE.test(odim.quantity))
-		{
+		if (!quantityRE.test(odim.quantity)){
 			mout.debug(8) << *it << "\n\t quantity '" << quantityRE.toStr() << "' !~ '" << odim.quantity << "'" << mout.endl;
 			// l.erase(it2);
 			continue;
@@ -527,7 +485,7 @@ void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string
 		// Outside index check, because mostly applied by count check as well.
 		const std::string root = it->substr(0, it->find('/', 1));  // typically dataset1/
 
-		if (index > 0){ // "Monitor mode on"
+		if (index > 0){ // "Log mode on"
 
 			// mout.warn() << "index studying " << *it << '\t' << root << mout.endl;
 			if (roots.find(root) == roots.end()){ // = new
@@ -563,63 +521,12 @@ void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string
 
 
 
-template <class M>
-void DataSelector::getAttributes(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly){
 
-	drain::MonitorSource mout("DataSelector", __FUNCTION__);
-
-	//drain::VariableMap::const_iterator it;
-
-	int iStart = 0;
-	if (!path.empty())
-		if (path[0] == '/')
-			iStart = 1;
-
-	mout.debug(5) << "'" << path << "'" << mout.endl;
-
-	std::stringstream sstr; // for speed
-	std::string s;
-	size_t i = 0;
-	while(true){
-
-		const std::string subpath = path.substr(iStart, i);  // with i=npos
-		mout.debug(5) << "'" << subpath << "'\t" << i << mout.endl;
-		//attributes[std::string("@")+subpath] = 0;
-
-		const HI5TREE & s = src(subpath);
-
-		/////// getO
-		for (std::set<std::string>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
-			const hi5::NodeHi5 & group = s[*git].data;
-			for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){
-				sstr.str("");
-				sstr << *git << ':' << ait->first;
-				//mout.debug(8) << "getAttributes: " << sstr.toStr() << '=' << it->second << mout.endl;
-				if (!updateOnly)
-					attributes[sstr.str()] = ait->second;
-				else {
-					typename M::iterator it = attributes.find(sstr.str());
-					if (it != attributes.end())
-						it->second = ait->second;
-				}
-			}
-		}
-
-
-		if (i == std::string::npos){
-			//if (drain::Debug > 4){ std::cerr << "attributes " << attributes << '\n';	}
-			return;
-		}
-
-		i = path.find('/', i+1);
-	}
-	//while (i < path.size()); //(i != std::string::npos);
-}
 
 template <class T>
 bool DataSelector::getQualityPaths(const HI5TREE & srcRoot, const std::string & datapath, T & qualityPaths) {
 
-	drain::MonitorSource mout("DataSelector", __FUNCTION__);
+	drain::Logger mout("DataSelector", __FUNCTION__);
 
 	mout.debug(1) << datapath << mout.endl;
 
@@ -635,7 +542,7 @@ bool DataSelector::getQualityPaths(const HI5TREE & srcRoot, const std::string & 
 		const std::string parentPath = datapath.substr(lStart, l);
 
 		mout.debug(12) << "checking path: " << parentPath << mout.endl;
-		const HI5TREE & src = srcRoot[parentPath];
+		const HI5TREE & src = srcRoot(parentPath);
 
 		/// Iterate children (for the srcRoot[datapath], actually its siblings)
 		for (HI5TREE::const_iterator it = src.begin(); it != src.end(); it++){

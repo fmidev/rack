@@ -46,7 +46,7 @@ using namespace drain::image;
 void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 	// void MaxEchoOp::filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const {
 
-	drain::MonitorSource mout(drain::monitor,"CumulativeProductOp::filter(data, accumulator)");
+	drain::Logger mout(drain::getLog(), getName(), __FUNCTION__);
 	mout.debug(2) << "Starting MaxEchoOp (" << name << ") " << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
@@ -60,7 +60,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 
 	// Elevation angle
-	const double eta = sweep.odim.elangle*DEG2RAD;
+	const double eta = sweep.odim.getElangleR();
 
 	// A fuzzy beam power model.
 	//drain::FuzzyPeak<double,double> beamPower(0.0, 0.25*DEG2RAD, 1.0);

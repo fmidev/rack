@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-#include <drain/image/DistanceTransformFillOp.h>
 #include <drain/image/File.h>
-#include <drain/image/RecursiveRepairerOp.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/RecursiveRepairerOp.h>
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -56,7 +56,7 @@ namespace rack {
 
 void CartesianGrid::exec() const {
 
-	drain::MonitorSource mout(name, __FUNCTION__);
+	drain::Logger mout(name, __FUNCTION__);
 
 	RackResources & resources = getResources();
 
@@ -80,7 +80,7 @@ void CartesianGrid::exec() const {
 
 		 */
 		CartesianODIM odim;
-		DataSelector::getAttributes(cartesian, "dataset1", odim, true);
+		DataTools::getAttributes(cartesian, "dataset1", odim, true);
 		//odim.addShortKeys();
 		//odim.updateFromMap(a);
 		//drain::Rectangle<double> bboxD(a["where:LL_lon"], a["where:LL_lat"], a["where:UR_lon"], a["where:UR_lat"]);
@@ -112,7 +112,7 @@ void CartesianGrid::exec() const {
 
 	const bool ALPHA = resources.currentImage->getAlphaChannelCount();
 
-	Image & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0);
+	ImageFrame & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0);
 
 	const drain::Rectangle<double> & bboxD = composite.getBoundingBoxD();
 	const double lonResolution = static_cast<double>(composite.getFrameWidth())  / (bboxD.xUpperRight - bboxD.xLowerLeft) / width ;
