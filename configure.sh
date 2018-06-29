@@ -2,7 +2,8 @@
 # Markus.Peura@fmi.fi
 
 CONF_FILE='install-rack.cnf'
-echo "Configuring Rack installation (creating/updating '$CONF_FILE')"
+echo "Creating/updating Rack config file '$CONF_FILE')"
+echo "(Optionally edited later.)"
 
 if [ -f "$CONF_FILE" ]; then
   cp -v $CONF_FILE $CONF_FILE.bak
@@ -16,27 +17,38 @@ echo >> $CONF_FILE
 
 
 # Given a file (like 'geotiff.h'), returns its directory.
-# If several paths found, gives the last one.
+# Among several paths, selects the last one.
+# ARGS: <variable-name> <file>
 function guess_path(){
-    #echo "(Found $1)"
-    dirname `locate $1 | tail -1`
-    #DIRS=(` locate /$1 `)
-    #echo ${DIRS[*]%/*} # all
+    #echo "For $1 ..."
+    local KEY=$1
+    locate --regex "$2$"
+    local P=`locate --regex $2$ | tail -1`
+    P=${P%/*}
+    #echo " -> $KEY="$P""
+    local P_old
+    eval  P_old=\$$KEY
+    if [ "$P" != "$P_old" ]; then
+	echo "# modifying $KEY=$P_old"
+	echo $KEY="$P"
+    fi
+    eval $KEY="$P"
+    echo 
 }
 
 
 # Utility to change default variables (above)
 # ARGS: <variable-name> <prompt-text>
 function ask_variable(){
-  local x=$1
+  local key=$1
   local X
-  eval X="\$$1"
+  eval X="\$$key"
   shift
   echo $*
-  read -e  -i "$X" -p "  $x=" $x
-  eval X=\$$x
+  read -e  -i "$X" -p "  $key=" $key
+  eval X=\$$key
   echo "# $*" >> $CONF_FILE
-  echo "$x='$X'" >> $CONF_FILE
+  echo "$key='$X'" >> $CONF_FILE
   echo >> $CONF_FILE
   echo
 }
@@ -48,26 +60,16 @@ function warn_if_unfound(){
 }
 
 # Todo recode
-echo 'Searching for includes...'
-echo
-locate hdf5.h
-HDFROOT=${HDFROOT:-`guess_path hdf5.h`}
-#echo -n '...'
-echo
-locate proj_api.h
-PROJROOT=${PROJROOT:-`guess_path proj_api.h`}
-#echo -n '...'
-echo
-locate geotiff.h
-GEOTIFF=${GEOTIFF:-`guess_path geotiff.h`}
-#echo -n '...'
+echo 'Automagically detecting for directories...'
+guess_path HDFROOT hdf5.h
+guess_path PROJROOT proj_api.h
+guess_path GEOTIFF geotiff.h
 prefix=${prefix:-'/var/opt'} # or '.'?
-#echo -ne '\r'
 echo
 
 
 
-echo "Give PATH PREFIXES"
+echo "Check the directories detected above:"
 echo 
 ask_variable HDFROOT  "Hierarchical Data Format (HDF5) library"
 warn_if_unfound $HDFROOT
@@ -85,12 +87,26 @@ echo "# General compilation setup"
 
 
 if pkg-config --version > /dev/null ; then
-    echo "# -using 'pkg-config' for setting CPPFLAGS and LDFLAGS"    echo 
+    echo "# -using 'pkg-config' for setting CPPFLAGS and LDFLAGS"
+    echo 
     CCFLAGS=${GEOTIFF:+"-I$GEOTIFF"}
     LDFLAGS=''
     for i in hdf5 proj png ${GEOTIFF:+'tiff'} ${GEOTIFF:+'geotiff'}; do
-	CCFLAGS="$CCFLAGS `pkg-config --cflags $i`" && LDFLAGS="$LDFLAGS `pkg-config --libs $i`" || LDFLAGS="$LDFLAGS -l$i"
+
+	# Try pkg-config
+	CCFLAGS="$CCFLAGS `pkg-config --silence-errors --cflags $i`" && LDFLAGS="$LDFLAGS `pkg-config --silence-errors --libs $i`" && continue
+
+	# ... Failed, so retry pkg-config with prefix 'lib'
+	CCFLAGS="$CCFLAGS `pkg-config --silence-errors --cflags lib$i`" && LDFLAGS="$LDFLAGS `pkg-config --silence-errors --libs lib$i`" && continue
+
+	#echo "Note: pkg-config warnings here can be discarded!"
+	#echo 
+
+	# ... Failed, so simply just add it
+	LDFLAGS="$LDFLAGS -l$i"
+	
     done
+
 fi
 echo
 
@@ -102,6 +118,7 @@ echo "Created $CONF_FILE with contents:"
 echo
 cat  $CONF_FILE
 
+echo "Updated '$CONF_FILE'"
 echo 
 echo "Continue with ./build.sh"
 

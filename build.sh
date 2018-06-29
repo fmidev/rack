@@ -32,7 +32,17 @@ fi
 
 make drainroot=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
 
+if [ $? != 0 ]; then
+    echo "ERROR: Compiling rack failed"
+    exit 1
+fi
+
+
 make prefix=$prefix install
+if [ $? != 0 ]; then
+    echo "ERROR: Installing rack failed"
+    exit 1
+fi
 
 popd
 
@@ -43,10 +53,6 @@ echo
 echo "Consider setting:"
 echo "export LD_LIBRARY_PATH=$HDFROOT/lib:$PROJROOT/lib:$LD_LIBRARY_PATH"
 echo "export PATH=$PATH:$RACKROOT/bin"
-
-
-
-
 
 
 exit 0
