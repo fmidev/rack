@@ -32,13 +32,14 @@ for i in ${CONF//,/ } ; do   # ORDER?
 done
 
 
-# Geographical bounding box 
-# BBOX=${BBOX:-'-10,35,35,70'} # Europe
+# Geographical bounding box
+# BBOX='-10.434576838640398,31.746215319325056,57.81196475014995,67.62103710275053' # OPERA
+#BBOX=${BBOX:-'-10,35,35,70'} # Europe
 # BBOX=${BBOX:-'16,57,35,70'}  # Finland
 # BBOX=${BBOX:-'8,53,32,70.5'} # Finland and Sweden
-BBOX=${BBOX:-'8,47.5,33,73'}   # Baltic
+#BBOX=${BBOX:-'8,47.5,33,73'}   # Baltic
 #BBOX=${BBOX:-'0,47.5,45.74,73'}   # BalticRus
-BBOX=${BBOX:-'-10,35,35,74'}   # EuroRus
+#BBOX=${BBOX:-'-10,35,35,74'}   # EuroRus
 BBOX=${BBOX:-'6,51.3,49,70.2'} # FMI Scandinavia
 
 # Addititional sub-area cropping, aiming at larger composite
@@ -71,8 +72,8 @@ SIZE=${SIZE:-800,800}
 
 #CTYPE=${CTYPE:-'C,0.5,-32,0,255'}
 
-# Compositing principle: MAX, MAXW, AVG or WAVG,p,r,gain,offset
-METHOD=${METHOD:-MAX}
+# Compositing principle: MAXIMUM, MAXW, AVERAGE or WAVG,p,r,gain,offset
+METHOD=${METHOD:-MAXIMUM}
 # METHOD=MAXQ
 # METHOD=${METHOD:-WAVG,1,1,-32}
 # METHOD=${METHOD:-WAVG,3,2,-32}
@@ -80,12 +81,16 @@ METHOD=${METHOD:-MAX}
 # Meteorological product to be composited. Leave empty if first sweep only (PPI).
 #PRODUCT=${PRODUCT:-'pCappi,500'} # altitude (metres)
 product=${PRODUCT:+'--'${PRODUCT/,/ }}
+#product=${QUANTITY:+"-Q '$QUANTITY' $product"}
 # If PRODUCT is unset, use lowest sweep (PPI) DBZH.
 QUANTITY=${QUANTITY:-'DBZH'}
+QUANTITY=${QUANTITY//\*/}
 #if [ "$PRODUCT" == '' ]; then
 #  delete='--delete dataset1?[02-9]'
 #fi
-product=${product:-"--select quantity=$QUANTITY"}
+#product=${product:-"--select quantity=$QUANTITY"}
+product=${product:-"-Q '$QUANTITY'"}
+
 
 PALETTE=${PALETTE:-$QUANTITY}
 
@@ -175,24 +180,24 @@ CWEIGHT=${CWEIGHT:-'0.9'}
 debug=${DEBUG:+'--debug'}
 
 # This is the "physical" value (dBZ) used when 'undetect' is read.
-# This is NOT the undetect code (marker) to be used; see --target below.
+# This is NOT the undetect code (marker) to be used; see --encoding below.
 # UNDETECT=${UNDETECT:-'-40'}
 X=( ${UNDETECT/,/ } )
 UNDETECT_VALUE=${UNDETECT_VALUE:-${X[0]}}
 UNDETECT_WEIGHT=${UNDETECT_WEIGHT:-${X[1]}}
 undetect=${UNDETECT_VALUE:+"--cUndetect $UNDETECT_VALUE"}' '${UNDETECT_WEIGHT:+"--undetectWeight $UNDETECT_WEIGHT"}
 
-# TARGET=${TARGET:-'C,0.5,-32,0,255'}
-target=${TARGET:+"--target $TARGET"}
+# ENCODING=${ENCODING:-'C,0.5,-32,0,255'}
+encoding=${ENCODING:+"--encoding $ENCODING"}
 
 
 if [ "$SCHEME" == 'TILE' ]; then
   mkdir --verbose --parents "$TILEDIR"
-  # rm $TILEDIR/*-tile.h5
-  if [ -s $TILEDIR/ ]; then
-      REPORT_TILES="Tile directory '$TILEDIR' was not empty, consider 'rm -vf $TILEDIR/*.h5'"
+  rm -v $TILEDIR/*-tile.h5
+  #if [ -s $TILEDIR/ ]; then
+  #    REPORT_TILES="Tile directory '$TILEDIR' was not empty, consider 'rm -vf $TILEDIR/*.h5'"
       #exit -1
-  fi
+  #fi
   decay=''
 fi
 
@@ -209,17 +214,17 @@ if [ "$INFILE" != '' ]; then
     INIT="        $INFILE $time --cAddWeighted $CWEIGHT "
     #INIT="--cLoad $INFILE $time --cAddWeighted $CWEIGHT "
 else
-    INIT="$NEWLINE --cProj '$PROJ' $NEWLINE --cSize $SIZE --cBBox $BBOX $bboxtile  $target --cInit"
+    INIT="$NEWLINE --cProj '$PROJ' $NEWLINE --cSize $SIZE --cBBox $BBOX $bboxtile  $encoding --cInit"
 fi
 
 inputprefix=${INPUTPREFIX:+"--inputPrefix $INPUTPREFIX"} # inputPrefix
 
-# PART 1: Initial part    # --target $CTYPE
+# PART 1: Initial part    # --encoding $CTYPE
 command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inputprefix $verbose" 
 
 
 # Routine applied to each input volume (in default and TILE schemes).
-routine="$delete ${ANDRE[*]} $product $target "  #--cCreate"
+routine="$delete ${ANDRE[*]} $product $encoding "  #--cCreate"
 
 if [ "$SCHEME" == '' ]; then
     command="$command $NEWLINE --script '$routine --cAdd' "  
@@ -233,7 +238,7 @@ fi
 
 
 # TODO simplify
-#target='--target C,0.5,-32,0,255'
+#encoding='--encoding C,0.5,-32,0,255'
 
 # Traverse arguments. 
 # If an argument is a directory, expand as *.h5 files.
@@ -264,8 +269,8 @@ for i in ${INPUT[*]}; do
        command2="$command $i $routine --cCreateTile -o $TILEDIR/${basename%.*}-tile.$FORMAT"
        echo $NPROC # $command2
        #echo -e "$command2" > ${basename%.*}-tile-proc$NPROC.cmd
-       echo -e "$command2" > $TILEDIR/proc$NPROC-lastcmd.txt
-       ln -sf $TILEDIR/proc$NPROC-lastcmd.txt ${BASENAME}-TILE.cmd
+       echo -e "$command2" > $TILEDIR/proc$NPROC-last.cmd
+       ln -sf $TILEDIR/proc$NPROC-last.cmd ${BASENAME}-TILE.cmd
        #echo -e "$command" > $BASENAME-cmd${SCHEME:+"-$SCHEME"}.txt
        if [ "$DEMO" != 0 ]; then
 	   eval "$command2"  &
@@ -316,18 +321,18 @@ grid=${GRID:+"--cGrid $GRID"}
 
 # -O $BASENAME-.p
 #  -o $BASENAME.tif
-DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png  -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q 'DEV$' -o $BASENAME-STDEV.png $NEWLINE --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --target 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
+DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '*DEV' -o $BASENAME-STDEV.png $NEWLINE --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --encoding 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
 
-# if not TILED target='' ?
-target='' 
-command="$command $NEWLINE$target --cExtract dwsc $NEWLINE-o $OUTFILE $DEMOFILES"
+# if not TILED encoding='' ?
+encoding='' 
+command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE-o $OUTFILE $DEMOFILES"
 
 #fi 0,47,36,73
 echo
 
 #command2=`echo -e "$command" | tr -d '\\\' `
 command2=`echo "$command" | tr -d '\\\' `
-echo -e "$command" > $BASENAME-cmd${SCHEME:+"-$SCHEME"}.txt
+echo -e "$command" > $BASENAME${SCHEME:+"-$SCHEME"}.cmd
 #echo $command2
 #eval $command2
 result=0

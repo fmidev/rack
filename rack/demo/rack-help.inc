@@ -1,7 +1,7 @@
-Rack - a radar data processing program
+Rack fmi.fi - a radar data processing program
 
---append  
-  Append outputs instead of overwriting. Deprecated, see --store
+--append  <path>
+  Append inputs/outputs instead of overwriting.
 
 --autoExec  <exec>
   Execute script automatically after each input. See --script
@@ -9,8 +9,14 @@ Rack - a radar data processing program
 --checkType  
   Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
+--completeODIM  
+  Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
+
 --convert  
-  Convert --select'ed data to scaling and markers set by --target
+  Convert --select'ed data to scaling and markers set by --encoding
+
+--createDefaultQuality  <quantitySpecific>
+  Creates default quality field. See --undetectQuality
 
 --dataOk, -ÿ  <flag>
   Status of last select.
@@ -57,6 +63,9 @@ Rack - a radar data processing program
 --histogram  <count>,<min>,<max>
   Histogram
 
+--iPhysical  <value>
+  Handle intensities as physical quantities like dBZ (instead of that of storage type).
+
 --image  
   Copies data to a separate image object. Encoding can be changed with --target .
 
@@ -66,9 +75,6 @@ Rack - a radar data processing program
 --imageFlatten  <bgcolor>
   Removes a alpha (transparency) channel. Adds a new background of given color.
 
---imageOp  <operator>,<parameters>
-  Run image operator. See --select and --help imageOps.
-
 --inputFile, -i  <filename>
   Read h5, txt or png file
 
@@ -77,6 +83,9 @@ Rack - a radar data processing program
 
 --inputSelect  <value>
   Read ATTRIBUTES (1), DATA(2) or both (3).
+
+--jSON  
+  Dump to JSON.
 
 --keep  <selector>
   Keeps a part of the current h5 structure, deletes the rest. Path and quantity are regexps.
@@ -99,17 +108,20 @@ Rack - a radar data processing program
 --paletteRefine  <count>
   Refine colors
 
---quantity, -Q  <quantity>
-  Same as --select quantity.
+--plot  <i,j,...>
+  Plot
+
+--quantity, -Q  <quantities>
+  Like --select quantity=... but with patterns (not regexps)
 
 --quantityConf  <quantity:type>,<gain>,<offset>,<undetect>,<nodata>,<zero>
   1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair
 
---renameODIM  <from,to>
-  Rename path (future ext: attribute)
+--rename  <from,to>
+  Rename/swap path names (future ext: attribute)
 
 --sample  <iStep>,<jStep>,<iStart>,<jStart>,<iEnd>,<jEnd>,<commentChar>,<skipVoid>
-  Sampling configuration. See --format and --outFile '*.dat'.
+  Extract samples. See --format.
 
 --script  <script>
   Define a script.
@@ -118,13 +130,13 @@ Rack - a radar data processing program
   Data selection for the next operation.
 
 --setODIM  <assignment>
-  Set data properties (ODIM).
+  Set data properties (ODIM). Works also directly: --/<path>:<key>[=<value>]
 
 --status  
   Dump information on current images.
 
---store  <append>,<intermediate>
-  Set how intermediate and final outputs are stored.
+--store  <intermediate>,<append>
+  Set how intermediate and final outputs are stored. See --append
 
 --target, -t  <type>,<gain>,<offset>,<undetect>,<nodata>,<rscale>,<nrays>,<nbins>
   Sets encodings parameters for polar and Cartesian products, including composites.
@@ -132,7 +144,7 @@ Rack - a radar data processing program
 --undetectWeight  <weight>
   Set the relative weight of data values assigned 'undetect'.
 
---verbose, -v  <level>
+--verbose, -v  <level>,<imageLevel>
   Set verbosity level
 
 --verboseData  <level>
@@ -141,8 +153,9 @@ Rack - a radar data processing program
 --version  
   Displays software version and quits.
 
-For help, type:
+For help on separate modules, type:
  --help andre
  --help cart
  --help formulae
+ --help imageOps
  --help prod

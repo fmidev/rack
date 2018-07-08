@@ -24,6 +24,6 @@ fi
 
 fgrep -v 'FORMAT' $ANDRE_CNF_FILLED  > tmp.inc
 mv tmp.inc $ANDRE_CNF_FILLED
-
+cat "$ANDRE_CNF_FILLED"
 
 #cp andre.inc andre.tmp

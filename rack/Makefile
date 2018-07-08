@@ -22,9 +22,11 @@ unzip:
 	unzip -o make.zip
 
 
-install: 
+install:
+	@echo 'Quick test:'
+	Release/rack --help > /dev/null
 	mkdir -v --parents ${prefix}/bin
-	cp -vi Release/rack ${prefix}/bin
+	VERSION=( `Release/rack --version` ); cp -vi Release/rack ${prefix}/bin/rack-$${VERSION}
 
 make.zip: Release
 	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `

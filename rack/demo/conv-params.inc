@@ -2,5 +2,5 @@
    cellDiameter=3 [km]
    echoTopThreshold=2 [km]
    echoTopDBZ=20 [dBZ]
-   smoothAzm=0 [?]
-   smoothRad=0 [?]
+   smoothAzm=0 [deg]
+   smoothRad=0 [km]

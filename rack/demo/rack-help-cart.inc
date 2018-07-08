@@ -1,10 +1,10 @@
-Rack - a radar data processing program
+Rack fmi.fi - a radar data processing program
 
 --cAdd  
-  Maps the current polar product to a Cartesian product.
+  Adds the current product to the composite.
 
 --cAddWeighted  <weight>
-  Adds current Cartesian product to the composite applying weight.
+  Adds the current product to the composite applying weight.
 
 --cBBox  <llLon>,<llLat>,<urLon>,<urLat>
   Bounding box of the Cartesian product.
@@ -39,6 +39,9 @@ Rack - a radar data processing program
 --cMethod  <method>
   Method to be used in accumulating the (weighted) values.
 
+--cOpticalFlow  <width>,<height>,<resize>,<threshold>,<spread>,<smooth>
+  A pipeline implementation of optical flow.
+
 --cPlot  <lon>,<lat>,<x>,<w>
   Add a single data point.
 
@@ -47,6 +50,12 @@ Rack - a radar data processing program
 
 --cProj  <projstr>
   Set projection
+
+--cQuantity  <quantity>
+  Set quantity of the composite.
+
+--cRange  <range>
+  Force range for single-radar cartesian products (0=use-metadata)
 
 --cSize  <width>,<height>
   Set size of the compositing array. Does not allocate memory.
@@ -60,8 +69,9 @@ Rack - a radar data processing program
 --cTimeDecay  <decay>
   Delay weight (0.0...1.0) per minute. 1=no decay. See --cTime
 
-For help, type:
+For help on separate modules, type:
  --help [<command>]
  --help andre
  --help formulae
+ --help imageOps
  --help prod

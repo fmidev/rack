@@ -1,56 +1,59 @@
-Rack - a radar data processing program
+Rack fmi.fi - a radar data processing program
 
 --pAdd  
   Add polar data to accumulation array.
 
+--pAddWeighted  <weight>
+  Adds the current product to the composite applying weight.
+
 --pBeamAltitude  <altitudeReference>
   Computes the altitude at each bin
-  # Encoding: gain=0.1,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0.1,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: 
 
 --pBird  <dbzPeak>,<vradDevMin>,<rhoHVmax>,<zdrDevMin>,<windowWidth>,<windowHeight>
   Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
-  # Input quantities: ^(DBZH|VRAD|RHOHV|ZDR)$
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
+  # Input quantities: ^(DBZH|VRAD|VRADH|RHOHV|ZDR)$
 
 --pCappi  <altitude>,<weightMin>,<weightExponent>,<aboveSeaLevel>
   Constant-altitude planar position indicator
-  # Encoding: gain=0,nodata=0,offset=0,type=,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: ^DBZH$
 
 --pConv  <maxEchoThreshold>,<cellDiameter>,<echoTopThreshold>,<echoTopDBZ>,<smoothAzm>,<smoothRad>
   Computes the probability of convection based on fuzzy cell intensity, area and height.
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins,undetect,nodata
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: ^DBZH$
 
 --pDoppler  <azm1>,<azm2>,<range1>,<range2>,<ray1>,<ray2>,<bin1>,<bin2>
   Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
-  # Input quantities: VRAD
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
+  # Input quantities: ^(VRAD|VRADH)$
 
---pDopplerAvg  <width>,<height>,<areaThreshold>,<compensate>
+--pDopplerAvg  <width>,<height>,<threshold>,<compensate>,<relativeScale>
   Smoothens Doppler field
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: gain
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain
   # Input quantities: VRAD
 
---pDopplerDeAlias  <width>,<height>,<nyquist>,<altitudeWeight>
+--pDopplerDeAlias  <width>,<height>,<nyquist>,<altitudeWeight>,<VVP>
   Solves Doppler speed ambiguity, outputs (u,v).
-  # Encoding: gain=0,nodata=0,offset=0,type=S,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=S,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: VRAD
 
---pDopplerDev  <width>,<height>,<areaThreshold>,<compensate>
+--pDopplerDev  <width>,<height>,<threshold>,<compensate>,<relativeScale>
   Computes std.dev.[m/s] of Doppler field
-  # Encoding: gain=0.5,nodata=0,offset=0,type=C,undetect=0, user modifiable: gain
+  # Encoding: gain=0,nodata=255,offset=0,type=C,undetect=0, user modifiable: type,gain
   # Input quantities: VRAD
 
 --pDrawing  <shape>,<p1>,<p2>,<p3>,<p4>,<marker>
   Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: 
 
 --pEchoTop  <minDBZ>,<dbzCoord>,<altitudeCoord>,<altitudeReference>
   Computes maximum (or minimum) altitude of echo.
-  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: ^DBZH$
 
 --pExtract  <channels>
@@ -58,12 +61,12 @@ Rack - a radar data processing program
 
 --pFunctor  <ftor>
   Computes the altitude at each bin
-  # Encoding: gain=0.1,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0.1,nodata=0,offset=0,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: 
 
 --pMaxEcho  <altitude>,<devAltitude>,<accumulationMethod>
   Computes...
-  # Encoding: gain=0,nodata=0,offset=0,type=,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: ^DBZH$
 
 --pPseudoRhi  <az_angle>,<xsize>,<ysize>,<minRange>,<range>,<minHeight>,<maxHeight>,<beamWidth>,<beamPowerThreshold>
@@ -73,7 +76,7 @@ Rack - a radar data processing program
 
 --pRainRate  
   Estimates precipitation rate [mm/h] from reflectance [dBZ].
-  # Encoding: gain=0,nodata=0,offset=0,type=S,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0,nodata=0,offset=0,type=S,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: ^DBZH$
 
 --pRainRateDP  <freezingLevel>,<freezingLevelThickness>,<dataThresholdParams>,<dbzParams>,<kdpParams>,<zzdrParams>,<kdpzdrParams>
@@ -88,7 +91,7 @@ Rack - a radar data processing program
 
 --pSunShine  <timestamp>,<quantity>
   Computes the sun position
-  # Encoding: gain=0.005,nodata=0,offset=-0.1,type=C,undetect=0, user modifiable: type,gain,offset,rscale,nrays,nbins
+  # Encoding: gain=0.005,nodata=0,offset=-0.1,type=C,undetect=0, user modifiable: type,gain,offset,undetect,nodata,rscale,nrays,nbins
   # Input quantities: 
 
 --pVerticalProfile  <minRange>,<range>,<minHeight>,<maxHeight>,<levels>,<startaz>,<stopaz>,<azSlots>
@@ -96,8 +99,9 @@ Rack - a radar data processing program
   # Encoding: gain=0,nodata=0,offset=0,type=d,undetect=0, user modifiable: type
   # Input quantities: ^DBZH$
 
-For help, type:
+For help on separate modules, type:
  --help [<command>]
  --help andre
  --help cart
  --help formulae
+ --help imageOps

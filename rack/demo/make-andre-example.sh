@@ -98,7 +98,7 @@ while [ ${#*} != 0 ]; do
 	ANOM_IMG_CART=andre-$DETECTOR-cart.png
 	ANOM_IMG_PANEL=andre-$DETECTOR-panel.png
 
-	cmd="rack $VOLUME -o $VOLUME_IMG  --store intermediate=1 --$aDETECTOR $VALUES --select 'quantity=$QUANTITY' -o $ANOM_IMG --select 'quantity=$QUANTITY' --cSize 500,500 --target C,0.004,0,0,16  -c -o $ANOM_IMG_CART"
+	cmd="rack $VOLUME -o $VOLUME_IMG  --store intermediate=1 --$aDETECTOR $VALUES --select 'quantity=$QUANTITY' -o $ANOM_IMG --select 'quantity=$QUANTITY' --cSize 500,500 --encoding C,0.004,-0.004,0,16  -c -o $ANOM_IMG_CART"
         # quantity=$QUANTITY -o $ANOM_IMG"
 	echo "$cmd"
 	eval "$cmd"

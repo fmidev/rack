@@ -19,7 +19,6 @@
 # those with variables like $FILE but not those with <FILE>
 # This was just a trick to exclude the latter from this test.
 DOC_FILES="../main/*.dox" 
-#DOC_FILES=( ../main/{rack,images,andre,products,compositing,misc}.dox ) 
 
 # Resulting list of example commands from *.dox
 TEST_CMD_FILE=tests.lst
@@ -33,13 +32,12 @@ fi
 
 # Check that 'rack' is executable
 #rack > /dev/null
-RACK=`which rack`
-if [ ! -x "$RACK" ]; then
-  echo "Error: could not execute 'rack'. No tests can be done..."
-  #which rack
-  echo "RACK=$RACK"
-  exit -1
-fi
+RACK=${RACK:-`which rack`}
+#if [ ! -x "$RACK" ]; then
+#  echo "Error: could not execute 'rack'. No tests can be done..."
+#  echo "RACK=$RACK"
+#  exit -1
+#fi
 
 
 # Fixed filenames will be used: volume.h5 and sweep1.h5, sweep2.h5, ...  
@@ -55,13 +53,15 @@ fi
 
 
 # Collect test cases
-# Exclude commands containing '<' or '>'
+# Exclude commands containing '<', for examples of type cmd <param>
 echo -n > $TEST_CMD_FILE
 for file in ${DOC_FILES[*]}; do
 #  grep '^[ ]*\(rack\|convert\) [^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
 #  grep '^ *\([a-zA-Z]+\=[^ ]* +\)*\(rack\|convert\) [^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
-  grep '^[ ]*\(rack \|convert \|.*#exec\)[^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
+  grep '^\s*\(rack \|convert \|.*#exec\)[^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
 done
+
+
 
 # Append additional cases
 
@@ -137,8 +137,9 @@ while (( $line <= iEnd )); do
 
     echo -e "\033[1;20mTEST #$i (line $line)\033[0m"
     #echo "TEST #$i (line $line):"
-    echo $cmd
-
+    #echo $cmd
+    echo -e '\033[1;42m' $cmd '\033[0m'
+    
     #echo "Test[$i]: '$cmd'"
     LOGFILE=test-$line.log
     if [ -f $LOGFILE ]; then 
@@ -148,7 +149,7 @@ while (( $line <= iEnd )); do
 
     echo $cmd > tmp.log
     #  valgrind -v $cmd
-    eval "$cmd"
+    eval "$PRE $cmd"
 
     if (( $? != 0 )); then
 	echo -e '\033[1;41mFAILED\033[0m'

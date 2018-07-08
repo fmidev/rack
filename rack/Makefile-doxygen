@@ -45,8 +45,11 @@ doc-pdf: doc
 	cd ${DOXYROOT}/$(PROJECT_NAME)/latex/; pdflatex refman.tex; pdflatex refman.tex
 	ln -sfv ${DOXYROOT}/$(PROJECT_NAME)/latex/refman.pdf $(PROJECT_NAME)-doc.pdf
 
-doc-html: doc
-	cd ${DOXYROOT}/$(PROJECT_NAME)/html/; zip $(PROJECT_NAME)-doc-html.zip -rp .
+#doc-html: doc
+#	
 
+doc-html-zip:
+	X=$(PROJECT_NAME); cd ${DOXYROOT}/$$X/html/; zip $$X-doc-html.zip -rp .
+	echo "Doc for '$(PROJECT_NAME)' ready" 
 
 

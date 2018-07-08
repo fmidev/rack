@@ -1,4 +1,5 @@
    width=1500 [metres]
    height=3 [deg]
-   areaThreshold=0.5 [percentage]
-   compensate=1 [cart/polar]
+   threshold=0.5 [percentage]
+   compensate=0 [cart/polar]
+   relativeScale=1 [0|1]
