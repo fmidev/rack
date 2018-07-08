@@ -9,6 +9,7 @@ prefix=/opt
 
 USE_GEOTIFF=NO
 
+VERSION := $(shell Release/rack --version | head -1)
 
 help:
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z\-\.]\+:' | cut -d' ' -f1 | tr ':' '|' `"; echo make \[ $$X \]
@@ -26,7 +27,7 @@ install:
 	@echo 'Quick test:'
 	Release/rack --help > /dev/null
 	mkdir -v --parents ${prefix}/bin
-	VERSION=( `Release/rack --version` ); cp -vi Release/rack ${prefix}/bin/rack-$${VERSION}
+	cp -vi Release/rack ${prefix}/bin/rack-${VERSION}
 
 make.zip: Release
 	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
