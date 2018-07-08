@@ -1,0 +1,11 @@
+# Metadata for radar 'fi'
+
+SOURCE="NOD:fi,ORG:fi"
+NOD="fi"
+WMO=""
+PLC=""
+LAT="64.7749"
+LON="26.3189"
+HEIGHT="118"
+PROJDEF=" +proj=aeqd +lon_0=26.3189 +lat_0=64.7749 +ellps=WGS84"
+BBOX="21.4998,62.4478,32.0057,66.9162"

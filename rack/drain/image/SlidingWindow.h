@@ -1,0 +1,595 @@
+/**
+
+    Copyright 2015 -   Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+
+
+    This file is part of Drain library for C++.
+
+    Drain is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    Drain is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Drain.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
+#ifndef SLIDING_W_H_
+#define SLIDING_W_H_
+
+//#include "CopyOp.h"
+#include "Window.h"
+//#include "SlidingWindowOp.h"
+
+namespace drain
+{
+
+namespace image
+{
+
+template <class C = WindowConfig, class R = WindowCore>
+class SlidingWindow : public Window<C,R>
+{
+public:
+
+	SlidingWindow(const C & conf, bool horzMultiple=true, bool vertMultiple=true) : Window<C,R>(conf){
+		setSlidingMode(horzMultiple, vertMultiple);
+	}; // , resetAtEdges(false)
+
+
+	SlidingWindow(int width=0, int height=0, bool horzMultiple=true, bool vertMultiple=true) : Window<C,R>(width,height){
+		setSlidingMode(horzMultiple, vertMultiple);
+	};
+
+public:
+
+	virtual ~SlidingWindow(){};
+
+	void setSlidingMode(bool horzMultiple, bool vertMultiple){
+
+		modeStr = "??";
+		modeStr.at(0) = horzMultiple?'H':'h';
+		modeStr.at(1) = vertMultiple?'V':'v';
+
+		updateHorz = horzMultiple ? &SlidingWindow<C,R>::updateHorzMultiple : &SlidingWindow<C,R>::updateHorzSingle;
+		updateVert = vertMultiple ? &SlidingWindow<C,R>::updateVertMultiple : &SlidingWindow<C,R>::updateVertSingle;
+
+		if (horzMultiple && vertMultiple)
+			fill = & SlidingWindow<C,R>::fillBoth;
+		else if (horzMultiple)
+			fill = & SlidingWindow<C,R>::fillVert; //Horz;
+		else if (vertMultiple)
+			fill = & SlidingWindow<C,R>::fillHorz; // Vert;
+		else {
+			drain::Logger mout("SlidingWindow", __FUNCTION__);
+			mout << "illegal sliding mode single-horz, single-vert" << mout.endl;
+			fill = & SlidingWindow<C,R>::fillBoth;
+		}
+
+	}
+
+	/// Sets coord handler, calls initialise, sets pos(0,0), fills, writes and slides.
+	/**
+	 *  Notice that this top-level function is final.
+	 */
+	void run(){
+
+		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+
+		mout.debug(2) << "initialize" << mout.endl;
+		initialize();
+
+		mout.debug(2) << (*this) << mout.endl;
+
+		(this->*fill)();
+		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		write();
+
+		if (this->isHorizontal()){
+			mout.debug(3) << "slideHorz" << mout.endl;
+			slideHorz();
+		}
+		else {
+			mout.debug(3) << "slideVert" << mout.endl;
+			slideVert();
+		}
+	}
+
+	/// Sets coord handler, calls initialise, sets pos(0,0), fills, writes and slides.
+	/**
+	 *  Notice that this top-level function is FINAL.
+	 */
+	void runHorz(){
+
+		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		mout.debug(2) << "start" << mout.endl;
+
+		mout.debug(2) << "initialize" << mout.endl;
+		initialize();
+
+		mout.debug(2) << (*this) << mout.endl;
+
+		fill();
+		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		write();
+
+		mout.debug(3) << "slideHorz" << mout.endl;
+		slideHorz();
+	}
+
+	/// Sets coord handler, calls initialise, sets pos(0,0), fills, writes and slides.
+	/**
+	 *  Notice that this top-level function is FINAL.
+	 */
+	void runVert(){
+
+		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		mout.debug(2) << "start" << mout.endl;
+
+		mout.debug(2) << "initialize" << mout.endl;
+		initialize();
+
+		mout.debug(2) << (*this) << mout.endl;
+
+		fill();
+		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		write();
+
+		mout.debug(3) << "slideVert" << mout.endl;
+		slideVert();
+	}
+
+
+
+	virtual
+	void debug(){
+		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		mout.warn() << "Using apply() recommended for debugging only." << mout.endl;
+		Window<C,R>::run();
+	}
+
+	/// Write the result in the target image.
+	/** Sliding windows enjoys a confidence of the application,
+	 *  as it has the
+	 */
+	virtual
+	void write() = 0; //{dst.at(location) = value;};
+
+	inline
+	const std::string & getModeStr(){
+		return modeStr;
+	}
+
+protected:
+
+
+	/// Sets class-specific initial values. Does not change general window state (e.g. location). Should not accumulate any statistics.
+	/**
+	 *   \see fill()
+	 *   \see clear()
+	 */
+	virtual
+	void initialize() = 0;
+
+	///  Returns false, if traversal should be ended.
+	virtual
+	inline
+	bool reset(){
+		(this->*fill)();
+		return true;
+	};
+
+	/// High-level functionality of a sliding window. FINAL
+	inline
+	void slideHorz(){
+
+		while (true){
+
+			while (moveRight())
+				write();
+
+			if (!moveDown())
+				return;
+
+			write();
+
+			while (moveLeft())
+				write();
+
+			if (!moveDown())
+				return;
+
+			write();
+
+			// For 1) cleaning numerical residues and 2) updating window parameters
+			if (this->resetAtEdges){
+				if (!this->reset())
+					return;
+			}
+
+		}
+
+	}
+
+	/// High-level functionality of a sliding window. FINAL
+	inline
+	void slideVert(){
+
+		while (true){
+
+			while (moveDown())
+				write();
+
+			if (!moveRight())
+				return;
+
+			write();
+
+			while (moveUp())
+				write();
+
+			if (!moveRight())
+				return;
+
+			write();
+
+			// For 1) cleaning numerical residues and 2) updating window parameters
+			if (this->resetAtEdges){
+				if (!this->reset())
+					return;
+			}
+
+
+		}
+
+	}
+
+
+private:
+
+	std::string modeStr;
+	//bool horzMultiple;
+	//bool vertMultiple;
+
+
+protected:
+
+	Point2D<int> locationLead;
+	Point2D<int> locationTrail;
+
+
+	/// Moves one pixel down. Stops at the edge, and returns false.
+	/**
+	 *  High-level functionality of a sliding window.
+	 *
+	 *  @return true, if the new location is within im		mout.debug(2) << window << mout.endl;
+	 *  age, otherways false.
+	 */
+	inline // FINAL
+	bool moveDown(){
+
+		++this->location.y;
+		if (this->location.y <= this->coordinateHandler.getYMax()){ //  < this->srcHeight){
+			locationLead.y  = this->location.y + this->jMax;
+			locationTrail.y = this->location.y + this->jMin-1;
+			(this->*updateVert)();
+			return true;
+		}
+		else { // step back
+			--this->location.y;
+			return false;
+		}
+	}
+
+	/// Moves one pixel up. Stops at the edge, and returns false.
+	/**
+	 *   High-level functionality of a sliding window.
+	 *
+	 *  @return true, if the new location is within image, otherways false.
+	 */
+	inline // FINAL
+	bool moveUp(){
+
+		--this->location.y;
+		if (this->location.y >= 0){
+			locationLead.y  = this->location.y + this->jMin;
+			locationTrail.y = this->location.y + this->jMax+1;
+			(this->*updateVert)();
+			return true;
+		}
+		else { // step back
+			++this->location.y;
+			return false;
+		}
+	}
+
+	/// Moves one pixel right. Stops at the edge, and returns false.
+	/**
+	 *  High-level functionality of a sliding window.
+	 *
+	 *  @return true, if the new location is within image, otherways false.
+	 */
+	inline // FINAL
+	bool moveRight(){
+
+		++this->location.x;
+		if (this->location.x <= this->coordinateHandler.getXMax()){ // this->srcWidth){
+			locationLead.x  = this->location.x + this->iMax;
+			locationTrail.x = this->location.x + this->iMin-1;
+			(this->*updateHorz)();
+			return true;
+		}
+		else { // step back
+			--this->location.x;
+			return false;
+		}
+
+	}
+
+	/// Moves one pixel left. Stops at the edge, and returns false.
+	/**
+	 *  High-level functionality of a sliding window.
+	 *
+	 *  @return true, if the new location is within image, otherways false.
+	 */
+	inline // FINAL
+	bool moveLeft(){
+
+		--this->location.x;
+		if (this->location.x >= 0){
+			locationLead.x  = this->location.x + this->iMin;
+			locationTrail.x = this->location.x + this->iMax+1;
+			(this->*updateHorz)();
+			return true;
+		}
+		else { // step back
+			++this->location.x;
+			return false;
+		}
+	}
+
+
+
+	/// Clears the applied statistics. Redefined in derived classes.
+	virtual
+	void clear(){};
+
+
+	/// Clears and computes the statistics for the current location.
+	/**
+	 *  Initialises the statistics in the current \c locationv.W
+	 *
+	 */
+	virtual // ?
+	inline
+	void fillBoth(){
+		//drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		this->clear();
+		//mout.warn() << "init window" << mout.endl;
+		for (int i = this->iMin; i <= this->iMax; i++) {
+			for (int j = this->jMin; j <= this->jMax; j++) {
+				this->locationTmp.setLocation(this->location.x+i, this->location.y+j);
+				this->addPixel(this->locationTmp);
+			}
+		}
+	}
+
+	/// Clears and computes the statistics for the current location. FINAL
+	/**
+	 *  Note: the direction (horz) describes the orientation of the window stripe, not the direction of motion.
+	 *
+	 */
+	inline
+	void fillHorz(){
+		this->clear();
+		for (int i = this->iMin; i <= this->iMax; i++) {
+			this->locationTmp.setLocation(this->location.x+i, this->location.y);
+			this->addPixel(this->locationTmp);
+		}
+	}
+
+	/// Clears and computes the statistics for the current location. FINAL
+	/**
+	 *  Note: the direction (vert) describes the orientation of the window stripe, not the direction of motion.
+	 *
+	 */
+	inline
+	void fillVert(){
+		this->clear();
+		for (int j = this->jMin; j <= this->jMax; j++) {
+			this->locationTmp.setLocation(this->location.x, this->location.y+j);
+			this->addPixel(this->locationTmp);
+		}
+	}
+
+	/// Pointer to fill operation preformed at initial location (0,0)
+	/**
+	 *  Initially set to fillMultiple()
+	 */
+	void (SlidingWindow<C,R>::* fill)(); //
+
+	/// Pointer to update function invoked at each horizontal move.
+	/**
+	 *  Note: the direction (horz) describes window motion, not the orientation of the window stripe.
+	 *  Only a single element may be handled, like in the case of FastAvergaeOp ( SlidingWindowStripe ).
+	 *
+	 *  Initially set to updateHorzMultiple()
+	 */
+	void (SlidingWindow<C,R>::* updateHorz)(); // initially
+
+	/// Pointer to update function invoked at each vertical move.
+	/**
+	 *  Note: the direction (vert) describes window motion, not the orientation of the window stripe.
+	 *  Only a single element may be handled, like in the case of FastAvergaeOp ( SlidingWindowStripe ).
+	 *
+	 *  Initially set to updateVertMultiple()
+	 */
+	void (SlidingWindow<C,R>::* updateVert)();
+
+
+	/// In \i moving horizontally, updates the window centered at current location. Calls removePixel() and addPixel().
+	void updateHorzMultiple() {
+
+		for (int j = this->jMin; j <= this->jMax; j++) {
+
+			locationTmp.setLocation(locationTrail.x, this->location.y + j);
+			this->removePixel(locationTmp);
+
+			locationTmp.setLocation(locationLead.x, this->location.y + j);
+			this->addPixel(locationTmp);
+
+		}
+	}
+
+	void updateHorzSingle(){
+
+		this->locationTmp.setLocation(this->locationTrail.x, this->location.y);
+		this->removePixel(this->locationTmp);
+
+		this->locationTmp.setLocation(this->locationLead.x, this->location.y);
+		this->addPixel(this->locationTmp);
+
+	}
+
+	/// In \i moving vertically, updates the window centered at current location. Calls removePixel() and addPixel().
+	void updateVertMultiple(){
+
+		for (int i=this->iMin; i<=this->iMax; i++) {
+
+			locationTmp.setLocation(this->location.x + i, locationTrail.y);
+			this->removePixel(locationTmp);
+
+			locationTmp.setLocation(this->location.x + i, locationLead.y);
+			this->addPixel(locationTmp);
+
+		}
+
+	}
+
+	/// For 1 x n sized windows
+	// virtual inline
+	void updateVertSingle(){
+
+		this->locationTmp.setLocation(this->location.x, this->locationTrail.y);
+		this->removePixel(this->locationTmp);
+
+		this->locationTmp.setLocation(this->location.x, this->locationLead.y);
+		this->addPixel(this->locationTmp);
+
+	}
+
+	/// Adds a pixel to window statistics. Unvalidated location.
+	/**
+	 *   Updates class-specific window statistics by adding a pixel value - typically at the leading edge of the window.
+	 *
+	 *   \param p - location at which contribution should be removed
+	 *
+	 *   The argument p is \em not validated in advance but
+	 *   it should be checked within the implementation using coordinateHandler.validate(p), for example.
+	 */
+	virtual
+	void addPixel(Point2D<int> &p) = 0;  // consider addPixel(Point2D<int> &p, int index/double weight)
+
+	/// Removes a pixel from window statistics. Unvalidated location.
+	/**
+	 *   Updates class-specific window statistics by removing a pixel value  - typically at the trailing edge of the window.
+	 *
+	 *   \param p - location at which contribution should be removed
+	 *	const int h = (conf.height>0.0) ? conf.height : conf.width;
+	//GaussianStripeVert window2(h, 0.5*conf.radius*static_cast<double>(h));
+	GaussianStripe2<false> window2(h, 0.5*conf.radius*static_cast<double>(h));
+	 *
+	 *   The argument p is \em not validated in advance but
+	 *   it should be checked within the implementation using coordinateHandler.validate(p), for example.
+	 */
+	virtual
+	void removePixel(Point2D<int> &p) = 0; // consider addPixel(Point2D<int> &p, int index/double weight)
+
+
+	//private:
+protected:
+
+	mutable Point2D<int> locationTmp;
+
+};
+
+
+
+
+
+
+/// A horizontal, one-dimensional SlidingWindow (Nx1).
+/**
+ *  \tparam DIR - direction: horizontal(true) or vertical(false)
+ *  \tparam C - WindowConfig
+ *  \tparam R - WindowCore
+ */
+template <class C = WindowConfig, class R = WindowCore, bool DIR=true>
+class SlidingStripe : public SlidingWindow<C,R> {
+public:
+
+	SlidingStripe(size_t n=1) : SlidingWindow<C,R>(DIR?n:1, DIR?1:n, !DIR, DIR) {
+	};
+
+	virtual
+	~SlidingStripe(){};
+
+	void setSize(size_t width = 1){
+		this->SlidingWindow<C,R>::setSize(width, 1);
+	}
+
+protected:
+
+	virtual
+	void setSize(size_t width, size_t height){
+
+		drain::Logger mout("SlidingStripe", __FUNCTION__);
+		//if (height > 1)
+		//	mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+		//SlidingWindow<C,R>::setSize(width, 1);
+		if (DIR){
+			if (height > 1)
+				mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+			SlidingWindow<C,R>::setSize(width, 1);
+		}
+		else {
+			if (width > 1)
+				mout.warn() << "vert stripe, width("  << width << ") discarded" << mout.endl;
+			SlidingWindow<C,R>::setSize(1, height);
+		}
+
+	}
+
+};
+
+
+
+
+/// A horizontal, one-dimensional SlidingWindow (Nx1).
+/**
+ *  \tparam C - WindowConfig
+ *  \tparam R - WindowCore
+template <class C = WindowConfig, class R = WindowCore>
+typedef SlidingStripe<true,C,R> SlidingStripeHorz;
+ */
+
+/// A horizontal, one-dimensional SlidingWindow (Nx1).
+/**
+ *  \tparam C - WindowConfig
+ *  \tparam R - WindowCore
+template <class C = WindowConfig, class R = WindowCore>
+typedef SlidingStripe<false,C,R> SlidingStripeVert;
+ */
+
+
+
+}
+
+}
+
+#endif /*SLIDINGWINDOWOP_H_*/

@@ -1,0 +1,259 @@
+/**
+
+    Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+
+
+    This file is part of Drain library for C++.
+
+    Drain is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    Drain is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Drain.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+#ifndef GradientOP_H_
+#define GradientOP_H_
+
+
+#include <math.h>
+
+#include "ImageOp.h"
+
+namespace drain
+{
+
+namespace image
+{
+
+
+/// Virtual base class for horizontal and vertical intensity derivatives
+/**!
+ *
+ */
+// TODO: consider changing "span=2" to "radius=1"
+class DifferentialOp : public ImageOp
+{
+
+public:
+
+	virtual
+	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
+
+protected:
+
+	DifferentialOp(const std::string & name, const std::string & description, size_t channels=1, int radius=1) : // , double scale=1.0, double bias=0.0
+			ImageOp(name, description), channels(channels) {
+		//parameters.reference("span",  this->span = span, "pix");
+		parameters.reference("radius",  this->radius = radius, "pix");
+		parameters.reference("LIMIT",  this->LIMIT = true, "0|1");
+	};
+
+	virtual
+	void makeCompatible(const ImageFrame & src, Image & dst) const;
+
+	// double bias;
+	// double scale;
+	// int span;
+	int radius;
+
+	const size_t channels;
+
+public:
+
+	/// Applied only for unsigned dst types
+	bool LIMIT;
+
+protected:
+
+
+	// Consider image range limited by 1 pix, to skip CoordinateHandler::validate() .
+	virtual
+	void traverse(const Channel & src, Channel & dst, int di, int dj) const = 0;
+
+
+	inline
+	void traverseHorz(const Channel & src, Channel & dst) const {
+		traverse(src, dst, radius, 0);
+	}
+
+	inline
+	void traverseVert(const Channel & src, Channel & dst) const {
+		traverse(src, dst, 0, radius);
+	}
+
+};
+
+
+///  Computes spatial horizontal derivatives (dx and dy).
+/**!
+ *    src(i,j)-src(i-1,j).
+ *
+ \~exec
+  drainage shapes.png --gradient 1 --channels 3    -o gradient-rg.png
+  drainage shapes.png --gradient 2 --channels 3    -o gradient-rg2.png
+  drainage shapes.png --gradient 1 --magnitude ''  -o gradient.png
+ \~
+ */
+class GradientOp : public DifferentialOp
+{
+public:
+
+	GradientOp(int radius=1) : DifferentialOp(__FUNCTION__,
+			"Computes horizontal and vertical derivatives: df/di and df/dj.", 2, radius) { // , scale, bias
+	};
+
+protected:
+
+	GradientOp(const std::string & name, const std::string & description, size_t channels=1 ,  int radius=1) :
+		DifferentialOp(name, description, channels, radius){
+	};
+
+	virtual
+	void traverse(const Channel & src, Channel & dst, int di, int dj) const;
+
+};
+
+/**! Computes spatial horizontal derivative, dx.
+ *    src(i,j)-src(i-1,j).
+ *
+ \~exec
+  drainage shapes.png --gradientHorz +1 -o gradientHorzRight.png
+  drainage shapes.png --gradientHorz -1 -o gradientHorzLeft.png
+ \~
+ */
+class GradientHorzOp : public GradientOp
+{
+public:
+	
+	GradientHorzOp(int radius=1) :
+		GradientOp(__FUNCTION__, "Horizontal intensity difference", 1, radius){};
+
+	inline
+	void traverseChannel(const Channel &src, Channel & dst) const {
+		traverseHorz(src, dst);
+	}
+
+};
+
+/**! Computes spatial vertical derivative, dy.
+ *    src(i,j+radius)-src(i,j-radius).
+ * 
+ \~exec
+  drainage shapes.png --gradientVert +1  -o gradientVertDown.png
+  drainage shapes.png --gradientVert -1  -o gradientVertUp.png
+ \~
+ */
+class GradientVertOp : public GradientOp
+{
+public:
+	
+	inline
+	GradientVertOp(int radius=1) : // double scale=1.0, double bias=0.0,
+		GradientOp(__FUNCTION__, "Vertical intensity difference", 1 , radius){}; // , scale, bias
+
+	inline
+	void traverseChannel(const Channel &src, Channel & dst) const {
+		traverseVert(src, dst);
+	}
+
+};
+
+
+/// Computes second intensity derivatives.
+/**!
+ *    src(i,j)-src(i,j-1).
+ *
+ \~exec
+   drainage shapes.png --laplace 1  --channels 3  -o laplace-rg.png
+   drainage shapes.png --laplace 1  --magnitude ''  -o laplace.png
+   drainage shapes.png --laplace -1 --magnitude ''  -o laplaceNeg.png
+ \~
+ */
+class LaplaceOp : public DifferentialOp {
+
+public:
+
+	LaplaceOp(int radius=1) : DifferentialOp(__FUNCTION__, "Second intensity derivatives, (df/di)^2 and (df/dj)^2", 2, radius){
+	}
+
+protected:
+
+	LaplaceOp(const std::string & name, const std::string & description, int radius=1) : DifferentialOp(name, description, 1, radius){
+	}
+
+	virtual
+	void traverse(const Channel &src, Channel &dst, int di, int dj) const;
+	//void traverse(const ImageFrame &src, ImageFrame &dst, int diLow, int djLow, int diHigh, int djHigh) const;
+
+};
+
+/// Computes second horizontal derivative, dx2.
+/**
+
+     src(i+di,j)-src(i-di,j)^2.
+
+ \~exec
+   drainage shapes.png --laplaceHorz +1  -o laplaceHorz.png
+   drainage shapes.png --laplaceHorz -1 -o laplaceHorz2.png
+ \~
+
+ */
+class LaplaceHorzOp : public LaplaceOp
+{
+public:
+
+	inline
+	LaplaceHorzOp(int radius=1) : LaplaceOp(__FUNCTION__, "Second horizontal differential"){
+		this->radius = radius;
+	};
+
+	inline
+	void traverseChannel(const Channel &src, Channel & dst) const {
+		traverseHorz(src, dst);
+	};
+
+};
+
+///  Computes second vertical derivative, dy2.
+/**
+
+Computes second vertical derivative:
+
+  dy2 = src(i,j)-src(i,j-1)^2.
+
+\~exec
+  drainage shapes.png --laplaceVert +1  -o laplaceVert.png
+  drainage shapes.png --laplaceVert -1 -o laplaceVert2.png
+\~
+
+ */
+class LaplaceVertOp : public LaplaceOp
+{
+public:
+
+	inline
+	LaplaceVertOp(int radius=1) : LaplaceOp(__FUNCTION__, "Second vertical differential"){
+		this->radius = radius;
+	};
+
+
+	inline
+	void traverseChannel(const Channel &src, Channel & dst) const {
+		traverseVert(src, dst);
+	};
+
+};
+
+}
+}
+
+
+#endif /*GradientOP_H_*/
