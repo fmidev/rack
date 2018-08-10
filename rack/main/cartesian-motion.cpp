@@ -1,26 +1,33 @@
-/**
+/*
 
+MIT License
 
-    Copyright 2006 - 2010   Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    This file is part of Rack.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-    Rack is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-    Rack is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser Public License for more details.
-
-    You should have received a copy of the GNU Lesser Public License
-    along with Rack.  If not, see <http://www.gnu.org/licenses/>.
-
-   Created on: Sep 30, 2010
- */
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
 
 
 
@@ -145,33 +152,13 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & src) const {
 				srcDataMod.odim.product = "oflowPreprocess"; //
 				//if (bean.optResize())
 				srcDataMod.odim.prodpar = getParameters().toStr();
-				//srcDataMod.odim.product = smoother.getName()+'('+srcData.odim.quantity+')'; // nonstandard
-				//srcDataMod.odim.prodpar = smoother.getParameters().getValues();
-				//srcDataMod.setEncoding(typeid(double)); encoding!
-				//srcDataMod.data.setScaling(1.0); // !!
-				//srcDataMod.setEncoding(encoding.type);
 				srcDataMod.data.adoptScaling(srcData.data);
 
 				//smoother.process(srcData.data, srcDataMod.data);
 				PlainData<CartesianDst> & srcQualityMod = srcDataMod.getQualityData();
 				srcQualityMod.setPhysicalRange(0.0, 1.0);
-				/*
-				const drain::image::Image & srcImage  = srcData.data;
-				const drain::image::Image & srcWeight = srcQuality.data;
-				drain::image::Image & dstImage  = srcDataMod.data;
-				drain::image::Image & dstWeight = srcQualityMod.data;
-				*/
 				bean.preprocess(srcData.data, srcQuality.data, srcDataMod.data, srcQualityMod.data);
 
-				//mout.warn() << "srcData       " <<  srcData.odim       << mout.endl;
-				//mout.warn() << "srcDataMod " <<  srcDataMod.odim << mout.endl;
-				//mout.warn() << "srcDataMod " <<  srcDataMod.data << mout.endl;
-
-				//@= srcDataMod.updateTree();
-				//@= dstDataSet.updateTree(srcDataMod.odim); // needed? Should be already ok (intact shared properties)
-				//@= DataTools::updateAttributes(groupH5); // why not?
-
-				//src.setChannels(srcDataMod.data, qualityMod);
 				src.appendImage(srcDataMod.data);
 				src.appendAlpha(srcQualityMod.data);
 			}
@@ -216,18 +203,6 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & src) const {
 
 
 }
-
-/*
-void CartesianOpticalFlow::initDiffChannel(size_t width, size_t height, double max, Data<CartesianDst> & data) const {
-
-	Logger mout(getName(), __FUNCTION__);
-
-	data.initialize(typeid(double), width, height);
-	Image & img = data.data;
-	img.setPhysicalScale(-max, max);// if saved as image
-	channels.appendImage(dx);
-}
-*/
 
 /// The result is stored in this channel pack.
 void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, ImageTray<Channel> & channels) const {
@@ -313,7 +288,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	odim.updateFromMap(resources.cartesianHi5.data.dataSet.properties); // projdef
 	odim.updateFromMap(resources.cartesianHi5["dataset1"].data.dataSet.properties); // needed?
 	//mout.debug() << "prop " << resources.cartesianHi5.data.dataSet.properties << mout.endl;
-	mout.warn() << "odim   " << odim << mout.endl;
+	mout.debug() << "odim: " << odim << mout.endl;
 
 	//HI5TREE & dstH5 = (*resources.currentHi5)(path);
 	HI5TREE & dstH5 = resources.cartesianHi5(parent);
@@ -402,3 +377,5 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 }  // namespace rack::
 
 
+
+// Rack

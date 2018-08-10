@@ -1,4 +1,33 @@
-/**
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*//**
 
     Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
 
@@ -34,52 +63,6 @@
 #include "Log.h"
 
 namespace drain {
-
-// // // using namespace std;
-
-
-
-
-
-
-/**
- *  \tparam T - return type
-class valueMax {
-
-public:
-
-	 *  \tparam S - type to be analyzed
-	 *  \tparam D - destination type
-	template <class S, class D>
-	static inline
-	D callback(){
-		return static_cast<D>(getValue<S>());
-	}
-
-protected:
-
-	template <class S>
-	static inline
-	double getValue(){
-		return static_cast<double>(std::numeric_limits<S>::max());
-	}
-
-};
-
-template <>
-inline
-double valueMax::getValue<void>(){
-	return 0;
-}
-
-template <>
-inline
-double valueMax::getValue<std::string>(){
-	return 0;
-}
-*/
-
-
 
 
 /// Utilities related to stl::type_info.
@@ -122,22 +105,7 @@ public:
 		call<typeSetter>(*this, t);
 	}
 
-	/*  // actually "TypeGetter" ?
-	struct typeGetter {
-		template <class S, class T>
-		static
-		inline
-		T callback(){
-			static Type t(typeid(T));
-			return t;
-		}
-	};
-	 */
-
-
-
-
-	//    TODO, for std::strings.
+	//  TODO for std::strings.
 	template <class T>
 	inline
 	Type & operator=(const T & t){
@@ -325,23 +293,25 @@ public:
 	/**
 	 *   \tparam F - struct implementing: T callback<T>()
 	 *   \tparam D - destination type
-	 *   \tparam T - selector type (char, std::string, drain::Type)
+	 *   \tparam S - selector type (char, std::string, drain::Type)
 	 */
-	template <class F, class D, class T>
+	template <class F, class D, class S>
 	static 	inline
-	D call(const T & typeCode){
+	D call(const S & typeCode){
 		return call<F,D>(getTypeInfo(typeCode));
 	}
 
-	/// Experimental
+	/// A shorthand for functors with a fixed return type, hence D = F::value_t
 	/**
-	 *   \tparam F2 - struct implementing: T callback<T>() AND value_t (replacing destination type S)
+	 *   Simpler template with two arguments
+	 *
+	 *   \tparam F - struct implementing: T callback<T>() AND value_t (replacing destination type S)
 	 *   \tparam S  - selector type (char, std::string, drain::Type)
 	 */
-	template <class F2, class S>
+	template <class F, class S>
 	static 	inline
-	typename F2::value_t call(const S & typeCode){
-		return call<F2,typename F2::value_t>(getTypeInfo(typeCode));
+	typename F::value_t call(const S & typeCode){
+		return call<F,typename F::value_t>(getTypeInfo(typeCode));
 	}
 
 
@@ -449,70 +419,6 @@ public:
 	}
 
 
-
-
-	///
-	/*
-	template <class T>
-	static inline
-	bool isIntegralType(const T & typeInfo) {
-		return call<typeIsInteger>(typeInfo);
-	}
-	*/
-
-
-
-	/*
-	template <class T>
-	static inline
-	bool isSigned(const T & typeInfo) {
-		return call<typeIsSigned>(typeInfo);
-	}
-	*/
-
-
-
-
-
-
-
-
-	/// Returns the minimum possible value of type S, casted to type T.
-	/**  Calls std::numeric_limits and casts the result.
-	 *
-	template <class S,class T>
-	static inline
-	T getMax(){
-		return call<valueMax, T>(typeid(S));
-	}
-
-	template <class D, class T>
-	static inline
-	D getMax(const T & type){
-		return call<valueMax, D>(type);
-	}
-	 */
-
-
-
-
-	/*
-	template <class T>
-	static inline
-	nameGetter::value_t getName(const T & typeCode){
-		return call<nameGetter>(typeCode);
-	}
-	 */
-
-
-	/*
-	template <class T>
-	static inline
-	size_t getSize(const T & typeCode){
-		return call<sizeGetter, size_t>(typeCode);
-	}
-	*/
-
 	static inline
 	std::ostream & toOStr(std::ostream & ostr, const Type &t){
 		const std::type_info & type = t.getType();
@@ -556,8 +462,6 @@ protected:
 	};
 
 	const std::type_info *currentType;
-	// double typeMin;
-	// double typeMax;
 
 };
 

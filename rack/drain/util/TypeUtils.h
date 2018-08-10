@@ -1,4 +1,33 @@
-/**
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*//**
 
     Copyright 2018 -  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
 
@@ -33,12 +62,46 @@
 
 namespace drain {
 
-/*
- *  TODO: move and lowerCase the native-like classes inside Type, rename call back
- *
- *  This is good enough:  Type::call<drain::typeIsInteger>(t)
- */
 
+class simpleName {
+
+public:
+
+	//typedef const char * value_t;
+	typedef std::string value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed
+	 *  \tparam T - destination type  (practically value_t)
+	 */
+	template <class S, class T>
+	static
+	T callback(){
+		const std::type_info & t = typeid(S);
+		if (t == typeid(void))
+			return "void";
+		else if (t == typeid(std::string)){
+			return "string";
+		}
+		else if (t == typeid(bool)){
+			return "boolean";
+		}
+		else if ((t == typeid(float))||(t == typeid(double))){
+			return "float";
+		}
+		else
+			return "integer";
+	}
+
+
+};
+
+
+/**
+ *  Calling:
+ *
+ *  Type::call<drain::sizeGetter>(t)
+ */
 class sizeGetter {
 
 public:

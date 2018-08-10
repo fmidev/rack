@@ -84,7 +84,7 @@ Rack fmi.fi - a radar data processing program
 --inputSelect  <value>
   Read ATTRIBUTES (1), DATA(2) or both (3).
 
---jSON  
+--jSON  <property>
   Dump to JSON.
 
 --keep  <selector>

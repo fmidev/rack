@@ -1,4 +1,33 @@
-/**
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*//**
 
     Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
 
@@ -86,8 +115,9 @@ public:
 
 		// TODO use src.
 		NI2 = 2.0 * NI;
-		//VELOCITY_MAX = NI2/2.0;
-		AZM2RAD = 2.0*M_PI/src.getHeight(); //2.0*M_PI/conf.odimSrc.nrays;
+
+		// Azimuthal resolution (radians per beam).
+		BEAM2RAD = 2.0*M_PI/src.getHeight(); //2.0*M_PI/conf.odimSrc.nrays;
 
 		/// Set maximum quality to undetectValue, and 50% quality at NI/4.
 		diffQuality.set(0.0, NI/1.0);
@@ -98,7 +128,7 @@ public:
 
 		vMax = odimOut.getMax();
 		if (drain::Type::call<drain::typeIsInteger>(odimOut.type))
-			mout.warn() << "max abs wind: " << vMax << mout.endl;
+			mout.warn() << "max abs wind (u or v): " << vMax << mout.endl;
 
 		//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
 
@@ -137,7 +167,7 @@ public:
 
 	std::string functorSetup; // TODO: use that of Window::
 
-	mutable double AZM2RAD;
+	mutable double BEAM2RAD;
 
 	//mutable double signCos;
 	//mutable double signSin;
@@ -186,12 +216,12 @@ protected:
 			deriveDifference(d1, d2, diff);
 
 			/// Consider LUT here
-			//c = signSin *sin(p.y * AZM2RAD);
-			//s = signCos *cos(p.y * AZM2RAD);
+			//c = signSin *sin(p.y * BEAM2RAD);
+			//s = signCos *cos(p.y * BEAM2RAD);
 
 			// ORIG
-			c = -sin(p.y * AZM2RAD);
-			s = +cos(p.y * AZM2RAD);
+			c = -sin(p.y * BEAM2RAD);
+			s = +cos(p.y * BEAM2RAD);
 
 			sTs += s*s;
 			cTc += c*c;
@@ -244,12 +274,12 @@ protected:
 			deriveDifference(d1, d2, diff);
 
 			/// Consider LUT here
-			//s = signCos *cos(p.y * AZM2RAD);
-			//c = signSin *sin(p.y * AZM2RAD);
+			//s = signCos *cos(p.y * BEAM2RAD);
+			//c = signSin *sin(p.y * BEAM2RAD);
 
 			// ORIG
-			c = -sin(p.y * AZM2RAD);
-			s = +cos(p.y * AZM2RAD);
+			c = -sin(p.y * BEAM2RAD);
+			s = +cos(p.y * BEAM2RAD);
 
 			sTs -= s*s;
 			cTc -= c*c;
@@ -384,7 +414,7 @@ protected:
 		else if (dOmega > this->NI)
 			dOmega -= NI2;
 
-		dOmega = dOmega/(dSpan2*AZM2RAD);
+		dOmega = dOmega/(dSpan2*BEAM2RAD);
 	}
 
 
@@ -519,8 +549,7 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
 	mout.warn() << "QIND" << dstQuality << mout.endl;
 	*/
-	DopplerDeAliasConfig conf(widthM, heightD);
-
+	const DopplerDeAliasConfig conf(widthM, heightD);
 
 	DopplerDeAliasWindow window(conf, dstDataU.odim);
 
@@ -542,17 +571,84 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	window.run();
 
 
-	//@ dstDataU.updateTree();
-	//@ dstDataV.updateTree();
-	//@ dstQuality.updateTree();
-	// mout.warn() << "dstDataU" << dstDataU << mout.endl;
-
 	dstDataU.odim.prodpar = getParameters().getKeys();
 	dstDataU.odim.update(srcData.odim); // date, time, etc
-	//@ dstProduct.updateTree(dstDataU.odim);
+
+	/// If desired, run also new, dealiased VRAD field
+	if (odim.NI != 0.0){
+
+		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased
+
+		const QuantityMap & qm = getQuantityMap();
+		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
+		//const double dstNI = abs(odim.NI);
+		dstDataVRAD.odim.setRange(-odim.NI, +odim.NI);
+		mout.info() << "dealiasing (u,v) to VRAD " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
+		setGeometry(srcData.odim, dstDataVRAD);
+		const double srcNI2 = 2.0*srcData.odim.NI;
+		const double min = dstDataVRAD.data.getMin<double>();
+		const double max = dstDataVRAD.data.getMax<double>();
+		double azm;
+
+		/// Original value in VRAD
+		double vOrig;
+		drain::image::Point2D<double> unitVOrig;
+
+		/// Resolved (u,v), from AMVU and AMVV
+		double u, v;
+
+		/// Resolved (u,v) projected back on beam
+		double vReproj;
+		drain::image::Point2D<double> unitVReproj;
+
+		/// Ambiguous part (2N * V_Nyq)
+		//  double vReprojMajor;
+
+		size_t address;
+
+		for (size_t j = 0; j < dstDataVRAD.data.getHeight(); ++j) {
+			azm = window.BEAM2RAD * static_cast<double>(j);
+			for (size_t i = 0; i < dstDataVRAD.data.getWidth(); ++i) {
+				address = dstDataVRAD.data.address(i,j);
+				u = dstDataU.data.get<double>(address);
+				v = dstDataV.data.get<double>(address);
+				if ((u != dstDataU.odim.undetect) && (u != dstDataU.odim.nodata) && (v != dstDataV.odim.undetect) && (v != dstDataV.odim.nodata)){
+					u = dstDataU.odim.scaleForward(u);
+					v = dstDataV.odim.scaleForward(v);
+					vReproj = project(azm, u,v);
+					//vReproj = alias(vReproj, odim.NI);
+					if (matchAliased){ // NICKNAME
+						vOrig = srcData.data.get<double>(address);
+						if ((vOrig != srcData.odim.undetect) && (vOrig != srcData.odim.nodata)){
+							vOrig = srcData.odim.scaleForward(vOrig);
+							srcData.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
+							srcData.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
+							vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
+						}
+					}
+
+					vReproj = dstDataVRAD.odim.scaleInverse(vReproj);
+					if ((vReproj > min) && (vReproj < max)){ // continue processing
+						dstDataVRAD.data.put(address, vReproj);
+						//u = unitVReproj.x-unitV.x
+						dstQuality.data.put(address, dstQuality.odim.scaleInverse(0.5 + (unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y)/2.0) );
+					}
+					else {
+						dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata);
+						dstQuality.data.put(address, 0);
+					};
+				}
+				else {
+					dstDataVRAD.data.put(address, dstDataVRAD.odim.undetect);
+				}
+			}
+		}
+		//@ dstDataVRAD.updateTree();
+	}
+
 
 	/// If desired, compute VVP
-	if (VVP){
+	if (VVP && false){
 
 		mout.info() << "computing VVP " << mout.endl;
 
@@ -621,39 +717,6 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		//@ dstDataVVPQ.updateTree();
 		//@ dstDataHGHT.updateTree();
 	}
-
-
-	/// If desired, run also new, unaliased VRAD field
-	if (odim.NI > 0.0){
-		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased
-
-		const QuantityMap & qm = getQuantityMap();
-		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
-		dstDataVRAD.odim.setRange(-odim.NI, +odim.NI);
-		mout.warn() << "VRAD unaliased " << dstDataVRAD.odim << mout.endl;
-		setGeometry(srcData.odim, dstDataVRAD);
-		double azm;
-		double u, v, vProj;
-		size_t address;
-		for (size_t j = 0; j < dstDataVRAD.data.getHeight(); ++j) {
-			azm = window.AZM2RAD * static_cast<double>(j);
-			for (size_t i = 0; i < dstDataVRAD.data.getWidth(); ++i) {
-				address = dstDataVRAD.data.address(i,j);
-				u = dstDataU.data.get<double>(address);
-				v = dstDataV.data.get<double>(address);
-				if ((u != dstDataU.odim.undetect) && (u != dstDataU.odim.nodata) && (v != dstDataV.odim.undetect) && (v != dstDataV.odim.nodata)){
-					u = dstDataU.odim.scaleForward(u);
-					v = dstDataV.odim.scaleForward(v);
-					vProj = project(azm, u,v);
-					//vProj = alias(vProj, odim.NI);
-					dstDataVRAD.data.put(address, dstDataVRAD.odim.scaleInverse(vProj));
-				}
-			}
-		}
-		//@ dstDataVRAD.updateTree();
-	}
-
-
 
 	/// Run also
 	/*

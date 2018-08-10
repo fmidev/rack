@@ -1,24 +1,33 @@
-/**
+/*
 
-    Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+MIT License
 
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
 
-    This file is part of Drain library for C++.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    Drain is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    any later version.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-    Drain is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser Public License for more details.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-    You should have received a copy of the GNU General Public License
-    along with Drain.  If not, see <http://www.gnu.org/licenses/>.
-
- */
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
 
 #include "ImageOp.h"
 
@@ -507,15 +516,15 @@ void ImageOp::traverseChannelsSeparately(const ImageTray<const Channel> & src, I
 		mout.error() << "dst empty" << mout.endl;
 	}
 
-	typename ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
-	typename ImageTray<Channel>::map_t::iterator dit = dst.begin();
+	ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
+	ImageTray<Channel>::map_t::iterator dit = dst.begin();
 
 	initializeParameters(sit->second, dit->second);
 
 	if (src.hasAlpha()){
 
-		typename ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
-		typename ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
+		ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
+		ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
 
 		while (true){
 
@@ -585,17 +594,20 @@ void ImageOp::traverseChannelsEqually(const ImageTray<const Channel> & src, Imag
 		return;
 	}
 
-	typename ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
-	typename ImageTray<Channel>::map_t::iterator dit = dst.begin();
+	ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
+	ImageTray<Channel>::map_t::iterator dit = dst.begin();
+
 	initializeParameters(sit->second, dit->second);
+
 	while (sit != src.end()){
 		mout.debug(1) << "invoke traverseChannel(src, dst) for Channel #" << sit->first << mout.endl;
 		traverseChannel(sit->second, dit->second); // apply
 		++sit, ++dit;
 	}
 
-	typename ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
-	typename ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
+	ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
+	ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
+
 	while (sait != src.alpha.end()){
 		mout.debug(1) << "invoke traverseChannel(srcAlpha, dstAlpha) for Channel #" << dit->first << mout.endl;
 		traverseChannel(sait->second, dait->second); // apply
@@ -617,16 +629,16 @@ void ImageOp::traverseChannelsRepeated(const ImageTray<const Channel> & src, Ima
 
 	const size_t n = std::max(src.size(), dst.size());
 
-	typename ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
-	typename ImageTray<Channel>::map_t::iterator dit = dst.begin();
+	ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
+	ImageTray<Channel>::map_t::iterator dit = dst.begin();
 
 	initializeParameters(sit->second, dit->second);
 
 
 	if (src.hasAlpha()){
 
-		typename ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
-		typename ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
+		ImageTray<const Channel>::map_t::const_iterator sait = src.alpha.begin();
+		ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
 
 		//while (true){
 		for (size_t i = 0; i < n; ++i) {
@@ -689,3 +701,5 @@ void ImageOp::traverseChannelsRepeated(const ImageTray<const Channel> & src, Ima
 }
 }
 
+
+// Drain

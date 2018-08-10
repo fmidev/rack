@@ -76,7 +76,7 @@ while [ ${#*} != 0 ]; do
 
     if [ "$MULTIPLE" == '' ]; then
 
-    # Primary test
+	echo "# Primary test"
 	#EXAMPLE=( `rack --helpExample $aDETECTOR | head -1` )
 	VALUES=( ${VALUES[*]} )
 	VALUES="${VALUES[*]}"
@@ -92,12 +92,13 @@ while [ ${#*} != 0 ]; do
 	echo "$cmd" > $DETECTOR.cmd
 	echo >> $DETECTOR.cmd
 	cat tmp.cmd >> $DETECTOR.cmd
-	rack --help $aDETECTOR | fgrep '#' >> $DETECTOR.cmd
-
+	#rack --help $aDETECTOR | fgrep '#' >> $DETECTOR.cmd
+	
 	ANOM_IMG=andre-$DETECTOR.png
 	ANOM_IMG_CART=andre-$DETECTOR-cart.png
 	ANOM_IMG_PANEL=andre-$DETECTOR-panel.png
 
+	echo "# Longer test"
 	cmd="rack $VOLUME -o $VOLUME_IMG  --store intermediate=1 --$aDETECTOR $VALUES --select 'quantity=$QUANTITY' -o $ANOM_IMG --select 'quantity=$QUANTITY' --cSize 500,500 --encoding C,0.004,-0.004,0,16  -c -o $ANOM_IMG_CART"
         # quantity=$QUANTITY -o $ANOM_IMG"
 	echo "$cmd"
