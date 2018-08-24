@@ -79,7 +79,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 	//setGeometry(dstHeight);
 
-	const VerticalProfileODIM & odimFinal = odim;
+	// const VerticalProfileODIM & odimFinal = odim;
 	/*
 	VerticalProfileODIM odimFinal; //(odim);
 	odimFinal.reference("interval", interval);

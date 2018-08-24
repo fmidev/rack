@@ -6,7 +6,7 @@
 # sampleRows=50
 # sampleCols=36
 # samples=1800
-# format='{i},{j},{LON},{LAT},{X},{Y},{RANGE},{AZM},{DBZH},{DBZHC},{HCLASS},{KDP},{RHOHV},{SQI},{TH},{VRAD},{WRAD},{ZDR}'
+# format='${i},${j},${LON},${LAT},${X},${Y},${RANGE},${AZM},${DBZH},${DBZHC},${HCLASS},${KDP},${RHOHV},${SQI},${TH},${VRAD},${WRAD},${ZDR}'
 5,5,26.3239,64.7995,239.678,2739.54,2750,5,0,0,0,0,0,0.212275,37.5,0,0,0 #void data
 15,5,26.3331,64.8441,675.457,7720.51,7750,5,0,0,0,0,0,0.162971,38,0,0,0 #void data
 35,5,26.3516,64.9335,1547.01,17682.5,17750,5,0,0,0,0,0,0.326263,38.5,0,0,0 #void data

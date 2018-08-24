@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/Image.h>
 #include <drain/image/Sampler.h>
 
-//#include <drain/prog/Command.h>
+//#include <drain/prog/Co mand.h>
 #include <drain/prog/CommandRegistry.h>
 
 #include "andre/QualityCombinerOp.h"

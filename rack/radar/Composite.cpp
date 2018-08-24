@@ -462,13 +462,16 @@ void Composite::updateGeoData(){
 	// Produces ...,12568,12579,bymin,dkbor,dkrom,dksin,...
 	odim.nodes = nodeMap.getKeys();
 
-	drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
+	//if (odim.source.empty()) { // nodeMap.size() > 1){ // consider AccNUM
+	//if (nodeMap.size() > 1){ // consider AccNUM
+	const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
 	if (nodSyntax.execute(odim.nodes) == 0){
 		odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
 	}
 	else {
 		mout.info() << "could not derive composite source NOD from nodes: " << odim.nodes << mout.endl;
 	}
+	//}
 	//odim.source = odim.nodes.substr(0, std::min<size_t>(2, odim.nodes.length()));
 	// mout.warn() << odim.nodes << mout.endl;
 

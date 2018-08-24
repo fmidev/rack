@@ -69,11 +69,14 @@ public:
 	void exec() const {
 		addCmd.exec();
 		extractCmd.exec();
+		RackResources & resources = getResources();
+		resources.cartesianHi5["what"].data.attributes["source"] = (*resources.currentPolarHi5)["what"].data.attributes["source"];
+		//const DataSet<PolarSrc> polarSrc((*resources.currentPolarHi5)["dataset1"]);
+		//DataSet<CartesianDst> cartDst((*resources.currentPolarHi5)["dataset1"]);
+		//cartDst.get  polarSrc.getFirstData().odim.source;
 	}
 
 private:
-
-	void execOLD() const;
 
 	const CompositeAdd & addCmd;
 	const CartesianExtract & extractCmd;

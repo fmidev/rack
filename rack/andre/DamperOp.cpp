@@ -106,8 +106,8 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 	const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
 
 	//const std::type_info & t = dstData.data.getType();
-	const double min = dstData.data.getMin<double>();
-	const double max = dstData.data.getMax<double>();
+	//const double min = dstData.data.getMin<double>();
+	//const double max = dstData.data.getMax<double>();
 	/// NOTE: getMin returns 0 for unsigned integral and ~0 for floats, which is ok here.
 	/** 2018
 	if (drain::Type::call<drain::typeIsInteger>(t))

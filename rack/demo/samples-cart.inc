@@ -8,7 +8,7 @@
 # sampleRows=10
 # sampleCols=10
 # samples=100
-# format='{i},{j},{LON},{LAT},{X},{Y},{j2},{DBZH},{QIND}'
+# format='${i},${j},${LON},${LAT},${X},${Y},${j2},${DBZH},${QIND}'
 25,25,21.2565,66.7078,-223270,224500,474,0,0 #void data
 75,25,22.3806,66.7396,-173544,224500,474,0,0 #void data
 125,25,23.5072,66.7635,-123818,224500,474,0,0 #void data

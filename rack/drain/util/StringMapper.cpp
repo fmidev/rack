@@ -35,15 +35,19 @@ namespace drain {
 
 void StringMapper::parse(const std::string &s) {
 
+	drain::Logger mout("StringMapper", __FUNCTION__);
+
+	mout.debug() << "validChars=" << validChars << mout.endl;
+
 	clear();  // clear list
 
 	// Splits s to "<*><variable><*>"
 	std::stringstream sstr;
 	// NOTE: Dollar $ and curlies have to be consistent with variablePrefix/Postfix
 	// WARNING: BRACES cause problems with newlines. And especially \\$ = \\ + $ was wrong...
-	//sstr << "^([^\\$]*)\\$?\\{(" << validChars << ")\\}(.*)$";  // NOTE: has to be consistent with variablePrefix/Postfix
-	//sstr << "^(.*[^$])?\\$?\\{(" << validChars << ")\\}(.*)$";
-	sstr << "^([^${]*)\\$?\\{(" << validChars << ")\\}(.*)$";
+	//sstr << "^([^${]*)\\$?\\{(" << validChars << ")\\}(.*)$";
+	//sstr << "^([^${]*)\\$\\{(" << validChars << ")\\}(.*)$";
+	sstr << "^(.*)\\$\\{(" << validChars << ")\\}(.*)$";
 	RegExp r(sstr.str(), REG_EXTENDED); //  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 
 	parse(s,r);

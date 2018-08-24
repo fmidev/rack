@@ -6,7 +6,7 @@
 # sampleRows=16
 # sampleCols=12
 # samples=192
-# format='{LON} {LAT} {AMVU} {AMVV} {QIND}'
+# format='${LON} ${LAT} ${AMVU} ${AMVV} ${QIND}'
 23.1145 61.8345 -7.50988 -1.18577 0.364
 23.1886 61.9644 -9.09091 -0.395257 0.996
 23.2634 62.0944 -9.88142 1.97628 0.996

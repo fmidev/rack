@@ -1,9 +1,9 @@
-# Metadata for radar 'fi'
+# Metadata for radar 'fiuta'
 
-SOURCE="NOD:fi,ORG:fi"
-NOD="fi"
-WMO=""
-PLC=""
+SOURCE="WMO:02870,RAD:FI47,PLC:Utajärvi,NOD:fiuta"
+NOD="fiuta"
+WMO="02870"
+PLC="Utajärvi"
 LAT="64.7749"
 LON="26.3189"
 HEIGHT="118"

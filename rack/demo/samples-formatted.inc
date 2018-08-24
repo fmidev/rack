@@ -6,7 +6,7 @@
 # sampleRows=50
 # sampleCols=12
 # samples=600
-# format='{i},{j2} ({LON},{LAT}) {DBZH}'
+# format='${i},${j2} (${LON},${LAT}) ${DBZH}'
 80, (26.5407,65.1234) 0 #void data
 90, (26.5687,65.1667) 0 #void data
 100, (26.5968,65.21) 0 #void data
