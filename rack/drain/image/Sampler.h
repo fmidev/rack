@@ -195,15 +195,6 @@ public:
 			mout.debug(1) << "referencing: " << key << ',' << minusStr << key << mout.endl;
 			variableMap.reference(key, values[key]=0);
 			variableMap.reference(minusStr+key, values[minusStr+key]=0);
-			/*
-			const D & ref = it->second;
-			mout.note() << key << '\t' << ref << mout.endl;
-			const ImageFrame & frame = it->second;
-			mout.note() << '\t' << frame << mout.endl;
-			for (size_t i = 0; i < frame.getHeight(); i+=16){
-				std::cout << i << '\t' << frame.get<double>(i,i) << '\n';
-			}
-			*/
 		}
 		mout.debug() << "variables: " << variableMap << mout.endl;
 
@@ -218,10 +209,10 @@ public:
 				if (!it->empty()){
 					if (it->at(0) != '-'){
 						if (separator)
-							sstr << ',';
+							sstr << separator;
 						else
 							separator = ',';
-						sstr << '{' << *it << '}';
+						sstr << '$' << '{' << *it << '}';
 					}
 				}
 				else {
