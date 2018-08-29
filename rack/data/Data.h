@@ -258,7 +258,8 @@ public:
 	template <class T>
 	inline
 	void setEncoding(const T & type, const std::string & values = ""){
-		odim.type = drain::Type::getTypeChar(type);
+		//odim.type = drain::Type::getTypeChar(type);
+		odim.type = drain::Type::getTypeChar(drain::Type(type));
 		odim.setTypeDefaults(type, values);
 		data.setType(type);
 		//data.setGeometry(data.);
