@@ -18,18 +18,37 @@ echo >> $CONF_FILE
 
 # Given a file (like 'geotiff.h'), returns its directory.
 # Among several paths, selects the last one.
+#
 # ARGS: <variable-name> <file>
-function guess_path(){
-    #echo "For $1 ..."
+#
+function guess_include_dir(){
+
     local KEY=$1
-    locate --regex "$2$"
-    local P=`locate --regex $2$ | tail -1`
+    local P=''
+    
+    # Step 1: try standard
+    for i in /{usr,var}{,/local}/include ; do
+	if [ -f $i/$2 ]; then
+	    P=$i/$2
+	    break
+	fi
+    done
+	     
+    if [ "$P" != '' ]; then
+	echo "# $KEY: found standard path: $P"
+    else
+	echo "# $KEY: trying 'locate'"
+	locate --regex "$2$"
+	local P=`locate --regex $2$ | tail -1`
+	#echo " -> $KEY="$P""
+    fi
+
+    # Strip filename 
     P=${P%/*}
-    #echo " -> $KEY="$P""
     local P_old
     eval  P_old=\$$KEY
     if [ "$P" != "$P_old" ]; then
-	echo "# modifying $KEY=$P_old"
+	echo "# Was: $KEY=$P_old"
 	echo $KEY="$P"
     fi
     eval $KEY="$P"
@@ -61,9 +80,9 @@ function warn_if_unfound(){
 
 # Todo recode
 echo 'Automagically detecting for directories...'
-guess_path HDFROOT hdf5.h
-guess_path PROJROOT proj_api.h
-guess_path GEOTIFF geotiff.h
+guess_include_dir  HDFROOT  hdf5.h
+guess_include_dir  PROJROOT proj_api.h
+guess_include_dir  GEOTIFF  geotiff.h
 prefix=${prefix:-'/var/opt'} # or '.'?
 echo
 
