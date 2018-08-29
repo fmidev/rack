@@ -146,9 +146,11 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 				dstData.odim.quantity = quantity; // causes copying metadata from src
 				setEncoding(srcData.odim, dstData);
 				mout.debug() << EncodingODIM(dstData.odim) << mout.endl;
-				//dstData.data.setType(dstData.odim.type.at(0));
-				dstData.data.setGeometry(geometry);
-				//mout.warn() << "init: "  << dstData << mout.endl;
+				dstData.data.setType(dstData.odim.type.at(0));
+				//dstData.initialize(dstData.odim.type, geometry.getWidth(), geometry.getHeight());
+				//dstData.setEncoding(dstData.odim.type);
+				dstData.setGeometry(geometry.getWidth(), geometry.getHeight());
+				// mout.warn() << "init: "  << dstData << mout.endl;
 
 				sumData.setGeometry(geometry);  // .Map[quantity]
 				sumQuality.setGeometry(geometry);
