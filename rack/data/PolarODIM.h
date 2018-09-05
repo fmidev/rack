@@ -110,6 +110,7 @@ public:
 	/// Freezing level
 	double freeze;
 
+
 	/// Returns recommended coordinate policy (Polar coords, origin at left)
 	virtual inline
 	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
@@ -124,6 +125,31 @@ public:
 		nbins = cols;
 		nrays = rows;
 	}
+
+	/// Updates object, quantity, product and time information.
+	/*!
+	 *  Fills empty values. Updates time variables.
+	 */
+	virtual
+	void update(const PolarODIM & odim);
+
+
+	/// For VRAD, set encoding range to cover [-NI,NI]
+	/**
+	 *  \return - true if quantity was VRAD
+	 */
+	inline
+	bool optimiseVRAD(){
+		if (quantity == "VRAD"){
+			setRange(-NI, NI);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	// Returns NI, unless zero. Otherways, tries to derive it from scaling (gain, offset).
+	double getNyquist() const;
 
 	/// Returns elevation angle in radians
 	inline

@@ -375,27 +375,6 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 
 
-double ODIM::getNyquist() const {
-
-	if (NI != 0.0){
-		return NI;
-	}
-	else {
-		drain::Logger mout("ODIM", __FUNCTION__);
-		const std::type_info & t = drain::Type::getTypeInfo(type);
-		if (drain::Type::call<drain::typeIsSmallInt>(t)){
-			const double vMax = drain::Type::call<drain::typeMax, double>(t);
-			const double vMin = drain::Type::call<drain::typeMin, double>(t);
-			mout.info() << "no NI in metadata, guessing speed range [" << vMin << ',' << vMax << "]" << mout.endl;
-			return scaleForward(vMax);
-		}
-		else {
-			mout.warn() << " could not derive Nyquist speed (NI)" << mout.endl;
-			return 0.0;
-		}
-	}
-}
-
 
 
 
@@ -484,7 +463,6 @@ void ODIM::update(const ODIM & odim){
 
 	if (NI == 0.0)
 		NI = odim.NI;
-
 
 }
 

@@ -377,6 +377,7 @@ public:
 	std::string enddate;
 	std::string endtime;
 
+
 	// Maximum Nyquist velocity
 	double NI;
 
@@ -434,22 +435,6 @@ public:
 		return false;
 	}
 
-	/// For VRAD, set encoding range to cover [-NI,NI]
-	/**
-	 *  \return - true if quantity was VRAD
-	 */
-	inline
-	bool optimiseVRAD(){
-		if (quantity == "VRAD"){
-			setRange(-NI, NI);
-			return true;
-		}
-		else
-			return false;
-	}
-
-	// Returns NI, unless zero. Otherways, tries to derive it from scaling (gain, offset).
-	double getNyquist() const;
 
 	static
 	const std::string dateformat; //, "%Y%m%d");

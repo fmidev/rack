@@ -265,7 +265,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 			const M srcODIM(srcData.odim); // copy, because src may be modified next
 			dstData.odim.quantity = quantity;
-			dstData.odim.NI = srcData.odim.NI; // if Cart?
+			dstData.odim.update(srcODIM); // <= dstData.odim.NI = srcData.odim.NI; // if Cart?
 			ProductBase::handleEncodingRequest(dstData.odim, this->encodingRequest);
 			//processData(srcData, dstData2);
 			processImage(srcODIM, srcData.data, dstData.odim, dstData.data);

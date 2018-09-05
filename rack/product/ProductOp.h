@@ -140,10 +140,11 @@ public:
 	virtual
 	inline
 	void setEncodingRequest(const std::string &p) {
-		drain::Logger mout(name+"(VolumeBaseOp)", __FUNCTION__);
-		/// test validity
+
+		drain::Logger mout(name+"(ProductOp)", __FUNCTION__);
+
 		try {
-			mout.debug(1) << " modifying metadata" << mout.endl;
+			mout.debug(1) << "Checking if these are allowed" << mout.endl;
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {

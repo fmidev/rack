@@ -59,6 +59,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("how:wavelength", wavelength = 0.0);
 		reference("how:highprf", highprf = 0.0);
 		reference("how:lowprf", lowprf = 0.0);
+		// reference("how:NI", NI = 0);
 	}
 
 	if (initialize & DATA){
@@ -66,8 +67,45 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 }
 
+void PolarODIM::update(const PolarODIM & odim){
+
+	if (NI == 0.0)
+		NI = odim.getNyquist();
+
+	ODIM::update(odim);
 
 
+}
+
+
+double PolarODIM::getNyquist() const {
+
+	if (NI != 0.0){
+		return NI;
+	}
+	else {
+		drain::Logger mout("ODIM", __FUNCTION__);
+
+		double ni = 0.01 * wavelength * lowprf / 4.0;
+		if (ni != 0){
+			mout.info() << "no NI in metadata, deriving from  wavelength*lowprf/4.0 " << mout.endl;
+			return ni;
+		}
+		else {
+			const std::type_info & t = drain::Type::getTypeInfo(type);
+			if (drain::Type::call<drain::typeIsSmallInt>(t)){
+				const double vMax = drain::Type::call<drain::typeMax, double>(t);
+				const double vMin = drain::Type::call<drain::typeMin, double>(t);
+				mout.info() << "no NI in metadata, guessing speed range [" << vMin << ',' << vMax << "]" << mout.endl;
+				return scaleForward(vMax);
+			}
+			else {
+				mout.warn() << " could not derive Nyquist speed (NI)" << mout.endl;
+				return 0.0;
+			}
+		}
+	}
+}
 
 
 

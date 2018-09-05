@@ -109,7 +109,8 @@ public:
 		setLoopLimits();
 		this->location.setLocation(0,0);
 
-		NI = (this->odimSrc.NI != 0.0) ? this->odimSrc.NI : 0.01*this->odimSrc.wavelength * this->odimSrc.lowprf / 4.0;
+		//NI = (this->odimSrc.NI != 0.0) ? this->odimSrc.NI : 0.01*this->odimSrc.wavelength * this->odimSrc.lowprf / 4.0;
+		NI = this->odimSrc.getNyquist();
 
 		mout.debug() << "NI=" << NI << mout.endl;
 
@@ -128,7 +129,7 @@ public:
 
 		vMax = odimOut.getMax();
 		if (drain::Type::call<drain::typeIsInteger>(odimOut.type))
-			mout.warn() << "max abs wind (u or v): " << vMax << mout.endl;
+			mout.warn() << "max abs wind for (u or v): " << vMax << mout.endl;
 
 		//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
 
@@ -512,10 +513,10 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		return;
 	}
 
-	if (srcData.odim.NI == 0.0){
+	/*if (srcData.odim.NI == 0.0){
 		mout.warn() << "NI (Nyquist interval) zero or not found." << mout.endl;
-		//return;
-	}
+
+	}*/
 
 	//dstProduct.odim.prodpar = getParameters().getKeys();
 
@@ -585,7 +586,7 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		dstDataVRAD.odim.setRange(-odim.NI, +odim.NI);
 		mout.info() << "dealiasing (u,v) to VRAD " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
 		setGeometry(srcData.odim, dstDataVRAD);
-		const double srcNI2 = 2.0*srcData.odim.NI;
+		const double srcNI2 = 2.0*srcData.odim.getNyquist(); // 2.0*srcData.odim.NI;
 		const double min = dstDataVRAD.data.getMin<double>();
 		const double max = dstDataVRAD.data.getMax<double>();
 		double azm;
@@ -602,7 +603,6 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		drain::image::Point2D<double> unitVReproj;
 
 		/// Ambiguous part (2N * V_Nyq)
-		//  double vReprojMajor;
 
 		size_t address;
 

@@ -125,7 +125,9 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 		//	getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, encoding); // type may be unset
-		productODIM.NI = srcODIM.NI;
+		//productODIM.NI = srcODIM.NI;
+		productODIM.update(srcODIM); // date, time, Nyquist(NI)
+
 	}
 
 	if ((!productODIM.isSet()) && useDefaults){
@@ -178,8 +180,9 @@ void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & enco
 	if ((dstODIM.gain == 0) || (type != dstODIM.type)){
 		mout.debug() << "type changed or gain==0, applying quantity defaults for quantity=" << dstODIM.quantity << mout.endl;
 		getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding); // type may be unset
-		if (dstODIM.optimiseVRAD())
-			mout.note() << "optimized VRAD for NI=" << dstODIM.NI << mout.endl;
+
+		//if (dstODIM.optimiseVRAD())
+		mout.note() << "not (at least here) optimized VRAD for NI="  << mout.endl; // << dstODIM.NI
 		//  type may be unset ?
 		mout.info() << "set quantity=" << dstODIM.quantity << ", encoding: " << EncodingODIM(dstODIM) << mout.endl;
 	}
