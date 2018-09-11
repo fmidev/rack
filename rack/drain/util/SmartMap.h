@@ -91,7 +91,7 @@ public:
 	typedef typename std::map<std::string, T>::iterator iterator;
 	typedef typename std::map<std::string, T>::const_iterator const_iterator;
 
-	inline
+	virtual inline
 	void clear(){
 		std::map<std::string, T>::clear();
 		keyList.clear();

@@ -53,11 +53,13 @@ public:
 
 	PolarODIM(const PolarODIM & odim) : ODIM(ALL) {
 		initFromMap(odim);
+		NI = getNyquist();
 	}
 
 	template <class T>
 	PolarODIM(const std::map<std::string,T> & m) : ODIM(ALL) {
 		initFromMap(m);
+		NI = getNyquist();
 	}
 
 	/*
@@ -148,8 +150,8 @@ public:
 			return false;
 	}
 
-	// Returns NI, unless zero. Otherways, tries to derive it from scaling (gain, offset).
-	double getNyquist() const;
+	// Sets how:NI from lowprf if needed. If that fails, tries to derive it from scaling (gain, offset).
+	double getNyquist(bool warn = false) const;
 
 	/// Returns elevation angle in radians
 	inline

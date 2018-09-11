@@ -115,7 +115,9 @@ void QuantityMap::initialize(){
 	set("COUNT", 'L');   //
 
 	set("AMVU", 'C').setRange(-100,100);
-	set("AMVU", 'S').setRange(-200,200);
+	set("AMVU", 'c').setRange(-127,127);
+	set("AMVU", 'S').setRange(-327.68, +327.68);
+	set("AMVU", 's').setScaling(0.01);
 	set("AMVU", 'd');
 	copy("AMVV", get("AMVU"));
 

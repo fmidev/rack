@@ -182,7 +182,7 @@ void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & enco
 		getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding); // type may be unset
 
 		//if (dstODIM.optimiseVRAD())
-		mout.note() << "not (at least here) optimized VRAD for NI="  << mout.endl; // << dstODIM.NI
+		//mout.note() << "not (at least here) optimized VRAD for NI :-)"  << mout.endl; // << dstODIM.NI
 		//  type may be unset ?
 		mout.info() << "set quantity=" << dstODIM.quantity << ", encoding: " << EncodingODIM(dstODIM) << mout.endl;
 	}

@@ -167,11 +167,10 @@ public:
 	/**
 	 *  Clears the map and its ordered keylist (and units).
 	 */
-	inline
+	virtual inline
 	void clear(){
-		SmartMap<Referencer>::clear();
+		SmartMap<Referencer>::clear(); //keyList.clear();
 		unitMap.clear();
-		keyList.clear();
 	}
 
 	template <class T>

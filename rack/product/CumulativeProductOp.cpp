@@ -86,6 +86,8 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 
 	mout.debug() << (const Accumulator &) accumulator << mout.endl;
 
+	//dstData.odim.NI =
+	srcData.odim.getNyquist(); // to prevent warning in the next cmd
 	dstData.odim.update(odim); // product
 	dstData.odim.update(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();

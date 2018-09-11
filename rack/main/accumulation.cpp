@@ -84,8 +84,12 @@ public:
 		}
 
 		mout.info() << "using path=" << path << ", quantity=" << srcData.odim.quantity << mout.endl;
+		// PolarODIM mika;
+		// mout.info() << "init: " << mika << mout.endl;
 
 		const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
+		mout.info() << "init: " << srcQuality.odim << mout.endl;
+
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
@@ -105,7 +109,7 @@ public:
 		}
 
 
-		mout.debug() << EncodingODIM(acc.odim) << mout.endl;
+		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
 		ProductBase::applyODIM(acc.odim, srcData.odim);
 		ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
 		resources.targetEncoding.clear();

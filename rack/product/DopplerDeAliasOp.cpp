@@ -128,8 +128,17 @@ public:
 		area = static_cast<double>(conf.width * conf.height);
 
 		vMax = odimOut.getMax();
-		if (drain::Type::call<drain::typeIsInteger>(odimOut.type))
-			mout.warn() << "max abs wind for (u or v): " << vMax << mout.endl;
+		const double vMin = odimOut.getMin();
+
+		const drain::Type t(odimOut.type);
+		if (drain::Type::call<drain::typeIsInteger>(t)){
+			mout.note() << "AMVU, AMVV: vMin=" << vMin << ", vMax=" << vMax << mout.endl;
+			if (drain::Type::call<drain::typeIsSmallInt>(t)){
+				// values
+				unsigned int n = 1 << 8*drain::Type::call<drain::sizeGetter>(t);
+				mout.note() << "AMVU, AMVV: resolution=" << static_cast<double>(vMax-vMin)/static_cast<double>(n) << "m/s / bit" << mout.endl;
+			}
+		}
 
 		//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
 
@@ -501,7 +510,7 @@ private:
 };
 
 
-void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
+void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -512,6 +521,8 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		mout.warn() << "data empty" << mout.endl;
 		return;
 	}
+
+	PolarODIM srcODIM(srcData.odim);  // NI now correct
 
 	/*if (srcData.odim.NI == 0.0){
 		mout.warn() << "NI (Nyquist interval) zero or not found." << mout.endl;
@@ -532,16 +543,16 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	ProductBase::handleEncodingRequest(dstDataU.odim, encodingRequest);
 	mout.debug(2) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 	dstDataU.data.setType(dstDataU.odim.type);
-	setGeometry(srcData.odim, dstDataU);
+	setGeometry(srcODIM, dstDataU);
 	mout.debug() << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 
 	ProductBase::applyODIM(dstDataV.odim, odim, true);
 	ProductBase::handleEncodingRequest(dstDataV.odim, encodingRequest);
 	dstDataV.data.setType(dstDataV.odim.type);
-	setGeometry(srcData.odim, dstDataV);
+	setGeometry(srcODIM, dstDataV);
 
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
-	setGeometry(srcData.odim, dstQuality);
+	setGeometry(srcODIM, dstQuality);
 
 	/*
 	mout.warn() << "scr" << srcData << mout.endl;
@@ -554,7 +565,7 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	DopplerDeAliasWindow window(conf, dstDataU.odim);
 
-	window.conf.updatePixelSize(srcData.odim);
+	window.conf.updatePixelSize(srcODIM);
 	//window.resetAtEdges = true;
 
 	// window.signCos = +1; //(testSigns & 1) ? +1 : -1;
@@ -573,20 +584,21 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 
 	dstDataU.odim.prodpar = getParameters().getKeys();
-	dstDataU.odim.update(srcData.odim); // date, time, etc
+	dstDataU.odim.update(srcODIM); // date, time, etc
 
 	/// If desired, run also new, dealiased VRAD field
-	if (odim.NI != 0.0){
+	//window.N
+	if (nyquist != 0.0){
 
 		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased
 
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
 		//const double dstNI = abs(odim.NI);
-		dstDataVRAD.odim.setRange(-odim.NI, +odim.NI);
+		dstDataVRAD.odim.setRange(-nyquist, +nyquist);
 		mout.info() << "dealiasing (u,v) to VRAD " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
-		setGeometry(srcData.odim, dstDataVRAD);
-		const double srcNI2 = 2.0*srcData.odim.getNyquist(); // 2.0*srcData.odim.NI;
+		setGeometry(srcODIM, dstDataVRAD);
+		const double srcNI2 = 2.0*srcODIM.getNyquist(); // 2.0*srcData.odim.NI;
 		const double min = dstDataVRAD.data.getMin<double>();
 		const double max = dstDataVRAD.data.getMax<double>();
 		double azm;
@@ -603,28 +615,54 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		drain::image::Point2D<double> unitVReproj;
 
 		/// Ambiguous part (2N * V_Nyq)
+		const bool MATCH_ALIASED  = (matchOriginal & 1);
+		const bool MATCH_UNDETECT = (matchOriginal & 2);
+
+
+		bool ORIG_UNDETECT;
+		bool ORIG_NODATA;
+		bool ORIG_UNUSABLE; // ORIG_UNDETECT && ORIG_NODATA
 
 		size_t address;
 
 		for (size_t j = 0; j < dstDataVRAD.data.getHeight(); ++j) {
+
 			azm = window.BEAM2RAD * static_cast<double>(j);
+
 			for (size_t i = 0; i < dstDataVRAD.data.getWidth(); ++i) {
 				address = dstDataVRAD.data.address(i,j);
 				u = dstDataU.data.get<double>(address);
 				v = dstDataV.data.get<double>(address);
+
+				if (MATCH_UNDETECT || MATCH_ALIASED){
+					vOrig = srcData.data.get<double>(address);
+					ORIG_UNDETECT = vOrig == srcData.odim.undetect;
+					ORIG_NODATA   = vOrig == srcData.odim.nodata;
+
+					ORIG_UNUSABLE = ORIG_UNDETECT || ORIG_NODATA;
+					if (MATCH_UNDETECT && ORIG_UNUSABLE){
+						if (ORIG_UNDETECT)
+							dstDataVRAD.data.put(address, dstDataVRAD.odim.undetect);
+						else
+							dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata);
+						dstQuality.data.put(address, 0);
+						continue;
+					}
+
+				}
+
+
 				if ((u != dstDataU.odim.undetect) && (u != dstDataU.odim.nodata) && (v != dstDataV.odim.undetect) && (v != dstDataV.odim.nodata)){
+
 					u = dstDataU.odim.scaleForward(u);
 					v = dstDataV.odim.scaleForward(v);
 					vReproj = project(azm, u,v);
-					//vReproj = alias(vReproj, odim.NI);
-					if (matchAliased){ // NICKNAME
-						vOrig = srcData.data.get<double>(address);
-						if ((vOrig != srcData.odim.undetect) && (vOrig != srcData.odim.nodata)){
-							vOrig = srcData.odim.scaleForward(vOrig);
-							srcData.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
-							srcData.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
-							vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
-						}
+
+					if (MATCH_ALIASED && !ORIG_UNUSABLE){
+						vOrig = srcData.odim.scaleForward(vOrig);
+						srcODIM.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
+						srcODIM.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
+						vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
 					}
 
 					vReproj = dstDataVRAD.odim.scaleInverse(vReproj);
@@ -647,7 +685,7 @@ void DopplerDeAliasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	}
 
 
-	/// If desired, compute VVP
+	/// FUTURE EXTENSION (VVPslots > 0)
 	if (VVP && false){
 
 		mout.info() << "computing VVP " << mout.endl;

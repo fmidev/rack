@@ -300,21 +300,36 @@ public: //re
 		PaletteOp  op(resources.palette);
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const VariableMap  & props = resources.currentGrayImage->properties;
-		op.scale   = props.get("what:gain", 1.0);
-		op.offset  = props.get("what:offset",0.0);
-		const std::string quantity = props["what:quantity"];
-		if (quantity == "VRAD"){ // rescale relative to NI (percentage -100% ... +100%)
-			const double NI = props["how:NI"];
+
+		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
+		const PolarODIM imgOdim(props);
+		// mout.warn() << imgOdim << mout.endl;
+
+		op.scale   = imgOdim.gain;   // props.get("what:gain", 1.0);
+		op.offset  = imgOdim.offset; // props.get("what:offset",0.0);
+		//const std::string quantity = props["what:quantity"];
+
+		if (imgOdim.quantity == "VRAD"){ // rescale relative to NI (percentage -100% ... +100%)
+
+			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
-				EncodingODIM odim;
+				// EncodingODIM odim;
+				// PolarODIM odim(imgOdim);
+				/*
 				odim.gain   = op.scale;
 				odim.offset = op.offset;
 				odim.type = props.get("what:type","C");
-				const double data_min = odim.scaleInverse(-NI);
-				const double data_max = odim.scaleInverse(+NI);
+				*/
+				//odim.optimiseVRAD();
+
+				const double data_min = imgOdim.scaleInverse(-NI);
+				const double data_max = imgOdim.scaleInverse(+NI);
 				const double data_mean = (data_max+data_min)/2.0;
 				op.scale = 2.0/(data_max-data_min);
 				op.offset = - data_mean * op.scale;
+
+				//op.scale  = odim.gain;
+				//op.offset = odim.offset;
 				//mout.warn() << odim << mout.endl;
 				//mout.warn() << data_mean << mout.endl;
 				//mout.warn() << odim.scaleInverse(0) << mout.endl;

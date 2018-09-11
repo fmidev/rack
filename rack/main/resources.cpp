@@ -97,6 +97,9 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	const SourceODIM sourceODIM(statusMap["what:source"].toStr());
 	statusMap.importMap(sourceODIM); // was import
 
+	const PolarODIM odim(statusMap);
+	statusMap["how:NI"] = odim.getNyquist();
+
 	/// Miscellaneous
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["inputOk"] = static_cast<int>(inputOk);

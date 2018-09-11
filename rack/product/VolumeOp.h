@@ -195,11 +195,6 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	dst["what"].data.attributes["object"] = this->odim.object;
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
-	/*
-	std::string dataSetPath = "dataset1";
-	if (ProductBase::appendResults.getType() != BaseODIM::NONE)  // empty()) // data or dataset
-		DataSelector::getNextOrdinalPath(dst, ProductBase::appendResults+"[0-9]+/?$", dataSetPath);
-	*/
 	ODIMPathElem dataSetPath(BaseODIM::DATASET, 1);
 	//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))
 

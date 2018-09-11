@@ -324,7 +324,7 @@ public:
 	void setSrcFrame(const drain::image::ImageFrame & src){
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		this->odimSrc.updateFromMap(src.getProperties());
-		mout.info()  << "NI=" << this->odimSrc.NI << mout.endl;
+		mout.info()  << "NI=" << this->odimSrc.getNyquist() << mout.endl;
 		mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
 
 		SlidingWindow<C, R>::setSrcFrame(src);

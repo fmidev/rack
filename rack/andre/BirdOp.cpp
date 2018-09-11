@@ -205,7 +205,7 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		mout.debug(1)  << "VRAD op   " << vradDevOp <<  mout.endl;
 		mout.debug()  << vradDevOp.conf.width  << 'x' << vradDevOp.conf.height <<  mout.endl;
 		mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
-		mout.debug()  << "vradSrc NI=" << vradSrc.odim.NI <<  mout.endl;
+		mout.debug()  << "vradSrc NI=" << vradSrc.odim.getNyquist() <<  mout.endl;
 		mout.debug(1) << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
 
 		dstData.setPhysicalRange(0.0, 1.0);

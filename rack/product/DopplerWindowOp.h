@@ -208,14 +208,15 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		return;
 	}
 
-	if (vradSrc.odim.NI == 0) {
-		mout.warn() << "VRAD unusable, vradSrc.odim.NI == 0" <<  mout.endl;
+	if (vradSrc.odim.getNyquist() == 0) {
+		mout.warn() << "VRAD unusable, vradSrc.odim.getNyquist() == 0" <<  mout.endl;
 		return;
 	}
 
 	Data<PolarDst> & dstData = dstProduct.getData(odim.quantity); // quality data?
 
-	dstData.odim.NI = vradSrc.odim.NI;
+	dstData.odim.update(vradSrc.odim);
+	//dstData.odim.NI = vradSrc.odim.NI;
 	initDst(vradSrc.odim, dstData);
 
 	processData(vradSrc, dstData);
@@ -284,12 +285,12 @@ protected:
 
 	virtual inline
 	double getPhysicalMin(const PolarODIM & srcODIM) const {
-		return (this->conf.relativeScale) ? -1.0 : -srcODIM.NI;
+		return (this->conf.relativeScale) ? -1.0 : -srcODIM.getNyquist();
 	}
 
 	virtual inline
 	double getPhysicalMax(const PolarODIM & srcODIM) const {
-		return (this->conf.relativeScale) ? +1.0 : +srcODIM.NI;
+		return (this->conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();
 	}
 
 };
@@ -325,7 +326,7 @@ protected:
 
 	virtual inline
 	double getPhysicalMax(const PolarODIM & srcODIM) const {
-		return (this->conf.relativeScale) ? 1.0 : +srcODIM.NI;
+		return (this->conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();
 	}
 
 

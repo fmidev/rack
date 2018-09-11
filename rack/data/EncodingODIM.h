@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef ODIM_STRUCT
-#define ODIM_STRUCT
+#ifndef ENC_ODIM_STRUCT
+#define ENC_ODIM_STRUCT
 
 #include <ostream>
 #include <cmath>
@@ -203,48 +203,12 @@ public:
 	}
 
 	/// Returns the minimum value that can be returned using current storage type, gain and offset.
-	inline
-	double getMin() const {
-
-		const std::type_info & t = drain::Type::getTypeInfo(type);
-
-		if (t == typeid(void))
-			throw std::runtime_error(std::string("ODIM")+__FUNCTION__+" type unset");
-
-		if (drain::Type::call<drain::typeIsInteger>(t)){
-			long int i = drain::Type::call<drain::typeMin, long int>(t);
-			if (static_cast<double>(i) != undetect)
-				return scaleForward(static_cast<double>(i));
-			else
-				return scaleForward(static_cast<double>(i+1));
-		}
-		else
-			return scaleForward( drain::Type::call<drain::typeMin, double>(t) );
-
-	}
+	// inline
+	double getMin() const;
 
 	/// Returns the minimum value that can be returned using current storage type, gain and offset.
-	inline
-	double getMax() const {
-
-		const std::type_info & t = drain::Type::getTypeInfo(type);
-
-		if (t == typeid(void))
-			throw std::runtime_error(std::string("ODIM")+__FUNCTION__+" type unset");
-
-		if (drain::Type::call<drain::typeIsInteger>(t)){
-			long int i = drain::Type::call<drain::typeMax, long int>(t);
-			if (static_cast<double>(i) != nodata)  // or undetect ?
-				return scaleForward(static_cast<double>(i));
-			else
-				return scaleForward(static_cast<double>(i-1));
-		}
-		else
-			return scaleForward( drain::Type::call<drain::typeMax, double>(t) );
-
-	}
-
-
+	// inline
+	double getMax() const;
 
 	/// Functor (why inverse?)
 	inline
@@ -255,6 +219,7 @@ public:
 
 	/// Resets the values.
 	// ?virtual?
+	/// FIX rename !!
 	void clear();
 
 
@@ -326,177 +291,6 @@ protected:
 	static
 	const std::set<std::string> & createAttributeGroups();
 
-
-private:
-
-	virtual // must
-	void init(group_t initialize=ALL);
-
-
-
-};
-
-
-/// ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)
-class ODIM : public EncodingODIM {
-
-public:
-
-	inline
-	ODIM(group_t initialize=ALL) : EncodingODIM(initialize){
-		init(initialize);
-	};
-
-	inline
-	ODIM(const ODIM & odim){
-		initFromMap(odim);
-	};
-
-	inline
-	ODIM(const drain::image::Image & image, const std::string & quantity=""){
-		initFromImage(image, quantity);
-	};
-
-	inline
-	~ODIM(){};
-
-	/// /what (obligatory)
-	std::string object;
-	std::string version;
-
-	std::string date;
-	std::string time;
-	std::string source;
-
-	/// dataX/what (obligatory)
-	std::string quantity;  // raise?
-	std::string product;   // raise?
-	std::string prodpar;   // raise?
-	std::string startdate;
-	std::string starttime;
-	std::string enddate;
-	std::string endtime;
-
-
-	// Maximum Nyquist velocity
-	double NI;
-
-	// Number of images used in precipitation accumulation (lenient, not linked)
-	long ACCnum;
-
-	/// Sets number of bins (nbins) and number of rays (nrays)
-	virtual
-	void setGeometry(size_t cols, size_t rows){
-		drain::Logger mout(__FUNCTION__,__FUNCTION__);
-		mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
-	};
-
-
-	/// Updates object, quantity, product and time information.
-	/*!
-	 *  Fills empty values. Updates time variables.
-	 */
-	virtual
-	void update(const ODIM & odim);
-
-	/// Retrieves the stored time. Returns true if successful, throws error if fail.
-	bool getTime(drain::Time & t) const;
-
-	/// Retrieves the start time. Returns true if successful, throws error if fail.
-	bool getStartTime(drain::Time & t) const;
-
-	/// Retrieves the end time. Returns true if successful, throws error if fail.
-	bool getEndTime(drain::Time & t) const;
-
-	/// Returns recommended coordinate policy. Redefined in PolarODIM.
-	virtual inline
-	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
-		using namespace drain::image;
-		static const CoordinatePolicy p(CoordinatePolicy::LIMIT);
-		return p;
-	}
-
-	/// If nodata==undetect, set nodata=maxValue (hoping its not nodata...)
-	/**
-	 *  This oddity is needed because some manufactures do not distinguish between undetect and nodata (esp. with VRAD).
-	 *
-	 *  \param quantity - set only if this quantity applies.
-	 */
-	inline
-	bool distinguishNodata(const std::string & quantity = ""){
-
-		if (quantity.empty() || (quantity == this->quantity)){  // Fix Vaisala IRIS bug
-			//std::cerr << "setNodata" << quantity << '\n';
-			if (nodata == undetect){
-				nodata = drain::Type::call<drain::typeMax,double>(type);
-				return true;
-			}
-			//std::cerr << "nodata: " << nodata << '\n';
-		}
-		return false;
-	}
-
-
-	static
-	const std::string dateformat; //, "%Y%m%d");
-
-	static
-	const std::string timeformat; // "%H%M%S");
-
-	/// Write ODIM data relevant for data level, eg. \c /dataset2, \c data4, and root.
-	/**
-	 *  \tparam G - group selector
-	 *  \tparam T - ODIM class
-	 *
-	 *  Examples of usage:
-	 *
-	 * 	- ODIM::copyToH5<ODIM::ROOT>(odim, resources.inputHi5);
-	 *	- ODIM::copyToH5<ODIM::DATASET>(odim, resources.inputHi5(dataSetPath));
-	 *  - ODIM::copyToH5<ODIM::DATA>(odim, dst);
-	 *
-	 */
-	template <group_t G, class T>
-	static inline
-	void copyToH5(const T &odim, HI5TREE & dst) {
-		static T odimLimited(G);
-		odim.copyTo(odimLimited.getKeyList(), dst);
-	}
-
-	template <group_t G, class T>
-	static inline
-	void copyToH5(const T &odim, const HI5TREE & dst) {
-		//static T odimLimited(G);
-		//odim.copyTo(odimLimited.getKeyList(), dst);
-	}
-
-
-protected:
-
-	///
-	void copyTo(const std::list<std::string> & keys, HI5TREE & dst) const;
-
-
-	template <class T>
-	inline
-	void initFromMap(const std::map<std::string,T> & m){
-		init(ALL);
-		updateFromMap(m);
-	}
-
-	virtual inline
-	void initFromImage(const drain::image::Image & img){  // =""
-		init(ALL);
-		this->quantity = img.getProperties().get("what:quantity", "");
-		copyFrom(img);
-	}
-
-	// deprec
-	virtual inline
-	void initFromImage(const drain::image::Image & img, const std::string & quantity){  // =""
-		init(ALL);
-		this->quantity = quantity;
-		copyFrom(img);
-	}
 
 private:
 

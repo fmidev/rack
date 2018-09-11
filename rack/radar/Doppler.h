@@ -108,7 +108,6 @@ protected:
 	 */
 	double radialSpeedConvInv;
 
-	//double ;
 
 	// cumulants
 	double sumI;
@@ -126,15 +125,8 @@ protected:
 		this->setLoopLimits();
 		this->setRangeNorm();
 
-		if (this->odimSrc.NI > 0.0){
-			// using true NI
-		}
-		else {
-			mout.info() << "no Nyquist velocity in metadata, NI==0, trying to guess" << mout.endl;
-			// using derived NI
-		}
 
-		this->NI = this->odimSrc.getNyquist();
+		this->NI = this->odimSrc.getNyquist(true);
 		if (this->NI == 0.0){
 			mout.warn() << odimSrc << mout.endl;
 			mout.error() << "Could not derive Nyquist velocity (NI) from metadata." << mout.endl;
