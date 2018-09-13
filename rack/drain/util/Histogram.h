@@ -166,7 +166,7 @@ public:
 
 	template <class T>
 	inline
-	T scaleOut(const size_type &i) const {
+	T scaleOut(size_type i) const {
 		//return static_cast<T>(outMin + (i*outSpan)/bins);
 		return static_cast<T>(scaling.forward(i));
 	}
@@ -331,7 +331,7 @@ public:
 		return *this;
 	};
 
-	void dump(std::ostream & ostr);
+	void dump(std::ostream & ostr = std::cout);
 
 	std::string delimiter;
 

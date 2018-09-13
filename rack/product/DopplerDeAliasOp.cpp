@@ -371,7 +371,7 @@ protected:
 			}
 			*/
 		}
-		odimOut.getMin();
+		//odimOut.getMin();
 
 		dst.put(location.x,  location.y, odimOut.scaleInverse(u));
 		dst2.put(location.x, location.y, odimOut.scaleInverse(v));

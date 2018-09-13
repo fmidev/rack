@@ -90,6 +90,7 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	// Polar coord met.product based on VRAD
 	static ProductAdapter<DopplerOp> dopplerMapper;  // circles
 	static ProductAdapter<DopplerAvgOp> dopplerAvg;
+	static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
 	static ProductAdapter<DopplerDevOp> dopplerDev;
 	static ProductAdapter<DopplerDeAliasOp> dopplerDeAlias;
 
@@ -113,6 +114,8 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 
 	// Geographical products
 	static ProductAdapter<SunShineOp> sun;
+
+
 
 }
 

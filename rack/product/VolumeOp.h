@@ -106,30 +106,6 @@ public:
 protected:
 
 
-	//static
-	//void handleEncodingRequest(const std::string & encoding, PlainData<DstType<M> > & dst);
-
-
-
-
-
-	/*
-	/// Copy nbins, nrays, rscale
-	inline
-	void copyPolarGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		dstData.odim.nbins  = srcODIM.nbins;
-		dstData.odim.nrays  = srcODIM.nrays;
-		dstData.odim.rscale = srcODIM.rscale;
-		dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
-		if (!dstData.odim.type.empty()){
-			dstData.data.setType(dstData.odim.type.at(0));
-		}
-		else {
-			// warn type not set?
-		}
-	};
-	*/
-
 
 };
 

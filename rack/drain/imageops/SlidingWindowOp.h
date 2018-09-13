@@ -149,12 +149,12 @@ public:
 
 protected:
 
-	virtual
-	void processOLD(const ImageFrame & src, Image & dst) const;
+	// virtual	void processOLD(const ImageFrame & src, Image & dst) const;
 
 
 };
 
+/*
 template <class T>
 void SlidingWindowOp<T>::processOLD(const ImageFrame & src, Image & dst) const {
 
@@ -182,6 +182,9 @@ void SlidingWindowOp<T>::processOLD(const ImageFrame & src, Image & dst) const {
 	window.run();
 
 }
+*/
+
+
 } // image::
 
 }  // drain::

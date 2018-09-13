@@ -69,8 +69,8 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 void PolarODIM::update(const PolarODIM & odim){
 
-	if (NI == 0.0)
-		NI = odim.getNyquist();
+	//if (NI == 0.0)
+	odim.getNyquist();
 
 	ODIM::update(odim);
 
@@ -82,36 +82,42 @@ double PolarODIM::getNyquist(bool warn) const {
 
 	drain::Logger mout("ODIM", __FUNCTION__);
 
-	if (NI == 0.0){
+	if (quantity.substr(0,4) != "VRAD"){
+		if (warn)
+			mout.warn() << "quantity not VRAD but " << quantity << mout.endl;
+		return NI;
+	}
 
-		NI = 0.01 * wavelength * lowprf / 4.0;
-		if (NI != 0){
-			if (warn)
-				mout.info() << "no NI in metadata, derived from  wavelength*lowprf/4.0 " << mout.endl;
+	//if (NI == 0.0){
+
+	NI = 0.01 * wavelength * lowprf / 4.0;
+	if (NI != 0){
+		if (warn)
+			mout.info() << "no NI in metadata, derived from  wavelength*lowprf/4.0 " << mout.endl;
+	}
+	else {
+
+		const std::type_info & t = drain::Type::getTypeInfo(type);
+
+		if (drain::Type::call<drain::typeIsSmallInt>(t)){
+
+			const double vMin = getMin(); // drain::Type::call<drain::typeMin, double>(t);
+			const double vMax = getMax(); // drain::Type::call<drain::typeMax, double>(t);
+
+			if (warn){
+				mout.warn();
+				mout << "no NI, wavelength or lowprf in metadata of elangle(" << elangle << "), guessed from type min/max: ";
+				mout << "[" << vMin << ',' << vMax << "]"  << mout.endl;
+			}
+			NI = vMax;
 		}
 		else {
-
-			const std::type_info & t = drain::Type::getTypeInfo(type);
-
-			if (drain::Type::call<drain::typeIsSmallInt>(t)){
-
-				const double vMin = getMin(); // drain::Type::call<drain::typeMin, double>(t);
-				const double vMax = getMax(); // drain::Type::call<drain::typeMax, double>(t);
-
-				if (warn){
-					mout.warn();
-					mout << "no NI, wavelength or lowprf in metadata of elangle(" << elangle << "), guessed from type min/max: ";
-					mout << "[" << vMin << ',' << vMax << "]"  << mout.endl;
-				}
-				NI = vMax;
-			}
-			else {
-				if (warn)
-					mout.warn() << " could not derive Nyquist speed (NI)" << mout.endl;
-			}
+			if (warn)
+				mout.warn() << " could not derive Nyquist speed (NI)" << mout.endl;
 		}
-
 	}
+
+	//}
 
 	return NI;
 }

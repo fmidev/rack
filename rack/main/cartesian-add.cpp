@@ -101,8 +101,9 @@ void CompositeAdd::exec() const {
 
 	/// Set default method, if unset.
 	if (!resources.composite.isMethodSet()){
-		mout.note() << " compositing method unset, setting MAX" << mout.endl;
+		mout.note() << " compositing method unset, setting MAXIMUM" << mout.endl;
 		resources.composite.setMethod("MAXIMUM");
+		//resources.composite.setMethod("LATEST");
 	}
 
 	/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.

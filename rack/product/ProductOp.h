@@ -409,12 +409,6 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 	dst["what"].data.attributes["object"] = this->odim.object;
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
-	/*
-	std::string dataSetPath = "dataset1";
-	if (!ProductBase::appendResults.empty()) // data or dataset
-		DataSelector::getNextOrdinalPath(dst, ProductBase::appendResults+"[0-9]+/?$", dataSetPath);
-	*/
-
 	//ODIMPath dataSetPath;
 	ODIMPathElem parent(BaseODIM::DATASET, 1); // /dataset1
 	ODIMPathElem child(BaseODIM::DATA, 1); // /dataset1

@@ -53,13 +53,13 @@ public:
 
 	PolarODIM(const PolarODIM & odim) : ODIM(ALL) {
 		initFromMap(odim);
-		NI = getNyquist();
+		getNyquist();
 	}
 
 	template <class T>
 	PolarODIM(const std::map<std::string,T> & m) : ODIM(ALL) {
 		initFromMap(m);
-		NI = getNyquist();
+		getNyquist();
 	}
 
 	/*

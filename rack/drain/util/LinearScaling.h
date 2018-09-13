@@ -103,22 +103,26 @@ public:
 	*/
 
 	template <class T>
-	inline T forward(const T &x) const{
+	inline
+	T forward(T x) const{
 		return static_cast<T>(offset + gain*x);
 	}
 
 	template <class T>
-	inline void forward(const double &x, T &y) const{
+	inline
+	void forward(double x, T &y) const{
 		y = static_cast<T>(offset + gain*x);
 	}
 
 	template <class T>
-	inline double inverse(const T &y) const {
+	inline
+	double inverse(T y) const {
 		return (static_cast<double>(y) - offset)*gainInv;
 	}
 
 	template <class T>
-	inline void inverse(const T &y, double &x) const {
+	inline
+	void inverse(T y, double &x) const {
 		x = (static_cast<double>(y) - offset)*gainInv;
 	}
 

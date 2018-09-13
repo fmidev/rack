@@ -265,6 +265,8 @@ void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
 
 double EncodingODIM::getMin() const {
 
+	drain::Logger mout("EncodingODIM", __FUNCTION__);
+
 	const std::type_info & t = drain::Type::getTypeInfo(type);
 
 	if (t == typeid(void))
@@ -275,6 +277,7 @@ double EncodingODIM::getMin() const {
 		double d;
 		do { // loop, yet max 2 steps
 			d = static_cast<double>(i);
+			//mout.warn() << "trying: " << i << " \t-> " << scaleForward(d) << mout.endl;
 			++i;
 		} while ((d == undetect) || (d == nodata));
 		return scaleForward(d);
@@ -286,6 +289,8 @@ double EncodingODIM::getMin() const {
 
 double EncodingODIM::getMax() const {
 
+	drain::Logger mout("EncodingODIM", __FUNCTION__);
+
 	const std::type_info & t = drain::Type::getTypeInfo(type);
 
 	if (t == typeid(void))
@@ -296,6 +301,7 @@ double EncodingODIM::getMax() const {
 		double d;
 		do { // loop, yet max 2 steps
 			d = static_cast<double>(i);
+			// mout.warn() << "trying: " << i << " \t-> " <<  scaleForward(d) << mout.endl;
 			--i;
 		} while ((d == undetect) || (d == nodata));
 		return scaleForward(d);

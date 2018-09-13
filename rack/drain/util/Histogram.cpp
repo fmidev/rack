@@ -75,7 +75,7 @@ void Histogram::clearBins(){
 /// Max refers to upper limit.
 /*
 void Histogram::setScale(int inMin, int inMax, int outMin, int outMax){
-	// First, store the values for future re-scalings.
+	// First, store the  values for future re-scalings.
 	this->inMin = inMin;
 	this->inMax = inMax;
 	this->outMin = outMin;
@@ -89,8 +89,10 @@ void Histogram::setScale(int inMin, int inMax, int outMin, int outMax){
 */
 
 void Histogram::dump(std::ostream & ostr){
-	for (size_type i = 0; i < bins; i++)
-		ostr << i << ':' << (*this)[i] << '\n';
+	ostr << "# i\tvalue \tcount\n";
+	for (size_type i = 0; i < bins; i++){
+		ostr << i << '\t' << scaleOut<double>(i) << '\t' << (*this)[i] << '\n';
+	}
 }
 
 

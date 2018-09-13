@@ -98,6 +98,7 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	statusMap.importMap(sourceODIM); // was import
 
 	const PolarODIM odim(statusMap);
+	//mout.warn() << odim << mout.endl;
 	statusMap["how:NI"] = odim.getNyquist();
 
 	/// Miscellaneous

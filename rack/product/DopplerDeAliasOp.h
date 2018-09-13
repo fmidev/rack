@@ -54,27 +54,6 @@ namespace rack {
 class DopplerWindOp : public DopplerOp {  // DopplerWindow unused!
 public:
 
-	/// Constructor
-	/**
-	 *  \param widthM - width of the window, in metres.
-	 *  \param heightD - azimuthal width of the window, in degrees.
-	DopplerDeAliasOp(int widthM = 500, double heightD = 3.0, double nyquistVelocity=0.0) :
-		DopplerOp(__FUNCTION__, "Inverts Doppler speed to (u,v), optionally de-aliases.") { //, widthM, heightD) {
-		parameters.reference("width", this->widthM = widthM, "metres");
-		parameters.reference("height", this->heightD = heightD, "degrees");
-		parameters.reference("nyquist", odim.NI = nyquistVelocity, "m/s");
-		//parameters.reference("VVP", VVP=false, "0|1"); // SLOTS
-		parameters.reference("matchAliased", matchAliased=true, "0|1"); // ALIASED=1, NODATA=2
-		parameters.reference("altitudeWeight", altitudeWeight, "Functor:a:b:c..."); // ??
-		//parameters.reference("testSigns", testSigns = 3, "bits");
-
-		dataSelector.count = 1;
-
-		odim.type = "S";
-		odim.product = "AMV";
-
-	};
-	 */
 
 	virtual ~DopplerWindOp(){};
 

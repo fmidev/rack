@@ -52,6 +52,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/DataOutput.h"
 #include "product/DataConversionOp.h"
+#include "product/HistogramOp.h"
 #include "radar/FileGeoTIFF.h"
 #include "radar/RadarDataPicker.h"
 
@@ -112,41 +113,66 @@ public:
 //static CommandEntry<CmdInputSelect> cmdInputSelect("inputSelect");
 
 
+/// TODO: generalize to array outfile
 class CmdHistogram : public BasicCommand {
 
 public:
 
 	int count;
-	mutable
+	//mutable
 	double minValue;
-	mutable
+	//mutable
 	double maxValue;
+	std::string filename;
 
 	//	CmdHistogram() : SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : BasicCommand(__FUNCTION__, "Histogram") {
 		parameters.reference("count", count = 256);
-		parameters.reference("min", minValue = std::numeric_limits<double>::min());
-		parameters.reference("max", maxValue = std::numeric_limits<double>::max());
+		parameters.reference("min", minValue = -std::numeric_limits<double>::max());
+		parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
+		parameters.reference("filename", filename = "-");
 	};
 
 	void exec() const {
+
 		drain::Logger mout(name, __FUNCTION__); // getResources().mout;
 
 		RackResources & resources = getResources();
 
+		HI5TREE & currentHi5 = *resources.currentHi5;
+
+		rack::HistogramOp<PolarODIM> hop;
+
+		hop.setParameters(this->getParameters());
+
+		hop.dataSelector.setParameters(resources.select);
+		resources.select.clear();
+
+		hop.setEncodingRequest(resources.targetEncoding);
+		resources.targetEncoding.clear();
+
+		hop.processH5(currentHi5, currentHi5);
+
+		return;
+
+		/*
 		std::list<std::string> paths;
 		DataSelector selector;
 		selector.setParameters(resources.select);
+		resources.select.clear();
 
-		DataSelector::getPaths(*resources.currentHi5, selector, paths);
+		DataSelector::getPaths(currentHi5, selector, paths);
 		if (paths.empty()){
 			mout.warn() << "no data " << mout.endl;
 			return;
 		}
 
-		DataSet<PolarSrc> srcDataSet((*resources.currentHi5)[*paths.begin()]);
+
+		DataSet<PolarSrc> srcDataSet((currentHi5)(*paths.begin()));
 		const Data<PolarSrc> &d = srcDataSet.getFirstData();
 		drain::Histogram hist(count);
+
+		//const Quantity & quantity = getQuantityMap().get(d.odim.quantity);
 
 		if ((minValue == std::numeric_limits<double>::min()) || (maxValue == std::numeric_limits<double>::max())){
 			const EncodingODIM & odim = getQuantityMap().get(d.odim.quantity).get('C');
@@ -176,14 +202,24 @@ public:
 			else {
 				f = d.odim.scaleForward(f);
 				if ((f >= min) && (f < max))
-				//if (hist.withinLimits(f))
+					//if (hist.withinLimits(f))
 					hist.increment(f);
 			}
 		}
 		mout.note() << hist << mout.endl;
 
+		ODIMPathElem parent(BaseODIM::DATASET);
+		DataTools::getNextChild(*resources.currentHi5, parent);
+
+		DataSet<PolarDst> dstDataSet((*resources.currentHi5)[parent]);
+		PlainData<PolarDst> & dstData = dstDataSet.getData("HGHT");
+		dstData.setEncoding("C");
+		dstData.setGeometry(1, hist.getSize());
+
+		// Reset
 		minValue = std::numeric_limits<double>::min();
 		maxValue = std::numeric_limits<double>::max();
+		 */
 
 	}
 

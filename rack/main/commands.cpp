@@ -72,10 +72,12 @@ public:
 
 		drain::Logger mout(getName(), __FUNCTION__);
 
-		test.setParameters(getResources().select, '=', ',');
+		RackResources & r = getResources();
+
+		test.setParameters(r.select, '=', ',');
 		mout.debug() << test << mout.endl;
 		// test.getParameters()["elangle"].toJSON(std::cout, '\n');
-		getResources().dataOk = true;
+		r.dataOk = true;
 
 	}
 
@@ -104,21 +106,18 @@ public:
 
 
 class CmdStatus : public BasicCommand {
-public: //re
+
+public:
+
 	CmdStatus() : BasicCommand(__FUNCTION__, "Dump information on current images.") {
-		//parameters.reference("ls", value, "dw", "Accumulation layers to be extracted");
 	};
 
 	void exec() const {
-		// map_t::iterator it = registry.find(name);
+
 		std::ostream & ostr = std::cout; // for now...
 
-		//drain::CommandRegistry & registry = getRegistry();
-
-		/// Update latest file contents etc.
-		//getResources().updateStatusMap();
-
 		const drain::VariableMap & statusMap = getResources().getUpdatedStatusMap();
+
 		for (drain::VariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
 			ostr << it->first << '=' << it->second << ' ';
 			it->second.typeInfo(ostr);
@@ -128,7 +127,7 @@ public: //re
 
 	};
 
-	//void updateStatusMap() const;
+
 
 };
 //extern CommandEntry<CmdStatus> cmdStatus;
@@ -233,17 +232,12 @@ public:
 		std::string & format = cmdFormat.value;
 		format = drain::StringTools::replace(format, "\\n", "\n");
 		format = drain::StringTools::replace(format, "\\t", "\t");
-		//options["RANGE"] = options.get("what:rscale",500) * options.get("@what:nbins",500) ;
-
-		//cmdStatus.updateStatusMap();
-		//resources.updateStatusMap();
 
 		CommandRegistry & reg = getRegistry();
 		reg.statusFormatter.parse(format);
 		//mout.warn() << "before expansion: " << r.statusFormatter << mout.endl;
 
 		reg.statusFormatter.expand(resources.getUpdatedStatusMap()); // needed? YES
-
 		//mout.warn() << r.getStatusMap() << mout.endl;
 		//mout.warn() << r.statusFormatter << mout.endl;
 
@@ -1244,6 +1238,17 @@ struct CmdVerbose2 : public BasicCommand {
 
 };
 
+class CmdExpandVariables2 : public drain::CmdExpandVariables {
+
+public:
+
+	inline
+	void exec() const {
+		getResources().getUpdatedStatusMap();
+		drain::CmdExpandVariables::exec();
+	};
+
+};
 
 
 CommandModule::CommandModule(){ //
@@ -1272,7 +1277,8 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<drain::CmdDebug> cmdDebug;
 	static RackLetAdapter<CmdVerbose2> cmdVerbose("verbose",'v');
 	static RackLetAdapter<drain::CommandLoader> commandLoader("execFile");
-	static RackLetAdapter<drain::CmdExpandVariables> expandVariables;
+	//static RackLetAdapter<drain::CmdExpandVariables> expandVariables;
+	static RackLetAdapter<CmdExpandVariables2> expandVariables("expandVariables");
 
 	static RackLetAdapter<CmdAutoExec> cmdAutoExec;
 	static RackLetAdapter<CmdDataOk> dataOk("dataOk", -1);

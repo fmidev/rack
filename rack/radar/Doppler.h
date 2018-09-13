@@ -55,27 +55,6 @@ using namespace drain::image;
 namespace rack {
 
 
-/*
-class DopplerWindowConfig : public RadarWindowConfig {
-
-public:
-
-	DopplerWindowConfig(const PolarODIM & odimSrc, drain::UnaryFunctor & ftor, int widthM=500, double heightD=1.0, double contributionThreshold=0.5) :
-		RadarWindowConfig(odimSrc, ftor, widthM, heightD, contributionThreshold){ //, contributionThreshold(contributionThreshold) {
-
-	}
-
-	DopplerWindowConfig(const PolarODIM & odimSrc, int widthM=500, double heightD=1.0, double contributionThreshold=0.5) :
-		RadarWindowConfig(odimSrc, widthM, heightD, contributionThreshold) { //, contributionThreshold(contributionThreshold) {
-
-	}
-
-
-
-};
-*/
-//typedef RadarWindowConfig DopplerWindowConfig;
-
 
 /**
  *  \tparam C - window parameters (including functor)
@@ -85,13 +64,12 @@ public:
 
 
 	DopplerWindow(const RadarWindowConfig & conf) : // countThreshold(0),
-		SlidingRadarWindow<RadarWindowConfig>(conf),  radialSpeedConv(0) , sumI(0.0), sumI2(0.0), sumJ(0.0), sumJ2(0.0), count(0){}; //, countMin(0) {};
+		SlidingRadarWindow<RadarWindowConfig>(conf),  radialSpeedConv(0.0) ,  radialSpeedConvInv(1.0),
+			sumI(0.0), sumI2(0.0), sumJ(0.0), sumJ2(0.0), count(0){}; //, countMin(0) {};
 
 	virtual
 	inline
 	~DopplerWindow(){};
-
-	//int countThreshold;
 
 protected:
 
@@ -126,7 +104,7 @@ protected:
 		this->setRangeNorm();
 
 
-		this->NI = this->odimSrc.getNyquist(true);
+		this->NI = this->odimSrc.getNyquist(true); // warn if guessed from scaling
 		if (this->NI == 0.0){
 			mout.warn() << odimSrc << mout.endl;
 			mout.error() << "Could not derive Nyquist velocity (NI) from metadata." << mout.endl;
@@ -134,8 +112,8 @@ protected:
 			radialSpeedConvInv = 1.0;
 		}
 		else {
-			radialSpeedConv    = M_PI   / this->NI;
-			radialSpeedConvInv = M_1_PI * this->NI;
+			radialSpeedConv    = M_PI     / this->NI;
+			radialSpeedConvInv = this->NI /     M_PI;  // M_1_PI * this->NI;
 		}
 	};
 
@@ -164,8 +142,7 @@ protected:
 		--count;
 	};
 
-	virtual
-	inline
+	virtual inline
 	void addLeadingValue(double x){
 		x *= radialSpeedConv;
 		double t;
@@ -180,7 +157,18 @@ protected:
 		//	std::cerr << "handleLeadingPixel" << this->p << ':' << x << '\t' << count << ':' << sum << std::endl;
 	};
 
+	/// Returns direction [rad] of the dominant speed.
+	virtual inline
+	double averageR(){
+		return atan2(sumJ, sumI);
+	}
 
+	/// Returns the radial speed variance [rad]
+	virtual inline
+	double stdDevR(){
+		double c = 1.0/static_cast<double>(count);
+		return sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
+	}
 
 };
 
@@ -206,9 +194,9 @@ protected:
 		if (count > countMin){ // TODO threshold 0.5?
 
 			if (this->conf.relativeScale)
-				this->dst.putScaled(this->location.x, this->location.y, atan2(sumJ, sumI) * M_1_PI); //
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); //
 			else
-				this->dst.putScaled(this->location.x, this->location.y, atan2(sumJ, sumI) * this->radialSpeedConvInv);
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
 			/*
 			if (this->debugDiag()){
 				std::cerr << "write: " << this->location.x << ":\t"
@@ -244,18 +232,13 @@ protected:
 
 		//if (count > (this->conf.contributionThreshold * static_cast<double>(this->samplingArea))){ // TODO threshold 0.5?
 		if (count > countMin){ // TODO threshold 0.5?
-			// double countD = static_cast<double>(count);
-			double c = 1.0/static_cast<double>(count);
-			c = sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
 
 			if (this->conf.relativeScale)
-				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(c));
-				//this->dst.put(this->location, this->conf.ftor(c));
+				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(stdDevR()));
 			else
 				//this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(c));
 				// NOTE: possibly odimSrc != odimDst, (C/S), add odimDst?
-				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(NI * c) );
-				//this->dst.put(this->location, this->conf.ftor(this->odimSrc.NI * c));
+				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(NI * stdDevR()) );
 			/*
 			if (this->debugDiag()){
 				std::cerr << "write: " << this->location.x << ":\t" << (int) this->conf.relativeScale << '\t'
@@ -273,6 +256,45 @@ protected:
 	};
 
 };
+
+
+class DopplerAverageWindow2 : public DopplerWindow {
+
+public:
+
+	DopplerAverageWindow2(const RadarWindowConfig & conf) : DopplerWindow(conf) {
+
+	}
+
+	typedef DopplerAverageWindow2 unweighted;
+
+protected:
+
+	virtual inline
+	void write(){
+
+		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
+		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
+
+		if (count > countMin){ // TODO threshold 0.5?
+
+			if (this->conf.relativeScale)
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); //
+			else
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
+
+			this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
+
+		}
+		else {
+			this->dst.put(this->location, this->odimSrc.undetect); // NOTE: may be wrong (C/S), add odimDst?
+			this->dstWeight.put(this->location, 0.0); // NOTE: may be wrong (C/S), add odimDst?
+		}
+
+	};
+
+};
+
 
 } // rack::
 

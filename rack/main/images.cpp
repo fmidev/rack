@@ -279,7 +279,9 @@ public: //re
 		//mout.debug(4) << "Current Gray: \n" << *resources.currentGrayImage << mout.endl;
 		//File::write(*resources.currentGrayImage, "gray.png");
 
-		resources.palette.load(value);
+		if (!value.empty())
+			resources.palette.load(value);
+
 		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;
 		mout.debug(2) << resources.palette << mout.endl;
 
