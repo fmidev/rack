@@ -88,7 +88,7 @@ class CmdSelectQuantity : public SimpleCommand<std::string> {
 
 public:
 
-	CmdSelectQuantity() : SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... but with patterns (not regexps)", "quantities", "quantity[,quantity2,...]"){
+	CmdSelectQuantity() : SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... but with patterns (not regexps)", "quantities","","quantity[,quantity2,...]"){
 
 	};
 

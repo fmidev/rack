@@ -305,35 +305,35 @@ public: //re
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		const PolarODIM imgOdim(props);
-		// mout.warn() << imgOdim << mout.endl;
+		mout.debug() << "input metadata: " << EncodingODIM(imgOdim) << mout.endl;
 
-		op.scale   = imgOdim.gain;   // props.get("what:gain", 1.0);
-		op.offset  = imgOdim.offset; // props.get("what:offset",0.0);
-		//const std::string quantity = props["what:quantity"];
 
-		if (imgOdim.quantity == "VRAD"){ // rescale relative to NI (percentage -100% ... +100%)
+		if (imgOdim.quantity.substr(0,4) != "VRAD"){
+			op.scale   = imgOdim.gain;   // props.get("what:gain", 1.0);
+			op.offset  = imgOdim.offset; // props.get("what:offset",0.0);
+		}
+		else { // rescale relative to NI (percentage -100% ... +100%)
 
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
-				// EncodingODIM odim;
-				// PolarODIM odim(imgOdim);
-				/*
-				odim.gain   = op.scale;
-				odim.offset = op.offset;
-				odim.type = props.get("what:type","C");
-				*/
-				//odim.optimiseVRAD();
 
+				mout.info() << "Doppler speed (VRAD), using relative scale, NI=" << NI << " orig NI=" << props["how:NI"] << mout.endl;
+				/*
+					f(data_min) = scale*data_min + offset == -1.0
+					f(data_max) = scale*data_max + offset == +1.0
+					scale = (+1 - -1) / ( data_max-data_min )
+					offset = scale*(data_min+data_max) / 2.0
+				*/
 				const double data_min = imgOdim.scaleInverse(-NI);
 				const double data_max = imgOdim.scaleInverse(+NI);
-				const double data_mean = (data_max+data_min)/2.0;
-				op.scale = 2.0/(data_max-data_min);
-				op.offset = - data_mean * op.scale;
+				//const double data_mean = (data_max+data_min)/2.0;
+				op.scale  =   2.0/(data_max-data_min);
+				op.offset = - op.scale*(data_max+data_min)/2.0;
+				//op.offset = -1.0;
+				//op.scale = 2.0/(data_max-data_min);
 
-				//op.scale  = odim.gain;
-				//op.offset = odim.offset;
 				//mout.warn() << odim << mout.endl;
-				//mout.warn() << data_mean << mout.endl;
+				mout.debug() << "expected storage value range: " << data_min << '-' << data_max << mout.endl;
 				//mout.warn() << odim.scaleInverse(0) << mout.endl;
 				//op.setSpecialCode("undetectValue", odim.scaleInverse(0.0));
 			}
@@ -342,8 +342,8 @@ public: //re
 			}
 		}
 
-		op.setSpecialCode("nodata",   props["what:nodata"]);
-		op.setSpecialCode("undetect", props["what:undetect"]);
+		op.setSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
+		op.setSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
 		mout.debug() << op << mout.endl;
 		//std::cout << op << std::endl;

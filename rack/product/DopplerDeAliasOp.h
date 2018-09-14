@@ -83,9 +83,12 @@ public:
 	}
 
 
-
+	// Re-alias
+	// x - 2*Vm*math.floor((Vm+x)/2.0/Vm)
 	inline
-	double alias(double v, double vNyquist) const {
+	double alias(double v, double vNyq) const {
+		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));
+		/*
 		double n=0;
 		if (v >= 0.0){
 			v += vNyquist;
@@ -97,6 +100,7 @@ public:
 			n = floor(-v/(2.0*vNyquist));
 			return v + n * (2.0*vNyquist) + vNyquist;
 		}
+		*/
 	}
 
 

@@ -88,7 +88,7 @@ void CompositeAdd::exec() const {
 			resources.composite.odim.gain   = 0.0;
 			resources.composite.odim.offset = 0.0;
 		}
-		resources.select.clear(); //
+		// resources.select.clear(); //
 	}
 	else {
 		if (resources.composite.dataSelector.quantity.empty()){
@@ -153,10 +153,11 @@ void CompositeAdd::addPolar() const {
 	bool isAeqd = false;
 
 	if (!resources.composite.isDefined()){
-		mout.note() << "Creating a single-radar Cartesian" << mout.endl;
+
+		mout.info() << "Initialising a single-radar Cartesian" << mout.endl;
 
 		// Try to set size. May still remain 0x0, which ok: addPolar() will set it if needed.
-		resources.composite.setGeometry(resources.composite.getFrameWidth(), resources.composite.getFrameHeight()); // Check - does nothing?
+		// resources.composite.setGeometry(resources.composite.getFrameWidth(), resources.composite.getFrameHeight()); // Check - does nothing?
 
 		if (!resources.projStr.empty())
 			resources.composite.setProjection(resources.projStr);

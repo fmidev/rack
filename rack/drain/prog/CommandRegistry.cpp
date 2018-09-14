@@ -325,7 +325,10 @@ void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
 	try {
 
-		if (expandVariables){
+		if (params.empty()){
+			cmd.run(params);
+		}
+		else if (expandVariables){
 			//mout.toOStr() << "expanding. map: " << statusMap << mout.endl;
 			statusFormatter.parse(params);
 			mout.debug() << "expanded: '" << params << "' => '" << statusFormatter.toStr(statusMap) << "'" << mout.endl;

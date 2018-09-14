@@ -143,6 +143,7 @@ public:
 	inline
 	bool optimiseVRAD(){
 		if (quantity == "VRAD"){
+			getNyquist();
 			setRange(-NI, NI);
 			return true;
 		}

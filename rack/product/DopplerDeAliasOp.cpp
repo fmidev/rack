@@ -522,7 +522,8 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 		return;
 	}
 
-	PolarODIM srcODIM(srcData.odim);  // NI now correct
+	//PolarODIM srcODIM(srcData.odim);  // NI now correct
+	const PolarODIM & srcODIM = srcData.odim;  // NI now correct
 
 	/*if (srcData.odim.NI == 0.0){
 		mout.warn() << "NI (Nyquist interval) zero or not found." << mout.endl;
@@ -587,16 +588,18 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	dstDataU.odim.update(srcODIM); // date, time, etc
 
 	/// If desired, run also new, dealiased VRAD field
-	//window.N
+	//
 	if (nyquist != 0.0){
 
-		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased
+		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased ("re-aliased")
 
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
 		//const double dstNI = abs(odim.NI);
 		dstDataVRAD.odim.setRange(-nyquist, +nyquist);
-		mout.info() << "dealiasing (u,v) to VRAD " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
+		mout.info() << "dealiasing (u,v) to VRAD " << mout.endl;
+		mout.info() << "src VRAD  " << EncodingODIM(srcData.odim) << mout.endl;
+		mout.info() << "dst VRADC " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
 		setGeometry(srcODIM, dstDataVRAD);
 		const double srcNI2 = 2.0*srcODIM.getNyquist(); // 2.0*srcData.odim.NI;
 		const double min = dstDataVRAD.data.getMin<double>();
@@ -614,10 +617,8 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 		double vReproj;
 		drain::image::Point2D<double> unitVReproj;
 
-		/// Ambiguous part (2N * V_Nyq)
 		const bool MATCH_ALIASED  = (matchOriginal & 1);
 		const bool MATCH_UNDETECT = (matchOriginal & 2);
-
 
 		bool ORIG_UNDETECT;
 		bool ORIG_NODATA;
@@ -636,8 +637,8 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 				if (MATCH_UNDETECT || MATCH_ALIASED){
 					vOrig = srcData.data.get<double>(address);
-					ORIG_UNDETECT = vOrig == srcData.odim.undetect;
-					ORIG_NODATA   = vOrig == srcData.odim.nodata;
+					ORIG_UNDETECT = (vOrig == srcData.odim.undetect);
+					ORIG_NODATA   = (vOrig == srcData.odim.nodata);
 
 					ORIG_UNUSABLE = ORIG_UNDETECT || ORIG_NODATA;
 					if (MATCH_UNDETECT && ORIG_UNUSABLE){

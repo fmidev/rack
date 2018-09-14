@@ -70,7 +70,8 @@ protected:
  *  Now member  std::string value is applied as toOStr container.
  */
 class CommandInfo : public BasicCommand { //public SimpleCommand<std::string> {
-    public: //re 
+
+public:
 
 	const std::string info;
 
@@ -90,7 +91,8 @@ class CommandInfo : public BasicCommand { //public SimpleCommand<std::string> {
 
 
 class ScriptParser : public SimpleCommand<std::string> {
-    public: //re 
+
+public:
 
 	Script script;
 
@@ -107,7 +109,9 @@ class ScriptParser : public SimpleCommand<std::string> {
 		//std::cerr << name << ", calling with param=" << s << std::endl;
 		if (autoExec < 0)
 			autoExec = 1;
-		getRegistry().scriptify(s, script);
+		CommandRegistry & reg = getRegistry();
+		reg.scriptify(s, script);
+		reg.expandVariables = true;
 	};
 
 };
@@ -116,8 +120,8 @@ class ScriptParser : public SimpleCommand<std::string> {
 
 /// Command loader that executes the commands immediately - it does not store the commands into a script.
 class CommandLoader : public SimpleCommand<std::string> {
-    public: //re 
 
+public: //re
 
 	CommandLoader() : SimpleCommand<std::string>(__FUNCTION__, "Execute commands from a file.", "filename") {}; // const std::string & name, char alias = 0
 
@@ -210,7 +214,8 @@ class CmdDebug : public BasicCommand {
 
 
 class CmdExpandVariables : public BasicCommand {
-    public: //re 
+
+public:
 
 	CmdExpandVariables() : BasicCommand(__FUNCTION__, "Toggle variable expansion on/off") {
 	};

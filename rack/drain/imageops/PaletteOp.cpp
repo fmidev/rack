@@ -76,7 +76,7 @@ void Palette::load(const std::string &filename){
 	std::vector<double> tmp;
 	std::stringstream label;
 
-	bool special;
+	bool SPECIAL;
 	while (!ifstr.eof()){
 
 		c = ifstr.peek();
@@ -104,10 +104,10 @@ void Palette::load(const std::string &filename){
 		}
 		else {
 
-			special = (ifstr.peek()=='@');
+			SPECIAL = (ifstr.peek()=='@');
 
 			// index
-			if (!special){
+			if (!SPECIAL){
 				ifstr >> d;
 				mout.debug() << " index: " << d << '\t';
 			}
@@ -122,7 +122,7 @@ void Palette::load(const std::string &filename){
 			//std::cout << "index:" << d << '\n';
 
 			// Read line
-			PaletteEntry &entry = special ? specialCodes[label.str()] : (*this)[d]; // Create entry
+			PaletteEntry &entry = SPECIAL ? specialCodes[label.str()] : (*this)[d]; // Create entry
 			entry.label = label.str();  // Save last label
 			label.str(""); // this is needed in two places
 			//entry.resize(4);
@@ -440,13 +440,6 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 
 	initialize();
 
-	//if (&src == &dst){
-	/*
-	if (src.hasOverlap(dst)){
-		throw std::string("PaletteOp: cannot handle src==dst (extra memory not implemented)");
-	}*/
-	//if (filterWithTmp(src,dst))
-	//	return;
 
 	makeCompatible(src,dst);
 
@@ -490,7 +483,7 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 			}
 
 			for (k = 0; k < channels; ++k)
-							dst.put(i,j,k, itLast->second[k]);
+				dst.put(i,j,k, itLast->second[k]);
 
 			/*
 			if (i==j){

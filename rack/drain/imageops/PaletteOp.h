@@ -46,16 +46,17 @@ namespace image
 {
 
 class PaletteEntry : public std::vector<double> {
-    public: //re 
-	std::string label;
-};
-
-class Palette : public std::map<double,PaletteEntry > {
-// public std::map<double,std::vector<double> > {
 
 public:
 
-	//typedef std::map<double,std::vector<double> >::iterator iterator;
+	std::string label;
+
+};
+
+class Palette : public std::map<double,PaletteEntry > {
+
+public:
+
 
 	void load(const std::string &filename);
 

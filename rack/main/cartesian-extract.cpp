@@ -76,27 +76,6 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	path << parent;
 
-	//if (ProductBase::appendResults.is(BaseODIM::DATA))
-	//	DataTools::getNextChild(resources.cartesianHi5[parent], parent);
-
-
-	//if (!DataTools::getNextDescendant(resources.cartesianHi5, ProductBase::appendResults.getType(), path))
-	//	path.push_back(BaseODIM::DATASET);
-
-
-
-	/*
-	std::string path = "dataset1";
-	if (ProductBase::appendResults == "dataset"){
-		if (DataSelector::getNextOrdinalPath(resources.cartesianHi5, "dataset([0-9]+)$", path))
-			mout.note() << "appending, path=" << path << mout.endl;
-	}
-	else if (ProductBase::appendResults == "data"){
-		if (DataSelector::getLastOrdinalPath(resources.cartesianHi5, "dataset([0-9]+)$", path))
-			mout.note() << "appending, path=" << path << mout.endl;
-	}
-	*/
-
 
 	HI5TREE & dstGroup = resources.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);
@@ -156,6 +135,12 @@ void CartesianExtract::extract(const std::string & channels) const {
 	resources.inputOk = true;
 	resources.dataOk = true;
 	//mout.warn() << "created" << mout.endl;
+
+	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);
+	//statusMap["what:quantity"] = ;
+	statusMap.updateFromMap(odim);
+	//resources.getUpdatedStatusMap();
+
 }
 
 
