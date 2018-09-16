@@ -279,8 +279,49 @@ public: //re
 		//mout.debug(4) << "Current Gray: \n" << *resources.currentGrayImage << mout.endl;
 		//File::write(*resources.currentGrayImage, "gray.png");
 
-		if (!value.empty())
-			resources.palette.load(value);
+		if (!value.empty()){
+			static RegExp quantityRegExp("^[A-Z]+[A-Z0-9_]*$");
+			std::string quantity;
+			std::string filename;
+			std::ifstream ifstr;
+
+			// drain::StringMapper palettePath;
+			// palettePath.parse("${palettePath}/palette-${what:quantity}.txt");
+
+
+			if (value == "default"){
+				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
+				quantity = statusMap["what:quantity"].toStr();
+				mout.note() << "quanitity=" << quantity << mout.endl;
+			}
+			else if (quantityRegExp.test(value)){
+				quantity = value;
+			}
+
+			if (quantity.empty()){
+				filename = value;
+			}
+			else {
+				std::stringstream s;
+				s << "palette-" << quantity << ".txt";
+				filename = s.str();
+			}
+
+			ifstr.open(filename.c_str(), std::ios::in);
+			if (!ifstr.is_open()){
+				// Test
+				filename = std::string("palette/") + filename;
+				mout.note() << "retry with " << filename << mout.endl;
+				ifstr.open(filename.c_str(), std::ios::in);
+			}
+
+			if (!ifstr.is_open()){
+				mout.error() << "could not open palette: " << filename << mout.endl;
+				return;
+			}
+
+			resources.palette.load(ifstr);
+		}
 
 		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;
 		mout.debug(2) << resources.palette << mout.endl;
