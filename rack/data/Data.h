@@ -332,13 +332,14 @@ public:
 
 
 	// Possibly this should be somewhere else? (Too specific here?)
+	/// For this data, creates an on-off quality data.
 	void createSimpleQualityData(drain::image::Image & qualityImage, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const;
 
 	// Possibly this should be somewhere else? (Too specific here?)
+	/// For this data, creates an on-off quality data.
 	inline
 	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
 		qualityData.setEncoding(typeid(unsigned char));
-		// qualityData.setGeometry(data.getWidth(), data.getHeight());
 		createSimpleQualityData(qualityData.data, dataQuality, nodataQuality, undetectQuality);
 		qualityData.odim.gain   = qualityData.data.getScaling().scale;
 		qualityData.odim.offset = qualityData.data.getScaling().offset;

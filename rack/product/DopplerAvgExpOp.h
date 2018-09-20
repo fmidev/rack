@@ -32,7 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DOPPLER_AvgExpOP_H_
 #define DOPPLER_AvgExpOP_H_
 
+#include <drain/imageops/ImpulseResponseOp.h>
+
+#include "../data/DataCoder.h"
 #include "DopplerOp.h"
+
 
 
 namespace rack {
@@ -41,12 +45,14 @@ class DopplerAvgExpOp : public PolarProductOp {
 public:
 
 	DopplerAvgExpOp() : PolarProductOp(__FUNCTION__, "Doppler field smoother with exponential decay weighting") {
-		parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
-		parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
+		parameters.append(conf.getParameters());
+		parameters.reference("horzExtension", horzExt = 0, "pix");
+		parameters.reference("vertExtension", vertExt = 0, "pix");
+		//parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
+		//parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
 		dataSelector.count = 1;
 		//dataSelector.quantity = "VRAD";
 		dataSelector.quantity = "DBZH";
-		//odim.quantity = "RESP";
 		//odim.quantity = "VRAD";
 		odim.quantity = "DBZH";
 		odim.type = "S";
@@ -58,9 +64,12 @@ public:
 	virtual
 	void processData1D(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
 
+	drain::image::ImpulseAvgConf conf;
 	//int order;
-	double decay;
-	double smoothNess;
+	//double decay;
+	//double smoothNess;
+	int horzExt;
+	int vertExt;
 
 };
 

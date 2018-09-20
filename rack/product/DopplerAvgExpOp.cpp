@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include <drain/image/File.h>
+//#include <drain/imageops/ImpulseResponseOp.h>
 
 #include "DopplerAvgExpOp.h"
 
@@ -41,8 +42,10 @@ namespace rack {
 
 void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	const int width  = srcData.data.getWidth();
-	const int height = srcData.data.getHeight();
+	drain::Logger mout(name, __FUNCTION__);
+
+	//const int width  = srcData.data.getWidth();
+	//const int height = srcData.data.getHeight();
 	const QuantityMap & qm = getQuantityMap();
 
 	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);  // TODO: re-design, get rid of these
@@ -51,186 +54,43 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	qm.setQuantityDefaults(dstQuality);
 	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
 
+	drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
+	impOp.setExtensions(horzExt, vertExt);
+
+	if (srcData.hasQuality()){
+
+		impOp.traverseChannel(srcData.data, srcData.getQualityData().data, dstData.data, dstQuality.data);
+
+	}
+	else {
+		mout.note() << "no quality field, creating default quality field" << mout.endl;
+		drain::image::Image srcQuality;
+		//double udq = DataCoder::undetectQualityCoeff;
+		//if (udq > 0.0)
+		mout.note() << "undetectQualityCoeff=" << DataCoder::undetectQualityCoeff << mout.endl;
+
+		srcData.createSimpleQualityData(srcQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
+
+		impOp.traverseChannel(srcData.data, srcQuality, dstData.data, dstQuality.data);
+	}
+
+
+	//drain::image::CoordinateHandler2D coordHandler(srcData.data.getGeometry(), srcData.data.getCoordinatePolicy());
+
+
 	/*
-	PlainData<PolarDst> & dstAux = dstData.getQualityData("AUX");
-	qm.setQuantityDefaults(dstAux, odim.quantity);
-	dstAux.data.setScaling(dstAux.odim.gain, dstAux.odim.offset);
-	*/
-
-
-
-	drain::image::Image imgDown(typeid(float), width, height, 1, 1);
-	drain::image::Channel & qualityDown = imgDown.getAlphaChannel();
-
-	drain::image::Image imgUp(typeid(float), width, height, 1, 1);
-	drain::image::Channel & qualityUp = imgUp.getAlphaChannel();
-
-	drain::image::CoordinateHandler2D coordHandler(srcData.data.getGeometry(), srcData.data.getCoordinatePolicy());
-
-	// Temp value
-	double x;
-
-	// Temp weight
-	double w;
-
-	int count;
-
-	drain::image::Point2D<int> point;
-	double value, weight;
-
-	for (int j=0; j<height; j++){
-
-		for (int i=0; i<width; i++){
-
-			count = 0;
-			weight = 0.0;
-			value = 0.0; // ? dstData.odim.undetect;
-
-			x = srcData.data.get<double>(i,j);
-			if (srcData.odim.isValue(x)){
-				value  += srcData.odim.scaleForward(x);
-				weight += 1.0; // or: quality?
-				++count;
-			}
-
-			/// DST prev values
-			point.setLocation(i-1, j);
-			if (coordHandler.validate(point)){
-				w = qualityDown.get<double>(point);
-				if (w > 0.0){
-					w *= decay;
-					value  += w*imgDown.get<double>(point);
-					weight += w;
-					++count;
-				}
-			}
-
-			point.setLocation(i, j-1);
-			if (coordHandler.validate(point)){
-				w = qualityDown.get<double>(point);
-				if (w > 0.0){
-					w *= decay;
-					value  += w*imgDown.get<double>(point);
-					weight += w;
-					++count;
-				}
-			}
-
-
-			if (weight > 0.0){
-				//dstData.data.put(i,j, dstData.odim.scaleInverse(value/weight));
-				imgDown.put<float>(i,j, value/weight);
-				qualityDown.put<float>(i,j, weight/static_cast<float>(count));
-				// I.e.
-				// dstData.data.putScaled(i,j, value/weight);
-				// dstQuality.data.putScaled(i, j, weight/static_cast<float>(count));
-			}
-			else {
-				dstData.data.put(i,j, dstData.odim.undetect);
-				dstQuality.data.putScaled(i, j, 0.0);
-			}
-
-
-		}
-
-	}
-
-
-
-	for (int j=height-1; j>=0; --j){
-
-		for (int i=width-1; i>=0; --i){
-
-			count  = 0;
-			weight = 0.0;
-			value  = 0.0;
-
-			x = srcData.data.get<double>(i,j);
-			if (srcData.odim.isValue(x)){
-				value  += srcData.odim.scaleForward(x);
-				weight += 1.0; // or: quality?
-				++count;
-			}
-
-			/// DST prev values
-			point.setLocation(i+1, j);
-			if (coordHandler.validate(point)){
-				w = qualityUp.get<double>(point);
-				if (w > 0.0){
-					w *= decay;
-					value  += w*imgUp.get<double>(point);
-					weight += w;
-					++count;
-				}
-			}
-
-			point.setLocation(i, j+1);
-			if (coordHandler.validate(point)){
-				w = qualityUp.get<double>(point);
-				if (w > 0.0){
-					w *= decay;
-					value  += w*imgUp.get<double>(point);
-					weight += w;
-					++count;
-				}
-			}
-
-
-			if (weight > 0.0){
-				imgUp.put<float>(i,j, value/weight);
-				qualityUp.put<float>(i,j, weight/static_cast<float>(count));
-			}
-
-			/*
-			if (weight > 0.0){
-				dstData.data.putScaled(i,j, value/weight);
-				dstQuality.data.putScaled(i, j, weight/static_cast<float>(count));
-			}
-			else {
-				dstData.data.put(i,j, dstData.odim.undetect);
-				dstQuality.data.putScaled(i, j, 0.0);
-			}
-			*/
-
-		}
-
-	}
-
-	float w1, w2;
-	for (int j=0; j<height; j++){
-		for (int i=0; i<width; i++){
-			w1 = qualityDown.get<float>(i,j);
-			w2 = qualityUp.get<float>(i,j);
-			weight = (w1+w2);
-			if (weight > 0.0){
-				dstData.data.putScaled(i,j, (w1*imgDown.get<float>(i,j)+w2*imgUp.get<float>(i,j)) /weight);
-				dstQuality.data.putScaled(i, j, weight/2.0f);
-			}
-			else {
-				dstData.data.put(i,j, dstData.odim.undetect);
-				dstQuality.data.putScaled(i, j, 0.0);
-			}
-		}
-	}
-
 	drain::getLog().setVerbosity(10);
 	drain::image::getImgLog().setVerbosity(10);
 
-	//imgDowimgDown.n.adoptScaling(dstData.data);
-	//imgDown.adoptScaling(dstData.data);
+
 	imgDown.setPhysicalScale(-32, 96);
 	qualityDown.setScaling(dstQuality.data.getScaling());
-	//imgDown.getScaling().setPhysicalRange(dstData.data.requestPhysicalMin(), dstData.data.requestPhysicalMax());
-	//qualityDown.getScaling().setPhysicalRange(0.0, 1.0);
 	drain::image::File::write(imgDown, "imgDown.png");
 
-	//imgUp.adoptScaling(dstData.data);
 	imgUp.setPhysicalScale(-32, 96);
 	qualityUp.setScaling(dstQuality.data.getScaling());
-	//qualityUp.getScaling().setPhysicalRange(0.0, 1.0);
 	drain::image::File::write(imgUp, "imgUp.png");
-	//imgUp.adoptScaling()
-
+	*/
 
 }
 
@@ -276,8 +136,10 @@ void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDs
 
 	double vrad, W, weight;
 
-	const double wOld = smoothNess;
-	const double wNew = 1.0-smoothNess;
+	double decay = conf.decay;
+
+	const double wOld = 0.5; // smoothNess;
+	const double wNew = 0.5; // 1.0-smoothNess;
 
 	std::vector<unitSpeed> speedTmp(srcData.data.getHeight()); //(height);
 

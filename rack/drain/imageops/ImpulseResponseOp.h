@@ -103,11 +103,13 @@ template <class T>
 class ImpulseResponseOpBase : public ImageOp {
 public:
 
-	/*
 	inline
-	ImpulseResponseOpBase(const std::string & name, const std::string & description="") : ImageOp(name, description){
+	ImpulseResponseOpBase(){};
+
+	inline
+	ImpulseResponseOpBase(const typename T::conf_t & conf) : conf(conf){
 	};
-	 */
+
 	virtual inline
 	~ImpulseResponseOpBase(){};
 
@@ -138,8 +140,24 @@ class ImpulseResponseOp : public ImpulseResponseOpBase<T> {
 
 public:
 
+
 	inline
 	ImpulseResponseOp() {
+		init();
+	};
+
+	inline
+	ImpulseResponseOp(const ImpulseResponseOp<T> & op) : ImpulseResponseOpBase<T>(op.conf) {
+		init();
+	};
+
+	inline
+	ImpulseResponseOp(const typename T::conf_t & conf) : ImpulseResponseOpBase<T>(conf) {
+		init();
+	};
+
+	inline
+	void init(){
 		this->parameters.append(this->conf.getParameters());
 		this->parameters.reference("extendHorz", extendHorz = 0, "pix"); // for avoiding border effects, include pixels beyond main area
 		this->parameters.reference("extendVert", extendVert = 0, "pix"); // for avoiding border effects, include pixels beyond main area
@@ -168,11 +186,17 @@ public:
 	virtual
 	void traverseChannelVert(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const;
 
+	inline
+	void setExtensions(int horz, int vert){
+		extendHorz = horz;
+		extendVert = vert;
+	}
 
 protected:
 
 	int extendHorz;
 	int extendVert;
+	double undetectQuality;
 
 };
 
@@ -368,6 +392,12 @@ struct ImpulseAvgConf : public BeanLike {
 	ImpulseAvgConf() : BeanLike(__FUNCTION__, "yes"){
 		this->parameters.reference("decay", decay = 0.9);
 	};
+
+	inline
+	ImpulseAvgConf(const ImpulseAvgConf & conf) : BeanLike(__FUNCTION__, "yes"){
+		this->parameters.reference("decay", decay = conf.decay);
+	};
+
 
 	double decay;
 
