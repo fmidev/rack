@@ -60,11 +60,21 @@ void Palette::load(const std::string &filename){
 
 	// TODO: drain::StringMapper formatter("[a-zA-Z0-9_]+");
 
-
 	std::ifstream ifstr;
 	ifstr.open(filename.c_str(), std::ios::in);
 	if (!ifstr.good()){
 		mout.error() << " opening file '" << filename << "' failed" << mout.endl;
+	};
+
+	load(ifstr);
+}
+
+void Palette::load(std::ifstream & ifstr){
+
+	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+
+	if (!ifstr.good()){
+		mout.error() << " opening file failed" << mout.endl;
 	};
 
 	_hasAlpha = false;
@@ -174,7 +184,8 @@ void Palette::load(const std::string &filename){
 		}
 
 	};
-	ifstr.close();
+
+	ifstr.close(); // ?
 
 }
 

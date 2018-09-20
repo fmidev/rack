@@ -135,6 +135,11 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 
 	dst.odim.quantity = odim.quantity;
 
+	drain::ReferenceMap typeRef;
+	typeRef.reference("type", dst.odim.type = odim.type);
+	typeRef.updateValues(encodingRequest);
+	dst.data.setType(dst.odim.type);
+
 	if (odim.gain != 0.0){ // NOTE: now dst.odim.gain at least default (1.0)
 		mout.warn() << "Init with use ODIM: " << EncodingODIM(odim)  << mout.endl;
 		//ProductOp::
@@ -145,8 +150,8 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 		if (drain::Type::call<drain::typeIsSmallInt>(dst.data.getType())){
 			dst.setPhysicalRange(getTypicalMin(inputODIM), getTypicalMax(inputODIM));
 			//mout.note() << EncodingODIM(inputODIM) << mout.endl;
-			mout.warn() << "small int: " << EncodingODIM(dst.odim)  << mout.endl;
-			mout.note() << "small int: " << dst.data  << mout.endl;
+			mout.debug()  << "small int: " << EncodingODIM(dst.odim)  << mout.endl;
+			mout.debug(1) << "small int: " << dst.data  << mout.endl;
 			// dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
 		}
 		else {
@@ -155,12 +160,11 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 		}
 	}
 
-	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
+	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
 	ProductBase::handleEncodingRequest(dst.odim, encodingRequest);
 
-
 	dst.data.setScaling(dst.odim.gain, dst.odim.offset);
-	mout.warn() << "final dst: " << dst.data  << mout.endl;
+	mout.debug() << "final dst: " << dst.data  << mout.endl;
 }
 
 
@@ -212,12 +216,12 @@ void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const Pola
 		mout.note() << this->conf.width  << mout.endl;
 		mout.note() << this->conf.widthM << mout.endl;
 		mout.note() << *this << mout.endl;
-		mout.warn() << "Applied width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
+		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
 		pixelConf.width = 1;
 	}
 
 	if (pixelConf.height == 0){
-		mout.warn() << "Applied height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.nrays) <<"), setting window height=1 " << mout.endl;
+		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.nrays) <<"), setting window height=1 " << mout.endl;
 		pixelConf.height = 1;
 	}
 
@@ -232,32 +236,14 @@ void DopplerWindowOp<W>::processData(const Data<PolarSrc> & vradSrc, Data<PolarD
 
 		typename W::conf_t pixelConf;
 		setPixelConf(pixelConf, vradSrc.odim);
-		/*
-		typename W::conf_t pixelConf(this->conf.widthM, this->conf.heightD,
-				this->conf.contributionThreshold, this->conf.invertPolar, this->conf.relativeScale); // *static_cast<double>(w*h));// require 20% of valid samples
-		pixelConf.updatePixelSize(vradSrc.odim);
-
-		if (pixelConf.width == 0){
-			mout.note() << this->conf.width  << mout.endl;
-			mout.note() << this->conf.widthM << mout.endl;
-			mout.note() << *this << mout.endl;
-			mout.warn() << "Applied width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< vradSrc.odim.rscale <<"), setting window width=1 " << mout.endl;
-			pixelConf.width = 1;
-		}
-
-		if (pixelConf.height == 0){
-			mout.warn() << "Applied height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/vradSrc.odim.nrays) <<"), setting window height=1 " << mout.endl;
-			pixelConf.height = 1;
-		}
-		*/
-
 
 		SlidingWindowOp<W> op(pixelConf);
 		mout.debug() << op << mout.endl;
 		mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
 		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
 		//op.process(vradSrc.data, dstData.data);
-		op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));
+		//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));
+		op.traverseChannel(vradSrc.data, dstData.data);
 
 		dstData.odim.prodpar = this->parameters.getValues();
 		//@~ dstData.updateTree();
@@ -351,28 +337,26 @@ public:
 	void processData(const Data<PolarSrc> & vradSrc, Data<PolarDst> & dstData) const {
 
 		drain::Logger mout(name, __FUNCTION__);
-		drain::FuzzyBell<double> fuzzyBell(0.0, 10.0); // 50m/s
-		typename DopplerAverageWindow2::conf_t pixelConf(fuzzyBell);
+		drain::FuzzyBell2<double> deviationQuality(1.0, 0.125); // 50m/s
+		typename DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
 		setPixelConf(pixelConf, vradSrc.odim);
 
-
-		mout.warn()  << "radarConf: " << this->conf.widthM << 'x' << this->conf.heightD << mout.endl;
-		mout.warn()  << "pixelConf: " << pixelConf.width << 'x' << this->conf.height << mout.endl;
+		mout.debug()  << "radarConf: " << this->conf.widthM << 'x' << this->conf.heightD << mout.endl;
+		mout.debug()  << "pixelConf: " << pixelConf.width << 'x' << this->conf.height << mout.endl;
 
 		SlidingWindowOp<DopplerAverageWindow2> op(pixelConf);
 		mout.debug() << op << mout.endl;
-		mout.warn()  << "provided functor: " << op.conf.ftor << mout.endl;
+		mout.debug()  << "provided functor: " << op.conf.ftor << mout.endl;
 
 		const drain::image::Geometry & g = vradSrc.data.getGeometry();
 
 		drain::image::Image dummy(g.getWidth(), g.getHeight());
 
 		PlainData<PolarDst> & dstQuality =  dstData.getQualityData("QIND");
-		//getQuantityMap().setQuantityDefaults(dstQuality.odim, "QIND");
 		getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
 		dstQuality.setGeometry(g.getWidth(), g.getHeight());
 
-		op.traverseChannel(vradSrc.data.getChannel(0), dummy,  dstData.data.getChannel(0), dstQuality.data.getChannel(0));
+		op.traverseChannel(vradSrc.data, dummy,  dstData.data, dstQuality.data);
 
 		dstData.odim.prodpar = this->parameters.getValues();
 	}

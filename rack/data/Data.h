@@ -265,6 +265,15 @@ public:
 		//data.setGeometry(data.);
 	}
 
+	template <class DT2>
+	inline
+	void copyEncoding(const PlainData<DT2> & srcData){
+		odim.importMap(srcData.odim);
+		data.setType(odim.type);
+		data.setScaling(odim.gain, odim.offset);
+		//data.setGeometry(data.);
+	}
+
 	inline
 	void setPhysicalRange(double min, double max){
 		data.setPhysicalScale(min, max);
@@ -279,7 +288,13 @@ public:
 		data.setGeometry(cols, rows);
 	}
 
-	/// Calls setTypeXX and setGeometry().
+	inline
+	void setGeometry(const drain::image::AreaGeometry & geometry){
+		odim.setGeometry(geometry.getWidth(), geometry.getHeight());
+		data.setGeometry(geometry);
+	}
+
+	/// Calls setEncoding() and setGeometry().
 	template <class T>
 	inline
 	void initialize(const T & type, size_t cols, size_t rows){
@@ -287,12 +302,18 @@ public:
 		setGeometry(cols, rows);
 	}
 
+	template <class T>
+	inline
+	void initialize(const T & type, const drain::image::AreaGeometry & geometry){
+		setEncoding(type);
+		setGeometry(geometry);
+	}
+
 	// Mark this data temporary so that it will not be save by Hi5::write().
 	inline
 	void setNoSave(bool noSave = true){ this->tree.data.noSave = noSave;};
 
 
-	//tree_t & tree;
 
 	image_t & data;
 
@@ -308,15 +329,7 @@ public:
 		//}
 	}
 
-	/*
-	inline void updateTree2(const tree_t & t) const {
-		std::cerr << "destructing const PlainData\n";
-	}
 
-	inline void updateTree2(tree_t & t) const {
-		std::cerr << "destructing non-const PlainData\n";
-	}
-	*/
 
 	// Possibly this should be somewhere else? (Too specific here?)
 	void createSimpleQualityData(drain::image::Image & qualityImage, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const;
@@ -334,15 +347,6 @@ public:
 
 protected:
 
-	/*
-	virtual inline
-	const tree_t & getTree() const { return this->tree; };
-
-	virtual inline
-	tree_t & getTree(){ return this->tree; } ;
-	*/
-
-	// mutable Image palette;
 
 };
 

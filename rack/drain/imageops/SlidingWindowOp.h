@@ -63,7 +63,8 @@ public:
 	SlidingWindowOp(typename W::conf_t & conf) : WindowOp<W>(conf, __FUNCTION__, ""){
 	};
 
-
+	virtual inline
+	~SlidingWindowOp(){};
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {

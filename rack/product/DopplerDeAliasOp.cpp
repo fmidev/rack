@@ -22,19 +22,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//**
-
-    Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
-
-    This file is part of AnoRack, a module of Rack for C++.
-
-    AnoRack is not free software.
-
  */
 
 #include <cmath>
@@ -49,465 +41,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Geometry.h"
 #include "radar/Doppler.h"
+#include "radar/PolarSmoother.h"
+
+#include "DopplerDeAliasWindow.h"
 
 #include "DopplerDeAliasOp.h"
 
 
 
 
+
 namespace rack {
-
-
-/// Doppler dealiasing window
-/**
- *  \tparam F - functor, e.g. drain::Fuzzifier used for scaling the result
- */
-/*
-template <class F>
-class DopplerDeal : public SlidingRadarWindow<F> {
-
- */
-
-class DopplerDeAliasConfig : public RadarWindowConfig {
-public:
-
-	//DopplerDeAliasConfig(const PolarODIM & odimSrc, int widthM=1500, double heightD=3.0) :
-	DopplerDeAliasConfig(int widthM=1500, double heightD=3.0) :
-		//RadarWindowConfig(odimSrc, width, height){
-		RadarWindowConfig(widthM, heightD){
-		//RadarWindowConfig(odimSrc.getBeamBins(widthM), odimSrc.getAzimuthalBins(heightD)){
-	};
-
-};
-
-class DopplerDeAliasWindow : public SlidingRadarWindow<DopplerDeAliasConfig> {
-//drain::image::SlidingWindowT<> { // TODO: move to Analysis.h, Templatize => SlidingWindowT
-
-
-public:
-
-	DopplerDeAliasWindow(const DopplerDeAliasConfig & conf, const PolarODIM & odimOut) :
-		SlidingRadarWindow<DopplerDeAliasConfig>(conf) , odimOut(odimOut), functor(NULL), dSpan(3), dSpan2(2.0*dSpan) { };
-
-	inline
-	void setDstFrame2(drain::image::Image &d2){
-		dst2.setView(d2);
-	}
-
-	inline
-	void setImageLimits() const {
-		src.adjustCoordinateHandler(coordinateHandler);
-	}
-
-	virtual
-	void initialize(){
-
-		drain::Logger mout("DopplerDeAliasWindow", __FUNCTION__);
-		//mout.warn() << mout.endl;
-
-		setImageLimits();
-		setLoopLimits();
-		this->location.setLocation(0,0);
-
-		//NI = (this->odimSrc.NI != 0.0) ? this->odimSrc.NI : 0.01*this->odimSrc.wavelength * this->odimSrc.lowprf / 4.0;
-		NI = this->odimSrc.getNyquist();
-
-		mout.debug() << "NI=" << NI << mout.endl;
-
-		// TODO use src.
-		NI2 = 2.0 * NI;
-
-		// Azimuthal resolution (radians per beam).
-		BEAM2RAD = 2.0*M_PI/src.getHeight(); //2.0*M_PI/conf.odimSrc.nrays;
-
-		/// Set maximum quality to undetectValue, and 50% quality at NI/4.
-		diffQuality.set(0.0, NI/1.0);
-
-		matrixInformation.set(0.0, -0.2, 250);
-
-		area = static_cast<double>(conf.width * conf.height);
-
-		vMax = odimOut.getMax();
-		const double vMin = odimOut.getMin();
-
-		const drain::Type t(odimOut.type);
-		if (drain::Type::call<drain::typeIsInteger>(t)){
-			mout.note() << "AMVU, AMVV: vMin=" << vMin << ", vMax=" << vMax << mout.endl;
-			if (drain::Type::call<drain::typeIsSmallInt>(t)){
-				// values
-				unsigned int n = 1 << 8*drain::Type::call<drain::sizeGetter>(t);
-				mout.note() << "AMVU, AMVV: resolution=" << static_cast<double>(vMax-vMin)/static_cast<double>(n) << "m/s / bit" << mout.endl;
-			}
-		}
-
-		//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
-
-		if (!functorSetup.empty()){
-			const drain::FunctorBank & functorBank = drain::getFunctorBank();
-			const size_t index = functorSetup.find(':');
-			const std::string functorName = functorSetup.substr(0, index);
-			if (functorBank.has(functorName)){
-				mout.note() << "using "<< functorName << mout.endl;
-				drain::UnaryFunctor & test = functorBank.get(functorName).clone();
-				functor = & test; //functorBank.get(functorName).clone(); // todo fbank exeption
-				if (index != std::string::npos){
-					functor->setParameters(functorSetup.substr(index+1), '=', ':');
-				}
-				mout.note() << *functor << mout.endl;
-				mout.warn() << "map alt: " << test(10.0)<< mout.endl;
-				mout.warn() << "map alt: " << (*functor)(10.0)<< mout.endl;
-			}
-			else {
-				mout.warn() << "could not find functor '" << functorName << "'" << mout.endl;
-				functor = NULL;
-			}
-		}
-
-		if (functor){
-			mout.info() << "functor='" << *functor << "'" << mout.endl;
-		}
-
-	}
-
-
-	//const PolarODIM & conf.odimSrc; // NOW in conf!
-
-
-	const PolarODIM & odimOut;
-
-	std::string functorSetup; // TODO: use that of Window::
-
-	mutable double BEAM2RAD;
-
-	//mutable double signCos;
-	//mutable double signSin;
-
-protected:
-
-
-	/// Handling altitude
-	drain::UnaryFunctor *functor; // pointer :-(
-
-	drain::FuzzyBell2<double> diffQuality;
-	drain::FuzzyBell2<double> matrixInformation;
-
-	virtual
-	void addLeadingValue(double x){};
-
-	virtual
-	void removeTrailingValue(double x){};
-
-	/// Add the pixel located at (p.x,p.y) to the window statistic/quantity.
-	/**
-	 *   Exceptionally, uses locationLead because derivatives are computed \em around Point p .
-	 */
-	virtual
-	void addPixel(Point2D<int> &p){
-
-		diff = 0.0; // debugging only
-
-		// Compute derivative
-		locationTmp.setLocation(p.x, p.y - dSpan);
-		if (!coordinateHandler.validate(locationTmp))
-			return;
-		d1 = src.get<double>(locationTmp);
-
-		locationTmp.setLocation(p.x, p.y + dSpan);
-		if (!coordinateHandler.validate(locationTmp))
-			return;
-		d2 = src.get<double>(locationTmp);
-
-		if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata) && (d2 != odimSrc.undetect) && (d2 != odimSrc.nodata)){
-
-			w += 1.0;
-
-			d1 = odimSrc.scaleForward(d1);
-			d2 = odimSrc.scaleForward(d2);
-			deriveDifference(d1, d2, diff);
-
-			/// Consider LUT here
-			//c = signSin *sin(p.y * BEAM2RAD);
-			//s = signCos *cos(p.y * BEAM2RAD);
-
-			// ORIG
-			c = -sin(p.y * BEAM2RAD);
-			s = +cos(p.y * BEAM2RAD);
-
-			sTs += s*s;
-			cTc += c*c;
-			cTs += c*s;
-			sTd += s*diff;
-			cTd += c*diff;
-
-			// Experimental
-			locationTmp.setLocation(p);
-			coordinateHandler.handle(locationTmp);
-			//if (coordinateHandler.validate(locationTmp)){ // always ok, because between span; but handling must be done!
-			d1 = src.get<double>(locationTmp);
-			if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata)){
-				d1 = odimSrc.scaleForward(d1)*M_PI/this->NI;
-				sV += sin(d1);
-				cV += cos(d1);
-			}
-
-			// Other
-			sumDiff  += diff; // weight
-			sumDiff2 += (diff*diff); // weight
-
-		}
-
-
-
-	};
-
-	/// Removes the pixel located at (p.x,p.y) from the window statistic/quantity.
-	virtual
-	void removePixel(Point2D<int> &p){
-
-		// Compute derivative
-		locationTmp.setLocation(p.x, p.y - dSpan);
-		if (!coordinateHandler.validate(locationTmp))
-			return;
-		d1 = src.get<double>(locationTmp);
-
-		locationTmp.setLocation(p.x, p.y + dSpan);
-		if (!coordinateHandler.validate(locationTmp))
-			return;
-		d2 = src.get<double>(locationTmp);
-
-		if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata) && (d2 != odimSrc.undetect) && (d2 != odimSrc.nodata)){
-
-			w -= 1.0;
-
-			d1 = odimSrc.scaleForward(d1);
-			d2 = odimSrc.scaleForward(d2);
-			deriveDifference(d1, d2, diff);
-
-			/// Consider LUT here
-			//s = signCos *cos(p.y * BEAM2RAD);
-			//c = signSin *sin(p.y * BEAM2RAD);
-
-			// ORIG
-			c = -sin(p.y * BEAM2RAD);
-			s = +cos(p.y * BEAM2RAD);
-
-			sTs -= s*s;
-			cTc -= c*c;
-			cTs -= c*s;
-			sTd -= s*diff;
-			cTd -= c*diff;
-
-			// Experimental!
-			locationTmp.setLocation(p);
-			coordinateHandler.handle(locationTmp);
-			//if (coordinateHandler.validate(locationTmp)){ // always ok, because between span; but handling must be done!
-			d1 = src.get<double>(locationTmp);
-			if ((d1 != odimSrc.undetect) && (d1 != odimSrc.nodata)){
-				d1 = odimSrc.scaleForward(d1)*M_PI/this->NI;
-				sV -= sin(d1);
-				cV -= cos(d1);
-			}
-
-			sumDiff  -= diff; // weight
-			sumDiff2 -= (diff*diff); // weight
-
-		}
-
-	};
-
-	inline
-	virtual
-	void write(){
-
-
-		div = (sTs*cTc - cTs*cTs); // TODO check
-
-		//if (abs(div) < 0.01)			return;
-		if (abs(div) < 0.01){
-			dst.put(location.x,  location.y, odimOut.undetect);
-			dst2.put(location.x, location.y, odimOut.undetect);
-			dstWeight.put(location.x, location.y, 0);
-			return;
-		}
-
-		/*
-		 *  Matrix =
-		 *  cTc  cTs  *  sTd
-		 *  cTs  sTs  *  cTd
-		 *
-		 */
-		u = ( cTc*sTd - cTs*cTd) / div;
-		v = (-cTs*sTd + sTs*cTd) / div;
-
-		if ((abs(u) >= vMax) || (abs(v) >= vMax)){
-			dst.put(location.x,  location.y, odimOut.nodata);
-			dst2.put(location.x, location.y, odimOut.nodata);
-			dstWeight.put(location.x, location.y, 0.1);
-			return;
-		}
-
-
-		/// Relative information (determinant divided by max volume)
-		//quality = div / sqrt((sTs*sTs + cTs*cTs)*(cTc*cTc + cTs*cTs));
-		//quality = 1.0;
-		quality = w/area; // not good! conv spots may behave nice.
-		// quality = sqrt(sV*sV + cV*cV)/w; // count
-		//quality = div / (u*u+v*v);
-
-		// quality *=  1.0/(1.0 + sqrt((sumDiff2 - sumDiff*sumDiff/w) /w));
-
-		if (functor){
-			quality *= (*functor)(Geometry::heightFromEtaBeam(odimSrc.elangle*drain::DEG2RAD, odimSrc.getBinDistance(location.x)));
-			/*
-			quality = Geometry::heightFromEtaBeam(conf.odimSrc.elangle*DEG2RAD, conf.odimSrc.getBinDistance(location.x));
-			if (isDiag(50)){
-				std::cerr << quality << " => ";
-			}
-			quality = (*functor)(quality);
-			//
-			if (isDiag(50)){
-				std::cerr << quality << '\n';
-				//std::cerr << *functor << '\n';
-			}
-			*/
-		}
-		//odimOut.getMin();
-
-		dst.put(location.x,  location.y, odimOut.scaleInverse(u));
-		dst2.put(location.x, location.y, odimOut.scaleInverse(v));
-
-		dstWeight.put(location.x, location.y, 250.0 * quality); //diffQuality(diff));
-		//dstWeight.put(location.x, location.y, diffQuality(diff));
-
-	};
-
-
-protected:
-
-	drain::image::ImageView dst2;
-
-	virtual
-	void clear(){
-
-		//drain::Logger mout("DopplerDeAliasWindow", __FUNCTION__);
-		//mout.warn() << mout.endl;
-
-		w = 0.0;
-
-		sTs = 0.0;
-		cTc = 0.0;
-		cTs = 0.0;
-		sTd = 0.0;
-		cTd = 0.0;
-
-		/// Experimental
-		sumDiff  = 0.0;
-		sumDiff2 = 0.0;
-		sV = 0.0;
-		cV = 0.0;
-
-	}
-
-	bool isDiag(int step){
-		return (location.x == location.y) && (location.x % step == 0);
-	}
-
-	/// Given two \e aliased doppler speeds computes the difference. Assumes that it is less than Nyquist velocity.
-	// Todo: return also quality
-	inline
-	void deriveDifference(double v1, double v2, double & dOmega){
-
-		/// Raw value (m/s)
-		dOmega = v2 - v1;
-		if (dOmega < -this->NI)
-			dOmega += NI2;
-		else if (dOmega > this->NI)
-			dOmega -= NI2;
-
-		dOmega = dOmega/(dSpan2*BEAM2RAD);
-	}
-
-
-	//drain::LinearScaling velocityScaling;
-
-private:
-
-	double u;
-	double v;
-
-	mutable double vMax;
-
-	// Matrix determinant
-	double div;
-
-	// Output quality
-	double quality;
-
-	// Used for computing derivatives in addPixel/removePixel
-	Point2D<int> locationTmp;
-
-	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
-	//mutable double NI;
-
-	/// Nyquist range = 2*NI.
-	mutable double NI2;
-
-
-	/// The span of bins when approximating the derivative with
-	const int    dSpan;
-	/// dSpan2 = 2.0*dSpan
-	const double dSpan2;
-
-
-	double diff;
-
-
-
-	/// Statistics
-
-	//  sum of differences
-	double sumDiff;
-	//  sum differences Squared
-	double sumDiff2;
-
-	// count/weight (quality weight)
-	double w;
-	// area, const (max weight)
-	double area;
-
-	/// Speed derivative projected on beam, sine
-	double sTd;
-
-	/// Speed derivative projected on beam, cosine
-	double cTd;
-
-	/// Sine squared
-	double sTs;
-
-	/// Cosine squared
-	double cTc;
-
-	/// Sine x cosine
-	double cTs;
-
-
-	// Experimental
-	/// sum of velocity sine
-	double sV;
-	/// sum of velocity cosine
-	double cV;
-
-
-
-	/// TMP variables
-
-	// Speed differences
-	double d1,d2;
-
-	/// Sine, cosine
-	double s,c;
-
-};
 
 
 void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
@@ -522,8 +66,8 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 		return;
 	}
 
-	//PolarODIM srcODIM(srcData.odim);  // NI now correct
-	const PolarODIM & srcODIM = srcData.odim;  // NI now correct
+	//PolarODIM srcData.odim(srcData.odim);  // NI now correct
+	//const PolarODIM & srcODIM = srcData.odim;  // NI now correct
 
 	/*if (srcData.odim.NI == 0.0){
 		mout.warn() << "NI (Nyquist interval) zero or not found." << mout.endl;
@@ -544,16 +88,16 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	ProductBase::handleEncodingRequest(dstDataU.odim, encodingRequest);
 	mout.debug(2) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 	dstDataU.data.setType(dstDataU.odim.type);
-	setGeometry(srcODIM, dstDataU);
+	setGeometry(srcData.odim, dstDataU);
 	mout.debug() << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 
 	ProductBase::applyODIM(dstDataV.odim, odim, true);
 	ProductBase::handleEncodingRequest(dstDataV.odim, encodingRequest);
 	dstDataV.data.setType(dstDataV.odim.type);
-	setGeometry(srcODIM, dstDataV);
+	setGeometry(srcData.odim, dstDataV);
 
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
-	setGeometry(srcODIM, dstQuality);
+	setGeometry(srcData.odim, dstQuality);
 
 	/*
 	mout.warn() << "scr" << srcData << mout.endl;
@@ -561,12 +105,21 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	mout.warn() << "V" << dstDataV << mout.endl;
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
 	mout.warn() << "QIND" << dstQuality << mout.endl;
-	*/
+	 */
 	const DopplerDeAliasConfig conf(widthM, heightD);
+
+
+	if (srcData.hasQuality()){
+		DopplerDeAliasWindowWeighted window(conf, dstDataU.odim);
+		mout.warn() << "WEIGHTED, not used yet" << mout.endl;
+	}
+	else {
+
+	}
 
 	DopplerDeAliasWindow window(conf, dstDataU.odim);
 
-	window.conf.updatePixelSize(srcODIM);
+	window.conf.updatePixelSize(srcData.odim);
 	//window.resetAtEdges = true;
 
 	// window.signCos = +1; //(testSigns & 1) ? +1 : -1;
@@ -580,31 +133,79 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 	window.functorSetup = altitudeWeight;
 
-	// MAIN OPERATION
+	// MAIN OPERATION !
 	window.run();
 
 
 	dstDataU.odim.prodpar = getParameters().getKeys();
-	dstDataU.odim.update(srcODIM); // date, time, etc
+	dstDataU.odim.update(srcData.odim); // date, time, etc
+
+	dstDataU.data.properties.importMap(dstDataU.odim);
+	dstDataV.data.properties.importMap(dstDataV.odim);
+
+
+	//const QuantityMap & qm = getQuantityMap();
+
+	/// Derived products and post-processing
+
+	//drain::IdentityFunctor ident; RadarWindowConfig avgConf(ident, 2.0*widthM, 2.0*heightD);
+	//RadarWindowConfig avgConf(2500, 11);
+
+
+	//drain::getLog().setVerbosity(20);
+
+	/*
+	PlainData<PolarDst> & dstDataU2   = dstProduct.getData("AMVU2");
+	dstDataU2.copyEncoding(dstDataU);
+	dstDataU.data.setScaling(dstDataU.odim.gain, dstDataU.odim.offset);
+	dstDataU2.setGeometry(dstDataU.data.getGeometry());
+	//mout.warn() << "Src for PolarSmoother::filter: " << EncodingODIM(dstDataU2.odim) << mout.endl;
+	//setGeometry(srcData.odim, dstDataU2);
+	PolarSmoother::filter(dstDataU.odim, dstDataU.data, dstDataU2.data, 5500);
+	//mout.note()  << dstDataU2 << mout.endl;
+
+
+
+	RadarWindowConfig avgConf(5*widthM, 5*heightD);
+	RadarWindowAvg<RadarWindowConfig> avgWindow(avgConf);
+	avgWindow.conf.updatePixelSize(srcData.odim);
+	PlainData<PolarDst> & dstDataV2   = dstProduct.getData("AMVV2");
+	dstDataV2.copyEncoding(dstDataV);
+	dstDataV2.setGeometry(dstDataV.data.getGeometry());
+	drain::image::SlidingWindowOp<RadarWindowAvg<RadarWindowConfig> > avg2(avgConf);
+	//mout.warn() << dstDataV2.data.getScaling() << mout.endl;
+	//mout.warn() << dstDataV2.data.getChannel(0).getScaling() << mout.endl;
+	mout.note() << "Calling (SlidingWindowOp)avg2.process" << mout.endl;
+	avg2.process(dstDataV.data, dstDataV2.data);
+	*/
+	//mout.warn() << EncodingODIM(dstDataV2.odim) << mout.endl;
 
 	/// If desired, run also new, dealiased VRAD field
-	//
+	//nyquist
 	if (nyquist != 0.0){
+
+		dstDataU.odim.NI = nyquist; // used for dataset-level metadata
 
 		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased ("re-aliased")
 
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
 		//const double dstNI = abs(odim.NI);
+		dstDataVRAD.odim.NI = nyquist;
 		dstDataVRAD.odim.setRange(-nyquist, +nyquist);
 		mout.info() << "dealiasing (u,v) to VRAD " << mout.endl;
 		mout.info() << "src VRAD  " << EncodingODIM(srcData.odim) << mout.endl;
 		mout.info() << "dst VRADC " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
-		setGeometry(srcODIM, dstDataVRAD);
-		const double srcNI2 = 2.0*srcODIM.getNyquist(); // 2.0*srcData.odim.NI;
+		setGeometry(srcData.odim, dstDataVRAD);
+		const double srcNI2 = 2.0*srcData.odim.getNyquist(); // 2.0*srcData.odim.NI;
 		const double min = dstDataVRAD.data.getMin<double>();
 		const double max = dstDataVRAD.data.getMax<double>();
-		double azm;
+
+		mout.info() << "dst VRADC " << EncodingODIM(dstDataVRAD.odim) << ", [" << min << ',' << max << ']' << mout.endl;
+
+
+		/// Azimuth in radians
+		double azmR;
 
 		/// Original value in VRAD
 		double vOrig;
@@ -628,9 +229,10 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 		for (size_t j = 0; j < dstDataVRAD.data.getHeight(); ++j) {
 
-			azm = window.BEAM2RAD * static_cast<double>(j);
+			azmR = srcData.odim.getBeamWidth() * static_cast<double>(j) ; // window.BEAM2RAD * static_cast<double>(j);
 
 			for (size_t i = 0; i < dstDataVRAD.data.getWidth(); ++i) {
+
 				address = dstDataVRAD.data.address(i,j);
 				u = dstDataU.data.get<double>(address);
 				v = dstDataV.data.get<double>(address);
@@ -653,27 +255,32 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 				}
 
 
-				if ((u != dstDataU.odim.undetect) && (u != dstDataU.odim.nodata) && (v != dstDataV.odim.undetect) && (v != dstDataV.odim.nodata)){
+				if (dstDataU.odim.isValue(u) && dstDataV.odim.isValue(v)){
 
 					u = dstDataU.odim.scaleForward(u);
 					v = dstDataV.odim.scaleForward(v);
-					vReproj = project(azm, u,v);
+					vReproj = project(azmR, u,v);
 
 					if (MATCH_ALIASED && !ORIG_UNUSABLE){
 						vOrig = srcData.odim.scaleForward(vOrig);
-						srcODIM.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
-						srcODIM.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
+						srcData.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
+						srcData.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
 						vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
 					}
 
 					vReproj = dstDataVRAD.odim.scaleInverse(vReproj);
+					/*
+					if ((i==j))
+						if ((i & 15) == 0)
+							std::cout << " outo: " << vReproj << '\n';
+					 */
 					if ((vReproj > min) && (vReproj < max)){ // continue processing
+						//dstDataVRAD.data.put(address, vReproj);
 						dstDataVRAD.data.put(address, vReproj);
-						//u = unitVReproj.x-unitV.x
 						dstQuality.data.put(address, dstQuality.odim.scaleInverse(0.5 + (unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y)/2.0) );
 					}
 					else {
-						dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata);
+						dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata); // rand() & 0xffff); //
 						dstQuality.data.put(address, 0);
 					};
 				}
@@ -761,7 +368,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	/*
 	if (odim.NI < 0.0){
 		mout.warn() << "deviation, " << srcData << mout.endl;
-		SlidingWindowOpT<RadarWindowDopplerDev<PolarODIM> > vradDevOp; // op not needed
+		SlidingWindowOp<RadarWindowDopplerDev<PolarODIM> > vradDevOp; // op not needed
 		vradDevOp.setSize(width, height);
 		vradDevOp.window.setSize(width, height);
 		vradDevOp.window.countThreshold = (width*height)/5;  // require 20% of valid samples
@@ -772,7 +379,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 		vradDevOp.window.odimSrc = srcData.odim;
 		vradDevOp.filter(srcData.data, dstQuality.data);
 	}
-	*/
+	 */
 
 	//drain::image::File::write(dst,"DopplerDeAliasOp.png");
 	mout.debug(3) << window.odimSrc << mout.endl;
@@ -782,6 +389,81 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 
 
+void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
+	drain::Logger mout(name, __FUNCTION__);
+
+	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
+
+	if (srcData.data.isEmpty()){
+		mout.warn() << "data empty" << mout.endl;
+		return;
+	}
+	// setEncoding(srcData.odim, dstData.odim);
+	// DopplerDeAliasWindow dw;
+
+	w.adjustIndices(srcData.odim);
+	if (w.ray2 < w.ray1){
+		w.ray2 += 360;
+	}
+	mout.warn() << "rays: " << w.ray1 << '-' << w.ray2 << mout.endl;
+	mout.warn() << "NI: " << srcData.odim.getNyquist() << mout.endl;
+
+	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
+
+	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
+	//mout.warn() << "size " << count << mout.endl;
+
+	PlainData<PolarDst> & dstDataU = dstProduct.getData("AZM");
+	PlainData<PolarDst> & dstDataV = dstProduct.getData("DIFF");
+
+	dstDataU.setEncoding(typeid(double));
+	dstDataU.data.setGeometry(count, 1);
+	dstDataU.odim.quantity = "AZM"; // ???
+	dstDataU.data.fill(dstDataU.odim.undetect);
+
+	dstDataV.setEncoding(typeid(double));
+	dstDataV.data.setGeometry(count, 1);
+	dstDataV.odim.quantity = "DIFF";
+	dstDataV.data.fill(dstDataV.odim.undetect);
+
+	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
+	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;
+
+
+	double azm, v1,v2,vDiff; // ,x,y;
+	size_t index = 0;
+
+	int j1;
+	int j2;
+
+	for (int j=w.ray1; j<w.ray2; ++j){
+
+		azm = srcData.odim.getBeamWidth() * static_cast<double>(j);
+		j1 = (j-1 + srcData.odim.nrays) % srcData.odim.nrays;
+		j2 = (j+1 + srcData.odim.nrays) % srcData.odim.nrays;
+
+		for (int i = w.bin1; i<w.bin2; ++i){
+
+			v1 = srcData.data.get<double>(i, j1);
+			v2 = srcData.data.get<double>(i, j2);
+
+			if (srcData.odim.deriveDifference(v1, v2, vDiff)) {
+				// mout.warn() << "data d: " << (double)d << mout.endl;
+				dstDataU.data.put(index, azm*drain::RAD2DEG);
+				dstDataV.data.put(index, vDiff/2.0); // span=2 between j1 and j2
+			}
+			else {
+				dstDataU.data.put(index, dstDataU.odim.nodata);
+				dstDataV.data.put(index, dstDataV.odim.nodata);
+			}
+			// mout.warn() << '\t' << index << mout.endl;
+			++index;
+		}
+	}
 
 }
+
+
+
+} // ::rack

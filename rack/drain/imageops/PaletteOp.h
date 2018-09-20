@@ -57,7 +57,10 @@ class Palette : public std::map<double,PaletteEntry > {
 
 public:
 
+	/// Loads a palette from text file
+	void load(std::ifstream & ifstr);
 
+	/// Loads a palette from text file
 	void load(const std::string &filename);
 
 	inline

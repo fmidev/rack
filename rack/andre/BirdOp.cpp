@@ -282,15 +282,6 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		applyOperator(zdrFuzzifier, tmp, "ZDR_NONZERO", zdrSrc, dstData, dstProductAux);
 		//applyOperator(zdrFuzzifier, tmp, "ZDR_HIGH", zdrSrc, dstData, dstProductAux);
 
-		/*
-		SlidingWindowOpT<RadarWindowStdDev<FuzzyStepsoid<double,double> > > stdDevOp;
-		const int w = static_cast<int>(windowWidth/zdrSrc.odim.rscale);
-		const int h = static_cast<double>(zdrSrc.odim.nrays) * windowHeight/360.0;
-		stdDevOp.window.setSize(w, h);
-		stdDevOp.window.functor.set( zdrDevMin, 0.25*zdrDevMin, 255.0);
-		stdDevOp.window.odimSrc = zdrSrc.odim;
-		applyOperator(stdDevOp, tmp, "ZDR_DEV", zdrSrc, dstData, dstProductAux);
-		*/
 
 	}
 

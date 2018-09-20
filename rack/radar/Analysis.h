@@ -217,7 +217,7 @@ public:
 	/**
 	 *
 	 */
-	RadarWindowCore() {
+	RadarWindowCore() : NI(0.0) {
 	}
 
 	//const PolarODIM & odimSrc;
@@ -321,13 +321,19 @@ public:
 	virtual
 	~SlidingRadarWindow(){};
 
+	/// Sets input image and retrieves ODIM metadata from image Properties.
+	/**
+	 *
+	 */
 	void setSrcFrame(const drain::image::ImageFrame & src){
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+		mout.warn()  << "src Scaling0: " << src.getScaling() << mout.endl;
 		this->odimSrc.updateFromMap(src.getProperties());
 		mout.info()  << "NI=" << this->odimSrc.getNyquist() << mout.endl;
-		mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
+		mout.note() << "copied odim: " << this->odimSrc << mout.endl;
 
 		SlidingWindow<C, R>::setSrcFrame(src);
+		mout.warn()  << "src Scaling: " << src.getScaling() << mout.endl;
 	}
 
 	/*
@@ -363,14 +369,20 @@ protected:
 	/// To compensate polar geometry, set applicable range for pixel area scaling.
 	void setRangeNorm(){
 
+		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+
+		if (this->odimSrc.nrays == 0)
+			mout.error() << "src odim.nrays==0" << mout.endl;
+
 		/// Distance [bins] at which a bin is (nearly) square, ie. beam-perpendicular and beam-directional steps are equal.
 		const double r = static_cast<double>(this->odimSrc.nrays) / (2.0*M_PI);
+
 
 		rangeNorm    = static_cast<int>(r);
 		/// Distance [bins] at which a single azimuthal step is equal to conf.height steps at rangeNorm.
 		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.height));
 		if ((rangeNorm <= 0) || (rangeNormEnd >= this->odimSrc.nbins)){
-			drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
+
 			mout.note() << rangeNorm << '-' << rangeNormEnd << mout.endl;
 		}
 		//
@@ -435,11 +447,15 @@ protected:
 };
 
 /**
- *  \tparam F - functor, e.g. drain::Fuzzifier used for scaling the result
+ *  \tparam C - RadarWindowConfig
+ *
  */
 template <class C>
 class RadarWindowAvg : public SlidingRadarWindow<C> {
 public:
+
+
+	RadarWindowAvg(const C & cnf) : SlidingRadarWindow<C>(cnf), sum(0.0), count(0) {};
 
 	RadarWindowAvg(int width=0, int height=0) : SlidingRadarWindow<C>(width,height), sum(0.0), count(0) {};
 
@@ -447,6 +463,8 @@ public:
 	virtual
 	inline
 	~RadarWindowAvg(){};
+
+	typedef RadarWindowAvg<C> unweighted;
 
 protected:
 
@@ -460,26 +478,24 @@ protected:
 		count = 0;
 	};
 
-	virtual
-	inline
+	virtual	inline
 	void removeTrailingValue(double x){
 		sum -= x;
 		--count;
 	};
 
-	virtual
-	inline
+	virtual	inline
 	void addLeadingValue(double x){
 		sum += x;
 		++count;
 	};
 
-	virtual
-	inline
+	virtual	inline
 	void write(){
 		if (count > 0)
-			this->dst.put(this->location, this->fuzzifier(sum/static_cast<double>(count)));
-		//dst.put(location, odimSrc.scaleInverse(sum/static_cast<double>(count)));
+			this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(sum/static_cast<double>(count)));
+		else
+			this->dst.put(this->location, this->odimSrc.undetect); // ?
 	};
 
 
@@ -548,8 +564,11 @@ protected:
 
 };
 
+/// Sliding window for computing standard deviation of scalar quantities.
 /**
  *  \tparam F - functor, e.g. drain::Fuzzifier used for scaling the result
+ *
+ *  \see DopplerDevWindow for respective operator for Doppler data [VRAD].
  */
 template <class C>
 class RadarWindowStdDev : public SlidingRadarWindow<C> {

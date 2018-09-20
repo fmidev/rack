@@ -138,7 +138,7 @@ public:
 	virtual inline
 	void setSrcFrames(const ImageTray<const Channel> & srcTray){
 
-		Logger mout("GaussianStripe", __FUNCTION__);
+		Logger mout("WindowCore", __FUNCTION__);
 
 		if (srcTray.empty()){
 			mout.error() << "src: no channels" << mout.endl;
@@ -149,7 +149,10 @@ public:
 			mout.warn()  << "src: multiple channels" << mout.endl;
 		}
 
+		//mout.warn()  << "scale:" << srcTray.get(0).getScaling() << mout.endl;
+		//mout.note()  << "scale:" << srcTray.get(0).getChannel(0).getScaling() << mout.endl;
 		src.setView(srcTray.get(0));
+		//mout.warn()  << "scale:" << src.getScaling() << mout.endl;
 
 		if (!srcTray.alpha.empty()){
 			setSrcFrameWeight(srcTray.getAlpha(0));

@@ -48,7 +48,9 @@ public:
 	inline
 	AreaGeometry() : width(0), height(0), area(0){};
 
-    void setWidth(size_t weight);
+	AreaGeometry(size_t width, size_t height=1) : width(width), height(height), area(width*height){};
+
+    void setWidth(size_t width);
 
     void setHeight(size_t height);
 

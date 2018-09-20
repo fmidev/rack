@@ -189,6 +189,11 @@ public:
 		setTypeDefaults(this->type);
 	}
 
+	/// Returns true for a valid measurement value, false for \c undetect and \c nodata marker values.
+	inline
+	bool isValue(double x) const {
+		return (x != undetect) && (x != nodata);
+	}
 
 	/// Converts a quantity from storage scale: y = offset + gain*y .
 	inline

@@ -43,30 +43,11 @@ const int CoordinatePolicy::WRAP(2);
 const int CoordinatePolicy::MIRROR(3);
 const int CoordinatePolicy::POLAR(4);
 
-/*
-CoordinatePolicy::CoordinatePolicy(int policy) : xUnderFlowPolicy(policy), xOverFlowPolicy(policy),
-		yUnderFlowPolicy(policy), yOverFlowPolicy(policy) {
-}
-
-CoordinatePolicy::CoordinatePolicy(int xUnderFlow, int yUnderFlow, int xOverFlow, int yOverFlow) :
-		xUnderFlowPolicy(xUnderFlow), xOverFlowPolicy(xOverFlow),
-		yUnderFlowPolicy(yUnderFlow), yOverFlowPolicy(yOverFlow) {
-}
-*/
-
-/*
-void CoordinatePolicy::setPolicy(const int & xUnderFlowPolicy, const int & yUnderFlowPolicy,  const int & xOverFlowPolicy, const int & yOverFlowPolicy){
-	this->xUnderFlowPolicy = xUnderFlowPolicy;
-	this->yUnderFlowPolicy = yUnderFlowPolicy;
-	this->xOverFlowPolicy  = xOverFlowPolicy;
-	this->yOverFlowPolicy  = yOverFlowPolicy;
-}
-*/
 
 
-CoordinateHandler2D::CoordinateHandler2D(){
-	setPolicy(CoordinatePolicy()); // turha
-	setLimits(1,1);
+CoordinateHandler2D::CoordinateHandler2D(const drain::image::AreaGeometry & area, const CoordinatePolicy &p){
+	setLimits(area.getWidth(), area.getHeight());
+	setPolicy(p);
 }
 
 CoordinateHandler2D::CoordinateHandler2D(int xUpperLimit, int yUpperLimit, const CoordinatePolicy &p){

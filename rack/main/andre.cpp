@@ -40,10 +40,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/DetectorOp.h"
 
 #include "andre/PrecipOp.h"
+
 #include "andre/BioMetOp.h"
 #include "andre/BirdOp.h"
 #include "andre/ClutterMapOp.h"
 #include "andre/CCorOp.h"
+#include "andre/DopplerNoiseOp.h"
 #include "andre/EmitterOp.h"
 #include "andre/HydroClassBasedOp.h"
 #include "andre/JammingOp.h"
@@ -167,6 +169,7 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<PrecipOp>   precip; // ?
 	static AnDReLetAdapter<BiometOp>   biomet;
 	static AnDReLetAdapter<BirdOp>     bird;
+	static AnDReLetAdapter<DopplerNoiseOp> dopplerNoise;
 	static AnDReLetAdapter<EmitterOp> emitter;
 	static AnDReLetAdapter<InsectOp>   insect;
 	static AnDReLetAdapter<JammingOp> jamming;

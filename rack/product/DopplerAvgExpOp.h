@@ -29,67 +29,34 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef DOPPLER_OP_H_
-#define DOPPLER_OP_H_
+#ifndef DOPPLER_AvgExpOP_H_
+#define DOPPLER_AvgExpOP_H_
 
-#include "PolarProductOp.h"
-
-//#include "radar/Doppler.h"
-#include "radar/PolarSector.h"
+#include "DopplerOp.h"
 
 
 namespace rack {
 
-
-/// Base class for computing products using Doppler speed [VRAD] data.
-/**
- *
- *  \see DopplerWindowOp
- */
-class DopplerOp : public PolarProductOp {
+class DopplerAvgExpOp : public PolarProductOp {
 public:
 
-
-	DopplerOp() : PolarProductOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
-		parameters.append(w.getParameters());
-		dataSelector.quantity = "^(VRAD|VRADH)$";
-		dataSelector.count = 1;
-	};
-
-	virtual inline ~DopplerOp(){};
-
-	mutable PolarSector w;
-
-
-protected:
-
-	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
-		dataSelector.quantity = "VRAD";
-		dataSelector.count = 1;
-	}
-
-	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
-
-
-};
-
-// for Testing
-class DopplerModulatorOp : public PolarProductOp {
-public:
-
-	DopplerModulatorOp() : PolarProductOp(__FUNCTION__, "Projects Doppler") {
+	DopplerAvgExpOp() : PolarProductOp(__FUNCTION__, "Doppler field smoother with exponential decay weighting") {
 		parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
-		parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]");
+		parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
 		dataSelector.count = 1;
-		dataSelector.quantity = "VRAD";
+		//dataSelector.quantity = "VRAD";
+		dataSelector.quantity = "DBZH";
 		//odim.quantity = "RESP";
-		odim.quantity = "VRAD";
+		//odim.quantity = "VRAD";
+		odim.quantity = "DBZH";
 		odim.type = "S";
 	}
 
 	virtual
 	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
+
+	virtual
+	void processData1D(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
 
 	//int order;
 	double decay;
@@ -97,9 +64,9 @@ public:
 
 };
 
-}  // namespace rack
+}  // rack::
 
 
-#endif /* RACKOP_H_ */
+#endif
 
-// Rack
+

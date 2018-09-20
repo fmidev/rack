@@ -154,6 +154,15 @@ public:
 	// Sets how:NI from lowprf if needed. If that fails, tries to derive it from scaling (gain, offset).
 	double getNyquist(bool warn = false) const;
 
+
+	/// Azimuthal resolution in radians.
+	inline
+	double getBeamWidth() const {
+		return 2.0*M_PI/static_cast<double>(nrays);
+	};
+
+	bool deriveDifference(double v1, double v2, double & dOmega) const;
+
 	/// Returns elevation angle in radians
 	inline
 	double getElangleR() const {

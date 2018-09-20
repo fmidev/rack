@@ -100,10 +100,16 @@ public:
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline
-	//bool
+	void setGeometry(const AreaGeometry &g){
+		setGeometry(g.getWidth(), g.getHeight());
+	};
+
+	/// Resizes the image, keeps the current type. \see initialize().
+	inline
 	void setGeometry(const Geometry &g){
 		setGeometry(g.getWidth(), g.getHeight(), g.getImageChannelCount(), g.getAlphaChannelCount());
 	};
+
 
 	/// Collapses the image to undetectValue size, releasing memory. @see clear().
 	void resetGeometry(){
@@ -320,13 +326,16 @@ public:
 		scaling.setPhysicalScale(getType(), min, max);
 	}
 
+
 	inline
 	void adoptScaling(const ImageFrame & src, const std::type_info & t = typeid(void)){
+		useOwnScaling(); // needed?
 		if (t == typeid(void))
 			scaling.adoptScaling(src.getScaling(), src.getType(), getType());
 		else
 			scaling.adoptScaling(src.getScaling(), src.getType(), t);
 	}
+
 
 
 	void swap(Image & img);

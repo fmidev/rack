@@ -170,6 +170,11 @@ protected:
 		return sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
 	}
 
+	virtual inline
+	double averageConfidence(){
+		return sqrt(sumI*sumI + sumJ*sumJ) / static_cast<double>(count);
+	}
+
 };
 
 
@@ -276,6 +281,8 @@ protected:
 		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
 		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
 
+		double confidence = this->conf.ftor(this->averageConfidence());
+
 		if (count > countMin){ // TODO threshold 0.5?
 
 			if (this->conf.relativeScale)
@@ -283,7 +290,9 @@ protected:
 			else
 				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
 
-			this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
+			this->dstWeight.putScaled(this->location.x, this->location.y, confidence);
+			//this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
+			//this->dstWeight.putScaled(this->location.x, this->location.y, this->averageConfidence());
 
 		}
 		else {

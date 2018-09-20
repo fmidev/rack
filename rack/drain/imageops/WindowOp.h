@@ -95,30 +95,6 @@ public:
 		conf.height = height;
 	}
 
-	/*
-	virtual
-	void process(const ImageFrame & src, Image & dst) const{
-
-		drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
-
-		//mout.debug() << "delegating back to ImageOp::processOverlappingWithTemp" << mout.endl;
-		if (processOverlappingWithTemp(src, dst)){
-			mout.debug() << "finished processing overlapping images" << mout.endl;
-			return;
-		}
-
-		makeCompatible(src, dst);
-
-		ImageTray<const Channel> srcTray;
-		srcTray.setChannels(src);
-
-		ImageTray<Channel> dstTray;
-		dstTray.setChannels(dst);
-
-		traverseChannels(srcTray, dstTray);
-
-	}
-	*/
 
 };
 

@@ -49,8 +49,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-// Consider rename DopplerWind derived classes DopplerVVP, DopplerDeAlias
-
+/// Base class for operators retrieving true wind (u,v).
+/**
+ *
+ */
 class DopplerWindOp : public DopplerOp {  // DopplerWindow unused!
 public:
 
@@ -74,7 +76,7 @@ public:
 	double heightD;
 	std::string altitudeWeight;  // Functor
 
-	/// Projects wind (u,v) to beam. Unit (typically m/s) is preserved.
+	/// Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved.
 	// raise
 	inline
 	double project(double azmR, double u, double v) const {
@@ -87,20 +89,7 @@ public:
 	// x - 2*Vm*math.floor((Vm+x)/2.0/Vm)
 	inline
 	double alias(double v, double vNyq) const {
-		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));
-		/*
-		double n=0;
-		if (v >= 0.0){
-			v += vNyquist;
-			n = floor(v/(2.0*vNyquist));
-			return v - n * (2.0*vNyquist) - vNyquist;
-		}
-		else {
-			v -= vNyquist;
-			n = floor(-v/(2.0*vNyquist));
-			return v + n * (2.0*vNyquist) + vNyquist;
-		}
-		*/
+		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));  // consider vNyq2
 	}
 
 
@@ -159,7 +148,25 @@ public:
 
 };
 
-}
+
+class DopplerDiffPlotterOp : public DopplerOp {  // DopplerWindow unused!
+
+public:
+
+
+	DopplerDiffPlotterOp() : DopplerOp(__FUNCTION__, "Plots differences in VRAD data as fucntion of azimuth") {
+		parameters.append(w.getParameters());
+		dataSelector.count = 1;
+	}
+
+	// Outputs u and v both, so dst dataSET needed
+	virtual
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
+
+};
+
+
+}  // ::rack
 
 
 #endif /* DOPPLERDEALIASOP_H_ */

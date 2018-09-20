@@ -58,6 +58,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	srcWeighted.setGeometry(src.getGeometry());
 	tmp.setCoordinatePolicy(polar);
 	tmp.setGeometry(src.getGeometry());
+	tmp.setScaling(src.getScaling());
 	tmpWeighted.setGeometry(src.getGeometry());
 	dstWeighted.setGeometry(src.getGeometry());
 
@@ -72,7 +73,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	weightMakerOp.process(src, srcWeighted);
 
 	// File::write(src, "fuzzyCellArea0.png");
-	// File::write(srcWeighted, "fuzzyCellArea0w.png");
+	//File::write(srcWeighted, "weight.png");
 
 	dst.setGeometry(src.getGeometry());
 	dst.setCoordinatePolicy(polar);
@@ -89,6 +90,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	//double radius = static_cast<double>(radiusBins);
 	//GaussianStripeHorzWeighted window1(static_cast<double>(radiusBins), radiusBins*2);
 	GaussianStripeWeighted<true> window1(radiusBins*2, static_cast<double>(radiusBins));
+	mout.debug() << "src scale:" << src.getChannel(0).getScaling() << mout.endl;
 	window1.setSrcFrame(src);
 	window1.setSrcFrameWeight(srcWeighted);
 	window1.setDstFrame(tmp);
@@ -98,8 +100,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	window1.run();
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
 	//mout.warn() << tmp << '\n' << tmpWeighted << mout.endl;
-	// File::write(tmp, "fuzzyCellArea1.png");
-	// File::write(tmpWeighted, "fuzzyCellArea1w.png");
+	//File::write(tmp, "PolarSmoother2.png");
 
 	GaussianStripeVertPolarWeighted window2(static_cast<double>(radiusBins), radiusBins*2);
 	//GaussianStripeWeighted<false> window2(radiusBins*2, static_cast<double>(radiusBins));
@@ -108,6 +109,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	window2.setRangeNorm(odimSrc);
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
 	//static_cast<double>(odimSrc.nrays) * (M_PI/180.0) / static_cast<double>(odimSrc.rscale);
+	//mout.warn() << "tmp scale:" << tmp.getChannel(0).getScaling() << mout.endl;
 	window2.setSrcFrame(tmp);
 	window2.setSrcFrameWeight(tmpWeighted);
 	window2.setDstFrame(dst);
@@ -116,14 +118,14 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	mout.debug() << ", rangeNorm=" << window2.getRangeNorm() << mout.endl;
 	//mout.warn() << "startar: " << window2 << mout.endl;
 	window2.run();
-	// File::write(dst, "fuzzyCellArea2.png");
-	mout.warn() << "success" << mout.endl;
-
+	//File::write(dst, "PolarSmoother3.png");
+	/*
 	BinaryFunctorOp<SubtractionFunctor> sub;
 	sub.functor.setScale(5.0, 0.0);
 	sub.LIMIT = true;
 	//sub.process(src, dst, dst);
 	sub.process(src, dst);
+	*/
 	// File::write(dst, "fuzzyCellArea3.png");
 }
 

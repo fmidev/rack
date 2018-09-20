@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "DifferentialOp.h"
 #include "HighBoostOp.h"
 #include "HighPassOp.h"
-//#include "ImageOp.h"
+#include "ImpulseResponseOp.h"
 #include "MarginalStatisticOp.h"
 //#include "MotionExtrapolatorOp.h"
 //#include "MotionIllustratorOp.h"
@@ -211,11 +211,15 @@ ImageOpBank & getImageOpBank() {
 			bank.add(fastaverage, "average");
 
 			//static ImageOpCloner<SlidingWindowOp<FlowAverageWindow> > flowAverage;
-			static ImageOpCloner<FlowAverageOp > flowAverage;
+			static ImageOpCloner<FlowAverageOp> flowAverage;
 			bank.add(flowAverage, "flowAverage");
 
 			static ImageOpCloner<BlenderOp> blender;
 			bank.add(blender);
+
+			static ImageOpCloner<ImpulseResponseOp<ImpulseAvg> > impulseResponse;
+			//std::cerr << "response: " << impulseResponse.getName() << std::endl;
+			bank.add(impulseResponse, "impulseAvg");
 
 
 			//static ImageOpCloner<FastOpticalFlowOp> fastopticalflow;

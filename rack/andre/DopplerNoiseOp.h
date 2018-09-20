@@ -28,78 +28,71 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#ifndef DopplerNoise_H_
+#define DopplerNoise_H_
 
-#ifndef DOPPLER_OP_H_
-#define DOPPLER_OP_H_
+//#include "PolarProductOp.h"
+#include <drain/imageops/ImageOp.h>
+#include "DetectorOp.h"
 
-#include "PolarProductOp.h"
-
-//#include "radar/Doppler.h"
-#include "radar/PolarSector.h"
-
+using namespace drain::image;
 
 namespace rack {
 
-
-/// Base class for computing products using Doppler speed [VRAD] data.
+///
 /**
+
  *
- *  \see DopplerWindowOp
  */
-class DopplerOp : public PolarProductOp {
+class DopplerNoiseOp: public DetectorOp {
+
 public:
 
+	/**
+	 *
+	 *  \param dbzPeak
+	 *  \param vradDevMin
+	 *  \param rhoHVmax
+	 *  \param zdrDevMin
+	 *  \param windowWidth
+	 *  \param windowHeight
+	 *
+	 */
+	DopplerNoiseOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-	DopplerOp() : PolarProductOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
-		parameters.append(w.getParameters());
+		DetectorOp(__FUNCTION__, "Estimates DopplerNoise probability from DBZH, VRAD, RhoHV and ZDR.", ECHO_CLASS_NOISE){ // Optional postprocessing: morphological closing.
+
+		dataSelector.path = "data[0-9]+/?$";
+		//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
+
+		parameters.reference("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
+		parameters.reference("windowWidth", this->windowWidth = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+		parameters.reference("windowHeight", this->windowHeight = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+
 	};
 
-	virtual inline ~DopplerOp(){};
+	virtual
+	inline
+	~DopplerNoiseOp(){};
 
-	mutable PolarSector w;
+	double vradDevMin;
+	double windowWidth;
+	double windowHeight;
 
-
-protected:
-
-	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
-		dataSelector.quantity = "VRAD";
-		dataSelector.count = 1;
-	}
+	// string functor ? TODO
 
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
+	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
+
 
 
 };
 
-// for Testing
-class DopplerModulatorOp : public PolarProductOp {
-public:
 
-	DopplerModulatorOp() : PolarProductOp(__FUNCTION__, "Projects Doppler") {
-		parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
-		parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]");
-		dataSelector.count = 1;
-		dataSelector.quantity = "VRAD";
-		//odim.quantity = "RESP";
-		odim.quantity = "VRAD";
-		odim.type = "S";
-	}
+}
 
-	virtual
-	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
-
-	//int order;
-	double decay;
-	double smoothNess;
-
-};
-
-}  // namespace rack
-
-
-#endif /* RACKOP_H_ */
+#endif
 
 // Rack

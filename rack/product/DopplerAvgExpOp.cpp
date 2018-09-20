@@ -30,105 +30,220 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <stdexcept>
-#include "DopplerOp.h"
+
+#include <drain/image/File.h>
+
+#include "DopplerAvgExpOp.h"
 
 namespace rack {
 
 
 
+void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+
+	const int width  = srcData.data.getWidth();
+	const int height = srcData.data.getHeight();
+	const QuantityMap & qm = getQuantityMap();
+
+	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);  // TODO: re-design, get rid of these
+
+	PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
+	qm.setQuantityDefaults(dstQuality);
+	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
+
+	/*
+	PlainData<PolarDst> & dstAux = dstData.getQualityData("AUX");
+	qm.setQuantityDefaults(dstAux, odim.quantity);
+	dstAux.data.setScaling(dstAux.odim.gain, dstAux.odim.offset);
+	*/
 
 
-void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::image::Image imgDown(typeid(float), width, height, 1, 1);
+	drain::image::Channel & qualityDown = imgDown.getAlphaChannel();
 
-	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
+	drain::image::Image imgUp(typeid(float), width, height, 1, 1);
+	drain::image::Channel & qualityUp = imgUp.getAlphaChannel();
 
-	if (srcData.data.isEmpty()){
-		mout.warn() << "data empty" << mout.endl;
-		return;
-	}
-	//setEncoding(srcData.odim, dstData.odim);
+	drain::image::CoordinateHandler2D coordHandler(srcData.data.getGeometry(), srcData.data.getCoordinatePolicy());
+
+	// Temp value
+	double x;
+
+	// Temp weight
+	double w;
+
+	int count;
+
+	drain::image::Point2D<int> point;
+	double value, weight;
+
+	for (int j=0; j<height; j++){
+
+		for (int i=0; i<width; i++){
+
+			count = 0;
+			weight = 0.0;
+			value = 0.0; // ? dstData.odim.undetect;
+
+			x = srcData.data.get<double>(i,j);
+			if (srcData.odim.isValue(x)){
+				value  += srcData.odim.scaleForward(x);
+				weight += 1.0; // or: quality?
+				++count;
+			}
+
+			/// DST prev values
+			point.setLocation(i-1, j);
+			if (coordHandler.validate(point)){
+				w = qualityDown.get<double>(point);
+				if (w > 0.0){
+					w *= decay;
+					value  += w*imgDown.get<double>(point);
+					weight += w;
+					++count;
+				}
+			}
+
+			point.setLocation(i, j-1);
+			if (coordHandler.validate(point)){
+				w = qualityDown.get<double>(point);
+				if (w > 0.0){
+					w *= decay;
+					value  += w*imgDown.get<double>(point);
+					weight += w;
+					++count;
+				}
+			}
 
 
-	w.adjustIndices(srcData.odim);
-	if (w.ray2 < w.ray1){
-		w.ray2 += 360;
-	}
-	mout.warn() << w.ray1 << '-' << w.ray2 << mout.endl;
-
-	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
-
-	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
-	//mout.warn() << "size " << count << mout.endl;
-
-	PlainData<PolarDst> & dstDataU = dstProduct.getData("X");
-	PlainData<PolarDst> & dstDataV = dstProduct.getData("Y");
-
-	//const QuantityMap & qm = getQuantityMap();
-	//qm.setTypeDefaults(dstDataU, "d"); //typeid(double));
-	//dstDataU.setTypeDefaults("d"); //typeid(double));
-	dstDataU.setEncoding(typeid(double));
-	//
-	dstDataU.data.setGeometry(count, 1);
-	dstDataU.odim.quantity = "X"; // ???
-	//dstDataU.odim.gain = 1.0;
-	dstDataU.data.fill(dstDataU.odim.undetect);
-	//initDst(srcData, dstDataU);
-	//
-	//qm.setTypeDefaults(dstDataV, "d"); //typeid(double));
-	//dstDataV.setTypeDefaults("d"); //typeid(double));
-	dstDataV.setEncoding(typeid(double));
-	dstDataV.data.setGeometry(count, 1);
-	dstDataV.odim.quantity = "Y";
-	//dstDataV.odim.gain = 1.0;
-	dstDataV.data.fill(dstDataV.odim.undetect);
-	//initDst(srcData, dstDataV);
-
-	//@ dstDataU.updateTree();
-	//@ dstDataV.updateTree();
-
-	//@? dstProduct.updateTree(odim);
-
-	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;
-
-
-	double d,x,y;
-	size_t index = 0;
-	int j2;
-	for (int j=w.ray1; j<w.ray2; ++j){
-		j2 = (j+srcData.odim.nrays)%srcData.odim.nrays;
-		for (int i = w.bin1; i<w.bin2; ++i){
-			d = srcData.data.get<double>(i, j2);
-			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
-			if (srcData.odim.isValue(d)){
-				// mout.warn() << "data d: " << (double)d << mout.endl;
-				srcData.odim.mapDopplerSpeed(d, x, y);
-				dstDataU.data.put(index, x);
-				dstDataV.data.put(index, y);
+			if (weight > 0.0){
+				//dstData.data.put(i,j, dstData.odim.scaleInverse(value/weight));
+				imgDown.put<float>(i,j, value/weight);
+				qualityDown.put<float>(i,j, weight/static_cast<float>(count));
+				// I.e.
+				// dstData.data.putScaled(i,j, value/weight);
+				// dstQuality.data.putScaled(i, j, weight/static_cast<float>(count));
 			}
 			else {
-				dstDataU.data.put(index, 0);
-				dstDataV.data.put(index, 0);
+				dstData.data.put(i,j, dstData.odim.undetect);
+				dstQuality.data.putScaled(i, j, 0.0);
 			}
-			// mout.warn() << '\t' << index << mout.endl;
-			++index;
+
+
+		}
+
+	}
+
+
+
+	for (int j=height-1; j>=0; --j){
+
+		for (int i=width-1; i>=0; --i){
+
+			count  = 0;
+			weight = 0.0;
+			value  = 0.0;
+
+			x = srcData.data.get<double>(i,j);
+			if (srcData.odim.isValue(x)){
+				value  += srcData.odim.scaleForward(x);
+				weight += 1.0; // or: quality?
+				++count;
+			}
+
+			/// DST prev values
+			point.setLocation(i+1, j);
+			if (coordHandler.validate(point)){
+				w = qualityUp.get<double>(point);
+				if (w > 0.0){
+					w *= decay;
+					value  += w*imgUp.get<double>(point);
+					weight += w;
+					++count;
+				}
+			}
+
+			point.setLocation(i, j+1);
+			if (coordHandler.validate(point)){
+				w = qualityUp.get<double>(point);
+				if (w > 0.0){
+					w *= decay;
+					value  += w*imgUp.get<double>(point);
+					weight += w;
+					++count;
+				}
+			}
+
+
+			if (weight > 0.0){
+				imgUp.put<float>(i,j, value/weight);
+				qualityUp.put<float>(i,j, weight/static_cast<float>(count));
+			}
+
+			/*
+			if (weight > 0.0){
+				dstData.data.putScaled(i,j, value/weight);
+				dstQuality.data.putScaled(i, j, weight/static_cast<float>(count));
+			}
+			else {
+				dstData.data.put(i,j, dstData.odim.undetect);
+				dstQuality.data.putScaled(i, j, 0.0);
+			}
+			*/
+
+		}
+
+	}
+
+	float w1, w2;
+	for (int j=0; j<height; j++){
+		for (int i=0; i<width; i++){
+			w1 = qualityDown.get<float>(i,j);
+			w2 = qualityUp.get<float>(i,j);
+			weight = (w1+w2);
+			if (weight > 0.0){
+				dstData.data.putScaled(i,j, (w1*imgDown.get<float>(i,j)+w2*imgUp.get<float>(i,j)) /weight);
+				dstQuality.data.putScaled(i, j, weight/2.0f);
+			}
+			else {
+				dstData.data.put(i,j, dstData.odim.undetect);
+				dstQuality.data.putScaled(i, j, 0.0);
+			}
 		}
 	}
+
+	drain::getLog().setVerbosity(10);
+	drain::image::getImgLog().setVerbosity(10);
+
+	//imgDowimgDown.n.adoptScaling(dstData.data);
+	//imgDown.adoptScaling(dstData.data);
+	imgDown.setPhysicalScale(-32, 96);
+	qualityDown.setScaling(dstQuality.data.getScaling());
+	//imgDown.getScaling().setPhysicalRange(dstData.data.requestPhysicalMin(), dstData.data.requestPhysicalMax());
+	//qualityDown.getScaling().setPhysicalRange(0.0, 1.0);
+	drain::image::File::write(imgDown, "imgDown.png");
+
+	//imgUp.adoptScaling(dstData.data);
+	imgUp.setPhysicalScale(-32, 96);
+	qualityUp.setScaling(dstQuality.data.getScaling());
+	//qualityUp.getScaling().setPhysicalRange(0.0, 1.0);
+	drain::image::File::write(imgUp, "imgUp.png");
+	//imgUp.adoptScaling()
+
 
 }
 
 
-// For testing
+
 struct unitSpeed {
 	double u;
 	double v;
 	double weight;
 };
 
-// For testing
-void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+
+void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 

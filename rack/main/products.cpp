@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/DopplerOp.h"
 #include "product/DopplerWindowOp.h"
 #include "product/DopplerDeAliasOp.h"
-
+#include "product/DopplerAvgExpOp.h"
 
 #include "product/ConvOp.h"
 #include "product/RainRateOp.h"
@@ -93,6 +93,8 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
 	static ProductAdapter<DopplerDevOp> dopplerDev;
 	static ProductAdapter<DopplerDeAliasOp> dopplerDeAlias;
+	static ProductAdapter<DopplerDiffPlotterOp> dopplerDiffPlotter;
+	static ProductAdapter<DopplerAvgExpOp> dopplerAvgExp;
 
 	// Vertical met.products
 	static ProductAdapter<VerticalProfileOp> verticalProfile;

@@ -39,8 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
        Author: mpeura
 */
 
-#ifndef POLARSLIDINGWINDOWOP_H_
-#define POLARSLIDINGWINDOWOP_H_
+#ifndef POLAR_SLIDINGWINDOWOP_H_
+#define POLAR_SLIDINGWINDOWOP_H_
 
 #include <drain/image/SlidingWindowOp.h>
 #include "PolarProductOp.h"
@@ -49,8 +49,54 @@ namespace drain {
 
 namespace radar {
 
+
+template <class W>
 class PolarSlidingWindowOp : public PolarProductOp {
-	//public image::SlidingWindowOp<T,T2> {
+
+public:
+
+	PolarSlidingWindowOp(const std::string &name, const std::string &description) : PolarProductOp(name,description) {
+		parameters.append(conf.getParameters());
+		//reference("width", width);
+		//reference("height", height);
+	};
+
+	typename W::conf_t conf;
+
+	virtual
+	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
+		drain::Logger mout(this->name, __FUNCTION__);
+		if (srcData.hasQuality())
+			processDataWeighted(srcData, dstData);
+		else
+			processPlainData(srcData, dstData);
+	};
+
+	virtual
+	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
+		drain::Logger mout(this->name, __FUNCTION__);
+		mout.warn() << "not implemented" << mout.endl;
+	};
+
+	/// Quality-weighted prosessing of data
+	virtual
+	void processDataWeighted(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
+		drain::Logger mout(this->name, __FUNCTION__);
+		mout.warn() << "not implemented" << mout.endl;
+	};
+
+
+protected:
+
+
+
+};
+
+}
+
+/*
+class PolarSlidingWindowOp : public PolarProductOp {
+
 public:
 
 	PolarSlidingWindowOp(SlidingWindow & w,const std::string &name, const std::string &description) : PolarProductOp(name,description) {
@@ -75,6 +121,7 @@ protected:
 };
 
 }
+*/
 
 }
 

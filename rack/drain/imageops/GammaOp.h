@@ -67,40 +67,6 @@ namespace image
  *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving
  *  a value for each: 1.2,1.4,0.7 for example. 
  */
-/*
-class GammaOp : public SequentialImageOp
-{
-public:
-
-	GammaOp(double gamma = 1.0) : SequentialImageOp(__FUNCTION__, "Gamma correction for brightness."){
-		parameters.reference("gamma", this->gamma = gamma, "0.0...");
-		gammaInv = 1.0/gamma;
-		scaleSrc = 1.0;
-		scaleDst = 1.0;
-	};
-
-	inline
-	void initializeParameters(const ImageFrame & src, const ImageFrame & src2, const ImageFrame & dst) const {
-		gammaInv = 1.0 / gamma;
-		scaleSrc = 1.0 / src.scaling.getMax<float>();
-		scaleDst = dst.scaling.getMax<float>();
-	};
-
-	inline
-	double filterValueD(double src, double src2) const {
-		return scaleDst * pow(src*scaleSrc, gammaInv);
-	};
-
-	double gamma;
-
-protected:
-
-	mutable double gammaInv;
-	mutable double scaleSrc;
-	mutable double scaleDst;
-
-};
-*/
 class GammaFunctor : public drain::UnaryFunctor
 {
 
@@ -122,37 +88,6 @@ public:
 };
 
 
-/*
-class GammaOp : public SequentialImageOp {
-	GammaOp(double gamma = 1.0) : SequentialImageOp(__FUNCTION__, "Gamma correction for brightness."){
-		parameters.reference("gamma", this->gamma = gamma, "0.0...");
-		gammaInv = 1.0/gamma;
-		scaleSrc = 1.0;
-		scaleDst = 1.0;
-	};
-
-	inline
-	void initializeParameters(const ImageFrame & src, const ImageFrame & src2, const ImageFrame & dst) const {
-		gammaInv = 1.0 / gamma;
-		scaleSrc = 1.0 / src.scaling.getMax<float>();
-		scaleDst = dst.scaling.getMax<float>();
-	};
-
-	inline
-	double filterValueD(double src, double src2) const {
-		return scaleDst * pow(src*scaleSrc, gammaInv);
-	};
-
-	double gamma;
-
-protected:
-
-	mutable double gammaInv;
-	mutable double scaleSrc;
-	mutable double scaleDst;
-
-};
-*/
 
 }
 }

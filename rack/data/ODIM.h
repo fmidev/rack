@@ -124,6 +124,14 @@ public:
 		mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
 	};
 
+	/*
+	virtual
+	void setGeometry(const drain::image::AreaGeometry & geometry){
+		setGeometry(geometry.getWidth(), geometry.getHeight());
+	};
+	*/
+
+
 
 	/// Updates object, quantity, product and time information.
 	/*!
@@ -202,12 +210,13 @@ public:
 		//odim.copyTo(odimLimited.getKeyList(), dst);
 	}
 
-
-protected:
-
 	// Maximum Nyquist velocity, mutable because may be updated with PolarODIM::getNyquist()
 	mutable
 	double NI;
+
+
+protected:
+
 
 	///
 	void copyTo(const std::list<std::string> & keys, HI5TREE & dst) const;

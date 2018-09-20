@@ -55,7 +55,8 @@ public:
 	{
     };
 
-	Point2D(const T &x,const T &y) : x(x), y(y)
+	//Point2D(const T &x,const T &y) : x(x), y(y)
+	Point2D(T x, T y) : x(x), y(y)
 	{
     };
 
@@ -75,7 +76,7 @@ public:
 	}
 
     template <class T2>
-    Point2D<T> & setLocation(const T2 & x, const T2 & y){
+    Point2D<T> & setLocation(T2 x, T2 y){
     	this->x = static_cast<T>(x);
     	this->y = static_cast<T>(y);
     	return *this;

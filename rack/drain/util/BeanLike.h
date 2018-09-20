@@ -58,19 +58,18 @@ public:
 	virtual inline
 	~BeanLike(){};
 
-	inline
+	virtual inline
 	const std::string & getName() const { return name; };
 
 
-	inline
+	virtual inline
 	const std::string & getDescription() const { return description; };
 
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
 	/**
 	 *  This function is virtual because derived classes may redefine it to update other members.
 	 */
-	virtual
-	inline
+	virtual inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){ parameters.setValues(p, assignmentSymbol, separatorSymbol); };  // , true);
 
 	/// Sets parameters

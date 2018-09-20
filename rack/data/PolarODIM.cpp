@@ -122,6 +122,33 @@ double PolarODIM::getNyquist(bool warn) const {
 	return NI;
 }
 
+/// Given two (possibly aliased) Doppler speeds, computes the difference. Assumes that it is less than Nyquist velocity.
+bool PolarODIM::deriveDifference(double v1, double v2, double & vDiff) const {
+
+	// v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));
+
+	if (isValue(v1) && isValue(v2)){
+
+		/// Raw value (m/s)
+		vDiff = scaleForward(v2) - scaleForward(v1);
+
+		if (vDiff < -NI)
+			vDiff += (2.0*NI);
+		else if (vDiff > NI)
+			vDiff -= (2.0*NI);
+
+		//vDiff = vDiff/(2.0*getBeamWidth());  // (dSpan2*BEAM2RAD);
+
+		return true;
+	}
+	else
+		return false;
+
+}
+
+
+
+
 }  // namespace rack
 
 

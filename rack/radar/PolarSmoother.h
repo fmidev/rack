@@ -44,8 +44,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
-class PolarSmoother { //: public drain::BeanLike {
+/**
+ *   \see RadarWindowAvg !?
+ */
+class PolarSmoother {
 
 public:
 

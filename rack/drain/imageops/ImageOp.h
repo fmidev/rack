@@ -210,6 +210,7 @@ protected:
 	/// Redirect to processing as trays. This is the opposite of processChannels...() functions.
 	inline
 	void traverseAsChannelTrays(const ImageFrame &src, const ImageFrame & srcWeight, ImageFrame &dst, ImageFrame &dstWeight) const {
+
 		Logger mout(getImgLog(), name, __FUNCTION__);
 		mout.debug() << "restoring to trays" << mout.endl;
 

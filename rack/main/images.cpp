@@ -237,8 +237,8 @@ static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
 
 class CmdPalette : public SimpleCommand<std::string> {
-public: //re
 
+public:
 
 	CmdPalette() : SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.txt") {
 	};
@@ -248,9 +248,6 @@ public: //re
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		RackResources & resources = getResources();
-
-		cmdImage.imageSelector.setParameters(resources.select);
-		resources.select.clear();
 
 
 		if (!resources.inputOk){
@@ -263,6 +260,8 @@ public: //re
 			return;
 		}
 
+		cmdImage.imageSelector.setParameters(resources.select);
+		// below resources.select.clear();
 
 		if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
 			mout.debug(2) << "Resetting current gray image." << mout.endl;
@@ -279,7 +278,9 @@ public: //re
 		//mout.debug(4) << "Current Gray: \n" << *resources.currentGrayImage << mout.endl;
 		//File::write(*resources.currentGrayImage, "gray.png");
 
-		if (!value.empty()){
+
+		if (!value.empty() || resources.palette.empty()){
+
 			static RegExp quantityRegExp("^[A-Z]+[A-Z0-9_]*$");
 			std::string quantity;
 			std::string filename;
@@ -289,10 +290,10 @@ public: //re
 			// palettePath.parse("${palettePath}/palette-${what:quantity}.txt");
 
 
-			if (value == "default"){
+			if (value == "default" || (resources.palette.empty() && value.empty())){
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
 				quantity = statusMap["what:quantity"].toStr();
-				mout.note() << "quanitity=" << quantity << mout.endl;
+				mout.note() << "quantity=" << quantity << mout.endl;
 			}
 			else if (quantityRegExp.test(value)){
 				quantity = value;
@@ -326,11 +327,13 @@ public: //re
 		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;
 		mout.debug(2) << resources.palette << mout.endl;
 
-
 		//mout.debug(5) << "--gain   " << resources.currentGrayImage->properties["what:gain"] << mout.endl;
 		//mout.debug(5) << "--offset " << resources.currentGrayImage->properties["what:offset"] << mout.endl;
 
 		apply();
+
+		resources.select.clear();
+
 	}
 
 	void apply() const{

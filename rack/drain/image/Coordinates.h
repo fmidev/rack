@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "ImageLike.h"
 //#include "Image.h"
 
+#include "Geometry.h"
+
 #include "Point.h"
 
 namespace drain {
@@ -131,7 +133,7 @@ class CoordinateHandler2D : protected CoordinatePolicy {
 
 public:
 
-	CoordinateHandler2D();
+	CoordinateHandler2D(const drain::image::AreaGeometry & area = AreaGeometry(), const CoordinatePolicy &p = CoordinatePolicy());
 
 	/// Constrcutor
 	/**
@@ -183,14 +185,6 @@ public:
 	inline
 	const CoordinatePolicy & getPolicy() const { return *this; }
 
-	/// Adopts to the coordinate policy and limits of the image.
-	/*
-	inline
-	void use(const Image & src){
-		setLimits(src.getWidth(), src.getHeight());
-		setPolicy(src.getCoordinatePolicy());
-	};
-	*/
 
 	/// Ensures the validity of the coordinates. If inside limits, arguments (x,y) remain intact and 0 is returned.
 	/**
