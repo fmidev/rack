@@ -188,8 +188,11 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		pRadarToComposite.setProjectionDst(getProjection());
 
-		if ((getFrameWidth() == 0)||(getFrameHeight() == 0)) // TODO
-			setGeometry(srcData.data.getWidth(), srcData.data.getWidth());
+		if ((getFrameWidth() == 0)||(getFrameHeight() == 0)){
+			setGeometry(500, 500);
+			mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
+			//setGeometry(srcData.data.getWidth(), srcData.data.getWidth());
+		}
 
 		if (defaultRange > 0.0)
 			pRadarToComposite.determineBoundingBoxM(defaultRange*1000.0, bboxM);
