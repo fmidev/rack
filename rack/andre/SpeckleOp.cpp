@@ -62,7 +62,8 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
 	const double max = src.data.getMax<double>()-2.0;
 	drain::FuzzyBell<double> fuzzyBell;
-	fuzzyBell.set(0.0, area, dst.data.getMax<double>());
+	//fuzzyBell.set(0.0, area, dst.data.getMax<double>());
+	fuzzyBell.set(0.0, area, dst.odim.scaleInverse(1.0));
 	SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
 
 	mout.debug(1) << op << mout.endl;
