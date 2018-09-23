@@ -143,6 +143,7 @@ public:
 	// in encoding, values lower than this value will be marked \c undetect .
 	double minCodeValue;
 
+	bool SKIP_UNDETECT;
 
 	/// Quality, relative to data quality, applied in locations marked with \c undetect .
 	/// NEW 2017: static (for Composite, Cappi)

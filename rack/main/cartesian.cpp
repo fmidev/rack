@@ -139,18 +139,22 @@ public:
 
 
 class CartesianSize : public BasicCommand {
-    public: //re 
+
+public:
+
 	int width;
 	int height;
 
 	inline
 	CartesianSize() : BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
-		parameters.reference("width",  width = 100, "pixels");
+		parameters.reference("width",  width = 400, "pixels");
 		parameters.reference("height", height = 0, "pixels");
 	};
 
 	inline
 	void exec() const {
+		// int w = width  ? width  : 500;
+		// int h = height ? height : 500;
 		if (height == 0)
 			getResources().composite.setGeometry(width, width);
 		else

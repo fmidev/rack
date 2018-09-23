@@ -117,15 +117,16 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 	if  (!productODIM.isSet()){
 
-		if (srcODIM.quantity == productODIM.quantity){ // note: may still be empty
+		if ((srcODIM.quantity == productODIM.quantity) && (srcODIM.type == productODIM.type)){ // note: may still be empty
 			EncodingODIM srcBase(srcODIM);
 			productODIM.updateFromMap(srcBase); // Does not copy geometry (rscale, nbins, etc).
-			mout.info() << "same quantity=" << productODIM.quantity << ", copying encoding: " << EncodingODIM(productODIM) << mout.endl;
+			mout.info() << "same quantity=" << productODIM.quantity << " and type, copied encoding: " << EncodingODIM(productODIM) << mout.endl;
 		}
 
 		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 		//	getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, encoding); // type may be unset
 		//productODIM.NI = srcODIM.NI;
+		//mout.warn() << "productODIM.update(srcODIM)" << mout.endl;
 		productODIM.update(srcODIM); // date, time, Nyquist(NI)
 
 	}
@@ -221,8 +222,7 @@ void ProductBase::setODIMspecials(ODIM & dstODIM){
 	drain::Logger mout(RACK_PRODUCT_OP, __FUNCTION__);
 
 	if (dstODIM.distinguishNodata("VRAD")){
-		mout.note() << "setting nodata=" << dstODIM.nodata << mout.endl;
-		mout.info() << " to distinguish it from undetect="<< dstODIM.undetect << mout.endl;
+		mout.note() << "setting nodata=" << dstODIM.nodata << " to distinguish undetect="<< dstODIM.undetect << mout.endl;
 	}
 
 	if (dstODIM.product == "SCAN"){

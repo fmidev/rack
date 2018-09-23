@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <ostream>
+#include <utility>
 
 #include "image/Coordinates.h"
 #include "image/FilePng.h"
@@ -45,17 +46,6 @@ namespace drain
 namespace image
 {
 
-/*
-class Conf  : public BeanLike {
-
-
-	inline
-	Conf(const std::string & name, const std::string & description="") : BeanLike(name, description) {
-	}
-
-
-};
- */
 
 /**
  *  \tparam C - conf type, implementing drain::BeanLike concept (getName, getDescription, getParameters)
@@ -77,19 +67,22 @@ public:
 	virtual
 	void reset() = 0;
 
-	/// When traversing down or right, add a value to bucket in position i.
+	/// When traversing down or right, add a encoded value to bucket in position i.
 	virtual
-	void add1(int i, double value, double weight = 1.0) = 0;
+	void add1(int i, double value, double weight) = 0;
 
-	/// When traversing up or left, add a value to bucket in position i.
+	/// When traversing up or left, add a encoded value to bucket in position i.
 	virtual
-	void add2(int i, double value, double weight = 1.0) = 0;
+	void add2(int i, double value, double weight) = 0;
 
-	/// Return value, typically final & filtered value, at position i.
+	/// Return natural (not encoded) value at position i.
 	virtual
 	double get(int i) = 0;
 
-	/// Return weight (confidence) at position i.
+	/// Return weight at position i.
+	/**
+	 *   Weight should reflect quality, reliability or relevance of the value returned by get(int i).
+	 */
 	virtual
 	double getWeight(int i) = 0;
 
@@ -131,9 +124,13 @@ public:
 
 /// A fill operation for one color.
 /**
+
+ \tparam - Accumulating unit that also handles decoding/encoding of the values, must define ::conf
+
  \code
    drainage shapes.png --impulseAvg  100,100,min=50,value=128 -o shapes-fill.png
  \endcode
+
  */
 template <class T>
 class ImpulseResponseOp : public ImpulseResponseOpBase<T> {
@@ -196,26 +193,30 @@ protected:
 
 	int extendHorz;
 	int extendVert;
-	double undetectQuality;
+	//double undetectQuality;
 
 };
 
 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
-
-	//drain::image::Image tmp;
-	//tmp.copyShallow(dst);
-
+	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+	mout.debug() << "delegating to traverseChannel(src, empty, dst, empty)" << mout.endl;
+	//dst.properties.updateFromMap(src.getProperties());
 	drain::image::Image empty;
-
-	traverseChannelHorz(src, empty, dst, empty);
-	traverseChannelVert(dst, empty, dst, empty);
+	traverseChannel(src, empty, dst, empty);
+	//traverseChannelHorz(src, empty, dst, empty);
+	//traverseChannelVert(dst, empty, dst, empty);
 
 }
 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
+
+	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+
+	//dst.properties.updateFromMap(src.getProperties());
+	//mout.note() << dst.getProperties() << mout.endl;
 
 	traverseChannelHorz(src, srcWeight, dst, dstWeight);
 	traverseChannelVert(dst, dstWeight, dst, dstWeight);
@@ -235,7 +236,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 	const int width    = src.getWidth();
 	const int widthExt = src.getWidth()+extendHorz;
 	const int height   = src.getHeight();
-	const double defaultWeight = srcWeight.getMax<double>();
+	const double defaultWeight = 1.0; //srcWeight.getMax<double>();
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
@@ -244,6 +245,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 	T bucket(this->conf);
 	bucket.init(src, true);
 
+	// NOTE: raw data values, but scaled weight values.
 
 	for (int j=0; j<height; ++j){
 
@@ -255,20 +257,22 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 			for (int i=-extendHorz; i<widthExt; ++i){
 
 				point.setLocation(i, j);
-				if (coordHandler.validate(point)){
-					bucket.add1(point.x, src.get<double>(point), defaultWeight);
-				}
+				coordHandler.handle(point);
+				//if (coordHandler.validate(point)){
+				bucket.add1(point.x, src.get<double>(point.x, point.y), defaultWeight);
+				//}
 
 				point.setLocation(width-1-i, j);
-				if (coordHandler.validate(point)){
-					bucket.add2(point.x, src.get<double>(point), defaultWeight);
-				}
+				coordHandler.handle(point);
+				// if (coordHandler.validate(point)){
+				bucket.add2(point.x, src.get<double>(point.x, point.y), defaultWeight);
+				//}
 
 			}
 
 			// Write
 			for (int i=0; i<width; ++i){
-				dst.put(i,j, bucket.get(i));
+				dst.putScaled(i,j, bucket.get(i));
 			}
 
 		}
@@ -278,21 +282,23 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 			for (int i=-extendHorz; i<widthExt; ++i){
 
 				point.setLocation(i, j);
-				if (coordHandler.validate(point)){
-					bucket.add1(point.x, src.get<double>(point), srcWeight.get<double>(point));
-				}
+				coordHandler.handle(point);
+				//if (coordHandler.validate(point)){
+				bucket.add1(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				//}
 
 				point.setLocation(width-1-i, j);
-				if (coordHandler.validate(point)){
-					bucket.add2(point.x, src.get<double>(point), srcWeight.get<double>(point));
-				}
+				coordHandler.handle(point);
+				// if (coordHandler.validate(point)){
+				bucket.add2(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				// }
 
 			}
 
 			// Write
 			for (int i=0; i<width; ++i){
-				dst.put(i,j, bucket.get(i));
-				dstWeight.put(i,j, bucket.getWeight(i));
+				dst.putScaled(i,j, bucket.get(i));
+				dstWeight.putScaled(i,j, bucket.getWeight(i));
 			}
 
 		}
@@ -311,8 +317,8 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 	const int width     = src.getWidth();
 	const int height    = src.getHeight();
-	const int heightExt = src.getHeight()+extendVert;
-	const double defaultWeight = srcWeight.getMax<double>();
+	const int heightExt = src.getHeight() + extendVert;
+	const double defaultWeight = 1.0; //srcWeight.getMax<double>();
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
@@ -320,6 +326,8 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 	T bucket(this->conf);
 	bucket.init(src, false);
+
+	// NOTE: raw data values, but scaled weight values.
 
 	for (int i=0; i<width; i++){
 
@@ -331,20 +339,18 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 			for (int j=-extendVert; j<heightExt; ++j){
 
 				point.setLocation(i, j);
-				if (coordHandler.validate(point)){
-					bucket.add1(point.y, src.get<double>(point), defaultWeight);
-				}
+				coordHandler.handle(point); //if (coordHandler.validate(point)){
+				bucket.add1(point.y, src.get<double>(point.x, point.y), defaultWeight);
 
 				point.setLocation(i, height-1-j);
-				if (coordHandler.validate(point)){
-					bucket.add2(point.y, src.get<double>(point), defaultWeight);
-				}
+				coordHandler.handle(point); //if (coordHandler.validate(point))
+				bucket.add2(point.y, src.get<double>(point.x, point.y), defaultWeight);
 
 			}
 
 			// Write
 			for (int j=0; j<height; ++j){
-				dst.put(i,j, bucket.get(j));
+				dst.putScaled(i,j, bucket.get(j));
 			}
 
 		}
@@ -354,20 +360,19 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 			for (int j=-extendVert; j<heightExt; ++j){
 
 				point.setLocation(i, j);
-				if (coordHandler.validate(point)){
-					bucket.add1(point.y, src.get<double>(point), srcWeight.get<double>(point));
-				}
+				coordHandler.handle(point); //if (coordHandler.validate(point)){
+				bucket.add1(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
 
 				point.setLocation(i, height-1-j);
-				if (coordHandler.validate(point)){
-					bucket.add2(point.y, src.get<double>(point), srcWeight.get<double>(point));
-				}
+				coordHandler.handle(point); // if (coordHandler.validate(point)){
+				bucket.add2(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+
 			}
 
 			// Write
 			for (int j=0; j<height; ++j){
-				dst.put(i,j, bucket.get(j));
-				dstWeight.put(i,j, bucket.getWeight(j));
+				dst.putScaled(i,j, bucket.get(j));
+				dstWeight.putScaled(i,j, bucket.getWeight(j));
 			}
 
 		}
@@ -407,8 +412,9 @@ struct ImpulseAvgConf : public BeanLike {
 /// Averaging operator. A simple example implementation of ImpulseCumulator
 /**
  \code
-   drainage image.png --impulseAvg  0.8       -o impulseAvg.png
-   drainage image.png --impulseAvg  0.8,40,20 -o impulseAvgMarg.png
+   drainage image.png --impulseAvg  0.5            -o impulseAvg.png
+   drainage image.png --impulseAvg  0.2,20,20      -o impulseAvgMarg.png
+   drainage image-rgba.png --target S --impulseAvg  0.5 -o impulseAvg-16b.png
  \endcode
  */
 class ImpulseAvg : public ImpulseCumulator<ImpulseAvgConf> {
@@ -417,35 +423,33 @@ public:
 
 
 	inline
-	ImpulseAvg() :  unDecay(0.0), prev1(0), prev2(0) {
+	ImpulseAvg(){
 
 	};
 
 	inline
-	ImpulseAvg(const ImpulseAvg & avg) : unDecay(0.0), prev1(0), prev2(0) {
+	ImpulseAvg(const ImpulseAvg & avg){
 		decay = avg.decay;
 	}
 
 	inline
-	ImpulseAvg(const ImpulseAvgConf & conf) : unDecay(0.0), prev1(0), prev2(0) {
+	ImpulseAvg(const ImpulseAvgConf & conf){
 		decay = conf.decay;
 	}
 
-
-	virtual inline
-	void init(const Channel & src, bool horizontal){
-		const size_t n = horizontal ? src.getWidth() : src.getHeight();
-		data.resize(n);
-	}
+	virtual
+	void init(const Channel & src, bool horizontal);
 
 	virtual
 	void reset();
 
+	/// Accumulate encoded value
 	virtual
-	void add1(int i, double value, double weight = 1.0);
+	void add1(int i, double value, double weight);
 
+	/// Accumulate encoded value
 	virtual
-	void add2(int i, double value, double weight = 1.0);
+	void add2(int i, double value, double weight);
 
 	virtual
 	double get(int i);
@@ -458,18 +462,48 @@ protected:
 
 private:
 
+	ImageScaling scaling;
+
+	/// Accumulating unit using natural values
 	struct entry {
-		double value1;
-		double weight1;
-		double value2;
-		double weight2;
+
+		double x;
+		double w;
+
+		inline void set(double value, double weight){
+			x = value;
+			w = weight;
+		}
+
 	};
 
-	double unDecay; // 1-decay;
+	/*
+	 *  \param xNew - value to be added
+	 *  \param wNew - weight of xNew
+	 */
+	inline
+	void mix(entry & prev, const entry & e, double decay){
 
-	std::vector<entry> data;
+		double w1 = decay*e.w;
+		double w2 = (1.0-decay);
 
-	double prev1, prev2;
+		if (decay < 1.0)
+			prev.x =(w1*e.x + w2*prev.x) / (w1 + w2);
+		else // decay==1.0
+			prev.x = e.x;
+
+		prev.w = w1 + w2*prev.w;
+
+	}
+
+	typedef std::pair<entry,entry> entryPair;
+	typedef std::vector<entryPair> container;
+
+	container data;
+
+	entry e;
+	entryPair latest; // utility
+
 
 };
 

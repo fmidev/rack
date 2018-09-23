@@ -152,7 +152,10 @@ public:
 	}
 
 	// Sets how:NI from lowprf if needed. If that fails, tries to derive it from scaling (gain, offset).
-	double getNyquist(bool warn = false) const;
+	/**
+	 *   \param errorThreshold -
+	 */
+	double getNyquist(int errorThreshold = LOG_NOTICE) const;
 
 
 	/// Azimuthal resolution in radians.

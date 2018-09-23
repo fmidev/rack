@@ -41,6 +41,108 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/// Averaging operator. A simple example implementation of ImpulseCumulator
+/**
+ \code
+   drainage image.png --impulseAvg  0.8       -o impulseAvg.png
+   drainage image.png --impulseAvg  0.8,40,20 -o impulseAvgMarg.png
+ \endcode
+ */
+class DopplerAvg : public drain::image::ImpulseCumulator<ImpulseAvgConf> {
+
+public:
+
+
+	inline
+	DopplerAvg(){
+
+	};
+
+	inline
+	DopplerAvg(const ImpulseAvg & avg){
+		decay = avg.decay;
+	}
+
+	inline
+	DopplerAvg(const ImpulseAvgConf & conf){
+		decay = conf.decay;
+	}
+
+
+	virtual
+	void init(const Channel & src, bool horizontal);
+
+	virtual
+	void reset();
+
+	virtual
+	void add1(int i, double value, double weight);
+
+	virtual
+	void add2(int i, double value, double weight);
+
+	/// Return natural (not encoded) value at position i.
+	virtual
+	double get(int i);
+
+	/// Returns the smoothed average of the input weights modulated with quality (non-centrity) of "radial" speed
+	virtual
+	double getWeight(int i);
+
+	PolarODIM odim;
+
+private:
+
+	/// Accumulation on a unit circle
+	struct entry {
+
+		double x;
+		double y;
+		double w;
+
+		inline void set(double x, double y, double w){
+			this->x = x;
+			this->y = y;
+			this->w = w;
+		}
+
+	};
+
+	/*
+	 *  \param xNew - value to be added
+	 *  \param wNew - weight of xNew
+	 */
+	inline
+	void mix(entry & prev, const entry & current, double decay){
+
+		double w1 = decay*current.w;
+		double w2 = (1.0-decay);
+
+		if (decay < 1.0){
+			prev.x = (w1*current.x + w2*prev.x) / (w1 + w2);
+			prev.y = (w1*current.y + w2*prev.y) / (w1 + w2);
+		}
+		else {// decay==1 => w2=0 => denominator would be zero if w1==0 <=> current.w==0
+			prev.x = current.x;
+			prev.y = current.y;
+		}
+
+		prev.w = w1 + w2*prev.w;
+
+	}
+
+	typedef std::pair<entry,entry> entryPair;
+	typedef std::vector<entryPair> container;
+
+	container data;
+
+	entry e;
+	entryPair latest; // utility
+
+};
+
+
+
 class DopplerAvgExpOp : public PolarProductOp {
 public:
 
@@ -51,11 +153,13 @@ public:
 		//parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
 		//parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
 		dataSelector.count = 1;
-		//dataSelector.quantity = "VRAD";
-		dataSelector.quantity = "DBZH";
-		//odim.quantity = "VRAD";
-		odim.quantity = "DBZH";
-		odim.type = "S";
+
+		dataSelector.quantity = "VRAD[H]?";
+		//dataSelector.quantity = "DBZH";
+		odim.quantity = "VRAD";
+		//odim.quantity = "DBZH";
+		// odim.type = "S";
+		odim.type = "C";
 	}
 
 	virtual
@@ -65,9 +169,6 @@ public:
 	void processData1D(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
 
 	drain::image::ImpulseAvgConf conf;
-	//int order;
-	//double decay;
-	//double smoothNess;
 	int horzExt;
 	int vertExt;
 

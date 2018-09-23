@@ -101,9 +101,8 @@ void CompositeAdd::exec() const {
 
 	/// Set default method, if unset.
 	if (!resources.composite.isMethodSet()){
-		mout.note() << " compositing method unset, setting MAXIMUM" << mout.endl;
-		resources.composite.setMethod("MAXIMUM");
-		//resources.composite.setMethod("LATEST");
+		resources.composite.setMethod("MAXIMUM");  // ("LATEST");
+		mout.note() << " compositing method unset, setting:" << resources.composite.getMethod() << mout.endl;
 	}
 
 	/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
@@ -147,8 +146,6 @@ void CompositeAdd::addPolar() const {
 		mout.warn() << "no polar data loaded, skipping" << mout.endl;
 		return;
 	}
-
-
 
 	bool isAeqd = false;
 

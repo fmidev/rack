@@ -43,41 +43,56 @@ namespace image
 {
 
 
+void ImpulseAvg::init(const Channel & src, bool horizontal){
+	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+
+	const size_t n = horizontal ? src.getWidth() : src.getHeight();
+	data.resize(n);
+	scaling.set(src.getScaling());
+
+	mout.debug() << "Data vector, n=" << n << mout.endl;
+	mout.debug() << "Scaling: " << scaling << mout.endl;
+
+
+}
+
+
 void ImpulseAvg::reset(){
-	unDecay = 1.0-this->decay;
-	prev1 = 0.0;
-	prev2 = 0.0;
-	for (std::vector<entry>::iterator it = data.begin(); it != data.end(); ++it){
-		it->value1  = 0.0;
-		it->weight1 = 0.0;
-		it->value2  = 0.0;
-		it->weight2 = 0.0;
+
+	latest.first.set(0.0, 0.0);
+	latest.second.set(0.0, 0.0);
+
+	for (container::iterator it = data.begin(); it != data.end(); ++it){
+		it->first.set(0.0, 0.0);
+		it->second.set(0.0, 0.0);
 	}
+
 }
 
 
 void ImpulseAvg::add1(int i, double value, double weight){
-	entry & d = data[i];
-	d.value1 = prev1 =  unDecay*value + this->decay*prev1;
-	d.weight1 = weight;
+	e.set(scaling.fwd(value), weight);
+	mix(latest.first, e, decay);
+	data[i].first = latest.first;
 }
 
 void ImpulseAvg::add2(int i, double value, double weight){
-	entry & d = data[i];
-	d.value2  = prev2 =  unDecay*value + this->decay*prev2;
-	d.weight2 = weight;
+	e.set(scaling.fwd(value), weight);
+	mix(latest.second, e, decay);
+	data[i].second = latest.second;
 }
 
-double ImpulseAvg::getWeight(int i){
-	entry & d = data[i];
-	return d.weight1 + d.weight2;
+
+double ImpulseAvg::getWeight(int i){  // TODO const
+	const entryPair & d = data[i];
+	return (d.first.w + d.second.w) / 2.0;
 }
 
-double ImpulseAvg::get(int i){
-	entry & d = data[i];
-	double w = d.weight1 + d.weight2;
+double ImpulseAvg::get(int i){ // TODO const
+	const entryPair & d = data[i];
+	double w = d.first.w + d.second.w;
 	if (w > 0.0)
-		return (d.weight1*d.value1 + d.weight2*d.value2) / w;
+		return ((d.first.w*d.first.x + d.second.w*d.second.x) / w);
 	else
 		return 0.0; // or code?
 }

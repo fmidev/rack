@@ -381,6 +381,9 @@ public:
 	inline
 	Logger & debug(unsigned int level = 0){init(LOG_DEBUG + level); return *this; };
 
+	inline
+	Logger & log(unsigned int level){init(level); return *this; };
+
 
 	template <class T>
 	Logger &operator<<(const T & x) {

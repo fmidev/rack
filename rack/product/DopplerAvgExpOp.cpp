@@ -38,38 +38,156 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void DopplerAvg::init(const Channel & src, bool horizontal){
+	drain::Logger mout(name, __FUNCTION__);
+	const size_t n = horizontal ? src.getWidth() : src.getHeight();
+	data.resize(n);
+	odim.updateFromMap(src.getProperties());
+	mout.note() << (int)horizontal << '\t' << EncodingODIM(odim) << mout.endl; // src.getProperties()
+	odim.getNyquist(LOG_ERR);
+}
+
+
+void DopplerAvg::reset(){
+
+	latest.first.set( 0.0, 0.0, 0.0);
+	latest.second.set(0.0, 0.0, 0.0);
+
+	for (container::iterator it = data.begin(); it != data.end(); ++it){
+		it->first.set( 0.0, 0.0, 0.0);
+		it->second.set(0.0, 0.0, 0.0);
+	}
+
+}
+
+
+void DopplerAvg::add1(int i, double value, double weight){
+
+	if (odim.isValue(value)){
+		// if (i == 100) 	std::cerr << __FUNCTION__ << ": " << value << '\n';
+		odim.mapDopplerSpeed(value, e.x, e.y); //odim.scaleForward(value)
+		e.w = weight;
+	}
+	else {
+		e.set(0.0, 0.0, 0.0);
+	}
+
+	mix(latest.first, e, decay);
+	data[i].first = latest.first;
+
+}
+
+void DopplerAvg::add2(int i, double value, double weight){
+
+	if (odim.isValue(value)){
+		// if (i == 100)  std::cerr << __FUNCTION__ << ": " << value << '\n';
+		//odim.mapDopplerSpeed(odim.scaleForward(value), e.x, e.y);
+		odim.mapDopplerSpeed(value, e.x, e.y);
+		if ((e.x*e.x + e.y*e.y) > 1.01)
+			std::cerr << __FUNCTION__ << ": " << value << '\t' << e.x << ',' <<  e.y << '\t' << (e.x*e.x + e.y*e.y)<< '\n';
+		e.w = weight;
+	}
+	else {
+		e.set(0.0, 0.0, 0.0);
+	}
+
+	mix(latest.second, e, decay);
+	data[i].second = latest.second;
+
+}
+
+
+double DopplerAvg::getWeight(int i){  // TODO const
+
+	const entryPair & d = data[i];
+
+	// Basically, this is the result:
+	double w = (d.first.w + d.second.w)/2.0;
+
+	// But formulate it with speed robustness
+	if (w > 0.0){
+		e.x = (d.first.w*d.first.x + d.second.w*d.second.x)/w;
+		e.y = (d.first.w*d.first.y + d.second.w*d.second.y)/w;
+		//if (i == 100)  std::cerr << __FUNCTION__ << ": " << (e.x*e.x + e.y*e.y) << '\n';
+		//w = w*(e.x*e.x + e.y*e.y);  // remains squared, this way
+	}
+
+	return w;
+}
+
+double DopplerAvg::get(int i){ // TODO const
+
+	const entryPair & d = data[i];
+	double w = d.first.w + d.second.w;
+
+	if (w > 0.0){
+		e.x = (d.first.w*d.first.x + d.second.w*d.second.x)/w;
+		e.y = (d.first.w*d.first.y + d.second.w*d.second.y)/w;
+		//if (i == 100)
+		//if (i == 100)  std::cerr << e.x  << '\t' << e.y << '\n';
+		//	std::cerr << __FUNCTION__ << ": " << e.x << ',' << e.y << '\t' << odim.NI * atan2(e.y, e.x)<< '\n';
+		return odim.NI * atan2(e.y, e.x)/M_PI;
+	}
+	else
+		return 0.0; // or code?
+}
+
+
+
 
 
 void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	//const int width  = srcData.data.getWidth();
-	//const int height = srcData.data.getHeight();
-	const QuantityMap & qm = getQuantityMap();
+	mout.note() << "Src: " << srcData << mout.endl;
 
+	// Dst
 	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);  // TODO: re-design, get rid of these
+	dstData.data.properties.importMap(dstData.odim); // IMPORTANT! But get rid of the self-copying later.
+	dstData.data.setCoordinatePolicy(srcData.data.getCoordinatePolicy());
+	mout.note() << "Dst: " << dstData << mout.endl;
 
+	const QuantityMap & qm = getQuantityMap();
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
 	qm.setQuantityDefaults(dstQuality);
 	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
+	dstQuality.data.properties.updateFromMap(dstQuality.odim); // get rid of these
 
-	drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
+
+	//drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
+	drain::image::ImpulseResponseOp<DopplerAvg> impOp(conf);
 	impOp.setExtensions(horzExt, vertExt);
+
 
 	if (srcData.hasQuality()){
 
-		impOp.traverseChannel(srcData.data, srcData.getQualityData().data, dstData.data, dstQuality.data);
+		const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
+		mout.note() << "Using quality field (" << srcQuality.odim.quantity << ") " << mout.endl;
+
+		impOp.traverseChannel(srcData.data, srcQuality.data, dstData.data, dstQuality.data);
 
 	}
 	else {
 		mout.note() << "no quality field, creating default quality field" << mout.endl;
-		drain::image::Image srcQuality;
-		//double udq = DataCoder::undetectQualityCoeff;
-		//if (udq > 0.0)
-		mout.note() << "undetectQualityCoeff=" << DataCoder::undetectQualityCoeff << mout.endl;
+		drain::image::Image srcQuality(typeid(unsigned char));
 
-		srcData.createSimpleQualityData(srcQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
+		if (!qm.hasQuantity(srcData.odim.quantity))
+			mout.info() << "quantity map contains no quantity=" << srcData.odim.quantity << mout.endl;
+
+		// Handle undetect
+		const Quantity & qty = qm.get(srcData.odim.quantity); // VRAD?
+		double udc = qty.hasUndetectValue ? DataCoder::undetectQualityCoeff : 0.0;
+
+		if (DataCoder::undetectQualityCoeff > 0.0){
+			if (qty.hasUndetectValue)
+				mout.warn() << "using undetectQualityCoeff=" << udc << ", actual value still indefinite" << mout.endl;
+			else
+				mout.note() << "quantity=" << srcData.odim.quantity << ", discarding 'undetect' values" << mout.endl;
+		}
+
+		// NOTE: the actual undetectValue is NOT (yet) used!
+		srcData.createSimpleQualityData(srcQuality, 1.0, 0.0, udc);
 
 		impOp.traverseChannel(srcData.data, srcQuality, dstData.data, dstQuality.data);
 	}

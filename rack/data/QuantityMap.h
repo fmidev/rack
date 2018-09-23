@@ -95,6 +95,10 @@ public:
 	}
 
 
+	inline
+	bool hasQuantity(const std::string & key) const {
+		return find(key) != end();
+	}
 
 
 	inline

@@ -60,10 +60,9 @@ public:
 	 */
 	DopplerNoiseOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		DetectorOp(__FUNCTION__, "Estimates DopplerNoise probability from DBZH, VRAD, RhoHV and ZDR.", ECHO_CLASS_NOISE){ // Optional postprocessing: morphological closing.
+		DetectorOp(__FUNCTION__, "Detects variance Doppler (VRAD).", ECHO_CLASS_NOISE){
 
 		dataSelector.path = "data[0-9]+/?$";
-		//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 

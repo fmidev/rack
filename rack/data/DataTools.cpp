@@ -79,8 +79,8 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::VariableMap & attr
 	//a.clear();
 	a.importMap(attributes);
 
-	//hi5::NodeHi5 & node = src.data;
-	if (src.hasChild("data")){
+	const bool HAS_DATA = src.hasChild("data");
+	if (HAS_DATA){  // move down?
 		const drain::image::Image & img = src["data"].data.dataSet;
 		//img.setCoordinatePolicy(policy);
 		if (img.typeIsSet())
@@ -88,10 +88,10 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::VariableMap & attr
 	}
 
 
-	const std::set<std::string> & g = EncodingODIM::attributeGroups;
 
-	// Update attributes, traversing WHAT, WHERE, HOW.
-	std::stringstream sstr; // For speed
+	// Traverse /what, /where, and /how groups.
+	const std::set<std::string> & g = EncodingODIM::attributeGroups;
+	std::stringstream sstr;
 	for (std::set<std::string>::const_iterator git = g.begin(); git != g.end(); ++git){
 		if (src.hasChild(*git)){
 			const drain::VariableMap  & groupAttributes = src[*git].data.attributes;
@@ -103,6 +103,16 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::VariableMap & attr
 			}
 		}
 	}
+
+	if (HAS_DATA){
+		drain::image::Image & img = src["data"].data.dataSet;
+		if (img.typeIsSet()){
+			const drain::image::ImageScaling & s = img.getScaling();
+			img.setScaling(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
+		}
+	}
+
+
 
 	// Traverse children (recursion)
 

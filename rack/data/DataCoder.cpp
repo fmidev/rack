@@ -57,6 +57,7 @@ void DataCoder::init(){
 
 	detectionThreshold = undetectValue; // NEW 2018
 
+	SKIP_UNDETECT = false;
 
 	if (DataCoder::undetectQualityCoeff > 0.0){
 
@@ -67,7 +68,6 @@ void DataCoder::init(){
 			detectionThreshold = undetectValue+ 0.0001;
 
 			/// This has caused (and solved) problems? In compositing, zero = -32 dBZH may undeflow.
-			//if (undetectValue < dataODIM.getMin()){
 			if (detectionThreshold < dataODIM.getMin()){
 				//mout.debug(1) << "undetectValue(" << undetectValue << ") smaller than odim.getMin(): "  << dataODIM.getMin() << mout.endl;
 				// mout.warn() << "adjusting undetectValue(" << undetectValue << ") up to minimum supported value: "  << dataODIM.getMin() << mout.endl;
@@ -79,13 +79,11 @@ void DataCoder::init(){
 
 		}
 		else { //  no undetectValue, but undetectQualityCoeff>0
+			SKIP_UNDETECT = true;
 			//mout.note() << "using default (storage type min) for undetectValue:" << converter.undetectValue << mout.endl;
-			mout.info() << "skipping 'undetect' values (like --undetectWeight 0), consider: " ;
+			mout.info() << "quantity=" << dataODIM.quantity << ", skipping 'undetect' values (equal to --undetectWeight 0)" << mout.endl;
 			//mout.warn() << "not using obsolete 'undetectValue' (" << undetectValue << "), set undetectValue value instead with:";
-			mout << "--quantityConf " << dataODIM.quantity << ",zero=<value>" <<mout.endl; //  << ':' << srcData.odim.type
-			//converter.undetectValue = undetectValue;
-			//undetectValue = -std::numeric_limits<double>::max();
-			//undetectValue = 0.0;
+			mout.info() << "consider: --quantityConf " << dataODIM.quantity << ",zero=<value>" <<mout.endl; //  << ':' << srcData.odim.type
 		}
 
 	}

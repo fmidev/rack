@@ -273,7 +273,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	mout.debug() << "projecting" << mout.endl;
 	const unsigned int bins     = srcData.data.getWidth();  // TODO odimize
 	const unsigned int azimuths = srcData.data.getHeight(); // TODO odimize
-	const float RAD2J = static_cast<double>(azimuths) / (2.0*M_PI);
+	const float RAD2J = 1.0/srcData.odim.getBeamWidth();  //static_cast<double>(azimuths) / (2.0*M_PI);
 	double range;
 
 	//bool computeBinSpan, restartBinSpan;
@@ -293,8 +293,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	 */
 
 	// converter.undetectValue = undetectValue;  // quantity.getZero() ?
-	const Quantity &q = getQuantityMap().get(srcData.odim.quantity);
-	const bool SKIP_UNDETECT = (DataCoder::undetectQualityCoeff == 0.0) || (! q.hasUndetectValue); //(undetectQualityCoeff == 0.0);
+	//const Quantity &q = getQuantityMap().get(srcData.odim.quantity);
+	//const bool SKIP_UNDETECT = (DataCoder::undetectQualityCoeff == 0.0) || (! q.hasUndetectValue); //(undetectQualityCoeff == 0.0);
 	//mout.warn() << "skip undetect:" << (int)SKIP_UNDETECT << mout.endl;
 
 	DataCoder converter(srcData.odim, srcQuality.odim);
@@ -339,7 +339,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 					s = srcData.data.get<double>(b,a);
 
-					if ((SKIP_UNDETECT) && (s == srcData.odim.undetect)){
+					if (converter.SKIP_UNDETECT && (s == srcData.odim.undetect)){
 						add(address, 0.0, 0.0); // last arg (weight) 0.0 => only counter updated
 					}
 					else {

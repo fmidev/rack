@@ -219,19 +219,19 @@ public:
 	// NEW
 	inline
 	PlainData(typename DT::tree_t & tree) : DataObject<DT>(tree),
-			data(tree["data"].data.dataSet),
-			odim(data, data.properties.get("what:quantity",""))
-			{
+	data(tree["data"].data.dataSet),
+	odim(data, data.properties.get("what:quantity",""))
+	{
+		//data.setScaling(odim.gain, odim.offset);
 	}
 
 	/// Constructor referring to HDF5 structure
 	PlainData(typename DT::tree_t & tree, const std::string & quantity) : DataObject<DT>(tree),
-		//tree(tree),
-		data(tree["data"].data.dataSet),
-		odim(data, quantity) // reads data.properties?
-	{
-		//odim.quantity = quantity;
-	}
+			data(tree["data"].data.dataSet),
+			odim(data, quantity) // reads data.properties?
+			{
+		//data.setScaling(odim.gain, odim.offset);
+			}
 
 	/// Copy constructor, also for referencing non-const as const.
 	/**
@@ -241,9 +241,8 @@ public:
 	PlainData(const PlainData<DT2> & d) : DataObject<DT>(d.tree),
 		data(this->tree["data"].data.dataSet),
 		odim(d.odim)
-		//odim(data, data.properties.get("what:quantity",""))
 	{
-		//odim.updateFromMap(d.odim);
+		//data.setScaling(odim.gain, odim.offset);
 	}
 
 	inline

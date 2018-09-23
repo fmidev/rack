@@ -579,7 +579,7 @@ void ImageOpRacklet::exec() const {
 
 		//
 		// mout.warn()
-		mout.debug(1) << "path: " << *it << (DATASET_QUALITY ? " has":" has not") <<  " dataset quality" << mout.endl;
+		mout.debug(1) << "path: " << *it << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
 
 		/// 1st loop: Add data, not quality yet (only check it)
 		for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
@@ -601,7 +601,7 @@ void ImageOpRacklet::exec() const {
 				SPECIFIC_QUALITY_FOUND = true;
 			}
 			else {
-				mout.debug() <<  *it << " /[" << dit->first <<  "] has no quality data" << mout.endl;
+				mout.debug() <<  *it << " /[" << dit->first <<  "] has no quality data (ok)" << mout.endl;
 				SPECIFIC_QUALITY_MISSING = true;
 			}
 

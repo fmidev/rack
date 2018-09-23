@@ -104,7 +104,7 @@ protected:
 		this->setRangeNorm();
 
 
-		this->NI = this->odimSrc.getNyquist(true); // warn if guessed from scaling
+		this->NI = this->odimSrc.getNyquist(LOG_WARNING); // warn if guessed from scaling
 		if (this->NI == 0.0){
 			mout.warn() << odimSrc << mout.endl;
 			mout.error() << "Could not derive Nyquist velocity (NI) from metadata." << mout.endl;

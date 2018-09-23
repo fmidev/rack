@@ -132,7 +132,7 @@ void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarD
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	const double NI = srcData.odim.getNyquist();
+	const double NI = srcData.odim.getNyquist(LOG_ERR);
 	if (NI == 0){
 		mout.error() << "NI=0" << mout.endl;
 		return;
