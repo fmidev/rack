@@ -128,12 +128,8 @@ void DopplerDeAliasWindow::addPixel(Point2D<int> &p){
 		w += 1.0;
 
 		/// Consider LUT here
-		//c = signSin *sin(p.y * BEAM2RAD);
-		//s = signCos *cos(p.y * BEAM2RAD);
-
-		// ORIG
-		c = -sin(p.y * odimSrc.getBeamWidth()); //BEAM2RAD);
-		s = +cos(p.y * odimSrc.getBeamWidth()); //BEAM2RAD);
+		c = -sin(odimSrc.getAzimuth(p.y));  // p.y * odimSrc.getBeamWidth());
+		s = +cos(odimSrc.getAzimuth(p.y));  // p.y * odimSrc.getBeamWidth());
 
 		sTs += s*s;
 		cTc += c*c;
@@ -174,32 +170,14 @@ void DopplerDeAliasWindow::removePixel(Point2D<int> &p){
 		w -= 1.0;
 
 		/// Consider LUT here
-		//s = signCos *cos(p.y * BEAM2RAD);
-		//c = signSin *sin(p.y * BEAM2RAD);
-
-		// ORIG
-		c = -sin(p.y * odimSrc.getBeamWidth()); //BEAM2RAD);
-		s = +cos(p.y * odimSrc.getBeamWidth()); //BEAM2RAD);
+		c = -sin(odimSrc.getAzimuth(p.y));  // location.y * odimSrc.getBeamWidth());
+		s = +cos(odimSrc.getAzimuth(p.y));  // location.y * odimSrc.getBeamWidth());
 
 		sTs -= s*s;
 		cTc -= c*c;
 		cTs -= c*s;
 		sTd -= s*diff;
 		cTd -= c*diff;
-
-		// Experimental!
-		/*
-		locationTmp.setLocation(p);
-		coordinateHandler.handle(locationTmp); // always valid, because between span; but handling must be done!
-		d1 = src.get<double>(locationTmp);
-		if (odimSrc.isValue(d1)){
-			d1 = odimSrc.scaleForward(d1) *M_PI/this->NI;
-			sV -= sin(d1);
-			cV -= cos(d1);
-			// e = d - b*v'
-			diff = diff -
-		}
-		*/
 
 		// Experimental!
 		/*
@@ -250,15 +228,25 @@ void DopplerDeAliasWindow::write(){
 	}
 
 
-	if (getDerivative(location, diff)){
+	if (getDerivative(location, diff, true)){
+
+		diff = diff/odimSrc.getBeamWidth(); // Now unit = [m/s/rad]
 		//odimSrc.getAzimuth();
-		c = -sin(location.y * odimSrc.getBeamWidth());
-		s = +cos(location.y * odimSrc.getBeamWidth());
+		c = -sin(odimSrc.getAzimuth(location.y));  // location.y * odimSrc.getBeamWidth());
+		s = +cos(odimSrc.getAzimuth(location.y));  // location.y * odimSrc.getBeamWidth());
 		// "e"
-		quality = (diff - (c*u + s*v)); // The error, by definition.
-		quality = quality / NI; // NOTE: NI=srcNI! Maybe unfair for src data with small NI?
-		quality = (quality*quality);
+		//quality = c*u + s*v; // The error, by definition.
+		//diff = ((c*u + s*v));
+		diff = (diff - (c*u + s*v)); // The error, by definition.
+		//diff = diff / NI; // NOTE: NI=srcNI! Maybe unfair for src data with small NI?
+		quality = 20.0 / (20.0 + abs(diff));  // 10m/s from hät
+		//quality = 0.5 + diff*0.5;
+		if (isDiag(2)){
+			//std::cerr << diff << '\t' << quality << '\n';
+		}
 	}
+	else
+		quality = 0.01;
 
 	/// Relative information (determinant divided by max volume)
 	// quality = div / sqrt((sTs*sTs + cTs*cTs)*(cTc*cTc + cTs*cTs));
@@ -272,14 +260,15 @@ void DopplerDeAliasWindow::write(){
 
 	// Height weighting?
 	if (functor){
-		quality *= (*functor)(Geometry::heightFromEtaBeam(odimSrc.elangle*drain::DEG2RAD, odimSrc.getBinDistance(location.x)));
+	//	quality *= (*functor)(Geometry::heightFromEtaBeam(odimSrc.elangle*drain::DEG2RAD, odimSrc.getBinDistance(location.x)));
 	}
 
 
 	dst.put(location.x,  location.y, odimOut.scaleInverse(u));
 	dst2.put(location.x, location.y, odimOut.scaleInverse(v));
 
-	dstWeight.put(location.x, location.y, 250.0 * quality); //diffQuality(diff));
+	//dstWeight.put(location.x, location.y, quality); //diffQuality(diff));
+	dstWeight.putScaled(location.x, location.y, quality); //diffQuality(diff));
 	//dstWeight.put(location.x, location.y, diffQuality(diff));
 
 }
