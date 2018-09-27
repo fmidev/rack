@@ -51,7 +51,6 @@ namespace rack {
 
 
 
-
 void DopplerDeAliasWindow::initialize(){
 
 	drain::Logger mout("DopplerDeAliasWindow", __FUNCTION__);
@@ -65,12 +64,6 @@ void DopplerDeAliasWindow::initialize(){
 	NI = this->odimSrc.getNyquist();
 
 	mout.debug() << "NI=" << NI << mout.endl;
-
-	// TODO use src.
-	//NI2 = 2.0 * NI;
-
-	// Azimuthal resolution (radians per beam).
-	//BEAM2RAD = 2.0*M_PI/src.getHeight(); //2.0*M_PI/conf.odimSrc.nrays;
 
 	/// Set maximum quality to undetectValue, and 50% quality at NI/4.
 	diffQuality.set(0.0, NI/1.0);
@@ -116,32 +109,21 @@ void DopplerDeAliasWindow::initialize(){
 	}
 
 	if (functor){
-
-
 		mout.info() << "functor='" << *functor << "'" << mout.endl;
 	}
+
+	reset();
 
 }
 
 
 void DopplerDeAliasWindow::addPixel(Point2D<int> &p){
 
-	diff = 0.0; // debugging only
 
-	// Compute derivative
-	locationTmp.setLocation(p.x, p.y - dSpan);
-	if (!coordinateHandler.validate(locationTmp))
-		return;
-	d1 = src.get<double>(locationTmp);
+	if (getDerivative(p, diff)){
 
-	locationTmp.setLocation(p.x, p.y + dSpan);
-	if (!coordinateHandler.validate(locationTmp))
-		return;
-	d2 = src.get<double>(locationTmp);
-
-	if (odimSrc.deriveDifference(d1, d2, diff)){
-
-		diff = diff/(2.0*dSpan*odimSrc.getBeamWidth());
+		//diff = diff/(2.0*dSpan*odimSrc.getBeamWidth());
+		diff = diff/odimSrc.getBeamWidth();
 
 		w += 1.0;
 
@@ -183,20 +165,11 @@ void DopplerDeAliasWindow::addPixel(Point2D<int> &p){
 
 void DopplerDeAliasWindow::removePixel(Point2D<int> &p){
 
-	// Compute derivative
-	locationTmp.setLocation(p.x, p.y - dSpan);
-	if (!coordinateHandler.validate(locationTmp))
-		return;
-	d1 = src.get<double>(locationTmp);
 
-	locationTmp.setLocation(p.x, p.y + dSpan);
-	if (!coordinateHandler.validate(locationTmp))
-		return;
-	d2 = src.get<double>(locationTmp);
+	if (getDerivative(p, diff)){
 
-	if (odimSrc.deriveDifference(d1, d2, diff)){
-
-		diff = diff/(2.0*dSpan*odimSrc.getBeamWidth());
+		//diff = diff/(2.0*dSpan*odimSrc.getBeamWidth());
+		diff = diff/odimSrc.getBeamWidth();
 
 		w -= 1.0;
 
@@ -213,6 +186,20 @@ void DopplerDeAliasWindow::removePixel(Point2D<int> &p){
 		cTs -= c*s;
 		sTd -= s*diff;
 		cTd -= c*diff;
+
+		// Experimental!
+		/*
+		locationTmp.setLocation(p);
+		coordinateHandler.handle(locationTmp); // always valid, because between span; but handling must be done!
+		d1 = src.get<double>(locationTmp);
+		if (odimSrc.isValue(d1)){
+			d1 = odimSrc.scaleForward(d1) *M_PI/this->NI;
+			sV -= sin(d1);
+			cV -= cos(d1);
+			// e = d - b*v'
+			diff = diff -
+		}
+		*/
 
 		// Experimental!
 		/*
@@ -263,31 +250,31 @@ void DopplerDeAliasWindow::write(){
 	}
 
 
+	if (getDerivative(location, diff)){
+		//odimSrc.getAzimuth();
+		c = -sin(location.y * odimSrc.getBeamWidth());
+		s = +cos(location.y * odimSrc.getBeamWidth());
+		// "e"
+		quality = (diff - (c*u + s*v)); // The error, by definition.
+		quality = quality / NI; // NOTE: NI=srcNI! Maybe unfair for src data with small NI?
+		quality = (quality*quality);
+	}
+
 	/// Relative information (determinant divided by max volume)
-	//quality = div / sqrt((sTs*sTs + cTs*cTs)*(cTc*cTc + cTs*cTs));
-	//quality = 1.0;
-	quality = w/area; // not good! conv spots may behave nice.
+	// quality = div / sqrt((sTs*sTs + cTs*cTs)*(cTc*cTc + cTs*cTs));
+	//
+	// quality = 1.0;
+	// quality = w/area; // not good! conv spots may behave nice.
 	// quality = sqrt(sV*sV + cV*cV)/w; // count
-	//quality = div / (u*u+v*v);
+	// quality = div / (u*u+v*v);
 
 	// quality *=  1.0/(1.0 + sqrt((sumDiff2 - sumDiff*sumDiff/w) /w));
 
+	// Height weighting?
 	if (functor){
 		quality *= (*functor)(Geometry::heightFromEtaBeam(odimSrc.elangle*drain::DEG2RAD, odimSrc.getBinDistance(location.x)));
-		/*
-			quality = Geometry::heightFromEtaBeam(conf.odimSrc.elangle*DEG2RAD, conf.odimSrc.getBinDistance(location.x));
-			if (isDiag(50)){
-				std::cerr << quality << " => ";
-			}
-			quality = (*functor)(quality);
-			//
-			if (isDiag(50)){
-				std::cerr << quality << '\n';
-				//std::cerr << *functor << '\n';
-			}
-		 */
 	}
-	//odimOut.getMin();
+
 
 	dst.put(location.x,  location.y, odimOut.scaleInverse(u));
 	dst2.put(location.x, location.y, odimOut.scaleInverse(v));

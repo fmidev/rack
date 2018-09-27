@@ -67,7 +67,7 @@ class DopplerDeAliasWindow : public SlidingRadarWindow<DopplerDeAliasConfig> {
 public:
 
 	DopplerDeAliasWindow(const DopplerDeAliasConfig & conf, const PolarODIM & odimOut) :
-		SlidingRadarWindow<DopplerDeAliasConfig>(conf) , odimOut(odimOut), functor(NULL), dSpan(1)
+		SlidingRadarWindow<DopplerDeAliasConfig>(conf) , odimOut(odimOut), functor(NULL)
 		//, dSpan(3), dSpan2(2.0*dSpan)
 		{ };
 
@@ -84,21 +84,40 @@ public:
 	virtual
 	void initialize();
 
-	//const PolarODIM & conf.odimSrc; // NOW in conf!
+	inline
+	bool getDerivative(const Point2D<int> &p, double & diff) const {
+
+		Point2D<int> pTmp;
+
+		pTmp.setLocation(p.x, p.y - 1);
+		if (!this->coordinateHandler.validate(pTmp))
+			return false;
+		const double d1 = src.get<double>(pTmp);
+
+		pTmp.setLocation(p.x, p.y + 1);
+		if (!this->coordinateHandler.validate(pTmp))
+			return false;
+		const double d2 = src.get<double>(pTmp);
+
+		if (odimSrc.deriveDifference(d1, d2, diff)){
+			diff *= 0.5; // due to above +1/-1
+			return true;
+		}
+		else
+			return false;
+
+	}
 
 
 	const PolarODIM & odimOut;
 
 	std::string functorSetup; // TODO: use that of Window::
 
-	// mutable double BEAM2RAD;
-
 
 protected:
 
-
 	/// Handling altitude
-	drain::UnaryFunctor *functor; // pointer :-(
+	drain::UnaryFunctor *functor; // pointer :-(   TODO: use that of Window::
 
 	drain::FuzzyBell2<double> diffQuality;
 	drain::FuzzyBell2<double> matrixInformation;
@@ -163,7 +182,7 @@ private:
 
 
 	/// The span of bins when approximating the derivative with
-	const int    dSpan;
+	//const int    dSpan;
 	/// dSpan2 = 2.0*dSpan
 	//const double dSpan2;
 
