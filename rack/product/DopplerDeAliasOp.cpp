@@ -100,12 +100,14 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	setGeometry(srcData.odim, dstQuality);
 
 	/*
-	mout.warn() << "scr" << srcData << mout.endl;
-	mout.warn() << "U" << dstDataU << mout.endl;
-	mout.warn() << "V" << dstDataV << mout.endl;
+	mout.warn() << "scr:  " << srcData << mout.endl;
+	mout.warn() << "U:    " << dstDataU << mout.endl;
+	mout.warn() << "V:    " << dstDataV << mout.endl;
+	mout.warn() << "QIND: " << dstQuality << mout.endl;
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
-	mout.warn() << "QIND" << dstQuality << mout.endl;
 	 */
+
+
 	const DopplerDeAliasConfig conf(widthM, heightD);
 
 
