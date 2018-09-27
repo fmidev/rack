@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef DOPPLER_OP_H_
-#define DOPPLER_OP_H_
+#ifndef DOPPLERSAMPLER_OP_H_
+#define DOPPLERSAMPLER_OP_H_
 
-#include "PolarProductOp.h"
+#include "DopplerOp.h"
 
 //#include "radar/Doppler.h"
 #include "radar/PolarSector.h"
@@ -46,86 +46,54 @@ namespace rack {
  *
  *  \see DopplerWindowOp
  */
-class DopplerOp : public PolarProductOp {
-
+class DopplerSamplerOp : public DopplerOp {
 public:
 
 
-	/*
-	DopplerOp() : PolarProductOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
+	DopplerSamplerOp() : DopplerOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
 		parameters.append(w.getParameters());
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 	};
-	*/
 
-	virtual inline ~DopplerOp(){};
+	virtual inline ~DopplerSamplerOp(){};
 
-	//mutable PolarSector w;
-
-	/// Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved.
-	// raise
-	inline
-	double project(double azmR, double u, double v) const {
-		// double speed = sqrt(u*u + v*v);
-		return u*sin(azmR) + v*cos(azmR);
-	}
-
-
-	// Re-alias
-	// x - 2*Vm*math.floor((Vm+x)/2.0/Vm)
-	inline
-	double alias(double v, double vNyq) const {
-		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));  // consider vNyq2
-	}
+	mutable PolarSector w;
 
 
 protected:
 
-	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
+	DopplerSamplerOp(const std::string & name, const std::string &description) : DopplerOp(name, description){
 		dataSelector.quantity = "VRAD";
 		dataSelector.count = 1;
 	}
 
-	//virtual void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
+	virtual
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
 
 
 };
 
-// for Testing
-class DopplerRealiasOp : public DopplerOp {
+class DopplerDiffPlotterOp : public DopplerSamplerOp {  // DopplerWindow unused!
+
 public:
 
-	DopplerRealiasOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
-		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
-		parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
-		parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
-
+	DopplerDiffPlotterOp() : DopplerSamplerOp(__FUNCTION__, "Plots differences in VRAD data as fucntion of azimuth") {
+		parameters.append(w.getParameters());
 		dataSelector.count = 1;
-		dataSelector.quantity = "AMVU|AMVV|VRAD";
-
-		//odim.quantity; // VRAD_C
-		//odim.NI;
-		odim.type = "S";
 	}
 
-	//	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
+	// Outputs u and v both, so dst dataSET needed
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
-
-
-
-	int matchOriginal;
-	//int order;
-	//double decay;
-	//double smoothNess;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
 
 };
+
+
 
 }  // namespace rack
 
 
-#endif /* RACKOP_H_ */
+#endif
 
-// Rack

@@ -37,7 +37,7 @@ namespace rack {
 
 
 
-
+/*
 void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(name, __FUNCTION__);
@@ -119,123 +119,163 @@ void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 
 }
 
+*/
 
-// For testing
-struct unitSpeed {
-	double u;
-	double v;
-	double weight;
-};
-
-// For testing
-void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	const double NI = srcData.odim.getNyquist(LOG_ERR);
-	if (NI == 0){
-		mout.error() << "NI=0" << mout.endl;
+	//const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
+
+
+
+	const PlainData<PolarSrc> & srcDataU    = srcSweep.getData("AMVU");
+	if (srcDataU.data.isEmpty()){
+		mout.warn() << "AMVU input missing" << mout.endl;
 		return;
 	}
 
-	dstData.setEncoding(odim.type);
-	dstData.setPhysicalRange(-NI, +NI);
-	//dstData.initialize(typeid(unsigned short int), srcData.data.getGeometry());
-	//dstData.copyEncoding(srcData);
-	//dstData.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
-	//dstData.setPhysicalRange(-1, +1);
+	const PlainData<PolarSrc> & srcDataV    = srcSweep.getData("AMVV");
+	if (srcDataV.data.isEmpty()){
+		mout.warn() << "AMVV input missing" << mout.endl;
+		return;
+	}
 
-	PlainData<PolarDst> & dstQuality = dstData.getQualityData();
-	QuantityMap & qm = getQuantityMap();
-	qm.setQuantityDefaults(dstQuality);
-	//dstU1.setPhysicalRange(-1, +1);
-	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
+	const PlainData<PolarSrc> & srcDataVRAD = srcSweep.getData("VRAD"); // maybe empty
+	const bool VRAD_SRC = !srcDataVRAD.data.isEmpty();
+	if ((matchOriginal > 0) && !VRAD_SRC){
+		mout.warn() << "No VRAD input, matching will be skipped" << mout.endl;
+	}
+	const bool MATCH_ALIASED  = (matchOriginal & 1) && VRAD_SRC;
+	const bool MATCH_UNDETECT = (matchOriginal & 2) && VRAD_SRC;
 
+	//const PlainData<PolarSrc> & dstDataV = srcSweep.getData("AMVV");
 
-	const int height = srcData.data.getHeight();
+	const bool VRAD_OVERWRITE = (dstProduct.find("VRAD") != dstProduct.end());
 
-	const double coeff     = M_PI/NI;
-	const double coeffInv  = NI/M_PI;
-
-	//const double orderD = static_cast<double>(order);
-
-	double vrad, W, weight;
-
-	const double wOld = smoothNess;
-	const double wNew = 1.0-smoothNess;
-
-	std::vector<unitSpeed> speedTmp(srcData.data.getHeight()); //(height);
-
-	int j;
-	unitSpeed speed;
-
-	for (size_t i=0; i<srcData.data.getWidth(); i++){
-
-		speed.u      = 0.0;
-		speed.v      = 0.0;
-		speed.weight = 0.0;
-
-		for (int j0=height+10; j0>=0; --j0){ // init
-
-			j = (j0%height);
-
-			vrad = srcData.data.get<double>(i,j);
-			if (srcData.odim.isValue(vrad)){
-				W = coeff * srcData.odim.scaleForward(vrad);
-				weight = speed.weight*wOld + wNew;
-				speed.u = (speed.weight*wOld*speed.u + wNew*cos(W)) / weight;
-				speed.v = (speed.weight*wOld*speed.v + wNew*sin(W)) / weight;
-				speed.weight = 1.0;
-			}
-			// Store
-			speedTmp[j] = speed;
-			speed.weight *= decay; // muisto haalistuu
-		}
-
-		speed.u      = 0.0;
-		speed.v      = 0.0;
-		speed.weight = 0.0;
-
-		for (int j0=-10; j0<height; j0++){
-
-			j = (j0+height)%height;
-
-			// Step 1: update accumulation
-			vrad = srcData.data.get<double>(i,j);
-			if (srcData.odim.isValue(vrad)){
-				W = coeff * srcData.odim.scaleForward(vrad);
-				weight = speed.weight*wOld + wNew;
-				speed.u = (speed.weight*wOld*speed.u + wNew*cos(W)) / weight;
-				speed.v = (speed.weight*wOld*speed.v + wNew*sin(W)) / weight;
-				speed.weight = 1.0;
-			}
-			speed.weight *= decay; // muisto haalistuu
-
-			// Step 2: update accumulation
-			const unitSpeed & s = speedTmp[j];
-
-			weight = speed.weight + s.weight;
-			if (weight > 0.1){
-
-				speed.u = (speed.weight*speed.u + s.weight*s.u) / weight;
-				speed.v = (speed.weight*speed.v + s.weight*s.v) / weight;
-				if ((speed.u != 0.0) && (speed.v != 0.0)){
-					dstData.data.putScaled(i, j, atan2(speed.v, speed.u)*coeffInv);
-					dstQuality.data.putScaled(i, j, weight/2.0);
-				}
-			}
-			/*
-			else {
-				dstData.data.put(i, j, dstData.odim.undetect);
-				dstQuality.data.putScaled(i, j, 0.0);
-			}
-			*/
-		}
-
+	if (VRAD_OVERWRITE){
+		mout.warn() << "Contains already VRAD, overwriting" << mout.endl;
+		//return;
 	}
 
 
+	PlainData<PolarDst> & dstData = dstProduct.getData(odim.quantity);
+
+
+
+	const QuantityMap & qm = getQuantityMap();
+	if (dstData.data.isEmpty()){ // or !VRAD_OVERWRITE
+		ProductBase::applyODIM(dstData.odim, odim, true);
+		//qm.setQuantityDefaults(dstData, "VRAD", odim.type);
+		setGeometry(srcDataU.odim, dstData);
+		dstData.odim.NI = odim.NI;
+		dstData.odim.setRange(-odim.NI, +odim.NI);
+	}
+	const double min = dstData.data.getMin<double>();
+	const double max = dstData.data.getMax<double>();
+
+	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
+	qm.setQuantityDefaults(dstQuality);
+	setGeometry(dstData.odim, dstQuality);
+
+	//const double dstNI = abs(odim.NI);
+	mout.info() << "Inverting (u,v) back to VRAD " << mout.endl;
+	mout.info() << "src [" << srcDataU.odim.quantity << "] " << EncodingODIM(srcDataU.odim) << mout.endl;
+	mout.info() << "src [" << srcDataV.odim.quantity << "] " << EncodingODIM(srcDataV.odim) << mout.endl;
+	mout.info() << "dst [" << dstData.odim.quantity << "]  " << EncodingODIM(dstData.odim) << ", [" << min << ',' << max << ']' << mout.endl;
+	mout.info() << "dst [" << dstQuality.odim.quantity << "]" << EncodingODIM(dstQuality.odim) << mout.endl;
+
+	const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
+
+	/// Azimuth in radians
+	double azmR;
+
+	/// Original value in VRAD
+	double vOrig;
+	drain::image::Point2D<double> unitVOrig;
+
+	/// Resolved (u,v), from AMVU and AMVV
+	double u, v;
+
+	/// Resolved (u,v) projected back on beam
+	double vReproj;
+	drain::image::Point2D<double> unitVReproj;
+
+
+	bool ORIG_UNDETECT;
+	bool ORIG_NODATA;
+	bool ORIG_UNUSABLE; // ORIG_UNDETECT && ORIG_NODATA
+
+	size_t address;
+
+	mout.warn() << "Main " << dstData    << mout.endl;
+	mout.note() << "Main " << dstQuality << mout.endl;
+
+	for (size_t j = 0; j < dstData.data.getHeight(); ++j) {
+
+		azmR = dstData.odim.getBeamWidth() * static_cast<double>(j) ; // window.BEAM2RAD * static_cast<double>(j);
+
+		for (size_t i = 0; i < dstData.data.getWidth(); ++i) {
+
+			address = dstData.data.address(i,j);
+			u = srcDataU.data.get<double>(address);
+			v = srcDataV.data.get<double>(address);
+
+
+			if (MATCH_UNDETECT || MATCH_ALIASED){
+				vOrig = srcDataVRAD.data.get<double>(address);
+				ORIG_UNDETECT = (vOrig == srcDataVRAD.odim.undetect);
+				ORIG_NODATA   = (vOrig == srcDataVRAD.odim.nodata);
+
+				ORIG_UNUSABLE = ORIG_UNDETECT || ORIG_NODATA;
+				if (MATCH_UNDETECT && ORIG_UNUSABLE){
+					if (ORIG_UNDETECT)
+						dstData.data.put(address, dstData.odim.undetect);
+					else
+						dstData.data.put(address, dstData.odim.nodata);
+					dstQuality.data.put(address, 0);
+					continue;
+				}
+
+			}
+
+
+			if (srcDataU.odim.isValue(u) && srcDataV.odim.isValue(v)){
+
+				u = srcDataU.odim.scaleForward(u);
+				v = srcDataV.odim.scaleForward(v);
+				vReproj = this->project(azmR, u,v);
+
+				if (MATCH_ALIASED && !ORIG_UNUSABLE){
+					vOrig = srcDataVRAD.odim.scaleForward(vOrig);
+					srcDataVRAD.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
+					srcDataVRAD.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
+					vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
+				}
+
+				vReproj = dstData.odim.scaleInverse(vReproj);
+				if ((vReproj > min) && (vReproj < max)){ // continue processing
+					//dstDataVRAD.data.put(address, vReproj);
+					dstData.data.put(address, vReproj);
+					dstQuality.data.put(address, dstQuality.odim.scaleInverse(0.5 + (unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y)/2.0) );
+				}
+				else {
+					dstData.data.put(address, dstData.odim.nodata); // rand() & 0xffff); //
+					dstQuality.data.put(address, 0);
+				};
+			}
+			else {
+				dstData.data.put(address, dstData.odim.undetect);
+			}
+
+
+		}
+	}
+	//@ dstDataVRAD.updateTree();
+
+
 }
+
 
 
 /*

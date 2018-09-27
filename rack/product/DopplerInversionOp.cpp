@@ -68,20 +68,20 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 
 	PlainData<PolarDst> & dstDataU   = dstProduct.getData("AMVU");
-	dstDataU.data.clear();
+	//dstDataU.data.clear();
 	PlainData<PolarDst> & dstDataV   = dstProduct.getData("AMVV");
-	dstDataV.data.clear();
+	//dstDataV.data.clear();
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
-	dstQuality.data.clear();
+	//dstQuality.data.clear();
 
+	dstDataU.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataU.odim, odim, true);
-	mout.debug(1) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 	ProductBase::handleEncodingRequest(dstDataU.odim, encodingRequest);
-	mout.debug(2) << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 	dstDataU.data.setType(dstDataU.odim.type);
 	setGeometry(srcData.odim, dstDataU);
 	mout.debug() << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 
+	dstDataV.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataV.odim, odim, true);
 	ProductBase::handleEncodingRequest(dstDataV.odim, encodingRequest);
 	dstDataV.data.setType(dstDataV.odim.type);
@@ -90,10 +90,11 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
 	setGeometry(srcData.odim, dstQuality);
 
-	/*
-	mout.warn() << "scr:  " << srcData << mout.endl;
 	mout.warn() << "U:    " << dstDataU << mout.endl;
 	mout.warn() << "V:    " << dstDataV << mout.endl;
+
+	/*
+	mout.warn() << "scr:  " << srcData << mout.endl;
 	mout.warn() << "QIND: " << dstQuality << mout.endl;
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
 	 */
@@ -129,162 +130,18 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	// MAIN OPERATION !
 	window.run();
 
-
 	dstDataU.odim.prodpar = getParameters().getKeys();
 	dstDataU.odim.update(srcData.odim); // date, time, etc
-
 	dstDataU.data.properties.importMap(dstDataU.odim);
 	dstDataV.data.properties.importMap(dstDataV.odim);
 
 
-	//const QuantityMap & qm = getQuantityMap();
-
-	/// Derived products and post-processing
-
-	//drain::IdentityFunctor ident; RadarWindowConfig avgConf(ident, 2.0*widthM, 2.0*heightD);
-	//RadarWindowConfig avgConf(2500, 11);
-
-
-	//drain::getLog().setVerbosity(20);
-
-	/*
-	PlainData<PolarDst> & dstDataU2   = dstProduct.getData("AMVU2");
-	dstDataU2.copyEncoding(dstDataU);
-	dstDataU.data.setScaling(dstDataU.odim.gain, dstDataU.odim.offset);
-	dstDataU2.setGeometry(dstDataU.data.getGeometry());
-	//mout.warn() << "Src for PolarSmoother::filter: " << EncodingODIM(dstDataU2.odim) << mout.endl;
-	//setGeometry(srcData.odim, dstDataU2);
-	PolarSmoother::filter(dstDataU.odim, dstDataU.data, dstDataU2.data, 5500);
-	//mout.note()  << dstDataU2 << mout.endl;
-
-
-
-	RadarWindowConfig avgConf(5*widthM, 5*heightD);
-	RadarWindowAvg<RadarWindowConfig> avgWindow(avgConf);
-	avgWindow.conf.updatePixelSize(srcData.odim);
-	PlainData<PolarDst> & dstDataV2   = dstProduct.getData("AMVV2");
-	dstDataV2.copyEncoding(dstDataV);
-	dstDataV2.setGeometry(dstDataV.data.getGeometry());
-	drain::image::SlidingWindowOp<RadarWindowAvg<RadarWindowConfig> > avg2(avgConf);
-	//mout.warn() << dstDataV2.data.getScaling() << mout.endl;
-	//mout.warn() << dstDataV2.data.getChannel(0).getScaling() << mout.endl;
-	mout.note() << "Calling (SlidingWindowOp)avg2.process" << mout.endl;
-	avg2.process(dstDataV.data, dstDataV2.data);
-	*/
-	//mout.warn() << EncodingODIM(dstDataV2.odim) << mout.endl;
-
-	/// If desired, run also new, Inversioned VRAD field
-	//nyquist
-	if (nyquist != 0.0){
-
-		dstDataU.odim.NI = nyquist; // used for dataset-level metadata
-
-		PlainData<PolarDst> & dstDataVRAD = dstProduct.getData("VRAD"); // de-aliased ("re-aliased")
-
-		const QuantityMap & qm = getQuantityMap();
-		qm.setQuantityDefaults(dstDataVRAD, "VRAD", "S");
-		//const double dstNI = abs(odim.NI);
-		dstDataVRAD.odim.NI = nyquist;
-		dstDataVRAD.odim.setRange(-nyquist, +nyquist);
-		mout.info() << "Inversioning (u,v) to VRAD " << mout.endl;
-		mout.info() << "src VRAD  " << EncodingODIM(srcData.odim) << mout.endl;
-		mout.info() << "dst VRADC " << EncodingODIM(dstDataVRAD.odim) << mout.endl;
-		setGeometry(srcData.odim, dstDataVRAD);
-		const double srcNI2 = 2.0*srcData.odim.getNyquist(); // 2.0*srcData.odim.NI;
-		const double min = dstDataVRAD.data.getMin<double>();
-		const double max = dstDataVRAD.data.getMax<double>();
-
-		mout.info() << "dst VRADC " << EncodingODIM(dstDataVRAD.odim) << ", [" << min << ',' << max << ']' << mout.endl;
-
-
-		/// Azimuth in radians
-		double azmR;
-
-		/// Original value in VRAD
-		double vOrig;
-		drain::image::Point2D<double> unitVOrig;
-
-		/// Resolved (u,v), from AMVU and AMVV
-		double u, v;
-
-		/// Resolved (u,v) projected back on beam
-		double vReproj;
-		drain::image::Point2D<double> unitVReproj;
-
-		const bool MATCH_ALIASED  = (matchOriginal & 1);
-		const bool MATCH_UNDETECT = (matchOriginal & 2);
-
-		bool ORIG_UNDETECT;
-		bool ORIG_NODATA;
-		bool ORIG_UNUSABLE; // ORIG_UNDETECT && ORIG_NODATA
-
-		size_t address;
-
-		for (size_t j = 0; j < dstDataVRAD.data.getHeight(); ++j) {
-
-			azmR = srcData.odim.getBeamWidth() * static_cast<double>(j) ; // window.BEAM2RAD * static_cast<double>(j);
-
-			for (size_t i = 0; i < dstDataVRAD.data.getWidth(); ++i) {
-
-				address = dstDataVRAD.data.address(i,j);
-				u = dstDataU.data.get<double>(address);
-				v = dstDataV.data.get<double>(address);
-
-				if (MATCH_UNDETECT || MATCH_ALIASED){
-					vOrig = srcData.data.get<double>(address);
-					ORIG_UNDETECT = (vOrig == srcData.odim.undetect);
-					ORIG_NODATA   = (vOrig == srcData.odim.nodata);
-
-					ORIG_UNUSABLE = ORIG_UNDETECT || ORIG_NODATA;
-					if (MATCH_UNDETECT && ORIG_UNUSABLE){
-						if (ORIG_UNDETECT)
-							dstDataVRAD.data.put(address, dstDataVRAD.odim.undetect);
-						else
-							dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata);
-						dstQuality.data.put(address, 0);
-						continue;
-					}
-
-				}
-
-
-				if (dstDataU.odim.isValue(u) && dstDataV.odim.isValue(v)){
-
-					u = dstDataU.odim.scaleForward(u);
-					v = dstDataV.odim.scaleForward(v);
-					vReproj = project(azmR, u,v);
-
-					if (MATCH_ALIASED && !ORIG_UNUSABLE){
-						vOrig = srcData.odim.scaleForward(vOrig);
-						srcData.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
-						srcData.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
-						vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
-					}
-
-					vReproj = dstDataVRAD.odim.scaleInverse(vReproj);
-					/*
-					if ((i==j))
-						if ((i & 15) == 0)
-							std::cout << " outo: " << vReproj << '\n';
-					 */
-					if ((vReproj > min) && (vReproj < max)){ // continue processing
-						//dstDataVRAD.data.put(address, vReproj);
-						dstDataVRAD.data.put(address, vReproj);
-						dstQuality.data.put(address, dstQuality.odim.scaleInverse(0.5 + (unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y)/2.0) );
-					}
-					else {
-						dstDataVRAD.data.put(address, dstDataVRAD.odim.nodata); // rand() & 0xffff); //
-						dstQuality.data.put(address, 0);
-					};
-				}
-				else {
-					dstDataVRAD.data.put(address, dstDataVRAD.odim.undetect);
-				}
-			}
-		}
-		//@ dstDataVRAD.updateTree();
-	}
-
+	// Copy VRAD
+	PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData("VRAD");
+	//dstDataVRAD.odim.importMap(srcData.odim);
+	dstDataVRAD.copyEncoding(srcData);
+	dstDataVRAD.setGeometry(srcData.data.getGeometry());
+	dstDataVRAD.data.copyDeep(srcData.data);
 
 	/// FUTURE EXTENSION (VVPslots > 0)
 	if (VVP && false){
@@ -380,82 +237,6 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 }
 
-
-
-void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
-
-	drain::Logger mout(name, __FUNCTION__);
-
-	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
-
-	if (srcData.data.isEmpty()){
-		mout.warn() << "data empty" << mout.endl;
-		return;
-	}
-	// setEncoding(srcData.odim, dstData.odim);
-	// DopplerInversionWindow dw;
-
-	w.adjustIndices(srcData.odim);
-	if (w.ray2 < w.ray1){
-		w.ray2 += 360;
-	}
-	mout.warn() << "rays: " << w.ray1 << '-' << w.ray2 << mout.endl;
-	mout.warn() << "NI: " << srcData.odim.getNyquist() << mout.endl;
-
-	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
-
-	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
-	//mout.warn() << "size " << count << mout.endl;
-
-	PlainData<PolarDst> & dstDataU = dstProduct.getData("AZM");
-	PlainData<PolarDst> & dstDataV = dstProduct.getData("DIFF");
-
-	dstDataU.setEncoding(typeid(double));
-	dstDataU.data.setGeometry(count, 1);
-	dstDataU.odim.quantity = "AZM"; // ???
-	dstDataU.data.fill(dstDataU.odim.undetect);
-
-	dstDataV.setEncoding(typeid(double));
-	dstDataV.data.setGeometry(count, 1);
-	dstDataV.odim.quantity = "DIFF";
-	dstDataV.data.fill(dstDataV.odim.undetect);
-
-	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;
-
-
-	double azm, v1,v2,vDiff; // ,x,y;
-	size_t index = 0;
-
-	int j1;
-	int j2;
-
-	for (int j=w.ray1; j<w.ray2; ++j){
-
-		azm = srcData.odim.getBeamWidth() * static_cast<double>(j);
-		j1 = (j-1 + srcData.odim.nrays) % srcData.odim.nrays;
-		j2 = (j+1 + srcData.odim.nrays) % srcData.odim.nrays;
-
-		for (int i = w.bin1; i<w.bin2; ++i){
-
-			v1 = srcData.data.get<double>(i, j1);
-			v2 = srcData.data.get<double>(i, j2);
-
-			if (srcData.odim.deriveDifference(v1, v2, vDiff)) {
-				// mout.warn() << "data d: " << (double)d << mout.endl;
-				dstDataU.data.put(index, azm*drain::RAD2DEG);
-				dstDataV.data.put(index, vDiff/2.0); // span=2 between j1 and j2
-			}
-			else {
-				dstDataU.data.put(index, dstDataU.odim.nodata);
-				dstDataV.data.put(index, dstDataV.odim.nodata);
-			}
-			// mout.warn() << '\t' << index << mout.endl;
-			++index;
-		}
-	}
-
-}
 
 
 

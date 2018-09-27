@@ -27,15 +27,8 @@ SOFTWARE.
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//**
-
-    Copyright 2001 - 2013  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
-
-    This file is part of AnoRack, a module of Rack for C++.
-
-    AnoRack is not free software.
-
 */
+
 
 #ifndef DOPPLER_Inversion2_OP_H_
 #define DOPPLER_Inversion2_OP_H_
@@ -62,7 +55,7 @@ public:
 
 	// Outputs u and v both, so dst dataSET needed
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
+	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
 	//@Override
 	virtual
@@ -76,28 +69,12 @@ public:
 	double heightD;
 	std::string altitudeWeight;  // Functor
 
-	/// Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved.
-	// raise
-	inline
-	double project(double azmR, double u, double v) const {
-		// double speed = sqrt(u*u + v*v);
-		return u*sin(azmR) + v*cos(azmR);
-	}
 
 
-	// Re-alias
-	// x - 2*Vm*math.floor((Vm+x)/2.0/Vm)
-	inline
-	double alias(double v, double vNyq) const {
-		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));  // consider vNyq2
-	}
-
-
-	double nyquist;
+	// double nyquist;
+	// int matchOriginal;
 
 	bool VVP;
-	//bool matchAliased;
-	int matchOriginal;
 
 protected:
 
@@ -132,9 +109,9 @@ public:
 	 */
 	DopplerInversionOp(int widthM = 500, double heightD = 3.0, double nyquistVelocity=0.0) :
 		DopplerWindOp(__FUNCTION__, "Inverts Doppler speed to (u,v), optionally de-aliases.", widthM, heightD) { //, widthM, heightD) {
-		parameters.reference("nyquist", nyquist = nyquistVelocity, "m/s");
+		// parameters.reference("nyquist", nyquist = nyquistVelocity, "m/s");
 		//parameters.reference("VVP", VVP=false, "0|1"); // SLOTS
-		parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
+		//parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
 		parameters.reference("altitudeWeight", altitudeWeight, "Functor:a:b:c..."); // ??
 		//parameters.reference("testSigns", testSigns = 3, "bits");
 
@@ -148,22 +125,6 @@ public:
 
 };
 
-
-class DopplerDiffPlotterOp : public DopplerOp {  // DopplerWindow unused!
-
-public:
-
-
-	DopplerDiffPlotterOp() : DopplerOp(__FUNCTION__, "Plots differences in VRAD data as fucntion of azimuth") {
-		parameters.append(w.getParameters());
-		dataSelector.count = 1;
-	}
-
-	// Outputs u and v both, so dst dataSET needed
-	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;
-
-};
 
 
 }  // ::rack

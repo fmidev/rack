@@ -39,9 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/MaxEchoOp.h"
 
 #include "product/DopplerOp.h"
-#include "product/DopplerWindowOp.h"
-#include "product/DopplerDeAliasOp.h"
 #include "product/DopplerAvgExpOp.h"
+#include "product/DopplerWindowOp.h"
+#include "product/DopplerInversionOp.h"
+#include "product/DopplerSamplerOp.h"
+
 
 #include "product/ConvOp.h"
 #include "product/RainRateOp.h"
@@ -88,11 +90,12 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<MaxEchoOp> maxEcho;
 
 	// Polar coord met.product based on VRAD
-	static ProductAdapter<DopplerOp> dopplerMapper;  // circles
+	static ProductAdapter<DopplerSamplerOp> dopplerSampler;  // circles
 	static ProductAdapter<DopplerAvgOp> dopplerAvg;
 	static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
 	static ProductAdapter<DopplerDevOp> dopplerDev;
-	static ProductAdapter<DopplerDeAliasOp> dopplerDeAlias;
+	static ProductAdapter<DopplerInversionOp> dopplerInversion;
+	static ProductAdapter<DopplerRealiasOp> dopplerRealias;
 	static ProductAdapter<DopplerDiffPlotterOp> dopplerDiffPlotter;
 	static ProductAdapter<DopplerAvgExpOp> dopplerAvgExp;
 
