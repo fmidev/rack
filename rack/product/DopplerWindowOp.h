@@ -121,7 +121,7 @@ protected:
 	virtual
 	double getTypicalMax(const PolarODIM & srcODIM) const = 0;
 
-	/// Convert SI (metric, radian) window widths to pixelConf;
+	/// Convert window dimensions from metres and radians to image pixels.
 	void setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const;
 
 };
@@ -205,10 +205,13 @@ void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const Pola
 
 	drain::Logger mout(name, __FUNCTION__);
 
+	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
 	pixelConf.widthM  = this->conf.widthM;
 	pixelConf.heightD = this->conf.heightD;
 	pixelConf.invertPolar   = this->conf.invertPolar;
+	pixelConf.contributionThreshold  = this->conf.contributionThreshold;
 	pixelConf.relativeScale = this->conf.relativeScale;
+
 
 	pixelConf.updatePixelSize(odim);
 
@@ -234,12 +237,17 @@ void DopplerWindowOp<W>::processData(const Data<PolarSrc> & vradSrc, Data<PolarD
 
 		drain::Logger mout(name, __FUNCTION__);
 
+		//DopplerDevWindow w;
+		//w.initialize();
+
 		typename W::conf_t pixelConf;
 		setPixelConf(pixelConf, vradSrc.odim);
 
 		SlidingWindowOp<W> op(pixelConf);
 		mout.debug() << op << mout.endl;
 		mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
+		mout.debug() << "pixelConf.contributionThreshold " << pixelConf.contributionThreshold << mout.endl;
+		mout.debug() << "op.conf.contributionThreshold " << op.conf.contributionThreshold << mout.endl;
 		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
 		//op.process(vradSrc.data, dstData.data);
 		//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));

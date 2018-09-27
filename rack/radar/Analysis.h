@@ -230,6 +230,10 @@ public:
 
 };
 
+
+
+
+
 class RadarWindowConfig : public drain::image::WindowConfig {
 
 public:
@@ -250,18 +254,9 @@ public:
 
 	/**
 	 *  \param odimSrc - metadata of the source data
-	RadarWindowConfig(const PolarODIM & odimSrc) :
-			drain::image::WindowConfig(1, 1),
-			odimSrc(odimSrc), invertPolar(false), contributionThreshold(1.0) {
-	}
-	 */
-
-	/**
-	 *  \param odimSrc - metadata of the source data
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
-	//RadarWindowConfig(int width=3, int height=3, double contributionThreshold = 0.5) :
 	RadarWindowConfig(int widthM=1500, double heightD=3.0, double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
 		drain::image::WindowConfig(1, 1), // drain::image::WindowConfig(width, height),
 		widthM(widthM), heightD(heightD), invertPolar(invertPolar), contributionThreshold(contributionThreshold), relativeScale(relativeScale) {
@@ -362,6 +357,7 @@ protected:
 			//this->conf.ftor.setScale(1.0);
 			mout.info() << "(not implemented: functor scaling for small int dst)"  << mout.endl;  // << this->odimSrc
 		}
+		// what about reset(); ?
 	};
 
 

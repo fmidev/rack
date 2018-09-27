@@ -59,15 +59,15 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	mout.debug() << parameters << mout.endl;
 
 	// Warn if below min dBZ?
-	const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
-	const double max = src.data.getMax<double>()-2.0;
+	//const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
+	//const double max = src.data.getMax<double>()-2.0;
 	drain::FuzzyBell<double> fuzzyBell;
-	//fuzzyBell.set(0.0, area, dst.data.getMax<double>());
 	fuzzyBell.set(0.0, area, dst.odim.scaleInverse(1.0));
-	SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
+	//SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
+	SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, reflMin, 70.0); // dBZ!	//"min,max,mapping,mSlope,mPos"
 
 	mout.debug(1) << op << mout.endl;
-	mout.debug(2) << src.data.getCoordinatePolicy() << mout.endl;
+	mout.debug(1) << src.data.getCoordinatePolicy() << mout.endl;
 
 	//if (mout.isDebug(10)) File::write(src.data,"SegmentAreaOp_src.png");
 

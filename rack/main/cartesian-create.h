@@ -67,9 +67,16 @@ public:
 
 	inline
 	void exec() const {
-		addCmd.exec();
-		extractCmd.exec();
+
 		RackResources & resources = getResources();
+
+		addCmd.exec();
+		//size_t n = std::min(resources.composite.getFrameWidth(), resources.composite.getFrameHeight());
+		//for (size_t i = 0; i < n; i+=2) {
+		//	std::cerr << i << '\t' << resources.composite.data.get<double>(i,i) << '\t' << resources.composite.weight.get<double>(i,i) << '\n';
+		//}
+		extractCmd.exec();
+
 		resources.cartesianHi5["what"].data.attributes["source"] = (*resources.currentPolarHi5)["what"].data.attributes["source"];
 		//const DataSet<PolarSrc> polarSrc((*resources.currentPolarHi5)["dataset1"]);
 		//DataSet<CartesianDst> cartDst((*resources.currentPolarHi5)["dataset1"]);

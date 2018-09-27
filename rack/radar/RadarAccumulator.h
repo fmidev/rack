@@ -64,12 +64,14 @@ public:
 	typedef PlainData<SrcType<OD const> > pdata_src_t;
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
 
-
 	/// Default constructor
 	RadarAccumulator() : defaultQuality(0.5) { //, undetectValue(-52.0) {
 		odim.type.clear();
 		//odim.ACCnum = 0;
 	}
+
+	virtual
+	~RadarAccumulator(){};
 
 	/// Adds data that is in the same coordinate system as the accumulator.
 	/*
@@ -83,12 +85,15 @@ public:
 	DataSelector dataSelector;
 
 	/// For storing the scaling and encoding of (1st) input or user-defined values. Also for bookkeeping of date, time, sources etc.
+	/*
+	 *  Helps in warning if input data does not match the expected / potential targetEncoding
+	 */
 	OD odim;
 
 	/// If source data has no quality field, this value is applied for (detected) data.
 	double defaultQuality;
 
-
+	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
 	inline
 	void setTargetEncoding(const std::string & encoding){
 		targetEncoding = encoding;
@@ -112,7 +117,6 @@ public:
 
 protected:
 
-
 	std::string targetEncoding;
 
 };
@@ -126,7 +130,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	if (!srcQuality.data.isEmpty()){
 		mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
 		DataCoder converter(srcData.odim, srcQuality.odim);
-		mout.debug() << converter << mout.endl;
+		//mout.debug() << converter.toStr() << mout.endl;
 		//converter.undetectValue   = undetectValue;
 		// uses also DataCoder::undetectQualityCoeff
 		AC::addData(srcData.data, srcQuality.data, converter, weight, i0, j0);
@@ -309,7 +313,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
 
-		mout.debug()  << "converter: " << converter << mout.endl;
+		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
 
 		this->Accumulator::extractField(field, converter, dstData.data);
 

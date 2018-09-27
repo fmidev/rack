@@ -51,11 +51,11 @@ namespace image
  *  \tparam C - conf type, implementing drain::BeanLike concept (getName, getDescription, getParameters)
  */
 template <class C>
-class ImpulseCumulator : public C {
+class ImpulseBucket : public C {
 
 public:
 
-	~ImpulseCumulator(){}
+	~ImpulseBucket(){}
 
 	typedef C conf_t;
 
@@ -86,6 +86,9 @@ public:
 	virtual
 	double getWeight(int i) = 0;
 
+protected:
+
+	//ImpulseBucket(conf_t){}
 
 };
 
@@ -101,6 +104,7 @@ public:
 
 	inline
 	ImpulseResponseOpBase(const typename T::conf_t & conf) : conf(conf){
+		//std::cerr << "decay now:" << conf.decay << '\n';
 	};
 
 	virtual inline
@@ -158,6 +162,8 @@ public:
 		this->parameters.append(this->conf.getParameters());
 		this->parameters.reference("extendHorz", extendHorz = 0, "pix"); // for avoiding border effects, include pixels beyond main area
 		this->parameters.reference("extendVert", extendVert = 0, "pix"); // for avoiding border effects, include pixels beyond main area
+		this->parameters.reference("weightThreshold", weightThreshold = 0.05, "[0..1.0]"); //
+
 	};
 
 	inline
@@ -193,6 +199,7 @@ protected:
 
 	int extendHorz;
 	int extendVert;
+	double weightThreshold;
 	//double undetectQuality;
 
 };
@@ -237,6 +244,9 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 	const int widthExt = src.getWidth()+extendHorz;
 	const int height   = src.getHeight();
 	const double defaultWeight = 1.0; //srcWeight.getMax<double>();
+
+	//const double weightThreshold = 0.1;
+	double w;
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
@@ -297,8 +307,15 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 
 			// Write
 			for (int i=0; i<width; ++i){
-				dst.putScaled(i,j, bucket.get(i));
-				dstWeight.putScaled(i,j, bucket.getWeight(i));
+				w = bucket.getWeight(i);
+				if (w > weightThreshold){
+					dst.putScaled(i,j, bucket.get(i));
+					dstWeight.putScaled(i,j, w);
+				}
+				else
+					dstWeight.putScaled(i,j, 0);
+				//dst.putScaled(i,j, bucket.get(i));
+				//dstWeight.putScaled(i,j, bucket.getWeight(i));
 			}
 
 		}
@@ -318,7 +335,9 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 	const int width     = src.getWidth();
 	const int height    = src.getHeight();
 	const int heightExt = src.getHeight() + extendVert;
-	const double defaultWeight = 1.0; //srcWeight.getMax<double>();
+	const double defaultWeight   = 1.0; //srcWeight.getMax<double>();
+	//const double weightThreshold = 0.1;
+	double w;
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
@@ -371,8 +390,13 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 			// Write
 			for (int j=0; j<height; ++j){
-				dst.putScaled(i,j, bucket.get(j));
-				dstWeight.putScaled(i,j, bucket.getWeight(j));
+				w = bucket.getWeight(j);
+				if (w > weightThreshold){
+					dst.putScaled(i,j, bucket.get(j));
+					dstWeight.putScaled(i,j, w);
+				}
+				else
+					dstWeight.putScaled(i,j, 0);
 			}
 
 		}
@@ -395,21 +419,27 @@ struct ImpulseAvgConf : public BeanLike {
 
 	inline
 	ImpulseAvgConf() : BeanLike(__FUNCTION__, "yes"){
+		// this->parameters.reference("decayHorz", decayHorz = 0.9);
+		// this->parameters.reference("decayVert", decayVert = 0.9);
 		this->parameters.reference("decay", decay = 0.9);
+		// this->parameters.reference("decayVert", decayVert = 0.9);
 	};
 
 	inline
 	ImpulseAvgConf(const ImpulseAvgConf & conf) : BeanLike(__FUNCTION__, "yes"){
 		this->parameters.reference("decay", decay = conf.decay);
+		// this->parameters.reference("decayHorz", decayHorz = conf.decayHorz);
+		// this->parameters.reference("decayVert", decayVert = conf.decayHorz);
 	};
 
-
 	double decay;
+	//double decayHorz;
+	//double decayVert;
 
 };
 
 
-/// Averaging operator. A simple example implementation of ImpulseCumulator
+/// Averaging operator. A simple example implementation of ImpulseBucket
 /**
  \code
    drainage image.png --impulseAvg  0.5            -o impulseAvg.png
@@ -417,7 +447,7 @@ struct ImpulseAvgConf : public BeanLike {
    drainage image-rgba.png --target S --impulseAvg  0.5 -o impulseAvg-16b.png
  \endcode
  */
-class ImpulseAvg : public ImpulseCumulator<ImpulseAvgConf> {
+class ImpulseAvg : public ImpulseBucket<ImpulseAvgConf> {
 
 public:
 

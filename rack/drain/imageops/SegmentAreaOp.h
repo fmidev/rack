@@ -154,6 +154,10 @@ void SegmentAreaOp<T>::traverseChannel(const Channel & src, Channel & dst) const
 	const typename T::src_t minRaw = src.getScaling().inv(min);
 	const typename T::src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getMax<typename T::src_t>() : src.getScaling().inv(max);
 
+	if (minRaw <= src.getMin<typename T::src_t>()){
+		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getMin<typename T::src_t>() << mout.endl;
+	}
+
 	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
 	mout.debug(1) << "src: " << src << mout.endl;
 	mout.debug(1) << "dst: " << dst << mout.endl;

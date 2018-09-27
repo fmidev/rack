@@ -63,7 +63,7 @@ class DopplerWindow : public SlidingRadarWindow<RadarWindowConfig> {
 public:
 
 
-	DopplerWindow(const RadarWindowConfig & conf) : // countThreshold(0),
+	DopplerWindow(const RadarWindowConfig & conf) :
 		SlidingRadarWindow<RadarWindowConfig>(conf),  radialSpeedConv(0.0) ,  radialSpeedConvInv(1.0),
 			sumI(0.0), sumI2(0.0), sumJ(0.0), sumJ2(0.0), count(0){}; //, countMin(0) {};
 
@@ -115,6 +115,9 @@ protected:
 			radialSpeedConv    = M_PI     / this->NI;
 			radialSpeedConvInv = this->NI /     M_PI;  // M_1_PI * this->NI;
 		}
+
+		reset();
+
 	};
 
 
@@ -163,15 +166,25 @@ protected:
 		return atan2(sumJ, sumI);
 	}
 
-	/// Returns the radial speed variance [rad]
+	/// Returns the radial speed variance [rad] defined as the variance of the cloud of velocity points on unit circle.
+	/**
+	 *   Takes values in [0.0,1.0] .
+	 */
 	virtual inline
 	double stdDevR(){
 		double c = 1.0/static_cast<double>(count);
 		return sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
 	}
 
+	/// Returns the eccentricity of the velocity points on unit circle.
+	/**
+	 * 	Defined as the distance [0.0..1.0] from origin to the average speed on unit circle.
+	 *
+	 *  - If all the points have been mapped on the same point (x,y) on the circle, returns 1.0
+	 *  - If the average location vector is in the origin, returns 0.0
+	 */
 	virtual inline
-	double averageConfidence(){
+	double eccentricity(){
 		return sqrt(sumI*sumI + sumJ*sumJ) / static_cast<double>(count);
 	}
 
@@ -199,7 +212,7 @@ protected:
 		if (count > countMin){ // TODO threshold 0.5?
 
 			if (this->conf.relativeScale)
-				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); //
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); // todo ftor?
 			else
 				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
 			/*
@@ -224,7 +237,6 @@ class DopplerDevWindow : public DopplerWindow {
 public:
 
 	DopplerDevWindow(const RadarWindowConfig & conf) : DopplerWindow(conf){
-		//this->conf.relativeScale = true;
 	}
 
 	typedef DopplerDevWindow unweighted;
@@ -235,7 +247,6 @@ protected:
 	virtual	inline
 	void write(){
 
-		//if (count > (this->conf.contributionThreshold * static_cast<double>(this->samplingArea))){ // TODO threshold 0.5?
 		if (count > countMin){ // TODO threshold 0.5?
 
 			if (this->conf.relativeScale)
@@ -281,7 +292,7 @@ protected:
 		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
 		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
 
-		double confidence = this->conf.ftor(this->averageConfidence());
+		double confidence = this->conf.ftor(this->eccentricity());
 
 		if (count > countMin){ // TODO threshold 0.5?
 
@@ -292,7 +303,7 @@ protected:
 
 			this->dstWeight.putScaled(this->location.x, this->location.y, confidence);
 			//this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
-			//this->dstWeight.putScaled(this->location.x, this->location.y, this->averageConfidence());
+			//this->dstWeight.putScaled(this->location.x, this->location.y, this->eccentricity());
 
 		}
 		else {

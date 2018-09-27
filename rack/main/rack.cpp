@@ -75,7 +75,6 @@ int process(int argc, const char **argv) {
 
 	CommandRegistry & registry = drain::getRegistry();
 
-
 	//registry.setSection("", "");
 	CommandModule commands;
 

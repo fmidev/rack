@@ -55,39 +55,37 @@ using namespace drain::image;
 /// Converts ODIM encoded data (with markers) to natural values and backwards.
 /**
  *   Converts ODIM encoded data with \c nodata and \c undetect markers to natural values and backwards.
+ *
+ *   Note: typically one instance is used for either decoding or encoding, not both!
+ *
  */
-class DataCoder : public AccumulationConverter {
+class DataCoder : public drain::BeanLike, public AccumulationConverter {
 
 public:
 
-	DataCoder() : defaultQuality(0.5), // undetectQualityCoeff(0.75),
+	DataCoder() : BeanLike(__FUNCTION__), defaultQuality(0.5),
 	dataODIM(defaultDataODIM), qualityODIM(defaultQualityODIM) {
 		init();
-		//setLimits();
 	};
 
 	/// Without quality (with impicit quality)
-	DataCoder(const ODIM & dataODIM) : defaultQuality(0.5), // undetectQualityCoeff(0.75),
+	DataCoder(const ODIM & dataODIM) : BeanLike(__FUNCTION__), defaultQuality(0.5),
 			dataODIM(dataODIM), qualityODIM(defaultQualityODIM) {
 		init();
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(defaultQualityODIM, "QIND", "C");
-		// setLimits();
-		//defaultQualityODIM.setQuantityDefaults("QIND","C");
 	};
 
-	DataCoder(const ODIM & dataODIM, const ODIM & qualityODIM) : defaultQuality(0.5), //undetectQualityCoeff(0.75),
+	DataCoder(const ODIM & dataODIM, const ODIM & qualityODIM) : BeanLike(__FUNCTION__), defaultQuality(0.5),
 			dataODIM(dataODIM), qualityODIM(qualityODIM) {
 		init();
-		//setLimits();
 	};
 
-	DataCoder(const DataCoder & converter) : defaultQuality(0.5), // undetectQualityCoeff(0.75),
+	DataCoder(const DataCoder & converter) : BeanLike(__FUNCTION__), defaultQuality(converter.defaultQuality),
 			dataODIM(defaultDataODIM), qualityODIM(defaultQualityODIM) {
 		defaultDataODIM    = converter.dataODIM;
 		defaultQualityODIM = converter.qualityODIM;
 		init();
-		//setLimits();
 	};
 
 	virtual
@@ -138,15 +136,11 @@ public:
 	 *
 	 *  Remember to call init() if dataODIM has been changed.
 	 */
-	double undetectValue; // "undetectValue"
-
-	// in encoding, values lower than this value will be marked \c undetect .
-	double minCodeValue;
+	double undetectValue;
 
 	bool SKIP_UNDETECT;
 
 	/// Quality, relative to data quality, applied in locations marked with \c undetect .
-	/// NEW 2017: static (for Composite, Cappi)
 	static double undetectQualityCoeff;
 
 	const ODIM & dataODIM;
@@ -155,16 +149,21 @@ public:
 	ODIM defaultDataODIM;
 	ODIM defaultQualityODIM;
 
-	inline
-	virtual
-	std::ostream & toOstr(std::ostream & ostr) const {
-		ostr << "DataConverter defaultQuality=" << defaultQuality << ", minDetectableValue=" << undetectValue << ", undetectQualityCoeff=" << undetectQualityCoeff << ", \n";
+	virtual inline
+	void toOStream(std::ostream & ostr) const {
+		ostr << getName() << ':' << parameters.toStr() << '\n';
+		//ostr << "DataConverter defaultQuality=" << defaultQuality << ", minDetectableValue=" << undetectValue << ", undetectQualityCoeff=" << undetectQualityCoeff << ", \n";
 		ostr << "\t data: " << EncodingODIM(dataODIM) << '\n';
 		ostr << "\t q:    " << EncodingODIM(qualityODIM) << '\n';
-		return ostr;
+		//return ostr;
 	}
 
+
 protected:
+
+	/// In extraction (encoding), values lower than this value will be marked \c undetect .
+	double minCodeValue;
+
 
 	/// A physical value greater than undetectValue. In \i encoding, lower values will be marked \c undetect . See init().
 	/**

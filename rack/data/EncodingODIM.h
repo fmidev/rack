@@ -207,12 +207,10 @@ public:
 		return (y-offset)/gain;
 	}
 
-	/// Returns the minimum value that can be returned using current storage type, gain and offset.
-	// inline
+	/// Returns the minimum physical value that can be returned using current storage type, gain and offset.
 	double getMin() const;
 
-	/// Returns the minimum value that can be returned using current storage type, gain and offset.
-	// inline
+	/// Returns the minimum physical value that can be returned using current storage type, gain and offset.
 	double getMax() const;
 
 	/// Functor (why inverse?)

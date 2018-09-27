@@ -105,7 +105,7 @@ public:
 	ReferenceMap & getParameters() { return parameters; };
 
 
-	inline
+	virtual inline
 	void toOStream(std::ostream & ostr) const {
 		//ostr << name << ':' << parameters;
 		ostr << name << ": " << description << '\n';

@@ -50,7 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/HydroClassBasedOp.h"
 #include "andre/JammingOp.h"
 #include "andre/LineOp.h"
-#include "andre/NoiseOp.h"
+//#include "andre/NoiseOp.h"
 #include "andre/RhoHVLowOp.h"
 #include "andre/ShipOp.h"
 #include "andre/SpeckleOp.h"
@@ -173,7 +173,7 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<EmitterOp> emitter;
 	static AnDReLetAdapter<InsectOp>   insect;
 	static AnDReLetAdapter<JammingOp> jamming;
-	static AnDReLetAdapter<NoiseOp>     noise; // ??
+	//static AnDReLetAdapter<NoiseOp>     noise; // on hold (bak)
 	static AnDReLetAdapter<RhoHVLowOp>     rhoHV;
 	static AnDReLetAdapter<ShipOp>       ship;
 	static AnDReLetAdapter<SpeckleOp> speckle;

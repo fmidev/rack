@@ -140,13 +140,13 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	mout.note() << "Src: " << srcData << mout.endl;
+	mout.debug() << "Src: " << srcData << mout.endl;
 
 	// Dst
 	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);  // TODO: re-design, get rid of these
 	dstData.data.properties.importMap(dstData.odim); // IMPORTANT! But get rid of the self-copying later.
 	dstData.data.setCoordinatePolicy(srcData.data.getCoordinatePolicy());
-	mout.note() << "Dst: " << dstData << mout.endl;
+	mout.debug() << "Dst: " << dstData << mout.endl;
 
 	const QuantityMap & qm = getQuantityMap();
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
@@ -154,10 +154,11 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
 	dstQuality.data.properties.updateFromMap(dstQuality.odim); // get rid of these
 
-
+	//mout.warn() << "conf.decay: " << conf.decay << mout.endl;
 	//drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
 	drain::image::ImpulseResponseOp<DopplerAvg> impOp(conf);
 	impOp.setExtensions(horzExt, vertExt);
+	mout.debug() << "Op: " << impOp << mout.endl;
 
 
 	if (srcData.hasQuality()){

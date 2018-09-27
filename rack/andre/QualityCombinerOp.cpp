@@ -265,10 +265,32 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	// Create in order:
 	// quality1 => QIND
 	// quality2 => CLASS
+
+	const PlainData<PolarSrc> & srcQIND  = srcDataSet.getQualityData();
+	const PlainData<PolarSrc> & srcCLASS = srcDataSet.getQualityData("CLASS");
+
+	const bool UPDATE_EXISTING = dstData.hasQuality();
+
+	if (!UPDATE_EXISTING){
+		mout.warn() << "Skipping update, because srcData won't get it " << mout.endl;
+		return;
+	}
+
+
 	PlainData<PolarDst> & dstQIND  = dstData.getQualityData();
 	PlainData<PolarDst> & dstCLASS = dstData.getQualityData("CLASS");
 
-	updateOverallQuality(srcDataSet.getQualityData(), srcDataSet.getQualityData("CLASS"), dstQIND, dstCLASS);
+	if (UPDATE_EXISTING){
+		updateOverallQuality(srcQIND, srcCLASS, dstQIND, dstCLASS);
+	}
+	else {
+		mout.note() << " NOT? Copying local QIND and CLASS for " <<  dstData.odim.quantity << mout.endl;
+		dstQIND.data.copyDeep(srcQIND.data);
+		dstQIND.odim.importMap(srcQIND.odim);
+		mout.note() << EncodingODIM(dstQIND.odim) << mout.endl;
+		dstCLASS.data.copyDeep(srcCLASS.data);
+		dstCLASS.odim.importMap(srcCLASS.odim);
+	}
 
 }
 

@@ -39,12 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/imageops/SlidingWindowHistogramOp.h>
 
 //#include "hi5/Hi5Write.h"
-
-#include "data/ODIM.h"
+/*#include "data/ODIM.h"
 #include "data/Data.h"
 #include "radar/Geometry.h"
 #include "radar/Analysis.h"
-#include "radar/Doppler.h"
+*/
+//#include "radar/Doppler.h"
 
 
 using namespace drain;
@@ -52,82 +52,23 @@ using namespace drain::image;
 
 namespace rack {
 
-/*
-void DopplerNoiseOp::applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
-	Image & tmp = dstProductAux.getQualityData(feature);
-}
-*/
-
-/* Rename
- *
- *
- */
-/*
-void DopplerNoiseOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
-
-	drain::Logger mout(getName() + "::"+__FUNCTION__, feature);
-
-	mout.debug() << "running " << feature << '/' << op.getName() << mout.endl;
-
-	const bool NEW = dstData.odim.prodpar.empty();  // or tmp.empty()
-
-	//Channel & channel = dstData.data;
-	//channel.properties.updateFromMap(dstData.data.getProperties());
-
-	/// Save directly to target (dstData), if this is the first applied detector
-	if (NEW){
-		mout.debug(1) << "creating dst image" << mout.endl;
-		//dstData.setPhysicalRange(0.0, 1.0);
-		op.traverseChannel(src.data, dstData.data);
-		dstData.odim.prodpar = feature;
-		tmp.copyShallow(dstData.data);
-		// tmp.initialize(dstData.data.getType(), dstData.data.getGeometry());
-		// tmp.adoptScaling(dstData.data);
-	}
-	else {
-		mout.debug(1) << "tmp exists => accumulating detection" << mout.endl;
-		op.process(src.data, tmp);
-		//op.traverseChannel(src.data.getChannel(0), tmp.getChannel(0));
-		mout.debug(1) << "updating dst image" << mout.endl;
-		BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(dstData.data, tmp, dstData.data);
-		// File::write(dstData.data, feature+".png");
-		dstData.odim.prodpar += ',';
-		dstData.odim.prodpar += feature;
-	}
-
-	/// Debugging: save intermediate images.
-	if (outputDataVerbosity >= 1){
-		PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(feature);  // consider direct instead of copy?
-		const QuantityMap & qm = getQuantityMap();
-		//dstFeature.odim.setQuantityDefaults("PROB");
-		dstFeature.odim.quantity = feature;
-		qm.setQuantityDefaults(dstFeature, "PROB");
-		if (NEW)
-			drain::image::CopyOp().process(dstData.data, dstFeature.data);
-		else
-			drain::image::CopyOp().process(tmp, dstFeature.data);
-		//@ dstFeature.updateTree();
-	}
-
-}
-*/
 
 void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(2) << "start" <<  mout.endl; //
 
-	const double MAX = dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
+	//const double MAX = dstData.odim.scaleInverse(1.0); // dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
 
 	//static drain::RegExp regExpVRAD("^VRAD[H]?$");
-	const Data<PolarSrc> &  vradSrc = sweepSrc.getFirstData(); // VolumeOpNew::
+	const Data<PolarSrc> &  vradSrc = sweepSrc.getFirstData();
 
 	if (vradSrc.data.isEmpty()){
 		mout.warn() << "VRAD missing, skipping..." <<  mout.endl;
 		return;
 	}
 
-	const double NI = vradSrc.odim.getNyquist(true);
+	const double NI = vradSrc.odim.getNyquist(LOG_ERR);
 
 	if (NI == 0) {
 		mout.note() << "vradSrc.odim (encoding): " << EncodingODIM(vradSrc.odim) << mout.endl;
@@ -135,19 +76,26 @@ void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainDat
 		return;
 	}
 
+	if (vradDevMin > NI) {
+		mout.warn() << "vradDevMin=" << vradDevMin << " exceeds input NI="  << NI << mout.endl;
+	}
+	else if (vradDevMin > (0.8*NI)) {
+		mout.warn() << "vradDevMin=" << vradDevMin << " close to input NI=" << NI << mout.endl;
+	}
+
 	FuzzyStep<double> fuzzyStep; //(0.5);
 	const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
 
 	if (pos > 0.0)
-		fuzzyStep.set( 0.8*pos, 1.2*pos, 255.0 );
+		fuzzyStep.set( 0.5*pos, 1.5*pos); // scales to [0.0,1.0]
 	else
-		fuzzyStep.set( 1.2*(-pos), 0.8*(-pos), MAX );
+		fuzzyStep.set( 1.5*(-pos), 0.5*(-pos)); // scales to [0.0,1.0]
 
-	DopplerDevWindow::conf_t conf(fuzzyStep, windowWidth, windowHeight, 0.05, true, false); // require 5% samples
-	conf.updatePixelSize(vradSrc.odim);
-	SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
+	DopplerDevWindow::conf_t pixelConf(fuzzyStep, conf.widthM, conf.heightD, 0.05, true, false); // require 5% samples
+	pixelConf.updatePixelSize(vradSrc.odim);
+	SlidingWindowOp<DopplerDevWindow> vradDevOp(pixelConf);
 
-	mout.warn() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
+	mout.debug() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
 	mout.debug(1)  << "VRAD op   " << vradDevOp <<  mout.endl;
 	mout.debug()  << vradDevOp.conf.width  << 'x' << vradDevOp.conf.height <<  mout.endl;
 	mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
@@ -155,17 +103,8 @@ void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainDat
 	mout.debug(1) << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
 
 	dstData.setPhysicalRange(0.0, 1.0);
-	/*
-		dstData.data.setOptimalScale(0.0, 1.0);
-		dstData.odim.gain   = dstData.data.getScaling().scale;
-		dstData.odim.offset = dstData.data.getScaling().offset;
-	 */
 	vradDevOp.traverseChannel(vradSrc.data, dstData.data);
 	//dstData.odim.prodpar = feature;
-
-	//applyOperator(vradDevOp, tmp, "VRAD_DEV", vradSrc, dstData, dstProductAux);
-	//mout.debug() << dstData.data <<  mout.endl;
-	//mout.debug() << EncodingODIM(dstData.odim) <<  mout.endl;
 
 
 	DataTools::updateAttributes(dstData.tree);

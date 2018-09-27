@@ -48,6 +48,7 @@ namespace rack
 
 double DataCoder::undetectQualityCoeff(0.75);
 
+/*
 void DataCoder::init(){
 
 	drain::Logger mout("DataCoder", __FUNCTION__);
@@ -93,6 +94,42 @@ void DataCoder::init(){
 	mout.info() << " detectionThreshold: " << detectionThreshold << mout.endl;
 
 }
+*/
+
+void DataCoder::init(){
+
+	drain::Logger mout(getName(), __FUNCTION__);
+
+	// For decoding
+	parameters.reference("SKIP_UNDETECT", SKIP_UNDETECT);
+	parameters.reference("undetectValue", undetectValue);
+	// For encoding
+	parameters.reference("minCodeValue", minCodeValue);
+	parameters.reference("detectionThreshold", detectionThreshold);
+
+	minCodeValue = dataODIM.getMin();
+
+	const Quantity &q = getQuantityMap().get(dataODIM.quantity);
+
+	SKIP_UNDETECT = ((!q.hasUndetectValue) || (DataCoder::undetectQualityCoeff==0));
+
+	if (SKIP_UNDETECT){
+		undetectValue = -std::numeric_limits<double>::max();
+		detectionThreshold = undetectValue;
+	}
+	else {
+		mout.info() << "using quantity-specific zero for undetectValue: " << q.undetectValue << " (quantity="<< dataODIM.quantity << ")" <<  mout.endl;
+		undetectValue = q.undetectValue;
+		detectionThreshold = undetectValue + 0.0001;
+		if (detectionThreshold < dataODIM.getMin()){
+			mout.debug() << "tuning detectionThreshold " << detectionThreshold << ") to odim.getMin(): "  << dataODIM.getMin() << mout.endl;
+			detectionThreshold = dataODIM.getMin();
+		}
+	}
+
+	mout.debug() << parameters.toStr() << mout.endl;
+
+}
 
 
 /// Converts storage data containing marker codes etc to natural scale.
@@ -123,8 +160,7 @@ bool DataCoder::decode(double & value, double & weight) const {
 		weight = 0.0;
 		return false; //   = "don't accumulate"
 	}
-	else if (value == dataODIM.undetect){ // huono: (weight < 0.001)
-	//else if ((value > (dataODIM.undetect-0.01)) && (value < (dataODIM.undetect+0.01))){ // huono: (weight < 0.001)
+	else if (value == dataODIM.undetect){
 		weight = undetectQualityCoeff * qualityODIM.scaleForward(weight); // may (still) be undetectValue
 		value  = undetectValue;
 		return true;  // TODO: this feature (true/false) could be user-modifiable? (Problem: nodata-areas in result)
@@ -139,15 +175,6 @@ bool DataCoder::decode(double & value, double & weight) const {
 
 /// Converts natural-scale data to storage data containing marker codes etc.
 void DataCoder::encode(double & value, double & weight) const {
-
-	/*
-	if (value < undetectValue){ // NEW < : <=
-		value = dataODIM.undetect;
-	}
-	else if (weight == 0.0){
-		value = dataODIM.nodata;
-	}
-	 */
 
 	if (weight <= 0.0){
 		//throw std::runtime_error("DataCoder::encode(double & value, double & weight) , weight <= 0.0");

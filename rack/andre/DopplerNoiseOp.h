@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "PolarProductOp.h"
 #include <drain/imageops/ImageOp.h>
 #include "DetectorOp.h"
+#include "../radar/Doppler.h"
 
 using namespace drain::image;
 
@@ -50,15 +51,12 @@ public:
 
 	/**
 	 *
-	 *  \param dbzPeak
 	 *  \param vradDevMin
-	 *  \param rhoHVmax
-	 *  \param zdrDevMin
 	 *  \param windowWidth
 	 *  \param windowHeight
 	 *
 	 */
-	DopplerNoiseOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	DopplerNoiseOp(double vradDevMin = 5.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
 		DetectorOp(__FUNCTION__, "Detects variance Doppler (VRAD).", ECHO_CLASS_NOISE){
 
@@ -67,8 +65,8 @@ public:
 		dataSelector.count = 1;
 
 		parameters.reference("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
-		parameters.reference("windowWidth", this->windowWidth = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-		parameters.reference("windowHeight", this->windowHeight = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+		parameters.reference("windowWidth", this->conf.widthM = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+		parameters.reference("windowHeight", this->conf.heightD = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
 
 	};
 
@@ -77,8 +75,9 @@ public:
 	~DopplerNoiseOp(){};
 
 	double vradDevMin;
-	double windowWidth;
-	double windowHeight;
+	DopplerDevWindow::conf_t conf;
+	//double windowWidth;
+	//double windowHeight;
 
 	// string functor ? TODO
 

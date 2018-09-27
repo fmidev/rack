@@ -85,49 +85,18 @@ Composite::Composite() :  decay(1.0), cropping(false)
 void Composite::checkQuantity(const std::string & quantity){
 
 	drain::Logger mout("Composite", __FUNCTION__);
+	/// TODO: regexp for accepting quantities
 
 	if (!this->odim.quantity.empty()){
 		if (this->odim.quantity != quantity){
 			mout.note() << "composite of quantity=" << this->odim.quantity << ", input with " << quantity << mout.endl;
 		}
-		/*
-		if (!this->dataSelector.quantity.empty()){
-			mout.note() << "applying quantity selector: " << this->dataSelector.quantity << mout.endl;
-			const RegExp quantityRegExp(this->dataSelector.quantity);
-			if (!quantityRegExp.test(quantity)){
-				mout.warn() << "composite of '" << this->dataSelector.quantity << "', input with '" << quantity << "', resetting data? " << mout.endl;
-				//this->odim.gain   = 0.0;
-				//this->odim.offset = 0.0;
-				//this->clear();
+		if (odim.ACCnum > 1){
+			if (quantity.substr(0, 4) == "VRAD"){
+				mout.warn() << "compositing VRAD directly, consider Doppler dealiasing (u,v) first" << quantity << mout.endl;
 			}
-		}*/
-	}
-
-	/*
-	if (!this->odim.quantity.empty()){
-
-		if ( this->odim.quantity != quantity){
-			if (this->getMethod().name != "LATEST"){
-				mout.warn() << "method: " << this->getMethod().name << ", ";
-			}
-			else {
-				mout.warn() << "clearing scale " << EncodingODIM(this->odim) << mout.endl;
-				this->odim.gain   = 0.0;
-				this->odim.offset = 0.0;
-				mout.note();
-			}
-			mout << "different quantities: ";
-			mout << this->odim.quantity << " <> ";
-			mout << quantity;
-			mout << mout.endl;
-
-			mout.warn() << "clearing array and scaling=" << EncodingODIM(this->odim) << mout.endl;
-			this->odim.gain   = 0.0;
-			this->odim.offset = 0.0;
-			this->clear();
 		}
 	}
-	*/
 
 	this->odim.quantity = quantity;
 
@@ -145,14 +114,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	checkQuantity(srcData.odim.quantity);
 
 	ProductBase::applyODIM(this->odim, srcData.odim);
+
 	checkCompositingMethod(srcData.odim);
 
-
-	/// TODO: regexp for accepting quantities
 	const bool USE_QUALITY = !srcQuality.data.isEmpty() && (priorWeight > 0.0); // && (odim.quantity == "DBZH"); // quantity != QIND
-	//const bool USE_QUALITY = src.hasQuality();
-
-
 
 	mout.info() << "quality data: priorWeight=" << priorWeight << ',';
 	if (USE_QUALITY) {
@@ -170,18 +135,16 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	mout.debug(1) << "Info: \"" << *this << '"' << mout.endl;
 	//mout.debug(1) << "undetectValue=" << undetectValue << mout.endl;
 
-	// Later used for data update.
+	// Defined here, because later used for data update.
 	drain::Rectangle<double> bboxM;
 
 	if (autoProj || !isDefined()){
 
 		if (autoProj){
-			const std::string & projstr = pRadarToComposite.getProjectionSrc();
 			mout.info() << "Using default projection aeqd (azimuthal equidistant)." << mout.endl;
-			// mout.debug() << aeqd.str() << mout.endl;
-			// setProjection(aeqd.str());
-			// setProjection(pRadarToComposite.getProjectionSrc());  // AEQD
-			setProjection(projstr);
+			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
+			// mout.debug() << aeqdStr << mout.endl;
+			setProjection(aeqdStr);
 		}
 
 		//mout.note(1) << "Using projection: " << getProjection() << mout.endl;
@@ -191,7 +154,6 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		if ((getFrameWidth() == 0)||(getFrameHeight() == 0)){
 			setGeometry(500, 500);
 			mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
-			//setGeometry(srcData.data.getWidth(), srcData.data.getWidth());
 		}
 
 		if (defaultRange > 0.0)
@@ -200,8 +162,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxM);
 		setBoundingBoxM(bboxM);
 
-		//pRadarToComposite.determineBoundingBox
-		//setBoundingBoxD(bboxD);!!
+		//setBoundingBoxD(bboxD); !?
 		mout.debug(1) << "BboxM: " << bboxM << mout.endl;
 
 	}
@@ -210,13 +171,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		pRadarToComposite.setProjectionDst(getProjection());
 		if (cropping){
 			//drain::Rectangle<double> bboxM;
-			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM);
 			cropWithM(bboxM);
 			//mout.toOStr() << "Cropped to: " << getBoundingBoxM() << mout.endl;
 			if (getBoundingBoxM().getArea() == 0){
 				mout.info() << "Cropping returned empty area." << mout.endl;
 				mout.note() << "Data outside bounding box, returning" << mout.endl;
-				allocate();
+				allocate(); // ?
 				updateGeoData();
 				return;
 			}
@@ -305,10 +267,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	size_t address;
 	for (int j=bboxPix.yLowerLeft; j>bboxPix.yUpperRight; j--){ // notice negative
 
-		// Beam index (azimuthal image coordinate)
+		// Beam index (azimuthal coordinate of polar input data)
 		unsigned int a;
 
-		// Bin index (radial image coordinate)
+		// Bin index (radial coordinate of polar input data)
 		unsigned int b;
 
 		//if ((j&31)==0)
@@ -325,8 +287,6 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 			//if (i==j)
 			//	std::cerr << " Pix (" << i << ',' << j << "),\t=>(" << x << ',' << y << "),\t range=" << range << ",\t bin=" << b << "\n";
 
-
-			/// TODO: asin, acos lookup => atan2
 			/// TODO: check nodata
 			if ((b >= 0) && (b < bins)){  // (if non-undetectValue rstart)
 				azimuth = atan2(x,y);  // notice x <=> y  in radars
@@ -340,7 +300,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 					s = srcData.data.get<double>(b,a);
 
 					if (converter.SKIP_UNDETECT && (s == srcData.odim.undetect)){
-						add(address, 0.0, 0.0); // last arg (weight) 0.0 => only counter updated
+						add(address, 0.0, 0.0); // weight=0.0 => only counter updated, important!
 					}
 					else {
 
@@ -378,6 +338,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), i, j);
 
 	odim.update(srcData.odim); // Time, date, new
+	if (odim.NI == 0)
+		odim.NI = srcData.odim.getNyquist();
 	++odim.ACCnum;
 
 	mout.debug() << "completed" << mout.endl;

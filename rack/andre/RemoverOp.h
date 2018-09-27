@@ -98,6 +98,9 @@ public:
 	virtual
 	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
 
+	virtual
+	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
+
 
 protected:
 

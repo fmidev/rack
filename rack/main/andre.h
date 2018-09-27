@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/AndreOp.h"
 #include "andre/DetectorOp.h"
 
+/*
 #include "andre/PrecipOp.h"
 #include "andre/BioMetOp.h"
 #include "andre/BirdOp.h"
@@ -59,6 +60,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/DamperOp.h"
 #include "andre/GapFillOp.h"
 //#include "andre/ThresholdOp.h"
+*/
 
 // Utils
 #include "andre/QualityCombinerOp.h"

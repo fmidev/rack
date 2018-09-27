@@ -48,7 +48,7 @@ namespace rack {
    drainage image.png --impulseAvg  0.8,40,20 -o impulseAvgMarg.png
  \endcode
  */
-class DopplerAvg : public drain::image::ImpulseCumulator<ImpulseAvgConf> {
+class DopplerAvg : public drain::image::ImpulseBucket<ImpulseAvgConf> {
 
 public:
 
@@ -67,7 +67,6 @@ public:
 	DopplerAvg(const ImpulseAvgConf & conf){
 		decay = conf.decay;
 	}
-
 
 	virtual
 	void init(const Channel & src, bool horizontal);
@@ -158,8 +157,8 @@ public:
 		//dataSelector.quantity = "DBZH";
 		odim.quantity = "VRAD";
 		//odim.quantity = "DBZH";
-		// odim.type = "S";
-		odim.type = "C";
+		odim.type = "S";
+		// odim.type = "C";
 	}
 
 	virtual

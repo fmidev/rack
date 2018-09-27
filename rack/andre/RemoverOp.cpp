@@ -88,8 +88,8 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 	else {
 
 		const PlainData<PolarSrc> & srcDataSetQualityIndex = srcDataSet.getQualityData("QIND");
-		//const PlainData<PolarSrc> & srcDataSetQualityClass = srcDataSet.getQualityData("CLASS"); // TODO
 		const bool DATASETQUALITY = !srcDataSetQualityIndex.data.isEmpty();
+		mout.debug() << "DataSet level quality: "  << (int) DATASETQUALITY <<  mout.endl;
 
 		for (DataSet<PolarSrc>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
 			mout.info() << "calling processData() for " << it->first << " elangle=" << it->second.odim.elangle << mout.endl;
@@ -114,8 +114,12 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 
 			if (LOCALQUALITY){
 				// TODO if (REQUIRE_STANDARD_DATA){ ?
-				//mout.warn() << "quality data yes? " << dstData.getQualityData() << mout.endl;
+				mout.warn() << "using local quality data" << mout.endl;
 				processData(srcData, dstData);
+			}
+			else if (DATASETQUALITY) {
+				mout.warn() << "using daatset level data" << mout.endl;
+				processData(srcData, srcDataSetQualityIndex, dstData);
 			}
 			else {
 				mout.note() << "no quality data for quantity=" << it->first << " elangle=" << it->second.odim.elangle << ", skipping " << mout.endl;
@@ -130,30 +134,47 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
 	drain::Logger mout(name, __FUNCTION__);
+	mout.info() << "delegate" << mout.endl;
+	processData(srcData, srcData.getQualityData(), dstData);
+
+}
+
+void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQIND, PlainData<PolarDst> & dstData) const {
+
+
+	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug(1) << "start" << mout.endl;
 
-	PlainData<PolarSrc> srcQIND = srcData.getQualityData();
+	//PlainData<PolarSrc> srcQIND = srcData.getQualityData();
 
 	if (srcQIND.data.isEmpty()){
-		mout.warn() << " src QIND emprty, skipping..." << mout.endl;
+		mout.warn() << " src QIND empty, skipping..." << mout.endl;
 		return;
 	}
+
+	File::write(srcQIND.data, "srcQIND.png");
 
 	// TODO FIX use QualityThresholdOp!
 
 	const double t = threshold * srcQIND.odim.scaleInverse(1.0);
 
-	// mout.warn() << " t=" << t << mout.endl;
-
+	mout.debug() << " t=" << t << mout.endl;
+	/*
+	mout.note() << " srcData" << srcData << mout.endl;
+	mout.warn() << " srcQuality" << srcQIND << mout.endl;
+	mout.note() << " dstData" << dstData << mout.endl;
+	*/
 	Image::const_iterator  it = srcData.data.begin();
 	Image::const_iterator qit = srcQIND.data.begin();
 	Image::iterator dit = dstData.data.begin();
 	//Image::iterator dqit = dstData.data.begin();
 
+	//File::write(dstData.data, "dst1.png");
+
 	const Image::iterator end = srcData.data.end();
 	while (it != end){
-		if (*qit < t)
+		if (static_cast<double>(*qit) < t)
 			*dit = dstData.odim.nodata;
 		else
 			*dit = *it; // assume no scaling difference
@@ -161,6 +182,8 @@ void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 		++qit;
 		++dit;
 	}
+
+	// File::write(dstData.data, "dst2.png");
 
 }
 

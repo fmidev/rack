@@ -118,7 +118,10 @@ double PolarODIM::getNyquist(int errorThreshold) const {
 	return NI;
 }
 
-/// Given two (possibly aliased) Doppler speeds, computes the difference. Assumes that it is less than Nyquist velocity.
+/// Given two Doppler speeds (m/s), computes their difference (m/s).
+/*
+ *   - Assumes that the difference is within Nyquist domain [-NI,+NI].
+ */
 bool PolarODIM::deriveDifference(double v1, double v2, double & vDiff) const {
 
 	// v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));
@@ -132,8 +135,6 @@ bool PolarODIM::deriveDifference(double v1, double v2, double & vDiff) const {
 			vDiff += (2.0*NI);
 		else if (vDiff > NI)
 			vDiff -= (2.0*NI);
-
-		//vDiff = vDiff/(2.0*getBeamWidth());  // (dSpan2*BEAM2RAD);
 
 		return true;
 	}
