@@ -84,8 +84,9 @@ public:
 	virtual
 	void initialize();
 
+	/// Computes the derivative (m/s)/beam. Often rescaled with beam width.
 	inline
-	bool getDerivative(const Point2D<int> &p, double & diff) const {
+	bool getDerivative(const Point2D<int> &p, double & diff, bool debug=false) const {
 
 		Point2D<int> pTmp;
 
@@ -101,6 +102,11 @@ public:
 
 		if (odimSrc.deriveDifference(d1, d2, diff)){
 			diff *= 0.5; // due to above +1/-1
+			/*
+			if (debug && isDiag(2)){
+				std::cerr << " {" << d1 << ',' << d2 << "} \t => (" << odimSrc.scaleForward(d1) << ',' << odimSrc.scaleForward(d2) << "}\t => " << diff << '\n';
+			}
+			*/
 			return true;
 		}
 		else
@@ -152,7 +158,7 @@ protected:
 	void clear();
 
 	inline
-	bool isDiag(int step){
+	bool isDiag(int step) const {
 		return (location.x == location.y) && (location.x % step == 0);
 	}
 
