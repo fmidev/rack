@@ -72,7 +72,7 @@ help-andre.txt:
 #install-rack.zip: make.zip
 
 clean:
-	rm -fv Release/rack Release/*/*.o                 
+	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
 
 clean-geotiff:
 	rm -fv rack/Release/rack rack/Release/main/commands.o rack/Release/radar/FileGeoTIFF.o
