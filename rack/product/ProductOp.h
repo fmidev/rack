@@ -474,7 +474,7 @@ void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<D
 template <class MS, class MD>
 void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<DstType<MD> > & dstProduct) const {
 
-	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 

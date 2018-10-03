@@ -93,17 +93,17 @@ protected:
 };
 
 // for Testing
-class DopplerRealiasOp : public DopplerOp {
+class DopplerReprojectOp : public DopplerOp {
 public:
 
-	DopplerRealiasOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
+	DopplerReprojectOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
 		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
 		parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
 		parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
 
 		dataSelector.count = 1;
-		dataSelector.quantity = "AMVU|AMVV|VRAD";
+		dataSelector.quantity = "^(AMVU|AMVV|VRAD)$";
 
 		//odim.quantity; // VRAD_C
 		//odim.NI;

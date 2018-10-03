@@ -60,7 +60,7 @@ Rack fmi.fi - a radar data processing program
 --helpExample  <keyword>
   Dump example of use and exit.
 
---histogram  <count>,<min>,<max>
+--histogram  <count>,<min>,<max>,<filename>
   Histogram
 
 --iPhysical  <value>

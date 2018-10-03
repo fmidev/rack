@@ -81,6 +81,8 @@ void CompositeAdd::exec() const {
 	if (!resources.select.empty()){
 		const std::string quantityOrig(resources.composite.dataSelector.quantity);
 		resources.composite.dataSelector.setParameters(resources.select);
+		resources.select = "quantity=" + resources.composite.dataSelector.quantity;
+		//resources.select.clear(); //
 		if (!quantityOrig.empty() && (quantityOrig != resources.composite.dataSelector.quantity)){
 			mout.info() << "quantity selector changed, resetting accumulation array" << mout.endl;
 			resources.composite.clear();
@@ -88,7 +90,6 @@ void CompositeAdd::exec() const {
 			resources.composite.odim.gain   = 0.0;
 			resources.composite.odim.offset = 0.0;
 		}
-		// resources.select.clear(); //
 	}
 	else {
 		if (resources.composite.dataSelector.quantity.empty()){

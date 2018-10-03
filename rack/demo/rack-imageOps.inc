@@ -78,6 +78,9 @@ Rack fmi.fi - a radar data processing program
 --iHistogram  <width>,<height>,<valueFunc>,<percentage>,<bins>
   A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)
 
+--iImpulseAvg  <decay>,<extendHorz>,<extendVert>,<weightThreshold>
+  yes
+
 --iLaplace  <radius>,<LIMIT>
   Second intensity derivatives, (df/di)^2 and (df/dj)^2
 

@@ -18,17 +18,32 @@ Rack fmi.fi - a radar data processing program
 --pConv  <maxEchoThreshold>,<cellDiameter>,<echoTopThreshold>,<echoTopDBZ>,<smoothAzm>,<smoothRad>
   Computes the probability of convection based on fuzzy cell intensity, area and height.
 
---pDoppler  <azm1>,<azm2>,<range1>,<range2>,<ray1>,<ray2>,<bin1>,<bin2>
-  Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)
-
 --pDopplerAvg  <width>,<height>,<threshold>,<compensate>,<relativeScale>
   Smoothens Doppler field
 
---pDopplerDeAlias  <width>,<height>,<nyquist>,<altitudeWeight>,<VVP>,<matchAliased>
-  Inverts Doppler speed to (u,v), optionally de-aliases.
+--pDopplerAvg2  <width>,<height>,<threshold>,<compensate>,<relativeScale>
+  Smoothens Doppler field
+
+--pDopplerAvgExp  <decay>,<horzExtension>,<vertExtension>
+  Doppler field smoother with exponential decay weighting
 
 --pDopplerDev  <width>,<height>,<threshold>,<compensate>,<relativeScale>
   Computes std.dev.[m/s] of Doppler field
+
+--pDopplerDiff  <dMax>
+  From VRAD
+
+--pDopplerDiffPlotter  <azm1>,<azm2>,<range1>,<range2>,<ray1>,<ray2>,<bin1>,<bin2>
+  Plots differences in VRAD data as fucntion of azimuth
+
+--pDopplerInversion  <width>,<height>,<altitudeWeight>
+  Inverts Doppler speed to (u,v), optionally de-aliases.
+
+--pDopplerReproject  <nyquist>,<match>,<quantity>
+  Creates virtual 
+
+--pDopplerSampler  <azm1>,<azm2>,<range1>,<range2>,<ray1>,<ray2>,<bin1>,<bin2>
+  Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)
 
 --pDrawing  <shape>,<p1>,<p2>,<p3>,<p4>,<marker>
   Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].

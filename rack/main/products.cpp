@@ -95,8 +95,9 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
 	static ProductAdapter<DopplerDevOp> dopplerDev;
 	static ProductAdapter<DopplerInversionOp> dopplerInversion;
-	static ProductAdapter<DopplerRealiasOp> dopplerRealias;
+	static ProductAdapter<DopplerReprojectOp> dopplerRealias;
 	static ProductAdapter<DopplerDiffPlotterOp> dopplerDiffPlotter;
+	static ProductAdapter<DopplerDiffOp> dopplerDiff;
 	static ProductAdapter<DopplerAvgExpOp> dopplerAvgExp;
 
 	// Vertical met.products

@@ -121,7 +121,7 @@ void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 
 */
 
-void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
+void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -147,7 +147,7 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		mout.warn() << "No VRAD input, matching will be skipped" << mout.endl;
 	}
 	const bool MATCH_ALIASED  = (matchOriginal & 1) && VRAD_SRC;
-	const bool MATCH_UNDETECT = (matchOriginal & 2) && VRAD_SRC;
+	const bool MASK_DATA = (matchOriginal & 2) && VRAD_SRC;
 
 	//const PlainData<PolarSrc> & dstDataV = srcSweep.getData("AMVV");
 
@@ -171,8 +171,8 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		dstData.odim.NI = odim.NI;
 		dstData.odim.setRange(-odim.NI, +odim.NI);
 	}
-	const double min = dstData.data.getMin<double>();
-	const double max = dstData.data.getMax<double>();
+	const double minCode = dstData.data.getMin<double>();
+	const double maxCode = dstData.data.getMax<double>();
 
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
 	qm.setQuantityDefaults(dstQuality);
@@ -182,7 +182,7 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	mout.info() << "Inverting (u,v) back to VRAD " << mout.endl;
 	mout.info() << "src [" << srcDataU.odim.quantity << "] " << EncodingODIM(srcDataU.odim) << mout.endl;
 	mout.info() << "src [" << srcDataV.odim.quantity << "] " << EncodingODIM(srcDataV.odim) << mout.endl;
-	mout.info() << "dst [" << dstData.odim.quantity << "]  " << EncodingODIM(dstData.odim) << ", [" << min << ',' << max << ']' << mout.endl;
+	mout.info() << "dst [" << dstData.odim.quantity << "]  " << EncodingODIM(dstData.odim) << ", [" << minCode << ',' << maxCode << ']' << mout.endl;
 	mout.info() << "dst [" << dstQuality.odim.quantity << "]" << EncodingODIM(dstQuality.odim) << mout.endl;
 
 	const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
@@ -195,7 +195,7 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	drain::image::Point2D<double> unitVOrig;
 
 	/// Resolved (u,v), from AMVU and AMVV
-	double u, v;
+	double u, v, quality;
 
 	/// Resolved (u,v) projected back on beam
 	double vReproj;
@@ -204,7 +204,7 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	bool ORIG_UNDETECT;
 	bool ORIG_NODATA;
-	bool ORIG_UNUSABLE; // ORIG_UNDETECT && ORIG_NODATA
+	bool ORIG_USABLE; // ORIG_UNDETECT && ORIG_NODATA
 
 	size_t address;
 
@@ -222,13 +222,13 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 			v = srcDataV.data.get<double>(address);
 
 
-			if (MATCH_UNDETECT || MATCH_ALIASED){
+			if (MASK_DATA || MATCH_ALIASED){
 				vOrig = srcDataVRAD.data.get<double>(address);
 				ORIG_UNDETECT = (vOrig == srcDataVRAD.odim.undetect);
 				ORIG_NODATA   = (vOrig == srcDataVRAD.odim.nodata);
 
-				ORIG_UNUSABLE = ORIG_UNDETECT || ORIG_NODATA;
-				if (MATCH_UNDETECT && ORIG_UNUSABLE){
+				ORIG_USABLE = !(ORIG_UNDETECT || ORIG_NODATA);
+				if (MASK_DATA && !ORIG_USABLE){
 					if (ORIG_UNDETECT)
 						dstData.data.put(address, dstData.odim.undetect);
 					else
@@ -246,21 +246,31 @@ void DopplerRealiasOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 				v = srcDataV.odim.scaleForward(v);
 				vReproj = this->project(azmR, u,v);
 
-				if (MATCH_ALIASED && !ORIG_UNUSABLE){
+				if (VRAD_SRC){
 					vOrig = srcDataVRAD.odim.scaleForward(vOrig);
 					srcDataVRAD.odim.mapDopplerSpeed(vOrig,     unitVOrig.x,   unitVOrig.y);
 					srcDataVRAD.odim.mapDopplerSpeed(vReproj, unitVReproj.x, unitVReproj.y);
+				}
+
+				if (MATCH_ALIASED && ORIG_USABLE){
+					//vReproj = srcNI2*(floor(vReproj/srcNI2+0.5)-0.5) + vOrig;
 					vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
 				}
 
 				vReproj = dstData.odim.scaleInverse(vReproj);
-				if ((vReproj > min) && (vReproj < max)){ // continue processing
-					//dstDataVRAD.data.put(address, vReproj);
+				if ((vReproj > minCode) && (vReproj < maxCode)){ // continue processing
+					// dstDataVRAD.data.put(address, vReproj);
 					dstData.data.put(address, vReproj);
-					dstQuality.data.put(address, dstQuality.odim.scaleInverse(0.5 + (unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y)/2.0) );
+					quality = 0.5 + 0.5*(unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y);
+					/*
+					if (((i+50)==j) && ((i&7)==0)){
+						std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+					}
+					*/
+					dstQuality.data.put(address, dstQuality.odim.scaleInverse(quality) );
 				}
 				else {
-					dstData.data.put(address, dstData.odim.nodata); // rand() & 0xffff); //
+					dstData.data.put(address, dstData.odim.undetect); // rand() & 0xffff); //
 					dstQuality.data.put(address, 0);
 				};
 			}

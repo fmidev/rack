@@ -21,6 +21,9 @@ Rack fmi.fi - a radar data processing program
 --aDamper  <threshold>,<undetectThreshold>,<dbzMin>
   Removes anomalies with fuzzy deletion operator.
 
+--aDopplerNoise  <vradDevMin>,<windowWidth>,<windowHeight>
+  Detects variance Doppler (VRAD).
+
 --aEmitter  <lengthMin>,<thicknessMax>,<sensitivity>
   Detects electromagnetic interference segments by means of window medians.
 
@@ -38,9 +41,6 @@ Rack fmi.fi - a radar data processing program
 
 --aJamming  <smoothnessThreshold>,<distanceMin>,<weightLower>,<debugRow>
   Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.
-
---aNoise  <minRange>,<minLength>,<sensitivity>
-  Detects sectors contaminated by electromagnetic interference.
 
 --aPrecip  <probMax>,<dbz>,<dbzSpan>
   Detects precipitation...

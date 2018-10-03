@@ -110,7 +110,9 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 	drain::Logger mout(RACK_PRODUCT_OP, __FUNCTION__);
 
-	if (productODIM.quantity.empty()){
+	const bool QUANTITY_UNSET = productODIM.quantity.empty();
+
+	if (QUANTITY_UNSET){
 		productODIM.quantity = srcODIM.quantity;
 		mout.info() << "set quantity=" << productODIM.quantity << mout.endl;
 	}
@@ -144,7 +146,6 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 		}
 	}
 
-
 	/*
 	else if (!encoding.empty()){
 		mout.note() << EncodingODIM(productODIM) << mout.endl;
@@ -153,9 +154,12 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 	*/
 
 	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
-	if (srcODIM.quantity == productODIM.quantity){
+	if (QUANTITY_UNSET && (srcODIM.quantity == productODIM.quantity)){
 		if (srcODIM.getMin() < productODIM.getMin()){
 			mout.warn() << "input range ("<< srcODIM.quantity << ", min="<< srcODIM.getMin() <<") possibly wider than target range (min="<< productODIM.getMin() << ")"<< mout.endl;
+		}
+		if (srcODIM.getMax() > productODIM.getMax()){
+			mout.warn() << "input range ("<< srcODIM.quantity << ", max="<< srcODIM.getMax() <<") possibly wider than target range (max="<< productODIM.getMax() << ")"<< mout.endl;
 		}
 	}
 

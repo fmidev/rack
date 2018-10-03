@@ -143,6 +143,8 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	mout.debug() << "Src: " << srcData << mout.endl;
 
 	// Dst
+	const double vMax = srcData.odim.getNyquist();
+	dstData.odim.setRange(-vMax, vMax);
 	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);  // TODO: re-design, get rid of these
 	dstData.data.properties.importMap(dstData.odim); // IMPORTANT! But get rid of the self-copying later.
 	dstData.data.setCoordinatePolicy(srcData.data.getCoordinatePolicy());

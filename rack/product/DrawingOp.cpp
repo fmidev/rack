@@ -112,7 +112,7 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setAzimuth(p1,p2); //odim.nrays;
 		w.setRange(p3,p4);
 		w.adjustIndices(dstData.odim);
-		mout.warn() << w << mout.endl;
+		mout.debug() << w << mout.endl;
 		for (int j=w.ray1; j<w.ray2; ++j){
 			j1 = w.getSafeRay(dstData.odim, j);
 			dstData.data.put(w.bin1, j1, marker);

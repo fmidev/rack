@@ -93,6 +93,7 @@ public:
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
+			acc.odim.type = "S";
 			acc.odim.nbins  = srcData.odim.nbins;
 			acc.odim.nrays  = srcData.odim.nrays;
 			acc.odim.rscale = srcData.odim.rscale;
@@ -110,7 +111,7 @@ public:
 
 
 		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
-		ProductBase::applyODIM(acc.odim, srcData.odim);
+		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
 		resources.targetEncoding.clear();
 
