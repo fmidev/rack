@@ -84,7 +84,7 @@ double PolarODIM::getNyquist(int errorThreshold) const {
 
 	if (quantity.substr(0,4) != "VRAD"){
 		//if (errorThreshold >= LOG_INFO)
-		mout.log(errorThreshold + 3) << "quantity not VRAD but " << quantity << mout.endl;
+		mout.log(errorThreshold + 4) << "quantity not VRAD but " << quantity << mout.endl;
 		return NI;
 	}
 
@@ -107,6 +107,7 @@ double PolarODIM::getNyquist(int errorThreshold) const {
 				mout << "no NI, wavelength or lowprf in metadata of elangle(" << elangle << "), guessed from type min/max: ";
 				mout << "[" << vMin << ',' << vMax << "]"  << mout.endl;
 				NI = vMax;
+
 			}
 			else {
 				mout.log(errorThreshold) << " could not derive Nyquist speed (NI)" << mout.endl;

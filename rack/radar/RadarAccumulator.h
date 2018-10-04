@@ -90,6 +90,9 @@ public:
 	 */
 	OD odim;
 
+	/// Book keeping for new data. Finally, in extraction phase, added to odid.ACCnum .
+	// size_t count;
+
 	/// If source data has no quality field, this value is applied for (detected) data.
 	double defaultQuality;
 

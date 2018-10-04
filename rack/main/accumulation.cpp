@@ -72,10 +72,15 @@ public:
 		mout.debug() << acc << mout.endl;
 
 
-		std::string path = "dataset1";
-		DataSelector::getPath(*resources.currentPolarHi5, acc.dataSelector, path);
+		std::string p = "dataset1";
+		DataSelector::getPath(*resources.currentPolarHi5, acc.dataSelector, p);
+		ODIMPath path(p);
+		//ODIMPathElem child = path.back();
+		path.pop_back();
 
-		Data<PolarSrc> srcData((*resources.currentPolarHi5)(path));
+		const DataSet<PolarSrc> srcDataSet((*resources.currentPolarHi5)(path));
+		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();
+		//Data<PolarSrc> srcData((*resources.currentPolarHi5)(path));
 		//mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
 
 		if (srcData.data.isEmpty()){
@@ -87,9 +92,12 @@ public:
 		// PolarODIM mika;
 		// mout.info() << "init: " << mika << mout.endl;
 
-		const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
-		mout.info() << "init: " << srcQuality.odim << mout.endl;
+		const bool LOCAL_QUALITY = srcData.hasQuality();
+		if (LOCAL_QUALITY)
+			mout.info() << "has local quality" << mout.endl;
 
+		const PlainData<PolarSrc> & srcQuality = LOCAL_QUALITY ? srcData.getQualityData() : srcDataSet.getQualityData();
+		mout.info() << "init: " << srcQuality.odim << mout.endl;
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
@@ -98,6 +106,7 @@ public:
 			acc.odim.nrays  = srcData.odim.nrays;
 			acc.odim.rscale = srcData.odim.rscale;
 			acc.odim.gain = 0.0; // !!
+			acc.odim.ACCnum = 0;
 		}
 		else if ((srcData.odim.nbins != acc.getWidth()) || (srcData.odim.nrays != acc.getHeight())){
 			mout.warn() << "Input geometry (" << srcData.odim.nbins << 'x' << srcData.odim.nrays << ')';
@@ -109,28 +118,39 @@ public:
 			return;
 		}
 
-
 		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
-		ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
-		resources.targetEncoding.clear();
+		if (!resources.targetEncoding.empty()){
+			// ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
+			mout.note() << "targetEncoding alreay at this stage is deprecating - use it only in extraction "  << mout.endl;
+			acc.setTargetEncoding(resources.targetEncoding);
+			resources.targetEncoding.clear();
+		}
 
-		//mout.warn() << srcData.odim.ACCnum << mout.endl;
-		//const long int count = std::min(1l, srcData.odim.ACCnum);
-		//const double weight = (acc.getMethod().name == "AVERAGE") ? static_cast<double>(count) : 1.0;
+
 		const std::string & name = acc.getMethod().name;
 		if ((name == "AVERAGE") || (name == "WAVG")){
-			//const long int count = acc.odim.ACCnum + 1;
-			//mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
-			acc.odim.ACCnum +=  std::max(1l, srcData.odim.ACCnum);
-			mout.info() << "avg-type method, dividing weight by " << acc.odim.ACCnum << mout.endl;
-			acc.addData(srcData, srcQuality, weight/static_cast<double>(acc.odim.ACCnum), 0, 0);
-			//acc.odim.ACCnum = count;
+
+			double coeff = 1.0;
+			if (srcData.odim.ACCnum > 1) {
+				coeff = static_cast<double>(srcData.odim.ACCnum);
+				mout.note() << "rescaling weight("<< weight << ") by srcData.odim.ACCnum=" << srcData.odim.ACCnum << mout.endl;
+			}
+
+			/*
+			if (acc.odim.ACCnum > 0){
+				mout.note() << "avg-type method, dividing weight by " << acc.odim.ACCnum << mout.endl;
+				coeff = coeff/static_cast<double>(acc.odim.ACCnum);
+			}
+			*/
+
+			acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
 		}
 		else
 			acc.addData(srcData, srcQuality, weight, 0, 0); // 1 => a::defaultQuality ?
-		// acc.count.fill(count);
-		// acc.odim.ACCnum = count;
+
+		//acc.count += std::max(1L, srcData.odim.ACCnum);
+		acc.odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
 
 	};
 
@@ -173,9 +193,15 @@ class PolarExtract : public SimpleCommand<std::string> {
 		RackResources & resources = getResources();
 
 		RadarAccumulator<Accumulator,PolarODIM> & acc = resources.polarAccumulator;
+
+		/// Clumsy?
 		acc.setTargetEncoding(resources.targetEncoding);
 		resources.targetEncoding.clear();
+		//
+		const QuantityMap & qm = getQuantityMap();
+		qm.setQuantityDefaults(acc.odim, acc.odim.quantity, acc.getTargetEncoding());
 
+		mout.info() << "acc.odim Encoding " << EncodingODIM(acc.odim) << mout.endl;
 
 		HI5TREE & dst = resources.polarHi5;
 		dst.clear();
@@ -183,18 +209,19 @@ class PolarExtract : public SimpleCommand<std::string> {
 		HI5TREE & dstDataSetGroup = dst["dataset1"];
 		DataSet<PolarDst> dstProduct(dstDataSetGroup);
 
-		PolarODIM odim(acc.odim);
-		odim.object = "SCAN";
-		odim.product = "ACC";
+		acc.odim.object = "SCAN";
+		acc.odim.product = "ACC";
 
-		acc.extract(odim, dstProduct, value);
+		//acc.odim.ACCnum += acc.count;
+		//acc.count = 0; // NOTE CHECK - if data re-added?
+		acc.extract(acc.odim, dstProduct, value);
 
-		ODIM::copyToH5<ODIM::DATASET>(odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
+		ODIM::copyToH5<ODIM::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateAttributes(dst); // why not start form "dataset1" ?
 
-		ODIM::copyToH5<ODIM::ROOT>(odim, dst);
+		ODIM::copyToH5<ODIM::ROOT>(acc.odim, dst);
 
 		resources.currentHi5 = & dst;
 		resources.currentPolarHi5 = & dst;
