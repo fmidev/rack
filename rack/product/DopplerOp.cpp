@@ -191,7 +191,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	double azmR;
 
 	/// Original value in VRAD
-	double vOrig;
+	double vOrig = 0.0;
 	drain::image::Point2D<double> unitVOrig;
 
 	/// Resolved (u,v), from AMVU and AMVV
