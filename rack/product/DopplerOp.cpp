@@ -204,7 +204,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	bool ORIG_UNDETECT;
 	bool ORIG_NODATA;
-	bool ORIG_USABLE; // ORIG_UNDETECT && ORIG_NODATA
+	bool ORIG_USABLE = true; // ORIG_UNDETECT && ORIG_NODATA
 
 	size_t address;
 
