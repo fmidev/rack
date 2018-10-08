@@ -50,8 +50,11 @@ namespace image
 /// Computes sizes connected pixel areas. For more complicated statistics, see SegmentStatisticsOp.
 /**
 
-	\tparam T - prober class, eg. SegmentProber
+    SegmentProber
+	\tparam S - source type for SegmentProber<S,D>
+	\tparam D - destination type for SegmentProber<S,D>
 
+	\tparam T - prober class, eg. SegmentProber
 	Note: current designed matches SegmentProber quite explicitly.
 
  \code
@@ -74,11 +77,13 @@ namespace image
 	\see SegmentStatisticsOp
 
  */
-template <class T>
+template <class S, class D>
 class SegmentAreaOp: public SegmentOp
 {
 public:
 
+	typedef S src_t;
+	typedef D dst_t;
 	/**
 	 * \par min - the smallest intensity in a segment to be traversed
 	 * \par max - the largest intensity in a segment to be traversed
@@ -119,12 +124,12 @@ public:
 };
 
 
-template <class T>
-void SegmentAreaOp<T>::makeCompatible(const ImageFrame & src, Image & dst) const  {
+template <class S, class D>
+void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
 
-	const std::type_info & t = typeid(typename T::dst_t);
+	const std::type_info & t = typeid(dst_t); // typeid(typename T::dst_t);
 
 	if (!dst.typeIsSet()){
 		dst.setType(t);
@@ -143,28 +148,28 @@ void SegmentAreaOp<T>::makeCompatible(const ImageFrame & src, Image & dst) const
 
 }
 
-template <class T>
-void SegmentAreaOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
+template <class S, class D>
+void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
 
-	const unsigned int w = src.getWidth();
-	const unsigned int h = src.getHeight();
+	const size_t w = src.getWidth();
+	const size_t h = src.getHeight();
 
-	const typename T::src_t minRaw = src.getScaling().inv(min);
-	const typename T::src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getMax<typename T::src_t>() : src.getScaling().inv(max);
+	const src_t minRaw = src.getScaling().inv(min);
+	const src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getMax<src_t>() : src.getScaling().inv(max);
 
-	if (minRaw <= src.getMin<typename T::src_t>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getMin<typename T::src_t>() << mout.endl;
+	if (minRaw <= src.getMin<src_t>()){
+		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getMin<src_t>() << mout.endl;
 	}
 
 	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
 	mout.debug(1) << "src: " << src << mout.endl;
 	mout.debug(1) << "dst: " << dst << mout.endl;
 
-	/// TODO: Use actual types in SegmentProber.
-	//SegmentProber<int,int> floodFill(src,dst);
-	T floodFill(src,dst);
+	SegmentProber<S,D> floodFill(src, dst);
+
+	//T floodFill(src, dst);
 
 	//const size_t dMax = dst.getMax<size_t>();
 	// const typename T::dst_t dMax = dst.getMax<typename T::dst_t>();
@@ -180,15 +185,13 @@ void SegmentAreaOp<T>::traverseChannel(const Channel & src, Channel & dst) const
 	mout.warn() << "Functor: 100 =>" << ftor(100.0) << mout.endl;
 	mout.warn() << "Functor: 10000 =>" << ftor(10000.0) << mout.endl;
 	*/
-	mout.debug(1);
-
+	//mout.debug(1);
 	mout << mout.endl;
 
-	typedef drain::typeLimiter<typename T::dst_t> Limiter;
-	typename Limiter::value_t limiter = dst.getLimiter<typename T::dst_t>();
+	typedef drain::typeLimiter<dst_t> Limiter;
+	typename Limiter::value_t limiter = dst.getLimiter<dst_t>();
 
 	size_t sizeMapped;
-	//double sizeMapped;
 	for (size_t i=0; i<w; i++){
 		for (size_t j=0; j<h; j++){
 			//if ((drain::Debug > 5) && ((i&15)==0) && ((j&15)==0)) std::cerr << i << ',' << j << "\n";

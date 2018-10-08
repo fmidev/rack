@@ -36,8 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Coordinates.h"
 #include "FilePng.h"
 
-//#include "ImageOp.h"
-
 
 namespace drain
 {
@@ -48,22 +46,20 @@ namespace image
 
 /// A helper class applied by FloodFillOp and SegmentAreaOp
 /**
- *   \tparam T  - storage type of the source image (int by default, but should be floating-type, if src is).
- *   \tparam T2 - storage type of the destination image, the image to be filled.
+ *   \tparam S  - storage type of the source image (int by default, but should be floating-type, if src is).
+ *   \tparam D - storage type of the destination image, the image to be filled.
  *
  *   \author Markus.Peura@fmi.fi
  */
-template <class T, class T2>
-class SegmentProber {  // TODO: rename to SegmentProber
+template <class S, class D>
+class SegmentProber {
 
 public:
 
-	typedef T  src_t;
-	typedef T2 dst_t;
+	typedef S src_t;
+	typedef D dst_t;
 
 	SegmentProber(const Channel &s) :
-		// src(s), width(s.getWidth()), height(s.getHeight()), dst(NULL),
-		// handler(width, height, s.getCoordinatePolicy()), mout(getImgLog(), "SegmentProber") {
 		src(s), dst(NULL),
 		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
 		size = 0;
@@ -72,8 +68,6 @@ public:
 	SegmentProber(const Channel &s, Channel &d) :
 		src(s), dst(&d),
 		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
-		// src(s), width(s.getWidth()), height(s.getHeight()), dst(&d),
-		// handler(width, height, s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
 		size = 0;
 	};
 
@@ -83,20 +77,15 @@ public:
 	void setDst(Channel & d){
 		dst = &d;
 	}
-	/*
-	 FloodFillProber(const Image &s, Image &d, const CoordinateHandler &handler) :
-		 src(s), width(src.getWidth()), height(src.getHeight()), dst(d), handler(handler) {
-	 };
-	 */
 
 	/// Fills the segment having constant intensity, that is, src.at(i0,j0).
-	void probe(size_t i, size_t j, T2 fillValue){
-		const T anchor = src.get<T>(i,j);
+	void probe(size_t i, size_t j, D fillValue){
+		const S anchor = src.get<S>(i,j);
 		probe(i, j, fillValue, anchor, anchor);
 	};
 
 	/// Fills the segment having intensity between min and max.
-	void probe(size_t i, size_t j, T2 fillValue, T min, T max){
+	void probe(size_t i, size_t j, D fillValue, S min, S max){
 
 		/*
 		if (fillValue > min){
@@ -110,31 +99,27 @@ public:
 		anchorMin = min;
 		anchorMax = max;
 
-		//size = 0;
 		clear();
 
-		//_stack = 0;
-		//mout.debug(30) << *this << mout.endl;
-
+		// _stack = 0;
+		// mout.debug(30) << *this << mout.endl;
 		probe8(i,j);
 
 	};
 
-	T  anchorMin;
-	T  anchorMax;
-	T2 value;  // fill
+	S  anchorMin;
+	S  anchorMax;
+	D value;  // fill
 
-	// Skk
+
 	mutable size_t size; // Consider deriving SegmentProber => SegmentAreaProber
 
 
 // TODO protected:
 
 	const Channel & src;
-	//const int width;
-	//const int height;
 	Channel *dst;
-	//const
+
 	CoordinateHandler2D handler;
 
 protected:
@@ -142,70 +127,98 @@ protected:
 	drain::Logger mout;
 
 
+
+	/// Application dependent
+	virtual inline
+	bool isValidSegment(int i, int j){
+		return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
+	}
+
+	/// Application dependent
+	virtual inline
+	bool isValidMove(int i0, int j0, int i, int j){
+		return true;
+	}
+
+	///  Application dependent operation performed in each segment location (i,j).
+	virtual	inline
+	void update(int i, int j){
+		++size;
+	}
+
+	///  Application dependent initialisation for statistics updated with update(int i, int j) function.
 	virtual
 	void clear(){
 		size = 0;
 	};
 
-	//mutable long int _stack;
 
-	/*
-	void test_8(unsigned int i,unsigned int j) const {
-		if ((_stack&255)==0)
-			std::cerr << _stack << '\t';
-		_stack++;
-		probe8(i,j);
-		_stack--;
-	}
-	*/
-
-
-
-
-	/// Operation performed in each segment location (i,j). A function to be redefined in derived classes.
-	virtual
-	inline
-	void update(int i, int j){
-		++size;
+	/// Experimental
+	/**
+	 */
+	virtual inline
+	bool isVisited(int i, int j){
+		return (dst->get<D>(i,j) == value);
 	}
 
-	//
-	virtual
-	inline
-	bool visit(int i0, int j0) {
 
-		//static
-		int i, j;
-		i=i0;
-		j=j0;
 
-		// Outside image?  NOTE: may change (i.j).
-		if ((handler.handle(i,j) & CoordinateHandler2D::IRREVERSIBLE) != 0 )
-		//if (! handler.validate(i, j))
+	bool moveHorz(int i0, int j0, int i, int j) {
+
+		if ((i < 0) || (i > handler.getXMax()))
 			return false;
 
-		// Outside segment?
-		if (src.get<T>(i,j) < anchorMin)
-			return false;
-		if (src.get<T>(i,j) > anchorMax)
+		if (isVisited(i, j))
 			return false;
 
-		// Already visited?
-		if (dst->get<T2>(i,j) == value)
-			return false;
+		return isValidSegment(i, j) && isValidMove(i0,j0, i, j);
 
-		/// NEW, it's here.
+	}
+
+
+
+	/// Main function: visit a single pixel and return.
+	/**
+	 *  Visiting means
+	 *  - updating the status of this prober, for example by updating statistics like segment size
+	 *  - marking the pixel visited in dst image
+	 *
+	 *  \param i0 - current i coordinate (always valid)
+	 *  \param j0 - current j coordinate (always valid)
+	 *  \param i  - aimed i coordinate
+	 *  \param j  - aimed j coordinate
+	 *
+	virtual inline
+	void visit(int i0, int j0, int i, int j) {
+
+		if (moveHorz(i0, j0, i, j)){
+			/// Mark visited
+			dst->put(i,j, value);
+			update(i, j);
+
+		}
+
+	}
+	 */
+
+
+	/// Visiting a single pixel when not coming from any direction.
+	/**
+	 *  Visiting means
+	 *  - updating the status of this prober, for example by updating statistics like segment size
+	 *  - marking the pixel visited in dst image
+	 *
+	 *  \param i0 - current i coordinate (always valid)
+	 *  \param j0 - current j coordinate (always valid)
+	 *
+	 */
+	virtual inline // "semi-final" ?
+	void visit(int i, int j) {
+
+		/// Mark visited
 		dst->put(i,j, value);
 		update(i, j);
-
-		return true;
-		/*
-		if (!_check(i2,j2))
-			return false;
-		else {
-			++size;
-			return true;
-		}*/
+		//}
 
 	}
 
@@ -218,30 +231,42 @@ protected:
 	 */
 	void probe8(int i, int j) {
 
-		if (!visit(i,j))
-			return;
+		// Note: coordHandler applied by checkPos
+		if (!handler.validate(i, j))
+			return; // false;
 
-		/// NOTE: visits can overflow, depends on coordPolicy!
+		if (isVisited(i,j))
+			return; // false;
+
+		if (!isValidSegment(i, j))
+			return; // false;
+
+		visit(i,j); // mark & update
 
 		/// Scan right
-		int i2 = i+1;
-		while (visit(i2,j))
+		int i2 = i;
+		while (moveHorz(i2,j, i2+1,j)){
 			++i2;
+			visit(i2, j);
+		}
+		// Now i2 is the maximum valid i coordinate.
 
 		/// Scan left
-		--i;
-		while (visit(i,j))
+		while (moveHorz(i,j, i-1,j)){
 			--i;
+			visit(i, j);
+		}
+		// Now i is the minimum valid i coordinate.
 
 		/// Scan again, continuing one step above and below.
-		++i;
-		while (i < i2){
-			probe8(i,j+1);
-			probe8(i,j-1);
+		while (i <= i2){
+			if (isValidMove(i,j, i,j-1))
+				probe8(i,j-1);
+			if (isValidMove(i,j, i,j+1))
+				probe8(i,j+1);
 			++i;
 		}
 
-		// _stack--;
 	}
 
 };
@@ -250,18 +275,19 @@ protected:
 
 
 
-template <class T, class T2>
-std::ostream & operator<<(std::ostream & ostr, const SegmentProber<T,T2> &floodFill){
-	ostr << "value="     << (float)floodFill.value << ',';
-	ostr << "anchorMin=" << (float)floodFill.anchorMin << ',';
-	ostr << "anchorMax=" << (float)floodFill.anchorMax << ',';
-	ostr << "size="      << (float)floodFill.size << ',';
-	//ostr << "width="     << (float)floodFill.width << ',';
-	//ostr << "height="    << (float)floodFill.height << ',';
-	ostr << "handler="   << floodFill.handler << ',';
-	//ostr << "p="         << floodFill.p;
+template <class S, class D>
+std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D> & prober){
+	ostr << "value="     << (float)prober.value << ',';
+	ostr << "anchorMin=" << (float)prober.anchorMin << ',';
+	ostr << "anchorMax=" << (float)prober.anchorMax << ',';
+	ostr << "size="      << (float)prober.size << ',';
+	//ostr << "width="     << (float)prober.width << ',';
+	//ostr << "height="    << (float)prober.height << ',';
+	ostr << "handler="   << prober.handler << ',';
+	//ostr << "p="         << prober.p;
 	return ostr;
 }
+
 
 
 

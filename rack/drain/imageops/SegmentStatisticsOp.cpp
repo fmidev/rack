@@ -76,13 +76,17 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	const Channel & src = srcTray.get();
 	Channel & dst = dstTray.get();
 
-	const unsigned int width  = src.getWidth();
-	const unsigned int height = src.getHeight();
+	const size_t width  = src.getWidth();
+	const size_t height = src.getHeight();
 	const unsigned int count  = statistics.size();
 
 	const float widthF = static_cast<float>(width);
 	const float heightF = static_cast<float>(height);
 	const float areaF  = widthF*heightF;
+
+	const int minI = static_cast<int>(min);
+	const int maxI = static_cast<int>(max);
+
 
 		/// TODO: should use the actual types of src and dst.
 	SegmentProber<int,int> floodFill(src);
@@ -90,27 +94,6 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 
 
 	const UnaryFunctor & functor = getFunctor(dst.getMax<double>());  // what if dst float?
-
-	/*
-	FunctorBank & functorBank = getFunctorBank();
-	if (!functorBank.has(functorName)){
-		mout.error() << "functor not found: " << functorName << mout.endl;
-		return;
-	}
-
-	mout.debug(2) << "functorName: " << functorName << mout.endl;
-
-	UnaryFunctor & functor = functorBank.get(functorName).clone();
-	mout.debug() << functor.getName() << ':' << functor.getDescription() << mout.endl;
-	functor.getParameters().separator = ':';
-
-	functor.setScale(dst.getMax<double>(), 0.0);
-	functor.setParameters(functorParams);
-
-	mout.debug(1) << functor.getName() << ':' << functor << mout.endl;
-	*/
-	//functor.setScale(dst.getMax<double>(), 0.0);
-
 	mout.debug(1) << functor.getName() << ':' << functor << mout.endl;
 
 	const float prescale = dst.getMax<float>();
@@ -136,7 +119,7 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 			if (dst.get<int>(i,j) == 0){ // not visited
 
 				// STAGE 1: detect statistics.
-				prober.probe(i,j,1, static_cast<int>(min), static_cast<int>(max));  // painting with '1' does not disturb dst
+				prober.probe(i,j,1, minI, maxI);  // painting with '1' does not disturb dst
 
 				//std::cerr << "segment @" << i << ',' << j << " size="  << s.getSize() << " f="  << src.get<float>(i,j) << '\n'; // " prober=" << prober << std::endl;
 
@@ -197,17 +180,15 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 
 						/// Phase 2: mapping (ie. scale the statistic)
 						quantity = limiter(functor(quantity));
-
 						//mout.debug(12)
 						//std::cerr << " quantity=" <<  quantity;
 						// Marker must be > 0.
 						if (quantity == 0.0)
 							quantity = 1.0;
-						//std::cerr << " >> "  << quantity << std::endl;
 
 						// floodFill.setDstFrames(dst.getChannel(k));
 						floodFill.setDst(dstTray.get(k));
-						floodFill.probe(i,j, static_cast<int>(quantity), static_cast<int>(min), static_cast<int>(max));
+						floodFill.probe(i,j, static_cast<int>(quantity), minI, maxI);
 						//floodFill.fill(i,j,size&254,min,max);
 						//std::cerr << "filled\n";
 					}

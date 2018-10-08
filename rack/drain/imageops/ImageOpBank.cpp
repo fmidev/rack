@@ -317,7 +317,7 @@ ImageOpBank & getImageOpBank() {
 			static ImageOpCloner<RunLengthVertOp> runLengthVert;
 			bank.add(runLengthVert);
 
-			static ImageOpCloner<SegmentAreaOp<SegmentProber<float,unsigned short> > > segmentArea;
+			static ImageOpCloner<SegmentAreaOp<float,unsigned short> > segmentArea;
 			bank.add(segmentArea, "segmentArea");
 
 			static ImageOpCloner<SegmentStatisticsOp> segmentStats;

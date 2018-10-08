@@ -55,7 +55,7 @@ namespace image
 	\~
 
   \code
-	drainage shapes.png --segmentStats x,64,255,FuzzyStep,100:0 -o segmentStat-x.png
+	drainage shapes.png --segmentStats x,64,255,FuzzyStep:100:0 -o segmentStat-x.png
 	drainage shapes.png --segmentStats y,64,255 -o segmentStat-y.png
 	drainage shapes.png --segmentStats h,64,255 -o segmentStat-horz.png
 	drainage shapes.png --segmentStats v,64,255 -o segmentStat-vert.png

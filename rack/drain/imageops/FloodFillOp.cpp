@@ -43,13 +43,48 @@ namespace image
 {
 
 
+class PickySegmentProber : public SegmentProber<double, double> {
+
+public:
+
+	inline
+	PickySegmentProber(const Channel &s, Channel &d) : SegmentProber<double, double>(s, d) {
+	}
+
+	inline
+	PickySegmentProber(Channel &d) : SegmentProber<double, double>(d, d) {
+	}
+
+protected:
+
+	/// Experimental
+	virtual inline
+	bool isValidMove(int i0, int j0, int i, int j){
+
+		src_t x = src.get<src_t>(i,j);
+
+		if ((x >= anchorMin) && (x <= anchorMax)){
+
+			x = x-src.get<src_t>(i0,j0);
+			if ((x>-4) && (x<4))
+				return true;
+
+		}
+
+		return false;
+
+	}
+
+};
+
+
 FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : ImageOp(__FUNCTION__,
 		"Fills an area starting at (i,j) having intensity in [min,max], with a value.") {
-	parameters.reference("i", this->i0 = i);
-	parameters.reference("j", this->j0 = j);
-	parameters.reference("min", this->min = min);
-	parameters.reference("max", this->max = max);
-	parameters.reference("value", this->value = value);
+	parameters.reference("i", this->i0 = i, "coord");
+	parameters.reference("j", this->j0 = j, "coord");
+	parameters.reference("min", this->min = min, "intensity");
+	parameters.reference("max", this->max = max, "intensity");
+	parameters.reference("value", this->value = value, "intensity");
 }
 
 
@@ -61,13 +96,15 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	if (src.isFloatType() || dst.isFloatType()) {
 		mout.debug(1) << "type: double" << mout.endl;
-		SegmentProber<double,double> fill(src, dst);
+		//SegmentProber<double,double> fill(src, dst);
+		PickySegmentProber fill(src, dst);
 		src.adjustCoordinateHandler(fill.handler);
 		fill.probe(i0, j0, value, min, max);
 	}
 	else {
 		mout.debug(1) << "type: integral" << mout.endl;
-		SegmentProber<int,int> fill(src, dst);
+		//SegmentProber<int,int> fill(src, dst);
+		PickySegmentProber fill(src, dst);
 		src.adjustCoordinateHandler(fill.handler);
 		fill.probe(i0, j0, static_cast<int>(value), static_cast<int>(min), static_cast<int>(max));
 	}

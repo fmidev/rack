@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "image/Coordinates.h"
 #include "image/FilePng.h"
-#include "image/SegmentProber.h"
+//#include "image/SegmentProber.h"
 
 #include "ImageOp.h"
 

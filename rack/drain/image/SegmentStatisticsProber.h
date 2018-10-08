@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef STATISTICSPROBER_H
-#define STATISTICSPROBER_H
+#ifndef STATISTICS_PROBER_H
+#define STATISTICS_PROBER_H
 
 #include <sstream>
 #include <ostream>
@@ -392,6 +392,7 @@ public:
 	SegmentStatisticsProber(const Channel &s, Channel & d, const std::string statistics="s") : SegmentProber<T,T2>(s,d), stats(statistics) {
 	};
 
+	virtual
 	~SegmentStatisticsProber(){};
 
 	const std::string & stats;
@@ -428,7 +429,7 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentStatisticsProber<T,T
 
 }
 }
-#endif /* FLOODFILL_H_ */
+#endif /* SEGMENSTATS_H_ */
 
 
 // Drain

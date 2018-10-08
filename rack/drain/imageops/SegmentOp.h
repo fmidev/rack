@@ -59,8 +59,6 @@ public:
 	bool clearDst;
 
 	std::string functorStr;  // consider internal split util
-	//std::string functorName;
-	//std::string functorParams;
 
 
 protected:
