@@ -1,0 +1,9 @@
+<map id="VerticalCrossSectionODIM" name="VerticalCrossSectionODIM">
+<area shape="rect" id="node8" href="$classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="5,453,83,480"/>
+<area shape="rect" id="node9" href="$classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="107,453,245,480"/>
+<area shape="rect" id="node2" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="81,304,138,331"/>
+<area shape="rect" id="node3" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="54,229,165,256"/>
+<area shape="rect" id="node4" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="6,155,93,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="117,155,224,181"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="85,80,256,107"/>
+</map>

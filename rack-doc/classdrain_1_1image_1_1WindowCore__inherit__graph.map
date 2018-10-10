@@ -1,0 +1,28 @@
+<map id="WindowCore" name="WindowCore">
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="365,131,517,158"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf \&gt;" alt="" coords="329,193,552,219"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf,\l WindowCore \&gt;" alt="" coords="333,244,548,285"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; HistogramWindowConfig,\l WindowCore \&gt;" alt="" coords="325,309,556,351"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; WindowConfig \&gt;" alt="" coords="351,375,530,402"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="5,251,132,278"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1MultiChannelWindowCore.html" title="MultiChannelWindowCore" alt="" coords="633,15,806,42"/>
+<area shape="rect" id="node9" href="$classrack_1_1RadarWindowCore.html" title="RadarWindowCore" alt="" coords="653,73,785,99"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf,\l WeightedWindowCore \&gt;" alt="" coords="612,124,827,165"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; HistogramWindowConfig,\l WeightedWindowCore \&gt;" alt="" coords="604,189,835,231"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; WindowConfig,\l MultiChannelWindowCore \&gt;" alt="" coords="897,7,1086,48"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; WindowConfig,\l MultiChannelWindowCore \&gt;" alt="" coords="1148,5,1357,47"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude. " alt="" coords="1444,13,1589,39"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1FlowAverageWindowWeighted.html" title="FlowAverageWindowWeighted" alt="" coords="1679,13,1879,39"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1GaussianStripe.html" title="GaussianStripe\&lt; DIR,\l WeightedWindowCore \&gt;" alt="" coords="907,124,1075,165"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title="GaussianStripeWeighted\l\&lt; DIR \&gt;" alt="" coords="1169,71,1336,112"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title="GaussianStripeWeighted\l\&lt; false \&gt;" alt="" coords="1169,136,1336,177"/>
+<area shape="rect" id="node14" href="$classrack_1_1GaussianStripeVertPolarWeighted.html" title="GaussianStripeVertPolarWeighted" alt="" coords="1407,143,1627,170"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; Histogram\lWindowConfig, WeightedWindow\lCore \&gt;" alt="" coords="883,193,1100,249"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="SlidingWindowHistogram\l\&lt; WeightedWindowCore \&gt;" alt="" coords="1165,201,1341,243"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1SlidingWindowHistogramWeighted.html" title="SlidingWindowHistogramWeighted" alt="" coords="1405,209,1628,235"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1SlidingWindowMedianWeighted.html" title="SlidingWindowMedianWeighted" alt="" coords="1676,209,1881,235"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1GaussianStripe.html" title="GaussianStripe\&lt; WindowCore \&gt;" alt="" coords="614,255,825,282"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; Histogram\lWindowConfig, WindowCore \&gt;" alt="" coords="618,309,821,351"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="SlidingWindowHistogram\l\&lt; WindowCore \&gt;" alt="" coords="907,309,1075,351"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1SlidingWindowMedian.html" title="SlidingWindowMedian" alt="" coords="1177,317,1328,343"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="CommandGroup" name="CommandGroup">
+<area shape="rect" id="node2" href="$classrack_1_1AccumulationModule.html" title="AccumulationModule" alt="" coords="172,5,315,32"/>
+<area shape="rect" id="node3" href="$classrack_1_1AnDReModule.html" title="AnDReModule" alt="" coords="190,56,297,83"/>
+<area shape="rect" id="node4" href="$classrack_1_1CommandModule.html" title="CommandModule" alt="" coords="181,107,305,133"/>
+<area shape="rect" id="node5" href="$classrack_1_1CompositingModule.html" title="Commands for conversions to Cartesian coordinate system, including generation of radar image composit..." alt="" coords="175,157,312,184"/>
+<area shape="rect" id="node6" href="$classrack_1_1FileModule.html" title="FileModule" alt="" coords="201,208,286,235"/>
+<area shape="rect" id="node7" href="$classrack_1_1ImageRackletModule.html" title="ImageRackletModule" alt="" coords="171,259,316,285"/>
+<area shape="rect" id="node8" href="$classrack_1_1ProductModule.html" title="ProductModule" alt="" coords="189,309,298,336"/>
+</map>

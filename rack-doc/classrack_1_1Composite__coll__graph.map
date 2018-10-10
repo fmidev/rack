@@ -1,0 +1,41 @@
+<map id="Composite" name="Composite">
+<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="3073,565,3248,621"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="2905,458,3024,485"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="2649,230,2744,257"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="1799,268,1931,294"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="2092,268,2236,294"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="1547,348,1707,374"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ModifiableImage.html" title="ModifiableImage" alt="" coords="1333,340,1450,366"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="1563,297,1691,324"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1035,340,1133,366"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="891,340,985,366"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="597,188,680,214"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="316,149,395,176"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="44,124,151,150"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="34,174,161,201"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="295,218,416,245"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="720,237,867,264"/>
+<area shape="rect" id="node15" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="67,316,128,342"/>
+<area shape="rect" id="node21" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="318,354,393,381"/>
+<area shape="rect" id="node16" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="591,605,686,632"/>
+<area shape="rect" id="node17" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="279,605,432,632"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="588,341,689,368"/>
+<area shape="rect" id="node20" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="581,396,696,422"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title="WeightedAverageMethod" alt="" coords="2285,116,2453,142"/>
+<area shape="rect" id="node29" href="$classdrain_1_1image_1_1MinimumMethod.html" title="MinimumMethod" alt="" coords="2310,244,2429,270"/>
+<area shape="rect" id="node30" href="$classdrain_1_1image_1_1OverwriteMethod.html" title="OverwriteMethod" alt="" coords="2309,294,2430,321"/>
+<area shape="rect" id="node31" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title="MaximumWeightMethod" alt="" coords="2288,345,2451,372"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1AverageMethod.html" title="AverageMethod" alt="" coords="2313,396,2426,422"/>
+<area shape="rect" id="node33" href="$classdrain_1_1image_1_1MaximumMethod.html" title="MaximumMethod" alt="" coords="2308,65,2431,92"/>
+<area shape="rect" id="node26" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="1811,538,1918,565"/>
+<area shape="rect" id="node38" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="2126,552,2202,578"/>
+<area shape="rect" id="node41" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="2109,610,2219,637"/>
+<area shape="rect" id="node27" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="1541,538,1712,565"/>
+<area shape="rect" id="node34" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support. " alt="" coords="2655,458,2738,485"/>
+<area shape="rect" id="node35" href="$classdrain_1_1Proj4.html" title="Proj4" alt="" coords="2343,446,2395,473"/>
+<area shape="rect" id="node36" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="2298,509,2441,536"/>
+<area shape="rect" id="node37" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="2502,560,2601,586"/>
+<area shape="rect" id="node39" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="2768,608,2881,634"/>
+<area shape="rect" id="node40" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="2341,610,2398,637"/>
+<area shape="rect" id="node42" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="1821,616,1908,642"/>
+</map>

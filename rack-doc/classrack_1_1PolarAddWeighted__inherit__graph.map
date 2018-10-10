@@ -1,0 +1,5 @@
+<map id="PolarAddWeighted" name="PolarAddWeighted">
+<area shape="rect" id="node2" href="$classrack_1_1PolarAdd.html" title="PolarAdd" alt="" coords="33,155,108,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="13,80,128,107"/>
+<area shape="rect" id="node4" href="$structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="29,5,112,32"/>
+</map>

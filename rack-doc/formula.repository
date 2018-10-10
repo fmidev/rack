@@ -1,0 +1,125 @@
+\form#0:\[ dbz = b_1 + b_1x + b_2*\log(x); \]
+\form#1:\[ \hat{y_2}(x) = b_0 + b_1x + b_2x^2 \]
+\form#2:$(0,b_0)$
+\form#3:$(w,\hat{y_2}(w))$
+\form#4:$w$
+\form#5:$x$
+\form#6:$d_y=\hat{y_2}(w)-\hat{y_2}(0)$
+\form#7:\[ \hat{y_1}(x) = b_0 + \frac{x}{w}d_y \]
+\form#8:\[ d(x) = \hat{y_2}(x) - \hat{y_1}(x) = x(b_1 - \frac{d_y}{w}) + b_2x^2 \]
+\form#9:\[ d'(x) = b_1 - \frac{d_y}{w} + 2b_2x . \]
+\form#10:$d'(x)=0$
+\form#11:\[ x = (\frac{d_y}{w}-b_1)/2b_2 \]
+\form#12:$(x_w,b_0 + b_1x_w + b_2x_w^2)$
+\form#13:$x_w$
+\form#14:\[ k(Z) = 1.12\cdot10^{-4} Z_e^{0.62} \]
+\form#15:\[ k(Z) = 1.1\cdot10^{-7} Z_e + 2.1\cdot10^{-5} Z_e^{0.5} \]
+\form#16:\[ k(Z) = c Z_e^p + c_2 Z_e^{p_2}. \]
+\form#17:$c$
+\form#18:$p$
+\form#19:$c_2$
+\form#20:$p_2$
+\form#21:\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]
+\form#22:$a$
+\form#23:\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]
+\form#24:$R(z) = \frac{1}{a}z^\frac{1}{b}$
+\form#25:$R(z_{h},z_{dr}) = 0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
+\form#26:$R(K_{dp}) = 21.0K_{dp}^{0.720}$
+\form#27:$R(K_{dp},z_{dr}) = 29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
+\form#28:$R={\frac{z}{a}}^\frac{1}{b}$
+\form#29:$R=0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
+\form#30:$R=21.0K_{dp}^{0.720}$
+\form#31:$R=29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
+\form#32:$ maxEcho $
+\form#33:$ zCell $
+\form#34:$ cellHeight $
+\form#35:$ cellDiameter $
+\form#36:$ f_{\mathrm{zMin}}$
+\form#37:$z$
+\form#38:$ z_w $
+\form#39:$ f_{\mathrm{echoTop}}$
+\form#40:$h$
+\form#41:$ f_{\mathrm{area}}$
+\form#42:$ a_w $
+\form#43:\[ p_{conv} = f_{\mathrm{zMin}}(z,z_w)f_{echoTop}(z)f_{area}(a,a_w) \]
+\form#44:\[ q_{conv} = q_{zMax}(z,z_w)q_{echoTop}(z)q_{area}(a,a_w) \]
+\form#45:\[ Z = 200 R^{1.6} \]
+\form#46:$R=Z/200^{0.625}$
+\form#47:\[ Z = 2000 R^{2.0} \]
+\form#48:$R=Z/2000^{0.5}$
+\form#49:\[ A_s = \frac{1}{2}ra = \frac{1}{2}\alpha r^2 \]
+\form#50:$r$
+\form#51:$p = \alpha r$
+\form#52:$b(i,j)$
+\form#53:$i$
+\form#54:$j$
+\form#55:\[ A_b(i,j) = \frac{1}{2}(r_2-r_1)a = \frac{1}{2}\mathrm{rscale}\cdot \frac{2\pi}{\mathrm{nrays}}(i\cdot \mathrm{rscale}) = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i \]
+\form#56:$\mathrm{rscale}$
+\form#57:$\mathrm{nrays}$
+\form#58:$(i,j)$
+\form#59:$\Phi$
+\form#60:$\Phi = \{(i,j)\}$
+\form#61:$ \Phi $
+\form#62:\[ D_\Phi = \sum_\Phi i \]
+\form#63:\[ A_\Phi = \sum_\Phi A_b(i,j) = \sum_\Phi \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} \sum_\Phi i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} D_\Phi \]
+\form#64:\[ Z = 10^{dBZ/10} \]
+\form#65:\[ dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10 \]
+\form#66:$\phi$
+\form#67:$\theta$
+\form#68:$\alpha$
+\form#69:$+\pi/2$
+\form#70:$\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})$
+\form#71:\[ \sin(\gamma)/c = \sin(\alpha)/a \Leftrightarrow c = a · \frac{\sin(\gamma)}{\sin(\alpha)} \Leftrightarrow h = c-a = a·( \frac{\sin(\gamma)}{\sin(\alpha)} - 1) \]
+\form#72:\[ \sin(\gamma) = \sin(\eta+\pi/2) = \cos(\eta) \]
+\form#73:$ \alpha = \pi - \gamma - \beta $
+\form#74:\[ \sin(\alpha) = \sin(\pi-\gamma-\beta) = \sin(\beta+\gamma) = \sin(\beta + \eta+\pi/2) = \cos(\beta + \eta) \]
+\form#75:\[ h = a·( \frac{\cos(\eta)}{\cos(\beta + \eta)} - 1) \]
+\form#76:\[ b^2 = a^2 + c^2 - 2ac\cos\beta = a^2 + (a^2 + 2ah+ h^2) - 2a(a + h)\cos\beta = 2a(a+h) + h^2 - 2a(a + h)\cos\beta = 2a(a+h)(1-\cos\beta) + h^2 \]
+\form#77:\[ \frac{\sin\alpha}{a} = \frac{\sin\gamma}{c} = \frac{\sin\gamma}{a+h} \Leftrightarrow \sin\alpha =\frac{a}{a+h}\sin\gamma \Rightarrow \gamma = \pi - \gamma - \alpha = \pi - (\eta+\pi/2) - \arcsin \left( \frac{a}{a+h}\sin(\eta+\pi/2) \right) \]
+\form#78:\[ \sin(\beta)/b = \sin(\gamma)/c \Leftrightarrow \sin(\beta) * c/b = \sin(\gamma) /// = \sin(\pi-\gamma) = /// \sin(\pi-(\eta + \pi/2)) = \sin(\pi/2-\eta) = \cos(\eta) \sin(\pi/2+\eta) = \sin(\pi-(\pi/2+\eta)) = \sin(\pi/2-\eta) = \cos(\eta) \Rightarrow \eta = \arccos( \sin(\beta) * c/b ) // WRONG! ALWAYS POSITIVE! \]
+\form#79:\[ c^2 = a^2 + b^2 - 2ab\cos\gamma \Leftrightarrow \cos\gamma = (a^2 + b^2 - c^2) / 2ab = = (a^2 + (a^2 + c^2 - 2ac\cos\beta) - c^2) / 2ab = (2a^2 - 2ac\cos\beta) / 2ab = (a-c\cos\beta) / b \]
+\form#80:$b$
+\form#81:$h = c - a$
+\form#82:$g$
+\form#83:$ \eta $
+\form#84:$ \alpha = \angle(b,c)$
+\form#85:$ \beta = \angle(a,c)$
+\form#86:$ \gamma = \angle(a,b) = \eta + \pi/2 $
+\form#87:\[ c^2 = a^2 + b^2 - 2ab·\cos(\gamma); \]
+\form#88:\[ \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c} \]
+\form#89:$ W\times H $
+\form#90:$ W\times 1 $
+\form#91:$ 1\times H $
+\form#92:\[ c^2 = a^2 + b^2 - 2ab\cos(\gamma); \]
+\form#93:$ V_{Nyq} $
+\form#94:$ V_{\mathrm Nyq} $
+\form#95:$V_{Nyq}$
+\form#96:\[ x = \sqrt[p]{\frac{\sum_i {q_i}^r x_i^p}{\sum_i {q_i}^r } } \]
+\form#97:$ sum x_i $
+\form#98:$ sum w_i x_i $
+\form#99:$ sum w_i^r x_i^p $
+\form#100:$ sum w_i $
+\form#101:$ N $
+\form#102:$ sum_i^N $
+\form#103:$ sum w_i^r x_i^{2p} $
+\form#104:\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] = E\left[ r^2 \right] \]
+\form#105:$(x_m,y_m)$
+\form#106:$R_1$
+\form#107:$R_2$
+\form#108:\[ A = \int_{R_1}^{R_2} \int_{0}^{2\pi} r d\alpha\! dr = \pi (R_2^2 - R_1^2) \]
+\form#109:\[ E\left[ r^2 \right] = \frac{1}{A} \int_{R_1}^{R_2} \int_{0}^{2\pi} r^2 r d\alpha\! dr = \frac{2\pi}{A}\int_{R_1}^{R_2} r^3 dr = \frac{2\pi}{4\pi (R_2^2 - R_1^2)} (R_2^4 - R_1^4) = \frac{R_2^2 + R_1^2}{2} \]
+\form#110:$R^2/2$
+\form#111:$R^2$
+\form#112:$R$
+\form#113:$2R$
+\form#114:\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] \approx E\left[ (y-y_m)^2 \right] = \int_{-R}^{R}y^2dy/\int_{-R}^{R} dy = \frac{1}{3}\frac{R^2+R^2}{R+R} = \frac{1}{3}R^2 \]
+\form#115:$r^2=A/\pi$
+\form#116:$A$
+\form#117:$A/2\pi$
+\form#118:$A/\pi$
+\form#119:\[ \mathrm{annularity} = \frac{\sigma^2-A/2\pi}{A/\pi-A/2\pi} = 2\pi\sigma^2/A - 1. \]
+\form#120:\[ F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \} = (1-c)F + (1-c)cM{F} + c^2M^2{F} \]
+\form#121:$F$
+\form#122:$M\{\}$
+\form#123:$W \times H$
+\form#124:$x'$

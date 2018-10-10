@@ -1,0 +1,12 @@
+<map id="DopplerDeAliasOp" name="DopplerDeAliasOp">
+<area shape="rect" id="node2" href="$classrack_1_1DopplerWindOp.html" title="Base class for operators retrieving true wind (u,v). " alt="" coords="291,516,406,543"/>
+<area shape="rect" id="node3" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="307,440,391,467"/>
+<area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="218,351,333,377"/>
+<area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,261,192,288"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,157,207,199"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="216,261,337,288"/>
+<area shape="rect" id="node8" href="$classrack_1_1PolarSector.html" title="PolarSector" alt="" coords="357,351,447,377"/>
+<area shape="rect" id="node9" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="364,261,440,288"/>
+<area shape="rect" id="node10" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="349,165,455,191"/>
+<area shape="rect" id="node11" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="317,81,487,108"/>
+</map>

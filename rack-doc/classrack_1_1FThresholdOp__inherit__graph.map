@@ -1,0 +1,8 @@
+<map id="FThresholdOp" name="FThresholdOp">
+<area shape="rect" id="node2" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="47,453,136,480"/>
+<area shape="rect" id="node3" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="55,379,128,405"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="23,304,160,331"/>
+<area shape="rect" id="node5" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="34,229,149,256"/>
+<area shape="rect" id="node6" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="5,155,177,181"/>
+<area shape="rect" id="node7" href="$classrack_1_1ProductOp.html" title="Base class for radar data processors. " alt="" coords="49,80,133,107"/>
+</map>

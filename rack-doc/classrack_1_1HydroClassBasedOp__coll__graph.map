@@ -1,0 +1,9 @@
+<map id="HydroClassBasedOp" name="HydroClassBasedOp">
+<area shape="rect" id="node2" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="189,413,279,440"/>
+<area shape="rect" id="node3" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="197,337,271,364"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="165,261,303,288"/>
+<area shape="rect" id="node5" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="177,185,291,212"/>
+<area shape="rect" id="node6" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,96,192,123"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,5,207,47"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="216,96,337,123"/>
+</map>

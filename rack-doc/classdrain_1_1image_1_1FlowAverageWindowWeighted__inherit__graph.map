@@ -1,0 +1,9 @@
+<map id="FlowAverageWindowWeighted" name="FlowAverageWindowWeighted">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude. " alt="" coords="37,483,183,509"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; WindowConfig,\l MultiChannelWindowCore \&gt;" alt="" coords="5,393,215,435"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; WindowConfig,\l MultiChannelWindowCore \&gt;" alt="" coords="15,304,205,345"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1MultiChannelWindowCore.html" title="MultiChannelWindowCore" alt="" coords="23,229,197,256"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="34,155,186,181"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="61,80,159,107"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="47,5,173,32"/>
+</map>

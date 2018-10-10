@@ -1,0 +1,7 @@
+<map id="AccumulationArray" name="AccumulationArray">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="129,80,224,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="33,169,152,196"/>
+<area shape="rect" id="node6" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::Accumulator,\l rack::PolarODIM \&gt;" alt="" coords="177,155,347,211"/>
+<area shape="rect" id="node4" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="5,259,180,315"/>
+<area shape="rect" id="node5" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars. " alt="" coords="50,363,135,389"/>
+</map>

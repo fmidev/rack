@@ -1,0 +1,8 @@
+<map id="DopplerWindow" name="DopplerWindow">
+<area shape="rect" id="node6" href="$classrack_1_1DopplerAverageWindow.html" title="DopplerAverageWindow" alt="" coords="5,423,168,449"/>
+<area shape="rect" id="node7" href="$classrack_1_1DopplerAverageWindow2.html" title="DopplerAverageWindow2" alt="" coords="193,423,362,449"/>
+<area shape="rect" id="node8" href="$classrack_1_1DopplerDevWindow.html" title="DopplerDevWindow" alt="" coords="387,423,525,449"/>
+<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\l\&lt; RadarWindowConfig \&gt;" alt="" coords="194,259,361,300"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; RadarWindow\lConfig, RadarWindowCore \&gt;" alt="" coords="176,169,379,211"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; RadarWindowConfig,\l RadarWindowCore \&gt;" alt="" coords="175,80,380,121"/>
+</map>

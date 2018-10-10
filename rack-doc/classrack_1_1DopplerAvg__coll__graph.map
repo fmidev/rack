@@ -1,0 +1,11 @@
+<map id="DopplerAvg" name="DopplerAvg">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImpulseBucket.html" title="ImpulseBucket\&lt; ImpulseAvg\lConf \&gt;" alt="" coords="125,399,316,440"/>
+<area shape="rect" id="node3" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title="ImpulseAvgConf" alt="" coords="160,323,279,349"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="180,247,256,273"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="149,157,255,184"/>
+<area shape="rect" id="node10" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="5,247,116,273"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="117,81,287,108"/>
+<area shape="rect" id="node8" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="15,406,101,433"/>
+<area shape="rect" id="node9" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="29,323,87,349"/>
+<area shape="rect" id="node11" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="17,157,104,184"/>
+</map>

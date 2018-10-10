@@ -1,0 +1,7 @@
+<map id="GaussianStripeWeighted&lt; DIR &gt;" name="GaussianStripeWeighted&lt; DIR &gt;">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1GaussianStripe.html" title="GaussianStripe\&lt; DIR,\l WeightedWindowCore \&gt;" alt="" coords="29,319,197,360"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf,\l WeightedWindowCore \&gt;" alt="" coords="5,229,220,271"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="37,155,189,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="64,80,161,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="49,5,176,32"/>
+</map>

@@ -1,0 +1,33 @@
+<map id="AccumulatorGeo" name="AccumulatorGeo">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="2649,351,2744,377"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="1799,184,1931,211"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="2092,325,2236,352"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="1547,232,1707,259"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ModifiableImage.html" title="ModifiableImage" alt="" coords="1333,220,1450,247"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="1563,181,1691,208"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1035,220,1133,247"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="891,220,985,247"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="597,69,680,96"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="316,31,395,57"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="44,5,151,32"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="34,56,161,83"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="295,100,416,127"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="720,120,867,147"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="67,196,128,223"/>
+<area shape="rect" id="node19" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="318,236,393,263"/>
+<area shape="rect" id="node14" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="591,340,686,367"/>
+<area shape="rect" id="node15" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="279,340,432,367"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="588,221,689,248"/>
+<area shape="rect" id="node18" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="581,276,696,303"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title="WeightedAverageMethod" alt="" coords="2285,284,2453,311"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1MinimumMethod.html" title="MinimumMethod" alt="" coords="2310,412,2429,439"/>
+<area shape="rect" id="node28" href="$classdrain_1_1image_1_1OverwriteMethod.html" title="OverwriteMethod" alt="" coords="2309,463,2430,489"/>
+<area shape="rect" id="node29" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title="MaximumWeightMethod" alt="" coords="2288,513,2451,540"/>
+<area shape="rect" id="node30" href="$classdrain_1_1image_1_1AverageMethod.html" title="AverageMethod" alt="" coords="2313,183,2426,209"/>
+<area shape="rect" id="node31" href="$classdrain_1_1image_1_1MaximumMethod.html" title="MaximumMethod" alt="" coords="2308,233,2431,260"/>
+<area shape="rect" id="node24" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="1811,325,1918,352"/>
+<area shape="rect" id="node25" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="1541,325,1712,352"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support. " alt="" coords="2655,564,2738,591"/>
+<area shape="rect" id="node33" href="$classdrain_1_1Proj4.html" title="Proj4" alt="" coords="2343,564,2395,591"/>
+<area shape="rect" id="node34" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="2298,668,2441,695"/>
+</map>

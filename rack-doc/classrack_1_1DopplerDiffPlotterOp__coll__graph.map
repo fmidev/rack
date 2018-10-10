@@ -1,0 +1,12 @@
+<map id="DopplerDiffPlotterOp" name="DopplerDiffPlotterOp">
+<area shape="rect" id="node2" href="$classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="285,427,417,453"/>
+<area shape="rect" id="node3" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="244,337,328,364"/>
+<area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="219,261,334,288"/>
+<area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,172,192,199"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,81,207,123"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="216,172,337,199"/>
+<area shape="rect" id="node8" href="$classrack_1_1PolarSector.html" title="PolarSector" alt="" coords="354,337,445,364"/>
+<area shape="rect" id="node9" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="367,261,443,288"/>
+<area shape="rect" id="node10" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="362,172,469,199"/>
+<area shape="rect" id="node11" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="330,89,501,115"/>
+</map>

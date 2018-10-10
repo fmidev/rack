@@ -1,0 +1,23 @@
+<map id="DopplerDevOp" name="DopplerDevOp">
+<area shape="rect" id="node2" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lDevWindow \&gt;" alt="" coords="255,1225,443,1267"/>
+<area shape="rect" id="node3" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="171,825,255,852"/>
+<area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="49,668,163,695"/>
+<area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,579,192,605"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,475,207,516"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="252,579,373,605"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="345,668,491,695"/>
+<area shape="rect" id="node8" href="$classrack_1_1DopplerDevWindow.html" title="DopplerDevWindow" alt="" coords="350,1136,489,1163"/>
+<area shape="rect" id="node9" href="$classrack_1_1DopplerWindow.html" title="DopplerWindow" alt="" coords="374,1060,489,1087"/>
+<area shape="rect" id="node10" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\l\&lt; RadarWindowConfig \&gt;" alt="" coords="365,969,532,1011"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; RadarWindow\lConfig, RadarWindowCore \&gt;" alt="" coords="398,877,601,919"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; RadarWindowConfig,\l RadarWindowCore \&gt;" alt="" coords="397,759,602,800"/>
+<area shape="rect" id="node14" href="$classrack_1_1RadarWindowConfig.html" title="RadarWindowConfig" alt="" coords="516,668,659,695"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="534,579,641,605"/>
+<area shape="rect" id="node16" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="561,399,662,425"/>
+<area shape="rect" id="node22" href="$structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="481,482,590,509"/>
+<area shape="rect" id="node17" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="578,323,645,349"/>
+<area shape="rect" id="node18" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="573,247,649,273"/>
+<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="558,157,665,184"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="526,81,697,108"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="683,668,790,695"/>
+</map>
