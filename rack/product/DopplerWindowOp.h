@@ -27,15 +27,8 @@ SOFTWARE.
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//**
-
-    Copyright 2001 - 2013  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
-
-    This file is part of AnoRack, a module of Rack for C++.
-
-    AnoRack is not free software.
-
 */
+
 
 #ifndef DOPPLER_WIN_OP_H_
 #define DOPPLER_WIN_OP_H_
@@ -346,7 +339,7 @@ public:
 
 		drain::Logger mout(name, __FUNCTION__);
 		drain::FuzzyBell2<double> deviationQuality(1.0, 0.125); // 50m/s
-		typename DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
+		typename  DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
 		setPixelConf(pixelConf, vradSrc.odim);
 
 		mout.debug()  << "radarConf: " << this->conf.widthM << 'x' << this->conf.heightD << mout.endl;
