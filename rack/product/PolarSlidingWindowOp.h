@@ -47,8 +47,6 @@ public:
 
 	PolarSlidingWindowOp(const std::string &name, const std::string &description) : PolarProductOp(name,description) {
 		parameters.append(conf.getParameters());
-		//reference("width", width);
-		//reference("height", height);
 	};
 
 	typename W::conf_t conf;
