@@ -65,7 +65,7 @@ public:
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
 
 	/// Default constructor
-	RadarAccumulator() : defaultQuality(0.5) { //, undetectValue(-52.0) {
+	RadarAccumulator() : defaultQuality(0.5), counter(0) { //, undetectValue(-52.0) {
 		odim.type.clear();
 		//odim.ACCnum = 0;
 	}
@@ -90,11 +90,11 @@ public:
 	 */
 	OD odim;
 
-	/// Book keeping for new data. Finally, in extraction phase, added to odid.ACCnum .
-	// size_t count;
-
 	/// If source data has no quality field, this value is applied for (detected) data.
 	double defaultQuality;
+
+	/// Book keeping for new data. Finally, in extraction phase, added to odid.ACCnum .
+	size_t counter;
 
 	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
 	inline
@@ -118,6 +118,7 @@ public:
 	/// Warns if data scaling involves risks in using WAVG (weighted averaging)
 	bool checkCompositingMethod(const ODIM & srcODIM) const;
 
+
 protected:
 
 	std::string targetEncoding;
@@ -133,24 +134,21 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	if (!srcQuality.data.isEmpty()){
 		mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
 		DataCoder converter(srcData.odim, srcQuality.odim);
-		//mout.debug() << converter.toStr() << mout.endl;
-		//converter.undetectValue   = undetectValue;
 		// uses also DataCoder::undetectQualityCoeff
 		AC::addData(srcData.data, srcQuality.data, converter, weight, i0, j0);
 	}
 	else {
-		mout.info() << "No quality data available with input; using unweighted compositing." << mout.endl;
-		//mout.warn() << cartSrc << mout.endl;
+		mout.info() << "No quality data available with input, ok." << mout.endl;
 		ODIM qualityOdim;
 		getQuantityMap().setQuantityDefaults(qualityOdim, "QIND");
 
 		DataCoder converter(srcData.odim, qualityOdim);
-		//converter.undetectValue   = undetectValue;
 		// uses also DataCoder::undetectQualityCoeff
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
 	//++odim.ACCnum;
+
 	odim.update(srcData.odim); // Time, date, new
 	// quantity?
 

@@ -136,7 +136,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	drain::image::Image tmpPeaks(typeid(unsigned char));
 
 	drain::FuzzyBell<double> fuzzyBell(5.0, width*height, tmpPeaks.getMax<double>());
-	SegmentAreaOp<SegmentProber<double,unsigned char> > segArea(fuzzyBell, srcData.odim.scaleInverse(reflMin));
+	SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, srcData.odim.scaleInverse(reflMin));
 	segArea.process(srcData.data, tmpPeaks);
 	tmpPeaks.setPhysicalScale(0.0, 1.0);
 	storeDebugData(2, tmpPeaks, "SHIP_SEG");

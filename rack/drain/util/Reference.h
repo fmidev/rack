@@ -36,8 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Castable.h"
 
-#ifndef REFERENCE
-#define REFERENCE
+#ifndef REFERENCE2
+#define REFERENCE2
 
 // // using namespace std;
 
@@ -98,65 +98,22 @@ public:
 	}
 
 
-	/*
+
 	inline
+	//void relink(const Castable & c){
 	void relink(const Castable & c){
 		setPtr(c);
-		std::cout << __FUNCTION__ << '\n';
-		c.toJSON(std::cout);
-		std::cout << '\n';
-		toJSON(std::cout);
-		std::cout << '\n';
-	}
-	*/
-
-	inline
-	void relink(Castable & c){
-		setPtr(c);
-		/*
-		std::cout << __FUNCTION__ << '\n';
-		c.toJSON(std::cout);
-		std::cout << '\n';
-		toJSON(std::cout);
-		std::cout << '\n';
-		*/
-	}
-
-
-
-
-	inline
-	void link(const Referencer & r){
-		setPtr((const Castable &)r);
-	}
-
-	inline
-	void link(Referencer & r){
-		relink(r);
 	}
 
 	/*
 	inline
-	void link(const Castable & c){
-		setPtr((Castable &)c);
-	}
-
-	inline
-	void link(Castable & c){
-		setPtr((const Castable &)c);
-	}
-
-	inline
-	void link(const Variable & r){
-		setPtr((Castable &)r);
-	}
-
-	inline
-	void link(Variable & r){
-		setPtr((const Castable &)r);
+	void link(const Referencer & r){
+		relink(r);
+		//setPtr((const Castable &)r);
 	}
 	*/
 
+	//inline	void link(Referencer & r){		relink(r);	}
 
 	template <class T>
 	inline
@@ -171,13 +128,6 @@ public:
 		return *this;
 	}
 
-	/*
-	inline
-	Referencer & operator=(const Variable &x){
-		//Castable::operator=(x);
-		return this->operator=((const Castable &)x);
-	}
-	*/
 
 
 };

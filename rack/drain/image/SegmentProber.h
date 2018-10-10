@@ -144,12 +144,28 @@ protected:
 	virtual	inline
 	void update(int i, int j){
 		++size;
+		Logger mout("SegmentProber", __FUNCTION__);
+		if (mout.isDebug(20)){
+			static size_t counter = 0;
+			if (size > counter){
+				counter = size + 1000;
+				std::stringstream sstr;
+				sstr << "SegmentProber-";
+				sstr.width(3);
+				sstr.fill('0');
+				sstr << (counter/1000) << ".png";
+				drain::image::FilePng::write(*dst, sstr.str());
+			}
+		}
+
+
 	}
 
 	///  Application dependent initialisation for statistics updated with update(int i, int j) function.
 	virtual
 	void clear(){
 		size = 0;
+
 	};
 
 

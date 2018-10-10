@@ -491,7 +491,6 @@ protected:
 	template <class F>
 	void setPtr(F &p){
 		ptr = &p;
-		//caster.setType(typeid(F));
 		caster.setType<F>();
 		elementCount = 1;
 	}
@@ -502,13 +501,12 @@ protected:
 	 */
 	template <class F>
 	void setPtr(std::vector<F> &v){
-		//setPtr(&v[0], typeid(F));
 		ptr = &v[0];
 		caster.setType<F>();
 		elementCount = v.size();
 	}
 
-	/// Sets the data pointer. Does not change type. (Cannot, because of void *.)
+	/// Sets the data pointer and changes type explicitly.
 	/*
 	 *  Function of this kind must be available for general (8bit) memory allocators.
 	 */
@@ -523,7 +521,7 @@ protected:
 	inline
 	void setPtr(const Castable &c){
 		ptr = c.ptr;
-		caster.setType(c.getType());  // TODO LINK
+		caster.setType(c.getType());  // TODO: link dynamically?
 		elementCount = c.elementCount;
 		outputSeparator = c.outputSeparator;
 	}
@@ -532,19 +530,21 @@ protected:
 	inline
 	void setPtr(Castable &c){
 		ptr = c.ptr;
-		caster.setType(c.getType());  // TODO LINK
+		caster.setType(c.getType());  // TODO: link dynamically?
 		elementCount = c.elementCount;
 		outputSeparator = c.outputSeparator;
 	}
 
 	/// Let Caster c convert my element #i to target *p
+	// IMPORTANT!
 	inline
 	void castElement(size_t i, const Caster &c, void *p) const {
 		c.cast(caster, getPtr(i), p);
 	}
 
 
-	/// Destination type (current type) specific assign operations:
+	// Destination type (current type) specific assign operations
+
 
 	/// Copy data from other Castable. Perhaps copy size and type, too.
 	Castable & assignCastable(const Castable &c);

@@ -80,9 +80,6 @@ public:
 		if (find(key) == end()) // not  already referenced
 			keyList.push_back(key);
 
-		// std::map<std::string,Referencer>::operator[](key).link(x);
-		// unitMap[key] = unit;
-
 		// Create
 		Referencer & r = std::map<std::string,Referencer>::operator[](key);
 		r.setSeparator(arraySeparator); // applicable, if array type element
@@ -169,7 +166,7 @@ public:
 	 */
 	virtual inline
 	void clear(){
-		SmartMap<Referencer>::clear(); //keyList.clear();
+		SmartMap<Referencer>::clear();
 		unitMap.clear();
 	}
 
@@ -180,7 +177,6 @@ public:
 		return *this;
 	}
 
-	inline
 	virtual
 	mapped_type & operator[](const std::string &key){
 
@@ -200,7 +196,6 @@ public:
 	}
 
 	///  Calling unreferenced key throws an exception.
-	inline
 	virtual
 	const mapped_type & operator[](const std::string &key) const {
 
@@ -226,7 +221,8 @@ public:
 
 protected:
 
-	/// Defines the _units of each element. NEW (incomplete)
+	/// Defines the units of each element.
+	// Questionable: consider SmartReference etc. with caster and unit info?
 	std::map<std::string,std::string> unitMap;
 
 

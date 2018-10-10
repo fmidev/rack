@@ -66,7 +66,7 @@ protected:
 		if ((x >= anchorMin) && (x <= anchorMax)){
 
 			x = x-src.get<src_t>(i0,j0);
-			if ((x>-4) && (x<4))
+			if ((x>-8) && (x<8))
 				return true;
 
 		}
@@ -99,6 +99,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		//SegmentProber<double,double> fill(src, dst);
 		PickySegmentProber fill(src, dst);
 		src.adjustCoordinateHandler(fill.handler);
+		fill.handler.setPolicy(CoordinatePolicy::WRAP);
 		fill.probe(i0, j0, value, min, max);
 	}
 	else {
@@ -106,6 +107,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		//SegmentProber<int,int> fill(src, dst);
 		PickySegmentProber fill(src, dst);
 		src.adjustCoordinateHandler(fill.handler);
+		fill.handler.setPolicy(CoordinatePolicy::WRAP);
 		fill.probe(i0, j0, static_cast<int>(value), static_cast<int>(min), static_cast<int>(max));
 	}
 

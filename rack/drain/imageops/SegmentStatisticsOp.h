@@ -55,12 +55,12 @@ namespace image
 	\~
 
   \code
-	drainage shapes.png --segmentStats x,64,255,FuzzyStep:100:0 -o segmentStat-x.png
-	drainage shapes.png --segmentStats y,64,255 -o segmentStat-y.png
-	drainage shapes.png --segmentStats h,64,255 -o segmentStat-horz.png
-	drainage shapes.png --segmentStats v,64,255 -o segmentStat-vert.png
-	drainage shapes.png --segmentStats e,32,255 -o segmentStat-elong.png
-	drainage shapes.png --segmentStats s,32,255 -o segmentStat-variance.png
+	drainage shapes.png --segmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png
+	drainage shapes.png --segmentStats y,64 -o segmentStat-y.png
+	drainage shapes.png --segmentStats h,64 -o segmentStat-horz.png
+	drainage shapes.png --segmentStats v,64 -o segmentStat-vert.png
+	drainage shapes.png --segmentStats e,32 -o segmentStat-elong.png
+	drainage shapes.png --segmentStats s,32,functor=FuzzyStepsoid:0:10 -o segmentStat-variance.png
   \endcode
 
 	Several statistics can be computed simultaneously simply. For example,
@@ -85,8 +85,6 @@ public:
 		parameters.reference("min", this->min = min);
 		parameters.reference("max", this->max = max);
 		parameters.reference("functor", this->functorStr);  //  = "FuzzyStep"
-		//parameters.reference("functorParams", this->functorParams);
-		// const std::string & mapping="d",
     };
 
 

@@ -108,14 +108,13 @@ class Variable : public Castable {
 public:
 
 	/// Default constructor generates an empty array.
-	Variable(const std::type_info &t = typeid(void)) { // : IS_STRING(false) {
+	Variable(const std::type_info &t = typeid(void)) {
 		reset();
 		setType(t);
-		// separator = ','; // todo: static defaultSeparator ?
 	};
 
 	/// Copies type, data and separator char.
-	Variable(const Variable & v) { //  : IS_STRING(false) {
+	Variable(const Variable & v) {
 		reset();
 		this->outputSeparator = v.outputSeparator;
 		this->inputSeparator = v.inputSeparator;
@@ -123,22 +122,20 @@ public:
 	};
 
 	/// Copies type, data and separator char.
-	Variable(const Castable & c) { //  : IS_STRING(false) {
+	Variable(const Castable & c) {
 		reset();
-		//this->outputSeparator = c.outputSeparator;
-		//this->inputSeparator = c.inputSeparator;
 		assignCastable(c);
 	};
 
 	/// Copies type, data and separator char.
-	Variable(const char * s) { //  : IS_STRING(false) {  // TODO: false?
+	Variable(const char * s) {
 		reset();
 		assignString(s);
 	};
 
 	/// Copies type, data and separator char. Fails with Reference?
 	template <class T>
-	Variable(const T & value, const std::type_info &t = typeid(void)) { //  : IS_STRING(false) {
+	Variable(const T & value, const std::type_info &t = typeid(void)) {
 		reset();
 		setType(t);
 		*this = value;
@@ -196,16 +193,18 @@ public:
 
 
 	inline
-	Variable &operator=(const Castable &c){
-		assignCastable(c);
-		return *this;
-	}
-
-	inline
 	Variable &operator=(const Referencer &r){
 		assignCastable(r);
 		return *this;
 	}
+
+	/* Handler by template, below
+	inline
+	Variable &operator=(const Castable &c){
+		assignCastable(c);
+		return *this;
+	}
+	*/
 
 	/// Assignment from basic types and std::string.
 	template <class T>
@@ -255,15 +254,6 @@ public:
 
 
 
-	/// Work-around for the bad behaviour of Variable::operator T() for std::string.
-	/*
-	 *
-	 *  Could return directly (const char *)
-	 *  but the target would be dynamically changing (be it  _sstr.toStr().c_str() or &data[0]).
-	 */
-
-
-
 	/// Extends the vector to include n elements of the current type.
 	virtual inline
 	bool resize(size_t elementCount){
@@ -271,16 +261,16 @@ public:
 		this->elementCount = elementCount;
 
 		if (elementCount > 0)
-			_data.resize(elementCount * getByteSize());
+			data.resize(elementCount * getByteSize());
 		else {
 			if (getByteSize() > 0)
-				_data.resize(1 * getByteSize());
+				data.resize(1 * getByteSize());
 			else
-				_data.resize(1);
-			_data[0] = 0; // for std::string toStr();
+				data.resize(1);
+			data[0] = 0; // for std::string toStr();
 		}
 
-		ptr = &_data[0]; // For Castable
+		ptr = &data[0]; // For Castable
 
 		updateIterators();
 
@@ -307,9 +297,7 @@ public:
 
 protected:
 
-	std::vector<char> _data;
-
-
+	std::vector<char> data;
 
 	mutable CastableIterator dataBegin;
 	mutable CastableIterator dataEnd;
@@ -340,10 +328,10 @@ protected:
 	void updateIterators()  {
 
 		dataBegin.setType(getType());
-		dataBegin = (void *) & _data[0];
+		dataBegin = (void *) & data[0];
 
 		dataEnd.setType(getType());
-		dataEnd = (void *) & _data[ getElementCount() * getByteSize() ]; // NOTE (elementCount-1) +1
+		dataEnd = (void *) & data[ getElementCount() * getByteSize() ]; // NOTE (elementCount-1) +1
 
 	}
 

@@ -75,7 +75,6 @@ public:
 		std::string p = "dataset1";
 		DataSelector::getPath(*resources.currentPolarHi5, acc.dataSelector, p);
 		ODIMPath path(p);
-		//ODIMPathElem child = path.back();
 		path.pop_back();
 
 		const DataSet<PolarSrc> srcDataSet((*resources.currentPolarHi5)(path));
@@ -97,7 +96,8 @@ public:
 			mout.info() << "has local quality" << mout.endl;
 
 		const PlainData<PolarSrc> & srcQuality = LOCAL_QUALITY ? srcData.getQualityData() : srcDataSet.getQualityData();
-		mout.info() << "init: " << srcQuality.odim << mout.endl;
+		mout.info() << "quality: " << srcQuality.odim << mout.endl;
+		//mout.info() << "quality: " << srcQuality.odim << mout.endl;
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
@@ -122,35 +122,37 @@ public:
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		if (!resources.targetEncoding.empty()){
 			// ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
-			mout.note() << "targetEncoding alreay at this stage is deprecating - use it only in extraction "  << mout.endl;
+			mout.info() << "targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  << mout.endl;
 			acc.setTargetEncoding(resources.targetEncoding);
 			resources.targetEncoding.clear();
 		}
 
 
+		double coeff = 1.0;
 		const std::string & name = acc.getMethod().name;
 		if ((name == "AVERAGE") || (name == "WAVG")){
 
-			double coeff = 1.0;
+			mout.note() << "avg-type method=" << acc.getMethod() << ' ';
+
+			if (acc.odim.ACCnum > 1){
+				mout << ", dividing weight by current ACCnum=" << acc.odim.ACCnum << ' ';
+				coeff = coeff / static_cast<double>(acc.odim.ACCnum);
+			}
+
 			if (srcData.odim.ACCnum > 1) {
-				coeff = static_cast<double>(srcData.odim.ACCnum);
-				mout.note() << "rescaling weight("<< weight << ") by srcData.odim.ACCnum=" << srcData.odim.ACCnum << mout.endl;
+				coeff = coeff*static_cast<double>(srcData.odim.ACCnum);
+				mout << ", rescaling weight with src ACCnum=" << srcData.odim.ACCnum;
 			}
 
-			/*
-			if (acc.odim.ACCnum > 0){
-				mout.note() << "avg-type method, dividing weight by " << acc.odim.ACCnum << mout.endl;
-				coeff = coeff/static_cast<double>(acc.odim.ACCnum);
-			}
-			*/
-
-			acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
+			mout << mout.endl;
 		}
-		else
-			acc.addData(srcData, srcQuality, weight, 0, 0); // 1 => a::defaultQuality ?
 
-		//acc.count += std::max(1L, srcData.odim.ACCnum);
-		acc.odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
+		mout.note() << "final weight: "<< coeff*weight << mout.endl;
+
+		acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
+
+		acc.counter += std::max(1L, srcData.odim.ACCnum);
+		//acc.odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
 
 	};
 
@@ -195,8 +197,10 @@ class PolarExtract : public SimpleCommand<std::string> {
 		RadarAccumulator<Accumulator,PolarODIM> & acc = resources.polarAccumulator;
 
 		/// Clumsy?
-		acc.setTargetEncoding(resources.targetEncoding);
-		resources.targetEncoding.clear();
+		if (!resources.targetEncoding.empty()){
+			acc.setTargetEncoding(resources.targetEncoding);
+			resources.targetEncoding.clear();
+		}
 		//
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(acc.odim, acc.odim.quantity, acc.getTargetEncoding());
@@ -215,6 +219,7 @@ class PolarExtract : public SimpleCommand<std::string> {
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
 		acc.extract(acc.odim, dstProduct, value);
+		acc.odim.ACCnum += acc.counter;
 
 		ODIM::copyToH5<ODIM::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??
