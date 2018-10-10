@@ -27,16 +27,6 @@ SOFTWARE.
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//*
-
-    Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
-
-    This file is part of AnoRack, a module of Rack for C++.
-
-    AnoRack is not free software.
-
-   Created on: Sep 12, 2010
-       Author: mpeura
 */
 
 #ifndef POLAR_SLIDINGWINDOWOP_H_
