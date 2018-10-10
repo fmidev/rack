@@ -339,7 +339,7 @@ public:
 
 		drain::Logger mout(name, __FUNCTION__);
 		drain::FuzzyBell2<double> deviationQuality(1.0, 0.125); // 50m/s
-		typename  DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
+		DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
 		setPixelConf(pixelConf, vradSrc.odim);
 
 		mout.debug()  << "radarConf: " << this->conf.widthM << 'x' << this->conf.heightD << mout.endl;
