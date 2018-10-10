@@ -100,20 +100,22 @@ public:
 
 
 	inline
-	//void relink(const Castable & c){
-	void relink(const Castable & c){
+	void link(const Castable & c){ //// relink
 		setPtr(c);
 	}
 
-	/*
 	inline
 	void link(const Referencer & r){
-		relink(r);
-		//setPtr((const Castable &)r);
+		//// relink(r);
+		setPtr((const Castable &)r);
 	}
-	*/
 
-	//inline	void link(Referencer & r){		relink(r);	}
+	inline
+	void link(Referencer & r){
+		setPtr((const Castable &)r);
+		//relink(r);
+	}
+
 
 	template <class T>
 	inline

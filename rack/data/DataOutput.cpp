@@ -68,15 +68,16 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int
 		ostr << fill;
 		ostr << '"' << path << '"' << ' ' << '[';
 
-		ostr << "label=\"<H>|<T>";
-		ostr << e << '|';
+		//ostr << "label=\"<H>|<T>"; // referring to "head" "tail"
+		ostr << "label=\"";
+		ostr << e ; //<< '|';
 		if (e.group == BaseODIM::DATASET){
 			if (where.hasKey("elangle"))
-				//ostr << ' ' << '(' << where["elangle"] << ')';
-				ostr << where["elangle"];
+				ostr << ' ' << '(' << where["elangle"] << '\xB0' << ')';
+				//ostr << where["elangle"];
 		}
 		else if (e.group & BaseODIM::DATA) // includes BaseODIM::QUALITY
-			ostr << what["quantity"];
+			ostr << ' ' << '[' << what["quantity"] << ']';
 		//ostr << ' ' << ' ' << what["quantity"] << ' ';
 		ostr << "\" ";
 
@@ -122,23 +123,24 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int
 			ostr << fill<< (id-1) << " -> " << id << " [style=invis];\n\n";
 		}
 
-		//const HI5TREE & g = it->second;
 		ODIMPath p(path);
 		p.push_back(e);
 
+		/// Draw edge
 		if (prev.empty() && !prev.back().isRoot()){
-			ostr << "/** '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
+			// ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
 			if (!ROOT){ // or path.
 				ostr << fill;
-				ostr << '"' << path << '"' << ":T";
-				ostr << "\t -> " << '"' << p  << '"' << ":H" << ';' << '\n';
+				ostr << '"' << path << '"'; // << ":T";
+				ostr << "\t -> " << '"' << p  << '"';// << ":H"
+				ostr << "  [tailport=s headport=w]" <<  ';' << '\n';
 			}
 			// ELSE ???
 		}
 		else {
 			ostr << fill;
-			ostr << '"'<< prev << '"'<< ":H"; // fix to prev?
-			ostr << "\t -> " << '"'<< p << '"' << ":H" << ';' << '\n';
+			ostr << '"'<< prev << '"'; //<< ":H"; // fix to prev?
+			ostr << "\t -> " << '"'<< p << '"' << ';' << '\n'; // << ":H" << ';' << '\n';
 		}
 		DataOutput::writeGroupToDot(ostr, it->second, id, selector, p);
 		prev = p;

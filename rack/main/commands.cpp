@@ -386,7 +386,7 @@ public:
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
 			if (quantitySpecific){
 				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
-					mout.warn() << '\t' << it2->first  << mout.endl;
+					mout.debug() << '\t' << it2->first  << mout.endl;
 					Data<DT> & dstData = it2->second;
 					PlainData<DT> & dstQuality = dstData.getQualityData();
 					if (!dstQuality.data.isEmpty())

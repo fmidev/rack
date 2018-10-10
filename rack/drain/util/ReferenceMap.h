@@ -92,7 +92,8 @@ public:
 	void reference(const std::string & key, Referencer &x, const std::string & unit){
 		if (find(key) == end()) // not  already referenced
 			keyList.push_back(key);
-		std::map<std::string,Referencer>::operator[](key).relink(x);
+		//std::map<std::string,Referencer>::operator[](key).relink(x);
+		std::map<std::string,Referencer>::operator[](key).link(x); ////
 		unitMap[key] = unit;
 	}
 
