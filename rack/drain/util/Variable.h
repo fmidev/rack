@@ -339,6 +339,26 @@ protected:
 };
 
 
+class FlexVariable : public Variable {
+
+public:
+
+	template <class T>
+	inline
+	void link(T &p){
+		reset();
+		setPtr(p);
+	}
+
+	template <class T>
+	inline
+	FlexVariable & operator=(const T &x){
+		Castable::operator=(x);
+		return *this;
+	}
+
+};
+
 
 
 
