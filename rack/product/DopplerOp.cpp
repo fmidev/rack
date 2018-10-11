@@ -211,68 +211,70 @@ class DopplerSegmentProber : public drain::image::SegmentProber<double, double> 
 public:
 
 	inline
-	DopplerSegmentProber(const Channel &s, Channel &d) : drain::image::SegmentProber<double, double>(s, d) {
+	DopplerSegmentProber(const Channel &s, Channel &d) : drain::image::SegmentProber<double, double>(s, d), relative_NI_limit(0.9) {
 	}
 
 	inline
-	DopplerSegmentProber(Channel &d) : drain::image::SegmentProber<double, double>(d, d) {
+	DopplerSegmentProber(Channel &d) : drain::image::SegmentProber<double, double>(d, d), relative_NI_limit(0.9) {
 	}
 
 	/// Update srcOdim
 	void init(){
 		size=0;
 		srcODIM.updateFromMap(src.getProperties());
+		NI_limit = relative_NI_limit * srcODIM.getNyquist(LOG_ERR);
 	}
 
-	mutable
+	virtual
+	void clear(){
+		counter = 0;
+	};
+
+	double relative_NI_limit;
+
+	/// Nyquist wrap measure
+	int counter;
+
+	//mutable
 	PolarODIM srcODIM;
 
 protected:
 
-	/// TODO!
-	/*
-		virtual inline
-		bool isValidSegment(int i, int j){
-			return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
-		}
-	 */
+	/// NI divided by 2.
+	double NI_limit;
 
-	/// Experimental
+
+	/// Returns true, if value in location (i,j) is not \c nodata nor \c undetect .
 	virtual inline
 	bool isValidSegment(int i, int j){
-
-		src_t x = src.get<src_t>(i,j);
-
-		if (srcODIM.isValue(x)){
-			return true;
-		}
-
-		/*
-		if ((x >= anchorMin) && (x <= anchorMax)){
-
-			x = x-src.get<src_t>(i0,j0);
-			if ((x>-8) && (x<8))
-				return true;
-
-		}
-		*/
-
-		return false;
-
+		return srcODIM.isValue(src.get<src_t>(i,j));
 	}
 
 	/// Application dependent
 	virtual inline
 	bool isValidMove(int i0, int j0, int i, int j){
-		return true;
+
+		double v0 = src.get<double>(i0,j0);
+		double v  = src.get<double>(i,j);
+		//if (srcODIM.deriveDifference(src.get<double>(i0,j0), src.get<double>(i,j), diff)){
+		if (srcODIM.isValue(v0) && srcODIM.isValue(v)){
+			v0 = srcODIM.scaleForward(v0);
+			v  = srcODIM.scaleForward(v);
+			// Detect overflow (aliasing)
+			if ((v0>NI_limit) && (v<-NI_limit)){
+				++counter;
+			}
+			else if ((v0>NI_limit) && (v<-NI_limit)){
+				--counter;
+			}
+		}
+
+		return false;
 	}
 
 	virtual inline
 	void update(int i, int j){
-		src_t x = src.get<src_t>(i,j);
-		//value = srcODIM.scaleForward(x);
-		//value = 128;
-		value = ++size | 1; //((rand() & 0xffff) |1);
+		value = counter; // TODO scaled counter+xx
 	}
 
 };
