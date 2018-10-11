@@ -46,7 +46,6 @@ public:
 	PolarAdd() : BasicCommand(__FUNCTION__, "Add polar data to accumulation array."), weight(1.0) { //, count(1) {
 	};
 
-
 	void exec() const {
 
 		Logger mout(name, __FUNCTION__);

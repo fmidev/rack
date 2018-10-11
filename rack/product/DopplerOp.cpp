@@ -32,94 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include "DopplerOp.h"
 
+#include <drain/image/SegmentProber.h> // for crawler
+
 namespace rack {
 
 
 
-
-/*
-void DopplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
-
-	drain::Logger mout(name, __FUNCTION__);
-
-	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
-
-	if (srcData.data.isEmpty()){
-		mout.warn() << "data empty" << mout.endl;
-		return;
-	}
-	//setEncoding(srcData.odim, dstData.odim);
-
-
-	w.adjustIndices(srcData.odim);
-	if (w.ray2 < w.ray1){
-		w.ray2 += 360;
-	}
-	mout.warn() << w.ray1 << '-' << w.ray2 << mout.endl;
-
-	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
-
-	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
-	//mout.warn() << "size " << count << mout.endl;
-
-	PlainData<PolarDst> & dstDataU = dstProduct.getData("X");
-	PlainData<PolarDst> & dstDataV = dstProduct.getData("Y");
-
-	//const QuantityMap & qm = getQuantityMap();
-	//qm.setTypeDefaults(dstDataU, "d"); //typeid(double));
-	//dstDataU.setTypeDefaults("d"); //typeid(double));
-	dstDataU.setEncoding(typeid(double));
-	//
-	dstDataU.data.setGeometry(count, 1);
-	dstDataU.odim.quantity = "X"; // ???
-	//dstDataU.odim.gain = 1.0;
-	dstDataU.data.fill(dstDataU.odim.undetect);
-	//initDst(srcData, dstDataU);
-	//
-	//qm.setTypeDefaults(dstDataV, "d"); //typeid(double));
-	//dstDataV.setTypeDefaults("d"); //typeid(double));
-	dstDataV.setEncoding(typeid(double));
-	dstDataV.data.setGeometry(count, 1);
-	dstDataV.odim.quantity = "Y";
-	//dstDataV.odim.gain = 1.0;
-	dstDataV.data.fill(dstDataV.odim.undetect);
-	//initDst(srcData, dstDataV);
-
-	//@ dstDataU.updateTree();
-	//@ dstDataV.updateTree();
-
-	//@? dstProduct.updateTree(odim);
-
-	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;
-
-
-	double d,x,y;
-	size_t index = 0;
-	int j2;
-	for (int j=w.ray1; j<w.ray2; ++j){
-		j2 = (j+srcData.odim.nrays)%srcData.odim.nrays;
-		for (int i = w.bin1; i<w.bin2; ++i){
-			d = srcData.data.get<double>(i, j2);
-			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
-			if (srcData.odim.isValue(d)){
-				// mout.warn() << "data d: " << (double)d << mout.endl;
-				srcData.odim.mapDopplerSpeed(d, x, y);
-				dstDataU.data.put(index, x);
-				dstDataV.data.put(index, y);
-			}
-			else {
-				dstDataU.data.put(index, 0);
-				dstDataV.data.put(index, 0);
-			}
-			// mout.warn() << '\t' << index << mout.endl;
-			++index;
-		}
-	}
-
-}
-
-*/
 
 void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
@@ -254,7 +172,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 				if (MATCH_ALIASED && ORIG_USABLE){
 					//vReproj = srcNI2*(floor(vReproj/srcNI2+0.5)-0.5) + vOrig;
-					vReproj = srcNI2*floor(vReproj/srcNI2) + vOrig;
+					vReproj = vOrig; //srcNI2*floor(vReproj/srcNI2) + vOrig;
 				}
 
 				vReproj = dstData.odim.scaleInverse(vReproj);
@@ -286,6 +204,107 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 }
 
+
+
+class DopplerSegmentProber : public drain::image::SegmentProber<double, double> {
+
+public:
+
+	inline
+	DopplerSegmentProber(const Channel &s, Channel &d) : drain::image::SegmentProber<double, double>(s, d) {
+	}
+
+	inline
+	DopplerSegmentProber(Channel &d) : drain::image::SegmentProber<double, double>(d, d) {
+	}
+
+	/// Update srcOdim
+	void init(){
+		size=0;
+		srcODIM.updateFromMap(src.getProperties());
+	}
+
+	mutable
+	PolarODIM srcODIM;
+
+protected:
+
+	/// TODO!
+	/*
+		virtual inline
+		bool isValidSegment(int i, int j){
+			return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
+		}
+	 */
+
+	/// Experimental
+	virtual inline
+	bool isValidSegment(int i, int j){
+
+		src_t x = src.get<src_t>(i,j);
+
+		if (srcODIM.isValue(x)){
+			return true;
+		}
+
+		/*
+		if ((x >= anchorMin) && (x <= anchorMax)){
+
+			x = x-src.get<src_t>(i0,j0);
+			if ((x>-8) && (x<8))
+				return true;
+
+		}
+		*/
+
+		return false;
+
+	}
+
+	/// Application dependent
+	virtual inline
+	bool isValidMove(int i0, int j0, int i, int j){
+		return true;
+	}
+
+	virtual inline
+	void update(int i, int j){
+		src_t x = src.get<src_t>(i,j);
+		//value = srcODIM.scaleForward(x);
+		//value = 128;
+		value = ++size | 1; //((rand() & 0xffff) |1);
+	}
+
+};
+
+
+void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
+
+	drain::Logger mout(name, __FUNCTION__);
+
+	//dstData.copyEncoding(srcData);
+	ProductBase::applyODIM(dstData.odim, odim, true);
+
+
+	DopplerSegmentProber prober(srcData.data, dstData.data);
+	prober.init();
+
+	double x;
+	for (size_t i=0; i<srcData.data.getWidth(); ++i){
+
+		for (size_t j=0; j<srcData.data.getHeight(); ++j){
+
+			x = srcData.data.get<double>(i,j);
+			if (prober.srcODIM.isValue(x)){
+				prober.probe(i,j,1);
+			}
+
+		}
+
+	}
+
+
+}
 
 
 /*

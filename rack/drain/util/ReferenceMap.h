@@ -98,22 +98,6 @@ public:
 	}
 
 
-	/*
-	/// New: associate vectors.
-	template <class F>
-	void reference(const std::string & key, std::vector<F> & v, const std::string & unit = std::string()){
-		if (find(key) == end()) // not already referenced
-			keyList.push_back(key);
-		// Create
-		Referencer & r = std::map<std::string,Referencer>::operator[](key);
-		r.setSeparator(arraySeparator);
-		// Link
-		//r.link(v[0]);
-		r.link(v);
-		unitMap[key] = unit;
-	}
-	*/
-
 	/// Associates a map entry with a variable, adding key in the beginning of key list.
 	/**
 	 *  \param key - variable name in a map
@@ -141,15 +125,9 @@ public:
 		}
 	}
 
-
-	/// Add a reference to an existing reference.
-	/*
-	void aliasOLD(const std::string & keyNew, const std::string & key){
-		std::map<std::string,Referencer>::insert(std::pair<std::string,Referencer>(keyNew, std::map<std::string,Referencer>::operator[](key)));
-	}
-	*/
-
 	// todo: consider NULL? (but leads to problems)
+
+	/// Removes an entry from the map.
 	inline
 	void dereference(const std::string & key){
 		std::map<std::string,Referencer>::erase(key);

@@ -87,7 +87,6 @@ public:
 	template <class F>
 	inline
 	void link(F &p){
-		//std::cout << __FUNCTION__ << "Loponen "<< '\n';
 		setPtr(p);
 	}
 
@@ -97,23 +96,19 @@ public:
 		setPtr<F>(p);
 	}
 
-
-
 	inline
-	void link(const Castable & c){ //// relink
+	void link(const Castable & c){
 		setPtr(c);
 	}
 
 	inline
 	void link(const Referencer & r){
-		//// relink(r);
 		setPtr((const Castable &)r);
 	}
 
 	inline
 	void link(Referencer & r){
 		setPtr((const Castable &)r);
-		//relink(r);
 	}
 
 

@@ -96,6 +96,7 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<DopplerDevOp> dopplerDev;
 	static ProductAdapter<DopplerInversionOp> dopplerInversion;
 	static ProductAdapter<DopplerReprojectOp> dopplerRealias;
+	static ProductAdapter<DopplerCrawlerOp> dopplerCrawler;
 	static ProductAdapter<DopplerDiffPlotterOp> dopplerDiffPlotter;
 	static ProductAdapter<DopplerDiffOp> dopplerDiff;
 	static ProductAdapter<DopplerAvgExpOp> dopplerAvgExp;

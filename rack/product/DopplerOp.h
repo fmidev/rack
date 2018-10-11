@@ -96,6 +96,7 @@ protected:
 class DopplerReprojectOp : public DopplerOp {
 public:
 
+	inline
 	DopplerReprojectOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
 		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
@@ -106,7 +107,6 @@ public:
 		dataSelector.quantity = "^(AMVU|AMVV|VRAD)$";
 
 		//odim.quantity; // VRAD_C
-		//odim.NI;
 		odim.type = "S";
 	}
 
@@ -117,11 +117,42 @@ public:
 
 
 	int matchOriginal;
-	//int order;
-	//double decay;
-	//double smoothNess;
+
 
 };
+
+
+// for Testing
+class DopplerCrawlerOp : public DopplerOp {
+public:
+
+	inline
+	DopplerCrawlerOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
+
+		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
+		//parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
+		//parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
+
+		dataSelector.count = 1;
+		dataSelector.quantity = "^VRAD";
+
+		odim.quantity = "VRAD";
+		odim.type = "S";
+	}
+
+	//	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
+	// virtual
+	// void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const;
+
+
+
+
+
+};
+
 
 }  // namespace rack
 

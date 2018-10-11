@@ -98,7 +98,12 @@ protected:
 
 };
 
-
+/// Derives two-dimensional  wind (u,v) from Doppler data
+/**
+ *  Input data may be aliased.
+ *
+ *  \see DopplerReprojectOp
+ */
 class DopplerInversionOp : public DopplerWindOp {  // DopplerWindow unused!
 public:
 
@@ -108,7 +113,7 @@ public:
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
 	DopplerInversionOp(int widthM = 500, double heightD = 3.0, double nyquistVelocity=0.0) :
-		DopplerWindOp(__FUNCTION__, "Inverts Doppler speed to (u,v), optionally de-aliases.", widthM, heightD) { //, widthM, heightD) {
+		DopplerWindOp(__FUNCTION__, "Derives 2D wind (u,v) from aliased Doppler data.", widthM, heightD) { //, widthM, heightD) {
 		// parameters.reference("nyquist", nyquist = nyquistVelocity, "m/s");
 		//parameters.reference("VVP", VVP=false, "0|1"); // SLOTS
 		//parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2

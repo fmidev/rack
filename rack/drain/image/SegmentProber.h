@@ -61,13 +61,13 @@ public:
 
 	SegmentProber(const Channel &s) :
 		src(s), dst(NULL),
-		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
+		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
 		size = 0;
 	};
 
 	SegmentProber(const Channel &s, Channel &d) :
 		src(s), dst(&d),
-		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()), mout(getImgLog(), __FUNCTION__) {
+		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
 		size = 0;
 	};
 
@@ -103,13 +103,15 @@ public:
 
 		// _stack = 0;
 		// mout.debug(30) << *this << mout.endl;
-		probe8(i,j);
+		probe4(i,j);
 
 	};
 
 	S  anchorMin;
 	S  anchorMax;
-	D value;  // fill
+
+	mutable
+	D value;  // "fill value", also dynamically changing visit marker?
 
 
 	mutable size_t size; // Consider deriving SegmentProber => SegmentAreaProber
@@ -124,9 +126,7 @@ public:
 
 protected:
 
-	drain::Logger mout;
-
-
+	//drain::Logger mout;
 
 	/// Application dependent
 	virtual inline
@@ -139,6 +139,7 @@ protected:
 	bool isValidMove(int i0, int j0, int i, int j){
 		return true;
 	}
+
 
 	///  Application dependent operation performed in each segment location (i,j).
 	virtual	inline
@@ -161,11 +162,12 @@ protected:
 
 	}
 
+protected:
+
 	///  Application dependent initialisation for statistics updated with update(int i, int j) function.
 	virtual
 	void clear(){
 		size = 0;
-
 	};
 
 
@@ -174,7 +176,8 @@ protected:
 	 */
 	virtual inline
 	bool isVisited(int i, int j){
-		return (dst->get<D>(i,j) == value);
+		//return (dst->get<D>(i,j) == value);
+		return (dst->get<D>(i,j) != 0); // consider src_t::min()
 	}
 
 
@@ -193,31 +196,6 @@ protected:
 
 
 
-	/// Main function: visit a single pixel and return.
-	/**
-	 *  Visiting means
-	 *  - updating the status of this prober, for example by updating statistics like segment size
-	 *  - marking the pixel visited in dst image
-	 *
-	 *  \param i0 - current i coordinate (always valid)
-	 *  \param j0 - current j coordinate (always valid)
-	 *  \param i  - aimed i coordinate
-	 *  \param j  - aimed j coordinate
-	 *
-	virtual inline
-	void visit(int i0, int j0, int i, int j) {
-
-		if (moveHorz(i0, j0, i, j)){
-			/// Mark visited
-			dst->put(i,j, value);
-			update(i, j);
-
-		}
-
-	}
-	 */
-
-
 	/// Visiting a single pixel when not coming from any direction.
 	/**
 	 *  Visiting means
@@ -234,7 +212,6 @@ protected:
 		/// Mark visited
 		dst->put(i,j, value);
 		update(i, j);
-		//}
 
 	}
 
@@ -245,7 +222,7 @@ protected:
 	 *   the horizontal direction is handled sequentially whereas the vertical direction handled recursively.
 	 *  Compared to fully recursive approach, this technique preserves the speed but offers smaller consumption of memory.
 	 */
-	void probe8(int i, int j) {
+	void probe4(int i, int j) {
 
 		// Note: coordHandler applied by checkPos
 		if (!handler.validate(i, j))
@@ -277,9 +254,9 @@ protected:
 		/// Scan again, continuing one step above and below.
 		while (i <= i2){
 			if (isValidMove(i,j, i,j-1))
-				probe8(i,j-1);
+				probe4(i,j-1);
 			if (isValidMove(i,j, i,j+1))
-				probe8(i,j+1);
+				probe4(i,j+1);
 			++i;
 		}
 
