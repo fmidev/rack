@@ -74,18 +74,38 @@ public:
 	virtual
 	~SegmentProber(){};
 
+	/// Set new target channel. Needed in multichannel operations.
 	void setDst(Channel & d){
 		dst = &d;
 	}
 
+	/// Called after src and dst have been set, but before processing. See clear().
+	virtual
+	void init(){
+
+		drain::Logger mout("SegmentProber", __FUNCTION__);
+		src.adjustCoordinateHandler(handler);
+		mout.debug() << handler << mout.endl;
+		mout.debug(1) <<  src << mout.endl;
+		mout.debug(1) << *dst << mout.endl;
+
+	}
+
+	void probe(D fillValue = 1){
+		init();
+		for (size_t i=0; i<src.getWidth(); ++i)
+			for (size_t j=0; j<src.getHeight(); ++j)
+				probe(i,j, fillValue);
+	}
+
 	/// Fills the segment having constant intensity, that is, src.at(i0,j0).
-	void probe(size_t i, size_t j, D fillValue){
+	void probe(int i, int j, D fillValue = 1){
 		const S anchor = src.get<S>(i,j);
 		probe(i, j, fillValue, anchor, anchor);
 	};
 
 	/// Fills the segment having intensity between min and max.
-	void probe(size_t i, size_t j, D fillValue, S min, S max){
+	void probe(int i, int j, D fillValue, S min, S max){
 
 		/*
 		if (fillValue > min){
@@ -103,7 +123,8 @@ public:
 
 		// _stack = 0;
 		// mout.debug(30) << *this << mout.endl;
-		probe4(i,j);
+		if (handler.validate(i, j))
+			probe4(i,j);
 
 	};
 
@@ -117,7 +138,7 @@ public:
 	mutable size_t size; // Consider deriving SegmentProber => SegmentAreaProber
 
 
-// TODO protected:
+// consider protected:
 
 	const Channel & src;
 	Channel *dst;
@@ -126,13 +147,13 @@ public:
 
 protected:
 
-	/// Application dependent
+	/// Application dependent. Assumes checked coordinates.
 	virtual inline
 	bool isValidSegment(int i, int j){
 		return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
 	}
 
-	/// Application dependent
+	/// Application dependent. Assumes checked coordinates.
 	virtual inline
 	bool isValidMove(int i0, int j0, int i, int j){
 		return true;
@@ -142,20 +163,28 @@ protected:
 	///  Application dependent operation performed in each segment location (i,j).
 	virtual	inline
 	void update(int i, int j){
+
 		++size;
+
 		Logger mout("SegmentProber", __FUNCTION__);
-		if (mout.isDebug(20)){
+
+		if (mout.isDebug(10)){
 			static size_t counter = 0;
 			if (size > counter){
 				counter = size + 1000;
-				std::stringstream sstr;
-				sstr << "SegmentProber-";
-				sstr.width(3);
-				sstr.fill('0');
-				sstr << (counter/1000) << ".png";
-				drain::image::FilePng::write(*dst, sstr.str());
+				mout.note() << size << mout.endl;
+				if (mout.isDebug(20)){
+					std::stringstream sstr;
+					sstr << "SegmentProber-";
+					sstr.width(3);
+					sstr.fill('0');
+					sstr << (counter/1000) << ".png";
+					drain::image::FilePng::write(*dst, sstr.str());
+				}
 			}
+
 		}
+
 
 
 	}
@@ -182,7 +211,10 @@ protected:
 
 protected:
 
-	///  Application dependent initialisation for statistics updated with update(int i, int j) function.
+	/// Called before processing each segment. Compare with init(), which is called once for each image.
+	/**
+	 *  Application dependent initialisation for statistics updated with update(int i, int j) function.
+	 */
 	virtual
 	void clear(){
 		size = 0;
@@ -224,10 +256,6 @@ protected:
 	 */
 	void probe4(int i, int j) {
 
-		// Note: coordHandler applied by checkPos
-		if (!handler.validate(i, j))
-			return; // false;
-
 		if (isVisited(i,j))
 			return; // false;
 
@@ -237,10 +265,10 @@ protected:
 		visit(i,j); // mark & update
 
 		/// Scan right
-		int i2 = i;
-		while (moveHorz(i2,j, i2+1,j)){
-			++i2;
-			visit(i2, j);
+		int iMax = i;
+		while (moveHorz(iMax,j, iMax+1,j)){
+			++iMax;
+			visit(iMax, j);
 		}
 		// Now i2 is the maximum valid i coordinate.
 
@@ -252,11 +280,20 @@ protected:
 		// Now i is the minimum valid i coordinate.
 
 		/// Scan again, continuing one step above and below.
-		while (i <= i2){
-			if (isValidMove(i,j, i,j-1))
-				probe4(i,j-1);
-			if (isValidMove(i,j, i,j+1))
-				probe4(i,j+1);
+		int i2, j2;
+		while (i <= iMax){
+			i2 = i;
+			j2 = j-1;
+			if (handler.validate(i2, j2))
+				if (isValidMove(i,j, i2,j2))
+					probe4(i2,j2);
+			i2 = i;
+			j2 = j+1;
+			if (handler.validate(i2, j2))
+				if (isValidMove(i,j, i2,j2))
+					probe4(i2,j2);
+			// if (isValidMove(i,j, i,j+1))
+			// probe4(i,j+1);
 			++i;
 		}
 
@@ -282,11 +319,10 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D> & prober
 }
 
 
+} // image::
+} // drain::
+
+#endif /* SEGMENT_PROBER_H_ */
 
 
-}
-}
-#endif /* FLOODFILL_H_ */
 
-
-// Drain

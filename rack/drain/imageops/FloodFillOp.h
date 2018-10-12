@@ -68,8 +68,11 @@ public:
 	virtual
 	void traverseChannel(const Channel & src, Channel & dst) const;
 
-	int i0;
-	int j0;
+	/// Mutable, for coord handler
+	mutable int i0;
+	/// Mutable, for coord handler
+	mutable int j0;
+
 	double max;
 	double min;
 	double value;

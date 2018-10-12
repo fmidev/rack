@@ -219,7 +219,10 @@ public:
 	}
 
 	/// Update srcOdim
+	virtual
 	void init(){
+		drain::Logger mout("DopplerSegmentProber", __FUNCTION__);
+
 		size=0;
 		srcODIM.updateFromMap(src.getProperties());
 		NI_limit = relative_NI_limit * srcODIM.getNyquist(LOG_ERR);
@@ -229,6 +232,7 @@ public:
 	virtual
 	void clear(){
 		counter = 0;
+		size = 0; //debug
 	};
 
 	double relative_NI_limit;
@@ -251,6 +255,8 @@ protected:
 	 */
 	virtual inline
 	bool isValidSegment(int i, int j){
+		if (i < 50)
+			return false;
 		return srcODIM.isValue(src.get<src_t>(i,j));
 	}
 
@@ -260,8 +266,7 @@ protected:
 
 		double v0 = src.get<double>(i0,j0);
 		double v  = src.get<double>(i,j);
-		//if (srcODIM.deriveDifference(src.get<double>(i0,j0), src.get<double>(i,j), diff)){
-		if (srcODIM.isValue(v0) && srcODIM.isValue(v)){
+		if (srcODIM.isValue(v0) && srcODIM.isValue(v)){ // cf. srcODIM.deriveDifference()
 			v0 = srcODIM.scaleForward(v0);
 			v  = srcODIM.scaleForward(v);
 			// Detect overflow (aliasing)
@@ -273,23 +278,28 @@ protected:
 			}
 			return true;
 		}
-
-		return false;
+		else
+			return false;
 	}
 
 
 	virtual inline
 	void visit(int i, int j){
+
+		++size;
+		if ((size % 100) == 0){
+			std::cerr << "size = " << size << '\n';
+		}
 		// No need to call update(), updating is already done by  isValidMove()
 		double x = //static_cast<double>(counter) * 2.0 * srcODIM.NI +
 				srcODIM.scaleForward(src.get<double>(i,j));
-		x = dst->getScaling().fwd(x);
+		x = limit(dst->getScaling().fwd(x));
 		if (x == 0.0)
 			x = 1.0;
-		dst->put(i,j, x);
+		//dst->put(i,j, x);
 		//dst->putScaled(i, j, x);
 		// value = counter; // TODO scaled counter+xx
-		// dst->put(i,j, counter | 1);
+		dst->put(i,j, counter | 1);
 		// dst->put(i,j, rand() & 0xffff);
 	}
 
@@ -307,6 +317,7 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.init();
 
+	mout.warn() << "src: " << srcData << mout.endl;
 	mout.warn() << "dst: " << dstData << mout.endl;
 
 	double x;

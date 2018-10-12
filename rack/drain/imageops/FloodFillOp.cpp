@@ -43,6 +43,7 @@ namespace image
 {
 
 
+
 class PickySegmentProber : public SegmentProber<double, double> {
 
 public:
@@ -94,20 +95,25 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	mout.debug() << *this << mout.endl;
 
+	CoordinateHandler2D preHandler(src.getGeometry());
+	preHandler.setPolicy(CoordinatePolicy::WRAP);
+	mout.note() << preHandler << mout.endl;
+	if (preHandler.handle(i0, j0)){
+		mout.note() << "tuned coordinates => (" << i0 << ',' << j0 << ')' << mout.endl;
+	}
+
 	if (src.isFloatType() || dst.isFloatType()) {
 		mout.debug(1) << "type: double" << mout.endl;
 		SegmentProber<double,double> fill(src, dst);
 		//PickySegmentProber fill(src, dst);
-		src.adjustCoordinateHandler(fill.handler);
-		fill.handler.setPolicy(CoordinatePolicy::WRAP);
+		fill.init();
 		fill.probe(i0, j0, value, min, max);
 	}
 	else {
 		mout.debug(1) << "type: integral" << mout.endl;
 		SegmentProber<int,int> fill(src, dst);
 		//PickySegmentProber fill(src, dst);
-		src.adjustCoordinateHandler(fill.handler);
-		fill.handler.setPolicy(CoordinatePolicy::WRAP);
+		fill.init();
 		fill.probe(i0, j0, static_cast<int>(value), static_cast<int>(min), static_cast<int>(max));
 	}
 
