@@ -290,7 +290,8 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.init();
-
+	prober.probe();
+	/*
 	double x;
 	for (size_t i=0; i<srcData.data.getWidth(); ++i){
 
@@ -304,6 +305,7 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 		}
 
 	}
+	*/
 
 
 }
