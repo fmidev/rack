@@ -223,6 +223,7 @@ public:
 		size=0;
 		srcODIM.updateFromMap(src.getProperties());
 		NI_limit = relative_NI_limit * srcODIM.getNyquist(LOG_ERR);
+		limit = dst->getLimiter<double>();
 	}
 
 	virtual
@@ -242,9 +243,12 @@ protected:
 
 	/// NI divided by 2.
 	double NI_limit;
-
+	drain::typeLimiter<double>::value_t limit; //  = dstData.data.getLimiter<double>();
 
 	/// Returns true, if value in location (i,j) is not \c nodata nor \c undetect .
+	/*
+	 *
+	 */
 	virtual inline
 	bool isValidSegment(int i, int j){
 		return srcODIM.isValue(src.get<src_t>(i,j));
@@ -261,21 +265,34 @@ protected:
 			v0 = srcODIM.scaleForward(v0);
 			v  = srcODIM.scaleForward(v);
 			// Detect overflow (aliasing)
-			if ((v0>NI_limit) && (v<-NI_limit)){
+			if ((v0>+NI_limit) && (v<-NI_limit)){
 				++counter;
 			}
-			else if ((v0>NI_limit) && (v<-NI_limit)){
+			else if ((v0<-NI_limit) && (v>+NI_limit)){
 				--counter;
 			}
+			return true;
 		}
 
 		return false;
 	}
 
+
 	virtual inline
-	void update(int i, int j){
-		value = counter; // TODO scaled counter+xx
+	void visit(int i, int j){
+		// No need to call update(), updating is already done by  isValidMove()
+		double x = //static_cast<double>(counter) * 2.0 * srcODIM.NI +
+				srcODIM.scaleForward(src.get<double>(i,j));
+		x = dst->getScaling().fwd(x);
+		if (x == 0.0)
+			x = 1.0;
+		dst->put(i,j, x);
+		//dst->putScaled(i, j, x);
+		// value = counter; // TODO scaled counter+xx
+		// dst->put(i,j, counter | 1);
+		// dst->put(i,j, rand() & 0xffff);
 	}
+
 
 };
 
@@ -284,12 +301,13 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	//dstData.copyEncoding(srcData);
 	ProductBase::applyODIM(dstData.odim, odim, true);
-
+	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.init();
+
+	mout.warn() << "dst: " << dstData << mout.endl;
 
 	double x;
 	for (size_t i=0; i<srcData.data.getWidth(); ++i){
@@ -298,6 +316,7 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 
 			x = srcData.data.get<double>(i,j);
 			if (prober.srcODIM.isValue(x)){
+
 				prober.probe(i,j,1);
 			}
 

@@ -126,8 +126,6 @@ public:
 
 protected:
 
-	//drain::Logger mout;
-
 	/// Application dependent
 	virtual inline
 	bool isValidSegment(int i, int j){
@@ -159,6 +157,26 @@ protected:
 			}
 		}
 
+
+	}
+
+	/// Visiting a single pixel when not coming from any direction.
+	/**
+	 *  Visiting means
+	 *  - updating the status of this prober, for example by updating statistics like segment size
+	 *  - marking the pixel visited in dst image
+	 *
+	 *  \param i0 - current i coordinate (always valid)
+	 *  \param j0 - current j coordinate (always valid)
+	 *
+	 */
+	virtual inline
+	void visit(int i, int j) {
+
+		update(i, j);
+
+		/// Mark visited
+		dst->put(i,j, value);
 
 	}
 
@@ -196,24 +214,6 @@ protected:
 
 
 
-	/// Visiting a single pixel when not coming from any direction.
-	/**
-	 *  Visiting means
-	 *  - updating the status of this prober, for example by updating statistics like segment size
-	 *  - marking the pixel visited in dst image
-	 *
-	 *  \param i0 - current i coordinate (always valid)
-	 *  \param j0 - current j coordinate (always valid)
-	 *
-	 */
-	virtual inline // "semi-final" ?
-	void visit(int i, int j) {
-
-		/// Mark visited
-		dst->put(i,j, value);
-		update(i, j);
-
-	}
 
 
     /// A semi-recursive approach that turns the 2D recursion to 1D traversal + 1D recursion.
