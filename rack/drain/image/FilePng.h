@@ -85,8 +85,22 @@ public:
 	/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
 	 *  Writes in 8 or 16 bits, according to template class.
 	 *  Floating point images will be scaled as 16 bit integral (unsigned short int).
+	 *
+	 *  \param image - image
+	 *  \param pathPrefix -
+	 *
 	*/
 	static void write(const ImageFrame &image, const std::string &path);
+
+	/// Writes image to a file, naming it: prefix + index + ".png", using desired number of leading zeros.
+	/** Utility function esp. for debugging
+	 *
+	 *  \param image - image
+	 *  \param pathPrefix - leading part of the path: directory and filename prefix.
+	 *
+	 *
+	 */
+	static void writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i=-1, int digits=3);
 
 protected:
 
@@ -101,7 +115,8 @@ protected:
 	static
 	void initialize(T &, const std::type_info & t, const Geometry & g);
 
-
+	static
+	int index;
 
 
 };

@@ -259,6 +259,139 @@ extern CommandEntry< CmdOutputPrefix > cmdOutputPrefix;
 //static CommandEntry<CmdOutputPrefix> cmdOutputPrefix( "outputPrefix", 0);
 
 
+template <class T>
+void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
+
+	drain::Logger mout(getName(), __FUNCTION__);
+
+	PolarODIM odim;
+
+	const drain::RegExp quantityRE(quantity);
+	std::set<ODIMPathElem> stems;
+	unsigned int counter = 0; // (this was needed as count would go -1 otherways below)
+
+	// Step 1: retrieve a temporary list of all paths
+	std::list<ODIMPath> l0;
+	mout.debug() << "getKeys " << path << mout.endl;
+	src.getKeys(l0);
+
+	// Accept no data[n]
+	const bool DATASETS = (data.max == 0);
+	if (DATASETS)
+		mout.debug(1) << "datasets only" << mout.endl;
+
+	// Step 2: select only the paths matching the criteria
+	for (std::list<ODIMPath>::iterator it = l0.begin(); it != l0.end(); ++it) {
+
+		//mout.note() << *it << mout.endl;
+
+		if (it->size() == 1) // only the stem ("") ???
+			continue;
+
+		const ODIMPathElem & stem = *(++(it->begin()));
+
+		mout.debug(2) << ": " << stem << "-> " << *it  << mout.endl;
+
+		if (stem.is(BaseODIM::DATASET)){
+			if (!dataset.isInside(stem.index)){
+				mout.debug() << "skip dataset " << stem.index << ", not in [" <<  dataset << ']' << mout.endl;
+				continue;
+			}
+		}
+
+		const ODIMPathElem & leaf = it->back();
+
+		if (leaf.is(BaseODIM::DATA)){ // what about quality?
+			if (!DATASETS){
+				if (!data.isInside(leaf.index)){
+					mout.warn() << "data " << leaf.index << " not in [" <<  data << ']' << mout.endl;
+					continue;
+				}
+			}
+		}
+		else if (!leaf.isIndexed()) { //(!leaf.is(BaseODIM::DATASET)){ //(!leaf.isIndexed()) {
+			// Skip WHAT, WHERE, HOW, ARRAY
+			mout.debug() << " skipping " << leaf << mout.endl;
+			continue;
+		}
+
+
+		//mout.debug(2) << *it << mout.endl;
+		const hi5::NodeHi5 & node = src(*it).data;
+		if (node.noSave){
+			mout.debug() << "noSave data, ok: " << *it << mout.endl;
+			//continue;
+		}
+
+		const drain::image::Image & d = node.dataSet;
+		//odim.clear();
+		//odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+
+		if (!quantityRE.test(d.properties["what:quantity"])){
+			//if (!quantityRE.test(odim.quantity)){
+			mout.debug() << *it << "\n\t quantity '" << quantityRE.toStr() << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
+			continue;
+		}
+
+		if (d.properties.hasKey("where:elangle")){
+			if (!elangle.isInside(d.properties["where:elangle"])){
+				mout.debug() << "outside elangle range"<< mout.endl;
+				continue;
+			}
+		}
+
+		// Outside index check, because mostly applied by count check as well.
+		mout.debug() << "considering " << *it << mout.endl;
+
+		/*
+		if (DATASETS){
+			if (leaf.is(BaseODIM::DATA)){ // what about quality?
+				continue;
+			}
+		}
+		*/
+
+		// Update count
+		if (stems.find(stem) == stems.end()){ // = not already in the set
+			++counter;
+			if (counter > count)
+				return;
+			stems.insert(stem);
+			if (DATASETS){ // Skip adding others than first
+				odim.clear();
+				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+				mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
+				ODIMPath p;
+				p << stem;
+				addPathT(container, odim, p);
+			}
+		}
+
+		if (DATASETS){ // Skip adding others than first
+			continue;
+		}
+
+
+		/// Skip non-datasets, if datasets requested, and vice versa
+		if (!leaf.is(BaseODIM::DATA)){
+			mout.warn() << "unexpected path: " << *it << mout.endl;
+		}
+
+		odim.clear();
+		odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+
+		mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
+		//container.push_back(*it);
+		addPathT(container, odim, *it);
+
+		//
+
+
+	}
+
+}
+
+
 class CmdOutputFile : public SimpleCommand<std::string> {
 
 public:
@@ -508,16 +641,40 @@ public:
 			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 
 			//DataSelector selector("dataset[0-9]/?$");
+			/*
 			DataSelector selector("data[0-9]+$");
 			selector.setParameters(resources.select);
-			mout.debug(1) << "Sampling selector: " << selector << mout.endl;
-
+			mout.debug(1) << "Selector: " << selector << mout.endl;
+			*/
+			/*
 			std::string path = "dataset1/data1";
 			std::list<std::string> dataPaths;  // TODO: 3D sampling (3rd dim: elevations / altitudes)
 			DataSelector::getPath(*resources.currentHi5, selector, path);  // TODO (failed)
 			path = DataTools::getParent(path);
+			*/
 
-			mout.debug() << "Sampling path: " << path << mout.endl;
+			DataSelector selector;
+			selector.setParameters(resources.select);
+			selector.updatePaths();
+			selector.count = 1;
+			selector.data.max = 0;
+			mout.note() << "selector: " << selector << mout.endl;
+
+			std::list<ODIMPath> paths;
+			//const HI5TREE & src2 = *resources.currentHi5;
+			selector.getPathsNEW(*resources.currentHi5, paths);
+
+			if (paths.empty()){
+				mout.warn() << "no paths found with: " << selector << mout.endl;
+				return;
+			}
+
+			for (std::list<ODIMPath>::iterator it = paths.begin(); it != paths.end(); ++it) {
+				mout.note() << *it << mout.endl;
+			}
+
+			const ODIMPath & path = paths.front();
+			mout.warn() << "Sampling path: " << path << mout.endl;
 
 			const HI5TREE & src = (*resources.currentHi5)(path);
 
@@ -534,7 +691,12 @@ public:
 
 				mout.debug() << "sampling Cartesian data: " << mout.endl;
 				const DataSet<CartesianSrc> dataset(src, drain::RegExp(selector.quantity));
-				//mout.warn() << dataset << mout.endl;
+				/*
+				for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
+					mout.warn() << "data:" << it->first << mout.endl;
+				}
+				*/
+
 				sampleData<CartesianDataPicker>(dataset, sampler, cmdFormat.value, ofstr);
 
 			}

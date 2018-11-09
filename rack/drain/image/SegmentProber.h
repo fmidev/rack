@@ -33,6 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <ostream>
+
+#include "../util/ReferenceMap.h"
 #include "Coordinates.h"
 #include "FilePng.h"
 
@@ -43,6 +45,30 @@ namespace image
 {
 
 
+template <class S, class D>
+class SegmentProberConf : public drain::ReferenceMap {
+
+public:
+
+	SegmentProberConf(S anchorMin=1, S anchorMax=255.0, D markerValue = 1) : markerValue(markerValue){
+		reference("anchorMin", this->anchorMin = anchorMin, "intensity");
+		reference("anchorMax", this->anchorMax = anchorMax, "intensity");
+		//reference("value", value);
+	}
+
+	S anchorMin;
+	S anchorMax;
+
+	/// "fill value", also dynamically changing visit marker?
+	D markerValue;
+
+	/// Criterion
+	bool isValidIntensity(S x) const {
+		return (x >= anchorMin) && (x <= anchorMax);
+	}
+
+
+};
 
 /// A helper class applied by FloodFillOp and SegmentAreaOp
 /**
@@ -51,24 +77,26 @@ namespace image
  *
  *   \author Markus.Peura@fmi.fi
  */
-template <class S, class D>
+template <class S, class D, class C>
 class SegmentProber {
 
 public:
 
 	typedef S src_t;
 	typedef D dst_t;
+	typedef C conf_t;
 
-	SegmentProber(const Channel &s) :
-		src(s), dst(NULL),
-		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
-		size = 0;
+
+	SegmentProber(const Channel &s) : src(s), dst(NULL){
+		//handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
+		//size = 0;
+		init();
 	};
 
-	SegmentProber(const Channel &s, Channel &d) :
-		src(s), dst(&d),
-		handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
-		size = 0;
+	SegmentProber(const Channel &s, Channel &d) : src(s), dst(&d) {
+		init();
+		// handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
+		//size = 0;
 	};
 
 	virtual
@@ -78,6 +106,20 @@ public:
 	void setDst(Channel & d){
 		dst = &d;
 	}
+
+	void setParams(const C & conf){
+		this->conf = conf;
+		// init()
+	}
+
+	/// Fills the segment having intensity between min and max.
+	/*
+	void setParams(src_t min, src_t max, dst_t fillValue){
+		anchorMin = min;
+		anchorMax = max;
+		value = fillValue;
+	}
+	*/
 
 	/// Called after src and dst have been set, but before processing. See clear().
 	virtual
@@ -91,52 +133,32 @@ public:
 
 	}
 
-	void probe(D fillValue = 1){
-		init();
+
+	/// Traverse
+	void scan(){
 		for (size_t i=0; i<src.getWidth(); ++i)
 			for (size_t j=0; j<src.getHeight(); ++j)
-				probe(i,j, fillValue);
+				probe(i,j);
 	}
 
-	/// Fills the segment having constant intensity, that is, src.at(i0,j0).
-	void probe(int i, int j, D fillValue = 1){
-		const S anchor = src.get<S>(i,j);
-		probe(i, j, fillValue, anchor, anchor);
-	};
 
-	/// Fills the segment having intensity between min and max.
-	void probe(int i, int j, D fillValue, S min, S max){
-
-		/*
-		if (fillValue > min){
-			Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
-			mout.error() << "markerValue (" << fillValue << ") > min(" << min << ")" << mout.endl;
-			return;
-		}
-		*/
-
-		value = fillValue;
-		anchorMin = min;
-		anchorMax = max;
+	/// Start probing
+	void probe(int i, int j){
 
 		clear();
-
-		// _stack = 0;
-		// mout.debug(30) << *this << mout.endl;
-		if (handler.validate(i, j))
+		if (handler.validate(i, j)){
+			/*
+			if (isValidPos(i,j)){
+				Logger mout("SegmentProber", __FUNCTION__);
+				mout.warn() << "accept: " << i << ',' << j << "\t=" << src.get<double>(i,j) << '\t' << dst->get<double>(i,j) << mout.endl;
+			}
+			*/
 			probe4(i,j);
+		}
 
 	};
 
-	S  anchorMin;
-	S  anchorMax;
-
-	mutable
-	D value;  // "fill value", also dynamically changing visit marker?
-
-
-	mutable size_t size; // Consider deriving SegmentProber => SegmentAreaProber
-
+	conf_t conf;
 
 // consider protected:
 
@@ -145,17 +167,31 @@ public:
 
 	CoordinateHandler2D handler;
 
+	/// Returns isValidSegment(i,j) and ! isVisited(i,j).
+	inline
+	bool isValidPos(int i, int j) const {
+		return (isValidSegment(i,j) && !isVisited(i,j));
+	}
+
+	/// Application dependent, to be redefined. Note: assumes checked coordinates.
+	virtual
+	bool isValidSegment(int i, int j) const = 0;
+	//return (src.get<src_t>(i,j) > 0);
+	//return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
+
+	/// Application dependent, to be redefined. Note: assumes checked coordinates.
+	/*
+	virtual inline
+	bool isValidSegment(int i, int j) const {
+		return conf.isValidIntensity(src.get<src_t>(i,j));
+	}
+	*/
+
 protected:
 
 	/// Application dependent. Assumes checked coordinates.
 	virtual inline
-	bool isValidSegment(int i, int j){
-		return (src.get<src_t>(i,j) >= anchorMin) && (src.get<src_t>(i,j) <= anchorMax);
-	}
-
-	/// Application dependent. Assumes checked coordinates.
-	virtual inline
-	bool isValidMove(int i0, int j0, int i, int j){
+	bool isValidMove(int i0, int j0, int i, int j) const {
 		return true;
 	}
 
@@ -163,31 +199,23 @@ protected:
 	///  Application dependent operation performed in each segment location (i,j).
 	virtual	inline
 	void update(int i, int j){
-
-		++size;
-
+		/*
 		Logger mout("SegmentProber", __FUNCTION__);
 
+		//static size_t size = 0;
+		static size_t counter = 0;
 		if (mout.isDebug(10)){
-			static size_t counter = 0;
-			if (size > counter){
-				counter = size + 1000;
-				mout.note() << size << mout.endl;
+			++ counter;
+			if ((counter % 63) == 0){
+				mout.note() << counter << mout.endl;
 				if (mout.isDebug(20)){
-					std::stringstream sstr;
-					sstr << "SegmentProber-";
-					sstr.width(3);
-					sstr.fill('0');
-					sstr << (counter/1000) << ".png";
-					drain::image::FilePng::write(*dst, sstr.str());
+					drain::image::FilePng::writeIndexed(*dst, "SegmentProber");
 				}
 			}
-
 		}
+		*/
+	};
 
-
-
-	}
 
 	/// Visiting a single pixel when not coming from any direction.
 	/**
@@ -205,7 +233,7 @@ protected:
 		update(i, j);
 
 		/// Mark visited
-		dst->put(i,j, value);
+		dst->put(i,j, 1);
 
 	}
 
@@ -216,34 +244,49 @@ protected:
 	 *  Application dependent initialisation for statistics updated with update(int i, int j) function.
 	 */
 	virtual
-	void clear(){
-		size = 0;
-	};
+	void clear(){};
 
 
 	/// Experimental
 	/**
 	 */
 	virtual inline
-	bool isVisited(int i, int j){
-		//return (dst->get<D>(i,j) == value);
-		return (dst->get<D>(i,j) != 0); // consider src_t::min()
+	bool isVisited(int i, int j) const {
+		return (dst->get<D>(i,j) != 0);
 	}
 
 
 
-	bool moveHorz(int i0, int j0, int i, int j) {
+	/// Try to move; change coords in success, else keep them intact.
+	bool move(int & i, int & j, int di, int dj) {
 
+		// Save
+		const int i0 = i;
+		const int j0 = j;
+
+		i += di;
+		j += dj;
+
+		// OLD ->
+		/*
 		if ((i < 0) || (i > handler.getXMax()))
 			return false;
+		*/
+		// <- OLD
 
-		if (isVisited(i, j))
-			return false;
+		// Drop isValidSegment
+		if (handler.validate(i,j)) // must be first, changes coords
+			//if ((!isVisited(i,j)) && isValidSegment(i,j) && isValidMove(i0,j0, i,j))
+			if (isValidPos(i,j))
+				if (isValidMove(i0,j0, i,j))
+					return true;
 
-		return isValidSegment(i, j) && isValidMove(i0,j0, i, j);
+		// restore orig
+		i = i0;
+		j = j0;
+		return false;
 
 	}
-
 
 
 
@@ -251,37 +294,44 @@ protected:
     /// A semi-recursive approach that turns the 2D recursion to 1D traversal + 1D recursion.
 	/**
 	 *
-	 *   the horizontal direction is handled sequentially whereas the vertical direction handled recursively.
+s	 *   the horizontal direction is handled sequentially whereas the vertical direction handled recursively.
 	 *  Compared to fully recursive approach, this technique preserves the speed but offers smaller consumption of memory.
 	 */
 	void probe4(int i, int j) {
 
-		if (isVisited(i,j))
-			return; // false;
-
-		if (!isValidSegment(i, j))
-			return; // false;
+		if (!isValidPos(i,j))
+			return;
 
 		visit(i,j); // mark & update
 
-		/// Scan right
-		int iMax = i;
-		while (moveHorz(iMax,j, iMax+1,j)){
-			++iMax;
-			visit(iMax, j);
+		const int i0 = i;
+		const int j0 = j;
+
+		/// Scan right. Note than i may wrap beyond image width.
+		int iEnd;
+		while (move(i,j, 1,0)){
+			visit(i,j);
 		}
+		iEnd = i;
 		// Now i2 is the maximum valid i coordinate.
 
+		// Rewrite code: iMax should support wrapping, so 200...256...10.
+
 		/// Scan left
-		while (moveHorz(i,j, i-1,j)){
-			--i;
+		i=i0;
+		j=j0;
+		while (move(i,j, -1,0)){
 			visit(i, j);
 		}
 		// Now i is the minimum valid i coordinate.
 
+
 		/// Scan again, continuing one step above and below.
 		int i2, j2;
-		while (i <= iMax){
+		bool done = false;
+		//while (i != iEnd){
+		while (!done){
+			done = (i == iEnd);
 			i2 = i;
 			j2 = j-1;
 			if (handler.validate(i2, j2))
@@ -292,10 +342,9 @@ protected:
 			if (handler.validate(i2, j2))
 				if (isValidMove(i,j, i2,j2))
 					probe4(i2,j2);
-			// if (isValidMove(i,j, i,j+1))
-			// probe4(i,j+1);
 			++i;
-		}
+			handler.validate(i, j); // check?
+		}; // while (i != iEnd);
 
 	}
 
@@ -305,18 +354,102 @@ protected:
 
 
 
-template <class S, class D>
-std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D> & prober){
+template <class S, class D, class C>
+std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D,C> & prober){
+	/*
 	ostr << "value="     << (float)prober.value << ',';
 	ostr << "anchorMin=" << (float)prober.anchorMin << ',';
 	ostr << "anchorMax=" << (float)prober.anchorMax << ',';
 	ostr << "size="      << (float)prober.size << ',';
+	*/
+	ostr << "conf: " << prober.conf << ", ";
 	//ostr << "width="     << (float)prober.width << ',';
 	//ostr << "height="    << (float)prober.height << ',';
-	ostr << "handler="   << prober.handler << ',';
+	ostr << "handler: "   << prober.handler << ',';
 	//ostr << "p="         << prober.p;
 	return ostr;
 }
+
+
+
+
+class FillProber : public SegmentProber<int,int,SegmentProberConf<int, int> > {
+
+public:
+
+	FillProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d) {};
+
+	FillProber(const Channel &s) : SegmentProber<int,int,SegmentProberConf<int, int> >(s) {};
+
+	virtual inline
+	void visit(int i, int j) {
+		count++;
+		update(i, j);
+		dst->put(i,j, conf.markerValue);
+	}
+
+	/// Experimental
+	/**
+	 */
+	virtual inline
+	bool isVisited(int i, int j) const {
+		return (dst->get<dst_t>(i,j) == conf.markerValue);
+	}
+
+	virtual inline
+	bool isValidSegment(int i, int j) const {
+		return conf.isValidIntensity(src.get<src_t>(i,j));
+	}
+
+	size_t count;
+
+};
+
+
+class SizeProber : public SegmentProber<int,int,SegmentProberConf<int, int> > {
+
+public:
+
+	SizeProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d) {};
+
+	virtual inline
+	void clear(){
+		size = 0;
+	};
+
+
+	virtual inline
+	void visit(int i, int j) {
+		update(i, j);
+		dst->put(i,j, conf.markerValue);
+	}
+
+	/// Experimental
+	/**
+	 */
+	virtual inline
+	bool isVisited(int i, int j) const {
+		return (dst->get<dst_t>(i,j) > 0);
+	}
+
+
+	///  Application dependent operation performed in each segment location (i,j).
+	virtual	inline
+	void update(int i, int j){
+		++size;
+	}
+
+	virtual inline
+	bool isValidSegment(int i, int j) const {
+		return conf.isValidIntensity(src.get<src_t>(i,j));
+	}
+
+	mutable size_t size; // Consider deriving SegmentProber => SegmentAreaProber
+
+
+};
+
+
 
 
 } // image::

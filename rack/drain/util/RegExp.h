@@ -93,9 +93,10 @@ public:
 
 	/// Apply regexp matching in a string. Returns 0 on success, REG_NOMATCH on failure
 	/**
-	 *  \tparam T - std ordered Sequence, e.g. std::vector or std::list
+	 *  \tparam T - A class implementing clear() and push_back() like STL Sequence, eg. std::vector or std::list
+	 *
 	 *  \param str    - source string
-	 *  \param result - result of the match
+	 *  \param result - result of the match (STL Sequence)
 	 *  \return - 0 on success, REG_NOMATCH on failure
 	 */
 	template <class T>
@@ -137,9 +138,10 @@ public:
 		return regExpString;
 	};
 
+	int flags;
 
 protected:
-	int flags;
+
 	regex_t regExpBinary;  // this is weird  FIXME: check pointer aspect
 
 	std::string regExpString;

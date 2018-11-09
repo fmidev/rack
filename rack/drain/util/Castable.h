@@ -43,14 +43,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef CASTABLE
 #define CASTABLE
 
-// // using namespace std;
 
 namespace drain {
 
 
-//class Variable;
 
-/// An object that can be automatically casted to and from a base type or std::string. Designed for objects returned by CastableIterator.
+
+/// An object that can be automatically casted to and from a basetype, array of basetype or std::string. Designed for objects returned by CastableIterator.
 /**
 
   Saves type info (like Caster) and also a pointer to external object.
@@ -72,20 +71,20 @@ class Castable  {
 public:
 
 	inline
-	Castable() : ptr(NULL), elementCount(0) {
+	Castable() : fillArray(false), ptr(NULL), elementCount(0){
 		setSeparator();
 		caster.unsetType();
 	};
 
 	/// Copy constructor
-	Castable(const Castable &c) : ptr(NULL), elementCount(0) {
+	Castable(const Castable &c) : fillArray(false), ptr(NULL), elementCount(0) {
 		setSeparator();
 		setPtr(c);
 	}
 
 	// Obsolete?
 	template <class F>
-	Castable(F *p) : ptr(NULL), elementCount(0) {
+	Castable(F *p) : fillArray(false), ptr(NULL), elementCount(0) {
 		setSeparator();
 		setPtr(p, typeid(F));
 		// std::cerr << "Castable(F *p) type=" << typeid(F).name() << " value=" << *p << " (" << (double)*p << ")" << std::endl;
@@ -93,7 +92,7 @@ public:
 
 	/// Constructor for an object pointing to a variable.
 	template <class F>
-	Castable(F &p) : ptr(NULL), elementCount(0) {
+	Castable(F &p) : fillArray(false), ptr(NULL), elementCount(0) {
 		setSeparator();
 		setPtr(p);
 	}
@@ -172,6 +171,7 @@ public:
 	/// Copies an arbitrary base type or std::string value.
 	template <class T>
 	Castable &operator=(const T &x){
+
 		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
 		requestType(typeid(T));
 		if (isString()){
@@ -179,13 +179,22 @@ public:
 			assignToString(x);
 		}
 		else if (typeIsSet()){
-			requestSize(1);
-			caster.put(ptr, x);
+			if (fillArray){
+				for (size_t i = 0; i<getElementCount(); ++i){
+					caster.put(getPtr(i), x);
+				}
+			}
+			else {
+				requestSize(1);
+				caster.put(ptr, x);
+			}
 		}
 		else {
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 		}
+
 		return *this;
+
 	}
 
 	inline
@@ -394,6 +403,7 @@ public:
 
 	std::ostream & valueToJSON(std::ostream & ostr = std::cout) const;
 
+	/// Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int."
 	const void typeInfo(std::ostream & ostr) const;
 
 
@@ -408,7 +418,8 @@ public:
 		container.clear();
 
 		if (isString()){
-			StringTools::split(toStr(), container, std::string(1, this->outputSeparator)," \t\n");
+			//StringTools::split(toStr(), container, std::string(1, this->outputSeparator)," \t\n");
+			StringTools::split(toStr(), container, this->outputSeparator," \t\n");
 		}
 		else {
 			for (size_t i = 0; i < getElementCount(); ++i) {
@@ -434,12 +445,15 @@ public:
 		return &((const char *)ptr)[i*caster.getByteSize()];
 	}
 
+	/// If array, assigning a scalar will fill up the current array.
+	bool fillArray;
+
 
 protected:
 
 	Caster caster;
 
-	/// Request to change in type. For Castable, only returns true if the current type was requested.
+	/// Request to change in type. For Castable, plainly returns true if the current type was requested.
 	/**
 	 *
 	 */
@@ -677,6 +691,7 @@ protected:
 			assignToString(sstr.str());
 		}
 		else if (caster.typeIsSet()){
+
 			if (append){
 				for (typename T::const_iterator it = v.begin(); it != v.end(); ++it){
 					appendToElementArray(*it);
@@ -686,10 +701,13 @@ protected:
 				requestSize(v.size());
 				typename T::const_iterator it = v.begin();
 				for (size_t i = 0; i<getElementCount(); ++i){
-					if (it != v.end())
-						caster.put(getPtr(i), *it);
-					else
-						return;
+					if (it == v.end()){
+						if (fillArray)
+							it = v.begin();
+						else
+							return;
+					}
+					caster.put(getPtr(i), *it);
 					++it;
 				}
 			}
@@ -737,7 +755,6 @@ protected:
 
 	/// Element separator usein in writing and reading character strings (streams).
 	char outputSeparator;
-
 
 
 };

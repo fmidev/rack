@@ -95,7 +95,7 @@ void ODIMPathElem::set(const std::string &s){
 	this->group = BaseODIM::NONE;
 	this->index = 0;
 	bool INDEXED = false; // to separate data and data1
-	this->other.clear();
+	this->other = ""; //.clear();
 
 	/// Empty string is identified with root
 	if (s.empty()){
@@ -104,6 +104,7 @@ void ODIMPathElem::set(const std::string &s){
 		return;
 	}
 
+	// Extract prefix (alphabets) and index (digits)
 	size_t i = 0;
 	while(i<s.length()){
 		if ((s.at(i)>='0') && (s.at(i)<='9')){
@@ -114,10 +115,9 @@ void ODIMPathElem::set(const std::string &s){
 		}
 		++i;
 	}
-
-
 	/// The non-numeric prefix
 	const std::string prefix(s.substr(0, i)); // +1?
+
 	//std::cout << "  raw: " << prefix << ':' << this->index << '\t';
 
 	/// Check if matches predefined group types

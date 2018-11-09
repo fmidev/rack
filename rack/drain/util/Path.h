@@ -83,24 +83,10 @@ public:
 
 	inline
 	void set(const std::string & p){
-			const std::string sep(1,separator);
-			StringTools::split(p, *this, sep); //, sep);
-			/*
-			const size_t length = path.length();
-			size_t i  = 0;
-			size_t i2 = 0;
-			this->clear();
-			while ((i2 = path.find(this->separator, i)) != std::string::npos){
-				//std::cout << (size_t)(i2) << '\n';
-				//std::cout << path.substr(i, i2-i) << '\n';
-				this->push_back(T(path.substr(i, i2-i)));
-				i = i2+1;
-				if (i == length) // last char was this->separator (warning?)
-					return;
-			}
-			this->push_back(path.substr(i));
-			*/
-		}
+		//const std::string sep(1,separator);
+		//StringTools::split(p, *this, sep); //, sep);
+		StringTools::split(p, *this, separator);
+	}
 
 	virtual inline
 	std::ostream & toOStr(std::ostream & ostr) const {
@@ -114,13 +100,13 @@ public:
 		str = sstr.str();
 	}
 
-	operator std::string (){
+	operator std::string () const {
 		std::stringstream sstr;
 		toOStr(sstr);
 		return sstr.str();
 	}
 
-		/*
+	/*
 	Path<T> & operator=(const T & e){
 		this->clear();
 		push_front(e);
@@ -137,7 +123,6 @@ public:
 	}
 
 	Path<T> & operator>>(T & e){
-		//push_back(e);
 		e = this->back();
 		this->pop_back();
 		return *this;

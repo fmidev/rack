@@ -46,17 +46,23 @@ namespace image
 {
 
 /// A fill operation for one color.
-/**  Uses SegmentProber<> in semi-recursive image traversal.
- *   \author Markus.Peura@fmi.fi
+/**  Uses FillProber, hence basically SegmentProber<> in semi-recursive image traversal.
+
  \code
    drainage shapes.png --floodFill  100,100,min=50,value=128 -o shapes-fill.png
+   drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,5,value=128   -o shapes-fill-wrap.png
+   drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,128,value=192 -o shapes-fill-wrap-h.png
+   drainage shapes-wrap.png --coordPolicy 2 --floodFill 128,5,value=96  -o shapes-fill-wrap-v.png
  \endcode
- */
+
+*/
+// Consider multi-channel fill. Needs one marker image.
 class FloodFillOp : public ImageOp {
 
 public:
 
-	FloodFillOp(int i=0, int j=0, double min=1.0, double max=255.0, double value=128.0);
+	FloodFillOp(int i=0, int j=0, double min=1.0, double max=65536.0, double value=1.0);
+	//FloodFillOp(int i=0, int j=0);
 
 	//virtual void makeCompatible(const ImageFrame & src,Image & dst) const;
 	virtual
@@ -68,21 +74,24 @@ public:
 	virtual
 	void traverseChannel(const Channel & src, Channel & dst) const;
 
+	/**
+	 *  \tparam C - conf
+	 */
+	//template <class C> 	void fill(const Channel & src, int i, int j, Channel & dst) const;
+
 	/// Mutable, for coord handler
 	mutable int i0;
 	/// Mutable, for coord handler
 	mutable int j0;
 
-	double max;
-	double min;
-	double value;
+	SegmentProberConf<double,double> conf;
 
 };
 
 
-}
-}
+} // image::
+} // drain::
+
 #endif /* FLOODFILL_H_ */
 
 
-// Drain

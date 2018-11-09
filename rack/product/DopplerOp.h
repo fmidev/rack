@@ -130,7 +130,7 @@ public:
 	DopplerCrawlerOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
 		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
-		//parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
+		parameters.reference("threshold", relative_NI_threshold=0.9, "relative speed");
 		//parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
 
 		dataSelector.count = 1;
@@ -140,15 +140,10 @@ public:
 		odim.type = "S";
 	}
 
-	//	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
-	// virtual
-	// void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
-
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const;
 
-
-
+	double relative_NI_threshold;
 
 
 };

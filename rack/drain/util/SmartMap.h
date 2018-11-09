@@ -235,16 +235,18 @@ public:
 	}
 
 	/// Assign values from a map. Updates existing entries only.
+	/**
+	 *  \par m - source of keys and values
+	 */
 	template <class T2>
 	void updateFromMap(const std::map<std::string,T2> & m){
 		for (typename std::map<std::string,T2>::const_iterator it = m.begin(); it != m.end(); ++it)
 			importEntry(it->first, it->second, true);
 	}
 
-	/// Assign values from a map.
+	/// Assign values from a map, overriding existing entries.
 	/**
 	 *  \par m - source of keys and values
-	 *  \par lenient - if true and map is not strictness, skips undefined keys silently, otherwise throws std::runtime_error.
 	 */
 	template <class T2>
 	void importMap(const std::map<std::string,T2> & m){
@@ -256,19 +258,13 @@ public:
 	// TODO: consider: std::string assignmentSymbols="=:", std::string separatorSymbols=", ", std::string trimSymbols=" \t\n\r",
 	inline
 	void setValues(const std::string & parameters, char assignmentSymbol='=', char separatorSymbol=0){  // char separatorSymbol=','
-		if (separatorSymbol)
-			_setValues(parameters, false, assignmentSymbol, separatorSymbol);
-		else
-			_setValues(parameters, false, assignmentSymbol, separator);
+		_setValues(parameters, false, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
 	}
 
 	/// Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters silently.
 	inline
 	void updateValues(const std::string & parameters, char assignmentSymbol='=', char separatorSymbol=0){// char separatorSymbol=','
-		if (separatorSymbol)
-			_setValues(parameters, true, assignmentSymbol, separatorSymbol);
-		else
-			_setValues(parameters, true, assignmentSymbol, separator); /// NEW true, was false(???)
+		_setValues(parameters, true, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
 	}
 
 

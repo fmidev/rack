@@ -44,6 +44,8 @@ namespace image
 
 
 
+
+/*
 class PickySegmentProber : public SegmentProber<double, double> {
 
 public:
@@ -77,15 +79,17 @@ protected:
 	}
 
 };
+*/
 
 
 FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : ImageOp(__FUNCTION__,
 		"Fills an area starting at (i,j) having intensity in [min,max], with a value.") {
 	parameters.reference("i", this->i0 = i, "coord");
 	parameters.reference("j", this->j0 = j, "coord");
-	parameters.reference("min", this->min = min, "intensity");
-	parameters.reference("max", this->max = max, "intensity");
-	parameters.reference("value", this->value = value, "intensity");
+	// parameters.append(conf);
+	parameters.reference("min", this->conf.anchorMin = min, "intensity");
+	parameters.reference("max", this->conf.anchorMax = max, "intensity");
+	parameters.reference("value", this->conf.markerValue = value, "intensity");
 }
 
 
@@ -97,30 +101,43 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	CoordinateHandler2D preHandler(src.getGeometry());
 	preHandler.setPolicy(CoordinatePolicy::WRAP);
-	mout.note() << preHandler << mout.endl;
+	mout.debug() << preHandler << mout.endl;
 	if (preHandler.handle(i0, j0)){
-		mout.note() << "tuned coordinates => (" << i0 << ',' << j0 << ')' << mout.endl;
+		mout.info() << "tuned coordinates => (" << i0 << ',' << j0 << ')' << mout.endl;
 	}
 
 	if (src.isFloatType() || dst.isFloatType()) {
 		mout.debug(1) << "type: double" << mout.endl;
-		SegmentProber<double,double> fill(src, dst);
+		//SegmentProber<double,double,SegmentProberConf<double,double> > fill(src, dst);
+		FillProber fill(src, dst);
 		//PickySegmentProber fill(src, dst);
+		fill.conf.updateFromMap(conf);
+		fill.conf.markerValue = dst.getScaling().inv(conf.markerValue);
 		fill.init();
-		fill.probe(i0, j0, value, min, max);
+		fill.probe(i0, j0);
 	}
 	else {
 		mout.debug(1) << "type: integral" << mout.endl;
-		SegmentProber<int,int> fill(src, dst);
+		FillProber fill(src, dst);
+		//SegmentProber<int,int,SegmentProberConf<int,int> > fill(src, dst);
 		//PickySegmentProber fill(src, dst);
+		fill.conf.updateFromMap(conf);
+		fill.conf.markerValue = dst.getScaling().inv(conf.markerValue);
 		fill.init();
-		fill.probe(i0, j0, static_cast<int>(value), static_cast<int>(min), static_cast<int>(max));
+		mout.debug() << "dst: " << dst << mout.endl;
+		//mout.warn() << conf << '>' << conf.markerValue << mout.endl;
+		mout.debug() << fill << '>' << fill.conf.markerValue << mout.endl;
+		//fill.count = 0;
+		fill.probe(i0, j0);
+
+		//fill.scan();
+		//mout.warn() << "fill.count: " << fill.count <<  mout.endl;
 	}
 
 }
 
-}
-}
+} // image::
+} // drain::
 
 
-// Drain
+

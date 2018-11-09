@@ -358,18 +358,19 @@ public:
 \~
 
 \code
-drainage diamond1.png diamond2.png --opticalFlow 25,25 --format '{i} {j2} {-0} {1} {A0}' --sample 10,10,file=oflow.dat
+drainage diamond1.png diamond2.png --opticalFlow 25,25 --format '${i} ${j2} ${-0} ${1} ${A0}' --sample 10,10,file=oflow.dat
 \endcode
 
 \~exec
-   # SCALE=0.003 OUTFILE=oflow-result.png gnuplot-vectors.sh oflow.dat diamond2.png #exec
-   make oflow OFLOW=75
-   make oflow OFLOW=55
-   make oflow OFLOW=25
-   make oflow OFLOW=15
-   make oflow OFLOW=05
-   convert -frame 2 +append diamond1.png diamond2.png oflow-result55.png oflow-panel.png
-   convert -frame 2 +append oflow-result??.png oflow-panel2.png
+# SCALE=0.003 OUTFILE=oflow-result.png gnuplot-vectors.sh oflow.dat diamond2.png #exec
+make oflow-clean
+make oflow OFLOW=75
+make oflow OFLOW=55
+make oflow OFLOW=25
+make oflow OFLOW=15
+make oflow OFLOW=05
+convert -frame 2 +append diamond1.png diamond2.png oflow-result55.png oflow-panel.png
+convert -frame 2 +append oflow-result??.png oflow-panel2.png
 \~
 
  */

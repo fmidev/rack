@@ -659,10 +659,10 @@ protected:
  *  \f]
  *
  */
-class PolarSegmentProber : public drain::image::SegmentProber<int,int> {
+class PolarSegmentProber : public drain::image::SizeProber { // SegmentProber<int,int>
 public:
 
-	PolarSegmentProber(const Image & src, Image & dst) : SegmentProber<int,int>(src.getChannel(0), dst.getChannel(0)){};
+	PolarSegmentProber(const Image & src, Image & dst) : SizeProber(src.getChannel(0), dst.getChannel(0)){};
 
 	/// Operation performed in each segment location (i,j). A function to be redefined in derived classes.
 	virtual

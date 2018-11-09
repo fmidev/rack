@@ -132,7 +132,9 @@ public:
  \tparam - Accumulating unit that also handles decoding/encoding of the values, must define ::conf
 
  \code
-   drainage shapes.png --impulseAvg  100,100,min=50,value=128 -o shapes-fill.png
+   drainage shapes.png --impulseAvg  0.9,5,5 -o shapes-impulse-90.png
+   drainage shapes.png --impulseAvg  0.5,5,5 -o shapes-impulse-50.png
+   drainage shapes.png --impulseAvg  0.1,5,5 -o shapes-impulse-10.png
  \endcode
 
  */

@@ -127,8 +127,8 @@ public:
 
 	template <class T>
 	static inline
-	void split(const std::string & s, T & sequence, char separator=','){
-		StringTools::split(s, sequence, std::string(1,separator));
+	void split(const std::string & s, T & sequence, char separator=',', const std::string & trimChars=" \t\n"){
+		StringTools::split(s, sequence, std::string(1,separator), trimChars);
 	}
 
 	/// Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').

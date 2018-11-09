@@ -219,28 +219,12 @@ void Castable::assignString(const std::string &s){
 		std::list<std::string> l;
 		StringTools::split(s, l, std::string(1, inputSeparator));
 		//requestType(typeid(double));
-		requestSize(l.size());
-		if (l.size() != getElementCount())
+		requestSize(l.size()); // check if true?
+		if (l.size() > getElementCount())
 			std::cerr << __FUNCTION__ << ": provided " << l.size() << " elements, assigning: "<< getElementCount() << std::endl;
 
 		assignContainer(l);
-		/*
-		//const std::string str(s);  // TODO: generalize, see StringTools::split
-		const size_t n = s.size();
-		size_t pos  = 0;
-		size_t pos2 = 0;
-		size_t i; // elementIndex
-		while ((pos2 < n) && (i < getElementCount())){
-			pos2 = s.find(inputSeparator, pos);
-			if (pos2 == std::string::npos)
-				pos2 = n;
-			//std::cerr << "append" << toStr.substr(pos, pos2-pos) << std::endl;
-			appendElement(s.substr(pos, pos2-pos));
 
-			pos = pos2+1;
-			++i;
-		}
-		 */
 	}
 
 }

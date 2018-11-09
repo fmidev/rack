@@ -70,7 +70,9 @@ public:
 	 *  This function is virtual because derived classes may redefine it to update other members.
 	 */
 	virtual inline
-	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){ parameters.setValues(p, assignmentSymbol, separatorSymbol); };  // , true);
+	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
+		parameters.setValues(p, assignmentSymbol, separatorSymbol);
+	};  // , true);
 
 	/// Sets parameters
 	/**

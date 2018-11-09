@@ -43,6 +43,8 @@ namespace image
 /// Syntax for recognising image files
 const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
 
+int FilePng::index(0);
+
 template <>
 void FilePng::initialize(Image & image, const std::type_info & t, const Geometry & g){
 	image.initialize(t,g);
@@ -332,9 +334,28 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	delete[] data;
 }
 
-}
+
+void FilePng::writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i, int digits){
+
+	if (i >= 0){
+		FilePng::index = i;
+	}
+
+	std::stringstream sstr;
+	sstr << pathPrefix;
+	sstr.width(digits);
+	sstr.fill('0');
+	sstr << index << ".png";
+	FilePng::write(image, sstr.str());
+
+	++index;
 
 }
+
+
+} // image::
+
+} // drain::
 
 
 

@@ -380,16 +380,20 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentStatistics & s){
 /// A helper class applied by FloodFillOp and SegmentAreaOp
 /**
  *   \tparam T - type of the source image (int by default, but should be floating-type, if src is).
- *   \tparam T2 - type of the destination image, the image to be filled.
+ *   \tparam D - type of the destination image, the image to be filled.
  *
  *   \author Markus.Peura@fmi.fi
  */
-template <class T, class T2>
-class SegmentStatisticsProber : public SegmentProber<T,T2> {
+template <class T, class D>
+class SegmentStatisticsProber : public SegmentProber<T,D,SegmentProberConf<T,D> > {
 
 public:
 
-	SegmentStatisticsProber(const Channel &s, Channel & d, const std::string statistics="s") : SegmentProber<T,T2>(s,d), stats(statistics) {
+	typedef T src_t;
+	typedef D dst_t;
+	//typedef SegmentProberConf<T,D> conf_t;
+
+	SegmentStatisticsProber(const Channel &s, Channel & d, const std::string statistics="s") : SegmentProber<T,D,SegmentProberConf<T,D> >(s,d), stats(statistics) {
 	};
 
 	virtual
@@ -398,6 +402,15 @@ public:
 	const std::string & stats;
 
 	SegmentStatistics statistics;
+
+	virtual inline
+	bool isValidSegment(int i, int j) const {
+		// this->src;
+		// this->conf;
+		// this->src.template get<src_t>(i,j);
+		// return this->conf.isValidIntensity(12345);
+		return this->conf.isValidIntensity(this->src.template get<src_t>(i,j));
+	}
 
 protected:
 
@@ -418,9 +431,9 @@ protected:
 };
 
 
-template <class T, class T2>
-std::ostream & operator<<(std::ostream & ostr, const SegmentStatisticsProber<T,T2> & prober){
-	ostr << (const SegmentProber<T,T2> &)prober << '\t';
+template <class T, class D>
+std::ostream & operator<<(std::ostream & ostr, const SegmentStatisticsProber<T,D> & prober){
+	ostr << (const SegmentProber<T,D,SegmentProberConf<T,D> > &)prober << '\t';
 	ostr << prober.statistics;
 	return ostr;
 }

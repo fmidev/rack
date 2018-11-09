@@ -42,13 +42,18 @@ namespace image
 /// Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation. Segment is an area of connected pixels.
 /*!
 
-	Unscaled area (A):
+	Most descriptors have unscaled and scaled (normalized) versions, distinguished with uppercase and lowercase letters.
+
+	For example, the unscaled area is obtained with \c 'A':
 	\code
 	drainage shapes.png --segmentStats A,64 -o segmentStat-area.png
 	\endcode
 
+	Respectively, the scaled area is obtained with \c 'a'.
 	\code
+	drainage shapes.png --segmentStats a,64 -o segmentStat-areaRel.png
 	\endcode
+
 	The relative vertical position can be computed similarly, with \c 'y'.
 	\~exec
 	 drainage shapes.png --segmentStats y,64 -o segmentStat-y.png
@@ -56,7 +61,6 @@ namespace image
 
   \code
 	drainage shapes.png --segmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png
-	drainage shapes.png --segmentStats y,64 -o segmentStat-y.png
 	drainage shapes.png --segmentStats h,64 -o segmentStat-horz.png
 	drainage shapes.png --segmentStats v,64 -o segmentStat-vert.png
 	drainage shapes.png --segmentStats e,32 -o segmentStat-elong.png

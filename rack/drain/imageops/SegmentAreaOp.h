@@ -167,8 +167,17 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	mout.debug(1) << "src: " << src << mout.endl;
 	mout.debug(1) << "dst: " << dst << mout.endl;
 
-	SegmentProber<S,D> floodFill(src, dst);
+	//SegmentProber<S,D> floodFill(src, dst);
+	SizeProber sizeProber(src, dst);
+	sizeProber.conf.anchorMin = minRaw;
+	sizeProber.conf.anchorMax = maxRaw;
+	mout.debug(1) << "areaProber:" << sizeProber << mout.endl;
 
+	FillProber floodFill(src, dst);
+	floodFill.conf.anchorMin = minRaw;
+	floodFill.conf.anchorMax = maxRaw;
+	mout.debug(1) << "floodFill:" << floodFill << mout.endl;
+	//floodFill.init();
 	//T floodFill(src, dst);
 
 	//const size_t dMax = dst.getMax<size_t>();
@@ -179,7 +188,7 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	const UnaryFunctor & ftor = getFunctor(scale);
 	//const UnaryFunctor & ftor = getFunctor(dst.getMax<T::dst_t>());
 
-	mout.debug(1) << "Functor: " << ftor.getName() << '=' << ftor.getParameters() << mout.endl;
+	mout.debug() << "Functor: " << ftor.getName() << '(' << ftor.getParameters() << ')' << mout.endl;
 	/*
 	mout.warn() << "Functor: 1 =>" << ftor(1.0) << mout.endl;
 	mout.warn() << "Functor: 100 =>" << ftor(100.0) << mout.endl;
@@ -189,34 +198,28 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	mout << mout.endl;
 
 	typedef drain::typeLimiter<dst_t> Limiter;
-	typename Limiter::value_t limiter = dst.getLimiter<dst_t>();
+	typename Limiter::value_t limit = dst.getLimiter<dst_t>();
 
 	size_t sizeMapped;
 	for (size_t i=0; i<w; i++){
 		for (size_t j=0; j<h; j++){
-			//if ((drain::Debug > 5) && ((i&15)==0) && ((j&15)==0)) std::cerr << i << ',' << j << "\n";
-			if (dst.get<int>(i,j) == 0){ // not visited
 
-				// STAGE 1: detect size.
-				floodFill.probe(i,j,1,  minRaw, maxRaw);  // painting with '1' does not disturb dst
+			// STAGE 1: detect size.
+			sizeProber.probe(i,j);
 
-				if (floodFill.size > 0){
+			if (sizeProber.size > 0){
 
-					// STAGE 2: mark the segment with size
+				// STAGE 2: mark the segment with size
+				sizeMapped = limit(ftor(sizeProber.size));
+				if (sizeMapped == 0)
+					sizeMapped = 1;
 
-					sizeMapped = limiter(ftor(floodFill.size));
-					if (sizeMapped == 0)
-						sizeMapped = 1;
+				// mout.warn() << "found segment at " << i << ',' << j << " f=" << src.get<float>(i,j);
+				// mout << " size=" << sizeProber.size << " => "<< sizeMapped << mout.endl;
 
-					/*
-					mout.warn() << "found segment at " << i << ',' << j << " f=" << src.get<float>(i,j);
-					mout << " size=" << floodFill.size << " => "<< sizeMapped << mout.endl;
-					*/
+				floodFill.conf.markerValue = sizeMapped;
+				floodFill.probe(i,j);
 
-					floodFill.probe(i,j,sizeMapped, minRaw, maxRaw);
-					//floodFill.fill(i,j,size&254,min,max);
-					//std::cerr << "filled\n";
-				}
 			}
 		}
 	}

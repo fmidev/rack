@@ -145,6 +145,23 @@ bool PolarODIM::deriveDifference(double v1, double v2, double & vDiff) const {
 }
 
 
+// Detect Doppler speed aliasing (wrapping)
+signed char PolarODIM::checkAliasing(double v1, double v2, double NI_threshold) const {
+
+	if (isValue(v1) && isValue(v2)){ // cf. srcODIM.deriveDifference()
+		v1 = scaleForward(v1);
+		v2 = scaleForward(v2);
+		if ((v1>+NI_threshold) && (v2<-NI_threshold)){
+			return +1;
+		}
+		else if ((v1<-NI_threshold) && (v2>+NI_threshold)){
+			return -1;
+		}
+	}
+
+	return 0;
+
+}
 
 
 }  // namespace rack

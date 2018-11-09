@@ -52,9 +52,10 @@ class SegmentOp: public ImageOp
 {
 public:
 
-
+	//SegmentOp
 	double min;  // TODO: instead consider criterion method inside(i,j)
 	double max;
+	//SegmentProberConf<int,int> conf;
 
 	bool clearDst;
 

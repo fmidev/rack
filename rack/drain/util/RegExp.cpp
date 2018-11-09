@@ -55,10 +55,8 @@ namespace drain {
  */
 //RegExp::RegExp() : result(writableResult) {	};
 //RegExp::RegExp(const char *toStr,int flags)
-RegExp::RegExp(const std::string &str,int flags) :  result(writableResult), flags(flags){
-	// int result = regcomp(&regExpBinary,"",0);
-	regcomp(&regExpBinary,"",0);
-	//  throw std::runtime_error(std::string("RegExp(toStr,flags) failed with toStr=") + toStr);
+RegExp::RegExp(const std::string &str, int flags) :  result(writableResult), flags(flags){
+	regcomp(&regExpBinary,"", flags);
 	setExpression(str);
 }
 
@@ -94,11 +92,11 @@ bool RegExp::setExpression(const std::string &str){
 	regfree(&regExpBinary);
 	writableResult.clear();
 
-	int result = regcomp(&regExpBinary,str.c_str(),flags);
+	int result = regcomp(&regExpBinary, str.c_str(), flags);
 
 	if (result > 0){
 		std::stringstream sstr;
-		sstr << "RegExp::setExpression(str) with str='" << str << "': ";
+		sstr << "RegExp::setExpression(str) failed with str='" << str << "': ";
 		const unsigned long int CBUF_LENGTH = 256;
 		char cbuf[CBUF_LENGTH];
 		regerror(result, &regExpBinary, cbuf, CBUF_LENGTH);
@@ -106,7 +104,7 @@ bool RegExp::setExpression(const std::string &str){
 		regExpString = "";  // ? should be saved instead?
 		throw std::runtime_error(sstr.str());
 		//regExpBinary = NULL;
-		//return false; // needed?
+		return false;
 	}
 
 	regExpString = str;
@@ -140,54 +138,7 @@ bool RegExp::test(const std::string &str) const {
 /**
  *  \return REG_NOMATCH if match fails, resultcode otherwise. TODO consider returning bool, saving return code.
  */
-/*
-int RegExp::execute(const std::string &str, std::vector<std::string> & result) const {
 
-	/// Allocates space for the matches.
-	const size_t n = regExpBinary.re_nsub + 1;
-	// cerr << "binary has subs:" << regExpBinary.re_nsub << endl;
-
-	result.clear();
-	result.resize(n);
-
-	//cout << "resize => " << this->size() << endl;
-
-	/// Allocates temp array for <regex.h> processing.
-	//regmatch_t *pmatch = new regmatch_t[n];
-	std::vector<regmatch_t> pmatch(n);
-
-	/// The essential <regex.h> wrapper.
-	/// (Notice the negation of boolean return values.)
-	/// In success, indices (rm_so,rm_eo)
-	/// will point to matching segments of toStr.
-	/// Eflags not implemented (yet?).
-
-	//cerr << "\nTrying " << toStr.c_str() << endl;
-	int resultCode = regexec(&regExpBinary, str.c_str(), pmatch.size(), &pmatch[0], 0) ;
-
-	//cerr << "result " << result << endl;
-
-	if (resultCode == REG_NOMATCH){
-		//cerr << "dont like " << toStr.c_str() << endl;
-		result.clear();
-	}
-	else {
-		regoff_t so;
-		regoff_t eo;
-		//size_t i;
-		for (size_t i=0; i < n; i++){
-			so = pmatch[i].rm_so; // start
-			eo = pmatch[i].rm_eo; // end
-			//cerr << "match" << so << "..." << eo << endl;
-			if (so != -1)
-				result[i].assign(str,so,eo - so);
-		}
-	}
-	delete[] pmatch; // valgrind herjasi muodosta: delete pmatch
-	return resultCode;
-
-}
-*/
 
 void RegExp::replace(const std::string &src, const std::string & replacement, std::ostream  & ostr) const {
 
@@ -236,7 +187,7 @@ void RegExp::replace(const std::string &src, const std::string & replacement, st
 
 std::ostream & operator<<(std::ostream &ostr, const drain::RegExp & r){
 
-	ostr << r.toStr();
+	ostr << r.toStr() << ", flags=" << r.flags;
 	for (std::vector<std::string>::const_iterator it = r.result.begin(); it != r.result.end(); ++it){
 		ostr << '|' << *it;
 	}

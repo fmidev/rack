@@ -166,6 +166,16 @@ public:
 
 	bool deriveDifference(double v1, double v2, double & dOmega) const;
 
+	/// Detect Doppler speed aliasing (wrapping)
+	/**
+	 *  \param v1 - raw code value for speed
+	 *  \param v2 - raw code value for speed
+	 *  \param NI_threshold - speed threshold close to max velocity (NI), for example 90% * NI.
+	 *  \return
+	 *
+	 */
+	signed char checkAliasing(double v1, double v2, double NI_threshold) const;
+
 	/// Returns elevation angle in radians
 	inline
 	double getElangleR() const {

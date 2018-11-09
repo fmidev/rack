@@ -133,7 +133,9 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	Image rleVert;
 	rleVert.setPhysicalScale(0.0, 1.0);
-	RunLengthVertOp(src.odim.scaleInverse(reflMin)).process(srcElong, rleVert);  //
+	//mout.warn() <<  "codeMin=" << src.odim.scaleInverse(reflMin) << mout.endl;
+	//RunLengthVertOp(src.odim.scaleInverse(reflMin)).process(srcElong, rleVert);  //
+	RunLengthVertOp(0.2).process(srcElong, rleVert);  //
 	storeDebugData(2, rleVert, "RLE-VERT");
 
 	UnaryFunctorOp<RemappingFunctor> remap;

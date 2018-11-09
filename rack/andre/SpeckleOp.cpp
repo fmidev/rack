@@ -65,8 +65,9 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	fuzzyBell.set(0.0, area, dst.odim.scaleInverse(1.0));
 	//SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
 	SegmentAreaOp<float,unsigned short> op(fuzzyBell, reflMin, 70.0); // dBZ!	//"min,max,mapping,mSlope,mPos"
+	//SegmentAreaOp<float,unsigned short> op(fuzzyBell, src.odim.scaleInverse(reflMin)); // "min,max,mapping,mSlope,mPos"
 
-	mout.debug(1) << op << mout.endl;
+	mout.note() << op << mout.endl;
 	mout.debug(1) << src.data.getCoordinatePolicy() << mout.endl;
 
 	//if (mout.isDebug(10)) File::write(src.data,"SegmentAreaOp_src.png");
