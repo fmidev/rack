@@ -48,6 +48,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
 
+#include "DataSelector.h" // Range
+
+
 namespace rack {
 
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
@@ -276,6 +279,44 @@ void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & 
 	//while (i < path.size()); //(i != std::string::npos);
 }
 
+
+
+class DataSelector2 : public drain::BeanLike {
+
+public:
+
+	DataSelector2();
+
+	// For compatibility
+	std::string path;
+
+
+	// Path criteria
+	Range<int> dataset;
+	Range<int> data;
+
+	bool isValidPath(const ODIMPath & path) const;
+
+	// Data criteria
+	Range<double> elangle;
+
+	std::string quantityStr;
+	//drain::RegExp quantity; // consider other, like std::set?
+
+	bool isValidData(const drain::ReferenceMap & properties) const ;
+
+	/// Restore default values.
+	void reset();
+
+	// Restore all the ranges to [min,min]; useful when explicitly set ranges are desired.
+	void collapse();
+
+protected:
+
+	mutable
+	std::set<std::string> quantitySet;
+
+};
 
 
 } // rack::

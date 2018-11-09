@@ -47,6 +47,33 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+
+template <class T>
+class Range  {
+
+public:
+
+	Range() : vect(2), min(vect[0]), max(vect[1]) {
+	}
+
+	std::vector<T> vect;
+	T & min;
+	T & max;
+
+	bool isInside(T x) const {
+		return (min <= x) && (x <= max);
+	}
+
+};
+
+
+
+template <class T>
+std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
+	ostr << r.min << ':' << r.max;
+	return ostr;
+}
+
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
 /**
  *    Future version will use:
@@ -72,11 +99,16 @@ public:
 	/// Regular expression of accepted paths, for example ".*/data$".
 	std::string path;
 
-	// Under consideration
+	// Path criteria
+	Range<int> dataset;
+	Range<int> data;
+	// This was under consideration
 	// mutable drain::RegExp pathRegExp;
+
 
 	/// Regular expression of accepted PolarODIM what::quantity, for example "DBZ.?" .
 	std::string quantity;
+	//NEW /? std::string quantityStr;
 
 	/// The (minimum) index of the key in the list of matching keys.
 	unsigned int index;
@@ -85,10 +117,23 @@ public:
 	unsigned int count;
 
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
-	std::vector<double> elangle;
+	Range<double> elangle;
+	// OLD std::vector<double> elangle;
+	bool isValidPath(const ODIMPath & path) const;
 
-	/// Sets the default values.
+	// Data criteria
+
+	/// Check if metadata matches.
+	bool isValidData(const drain::ReferenceMap & properties) const ;
+
+	/// Restore default values.
 	void reset();
+
+	template <class T>
+	void getPathsNEW(const HI5TREE & src, T & container) const;
+
+	/// Temporary fix for intermediate stage
+	void updatePaths();
 
 	/// Sets this selector similar to given selector.
 	// void copy(const DataSelector & selector);
@@ -161,8 +206,7 @@ public:
 
 
 	/// Returns data paths, mapped by elevation.
-	static
-	void getPaths(const HI5TREE &src, std::map<double,std::string> & path);
+	//static 	void getPaths(const HI5TREE &src, std::map<double,std::string> & path);
 
 	/// Convenience function. Often only o ne path is return in the list, or only the first path is needed.
 	static
@@ -258,30 +302,12 @@ public:
 	inline
 	const drain::image::Image & getData(const HI5TREE &src, const DataSelector & selector){
 		return getNode(src, selector).dataSet;
-		/*
-		std::string path;
-		if (getPath(src,  selector, path))
-			return src[path].data.dataSet;
-		else {
-			static const drain::image::Image _empty;
-			return _empty;
-		}
-		*/
 	}
 
 	static
 	inline
 	drain::image::Image & getData(HI5TREE &src, const DataSelector & selector){
 		return getNode(src, selector).dataSet;
-		/*
-		std::string path;
-		if (getPath(src,  selector, path))
-			return src[path].data.dataSet;
-		else {
-			static drain::image::Image _empty;
-			return _empty;
-		}
-		*/
 	}
 
 	/// Given a path to data, tries to find the respective "quality1" field. Currently, does not check quantity.
@@ -339,24 +365,6 @@ public:
 	}
 
 
-
-	/*
-	inline
-	std::string getKeys() const {
-		return _parameters.getKeys();
-	}
-
-	inline
-	std::string getValues() const {
-		return _parameters.getValues();
-	}
-
-	inline
-	const drain::ReferenceMap & getParameters() const {
-		return _parameters;
-	}
-	*/
-
 protected:
 
 	//drain::ReferenceMap _parameters;
@@ -375,7 +383,7 @@ protected:
 	void getPathsT(const HI5TREE &src, const DataSelector & selector, T & container){
 		getPaths(src, container, selector.path, selector.quantity,
 				selector.index, selector.count,
-				selector.elangle[0], selector.elangle[1]); // min, max
+				selector.elangle.min, selector.elangle.max); // min, max
 	}
 
 
@@ -396,16 +404,28 @@ protected:
 	}
 	*/
 
+	/// NEW Collects paths to a list.
+	template <class P>
+	static
+	void addPathT(std::list<P> & l, const PolarODIM & odim, const P & path){ l.push_back(path); }
+
+
 	/// Collects paths to a list.
+	/*
 	static
 	inline
 	void addPathT(std::list<std::string> & l, const PolarODIM & odim, const std::string &path){ l.push_back(path); }; // discards elevation
+	*/
 
 	/// Collects paths to a set. (unused?)
+	template <class P>
+	static
+	void addPathT(std::set<P> & l, const PolarODIM & odim, const P & path){ l.insert(path); }
+	/*
 	static
 	inline
 	void addPathT(std::set<std::string> & s, const PolarODIM & odim, const std::string &path){ s.insert(path); }; // discards elevation
-
+	*/
 
 	/// Collects paths by their elevation angle (elangle).
 	static
@@ -422,12 +442,16 @@ protected:
 	inline
 	bool addPathT(std::list<std::string> & l, const std::string &path){ l.push_back(path); return false; };  // ??
 
+
 	/// Add a std::string. Search ends with the first entry encountered.
 	static
 	inline
 	bool addPathT(std::string & str, const std::string &path){ str.assign(path); return true; };  // ??
 
 };
+
+
+
 
 template <class T>
 void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string & path, const std::string &quantity,

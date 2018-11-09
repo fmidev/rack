@@ -30,9 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/util/Type.h>
+#include <drain/util/RegExp.h>
 
 #include "hi5/Hi5.h"
 #include "DataSelector.h"
+
 
 namespace rack {
 
@@ -40,7 +42,7 @@ using namespace hi5;
 
 DataSelector::DataSelector(const std::string & path, const std::string & quantity,
 		unsigned int index, unsigned int count,
-		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__), elangle(2) {
+		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__) { //, elangle(2) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
 	init();
@@ -48,14 +50,14 @@ DataSelector::DataSelector(const std::string & path, const std::string & quantit
 	this->quantity = quantity;
 	this->index = index;
 	this->count = count;
-	this->elangle[0] = elangleMin;
-	this->elangle[1] = elangleMax;
+	this->elangle.min = elangleMin;
+	this->elangle.max = elangleMax;
 
 	//std::cerr << 1 << *this << std::endl;
 }
 
 
-DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__), elangle(2) {
+DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__){ //, elangle(2) {
 
 	init();
 	setParameters(parameters);
@@ -63,7 +65,7 @@ DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__), elangle(2) {
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__){ //, elangle(2) {
 	init();
 	copy(selector);
 }
@@ -73,28 +75,138 @@ DataSelector::~DataSelector() {
 }
 
 void DataSelector::init() {
+
 	reset();
+
 	parameters.reference("path", path);
 	parameters.reference("quantity", quantity);
 	parameters.reference("index", index);
 	parameters.reference("count", count);
+
+	parameters.reference("elangle", elangle.vect);
+
+	parameters.reference("quantity", quantity);
+	// quantity.insert("");
+	// reset(){...} ?
+
+	parameters.reference("dataset", dataset.vect);
+	parameters["dataset"].fillArray = true;
+
+	parameters.reference("data", data.vect);
+	parameters["data"].fillArray = true;
+
+	// Deprecating, use "elangle=min:max" instead
+	parameters.reference("elangleMin", elangle.min);
+	parameters.reference("elangleMax", elangle.max);
+	/*
+	 * OLD
 	parameters.reference("elangle", elangle);
-	//parameters["elangle"].toJSON(std::cout, '\n');
 	parameters.reference("elangleMin", elangle[0]);
 	parameters.reference("elangleMax", elangle[1]);
+	*/
+
 }
 
 void DataSelector::reset() {
+
 	path = "";
 	quantity = "";
 	index = 0;
 	count = 1000;
-	elangle.resize(2);
-	elangle[0] = -90;
-	elangle[1] = +90;
+
+	// New
+	elangle.min = -90.0;
+	elangle.max = +90.0;
+	// Old
+	//elangle.resize(2);
+	//elangle[0] = -90;
+	//elangle[1] = +90;
+
+	dataset.min = 0;
+	dataset.max = 0xffff;
+	data.min = 0;
+	data.max = 0xffff;
+
+
+}
+
+bool DataSelector::isValidPath(const ODIMPath & path) const {
+
+	for (ODIMPath::const_iterator it = path.begin(); it != path.end(); ++it){
+		switch (it->group) {
+			case ODIM::DATASET:
+				if (!dataset.isInside(it->index))
+					return false;
+				break;
+			case ODIM::DATA:
+				if (!data.isInside(it->index))
+					return false;
+				break;
+			default:
+				break;
+		}
+	}
+
+	return true;
+
+}
+
+void DataSelector::updatePaths(){
+
+	drain::Logger mout(getName(), __FUNCTION__);
+
+	static drain::RegExp rangeReg("^([+-]?[[:digit:]]+)(:([+-]?[[:digit:]]+))?$");
+
+
+	static drain::RegExp datasetRE("/?dataset([^/]+)(/.*)?$");
+
+	if (datasetRE.execute(path)==0){
+		const std::string & datasetIndex = datasetRE.result[1];
+		if (rangeReg.test(datasetIndex)){
+			setParameter("dataset", datasetIndex);
+		}
+		else {
+			mout.note() << "deprecating form: " << datasetIndex << mout.endl;
+			mout.warn() << "'path' (with regexps) is deprecating, consider explicit parameter 'dataset'" << mout.endl;
+		}
+	}
+
+	static drain::RegExp dataRE("/?data([^set/]+)(/.*)?$");
+
+	if (dataRE.execute(path)==0){
+		const std::string & dataIndex = dataRE.result[1];
+		if (rangeReg.test(dataIndex)){
+			setParameter("data", dataIndex);
+		}
+		else {
+			mout.note() << "deprecating form: " << dataIndex << mout.endl;
+			mout.warn() << "'path' (with regexps) is deprecating, consider explicit parameter 'data'" << mout.endl;
+		}
+	}
+
+
+}
+
+bool DataSelector::isValidData(const drain::ReferenceMap & properties) const {
+
+	if (properties.hasKey("where:elangle"))
+		if (!elangle.isInside(properties["where:elangle"]))
+			return false;
+
+	/*
+	if (properties.hasKey("what:quantity")){
+		drain::StringTools::split(quantity, quantitySet, ':');
+		if (quantitySet.find(properties["what:quantity"]) == quantitySet.end())
+			return false;
+	}
+	*/
+
+	return true;
+
 }
 
 
+// ------ OLD ------------------
 bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & basePath, int & index){
 
 	drain::Logger mout("DataSelector", __FUNCTION__);

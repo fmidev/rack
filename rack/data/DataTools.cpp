@@ -213,6 +213,79 @@ bool DataTools::getLastChild(HI5TREE & tree, ODIMPathElem & child){ //, BaseODIM
 
 }
 
+
+DataSelector2::DataSelector2() : drain::BeanLike("DataSelector2") {
+
+	// For compatibility
+	parameters.reference("path", path);
+
+	parameters.reference("elangle", elangle.vect);
+
+	parameters.reference("quantity", quantityStr);
+	// quantity.insert("");
+	// reset(){...} ?
+
+	parameters.reference("dataset", dataset.vect);
+	parameters["dataset"].fillArray = true;
+
+	parameters.reference("data", data.vect);
+	parameters["data"].fillArray = true;
+
+}
+
+void DataSelector2::reset(){
+	dataset.min = 0;
+	dataset.max = 0xffff;
+	data.min = 0;
+	data.max = 0xffff;
+	elangle.min = -90.0;
+	elangle.max = +90.0;
+}
+
+void DataSelector2::collapse(){
+	dataset.max = dataset.min;
+	data.max = data.min;
+	elangle.max = elangle.min;
+}
+
+bool DataSelector2::isValidPath(const ODIMPath & path) const {
+
+	for (ODIMPath::const_iterator it = path.begin(); it != path.end(); ++it){
+		switch (it->group) {
+			case ODIM::DATASET:
+				if (!dataset.isInside(it->index))
+					return false;
+				break;
+			case ODIM::DATA:
+				if (!data.isInside(it->index))
+					return false;
+				break;
+			default:
+				break;
+		}
+	}
+
+	return true;
+
+}
+
+
+bool DataSelector2::isValidData(const drain::ReferenceMap & properties) const {
+
+	if (properties.hasKey("where:elangle"))
+		if (!this->elangle.isInside(properties["where:elangle"]))
+			return false;
+
+	if (properties.hasKey("what:quantity")){
+		drain::StringTools::split(quantityStr, quantitySet, ':');
+		if (quantitySet.find(properties["what:quantity"]) == quantitySet.end())
+			return false;
+	}
+
+	return true;
+
+}
+
 }  // rack::
 
 // Rack
