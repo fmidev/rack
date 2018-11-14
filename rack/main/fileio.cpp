@@ -258,9 +258,10 @@ public:
 extern CommandEntry< CmdOutputPrefix > cmdOutputPrefix;
 //static CommandEntry<CmdOutputPrefix> cmdOutputPrefix( "outputPrefix", 0);
 
-
+/// <= Note: each path starts with root element BaseODIM::ROOT, corresponding to empty string ("").
+/*
 template <class T>
-void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
+void DataSelector::getPathsNEW(const HI5TREE &src, T & container, bool dataSetsOnly) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -276,7 +277,7 @@ void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
 	src.getKeys(l0);
 
 	// Accept no data[n]
-	const bool DATASETS = (data.max == 0);
+	const bool DATASETS = dataSetsOnly || (data.max == 0);
 	if (DATASETS)
 		mout.debug(1) << "datasets only" << mout.endl;
 
@@ -343,14 +344,6 @@ void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
 		// Outside index check, because mostly applied by count check as well.
 		mout.debug() << "considering " << *it << mout.endl;
 
-		/*
-		if (DATASETS){
-			if (leaf.is(BaseODIM::DATA)){ // what about quality?
-				continue;
-			}
-		}
-		*/
-
 		// Update count
 		if (stems.find(stem) == stems.end()){ // = not already in the set
 			++counter;
@@ -361,8 +354,8 @@ void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
 				odim.clear();
 				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
 				mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
-				ODIMPath p;
-				p << stem;
+				ODIMPath p; // consider ODIMPath(ODIMPathElement(ROOT))?
+				p << ODIMPathElem(BaseODIM::ROOT) << stem;
 				addPathT(container, odim, p);
 			}
 		}
@@ -390,7 +383,7 @@ void DataSelector::getPathsNEW(const HI5TREE &src, T & container) const {
 	}
 
 }
-
+*/
 
 class CmdOutputFile : public SimpleCommand<std::string> {
 
@@ -662,7 +655,7 @@ public:
 
 			std::list<ODIMPath> paths;
 			//const HI5TREE & src2 = *resources.currentHi5;
-			selector.getPathsNEW(*resources.currentHi5, paths);
+			selector.getPathsNEW(*resources.currentHi5, paths, true);
 
 			if (paths.empty()){
 				mout.warn() << "no paths found with: " << selector << mout.endl;
@@ -691,6 +684,7 @@ public:
 
 				mout.debug() << "sampling Cartesian data: " << mout.endl;
 				const DataSet<CartesianSrc> dataset(src, drain::RegExp(selector.quantity));
+				mout.info() << "data:" << dataset << mout.endl;
 				/*
 				for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
 					mout.warn() << "data:" << it->first << mout.endl;

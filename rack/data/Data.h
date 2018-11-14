@@ -860,6 +860,30 @@ protected:
 };
 
 
+template <typename DT>
+std::ostream & operator<<(std::ostream & ostr, const DataSet<DT> & d){
+	ostr << "dataSet ";
+	char separator = 0;
+	drain::image::Geometry g;
+	for (DataSet<CartesianSrc>::const_iterator it = d.begin(); it != d.end(); ++it){
+		if (separator)
+			ostr << separator;
+		else {
+			separator = ',';
+			g.setGeometry(it->second.data.getGeometry());
+		}
+		ostr << it->first << '[' << drain::Type::getTypeChar(it->second.data.getType()) << ']';
+	}
+	ostr << " ("<< g << ")";
+	/*
+	ostr << d.data << ", ODIM:\t ";
+	ostr << d.odim << '\n';
+	ostr << "props: " << d.data.properties << '\n';
+	*/
+	return ostr;
+}
+
+
 /// Structure for storing sweeps by their elevation angle.
 ///  Note: this approach fails if a volume contains several azimuthal sweeps with a same elevation angle.
 // Becoming DEPRECATED

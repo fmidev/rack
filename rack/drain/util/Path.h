@@ -71,10 +71,20 @@ public:
 		set(s);
 	};
 
-
+	/// Copy constructor. Note: copies also the separator.
 	inline
 	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator) {
 	};
+
+	/// Constructor that initialises the path with a single element - typically a root.
+	/**
+	 *  The root might correspond to an empty string.
+	 */
+	inline
+	Path(const T & e, char separator='/') : separator(separator) {
+		this->push_back(e);
+	};
+
 
 	virtual inline
 	~Path(){};
@@ -83,27 +93,7 @@ public:
 
 	inline
 	void set(const std::string & p){
-		//const std::string sep(1,separator);
-		//StringTools::split(p, *this, sep); //, sep);
 		StringTools::split(p, *this, separator);
-	}
-
-	virtual inline
-	std::ostream & toOStr(std::ostream & ostr) const {
-		return drain::StringTools::join(*this, ostr, this->separator);
-	}
-
-	inline
-	void toStr(std::string & str) const {
-		std::stringstream sstr;
-		toOStr(sstr);
-		str = sstr.str();
-	}
-
-	operator std::string () const {
-		std::stringstream sstr;
-		toOStr(sstr);
-		return sstr.str();
 	}
 
 	/*
@@ -127,6 +117,26 @@ public:
 		this->pop_back();
 		return *this;
 	}
+
+
+	virtual inline
+	std::ostream & toOStr(std::ostream & ostr) const {
+		return drain::StringTools::join(*this, ostr, this->separator);
+	}
+
+	inline
+	void toStr(std::string & str) const {
+		std::stringstream sstr;
+		toOStr(sstr);
+		str = sstr.str();
+	}
+
+	operator std::string () const {
+		std::stringstream sstr;
+		toOStr(sstr);
+		return sstr.str();
+	}
+
 
 };
 

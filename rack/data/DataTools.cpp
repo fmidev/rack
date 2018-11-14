@@ -213,7 +213,7 @@ bool DataTools::getLastChild(HI5TREE & tree, ODIMPathElem & child){ //, BaseODIM
 
 }
 
-
+/*
 DataSelector2::DataSelector2() : drain::BeanLike("DataSelector2") {
 
 	// For compatibility
@@ -285,6 +285,8 @@ bool DataSelector2::isValidData(const drain::ReferenceMap & properties) const {
 	return true;
 
 }
+*/
+
 
 }  // rack::
 

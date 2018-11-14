@@ -129,10 +129,27 @@ public:
 	/// Restore default values.
 	void reset();
 
+	/// Select dataset/data paths using current selection criteria.
+	/**
+	 *   Selects paths down to \c dataset and \c data group level. Uses metadata of \c what , \c where and \c how but
+	 *   does not include them in the result (container).
+	 *
+	 *   Note: each retrieved path starts with root element (BaseODIM::ROOT), corresponding to empty string ("").
+	 *
+	 *   \tparam - container class supporting push_(), e.g. std::set, std::list or std::vector.
+	 *   \param src - the data structure searched for paths
+	 *   \param container - container for found paths
+	 *   \param dataSetsOnly - switch for collecting first level groups (\c dataset 's) only
+	 *
+	 */
 	template <class T>
-	void getPathsNEW(const HI5TREE & src, T & container) const;
+	void getPathsNEW(const HI5TREE & src, T & container, bool dataSetsOnly = false) const; // consider: bool dataSetsOnly = false ?
 
-	/// Temporary fix for intermediate stage
+
+	/// Temporary fix: try to derive dataset and data indices from path regexp.
+	/**
+	 *   Variable 'path' will be probably obsolete in future.
+	 */
 	void updatePaths();
 
 	/// Sets this selector similar to given selector.
@@ -450,6 +467,130 @@ protected:
 
 };
 
+/// <= Note: each path starts with root element BaseODIM::ROOT, corresponding to empty string ("").
+template <class T>
+void DataSelector::getPathsNEW(const HI5TREE &src, T & container, bool dataSetsOnly) const {
+
+	drain::Logger mout(getName(), __FUNCTION__);
+
+	PolarODIM odim;
+
+	const drain::RegExp quantityRE(quantity);
+	std::set<ODIMPathElem> stems;
+	unsigned int counter = 0; // (this was needed as count would go -1 otherways below)
+
+	// Step 1: retrieve a temporary list of all paths
+	std::list<ODIMPath> l0;
+	mout.debug() << "getKeys " << path << mout.endl;
+	src.getKeys(l0);
+
+	// Accept no data[n]
+	const bool DATASETS = dataSetsOnly || (data.max == 0);
+	if (DATASETS)
+		mout.debug(1) << "datasets only" << mout.endl;
+
+	// Step 2: select only the paths matching the criteria
+	for (std::list<ODIMPath>::iterator it = l0.begin(); it != l0.end(); ++it) {
+
+		//mout.note() << *it << mout.endl;
+
+		if (it->size() == 1) // only the stem ("") ???
+			continue;
+
+		const ODIMPathElem & stem = *(++(it->begin()));
+
+		mout.debug(2) << ": " << stem << "-> " << *it  << mout.endl;
+
+		if (stem.is(BaseODIM::DATASET)){
+			if (!dataset.isInside(stem.index)){
+				mout.debug() << "skip dataset " << stem.index << ", not in [" <<  dataset << ']' << mout.endl;
+				continue;
+			}
+		}
+
+		const ODIMPathElem & leaf = it->back();
+
+		if (leaf.is(BaseODIM::DATA)){ // what about quality?
+			if (!DATASETS){
+				if (!data.isInside(leaf.index)){
+					mout.warn() << "data " << leaf.index << " not in [" <<  data << ']' << mout.endl;
+					continue;
+				}
+			}
+		}
+		else if (!leaf.isIndexed()) { //(!leaf.is(BaseODIM::DATASET)){ //(!leaf.isIndexed()) {
+			// Skip WHAT, WHERE, HOW, ARRAY
+			mout.debug() << " skipping " << leaf << mout.endl;
+			continue;
+		}
+
+
+		//mout.debug(2) << *it << mout.endl;
+		const hi5::NodeHi5 & node = src(*it).data;
+		if (node.noSave){
+			mout.debug() << "noSave data, ok: " << *it << mout.endl;
+			//continue;
+		}
+
+		const drain::image::Image & d = node.dataSet;
+		//odim.clear();
+		//odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+
+		if (!quantityRE.test(d.properties["what:quantity"])){
+			//if (!quantityRE.test(odim.quantity)){
+			mout.debug() << *it << "\n\t quantity '" << quantityRE.toStr() << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
+			continue;
+		}
+
+		if (d.properties.hasKey("where:elangle")){
+			if (!elangle.isInside(d.properties["where:elangle"])){
+				mout.debug() << "outside elangle range"<< mout.endl;
+				continue;
+			}
+		}
+
+		// Outside index check, because mostly applied by count check as well.
+		mout.debug() << "considering " << *it << mout.endl;
+
+		// Update count
+		if (stems.find(stem) == stems.end()){ // = not already in the set
+			++counter;
+			if (counter > count)
+				return;
+			stems.insert(stem);
+			if (DATASETS){ // Skip adding others than first
+				odim.clear();
+				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+				mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
+				ODIMPath p; // consider ODIMPath(ODIMPathElement(ROOT))?
+				p << ODIMPathElem(BaseODIM::ROOT) << stem;
+				addPathT(container, odim, p);
+			}
+		}
+
+		if (DATASETS){ // Skip adding others than first
+			continue;
+		}
+
+
+		/// Skip non-datasets, if datasets requested, and vice versa
+		if (!leaf.is(BaseODIM::DATA)){
+			mout.warn() << "unexpected path: " << *it << mout.endl;
+		}
+
+		odim.clear();
+		odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
+
+		mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
+		//container.push_back(*it);
+		addPathT(container, odim, *it);
+
+		//
+
+
+	}
+
+}
 
 
 

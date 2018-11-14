@@ -69,6 +69,7 @@ public:
 		parameters.reference("dbzSpan", this->dbzSpan = dbzSpan, "dBZ");
 
 		dataSelector.quantity = "DBZH$";
+		dataSelector.count = 1;
 		REQUIRE_STANDARD_DATA = false;
 	};
 

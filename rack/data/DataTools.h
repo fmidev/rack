@@ -280,7 +280,7 @@ void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & 
 }
 
 
-
+/*
 class DataSelector2 : public drain::BeanLike {
 
 public:
@@ -317,7 +317,7 @@ protected:
 	std::set<std::string> quantitySet;
 
 };
-
+*/
 
 } // rack::
 
