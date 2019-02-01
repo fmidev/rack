@@ -12,7 +12,7 @@ help:
 
 release: #unpack
 	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
-	tar xvzf make.tgz
+	tar xzf make.tgz --keep-newer-files
 	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
 #unpack:
