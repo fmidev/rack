@@ -60,29 +60,27 @@ namespace drain {
 
 namespace image {
 
-
+/// Image with modifiable geometry.
 class ModifiableImage : public MultiChannel {
 
 public:
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	/**
-	   \return true if geometry was changed, otherwise false.
 
 	    The buffer will always have at least one element to guarantee a safe call to begin().
 
-	    \see CmdGeometry
-
 	 */
+	// 	Consider old feature: \return true if geometry was changed, otherwise false.
 	virtual inline
 	void setGeometry(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
 
-		//if (!ImageFrame::isView()){
-
 		// const bool result =
 		geometry.setGeometry(width, height, imageChannels, alphaChannels);
+		adjustBuffer();
+		/*
+		const size_t s = geometry.getVolume() * encoding.byteSize;
 
-		const size_t s = geometry.getVolume() * byteSize;
 
 		if (s > 0)
 			buffer.resize(s);
@@ -92,6 +90,7 @@ public:
 		bufferPtr = &buffer[0];
 		segmentBegin = (void *)&(*buffer.begin());
 		segmentEnd   = (void *)&(*buffer.end());
+		*/
 
 		this->channelVector.clear();
 		//updateChannelVector();
@@ -304,36 +303,15 @@ public:
 	/// Prints images geometry, buffer size and type information, and dumps the array contents. Consider toOStr...
 	void dump(std::ostream &ostr = std::cout) const;
 
-	/*
-	virtual
-	const ImageScaling & getScaling() const {
-		return scaling;
-	}
-	*/
-
-	/*
-	virtual
-	ImageScaling & getScaling(){
-		return scaling;
-	}
-	*/
-
-
-
-	inline
-	void setPhysicalScale(double min, double max){
-		// getScaling()
-		scaling.setPhysicalScale(getType(), min, max);
-	}
 
 
 	inline
 	void adoptScaling(const ImageFrame & src, const std::type_info & t = typeid(void)){
 		useOwnScaling(); // needed?
 		if (t == typeid(void))
-			scaling.adoptScaling(src.getScaling(), src.getType(), getType());
+			encoding.scaling.adoptScaling(src.getScaling(), src.getType(), getType());
 		else
-			scaling.adoptScaling(src.getScaling(), src.getType(), t);
+			encoding.scaling.adoptScaling(src.getScaling(), src.getType(), t);
 	}
 
 

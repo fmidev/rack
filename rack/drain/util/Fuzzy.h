@@ -105,6 +105,20 @@ private:
 /*!
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
+ *
+
+ Examples with and without physical scaling to (0.0,1.0), setting step at 50% intensity (128 and 0.5):
+ \code
+	drainage gray.png        --fuzzyStep 128,64,255 -o fuzzyStep.png
+	drainage gray.png -R 0,1 --fuzzyStep 0.5,0.25   -o fuzzyStep-phys.png
+ \endcode
+
+When changing storage type, scaling must be given explicitly (here 256, from \c C to \c S ) or physically with \c -R :
+ \code
+    drainage gray.png         -T S --fuzzyStep 128,64,255 -o fuzzyStep-16bit.png
+	drainage gray.png  -R 0,1 -T S --fuzzyStep 0.25,0.5   -o fuzzyStep-16bit-phys.png
+ \endcode
+
  */
 template <class T> //,class T2>
 class FuzzyStep : public Fuzzifier<T> {
@@ -141,6 +155,8 @@ public:
 	inline
 	void update() const {
 
+		drain::Logger mout(this->getName(), __FUNCTION__);
+
 		this->INVERSE = (startPos > endPos);
 
 		if (!this->INVERSE){
@@ -156,6 +172,8 @@ public:
 		}
 
 		this->updateScale();
+
+		mout.debug(1) << this->scaleFinal << ',' << this->biasFinal << mout.endl;
 
 	}
 
@@ -197,6 +215,12 @@ private:
 /*!
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
+ *
+	\code
+	drainage gray.png        --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle.png
+	drainage gray.png -R 0,1 --fuzzyTriangle 0.25,0.5,0.75  -o fuzzyTriangle-phys.png
+	drainage gray.png -T S   --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle-16bit.png
+	\endcode
  */
 template <class T>  //,class T2>
 class FuzzyTriangle : public Fuzzifier<T> {

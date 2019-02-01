@@ -120,8 +120,8 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	tmpLap.setPhysicalScale(0.0, 1.0);
 	LaplaceHorzOp lapHorz(2); // not enough, detects edeges.
 	mout.debug(4) << lapHorz << mout.endl;
-	lapHorz.traverseChannel(tmpFuzzyDBZ, tmpLap[0]);
-	storeDebugData(2, tmpLap[0], "SHIP_HPH"); // for debugging only
+	lapHorz.traverseChannel(tmpFuzzyDBZ, tmpLap.getChannel(0));
+	storeDebugData(2, tmpLap.getChannel(0), "SHIP_HPH"); // for debugging only
 
 	/*
 	LaplaceVertOp lapVert(2); // not enough, detects edeges.
@@ -135,7 +135,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 	drain::image::Image tmpPeaks(typeid(unsigned char));
 
-	drain::FuzzyBell<double> fuzzyBell(5.0, width*height, tmpPeaks.getMax<double>());
+	drain::FuzzyBell<double> fuzzyBell(5.0, width*height, tmpPeaks.getEncoding().getTypeMax<double>());
 	//SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, srcData.odim.scaleInverse(reflMin));
 	SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, reflMin);
 	//SegmentAreaOp<double,unsigned char> segArea;
@@ -156,10 +156,10 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	BinaryFunctorOp<MultiplicationFunctor> mulOp;
 	mulOp.functor.setScale(1); // = 2.0;
 	mulOp.LIMIT = true;
-	mulOp.initializeParameters(tmpLap[0], tmpPeaks);
+	mulOp.initializeParameters(tmpLap.getChannel(0), tmpPeaks);
 	mulOp.makeCompatible(tmpPeaks, dstProb.data);
 	dstProb.setPhysicalRange(0.0, 1.0);
-	mulOp.traverseChannel(tmpLap[0], tmpPeaks, dstProb.data);
+	mulOp.traverseChannel(tmpLap.getChannel(0), tmpPeaks, dstProb.data);
 	storeDebugData(3, dstProb.data, "SHIP_FINAL"); // for debugging only
 	mout.debug(2) << dstProb.data << mout.endl;
 

@@ -79,7 +79,7 @@ class ODIM : public EncodingODIM {
 public:
 
 	inline
-	ODIM(group_t initialize=ALL) : EncodingODIM(initialize){
+	ODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
 		init(initialize);
 	};
 
@@ -191,9 +191,9 @@ public:
 	 *
 	 *  Examples of usage:
 	 *
-	 * 	- ODIM::copyToH5<ODIM::ROOT>(odim, resources.inputHi5);
-	 *	- ODIM::copyToH5<ODIM::DATASET>(odim, resources.inputHi5(dataSetPath));
-	 *  - ODIM::copyToH5<ODIM::DATA>(odim, dst);
+	 * 	- ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5);
+	 *	- ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5(dataSetPath));
+	 *  - ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst);
 	 *
 	 */
 	template <group_t G, class T>
@@ -225,13 +225,13 @@ protected:
 	template <class T>
 	inline
 	void initFromMap(const std::map<std::string,T> & m){
-		init(ALL);
+		init(ODIMPathElem::ALL_LEVELS);
 		updateFromMap(m);
 	}
 
 	virtual inline
 	void initFromImage(const drain::image::Image & img){  // =""
-		init(ALL);
+		init(ODIMPathElem::ALL_LEVELS);
 		this->quantity = img.getProperties().get("what:quantity", "");
 		copyFrom(img);
 	}
@@ -239,16 +239,18 @@ protected:
 	// deprec
 	virtual inline
 	void initFromImage(const drain::image::Image & img, const std::string & quantity){  // =""
-		init(ALL);
+		drain::Logger mout(__FILE__,__FUNCTION__);
+		init(ODIMPathElem::ALL_LEVELS);
 		this->quantity = quantity;
 		copyFrom(img);
+		//mout.warn() << "guantity finally=(" << this->quantity << '<' << quantity << ")" << mout.endl;
 	}
 
 private:
 
 
 	virtual // must
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 
 
@@ -262,3 +264,4 @@ private:
 #endif
 
 // Rack
+ // REP // REP // REP

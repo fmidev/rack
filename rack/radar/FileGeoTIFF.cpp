@@ -93,7 +93,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 
 	Logger mout("FileGeoTIFF", __FUNCTION__);
 
-	const drain::VariableMap & prop = src.properties;
+	const drain::FlexVariableMap & prop = src.properties;
 
 	const size_t width  = src.getWidth();
 	const size_t height = src.getHeight();
@@ -114,7 +114,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 			break;
 		default:
 			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
-			mout.warn() << "unsupported storage type=" <<  src.getType2() << ", trying 8 bit mode"<< mout.endl;
+			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
 	}
 
 	// write as tiles
@@ -274,7 +274,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 
 		const bool UCHAR8 = (bitspersample==8); // ? 1 : 2; // 8 or 16 bit data
 
-		Image tile;
+		drain::image::Image tile;
 		if (UCHAR8)
 			tile.setType<unsigned char>();
 		else
@@ -344,7 +344,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 		const drain::Type t(src.getType());
 		if ((t == 'C') || (t=='S')){
 			/// Address each ŕow directly
-			const int rowBytes = width*src.getByteSize();
+			const int rowBytes = width * src.getEncoding().getByteSize();
 			buffer = (unsigned char *)src.getBuffer();
 			for (int j=0; j<height; ++j){
 				if (!TIFFWriteScanline(tif, &(buffer[j * rowBytes]), j, 0))
@@ -375,7 +375,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
  */
-//void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const std::list<std::string> & paths){
+//void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const std::list<ODIMPath> & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
 	Logger mout("FileGeoTIFF", __FUNCTION__);
@@ -455,3 +455,4 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 
 
 // Rack
+ // REP

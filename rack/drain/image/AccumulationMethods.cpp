@@ -141,27 +141,11 @@ void AccumulationMethod::extractDev(const AccumulationConverter & coder, Image &
 
 }
 
-void AccumulationMethod::extractDevInv(const AccumulationConverter & coder, Image & dst) const {
-
-	Image tmp;
-	//tmp.setType(dst.getType2());
-	tmp.initialize(dst.getType2(), dst.getGeometry());
-	/*
-
-	double stdDev;
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i){
-		stdDev = static_cast<double>(accumulationArray.count.at(i));  //???
-		coder.encodeStdDev(stdDev);
-		dst.put(i, stdDev);
-	}
-	*/
-}
 
 
 
 
-void OverwriteMethod::add(const size_t &i, double value, double weight) const{
+void OverwriteMethod::add(const size_t i, double value, double weight) const{
 	//coder.decode(value, weight);
 	//double value = vField;
 	//double weight = w;
@@ -197,21 +181,13 @@ void OverwriteMethod::extractDev(const AccumulationConverter & coder, Image & ds
 
 
 
-//void MaximumMethod::add(const size_t &i, const double & value, const double & weight) const{
-void MaximumMethod::add(const size_t &i, double value, double weight) const {
+//void MaximumMethod::add(const size_t i, const double & value, const double & weight) const{
+void MaximumMethod::add(const size_t i, double value, double weight) const {
 
 	// Note:  data initialized to undetectValue, but value may be negative. So, unconditional initialization with count==0.
-	// Note2: weight must be non-undetectValue, because undetectValue weight datat values may be large/undefined.
+	// Note2: weight must be non-undetectValue, because undetectValue weight data values may be large/undefined.
 	if (weight > 0.0){
 		if ( (accumulationArray.weight.at(i) == 0.0) || (value > (accumulationArray.data.at(i))) ){
-			/*
-			if (i % (2*accumulationArray.getWidth()+2) == 0){
-				std::cerr << " vField=" << value << ", w=" << weight << std::endl;
-				accumulationArray.data.at(i)   = 100*weight;
-				accumulationArray.weight.at(i) = 0.80;
-			}
-			else {
-			 */
 			accumulationArray.data.at(i)   = value;
 			accumulationArray.weight.at(i) = weight;
 		}
@@ -220,18 +196,13 @@ void MaximumMethod::add(const size_t &i, double value, double weight) const {
 	++accumulationArray.count.at(i); //  = 1;
 }
 
-void MinimumMethod::add(const size_t &i, double value, double weight) const{
-	//void MinimumMethod::add(const size_t &i, const double & value, const double & weight) const{
-	//coder.decode(value, weight);
+void MinimumMethod::add(const size_t i, double value, double weight) const{
 
 	// "Weight control" is needed, because data initialized with undetectValue, but 'value' can be negative.
-	//if ((value < accumulationArray.data.at(i)) || (accumulationArray.weight.at(i) == 0.0)){  // what about count?
-		//if ((value >= accumulationArray.data.at(it))){
 	if (weight > 0.0)
 		if ( (accumulationArray.weight.at(i) == 0.0) || (value < accumulationArray.data.at(i)) ){
 			accumulationArray.data.at(i)   = value;
 			accumulationArray.weight.at(i) = weight;
-			//accumulationArray.count.at(i)  = 1;
 		}
 
 	accumulationArray.count.at(i)  = 1;
@@ -239,10 +210,8 @@ void MinimumMethod::add(const size_t &i, double value, double weight) const{
 }
 
 
-void AverageMethod::add(const size_t &i, double value, double weight) const {
-	//void AverageMethod::add(const size_t &i, const double & value, const double & weight) const {
+void AverageMethod::add(const size_t i, double value, double weight) const {
 
-	//coder.decode(value, weight);
 	accumulationArray.count.at(i)  += 1;
 	if (weight > 0.0){
 		accumulationArray.data.at(i)   += value;
@@ -250,7 +219,18 @@ void AverageMethod::add(const size_t &i, double value, double weight) const {
 		accumulationArray.data2.at(i)  += value*value;
 	}
 
-	return;
+}
+
+void AverageMethod::add(const size_t i, double value, double weight, unsigned int count) const {
+
+	accumulationArray.count.at(i)  += count;
+	if (weight > 0.0){
+		double c = static_cast<double>(count);
+		accumulationArray.data.at(i)   += c*value;
+		accumulationArray.weight.at(i) += c;
+		accumulationArray.data2.at(i)  += c*value*value;
+	}
+
 }
 
 
@@ -377,20 +357,9 @@ void WeightedAverageMethod::updateInternalParameters(){ //const std::string & pa
 }
 
 
-void WeightedAverageMethod::add(const size_t &i, double value, double weight) const {
+void WeightedAverageMethod::add(const size_t i, double value, double weight) const {
 
 	accumulationArray.count.at(i) += 1;
-
-	/*
-	if ( value < bias ){
-		value = 0.0;
-	}
-	else if (USE_P){
-		value = pow(value - bias, p); // TODO: check overflow
-	}
-	else
-		value = value - bias; //dataScaling.inverse(value);
-	 */
 
 	// NO WEIGHTING if  r==0.0 ( WAVG,p,0 === AVG )
 	if (weight > 0.0){
@@ -411,6 +380,32 @@ void WeightedAverageMethod::add(const size_t &i, double value, double weight) co
 	/// else (r==0, weight==0) just ++count, see above.
 
 }
+
+void WeightedAverageMethod::add(const size_t i, double value, double weight, unsigned int count) const {
+
+	accumulationArray.count.at(i) += count;
+
+	// NO WEIGHTING if  r==0.0 ( WAVG,p,0 === AVG )
+	if (weight > 0.0){
+
+		double c = static_cast<double>(count);
+
+		// NEW 2017: if p==1, allow negative values (and exponent r in weight)
+		if (USE_P)
+			value = pow(value - bias, p);
+
+		if (USE_R)
+			weight = pow(weight, r);
+
+		accumulationArray.weight.at(i) += c*weight; // mean weight will reflect input weights
+		accumulationArray.data.at(i)   += c*weight*value;
+		accumulationArray.data2.at(i)  += c*weight*value*value;
+	}
+	/// else (r==0, weight==0), and just ++count, see above.
+
+}
+
+
 
 
 void WeightedAverageMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
@@ -548,8 +543,8 @@ void WeightedAverageMethod::extractDev(const AccumulationConverter & coder, Imag
 }
 
 
-void MaximumWeightMethod::add(const size_t &i, double value, double weight) const {
-	//void MaximumWeightMethod::add(const size_t &i, const double & value, const double & weight) const {
+void MaximumWeightMethod::add(const size_t i, double value, double weight) const {
+	//void MaximumWeightMethod::add(const size_t i, const double & value, const double & weight) const {
 
 	if (weight >= accumulationArray.weight.at(i)){
 		accumulationArray.data.at(i)   = value;

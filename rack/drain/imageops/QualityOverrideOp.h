@@ -48,7 +48,7 @@ namespace image
 \~exec
   # onvert  image.png -rotate 180 image-rot.png
   # rainage image-rot.png --copy f --view r --copy a --view f -o image-rot-rgba.png
-  make image-rot-rgba.png
+  make image-rot-rgba.png # exec
 \~
 
  \code

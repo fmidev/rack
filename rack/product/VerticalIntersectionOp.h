@@ -73,7 +73,7 @@ public:
 protected:
 
 	virtual
-	void filterGroups(const HI5TREE &src, const std::list<std::string> & paths, HI5TREE &dst) const;
+	void filterGroups(const HI5TREE &src, const std::list<ODIMPath> & paths, HI5TREE &dst) const;
 
 };
 
@@ -90,3 +90,4 @@ protected:
 #endif /* VERTICALIntersectionOp_H_ */
 
 // Rack
+ // REP

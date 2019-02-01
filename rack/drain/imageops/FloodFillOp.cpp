@@ -106,7 +106,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		mout.info() << "tuned coordinates => (" << i0 << ',' << j0 << ')' << mout.endl;
 	}
 
-	if (src.isFloatType() || dst.isFloatType()) {
+	if (Type::call<typeIsFloat>(src.getType()) || Type::call<typeIsFloat>(dst.getType()) ) {
 		mout.debug(1) << "type: double" << mout.endl;
 		//SegmentProber<double,double,SegmentProberConf<double,double> > fill(src, dst);
 		FillProber fill(src, dst);

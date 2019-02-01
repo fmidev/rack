@@ -57,7 +57,7 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 	int pos;
 	int length;
 	int lengthTag;
-	const int lengthMax = dst.getMax<int>();
+	const int lengthMax = dst.getEncoding().getTypeMax<int>();
 
 	// Use may give 'threshold' as a relative [0.0,1.0] or absolute value.
 	// => Convert to unambiguous thresholdAbs.
@@ -133,7 +133,7 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	int pos; // pos will never decrease
 	int length;
 	int lengthTag;
-	const int lengthMax = dst.getMax<int>();
+	const int lengthMax = dst.getEncoding().getTypeMax<int>();
 
 	// Use may give 'threshold' as a relative [0.0,1.0] or absolute value.
 	// => Convert to unambiguous thresholdAbs.

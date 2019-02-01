@@ -78,8 +78,8 @@ public:
 	/// Bounding box in radians
 	inline
 	void getBoundingBox(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
-		projectFwd(5.0/4.0*M_PI, sqrt(2.0)*range, lonLL, latLL);
-		projectFwd(1.0/4.0*M_PI, sqrt(2.0)*range, lonUR, latUR);
+		projectFwd(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);
+		projectFwd(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);
 	}
 
 	/// Bounding box in degrees

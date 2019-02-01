@@ -314,7 +314,7 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 
 
     // koe kooe
-	if ((image.getSize() > 0) && typeOk){
+	if ((image.getGeometry().getVolume() > 0) && typeOk){
 		mout.debug(2) << "calling H5Dread" << mout.endl;
 		H5O_info_t info;
 		H5Oget_info(dataset, &info);
@@ -332,7 +332,7 @@ void Reader::h5DatasetToImage(hid_t id, const std::string &path, drain::image::I
 			mout.warn() << "H5Dread() failed " << mout.endl;
 		image.setName(path);
 		mout.debug(2) << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
-		mout << '*' << image.getChannelCount() << '=' << image.getSize() << '\n';
+		mout << '*' << image.getChannelCount() << '=' << image.getGeometry().getVolume() << '\n';
 		mout << '*' << image.getGeometry() << '\n';
 		mout << image << mout.endl;
 		//image.toOStr(std::cout);
@@ -385,7 +385,7 @@ void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,
 
 	H5G_stat_t info;
 
-	//for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
+	//for (std::list<ODIMPath>::const_iterator it = l.begin(); it != l.end(); ++it) {
 	for (HI5TREE::iterator it = tree.begin(); it != tree.end(); ++it) {
 		const std::string &s = it->first;
 		HI5TREE &subtree = it->second;
@@ -442,3 +442,4 @@ void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,
 
 
 // Rack
+ // REP

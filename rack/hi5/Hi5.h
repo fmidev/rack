@@ -46,8 +46,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/Image.h>
 #include <drain/util/Tree.h>
 
-// using namespace std;
+#include <data/ODIMPath.h>
 
+/*
 struct lessAlphaNum {
 
 	enum comparison {LESS=-1, EQUAL=0, GREATER=+1};
@@ -205,19 +206,14 @@ struct lessAlphaNum {
 	} // end operator()
 
 };  // end class
+*/
 
-
-
-//#define HI5TREE drain::Tree<hi5::NodeHi5, std::less<char> >
-//typedef  TreeNode<NodeHi5> TreeHi5;
-#define HI5TREE drain::Tree<hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
-//#define HI5TREE drain::Tree<hi5::NodeHi5, lexicODIM >
-//#define HI5TREE drain::Tree<hi5::NodeHi5 >
 
 
 // using namespace std;
 
 namespace hi5 {
+
 
 extern drain::Log hi5monitor;
 extern drain::Logger hi5mout;
@@ -257,19 +253,20 @@ struct NodeHi5 {
 	/// Experimental
 	bool noSave;  // OK!
 
-	/* to EncodingODIM
-	static
-	const std::set<std::string> & attributeGroups;
-
-private:
-
-	static
-	const std::set<std::string> & createAttributeGroups();
-*/
 };
 
+}
 
 
+
+//typedef  TreeNode<NodeHi5> TreeHi5;
+//#define HI5TREE drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
+#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+
+
+namespace hi5 {
+
+//typedef rack::ODIMPath path_t;
 
 ///
 ///
@@ -307,13 +304,13 @@ public:
 
 	/// Dumps the H5 structure, attributes and data properties.
 	static
-	void writeText(const HI5TREE &src, const std::list<std::string> & paths, std::ostream & ostr = std::cout);
+	void writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr = std::cout);
 
 	/// Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)).
 	static
 	void writeText(const HI5TREE &src, std::ostream & ostr = std::cout){
-		std::list<std::string> paths;
-		src.getKeys(paths);
+		std::list<HI5TREE::path_t> paths;
+		src.getPaths(paths);
 		writeText(src, paths, ostr);
 	};
 
@@ -331,7 +328,10 @@ public:
 	 *
 	 */
 	static
-	void readTextLine(HI5TREE &src, const std::string & key, const std::string & value = "");
+	void readTextLine(HI5TREE &src, const std::string & line);
+
+	static
+	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
 
 	/// Delete branches that have been marked with noSave=true .
 	static

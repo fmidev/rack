@@ -56,7 +56,7 @@ class HistogramWindowConfig : public WindowConfig, public HistogramConfig {
 
 };
 
-/// Base class for median and other histogram based statistics.
+/// Base class for median and str histogram based statistics.
 /** 
  *
  *  \tparam - Resource
@@ -99,7 +99,7 @@ public:
 		histogram.setSize(this->conf.bins);
 		histogram.setSampleCount(this->getArea());
 		//histogram.setScale(src.getMin<int>(), src.getMax<int>(), dst.getMin<int>(), dst.getMax<int>());
-		histogram.setScale(this->src.template getMin<int>(), this->src.template getMax<int>());
+		histogram.setScale(this->src.getEncoding().template getTypeMin<int>(), this->src.getEncoding().template getTypeMax<int>());
 
 		if (!this->conf.valueFunc.empty())
 			histogram.setValueFunc(this->conf.valueFunc.at(0));
@@ -212,14 +212,15 @@ protected:
 /// Window histogram for computing [asmdvNX] = average, sum, median, stddev, variance, miN, maX
 /**
 
+\code
   drainage gray.png --histogram 5,5,a -o hist-avg.png
-  drainage gray.png --histogram 5,5,s -o hist-sum.png
-  drainage gray.png --histogram 5,5,m -o hist-sum.png
+  drainage gray.png -T S --histogram 15,15,s -o hist-sum.png
+  drainage gray.png --histogram 5,5,m -o hist-med.png
   drainage gray.png --histogram 5,5,d -o hist-dev.png
   drainage gray.png --histogram 5,5,v -o hist-var.png
   drainage gray.png --histogram 5,5,N -o hist-min.png
   drainage gray.png --histogram 5,5,X -o hist-max.png
-
+\endcode
 
  \see SlidingWindowMedian
  \see FastAverageOp

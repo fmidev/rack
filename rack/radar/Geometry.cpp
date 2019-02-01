@@ -110,7 +110,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      */
     double Geometry::heightFromEtaBeam(double eta, double b){
     	static const double a = EARTH_RADIUS_43;
-    	return sqrt( a*a + b*b - 2.0*a*b*cos(M_PI/2.0 + eta) ) - a;
+    	return ::sqrt( a*a + b*b - 2.0*a*b*cos(M_PI/2.0 + eta) ) - a;
     }
 
     /** The altitude of a point above ground.
@@ -170,7 +170,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     //  inline 
     double Geometry::beamFromBetaH(double beta,double h){
     	static const double a = EARTH_RADIUS_43;
-    	return sqrt((2.0*a)*(a+h)*(1.0-cos(beta)) + h*h);
+    	return ::sqrt((2.0*a)*(a+h)*(1.0-cos(beta)) + h*h);
     }
 
 
@@ -187,8 +187,8 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     	static const double a = EARTH_RADIUS_43;
     	const double c = EARTH_RADIUS_43 + h;
     	const double gamma = eta + (M_PI/2.0);
-    	const double beta = M_PI - gamma - asin(a*sin(gamma)/c);
-    	return sin(beta) * c / sin(gamma); // / my_binDepth;
+    	const double beta = M_PI - gamma - ::asin(a*::sin(gamma)/c);
+    	return ::sin(beta) * c / ::sin(gamma); // / my_binDepth;
     }
 
 
@@ -204,7 +204,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     double Geometry::beamFromEtaBeta(double eta,double beta){
     	static const double a = EARTH_RADIUS_43;
     	const double alpha = M_PI - (eta + (M_PI/2.0)) - beta;
-    	return sin(beta) * a / sin(alpha);
+    	return ::sin(beta) * a / ::sin(alpha);
     }
 
 
@@ -224,7 +224,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     	/// Angle(BIN->RADAR,BIN->GROUND_POINT)
     	double alpha = static_cast<double>(M_PI - (eta + (M_PI/2.0)) - beta);
 
-    	return sin(beta) * EARTH_RADIUS_43 / sin(alpha);
+    	return sin(beta) * EARTH_RADIUS_43 / ::sin(alpha);
 
     }
   
@@ -238,7 +238,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     	//    float x,y;
     	double x = beam * (float)cos(eta);
     	double y = beam * (float)sin(eta);
-    	return EARTH_RADIUS_43 * atan(x / (y + EARTH_RADIUS_43));
+    	return EARTH_RADIUS_43 * ::atan(x / (y + EARTH_RADIUS_43));
     }
 
 
@@ -255,7 +255,7 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      * \f]
      */
     double Geometry::gammaFromEtaH(double eta,double h){
-    	return M_PI_2 - eta - asin(EARTH_RADIUS_43/(EARTH_RADIUS_43+h)*sin(eta+M_PI_2));
+    	return M_PI_2 - eta - ::asin(EARTH_RADIUS_43/(EARTH_RADIUS_43+h)*sin(eta+M_PI_2));
     	//return 180.0/M_PI * asin(EARTH_RADIUS_43/(EARTH_RADIUS_43+h)*sin(eta+M_PI_2));
     }
 
@@ -293,11 +293,11 @@ void Geometry::findClosestElevations(const float &elevationAngle,
     	double c2   = c*c; //
     	//    double beta = g/EARTH_RADIUS_43;
     	//    double b2   = a2 + c2 - 2.0*a*c*cos( beta );
-    	double b   = sqrt(a2 + c2 - 2.0*a*c*cos( beta ));
+    	double b   = ::sqrt(a2 + c2 - 2.0*a*c*cos( beta ));
 
     	//    return asin( (a2 + b*b - c2) / (2 * a * b) ); // feb 2005 
 
-    	return acos( (a - (a+h)*cos(beta)) / b) - (M_PI/2.0); // feb 2005 
+    	return ::acos( (a - (a+h)*::cos(beta)) / b) - (M_PI/2.0); // feb 2005
     }
 
     double Geometry::bFromGH(double g,double h){

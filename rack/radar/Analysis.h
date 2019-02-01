@@ -65,7 +65,7 @@ namespace rack {
 
 /// Checks \c nodata and \c undetect before calling the functor
 /**
- *  \tparam F - unary functor, e.g. drain::FuzzyTriangeor other derived from UnaryFUnctor
+ *  \tparam F - unary functor, e.g. drain::FuzzyTriangeor str derived from UnaryFUnctor
  */
 // NOTE may be bad, because UnaryFunctorOp pre-scales etc.
 template <class F>
@@ -151,7 +151,7 @@ public:
 		mout.debug() << "start" << mout.endl;
 
 		// const double dstMax = dst.scaling.getMax<double>();
-		const double dstMax = dst.getMax<double>();
+		const double dstMax = dst.getEncoding().getTypeMax<double>();
 				// drain::Type::call<drain::typeMax, double>(dst.getType());
 
 		typedef drain::typeLimiter<double> Limiter;
@@ -536,14 +536,14 @@ protected:
 	virtual
 	inline
 	void removeTrailingValue(double x){
-		sum -= exp(coeff * x);
+		sum -= ::exp(coeff * x);
 		--count;
 	};
 
 	virtual
 	inline
 	void addLeadingValue(double x){
-		sum += exp(coeff * x);
+		sum += ::exp(coeff * x);
 		++count;
 		//if ((p.x == p.y) && (x > -15.0))
 		//	std::cerr << "handleLeadingPixel" << p << ':' << x << '\t' << count << ':' << sum << std::endl;
@@ -553,7 +553,7 @@ protected:
 	inline
 	void write(){
 		if (count > 0)
-			this->dst.put(this->location, this->fuzzifier(coeffInv*log(sum/static_cast<double>(count))));
+			this->dst.put(this->location, this->fuzzifier(coeffInv*::log(sum/static_cast<double>(count))));
 		//this->dst.put(this->location, this->functor(sum/static_cast<double>(count)));
 	};
 
@@ -615,7 +615,7 @@ protected:
 
 		if (count > 0){
 			double countD = static_cast<double>(count);
-			this->dst.put(this->location, this->fuzzifier( sqrt(sum2/countD - sum*sum/(countD*countD)) ));
+			this->dst.put(this->location, this->fuzzifier( ::sqrt(sum2/countD - sum*sum/(countD*countD)) ));
 			/*
 			countD = sum2/countD - sum*sum/(countD*countD);
 			if ((this->p.x == this->p.y) && (count > 5))

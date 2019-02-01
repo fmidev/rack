@@ -68,19 +68,19 @@ void CartesianExtract::extract(const std::string & channels) const {
 	//ODIMPath path("dataset1");
 	ODIMPath path;
 
-	ODIMPathElem parent(BaseODIM::DATASET, 1);
-	if (ProductBase::appendResults.is(BaseODIM::DATASET))
-		DataTools::getNextChild(resources.cartesianHi5, parent);
-	else if (ProductBase::appendResults.is(BaseODIM::DATA))
-		DataTools::getLastChild(resources.cartesianHi5, parent);
+	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
+	if (ProductBase::appendResults.is(ODIMPathElem::DATASET))
+		DataSelector::getNextChild(resources.cartesianHi5, parent);
+	else if (ProductBase::appendResults.is(ODIMPathElem::DATA))
+		DataSelector::getLastChild(resources.cartesianHi5, parent);
 
-	path << parent;
-
+	path << parent; // ?
+	mout.debug() << "dst path: " << path << mout.endl;
 
 	HI5TREE & dstGroup = resources.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);
 
-
+	mout.debug(3) << "update geodata " << mout.endl;
 	resources.composite.updateGeoData(); // TODO check if --plot cmds don't need
 
 	CartesianODIM odim; // needed? yes, because Extract uses (Accumulator &), not Composite.
@@ -102,15 +102,18 @@ void CartesianExtract::extract(const std::string & channels) const {
 	//mout.warn() << "composite: " << resources.composite.odim << mout.endl;
 	//mout.warn() << "composite: " << resources.composite << mout.endl;
 	//mout.note() << "dst odim: " << odim << mout.endl;
-	//mout.debug() << "extracting..." << mout.endl;
+	mout.debug(1) << "extracting..." << mout.endl;
+
 	resources.composite.extract(odim, dstProduct, channels);
 
-	//mout.warn() << "extracted data: " << dstProduct.getFirstData().data << mout.endl;
+	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
 
-	ODIM::copyToH5<ODIM::ROOT>(odim, resources.cartesianHi5); // odim.copyToRoot(resources.cartesianHi5);
+	ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.cartesianHi5); // odim.copyToRoot(resources.cartesianHi5);
 
-	drain::VariableMap & how = dstGroup["how"].data.attributes;
+	drain::VariableMap & how = resources.cartesianHi5["how"].data.attributes;
+	//drain::VariableMap & how = dstGroup["how"].data.attributes;
 	how["software"] = __RACK__;
+	how["sw_version"] = __RACK_VERSION__;
 	// Non-standard
 	how["tags"] = resources.composite.nodeMap.toStr(':');
 
@@ -153,3 +156,4 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 
 // Rack
+ // REP // REP // REP // REP

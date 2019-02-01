@@ -45,17 +45,17 @@ class CartesianODIM : public ODIM {
 public:
 
 	inline
-	CartesianODIM(group_t initialize = ALL) : ODIM(initialize) {
+	CartesianODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : ODIM(initialize) {
 		init(initialize);
 	};
 
 	inline
-	CartesianODIM(const CartesianODIM & odim) : ODIM(ALL) {
+	CartesianODIM(const CartesianODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	};
 
 	template <class T>
-	CartesianODIM(const std::map<std::string,T> & m) : ODIM(ALL){
+	CartesianODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS){
 		initFromMap(m);
 	}
 
@@ -69,7 +69,7 @@ public:
 
 
 	inline
-	CartesianODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ALL) {
+	CartesianODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromImage(img, quantity);
 	};
 
@@ -127,7 +127,7 @@ public:
 private:
 
 	virtual // must
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 	mutable drain::Rectangle<double> bboxD;
 

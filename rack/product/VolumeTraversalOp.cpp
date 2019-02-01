@@ -67,8 +67,8 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	DataSetMap<PolarSrc> srcDataSets;
 	DataSetMap<PolarDst> dstDataSets;
 
-	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src, this->dataSelector, dataPaths);
+	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	if (dataPaths.size() == 0)
 		mout.note() << "no dataPaths matching selector="  << this->dataSelector << mout.endl;
@@ -78,22 +78,30 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	//mout.warn() << "regExp: " << quantityRegExp << mout.endl;
 
 
-	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-		mout.debug() << "considering" << *it << mout.endl;
+		mout.debug() << "considering " << *it << mout.endl;
 
-		const std::string parent = DataTools::getParent(*it);
+		//const std::string parent = DataTools::getParent(*it);
+		ODIMPath parent = *it;
+		parent.pop_back();
+
+		mout.debug(2) << "parent: " << parent << mout.endl;
+		mout.debug(3) << "parent attribs " << src(parent)["where"].data.attributes << mout.endl;
+
 		const double elangle = src(parent)["where"].data.attributes["elangle"];
 
 		if (srcDataSets.find(elangle) == srcDataSets.end()){
-			mout.info() << "add "  << elangle << ':'  << parent << mout.endl;
+
+			mout.debug(1) << "add elangle="  << elangle << ':'  << parent << mout.endl;
+
+			// Something like: sweeps[elangle] = src[parent] .
 
 			/// its and itd for debugging
-			//DataSetMap<PolarSrc>::const_iterator its = srcDataSets.insert(srcDataSets.begin(), DataSetMap<PolarSrc>::value_type(elangle, DataSet<>(src[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
-			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			// DataSetMap<PolarSrc>::const_iterator its =
+			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), quantityRegExp)));
 
-			//DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
-			//itd = dstDataSets.insert(itd, DataSetMap<PolarDst>::value_type(elangle, DataSet<>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			// DataSetMap<PolarDst>::iterator itd =
 			dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
 			// elangles << elangle;
@@ -102,7 +110,7 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	}
 
-	mout.debug() << "ok, calling processDataSets " << mout.endl;
+	mout.debug() << srcDataSets.size() << " datasets, now calling processDataSets() " << mout.endl;
 
 	processDataSets(srcDataSets, dstDataSets);
 
@@ -134,12 +142,12 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 			processDataSet(srcDataSet, dstDataSet);
 			//dstDataSet.updateTree(); // create /what, /where etc.
 			//DataTools::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
-			// update other trees?
+			// update str trees?
 
 
 		}
 		else {
-			mout.warn() << "something went wrong, dst has no angle, src=" << its->first << mout.endl;
+			mout.warn() << "something went wrong, src=" << its->first << mout.endl;
 			return;
 		}
 		++its;
@@ -155,3 +163,6 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 
 
 // Rack
+ // REP // REP // RE2
+ // RE2
+ // REP

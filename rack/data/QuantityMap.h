@@ -127,17 +127,18 @@ public:
 			return it->second;
 		}
 		else {
-			static
-			Quantity empty;
+			// Warning: if this is declared (modified), further instances will override and hence confuse
+
+			static Quantity empty;
 			return empty;
 		}
 
 	}
 
-	/// Sets quantity with default values, optionally overridden with by user values.
+	/// Sets default values of given quantity - but not the quantity itself. Optionally overrides with user values.
 	/**
 	 *  \param quantity - the quantity according to which the encoding will be set.
-	 *  \param values - other values, comma-separated
+	 *  \param values - str values, comma-separated
 	 *
 	 *   \return - true, if type could be set / derived
 	 */
@@ -151,7 +152,7 @@ public:
 	///
 	/**
 	 *  \param quantity - the quantity according to which the encoding will be set.
-	 *  \param values - other values, comma-separated
+	 *  \param values - str values, comma-separated
 
 	 *  \return - true, if type could be set / derived
 	 */
@@ -196,12 +197,6 @@ public:
 		return EncodingODIM::haveSimilarEncoding(odim, q.get(q.defaultType));
 	}
 
-	/*
-	inline
-	bool hasQuantity(const std::string & quantity) const {
-		return (find(quantity) == end());
-	}
-	*/
 
 
 	inline

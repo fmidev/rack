@@ -49,9 +49,9 @@ namespace image
 	\code
 	drainage gray.png  --rescale 0.5              -o scale-dark.png
 	drainage gray.png  --target S --rescale 0.5   -o scale-dark16.png
-	drainage gray.png  --rescale 0.5,0.5          -o scale-dim.png
-	drainage gray.png  --rescale 2.0,-0.5,LIMIT=1 -o scale-contrast.png
-	drainage color.png --rescale 0.5,0.5 -o scale-dim-color.png
+	drainage gray.png  --rescale 0.5,128          -o scale-dim.png
+	drainage image.png --rescale 0.5,128          -o scale-dim-image.png
+	drainage gray.png  --rescale 2.0,-128,LIMIT=1 -o scale-contrast.png
 	\endcode
  */
 // Inversely: f = (f'-offset)/scale = a*f+b, where a=1/scale and b=-offset/scale.
@@ -83,7 +83,7 @@ protected:
    Inverts image by subtracting the pixel intensities from the maximum intensity (255, 65535 or 1.0).
 	\code
 	drainage gray.png  --negate -o negate.png
-	drainage color.png --negate -o negate-color.png
+	drainage image.png --negate -o negate-image.png
 	\endcode
  */
 class NegateFunctor : public ScalingFunctor {
@@ -98,7 +98,7 @@ class NegateFunctor : public ScalingFunctor {
 	\code
 	drainage gray.png  --remap 255,32       -o remap-abs.png
 	drainage gray.png  --physicalRange 0,1 --remap 1,0.125  -o remap.png
-	drainage color.png --physicalRange 0,1 --remap 1,0.25  -o remap-color.png
+	drainage image.png --physicalRange 0,1 --remap 1,0.25  -o remap-image.png
 	\endcode
  */
 class RemappingFunctor : public UnaryFunctor {
@@ -136,14 +136,14 @@ public:
 	\code
 	drainage gray.png  --threshold 96 -o thresholdAbs.png
 	drainage gray.png  --physicalRange 0,1 --threshold 0.5   -o thresholdRelative.png
-	drainage color.png --physicalRange 0,1 --threshold 0.25  -o thresholdRelative-color.png
+	drainage image.png --physicalRange 0,1 --threshold 0.25  -o thresholdRelative-image.png
 	\endcode
  */
 class ThresholdFunctor : public UnaryFunctor {
 
 public:
 
-	ThresholdFunctor(double threshold = 0.5, double replace = 0.0) : UnaryFunctor(__FUNCTION__, "Rescales intensities linerarly") , threshold(threshold), replace(replace) {
+	ThresholdFunctor(double threshold = 0.5, double replace = 0.0) : UnaryFunctor(__FUNCTION__, "Resets values lower than a threshold") , threshold(threshold), replace(replace) {
 		this->getParameters().reference("threshold", this->threshold = threshold);
 		this->getParameters().reference("replace", this->replace = replace);
 	};
@@ -164,9 +164,9 @@ public:
 /// Thresholds intensity values.
 /**
 	\code
-	drainage gray.png  --thresholdBinary 128 -o thresholdBinaryAbs.png
+	drainage gray.png  --thresholdBinary 128,64,192 -o thresholdBinaryAbs.png
 	drainage gray.png  --physicalRange 0,1 --thresholdBinary 0.65 -o thresholdBinaryRelative.png
-	drainage color.png --physicalRange 0,1 --thresholdBinary 0.5  -o thresholdBinaryRelative-color.png
+	drainage image.png --physicalRange 0,1 --thresholdBinary 0.5  -o thresholdBinaryRelative-image.png
 	\endcode
  */
 class BinaryThresholdFunctor : public ThresholdFunctor {
@@ -193,6 +193,11 @@ public: //re
 
 /// Adds a intensity values .
 /**
+ *
+   \~exec
+   make gray-rot.png #exec
+   \~
+
 	\code
 	drainage shapes1.png shapes2.png --add 0.5  -o add1.png
 	drainage gray.png gray-rot.png   --add 0.5  -o add2.png
@@ -319,11 +324,11 @@ public:
    <CODE>c</CODE> is a coefficient.
 
  \exec~
-  convert  color.png -rotate 180 color-rot180.png
+  make image-rot.png #exec
  \~
  \code
    drainage shapes1.png shapes2.png    --mix 0.75 -o mix.png
-   drainage color.png color-rot180.png --mix 0.25 -o mix-color.png
+   drainage image.png image-rot.png --mix 0.25 -o mix-image.png
  \endcode
 
   \see DoubleSmootherOp
@@ -376,7 +381,7 @@ protected:
  *   Prescales src to dst scale. See also MinimumOp, MaximumOp and MultiplicationOp
  \code
  drainage shapes1.png    shapes2.png --max -o max.png
- drainage color.png color-rot180.png --max -o max-color.png
+ drainage image.png image-rot.png --max -o max-image.png
 \endcode
 */
 class MaximumFunctor : public BinaryFunctor {
@@ -401,7 +406,7 @@ public:
  *   Prescales src to dst scale.  See also MaximumOp, MinimumOp and MultiplicationOp.
  \code
  drainage shapes1.png shapes2.png    --min -o min.png
- drainage color.png color-rot180.png --min -o min-color.png
+ drainage image.png image-rot.png --min -o min-image.png
  \endcode
 */
 class MinimumFunctor : public BinaryFunctor {

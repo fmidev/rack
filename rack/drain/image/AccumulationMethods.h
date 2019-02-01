@@ -104,9 +104,16 @@ public:
 	 *   Notice that not all the rules apply the weights.
 	 *   Semantically, the weights should reflect the importance, confidence or relevance of the value.
 	 */
-	virtual
-	void add(const size_t &i, double value, double weight) const {
+	virtual inline
+	void add(const size_t i, double value, double weight) const {
 		throw std::runtime_error("AccumulationMethod::add - method/rule UNDEFINED");
+	};
+
+
+	/// Adds 'count' copies of a weighted value to the accumulation array
+	virtual inline
+	void add(const size_t i, double value, double weight, unsigned int count) const {
+		add(i, value, weight);
 	};
 
 
@@ -133,8 +140,6 @@ public:
 	virtual
 	void extractWeight(const AccumulationConverter & coder, Image & dst) const;
 
-	// virtual void extractWeight(Image & dst, double gain, double offset=0.0) const;
-
 	/// Retrieves the count of values accumulated.
 	/**
 	 *  \par dst - target array in which the values are stored.
@@ -155,8 +160,7 @@ public:
 	void extractDev(const AccumulationConverter & coder, Image & dst) const;
 
 	//virtual
-	void extractDevInv(const AccumulationConverter & coder, Image & dst) const;
-
+	//void extractDevInv(const AccumulationConverter & coder, Image & dst) const;
 
 	const std::string name;
 
@@ -165,8 +169,6 @@ public:
 		ostr << name;
 		if (!parameters.empty())
 			ostr << " [" << parameters << "]";
-		//if (parameters.typeIsSet())
-		//	ostr << " [" << parameters << "]";
 		return ostr;
 	};
 
@@ -202,8 +204,7 @@ public:
 	OverwriteMethod(AccumulationArray & c) : AccumulationMethod("LATEST", c) {};
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	//void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
 
 	virtual
 	void extractDev(const AccumulationConverter & coder, Image & dst) const;
@@ -218,8 +219,7 @@ public:
 	MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAXIMUM", c) {};
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	//void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
 
 };
 
@@ -230,8 +230,7 @@ public:
 	MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	//void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
 
 };
 
@@ -243,8 +242,10 @@ public:
 	AverageMethod(AccumulationArray & c) : AccumulationMethod("AVERAGE", c) {};
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	//void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
+
+	virtual inline
+	void add(const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
 	void extractValue(const AccumulationConverter & coder, Image & dst) const;
@@ -277,9 +278,10 @@ public:
 	//void setParameters(const std::string & parameters);
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	//void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
 
+	virtual inline
+	void add(const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
 	void extractValue(const AccumulationConverter & coder, Image & dst) const;
@@ -289,7 +291,6 @@ public:
 
 	virtual
 	void extractDev(const AccumulationConverter & coder, Image & dst) const;
-	//void extractDev(Image & dst, double gain=1.0, double offset=0.0, double NODATA=std::numeric_limits<double>::max()) const;
 
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const {
@@ -325,8 +326,7 @@ public:
 	MaximumWeightMethod(AccumulationArray & c) : AccumulationMethod("MAXW", c) {};
 
 	virtual
-	void add(const size_t &i, double value, double weight) const;
-	// void add(const size_t &i, const double & value, const double & weight) const;
+	void add(const size_t i, double value, double weight) const;
 
 };
 

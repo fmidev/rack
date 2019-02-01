@@ -48,6 +48,11 @@ namespace image
 /// A fill operation for one color.
 /**  Uses FillProber, hence basically SegmentProber<> in semi-recursive image traversal.
 
+\exec~
+	make shapes-wrap.png # exec
+\~
+
+
  \code
    drainage shapes.png --floodFill  100,100,min=50,value=128 -o shapes-fill.png
    drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,5,value=128   -o shapes-fill-wrap.png

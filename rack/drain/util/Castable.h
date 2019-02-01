@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "String.h"
 
 #ifndef CASTABLE
-#define CASTABLE
+#define CASTABLE "drain::Castable"
 
 
 namespace drain {
@@ -71,20 +71,24 @@ class Castable  {
 public:
 
 	inline
-	Castable() : fillArray(false), ptr(NULL), elementCount(0){
+	Castable() : fillArray(false), elementCount(0){
 		setSeparator();
 		caster.unsetType();
 	};
 
 	/// Copy constructor
-	Castable(const Castable &c) : fillArray(false), ptr(NULL), elementCount(0) {
-		setSeparator();
-		setPtr(c);
+	Castable(const Castable &c) : fillArray(false), elementCount(0) {
+		//setSeparator();
+		setInputSeparator(c.inputSeparator);
+		setOutputSeparator(c.outputSeparator);
+		//setPtr(c);
+		setPtr(c.caster.ptr, c.caster.getType());
+		elementCount = c.elementCount;
 	}
 
 	// Obsolete?
 	template <class F>
-	Castable(F *p) : fillArray(false), ptr(NULL), elementCount(0) {
+	Castable(F *p) : fillArray(false), elementCount(0) {
 		setSeparator();
 		setPtr(p, typeid(F));
 		// std::cerr << "Castable(F *p) type=" << typeid(F).name() << " value=" << *p << " (" << (double)*p << ")" << std::endl;
@@ -92,15 +96,13 @@ public:
 
 	/// Constructor for an object pointing to a variable.
 	template <class F>
-	Castable(F &p) : fillArray(false), ptr(NULL), elementCount(0) {
+	Castable(F &p) : fillArray(false), elementCount(0) {
 		setSeparator();
 		setPtr(p);
 	}
 
-	inline
+	inline virtual
 	~Castable(){};
-
-
 
 	// Variable will hide std::string type.
 	virtual inline
@@ -108,7 +110,7 @@ public:
 		return caster.getType();
 	};
 
-	/// Returns true, if type is \c char and outputSepator is null char.
+	/// Returns true, if type is \c char and outputSepator is the null char.
 	inline
 	bool isCharArrayString() const {
 		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess
@@ -173,7 +175,7 @@ public:
 	Castable &operator=(const T &x){
 
 		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
-		requestType(typeid(T));
+		suggestType(typeid(T));
 		if (isString()){
 			//std::cout << __FUNCTION__ << ':' << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
 			assignToString(x);
@@ -186,7 +188,8 @@ public:
 			}
 			else {
 				requestSize(1);
-				caster.put(ptr, x);
+				//caster.put(ptr, x);
+				caster.put(x);
 			}
 		}
 		else {
@@ -210,7 +213,7 @@ public:
 	}
 
 
-	/// Copies elements of std::list
+	/// Copies elements of a list.
 	template <class T>
 	inline
 	Castable &operator=(const std::list<T> & l){
@@ -218,7 +221,7 @@ public:
 		return *this;
 	}
 
-	/// Copies elements of std::vector
+	/// Copies elements of a vector.
 	template <class T>
 	inline
 	Castable &operator=(const std::vector<T> & v){
@@ -226,7 +229,7 @@ public:
 		return *this;
 	}
 
-	/// Copies elements of std::vector
+	/// Copies elements of a set.
 	template <class T>
 	inline
 	Castable &operator=(const std::set<T> & s){
@@ -242,7 +245,7 @@ public:
 	template <class T>
 	inline
 	Castable &operator<<(const T &x){
-		requestType(typeid(T));
+		suggestType(typeid(T));
 		if (isString()){
 			appendToString(x);
 		}
@@ -266,7 +269,7 @@ public:
 		return *this;
 	}
 
-	/// Appends elements of std::vector
+	/// Appends elements of a vector
 	template <class T>
 	inline
 	Castable &operator<<(const std::vector<T> & v){
@@ -274,7 +277,7 @@ public:
 		return *this;
 	}
 
-	/// Appends elements of std::vector
+	/// Appends elements of a set
 	template <class T>
 	inline
 	Castable &operator<<(const std::set<T> & s){
@@ -313,7 +316,7 @@ public:
 	 *   \endcode
 	 *   See http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization .
 	 *   The conversion works only if a conversion operator is defined only for std::string (operator std::string()).
-	 *   Adding any other conversions (int, double, ...) causes the compiler to fail.
+	 *   Adding any str conversions (int, double, ...) causes the compiler to fail.
 	 */
 	template <class T>
 	operator T() const {
@@ -325,7 +328,7 @@ public:
 			return x;
 		}
 		else
-			return caster.get<T>(ptr);
+			return caster.get<T>(); //caster.get<T>(ptr);
 	}
 
 
@@ -340,7 +343,7 @@ public:
 	/// Compares a value to internal data.
 	template <class T>
 	bool operator==(const T &x){
-		return (caster.get<T>(ptr) == x);
+		return (caster.get<T>() == x);  //(caster.get<T>(ptr) == x);
 	}
 
 	/// Compares a value to inner data.
@@ -349,19 +352,21 @@ public:
 	 */
 	template <class T>
 	bool operator!=(const T &x){
-		return (caster.get<T>(ptr) != x);
+		return (caster.get<T>() != x);  // (caster.get<T>(ptr) != x);
 	}
 
 	/// Compares a value to inner data.
+	// strings?
 	template <class T>
 	bool operator<(const T &x){
-		return (caster.get<T>(ptr) < x);
+		return (caster.get<T>() < x); // (caster.get<T>(ptr) < x);
 	}
 
 	/// Compares a value with inner data.
 	template <class T>
 	bool operator>(const T &x){
-		return (caster.get<T>(ptr) > x);
+		return (caster.get<T>() > x);
+		//return (caster.get<T>(ptr) > x);
 	}
 
 	/// The character used between array elements in output stream.
@@ -399,7 +404,7 @@ public:
 
 	std::string toStr() const;
 
-	void toJSON(std::ostream & ostr = std::cout, char fill = ' ') const;
+	void toJSON(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
 
 	std::ostream & valueToJSON(std::ostream & ostr = std::cout) const;
 
@@ -437,28 +442,30 @@ public:
 	 */
 	inline
 	char * getPtr(size_t i = 0) {
-		return &((char *)ptr)[i*caster.getByteSize()];
+		return &((char *)caster.ptr)[i*caster.getByteSize()];
 	}
 
 	inline
 	const char * getPtr(size_t i = 0) const {
-		return &((const char *)ptr)[i*caster.getByteSize()];
+		return &((const char *)caster.ptr)[i*caster.getByteSize()];
 	}
 
 	/// If array, assigning a scalar will fill up the current array.
 	bool fillArray;
 
 
+
+
 protected:
 
 	Caster caster;
 
-	/// Request to change in type. For Castable, plainly returns true if the current type was requested.
+	/// Request to change in type. For Castable, simply returns true if the current type was requested.
 	/**
 	 *
 	 */
 	virtual inline
-	bool requestType(const std::type_info & t){
+	bool suggestType(const std::type_info & t){
 		return (getType() == t);
 	}
 
@@ -484,28 +491,24 @@ protected:
 	/// Sets the storage type. If a target value is available, use link() directly.
 	virtual inline // virtual?  Variable may need
 	void setType(const std::type_info &t){
-		setSeparator(',');
+		setSeparator(','); // ?
 		caster.setType(t);
 		//elementCount = 1;
 	}
 
 
 	/// Stores the pointer and its storage type F. Assumes elementCount=1.
-	//  Why not: setPtr(F *p)
 	template <class F>
 	inline
 	void setPtr(void *p){
-		ptr = p;
-		//caster.setType(typeid(F));
-		caster.setType<F>();
+		caster.link(p);
 		elementCount = 1;
 	}
 
 	/// Stores the pointer and its storage type F.
 	template <class F>
 	void setPtr(F &p){
-		ptr = &p;
-		caster.setType<F>();
+		caster.link(p);
 		elementCount = 1;
 	}
 
@@ -515,52 +518,63 @@ protected:
 	 */
 	template <class F>
 	void setPtr(std::vector<F> &v){
-		ptr = &v[0];
-		caster.setType<F>();
+		caster.link(&v[0]);
+		// caster.ptr = &v[0];
+		// caster.setType<F>();
 		elementCount = v.size();
 	}
 
-	/// Sets the data pointer and changes type explicitly.
+	/// Sets the data pointer and its explicit type.
 	/*
 	 *  Function of this kind must be available for general (8bit) memory allocators.
 	 */
 	inline
 	void setPtr(void *p, const std::type_info &t){
-		ptr = p;
-		caster.setType(t);
+		//if (t == typeid(void))
+		//	throw std::runtime_error(std::string(__FUNCTION__) + ": explicit void type given");
+		caster.link(p, t);
 		elementCount = 1;
 	}
 
-	///
+	/// Copies the link and element count.
+	void relink(Castable & c);
+
+
+	/*
 	inline
 	void setPtr(const Castable &c){
-		ptr = c.ptr;
-		caster.setType(c.getType());  // TODO: link dynamically?
-		elementCount = c.elementCount;
-		outputSeparator = c.outputSeparator;
+		//caster.link0((const Caster &)c);
+
+		caster.ptr = c.caster.ptr;
+		caster.setType(c.getType());
+
+		elementCount = c.elementCount; // TODO
+		outputSeparator = c.outputSeparator; // ?
 	}
 
 	/// Note:
 	inline
 	void setPtr(Castable &c){
-		ptr = c.ptr;
-		caster.setType(c.getType());  // TODO: link dynamically?
-		elementCount = c.elementCount;
-		outputSeparator = c.outputSeparator;
+		caster.link0((Caster &)c);
+		// caster.ptr = c.caster.ptr;
+		// caster.setType(c.getType());
+		elementCount = c.elementCount; // TODO
+		outputSeparator = c.outputSeparator; // ?
 	}
+	*/
 
 	/// Let Caster c convert my element #i to target *p
 	// IMPORTANT!
 	inline
 	void castElement(size_t i, const Caster &c, void *p) const {
-		c.cast(caster, getPtr(i), p);
+		c.translate(caster, getPtr(i), p);
 	}
 
 
 	// Destination type (current type) specific assign operations
 
 
-	/// Copy data from other Castable. Perhaps copy size and type, too.
+	/// Copy data from str Castable. Perhaps copy size and type, too.
 	Castable & assignCastable(const Castable &c);
 
 	/// Append to std::string or char array.
@@ -581,10 +595,11 @@ protected:
 
 		std::string  s = sstr.str();
 
-		requestType(typeid(std::string));
+		suggestType(typeid(std::string));
 
 		if (isStlString()){
-			caster.put(ptr, s);
+			caster.put(s);
+			//caster.put(ptr, s);
 		}
 		else if (isCharArrayString()){
 			assignToCharArray(s);
@@ -598,10 +613,11 @@ protected:
 	template <class T>
 	void assignToString(const T & x){
 
-		requestType(typeid(std::string));
+		suggestType(typeid(std::string));
 
 		if (isStlString()){
-			caster.put(ptr, x);
+			caster.put(x);
+			//caster.put(ptr, x);
 		}
 		else if (isCharArrayString()){
 			requestSize(0);  // works only for Variable, ok
@@ -640,7 +656,7 @@ protected:
 	template <class T>
 	void appendToElementArray(const T & s){
 
-		requestType(typeid(T)); // check return code?
+		suggestType(typeid(T)); // check return code?
 		if (!typeIsSet()){
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 			return;
@@ -677,7 +693,7 @@ protected:
 	template <class T>
 	void assignContainer(const T & v, bool append=false) {
 
-		requestType(typeid(typename T::value_type));
+		suggestType(typeid(typename T::value_type));
 		// Note: sequence of strings, will request string type...
 
 		if (isString()){
@@ -713,7 +729,7 @@ protected:
 			}
 		}
 		else {
-			throw std::runtime_error(std::string("__FILE__") + ": type unset, cannot assign");
+			throw std::runtime_error(std::string(__FILE__) + ": type unset, cannot assign");
 		}
 
 	}
@@ -744,7 +760,7 @@ protected:
 
 
 	/// Pointer to the data variable.
-	void *ptr;
+	//void *ptr;
 
 	/// Size of the current variable
 	size_t elementCount;
@@ -759,7 +775,10 @@ protected:
 
 };
 
-
+/*
+template <>
+void Castable::setPtr(Castable &c);
+*/
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const Castable &c){

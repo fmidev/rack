@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/RegExp.h>
 
 #include "hi5/Hi5.h"
-#include "BaseODIM.h"
+#include "ODIMPath.h"
 
 
 namespace rack {
@@ -52,22 +52,24 @@ class DataOutput {
 
 public:
 
-	static inline
-	void writeGroupToDot(std::ostream & ostr, const HI5TREE & tree){
-
-		int index = 0;
-		ostr << "digraph G { \n";
-		writeGroupToDot(ostr, tree, index);
-		ostr << "}\n";
-
-	}
+	/// Writes H5 structure to GraphViz (dot) format.
+	static
+	void writeToDot(std::ostream & ostr, const HI5TREE & tree, ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED));
 
 
 protected:
 
+	/// Writes H5 structure to GraphViz (dot) format.
 	static
 	void writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int & id,
-			BaseODIM::group_t selector = (BaseODIM::ROOT | BaseODIM::IS_INDEXED), const ODIMPath & path = ODIMPath());
+			ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED), const ODIMPath & path = ODIMPath());
+
+private:
+
+	static
+	std::string quoted(const ODIMPath & path);
+
+
 
 };
 
@@ -78,3 +80,4 @@ protected:
 #endif /* DATASELECTOR_H_ */
 
 // Rack
+ // REP // REP

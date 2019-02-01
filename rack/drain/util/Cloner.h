@@ -31,13 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef Cloner_H_
 #define Cloner_H_
 
-//#include <cmath>
 #include <list>
 #include <exception>
 
-//#include "../util/Type.h"
-
-// // using namespace std;
 
 namespace drain {
 

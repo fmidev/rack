@@ -139,7 +139,7 @@ void Writer::treeToH5File(const HI5TREE &tree,hid_t fid, const std::string &path
 
 		const std::string separator = (path == "/") ? "" : "/";
 		for (HI5TREE::const_iterator it = tree.begin(); it != tree.end(); ++it) {
-			treeToH5File(it->second,fid,path+separator+it->first);
+			treeToH5File(it->second, fid, path + separator + std::string(it->first));
 		}
 
 
@@ -147,10 +147,12 @@ void Writer::treeToH5File(const HI5TREE &tree,hid_t fid, const std::string &path
 
 	/// Copy attributes (group or image)
 	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
-		dataToH5Attribute(it->second,fid,path,it->first);
+		dataToH5Attribute(it->second, fid, path, it->first);
 	}
 
 }
+
+
 
 void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute){
 
@@ -365,6 +367,7 @@ void Writer::dataToH5AttributeString(const drain::Variable & data, hid_t fid, co
 
 }
 
+/*
 struct AttrWriter {
 
 	AttrWriter(const drain::Variable & data, hid_t fid, const std::string &path, const std::string & attribute) :
@@ -389,6 +392,78 @@ void Writer::dataToH5Attribute(const drain::Variable &data, hid_t fid, const std
 	const std::type_info & type = data.getType();
 	AttrWriter a(data, fid, path, attribute);
 	drain::Type::call<AttrWriter>(a, type);
+}
+*/
+
+void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute){
+
+	drain::Logger mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
+
+	if (d.isCharArrayString() || (d.getType() == typeid(std::string))){
+		dataToH5AttributeString(d, fid, path, attribute);
+		return;
+	}
+
+
+	int status = 0;
+
+	const hid_t tid = getH5DataType(d.getType());    //getH5DataType(typeid(T));
+
+	// New
+	const hsize_t elements = d.getElementCount();
+	const bool isArray = (elements > 1); // && false;
+
+	//const hid_t sid = isArray ? H5Screate_simple(1, &elements, NULL) : H5Screate(H5S_SCALAR);
+	const hid_t sid = isArray ? H5Screate_simple(1, &elements, &elements) : H5Screate(H5S_SCALAR);
+	if (sid < 0){
+		mout.error() << ": H5Screate failed for attribute, path=" << path;
+		mout << ", size=" << elements << mout.endl;
+	}
+	//H5Sc
+
+	// NEW
+	/*
+	if (isArray){
+		mout.debug()  << ": creating array of size " << elements;
+		mout << ", path=" << path << mout.endl;
+		status = H5Sset_extent_simple(sid, 1, &elements, &elements); //NULL);
+		if (status < 0)
+			mout.error()  << ": H5Screate failed for ARRAY, path=" << path << mout.endl;
+		return;
+	}
+	*/
+	const hid_t oid = H5Oopen(fid, path.c_str(), H5P_DEFAULT);
+	if (oid < 0)
+		mout.error()  << "H5Oopen failed, path=" << path << mout.endl;
+	//const hid_t gid = H5Gopen2(fid,path.c_str(),H5P_DEFAULT);
+	//if (gid < 0)
+	//	mout.error()  << ": H5Gopen failed, path=" << path << mout.endl;
+
+	const hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
+	if (aid < 0)
+		mout.error()  << "H5Acreate failed, path=" << path << mout.endl;
+
+	// OLD const T x = d;
+	// status = H5Awrite(aid,tid,&x);
+	// New
+	status = H5Awrite(aid, tid, d.getPtr());
+	if (status < 0)
+		mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
+
+
+	status = H5Aclose(aid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
+	//status = H5Gclose(gid);
+	status = H5Oclose(oid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
+	status = H5Sclose(sid);
+	if (status < 0)
+		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+
 }
 
 

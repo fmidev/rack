@@ -44,7 +44,7 @@ void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	mout.debug(2) << "src: " << src << mout.endl;
 
-	if (dst.isSame(src)){
+	if (dst.hasSameSegment(src)){
 		mout.debug() << "dst == src, ok" << mout.endl;
 		return;
 	}
@@ -55,7 +55,7 @@ void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 	}
 
 
-	if (!Type::call<drain::typeIsInteger>(dst.getType())){
+	if (!Type::call<typeIsInteger>(dst.getType())){
 		//dst.scaling.setScale(src.scaling.getScale());
 		dst.setScaling(src.getScaling());
 		if (dst.getType() != src.getType()){
@@ -98,7 +98,7 @@ void QualityThresholdOp::traverseChannel(const Channel &src, const Channel &srcA
 	Channel::iterator dait = dstAlpha.begin();
 
 	/// Only alpha is thresholded
-	if (isnan(replace)){
+	if (std::isnan(replace)){
 		while (sit != src.end()){
 			if (*sait < t){
 				*dit = *sit;

@@ -52,7 +52,7 @@ public:
 	 *  \param windowHeight - optional: median filtering height width in metres
 	 *  \param medianPos    - optional: median position: 0.5 = normal median (morphology: 0.5 > opening; 0.5 < closing)
 	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
+	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	CCorOp(double reflHalfWidth=40) :
 		DetectorOp(__FUNCTION__,"Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.", ECHO_CLASS_CLUTTER){ // Optional postprocessing: morphological closing.

@@ -38,31 +38,50 @@ namespace image {
 
 
 
-/// Prints images geometry, buffer size and type information,
-//  ///// and dumps the array contents.
+
+// Needed? Cf.    ImageFrame::toOStr
 void Image::dump(std::ostream & ostr) const {
-	toOStr(ostr);
+
+	for (size_t i = 0; i < getChannelCount(); ++i) {
+		getChannel(i).toOStr(ostr);
+		ostr << '\n';
+	}
+
+	//ostr << "bytesize=" << getB << '\n';
+
+
 	ostr << "begin=" << (long)begin() << '\n';
 	ostr << "end=  " << (long)end() << '\n';
+	properties.toOStream(ostr);
+	ostr << '\n';
 }
+
 
 void Image::swap(Image & img){
 
 	const std::type_info & type = getType();
 	const Geometry geometry(getGeometry());
+	const CoordinatePolicy policy(getCoordinatePolicy());
 	const ImageScaling scaling(getScaling());
 
 	buffer.swap(img.buffer);
 
-	initialize(img.getType(), img.getGeometry());
+	//initialize(img.getType(), img.getGeometry());
+	setType(img.getType());
+	setGeometry(img.getGeometry());
 	setScaling(img.getScaling());
+	setCoordinatePolicy(img.getCoordinatePolicy());
 
-	img.initialize(type, geometry);
+	// img.initialize(type, geometry);
+	img.setType(type);
+	img.setGeometry(geometry);
 	img.setScaling(scaling);
+	img.setCoordinatePolicy(policy);
 
-	img.properties.swap(properties);
+	img.properties.swap(properties); // dangerous?
 
 }
+
 
 
 }  // image::

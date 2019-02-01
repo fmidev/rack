@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "ImageOp.h"
-
+#include "../image/File.h" // debugging
 
 
 namespace drain
@@ -38,6 +38,73 @@ namespace drain
 
 namespace image
 {
+
+
+
+void ImageOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
+
+	drain::Logger mout(getImgLog(), name+"(ImageOp)", __FUNCTION__);
+
+	mout.debug(2) << "src: " << src << mout.endl;
+	// mout.warn() << "dst0: " << dst << mout.endl;
+
+	if (dst.hasSameSegment(src)){
+		mout.debug() << "dst == src, ok" << mout.endl;
+		return;
+	}
+
+	if (!dst.typeIsSet()){
+		mout.debug() << "dst type unset, adopting type and scale: " << dst << mout.endl; // Type::getTypeChar(src.getType())
+		dst.setType(src.getType());
+	}
+
+	if (!dst.getScaling().isPhysical()){
+		mout.debug() << "dst (" << dst.getScaling() << ") has no physical range , adopting scaling of src(" << src.getScaling() << ')' << mout.endl;
+		dst.adoptScaling(src);
+	}
+	else {
+		mout.debug() << "dst has physical range " << dst.getScaling() << mout.endl;
+	}
+
+	dst.setGeometry(src.getGeometry());
+
+	mout.debug(1) << " dst:  " << dst << mout.endl;
+	//mout.debug(1) << " dst0: " << dst.getChannel(0) << mout.endl;
+
+	/// TODO: copy alpha, fill alpha?
+	if (dst.hasAlphaChannel()){
+		mout.warn() << "filling alpha channel" << mout.endl;
+		dst.getAlphaChannel().fill(dst.getEncoding().getTypeMax<int>());
+	}
+
+	dst.setCoordinatePolicy(src.getCoordinatePolicy());
+
+	mout.debug(3) << "dst: " << dst << mout.endl;
+
+}
+
+
+void ImageOp::makeCompatible(const ImageFrame & src1, const ImageFrame & src2, Image & dst) const  {
+
+	drain::Logger mout(getImgLog(), name+"(ImageOp)", __FUNCTION__);
+
+	mout.debug(2) << "src1: " << src1 << mout.endl;
+	mout.debug(2) << "src2: " << src2 << mout.endl;
+
+	if (dst.hasOverlap(src1)){
+		mout.info() << "dst is src1 or has overlap, leaving unmodified" << mout.endl;
+		return;
+	}
+
+	if (dst.hasOverlap(src2)){
+		mout.info() << "dst is src2 or has overlap, leaving unmodified" << mout.endl;
+		return;
+	}
+
+	makeCompatible(src1, dst);
+
+}
+
 
 void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
@@ -64,26 +131,8 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	//process(srcTray, dstTray);
 	traverseChannels(srcTray, dstTray);
 
-	/*
-	if (srcFrame.hasOverlap(dstImage)){
-		mout.debug() << "src has overlap with dst..." << mout.endl;
-	}
+	//drain::image::File::write(dstImage, "Mika.png");
 
-	mout.debug(1) << "calling makeCompatible()" << mout.endl;
-
-	makeCompatible(srcFrame, dstImage);
-	initializeParameters(srcFrame, dstImage);
-
-	mout.debug(1) << "forwarding to: traverseChannels(const ImageTray &, ImageTray &)" << mout.endl;
-
-	ImageTray<const Channel> srcTray;
-	srcTray.setChannels(srcFrame);
-
-	ImageTray<Channel> dstTray;
-	dstTray.setChannels(dstImage);
-
-	traverseChannels(srcTray, dstTray);
-	 */
 }
 
 void ImageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Image & dst, Image & dstWeight) const {
@@ -108,42 +157,6 @@ void ImageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Imag
 
 	process(srcTray, dstTray);
 
-	/*
-	if (src.hasOverlap(dst)){
-		mout.debug() << "src has overlap with dst..." << mout.endl;
-	}
-	if (srcWeight.hasOverlap(dstWeight)){
-		mout.debug() << "src has overlap with dst..." << mout.endl;
-	}
-
-	// mout.debug() << "dst0 scaling: " << dst.getScaling() << mout.endl;
-
-	if (processOverlappingWithTemp(src, srcWeight, dst, dstWeight)){
-		return;
-	}
-
-	// mout.warn() << "dst1 scaling: " << dst.getScaling() << mout.endl;
-	makeCompatible(src, dst);
-	// mout.warn() << "dst2 scaling: " << dst.getScaling() << mout.endl;
-
-	makeCompatible(srcWeight, dstWeight);
-
-
-	initializeParameters(src, dst);
-	// mout.warn() << "dst scaling: " << dst.getScaling() << mout.endl;
-
-	ImageTray<const Channel> srcTray; //(src, srcWeight);
-	srcTray.setChannels(src);
-	srcTray.setAlphaChannels(srcWeight);
-
-	ImageTray<Channel> dstTray; // (dst, dstWeight);
-	dstTray.setChannels(dst);
-	dstTray.setAlphaChannels(dstWeight);
-
-	// mout.warn() << "dst scaling: " << dstTray.get().getScaling() << mout.endl;
-
-	traverseChannels(srcTray, dstTray);
-	*/
 }
 
 bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & dstImage) const {
@@ -294,79 +307,6 @@ void ImageOp::process(const ImageTray<const Channel> & srcChannels, ImageTray<Im
 
 }
 
-
-
-
-void ImageOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
-
-	drain::Logger mout(getImgLog(), name+"(ImageOp)", __FUNCTION__);
-
-	mout.debug(2) << "src: " << src << mout.endl;
-	// mout.warn() << "dst0: " << dst << mout.endl;
-
-	if (dst.isSame(src)){
-		mout.debug() << "dst == src, ok" << mout.endl;
-		return;
-	}
-
-	if (!dst.typeIsSet()){
-		mout.debug() << "dst type unset, adopting type and scale: " << dst << mout.endl; // Type::getTypeChar(src.getType())
-		dst.setType(src.getType());
-	}
-
-	if (!dst.getScaling().isPhysical()){
-		mout.debug() << "dst (" << dst.getScaling() << ") has no physical range , adopting scaling of src(" << src.getScaling() << ')' << mout.endl;
-		dst.adoptScaling(src);
-	}
-	else {
-		mout.debug() << "dst has physical range " << dst.getScaling() << mout.endl;
-	}
-
-
-
-	dst.setGeometry(src.getGeometry());
-
-	mout.debug(1) << " dst:  " << dst << mout.endl;
-	//mout.debug(1) << " dst0: " << dst.getChannel(0) << mout.endl;
-
-
-
-	/// TODO: copy alpha, fill alpha?
-
-	//if (dst.setGeometry(src.getGeometry())){
-	if (dst.hasAlphaChannel()){
-		mout.warn() << "filling alpha channel" << mout.endl;
-		dst.getAlphaChannel().fill(dst.getMax<int>());
-	}
-	//}
-
-	dst.setCoordinatePolicy(src.getCoordinatePolicy());
-
-	mout.debug(3) << "dst: " << dst << mout.endl;
-
-}
-
-
-void ImageOp::makeCompatible(const ImageFrame & src1, const ImageFrame & src2, Image & dst) const  {
-
-	drain::Logger mout(getImgLog(), name+"(ImageOp)", __FUNCTION__);
-
-	mout.debug(2) << "src1: " << src1 << mout.endl;
-	mout.debug(2) << "src2: " << src2 << mout.endl;
-
-	if (dst.hasOverlap(src1)){
-		mout.info() << "dst is src1 or has overlap, leaving unmodified" << mout.endl;
-		return;
-	}
-
-	if (dst.hasOverlap(src2)){
-		mout.info() << "dst is src2 or has overlap, leaving unmodified" << mout.endl;
-		return;
-	}
-
-	makeCompatible(src1, dst);
-
-}
 
 
 

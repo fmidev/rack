@@ -46,7 +46,10 @@ void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	if (dst.isEmpty())
 		dst.setGeometry(src.getGeometry());
 
-	if (functor.dstView == "a"){
+	if (functor.dstView.empty()){
+		dst.setChannelCount(src.getImageChannelCount(), src.getAlphaChannelCount());
+	}
+	else if (functor.dstView == "a"){
 		//mout.warn() << "request dst alpha" << mout.endl;
 		dst.setAlphaChannelCount(1);
 		dst.getAlphaChannel(0).fill(128);
@@ -62,12 +65,14 @@ void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 	}
 
-	ImageScaling s;
-	s.adoptScaling(src.getScaling(), src.getType(), dst.getType());
-	mout.debug(1) << " src:       " << mout.endl;
+	mout.debug(1) << " src:       " << src << mout.endl;
 	mout.debug(2) << " dst(orig): " << dst << mout.endl;
-	//dst.setOptimalScale(s.getMinPhys(), s.getMaxPhys());
-	dst.setScaling(s);
+	/*
+	  ImageScaling s;
+	  s.adoptScaling(src.getScaling(), src.getType(), dst.getType());
+	  dst.setScaling(s);
+	*/
+	dst.adoptScaling(src);
 	mout.debug(1) << " dst:       " << dst << mout.endl;
 
 }

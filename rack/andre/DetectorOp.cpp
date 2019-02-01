@@ -70,6 +70,8 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
 
+	const std::string & CLASSNAME = getQuantityName();
+
 	mout.debug(1) << "start1" << mout.endl;
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
@@ -99,9 +101,14 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 			Data<PolarDst>  & dstData = dstDataSet.getFirstData(); // only for QIND and CLASS
 
+
+			mout.warn() << "CLASSNAME=" << CLASSNAME << " using universal=" << (SUPPORT_UNIVERSAL && UNIVERSAL) << mout.endl;
+
+			const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
+
 			/// TODO: UNIVERSAL and several inputs?
 			// OVERALL QUALITY (PROB.)
-			PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("QIND") : dstData.getQualityData("QIND"); // of first data (eg. TH)
+			PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(QIND) : dstData.getQualityData(QIND); // of first data (eg. TH)
 			initDataDst(srcData, dstQind, "QIND");
 
 			// OVERALL QUALITY FIELD
@@ -109,9 +116,9 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			initDataDst(srcData, dstClass, "CLASS");
 
 			// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
-			const std::string & CLASSNAME = getQuantityName();
-			//const std::string & KEYNAME = DetectorOp::STORE ? CLASSNAME : std::string("~")+CLASSNAME;
-			mout.debug() << "CLASSNAME=" << CLASSNAME << mout.endl;
+
+			// const std::string & KEYNAME = DetectorOp::STORE ? CLASSNAME : std::string("~")+CLASSNAME;
+
 
 			// add tmp here
 			PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
@@ -125,7 +132,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			processDataSet(srcDataSet, dstProb,  dstDataSet);
 			//@ dstProb.updateTree(); // create /what, /where etc.
 			//@ DataTools::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
-			// update other trees?
+			// update str trees?
 
 			/*
 			const PlainData<PolarSrc> & srcProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? srcDataSet.getQualityData(CLASSNAME) : srcData.getQualityData(CLASSNAME); // slows, due to src/dst const
@@ -248,7 +255,8 @@ const std::string & DetectorOp::getQuantityName() const {
 
 	// If unset, copy in uppercase letters.
 	if (upperCaseName.empty()) {
-		upperCaseName = name;
+		//size_t i = name.find_last_of("Op");
+		upperCaseName = name; //.substr(0, i);
 		drain::StringTools::upperCase(upperCaseName);
 	}
 
@@ -258,7 +266,7 @@ const std::string & DetectorOp::getQuantityName() const {
 
 void DetectorOp::storeDebugData(const ImageFrame & srcImage, PlainData<PolarDst> & dstData, const std::string & quantityLabel) const {
 
-	DataSet<PolarDst> dstDataSet(dstData.tree);
+	DataSet<PolarDst> dstDataSet(dstData.getTree());
 
 	PlainData<PolarDst> & dstDebugData = dstDataSet.getQualityData(quantityLabel);
 
@@ -292,7 +300,7 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 
 void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
-	drain::VariableMap & a = dstData.tree["how"].data.attributes;
+	drain::VariableMap & a = dstData.getTree()["how"].data.attributes;
 	a["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe."+name+':'+getParameters().getKeys();
 	a["task_args"] = getParameters().getValues();
 }

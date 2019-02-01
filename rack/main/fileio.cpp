@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Write.h"
 #include "hi5/Hi5Read.h"
-//#include "data/BaseODIM.h"
+//#include "data/ODIMPath.h"
 #include "data/ODIM.h"
 #include "data/DataOutput.h"
 #include "product/DataConversionOp.h"
@@ -155,72 +155,6 @@ public:
 
 		return;
 
-		/*
-		std::list<std::string> paths;
-		DataSelector selector;
-		selector.setParameters(resources.select);
-		resources.select.clear();
-
-		DataSelector::getPaths(currentHi5, selector, paths);
-		if (paths.empty()){
-			mout.warn() << "no data " << mout.endl;
-			return;
-		}
-
-
-		DataSet<PolarSrc> srcDataSet((currentHi5)(*paths.begin()));
-		const Data<PolarSrc> &d = srcDataSet.getFirstData();
-		drain::Histogram hist(count);
-
-		//const Quantity & quantity = getQuantityMap().get(d.odim.quantity);
-
-		if ((minValue == std::numeric_limits<double>::min()) || (maxValue == std::numeric_limits<double>::max())){
-			const EncodingODIM & odim = getQuantityMap().get(d.odim.quantity).get('C');
-			hist.setScale(odim.scaleForward(0), odim.scaleForward(0xff));
-		}
-		else {
-			hist.setScale(minValue, maxValue);
-		}
-
-		mout.note() << "quantity: " << d.odim.quantity << mout.endl;
-
-		mout.note() << hist << mout.endl;
-
-		const double min = hist.getOutMin();
-		const double max = hist.getUpperBoundOut();
-		double f;
-		int nodataCount = 0;
-		int undetectCount = 0;
-		for (drain::image::Image::const_iterator it = d.data.begin(); it != d.data.end(); ++it){
-			f = *it;
-			if (f == d.odim.undetect){
-				++undetectCount;
-			}
-			else if (f == d.odim.nodata){
-				++nodataCount;
-			}
-			else {
-				f = d.odim.scaleForward(f);
-				if ((f >= min) && (f < max))
-					//if (hist.withinLimits(f))
-					hist.increment(f);
-			}
-		}
-		mout.note() << hist << mout.endl;
-
-		ODIMPathElem parent(BaseODIM::DATASET);
-		DataTools::getNextChild(*resources.currentHi5, parent);
-
-		DataSet<PolarDst> dstDataSet((*resources.currentHi5)[parent]);
-		PlainData<PolarDst> & dstData = dstDataSet.getData("HGHT");
-		dstData.setEncoding("C");
-		dstData.setGeometry(1, hist.getSize());
-
-		// Reset
-		minValue = std::numeric_limits<double>::min();
-		maxValue = std::numeric_limits<double>::max();
-		 */
-
 	}
 
 };
@@ -233,8 +167,6 @@ class CmdGeoTiffTile : public BasicCommand {
 
 public:
 
-	//int width;
-	//int height;
 	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size") {
 		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
@@ -242,7 +174,6 @@ public:
 
 
 };
-// static CommandEntry<CmdTiffTile> geoTIFF("geoTIFF");
 
 
 
@@ -256,134 +187,7 @@ public:
 	};
 };
 extern CommandEntry< CmdOutputPrefix > cmdOutputPrefix;
-//static CommandEntry<CmdOutputPrefix> cmdOutputPrefix( "outputPrefix", 0);
 
-/// <= Note: each path starts with root element BaseODIM::ROOT, corresponding to empty string ("").
-/*
-template <class T>
-void DataSelector::getPathsNEW(const HI5TREE &src, T & container, bool dataSetsOnly) const {
-
-	drain::Logger mout(getName(), __FUNCTION__);
-
-	PolarODIM odim;
-
-	const drain::RegExp quantityRE(quantity);
-	std::set<ODIMPathElem> stems;
-	unsigned int counter = 0; // (this was needed as count would go -1 otherways below)
-
-	// Step 1: retrieve a temporary list of all paths
-	std::list<ODIMPath> l0;
-	mout.debug() << "getKeys " << path << mout.endl;
-	src.getKeys(l0);
-
-	// Accept no data[n]
-	const bool DATASETS = dataSetsOnly || (data.max == 0);
-	if (DATASETS)
-		mout.debug(1) << "datasets only" << mout.endl;
-
-	// Step 2: select only the paths matching the criteria
-	for (std::list<ODIMPath>::iterator it = l0.begin(); it != l0.end(); ++it) {
-
-		//mout.note() << *it << mout.endl;
-
-		if (it->size() == 1) // only the stem ("") ???
-			continue;
-
-		const ODIMPathElem & stem = *(++(it->begin()));
-
-		mout.debug(2) << ": " << stem << "-> " << *it  << mout.endl;
-
-		if (stem.is(BaseODIM::DATASET)){
-			if (!dataset.isInside(stem.index)){
-				mout.debug() << "skip dataset " << stem.index << ", not in [" <<  dataset << ']' << mout.endl;
-				continue;
-			}
-		}
-
-		const ODIMPathElem & leaf = it->back();
-
-		if (leaf.is(BaseODIM::DATA)){ // what about quality?
-			if (!DATASETS){
-				if (!data.isInside(leaf.index)){
-					mout.warn() << "data " << leaf.index << " not in [" <<  data << ']' << mout.endl;
-					continue;
-				}
-			}
-		}
-		else if (!leaf.isIndexed()) { //(!leaf.is(BaseODIM::DATASET)){ //(!leaf.isIndexed()) {
-			// Skip WHAT, WHERE, HOW, ARRAY
-			mout.debug() << " skipping " << leaf << mout.endl;
-			continue;
-		}
-
-
-		//mout.debug(2) << *it << mout.endl;
-		const hi5::NodeHi5 & node = src(*it).data;
-		if (node.noSave){
-			mout.debug() << "noSave data, ok: " << *it << mout.endl;
-			//continue;
-		}
-
-		const drain::image::Image & d = node.dataSet;
-		//odim.clear();
-		//odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
-
-		if (!quantityRE.test(d.properties["what:quantity"])){
-			//if (!quantityRE.test(odim.quantity)){
-			mout.debug() << *it << "\n\t quantity '" << quantityRE.toStr() << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
-			continue;
-		}
-
-		if (d.properties.hasKey("where:elangle")){
-			if (!elangle.isInside(d.properties["where:elangle"])){
-				mout.debug() << "outside elangle range"<< mout.endl;
-				continue;
-			}
-		}
-
-		// Outside index check, because mostly applied by count check as well.
-		mout.debug() << "considering " << *it << mout.endl;
-
-		// Update count
-		if (stems.find(stem) == stems.end()){ // = not already in the set
-			++counter;
-			if (counter > count)
-				return;
-			stems.insert(stem);
-			if (DATASETS){ // Skip adding others than first
-				odim.clear();
-				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
-				mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
-				ODIMPath p; // consider ODIMPath(ODIMPathElement(ROOT))?
-				p << ODIMPathElem(BaseODIM::ROOT) << stem;
-				addPathT(container, odim, p);
-			}
-		}
-
-		if (DATASETS){ // Skip adding others than first
-			continue;
-		}
-
-
-		/// Skip non-datasets, if datasets requested, and vice versa
-		if (!leaf.is(BaseODIM::DATA)){
-			mout.warn() << "unexpected path: " << *it << mout.endl;
-		}
-
-		odim.clear();
-		odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
-
-		mout.debug() << "ACCEPT, counter(" << counter << "): " << *it << mout.endl;
-		//container.push_back(*it);
-		addPathT(container, odim, *it);
-
-		//
-
-
-	}
-
-}
-*/
 
 class CmdOutputFile : public SimpleCommand<std::string> {
 
@@ -419,7 +223,7 @@ public:
 			mout.note() << "writing: '" << value << "'" << mout.endl;
 
 		// TODO: generalize select
-		// TODO: generalize image pick (current or other) for png/tif
+		// TODO: generalize image pick (current or str) for png/tif
 
 		if (h5FileExtension.test(value)){
 			mout.info() << "File format: HDF5" << mout.endl;
@@ -492,19 +296,21 @@ public:
 		else if (textFileExtension.test(value) || (value == "-")){
 
 			mout.info() << "File format: TXT" << mout.endl;
-			std::list<std::string> paths;
+			std::list<ODIMPath> paths;
 
 			if (!resources.select.empty()){
-				DataSelector selector;
-				selector.setParameters(resources.select);
-				DataSelector::getPaths(*resources.currentHi5, selector, paths);
-				//DataSelector::getPaths(*getResources().currentHi5, DataSelector(resources.select), paths);
+				//DataSelector selector;
+				//selector.setParameters(resources.select);
+				//selector.getPathsNEW(*resources.currentHi5, paths); // TODO: shorten
+				DataSelector selector(resources.select);
+				ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
+				DataSelector(resources.select).getPathsNEW(*getResources().currentHi5, paths, groups); // RE2
 				resources.select.clear();
-				// for (std::list<std::string>::const_iterator it = paths.begin(); it != paths.end(); ++it)
+				// for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it)
 				//	mout.warn() << *it << mout.endl;
 			}
 			else {
-				resources.currentHi5->getKeys(paths);
+				resources.currentHi5->getPaths(paths);
 			}
 
 			if (value == "-")
@@ -621,8 +427,6 @@ public:
 				//std::cerr << "i=" << i << std::endl;
 			}
 
-
-
 			ofstr.close();
 
 		}
@@ -633,41 +437,17 @@ public:
 			std::string outFileName = resources.outputPrefix + value;
 			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 
-			//DataSelector selector("dataset[0-9]/?$");
-			/*
-			DataSelector selector("data[0-9]+$");
-			selector.setParameters(resources.select);
-			mout.debug(1) << "Selector: " << selector << mout.endl;
-			*/
-			/*
-			std::string path = "dataset1/data1";
-			std::list<std::string> dataPaths;  // TODO: 3D sampling (3rd dim: elevations / altitudes)
-			DataSelector::getPath(*resources.currentHi5, selector, path);  // TODO (failed)
-			path = DataTools::getParent(path);
-			*/
-
 			DataSelector selector;
 			selector.setParameters(resources.select);
 			selector.updatePaths();
 			selector.count = 1;
-			selector.data.max = 0;
-			mout.note() << "selector: " << selector << mout.endl;
+			//selector.data.max = 0;
+			mout.debug() << "selector: " << selector << mout.endl;
 
-			std::list<ODIMPath> paths;
-			//const HI5TREE & src2 = *resources.currentHi5;
-			selector.getPathsNEW(*resources.currentHi5, paths, true);
+			ODIMPath path;
+			selector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATASET);
 
-			if (paths.empty()){
-				mout.warn() << "no paths found with: " << selector << mout.endl;
-				return;
-			}
-
-			for (std::list<ODIMPath>::iterator it = paths.begin(); it != paths.end(); ++it) {
-				mout.note() << *it << mout.endl;
-			}
-
-			const ODIMPath & path = paths.front();
-			mout.warn() << "Sampling path: " << path << mout.endl;
+			mout.info() << "Sampling path: " << path << mout.endl;
 
 			const HI5TREE & src = (*resources.currentHi5)(path);
 
@@ -702,10 +482,17 @@ public:
 
 			mout.info() << "Dot/Graphviz file (.dot)" << mout.endl;
 
+			DataSelector selector;
+			selector.groups = ODIMPathElem::ALL_GROUPS;
+			selector.setParameters(resources.select);
+			selector.updatePaths();
+			resources.select.clear();
+
 			std::string outFileName = resources.outputPrefix + value;
 			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-			DataOutput::writeGroupToDot(ofstr, *resources.currentHi5);
+			DataOutput::writeToDot(ofstr, *resources.currentHi5, selector.groups);
 			ofstr.close();
+
 		}
 		else {
 			// or warn?
@@ -775,14 +562,14 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector("/data$");
+		DataSelector iSelector; //("/data$");
 		iSelector.setParameters(resources.select);
 		resources.select.clear();
 		mout.debug() << iSelector << mout.endl;
 
-		std::list<std::string> l;
-		//getResources().currentHi5->getKeys(l, options["data"]);
-		DataSelector::getPaths(*getResources().currentHi5, iSelector, l);
+		std::list<ODIMPath> paths;
+		//getResources().currentHi5->getKeys(paths, options["data"]);
+		iSelector.getPathsNEW(*getResources().currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
 		/// Split filename to basename+extension.
 		static const drain::RegExp r("^(.*)(\\.[a-zA-Z0-9]+)$");
@@ -794,69 +581,49 @@ public:
 		const std::string & basename  = r.result[1];
 		const std::string & extension = r.result[2];
 
-		// Overall index (prefix)
-		int i=1;
+
 		std::string filenameOut;
-		/// Means for extracting initial letters and numbers from path components of type {dataset|data|quality}{0-9}
-		//  Consider: /dataset1/data2/quality2/what:quantity=CLASS
-		//            /dataset1/quality2/what:quantity=CLASS
-		//drain::RegExp pathMatcher("^/?([dq])[^0-9]+([0-9]+)/([dq])[^0-9]+([0-9]+)(/([dq])[^0-9]+([0-9]+))?[^0-9]*$");
+		int i=0; // Overall index (prefix)
 
+		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); it++) {
 
-		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); it++) {
-
-			hi5::NodeHi5 & node = (*getResources().currentHi5)(*it).data;
+			const ODIMPath & path = (*it); // modified below
+			hi5::NodeHi5 & node = (*getResources().currentHi5)(path)["data"].data;
 			drain::image::Image & img = node.dataSet;
 
-			mout.debug(2) << "testing: " << *it <<mout.endl;
+			mout.debug() << "testing: " << path << " => /data" <<mout.endl;
 
-			if (img.isEmpty())
+			if (img.isEmpty()){
+				mout.warn() << "empty data array: " << path << " => /data" <<mout.endl;
 				continue;
+			}
 
-			DataTools::getAttributes((*getResources().currentHi5), *it, img.properties); // may be unneeded
-			mout.debug(2) << "constructing filename for : " << *it <<mout.endl;
+			DataTools::getAttributes((*getResources().currentHi5), path, img.properties); // may be unneeded
 
-
-			ODIMPath path(*it);
-			if (path.front().isRoot()) // typically is, string started with slash '/'
-				path.pop_front();
+			//if (path.front().isRoot()) // typically is, string started with slash '/'
+			//path.pop_back(); // strip /data
 			mout.debug(2) << "constructing filename for : " << path <<mout.endl;
-			path.pop_back(); // strip /data
-			ODIMPathElem root =  path.front();
-			ODIMPathElem child  = path.back();
-			path.pop_back();
-			ODIMPathElem parent = path.back();
-			mout.debug(2) << " that is: " << parent << " // " << child <<mout.endl;
-			mout.debug(2) << " root: " << path.front() << " // " << child <<mout.endl;
+
+			//ODIMPathElem root =  path.front();
+			//ODIMPathElem child  = path.back();
+			//path.pop_back();
+			//ODIMPathElem parent = path.back();
+			//mout.debug(2) << " that is: " << parent << " // " << child <<mout.endl;
+			//mout.debug(2) << " root: " << path.front() << " // " << child <<mout.endl;
 
 			std::stringstream sstr;
 			sstr << basename;
 			sstr.width(3);
 			sstr.fill('0');
-			sstr << i;
-			sstr << '_';
-			sstr << root.getCharCode();
-			if (BaseODIM::isIndexed(root.getType()))
-				sstr << root.getIndex();
-			sstr << '-';
-			if (parent != root){
-				sstr << parent.getCharCode();
-				if (BaseODIM::isIndexed(parent.getType()))
-					sstr << parent.getIndex();
+			sstr << ++i << '_';
+			for (ODIMPath::const_iterator pit=path.begin(); pit!=path.end(); ++pit){
+				sstr << pit->getCharCode();
+				if (pit->isIndexed()){
+					sstr << pit->getIndex();
+				}
 				sstr << '-';
 			}
-			sstr << child.getCharCode();
-			if (BaseODIM::isIndexed(child.getType()))
-				sstr << child.getIndex();
-
-			/*
-			if (pathMatcher.execute(*it) != REG_NOMATCH){
-				//sstr.width(2);pathMatcher.
-				mout.debug(1) << "#matches: " <<  pathMatcher.result.size() << mout.endl;
-				sstr << '-' << pathMatcher.result[1] << pathMatcher.result[2] << pathMatcher.result[3] << pathMatcher.result[4] << pathMatcher.result[6] << pathMatcher.result[7];
-			}
-			*/
-			sstr << '_' << img.properties["what:quantity"];
+			sstr << img.properties["what:quantity"];
 			sstr << extension;
 			filenameOut = sstr.str();
 
@@ -866,7 +633,6 @@ public:
 			drain::image::File::write(img, filenameOut);
 			//getResources().currentImage = & img; NEW 2017
 
-			i++;
 		}
 		// options[key] = value;  // save last successful filename, see --writeText
 
@@ -936,3 +702,5 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 } // namespace rack
 
 // Rack
+ // REP // REP // REP // REP // REP
+ // REP // REP // REP // REP

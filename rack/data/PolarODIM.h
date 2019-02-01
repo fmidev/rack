@@ -41,23 +41,22 @@ namespace rack {
 /**
  *
  */
-// Consider single-radar odim
 class PolarODIM : public ODIM {
 
 
 public:
 
-	PolarODIM(group_t initialize = ALL) : ODIM(initialize){
+	PolarODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : ODIM(initialize){
 		init(initialize);
 	};
 
-	PolarODIM(const PolarODIM & odim) : ODIM(ALL) {
+	PolarODIM(const PolarODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 		getNyquist();
 	}
 
 	template <class T>
-	PolarODIM(const std::map<std::string,T> & m) : ODIM(ALL) {
+	PolarODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(m);
 		getNyquist();
 	}
@@ -70,7 +69,7 @@ public:
 	*/
 
 
-	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ALL) {
+	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromImage(img, quantity);
 	}
 
@@ -228,13 +227,8 @@ public:
 	}
 
 	/// Returns the range in metres (i.e. distance to the end of the last measurement volume).
-	inline
-	double getMaxRange() const {
-		return rstart + static_cast<double>(nbins)*rscale;
-		//return getBinDistance(nbins);
-	};
-
-
+	//inline
+	double getMaxRange(bool warn = false) const;
 
 	double getGroundAngle(size_t i) const {
 		return (static_cast<double>(i)+0.5) * rscale / EARTH_RADIUS_43;
@@ -250,10 +244,13 @@ public:
 	}
 
 
+	// defaultRange
+	static int defaultRange;
+
 private:
 
 	virtual // must
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 
 };

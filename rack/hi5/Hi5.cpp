@@ -65,13 +65,13 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 	}
 
 	//const drain::image::Image &d = n.dataSet;
-	if (dataSet.getSize()>0){
+	if (dataSet.getVolume() > 0){
 		if (!prefix.empty())
 			ostr << prefix << ':';
 		//'\t';
 		ostr << "image=" << dataSet.getWidth() << ',' << dataSet.getHeight() << ' ';
 		//ostr << d.getImageChannelCount() << ' '; // << d.getAlphaChannelCount() << ' ';
-		ostr << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getByteSize() << ']' << '\n';  // like typeInfo above
+		ostr << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getByteSize() << ']' << '\n';  // like typeInfo above
 
 	}
 
@@ -172,10 +172,10 @@ void Hi5Base::linkPalette(const HI5TREE & palette, HI5TREE & dst){
 }
 
 // const HI5TREE &src,
-void Hi5Base::writeText(const HI5TREE &src, const std::list<std::string> & keys, std::ostream & ostr) {
+void Hi5Base::writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & keys, std::ostream & ostr) {
 
 
-	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it) {
+	for (std::list<HI5TREE::path_t>::const_iterator it = keys.begin(); it != keys.end(); ++it) {
 
 		const std::string &key = *it;
 		src(key).data.writeText(ostr, key);
@@ -191,12 +191,10 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 		if (!line.empty() && (line.at(0)!='#')){
 
-			const size_t j = line.find('=');
-			if (j == std::string::npos)
-				readTextLine(src, line);
-			else
-				readTextLine(src, line.substr(0, j), line.substr(j+1));
-
+			// const size_t j = line.find('=');
+			// if (j == std::string::npos)
+			readTextLine(src, line);
+			// else readTextLine(src, line.substr(0, j), line.substr(j+1));
 
 		}
 
@@ -204,22 +202,43 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 }
 
-void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std::string & value){
+
+void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
+
+	const size_t i = line.find(':');
+	if (i == std::string::npos){
+		// Just create a group
+		const HI5TREE::path_t path(line);
+		readTextLine(dst, path, "", "");
+	}
+	else {
+		const HI5TREE::path_t path(line.substr(0, i));
+
+		const std::string assignment = line.substr(i+1);
+		const size_t j = assignment.find('=');
+		if (j == std::string::npos){
+			readTextLine(dst, path, assignment, "");
+		}
+		else {
+			readTextLine(dst, path, assignment.substr(0,j), assignment.substr(j+1));
+		}
+	}
+
+}
+
+void Hi5Base::readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value){
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
-	const size_t i = keyPath.find(':');
-
-	const std::string path(keyPath, 0, i);
 
 	/// Create the node, even if the rest fails, ie. (i == std::string::npos).
 	NodeHi5 & n = dst(path).data;
-
 	//std::cerr << "Created: " << path << std::endl;
-	if (i == std::string::npos)
+
+	if (key.empty())
 		return;
 
-	const std::string key(keyPath, i+1);
+	//const std::string key(keyPath, i+1);
 	//std::cerr << "Created: " << path << '|' << key << std::endl;
 
 
@@ -249,7 +268,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & keyPath, const std
 		if (!value.empty() && (value.at(0) != '[')){
 			drain::Variable g;
 			g.setType(typeid(size_t));
-			g.resize(2);
+			g.setSize(2);
 			g.setSeparator(',');
 			g = value.substr(0, k-1);
 			switch (g.getElementCount()){
@@ -306,7 +325,7 @@ void Hi5Base::deleteNoSave(HI5TREE &src){
 
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
 		if (it->second.data.noSave){
-			src.erase(it->first);
+			src.erase(HI5TREE::path_t(it->first));
 		}
 	}
 
@@ -330,3 +349,4 @@ std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree){
 
 
 // Rack
+ // REP // REP

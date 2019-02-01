@@ -33,11 +33,32 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
+template <>
+void Castable::setPtr(Castable &c){
+	caster.ptr = c.caster.ptr;
+	caster.setType(c.getType());
+	elementCount = c.elementCount; // TODO
+	outputSeparator = c.outputSeparator; // ?
+}
+*/
+
+void Castable::relink(Castable & c){
+
+	const std::type_info &t = c.getType();
+
+	if (t == typeid(void))
+		throw std::runtime_error(std::string("Castable::") + __FUNCTION__ + "(Castable &c): c has void type");
+
+	setPtr(c.getPtr(), t);
+	elementCount = c.getElementCount();
+}
+
 
 void Castable::clear(){
 	if (caster.typeIsSet()){
 		if (caster.getType() == typeid(std::string))
-			caster.put(ptr, "");
+			caster.put(""); //caster.put(ptr, "");
 		else {
 			for (size_t i = 0; i < getElementCount(); ++i) {
 				caster.put(getPtr(i), 0);
@@ -53,13 +74,15 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 
 	if (t == typeid(std::string)){  // or any single-element?
 		//ostr << "# type==std::string\n";
-		caster.toOStream(ostr, ptr);  // no cast needed...
+		caster.toOStream(ostr, caster.ptr);  // no cast needed...
 		//ostr << "{std::string}";
 	}
 	else if (isCharArrayString()){  // char array without outputSeparator
 		ostr << getCharArray();
 	}
 	else if (!isEmpty()) {
+
+		//std::cerr << __FUNCTION__ << " separator: " << this->outputSeparator << '\n';
 
 		// Output element using given separator or default (outputSeparator)
 		if (!separator)
@@ -71,6 +94,7 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 			caster.toOStream(ostr, getPtr(i));
 			sep = separator;
 		}
+		//std::cerr << __FUNCTION__ << " separator: " << sep << '\n';
 	}
 	else {
 		// Output nothing!
@@ -88,7 +112,7 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 std::string Castable::toStr() const {
 
 	if (isStlString()){
-		return *(const std::string *)ptr;
+		return *(const std::string *)caster.ptr;
 	}
 	else if (isCharArrayString()){
 		return std::string(getCharArray());
@@ -101,7 +125,7 @@ std::string Castable::toStr() const {
 	//return caster.get<std::string>(ptr);
 }
 
-void Castable::toJSON(std::ostream & ostr, char fill) const {
+void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
 	ostr << '{' << fill << " \"value\": ";
 	valueToJSON(ostr);
 	ostr << ',' << fill; //",\n";
@@ -110,12 +134,15 @@ void Castable::toJSON(std::ostream & ostr, char fill) const {
 		ostr << '$';
 	else
 		ostr << drain::Type::getTypeChar(getType());
-	// Debug:
-	if (getElementCount() != 1)
-		ostr << '[' << getElementCount() << ']';
+	// OLD: if (getElementCount() != 1)		ostr << '[' << getElementCount() << ']';
 	ostr << "\"";
-	ostr << ',' << fill << " \"inputSeparator\": \""  << inputSeparator  << "\"";
-	ostr << ',' << fill << " \"outputSeparator\": \"" << outputSeparator << "\"";
+	if ((getElementCount() != 1) || (verbosity > 1)){
+		ostr << ',' << fill << " \"size\": "  << getElementCount();
+	}
+	if (verbosity > 2){
+		ostr << ',' << fill << " \"inputSeparator\": \""  << inputSeparator  << "\"";
+		ostr << ',' << fill << " \"outputSeparator\": \"" << outputSeparator << "\"";
+	}
 	ostr << fill << '}' << fill;
 }
 
@@ -156,20 +183,18 @@ const void Castable::typeInfo(std::ostream & ostr) const {
 
 Castable & Castable::assignCastable(const Castable &c){
 
-	// this is a string
+	// If this ie. destination is a string, convert input.
 	if (isString()){
-		// Should call resize()
-		//std::cerr << "target is string or char arrray" << '\n';
+		// Should call resize()?
 		assignString(c.toStr());
 	}
-	// c is a string, same thing
+	// Same thing, if input is a string(like), because nothing should be lost when converting that to std::string.
 	else if (c.isString()){
-		// Should call resize()
-		// std::cerr << "src is string or char arrray" << '\n';
+		// Should call resize()?
 		assignString(c.toStr()); // when to split?
 	}
 	else {
-		requestType(c.getType());
+		suggestType(c.getType());
 		requestSize(c.getElementCount());
 		const size_t n = std::min(getElementCount(), c.getElementCount());
 		for (size_t i = 0; i < n; ++i) {
@@ -205,26 +230,23 @@ void Castable::assignToCharArray(const std::string & s){
 
 void Castable::assignString(const std::string &s){
 
-	requestType(typeid(std::string));
+	suggestType(typeid(std::string));
 
 	if (isStlString()){
-		caster.put(ptr, s);  // does not split!
+		//caster.put(ptr, s);  // does not split!
+		caster.put(s);  // does not split!
 	}
 	else if (isCharArrayString()){
 		assignToCharArray(s);  // does not split!
 	}
 	else {
-		//std::cerr << __FUNCTION__ << ": assigning '" << s << "' to type "<< drain::Type::getTypeChar(getType()) << std::endl;
-		/// list<string> ok here, simply a tmp container for split string
 		std::list<std::string> l;
-		StringTools::split(s, l, std::string(1, inputSeparator));
-		//requestType(typeid(double));
+		StringTools::split(s, l, inputSeparator);
 		requestSize(l.size()); // check if true?
-		if (l.size() > getElementCount())
+		if (l.size() > getElementCount()) // or throw excp?
 			std::cerr << __FUNCTION__ << ": provided " << l.size() << " elements, assigning: "<< getElementCount() << std::endl;
-
+		// Will suggest string type, because s is a string...
 		assignContainer(l);
-
 	}
 
 }

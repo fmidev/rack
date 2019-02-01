@@ -72,6 +72,9 @@ namespace image
    \endcode
 
 	This operator can be also used for restoring images containing specks of low quality.
+    \~exec
+       make flowers-rgba.png  #exec
+    \~
    \code
      drainage flowers-rgba.png --blender 50,smooth=a,mix=m -o restored-a1.png
      drainage flowers-rgba.png --blender 50,smooth=a,mix=m,loops=3 -o restored-a3.png

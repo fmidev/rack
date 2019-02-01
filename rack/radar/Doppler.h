@@ -173,7 +173,7 @@ protected:
 	virtual inline
 	double stdDevR(){
 		double c = 1.0/static_cast<double>(count);
-		return sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
+		return ::sqrt((sumI2+sumJ2 - (sumI*sumI+sumJ*sumJ)*c)*c);
 	}
 
 	/// Returns the eccentricity of the velocity points on unit circle.
@@ -185,7 +185,7 @@ protected:
 	 */
 	virtual inline
 	double eccentricity(){
-		return sqrt(sumI*sumI + sumJ*sumJ) / static_cast<double>(count);
+		return ::sqrt(sumI*sumI + sumJ*sumJ) / static_cast<double>(count);
 	}
 
 };

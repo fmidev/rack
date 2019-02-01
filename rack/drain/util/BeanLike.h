@@ -67,7 +67,7 @@ public:
 
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
 	/**
-	 *  This function is virtual because derived classes may redefine it to update other members.
+	 *  This function is virtual because derived classes may redefine it to update str members.
 	 */
 	virtual inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
@@ -76,7 +76,7 @@ public:
 
 	/// Sets parameters
 	/**
-	 *  This function is virtual because derived classes may redefine it to update other members.
+	 *  This function is virtual because derived classes may redefine it to update str members.
 	 */
 	template <class T>
 	inline

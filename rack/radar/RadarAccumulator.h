@@ -73,11 +73,14 @@ public:
 	virtual
 	~RadarAccumulator(){};
 
-	/// Adds data that is in the same coordinate system as the accumulator.
+	/// Adds data that is in the same coordinate system as the accumulator. Weighted with quality.
 	/*
 	 *  Both the input data and the accumulation array are in the same coordinate system.
 	 */
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0);
+
+	/// Adds data that is in the same coordinate system as the accumulator. Weighted with quality and count.
+	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount);
 
 	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const;
 
@@ -147,16 +150,23 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
-	//++odim.ACCnum;
-
+	counter += std::max(1L, srcData.odim.ACCnum);
 	odim.update(srcData.odim); // Time, date, new
-	// quantity?
 
-	//mout.note() << "before: " << this->odim << mout.endl;
 	//mout.note() << "after:  " << this->odim << mout.endl;
 
 }
 
+template  <class AC, class OD>
+void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount){
+
+	drain::Logger mout("RadarAccumulator", __FUNCTION__);
+	//mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
+	DataCoder converter(srcData.odim, srcQuality.odim);
+	AC::addData(srcData.data, srcQuality.data, srcCount.data, converter);
+	odim.update(srcData.odim); // Time, date, new
+	counter = std::max(1L, srcData.odim.ACCnum);
+}
 
 
 template  <class AC, class OD>
@@ -199,9 +209,9 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const {
 
-
 	drain::Logger mout("RadarAccumulator", __FUNCTION__);
 	// mout.warn() << "is root?\n" << dst << mout.endl;
+	// mout.debug() << "Start " << accumulator.getMethod().name << mout.endl;
 
 	const std::type_info & t = drain::Type::getTypeInfo(odimOut.type);
 
@@ -233,31 +243,37 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			case 'd':
 				type = DATA;
 				odimFinal = odimOut; // consider update
-				// odimQuality.setQuantityDefaults("QIND");
-				qm.setQuantityDefaults(odimQuality, "QIND");  // note: will not SET quantity !
+				qm.setQuantityDefaults(odimQuality, "QIND");
 				odimQuality.quantity = "QIND";
 				break;
-			case 'C':
-				mout.warn() << "non-standard layer code; use 'c' for 'count' instead" << mout.endl;
-				// no break
 			case 'c':
 				type = QUALITY;
-				// odimQuality.setQuantityDefaults("COUNT", "C"); ok
-				odimQuality.type = drain::Type::getTypeChar(typeid(unsigned char));
-				odimQuality.gain   = 1;
-				odimQuality.offset = 0;
-				odimQuality.undetect = 256;
-				odimQuality.nodata = -1;
+				qm.setQuantityDefaults(odimQuality, "COUNT");
+				odimQuality.quantity = "COUNT";
+				break;
+			case 'C':
+				type = QUALITY;
+				qm.setQuantityDefaults(odimQuality, "COUNT", "d");
 				odimQuality.quantity = "COUNT";
 				break;
 			case 'w':
 				// no break
 				type = QUALITY;
-				odimFinal = odimOut; // WHY?
-				//odimQuality.setQuantityDefaults("QIND", "C");
+				odimFinal = odimOut; // (Because converted needs both data and weight to encode weight?)
 				qm.setQuantityDefaults(odimQuality, "QIND", "C");
-				odimQuality.undetect = 256;
-				odimQuality.nodata = -1;  // this is good, because otherwise nearly-undetectValue-quality CAPPI areas become no-data.
+				odimQuality.quantity = "QIND";
+				//odimQuality.undetect = 256;
+				//odimQuality.nodata = -1;  // this is good, because otherwise nearly-undetectValue-quality CAPPI areas become no-data.
+				break;
+			case 'W':
+				mout.warn() << "experimental: quality [QIND] type copied from data [" << odimOut.quantity << ']' << mout.endl;
+				// no break
+				type = QUALITY;
+				odimFinal = odimOut; // (Because converted needs both data and weight to encode weight?)
+				qm.setQuantityDefaults(odimQuality, "QIND", odimOut.type);
+				odimQuality.quantity = "QIND";
+				//odimQuality.undetect = 256;
+				//odimQuality.nodata = -1;  // this is good, because otherwise nearly-undetectValue-quality CAPPI areas become no-data.
 				break;
 			case 's':
 				type = QUALITY;
@@ -292,7 +308,9 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		}
 
 		//PlainData<DstType<OD> >
+		mout.debug() << "searching dstData... DATA=" << (type == DATA) << mout.endl;
 		pdata_dst_t & dstData = (type == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
+		mout.debug(3) << "dstData: " << dstData << mout.endl;
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;
@@ -300,8 +318,6 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		if (type == DATA){
 			mout.debug() << "DATA/" << field << mout.endl;
 			//mout.warn() << dstData.odim << mout.endl;
-			//if (!dstData.data.typeIsSet())
-			  //dstData.data.setType(t);
 			dstData.odim.importMap(odimFinal);
 			dstData.data.setType(odimFinal.type);
 			//mout.debug()  << "quantity=" << dstData.odim.quantity << mout.endl;
@@ -325,14 +341,10 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		//std::cerr << __FUNCTION__ << ':' << dstData.tree << std::endl;
 		//hi5::Writer::writeFile("test1.h5", dstProduct.tree);
 
-
 	}
 
-	//updateGeoData()
 
 	mout.debug()  << "updating local tree attributes" << mout.endl;
-	//odimFinal.
-	//@= dstProduct.updateTree(odimFinal);
 
 
 	//mout.debug() << "Finished " << accumulator.getMethod().name << mout.endl;

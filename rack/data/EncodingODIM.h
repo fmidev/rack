@@ -43,11 +43,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "hi5/Hi5.h"
 #include "radar/Constants.h"
-#include "BaseODIM.h"
+#include "ODIMPath.h"
 
 namespace rack {
 
-
+/// Structure for data storage type, scaling and marker codes. Does not contain quantity.
 /**
  *  Within each ODIM class, each variable should have
  *
@@ -56,7 +56,7 @@ namespace rack {
  *  -# group/name
  *  -# dataset/group/name
  *
- *  The scope for variables is "down to the data array". Ie.
+ *  The scope for variables extends "down to the data array". Ie.
  *
  *  Common interface:
  *
@@ -68,42 +68,26 @@ namespace rack {
  *  -# native variables (double, long int, std::string)
  *
  *  Typically used in creating and writing a product.
+ *
  *  See also: LinearScaling (could be used as base class?)
  */
-class EncodingODIM : public BaseODIM, public drain::ReferenceMap {
+class EncodingODIM : public drain::ReferenceMap {  // public ODIMPathElem,
 
 public:
 
+	///
 	typedef unsigned char group_t;
-	/*
-	static const group_t NONE = 0;
-	static const group_t ROOT = 1;
-	static const group_t DATASET = 2;
-	static const group_t DATA = 4; // or quality
-	static const group_t ALL = (ROOT | DATASET | DATA);
-	*/
-	// data
-	/*
-	static const group_t ROOT = 0;
-	static const group_t IS_INDEXED = 1;
-	static const group_t DATASET = 2 | IS_INDEXED;
-	static const group_t DATA    = 4 | IS_INDEXED; // or quality
-	static const group_t QUALITY = 8 | DATA | IS_INDEXED; // or quality
-	static const group_t ARRAY = 16;
-	static const group_t OTHER = 32; // tmp, user defined, etc.
-	static const group_t OTHER_INDEXED = (OTHER | IS_INDEXED); // tmp, user defined, etc.
-	static const group_t ALL = (ROOT | DATASET | DATA | QUALITY);
-	static const group_t NONE = 128;
-	*/
 
+	/// Default constructor.
 	inline
-	EncodingODIM(group_t initialize = ALL){
+	EncodingODIM(group_t initialize = ODIMPathElem::ALL_LEVELS){
 		init(initialize);
 	};
 
+	/// Copy constructor.
 	inline  // todo raise initFromMap (was: FromODIM)
 	EncodingODIM(const EncodingODIM & odim){
-		init(ALL);
+		init(ODIMPathElem::ALL_LEVELS);
 		updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
 	};
 
@@ -118,7 +102,9 @@ public:
 
 
 	/// This is non-standard (not in ODIM), but a practical means of handling storage type of datasets.
-	//  See drain::Type.
+	/**
+	 *  See drain::Type.
+	 */
 	std::string type;
 
 	/// data[n]/what (obligatory)
@@ -149,7 +135,7 @@ public:
 				;
 	};
 
-	void setRange(double min, double max);  // todo rename setRange
+	void setRange(double min, double max);
 
 	/// Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Note: sets type only if unset.
 	template <class T>
@@ -246,10 +232,21 @@ public:
 
 
 	/// Creates a short alias \c (attrib) for each \c (group):(attrib). Example: "gain" => "what:gain".
-	/*  The object itself can be given as an argument.
-	 *	Does not change the keys of the object.
+	/*
+	 *	Does not change the values of the map.
+	 *
+	 *	The object itself can be given as an argument, \see addShortKeys().
 	 */
 	void addShortKeys(drain::ReferenceMap & ref);
+
+	/// Creates a short alias \c (attrib) for each \c (group):(attrib). Example: "gain" => "what:gain".
+	/*
+	 *	Does not change the values of the map.
+	 */
+	inline
+	void addShortKeys(){
+		addShortKeys(*this);
+	}
 
 	/// Copies image attributes and \b type . Experimental.
 	/**
@@ -263,7 +260,10 @@ public:
 	 */
 	static
 	inline
-	void checkType(HI5TREE & dst){ EncodingODIM odim; checkType(dst, odim); } // Temp for thread-safety.
+	void checkType(HI5TREE & dst){
+		EncodingODIM odim;
+		checkType(dst, odim);
+	} // Temp for thread-safety.
 
 
 	/// Copies contents of this to a h5 group.
@@ -279,7 +279,8 @@ public:
 
 	/// A set containing "what", "where" and "how".
 	static
-	const std::set<std::string> & attributeGroups;
+	//const std::set<std::string> & attributeGroups;
+	const std::set<ODIMPathElem> & attributeGroups;
 
 
 
@@ -292,13 +293,13 @@ protected:
 
 
 	static
-	const std::set<std::string> & createAttributeGroups();
+	const std::set<ODIMPathElem> & createAttributeGroups();
 
 
 private:
 
 	virtual // must
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 
 

@@ -366,7 +366,9 @@ protected:
 
 	/// Clears the applied statistics. Redefined in derived classes.
 	virtual
-	void clear(){};
+	void clear(){
+		std::cerr << __FUNCTION__ << " (plain) " << std::endl;
+	};
 
 
 	/// Clears and computes the statistics for the current location.

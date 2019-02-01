@@ -106,6 +106,11 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	drain::Logger mout("Composite", __FUNCTION__);
 
+	const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
+
+	//DataSet<PolarDst> varjo(srcData.tree["dataset1"]);  // TODO REMOVE XX
+
+
 	if (!projR2M.isSet())
 		autoProj = true;
 
@@ -156,14 +161,18 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 			mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
 		}
 
-		if (defaultRange > 0.0)
-			pRadarToComposite.determineBoundingBoxM(defaultRange*1000.0, bboxM);
-		else
-			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxM);
+		if (PolarODIM::defaultRange > 0.0){
+			mout.info() << "Using default range: " << (PolarODIM::defaultRange) << mout.endl;
+			pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
+		}
+		else {
+			mout.info() << "Using maximum range: " << srcData.odim.getMaxRange(false) << mout.endl;
+			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
+		}
 		setBoundingBoxM(bboxM);
 
 		//setBoundingBoxD(bboxD); !?
-		mout.debug(1) << "BboxM: " << bboxM << mout.endl;
+		mout.debug() << "BBoxM: " << bboxM << ", range:" << srcData.odim.getMaxRange(true)<< mout.endl;
 
 	}
 	else {
@@ -193,16 +202,15 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	}
 
 
-	if (mout.isDebug(3)){
+	if (mout.isDebug(2)){
 		/// Check mapping for the origin (= location of the radar)?
 		double _x,_y;
 		pRadarToComposite.projectFwd(0.0, 0.0, _x,_y);
-		mout.debug(3) << "Test origin mapping: " << _x << ' ' << _y << mout.endl;
+		mout.debug(2) << "Test origin mapping: " << _x << ' ' << _y << mout.endl;
 	}
 
 
 	/// Limit to data extent
-	//drain::Rectangle<double> bboxM; // be careful, if consider shared...
 	pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxM);
 	//mout.warn() << "bbox composite:" <<  getBoundingBoxM() << ", data:" << bboxM << '\n';
 	bboxM.crop(getBoundingBoxM());
@@ -281,7 +289,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 			pix2m(i,j,x,y);
 			pRadarToComposite.projectInv(x,y);
-			range = sqrt(x*x + y*y);
+			range = ::sqrt(x*x + y*y);
 			b = srcData.odim.getBinIndex(range);
 
 			//if (i==j)

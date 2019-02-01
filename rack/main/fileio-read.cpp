@@ -74,7 +74,7 @@ void CmdInputFile::exec() const {
 	//const CommandRegistry & r = drain::getRegistry();
 	//mout.warn() << "lastCommand: '" << CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
 
-	// Kludge. Check if last command was other than 1) file read or 2) odim assignment ( --/path:key=value )
+	// Kludge. Check if last command was str than 1) file read or 2) odim assignment ( --/path:key=value )
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
 	// mout.warn() << "inputComplete: " << (int)inputComplete << mout.endl;
 	// mout.warn() << "autoExec:      " << (int)cmdAutoExec.exec << mout.endl;
@@ -98,7 +98,7 @@ void CmdInputFile::exec() const {
 	catch (std::exception & e) {
 		resources.inputOk = false;
 		mout.debug() << e.what() << mout.endl;
-		if (resources.scriptParser.autoExec > 0){  // => go on with other inputs
+		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs
 			mout.warn() << "Read error, file=" << this->value << mout.endl;
 		}
 		else {
@@ -108,6 +108,7 @@ void CmdInputFile::exec() const {
 		return;
 	}
 
+	mout.debug(3) << "resources.getUpdatedStatusMap()" << mout.endl;
 	resources.getUpdatedStatusMap();
 
 	mout.timestamp("END_FILEREAD");
@@ -136,13 +137,18 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	HI5TREE srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
-	if (mout.isDebug(2)){
-		mout.debug() << "input data:" << mout.endl;
+
+
+	if (mout.isDebug(6)){
+		mout.debug(2) << "input data:" << mout.endl;
 		hi5::Hi5Base::writeText(srcTmp, std::cerr);
 	}
 
-	DataTools::updateAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
 
+	//DataTools::updateAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	//FlexVariableMap debugMap;
+	DataTools::updateAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	//mout.warn() << "debugMap: " << debugMap << mout.endl;
 
 
 	/// True, if user seems to provide
@@ -167,7 +173,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		resources.currentHi5 = & resources.cartesianHi5;
 
 		// SINGLE_INPUT ||
-		if (AUTO_EXEC || ProductBase::appendResults.isUnset() || resources.cartesianHi5.isEmpty()){
+		//if (AUTO_EXEC || ProductBase::appendResults.isUnset() || resources.cartesianHi5.isEmpty()){
+		if (AUTO_EXEC || ProductBase::appendResults.isRoot() || resources.cartesianHi5.isEmpty()){
 			resources.cartesianHi5.swap(srcTmp);
 			//mout.note() << resources.cartesianHi5 << mout.endl;
 		}
@@ -191,7 +198,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			}
 
 		}
-		//DataTools::updateAttributes(*resources.currentHi5, ODIM().getCoordinatePolicy());
+		DataTools::updateAttributes(*resources.currentHi5);
 	}
 	else {
 
@@ -199,7 +206,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		resources.setSource(resources.inputHi5, *this);
 		resources.currentHi5 =      & resources.inputHi5;
 		resources.currentPolarHi5 = & resources.inputHi5;
-		DataTools::updateCoordinatePolicy(srcTmp, RackResources::polarLeft);
+		//DataTools::updateCoordinatePolicy(srcTmp, RackResources::polarLeft);
 
 		//if (ProductOp::appendResults.empty()){ // TODO ..or..
 		//if ((!multipleInput) || (resources.scriptParser.autoExec>0)){ // TODO ..or..
@@ -210,18 +217,68 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		else {
 			appendPolarH5(srcTmp, resources.inputHi5);
 		}
-		//DataTools::updateAttributes(*resources.currentHi5, PolarODIM().getCoordinatePolicy());
+
+		DataTools::updateAttributes(*resources.currentHi5);
+		DataTools::updateCoordinatePolicy(resources.inputHi5, RackResources::polarLeft);
+
+			}
+
+
+	//mout.warn() << resources.currentHi5->data.dataSet.properties << mout.endl;
+
+	if (false){
+
+		mout.warn() << "eka" << mout.endl;
+		Data<PolarDst> eka((*resources.currentHi5)["dataset1"]["data2"]);
+		mout.note() << eka << mout.endl;
+
+		mout.warn() << "moka" << mout.endl;
+		Data<PolarDst> moka(eka);
+		mout.note() << moka << mout.endl;
+
+		/*
+		mout.warn() << "toka" << mout.endl;
+		const DataSet<PolarSrc> konsta((*resources.currentHi5)["dataset1"], drain::RegExp("H"));  //REGEXP
+		mout.note() << "konsta:\n" << konsta << mout.endl;
+		const PlainData<PolarSrc> & aapeli = konsta.getData("TH");
+		mout.warn() << aapeli << mout.endl;
+		*/
+		DataSet<PolarDst> muuttio((*resources.currentHi5)["dataset1"], drain::RegExp("Å"));
+		mout.warn() << "pair" << mout.endl;
+		DataSet<PolarDst>::value_type valu("KEPATH", eka);
+		mout.warn() << "sertti" << mout.endl;
+		muuttio.insert(valu);
+		//moka.odim.quantity  = "XXXXX"; OK, but overridden by eka later
+		eka.odim.offset = 12.3;
+
+
+		/*
+		DataSet<PolarDst> muuttio((*resources.currentHi5)["dataset1"]);
+		Data<PolarDst> & uusi = muuttio.getData("SUURO");
+		PlainData<PolarDst> & laatu = uusi.getQualityData("LAATU");
+		laatu.initialize(typeid(unsigned short),123, 456);
+		mout.warn() << uusi << mout.endl;
+		mout.debug() << laatu << mout.endl;
+
+		DataSet<PolarDst> tupla((*resources.currentHi5)["dataset1"]);
+		Data<PolarDst> & rouhio = tupla.getData("SUURIMO");
+		rouhio.initialize(typeid(unsigned char),123, 456);
+		rouhio.odim.gain = 1.23456789;
+		rouhio.odim.elangle = 12345.678;
+
+		mout.warn() << rouhio << mout.endl;
+		 */
 	}
 
-	DataTools::updateAttributes(*resources.currentHi5);
-	//mout.warn() << resources.currentHi5->data.dataSet.properties << mout.endl;
+	mout.debug() << "end" << mout.endl;
+
 }
 
 void CmdInputFile::appendCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
-	if (ProductBase::appendResults.is(BaseODIM::DATASET)){
+	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
 		attachCartesianH5(srcRoot, dstRoot);
 	}
 	else if (ProductBase::appendResults.isIndexed()){
@@ -233,8 +290,8 @@ void CmdInputFile::appendCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const
 			mout.note() << " srcRoot has several datasets" << mout.endl;
 
 
-		ODIMPathElem parent(BaseODIM::DATASET);
-		DataTools::getLastChild(dstRoot, parent);
+		ODIMPathElem parent(ODIMPathElem::DATASET);
+		DataSelector::getLastChild(dstRoot, parent);
 		if (parent.getIndex()==0)
 			parent.index = 1;
 
@@ -268,7 +325,7 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 	drain::Logger mout(name, __FUNCTION__);
 
 	//ODIMPathElem p(g);
-	//DataTools::getLastChild(dst, p);
+	//DataSelector::getLastChild(dst, p);
 
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
 
@@ -276,7 +333,7 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 		if (p.isIndexed()){
 			//++p.index;
 			//ODIMPathElem p(s);
-			DataTools::getNextChild(dst, p);
+			DataSelector::getNextChild(dst, p);
 			mout.note() << " appending " << p << mout.endl;
 			dst[p].swap(it->second);
 		}
@@ -296,7 +353,7 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 /*
 	RackResources & resources = getResources();
 
-	std::list<std::string> srcPaths;
+	std::list<ODIMPath> srcPaths;
 	DataSelector srcSelector(ProductBase::appendResults+"[0-9]+$");
 	srcSelector.setParameters(resources.select); //??
 	resources.select.clear();
@@ -304,8 +361,8 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 	const DataSelector dstSelector(ProductBase::appendResults+"[0-9]+$");
 
 
-	DataSelector::getPaths(src, srcSelector, srcPaths);
-	for (std::list<std::string>::const_iterator it=srcPaths.begin(); it != srcPaths.end(); ++it){
+	 srcSelector.getPathsNEW(src, srcPaths); // RE2
+	for (std::list<ODIMPath>::const_iterator it=srcPaths.begin(); it != srcPaths.end(); ++it){
 		mout.warn() << "Appending from src:" << *it << mout.endl;
 		std::string path = "dataset1";
 		DataSelector::getNextOrdinalPath(dst, dstSelector, path);  //
@@ -315,233 +372,190 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 	*/
 }
 
+void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
+
+	drain::Logger mout(name, __FUNCTION__);
+
+	const QualityDataSupport<PolarSrc> srcQ(src);
+	const PlainData<PolarSrc> & srcQind  = srcQ.getQualityData("QIND");  // ie.
+	const PlainData<PolarSrc> & srcClass = srcQ.getQualityData("CLASS"); // Maybe empty
+
+	QualityDataSupport<PolarDst> dstQ(dst);
+	PlainData<PolarDst> & dstQind  = dstQ.getQualityData("QIND");
+	PlainData<PolarDst> & dstClass = dstQ.getQualityData("CLASS");
+
+	typedef std::map<std::string, ODIMPathElem> quantity_map;
+
+	quantity_map srcQualityPaths;
+	DataSelector::getChildren(src, srcQualityPaths, ODIMPathElem::QUALITY);  // consider children
+
+	quantity_map dstQualityPaths;
+	DataSelector::getChildren(dst, dstQualityPaths, ODIMPathElem::QUALITY);
+
+	for (quantity_map::const_iterator it = srcQualityPaths.begin(); it != srcQualityPaths.end(); ++it) {
+
+		const std::string & quantity  = it->first; // DBZH, or QIND or CLASS
+		const ODIMPathElem & srcChild = it->second;
+
+
+		if (quantity == "QIND"){  // => update (combine), do not just copy (override)
+
+			mout.note() << "Updating QIND (and CLASS) with "<< srcChild << '[' << quantity << ']' << mout.endl;
+			// Todo: if no CLASS
+			if (srcClass.data.isEmpty()){
+				mout.warn() << "CLASS data for srcPath=" << srcChild << mout.endl;
+			}
+
+			QualityCombinerOp::updateOverallQuality(srcQind, srcClass,	dstQind, dstClass);
+			continue;
+
+		}
+		else if (quantity == "CLASS"){
+			mout.debug(2) << "Combining CLASS skipped (handled by QIND, if found)" << mout.endl;
+			continue;
+		}
+
+		/*  CONSIDER
+		if (srcClass.data.isEmpty()){ // CLASS
+			const PlainData<PolarSrc> & srcProb = sDataSet.getQualityData(quantity);
+			if (srcProb.data.isEmpty()){
+				mout.warn() << "Empty data for prob. quantity="<< quantity << mout.endl;
+				continue;
+			}
+			mout.note() << "No CLASS data in src, ok. Updating dst CLASS with prob.field; quantity="<< quantity << mout.endl;
+			QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123); // FIX code!
+		}
+		else {
+			mout.info() << "Found quality data (CLASS), updates done on that, not on orig quality=" << quantity << mout.endl;
+		}
+		*/
+
+		quantity_map::const_iterator dit = dstQualityPaths.find(quantity);
+
+		if (dit == dstQualityPaths.end()){ // New quantity, simply add this \c dataN directly.
+
+			// if dstChild EMPTY, add it now.
+			if (srcClass.data.isEmpty()){
+				mout.info() << "src CLASS empty for  ["<< quantity << "] " << srcChild;
+				mout << " (update under constr.)" << mout.endl;
+			}
+
+			// if dstChild EMPTY, add it now.
+			if (srcQind.data.isEmpty()){ // ie not handled above
+				mout.warn() << "src QIND empty for  ["<< quantity << "] " << srcChild;
+				mout << " (update under constr.)" << mout.endl;
+				const PlainData<PolarSrc> srcProb(src[srcChild]);  // TODO: resources and quality code?
+				QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123);
+			}
+
+			ODIMPathElem dstChild(ODIMPathElem::QUALITY);
+			DataSelector::getNextChild(dst, dstChild);
+
+			mout.note() << "Adding quality ["<< quantity << "] directly to ./" << dstChild  << mout.endl;
+
+			// Create empty dstRoot[path] and swap it...
+			dst[dstChild].swap(src[srcChild]);
+		}
+		else { // elangle is found in dstRoot.
+			mout.note() << "UNDONE: Already [" << quantity << "] at " << dit->second  << mout.endl;
+		}
+
+	}
+
+
+}
 
 void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
-	// Data or quality data
-	// static const drain::RegExp dataTypeMatcher("^/?((data[0-9]+)/)?((data|quality)[0-9]+)/?$");
-	//static const drain::RegExp dataTypeMatcher("^/?((data[0-9]+)/)?((data|quality)[0-9]+)/?$");
-	//static const drain::RegExp dataTypeMatcher(".*(data|dataset)([0-9]+)/(data|quality)([0-9]+)/?$");
-	// static const drain::RegExp dataTypeMatcher(".*((data|dataset)[0-9]+)/((data|quality)[0-9]+)/?$");
-	static const drain::RegExp dataTypeMatcher("^(|(/data[0-9]+))/((data|quality)[0-9]+)/?$");
-	static const DataSelector dataSelector("(data|quality)[0-9]+/?$"); // = above std::string dataTypeMatcher.regExpString
-
-	// Raise selection?
 	RackResources & resources = getResources();
 
 	/// Common dataSetSelector for srcRoot and dstRoot
-	DataSelector dataSetSelector("dataset[0-9]+/?$");
+	DataSelector dataSetSelector;
 	dataSetSelector.setParameters(resources.select); //??
 	resources.select.clear();
-	/*  In future, dataselector could/should handle:
-	 *  dataset=1-2,4
-	 *  data=1-2
-	 *  quality=1-2
-	 */
 
+	// Consider generalization for Carts
+	std::map<double,ODIMPath> srcPaths;
+	dataSetSelector.getPathsNEW(srcRoot, srcPaths, ODIMPathElem::DATASET);
 
-	std::list<std::string> srcPaths;
-	DataSelector::getPaths(srcRoot, dataSetSelector, srcPaths);
-
-	std::map<double,std::string> dstPaths;
-	DataSelector::getPathsByElevation(dstRoot, dataSetSelector, dstPaths);
+	std::map<double,ODIMPath> dstPaths;
+	dataSetSelector.getPathsNEW(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
 
 
 	mout.debug() << "traverse paths" << mout.endl;
 	/// Traverse the child paths of srcRoot dataset[i]
-	for (std::list<std::string>::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
+	for (std::map<double,ODIMPath>::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
 
-		const std::string & srcDataSetPath = *it;
+		const double   & elangle = it->first;
+		const ODIMPath & srcDataSetPath = it->second;
 
 		HI5TREE & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
 
-		const VariableMap & where = srcDataSet["where"].data.attributes; // (it->second)["where"].data.attributes;
-		//	if (where.hasKey("elangle"));
-		const double elangle = where["elangle"];
-
 		mout.debug() << " Considering " << srcDataSetPath <<  " (" << elangle << ')' << mout.endl;
 
-		std::map<double,std::string>::const_iterator eit = dstPaths.find(elangle);
+		std::map<double,ODIMPath>::const_iterator eit = dstPaths.find(elangle);
 
-		if (eit == dstPaths.end()){ // Elevation angle (elangle) of this input dataset is not found in dstRoot, so add it.
+		if (eit == dstPaths.end()){ // New elangle, add this \c dataset directly.
 
-			ODIMPathElem path(BaseODIM::DATASET);
-			DataTools::getNextChild(dstRoot, path);
-			mout.note() << "Appending to path=" << path << mout.endl;
-			// Creates dstRoot[path]
-			//dstRoot[path].getChildren().swap( srcDataSet.getChildren() );
-			HI5TREE & dstDataSet = dstRoot[path];
+			ODIMPathElem child(ODIMPathElem::DATASET);
+			DataSelector::getNextChild(dstRoot, child);
+			mout.info() << "New elangle (" << elangle << "), appending to path=" << child << mout.endl;
+			// Create empty dstRoot[path] and swap it...
+			HI5TREE & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
 		}
 		else { // elangle is found in dstRoot.
 
-			const std::string & dstDataSetPath = eit->second;
+			static const DataSelector dataSelector;
 
-			mout.note() << " Combining datasets with same elevation ("<< elangle << "): src:" << srcDataSetPath <<  " <--> dst:" << dstDataSetPath << mout.endl;
+			const ODIMPath & dstDataSetPath = eit->second;
+
+			mout.note() << "Combining datasets of elevation ("<< elangle << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << mout.endl;
 
 			HI5TREE & dstDataSet = dstRoot(dstDataSetPath);
 
-			std::map<std::string, std::string> srcQuantityPaths;
-			DataSelector::getPathsByQuantity(srcDataSet, dataSelector, srcQuantityPaths);
+			//typedef std::map<std::string, ODIMPath> quantity_map;
+			typedef std::map<std::string, ODIMPathElem> quantity_map;
 
-			std::map<std::string, std::string> dstQuantityPaths;
-			DataSelector::getPathsByQuantity(dstDataSet, dataSelector, dstQuantityPaths);
+
+			quantity_map srcQuantityPaths;
+			DataSelector::getChildren(srcDataSet, srcQuantityPaths, ODIMPathElem::DATA);  // consider children
+
+			quantity_map dstQuantityPaths;
+			DataSelector::getChildren(dstDataSet, dstQuantityPaths, ODIMPathElem::DATA);
 
 			/// Traverse quantities, assigning each to new / existing dstPaths in current structure.
-			for (std::map<std::string,std::string>::const_iterator qit = srcQuantityPaths.begin(); qit != srcQuantityPaths.end(); ++qit) {
+			for (quantity_map::const_iterator qit = srcQuantityPaths.begin(); qit != srcQuantityPaths.end(); ++qit) {
 
-				const std::string & quantity = qit->first; // DBZH, or even QIND or CLASS
-				const std::string & srcPath  = qit->second;
-				mout.debug() << " -> " << srcPath <<  " [" << quantity << ']' << mout.endl;
+				const std::string & quantity  = qit->first; // DBZH, or QIND or CLASS
+				const ODIMPathElem & srcChild = qit->second;  //srcPath.back();
+				HI5TREE & srcData = srcDataSet[srcChild];
 
-
-				ODIMPath opath(srcPath);
-				mout.debug() << "ODIMPath: " << opath << " size=" << opath.size() << mout.endl;
-
-				ODIMPathElem child = opath.back();
-
-				opath.pop_back();
-				ODIMPathElem parent = opath.back();
-
-				mout.debug() << "ODIMPath: child='" << child  << "', parent='" << parent << "'" << mout.endl;
-
-				const bool QUALITY = (child.group == BaseODIM::QUALITY);
-				const bool LOCAL   = (parent.group != BaseODIM::ROOT); // not true root, but empty /dataset1//quality1
-
-
-				//mout.debug() << "Handling " << srcPath << " => " << srcPathParent << " / "  << srcPathChild << mout.endl;
-				mout.debug() << "Handling src:" << srcPath << " => dst:" << parent << " / "  << child << mout.endl;
-				mout.debug(1) << "LOCAL=" << (int)LOCAL << ", QUALITY=" << (int)QUALITY << mout.endl;
-
-				if (QUALITY){
-
-					std::string dataQuantity;  // DBZH, VRAD etc.
-
-					if (LOCAL){
-						mout.debug() << "checking " << parent << "/what:quantity" << mout.endl;
-						dataQuantity = srcDataSet[parent]["what"].data.attributes["quantity"].toStr();
-						//mout.warn() << "data quantity: " << dataQuantity << mout.endl;
-					}
-					else {
-						mout.info() << "updating GLOBAL quality: " << quantity << mout.endl;
-
-					}
-					// NOW, dataQuantity is empty, unless local
-					//mout.warn() << "data quantityD: " << dataQuantity << mout.endl;
-					//mout.info() << "retrieve common data: " << quantity << mout.endl;
-
-					DataSet<PolarSrc> sDataSet(srcDataSet);
-					PlainData<PolarSrc> & srcQind  = sDataSet.getQualityData2("QIND",  dataQuantity);
-					PlainData<PolarSrc> & srcClass = sDataSet.getQualityData2("CLASS", dataQuantity); // Maybe empty
-
-					DataSet<PolarDst> dDataSet(dstDataSet);
-					PlainData<PolarDst> & dstQind  = dDataSet.getQualityData2("QIND",  dataQuantity);
-					PlainData<PolarDst> & dstClass = dDataSet.getQualityData2("CLASS", dataQuantity); // Maybe empty (but created if srcClass non-empty).
-
-					if (quantity == "QIND"){  // append (combine) dataset-level qind
-						mout.note() << "updating QIND and CLASS" << mout.endl;
-
-						// Todo: if no CLASS
-						if (srcClass.data.isEmpty()){
-							mout.warn() << "CLASS empty srcPath=" << srcPath << mout.endl;
-						}
-						QualityCombinerOp::updateOverallQuality(srcQind, srcClass,	dstQind, dstClass);
-
-						const drain::VariableMap & srcHow   = srcQind.tree["how"].data.attributes;
-						const std::string srcArgs = srcHow["task_args"];
-
-						drain::VariableMap & dstHow   = dstQind.tree["how"].data.attributes;
-						dstHow["task_args"] << srcArgs;
-						continue;
-
-					}
-					else if (quantity == "CLASS"){
-						// Handled with "QIND", right above.
-						mout.debug(1) << "combining CLASS skipped (handled by QIND, if found)" << mout.endl;
-						continue;
-					}
-					else {
-						mout.note() << "updating Q quantity="<< quantity << "  " << srcDataSetPath << ':' << srcPath << " dstDataSetPath => " << dstDataSetPath << mout.endl;
-						if (srcClass.data.isEmpty()){
-							PlainData<PolarSrc> & srcProb = sDataSet.getQualityData(quantity);
-							if (srcProb.data.isEmpty()){
-								mout.warn() << "Empty data for prob. quantity="<< quantity << mout.endl;
-								continue;
-							}
-							mout.note() << "No CLASS data in src, ok. Updating dst CLASS with prob.field; quantity="<< quantity << mout.endl;
-							QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123); // FIX code!
-						}
-						else {
-							mout.info() << "Found quality data (CLASS), updates done on that, not on orig quality=" << quantity << mout.endl;
-						}
-						// continues below
-						if (LOCAL){
-							mout.note() << "LOCAL (specific) Q data" << quantity << ", for quantity=" << dataQuantity << mout.endl;
-							Data<PolarSrc> & s         = sDataSet.getData(dataQuantity);
-							PlainData<PolarSrc> & qSrc = s.getQualityData(quantity);
-
-							Data<PolarDst> & d         = dDataSet.getData(dataQuantity);
-							PlainData<PolarDst> & qDst = d.getQualityData(quantity);
-							qDst.odim.updateFromMap(qSrc.odim);
-							qDst.data.copyDeep(qSrc.data); // kludge
-							qDst.updateTree2();
-							continue;
-						}
-					}
-
-				}
-
-				// Substantial quantity or quality other than QIND or CLASS
-				std::map<std::string,std::string>::const_iterator dit;
-				/*
-				if (QUALITY && LOCAL)
-					dit = dstQuantityPaths.find(dataQuantity);
-				else
-				*/
-					dit = dstQuantityPaths.find(quantity);
-
-				if (dit == dstQuantityPaths.end()){ // Not found => add (append)
-
-					ODIMPathElem dstParentPath(parent.group);
-					if (BaseODIM::isIndexed(parent.group)) // != BaseODIM::ROOT , practically
-						DataTools::getNextChild(dstDataSet, dstParentPath);
-
-					ODIMPathElem dstChildPath(child.group); // BaseODIM::DATA or BaseODIM::QUALITY
-
-					if (QUALITY){
-						mout.debug() << "Adding Q quantity " << '[' << quantity << "]" << mout.endl;
-						mout.debug(1) << "Initial target path " << dstParentPath << " / " << dstChildPath << mout.endl;
-					}
-					else {
-						mout.debug() << "Adding quantity " << '[' << quantity << "]" << mout.endl;
-					}
-
-					if (DataTools::getNextChild(dstDataSet, dstChildPath)){
-						//++dstChildPath.index;
-						mout.debug() << "Target path " << dstParentPath << " / " << dstChildPath << mout.endl;
-						//mout.note() << "NEW: Target path2: " << dstChildPath << mout.endl;
-					}
-					else {
-						mout.error() << "could not find path for dst=" << dstParentPath << '|' << dstChildPath << "?" << mout.endl;
-					}
-
-					dstDataSet[dstParentPath][dstChildPath].swap(srcDataSet(srcPath));
-
-					srcDataSet.erase(srcPath); // otherwise empty /data6 Groups remains
-					//mout.note() << "Erased" << mout.endl;
+				quantity_map::const_iterator dit = dstQuantityPaths.find(quantity);
+				if (dit == dstQuantityPaths.end()){
+					//mout.debug() << "New quantity, adapt the full data group (with or without quality)" << mout.endl;
+					ODIMPathElem dstChild(ODIMPathElem::DATA);
+					DataSelector::getNextChild(dstDataSet, dstChild);
+					mout.note() << "Add new quantity " <<  quantity << " => " << dstDataSetPath << '|' << dstChild << mout.endl;
+					HI5TREE & dstData = dstDataSet[dstChild];
+					srcData.swap(dstData);
+					//continue;
 				}
 				else {
-					// Problem: original LOCAL quality data would be swapped...
-					mout.note() << "Not overwriting: src: " << srcDataSetPath << '/' << srcPath << '(' << elangle << ')' << '[' << quantity <<  "] -> dst:" << dstDataSetPath << '/' << dit->second<< mout.endl;
+					mout.note() << "Already [" <<  quantity << "] => " << dstDataSetPath << '|' << dit->second << ", updating its quality" << mout.endl;
+					HI5TREE & dstData = dstDataSet[dit->second];
+					// DO not copy data, but quality
+					updateQuality(srcData, dstData);
 				}
+
 			}
 
-			// for (std::map<std::string,std::string>::const_iterator it = dstQuantityPaths.begin(); it != dstQuantityPaths.end(); ++it)
-			// std::cout << '\t' << it->first << '\t' << it->second << std::endl;
-			continue;  // IMPORTANT
+			// Update dataset quantities
+			updateQuality(srcDataSet, dstDataSet);
+
 		}
 
 
@@ -578,24 +592,31 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	RackResources & resources = getResources();
 
 	/// Search last dataset
-	std::string pathSearch = "dataset[0-9]+/?$";
-	std::string dataSetPath = "dataset1";
-	DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataSetPath);
+	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
+	DataSelector::getLastChild(resources.inputHi5, dataSetElem);
+	// std::string pathSearch = "dataset[0-9]+/?$";
+	// std::string dataSetPath = "dataset1";
+	// DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataSetPath);
 
 	/// Search new data[n] in the dataset found
-	pathSearch = dataSetPath+"/data[0-9]+/?$";
-	std::string dataPath = dataSetPath + "/data1"; // needed for recognition
-	DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataPath);
+	ODIMPathElem dataElem(ODIMPathElem::DATA);
+	DataSelector::getLastChild(resources.inputHi5[dataSetElem], dataElem);
+	//pathSearch = dataSetPath+"/data[0-9]+/?$";
+	//std::string dataPath = dataSetPath + "/data1"; // needed for recognition
+	//DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataPath);
 
-	mout.debug() << "Found path " << dataPath << mout.endl;
-	if (!resources.inputHi5(dataPath)["data"].data.dataSet.isEmpty()){
-		mout.debug() << "Path " << dataPath << "/data contains data already, searching further..." << mout.endl;
-		DataSelector::getNextOrdinalPath(resources.inputHi5, pathSearch, dataPath);
+
+	mout.warn() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
+	if (!resources.inputHi5[dataSetElem][dataElem]["data"].data.dataSet.isEmpty()){
+		mout.debug() << "Path " << dataSetElem << '>' << dataElem << "/data contains data already, searching further..." << mout.endl;
+		//DataSelector::getNextOrdinalPath(resources.inputHi5, pathSearch, dataPath);
+		++dataElem.index;
 	}
-	mout.debug() << "Final path " << dataPath << mout.endl;
+	mout.warn() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
+	// mout.debug() << "Final path " << dataPath << mout.endl;
 
 
-	HI5TREE & dst = resources.inputHi5(dataPath);
+	HI5TREE & dst = resources.inputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst["data"].data.dataSet;
 	drain::image::File::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();
@@ -607,22 +628,22 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		object = "PVOL";
 	}
 
-	DataTools::updateAttributes(resources.inputHi5);
+	DataTools::updateAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
 	if (object.toStr()=="COMP"){
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
-		ODIM::copyToH5<ODIM::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIM::DATASET>(odim, resources.inputHi5(dataSetPath)); // $ odim.copyToDataSet(resources.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIM::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5[dataSetElem]); // $ odim.copyToDataSet(resources.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
 	}
 	else {
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)
-		ODIM::copyToH5<ODIM::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIM::DATASET>(odim, resources.inputHi5(dataSetPath)); // $odim.copyToDataSet(resources.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIM::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5[dataSetElem]); // $odim.copyToDataSet(resources.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
 	}
 
 	DataTools::updateAttributes(resources.inputHi5);

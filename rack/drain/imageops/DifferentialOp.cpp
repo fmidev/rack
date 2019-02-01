@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <math.h>
 
 // #include "util/Log.h"
+#include "../image/File.h"
 #include "DifferentialOp.h"
 
 
@@ -62,7 +63,7 @@ void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
 
 	if (src.empty()){
 		mout.error() << "src empty" << mout.endl;
@@ -84,29 +85,6 @@ void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 
 }
 
-
-
-//void DifferentialOp::traverseHorz(const Channel & src, Channel & dst) const {
-/*
-	if (span > 0){
-		traverse(src, dst, span/2, 0, (span+1)/2, 0);  // ?
-	}
-	else {
-		traverse(src, dst, span/2, 0, (span-1)/2, 0);  // ?
-	}
-	*/
-//}
-
-//void DifferentialOp::traverseVert(const Channel & src, Channel & dst) const {
-	/*
-	if (span > 0){
-		traverse(src, dst, 0, span/2, 0, (span+1)/2);  // ?
-	}
-	else {
-		traverse(src, dst, 0, span/2, 0, (span-1)/2);  // ?
-	}
-	*/
-//}
 
 
 
@@ -181,7 +159,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 
 		mout.debug() << "LIMIT=true" << mout.endl;
 
-		drain::typeLimiter<ftype>::value_t limit = dst.getLimiter<ftype>();
+		drain::typeLimiter<ftype>::value_t limit = dst.getEncoding().getLimiter<ftype>();
 		if (!SCALE){
 			mout.debug() << "SCALE=false" << mout.endl;
 			for (int j = 0; j < height; j++) {
@@ -211,6 +189,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 
 	}
 
+	//drain::image::File::write(dst, "Mika.png");
 	// mout.warn() << "finished\n" << mout.endl;
 
 }
@@ -259,7 +238,7 @@ void LaplaceOp::traverse(const Channel &src, Channel &dst, int di, int dj) const
 	mout.debug(3) << getParameters() << mout.endl;
 	//mout.debug(3) << " bias=" << bias << " scale=" << scale << mout.endl;
 
-	drain::typeLimiter<double>::value_t limit = dst.getLimiter<double>(); // Type::call<Limiter>(dst.getType());
+	drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>(); // Type::call<Limiter>(dst.getType());
 
 	Point2D<int> pLo;
 	Point2D<int> pHi;

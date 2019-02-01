@@ -174,32 +174,39 @@ void DataConversionOp<M>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src,  this->dataSelector, dataPaths);
+	//std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	std::list<ODIMPath> dataPaths;
+	//  this->dataSelector.getPathsNEW(src, dataPaths); // RE2
+	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	std::set<ODIMPathElem> parents;
 
 	const drain::RegExp quantityRegExp(this->dataSelector.quantity);
 
-	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	//for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 		//mout.debug() << *it << mout.endl;
 
-		ODIMPath path = DataTools::getParent(*it);
-		ODIMPathElem parent = path.back();
+		// ODIMPath path = DataTools::getParent(*it);
+		// ODIMPathElem parent = path.back();
+
+		ODIMPath parentPath = *it;
+		parentPath.pop_back();
+		ODIMPathElem & parent = parentPath.back();
 
 		mout.debug() << "check " << parent << '<' << *it << mout.endl;
 
 		if (parents.find(parent) == parents.end()){
-			if (parent.getType() != BaseODIM::DATASET){
+			if (parent.getType() != ODIMPathElem::DATASET){
 				mout.note() << "non-dataset group: " << parent << mout.endl;
 			}
 			mout.note() << "append " <<  parent << mout.endl;
 			parents.insert(parent);
-			const DataSet<src_t> srcDataSet(src(path), quantityRegExp);
-			DataSet<dst_t> dstDataSet(dst(path));
+			const DataSet<src_t> srcDataSet(src(parentPath), quantityRegExp);
+			DataSet<dst_t> dstDataSet(dst(parentPath));
 			processDataSet(srcDataSet, dstDataSet);
 		}
 		else {
@@ -382,7 +389,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	*d = dstOdim.nodata;
 	if (static_cast<double>(*d) != dstOdim.nodata){
 		mout.note() << "dstOdim.nodata=" << dstOdim.nodata << " vs. written: " << *d << mout.endl;
-		mout.warn() << "dstOdim.nodata type conversion to " << dstImage.getType2() << " changed the value" << mout.endl;
+		mout.warn() << "dstOdim.nodata type conversion to " << drain::Type::getTypeChar(dstImage.getType()) << " changed the value" << mout.endl;
 	}
 	//mout.debug() << "dstOdim nodata long-int check " << dstOdim.nodata << " <> " << (long int)(*d = dstOdim.nodata) << mout.endl;
 
@@ -421,3 +428,4 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 #endif /* DATACONVERSIONOP_H_ */
 
 // Rack
+ // REP // REP // REP // REP

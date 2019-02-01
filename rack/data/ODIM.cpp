@@ -120,7 +120,8 @@ const std::string ODIM::timeformat("%H%M%S");
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-	if (initialize & ROOT){
+	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
+	if (initialize & ODIMPathElem::ROOT){
 		reference("what:object", object = "");
 		reference("what:version", version = "H5rad 2.2");
 		reference("what:date", date = "");
@@ -129,7 +130,7 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 		reference("what:product", product = "");
 		reference("what:prodpar", prodpar = "");
 		reference("what:starttime", starttime = "");
@@ -140,7 +141,7 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	}
 
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 		reference("what:quantity", quantity = "");
 	}
 
@@ -246,3 +247,4 @@ void ODIM::update(const ODIM & odim){
 
 
 // Rack
+ // REP // REP // REP

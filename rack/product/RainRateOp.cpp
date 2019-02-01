@@ -126,11 +126,11 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	double rateEnc;
 	double quality;
 
-	const double dstMin = dstData.data.getMin<double>();
-	const double dstMax = dstData.data.getMax<double>();
+	const double dstMin = dstData.data.getEncoding().getTypeMin<double>();
+	const double dstMax = dstData.data.getEncoding().getTypeMax<double>();
 	//mout.warn() << dstMin << '-' << dstMax << mout.endl;
 
-	const bool USE_METADATA_FLEVEL = isnan(freezingLevel.height);
+	const bool USE_METADATA_FLEVEL = std::isnan(freezingLevel.height);
 
 	//const double finalHeight = 1000.0 * (USE_METADATA_FLEVEL ? srcData.odim.freeze : freezingLevel.height);
 	const double relativeHeight = 1000.0 * (USE_METADATA_FLEVEL ? srcData.odim.freeze : freezingLevel.height) - srcData.odim.height;
@@ -156,7 +156,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 		// if ((i&15) == 0) std::cout << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << std::endl;
 
-		// TODO: use other height information (HEIGHT in PseudoCAPPI)
+		// TODO: use str height information (HEIGHT in PseudoCAPPI)
 
 		// if (i >= dstData.data.getWidth())
 		//	mout.error() << "overflow i=" << i << mout.endl;

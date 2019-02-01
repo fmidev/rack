@@ -63,7 +63,7 @@ void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, b
 	else if (horz > 0.0)
 		horzDec = (getMax()/horz  + 0.0); // "default"
 
-	if (isnan(vert))
+	if (std::isnan(vert))
 		vertDec = horzDec;
 	else if (vert < 0.0)
 		vertDec = 0.0;   // no decrement, spread to infinity
@@ -133,7 +133,7 @@ void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool di
 	else if (horz > 0.0)
 		horzDec = pow(0.5, 2.0/horz);  // 0.5^(1/horz)
 
-	if (isnan(vert))      // default; copy horz
+	if (std::isnan(vert))      // default; copy horz
 		vertDec = horzDec;
 	else if (vert < 0.0)  // no decay, spread to infinity
 		vertDec = 1.0;
@@ -163,7 +163,7 @@ void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 		horzDecay = horz;  // 0.5^(1/horz)  ????
 
 
-	if (isnan(vert)){
+	if (std::isnan(vert)){
 		vertDecay = horzDecay;
 	}
 	else if (vert < 0.0){

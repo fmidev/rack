@@ -40,7 +40,14 @@ namespace drain
 namespace image
 {
 
-/** Overwrites pixels of destination image in locations where destination weight is lower.
+/// Overwrites pixels of destination image in locations where destination weight is lower.
+/**
+
+ \~exec
+   make image-rgba.png     #exec
+   make image-rot-rgba.png #exec
+ \~
+
  \code
    drainage image-rgba.png image-rot-rgba.png --qualityMixer '0.20' -o qualityOverride20.png
    drainage image-rgba.png image-rot-rgba.png --qualityMixer '0.50' -o qualityOverride50.png

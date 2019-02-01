@@ -105,7 +105,7 @@ protected:
 };
 
 
-/// Changes the type of an existing image
+/// Changes the type of a target image
 /**
 
 \code
@@ -262,10 +262,10 @@ protected:
 /// Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by default.
 /**
 \code
-drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192  -o dots.png
-drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192 --target S --copy f -o dots-16b.png
-drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192  -o dots-rgba.png
-drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192 --target S --copy f -o dots-rgba-16b.png
+drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192  -o plot-dots.png
+drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192 --target S --copy f -o plot-dots-16b.png
+drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192  -o plot-dots-rgba.png
+drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192 --target S --copy f -o plot-dots-rgba-16b.png
 \endcode
  *
  */

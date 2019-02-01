@@ -121,8 +121,8 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	}
 
 	mout.debug()   << "calling traverseDownRight" << mout.endl;
-	mout.debug(1)  << src << mout.endl;
-	mout.debug(1)  << dst << mout.endl;
+	// mout.debug(1)  << src << mout.endl;
+	// mout.debug(1)  << dst << mout.endl;
 	traverseDownRight(src, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -132,7 +132,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	 */
 
 	mout.debug()  << "calling traverseUpLeft" << mout.endl;
-	mout.debug(1)  << dst << mout.endl;
+	// mout.debug(1)  << dst << mout.endl;
 	traverseUpLeft(dst, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -195,7 +195,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	mout.debug() << "main loop" << mout.endl;
 
 	for (py=0; py<=coordinateHandler.getYMax(); py++){// TODO check < vs <=
-		for (px=0; px<=coordinateHandler.getYMax(); px++){ // TODO check < vs <=
+		for (px=0; px<=coordinateHandler.getXMax(); px++){ // TODO check < vs <=
 
 			// Take source value as default
 			d = srcAlpha.get<dist_t>(p);

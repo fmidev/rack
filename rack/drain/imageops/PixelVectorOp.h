@@ -49,9 +49,10 @@ namespace image
 
 
 
-///  A base class for operations between of intensity vectors of two images.
-/**  In each point(i,j), performs  an operation for vectors constructed the intensities in different channels.
- *   Produces a flat, single-channel image.
+///  A base class for operations between of multi-channel pixels (intensity vectors) of two images.
+/**  In each point(i,j), performs an operation for vectors of the channels intensities.
+ *
+ *   Produces a flat (single-channel) image.
  *
  *  \see DistanceOp
  *  \see ProductOp
@@ -65,16 +66,6 @@ public:
 
 	virtual
 	void makeCompatible(const ImageFrame &src, Image &dst) const;
-
-	/*
-	virtual
-	inline
-	void traverseFrame(const ImageFrame &src, ImageFrame & dst) const {
-		Logger mout(getImgLog(), name+"::PixelVectorOp[src, dst]", __FUNCTION__);
-		mout.error() << "undefined method" << mout.endl;
-		//traverseFrame(src, dst, dst);
-	}
-	*/
 
 
 	std::string functorName;
@@ -150,14 +141,19 @@ public:
 			ImageTray<Channel> & dst) const;
 
 	void traverseFrame(const ImageFrame &src1, const ImageFrame &src2, ImageFrame &dst) const {
+
 		Logger mout(getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 		mout.debug() << "delegate to: traverseChannels(src, dst, dst)" << mout.endl;
+
 		ImageTray<const Channel> src1Channels;
 		src1Channels.setChannels(src1);
+
 		ImageTray<const Channel> src2Channels;
 		src2Channels.setChannels(src2);
+
 		ImageTray<Channel> dstChannels;
 		dstChannels.setChannels(dst);
+
 		traverseChannels(src1Channels, src2Channels, dstChannels);
 	}
 
@@ -265,8 +261,12 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 /**
  *    dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.
 
+\~exec
+  make image-rot.png
+\~
+
  \code
-   drainage color.png color-rot180.png  --distance FuzzyStep:0,255 -o distance.png
+   drainage image.png image-rot.png  --distance FuzzyStep:0,255 -o distance-step.png
  \endcode
 
  \see ProductOp
@@ -286,10 +286,15 @@ public:
 
 ///  Computes dot product of intensities of two images.
 /**!
- *    dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.
 
+  dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.
+
+
+\~exec
+  make image-rot.png
+\~
 \code
-  drainage color.png color-rot180.png --product FuzzyStep:0,155  -o fuzzyStep.png
+  drainage image.png image-rot.png --product FuzzyStep:0,155  -o product-step.png
 \endcode
 
  *  \see DistanceOp

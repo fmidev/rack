@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 //#include <algorithm>
 #include <drain/util/Path.h>
+#include <drain/util/Log.h>
 
 
 namespace rack {
@@ -65,9 +66,12 @@ namespace rack {
  *  Typically used in creating and writing a product.
  *  See also: LinearScaling (could be used as base class?)
  */
-class BaseODIM  {
 
-public:
+
+class ODIMPathElem  {
+
+public: // from ODIM.h
+
 
 	/// In H5, "groups" containers of data corresponding to "directories" or "folders" in Unix and Windows.
 	typedef unsigned int group_t;
@@ -79,46 +83,50 @@ public:
 	/// Zeroth level group, identified with empty string "", or "/" which is the separator prefixed with empty string.
 	static const group_t ROOT = 1;
 
-	/// Metadata group "what", at any depth
-	static const group_t WHAT  = 2;
+	/// First level group, \c /dataset + \e digit .
+	static const group_t DATASET = 2; // 8;  // one bit (16) must be unique
 
-	/// User defined group, name stored as a separate string.
-	// static const group_t UNUSED = 3;
-
-	/// Metadata group "where", at any depth
-	static const group_t WHERE = 4;
-
-	/// Metadata group "how", at any depth
-	static const group_t HOW   = 6;
-
-	/// Flag, set if this path element requires an index (like dataset2, or data5)
-	// static const group_t IS_INDEXED = 8;
-
-	/// First level group.
-	static const group_t DATASET = 8;  // one bit (16) must be unique
-
-	/// Second level group.
-	static const group_t DATA    = 16;
-
-
-	/// Second or third level group containing quality data associated with data at the same level or below.
-	static const group_t IS_QUALITY = 32;
-
-	static const group_t QUALITY = DATA | IS_QUALITY;
+	/// Second level group, \c /data + \e digit .
+	static const group_t DATA    = 4; // 16;
 
 	/// Data group "data", at deepest level, like /dataset4/data2/quality1/data
-	static const group_t ARRAY   = 64;
+	static const group_t ARRAY   = 8; // low index, to appear before QUALITY (below)
 
-	/// Flag test for writing attributes
-	//static const group_t UPDATED = DATASET|DATA|QUALITY; //
+	/// Special group on first or second level, \c /quality + \e digit , used for storing quality data.
+	static const group_t QUALITY = 16;
+
+	/// Group index mask for groups under which data arrays (ARRAY type) are found
+	static const group_t DATA_GROUPS = DATASET | DATA | QUALITY;
+
+	/// Abbreviation for linking (referencing) attributes at different levels (tree depths).
+	static const group_t ALL_LEVELS = (ROOT | DATASET | DATA); //  | QUALITY
+
+	/// Group index mask for groups that have an index.
+	static const group_t IS_INDEXED = (DATASET | DATA | QUALITY);
+
+
+
+	/// Metadata group \c /what , at any depth
+	static const group_t WHAT  = 32;
+
+	/// Metadata group \c /where , at any depth
+	static const group_t WHERE = 64;
+
+	/// Metadata group \c /how , at any depth
+	static const group_t HOW   = 128; // ylennysmerkki
+
+	/// Group index mask for groups that contain only meta data.
+	static const group_t ATTRIBUTE_GROUPS = WHAT|WHERE|HOW;
+
+
+	/// User defined group, name stored as a separate string. The string may still contain numbers, but no indices will be extracted.
+	/**
+	 *   Not indexed.
+	 */
+	static const group_t OTHER   = 255;
 
 	/// User defined group, name stored as a separate string. Index allowed, but only catenated in the string.
-	static const group_t OTHER   = 128;
-
-	// static const group_t OTHER_INDEXED = (OTHER | IS_INDEXED); // tmp, user defined, etc.
-	static const group_t ALL = (ROOT | DATASET | DATA | QUALITY);
-
-	static const group_t IS_INDEXED = (DATASET | DATA);
+	static const group_t ALL_GROUPS = 255;
 
 	static inline
 	bool isIndexed(group_t group){
@@ -127,7 +135,8 @@ public:
 
 	static inline
 	bool isQuality(group_t group){
-		return (group & IS_QUALITY) == IS_QUALITY;
+		return (group == QUALITY);
+		//return (group & IS_QUALITY) == IS_QUALITY;
 	}
 
 	typedef std::map<group_t, std::string> dict_t;
@@ -138,21 +147,13 @@ public:
 	/// User defined group, name stored as a separate string.
 	// ?
 
-
-};
-
-
-
-class ODIMPathElem  {
-
-public: // from ODIM.h
-
-	BaseODIM::group_t group;
+	//ODIMPath::
+	group_t group;
 	typedef int index_t;
 	index_t index;
 
 	inline
-	ODIMPathElem(BaseODIM::group_t group=BaseODIM::NONE, index_t index = 0) : group(group), index(index) {
+	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index) {  // root=NONE
 	}
 
 	inline
@@ -162,8 +163,8 @@ public: // from ODIM.h
 
 	inline
 	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index) {
-		if (e.group == BaseODIM::OTHER)
-			other = e.other;
+		if (e.group == OTHER)
+			str = e.str;
 	}
 
 	inline
@@ -190,43 +191,60 @@ public: // from ODIM.h
 	}
 
 	inline
-	void set(BaseODIM::group_t g, index_t i = 0){
+	void set(group_t g, index_t i = 0){
 		group = g;
 		index = i;
-		if ((i>0) && !BaseODIM::isIndexed(g)){
-			// warning
+		if ((i>0) && !isIndexed(g)){
+			drain::Logger mout("ODIMPath", __FUNCTION__);
+			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
 		}
 	}
 
 	/// Assign a path string, like "dataset4/data5/quality1/data".
 	void set(const std::string &s);
 
-	/// Abbreviation of (group == BaseODIM::NONE)
+	/// Abbreviation of (group == NONE)
 	inline
-	bool is(BaseODIM::group_t g) const {
+	bool is(group_t g) const {
 		return (group == g);
 	}
 
-	/// Abbreviation of (group == BaseODIM::ROOT)
+	/// Abbreviation of (group == ROOT)
+	inline
+	bool empty() const {
+		return (group == ROOT);
+	}
+
+	/// Abbreviation of (group == ROOT)
 	inline
 	bool isRoot() const {
-		return (group == BaseODIM::ROOT);
+		return (group == ROOT);
 	}
 
-	/// Abbreviation of (group == BaseODIM::NONE)
+	/// Abbreviation of (group == NONE)
+	/*
 	inline
 	bool isUnset() const {
-		return (group == BaseODIM::NONE);
+		return (group == NONE);
 	}
+	*/
 
-	/// Abbreviation of (group == BaseODIM::NONE)
+	/// Abbreviation of (group == NONE)
 	inline
 	bool isIndexed() const {
-		return BaseODIM::isIndexed(this->group);
+		return isIndexed(this->group);
+	}
+
+	/// Checks if the element belongs to any of groups given.
+	inline
+	bool belongsTo(int groupFilter) const {
+		// Notice: filter must fully "cover" group bits (especially because QUALITY = DATASET | DATA )
+		return ((this->group & groupFilter) == this->group);
+		//return ((this->group & groupFilter) != 0);
 	}
 
 	inline
-	BaseODIM::group_t getType() const {
+	group_t getType() const {
 		return this->group;
 	}
 
@@ -247,7 +265,7 @@ public: // from ODIM.h
 		sstr << getPrefix();
 
 		/// Step 2: index
-		if (BaseODIM::isIndexed(this->group))
+		if (isIndexed(this->group))
 			sstr << this->index;
 		//sstr << '{' << this->index << '}';
 
@@ -255,30 +273,43 @@ public: // from ODIM.h
 	};
 
 	operator const std::string &() const {
-		if (this->group != BaseODIM::OTHER){
+		if (this->group != OTHER){
 			std::stringstream sstr;
 			toOStr(sstr);
-			other = sstr.str();
+			str = sstr.str();
 		}
-		return other;
+		return str;
 	}
 
 	// TODO: Returns name
 	/**
-	 *   Uses "other" field as a temp storage.
+	 *   Uses "str" field as a temp storage.
 	 */
 	//const std::string & getStr() const;
 
-protected:
+	/// Returns standard name. Does not check if type is OTHER.
+	static
+	const std::string & getKey(group_t g);
 
 	/// Returns standard name. Does not check if type is OTHER.
-	const std::string & getKey() const;
+	inline
+	const std::string & getKey() const {
+		return getKey(this->group);
+	}
+
+protected:
+
 
 	mutable
-	std::string other;
+	std::string str;
 
 
 };
+
+
+extern ODIMPathElem odimWHERE;
+extern ODIMPathElem odimWHAT;
+extern ODIMPathElem odimARRAY;
 
 bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2);
 
@@ -306,6 +337,57 @@ std::istream & operator>>(std::istream & istr, ODIMPathElem & p) {
 
 
 typedef drain::Path<ODIMPathElem> ODIMPath;
+
+struct ODIMPathLess {
+
+
+	/*
+	bool kompate(const ODIMPath & p1, const ODIMPath & p2) const {
+
+		const_iterator it1 = p1.begin();
+		const_iterator it2 = p2.begin();
+
+		while (true){
+
+			if (it1 == p1.end())
+				return true;
+
+			if (it2 == p2.end())
+				return false;
+
+			++it1;
+				++it2;
+
+		}
+
+	}
+	*/
+
+	// Main function
+	bool operator()(const ODIMPathElem & p1, const ODIMPathElem & p2) const {
+
+		if (p1.group < p2.group){
+			return true;
+		}
+		else if (p1.group > p2.group){
+			return false;
+		}
+		else { // p1.group == p2.group
+			if (p1.isIndexed()){
+				return (p1.getIndex() < p2.getIndex());
+			}
+			else if (p1.is(ODIMPathElem::OTHER)){
+				return (const std::string &)p1 < (const std::string &)p2 ;
+			}
+		}
+		// e.g. WHAT == WHAT
+		return false;
+	}
+
+};  // end class
+
+
+
 
 
 }  // namespace rack

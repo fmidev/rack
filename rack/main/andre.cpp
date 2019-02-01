@@ -75,7 +75,9 @@ namespace rack {
 
 
 class ClutterMapRead : public SimpleCommand<std::string> {
-    public: //re 
+
+public:
+
 	ClutterMapRead(ClutterMapOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTERMAP quantity.", "filename",""),
 			clutterOp(op) {
 		getRegistry().add(*this, __FUNCTION__, 0);

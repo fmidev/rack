@@ -46,12 +46,14 @@ namespace image
 
 /// Template for operators applying pipeline-like sliding window.
 /**
- *  \tparam W - window class with W::conf_t structure, potentially suporting user modifiable parameters.
+ *  \tparam W - sliding window class with W::conf_t structure, potentially suporting user modifiable parameters.
  *
  *  Class W must have:
  *  - W::conf_t - conf structure
  *  - W::unweighted - typedef for unweighted version of the operator.
  *  - W::slide() - method implementing the sliding.
+ *
+ *  \see SlidingWindow
  */
 template <class W>
 class SlidingWindowOp : public WindowOp<W> {
@@ -155,35 +157,6 @@ protected:
 
 };
 
-/*
-template <class T>
-void SlidingWindowOp<T>::processOLD(const ImageFrame & src, Image & dst) const {
-
-	Logger mout(getImgLog(), this->name, __FUNCTION__);
-
-	this->makeCompatible(src, dst);
-	mout.debug() << "src: " << src << mout.endl;
-	mout.debug() << "dst: " << dst << mout.endl;
-
-
-	// TODO: check dst weighting!!!
-	T window(this->conf);
-	ImageTray<const Channel> srcChannels;
-	srcChannels.setChannels(src);
-	window.setSrcFrames(srcChannels);
-	//window.setSrcFrameWeight(src.getAlphaChannel());
-
-	ImageTray<Channel> dstChannels;
-	dstChannels.setChannels(dst);
-	window.setDstFrames(dstChannels);
-	// window.setDstFrameWeight(dst.getAlphaChannel());
-	mout.warn() << "window mode=" << window.getModeStr() << mout.endl;
-	mout.debug(2) << window << mout.endl;
-
-	window.run();
-
-}
-*/
 
 
 } // image::

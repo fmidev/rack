@@ -74,14 +74,32 @@ public:
 
 		RackResources & r = getResources();
 
-		test.setParameters(r.select, '=', ',');
-		mout.debug() << test << mout.endl;
+		//const bool DEBUG = mout.isDebug(2);
+		DataSelector check;
+		//(ODIMPathElem::group_t checkMask;
+
+		//if (DEBUG)			check.parameters.reference("mask", checkMask);
+
+		check.setParameters(r.select, '=', ',');
+		mout.debug() << check << mout.endl;
+
 		// test.getParameters()["elangle"].toJSON(std::cout, '\n');
 		r.dataOk = true;
 
+		if (mout.isDebug(2)){
+			mout.warn() << "Selector test for current data. Note: using dataset.max=" << check.dataset.max << " for groupFilter/mask " << mout.endl;
+			//typedef std::map<double, std::string> cont_t;
+			typedef std::map<double, ODIMPath> cont_t;
+			//typedef std::set<ODIMPath> cont_t;
+			cont_t paths;
+			check.getPathsNEW(*r.currentHi5, paths, check.dataset.max);
+			for (cont_t::const_iterator it = paths.begin(); it != paths.end(); ++it)
+				mout.warn() << it->first << '=' << it->second << mout.endl;
+		}
+
 	}
 
-	mutable DataSelector test;
+	//mutable DataSelector test;
 };
 
 class CmdSelectQuantity : public SimpleCommand<std::string> {
@@ -96,9 +114,12 @@ public:
 	void exec() const {
 
 		drain::Logger mout(getName(), __FUNCTION__);
+
 		const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
 		mout.debug() << v << mout.endl;
-		getResources().select = "quantity=^(" + v + ")$";
+		RackResources & r = getResources();
+		r.select = "quantity=^(" + v + ")$";
+		r.dataOk = true;
 		//getRegistry().run("select", "quantity=^(" + vField + ")$");
 	}
 
@@ -157,8 +178,11 @@ public:
 		parameters.reference("nrays", odim.nrays = 0L, "count");
 		parameters.reference("nbins", odim.nbins = 0l, "count");
 
+		/// Experimental, for image processing
+		parameters.reference("quantity", odim.quantity = "", "string");
+
 		//getQuantityMap().setTypeDefaults(odim, "C");
-		odim.setTypeDefaults("C");
+		odim.setTypeDefaults("C"); // ??
 		//odim.setTypeDefaults(typeid(unsigned char));
 		//std::cerr << "CmdEncoding.odim:" << odim << std::endl;
 		//std::cerr << "CmdEncoding.pars:" << parameters << std::endl;
@@ -173,23 +197,22 @@ public:
 
 		try {
 
-			/// Main action: store it...
+			/// Main action: store it for later use (by proceeding commands).
 			getResources().targetEncoding = params;
 
-			/// ...But check and warn of unknown parameters
+			/// Also check and warn of unknown parameters
 			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
 
 			// mout.note() << "pars: " << parameters << mout.endl;
 			// mout.note() << "odim: " << odim << mout.endl;
-			//getQuantityMap().setTypeDefaults(odim, odim.type);
 			odim.setTypeDefaults();
 
-			//mout.note() << "Set odim defaults: " << odim << mout.endl;
+			// Reassign (to odim).
 			parameters.setValues(params);
-
 			//mout.note() << "Re-assigned parameters: " << parameters << mout.endl;
 
-		} catch (std::runtime_error & e) {
+		}
+		catch (const std::runtime_error & e) {
 
 			mout.warn() << "Could not set odim" << mout.endl;
 			mout.note() << "pars: " << parameters << mout.endl;
@@ -372,7 +395,7 @@ public:
 	bool quantitySpecific;
 
 	template <class OD>
-	void processStructure(HI5TREE & dst, const std::list<std::string> & paths, const drain::RegExp & quantityRegExp) const {
+	void processStructure(HI5TREE & dst, const std::list<ODIMPath> & paths, const drain::RegExp & quantityRegExp) const {
 
 		drain::Logger mout(getName(), __FUNCTION__);
 
@@ -380,7 +403,7 @@ public:
 
 		const QuantityMap & qmap = getQuantityMap();
 
-		for (std::list<std::string>::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			mout.info() << *it  << mout.endl;
 			HI5TREE & dstDataSetH5 = dst(*it);
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
@@ -391,9 +414,6 @@ public:
 					PlainData<DT> & dstQuality = dstData.getQualityData();
 					if (!dstQuality.data.isEmpty())
 						mout.warn() << "quality data exists already, overwriting" << mout.endl;
-					//qmap.setQuantityDefaults(dstQuality, "QIND");dstQuality
-					//dstQuality.setGeometry(dstData.data.getWidth(), dstData.data.getHeight());
-					//dstData.createSimpleQualityData(dstQuality.data, 255.0, 0.0);
 					dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 					qmap.setQuantityDefaults(dstQuality, "QIND");
 					dstQuality.data.setScaling(dstQuality.odim.gain, dstQuality.odim.offset);
@@ -405,8 +425,6 @@ public:
 				PlainData<DT> & dstQuality = dstDataSet.getQualityData();
 				if (!dstQuality.data.isEmpty())
 					mout.warn() << "quality data exists already, overwriting" << mout.endl;
-				//dstQuality.setGeometry(dstData.data.getWidth(), dstData.data.getHeight());
-				//dstData.createSimpleQualityData(dstQuality.data, 255.0, 0.0);
 				dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 				qmap.setQuantityDefaults(dstQuality, "QIND");
 				dstQuality.data.setScaling(dstQuality.odim.gain, dstQuality.odim.offset);
@@ -431,11 +449,10 @@ public:
 		resources.select.clear();
 		const drain::RegExp quantityRegExp(selector.quantity);
 		selector.quantity.clear();
-		if (selector.path.empty())
-			selector.path = "dataset[0-9]+$";
+		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
 
-		std::list<std::string> paths;
-		DataSelector::getPaths(*resources.currentHi5, selector, paths);
+		std::list<ODIMPath> paths;
+		selector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATASET); // RE2
 
 
 		if (resources.currentHi5 == resources.currentPolarHi5){
@@ -454,97 +471,6 @@ public:
 
 };
 
-
-class CmdCompleteODIM : public BasicCommand {
-
-public:
-
-	CmdCompleteODIM() : BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
-
-	template <class OD>  // const drain::VariableMap & rootProperties,
-	void complete(HI5TREE & dstH5, OD & od) const {
-
-		drain::Logger mout(getName(), __FUNCTION__);
-
-		typedef DstType<OD> DT;
-		//typedef DataSet<DT> DS;
-
-		static const drain::RegExp reg("dataset[0-9]+");
-		OD rootODIM;
-
-		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
-			if (reg.test(it->first)){
-				mout.debug() << it->first << mout.endl;
-				DataSet<DT> dstDataSet(it->second);
-				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
-					mout.debug() << dit->first << " :" << dit->second << mout.endl;
-					Data<DT> & dstData = dit->second;
-					if (!dstData.data.isEmpty()){
-						const size_t w = dstData.data.getWidth();
-						const size_t h = dstData.data.getHeight();
-						dstData.odim.type = (char)dstData.data.getType2();
-						dstData.odim.setGeometry(w, h);
-						//rootODIM.setGeometry(w, h);    // for Cartesian root-level xsize,ysize
-						//dataSetODIM.setGeometry(w, h); // for Polar  dataset-level nbins, nrays
-						if (dstData.odim.quantity.empty()){
-							dstData.odim.quantity = dit->first;
-						}
-						if (dstData.odim.gain == 0){
-							getQuantityMap().setQuantityDefaults(dstData.odim, dstData.odim.quantity);
-						}
-					}
-
-					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
-					//rootODIM.updateFromMap(d.data.properties);
-					rootODIM.update(dstData.odim);
-					//odim.copyToData(dst);
-					//dstData.odim.update(dstData.odim);
-				}
-				//dataSet.updateTrdtee3(rootODIM);
-
-				//dataSet.updateTree(dataSetODIM);
-			}
-			//rootODIM.copyToRoot()
-		}
-		//rootODIM.
-
-		/*
-		if (rootODIM.date.empty())
-			rootODIM.date = rootODIM.startdate;
-		if (rootODIM.time.empty())
-			rootODIM.time = rootODIM.starttime;
-		*/
-		ODIM::copyToH5<ODIM::ROOT>(rootODIM, dstH5);
-
-	}
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__);
-
-		RackResources & resources = getResources();
-
-		if (resources.inputHi5["what"].data.attributes["object"].toStr() == "COMP"){
-			resources.inputHi5.swap(resources.cartesianHi5);
-			resources.currentHi5 = &resources.cartesianHi5;
-		}
-
-		if (resources.currentHi5 == resources.currentPolarHi5){
-			PolarODIM odim;
-			complete(*resources.currentHi5, odim);
-		}
-		else if (resources.currentHi5 == &resources.cartesianHi5){
-			CartesianODIM odim;
-			complete(*resources.currentHi5, odim);
-		}
-		else {
-
-		}
-
-
-	};
-
-};
 
 
 
@@ -598,50 +524,6 @@ protected:
 
 };
 
-
-
-class CmdDelete : public SimpleCommand<std::string> {
-
-public:
-
-	CmdDelete() : SimpleCommand<std::string>(__FUNCTION__, "Deletes selected parts of h5 structure.", "selector", "", DataSelector().getParameters().getKeys()) {
-	};
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
-
-		RackResources & resources = getResources();
-
-		const bool DELETE_NOSAVE = value.empty();
-		if (DELETE_NOSAVE){
-
-		}
-
-		std::list<std::string> l;
-		DataSelector  s;
-		s.setParameters(value);
-		DataSelector::getPaths(*getResources().currentHi5, s, l);
-		//DataSelector::getPaths
-		//DataSelector::getPaths(*getResources().currentHi5, DataSelector(value), l);
-		mout.info() << "deleting " << l.size() << " substructures" << mout.endl;
-		for (std::list<std::string>::const_reverse_iterator it = l.rbegin(); it != l.rend(); it++){
-			mout.debug() << "deleting: " << *it << mout.endl;
-			if (DELETE_NOSAVE){
-				//HI5TREE & dst = resources.currentHi5(*it);
-				if ((*resources.currentHi5)(*it).data.noSave){
-					resources.currentHi5->erase(*it);
-
-				}
-			}
-			else {
-				resources.currentHi5->erase(*it);
-				mout.debug() << "deleting: " << *it << mout.endl;
-			}
-		}
-	};
-
-};
 
 
 class CmdDumpMap : public BasicCommand {
@@ -798,9 +680,43 @@ public:
 
 
 
+
+class CmdDelete : public SimpleCommand<std::string> {
+
+public:
+
+	CmdDelete() : SimpleCommand<std::string>(__FUNCTION__, "Deletes selected parts of h5 structure.", "selector", "", DataSelector().getParameters().getKeys()) {
+	};
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+
+		//RackResources & resources = getResources();
+		DataSelector selector;
+		ODIMPathElem::group_t groupFilter = selector.resetParameters(value);
+		selector.updatePaths(); // check
+
+		mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
+
+		std::list<ODIMPath> paths;
+		HI5TREE & dst = *getResources().currentHi5;
+		selector.getPathsNEW(dst, paths, groupFilter);
+		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
+		for (std::list<ODIMPath>::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
+			mout.note() << "deleting: " << *it << mout.endl;
+			dst.erase(*it);
+		}
+	};
+
+};
+
+
+
 class CmdKeep : public SimpleCommand<std::string> {
-public: //re
-	//std::string value;
+
+public:
+
 
 	CmdKeep() : SimpleCommand<std::string>(__FUNCTION__, "Keeps a part of the current h5 structure, deletes the rest. Path and quantity are regexps.",
 			"selector", "", DataSelector().getParameters().getKeys()) {
@@ -812,22 +728,56 @@ public: //re
 
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
-		std::set<std::string> s;
-		DataSelector::getPaths(*getResources().currentHi5, DataSelector(value), s);
+		//RackResources & resources = getResources();
+		HI5TREE & dst = *getResources().currentHi5;
 
-		std::list<std::string> l;
-		getResources().currentHi5->getKeys(l);
+		DataSelector selector;
 
-		for (std::list<std::string>::const_reverse_iterator it = l.rbegin(); it != l.rend(); it++){
+		std::list<ODIMPath> paths;
 
-			if (s.find(*it) != s.end()){
-				mout.debug() << "keeping: " << *it << mout.endl;
-			}
-			else {
-				mout.debug(1) << "deleting: " << *it << mout.endl;
-				getResources().currentHi5->erase(*it);  // TODO check if nonexistent?
-			}
+		selector.getPathsNEW(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		mout.note() << "data structure contains " << paths.size() << " paths " << mout.endl;
+		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); it++){
+			mout.debug(4) << "set noSave: " << *it << mout.endl;
+			dst(*it).data.noSave = true;
 		}
+
+		//ODIMPathElem::group_t groupFilter = selector.resetParameters(value);
+		selector.resetParameters(value);
+		selector.updatePaths();
+		//mout.debug(2) << "derived group mask: " << groupFilter << ", selector: " << selector << mout.endl;
+		mout.debug(2) << "selector for saved paths: " << selector << mout.endl;
+		//std::set<ODIMPath> savedPaths;
+		//selector.getPathsNEW(dst, savedPaths, groupFilter);
+
+
+		std::list<ODIMPath> savedPaths;
+		selector.getPathsNEW(dst, savedPaths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
+		//mout.info() << "set save" << mout.endl;
+		for (std::list<ODIMPath>::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
+			mout.debug(1) << "set save: " << *it << mout.endl;
+			ODIMPath p;
+			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
+				p << *pit;
+				// mout.debug(2) << " \t\t" << p << mout.endl;
+				dst(p).data.noSave = false;
+			}
+
+		}
+
+		// Traverse all the paths
+		// reverse_iterator, because dataset groups (descendants) become deleted before dataset itself.
+		for (std::list<ODIMPath>::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
+
+			if (dst(*it).data.noSave){
+				mout.debug(2) << "deleting: " << *it << mout.endl;
+				dst.erase(*it);
+			}
+			else
+				mout.debug() << "saving: " << *it << mout.endl;
+		}
+
 
 	};
 
@@ -917,11 +867,117 @@ public:
 // static CommandEntry<CmdRename> cmdRename("rename");
 
 
-class CmdSetODIM : public SimpleCommand<> {
+
+class CmdCompleteODIM : public BasicCommand {
 
 public:
 
-	CmdSetODIM() : SimpleCommand<std::string>(__FUNCTION__, "Set data properties (ODIM). Works also directly: --/<path>:<key>[=<value>]",
+	CmdCompleteODIM() : BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
+
+	template <class OD>  // const drain::VariableMap & rootProperties,
+	void complete(HI5TREE & dstH5, OD & od) const {
+
+		drain::Logger mout(getName(), __FUNCTION__);
+
+		typedef DstType<OD> DT;
+
+		DataSelector selector; // todo implement --select
+
+		DataTools::updateAttributes(dstH5);
+
+		OD rootODIM;
+
+		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
+
+			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.isInside(it->first.getIndex())){
+
+				mout.debug() << it->first << mout.endl;
+				DataSet<DT> dstDataSet(it->second);
+				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+					mout.debug() << dit->first << " :" << dit->second << mout.endl;
+					Data<DT> & dstData = dit->second;
+					if (!dstData.data.isEmpty()){
+						const size_t w = dstData.data.getWidth();
+						const size_t h = dstData.data.getHeight();
+						dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
+						dstData.odim.setGeometry(w, h);
+						//rootODIM.setGeometry(w, h);    // for Cartesian root-level xsize,ysize
+						//dataSetODIM.setGeometry(w, h); // for Polar  dataset-level nbins, nrays
+						if (dstData.odim.quantity.empty()){
+							dstData.odim.quantity = dit->first;
+						}
+						if (dstData.odim.gain == 0){
+							getQuantityMap().setQuantityDefaults(dstData.odim, dstData.odim.quantity);
+						}
+					}
+
+					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
+					//rootODIM.updateFromMap(d.data.properties);
+					rootODIM.update(dstData.odim);
+					//odim.copyToData(dst);
+					//dstData.odim.update(dstData.odim);
+				}
+				//dataSet.updateTrdtee3(rootODIM);
+
+				//dataSet.updateTree(dataSetODIM);
+			}
+			//rootODIM.copyToRoot()
+		}
+		//rootODIM.
+
+		/*
+		if (rootODIM.date.empty())
+			rootODIM.date = rootODIM.startdate;
+		if (rootODIM.time.empty())
+			rootODIM.time = rootODIM.starttime;
+		*/
+		ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
+
+	}
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__);
+
+		RackResources & resources = getResources();
+
+		if (resources.inputHi5["what"].data.attributes["object"].toStr() == "COMP"){
+			resources.inputHi5.swap(resources.cartesianHi5);
+			resources.currentHi5 = &resources.cartesianHi5;
+		}
+
+		if (resources.currentHi5 == resources.currentPolarHi5){
+			PolarODIM odim;
+			complete(*resources.currentHi5, odim);
+		}
+		else if (resources.currentHi5 == &resources.cartesianHi5){
+			CartesianODIM odim;
+			complete(*resources.currentHi5, odim);
+		}
+		else {
+
+		}
+
+
+	};
+
+};
+
+
+/**
+ *    --/dataset1/what:nbins=210
+ *
+ *    Future feature: Select properties with \c --select , then
+ *    \code
+ *    rack volume.h5 --select data=2:4  --/what:undetect=244
+ *    \endcode
+ *
+ */
+class CmdSetODIM : public SimpleCommand<std::string> {
+
+public:
+
+	CmdSetODIM() : SimpleCommand<std::string>(__FUNCTION__, "Set data properties (ODIM). Works also directly: --/<path>:<key>[=<value>]. See --completeODIM",
 			"assignment", "", "/<path>:<key>[=<value>]") {
 	};
 
@@ -929,11 +985,22 @@ public:
 
 		drain::Logger mout(name, __FUNCTION__);
 
-		// mout.warn() << "hello" << mout.endl;
+		RackResources & resources = getResources();
+
+		if (value.find_first_of("?*()^$") != std::string::npos){
+			mout.warn() << "RegExp support temporarily supressed from this version" << mout.endl;
+			return;
+		}
+
+		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
+
+		//DataTools::updateAttributes(*(resources.currentHi5));
+
 
 		// List of paths in which assignments are repeated.
 		// A single path, unless search key is a regexp, see below.
-		std::list<std::string> pathList;
+		/*
+		std::list<ODIMPath> pathList;
 
 		const std::string & s = value;
 
@@ -941,7 +1008,7 @@ public:
 		const size_t j = s.find('=');
 
 		const std::string groupPath = s.substr(0, i);
-		const std::string attributeKey = (i != std::string::npos) ? s.substr(i,j-i) : ""; // NOTE substr(i), not (i+1) => if non-empty, contains ':' as prefix
+		const std::string attributeKey = (i != std::string::npos) ? s.substr(i+1,j-i) : ""; // WAS substr(i), not (i+1) => if non-empty, contains ':' as prefix
 		const std::string value = s.substr(j+1);
 
 		mout.debug(5) << "Group path:" << groupPath << ' ';
@@ -949,33 +1016,40 @@ public:
 		mout << "Value:"      << value << mout.endl;
 
 		HI5TREE & currentHi5 = *(getResources().currentHi5);
+		 */
 
+		/*
 		if (groupPath.find_first_of(".?*[]") == std::string::npos){
 			pathList.push_front(groupPath);
 		}
 		else {
-			DataSelector::getPaths(*getResources().currentHi5, pathList, groupPath);
+			getResources().currentHi5->getPaths(pathList);
+			//pathList.getPathsNEW(*getResources().currentHi5, groupPath); // RE2
 			// mout.warn()  << " --/ multiple, ok" << mout.endl;
 		}
 
-		static
-		const drain::RegExp attributeGroup("^((.*)/)?(what|where|how)$");  // $1,$2: one step above "where","what","how"
+		//static 		const drain::RegExp attributeGroup("^((.*)/)?(what|where|how)$");  // $1,$2: one step above "where","what","how"
 
-		for (std::list<std::string>::const_iterator it = pathList.begin(); it != pathList.end(); ++it){
+		for (std::list<ODIMPath>::const_iterator it = pathList.begin(); it != pathList.end(); ++it){
 			// mout.warn()  << " multiple: key=" << *it << "|"  << attributeKey << mout.endl;
-			hi5::Hi5Base::readTextLine(currentHi5, *it+attributeKey, value);
+			//hi5::Hi5Base::readTextLine(currentHi5, it->toStr()+attributeKey, value);
+			hi5::Hi5Base::readTextLine(currentHi5, *it, attributeKey, value);
 
-			if (attributeGroup.execute(*it) == 0){ // match
+			if (it->back().belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			//if (attributeGroup.execute(*it) == 0){ // match
+				ODIMPath parent = *it;
+				parent.pop_back();
 				// mout.warn() << "update attributes under: " <<  attributeGroup.result[2] << mout.endl;
-				DataTools::updateAttributes(currentHi5(attributeGroup.result[2]));  // one step above where,what,how
+				//DataTools::updateAttributes(currentHi5(attributeGroup.result[2]));  // one step above where,what,how
+				DataTools::updateAttributes(currentHi5(parent));  // one step above where,what,how
 			}
 			else {
 				//mout.warn() << "update attributes under: " <<  *it << mout.endl;
 				DataTools::updateAttributes(currentHi5(*it));
 			}
-			// mout.warn() << "updateAttributes: " << attributeGroup.result[2] << '!' << attributeGroup.result[3] << mout.endl;
-			// mout.warn() << "updateAttributes: " << *it << mout.endl;
+
 		}
+		*/
 
 	};
 
@@ -1035,40 +1109,43 @@ public:
 
 
 
-class CmdAppend : public BasicCommand {
+class CmdAppend : public SimpleCommand<std::string> {  //public BasicCommand {
 
 public:
 
+	CmdAppend() : SimpleCommand<std::string>(__FUNCTION__, "Append inputs/outputs instead of overwriting.", "path", "", "<empty>|dataset|data"){
+
+	}
+
+	/*
 	CmdAppend() : BasicCommand(__FUNCTION__, "Append inputs/outputs instead of overwriting."){
 		parameters.reference("path", path, "|data<n>|dataset<n>");
 	};
+	*/
 
 	virtual
 	void exec() const {
 
-		if (path == "dataset")
-			ProductBase::appendResults.set(BaseODIM::DATASET);
-		else if (path == "data")
-			ProductBase::appendResults.set(BaseODIM::DATA);
-		else
-			ProductBase::appendResults.set(path); // possibly "data4" or "dataset7"
+		drain::Logger mout(name, __FUNCTION__);
 
-		if (!BaseODIM::isIndexed(ProductBase::appendResults.getType()) && ! (ProductBase::appendResults != BaseODIM::NONE)){
-			drain::Logger mout(name, __FUNCTION__);
-			mout.warn() << "illegal path elem '"<< path << "'" << mout.endl;
+		if (value == "dataset")
+			ProductBase::appendResults.set(ODIMPathElem::DATASET);
+		else if (value == "data") // This is needed to distinguish between /data123 and /data
+			ProductBase::appendResults.set(ODIMPathElem::DATA);
+		else {
+			ProductBase::appendResults.set(value); // possibly "data4" or "dataset7"
+			mout.warn() << "check path validity: "<< value << "'" << mout.endl;
 		}
-		/*
-		if (!ProductBase::appendResults.empty()){
-			if ((ProductBase::appendResults != "dataset") && (ProductBase::appendResults != "data")){
-				drain::Logger mout(name, __FUNCTION__);
-				mout.warn() << "value '"<< ProductBase::appendResults << "'? (should be empty, 'data' or 'dataset')" << mout.endl;
-			}
 
+		/*
+		if (!ODIMPath::isIndexed(ProductBase::appendResults.getType()) && ! (ProductBase::appendResults != ODIMPathElem::NONE)){
+			mout.warn() << "illegal path elem '"<< value << "'" << mout.endl;
 		}
 		*/
+
 	}
 
-	std::string path;
+	//std::string path;
 
 };
 
@@ -1183,7 +1260,7 @@ protected:
 		Quantity & q = m[quantity];
 
 		if (zero != std::numeric_limits<double>::min()){
-			if (isnan(zero))        // TODO: convert toStr to double NaN
+			if (std::isnan(zero))        // TODO: convert toStr to double NaN
 				q.unsetZero();
 			else
 				q.setZero(zero);
@@ -1314,3 +1391,5 @@ CommandModule::CommandModule(){ //
 } // namespace rack
 
 // Rack
+ // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
+ // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

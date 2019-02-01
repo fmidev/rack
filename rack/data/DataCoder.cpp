@@ -48,54 +48,6 @@ namespace rack
 
 double DataCoder::undetectQualityCoeff(0.75);
 
-/*
-void DataCoder::init(){
-
-	drain::Logger mout("DataCoder", __FUNCTION__);
-
-	minCodeValue = dataODIM.getMin(); //drain::Type::getMin<double>(dataODIM.type); // consider embed in ODIM
-	undetectValue = -std::numeric_limits<double>::max();
-
-	detectionThreshold = undetectValue; // NEW 2018
-
-	SKIP_UNDETECT = false;
-
-	if (DataCoder::undetectQualityCoeff > 0.0){
-
-		const Quantity &q = getQuantityMap().get(dataODIM.quantity);
-		if (q.hasUndetectValue){
-			mout.info() << "using quantity-specific zero for undetectValue: " << q.undetectValue << " (quantity="<< dataODIM.quantity << ")" <<  mout.endl;
-			undetectValue = q.undetectValue;
-			detectionThreshold = undetectValue+ 0.0001;
-
-			/// This has caused (and solved) problems? In compositing, zero = -32 dBZH may undeflow.
-			if (detectionThreshold < dataODIM.getMin()){
-				//mout.debug(1) << "undetectValue(" << undetectValue << ") smaller than odim.getMin(): "  << dataODIM.getMin() << mout.endl;
-				// mout.warn() << "adjusting undetectValue(" << undetectValue << ") up to minimum supported value: "  << dataODIM.getMin() << mout.endl;
-				// undetectValue = dataODIM.getMin(); // This should not happen in accumulating. Say composite has min=0.0, but data_min=0.5 ?
-				// NOTE: undetectValue should not be tuned according to data, but to the host resource, like composite
-				mout.debug() << "tuning detectionThreshold " << detectionThreshold << ") to odim.getMin(): "  << dataODIM.getMin() << mout.endl;
-				detectionThreshold = dataODIM.getMin();
-			}
-
-		}
-		else { //  no undetectValue, but undetectQualityCoeff>0
-			SKIP_UNDETECT = true;
-			//mout.note() << "using default (storage type min) for undetectValue:" << converter.undetectValue << mout.endl;
-			mout.info() << "quantity=" << dataODIM.quantity << ", skipping 'undetect' values (equal to --undetectWeight 0)" << mout.endl;
-			//mout.warn() << "not using obsolete 'undetectValue' (" << undetectValue << "), set undetectValue value instead with:";
-			mout.info() << "consider: --quantityConf " << dataODIM.quantity << ",zero=<value>" <<mout.endl; //  << ':' << srcData.odim.type
-		}
-
-	}
-
-	//detectionThreshold = undetectValue+ 0.0001;
-
-	mout.info() << " detectionThreshold: " << detectionThreshold << mout.endl;
-
-}
-*/
-
 void DataCoder::init(){
 
 	drain::Logger mout(getName(), __FUNCTION__);
@@ -180,19 +132,15 @@ void DataCoder::encode(double & value, double & weight) const {
 		//throw std::runtime_error("DataCoder::encode(double & value, double & weight) , weight <= 0.0");
 		value = dataODIM.nodata;
 	}
-	else if (value <= detectionThreshold) { // NEW IMPORTANT (but could be < instead <= ?)
+	else if (value <= detectionThreshold) { // IMPORTANT (but could be < instead <= ?)
 		value = dataODIM.undetect;
 	}
 	else {
 		value = dataODIM.scaleInverse(value);
-		if (value <= minCodeValue) { // NEW;  consider: embed in scaleInverse?
+		if (value <= minCodeValue) { // consider: embed in scaleInverse?
 			value = dataODIM.undetect;
 		}
 	}
-	// TODO LIMIT?
-	// if (value < undetectValue)  NEW
-	//	value = dataODIM.undetect;  // NEW
-
 }
 
 void DataCoder::encodeWeight(double & weight) const {

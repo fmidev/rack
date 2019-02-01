@@ -79,7 +79,7 @@ public:
 	static
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
 #endif
-	//void write(const std::string &filePath,  const HI5TREE & src, const std::list<std::string> & paths);
+	//void write(const std::string &filePath,  const HI5TREE & src, const std::list<ODIMPath> & paths);
 
 	inline
 	static
@@ -103,3 +103,4 @@ private:
 #endif //
 
 // Rack
+ // REP

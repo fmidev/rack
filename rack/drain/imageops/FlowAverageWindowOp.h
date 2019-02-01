@@ -108,7 +108,7 @@ protected:
 		setLoopLimits();
 		this->location.setLocation(0,0);
 
-		limiter = this->dst.getLimiter<double>();
+		limiter = this->dst.getEncoding().getLimiter<double>();
 
 		sum.resize(dstTray.size(), 0.0);
 		fillBoth();

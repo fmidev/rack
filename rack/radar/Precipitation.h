@@ -124,7 +124,7 @@ class PrecipitationZ : public Precipitation {
 
 	inline
 	double rainRate(double dbz) const {
-		return pow(aInv*pow10(dbz*0.10), bInv);// Eq.(1)
+		return ::pow(aInv*::pow(10.0,dbz*0.10), bInv);// Eq.(1)
 	}
 
 
@@ -165,7 +165,7 @@ class PrecipitationKDP : public Precipitation {
 	inline
 	double rainRate(double kdp) const {
 		double r = -1.0;
-		r = a * pow(kdp, b); // Eq.(3)
+		r = a * ::pow(kdp, b); // Eq.(3)
 		return r;
 	}
 
@@ -201,7 +201,7 @@ class PrecipitationZZDR : public Precipitation {
 	inline
 	double rainRate(double dbz, double zdr) const {
 		double r = -1.0;
-		r = a * pow(dbz, b) * pow(zdr, c);// Eq.(2)
+		r = a * ::pow(dbz, b) * pow(zdr, c);// Eq.(2)
 		return r;
 	}
 
@@ -239,7 +239,7 @@ class PrecipitationKDPZDR : public Precipitation {
 	inline
 	double rainRate(double kdp, double zdr) const {
 		double r = -1.0;
-		r = a * pow(kdp, b) * pow(zdr, c); //Eq. (4)
+		r = a * ::pow(kdp, b) * pow(zdr, c); //Eq. (4)
 		return r;
 	}
 

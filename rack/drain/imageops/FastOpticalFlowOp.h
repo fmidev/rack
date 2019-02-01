@@ -157,10 +157,11 @@ protected:
 	data_t W;
 
 	/**
-	 *   TODO: weight = > weightSUm
+	 *
 	 */
-	virtual
-	void clear(){
+	// Consider: weight = > weightSUm
+	//virtual
+	void clearStats(){
 		Gxx = 0.0;
 		Gxy = 0.0;
 		Gyy = 0.0;
@@ -169,6 +170,9 @@ protected:
 		// Quality only:
 		Gtt = 0.0;
 		W = 0.0;
+
+		//std::cerr << __FUNCTION__ << ": " << this->nominator() << ", " << this->uDenominator() << ", " << this->vDenominator() << std::endl;
+
 	}
 
 };
@@ -397,6 +401,11 @@ public:
 
 protected:
 
+	virtual
+	void clear(){
+		std::cerr << "SlidingOpticalFlow::" << __FUNCTION__ << std::endl;
+		void clearStats();
+	}
 
 	// Used by addPixel, removePixel
 	mutable size_t address;
@@ -526,18 +535,11 @@ public:
 \~
 
 \code
-drainage diamond1.png diamond2.png --opticalFlow 25,25 --format '{i} {j2} {-0} {1} {A0}' --sample 10,10,file=oflow.dat
+ # rainage diamond1.png diamond2.png --opticalFlow 25,25 --format '{i} {j2} {-0} {1} {A0}' --sample 10,10,file=oflow.dat
 \endcode
 
 \~exec
-   # SCALE=0.003 OUTFILE=oflow-result.png gnuplot-vectors.sh oflow.dat diamond2.png #exec
-   make oflow OFLOW=75
-   make oflow OFLOW=55
-   make oflow OFLOW=25
-   make oflow OFLOW=15
-   make oflow OFLOW=05
-   convert -frame 2 +append diamond1.png diamond2.png oflow-result55.png oflow-panel.png
-   convert -frame 2 +append oflow-result??.png oflow-panel2.png
+   # see examples on Op2 !
 \~
 
 */

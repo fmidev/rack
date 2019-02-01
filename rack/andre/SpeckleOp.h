@@ -58,7 +58,7 @@ public:
 	 *  \param reflMin - threshold reflectivity
 	 *  \param area - fuzzy threshold, at which the likelihood is 50%
 	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
+	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
 	SpeckleOp(double reflMin=0.0, int area=9) :

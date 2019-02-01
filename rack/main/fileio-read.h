@@ -77,6 +77,8 @@ protected:
 	void appendPolarH5(HI5TREE & tmpSrc, HI5TREE & dst) const;
 	//void appendPolarH5OLD(HI5TREE & tmpSrc, HI5TREE & dst) const;
 
+	void updateQuality(HI5TREE & srcData, HI5TREE & dstData) const;
+
 
 	void readTextFile(const std::string & fullFilename) const;
 
@@ -88,7 +90,7 @@ protected:
 		// See also EncodingODIM copyFro
 		const drain::image::Geometry & g = srcImage.getGeometry();
 		odim.setGeometry(g.getWidth(), g.getHeight());
-		odim.type = (char)srcImage.getType2();
+		odim.type = drain::Type::getTypeChar(srcImage.getType());
 		//odim.updateFromMap(rootProperties);
 		odim.updateFromMap(srcImage.properties);
 		if (odim.gain == 0){

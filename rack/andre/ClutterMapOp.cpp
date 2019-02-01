@@ -48,7 +48,6 @@ using namespace drain::image;
 
 namespace rack {
 
-//void ClutterMapOp::setClutterMap(const HI5TREE & tree, const std::string & quantityRegExp) const {
 void ClutterMapOp::setClutterMap(const std::string & filename) const {
 
 	drain::Logger mout(name, __FUNCTION__);
@@ -56,9 +55,8 @@ void ClutterMapOp::setClutterMap(const std::string & filename) const {
 	try {
 		hi5::Reader::readFile(filename, clutterMap);
 		DataTools::updateAttributes(clutterMap);
-		// hi5::Hi5Base::writeText(clutterMap);
 	}
-	catch (std::runtime_error & e) {
+	catch (const std::runtime_error & e) {
 		mout.warn() << "Failed reading cluttermap '" << filename << "'" << mout.endl;
 	}
 
@@ -119,10 +117,10 @@ void ClutterMapOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<Polar
 	//double distance;
 	//double distanceMax = 0;
 	//unsigned short i2;
-	const double halfCoeff = log(decay) / 1000;
+	const double halfCoeff = ::log(decay) / 1000;
 	for (unsigned short i=0; i<cols; ++i){
 		altitude = Geometry::heightFromEtaGround(srcData.odim.elangle, srcData.odim.getBinDistance(i));
-		coeff = exp(altitude * halfCoeff); //
+		coeff = ::exp(altitude * halfCoeff); //
 		//distance = Geometry::groundFromEtaBeam(srcData.odim.elangle, srcData.odim.getBinDistance(i));
 		//i2 = srcMap.odim.getBinIndex(distance);
 		//if (i2 < cols_map){

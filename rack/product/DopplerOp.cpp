@@ -89,8 +89,8 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		dstData.odim.NI = odim.NI;
 		dstData.odim.setRange(-odim.NI, +odim.NI);
 	}
-	const double minCode = dstData.data.getMin<double>();
-	const double maxCode = dstData.data.getMax<double>();
+	const double minCode = dstData.data.getEncoding().getTypeMin<double>();
+	const double maxCode = dstData.data.getEncoding().getTypeMax<double>();
 
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
 	qm.setQuantityDefaults(dstQuality);
@@ -226,7 +226,7 @@ public:
 		size=0;
 		srcODIM.updateFromMap(src.getProperties());
 		NI_threshold = relative_NI_threshold * srcODIM.getNyquist(LOG_ERR);
-		limit = dst->getLimiter<double>();
+		limit = dst->getEncoding().getLimiter<double>();
 
 	}
 

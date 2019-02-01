@@ -40,17 +40,48 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/// Utility for implementing setType(const std::type_info &t) in classes supporting setType<T>().
+/**
+ *
+template <class C>
+class typesetter {
+public:
+
+	typedef void value_t;
+
+	template <class T>
+	static
+	void callback(C & c){
+		c.template setType<T>();
+	}
+};
+*/
+
+class typesetter {
+public:
+
+	/**
+	 *  \tparam S - target type
+	 *  \tparam T - type to be analyzed
+	 */
+	template <class S, class T>
+	static
+	void callback(T & target){
+		target.template setType<S>();
+	}
+};
+
+
 
 class simpleName {
 
 public:
 
-	//typedef const char * value_t;
 	typedef std::string value_t;
 
 	/**
-	 *  \tparam S - type to be analyzed
-	 *  \tparam T - destination type  (practically value_t)
+	 *  \tparam S - type to be analyzed (argument)
+	 *  \tparam T - return type  (practically value_t)
 	 */
 	template <class S, class T>
 	static
@@ -167,6 +198,24 @@ public:
 	T callback(){ return std::numeric_limits<S>::is_integer; }
 
 };
+
+
+class typeIsFloat { // F2
+
+public:
+
+	typedef bool value_t;
+
+	/**
+	 *  \tparam S - selector type
+	 *  \tparam T - destination type (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){ return (typeid(S)==typeid(float)) || (typeid(S)==typeid(double)); }
+
+};
+
 
 /// The maximum value of a type given as type_info, char or std::string.
 /**

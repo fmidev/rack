@@ -142,7 +142,7 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 	//tmp.adoptScaling(dstData.data);
 	// 2018 ? tmp.scaling.setLimits(dstData.data.getMin<double>(), dstData.data.getMax<double>());
 
-	const double MAX = dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
+	const double MAX = dstData.data.getEncoding().getTypeMax<double>(); //dstData.odim.scaleInverse(1);
 
 	/// Reduction coefficient to compensate missing measurement data
 	double overallScale = 1.0;
@@ -295,7 +295,7 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		fuzzyBright.functor.set(0.0,-0.032, overallScale);
 		fuzzyBright.process(dstData.data, dstData.data);
 	}
-	DataTools::updateAttributes(dstData.tree);
+	DataTools::updateAttributes(dstData.getTree()); // needed?
 }
 
 

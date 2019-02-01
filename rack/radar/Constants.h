@@ -59,9 +59,9 @@ namespace rack {
   template <class T>                               
   inline
   double dbzToZ(const T &dBZ){
-	  //z = pow10(dbz*0.10);
+	  //z = ::pow(10.0,dbz*0.10);
 	  //return pow(10.0, static_cast<double>(dBZ)/10.0 );
-	  return pow10(static_cast<double>(dBZ) * 0.1);
+	  return ::pow(10.0,static_cast<double>(dBZ) * 0.1);
   }                                                  
 
   /*! Converts Z from logarithmic to linear scale.   
@@ -74,7 +74,7 @@ namespace rack {
   double zToDbz(const T &Z){
 	  //static const double coeff = 10.0 / log(10.0);
 	  //coeff * log( static_cast<double>(Z) ) ;
-	  return 10.0 * log10( static_cast<double>(Z) ) ;
+	  return 10.0 * ::log10( static_cast<double>(Z) ) ;
   }                                                  
 
 

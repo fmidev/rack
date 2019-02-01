@@ -38,7 +38,7 @@ namespace rack {
 
 void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-	if (initialize & ROOT){
+	if (initialize & ODIMPathElem::ROOT){
 
 		// compiler test...
 #ifdef INT64_C
@@ -58,11 +58,11 @@ void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs
 		reference("how:NI",  NI = 0.0);
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 	}
 
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 	}
 
 }
@@ -74,13 +74,13 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 
 	object = "XSEC";
 
-	if (initialize & ROOT){
+	if (initialize & ODIMPathElem::ROOT){
 		reference("where:lon", lon = 0.0);
 		reference("where:lat", lat = 0.0);
 		reference("where:height", height = 0.0);
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 		reference("where:levels",  levels = 0L);
 		reference("where:interval",  interval = 0.0);
 
@@ -92,7 +92,7 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 		reference("where:azSlots", azSlots = 1L);
 	}
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 	}
 
 }
@@ -103,19 +103,19 @@ void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
 
 	object = "XSEC";
 
-	if (initialize & ROOT){
+	if (initialize & ODIMPathElem::ROOT){
 		reference("where:lon", lon = 0.0);
 		reference("where:lat", lat = 0.0);
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 		reference("where:minRange", minRange = 0.0);  // where or how??
-		reference("where:range", range = 0.0);// where or how??
+		reference("where:range", range = 0.0);        // where or how??
 		reference("where:az_angle", az_angle = 0.0);
 		reference("where:angles", angles = 0.0);
 	}
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 	}
 
 }

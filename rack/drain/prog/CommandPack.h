@@ -223,7 +223,7 @@ public:
 	inline
 	void exec() const {
 		CommandRegistry & r = getRegistry();
-		r.expandVariables = ~r.expandVariables;
+		r.expandVariables = !r.expandVariables;
 	};
 
 };

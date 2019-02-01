@@ -61,15 +61,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 CommandEntry<CmdImage> cmdImage("image");
-CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
+//CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
 
 
 void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters, drain::image::Image &dst){
 
 	drain::Logger mout("CmdImage", __FUNCTION__);
 
-	std::string path = "";
-	DataSelector::getPath(src, DataSelector("(data|quality)[0-9]+/?$", selector.quantity), path);
+	//std::string path = "";
+	//DataSelector::getPath(src, DataSelector("(data|quality)[0-9]+/?$", selector.quantity), path);
+	ODIMPath path;
+	selector.getPathNEW(src, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
 	if (path.empty()){
 		mout.warn() << "path empty" << mout.endl;
 		return;
@@ -146,7 +149,13 @@ public: //re
 
 		//const drain::image::Image &d = VolumeOp::getData(*resources.currentHi5, 0); // options["quantity?"]); // typically, first "DBZ.*"
 		//
-		const drain::image::Image &alpha = DataSelector::getData(*resources.currentHi5, iSelector);
+		//const drain::image::Image &alpha = DataSelector::getData(*resources.currentHi5, iSelector);
+		ODIMPath path;
+		iSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		path << ODIMPathElem::ARRAY;
+		mout.debug() << "alpha path:"  <<  path << mout.endl;
+		const drain::image::Image &alpha = (*resources.currentHi5)(path).data.dataSet;
+
 		PolarODIM odimAlpha(alpha);
 
 		DataConversionOp<PolarODIM> copier; //(copierHidden);
@@ -170,7 +179,6 @@ public: //re
 };
 // static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
 static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
-
 
 
 class CmdImageFlatten : public SimpleCommand<std::string> {
@@ -202,7 +210,7 @@ public: //re
 
 		drain::image::ImageFrame & imgAlpha = img.getAlphaChannel();
 
-		const double alphaMax = imgAlpha.getMax<double>();
+		const double alphaMax = imgAlpha.getEncoding().getTypeMax<double>();
 		if (alphaMax == 0) {
 			mout.warn() << name << ": zero alphaMax" << mout.endl;
 			return;
@@ -266,7 +274,11 @@ public:
 		if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
 			mout.debug(2) << "Resetting current gray image." << mout.endl;
 			mout.debug(3) << cmdImage.imageSelector << mout.endl;
-			resources.currentGrayImage = & DataSelector::getData(*resources.currentHi5, cmdImage.imageSelector);
+			ODIMPath path;
+			cmdImage.imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			mout.note() << "path:" << path << mout.endl;
+			resources.currentGrayImage = & (*resources.currentHi5)(path)[odimARRAY].data.dataSet;
+			//resources.currentGrayImage = & DataSelector::getData(*resources.currentHi5, cmdImage.imageSelector);
 			resources.currentImage     =   resources.currentGrayImage;
 		}
 
@@ -345,7 +357,7 @@ public:
 
 		PaletteOp  op(resources.palette);
 		// The intensities will  be mapped first: f' = gain*f + offset
-		const VariableMap  & props = resources.currentGrayImage->properties;
+		const FlexVariableMap  & props = resources.currentGrayImage->properties;
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		const PolarODIM imgOdim(props);
@@ -424,7 +436,9 @@ static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
 class CmdLegendOut : public SimpleCommand<> {
-public: //re
+
+public:
+
 	CmdLegendOut() : SimpleCommand<>(__FUNCTION__, "Save palette as a legend to a SVG file.", "filename", "", "<filename>.svg") {
 		//parameters.separators.clear();
 		//parameters.reference("filename", filename, "", "<filename>.svg");
@@ -470,37 +484,44 @@ public:
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		RackResources & resources = getResources();
-		std::list<std::string> l;
+		std::list<ODIMPath> paths;
 		//std::map<std::string,std::string> m;
-		DataSelector selector("data[0-9]+$");
+		DataSelector selector; //("data[0-9]+$");
 		selector.setParameters(resources.select);
 		resources.select.clear();
 		mout.debug() << "selector: " << selector << mout.endl;
-		// DataSelector::getPaths(*resources.currentHi5, selector, l); // todo getFirstData
+		//  selector.getPathsNEW(*resources.currentHi5, paths); // RE2 // todo getFirstData
 		//DataSelector::getPathsByQuantity(*resources.currentHi5, selector, m); // key==quantity, so only one (last) path obtained
-		DataSelector::getPaths(*resources.currentHi5, selector, l);
+		selector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATA);
 		//size_t count = m.size();
-		size_t count = l.size();
+		size_t count = paths.size();
 		mout.info() << "found: " << count << " paths " << mout.endl;
 		drain::image::ImageTray<Channel> tray;
 		//size_t index = 0;
 		//for (std::map<std::string,std::string>::const_iterator it = m.begin(); it != m.end(); ++it){
-		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it){
+		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			//mout.note() << "selected: " << it->first << '=' << it->second << mout.endl;
 			mout.note() << "selected: " << *it << mout.endl;
+			HI5TREE & dst = (*resources.currentHi5)(*it);
 			//drain::image::Image & channel = (*resources.currentHi5)(it->second)["data"].data.dataSet;
-			drain::image::Channel & channel = (*resources.currentHi5)(*it)["data"].data.dataSet.getChannel(0);
+			drain::image::Channel & channel = dst["data"].data.dataSet.getChannel(0);
 			if (channel.isEmpty()){
 				mout.warn() << "empty image in " << *it << "/data, skipping" << mout.endl;
 				continue;
 			}
 			tray.appendImage(channel);
 			mout.debug(1) << channel << mout.endl;
-			std::string path(*it);
-			if (DataSelector::getQualityPath(*resources.currentHi5, path)){
+			//std::string path(*it);
+
+
+			ODIMPath path;
+			mout.warn() << "note: checking parallel quality unimplemented" << mout.endl;
+			if (DataSelector().getPathNEW(dst, path, ODIMPathElem::QUALITY)){
+			//if (DataSelector::getQualityPath(*resources.currentHi5, path)){
+				path << ODIMPathElem(ODIMPathElem::ARRAY);
 				mout.note() << "associated quality field for ["<< *it << "] found in " << path << mout.endl;
 				if (tray.alpha.empty()){
-					drain::image::Channel & quality = (*resources.currentHi5)(path).data.dataSet.getChannel(0);
+					drain::image::Channel & quality = dst(path).data.dataSet.getChannel(0);
 					tray.appendAlpha(quality);
 				}
 				else {
@@ -519,8 +540,8 @@ public:
 		plot.traverseChannels(tray);
 
 		/*
-		if (!l.empty()){
-			const std::list<std::string>::const_iterator it = l.begin();
+		if (!paths.empty()){
+			const std::list<ODIMPath>::const_iterator it = paths.begin();
 			mout.info() << "selected: " << *it << mout.endl;
 		}
 		 */
@@ -531,217 +552,8 @@ static CommandEntry<CmdPlot> cmdPlot;
 //static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
-std::string ImageOpRacklet::outputQuantity("{what:quantity}_{command}");
 
-void ImageOpRacklet::exec() const {
-
-	typedef DstType<ODIM> dst_t;
-
-	drain::Logger mout(this->getName()+"[ImageOpRacklet]", __FUNCTION__); // = resources.mout;
-
-	RackResources & resources = getResources();
-
-	/*  Traverse all the datasets
-	 *  - construct DataSet<Dst>(
-	 *  - if (dataSetQuantity, add it for each,
-	 */
-
-	DataSelector imageSelector("dataset[0-9]+$","");
-	imageSelector.count = 1;
-	imageSelector.setParameters(resources.select);
-	resources.select.clear();
-	// skip quantity fow later traversal, accept now all the datasetN's
-	const std::string quantity(imageSelector.quantity);
-	imageSelector.quantity.clear();
-
-	mout.debug(2) << imageSelector << mout.endl;
-
-	std::list<std::string> l;
-	DataSelector::getPaths(*resources.currentHi5, imageSelector, l);
-	if (l.empty()){
-		mout.warn() << "no paths found with selector: " << imageSelector << mout.endl;
-		return;
-	}
-
-	// Main loop: visit each /dataset<n>
-	for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it){
-
-
-		// Results will be stored in the same datasetN.
-		DataSet<dst_t > dstDataSet((*resources.currentHi5)(*it), quantity);
-
-		drain::image::ImageTray<const Channel> srcTray;
-		drain::image::ImageTray<Image> dstTray;
-
-		bool DATASET_QUALITY = dstDataSet.hasQuality(); //
-		bool SPECIFIC_QUALITY_FOUND    = false;
-		bool SPECIFIC_QUALITY_MISSING  = false;
-
-		//
-		// mout.warn()
-		mout.debug(1) << "path: " << *it << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
-
-		/// 1st loop: Add data, not quality yet (only check it)
-		for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
-
-			Data<dst_t> & data = dit->second;
-
-			/// Apply physical values as thresholds etc
-			if (cmdPhysical.value)
-				data.data.setScaling(data.odim.gain, data.odim.offset);
-			else
-				data.data.setScaling(1.0, 0.0);
-
-			data.data.setName(dit->first);
-
-			srcTray.appendImage(data.data);
-			dstTray.appendImage(data.data);
-			if (data.hasQuality()){
-				mout.debug() << *it << " /[" << dit->first <<  "] has quality data" << mout.endl;
-				SPECIFIC_QUALITY_FOUND = true;
-			}
-			else {
-				mout.debug() <<  *it << " /[" << dit->first <<  "] has no quality data (ok)" << mout.endl;
-				SPECIFIC_QUALITY_MISSING = true;
-			}
-
-		}
-
-		/// Add quality, if found.
-		// Case 1: at least some specific quality is used (and dataset-level )
-		if ((DATASET_QUALITY && SPECIFIC_QUALITY_FOUND) || !SPECIFIC_QUALITY_MISSING) {
-			if (DATASET_QUALITY)
-				mout.note() << "using dataset-level quality data: " << *it << mout.endl;
-			// else
-			mout.note() << "using data-level quality data"  << mout.endl;
-			// Loop again (add specific)
-			for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
-				//const std::string & key = it->first;
-				mout.note() << "considering quantity " << dit->first << mout.endl;
-				Data<dst_t > & data = dit->second;
-				if (data.hasQuality()){
-					mout.note() << "using quantity(" << dit->first << ") specific quality data" << mout.endl;
-					PlainData<dst_t> & q = data.getQualityData();
-					//dstTray.alpha.appendImage(data.getQualityData().data);
-					q.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-					q.data.setScaling(q.odim.gain, q.odim.offset);
-					srcTray.alpha.set(q.data);
-					dstTray.alpha.set(q.data);
-				}
-				else if (DATASET_QUALITY) {
-					//dstTray.alpha.appendImage(dstDataSet.getQualityData().data);
-					PlainData<dst_t> & q = dstDataSet.getQualityData();
-					q.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-					q.data.setScaling(q.odim.gain, q.odim.offset);
-					srcTray.alpha.set(q.data);
-					dstTray.alpha.set(q.data);
-				}
-			}
-		}
-		else if (DATASET_QUALITY){ // ...only.
-			mout.note() << *it << " has dataset-level quality data (only)"  << mout.endl;
-			//dstTray.alpha.appendImage(dstDataSet.getQualityData().data);
-			PlainData<dst_t> & q = dstDataSet.getQualityData();
-			q.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-			q.data.setScaling(q.odim.gain, q.odim.offset);
-			srcTray.alpha.set(q.data);
-			dstTray.alpha.set(q.data);
-		}
-		else {
-			if (SPECIFIC_QUALITY_FOUND && SPECIFIC_QUALITY_MISSING)
-				mout.note() << "discarding quality data (associated with only some data)"  << mout.endl;
-			else
-				mout.info() << "no associated quality data"  << mout.endl;
-		}
-
-
-		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
-		mout.debug()  << "src tray:\n" << srcTray << mout.endl;
-		mout.debug(1) << "dst tray before processing:\n" << dstTray << mout.endl;
-		bean.process(srcTray, dstTray); //, true);
-		// bean.traverseChannels(srcTray, dstTray);
-		mout.debug() << "dst tray after processing:\n" << dstTray << mout.endl;
-
-
-	}
-
-	return;
-}
-
-ImageRackletModule::list_t ImageRackletModule::rackletList;
-
-//ImageRackletModule::ImageRackletModule(CommandRegistry & registry){ //, const std::string & section, const std::string & prefix){
-ImageRackletModule::ImageRackletModule(const std::string & section, const std::string & prefix){
-
-	drain::Logger mout(__FUNCTION__);
-
-	CommandRegistry & registry = getRegistry();
-
-	registry.setSection(section, prefix);
-
-	ImageOpBank::map_t & ops = getImageOpBank().getMap();
-
-	for (ImageOpBank::map_t::iterator it=ops.begin(); it != ops.end(); ++it){
-
-		const std::string & key = it->first;
-		ImageOp & op = it->second.get();
-		list_t::iterator lit = rackletList.insert(rackletList.end(), ImageOpRacklet(op, key));
-		// mout.warn() << op.getName() << '\t' << adapter.getName() << mout.endl;
-		// mout.note() << op.getName() << mout.endl;
-		// mout.warn() << op.getName() << '\t' << op.getParameters().getValues() << mout.endl;
-		registry.add(*lit, key);
-
-		//if (++n > 5) break;
-	}
-
-	// DEBUG
-	/*
-	for (list_t::iterator it=rackletList.begin(); it != rackletList.end(); ++it){
-		mout.warn() << it->getName() << '\t' << it->getParameters().getValues() << mout.endl;
-	}
-	 */
-
-
-}
-
-
-/*
-
-DataSelector imageSelector(".* /data[0-9]+$","");   // Consider shared? Only for images. Not directly accessible.
-imageSelector.setParameters(resources.select);
-resources.select.clear();
-mout.debug(2) << imageSelector << mout.endl;
-
-std::list<std::string> l;
-DataSelector::getPaths(*resources.currentHi5, imageSelector, l);
-
-if (l.empty()){
-	mout.warn() << "no matching paths with selector: " << imageSelector << mout.endl;
-	return;
-}
-//size_t count = l.size();
-mout.info() << "found: " << l.size() << " paths " << mout.endl;
-
-Variable & v = (*resources.currentHi5)["what"].data.attributes["object"];
-if (!v.typeIsSet())
-	v.setType<std::string>();
-const std::string object = v;
-const bool CARTESIAN = (object == "COMP");
-
-mout.info() << "data type " << (CARTESIAN?"CARTESIAN":"POLAR") << mout.endl;
-mout.debug() << "selector: " << imageSelector << mout.endl;
-
-for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it){
-	mout.info() << "processing: " << *it << mout.endl;
-	if (CARTESIAN)
-		processDataSet<CartesianODIM>(*resources.currentHi5, *it, imageSelector.quantity, mout);
-	else
-		processDataSet<PolarODIM>(*resources.currentHi5, *it, imageSelector.quantity, mout);
-}
-DataTools::updateAttributes(*resources.currentHi5);
- */
 
 
 } // namespace rack
 
-// Rack

@@ -58,7 +58,8 @@ public:
 			acc.setMethod("AVERAGE"); // TODO: add pMethod command?
 		}
 
-		acc.dataSelector.path     = "data[0-9]+$";
+		// acc.dataSelector.path     = "data[0-9]+$";
+		acc.dataSelector.path = ""; // remove after deprecated
 
 		if (acc.dataSelector.quantity.empty())
 			acc.dataSelector.quantity = "^(DBZH|RATE)$";
@@ -70,16 +71,17 @@ public:
 
 		mout.debug() << acc << mout.endl;
 
+		// NEW
+		acc.dataSelector.updatePaths();
 
-		std::string p = "dataset1";
-		DataSelector::getPath(*resources.currentPolarHi5, acc.dataSelector, p);
-		ODIMPath path(p);
-		path.pop_back();
+		//selector.data.max = 0;
+		//mout.note() << "selector: " << selector << mout.endl;
+		ODIMPath path;
+		acc.dataSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATASET); //, true);
 
 		const DataSet<PolarSrc> srcDataSet((*resources.currentPolarHi5)(path));
 		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();
-		//Data<PolarSrc> srcData((*resources.currentPolarHi5)(path));
-		//mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
+		// mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
 
 		if (srcData.data.isEmpty()){
 			mout.warn() << "No data found with selector:" << acc.dataSelector << ", skipping..." << mout.endl;
@@ -87,18 +89,17 @@ public:
 		}
 
 		mout.info() << "using path=" << path << ", quantity=" << srcData.odim.quantity << mout.endl;
-		// PolarODIM mika;
-		// mout.info() << "init: " << mika << mout.endl;
 
 		const bool LOCAL_QUALITY = srcData.hasQuality();
 		if (LOCAL_QUALITY)
 			mout.info() << "has local quality" << mout.endl;
 
 		const PlainData<PolarSrc> & srcQuality = LOCAL_QUALITY ? srcData.getQualityData() : srcDataSet.getQualityData();
-		mout.info() << "quality: " << srcQuality.odim << mout.endl;
-		//mout.info() << "quality: " << srcQuality.odim << mout.endl;
+		mout.debug() << "quality: " << srcQuality.odim << mout.endl;
+
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
+			//acc.odim.update(srcData.odim);
 			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
 			acc.odim.type = "S";
 			acc.odim.nbins  = srcData.odim.nbins;
@@ -127,11 +128,12 @@ public:
 		}
 
 
+
 		double coeff = 1.0;
 		const std::string & name = acc.getMethod().name;
 		if ((name == "AVERAGE") || (name == "WAVG")){
 
-			mout.note() << "avg-type method=" << acc.getMethod() << ' ';
+		 	mout.debug() << "avg-type method=" << acc.getMethod() << ' ';
 
 			if (acc.odim.ACCnum > 1){
 				mout << ", dividing weight by current ACCnum=" << acc.odim.ACCnum << ' ';
@@ -146,11 +148,19 @@ public:
 			mout << mout.endl;
 		}
 
-		mout.note() << "final weight: "<< coeff*weight << mout.endl;
 
-		acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
+		if (srcDataSet.hasQuality("COUNT")){
+			mout.note() << "COUNT field detected, using restored weighted sums" << mout.endl;
+			const PlainData<PolarSrc> & srcCount = srcDataSet.getQualityData("COUNT");
+			acc.addData(srcData, srcQuality, srcCount);
+		}
+		else {
+			if (coeff != 1.0)
+				mout.note() << "No COUNT field detected, ACCnum "<< acc.odim.ACCnum << '+' << srcData.odim.ACCnum << ", using tuned weight: " << coeff << '*' << weight  << mout.endl;
+			acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
+		}
 
-		acc.counter += std::max(1L, srcData.odim.ACCnum);
+		//acc.counter += std::max(1L, srcData.odim.ACCnum);
 		//acc.odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
 
 	};
@@ -220,12 +230,16 @@ class PolarExtract : public SimpleCommand<std::string> {
 		acc.extract(acc.odim, dstProduct, value);
 		acc.odim.ACCnum += acc.counter;
 
-		ODIM::copyToH5<ODIM::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateAttributes(dst); // why not start form "dataset1" ?
 
-		ODIM::copyToH5<ODIM::ROOT>(acc.odim, dst);
+		//mout.warn() << "ODIM lat" <<  acc.odim << mout.endl;
+		ODIM::copyToH5<ODIMPathElem::ROOT>(acc.odim, dst);
+
+		dst["how"].data.attributes["software"]   = __RACK__;
+		dst["how"].data.attributes["sw_version"] = __RACK_VERSION__;
 
 		resources.currentHi5 = & dst;
 		resources.currentPolarHi5 = & dst;
@@ -251,7 +265,3 @@ AccumulationModule::AccumulationModule(const std::string & section, const std::s
 
 
 } // namespace rack::
-
-
-
-// Rack

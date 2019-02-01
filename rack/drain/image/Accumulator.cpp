@@ -108,19 +108,14 @@ void Accumulator::addData(const Image & srcData, const AccumulationConverter & c
 
 	const unsigned int width  = srcData.getWidth();
 	const unsigned int height = srcData.getHeight();
-
-	mout.debug() << width << 'x' << height << '@' << iOffset << ',' << jOffset << mout.endl;
-
+	// mout.debug() << width << 'x' << height << '@' << iOffset << ',' << jOffset << mout.endl;
 	size_t a;
 	double value;
-
 	double weight;
 	converter.encodeWeight(priorWeight);  // important
-
-
 	mout.debug() << converter << mout.endl;
-
 	Point2D<int> p;
+
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
 			p.setLocation(iOffset+i,jOffset+j);
@@ -131,11 +126,6 @@ void Accumulator::addData(const Image & srcData, const AccumulationConverter & c
 				if (converter.decode(value, weight)){
 					add(data.address(p.x, p.y), value, weight);
 				}
-				/*  OLD
-				if (converter.decode(value)){
-					add(data.address(p.x, p.y), value, priorWeight);
-				}
-				*/
 			}
 		}
 	}
@@ -145,11 +135,11 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 
 	const unsigned int width  = src.getWidth();
 	const unsigned int height = src.getHeight();
-
 	size_t a;
 	double value;
 	double weight;
 	Point2D<int> p;
+
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
 			p.setLocation(iOffset+i,jOffset+j);
@@ -165,6 +155,25 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 	}
 }
 
+void Accumulator::addData(const Image & src, const Image & srcQuality, const Image & srcCount, const AccumulationConverter & converter){
+
+	const unsigned int width  = src.getWidth();
+	const unsigned int height = src.getHeight();
+	size_t a;
+	double value;
+	double weight;
+
+	for (unsigned int i = 0; i < width; ++i) {
+		for (unsigned int j = 0; j < height; ++j) {
+			a = src.address(i,j);
+			value  = src.get<double>(a);
+			weight = srcQuality.get<double>(a);
+			if (converter.decode(value, weight)){
+				add(a, value, weight, srcCount.get<unsigned int>(a));
+			}
+		}
+	}
+}
 
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst) const {
@@ -178,27 +187,40 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	}
 
 
-	if (!dst.typeIsSet())
-		dst.setType<unsigned char>();
+	// Storage type selection for fields str than 'data'.
+	if (!dst.typeIsSet()){
+		if ((field >= 'a') && (field <= 'z'))
+			dst.setType<unsigned char>();
+		else {
+			dst.setType<double>();
+			// field = field-'A'+'a';
+		}
+	}
+
+
+	// if (!dst.typeIsSet())
+	//	dst.setType<unsigned char>();
+
+	//if ((field >= 'A') && (field <= 'Z')) field = field-'A'+'a';
 
 	mout.debug(1) << "field " << field << mout.endl;
 
 	switch (field){
 		case 'd':
+		case 'D':
 			methodPtr->extractValue(coder, dst);
 			break;
 		case 'w':
+		case 'W':
 			methodPtr->extractWeight(coder, dst);
 			break;
 		case 'c':
+		case 'C':
 			methodPtr->extractCount(coder, dst);
 			break;
 		case 's':
+		case 'S':
 			methodPtr->extractDev(coder, dst);
-			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
-			break;
-		case 'D':
-			methodPtr->extractDevInv(coder, dst);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:

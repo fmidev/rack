@@ -124,10 +124,10 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 	//data.setLimits(-256.0, 255.0);
 
 	mout.debug(2) << "data, after limits: " << dstData.data << mout.endl;
-	mout.debug(2) << "limits: " << dstData.data.getMin<double>() << ',' << dstData.data.getMax<double>() << mout.endl;
+	mout.debug(2) << "limits: " << dstData.data.getEncoding().getTypeMin<double>() << ',' << dstData.data.getEncoding().getTypeMax<double>() << mout.endl;
 	//data.toOStr(std::cout);
 
-	drain::typeLimiter<double>::value_t limit = dstData.data.getLimiter<double>();
+	drain::typeLimiter<double>::value_t limit = dstData.data.getEncoding().getLimiter<double>();
 
 	while (d != dEnd){
 		x = *d;

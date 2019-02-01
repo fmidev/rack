@@ -60,14 +60,17 @@ class ReferenceMap : public SmartMap<Referencer> {//public std::map<std::string,
 
 public:
 
+	/// Default constructor
 	/**
 	 *  \strictness - if true, allow attempts of assigning to non-existing entries; otherways throw exception on attempt.
 	 */
 	// ReferenceMap(bool ordered, char separator) : SmartMap<Referencer>(ordered, separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 	ReferenceMap(char separator=',') : SmartMap<Referencer>(separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 
-	//ReferenceMap(const ReferenceMap & rmap) : SmartMap<Referencer>(rmap.ORDERED, rmap.separator){};  // , STRICTLY_CLOSED,
-	ReferenceMap(const ReferenceMap & rmap) : SmartMap<Referencer>(rmap.separator){};  // , STRICTLY_CLOSED,
+	/// Copy constructor copies only the separators (doesn't copy the items).
+	inline
+	ReferenceMap(const ReferenceMap & rmap) : SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
+	};
 
 	/// Associates a map entry with a variable
 	/**
@@ -88,15 +91,6 @@ public:
 		unitMap[key] = unit;
 	}
 
-	inline
-	void reference(const std::string & key, Referencer &x, const std::string & unit){
-		if (find(key) == end()) // not  already referenced
-			keyList.push_back(key);
-		//std::map<std::string,Referencer>::operator[](key).relink(x);
-		std::map<std::string,Referencer>::operator[](key).link(x); ////
-		unitMap[key] = unit;
-	}
-
 
 	/// Associates a map entry with a variable, adding key in the beginning of key list.
 	/**
@@ -105,10 +99,8 @@ public:
 	 */
 	template <class F>
 	void referenceTop(const std::string & key, F &x, const std::string & unit = std::string()){
-		//if (ORDERED){
 		if (find(key) != end()) // already referenced
 			keyList.push_front(key);
-		//}
 		std::map<std::string,Referencer>::operator[](key).link(x);
 		unitMap[key] = unit;
 	}
@@ -119,9 +111,10 @@ public:
 		//std::cerr << __FILE__ << " -> " << __FUNCTION__ <<  std::endl;
 		const std::list<std::string> & keys = r.getKeyList();
 		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
-			// std::cerr << " -> " << *it <<  std::endl;
-			if (replace || !hasKey(*it))
+			//std::cerr << " -> " << *it <<  std::endl;
+			if (replace || !hasKey(*it)){
 				reference(*it, r[*it], r.unitMap[*it]);
+			}
 		}
 	}
 

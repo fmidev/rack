@@ -31,14 +31,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef CASTER
 #define CASTER
 
-#include <typeinfo>
+//#include <typeinfo>
 #include <stdexcept>
 #include <iostream>
-//#include <limits>
+#include <cmath>  // for NaN
 #include <vector>
-//#include <string>
+
+
 
 #include "Type.h"
+#include "TypeUtils.h" // for typesetter
 
 
 
@@ -65,7 +67,7 @@ namespace drain {
 class Caster {
 
 
-	//protected:
+
 public:
 
 	/// Default constructor. Leaves the type undefined.
@@ -82,42 +84,64 @@ public:
 	 */
 	inline
 	Caster (const Caster &c){
-		std::cerr << "Caster::  warning: copy const;" << std::endl;
-		//unsetType();
-		setType(c.getType()); // WHY not ok?
+		//std::cerr << "Caster::  warning: copy const;" << std::endl;
+		setType(c.getType());
+		ptr = c.ptr;
 	};
-
-
-	// void setType(const std::type_info &t);
 
 	inline
-	void setType(const std::type_info &t){
-		if (t == typeid(void))
-			unsetType();
-		else {
-			Type::call<typesetter>(*this, t);
-		}
+	void link(void *p, const std::type_info &t){
+		ptr = p;
+		setType(t);
 	}
 
-	// Use Type::typesetter<Caster> instead?
-	class typesetter {
-	public:
-		template <class T>
-		static
-		inline
-		void callback(Caster & c){
-			c.setType<T>();
+	template <class T>
+	inline
+	void link(T *p){
+		link(p, typeid(T));
+	}
+
+	template <class T>
+	inline
+	void link(T &p){
+		link(&p, typeid(T));
+	}
+
+
+	/// Calls setType<T>() for which typeid(T) = t.
+	/**
+	 *  Caster implements setType<T>(), hence this utility can be applied.
+	 */
+	inline
+	void setType(const std::type_info &t){
+		/*
+		std::cerr << "Caster::" << __FUNCTION__ << ':' << t.name() << std::endl;
+		if (t == typeid(Caster)){
+			std::cerr << "Caster::" << __FUNCTION__ << " yes Caster" << std::endl;
+			updateCasterType(); //calls updateType<Caster>();
 		}
+		else */
+		Type::call<drain::typesetter>(*this, t);
+	}
 
-	};
-
-	///
-	//   Implementation at the bottom.
+	/// Sets pointers to the type-dependent conversion functions.
+	//
+	// Note: updateType planned to be renamed "directly" to setType?
 	template <class F>
-	void setType();
+	inline
+	void setType(){
+		updateType<F>();
+	}
 
-	/// VOID 
-	void unsetType();
+	/// Utility for derived classes, which may be able to adapt memory array type as well.
+	virtual inline
+	bool requestType(const std::type_info & t){
+		return getType() == t;
+	}
+
+	/// calls void setType<void>().
+	void unsetType(); //  inline not possible here due to template<> (?)
+
 
 	/// Returns type_info of the current type.
 	inline
@@ -138,6 +162,7 @@ public:
 		if (typeIsSet()){
 			std::stringstream sstr;
 			sstr << x;
+			//std::cerr << "Caster::put(p, T x): stringstream conversion: " << x << "=>" << sstr.str() << std::endl;
 			put(p, sstr.str());
 		}
 		else {
@@ -145,6 +170,12 @@ public:
 		}
 	}
 
+	/// Write to internal pointer, calls put(this->ptr, x).
+	template <class T>
+	inline
+	void put(const T & x) const {  // NEW
+		put(this->ptr, x);
+	}
 
 	// Consider assigning default type (std::string?)
 	/*
@@ -155,19 +186,27 @@ public:
 	 */
 	inline
 	void put(void *p, const char * x) const {
-		if (typeIsSet()){
-			const std::type_info & t = getType();
+
+		const std::type_info & t = getType();
+
+		if (t != typeid(void)){
+
 			if (t == typeid(std::string)){
 				//std::cout << "put(void *p, const char * x) => string\n";
 				*(std::string *)p = x;
 			}
 			else {
-				//std::cout << "put(void *p, const char * x=" << x <<") => double => "<< getType().name() << "\n";
-				// Initialization important, because x maybe empty or other non-numeric std::string.
+
+				//  std::cout << "put(void *p, const char * x=" << x <<") => double => "<< getType().name() << "\n";
+				//  Initialization important, because x maybe empty or str non-numeric std::string.
 				std::stringstream sstr;
 				sstr << x;
 
-				//if (Type::call<drain::typeIsInteger>(t)){
+				/*
+				if (t == typeid(Caster)){
+					putToCasterT(p, sstr.str());
+				}
+				else */
 				if ((t == typeid(float))|| (t == typeid(double))){
 					double y = 0.0;
 					sstr >> y;
@@ -188,6 +227,13 @@ public:
 		}
 	};
 
+	/// Write to internal pointer, calls put(this->ptr, x).
+	inline
+	void put(const char * x) const {  // NEW
+		put(this->ptr, x);
+	}
+
+
 	/// Default implementation throws an error. See specialized implementation below.
 	template <class T>
 	T get(const void *p) const {
@@ -195,25 +241,55 @@ public:
 		return T();
 	}
 
-
-	/// Convert from other pointer and Caster.
-	inline 
-	void cast(const Caster &c, const void *ptrC, void *ptr) const {
-		(this->*castP)(c, ptrC, ptr);
-	};
-
-
-	/// New
+	template <class T>
 	inline
-	std::ostream & toOStream(std::ostream &ostr, const void *p) const {
-		return (this->*toOStreamP)(ostr,p);
+	T get() const {  // NEW
+		return get<T>(this->ptr);
 	}
 
 
+	/// Convert from str pointer and Caster.
+	inline 
+	void translate(const Caster &c, const void *ptrC, void *ptr) const {
+		//(this->*translatePtr)(c, ptrC, ptr);
+		(*translatePtr)(c, ptrC, ptr);
+	};
+
+
+	/// Convert from str Caster.
+	inline
+	void translate(const Caster &c) const { // NEW
+		//(this->*translatePtr)(c, c.ptr, this->ptr);
+		(*translatePtr)(c, c.ptr, this->ptr);
+	};
+
+
+	/// Write data to output stream
+	inline
+	std::ostream & toOStream(std::ostream &ostr, const void *p) const {
+		//return (this->*toOStreamPtr)(ostr,p);
+		return (*toOStreamPtr)(ostr,p);
+	}
+
+	/// Write data to output stream
+	inline
+	std::ostream & toOStream(std::ostream &ostr) const {  // NEW
+		//return (this->*toOStreamPtr)(ostr, this->ptr);
+		return (*toOStreamPtr)(ostr, this->ptr);
+	}
+
+
+	// Future member: enables setting Caster type.
+	void *ptr; // NEW
+
 protected:
 
+	/// Sets pointers to the type-dependent conversion functions.
+	template <class F>
+	void updateType();
 
 
+	//void updateCasterType();
 
 	// New / experimental
 	void (* putBool)(void *p, const bool &x);
@@ -243,13 +319,16 @@ protected:
 	bool (* getBool)(const void *p);
 
 
-	/// Convert from other pointer and Caster.
-	void (Caster::* castP)(const Caster &c, const void *ptrC, void *ptr) const;
+	/// Convert from str pointer and Caster.
+	//void (Caster::* translatePtr)(const Caster &c, const void *ptrC, void *ptr) const;
+	void (* translatePtr)(const Caster &c, const void *ptrC, void *ptr);
 
 	/// Write to stream.
-	std::ostream & (Caster::* toOStreamP)(std::ostream &ostr, const void *p) const;
+	// std::ostream & (Caster::* toOStreamPtr)(std::ostream &ostr, const void *p) const;
+	std::ostream & (* toOStreamPtr)(std::ostream &ostr, const void *p);
 
 
+	/// Convert input of base type to internally applied base type
 	/*
 	 *  \tparam T - outer type
 	 *  \tparam F - inner type
@@ -263,7 +342,7 @@ protected:
 
 	/// Void - does nothing, regardless of input type.
 	template <class T>
-	inline static
+	static inline
 	void putToVoidT(void *p, const T &x) {
 	}
 
@@ -274,12 +353,27 @@ protected:
 	 *  The internal storage type is std::string.
 	 */
 	template <class T>
-	inline static
+	static inline
 	void putToStringT(void *p, const T &x) {
 		std::stringstream sstr;
 		sstr << x;
 		*(std::string*)p = sstr.str();
 	}
+
+
+	// Future member: enables forwarding value x to a Caster.
+	template <class T>
+	static inline
+	void putToCasterT(void *p, const T &x) {
+		Caster &c = *(Caster *)p;
+		// std::cerr << __FUNCTION__ << "(p, T x): x="   << x << std::endl;
+		// std::cerr << __FUNCTION__ << "(p, T x): dst=" << c.getType().name() << std::endl;
+		c.put(c.ptr, x);
+		// std::cerr << __FUNCTION__ << "(p, T x): (string)" << c.get<std::string>(c.ptr) << std::endl;
+		// std::cerr << __FUNCTION__ << "(p, T x): (double)" << c.get<double>(c.ptr) << std::endl;
+	}
+
+
 
 	/// The main handler converting input to output.
 	/**
@@ -292,11 +386,17 @@ protected:
 		return static_cast<T>(*(F*)p);
 	}
 
-	/// Void - returns an empty/default value.
+	/// This default implementation is for integral numeric types, returns zero. Specialisation for floats returns NAN.
+	/**
+	 *
+	 *
+	 *
+	 */
 	template <class T>
 	static inline
 	T getFromVoidT(const void *p){
 		static const T t(0);
+		//static const T t(NAN);
 		return t;
 	}
 
@@ -317,17 +417,34 @@ protected:
 		return x;
 	}
 
+	// Future member: enables forwarding from a Caster.
+	/*
+	template <class T>
+	static inline
+	T getFromCasterT(const void *p) {
+		const Caster &c = *(const Caster *)p;
+		//std::cerr << c.getType().name() << " <- " << x << std::endl;
+		return c.get<T>(c.ptr); // or even c.get<T>()
+	}
+	*/
+
 
 	/// Casts from ptrC to ptr
-	template <class F>
-	inline
-	void _cast(const Caster &c, const void *ptrC, void *ptr) const {
+	/**
+	 *   Given data of type c.getType() behind pointer ptrC, cast it to type F and store it behind ptr.
+	 */
+	template <class F> // STATIC!
+	//inline
+	static
+	void translateT(const Caster &c, const void *ptrC, void *ptr) { // const {
+		//std::cerr << "Caster::" << __FUNCTION__ << ": " << c.getType().name() << std::endl;
 		*(F *)ptr = c.get<F>(ptrC);
 	}
 
 	/// New
 	template <class F>
-	std::ostream & _toOStream(std::ostream & ostr, const void *p) const {
+	static
+	std::ostream & toOStreamT(std::ostream & ostr, const void *p) { //const {
 		if (p != NULL)
 			ostr << *(F*)p;
 		return ostr;
@@ -336,12 +453,16 @@ protected:
 	/// Current type.
 	const std::type_info *type;
 
-	/// Typically 1 or 2 (8 and 16 bits).
+	/// Size of target memory (target object) in bytes.
 	size_t byteSize;
 
 };
 
-
+template <>
+inline
+void Caster::link(Caster &c){
+	link(c.ptr, c.getType());
+}
 
 
 
@@ -349,17 +470,19 @@ protected:
 //void Caster::setType<void>();
 // VOID	unsetType();
 
-
+template <>
+void Caster::updateType<void>();
 
 template <>
-void Caster::setType<std::string>();
+void Caster::updateType<std::string>();
 
+/// Forward pointer
 template <>
-void Caster::setType<void>();
+void Caster::updateType<Caster>();
 
 
 template <class F>
-void Caster::setType(){
+void Caster::updateType(){
 
 	type = & typeid(F);
 	byteSize = sizeof(F)/sizeof(char);
@@ -391,17 +514,11 @@ void Caster::setType(){
 
 
 
-	toOStreamP = & Caster::_toOStream<F>;
-	castP      = & Caster::_cast<F>;
+	toOStreamPtr = & Caster::toOStreamT<F>;
+	translatePtr = & Caster::translateT<F>;
 }
 
-// VOID
-/// Append nothing to the stream.
-template <>
-inline
-std::ostream & Caster::_toOStream<void>(std::ostream &ostr, const void *p) const {
-	return ostr;
-}
+
 
 template <>
 inline
@@ -567,11 +684,52 @@ std::string Caster::get<std::string>(const void *p) const {
 
 
 // Does nothing, leaves ptr intact.
-template <> inline
-void Caster::_cast<void>(const Caster &c, const void *ptrC, void *ptr) const {
+template <>
+inline
+void Caster::translateT<void>(const Caster &c, const void *ptrC, void *ptr){ // const {
+}
+
+// Writes to buffer of Caster pointed by ptr.
+template <>
+inline
+void Caster::translateT<Caster>(const Caster &c, const void *ptrC, void *ptr){ // const {
+	Caster & c2 = *(Caster *)ptr;
+	c2.translate(c, ptrC, c2.ptr);
+	//*(F *)ptr = c.get<F>(ptrC);
+}
+
+/// Specialisation for floats returns NAN.
+template <>
+inline
+double Caster::getFromVoidT<double>(const void *p){
+	return NAN;
 }
 
 
+// Specialisation for floats returns NAN.
+template <>
+inline
+float Caster::getFromVoidT<float>(const void *p){
+	return NAN;
+}
+
+
+// VOID
+/// Append nothing to the stream.
+template <>
+inline
+std::ostream & Caster::toOStreamT<void>(std::ostream &ostr, const void *p){ // const {
+	return ostr;
+}
+
+/// Append nothing to the stream.
+template <>
+inline
+std::ostream & Caster::toOStreamT<Caster>(std::ostream &ostr, const void *p){ // const {
+	const Caster &c = *(const Caster *)p;
+	c.toOStream(ostr);
+	return ostr;
+}
 
 
 

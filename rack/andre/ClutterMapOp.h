@@ -49,10 +49,10 @@ public:
 	/**
 	 *  \param decay - percentage of clutter probability remaining for each 1000m lift in altitude.
 	 *
-	 *  Before applying this operator (by calling processVolume), \c cluttermap has to be read first. In \b rack , this is implemented with
-	 *  AnDReClutterMapRead, "--aClutterMapRead" in command line.
+	 *  Before applying this operator (by calling processVolume), \c cluttermap has to be read first. In \b rack ,
+	 *  this is implemented with AnDReClutterMapRead, "--aClutterMapRead" in command line.
 	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
+	 *  This operator is \e universal , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	ClutterMapOp(double decay=0.5) : //, const std::string & filename = "") :
 		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", ECHO_CLASS_CLUTTER){ // Optional postprocessing: morphological closing.
@@ -72,7 +72,7 @@ public:
 
 	const Data<PolarSrc> & getClutterMap() const;
 
-	/// NEW POLICY
+
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 

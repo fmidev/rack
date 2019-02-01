@@ -77,7 +77,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	const size_t imageWidth  = src.data.getWidth();
 	const size_t imageHeight = src.data.getHeight();
 
-	const double reflMin = -10; // dBZ, consider as parameter?
+	//const double reflMin = -10; // dBZ, consider as parameter?
 
 	mout.debug(3) << "min length and max thickness," << w << ',' << h << " (pixels)" << mout.endl;
 
@@ -92,7 +92,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	std::vector<unsigned short int> count(imageHeight);
 	std::vector<unsigned short int> countData(imageHeight);
 	//drain::FuzzyPeak<double, unsigned char> fuzzyPeak1(10.0, 10.0, 255);
-	drain::FuzzyStepsoid<double> fuzzyStepsoid(0.5, 0.5, marginAvg.getMax<double>());
+	drain::FuzzyStepsoid<double> fuzzyStepsoid(0.5, 0.5, marginAvg.getEncoding().getTypeMax<double>());
 	//drain::FuzzyStep<double, double> fuzzyStep(0.25, 0.50, 255.0);
 	for (size_t j=0; j<imageHeight; ++j){
 		unsigned short int & c = count[j];
@@ -164,7 +164,10 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(rleVert, rleHorz, dst.data);
 	storeDebugData(2, dst.data, "FINAL");
 
-	BinaryFunctorOp<MultiplicationFunctor>(2.0 * sensitivity).traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
+	BinaryFunctorOp<MultiplicationFunctor> mop;
+	mop.functor.setScale(2.0 * sensitivity);
+	mop.traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
+	//BinaryFunctorOp<MultiplicationFunctor>(2.0 * sensitivity).traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
 	storeDebugData(2, dst.data, "FINAL-MARGIN-WEIGHTED");
 	//_mout.writeImage(10, dst.data, "dst.data"); // ? final
 

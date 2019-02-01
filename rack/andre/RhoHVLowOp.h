@@ -54,7 +54,7 @@ public:
 	 *  \param medianPos    - optional: median position: 0.5 = normal median ( >0.5: conservative for precip)
 	 *  //(morphology: 0.5 > opening; 0.5 < closing)
 	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
+	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	RhoHVLowOp(double threshold=0.85, double thresholdWidth=0.1, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
 		DetectorOp("RhoHVLow","Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", 131){

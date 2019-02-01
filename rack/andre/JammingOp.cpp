@@ -376,7 +376,7 @@ void JammingOp::fitCurve(const std::vector<double> &src, const std::vector<doubl
 	 *    LOG XLOG LOGLOG
 	 *
 	 *
-	double l; // log(x)
+	double l; // ::log(x)
 	double sum1, sumX, sumLOG, sumX2, sumXLOG, sumLOGLOG;
 	sum1 = sumX = sumLOG = sumX2 = sumXLOG = sumLOGLOG = 0.0;
 	drain::Matrix<double> XTXinv(3,3);
@@ -399,7 +399,7 @@ void JammingOp::fitCurve(const std::vector<double> &src, const std::vector<doubl
 		x += 1.0;
 		y = *its;
 		w = *itw;
-		l = log(x); // (x > 0.0, ok)
+		l = ::log(x); // (x > 0.0, ok)
 
 		sum1 +=     w* 1.0;
 		sumX +=     w* x;
@@ -549,7 +549,7 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 	drain::Vector<double> xEnd(3, false);
 	xEnd(0,0) = 1.0;
 	xEnd(0,1) = width;
-	xEnd(0,2) = log(static_cast<double>(width));
+	xEnd(0,2) = ::log(static_cast<double>(width));
 
 	//std::cerr << xVector << std::endl;
 	//std::cerr << xEnd    << std::endl;
@@ -606,7 +606,7 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 			x = static_cast<double>(i);
 			//y = s[i];
 			xVector(1) = x;
-			xVector(2) = log(x);
+			xVector(2) = ::log(x);
 			yFitted = xVector.innerProduct(coeffVector);
 			fit = yFitted - s[i];
 			if (fit > 0.0)
@@ -642,7 +642,7 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 			if ((y != odimIn.nodata) && (y != odimIn.undetect)){
 				x = static_cast<double>(i);
 				xVector(1) = x;
-				xVector(2) = log(x);
+				xVector(2) = ::log(x);
 				yFitted = xVector.innerProduct(coeffVector2);
 				//dst.put(i, j, fuzzyPos * fuzzyLin * stdDev.get<float>(i,j) * fuzzyFit(yFitted-y));
 				dst.put(i, j, stdDev.get<float>(i,j) * fuzzyFit(yFitted-y));
@@ -665,7 +665,7 @@ void JammingOp::filterImageOLD(const PolarODIM &src.odim, const Image &src, Imag
 			for (size_t i = 0; i < width; ++i) {
 				x = static_cast<double>(i);
 				xVector(1) = x;
-				xVector(2) = log(x);
+				xVector(2) = ::log(x);
 				//std::cout << i << '\t' << src.get<double>(i, debugRow);
 				std::cout << i;
 				std::cout << '\t' << src.get<double>(i, debugRow);

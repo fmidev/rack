@@ -51,9 +51,13 @@ namespace drain {
 
 /// A base class for smart maps providing methods for importing and exporting values, among others
 /**
- *  Unlike with std::map<>, operator[] is defined const, too, returning reference to a static empty instance.
+ *  Unlike with std::map<>, operator[] is defined as const, too, returning reference to a static empty instance.
  *
- *  Optionally, SmartMap can be \b ORDERED - comma-separated values can be assigned simultaneously with setValues() and updateValues()
+ *  SmartMap maintains an ordered list of keys, accessible with getKeys(). The items in the key list are
+ *  appended in the order they have been created. This is order is generally different from the (alphabetical) order
+ *  appearing in std::map iteration.
+ *
+ *  Comma-separated values can be assigned simultaneously with setValues() and updateValues()
  */
 template<class T>
 class SmartMap : public std::map<std::string, T> {
@@ -61,8 +65,6 @@ class SmartMap : public std::map<std::string, T> {
 public:
 
 	typedef std::list<std::string> keylist_t;
-
-	// const bool ORDERED;
 
 	/// Default character used for splitting input and output. See setValues
 	char separator;
@@ -168,7 +170,6 @@ public:
 			T & element = std::map<std::string, T>::operator[](key);
 			//element.setSeparator(arraySeparator);
 			return element;
-			//return std::map<std::string, T>::operator[](key);
 		}
 	}
 
@@ -189,7 +190,6 @@ public:
 
 
 	/// Derived versions may produce an ordered set of keys.
-	//   (why virtual?)
 	virtual inline
 	const std::list<std::string> & getKeyList() const {
 		return keyList;
@@ -215,22 +215,21 @@ public:
 	template <class T2>
 	inline
 	void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
+
 		iterator rit = this->find(key);
+
 		if (rit != this->end()){
 			rit->second = value;  // ? Castable = Variable  (T &)
 		}
 		else {
-
 			// RefMap = flexible =  updateOnly
 			// Varmap = flexible = !updateOnly
 			if (updateOnly){
 				// skip!
 			}
 			else {
-				//(*this)[key] = (T &)value;  // throws exception if STRICTLY CLOSED
 				(*this)[key] = value;  // throws exception if STRICTLY CLOSED
 			}
-
 		}
 	}
 
@@ -298,8 +297,9 @@ public:
 				ostr << ',';
 			if (this->find(*it) != this->end())
 				ostr <<	(*this)[*it]; //  << this->find(*it).getType();
-			else
+			else {
 				ostr << "*SMARTMAP::FAIL* " << __FUNCTION__;
+			}
 		}
 
 	}
@@ -325,19 +325,22 @@ public:
 
 		const std::list<std::string> & keys = this->getKeyList();
 
-		separatorChar = separatorChar != 0 ? separatorChar : this->separator;
-		separatorChar = separatorChar != 0 ? separatorChar : ',';  // needed?
+		separatorChar = separatorChar ? separatorChar : this->separator;
+		separatorChar = separatorChar ? separatorChar : ',';  // needed?
 
 		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 
-			if (separatorChar)
+			if (separatorChar){
 				if (it != keys.begin())
 					ostr << separatorChar;
+			}
 
 			ostr << *it << equal;
 			if (startChar)
 				ostr << startChar;
 			ostr << (*this)[*it];
+			if (endChar)
+				ostr << endChar;
 			/*
 			const_iterator pit = this->find(*it);
 			if (pit != this->end()){
@@ -348,8 +351,6 @@ public:
 				ostr << "SmartMap test";
 			}
 			*/
-			if (endChar)
-				ostr << endChar;
 		}
 
 	}
@@ -381,7 +382,9 @@ public:
 			ostr << '\n';
 			ostr << space << "\"" << key << "\" : ";
 			const T & item = it->second; //(*this)[key];
-			if (item.getType() == typeid(std::string)){
+
+			//if (item.getType() == typeid(std::string)){
+			if (item.T::isString()){
 				ostr << '"' << item << '"';
 			}
 			else {
@@ -456,23 +459,6 @@ protected:
 
 			// Key and assignment symbol not given, ok.
 
-			/*
-			if (!ORDERED){
-				if (this->size() == 1){
-					this->begin()->second = *pit;
-					++pit;
-					if (pit != p.end())
-						mout.error() << "multiple assignments '" << *pit << "' to a single-element variable map, key='" << this->begin()->first << "'" <<  mout.endl;
-					return;
-				}
-				else {
-					mout.error() << "non-specific assignment '" << *pit << "' to UNORDERED map of several elements ("<< this->size()  << ") " <<  mout.endl;
-				}
-			}
-			else { // ORDERED
-
-			*/
-
 			if (kit != keys.end()){
 				// Assignment-by-order
 				(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
@@ -483,10 +469,7 @@ protected:
 				return;
 			}
 
-				++kit;
-
-			// }
-
+			++kit;
 
 		}
 	}

@@ -139,36 +139,50 @@ public:
 
 	/// Adds decoded data that applies natural scaling.
 	inline
-	void add(const size_t &i, double value, double weight) {
+	void add(const size_t i, double value, double weight) {
 		methodPtr->add(i, value, weight);
 	}
 
-	void add2(const size_t &i, double value, double value2, double weight) {
-		methodPtr->add(i, value, weight);
+	/// Adds decoded data that applies natural scaling.
+	inline
+	void add(const size_t i, double value, double weight, unsigned int count) {
+		methodPtr->add(i, value, weight, count);
 	}
 
 
-	/// NEW
+	/// Add (accumulate) data with given prior weight
+	/**
+	 *  \param src - input data
+	 */
+	void addData(const Image & src, const AccumulationConverter & converter, double weight = 1.0, int iOffset=0, int jOffset=0);
+
+	/// Add (accumulate) data weighted with input quality.
+	/**
+	 *  \param src - input data
+	 *  \param srcQuality - quality field of input data
+	 */
 	void addData(const Image & src, const Image & srcQuality, const AccumulationConverter & converter, double weight = 1.0, int iOffset=0, int jOffset=0);
 
-	void addData(const Image & src, const AccumulationConverter & converter, double weight = 1.0, int iOffset=0, int jOffset=0);
+
+	/// Add (accumulate) data weighted with input quality and count; each data(i,j) contributes count(i,j) times.
+	/**
+	 *  \param src - input data
+	 *  \param srcQuality - quality field of input data
+	 *  \param srcCount - counts of input data (makes difference in resulting weights)
+	 *
+	 *  Count is bypassed when necessary; for example, when the accumulation method is MAXIMUM.
+	 */
+	void addData(const Image & src, const Image & srcQuality, const Image & srcCount, const AccumulationConverter & converter);
+	// Could be easily added: ... double weight = 1.0, int iOffset=0, int jOffset=0
 
 	/// Extracts the accumulated quantity or secondary quantities like weight and standard deviation.
 	/**
 	 *
 	 * \param field - data layer to be extracted
-	 *  - d = data, scaled
-	 *  - w = weight, scaled
-	 *  - c = count
+	 *  - d = data;
+	 *  - w = weight (8bit uchar); W = with same storage type as data
+	 *  - c = count (8bit uchar);
 	 *  - s = standard deviation, unscaled
-	 *
-	 *  Perhaps implemeted later:
-	 *  - S = standard deviation, scaled
-	 *  - p = data, sum of squared ("power"), scaled
-	 *  - D = data, cumulated  (debugging)
-	 *  - W = weight, cumulated
-	 *  - C = count, scaled
-	 *  - S = standard deviation, unscaled
 	 *
 	 */
 	void extractField(char field, const AccumulationConverter & converter, Image & dst) const;

@@ -30,34 +30,90 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include "BaseODIM.h"
+#include "ODIMPath.h"
 #include "DataOutput.h"
 
 namespace rack {
 
 //using namespace hi5;
 
+std::string DataOutput::quoted(const ODIMPath & path){
+	//std::stringstream sstr;
+	if (path.empty() || path.back().isRoot())
+		return "root";
+
+	std::string str;
+	//if (path.si)
+	path.toStr(str, '_');
+	return str;
+}
+
+void DataOutput::writeToDot(std::ostream & ostr, const HI5TREE & tree, ODIMPathElem::group_t selector){
+
+	drain::Logger mout("DataOutput", __FUNCTION__);
+
+	int index = 0;
+
+	/*
+	//(ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED);
+	ODIMPathElem::group_t selector = (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
+	const int verbosity = drain::getLog().getVerbosity();
+
+	if (verbosity >= LOG_NOTICE){
+
+		selector |= ODIMPathElem::WHAT;
+		selector |= ODIMPathElem::WHERE;
+		if (verbosity >= LOG_INFO){
+			selector |= ODIMPathElem::ARRAY;
+			if (verbosity >= LOG_DEBUG){
+				selector |= ODIMPathElem::HOW;
+				selector |= ODIMPathElem::OTHER;
+			}
+		}
+
+	}
+	*/
+
+	ostr << "digraph G { \n";
+	ostr << "/* selector=" << selector << " */  \n";
+
+	DataOutput::writeGroupToDot(ostr, tree, index, selector);
+	ostr << "}\n";
+
+}
 
 void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int & id,
-		BaseODIM::group_t selector, const ODIMPath & path) {
+		ODIMPathElem::group_t selector, const ODIMPath & path) {
+
+	drain::Logger mout("DataOutput", __FUNCTION__);
 
 	const std::string fill(path.size()*2, ' ');
 	//ostr << "/* '" << path << "' */\n";
 
 	const bool ROOT = (path.empty() || path.back().isRoot());
 
-	if (!path.empty())
-		ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
+	//if (!path.empty())
+		ostr << "\n/* " << quoted(path) << " */\n";
+		//ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
 
-
+	/// Draw node
 	if (ROOT){
+		// Write initial settings
 		ostr << '\n';
-		//ostr << "  size = \"10,8\";\n";
+		//ostr << " size = \"10,8\";\n";
 		ostr << "  rankdir=TB;\n"; //  ordering=out;\n";
 		ostr << "  ranksep=0.2;\n"; //  ordering=out;\n";
-		ostr << "  node [shape=record];\n";
+		ostr << "  node [shape=record];\n"; // parallelogram
 		ostr << "  tailport=s;\n";
 		ostr << '\n';
+
+		ostr << fill << "\"root\"" << " [shape=point];\n"; //" [style=invis][shape=ellipse];\n";
+
+		// Rank fixer
+		ostr << fill << 'R'<< 0 << " [style=invis];\n"; //" [style=invis][shape=ellipse];\n";
+
+
 	}
 	else {
 
@@ -65,85 +121,128 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int
 		const drain::VariableMap & what  = group["what"].data.attributes;
 		const drain::VariableMap & where = group["where"].data.attributes;
 
+		const std::string quantity = what["quantity"].toStr();
 		ostr << fill;
-		ostr << '"' << path << '"' << ' ' << '[';
+		ostr << '"' <<  quoted(path) << '"' << ' ' << '[';
 
-		//ostr << "label=\"<H>|<T>"; // referring to "head" "tail"
+		// LABEL
 		ostr << "label=\"";
 		ostr << e ; //<< '|';
-		if (e.group == BaseODIM::DATASET){
+		if (e.is(ODIMPathElem::DATASET)){
 			if (where.hasKey("elangle"))
-				ostr << ' ' << '(' << where["elangle"] << '\xB0' << ')';
-				//ostr << where["elangle"];
+				ostr << ':' << ' ' << where["elangle"] << "deg" << ' ';
+				//ostr << "| {image|attributes}";
 		}
-		else if (e.group & BaseODIM::DATA) // includes BaseODIM::QUALITY
-			ostr << ' ' << '[' << what["quantity"] << ']';
+		else if (e.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
+			ostr << ':' << ' ' << quantity << ' ';
+			// if (group["data"].data.dataSet.isEmpty())
+			// ostr << "| {image| }";
+		}
+
+		//ostr << "| { <IMG>";
+		if (!group.data.dataSet.isEmpty()){
+			ostr << "| <IMG>";
+			ostr << group.data.dataSet.getGeometry();
+		}
+		if (!group.data.attributes.empty()){
+			ostr << '|' << "<ATTR>";
+			ostr << " attributes ";
+		}
+		//ostr << '}';
+
+		ostr << ' ';
 		//ostr << ' ' << ' ' << what["quantity"] << ' ';
 		ostr << "\" ";
 
-		// color & fill style
-		if (e.group & BaseODIM::IS_INDEXED){
+		// STYLE
+		if (group.data.noSave)
+			ostr << " style=\"dotted\" ";
+		else if (e.isIndexed()){
 			ostr << " style=\"filled\"";
-			switch (e.group) {
-			case BaseODIM::DATASET:
-				ostr << " fillcolor=\"lightslateblue\"";
-				break;
-			case BaseODIM::DATA:
-				ostr << " fillcolor=\"lightblue\"";
-				break;
-			case BaseODIM::QUALITY:
-				ostr << " fillcolor=\"lightseagreen\"";
-				break;
-			default:
-				ostr << " fillcolor=\"lightyellow\"";
-			}
 		}
-		else { // WHAT, WHERE, HOW, DATA(array)
-			ostr << " color=\"gray\"";
+
+
+		// MISC
+		switch (e.group) {
+		case ODIMPathElem::DATASET:
+			ostr << " fillcolor=\"lightslateblue\"";
+			break;
+		case ODIMPathElem::DATA:
+			ostr << " fillcolor=\"lightblue\"";
+			break;
+		case ODIMPathElem::QUALITY:
+			if ((quantity == "QIND")||(quantity == "CLASS")){
+				ostr << " fillcolor=\"darkolivegreen3\"";
+			}
+			else
+				ostr << " fillcolor=\"darkolivegreen1\"";
+			break;
+		case ODIMPathElem::ROOT:
+			ostr << " shape=\"point\"";
+			break;
+		case ODIMPathElem::ARRAY:
+			ostr << " color=\"blue\"";
+			break;
+		default:
+			ostr << " color=\"gray\""; // shape=\"box\"
 		}
 
 		ostr << ']' << ';' << '\n';
-		ostr << fill << "{rank=same; " << id << "; \"" << path << "\" };\n";
-		ostr << fill << id << " [style=invis];\n";
+
+		ostr << fill << id << "  [shape=point];\n"; //" [shape=ellipse][style=invis];\n";
+
+		/// Draw rank fixer
+		ostr << fill << 'R' << id << " [style=invis];\n"; //" [style=invis][shape=ellipse];\n";
+
 	}
 
-
-	ODIMPath prev;
+	/// Draw egdes
+	//ODIMPath prev;
+	bool first = true;
+	int indexPrev = id;
 	for (HI5TREE::const_iterator it = group.begin(); it!=group.end(); ++it){
 
 		ODIMPathElem e(it->first);
-		//ostr << "/* '" << e << '|' << (int)e.group << ',' << selector << "' */\n";
 
-		if ((e.group & selector) == 0){  // DATASET, DATA, ARRAY, WHAT, WHERE, HOW
+		if ((e.group & selector) == 0){  // eg. DATASET, DATA, ARRAY, WHAT, WHERE, HOW
+			mout.debug() << "Skipping: " << e << mout.endl;
 			continue;
 		}
 
 		++id;
-		if (id > 1){
-			ostr << fill<< (id-1) << " -> " << id << " [style=invis];\n\n";
-		}
 
-		ODIMPath p(path);
+		/// Draw rank fixer
+		ostr << fill << 'R' <<  (id-1) << " -> R" <<  id << " [style=invis];\n\n"; // [style=invis]
+
+		ODIMPath p(path);  // ,'_')
 		p.push_back(e);
 
+
 		/// Draw edge
-		if (prev.empty() && !prev.back().isRoot()){
-			// ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
-			if (!ROOT){ // or path.
-				ostr << fill;
-				ostr << '"' << path << '"'; // << ":T";
-				ostr << "\t -> " << '"' << p  << '"';// << ":H"
-				ostr << "  [tailport=s headport=w]" <<  ';' << '\n';
-			}
-			// ELSE ???
+		ostr << fill;
+		if (first){
+			ostr << '"' <<  quoted(path) << '"';
+			first = false;
 		}
 		else {
-			ostr << fill;
-			ostr << '"'<< prev << '"'; //<< ":H"; // fix to prev?
-			ostr << "\t -> " << '"'<< p << '"' << ';' << '\n'; // << ":H" << ';' << '\n';
+			ostr << '"' <<  indexPrev << '"';
 		}
+		ostr << " -> " <<  id << " [arrowhead=none];\n";
+
+		ostr << fill << "{rank=same; R" << id << ";  " << id << "; \"" << quoted(p) << "\" };\n";
+		ostr << fill << id << " -> " << '"' << quoted(p) << '"';
+		//if (id & 2) ostr <<  " [style=dotted] ";
+		ostr << " ;\n"; // [style=invis]
+		// TEST
+		if (!ROOT)
+			//ostr << fill << quoted(p) << ":ATTR -> " << quoted(path) << ":IMG" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
+			ostr << fill << quoted(p) << " -> " << quoted(path) << "" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
+		ostr << '\n';
+
+		indexPrev = id;
+
 		DataOutput::writeGroupToDot(ostr, it->second, id, selector, p);
-		prev = p;
+
 	}
 	ostr << '\n';
 
@@ -156,3 +255,4 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int
 }  // rack::
 
 // Rack
+ // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

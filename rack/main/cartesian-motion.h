@@ -39,9 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/prog/CommandOpticalFlow.h>
 #include <drain/util/Time.h>
-//#include <drain/image/FlowAverageWindow.h>
 
-//#include "../radar/Analysis.h"
 #include "resources.h"
 
 

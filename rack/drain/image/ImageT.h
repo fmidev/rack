@@ -90,33 +90,38 @@ public:
 	virtual ~ImageT(){};
 
 	inline
-	const T & at(const size_t &i) const {
-		return *(const T *)&buffer[ address(i)*byteSize ];
+	const T & at(size_t i) const {
+		return *retrieve<const T>(address(i));
+		//return *(const T *)&buffer[ address(i)*encoding.byteSize ];
 	}
 
 	inline
-	T & at(const size_t &i) {
-		return *(T *)&buffer[ address(i)*byteSize ];
+	T & at(size_t i) {
+		return *retrieve<T>(address(i));
+		//return *(T *) retrieve(i);
+		//return *(T *)&buffer[ address(i)*encoding.byteSize ];
 	}
 
 	inline
-	const T & at(const size_t &i, const size_t &j) const {
-		return *(const T *)&buffer[ address(i)*byteSize ];
+	const T & at(size_t i, size_t j) const {
+		return *(T *) retrieve<T>(i);
+		//return *(const T *)&buffer[ address(i)*encoding.byteSize ];
 	};
 
 	inline
-	T & at(const size_t &i, const size_t &j){
-		return *(T *)&buffer[ address(i,j)*byteSize ];
+	T & at(size_t i, size_t j){
+		return *(T *)&buffer[ address(i,j)*encoding.byteSize ];
+	};
+
+	/*
+	inline
+	const T & at(size_t i, size_t j, size_t k) const {
+		return *(const T *)&buffer[ address(i,j,k)*encoding.byteSize ];
 	};
 
 	inline
-	const T & at(const size_t &i, const size_t &j, const size_t &k) const {
-		return *(const T *)&buffer[ address(i,j,k)*byteSize ];
-	};
-
-	inline
-	T & at(const size_t &i, const size_t &j, const size_t &k) {
-		return *(T *)&buffer[ address(i,j,k)*byteSize ];
+	T & at(const size_t i, const size_t j, const size_t &) {
+		return *(T *)&buffer[ address(i,j,k)*encoding.byteSize ];
 	};
 
 	inline
@@ -128,7 +133,7 @@ public:
 	T & at(const Point2D<int> &p) {
 		return (T *) & buffer[ address(p.x,p.y) ];
 	};
-
+	*/
 
 
 };

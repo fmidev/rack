@@ -81,14 +81,14 @@ public:
 
 	/// The main functionality called by traverseFrame() after image compatibility check and tmp allocations
 	/**
-	 *  Other classes - like other operators - may call these also directly, but then compatibility must be ensured.
+	 *  Other classes - like str operators - may call these also directly, but then compatibility must be ensured.
 	 */
 	virtual
 	void process(const ImageFrame & src, ImageFrame & dst) const;
 
 	/// The main functionality called by traverseFrame() after image compatibility check and tmp allocations
 	/**
-	 *  Other classes - like other operators - may call these also directly, but then compatibility must be ensured.
+	 *  Other classes - like str operators - may call these also directly, but then compatibility must be ensured.
 	 */
 	virtual
 	inline

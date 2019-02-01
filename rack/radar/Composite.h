@@ -52,28 +52,20 @@ using namespace drain::image;
 
 
 
-
-
-// Defines a region within a main composite.
+/// Cartesian composite (mosaic) of data from several radars.
 /**
- *
- */
-// OLD: An injective, cumulative radar image compositing.
-/*
+
   Main features:
 
+  Cumulation. The compositing starts by initiating the target image.
 
-  Cumulation. The compositing starts by initiating the target image,
-  see open().
   Each input radar image is projected on the target image cumulatively,
-  see execute(). Finally, the cumulation must be completed by
+  see execute(). Finally, the cumulation is completed by
   normalizing the result with the number/weight of
-  cumulated inputs, see close().
-  Hence, the target which should be seen.
+  cumulated inputs.
 
   The weights are stored in the first alphaChannel (index 0) of the
-  target image. If the target has a second image channel, also
-  the (weighted) squared values are cumulated.
+  target image.
 
   In cumulation, ...
   \f[
@@ -91,7 +83,7 @@ accumulated data (\f$\sum w_ix_i\f$), weights (\f$\sum w_i\f$), squared sum (\f$
 
 For radar data ODIM standard defines two essential special codes, \c undetect and \c nodata, which above all mark samples that are
 beyond the sensitivity or the range of a radar, respectively. \c nodata is also applied in marking samples where data has been rejected
-due to noise and other anomalies. These codes imply adding special rules to the basically "mathematical" accumulation.
+due to noise and str anomalies. These codes imply adding special rules to the basically "mathematical" accumulation.
 
 In the accumulation stage, each valid data sample with data value \f$ x_i \f$ and its weight \f$ w_i \f$ is accumulated to the arrays by calling Cumulator::add(), with the following std::exceptions:
 
@@ -109,19 +101,12 @@ to compositing principle (AVG, MAX,...) with the following special cases:
 
 
  */
-
-/// Cartesian composite (mosaic) of data from several radars.
-/*
- *
- */
 class Composite : public RadarAccumulator<drain::image::AccumulatorGeo,CartesianODIM> ///
 {
 public:
 
 
-	Composite(); /// todo add parameters?
-	// TODO: what:number-of-radars
-	// TODO: date, timeq
+	Composite();
 
 	virtual ~Composite(){};
 
@@ -163,10 +148,6 @@ public:
 
 	double getTimeDifferenceMinute(const CartesianODIM & odimIn) const;
 
-	/// Updates internal metadata.
-	//  Should to be called after addData(). Called implicitly by addPolar.
-	//void updateMetadata(const ODIM & odimSrc);
-
 	/// Updates xscale, rscale and secondary Bounding Box attributes.
 	/**
 	 *   Secondary BBOX means the minimum BBOX spanned by the data only.
@@ -177,16 +158,13 @@ public:
 	drain::VariableMap nodeMap;
 
 	/// Range [km] for single-radar products. Typically 250 km.
-	int defaultRange;
+	// int defaultRange;
 
 protected:
 
 	void updateNodeMap(const std::string & node, int i, int j);
 
-
 	bool cropping;
-
-
 
 };
 

@@ -37,6 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "ImageLike.h"
 //#include "Image.h"
+#include "../util/Log.h"
+
 
 #include "Geometry.h"
 
@@ -62,20 +64,25 @@ public:
 	//static const int DROP=4;
 
 	inline
-	CoordinatePolicy(int p = LIMIT){
+	CoordinatePolicy(int p = LIMIT) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
 		set(p);
 	};
 
 	inline
-	CoordinatePolicy(const CoordinatePolicy & policy){
+	CoordinatePolicy(const CoordinatePolicy & policy) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
 		set(policy);
 	};
 
 	inline
-	CoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy) {
+	CoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
 		set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
 	};
 
+	inline
+	CoordinatePolicy & operator=(const CoordinatePolicy & policy){
+		set(policy);
+		return *this;
+	}
 
 	inline
 	void set(const CoordinatePolicy & policy){
@@ -84,10 +91,12 @@ public:
 
 	inline
 	void set(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
+		//drain::Logger mout("CoordinatePolicy", __FUNCTION__);
 		this->xUnderFlowPolicy = xUnderFlowPolicy;
 		this->yUnderFlowPolicy = yUnderFlowPolicy;
 		this->xOverFlowPolicy  = xOverFlowPolicy;
 		this->yOverFlowPolicy  = yOverFlowPolicy;
+		// mout.note() << *this << mout.endl;
 	}
 
 	inline
@@ -97,7 +106,7 @@ public:
 
 	inline
 	void set(const std::vector<int> & v){
-	// CoordinatePolicy & operator=(const std::vector<int> & v){
+		// CoordinatePolicy & operator=(const std::vector<int> & v){
 		if (v.size()!=4){
 			throw std::runtime_error("CoordinatePolicy::set v size not 4");
 			return; //  *this;
@@ -107,24 +116,25 @@ public:
 
 	inline
 	operator const std::vector<int> & (){
+		/*
 		v.resize(4);
 		v[0] = xUnderFlowPolicy;
 		v[1] = yUnderFlowPolicy;
 		v[2] = xOverFlowPolicy;
 		v[3] = yOverFlowPolicy;
+		*/
 		return v;
 	}
 
-	int xUnderFlowPolicy;
-	int xOverFlowPolicy;
-	int yUnderFlowPolicy;
-	int yOverFlowPolicy;
-
+	std::vector<int> v;
+	int & xUnderFlowPolicy;
+	int & yUnderFlowPolicy;
+	int & xOverFlowPolicy;
+	int & yOverFlowPolicy;
 
 protected:
 
-	mutable
-	std::vector<int> v;
+	//mutable	std::vector<int> v;
 
 
 };
@@ -191,7 +201,7 @@ public:
 	 *
 	 *   \return - value that describes overflow; zero if no limits crossed and hence, x and y intact.
 	 *
-	 *   \see CoordinateHandler2D::IRREVERSIBLE  and other constants.
+	 *   \see CoordinateHandler2D::IRREVERSIBLE  and str constants.
 	 *   \see validate()
 	 *
 	 */

@@ -51,7 +51,7 @@ void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) co
 	if (!dst.typeIsSet()){
 		dst.setType(t);
 	}
-	else if (!dst.isIntegerType()){
+	else if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
 		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
@@ -87,10 +87,10 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	//const int minI = static_cast<int>(min);
 	//const int maxI = static_cast<int>(max);
 	const double minRaw = src.getScaling().inv(min);
-	const double maxRaw = (max == std::numeric_limits<double>::max()) ? src.getMax<double>() : src.getScaling().inv(max);
+	const double maxRaw = (max == std::numeric_limits<double>::max()) ? src.getEncoding().getTypeMax<double>() : src.getScaling().inv(max);
 
-	if (minRaw <= src.getMin<double>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getMin<double>() << mout.endl;
+	if (minRaw <= src.getEncoding().getTypeMin<double>()){
+		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getEncoding().getTypeMin<double>() << mout.endl;
 	}
 
 	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
@@ -108,10 +108,10 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	prober.conf.markerValue = 1;
 	prober.init();
 
-	const UnaryFunctor & functor = getFunctor(dst.getMax<double>());  // what if dst float?
+	const UnaryFunctor & functor = getFunctor(dst.getEncoding().getTypeMax<double>());  // what if dst float?
 	mout.debug(1) << functor.getName() << ':' << functor << mout.endl;
 
-	const float prescale = dst.getMax<float>();
+	const float prescale = dst.getEncoding().getTypeMax<float>();
 
 	//mout.note(3) << *this << mout.endl;
 	mout.debug(1) << "statistics: " << statistics << " count=" << count << '\n';

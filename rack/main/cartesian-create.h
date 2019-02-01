@@ -71,16 +71,9 @@ public:
 		RackResources & resources = getResources();
 
 		addCmd.exec();
-		//size_t n = std::min(resources.composite.getFrameWidth(), resources.composite.getFrameHeight());
-		//for (size_t i = 0; i < n; i+=2) {
-		//	std::cerr << i << '\t' << resources.composite.data.get<double>(i,i) << '\t' << resources.composite.weight.get<double>(i,i) << '\n';
-		//}
 		extractCmd.exec();
 
 		resources.cartesianHi5["what"].data.attributes["source"] = (*resources.currentPolarHi5)["what"].data.attributes["source"];
-		//const DataSet<PolarSrc> polarSrc((*resources.currentPolarHi5)["dataset1"]);
-		//DataSet<CartesianDst> cartDst((*resources.currentPolarHi5)["dataset1"]);
-		//cartDst.get  polarSrc.getFirstData().odim.source;
 	}
 
 private:
@@ -115,17 +108,14 @@ private:
 };
 
 
-class CartesianRange : public SimpleCommand<int> {
+class CartesianRange : public BasicCommand { //SimpleCommand<double> {
 
 public:
 
-	CartesianRange() : SimpleCommand<int>(__FUNCTION__, "Force range for single-radar cartesian products (0=use-metadata)", "range", 0, "km"){
-	}
+	CartesianRange() : BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
+		parameters.reference("range", PolarODIM::defaultRange, "km");
+	};
 
-	inline
-	void exec() const {
-		getResources().composite.defaultRange = value;
-	}
 };
 
 } // rack::

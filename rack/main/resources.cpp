@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 #include "hi5/Hi5.h"
 
@@ -69,33 +69,42 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
 	drain::Logger mout("RackResources", __FUNCTION__);
 
-	//RackResources & resources = getResources();
-
-	// resources.select.clear(); don't clear, because status is used fro debugging.
-	//CommandRegistry & reg = getRegistry();
-	//VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
 	VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
 
 	/// Step 1: copy current H5 metadata (what, where, how)
-	DataSelector selector("data[0-9]+");
+	//DataSelector selector("data[0-9]+");
+	DataSelector selector;
 	selector.setParameters(select);
-	//std::list<std::string> l;
-	std::string path;
-	DataSelector::getPath(*currentHi5, selector, path);
+	selector.count = 1; // warn if not 1?
+	/*
+	mout.warn() << " currentHi5: list" << mout.endl;
+	std::list<ODIMPath> paths;
+	currentHi5->getPaths( paths);
+	for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
+		const ODIMPathElem & leaf = it->back();
+		if (leaf.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			mout.note() << '"' << *it << '"' << " [" << leaf.group << ']' << ' ';
+			mout << (*currentHi5)(*it).data.dataSet.properties["what:quantity"];
+			mout << mout.endl;
+		}
+
+	}
+	*/
+	ODIMPath path;
+	selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 	if (path.empty()){
-		mout.note() << " currentHi5: no path for selector '" << select << "'" << mout.endl;
-		mout.warn() << " currentHi5:\n" << *currentHi5 << mout.endl;
+		mout.note() << " currentHi5: no path found for selector '" << select << "'" << mout.endl;
+		//mout.debug(4) << " currentHi5:\n" << *currentHi5 << mout.endl;
 	}
 	else {
-		//const std::string & path = *l.begin();
-		mout.debug(1) << "RackResources" << " path=" << path << mout.endl;
+		mout.debug(1) << "using path=" << path << mout.endl;
 		DataTools::getAttributes(*currentHi5, path, statusMap);
 		// mout.debug() << statusMap << mout.endl;
 	}
 	/// Split what:source to separate fields
 	const SourceODIM sourceODIM(statusMap["what:source"].toStr());
-	statusMap.importMap(sourceODIM); // was import
+	statusMap.importMap(sourceODIM);
 
 	const PolarODIM odim(statusMap);
 	//mout.warn() << odim << mout.endl;
@@ -118,27 +127,35 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	drain::Logger mout("RackResources", __FUNCTION__);
 
-	std::list<std::string> l;
-	DataSelector::getPaths(*currentHi5, imageSelector, l); // todo getFirstData
+	ODIMPath path;
 
-	if (!l.empty()){
+	// NOTE  ODIMPathElem::ARRAY cannot be searched
+	if (imageSelector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
-		const std::list<std::string>::const_iterator it = l.begin();
-		mout.info() << "selected: " << *it << mout.endl;
-		drain::image::Image & img = (*currentHi5)(*it).data.dataSet;
+		path << ODIMPathElem(ODIMPathElem::ARRAY);
+		//const std::list<ODIMPath>::const_iterator it = paths.begin();
+		mout.info() << "selected: " << path << mout.endl;
+		drain::image::Image & img = (*currentHi5)(path).data.dataSet;
 		if (!img.isEmpty()){
-			DataTools::getAttributes(*currentHi5, *it, img.properties); // may be unneeded
+			// mout.warn() << "selected: " << img.properties << mout.endl;
+			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded
 			currentImage = &img;
+			//img.getCoordinatePolicy().
+			//img.properties["coordinatePolicy"] = 3; //="1,2,3,4";
+			//mout.warn() << "selected: " << img.properties << mout.endl;
 			return true;
 		}
 		else {
-			mout.warn() << "empty data in path: " << *it << mout.endl;
+			// consider
+			dataOk = false;
+			mout.warn() << "empty data in path: " << path << mout.endl;
 			return false;
 		}
 	}
 	else {
 		// if EXIT_ON_DATA_FAIL
-		mout.warn() << "skipping, no image data found with selector " << imageSelector << mout.endl;
+		mout.note() << "selector: " << imageSelector << mout.endl;
+		mout.warn() << "no image data found in " << path << mout.endl;
 		return false;
 	}
 
@@ -157,3 +174,5 @@ RackResources & getResources() {
 } /* namespace rack */
 
 // Rack
+ // REP // REP
+ // REP // REP // REP // REP // REP // REP // REP

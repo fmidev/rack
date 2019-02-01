@@ -170,8 +170,8 @@ void CompositeAdd::addPolar() const {
 
 		resources.dataOk = true; // return if input not ok?
 
-		std::string dataPath;
-		DataSelector::getPath(*(resources.currentPolarHi5), resources.composite.dataSelector, dataPath);
+		ODIMPath dataPath;
+		resources.composite.dataSelector.getPathNEW(*(resources.currentPolarHi5), dataPath, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 		if (dataPath.empty()){
 			mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 			//resources.inputOk = false; // REMOVE?
@@ -183,7 +183,7 @@ void CompositeAdd::addPolar() const {
 
 		/// GET INPUT DATA
 		if ( !polarSrc.data.isEmpty() ){
-			mout.info() << "using input quantity:" << polarSrc.odim.quantity << mout.endl;
+			mout.info() << "using input path:" << dataPath << ", quantity:" << polarSrc.odim.quantity << mout.endl;
 		}
 		else {
 			mout.warn() << "skipping empty input data: quantity=" << polarSrc.odim.quantity << ", path:" << dataPath << "/data" << mout.endl;  // was: dataSetPath
@@ -211,13 +211,15 @@ void CompositeAdd::addPolar() const {
 
 		//subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
 		//const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
-		std::string parent;
-		std::string current;
-		DataTools::getParentAndChild(dataPath, parent, current);
+		ODIMPathElem current = dataPath.back();
+		ODIMPath parent  = dataPath;
+		parent.pop_back();
+		//std::string parent;
+		//std::string current;
+		//DataTools::getParentAndChild(dataPath, parent, current);
 
-
-
-		if (current.find("quality") == 0){
+		//if (current.find("quality") == 0){
+		if (current.is(ODIMPathElem::QUALITY)){
 			mout.info()  << "plain quality data, ok (no further quality data)" << mout.endl;  // TODO: fix if quality/quality (BirdOp)
 			static const HI5TREE t;
 			static const PlainData<PolarSrc> empty(t);
@@ -272,8 +274,8 @@ void CompositeAdd::addCartesian() const {
 
 
 	//DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
-	std::string dataPath;
-	DataSelector::getPath((resources.cartesianHi5), resources.composite.dataSelector, dataPath);
+	ODIMPath dataPath;
+	 resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath); // RE2
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 		//resources.inputOk = false; // REMOVE?
@@ -283,7 +285,7 @@ void CompositeAdd::addCartesian() const {
 
 
 	ODIMPath p(dataPath);
-	if (p.back().is(BaseODIM::DATA)){
+	if (p.back().is(ODIMPathElem::DATA)){
 		p.pop_back();
 	}
 	mout.info() << "using:" << p << mout.endl;
@@ -335,13 +337,13 @@ void CompositeAdd::addCartesian() const {
 		const double delayMinutes = resources.composite.getTimeDifferenceMinute(cartSrc.odim);  // assume update done
 		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
 		/// Todo: warn
-		const double delayWeight = pow(resources.composite.decay, delayMinutes);
+		const double delayWeight = ::pow(resources.composite.decay, delayMinutes);
 		mout.info() << "Delay weight: "  << delayWeight  << mout.endl;
 		if (delayWeight < 0.01)
 			mout.warn() << "delay weight below 1%" << mout.endl;  // SKIP?
 		w *= delayWeight;
 	}
-	// const double decayWeight = (decay==1.0) ? 1.0 : pow();
+	// const double decayWeight = (decay==1.0) ? 1.0 : ::pow();
 
 
 	mout.debug(1) << "input properties:\n" << cartSrc.odim << mout.endl;
@@ -402,3 +404,4 @@ void CompositeAdd::addCartesian() const {
 
 
 // Rack
+ // REP // REP // REP // REP

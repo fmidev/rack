@@ -60,52 +60,92 @@ class Path : public std::list<T> {
 
 public:
 
+	typedef T elem_t;
+
+	inline
 	Path(char separator='/') : separator(separator){
 		if (!separator)
 			throw std::runtime_error("Path(char separator): separator=0, did you mean empty init (\"\")");
 	};
 
+	/*
 	Path(const std::string &s, char separator='/') : separator(separator){
 		if (!separator)
 			throw std::runtime_error("Path(const string &s, char separator): separator=0");
 		set(s);
 	};
+	*/
 
 	/// Copy constructor. Note: copies also the separator.
 	inline
 	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator) {
 	};
 
-	/// Constructor that initialises the path with a single element - typically a root.
+	/// Constructor with an initialises element - typically a root.
+	//  PROBLEMATIC - elem may be std::string, and also the full path representation
 	/**
 	 *  The root might correspond to an empty string.
 	 */
+	/*
 	inline
-	Path(const T & e, char separator='/') : separator(separator) {
+	Path(const elem_t & e, char separator='/') : separator(separator) {
 		this->push_back(e);
 	};
+	*/
 
+	inline
+	Path(const std::string & s, char separator='/') : separator(separator) {
+		set(s);
+	};
+
+	inline
+	Path(const char *s, char separator='/') : separator(separator) {
+		set(s);
+	};
 
 	virtual inline
 	~Path(){};
 
 	char separator;
 
+	// needed?
 	inline
 	void set(const std::string & p){
 		StringTools::split(p, *this, separator);
 	}
 
-	/*
-	Path<T> & operator=(const T & e){
-		this->clear();
-		push_front(e);
+	Path<T> & operator=(const Path<T> & p){
+		std::list<T>::operator=(p);
+		/*
+		std::list<T>::clear();
+		// check std::assign
+		for (typename Path<T>::const_iterator it = p.begin(); it != p.end(); ++it) {
+			*this << *it;
+		}*/
+		return *this;
 	}
 
-	Path<T> & operator<<(const T & e){
-		push_back(e);
+	/// Conversion from str path type
+	template <class T2>
+	Path<T> & operator=(const Path<T2> & p){
+		//std::list<T>::operator=(p);
+		std::list<T>::clear();
+		for (typename Path<T2>::const_iterator it = p.begin(); it != p.end(); ++it) {
+			*this << *it;
+		}
+		return *this;
 	}
-	*/
+
+	Path<T> & operator=(const std::string & p){
+		StringTools::split(p, *this, separator);
+		return *this;
+	}
+
+	Path<T> & operator=(const char *p){
+		StringTools::split(std::string(p), *this, separator);
+		return *this;
+	}
+
 
 	Path<T> & operator<<(const T & e){
 		this->push_back(e);
@@ -119,22 +159,23 @@ public:
 	}
 
 
-	virtual inline
-	std::ostream & toOStr(std::ostream & ostr) const {
-		return drain::StringTools::join(*this, ostr, this->separator);
-	}
-
-	inline
-	void toStr(std::string & str) const {
-		std::stringstream sstr;
-		toOStr(sstr);
-		str = sstr.str();
-	}
-
 	operator std::string () const {
 		std::stringstream sstr;
 		toOStr(sstr);
 		return sstr.str();
+	}
+
+	virtual inline
+	std::ostream & toOStr(std::ostream & ostr, char separator = 0) const {
+		separator = separator ? separator : this->separator;
+		return drain::StringTools::join(*this, ostr, separator);
+	}
+
+	inline
+	void toStr(std::string & str, char separator = 0) const {
+		std::stringstream sstr;
+		toOStr(sstr, separator);
+		str = sstr.str();
 	}
 
 

@@ -95,9 +95,10 @@ public:
 	void dataToH5Attribute(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute);
 
 	/// Creates and writes scalar (non-std::string) attributes to group.
-	template <class T>
+	/* template <class T>
 	static
 	void dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute);
+	*/
 
 	/// For std::string and characterArrays.
 	static
@@ -124,6 +125,9 @@ void Writer::dataToH5AttributeT<std::string>(const drain::Variable & data, hid_t
 	dataToH5AttributeString(d, fid, path, attribute);
 }
 */
+
+/*
+ *
 
 template <class T>
 void Writer::dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::string &path, const std::string &attribute){
@@ -152,6 +156,7 @@ void Writer::dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::
 	}
 	//H5Sc
 
+*/
 	// NEW
 	/*
 	if (isArray){
@@ -163,7 +168,7 @@ void Writer::dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::
 		return;
 	}
 	*/
-
+/*
 	const hid_t oid = H5Oopen(fid, path.c_str(), H5P_DEFAULT);
 	if (oid < 0)
 		mout.error()  << "H5Oopen failed, path=" << path << mout.endl;
@@ -197,7 +202,7 @@ void Writer::dataToH5AttributeT(const drain::Variable &d, hid_t fid, const std::
 		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
 
 }
-
+*/
 
 
 

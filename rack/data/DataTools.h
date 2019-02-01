@@ -81,25 +81,46 @@ public:
 	static
 	void getAttributes(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly = false);
 
-	/// Traverses the whole h5 structure, updates the data (image) attributes along the path.
-	/**!
-	 *    Typically, this is called on the root.
+
+	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
+	/**
+	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
+	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
 	 *
+	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
+	 *
+	 *  Typically, this is called on the root.
+	 *
+	 *    \see updateAttributes(HI5TREE & src)
 	 */
 	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
 	static
-	void updateAttributes(HI5TREE & src, const drain::VariableMap & attributes); // = drain::VariableMap()
+	void updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
 
+	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
+	/**
+	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
+	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
+	 *
+	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
+	 *
+	 *  Typically, this is called on the root.
+	 *
+	 *  \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
+	 */
 	static inline
 	void updateAttributes(HI5TREE & src){
 		src.data.dataSet.properties.clear();
-		updateAttributes(src, drain::VariableMap());
+		updateAttributes(src, drain::FlexVariableMap());
 	}
 
-	// Does nothing
+	/// This \c const version does nothing.
+	/**
+	 *   \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
+	 */
 	static inline
-	void updateAttributes(const HI5TREE & src, const drain::VariableMap & attributes = drain::VariableMap()){
-		drain::Logger mout("DataTools", __FUNCTION__);
+	void updateAttributes(const HI5TREE & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
+		//drain::Logger mout("DataTools", __FUNCTION__);
 		//mout.warn() << "somebody called me" << mout.endl;
 	};
 
@@ -136,8 +157,8 @@ public:
 
 
 	/// Returns the path std::string one step upwards, ie. up to the preceding '/'.
+	/*
 	static inline
-	// FIX: redesign with ODIMPath
 	std::string getParent(const std::string &path) {
 		return path.substr(0,path.rfind('/'));
 	};
@@ -163,62 +184,7 @@ public:
 		else
 			return std::string("");
 	};
-
-
-
-	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
-	static
-	bool getLastChild(HI5TREE & tree, ODIMPathElem & child); //, BaseODIM::group_t g =  BaseODIM::NONE);
-
-	/// Within children of type child.group, return a non-existing child with index greater than child.index.
-	/**
-	 *   Unused indices may be returned.
-	 */
-	static
-	bool getNewChild(HI5TREE & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=100);
-
-	/// Derive a child with index one greater of the largest index encountered.
-	/**
-	 *  \param tree - parent structure
-	 *  \param child - child to be set index = last+1, hence 1 if none found.
-	 *  \return - true if child's index was incremented (ie.)
-	 */
-	static inline
-	bool getNextChild(HI5TREE & tree, ODIMPathElem & child){
-
-		if (getLastChild(tree, child)){
-			++child.index;
-			return true;
-		}
-		else {
-			child.index = 1;
-			return false;
-		}
-	}
-
-	static inline
-	bool getNextDescendant(HI5TREE & tree, BaseODIM::group_t g, ODIMPath & path){
-		//path.clear()?
-		if (BaseODIM::isIndexed(g)){
-			ODIMPathElem parent(BaseODIM::DATASET);
-			getLastChild(tree, parent);
-			if (g == BaseODIM::DATASET){
-				++parent.index;
-				path.push_back(parent);
-			}
-			else {
-				path.push_back(parent);
-
-				ODIMPathElem child(g); // BaseODIM::DATA or BaseODIM::QUALITY
-				getNextChild(tree[parent], child);
-				path.push_back(child);
-			}
-			return true;
-		}
-
-		return false;
-
-	}
+	*/
 
 protected:
 
@@ -252,7 +218,7 @@ void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & 
 		const HI5TREE & s = src(subpath);
 
 		/////// getO
-		for (std::set<std::string>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+		for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
 			const hi5::NodeHi5 & group = s[*git].data;
 			for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){
 				sstr.str("");
@@ -280,44 +246,6 @@ void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & 
 }
 
 
-/*
-class DataSelector2 : public drain::BeanLike {
-
-public:
-
-	DataSelector2();
-
-	// For compatibility
-	std::string path;
-
-
-	// Path criteria
-	Range<int> dataset;
-	Range<int> data;
-
-	bool isValidPath(const ODIMPath & path) const;
-
-	// Data criteria
-	Range<double> elangle;
-
-	std::string quantityStr;
-	//drain::RegExp quantity; // consider other, like std::set?
-
-	bool isValidData(const drain::ReferenceMap & properties) const ;
-
-	/// Restore default values.
-	void reset();
-
-	// Restore all the ranges to [min,min]; useful when explicitly set ranges are desired.
-	void collapse();
-
-protected:
-
-	mutable
-	std::set<std::string> quantitySet;
-
-};
-*/
 
 } // rack::
 

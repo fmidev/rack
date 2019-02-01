@@ -134,7 +134,7 @@ void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) con
 	if (!dst.typeIsSet()){
 		dst.setType(t);
 	}
-	else if (!dst.isIntegerType()){
+	else if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
 		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
@@ -157,10 +157,10 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	const size_t h = src.getHeight();
 
 	const src_t minRaw = src.getScaling().inv(min);
-	const src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getMax<src_t>() : src.getScaling().inv(max);
+	const src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getEncoding().getTypeMax<src_t>() : src.getScaling().inv(max);
 
-	if (minRaw <= src.getMin<src_t>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getMin<src_t>() << mout.endl;
+	if (minRaw <= src.getEncoding().getTypeMin<src_t>()){
+		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getEncoding().getTypeMin<src_t>() << mout.endl;
 	}
 
 	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
@@ -183,7 +183,7 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	//const size_t dMax = dst.getMax<size_t>();
 	// const typename T::dst_t dMax = dst.getMax<typename T::dst_t>();
 	// mout.warn() << "dMax " << (double)dMax << mout.endl;
-	const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getMax<double>() : 1.0;
+	const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;
 
 	const UnaryFunctor & ftor = getFunctor(scale);
 	//const UnaryFunctor & ftor = getFunctor(dst.getMax<T::dst_t>());
@@ -198,7 +198,7 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	mout << mout.endl;
 
 	typedef drain::typeLimiter<dst_t> Limiter;
-	typename Limiter::value_t limit = dst.getLimiter<dst_t>();
+	typename Limiter::value_t limit = dst.getEncoding().getLimiter<dst_t>();
 
 	size_t sizeMapped;
 	for (size_t i=0; i<w; i++){

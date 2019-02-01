@@ -1,36 +1,36 @@
 # Markus.Peura@fmi.fi
 
-
-#drainroot=/opt
-#hdfroot=/opt
-#projroot=/opt
-
 prefix=/opt
 
 USE_GEOTIFF=NO
 
-VERSION := $(shell Release/rack --version | head -1)
+#VERSION := $(shell Release/rack --version | head -1)
 
 help:
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z\-\.]\+:' | cut -d' ' -f1 | tr ':' '|' `"; echo make \[ $$X \]
 
 
-release: unzip
+release: #unpack
 	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
+	tar xvzf make.tgz
 	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
-unzip:
-	unzip -o make.zip
-
+#unpack:
+#	unzip -o make.zip
+#	tar xvzf make.tgz
 
 install:
 	@echo 'Quick test:'
 	Release/rack --help > /dev/null
 	mkdir -v --parents ${prefix}/bin
-	cp -vi Release/rack ${prefix}/bin/rack-${VERSION}
+	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1)
+#cp -vi Release/rack ${prefix}/bin/rack-${VERSION}
 
-make.zip: Release
-	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+#make.zip: Release
+#	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+
+make.tgz: Release/
+	tar cvzf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 
 tests:
@@ -42,7 +42,7 @@ update:
 	svn update
 
 # FMI only
-commit: make.zip
+commit: #make.tgz
 	svn commit -m "${USER}@${HOSTNAME}:${PWD}" 
 #	rm -vf make.zip
 
@@ -78,7 +78,7 @@ clean-geotiff:
 	rm -fv rack/Release/rack rack/Release/main/commands.o rack/Release/radar/FileGeoTIFF.o
 
 clean-full: clean
-	rm -fv make.zip `find -name makefile -or -name '*.mk' -or -name '*.d'`
+	rm -fv  `find -name makefile -or -name '*.mk' -or -name '*.d'` # make.tgz
 
 
 PROJECT_LOGO=demo/rack-logo-110x55.png

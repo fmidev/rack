@@ -175,8 +175,7 @@ public:
 
 		drain::Logger mout("Sampler", __FUNCTION__);
 
-		mout.debug(1) << "variables (initially): " << variableMap << mout.endl;
-
+		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
 
 		const bool FORMAT = !formatStr.empty();
 		std::string format = drain::StringTools::replace(formatStr, "\\n", "\n"); // "\\n", "\n");

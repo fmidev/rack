@@ -143,7 +143,7 @@ protected:
 	 */
 	bool REQUIRE_STANDARD_DATA;
 
-	/// If true, applies also to quantities other than the one used in detection. The detection and the accumulation will be stored one step upwards.
+	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards.
 	bool UNIVERSAL;
 
 	/// Enhances the detection result by reinforcing sectors of strong response, attenuating others. Optional utility for derived classes.

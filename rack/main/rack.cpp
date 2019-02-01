@@ -54,6 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "products.h"
 #include "cartesian.h"
 #include "images.h"
+#include "image-ops.h"
 #include "rack.h"
 
 // using namespace std;
@@ -131,6 +132,7 @@ int process(int argc, const char **argv) {
 	registry.runCommands(argc, argv);
 
 	//mout.timestamp("END_RACK");
+	mout << "end" << mout.endl;
 
 	/* TODO: more status flags
 	 * INPUT_OK
@@ -142,6 +144,7 @@ int process(int argc, const char **argv) {
 		return 0; //result; future option
 	else
 		return 1;
+
 
 }
 

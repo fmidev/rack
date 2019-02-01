@@ -28,28 +28,61 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DRAIN_BANK_H_
-#define DRAIN_BANK_H_
+/*
+ * Rectangle.h
+ *
+ *  Created on: Sep 9, 2010
+ *      Author: mpeura
+ */
 
-//
-#include <iostream>
-#include <map>
+#ifndef DRAIN_RANGE_H_
+#define DRAIN_RANGE_H_
 
-#include "Log.h"
-#include "Registry.h"
-#include "Cloner.h"
+#include <ostream>
+#include <cmath>
+#include <string>
+#include <sstream>
+
+// // using namespace std;
 
 
-namespace drain
-{
+namespace drain {
 
-/// A registry that contains items that can be cloned with clone() or referenced directly with get().
 template <class T>
-class Bank : public Registry<ClonerBase<T> > {
+class Range  {
+
+public:
+
+	Range() : vect(2),min(vect[0]), max(vect[1]) { //
+	}
+
+	std::vector<T> vect;
+	//T vect[2]; Reference::link() caused problems
+	T & min;
+	T & max;
+
+	Range<T> & operator=(const T &x){
+		min = x;
+		max = x;
+		return *this;
+	};
+
+	bool isInside(T x) const {
+		return (min <= x) && (x <= max);
+	}
+
 };
 
+
+template <class T>
+std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
+	ostr << r.min << ':' << r.max;
+	return ostr;
 }
 
-#endif
+} // namespace drain
 
-// Drain
+
+
+#endif /* RECTANGLE_H_ */
+

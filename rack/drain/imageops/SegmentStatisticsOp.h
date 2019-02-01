@@ -51,7 +51,7 @@ namespace image
 
 	Respectively, the scaled area is obtained with \c 'a'.
 	\code
-	drainage shapes.png --segmentStats a,64 -o segmentStat-areaRel.png
+	drainage shapes.png --segmentStats a,64,functor=FuzzyStep:0.5:0.75  -o segmentStat-areaRel.png
 	\endcode
 
 	The relative vertical position can be computed similarly, with \c 'y'.

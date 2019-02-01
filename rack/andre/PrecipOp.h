@@ -49,7 +49,7 @@ namespace rack {
 /// Simply, "detects" precipitation ie sets its probability.
 /**
  *  Sets default class, typically with a low maximum prority.
- *  Applicable in context of other detectors to prevent clear precipitation from being classified to other classes.
+ *  Applicable in context of str detectors to prevent clear precipitation from being classified to str classes.
  */
 class PrecipOp: public DetectorOp {
 

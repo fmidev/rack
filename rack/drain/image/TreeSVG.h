@@ -58,7 +58,7 @@ public:
 	void setType(type t);
 
 	static
-	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<NodeSVG> & t);
+	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<std::string,NodeSVG> & t);
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static
@@ -84,7 +84,7 @@ protected:
 };
 
 
-typedef drain::Tree<NodeSVG> TreeSVG;
+typedef drain::Tree<std::string,NodeSVG> TreeSVG;
 
 
 

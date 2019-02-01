@@ -68,6 +68,10 @@ public:
 	inline
 	Registry(){}; // : DEFAULT_HANDLER("_handler"), expandVariables(false), statusFormatter("[a-zA-Z0-9_:]+") { ++index; };  // note ':' in statusFormatter
 
+
+	virtual inline
+	~Registry(){};
+
 	/// Adds entry of type T to current section of registry.
 	virtual
 	void add(T & r, const std::string & key, char alias = 0);

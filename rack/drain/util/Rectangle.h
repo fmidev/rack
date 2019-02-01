@@ -45,8 +45,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // // using namespace std;
 
+
 namespace drain {
 
+/// Rectange defined through lower left and upper right coordinates.
+/**
+ *
+ *  \see drain::Range<T>
+ *
+ */
 template <class T>
 class Rectangle {
 public:

@@ -49,10 +49,6 @@ namespace drain
 namespace image
 {
 
-//extern
-//drain::Log iLog;
-
-
 class Channel;
 
 /// Image with static geometry
@@ -73,105 +69,56 @@ public:
 	typedef CastableIterator iterator;
 
 	inline
-	ImageFrame() : buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]), byteSize(0),
-			scalingPtr(&scaling), propertiesPtr(&properties){
+	ImageFrame() : //buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]),
+			scalingPtr(&encoding.scaling), propertiesPtr(&properties){
+		adjustBuffer();
+		init();
 	};
 
-	ImageFrame(const ImageFrame & src) : buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]), byteSize(0),
-			scalingPtr(&scaling), propertiesPtr(&properties){
-		scaling.set(src.getScaling());
+	inline
+	ImageFrame(const ImageFrame & src) : ImageLike(src), //buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]),
+			scalingPtr(&encoding.scaling), propertiesPtr(&properties){
+		adjustBuffer();
+		init();
 		// copy properties? (no)
 	}
 
 
-	/// Returns true, if type is set.
-	inline
-	bool typeIsSet() const {
-		return caster.typeIsSet(); //Castable::typeIsSet();
-	};
-
-	/// Returns the storage type of the image (typically unsigned char, unsigned int or float).
-	/*
-	 *
-	 *
-	 *   \see getMin()
-	 *   \see getMax()
-	 *   \see getLimiter()
-	 *
-	 */
-	inline
-	const std::type_info & getType() const { return caster.getType(); };
-
-	/// Returns the type of the image as drain::Type utility class.
-	inline
-	drain::Type getType2() const { return drain::Type(caster.getType()); };
-
-
-	/// Returns true, if type is set and is either float or double.
-	// deprecating. use: type_traits is_floating_point
-	inline
-	bool isFloatType() const {
-		return typeIsSet() && !Type::call<drain::typeIsInteger>(getType());
-	};
-
-	/// Returns true, if type is set and is either float or double.
-	inline
-	bool isIntegerType() const {
-		return Type::call<drain::typeIsInteger>(caster.getType());
-		//return Type::call<drain::typeIsInteger>(getType());
-	};
-
-	/// Returns a pointer to a static limiter function for the values of the current storage type.
-	/**
-	 *  \tparam T - base type, typically int or double, should be larger than the expected storage type of the image.
-	 *
-	 *  If storage type has been changed, the pointer should be re-assigned.
-	 *
-	 *   \see getMin()
-	 *   \see getMax()
-	 *   \see setType()
-	 */
-	template <class T>
-	inline
-	typename drain::typeLimiter<T>::value_t getLimiter() const {
-		return drain::Type::call<drain::typeLimiter<T> >(caster.getType());
+	virtual inline
+	const ImageScaling & getScaling() const {
+		return *scalingPtr;
 	}
 
-	/// Returns the minimum value supported by the current storage type.
-	/**
-	 *   Does not check the actual image data.
-	 *
-	 *   \see getMax()
-	 *   \see getLimiter()
-	 *   \see setType()
-	 */
-	template <class T>
-	inline
-	T getMin() const {
-		return Type::call<typeMin, T>(caster.getType());
+	/// Facilitates modifications provided directly by ImageScaling object.
+	virtual inline
+	ImageScaling & getScaling(){
+		useOwnScaling();
+		return encoding.scaling; // == *scalingPtr
 	}
 
-	/// Returns the maximum value supported by the current storage type. \see setType()
-	/**
-	 *   Does not check the actual image data.
-	 *
-	 *   \see getMin()
-	 *   \see getLimiter()
-	 *   \see setType()
-	 */
-	template <class T>
+
+
 	inline
-	T getMax() const {
-		return Type::call<typeMax, T>(caster.getType());
+	void setPhysicalScale(double min, double max){
+		//this->scaling.setPhysicalScale(getType(), min, max);
+		getScaling().setPhysicalScale(getType(), min, max);
 	}
 
-	/// Returns the size in bytes of the storage type (1 for unsigned char, 2 for 16-bit types, etc.)
-	inline
-	const size_t & getByteSize() const { return byteSize; };
 
-	/// Returns the size as pixel volume (width x height x channels).
+	/// Sets channel specific scaling instead of shared scaling
 	inline
-	size_t getSize() const { return getVolume(); }; // TODO check alphas
+	void useOwnScaling() {
+		if (scalingPtr != &encoding.scaling){
+			// copy (inclusing physical range):
+			encoding.scaling.set(*scalingPtr);
+			scalingPtr = &encoding.scaling;
+		}
+	}
+
+
+
+
+
 
 
 	/// Returns iterator pointing to the first image element.
@@ -242,11 +189,6 @@ public:
 
 
 
-	virtual inline
-	const ImageScaling & getScaling() const {
-		return *scalingPtr;
-	}
-
 
 	// END ImageCore...
 
@@ -258,7 +200,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, T x){
-		caster.put( & bufferPtr[address(i) * byteSize], x);  // why address(i)?
+		encoding.caster.put( & bufferPtr[address(i) * encoding.byteSize], x);  // why address(i)?
 	}
 
 	/// Sets the intensity at location \c i,j to \c x. See address().
@@ -270,7 +212,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, size_t j, T x){
-		caster.put( & bufferPtr[address(i,j) * byteSize], x);
+		encoding.caster.put( & bufferPtr[address(i,j) * encoding.byteSize], x);
 	}
 
 	/// Sets the intensity at location \c i,j,k to \c x.
@@ -285,7 +227,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, size_t j, size_t k, T x){
-		caster.put( & bufferPtr[address(i,j,k)*byteSize], x);
+		encoding.caster.put( & bufferPtr[address(i,j,k)*encoding.byteSize], x);
 	}
 
 
@@ -296,7 +238,7 @@ public:
 	template <class T, class P>
 	inline
 	void put(const Point2D<P> &p, T x){
-		caster.put( & bufferPtr[address(p.x,p.y)*byteSize], x);
+		encoding.caster.put( & bufferPtr[address(p.x,p.y)*encoding.byteSize], x);
 	}
 
 
@@ -307,7 +249,7 @@ public:
 	// TODO: consider virtual, with Channel::scalingPtr->inv(x) and Image::scaling.inv(x)    Could be just as fast, though...
 	inline
 	void putScaled(size_t i, size_t j, double x){
-		caster.put( & bufferPtr[address(i,j) * byteSize], getScaling().inv(x));
+		encoding.caster.put( & bufferPtr[address(i,j) * encoding.byteSize], getScaling().inv(x));
 	}
 
 
@@ -320,7 +262,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i) const {
-		return caster.get<T>( & bufferPtr[address(i)*byteSize] );
+		return encoding.caster.get<T>( & bufferPtr[address(i)*encoding.byteSize] );
 	}
 
 	/// Gets the intensity at location \c i,j .
@@ -331,7 +273,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i, size_t j) const {
-		return caster.get<T>( & bufferPtr[address(i,j) * byteSize ] );
+		return encoding.caster.get<T>( & bufferPtr[address(i,j) * encoding.byteSize ] );
 	}
 
 	/// Gets the intensity at location \c i,j,k .
@@ -343,7 +285,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i, size_t j, size_t k) const {
-		return caster.get<T>( & bufferPtr[address(i,j,k) * byteSize] );
+		return encoding.caster.get<T>( & bufferPtr[address(i,j,k) * encoding.byteSize] );
 	}
 
 	/// Get intensity in original physical scale.
@@ -353,7 +295,7 @@ public:
 	// TODO: consider virtual, with Channel::scalingPtr->fwd(x) and Image::scaling.fwd(x)    Could be just as fast, though...
 	inline
 	double getScaled(size_t i, size_t j) const {
-		return getScaling().fwd(caster.get<double>( & bufferPtr[address(i,j) * byteSize ] ));
+		return getScaling().fwd(encoding.caster.get<double>( & bufferPtr[address(i,j) * encoding.byteSize ] ));
 	}
 
 	/// Gets the intensity at location \c p=(i,j) .
@@ -363,16 +305,15 @@ public:
 	template <class T,class P>
 	inline
 	T get(const Point2D<P> &p) const {
-		return caster.get<T>( & bufferPtr[address(p.x,p.y) * byteSize ] );
+		return encoding.caster.get<T>( & bufferPtr[address(p.x,p.y) * encoding.byteSize ] );
 	}
 
-public:
 
 	template <class T, class P>
 	inline
 	void putPixel(const Point2D<P> &p, const std::vector<T> & pixel) const {
 		for (typename std::vector<T>::size_type i = 0; i < pixel.size(); ++i) {
-			caster.put( & bufferPtr[address(p.x,p.y,i)*byteSize], pixel[i]);
+			encoding.caster.put( & bufferPtr[address(p.x,p.y,i)*encoding.byteSize], pixel[i]);
 		}
 	}
 
@@ -380,15 +321,14 @@ public:
 	template <class T, class P>
 	inline
 	void getPixel(const Point2D<P> &p, std::vector<T> & pixel) const {
-		//static typename std::vector<T>::size_type i;
 		for (typename std::vector<T>::size_type i = 0; i < pixel.size(); ++i) {
-			pixel[i] = caster.get<T>( & bufferPtr[address(p.x,p.y,i)*byteSize]);
+			pixel[i] = encoding.caster.get<T>( & bufferPtr[address(p.x,p.y,i)*encoding.byteSize]);
 		}
 	}
 
-public:
 
-	/// Sets the intensities to undetectValue. Does not change image geometry. See resetGeometry().
+	/// Sets the intensities to zero. Does not change image geometry. See resetGeometry().
+	// TODO: what about value corresponding to physical min?
 	inline
 	void clear(){
 		fill(0);
@@ -402,122 +342,9 @@ public:
 			*it = x;
 	}
 
-	/// Copies the type, geometry, coordinate policy and data of the given image.
-	inline
-	void copyData(const ImageFrame & src){
+	/// Copies data. Does not change encoding, geometry, or coordinate policy.
+	void copyData(const ImageFrame & src);
 
-		Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
-
-		if (getGeometry() != src.getGeometry()){
-			mout.error() << "conflicting geometries: " << getGeometry() << " vs. " << src.getGeometry() << mout.endl;
-			return;
-		}
-
-		const_iterator sit = src.begin();
-		for (iterator it = begin(); it != end(); ++it,++sit)
-			*it = *sit;
-	}
-
-
-
-
-
-
-	/*
-	inline
-	void setOptimalScale(double min, double max){
-		scaling.setOptimalScale(getType(), min, max);
-	}
-	*/
-
-	/// Returns the actual or guessed maximum physical value,
-	/**
-	 *   Returns the actual or guessed maximum physical value,
-	 *
-	 */
-	inline // double defaultMax = std::numeric_limits<double>::max()
-	double requestPhysicalMax(double defaultMax = static_cast<double>(std::numeric_limits<short int>::max())) const {
-
-		const ImageScaling & s = getScaling();
-
-		if (s.isPhysical())
-			return s.getMaxPhys();
-		else {
-			const std::type_info & t = getType();
-			if (Type::call<drain::typeIsSmallInt>(t))
-				return s.fwd(Type::call<typeMax, double>(t));
-			else
-				return defaultMax;
-		}
-	}
-
-	/// Returns the actual or guessed maximum physical value,
-	/**
-	 *   Returns the actual or guessed maximum physical value,
-	 *
-	 */
-	inline
-	double requestPhysicalMin(double defaultMin = static_cast<double>(std::numeric_limits<short int>::min())) const {
-
-		const ImageScaling & s = getScaling();
-
-		if (s.isPhysical())
-			return s.getMinPhys();
-		else {
-			const std::type_info & t = getType();
-			if (Type::call<drain::typeIsSmallInt>(t))
-				return s.fwd(Type::call<typeMin, double>(t));
-			else
-				return defaultMin;
-		}
-	}
-
-
-	inline
-	void setScaling(const ImageScaling &s) {
-		useOwnScaling();
-		scaling.set(s);
-	}
-
-	inline
-	void setScaling(double scale, double offset=0.0) {
-		useOwnScaling();
-		scaling.setScale(scale, offset);
-	}
-
-
-	/// Facilitates modifications provided directly by ImageScaling object.
-	ImageScaling & getScaling(){
-		useOwnScaling();
-		return scaling;
-	}
-
-	inline
-	void useOwnScaling() {
-		if (scalingPtr != &scaling){
-			scaling.set(*scalingPtr); // copies also physical range
-		}
-		scalingPtr = &scaling;
-	}
-
-
-	/// Container for user-defined KEY=VALUE metadata.
-	VariableMap properties;
-
-	virtual inline
-	const SmartMap<Variable> & getProperties() const {
-		return *propertiesPtr;
-	}
-
-
-	inline
-	void setName(const std::string & s){ properties["name"] = s; };
-
-	inline
-	const drain::Variable & getName() const { return properties["name"];};
-
-	/// Prints images geometry, buffer size and type information.
-	void toOStr(std::ostream &ostr = std::cout) const;
 
 	/// Checks if images have a common memory segment.
 	inline
@@ -525,27 +352,46 @@ public:
 		return ((image.begin() < end()) && (image.end() > begin()));
 	}
 
-	// Todo: hasSameSegment
+	/// Return true, if both frames have same type and are using the same data segment.
+	/*
 	inline
 	bool isSame(const ImageFrame & image) const {
+		return (getType() == image.getType()) && hasSameSegment(image);
+	}
+	*/
+
+	/// Return true, if both frames are using the same data segment.
+	/**
+	 *   When calling this, consider calling isView() as well.
+	 *
+	 *   Note that two frames viewing the same segment should also have the same type.
+	 *
+	 */
+	inline
+	bool hasSameSegment(const ImageFrame & image) const {
 		return ((image.begin() == begin()) && (image.end() == end()));
 	}
 
-	/// Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format.
-	/**
-	 *   Given a numeric channel index, returns it as a number.
-	 */
-	size_t getChannelIndex(const std::string & index) const;
 
-	inline
-	Channel & operator[](size_t i){
-		return getChannel(i);
+
+
+	/// Container for user-defined KEY=VALUE metadata.
+	FlexVariableMap properties;
+
+	virtual inline
+	const FlexVariableMap & getProperties() const {
+		return *propertiesPtr;
 	}
 
+
 	inline
-	const Channel & operator[](size_t i) const {
-		return getChannel(i);
-	}
+	void setName(const std::string & s){ name = s; };
+
+	inline
+	const std::string & getName() const { return name; };
+
+	/// Prints images geometry, buffer size and type information.
+	void toOStr(std::ostream &ostr = std::cout) const;
 
 	virtual
 	Channel & getChannel(size_t i) = 0;
@@ -559,20 +405,42 @@ public:
 	virtual
 	const Channel & getAlphaChannel(size_t i=0) const = 0;
 
+	/*
+	inline
+	Channel & operator[](size_t i){
+		return getChannel(i);
+	}
 
-protected:  // core
+	inline
+	const Channel & operator[](size_t i) const {
+		return getChannel(i);
+	}
+	*/
 
-	std::vector<unsigned char> buffer;
+	/// Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format.
+	/**
+	 *   Given a numeric channel index, returns it as a number.
+	 */
+	size_t getChannelIndex(const std::string & index) const;
+
+protected:
+
+	void init();
+
+	/// Resize data buffer to match the geometry.
+	void adjustBuffer();
+
+	//std::vector<unsigned char> buffer;
 
 	unsigned char * bufferPtr;
 
 	iterator segmentBegin;
 	iterator segmentEnd;
 
-	Caster caster;
+	// Caster encoding.caster;
 
 	// Size of the storage type (1 for 8 bits, 2 for 16 bits, etc.)
-	size_t byteSize;
+	//size_t byteSize;
 
 	/// Sets the storage type of the image - typically unsigned char, unsigned int or float. Calls setDefaultLimits().
 	/* Sets the type of pixel elements of the image.
@@ -582,7 +450,8 @@ protected:  // core
 
 	inline
 	void unsetType(){
-		setStorageType(typeid(void));
+		throw std::runtime_error("ImageFrame infinite loop: -> unsetType() ?");
+		//setStorageType(typeid(void));
 	};
 
 	/// Sets the image to view the data and scaling of another image.
@@ -597,14 +466,14 @@ protected:  // core
 		return (bufferPtr != &buffer[0]);
 	};  // TODO: first channel not
 
+private:
+
 	ImageScaling const * scalingPtr;
 
-	// A single channel may have specific scaling, or scaling linked to main image object.
-	ImageScaling scaling;
-
-	VariableMap const * propertiesPtr;
-
 protected:
+
+	FlexVariableMap const * propertiesPtr;
+
 
 	/// Updates channel vector. Copies scaling of the host image.
 	/**
@@ -613,6 +482,25 @@ protected:
 	virtual inline
 	void updateChannelVector() const {};
 
+	std::string name;
+
+	template <class T>
+	inline
+	T * retrieve(size_t a){
+		return (T*)&buffer[ a*encoding.byteSize ];
+	}
+
+	/*
+	template <class T>
+	inline
+	const void * retrieve(size_t a) const {
+		return (const T*)&buffer[ a*encoding.byteSize ];
+	}
+	*/
+
+//private:
+
+	std::vector<unsigned char> buffer; // non-private, for Image::swap().
 
 };
 

@@ -155,7 +155,7 @@ void PolarAttenuation<T,T2>::filter(const ImageT<T> &src, ImageT<T2> &dst) const
 				/// one-way attenuation per one bin
 				/// two-way attenuation per one bin
 				// TODO: bin width should be in the exponent?
-				zAttnBin = c*pow(zTrue,p) * binDepth * 2.0;
+				zAttnBin = c*::pow(zTrue,p) * binDepth * 2.0;
 				zAttnCumulated += zAttnBin;
 
 				//confidence = (::radar::zToDbz(zAttnCumulated)+64)*4;  // TODO

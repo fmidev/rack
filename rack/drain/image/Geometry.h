@@ -41,14 +41,43 @@ namespace image
 {
 
 /// Rectangle of width x height .
-class AreaGeometry
-{
-public:
+/*
+struct AreaGeometryStruct {
 
 	inline
-	AreaGeometry() : width(0), height(0), area(0){};
+	AreaGeometryStruct() : width(0), height(0), area(0){};
 
-	AreaGeometry(size_t width, size_t height=1) : width(width), height(height), area(width*height){};
+	size_t width;
+    size_t height;
+    size_t area;
+};
+*/
+
+/// Rectangle of width x height .
+class AreaGeometry { //: protected AreaGeometryStruct {
+
+public:
+
+	//inline
+	//AreaGeometry() : width(0), height(0), area(0){};
+
+	//AreaGeometry(size_t width, size_t height=1) : width(width), height(height), area(width*height){};
+	inline
+	AreaGeometry(size_t width=0, size_t height=0)  : width(0), height(0), area(0){
+		setArea(width, height?height:width);
+	};
+
+	/*
+	inline
+	operator const AreaGeometryStruct & () const {
+		return *this;
+	}
+
+	inline
+	const AreaGeometryStruct & getAreaGeometryStruct() const {
+		return *this;
+	}
+	*/
 
     void setWidth(size_t width);
 
@@ -74,11 +103,18 @@ public:
 		ostr << getWidth() << "×" << getHeight();
 	}
 
+	size_t width;
+    size_t height;
+
 protected:
 
+    size_t area;
+
+	/*
 	size_t width;
     size_t height;
     size_t area;
+	*/
 
     virtual
     void update();
@@ -140,13 +176,6 @@ std::ostream & operator<<(std::ostream &ostr, const ChannelGeometry & g){
 /*! The basic idea is to encode dimensions directly as a std::vector<int>; the number of elements is 
  *  the number of dimensions. Each element states the discrete coordinate space.
  * 
- *  Three standard "copies" are defined for convenience; KLUDGE!
- *  # geometry.width  = geometry[0]
- *  # geometry.height = geometry[1]
- *  # geometry.channelCount = geometry[2]  
- *
- *  To guarantee this, the minimum size of the vector will always be at least three (3).
- *  
  * 
  *  For example, a three-channel image having width 640 and height 400 would have dimension vector 
  *  [640,400,3]. The coordinates will be: x \in {0,1,...,639}, y \in {0,1,...,399} and z \in {0,1,2}.

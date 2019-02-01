@@ -137,42 +137,6 @@ class AnDReModule : public drain::CommandGroup {
 	AnDReModule(const std::string & section = "andre", const std::string & prefix = "a"); // : drain::CommandGroup(section, prefix); // { //,
 	//	clutterMapRead(clutter.productOp) {};
 	//AnDReModule(CommandRegistry & registry);
-
-	/*
-	AnDReLetAdapter<PrecipOp>   precip; // ?
-	AnDReLetAdapter<BiometOp>   biomet;
-	AnDReLetAdapter<BirdOp>     bird;
-	AnDReLetAdapter<EmitterOp> emitter;
-	AnDReLetAdapter<InsectOp>   insect;
-	AnDReLetAdapter<JammingOp> jamming;
-	AnDReLetAdapter<NoiseOp>     noise; // ??
-	AnDReLetAdapter<RhoHVLowOp>     rhoHV;
-	AnDReLetAdapter<ShipOp>       ship;
-	AnDReLetAdapter<SpeckleOp> speckle;
-
-
-	// Other detector-like operators
-
-	AnDReLetAdapter<CCorOp>       ccor;
-	AnDReLetAdapter<HydroClassBasedOp> hydroClass;
-	AnDReLetAdapter<SunOp>   sun;
-	AnDReLetAdapter<TimeOp> time;
-
-	// Removal   ops
-	AnDReLetAdapter<GapFillOp> gapFillDist;
-	AnDReLetAdapter<GapFillRecOp>   gapFillRec;
-	AnDReLetAdapter<DamperOp>           damper;
-	AnDReLetAdapter<RemoverOp>         remover;
-
-	AnDReLetAdapter<QualityCombinerOp> qualityCombiner;
-
-
-	AnDReLetAdapter<ClutterMapOp>  clutter;
-	ClutterMapRead clutterMapRead;
-
-	ClassThreshold classThreshold;
-	Universal universal;
-	 */
 };
 
 } /* namespace rack */

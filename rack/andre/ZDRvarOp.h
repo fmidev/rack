@@ -52,7 +52,7 @@ public:
 	 *  \param windowHeight - optional: median filtering height width in metres
 	 *  \param medianPos    - optional: median position: 0.5 = normal median (morphology: 0.5 > opening; 0.5 < closing)
 	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to other radar parameters measured (VRAD etc)
+	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	ZDRvarOp(double threshold=0.5, double thresholdWidth=0.1, double windowWidth=5.0, double windowHeight=5.0, double medianPos=0.3) :
 		DetectorOp("__FUNCTION__","Detects clutter. Based on dual-pol parameter ZDRvar . Optional postprocessing: morphological closing. Universal."){

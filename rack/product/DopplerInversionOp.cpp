@@ -60,15 +60,37 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 	const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
 
+	mout.note() << "src dataSet: " << srcSweep << mout.endl;
+
+	mout.warn() << "src data quantity=" << srcData.odim.quantity << ':' << srcData.data << mout.endl;
+
 	if (srcData.data.isEmpty()){
 		// Actually this should be in higher level
 		mout.warn() << "data empty" << mout.endl;
 		return;
 	}
 
-
+	//mout.warn() << "allocating data AMVU" << mout.endl;
 	PlainData<PolarDst> & dstDataU   = dstProduct.getData("AMVU");
+	/*
+	 mout.note() << "AMVU tests" << mout.endl;
+	mout.warn() << "AMVU: quantity=" << dstDataU.odim.quantity << mout.endl;
+	mout.warn() << "AMVU: quantity=" << dstProduct.getData("AMVU").odim.quantity << mout.endl;
+
+	typedef std::map<std::string, PlainData<PolarDst> > dmap;
+	dmap m;
+	m.insert(dmap::value_type("AMFY", PlainData<PolarDst>(dstProduct.getTree()["data98"], "AMFU")));
+	mout.note() << "AMFY/AMFU: quantity=" << m.begin()->second.odim.quantity << mout.endl;
+
+	PlainData<PolarDst> dstDataU2(dstProduct.getTree()["data99"],"AMVU");
+	mout.warn() << "AMVU2: quantity=" << dstDataU2.odim.quantity << mout.endl;
+
+	PlainData<PolarDst> dstDataU3(dstDataU2);
+	mout.warn() << "AMVU3: quantity=" << dstDataU3.odim.quantity << mout.endl;
+	*/
+
 	//dstDataU.data.clear();
+	mout.warn() << "allocating data AMVV" << mout.endl;
 	PlainData<PolarDst> & dstDataV   = dstProduct.getData("AMVV");
 	//dstDataV.data.clear();
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
@@ -97,7 +119,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	mout.warn() << "scr:  " << srcData << mout.endl;
 	mout.warn() << "QIND: " << dstQuality << mout.endl;
 	//mout.warn() << "VRADC" << dstDataVRAD << mout.endl;
-	 */
+	*/
 
 
 	const DopplerInversionConfig conf(widthM, heightD);

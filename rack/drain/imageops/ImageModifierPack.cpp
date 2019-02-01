@@ -279,7 +279,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 		     }
 			 */
 			const ImageScaling & scaling = channel.getScaling();
-			const drain::typeLimiter<data_t>::value_t & limit = channel.getLimiter<data_t>();
+			const drain::typeLimiter<data_t>::value_t & limit = channel.getEncoding().getLimiter<data_t>();
 			channel.put(i, j, limit(scaling.inv(v[2+k])));
 			//channel.putScaled(i, j, limit(v[2+k])); // ! scaled
 			// channel.put(i, j, v[2+k]);

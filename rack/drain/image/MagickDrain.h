@@ -40,12 +40,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <Magick++.h>
 #endif
 
-/// In compilation, use "Magick*-config" to get libs and includes right.
+// In compilation, use "Magick*-config" to get libs and includes right.
 
 
 #include "Image.h"
 
-//#include "Point.h"
 
 namespace drain
 {
@@ -61,12 +60,12 @@ public:
 	
 #ifdef DRAIN_MAGICK_yes
 	/// Converts drain::image to MagickImage
-	/// Does not support other types than <unsigned char>
+	/// Does not support str types than <unsigned char>
 	template<class T>
 	static void convert(const ImageT<T> &drainImage, Magick::ImageT &magickImage);
 	
 	/// Converts MagickImage to drain::image
-	/// Does not support other types than <unsigned char>
+	/// Does not support str types than <unsigned char>
 	template<class T>
 	static void convert(Magick::ImageT &magickImage, ImageT<T> &drainImage);
 	

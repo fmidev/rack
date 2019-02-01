@@ -484,8 +484,8 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 /// Computes inverse linear distance to bright points.
 /**
 \~exec
-make dots.png
-make dots-16bit.png
+make dots.png #make
+make dots-16bit.png #make
 \~
 
 Examples:

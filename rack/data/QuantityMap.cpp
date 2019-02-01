@@ -37,43 +37,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-/*
-void QuantityMap::set(const std::string & key, char typecode, double gain, double offset, double undetect, double nodata){
-
-	Quantity & q = (*this)[key];
-
-	if (!typecode)
-		typecode = 'C';
-
-	q.set(typecode, gain, offset, undetect, nodata);
-
-	//return q;
-}
-
-void QuantityMap::set(const std::string & key, char typecode, double gain, double offset){
-
-	// TODO: if (isSigned(typecode)) ...
-
-	if (isnan(offset))
-		offset = -gain;
-
-	return set(key, typecode, gain, offset, drain::Type::getMin<double>(typecode), drain::Type::call<drain::typeMax,double>(typecode));
-
-}
-*/
-
-/*
-EncodingODIM QuantityMap::set(const std::string & key, char typecode){
-	return get(key).set(typecode);
-}
-
-void QuantityMap::set(const std::string & key, const Quantity & q){
-	set(key, q.defaultType);
-	get(key) = q;
-}
-*/
-
-
 void QuantityMap::initialize(){
 
 	set("DBZH", 'C').setScaling(0.5, -32);
@@ -110,9 +73,11 @@ void QuantityMap::initialize(){
 	copy("PROB", get("QIND"));
 
 	set("COUNT", 'S'); // default type short int
-	set("COUNT", 'C');   //
-	set("COUNT", 'I');   //
-	set("COUNT", 'L');   //
+	set("COUNT", 'C'); //
+	set("COUNT", 'I'); //
+	set("COUNT", 'L'); //
+	set("COUNT", 'f'); // Floats needed in infinite accumulations
+	set("COUNT", 'd'); //
 
 	set("AMVU", 'C').setRange(-100,100);
 	set("AMVU", 'c').setRange(-127,127);
@@ -138,7 +103,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 	drain::ReferenceMap refMap;
 	if (!values.empty()){
 		dstODIM.addShortKeys(refMap);
-		refMap.setValues(values);   // essentially, sets dstODIM.type (other values will be reset, below)
+		refMap.setValues(values);   // essentially, sets dstODIM.type (str values will be reset, below)
 	}
 
 	mout.debug(2) << "searching for quantity=" << quantity << mout.endl;

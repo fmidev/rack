@@ -70,10 +70,13 @@ public:
 
 };
 
-/// A helper class applied by FloodFillOp and SegmentAreaOp
+/// A recursive method for visiting pixels of a segment in an image.
 /**
- *   \tparam S  - storage type of the source image (int by default, but should be floating-type, if src is).
- *   \tparam D - storage type of the destination image, the image to be filled.
+ *   A helper class applied by FloodFillOp and SegmentAreaOp.
+ *
+ *   \tparam S - storage type of the source image data (int by default, but should be floating-type, if src is).
+ *   \tparam D - storage type of the destination image data
+ *   \tparam C - configuration type,
  *
  *   \author Markus.Peura@fmi.fi
  */
@@ -88,15 +91,11 @@ public:
 
 
 	SegmentProber(const Channel &s) : src(s), dst(NULL){
-		//handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
-		//size = 0;
 		init();
 	};
 
 	SegmentProber(const Channel &s, Channel &d) : src(s), dst(&d) {
 		init();
-		// handler(s.getWidth(), s.getHeight(), s.getCoordinatePolicy()) { //, mout(getImgLog(), __FUNCTION__) {
-		//size = 0;
 	};
 
 	virtual
@@ -134,7 +133,11 @@ public:
 	}
 
 
-	/// Traverse
+	/// A convenience function for traversing a whole image.
+	/**
+	 *  Applicable in cases where probing parameters are not spatically ("dynamically") changing.
+	 *
+	 */
 	void scan(){
 		for (size_t i=0; i<src.getWidth(); ++i)
 			for (size_t j=0; j<src.getHeight(); ++j)
@@ -167,13 +170,20 @@ public:
 
 	CoordinateHandler2D handler;
 
-	/// Returns isValidSegment(i,j) and ! isVisited(i,j).
+	/// Returns isValidSegment(i,j) and !isVisited(i,j).
 	inline
 	bool isValidPos(int i, int j) const {
 		return (isValidSegment(i,j) && !isVisited(i,j));
 	}
 
-	/// Application dependent, to be redefined. Note: assumes checked coordinates.
+	/// Application dependent, to be redefined. Assumes checked coordinates.
+	/**
+	 *  Determines if the current position is within a segment. The criterion of "segment"
+	 *  depends on the application.
+	 *
+	 *  Note: does not check coordinates, assumes them to be checked by the calling scope.
+	 *
+	 */
 	virtual
 	bool isValidSegment(int i, int j) const = 0;
 	//return (src.get<src_t>(i,j) > 0);
@@ -267,16 +277,8 @@ protected:
 		i += di;
 		j += dj;
 
-		// OLD ->
-		/*
-		if ((i < 0) || (i > handler.getXMax()))
-			return false;
-		*/
-		// <- OLD
-
 		// Drop isValidSegment
 		if (handler.validate(i,j)) // must be first, changes coords
-			//if ((!isVisited(i,j)) && isValidSegment(i,j) && isValidMove(i0,j0, i,j))
 			if (isValidPos(i,j))
 				if (isValidMove(i0,j0, i,j))
 					return true;
@@ -349,9 +351,6 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 	}
 
 };
-
-//template <class T, class T2>
-
 
 
 template <class S, class D, class C>

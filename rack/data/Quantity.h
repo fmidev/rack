@@ -125,45 +125,6 @@ public:
 	}
 
 
-	/// Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Sets type, if unset.
-	/*
-	static
-	inline
-	void setTypeDefaults(EncodingODIM & dst, const std::string & type = "", const std::string & values = ""){
-
-		if (dst.type.empty())
-			dst.type = type;
-
-		dst.gain = 1.0;
-	    dst.offset = 0.0;
-
-	    if (!type.empty()){
-	    	dst.undetect = drain::Type::getMin<double>(type);
-	    	dst.nodata   = drain::Type::call<drain::typeMax,double>(type);
-	    }
-	    else {
-	    	dst.undetect = drain::Type::getMin<double>(dst.type);
-	    	dst.nodata   = drain::Type::call<drain::typeMax,double>(dst.type);
-	    }
-
-		dst.setValues(values);
-
-	}
-	*/
-
-	/// Saves type and sets the type of the actual data array as well.
-	/*
-	template <class D, class T>
-	static
-	inline
-	void setTypeDefaults(PlainData<D> & dstData, const T & type, const std::string & values = ""){
-		setTypeDefaults(dstData.odim, type, values);
-		dstData.data.setType(type);
-	}
-	*/
-
-
-
 
 	/// Print declared encodings (storage types and scalings)
 	inline

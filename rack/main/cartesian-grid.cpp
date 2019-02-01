@@ -125,8 +125,8 @@ void CartesianGrid::exec() const {
 	double weight;
 	/// Intensity
 	double f;
-	const double fMax = intensity * img.getMax<double>();
-	const double fMaxAlpha = img.getMax<double>();
+	const double fMax = intensity * img.getEncoding().getTypeMax<double>();
+	const double fMaxAlpha = img.getEncoding().getTypeMax<double>();
 	for (size_t j = 0; j<img.getHeight(); ++j){
 		for (size_t i = 0; i<img.getWidth(); ++i){
 			composite.pix2deg(i,j,lon,lat);

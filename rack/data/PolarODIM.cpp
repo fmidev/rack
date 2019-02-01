@@ -36,10 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+int PolarODIM::defaultRange(250000); // metres
 
 void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-	if (initialize & ROOT){
+	if (initialize & ODIMPathElem::ROOT){
 		reference("what:object", object = "PVOL");  // // or SCAN...
 		reference("where:lon", lon = 0.0);
 		reference("where:lat", lat = 0.0);
@@ -47,7 +48,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("how:freeze", freeze = 10.0);
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 		reference("where:nbins",  nbins = 0L);
 		reference("where:nrays",  nrays = 0L);
 		reference("where:rscale", rscale = 0.0);
@@ -62,7 +63,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		// reference("how:NI", NI = 0);
 	}
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 	}
 
 }
@@ -72,8 +73,45 @@ void PolarODIM::update(const PolarODIM & odim){
 	//if (NI == 0.0)
 	odim.getNyquist(LOG_INFO);
 
+	if ((lat == 0.0) && (lon == 0.0)){
+		lat    = odim.lat;
+		lon    = odim.lon;
+		height = odim.height;
+	}
+
+
 	ODIM::update(odim);
 
+
+}
+
+double PolarODIM::getMaxRange(bool warn) const {
+
+	if (!warn)
+		return rstart + static_cast<double>(nbins)*rscale;
+	else {
+		drain::Logger mout("PolarODIM", __FUNCTION__);
+		if (nbins == 0){
+			mout.warn() << "nbins==0" << mout.endl;
+		}
+		if (rscale == 0){
+			mout.warn() << "rscale==0" << mout.endl;
+			// mout.warn() << "rscale==0, returning default range=" << PolarODIM::defaultRange << 'm' << mout.endl;
+			// return 250000;
+		}
+		double r = rscale*static_cast<double>(nbins);
+		if (r == 0.0){
+			if (PolarODIM::defaultRange > 0){
+				r = PolarODIM::defaultRange;
+				mout.note() << "using defaultRange" << r << mout.endl;
+			}
+			else {
+				r = 250000.0;
+				mout.note() << "using range=" << r << mout.endl;
+			}
+		}
+		return r;
+	}
 
 }
 

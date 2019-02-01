@@ -146,7 +146,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 
 
-	const int byte_depth = image.getByteSize(); //sizeof(T);
+	const int byte_depth = image.getEncoding().getByteSize(); //sizeof(T);
 	const int bit_depth  = byte_depth <= 2 ? byte_depth*8 : 16;
 
 	// mout.debug() << image.getGeometry() << ", orig byte_depth=" << byte_depth << ", bit_depth=" << bit_depth << mout.endl;
@@ -207,7 +207,8 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	// comments["Scaling"] = image.getScaling().toStr(); // FUTURE: only after known (below)
 	comments["Software"] = "drain/image/FilePng Markus.Peura[c]fmi.fi";
 	//for (std::map<std::string,Data>::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
-	for (VariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
+	/// WARNING: for channels/views: getProperties instead?
+	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 		comments[it->first] = it->second.toStr();
 		//it->second.substr(0,79);
 	}

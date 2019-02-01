@@ -30,8 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#ifndef RACK_IMAGES
-#define RACK_IMAGES
+#ifndef RACK_IMAGE_OPS
+#define RACK_IMAGE_OPS
 
 #include <drain/image/Image.h>
 #include <drain/prog/Command.h>
@@ -43,6 +43,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 #include "commands.h" // cmdSelect
 
+namespace drain {
+
+typedef BeanRefAdapter<drain::image::ImageOp> ImageOpAdapter;
+
+}
 
 
 namespace rack {
@@ -50,43 +55,7 @@ namespace rack {
 /**
  *   Applied also by CartesianGrid
  */
-class CmdImage : public drain::BasicCommand {
-
-public: //re
-
-	mutable DataSelector imageSelector;
-
-	CmdImage() : BasicCommand(__FUNCTION__, "Copies data to a separate image object. Encoding can be changed with --target ."), imageSelector(".*/data/?$","") {
-	};
-
-	inline
-	void exec() const {
-
-		//drain::Logger & mout = resources.mout;
-		RackResources & resources = getResources();
-		imageSelector.setParameters(resources.select);
-		resources.select.clear();
-
-		convertImage(*resources.currentHi5, imageSelector, resources.targetEncoding, resources.grayImage);
-		resources.targetEncoding.clear();
-		//convertImage(*getResources().currentHi5, imageSelector, properties, getResources().grayImage);
-
-		resources.currentGrayImage = & resources.grayImage;
-		resources.currentImage     = & resources.grayImage;
-		//File::write(*resources.currentImage, "convert.png");
-	};
-
-	static
-	void convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters,
-			drain::image::Image &dst);
-
-
-};
-extern CommandEntry<CmdImage> cmdImage;
-
-/**
- *   Applied also by CartesianGrid
- class CmdPhysical : public drain::SimpleCommand<bool> {
+class CmdPhysical : public drain::SimpleCommand<bool> {
 
 public:
 
@@ -97,8 +66,59 @@ public:
 
 };
 extern CommandEntry<CmdPhysical> cmdPhysical;
-*/
 
+
+/// Designed for Rack
+class ImageOpRacklet : public drain::ImageOpAdapter {
+
+public:
+
+	/// Constructor that adapts an operator and its name.
+	/**
+	 *  \param op - image operator to be used
+	 *  \param key - command name
+	 */
+	ImageOpRacklet(drain::image::ImageOp & imageOp, const std::string & key) : drain::ImageOpAdapter(imageOp), key(key) {
+	};
+
+
+	/// Constructor that adapts an operator and its name.
+	/**
+	 *  \param op - image operator to be used througjh reference
+	 */
+	ImageOpRacklet(drain::image::ImageOp & imageOp) : drain::ImageOpAdapter(imageOp), key(imageOp.getName()) {
+	};
+
+
+	/// Copy constructor.
+	ImageOpRacklet(const ImageOpRacklet & a) : ImageOpAdapter(a.bean), key(a.key) {
+		//imageOp.getParameters().updateFromMap(a.imageOp.getParameters());
+	}
+
+	virtual
+	void exec() const;
+
+	/// Name of this operator, to be recognized
+	const std::string key;
+
+	static std::string outputQuantity;
+
+protected:
+
+};
+
+
+class ImageRackletModule : public CommandGroup {
+public:
+
+	typedef std::list<ImageOpRacklet> list_t;
+
+	static
+	list_t rackletList;
+
+	ImageRackletModule(const std::string & section = "image", const std::string & prefix = "i");
+
+};
 
 
 } /* namespace rack */

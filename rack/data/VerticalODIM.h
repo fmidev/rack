@@ -80,7 +80,7 @@ public:
 	double NI;
 
 	inline
-	VerticalCrossSectionODIM(group_t initialize = ALL) : ODIM(initialize) {
+	VerticalCrossSectionODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : ODIM(initialize) {
 		init(initialize);
 	};
 
@@ -97,7 +97,7 @@ public:
 protected:
 
 	virtual
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 };
 
@@ -123,7 +123,7 @@ public:
 
 
 	inline
-	VerticalProfileODIM(group_t initialize = ALL) : VerticalCrossSectionODIM(initialize) {
+	VerticalProfileODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : VerticalCrossSectionODIM(initialize) {
 		init(initialize);
 	}
 
@@ -144,7 +144,7 @@ public:
 protected:
 
 	virtual
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 
 };
 
@@ -169,7 +169,7 @@ public:
 	double range;
 
 	inline
-	RhiODIM(group_t initialize = ALL) : VerticalCrossSectionODIM(initialize) {
+	RhiODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : VerticalCrossSectionODIM(initialize) {
 		init(initialize);
 	};
 
@@ -189,7 +189,7 @@ public:
 protected:
 
 	virtual
-	void init(group_t initialize=ALL);
+	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
 };
 
 

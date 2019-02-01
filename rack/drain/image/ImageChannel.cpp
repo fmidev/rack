@@ -84,7 +84,7 @@ const Channel & MultiChannel::getAlphaChannel(size_t k) const {
 
 	updateChannelVector();
 
-	const size_t a = getImageChannelCount(); //???
+	const size_t a = getImageChannelCount();
 	return getChannel(a);
 }
 
@@ -97,25 +97,35 @@ void MultiChannel::updateChannelVector() const {
 
 	const size_t n = getChannelCount();
 
-	//if (n > channelVector.size()){ FAIL, old views unchanged
 	channelVector.resize(n);
-	for (size_t k = 0; k < n; ++k) {
-		ChannelView & channel = channelVector[k];
-		channel.setView(*this,k); // sets: channel.scalingPtr = this->scaling;
 
-		// Special for alpha channels:
-		if (k >= geometry.getImageChannelCount()){
-			channel.useOwnScaling();
-			if (!channel.getScaling().isPhysical()){
-				const std::type_info & t = channel.getType();
-				if (Type::call<typeIsSmallInt>(t)){
-					channel.getScaling().setPhysicalScale(t, 0.0, 1.0);
-					mout.debug() << "using own physical scaling for channel[" << k << "], " << channel.getScaling() << mout.endl;
+	for (size_t k = 0; k < n; ++k) {
+
+		ChannelView & channel = channelVector[k];
+
+		// Test if segment viewed already (lazy init, prevents from re-scaling
+		// This way only new ones initialized, to prevent resetting channel specific scalings (and coord policies).
+		if (ChannelView(*this,k).hasSameSegment(channel)){
+			mout.debug(1) << "channel[" << k << "] already in use, leaving scaling intact " << channel.getScaling() << mout.endl;
+		}
+		else {
+			// links scaling to target image: channel.scalingPtr = this->scaling;
+			channel.setView(*this,k);
+
+			// Special for alpha channels:
+			if (k >= geometry.getImageChannelCount()){
+				channel.useOwnScaling();
+				if (!channel.getScaling().isPhysical()){
+					const std::type_info & t = channel.getType();
+					if (Type::call<typeIsSmallInt>(t)){
+						channel.getScaling().setPhysicalScale(t, 0.0, 1.0);
+						mout.debug() << "using own physical scaling for channel[" << k << "], " << channel.getScaling() << mout.endl;
+					}
 				}
 			}
+
 		}
 	}
-	//};
 
 }
 
@@ -123,5 +133,3 @@ void MultiChannel::updateChannelVector() const {
 }  // image::
 
 }  // drain::
-
-// Drain

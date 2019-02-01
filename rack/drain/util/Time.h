@@ -46,9 +46,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 /// Utility for handling time. Internally, uses tm (C time structure).
+/**
+ *  Note: This class does nout (yet) support format strings of arbitrary size.
+ *  (output str length has limited size).
+ *
+ */
 class Time : private tm {
 public:
 
+	inline
 	Time() {
 		tm_sec = 0;			    /* Seconds.	[0-60] (1 leap second) */
 		tm_min = 0;			    /* Minutes.	[0-59] */
@@ -64,52 +70,54 @@ public:
 		setTime();
 	};
 
-	//virtual
+	inline
 	~Time(){};
 
 	/// Sets time to current UTC time.
 	inline
 	void setTime(){
 		setTime(time(NULL));
-		//_time =  time((tm *)this);
 	};
 
 	/// Sets time to UTC time.
+	/**
+	 *  \par time -   std::string presentation of time.
+	 */
 	inline
 	void setTime(const time_t &time){
-		//_time = time;
 		*(tm *)this = *gmtime(&time);
 	};
 
 	/// Sets time
 	/**
-	 *  \par time -   std::string presentation of time.
+	 *  \par time -   time given as a std::string .
 	 *  \par format - format of time parameter, for example "%Y/%m/%d %H:%M".
 	 *  \par strictness - if \true, a runtime error is thrown when parsing fails.
+	 *
+	 *  Note: handling of Time Zone is odd:
+	 *  - Giving unix seconds (input format="%s") changes time zone to local time (EET in Finland)
+	 *  - Giving time zone explicitly (input format="%Z"), eg. "2018/11/16 22:58 EET" has no effect; the time is understood
+	 *    as GMT time
 	 *
 	 *  The time can be adjusted using several subsequent calls.
 	 */
 	inline
 	void setTime(const std::string &time, const std::string &format, bool strict=true){
+		// setTime(0); reset seconds?
 		const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
 		if (strict && (t == NULL)){
 			throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
 		}
 		/*
-		else if (*t != '\0') {
+		if (*t != '\0') {
 			std::cerr << "Remaining std::string:" << std::endl;
 		}
 		*/
-		// std::cerr << t << std::endl;
-		//std::cerr << "Address:"  << (size_t)t << std::endl;
-	//_time = timegm((tm *)this);
-};
+	};
 
 	inline
 	void setTime(const tm &time){
-		//this->_tm = time;
 		(tm &)*this = time;
-		//_time = timegm((tm *)&time);
 	};
 
 	/// Sets time to UTC time.
@@ -139,8 +147,12 @@ public:
 			//const unsigned int maxSize = 256;
 			const size_t maxSize = 256;
 			static char tmp[maxSize];
-			const size_t length = strftime(tmp, maxSize, format.c_str(),(tm *)this);
+			const size_t length = strftime(tmp, maxSize, format.c_str(), (tm *)this);
 			timeStr.assign(tmp,length);
+			if (length == maxSize){
+				std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
+				// TODO: string mapper
+			}
 		}
 		return timeStr;
 	};
@@ -150,11 +162,9 @@ public:
 		std::cerr << "H=" << this->tm_hour << ", DST="  << this->tm_isdst << '\n';
 	}
 
-	//int mika;
 
 protected:
-	//tm _tm;
-	//time_t _time;
+
 	mutable std::string timeStr;
 
 };

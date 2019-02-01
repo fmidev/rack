@@ -140,7 +140,7 @@ public:
 
 		if (!resources.targetEncoding.empty()){
 			mout.debug() << "Setting target parameters: " << resources.targetEncoding << mout.endl;
-			//productOp.getODIM().setValues(cmd.value, true); // nbins, nrays not in EncodingODIM, consider other than that?
+			//productOp.getODIM().setValues(cmd.value, true); // nbins, nrays not in EncodingODIM, consider str than that?
 			productOp.setEncodingRequest(resources.targetEncoding);
 			//mout.debug(1) << "New values: " << productOp.odim  << mout.endl;
 			resources.targetEncoding.clear();

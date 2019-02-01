@@ -38,10 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "image/File.h"
 
-//#include "SlidingWindowOp.h"
-//#include "DifferentialOp.h"
-
-
 #include "FastOpticalFlowOp.h" // OpticalFlowConfig, OpticalFlowCore1
 
 
@@ -100,11 +96,13 @@ class SlidingOpticalFlow2 : public SlidingWindow<OpticalFlowConfig, R> {
 public:
 
 	SlidingOpticalFlow2(int width = 0, int height = 0) : SlidingWindow<OpticalFlowConfig, R>(width, height) {
-		//setSize(width,height);
+		address = 0;
+		w = u = v = nom = quality = 0.0;
 	}
 
 	SlidingOpticalFlow2(const OpticalFlowConfig & conf) : SlidingWindow<OpticalFlowConfig, R>(conf) {
-		//setSize(conf.width, conf.height);
+		address = 0;
+		w = u = v = nom = quality = 0.0;
 	}
 
 	virtual inline
@@ -189,8 +187,6 @@ public:
 	virtual inline
 	void write(){
 
-		//std::cerr << "start: " << this->location << '\t' << this->GXX.template get<double>(this->location) << '\n';
-		//exit(1);
 
 		nom = this->nominator();
 
@@ -211,13 +207,14 @@ public:
 		 */
 
 		if (nom > 0.00000001){  // todo minQuality
-			static const drain::FuzzySigmoid<double> sigmoid(0.0, 127.0, 254.0);
+
 			u = this->uDenominator()/nom;
 			v = this->vDenominator()/nom;
-			quality = sqrt(nom/this->W);
-
 			this->uField.put(this->location, this->conf.invertU ? -u : u);
 			this->vField.put(this->location, this->conf.invertV ? -v : v);
+
+			static const drain::FuzzySigmoid<double> sigmoid(0.0, 127.0, 254.0);
+			quality = sqrt(nom/this->W);
 			this->dstWeight.put(this->location, sigmoid(quality));
 		}
 		else {
@@ -229,6 +226,12 @@ public:
 	}
 
 protected:
+
+	virtual
+	void clear(){
+		this->clearStats();
+		//std::cerr << "SlidingOpticalFlow2::" << __FUNCTION__ << ": " << this->nominator() << ", " << this->uDenominator() << ", " << this->vDenominator() << std::endl;
+	}
 
 	// Used by addPixel, removePixel
 	mutable size_t address;
@@ -260,7 +263,7 @@ void SlidingOpticalFlow2<R>::initialize() {
 	mout << "GXX: " << this->GYT << '\n';
 	mout << "W:   " << this->srcWeight   << '\n';
 	mout << mout.endl;
-		//this->resetAtEdges = true;
+	//this->resetAtEdges = true;
 
 	/*
 	std::cout << "Annapa input\n";
@@ -381,7 +384,7 @@ public:
 	typedef window_t::data_t data_t;
 
 	FastOpticalFlowOp2(int width=5, int height=5): //, double smoothing=0.01) : //, double gradPow=2.0) : //, double gradWidth = 16) :
-		SlidingWindowOp<SlidingOpticalFlowWeighted2>(__FUNCTION__, "A pipeline implementation of optical flow.")
+		SlidingWindowOp<SlidingOpticalFlowWeighted2>(__FUNCTION__, "Optical flow computed based on differential accumulation layers.")
 		 {
 		//parameters.append(blender.getParameters(), false);
 		//blender.setParameter("mix", "b");
@@ -444,7 +447,7 @@ protected:
 
 	/// Returns true, if threshold is requested as postprocessing
 	inline
-	bool optThreshold() const { return !isnan(threshold); };
+	bool optThreshold() const { return !std::isnan(threshold); };
 
 	inline
 	bool optSpread() const { return spread; };

@@ -64,7 +64,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		ftor.setParameters(ftorParams, '=', ':');
 		//	ftors.push_back(ftor);
 
-		const double dstMax = dst.data.getMax<double>();
+		const double dstMax = dst.data.getEncoding().getTypeMax<double>();
 		typedef drain::typeLimiter<double> Limiter;
 		Limiter::value_t limit = drain::Type::call<Limiter>(dst.data.getType());
 

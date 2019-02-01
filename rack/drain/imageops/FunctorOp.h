@@ -136,7 +136,7 @@ public:
 	virtual ~UnaryFunctorOp(){};
 
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {  //  = 0;
-		drain::Logger mout(this->name+"(UnaryFunctorOp)", __FUNCTION__);
+		drain::Logger mout(this->getName()+"(UnaryFunctorOp)", __FUNCTION__);
 		mout.debug(1) << "invoking processChannelsSeparately()" << mout.endl;
 		ImageOp::traverseChannelsSeparately(src, dst);
 	}
@@ -221,18 +221,18 @@ void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 		if (!drain::Type::call<drain::typeIsInteger>(dst.getType()))
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
 
-		typedef drain::typeLimiter<double> Limiter;
-		Limiter::value_t limiterPtr = Type::call<Limiter>(dst.getType());
+		//typedef drain::typeLimiter<double> Limiter;
+		drain::typeLimiter<double>::value_t limiter = dst.getEncoding().getLimiter<double>(); //Type::call<Limiter>(dst.getType());
 		if (!SCALE){
 			while (d != dst.end()){
-				*d = limiterPtr(this->functor(static_cast<double>(*s)));
+				*d = limiter(this->functor(static_cast<double>(*s)));
 				++s;
 				++d;
 			}
 		}
 		else {
 			while (d != dst.end()){
-				*d = limiterPtr(ds.inv(this->functor(ss.fwd(static_cast<double>(*s)))));
+				*d = limiter(ds.inv(this->functor(ss.fwd(static_cast<double>(*s)))));
 				++s;
 				++d;
 			}
@@ -401,7 +401,7 @@ void BinaryFunctorOp<T>::traverseSequentially(const Channel &src1, const Channel
 		if (!drain::Type::call<drain::typeIsInteger>(dst.getType()))
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
 		//typedef drain::typeLimiter<double> Limiter;
-		drain::typeLimiter<double>::value_t limit = dst.getLimiter<double>(); //Type::call<Limiter>(dst.getType());
+		drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>(); //Type::call<Limiter>(dst.getType());
 		if (!SCALE){
 			while (d != dst.end()){
 				*d = limit(this->functor(*s1, *s2));
@@ -483,7 +483,7 @@ void BinaryFunctorOp<T>::traverseSpatially(const Channel &src1, const Channel &s
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
 		//typedef drain::typeLimiter<double> Limiter;
 		//Limiter::value_t limiterPtr = Type::call<Limiter>(dst.getType());
-		drain::typeLimiter<double>::value_t limit = dst.getLimiter<double>();
+		drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>();
 
 		if (!SCALE){
 			mout.debug() << "SCALE=false" << mout.endl;

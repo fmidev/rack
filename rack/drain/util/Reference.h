@@ -61,16 +61,24 @@ namespace drain {
 
  */
 
-class Variable;
+//class Variable;
 
 /// Extends Castable's interface with link()
 class Referencer : public Castable {
 
 public:
 
+	/// Default constructor.
 	Referencer(){};
 
-	//Referencer(Referencer & r) {};
+	/// Copy constructor.
+	Referencer(const Referencer & r) : Castable((const Castable &)r) {
+	};
+
+	// Needed?
+	Referencer(Referencer & r) : Castable((Castable &)r) {
+	};
+
 	template <class T>
 	inline
 	Referencer(T *p) : Castable(p){}
@@ -83,34 +91,31 @@ public:
 	virtual inline
 	~Referencer(){};
 
-
+	/// Set pointer to &p.
+	/**
+	 *  \tparam T - target object (if Castable or Referencer redirected to relink() )
+	 */
 	template <class F>
 	inline
 	void link(F &p){
 		setPtr(p);
 	}
 
+	/// Set pointer to p.
 	template <class F>
 	inline
 	void link(F *p){
 		setPtr<F>(p);
 	}
 
+	/// Explicit linking for Castable class(es).
+	/**
+	 *   Essentially, makes Castable::relink visible.
+	 */
 	inline
-	void link(const Castable & c){
-		setPtr(c);
+	void relink(Castable & c){
+		Castable::relink(c);
 	}
-
-	inline
-	void link(const Referencer & r){
-		setPtr((const Castable &)r);
-	}
-
-	inline
-	void link(Referencer & r){
-		setPtr((const Castable &)r);
-	}
-
 
 	template <class T>
 	inline
@@ -128,6 +133,28 @@ public:
 
 
 };
+
+template <>
+inline
+void Referencer::link<void>(void *p){
+	throw std::runtime_error(std::string("Referencer::") + __FUNCTION__ + ": void type unsupported");
+}
+
+template <>
+inline
+void Referencer::link<Castable>(Castable &c){
+	// Warning removed, because link(T) is handy for ReferenceMap::append()
+	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
+	relink(c);
+}
+
+template <>
+inline
+void Referencer::link<Referencer>(Referencer &r){
+	// Warning removed, because link(T) is handy for ReferenceMap::append()
+	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
+	relink(r);
+}
 
 
 }  // namespace drain

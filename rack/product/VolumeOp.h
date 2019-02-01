@@ -89,6 +89,7 @@ public:
 	VolumeOp(const std::string & name, const std::string &description="") : ProductOp<const PolarODIM, M>(name, description){
 	};
 
+	virtual inline
 	~VolumeOp(){};
 
 
@@ -143,26 +144,39 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src,  this->dataSelector, dataPaths);
+	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	drain::Variable elangles(typeid(double));
-	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 
-		const std::string parent = DataTools::getParent(*it);
-		const double elangle = src(parent)["where"].data.attributes["elangle"];  // PATH
+		//const std::string parent = DataTools::getParent(*it);
+		const ODIMPath & parent = *it;
+		//parent.pop_back();
+		const HI5TREE & srcDataSet = src(parent);
+		const double elangle = srcDataSet["where"].data.attributes["elangle"];  // PATH
 
-		mout.debug(2) << "check "  << *it << mout.endl;
+		//mout.debug(2) << "check elangle of "  << parent << mout.endl;
+		mout.debug() << "testing " << parent << ", elangle=" << elangle << ':' << srcDataSet.data.dataSet << mout.endl;
+
+		//mout.note() << "src dataset1/data2 QTY = " << srcDataSet["data2"]["data"].data.dataSet << mout.endl;
 
 		if (sweeps.find(elangle) == sweeps.end()){
-			mout.debug(2) << "add "  << elangle << ':'  << parent << mout.endl;
-			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+			mout.debug(2) << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
+			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			elangles << elangle;
+			//mout.warn() << "add " <<  DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) ) << mout.endl;
+		}
+		else {
+			mout.note() << "elange ="  << elangle << " already added, skipping " << parent << mout.endl;
 		}
 	}
+
+	//mout.note() << "first elange =" << sweeps.begin()->first << " DS =" << sweeps.begin()->second << mout.endl;
+	//mout.note() << "first qty =" << sweeps.begin()->second.begin()->first << " D =" << sweeps.begin()->second.getFirstData() << mout.endl;
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
 	dst["what"]  = src["what"];
@@ -171,21 +185,21 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	dst["what"].data.attributes["object"] = this->odim.object;
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
-	ODIMPathElem dataSetPath(BaseODIM::DATASET, 1);
+	ODIMPathElem dataSetPath(ODIMPathElem::DATASET, 1);
 	//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))
 
-	if (ProductBase::appendResults.is(BaseODIM::DATASET)){
+	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
 		if (ProductBase::appendResults.getIndex()){
 			dataSetPath.index = ProductBase::appendResults.getIndex();
 		}
 		else {
-			DataTools::getNextChild(dst, dataSetPath);
+			DataSelector::getNextChild(dst, dataSetPath);
 		}
 	}
 	//++dataSetPath.index;
 
 	//mout.warn() << "FAILED: "  << dataSetPath << mout.endl;
-		//dataSetPath.push_back(ODIMPathElem(BaseODIM::DATASET, 1));
+		//dataSetPath.push_back(ODIMPathElem(ODIMPathElem::DATASET, 1));
 
 
 	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
@@ -216,3 +230,5 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 #endif /* RACKOP_H_ */
 
 // Rack
+ // REP // REP
+ // REP // REP // REP // REP

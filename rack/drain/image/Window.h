@@ -336,7 +336,7 @@ public:
 
 /// Base class for windows applied by WIndowOp's
 /**
- *  \tparam C - configuration (width, height and other metadata)
+ *  \tparam C - configuration (width, height and str metadata)
  *  \tparam R - source and target images, and their setters.
  */
 template <class C = WindowConfig, class R = WindowCore>

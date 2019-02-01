@@ -107,7 +107,7 @@ void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainDat
 	//dstData.odim.prodpar = feature;
 
 
-	DataTools::updateAttributes(dstData.tree);
+	DataTools::updateAttributes(dstData.getTree()); // nweeded
 }
 
 

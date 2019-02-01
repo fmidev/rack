@@ -76,10 +76,32 @@ public:
 };
 
 
-//std::ostream &operator<<(std::ostream &ostr, const VariableMap &m);
+/// A map of FlexVariable:s.
+class FlexVariableMap : public SmartMap<FlexVariable> { //std::map<std::string,FlexVariable> {
+
+public:
+
+	inline  // strictness_t s=OPEN,
+	FlexVariableMap(char separator = '\0') : SmartMap<FlexVariable>(separator){
+	};
+
+	inline
+	FlexVariableMap(const FlexVariableMap & v) : SmartMap<FlexVariable>(v.separator){ // vField.ordered,
+		importMap(v);
+	};
+
+	inline
+	FlexVariableMap & operator=(const FlexVariableMap & v){
+		importMap(v);
+		return *this;
+	}
+
+};
+
+// std::ostream &operator<<(std::ostream &ostr, const VariableMap &m);
 
 } // drain
 
 #endif /* VARIABLE_H_ */
 
-// Drain
+

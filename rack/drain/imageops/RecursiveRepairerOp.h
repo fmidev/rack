@@ -47,7 +47,7 @@ for i in  15,15,5,a  15,15,5,g  50,50,1,d  25,25,1,D; do
   	echo drainage flowers-rgba.png --recursiveRepairer "$i" -o recRep-$LABEL.png --view a -o recRep-$LABEL-alpha.png
     echo convert +append -frame 1 recRep-$LABEL.png recRep-$LABEL-alpha.png row-$LABEL.png
 done
-convert -append flowers-rgba.png  row-{a,g,d,D}.png -background black recRep.png
+# convert -append flowers-rgba.png  row-{a,g,d,D}.png -background black recRep.png
  */
 /**
 

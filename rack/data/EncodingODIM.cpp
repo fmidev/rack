@@ -37,7 +37,6 @@ namespace rack {
 
 
 
-const std::set<std::string> & EncodingODIM::attributeGroups(createAttributeGroups());
 
 /*
 EncodingODIM::EncodingODIM(group_t initialize = ALL){
@@ -52,7 +51,8 @@ EncodingODIM::EncodingODIM(const EncodingODIM & odim){
 
 
 //static
-const std::set<std::string> & EncodingODIM::createAttributeGroups(){
+/*
+//const std::set<std::string> & EncodingODIM::createAttributeGroups(){
 
 	static std::set<std::string> s;
 	s.insert("what");
@@ -61,6 +61,20 @@ const std::set<std::string> & EncodingODIM::createAttributeGroups(){
 	return s;
 
 }
+*/
+
+const std::set<ODIMPathElem> & EncodingODIM::attributeGroups(createAttributeGroups());
+
+const std::set<ODIMPathElem> & EncodingODIM::createAttributeGroups(){
+
+	static std::set<ODIMPathElem> s;
+	s.insert(ODIMPathElem(ODIMPathElem::WHAT));
+	s.insert(ODIMPathElem(ODIMPathElem::WHERE));
+	s.insert(ODIMPathElem(ODIMPathElem::HOW));
+	return s;
+
+}
+
 
 EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
 
@@ -69,7 +83,7 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
 
 	//char typecode = type.at(0);
 
-	if (isnan(offset))
+	if (std::isnan(offset))
 		offset = -gain;
 
 	const std::type_info & t = drain::Type::getTypeInfo(type.at(0));
@@ -94,13 +108,13 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 
 void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
-	if (initialize & ROOT){
+	if (initialize & ODIMPathElem::ROOT){
 	}
 
-	if (initialize & DATASET){
+	if (initialize & ODIMPathElem::DATASET){
 	}
 
-	if (initialize & DATA){
+	if (initialize & ODIMPathElem::DATA){
 		reference("what:type", type = "C");
 		reference("what:gain",   gain = 0.0);
 		reference("what:offset", offset = 0.0);
@@ -124,7 +138,6 @@ void declare(std::set<std::string> & keys, const std::string & key, F &x){
 
 void EncodingODIM::clear(){
   for (ReferenceMap::iterator it = begin(); it != end(); ++it)
-	  //it->second = 0;
 	  it->second.clear();
 }
 
@@ -143,6 +156,7 @@ void EncodingODIM::update(const EncodingODIM & odim){
 }
 
 void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
+
 	const EncodingODIM::keylist_t & keys = getKeyList();
 
 	//for (EncodingODIM::iterator it = begin(); it != end(); ++it){
@@ -158,13 +172,13 @@ void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
 
 void EncodingODIM::copyFrom(const drain::image::Image & data){
 
-	const drain::VariableMap & m = data.properties;
+	const drain::FlexVariableMap & m = data.properties;
 
-	for (drain::VariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
+	for (drain::FlexVariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
 
 		const iterator oit = find(it->first);
 		if (oit != end()){
-			const drain::Variable & srcValue = it->second;
+			const drain::FlexVariable & srcValue = it->second;
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
@@ -323,3 +337,4 @@ double EncodingODIM::getMax() const {
 
 
 // Rack
+ // REP // REP // REP

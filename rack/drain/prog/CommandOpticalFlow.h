@@ -45,37 +45,6 @@ namespace drain {
 using namespace image;
 
 
-/*
-class FastOpticalFlowOp2 : public FastOpticalFlowOp {
-
-public:
-
-	FastOpticalFlowOp2() : blender(5,5, 'a', 'b', 1) {
-		//parameters.reference("smooth", smooth="", "imageOp[/key:value]");
-		parameters.append(blender.getParameters(), false);
-		//parameters.reference("smooth", smooth="", "[a|g] average, gaussianAverage");
-		//parameters.reference("mix", mix="", "[b|m] mix, max");
-		//parameters.reference("loops", loops="", "[b|m] mix, max");
-		//parameters.reference("smoothing", smoothing="doubleSmoother/coeff:0.98", "imageOp");
-	}
-
-	// std::string smooth;
-	// std::string mix;
-	// std::string loops;
-
-	inline
-	bool preSmooth() const {
-		return !blender.getSmootherKey().empty();
-	}
-
-	mutable
-	BlenderOp blender;
-
-protected:
-
-
-};
-*/
 
 /// Utility for creating a Command that runs FastOpticalFlowOp operator.
 /**

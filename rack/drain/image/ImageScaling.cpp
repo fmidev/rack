@@ -111,7 +111,7 @@ void ImageScaling::adoptScaling(const ImageScaling & srcScaling, const std::type
 					setScale(srcScaling.getScale() * maxS/maxD);
 					//setScale(srcScaling.getScale() * Type::call<Type::maxD>(srcType)/Type::call<Type::maxD>(dstType));
 					if (srcScaling.getOffset() != 0.0){
-						mout.warn() << " offset conversion unimplemented" << mout.endl;
+						mout.warn() << " offset ("<< srcScaling.getOffset() << ") conversion unimplemented "<< mout.endl;
 					}
 					mout.note() << *this << mout.endl;
 				}
@@ -146,56 +146,6 @@ void ImageScaling::adoptScaling(const ImageScaling & srcScaling, const std::type
 			}
 		}
 
-		/*
-		double min = 0.0;
-		double max = 0.0;
-
-		if (srcScaling.isPhysical()){
-			mout.debug(1) << "Src has physical scaling:" <<  srcScaling << ", type=" << Type::getTypeChar(srcType) << mout.endl;
-			min = srcScaling.getMinPhys();
-			max = srcScaling.getMaxPhys();
-		}
-		else if (Type::call<drain::typeIsSmallInt>(dstType)){
-			// First, assign range of the storage type
-			min = drain::Type::call<drain::typeMin, double>(dstType);
-			max = drain::Type::call<drain::typeMax, double>(dstType);
-			if (srcScaling.getScale() != 0.0){
-				min = srcScaling.fwd(min);
-				max = srcScaling.fwd(max);
-				mout.warn() << "Src[" << Type::getTypeChar(srcType) << "], Dst[" << Type::getTypeChar(dstType) << "], ";
-				mout << "guessing physical scale [" <<  min << ',' << max << ']' << mout.endl;
-				//mout.warn() << "mapping src scale (" << srcScaling << ") to type-derived physical range [" << min << ',' << max << "]" << mout.endl;
-			}
-			else {
-				//setPhysicalRange(min, max);
-				//mout.warn() << "Requested physical (min,max) from int type with no scaling (" << img.scaling << ")" <<  mout.endl;
-				mout.warn() << "Assuming absolute scaling for storage type: [" << min << ',' << max << "] (src: " << srcScaling << ") " << mout.endl;
-				//mout.note() << "Setting absolute scaling: " << scaling <<  mout.endl;
-			}
-		}
-		else if (Type::call<drain::typeIsSmallInt>(srcType)){
-
-			// First, assign range of the storage type
-			min = Type::call<drain::typeMin, double>(srcType);
-			min = srcScaling.fwd(min);
-			max = Type::call<drain::typeMax, double>(srcType);
-			max = srcScaling.fwd(max);
-			mout.warn() << "Src[" << Type::getTypeChar(srcType) << "], ";
-			mout << "guessing physical scale [" <<  min << ',' << max << ']' << mout.endl;
-			//mout.debug(1) << "Src of type=" << Type::getTypeChar(srcType) << ", guessing physical scale [" <<  min << ',' << max << ']' << mout.endl;
-		}
-		else {
-			//scaling.setOptimalScale(img.getType(), min, max);
-			mout.warn() << "Could not derive physical scaling from "; // <<  srcScaling << " type=" << Type::getTypeChar(srcType) << mout.endl;
-			mout << "Src[" << Type::getTypeChar(srcType) << "]: " << srcScaling << ", Dst[" << Type::getTypeChar(dstType) << "], ";
-			return;
-		}
-
-		if (dstType != typeid(void))
-			setOptimalScale(dstType, min, max);
-		else
-			setPhysicalRange(min, max);
-		*/
 	}
 
 }  // namespace image

@@ -37,39 +37,57 @@ namespace drain {
 namespace image {
 
 
-//drain::Log iLog;
+void ImageFrame::init(){
 
-//ImageScaling ImageFrame::dummyScaling;
+	properties["name"] = name; // ("security risk", if file paths included by default?)
+
+	properties["type"].link(encoding.type);
+
+	// properties["width"].link(geometry.width);
+	// properties["height"].link(geometry.height);
+
+	properties["scale"].link(encoding.scaling.scale);
+	properties["offset"].link(encoding.scaling.offset);
+	properties["minPhysValue"].link(encoding.scaling.minPhysValue);
+	properties["maxPhysValue"].link(encoding.scaling.maxPhysValue);
+
+	properties["coordinatePolicy"].link(coordinatePolicy.v).fillArray = true;
+
+
+}
 
 void ImageFrame::setStorageType(const std::type_info &type){
 
 	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
 
-	if (type == typeid(void)){
-		unsetType();
-	}
-	else if (type == typeid(bool)){
-		mout.warn() << "storage type 'bool' not supported, using 'unsigned char'" << mout.endl;
-		setStorageType(typeid(unsigned char)); // re-invoke
-	}
-	else if (type == typeid(std::string)){
-		mout.error() << "storage type 'std::string' not applicable to images" << mout.endl;
-		//setType(typeid(unsigned char));
-	}
-	else {
-		caster.setType(type);
-		byteSize = caster.getByteSize();
-		segmentBegin.setType(type);
-		segmentEnd.setType(type);
-	}
-
+	encoding.setType(type);
+	segmentBegin.setType(type);
+	segmentEnd.setType(type);
 
 };
+
+void ImageFrame::adjustBuffer(){
+
+	const size_t s = geometry.getVolume() * encoding.byteSize;
+
+	if (s > 0)
+		buffer.resize(s);
+	else
+		buffer.resize(1);
+
+	bufferPtr = &buffer[0];
+	segmentBegin = (void *)&(*buffer.begin());
+	segmentEnd   = (void *)&(*buffer.end());
+
+
+}
 
 
 /**  Changes the image to view another image instead of its own.
  */
 void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t channelCount, bool catenate){
+
+	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
 
 	try {
 		setStorageType(src.getType());
@@ -78,29 +96,13 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 		throw std::runtime_error("setView: source type undefined");
 	}
 
-	if (buffer.size() > byteSize){
+	if (buffer.size() > encoding.byteSize){// isView() inapplicable, returns false at new images
 		throw std::runtime_error("setView: buffer not empty; non-empty image cannot view another image.");
 	}
 
-	// TODO re/move?
-	/*
-	if (!src.getName().isEmpty()){
-		std::stringstream sstr;
-		sstr << std::string("&") << src.getName();
-		if (channelCount==1)
-			sstr << '[' << channelStart << ']';
-		setName(sstr.str());
-	}
-	*/
-	std::stringstream sstr;
-	sstr << src.getName() << '[' << channelStart;
-	if (channelCount > 1)
-		sstr << ':' << (channelStart+channelCount-1);
-	sstr << ']';
-	setName(sstr.str());
-
+	// getter used, because possibly forwarded view-> view->
 	scalingPtr    = & src.getScaling();
-	propertiesPtr = & src.properties;
+	propertiesPtr = & src.getProperties(); // what about (alpha) channel scaling?
 
 	if (catenate){
 		geometry.setGeometry(src.getWidth(), src.getHeight()*channelCount,1,0);
@@ -130,21 +132,51 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 		*/
 	}
 
-	bufferPtr = & src.bufferPtr[address(channelStart*geometry.getArea()) * byteSize];
-	segmentBegin = & bufferPtr[address(0)];
-	segmentBegin.setType(src.getType());  // TODO
-
-	segmentEnd   = & bufferPtr[address(geometry.getVolume()) * byteSize];
-	segmentEnd.setType(src.getType()); // TODO
-
-	//channelVector.clear();
-	//updateChannelVector(); infinite loop?
-
-	//scaling.setLimits(src.scaling.getMin<double>(), src.scaling.getMax<double>());
-	//scaling.setPhysicalRange(src.getScaling().getMinPhys(), src.getScaling().getMaxPhys());
-	//Limits(src.scaling.getMin<double>(), src.scaling.getMax<double>());
-	//scaling.setScale(src.getScaling().getScale());
 	setCoordinatePolicy(src.getCoordinatePolicy());
+
+
+	bufferPtr    = & src.bufferPtr[address(channelStart*geometry.getArea()) * encoding.byteSize];
+
+	// NOTE: (void *) needed, because bufferPtr is <unsigned char *> while these segment iterators vary.
+	segmentBegin = (void *)& bufferPtr[address(0)];
+	segmentEnd   = (void *)& bufferPtr[address(geometry.getVolume()) * encoding.byteSize];
+
+	segmentBegin.setType(src.getType());
+	segmentEnd.setType(src.getType());
+
+
+	// Compose name by appending index to the source name.
+	std::stringstream sstr;
+	sstr << src.getName() << '[' << channelStart;
+	if (channelCount > 1)
+		sstr << ':' << (channelStart+channelCount-1);
+	sstr << ']';
+	setName(sstr.str());
+
+	/*
+	std::cerr << __FUNCTION__ << '\n';
+	src.toOStr(std::cerr);
+	std::cerr << '\n';
+	toOStr(std::cerr);
+	std::cerr << '\n';
+	*/
+
+}
+
+void ImageFrame::copyData(const ImageFrame & src){
+
+	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+	mout.debug() << "start" << mout.endl;
+
+	if (getGeometry() != src.getGeometry()){
+		mout.error() << "conflicting geometries: " << getGeometry() << " vs. " << src.getGeometry() << mout.endl;
+		return;
+	}
+
+	const_iterator sit = src.begin();
+	for (iterator it = begin(); it != end(); ++it,++sit)
+		*it = *sit;
+
 }
 
 
@@ -152,10 +184,12 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 /// Prints images geometry, buffer size and type information.
 void ImageFrame::toOStr(std::ostream & ostr) const {
 
-	ostr << "Image '"<< getName() << "' ";
 	if (isView())
-		ostr << '@';
-	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getByteSize()*8) << 'b';
+		ostr << "View ";
+	else
+		ostr << "Image";
+	ostr << " '"<< getName() << "'\t";
+	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getByteSize()*8) << 'b';
 	//if (typeIsIntegerType() || (scaling.isScaled()))
 	const ImageScaling & s = getScaling();
 	if (s.isScaled() || s.isPhysical()){
@@ -168,7 +202,7 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	//	ostr  << '[' << scaling.getMinPhys() << ',' << scaling.getMaxPhys() << ']';
 	//ostr << ' ' << '[' << scaling.getMin<double>() <<  ',' << scaling.getMax<double>() << ']' << ' ' << scaling.getScale() << ' ';
 	ostr << ' ' << 'c' << getCoordinatePolicy();
-	//ostr << ' ' << (size_t) segmentBegin << ' ' << (size_t) segmentEnd << ' ';
+	ostr << ' ' << (size_t) segmentBegin << ' ' << (size_t) segmentEnd << ' ';
 
 
 }
@@ -176,32 +210,44 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 
 size_t ImageFrame::getChannelIndex(const std::string & index) const {
 
-	// consider: overflow check
 	// consider: conv to lower case
 
-	if (index.empty())
+	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+
+
+	if (index.empty()){
+		mout.warn() << "index str empty, returning 0" << mout.endl;
 		return 0;
+	}
+
+	size_t i = 0;
 
 	switch (index.at(0)) {
 	case 'r':  // red
-		return 0;
+		i = 0;
+		break;
 	case 'g':  // green
-		return 1;
+		i =  1;
+		break;
 	case 'b':  // blue
-		return 2;
+		i =  2;
+		break;
 	case 'a':  // alpha
-		return getImageChannelCount();
+		i =  getImageChannelCount();
+		break;
 	default:
 		/// Number
 		std::stringstream sstr(index);
-		size_t i;
 		sstr >> i;
 		if ((i == 0) && (index != "0"))
 			throw std::range_error(index + "<-- Image::getChannelIndex: unknown channel symbol");
-		else
-			return i;
 	}
 
+	if (i >= getChannelCount()){
+		mout.warn() << "index " << i << " larger than channelCount " << getChannelCount() << mout.endl;
+	}
+
+	return i;
 
 }
 

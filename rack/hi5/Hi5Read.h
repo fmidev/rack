@@ -101,7 +101,7 @@ public:
 	void h5AttributeToData(hid_t aid, hid_t datatype, drain::Variable & attribute, size_t elements=1){
 
 		attribute.setType(typeid(T));
-		attribute.resize(elements);
+		attribute.setSize(elements);
 
 		int status = H5Aread(aid,datatype, attribute.getPtr());
 

@@ -36,13 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "util/CastableIterator.h"
 #include "util/VariableMap.h"
 #include "util/TypeUtils.h"
-
-/*
-#include "Geometry.h"
-#include "Coordinates.h"
-#include "ImageLike.h"
-#include "ImageScaling.h"
-*/
 #include "ImageFrame.h"
 
 
@@ -56,8 +49,10 @@ namespace image
 
 /// Image with static geometry
 /**
- *    ImageFrame is an image which has predefined area and channel geometry.
- *    Its pixel array is readable and writable.
+ *    ImageFrame is an image which has a fixed type and geometry.
+ *
+ *    The pixel array is readable and writable.
+ *    Scaling and coordinate handlers can be altered.
  *
  */
 class Channel : public ImageFrame {
@@ -70,12 +65,12 @@ public:
 
 	inline
 	Channel(const Channel & channel){
-		scaling.set(channel.getScaling());
+		encoding.scaling.set(channel.getScaling());
 	};
 
 	virtual inline
 	Channel & getChannel(size_t i){
-		if (i!=0)
+		if (i != 0)
 			throw std::runtime_error("Channel: getChannel(i) with i>0");
 		return *this;
 	};
@@ -83,7 +78,7 @@ public:
 
 	virtual inline
 	const Channel & getChannel(size_t i) const {
-		if (i!=0)
+		if (i != 0)
 			throw std::runtime_error("Channel: getChannel(i) with i>0");
 		return *this;
 	}
@@ -103,10 +98,8 @@ public:
 
 };
 
-/// Image with static geometry
+/// View to a single channel.
 /**
- *    ImageFrame is an image which has predefined area and channel geometry.
- *    Its pixel array is readable and writable.
  *
  */
 class ChannelView : public Channel {
@@ -123,6 +116,11 @@ public:
 	};
 
 	inline
+	ChannelView(const ImageFrame & src, size_t channel = 0) {
+		setView(src, channel);
+	};
+
+	inline
 	void setView(const ImageFrame & src, size_t channel){
 		ImageFrame::setView(src, channel, 1);
 		geometry.setChannelCount(1,0);
@@ -135,32 +133,9 @@ public:
 	}
 
 
-protected:
-
 
 };
 
-
-/*
-inline // tODO REMOVE
-std::ostream & operator<<(std::ostream &ostr, const Channel & src){
-	src.toOStr(ostr);
-	return ostr;
-}
-*/
-
-
-
-//typedef ImageFrame Channel; // Maybe misleading
-
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const Channel &image){
-	//ostr << image.getGeometry() << ' ' << 'X';
-	image.toOStr(ostr);
-	return ostr;
-}
-*/
 
 /// Multi-channel ImageFrame.
 class MultiChannel : public ImageFrame {

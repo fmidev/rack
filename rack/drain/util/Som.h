@@ -280,7 +280,7 @@ protected:
 
 
 /*
-    For vectors and other objects having 
+    For vectors and str objects having 
  */
 template <class T>
 double euclideanDistance2(const T & x1, const T & x2) {

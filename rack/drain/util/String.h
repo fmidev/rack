@@ -95,7 +95,7 @@ public:
 	void replace(const std::string &src, const std::string &from, const std::string & to, std::string & dst);
 
 
-	/// Returns a string without leading and trailing whitespace (or other undesired chars).
+	/// Returns a string without leading and trailing whitespace (or str undesired chars).
 	static
 	std::string trim(const std::string &s, const std::string &trimChars=" \t\n");
 

@@ -112,11 +112,6 @@ class AccumulationArray
 public:
 
 	friend class AccumulationMethod;
-	//LinearScaling dataScaling;
-	//LinearScaling dataScaling;
-
-	//double MINIMUM_NEW;
-	//double NO_DATA_NEW;
 
 	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
 	AccumulationArray(unsigned int width = 0, unsigned int height = 0){
@@ -134,11 +129,6 @@ public:
 	/// Resets the accumulation array values to undetectValue. Does not change the geometry.
 	void clear();
 
-	/// NEW. Applied by setMethod(Variable )
-	// AccumulationMethod * accumulationRule;
-
-	//void setAccumulationRule(const AccumulationMethod & rule);
-
 
 	/// Returns the width of the accumulation array.
 	inline
@@ -147,14 +137,6 @@ public:
 	/// Returns the height of the accumulation array.
 	inline
 	unsigned int getHeight() const { return height; };
-
-
-
-
-	/// Given the code of an extracted quantity, returns the name of the quantity
-	// todo static!
-	//std::string getQuantityName(char c) const;
-
 
 
 	bool debug;
@@ -180,14 +162,9 @@ public:
 	// actual data \f$ sum w_i^r x_i^{2p} \f$
 	ImageT<double> data2;
 
-	//inline
-	//void setConverter(AccumulationConverter & c) const { this->converter = &c; };
-
-	//mutable AccumulationConverter * converter;
 
 protected:
 
-	//AccumulationConverter defaultConverter;
 
 	unsigned int width;  // TODO: size_t ?
 	unsigned int height;

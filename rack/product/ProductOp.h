@@ -68,7 +68,7 @@ using namespace drain::image;
 /** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree<NodeH5>.
  *
  *  Input can be
- *  - polar sweeps, volumes or even other polar products
+ *  - polar sweeps, volumes or even str polar products
  *  - Cartesian single-radar products or composites.
  *
  *  Basically, there are two kinds of polar processing
@@ -378,19 +378,23 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	std::list<std::string> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	DataSelector::getPaths(src,  this->dataSelector, dataPaths);
+	//std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	//  this->dataSelector.getPathsNEW(src, dataPaths); // RE2
+	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
-	std::set<std::string> parents;
+	std::set<ODIMPath> parents;
 	int index = 0;
 
-	for (std::list<std::string>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 
-		const std::string parent = DataTools::getParent(*it);
-		//const double elangle = src(parent)["where"].data.attributes["elangle"];  // PATH
+		//const std::string parent = DataTools::getParent(*it);
+		ODIMPath parent = *it;
+		parent.pop_back();
+
 
 		mout.debug(2) << "check "  << *it << mout.endl;
 
@@ -410,15 +414,15 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	//ODIMPath dataSetPath;
-	ODIMPathElem parent(BaseODIM::DATASET, 1); // /dataset1
-	ODIMPathElem child(BaseODIM::DATA, 1); // /dataset1
+	ODIMPathElem parent(ODIMPathElem::DATASET, 1); // /dataset1
+	ODIMPathElem child(ODIMPathElem::DATA, 1); // /dataset1
 
 	mout.note() << "append selector" <<  ProductBase::appendResults << mout.endl;
-	if (ProductBase::appendResults.getType() == BaseODIM::DATASET){
-		DataTools::getNextChild(dst, parent);
+	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
+		DataSelector::getNextChild(dst, parent);
 	}
 
-	DataTools::getNextChild(dst[parent], child);
+	DataSelector::getNextChild(dst[parent], child);
 
 	mout.note() << "storing product in path: " <<  parent << '|' << child << mout.endl;
 	//mout.debug(2) << "storing product in path: "  << dataSetPath << mout.endl;
@@ -505,3 +509,5 @@ void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<
 #endif /* RACKOP_H_ */
 
 // Rack
+ // REP
+ // REP // REP // REP // REP

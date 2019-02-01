@@ -119,8 +119,6 @@ public:
 	inline
 	void setNormalScale(const std::type_info & t){
 
-		//if ((t == typeid(char)) || (t == typeid(unsigned char)) || (t == typeid(short)) || (t == typeid(unsigned short)))
-
 		if (Type::call<drain::typeIsSmallInt>(t))
 			setScale(1.0/drain::Type::call<drain::typeMax,double>(t), 0.0);
 		else  // warn? (esp. for int and long int)

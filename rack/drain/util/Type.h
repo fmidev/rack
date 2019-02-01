@@ -199,9 +199,7 @@ public:
 		else if (t == typeid(char *))
 			return '#';
 		else {
-			//Logger mout(monitor,"Type::getTypeChar(t)");
-			//mout.error() << " undefined type: '" << t.name() << "'" << mout.endl;
-			return '*';
+			return 'x'; // = "extension"
 		}
 	}
 
@@ -217,6 +215,7 @@ public:
 	T call(const std::type_info & t){  // ORIGINAL
 
 		//std::cout << "Calling call with " << t.name() << " (" << getTypeChar(t) << ")\n";
+		// NOTE: STL uses string comparison!!!
 		if (t == typeid(char)){
 			return F::template callback<char,T>();
 		}
@@ -266,7 +265,7 @@ public:
 
 	/// New, preferred implementation: a single if-then structure once and for all.
 	/**
-	 *   \tparam F - struct implementing: T callback<T>()
+	 *   \tparam F - struct implementing: T callback<S>()
 	 *   \tparam D - destination type
 	 *   \tparam S - selector type (char, std::string, drain::Type)
 	 */
@@ -280,8 +279,8 @@ public:
 	/**
 	 *   Simpler template with two arguments
 	 *
-	 *   \tparam F - struct implementing: T callback<T>() AND value_t (replacing destination type S)
-	 *   \tparam S  - selector type (char, std::string, drain::Type)
+	 *   \tparam F - struct implementing: T::callback<S>() AND value_t (replacing destination type S)
+	 *   \tparam S - selector type (char, std::string, drain::Type)
 	 */
 	template <class F, class S>
 	static 	inline
@@ -290,13 +289,28 @@ public:
 	}
 
 
-	/// Static function call with a single parameter.
+	/// Static function call without parameters on a single target of type T.
 	/**
 	 *   Maps std::type_info to the corresponding template, calling a desired modifier function.
 	 *
-	 *   \tparam F - struct that implements static callback<type>(T & target), where \c type is basetype or std::string.
+	 *   \tparam F - struct that implements static void callback<type>(T & target), where \c <type> is basetype or std::string.
 	 *   \tparam T - target object class
 	 *
+	 *  Example struct F:
+	 *  \code
+
+	    class typesetter {
+        public:
+  	      // param S - target type
+	      // param T - type to be analyzed
+	      template <class S, class T>
+	      static
+	      void callback(T & target){
+		    target.template setType<S>();
+          }
+        };
+
+	    \endcode
 	 *
 	 */
 	template <class F, class T>
@@ -329,8 +343,6 @@ public:
 			F::template callback<std::string>(target);
 		else if (t == typeid(void)) {
 			F::template callback<void>(target);
-			//c.setType<void>();
-			//unsetType();
 		}
 		else {
 			throw std::runtime_error(std::string(": unimplemented type: ") + t.name());

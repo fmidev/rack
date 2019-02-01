@@ -85,7 +85,7 @@ void CartesianBBoxTest::exec() const {
 
 	mout.debug() << ": lon=" << lon << ", lat=" << lat << ", range=" << range << mout.endl;
 
-	// TODO: other than aeqd?
+	// TODO: str than aeqd?
 	RadarProj pRadarToComposite;
 	pRadarToComposite.setSiteLocationDeg(lon, lat);
 	pRadarToComposite.setProjectionDst(resources.composite.getProjection());
