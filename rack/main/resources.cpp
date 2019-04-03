@@ -47,6 +47,7 @@ const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinateP
 RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
 		currentGrayImage(NULL), inputSelect(0), scriptExec(scriptParser.script) {
 	polarAccumulator.setMethod("WAVG");
+	andreSelect = "dataset=1,count=1";
 }
 
 void RackResources::setSource(HI5TREE & dst, const drain::Command & cmd){
@@ -127,8 +128,13 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	drain::Logger mout("RackResources", __FUNCTION__);
 
-	ODIMPath path;
+	/*
+	std::list<ODIMPath> paths;
+	imageSelector.getPathsNEW(*currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	mout.info() << "selected: " << paths.size() << mout.endl;
+	*/
 
+	ODIMPath path;
 	// NOTE  ODIMPathElem::ARRAY cannot be searched
 	if (imageSelector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
@@ -140,9 +146,10 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 			// mout.warn() << "selected: " << img.properties << mout.endl;
 			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded
 			currentImage = &img;
+			currentGrayImage = currentImage;
 			//img.getCoordinatePolicy().
 			//img.properties["coordinatePolicy"] = 3; //="1,2,3,4";
-			//mout.warn() << "selected: " << img.properties << mout.endl;
+			mout.debug(1) << "selected: " << *currentImage << mout.endl;
 			return true;
 		}
 		else {

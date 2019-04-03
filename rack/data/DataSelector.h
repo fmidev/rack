@@ -428,7 +428,7 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 	PolarODIM odim;
 
 	if (path.empty())
-		mout.debug() << "empty path (ok)"  << mout.endl;
+		mout.debug(3) << "empty path (ok)"  << mout.endl;
 	else if (!src.hasPath(path)){
 		mout.warn() << "data structure has no path:"  << path << mout.endl;
 		return false;
@@ -439,31 +439,32 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 
 
 	// Selector contains a rule for desired quantity. (This also indicates that quantityRE is set).
-	const bool QUANTITY_MATCH_REQUIRED = !quantity.empty();
+	const bool QUANTITY_CONSTRAINT = !quantity.empty();
 
 
 	// Changed to true, if a descendant contains the desired quantity.
-	bool groupMatch = false;
+	bool quantityGroupOK = QUANTITY_CONSTRAINT ? false : true;
 
 	//const bool IS_ROOT = (path.size() == 1);
 	std::set<ODIMPathElem> datasets;
 
 	for (HI5TREE::const_iterator it = s.begin(); it != s.end(); ++it) {
 
-		ODIMPathElem child(it->first);
-		mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t child=" << "'" << child <<"' (" << child.group <<  ") include=" << child.belongsTo(groupFilter) << mout.endl;
-		bool quantityMatch = false;
+		//ODIMPathElem child(it->first);
+		const ODIMPathElem & currentElem = it->first;
+		//mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") include=" << currentElem.belongsTo(groupFilter) << mout.endl;
+		mout.debug(3) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
 
 
-		if (child.is(ODIMPathElem::DATASET)){ // what about quality?
-			if (!dataset.isInside(child.index)){
-				mout.debug(3) << "dataset " << child.index << " not in [" <<  dataset << "], skipping" << mout.endl;
+		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
+			if (!dataset.isInside(currentElem.index)){
+				mout.debug(3) << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
 				continue;
 			}
 		}
-		else if (child.is(ODIMPathElem::DATA)){ // what about quality?
-			if (!data.isInside(child.index)){
-				mout.debug(3) << "data " << child.index << " not in [" <<  data << "], skipping" << mout.endl;
+		else if (currentElem.is(ODIMPathElem::DATA)){ // what about quality?
+			if (!data.isInside(currentElem.index)){
+				mout.debug(3) << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
 				continue;
 			}
 		}
@@ -479,9 +480,9 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 
 		// In indexed DATASET/QUALITY/DATA groups, images are the metadata containers
 		const drain::image::Image & d = node.dataSet;
-		//mout.note() << "reconsidering " << child << ':' << d.properties["what:quantity"] << mout.endl;
+		//mout.note() << "reconsidering " << currentElem << ':' << d.properties["what:quantity"] << mout.endl;
 
-		if (child.is(ODIMPathElem::DATASET)){ // what about quality?
+		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
 			if (d.properties.hasKey("where:elangle")){
 				if (!elangle.isInside(d.properties["where:elangle"])){
 					mout.debug() << "outside elangle range"<< mout.endl;
@@ -490,23 +491,24 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 			}
 		}
 
-		//if (child.is(ODIMPathElem::DATA) || (child.is(ODIMPathElem::QUALITY) &&  child.belongsTo(groupFilter)) ){
-		if (QUANTITY_MATCH_REQUIRED){
+		bool quantityOK = true;
+		if (QUANTITY_CONSTRAINT){
 
-			if (child.is(ODIMPathElem::ARRAY)){
+			// IS this check needed (here)? Consider above: QUANTITY_CONSTRAINT && (currentElem.is(ODIMPathElem::DATA) || currentElem.is(ODIMPathElem::QUALITY) )
+			if (currentElem.is(ODIMPathElem::ARRAY)){
 				if (groupFilter & ODIMPathElem::ARRAY){
-					mout.warn() << "path " << path << '/' << child << " will not be detected; ARRAY does not support quantity (request=" << quantity << ")" << mout.endl;
+					mout.warn() << "path " << path << '/' << currentElem << " will not be detected; ARRAY does not support quantity (request=" << quantity << ")" << mout.endl;
 				}
 			}
 
-			if (child.is(ODIMPathElem::DATA) || child.is(ODIMPathElem::QUALITY) ){
+			if (currentElem.is(ODIMPathElem::DATA) || currentElem.is(ODIMPathElem::QUALITY) ){
 
 				if (d.properties.hasKey("what:quantity")){
 
-					quantityMatch = quantityRE.test(d.properties["what:quantity"]);
-					if (quantityMatch){
+					quantityOK = quantityRE.test(d.properties["what:quantity"]);
+					if (quantityOK){
+						quantityGroupOK = true;
 						mout.debug() << it->first << ":\t found quantity '" << d.properties["what:quantity"] << "'" << mout.endl;
-						groupMatch = true;
 					}
 					else {
 						mout.debug(1) << it->first << ":\t quantity '" << quantity << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
@@ -514,9 +516,9 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 					}
 				}
 				else {
-					if (child.belongsTo(groupFilter))
+					if (currentElem.belongsTo(groupFilter))
 						mout.warn() << "testing '" << quantity << "': no what:quantity in " << path << '/' << it->first  << mout.endl;
-					// else check  child.is(ODIMPathElem::QUALITY) and QIND?
+					// else check  currentElem.is(ODIMPathElem::QUALITY) and QIND?
 				}
 			}
 		}
@@ -524,209 +526,67 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 
 
 		ODIMPath p(path);
-		p << child;
+		p << currentElem;
 
-		/// Recursion: traverse descendants
+		/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
 		//mout.warn() << "descending to " << p << mout.endl;
 		T descendantPaths;
-		const bool descendantMatch = getPathsNEW(src, descendantPaths, quantityRE, groupFilter, p); // note: original "root" src
+		const bool quantitySubtreeOK = getPathsNEW(src, descendantPaths, quantityRE, groupFilter, p) ; // note: original "root" src
 
-		if (descendantMatch)
-			groupMatch = true;
+		if (quantitySubtreeOK)
+			quantityGroupOK = true;
 
 
-		if (child.belongsTo(groupFilter)){ // If quantity match requiredAccept DATASET i
+		/// Accept (elevation and quantities)
+		bool accept = true;
 
-			bool accept = !QUANTITY_MATCH_REQUIRED;
-			accept = accept || ((child.is(ODIMPathElem::DATA) || child.is(ODIMPathElem::QUALITY)) && quantityMatch);
-			accept = accept || (child.is(ODIMPathElem::DATASET) && descendantMatch);
+		if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			if (!quantityOK)
+				accept = false;
+		}
+		else if (currentElem.is(ODIMPathElem::DATASET)){
+			if (!quantitySubtreeOK)
+				accept = false;
+		}
 
-			if (accept){
+		if (accept){
 
-				// DATASET counter
-				// Otherways accepted now, only check the counter. Counter must not be incremented before this point.
-				if (child.is(ODIMPathElem::DATASET)){
-					datasets.insert(child);
-					mout.debug(3) << "now dataset count=" << datasets.size() << " latest=" << child << mout.endl;
-					if (datasets.size() > count){
-						mout.debug(3) << " count=" << count << " exceeded, returning" << mout.endl;
-						return true; // = dump this child and its descendants
-					}
+			// COUNTER. Otherways accepted now, only check the counter. Counter must not be incremented before this point.
+			if (currentElem.is(ODIMPathElem::DATASET)){
+				datasets.insert(currentElem);
+				mout.debug(2) << "now dataset count=" << datasets.size() << " latest=" << currentElem << mout.endl;
+				if (datasets.size() > count){
+					mout.debug(1) << " count=" << count << " exceeded, returning" << mout.endl;
+					return true; // = dump this currentElem and its descendants
 				}
+			}
 
-				mout.debug(3) << "accepted " << p << mout.endl;
+			if (currentElem.belongsTo(groupFilter)){
+				mout.debug(1) << "accepted " << p << mout.endl;
 				odim.clear();
 				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
 				addPathT(pathContainer, odim, p);
-
+				mout.debug(2) << "pathContainer size=" <<  pathContainer.size() << mout.endl;
 			}
-
-
 		}
+
+
+		// Note: all the descendantPaths (if exist) are confirmed already in the inner call.
+		mout.debug(3) << "adding descendants: " << descendantPaths.size() << mout.endl;
 
 		// Append descendant paths now (all have been accepted already)
 		for (typename T::const_iterator it = descendantPaths.begin(); it != descendantPaths.end(); ++it){
 			pathContainer.insert(pathContainer.end(), *it);
+			//pathContainer.insert(*it);
 		}
+
+		//mout.warn() << "pathContainer size=" <<  pathContainer.size() << mout.endl;
 
 	}
 
-	return groupMatch;
+	return quantityGroupOK;
 }
 
-
-/*
-template <class T>
-void DataSelector::getPaths(const HI5TREE &src, T & container, const std::string & path, const std::string &quantity,
-		unsigned int index, unsigned int count, double elangleMin, double elangleMax) {
-
-	drain::Logger mout("DataSelector", __FUNCTION__);
-
-	//const drain::RegExp quantityRE(std::string("^")+quantity+std::string("$"));
-	const drain::RegExp quantityRE(quantity);
-
-	std::list<ODIMPath> l0;
-
-	/// Step 1: get paths that match pathRegExp TreeT
-	mout.debug(10) << "getKeys " << path << mout.endl;
-	src.getKeys(l0, path);
-	//src.getKeys(l0, pathRegExp);
-
-	std::set<std::string> roots;
-	unsigned int counter = 0; // (this was needed as count would go -1 otherways below)
-
-	/// Step 2: add paths that match path and quantity regexps and are with elevation limits.
-	PolarODIM odim;
-	for (std::list<ODIMPath>::iterator it = l0.begin(); it != l0.end(); ++it) {
-
-		//mout.debug(2) << *it << mout.endl;
-		const hi5::NodeHi5 & node = src(*it).data;
-		if (node.noSave){
-			mout.debug() << "noSave data, ok: " << *it << mout.endl;
-			//continue;
-		}
-
-		const drain::image::Image & d = node.dataSet;
-		odim.clear();
-		odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
-		// odim.set() would be bad! Looses precision in RefMap/Castable << (std::string) << Variable
-
-		if (!quantityRE.test(odim.quantity)){
-			mout.debug(8) << *it << "\n\t quantity '" << quantityRE.toStr() << "' !~ '" << odim.quantity << "'" << mout.endl;
-			// l.erase(it2);
-			continue;
-		}
-
-		if ((odim.elangle < elangleMin) || (odim.elangle > elangleMax))
-		{
-			mout.debug(8) << "elangle inapplicable " << odim.elangle << mout.endl;
-			// l.erase(it2);
-			continue;
-		}
-
-		// Outside index check, because mostly applied by count check as well.
-		const std::string root = it->substr(0, it->find('/', 1));  // typically dataset1/
-
-		if (index > 0){ // "Log mode on"
-
-			// mout.warn() << "index studying " << *it << '\t' << root << mout.endl;
-			if (roots.find(root) == roots.end()){ // = new
-				--index;
-				if (index == 0){ // done!
-					// mout.warn() << "index ACCEPTED " << *it << '\t' << root << mout.endl;
-					roots.clear(); // re-use for count (below)
-				}
-				else {
-					roots.insert(root);
-					continue;
-				}
-			}
-			else
-				continue;
-		}
-
-
-		if (roots.find(root) == roots.end()){ // = not already in the set
-			++counter;
-			if (counter > count)
-				return;
-			roots.insert(root);
-		}
-
-
-		// mout.warn() << "counter(" << counter << ") ACCEPTED " << *it << '\t' << root << mout.endl;
-		addPathT(container, odim, *it);
-
-	}
-
-}
-*/
-
-
-
-/*
-template <class T>
-bool DataSelector::getQualityPaths(const HI5TREE & srcRoot, const ODIMPath & datapath, T & qualityPaths) {
-
-	drain::Logger mout("DataSelector", __FUNCTION__);
-
-	std::list<ODIMPath> paths;
-	srcRoot.getPaths(paths);
-
-	bool result;
-
-	for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); it++){
-		if (it->back().is(ODIMPathElem::QUALITY)){
-			ODIMPath p = *it;
-			p << ODIMPathElem(ODIMPathElem::ARRAY);
-			if (addPathT(qualityPaths, p))
-				result = true;
-		}
-	}
-
-	return result;
-	//return (qualityPaths.size() > 0);
-}
-*/
-
-/*
-bool DataSelector::getQualityPaths(const HI5TREE & srcRoot, const ODIMPath & datapath, T & qualityPaths) {
-
-	drain::Logger mout("DataSelector", __FUNCTION__);
-
-	mout.debug(1) << datapath << mout.endl;
-
-	const size_t lStart = datapath[0]=='/' ? 1 : 0;
-
-	size_t l = datapath.length();
-
-	while (l > lStart) {
-
-		const std::string parentPath = datapath.substr(lStart, l);
-
-		mout.debug(12) << "checking path: " << parentPath << mout.endl;
-		const HI5TREE & src = srcRoot(parentPath);
-
-		/// Iterate children (for the srcRoot[datapath], actually its siblings)
-		for (HI5TREE::const_iterator it = src.begin(); it != src.end(); it++){
-			mout.debug(14) << "checking subpath: " << it->first << mout.endl;
-			if (it->second["what"].data.attributes["quantity"].toStr() == "QIND" ){  // QIND
-				mout.debug(5) << "found:" << it->first << mout.endl;
-				//qualityPaths.push_back(parentPath + '/' + it->first + "/data");
-				if (addPathT(qualityPaths, parentPath + '/' + it->first + "/data"))
-					return true;
-				// returns if std::string, continues if list
-			}
-		}
-
-		l = datapath.rfind('/', l-1);
-		if (l == std::string::npos)
-			l = lStart;
-	}
-
-	return (qualityPaths.size() > 0);
-}
-*/
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){

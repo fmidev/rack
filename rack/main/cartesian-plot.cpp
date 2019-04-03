@@ -35,8 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/File.h>
-//#include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+
+//#include <drain/imageops/RecursiveRepairerOp.h>
+#include <drain/imageops/BlenderOp.h>
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -146,10 +147,16 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	DistanceTransformFillLinearOp  & dist = distLinear;
 	*/
 
-	RecursiveRepairerOp recOp;  // slow, smooth
-	recOp.width = 5;
-	recOp.height = 5;
-	recOp.loops = loops;
+	//RecursiveRepairerOp recOp;  // slow, smooth
+
+	// 5x5 window, block averaging, maximum-mixer
+	BlenderOp recOp(5,5, 'a', 'm', 1);
+
+	//recOp.conf.width  = 5;
+	//recOp.conf.height = 5;
+	//recOp.width = 5;
+	//recOp.height = 5;
+	//recOp.loops = loops;
 	//recOp.decay = decay;
 
 	/*

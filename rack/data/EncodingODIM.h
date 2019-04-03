@@ -91,6 +91,11 @@ public:
 		updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
 	};
 
+	inline
+	EncodingODIM(const drain::image::Image & image){
+		initFromImage(image);
+	};
+
 
 	inline
 	EncodingODIM & operator=(const EncodingODIM & odim) {
@@ -299,9 +304,9 @@ protected:
 private:
 
 	virtual // must
-	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
+	void init(group_t initialize = ODIMPathElem::ALL_LEVELS);
 
-
+	void initFromImage(const drain::image::Image & img);
 
 };
 

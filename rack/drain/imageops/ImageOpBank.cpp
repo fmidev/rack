@@ -68,7 +68,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "QualityMixerOp.h"
 #include "QualityOverrideOp.h"
 #include "QuantizatorOp.h"
-#include "RecursiveRepairerOp.h"
+//#include "RecursiveRepairerOp.h"
 #include "ResizeOp.h"
 #include "RunLengthOp.h"
 //#include "image/SegmentProber.h"
@@ -179,6 +179,8 @@ ImageOpBank & getImageOpBank() {
 			bank.add(fuzzyBell2);
 			static UnaryFunctorOpCloner<FuzzyStep<double> > fuzzyStep;
 			bank.add(fuzzyStep);
+			static UnaryFunctorOpCloner<FuzzyStepsoid<double> > fuzzyStepSoid;
+			bank.add(fuzzyStepSoid);
 			static UnaryFunctorOpCloner<FuzzyTriangle<double> > fuzzyTriange;
 			bank.add(fuzzyTriange);
 
@@ -309,8 +311,8 @@ ImageOpBank & getImageOpBank() {
 			static ImageOpCloner<ResizeOp> resize;
 			bank.add(resize);
 
-			static ImageOpCloner<RecursiveRepairerOp> recursiveRepairer;
-			bank.add(recursiveRepairer);
+			//static ImageOpCloner<RecursiveRepairerOp> recursiveRepairer;
+			//bank.add(recursiveRepairer);
 
 			static ImageOpCloner<RunLengthHorzOp> runLengthHorz;
 			bank.add(runLengthHorz);

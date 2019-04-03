@@ -244,7 +244,7 @@ void Castable::assignString(const std::string &s){
 		StringTools::split(s, l, inputSeparator);
 		requestSize(l.size()); // check if true?
 		if (l.size() > getElementCount()) // or throw excp?
-			std::cerr << __FUNCTION__ << ": provided " << l.size() << " elements, assigning: "<< getElementCount() << std::endl;
+			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": provided " << s << " with "<< l.size() << " elements, assigning: "<< getElementCount() << std::endl;
 		// Will suggest string type, because s is a string...
 		assignContainer(l);
 	}

@@ -78,7 +78,7 @@ public:
 	 *  \param x   - target variable to be linked
 	 */
 	template <class F>
-	void reference(const std::string & key, F &x, const std::string & unit = std::string()){
+	Referencer & reference(const std::string & key, F &x, const std::string & unit = std::string()){
 
 		if (find(key) == end()) // not  already referenced
 			keyList.push_back(key);
@@ -89,6 +89,7 @@ public:
 		// Link
 		r.link(x);
 		unitMap[key] = unit;
+		return r;
 	}
 
 
@@ -98,11 +99,19 @@ public:
 	 *  \param x   - target variable to be linked
 	 */
 	template <class F>
-	void referenceTop(const std::string & key, F &x, const std::string & unit = std::string()){
+	Referencer & referenceTop(const std::string & key, F &x, const std::string & unit = std::string()){
+
 		if (find(key) != end()) // already referenced
 			keyList.push_front(key);
-		std::map<std::string,Referencer>::operator[](key).link(x);
+
+		//Referencer & r = std::map<std::string,Referencer>::operator[](key).link(x);
+		Referencer & r = std::map<std::string,Referencer>::operator[](key);
+		r.setSeparator(arraySeparator); // applicable, if array type element
+		// Link
+		r.link(x);
+
 		unitMap[key] = unit;
+		return r;
 	}
 
 

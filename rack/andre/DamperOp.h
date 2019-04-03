@@ -89,8 +89,12 @@ protected:
 	//void filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstDataRoot, const std::string &path) const;
 
 	// void filterImage(const PolarODIM & odim, Image &data, Image &quality) const;
+	// virtual	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
+
 	virtual
-	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
+	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
+
+
 };
 
 

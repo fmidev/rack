@@ -115,11 +115,11 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 			if (LOCALQUALITY){
 				// TODO if (REQUIRE_STANDARD_DATA){ ?
 				mout.warn() << "using local quality data" << mout.endl;
-				processData(srcData, dstData);
+				processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 			}
 			else if (DATASETQUALITY) {
-				mout.warn() << "using daatset level data" << mout.endl;
-				processData(srcData, srcDataSetQualityIndex, dstData);
+				mout.warn() << "using dataset level data" << mout.endl;
+				processData(srcData, srcDataSetQualityIndex, dstData, dstDataSet.getQualityData());
 			}
 			else {
 				mout.note() << "no quality data for quantity=" << it->first << " elangle=" << it->second.odim.elangle << ", skipping " << mout.endl;
@@ -134,27 +134,28 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
 	drain::Logger mout(name, __FUNCTION__);
-	mout.info() << "delegate" << mout.endl;
-	processData(srcData, srcData.getQualityData(), dstData);
+
+	mout.error() << "explicitly selected quality field required, skipping" << mout.endl;
+
+	//processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 
 }
 
-void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQIND, PlainData<PolarDst> & dstData) const {
+void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQIND,
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
 
 	drain::Logger mout(name, __FUNCTION__);
 
 	mout.debug(1) << "start" << mout.endl;
-
-	//PlainData<PolarSrc> srcQIND = srcData.getQualityData();
+	// PlainData<PolarSrc> srcQIND = srcData.getQualityData();
 
 	if (srcQIND.data.isEmpty()){
 		mout.warn() << " src QIND empty, skipping..." << mout.endl;
 		return;
 	}
 
-	File::write(srcQIND.data, "srcQIND.png");
-
+	// File::write(srcQIND.data, "srcQIND.png");
 	// TODO FIX use QualityThresholdOp!
 
 	const double t = threshold * srcQIND.odim.scaleInverse(1.0);

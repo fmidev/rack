@@ -31,9 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef BIRD_H_
 #define BIRD_H_
 
-//#include "PolarProductOp.h"
-#include <drain/imageops/ImageOp.h>
-#include "DetectorOp.h"
+#include <andre/DetectorOp.h>
+#include <data/Data.h>
+#include <image/Image.h>
+#include <imageops/ImageOp.h>
+#include <radar/EchoClasses.h>
+#include <string>
 
 using namespace drain::image;
 

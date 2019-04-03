@@ -287,9 +287,10 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 	if (mout.isDebug(debugLevel)){
 		std::stringstream sstr;
+		sstr << name << '-';
 		sstr.width(2);
 		sstr.fill('0');
-		sstr << name << '-' << counter << '-' << label << ".png";
+		sstr << counter << '-' << label << ".png";
 		const std::string filename = sstr.str();
 		mout.debug() << "writing " << filename << mout.endl;
 		File::write(srcImage, filename);

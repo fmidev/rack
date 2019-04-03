@@ -73,7 +73,7 @@ public:
 	/// Given radar's range, returns the metric bounding box using the current projection.
 	inline
 	void determineBoundingBoxM(double range, drain::Rectangle<double> & bbox) const {
-		determineBoundingBoxM(range, bbox.xLowerLeft, bbox.yLowerLeft, bbox.xUpperRight, bbox.yUpperRight);
+		determineBoundingBoxM(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 	}
 
 
@@ -85,7 +85,7 @@ public:
 	/// Given radar's range, returns the metric bounding box using the current projection.
 	inline
 	void determineBoundingBoxD(double range, drain::Rectangle<double> & bbox) const {
-		determineBoundingBoxD(range, bbox.xLowerLeft, bbox.yLowerLeft, bbox.xUpperRight, bbox.yUpperRight);
+		determineBoundingBoxD(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 	}
 
 

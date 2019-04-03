@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <drain/util/Log.h>
-#include <drain/util/ProjectionFrame.h>
+//#include <drain/util/ProjectionFrame.h>
 #include <drain/image/AccumulatorGeo.h>
 
 #include <drain/image/File.h>
@@ -210,20 +210,20 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	double pixscale[3] = {1,1,0};
 	//std::cerr << "frame: " << frame.getProjection() << '\n';
 	const drain::Rectangle<double> & bbox = frame.isLongLat() ? bboxD : frame.getBoundingBoxM();
-	pixscale[0] = (bbox.xUpperRight - bbox.xLowerLeft)/ static_cast<double>(frame.getFrameWidth());
-	pixscale[1] = (bbox.yUpperRight - bbox.yLowerLeft)/ static_cast<double>(frame.getFrameHeight());
+	pixscale[0] = (bbox.upperRight.x - bbox.lowerLeft.x)/ static_cast<double>(frame.getFrameWidth());
+	pixscale[1] = (bbox.upperRight.y - bbox.lowerLeft.y)/ static_cast<double>(frame.getFrameHeight());
 
 	/*
 	if (frame.isLongLat()){
 	//if (false){
 		//const drain::Rectangle<double> & bboxD = frame.getBoundingBoxD();
-		pixscale[0] = (bboxD.xUpperRight - bboxD.xLowerLeft)/ static_cast<double>(frame.getFrameWidth());
-		pixscale[1] = (bboxD.yUpperRight - bboxD.yLowerLeft)/ static_cast<double>(frame.getFrameHeight());
+		pixscale[0] = (bboxD.upperRight.x - bboxD.lowerLeft.x)/ static_cast<double>(frame.getFrameWidth());
+		pixscale[1] = (bboxD.upperRight.y - bboxD.lowerLeft.y)/ static_cast<double>(frame.getFrameHeight());
 	}
 	else {
 		const drain::Rectangle<double> & bbox = frame.getBoundingBoxM();
-		pixscale[0] = (bbox.xUpperRight - bbox.xLowerLeft)/ static_cast<double>(frame.getFrameWidth());
-		pixscale[1] = (bbox.yUpperRight - bbox.yLowerLeft)/ static_cast<double>(frame.getFrameHeight());
+		pixscale[0] = (bbox.upperRight.x - bbox.lowerLeft.x)/ static_cast<double>(frame.getFrameWidth());
+		pixscale[1] = (bbox.upperRight.y - bbox.lowerLeft.y)/ static_cast<double>(frame.getFrameHeight());
 	}
 	*/
 

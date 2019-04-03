@@ -108,7 +108,7 @@ public:
 		op.dataSelector.setParameters(resources.andreSelect);
 
 		mout.debug() << "Running:  " << op << mout.endl;
-		mout.debug() << "Selector: " << resources.andreSelect << mout.endl;
+		mout.debug() << "AnDRe selector: " << resources.andreSelect << mout.endl;
 
 		const HI5TREE &src = resources.inputHi5;
 		HI5TREE & dst = getTarget();  //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?

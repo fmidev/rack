@@ -33,15 +33,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_IMAGES
 #define RACK_IMAGES
 
-#include <drain/image/Image.h>
-#include <drain/prog/Command.h>
-#include <drain/prog/CommandAdapter.h>
-
-#include "data/DataSelector.h"
-
-
-#include "resources.h"
-#include "commands.h" // cmdSelect
+#include <data/DataSelector.h>
+#include <hi5/Hi5.h>
+//#include <image/Image.h>
+#include <image/Image.h>
+#include <main/resources.h>
+#include <prog/CommandAdapter.h>
+#include <util/Tree.h>
+#include <string>
 
 
 
@@ -84,20 +83,6 @@ public: //re
 };
 extern CommandEntry<CmdImage> cmdImage;
 
-/**
- *   Applied also by CartesianGrid
- class CmdPhysical : public drain::SimpleCommand<bool> {
-
-public:
-
-	CmdPhysical() : drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
-			"value", true, "0,1") {
-	};
-
-
-};
-extern CommandEntry<CmdPhysical> cmdPhysical;
-*/
 
 
 

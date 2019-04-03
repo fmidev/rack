@@ -99,7 +99,8 @@ public:
 	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
 
 	virtual
-	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
+	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+				PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const;
 
 
 protected:
@@ -109,7 +110,7 @@ protected:
 	RemoverOp(const std::string &name, const std::string & description) :
 		AndreOp(name, description){
 		dataSelector.quantity = "^[A-Z]+";
-		dataSelector.path = ".*/data[0-9]+/?$";  // unused
+		//dataSelector.path = ".*/data[0-9]+/?$";  // unused
 	};
 
 private:

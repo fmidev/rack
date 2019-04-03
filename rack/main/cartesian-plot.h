@@ -115,7 +115,7 @@ public:
 	//double decay;
 	// int height;
 
-	CartesianSpread() : BasicCommand(__FUNCTION__, "Set Spread of the compositing array."){ // Does not allocate memory."){
+	CartesianSpread() : BasicCommand(__FUNCTION__, "Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead"){ // Does not allocate memory."){
 		parameters.reference("horz", horz = 10, "pixels");
 		parameters.reference("vert", vert = 0,  "pixels");
 		parameters.reference("loops",  loops = 0, "N");

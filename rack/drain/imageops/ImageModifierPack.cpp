@@ -343,10 +343,13 @@ ImageSampler::ImageSampler() : ImageMod(__FUNCTION__, "Extract samples. See --fo
 void ImageSampler::setReferences(){
 	parameters.reference("iStep",  sampler.iStep = 10, "horz coord step");
 	parameters.reference("jStep",  sampler.jStep =  0, "vert coord step");
-	parameters.reference("iStart", sampler.iStart = -1, "horz coord start");
-	parameters.reference("jStart", sampler.jStart = -1, "vert coord start");
-	parameters.reference("iEnd",   sampler.iEnd = -1,  "horz coord end");
-	parameters.reference("jEnd",   sampler.jEnd = -1,  "vert coord end");
+	parameters.reference("iRange", sampler.iRange.vect, "horz range").fillArray = true;
+	parameters.reference("jRange", sampler.jRange.vect, "vert range").fillArray = true;
+	// parameters["jRange"].fillArray
+	parameters.reference("iStart", sampler.iRange.vect[0] = -1, "horz coord start (depr.)");
+	parameters.reference("jStart", sampler.jRange.vect[0] = -1, "vert coord start (depr.)");
+	parameters.reference("iEnd",   sampler.iRange.vect[1] = -1,  "horz coord end (depr.)");
+	parameters.reference("jEnd",   sampler.jRange.vect[1] = -1,  "vert coord end (depr.)");
 	parameters.reference("commentChar",   sampler.commentChar = "#",  "comment character");
 	parameters.reference("skipVoid", sampler.skipVoid = 0,  "skip lines with invalid/missing values");
 }

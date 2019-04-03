@@ -80,7 +80,7 @@ public:
 
 protected:
 	bool _hasAlpha;
-	unsigned int _colors;
+	unsigned int colorCount;
 	//void skipLine(std::ifstream &ifstr) const;
 
 };
@@ -88,14 +88,18 @@ protected:
 inline
 std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
 	for (PaletteEntry::const_iterator it = e.begin(); it != e.end(); ++it){
-			ostr << '\t' << *it;
+		ostr << '\t' << *it;
 	}
 	return ostr;
 }
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const Palette & p){
+
 	ostr << "Palette '" << p.title << "'\n";
+	for (std::map<std::string,PaletteEntry >::const_iterator it = p.specialCodes.begin(); it != p.specialCodes.end(); ++it){
+		ostr << '#' << it->first << ':' << it->second << '\n';
+	}
 	for (Palette::const_iterator it = p.begin(); it != p.end(); ++it){
 		ostr << it->first << ':' << it->second << '\n';
 	}

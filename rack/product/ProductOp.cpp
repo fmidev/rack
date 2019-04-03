@@ -34,14 +34,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Created on: Mar 7, 2011
  *      Author: mpeura
  */
-#include <stdexcept>
 
-#include <drain/util/Log.h>
-#include <drain/util/Variable.h>
-#include <drain/image/File.h>
-
-#include "data/Quantity.h"
-#include "ProductOp.h"
+#include <data/QuantityMap.h>
+//#include <drain/image/File.h>
+//#include <drain/util/Log.h>
+//#include <drain/util/Variable.h>
+#include <product/ProductOp.h>
+#include <util/Castable.h>
+#include <util/Reference.h>
+#include <util/String.h>
+#include <util/Type.h>
+#include <util/TypeUtils.h>
+//#include "data/Quantity.h"
+#include <limits>
+//#include <stdexcept>
+#include <utility>
 
 namespace rack {
 

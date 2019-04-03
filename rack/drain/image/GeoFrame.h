@@ -67,18 +67,12 @@ class GeoFrame { //  See also
 
 public:
 
-    /*
- 	  static const double DEG2RAD;
-	  static const double RAD2DEG;
-	  static const int   EARTH_RADIUSi;
-	  static const double EARTH_RADIUS;
-    */
-
 	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
 	GeoFrame(unsigned int width = 0, unsigned int height = 0);
 
 	//, unsigned int imageChannels=1,unsigned int alphaChannels=2);
-	virtual ~GeoFrame(){
+	virtual inline
+	~GeoFrame(){
 	};
 
 	// Notice that someday this does NOT allocate memory. @see allocate();
@@ -104,15 +98,15 @@ public:
 	/// Sets bounding box in degrees in the target coordinate system.
 	inline
 	void setBoundingBoxD(const drain::Rectangle<double> & bboxD){
-		setBoundingBoxD(bboxD.xLowerLeft, bboxD.yLowerLeft, bboxD.xUpperRight, bboxD.yUpperRight);
+		setBoundingBoxD(bboxD.lowerLeft.x, bboxD.lowerLeft.y, bboxD.upperRight.x, bboxD.upperRight.y);
 		//static const double D2R = M_PI/180.0;
-		//setBoundingBoxR(DEG2RAD*bboxD.xLowerLeft, DEG2RAD*bboxD.yLowerLeft, D2R*bboxD.xUpperRight, D2R*bboxD.yUpperRight);
+		//setBoundingBoxR(DEG2RAD*bboxD.lowerLeft.x, DEG2RAD*bboxD.lowerLeft.y, D2R*bboxD.upperRight.x, D2R*bboxD.upperRight.y);
 	}
 
 	/// Sets bounding box in radians in the target coordinate system.
 	inline
 	void setBoundingBoxR(const drain::Rectangle<double> & bboxR){
-		setBoundingBoxR(bboxR.xLowerLeft, bboxR.yLowerLeft, bboxR.xUpperRight, bboxR.yUpperRight);
+		setBoundingBoxR(bboxR.lowerLeft.x, bboxR.lowerLeft.y, bboxR.upperRight.x, bboxR.upperRight.y);
 	}
 
 	/// Sets bounding box in radians in the target coordinate system.
@@ -125,7 +119,7 @@ public:
 	/// Sets bounding box in meters in the target coordinate system.
 	inline
 	void setBoundingBoxM(const drain::Rectangle<double> & bboxM) {
-		setBoundingBoxM(bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+		setBoundingBoxM(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 	}
 
 
@@ -158,7 +152,7 @@ public:
 	 */
 	inline
 	void cropWithM(drain::Rectangle<double> & bboxM) {
-		cropWithM(bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+		cropWithM(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 	}
 
 	/// Crops the initial bounding box with a given bounding box.
@@ -174,16 +168,25 @@ public:
 		//j = height-1-j;
 	}
 
+	inline
+	void deg2pix(const drain::image::Point2D<double> & loc, drain::image::Point2D<int> & pix) const {
+		deg2pix(loc.x, loc.y, pix.x, pix.y);
+	}
 
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	virtual inline
 	void pix2deg(int i, int j, double & lon, double & lat) const {
 		double x, y; // metric
 		pix2m(i,j, x,y);
-		//pix2m(i,height-1-j,x,y);
 		projR2M.projectInv(x,y, lon,lat);
 		lon *= RAD2DEG;
 		lat *= RAD2DEG;
+	}
+
+	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
+	inline
+	void pix2deg(const drain::image::Point2D<int> & pix, drain::image::Point2D<double> & loc) const {
+		pix2deg(pix.x, pix.y, loc.x, loc.y);
 	}
 
 	/// Calculates the geographic coordinates of the lower left corner of a pixel at (i,j).
@@ -224,9 +227,9 @@ public:
 	inline
 	virtual
 	void m2pix(const double & x, const double & y, int & i, int & j) const {
-		i = static_cast<int>(0.5+ (x - extentM.xLowerLeft) / xScale); //  xOffset
-		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.yLowerLeft) / yScale);
-		//j = 1-1 + static_cast<int>((y - extentM.yLowerLeft) / yScale);
+		i = static_cast<int>(0.5+ (x - extentM.lowerLeft.x) / xScale); //  xOffset
+		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
+		//j = 1-1 + static_cast<int>((y - extentM.lowerLeft.y) / yScale);
 	}
 
 
@@ -243,9 +246,9 @@ public:
 	inline
 	virtual
 	void pix2m(const int & i, const int & j, double & x, double & y) const {
-		x = (static_cast<double>(i)+0.5)*xScale + extentM.xLowerLeft;
-		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.yLowerLeft;
-		//y = static_cast<double>(1-1 + j)*yScale + extentM.yLowerLeft;
+		x = (static_cast<double>(i)+0.5)*xScale + extentM.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
+		//y = static_cast<double>(1-1 + j)*yScale + extentM.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.
@@ -259,9 +262,9 @@ public:
 	inline
 	virtual
 	void pix2LLm(const int & i, const int & j, double & x, double & y) const {
-		x = (static_cast<double>(i))*xScale + extentM.xLowerLeft;
-		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.yLowerLeft;
-		//y = static_cast<double>(1-1 + j)*yScale + extentM.yLowerLeft;
+		x = (static_cast<double>(i))*xScale + extentM.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.lowerLeft.y;
+		//y = static_cast<double>(1-1 + j)*yScale + extentM.lowerLeft.y;
 	}
 
 

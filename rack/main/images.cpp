@@ -29,32 +29,41 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <set>
-#include <map>
-#include <ostream>
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <data/ODIMPath.h>
+#include <data/PolarODIM.h>
+#include <hi5/Hi5.h>
+#include <image/Image.h>
+#include <image/ImageChannel.h>
+#include <image/ImageLike.h>
+#include <image/ImageTray.h>
+#include <image/TreeSVG.h>
+#include <imageops/ImageModifierPack.h>
+#include <imageops/PaletteOp.h>
+#include <main/resources.h>
+#include <product/DataConversionOp.h>
+#include <prog/Command.h>
+#include <prog/CommandAdapter.h>
+#include <radar/Analysis.h>
+#include <stddef.h>
+#include <util/Log.h>
+#include <util/Path.h>
+#include <util/RegExp.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
+#include <util/Type.h>
+#include <util/Variable.h>
+#include <util/VariableMap.h>
 
-
-
-#include <drain/util/Log.h>
-#include <drain/util/RegExp.h>
-
-#include <drain/image/Image.h>
-#include <drain/image/TreeSVG.h>
-
-#include <drain/imageops/ImageMod.h>
-#include <drain/imageops/ImageOpBank.h>
-#include <drain/imageops/FastAverageOp.h>
-
-#include <drain/prog/CommandRegistry.h>
-
-
-#include "rack.h"
-#include "product/DataConversionOp.h"
-#include "data/ODIM.h"
-//#include "hi5/Hi5.h"
-
-#include "commands.h"
 #include "images.h"
+#include "image-ops.h"
+
+#include <fstream>
+#include <list>
+#include <map>
+#include <sstream>
+#include <string>
 
 // #include <pthread.h>
 
@@ -68,8 +77,6 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 
 	drain::Logger mout("CmdImage", __FUNCTION__);
 
-	//std::string path = "";
-	//DataSelector::getPath(src, DataSelector("(data|quality)[0-9]+/?$", selector.quantity), path);
 	ODIMPath path;
 	selector.getPathNEW(src, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
@@ -80,9 +87,10 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 
 	const Data<PolarSrc> srcData(src(path));  // limit?
 
-	DataConversionOp<PolarODIM> op;
+	//DataConversionOp<PolarODIM> op;
+	DataConversionOp<ODIM> op;
 	// mout.warn() << "srcOdim:" << srcData.odim << mout.endl;
-	op.odim.importMap(srcData.odim);
+	op.odim.updateFromMap(srcData.odim);
 	// mout.note() << "dstOdim:" << op.odim << mout.endl;
 
 	// mout.note() << "params :" << parameters << mout.endl;
@@ -90,6 +98,10 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 	// mout.warn() << "dstOdim:" << op.odim << mout.endl;
 
 	op.processImage(srcData, dst);
+
+	RackResources & resources = getResources();
+	resources.currentGrayImage = &resources.grayImage;
+	resources.currentImage     = &resources.grayImage;
 
 }
 
@@ -103,16 +115,50 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 namespace {
 
 
+// Adds alpha channel containing current data.
+class CmdImageAlphaBase : public BasicCommand {
+
+public:
+
+	CmdImageAlphaBase(const std::string & name, const std::string & description) :  BasicCommand(name, description){
+	}
+
+
+	drain::image::Image & getModifiableImage(const DataSelector & selector) const {
+
+		drain::Logger mout(name, __FUNCTION__);
+
+		RackResources & resources = getResources();
+
+		if (resources.currentImage == &resources.colorImage){
+			mout.info() << " using already existing colour image" << mout.endl;
+			return resources.colorImage;
+		}
+		else if (resources.currentImage == &resources.grayImage){
+			mout.info() << " using already existing (additional) gray image" << mout.endl;
+			//if (ImageOpRacklet::physical){
+			//mout.note() << " ensuring physical scale" << mout.endl;
+			return resources.grayImage;
+		}
+		else { // resources.currentImage != &resources.grayImage
+			mout.note() << " no current image, creating a copy (graylevel)" << mout.endl;
+			CmdImage::convertImage(*resources.currentHi5, selector, "", resources.grayImage);  // TODO check
+			//resources.currentGrayImage = &resources.grayImage;
+			//resources.currentImage     = &resources.grayImage;
+			return resources.grayImage;
+		}
+	}
+
+};
+
 
 
 // Adds alpha channel containing current data.
-class CmdImageAlpha : public BasicCommand {
-public: //re
-	//std::string properties;
-	//volatile
-	// DataConversionOp copierHidden;
+class CmdImageAlpha : public CmdImageAlphaBase {
 
-	CmdImageAlpha() : BasicCommand(__FUNCTION__, "Adds a transparency channel. Creates current image if nonexistent. See --target") {
+public:
+
+	CmdImageAlpha() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Implies additional image, creates one if needed. See --target") {
 	};
 
 	void exec() const {
@@ -121,59 +167,50 @@ public: //re
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector("/data$");
+		DataSelector iSelector;
 		iSelector.setParameters(resources.select);
 		resources.select.clear();
 
-		// Create a copy (getResources().colorImage or getResources().grayImage), and point *img to it.
-		// Because getResources().currentImage is const, non-const *img is needed.
-		drain::image::Image * img;
-		if (resources.currentImage == &getResources().colorImage){
-			mout.info() << " using colour image" << mout.endl;
-			img = & resources.colorImage;
-		}
-		else {
-			if (resources.currentImage != &resources.grayImage){
-				mout.note() << " no current image, creating..." << mout.endl;
-				CmdImage::convertImage(*resources.currentHi5, iSelector, "", resources.grayImage);  // TODO check
-				resources.currentGrayImage = &resources.grayImage;
-				resources.currentImage     = &resources.grayImage;
-			}
-			img = &resources.grayImage;
-		}
-
-		/// Add empty alpha channel
-		img->setAlphaChannelCount(1);
-		mout.debug() << "image:"  << *resources.currentImage << mout.endl;
-		mout.debug() << "alpha:"  <<  resources.currentImage->getAlphaChannel() << mout.endl;
-
-		//const drain::image::Image &d = VolumeOp::getData(*resources.currentHi5, 0); // options["quantity?"]); // typically, first "DBZ.*"
-		//
-		//const drain::image::Image &alpha = DataSelector::getData(*resources.currentHi5, iSelector);
+		// Source image (original data)
 		ODIMPath path;
 		iSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
 		path << ODIMPathElem::ARRAY;
-		mout.debug() << "alpha path:"  <<  path << mout.endl;
-		const drain::image::Image &alpha = (*resources.currentHi5)(path).data.dataSet;
+		mout.debug() << "alphaSrc path:"  <<  path << mout.endl;
+		const drain::image::Image &alphaSrc = (*resources.currentHi5)(path).data.dataSet;
+		ODIM alphaSrcODIM(alphaSrc);
 
-		PolarODIM odimAlpha(alpha);
 
-		DataConversionOp<PolarODIM> copier; //(copierHidden);
-		copier.odim.setValues(resources.targetEncoding, '=');
+		// Dst image
+		// Create a copy (getResources().colorImage or getResources().grayImage), and point *img to it.
+		// Because getResources().currentImage is const, non-const *img is needed.
+		drain::image::Image & img = getModifiableImage(iSelector);
+
+		/// Add empty alphaSrc channel
+		img.setAlphaChannelCount(1);
+
+		mout.debug() << "image:"  << *resources.currentImage << mout.endl;
+		mout.debug() << "alphaSrc:"  <<  resources.currentImage->getAlphaChannel() << mout.endl;
+
+
+		DataConversionOp<ODIM> copier; //(copierHidden);
+		copier.odim.addShortKeys();
+		copier.odim.setValues(resources.targetEncoding);
 		resources.targetEncoding.clear();
-		const std::string type(1, drain::Type::getTypeChar(img->getType()));
+
+		//const std::string type(1, drain::Type::getTypeChar(img.getType())); // rewrite
+		const std::string type = drain::Type(img.getType()); // rewrite
 		if (copier.odim.type != type){
 			mout.note() << " using the type of base image: " << type << mout.endl;
 		}
 		copier.odim.type = type; //drain::Type::getTypeChar(img->getType());
 
-		mout.debug(2) << "odimAlpha:  "  <<  odimAlpha << mout.endl;
+		mout.debug(2) << "alphaSrcODIM:  "  <<  alphaSrcODIM << mout.endl;
 		mout.debug(2) << "odimOut: " << copier.odim << mout.endl;
 		mout.debug(2) << "copier: " << copier << mout.endl;
-		copier.traverseImageFrame(odimAlpha, alpha, copier.odim, img->getAlphaChannel());
+		copier.traverseImageFrame(alphaSrcODIM, alphaSrc, copier.odim, img.getAlphaChannel());
 
-		img->properties["what.gainAlpha"] = copier.odim.gain;
-		img->properties["what.offsetAlpha"] = copier.odim.offset;
+		img.properties["what.gainAlpha"]   = copier.odim.gain;
+		img.properties["what.offsetAlpha"] = copier.odim.offset;
 
 	}
 };
@@ -181,8 +218,91 @@ public: //re
 static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
 
 
+
+// NEW! Adds alpha channel containing current data.
+class CmdImageTransp : public CmdImageAlphaBase {
+
+public:
+
+	drain::Range<double> range;
+	double undetect;
+	double nodata;
+
+	CmdImageTransp() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Uses copied image, creating one if needed.") {
+		parameters.reference("range",    range.vect, "min:max");
+		parameters.reference("undetect", undetect=0, "opacity of 'undetect' pixels");
+		parameters.reference("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
+		parameters["range"].fillArray = true;
+
+		range.min = -std::numeric_limits<double>::max();
+		range.max = +std::numeric_limits<double>::max();
+	};
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+
+		RackResources & resources = getResources();
+
+		DataSelector imageSelector;
+		imageSelector.setParameters(resources.select);
+		resources.select.clear();
+
+		// Source image (original data)
+		ODIMPath path;
+		imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		path << ODIMPathElem::ARRAY;
+		mout.debug() << "alphaSrc path:"  <<  path << mout.endl;
+		//hi5::NodeHi5 & node = (*resources.currentHi5)(path).data;
+		drain::image::Image &srcImg = (*resources.currentHi5)(path).data.dataSet; // Yes non-const, see below
+		EncodingODIM odim(srcImg);
+		srcImg.setScaling(odim.gain, odim.offset);
+
+		// Dst image
+		// Create a copy (getResources().colorImage or getResources().grayImage), and point *img to it.
+		// Because getResources().currentImage is const, non-const *img is needed.
+		drain::image::Image & dstImg = getModifiableImage(imageSelector);
+		dstImg.setAlphaChannelCount(1);
+
+		RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep(true);
+		fuzzyStep.odimSrc.updateFromMap(srcImg.getProperties());
+
+		//fuzzyStep.functor.set(range.min, range.max, 1.0);
+		/*
+		const drain::image::ImageScaling & scaling = srcImg.getScaling();
+		mout.warn() << "scaling: "  << scaling << mout.endl;
+		fuzzyStep.functor.set(scaling.inv(range.min), scaling.inv(range.max), 1.0);
+		*/
+		if (ImageOpRacklet::physical){
+			fuzzyStep.functor.set(range.min, range.max, 1.0);
+		}
+		else {
+			//const drain::image::ImageScaling & scaling = srcImg.getScaling();
+			mout.warn() << "scaling: "  << odim << mout.endl;
+			//odim.scaleForward()
+			const double max = Type::call<typeNaturalMax>(srcImg.getType()); // 255, 65535, or 1.0
+			//srcImg.getScaling().
+			fuzzyStep.functor.set(odim.scaleForward(max*range.min), odim.scaleForward(max*range.max), 1.0);
+		}
+
+		const double dstMax = Type::call<typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
+		drain::typeLimiter<double>::value_t limit = dstImg.getEncoding().getLimiter<double>();  // t is type_info, char or std::string.
+		fuzzyStep.nodataValue   = limit(dstMax*nodata);
+		fuzzyStep.undetectValue = limit(dstMax*undetect);
+
+		mout.warn() << "fuzzy: "  << fuzzyStep << mout.endl;
+		fuzzyStep.traverseChannel(srcImg.getChannel(0), dstImg.getAlphaChannel(0));
+
+	}
+
+};
+static CommandEntry<CmdImageTransp> cmdImageTransp("imageTransp");
+
+
+
 class CmdImageFlatten : public SimpleCommand<std::string> {
-public: //re
+
+public:
 
 	CmdImageFlatten() : SimpleCommand<>(__FUNCTION__, "Removes a alpha (transparency) channel. Adds a new background of given color.",
 			"bgcolor", "0", "<gray>|<red>,<green>,<blue>") {

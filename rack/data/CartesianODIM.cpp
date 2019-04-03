@@ -91,11 +91,11 @@ void CartesianODIM::setGeometry(size_t cols, size_t rows){
 	const int im = xsize/2;
 	const int jm = ysize/2;
 	drain::Rectangle<double> box;
-	pix2deg(im-1, jm-1, box.xLowerLeft,  box.yLowerLeft);
-	pix2deg(im+1, jm+1, box.xUpperRight, box.yUpperRight);
+	pix2deg(im-1, jm-1, box.lowerLeft.x,  box.lowerLeft.y);
+	pix2deg(im+1, jm+1, box.upperRight.x, box.upperRight.y);
 	//mout.warn() << box << mout.endl;
-	odim.xscale = (box.xUpperRight-box.xLowerLeft )/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS;
-	odim.yscale = (box.yLowerLeft -box.yUpperRight)/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS * cos(DEG2RAD*(box.yLowerLeft+box.yUpperRight)/2.0);
+	odim.xscale = (box.upperRight.x-box.lowerLeft.x )/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS;
+	odim.yscale = (box.lowerLeft.y -box.upperRight.y)/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS * cos(DEG2RAD*(box.lowerLeft.y+box.upperRight.y)/2.0);
 	*/
 }
 

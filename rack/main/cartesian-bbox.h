@@ -54,10 +54,10 @@ class CartesianBBox : public BasicCommand {
 
 	CartesianBBox() : BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
 		RackResources & resources = getResources();
-		parameters.reference("llLon", resources.bbox.xLowerLeft = 0.0, "deg");
-		parameters.reference("llLat", resources.bbox.yLowerLeft = 0.0, "deg");
-		parameters.reference("urLon", resources.bbox.xUpperRight = 0.0, "deg");
-		parameters.reference("urLat", resources.bbox.yUpperRight = 0.0, "deg");
+		parameters.reference("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
+		parameters.reference("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
+		parameters.reference("urLon", resources.bbox.upperRight.x = 0.0, "deg");
+		parameters.reference("urLat", resources.bbox.upperRight.y = 0.0, "deg");
 	};
 
 	inline
@@ -113,14 +113,16 @@ class CartesianBBoxTest : public SimpleCommand<int> { //
 
 
 class CartesianBBoxTile : public BasicCommand {
-    public: //re
+
+public:
+
 	Rectangle<double> bbox;
 
 	CartesianBBoxTile() : BasicCommand(__FUNCTION__, "Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.") {
-		parameters.reference("llLon", bbox.xLowerLeft = 0.0, "deg");
-		parameters.reference("llLat", bbox.yLowerLeft = 0.0, "deg");
-		parameters.reference("urLon", bbox.xUpperRight = 0.0, "deg");
-		parameters.reference("urLat", bbox.yUpperRight = 0.0, "deg");
+		parameters.reference("llLon", bbox.lowerLeft.x = 0.0, "deg");
+		parameters.reference("llLat", bbox.lowerLeft.y = 0.0, "deg");
+		parameters.reference("urLon", bbox.upperRight.x = 0.0, "deg");
+		parameters.reference("urLat", bbox.upperRight.y = 0.0, "deg");
 	}
 
 	void exec() const;

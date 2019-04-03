@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Fuzzy.h>
 
 #include <drain/image/File.h>
-#include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+//#include <drain/imageops/DistanceTransformFillOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
@@ -115,8 +115,8 @@ void CartesianGrid::exec() const {
 	ImageFrame & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0);
 
 	const drain::Rectangle<double> & bboxD = composite.getBoundingBoxD();
-	const double lonResolution = static_cast<double>(composite.getFrameWidth())  / (bboxD.xUpperRight - bboxD.xLowerLeft) / width ;
-	const double latResolution = static_cast<double>(composite.getFrameHeight()) / (bboxD.yUpperRight - bboxD.yLowerLeft) / width ;
+	const double lonResolution = static_cast<double>(composite.getFrameWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
+	const double latResolution = static_cast<double>(composite.getFrameHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
 
 	drain::FuzzyBell2<double> peak(0.0, width);
 	double lat, lon;

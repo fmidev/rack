@@ -56,6 +56,9 @@ public:
 	Range() : vect(2),min(vect[0]), max(vect[1]) { //
 	}
 
+	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
+	}
+
 	std::vector<T> vect;
 	//T vect[2]; Reference::link() caused problems
 	T & min;

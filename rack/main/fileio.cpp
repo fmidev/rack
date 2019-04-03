@@ -30,38 +30,45 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include <set>
-#include <ostream>
-
-
-#include <drain/util/Log.h>
-#include <drain/util/Histogram.h>
-#include <drain/util/RegExp.h>
-
-#include <drain/image/Image.h>
-#include <drain/image/Sampler.h>
-
-//#include <drain/prog/Co mand.h>
-#include <drain/prog/CommandRegistry.h>
-
-#include "andre/QualityCombinerOp.h"
-#include "hi5/Hi5.h"
-#include "hi5/Hi5Write.h"
-#include "hi5/Hi5Read.h"
-//#include "data/ODIMPath.h"
-#include "data/ODIM.h"
-#include "data/DataOutput.h"
-#include "product/DataConversionOp.h"
-#include "product/HistogramOp.h"
-#include "radar/FileGeoTIFF.h"
-#include "radar/RadarDataPicker.h"
-
-
-#include "commands.h"
-
-#include "images.h" // for calling --image on the fly
-#include "fileio.h"
-#include "fileio-read.h"
+#include <data/Data.h>
+#include <data/DataOutput.h>
+#include <data/DataSelector.h>
+#include <data/DataTools.h>
+#include <data/ODIMPath.h>
+#include <data/PolarODIM.h>
+#include <hi5/Hi5.h>
+#include <hi5/Hi5Read.h>
+#include <hi5/Hi5Write.h>
+#include <image/File.h>
+#include <image/Image.h>
+#include <image/Sampler.h>
+#include <imageops/ImageModifierPack.h>
+#include <main/fileio.h>
+#include <main/fileio-read.h>
+#include <main/images.h> // for calling --image on the fly
+#include <main/resources.h>
+#include <product/HistogramOp.h>
+#include <product/ProductOp.h>
+#include <prog/Command.h>
+#include <prog/CommandAdapter.h>
+#include <prog/CommandPack.h>
+#include <radar/FileGeoTIFF.h>
+#include <radar/RadarDataPicker.h>
+#include <regex.h>
+#include <stddef.h>
+#include <util/Log.h>
+#include <util/Tree.h>
+#include <util/Variable.h>
+#include <algorithm>
+#include <exception>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <list>
+#include <map>
+#include <sstream>
+#include <utility>
+#include <vector>
 
 
 

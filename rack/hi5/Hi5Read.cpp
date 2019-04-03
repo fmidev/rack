@@ -29,9 +29,13 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Log.h>
-
-#include "Hi5Read.h"
+#include <data/ODIMPath.h>
+//#include <drain/util/Log.h>
+#include <hi5/Hi5Read.h>
+#include <util/Log.h>
+#include <util/Variable.h>
+#include <map>
+#include <utility>
 
 // using namespace std;
 
@@ -120,9 +124,6 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 		}
 	}
 
-
-
-
 	if (H5Tequal(datatype, H5T_NATIVE_CHAR)){
 		h5AttributeToData<char>(a,datatype,attribute, elements);
 	}
@@ -202,9 +203,10 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			mout.warn() << " '" << attribute << "'" <<"\t [" << info.data_size << "] variable-length=" << (int)H5Tis_variable_str(datatype) << mout.endl;
 			*/
 		}
-		else
+		else {
 			mout.warn() << ": type not implemented, attr=" << attr_name << " *\n";
 			mout << mout.endl;
+		}
 	}
 
 

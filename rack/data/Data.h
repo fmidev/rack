@@ -69,10 +69,9 @@ namespace rack {
  /dataset1/quality2/data
  /dataset2/
  ...
+ \endcode
 
   The classes in this section provide solutions for handling dataset-level and data-level information.
-
- \endcode
 
 
  */
@@ -197,6 +196,10 @@ public:
 		// return getTree()["how"].data.attributes;
 	}
 
+	// Mark this data temporary so that it will not be save by Hi5::write().
+	inline
+	void setNoSave(bool noSave = true){ this->tree.data.noSave = noSave;};
+
 
 
 //protected:
@@ -219,6 +222,18 @@ protected:
 	//TreeWrapper(tree_t & tree, const odim_t & odim) tree(tree), odim(odim) {};
 	TreeWrapper(const TreeWrapper & d) : tree(d.tree){}; //, image(d.data), odim(d.odim) {};
 
+
+	~TreeWrapper(){
+		/*
+		drain::Logger mout("TreeWrapper", __FUNCTION__);
+		if (this->tree.data.noSave){
+			mout.note() << "deleting (children only?)" << mout.endl;
+			this->tree.clear();
+		}
+		*/
+	};
+
+
 	template <ODIMPathElem::group_t G>
 	const drain::VariableMap & getAttr() const {
 		return this->tree[ODIMPathElem(G)].data.attributes;
@@ -228,6 +243,7 @@ protected:
 	drain::VariableMap & getAttr(){
 		return this->tree[ODIMPathElem(G)].data.attributes;
 	}
+
 
 };
 
@@ -355,10 +371,6 @@ public:
 		setGeometry(geometry);
 	}
 
-	// Mark this data temporary so that it will not be save by Hi5::write().
-	inline
-	void setNoSave(bool noSave = true){ this->tree.data.noSave = noSave;};
-
 
 
 	image_t & data;
@@ -466,7 +478,7 @@ public:
 	virtual
 	~DataGroup(){
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		drain::Logger mout("DataGroup<" + ODIMPathElem::getKey(G)+">", __FUNCTION__);
 		switch (this->size()) {
 		case 0:
 			mout.debug(4) << "no data<n> groups" << mout.endl;
@@ -795,6 +807,21 @@ public:
 	// Data(const HI5TREE & src, const std::string & quantity = "^DBZH$");
 	virtual ~Data(){};
 
+	// Experimental
+	void swap(Data<DT> &d){ // TODO: also for plaindata?
+		drain::Logger mout("Data<>", __FUNCTION__);
+		mout.warn() << "Swap" << mout.endl;
+		this->tree.swap(d.tree);
+
+		typename DT::odim_t odim;
+		odim.updateFromMap(this->odim);
+		this->odim.updateFromMap(d.odim);
+		d.odim.updateFromMap(odim);
+
+		this->updateTree2();
+		d.updateTree2();
+	}
+
 protected:
 
 };
@@ -848,11 +875,22 @@ public:
 	DataSet(const DataSet<DT> & ds) : datagroup_t(ds), QualityDataSupport<DT>(ds) {
 	}
 
+	~DataSet(){
+		/*
+		drain::Logger mout("DataSet", __FUNCTION__);
+		for (typename DataSet<DT>::iterator it = this->begin(); it != this->end(); ++it){
+			if (it->second.getTree().data.noSave){
+				mout.note() << "deleting " << it->first << mout.endl;
+				//it->
+			}
+		}
+	    */
+	}
+
 
 
 	// Mark this data temporary so that it will not be save by Hi5::write().
-	inline
-	void setNoSave(bool noSave = true){ this->tree.node.noSave = noSave;};
+	//inline 	void setNoSave(bool noSave = true){ this->tree.node.noSave = noSave;};
 
 
 

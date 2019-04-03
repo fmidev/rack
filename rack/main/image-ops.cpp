@@ -29,42 +29,37 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <set>
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <data/ODIM.h>
+#include <data/ODIMPath.h>
+#include <data/QuantityMap.h>
+#include <image/Image.h>
+#include <image/ImageChannel.h>
+#include <image/ImageFrame.h>
+#include <image/ImageScaling.h>
+#include <image/ImageTray.h>
+#include <imageops/ImageOpBank.h>
+#include <main/image-ops.h>
+#include <main/resources.h>
+//#include <radar/Analysis.h>
+#include <stddef.h>
+#include <util/Cloner.h>
+#include <util/Log.h>
+#include <util/Range.h>
+#include <util/Registry.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
 #include <map>
-#include <ostream>
-
-
-
-#include <drain/util/Log.h>
-#include <drain/util/RegExp.h>
-
-#include <drain/image/Image.h>
-#include <drain/image/TreeSVG.h>
-
-#include <drain/imageops/ImageMod.h>
-#include <drain/imageops/ImageOpBank.h>
-#include <drain/imageops/FastAverageOp.h>
-
-#include <drain/prog/CommandRegistry.h>
-
-#include <drain/util/Range.h>
-
-
-#include "rack.h"
-#include "product/DataConversionOp.h"
-#include "data/ODIM.h"
-//#include "hi5/Hi5.h"
-
-#include "commands.h"
-#include "image-ops.h"
-
-// #include <pthread.h>
+#include <utility>
 
 namespace rack {
 
-CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
+//CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
 
 std::string ImageOpRacklet::outputQuantity("{what:quantity}_{command}");
+
+bool ImageOpRacklet::physical(true);
 
 void ImageOpRacklet::exec() const {
 
@@ -89,9 +84,11 @@ void ImageOpRacklet::exec() const {
 
 	std::string dstQuantity;
 	if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
-		drain::ReferenceMap m;
-		m.reference("quantity", dstQuantity);
-		m.updateValues(resources.targetEncoding); // do not clear yet
+		EncodingODIM odim;
+		odim.reference("quantity", dstQuantity);
+		odim.addShortKeys();
+		odim.updateValues(resources.targetEncoding); // do not clear yet
+		mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
 	}
 	bool NEW_QUANTITY = !dstQuantity.empty();
 	/*
@@ -102,14 +99,6 @@ void ImageOpRacklet::exec() const {
 
 	bool NEW_QUANTITY = !dstODIM.quantity.empty();
 	*/
-
-	if (NEW_QUANTITY){
-		// , dstODIM.type, resources.targetEncoding
-		//getQuantityMap().setQuantityDefaults(dstODIM);
-		//dstODIM.setValues(resources.targetEncoding);
-		mout.note() << "target quantity: " << dstQuantity << mout.endl;
-		//mout.note() << "target encoding " << EncodingODIM(dstODIM) << mout.endl;
-	}
 
 	// skip quantity fow later traversal, accept now all the datasetN's ?
 	// ORIG quantity => in-place
@@ -157,27 +146,40 @@ void ImageOpRacklet::exec() const {
 
 			Data<dst_t> & dstData = NEW_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 
-
 			/// Apply physical values as thresholds etc
-			if (cmdPhysical.value)
+			if (ImageOpRacklet::physical)
 				srcData.data.setScaling(srcData.odim.gain, srcData.odim.offset);
 			else
-				srcData.data.setScaling(1.0, 0.0);
+				srcData.data.setScaling(1.0, 0.0); // WARNING: in future, direct linking with ODIM offset and gain will cause unexpected changes?
 
 			if (NEW_QUANTITY){
-				mout.note() << "NEW quantity!" << dstQuantity << mout.endl;
-				dstData.odim.quantity = dstQuantity;
-				getQuantityMap().setQuantityDefaults(dstData.odim);
-				//mout.note() << "dstData.odim: " << dstData.odim << mout.endl;
+				mout.debug() << "new quantity:" << dstQuantity << mout.endl;
+				dstData.odim.update(srcData.odim);
+				dstData.odim.gain = 0.0;
+				//dstData.odim.quantity = dstQuantity;
+				// mout.note() << "dstData.odim: " << dstData.odim << mout.endl;
 				dstData.odim.addShortKeys();
 				dstData.odim.setValues(resources.targetEncoding);
+
+				QuantityMap & qmap = getQuantityMap();
+				if (!qmap.setQuantityDefaults(dstData.odim)){
+					mout.note() << "no predefined scaling for [" << dstQuantity << "]"<< mout.endl;
+				}
+
+				dstData.odim.setValues(resources.targetEncoding);
 				resources.targetEncoding.clear();
-				//mout.note() << "target quantity: " << dstQuantity << mout.endl;
-				//mout.note() << "target encoding " << EncodingODIM(dstODIM) << mout.endl;
-				//dstData.odim.updateFromMap(;
+
+				// Important: guess physical scaling, esp.
+				dstData.data.setType(dstData.odim.type);
+				//dstData.setPhysicalRange();
+				dstData.data.getScaling().setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
 				dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+				//dstData.se
+				// dstData.data.setPhysicalScale(dstData.odim.getMin(), dstData.odim.getMax());
 				dstData.data.setName(dstQuantity);
-				mout.note() << dstData << mout.endl;
+				mout.debug(1) << dstData << mout.endl;
+				//mout.note() << "dstData.odim: " << dstData.odim << mout.endl;
+
 			}
 
 			mout.note() << "using src: [" << dit->first << "] (dst: [" << dstQuantity << "])" << mout.endl;
@@ -442,6 +444,9 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 
 	registry.setSection(section, prefix);
 
+	// Put image utilities and other non-ops  here
+	static CommandEntry<CmdPhysical> cmdPhysical; //("iPhysical");
+
 	ImageOpBank::map_t & ops = getImageOpBank().getMap();
 
 	for (ImageOpBank::map_t::iterator it=ops.begin(); it != ops.end(); ++it){
@@ -478,5 +483,3 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 } // namespace rack
 
 // Rack
- // REP // REP // REP
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

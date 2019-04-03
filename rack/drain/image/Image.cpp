@@ -79,6 +79,10 @@ void Image::swap(Image & img){
 	img.setCoordinatePolicy(policy);
 
 	img.properties.swap(properties); // dangerous?
+	img.init();
+	init();
+	propertiesPtr = & properties;
+	img.propertiesPtr = & img.properties;
 
 }
 

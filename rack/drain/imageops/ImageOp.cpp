@@ -73,7 +73,7 @@ void ImageOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	/// TODO: copy alpha, fill alpha?
 	if (dst.hasAlphaChannel()){
-		mout.warn() << "filling alpha channel" << mout.endl;
+		mout.info() << "filling alpha channel" << mout.endl;
 		dst.getAlphaChannel().fill(dst.getEncoding().getTypeMax<int>());
 	}
 

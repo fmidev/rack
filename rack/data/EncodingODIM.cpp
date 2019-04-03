@@ -125,6 +125,10 @@ void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 }
 
 
+void EncodingODIM::initFromImage(const drain::image::Image & img){  // =""
+	init(ODIMPathElem::ALL_LEVELS);
+	EncodingODIM::copyFrom(img);
+}
 
 
 /*

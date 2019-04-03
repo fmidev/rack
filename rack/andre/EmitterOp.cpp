@@ -65,8 +65,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	dst.data.setPhysicalScale(0.0, 1.0);
 
 	/// Minimum segment width in pixels.
-	const int w = src.odim.getBeamBins(lengthMin*1000.0); // (static_cast<int>(lengthMin)*1000)/src.odim.rscale;
-
+	//const int w = src.odim.getBeamBins(lengthMin*1000.0); // (static_cast<int>(lengthMin)*1000)/src.odim.rscale;
 
 	/// Maximum segment height in pixels.
 	const int h = src.odim.getAzimuthalBins(thicknessMax); // (thicknessMax*src.odim.nrays)/360;
@@ -79,11 +78,11 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	//const double reflMin = -10; // dBZ, consider as parameter?
 
-	mout.debug(3) << "min length and max thickness," << w << ',' << h << " (pixels)" << mout.endl;
+	//mout.debug() << "min length and max thickness: " << w << ',' << h << " (pixels)" << mout.endl;
 
 	storeDebugData(2, src.data, "SRC");
 
-	Image tmp;
+	// Image tmp;
 	// Compute margin peaks
 	Image marginAvg(typeid(unsigned char), 1, imageHeight);
 	marginAvg.setCoordinatePolicy(PolarProductOp::polarCoordPolicy);
@@ -110,7 +109,8 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 		}
 		// d = fuzzyPeak1(s/static_cast<double>(c));
 		//mout.note() << "d/c =  " << d << '/' << c << "\t fuzzy=" <<  fuzzyStepsoid(static_cast<double>(d)/static_cast<double>(c)) << mout.endl;
-		marginAvg.put(j, fuzzyStepsoid(static_cast<double>(d)/static_cast<double>(c)));
+		if (c > 0)
+			marginAvg.put(j, fuzzyStepsoid(static_cast<double>(d)/static_cast<double>(c)));
 	}
 
 	storeDebugData(2, marginAvg, "MARG");

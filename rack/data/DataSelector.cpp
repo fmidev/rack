@@ -384,6 +384,7 @@ bool DataSelector::getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem
 	std::list<ODIMPath> paths;
 	getPathsNEW(src, paths, groupFilter);
 	if (paths.empty()){
+		mout.debug(3) << "no paths" << mout.endl;
 		path.clear();  // sure?
 		return false;
 	}

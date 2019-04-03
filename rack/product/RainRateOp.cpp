@@ -28,16 +28,18 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/image/File.h>
 
-#include <drain/util/Fuzzy.h>
-
-
-//#include "andre/AndreOp.h"
-#include "radar/Geometry.h"
-#include "radar/Precipitation.h"
-
-#include "RainRateOp.h"
+#include <data/Data.h>
+#include <data/PolarODIM.h>
+#include <data/QuantityMap.h>
+#include <image/Image.h>
+#include <image/ImageLike.h>
+#include <product/RainRateOp.h>
+#include <radar/Geometry.h>
+#include <util/Fuzzy.h>
+#include <util/Log.h>
+#include <cmath>
+#include <string>
 
 
 

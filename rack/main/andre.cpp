@@ -78,7 +78,7 @@ class ClutterMapRead : public SimpleCommand<std::string> {
 
 public:
 
-	ClutterMapRead(ClutterMapOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTERMAP quantity.", "filename",""),
+	ClutterMapRead(ClutterMapOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTER quantity.", "filename",""),
 			clutterOp(op) {
 		getRegistry().add(*this, __FUNCTION__, 0);
 	};

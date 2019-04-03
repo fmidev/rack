@@ -308,7 +308,7 @@ public:
 /**
  *  Usage:
  *  \code
- *   Type::call<Type Max, double>(t)
+ *    double d = Type::call<typeMax, double>(t);
  *  \endcode
  */
 class typeMax {
@@ -331,14 +331,49 @@ public:
 	}
 };
 
+/// The maximum value of a
+/**
+ *  Type can be given as type_info, char or std::string.
+ *
+ *  Usage:
+ *  \code
+ *    double d = Type::call<typeNaturalMax>(t);
+ *  \endcode
+ */
+class typeNaturalMax {
+
+public:
+
+	typedef double value_t;
+
+	/**
+	 *  \tparam S - type selector
+	 *  \tparam D - destination type
+	 */
+	template <class S, class D>
+	static inline
+	D callback(){
+		if (typeIsSmallInt::callback<S,bool>())
+			return static_cast<D>(typeLimits<S>::getMaxI());
+		else
+			return static_cast<D>(1.0);
+	}
+};
+
 
 /// Class for ensuring that variable of type D remains within limits of type S.
 /**
- *  Returns a function pointer (of type typeLimiter::value_t) .
+ *  Returns a function pointer of type typeLimiter::value_t .
  *  \code
- 	 typedef drain::typeLimiter<double> Limiter;
-	 typeLimiter::value_t fptr = Type::call<typeLimiter>(t);  // t is type_info, char or std::string.
+     typedef drain::typeLimiter<double> Limiter;
+     Limiter::value_t limit = Type::call<typeLimiter>(t);  // t is type_info, char or std::string.
+	 double d = limit(12345.6789);
     \endcode
+
+    With images of type drain::image::Image, use convenient function:
+    \code
+    Limiter::value_t limit = img.getEncoding().getLimiter<double>();
+	\endcode
  *
  */
 // THIS WORKS WELL!

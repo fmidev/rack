@@ -30,34 +30,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
+#include <string>
 
-#include <drain/util/Fuzzy.h>
+#include <data/DataSelector.h>
+#include <prog/Command.h>
+#include <radar/Composite.h>
+#include <radar/RadarAccumulator.h>
+#include <util/Log.h>
+#include <util/SmartMap.h>
 
-#include <drain/image/File.h>
-#include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+#include <main/cartesian.h>  // for cmdFormat called by
+#include <main/cartesian-add.h>
+#include <main/cartesian-bbox.h>
+#include <main/cartesian-create.h>
+#include <main/cartesian-grid.h>
+#include <main/cartesian-motion.h>
+#include <main/cartesian-plot.h>
 
-#include <drain/prog/CommandOpticalFlow.h>
-
-#include "data/DataCoder.h"
-#include "hi5/Hi5.h"
-#include "hi5/Hi5Read.h"
-
-#include "radar/Coordinates.h"
-#include "radar/Composite.h"
-//#include "radar/Extractor.h"
-
-#include "commands.h"  // for cmdFormat called by
-#include "images.h"     // for cmdImage("image") called by cGrid("cGrid")
-
-#include "cartesian.h"  // for cmdFormat called by
-#include "cartesian-add.h"
-#include "cartesian-bbox.h"
-#include "cartesian-create.h"
-#include "cartesian-grid.h"
-#include "cartesian-extract.h"
-#include "cartesian-motion.h"
-#include "cartesian-plot.h"
 
 
 

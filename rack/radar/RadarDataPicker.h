@@ -276,8 +276,8 @@ public:
 		ostr << commentPrefix << " proj='" <<  frame.getProjection()   << "'\n";
 		const drain::Rectangle<double> & bbox = frame.getBoundingBoxD();
 		ostr << commentPrefix << " BBOX='" << bbox << "'\n";
-		ostr << commentPrefix << " XRANGE='" <<  bbox.xLowerLeft << ':' <<  bbox.xUpperRight << "'\n";
-		ostr << commentPrefix << " YRANGE='" <<  bbox.yLowerLeft << ':' <<  bbox.yUpperRight << "'\n";
+		ostr << commentPrefix << " XRANGE='" <<  bbox.lowerLeft.x << ':' <<  bbox.upperRight.x << "'\n";
+		ostr << commentPrefix << " YRANGE='" <<  bbox.lowerLeft.y << ':' <<  bbox.upperRight.y << "'\n";
 	};
 
 };

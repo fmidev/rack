@@ -29,22 +29,23 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "BirdOp.h"
-
-#include <drain/util/FunctorPack.h>
-#include <drain/util/Fuzzy.h>
-
-#include <drain/image/File.h>
-#include <drain/imageops/FunctorOp.h>
-#include <drain/imageops/SlidingWindowHistogramOp.h>
-
-//#include "hi5/Hi5Write.h"
-
-#include "data/ODIM.h"
-#include "data/Data.h"
-#include "radar/Geometry.h"
-#include "radar/Analysis.h"
-#include "radar/Doppler.h"
+#include <andre/BirdOp.h>
+#include <data/DataSelector.h>
+#include <data/DataTools.h>
+#include <data/PolarODIM.h>
+#include <data/QuantityMap.h>
+#include <image/ImageChannel.h>
+#include <image/ImageLike.h>
+#include <image/Window.h>
+#include <imageops/CopyOp.h>
+#include <imageops/FunctorOp.h>
+#include <imageops/SlidingWindowOp.h>
+#include <radar/Analysis.h>
+#include <radar/Doppler.h>
+#include <util/FunctorPack.h>
+#include <util/Fuzzy.h>
+#include <util/Log.h>
+#include <util/RegExp.h>
 
 
 using namespace drain;

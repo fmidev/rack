@@ -39,52 +39,15 @@ using namespace hi5;
 
 namespace rack {
 
-/**  Converts a polar product to topologically equivalent product in Cartesian coordinates
- *
- */
 
-/*
-void DamperOp::filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstRoot, const std::string &path) const {
+// void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
 
-	drain::Logger mout(drain::monitor,"DamperOp::filterDataGroup");
+void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const {
 
-	Image & data = dstRoot[path]["data"].data.dataSet;
-
-	mout.debug(1) << path << mout.endl;
-
-	if (!data.isEmpty()){
-
-		//getQualityData(srcRoot,path);
-
-		//const std::string qPath = path + "/quality1";
-		//const Image &quality = srcRoot[qPath]["data"].data.dataSet;
-		const Image &quality = getQualityData(srcRoot,path);
-
-		if (quality.isEmpty()){
-			mout.note(1) <<  "No quality data, skipping." << mout.endl;
-			return;
-		}
-
-		mout.debug(1) << " using quality"  << mout.endl;
-		if (mout.isDebug(5)){
-			quality.toOStr(std::cerr);
-		}
-		//Image<unsigned char> &dst = ((NodeHi5 &)dstRoot[path+"/data"]).data;
-
-
-		filterImage(quality, data);
-		drain::Options & a = dstRoot[path]["how"].data.attributes;
-		a["q_algorithms"] << name;
-		a["q_algorithms"].setType<std::string>();
-
-	};
-}
-*/
-
-void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
-//void DamperOp::filterImage(const PolarODIM & odim, Image &data, Image &quality) const {
 
 	drain::Logger mout(name, __FUNCTION__);
+
+	mout.warn() << "startar" << mout.endl;
 
 	//drain::image::File::write(data,"Eras0.png");
 	//drain::image::File::write(quality,"Erasq.png");
@@ -103,7 +66,7 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 
 	drain::FuzzyStep<double> fstep(threshold, threshold+(1.0-threshold)/2.0);
 
-	const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
+	//const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
 
 	//const std::type_info & t = dstData.data.getType();
 	//const double min = dstData.data.getMin<double>();
@@ -123,14 +86,18 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 	double w;
 	//data.setLimits(-256.0, 255.0);
 
-	mout.debug(2) << "data, after limits: " << dstData.data << mout.endl;
-	mout.debug(2) << "limits: " << dstData.data.getEncoding().getTypeMin<double>() << ',' << dstData.data.getEncoding().getTypeMax<double>() << mout.endl;
+	mout.note() << "data " << dstData.data << mout.endl;
+	const drain::image::Encoding & encoding = dstData.data.getEncoding();
+	//mout.note() << "encoding " << encoding.get << mout.endl;
+	mout.debug(2) << "limits: " << encoding.getTypeMin<double>() << ',' << encoding.getTypeMax<double>() << mout.endl;
 	//data.toOStr(std::cout);
 
-	drain::typeLimiter<double>::value_t limit = dstData.data.getEncoding().getLimiter<double>();
+	drain::typeLimiter<double>::value_t limit = encoding.getLimiter<double>();
 
 	while (d != dEnd){
+
 		x = *d;
+
 		if ( (x != srcData.odim.nodata) && (x != srcData.odim.undetect) ){
 
 			w = fstep(srcQuality.odim.scaleForward(*q));
@@ -144,7 +111,7 @@ void DamperOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstD
 					*d = dstData.odim.undetect;
 				else
 					*d = limit(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
-							//dstData.data.scaling.limit<double>(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
+				//dstData.data.scaling.limit<double>(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
 				//*d = scaleDBZ.inverse(x);
 				//*d = scaleDBZ.inverse(x);
 				//*d = static_cast<double>(*q)/255.0 * x;

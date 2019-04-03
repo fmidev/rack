@@ -303,10 +303,11 @@ void RainRateDPSimpleOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, Data
 						quality = precipQuality(r);
 					}
 				}
-				else
+				else {
 					r = dbzP.rainRate(dbz); //, p);
 					quality = precipQuality(r);
 				}
+			}
 			if(r < 50.0){
 				rate.data.put(i,j, rate.odim.undetect/2);
 				rateQuality.data.put(i, j, 0);

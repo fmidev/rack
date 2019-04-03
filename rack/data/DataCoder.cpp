@@ -28,17 +28,19 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/util/Log.h>
-#include <drain/util/FunctorPack.h>
-#include <drain/util/Time.h>  // decayTime
-#include <drain/util/Variable.h>
-#include <drain/image/AccumulationMethods.h>
-#include <drain/image/File.h>
-#include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
 
-
-#include "DataCoder.h"
+#include <data/DataCoder.h>
+#include <data/Quantity.h>
+//#include <drain/image/AccumulationMethods.h>
+//#include <drain/image/File.h>
+//#include <drain/util/FunctorPack.h>
+//#include <drain/util/Log.h>
+//#include <drain/util/Time.h>  // decayTime
+//#include <drain/util/Variable.h>
+#include <util/Log.h>
+#include <util/SmartMap.h>
+#include <limits>
+#include <string>
 
 using namespace drain;
 using namespace drain::image;

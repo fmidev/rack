@@ -22,22 +22,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 #ifndef DATACONVERSIONOP2_H_
 #define DATACONVERSIONOP2_H_
 
-#include <drain/util/LinearScaling.h>
+#include <data/Data.h>
+#include <data/ODIM.h>
+#include <data/ODIMPath.h>
+#include <data/Quantity.h>
+#include <data/QuantityMap.h>
+//#include <drain/util/LinearScaling.h>
+#include <hi5/Hi5.h>
+#include <image/Geometry.h>
+#include <image/Image.h>
+#include <image/ImageFrame.h>
+#include <product/ProductOp.h>
+#include <util/LinearScaling.h>
+#include <util/Log.h>
+#include <util/RegExp.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
+#include <util/Type.h>
+#include <util/TypeUtils.h>
+#include <util/VariableMap.h>
+//#include "VolumeTraversalOp.h"
+#include <list>
+#include <map>
+#include <set>
+#include <string>
+#include <typeinfo>
+#include <utility>
 
-#include "data/ODIM.h"
-#include "data/Data.h"
-//&#include "PolarProductOp.h"
-#include "VolumeTraversalOp.h"
 //#include "VolumeOpNew.h"
 
 
@@ -108,7 +129,7 @@ public:
 
 
 	static
-	PlainData< DstType<M> > & getNormalizedData(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity);
+	PlainData< DstType<M> > & getNormalizedData(const DataSet<src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity);
 
 
 protected:
@@ -120,7 +141,7 @@ protected:
 
 
 template <class M> //
-PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & normDataSet,
+PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<src_t> & srcDataSet, DataSet<dst_t> & normDataSet,
 		const std::string & quantity) { // , const PlainData< src_t> & mika
 
 	drain::Logger mout("DataConversionOp<>", __FUNCTION__);
@@ -128,7 +149,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet< 
 	const std::string quantityExt = quantity+"_norm";  // std::string("~") +
 
 	//typename DataSet< SrcType<M const> >::const_iterator it = normDataSet.find(quantityExt);
-	typename DataSet< dst_t >::iterator it = normDataSet.find(quantityExt);
+	typename DataSet<dst_t >::iterator it = normDataSet.find(quantityExt);
 	if (it != normDataSet.end()){
 		mout.note() << "using cached data: " << quantityExt << mout.endl;
 		return it->second;
@@ -174,24 +195,19 @@ void DataConversionOp<M>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	//std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	std::list<ODIMPath> dataPaths;
-	//  this->dataSelector.getPathsNEW(src, dataPaths); // RE2
 	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	// Parents are needed because converted data are stored in parallel.
 	std::set<ODIMPathElem> parents;
 
 	const drain::RegExp quantityRegExp(this->dataSelector.quantity);
 
-	//for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 		//mout.debug() << *it << mout.endl;
-
-		// ODIMPath path = DataTools::getParent(*it);
-		// ODIMPathElem parent = path.back();
 
 		ODIMPath parentPath = *it;
 		parentPath.pop_back();
@@ -221,8 +237,12 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 	drain::Logger mout(this->name, __FUNCTION__);
 
+	std::set<std::string> convertedQuantities;
+
+	const std::string extension("_X");
+
 	// Traverse quantities
-	for (typename DataSet< src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
+	for (typename DataSet<src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
 
 		const std::string & quantity = it->first;
 
@@ -231,14 +251,14 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			continue;
 		}
 
-		std::stringstream sstr; //quantity); //+"-tmp");
-		//sstr << "data" << ++index << "tmp-"<< quantity;
-		sstr << "data0." << quantity;
+		//std::stringstream sstr; //quantity); //+"-tmp");
+		//sstr << "data0." << quantity;
 
 		mout.debug() << "quantity: " << quantity << mout.endl;
 
 		const Data< src_t> & srcData = it->second;
-		Data<dst_t>       & dstData = dstProduct.getData(quantity);
+		Data<dst_t>       & dstData = dstProduct.getData(quantity + extension); // todo: getNewData
+		//dstProduct.getData(quantity).setNoSave(true);
 
 		mout.debug(1) << EncodingODIM(this->odim) << mout.endl;
 		//mout.toOStr() << "src " << (long int) &(srcData.data) << EncodingODIM(srcData.odim) << mout.endl;
@@ -255,15 +275,18 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 				continue; // to next quantity
 			}
 
+			mout.fatal() << "not implemented" << mout.endl;
 			mout.debug() << "in-place" << mout.endl;
 			//processData(srcData, dstData);
 			//processImage(srcData.odim, srcData.data, dstData.odim, dstData.data);
 			//@ dstData.updateTree();
-			mout.fatal() << "not implemented" << mout.endl;
+
 		}
 		else {
-			//mout.warn() << "in-place" << mout.endl;
+
 			mout.info() << "using tmp data (in-place computation not possible)" << mout.endl;
+
+			convertedQuantities.insert(it->first);
 
 			if (ODIM::haveSimilarEncoding(srcData.odim, this->odim)){
 				mout.info() << "already similar encoding, no need to convert" << mout.endl;
@@ -277,25 +300,29 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			//processData(srcData, dstData2);
 			processImage(srcODIM, srcData.data, dstData.odim, dstData.data);
 
+
+
 		}
 
 	}
 
+	/// SWAP & delete
+	mout.debug(2) << "Swap & mark for delete" << mout.endl;
+	for (std::set<std::string>::const_iterator qit = convertedQuantities.begin(); qit != convertedQuantities.end(); ++qit){
+
+		mout.warn() << "Swapping quantity: " << *qit << '/' << extension << mout.endl;
+
+		Data<dst_t> & dstDataOrig = dstProduct.getData(*qit);
+		Data<dst_t> & dstDataConv = dstProduct.getData(*qit+extension);
+
+		dstDataOrig.swap(dstDataConv); // calls updateTree2 (consider what:quantity)
+
+		dstDataConv.odim.quantity = *qit+extension;
+		dstDataConv.setNoSave(true);
+	}
+
 }
 
-/*
-template <class M>
-void DataConversionOp<M>::processPlainData(const PlainData< src_t> & src, PlainData<dst_t> & dst) const {
-
-
-	drain::Logger mout(this->name, __FUNCTION__);
-
-	mout.debug() << "start, " << dst << mout.endl;
-
-	processImage(src.odim, src.data, dst.odim, dst.data);
-
-}
-*/
 
 template <class M>
 void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage, const ODIM & dstOdim, drain::image::Image & dstImage) const {
@@ -311,13 +338,14 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 
 	if (srcImage.hasOverlap(dstImage)){
 		if ((t.getType() != srcImage.getType()) || (g != dstImage.getGeometry())){
-			mout.debug() << "using temp image" << mout.endl;
+			mout.warn() << "using temp image + swap" << mout.endl;
 			drain::image::Image tmp;
 			tmp.setType(t);
 			tmp.setGeometry(g);
 			tmp.setScaling(dstOdim.gain, dstOdim.offset);
 			traverseImageFrame(srcOdim, srcImage, dstOdim, tmp);
 			dstImage.swap(tmp);
+			//dstImage.copyDeep(tmp);
 			return;
 		}
 		else {
@@ -332,16 +360,16 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 			mout.error() << "trying to change geometry when dst==src" << mout.endl;
 			return;
 		}
-		*/
+		 */
 	}
 	else {
 		dstImage.setType(t);
 		dstImage.setGeometry(g);
 		dstImage.setScaling(dstOdim.gain, dstOdim.offset);
 		mout.debug(1) << "dst:" << dstImage << mout.endl;
+		traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 	}
 
-	traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 
 }
 
@@ -428,4 +456,4 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 #endif /* DATACONVERSIONOP_H_ */
 
 // Rack
- // REP // REP // REP // REP
+// REP // REP // REP // REP

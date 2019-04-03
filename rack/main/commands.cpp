@@ -498,6 +498,8 @@ public:
 		else {
 			 mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
 		}
+		resources.currentImage = NULL;
+		resources.currentGrayImage = NULL;
 
 	};
 
@@ -644,31 +646,43 @@ public:
 
 	virtual
 	void run(const std::string & params = "") {
-		if (params.empty())
-			getRegistry().toJSON(std::cout);
+
+		drain::Logger mout(name, __FUNCTION__);
+
+		CommandRegistry & reg = getRegistry();
+
+		if (params.empty()){
+			reg.toJSON(std::cout);
+		}
 		else {
-			const ReferenceMap & m = getRegistry().get(params).getParameters();
+			if (!reg.has(params)){
+				mout.error() << "no such key: " << params << mout.endl;
+				return;
+			}
+			const ReferenceMap & m = reg.get(params).getParameters();
+			const ReferenceMap::keylist_t & keys = m.getKeyList();
 			std::cout << "{";
 			char sep=0;
-			for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
+
+			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
+			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
 				if (sep)
 					std::cout << sep;
 				else
 					sep = ',';
-				std::cout << "\n  \"" << it->first << "\": {\n";
-
+				std::cout << "\n  \"" << *it << "\": {\n";
 				std::cout << "    \"type\": \"";
-				if (it->second.isString()) {
+				const drain::Referencer & entry = m[*it];
+				if (entry.isString()) {
 					std::cout << "string";
 				}
 				else {
-					std::cout << Type::call<drain::simpleName>(it->second.getType());
+					std::cout << Type::call<drain::simpleName>(entry.getType());
 				}
-				//std::cout << '[' << Type::getTypeChar(it->second.getType()) << ']';
 				std::cout << "\",\n";
 
 				std::cout << "    \"value\": ";
-				it->second.valueToJSON(std::cout);
+				entry.valueToJSON(std::cout);
 				std::cout << "\n";
 				std::cout << "  }";
 			}
@@ -895,7 +909,10 @@ public:
 				DataSet<DT> dstDataSet(it->second);
 				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
 					mout.debug() << dit->first << " :" << dit->second << mout.endl;
-					Data<DT> & dstData = dit->second;
+					PlainData<DT> & dstData = dit->second;
+
+					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
+
 					if (!dstData.data.isEmpty()){
 						const size_t w = dstData.data.getWidth();
 						const size_t h = dstData.data.getHeight();
@@ -907,12 +924,14 @@ public:
 							dstData.odim.quantity = dit->first;
 						}
 						if (dstData.odim.gain == 0){
-							getQuantityMap().setQuantityDefaults(dstData.odim, dstData.odim.quantity);
+							mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
+							getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
 						}
 					}
 
-					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
 					//rootODIM.updateFromMap(d.data.properties);
+					//dstData.updateTree2();
+					dstData.updateTree2();
 					rootODIM.update(dstData.odim);
 					//odim.copyToData(dst);
 					//dstData.odim.update(dstData.odim);

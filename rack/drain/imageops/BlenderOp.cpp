@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "util/Log.h"
 
 #include "BlenderOp.h"
+#include "CopyOp.h"
 #include "ImageOpBank.h"
 
 namespace drain {
@@ -53,7 +54,11 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 
 	if (loops == 0){
-		mout.error() << "zero loops, use copy instead..." << mout.endl;
+		//mout.error() << "zero loops, use copy instead..." << mout.endl;
+		mout.note() << "zero loops, only copying data" << mout.endl;
+		CopyOp copy;
+		copy.traverseChannels(src, dst);
+		//dst.get().copyData(src.get());
 		return;
 	}
 

@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 
 #include <set>
@@ -107,6 +107,9 @@ void CmdInputFile::exec() const {
 		}
 		return;
 	}
+
+	// ZELECT
+	resources.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
 	mout.debug(3) << "resources.getUpdatedStatusMap()" << mout.endl;
 	resources.getUpdatedStatusMap();
@@ -221,7 +224,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		DataTools::updateAttributes(*resources.currentHi5);
 		DataTools::updateCoordinatePolicy(resources.inputHi5, RackResources::polarLeft);
 
-			}
+	}
 
 
 	//mout.warn() << resources.currentHi5->data.dataSet.properties << mout.endl;
@@ -242,7 +245,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		mout.note() << "konsta:\n" << konsta << mout.endl;
 		const PlainData<PolarSrc> & aapeli = konsta.getData("TH");
 		mout.warn() << aapeli << mout.endl;
-		*/
+		 */
 		DataSet<PolarDst> muuttio((*resources.currentHi5)["dataset1"], drain::RegExp("Å"));
 		mout.warn() << "pair" << mout.endl;
 		DataSet<PolarDst>::value_type valu("KEPATH", eka);
@@ -350,26 +353,6 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 	}
 
 
-/*
-	RackResources & resources = getResources();
-
-	std::list<ODIMPath> srcPaths;
-	DataSelector srcSelector(ProductBase::appendResults+"[0-9]+$");
-	srcSelector.setParameters(resources.select); //??
-	resources.select.clear();
-
-	const DataSelector dstSelector(ProductBase::appendResults+"[0-9]+$");
-
-
-	 srcSelector.getPathsNEW(src, srcPaths); // RE2
-	for (std::list<ODIMPath>::const_iterator it=srcPaths.begin(); it != srcPaths.end(); ++it){
-		mout.warn() << "Appending from src:" << *it << mout.endl;
-		std::string path = "dataset1";
-		DataSelector::getNextOrdinalPath(dst, dstSelector, path);  //
-		mout.warn() << "Appending to   dst:" << path << mout.endl;
-		dst(path).swap(src(*it));
-	}
-	*/
 }
 
 void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
@@ -428,7 +411,7 @@ void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
 		else {
 			mout.info() << "Found quality data (CLASS), updates done on that, not on orig quality=" << quantity << mout.endl;
 		}
-		*/
+		 */
 
 		quantity_map::const_iterator dit = dstQualityPaths.find(quantity);
 
@@ -594,17 +577,15 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
 	DataSelector::getLastChild(resources.inputHi5, dataSetElem);
-	// std::string pathSearch = "dataset[0-9]+/?$";
-	// std::string dataSetPath = "dataset1";
-	// DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataSetPath);
+	if (dataSetElem.getIndex() == 0)
+		dataSetElem.index = 1;
 
 	/// Search new data[n] in the dataset found
 	ODIMPathElem dataElem(ODIMPathElem::DATA);
+	// TODO: append cmd?
 	DataSelector::getLastChild(resources.inputHi5[dataSetElem], dataElem);
-	//pathSearch = dataSetPath+"/data[0-9]+/?$";
-	//std::string dataPath = dataSetPath + "/data1"; // needed for recognition
-	//DataSelector::getLastOrdinalPath(resources.inputHi5, pathSearch, dataPath);
-
+	if (dataElem.getIndex() == 0)
+		dataElem.index = 1;
 
 	mout.warn() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
 	if (!resources.inputHi5[dataSetElem][dataElem]["data"].data.dataSet.isEmpty()){

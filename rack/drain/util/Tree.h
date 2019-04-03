@@ -27,31 +27,7 @@ SOFTWARE.
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//**
-
-    Copyright 2001 - 2010  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
-
-
-    This file is part of Drain library for C++.
-
-    Drain is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    any later version.
-
-    Drain is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Drain.  If not, see <http://www.gnu.org/licenses/>.
-
- * Tree.h
- *
- *  Created on: Nov 25, 2010
- *      Author: mpeura
- */
+*/
 
 #ifndef TREE2_H_
 #define TREE2_H_
@@ -333,7 +309,6 @@ public:
 	 */
 	//template <class K2>
 	inline
-	//tree_t & get(typename K2::const_iterator it, typename K2::const_iterator eit){
 	tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) {
 
 		// Path empty => self-reference
@@ -358,7 +333,6 @@ public:
 	 */
 	//template <class K2>
 	inline
-	//const tree_t & get(typename K2::const_iterator it, typename K2::const_iterator eit) const {
 	const tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const {
 
 		// Path empty => self-reference
@@ -376,25 +350,6 @@ public:
 		return child.get(++it, eit);
 	}
 
-	/// Returns a descendant, or the dummy one if not existing.
-			/*
-	inline
-	const tree_t &operator()(const path_t & path) const {
-
-
-		// Self-reference
-		if (path.empty())
-			return *this;
-
-		const key_t & root = path.front();
-
-		typename path_t::const_iterator it = path.begin();
-		const tree_t & child = operator[](*it);
-		return child(*(++it));
-
-
-	};
-	*/
 
 
 	bool hasChild(const key_t &key) const {
@@ -453,35 +408,7 @@ public:
 		}
 
 	}
-	/*
-	void erase(const std::string &path){
 
-		const size_t i = path.rfind(separator);
-
-		const std::string prefix = (i != std::string::npos) ? path.substr(0,i) : "";
-		const std::string child  = (i != std::string::npos) ? path.substr(i+1) : path;
-
-		if (child.empty())
-			return;
-
-		if (prefix.empty())
-			children.erase(child);
-		else if (hasDescendant(prefix)){
-			(*this)(prefix).children.erase(child);
-			//std::cerr << "Tree::erase OK " << parent << ": " << child << '\n';
-		}
-		else {
-			std::cerr << "Tried to erase inexistent prefix=" << prefix << ", child=" << child << '\n';
-		}
-	};
-	*/
-
-	/* not elegant
-	inline
-	void swapChildren(Tree<T,C> &t){
-		children.swap(t.children);
-	}
-	*/
 	inline
 	void swap(tree_t &t){
 		children.swap(t.children);

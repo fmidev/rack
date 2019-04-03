@@ -31,11 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include <drain/util/Fuzzy.h>
+//#include <drain/util/Fuzzy.h>
 
 #include <drain/image/File.h>
-#include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+//#include <drain/imageops/DistanceTransformFillOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
 
 
 #include "data/DataCoder.h"
@@ -122,7 +122,14 @@ void CartesianExtract::extract(const std::string & channels) const {
 	where["BBOX"].setType(typeid(double));
 	where["BBOX"] = resources.composite.getBoundingBoxD().toStr();
 	where["BBOX_data"].setType(typeid(double));
-	where["BBOX_data"] = resources.composite.getDataExtentD().toStr();
+	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();
+	where["BBOX_data"] = bboxDataD.toStr();
+
+	drain::Rectangle<int> bboxDataPix;
+	resources.composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
+	resources.composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
+	where["BBOX_data_pix"] = bboxDataPix.toStr();
+
 	where["BBOX_overlap"].setType(typeid(double));
 	where["BBOX_overlap"] = resources.composite.getDataOverlapD().toStr();
 

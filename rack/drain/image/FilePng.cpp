@@ -205,10 +205,12 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	std::map<std::string,std::string> comments;
 	comments["Creation_time"] = drain::Time().str();
 	// comments["Scaling"] = image.getScaling().toStr(); // FUTURE: only after known (below)
-	comments["Software"] = "drain/image/FilePng Markus.Peura[c]fmi.fi";
+	comments["Software"] = "drain/rack Markus.Peura[c]fmi.fi";
 	//for (std::map<std::string,Data>::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 	/// WARNING: for channels/views: getProperties instead?
 	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
+		mout.debug() << "properties:" << it->first << mout.endl;
+		mout.debug() << "properties:" << it->first << '=' << it->second << mout.endl;
 		comments[it->first] = it->second.toStr();
 		//it->second.substr(0,79);
 	}

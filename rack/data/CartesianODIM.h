@@ -117,10 +117,10 @@ public:
 
 	inline
 	const drain::Rectangle<double> & getBoundingBoxD(){
-		bboxD.xLowerLeft  = LL_lon;
-		bboxD.yLowerLeft  = LL_lat;
-		bboxD.xUpperRight = UR_lon;
-		bboxD.yUpperRight = UR_lat;
+		bboxD.lowerLeft.x  = LL_lon;
+		bboxD.lowerLeft.y  = LL_lat;
+		bboxD.upperRight.x = UR_lon;
+		bboxD.upperRight.y = UR_lat;
 		return bboxD;
 	}
 

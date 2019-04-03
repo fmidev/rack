@@ -462,14 +462,15 @@ protected:
 			if (kit != keys.end()){
 				// Assignment-by-order
 				(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
+				++kit; // NUEVO
 			}
 			else {
 				if (!updateOnly)
 					mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
-				return;
+				//return; // NUEVO
 			}
 
-			++kit;
+			// ++kit;  NUEVO
 
 		}
 	}

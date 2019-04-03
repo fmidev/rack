@@ -39,25 +39,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_PRODUCT_OP "ProductOP"
 
 
-#include <stdexcept>
-
-#include <drain/util/BeanLike.h>
-//#include <drain/util/DataScaling.h>
-//#include <drain/util/StringMapper.h>
-//#include <drain/util/Variable.h>
-//#include <drain/util/Tree.h>
-//#include <drain/util/ReferenceMap.h>
-
-
-
-//#include "hi5/H52Image.h"
-#include "main/rack.h"
-#include "hi5/Hi5.h"
-#include "data/ODIM.h"
-#include "data/DataSelector.h"
-#include "data/DataTools.h"
-#include "data/Data.h"
-#include "data/QuantityMap.h" // NEW
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <data/ODIM.h>
+#include <data/ODIMPath.h>
+#include <hi5/Hi5.h>
+#include <main/rack.h>
+#include <util/Log.h>
+#include <util/RegExp.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
+#include <util/Variable.h>
+#include <exception>
+#include <iostream>
+#include <list>
+#include <map>
+#include <set>
+#include <string>
 
 namespace rack {
 

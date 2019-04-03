@@ -35,19 +35,29 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "PolarSlidingWindowOp.h"
 
-#include <drain/util/Fuzzy.h>
-#include <drain/util/LookUp.h>
-
-#include <drain/imageops/SlidingWindowOp.h>
-#include <drain/imageops/SlidingWindowHistogramOp.h>
-//#include <drain/util/FunctorBank.h>
-
-
-//#include "Analysis.h"
-#include "../radar/Doppler.h"
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <data/PolarODIM.h>
+#include <data/QuantityMap.h>
+//#include <drain/imageops/SlidingWindowHistogramOp.h>
+//#include <drain/imageops/SlidingWindowOp.h>
+//#include <drain/util/Fuzzy.h>
+//#include <drain/util/LookUp.h>
+#include <image/Geometry.h>
+#include <image/Image.h>
+#include <image/ImageChannel.h>
+#include <image/Window.h>
+#include <imageops/SlidingWindowOp.h>
+#include <product/ProductOp.h>
+#include <radar/Doppler.h>
+#include <util/Fuzzy.h>
+#include <util/Log.h>
+#include <util/SmartMap.h>
+#include <util/Type.h>
+#include <util/TypeUtils.h>
 #include "DopplerOp.h"
-
-#include <cmath>
+//#include <cmath>
+#include <string>
 
 
 namespace rack {

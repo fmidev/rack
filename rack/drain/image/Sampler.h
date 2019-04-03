@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
+#include "util/Range.h"
 #include "util/ReferenceMap.h"
 #include "util/StringMapper.h"
 #include "image/Image.h"
@@ -136,16 +137,28 @@ class Sampler  {
 
 public:
 
-	Sampler() : iStep(10), jStep(0), iStart(-1), jStart(-1), iEnd(-1), jEnd(0),
+	//Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), iStart(-1), jStart(-1), iEnd(-1), jEnd(0),
+	/*
+	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), iStart(iRange.vect[0]), jStart(jRange.vect[0]), iEnd(iRange.vect[1]), jEnd(jRange.vect[1]),
 			commentChar("#"), skipVoid(0), voidMarker("void data") {
 	};
+	*/
+
+	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar("#"), skipVoid(0), voidMarker("void data") {
+	};
+
 
 	int iStep;
 	int jStep;
-	int iStart;
-	int jStart;
-	int iEnd;
-	int jEnd;
+
+	drain::Range<int> iRange;
+	drain::Range<int> jRange;
+	/*
+	int & iStart;
+	int & jStart;
+	int & iEnd;
+	int & jEnd;
+	*/
 
 	/// Escape std::string for prefixing text no to be handled as data values.
 	std::string commentChar;
@@ -248,19 +261,19 @@ public:
 		//mout.warn() << "formatter " << formatter << mout.endl;
 
 
-		int iStart = this->iStart;
+		int iStart = this->iRange.min; // this->iStart;
 		if (iStart < 0)
 			iStart = iStep/2;
 
-		int jStart = this->jStart;
+		int jStart = this->jRange.min; //jStart;
 		if (jStart < 0)
 			jStart = jStep/2;
 
-		int iEnd   = this->iEnd;
+		int iEnd   = this->iRange.max; // iEnd;
 		if (iEnd < iStart)
 			iEnd = picker.width-1;
 
-		int jEnd   = this->jEnd;
+		int jEnd   = this->jRange.max; // jEnd;
 		if (jEnd < jStart)
 			jEnd = picker.height-1;
 

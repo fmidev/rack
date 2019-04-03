@@ -43,6 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <sstream>
 
+#include "../image/Point.h"
+
 // // using namespace std;
 
 
@@ -67,24 +69,24 @@ public:
 	};
 
 	Rectangle(const Rectangle & r){
-		set(r.xLowerLeft, r.yLowerLeft, r.xUpperRight, r.yUpperRight);
+		set(r.lowerLeft.x, r.lowerLeft.y, r.upperRight.x, r.upperRight.y);
 	};
 
 
 	inline
 	void set(T xLowerLeft, T yLowerLeft, T xUpperRight, T yUpperRight){
-		this->xLowerLeft  = xLowerLeft;
-		this->yLowerLeft  = yLowerLeft;
-		this->xUpperRight = xUpperRight;
-		this->yUpperRight = yUpperRight;
+		this->lowerLeft.x  = xLowerLeft;
+		this->lowerLeft.y  = yLowerLeft;
+		this->upperRight.x = xUpperRight;
+		this->upperRight.y = yUpperRight;
 	};
 
 
 	inline
-	T getWidth() const { return (xUpperRight - xLowerLeft); };
+	T getWidth() const { return (this->upperRight.x - this->lowerLeft.x); };
 
 	inline
-	T getHeight() const { return (yUpperRight - yLowerLeft); };
+	T getHeight() const { return (this->upperRight.y - this->lowerLeft.y); };
 
 	inline
 	T getArea() const { return std::abs(getWidth()*getHeight()); };
@@ -97,10 +99,10 @@ public:
 	void crop(const Rectangle<T> & r){
 		const Rectangle<T> bounds(*this);
 		*this = r;
-		limit(bounds.xLowerLeft, bounds.xUpperRight, xLowerLeft);
-		limit(bounds.xLowerLeft, bounds.xUpperRight, xUpperRight);
-		limit(bounds.yLowerLeft, bounds.yUpperRight, yLowerLeft);
-		limit(bounds.yLowerLeft, bounds.yUpperRight, yUpperRight);
+		limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
+		limit(bounds.lowerLeft.x, bounds.upperRight.x, this->upperRight.x);
+		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
+		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
 	}
 
 	/// The instance extends to its union with r.
@@ -112,13 +114,13 @@ public:
 
 	inline
 	bool isInside(const T &x,const T &y) const {
-		return ((x>xLowerLeft) && (x<xUpperRight) && (y>yLowerLeft) && (y<yUpperRight));
+		return ((x>this->lowerLeft.x) && (x<this->upperRight.x) && (y>this->lowerLeft.y) && (y<this->upperRight.y));
 	};
 
 	inline
 	bool isOverLapping(const Rectangle &r) const {
-		const bool xOverLap = !((r.xUpperRight < xLowerLeft) || (r.xLowerLeft > xUpperRight));
-		const bool yOverLap = !((r.yUpperRight < yLowerLeft) || (r.yLowerLeft > yUpperRight));
+		const bool xOverLap = !((r.upperRight.x < this->lowerLeft.x) || (r.lowerLeft.x > this->upperRight.x));
+		const bool yOverLap = !((r.upperRight.y < this->lowerLeft.y) || (r.lowerLeft.y > this->upperRight.y));
 		return (xOverLap && yOverLap);
 	};
 
@@ -126,7 +128,7 @@ public:
 	template <class S>
 	inline
 	void toStream(S & ostr, char separator=',') const {
-		ostr << xLowerLeft << separator << yLowerLeft << separator <<  xUpperRight << separator << yUpperRight;
+		ostr << this->lowerLeft.x << separator << this->lowerLeft.y << separator <<  this->upperRight.x << separator << this->upperRight.y;
 	}
 
 	/// Return corner points to a string
@@ -137,10 +139,14 @@ public:
 		return sstr.str();
 	}
 
+	drain::image::Point2D<T> lowerLeft;
+	drain::image::Point2D<T> upperRight;
+	/*
 	T xLowerLeft;
 	T yLowerLeft;
 	T xUpperRight;
 	T yUpperRight;
+	*/
 
 protected:
 
@@ -161,40 +167,40 @@ protected:
 /*
 template<class T> inline void Rectangle<T>::crop(const Rectangle & r)
 {
-	xLowerLeft  = std::max(xLowerLeft,r.xLowerLeft); // at least xLL
+	xLowerLeft  = std::max(xLowerLeft,r.lowerLeft.x); // at least xLL
 	//xLowerLeft  = std::min(xUpperRight,xLowerLeft);  // at max   xUR
 
-	yLowerLeft  = std::max(yLowerLeft,r.yLowerLeft);
+	yLowerLeft  = std::max(yLowerLeft,r.lowerLeft.y);
 	//yLowerLeft  = std::min(yUpperRight, yLowerLeft);
 
-	xUpperRight = std::min(xUpperRight, r.xUpperRight);
+	xUpperRight = std::min(xUpperRight, r.upperRight.x);
 	//xUpperRight = std::max(xLowerLeft, xUpperRight);
 
-	yUpperRight = std::min(yUpperRight,r.yUpperRight);
+	yUpperRight = std::min(yUpperRight,r.upperRight.y);
 
 }
 */
 
 template<class T> inline void Rectangle<T>::extend(const Rectangle & r)
 {
-	xLowerLeft  = std::min(xLowerLeft,r.xLowerLeft);
-	yLowerLeft  = std::min(yLowerLeft,r.yLowerLeft);
-	xUpperRight = std::max(xUpperRight,r.xUpperRight);
-	yUpperRight = std::max(yUpperRight,r.yUpperRight);
+	this->lowerLeft.x  = std::min(this->lowerLeft.x,r.lowerLeft.x);
+	this->lowerLeft.y  = std::min(this->lowerLeft.y,r.lowerLeft.y);
+	this->upperRight.x = std::max(this->upperRight.x,r.upperRight.x);
+	this->upperRight.y = std::max(this->upperRight.y,r.upperRight.y);
 }
 
 template<class T> inline void Rectangle<T>::contract(const Rectangle & r)
 {
-	xLowerLeft  = std::max(xLowerLeft,r.xLowerLeft);
-	yLowerLeft  = std::max(yLowerLeft,r.yLowerLeft);
-	xUpperRight = std::min(xUpperRight,r.xUpperRight);
-	yUpperRight = std::min(yUpperRight,r.yUpperRight);
+	this->lowerLeft.x  = std::max(this->lowerLeft.x,r.lowerLeft.x);
+	this->lowerLeft.y  = std::max(this->lowerLeft.y,r.lowerLeft.y);
+	this->upperRight.x = std::min(this->upperRight.x,r.upperRight.x);
+	this->upperRight.y = std::min(this->upperRight.y,r.upperRight.y);
 }
 
 
 template <class T>
 std::ostream & operator<<(std::ostream &ostr,const drain::Rectangle<T> &r){
-	ostr << r.xLowerLeft << ',' << r.yLowerLeft << ' ' <<  r.xUpperRight << ',' << r.yUpperRight;
+	ostr << r.lowerLeft.x << ',' << r.lowerLeft.y << ' ' <<  r.upperRight.x << ',' << r.upperRight.y;
 	return ostr;
 }
 
@@ -204,7 +210,7 @@ std::ostream & operator<<(std::ostream &ostr,const drain::Rectangle<T> &r){
 /*
 template <class T>
 std::ostream & operator<<(std::ostream &ostr,const drain::Rectangle<T> &r){
-	ostr << r.xLowerLeft << ',' << r.yLowerLeft << ' ' <<  r.xUpperRight << ',' << r.yUpperRight;
+	ostr << r.lowerLeft.x << ',' << r.lowerLeft.y << ' ' <<  r.upperRight.x << ',' << r.upperRight.y;
 	return ostr;
 }
 */

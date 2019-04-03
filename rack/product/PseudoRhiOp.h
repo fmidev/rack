@@ -33,9 +33,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define PseudoRhiOP_OP_H_
 
 
-#include "VolumeOp.h"
-
-#include "data/VerticalODIM.h"
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <data/PolarODIM.h>
+#include <data/VerticalODIM.h>
+#include <product/VolumeOp.h>
+#include <string>
 
 namespace rack {
 

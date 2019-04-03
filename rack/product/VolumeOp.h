@@ -147,6 +147,10 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
+	if (dataPaths.empty()){
+		mout.warn() << "no dataset's selected" << mout.endl;
+	}
+
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	drain::Variable elangles(typeid(double));
 	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){

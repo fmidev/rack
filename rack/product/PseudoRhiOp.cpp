@@ -28,16 +28,21 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <stdexcept>
 
-#include <drain/util/Log.h>
-#include <drain/util/Variable.h>
-
-//#include "main/rack.h"
-
-#include "radar/Geometry.h"
-
-#include "PseudoRhiOp.h"
+#include <data/Quantity.h>
+#include <data/QuantityMap.h>
+//#include <drain/util/Log.h>
+//#include <drain/util/Variable.h>
+#include <image/Image.h>
+#include <product/ProductOp.h>
+#include <product/PseudoRhiOp.h>
+#include <radar/Geometry.h>
+#include <util/Log.h>
+#include <algorithm>
+#include <cmath>
+#include <map>
+//#include <stdexcept>
+#include <utility>
 
 
 

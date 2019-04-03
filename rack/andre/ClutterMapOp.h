@@ -31,7 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ClutterMapOP_H_
 #define ClutterMapOP_H_
 
-#include "DetectorOp.h"
+#include <andre/DetectorOp.h>
+#include <data/Data.h>
+#include <data/DataSelector.h>
+#include <hi5/Hi5.h>
+#include <radar/EchoClasses.h>
+#include <util/ReferenceMap.h>
+#include <string>
 
 using namespace drain::image;
 
@@ -68,9 +74,10 @@ public:
 
 	double decay;
 
+	/// Loads a clutter map
 	void setClutterMap(const std::string & filename) const;
 
-	const Data<PolarSrc> & getClutterMap() const;
+	const Data<PolarSrc> & getClutterMap(const PolarODIM & odim) const;
 
 
 	virtual

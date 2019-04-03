@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/File.h>
 
 #include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
 
 
 #include "data/DataCoder.h"
@@ -93,12 +93,12 @@ void CartesianBBoxTest::exec() const {
 	drain::Rectangle<double> bboxM;
 	//resources.composite.determineBoundingBoxM(pRadarToComposite, odimIn.rscale*odimIn.nbins + odimIn.rscale/2.0 + odimIn.rstart, bboxM);
 	if (range > 0.0) {
-		pRadarToComposite.determineBoundingBoxM(range, bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+		pRadarToComposite.determineBoundingBoxM(range, bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 		//resources.composite.determineBoundingBoxM(pRadarToComposite, range, bboxM);
 	}
 	else {
 		mout.warn() << "could not derive range, using 250km "<< mout.endl;
-		pRadarToComposite.determineBoundingBoxM(250000, bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+		pRadarToComposite.determineBoundingBoxM(250000, bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 		//resources.composite.determineBoundingBoxM(pRadarToComposite, 250000, bboxM);
 	}
 
@@ -108,19 +108,19 @@ void CartesianBBoxTest::exec() const {
 	//drain::Rectangle<int> bInt;
 	int i,j;
 
-	resources.composite.m2deg(bboxM.xLowerLeft, bboxM.yLowerLeft, bboxD.xLowerLeft, bboxD.yLowerLeft);
-	attributes["LL_lon"] = bboxD.xLowerLeft;
-	attributes["LL_lat"] = bboxD.yLowerLeft;
+	resources.composite.m2deg(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxD.lowerLeft.x, bboxD.lowerLeft.y);
+	attributes["LL_lon"] = bboxD.lowerLeft.x;
+	attributes["LL_lat"] = bboxD.lowerLeft.y;
 
-	resources.composite.m2pix(bboxM.xLowerLeft, bboxM.yLowerLeft, i, j);
+	resources.composite.m2pix(bboxM.lowerLeft.x, bboxM.lowerLeft.y, i, j);
 	attributes["LL_i"] = i;
 	attributes["LL_j"] = j;
 
-	resources.composite.m2deg(bboxM.xUpperRight, bboxM.yUpperRight, bboxD.xUpperRight, bboxD.yUpperRight);
-	attributes["UR_lon"] = bboxD.xUpperRight;
-	attributes["UR_lat"] = bboxD.yUpperRight;
+	resources.composite.m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
+	attributes["UR_lon"] = bboxD.upperRight.x;
+	attributes["UR_lat"] = bboxD.upperRight.y;
 
-	resources.composite.m2pix(bboxM.xUpperRight, bboxM.yUpperRight, i, j);
+	resources.composite.m2pix(bboxM.upperRight.x, bboxM.upperRight.y, i, j);
 	attributes["UR_i"] = i;
 	attributes["UR_j"] = j;
 
@@ -162,16 +162,16 @@ void CartesianBBoxTile::exec() const {
 
 	// Project to image coordinates.
 	int i, j;
-	composite.deg2pix(bboxTile.xLowerLeft, bboxTile.yLowerLeft, i, j);
+	composite.deg2pix(bboxTile.lowerLeft.x, bboxTile.lowerLeft.y, i, j);
 	int i2, j2;
-	composite.deg2pix(bboxTile.xUpperRight, bboxTile.yUpperRight, i2, j2);
+	composite.deg2pix(bboxTile.upperRight.x, bboxTile.upperRight.y, i2, j2);
 
 	// Justify the float-valued bbox to image coordinates (integers).
 	// First, decrement UR image coords by one:
 	--j;
 	--i2;
-	composite.pix2deg(i, j, bboxTile.xLowerLeft, bboxTile.yLowerLeft);
-	composite.pix2deg(i2, j2, bboxTile.xUpperRight, bboxTile.yUpperRight);
+	composite.pix2deg(i, j, bboxTile.lowerLeft.x, bboxTile.lowerLeft.y);
+	composite.pix2deg(i2, j2, bboxTile.upperRight.x, bboxTile.upperRight.y);
 	if ((bboxTile.getWidth() <= 0.0) || (bboxTile.getHeight() <= 0.0)){
 		mout.error() << "negative-valued area in a bbox: " << bboxTile << mout.endl;
 	}

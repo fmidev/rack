@@ -67,7 +67,7 @@ namespace image
    	drainage shapes.png --blender 25,mix=b/coeff:0.25 -o hazy25a.png
    	drainage shapes.png --blender 25,mix=b/coeff:0.50 -o hazy50a.png
    	drainage shapes.png --blender 25,mix=b/coeff:0.75 -o hazy75a.png
-   	drainage shapes.png --blender 25,smooth=g,mix=b/coeff:0.75 -o hazy75g.png
+   	drainage shapes.png --blender 25,smooth=g,mix=b/coeff:0.25 -o hazy25g.png
    	drainage shapes.png --blender 25,mix=m            -o hazyMax.png
    \endcode
 

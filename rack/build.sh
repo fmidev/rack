@@ -46,7 +46,7 @@ fi
 
 
 echo "Success."
-echo "Consider creating documentation by calling 'make doc' in ./rack ."
+#echo "Consider creating documentation by calling 'make doc' in ./rack ."
 echo
 echo "Consider setting:"
 echo "export LD_LIBRARY_PATH=$HDFROOT/lib:$PROJROOT/lib:$LD_LIBRARY_PATH"

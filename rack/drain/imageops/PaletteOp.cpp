@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <sstream>
+//#include <strstream>
 #include <list>
 #include "PaletteOp.h"
 
@@ -78,15 +79,108 @@ void Palette::load(std::ifstream & ifstr){
 	};
 
 	_hasAlpha = false;
-	char c;
-	double d;
-	_colors = 0;
-	clear();
 
-	std::vector<double> tmp;
-	std::stringstream label;
+	double d;
+	colorCount = 0;
+	clear();
+	specialCodes.clear();
+
+	//std::vector<double> tmp;
+	//std::stringstream label;
 
 	bool SPECIAL;
+	std::string line;
+	//std::string title;
+	std::string label;
+
+	while (std::getline(ifstr, line)){
+
+		//mout.note() << "'" << line <<  "'" << std::endl;
+
+		size_t i = line.find_first_not_of(" \t");
+
+		// Skip empty lines
+		if (i == std::string::npos)
+			continue;
+
+		char c = line.at(i);
+
+		if (c == '#'){
+			// Re-search
+			++i;
+			i = line.find_first_not_of(" \t", i);
+			if (i == std::string::npos) // line contains only '#'
+				continue;
+			//mout.note() << "i=" << i << mout.endl;
+
+			size_t j = line.find_last_not_of(" \t");
+			if (j == std::string::npos) // when?
+				continue;
+			//mout.note() << "j=" << j << mout.endl;
+
+			label = line.substr(i, j+1-i);
+			if (title.empty())
+				title = label;
+
+			continue;
+		}
+
+		if (c == '@'){
+			SPECIAL = true;
+			++i;
+			mout.debug(3) << "reading special entry[" << label << "]" << mout.endl;
+		}
+		else {
+			SPECIAL = false;
+			i = 0;
+		}
+
+		//mout.note() << "remaining line '" << line.substr(i) << "'" << mout.endl;
+
+		std::istringstream data(line.substr(i));
+		if (!SPECIAL){
+			if (!(data >> d)){
+				mout.warn() << "suspicious line: " << line << mout.endl;
+				continue;
+			}
+			mout.debug(4) << "reading  entry[" << d << "]" << mout.endl;
+		}
+
+		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+		entry.label = label;
+
+		unsigned int n=0;
+		while (true) {
+
+			if (!(data >> d))
+				break; // todo detect if chars etc
+
+			//mout.note() << "got " << d << mout.endl;
+
+			if (colorCount == 0){
+				entry.resize(n+1);
+			}
+			else {
+				entry.resize(colorCount);
+				if (i >= colorCount){
+					mout.error() << " increased color count? index=" << i << " #colors=" << colorCount << mout.endl;
+					return;
+				}
+			};
+
+			entry[n] = d;
+			++n;
+
+		}
+		// Now fixed.
+		colorCount = entry.size();
+
+		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
+
+	}
+
+	/*
+
 	while (!ifstr.eof()){
 
 		c = ifstr.peek();
@@ -104,6 +198,7 @@ void Palette::load(std::ifstream & ifstr){
 			   ifstr.get();
 			   c = ifstr.peek();
 			}
+			//ifstr.getline();
 			while ((c = ifstr.get()) != '\n'){
 				if (ifstr.eof())
 					return;
@@ -143,13 +238,13 @@ void Palette::load(std::ifstream & ifstr){
 				if (ifstr.eof())
 					return;
 
-				if (_colors == 0){
+				if (colorCount == 0){
 					entry.resize(i+1);
 				}
 				else {
-					entry.resize(_colors);
-					if (i >= _colors)
-						mout.error() << " increased color count? index=" << i << " #colors=" << _colors << mout.endl;
+					entry.resize(colorCount);
+					if (i >= colorCount)
+						mout.error() << " increased color count? index=" << i << " #colors=" << colorCount << mout.endl;
 						//throw std::runtime_error(" Palette::read: ");
 				};
 
@@ -173,17 +268,17 @@ void Palette::load(std::ifstream & ifstr){
 			mout << mout.endl;
 
 			// Now fixed.
-			_colors = entry.size();
+			colorCount = entry.size();
 
 			// Read std::endline (because next
 			//ifstr.get();
-			// for (size_t i = 0; i < _colors; ++i)
+			// for (size_t i = 0; i < colorCount; ++i)
 			//	std::cout << entry[i] << ',';
 			//std::cout << "NEXT\n";
 
 		}
-
 	};
+	 */
 
 	ifstr.close(); // ?
 
@@ -392,15 +487,20 @@ void PaletteOp::setPalette(const Palette &palette) {
 
 
 void PaletteOp::setSpecialCode(const std::string code, double f) {
+
+	Logger mout(getImgLog(), getName(), __FUNCTION__);
+
 	//if (this->palette == NULL)
 	//	throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
-	//if (specialCode.hasKe)
+
 	std::map<std::string,PaletteEntry >::const_iterator it = palette.specialCodes.find(code);
 	if (it != palette.specialCodes.end())
 		specialCodes[f] = it->second;
-	else
-	//	throw std::runtime_error(code + ": setSpecialCode: could not find entry");
-		std::cerr << code <<  ": setSpecialCode: could not find entry\n";
+	else {
+		mout.note() << palette << mout.endl;
+		mout.warn() << "could not find entry: "<< code << '(' << f << ')' << mout.endl;
+	}
+	//std::cerr << code <<  ": setSpecialCode: could not find entry\n";
 
 }
 
@@ -435,7 +535,9 @@ void PaletteOp::makeCompatible(const ImageFrame &src,Image &dst) const {
 
 
 void PaletteOp::help(std::ostream & ostr) const {
+
 	ImageOp::help(ostr);
+
 	for (std::map<double,PaletteEntry >::const_iterator cit = specialCodes.begin(); cit != specialCodes.end(); ++cit){
 		ostr << cit->first << '=' << cit->second << '\n';
 	}

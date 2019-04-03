@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/AccumulationMethods.h>
 #include <drain/image/File.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
 #include <drain/imageops/DistanceTransformFillOp.h>
 
 #include "main/rack.h"  // for version toOStr
@@ -180,7 +180,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		pRadarToComposite.setProjectionDst(getProjection());
 		if (cropping){
 			//drain::Rectangle<double> bboxM;
-			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM.xLowerLeft, bboxM.yLowerLeft, bboxM.xUpperRight, bboxM.yUpperRight);
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM);
 			cropWithM(bboxM);
 			//mout.toOStr() << "Cropped to: " << getBoundingBoxM() << mout.endl;
@@ -220,8 +220,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	/// Area for main loop
 	drain::Rectangle<int> bboxPix;
-	m2pix(bboxM.xLowerLeft,  bboxM.yLowerLeft,  bboxPix.xLowerLeft,  bboxPix.yLowerLeft);
-	m2pix(bboxM.xUpperRight, bboxM.yUpperRight, bboxPix.xUpperRight, bboxPix.yUpperRight);
+	m2pix(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxPix.lowerLeft.x,  bboxPix.lowerLeft.y);
+	m2pix(bboxM.upperRight.x, bboxM.upperRight.y, bboxPix.upperRight.x, bboxPix.upperRight.y);
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 
 	//if (drain::Debug > 4){
@@ -273,7 +273,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	double s, w;
 	size_t address;
-	for (int j=bboxPix.yLowerLeft; j>bboxPix.yUpperRight; j--){ // notice negative
+	for (int j=bboxPix.lowerLeft.y; j>bboxPix.upperRight.y; j--){ // notice negative
 
 		// Beam index (azimuthal coordinate of polar input data)
 		unsigned int a;
@@ -284,7 +284,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		//if ((j&31)==0)
 		//	mout.debug(2) << j << mout.endl;
 		//for (unsigned int i=0; i<width; i++){
-		for (int i=bboxPix.xLowerLeft; i<bboxPix.xUpperRight; i++){
+		for (int i=bboxPix.lowerLeft.x; i<bboxPix.upperRight.x; i++){
 
 
 			pix2m(i,j,x,y);
@@ -335,14 +335,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	//updateGeoData();
 	//const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 	drain::Rectangle<double> bboxD;
-	m2deg(bboxM.xLowerLeft,  bboxM.yLowerLeft,  bboxD.xLowerLeft,  bboxD.yLowerLeft);
-	m2deg(bboxM.xUpperRight, bboxM.yUpperRight, bboxD.xUpperRight, bboxD.yUpperRight);
+	m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
+	m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
 	updateDataExtent(bboxD);
 
 
 
 	int i, j;
-	m2pix((bboxM.xLowerLeft + bboxM.xUpperRight)/2.0,  (bboxM.yLowerLeft+bboxM.yUpperRight)/2.0,  i,  j);
+	m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), i, j);
 
 	odim.update(srcData.odim); // Time, date, new
@@ -399,10 +399,10 @@ void Composite::updateGeoData(){
 	odim.ysize   = getFrameHeight();
 
 	const drain::Rectangle<double> &bboxD = getBoundingBoxD();
-	odim.LL_lon = bboxD.xLowerLeft;
-	odim.LL_lat = bboxD.yLowerLeft;
-	odim.UR_lon = bboxD.xUpperRight;
-	odim.UR_lat = bboxD.yUpperRight;
+	odim.LL_lon = bboxD.lowerLeft.x;
+	odim.LL_lat = bboxD.lowerLeft.y;
+	odim.UR_lon = bboxD.upperRight.x;
+	odim.UR_lat = bboxD.upperRight.y;
 	double x2,y2;
 	pix2LLdeg(0,-1, x2,y2); // (vertically outside)
 	odim.UL_lon = x2;
@@ -420,11 +420,11 @@ void Composite::updateGeoData(){
 		const int im = getFrameWidth()/2;
 		const int jm = getFrameHeight()/2;
 		drain::Rectangle<double> bboxDeg;
-		pix2deg(im-1, jm-1, bboxDeg.xLowerLeft,  bboxDeg.yLowerLeft);
-		pix2deg(im+1, jm+1, bboxDeg.xUpperRight, bboxDeg.yUpperRight);
+		pix2deg(im-1, jm-1, bboxDeg.lowerLeft.x,  bboxDeg.lowerLeft.y);
+		pix2deg(im+1, jm+1, bboxDeg.upperRight.x, bboxDeg.upperRight.y);
 
-		odim.xscale = (bboxDeg.xUpperRight-bboxDeg.xLowerLeft )/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS * cos(DEG2RAD*(bboxDeg.yLowerLeft+bboxDeg.yUpperRight)/2.0);
-		odim.yscale = (bboxDeg.yLowerLeft -bboxDeg.yUpperRight)/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS; //
+		odim.xscale = (bboxDeg.upperRight.x-bboxDeg.lowerLeft.x )/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS * cos(DEG2RAD*(bboxDeg.lowerLeft.y+bboxDeg.upperRight.y)/2.0);
+		odim.yscale = (bboxDeg.lowerLeft.y -bboxDeg.upperRight.y)/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS; //
 	}
 	else {
 	*/

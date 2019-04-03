@@ -29,21 +29,23 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <algorithm>
-
-
-#include <drain/util/Log.h>
-
-//#include <drain/image/MathOpPack.h>
-
-
-// debugging
-#include <drain/image/File.h>
-#//include "odim/ODIM.h"
-
-#include "AndreOp.h"
-
-#include "QualityCombinerOp.h"
+#include <andre/QualityCombinerOp.h>
+#include <data/Data.h>
+#include <data/PolarODIM.h>
+#include <data/QuantityMap.h>
+#include <hi5/Hi5.h>
+#include <image/Image.h>
+#include <image/ImageFrame.h>
+#include <main/rack.h>
+#include <util/Log.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
+#include <util/Variable.h>
+#include <map>
+#include <set>
+#include <sstream>
+#include <string>
+#include <utility>
 
 // using namespace std;
 
@@ -266,16 +268,15 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	// quality1 => QIND
 	// quality2 => CLASS
 
-	const PlainData<PolarSrc> & srcQIND  = srcDataSet.getQualityData();
-	const PlainData<PolarSrc> & srcCLASS = srcDataSet.getQualityData("CLASS");
-
 	const bool UPDATE_EXISTING = dstData.hasQuality();
 
 	if (!UPDATE_EXISTING){
-		mout.warn() << "Skipping update, because srcData won't get it " << mout.endl;
+		mout.debug(1) << "Skipping update, because srcData won't get it " << mout.endl;
 		return;
 	}
 
+	const PlainData<PolarSrc> & srcQIND  = srcDataSet.getQualityData();
+	const PlainData<PolarSrc> & srcCLASS = srcDataSet.getQualityData("CLASS");
 
 	PlainData<PolarDst> & dstQIND  = dstData.getQualityData();
 	PlainData<PolarDst> & dstCLASS = dstData.getQualityData("CLASS");

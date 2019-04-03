@@ -36,7 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/Intensity.h>
 #include <drain/imageops/CopyOp.h>
 #include <drain/imageops/DistanceTransformFillOp.h>
-#include <drain/imageops/RecursiveRepairerOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
+#include <drain/imageops/BlenderOp.h>
 
 
 
@@ -51,9 +52,9 @@ using namespace hi5;
 
 
 
-
-//void GapFillOp::filterImage(const PolarODIM & odim, Image &data, Image &quality) const {
-void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+//void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << *this << mout.endl;
@@ -73,10 +74,10 @@ void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 	//mout.warn() << op << mout.endl;
 
 	ImageTray<const Channel> srcTray;
-	srcTray.setChannels(srcData.data, srcData.getQualityData().data);
+	srcTray.setChannels(srcData.data, srcQuality.data);
 
 	ImageTray<Channel> dstTray;
-	dstTray.setChannels(dstData.data, dstData.getQualityData().data);
+	dstTray.setChannels(dstData.data, dstQIND.data);
 
 	op.traverseChannels(srcTray, dstTray);
 	//op.traverseChannels(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
@@ -85,19 +86,22 @@ void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 
 }
 
-//void GapFillRecOp::filterImage(const PolarODIM & odim, Image &data, Image &quality) const {
-void GapFillRecOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+//void GapFillRecOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
+	/*
 	RecursiveRepairerOp op;
 	op.width =  width /  srcData.odim.rscale;
 	op.height = height * srcData.data.getHeight() / 360.0;
 	op.loops = loops;
-	//op.decay = decay;
+	*/
+	BlenderOp op(width /  srcData.odim.rscale, height * srcData.data.getHeight() / 360.0, 'g', 'm', loops);
 
 	ImageTray<const Channel> srcTray;
-	srcTray.setChannels(srcData.data, srcData.getQualityData().data);
+	srcTray.setChannels(srcData.data, srcQuality.data);
 	ImageTray<Channel> dstTray;
-	dstTray.setChannels(dstData.data, dstData.getQualityData().data);
+	dstTray.setChannels(dstData.data, dstQIND.data);
 	//op.filter(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
 	op.traverseChannels(srcTray, dstTray);
 

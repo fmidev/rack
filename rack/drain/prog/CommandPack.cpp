@@ -152,7 +152,8 @@ class CmdFormatFile : public SimpleCommand<std::string> {
 CommandEntry<CmdFormatFile> cmdFormatFile("formatFile");
 
 void CommandLoader::run(const std::string & params){
-	// getRegistry().scriptify(params, script);
+
+
 	drain::Logger mout(name, __FUNCTION__); // = getDrainage().mout;
 
 	Script script;

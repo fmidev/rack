@@ -33,15 +33,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_IMAGE_OPS
 #define RACK_IMAGE_OPS
 
-#include <drain/image/Image.h>
-#include <drain/prog/Command.h>
-#include <drain/prog/CommandAdapter.h>
+#include <imageops/ImageOp.h>
+#include <prog/Command.h>
+#include <prog/CommandAdapter.h>
+#include <prog/CommandRegistry.h>
+#include <util/ReferenceMap.h>
 
-#include "data/DataSelector.h"
-
-
-#include "resources.h"
-#include "commands.h" // cmdSelect
+#include <list>
+#include <string>
 
 namespace drain {
 
@@ -52,20 +51,6 @@ typedef BeanRefAdapter<drain::image::ImageOp> ImageOpAdapter;
 
 namespace rack {
 
-/**
- *   Applied also by CartesianGrid
- */
-class CmdPhysical : public drain::SimpleCommand<bool> {
-
-public:
-
-	CmdPhysical() : drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
-			"value", true, "0,1") {
-	};
-
-
-};
-extern CommandEntry<CmdPhysical> cmdPhysical;
 
 
 /// Designed for Rack
@@ -103,18 +88,42 @@ public:
 
 	static std::string outputQuantity;
 
+	static bool physical;
+
 protected:
 
 };
 
 
+/**
+ *   Applied also by CartesianGrid
+ */
+class CmdPhysical : public drain::BasicCommand { //SimpleCommand<bool> {
+
+public:
+
+	CmdPhysical() :  drain::BasicCommand(__FUNCTION__, "Flag. Handle intensities as physical quantities instead of storage typed values."){
+		//drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
+		//	"value", true, "0,1")
+
+		parameters.reference("value", ImageOpRacklet::physical, "0|1");
+
+	};
+
+
+};
+//extern CommandEntry<CmdPhysical> cmdPhysical;
+
+
 class ImageRackletModule : public CommandGroup {
+
 public:
 
 	typedef std::list<ImageOpRacklet> list_t;
 
 	static
 	list_t rackletList;
+
 
 	ImageRackletModule(const std::string & section = "image", const std::string & prefix = "i");
 

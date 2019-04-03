@@ -33,11 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "Geometry.h"
 
-#include "util/Rectangle.h"
-
-#include "util/Proj4.h"  // for geographical projection of radar data bins
-
-//#include "image/Image.h"
+//#include "util/Rectangle.h"
+//#include "util/Proj4.h"  // for geographical projection of radar data bins
 #include "Accumulator.h"
 #include "GeoFrame.h"
 

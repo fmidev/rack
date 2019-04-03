@@ -31,10 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GEO_TIFF_H
 #define RACK_GEO_TIFF_H
 
-#include <drain/image/AccumulationConverter.h>
-
-#include <drain/image/AccumulatorGeo.h>
 #include <drain/util/Log.h>
+#include <drain/image/Image.h>
+
+/*
+#include <drain/image/AccumulationConverter.h>
+#include <drain/image/AccumulatorGeo.h>
 #include <drain/util/Rectangle.h>
 #include <drain/util/Type.h>
 
@@ -43,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/Data.h"
 #include "data/DataSelector.h"
+*/
 //#include "Coordinates.h"
 
 
