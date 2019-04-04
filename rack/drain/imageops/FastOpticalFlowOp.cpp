@@ -36,8 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FunctorOp.h"
 #include "DifferentialOp.h"
 #include "PixelVectorOp.h"
-//#include "QuadraticSmootherOp.h"
-#include "RecursiveRepairerOp.h"
+#include "BlenderOp.h"
+
 
 #include "ImageModifierPack.h"
 
