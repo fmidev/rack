@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/PrecipOp.h"
 #include "andre/BioMetOp.h"
 #include "andre/BirdOp.h"
-#include "andre/ClutterMapOp.h"
+#include "andre/ClutterOp.h"
 #include "andre/CCorOp.h"
 #include "andre/EmitterOp.h"
 #include "andre/HydroClassBasedOp.h"
@@ -65,7 +65,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // Utils
 #include "andre/QualityCombinerOp.h"
 
-#include "andre/ClutterMapOp.h"
+#include "andre/ClutterOp.h"
 
 namespace rack {
 

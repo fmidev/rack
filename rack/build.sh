@@ -38,7 +38,7 @@ fi
 
 make prefix=$prefix install
 if [ $? != 0 ]; then
-    echo "ERROR: Installing rack failed"
+    echo "ERROR: Installing rack failed. Consider: $0 clean"
     exit 1
 fi
 

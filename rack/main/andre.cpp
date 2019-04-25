@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "andre/BioMetOp.h"
 #include "andre/BirdOp.h"
-#include "andre/ClutterMapOp.h"
+#include "andre/ClutterOp.h"
 #include "andre/CCorOp.h"
 #include "andre/DopplerNoiseOp.h"
 #include "andre/EmitterOp.h"
@@ -78,7 +78,7 @@ class ClutterMapRead : public SimpleCommand<std::string> {
 
 public:
 
-	ClutterMapRead(ClutterMapOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTER quantity.", "filename",""),
+	ClutterMapRead(ClutterOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTER quantity.", "filename",""),
 			clutterOp(op) {
 		getRegistry().add(*this, __FUNCTION__, 0);
 	};
@@ -90,7 +90,7 @@ public:
 		clutterOp.setClutterMap(value);
 	};
 
-	ClutterMapOp & clutterOp;
+	ClutterOp & clutterOp;
 
 };
 
@@ -197,7 +197,7 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<QualityCombinerOp> qualityCombiner;
 
 
-	static AnDReLetAdapter<ClutterMapOp>  clutter;
+	static AnDReLetAdapter<ClutterOp>  clutter;
 
 	static ClutterMapRead clutterMapRead(clutter.productOp);
 
