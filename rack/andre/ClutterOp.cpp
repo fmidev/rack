@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <andre/ClutterMapOp.h>
+#include <andre/ClutterOp.h>
 #include <data/Data.h>
 #include <data/DataTools.h>
 #include <data/PolarODIM.h>
@@ -51,7 +51,7 @@ using namespace drain::image;
 
 namespace rack {
 
-void ClutterMapOp::setClutterMap(const std::string & filename) const {
+void ClutterOp::setClutterMap(const std::string & filename) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.info() << "reading " << filename << mout.endl;
@@ -65,7 +65,7 @@ void ClutterMapOp::setClutterMap(const std::string & filename) const {
 
 }
 
-const Data<PolarSrc> & ClutterMapOp::getClutterMap(const PolarODIM & odim) const {
+const Data<PolarSrc> & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -103,7 +103,7 @@ const Data<PolarSrc> & ClutterMapOp::getClutterMap(const PolarODIM & odim) const
 
 }
 
-void ClutterMapOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
+void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 

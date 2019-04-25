@@ -51,7 +51,7 @@ namespace rack {
  *    from accumulated dBZ values as described in \ref cluttermaps .
  *
  */
-class ClutterMapOp: public DetectorOp {
+class ClutterOp: public DetectorOp {
 
 public:
 
@@ -64,7 +64,7 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
-	ClutterMapOp(double decay=0.5) : //, const std::string & filename = "") :
+	ClutterOp(double decay=0.5) : //, const std::string & filename = "") :
 		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", ECHO_CLASS_CLUTTER){ // Optional postprocessing: morphological closing.
 		dataSelector.path = ".*/data[0-9]+/?$";
 		dataSelector.quantity = "";  // or FREQ?
