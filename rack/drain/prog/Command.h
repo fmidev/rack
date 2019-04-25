@@ -51,13 +51,14 @@ namespace drain {
 /**
  *
  */
-struct Command {
+class Command {
+
+public:
 
 	inline
 	Command(){};
 
-	inline
-	virtual
+	virtual inline
 	~Command(){};
 
 	// TODO: getFullName(), the "C++ name" of this (derived) class.
@@ -88,6 +89,14 @@ struct Command {
 		else
 			return it->second.getType() != typeid(void);  // ???
 	};
+
+	/// Description of result, comparable to a return type of a function.
+	virtual inline
+	const std::string & getType() const {
+		static const std::string empty;
+		return empty;
+	};
+
 
 	// Currently, non-const, because may run
 	virtual

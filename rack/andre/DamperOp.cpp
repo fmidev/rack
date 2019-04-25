@@ -32,52 +32,42 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "DamperOp.h"
 
-using namespace drain::image;
-using namespace hi5;
+#include "../data/QuantityMap.h"
+
+// using namespace drain::image;
+// using namespace hi5;
 
 
 
 namespace rack {
 
 
-// void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
 
-void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const {
+void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	mout.warn() << "startar" << mout.endl;
-
-	//drain::image::File::write(data,"Eras0.png");
-	//drain::image::File::write(quality,"Erasq.png");
-	/*
-
-	Image::iterator  it = srcData.data.begin();
-	Image::iterator qit = srcData.getQualityData().data.begin();
-	const Image::iterator end = srcData.data.end();
-	while (it != end){
-		if (*qit < t)
-			*it = dstData.odim.nodata;
-		++it;
-		++qit;
-	}
-	 */
+	mout.debug() << "start" << mout.endl;
 
 	drain::FuzzyStep<double> fstep(threshold, threshold+(1.0-threshold)/2.0);
 
-	//const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
+	double minVal = this->minValue;
 
-	//const std::type_info & t = dstData.data.getType();
-	//const double min = dstData.data.getMin<double>();
-	//const double max = dstData.data.getMax<double>();
-	/// NOTE: getMin returns 0 for unsigned integral and ~0 for floats, which is ok here.
-	/** 2018
-	if (drain::Type::call<drain::typeIsInteger>(t))
-		dstData.data.scaling.setLimits( min+2.0, max-2.0);
-	else
-		dstData.data.scaling.setLimits(-max+2.0, max-2.0);
-	*/
+	const QuantityMap & qMap = getQuantityMap();
+	if (qMap.hasQuantity(srcData.odim.quantity)){
+		const Quantity & quantity = qMap.get(srcData.odim.quantity);
+		if (quantity.hasUndetectValue){
+			mout.info() << "using physical undetect value: " << quantity.undetectValue << ", set by --quantityConf" << mout.endl;
+			minVal = quantity.undetectValue;
+		}
+	}
+
+	//if (minValue == -std::numeric_limits<double>::max()){
+	if (isnan(minVal)){
+		mout.error() << "minimum physical value unset for ["<< srcData.odim.quantity << "] (no parameter or quantityConf)" << mout.endl;
+		return;
+	}
 
 	Image::iterator d  = dstData.data.begin();  // fixme: const object allows non-const iterator
 	Image::const_iterator q = srcQuality.data.begin();
@@ -98,7 +88,7 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 
 		x = *d;
 
-		if ( (x != srcData.odim.nodata) && (x != srcData.odim.undetect) ){
+		if (srcData.odim.isValue(x)){
 
 			w = fstep(srcQuality.odim.scaleForward(*q));
 			if (w < undetectThreshold){
@@ -107,14 +97,10 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 			else {
 				x = srcData.odim.scaleForward(x);
 
-				if (x < dbzMin)
+				if (x < minVal)
 					*d = dstData.odim.undetect;
 				else
-					*d = limit(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
-				//dstData.data.scaling.limit<double>(srcData.odim.scaleInverse(dbzMin + w*(x-dbzMin)));
-				//*d = scaleDBZ.inverse(x);
-				//*d = scaleDBZ.inverse(x);
-				//*d = static_cast<double>(*q)/255.0 * x;
+					*d = limit(srcData.odim.scaleInverse(minVal + w*(x-minVal)));
 			}
 		}
 		++d;

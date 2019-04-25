@@ -91,11 +91,13 @@ void CmdHelp::exec() const {
 			if (sections.find(key) != sections.end()){
 				r.helpSections(ostr, key);
 				helpOnModules(ostr, key);
-				return;
+				// return;
+				exit(0);
 			}
 			else {
 				mout.warn() << "Help for '" << key << "'  (" << value << ") not found." << mout.endl;
-				return;
+				// return;
+				exit(0);
 			}
 
 			/*

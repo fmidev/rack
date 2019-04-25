@@ -44,7 +44,11 @@ using namespace drain::image;
 namespace rack {
 
 /// Based on pre-computed clutter map, scales the clutter probability for desired sweeps.
-/** Assuming that
+/**
+ *
+ *    The scaling is a heuristic. The loaded map should contain quantity \c CLUTTER which in each bin represents the probability
+ *    of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed
+ *    from accumulated dBZ values as described in \ref cluttermaps .
  *
  */
 class ClutterMapOp: public DetectorOp {

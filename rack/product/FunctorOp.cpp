@@ -51,7 +51,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 
 	drain::Logger mout(name,__FUNCTION__);
 
-	drain::FunctorBank & functorBank = drain::getFunctorBank();
+	const drain::FunctorBank & functorBank = drain::getFunctorBank();
 
 	try {
 		//const std::string ftorStr = ftorSetup.substr(iStart, iEnd-iStart);
@@ -60,7 +60,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 
 		const std::string ftorName   = PARAMS ? ftorSetup.substr(0, iSeparator) : ftorSetup;
 		const std::string ftorParams = PARAMS ? ftorSetup.substr(iSeparator+1) : "";
-		drain::UnaryFunctor & ftor = functorBank.get(ftorName).clone();
+		drain::UnaryFunctor & ftor = functorBank.clone(ftorName);
 		ftor.setParameters(ftorParams, '=', ':');
 		//	ftors.push_back(ftor);
 

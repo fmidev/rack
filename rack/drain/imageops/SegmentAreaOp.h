@@ -176,7 +176,7 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	FillProber floodFill(src, dst);
 	floodFill.conf.anchorMin = minRaw;
 	floodFill.conf.anchorMax = maxRaw;
-	mout.debug(1) << "floodFill:" << floodFill << mout.endl;
+	mout.debug(1) << "floodFill: " << floodFill << mout.endl;
 	//floodFill.init();
 	//T floodFill(src, dst);
 
@@ -184,6 +184,8 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	// const typename T::dst_t dMax = dst.getMax<typename T::dst_t>();
 	// mout.warn() << "dMax " << (double)dMax << mout.endl;
 	const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;
+
+	mout.debug() << "Scale: " << scale << mout.endl;
 
 	const UnaryFunctor & ftor = getFunctor(scale);
 	//const UnaryFunctor & ftor = getFunctor(dst.getMax<T::dst_t>());

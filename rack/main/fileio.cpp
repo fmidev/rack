@@ -97,16 +97,14 @@ const drain::RegExp arrayFileExtension(".*\\.(mat)$",  REG_EXTENDED | REG_ICASE)
 /// Syntax for sparsely resampled data.
 const drain::RegExp sampleFileExtension(".*\\.(dat)$",  REG_EXTENDED | REG_ICASE);
 
-/// Syntax for recognising JSON files.
+/// Syntax for recognising Graphviz DOT files.
 const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
-/// Syntax for recognising JSON files.
-//const drain::RegExp jsonFileExtension(".*\\.(js|json)$",  REG_EXTENDED | REG_ICASE);
 
 
 static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 
-
+/// A debugging facility. Obsolete?
 class CmdInputSelect : public BasicCommand {
 
 public:

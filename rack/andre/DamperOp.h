@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DamperOP_H_
 #define DamperOP_H_
 
+#include <limits>
 
 #include <drain/util/Fuzzy.h>
 #include <drain/image/Intensity.h>
@@ -63,36 +64,36 @@ public:
 	/** Default constructor.
 	 *  \param threshold - quality values below this will be considered
 	 *  \param undetectThreshold - q index below which bins are marked 'undetect'.
-	 *  \param dbzMin - reflectance towards which values are decremented.
+	 *  \param minValue - measurement value towards which values are decremented.
 	 */
-	DamperOp(double threshold=0.5, double undetectThreshold=0.1, double dbzMin=-40.0) :  // double slope=0.0,
+	//DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minVal = -std::numeric_limits<double>::max()) :  // double slope=0.0,
+	DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minValue = NAN) :  // double slope=0.0,
 		RemoverOp(__FUNCTION__,"Removes anomalies with fuzzy deletion operator."){
 
 		dataSelector.quantity = "^DBZH$";
 
 		parameters.reference("threshold", this->threshold = threshold);
 		parameters.reference("undetectThreshold", this->undetectThreshold = undetectThreshold);
-		parameters.reference("dbzMin", this->dbzMin = dbzMin);
+		parameters.reference("minValue", this->minValue = minValue);
 
 	};
 
 
 	double threshold;
 	double undetectThreshold;
-	double dbzMin;
+	double minValue;
 
 protected:
 
+
+	// Main method. Like RemoverOp. remains dstQuality intact.
 	/**
-	 *  Practically, qualityRoot == dstDataRoot
+	 *
+	 *
+	 *   ? Practically, qualityRoot == dstDataRoot
 	 */
-	//void filterDataGroup(const HI5TREE &srcRoot, HI5TREE &dstDataRoot, const std::string &path) const;
-
-	// void filterImage(const PolarODIM & odim, Image &data, Image &quality) const;
-	// virtual	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const;
-
-	virtual
-	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData) const;
+	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+							PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const;
 
 
 };

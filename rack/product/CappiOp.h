@@ -60,7 +60,9 @@ public:
 		parameters.reference("weightExponent", this->weightExponent = weightExponent, "scalar");
 		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
 
-		odim.product = "PCAPPI";
+		odim.product  = "PCAPPI";
+		//odim.quantity = "DBZH";
+		odim.quantity = "";
 		dataSelector.quantity = "^DBZH$";
 
 	};
@@ -68,6 +70,7 @@ public:
 	double altitude;
 	double weightExponent;
 	double weightMin;
+
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 

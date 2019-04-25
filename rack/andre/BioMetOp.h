@@ -48,7 +48,11 @@ namespace rack {
 
 /// Detects birds and insects.
 /**
- *
+ 	The idea behind bird and insect detector hence "biometeor" detector is very simple.
+	It looks for intensities lower than threshold \c reflMax and altitudes
+	lower than \c altitudeMax (metres). The thresholds have fuzzy steepness parameters:
+	intensity steepness \c reflDev and altitude steepness \c altitudeDev.
+	The steepness parameters determine "half-widths" of the fuzzy responses (\ref fuzzy ).
  *
  */
 class BiometOp: public DetectorOp {
@@ -56,9 +60,9 @@ class BiometOp: public DetectorOp {
 public:
 
 	/**
-	 * \param reflMax - maximum expected reflectance of biometeors
-	 * \param maxAltitude - maximum expected altitude of biometeors
-	 * \param reflDev - fuzzy width of  \c reflMax
+	 * \param reflMax     - threshold: maximum expected reflectance of biometeors
+	 * \param maxAltitude - threshold: maximum expected altitude of biometeors
+	 * \param reflDev     - fuzzy width of  \c reflMax
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	BiometOp(double reflMax=-10.0, int maxAltitude=500, double reflDev=5.0, int devAltitude=1000) :

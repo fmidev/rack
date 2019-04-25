@@ -70,7 +70,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
 
-	const std::string & CLASSNAME = getQuantityName();
+	const std::string & CLASSNAME = getOutputQuantity();
 
 	mout.debug(1) << "start1" << mout.endl;
 
@@ -226,7 +226,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 		if (quantity.empty()){ // BIOMET, EMITTER, SHIP, etc.
 			//dstData.odim.setQuantityDefaults("PROB");
-			dstData.odim.quantity = getQuantityName();
+			dstData.odim.quantity = getOutputQuantity();
 			getQuantityMap().setQuantityDefaults(dstData, "PROB");
 		}
 		else
@@ -251,7 +251,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 
 
-const std::string & DetectorOp::getQuantityName() const {
+const std::string & DetectorOp::getOutputQuantity() const {
 
 	// If unset, copy in uppercase letters.
 	if (upperCaseName.empty()) {

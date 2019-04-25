@@ -215,7 +215,7 @@ ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 
 	const Variable v(key, typeid(double));
 	if ((double)v > 0.0){
-		ImageOp & op = bank.get(aliasMap["b"]).get();
+		ImageOp & op = bank.get(aliasMap["b"]);
 		op.setParameter("coeff", v);
 		return op;
 	}

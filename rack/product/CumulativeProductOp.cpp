@@ -65,7 +65,7 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	}
 
 
-	// Consider EchoTop, with DBZH input and HGHT output.
+	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity
 	const std::string dstQuantity = odim.quantity.empty() ? quantity : odim.quantity;
 
 	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity);

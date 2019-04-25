@@ -108,6 +108,12 @@ public:
 	};
 
 
+	/// Returns a description for help functions.
+	const std::string & getType() const {
+		return productOp.getOutputQuantity();
+	}
+
+
 	// NOTE: Potentially, VolumeOp could be generalized to a RackOp, having polar OR Cartesian targets.
 	virtual
 	inline

@@ -215,7 +215,7 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 		return;
 	}
 
-	UnaryFunctor & scalingFunctor = functorBank.get(functorName).clone();
+	UnaryFunctor & scalingFunctor = functorBank.clone(functorName); // consider get? Or static from clone()
 	//mout.debug() << scalingFunctor.getName() << ':' << scalingFunctor.getDescription() << mout.endl;
 	//scalingFunctor.setScale(dstChannel.scaling.getMax<double>(), 0.0);
 	const std::type_info & t = dstChannel.getType();

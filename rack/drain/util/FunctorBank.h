@@ -31,18 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FUNCTOR_BANK_H_
 #define DRAIN_FUNCTOR_BANK_H_
 
-//
-
 #include "Log.h"
-
-
-//#include "Registry.h"
-//#include "Cloner.h"
 #include "Functor.h"
-//#include "Fuzzy.h"
 #include "Bank.h"
-
-// using namespace std;
 
 namespace drain
 {
@@ -74,14 +65,7 @@ FunctorBank & getFunctorBank();
 extern
 UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator=',');
 
-/*static inline
-UnaryFunctor & getFunctor(const std::string & key) {
 
-	FunctorBank & functorBank = getFunctorBank();
-	return functorBank.get(key).clone();
-
-}
-*/
 
 
 }

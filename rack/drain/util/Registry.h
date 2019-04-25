@@ -72,9 +72,11 @@ public:
 	virtual inline
 	~Registry(){};
 
-	/// Adds entry of type T to current section of registry.
+	/// Adds entry of (base) class T to current section of registry.
 	virtual
 	void add(T & r, const std::string & key, char alias = 0);
+
+
 
 	/// Queries whether a command has been added.
 	bool has(const std::string & key) const;

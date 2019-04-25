@@ -93,7 +93,7 @@ void DopplerInversionWindow::initialize(){
 		const std::string functorName = functorSetup.substr(0, index);
 		if (functorBank.has(functorName)){
 			mout.note() << "using "<< functorName << mout.endl;
-			drain::UnaryFunctor & test = functorBank.get(functorName).clone();
+			drain::UnaryFunctor & test = functorBank.clone(functorName);
 			functor = & test; //functorBank.get(functorName).clone(); // todo fbank exeption
 			if (index != std::string::npos){
 				functor->setParameters(functorSetup.substr(index+1), '=', ':');

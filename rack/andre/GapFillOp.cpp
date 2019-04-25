@@ -90,12 +90,9 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
-	/*
-	RecursiveRepairerOp op;
-	op.width =  width /  srcData.odim.rscale;
-	op.height = height * srcData.data.getHeight() / 360.0;
-	op.loops = loops;
-	*/
+
+	//srcData.odim.getBinIndex()
+
 	BlenderOp op(width /  srcData.odim.rscale, height * srcData.data.getHeight() / 360.0, 'g', 'm', loops);
 
 	ImageTray<const Channel> srcTray;

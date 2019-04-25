@@ -72,7 +72,10 @@ public:
 
 	/// Returns the quantity name, by default the name of the class in upper case letters.
 	virtual
-	const std::string & getQuantityName() const;
+	const std::string & getOutputQuantity() const;
+
+	//virtual inline
+	//const std::string & getOutputQuantity() const;
 
 	static bool SUPPORT_UNIVERSAL;
 

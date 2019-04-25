@@ -90,13 +90,21 @@ UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 
 	drain::Logger mout(getLog(), __FUNCTION__);
 
+	std::string name;
+	std::string params;
 
 	size_t i = nameAndParams.find(':');
-	if (i == std::string::npos)
-		i = nameAndParams.size();
+	if (i == std::string::npos){
+		name = nameAndParams;
+	}
+	else {
+		name   = nameAndParams.substr(0, i);
+		params = nameAndParams.substr(i+1);
+		//i = nameAndParams.size();
+	}
 
-	const std::string name(nameAndParams.substr(0, i));
-	const std::string params(nameAndParams.substr(i+1));
+	//const std::string name(nameAndParams.substr(0, i));
+	//const std::string params(nameAndParams.substr(i+1));
 
 	mout.debug(2) << "functor name: " << name << ", params: " << params << mout.endl;
 
@@ -105,7 +113,7 @@ UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 		mout.error() << "functor not found: " << name << mout.endl;
 	}
 
-	UnaryFunctor & ftor = functorBank.get(name).get();  // or clone() ?
+	UnaryFunctor & ftor = functorBank.get(name);  // or clone() ?
 	mout.debug(2) << ftor.getName() << ',' << ftor.getDescription() << mout.endl;
 
 	ftor.setParameters(params, '=', separator);

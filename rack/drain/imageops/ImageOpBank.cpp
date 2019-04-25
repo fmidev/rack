@@ -103,7 +103,7 @@ ImageOp & ImageOpBank::getComplete(const std::string & query, char assignmentCha
 		mout.error() << "invalid op: '" << name << "' extracted from query: '" << query << "'" << mout.endl;
 	}
 
-	ImageOp & op = get(name).get();
+	ImageOp & op = get(name);
 	if (PARAMS)
 		op.setParameters(params, assignmentChar, separatorChar);
 

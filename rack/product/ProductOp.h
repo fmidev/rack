@@ -167,11 +167,6 @@ public:
 	void handleEncodingRequest(ODIM & productODIM, const std::string & encoding);
 
 
-	/**
-	 *
-	 */
-	// static	void applyDefaultODIM_OLD(ODIM & productODIM, const ODIM & defaultODIM);
-
 
 	/// Sets target quantity and encoding, if unset. If input odim
 	/**
@@ -194,6 +189,13 @@ public:
 	// Could be hidden (esp. if some quantity is definite?)
 	DataSelector dataSelector;
 
+	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
+	/*
+	inline
+	const std::string & getOutputQuantity() const {
+		return odim.quantity; //outputQuantity;
+	}
+	*/
 
 protected:
 
@@ -202,6 +204,8 @@ protected:
 	void setODIMspecials(ODIM & productODIM);
 
 protected:
+
+	//std::string outputQuantity;
 
 	/// Defines which encoding parameters can be changed by the user from command line.
 	/**
@@ -254,6 +258,12 @@ public:
 	/// The default data parameters for encoding output (the product).
 	MD odim;
 
+	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
+	virtual inline
+	const std::string & getOutputQuantity() const {
+		return odim.quantity; //outputQuantity;
+	}
+
 
 	//void processH5() // see MotionFill
 	void processH5(const HI5TREE &src, HI5TREE &dst) const;
@@ -283,6 +293,7 @@ public:
 		drain::Logger mout(this->name, __FUNCTION__);
 		mout.warn() << "not implemented" << mout.endl;
 	};
+
 
 protected:
 

@@ -477,7 +477,7 @@ public:
 
 	virtual
 	~DataGroup(){
-
+		/*
 		drain::Logger mout("DataGroup<" + ODIMPathElem::getKey(G)+">", __FUNCTION__);
 		switch (this->size()) {
 		case 0:
@@ -490,7 +490,7 @@ public:
 			mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
 			updateTree3(this->getFirstData().odim); // tree
 		}
-
+	*/
 	};
 
 
@@ -593,6 +593,7 @@ public:
 
 
 	// TODO: consider this to destructor!
+	/*
 	inline
 	void updateTree3(const typename datatype_t::odim_t & odim){  //
 		//odim.copyToDataSet(this->tree);
@@ -607,7 +608,7 @@ public:
 		std::cout << "updateTree3 const \n";
 		//ODIM::copyToH5<ODIMPathElem::DATASET>(odim, tree);
 	}
-
+	*/
 
 protected:
 
@@ -857,12 +858,13 @@ std::ostream & operator<<(std::ostream & ostr, const Data<DT> & d){
    See SweepSrc and ProductDst below.
  */
 template <typename DT>
+//class DataSet : public DataGroup<Data<DT>,ODIMPathElem::DATA>, public QualityDataSupport<DT> { // typename T::data_t
 class DataSet : public DataGroup<Data<DT>,ODIMPathElem::DATA>, public QualityDataSupport<DT> { // typename T::data_t
 public:
 
 	typedef Data<DT> data_t;
 	typedef PlainData<DT> plaindata_t;
-	typedef typename DataGroup<data_t,ODIMPathElem::DATA>::datagroup_t datagroup_t;
+	typedef typename DataGroup<data_t,ODIMPathElem::DATA>::datagroup_t datagroup_t; //  ODIMPathElem::DATA>
 	typedef typename datagroup_t::map_t  map_t;
 
 
@@ -876,40 +878,39 @@ public:
 	}
 
 	~DataSet(){
-		/*
+
 		drain::Logger mout("DataSet", __FUNCTION__);
-		for (typename DataSet<DT>::iterator it = this->begin(); it != this->end(); ++it){
-			if (it->second.getTree().data.noSave){
-				mout.note() << "deleting " << it->first << mout.endl;
-				//it->
-			}
+		switch (this->size()) {
+		case 0:
+			mout.debug(4) << "no data<n> groups" << mout.endl;
+			break;
+		default:
+			mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;
+			// no break;
+		case 1:
+			mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
+			updateTree3(this->getFirstData().odim); // tree
 		}
-	    */
+
 	}
-
-
-
-	// Mark this data temporary so that it will not be save by Hi5::write().
-	//inline 	void setNoSave(bool noSave = true){ this->tree.node.noSave = noSave;};
-
 
 
 	/// Retrieves data containing the given quantity. If not found, returns an empty array.
 	inline
-	const data_t & getData(const std::string & quantity) const {
+	const data_t & getData(const std::string & quantity) const {  // TODO: simply use original get()?
 		return this->get(quantity);
 	}
 
 	/// Retrieves data containing the given quantity. If not found, creates an array.
 	inline
-	data_t & getData(const std::string & quantity) { //
+	data_t & getData(const std::string & quantity) { // // TODO: simply use original get()?
 		//drain::Logger mout("DataSetDst", __FUNCTION__);
 		return this->get(quantity);
 	}
 
 	/// Retrieves data matching the given quantity. If not found, returns an empty array.
 	inline
-	const data_t & getData(const drain::RegExp & regExp) const {
+	const data_t & getData(const drain::RegExp & regExp) const { // TODO: simply use original get()?
 		return this->get(regExp);
 	}
 
@@ -932,7 +933,23 @@ public:
 	}
 
 
+	inline
+	void updateTree3(const typename DT::odim_t & odim){  //
+		//odim.copyToDataSet(this->tree);
+		//if (!DataTools::removeIfNoSave(this->tree))
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
+		DataTools::updateAttributes(this->tree); // images, including DataSet.data, TODO: skip children
+	}
+
+	// TODO: consider this to destructor!
+	inline
+	void updateTree3(const typename DT::odim_t & odim) const {  //
+		std::cout << "updateTree3 const \n";
+		//ODIM::copyToH5<ODIMPathElem::DATASET>(odim, tree);
+	}
+
 protected:
+
 
 
 	/// Adds Data<DT>

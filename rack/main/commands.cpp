@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <map>
 #include <ostream>
+#include <iomanip>
 
 
 
@@ -651,43 +652,56 @@ public:
 
 		CommandRegistry & reg = getRegistry();
 
+		std::ostream & ostr = std::cout;
+
 		if (params.empty()){
-			reg.toJSON(std::cout);
+			reg.toJSON(ostr);
 		}
 		else {
 			if (!reg.has(params)){
 				mout.error() << "no such key: " << params << mout.endl;
 				return;
 			}
-			const ReferenceMap & m = reg.get(params).getParameters();
+
+			const drain::Command & command = reg.get(params);
+			const ReferenceMap & m = command.getParameters();
 			const ReferenceMap::keylist_t & keys = m.getKeyList();
-			std::cout << "{";
+			ostr << "{";
+			ostr << "  \"parameters\": {";
+
 			char sep=0;
 
 			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
 			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
 				if (sep)
-					std::cout << sep;
+					ostr << sep;
 				else
 					sep = ',';
-				std::cout << "\n  \"" << *it << "\": {\n";
-				std::cout << "    \"type\": \"";
+				ostr << "\n  \"" << *it << "\": {\n";
+				//ostr << std::setw(10) << std::left << "\"type\": \"";
+				//ostr << "    \"type\": \"";
 				const drain::Referencer & entry = m[*it];
 				if (entry.isString()) {
-					std::cout << "string";
+					ostr << "string";
 				}
 				else {
-					std::cout << Type::call<drain::simpleName>(entry.getType());
+					ostr << Type::call<drain::simpleName>(entry.getType());
 				}
-				std::cout << "\",\n";
+				ostr << "\",\n";
 
-				std::cout << "    \"value\": ";
-				entry.valueToJSON(std::cout);
-				std::cout << "\n";
-				std::cout << "  }";
+				ostr << "    \"value\": ";
+				entry.valueToJSON(ostr);
+				ostr << "\n";
+				ostr << "  }";
 			}
-			std::cout << "\n}\n";
+			ostr << "  }";
+			if (!command.getType().empty()){
+				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
+			}
+			ostr << "\n}\n";
 		}
+
+		std::cout << std::setw(10) << "Viola!" << std::endl;
 	};
 
 };

@@ -46,6 +46,29 @@ namespace drain
 /// A registry that contains items that can be cloned with clone() or referenced directly with get().
 template <class T>
 class Bank : public Registry<ClonerBase<T> > {
+
+public:
+
+	/// Adds static entry of type D to current section of registry.
+	template <class D>
+	void add2(const std::string & key){
+		static drain::Cloner<T,D> cloner;
+		this->add(cloner, key);
+		// x.get().value = 12345;
+		//std::cout << " Atte " << this->get(key).get().value << '\n';
+	}
+
+	inline
+	T & clone(const std::string & key) const {
+		return this->template Registry<ClonerBase<T> >::get(key).clone();
+	}
+
+	inline
+	T & get(const std::string & key){
+		return this->template Registry<ClonerBase<T> >::get(key).get();
+	}
+
+
 };
 
 }
