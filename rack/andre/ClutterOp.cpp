@@ -54,10 +54,19 @@ namespace rack {
 void ClutterOp::setClutterMap(const std::string & filename) const {
 
 	drain::Logger mout(name, __FUNCTION__);
+
+	if (!clutterMap.getChildren().empty()){
+		if (clutterMap.data.attributes["filename"].toStr() == filename){
+			mout.info() << "required map '" << filename << "' already loaded, skipping reload"  << mout.endl;
+			return;
+		}
+	}
+
 	mout.info() << "reading " << filename << mout.endl;
 	try {
 		hi5::Reader::readFile(filename, clutterMap);
 		DataTools::updateAttributes(clutterMap);
+		clutterMap.data.attributes["filename"] = filename;
 	}
 	catch (const std::runtime_error & e) {
 		mout.warn() << "Failed reading cluttermap '" << filename << "'" << mout.endl;
@@ -69,15 +78,20 @@ const Data<PolarSrc> & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
-	if (clutterMap.getChildren().empty()){
-		drain::StringMapper filepath;
-		SourceODIM srcODIM(odim.source);
-		filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
-		const std::string filename = filepath.toStr(srcODIM);
-		mout.note() << "no clutterMap, trying to load '" << filename << "'" << mout.endl;
-		setClutterMap(filename);
-	}
+	const SourceODIM srcODIM(odim.source);
 
+	// if (clutterMap.getChildren().empty()){ // Load map
+	drain::StringMapper filepath;
+	filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
+	const std::string filename = filepath.toStr(srcODIM);
+	// mout.note() << "no clutterMap, trying to load '" << filename << "'" << mout.endl;
+	setClutterMap(filename); // Note: does not reload
+	/*
+	}
+	else {
+
+	}
+	*/
 
 	if (clutterMap.getChildren().empty()){
 		mout.warn() << "no clutterMap available, problems ahead..." << mout.endl;
