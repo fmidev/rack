@@ -57,7 +57,7 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 
 	if (!clutterMap.getChildren().empty()){
 		if (clutterMap.data.attributes["filename"].toStr() == filename){
-			mout.info() << "required map '" << filename << "' already loaded, skipping reload"  << mout.endl;
+			mout.note() << "required map '" << filename << "' already loaded, skipping reload"  << mout.endl;
 			return;
 		}
 	}
