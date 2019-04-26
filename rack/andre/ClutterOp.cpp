@@ -74,7 +74,7 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 
 }
 
-const Data<PolarSrc> & ClutterOp::getClutterMap(const PolarODIM & odim) const {
+const HI5TREE & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -84,34 +84,34 @@ const Data<PolarSrc> & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	drain::StringMapper filepath;
 	filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
 	const std::string filename = filepath.toStr(srcODIM);
-	// mout.note() << "no clutterMap, trying to load '" << filename << "'" << mout.endl;
-	setClutterMap(filename); // Note: does not reload
-	/*
-	}
-	else {
-
-	}
-	*/
+	mout.debug() << "clutter map: '" << filename << "'" << mout.endl;
+	setClutterMap(filename); // Note: load new only when needed
 
 	if (clutterMap.getChildren().empty()){
 		mout.warn() << "no clutterMap available, problems ahead..." << mout.endl;
+		return clutterMap;
 	}
 
-	DataSet<PolarSrc> src(clutterMap["dataset1"]);
-	mout.debug(1) << src << mout.endl;
+	ODIMPath path;
+	DataSelector selector;
+	selector.quantity = "CLUTTER";
 
-	if (src.empty()){
-		mout.warn() << "no data groups in structure" << mout.endl;
+	/*
+	ODIMPathList paths;
+	selector.getPathsNEW(clutterMap, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		mout.warn() << "path candidate " << *it << mout.endl;
 	}
+	*/
 
-
-	if (src.find("CLUTTER") != src.end()){
-		return src.getData("CLUTTER");
+	if (selector.getPathNEW(clutterMap, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+		mout.debug() << "found " << path << mout.endl;
+		return clutterMap(path);
 	}
 	else {
-		if (src.size())
-			mout.warn() << "no CLUTTER quantity found, using 1st data" << mout.endl;
-		return src.getFirstData();
+		mout.debug() << "using default path " << path << mout.endl;
+		return clutterMap["dataset1"]["data1"];
+		//return clutterMap.begin()->second.begin()->second;  // "dataset1/data1"
 	}
 
 
@@ -125,19 +125,10 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 	const size_t cols = srcData.data.getWidth();
 	const size_t rows = srcData.data.getHeight();
 
-	/*
-	if (clutterMap.getChildren().empty()){
-		// mout.note() << clutterMap << mout.endl;
-		mout.warn() << "no clutterMap loaded, skipping" << mout.endl;
-		return;
-	}
-	*/
-
-	//DataSet<PolarSrc> clutterDataSet(clutterMap["dataset1"]);  // or directly ? "data1"
 	//const Data<PolarSrc> & srcMap = clutterDataSet.getFirstData();
-	const Data<PolarSrc> & srcMap = getClutterMap(srcData.odim);
+	const Data<PolarSrc> srcMap(getClutterMap(srcData.odim));
 
-	mout.note() << "using 1st data, quantity: " << srcMap.odim.quantity << mout.endl;
+	mout.note() << "using quantity: " << srcMap.odim.quantity << mout.endl;
 
 	if (srcMap.data.isEmpty()){
 		//clutterMap.dumpContents(std::cerr);

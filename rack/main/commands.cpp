@@ -396,7 +396,7 @@ public:
 	bool quantitySpecific;
 
 	template <class OD>
-	void processStructure(HI5TREE & dst, const std::list<ODIMPath> & paths, const drain::RegExp & quantityRegExp) const {
+	void processStructure(HI5TREE & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
 
 		drain::Logger mout(getName(), __FUNCTION__);
 
@@ -404,7 +404,7 @@ public:
 
 		const QuantityMap & qmap = getQuantityMap();
 
-		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			mout.info() << *it  << mout.endl;
 			HI5TREE & dstDataSetH5 = dst(*it);
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
@@ -452,7 +452,7 @@ public:
 		selector.quantity.clear();
 		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
 
-		std::list<ODIMPath> paths;
+		ODIMPathList paths;
 		selector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATASET); // RE2
 
 
@@ -727,11 +727,11 @@ public:
 
 		mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
-		std::list<ODIMPath> paths;
+		ODIMPathList paths;
 		HI5TREE & dst = *getResources().currentHi5;
 		selector.getPathsNEW(dst, paths, groupFilter);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
-		for (std::list<ODIMPath>::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
+		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 			mout.note() << "deleting: " << *it << mout.endl;
 			dst.erase(*it);
 		}
@@ -761,11 +761,11 @@ public:
 
 		DataSelector selector;
 
-		std::list<ODIMPath> paths;
+		ODIMPathList paths;
 
 		selector.getPathsNEW(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		mout.note() << "data structure contains " << paths.size() << " paths " << mout.endl;
-		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); it++){
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++){
 			mout.debug(4) << "set noSave: " << *it << mout.endl;
 			dst(*it).data.noSave = true;
 		}
@@ -779,11 +779,11 @@ public:
 		//selector.getPathsNEW(dst, savedPaths, groupFilter);
 
 
-		std::list<ODIMPath> savedPaths;
+		ODIMPathList savedPaths;
 		selector.getPathsNEW(dst, savedPaths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		//mout.info() << "set save" << mout.endl;
-		for (std::list<ODIMPath>::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
+		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
 			mout.debug(1) << "set save: " << *it << mout.endl;
 			ODIMPath p;
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
@@ -796,7 +796,7 @@ public:
 
 		// Traverse all the paths
 		// reverse_iterator, because dataset groups (descendants) become deleted before dataset itself.
-		for (std::list<ODIMPath>::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
+		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 
 			if (dst(*it).data.noSave){
 				mout.debug(2) << "deleting: " << *it << mout.endl;
@@ -1033,7 +1033,7 @@ public:
 		// List of paths in which assignments are repeated.
 		// A single path, unless search key is a regexp, see below.
 		/*
-		std::list<ODIMPath> pathList;
+		ODIMPathList pathList;
 
 		const std::string & s = value;
 
@@ -1063,7 +1063,7 @@ public:
 
 		//static 		const drain::RegExp attributeGroup("^((.*)/)?(what|where|how)$");  // $1,$2: one step above "where","what","how"
 
-		for (std::list<ODIMPath>::const_iterator it = pathList.begin(); it != pathList.end(); ++it){
+		for (ODIMPathList::const_iterator it = pathList.begin(); it != pathList.end(); ++it){
 			// mout.warn()  << " multiple: key=" << *it << "|"  << attributeKey << mout.endl;
 			//hi5::Hi5Base::readTextLine(currentHi5, it->toStr()+attributeKey, value);
 			hi5::Hi5Base::readTextLine(currentHi5, *it, attributeKey, value);

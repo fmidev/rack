@@ -604,7 +604,7 @@ public:
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		RackResources & resources = getResources();
-		std::list<ODIMPath> paths;
+		ODIMPathList paths;
 		//std::map<std::string,std::string> m;
 		DataSelector selector; //("data[0-9]+$");
 		selector.setParameters(resources.select);
@@ -619,7 +619,7 @@ public:
 		drain::image::ImageTray<Channel> tray;
 		//size_t index = 0;
 		//for (std::map<std::string,std::string>::const_iterator it = m.begin(); it != m.end(); ++it){
-		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			//mout.note() << "selected: " << it->first << '=' << it->second << mout.endl;
 			mout.note() << "selected: " << *it << mout.endl;
 			HI5TREE & dst = (*resources.currentHi5)(*it);
@@ -661,7 +661,7 @@ public:
 
 		/*
 		if (!paths.empty()){
-			const std::list<ODIMPath>::const_iterator it = paths.begin();
+			const ODIMPathList::const_iterator it = paths.begin();
 			mout.info() << "selected: " << *it << mout.endl;
 		}
 		 */

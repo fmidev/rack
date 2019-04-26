@@ -338,6 +338,9 @@ std::istream & operator>>(std::istream & istr, ODIMPathElem & p) {
 
 typedef drain::Path<ODIMPathElem> ODIMPath;
 
+typedef std::list<ODIMPath> ODIMPathList;
+
+
 struct ODIMPathLess {
 
 

@@ -387,7 +387,7 @@ void Reader::h5FileToTree(hid_t file_id, const std::string &path, HI5TREE &tree,
 
 	H5G_stat_t info;
 
-	//for (std::list<ODIMPath>::const_iterator it = l.begin(); it != l.end(); ++it) {
+	//for (ODIMPathList::const_iterator it = l.begin(); it != l.end(); ++it) {
 	for (HI5TREE::iterator it = tree.begin(); it != tree.end(); ++it) {
 		const std::string &s = it->first;
 		HI5TREE &subtree = it->second;

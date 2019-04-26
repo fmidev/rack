@@ -247,7 +247,7 @@ public:
 	static
 	inline
 	bool getPath(const HI5TREE &src, const DataSelector & selector, std::string & path){
-		std::list<ODIMPath> l;
+		ODIMPathList l;
 		getPaths(src, selector, l);
 		if (l.empty()){
 			path.clear();
@@ -317,8 +317,8 @@ protected:
 
 	/// Traverses down the tree and returns matching paths as a list or map (ordered by elevation).
 	/**
-	 *   Applicable for std::list<ODIMPath> and std::map<double,std::string>.
-	 *   \param container - std::list<ODIMPath> and std::map<double,std::string>
+	 *   Applicable for ODIMPathList and std::map<double,std::string>.
+	 *   \param container - ODIMPathList and std::map<double,std::string>
 	 */
 	template <class T>
 	static
@@ -357,7 +357,7 @@ protected:
 	/*
 	static
 	inline
-	void addPathT(std::list<ODIMPath> & l, const PolarODIM & odim, const std::string &path){ l.push_back(path); }; // discards elevation
+	void addPathT(ODIMPathList & l, const PolarODIM & odim, const std::string &path){ l.push_back(path); }; // discards elevation
 	 */
 
 	/// Collects paths to a set. (unused?)

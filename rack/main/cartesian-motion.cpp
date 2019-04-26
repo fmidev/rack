@@ -53,8 +53,8 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 	RackResources & resources = getResources();
 	//HI5TREE & srcH5 = resources.cartesianHi5; //*resources.currentHi5;
 
-	//std::list<ODIMPath> paths;
-	std::list<ODIMPath> paths;
+	//ODIMPathList paths;
+	ODIMPathList paths;
 	DataSelector selector; //("/data[0-9]+/?$");
 	selector.setParameters(resources.select);
 	resources.select.clear();
@@ -64,7 +64,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 	unsigned short count = 0;
 
 	// TODO: this could be dataset<i> paths instead of dataset<i>/data<j> paths
-	for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
+	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 
 		//const std::string & path = *it;
 		const ODIMPath & path = *it;

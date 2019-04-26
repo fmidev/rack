@@ -261,7 +261,8 @@ struct NodeHi5 {
 
 //typedef  TreeNode<NodeHi5> TreeHi5;
 //#define HI5TREE drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
-#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+//#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> HI5TREE;
 
 
 namespace hi5 {

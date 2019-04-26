@@ -67,7 +67,7 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	DataSetMap<PolarSrc> srcDataSets;
 	DataSetMap<PolarDst> dstDataSets;
 
-	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	if (dataPaths.size() == 0)
@@ -78,7 +78,7 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	//mout.warn() << "regExp: " << quantityRegExp << mout.endl;
 
 
-	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		mout.debug() << "considering " << *it << mout.endl;
 

@@ -105,7 +105,7 @@ void ImageOpRacklet::exec() const {
 	// TODO: if same quantity, use temp?
 	const std::string quantity(imageSelector.quantity);
 
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	//imageSelector.getPathsNEW(*resources.currentHi5, paths, true);
 	imageSelector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATASET);
 
@@ -115,12 +115,12 @@ void ImageOpRacklet::exec() const {
 	}
 	else if (mout.isDebug(1)) {
 		mout.warn() << "Selector results: " << mout.endl;
-		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it)
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
 			mout.warn() << *it << mout.endl;
 	}
 
 	// Main loop: visit each /dataset<n>
-	for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it){
+	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 
 		// Results will be stored in the same datasetN.
 		DataSet<dst_t > dstDataSet((*resources.currentHi5)(*it), quantity);

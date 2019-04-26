@@ -144,7 +144,7 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	std::list<ODIMPath> dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
 	if (dataPaths.empty()){
@@ -153,7 +153,7 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	drain::Variable elangles(typeid(double));
-	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 

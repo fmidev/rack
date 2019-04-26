@@ -296,7 +296,7 @@ ODIMPathElem::group_t DataSelector::resetParameters(const std::string & paramete
 	mout.debug() << "group mask: " << groupFilter << ", selector now: " << *this << mout.endl;
 
 	/*
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	HI5TREE & dst = *getResources().currentHi5;
 	selector.getPathsNEW(dst, paths, groupFilter); // RE2
 	 */
@@ -381,7 +381,7 @@ bool DataSelector::getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem
 		mout.debug(3) << "count=" << count << ", but only 1 path will be used " << mout.endl;
 	}
 
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	getPathsNEW(src, paths, groupFilter);
 	if (paths.empty()){
 		mout.debug(3) << "no paths" << mout.endl;
@@ -406,7 +406,7 @@ bool DataSelector::getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathEle
 		mout.debug(3) << "count=" << count << ", but only 1 path will be used " << mout.endl;
 	}
 
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	getPathsNEW(src, paths, group);
 	if (paths.empty()){
 		path.clear();  // sure?
@@ -484,7 +484,7 @@ bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & s
 
 	mout.debug(2) << "selector=" << selector << mout.endl;
 
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	//getPaths(src, selector, paths);
 	selector.getPathsNEW(src, paths);
 
@@ -500,7 +500,7 @@ bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & s
 	drain::Variable v(0);
 	//vField.setType<int>();
 	//vField = 0;  //
-	for (std::list<ODIMPath>::iterator it = paths.begin(); it != paths.end(); ++it){
+	for (ODIMPathList::iterator it = paths.begin(); it != paths.end(); ++it){
 		/// std::cerr << "???" << *it << std::endl;
 		if (r.execute(*it) != REG_NOMATCH ){
 			mout.debug(2) << r.result[1] << '|' << r.result[2] << mout.endl;

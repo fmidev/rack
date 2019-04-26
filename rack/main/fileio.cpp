@@ -301,7 +301,7 @@ public:
 		else if (textFileExtension.test(value) || (value == "-")){
 
 			mout.info() << "File format: TXT" << mout.endl;
-			std::list<ODIMPath> paths;
+			ODIMPathList paths;
 
 			if (!resources.select.empty()){
 				//DataSelector selector;
@@ -311,7 +311,7 @@ public:
 				ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
 				DataSelector(resources.select).getPathsNEW(*getResources().currentHi5, paths, groups); // RE2
 				resources.select.clear();
-				// for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it)
+				// for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
 				//	mout.warn() << *it << mout.endl;
 			}
 			else {
@@ -572,7 +572,7 @@ public:
 		resources.select.clear();
 		mout.debug() << iSelector << mout.endl;
 
-		std::list<ODIMPath> paths;
+		ODIMPathList paths;
 		//getResources().currentHi5->getKeys(paths, options["data"]);
 		iSelector.getPathsNEW(*getResources().currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
@@ -590,7 +590,7 @@ public:
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
 
-		for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); it++) {
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++) {
 
 			const ODIMPath & path = (*it); // modified below
 			hi5::NodeHi5 & node = (*getResources().currentHi5)(path)["data"].data;

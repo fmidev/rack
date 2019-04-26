@@ -375,7 +375,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
  */
-//void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const std::list<ODIMPath> & paths){
+//void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const ODIMPathList & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
 	Logger mout("FileGeoTIFF", __FUNCTION__);

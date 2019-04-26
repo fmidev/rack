@@ -50,6 +50,8 @@ namespace rack {
  *    of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed
  *    from accumulated dBZ values as described in \ref cluttermaps .
  *
+ *    - alpha \f$ \alpha = \angle(b,c)\f$: "sky angle",
+ *
  */
 class ClutterOp: public DetectorOp {
 
@@ -81,7 +83,7 @@ public:
 	/// Loads a clutter map
 	void setClutterMap(const std::string & filename) const;
 
-	const Data<PolarSrc> & getClutterMap(const PolarODIM & odim) const;
+	const HI5TREE & getClutterMap(const PolarODIM & odim) const;
 
 
 	virtual

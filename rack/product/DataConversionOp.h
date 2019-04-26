@@ -195,7 +195,7 @@ void DataConversionOp<M>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	std::list<ODIMPath> dataPaths;
+	ODIMPathList dataPaths;
 	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
@@ -204,7 +204,7 @@ void DataConversionOp<M>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 
 	const drain::RegExp quantityRegExp(this->dataSelector.quantity);
 
-	for (std::list<ODIMPath>::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 		//mout.debug() << *it << mout.endl;

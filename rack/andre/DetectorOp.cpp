@@ -102,7 +102,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			Data<PolarDst>  & dstData = dstDataSet.getFirstData(); // only for QIND and CLASS
 
 
-			mout.warn() << "CLASSNAME=" << CLASSNAME << " using universal=" << (SUPPORT_UNIVERSAL && UNIVERSAL) << mout.endl;
+			mout.debug() << "CLASSNAME=" << CLASSNAME << " using universal=" << (SUPPORT_UNIVERSAL && UNIVERSAL) << mout.endl;
 
 			const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
 

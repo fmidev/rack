@@ -73,7 +73,7 @@ public:
 protected:
 
 	virtual
-	void filterGroups(const HI5TREE &src, const std::list<ODIMPath> & paths, HI5TREE &dst) const;
+	void filterGroups(const HI5TREE &src, const ODIMPathList & paths, HI5TREE &dst) const;
 
 };
 

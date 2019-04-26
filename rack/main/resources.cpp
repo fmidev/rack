@@ -79,9 +79,9 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	selector.count = 1; // warn if not 1?
 	/*
 	mout.warn() << " currentHi5: list" << mout.endl;
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	currentHi5->getPaths( paths);
-	for (std::list<ODIMPath>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
+	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it) {
 		const ODIMPathElem & leaf = it->back();
 		if (leaf.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			mout.note() << '"' << *it << '"' << " [" << leaf.group << ']' << ' ';
@@ -129,7 +129,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 	drain::Logger mout("RackResources", __FUNCTION__);
 
 	/*
-	std::list<ODIMPath> paths;
+	ODIMPathList paths;
 	imageSelector.getPathsNEW(*currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	mout.info() << "selected: " << paths.size() << mout.endl;
 	*/
@@ -139,7 +139,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 	if (imageSelector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
 		path << ODIMPathElem(ODIMPathElem::ARRAY);
-		//const std::list<ODIMPath>::const_iterator it = paths.begin();
+		//const ODIMPathList::const_iterator it = paths.begin();
 		mout.info() << "selected: " << path << mout.endl;
 		drain::image::Image & img = (*currentHi5)(path).data.dataSet;
 		if (!img.isEmpty()){
