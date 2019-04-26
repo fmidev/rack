@@ -62,7 +62,7 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 		}
 	}
 
-	mout.info() << "reading " << filename << mout.endl;
+	mout.debug() << "reading " << filename << mout.endl;
 	try {
 		hi5::Reader::readFile(filename, clutterMap);
 		DataTools::updateAttributes(clutterMap);

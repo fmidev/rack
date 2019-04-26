@@ -85,7 +85,7 @@ public:
 
 	void exec() const {
 		drain::Logger mout(name, __FUNCTION__);
-		mout.info() << "reading " << value << mout.endl;
+		mout.info() << "querying " << value << mout.endl;
 		//clutter.productOp.setClutterMap(value);
 		clutterOp.setClutterMap(value);
 	};
