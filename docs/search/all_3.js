@@ -117,7 +117,7 @@ var searchData=
   ['compositedefaultquality',['CompositeDefaultQuality',['../classrack_1_1CompositeDefaultQuality.html',1,'rack']]],
   ['compositeinit',['CompositeInit',['../classrack_1_1CompositeInit.html',1,'rack']]],
   ['compositemethod',['CompositeMethod',['../classrack_1_1CompositeMethod.html',1,'rack']]],
-  ['cartesian_20conversions_20and_20compositing',['Cartesian conversions and compositing',['../compositespage.html',1,'']]],
+  ['cartesian_20conversions_20and_20composites',['Cartesian conversions and composites',['../compositespage.html',1,'']]],
   ['compositetimedecay',['CompositeTimeDecay',['../classrack_1_1CompositeTimeDecay.html',1,'rack']]],
   ['compositingmodule',['CompositingModule',['../classrack_1_1CompositingModule.html',1,'rack']]],
   ['computedifferentials',['computeDifferentials',['../classdrain_1_1image_1_1FastOpticalFlowOp.html#af6308e013d697903af88b6a8b4a2649f',1,'drain::image::FastOpticalFlowOp::computeDifferentials()'],['../classdrain_1_1image_1_1FastOpticalFlowOp2.html#af6308e013d697903af88b6a8b4a2649f',1,'drain::image::FastOpticalFlowOp2::computeDifferentials()']]],

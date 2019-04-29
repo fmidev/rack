@@ -121,7 +121,7 @@ Reading and writing text files</h1>
 Reading and writing image files</h1>
 <p>Writing data to Portable Network Graphics (PNG) image format is carried out simply by using file extension "png", for example:</p>
 <p>In addition, <b>Rack</b> provides support for writing Cartesian image data in Geo-Referenced Tagged Image File Format (GTIFF, GeoTIFF) format</p>
-<p>Note: for unknown reasons, some projections &ndash; for example EPSG:3844, EPSG:3035, and EPSG:3995 &ndash; raise errors in writing projection data. (See <a class="el" href="compositespage.html">Cartesian conversions and compositing</a> .)</p>
+<p>Note: for unknown reasons, some projections &ndash; for example EPSG:3844, EPSG:3035, and EPSG:3995 &ndash; raise errors in writing projection data. (See <a class="el" href="compositespage.html">Cartesian conversions and composites</a> .)</p>
 <p>Rack is also able to construct HDF5 from standard <b>png</b> image files. Each input image will be stored into the structure</p><ol type="1">
 <li>in the first encountered <code>/data&lt;i&gt;</code> or <code>/quality&lt;i&gt;</code> group containing an empty <code>/data</code> (ie. uninitialized image), or if not found:</li>
 <li>in a new <code>/data&lt;i&gt;/data</code> of the existing <code>/dataset&lt;j&gt;</code> with the highest index <code>j</code> </li>
