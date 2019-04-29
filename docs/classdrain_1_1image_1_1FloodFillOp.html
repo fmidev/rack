@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -114,19 +115,20 @@ Collaboration diagram for FloodFillOp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FloodFillOp__coll__graph.png" border="0" usemap="#FloodFillOp_coll__map" alt="Collaboration graph"/></div>
 <map name="FloodFillOp_coll__map" id="FloodFillOp_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="69,399,143,425"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="65,323,147,349"/>
-<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="38,452,113,479"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="27,363,110,389"/>
+<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="23,247,99,273"/>
 <area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
+<area shape="rect" id="node8" href="classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l double, double \&gt;" alt="" coords="81,297,229,339"/>
 <area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a25f0192cb175b3d54af14f81ffa51bc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25f0192cb175b3d54af14f81ffa51bc8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FloodFillOp</b> (int i=0, int j=0, double min=1.0, double max=255.0, double value=128.0)</td></tr>
-<tr class="separator:a25f0192cb175b3d54af14f81ffa51bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aaf3c6d1bac0e4ce734cc551e569bed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3aaf3c6d1bac0e4ce734cc551e569bed"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>FloodFillOp</b> (int i=0, int j=0, double min=1.0, double max=65536.0, double value=1.0)</td></tr>
+<tr class="separator:a3aaf3c6d1bac0e4ce734cc551e569bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92845681c0e54f107128c4335d7798b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92845681c0e54f107128c4335d7798b0"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseChannels</b> (const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;dst) const </td></tr>
 <tr class="separator:a92845681c0e54f107128c4335d7798b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,21 +217,16 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4ebb6d9fc740933a0f821517ed9af3e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ebb6d9fc740933a0f821517ed9af3e3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>i0</b></td></tr>
+<tr class="memitem:a4ebb6d9fc740933a0f821517ed9af3e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FloodFillOp.html#a4ebb6d9fc740933a0f821517ed9af3e3">i0</a></td></tr>
+<tr class="memdesc:a4ebb6d9fc740933a0f821517ed9af3e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable, for coord handler.  <a href="#a4ebb6d9fc740933a0f821517ed9af3e3">More...</a><br /></td></tr>
 <tr class="separator:a4ebb6d9fc740933a0f821517ed9af3e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25d8e6931016c6e69a33e59d41a3b5c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25d8e6931016c6e69a33e59d41a3b5c1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>j0</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FloodFillOp.html#a25d8e6931016c6e69a33e59d41a3b5c1">j0</a></td></tr>
+<tr class="memdesc:a25d8e6931016c6e69a33e59d41a3b5c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable, for coord handler. <br /></td></tr>
 <tr class="separator:a25d8e6931016c6e69a33e59d41a3b5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b0ede69e8156eb97acc579b88e883de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b0ede69e8156eb97acc579b88e883de"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>max</b></td></tr>
-<tr class="separator:a0b0ede69e8156eb97acc579b88e883de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad36546e8175d2922bee165fe028fedc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad36546e8175d2922bee165fe028fedc"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>min</b></td></tr>
-<tr class="separator:aad36546e8175d2922bee165fe028fedc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee90379adb0307effb138f4871edbc5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee90379adb0307effb138f4871edbc5c"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:aee90379adb0307effb138f4871edbc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8db392c9d4fd4e12016227af6527e5a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8db392c9d4fd4e12016227af6527e5a"></a>
+<a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">SegmentProberConf</a>&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
+<tr class="separator:af8db392c9d4fd4e12016227af6527e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -316,8 +313,38 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A fill operation for one color. </p>
-<p>Uses SegmentProber&lt;&gt; in semi-recursive image traversal. </p><dl class="section author"><dt>Author</dt><dd><a href="#" onclick="location.href='mai'+'lto:'+'Mar'+'ku'+'s.P'+'eu'+'ra@'+'fm'+'i.f'+'i'; return false;">Marku<span style="display: none;">.nosp@m.</span>s.Pe<span style="display: none;">.nosp@m.</span>ura@f<span style="display: none;">.nosp@m.</span>mi.f<span style="display: none;">.nosp@m.</span>i</a> <div class="fragment"><div class="line">drainage shapes.png --floodFill  100,100,min=50,value=128 -o shapes-fill.png</div></div><!-- fragment --> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<p>Uses <a class="el" href="classdrain_1_1image_1_1FillProber.html">FillProber</a>, hence basically SegmentProber&lt;&gt; in semi-recursive image traversal.</p>
+<p>~ make shapes-wrap.png # exec</p>
+<div class="fragment"><div class="line">drainage shapes.png --floodFill  100,100,min=50,value=128 -o shapes-fill.png</div><div class="line">drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,5,value=128   -o shapes-fill-wrap.png</div><div class="line">drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,128,value=192 -o shapes-fill-wrap-h.png</div><div class="line">drainage shapes-wrap.png --coordPolicy 2 --floodFill 128,5,value=96  -o shapes-fill-wrap-v.png</div></div><!-- fragment --> </div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a4ebb6d9fc740933a0f821517ed9af3e3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int i0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutable, for coord handler. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">C</td><td>- conf </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/imageops/<a class="el" href="FloodFillOp_8h_source.html">FloodFillOp.h</a></li>
 <li>drain/imageops/FloodFillOp.cpp</li>
 </ul>

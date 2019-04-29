@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,11 +98,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for QuantityMap:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1QuantityMap__inherit__graph.png" border="0" usemap="#QuantityMap_inherit__map" alt="Inheritance graph"/></div>
+<map name="QuantityMap_inherit__map" id="QuantityMap_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for QuantityMap:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1QuantityMap__coll__graph.png" border="0" usemap="#QuantityMap_coll__map" alt="Collaboration graph"/></div>
+<map name="QuantityMap_coll__map" id="QuantityMap_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -125,7 +130,7 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
 <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key)</td></tr>
 <tr class="separator:a260fa1061611c5c439d504510ba4efe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cccdb7650544b99245d8ff4527f4937"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a3cccdb7650544b99245d8ff4527f4937">setQuantityDefaults</a> (<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;dst, const std::string &amp;quantity, const std::string &amp;values=&quot;&quot;) const </td></tr>
-<tr class="memdesc:a3cccdb7650544b99245d8ff4527f4937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets quantity with default values, optionally overridden with by user values.  <a href="#a3cccdb7650544b99245d8ff4527f4937">More...</a><br /></td></tr>
+<tr class="memdesc:a3cccdb7650544b99245d8ff4527f4937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets default values of given quantity - but not the quantity itself. Optionally overrides with user values.  <a href="#a3cccdb7650544b99245d8ff4527f4937">More...</a><br /></td></tr>
 <tr class="separator:a3cccdb7650544b99245d8ff4527f4937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c7bddaf19b86e049364c56d5c10d88d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c7bddaf19b86e049364c56d5c10d88d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>setQuantityDefaults</b> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;dst) const </td></tr>
@@ -210,11 +215,11 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOstr<
       </table>
 </div><div class="memdoc">
 
-<p>Sets quantity with default values, optionally overridden with by user values. </p>
+<p>Sets default values of given quantity - but not the quantity itself. Optionally overrides with user values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">quantity</td><td>- the quantity according to which the encoding will be set. </td></tr>
-    <tr><td class="paramname">values</td><td>- other values, comma-separated</td></tr>
+    <tr><td class="paramname">values</td><td>- str values, comma-separated</td></tr>
   </table>
   </dd>
 </dl>
@@ -264,7 +269,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOstr<
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">quantity</td><td>- the quantity according to which the encoding will be set. </td></tr>
-    <tr><td class="paramname">values</td><td>- other values, comma-separated</td></tr>
+    <tr><td class="paramname">values</td><td>- str values, comma-separated</td></tr>
   </table>
   </dd>
 </dl>

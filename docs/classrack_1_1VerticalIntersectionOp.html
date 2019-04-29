@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -112,10 +113,9 @@ Collaboration diagram for VerticalIntersectionOp:</div>
 <area shape="rect" id="node3" href="classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l VerticalProfileODIM \&gt;" alt="" coords="5,309,207,351"/>
 <area shape="rect" id="node4" href="classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="219,407,399,434"/>
 <area shape="rect" id="node5" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="280,317,337,343"/>
-<area shape="rect" id="node6" href="classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="253,233,364,260"/>
-<area shape="rect" id="node7" href="classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="227,157,313,184"/>
-<area shape="rect" id="node8" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="338,157,445,184"/>
-<area shape="rect" id="node9" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="306,81,477,108"/>
+<area shape="rect" id="node6" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="253,233,364,260"/>
+<area shape="rect" id="node7" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="255,157,362,184"/>
+<area shape="rect" id="node8" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="223,81,394,108"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -127,9 +127,9 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a1beff85f5c1fa276176ebe59a6ba648c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1beff85f5c1fa276176ebe59a6ba648c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>filterGroups</b> (const HI5TREE &amp;src, const std::list&lt; std::string &gt; &amp;paths, HI5TREE &amp;dst) const </td></tr>
-<tr class="separator:a1beff85f5c1fa276176ebe59a6ba648c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a521187c118db75efb8f54f9c530f1001"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a521187c118db75efb8f54f9c530f1001"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>filterGroups</b> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const ODIMPathList &amp;paths, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
+<tr class="separator:a521187c118db75efb8f54f9c530f1001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -137,7 +137,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const</td></tr>
+<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const</td></tr>
 <tr class="memdesc:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="#ac50f829ea463fa8833e8d8ded7c17b20">More...</a><br /></td></tr>
 <tr class="separator:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

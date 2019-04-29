@@ -1,9 +1,8 @@
 <map id="DataCoder" name="DataCoder">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="145,297,221,324"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="129,157,235,184"/>
-<area shape="rect" id="node8" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="5,247,116,273"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="97,81,267,108"/>
-<area shape="rect" id="node6" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation. " alt="" coords="225,348,384,375"/>
-<area shape="rect" id="node7" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="24,348,81,375"/>
-<area shape="rect" id="node9" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="17,157,104,184"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="24,297,100,324"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
+<area shape="rect" id="node8" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="99,247,209,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
+<area shape="rect" id="node6" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation. " alt="" coords="203,348,361,375"/>
+<area shape="rect" id="node7" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="120,348,177,375"/>
 </map>

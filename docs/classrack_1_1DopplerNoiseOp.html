@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -133,10 +134,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ea19bcd68a5920b10af16239014d6a2 inherit pub_methods_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ea19bcd68a5920b10af16239014d6a2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DetectorOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, unsigned short code=0)</td></tr>
 <tr class="separator:a8ea19bcd68a5920b10af16239014d6a2 inherit pub_methods_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867813cf3211ee3ea98a153c09a033b9 inherit pub_methods_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a867813cf3211ee3ea98a153c09a033b9"></a>
-virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#a867813cf3211ee3ea98a153c09a033b9">getQuantityName</a> () const </td></tr>
-<tr class="memdesc:a867813cf3211ee3ea98a153c09a033b9 inherit pub_methods_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quantity name, by default the name of the class in upper case letters. <br /></td></tr>
-<tr class="separator:a867813cf3211ee3ea98a153c09a033b9 inherit pub_methods_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9314d9ddafbc56c8b51d8e5aeb4ee49 inherit pub_methods_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9314d9ddafbc56c8b51d8e5aeb4ee49"></a>
+virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#ab9314d9ddafbc56c8b51d8e5aeb4ee49">getOutputQuantity</a> () const </td></tr>
+<tr class="memdesc:ab9314d9ddafbc56c8b51d8e5aeb4ee49 inherit pub_methods_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quantity name, by default the name of the class in upper case letters. <br /></td></tr>
+<tr class="separator:ab9314d9ddafbc56c8b51d8e5aeb4ee49 inherit pub_methods_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04672c3e850d580aadcf73d85c75d49d inherit pub_methods_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#a04672c3e850d580aadcf73d85c75d49d">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1SrcType.html">PolarSrc</a> &gt; &amp;srcVolume, <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1DstType.html">PolarDst</a> &gt; &amp;dstVolume) const </td></tr>
 <tr class="memdesc:a04672c3e850d580aadcf73d85c75d49d inherit pub_methods_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW POLICY =&gt; DetectorOpNEW.  <a href="#a04672c3e850d580aadcf73d85c75d49d">More...</a><br /></td></tr>
 <tr class="separator:a04672c3e850d580aadcf73d85c75d49d inherit pub_methods_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,7 +148,7 @@ virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a3cb5cd7aa5118402c16ba3607b691fbc inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cb5cd7aa5118402c16ba3607b691fbc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeTraversalOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a3cb5cd7aa5118402c16ba3607b691fbc inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const </td></tr>
+<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
 <tr class="memdesc:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for radar data processors.  <a href="#ac50f829ea463fa8833e8d8ded7c17b20">More...</a><br /></td></tr>
 <tr class="separator:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
@@ -232,7 +233,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>upperCaseName<
 <tr class="separator:a788a9f0fa011968823f828262808b703 inherit pro_attribs_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d73861600b8d982afcbab299b339fa inherit pro_attribs_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d73861600b8d982afcbab299b339fa"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa">UNIVERSAL</a></td></tr>
-<tr class="memdesc:ac7d73861600b8d982afcbab299b339fa inherit pro_attribs_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, applies also to quantities other than the one used in detection. The detection and the accumulation will be stored one step upwards. <br /></td></tr>
+<tr class="memdesc:ac7d73861600b8d982afcbab299b339fa inherit pro_attribs_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards. <br /></td></tr>
 <tr class="separator:ac7d73861600b8d982afcbab299b339fa inherit pro_attribs_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92bac8f6fc745bee78b290dcc8de8392"></a>

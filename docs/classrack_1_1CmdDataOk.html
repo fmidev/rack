@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +99,7 @@ Inheritance diagram for CmdDataOk:</div>
 <div class="center"><img src="classrack_1_1CmdDataOk__inherit__graph.png" border="0" usemap="#CmdDataOk_inherit__map" alt="Inheritance graph"/></div>
 <map name="CmdDataOk_inherit__map" id="CmdDataOk_inherit__map">
 <area shape="rect" id="node2" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="5,80,120,107"/>
-<area shape="rect" id="node3" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="21,5,104,32"/>
+<area shape="rect" id="node3" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="21,5,104,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -107,7 +108,7 @@ Collaboration diagram for CmdDataOk:</div>
 <div class="center"><img src="classrack_1_1CmdDataOk__coll__graph.png" border="0" usemap="#CmdDataOk_coll__map" alt="Collaboration graph"/></div>
 <map name="CmdDataOk_coll__map" id="CmdDataOk_coll__map">
 <area shape="rect" id="node2" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="29,247,144,273"/>
-<area shape="rect" id="node3" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,157,88,184"/>
+<area shape="rect" id="node3" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,157,88,184"/>
 <area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="112,157,219,184"/>
 <area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="80,81,251,108"/>
 </map>
@@ -138,10 +139,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a751f280ac0a41bd4e1487b13eae5ccca inherit pub_methods_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a751f280ac0a41bd4e1487b13eae5ccca"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>exec</b> () const </td></tr>
 <tr class="separator:a751f280ac0a41bd4e1487b13eae5ccca inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1Command.html">Command</a></td></tr>
-<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
+<tr class="inherit_header pub_methods_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
+<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasArguments</b> () const </td></tr>
-<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5699010e0413a53f2d81e5fad3cd6965"></a>
+virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a5699010e0413a53f2d81e5fad3cd6965">getType</a> () const </td></tr>
+<tr class="memdesc:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of result, comparable to a return type of a function. <br /></td></tr>
+<tr class="separator:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1BasicCommand"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BasicCommand')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BasicCommand.html">BasicCommand</a></td></tr>
 <tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -87,13 +88,15 @@ Processing two-dimensional data</h1>
 <p>For anomaly detection and removal as well as for meteorological products, all the processing is done in polar coordinate system, ie. the native system for radars. At the edges of the data arrays, coordinate handlers (drain::image::CoordinateHandler) quarantee that the coordinates are properly wrapped. This is needed by functions applying pixel neighbourhoods, such as those applying moving windows or spatial recursion.</p>
 <p>Smoothing operations (<a class="el" href="classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support. ">drain::image::FastAverageOp</a>, drain::image::FastMedianOp) apply rectangular moving windows which are updated incrementally, yelding a remarkable speedup. Functions not applying pixel neighbourhoods apply direct, one-dimensional memory iteration whenever possible. The segment size analysis (<a class="el" href="namespacedrain_1_1image.html" title="Namespace for images and image processing tools. ">drain::image</a>:SegmentSizeOp) applies a semi-recursive floodfill technique, which combines a non-recursive horizontal traversal with a recursive vertical traversal; this keeps stack size small.</p>
 <p>Internally some <b>AnDRe</b> detectors require that incoming data be in unsigned-char type with a fixed scaling (<code>gain</code> =1.0/250.0, <code>offset</code> =-32.0) and special codes (<code>undetect</code> =0, <code>nodata</code> =255). When needed, <b>Andre</b> performs this conversion automatically, storing the converted copy in a path suffixed with tilde '~'. These auxiliary data will not be included in output files unless a high debugging mode is selected with <code>&ndash;verbose</code> . The removal operations apply to the original data.</p>
-<p>Instead of strict thresholding, the detectors apply frequently fuzzy functions ie. functions that map quantity ranges to continuous truth values between 0.0 (no) and 1.0 (yes). Then, conditions like "the dBZ is over 20" and "width of the speck is about 1500m" can be combined by multiplying associated fuzzy functions; the result is a combined truth value. The fuzzy functions applied in <b>AnDRe</b> are fuzzy peak (drain::FuzzyPeak) </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]" src="form_21.png"/>
+<h1><a class="anchor" id="fuzzy"></a>
+Fuzzy functions</h1>
+<p>Instead of strict thresholding, the detectors apply frequently fuzzy functions ie. functions that map quantity ranges to continuous truth values between 0.0 (no) and 1.0 (yes). Then, conditions like "the dBZ is over 20" and "width of the speck is about 1500m" can be combined by multiplying associated fuzzy functions; the result is a combined truth value. The typical fuzzy functions applied in <b>AnDRe</b> are fuzzy peak (drain::FuzzyPeak) </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]" src="form_45.png"/>
 </p>
-<p> where <img class="formulaInl" alt="$a$" src="form_22.png"/> is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) . ">drain::FuzzyStep</a>) </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]" src="form_23.png"/>
+<p> where <img class="formulaInl" alt="$a$" src="form_46.png"/> is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) . ">drain::FuzzyStep</a>) </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]" src="form_47.png"/>
 </p>
-<p> where <img class="formulaInl" alt="$a$" src="form_22.png"/> is the steepness.</p>
+<p> where <img class="formulaInl" alt="$a$" src="form_46.png"/> is the steepness.</p>
 <div class="image">
 <img src="fuzzies.png" alt="fuzzies.png"/>
 <div class="caption">

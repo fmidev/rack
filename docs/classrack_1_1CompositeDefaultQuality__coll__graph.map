@@ -1,6 +1,6 @@
 <map id="CompositeDefaultQuality" name="CompositeDefaultQuality">
 <area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="32,247,147,273"/>
-<area shape="rect" id="node3" href="$structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="8,157,91,184"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="8,157,91,184"/>
 <area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="115,157,221,184"/>
 <area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="83,81,253,108"/>
 </map>

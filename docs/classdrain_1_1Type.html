@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -164,7 +165,7 @@ static char&#160;</td><td class="memItemRight" valign="bottom"><b>getTypeChar</b
 <tr class="separator:aaf42633d41597fb0f7a7c87dd93b82c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59087b3aeca1691b863e3a8b4a63ed2f"><td class="memTemplParams" colspan="2">template&lt;class F , class T &gt; </td></tr>
 <tr class="memitem:a59087b3aeca1691b863e3a8b4a63ed2f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html#a59087b3aeca1691b863e3a8b4a63ed2f">call</a> (T &amp;target, const std::type_info &amp;t)</td></tr>
-<tr class="memdesc:a59087b3aeca1691b863e3a8b4a63ed2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function call with a single parameter.  <a href="#a59087b3aeca1691b863e3a8b4a63ed2f">More...</a><br /></td></tr>
+<tr class="memdesc:a59087b3aeca1691b863e3a8b4a63ed2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function call without parameters on a single target of type T.  <a href="#a59087b3aeca1691b863e3a8b4a63ed2f">More...</a><br /></td></tr>
 <tr class="separator:a59087b3aeca1691b863e3a8b4a63ed2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae76a631a8ccb620802b18efd9fe88e6b"><td class="memTemplParams" colspan="2">template&lt;class F , class T , class T2 &gt; </td></tr>
 <tr class="memitem:ae76a631a8ccb620802b18efd9fe88e6b"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html#ae76a631a8ccb620802b18efd9fe88e6b">call</a> (T &amp;target, const T2 &amp;t)</td></tr>
@@ -255,7 +256,7 @@ const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>cur
 <p>New, preferred implementation: a single if-then structure once and for all. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct implementing: T callback&lt;T&gt;() </td></tr>
+    <tr><td class="paramname">F</td><td>- struct implementing: T callback&lt;S&gt;() </td></tr>
     <tr><td class="paramname">D</td><td>- destination type </td></tr>
     <tr><td class="paramname">S</td><td>- selector type (char, std::string, <a class="el" href="classdrain_1_1Type.html" title="Utilities related to stl::type_info. ">drain::Type</a>) </td></tr>
   </table>
@@ -290,7 +291,7 @@ const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>cur
 <p>Simpler template with two arguments</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct implementing: T callback&lt;T&gt;() AND value_t (replacing destination type S) </td></tr>
+    <tr><td class="paramname">F</td><td>- struct implementing: T::callback&lt;S&gt;() AND value_t (replacing destination type S) </td></tr>
     <tr><td class="paramname">S</td><td>- selector type (char, std::string, <a class="el" href="classdrain_1_1Type.html" title="Utilities related to stl::type_info. ">drain::Type</a>) </td></tr>
   </table>
   </dd>
@@ -330,16 +331,16 @@ const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>cur
 </table>
 </div><div class="memdoc">
 
-<p>Static function call with a single parameter. </p>
+<p>Static function call without parameters on a single target of type T. </p>
 <p>Maps std::type_info to the corresponding template, calling a desired modifier function.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct that implements static callback&lt;type&gt;(T &amp; target), where <code>type</code> is basetype or std::string. </td></tr>
-    <tr><td class="paramname">T</td><td>- target object class </td></tr>
+    <tr><td class="paramname">F</td><td>- struct that implements static void callback&lt;type&gt;(T &amp; target), where <code></code> &lt;type&gt; is basetype or std::string. </td></tr>
+    <tr><td class="paramname">T</td><td>- target object class</td></tr>
   </table>
   </dd>
 </dl>
-
+<p>Example struct F: </p><div class="fragment"><div class="line"><span class="keyword">class </span>typesetter {</div><div class="line"><span class="keyword">public</span>:</div><div class="line">  <span class="comment">// param S - target type</span></div><div class="line">  <span class="comment">// param T - type to be analyzed</span></div><div class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span> S, <span class="keyword">class</span> T&gt;</div><div class="line">  <span class="keyword">static</span></div><div class="line">  <span class="keywordtype">void</span> callback(T &amp; target){</div><div class="line">    target.template setType&lt;S&gt;();</div><div class="line">  }</div><div class="line">};</div></div><!-- fragment --> 
 </div>
 </div>
 <a class="anchor" id="ae76a631a8ccb620802b18efd9fe88e6b"></a>

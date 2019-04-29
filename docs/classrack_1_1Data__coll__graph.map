@@ -1,5 +1,7 @@
 <map id="Data&lt; DT &gt;" name="Data&lt; DT &gt;">
-<area shape="rect" id="node2" href="$classrack_1_1PlainData.html" title="PlainData\&lt; DT \&gt;" alt="" coords="10,87,131,114"/>
-<area shape="rect" id="node3" href="$classrack_1_1DataObject.html" title="Base class for all kinds of radar data. " alt="" coords="5,5,136,32"/>
-<area shape="rect" id="node4" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="156,80,292,121"/>
+<area shape="rect" id="node2" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data. " alt="" coords="27,207,149,234"/>
+<area shape="rect" id="node3" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data. " alt="" coords="5,103,144,130"/>
+<area shape="rect" id="node4" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="180,200,316,241"/>
+<area shape="rect" id="node5" href="$classrack_1_1DataGroup.html" title="DataGroup\&lt; rack::PlainData,\l rack::ODIMPathElem::QUALITY \&gt;" alt="" coords="169,96,397,137"/>
+<area shape="rect" id="node6" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; rack::\lPlainData::datatype_t \&gt;" alt="" coords="112,5,272,47"/>
 </map>

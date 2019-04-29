@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -129,11 +130,11 @@ Layers extracted from the accumulation array: the composite, quality field, disc
  <div class="image">
 <img src="composite-fi-all.png" alt="composite-fi-all.png"/>
 <div class="caption">
-Composites of CAPPI, max echo, echo top and rhoHV.</div></div>
+Composites of CAPPI, max echo, echo top, rhoHV, and HydroClass.</div></div>
 <p><b>Hint</b>. Command lines may get lengthy in compositing. You can shorten file arguments by using general options <code>&ndash;inputDir</code> and <code>&ndash;outputDir</code> .</p>
 <h2><a class="anchor" id="parallelcompositing"></a>
-Distributed compositing</h2>
-<p>In a distributed (parallel) mode, the composite is initialized as in direct mode but the tile generated is with <code>&ndash;cCreateTile</code> and then saved with <code>&ndash;outputFile</code> command. In the accumulation stage, the composite is loaded and then copied to the internal compositing array with <code>&ndash;cAdd</code>. The stages are illustrated in the diagrams below.</p>
+Tiled compositing</h2>
+<p>In a Tiled (distributed) mode, the composite is initialized as in direct mode but the tile generated is with <code>&ndash;cCreateTile</code> and then saved with <code>&ndash;outputFile</code> command. In the accumulation stage, the composite is loaded and then copied to the internal compositing array with <code>&ndash;cAdd</code>. The stages are illustrated in the diagrams below.</p>
 <div align="center">
 <img src="dot_inline_dotgraph_2.png" alt="dot_inline_dotgraph_2.png" border="0" usemap="#dot_inline_dotgraph_2.map"/>
 <map name="dot_inline_dotgraph_2.map" id="dot_inline_dotgraph_2.map"><area shape="rect" id="node2" href="fileiopage.html" title="&lt;i&gt;Load volume file" alt="" coords="145,5,260,55"/>
@@ -145,7 +146,8 @@ Distributed compositing</h2>
 <div class="fragment"><div class="line">rack   --cMethod WAVG,2,2,-32    \</div><div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div><div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5    --cInit \</div><div class="line">   data-20140525/201405251200_radar.raw.fivim.h5   --pCappi 1000   --cCreateTile -o ./tiles/201405251200_radar.raw.fivim-tile.h5</div></div><!-- fragment --><div align="center">
 </div>
 <p>Then, tiles are collectively added to composite with a single command. Notice that the composite definitions should be exactly the same as in the tile creation:</p>
-<div class="fragment"><div class="line">rack   --cMethod WAVG,2,2,-32    \</div><div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div><div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5    --cInit \</div><div class="line">   --script &#39;--cAdd&#39;  \</div><div class="line">          tiles/201405251200_radar.raw.fianj-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fiika-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fikor-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fikuo-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.filuo-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fiuta-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fivan-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fivim-tile.h5  \</div><div class="line"> --cExtract dwsc \</div><div class="line">-o composite-fi-cappi.h5 </div></div><!-- fragment --><h3><a class="anchor" id="multitiles"></a>
+<div class="fragment"><div class="line">rack   --cMethod WAVG,2,2,-32    \</div><div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div><div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5    --cInit \</div><div class="line">   --script &#39;--cAdd&#39;  \</div><div class="line">          tiles/201405251200_radar.raw.fianj-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fiika-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fikor-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fikuo-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.filuo-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fiuta-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fivan-tile.h5  \</div><div class="line">          tiles/201405251200_radar.raw.fivim-tile.h5  \</div><div class="line"> --cExtract dwsc \</div><div class="line">-o composite-fi-cappi.h5 </div></div><!-- fragment --><p>(The above commands have been generated using <code>make-composite.sh</code> with <code>SCHEME=TILE</code> and <code>SCHEME=TILED</code> .)</p>
+<h3><a class="anchor" id="multitiles"></a>
 Tiles containing several radars</h3>
 <p>By default, each tile contains data from a single radar. Alternatively, for a large composite, one can construct a tile containing data from several radars by calling <code>&ndash;cBBoxTile</code> command immediately after <code>&ndash;cBBox</code> and <code>&ndash;cSize</code> . The latter commands are equal to those of the large composite. A multi-radar tile is otherwise generated like any composite, that is, <code>&ndash;cAdd</code> and <code>&ndash;cExtract</code> commands are needed (unlike in constructing a single-radar tile).</p>
 <p>For example, consider receiving a precomputed the OPERA composite, to which the Russian and Belarussian radars are added. First, the latter data is composited to a tile cropped with <code>&ndash;cBBoxTile</code> under OPERA geometry:</p>

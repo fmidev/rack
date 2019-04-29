@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -152,9 +153,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostr
 std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toString</b> (std::string &amp;s) const </td></tr>
 <tr class="separator:a2dd3190e3ca894ed78b992b8909383db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1AreaGeometry"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1AreaGeometry')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1AreaGeometry.html">AreaGeometry</a></td></tr>
-<tr class="memitem:a26018831a242b8824aa35393f95428f1 inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26018831a242b8824aa35393f95428f1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AreaGeometry</b> (size_t width, size_t height=1)</td></tr>
-<tr class="separator:a26018831a242b8824aa35393f95428f1 inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24f03e6d5f9d30ae0ecef9025e6ac33e inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24f03e6d5f9d30ae0ecef9025e6ac33e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AreaGeometry</b> (size_t width=0, size_t height=0)</td></tr>
+<tr class="separator:a24f03e6d5f9d30ae0ecef9025e6ac33e inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d88d901fa542ecdb85a154f1221f90 inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45d88d901fa542ecdb85a154f1221f90"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (size_t width)</td></tr>
 <tr class="separator:a45d88d901fa542ecdb85a154f1221f90 inherit pub_methods_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,12 +213,6 @@ Protected Attributes</h2></td></tr>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>volume</b></td></tr>
 <tr class="separator:af48ee5296f65a60f341fb372e6847a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1AreaGeometry')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1AreaGeometry.html">AreaGeometry</a></td></tr>
-<tr class="memitem:a02bed8590a9ddf520e58a060059518ec inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02bed8590a9ddf520e58a060059518ec"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
-<tr class="separator:a02bed8590a9ddf520e58a060059518ec inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02afeaaf8574e7a78d6b466ff2695052 inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02afeaaf8574e7a78d6b466ff2695052"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
-<tr class="separator:a02afeaaf8574e7a78d6b466ff2695052 inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade4732e60568afafac91ce21f1506dd7 inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade4732e60568afafac91ce21f1506dd7"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>area</b></td></tr>
 <tr class="separator:ade4732e60568afafac91ce21f1506dd7 inherit pro_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,13 +226,19 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>alphaChannelCount</
 <tr class="memitem:a7b686231863ad163d6da2bcb65148f2f inherit pro_attribs_classdrain_1_1image_1_1ChannelGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b686231863ad163d6da2bcb65148f2f"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>channelCount</b></td></tr>
 <tr class="separator:a7b686231863ad163d6da2bcb65148f2f inherit pro_attribs_classdrain_1_1image_1_1ChannelGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classdrain_1_1image_1_1AreaGeometry"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1AreaGeometry')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1AreaGeometry.html">AreaGeometry</a></td></tr>
+<tr class="memitem:a02bed8590a9ddf520e58a060059518ec inherit pub_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02bed8590a9ddf520e58a060059518ec"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<tr class="separator:a02bed8590a9ddf520e58a060059518ec inherit pub_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02afeaaf8574e7a78d6b466ff2695052 inherit pub_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02afeaaf8574e7a78d6b466ff2695052"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="separator:a02afeaaf8574e7a78d6b466ff2695052 inherit pub_attribs_classdrain_1_1image_1_1AreaGeometry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The basic idea is to encode dimensions directly as a std::vector&lt;int&gt;; the number of elements is the number of dimensions. Each element states the discrete coordinate space.</p>
-<p>Three standard "copies" are defined for convenience; KLUDGE! </p><h1>geometry.width = geometry[0]</h1>
-<h1>geometry.height = geometry[1]</h1>
-<h1>geometry.channelCount = geometry[2]</h1>
-<p>To guarantee this, the minimum size of the vector will always be at least three (3).</p>
 <p>For example, a three-channel image having width 640 and height 400 would have dimension vector [640,400,3]. The coordinates will be: x  {0,1,...,639}, y  {0,1,...,399} and z  {0,1,2}. The size of the vector of unlimited, allowing hypermatrices of any size. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/image/<a class="el" href="drain_2image_2Geometry_8h_source.html">Geometry.h</a></li>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -115,8 +116,9 @@ Collaboration diagram for GeoFrame:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1GeoFrame__coll__graph.png" border="0" usemap="#GeoFrame_coll__map" alt="Collaboration graph"/></div>
 <map name="GeoFrame_coll__map" id="GeoFrame_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1Proj4.html" title="Proj4" alt="" coords="5,5,57,32"/>
-<area shape="rect" id="node3" href="classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="81,5,224,32"/>
+<area shape="rect" id="node2" href="classdrain_1_1Proj4.html" title="Proj4" alt="" coords="5,109,57,136"/>
+<area shape="rect" id="node3" href="classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="81,109,224,136"/>
+<area shape="rect" id="node4" href="classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="87,5,218,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -195,10 +197,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#af24c808645a4939a2aaef8381e21dd11">deg2pix</a> (double lon, double lat, int &amp;i, int &amp;j) const </td></tr>
 <tr class="memdesc:af24c808645a4939a2aaef8381e21dd11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects geographic coordinates to image coordinates. <br /></td></tr>
 <tr class="separator:af24c808645a4939a2aaef8381e21dd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25ab6acae1bc107159dfb83ff1a353e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25ab6acae1bc107159dfb83ff1a353e4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>deg2pix</b> (const <a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; double &gt; &amp;loc, <a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; int &gt; &amp;pix) const </td></tr>
+<tr class="separator:a25ab6acae1bc107159dfb83ff1a353e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8841a3da41a577fbb98921e1996b69c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8841a3da41a577fbb98921e1996b69c6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a8841a3da41a577fbb98921e1996b69c6">pix2deg</a> (int i, int j, double &amp;lon, double &amp;lat) const </td></tr>
 <tr class="memdesc:a8841a3da41a577fbb98921e1996b69c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the geographic coordinates of the center of a pixel at (i,j). <br /></td></tr>
 <tr class="separator:a8841a3da41a577fbb98921e1996b69c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc475a5094a0b591f3a22c7bf043295"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addc475a5094a0b591f3a22c7bf043295"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#addc475a5094a0b591f3a22c7bf043295">pix2deg</a> (const <a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; int &gt; &amp;pix, <a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; double &gt; &amp;loc) const </td></tr>
+<tr class="memdesc:addc475a5094a0b591f3a22c7bf043295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the geographic coordinates of the center of a pixel at (i,j). <br /></td></tr>
+<tr class="separator:addc475a5094a0b591f3a22c7bf043295"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127f1ad50fdbe5a725298725a6e5976d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a127f1ad50fdbe5a725298725a6e5976d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a127f1ad50fdbe5a725298725a6e5976d">pix2LLdeg</a> (int i, int j, double &amp;lon, double &amp;lat) const </td></tr>
 <tr class="memdesc:a127f1ad50fdbe5a725298725a6e5976d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the geographic coordinates of the lower left corner of a pixel at (i,j). <br /></td></tr>

@@ -9,6 +9,7 @@ var searchData=
   ['maxorigin',['maxOrigin',['../classdrain_1_1image_1_1Intensity.html#a8765f92e11bf1a65c41b41db9e5194e0',1,'drain::image::Intensity']]],
   ['min',['min',['../classdrain_1_1image_1_1Intensity.html#a235662070fc104476515edb1e90443b8',1,'drain::image::Intensity']]],
   ['modelledemitter',['modelledEmitter',['../classrack_1_1JammingOp.html#a0338120e19eb5765464f64a65ca98801',1,'rack::JammingOp']]],
+  ['move',['move',['../classdrain_1_1image_1_1SegmentProber.html#a0cb249ceb464d93175fbd6934c853f7a',1,'drain::image::SegmentProber']]],
   ['movedown',['moveDown',['../classdrain_1_1image_1_1SlidingWindow.html#a80de71d0f9543ba96ec68e9128805d3f',1,'drain::image::SlidingWindow']]],
   ['moveleft',['moveLeft',['../classdrain_1_1image_1_1SlidingWindow.html#aac4bcbfa17105059389c38d53c332acf',1,'drain::image::SlidingWindow']]],
   ['moveright',['moveRight',['../classdrain_1_1image_1_1SlidingWindow.html#adabdbb47805e946b0b39a7049d47e135',1,'drain::image::SlidingWindow']]],

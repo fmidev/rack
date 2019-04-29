@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -170,7 +171,7 @@ std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bot
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a2312427f8aaa186bfddd1ed745afb2f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2312427f8aaa186bfddd1ed745afb2f4"></a>
-static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS_43</b> = 4.0/3.0 * drain::EARTH_RADIUS</td></tr>
+static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS_43</b> = 4.0/3.0 * <a class="el" href="namespacedrain.html#a2cb7703740f4124ff50163bdc2b0d1da">drain::EARTH_RADIUS</a></td></tr>
 <tr class="separator:a2312427f8aaa186bfddd1ed745afb2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -179,25 +180,25 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
 </div>
 <p>Distances in meters, angles in radians.</p>
 <ul>
-<li><img class="formulaInl" alt="$a$" src="form_22.png"/>: Earth radius, the distance from the Earth's center to the radar</li>
-<li><img class="formulaInl" alt="$b$" src="form_80.png"/>: beam distance; the distance from the radar to the bin</li>
-<li><img class="formulaInl" alt="$c$" src="form_17.png"/>: distance from the Earth's center to the bin</li>
-<li><img class="formulaInl" alt="$h = c - a$" src="form_81.png"/>: altitude from ground to beam point</li>
-<li><img class="formulaInl" alt="$g$" src="form_82.png"/>: ground distance; surface distance from the radar to the ground point</li>
+<li><img class="formulaInl" alt="$a$" src="form_46.png"/>: Earth radius, the distance from the Earth's center to the radar</li>
+<li><img class="formulaInl" alt="$b$" src="form_121.png"/>: beam distance; the distance from the radar to the bin</li>
+<li><img class="formulaInl" alt="$c$" src="form_43.png"/>: distance from the Earth's center to the bin</li>
+<li><img class="formulaInl" alt="$h = c - a$" src="form_122.png"/>: altitude from ground to beam point</li>
+<li><img class="formulaInl" alt="$g$" src="form_123.png"/>: ground distance; surface distance from the radar to the ground point</li>
 </ul>
-<p>eta <img class="formulaInl" alt="$ \eta $" src="form_83.png"/>: beam elevation</p>
+<p>eta <img class="formulaInl" alt="$ \eta $" src="form_124.png"/>: beam elevation</p>
 <ul>
-<li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_84.png"/>: "sky angle",</li>
-<li>beta <img class="formulaInl" alt="$ \beta = \angle(a,c)$" src="form_85.png"/>: "ground angle"</li>
-<li>gamma <img class="formulaInl" alt="$ \gamma = \angle(a,b) = \eta + \pi/2 $" src="form_86.png"/>: "radar angle"</li>
+<li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_125.png"/>: "sky angle",</li>
+<li>beta <img class="formulaInl" alt="$ \beta = \angle(a,c)$" src="form_126.png"/>: "ground angle"</li>
+<li>gamma <img class="formulaInl" alt="$ \gamma = \angle(a,b) = \eta + \pi/2 $" src="form_127.png"/>: "radar angle"</li>
 <li>r = radian</li>
 <li>d = degree</li>
 </ul>
 <p>Cosine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab·\cos(\gamma); \]" src="form_87.png"/>
+<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab·\cos(\gamma); \]" src="form_128.png"/>
 </p>
 <p>Sine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c} \]" src="form_88.png"/>
+<img class="formulaDsp" alt="\[ \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c} \]" src="form_129.png"/>
 </p>
  </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6efbb09c1a4a741fe8e8391c939f1222"></a>
@@ -233,7 +234,7 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
 </div><div class="memdoc">
 <p>The on-beam distance at ground angle <code>beta</code> and altitude <code>h</code>.</p>
 <p>By cosine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ b^2 = a^2 + c^2 - 2ac\cos\beta = a^2 + (a^2 + 2ah+ h^2) - 2a(a + h)\cos\beta = 2a(a+h) + h^2 - 2a(a + h)\cos\beta = 2a(a+h)(1-\cos\beta) + h^2 \]" src="form_76.png"/>
+<img class="formulaDsp" alt="\[ b^2 = a^2 + c^2 - 2ac\cos\beta = a^2 + (a^2 + 2ah+ h^2) - 2a(a + h)\cos\beta = 2a(a+h) + h^2 - 2a(a + h)\cos\beta = 2a(a+h)(1-\cos\beta) + h^2 \]" src="form_117.png"/>
 </p>
  
 </div>
@@ -386,10 +387,10 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
 <p>Given ground angle <code>beta</code> and altitude <code>h</code>, returns the elevation angle. </p>
 <p>By sine rule:</p>
 <p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \sin(\beta)/b = \sin(\gamma)/c \Leftrightarrow \sin(\beta) * c/b = \sin(\gamma) /// = \sin(\pi-\gamma) = /// \sin(\pi-(\eta + \pi/2)) = \sin(\pi/2-\eta) = \cos(\eta) \sin(\pi/2+\eta) = \sin(\pi-(\pi/2+\eta)) = \sin(\pi/2-\eta) = \cos(\eta) \Rightarrow \eta = \arccos( \sin(\beta) * c/b ) // WRONG! ALWAYS POSITIVE! \]" src="form_78.png"/>
+<img class="formulaDsp" alt="\[ \sin(\beta)/b = \sin(\gamma)/c \Leftrightarrow \sin(\beta) * c/b = \sin(\gamma) /// = \sin(\pi-\gamma) = /// \sin(\pi-(\eta + \pi/2)) = \sin(\pi/2-\eta) = \cos(\eta) \sin(\pi/2+\eta) = \sin(\pi-(\pi/2+\eta)) = \sin(\pi/2-\eta) = \cos(\eta) \Rightarrow \eta = \arccos( \sin(\beta) * c/b ) // WRONG! ALWAYS POSITIVE! \]" src="form_119.png"/>
 </p>
 <p>By cosine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab\cos\gamma \Leftrightarrow \cos\gamma = (a^2 + b^2 - c^2) / 2ab = = (a^2 + (a^2 + c^2 - 2ac\cos\beta) - c^2) / 2ab = (2a^2 - 2ac\cos\beta) / 2ab = (a-c\cos\beta) / b \]" src="form_79.png"/>
+<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab\cos\gamma \Leftrightarrow \cos\gamma = (a^2 + b^2 - c^2) / 2ab = = (a^2 + (a^2 + c^2 - 2ac\cos\beta) - c^2) / 2ab = (2a^2 - 2ac\cos\beta) / 2ab = (a-c\cos\beta) / b \]" src="form_120.png"/>
 </p>
  
 </div>
@@ -429,7 +430,7 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
 <p>Given elevation angle <code>eta</code> and altitude <code>h</code>, returns the ground angle. </p>
 <p>By sine rule:</p>
 <p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \frac{\sin\alpha}{a} = \frac{\sin\gamma}{c} = \frac{\sin\gamma}{a+h} \Leftrightarrow \sin\alpha =\frac{a}{a+h}\sin\gamma \Rightarrow \gamma = \pi - \gamma - \alpha = \pi - (\eta+\pi/2) - \arcsin \left( \frac{a}{a+h}\sin(\eta+\pi/2) \right) \]" src="form_77.png"/>
+<img class="formulaDsp" alt="\[ \frac{\sin\alpha}{a} = \frac{\sin\gamma}{c} = \frac{\sin\gamma}{a+h} \Leftrightarrow \sin\alpha =\frac{a}{a+h}\sin\gamma \Rightarrow \gamma = \pi - \gamma - \alpha = \pi - (\eta+\pi/2) - \arcsin \left( \frac{a}{a+h}\sin(\eta+\pi/2) \right) \]" src="form_118.png"/>
 </p>
  
 </div>
@@ -469,7 +470,7 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
 <p>Altitude, given elevation [rad] and bin distance [m]. </p>
 <p>The altitude of a point at beam distance (b) and elevation (eta).</p>
 <p>By cosine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab\cos(\gamma); \]" src="form_92.png"/>
+<img class="formulaDsp" alt="\[ c^2 = a^2 + b^2 - 2ab\cos(\gamma); \]" src="form_111.png"/>
 </p>
  
 </div>
@@ -516,16 +517,16 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS
   </dd>
 </dl>
 <p>By sine rule: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \sin(\gamma)/c = \sin(\alpha)/a \Leftrightarrow c = a · \frac{\sin(\gamma)}{\sin(\alpha)} \Leftrightarrow h = c-a = a·( \frac{\sin(\gamma)}{\sin(\alpha)} - 1) \]" src="form_71.png"/>
+<img class="formulaDsp" alt="\[ \sin(\gamma)/c = \sin(\alpha)/a \Leftrightarrow c = a · \frac{\sin(\gamma)}{\sin(\alpha)} \Leftrightarrow h = c-a = a·( \frac{\sin(\gamma)}{\sin(\alpha)} - 1) \]" src="form_112.png"/>
 </p>
 <p>Always </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \sin(\gamma) = \sin(\eta+\pi/2) = \cos(\eta) \]" src="form_72.png"/>
+<img class="formulaDsp" alt="\[ \sin(\gamma) = \sin(\eta+\pi/2) = \cos(\eta) \]" src="form_113.png"/>
 </p>
-<p>Because <img class="formulaInl" alt="$ \alpha = \pi - \gamma - \beta $" src="form_73.png"/> in a triangle, </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \sin(\alpha) = \sin(\pi-\gamma-\beta) = \sin(\beta+\gamma) = \sin(\beta + \eta+\pi/2) = \cos(\beta + \eta) \]" src="form_74.png"/>
+<p>Because <img class="formulaInl" alt="$ \alpha = \pi - \gamma - \beta $" src="form_114.png"/> in a triangle, </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \sin(\alpha) = \sin(\pi-\gamma-\beta) = \sin(\beta+\gamma) = \sin(\beta + \eta+\pi/2) = \cos(\beta + \eta) \]" src="form_115.png"/>
 </p>
 <p>Finally, </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ h = a·( \frac{\cos(\eta)}{\cos(\beta + \eta)} - 1) \]" src="form_75.png"/>
+<img class="formulaDsp" alt="\[ h = a·( \frac{\cos(\eta)}{\cos(\beta + \eta)} - 1) \]" src="form_116.png"/>
 </p>
  
 </div>

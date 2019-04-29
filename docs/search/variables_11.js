@@ -15,7 +15,7 @@ var searchData=
   ['require_5fstandard_5fdata',['REQUIRE_STANDARD_DATA',['../classrack_1_1DetectorOp.html#a788a9f0fa011968823f828262808b703',1,'rack::DetectorOp']]],
   ['resetatedges',['resetAtEdges',['../classdrain_1_1image_1_1Window.html#a130aec149c5adcac8be943911a0369b2',1,'drain::image::Window']]],
   ['result',['result',['../classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766',1,'drain::RegExp']]],
-  ['root',['ROOT',['../classrack_1_1BaseODIM.html#a04e5048c3a0d78ae8dfd92acd881598b',1,'rack::BaseODIM']]],
+  ['root',['ROOT',['../classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339',1,'rack::ODIMPathElem']]],
   ['rscale',['rscale',['../classrack_1_1PolarODIM.html#ade771d3f57e5219cc8cce838cbc8c62a',1,'rack::PolarODIM']]],
   ['rstart',['rstart',['../classrack_1_1PolarODIM.html#af807d1a13a5ed0ed49cc508a3a77d5f3',1,'rack::PolarODIM']]]
 ];

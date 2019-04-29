@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -119,29 +120,31 @@ template&lt;class T &gt; </td></tr>
 <tr class="memdesc:acef29331907362f0ea5766b9b117fcf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a native C++ type, returns a native HDF5 data type. <br /></td></tr>
 <tr class="separator:acef29331907362f0ea5766b9b117fcf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfa97638ce4c00cdb6debe0e5c874ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dfa97638ce4c00cdb6debe0e5c874ea"></a>
-static HI5TREE &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a2dfa97638ce4c00cdb6debe0e5c874ea">getPalette</a> (HI5TREE &amp;dst)</td></tr>
+static <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a2dfa97638ce4c00cdb6debe0e5c874ea">getPalette</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst)</td></tr>
 <tr class="memdesc:a2dfa97638ce4c00cdb6debe0e5c874ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 256-element RGB palette to be referenced with <a class="el" href="classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81" title="Links the palette that has been (or will be) created with createPalette(). ">linkPalette()</a>. <br /></td></tr>
 <tr class="separator:a2dfa97638ce4c00cdb6debe0e5c874ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8819dffaf02405fc78bde31296917f81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8819dffaf02405fc78bde31296917f81"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81">linkPalette</a> (const HI5TREE &amp;palette, HI5TREE &amp;dst)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81">linkPalette</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;palette, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst)</td></tr>
 <tr class="memdesc:a8819dffaf02405fc78bde31296917f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
 <tr class="separator:a8819dffaf02405fc78bde31296917f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8641feffee757cc2d8aa016fa205af2f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8641feffee757cc2d8aa016fa205af2f"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a8641feffee757cc2d8aa016fa205af2f">writeText</a> (const HI5TREE &amp;src, const std::list&lt; std::string &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
-<tr class="memdesc:a8641feffee757cc2d8aa016fa205af2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
-<tr class="separator:a8641feffee757cc2d8aa016fa205af2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f7c59db9cc4e75cbb3895bac7d97ce1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f7c59db9cc4e75cbb3895bac7d97ce1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const std::list&lt; <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
+<tr class="memdesc:a2f7c59db9cc4e75cbb3895bac7d97ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
+<tr class="separator:a2f7c59db9cc4e75cbb3895bac7d97ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a222ce0bbf8b3d3727ab9fc4662f93cbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a222ce0bbf8b3d3727ab9fc4662f93cbd"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a222ce0bbf8b3d3727ab9fc4662f93cbd">writeText</a> (const HI5TREE &amp;src, std::ostream &amp;ostr=std::cout)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a222ce0bbf8b3d3727ab9fc4662f93cbd">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:a222ce0bbf8b3d3727ab9fc4662f93cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)). <br /></td></tr>
 <tr class="separator:a222ce0bbf8b3d3727ab9fc4662f93cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a447cb17fc1461b4325a8e00bb45114f8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a447cb17fc1461b4325a8e00bb45114f8">readText</a> (HI5TREE &amp;src, std::istream &amp;istr=std::cin)</td></tr>
-<tr class="memdesc:a447cb17fc1461b4325a8e00bb45114f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#a8641feffee757cc2d8aa016fa205af2f" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>.  <a href="#a447cb17fc1461b4325a8e00bb45114f8">More...</a><br /></td></tr>
+<tr class="memitem:a447cb17fc1461b4325a8e00bb45114f8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a447cb17fc1461b4325a8e00bb45114f8">readText</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, std::istream &amp;istr=std::cin)</td></tr>
+<tr class="memdesc:a447cb17fc1461b4325a8e00bb45114f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>.  <a href="#a447cb17fc1461b4325a8e00bb45114f8">More...</a><br /></td></tr>
 <tr class="separator:a447cb17fc1461b4325a8e00bb45114f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a322031d5639ef9bcbfe9295dfdfcca9c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a322031d5639ef9bcbfe9295dfdfcca9c">readTextLine</a> (HI5TREE &amp;src, const std::string &amp;key, const std::string &amp;value=&quot;&quot;)</td></tr>
-<tr class="memdesc:a322031d5639ef9bcbfe9295dfdfcca9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a value with optional type specification.  <a href="#a322031d5639ef9bcbfe9295dfdfcca9c">More...</a><br /></td></tr>
-<tr class="separator:a322031d5639ef9bcbfe9295dfdfcca9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31013248294638353c2a47d10d0022fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a31013248294638353c2a47d10d0022fa">readTextLine</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const std::string &amp;line)</td></tr>
+<tr class="memdesc:a31013248294638353c2a47d10d0022fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a value with optional type specification.  <a href="#a31013248294638353c2a47d10d0022fa">More...</a><br /></td></tr>
+<tr class="separator:a31013248294638353c2a47d10d0022fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cf219dd28ff5b25841c3fe3182a8bfe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a6cf219dd28ff5b25841c3fe3182a8bfe">readTextLine</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst, const <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;path, const std::string &amp;key, const std::string &amp;value)</td></tr>
+<tr class="separator:a6cf219dd28ff5b25841c3fe3182a8bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8b4161d1e84bff5cad2a850d083be18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8b4161d1e84bff5cad2a850d083be18"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#af8b4161d1e84bff5cad2a850d083be18">deleteNoSave</a> (HI5TREE &amp;src)</td></tr>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#af8b4161d1e84bff5cad2a850d083be18">deleteNoSave</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src)</td></tr>
 <tr class="memdesc:af8b4161d1e84bff5cad2a850d083be18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete branches that have been marked with noSave=true . <br /></td></tr>
 <tr class="separator:af8b4161d1e84bff5cad2a850d083be18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -185,7 +188,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">void readText </td>
           <td>(</td>
-          <td class="paramtype">HI5TREE &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -207,12 +210,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#a8641feffee757cc2d8aa016fa205af2f" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>. </p>
-<p>The grammar should follow to that produced by <a class="el" href="classhi5_1_1Hi5Base.html#a8641feffee757cc2d8aa016fa205af2f" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>. </p>
+<p>Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>. </p>
+<p>The grammar should follow to that produced by <a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>. </p>
 
 </div>
 </div>
-<a class="anchor" id="a322031d5639ef9bcbfe9295dfdfcca9c"></a>
+<a class="anchor" id="a31013248294638353c2a47d10d0022fa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -222,20 +225,14 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">void readTextLine </td>
           <td>(</td>
-          <td class="paramtype">HI5TREE &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>value</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>line</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -252,6 +249,52 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Assign a value with optional type specification. </p>
 <p>Creates a node in src, creates the desired attribute with given value of specified storage type. If the attribute is <code>"image"</code>, creates an image with specified value (<code>width</code>,<code>height</code> ) and type. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6cf219dd28ff5b25841c3fe3182a8bfe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readTextLine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 <p>Create the node, even if the rest fails, ie. (i == std::string::npos).</p>
 <p>Set type</p>
 <p>Set geometry (unless)</p>

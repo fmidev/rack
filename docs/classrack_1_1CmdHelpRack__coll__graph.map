@@ -2,7 +2,7 @@
 <area shape="rect" id="node2" href="$classdrain_1_1CmdHelp.html" title="CmdHelp" alt="" coords="48,413,125,440"/>
 <area shape="rect" id="node3" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="11,323,163,364"/>
 <area shape="rect" id="node4" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="29,247,144,273"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,157,88,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,157,88,184"/>
 <area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="112,157,219,184"/>
 <area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="80,81,251,108"/>
 </map>

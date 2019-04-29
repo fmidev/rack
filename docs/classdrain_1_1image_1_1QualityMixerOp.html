@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -94,6 +95,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">QualityMixerOp Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Overwrites pixels of destination image in locations where destination weight is lower.  
+ <a href="classdrain_1_1image_1_1QualityMixerOp.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="QualityMixerOp_8h_source.html">QualityMixerOp.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -303,7 +307,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Overwrites pixels of destination image in locations where destination weight is lower. </p><div class="fragment"><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.20&#39;</span> -o qualityOverride20.png</div><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.50&#39;</span> -o qualityOverride50.png</div><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.80&#39;</span> -o qualityOverride80.png</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><p>Overwrites pixels of destination image in locations where destination weight is lower. </p>
+<div class="fragment"><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.20&#39;</span> -o qualityOverride20.png</div><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.50&#39;</span> -o qualityOverride50.png</div><div class="line">drainage image-rgba.png image-rot-rgba.png --qualityMixer <span class="stringliteral">&#39;0.80&#39;</span> -o qualityOverride80.png</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/imageops/<a class="el" href="QualityMixerOp_8h_source.html">QualityMixerOp.h</a></li>
 <li>drain/imageops/QualityMixerOp.cpp</li>
 </ul>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -112,7 +113,7 @@ Inheritance diagram for VolumeTraversalOp:</div>
 <area shape="rect" id="node7" href="classrack_1_1BiometOp.html" title="Detects birds and insects. " alt="" coords="1117,5,1197,32"/>
 <area shape="rect" id="node8" href="classrack_1_1BirdOp.html" title="BirdOp" alt="" coords="1125,56,1188,83"/>
 <area shape="rect" id="node10" href="classrack_1_1CCorOp.html" title="CCorOp" alt="" coords="1121,107,1192,133"/>
-<area shape="rect" id="node11" href="classrack_1_1ClutterMapOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="1105,157,1208,184"/>
+<area shape="rect" id="node11" href="classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="1117,157,1196,184"/>
 <area shape="rect" id="node12" href="classrack_1_1DopplerNoiseOp.html" title="DopplerNoiseOp" alt="" coords="1097,208,1216,235"/>
 <area shape="rect" id="node13" href="classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones..." alt="" coords="1116,259,1197,285"/>
 <area shape="rect" id="node14" href="classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification. " alt="" coords="1084,309,1229,336"/>
@@ -149,7 +150,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3cb5cd7aa5118402c16ba3607b691fbc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cb5cd7aa5118402c16ba3607b691fbc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeTraversalOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a3cb5cd7aa5118402c16ba3607b691fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const </td></tr>
+<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
 <tr class="memdesc:ac50f829ea463fa8833e8d8ded7c17b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for radar data processors.  <a href="#ac50f829ea463fa8833e8d8ded7c17b20">More...</a><br /></td></tr>
 <tr class="separator:ac50f829ea463fa8833e8d8ded7c17b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04672c3e850d580aadcf73d85c75d49d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#a04672c3e850d580aadcf73d85c75d49d">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1SrcType.html">PolarSrc</a> &gt; &amp;srcVolume, <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1DstType.html">PolarDst</a> &gt; &amp;dstVolume) const </td></tr>
@@ -245,13 +246,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
         <tr>
           <td class="memname">void processVolume </td>
           <td>(</td>
-          <td class="paramtype">const HI5TREE &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">HI5TREE &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>&#160;</td>
         </tr>
         <tr>

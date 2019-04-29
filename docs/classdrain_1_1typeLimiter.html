@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -128,7 +129,7 @@ Static Protected Member Functions</h2></td></tr>
 class drain::typeLimiter&lt; D &gt;</h3>
 
 <p>Class for ensuring that variable of type D remains within limits of type S. </p>
-<p>Returns a function pointer (of type <a class="el" href="classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d" title="Definition that simplifies. ">typeLimiter::value_t</a>) . </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <a class="code" href="classdrain_1_1typeLimiter.html">drain::typeLimiter&lt;double&gt;</a> Limiter;</div><div class="line"><a class="code" href="classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d">typeLimiter::value_t</a> fptr = Type::call&lt;typeLimiter&gt;(t);  <span class="comment">// t is type_info, char or std::string.</span></div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+<p>Returns a function pointer of type <a class="el" href="classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d" title="Definition that simplifies. ">typeLimiter::value_t</a> . </p><div class="fragment"><div class="line"><span class="keyword">typedef</span> <a class="code" href="classdrain_1_1typeLimiter.html">drain::typeLimiter&lt;double&gt;</a> Limiter;</div><div class="line">Limiter::value_t limit = Type::call&lt;typeLimiter&gt;(t);  <span class="comment">// t is type_info, char or std::string.</span></div><div class="line"><span class="keywordtype">double</span> d = limit(12345.6789);</div></div><!-- fragment --><p>With images of type <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>, use convenient function: </p><div class="fragment"><div class="line">Limiter::value_t limit = img.getEncoding().getLimiter&lt;<span class="keywordtype">double</span>&gt;();</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab9d1ce86982f88bcc17692a936364949"></a>
 <div class="memitem">
 <div class="memproto">

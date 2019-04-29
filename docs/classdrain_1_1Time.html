@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,11 +104,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for Time:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Time__inherit__graph.png" border="0" usemap="#Time_inherit__map" alt="Inheritance graph"/></div>
+<map name="Time_inherit__map" id="Time_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Time:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Time__coll__graph.png" border="0" usemap="#Time_coll__map" alt="Collaboration graph"/></div>
+<map name="Time_coll__map" id="Time_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -116,9 +121,8 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#afc443fe98a5312e4b6f8d5fe13baf7cb">setTime</a> ()</td></tr>
 <tr class="memdesc:afc443fe98a5312e4b6f8d5fe13baf7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to current UTC time. <br /></td></tr>
 <tr class="separator:afc443fe98a5312e4b6f8d5fe13baf7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a67484ecc5b3ae6fe4f8eee25f440ac"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a2a67484ecc5b3ae6fe4f8eee25f440ac">setTime</a> (const time_t &amp;time)</td></tr>
-<tr class="memdesc:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to UTC time. <br /></td></tr>
+<tr class="memitem:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a2a67484ecc5b3ae6fe4f8eee25f440ac">setTime</a> (const time_t &amp;time)</td></tr>
+<tr class="memdesc:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to UTC time.  <a href="#a2a67484ecc5b3ae6fe4f8eee25f440ac">More...</a><br /></td></tr>
 <tr class="separator:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82b93c76233938123d0c730587e29b1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a82b93c76233938123d0c730587e29b1d">setTime</a> (const std::string &amp;time, const std::string &amp;format, bool strict=true)</td></tr>
 <tr class="memdesc:a82b93c76233938123d0c730587e29b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time.  <a href="#a82b93c76233938123d0c730587e29b1d">More...</a><br /></td></tr>
@@ -149,6 +153,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility for handling time. Internally, uses tm (C time structure). </p>
+<p>Note: This class does nout (yet) support format strings of arbitrary size. (output str length has limited size). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a46b14c4450ed7a55bacac7c526a53742"></a>
 <div class="memitem">
@@ -173,6 +178,33 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 
 <p>Sets time to UTC time. </p>
 <p>Returns the C struct. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2a67484ecc5b3ae6fe4f8eee25f440ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setTime </td>
+          <td>(</td>
+          <td class="paramtype">const time_t &amp;&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets time to UTC time. </p>
+<dl class="section user"><dt>time - std::string presentation of time.</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -215,9 +247,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 </div><div class="memdoc">
 
 <p>Sets time. </p>
-<dl class="section user"><dt>time - std::string presentation of time.</dt><dd></dd></dl>
+<dl class="section user"><dt>time - time given as a std::string .</dt><dd></dd></dl>
 <dl class="section user"><dt>format - format of time parameter, for example "%Y/%m/%d %H:%M".</dt><dd></dd></dl>
 <dl class="section user"><dt>strictness - if , a runtime error is thrown when parsing fails.</dt><dd></dd></dl>
+<p>Note: handling of <a class="el" href="classdrain_1_1Time.html" title="Utility for handling time. Internally, uses tm (C time structure). ">Time</a> Zone is odd:</p><ul>
+<li>Giving unix seconds (input format="%s") changes time zone to local time (EET in Finland)</li>
+<li>Giving time zone explicitly (input format="%Z"), eg. "2018/11/16 22:58 EET" has no effect; the time is understood as GMT time</li>
+</ul>
 <p>The time can be adjusted using several subsequent calls. </p>
 
 </div>

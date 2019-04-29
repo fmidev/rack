@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -127,17 +128,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>DamperOp()
-: <a class="el" href="classrack_1_1DamperOp.html#a04b667ec48f4614dbe19602d6202fc19">DamperOp</a>
+: <a class="el" href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">DamperOp</a>
 </li>
 <li>data
 : <a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27">AccumulationArray</a>
-, <a class="el" href="classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5">Tree&lt; T, C &gt;</a>
+, <a class="el" href="classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>DATA
-: <a class="el" href="classrack_1_1BaseODIM.html#a9b6ae6bd2148fae78393d42042ad1c52">BaseODIM</a>
+: <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem</a>
 </li>
 <li>data2
 : <a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738">AccumulationArray</a>
+</li>
+<li>DATA_GROUPS
+: <a class="el" href="classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4">ODIMPathElem</a>
 </li>
 <li>data_t
 : <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">RadarDataPicker&lt; OD &gt;</a>
@@ -147,6 +151,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>dataExtentD
 : <a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ab5f1042b8578a768c0dd35e9f9e9eab9">GeoFrame</a>
+</li>
+<li>DataGroup()
+: <a class="el" href="classrack_1_1DataGroup.html#ae79660fd027e3319b54a930b5899d900">DataGroup&lt; D, G &gt;</a>
 </li>
 <li>dataOk
 : <a class="el" href="classrack_1_1RackResources.html#a9daf4714873831f40b0f915a3644ba48">RackResources</a>
@@ -158,11 +165,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classrack_1_1ProductBase.html#a2fe1ad87be83ea67c8e51843cb791be4">ProductBase</a>
 , <a class="el" href="classrack_1_1RadarAccumulator.html#a2fe1ad87be83ea67c8e51843cb791be4">RadarAccumulator&lt; AC, OD &gt;</a>
 </li>
-<li>DATASET
-: <a class="el" href="classrack_1_1BaseODIM.html#a1f7686c9eb1271888b9eb6b67968afe7">BaseODIM</a>
-</li>
 <li>DataSet()
-: <a class="el" href="classrack_1_1DataSet.html#a6e6fba21c9fa5836fd0e4aee9da77ff4">DataSet&lt; DT &gt;</a>
+: <a class="el" href="classrack_1_1DataSet.html#ac3b3d9600505bf0a3db343882e464310">DataSet&lt; DT &gt;</a>
+</li>
+<li>DATASET
+: <a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem</a>
 </li>
 <li>dataset_t
 : <a class="el" href="classrack_1_1RadarDataPicker.html#a098637a31b73874b18fb9992cd538419">RadarDataPicker&lt; OD &gt;</a>
@@ -173,18 +180,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>dataToH5AttributeString()
 : <a class="el" href="classhi5_1_1Writer.html#aca406f4ee0cd89be6d4504714c908cbd">Writer</a>
 </li>
-<li>dataToH5AttributeT()
-: <a class="el" href="classhi5_1_1Writer.html#a3946241627c80ecec15639eba8874dcf">Writer</a>
-</li>
 <li>dbz
 : <a class="el" href="classrack_1_1PrecipOp.html#a5c4677c3788d2aa44cd54c9997ad809d">PrecipOp</a>
 </li>
 <li>dbzSpan
 : <a class="el" href="classrack_1_1PrecipOp.html#ac496e470b7a94a4ed86910f18664130b">PrecipOp</a>
 </li>
-<li>debug
-: <a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#a398527b3e9e358c345c5047b16871957">AccumulationArray</a>
-, <a class="el" href="classdrain_1_1Logger.html#a249f432520e5a07f7beaa2f780531172">Logger</a>
+<li>debug()
+: <a class="el" href="classdrain_1_1Logger.html#a249f432520e5a07f7beaa2f780531172">Logger</a>
 , <a class="el" href="classdrain_1_1StringMapper.html#a61828dda10eb88fb89e5dca812d9927d">StringMapper</a>
 </li>
 <li>debugRow
@@ -225,9 +228,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>defaultQuality
 : <a class="el" href="classrack_1_1DataCoder.html#afc01b34a7bd371b2051c99603ab796f1">DataCoder</a>
 , <a class="el" href="classrack_1_1RadarAccumulator.html#afc01b34a7bd371b2051c99603ab796f1">RadarAccumulator&lt; AC, OD &gt;</a>
-</li>
-<li>defaultRange
-: <a class="el" href="classrack_1_1Composite.html#a90cf0cfe9b9abfa6e71a9d831ff57115">Composite</a>
 </li>
 <li>defaultType
 : <a class="el" href="classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2">Quantity</a>
@@ -314,15 +314,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classdrain_1_1image_1_1OpticalFlowCore1.html#a9f4dd89de55b694fec77651703723baf">OpticalFlowCore1</a>
 </li>
 <li>dummy
-: <a class="el" href="classdrain_1_1Tree.html#af39461df714a6b0245967d2aa03c0250">Tree&lt; T, C &gt;</a>
+: <a class="el" href="classdrain_1_1Tree.html#ad41f42d7d9152733eb036f420c6804b1">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>dump()
 : <a class="el" href="classdrain_1_1Histogram.html#a82ea8775a3e37a05a05ed8bdfa015ec4">Histogram</a>
 , <a class="el" href="classdrain_1_1image_1_1Image.html#ac3c17af13026a6bf0b451258ad9557df">Image</a>
-, <a class="el" href="classdrain_1_1Tree.html#a9e7215f47e0c7abe621fee341a72edce">Tree&lt; T, C &gt;</a>
+, <a class="el" href="classdrain_1_1Tree.html#a9e7215f47e0c7abe621fee341a72edce">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>dumpContents()
-: <a class="el" href="classdrain_1_1Tree.html#abf23a7344fd25d4ae95f860697bce2d6">Tree&lt; T, C &gt;</a>
+: <a class="el" href="classdrain_1_1Tree.html#abf23a7344fd25d4ae95f860697bce2d6">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>Dx
 : <a class="el" href="classdrain_1_1image_1_1OpticalFlowCore1.html#ab80246d52b732fdfbe543df0a68201ea">OpticalFlowCore1</a>

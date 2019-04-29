@@ -1,19 +1,18 @@
 var searchData=
 [
-  ['data',['DATA',['../classrack_1_1BaseODIM.html#a9b6ae6bd2148fae78393d42042ad1c52',1,'rack::BaseODIM::DATA()'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()'],['../classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5',1,'drain::Tree::data()']]],
+  ['data',['DATA',['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem::DATA()'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()'],['../classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5',1,'drain::Tree::data()']]],
   ['data2',['data2',['../classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738',1,'drain::image::AccumulationArray']]],
+  ['data_5fgroups',['DATA_GROUPS',['../classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4',1,'rack::ODIMPathElem']]],
   ['dataextentd',['dataExtentD',['../classdrain_1_1image_1_1GeoFrame.html#ab5f1042b8578a768c0dd35e9f9e9eab9',1,'drain::image::GeoFrame']]],
   ['dataok',['dataOk',['../classrack_1_1RackResources.html#a9daf4714873831f40b0f915a3644ba48',1,'rack::RackResources']]],
   ['dataoverlapd',['dataOverlapD',['../classdrain_1_1image_1_1GeoFrame.html#ac423361f4de7fe8e0e69279b89195bdd',1,'drain::image::GeoFrame']]],
   ['dataselector',['dataSelector',['../classrack_1_1ProductBase.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::ProductBase::dataSelector()'],['../classrack_1_1RadarAccumulator.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::RadarAccumulator::dataSelector()']]],
-  ['dataset',['DATASET',['../classrack_1_1BaseODIM.html#a1f7686c9eb1271888b9eb6b67968afe7',1,'rack::BaseODIM']]],
+  ['dataset',['DATASET',['../classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c',1,'rack::ODIMPathElem']]],
   ['dbz',['dbz',['../classrack_1_1PrecipOp.html#a5c4677c3788d2aa44cd54c9997ad809d',1,'rack::PrecipOp']]],
   ['dbzspan',['dbzSpan',['../classrack_1_1PrecipOp.html#ac496e470b7a94a4ed86910f18664130b',1,'rack::PrecipOp']]],
-  ['debug',['debug',['../classdrain_1_1image_1_1AccumulationArray.html#a398527b3e9e358c345c5047b16871957',1,'drain::image::AccumulationArray']]],
   ['debugrow',['debugRow',['../classrack_1_1JammingOp.html#a3ee7d7b3015bbb8a4b44c99d6c1fa9ef',1,'rack::JammingOp']]],
   ['decay',['decay',['../classrack_1_1Composite.html#ab01a33c3f845cc963c97a17973b4e871',1,'rack::Composite']]],
   ['defaultquality',['defaultQuality',['../classrack_1_1DataCoder.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::DataCoder::defaultQuality()'],['../classrack_1_1RadarAccumulator.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::RadarAccumulator::defaultQuality()']]],
-  ['defaultrange',['defaultRange',['../classrack_1_1Composite.html#a90cf0cfe9b9abfa6e71a9d831ff57115',1,'rack::Composite']]],
   ['defaulttype',['defaultType',['../classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2',1,'rack::Quantity']]],
   ['detectionthreshold',['detectionThreshold',['../classrack_1_1DataCoder.html#abad7c5528d2d9fba4e33019ccbcd8bd0',1,'rack::DataCoder']]],
   ['devaltitude',['devAltitude',['../classrack_1_1BiometOp.html#af877fbc267569e9c4300844dbdc94044',1,'rack::BiometOp']]],
@@ -21,7 +20,7 @@ var searchData=
   ['distancefunction',['distanceFunction',['../classdrain_1_1Som.html#a282bd9da4988a89b9e2f89f4e11458ee',1,'drain::Som']]],
   ['dstweight',['dstWeight',['../classdrain_1_1image_1_1OpticalFlowCore.html#ab42b55ed1704b2203cf869e6479357f2',1,'drain::image::OpticalFlowCore']]],
   ['dt',['Dt',['../classdrain_1_1image_1_1OpticalFlowCore1.html#a9f4dd89de55b694fec77651703723baf',1,'drain::image::OpticalFlowCore1']]],
-  ['dummy',['dummy',['../classdrain_1_1Tree.html#af39461df714a6b0245967d2aa03c0250',1,'drain::Tree']]],
+  ['dummy',['dummy',['../classdrain_1_1Tree.html#ad41f42d7d9152733eb036f420c6804b1',1,'drain::Tree']]],
   ['dx',['Dx',['../classdrain_1_1image_1_1OpticalFlowCore1.html#ab80246d52b732fdfbe543df0a68201ea',1,'drain::image::OpticalFlowCore1']]],
   ['dy',['Dy',['../classdrain_1_1image_1_1OpticalFlowCore1.html#ab52da0f78f8183cd4a9deacc3cac2aae',1,'drain::image::OpticalFlowCore1']]]
 ];

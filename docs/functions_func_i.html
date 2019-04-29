@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -153,11 +154,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>init()
 : <a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#a25293c2ebd472e6899c5b910b0060d7c">ImpulseAvg</a>
 , <a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#aafa0640ad2d865ceb6bb4618c10f49ce">ImpulseBucket&lt; C &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863">SegmentProber&lt; S, D, C &gt;</a>
 , <a class="el" href="classrack_1_1BirdOp.html#a3954c97fb6f8bb45097d0e45e96781b5">BirdOp</a>
 , <a class="el" href="classrack_1_1DataCoder.html#a02fd73d861ef2e4aabb38c0c9ff82947">DataCoder</a>
+, <a class="el" href="classrack_1_1DataGroup.html#a1974e91dfd46e204adea39c1610f0120">DataGroup&lt; D, G &gt;</a>
 , <a class="el" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">DataSelector</a>
-, <a class="el" href="classrack_1_1DataSet.html#a41d15fa2da45565b09ba0fcd3fd7a6b6">DataSet&lt; DT &gt;</a>
 , <a class="el" href="classrack_1_1DopplerAvg.html#a25293c2ebd472e6899c5b910b0060d7c">DopplerAvg</a>
+, <a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863">DopplerSegmentProber</a>
 </li>
 <li>initDataDst()
 : <a class="el" href="classrack_1_1DetectorOp.html#a0b347f9523181965124433f493aa5ee0">DetectorOp</a>
@@ -177,7 +180,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1image_1_1ImageEncoding.html#aee77f6f7215e75c96f162683d6f43eea">ImageEncoding</a>
 , <a class="el" href="classdrain_1_1image_1_1ImageGeometry.html#aee77f6f7215e75c96f162683d6f43eea">ImageGeometry</a>
 , <a class="el" href="classdrain_1_1image_1_1ImageMod.html#a2806d22a45deb39229d6e895f76835c8">ImageMod</a>
-, <a class="el" href="classdrain_1_1image_1_1ModifiableImage.html#a148be29725e0735a8bd9b9735d972d44">ModifiableImage</a>
+, <a class="el" href="classdrain_1_1image_1_1ModifiableImage.html#a294022477f149b82e3fc504a6d6e1d57">ModifiableImage</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingOpticalFlow2.html#a25a40b6614565f755233080a384c35f1">SlidingOpticalFlow2&lt; R &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingOpticalFlow.html#a25a40b6614565f755233080a384c35f1">SlidingOpticalFlow&lt; R &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingStripeAverage.html#a6365dca5a7d8ddb694726a53b55a4c27">SlidingStripeAverage&lt; SW &gt;</a>
@@ -196,7 +199,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>initializeParameters()
 : <a class="el" href="classdrain_1_1image_1_1BinaryFunctorOp.html#a032942e96a55c787b02618cb0ace6984">BinaryFunctorOp&lt; F &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html#a032942e96a55c787b02618cb0ace6984">DistanceTransformOp&lt; T &gt;</a>
-, <a class="el" href="classdrain_1_1image_1_1ImageOp.html#a032942e96a55c787b02618cb0ace6984">ImageOp</a>
+, <a class="el" href="classdrain_1_1image_1_1ImageOp.html#adaac757ddf0ee28d37df0c9e9b735f9f">ImageOp</a>
 , <a class="el" href="classdrain_1_1image_1_1SeparableWindowOp.html#a032942e96a55c787b02618cb0ace6984">SeparableWindowOp</a>
 , <a class="el" href="classdrain_1_1image_1_1UnaryFunctorOp.html#a032942e96a55c787b02618cb0ace6984">UnaryFunctorOp&lt; F &gt;</a>
 </li>
@@ -210,7 +213,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classdrain_1_1Matrix.html#aca5f0396621e1a43404ddfb60de9136a">Matrix&lt; T &gt;</a>
 </li>
 <li>is()
-: <a class="el" href="classrack_1_1ODIMPathElem.html#a0d0b0a38b0d9b0352b8ec330b40c2287">ODIMPathElem</a>
+: <a class="el" href="classrack_1_1ODIMPathElem.html#a7edaf0fce79078bb4e727d8a5e1733d4">ODIMPathElem</a>
 </li>
 <li>isCharArrayString()
 : <a class="el" href="classdrain_1_1Castable.html#a8682fae81946b3663511590ae3ec92be">Castable</a>
@@ -220,10 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>isEmpty()
 : <a class="el" href="classdrain_1_1Castable.html#af4345a9f2614af90d96dcef29bf6f91b">Castable</a>
-, <a class="el" href="classdrain_1_1Tree.html#af337ffd75e4f019ce15302c60715d84b">Tree&lt; T, C &gt;</a>
-</li>
-<li>isFloatType()
-: <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#acef71de4de7f828590bf5f5473112817">ImageFrame</a>
+, <a class="el" href="classdrain_1_1Tree.html#af337ffd75e4f019ce15302c60715d84b">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>isHorizontal()
 : <a class="el" href="classdrain_1_1image_1_1Window.html#a7146be17431bd1be2f35abf4c8e4676b">Window&lt; C, R &gt;</a>
@@ -231,14 +231,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>isIndexed()
 : <a class="el" href="classrack_1_1ODIMPathElem.html#a185fc5b59bed53df62b6f546ff576c19">ODIMPathElem</a>
 </li>
-<li>isIntegerType()
-: <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a1423d458b321533616979b9115dd5c04">ImageFrame</a>
-</li>
 <li>isNormalized()
 : <a class="el" href="classrack_1_1QuantityMap.html#af494bf3e5edf8f5c7f598e5f8eb8541c">QuantityMap</a>
 </li>
 <li>isPhysical()
 : <a class="el" href="classdrain_1_1image_1_1ImageScaling.html#a9fd14397eb1e25f05340e861f37134bd">ImageScaling</a>
+</li>
+<li>isReference()
+: <a class="el" href="classdrain_1_1FlexVariable.html#a9bb56632903c970d0c69e6382b52c5b0">FlexVariable</a>
 </li>
 <li>isRoot()
 : <a class="el" href="classrack_1_1ODIMPathElem.html#adb67b2a249620b49f23a8bc03cbdb3b0">ODIMPathElem</a>
@@ -252,15 +252,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>isString()
 : <a class="el" href="classdrain_1_1Castable.html#a3ea0b05483601e9acd735f48ccf7ed80">Castable</a>
 </li>
-<li>isUnset()
-: <a class="el" href="classrack_1_1ODIMPathElem.html#a5dfd6734b200034360f41efb4682ee53">ODIMPathElem</a>
+<li>isValidIntensity()
+: <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html#a07d6a277113dd1686977f0a19bd9fbe9">SegmentProberConf&lt; S, D &gt;</a>
 </li>
 <li>isValidMove()
-: <a class="el" href="classdrain_1_1image_1_1PickySegmentProber.html#ad4be5f775354c4a0d5f5bd0f2ad5305a">PickySegmentProber</a>
-, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ad4be5f775354c4a0d5f5bd0f2ad5305a">SegmentProber&lt; S, D &gt;</a>
+: <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a975ce08014b2c6979876261d70639d21">SegmentProber&lt; S, D, C &gt;</a>
+, <a class="el" href="classrack_1_1DopplerSegmentProber.html#a975ce08014b2c6979876261d70639d21">DopplerSegmentProber</a>
+</li>
+<li>isValidPos()
+: <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a561b095764196883748642435238a697">SegmentProber&lt; S, D, C &gt;</a>
 </li>
 <li>isValidSegment()
-: <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#acb749d4e7ccbbff951746331c5b1d24f">SegmentProber&lt; S, D &gt;</a>
+: <a class="el" href="classdrain_1_1image_1_1FillProber.html#acbf4e47a3ba963e25e7856b2da863fe5">FillProber</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ae58b0fe4f3441e653f5046e6a3d9a558">SegmentProber&lt; S, D, C &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html#acbf4e47a3ba963e25e7856b2da863fe5">SegmentStatisticsProber&lt; T, D &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SizeProber.html#acbf4e47a3ba963e25e7856b2da863fe5">SizeProber</a>
+, <a class="el" href="classrack_1_1DopplerSegmentProber.html#acbf4e47a3ba963e25e7856b2da863fe5">DopplerSegmentProber</a>
 </li>
 <li>isValue()
 : <a class="el" href="classrack_1_1EncodingODIM.html#a9167e3dd6bb91f59c293a95131240a5b">EncodingODIM</a>
@@ -269,7 +276,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#ac388138ffb9e8b132faf0cf6f3c22b21">ImageFrame</a>
 </li>
 <li>isVisited()
-: <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ae13e0ca4a09d898911fdd36d2249a067">SegmentProber&lt; S, D &gt;</a>
+: <a class="el" href="classdrain_1_1image_1_1FillProber.html#ad55d1aed97513290695706c09cbf710f">FillProber</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ad55d1aed97513290695706c09cbf710f">SegmentProber&lt; S, D, C &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SizeProber.html#ad55d1aed97513290695706c09cbf710f">SizeProber</a>
 </li>
 <li>iterate()
 : <a class="el" href="classhi5_1_1Reader.html#ab20c20d7643da7388b4702422e5c6e10">Reader</a>

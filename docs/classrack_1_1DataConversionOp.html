@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -132,11 +133,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a231a8a98c95b819d868f2cab552e9ac9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a231a8a98c95b819d868f2cab552e9ac9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataConversionOp</b> (const std::string &amp;type=&quot;C&quot;, double gain=1.0, double offset=0.0, double undetect=0.0, double nodata=255.0, std::string <a class="el" href="classrack_1_1DataConversionOp.html#a38897de0e9d9a487a3186b8b6cd4f864">copyGroupSuffix</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a231a8a98c95b819d868f2cab552e9ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8273827686b65f1217d76801d20dbb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a8273827686b65f1217d76801d20dbb55">processH5</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const </td></tr>
+<tr class="memitem:a8273827686b65f1217d76801d20dbb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a8273827686b65f1217d76801d20dbb55">processH5</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
 <tr class="memdesc:a8273827686b65f1217d76801d20dbb55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensures data to be in standard type and scaling. Makes a converted copy if needed.  <a href="#a8273827686b65f1217d76801d20dbb55">More...</a><br /></td></tr>
 <tr class="separator:a8273827686b65f1217d76801d20dbb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc6f8688ff9ff3c0dee705b86fda5f5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc6f8688ff9ff3c0dee705b86fda5f5d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>processDataSet</b> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;srcSweep, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">dst_t</a> &gt; &amp;dstProduct) const </td></tr>
+<tr class="memitem:abc6f8688ff9ff3c0dee705b86fda5f5d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#abc6f8688ff9ff3c0dee705b86fda5f5d">processDataSet</a> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;srcSweep, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">dst_t</a> &gt; &amp;dstProduct) const </td></tr>
 <tr class="separator:abc6f8688ff9ff3c0dee705b86fda5f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14f336f0e6d24c8d624d8a59fdff1f3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14f336f0e6d24c8d624d8a59fdff1f3a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a14f336f0e6d24c8d624d8a59fdff1f3a">processImage</a> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;dst) const </td></tr>
@@ -177,6 +177,41 @@ class rack::DataConversionOp&lt; M &gt;</h3>
 </dl>
 <dl class="section see"><dt>See also</dt><dd>Conversion </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="abc6f8688ff9ff3c0dee705b86fda5f5d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void processDataSet </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>srcSweep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">dst_t</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dstProduct</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>SWAP &amp; delete </p>
+
+</div>
+</div>
 <a class="anchor" id="a8273827686b65f1217d76801d20dbb55"></a>
 <div class="memitem">
 <div class="memproto">
@@ -184,13 +219,13 @@ class rack::DataConversionOp&lt; M &gt;</h3>
         <tr>
           <td class="memname">void processH5 </td>
           <td>(</td>
-          <td class="paramtype">const HI5TREE &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">HI5TREE &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>&#160;</td>
         </tr>
         <tr>

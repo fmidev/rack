@@ -1,6 +1,7 @@
 <map id="Image" name="Image">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ModifiableImage.html" title="ModifiableImage" alt="" coords="5,229,123,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="15,155,113,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="17,80,111,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="23,5,105,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="5,304,123,331"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="15,229,113,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="17,155,111,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="23,80,105,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="21,5,107,32"/>
 </map>

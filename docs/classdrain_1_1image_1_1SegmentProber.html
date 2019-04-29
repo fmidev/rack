@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>SegmentProber&lt; S, D &gt; Class Template Reference</title>
+<title>SegmentProber&lt; S, D, C &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -91,38 +92,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1SegmentProber-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SegmentProber&lt; S, D &gt; Class Template Reference</div>  </div>
+<div class="title">SegmentProber&lt; S, D, C &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A helper class applied by <a class="el" href="classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color. ">FloodFillOp</a> and <a class="el" href="classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes connected pixel areas. For more complicated statistics, see SegmentStatisticsOp. ">SegmentAreaOp</a>.  
+<p>A recursive method for visiting pixels of a segment in an image.  
  <a href="classdrain_1_1image_1_1SegmentProber.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="SegmentProber_8h_source.html">SegmentProber.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for SegmentProber&lt; S, D &gt;:</div>
+Collaboration diagram for SegmentProber&lt; S, D, C &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdrain_1_1image_1_1SegmentProber__coll__graph.png" border="0" usemap="#SegmentProber_3_01S_00_01D_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="SegmentProber_3_01S_00_01D_01_4_coll__map" id="SegmentProber_3_01S_00_01D_01_4_coll__map">
-<area shape="rect" id="node3" href="classdrain_1_1Logger.html" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log. " alt="" coords="161,377,222,404"/>
-<area shape="rect" id="node4" href="classdrain_1_1Log.html" title="Handler for notifications sent by. " alt="" coords="160,288,202,315"/>
-<area shape="rect" id="node5" href="classdrain_1_1image_1_1Channel.html" title="Image with static geometry. " alt="" coords="247,377,318,404"/>
-<area shape="rect" id="node6" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="227,288,322,315"/>
-<area shape="rect" id="node7" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="417,184,500,211"/>
-<area shape="rect" id="node8" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="366,95,444,121"/>
-<area shape="rect" id="node9" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="493,5,600,32"/>
-<area shape="rect" id="node10" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="342,5,468,32"/>
-<area shape="rect" id="node11" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="499,95,620,121"/>
-<area shape="rect" id="node19" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="484,236,630,263"/>
-<area shape="rect" id="node12" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="6,5,68,32"/>
-<area shape="rect" id="node18" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="49,95,124,121"/>
-<area shape="rect" id="node13" href="classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="298,184,392,211"/>
-<area shape="rect" id="node14" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="170,95,323,121"/>
-<area shape="rect" id="node16" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="172,184,273,211"/>
-<area shape="rect" id="node17" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="33,184,148,211"/>
+<div class="center"><img src="classdrain_1_1image_1_1SegmentProber__coll__graph.png" border="0" usemap="#SegmentProber_3_01S_00_01D_00_01C_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="SegmentProber_3_01S_00_01D_00_01C_01_4_coll__map" id="SegmentProber_3_01S_00_01D_00_01C_01_4_coll__map">
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1Channel.html" title="Image with static geometry. " alt="" coords="219,468,290,495"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="263,392,358,419"/>
+<area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="203,287,285,313"/>
+<area shape="rect" id="node5" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="202,184,289,211"/>
+<area shape="rect" id="node6" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="381,95,459,121"/>
+<area shape="rect" id="node7" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="357,5,464,32"/>
+<area shape="rect" id="node8" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="489,5,615,32"/>
+<area shape="rect" id="node9" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="27,95,149,121"/>
+<area shape="rect" id="node18" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="5,235,152,261"/>
+<area shape="rect" id="node10" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="181,95,257,121"/>
+<area shape="rect" id="node11" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="263,5,324,32"/>
+<area shape="rect" id="node14" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="281,95,356,121"/>
+<area shape="rect" id="node12" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="120,5,221,32"/>
+<area shape="rect" id="node13" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="272,235,387,261"/>
+<area shape="rect" id="node15" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="477,287,595,313"/>
+<area shape="rect" id="node16" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="483,184,661,211"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -134,6 +134,9 @@ typedef S&#160;</td><td class="memItemRight" valign="bottom"><b>src_t</b></td></
 <tr class="memitem:a0f647439d36c2970778d9cd80ada3a8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f647439d36c2970778d9cd80ada3a8e"></a>
 typedef D&#160;</td><td class="memItemRight" valign="bottom"><b>dst_t</b></td></tr>
 <tr class="separator:a0f647439d36c2970778d9cd80ada3a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c7e24a23288145c5e55cf0b82525524"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c7e24a23288145c5e55cf0b82525524"></a>
+typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td></tr>
+<tr class="separator:a1c7e24a23288145c5e55cf0b82525524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -144,31 +147,35 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SegmentProber</b> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;s, <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
 <tr class="separator:aac33a21fd64378802ba86ce27b13bca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ac37dc6e5b31697c83731b6089fb79"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94ac37dc6e5b31697c83731b6089fb79"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDst</b> (<a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a94ac37dc6e5b31697c83731b6089fb79">setDst</a> (<a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
+<tr class="memdesc:a94ac37dc6e5b31697c83731b6089fb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new target channel. Needed in multichannel operations. <br /></td></tr>
 <tr class="separator:a94ac37dc6e5b31697c83731b6089fb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c091a45702141f36486405664d46c1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c091a45702141f36486405664d46c1f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a8c091a45702141f36486405664d46c1f">probe</a> (size_t i, size_t j, D fillValue)</td></tr>
-<tr class="memdesc:a8c091a45702141f36486405664d46c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the segment having constant intensity, that is, src.at(i0,j0). <br /></td></tr>
-<tr class="separator:a8c091a45702141f36486405664d46c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a546709ce86bd43c74cc513e52d31ac81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a546709ce86bd43c74cc513e52d31ac81"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a546709ce86bd43c74cc513e52d31ac81">probe</a> (size_t i, size_t j, D fillValue, S min, S max)</td></tr>
-<tr class="memdesc:a546709ce86bd43c74cc513e52d31ac81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the segment having intensity between min and max. <br /></td></tr>
-<tr class="separator:a546709ce86bd43c74cc513e52d31ac81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afebe7c8755c03a36e99e075df7913b2f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afebe7c8755c03a36e99e075df7913b2f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setParams</b> (const C &amp;conf)</td></tr>
+<tr class="separator:afebe7c8755c03a36e99e075df7913b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9339772ec5ac9fa929938109207f2863"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863">init</a> ()</td></tr>
+<tr class="memdesc:a9339772ec5ac9fa929938109207f2863"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the segment having intensity between min and max.  <a href="#a9339772ec5ac9fa929938109207f2863">More...</a><br /></td></tr>
+<tr class="separator:a9339772ec5ac9fa929938109207f2863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a047344685c73aae3707ffbd91c176a4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a047344685c73aae3707ffbd91c176a4b">scan</a> ()</td></tr>
+<tr class="memdesc:a047344685c73aae3707ffbd91c176a4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenience function for traversing a whole image.  <a href="#a047344685c73aae3707ffbd91c176a4b">More...</a><br /></td></tr>
+<tr class="separator:a047344685c73aae3707ffbd91c176a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c8c72e87f5b68a9f753ea600f33e80b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c8c72e87f5b68a9f753ea600f33e80b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a1c8c72e87f5b68a9f753ea600f33e80b">probe</a> (int i, int j)</td></tr>
+<tr class="memdesc:a1c8c72e87f5b68a9f753ea600f33e80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start probing. <br /></td></tr>
+<tr class="separator:a1c8c72e87f5b68a9f753ea600f33e80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561b095764196883748642435238a697"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a561b095764196883748642435238a697"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a561b095764196883748642435238a697">isValidPos</a> (int i, int j) const </td></tr>
+<tr class="memdesc:a561b095764196883748642435238a697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns isValidSegment(i,j) and !isVisited(i,j). <br /></td></tr>
+<tr class="separator:a561b095764196883748642435238a697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae58b0fe4f3441e653f5046e6a3d9a558"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ae58b0fe4f3441e653f5046e6a3d9a558">isValidSegment</a> (int i, int j) const =0</td></tr>
+<tr class="memdesc:ae58b0fe4f3441e653f5046e6a3d9a558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent, to be redefined. Assumes checked coordinates.  <a href="#ae58b0fe4f3441e653f5046e6a3d9a558">More...</a><br /></td></tr>
+<tr class="separator:ae58b0fe4f3441e653f5046e6a3d9a558"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2cc26b4147fcb0d37bb1c4ec64617b0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cc26b4147fcb0d37bb1c4ec64617b0f"></a>
-S&#160;</td><td class="memItemRight" valign="bottom"><b>anchorMin</b></td></tr>
-<tr class="separator:a2cc26b4147fcb0d37bb1c4ec64617b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a504bb071592e4d76eef09ff65f38671f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a504bb071592e4d76eef09ff65f38671f"></a>
-S&#160;</td><td class="memItemRight" valign="bottom"><b>anchorMax</b></td></tr>
-<tr class="separator:a504bb071592e4d76eef09ff65f38671f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5445b0bf3fc26cdd0694914f2e92018d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5445b0bf3fc26cdd0694914f2e92018d"></a>
-D&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:a5445b0bf3fc26cdd0694914f2e92018d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a854352f53b148adc24983a58a1866d66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a854352f53b148adc24983a58a1866d66"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
-<tr class="separator:a854352f53b148adc24983a58a1866d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e427255962e28d8913a56db7b748b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40e427255962e28d8913a56db7b748b8"></a>
+conf_t&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
+<tr class="separator:a40e427255962e28d8913a56db7b748b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f494c9d89b47efb3aab0d3b9526b2e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f494c9d89b47efb3aab0d3b9526b2e2"></a>
 const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>src</b></td></tr>
 <tr class="separator:a5f494c9d89b47efb3aab0d3b9526b2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,57 +188,48 @@ const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:acb749d4e7ccbbff951746331c5b1d24f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb749d4e7ccbbff951746331c5b1d24f"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#acb749d4e7ccbbff951746331c5b1d24f">isValidSegment</a> (int i, int j)</td></tr>
-<tr class="memdesc:acb749d4e7ccbbff951746331c5b1d24f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent. <br /></td></tr>
-<tr class="separator:acb749d4e7ccbbff951746331c5b1d24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4be5f775354c4a0d5f5bd0f2ad5305a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4be5f775354c4a0d5f5bd0f2ad5305a"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ad4be5f775354c4a0d5f5bd0f2ad5305a">isValidMove</a> (int i0, int j0, int i, int j)</td></tr>
-<tr class="memdesc:ad4be5f775354c4a0d5f5bd0f2ad5305a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent. <br /></td></tr>
-<tr class="separator:ad4be5f775354c4a0d5f5bd0f2ad5305a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975ce08014b2c6979876261d70639d21"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a975ce08014b2c6979876261d70639d21">isValidMove</a> (int i0, int j0, int i, int j) const </td></tr>
+<tr class="memdesc:a975ce08014b2c6979876261d70639d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent, to be redefined. Note: assumes checked coordinates.  <a href="#a975ce08014b2c6979876261d70639d21">More...</a><br /></td></tr>
+<tr class="separator:a975ce08014b2c6979876261d70639d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35f2d5cf32d6a444b4b7fe69f755cfbb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35f2d5cf32d6a444b4b7fe69f755cfbb"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a35f2d5cf32d6a444b4b7fe69f755cfbb">update</a> (int i, int j)</td></tr>
 <tr class="memdesc:a35f2d5cf32d6a444b4b7fe69f755cfbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent operation performed in each segment location (i,j). <br /></td></tr>
 <tr class="separator:a35f2d5cf32d6a444b4b7fe69f755cfbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae048282c7011eedc2e0492f6421ea73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae048282c7011eedc2e0492f6421ea73"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73">clear</a> ()</td></tr>
-<tr class="memdesc:aae048282c7011eedc2e0492f6421ea73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent initialisation for statistics updated with <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a35f2d5cf32d6a444b4b7fe69f755cfbb" title="Application dependent operation performed in each segment location (i,j). ">update(int i, int j)</a> function. <br /></td></tr>
-<tr class="separator:aae048282c7011eedc2e0492f6421ea73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae13e0ca4a09d898911fdd36d2249a067"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae13e0ca4a09d898911fdd36d2249a067"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ae13e0ca4a09d898911fdd36d2249a067">isVisited</a> (int i, int j)</td></tr>
-<tr class="memdesc:ae13e0ca4a09d898911fdd36d2249a067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. <br /></td></tr>
-<tr class="separator:ae13e0ca4a09d898911fdd36d2249a067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37db84cbcc7f459697105face50f5c67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37db84cbcc7f459697105face50f5c67"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>moveHorz</b> (int i0, int j0, int i, int j)</td></tr>
-<tr class="separator:a37db84cbcc7f459697105face50f5c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">visit</a> (int i, int j)</td></tr>
-<tr class="memdesc:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function: visit a single pixel and return.  <a href="#ab0c12fd03a7d2a15473e5575a13b25ae">More...</a><br /></td></tr>
+<tr class="memdesc:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visiting a single pixel when not coming from any direction.  <a href="#ab0c12fd03a7d2a15473e5575a13b25ae">More...</a><br /></td></tr>
 <tr class="separator:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adecc7755cc9daf42b7f6c9453a8549f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#adecc7755cc9daf42b7f6c9453a8549f6">probe8</a> (int i, int j)</td></tr>
-<tr class="memdesc:adecc7755cc9daf42b7f6c9453a8549f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A semi-recursive approach that turns the 2D recursion to 1D traversal + 1D recursion.  <a href="#adecc7755cc9daf42b7f6c9453a8549f6">More...</a><br /></td></tr>
-<tr class="separator:adecc7755cc9daf42b7f6c9453a8549f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a5c0a14cf2db699efaf6e6ade449120e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c0a14cf2db699efaf6e6ade449120e0"></a>
-<a class="el" href="classdrain_1_1Logger.html">drain::Logger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mout</b></td></tr>
-<tr class="separator:a5c0a14cf2db699efaf6e6ade449120e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae048282c7011eedc2e0492f6421ea73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73">clear</a> ()</td></tr>
+<tr class="memdesc:aae048282c7011eedc2e0492f6421ea73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before processing each segment. Compare with <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863" title="Fills the segment having intensity between min and max. ">init()</a>, which is called once for each image.  <a href="#aae048282c7011eedc2e0492f6421ea73">More...</a><br /></td></tr>
+<tr class="separator:aae048282c7011eedc2e0492f6421ea73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55d1aed97513290695706c09cbf710f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad55d1aed97513290695706c09cbf710f"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ad55d1aed97513290695706c09cbf710f">isVisited</a> (int i, int j) const </td></tr>
+<tr class="memdesc:ad55d1aed97513290695706c09cbf710f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. <br /></td></tr>
+<tr class="separator:ad55d1aed97513290695706c09cbf710f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cb249ceb464d93175fbd6934c853f7a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0cb249ceb464d93175fbd6934c853f7a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a0cb249ceb464d93175fbd6934c853f7a">move</a> (int &amp;i, int &amp;j, int di, int dj)</td></tr>
+<tr class="memdesc:a0cb249ceb464d93175fbd6934c853f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to move; change coords in success, else keep them intact. <br /></td></tr>
+<tr class="separator:a0cb249ceb464d93175fbd6934c853f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35d0eb74967f8ac13f105fa01b28f6d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a35d0eb74967f8ac13f105fa01b28f6d9">probe4</a> (int i, int j)</td></tr>
+<tr class="memdesc:a35d0eb74967f8ac13f105fa01b28f6d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A semi-recursive approach that turns the 2D recursion to 1D traversal + 1D recursion.  <a href="#a35d0eb74967f8ac13f105fa01b28f6d9">More...</a><br /></td></tr>
+<tr class="separator:a35d0eb74967f8ac13f105fa01b28f6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class S, class D&gt;<br />
-class drain::image::SegmentProber&lt; S, D &gt;</h3>
+<div class="textblock"><h3>template&lt;class S, class D, class C&gt;<br />
+class drain::image::SegmentProber&lt; S, D, C &gt;</h3>
 
-<p>A helper class applied by <a class="el" href="classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color. ">FloodFillOp</a> and <a class="el" href="classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes connected pixel areas. For more complicated statistics, see SegmentStatisticsOp. ">SegmentAreaOp</a>. </p>
+<p>A recursive method for visiting pixels of a segment in an image. </p>
+<p>A helper class applied by <a class="el" href="classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color. ">FloodFillOp</a> and <a class="el" href="classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes connected pixel areas. For more complicated statistics, see SegmentStatisticsOp. ">SegmentAreaOp</a>.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">S</td><td>- storage type of the source image (int by default, but should be floating-type, if src is). </td></tr>
-    <tr><td class="paramname">D</td><td>- storage type of the destination image, the image to be filled.</td></tr>
+    <tr><td class="paramname">S</td><td>- storage type of the source image data (int by default, but should be floating-type, if src is). </td></tr>
+    <tr><td class="paramname">D</td><td>- storage type of the destination image data </td></tr>
+    <tr><td class="paramname">C</td><td>- configuration type,</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section author"><dt>Author</dt><dd><a href="#" onclick="location.href='mai'+'lto:'+'Mar'+'ku'+'s.P'+'eu'+'ra@'+'fm'+'i.f'+'i'; return false;">Marku<span style="display: none;">.nosp@m.</span>s.Pe<span style="display: none;">.nosp@m.</span>ura@f<span style="display: none;">.nosp@m.</span>mi.f<span style="display: none;">.nosp@m.</span>i</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="adecc7755cc9daf42b7f6c9453a8549f6"></a>
+<a class="anchor" id="aae048282c7011eedc2e0492f6421ea73"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -239,7 +237,154 @@ class drain::image::SegmentProber&lt; S, D &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void probe8 </td>
+          <td class="memname">virtual void clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called before processing each segment. Compare with <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863" title="Fills the segment having intensity between min and max. ">init()</a>, which is called once for each image. </p>
+<p>Application dependent initialisation for statistics updated with <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a35f2d5cf32d6a444b4b7fe69f755cfbb" title="Application dependent operation performed in each segment location (i,j). ">update(int i, int j)</a> function. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentStatisticsProber&lt; T, D &gt;</a>, <a class="el" href="classdrain_1_1image_1_1SizeProber.html#aae048282c7011eedc2e0492f6421ea73">SizeProber</a>, and <a class="el" href="classrack_1_1DopplerSegmentProber.html#aae048282c7011eedc2e0492f6421ea73">DopplerSegmentProber</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9339772ec5ac9fa929938109207f2863"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void init </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fills the segment having intensity between min and max. </p>
+<p>Called after src and dst have been set, but before processing. See <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73" title="Called before processing each segment. Compare with init(), which is called once for each image...">clear()</a>. </p>
+
+<p>Reimplemented in <a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863">DopplerSegmentProber</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a975ce08014b2c6979876261d70639d21"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isValidMove </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Application dependent, to be redefined. Note: assumes checked coordinates. </p>
+<p>Application dependent. Assumes checked coordinates. </p>
+
+<p>Reimplemented in <a class="el" href="classrack_1_1DopplerSegmentProber.html#a975ce08014b2c6979876261d70639d21">DopplerSegmentProber</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae58b0fe4f3441e653f5046e6a3d9a558"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isValidSegment </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Application dependent, to be redefined. Assumes checked coordinates. </p>
+<p>Determines if the current position is within a segment. The criterion of "segment" depends on the application.</p>
+<p>Note: does not check coordinates, assumes them to be checked by the calling scope. </p>
+
+<p>Implemented in <a class="el" href="classdrain_1_1image_1_1SizeProber.html#acbf4e47a3ba963e25e7856b2da863fe5">SizeProber</a>, <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html#acbf4e47a3ba963e25e7856b2da863fe5">SegmentStatisticsProber&lt; T, D &gt;</a>, <a class="el" href="classdrain_1_1image_1_1FillProber.html#acbf4e47a3ba963e25e7856b2da863fe5">FillProber</a>, and <a class="el" href="classrack_1_1DopplerSegmentProber.html#acbf4e47a3ba963e25e7856b2da863fe5">DopplerSegmentProber</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a35d0eb74967f8ac13f105fa01b28f6d9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void probe4 </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>i</em>, </td>
@@ -264,10 +409,36 @@ class drain::image::SegmentProber&lt; S, D &gt;</h3>
 </div><div class="memdoc">
 
 <p>A semi-recursive approach that turns the 2D recursion to 1D traversal + 1D recursion. </p>
-<p>the horizontal direction is handled sequentially whereas the vertical direction handled recursively. Compared to fully recursive approach, this technique preserves the speed but offers smaller consumption of memory. </p>
-<p>Scan right</p>
+<p>s * the horizontal direction is handled sequentially whereas the vertical direction handled recursively. Compared to fully recursive approach, this technique preserves the speed but offers smaller consumption of memory. </p>
+<p>Scan right. Note than i may wrap beyond image width.</p>
 <p>Scan left</p>
 <p>Scan again, continuing one step above and below. </p>
+
+</div>
+</div>
+<a class="anchor" id="a047344685c73aae3707ffbd91c176a4b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void scan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A convenience function for traversing a whole image. </p>
+<p>Applicable in cases where probing parameters are not spatically ("dynamically") changing. </p>
 
 </div>
 </div>
@@ -303,24 +474,8 @@ class drain::image::SegmentProber&lt; S, D &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Main function: visit a single pixel and return. </p>
+<p>Visiting a single pixel when not coming from any direction. </p>
 <p>Visiting means</p><ul>
-<li>updating the status of this prober, for example by updating statistics like segment size</li>
-<li>marking the pixel visited in dst image</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i0</td><td>- current i coordinate (always valid) </td></tr>
-    <tr><td class="paramname">j0</td><td>- current j coordinate (always valid) </td></tr>
-    <tr><td class="paramname">i</td><td>- aimed i coordinate </td></tr>
-    <tr><td class="paramname">j</td><td>- aimed j coordinate</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>virtual inline void visit(int i0, int j0, int i, int j) { </p><pre class="fragment">if (moveHorz(i0, j0, i, j)){
-</pre><p> / Mark visited dst-&gt;put(i,j, value); update(i, j);</p>
-<p>}</p>
-<p>}Visiting a single pixel when not coming from any direction. Visiting means</p><ul>
 <li>updating the status of this prober, for example by updating statistics like segment size</li>
 <li>marking the pixel visited in dst image</li>
 </ul>
@@ -332,6 +487,8 @@ class drain::image::SegmentProber&lt; S, D &gt;</h3>
   </dd>
 </dl>
 <p>Mark visited </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1image_1_1SizeProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">SizeProber</a>, <a class="el" href="classdrain_1_1image_1_1FillProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">FillProber</a>, and <a class="el" href="classrack_1_1DopplerSegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">DopplerSegmentProber</a>.</p>
 
 </div>
 </div>

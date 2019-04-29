@@ -1,9 +1,10 @@
 <map id="ModifiableImage" name="ModifiableImage">
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="5,304,64,331"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageT.html" title="A template class for images with static storage type. " alt="" coords="88,304,187,331"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="211,304,339,331"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="363,304,523,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="156,155,255,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="158,80,253,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="164,5,247,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="5,379,64,405"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageT.html" title="A template class for images with static storage type. " alt="" coords="88,379,187,405"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="211,379,339,405"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="363,379,523,405"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="156,229,255,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="158,155,253,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="164,80,247,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="162,5,249,32"/>
 </map>

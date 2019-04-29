@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -131,17 +132,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1simpleName.html#ab9d1ce86982f88bcc17692a936364949">simpleName</a>
 , <a class="el" href="classdrain_1_1sizeGetter.html#ab9d1ce86982f88bcc17692a936364949">sizeGetter</a>
 , <a class="el" href="structdrain_1_1Type_1_1typeSetter.html#a0b575719336a9c68b2db33c6994214ce">Type::typeSetter</a>
+, <a class="el" href="classdrain_1_1typeIsFloat.html#ab9d1ce86982f88bcc17692a936364949">typeIsFloat</a>
 , <a class="el" href="classdrain_1_1typeIsInteger.html#ab9d1ce86982f88bcc17692a936364949">typeIsInteger</a>
 , <a class="el" href="classdrain_1_1typeIsSmallInt.html#a2e3564ec9c21056477a83430f7922ab4">typeIsSmallInt</a>
 , <a class="el" href="classdrain_1_1typeLimiter.html#ab9d1ce86982f88bcc17692a936364949">typeLimiter&lt; D &gt;</a>
 , <a class="el" href="classdrain_1_1typeMax.html#a2e3564ec9c21056477a83430f7922ab4">typeMax</a>
 , <a class="el" href="classdrain_1_1typeMin.html#a2e3564ec9c21056477a83430f7922ab4">typeMin</a>
+, <a class="el" href="classdrain_1_1typeNaturalMax.html#a2e3564ec9c21056477a83430f7922ab4">typeNaturalMax</a>
+, <a class="el" href="classdrain_1_1typesetter.html#acfb909ad82f0472e8ab1bf1249928b1c">typesetter</a>
 </li>
 <li>CartesianDataPicker()
 : <a class="el" href="classrack_1_1CartesianDataPicker.html#a51e0349f42fb4ca7ed64967c6469795f">CartesianDataPicker</a>
-</li>
-<li>cast()
-: <a class="el" href="classdrain_1_1Caster.html#a265a9378b41b5765125911bcf60438f0">Caster</a>
 </li>
 <li>Castable()
 : <a class="el" href="classdrain_1_1Castable.html#a483ba604aa35a8c0e9370bc84b26b062">Castable</a>
@@ -154,6 +155,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>CCorOp()
 : <a class="el" href="classrack_1_1CCorOp.html#a6782df4b2e421fb2aa4ff80470b3a2be">CCorOp</a>
+</li>
+<li>checkAliasing()
+: <a class="el" href="classrack_1_1PolarODIM.html#a24850cef4ae1956ab5b6c2936ec9c75b">PolarODIM</a>
 </li>
 <li>checkCompositingMethod()
 : <a class="el" href="classrack_1_1RadarAccumulator.html#a74c762da36dba9a29dc879148f6739da">RadarAccumulator&lt; AC, OD &gt;</a>
@@ -172,15 +176,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#ac8bb3912a3ce86b15842e79d0b421204">AccumulationArray</a>
 , <a class="el" href="classdrain_1_1image_1_1FlowAverageWindow.html#ac8bb3912a3ce86b15842e79d0b421204">FlowAverageWindow</a>
 , <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#ac8bb3912a3ce86b15842e79d0b421204">ImageFrame</a>
-, <a class="el" href="classdrain_1_1image_1_1OpticalFlowCore.html#aae048282c7011eedc2e0492f6421ea73">OpticalFlowCore</a>
-, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentProber&lt; S, D &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentProber&lt; S, D, C &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html#aae048282c7011eedc2e0492f6421ea73">SegmentStatistics</a>
-, <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentStatisticsProber&lt; T, T2 &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentStatisticsProber&lt; T, D &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SizeProber.html#aae048282c7011eedc2e0492f6421ea73">SizeProber</a>
+, <a class="el" href="classdrain_1_1image_1_1SlidingOpticalFlow2.html#aae048282c7011eedc2e0492f6421ea73">SlidingOpticalFlow2&lt; R &gt;</a>
+, <a class="el" href="classdrain_1_1image_1_1SlidingOpticalFlow.html#aae048282c7011eedc2e0492f6421ea73">SlidingOpticalFlow&lt; R &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html#aae048282c7011eedc2e0492f6421ea73">SlidingWindow&lt; C, R &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingWindowHistogram.html#aae048282c7011eedc2e0492f6421ea73">SlidingWindowHistogram&lt; R &gt;</a>
 , <a class="el" href="classdrain_1_1ReferenceMap.html#aae048282c7011eedc2e0492f6421ea73">ReferenceMap</a>
-, <a class="el" href="classdrain_1_1Tree.html#ac8bb3912a3ce86b15842e79d0b421204">Tree&lt; T, C &gt;</a>
+, <a class="el" href="classdrain_1_1Tree.html#ac8bb3912a3ce86b15842e79d0b421204">Tree&lt; K, T, C &gt;</a>
 , <a class="el" href="classrack_1_1DopplerInversionWindow.html#ac8bb3912a3ce86b15842e79d0b421204">DopplerInversionWindow</a>
+, <a class="el" href="classrack_1_1DopplerSegmentProber.html#aae048282c7011eedc2e0492f6421ea73">DopplerSegmentProber</a>
 , <a class="el" href="classrack_1_1DopplerWindow.html#aae048282c7011eedc2e0492f6421ea73">DopplerWindow</a>
 , <a class="el" href="classrack_1_1EncodingODIM.html#ac8bb3912a3ce86b15842e79d0b421204">EncodingODIM</a>
 , <a class="el" href="classrack_1_1RadarWindowAvg.html#aae048282c7011eedc2e0492f6421ea73">RadarWindowAvg&lt; C &gt;</a>
@@ -190,8 +197,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>clearBins()
 : <a class="el" href="classdrain_1_1Histogram.html#a0a8f39e935ec79a9512eaee0550a0b0c">Histogram</a>
 </li>
-<li>ClutterMapOp()
-: <a class="el" href="classrack_1_1ClutterMapOp.html#a962b3ed309318daa50ea338f94b9f535">ClutterMapOp</a>
+<li>ClutterOp()
+: <a class="el" href="classrack_1_1ClutterOp.html#ae7061b0f442031f2a6160aa639655318">ClutterOp</a>
 </li>
 <li>CmdEncoding()
 : <a class="el" href="classrack_1_1CmdEncoding.html#a3377493f5e4dbb64853409d3afa09707">CmdEncoding</a>
@@ -235,13 +242,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classdrain_1_1image_1_1Tray.html#aaaedffcbf8232d573e53fad59495bfbc">Tray&lt; T &gt;</a>
 </li>
 <li>createSimpleQualityData()
-: <a class="el" href="classrack_1_1PlainData.html#af5ff0df8ab7d9ba7de6f3589073ab0c4">PlainData&lt; DT &gt;</a>
+: <a class="el" href="classrack_1_1PlainData.html#a0894fabc4b79c7464cd7d8c2c7e59c56">PlainData&lt; DT &gt;</a>
 </li>
 <li>crop()
 : <a class="el" href="classdrain_1_1Rectangle.html#adec41639d4cad93a9b779b29665b4268">Rectangle&lt; T &gt;</a>
 </li>
 <li>cropWithM()
-: <a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ad85a3b02fb314dd015b2b38ae1fb977e">GeoFrame</a>
+: <a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a66186049eb5c9e5fbbc33ccfbd6a1905">GeoFrame</a>
 </li>
 </ul>
 </div><!-- contents -->

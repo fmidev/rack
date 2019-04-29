@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -116,35 +117,37 @@ Collaboration diagram for BlenderOp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1BlenderOp__coll__graph.png" border="0" usemap="#BlenderOp_coll__map" alt="Collaboration graph"/></div>
 <map name="BlenderOp_coll__map" id="BlenderOp_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt;\&gt;" alt="" coords="2297,53,2400,80"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="1509,5,1584,32"/>
-<area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="1260,5,1343,32"/>
-<area shape="rect" id="node5" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="851,25,927,52"/>
-<area shape="rect" id="node29" href="classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="1155,56,1222,83"/>
-<area shape="rect" id="node6" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="553,25,659,52"/>
-<area shape="rect" id="node7" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="263,25,433,52"/>
-<area shape="rect" id="node9" href="classdrain_1_1image_1_1Window.html" title="Window\&lt; WindowConfig \&gt;" alt="" coords="2041,168,2220,195"/>
-<area shape="rect" id="node10" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="1842,269,1939,296"/>
-<area shape="rect" id="node11" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="1625,269,1752,296"/>
-<area shape="rect" id="node12" href="classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="1645,320,1732,347"/>
-<area shape="rect" id="node13" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1368,321,1467,348"/>
-<area shape="rect" id="node14" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1141,327,1236,353"/>
-<area shape="rect" id="node15" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="848,217,931,244"/>
-<area shape="rect" id="node16" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="567,285,645,312"/>
-<area shape="rect" id="node17" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="295,285,401,312"/>
-<area shape="rect" id="node18" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="285,336,411,363"/>
-<area shape="rect" id="node19" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="545,172,667,199"/>
-<area shape="rect" id="node32" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="971,168,1117,195"/>
-<area shape="rect" id="node20" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="317,401,379,428"/>
-<area shape="rect" id="node26" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="569,421,643,448"/>
-<area shape="rect" id="node21" href="classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="842,320,937,347"/>
-<area shape="rect" id="node22" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="529,235,683,261"/>
-<area shape="rect" id="node24" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="839,268,940,295"/>
-<area shape="rect" id="node25" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="832,421,947,448"/>
-<area shape="rect" id="node27" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="1837,117,1944,144"/>
-<area shape="rect" id="node28" href="structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="1367,56,1468,83"/>
-<area shape="rect" id="node30" href="structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="1634,117,1743,144"/>
-<area shape="rect" id="node31" href="classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="1837,219,1944,245"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt;\&gt;" alt="" coords="772,877,875,904"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="871,544,946,571"/>
+<area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="870,443,953,469"/>
+<area shape="rect" id="node5" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="848,287,924,313"/>
+<area shape="rect" id="node31" href="classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="797,392,863,419"/>
+<area shape="rect" id="node6" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="833,184,939,211"/>
+<area shape="rect" id="node7" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="801,95,971,121"/>
+<area shape="rect" id="node9" href="classdrain_1_1image_1_1Window.html" title="Window\&lt; WindowConfig \&gt;" alt="" coords="551,788,730,815"/>
+<area shape="rect" id="node10" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="375,699,472,725"/>
+<area shape="rect" id="node11" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="453,595,580,621"/>
+<area shape="rect" id="node12" href="classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="343,595,429,621"/>
+<area shape="rect" id="node13" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="337,493,435,520"/>
+<area shape="rect" id="node14" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="339,392,433,419"/>
+<area shape="rect" id="node15" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="345,287,427,313"/>
+<area shape="rect" id="node16" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="347,184,433,211"/>
+<area shape="rect" id="node17" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="239,95,317,121"/>
+<area shape="rect" id="node18" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="78,5,185,32"/>
+<area shape="rect" id="node19" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="209,5,336,32"/>
+<area shape="rect" id="node20" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="572,95,693,121"/>
+<area shape="rect" id="node34" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="567,235,714,261"/>
+<area shape="rect" id="node21" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="367,95,443,121"/>
+<area shape="rect" id="node22" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="505,5,566,32"/>
+<area shape="rect" id="node25" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="471,95,546,121"/>
+<area shape="rect" id="node23" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="361,5,462,32"/>
+<area shape="rect" id="node24" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="418,235,533,261"/>
+<area shape="rect" id="node26" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="180,287,299,313"/>
+<area shape="rect" id="node27" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="81,184,259,211"/>
+<area shape="rect" id="node29" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="679,699,786,725"/>
+<area shape="rect" id="node30" href="structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="774,493,875,520"/>
+<area shape="rect" id="node32" href="structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="678,595,787,621"/>
+<area shape="rect" id="node33" href="classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="497,699,603,725"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -382,10 +385,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinat
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Smoothes image and mixes the result with the original by coeff*100%. </p>
 <p>This operator produces </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \} = (1-c)F + (1-c)cM{F} + c^2M^2{F} \]" src="form_120.png"/>
+<img class="formulaDsp" alt="\[ F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \} = (1-c)F + (1-c)cM{F} + c^2M^2{F} \]" src="form_39.png"/>
 </p>
-<p> where <img class="formulaInl" alt="$F$" src="form_121.png"/> is an image, <img class="formulaInl" alt="$M\{\}$" src="form_122.png"/> is a FastAverage operator of size <img class="formulaInl" alt="$W \times H$" src="form_123.png"/>, and <img class="formulaInl" alt="$c$" src="form_17.png"/> is the mixing coefficient between 0.0 and 1.0.</p>
-<div class="fragment"><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.25 -o hazy25a.png</div><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.50 -o hazy50a.png</div><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.75 -o hazy75a.png</div><div class="line">drainage shapes.png --blender 25,smooth=g,mix=b/coeff:0.75 -o hazy75g.png</div><div class="line">drainage shapes.png --blender 25,mix=m            -o hazyMax.png</div></div><!-- fragment --><p>This operator can be also used for restoring images containing specks of low quality. </p><div class="fragment"><div class="line">drainage flowers-rgba.png --blender 50,smooth=a,mix=m -o restored-a1.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=a,mix=m,loops=3 -o restored-a3.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=g,mix=m -o restored-g1.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=g,mix=m,loops=3 -o restored-g3.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=d -o restored--d.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=D -o restored--D.png</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+<p> where <img class="formulaInl" alt="$F$" src="form_40.png"/> is an image, <img class="formulaInl" alt="$M\{\}$" src="form_41.png"/> is a FastAverage operator of size <img class="formulaInl" alt="$W \times H$" src="form_42.png"/>, and <img class="formulaInl" alt="$c$" src="form_43.png"/> is the mixing coefficient between 0.0 and 1.0.</p>
+<div class="fragment"><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.25 -o hazy25a.png</div><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.50 -o hazy50a.png</div><div class="line">drainage shapes.png --blender 25,mix=b/coeff:0.75 -o hazy75a.png</div><div class="line">drainage shapes.png --blender 25,smooth=g,mix=b/coeff:0.25 -o hazy25g.png</div><div class="line">drainage shapes.png --blender 25,mix=m            -o hazyMax.png</div></div><!-- fragment --><p>This operator can be also used for restoring images containing specks of low quality.</p>
+<div class="fragment"><div class="line">drainage flowers-rgba.png --blender 50,smooth=a,mix=m -o restored-a1.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=a,mix=m,loops=3 -o restored-a3.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=g,mix=m -o restored-g1.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=g,mix=m,loops=3 -o restored-g3.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=d -o restored--d.png</div><div class="line">drainage flowers-rgba.png --blender 50,smooth=D -o restored--D.png</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab40c2e6573581386d393d2b148bb6b6f"></a>
 <div class="memitem">
 <div class="memproto">

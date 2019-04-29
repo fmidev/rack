@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['damperop',['DamperOp',['../classrack_1_1DamperOp.html#a04b667ec48f4614dbe19602d6202fc19',1,'rack::DamperOp']]],
+  ['damperop',['DamperOp',['../classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9',1,'rack::DamperOp']]],
   ['datacoder',['DataCoder',['../classrack_1_1DataCoder.html#a22ef09d1a71efc022fb159f25506bdac',1,'rack::DataCoder']]],
-  ['dataset',['DataSet',['../classrack_1_1DataSet.html#a6e6fba21c9fa5836fd0e4aee9da77ff4',1,'rack::DataSet']]],
+  ['datagroup',['DataGroup',['../classrack_1_1DataGroup.html#ae79660fd027e3319b54a930b5899d900',1,'rack::DataGroup']]],
+  ['dataset',['DataSet',['../classrack_1_1DataSet.html#ac3b3d9600505bf0a3db343882e464310',1,'rack::DataSet']]],
   ['datatoh5attribute',['dataToH5Attribute',['../classhi5_1_1Writer.html#a7a42f25cb17a39034154bd722d5c0bfa',1,'hi5::Writer']]],
   ['datatoh5attributestring',['dataToH5AttributeString',['../classhi5_1_1Writer.html#aca406f4ee0cd89be6d4504714c908cbd',1,'hi5::Writer']]],
-  ['datatoh5attributet',['dataToH5AttributeT',['../classhi5_1_1Writer.html#a3946241627c80ecec15639eba8874dcf',1,'hi5::Writer']]],
   ['dbztoz',['dbzToZ',['../Constants_8h.html#a969b067b9ce4f3301e2ac9d21c40bb2f',1,'rack']]],
   ['debug',['debug',['../classdrain_1_1Logger.html#a249f432520e5a07f7beaa2f780531172',1,'drain::Logger::debug()'],['../classdrain_1_1StringMapper.html#a61828dda10eb88fb89e5dca812d9927d',1,'drain::StringMapper::debug()']]],
   ['decode',['decode',['../classrack_1_1DataCoder.html#a4aa36883f540660521a1b4ee325d8834',1,'rack::DataCoder::decode(double &amp;value) const '],['../classrack_1_1DataCoder.html#ac093ab28d31d16d952a56820cd971f7c',1,'rack::DataCoder::decode(double &amp;value, double &amp;weight) const '],['../structdrain_1_1image_1_1AccumulationConverter.html#a8200504e386fd385311f2cc254d2e072',1,'drain::image::AccumulationConverter::decode(double &amp;value) const '],['../structdrain_1_1image_1_1AccumulationConverter.html#a94e5e50d60f9f796270ce818087326ae',1,'drain::image::AccumulationConverter::decode(double &amp;value, double &amp;weight) const ']]],

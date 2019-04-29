@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -116,12 +117,14 @@ Collaboration diagram for ProductOp&lt; MS, MD &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ProductOp__coll__graph.png" border="0" usemap="#ProductOp_3_01MS_00_01MD_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="ProductOp_3_01MS_00_01MD_01_4_coll__map" id="ProductOp_3_01MS_00_01MD_01_4_coll__map">
-<area shape="rect" id="node2" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates. " alt="" coords="171,425,268,452"/>
-<area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="149,247,225,273"/>
-<area shape="rect" id="node7" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="225,336,323,363"/>
-<area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node8" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="347,336,462,363"/>
+<area shape="rect" id="node2" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates. " alt="" coords="380,440,477,467"/>
+<area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="347,247,423,273"/>
+<area shape="rect" id="node7" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="230,351,329,377"/>
+<area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="362,157,469,184"/>
+<area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="330,81,501,108"/>
+<area shape="rect" id="node8" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="5,247,175,273"/>
+<area shape="rect" id="node9" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="199,247,322,273"/>
+<area shape="rect" id="node10" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="498,351,613,377"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -141,7 +144,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad094bedd0ad67920dd867b0432b0a4d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#ad094bedd0ad67920dd867b0432b0a4d9">ProductOp</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
 <tr class="memdesc:ad094bedd0ad67920dd867b0432b0a4d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ad094bedd0ad67920dd867b0432b0a4d9">More...</a><br /></td></tr>
 <tr class="separator:ad094bedd0ad67920dd867b0432b0a4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8273827686b65f1217d76801d20dbb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a8273827686b65f1217d76801d20dbb55">processH5</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const </td></tr>
+<tr class="memitem:acec585c588eec2c578c02d8ed553b316"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acec585c588eec2c578c02d8ed553b316"></a>
+virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#acec585c588eec2c578c02d8ed553b316">getOutputQuantity</a> () const </td></tr>
+<tr class="memdesc:acec585c588eec2c578c02d8ed553b316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> <code>what:quantity</code> , like DBZH) <br /></td></tr>
+<tr class="separator:acec585c588eec2c578c02d8ed553b316"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8273827686b65f1217d76801d20dbb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a8273827686b65f1217d76801d20dbb55">processH5</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
 <tr class="separator:a8273827686b65f1217d76801d20dbb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20692e734b22f5fa48a137992adf181c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a20692e734b22f5fa48a137992adf181c">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstProduct) const </td></tr>
 <tr class="memdesc:a20692e734b22f5fa48a137992adf181c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse the data applicable for this product and create new, processed data (volume or polar product).  <a href="#a20692e734b22f5fa48a137992adf181c">More...</a><br /></td></tr>
@@ -264,9 +271,8 @@ Static Protected Member Functions</h2></td></tr>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>handleEncodingRequest</b> (const std::string &amp;encoding, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dst)</td></tr>
 <tr class="separator:aaacaf6b3984b5227d271c0885bf1c661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
-<tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c647c4533f71ac1551da8776912436c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
-<tr class="memdesc:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target encoding. <br /></td></tr>
+<tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
+<tr class="memdesc:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> <code>what:quantity</code> , like DBZH)  <a href="#a2c647c4533f71ac1551da8776912436c">More...</a><br /></td></tr>
 <tr class="separator:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -443,13 +449,13 @@ class rack::ProductOp&lt; MS, MD &gt;</h3>
         <tr>
           <td class="memname">void processH5 </td>
           <td>(</td>
-          <td class="paramtype">const HI5TREE &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">HI5TREE &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>&#160;</td>
         </tr>
         <tr>

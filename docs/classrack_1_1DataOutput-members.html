@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -93,8 +94,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>This is the complete list of members for <a class="el" href="classrack_1_1DataOutput.html">DataOutput</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>writeGroupToDot</b>(std::ostream &amp;ostr, const HI5TREE &amp;tree) (defined in <a class="el" href="classrack_1_1DataOutput.html">DataOutput</a>)</td><td class="entry"><a class="el" href="classrack_1_1DataOutput.html">DataOutput</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classrack_1_1DataOutput.html#a361a1d9dfc2b60399409ec8979992c36">writeGroupToDot</a>(std::ostream &amp;ostr, const HI5TREE &amp;group, int &amp;id, BaseODIM::group_t selector=(BaseODIM::ROOT|BaseODIM::IS_INDEXED), const ODIMPath &amp;path=ODIMPath())</td><td class="entry"><a class="el" href="classrack_1_1DataOutput.html">DataOutput</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1DataOutput.html#a78e6162f48e0c5621e088b12660253bc">writeGroupToDot</a>(std::ostream &amp;ostr, const HI5TREE &amp;group, int &amp;id, ODIMPathElem::group_t selector=(ODIMPathElem::ROOT|ODIMPathElem::IS_INDEXED), const ODIMPath &amp;path=ODIMPath())</td><td class="entry"><a class="el" href="classrack_1_1DataOutput.html">DataOutput</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classrack_1_1DataOutput.html#af177b47c7701ab0c5adbcb10f51fefa6">writeToDot</a>(std::ostream &amp;ostr, const HI5TREE &amp;tree, ODIMPathElem::group_t selector=(ODIMPathElem::ROOT|ODIMPathElem::IS_INDEXED))</td><td class="entry"><a class="el" href="classrack_1_1DataOutput.html">DataOutput</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

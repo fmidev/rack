@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -94,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Container that couples together trees (<a class="el" href="classdrain_1_1Tree.html" title="Unordered tree. ">drain::Tree</a>) and images (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>). Source or destinations types.  
+<p>Container that couples together a tree structure and a data array (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>), according to source type (const or non-const) .  
  <a href="structrack_1_1DataType.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Data_8h_source.html">Data.h</a>&gt;</code></p>
@@ -115,13 +116,13 @@ typedef D&#160;</td><td class="memItemRight" valign="bottom"><b>image_t</b></td>
 <div class="textblock"><h3>template&lt;typename T, typename TI, typename D&gt;<br />
 struct rack::DataType&lt; T, TI, D &gt;</h3>
 
-<p>Container that couples together trees (<a class="el" href="classdrain_1_1Tree.html" title="Unordered tree. ">drain::Tree</a>) and images (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>). Source or destinations types. </p>
+<p>Container that couples together a tree structure and a data array (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>), according to source type (const or non-const) . </p>
 <p>Consider that const HI5TREE src or HI5TREE dst contain following structure:</p>
-<div class="fragment"><div class="line">/dataset1/data1</div><div class="line">/dataset1/data1/quality1/data</div><div class="line">/dataset1/data2</div><div class="line">/dataset1/data3</div><div class="line">/dataset1/dataN...</div><div class="line">/dataset1/quality1/data</div><div class="line">/dataset1/quality2/data</div><div class="line">/dataset2/</div><div class="line">...</div><div class="line"></div><div class="line"> The classes in <span class="keyword">this</span> section provide solutions <span class="keywordflow">for</span> handling dataset-level and data-level information.</div></div><!-- fragment --><p> The template parameters are expected to be exactly the following, all of them const or non-const: </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="fragment"><div class="line">/dataset1/data1</div><div class="line">/dataset1/data1/quality1/data</div><div class="line">/dataset1/data2</div><div class="line">/dataset1/data3</div><div class="line">/dataset1/dataN...</div><div class="line">/dataset1/quality1/data</div><div class="line">/dataset1/quality2/data</div><div class="line">/dataset2/</div><div class="line">...</div></div><!-- fragment --><p>The classes in this section provide solutions for handling dataset-level and data-level information. The template parameters are expected to be exactly the following, all of them const or non-const: </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>- HDF5 tree, as HI5TREE </td></tr>
-    <tr><td class="paramname">TI</td><td>- two-dimensional data, as <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a> </td></tr>
-    <tr><td class="paramname">D</td><td>- metadata, as <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products). ">rack::PolarODIM</a> </td></tr>
+    <tr><td class="paramname">TI</td><td>- tree iterator type </td></tr>
+    <tr><td class="paramname">D</td><td>- data array (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>) </td></tr>
   </table>
   </dd>
 </dl>

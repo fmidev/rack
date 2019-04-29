@@ -1,5 +1,4 @@
 <map id="Proj4" name="Proj4">
-<area shape="rect" id="node2" href="$classdrain_1_1ProjectionFrame.html" title="Extends the projection functionalities towards an image, that is, a bounded two&#45;dimensional region..." alt="" coords="5,80,123,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1RadarProj.html" title="RadarProj" alt="" coords="147,80,227,107"/>
-<area shape="rect" id="node4" href="$classrack_1_1RadarProj4.html" title="Equals M_PI/180.0. " alt="" coords="251,80,338,107"/>
+<area shape="rect" id="node2" href="$classrack_1_1RadarProj.html" title="RadarProj" alt="" coords="5,80,85,107"/>
+<area shape="rect" id="node3" href="$classrack_1_1RadarProj4.html" title="Equals M_PI/180.0. " alt="" coords="110,80,197,107"/>
 </map>

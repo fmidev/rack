@@ -2,7 +2,6 @@ var searchData=
 [
   ['bank',['Bank',['../classdrain_1_1Bank.html',1,'drain']]],
   ['bank_3c_20imageop_20_3e',['Bank&lt; ImageOp &gt;',['../classdrain_1_1Bank.html',1,'drain']]],
-  ['baseodim',['BaseODIM',['../classrack_1_1BaseODIM.html',1,'rack']]],
   ['basiccommand',['BasicCommand',['../classdrain_1_1BasicCommand.html',1,'drain']]],
   ['beamaltitudeop',['BeamAltitudeOp',['../classrack_1_1BeamAltitudeOp.html',1,'rack']]],
   ['beanadapter',['BeanAdapter',['../classdrain_1_1BeanAdapter.html',1,'drain']]],

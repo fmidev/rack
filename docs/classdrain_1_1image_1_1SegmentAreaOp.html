@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -349,11 +350,11 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 class drain::image::SegmentAreaOp&lt; S, D &gt;</h3>
 
 <p>Computes sizes connected pixel areas. For more complicated statistics, see <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsOp.html" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation...">SegmentStatisticsOp</a>. </p>
-<p><a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A helper class applied by FloodFillOp and SegmentAreaOp. ">SegmentProber</a> </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p><a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A recursive method for visiting pixels of a segment in an image. ">SegmentProber</a> </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">S</td><td>- source type for SegmentProber&lt;S,D&gt; </td></tr>
     <tr><td class="paramname">D</td><td>- destination type for SegmentProber&lt;S,D&gt;</td></tr>
-    <tr><td class="paramname">T</td><td>- prober class, eg. <a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A helper class applied by FloodFillOp and SegmentAreaOp. ">SegmentProber</a> Note: current designed matches <a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A helper class applied by FloodFillOp and SegmentAreaOp. ">SegmentProber</a> quite explicitly.</td></tr>
+    <tr><td class="paramname">T</td><td>- prober class, eg. <a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A recursive method for visiting pixels of a segment in an image. ">SegmentProber</a> Note: current designed matches <a class="el" href="classdrain_1_1image_1_1SegmentProber.html" title="A recursive method for visiting pixels of a segment in an image. ">SegmentProber</a> quite explicitly.</td></tr>
   </table>
   </dd>
 </dl>

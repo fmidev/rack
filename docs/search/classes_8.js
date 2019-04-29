@@ -3,6 +3,7 @@ var searchData=
   ['identityfunctor',['IdentityFunctor',['../structdrain_1_1IdentityFunctor.html',1,'drain']]],
   ['image',['Image',['../classdrain_1_1image_1_1Image.html',1,'drain::image']]],
   ['imagechannels',['ImageChannels',['../classdrain_1_1image_1_1ImageChannels.html',1,'drain::image']]],
+  ['imageconf',['ImageConf',['../classdrain_1_1image_1_1ImageConf.html',1,'drain::image']]],
   ['imagecoordpolicy',['ImageCoordPolicy',['../classdrain_1_1image_1_1ImageCoordPolicy.html',1,'drain::image']]],
   ['imageencoding',['ImageEncoding',['../classdrain_1_1image_1_1ImageEncoding.html',1,'drain::image']]],
   ['imagefill',['ImageFill',['../classdrain_1_1image_1_1ImageFill.html',1,'drain::image']]],

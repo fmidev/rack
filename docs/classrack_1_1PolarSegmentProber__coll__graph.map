@@ -1,19 +1,23 @@
 <map id="PolarSegmentProber" name="PolarSegmentProber">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SegmentProber.html" title="SegmentProber\&lt; int,\l int \&gt;" alt="" coords="204,481,347,523"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Logger.html" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log. " alt="" coords="153,377,214,404"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Log.html" title="Handler for notifications sent by. " alt="" coords="161,288,204,315"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry. " alt="" coords="240,377,311,404"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="228,288,323,315"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="417,184,500,211"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="366,95,444,121"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="493,5,600,32"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="342,5,468,32"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="499,95,620,121"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="484,236,630,263"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="6,5,68,32"/>
-<area shape="rect" id="node18" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="49,95,124,121"/>
-<area shape="rect" id="node13" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="298,184,392,211"/>
-<area shape="rect" id="node14" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="170,95,323,121"/>
-<area shape="rect" id="node16" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="172,184,273,211"/>
-<area shape="rect" id="node17" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="33,184,148,211"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SizeProber.html" title="SizeProber" alt="" coords="341,692,427,719"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SegmentProber.html" title="SegmentProber\&lt; int,\l int, SegmentProberConf\l\&lt; int, int \&gt; \&gt;" alt="" coords="301,587,467,643"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry. " alt="" coords="349,475,419,502"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="337,392,431,419"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="472,287,555,313"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="482,184,569,211"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="610,95,689,121"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="596,5,703,32"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="727,5,854,32"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="18,95,139,121"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="5,235,152,261"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="497,95,573,121"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="315,5,376,32"/>
+<area shape="rect" id="node16" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="164,95,239,121"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="471,5,572,32"/>
+<area shape="rect" id="node15" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="159,235,273,261"/>
+<area shape="rect" id="node17" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="325,287,443,313"/>
+<area shape="rect" id="node18" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="279,184,457,211"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l int, int \&gt;" alt="" coords="445,468,593,509"/>
+<area shape="rect" id="node21" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="476,392,583,419"/>
+<area shape="rect" id="node22" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="593,287,764,313"/>
 </map>

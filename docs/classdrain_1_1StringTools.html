@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -126,7 +127,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:ad67b8f3ca5389f4c342eac716e0850b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb54d65e4396f4ae923aa5ec1d8cf7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fb54d65e4396f4ae923aa5ec1d8cf7f"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a1fb54d65e4396f4ae923aa5ec1d8cf7f">trim</a> (const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
-<tr class="memdesc:a1fb54d65e4396f4ae923aa5ec1d8cf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string without leading and trailing whitespace (or other undesired chars). <br /></td></tr>
+<tr class="memdesc:a1fb54d65e4396f4ae923aa5ec1d8cf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string without leading and trailing whitespace (or str undesired chars). <br /></td></tr>
 <tr class="separator:a1fb54d65e4396f4ae923aa5ec1d8cf7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8245358c066830c08abc07b145f7e059"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a8245358c066830c08abc07b145f7e059">trim</a> (const std::string &amp;s, size_t &amp;pos1, size_t &amp;pos2, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
 <tr class="memdesc:a8245358c066830c08abc07b145f7e059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).  <a href="#a8245358c066830c08abc07b145f7e059">More...</a><br /></td></tr>
@@ -135,10 +136,10 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a6ff42a708091328dd584df1d42fdb75c"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c">split</a> (const std::string &amp;s, T &amp;sequence, const std::string &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
 <tr class="memdesc:a6ff42a708091328dd584df1d42fdb75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits a given std::string to a std Sequence.  <a href="#a6ff42a708091328dd584df1d42fdb75c">More...</a><br /></td></tr>
 <tr class="separator:a6ff42a708091328dd584df1d42fdb75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1f19c5fe25bc94ff4e0ebd3ee2c53a8"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad1f19c5fe25bc94ff4e0ebd3ee2c53a8"></a>
+<tr class="memitem:a9df398b519e19c4456fd7641dbc0407f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9df398b519e19c4456fd7641dbc0407f"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad1f19c5fe25bc94ff4e0ebd3ee2c53a8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>split</b> (const std::string &amp;s, T &amp;sequence, char separator=',')</td></tr>
-<tr class="separator:ad1f19c5fe25bc94ff4e0ebd3ee2c53a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9df398b519e19c4456fd7641dbc0407f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>split</b> (const std::string &amp;s, T &amp;sequence, char separator=',', const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
+<tr class="separator:a9df398b519e19c4456fd7641dbc0407f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6662f800604359c3e3c29d0300951ec9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a6662f800604359c3e3c29d0300951ec9"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a6662f800604359c3e3c29d0300951ec9">join</a> (const T &amp;container, std::ostream &amp;ostr, char separator=0)</td></tr>
 <tr class="memdesc:a6662f800604359c3e3c29d0300951ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').  <a href="#a6662f800604359c3e3c29d0300951ec9">More...</a><br /></td></tr>
@@ -418,7 +419,7 @@ template&lt;unsigned int S&gt; </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>- true if a non-empty segment found.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a1fb54d65e4396f4ae923aa5ec1d8cf7f" title="Returns a string without leading and trailing whitespace (or other undesired chars). ">trim(const std::string &amp;, const std::string &amp;)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a1fb54d65e4396f4ae923aa5ec1d8cf7f" title="Returns a string without leading and trailing whitespace (or str undesired chars). ">trim(const std::string &amp;, const std::string &amp;)</a> </dd></dl>
 
 </div>
 </div>

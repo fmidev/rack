@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -105,16 +106,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for RadarAccumulator&lt; AC, OD &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1RadarAccumulator__inherit__graph.png" border="0" usemap="#RadarAccumulator_3_01AC_00_01OD_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="RadarAccumulator_3_01AC_00_01OD_01_4_inherit__map" id="RadarAccumulator_3_01AC_00_01OD_01_4_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for RadarAccumulator&lt; AC, OD &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1RadarAccumulator__coll__graph.png" border="0" usemap="#RadarAccumulator_3_01AC_00_01OD_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="RadarAccumulator_3_01AC_00_01OD_01_4_coll__map" id="RadarAccumulator_3_01AC_00_01OD_01_4_coll__map">
-<area shape="rect" id="node3" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="71,323,170,349"/>
-<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="83,247,159,273"/>
-<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="67,157,174,184"/>
-<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="35,81,206,108"/>
+<area shape="rect" id="node3" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="203,351,302,377"/>
+<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
+<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
+<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
+<area shape="rect" id="node8" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="168,247,337,273"/>
+<area shape="rect" id="node9" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="362,247,485,273"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -136,8 +141,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5fd2fd7fc7c488d4f7b9b79a49255a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d0fa105a91c03d7f2a3b932047cef86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d0fa105a91c03d7f2a3b932047cef86"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a2d0fa105a91c03d7f2a3b932047cef86">addData</a> (const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcData, const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcQuality, double weight, int i0, int j0)</td></tr>
-<tr class="memdesc:a2d0fa105a91c03d7f2a3b932047cef86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data that is in the same coordinate system as the accumulator. <br /></td></tr>
+<tr class="memdesc:a2d0fa105a91c03d7f2a3b932047cef86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data that is in the same coordinate system as the accumulator. Weighted with quality. <br /></td></tr>
 <tr class="separator:a2d0fa105a91c03d7f2a3b932047cef86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a46b79d5735b99d85d3c920de5039de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a46b79d5735b99d85d3c920de5039de"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a6a46b79d5735b99d85d3c920de5039de">addData</a> (const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcData, const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcQuality, const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcCount)</td></tr>
+<tr class="memdesc:a6a46b79d5735b99d85d3c920de5039de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data that is in the same coordinate system as the accumulator. Weighted with quality and count. <br /></td></tr>
+<tr class="separator:a6a46b79d5735b99d85d3c920de5039de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc95fb0a665d25248d016af3a89a3e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accc95fb0a665d25248d016af3a89a3e8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>extract</b> (const OD &amp;odimOut, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; OD &gt; &gt; &amp;dstProduct, const std::string &amp;quantities) const </td></tr>
 <tr class="separator:accc95fb0a665d25248d016af3a89a3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>

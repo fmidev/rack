@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['scale',['SCALE',['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE()'],['../classdrain_1_1image_1_1ImageScaling.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::ImageScaling::scale()'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale()'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale()']]],
+  ['scale',['scale',['../classdrain_1_1image_1_1ImageScaling.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::ImageScaling::scale()'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale()'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale()'],['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE()']]],
   ['scalefinal',['scaleFinal',['../classdrain_1_1Functor.html#a9708cfcfdc71fafc417eab90771bec18',1,'drain::Functor']]],
+  ['scaling',['scaling',['../classdrain_1_1image_1_1Encoding.html#a52756a4a36f1c76ea6cfb4739d24e498',1,'drain::image::Encoding']]],
   ['sensitivity',['sensitivity',['../classrack_1_1SunOp.html#a3db15570a79682b98819ebfded08596b',1,'rack::SunOp']]],
   ['separator',['separator',['../classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154',1,'drain::SmartMap']]],
   ['size',['size',['../classdrain_1_1image_1_1SegmentStatistics.html#ae9f51f5758591221e7f66f863b4f30a7',1,'drain::image::SegmentStatistics']]],

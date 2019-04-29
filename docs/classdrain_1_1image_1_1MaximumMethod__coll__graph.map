@@ -1,23 +1,25 @@
 <map id="MaximumMethod" name="MaximumMethod">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="245,737,389,764"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="182,648,289,675"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="126,529,297,556"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="321,648,453,675"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="379,529,539,556"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ModifiableImage.html" title="ModifiableImage" alt="" coords="470,453,587,480"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="563,529,691,556"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="479,364,578,391"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="481,288,576,315"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="187,184,270,211"/>
-<area shape="rect" id="node12" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="100,95,179,121"/>
-<area shape="rect" id="node13" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="157,5,263,32"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="5,5,132,32"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="247,95,368,121"/>
-<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="269,236,415,263"/>
-<area shape="rect" id="node16" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="537,5,598,32"/>
-<area shape="rect" id="node22" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="574,95,649,121"/>
-<area shape="rect" id="node17" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="705,184,800,211"/>
-<area shape="rect" id="node18" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="676,95,829,121"/>
-<area shape="rect" id="node20" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="390,184,491,211"/>
-<area shape="rect" id="node21" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="566,184,681,211"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="155,828,299,855"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="93,739,199,765"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="38,620,209,647"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="231,739,363,765"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; unsigned int \&gt;" alt="" coords="443,620,603,647"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="462,544,579,571"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1ImageT.html" title="ImageT\&lt; double \&gt;" alt="" coords="291,620,419,647"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="471,468,570,495"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="473,392,568,419"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="366,287,449,313"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="339,184,425,211"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="135,95,213,121"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="157,5,263,32"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="237,95,359,121"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="181,235,327,261"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="384,95,460,121"/>
+<area shape="rect" id="node18" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="470,5,531,32"/>
+<area shape="rect" id="node21" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="485,95,559,121"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="323,5,425,32"/>
+<area shape="rect" id="node20" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="465,235,579,261"/>
+<area shape="rect" id="node22" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="629,287,748,313"/>
+<area shape="rect" id="node23" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="599,184,778,211"/>
 </map>

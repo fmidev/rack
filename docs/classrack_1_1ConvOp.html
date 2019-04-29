@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -135,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const HI5TREE &amp;src, HI5TREE &amp;dst) const</td></tr>
+<tr class="memitem:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac50f829ea463fa8833e8d8ded7c17b20">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const</td></tr>
 <tr class="memdesc:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="#ac50f829ea463fa8833e8d8ded7c17b20">More...</a><br /></td></tr>
 <tr class="separator:ac50f829ea463fa8833e8d8ded7c17b20 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -265,25 +266,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
 <li>The height of a convective cell typically reaches at least 5km</li>
 </ol>
 <p>The user-defined parameters for the algorithm are:</p><ol type="1">
-<li><img class="formulaInl" alt="$ maxEcho $" src="form_32.png"/> : minimum reflectivity directly indicating convection</li>
-<li><img class="formulaInl" alt="$ zCell $" src="form_33.png"/> : minimum reflectivity of convective area and its top</li>
-<li><img class="formulaInl" alt="$ cellHeight $" src="form_34.png"/> : minimum top height of a convective cell (having reflectivity &gt; <img class="formulaInl" alt="$ zCell $" src="form_33.png"/>)</li>
-<li><img class="formulaInl" alt="$ cellDiameter $" src="form_35.png"/> : typical diameter of a convective cell (having reflectivity &gt; <img class="formulaInl" alt="$ zCell $" src="form_33.png"/>)</li>
+<li><img class="formulaInl" alt="$ maxEcho $" src="form_61.png"/> : minimum reflectivity directly indicating convection</li>
+<li><img class="formulaInl" alt="$ zCell $" src="form_62.png"/> : minimum reflectivity of convective area and its top</li>
+<li><img class="formulaInl" alt="$ cellHeight $" src="form_63.png"/> : minimum top height of a convective cell (having reflectivity &gt; <img class="formulaInl" alt="$ zCell $" src="form_62.png"/>)</li>
+<li><img class="formulaInl" alt="$ cellDiameter $" src="form_64.png"/> : typical diameter of a convective cell (having reflectivity &gt; <img class="formulaInl" alt="$ zCell $" src="form_62.png"/>)</li>
 </ol>
 <div class="image">
 <img src="convection-principle.png" alt="convection-principle.png"/>
 <div class="caption">
 Parameters of the convection product.</div></div>
  Computationally, these properties are handled as fuzzy membership functions.</p><ul>
-<li><img class="formulaInl" alt="$ f_{\mathrm{zMin}}$" src="form_36.png"/> : minimum reflectivity; a fuzzy threshold at location <img class="formulaInl" alt="$z$" src="form_37.png"/> (minimum dBZ) and steepness <img class="formulaInl" alt="$ z_w $" src="form_38.png"/></li>
-<li><img class="formulaInl" alt="$ f_{\mathrm{echoTop}}$" src="form_39.png"/> : echo top for <img class="formulaInl" alt="$z$" src="form_37.png"/> ; a fuzzy threshold at location <img class="formulaInl" alt="$h$" src="form_40.png"/> (minimum height) and steepness <img class="formulaInl" alt="$ z_w $" src="form_38.png"/></li>
-<li><img class="formulaInl" alt="$ f_{\mathrm{area}}$" src="form_41.png"/> : size of cells of at least <img class="formulaInl" alt="$z$" src="form_37.png"/> ; a fuzzy peak at location <img class="formulaInl" alt="$a$" src="form_22.png"/> (minimum area) and steepness <img class="formulaInl" alt="$ a_w $" src="form_42.png"/></li>
+<li><img class="formulaInl" alt="$ f_{\mathrm{zMin}}$" src="form_65.png"/> : minimum reflectivity; a fuzzy threshold at location <img class="formulaInl" alt="$z$" src="form_66.png"/> (minimum dBZ) and steepness <img class="formulaInl" alt="$ z_w $" src="form_67.png"/></li>
+<li><img class="formulaInl" alt="$ f_{\mathrm{echoTop}}$" src="form_68.png"/> : echo top for <img class="formulaInl" alt="$z$" src="form_66.png"/> ; a fuzzy threshold at location <img class="formulaInl" alt="$h$" src="form_69.png"/> (minimum height) and steepness <img class="formulaInl" alt="$ z_w $" src="form_67.png"/></li>
+<li><img class="formulaInl" alt="$ f_{\mathrm{area}}$" src="form_70.png"/> : size of cells of at least <img class="formulaInl" alt="$z$" src="form_66.png"/> ; a fuzzy peak at location <img class="formulaInl" alt="$a$" src="form_46.png"/> (minimum area) and steepness <img class="formulaInl" alt="$ a_w $" src="form_71.png"/></li>
 </ul>
 <p>The resulting quantity </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ p_{conv} = f_{\mathrm{zMin}}(z,z_w)f_{echoTop}(z)f_{area}(a,a_w) \]" src="form_43.png"/>
+<img class="formulaDsp" alt="\[ p_{conv} = f_{\mathrm{zMin}}(z,z_w)f_{echoTop}(z)f_{area}(a,a_w) \]" src="form_72.png"/>
 </p>
 <p>The quality (confidence) of the probability estimation is defined likewise as a product of the component qualities: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ q_{conv} = q_{zMax}(z,z_w)q_{echoTop}(z)q_{area}(a,a_w) \]" src="form_44.png"/>
+<img class="formulaDsp" alt="\[ q_{conv} = q_{zMax}(z,z_w)q_{echoTop}(z)q_{area}(a,a_w) \]" src="form_73.png"/>
 </p>
  
 </div>

@@ -1,3 +1,5 @@
 <map id="DataSet&lt; DT &gt;" name="DataSet&lt; DT &gt;">
-<area shape="rect" id="node3" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="182,5,318,47"/>
+<area shape="rect" id="node2" href="$classrack_1_1DataGroup.html" title="DataGroup\&lt; Data\&lt; DT\l \&gt;, ODIMPathElem::DATA \&gt;" alt="" coords="69,95,260,136"/>
+<area shape="rect" id="node3" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; Data\&lt;\l DT \&gt;::datatype_t \&gt;" alt="" coords="5,5,151,47"/>
+<area shape="rect" id="node5" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="285,95,421,136"/>
 </map>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -89,9 +90,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classrack_1_1DataSet-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DataSet&lt; DT &gt; Class Template Reference</div>  </div>
@@ -107,7 +105,9 @@ Inheritance diagram for DataSet&lt; DT &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DataSet__inherit__graph.png" border="0" usemap="#DataSet_3_01DT_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="DataSet_3_01DT_01_4_inherit__map" id="DataSet_3_01DT_01_4_inherit__map">
-<area shape="rect" id="node3" href="classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="182,5,318,47"/>
+<area shape="rect" id="node2" href="classrack_1_1DataGroup.html" title="DataGroup\&lt; Data\&lt; DT\l \&gt;, ODIMPathElem::DATA \&gt;" alt="" coords="69,95,260,136"/>
+<area shape="rect" id="node3" href="classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; Data\&lt;\l DT \&gt;::datatype_t \&gt;" alt="" coords="5,5,151,47"/>
+<area shape="rect" id="node5" href="classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="285,95,421,136"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -115,18 +115,51 @@ Collaboration diagram for DataSet&lt; DT &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DataSet__coll__graph.png" border="0" usemap="#DataSet_3_01DT_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="DataSet_3_01DT_01_4_coll__map" id="DataSet_3_01DT_01_4_coll__map">
-<area shape="rect" id="node3" href="classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="182,5,318,47"/>
+<area shape="rect" id="node2" href="classrack_1_1DataGroup.html" title="DataGroup\&lt; Data\&lt; DT\l \&gt;, ODIMPathElem::DATA \&gt;" alt="" coords="533,71,724,112"/>
+<area shape="rect" id="node3" href="classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; Data\&lt;\l DT \&gt;::datatype_t \&gt;" alt="" coords="256,5,401,47"/>
+<area shape="rect" id="node5" href="classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="561,136,697,177"/>
+<area shape="rect" id="node6" href="classrack_1_1DataGroup.html" title="DataGroup\&lt; rack::PlainData,\l rack::ODIMPathElem::QUALITY \&gt;" alt="" coords="215,136,443,177"/>
+<area shape="rect" id="node7" href="classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; rack::\lPlainData::datatype_t \&gt;" alt="" coords="5,103,165,144"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a99b3192527ccdd5931837811666ac0c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99b3192527ccdd5931837811666ac0c5"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data_t</b></td></tr>
+<tr class="separator:a99b3192527ccdd5931837811666ac0c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0210b9ce97b891540e08da8fd930100b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0210b9ce97b891540e08da8fd930100b"></a>
 typedef <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>plaindata_t</b></td></tr>
 <tr class="separator:a0210b9ce97b891540e08da8fd930100b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5524e4730540a397311b745aee29100"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5524e4730540a397311b745aee29100"></a>
-typedef std::map&lt; std::string, <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_type</b></td></tr>
-<tr class="separator:ab5524e4730540a397311b745aee29100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41fb03f605fb25cd76742c92fd75a13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac41fb03f605fb25cd76742c92fd75a13"></a>
+typedef <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1Data.html">data_t</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a> &gt;::<a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>datagroup_t</b></td></tr>
+<tr class="separator:ac41fb03f605fb25cd76742c92fd75a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a666b25055a0534836ea6c91bbe80fb8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a666b25055a0534836ea6c91bbe80fb8f"></a>
+typedef datagroup_t::map_t&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="separator:a666b25055a0534836ea6c91bbe80fb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classrack_1_1DataGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1DataGroup')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1DataGroup.html">DataGroup&lt; Data&lt; DT &gt;, ODIMPathElem::DATA &gt;</a></td></tr>
+<tr class="memitem:a108951c2822c7dc99e344e630dd44727 inherit pub_types_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a108951c2822c7dc99e344e630dd44727"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data_t</b></td></tr>
+<tr class="separator:a108951c2822c7dc99e344e630dd44727 inherit pub_types_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d9f26c469884dfd667310dcbf5e9f2b inherit pub_types_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d9f26c469884dfd667310dcbf5e9f2b"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::datatype_t&#160;</td><td class="memItemRight" valign="bottom"><b>datatype_t</b></td></tr>
+<tr class="separator:a9d9f26c469884dfd667310dcbf5e9f2b inherit pub_types_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab65732d1d07fe33511f08559bf769c0 inherit pub_types_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab65732d1d07fe33511f08559bf769c0"></a>
+typedef std::map&lt; std::string, <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="separator:aab65732d1d07fe33511f08559bf769c0 inherit pub_types_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd5070f9e99ae63d408b496235c3446 inherit pub_types_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6dd5070f9e99ae63d408b496235c3446"></a>
+typedef <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1Data.html">data_t</a>, G &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>datagroup_t</b></td></tr>
+<tr class="separator:a6dd5070f9e99ae63d408b496235c3446 inherit pub_types_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; Data&lt; DT &gt;::datatype_t &gt;</a></td></tr>
+<tr class="memitem:a436a402f2943f43b74a439b5fd5aa7a7 inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a436a402f2943f43b74a439b5fd5aa7a7"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::datatype_t&#160;</td><td class="memItemRight" valign="bottom"><b>datatype_t</b></td></tr>
+<tr class="separator:a436a402f2943f43b74a439b5fd5aa7a7 inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e34c3d21d350c3b647cddcc1c04a47f"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::datatype_t::tree_t&#160;</td><td class="memItemRight" valign="bottom"><b>tree_t</b></td></tr>
+<tr class="separator:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f7fd622b2e2caa8dcd72cf815955bf inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95f7fd622b2e2caa8dcd72cf815955bf"></a>
+typedef <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::datatype_t::tree_iter_t&#160;</td><td class="memItemRight" valign="bottom"><b>tree_iter_t</b></td></tr>
+<tr class="separator:a95f7fd622b2e2caa8dcd72cf815955bf inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classrack_1_1QualityDataSupport"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1QualityDataSupport')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport&lt; DT &gt;</a></td></tr>
 <tr class="memitem:a0210b9ce97b891540e08da8fd930100b inherit pub_types_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0210b9ce97b891540e08da8fd930100b"></a>
 typedef <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>plaindata_t</b></td></tr>
@@ -134,30 +167,25 @@ typedef <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &g
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6e6fba21c9fa5836fd0e4aee9da77ff4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e6fba21c9fa5836fd0e4aee9da77ff4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a6e6fba21c9fa5836fd0e4aee9da77ff4">DataSet</a> (typename DT::tree_t &amp;tree, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
-<tr class="memdesc:a6e6fba21c9fa5836fd0e4aee9da77ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> subtree, like tree["dataset3"], constructs a data map of desired quantities. <br /></td></tr>
-<tr class="separator:a6e6fba21c9fa5836fd0e4aee9da77ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ca65f49eca1fa96d9f1a94ec25c2152"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca65f49eca1fa96d9f1a94ec25c2152"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setNoSave</b> (bool noSave=true)</td></tr>
-<tr class="separator:a6ca65f49eca1fa96d9f1a94ec25c2152"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac58b72a7863365c1a51bf41449602096"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac58b72a7863365c1a51bf41449602096"></a>
-<a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getFirstData</b> ()</td></tr>
-<tr class="separator:ac58b72a7863365c1a51bf41449602096"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533113604905250fffd94bdd0a8c18d0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a533113604905250fffd94bdd0a8c18d0"></a>
-const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getFirstData</b> () const </td></tr>
-<tr class="separator:a533113604905250fffd94bdd0a8c18d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9660e941320487452ce7bb11cafb6d01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9660e941320487452ce7bb11cafb6d01"></a>
-const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a9660e941320487452ce7bb11cafb6d01">getData</a> (const std::string &amp;quantityKey) const </td></tr>
-<tr class="memdesc:a9660e941320487452ce7bb11cafb6d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves data containing the given quantity. If not found, returns an empty array. <br /></td></tr>
-<tr class="separator:a9660e941320487452ce7bb11cafb6d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b3de8d0523d47217cdb40a9a0d80619"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b3de8d0523d47217cdb40a9a0d80619"></a>
-const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantity) const </td></tr>
-<tr class="separator:a6b3de8d0523d47217cdb40a9a0d80619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec6722056de73798a8dc84f46b6c5e86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec6722056de73798a8dc84f46b6c5e86"></a>
-<a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#aec6722056de73798a8dc84f46b6c5e86">getData</a> (const std::string &amp;quantityKey)</td></tr>
-<tr class="memdesc:aec6722056de73798a8dc84f46b6c5e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves data containing the given quantity. If not found, creates an array. <br /></td></tr>
-<tr class="separator:aec6722056de73798a8dc84f46b6c5e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b3d9600505bf0a3db343882e464310"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3b3d9600505bf0a3db343882e464310"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#ac3b3d9600505bf0a3db343882e464310">DataSet</a> (typename data_t::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
+<tr class="memdesc:ac3b3d9600505bf0a3db343882e464310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> subtree, like tree["dataset3"], constructs a data map of desired quantities. <br /></td></tr>
+<tr class="separator:ac3b3d9600505bf0a3db343882e464310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b9a379545e7446a744321aac5d6f7bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b9a379545e7446a744321aac5d6f7bb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DataSet</b> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;ds)</td></tr>
+<tr class="separator:a5b9a379545e7446a744321aac5d6f7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf31c335902feb50b0ddcae39b8cdd68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf31c335902feb50b0ddcae39b8cdd68"></a>
+const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#aaf31c335902feb50b0ddcae39b8cdd68">getData</a> (const std::string &amp;quantity) const </td></tr>
+<tr class="memdesc:aaf31c335902feb50b0ddcae39b8cdd68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves data containing the given quantity. If not found, returns an empty array. <br /></td></tr>
+<tr class="separator:aaf31c335902feb50b0ddcae39b8cdd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a68620f3cdd4f1efe2ad1098ccf793e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a68620f3cdd4f1efe2ad1098ccf793e"></a>
+<a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a6a68620f3cdd4f1efe2ad1098ccf793e">getData</a> (const std::string &amp;quantity)</td></tr>
+<tr class="memdesc:a6a68620f3cdd4f1efe2ad1098ccf793e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves data containing the given quantity. If not found, creates an array. <br /></td></tr>
+<tr class="separator:a6a68620f3cdd4f1efe2ad1098ccf793e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d4a67ff5d22114c919613e6247a0946"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d4a67ff5d22114c919613e6247a0946"></a>
+const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a1d4a67ff5d22114c919613e6247a0946">getData</a> (const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;regExp) const </td></tr>
+<tr class="memdesc:a1d4a67ff5d22114c919613e6247a0946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves data matching the given quantity. If not found, returns an empty array. <br /></td></tr>
+<tr class="separator:a1d4a67ff5d22114c919613e6247a0946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf3fff584ef953574a3006ce1c0bd49c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf3fff584ef953574a3006ce1c0bd49c"></a>
 <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQualityData2</b> (const std::string &amp;quantity=&quot;QIND&quot;, const std::string &amp;dataQuantity=&quot;&quot;)</td></tr>
 <tr class="separator:abf3fff584ef953574a3006ce1c0bd49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,67 +198,110 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTree3</b> (cons
 <tr class="memitem:a9db4209bad8afc522a578548593bf170"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9db4209bad8afc522a578548593bf170"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTree3</b> (const typename DT::odim_t &amp;odim) const </td></tr>
 <tr class="separator:a9db4209bad8afc522a578548593bf170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1DataGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1DataGroup')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1DataGroup.html">DataGroup&lt; Data&lt; DT &gt;, ODIMPathElem::DATA &gt;</a></td></tr>
+<tr class="memitem:ae79660fd027e3319b54a930b5899d900 inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae79660fd027e3319b54a930b5899d900"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#ae79660fd027e3319b54a930b5899d900">DataGroup</a> (typename <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
+<tr class="memdesc:ae79660fd027e3319b54a930b5899d900 inherit pub_methods_classrack_1_1DataGroup"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> subtree, like tree["dataset3"], constructs a data map of desired quantities. <br /></td></tr>
+<tr class="separator:ae79660fd027e3319b54a930b5899d900 inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5156016e6403c82f080f22b2a6b97e inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b5156016e6403c82f080f22b2a6b97e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DataGroup</b> (const <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;src)</td></tr>
+<tr class="separator:a4b5156016e6403c82f080f22b2a6b97e inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09dfd3f22b2c5090f67e3f5fe18dde01 inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09dfd3f22b2c5090f67e3f5fe18dde01"></a>
+const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;quantity) const</td></tr>
+<tr class="separator:a09dfd3f22b2c5090f67e3f5fe18dde01 inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa06a23daf931ae5ead55bbeb39c9571f inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa06a23daf931ae5ead55bbeb39c9571f"></a>
+<a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;quantity)</td></tr>
+<tr class="separator:aa06a23daf931ae5ead55bbeb39c9571f inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9e764ca0a807c216faed32f28c2e6f9 inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9e764ca0a807c216faed32f28c2e6f9"></a>
+const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;regExp) const</td></tr>
+<tr class="separator:ad9e764ca0a807c216faed32f28c2e6f9 inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5782dba20afaf41c70a8e38a69ffe50b inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5782dba20afaf41c70a8e38a69ffe50b"></a>
+<a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getFirstData</b> ()</td></tr>
+<tr class="separator:a5782dba20afaf41c70a8e38a69ffe50b inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61561c6dc182e0ce9e974c2e42de8304 inherit pub_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61561c6dc182e0ce9e974c2e42de8304"></a>
+const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getFirstData</b> () const</td></tr>
+<tr class="separator:a61561c6dc182e0ce9e974c2e42de8304 inherit pub_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; Data&lt; DT &gt;::datatype_t &gt;</a></td></tr>
+<tr class="memitem:a743c74a3a3b9c3b04b11deecaf104403 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a743c74a3a3b9c3b04b11deecaf104403"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhat</b> () const</td></tr>
+<tr class="separator:a743c74a3a3b9c3b04b11deecaf104403 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef409fe76e6cd47c1aedf4e59459c11 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ef409fe76e6cd47c1aedf4e59459c11"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhat</b> ()</td></tr>
+<tr class="separator:a1ef409fe76e6cd47c1aedf4e59459c11 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a318c9ae9432f67bb500746d22669c339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a318c9ae9432f67bb500746d22669c339"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhere</b> () const</td></tr>
+<tr class="separator:a318c9ae9432f67bb500746d22669c339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a1fedfb8c6adcdd591cb8969049339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24a1fedfb8c6adcdd591cb8969049339"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhere</b> ()</td></tr>
+<tr class="separator:a24a1fedfb8c6adcdd591cb8969049339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133b9e13ed8fba9db7a8103d1b962346 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a133b9e13ed8fba9db7a8103d1b962346"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHow</b> () const</td></tr>
+<tr class="separator:a133b9e13ed8fba9db7a8103d1b962346 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7cffdbe1fabfd6260280921916d73e3 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7cffdbe1fabfd6260280921916d73e3"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHow</b> ()</td></tr>
+<tr class="separator:ad7cffdbe1fabfd6260280921916d73e3 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ca65f49eca1fa96d9f1a94ec25c2152 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca65f49eca1fa96d9f1a94ec25c2152"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNoSave</b> (bool noSave=true)</td></tr>
+<tr class="separator:a6ca65f49eca1fa96d9f1a94ec25c2152 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2b3b0cd399420551abec3c7d81e198 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f2b3b0cd399420551abec3c7d81e198"></a>
+virtual const tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> () const</td></tr>
+<tr class="separator:a9f2b3b0cd399420551abec3c7d81e198 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b9ca88cd9c9411879ef4c4f5480a732 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b9ca88cd9c9411879ef4c4f5480a732"></a>
+virtual tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> ()</td></tr>
+<tr class="separator:a8b9ca88cd9c9411879ef4c4f5480a732 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1QualityDataSupport"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1QualityDataSupport')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport&lt; DT &gt;</a></td></tr>
-<tr class="memitem:a61c3238e269d364151d22d448eae3d54 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61c3238e269d364151d22d448eae3d54"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#a61c3238e269d364151d22d448eae3d54">hasQuality</a> (const std::string &amp;qualityQuantity=&quot;QIND&quot;) const </td></tr>
-<tr class="memdesc:a61c3238e269d364151d22d448eae3d54 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if non-empty, associated QIND data exists. <br /></td></tr>
-<tr class="separator:a61c3238e269d364151d22d448eae3d54 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91134b9c1372d8718fa52bbceac87f6d"></a>
-<a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#a91134b9c1372d8718fa52bbceac87f6d">getQualityData</a> (const std::string &amp;quantity=&quot;QIND&quot;)</td></tr>
-<tr class="memdesc:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds local quality data; maybe empty. <br /></td></tr>
-<tr class="separator:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa51f7670e8b076a6aaabb39f5f84b994 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa51f7670e8b076a6aaabb39f5f84b994"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (typename plaindata_t::tree_t &amp;tree)</td></tr>
+<tr class="separator:aa51f7670e8b076a6aaabb39f5f84b994 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a553aa92d407048eb05fad44453502707 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a553aa92d407048eb05fad44453502707"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (const <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport</a>&lt; DT &gt; &amp;qds)</td></tr>
+<tr class="separator:a553aa92d407048eb05fad44453502707 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94d4339693aa26533a7b29f352c7e7d8 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94d4339693aa26533a7b29f352c7e7d8"></a>
 const <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#a94d4339693aa26533a7b29f352c7e7d8">getQualityData</a> (const std::string &amp;quantity=&quot;QIND&quot;) const </td></tr>
-<tr class="memdesc:a94d4339693aa26533a7b29f352c7e7d8 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds local quality data; maybe empty. <br /></td></tr>
+<tr class="memdesc:a94d4339693aa26533a7b29f352c7e7d8 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds associated quality data - maybe empty and unscaled. <br /></td></tr>
 <tr class="separator:a94d4339693aa26533a7b29f352c7e7d8 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:aa8c0e5cf90e431fe29f9ca8d64b57b93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8c0e5cf90e431fe29f9ca8d64b57b93"></a>
-DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>tree</b></td></tr>
-<tr class="separator:aa8c0e5cf90e431fe29f9ca8d64b57b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6323a6cd845fef5d0d783af27fdfa169"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a6323a6cd845fef5d0d783af27fdfa169">add</a> (const std::string &amp;dataPath, const std::string &amp;quantityKey)</td></tr>
-<tr class="memdesc:a6323a6cd845fef5d0d783af27fdfa169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds <a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. ">Data</a> <a href="#a6323a6cd845fef5d0d783af27fdfa169">More...</a><br /></td></tr>
-<tr class="separator:a6323a6cd845fef5d0d783af27fdfa169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d42c46b35c113d8a65c0664255e6736"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d42c46b35c113d8a65c0664255e6736"></a>
-virtual const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt;::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> () const </td></tr>
-<tr class="separator:a1d42c46b35c113d8a65c0664255e6736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba7e65ab0413dc129d47fb95263b1287"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba7e65ab0413dc129d47fb95263b1287"></a>
-virtual <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt;::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> ()</td></tr>
-<tr class="separator:aba7e65ab0413dc129d47fb95263b1287"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a370ee779bb5c74c985b01c66b42ddb0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a370ee779bb5c74c985b01c66b42ddb0a"></a>
-static const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEmpty</b> ()</td></tr>
-<tr class="separator:a370ee779bb5c74c985b01c66b42ddb0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41d15fa2da45565b09ba0fcd3fd7a6b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41d15fa2da45565b09ba0fcd3fd7a6b6"></a>
-static DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#a41d15fa2da45565b09ba0fcd3fd7a6b6">init</a> (typename DT::tree_t &amp;root, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;dst)</td></tr>
-<tr class="memdesc:a41d15fa2da45565b09ba0fcd3fd7a6b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a root, constructs a map of data sets of desired quantities. <br /></td></tr>
-<tr class="separator:a41d15fa2da45565b09ba0fcd3fd7a6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4aa9deee2fe7b1ecaca19a9c02a78e"><td class="memItemLeft" align="right" valign="top">static DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSet.html#afc4aa9deee2fe7b1ecaca19a9c02a78e">init</a> (typename DT::tree_t &amp;datasetTree, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;dst)</td></tr>
-<tr class="memdesc:afc4aa9deee2fe7b1ecaca19a9c02a78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given <a class="el" href="classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc). ">DataSet</a> subtree, like tree["dataset3"], constructs a data map of desired quantities.  <a href="#afc4aa9deee2fe7b1ecaca19a9c02a78e">More...</a><br /></td></tr>
-<tr class="separator:afc4aa9deee2fe7b1ecaca19a9c02a78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_classrack_1_1QualityDataSupport"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1QualityDataSupport')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport&lt; DT &gt;</a></td></tr>
-<tr class="memitem:ac984f2c0158d103ffbddb2426c5b5fa6 inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#ac984f2c0158d103ffbddb2426c5b5fa6">findExistingQualityPath</a> (const std::string &amp;quantity, const typename plaindata_t::tree_t &amp;tree, std::string &amp;path)</td></tr>
-<tr class="memdesc:ac984f2c0158d103ffbddb2426c5b5fa6 inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve general or quantity-specific quality data.  <a href="#ac984f2c0158d103ffbddb2426c5b5fa6">More...</a><br /></td></tr>
-<tr class="separator:ac984f2c0158d103ffbddb2426c5b5fa6 inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab285dbb3ae30369ea9f1e149c071faf8 inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab285dbb3ae30369ea9f1e149c071faf8"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasQualityData</b> (std::map&lt; std::string, <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &gt; &amp;cacheMap, const std::string &amp;quantity, const typename plaindata_t::tree_t &amp;tree)</td></tr>
-<tr class="separator:ab285dbb3ae30369ea9f1e149c071faf8 inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97e33f7a87057d1b9a4a8466d390d54f inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97e33f7a87057d1b9a4a8466d390d54f"></a>
-static <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveQualityData</b> (std::map&lt; std::string, <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &gt; &amp;cacheMap, const std::string &amp;quantity, typename plaindata_t::tree_t &amp;tree)</td></tr>
-<tr class="separator:a97e33f7a87057d1b9a4a8466d390d54f inherit pro_static_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a91134b9c1372d8718fa52bbceac87f6d"></a>
+<a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#a91134b9c1372d8718fa52bbceac87f6d">getQualityData</a> (const std::string &amp;quantity=&quot;QIND&quot;)</td></tr>
+<tr class="memdesc:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds associated quality data - maybe empty and unscaled. <br /></td></tr>
+<tr class="separator:a91134b9c1372d8718fa52bbceac87f6d inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87634df5b6b1f172321ab4da128f5a9 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab87634df5b6b1f172321ab4da128f5a9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasQuality</b> (const std::string &amp;quantity=&quot;QIND&quot;) const </td></tr>
+<tr class="separator:ab87634df5b6b1f172321ab4da128f5a9 inherit pub_methods_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; Data&lt; DT &gt;::datatype_t &gt;</a></td></tr>
+<tr class="memitem:a8180eb556a52a5f57a1d9dad057b5289 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8180eb556a52a5f57a1d9dad057b5289"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TreeWrapper</b> (tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>)</td></tr>
+<tr class="separator:a8180eb556a52a5f57a1d9dad057b5289 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8fc523a50155fcbf295d848ce9e1707 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8fc523a50155fcbf295d848ce9e1707"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TreeWrapper</b> (const <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper</a> &amp;d)</td></tr>
+<tr class="separator:ac8fc523a50155fcbf295d848ce9e1707 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3980eefc9d59aa33067df080e3d66314 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3980eefc9d59aa33067df080e3d66314"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttr</b> () const</td></tr>
+<tr class="separator:a3980eefc9d59aa33067df080e3d66314 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae7a6006935e5a532f0f1aa39cf2600f inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae7a6006935e5a532f0f1aa39cf2600f"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttr</b> ()</td></tr>
+<tr class="separator:aae7a6006935e5a532f0f1aa39cf2600f inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classrack_1_1DataGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1DataGroup')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1DataGroup.html">DataGroup&lt; Data&lt; DT &gt;, ODIMPathElem::DATA &gt;</a></td></tr>
+<tr class="memitem:a5abc001af14285affd17623de8d84ade inherit pro_static_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5abc001af14285affd17623de8d84ade"></a>
+static const <a class="el" href="classrack_1_1Data.html">data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEmpty</b> ()</td></tr>
+<tr class="separator:a5abc001af14285affd17623de8d84ade inherit pro_static_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1974e91dfd46e204adea39c1610f0120 inherit pro_static_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#a1974e91dfd46e204adea39c1610f0120">init</a> (typename <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::tree_t &amp;t, <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;dst, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
+<tr class="memdesc:a1974e91dfd46e204adea39c1610f0120 inherit pro_static_methods_classrack_1_1DataGroup"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given DataSet subtree, like tree["dataset3"], constructs a data map of desired quantities.  <a href="#a1974e91dfd46e204adea39c1610f0120">More...</a><br /></td></tr>
+<tr class="separator:a1974e91dfd46e204adea39c1610f0120 inherit pro_static_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca3d03e423f80e4533de2882d7b72b4c inherit pro_static_methods_classrack_1_1DataGroup"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca3d03e423f80e4533de2882d7b72b4c"></a>
+static <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt;::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>adapt</b> (const <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;src, <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;dst)</td></tr>
+<tr class="separator:aca3d03e423f80e4533de2882d7b72b4c inherit pro_static_methods_classrack_1_1DataGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; Data&lt; DT &gt;::datatype_t &gt;</a></td></tr>
+<tr class="memitem:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab29b3410f1b085a954d78622b270613f"></a>
+tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a></td></tr>
+<tr class="memdesc:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="mdescLeft">&#160;</td><td class="mdescRight">General HDF5 data structure. <br /></td></tr>
+<tr class="separator:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1QualityDataSupport"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1QualityDataSupport')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport&lt; DT &gt;</a></td></tr>
-<tr class="memitem:a1631ccc228f1ddc5d579c2fed9583fc7 inherit pro_attribs_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1631ccc228f1ddc5d579c2fed9583fc7"></a>
-std::map&lt; std::string, <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>qualityDataMap</b></td></tr>
-<tr class="separator:a1631ccc228f1ddc5d579c2fed9583fc7 inherit pro_attribs_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a6771f28eef69176f3b04260011e6b inherit pro_attribs_classrack_1_1QualityDataSupport"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93a6771f28eef69176f3b04260011e6b"></a>
+<a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">ODIMPathElem::QUALITY</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>quality</b></td></tr>
+<tr class="separator:a93a6771f28eef69176f3b04260011e6b inherit pro_attribs_classrack_1_1QualityDataSupport"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename DT&gt;<br />
@@ -244,94 +315,7 @@ class rack::DataSet&lt; DT &gt;</h3>
   </dd>
 </dl>
 <p>See SweepSrc and ProductDst below. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6323a6cd845fef5d0d783af27fdfa169"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classrack_1_1Data.html">Data</a>&lt;DT&gt;&amp; add </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>dataPath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>quantityKey</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds <a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. ">Data</a></p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dataPath</td><td>- "data1", "data2", etc </td></tr>
-    <tr><td class="paramname">quantityKey</td><td>- "DBZH", "VRAD", etc. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="afc4aa9deee2fe7b1ecaca19a9c02a78e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static DT::tree_t&amp; init </td>
-          <td>(</td>
-          <td class="paramtype">typename DT::tree_t &amp;&#160;</td>
-          <td class="paramname"><em>datasetTree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;&#160;</td>
-          <td class="paramname"><em>quantityRegExp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;&#160;</td>
-          <td class="paramname"><em>dst</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Given <a class="el" href="classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc). ">DataSet</a> subtree, like tree["dataset3"], constructs a data map of desired quantities. </p>
-<p>ODC non-standard quantity location </p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>data/<a class="el" href="Data_8h_source.html">Data.h</a></li>
 </ul>
 </div><!-- contents -->

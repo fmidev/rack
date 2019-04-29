@@ -1,6 +1,0 @@
-<map id="DopplerWindowConfig" name="DopplerWindowConfig">
-<area shape="rect" id="node2" href="$classrack_1_1RadarWindowConfig.html" title="RadarWindowConfig" alt="" coords="29,323,171,349"/>
-<area shape="rect" id="node4" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="137,233,223,260"/>
-<area shape="rect" id="node5" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="151,157,209,184"/>
-<area shape="rect" id="node6" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="125,81,235,108"/>
-</map>

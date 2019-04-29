@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -244,8 +245,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const <a cl
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Blends an image to another with given proportion. </p>
 <p>This operator produces: <code> F2 = cF + (1-c)M{ cF + (1-c)M{F} } = cF + (1-c)cM{F} + (1-c)^2M^2{F} </code> where <code>F</code> is an image, <code>M{}</code> is a <code>W x W</code> WindowAverage operator, and <code>c</code> is a coefficient.</p>
-<p>~ convert color.png -rotate 180 color-rot180.png</p>
-<div class="fragment"><div class="line">drainage shapes1.png shapes2.png    --mix 0.75 -o mix.png</div><div class="line">drainage color.png color-rot180.png --mix 0.25 -o mix-color.png</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>DoubleSmootherOp </dd>
+<p>~ make image-rot.png #exec</p>
+<div class="fragment"><div class="line">drainage shapes1.png shapes2.png    --mix 0.75 -o mix.png</div><div class="line">drainage image.png image-rot.png --mix 0.25 -o mix-image.png</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>DoubleSmootherOp </dd>
 <dd>
 QuadraticSmootherOp </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>A base class for operations between of intensity vectors of two images.  
+<p>A base class for operations between of multi-channel pixels (intensity vectors) of two images.  
  <a href="classdrain_1_1image_1_1PixelVectorOp.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="PixelVectorOp_8h_source.html">PixelVectorOp.h</a>&gt;</code></p>
@@ -329,8 +330,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinat
 <tr class="separator:a66fe29f91162e731193e78ce1aad2781 inherit pro_static_methods_classdrain_1_1image_1_1ImageOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A base class for operations between of intensity vectors of two images. </p>
-<p>In each point(i,j), performs an operation for vectors constructed the intensities in different channels. Produces a flat, single-channel image.</p>
+<div class="textblock"><p>A base class for operations between of multi-channel pixels (intensity vectors) of two images. </p>
+<p>In each point(i,j), performs an operation for vectors of the channels intensities.</p>
+<p>Produces a flat (single-channel) image.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1DistanceOp.html" title="Computes the distance between intensity vectors. ">DistanceOp</a> </dd>
 <dd>
 <a class="el" href="classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images. ">ProductOp</a> </dd>

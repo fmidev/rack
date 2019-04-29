@@ -31,7 +31,7 @@
 <area shape="rect" id="node23" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title="DistanceModelLinear" alt="" coords="319,639,463,665"/>
 <area shape="rect" id="node25" href="$classdrain_1_1image_1_1ImageChannels.html" title="ImageChannels" alt="" coords="335,689,448,716"/>
 <area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageCoordPolicy.html" title="ImageCoordPolicy" alt="" coords="327,740,456,767"/>
-<area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of an existing image. " alt="" coords="335,791,447,817"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of a target image. " alt="" coords="335,791,447,817"/>
 <area shape="rect" id="node28" href="$classdrain_1_1image_1_1ImageFill.html" title="ImageFill" alt="" coords="354,841,429,868"/>
 <area shape="rect" id="node29" href="$classdrain_1_1image_1_1ImageGeometry.html" title="ImageGeometry" alt="" coords="334,892,449,919"/>
 <area shape="rect" id="node30" href="$classdrain_1_1image_1_1ImageHistogram.html" title="ImageHistogram" alt="" coords="332,943,451,969"/>

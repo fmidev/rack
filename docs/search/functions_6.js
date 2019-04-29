@@ -8,7 +8,6 @@ var searchData=
   ['filter',['filter',['../classrack_1_1PolarSmoother.html#ad03ecd47911783415adeaf39aad07320',1,'rack::PolarSmoother']]],
   ['find',['find',['../classdrain_1_1Registry.html#a94dea84892f5d620c3aff3300c0e1798',1,'drain::Registry::find(const std::string &amp;name) const '],['../classdrain_1_1Registry.html#aab9a57d6a4b127b8e204bda72bfdf273',1,'drain::Registry::find(const std::string &amp;name)']]],
   ['findbestmatchingunit',['findBestMatchingUnit',['../classdrain_1_1Som.html#ac94898005583f71a703b3fd2fe7f620b',1,'drain::Som']]],
-  ['findexistingqualitypath',['findExistingQualityPath',['../classrack_1_1QualityDataSupport.html#ac984f2c0158d103ffbddb2426c5b5fa6',1,'rack::QualityDataSupport']]],
   ['functorop',['FunctorOp',['../classdrain_1_1image_1_1FunctorOp.html#a0ae034251488e7622508ad9da6cc0d71',1,'drain::image::FunctorOp']]],
   ['fuzzystep',['FuzzyStep',['../classdrain_1_1FuzzyStep.html#ab6b125d0b851a01c237461900d8fa768',1,'drain::FuzzyStep']]],
   ['fwd',['fwd',['../classdrain_1_1image_1_1ImageScaling.html#a913e556878f696ec51f622578959b33f',1,'drain::image::ImageScaling']]]

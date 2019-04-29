@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,11 +96,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Rectangle&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for Rectangle&lt; T &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="classdrain_1_1Rectangle__coll__graph.png" border="0" usemap="#Rectangle_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
+<p>Rectange defined through lower left and upper right coordinates.  
+ <a href="classdrain_1_1Rectangle.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="Rectangle_8h_source.html">Rectangle.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -150,18 +151,12 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:afd7bd66817ba55da15059fdffa7de088"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd7bd66817ba55da15059fdffa7de088"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>xLowerLeft</b></td></tr>
-<tr class="separator:afd7bd66817ba55da15059fdffa7de088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae86a2f4aa41fa3ce3ca9ccb5ca3ef790"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae86a2f4aa41fa3ce3ca9ccb5ca3ef790"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>yLowerLeft</b></td></tr>
-<tr class="separator:ae86a2f4aa41fa3ce3ca9ccb5ca3ef790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8bf318f71532fa8155666adb2478e4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8bf318f71532fa8155666adb2478e4e"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>xUpperRight</b></td></tr>
-<tr class="separator:af8bf318f71532fa8155666adb2478e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42e21f55dc44a58b280bb3dcaf80a0c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42e21f55dc44a58b280bb3dcaf80a0c1"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>yUpperRight</b></td></tr>
-<tr class="separator:a42e21f55dc44a58b280bb3dcaf80a0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb551d87aa13eb5e4a55246584e3248"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bb551d87aa13eb5e4a55246584e3248"></a>
+<a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>lowerLeft</b></td></tr>
+<tr class="separator:a8bb551d87aa13eb5e4a55246584e3248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae831335e36b8f7db49dbf643ca282c85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae831335e36b8f7db49dbf643ca282c85"></a>
+<a class="el" href="classdrain_1_1image_1_1Point2D.html">drain::image::Point2D</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>upperRight</b></td></tr>
+<tr class="separator:ae831335e36b8f7db49dbf643ca282c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -169,7 +164,13 @@ Static Protected Member Functions</h2></td></tr>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>limit</b> (const T &amp;lowerBound, const T &amp;upperBound, T &amp;x)</td></tr>
 <tr class="separator:a6bb3ae6356f2039b5d0aba911f3ad932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br />
+class drain::Rectangle&lt; T &gt;</h3>
+
+<p>Rectange defined through lower left and upper right coordinates. </p>
+<dl class="section see"><dt>See also</dt><dd>drain::Range&lt;T&gt; </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="adec41639d4cad93a9b779b29665b4268"></a>
 <div class="memitem">
 <div class="memproto">

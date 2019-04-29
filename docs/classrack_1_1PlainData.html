@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -96,14 +97,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>Essential class for storing radar data.  
+ <a href="classrack_1_1PlainData.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Data_8h_source.html">Data.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for PlainData&lt; DT &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1PlainData__inherit__graph.png" border="0" usemap="#PlainData_3_01DT_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="PlainData_3_01DT_01_4_inherit__map" id="PlainData_3_01DT_01_4_inherit__map">
-<area shape="rect" id="node3" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. " alt="" coords="25,155,117,181"/>
-<area shape="rect" id="node2" href="classrack_1_1DataObject.html" title="Base class for all kinds of radar data. " alt="" coords="5,5,136,32"/>
+<area shape="rect" id="node3" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. " alt="" coords="29,155,121,181"/>
+<area shape="rect" id="node2" href="classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data. " alt="" coords="5,5,144,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -111,7 +115,7 @@ Collaboration diagram for PlainData&lt; DT &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1PlainData__coll__graph.png" border="0" usemap="#PlainData_3_01DT_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="PlainData_3_01DT_01_4_coll__map" id="PlainData_3_01DT_01_4_coll__map">
-<area shape="rect" id="node2" href="classrack_1_1DataObject.html" title="Base class for all kinds of radar data. " alt="" coords="5,5,136,32"/>
+<area shape="rect" id="node2" href="classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data. " alt="" coords="5,5,144,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -126,18 +130,24 @@ typedef DT::image_t&#160;</td><td class="memItemRight" valign="bottom"><b>image_
 <tr class="memitem:a62d138baa10d08139d3eaef0ac72419e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62d138baa10d08139d3eaef0ac72419e"></a>
 typedef DT::odim_t&#160;</td><td class="memItemRight" valign="bottom"><b>odim_t</b></td></tr>
 <tr class="separator:a62d138baa10d08139d3eaef0ac72419e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classrack_1_1DataObject"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1DataObject')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1DataObject.html">DataObject&lt; DT &gt;</a></td></tr>
-<tr class="memitem:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1DataObject"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e34c3d21d350c3b647cddcc1c04a47f"></a>
+<tr class="inherit_header pub_types_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; DT &gt;</a></td></tr>
+<tr class="memitem:a436a402f2943f43b74a439b5fd5aa7a7 inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a436a402f2943f43b74a439b5fd5aa7a7"></a>
+typedef DT&#160;</td><td class="memItemRight" valign="bottom"><b>datatype_t</b></td></tr>
+<tr class="separator:a436a402f2943f43b74a439b5fd5aa7a7 inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e34c3d21d350c3b647cddcc1c04a47f"></a>
 typedef DT::tree_t&#160;</td><td class="memItemRight" valign="bottom"><b>tree_t</b></td></tr>
-<tr class="separator:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1DataObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2e34c3d21d350c3b647cddcc1c04a47f inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f7fd622b2e2caa8dcd72cf815955bf inherit pub_types_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95f7fd622b2e2caa8dcd72cf815955bf"></a>
+typedef DT::tree_iter_t&#160;</td><td class="memItemRight" valign="bottom"><b>tree_iter_t</b></td></tr>
+<tr class="separator:a95f7fd622b2e2caa8dcd72cf815955bf inherit pub_types_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ec3670ef823e175cfee13b42d70c826"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ec3670ef823e175cfee13b42d70c826"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PlainData</b> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1DataObject.html#ab29b3410f1b085a954d78622b270613f">tree</a>)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PlainData</b> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>)</td></tr>
 <tr class="separator:a5ec3670ef823e175cfee13b42d70c826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaf9f566d18c6252e61a8b09b61fafd0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adaf9f566d18c6252e61a8b09b61fafd0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#adaf9f566d18c6252e61a8b09b61fafd0">PlainData</a> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1DataObject.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const std::string &amp;quantity)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#adaf9f566d18c6252e61a8b09b61fafd0">PlainData</a> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const std::string &amp;quantity)</td></tr>
 <tr class="memdesc:adaf9f566d18c6252e61a8b09b61fafd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor referring to HDF5 structure. <br /></td></tr>
 <tr class="separator:adaf9f566d18c6252e61a8b09b61fafd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a006e39d014d8715384705987ac0b05ce"><td class="memTemplParams" colspan="2">template&lt;typename DT2 &gt; </td></tr>
@@ -172,13 +182,6 @@ template&lt;class T &gt; </td></tr>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a1922521b78a5c2a2fce032590e11a2aa"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>initialize</b> (const T &amp;type, const <a class="el" href="classdrain_1_1image_1_1AreaGeometry.html">drain::image::AreaGeometry</a> &amp;geometry)</td></tr>
 <tr class="separator:a1922521b78a5c2a2fce032590e11a2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ca65f49eca1fa96d9f1a94ec25c2152"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca65f49eca1fa96d9f1a94ec25c2152"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setNoSave</b> (bool noSave=true)</td></tr>
-<tr class="separator:a6ca65f49eca1fa96d9f1a94ec25c2152"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae03d0a3180909f965f0edd15ed5ecda"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae03d0a3180909f965f0edd15ed5ecda"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#aae03d0a3180909f965f0edd15ed5ecda">updateTree2</a> ()</td></tr>
-<tr class="memdesc:aae03d0a3180909f965f0edd15ed5ecda"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: consider this to destructor. <br /></td></tr>
-<tr class="separator:aae03d0a3180909f965f0edd15ed5ecda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ff0df8ab7d9ba7de6f3589073ab0c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5ff0df8ab7d9ba7de6f3589073ab0c4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#af5ff0df8ab7d9ba7de6f3589073ab0c4">createSimpleQualityData</a> (<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;qualityImage, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const </td></tr>
 <tr class="memdesc:af5ff0df8ab7d9ba7de6f3589073ab0c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">For this data, creates an on-off quality data. <br /></td></tr>
@@ -187,6 +190,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#a0894fabc4b79c7464cd7d8c2c7e59c56">createSimpleQualityData</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt; &amp;qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const </td></tr>
 <tr class="memdesc:a0894fabc4b79c7464cd7d8c2c7e59c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">For this data, creates an on-off quality data. <br /></td></tr>
 <tr class="separator:a0894fabc4b79c7464cd7d8c2c7e59c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae03d0a3180909f965f0edd15ed5ecda"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae03d0a3180909f965f0edd15ed5ecda"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#aae03d0a3180909f965f0edd15ed5ecda">updateTree2</a> ()</td></tr>
+<tr class="memdesc:aae03d0a3180909f965f0edd15ed5ecda"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: consider this to destructor. <br /></td></tr>
+<tr class="separator:aae03d0a3180909f965f0edd15ed5ecda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; DT &gt;</a></td></tr>
+<tr class="memitem:a743c74a3a3b9c3b04b11deecaf104403 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a743c74a3a3b9c3b04b11deecaf104403"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhat</b> () const </td></tr>
+<tr class="separator:a743c74a3a3b9c3b04b11deecaf104403 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef409fe76e6cd47c1aedf4e59459c11 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ef409fe76e6cd47c1aedf4e59459c11"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhat</b> ()</td></tr>
+<tr class="separator:a1ef409fe76e6cd47c1aedf4e59459c11 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a318c9ae9432f67bb500746d22669c339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a318c9ae9432f67bb500746d22669c339"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhere</b> () const </td></tr>
+<tr class="separator:a318c9ae9432f67bb500746d22669c339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a1fedfb8c6adcdd591cb8969049339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24a1fedfb8c6adcdd591cb8969049339"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWhere</b> ()</td></tr>
+<tr class="separator:a24a1fedfb8c6adcdd591cb8969049339 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133b9e13ed8fba9db7a8103d1b962346 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a133b9e13ed8fba9db7a8103d1b962346"></a>
+const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHow</b> () const </td></tr>
+<tr class="separator:a133b9e13ed8fba9db7a8103d1b962346 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7cffdbe1fabfd6260280921916d73e3 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7cffdbe1fabfd6260280921916d73e3"></a>
+<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHow</b> ()</td></tr>
+<tr class="separator:ad7cffdbe1fabfd6260280921916d73e3 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ca65f49eca1fa96d9f1a94ec25c2152 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ca65f49eca1fa96d9f1a94ec25c2152"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNoSave</b> (bool noSave=true)</td></tr>
+<tr class="separator:a6ca65f49eca1fa96d9f1a94ec25c2152 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f2b3b0cd399420551abec3c7d81e198 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f2b3b0cd399420551abec3c7d81e198"></a>
+virtual const tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> () const </td></tr>
+<tr class="separator:a9f2b3b0cd399420551abec3c7d81e198 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b9ca88cd9c9411879ef4c4f5480a732 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b9ca88cd9c9411879ef4c4f5480a732"></a>
+virtual tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTree</b> ()</td></tr>
+<tr class="separator:a8b9ca88cd9c9411879ef4c4f5480a732 inherit pub_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -196,31 +231,38 @@ image_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td
 <tr class="memitem:a2d8e906ee8e8813e87cba80bf90c0004"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d8e906ee8e8813e87cba80bf90c0004"></a>
 odim_t&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
 <tr class="separator:a2d8e906ee8e8813e87cba80bf90c0004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_classrack_1_1DataObject"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1DataObject')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1DataObject.html">DataObject&lt; DT &gt;</a></td></tr>
-<tr class="memitem:ab29b3410f1b085a954d78622b270613f inherit pub_attribs_classrack_1_1DataObject"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab29b3410f1b085a954d78622b270613f"></a>
-tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataObject.html#ab29b3410f1b085a954d78622b270613f">tree</a></td></tr>
-<tr class="memdesc:ab29b3410f1b085a954d78622b270613f inherit pub_attribs_classrack_1_1DataObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">General HDF5 data structure. <br /></td></tr>
-<tr class="separator:ab29b3410f1b085a954d78622b270613f inherit pub_attribs_classrack_1_1DataObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_methods_classrack_1_1DataObject"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1DataObject')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1DataObject.html">DataObject&lt; DT &gt;</a></td></tr>
-<tr class="memitem:a1d2f988738330f32f0dd666df56cef4a inherit pro_methods_classrack_1_1DataObject"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d2f988738330f32f0dd666df56cef4a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DataObject</b> (tree_t &amp;<a class="el" href="classrack_1_1DataObject.html#ab29b3410f1b085a954d78622b270613f">tree</a>)</td></tr>
-<tr class="separator:a1d2f988738330f32f0dd666df56cef4a inherit pro_methods_classrack_1_1DataObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade2903936027f4d8bb6c6cb50f4fc115 inherit pro_methods_classrack_1_1DataObject"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade2903936027f4d8bb6c6cb50f4fc115"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DataObject</b> (const <a class="el" href="classrack_1_1DataObject.html">DataObject</a> &amp;d)</td></tr>
-<tr class="separator:ade2903936027f4d8bb6c6cb50f4fc115 inherit pro_methods_classrack_1_1DataObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; DT &gt;</a></td></tr>
+<tr class="memitem:a8180eb556a52a5f57a1d9dad057b5289 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8180eb556a52a5f57a1d9dad057b5289"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TreeWrapper</b> (tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>)</td></tr>
+<tr class="separator:a8180eb556a52a5f57a1d9dad057b5289 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8fc523a50155fcbf295d848ce9e1707 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8fc523a50155fcbf295d848ce9e1707"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TreeWrapper</b> (const <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper</a> &amp;d)</td></tr>
+<tr class="separator:ac8fc523a50155fcbf295d848ce9e1707 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3980eefc9d59aa33067df080e3d66314 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3980eefc9d59aa33067df080e3d66314"></a>
+template&lt;ODIMPathElem::group_t G&gt; </td></tr>
+<tr class="memitem:a3980eefc9d59aa33067df080e3d66314 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getAttr</b> () const </td></tr>
+<tr class="separator:a3980eefc9d59aa33067df080e3d66314 inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae7a6006935e5a532f0f1aa39cf2600f inherit pro_methods_classrack_1_1TreeWrapper"><td class="memTemplParams" colspan="2"><a class="anchor" id="aae7a6006935e5a532f0f1aa39cf2600f"></a>
+template&lt;ODIMPathElem::group_t G&gt; </td></tr>
+<tr class="memitem:aae7a6006935e5a532f0f1aa39cf2600f inherit pro_methods_classrack_1_1TreeWrapper"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getAttr</b> ()</td></tr>
+<tr class="separator:aae7a6006935e5a532f0f1aa39cf2600f inherit pro_methods_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrack_1_1TreeWrapper"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1TreeWrapper')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper&lt; DT &gt;</a></td></tr>
+<tr class="memitem:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab29b3410f1b085a954d78622b270613f"></a>
+tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a></td></tr>
+<tr class="memdesc:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="mdescLeft">&#160;</td><td class="mdescRight">General HDF5 data structure. <br /></td></tr>
+<tr class="separator:ab29b3410f1b085a954d78622b270613f inherit pro_attribs_classrack_1_1TreeWrapper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename DT&gt;<br />
 class rack::PlainData&lt; DT &gt;</h3>
 
-<p>The template parameters are expected to be exactly the following, but all of them const or non-const: </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Essential class for storing radar data. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- HDF5 tree, as HI5TREE </td></tr>
-    <tr><td class="paramname">D</td><td>- two-dimensional data, as <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a> </td></tr>
-    <tr><td class="paramname">M</td><td>- metadata, as <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products). ">rack::PolarODIM</a> </td></tr>
+    <tr><td class="paramname">DT</td><td>- data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...) </td></tr>
   </table>
   </dd>
 </dl>

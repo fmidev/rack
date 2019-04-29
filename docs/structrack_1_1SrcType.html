@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -94,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Read-only data type with metadata.  
+<p>Read-only data type.  
  <a href="structrack_1_1SrcType.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Data_8h_source.html">Data.h</a>&gt;</code></p>
@@ -122,7 +123,7 @@ typedef M&#160;</td><td class="memItemRight" valign="bottom"><b>odim_t</b></td><
 <tr class="separator:a99f021ec0ac2a16d6b961f8b7ca3b124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_structrack_1_1DataType"><td colspan="2" onclick="javascript:toggleInherit('pub_types_structrack_1_1DataType')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structrack_1_1DataType.html">DataType&lt; HI5TREE const, HI5TREE::const_iterator, Image const  &gt;</a></td></tr>
 <tr class="memitem:afa843c43146ba4bb20f92c1d4aa49340 inherit pub_types_structrack_1_1DataType"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa843c43146ba4bb20f92c1d4aa49340"></a>
-typedef HI5TREE const&#160;</td><td class="memItemRight" valign="bottom"><b>tree_t</b></td></tr>
+typedef <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> const&#160;</td><td class="memItemRight" valign="bottom"><b>tree_t</b></td></tr>
 <tr class="separator:afa843c43146ba4bb20f92c1d4aa49340 inherit pub_types_structrack_1_1DataType"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a956b4b31d66aebfe3a87861550e4b848 inherit pub_types_structrack_1_1DataType"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a956b4b31d66aebfe3a87861550e4b848"></a>
 typedef HI5TREE::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>tree_iter_t</b></td></tr>
@@ -135,10 +136,10 @@ typedef <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> const&#
 <div class="textblock"><h3>template&lt;typename M = PolarODIM const&gt;<br />
 struct rack::SrcType&lt; M &gt;</h3>
 
-<p>Read-only data type with metadata. </p>
+<p>Read-only data type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">M</td><td>- metadata using OPERA data information model </td></tr>
+    <tr><td class="paramname">M</td><td>- meta data using OPERA data information model (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a>) </td></tr>
   </table>
   </dd>
 </dl>

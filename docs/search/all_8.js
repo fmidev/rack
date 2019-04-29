@@ -8,9 +8,10 @@ var searchData=
   ['handlexunderflow_5fpolar',['handleXUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a8cd19025521d165e38c89969cda89cb1',1,'drain::image::CoordinateHandler2D']]],
   ['handleyunderflow_5fpolar',['handleYUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a9e985eeff83f2841c0cd89232270a57b',1,'drain::image::CoordinateHandler2D']]],
   ['has',['has',['../classdrain_1_1Registry.html#a8b09ace5fddead133ee7cefaecd415c6',1,'drain::Registry']]],
-  ['haskey',['hasKey',['../classdrain_1_1Tree.html#ac75495e98f1ce49d7cab5ade228608cb',1,'drain::Tree::hasKey(const std::string &amp;path) const '],['../classdrain_1_1Tree.html#ad35bc87792217fb98606814879664014',1,'drain::Tree::hasKey(const std::string &amp;path, const std::string &amp;prefix) const ']]],
+  ['haskey',['hasKey',['../classdrain_1_1Tree.html#acaa0c097384ec18fe0fbb4f75e95e7c0',1,'drain::Tree']]],
   ['hasoverlap',['hasOverlap',['../classdrain_1_1image_1_1ImageFrame.html#aeb61a8582a81780c508eb2f470a780c1',1,'drain::image::ImageFrame']]],
-  ['hasquality',['hasQuality',['../classrack_1_1QualityDataSupport.html#a61c3238e269d364151d22d448eae3d54',1,'rack::QualityDataSupport']]],
+  ['haspath',['hasPath',['../classdrain_1_1Tree.html#ab57c1905f920343272b8eb0eb8fdabc3',1,'drain::Tree']]],
+  ['hassamesegment',['hasSameSegment',['../classdrain_1_1image_1_1ImageFrame.html#a9d592b29f22ea31932fdef779cb606f3',1,'drain::image::ImageFrame']]],
   ['hasundetectvalue',['hasUndetectValue',['../classrack_1_1Quantity.html#a613a5e62d0a669c3e8c2e77bf394652b',1,'rack::Quantity']]],
   ['havesimilarencoding',['haveSimilarEncoding',['../classrack_1_1EncodingODIM.html#a4fe9ea39b05471f7f8480480800f70b1',1,'rack::EncodingODIM']]],
   ['height',['height',['../classrack_1_1PolarODIM.html#a89f6abd564014faeff7cd20c340a9c7d',1,'rack::PolarODIM::height()'],['../classdrain_1_1image_1_1WindowConfig.html#ad12fc34ce789bce6c8a05d8a17138534',1,'drain::image::WindowConfig::height()']]],
@@ -27,7 +28,7 @@ var searchData=
   ['histogramop',['HistogramOp',['../classrack_1_1HistogramOp.html',1,'rack']]],
   ['histogramwindowconfig',['HistogramWindowConfig',['../classdrain_1_1image_1_1HistogramWindowConfig.html',1,'drain::image']]],
   ['horizontal',['Horizontal',['../structrack_1_1Horizontal.html',1,'rack']]],
-  ['how',['HOW',['../classrack_1_1BaseODIM.html#a7d615032176454ed22cc0c281e564d5a',1,'rack::BaseODIM']]],
+  ['how',['HOW',['../classrack_1_1ODIMPathElem.html#a8fe897a670840520f73adbb3333dde40',1,'rack::ODIMPathElem']]],
   ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html#af995687397e8f26faa9884b4f51c15f4',1,'rack::HydroClassBasedOp']]],
   ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html',1,'rack']]]
 ];

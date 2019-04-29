@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -166,19 +167,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aa0c078ba781eecb5a494a4965108b562 inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#aa0c078ba781eecb5a494a4965108b562">importEntry</a> (const std::string &amp;key, const T2 &amp;value, bool updateOnly=true)</td></tr>
 <tr class="memdesc:aa0c078ba781eecb5a494a4965108b562 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[].  <a href="#aa0c078ba781eecb5a494a4965108b562">More...</a><br /></td></tr>
 <tr class="separator:aa0c078ba781eecb5a494a4965108b562 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">updateFromMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
-<tr class="memdesc:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map. Updates existing entries only. <br /></td></tr>
+<tr class="memitem:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">updateFromMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
+<tr class="memdesc:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map. Updates existing entries only.  <a href="#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">More...</a><br /></td></tr>
 <tr class="separator:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b167abca1d8a101208c7aa3f989ddc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a1b167abca1d8a101208c7aa3f989ddc0">importMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
-<tr class="memdesc:a1b167abca1d8a101208c7aa3f989ddc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map.  <a href="#a1b167abca1d8a101208c7aa3f989ddc0">More...</a><br /></td></tr>
+<tr class="memdesc:a1b167abca1d8a101208c7aa3f989ddc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map, overriding existing entries.  <a href="#a1b167abca1d8a101208c7aa3f989ddc0">More...</a><br /></td></tr>
 <tr class="separator:a1b167abca1d8a101208c7aa3f989ddc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed9f66a2a7ce723180ea100bf63fd53c inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed9f66a2a7ce723180ea100bf63fd53c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#aed9f66a2a7ce723180ea100bf63fd53c">setValues</a> (const std::string &amp;parameters, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
 <tr class="memdesc:aed9f66a2a7ce723180ea100bf63fd53c inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry. <br /></td></tr>
 <tr class="separator:aed9f66a2a7ce723180ea100bf63fd53c inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3a1115648396b26b13182c5944d1097 inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3a1115648396b26b13182c5944d1097">updateValues</a> (const std::string &amp;parameters, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
-<tr class="memdesc:ab3a1115648396b26b13182c5944d1097 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters silently.  <a href="#ab3a1115648396b26b13182c5944d1097">More...</a><br /></td></tr>
+<tr class="memitem:ab3a1115648396b26b13182c5944d1097 inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a1115648396b26b13182c5944d1097"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3a1115648396b26b13182c5944d1097">updateValues</a> (const std::string &amp;parameters, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
+<tr class="memdesc:ab3a1115648396b26b13182c5944d1097 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters silently. <br /></td></tr>
 <tr class="separator:ab3a1115648396b26b13182c5944d1097 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad187955f46cac33fe12947c7887cf08 inherit pub_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad187955f46cac33fe12947c7887cf08"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> (std::ostream &amp;ostr) const</td></tr>

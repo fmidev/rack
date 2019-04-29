@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -155,12 +156,12 @@ Public Attributes</h2></td></tr>
 const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">result</a></td></tr>
 <tr class="memdesc:a8d7dd34c70c706617cf5fc85f4f93766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public interface for the result. <br /></td></tr>
 <tr class="separator:a8d7dd34c70c706617cf5fc85f4f93766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
 <tr class="memitem:ac8bf36fe0577cba66bccda3a6f7e80a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8bf36fe0577cba66bccda3a6f7e80a4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
 <tr class="separator:ac8bf36fe0577cba66bccda3a6f7e80a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:ace73f8aae3747060a781f1924b732157"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace73f8aae3747060a781f1924b732157"></a>
 regex_t&#160;</td><td class="memItemRight" valign="bottom"><b>regExpBinary</b></td></tr>
 <tr class="separator:ace73f8aae3747060a781f1924b732157"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,14 +230,14 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <p>Apply regexp matching in a string. Returns 0 on success, REG_NOMATCH on failure. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- std ordered Sequence, e.g. std::vector or std::list </td></tr>
+    <tr><td class="paramname">T</td><td>- A class implementing clear() and push_back() like STL Sequence, eg. std::vector or std::list</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>- source string </td></tr>
-    <tr><td class="paramname">result</td><td>- result of the match </td></tr>
+    <tr><td class="paramname">result</td><td>- result of the match (STL Sequence) </td></tr>
   </table>
   </dd>
 </dl>

@@ -4,10 +4,10 @@ var searchData=
   ['paletteentry',['PaletteEntry',['../classdrain_1_1image_1_1PaletteEntry.html',1,'drain::image']]],
   ['paletteop',['PaletteOp',['../classdrain_1_1image_1_1PaletteOp.html',1,'drain::image']]],
   ['path',['Path',['../classdrain_1_1Path.html',1,'drain']]],
-  ['pickysegmentprober',['PickySegmentProber',['../classdrain_1_1image_1_1PickySegmentProber.html',1,'drain::image']]],
   ['pixelvectorop',['PixelVectorOp',['../classdrain_1_1image_1_1PixelVectorOp.html',1,'drain::image']]],
   ['plaindata',['PlainData',['../classrack_1_1PlainData.html',1,'rack']]],
   ['point2d',['Point2D',['../classdrain_1_1image_1_1Point2D.html',1,'drain::image']]],
+  ['point2d_3c_20double_20_3e',['Point2D&lt; double &gt;',['../classdrain_1_1image_1_1Point2D.html',1,'drain::image']]],
   ['point2d_3c_20int_20_3e',['Point2D&lt; int &gt;',['../classdrain_1_1image_1_1Point2D.html',1,'drain::image']]],
   ['point3d',['Point3D',['../classdrain_1_1image_1_1Point3D.html',1,'drain::image']]],
   ['polaradd',['PolarAdd',['../classrack_1_1PolarAdd.html',1,'rack']]],
@@ -30,8 +30,8 @@ var searchData=
   ['productadapter',['ProductAdapter',['../classrack_1_1ProductAdapter.html',1,'rack']]],
   ['productbase',['ProductBase',['../classrack_1_1ProductBase.html',1,'rack']]],
   ['productmodule',['ProductModule',['../classrack_1_1ProductModule.html',1,'rack']]],
-  ['productop',['ProductOp',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
   ['productop',['ProductOp',['../classrack_1_1ProductOp.html',1,'rack']]],
+  ['productop',['ProductOp',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
   ['productop_3c_20const_20polarodim_2c_20m_20_3e',['ProductOp&lt; const PolarODIM, M &gt;',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
   ['productop_3c_20const_20polarodim_2c_20polarodim_20_3e',['ProductOp&lt; const PolarODIM, PolarODIM &gt;',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
   ['productop_3c_20const_20polarodim_2c_20rhiodim_20_3e',['ProductOp&lt; const PolarODIM, RhiODIM &gt;',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
@@ -39,6 +39,5 @@ var searchData=
   ['productop_3c_20m_2c_20m_20_3e',['ProductOp&lt; M, M &gt;',['../classdrain_1_1image_1_1ProductOp.html',1,'drain::image']]],
   ['proj4',['Proj4',['../classdrain_1_1Proj4.html',1,'drain']]],
   ['projection',['Projection',['../classdrain_1_1Projection.html',1,'drain']]],
-  ['projectionframe',['ProjectionFrame',['../classdrain_1_1ProjectionFrame.html',1,'drain']]],
   ['pseudorhiop',['PseudoRhiOp',['../classrack_1_1PseudoRhiOp.html',1,'rack']]]
 ];

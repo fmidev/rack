@@ -19,5 +19,6 @@ var searchData=
   ['motionillustratorop',['MotionIllustratorOp',['../classdrain_1_1image_1_1MotionIllustratorOp.html',1,'drain::image']]],
   ['multichannel',['MultiChannel',['../classdrain_1_1image_1_1MultiChannel.html',1,'drain::image']]],
   ['multichannelwindowcore',['MultiChannelWindowCore',['../classdrain_1_1image_1_1MultiChannelWindowCore.html',1,'drain::image']]],
-  ['multiplicationfunctor',['MultiplicationFunctor',['../classdrain_1_1image_1_1MultiplicationFunctor.html',1,'drain::image']]]
+  ['multiplicationfunctor',['MultiplicationFunctor',['../classdrain_1_1image_1_1MultiplicationFunctor.html',1,'drain::image']]],
+  ['multithresholdop',['MultiThresholdOp',['../classrack_1_1MultiThresholdOp.html',1,'rack']]]
 ];

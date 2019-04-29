@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,11 +104,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for Quantity:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Quantity__inherit__graph.png" border="0" usemap="#Quantity_inherit__map" alt="Inheritance graph"/></div>
+<map name="Quantity_inherit__map" id="Quantity_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Quantity:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Quantity__coll__graph.png" border="0" usemap="#Quantity_coll__map" alt="Collaboration graph"/></div>
+<map name="Quantity_coll__map" id="Quantity_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -136,8 +141,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af4cb8c7df1caf878655e71883684bbc2">unsetZero</a> ()</td></tr>
 <tr class="memdesc:af4cb8c7df1caf878655e71883684bbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets neutral value for purposes of interpolation. <br /></td></tr>
 <tr class="separator:af4cb8c7df1caf878655e71883684bbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02a2a68d959a404f376d926886c70f83"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a02a2a68d959a404f376d926886c70f83">toOstr</a> (std::ostream &amp;ostr) const </td></tr>
-<tr class="memdesc:a02a2a68d959a404f376d926886c70f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Sets type, if unset.  <a href="#a02a2a68d959a404f376d926886c70f83">More...</a><br /></td></tr>
+<tr class="memitem:a02a2a68d959a404f376d926886c70f83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02a2a68d959a404f376d926886c70f83"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a02a2a68d959a404f376d926886c70f83">toOstr</a> (std::ostream &amp;ostr) const </td></tr>
+<tr class="memdesc:a02a2a68d959a404f376d926886c70f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print declared encodings (storage types and scalings) <br /></td></tr>
 <tr class="separator:a02a2a68d959a404f376d926886c70f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -157,35 +163,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure for defining. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a02a2a68d959a404f376d926886c70f83"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream&amp; toOstr </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Sets type, if unset. </p>
-<p>Saves type and sets the type of the actual data array as well. Print declared encodings (storage types and scalings) </p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>data/<a class="el" href="Quantity_8h_source.html">Quantity.h</a></li>
 <li>data/Quantity.cpp</li>
 </ul>

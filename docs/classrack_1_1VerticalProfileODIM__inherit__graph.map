@@ -1,8 +1,7 @@
 <map id="VerticalProfileODIM" name="VerticalProfileODIM">
-<area shape="rect" id="node2" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="19,379,199,405"/>
-<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="80,304,137,331"/>
-<area shape="rect" id="node4" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="53,229,164,256"/>
-<area shape="rect" id="node5" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="5,155,92,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="117,155,223,181"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="85,80,255,107"/>
+<area shape="rect" id="node2" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="16,379,196,405"/>
+<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="77,304,135,331"/>
+<area shape="rect" id="node4" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="51,229,161,256"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,155,159,181"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,80,191,107"/>
 </map>

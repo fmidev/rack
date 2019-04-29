@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -125,17 +126,17 @@ typedef std::map&lt; std::string, std::set&lt; std::string &gt; &gt;&#160;</td><
 <tr class="separator:a97a5edfcca10d27748b728ba33228652"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classdrain_1_1Registry"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1Registry')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1Registry.html">Registry&lt; Command &gt;</a></td></tr>
 <tr class="memitem:a0c49ba24dc8dbc4641d338b174659773 inherit pub_types_classdrain_1_1Registry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c49ba24dc8dbc4641d338b174659773"></a>
-typedef std::map&lt; std::string, <a class="el" href="structdrain_1_1Command.html">Command</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+typedef std::map&lt; std::string, <a class="el" href="classdrain_1_1Command.html">Command</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
 <tr class="separator:a0c49ba24dc8dbc4641d338b174659773 inherit pub_types_classdrain_1_1Registry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a21837109f13d054d847822856aa3a1bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21837109f13d054d847822856aa3a1bf"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a21837109f13d054d847822856aa3a1bf">add</a> (<a class="el" href="structdrain_1_1Command.html">Command</a> &amp;r, const std::string &amp;name, char alias=0)</td></tr>
-<tr class="memdesc:a21837109f13d054d847822856aa3a1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds entry of type T to current section of registry. <br /></td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a21837109f13d054d847822856aa3a1bf">add</a> (<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;r, const std::string &amp;name, char alias=0)</td></tr>
+<tr class="memdesc:a21837109f13d054d847822856aa3a1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds entry of (base) class T to current section of registry. <br /></td></tr>
 <tr class="separator:a21837109f13d054d847822856aa3a1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bb32586696bb20f76b5cac47ebc5535"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bb32586696bb20f76b5cac47ebc5535"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const std::string &amp;section, <a class="el" href="structdrain_1_1Command.html">Command</a> &amp;r, const std::string &amp;name, char alias)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const std::string &amp;section, <a class="el" href="classdrain_1_1Command.html">Command</a> &amp;r, const std::string &amp;name, char alias)</td></tr>
 <tr class="separator:a5bb32586696bb20f76b5cac47ebc5535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeaa8aa7896506fc7756b8aa609d378f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abeaa8aa7896506fc7756b8aa609d378f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setPrefix</b> (const std::string &amp;p)</td></tr>
@@ -154,8 +155,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a2282bd126a7e814e0332d1b353df6221">help</a> (const std::string &amp;key, std::ostream &amp;ostr=std::cout, bool paramDescriptions=true) const </td></tr>
 <tr class="memdesc:a2282bd126a7e814e0332d1b353df6221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Help on a specific drainlet or section. <br /></td></tr>
 <tr class="separator:a2282bd126a7e814e0332d1b353df6221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32965ef362d09579a072bbfa0439972c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a32965ef362d09579a072bbfa0439972c">help</a> (const <a class="el" href="structdrain_1_1Command.html">Command</a> &amp;cmd, std::ostream &amp;ostr=std::cout, bool paramDescriptions=false) const </td></tr>
-<tr class="memdesc:a32965ef362d09579a072bbfa0439972c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Help on a specific cmd. // TODO: template T for <a class="el" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> concept instances.  <a href="#a32965ef362d09579a072bbfa0439972c">More...</a><br /></td></tr>
+<tr class="memitem:a32965ef362d09579a072bbfa0439972c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a32965ef362d09579a072bbfa0439972c">help</a> (const <a class="el" href="classdrain_1_1Command.html">Command</a> &amp;cmd, std::ostream &amp;ostr=std::cout, bool paramDescriptions=false) const </td></tr>
+<tr class="memdesc:a32965ef362d09579a072bbfa0439972c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Help on a specific cmd. // TODO: template T for <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> concept instances.  <a href="#a32965ef362d09579a072bbfa0439972c">More...</a><br /></td></tr>
 <tr class="separator:a32965ef362d09579a072bbfa0439972c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a70375b30771e4a965d8f413e347cee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a70375b30771e4a965d8f413e347cee"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a6a70375b30771e4a965d8f413e347cee">helpSections</a> (std::ostream &amp;ostr=std::cout) const </td></tr>
@@ -165,7 +166,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#aa2fd80a1daed69fcbe411be728d98886">helpSections</a> (std::ostream &amp;ostr, const std::string &amp;section) const </td></tr>
 <tr class="memdesc:aa2fd80a1daed69fcbe411be728d98886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Help on a section. <br /></td></tr>
 <tr class="separator:aa2fd80a1daed69fcbe411be728d98886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a634f53a982510a8775b5d6678fa834ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a634f53a982510a8775b5d6678fa834ee">run</a> (<a class="el" href="structdrain_1_1Command.html">Command</a> &amp;cmd, const std::string &amp;parameters=&quot;&quot;) const </td></tr>
+<tr class="memitem:a634f53a982510a8775b5d6678fa834ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandRegistry.html#a634f53a982510a8775b5d6678fa834ee">run</a> (<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;cmd, const std::string &amp;parameters=&quot;&quot;) const </td></tr>
 <tr class="memdesc:a634f53a982510a8775b5d6678fa834ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a command. Expands variables appearing in parameters if expandVariables is set.  <a href="#a634f53a982510a8775b5d6678fa834ee">More...</a><br /></td></tr>
 <tr class="separator:a634f53a982510a8775b5d6678fa834ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bb2dcccb72aecef472a30c89bbf34ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bb2dcccb72aecef472a30c89bbf34ca"></a>
@@ -219,7 +220,7 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <tr class="memdesc:a0c03e5d81f7f49930624826a1ded5e94 inherit pub_methods_classdrain_1_1Registry"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a single-letter abbreviation, return the command name. <br /></td></tr>
 <tr class="separator:a0c03e5d81f7f49930624826a1ded5e94 inherit pub_methods_classdrain_1_1Registry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fbaff9b68cf03fc323bc82acf805335 inherit pub_methods_classdrain_1_1Registry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fbaff9b68cf03fc323bc82acf805335"></a>
-<a class="el" href="structdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Registry.html#a4fbaff9b68cf03fc323bc82acf805335">get</a> (const std::string &amp;name) const</td></tr>
+<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Registry.html#a4fbaff9b68cf03fc323bc82acf805335">get</a> (const std::string &amp;name) const</td></tr>
 <tr class="memdesc:a4fbaff9b68cf03fc323bc82acf805335 inherit pub_methods_classdrain_1_1Registry"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a single-letter abbreviation or full command name, returns the command object. <br /></td></tr>
 <tr class="separator:a4fbaff9b68cf03fc323bc82acf805335 inherit pub_methods_classdrain_1_1Registry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9056894a7cc9a645cca06b67252f917 inherit pub_methods_classdrain_1_1Registry"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9056894a7cc9a645cca06b67252f917"></a>
@@ -303,7 +304,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>index</b></td><
         <tr>
           <td class="memname">void help </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structdrain_1_1Command.html">Command</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td>
           <td class="paramname"><em>cmd</em>, </td>
         </tr>
         <tr>
@@ -326,7 +327,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>index</b></td><
       </table>
 </div><div class="memdoc">
 
-<p>Help on a specific cmd. // TODO: template T for <a class="el" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> concept instances. </p>
+<p>Help on a specific cmd. // TODO: template T for <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> concept instances. </p>
 <p>Iterate variable keys </p>
 
 </div>
@@ -338,7 +339,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>index</b></td><
         <tr>
           <td class="memname">void run </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdrain_1_1Command.html">Command</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td>
           <td class="paramname"><em>cmd</em>, </td>
         </tr>
         <tr>

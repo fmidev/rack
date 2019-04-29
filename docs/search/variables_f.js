@@ -11,6 +11,5 @@ var searchData=
   ['proj',['proj',['../classrack_1_1PolarDataPicker.html#af337181528cb4e8d1ff1d3a0d8aa9daf',1,'rack::PolarDataPicker']]],
   ['projdef',['projdef',['../classrack_1_1CartesianODIM.html#a92e33e03368428fc3c42a5b21e56f439',1,'rack::CartesianODIM']]],
   ['projr2m',['projR2M',['../classdrain_1_1image_1_1GeoFrame.html#ae6a1d1793900cc3865ae7a8629ae3d9d',1,'drain::image::GeoFrame']]],
-  ['properties',['properties',['../classdrain_1_1image_1_1ImageFrame.html#ac0d9008f385c31c7c2ea8906c98bb3c5',1,'drain::image::ImageFrame']]],
-  ['ptr',['ptr',['../classdrain_1_1Castable.html#add9af9569af79ec26dd741fb226b38ba',1,'drain::Castable']]]
+  ['properties',['properties',['../classdrain_1_1image_1_1ImageFrame.html#abc8df7f31d1913968d4402fa456b1f55',1,'drain::image::ImageFrame']]]
 ];

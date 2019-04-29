@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -101,7 +102,7 @@ Inheritance diagram for ClutterMapRead:</div>
 <map name="ClutterMapRead_inherit__map" id="ClutterMapRead_inherit__map">
 <area shape="rect" id="node2" href="classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="5,155,157,196"/>
 <area shape="rect" id="node3" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="24,80,139,107"/>
-<area shape="rect" id="node4" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="40,5,123,32"/>
+<area shape="rect" id="node4" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="40,5,123,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -109,27 +110,48 @@ Collaboration diagram for ClutterMapRead:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ClutterMapRead__coll__graph.png" border="0" usemap="#ClutterMapRead_coll__map" alt="Collaboration graph"/></div>
 <map name="ClutterMapRead_coll__map" id="ClutterMapRead_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="89,503,241,544"/>
-<area shape="rect" id="node3" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="108,427,223,453"/>
-<area shape="rect" id="node4" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,337,88,364"/>
-<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="112,337,219,364"/>
-<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="64,261,235,288"/>
-<area shape="rect" id="node8" href="classrack_1_1ClutterMapOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="266,510,369,537"/>
-<area shape="rect" id="node9" href="classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="273,427,362,453"/>
-<area shape="rect" id="node10" href="classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="283,337,357,364"/>
-<area shape="rect" id="node11" href="classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="259,261,397,288"/>
-<area shape="rect" id="node12" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="273,185,388,212"/>
-<area shape="rect" id="node13" href="classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="127,96,299,123"/>
-<area shape="rect" id="node14" href="classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="113,5,314,47"/>
-<area shape="rect" id="node15" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="323,96,445,123"/>
+<area shape="rect" id="node2" href="classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="2963,81,3115,122"/>
+<area shape="rect" id="node3" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="2669,56,2784,83"/>
+<area shape="rect" id="node4" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="2388,56,2471,83"/>
+<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="2376,5,2483,32"/>
+<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="2095,5,2265,32"/>
+<area shape="rect" id="node8" href="classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="2999,157,3078,184"/>
+<area shape="rect" id="node9" href="classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="1731,247,1820,273"/>
+<area shape="rect" id="node10" href="classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="1425,248,1499,275"/>
+<area shape="rect" id="node11" href="classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="1145,271,1283,297"/>
+<area shape="rect" id="node12" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="693,272,808,299"/>
+<area shape="rect" id="node13" href="classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="319,324,491,351"/>
+<area shape="rect" id="node14" href="classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,319,207,361"/>
+<area shape="rect" id="node15" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="344,269,465,296"/>
+<area shape="rect" id="node28" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="707,176,794,203"/>
+<area shape="rect" id="node16" href="classdrain_1_1Tree.html" title="Tree\&lt; rack::ODIMPathElem,\l hi5::NodeHi5, rack::ODIMPathLess \&gt;" alt="" coords="2604,150,2849,191"/>
+<area shape="rect" id="node17" href="classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="2372,196,2487,223"/>
+<area shape="rect" id="node19" href="structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="2393,107,2466,133"/>
+<area shape="rect" id="node20" href="classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="2133,56,2227,83"/>
+<area shape="rect" id="node21" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="1868,56,2021,83"/>
+<area shape="rect" id="node23" href="classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="2151,107,2209,133"/>
+<area shape="rect" id="node24" href="classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="1886,107,2003,133"/>
+<area shape="rect" id="node25" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1565,107,1664,133"/>
+<area shape="rect" id="node26" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1307,101,1401,128"/>
+<area shape="rect" id="node27" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1021,163,1103,189"/>
+<area shape="rect" id="node29" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="365,217,444,244"/>
+<area shape="rect" id="node30" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="53,217,159,244"/>
+<area shape="rect" id="node31" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="43,268,169,295"/>
+<area shape="rect" id="node32" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="367,136,443,163"/>
+<area shape="rect" id="node33" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="75,97,137,124"/>
+<area shape="rect" id="node36" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="548,95,623,121"/>
+<area shape="rect" id="node34" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="55,167,157,193"/>
+<area shape="rect" id="node35" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="864,100,979,127"/>
+<area shape="rect" id="node37" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="1003,35,1121,61"/>
+<area shape="rect" id="node38" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="661,31,840,57"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9b1f0e57409d22cdf17ef6725dd70f1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b1f0e57409d22cdf17ef6725dd70f1a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ClutterMapRead</b> (<a class="el" href="classrack_1_1ClutterMapOp.html">ClutterMapOp</a> &amp;op)</td></tr>
-<tr class="separator:a9b1f0e57409d22cdf17ef6725dd70f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5806d8a695a6d217eaea606eb6f61f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5806d8a695a6d217eaea606eb6f61f1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ClutterMapRead</b> (<a class="el" href="classrack_1_1ClutterOp.html">ClutterOp</a> &amp;op)</td></tr>
+<tr class="separator:ab5806d8a695a6d217eaea606eb6f61f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7678249dbff5445ac313f2ad6ed6160c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7678249dbff5445ac313f2ad6ed6160c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exec</b> () const </td></tr>
 <tr class="separator:a7678249dbff5445ac313f2ad6ed6160c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,16 +188,20 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BasicCommand.html#ad6ff66747141f8cf6f4e2ef9e5c58729">run</a> (const std::string &amp;params=&quot;&quot;)</td></tr>
 <tr class="memdesc:ad6ff66747141f8cf6f4e2ef9e5c58729 inherit pub_methods_classdrain_1_1BasicCommand"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets new parameters and runs. <br /></td></tr>
 <tr class="separator:ad6ff66747141f8cf6f4e2ef9e5c58729 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1Command.html">Command</a></td></tr>
-<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
+<tr class="inherit_header pub_methods_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
+<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasArguments</b> () const </td></tr>
-<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5699010e0413a53f2d81e5fad3cd6965"></a>
+virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a5699010e0413a53f2d81e5fad3cd6965">getType</a> () const </td></tr>
+<tr class="memdesc:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of result, comparable to a return type of a function. <br /></td></tr>
+<tr class="separator:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a42ed4438358261ccc794372cb8c14ebb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42ed4438358261ccc794372cb8c14ebb"></a>
-<a class="el" href="classrack_1_1ClutterMapOp.html">ClutterMapOp</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>clutterOp</b></td></tr>
-<tr class="separator:a42ed4438358261ccc794372cb8c14ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac37795080578dd39333827476317aba4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac37795080578dd39333827476317aba4"></a>
+<a class="el" href="classrack_1_1ClutterOp.html">ClutterOp</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>clutterOp</b></td></tr>
+<tr class="separator:ac37795080578dd39333827476317aba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1SimpleCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1SimpleCommand')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt; std::string &gt;</a></td></tr>
 <tr class="memitem:a4fc7f59e3113e19697159919a5aad095 inherit pub_attribs_classdrain_1_1SimpleCommand"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fc7f59e3113e19697159919a5aad095"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>

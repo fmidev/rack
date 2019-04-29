@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -88,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1Castable-members.html">List of all members</a>  </div>
@@ -135,7 +137,7 @@ virtual const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bo
 <tr class="separator:abd6bcba6653c2b88d8541ed484dced5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8682fae81946b3663511590ae3ec92be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8682fae81946b3663511590ae3ec92be"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8682fae81946b3663511590ae3ec92be">isCharArrayString</a> () const </td></tr>
-<tr class="memdesc:a8682fae81946b3663511590ae3ec92be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is <code>char</code> and outputSepator is null char. <br /></td></tr>
+<tr class="memdesc:a8682fae81946b3663511590ae3ec92be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is <code>char</code> and outputSepator is the null char. <br /></td></tr>
 <tr class="separator:a8682fae81946b3663511590ae3ec92be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac39739341d11ed1923f41c58013b99ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac39739341d11ed1923f41c58013b99ee"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ac39739341d11ed1923f41c58013b99ee">isStlString</a> () const </td></tr>
@@ -179,17 +181,17 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a84ef54616b4fc3dee99189ca6f714b66"><td class="memTemplParams" colspan="2"><a class="anchor" id="a84ef54616b4fc3dee99189ca6f714b66"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a84ef54616b4fc3dee99189ca6f714b66"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a84ef54616b4fc3dee99189ca6f714b66">operator=</a> (const std::list&lt; T &gt; &amp;l)</td></tr>
-<tr class="memdesc:a84ef54616b4fc3dee99189ca6f714b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of std::list. <br /></td></tr>
+<tr class="memdesc:a84ef54616b4fc3dee99189ca6f714b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of a list. <br /></td></tr>
 <tr class="separator:a84ef54616b4fc3dee99189ca6f714b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a204ca238e1b40459c58f88ce1b613ad2"><td class="memTemplParams" colspan="2"><a class="anchor" id="a204ca238e1b40459c58f88ce1b613ad2"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a204ca238e1b40459c58f88ce1b613ad2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a204ca238e1b40459c58f88ce1b613ad2">operator=</a> (const std::vector&lt; T &gt; &amp;v)</td></tr>
-<tr class="memdesc:a204ca238e1b40459c58f88ce1b613ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of std::vector. <br /></td></tr>
+<tr class="memdesc:a204ca238e1b40459c58f88ce1b613ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of a vector. <br /></td></tr>
 <tr class="separator:a204ca238e1b40459c58f88ce1b613ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c6b1d82fa5d22caa3993ed0d4755b50"><td class="memTemplParams" colspan="2"><a class="anchor" id="a0c6b1d82fa5d22caa3993ed0d4755b50"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a0c6b1d82fa5d22caa3993ed0d4755b50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a0c6b1d82fa5d22caa3993ed0d4755b50">operator=</a> (const std::set&lt; T &gt; &amp;s)</td></tr>
-<tr class="memdesc:a0c6b1d82fa5d22caa3993ed0d4755b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of std::vector. <br /></td></tr>
+<tr class="memdesc:a0c6b1d82fa5d22caa3993ed0d4755b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of a set. <br /></td></tr>
 <tr class="separator:a0c6b1d82fa5d22caa3993ed0d4755b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee228058e219a51b9dac4886284f9861"><td class="memTemplParams" colspan="2"><a class="anchor" id="aee228058e219a51b9dac4886284f9861"></a>
 template&lt;class T &gt; </td></tr>
@@ -208,12 +210,12 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae087186eeef8dfcffd3d97ad10fb9741"><td class="memTemplParams" colspan="2"><a class="anchor" id="ae087186eeef8dfcffd3d97ad10fb9741"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae087186eeef8dfcffd3d97ad10fb9741"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ae087186eeef8dfcffd3d97ad10fb9741">operator&lt;&lt;</a> (const std::vector&lt; T &gt; &amp;v)</td></tr>
-<tr class="memdesc:ae087186eeef8dfcffd3d97ad10fb9741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends elements of std::vector. <br /></td></tr>
+<tr class="memdesc:ae087186eeef8dfcffd3d97ad10fb9741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends elements of a vector. <br /></td></tr>
 <tr class="separator:ae087186eeef8dfcffd3d97ad10fb9741"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07e00c60bd4c46ee3a304f4a9057b5b8"><td class="memTemplParams" colspan="2"><a class="anchor" id="a07e00c60bd4c46ee3a304f4a9057b5b8"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a07e00c60bd4c46ee3a304f4a9057b5b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a07e00c60bd4c46ee3a304f4a9057b5b8">operator&lt;&lt;</a> (const std::set&lt; T &gt; &amp;s)</td></tr>
-<tr class="memdesc:a07e00c60bd4c46ee3a304f4a9057b5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends elements of std::vector. <br /></td></tr>
+<tr class="memdesc:a07e00c60bd4c46ee3a304f4a9057b5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends elements of a set. <br /></td></tr>
 <tr class="separator:a07e00c60bd4c46ee3a304f4a9057b5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05a548b4c46d9eb97ad4a6c40930d01f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a05a548b4c46d9eb97ad4a6c40930d01f"></a>
 template&lt;class T &gt; </td></tr>
@@ -261,14 +263,15 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStrea
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a273e556554185d61fa8c76ccfa236c41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a273e556554185d61fa8c76ccfa236c41"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toJSON</b> (std::ostream &amp;ostr=std::cout, char fill= ' ') const </td></tr>
-<tr class="separator:a273e556554185d61fa8c76ccfa236c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad606d160dd584f98d3c59bb192e0be12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad606d160dd584f98d3c59bb192e0be12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>toJSON</b> (std::ostream &amp;ostr=std::cout, char fill= ' ', int verbosity=0) const </td></tr>
+<tr class="separator:ad606d160dd584f98d3c59bb192e0be12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa10c29d9608be5c8433d607ff74aea1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa10c29d9608be5c8433d607ff74aea1b"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>valueToJSON</b> (std::ostream &amp;ostr=std::cout) const </td></tr>
 <tr class="separator:aa10c29d9608be5c8433d607ff74aea1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cbdb3151aa68e53009a92c863f9973a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cbdb3151aa68e53009a92c863f9973a"></a>
-const void&#160;</td><td class="memItemRight" valign="bottom"><b>typeInfo</b> (std::ostream &amp;ostr) const </td></tr>
+const void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a6cbdb3151aa68e53009a92c863f9973a">typeInfo</a> (std::ostream &amp;ostr) const </td></tr>
+<tr class="memdesc:a6cbdb3151aa68e53009a92c863f9973a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int.". <br /></td></tr>
 <tr class="separator:a6cbdb3151aa68e53009a92c863f9973a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3cf8ac085d8c95135b0e6464f5041d8"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ad3cf8ac085d8c95135b0e6464f5041d8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad3cf8ac085d8c95135b0e6464f5041d8">toContainer</a> (T &amp;container) const </td></tr>
@@ -281,12 +284,19 @@ const void&#160;</td><td class="memItemRight" valign="bottom"><b>typeInfo</b> (s
 const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getPtr</b> (size_t i=0) const </td></tr>
 <tr class="separator:a014f8e50e78e6e8d4b72c7a551244519"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aa5891ba7dc473f6bb0ae6682e15cde69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5891ba7dc473f6bb0ae6682e15cde69"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69">fillArray</a></td></tr>
+<tr class="memdesc:aa5891ba7dc473f6bb0ae6682e15cde69"><td class="mdescLeft">&#160;</td><td class="mdescRight">If array, assigning a scalar will fill up the current array. <br /></td></tr>
+<tr class="separator:aa5891ba7dc473f6bb0ae6682e15cde69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab2f61610341264302dd61ea0de15f0f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2f61610341264302dd61ea0de15f0f7"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ab2f61610341264302dd61ea0de15f0f7">requestType</a> (const std::type_info &amp;t)</td></tr>
-<tr class="memdesc:ab2f61610341264302dd61ea0de15f0f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change in type. For <a class="el" href="classdrain_1_1Castable.html">Castable</a>, only returns true if the current type was requested. <br /></td></tr>
-<tr class="separator:ab2f61610341264302dd61ea0de15f0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5082bad072d8c8b1671077cb66fdf63b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5082bad072d8c8b1671077cb66fdf63b"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5082bad072d8c8b1671077cb66fdf63b">suggestType</a> (const std::type_info &amp;t)</td></tr>
+<tr class="memdesc:a5082bad072d8c8b1671077cb66fdf63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change in type. For <a class="el" href="classdrain_1_1Castable.html">Castable</a>, simply returns true if the current type was requested. <br /></td></tr>
+<tr class="separator:a5082bad072d8c8b1671077cb66fdf63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af61912602179e9425271926135614061"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#af61912602179e9425271926135614061">requestSize</a> (size_t <a class="el" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>)</td></tr>
 <tr class="memdesc:af61912602179e9425271926135614061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change the array size. For <a class="el" href="classdrain_1_1Castable.html">Castable</a> (and Reference) does nothing and returns false.  <a href="#af61912602179e9425271926135614061">More...</a><br /></td></tr>
 <tr class="separator:af61912602179e9425271926135614061"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -314,22 +324,19 @@ template&lt;class F &gt; </td></tr>
 <tr class="separator:acb7b23d54cf9d937c0ca3568d839e0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa808ea4d4bf83ea75f8c2cede9312bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa808ea4d4bf83ea75f8c2cede9312bf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#afa808ea4d4bf83ea75f8c2cede9312bf">setPtr</a> (void *p, const std::type_info &amp;t)</td></tr>
-<tr class="memdesc:afa808ea4d4bf83ea75f8c2cede9312bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the data pointer and changes type explicitly. <br /></td></tr>
+<tr class="memdesc:afa808ea4d4bf83ea75f8c2cede9312bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the data pointer and its explicit type. <br /></td></tr>
 <tr class="separator:afa808ea4d4bf83ea75f8c2cede9312bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb05fb837cabbbeaa1848c420d940d71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afb05fb837cabbbeaa1848c420d940d71"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPtr</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
-<tr class="separator:afb05fb837cabbbeaa1848c420d940d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57324c83df6fad5fe2a8424de5a0bf7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57324c83df6fad5fe2a8424de5a0bf7d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a57324c83df6fad5fe2a8424de5a0bf7d">setPtr</a> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
-<tr class="memdesc:a57324c83df6fad5fe2a8424de5a0bf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note: <br /></td></tr>
-<tr class="separator:a57324c83df6fad5fe2a8424de5a0bf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad21db5fe069b6d946c01f00ddcd64591"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad21db5fe069b6d946c01f00ddcd64591"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad21db5fe069b6d946c01f00ddcd64591">relink</a> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
+<tr class="memdesc:ad21db5fe069b6d946c01f00ddcd64591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the link and element count. <br /></td></tr>
+<tr class="separator:ad21db5fe069b6d946c01f00ddcd64591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e2ee872ed8d8416c2c67c7adf825197"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e2ee872ed8d8416c2c67c7adf825197"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5e2ee872ed8d8416c2c67c7adf825197">castElement</a> (size_t i, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, void *p) const </td></tr>
 <tr class="memdesc:a5e2ee872ed8d8416c2c67c7adf825197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let <a class="el" href="classdrain_1_1Caster.html">Caster</a> c convert my element #i to target *p. <br /></td></tr>
 <tr class="separator:a5e2ee872ed8d8416c2c67c7adf825197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f6ede51c5a5ffd7db7278f4e625f64a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f6ede51c5a5ffd7db7278f4e625f64a"></a>
 <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a">assignCastable</a> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
-<tr class="memdesc:a8f6ede51c5a5ffd7db7278f4e625f64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy data from other <a class="el" href="classdrain_1_1Castable.html">Castable</a>. Perhaps copy size and type, too. <br /></td></tr>
+<tr class="memdesc:a8f6ede51c5a5ffd7db7278f4e625f64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy data from str <a class="el" href="classdrain_1_1Castable.html">Castable</a>. Perhaps copy size and type, too. <br /></td></tr>
 <tr class="separator:a8f6ede51c5a5ffd7db7278f4e625f64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b568687218bd1e0c85f0187fc62fa38"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a8b568687218bd1e0c85f0187fc62fa38"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8b568687218bd1e0c85f0187fc62fa38">appendToString</a> (const T &amp;x)</td></tr>
@@ -356,8 +363,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>appendToElementArray<
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aae058b4e9e4f2d50a5f6abd11c99fffd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendToElementArray</b> (const T &amp;s)</td></tr>
 <tr class="separator:aae058b4e9e4f2d50a5f6abd11c99fffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d5e45a4e83aef3e608808366d54fe04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a3d5e45a4e83aef3e608808366d54fe04">assignString</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:a3d5e45a4e83aef3e608808366d54fe04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input type specific assign operations.  <a href="#a3d5e45a4e83aef3e608808366d54fe04">More...</a><br /></td></tr>
+<tr class="memitem:a3d5e45a4e83aef3e608808366d54fe04"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d5e45a4e83aef3e608808366d54fe04"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a3d5e45a4e83aef3e608808366d54fe04">assignString</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:a3d5e45a4e83aef3e608808366d54fe04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input type specific assign operations. <br /></td></tr>
 <tr class="separator:a3d5e45a4e83aef3e608808366d54fe04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a821dd5d996f20fa95d327b5bfeffe403"><td class="memTemplParams" colspan="2"><a class="anchor" id="a821dd5d996f20fa95d327b5bfeffe403"></a>
 template&lt;class T &gt; </td></tr>
@@ -373,13 +381,8 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9ffd5a93a98f481dc194fbb707787ccf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ffd5a93a98f481dc194fbb707787ccf"></a>
 <a class="el" href="classdrain_1_1Caster.html">Caster</a>&#160;</td><td class="memItemRight" valign="bottom"><b>caster</b></td></tr>
 <tr class="separator:a9ffd5a93a98f481dc194fbb707787ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add9af9569af79ec26dd741fb226b38ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add9af9569af79ec26dd741fb226b38ba"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#add9af9569af79ec26dd741fb226b38ba">ptr</a></td></tr>
-<tr class="memdesc:add9af9569af79ec26dd741fb226b38ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the data variable. <br /></td></tr>
-<tr class="separator:add9af9569af79ec26dd741fb226b38ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71c45090ec0db23502b8e5acb00f4ce5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71c45090ec0db23502b8e5acb00f4ce5"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a></td></tr>
-<tr class="memdesc:a71c45090ec0db23502b8e5acb00f4ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the current variable. <br /></td></tr>
+<tr class="memitem:a71c45090ec0db23502b8e5acb00f4ce5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a></td></tr>
+<tr class="memdesc:a71c45090ec0db23502b8e5acb00f4ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the data variable.  <a href="#a71c45090ec0db23502b8e5acb00f4ce5">More...</a><br /></td></tr>
 <tr class="separator:a71c45090ec0db23502b8e5acb00f4ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac659aca0a35e26228c94af12c55fcd5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac659aca0a35e26228c94af12c55fcd5d"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ac659aca0a35e26228c94af12c55fcd5d">inputSeparator</a></td></tr>
@@ -415,33 +418,6 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Append to std::string or char array. </p>
 <p>Combines current data and input in stringstream, and replaces contents by sstr.str(). Hence not specialized for input that is already string-like (std::string and char array). </p>
-
-</div>
-</div>
-<a class="anchor" id="a3d5e45a4e83aef3e608808366d54fe04"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void assignString </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Input type specific assign operations. </p>
-<p>list&lt;string&gt; ok here, simply a tmp container for split string </p>
 
 </div>
 </div>
@@ -625,7 +601,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line">Variable vField;</div><div class="line">vField = 1.23;</div><div class="line">std::string s = vField;  <span class="comment">// OK</span></div><div class="line">s = vField;         <span class="comment">// FAILS, for unknown reason</span></div></div><!-- fragment --><p> See <a href="http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization">http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization</a> . The conversion works only if a conversion operator is defined only for std::string (operator std::string()). Adding any other conversions (int, double, ...) causes the compiler to fail. </p>
+<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line">Variable vField;</div><div class="line">vField = 1.23;</div><div class="line">std::string s = vField;  <span class="comment">// OK</span></div><div class="line">s = vField;         <span class="comment">// FAILS, for unknown reason</span></div></div><!-- fragment --><p> See <a href="http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization">http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization</a> . The conversion works only if a conversion operator is defined only for std::string (operator std::string()). Adding any str conversions (int, double, ...) causes the compiler to fail. </p>
 
 </div>
 </div>
@@ -654,7 +630,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Request to change the array size. For <a class="el" href="classdrain_1_1Castable.html">Castable</a> (and Reference) does nothing and returns false. </p>
 <p>Does not apply to std::string; </p>
 
-<p>Reimplemented in <a class="el" href="classdrain_1_1Variable.html#af61912602179e9425271926135614061">Variable</a>.</p>
+<p>Reimplemented in <a class="el" href="classdrain_1_1FlexVariable.html#af61912602179e9425271926135614061">FlexVariable</a>, and <a class="el" href="classdrain_1_1Variable.html#af61912602179e9425271926135614061">Variable</a>.</p>
 
 </div>
 </div>
@@ -758,7 +734,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>The character used between array elements in output stream. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1Castable.html#a8682fae81946b3663511590ae3ec92be" title="Returns true, if type is char and outputSepator is null char. ">isCharArrayString</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1Castable.html#a8682fae81946b3663511590ae3ec92be" title="Returns true, if type is char and outputSepator is the null char. ">isCharArrayString</a> </dd></dl>
 
 </div>
 </div>
@@ -817,6 +793,30 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a71c45090ec0db23502b8e5acb00f4ce5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t elementCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to the data variable. </p>
+<p>Size of the current variable </p>
 
 </div>
 </div>

@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -88,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1AreaGeometry-members.html">List of all members</a>  </div>
@@ -96,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classdrain_1_1Rectangle.html">Rectangle</a> of width x height .  
+<p><a class="el" href="classdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates. ">Rectangle</a> of width x height .  
  <a href="classdrain_1_1image_1_1AreaGeometry.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="drain_2image_2Geometry_8h_source.html">Geometry.h</a>&gt;</code></p>
@@ -111,9 +113,9 @@ Inheritance diagram for AreaGeometry:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a26018831a242b8824aa35393f95428f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26018831a242b8824aa35393f95428f1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AreaGeometry</b> (size_t width, size_t height=1)</td></tr>
-<tr class="separator:a26018831a242b8824aa35393f95428f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24f03e6d5f9d30ae0ecef9025e6ac33e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24f03e6d5f9d30ae0ecef9025e6ac33e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AreaGeometry</b> (size_t width=0, size_t height=0)</td></tr>
+<tr class="separator:a24f03e6d5f9d30ae0ecef9025e6ac33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d88d901fa542ecdb85a154f1221f90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45d88d901fa542ecdb85a154f1221f90"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (size_t width)</td></tr>
 <tr class="separator:a45d88d901fa542ecdb85a154f1221f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +141,15 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getArea</b> () cons
 void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostream &amp;ostr) const </td></tr>
 <tr class="separator:acbfa2e8e6ad640f67c45e74695837789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a02bed8590a9ddf520e58a060059518ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02bed8590a9ddf520e58a060059518ec"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<tr class="separator:a02bed8590a9ddf520e58a060059518ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02afeaaf8574e7a78d6b466ff2695052"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02afeaaf8574e7a78d6b466ff2695052"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="separator:a02afeaaf8574e7a78d6b466ff2695052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c54df7ed3b930268c8d7752c101725"></a>
@@ -147,18 +158,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a02bed8590a9ddf520e58a060059518ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02bed8590a9ddf520e58a060059518ec"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
-<tr class="separator:a02bed8590a9ddf520e58a060059518ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02afeaaf8574e7a78d6b466ff2695052"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02afeaaf8574e7a78d6b466ff2695052"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
-<tr class="separator:a02afeaaf8574e7a78d6b466ff2695052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade4732e60568afafac91ce21f1506dd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade4732e60568afafac91ce21f1506dd7"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>area</b></td></tr>
 <tr class="separator:ade4732e60568afafac91ce21f1506dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classdrain_1_1Rectangle.html">Rectangle</a> of width x height . </p>
+<div class="textblock"><p><a class="el" href="classdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates. ">Rectangle</a> of width x height . </p>
+<p><a class="el" href="classdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates. ">Rectangle</a> of width x height . </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/image/<a class="el" href="drain_2image_2Geometry_8h_source.html">Geometry.h</a></li>
 <li>drain/image/Geometry.cpp</li>

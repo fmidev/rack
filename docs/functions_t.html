@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -158,7 +159,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>toOStr()
 : <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#ad0f8e3ca8338c0836d32fd18408c7bbb">ImageFrame</a>
-, <a class="el" href="classdrain_1_1NodeXML.html#a766022a0c298342d96cbeebed394d8f9">NodeXML</a>
+, <a class="el" href="classdrain_1_1NodeXML.html#ad1d386f40d6798ef07fffb04061adfbf">NodeXML</a>
 , <a class="el" href="classrack_1_1ODIMPathElem.html#ab63a7e95c85763fb93510efbbd0da8e3">ODIMPathElem</a>
 </li>
 <li>toOstr()
@@ -173,8 +174,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>toOstream()
 : <a class="el" href="classrack_1_1ProductAdapter.html#ad525e69140381ecf5cde8376d1a00217">ProductAdapter&lt; T &gt;</a>
 </li>
-<li>toOStreamP
-: <a class="el" href="classdrain_1_1Caster.html#a60c45e8f71709ba73f4121752675ec48">Caster</a>
+<li>toOStreamPtr
+: <a class="el" href="classdrain_1_1Caster.html#a61b9661743b80ab9e031807f36e1478e">Caster</a>
+</li>
+<li>toOStreamT()
+: <a class="el" href="classdrain_1_1Caster.html#a63295ced1a748e507dc6f6089bb0c426">Caster</a>
 </li>
 <li>toStr()
 : <a class="el" href="classdrain_1_1Rectangle.html#a98e6880e2802232bb1aa28b9d526fb48">Rectangle&lt; T &gt;</a>
@@ -186,7 +190,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1WeightedVector.html#a73aea9daa49a6fea025570bfb4d2d4c9">WeightedVector&lt; T &gt;</a>
 </li>
 <li>train()
-: <a class="el" href="classdrain_1_1Som.html#a6c430bed0c113ebf06af60bc4807af82">Som&lt; T &gt;</a>
+: <a class="el" href="classdrain_1_1Som.html#a74cfef4542cc29979f5625cb1a954e46">Som&lt; T &gt;</a>
+</li>
+<li>translate()
+: <a class="el" href="classdrain_1_1Caster.html#a19868aea4951e7ec3d5e85fc8536d66a">Caster</a>
+</li>
+<li>translatePtr
+: <a class="el" href="classdrain_1_1Caster.html#a88db546b0fd76eadc804a700e0ff0de8">Caster</a>
+</li>
+<li>translateT()
+: <a class="el" href="classdrain_1_1Caster.html#af7b6c9530837aa43d46837c113754431">Caster</a>
 </li>
 <li>TransposeOp()
 : <a class="el" href="classdrain_1_1image_1_1TransposeOp.html#aea37a05e1969515b89b9fc50ee963e38">TransposeOp</a>
@@ -229,10 +242,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1image_1_1RunLengthHorzOp.html#a7e4c68b13377f0c889d81efd5cc81001">RunLengthHorzOp</a>
 , <a class="el" href="classdrain_1_1image_1_1RunLengthVertOp.html#a7e4c68b13377f0c889d81efd5cc81001">RunLengthVertOp</a>
 , <a class="el" href="classdrain_1_1image_1_1SegmentAreaOp.html#a7e4c68b13377f0c889d81efd5cc81001">SegmentAreaOp&lt; S, D &gt;</a>
-, <a class="el" href="classdrain_1_1image_1_1SeparableWindowOp.html#a7e4c68b13377f0c889d81efd5cc81001">SeparableWindowOp</a>
+, <a class="el" href="classdrain_1_1image_1_1SeparableWindowOp.html#a7ee452d0407beaa3951ad23911cc5db3">SeparableWindowOp</a>
 , <a class="el" href="classdrain_1_1image_1_1SlidingWindowOp.html#aa020083e9b052ce1aa86933b25a228c2">SlidingWindowOp&lt; W &gt;</a>
 , <a class="el" href="classdrain_1_1image_1_1TransposeOp.html#a7e4c68b13377f0c889d81efd5cc81001">TransposeOp</a>
 , <a class="el" href="classdrain_1_1image_1_1UnaryFunctorOp.html#a7e4c68b13377f0c889d81efd5cc81001">UnaryFunctorOp&lt; F &gt;</a>
+, <a class="el" href="classrack_1_1MultiThresholdOp.html#ae9150c152806458c9b81b2854be11a33">MultiThresholdOp</a>
 , <a class="el" href="classrack_1_1RadarFunctorOp.html#ae9150c152806458c9b81b2854be11a33">RadarFunctorOp&lt; F &gt;</a>
 </li>
 <li>traverseChannels()
@@ -241,9 +255,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1image_1_1FastAverageOp.html#a92845681c0e54f107128c4335d7798b0">FastAverageOp</a>
 , <a class="el" href="classdrain_1_1image_1_1GaussianAverageOp.html#a92845681c0e54f107128c4335d7798b0">GaussianAverageOp</a>
 , <a class="el" href="classdrain_1_1image_1_1ImageFill.html#a9cb08fa3670d2c936e97dd7ae2fffde4">ImageFill</a>
-, <a class="el" href="classdrain_1_1image_1_1ImageMod.html#a9cb08fa3670d2c936e97dd7ae2fffde4">ImageMod</a>
+, <a class="el" href="classdrain_1_1image_1_1ImageMod.html#ad47262251b811c2547d2d41e0ec46ad9">ImageMod</a>
 , <a class="el" href="classdrain_1_1image_1_1ImagePlot.html#a9cb08fa3670d2c936e97dd7ae2fffde4">ImagePlot</a>
-, <a class="el" href="classdrain_1_1image_1_1RecursiveRepairerOp.html#af7d88a1f6d36c6409403bc9adcd11264">RecursiveRepairerOp</a>
 , <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsOp.html#af7d88a1f6d36c6409403bc9adcd11264">SegmentStatisticsOp</a>
 </li>
 <li>traverseChannelsEqually()
@@ -269,16 +282,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html#a7cd532237ac4a59d245ec61e8da6f89c">DistanceTransformOp&lt; T &gt;</a>
 </li>
 <li>Tree()
-: <a class="el" href="classdrain_1_1Tree.html#a9603ba799d51fe7b2e8d2ac78abfa535">Tree&lt; T, C &gt;</a>
+: <a class="el" href="classdrain_1_1Tree.html#a2c8487838f9b43596bb5c6d1c235358f">Tree&lt; K, T, C &gt;</a>
 </li>
 <li>tree
-: <a class="el" href="classrack_1_1DataObject.html#ab29b3410f1b085a954d78622b270613f">DataObject&lt; DT &gt;</a>
+: <a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">TreeWrapper&lt; DT &gt;</a>
 </li>
 <li>treeToH5File()
 : <a class="el" href="classhi5_1_1Writer.html#a3092c0574b9401aa3fb0e78605ef66c7">Writer</a>
 </li>
 <li>trim()
-: <a class="el" href="classdrain_1_1StringTools.html#a8245358c066830c08abc07b145f7e059">StringTools</a>
+: <a class="el" href="classdrain_1_1StringTools.html#a1fb54d65e4396f4ae923aa5ec1d8cf7f">StringTools</a>
 </li>
 <li>trimChars
 : <a class="el" href="classdrain_1_1MapReader.html#a48a50d9d6b609001cf5650310b2c3a42">MapReader&lt; K, V &gt;</a>
@@ -286,10 +299,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>type
 : <a class="el" href="classdrain_1_1Caster.html#a4fc25035b26722ecf2c7eabed06e44a8">Caster</a>
 , <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html#a75b160f574a0be26114bae2c7686a5e1">AccumulationConverter</a>
+, <a class="el" href="classdrain_1_1image_1_1Encoding.html#a75b160f574a0be26114bae2c7686a5e1">Encoding</a>
 , <a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">EncodingODIM</a>
 </li>
+<li>typeInfo()
+: <a class="el" href="classdrain_1_1Castable.html#a6cbdb3151aa68e53009a92c863f9973a">Castable</a>
+</li>
 <li>typeIsSet()
-: <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#abf5abcc07d7e1b93539acb4467637102">ImageFrame</a>
+: <a class="el" href="classdrain_1_1image_1_1ImageLike.html#abf5abcc07d7e1b93539acb4467637102">ImageLike</a>
 </li>
 </ul>
 </div><!-- contents -->

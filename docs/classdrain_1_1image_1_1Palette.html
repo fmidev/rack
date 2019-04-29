@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,17 +100,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for Palette:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Palette__inherit__graph.png" border="0" usemap="#Palette_inherit__map" alt="Inheritance graph"/></div>
+<map name="Palette_inherit__map" id="Palette_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Palette:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Palette__coll__graph.png" border="0" usemap="#Palette_coll__map" alt="Collaboration graph"/></div>
+<map name="Palette_coll__map" id="Palette_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc2ebbb4a5020535323a68d9f2778b7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acc2ebbb4a5020535323a68d9f2778b7d">load</a> (std::ifstream &amp;ifstr)</td></tr>
-<tr class="memdesc:acc2ebbb4a5020535323a68d9f2778b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file.  <a href="#acc2ebbb4a5020535323a68d9f2778b7d">More...</a><br /></td></tr>
+<tr class="memitem:acc2ebbb4a5020535323a68d9f2778b7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc2ebbb4a5020535323a68d9f2778b7d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acc2ebbb4a5020535323a68d9f2778b7d">load</a> (std::ifstream &amp;ifstr)</td></tr>
+<tr class="memdesc:acc2ebbb4a5020535323a68d9f2778b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
 <tr class="separator:acc2ebbb4a5020535323a68d9f2778b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c21edd9d285c925527e3209fca54b01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01">load</a> (const std::string &amp;filename)</td></tr>
 <tr class="memdesc:a6c21edd9d285c925527e3209fca54b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file.  <a href="#a6c21edd9d285c925527e3209fca54b01">More...</a><br /></td></tr>
@@ -141,30 +147,11 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a6a99ea34171f66695c231688690c29ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a99ea34171f66695c231688690c29ce"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>_hasAlpha</b></td></tr>
 <tr class="separator:a6a99ea34171f66695c231688690c29ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e79e38c23462fada4cf3dbf26d5fcdb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e79e38c23462fada4cf3dbf26d5fcdb"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>_colors</b></td></tr>
-<tr class="separator:a7e79e38c23462fada4cf3dbf26d5fcdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefc21e93721a9ded30c86ea863a2c78"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaefc21e93721a9ded30c86ea863a2c78"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b></td></tr>
+<tr class="separator:aaefc21e93721a9ded30c86ea863a2c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="acc2ebbb4a5020535323a68d9f2778b7d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void load </td>
-          <td>(</td>
-          <td class="paramtype">std::ifstream &amp;&#160;</td>
-          <td class="paramname"><em>ifstr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Loads a palette from text file. </p>
-<p>Read the trailing whitespace </p>
-
-</div>
-</div>
 <a class="anchor" id="a6c21edd9d285c925527e3209fca54b01"></a>
 <div class="memitem">
 <div class="memproto">

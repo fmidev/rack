@@ -1,5 +1,5 @@
 <map id="CmdExpandVariables" name="CmdExpandVariables">
 <area shape="rect" id="node4" href="$classrack_1_1CmdExpandVariables2.html" title="CmdExpandVariables2" alt="" coords="5,229,160,256"/>
 <area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="25,80,140,107"/>
-<area shape="rect" id="node3" href="$structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="41,5,124,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="41,5,124,32"/>
 </map>

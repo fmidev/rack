@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -344,8 +345,9 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation. Segment is an area of connected pixels. </p>
-<p>Unscaled area (A): </p><div class="fragment"><div class="line">drainage shapes.png --segmentStats A,64 -o segmentStat-area.png</div></div><!-- fragment --><div class="fragment"></div><!-- fragment --><p> The relative vertical position can be computed similarly, with <code>'y'</code>.</p>
-<div class="fragment"><div class="line">drainage shapes.png --segmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png</div><div class="line">drainage shapes.png --segmentStats y,64 -o segmentStat-y.png</div><div class="line">drainage shapes.png --segmentStats h,64 -o segmentStat-horz.png</div><div class="line">drainage shapes.png --segmentStats v,64 -o segmentStat-vert.png</div><div class="line">drainage shapes.png --segmentStats e,32 -o segmentStat-elong.png</div><div class="line">drainage shapes.png --segmentStats s,32,functor=FuzzyStepsoid:0:10 -o segmentStat-variance.png</div></div><!-- fragment --><p>Several statistics can be computed simultaneously simply. For example, elongation (e), slimness (l) and y-coordinate (y):</p>
+<p>Most descriptors have unscaled and scaled (normalized) versions, distinguished with uppercase and lowercase letters.</p>
+<p>For example, the unscaled area is obtained with <code>'A'</code>: </p><div class="fragment"><div class="line">drainage shapes.png --segmentStats A,64 -o segmentStat-area.png</div></div><!-- fragment --><p>Respectively, the scaled area is obtained with <code>'a'</code>. </p><div class="fragment"><div class="line">drainage shapes.png --segmentStats a,64,functor=FuzzyStep:0.5:0.75  -o segmentStat-areaRel.png</div></div><!-- fragment --><p>The relative vertical position can be computed similarly, with <code>'y'</code>.</p>
+<div class="fragment"><div class="line">drainage shapes.png --segmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png</div><div class="line">drainage shapes.png --segmentStats h,64 -o segmentStat-horz.png</div><div class="line">drainage shapes.png --segmentStats v,64 -o segmentStat-vert.png</div><div class="line">drainage shapes.png --segmentStats e,32 -o segmentStat-elong.png</div><div class="line">drainage shapes.png --segmentStats s,32,functor=FuzzyStepsoid:0:10 -o segmentStat-variance.png</div></div><!-- fragment --><p>Several statistics can be computed simultaneously simply. For example, elongation (e), slimness (l) and y-coordinate (y):</p>
 <div class="fragment"><div class="line">drainage shapes.png --segmentStats ely,64,255 -o segmentStat-ely.png</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab0ab246666e59a1bfa3d76ea523acb35"></a>
 <div class="memitem">

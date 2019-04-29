@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -87,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdrain_1_1Path-members.html">List of all members</a>  </div>
@@ -100,42 +102,70 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for Path&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Path__inherit__graph.png" border="0" usemap="#Path_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="Path_3_01T_01_4_inherit__map" id="Path_3_01T_01_4_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Path&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Path__coll__graph.png" border="0" usemap="#Path_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="Path_3_01T_01_4_coll__map" id="Path_3_01T_01_4_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3fa2115cdbb245c2f609f654a9888f14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fa2115cdbb245c2f609f654a9888f14"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><b>elem_t</b></td></tr>
+<tr class="separator:a3fa2115cdbb245c2f609f654a9888f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6faa945cc6fc822ab2fab3854fdabf8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6faa945cc6fc822ab2fab3854fdabf8a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> (char separator='/')</td></tr>
 <tr class="separator:a6faa945cc6fc822ab2fab3854fdabf8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01638c5846ed22f6a7538863a68a5a82"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01638c5846ed22f6a7538863a68a5a82"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> (const std::string &amp;s, char separator='/')</td></tr>
-<tr class="separator:a01638c5846ed22f6a7538863a68a5a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead8c9652883b119959de923a2effedf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aead8c9652883b119959de923a2effedf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> (const <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;p)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#aead8c9652883b119959de923a2effedf">Path</a> (const <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="memdesc:aead8c9652883b119959de923a2effedf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. Note: copies also the separator. <br /></td></tr>
 <tr class="separator:aead8c9652883b119959de923a2effedf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01638c5846ed22f6a7538863a68a5a82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a01638c5846ed22f6a7538863a68a5a82">Path</a> (const std::string &amp;s, char separator='/')</td></tr>
+<tr class="memdesc:a01638c5846ed22f6a7538863a68a5a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with an initialises element - typically a root.  <a href="#a01638c5846ed22f6a7538863a68a5a82">More...</a><br /></td></tr>
+<tr class="separator:a01638c5846ed22f6a7538863a68a5a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902aba340509f21cff231ad138799b49"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a902aba340509f21cff231ad138799b49"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> (const char *s, char separator='/')</td></tr>
+<tr class="separator:a902aba340509f21cff231ad138799b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56aa16de92135852d553e6abdbf09717"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56aa16de92135852d553e6abdbf09717"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;p)</td></tr>
 <tr class="separator:a56aa16de92135852d553e6abdbf09717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e0ac178e3256eedae62f37893e14829"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e0ac178e3256eedae62f37893e14829"></a>
-virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostream &amp;ostr) const </td></tr>
-<tr class="separator:a9e0ac178e3256eedae62f37893e14829"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8ebf3bef9932b3dcb727328335f1080"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8ebf3bef9932b3dcb727328335f1080"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (std::string &amp;str) const </td></tr>
-<tr class="separator:aa8ebf3bef9932b3dcb727328335f1080"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec21c2daaac19676aa46134f63b471c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec21c2daaac19676aa46134f63b471c1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> ()</td></tr>
-<tr class="separator:aec21c2daaac19676aa46134f63b471c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0a632004b5066c92b42d5648c0a137"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a0a632004b5066c92b42d5648c0a137"></a>
+<a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;p)</td></tr>
+<tr class="separator:a6a0a632004b5066c92b42d5648c0a137"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cad58717c172765d90d45cb589d4d2f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a4cad58717c172765d90d45cb589d4d2f"></a>
+template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:a4cad58717c172765d90d45cb589d4d2f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a4cad58717c172765d90d45cb589d4d2f">operator=</a> (const <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T2 &gt; &amp;p)</td></tr>
+<tr class="memdesc:a4cad58717c172765d90d45cb589d4d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion from str path type. <br /></td></tr>
+<tr class="separator:a4cad58717c172765d90d45cb589d4d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46c5bcfab51e1afd8305d6d2cf50fa9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46c5bcfab51e1afd8305d6d2cf50fa9a"></a>
+<a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const std::string &amp;p)</td></tr>
+<tr class="separator:a46c5bcfab51e1afd8305d6d2cf50fa9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06bd1d4b62596c97fa4d2deda4f1a1bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06bd1d4b62596c97fa4d2deda4f1a1bc"></a>
+<a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const char *p)</td></tr>
+<tr class="separator:a06bd1d4b62596c97fa4d2deda4f1a1bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f3010dd55f992e2cc74af4b08c1e40"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89f3010dd55f992e2cc74af4b08c1e40"></a>
 <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const T &amp;e)</td></tr>
 <tr class="separator:a89f3010dd55f992e2cc74af4b08c1e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f741176f088edf5aeb998a55d47fd4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f741176f088edf5aeb998a55d47fd4c"></a>
 <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;&gt;</b> (T &amp;e)</td></tr>
 <tr class="separator:a9f741176f088edf5aeb998a55d47fd4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d27cc515e59f676f08d399124be099d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d27cc515e59f676f08d399124be099d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> () const </td></tr>
+<tr class="separator:a7d27cc515e59f676f08d399124be099d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae8094455d79abe353a9131bfa72f7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adae8094455d79abe353a9131bfa72f7b"></a>
+virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostream &amp;ostr, char separator=0) const </td></tr>
+<tr class="separator:adae8094455d79abe353a9131bfa72f7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a246878a262338a87471b3aaef2a57d1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a246878a262338a87471b3aaef2a57d1f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (std::string &amp;str, char separator=0) const </td></tr>
+<tr class="separator:a246878a262338a87471b3aaef2a57d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -153,7 +183,45 @@ class drain::Path&lt; T &gt;</h3>
   </table>
   </dd>
 </dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a01638c5846ed22f6a7538863a68a5a82"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1Path.html">Path</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>'/'</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor with an initialises element - typically a root. </p>
+<p>The root might correspond to an empty string. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Path_8h_source.html">Path.h</a></li>
 </ul>
 </div><!-- contents -->

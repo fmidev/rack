@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,7 +104,7 @@ Inheritance diagram for CartesianOpticalFlow:</div>
 <area shape="rect" id="node2" href="classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator. " alt="" coords="37,259,187,285"/>
 <area shape="rect" id="node3" href="classdrain_1_1BeanWrapper.html" title="BeanWrapper\&lt; FastOptical\lFlowOp2 \&gt;" alt="" coords="22,169,202,211"/>
 <area shape="rect" id="node4" href="classdrain_1_1BeanAdapter.html" title="BeanAdapter\&lt; FastOptical\lFlowOp2, FastOpticalFlowOp2 \&gt;" alt="" coords="5,80,219,121"/>
-<area shape="rect" id="node5" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="71,5,153,32"/>
+<area shape="rect" id="node5" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="71,5,153,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -111,47 +112,49 @@ Collaboration diagram for CartesianOpticalFlow:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CartesianOpticalFlow__coll__graph.png" border="0" usemap="#CartesianOpticalFlow_coll__map" alt="Collaboration graph"/></div>
 <map name="CartesianOpticalFlow_coll__map" id="CartesianOpticalFlow_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator. " alt="" coords="628,1731,777,1757"/>
-<area shape="rect" id="node3" href="classdrain_1_1BeanWrapper.html" title="BeanWrapper\&lt; FastOptical\lFlowOp2 \&gt;" alt="" coords="602,1640,782,1681"/>
-<area shape="rect" id="node4" href="classdrain_1_1BeanAdapter.html" title="BeanAdapter\&lt; FastOptical\lFlowOp2, FastOpticalFlowOp2 \&gt;" alt="" coords="580,1549,793,1591"/>
-<area shape="rect" id="node5" href="structdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="523,1460,605,1487"/>
-<area shape="rect" id="node6" href="classdrain_1_1image_1_1FastOpticalFlowOp2.html" title="FastOpticalFlowOp2" alt="" coords="629,1460,771,1487"/>
-<area shape="rect" id="node7" href="classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lOpticalFlowWeighted2 \&gt;" alt="" coords="612,1369,788,1411"/>
-<area shape="rect" id="node8" href="classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingOptical\lFlowWeighted2 \&gt;" alt="" coords="611,1279,789,1320"/>
-<area shape="rect" id="node9" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="731,516,805,543"/>
-<area shape="rect" id="node10" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="720,415,803,441"/>
-<area shape="rect" id="node11" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="714,260,790,287"/>
-<area shape="rect" id="node40" href="classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="651,364,717,391"/>
-<area shape="rect" id="node12" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="685,171,792,197"/>
-<area shape="rect" id="node13" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="583,81,753,108"/>
-<area shape="rect" id="node15" href="classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title="SlidingOpticalFlowWeighted2" alt="" coords="521,1189,713,1216"/>
-<area shape="rect" id="node16" href="classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="SlidingOpticalFlow2\l\&lt; OpticalFlowCore2 \&gt;" alt="" coords="485,1099,635,1140"/>
-<area shape="rect" id="node17" href="classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, OpticalFlowCore2 \&gt;" alt="" coords="451,1007,640,1048"/>
-<area shape="rect" id="node18" href="classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig,\l OpticalFlowCore2 \&gt;" alt="" coords="417,913,609,955"/>
-<area shape="rect" id="node19" href="classdrain_1_1image_1_1OpticalFlowCore2.html" title="OpticalFlowCore2" alt="" coords="245,823,371,849"/>
-<area shape="rect" id="node20" href="classdrain_1_1image_1_1OpticalFlowCore.html" title="OpticalFlowCore" alt="" coords="141,723,259,750"/>
-<area shape="rect" id="node21" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="111,567,238,593"/>
-<area shape="rect" id="node22" href="classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="262,567,349,593"/>
-<area shape="rect" id="node23" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="252,465,351,492"/>
-<area shape="rect" id="node24" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="254,364,349,391"/>
-<area shape="rect" id="node25" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="513,260,596,287"/>
-<area shape="rect" id="node26" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="429,171,507,197"/>
-<area shape="rect" id="node27" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="777,81,884,108"/>
-<area shape="rect" id="node28" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="405,81,531,108"/>
-<area shape="rect" id="node29" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="537,171,658,197"/>
-<area shape="rect" id="node43" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="557,312,704,339"/>
-<area shape="rect" id="node30" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="271,81,332,108"/>
-<area shape="rect" id="node36" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="321,171,396,197"/>
-<area shape="rect" id="node31" href="classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="55,260,150,287"/>
-<area shape="rect" id="node32" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="21,171,174,197"/>
-<area shape="rect" id="node34" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="249,260,351,287"/>
-<area shape="rect" id="node35" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="375,260,489,287"/>
-<area shape="rect" id="node37" href="classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="451,823,581,849"/>
-<area shape="rect" id="node38" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="520,723,627,750"/>
-<area shape="rect" id="node39" href="structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="625,465,727,492"/>
-<area shape="rect" id="node41" href="structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="621,567,731,593"/>
-<area shape="rect" id="node42" href="classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="605,823,712,849"/>
-<area shape="rect" id="node44" href="classdrain_1_1Time.html" title="Utility for handling time. Internally, uses tm (C time structure). " alt="" coords="868,1731,919,1757"/>
+<area shape="rect" id="node2" href="classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator. " alt="" coords="725,1772,874,1799"/>
+<area shape="rect" id="node3" href="classdrain_1_1BeanWrapper.html" title="BeanWrapper\&lt; FastOptical\lFlowOp2 \&gt;" alt="" coords="699,1681,879,1723"/>
+<area shape="rect" id="node4" href="classdrain_1_1BeanAdapter.html" title="BeanAdapter\&lt; FastOptical\lFlowOp2, FastOpticalFlowOp2 \&gt;" alt="" coords="677,1591,890,1632"/>
+<area shape="rect" id="node5" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="619,1501,702,1528"/>
+<area shape="rect" id="node6" href="classdrain_1_1image_1_1FastOpticalFlowOp2.html" title="FastOpticalFlowOp2" alt="" coords="726,1501,867,1528"/>
+<area shape="rect" id="node7" href="classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lOpticalFlowWeighted2 \&gt;" alt="" coords="709,1411,885,1452"/>
+<area shape="rect" id="node8" href="classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingOptical\lFlowWeighted2 \&gt;" alt="" coords="707,1320,886,1361"/>
+<area shape="rect" id="node9" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="826,544,901,571"/>
+<area shape="rect" id="node10" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="809,443,891,469"/>
+<area shape="rect" id="node11" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="765,287,841,313"/>
+<area shape="rect" id="node42" href="classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="734,392,801,419"/>
+<area shape="rect" id="node12" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="750,184,857,211"/>
+<area shape="rect" id="node13" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="718,95,889,121"/>
+<area shape="rect" id="node15" href="classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title="SlidingOpticalFlowWeighted2" alt="" coords="615,1231,807,1257"/>
+<area shape="rect" id="node16" href="classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="SlidingOpticalFlow2\l\&lt; OpticalFlowCore2 \&gt;" alt="" coords="580,1140,731,1181"/>
+<area shape="rect" id="node17" href="classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, OpticalFlowCore2 \&gt;" alt="" coords="547,1048,737,1089"/>
+<area shape="rect" id="node18" href="classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig,\l OpticalFlowCore2 \&gt;" alt="" coords="514,941,706,983"/>
+<area shape="rect" id="node19" href="classdrain_1_1image_1_1OpticalFlowCore2.html" title="OpticalFlowCore2" alt="" coords="316,851,443,877"/>
+<area shape="rect" id="node20" href="classdrain_1_1image_1_1OpticalFlowCore.html" title="OpticalFlowCore" alt="" coords="212,751,331,778"/>
+<area shape="rect" id="node21" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="143,595,269,621"/>
+<area shape="rect" id="node22" href="classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="293,595,380,621"/>
+<area shape="rect" id="node23" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="247,493,346,520"/>
+<area shape="rect" id="node24" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="239,392,333,419"/>
+<area shape="rect" id="node25" href="classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="402,287,485,313"/>
+<area shape="rect" id="node26" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="412,184,499,211"/>
+<area shape="rect" id="node27" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="469,95,548,121"/>
+<area shape="rect" id="node28" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="874,5,981,32"/>
+<area shape="rect" id="node29" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="495,5,621,32"/>
+<area shape="rect" id="node30" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="572,95,693,121"/>
+<area shape="rect" id="node45" href="classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="529,235,675,261"/>
+<area shape="rect" id="node31" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="339,95,415,121"/>
+<area shape="rect" id="node32" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="265,5,326,32"/>
+<area shape="rect" id="node35" href="classdrain_1_1Castable.html" title="Castable" alt="" coords="239,95,314,121"/>
+<area shape="rect" id="node33" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="369,5,470,32"/>
+<area shape="rect" id="node34" href="classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="226,235,341,261"/>
+<area shape="rect" id="node36" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="79,287,197,313"/>
+<area shape="rect" id="node37" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="27,184,206,211"/>
+<area shape="rect" id="node39" href="classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="565,851,695,877"/>
+<area shape="rect" id="node40" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="605,751,711,778"/>
+<area shape="rect" id="node41" href="structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="710,493,811,520"/>
+<area shape="rect" id="node43" href="structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="706,595,815,621"/>
+<area shape="rect" id="node44" href="classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="719,851,826,877"/>
+<area shape="rect" id="node46" href="classdrain_1_1Time.html" title="Utility for handling time. Internally, uses tm (C time structure). " alt="" coords="965,1772,1015,1799"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -180,16 +183,19 @@ virtual const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap<
 <tr class="memitem:ad6ff66747141f8cf6f4e2ef9e5c58729 inherit pub_methods_classdrain_1_1BeanAdapter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6ff66747141f8cf6f4e2ef9e5c58729"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> (const std::string &amp;params=&quot;&quot;)</td></tr>
 <tr class="separator:ad6ff66747141f8cf6f4e2ef9e5c58729 inherit pub_methods_classdrain_1_1BeanAdapter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_structdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1Command.html">Command</a></td></tr>
-<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
+<tr class="inherit_header pub_methods_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
+<tr class="memitem:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35c517b48ec763f100bf4900b032b1ee"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasArguments</b> () const </td></tr>
-<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_structdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a35c517b48ec763f100bf4900b032b1ee inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5699010e0413a53f2d81e5fad3cd6965"></a>
+virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a5699010e0413a53f2d81e5fad3cd6965">getType</a> () const </td></tr>
+<tr class="memdesc:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of result, comparable to a return type of a function. <br /></td></tr>
+<tr class="separator:a5699010e0413a53f2d81e5fad3cd6965 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a958848a95907783b867081a63ef30eec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a958848a95907783b867081a63ef30eec"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianOpticalFlow.html#a958848a95907783b867081a63ef30eec">getSrcData</a> (<a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src) const </td></tr>
-<tr class="memdesc:a958848a95907783b867081a63ef30eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the intensity images used as a basis of motion analysis. <br /></td></tr>
+<tr class="memitem:a958848a95907783b867081a63ef30eec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianOpticalFlow.html#a958848a95907783b867081a63ef30eec">getSrcData</a> (<a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src) const </td></tr>
+<tr class="memdesc:a958848a95907783b867081a63ef30eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the intensity images used as a basis of motion analysis.  <a href="#a958848a95907783b867081a63ef30eec">More...</a><br /></td></tr>
 <tr class="separator:a958848a95907783b867081a63ef30eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0a203fadedde69c03064de5723069ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianOpticalFlow.html#ac0a203fadedde69c03064de5723069ec">getDiff</a> (size_t width, size_t height, double max, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;channels) const </td></tr>
 <tr class="memdesc:ac0a203fadedde69c03064de5723069ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the difference image needed as a temporary storage. Maybe viewed for debugging.  <a href="#ac0a203fadedde69c03064de5723069ec">More...</a><br /></td></tr>
@@ -361,6 +367,35 @@ typedef <a class="el" href="classdrain_1_1image_1_1FastOpticalFlowOp2.html">Fast
 <p>Create array for "vertical" motion (vField component) </p>
 
 <p>Implements <a class="el" href="classdrain_1_1CmdOpticalFlowBase.html#a631a1c2bae9f29074bb5462d836018c0">CmdOpticalFlowBase</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a958848a95907783b867081a63ef30eec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getSrcData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>channels</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the intensity images used as a basis of motion analysis. </p>
+<p>IMPORTANT: DataSet&lt;CartesianDst&gt; below will read properties. </p>
+
+<p>Implements <a class="el" href="classdrain_1_1CmdOpticalFlowBase.html#a7903a48b9414ccdf2b25235ecc1b9b3d">CmdOpticalFlowBase</a>.</p>
 
 </div>
 </div>

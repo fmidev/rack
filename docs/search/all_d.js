@@ -12,6 +12,7 @@ var searchData=
   ['mapwriter',['MapWriter',['../classdrain_1_1MapWriter.html',1,'drain']]],
   ['marginalstatisticop',['MarginalStatisticOp',['../classdrain_1_1image_1_1MarginalStatisticOp.html',1,'drain::image']]],
   ['marginalstatisticop',['MarginalStatisticOp',['../classdrain_1_1image_1_1MarginalStatisticOp.html#a18d847ed8f29f415982cdf15cdb7ce28',1,'drain::image::MarginalStatisticOp']]],
+  ['markervalue',['markerValue',['../classdrain_1_1image_1_1SegmentProberConf.html#ab4dd9abdd7e87125453f9084b0a374d3',1,'drain::image::SegmentProberConf']]],
   ['matrix',['Matrix',['../classdrain_1_1Matrix.html',1,'drain']]],
   ['max',['max',['../classdrain_1_1image_1_1Intensity.html#a1cb4313fca04c9e4d3aefdf6cb58961f',1,'drain::image::Intensity']]],
   ['maxaltitude',['maxAltitude',['../classrack_1_1BiometOp.html#aee2baa24566d72db8cf547ee8855fa31',1,'rack::BiometOp']]],
@@ -39,6 +40,7 @@ var searchData=
   ['motionextrapolatorop',['MotionExtrapolatorOp',['../classdrain_1_1image_1_1MotionExtrapolatorOp.html',1,'drain::image']]],
   ['motionillustratorop',['MotionIllustratorOp',['../classdrain_1_1image_1_1MotionIllustratorOp.html',1,'drain::image']]],
   ['motion',['Motion',['../motionpage.html',1,'']]],
+  ['move',['move',['../classdrain_1_1image_1_1SegmentProber.html#a0cb249ceb464d93175fbd6934c853f7a',1,'drain::image::SegmentProber']]],
   ['movedown',['moveDown',['../classdrain_1_1image_1_1SlidingWindow.html#a80de71d0f9543ba96ec68e9128805d3f',1,'drain::image::SlidingWindow']]],
   ['moveleft',['moveLeft',['../classdrain_1_1image_1_1SlidingWindow.html#aac4bcbfa17105059389c38d53c332acf',1,'drain::image::SlidingWindow']]],
   ['moveright',['moveRight',['../classdrain_1_1image_1_1SlidingWindow.html#adabdbb47805e946b0b39a7049d47e135',1,'drain::image::SlidingWindow']]],
@@ -46,5 +48,6 @@ var searchData=
   ['multichannel',['MultiChannel',['../classdrain_1_1image_1_1MultiChannel.html',1,'drain::image']]],
   ['multichannelwindowcore',['MultiChannelWindowCore',['../classdrain_1_1image_1_1MultiChannelWindowCore.html',1,'drain::image']]],
   ['multiplicationfunctor',['MultiplicationFunctor',['../classdrain_1_1image_1_1MultiplicationFunctor.html',1,'drain::image']]],
+  ['multithresholdop',['MultiThresholdOp',['../classrack_1_1MultiThresholdOp.html',1,'rack']]],
   ['meteorological_20products',['Meteorological products',['../productspage.html',1,'']]]
 ];

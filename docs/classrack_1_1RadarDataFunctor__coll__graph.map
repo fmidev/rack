@@ -1,8 +1,7 @@
 <map id="RadarDataFunctor&lt; F &gt;" name="RadarDataFunctor&lt; F &gt;">
 <area shape="rect" id="node3" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="97,385,184,412"/>
 <area shape="rect" id="node4" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="112,309,169,336"/>
-<area shape="rect" id="node5" href="$classrack_1_1EncodingODIM.html" title="EncodingODIM" alt="" coords="85,233,196,260"/>
-<area shape="rect" id="node6" href="$classrack_1_1BaseODIM.html" title="BaseODIM" alt="" coords="59,157,145,184"/>
-<area shape="rect" id="node7" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="170,157,277,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="138,81,309,108"/>
+<area shape="rect" id="node5" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="85,233,196,260"/>
+<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="87,157,194,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="55,81,226,108"/>
 </map>

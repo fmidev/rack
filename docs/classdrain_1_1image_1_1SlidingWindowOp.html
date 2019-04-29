@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -341,15 +342,16 @@ class drain::image::SlidingWindowOp&lt; W &gt;</h3>
 <p>Template for operators applying pipeline-like sliding window. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">W</td><td>- window class with W::conf_t structure, potentially suporting user modifiable parameters.</td></tr>
+    <tr><td class="paramname">W</td><td>- sliding window class with W::conf_t structure, potentially suporting user modifiable parameters.</td></tr>
   </table>
   </dd>
 </dl>
 <p>Class W must have:</p><ul>
 <li>W::conf_t - conf structure</li>
 <li>W::unweighted - typedef for unweighted version of the operator.</li>
-<li>W::slide() - method implementing the sliding. </li>
+<li>W::slide() - method implementing the sliding.</li>
 </ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow</a> </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/imageops/<a class="el" href="SlidingWindowOp_8h_source.html">SlidingWindowOp.h</a></li>
 </ul>

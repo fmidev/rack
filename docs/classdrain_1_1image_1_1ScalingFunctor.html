@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -234,7 +235,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Rescales intensities linearly: f' = scale*f + offset. </p>
-<p>Scale determines the contrast, offset determines the brightness of the resulting image. </p><div class="fragment"><div class="line">drainage gray.png  --rescale 0.5              -o scale-dark.png</div><div class="line">drainage gray.png  --target S --rescale 0.5   -o scale-dark16.png</div><div class="line">drainage gray.png  --rescale 0.5,0.5          -o scale-dim.png</div><div class="line">drainage gray.png  --rescale 2.0,-0.5,LIMIT=1 -o scale-contrast.png</div><div class="line">drainage color.png --rescale 0.5,0.5 -o scale-dim-color.png</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Scale determines the contrast, offset determines the brightness of the resulting image. </p><div class="fragment"><div class="line">drainage gray.png  --rescale 0.5              -o scale-dark.png</div><div class="line">drainage gray.png  --target S --rescale 0.5   -o scale-dark16.png</div><div class="line">drainage gray.png  --rescale 0.5,128          -o scale-dim.png</div><div class="line">drainage image.png --rescale 0.5,128          -o scale-dim-image.png</div><div class="line">drainage gray.png  --rescale 2.0,-128,LIMIT=1 -o scale-contrast.png</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="FunctorPack_8h_source.html">FunctorPack.h</a></li>
 </ul>
 </div><!-- contents -->

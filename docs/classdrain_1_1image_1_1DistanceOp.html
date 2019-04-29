@@ -15,6 +15,7 @@
   $(document).ready(function() { init_search(); });
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,7 +104,7 @@ Inheritance diagram for DistanceOp:</div>
 <div class="center"><img src="classdrain_1_1image_1_1DistanceOp__inherit__graph.png" border="0" usemap="#DistanceOp_inherit__map" alt="Inheritance graph"/></div>
 <map name="DistanceOp_inherit__map" id="DistanceOp_inherit__map">
 <area shape="rect" id="node2" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\l\&lt; SubtractionFunctor \&gt;" alt="" coords="5,304,161,345"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of intensity vectors of two images. " alt="" coords="30,229,137,256"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images..." alt="" coords="30,229,137,256"/>
 <area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="46,155,121,181"/>
 <area shape="rect" id="node5" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="42,80,125,107"/>
 <area shape="rect" id="node6" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="45,5,121,32"/>
@@ -115,7 +116,7 @@ Collaboration diagram for DistanceOp:</div>
 <div class="center"><img src="classdrain_1_1image_1_1DistanceOp__coll__graph.png" border="0" usemap="#DistanceOp_coll__map" alt="Collaboration graph"/></div>
 <map name="DistanceOp_coll__map" id="DistanceOp_coll__map">
 <area shape="rect" id="node2" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\l\&lt; SubtractionFunctor \&gt;" alt="" coords="65,564,221,605"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of intensity vectors of two images. " alt="" coords="6,475,113,501"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images..." alt="" coords="6,475,113,501"/>
 <area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="31,399,106,425"/>
 <area shape="rect" id="node5" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="33,323,115,349"/>
 <area shape="rect" id="node6" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
@@ -337,7 +338,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Computes the distance between intensity vectors. </p>
 <p>dst(i,j) = { src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.</p>
-<div class="fragment"><div class="line">drainage color.png color-rot180.png  --distance FuzzyStep:0,255 -o distance.png</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images. ">ProductOp</a> </dd>
+<div class="fragment"><div class="line">drainage image.png image-rot.png  --distance FuzzyStep:0,255 -o distance-step.png</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images. ">ProductOp</a> </dd>
 <dd>
 <a class="el" href="classdrain_1_1image_1_1MagnitudeOp.html" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector. ">MagnitudeOp</a> </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
