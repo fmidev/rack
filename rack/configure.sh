@@ -2,11 +2,11 @@
 # Markus.Peura@fmi.fi
 
 CONF_FILE='install-rack.cnf'
-echo "Creating/updating Rack config file '$CONF_FILE')"
+echo "Creating/updating Rack config file '$CONF_FILE'"
 echo "(Optionally edited later.)"
 
 if [ -f "$CONF_FILE" ]; then
-  cp -v $CONF_FILE $CONF_FILE.bak
+  cp -vi $CONF_FILE $CONF_FILE.bak
   source $CONF_FILE
 fi
 
@@ -79,7 +79,7 @@ function warn_if_unfound(){
 }
 
 # Todo recode
-echo 'Automagically detecting for directories...'
+echo 'Automagically detecting directories...'
 guess_include_dir  HDFROOT  hdf5.h
 guess_include_dir  PROJROOT proj_api.h
 guess_include_dir  GEOTIFF  geotiff.h
@@ -88,7 +88,7 @@ echo
 
 
 
-echo "Check the directories detected above:"
+echo "Accept or modify the directories detected above:"
 echo 
 ask_variable HDFROOT  "Hierarchical Data Format (HDF5) library"
 warn_if_unfound $HDFROOT

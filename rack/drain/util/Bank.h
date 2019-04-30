@@ -60,12 +60,14 @@ public:
 
 	inline
 	T & clone(const std::string & key) const {
-		return this->template Registry<ClonerBase<T> >::get(key).clone();
+		// return this->template Registry<ClonerBase<T> >::get(key).clone();
+		return this->Registry<ClonerBase<T> >::get(key).clone();
 	}
 
 	inline
 	T & get(const std::string & key){
-		return this->template Registry<ClonerBase<T> >::get(key).get();
+		return this->Registry<ClonerBase<T> >::get(key).get();
+		//return this->Registry<ClonerBase<T> >::get(key).get();
 	}
 
 
