@@ -404,7 +404,7 @@ protected:
 	virtual
 	void clear(){
 		std::cerr << "SlidingOpticalFlow::" << __FUNCTION__ << std::endl;
-		void clearStats();
+		this->clearStats();
 	}
 
 	// Used by addPixel, removePixel
