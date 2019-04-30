@@ -158,10 +158,10 @@ void RainRateDPSimpleOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, Data
 	const double elangleR = dbzSrc.odim.getElangleR();
 	//## Data quality
 
-	double dbz;
+	double dbz = -32;
 	double rhohv;
 	double kdp;
-	int	hclass;
+	int	hclass = 0;
 
 	PrecipitationZ dbzP;
 	PrecipitationKDP kdpP;
@@ -275,7 +275,7 @@ void RainRateDPSimpleOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, Data
 							r = 0.0;
 						}
 						else if(dbzIsValid){
-							if (hclassIsValid && hclass == 2) { // hydroclass shows water
+							if (hclassIsValid && (hclass == 2)) { // hydroclass shows water
 								if (kdpIsValid) {
 									if (dbz > dbzHailThr){
 										r = kdpP.rainRate(kdp);

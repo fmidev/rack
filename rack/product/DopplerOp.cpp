@@ -118,7 +118,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	mout.info() << "dst [" << dstData.odim.quantity << "]  " << EncodingODIM(dstData.odim) << ", [" << minCode << ',' << maxCode << ']' << mout.endl;
 	mout.info() << "dst [" << dstQuality.odim.quantity << "]" << EncodingODIM(dstQuality.odim) << mout.endl;
 
-	const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
+	// UNUSED const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
 
 	/// Azimuth in radians
 	double azmR;
