@@ -123,7 +123,7 @@ public: // from ODIM.h
 	/**
 	 *   Not indexed.
 	 */
-	static const group_t OTHER   = 255;
+	static const group_t OTHER   = 255 ^ IS_INDEXED; // OTHER is not indexed...
 
 	/// User defined group, name stored as a separate string. Index allowed, but only catenated in the string.
 	static const group_t ALL_GROUPS = 255;

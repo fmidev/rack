@@ -64,7 +64,7 @@ void ImageFrame::setStorageType(const std::type_info &type){
 	segmentBegin.setType(type);
 	segmentEnd.setType(type);
 
-};
+}
 
 void ImageFrame::adjustBuffer(){
 

@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 #include <set>
 #include <map>
@@ -497,7 +497,7 @@ public:
 			convertCurrentH5<PolarODIM>();
 		}
 		else {
-			 mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
+			mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
 		}
 		resources.currentImage = NULL;
 		resources.currentGrayImage = NULL;
@@ -815,84 +815,185 @@ public:
 
 
 
+/// Renames or moves paths and attributes.
+/**
 
-class CmdRename : public SimpleCommand<std::string> {
+    A full path consist of a slash-separated group path elements followed by an attribute key separated by colon, for example \c /dataset1/data2/what:gain .
+
+
+    Parameters:
+    \param src - source path, at least the group path
+    \param dst - destination path
+
+    Examples:
+    \code{.sh}
+    # Move group
+    rack volume.h5 --move quality1,dataset1/quality1 -o renamed.h5
+
+    # Rename only the attribute key
+    rack volume.h5 --move dataset1/how:task,newtask -o renamed.h5
+
+    # Change attribute location in hierarchy
+    rack volume.h5 --move dataset1/where:nrays,dataset1/data1 -o renamed.h5
+
+    # Change key and location
+    rack volume.h5 --move dataset1/where:nrays,dataset1/how:imageheight -o renamed.h5
+    \endcode
+
+ */
+class CmdMove :  public BasicCommand {  //public SimpleCommand<std::string> {
 
 public:
 
-	CmdRename() : SimpleCommand<std::string>(__FUNCTION__, "Rename/swap path names (future ext: attribute)", "from,to", "", "<path>[:<key>],[<path2>|<key2>],") { // TODO
+	///
+	CmdMove() : BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){
+		parameters.reference("src", pathSrc = "", "/group/group2[:attr]");
+		parameters.reference("dst", pathDst = "", "/group/group2[:attr]");
 	};
+
 
 	void exec() const {
 
 		drain::Logger mout(name, __FUNCTION__);
 
-		//drain::RegExp pathSplitter("^([^:]+)(:(.+))?,([^:]*)(:(.+))?$");
-		const drain::RegExp pathSplitter("^([^:]+)(:(.+))?,(.+)?$");
+		RackResources & resources = getResources();
+		if (resources.currentHi5 == NULL){
+			mout.error() << "current Hi5 == NULL" << mout.endl;
+			return;
+		}
 
-		if (pathSplitter.execute(this->value) == 0){
+		HI5TREE & dstRoot = *resources.currentHi5;
 
-			mout.debug() << "matches" << mout.endl;
+		ODIMPath path1;
+		std::string attr1;
+		getPath(pathSrc, path1, attr1);
+		mout.debug() << "path1: " << path1 << " : " << attr1 << mout.endl;
+		if (!dstRoot.hasPath(path1)) // make it temporary (yet allocating)
+			mout.warn() << "nonexistent path: " << path1 << mout.endl;
 
-			const std::string & path1 = pathSplitter.result[1];
-			const std::string & attr1 = pathSplitter.result[3];
-			const std::string & path2 = pathSplitter.result[4];
-			//const std::string & attr2 = pathSplitter.result[6];
 
-			//mout.warn() << path1 << '|' << attr1 << " => " << path2 << '|' << attr2 << mout.endl;
-			if (attr1.empty())
-				mout.note() << path1 << " => " << path2 << mout.endl;
-			else
-				mout.note() << path1 << '|' << attr1 << " => " << path2 << mout.endl;
+		if (attr1.empty()){ // RENAME PATHS (swap two paths)
 
-			RackResources & resources = getResources();
-			if (resources.currentHi5 == NULL){
-				mout.error() << "current Hi5 == NULL" << mout.endl;
+			ODIMPath path2;
+			std::string attr2;
+			getPath(pathDst, path2, attr2);
+			if (!attr2.empty()){
+				mout.error() << "cannot move path '" << path1 << "' to attribute '" << attr2 << "'" << mout.endl;
 				return;
 			}
-			HI5TREE & dst = *resources.currentHi5;
 
-			//if (attr1.empty() && attr2.empty()){
-			if (attr1.empty()){
-				mout.debug() << "renaming path" << path1 << " => " << path2 << mout.endl;
-				//mout.warn() << dst << mout.endl;
-				HI5TREE & d1 = dst(path1);
-				HI5TREE & d2 = dst(path2);
-				const bool noSave1 = d1.data.noSave;
-				const bool noSave2 = d2.data.noSave;
-				d2.swap(d1);
-				d1.data.noSave = noSave2;
-				d2.data.noSave = noSave1;
-				d2.data.attributes.swap(d2.data.attributes);
-				//dst.erase(path1);
-				DataTools::updateAttributes(d1);
-				DataTools::updateAttributes(d2);
-				//mout.note() << dst << mout.endl;
-			}
-			else {//if (!attr1.empty() && path2.empty() && !attr2.empty()){
-				mout.debug() << "renaming attribute (" << path1 << "):" << attr1 << " => " << path2 << mout.endl;
-				HI5TREE & dst2 = dst[path1];
-				if (dst2.data.attributes.hasKey(attr1)){
-					dst2.data.attributes[path2] = dst2.data.attributes[attr1]; //???
-					dst2.data.attributes.erase(attr1);
-				}
-				//dst.erase(path1);
-			}
-			/*
-				else {
-					mout.warn() << " illegal rename operation: " << path1 << ':' << attr1 << " => " << path2 << ':' << attr2 << mout.endl;
-				}
-			 */
-			//if ()
+			mout.debug() << "renaming path '" << path1 << "' => '" << path2 << "'" << mout.endl;
+			//mout.warn() << dstRoot << mout.endl;
+			HI5TREE & dst1 = dstRoot(path1);
+			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating)
+				dstRoot(path2).data.noSave = true;
+			HI5TREE & dst2 = dstRoot(path2);
+
+			const bool noSave1 = dst1.data.noSave;
+			const bool noSave2 = dst2.data.noSave;
+			dst2.swap(dst1);
+			dst1.data.noSave = noSave2;
+			dst2.data.noSave = noSave1;
+			dst2.data.attributes.swap(dst1.data.attributes);
+			//dstRoot.erase(path1);
+			//DataTools::updateAttributes(dst1); // recurse subtrees
+			//DataTools::updateAttributes(dst2); // recurse subtrees
 
 		}
+		else { // Rename attribute
+
+			ODIMPath path2;
+			std::string attr2;
+
+			//const bool CHANGE_PATH = ((attr2.find(path1.separator) != std::string::npos) || (attr2.find(':') != std::string::npos));
+			if ((pathDst.find(path2.separator) != std::string::npos) || (pathDst.find(':') != std::string::npos)) { // contains '/'
+				getPath(pathDst, path2, attr2);
+			}
+			else {
+				path2 = path1;
+				attr2 = pathDst;
+			}
+
+			mout.debug() << "renaming attribute (" << path1 << "):" << attr1 << " => (" << path2 << "):" << attr2 << mout.endl;
+
+			HI5TREE & dst1 = dstRoot(path1);
+			if (!dst1.data.attributes.hasKey(attr1)){
+				mout.warn() <<  "attribute (" << path1 << ") '" << attr1 << "' not found" << mout.endl;
+			}
+			HI5TREE & dst2 = dstRoot(path2);
+			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
+			dst1.data.attributes.erase(attr1);
+			//DataTools::updateAttributes(dst2);
+			mout.warn() << "dst1 attributes now: " << dst1.data.attributes << mout.endl;
+			//dstRoot.erase(path1);
+		}
+
+		DataTools::updateAttributes(dstRoot);
+		//mout.error() << "argument <from,to> syntax error; regexp: " << pathSplitter.toStr() << mout.endl;
+
+		pathSrc = "";
+		pathDst = "";
+	}
+
+protected:
+
+	mutable
+	std::string pathSrc;
+
+	mutable
+	std::string pathDst;
+
+
+
+	// Consider sharing (DataTools?)
+	/// Split full path string to path object and attribute key.
+	/**
+	 *   Given a path like /dataset1/data3
+	 *   \code
+	 *
+	 *   \endcode
+	 *
+	 */
+	static
+	void getPath(const std::string & s, ODIMPath & path, std::string & attribute){
+
+		drain::Logger mout("CmdRename", __FUNCTION__);
+
+		std::string::size_type i = s.find(':');
+
+		if (i == std::string::npos){ // no attribute
+			path.set(s);
+			attribute.clear();
+		}
 		else {
-			mout.error() << "argument <from,to> syntax error; regexp: " << pathSplitter.toStr() << mout.endl;
+			path.set(s.substr(0, i));
+			if ((i+1) < s.length())
+				attribute.assign(s.substr(i+1));
+			else {
+				mout.warn() << "empty attribute given, path='" << s << "'" << mout.endl;
+				attribute.clear();
+			}
 		}
 
 	}
+
 };
-// static CommandEntry<CmdRename> cmdRename("rename");
+
+//class CmdRename : public BasicCommand {
+class CmdRename : public CmdMove {
+
+public:
+
+	//CmdRename() : BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){};
+
+	void exec() const {
+		drain::Logger mout(name, __FUNCTION__);
+		mout.warn() << "deprecated command, use '--move' instead" << mout.endl;
+		CmdMove::exec();
+	};
+
+};
+
 
 
 
@@ -963,7 +1064,7 @@ public:
 			rootODIM.date = rootODIM.startdate;
 		if (rootODIM.time.empty())
 			rootODIM.time = rootODIM.starttime;
-		*/
+		 */
 		ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
 
 	}
@@ -1082,7 +1183,7 @@ public:
 			}
 
 		}
-		*/
+		 */
 
 	};
 
@@ -1154,7 +1255,7 @@ public:
 	CmdAppend() : BasicCommand(__FUNCTION__, "Append inputs/outputs instead of overwriting."){
 		parameters.reference("path", path, "|data<n>|dataset<n>");
 	};
-	*/
+	 */
 
 	virtual
 	void exec() const {
@@ -1174,7 +1275,7 @@ public:
 		if (!ODIMPath::isIndexed(ProductBase::appendResults.getType()) && ! (ProductBase::appendResults != ODIMPathElem::NONE)){
 			mout.warn() << "illegal path elem '"<< value << "'" << mout.endl;
 		}
-		*/
+		 */
 
 	}
 
@@ -1405,7 +1506,8 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<CmdHelpExample> cmdHelpExample;
 	static RackLetAdapter<CmdJSON> cmdJSON;
 	static RackLetAdapter<CmdKeep> cmdKeep;
-	static RackLetAdapter<CmdRename> cmdRename;
+	static RackLetAdapter<CmdRename> cmdRename("rename"); // deprecating
+	static RackLetAdapter<CmdMove> cmdMove;
 	static RackLetAdapter<CmdSetODIM> cmdSetODIM;
 	static RackLetAdapter<CmdVersion> cmdVersion;
 	static RackLetAdapter<OutputDataVerbosity> dataVebose("verboseData");
@@ -1424,5 +1526,5 @@ CommandModule::CommandModule(){ //
 } // namespace rack
 
 // Rack
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
+// REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
+// REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
