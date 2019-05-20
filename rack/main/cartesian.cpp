@@ -205,7 +205,7 @@ void CompositeInit::exec() const {
 
 	if ((resources.composite.getFrameWidth() == 0) || (resources.composite.getFrameHeight() == 0)){
 		resources.composite.setGeometry(500,500); // frame only
-		mout.warn() << "size unset, applying" << resources.composite.getFrameWidth() << ',' << resources.composite.getFrameHeight() << mout.endl;
+		mout.warn() << "size unset, applying " << resources.composite.getFrameWidth() << ',' << resources.composite.getFrameHeight() << mout.endl;
 	}
 	resources.composite.allocate();
 

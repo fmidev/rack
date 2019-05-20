@@ -65,7 +65,7 @@ Composite::Composite() :  decay(1.0), cropping(false)
 {
 
 	dataSelector.quantity = ""; // "DBZH";
-	dataSelector.path = ".*/(data|quality)[0-9]+/?$";  // groups  .. but quality??
+	//dataSelector.path = ".*/(data|quality)[0-9]+/?$";  // groups  .. but quality??
 
 	//odim.reference("type", odim.type = drain::Type::getTypeChar(typeid(void)));
 	odim.reference("type", odim.type = "C");

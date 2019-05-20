@@ -72,7 +72,7 @@ public:
 		mout.debug() << acc << mout.endl;
 
 		// NEW
-		acc.dataSelector.updatePaths();
+		acc.dataSelector.convertRegExpToRanges();
 
 		//selector.data.max = 0;
 		//mout.note() << "selector: " << selector << mout.endl;

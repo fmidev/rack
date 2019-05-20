@@ -121,54 +121,6 @@ void Caster::updateType<std::string>(){
 
 }
 
-// This is ok us such, but str methods like getByteSize() and iteration become ambiguous
-/*
-template <>
-void Caster::updateType<Caster>(){
-
-	type = &typeid(Caster);
-	byteSize = 1;  // Varies... getByteSize() could retrieve that from the Caster object
-
-	// NEW
-	putBool   = & Caster::putToCasterT<bool>;
-	putInt    = & Caster::putToCasterT<int>;
-	putChar   = & Caster::putToCasterT<char>;
-	putUChar  = & Caster::putToCasterT<unsigned char>;
-	putUInt   = & Caster::putToCasterT<unsigned int>;
-	putShort  = & Caster::putToCasterT<short>;
-	putUShort = & Caster::putToCasterT<unsigned short>;
-	putLong   = & Caster::putToCasterT<long int>;
-	putULong  = & Caster::putToCasterT<unsigned long>;
-	putFloat  = & Caster::putToCasterT<float>;
-	putDouble = & Caster::putToCasterT<double>;
-
-	// NEW
-	getBool   = & Caster::getFromCasterT<bool>;
-	getInt    = & Caster::getFromCasterT<int>;
-	getChar   = & Caster::getFromCasterT<char>;
-	getUChar  = & Caster::getFromCasterT<unsigned char>;
-	getUInt   = & Caster::getFromCasterT<unsigned int>;
-	getShort  = & Caster::getFromCasterT<short>;
-	getUShort = & Caster::getFromCasterT<unsigned short>;
-	getLong   = & Caster::getFromCasterT<long>;
-	getULong  = & Caster::getFromCasterT<unsigned long>;
-	getFloat  = & Caster::getFromCasterT<float>;
-	getDouble = & Caster::getFromCasterT<double>;
-
-	toOStreamPtr = & Caster::toOStreamT<Caster>;
-	translatePtr = & Caster::translateT<Caster>;
-
-	std::cerr << __FUNCTION__ << " completed " << std::endl;
-
-	return;
-
-}
-
-void Caster::updateCasterType(){
-	Caster::updateType<Caster>();
-}
-*/
-
 
 }  // drain::
 

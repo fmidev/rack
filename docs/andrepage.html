@@ -141,6 +141,17 @@ Detection results of <code>--aBird</code> .</div></div>
 Detection results of <code>--aInsect</code> .</div></div>
 <h2><a class="anchor" id="aClutter"></a>
 Detecting ground clutter</h2>
+<p>Based on pre-computed clutter map, scales the clutter probability for desired sweeps. The scaling is a heuristic. The loaded map should contain quantity <code>CLUTTER</code> which in each bin represents the probability of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed from accumulated dBZ values as described in cluttermaps .</p>
+<ul>
+<li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_125.png"/>: "sky angle", Default constructor. <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">decay</td><td>- percentage of clutter probability remaining for each 1000m lift in altitude.</td></tr>
+  </table>
+  </dd>
+</dl>
+Before applying this operator (by calling processVolume), <code>cluttermap</code> has to be read first. In <b>rack</b> , this is implemented with AnDReClutterMapRead, "--aClutterMapRead" in command line.</li>
+</ul>
+<p>This operator is <em>universal</em> , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)</p>
 <div class="fragment"></div><!-- fragment --><div class="image">
 <img src="result-cluttermap.png" alt="result-cluttermap.png"/>
 <div class="caption">

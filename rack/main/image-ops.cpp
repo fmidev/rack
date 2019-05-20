@@ -78,7 +78,7 @@ void ImageOpRacklet::exec() const {
 	DataSelector imageSelector;
 	imageSelector.setParameters(resources.select);
 	resources.select.clear();
-	imageSelector.updatePaths();
+	imageSelector.convertRegExpToRanges();
 	imageSelector.count = 1;
 	mout.debug() << "selector: " << imageSelector << mout.endl;
 

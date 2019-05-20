@@ -20,6 +20,7 @@ var searchData=
   ['derivativedbz',['derivativeDBZ',['../classrack_1_1JammingOp.html#a22dab7280dc4edd6ad777ac8838d3543',1,'rack::JammingOp']]],
   ['derivedifference',['deriveDifference',['../classrack_1_1PolarODIM.html#ade58bc561b315ff3e629771682d5e93a',1,'rack::PolarODIM']]],
   ['derivedstgeometry',['deriveDstGeometry',['../classrack_1_1PolarProductOp.html#a939450d9143be34c545384ca56864da1',1,'rack::PolarProductOp']]],
+  ['deriveparameters',['deriveParameters',['../classrack_1_1DataSelector.html#aedf49c4835792a1bc9cb7eaceafac2b0',1,'rack::DataSelector']]],
   ['derivewindow',['deriveWindow',['../classrack_1_1PolarSector.html#ad3d3ddb67569fce5a41c3ca6893ccd6c',1,'rack::PolarSector']]],
   ['determineboundingboxd',['determineBoundingBoxD',['../classrack_1_1RadarProj.html#ae5acc73dc2e4a4283406b5033645ba39',1,'rack::RadarProj::determineBoundingBoxD(double range, double &amp;xLL, double &amp;yLL, double &amp;xUR, double &amp;yUR) const '],['../classrack_1_1RadarProj.html#a82bbf0d9b7288e0e419664fb8a02b22b',1,'rack::RadarProj::determineBoundingBoxD(double range, drain::Rectangle&lt; double &gt; &amp;bbox) const ']]],
   ['determineboundingboxm',['determineBoundingBoxM',['../classrack_1_1RadarProj.html#a16d605afa7dbfdff8b50b9fbca0685e9',1,'rack::RadarProj::determineBoundingBoxM(double range, double &amp;xLL, double &amp;yLL, double &amp;xUR, double &amp;yUR) const '],['../classrack_1_1RadarProj.html#a1e062493a6f5b5bf6e3163f0416f214f',1,'rack::RadarProj::determineBoundingBoxM(double range, drain::Rectangle&lt; double &gt; &amp;bbox) const ']]],

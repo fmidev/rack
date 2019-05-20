@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <algorithm>
 #include <drain/util/Path.h>
 #include <drain/util/Log.h>
+#include <drain/util/Flags.h>
 
 
 namespace rack {
@@ -139,7 +140,12 @@ public: // from ODIM.h
 		//return (group & IS_QUALITY) == IS_QUALITY;
 	}
 
-	typedef std::map<group_t, std::string> dict_t;
+	//typedef std::map<group_t, std::string> dict_t;
+	typedef drain::Flags flag_t;
+	typedef drain::Flags::dict_t dict_t;
+
+	//static	const flag_t & getFlags();
+
 
 	static
 	const dict_t & getDictionary();
@@ -176,13 +182,21 @@ public: // from ODIM.h
 	/// Redirects to set(const std::string &) .
 	/**
 	 *  \tparam T - something castable to std::string.
+	 *
+	 *  \param  s - std::string, or something directly castable to it.
 	 */
 	template <class T>
 	inline
-	ODIMPathElem & operator=(const T &v){
-		set(v);
+	ODIMPathElem & operator=(const T &s){
+		set(s);
 		return *this;
 	}
+
+
+	/// Redirects to set(const std::string &) .
+	/**
+	 *  \param  s - string corresponding a path element.
+	 */
 
 	inline
 	ODIMPathElem & operator=(const char *s){
@@ -191,17 +205,26 @@ public: // from ODIM.h
 	}
 
 	inline
-	void set(group_t g, index_t i = 0){
+	bool set(group_t g, index_t i = 0){
 		group = g;
 		index = i;
 		if ((i>0) && !isIndexed(g)){
 			drain::Logger mout("ODIMPath", __FUNCTION__);
 			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
+			return false;
 		}
+		return (g != ODIMPathElem::OTHER);
 	}
 
-	/// Assign a path string, like "dataset4/data5/quality1/data".
-	void set(const std::string &s);
+	/// Assign a string to this path element.
+	/**
+	 *   \param s - path element as a string,  "dataset4" for example
+	 *
+	 *   Note that path separator is not recognized; instead, it will be assigned as a part of the string.
+	 *
+	 *   \return - true if a valid ODIM path element was created
+	 */
+	bool set(const std::string &s);
 
 	/// Abbreviation of (group == NONE)
 	inline

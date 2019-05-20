@@ -18,6 +18,7 @@ var searchData=
   ['datatype_3c_20hi5tree_2c_20hi5tree_3a_3aiterator_2c_20image_20_3e',['DataType&lt; HI5TREE, HI5TREE::iterator, Image &gt;',['../structrack_1_1DataType.html',1,'rack']]],
   ['defaulthandler',['DefaultHandler',['../classdrain_1_1DefaultHandler.html',1,'drain']]],
   ['detectorop',['DetectorOp',['../classrack_1_1DetectorOp.html',1,'rack']]],
+  ['dictionary',['Dictionary',['../classdrain_1_1Dictionary.html',1,'drain']]],
   ['differentialop',['DifferentialOp',['../classdrain_1_1image_1_1DifferentialOp.html',1,'drain::image']]],
   ['distancemodel',['DistanceModel',['../classdrain_1_1image_1_1DistanceModel.html',1,'drain::image']]],
   ['distancemodelexponential',['DistanceModelExponential',['../classdrain_1_1image_1_1DistanceModelExponential.html',1,'drain::image']]],

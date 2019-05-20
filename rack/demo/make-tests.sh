@@ -64,8 +64,8 @@ done
 
 
 # Append additional cases
-
-echo ./make-plot.sh >> $TEST_CMD_FILE
+echo ./test-content.sh >> $TEST_CMD_FILE
+echo ./make-plot.sh    >> $TEST_CMD_FILE
 
 #echo METHOD=WAVG,1,1  SIZE=300,300 BBOX=17.6,57.6,29.7,64.0 POLARPRODUCT=' ' ./make-composite.sh data/pvol_fi{kor,ika,van}.h5   >> $TEST_CMD_FILE
 

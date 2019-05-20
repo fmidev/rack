@@ -42,7 +42,7 @@ using namespace hi5;
 
 DataSelector::DataSelector(const std::string & path, const std::string & quantity,
 		unsigned int index, unsigned int count,
-		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__) { //, elangle(2) {
+		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__), groups(ODIMPathElem::getDictionary(), ':') {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
 	init();
@@ -52,20 +52,20 @@ DataSelector::DataSelector(const std::string & path, const std::string & quantit
 	this->count = count;
 	this->elangle.min = elangleMin;
 	this->elangle.max = elangleMax;
-	this->groups = ODIMPathElem::ALL_GROUPS;
+
+
+	//this->groups.value = ODIMPathElem::ALL_GROUPS;
 	//std::cerr << 1 << *this << std::endl;
 }
 
 
-DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__){ //, elangle(2) {
-
+DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__), groups(ODIMPathElem::getDictionary(), ':') {
 	init();
 	setParameters(parameters);
-
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__){ //, elangle(2) {
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__), groups(ODIMPathElem::getDictionary(), ':') {
 	init();
 	copy(selector);
 }
@@ -79,228 +79,142 @@ void DataSelector::init() {
 	reset();
 
 	parameters.reference("path", path);
-	parameters.reference("quantity", quantity);
+	parameters.reference("quantity", quantity, "DBZH|VRAD|RHOHV|...");
 	parameters.reference("index", index);
 	parameters.reference("count", count);
-
-	parameters.reference("elangle", elangle.vect);
-
-	parameters.reference("quantity", quantity);
-	// quantity.insert("");
-	// reset(){...} ?
-
-	parameters.reference("dataset", dataset.vect);
+	parameters.reference("elangle", elangle.vect, "min[:max]");
+	parameters.reference("dataset", dataset.vect, "min[:max]");
 	parameters["dataset"].fillArray = true;
-
-	parameters.reference("data", data.vect);
+	parameters.reference("data", data.vect, "min[:max]");
 	parameters["data"].fillArray = true;
 
 	// Deprecating, use "elangle=min:max" instead
 	parameters.reference("elangleMin", elangle.min);
 	parameters.reference("elangleMax", elangle.max);
 
-	parameters.reference("groups", groups, "2=DATASET,4=DATA,8=QUALITY,16=WHAT,32=WHERE,64=HOW");
-
-
-	/*
-	 * OLD
-	parameters.reference("elangle", elangle);
-	parameters.reference("elangleMin", elangle[0]);
-	parameters.reference("elangleMax", elangle[1]);
-	 */
+	groups = ODIMPathElem::ALL_GROUPS;
+	std::stringstream sstr;
+	groups.keysToStream(sstr);
+	parameters.reference("groups", groupStr, sstr.str());
 
 }
 
 void DataSelector::reset() {
 
-	path = "";
 	quantity = "";
+
 	index = 0;
 	count = 1000;
 
 	elangle.min = -90.0;
-	elangle.max = +90.0;
+	elangle.max = +90.0; // unflexible
 
 	dataset.min = 0;
-	dataset.max = 0xffff;
+	dataset.max = std::numeric_limits<unsigned short>::max();
+	//dataset.max = flexible ? std::numeric_limits<unsigned short>::max() : 0;
+
 	data.min = 0;
-	data.max = 0xffff;
+	// flexible ?
+	data.max = std::numeric_limits<unsigned short>::max();
 
+	//
+	groupStr = ""; //dataset:data:quality"; // or groups.toStr?
+	groups.value = (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
-}
-
-/*
-bool DataSelector::isValidPath(const ODIMPath & path) const {
-
-	for (ODIMPath::const_iterator it = path.begin(); it != path.end(); ++it){
-		switch (it->group) {
-			case ODIMPathElem::DATASET:
-				if (!dataset.isInside(it->index))
-					return false;
-				break;
-			case ODIMPathElem::DATA:
-				if (!data.isInside(it->index))
-					return false;
-				break;
-			default:
-				break;
-		}
-	}
-
-	return true;
+	path = "";
 
 }
- */
 
-void DataSelector::updatePaths(){
+
+void DataSelector::update(){
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
-	static drain::RegExp rangeRE("^\\[?([+-]?[[:digit:]]+)(:([+-]?[[:digit:]]+))?\\]?$");
-
-	static drain::RegExp datasetRE("/?dataset([^/]+)(/.*)?$");
-	if (datasetRE.execute(path)==0){
-
-		mout.warn() << "'path=" << path << "' (with regexps) is deprecating, use form 'dataset=...' instead" << mout.endl;
-		//mout.note() << "dataset result" << drain::StringTools::join(datasetRE.result, '|') << mout.endl;
-
-		const std::string & datasetIndex = datasetRE.result[1];
-		//mout.note() << "dataset index string: " << datasetIndex << mout.endl;
-
-		const int i = atoi(datasetIndex.c_str());
-		if (i > 0){ // at least starts with a digit
-			// setParameter("dataset", i);
-			dataset = i; // assign will fill both
-			mout.debug(3) << "first guess: dataset=" << dataset << mout.endl;
-		}
-
-		if (rangeRE.execute(datasetIndex) == 0){
-			mout.debug(1) << "dataset result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
-			if (rangeRE.result.size() >= 2){
-				dataset = atoi(rangeRE.result[1].c_str());
-				if (rangeRE.result.size() >= 4){
-					dataset.max = atoi(rangeRE.result[3].c_str());
-				}
-				mout.note() << "derived: dataset=" << dataset << mout.endl;
-			}
-			else {
-				mout.warn() << rangeRE.result.size() << " elems in regexp result - something went wrong" << mout.endl;
-			}
-			mout.warn() << "guessed: dataset=" << dataset << mout.endl;
-		}
-		else {
-			//mout.note() << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
-			mout.warn() << "guessed: dataset=" << dataset << mout.endl;
-		}
-
-		//mout.warn() << "could not derive range from '" << datasetIndex << "'" << mout.endl;
-
+	if (!path.empty()){
+		convertRegExpToRanges(path);
+		mout.warn() << "path '" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
 
-	static drain::RegExp dataRE("/?data([^set/]+)(/.*)?$");
-	if (dataRE.execute(path)==0){
-
-		mout.warn() << "'path=" << path << "' (with regexps) is deprecating, use form 'data=...' instead" << mout.endl;
-		//mout.note() << "dataset result" << drain::StringTools::join(datasetRE.result, '|') << mout.endl;
-
-		const std::string & dataIndex = dataRE.result[1];
-		//mout.note() << "'path=" << dataIndex << "' (with regexps) is deprecating, consider explicit form 'data=i:j'" << mout.endl;
-
-		const int i = atoi(dataIndex.c_str());
-		if (i > 0){ // at least starts with a digit
-			// setParameter("data", i);
-			data = i; // assign will fill both
-			mout.debug(3) << "first guess: data=" << data << mout.endl;
-		}
-
-		if (rangeRE.execute(dataIndex) == 0){
-			mout.debug(1) << "data result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
-			if (rangeRE.result.size() >= 2){
-				data = atoi(rangeRE.result[1].c_str());
-				if (rangeRE.result.size() >= 4){
-					data.max = atoi(rangeRE.result[3].c_str());
-				}
-				mout.note() << "derived: data=" << data << mout.endl;
-			}
-			else {
-				mout.warn() << rangeRE.result.size() << " elems in regexp result - something went wrong" << mout.endl;
-			}
-			mout.warn() << "guessed: data=" << data << mout.endl;
-		}
-		else {
-			//mout.note() << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
-			mout.warn() << "guessed: data=" << data << mout.endl;
-		}
-
+	if (!groupStr.empty()){
+		groups   = groupStr;  // update flags
+		mout.warn() << "updating groups flag: '" << groupStr << "' => " << groups.value << " = '" << groups << "'" << mout.endl;
+		groupStr = "";
 	}
-
 
 }
 
-/*
-bool DataSelector::isValidData(const drain::ReferenceMap & properties) const {
-	if (properties.hasKey("where:elangle"))
-		if (!elangle.isInside(properties["where:elangle"]))
-			return false;
-	//if (properties.hasKey("what:quantity")){
-	return true;
-}
+
+
+
+
+// Derive missing parameters.
+/**
+
+     Assumes that
+     - setParamters(const std::string & parameters)
+
+     has been called.
+
+
  */
-
-ODIMPathElem::group_t DataSelector::resetParameters(const std::string & parameters){
+void DataSelector::deriveParameters(const std::string & parameters){
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
-	ODIMPathElem::group_t groupFilter = 0;
-
-	data    = 0; // = 0:0 ~ delete none, unless set below
-	//dataset = 0; // = 0:0 ~ traverse all, delete none, unless set below
-	//elangle = NAN;
+	//ODIMPathElem::group_t groupFilter = 0;
+	// groups.value = 0;
+	reset();
+	groups.value = 0;
+	data = 0; // = 0:0 ~ delete none, unless set below
 
 	setParameters(parameters);
 
-	/*
-	if (std::isnan(elangle.max)){
-		elangle.min = -90;
-		elangle.min = +90;
-	}
+	const bool AUTO_GROUPS = (groups.value == 0); // value corresponding to empty parameter: groups="" .
 
-	if (dataset.max == 0){
-		dataset.min = 0;
-		dataset.max = 0xffff;
-	}
-	 */
-
+	// If quantity has been declared, open up remaining limits for data group.
 	if (!quantity.empty()){
-		if (data.max == 0){
+		mout.debug() << "no quantity set " << mout.endl;
+
+		if (data.max == 0){ // Maybe this 2nd check is unneeded
 			data.min = 0;
-			data.max = 0xffff;
+			data.max = std::numeric_limits<unsigned short>::max();
 			setParameters(parameters); // data range may be re-adjusted
+			mout.debug() << "opened up data group, status " << *this << mout.endl;
+		}
+		if (AUTO_GROUPS){
+			groups.value = (ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		}
 	}
 
 	if (data.max == 0){
-		/// No DATA indices nor quantities specified, so only DATASET should be returned.
-		groupFilter = ODIMPathElem::DATASET;
-		// Allow still all descendants (for quantity check?)
+		/// No DATA indices nor quantities specified, hence only DATASET should be returned?
+		//  Allow still all descendants to be searched.
 		data.min = 0;
-		data.max = 0xffff;
+		data.max = std::numeric_limits<unsigned short>::max();
+		if (AUTO_GROUPS)
+			groups.value |= (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		mout.debug() << "status 2: " << *this << ", groups: " << groups.value << mout.endl;
+
 	}
 	else {
 		// Note: now all the DATASETs will be traversed but not returned
 		// If datasets specified, deletion rules apply to their descendants.
-		groupFilter = ODIMPathElem::DATA | ODIMPathElem::QUALITY;
+		// groupFilter = this->groups & (ODIMPathElem::DATA | ODIMPathElem::QUALITY); // NEW 2019/05
+		// groupFilter = (ODIMPathElem::DATA | ODIMPathElem::QUALITY); // NEW 2019/05
+		if (AUTO_GROUPS)
+			groups.value |= (ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		mout.debug() << "status 3: " << groups.value << mout.endl;
+
 	}
+
+	mout.debug() << "final flags: " << groups << mout.endl;
+
 	//(ODIMPathElem::group_t groupFilter = ODIMPathElem::DATA | ODIMPathElem::QUALITY | (data.max?ODIMPathElem::DATA
 
-	mout.debug() << "group mask: " << groupFilter << ", selector now: " << *this << mout.endl;
+	if (AUTO_GROUPS)
+		mout.debug() << "group mask: " << groups << ", full selector now: " << *this << mout.endl;
 
-	/*
-	ODIMPathList paths;
-	HI5TREE & dst = *getResources().currentHi5;
-	selector.getPathsNEW(dst, paths, groupFilter); // RE2
-	 */
-	return groupFilter;
+	return; // groups.value;
 }
 
 bool DataSelector::getLastChild(const HI5TREE & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
@@ -475,95 +389,125 @@ bool DataSelector::getChildren(const HI5TREE & tree, std::map<std::string,ODIMPa
 }
 
 
-// ------ OLD ------------------
-/*
-bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & basePath, int & index){
 
-	drain::Logger mout("DataSelector", __FUNCTION__);
-	//drain::Logger mout(__FILE__, __FUNCTION__);
+void DataSelector::convertRegExpToRanges(const std::string & param){
 
-	mout.debug(2) << "selector=" << selector << mout.endl;
+	drain::Logger mout(getName(), __FUNCTION__);
 
-	ODIMPathList paths;
-	//getPaths(src, selector, paths);
-	selector.getPathsNEW(src, paths);
+	static drain::RegExp rangeRE("^\\[?([+-]?[[:digit:]]+)(:([+-]?[[:digit:]]+))?\\]?$");
 
-	if (paths.empty()){
-		//mout.warn() << "No paths with: "  << selector << mout.endl;
-		return false;
-	}
+	static drain::RegExp datasetRE("/?dataset([^/]+)(/.*)?$");
 
-	//drain::RegExp r("^(.*[^0-9])([0-9]+)([^0-9]*)$");  // 2nd item is the last numeric substd::string
-	// skip leading '/'
-	drain::RegExp r("^/?([^/].*[^0-9])([0-9]+)([^0-9]*)$");  // 2nd item is the last numeric substd::string
-	index = -1;
-	drain::Variable v(0);
-	//vField.setType<int>();
-	//vField = 0;  //
-	for (ODIMPathList::iterator it = paths.begin(); it != paths.end(); ++it){
-		/// std::cerr << "???" << *it << std::endl;
-		if (r.execute(*it) != REG_NOMATCH ){
-			mout.debug(2) << r.result[1] << '|' << r.result[2] << mout.endl;
-			v = r.result[2];
-			if (static_cast<int>(v) > index){
-				index = v;
-				basePath  = r.result[1];
-				/// std::cerr << "xxxx" << *it << std::endl;
-			}
+	if (datasetRE.execute(param)==0){
+
+		mout.warn() << "'param=" << param << "' (with regexps) is deprecating, use form 'dataset=...' instead" << mout.endl;
+		//mout.note() << "dataset result" << drain::StringTools::join(datasetRE.result, '|') << mout.endl;
+
+		const std::string & datasetIndex = datasetRE.result[1];
+		//mout.note() << "dataset index string: " << datasetIndex << mout.endl;
+
+		const int i = atoi(datasetIndex.c_str());
+		if (i > 0){ // at least starts with a digit
+			// setParameter("dataset", i);
+			dataset = i; // assign will fill both
+			mout.debug(3) << "first guess: dataset=" << dataset << mout.endl;
 		}
+
+		if (rangeRE.execute(datasetIndex) == 0){
+			mout.debug(1) << "dataset result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			if (rangeRE.result.size() >= 2){
+				dataset = atoi(rangeRE.result[1].c_str());
+				if (rangeRE.result.size() >= 4){
+					dataset.max = atoi(rangeRE.result[3].c_str());
+				}
+				mout.note() << "derived: dataset=" << dataset << mout.endl;
+			}
+			else {
+				mout.warn() << rangeRE.result.size() << " elems in regexp result - something went wrong" << mout.endl;
+			}
+			mout.warn() << "guessed: dataset=" << dataset << mout.endl;
+		}
+		else {
+			//mout.note() << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			mout.warn() << "guessed: dataset=" << dataset << mout.endl;
+		}
+
+		//mout.warn() << "could not derive range from '" << datasetIndex << "'" << mout.endl;
+
 	}
 
-	mout.debug(2) << "result: " << basePath << mout.endl;
+	static drain::RegExp dataRE("/?data([^set/]+)(/.*)?$");
+	if (dataRE.execute(param)==0){
 
-	return (index != -1);
+		mout.warn() << "'param=" << param << "' (with regexps) is deprecating, use form 'data=...' instead" << mout.endl;
+		//mout.note() << "dataset result" << drain::StringTools::join(datasetRE.result, '|') << mout.endl;
+
+		const std::string & dataIndex = dataRE.result[1];
+		//mout.note() << "'path=" << dataIndex << "' (with regexps) is deprecating, consider explicit form 'data=i:j'" << mout.endl;
+
+		const int i = atoi(dataIndex.c_str());
+		if (i > 0){ // at least starts with a digit
+			// setParameter("data", i);
+			data = i; // assign will fill both
+			mout.debug(3) << "first guess: data=" << data << mout.endl;
+		}
+
+		if (rangeRE.execute(dataIndex) == 0){
+			mout.debug(1) << "data result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			if (rangeRE.result.size() >= 2){
+				data = atoi(rangeRE.result[1].c_str());
+				if (rangeRE.result.size() >= 4){
+					data.max = atoi(rangeRE.result[3].c_str());
+				}
+				mout.note() << "derived: data=" << data << mout.endl;
+			}
+			else {
+				mout.warn() << rangeRE.result.size() << " elems in regexp result - something went wrong" << mout.endl;
+			}
+			mout.warn() << "guessed: data=" << data << mout.endl;
+		}
+		else {
+			//mout.note() << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			mout.warn() << "guessed: data=" << data << mout.endl;
+		}
+
+	}
+
 
 }
 
-bool DataSelector::getLastOrdinalPath(const HI5TREE &src, const std::string & pathRegExp, std::string & path){
-
-	drain::Logger mout("DataSelector", __FUNCTION__);
-	//drain::Logger mout(__FILE__, __FUNCTION__);
-	//drain::Logger mout(drain::monitor,"DataSelector::getNextOrdinalPath::filter");
-
-	mout.debug(2) << " selector=" << pathRegExp << mout.endl;
-
-	int index = -1;
-
-	DataSelector::getLastOrdinalPath(src, DataSelector(pathRegExp), path, index);
-
-	if (index == -1)
-		return false;
-	else {
-		std::stringstream sstr;
-		sstr << path << index;
-		path = sstr.str();
-		mout.debug(2) << "result: " << path << mout.endl;
-		return true;
-	}
-}
-
-
-bool DataSelector::getNextOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & path){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	mout.debug(1) << " selector=" << selector << mout.endl;
-
-	int index = -1;
-
-	DataSelector::getLastOrdinalPath(src, selector, path, index);
-
-	if (index == -1)
-		return false;
-	else {
-		std::stringstream sstr;
-		sstr << path << ++index;
-		path = sstr.str();
-		mout.debug(1) << "result: " << path << mout.endl;
-		return true;
-	}
+/*
+bool DataSelector::isValidData(const drain::ReferenceMap & properties) const {
+	if (properties.hasKey("where:elangle"))
+		if (!elangle.isInside(properties["where:elangle"]))
+			return false;
+	//if (properties.hasKey("what:quantity")){
+	return true;
 }
  */
 
+/*
+bool DataSelector::isValidPath(const ODIMPath & path) const {
+
+	for (ODIMPath::const_iterator it = path.begin(); it != path.end(); ++it){
+		switch (it->group) {
+			case ODIMPathElem::DATASET:
+				if (!dataset.isInside(it->index))
+					return false;
+				break;
+			case ODIMPathElem::DATA:
+				if (!data.isInside(it->index))
+					return false;
+				break;
+			default:
+				break;
+		}
+	}
+
+	return true;
+
+}
+ */
+
+
 }  // rack::
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

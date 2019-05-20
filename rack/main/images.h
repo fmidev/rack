@@ -55,7 +55,10 @@ public: //re
 
 	mutable DataSelector imageSelector;
 
-	CmdImage() : BasicCommand(__FUNCTION__, "Copies data to a separate image object. Encoding can be changed with --target ."), imageSelector(".*/data/?$","") {
+	CmdImage() : BasicCommand(__FUNCTION__,
+			"Copies data to a separate image object. Encoding can be changed with --target .")
+			// , imageSelector(".*/data/?$","")
+	{
 	};
 
 	inline

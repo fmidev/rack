@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
 
-#include "DataSelector.h" // Range
+//#include "DataSelector.h" // Range
 
 
 namespace rack {
@@ -61,6 +61,7 @@ namespace rack {
 class DataTools { //: public drain::BeanLike {
 
 public:
+
 
 	/// Traverses upward in hierachy to find the value of the given PolarODIM where, what, or how attribute.
 	/**
@@ -144,47 +145,7 @@ public:
 	static
 	void updateCoordinatePolicy(HI5TREE & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
 	//void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
-	/*
-	static
-	inline
-	void updateAttributes(HI5TREE & src){
-		_updateAttributes(src, drain::VariableMap());
-	}
 
-	static
-	void _updateAttributes(HI5TREE & src, const drain::VariableMap & attributes);
-     */
-
-
-	/// Returns the path std::string one step upwards, ie. up to the preceding '/'.
-	/*
-	static inline
-	std::string getParent(const std::string &path) {
-		return path.substr(0,path.rfind('/'));
-	};
-
-	static inline
-	// FIX: redesign with ODIMPath
-	void getParentAndChild(const std::string & path, std::string & parent, std::string & child) {
-		//const size_t n = path.length();
-		const size_t i = path.rfind('/');
-		parent.assign(path,0,i);
-		child.assign(path,i+1, path.length());
-		//return path.substr(0,path.rfind('/'));
-	};
-
-
-	/// Returns the path std::string one step upwards, ie. up to the preceding '/'.
-	// FIX: redesign with ODIMPath
-	static inline
-	std::string getChild(const std::string &path) {
-		const size_t i = path.rfind('/');
-		if (i != std::string::npos)
-			return path.substr(i+1);
-		else
-			return std::string("");
-	};
-	*/
 
 protected:
 

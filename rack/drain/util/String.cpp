@@ -68,67 +68,77 @@ void StringTools::replace(const std::string &src, const std::string &search, con
 
 }
 
-
-bool StringTools::trim(const std::string &s, size_t & pos1, size_t & pos2, const std::string & trimChars){
-
-
-	if (s.empty()){
-		/*
-		//pos1 = pos2 = std::string::npos; // or s.size()?
-		if ((pos1 > 0)||(pos2 > 0)){
-
-			drain::Logger mout(getLog(), "StringTools", __FUNCTION__);
-			mout.warn() << "s='" << s << "', pos1=" << pos1 << ", pos2=" << pos2 << mout.endl;
-
-			throw std::runtime_error("StringTools::trim() with empty string but non-zero indices");
-		}
-		*/
-		pos1 = pos2 = 0;
-		return false;
-	}
-
-	if (pos2 == 0){ // by definition, pos2 is after the scanned segment, hence empty string segment  => return false
-		return false;
-	}
-
-	const size_t p1 = s.find_first_not_of(trimChars, pos1);
-
-	if ((p1 == std::string::npos) || (p1 >= pos2)){
-		pos1 = pos2;  // strlen = 0
-		return false;
-	}
-	else {
-		pos1 = p1;
-		size_t p2 = s.find_last_not_of(trimChars, pos2-1); // pos2 != 0 (checked above)
-		if ((p2 == std::string::npos)||(p2<=pos1)){
-			// = no _trailing_ trimchars
-			// So don't move, keep pos2!
-			// std::cerr << __FUNCTION__ << " success1: '" << s << "' [" << pos1 << ',' << pos2 << '[' << " = '" << s.substr(pos1, pos2-pos1) << "'\n";
-			return true;
-		}
-		else {
-			// Set pos2 after last non-trimChar
-			pos2 = p2+1;
-			// std::cerr << __FUNCTION__ << " success2: '" << s << "' [" << pos1 << ',' << pos2 << '[' << " = '" << s.substr(pos1, pos2-pos1) << "'\n";
-			return true;
-		}
-	}
-
-}
-
-
 std::string StringTools::trim(const std::string &s, const std::string & trimChars ){
 
 	std::string::size_type pos1 = 0;
-	std::string::size_type pos2 = std::string::npos;
+	std::string::size_type pos2 = s.size();
 
-	if (trim(s, pos1, pos2, trimChars))
+	if (trimScan(s, pos1, pos2, trimChars))
 		return s.substr(pos1, pos2-pos1);
 	else {
 		return "";
 	}
 
 }
+
+
+bool StringTools::trimScan(const std::string &s, size_t & posLeft, size_t & posRight, const std::string & trimChars){
+
+
+	if (s.empty()){
+		posLeft = posRight = 0;
+		return false;
+	}
+
+	if (posRight == 0){ // by definition, posRight is after the scanned segment, hence empty string segment  => return false
+		return false;
+	}
+
+	// Possibly posLeft>=s.length() or posLeft>=posRight, but checked next anyway:
+
+	const size_t p1 = s.find_first_not_of(trimChars, posLeft);
+
+	//if ((p1 == std::string::npos) || (p1 >= posRight)){
+	if (posRight > s.length())
+		posRight = s.length();
+
+	if (p1 >= posRight){ // includes npos check
+		posLeft = posRight;  // strlen = 0, note: now posLeft may be s.length(), hence illegal index.
+		return false;
+	}
+	else {
+
+		posLeft = p1;
+		//std::cerr << __FUNCTION__ << " search2: " << (posRight-1) << '\n';
+
+
+		size_t p2 = s.find_last_not_of(trimChars, posRight-1); // posRight != 0 (checked above)
+
+		if (p2 == std::string::npos){ // not found (left of posRight)
+			// keep pos2
+		}
+		else if (p2<posLeft){
+			// = no trailing trimchars, but leading
+			// keep pos2 also here!
+
+			//std::cerr << __FUNCTION__ << " success1: '" << s << "' [" << posLeft << ',' << posRight << '[' << " = '" << s.substr(posLeft, posRight-posLeft) << "'\n";
+			//std::cerr << __FUNCTION__ << " success1: " << p2 << '\n';
+			return false; // WAS true?
+		}
+		else {
+			// Set posRight after last non-trimChar
+			posRight = p2+1;
+			// std::cerr << __FUNCTION__ << " success2: '" << s << "' [" << posLeft << ',' << posRight << '[' << " = '" << s.substr(posLeft, posRight-posLeft) << "'\n";
+			//return true;
+		}
+		return (posLeft < posRight);
+		//return true;
+		//return (posRight > posRight);
+	}
+
+}
+
+
 
 
 char StringTools::upperCase(char c){

@@ -48,6 +48,178 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <data/ODIMPath.h>
 
+
+
+
+// using namespace std;
+
+namespace hi5 {
+
+
+extern drain::Log hi5monitor;
+extern drain::Logger hi5mout;
+
+
+/// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
+/**
+ *   Node to be used in a h5 structure, ie. TreeNode<NodeHi5>.
+ *   A node serves both as a group or a data set; if a data set is empty its node is treated as a group.
+ *
+ *   ODIM conventions are purposely not included in the Hi5 utilities.
+ *   For example, path naming conventions (dataset1/data3/...) and some special attributes like
+ *   Conventions="ODIM_H5/V2_0" are left to the application code.
+ */
+struct NodeHi5 {
+
+	typedef drain::image::Image image_type;
+
+	drain::image::Image dataSet;
+
+	drain::VariableMap  attributes;
+
+	NodeHi5() : noSave(false) {};
+
+	inline
+	NodeHi5(const NodeHi5 & n) : noSave(n.noSave) {
+		attributes.importMap(n.attributes);
+	};
+
+	inline
+	NodeHi5 & operator=(const hi5::NodeHi5 & n){
+		attributes.importMap(n.attributes); return *this;
+	};
+
+	void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
+
+	/// Experimental
+	bool noSave;  // OK!
+
+};
+
+}
+
+
+
+//typedef  TreeNode<NodeHi5> TreeHi5;
+//#define HI5TREE drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
+//#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> HI5TREE;
+
+
+namespace hi5 {
+
+//typedef rack::ODIMPath path_t;
+
+///
+///
+
+/// Base class for Reader and Writer, essentially just wrapping some utilities.
+class Hi5Base {
+
+public:
+
+	//static
+	// drain::Log hi5monitor;
+
+	// static
+	// drain::Logger hi5mout; //(drain::monitor,"hi5");
+
+	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
+	static
+	const hid_t & getH5DataType(const std::type_info &t);
+
+	/// Given a native C++ type, returns a native HDF5 data type.
+	template <class T>
+	static
+	const hid_t & getH5DataType(){ return getH5DataType(typeid(T)); }
+
+
+	/// Creates a 256-element RGB palette to be referenced with linkPalette().
+	static
+	HI5TREE & getPalette(HI5TREE & dst);
+	//drain::image::Image & getPalette(HI5TREE & dst);
+
+	/// Links the palette that has been (or will be) created with createPalette().
+	static
+	void linkPalette(const HI5TREE & palette, HI5TREE & dst);
+
+
+	/// Dumps the H5 structure, attributes and data properties.
+	static
+	void writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr = std::cout);
+
+	/// Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)).
+	static
+	void writeText(const HI5TREE &src, std::ostream & ostr = std::cout){
+		std::list<HI5TREE::path_t> paths;
+		src.getPaths(paths);
+		writeText(src, paths, ostr);
+	};
+
+
+	/// Constructs a tree from formatted text. See writeText().
+	/**
+	 *  The grammar should follow to that produced by writeText().
+	 */
+	static
+	void readText(HI5TREE &src, std::istream & istr = std::cin);
+
+	/// Assign a value with optional type specification.
+	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
+	 *   If the attribute is \c "image", creates an image with specified value (\c width,\c height ) and type.
+	 *
+	 *
+	 */
+
+	/// Split full path string to path object and attribute key.
+	/**
+	 *
+	 *   \param s - string containing path and/or attribute
+	 *
+	 *   Given a path like /dataset1/data3
+	 *   \code
+	 *
+	 *   \endcode
+	 *
+	 */
+	static
+	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
+			std::string & attrType);
+
+
+	static inline
+	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey){
+		std::string attrValue;
+		std::string attrType;
+		parsePath(line, path, attrKey, attrValue, attrType);
+	}
+
+	/// Assign a value with optional type specification.
+	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
+	 *   If the attribute is \c "image", creates an image with specified value (\c width,\c height ) and type.
+	 *
+	 */
+	static
+	void readTextLine(HI5TREE &src, const std::string & line);
+
+	static
+	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
+
+	/// Delete branches that have been marked with noSave=true .
+	static
+	void deleteNoSave(HI5TREE &src);
+
+
+};
+
+
+/// Dumps a node.
+std::ostream & operator<<(std::ostream &ostr, const hi5::NodeHi5 &n);
+
+/// Dumps a complete tree.
+std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree);
+
+
 /*
 struct lessAlphaNum {
 
@@ -207,148 +379,6 @@ struct lessAlphaNum {
 
 };  // end class
 */
-
-
-
-// using namespace std;
-
-namespace hi5 {
-
-
-extern drain::Log hi5monitor;
-extern drain::Logger hi5mout;
-
-
-/// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
-/**
- *   Node to be used in a h5 structure, ie. TreeNode<NodeHi5>.
- *   A node serves both as a group or a data set; if a data set is empty its node is treated as a group.
- *
- *   ODIM conventions are purposely not included in the Hi5 utilities.
- *   For example, path naming conventions (dataset1/data3/...) and some special attributes like
- *   Conventions="ODIM_H5/V2_0" are left to the application code.
- */
-struct NodeHi5 {
-
-	typedef drain::image::Image image_type;
-
-	drain::image::Image dataSet;
-
-	drain::VariableMap  attributes;
-
-	NodeHi5() : noSave(false) {};
-
-	inline
-	NodeHi5(const NodeHi5 & n) : noSave(n.noSave) {
-		attributes.importMap(n.attributes);
-	};
-
-	inline
-	NodeHi5 & operator=(const hi5::NodeHi5 & n){
-		attributes.importMap(n.attributes); return *this;
-	};
-
-	void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
-
-	/// Experimental
-	bool noSave;  // OK!
-
-};
-
-}
-
-
-
-//typedef  TreeNode<NodeHi5> TreeHi5;
-//#define HI5TREE drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
-//#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
-typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> HI5TREE;
-
-
-namespace hi5 {
-
-//typedef rack::ODIMPath path_t;
-
-///
-///
-
-/// Base class for Reader and Writer, essentially just wrapping some utilities.
-class Hi5Base {
-
-public:
-
-	//static
-	// drain::Log hi5monitor;
-
-	// static
-	// drain::Logger hi5mout; //(drain::monitor,"hi5");
-
-	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
-	static
-	const hid_t & getH5DataType(const std::type_info &t);
-
-	/// Given a native C++ type, returns a native HDF5 data type.
-	template <class T>
-	static
-	const hid_t & getH5DataType(){ return getH5DataType(typeid(T)); }
-
-
-	/// Creates a 256-element RGB palette to be referenced with linkPalette().
-	static
-	HI5TREE & getPalette(HI5TREE & dst);
-	//drain::image::Image & getPalette(HI5TREE & dst);
-
-	/// Links the palette that has been (or will be) created with createPalette().
-	static
-	void linkPalette(const HI5TREE & palette, HI5TREE & dst);
-
-
-	/// Dumps the H5 structure, attributes and data properties.
-	static
-	void writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr = std::cout);
-
-	/// Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)).
-	static
-	void writeText(const HI5TREE &src, std::ostream & ostr = std::cout){
-		std::list<HI5TREE::path_t> paths;
-		src.getPaths(paths);
-		writeText(src, paths, ostr);
-	};
-
-
-	/// Constructs a tree from formatted text. See writeText().
-	/**
-	 *  The grammar should follow to that produced by writeText().
-	 */
-	static
-	void readText(HI5TREE &src, std::istream & istr = std::cin);
-
-	/// Assign a value with optional type specification.
-	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
-	 *   If the attribute is \c "image", creates an image with specified value (\c width,\c height ) and type.
-	 *
-	 */
-	static
-	void readTextLine(HI5TREE &src, const std::string & line);
-
-	static
-	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
-
-	/// Delete branches that have been marked with noSave=true .
-	static
-	void deleteNoSave(HI5TREE &src);
-
-
-};
-
-
-/// Dumps a node.
-std::ostream & operator<<(std::ostream &ostr, const hi5::NodeHi5 &n);
-
-/// Dumps a complete tree.
-std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree);
-
-
 
 
 } // ::hi5

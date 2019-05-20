@@ -72,7 +72,8 @@ public:
 	virtual inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 		parameters.setValues(p, assignmentSymbol, separatorSymbol);
-	};  // , true);
+		update();
+	};
 
 	/// Sets parameters
 	/**
@@ -80,12 +81,18 @@ public:
 	 */
 	template <class T>
 	inline
-	void setParameters(const std::map<std::string,T> & p){ parameters.importMap(p); }
+	void setParameters(const std::map<std::string,T> & p){
+		parameters.importMap(p);
+		update();
+	}
 
 	/// Sets a single parameter
 	template <class F>
 	inline
-	void setParameter(const std::string &p, const F &value){ parameters[p] = value; }
+	void setParameter(const std::string &p, const F &value){
+		parameters[p] = value;
+		update();
+	}
 
 	/// Gets a single parameter
 	template <class F>
@@ -145,6 +152,8 @@ protected:
 		parameters.importMap(b.getParameters());
 	}
 
+	virtual inline
+	void update(){};
 
 };
 

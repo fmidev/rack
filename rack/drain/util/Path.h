@@ -108,27 +108,37 @@ public:
 
 	char separator;
 
-	// needed?
-	inline
 	void set(const std::string & p){
-		StringTools::split(p, *this, separator);
+
+
+		std::list<T>::clear();
+
+		// Here: optional / experimental "root"
+		/*
+		if (p.empty())
+			return;
+			// SUPPORT_ROOT > 0
+		if (p.at(0) == separator)
+			* this << elem_t();
+		*/
+
+		std::list<std::string> l;
+		StringTools::split(p, l, separator);
+		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
+			if (!it->empty())
+				*this << *it; // note: skips empty strings
+		}
+
 	}
 
 	Path<T> & operator=(const Path<T> & p){
 		std::list<T>::operator=(p);
-		/*
-		std::list<T>::clear();
-		// check std::assign
-		for (typename Path<T>::const_iterator it = p.begin(); it != p.end(); ++it) {
-			*this << *it;
-		}*/
 		return *this;
 	}
 
 	/// Conversion from str path type
 	template <class T2>
 	Path<T> & operator=(const Path<T2> & p){
-		//std::list<T>::operator=(p);
 		std::list<T>::clear();
 		for (typename Path<T2>::const_iterator it = p.begin(); it != p.end(); ++it) {
 			*this << *it;
@@ -136,23 +146,40 @@ public:
 		return *this;
 	}
 
+
+	inline
 	Path<T> & operator=(const std::string & p){
-		StringTools::split(p, *this, separator);
+		set(p);
 		return *this;
 	}
 
+	inline
 	Path<T> & operator=(const char *p){
-		StringTools::split(std::string(p), *this, separator);
+		set(p);
+		return *this;
+	}
+
+	// Note: this is impossible
+	// If (elem_t == std::string), elem cannot be assigned directly, because string suggest full path assignment, at least
+	// Path<T> & operator=(const elem_t & e)
+
+	/// Append an element, unless empty string.
+	Path<T> & operator<<(const std::string & s){
+		if (!s.empty())
+			this->push_back(s);
 		return *this;
 	}
 
 
-	Path<T> & operator<<(const T & e){
-		this->push_back(e);
+	/// Append an element
+	template <class T2>
+	Path<T> & operator<<(const T2 & elem){
+		this->push_back(elem);
 		return *this;
 	}
 
-	Path<T> & operator>>(T & e){
+	/// Extract last element.
+	Path<T> & operator>>(elem_t & e){
 		e = this->back();
 		this->pop_back();
 		return *this;
@@ -164,6 +191,7 @@ public:
 		toOStr(sstr);
 		return sstr.str();
 	}
+
 
 	virtual inline
 	std::ostream & toOStr(std::ostream & ostr, char separator = 0) const {
@@ -180,6 +208,7 @@ public:
 
 
 };
+
 
 template <class T>
 inline

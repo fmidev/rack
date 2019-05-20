@@ -103,15 +103,16 @@ public:
 	/**
 	 *  Starting from pos1, searches for the first segment not containing trimChars.
 	 *
-	 *  \param pos1 - index of 1st char to search and then 1st char of the segment, if found; else s.size().
-	 *  \param pos2 - index of the char \b after the segment, or s.size().
+	 *  \param s    - string to be scanned
+	 *  \param pos1 - before: index of 1st char to scan right, after: index of 1st char of the segment, if found; else s.size().
+	 *  \param pos2 - before: index of 1st char to scan left, after: index of the char \b after the segment, or s.size().
 	 *  \return - true if a non-empty segment found.
 	 *
 	 *  \see trim(const std::string &, const std::string &)
 	 *
 	 */
 	static
-	bool trim(const std::string &s, size_t & pos1, size_t & pos2, const std::string &trimChars=" \t\n");
+	bool trimScan(const std::string &s, size_t & pos1, size_t & pos2, const std::string &trimChars=" \t\n");
 
 	/// Splits a given std::string to a std Sequence.
 	/**
@@ -171,7 +172,7 @@ public:
 	    s.append(buffer, istr.gcount());
 	}
 
-private:
+//private:
 
 	/// Conversion from std::string to basic types.
 	/**
@@ -184,12 +185,38 @@ private:
 	static
 	const T & convert(const std::string &str, T & tmp);
 
+	template <class T>
+	static
+	std::string & import(const T & src, std::string & target);
+
+
+private:
+
+	template <class T>
+	static
+	void appendString(T & sequence, const std::string & str){
+		typename T::value_type tmp;
+		sequence.insert(sequence.end(), StringTools::convert(str, tmp));
+	}
+
+	template <class T>
+	static
+	void appendSubstring(T & sequence, const std::string & str, std::string::size_type pos, std::string::size_type n){
+
+		if (n > 0){
+			appendString(sequence, str.substr(pos, n));
+		}
+		else {
+			appendString(sequence, "");
+		}
+
+	}
 
 };
 
 
 template <class T>
-void StringTools::split(const std::string & str, T & sequence, const std::string &separators, const std::string & trimChars){
+void StringTools::split(const std::string & str, T & sequence, const std::string & separators, const std::string & trimChars){
 
 	sequence.clear();
 
@@ -197,13 +224,15 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	const std::string::size_type n = str.size();
 
 	std::string::size_type pos1 = 0; // Start of segment
-	std::string::size_type pos2 = std::string::npos;  // End of segment (index of last char + 1)
+	std::string::size_type pos2 = n; // std::string::npos;  // End of segment (index of last char + 1)
 
 	/// Initial trim (with or without further split)
+	/*
 	if (TRIM){
 		// std::cerr << __FUNCTION__ << " initial trim: " << str << '\n';
-		StringTools::trim(str, pos1, pos2, trimChars);
+		StringTools::trimScan(str, pos1, pos2, trimChars);
 	}
+	*/
 
 	// Tmp
 	typename T::value_type tmpValue;
@@ -211,12 +240,12 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	if (separators.empty()){ // = no split! :-)
 
 		if (TRIM){
-			sequence.insert(sequence.end(), StringTools::convert(str.substr(pos1, pos2-pos1), tmpValue));
+			StringTools::trimScan(str, pos1, pos2, trimChars);
+			appendSubstring(sequence, str, pos1, pos2-pos1);
 		}
 		else
-			sequence.insert(sequence.end(), StringTools::convert(str, tmpValue));
+			appendString(sequence, str);
 
-		//sequence.push_back(tmpValue); not in set
 		return;
 	}
 	else {
@@ -224,41 +253,26 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 		// Index of the next separator position
 		std::string::size_type pos = pos1; // "irreversible"
 
-		do {
+		while (true) {
 
 			pos1 = pos;
 			pos  = str.find_first_of(separators, pos);
 			if (pos == std::string::npos){
 				pos2 = n;
-				pos  = n; // last
+				if (TRIM)
+					StringTools::trimScan(str, pos1, pos2, trimChars);
+				appendSubstring(sequence, str, pos1, pos2-pos1);
+				return;
 			}
 			else {
 				pos2 = pos;
+				if (TRIM)
+					StringTools::trimScan(str, pos1, pos2, trimChars);
+				appendSubstring(sequence, str, pos1, pos2-pos1);
 				++pos; // for the next round
 			}
 
-			//std::cerr << __FUNCTION__ << ":: SEG = [" << pos1 << ',' << pos2 << '['<< "'...\n";
-
-			if (TRIM){
-				// std::cerr << __FUNCTION__ << ": trimming: '" << str.substr(pos1, pos2-pos1) << "' to ...\n"; // << "' [" << pos1 << ',' << pos2 << '['
-				if (StringTools::trim(str, pos1, pos2, trimChars)){
-					//std::cerr << __FUNCTION__ << " element trim: => => [" << pos1 << ',' << pos2 << '[' << " = '" << str.substr(pos1, pos2-pos1) << "'\n";
-					// std::cerr << __FUNCTION__ << ": ... to [" << pos1 << ',' << pos2 << '[' << " = '" << str.substr(pos1, pos2-pos1) << "'\n";
-					sequence.insert(sequence.end(), StringTools::convert(str.substr(pos1, pos2-pos1), tmpValue));
-				}
-				else {
-					sequence.insert(sequence.end(), StringTools::convert("", tmpValue));
-				}
-			}
-			else {
-				//std::cerr << __FUNCTION__ << " element seg = '" << str.substr(pos1, pos2-pos1) << "'\n";
-				sequence.insert(sequence.end(), StringTools::convert(str.substr(pos1, pos2-pos1), tmpValue));
-				//sequence.insert(sequence.end(), StringTools::convert(str.substr(pos1, pos2-pos1), tmpValue));
-			}
-
-			//pos = pos + 1;
-
-		} while (pos != n);
+		}
 	}
 }
 
@@ -266,7 +280,7 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 
 template <>
 inline
-const std::string & StringTools::convert(const std::string &str, std::string & target){
+const std::string & StringTools::convert(const std::string &str, std::string & dst){
 	//target.assign(str);
 	return str;
 }
@@ -274,11 +288,26 @@ const std::string & StringTools::convert(const std::string &str, std::string & t
 
 template <class T>
 inline
-const T & StringTools::convert(const std::string &str, T & target){
+const T & StringTools::convert(const std::string &str, T & dst	){
 	std::stringstream sstr(str);
-	sstr >> target;
+	sstr >> dst;
 	//std::cerr << __FUNCTION__ << ": " << str << '>' << target << '\n';
-	return target;
+	return dst;
+}
+
+template <>
+inline
+std::string & StringTools::import(const std::string & src, std::string & dst){
+	return dst;
+}
+
+template <class T>
+std::string & StringTools::import(const T & x, std::string & dst){
+	std::stringstream sstr;
+	sstr << x;
+	dst.assign(sstr.str());
+	//std::cerr << __FUNCTION__ << ": " << str << '>' << target << '\n';
+	return dst;
 }
 
 

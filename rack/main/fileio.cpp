@@ -102,7 +102,8 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
 
 
-static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
+//static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
+static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
 /// A debugging facility. Obsolete?
 class CmdInputSelect : public BasicCommand {
@@ -304,12 +305,13 @@ public:
 			ODIMPathList paths;
 
 			if (!resources.select.empty()){
-				//DataSelector selector;
-				//selector.setParameters(resources.select);
-				//selector.getPathsNEW(*resources.currentHi5, paths); // TODO: shorten
-				DataSelector selector(resources.select);
-				ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
-				DataSelector(resources.select).getPathsNEW(*getResources().currentHi5, paths, groups); // RE2
+				DataSelector selector; //( resources.select);
+				//mout.info() << "sel g " << selector.groups << mout.endl;
+				//mout.info() << "sel g " << selector.groups.separator << mout.endl;
+				selector.deriveParameters(resources.select);
+				//ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
+				//selector.getPathsNEW(*getResources().currentHi5, paths, groups);
+				selector.getPathsNEW(*getResources().currentHi5, paths);
 				resources.select.clear();
 				// for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
 				//	mout.warn() << *it << mout.endl;
@@ -321,10 +323,8 @@ public:
 			if (value == "-")
 				hi5::Hi5Base::writeText(*resources.currentHi5, paths, std::cout);
 			else {
-				//ofstream ofstr((const std::string &)outputPrefix + value.c_str(), ios::out);
 				std::string outFileName = resources.outputPrefix + value;
 				std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-				//getResources().currentHi5->writeText(ofstr);
 				hi5::Hi5Base::writeText(*resources.currentHi5, paths, ofstr);
 				ofstr.close();
 			}
@@ -444,7 +444,7 @@ public:
 
 			DataSelector selector;
 			selector.setParameters(resources.select);
-			selector.updatePaths();
+			selector.convertRegExpToRanges();
 			selector.count = 1;
 			//selector.data.max = 0;
 			mout.debug() << "selector: " << selector << mout.endl;
@@ -488,9 +488,9 @@ public:
 			mout.info() << "Dot/Graphviz file (.dot)" << mout.endl;
 
 			DataSelector selector;
-			selector.groups = ODIMPathElem::ALL_GROUPS;
+			//selector.groups.value = ODIMPathElem::ALL_GROUPS;
 			selector.setParameters(resources.select);
-			selector.updatePaths();
+			selector.convertRegExpToRanges();
 			resources.select.clear();
 
 			std::string outFileName = resources.outputPrefix + value;

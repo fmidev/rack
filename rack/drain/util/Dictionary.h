@@ -28,15 +28,83 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-//#include "Path.h"
+#ifndef DRAIN_DICTIONARY
+#define DRAIN_DICTIONARY "Dictionary v1.0"
 
-
-#include <stdexcept>
+//
 #include <iostream>
+#include <map>
+#include <list>
+#include <string>
+
+#include "Log.h"
+
+
 
 namespace drain {
 
 
+template <class T>
+class Dictionary : public std::pair<std::map<std::string,T>, std::map<T,std::string> > {
+
+public:
+
+	typedef T value_t;
+	typedef Dictionary<T> dict_t;
+
+
+	inline
+	Dictionary() : separator(',') {
+	}
+
+	inline
+	bool contains(const std::string & entry) const {
+		return (this->first.find(entry) != this->first.end());
+	}
+
+	template <class T2>
+	inline
+	bool contains(const T2 & entry) const {
+		return (this->second.find(entry) != this->second.end());
+	}
+
+	inline
+	void addEntry(const std::string & key, const T &x){
+		this->first[key] = x;
+		this->second[x]  = key;
+	}
+
+	void toOstr(std::ostream & ostr, char separator=0){
+
+		if (!separator)
+			separator = this->separator;
+
+		char sep = 0;
+		for (typename dict_t::first_type::const_iterator it = this->first.begin(); it != this->first.end(); ++it){
+			if (sep)
+				ostr << sep;
+			else
+				sep = separator;
+			ostr << it->first << '=' << it->second;
+		}
+	}
+
+	char separator;
+
+};
+
+
+
+
+template <class T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const Dictionary<T> & d) {
+	return d.toOStr(ostr);
 }
+
+} // drain::
+
+
+#endif
 
 // Drain

@@ -83,7 +83,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1><a class="anchor" id="rescale"></a>
 Rescaling image intensities</h1>
 <p>If a user wishes to rescale intensities, one may create a scaled copy with <code>&ndash;image</code> command. The scaling and special codes are defined with <code>&ndash;encoding</code> .</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --encoding C,0.25,-32.0 --image -o sweep-rescaled.png</div></div><!-- fragment --><p>Notice that this command will not affect the actual radar data (HDF5 structure) in memory. For converting the actual data, use <code>&ndash;convert</code> as explained in <a class="el" href="index.html#conversions">Data conversions</a> .</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --encoding C,0.25,-32.0 --image -o sweep-rescaled.png</div></div><!-- fragment --><p>Notice that this command will not affect the actual radar data (HDF5 structure) in memory. For converting the actual data, use <code>&ndash;convert</code> as explained in <a class="el" href="miscbook.html#conversions">Data conversions</a> .</p>
 <p>If no rescaling is needed, calling <code>&ndash;image</code> prior to saving image data is unnecessary. Certain commands like <code>&ndash;imageAlpha</code> will implicitly call <code>&ndash;image</code> when necessary.</p>
 <div class="image">
 <img src="sweep-rescaled.png" alt="sweep-rescaled.png"/>

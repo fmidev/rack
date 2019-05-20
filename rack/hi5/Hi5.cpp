@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 
 #include <fstream>
@@ -57,7 +57,7 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
 	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
 		if (!prefix.empty())
-		  ostr << prefix << ':'; //'\t';
+			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
 		ostr << it->second << ' ';
 		it->second.typeInfo(ostr);
@@ -157,7 +157,7 @@ HI5TREE & Hi5Base::getPalette(HI5TREE & dst){
 		// attributes["PAL_MINMAXNUMERIC"] = std::string(); // << min , max "0,255";
 		attributes["PAL_TYPE"] = "STANDARD8";
 		attributes["PAL_VERSION"] = "1.2";
-		*/
+		 */
 	}
 
 	return palette;
@@ -202,9 +202,119 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 }
 
+/// Split full path string to path object and attribute key.
+void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue, std::string & attrType){
+
+	drain::Logger mout("Hi5Base", __FUNCTION__);
+
+	path.clear();
+	attrKey.clear();
+	attrValue.clear();
+	attrType.clear();
+
+	if (s.empty()){
+		mout.warn() << "empty path given" << mout.endl;
+	}
+	//static const drain::RegExp pathSyntax("^(.*)(:()) ([\\w]+())$",  REG_EXTENDED);
+
+	enum { PATH, ATTR_KEY, ATTR_VALUE, ATTR_TYPE } mode;
+	mode = PATH;
+	std::string::size_type iMax = s.length() - 1; // >= 0
+	std::string::size_type i    = 0;
+	std::string::size_type iStart   = 0;
+	std::string::size_type iEnd     = 0; // for ATTR_VALUE only, potentially containing spaces
+	char c;
+	bool END;
+
+	for (std::string::size_type i = 0; i < s.length(); ++i) {
+
+		c = s.at(i);
+		END = (i == iMax);
+
+		switch (mode) {
+
+		case PATH:
+			if (c == ':'){
+				path = s.substr(iStart, i-iStart);
+				mode = ATTR_KEY;
+				iStart = i+1;
+			}
+			else if (c == ' '){
+				path = s.substr(iStart, i-iStart);
+				mode = ATTR_TYPE;
+				iStart = i+1;
+			}
+			else if (END){
+				path = s.substr(iStart);
+				return;
+			}
+			break;
+
+		case ATTR_KEY:
+			if (c == '='){
+				attrKey = s.substr(iStart, i-iStart);
+				mode = ATTR_VALUE;
+				iStart = i+1;
+				iEnd   = iStart;
+			}
+			else if (c == ' '){
+				attrKey = s.substr(iStart, i-iStart);
+				mode = ATTR_TYPE;
+				iStart = i+1;
+			}
+			else if (END){
+				attrKey = s.substr(iStart);
+				return;
+			}
+			break;
+
+		case ATTR_VALUE:
+			if (c == ' '){
+				// Scan, but do not update anchor (iEnd)
+			}
+			else if (c == '['){
+				attrValue = s.substr(iStart, iEnd-iStart);
+				mode = ATTR_TYPE;
+				iStart = i+1;
+			}
+			else if (END){
+				attrValue = s.substr(iStart, iEnd-iStart);
+				return;
+			}
+			else {
+				iEnd = i+1;
+			}
+
+			break;
+
+		case ATTR_TYPE:
+			if ((c == '[') || (c == ' ')){
+				iStart = i+1;
+			}
+			else if (c == ']'){
+				attrType = s.substr(iStart, i-iStart);
+				return;
+			}
+			else if (END){
+				attrType = s.substr(iStart);
+				mout.warn() << "missing closing brace ']' for attribute type specification (" <<  attrType << ")" << mout.endl;
+				return;
+			}
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+}
+
 
 void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
+
+	/*
 	const size_t i = line.find(':');
 	if (i == std::string::npos){
 		// Just create a group
@@ -223,6 +333,81 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 			readTextLine(dst, path, assignment.substr(0,j), assignment.substr(j+1));
 		}
 	}
+	*/
+
+	HI5TREE::path_t path;
+	std::string attrKey;
+	std::string attrValue;
+	std::string attrType;
+
+	Hi5Base::parsePath(line, path, attrKey, attrValue, attrType);
+
+	/// Create the node always
+	NodeHi5 & n = dst(path).data;
+
+	if (attrKey.empty())
+		return;
+
+	char typeCode = 0;
+
+	if (!attrType.empty())
+		typeCode = attrType.at(0);
+
+	if (attrKey == "image"){
+
+		/// Set type
+		if (typeCode)
+			n.dataSet.setType(typeCode); // what about <string>!?!
+		//n.dataSet.setType(drain::Type::getType(typeCode)); // what about <string>!?!
+		else
+			n.dataSet.setType<unsigned char>();
+
+		/// Set geometry (unless..?)
+		if (!attrValue.empty()){
+			drain::Variable g;
+			g.setType(typeid(size_t));
+			g.setSize(2);
+			g.setSeparator(',');
+			g = attrValue;
+			switch (g.getElementCount()){
+			case 2:
+				n.dataSet.setGeometry(g.get<size_t>(0), g.get<size_t>(1));
+				break;
+			case 1:
+				n.dataSet.setGeometry(g.get<size_t>(0), g.get<size_t>(0));
+				break;
+			case 0:
+				break;
+			default:
+				hi5mout.error() << "Illegal number of data geometry arguments:'" << g << '\'';
+			}
+			n.dataSet.setGeometry(g.get<size_t>(0), g.get<size_t>(1));
+		}
+		//std::cerr << "!IMAGE:" << n.dataSet << std::endl;
+	}
+	else { // non-image
+
+		drain::Variable & a = n.attributes[attrKey];
+
+		static const char stringTypeCode = drain::Type::getTypeChar(typeid(std::string));
+		if ((typeCode) && (typeCode != stringTypeCode)){
+			//mout.warn() << "typeCode=" << typeCode << mout.endl;
+			a.setType(drain::Type::getTypeInfo(typeCode));
+			//mout.warn() << "typeCode=" << typeCode << " => " << drain::Type::getTypeChar(a.getType()) << mout.endl;
+		}
+		else if (! a.typeIsSet())
+			a.setType(typeid(std::string));
+
+		a = attrValue;
+
+		/*
+			if (typeCode){
+				mout.warn() << "typeCode=" << typeCode << " >> " << drain::Type::getTypeChar(a.getType()) << mout.endl;
+			}
+		 */
+		//n.attributes[key]
+
+	}
 
 }
 
@@ -230,6 +415,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const st
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
+	mout.warn() << "unchecked function" << mout.endl;
 
 	/// Create the node, even if the rest fails, ie. (i == std::string::npos).
 	NodeHi5 & n = dst(path).data;
@@ -260,7 +446,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const st
 		/// Set type
 		if (typeCode)
 			n.dataSet.setType(typeCode); // what about <string>!?!
-			//n.dataSet.setType(drain::Type::getType(typeCode)); // what about <string>!?!
+		//n.dataSet.setType(drain::Type::getType(typeCode)); // what about <string>!?!
 		else
 			n.dataSet.setType<unsigned char>();
 
@@ -312,7 +498,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const st
 		if (typeCode){
 			mout.warn() << "typeCode=" << typeCode << " >> " << drain::Type::getTypeChar(a.getType()) << mout.endl;
 		}
-		*/
+		 */
 		//n.attributes[key]
 
 	}
@@ -349,4 +535,4 @@ std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree){
 
 
 // Rack
- // REP // REP
+// REP // REP

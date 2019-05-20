@@ -71,19 +71,13 @@ public:
 
 	virtual ~DataSelector();
 
-	/// Regular expression of accepted paths, for example ".*/data$".
-	std::string path;
+
+	/// Regular expression of accepted PolarODIM what::quantity, for example "DBZ.?" .
+	std::string quantity;
 
 	// Path criteria
 	drain::Range<unsigned short> dataset;
 	drain::Range<unsigned short> data;
-	// This was under consideration
-	// mutable drain::RegExp pathRegExp;
-
-
-	/// Regular expression of accepted PolarODIM what::quantity, for example "DBZ.?" .
-	std::string quantity;
-	//NEW /? std::string quantityStr;
 
 	/// The (minimum) index of the key in the list of matching keys.
 	unsigned int index;
@@ -94,25 +88,57 @@ public:
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
 	drain::Range<double> elangle;
 
-	ODIMPathElem::group_t groups;
 
-	//bool isValidPath(const ODIMPath & path) const;
+	/*
+	drain::Flags::value_t getGroupMask() const {
+		groups = groupStr;
+		return groups.value;
+	}
+	*/
+	//mutable
+	drain::Flags groups;
 
-	// Data criteria
+protected:
 
-	/// Check if metadata matches.
-	// bool isValidData(const drain::ReferenceMap & properties) const ;
+	std::string  groupStr; // converted to 'groups' with update.
 
-	/// Sets parameters and tries to guess additional filter
+	virtual
+	void update();
+
+
+
+
+public:
+
+	/// Regular expression of accepted paths, for example ".*/data$". Deprecated
 	/**
-	 *   Tries to guess additional filter for paths returned with getPathsNEW().
-	 *
-	 *   \return - bitmask a combination of ODIMPathElem::DATASET, ODIMPathElem::DATA, and ODIMPathElem::QUALITY.
+	 *  \deprecated Use \c dataset and \c data parameters instead
 	 */
-	ODIMPathElem::group_t resetParameters(const std::string & parameters);
+	std::string path;
+
 
 	/// Restore default values.
-	void reset();
+	/**
+	 *   The values set maximally accepting ie. all the groups are returned with getPaths() call.
+	 */
+	void reset(); // bool flexible = true "inclusive"
+
+	/// Sets parameters and sets \c groups parameter automatically.
+	/**
+	 *   First, resets parameters. Then derives
+	 *   Tries to guess additional filter for paths returned with getPathsNEW().
+	 *
+	 *   bitmask a combination of ODIMPathElem::DATASET, ODIMPathElem::DATA, and ODIMPathElem::QUALITY.
+	 */
+	//void setParameters(const std::string & parameters, bool lenient);
+
+	///  Sets group mask etc
+	/**
+	 *  \param lenient - bool = maximize selection, false = minimize
+	 */
+	virtual
+	void deriveParameters(const std::string & parameters); //, char assignmentSymbol='=', char separatorSymbol=0);
+
 
 	/// Retrieves paths using current selection criteria and an additional group selector.
 	/**
@@ -130,7 +156,7 @@ public:
 	 *   The full tree structure will be searched for; \c groupFilter does not affect the traversal.
 	 *   When retrieving quality groups, \c groupFilter should countain ODIMPathElem::QUALITY.
 	 *
-	 *   \see resetParameters().
+	 *   \see deriveParameters().
 	 */
 	// Recommended convenience function.
 	template <class T>
@@ -142,7 +168,17 @@ public:
 	template <class T>
 	inline
 	void getPathsNEW(const HI5TREE & src, T & pathContainer) const {
-		getPathsNEW(src, pathContainer, groups);
+
+		if (groups.value > 0){
+			getPathsNEW(src, pathContainer, groups.value);
+		}
+		else {
+			drain::Logger mout(getName(), __FUNCTION__);
+			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
+			getPathsNEW(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
+			//groups = groupStr;
+		}
+
 	}
 
 
@@ -158,13 +194,25 @@ public:
 	 */
 	template <class T>
 	bool getPathsNEW(const HI5TREE & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
-	/*
-	bool getPathsNEW(const HI5TREE & src, T & pathContainer, const drain::RegExp & quantityRE, int groupFilter = (ODIMPathElem::DATA|ODIMPathElem::DATASET),
-			const ODIMPath & path = ODIMPath(ODIMPathElem()) ) const;
-	*/
+
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
-	bool getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t groupFilter = (ODIMPathElem::DATA|ODIMPathElem::DATASET) ) const;
+	bool getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const;
+
+	/// Returns the first path encountered with selector attributes and given groupFilter .
+	inline
+	bool getPathNEW(const HI5TREE & src, ODIMPath & path) const {
+
+		if (groups.value > 0){ // if (groupStr.empty())
+			return getPathNEW(src, path, groups.value);
+		}
+		else {
+			drain::Logger mout(getName(), __FUNCTION__);
+			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
+			return getPathNEW(src, path, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
+		}
+
+	}
 
 	/// Returns the last path encountered with selector attributes and given groupFilter .
 	bool getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
@@ -203,11 +251,6 @@ public:
 	bool getChildren(const HI5TREE & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups);
 
 
-	/// Temporary fix: try to derive dataset and data indices from path regexp.
-	/**
-	 *   Variable 'path' will be probably obsolete in future.
-	 */
-	void updatePaths();
 
 	/// Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)
 	//  *   - \c index - integer value, only changing the \c index member. ???
@@ -239,80 +282,27 @@ public:
 	}
 
 
-	/// Returns data paths, mapped by elevation.
-	//static 	void getPaths(const HI5TREE &src, std::map<double,std::string> & path);
 
-	/// Convenience function. Often only o ne path is return in the list, or only the first path is needed.
-	/*
-	static
-	inline
-	bool getPath(const HI5TREE &src, const DataSelector & selector, std::string & path){
-		ODIMPathList l;
-		getPaths(src, selector, l);
-		if (l.empty()){
-			path.clear();
-			return false;
-		}
-		else {
-			path = *l.begin();
-			return true;
-		}
-	}
-	*/
-
-
-
-	// TODO ? bool getLastOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & path, int & index){
-
-	/// Finds the path that is numerically greatest with respect to the last numeric
-	/*
-	 *
-	 *  \return - true, if a path was found with the given selector.
-	 */
-	// static	bool getLastOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & basePath, int & index);
-
-	/// A shortcut.
-	/*
-	 */
-	// static bool getLastOrdinalPath(const HI5TREE &src, const std::string & pathRegexp, std::string & path);
-
-
-	/// Detect the last path accepted by regexp and increment the trailing numeral (eg. data2 => data3) and return the std::string in \c path.
+	/// Temporary fix: try to derive dataset and data indices from path regexp.
 	/**
-	 * \param src - hdf tree to be searched
-	 * \param pathRegExp - parent path(s) defined as regular expressions, for example:
-	 * - \c /dataset[0-9]$
-	 * - \c /dataset2/data[0-9]$
-	 * - \c data[0-9]$
-	 * - \c data2/quality[0-9]$
-	 * \param path - std::string in which the result is stored, if found.
-	 * \return - true, if a path was found
-	 *
-	 *  Notice that \c path can be initialized with a default value; if no path is found, the default value will stay intact.
+	 *   Variable 'path' will be probably obsolete in future.
 	 */
-	/*
-	static
+	void convertRegExpToRanges(const std::string & param);
+
+	/// Temporary fix: try to derive dataset and data indices from deprecated 'path' regexp (and also, quantity, current first param.)
+	/**
+	 *   Variable 'path' will be probably obsolete in future.
+	 */
 	inline
-	bool getNextOrdinalPath(const HI5TREE &src, const std::string & pathRegExp, std::string & path){
-		DataSelector s;
-		s.path = pathRegExp;
-		return getNextOrdinalPath(src, s, path);
-	}
-	*/
-
-	/// A shortcut
-	/*
-	 *
-	 */
-	// static 	bool getNextOrdinalPath(const HI5TREE &src, const DataSelector & selector, std::string & path);
-
-
+	void convertRegExpToRanges(){
+		convertRegExpToRanges(this->path);
+		//convertRegExpToRanges(this->quantity);
+	};
 
 protected:
 
-	//drain::ReferenceMap _parameters;
 
-	/// Sets the default values.
+	/// Sets the default values and sets references.
 	void init();
 
 	/// Traverses down the tree and returns matching paths as a list or map (ordered by elevation).
@@ -330,35 +320,11 @@ protected:
 	}
 
 
-
-	/*
-	template <class F, class T>
-	inline
-	void reference(const std::string & key, F & target, const T & value){
-		parameters.reference(key, target, value);
-	}
-	 */
-
-	/*
-	template <class F>
-	inline
-	void reference(const std::string & key, F & target){
-		parameters.reference(key, target);
-	}
-	 */
-
 	/// NEW Collects paths to a list.
 	template <class P>
 	static
 	void addPathT(std::list<P> & l, const PolarODIM & odim, const P & path){ l.push_back(path); }
 
-
-	/// Collects paths to a list.
-	/*
-	static
-	inline
-	void addPathT(ODIMPathList & l, const PolarODIM & odim, const std::string &path){ l.push_back(path); }; // discards elevation
-	 */
 
 	/// Collects paths to a set. (unused?)
 	/**
@@ -369,11 +335,7 @@ protected:
 	void addPathT(std::set<P> & l, const PolarODIM & odim, const P & path){
 		l.insert(path);
 	}
-	/*
-	static
-	inline
-	void addPathT(std::set<std::string> & s, const PolarODIM & odim, const std::string &path){ s.insert(path); }; // discards elevation
-	 */
+
 
 	/// Collects paths by their elevation angle (elangle).
 	/**
@@ -597,7 +559,3 @@ std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 } // rack::
 
 #endif /* DATASELECTOR_H_ */
-
-// Rack
- // REP // REP // REP // REP // REP // REP // REP // REP // REP
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

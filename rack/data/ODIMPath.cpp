@@ -54,43 +54,57 @@ const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS;
 
 //const std::set<std::string> & ODIM::attributeGroups(createAttributeGroups());
 
+/*
+const ODIMPathElem::flag_t & ODIMPathElem::getFlags(){
+
+	static ODIMPathElem::flag_t flags(dict);
+
+	return flags;
+
+}
+*/
+
+
 const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 
-	static ODIMPathElem::dict_t map;
+	static ODIMPathElem::dict_t dict;
 
-	if (map.empty()){
-		map[NONE]   = "*";
-		map[ROOT]   = "";
-		map[DATASET] = "dataset";
-		map[DATA]   = "data";
-		map[ARRAY]  = "data";
-		map[QUALITY] = "quality";
-		map[OTHER]  = "OTHER";
-		map[WHAT]   = "what";
-		map[WHERE]  = "where";
-		map[HOW]    = "how";
-		//map[OTHER_INDEXED] = "OTHER_INDEXED";
+	if (dict.first.empty()){
+		dict.addEntry("*", NONE);
+		dict.addEntry("", ROOT);
+		dict.addEntry("dataset", DATASET);
+		dict.addEntry("data", DATA);
+		dict.first["array"] = ARRAY;
+		dict.second[ARRAY] = "data";
+		//dict.addEntry("data", ARRAY);
+		dict.addEntry("quality", QUALITY);
+		dict.addEntry("OTHER", OTHER);
+		dict.addEntry("what", WHAT);
+		dict.addEntry("where", WHERE);
+		dict.addEntry("how", HOW);
 	}
-	return map;
+
+	return dict;
+
 }
 
 
 
 
-void ODIMPathElem::set(const std::string &s){
+bool ODIMPathElem::set(const std::string &s){
 
 	drain::Logger mout("ODIMPath", __FUNCTION__);
 
 	this->group = ROOT; // or none?
 	this->index = 0;
 	bool INDEXED = false; // to separate data and data1
-	this->str = ""; //.clear();
+	this->str = "";
 
 	/// Empty string is identified with root (rethink?)
 	if (s.empty()){
 		this->group = ROOT;
 		//std::cout << "root" << '\n';
-		return;
+		return true;
 	}
 
 	// Extract prefix (alphabets) and index (digits)
@@ -110,14 +124,14 @@ void ODIMPathElem::set(const std::string &s){
 	//std::cout << "  raw: " << prefix << ':' << this->index << '\t';
 
 	/// Check if matches predefined group types
-	const dict_t & d = getDictionary();
-	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
+	const dict_t::second_type & d = getDictionary().second;
+	for (dict_t::second_type::const_iterator it=d.begin(); it!=d.end(); ++it){
 		// it->first  : group id [enum code]
 		// it->second : group prefix [string]
 		if ((prefix == it->second) && (INDEXED == isIndexed(it->first))) {
 			this->group = it->first;
 			// std::cout << ", code: " << (int)this->group << '\n';
-			return;
+			return true;
 		}
 	}
 
@@ -125,17 +139,16 @@ void ODIMPathElem::set(const std::string &s){
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->str = prefix;
 
-	mout.warn() << "non-standard path element: " << *this << mout.endl;
+	mout.note() << "non-standard path element: " << *this << mout.endl;
 
-	//std::cout << ", OTHER: " << (int)this->group << '\n';
-
-	return;
+	return false;
 
 }
 
 const std::string & ODIMPathElem::getKey(group_t group)  {
-	static const dict_t & d = getDictionary();
-	const dict_t::const_iterator it = d.find(group); // should be always found, if group != OTHER
+	static const dict_t::second_type & d = getDictionary().second;
+	const dict_t::second_type::const_iterator it = d.find(group);
+	//const dict_t::const_iterator it = d.find(group); // should be always found, if group != OTHER
 	if (it != d.end()){
 		return it->second;
 	}
@@ -223,5 +236,3 @@ ODIMPathElem odimARRAY(ODIMPathElem::ARRAY);
 
 
 
-// Rack
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

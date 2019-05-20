@@ -55,54 +55,79 @@ namespace rack {
 
 
 
-/** General commands.
+/* General commands.
  *
  */
 
 
+/// Select input data for next command.
+/**
+
+Most commands apply implicit input data selection criteria,
+typically involving quantities and elevation angle(s).
+Often, the first data array matching the criteria are used.
+
+One can explicitly change the criteria with \c --select (\c -s) command .
+For example, in data conversions one may wish to focus on VRAD data, not all the data.
+
+The selection command can be applied practically with all the commands processing data.
+In computing meteorological products (\ref products), it affects the following product only.
+In case of anomaly detectors (\ref andrepage), it applies to all subsequent operators.
+
+Note that some processing commands may not support explicit data selection.
+
+\~remark
+
+will neglect some selection arguments, eg. CAPPI product will always use \c quantity=DBZH.
+
+-# \b Deprecating: \c path (regular expression): paths of the ODIM structure, eg. \c "/dataset[0-9]+$"
+-# \c quantity (regular expression): ODIM attribute \c quantity, eg. \c "DBZ.*"
+-# \c index (positive integer): first occurrence to be considered (makes sense with dataset selections)
+-# \c count (positive integer): \c index+count occurrences will be considered (makes sense with dataset selections)
+-# \c elangle (double:double): elevation angle range, use colon (:) as separator; single value can be issued as well.
+-# \b Deprecating: \c elangleMin (double): minimum elevation angle
+-# \b Deprecating: \c elangleMax (double): maximum elevation angle
+Some parameters are deprecating, hence it is better to use explicit keys is assignments, for example:
+ --code
+rack volume.h5 --select 'dataset=2:5,quantity=DBZH'                 <commands>
+rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
+ --endcode
+\~
+
+
+
+*/
 class CmdSelect : public BasicCommand {
 
 public:
 
 	CmdSelect() : BasicCommand(__FUNCTION__, "Data selection for the next operation."){
-		parameters.reference("selector", getResources().select, DataSelector().getParameters().getKeys());
-		parameters.separator = 0;
+		parameters.append(test.getParameters());
+		//parameters.reference("selector", getResources().select, DataSelector().getParameters().getKeys());
+		//parameters.separator = 0;
 	};
 
-	void exec() const {
-
+	virtual
+	void setParameters(const std::string & params, char assignmentSymbol='=') {
 		drain::Logger mout(getName(), __FUNCTION__);
-
-		RackResources & r = getResources();
-
-		//const bool DEBUG = mout.isDebug(2);
-		DataSelector check;
-		//(ODIMPathElem::group_t checkMask;
-
-		//if (DEBUG)			check.parameters.reference("mask", checkMask);
-
-		check.setParameters(r.select, '=', ',');
-		mout.debug() << check << mout.endl;
-
-		// test.getParameters()["elangle"].toJSON(std::cout, '\n');
-		r.dataOk = true;
-
-		if (mout.isDebug(2)){
-			mout.warn() << "Selector test for current data. Note: using dataset.max=" << check.dataset.max << " for groupFilter/mask " << mout.endl;
-			//typedef std::map<double, std::string> cont_t;
-			typedef std::map<double, ODIMPath> cont_t;
-			//typedef std::set<ODIMPath> cont_t;
-			cont_t paths;
-			check.getPathsNEW(*r.currentHi5, paths, check.dataset.max);
-			for (cont_t::const_iterator it = paths.begin(); it != paths.end(); ++it)
-				mout.warn() << it->first << '=' << it->second << mout.endl;
-		}
-
+		getResources().select = params;
+		//BasicCommand::setParameters(params, assignmentSymbol);
+		test.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
+		//mout.note() << params << " => " << test << '|' << test.groups.value << mout.endl;
 	}
 
-	//mutable DataSelector test;
+private:
+
+	mutable DataSelector test;
+
 };
 
+/// Set selection criteria strictly to one \c quantity .
+/**
+Selecting quantities only is frequently needed, so there is a dedicated command \c --selectQuantity (\c -Q ) which
+accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, \c -Q \c DBZH*,QIND
+is equal to \c --select \c quantity='^(DBZH.*|QIND)$' .
+*/
 class CmdSelectQuantity : public SimpleCommand<std::string> {
 
 public:
@@ -127,263 +152,59 @@ public:
 };
 
 
-class CmdStatus : public BasicCommand {
+
+
+
+
+class CmdConvert : public BasicCommand {
 
 public:
 
-	CmdStatus() : BasicCommand(__FUNCTION__, "Dump information on current images.") {
+	CmdConvert() : BasicCommand(__FUNCTION__, "Convert --select'ed data to scaling and markers set by --encoding") {
 	};
+
 
 	void exec() const {
 
-		std::ostream & ostr = std::cout; // for now...
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
 
-		const drain::VariableMap & statusMap = getResources().getUpdatedStatusMap();
-
-		for (drain::VariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
-			ostr << it->first << '=' << it->second << ' ';
-			it->second.typeInfo(ostr);
-			ostr << '\n';
+		RackResources & resources = getResources();
+		if (resources.currentHi5 == &resources.cartesianHi5){
+			convertCurrentH5<CartesianODIM>();
 		}
-		// ostr << statusMap << std::endl;
-
-	};
-
-
-
-};
-//extern CommandEntry<CmdStatus> cmdStatus;
-
-
-/// Facility for validating and storing desired technical (non-meteorological) user parameters.
-/*
- *  Quick-checks values immediately.
- *  To consider: PolarODIM and CartesianODIM ?
- */
-class CmdEncoding : public BasicCommand {
-
-public:
-
-	inline
-	CmdEncoding() : BasicCommand(__FUNCTION__, "Sets encodings parameters for polar and Cartesian products, including composites.") {
-
-		parameters.separator = ','; // s = ",";
-		parameters.reference("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		parameters.reference("gain", odim.gain = 0.0, "scaling coefficient");
-		parameters.reference("offset", odim.offset = 0.0, "bias");
-		parameters.reference("undetect", odim.undetect = 0.0, "marker");
-		parameters.reference("nodata", odim.nodata = 0.0, "marker");
-
-		/// Polar-specific
-		parameters.reference("rscale", odim.rscale = 0.0, "metres");
-		parameters.reference("nrays", odim.nrays = 0L, "count");
-		parameters.reference("nbins", odim.nbins = 0l, "count");
-
-		/// Experimental, for image processing
-		parameters.reference("quantity", odim.quantity = "", "string");
-
-		//getQuantityMap().setTypeDefaults(odim, "C");
-		odim.setTypeDefaults("C"); // ??
-		//odim.setTypeDefaults(typeid(unsigned char));
-		//std::cerr << "CmdEncoding.odim:" << odim << std::endl;
-		//std::cerr << "CmdEncoding.pars:" << parameters << std::endl;
-	};
-
-
-	virtual  //?
-	inline
-	void run(const std::string & params){
-
-		Logger mout(getName(), __FUNCTION__);
-
-		try {
-
-			/// Main action: store it for later use (by proceeding commands).
-			getResources().targetEncoding = params;
-
-			/// Also check and warn of unknown parameters
-			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
-
-			// mout.note() << "pars: " << parameters << mout.endl;
-			// mout.note() << "odim: " << odim << mout.endl;
-			odim.setTypeDefaults();
-
-			// Reassign (to odim).
-			parameters.setValues(params);
-			//mout.note() << "Re-assigned parameters: " << parameters << mout.endl;
-
+		else if (resources.currentHi5 == resources.currentPolarHi5) {
+			convertCurrentH5<PolarODIM>();
 		}
-		catch (const std::runtime_error & e) {
-
-			mout.warn() << "Could not set odim" << mout.endl;
-			mout.note() << "pars: " << parameters << mout.endl;
-			mout.warn() << "odim: " << odim << mout.endl;
-			mout.error() << e.what() << mout.endl;
-
+		else {
+			mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
 		}
-
-		// std::cerr << "CmdEncoding.odim: " << odim << std::endl;
-		// std::cerr << "CmdEncoding.pars: " << parameters << std::endl;
+		resources.currentImage = NULL;
+		resources.currentGrayImage = NULL;
 
 	};
 
+protected:
 
-private:
-
-	/// Facility for validating the parameters supplied by the user.
-	PolarODIM odim;
-
-
-
-};
-// extern CommandEntry<CmdEncoding> cmdEncoding;
-
-class CmdFormatOut : public SimpleCommand<std::string> {
-
-public:
-
-	CmdFormatOut() : SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
-		//parameters.separators.clear();
-		//parameters.reference("filename", filename, "");
-	};
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+	template <class OD>
+	void convertCurrentH5() const {
 
 		RackResources & resources = getResources();
 
-		std::string & format = cmdFormat.value;
-		format = drain::StringTools::replace(format, "\\n", "\n");
-		format = drain::StringTools::replace(format, "\\t", "\t");
+		DataConversionOp<OD> op;
+		op.setEncodingRequest(resources.targetEncoding);
+		resources.targetEncoding.clear();
 
-		CommandRegistry & reg = getRegistry();
-		reg.statusFormatter.parse(format);
-		//mout.warn() << "before expansion: " << r.statusFormatter << mout.endl;
+		// mout.debug() << op.encodingRequest << mout.endl;
+		// mout.warn() << op << mout.endl;
+		op.dataSelector.setParameters(resources.select);
+		resources.select.clear();
 
-		reg.statusFormatter.expand(resources.getUpdatedStatusMap()); // needed? YES
-		//mout.warn() << r.getStatusMap() << mout.endl;
-		//mout.warn() << r.statusFormatter << mout.endl;
+		op.processH5(*resources.currentHi5, *resources.currentHi5);
+		DataTools::updateAttributes(*resources.currentHi5);
 
-
-		if ((value == "")||(value == "-"))
-			std::cout << reg.statusFormatter;
-		else {
-			const std::string outFileName = getResources().outputPrefix + value;
-			mout.info() << "writing " << outFileName << mout.endl;
-			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-			if (ofstr)
-				ofstr << reg.statusFormatter;
-			else
-				mout.warn() << "write error: " << outFileName << mout.endl;
-			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
-			ofstr.close();
-		}
-
-		//mout.warn() << "after expansion: " << r.statusFormatter << mout.endl;
-		//r.statusFormatter.debug(std::cerr, r.getStatusMap());
-
-	};
-
-};
-
-
-
-
-
-class CmdAutoExec : public BasicCommand {
-
-public:
-
-	CmdAutoExec() : BasicCommand(__FUNCTION__, "Execute script automatically after each input. See --script") {
-		parameters.reference("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
 	}
 
 };
-
-
-class CmdDataOk : public BasicCommand {
-
-public:
-
-	CmdDataOk() : BasicCommand(__FUNCTION__, "Status of last select."){
-		parameters.reference("flag", getResources().dataOk = true);
-	};
-};
-
-
-class UndetectWeight : public BasicCommand {  // TODO: move to general commands, leave warning here
-
-public:
-
-	UndetectWeight() : BasicCommand(__FUNCTION__, "Set the relative weight of data values assigned 'undetect'."){
-		parameters.reference("weight", DataCoder::undetectQualityCoeff, "0...1");
-	};
-
-
-};
-
-/// Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) ODIM properties to be assigned in current H5 structure.
-/**
- *   ODIM properties can be set with
- *   - \c --/dataset2/data2:
- *
- */
-class CmdDefaultHandler : public BasicCommand {
-public: //re
-	//std::string value;
-	CmdDefaultHandler() : BasicCommand(getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};  // getRegistry().DEFAULT_HANDLER, 0,
-
-	virtual  //?
-	inline
-	void run(const std::string & params){
-
-		Logger mout(getName());
-
-		mout.debug(1) << "params: " << params << mout.endl;
-
-		/// Syntax for recognising text files.
-		static const drain::RegExp odimSyntax("^--?(/.+)$");
-
-		if (params.empty()){
-			mout.error() << "Empty parameters" << mout.endl;
-		}
-		else if (odimSyntax.execute(params) == 0) {
-			//mout.warn() << "Recognised --/ hence running applyODIM" << mout.endl;
-			getRegistry().run("setODIM", odimSyntax.result[1]);
-		}
-		else {
-			if (params.at(0) == '-'){
-				mout.error() << "Unknown parameter (or invalid filename): " << params << mout.endl;
-			}
-			try {
-				mout.debug(1) << "Assuming filename, trying to read." << mout.endl;
-				getRegistry().run("inputFile", params);
-			} catch (std::exception & e) {
-				mout.error() << "could not handle params='" << params << "'" << mout.endl;
-			}
-		}
-
-	};
-
-};
-
-
-
-
-
-class CmdCheckType : public BasicCommand {
-
-public:
-
-	CmdCheckType() : BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
-
-	void exec() const {
-		PolarODIM::checkType(*getResources().currentHi5);
-	};
-
-};
-
 
 class CmdCreateDefaultQuality : public BasicCommand {
 
@@ -473,284 +294,86 @@ public:
 };
 
 
+/**
 
+Examples:
+\include example-delete.inc
 
+Notice that \c --elangle applies to volume data only, and essentially selects \c dataset  groups.
+Similarly, \c quantity selects \c data (and \c quality)  groups.
+If selection parameters of both levels are issued in the same command,
+implicit \c AND function applies in selection.
 
-
-class CmdConvert : public BasicCommand {
-
-public:
-
-	CmdConvert() : BasicCommand(__FUNCTION__, "Convert --select'ed data to scaling and markers set by --encoding") {
-	};
-
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
-
-		RackResources & resources = getResources();
-		if (resources.currentHi5 == &resources.cartesianHi5){
-			convertCurrentH5<CartesianODIM>();
-		}
-		else if (resources.currentHi5 == resources.currentPolarHi5) {
-			convertCurrentH5<PolarODIM>();
-		}
-		else {
-			mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
-		}
-		resources.currentImage = NULL;
-		resources.currentGrayImage = NULL;
-
-	};
-
-protected:
-
-	template <class OD>
-	void convertCurrentH5() const {
-
-		RackResources & resources = getResources();
-
-		DataConversionOp<OD> op;
-		op.setEncodingRequest(resources.targetEncoding);
-		resources.targetEncoding.clear();
-
-		// mout.debug() << op.encodingRequest << mout.endl;
-		// mout.warn() << op << mout.endl;
-		op.dataSelector.setParameters(resources.select);
-		resources.select.clear();
-
-		op.processH5(*resources.currentHi5, *resources.currentHi5);
-		DataTools::updateAttributes(*resources.currentHi5);
-
-	}
-
-};
-
-
-
-class CmdDumpMap : public BasicCommand {
+*/
+class CmdDelete : public BasicCommand {  // public SimpleCommand<std::string> {
 
 public:
 
-	std::string filter;
-	std::string filename;
-
-	//options["dumpMap"].syntax = "<regexp>[:<file>]"
-	CmdDumpMap() : BasicCommand(__FUNCTION__, "Dump variable map, filtered by keys, to std or file.") {
-		parameters.separator = ':'; //s = ":";
-		parameters.reference("filter", filter = "", "regexp");
-		parameters.reference("filename", filename = "", "std::string");
-	};
-
-	void exec() const {
-
-		// TODO filename =resources.outputPrefix + values[1];
-
-		drain::RegExp r(filter);
-		// std::ostream *ostr = &std::cout;
-		std::ofstream ofstr;
-		if (filename != ""){
-			//std::string filename = options.get("outputFile","out")+extension;
-			std::cout << "opening " << filename << '\n';
-			//std::string outFileName =resources.outputPrefix + filename;
-			ofstr.open(filename.c_str(),std::ios::out);
-			// ostr = & ofstr;
-		}
-		throw std::runtime_error(name + ": unimplemented SingleParamCommand");
-		ofstr.close();
-
-	};
-
-};
-
-
-
-
-
-
-
-class CmdHelpRack : public CmdHelp {
-public:
-	CmdHelpRack() : CmdHelp(std::string(__RACK__) + " - a radar data processing program", "Usage: rack <input> [commands...] -o <outputFile>") {};
-};
-
-
-class CmdHelpExample : public SimpleCommand<std::string> {
-
-public:
-
-	CmdHelpExample() : SimpleCommand<std::string>(__FUNCTION__, "Dump example of use and exit.", "keyword", "") {
-	};
-
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__);
-
-		std::ostream & ostr = std::cout;
-
-		const CommandRegistry::map_t & map = getRegistry().getMap();
-
-		const std::string key = value.substr(value.find_first_not_of('-'));
-		//mout.warn() << key << mout.endl;
-
-		CommandRegistry::map_t::const_iterator it = map.find(key);
-
-		if (it != map.end()){
-
-			const Command & d = it->second;
-			const ReferenceMap & params = d.getParameters();
-
-			ostr << "--" << key << ' ' << '\'';
-			params.getValues(ostr);
-			ostr << '\'' << '\n';
-			//ostr << '\n';
-			// ostr << "Default values: ";
-			// params.getValues(ostr);
-			//ostr << '\n';
-
-			//ostr << "  # Parameters:\n";
-			const std::list<std::string> keys = params.getKeyList();
-			const std::map<std::string,std::string> & units = params.getUnitMap();
-			for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-				ostr << "  # " << *kit << '=';
-				ostr << params[*kit];
-				ostr << ' ';
-				const std::map<std::string,std::string>::const_iterator uit = units.find(*kit);
-				if (uit != units.end())
-					if (!uit->second.empty())
-						ostr << '[' << uit->second << ']';
-				ostr << '\n';
-			}
-			//ostr << '\n';  ostr << "# Modifiable encoding:\n";
-
-		}
-		else {
-
-		}
-
-		exit(0);
-	};
-
-
-
-
-};
-// static CommandEntry<CmdHelpExample> cmdHelpExample("helpExample", 0);
-
-class CmdJSON : public SimpleCommand<std::string> { //BasicCommand {
-public:
-
-	CmdJSON() : SimpleCommand<std::string>(__FUNCTION__, "Dump to JSON.", "property", "", ""){
+	CmdDelete() : BasicCommand(__FUNCTION__, "Deletes selected parts of h5 structure."){
+		parameters.append(selector.getParameters());
 	};
 
 	virtual
-	void run(const std::string & params = "") {
+	void setParameters(const std::string & params, char assignmentSymbol='=') {
 
-		drain::Logger mout(name, __FUNCTION__);
+		// drain::Logger mout(getName(), __FUNCTION__);
+		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
 
-		CommandRegistry & reg = getRegistry();
+		selector.convertRegExpToRanges(); // transitional op for deprecated \c path
 
-		std::ostream & ostr = std::cout;
-
-		if (params.empty()){
-			reg.toJSON(ostr);
-		}
-		else {
-			if (!reg.has(params)){
-				mout.error() << "no such key: " << params << mout.endl;
-				return;
-			}
-
-			const drain::Command & command = reg.get(params);
-			const ReferenceMap & m = command.getParameters();
-			const ReferenceMap::keylist_t & keys = m.getKeyList();
-			ostr << "{";
-			ostr << "  \"parameters\": {";
-
-			char sep=0;
-
-			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
-			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
-				if (sep)
-					ostr << sep;
-				else
-					sep = ',';
-				ostr << "\n  \"" << *it << "\": {\n";
-				//ostr << std::setw(10) << std::left << "\"type\": \"";
-				//ostr << "    \"type\": \"";
-				const drain::Referencer & entry = m[*it];
-				if (entry.isString()) {
-					ostr << "string";
-				}
-				else {
-					ostr << Type::call<drain::simpleName>(entry.getType());
-				}
-				ostr << "\",\n";
-
-				ostr << "    \"value\": ";
-				entry.valueToJSON(ostr);
-				ostr << "\n";
-				ostr << "  }";
-			}
-			ostr << "  }";
-			if (!command.getType().empty()){
-				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
-			}
-			ostr << "\n}\n";
-		}
-
-		std::cout << std::setw(10) << "Viola!" << std::endl;
-	};
-
-};
-
-
-
-
-class CmdDelete : public SimpleCommand<std::string> {
-
-public:
-
-	CmdDelete() : SimpleCommand<std::string>(__FUNCTION__, "Deletes selected parts of h5 structure.", "selector", "", DataSelector().getParameters().getKeys()) {
-	};
+	}
 
 	void exec() const {
 
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
-		//RackResources & resources = getResources();
-		DataSelector selector;
-		ODIMPathElem::group_t groupFilter = selector.resetParameters(value);
-		selector.updatePaths(); // check
+		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
+		mout.debug() << "selector: " << selector << mout.endl;
 
-		mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
-
-		ODIMPathList paths;
 		HI5TREE & dst = *getResources().currentHi5;
-		selector.getPathsNEW(dst, paths, groupFilter);
+		ODIMPathList paths;
+		selector.getPathsNEW(dst, paths);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
 		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
-			mout.note() << "deleting: " << *it << mout.endl;
+			mout.debug() << "deleting: " << *it << mout.endl;
 			dst.erase(*it);
 		}
 	};
 
+private:
+
+	DataSelector selector;
+
+
 };
 
 
+///
+/**
 
-class CmdKeep : public SimpleCommand<std::string> {
+Metadata groups (\c what, \c where, \c how) are preserved or deleted together with their
+parent groups.
+
+Examples:
+\include example-keep.inc
+
+ */
+class CmdKeep : public BasicCommand { // : public SimpleCommand<std::string> {
 
 public:
 
-
-	CmdKeep() : SimpleCommand<std::string>(__FUNCTION__, "Keeps a part of the current h5 structure, deletes the rest. Path and quantity are regexps.",
-			"selector", "", DataSelector().getParameters().getKeys()) {
-		//parameters.separators.clear();
-		//parameters.reference("value", value, "", DataSelector().getKeys());
+	/// Keeps a part of the current h5 structure, deletes the rest. Path and quantity are regexps.
+	CmdKeep() : BasicCommand(__FUNCTION__, "Keeps selected part of data structure, deletes rest."){
+		parameters.append(selector.getParameters());
 	};
+
+	virtual
+	void setParameters(const std::string & params, char assignmentSymbol='=') {
+		//drain::Logger mout(getName(), __FUNCTION__);
+		//selector.groups = ODIMPathElem::ALL_GROUPS; //DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY;
+		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
+		selector.convertRegExpToRanges(); // transition support...
+	}
 
 	void exec() const {
 
@@ -759,36 +382,41 @@ public:
 		//RackResources & resources = getResources();
 		HI5TREE & dst = *getResources().currentHi5;
 
-		DataSelector selector;
-
 		ODIMPathList paths;
 
-		selector.getPathsNEW(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-		mout.note() << "data structure contains " << paths.size() << " paths " << mout.endl;
+		DataSelector preselector;
+
+		//dst.getPaths(paths);
+		preselector.getPathsNEW(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
+		mout.info() << "data structure contains " << paths.size() << " paths " << mout.endl;
+
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++){
-			mout.debug(4) << "set noSave: " << *it << mout.endl;
+			mout.debug(1) << "set noSave: " << *it << mout.endl;
 			dst(*it).data.noSave = true;
 		}
 
-		//ODIMPathElem::group_t groupFilter = selector.resetParameters(value);
-		selector.resetParameters(value);
-		selector.updatePaths();
-		//mout.debug(2) << "derived group mask: " << groupFilter << ", selector: " << selector << mout.endl;
-		mout.debug(2) << "selector for saved paths: " << selector << mout.endl;
-		//std::set<ODIMPath> savedPaths;
-		//selector.getPathsNEW(dst, savedPaths, groupFilter);
-
+		//ODIMPathElem::group_t groupFilter = selector.deriveParameters(value);
+		mout.note() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
 
 		ODIMPathList savedPaths;
-		selector.getPathsNEW(dst, savedPaths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		selector.getPathsNEW(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		//mout.info() << "set save" << mout.endl;
+		const ODIMPathElem::group_t groupMask = selector.groups; //getGroupMask();
+
 		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
 			mout.debug(1) << "set save: " << *it << mout.endl;
 			ODIMPath p;
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
 				p << *pit;
 				// mout.debug(2) << " \t\t" << p << mout.endl;
+				if (!pit->belongsTo(groupMask)){
+					if (dst(p).hasChild(odimARRAY)){
+						dst(p)[odimARRAY].data.noSave = true;
+						dst(p)[odimARRAY].data.dataSet.resetGeometry();
+						mout.debug(1) << "clearing " << p << " // data" << mout.endl;
+					}
+				}
 				dst(p).data.noSave = false;
 			}
 
@@ -809,44 +437,37 @@ public:
 
 	};
 
+private:
+
+	DataSelector selector;
+
+
 };
 
 
 
 
 
-/// Renames or moves paths and attributes.
+/// Rename or move data groups and attributes.
 /**
 
-    A full path consist of a slash-separated group path elements followed by an attribute key separated by colon, for example \c /dataset1/data2/what:gain .
+    \param src - source path consisting at least of the group path
+    \param dst - full destination path or only ':' followed by attribute key
 
+    A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
+    For example: \c /dataset1/data2/what:gain .
 
-    Parameters:
-    \param src - source path, at least the group path
-    \param dst - destination path
 
     Examples:
-    \code{.sh}
-    # Move group
-    rack volume.h5 --move quality1,dataset1/quality1 -o renamed.h5
-
-    # Rename only the attribute key
-    rack volume.h5 --move dataset1/how:task,newtask -o renamed.h5
-
-    # Change attribute location in hierarchy
-    rack volume.h5 --move dataset1/where:nrays,dataset1/data1 -o renamed.h5
-
-    # Change key and location
-    rack volume.h5 --move dataset1/where:nrays,dataset1/how:imageheight -o renamed.h5
-    \endcode
+	\include example-move.inc
 
  */
-class CmdMove :  public BasicCommand {  //public SimpleCommand<std::string> {
+class CmdMove :  public BasicCommand {
 
 public:
 
-	///
-	CmdMove() : BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){
+	/// Default constructor
+	CmdMove() : BasicCommand(__FUNCTION__, "Rename or move data groups and attributes."){
 		parameters.reference("src", pathSrc = "", "/group/group2[:attr]");
 		parameters.reference("dst", pathDst = "", "/group/group2[:attr]");
 	};
@@ -866,17 +487,31 @@ public:
 
 		ODIMPath path1;
 		std::string attr1;
-		getPath(pathSrc, path1, attr1);
-		mout.debug() << "path1: " << path1 << " : " << attr1 << mout.endl;
+		// std::string attr1value; // debug
+		// std::string attr1type;// debug
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1); //, attr1value, attr1type);
+		/*
+		mout.warn() << "path:  " << path1 << mout.endl;
+		mout.warn() << "attr:  " << attr1 << mout.endl;
+		mout.warn() << "value: " << attr1value << mout.endl;
+		mout.warn() << "type:  " << attr1type  << mout.endl;
+		return;
+		 */
+
 		if (!dstRoot.hasPath(path1)) // make it temporary (yet allocating)
 			mout.warn() << "nonexistent path: " << path1 << mout.endl;
+
+		ODIMPath path2;
+		std::string attr2;
+		hi5::Hi5Base::parsePath(pathDst, path2, attr2);
+
+		mout.debug() << "path1: " << path1 << '(' << path1.size() << ')' << " : " << attr1 << mout.endl;
+		mout.debug() << "path2: " << path2 << '(' << path2.size() << ')' << " : " << attr2 << mout.endl;
 
 
 		if (attr1.empty()){ // RENAME PATHS (swap two paths)
 
-			ODIMPath path2;
-			std::string attr2;
-			getPath(pathDst, path2, attr2);
+			//hi5::Hi5Base::parsePath(pathDst, path2, attr2);
 			if (!attr2.empty()){
 				mout.error() << "cannot move path '" << path1 << "' to attribute '" << attr2 << "'" << mout.endl;
 				return;
@@ -885,7 +520,7 @@ public:
 			mout.debug() << "renaming path '" << path1 << "' => '" << path2 << "'" << mout.endl;
 			//mout.warn() << dstRoot << mout.endl;
 			HI5TREE & dst1 = dstRoot(path1);
-			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating)
+			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
 				dstRoot(path2).data.noSave = true;
 			HI5TREE & dst2 = dstRoot(path2);
 
@@ -902,17 +537,12 @@ public:
 		}
 		else { // Rename attribute
 
-			ODIMPath path2;
-			std::string attr2;
 
-			//const bool CHANGE_PATH = ((attr2.find(path1.separator) != std::string::npos) || (attr2.find(':') != std::string::npos));
-			if ((pathDst.find(path2.separator) != std::string::npos) || (pathDst.find(':') != std::string::npos)) { // contains '/'
-				getPath(pathDst, path2, attr2);
-			}
-			else {
+			if (path2.empty())
 				path2 = path1;
-				attr2 = pathDst;
-			}
+
+			if (attr2.empty())
+				attr2 = attr1;
 
 			mout.debug() << "renaming attribute (" << path1 << "):" << attr1 << " => (" << path2 << "):" << attr2 << mout.endl;
 
@@ -924,7 +554,8 @@ public:
 			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
 			dst1.data.attributes.erase(attr1);
 			//DataTools::updateAttributes(dst2);
-			mout.warn() << "dst1 attributes now: " << dst1.data.attributes << mout.endl;
+			mout.debug() << "dst1 attributes now: " << dst1.data.attributes << mout.endl;
+			mout.debug() << "dst2 attributes now: " << dst2.data.attributes << mout.endl;
 			//dstRoot.erase(path1);
 		}
 
@@ -945,37 +576,6 @@ protected:
 
 
 
-	// Consider sharing (DataTools?)
-	/// Split full path string to path object and attribute key.
-	/**
-	 *   Given a path like /dataset1/data3
-	 *   \code
-	 *
-	 *   \endcode
-	 *
-	 */
-	static
-	void getPath(const std::string & s, ODIMPath & path, std::string & attribute){
-
-		drain::Logger mout("CmdRename", __FUNCTION__);
-
-		std::string::size_type i = s.find(':');
-
-		if (i == std::string::npos){ // no attribute
-			path.set(s);
-			attribute.clear();
-		}
-		else {
-			path.set(s.substr(0, i));
-			if ((i+1) < s.length())
-				attribute.assign(s.substr(i+1));
-			else {
-				mout.warn() << "empty attribute given, path='" << s << "'" << mout.endl;
-				attribute.clear();
-			}
-		}
-
-	}
 
 };
 
@@ -1188,8 +788,451 @@ public:
 	};
 
 };
-// static CommandEntry<CmdSetODIM> cmdSetODIM("applyODIM");
 
+
+
+
+
+
+// Various dumps
+
+
+
+
+class CmdDumpMap : public BasicCommand {
+
+public:
+
+	std::string filter;
+	std::string filename;
+
+	//options["dumpMap"].syntax = "<regexp>[:<file>]"
+	CmdDumpMap() : BasicCommand(__FUNCTION__, "Dump variable map, filtered by keys, to std or file.") {
+		parameters.separator = ':'; //s = ":";
+		parameters.reference("filter", filter = "", "regexp");
+		parameters.reference("filename", filename = "", "std::string");
+	};
+
+	void exec() const {
+
+		// TODO filename =resources.outputPrefix + values[1];
+
+		drain::RegExp r(filter);
+		// std::ostream *ostr = &std::cout;
+		std::ofstream ofstr;
+		if (filename != ""){
+			//std::string filename = options.get("outputFile","out")+extension;
+			std::cout << "opening " << filename << '\n';
+			//std::string outFileName =resources.outputPrefix + filename;
+			ofstr.open(filename.c_str(),std::ios::out);
+			// ostr = & ofstr;
+		}
+		throw std::runtime_error(name + ": unimplemented SingleParamCommand");
+		ofstr.close();
+
+	};
+
+};
+
+
+
+
+
+
+
+class CmdHelpRack : public CmdHelp {
+public:
+	CmdHelpRack() : CmdHelp(std::string(__RACK__) + " - a radar data processing program", "Usage: rack <input> [commands...] -o <outputFile>") {};
+};
+
+
+class CmdHelpExample : public SimpleCommand<std::string> {
+
+public:
+
+	CmdHelpExample() : SimpleCommand<std::string>(__FUNCTION__, "Dump example of use and exit.", "keyword", "") {
+	};
+
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__);
+
+		std::ostream & ostr = std::cout;
+
+		const CommandRegistry::map_t & map = getRegistry().getMap();
+
+		const std::string key = value.substr(value.find_first_not_of('-'));
+		//mout.warn() << key << mout.endl;
+
+		CommandRegistry::map_t::const_iterator it = map.find(key);
+
+		if (it != map.end()){
+
+			const Command & d = it->second;
+			const ReferenceMap & params = d.getParameters();
+
+			ostr << "--" << key << ' ' << '\'';
+			params.getValues(ostr);
+			ostr << '\'' << '\n';
+			//ostr << '\n';
+			// ostr << "Default values: ";
+			// params.getValues(ostr);
+			//ostr << '\n';
+
+			//ostr << "  # Parameters:\n";
+			const std::list<std::string> keys = params.getKeyList();
+			const std::map<std::string,std::string> & units = params.getUnitMap();
+			for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+				ostr << "  # " << *kit << '=';
+				ostr << params[*kit];
+				ostr << ' ';
+				const std::map<std::string,std::string>::const_iterator uit = units.find(*kit);
+				if (uit != units.end())
+					if (!uit->second.empty())
+						ostr << '[' << uit->second << ']';
+				ostr << '\n';
+			}
+			//ostr << '\n';  ostr << "# Modifiable encoding:\n";
+
+		}
+		else {
+
+		}
+
+		exit(0);
+	};
+
+
+
+
+};
+// static CommandEntry<CmdHelpExample> cmdHelpExample("helpExample", 0);
+
+class CmdJSON : public SimpleCommand<std::string> { //BasicCommand {
+public:
+
+	CmdJSON() : SimpleCommand<std::string>(__FUNCTION__, "Dump to JSON.", "property", "", ""){
+	};
+
+	virtual
+	void run(const std::string & params = "") {
+
+		drain::Logger mout(name, __FUNCTION__);
+
+		CommandRegistry & reg = getRegistry();
+
+		std::ostream & ostr = std::cout;
+
+		if (params.empty()){
+			reg.toJSON(ostr);
+		}
+		else {
+			if (!reg.has(params)){
+				mout.error() << "no such key: " << params << mout.endl;
+				return;
+			}
+
+			const drain::Command & command = reg.get(params);
+			const ReferenceMap & m = command.getParameters();
+			const ReferenceMap::keylist_t & keys = m.getKeyList();
+			ostr << "{";
+			ostr << "  \"parameters\": {";
+
+			char sep=0;
+
+			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
+			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
+				if (sep)
+					ostr << sep;
+				else
+					sep = ',';
+				ostr << "\n  \"" << *it << "\": {\n";
+				//ostr << std::setw(10) << std::left << "\"type\": \"";
+				//ostr << "    \"type\": \"";
+				const drain::Referencer & entry = m[*it];
+				if (entry.isString()) {
+					ostr << "string";
+				}
+				else {
+					ostr << Type::call<drain::simpleName>(entry.getType());
+				}
+				ostr << "\",\n";
+
+				ostr << "    \"value\": ";
+				entry.valueToJSON(ostr);
+				ostr << "\n";
+				ostr << "  }";
+			}
+			ostr << "  }";
+			if (!command.getType().empty()){
+				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
+			}
+			ostr << "\n}\n";
+		}
+
+		std::cout << std::setw(10) << "Viola!" << std::endl;
+	};
+
+};
+
+
+class CmdFormatOut : public SimpleCommand<std::string> {
+
+public:
+
+	CmdFormatOut() : SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
+		//parameters.separators.clear();
+		//parameters.reference("filename", filename, "");
+	};
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+
+		RackResources & resources = getResources();
+
+		std::string & format = cmdFormat.value;
+		format = drain::StringTools::replace(format, "\\n", "\n");
+		format = drain::StringTools::replace(format, "\\t", "\t");
+
+		CommandRegistry & reg = getRegistry();
+		reg.statusFormatter.parse(format);
+		//mout.warn() << "before expansion: " << r.statusFormatter << mout.endl;
+
+		reg.statusFormatter.expand(resources.getUpdatedStatusMap()); // needed? YES
+		//mout.warn() << r.getStatusMap() << mout.endl;
+		//mout.warn() << r.statusFormatter << mout.endl;
+
+
+		if ((value == "")||(value == "-"))
+			std::cout << reg.statusFormatter;
+		else {
+			const std::string outFileName = getResources().outputPrefix + value;
+			mout.info() << "writing " << outFileName << mout.endl;
+			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			if (ofstr)
+				ofstr << reg.statusFormatter;
+			else
+				mout.warn() << "write error: " << outFileName << mout.endl;
+			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
+			ofstr.close();
+		}
+
+		//mout.warn() << "after expansion: " << r.statusFormatter << mout.endl;
+		//r.statusFormatter.debug(std::cerr, r.getStatusMap());
+
+	};
+
+};
+
+
+class CmdStatus : public BasicCommand {
+
+public:
+
+	CmdStatus() : BasicCommand(__FUNCTION__, "Dump information on current images.") {
+	};
+
+	void exec() const {
+
+		std::ostream & ostr = std::cout; // for now...
+
+		const drain::VariableMap & statusMap = getResources().getUpdatedStatusMap();
+
+		for (drain::VariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
+			ostr << it->first << '=' << it->second << ' ';
+			it->second.typeInfo(ostr);
+			ostr << '\n';
+		}
+		// ostr << statusMap << std::endl;
+
+	};
+
+
+
+};
+
+
+/// Facility for validating and storing desired technical (non-meteorological) user parameters.
+/*
+ *  Quick-checks values immediately.
+ *  To consider: PolarODIM and CartesianODIM ?
+ */
+class CmdEncoding : public BasicCommand {
+
+public:
+
+	inline
+	CmdEncoding() : BasicCommand(__FUNCTION__, "Sets encodings parameters for polar and Cartesian products, including composites.") {
+
+		parameters.separator = ','; // s = ",";
+		parameters.reference("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
+		parameters.reference("gain", odim.gain = 0.0, "scaling coefficient");
+		parameters.reference("offset", odim.offset = 0.0, "bias");
+		parameters.reference("undetect", odim.undetect = 0.0, "marker");
+		parameters.reference("nodata", odim.nodata = 0.0, "marker");
+
+		/// Polar-specific
+		parameters.reference("rscale", odim.rscale = 0.0, "metres");
+		parameters.reference("nrays", odim.nrays = 0L, "count");
+		parameters.reference("nbins", odim.nbins = 0l, "count");
+
+		/// Experimental, for image processing
+		parameters.reference("quantity", odim.quantity = "", "string");
+
+		//getQuantityMap().setTypeDefaults(odim, "C");
+		odim.setTypeDefaults("C"); // ??
+		//odim.setTypeDefaults(typeid(unsigned char));
+		//std::cerr << "CmdEncoding.odim:" << odim << std::endl;
+		//std::cerr << "CmdEncoding.pars:" << parameters << std::endl;
+	};
+
+
+	virtual  //?
+	inline
+	void run(const std::string & params){
+
+		Logger mout(getName(), __FUNCTION__);
+
+		try {
+
+			/// Main action: store it for later use (by proceeding commands).
+			getResources().targetEncoding = params;
+
+			/// Also check and warn of unknown parameters
+			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
+
+			// mout.note() << "pars: " << parameters << mout.endl;
+			// mout.note() << "odim: " << odim << mout.endl;
+			odim.setTypeDefaults();
+
+			// Reassign (to odim).
+			parameters.setValues(params);
+			//mout.note() << "Re-assigned parameters: " << parameters << mout.endl;
+
+		}
+		catch (const std::runtime_error & e) {
+
+			mout.warn() << "Could not set odim" << mout.endl;
+			mout.note() << "pars: " << parameters << mout.endl;
+			mout.warn() << "odim: " << odim << mout.endl;
+			mout.error() << e.what() << mout.endl;
+
+		}
+
+		// std::cerr << "CmdEncoding.odim: " << odim << std::endl;
+		// std::cerr << "CmdEncoding.pars: " << parameters << std::endl;
+
+	};
+
+
+private:
+
+	/// Facility for validating the parameters supplied by the user.
+	PolarODIM odim;
+
+
+
+};
+// extern CommandEntry<CmdEncoding> cmdEncoding;
+
+
+
+
+
+class CmdAutoExec : public BasicCommand {
+
+public:
+
+	CmdAutoExec() : BasicCommand(__FUNCTION__, "Execute script automatically after each input. See --script") {
+		parameters.reference("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
+	}
+
+};
+
+
+class CmdDataOk : public BasicCommand {
+
+public:
+
+	CmdDataOk() : BasicCommand(__FUNCTION__, "Status of last select."){
+		parameters.reference("flag", getResources().dataOk = true);
+	};
+};
+
+
+class UndetectWeight : public BasicCommand {  // TODO: move to general commands, leave warning here
+
+public:
+
+	UndetectWeight() : BasicCommand(__FUNCTION__, "Set the relative weight of data values assigned 'undetect'."){
+		parameters.reference("weight", DataCoder::undetectQualityCoeff, "0...1");
+	};
+
+
+};
+
+/// Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) ODIM properties to be assigned in current H5 structure.
+/**
+ *   ODIM properties can be set with
+ *   - \c --/dataset2/data2:
+ *
+ */
+class CmdDefaultHandler : public BasicCommand {
+public: //re
+	//std::string value;
+	CmdDefaultHandler() : BasicCommand(getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};  // getRegistry().DEFAULT_HANDLER, 0,
+
+	virtual  //?
+	inline
+	void run(const std::string & params){
+
+		Logger mout(getName());
+
+		mout.debug(1) << "params: " << params << mout.endl;
+
+		/// Syntax for recognising text files.
+		static const drain::RegExp odimSyntax("^--?(/.+)$");
+
+		if (params.empty()){
+			mout.error() << "Empty parameters" << mout.endl;
+		}
+		else if (odimSyntax.execute(params) == 0) {
+			//mout.warn() << "Recognised --/ hence running applyODIM" << mout.endl;
+			getRegistry().run("setODIM", odimSyntax.result[1]);
+		}
+		else {
+			if (params.at(0) == '-'){
+				mout.error() << "Unknown parameter (or invalid filename): " << params << mout.endl;
+			}
+			try {
+				mout.debug(1) << "Assuming filename, trying to read." << mout.endl;
+				getRegistry().run("inputFile", params);
+			} catch (std::exception & e) {
+				mout.error() << "could not handle params='" << params << "'" << mout.endl;
+			}
+		}
+
+	};
+
+};
+
+
+
+
+
+class CmdCheckType : public BasicCommand {
+
+public:
+
+	CmdCheckType() : BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
+
+	void exec() const {
+		PolarODIM::checkType(*getResources().currentHi5);
+	};
+
+};
 
 
 
@@ -1463,23 +1506,18 @@ public:
 
 
 CommandModule::CommandModule(){ //
-	//: scriptParser("script", 0), scriptExec( "exec", 'e', ScriptExec(scriptParser.script)), cmdSelect( "select", 's'),
-	//cmdStatus("status"), cmdEncoding( "target", 't'), cmdFormatOut("formatOut"){
 
 	CommandRegistry & registry = getRegistry();
 	RackResources & resources = getResources();
 
 	static RackLetAdapter<CmdDefaultHandler> cmdDefaultHandler(registry.DEFAULT_HANDLER);
-
 	registry.add(resources.scriptParser, "script");
 
 	static ScriptExec scriptExec(resources.scriptParser.script);
 	registry.add(scriptExec, "exec");
-	//static RackLetAdapter<drain::ScriptParser> scriptParser("script");
-	//static RackLetAdapter<drain::ScriptExec> scriptExec( "exec", 'e', ScriptExec(scriptParser.script) );
 
 	static RackLetAdapter<CmdSelect> cmdSelect("select", 's');
-	static RackLetAdapter<CmdStatus> cmdStatus; // ("status");
+	static RackLetAdapter<CmdStatus> cmdStatus;
 	static RackLetAdapter<CmdEncoding> cmdTarget("target", 't');  // old
 	static RackLetAdapter<CmdEncoding> cmdEncoding("encoding", 'e');  // new
 	static RackLetAdapter<CmdFormatOut> cmdFormatOut;
@@ -1520,11 +1558,4 @@ CommandModule::CommandModule(){ //
 
 }
 
-
-//void populateCommands(){}
-
 } // namespace rack
-
-// Rack
-// REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
-// REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

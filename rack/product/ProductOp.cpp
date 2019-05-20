@@ -163,7 +163,7 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 	if (QUANTITY_UNSET && (srcODIM.quantity == productODIM.quantity)){
 		// xxx
-		if (drain::Type::call<drain::typeIsSmallInt>(srcODIM.type)){
+		if (productODIM.isSet() && drain::Type::call<drain::typeIsSmallInt>(srcODIM.type)){
 			if (srcODIM.getMin() < productODIM.getMin()){
 				mout.note() << "input ["<< srcODIM.quantity << "] min="<< srcODIM.getMin() <<") lower than supported by target  (min="<< productODIM.getMin() << ")"<< mout.endl;
 			}

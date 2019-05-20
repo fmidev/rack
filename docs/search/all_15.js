@@ -29,7 +29,6 @@ var searchData=
   ['updatenodemap',['updateNodeMap',['../classrack_1_1Composite.html#af95544f2b101c46ce929f04535bc9fea',1,'rack::Composite']]],
   ['updateoveralldetection',['updateOverallDetection',['../classrack_1_1QualityCombinerOp.html#af5e149542a2bf4ff49e48631f89eecac',1,'rack::QualityCombinerOp']]],
   ['updateoverallquality',['updateOverallQuality',['../classrack_1_1QualityCombinerOp.html#a6fee5f1d70a6b87e50b2e8a609875ee7',1,'rack::QualityCombinerOp']]],
-  ['updatepaths',['updatePaths',['../classrack_1_1DataSelector.html#aa00db9f09cf84f04f4e2c64ec9882156',1,'rack::DataSelector']]],
   ['updatescaling',['updateScaling',['../classdrain_1_1image_1_1GeoFrame.html#a28f8306f05beb2f699ce9ebb423c500e',1,'drain::image::GeoFrame']]],
   ['updatestats',['updateStats',['../classdrain_1_1image_1_1SegmentStatistics.html#a432728ddccb704bb5b14daa88dbdc85d',1,'drain::image::SegmentStatistics']]],
   ['updatetree2',['updateTree2',['../classrack_1_1PlainData.html#aae03d0a3180909f965f0edd15ed5ecda',1,'rack::PlainData']]],
