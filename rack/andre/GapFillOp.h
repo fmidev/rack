@@ -64,10 +64,9 @@ public:
 protected:
 
 	// "Removes detected anomalies by overriding low-quality pixels with neighboring high-quality pixels."
+
 	GapFillOpBase(const std::string &name, const std::string &description) :
 		RemoverOp(name, description){
-		//pathFilter = "^.*/data[0-9]+/data$";
-		//propertyFilter["what:quantity"] = "DBZ.*";
 		dataSelector.quantity = "^DBZH$";
 	};
 

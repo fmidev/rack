@@ -57,7 +57,7 @@ public:
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	RhoHVLowOp(double threshold=0.85, double thresholdWidth=0.1, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
-		DetectorOp("RhoHVLow","Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", 131){
+		DetectorOp("RhoHVLow","Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", "nonmet"){
 		dataSelector.quantity = "RHOHV";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;

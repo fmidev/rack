@@ -63,7 +63,7 @@ public:
 	//EmitterOp(int windowWidth=5000, float thicknessMax=10.0, float sensitivity = 0.5, float eWidth = 1.0f, float eHeight = 0.0f) :
 	//EmitterOp(double thicknessMax=5.0, int samplingDistance = 100, int samplingDistanceWidth = 50) :
 	EmitterOp(double lengthMin=5.0, double thicknessMax=5.0, double sensitivity=0.5) :
-		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", ECHO_CLASS_EMITTER)
+		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", "signal.emitter.line")
 	{
 		parameters.reference("lengthMin", this->lengthMin = lengthMin, "km");
 		parameters.reference("thicknessMax",  this->thicknessMax = thicknessMax, "deg");

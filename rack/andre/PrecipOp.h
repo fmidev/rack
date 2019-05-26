@@ -62,7 +62,7 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	PrecipOp(double probMax=0.50, double dbz=20.0, double dbzSpan=+10.0) :
-		DetectorOp(__FUNCTION__, "Detects precipitation...", ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Detects precipitation...", "met"){ //ECHO_CLASS_PRECIP){
 
 		parameters.reference("probMax", this->probMax = probMax, "probability");
 		parameters.reference("dbz", this->dbz = dbz, "dBZ");

@@ -48,20 +48,6 @@ public:
 	VerticalIntersectionOp() :
 				VolumeOp<VerticalProfileODIM>("VerticalIntersectionOp","Computes vertical dBZ distribution in within range [minRange,maxRange] km.") {
 
-			/*
-				reference("minHeight", odim.minheight, minHeight);
-				reference("maxHeight", odim.maxheight, maxHeight);
-				//reference("type", odim.type, type); // TODO
-				reference("type", odim.type, "d");
-				reference("gain", odim.gain, gain);
-				reference("offset", odim.offset, offset);
-
-				//reference("minHeight", this->minHeight, minHeight); todo: angles
-				//reference("elangleMin", dataSelector.elangleMin, -10.0);
-				//reference("elangleMax", dataSelector.elangleMax, +90.0);
-				dataSelector.path = ".* /data[0-9]+/?$";
-				dataSelector.quantity = "DBZ|TH|TV|RHOHV|LDR|PHIDP|KDP";
-			*/
 	}
 
 

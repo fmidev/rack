@@ -64,7 +64,6 @@ public:
 		parameters.reference("altitude", this->altitude = altitude, "metres");
 		parameters.reference("devAltitude", this->devAltitude = devAltitude, "metres");
 		parameters.reference("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
-		//dataSelector.path = "^.*/data[0-9]+/?$";  ///
 
 		dataSelector.quantity = "^DBZH$";
 

@@ -146,7 +146,7 @@ public:
 	/// Assigns value to contents.
 	// Needed? See next.
 	inline
-	Tree &operator=(const T &v){
+	Tree & operator=(const T &v){
 		data = v;
 		return *this;
 	};
@@ -154,20 +154,10 @@ public:
 	/// Assigns a value to contents.
 	template <class T2>
 	inline
-	Tree &operator=(const T2 &v){
+	Tree & operator=(const T2 &v){
 		data = v;
 		return *this;
 	}
-
-
-	/// Returns a copy of the data of a node.
-	/// inline operator T() const { return value;};
-
-	/// Returns the reference to the contents of a node.
-	/// inline operator T &(){ return value; };
-
-	/// Returns the reference to the contents of a node.
-	/// inline 	operator const T &() const { return value; };
 
 	typedef typename map_t::iterator iterator;
 	typedef typename map_t::reverse_iterator reverse_iterator;
@@ -191,10 +181,6 @@ public:
 	typename map_t::iterator end(){ return children.end(); };
 
 
-	/*
-	tree_t & operator[](const std::string & key){
-	}
-	*/
 
 	tree_t & operator[](const key_t & key){
 
@@ -244,11 +230,16 @@ public:
 	/**
 	 *  \tparam - K2 key type of applied Path class
 	 */
-	//template <class K2>
 	inline
-	//tree_t & operator()(const drain::Path<K2> & path){
 	tree_t & operator()(const path_t & path){
 		return get(path.begin(), path.end());
+	}
+
+	template <class S>
+	inline
+	tree_t & operator()(const S & path){
+		return operator()(path_t(path, this->separator));
+		//return get(path.begin(), path.end());
 	}
 
 	/// Returns a descendant.
@@ -257,49 +248,17 @@ public:
 	 */
 	//template <class K2>
 	inline
-	//const tree_t & operator()(const drain::Path<K2> & path) const {
 	const tree_t & operator()(const path_t & path) const {
 		return get(path.begin(), path.end());
 	}
 
-	/*
-	/// Returns a descendant. Creates one if not existing already.
+	template <class S>
 	inline
-	tree_t & operator()(const path_t & path){
-		return get(path.begin(), path.end());
+	const tree_t & operator()(const S & path) const {
+		return operator()(path_t(path, this->separator));
+		// return get(path.begin(), path.end());
 	}
 
-	/// Returns a descendant.
-	inline
-	const tree_t &operator()(const path_t & path) const {
-		return get(path.begin(), path.end());
-	}
-	*/
-
-	/// Returns a descendant. Creates one if not existing already.
-	/*
-	inline
-	tree_t & operator()(const std::string & s){
-		return operator()(path_t(s));
-	}
-
-	/// Returns a descendant. Creates one if not existing already.
-	inline
-	const tree_t & operator()(const std::string & s) const {
-		return operator()(path_t(s));
-	}
-
-	inline
-	tree_t & operator()(const char *s){
-		return operator()(path_t(s));
-	}
-
-	/// Returns a descendant. Creates one if not existing already.
-	inline
-	const tree_t & operator()(const char *s) const {
-		return operator()(path_t(s));
-	}
-	*/
 
 
 
@@ -351,16 +310,8 @@ public:
 	}
 
 
-
 	bool hasChild(const key_t &key) const {
 		return (children.find(key) != children.end());
-	};
-
-	// TODO: hasKey = hasPath
-	bool hasDescendant(const path_t &path) const {
-		std::cerr << "obsolete " << __FUNCTION__ << std::endl;
-		return hasPath(path);
-		//return &((*this)(path)) != &dummy;
 	};
 
 
@@ -377,7 +328,7 @@ public:
 
 	/// Clears the children of this node.
 	inline
-	bool isEmpty(){
+	bool isEmpty() const {
 		return (children.empty());
 	};
 
@@ -448,16 +399,25 @@ public:
 
 
 	/// Checks if there is a node with a given path name.
+	/*
 	inline
 	bool hasKey(const path_t & path) const {
 		std::cerr << "obsolete " << __FUNCTION__ << ", forwarding to hasPath() " << std::endl;
 		return hasPath(path);
-	};
+	}
+	*/
 
 	inline
 	bool hasPath(const path_t & path) const {
 		return hasPath(path.begin(), path.end());
-	};
+	}
+
+
+	template <class S>
+	inline
+	bool hasPath(const S & pathStr) const {
+		return hasPath(path_t(pathStr, this->separator));
+	}
 
 
 	inline

@@ -66,9 +66,10 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
+	inline
 	ClutterOp(double decay=0.5) : //, const std::string & filename = "") :
-		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", ECHO_CLASS_CLUTTER){ // Optional postprocessing: morphological closing.
-		dataSelector.path = ".*/data[0-9]+/?$";
+		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter"){ // Optional postprocessing: morphological closing.
+		// dataSelector.path = ". */da ta[0-9]+/?$";
 		dataSelector.quantity = "";  // or FREQ?
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;

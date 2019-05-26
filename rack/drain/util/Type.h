@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <typeinfo>
 //#include <type_traits>
 #include <limits>
+#include <list>
 
 #include "Log.h"
 
@@ -404,6 +405,17 @@ public:
 	const std::type_info & getTypeInfo(const Type & t){
 		return t;
 	}
+
+	/// Given a string, check if it could be stored as \c int or \c double instead of \c std::string .
+	/**
+	 *  \return - std::type_info in priority order: int, double, std::string.
+	 */
+	static
+	const std::type_info & guessType(const std::string & value);
+
+	/// Given a list of strings, suggest a matching storage type (int, double, std::string).
+	static
+	const std::type_info & guessArrayType(const std::list<std::string> & l);
 
 
 	static inline

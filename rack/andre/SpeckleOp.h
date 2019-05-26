@@ -62,7 +62,7 @@ public:
 	 */
 	inline
 	SpeckleOp(double reflMin=0.0, int area=9) :
-		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input but applies to all data in a sweep group.", ECHO_CLASS_NOISE){
+		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input but applies to all data in a sweep group.", "signal.noise"){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;
 		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");

@@ -56,11 +56,12 @@ public:
 	 *  \param windowHeight
 	 *
 	 */
+	inline
 	DopplerNoiseOp(double vradDevMin = 5.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		DetectorOp(__FUNCTION__, "Detects variance Doppler (VRAD).", ECHO_CLASS_NOISE){
+		DetectorOp(__FUNCTION__, "Detects variance Doppler (VRAD).", "nonmet.bio.bird"){
 
-		dataSelector.path = "data[0-9]+/?$";
+		// dataSelector.path = "da ta[0-9]+/?$";
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 

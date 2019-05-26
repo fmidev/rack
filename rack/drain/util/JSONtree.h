@@ -28,67 +28,76 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#ifndef JSON_TREE_H_
+#define JSON_TREE_H_
 
-#include <drain/image/File.h>
-//#include <drain/image/MathOpPack.h>
-#include <drain/util/Log.h>
+#include <iostream>
+#include <list>
+#include <string>
 
-#include "hi5/Hi5Write.h"
-
-#include "AndreOp.h"
-
-
-using namespace drain::image;
-using namespace hi5;
+#include "../util/Tree.h"
+#include "../util/VariableMap.h"
 
 
+namespace drain
+{
 
-namespace rack {
+/// Hierarchical object consisting of nesting objects and attributes (numeric, string, array).
+/**
+ *   Supports
+ *   - nesting objects {... {... } }
+ *   - integers (int), floats (double)
+ *
+ *   Does not support:
+ *   - arrays of arrays, arrays of objects
+ *   - boolean
 
-classtree_t::node_t AndreOp::getClassCode(const std::string & key){
+    \example examples/JSON-example.inc
 
-	drain::Logger mout("AndreOp", __FUNCTION__);
+ */
+class JSON {
 
-	classtree_t &t = getClassTree();
-	//mout.note() << "path sep: " << t.getSeparator() << mout.endl;
+public:
 
-	classtree_t::path_t path(key, t.getSeparator());
+	typedef drain::Tree<std::string, drain::VariableMap> tree_t;
+	typedef tree_t::path_t path_t;
+	typedef tree_t::node_t node_t;
 
-	return getClassCode(t, path.begin(), path.end());
-
-}
-
-classtree_t::node_t AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
+	/// Write a JSON file
+	static
+	void write(std::ostream & ostr, const tree_t & t, unsigned short indentation = 0);
 
 
-	drain::Logger mout("AndreOp", __FUNCTION__);
+	/// Reads and parses a JSON file
+	static
+	void read(tree_t & t, std::istream & istr);
 
-	if (it == eit){
-		return tr.data;
+	static
+	unsigned short indentStep;
+
+protected:
+
+	// Write utils
+
+	/// Indent output with \c n spaces
+	static inline
+	void indent(std::ostream & ostr, unsigned short n){
+		for (int i = 0; i < n; ++i)
+			ostr.put(' ');
 	}
 
-	const classtree_t::path_t::value_type & key = *it;
+	// Read utils
 
-	//mout.note() << "entered " << key << mout.endl;
+	static
+	void skipChars(std::istream & istr, const std::string skip = " \t\n\r");
 
-	if (!tr.hasChild(key)){
-		static classtree_t::node_t counter(32);
-		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
-		tr[key].data = counter;
-		++counter;
-	}
-	else {
-		mout.note() << "existing class code: *." << *it << ' ' << tr[key].data << mout.endl;
-	}
-
-	//mout.note() << "descending to " << *it << mout.endl;
-
-	return getClassCode(tr[key], ++it, eit);
-
-}
+	static
+	std::string scanSegment(std::istream & istr, const std::string & terminator);
 
 
-}  // rack::
+};
 
 
-// Rack
+} // ::drain
+
+#endif

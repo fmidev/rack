@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/Geometry.h"
 #include "hi5/Hi5.h"
 #include "data/ODIM.h"
+#include "data/EchoClass.h"
 #include "product/VolumeTraversalOp.h"
 
 
@@ -56,25 +57,13 @@ public:
 
 	~AndreOp(){};
 
-	/// If true, results of certain detectors will be stored higher and hence applied in a wider group of data(sets).
-	//static 	bool universalMode;  use:  Detector::SUPPORT_UNIVERSAL
 
-	//virtual	void processVolume(const HI5TREE &src, HI5TREE &dst) const;
+	static
+	classtree_t::node_t getClassCode(const std::string & key);
 
-
-
-	/// Searches for precomputed quality field up in the hierarchy. Computes if nonexistent, and stores in pathCombinedQuality
-	//  Todo: This implementation is clumsy, as it re-searches for the data
-	/**
-	 *  \param dstRoot   - structure to be traversed
-	 *  \param groupPath - path to be searched for and the parent for quality1/<pathCombinedQuality>
-	 *
-	 *  Called by (at least) RemoverOp
-	 */
-	// static Image & getCombinedQualityData(HI5TREE &dstRoot, const std::string &groupPath); // todo: support to "universal"
-
-	/// Store combined detection results in .../quality1/(pathCombinedQuality): 'data' implies overwriting, 'data~' implies temp data (unsaved).
-	// static std::string pathCombinedQuality;
+	static
+	//classtree_t::node_t getClassCode(classtree_t::path_t & path);
+	classtree_t::node_t getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
 
 	virtual
 	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;

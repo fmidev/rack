@@ -64,7 +64,7 @@ public:
 	 *
 	 */
 	HydroClassBasedOp(double nonMet = 0.5, unsigned int NOMET = 1) :
-		DetectorOp(__FUNCTION__, "Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.", 132){
+		DetectorOp(__FUNCTION__, "Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.", "nonmet"){
 		dataSelector.quantity = "HCLASS";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;

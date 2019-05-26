@@ -71,7 +71,7 @@ public:
 	 *   \param reflMin3 - optional 3rd threshold for reflectance
 	 */
 	LineOp(double lengthMin=5, double widthMax=10.0, double reflMin=-10.0, double reflMin2=std::numeric_limits<double>::min(), double reflMin3=std::numeric_limits<double>::min()) : //, double sensitivity=1.0) : //, double enhancement = 0.0) :
-		DetectorOp(__FUNCTION__, "Detects lines caused by electromagnetic interference.", ECHO_CLASS_EMITTER)
+		DetectorOp(__FUNCTION__, "Detects lines caused by electromagnetic interference.", "signal.emitter.line")
 	{
 		REQUIRE_STANDARD_DATA = true;
 		parameters.reference("lengthMin",  this->lengthMin = lengthMin, "km");

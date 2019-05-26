@@ -33,23 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define QualityCombiner_SEGMENT_OP_H_
 
 
-//#include <drain/image/SegmentAreaOp.h>
-//#include <drain/image/RunLengthOp.h>
-//#include <drain/image/BasicOps.h>
-
-
-//#include <drain/image/DistanceTransformOp.h>
-//#include <drain/image/FuzzyOp.h>
-
-
 #include <drain/image/File.h>
 
-//#include "DetectorOp.h"
-//#include "product/VolumeOp.h"
 #include "product/PolarProductOp.h"
 
 
-//using namespace drain::image;
 
 using namespace drain::image;
 
@@ -60,15 +48,10 @@ class QualityCombinerOp: public PolarProductOp {  // VolumeOp<PolarODIM>
 
 public:
 
-	//QualityCombinerOp(const std::string & targetQuantity = "QIND") :
 	QualityCombinerOp() :
 		PolarProductOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
 	{
-		//reference("targetQuantity", this->targetQuantity, targetQuantity );
-
-		//dataSelector.path = "/quality[0-9]+$";
-		//dataSelector.quantity = "^(PROB|)$";
-		dataSelector.path = "/data[0-9]+$";
+		// dataSelector.path = "/da ta[0-9]+$";
 		dataSelector.quantity = "^DBZH$";
 
 		allowedEncoding.clear();

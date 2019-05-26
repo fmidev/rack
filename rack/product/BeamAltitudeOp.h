@@ -62,7 +62,6 @@ public:
 		odim.quantity = "HGHT";
 
 		dataSelector.quantity = "";
-		//dataSelector.path = "dataset[0-9]+/data[0-9]+/?$";  // NOTE! A dataset for each elevation groups; should suffit for nbins and rscale. However, if a user wants to use quantity, /dataN/ should be reached.
 		dataSelector.count = 1;
 
 		this->allowedEncoding.reference("type",   odim.type = "C");

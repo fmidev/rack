@@ -73,7 +73,6 @@ public:
 		parameters.reference("beamPowerThreshold", this->weightThreshold = beamPowerThreshold, "0..1");
 
 		// reference("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
-
 		//reference("type", odim.type, "C"); // TODO
 		//reference("gain", odim.gain, 0.5);
 		//reference("offset", odim.offset, -32.0);
@@ -82,7 +81,6 @@ public:
 		allowedEncoding.reference("gain", odim.gain);
 		allowedEncoding.reference("offset", odim.offset);
 
-		dataSelector.path = ".*/data[0-9]+/?$";
 		dataSelector.quantity = "^DBZH$";
 
 	}

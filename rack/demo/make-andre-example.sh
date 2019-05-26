@@ -12,17 +12,23 @@ fi
 
 NICK=$1
 VOLUME=volume-$NICK.h5
+
+if [ "$SITE" == '' ]; then
+    eval SITE=`rack --verbose 0 $VOLUME --format '${NOD}' --formatOut -`
+    echo "# SITE=$SITE"
+fi
+
 VOLUME_IMG=${VOLUME%%.*}.png
 #VOLUME_IMG_PANEL=${VOLUME%%.*}-panel.png
 VOLUME_IMG_PANEL=${NICK}-$SITE-panel.png
 
 if [ ! -f $VOLUME ]; then
-    echo "Volume '$VOLUME' not found"
+    echo "# Volume '$VOLUME' not found"
     exit
 fi
 
 if [ -f $VOLUME_IMG_PANEL ]; then
-  echo "$VOLUME_IMG_PANEL exists, ok"
+  echo "# $VOLUME_IMG_PANEL exists, ok"
 else
   cmd="QUANTITY=$QUANTITY ./make-panel.sh $NICK $VOLUME $SITE"
   echo "$cmd" 

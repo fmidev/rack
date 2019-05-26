@@ -40,8 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Caster.h"
 #include "String.h"
 
-#ifndef CASTABLE
-#define CASTABLE "drain::Castable"
+#ifndef CASTABLE2
+#define CASTABLE2 "drain::Castable"
 
 
 namespace drain {
@@ -412,7 +412,6 @@ public:
 	const void typeInfo(std::ostream & ostr) const;
 
 
-
 	/// Converts to simple iterable STL container.
 	/**
 	 *    \tparam T - std::set, std::list or std::vector
@@ -739,6 +738,7 @@ protected:
 	/**
 	 *  \see getPtr()
 	 */
+	/* OLD
 	inline
 	const char * getCharArray() const {
 
@@ -757,6 +757,46 @@ protected:
 		return getPtr();
 
 	}
+	*/
+
+	/// Returns pointer to the array of chars, if charArray or std::string
+	/**
+	 *
+	 *  \see getPtr() which returns pointer directly
+	 *
+	 *  checks validity first.
+	 */
+	// NEW
+
+public:
+
+	inline
+	const char * getCharArray() const {
+
+		if (isCharArrayString()){
+
+			if (isEmpty()){
+				static const char * empty = "";
+				return empty;
+				// throw std::runtime_error("getCharArray: empty array, no even null char");
+			}
+
+			if (*getPtr(getElementCount()-1) != '\0')
+				throw std::runtime_error("getCharArray: no terminating null char");
+
+			return (const char *)caster.ptr;
+
+		}
+		else if (isStlString()){
+			return ((const std::string *)caster.ptr)->c_str();
+		}
+		else {
+			throw std::runtime_error("getCharArray: type neither charArray nor std::string");
+			return NULL;
+		}
+	}
+
+protected:
 
 
 	/// Pointer to the data variable.

@@ -56,7 +56,7 @@ namespace rack {
 // kludge
 void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight) {
 
-	dataSelector.path = "data[0-9]+/?$";
+	//dataSelector.path = "da ta[0-9]+/?$";
 	//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
 	dataSelector.quantity = "^(DBZH|VRAD|VRADH|RHOHV|ZDR)$";
 	dataSelector.count = 1;

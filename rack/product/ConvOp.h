@@ -130,7 +130,6 @@ public:
 		allowedEncoding.reference("nodata",   odim.nodata = 0.0);
 
 		dataSelector.quantity = "^DBZH$";
-		dataSelector.path = ".*/data[0-9]+/?$";  // groups
 
 		odim.product = "CONVECTION";
 		odim.quantity = "PROB";

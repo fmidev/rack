@@ -56,9 +56,22 @@ public:
 	static
 	bool STORE;
 
+	/*
 	DetectorOp(const std::string & name = __FUNCTION__, const std::string &description = "", unsigned short code = 0) : AndreOp(name,description), classCode(code ? code : 128+(++_count)) {
 
-		dataSelector.path = ".*/data[0-9]+/?$";
+		// dataSelector.path = ". * /da ta[0-9]+/?$";
+		//dataSelector.quantity = "DBZ.*";
+		dataSelector.quantity = "^DBZH$";
+		//cumulateDetections = MAX;
+		REQUIRE_STANDARD_DATA = true;
+		UNIVERSAL = false;
+
+	}
+	*/
+
+	DetectorOp(const std::string & name = __FUNCTION__, const std::string & description = "", const std::string & echoClass = "") : AndreOp(name,description), classCode(getClassCode(echoClass)) {
+
+		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		//dataSelector.quantity = "DBZ.*";
 		dataSelector.quantity = "^DBZH$";
 		//cumulateDetections = MAX;

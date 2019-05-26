@@ -85,7 +85,6 @@ protected:
 
 	/// Default constructor
 	ProductBase(const std::string &name, const std::string & description) : drain::BeanLike(name, description) {
-		dataSelector.path = "^.*/data[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
 	}
 
 public:
@@ -252,7 +251,7 @@ public:
 
 	/// Default constructor
 	ProductOp(const std::string &name, const std::string & description) : ProductBase(name, description) {
-		dataSelector.path = "^.*/data[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
+		// dataSelector.path = "^.* / da ta[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
 	}
 
 	/// The default data parameters for encoding output (the product).

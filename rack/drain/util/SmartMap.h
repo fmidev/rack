@@ -368,24 +368,28 @@ public:
 		const std::string space(indent, ' ');
 
 		char sep = 0;
-		ostr << "{";
+		//ostr << "{";
+
 		//for (std::list<std::string>::const_iterator it = getKeyList().begin(); it != getKeyList().end(); ++it){
 		for (const_iterator it = this->begin(); it != this->end(); ++it){
 			//const string & key = *it;
 			const std::string & key = it->first;
 			if (sep){
 				ostr << sep;
+				ostr << '\n';
 			}
 			else {
 				sep = ',';
 			}
-			ostr << '\n';
+			//ostr << '\n';
 			ostr << space << "\"" << key << "\" : ";
 			const T & item = it->second; //(*this)[key];
 
 			//if (item.getType() == typeid(std::string)){
 			if (item.T::isString()){
-				ostr << '"' << item << '"';
+				//
+				ostr << '"' << item.getCharArray() << '"';
+				//ostr << '"' << item << '"';
 			}
 			else {
 				if (item.T::getElementCount()>1){
@@ -400,7 +404,8 @@ public:
 		}
 		// ostr << "{\n  \"value\":" << *this << ",\n";
 		//ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
-		ostr << "\n" << space << "}\n";  // \n needed?
+		//ostr << "\n";
+		// << space << "}\n";  // \n needed?
 	}
 
 protected:

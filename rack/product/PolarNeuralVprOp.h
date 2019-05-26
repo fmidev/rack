@@ -72,7 +72,6 @@ public:
 		odim.quantity = "DBZH";
 		odim.offset = 0;
 
-		dataSelector.path = ".*/data[0-9]+/?$";
 		dataSelector.quantity = "DBZ.*";
 
 	};

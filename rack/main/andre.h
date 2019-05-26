@@ -139,8 +139,9 @@ class AnDReModule : public drain::CommandGroup {
 	//AnDReModule(CommandRegistry & registry);
 };
 
-} /* namespace rack */
 
-#endif /* RACK_PRODUCTS */
+} // rack
+
+#endif
 
 // Rack

@@ -116,7 +116,6 @@ public:
 		//reference("gain", odim.gain, gain);
 
 		dataSelector.quantity = "^DBZH$";
-		dataSelector.path = ".*/data[0-9]+/?$";  // groups
 		dataSelector.count = 1;
 
 		odim.product = "SURF";

@@ -155,7 +155,8 @@ public:
 
 
 class CartesianTime : public SimpleCommand<std::string> {
-    public: //re 
+
+public:
 
 	inline
 	CartesianTime() : SimpleCommand<>(__FUNCTION__, "Modify the time of the current composite. See --cTimeDecay ",
@@ -187,9 +188,6 @@ class CompositeTimeDecay : public BasicCommand {
 
 
 
-
-
-
 void CompositeInit::exec() const {
 
 	drain::Logger mout(name, __FUNCTION__);
@@ -214,17 +212,6 @@ void CompositeInit::exec() const {
 		mout.debug() << "target encoding: " << resources.composite.getTargetEncoding() << mout.endl;
 		resources.targetEncoding.clear();
 	}
-
-	/*
-	if (!resources.targetEncoding.empty()){
-		resources.composite.odim.type = "*";
-		resources.composite.odim.setValues(resources.targetEncoding);
-		if (resources.composite.odim.gain == 0.0)
-			mout.note() << "scaling not set, waiting for 1st input" << mout.endl;
-		resources.targetEncoding.clear();
-	}
-	 */
-
 
 
 }

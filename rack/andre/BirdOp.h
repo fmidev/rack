@@ -63,7 +63,7 @@ public:
 	 */
 	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		DetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", ECHO_CLASS_BIRD){ // Optional postprocessing: morphological closing.
+		DetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.bio.bird"){ // Optional postprocessing: morphological closing.
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrDevMin, windowWidth, windowHeight);
 
@@ -91,7 +91,7 @@ public:
 
 protected:
 
-	BirdOp(const std::string & name, const std::string & description, unsigned int code) : DetectorOp(name, description, code) {
+	BirdOp(const std::string & name, const std::string & description, const std::string & classCode) : DetectorOp(name, description, classCode) {
 	};
 
 	/// Inits common for BIRD and INSECT
@@ -116,7 +116,7 @@ public:
 	// BIRD: double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0
 
 	InsectOp(double dbzPeak = -10.0, double vradDevMin = -5.0, double rhoHVmax = 0.7, double zdrDevMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-			BirdOp("Insect", "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", ECHO_CLASS_INSECT){
+			BirdOp("Insect", "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.bio.insect"){
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrDevMin, windowWidth, windowHeight);
 	};
 

@@ -82,7 +82,7 @@ public:
 	// JammingOp(int windowWidth=5000, float windowHeight=10.0, float sensitivity = 0.5, float eWidth = 1.0f, float eHeight = 0.0f) :
 	// JammingOp(double smoothnessThreshold = 5.0, double sampleContent=0.5, double weightLower = 0.1, double maxCurvature = 0.001, double distanceMin = 40.0, int debugRow=-1) :
 	JammingOp(double smoothnessThreshold = 5.0, double distanceMin = 80.0, double weightLower = 2.0, int debugRow=-1) : // , double derivativeDifferenceMax = 0.0001
-		DetectorOp(__FUNCTION__,"Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.", ECHO_CLASS_JAMMING)
+		DetectorOp(__FUNCTION__,"Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.", "signal.jamming")
 	{
 		parameters.reference("smoothnessThreshold", this->smoothnessThreshold = smoothnessThreshold, "dBZ");
 		parameters.reference("distanceMin", this->distanceMin = distanceMin, "km");

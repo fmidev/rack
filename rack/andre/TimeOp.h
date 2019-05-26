@@ -52,7 +52,7 @@ public:
 	 *   \param decayFuture - quality halving time in minutes; if not set, decayPast is used.
 	 */
 	TimeOp(std::string time="NOMINAL", double decayPast = 1.0, double decayFuture = -1.0) :
-		DetectorOp(__FUNCTION__,"Created quality field based on measurement time for each beam.", ECHO_CLASS_DELAY)
+		DetectorOp(__FUNCTION__,"Created quality field based on measurement time for each beam.", "data.time")
 	{
 		parameters.reference("time",  this->time = time, "NOMINAL,NOW,<YYYYmmddMMHH>");
 		parameters.reference("decayPast",  this->decayPast = decayPast, "mins");
@@ -60,9 +60,7 @@ public:
 		UNIVERSAL = true;
 		REQUIRE_STANDARD_DATA = false;
 
-
 		dataSelector.quantity = "^[A-Z]+$";  // Any quantity is ok...
-		dataSelector.path = ".*/data1/?$"; // ... but use the first only.
 
 	}
 

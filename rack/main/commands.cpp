@@ -50,6 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "commands.h"
 #include "data/DataCoder.h"
+#include "data/EchoClass.h"
 
 namespace rack {
 
@@ -797,7 +798,33 @@ public:
 // Various dumps
 
 
+class CmdDumpEchoClasses : public BasicCommand {
 
+public:
+
+	CmdDumpEchoClasses() : BasicCommand(__FUNCTION__, "Dump variable map, filtered by keys, to std or file.") {
+	};
+
+	void exec() const {
+
+		const classtree_t & t = getClassTree();
+		t.dumpContents();
+		t.dump();
+		typedef classtree_t::path_t path_t;
+		typedef std::list<path_t> pathlist_t;
+		pathlist_t paths;
+		t.getPaths(paths);
+		for (pathlist_t::iterator it = paths.begin(); it != paths.end(); ++it) {
+			it->separator = '|';
+			std::cout << *it << ':' << t(*it).data << '\n';
+		}
+
+		std::cout << t.hasPath("met") << ':' << t.hasPath("met/hail") << ':' << t.hasPath("met.hail") << '\n';
+
+
+	}
+
+};
 
 class CmdDumpMap : public BasicCommand {
 
@@ -1540,6 +1567,8 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<CmdConvert> cmdConvert;
 	static RackLetAdapter<CmdDelete> cmdDelete;
 	static RackLetAdapter<CmdDumpMap> cmdDumpMap; // obsolete?
+	static RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
+
 	static RackLetAdapter<CmdHelpRack> help("help", 'h');
 	static RackLetAdapter<CmdHelpExample> cmdHelpExample;
 	static RackLetAdapter<CmdJSON> cmdJSON;

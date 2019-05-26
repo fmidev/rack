@@ -54,18 +54,14 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
+	inline
 	CCorOp(double reflHalfWidth=40) :
-		DetectorOp(__FUNCTION__,"Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.", ECHO_CLASS_CLUTTER){ // Optional postprocessing: morphological closing.
-		dataSelector.path = ".*/data[0-9]+/?$";
+		DetectorOp(__FUNCTION__,"Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.", "nonmet.clutter"){ // Optional postprocessing: morphological closing.
+		//dataSelector.path = ". */da ta[0-9]+/?$";
 		dataSelector.quantity = "^(TH|DBZH)$";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		parameters.reference("reflHalfWidth", this->reflHalfWidth = reflHalfWidth, "dBZ");
-		//parameters.reference("thresholdWidth", this->thresholdWidth, thresholdWidth);
-		//parameters.reference("windowWidth", this->windowWidth, windowWidth);
-		//parameters.reference("windowHeight", this->windowHeight, windowHeight);
-		//parameters.reference("medianPos", this->medianPos, medianPos);
-		//parameters.reference("area", this->area, area);
 	};
 
 	double reflHalfWidth;

@@ -28,23 +28,15 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-/*
- * RemoverOp.h
- *
- *  Created on: Aug 7, 2011
- *      Author: mpeura
- */
 
-#ifndef CorrectorOP_H_
-#define CorrectorOP_H_
+#ifndef RACK_RemoverOP_H_
+#define RACK_RemoverOP_H_
 
 
 #include <drain/util/Fuzzy.h>
 #include <drain/image/Intensity.h>
 #include <drain/image/File.h>
 
-
-//#include "radar/Geometry.h"
 #include "hi5/Hi5.h"
 #include "data/Data.h"
 #include "AndreOp.h"
@@ -66,10 +58,10 @@ public:
 	/** Default constructor.
 	 *  \param minDBZ - Probability minDBZ, over which data is replaced by "nodata".
 	 */
+	inline
 	RemoverOp(double threshold = 0.5): AndreOp("Remover", "Simple anomaly removal operator."){
 		parameters.reference("threshold", this->threshold = threshold, "probability");
-		//dataSelector.quantity = ""; // Accepts DBZH and VRAD
-		dataSelector.path = ".*data[0-9]+/?$";
+		// dataSelector.path = ".*da ta[0-9]+/?$";
 		dataSelector.quantity = "^DBZH$"; //|TV|VRAD|RHOHV|LDR|PHIDP|KDP";
 	};
 
@@ -110,7 +102,6 @@ protected:
 	RemoverOp(const std::string &name, const std::string & description) :
 		AndreOp(name, description){
 		dataSelector.quantity = "^[A-Z]+";
-		//dataSelector.path = ".*/data[0-9]+/?$";  // unused
 	};
 
 private:

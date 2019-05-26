@@ -59,9 +59,6 @@ public:
 		odim.type = "C";
 
 		dataSelector.quantity = "^DBZH$";
-		dataSelector.path = ".*/data[0-9]+/?$";  // groups
-
-		//outputQuantity
 
 	};
 

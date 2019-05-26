@@ -59,7 +59,7 @@ public:
 	 * \param windowHeight - height of the neighbourhood window; in degrees
 	 */
 	ShipOp(double reflMin = 25.0, double reflDev = 15.0, int windowWidth = 1500, double windowHeight = 3.0) :
-		DetectorOp(__FUNCTION__,"Detects ships based on their high absolute reflectivity and local reflectivity difference.", ECHO_CLASS_VEHICLE){
+		DetectorOp(__FUNCTION__,"Detects ships based on their high absolute reflectivity and local reflectivity difference.", "nonmet.vessel.ship"){
 		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");
 		parameters.reference("reflDev", this->reflDev = reflDev, "dBZ");
 		parameters.reference("windowWidth", this->windowWidth = windowWidth, "m");

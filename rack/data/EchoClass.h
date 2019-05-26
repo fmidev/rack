@@ -29,66 +29,32 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/image/File.h>
-//#include <drain/image/MathOpPack.h>
-#include <drain/util/Log.h>
-
-#include "hi5/Hi5Write.h"
-
-#include "AndreOp.h"
+#ifndef ECHO_CLASS_H_
+#define ECHO_CLASS_H_
 
 
-using namespace drain::image;
-using namespace hi5;
+//#include <drain/util/BeanLike.h>
+#include <ostream>
+
+#include <drain/util/Tree.h>
 
 
 
 namespace rack {
 
-classtree_t::node_t AndreOp::getClassCode(const std::string & key){
-
-	drain::Logger mout("AndreOp", __FUNCTION__);
-
-	classtree_t &t = getClassTree();
-	//mout.note() << "path sep: " << t.getSeparator() << mout.endl;
-
-	classtree_t::path_t path(key, t.getSeparator());
-
-	return getClassCode(t, path.begin(), path.end());
-
-}
-
-classtree_t::node_t AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
+/// Tool for
+/**
+ *
+ */
+typedef drain::Tree<std::string, unsigned short int> classtree_t;
 
 
-	drain::Logger mout("AndreOp", __FUNCTION__);
-
-	if (it == eit){
-		return tr.data;
-	}
-
-	const classtree_t::path_t::value_type & key = *it;
-
-	//mout.note() << "entered " << key << mout.endl;
-
-	if (!tr.hasChild(key)){
-		static classtree_t::node_t counter(32);
-		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
-		tr[key].data = counter;
-		++counter;
-	}
-	else {
-		mout.note() << "existing class code: *." << *it << ' ' << tr[key].data << mout.endl;
-	}
-
-	//mout.note() << "descending to " << *it << mout.endl;
-
-	return getClassCode(tr[key], ++it, eit);
-
-}
+classtree_t & getClassTree();
 
 
-}  // rack::
+} // rack::
 
+#endif /* DATASELECTOR_H_ */
 
 // Rack
+ // REP // REP

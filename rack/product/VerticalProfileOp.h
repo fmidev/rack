@@ -72,7 +72,6 @@ public:
 		//allowedEncoding.reference("gain", odim.gain, 0.5);
 		//allowedEncoding.reference("offset", odim.offset, -32.0);
 
-		dataSelector.path = ".*/data[0-9]+/?$";
 		dataSelector.quantity = "^DBZH$";
 
 	}
