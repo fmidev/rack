@@ -45,7 +45,7 @@ using namespace hi5;
 
 namespace rack {
 
-classtree_t::node_t AndreOp::getClassCode(const std::string & key){
+int AndreOp::getClassCode(const std::string & key){
 
 	drain::Logger mout("AndreOp", __FUNCTION__);
 
@@ -58,31 +58,32 @@ classtree_t::node_t AndreOp::getClassCode(const std::string & key){
 
 }
 
-classtree_t::node_t AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
+int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
 
 
 	drain::Logger mout("AndreOp", __FUNCTION__);
 
-	if (it == eit){
-		return tr.data;
+	if (it == eit){ // "empty path"
+		if (!tr.data.hasKey("index")){
+			mout.note() << "missing existing class index: *."  << mout.endl; // ddificult to locate, try tr.dump()
+		}
+		return tr.data["index"];
 	}
 
 	const classtree_t::path_t::value_type & key = *it;
-
 	//mout.note() << "entered " << key << mout.endl;
 
 	if (!tr.hasChild(key)){
-		static classtree_t::node_t counter(32);
+		static unsigned short counter(32);
 		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
-		tr[key].data = counter;
+		tr[key].data["index"] = counter;
 		++counter;
 	}
 	else {
-		mout.note() << "existing class code: *." << *it << ' ' << tr[key].data << mout.endl;
+		mout.info() << "existing class code: *." << *it << '(' << tr[key].data.getValues() << ')' << mout.endl;
 	}
 
 	//mout.note() << "descending to " << *it << mout.endl;
-
 	return getClassCode(tr[key], ++it, eit);
 
 }

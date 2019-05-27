@@ -66,7 +66,7 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	BiometOp(double reflMax=-10.0, int maxAltitude=500, double reflDev=5.0, int devAltitude=1000) :
-		DetectorOp(__FUNCTION__, "Detects birds and insects.", "nonmet.bio"){
+		DetectorOp(__FUNCTION__, "Detects birds and insects.", "nonmet.biol"){
 
 		parameters.reference("reflMax", this->reflMax = reflMax, "dBZ");
 		parameters.reference("maxAltitude", this->maxAltitude = maxAltitude, "m");

@@ -388,7 +388,16 @@ public:
 			//if (item.getType() == typeid(std::string)){
 			if (item.T::isString()){
 				//
-				ostr << '"' << item.getCharArray() << '"';
+				ostr << '"';
+				// ostr << '"' << item.getCharArray() << '"';
+				const char *c = item.getCharArray();
+				while (*c != '\0'){
+					if (*c == '"')
+						ostr << '\\';  // TODO; implement also \n \t ...
+					ostr << *c;
+					++c;
+				}
+				ostr << '"';
 				//ostr << '"' << item << '"';
 			}
 			else {

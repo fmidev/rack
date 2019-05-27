@@ -68,7 +68,7 @@ public:
 	 */
 	inline
 	ClutterOp(double decay=0.5) : //, const std::string & filename = "") :
-		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter"){ // Optional postprocessing: morphological closing.
+		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter.ground"){ // Optional postprocessing: morphological closing.
 		// dataSelector.path = ". */da ta[0-9]+/?$";
 		dataSelector.quantity = "";  // or FREQ?
 		REQUIRE_STANDARD_DATA = false;

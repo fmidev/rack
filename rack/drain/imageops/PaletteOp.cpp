@@ -67,8 +67,24 @@ void Palette::load(const std::string &filename){
 		mout.error() << " opening file '" << filename << "' failed" << mout.endl;
 	};
 
-	load(ifstr);
+	mout.warn() << "size: " << filename.size() << mout.endl;
+	mout.warn() << "find: " << filename.find(".json") << mout.endl;
+
+	if (filename.find(".json") == (filename.size() - 5)){
+		drain::JSON::tree_t json;
+		drain::JSON::read(json, ifstr);
+		convertJSON(json);
+	}
+	else {
+		load(ifstr);
+	}
 }
+
+void Palette::convertJSON(const drain::JSON::tree_t & json){
+	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	mout.error() << " JSON not supported yet" << mout.endl;
+}
+
 
 void Palette::load(std::ifstream & ifstr){
 
@@ -178,107 +194,6 @@ void Palette::load(std::ifstream & ifstr){
 		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
 
 	}
-
-	/*
-
-	while (!ifstr.eof()){
-
-		c = ifstr.peek();
-		while ((c==' ')||(c=='\t')||(c=='\n')){
-			ifstr.get();
-			c = ifstr.peek();
-		}
-
-		if (c=='#'){
-			ifstr.get(); // swallow '#'
-			label.str(""); // this is needed in two places
-			//monitor.note(3) << " comment: " << monitor.endl;
-			c = ifstr.peek();
-			while (c==' '){
-			   ifstr.get();
-			   c = ifstr.peek();
-			}
-			//ifstr.getline();
-			while ((c = ifstr.get()) != '\n'){
-				if (ifstr.eof())
-					return;
-				label << c;
-			}
-			if (title.empty())
-				title = label.str();
-		}
-		else {
-
-			SPECIAL = (ifstr.peek()=='@');
-
-			// index
-			if (!SPECIAL){
-				ifstr >> d;
-				mout.debug() << " index: " << d << '\t';
-			}
-			else {
-				ifstr.get(); //
-				mout.debug() << " special: " << label.str() << '\t';
-			}
-
-			if (ifstr.eof())
-				return;
-
-			//std::cout << "index:" << d << '\n';
-
-			// Read line
-			PaletteEntry &entry = SPECIAL ? specialCodes[label.str()] : (*this)[d]; // Create entry
-			entry.label = label.str();  // Save last label
-			label.str(""); // this is needed in two places
-			//entry.resize(4);
-			unsigned int i=0;
-			do {
-				//ifstr >> entry[i];
-				ifstr >> d;
-				if (ifstr.eof())
-					return;
-
-				if (colorCount == 0){
-					entry.resize(i+1);
-				}
-				else {
-					entry.resize(colorCount);
-					if (i >= colorCount)
-						mout.error() << " increased color count? index=" << i << " #colors=" << colorCount << mout.endl;
-						//throw std::runtime_error(" Palette::read: ");
-				};
-
-				mout << d << ' ';
-
-				entry[i] = d;
-				++i;
-
-				/// Read the trailing whitespace
-				while ((ifstr.peek() == ' ') || (ifstr.peek() == '\t')){
-					c = ifstr.get();
-					//std::cout << c;
-				}
-
-				if (ifstr.eof())
-					return;
-
-			}
-			while (ifstr.peek() != '\n');
-
-			mout << mout.endl;
-
-			// Now fixed.
-			colorCount = entry.size();
-
-			// Read std::endline (because next
-			//ifstr.get();
-			// for (size_t i = 0; i < colorCount; ++i)
-			//	std::cout << entry[i] << ',';
-			//std::cout << "NEXT\n";
-
-		}
-	};
-	 */
 
 	ifstr.close(); // ?
 

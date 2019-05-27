@@ -36,8 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/BeanLike.h>
 #include <ostream>
 
-#include <drain/util/Tree.h>
+// #include <drain/util/Variable.h>
 
+//#include <drain/util/Tree.h>
+
+#include <drain/util/JSONtree.h>
 
 
 namespace rack {
@@ -46,7 +49,8 @@ namespace rack {
 /**
  *
  */
-typedef drain::Tree<std::string, unsigned short int> classtree_t;
+///typedef drain::Tree<std::string, unsigned short int> classtree_t;
+typedef drain::JSON::tree_t classtree_t;
 
 
 classtree_t & getClassTree();

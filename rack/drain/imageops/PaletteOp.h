@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "image/File.h"
 #include "image/TreeSVG.h"
 
+#include "util/JSONtree.h"
+
+
 #include "ImageOp.h"
 #include "CopyOp.h"
 
@@ -62,6 +65,9 @@ public:
 
 	/// Loads a palette from text file
 	void load(const std::string &filename);
+
+	/// Creates a palette from json object
+	void convertJSON(const drain::JSON::tree_t & json);
 
 	inline
 	bool hasAlpha() const { return _hasAlpha; };

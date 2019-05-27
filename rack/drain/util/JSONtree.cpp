@@ -161,22 +161,25 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 }
 
-void JSON::write(std::ostream & ostr, const tree_t & t, unsigned short indentation){
+void JSON::write(std::ostream & ostr, const tree_t & json, unsigned short indentation){
 
-	const node_t & vmap = t.data;
+	const node_t & vmap = json.data;
 
 	char sep = 0;
 
 	ostr << "{\n";
 
+	indentation += JSON::indentStep;
+
 	if (!vmap.empty()){
 		vmap.toJSON(ostr, indentation); // relies on similar formatting
-		if (!t.isEmpty())
-			ostr << ',';
+		if (!json.isEmpty())
+			ostr << ','; // Add comma, if non-empty subtree coming next
 		ostr << '\n';
 	}
 
-	for (typename tree_t::const_iterator it = t.begin(); it != t.end(); ++it){
+
+	for (typename tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
 
 		if (sep){
 			ostr << sep << '\n';
@@ -189,12 +192,29 @@ void JSON::write(std::ostream & ostr, const tree_t & t, unsigned short indentati
 		ostr << '"' << it->first << '"' << ": ";
 
 		// Recursion
-		JSON::write(ostr, it->second, indentation + JSON::indentStep);
+		JSON::write(ostr, it->second, indentation); // + JSON::indentStep);
 
 	}
 
+	/// If also object was dumped above, add newline
+	if (!json.isEmpty())
+		ostr << '\n';
+
+	// Attributes and object are completed, hence decrement indentation for terminal char '}'
+	if (indentation >= JSON::indentStep)
+		 indentation -= JSON::indentStep;
+	else {
+		drain::Logger mout("JSON", __FUNCTION__);
+		mout.warn() << "skipped negative indentation" << mout.endl;
+	}
+
 	indent(ostr, indentation);
-	ostr << "}\n";
+	ostr << '}'; // << indentation;
+
+	// If end of recursion, file completed, add newline.
+	if (indentation == 0)
+		ostr << '\n';
+
 
 
 }

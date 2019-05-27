@@ -808,18 +808,18 @@ public:
 	void exec() const {
 
 		const classtree_t & t = getClassTree();
-		t.dumpContents();
-		t.dump();
+		// t.dumpContents();
+		// t.dump();
 		typedef classtree_t::path_t path_t;
 		typedef std::list<path_t> pathlist_t;
 		pathlist_t paths;
 		t.getPaths(paths);
 		for (pathlist_t::iterator it = paths.begin(); it != paths.end(); ++it) {
-			it->separator = '|';
-			std::cout << *it << ':' << t(*it).data << '\n';
+			it->separator = '.';
+			std::cout << *it << ": "  << t(*it).data << '\n';
 		}
 
-		std::cout << t.hasPath("met") << ':' << t.hasPath("met/hail") << ':' << t.hasPath("met.hail") << '\n';
+		//std::cout << t.hasPath("met") << ':' << t.hasPath("met/hail") << ':' << t.hasPath("met.hail") << '\n';
 
 
 	}

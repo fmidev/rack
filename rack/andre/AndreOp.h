@@ -59,11 +59,11 @@ public:
 
 
 	static
-	classtree_t::node_t getClassCode(const std::string & key);
+	int getClassCode(const std::string & key);
 
 	static
 	//classtree_t::node_t getClassCode(classtree_t::path_t & path);
-	classtree_t::node_t getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
+	int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
 
 	virtual
 	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;

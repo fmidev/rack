@@ -415,6 +415,8 @@ public:
 
 			static RegExp quantityRegExp("^[A-Z]+[A-Z0-9_]*$");
 			std::string quantity;
+
+			static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
 			std::string filename;
 			std::ifstream ifstr;
 
@@ -440,6 +442,8 @@ public:
 				filename = s.str();
 			}
 
+			mout.warn() << "filename=" << filename << mout.endl;
+
 			ifstr.open(filename.c_str(), std::ios::in);
 			if (!ifstr.is_open()){
 				// Test
@@ -451,6 +455,19 @@ public:
 			if (!ifstr.is_open()){
 				mout.error() << "could not open palette: " << filename << mout.endl;
 				return;
+			}
+
+			if (!extensionRegExp.execute(filename)){
+				mout.warn() << "ext=" << extensionRegExp.result[1] << mout.endl;
+				if (extensionRegExp.result[1] == "json"){
+					drain::JSON::tree_t json;
+					drain::JSON::read(json, ifstr);
+					resources.palette.convertJSON(json);
+					return;
+				}
+			}
+			else {
+				mout.warn() << "filename has no extension" << mout.endl;
 			}
 
 			resources.palette.load(ifstr);

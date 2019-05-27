@@ -149,7 +149,16 @@ void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
 std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 
 	if ((getType() == typeid(char)) || isStlString()){
+	    //if (isString()){
 		ostr << '"';
+		/*
+		//isCharArrayString()
+		const char *c = getCharArray();
+		while (*c != '\0'){
+			ostr << *c;
+			++c;
+		}
+		*/
 		toStream(ostr, ','); // use JSON separator
 		ostr << '"';
 	}
