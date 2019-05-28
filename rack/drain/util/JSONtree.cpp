@@ -179,7 +179,7 @@ void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indent
 	}
 
 
-	for (typename tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
+	for (tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
 
 		if (sep){
 			ostr << sep << '\n';
