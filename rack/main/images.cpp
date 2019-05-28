@@ -377,7 +377,6 @@ public:
 
 		RackResources & resources = getResources();
 
-
 		if (!resources.inputOk){
 			mout.warn() << "input failed, skipping" << mout.endl;
 			return;
@@ -462,6 +461,8 @@ public:
 				if (extensionRegExp.result[1] == "json"){
 					drain::JSON::tree_t json;
 					drain::JSON::read(json, ifstr);
+					//mout.note() << "ext=" << json << mout.endl;
+					//drain::JSON::write(json);
 					resources.palette.convertJSON(json);
 					return;
 				}

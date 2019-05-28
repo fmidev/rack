@@ -62,7 +62,7 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	SunOp(double width = 1.0, double sensitivity=0.5) :
-		DetectorOp("Sun","Draw the sun beam", "signal.sun"){
+		DetectorOp("Sun","Draw the sun beam", "signal.emitter.sun"){
 		parameters.reference("width", this->width = width, "deg");
 		parameters.reference("sensitivity", this->sensitivity = sensitivity, "0...1");
 		dataSelector.quantity = "^DBZH$";

@@ -77,7 +77,7 @@ public:
 		//cumulateDetections = MAX;
 		REQUIRE_STANDARD_DATA = true;
 		UNIVERSAL = false;
-
+		// std::cout << __FUNCTION__ << ':' << name << ':' << echoClass << '\n';
 	}
 
 	virtual

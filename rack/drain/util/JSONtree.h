@@ -65,7 +65,7 @@ public:
 
 	/// Write a JSON file
 	static
-	void write(std::ostream & ostr, const tree_t & t, unsigned short indentation = 0);
+	void write(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 
 
 	/// Reads and parses a JSON file

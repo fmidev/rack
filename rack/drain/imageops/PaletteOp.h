@@ -67,7 +67,7 @@ public:
 	void load(const std::string &filename);
 
 	/// Creates a palette from json object
-	void convertJSON(const drain::JSON::tree_t & json);
+	void convertJSON(const drain::JSON::tree_t & json, int depth = 0);
 
 	inline
 	bool hasAlpha() const { return _hasAlpha; };

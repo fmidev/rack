@@ -50,9 +50,9 @@ int AndreOp::getClassCode(const std::string & key){
 	drain::Logger mout("AndreOp", __FUNCTION__);
 
 	classtree_t &t = getClassTree();
-	//mout.note() << "path sep: " << t.getSeparator() << mout.endl;
 
 	classtree_t::path_t path(key, t.getSeparator());
+	mout.debug() << "path(" << path.separator << ") "<< drain::StringTools::join(path, path.separator) << mout.endl;
 
 	return getClassCode(t, path.begin(), path.end());
 
@@ -65,7 +65,7 @@ int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator 
 
 	if (it == eit){ // "empty path"
 		if (!tr.data.hasKey("index")){
-			mout.note() << "missing existing class index: *."  << mout.endl; // ddificult to locate, try tr.dump()
+			mout.note() << "missing index of existing class " << tr.data << mout.endl; // ddificult to locate, try tr.dump()
 		}
 		return tr.data["index"];
 	}
@@ -76,6 +76,7 @@ int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator 
 	if (!tr.hasChild(key)){
 		static unsigned short counter(32);
 		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
+		//tr.getPaths()
 		tr[key].data["index"] = counter;
 		++counter;
 	}

@@ -80,9 +80,34 @@ void Palette::load(const std::string &filename){
 	}
 }
 
-void Palette::convertJSON(const drain::JSON::tree_t & json){
+void Palette::convertJSON(const drain::JSON::tree_t & json, int depth){
+
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
-	mout.error() << " JSON not supported yet" << mout.endl;
+	// mout.warn() << "experimental, JSON not supported yet" << mout.endl;
+
+	specialCodes.clear();
+
+	for (drain::JSON::tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
+
+		bool SPECIAL = false;
+
+
+		const std::string & label         = it->first;
+		const drain::JSON::tree_t & child = it->second;
+
+		const VariableMap & attr  = child.data;
+
+		double d = attr.get("index", -1);
+
+		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+		entry.label = std::string(depth*2, '_') + label;
+
+		const Variable & color = attr["color"];
+		color.toContainer(entry);
+
+		mout.debug() << "entry: " << d << '\t' << label << ':' << color << mout.endl;
+		convertJSON(child, depth + 1);
+	}
 }
 
 

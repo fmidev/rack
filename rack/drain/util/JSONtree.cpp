@@ -161,7 +161,7 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 }
 
-void JSON::write(std::ostream & ostr, const tree_t & json, unsigned short indentation){
+void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
 	const node_t & vmap = json.data;
 
@@ -192,7 +192,7 @@ void JSON::write(std::ostream & ostr, const tree_t & json, unsigned short indent
 		ostr << '"' << it->first << '"' << ": ";
 
 		// Recursion
-		JSON::write(ostr, it->second, indentation); // + JSON::indentStep);
+		JSON::write(it->second, ostr, indentation); // + JSON::indentStep);
 
 	}
 

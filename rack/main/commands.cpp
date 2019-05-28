@@ -808,8 +808,12 @@ public:
 	void exec() const {
 
 		const classtree_t & t = getClassTree();
+
+		drain::JSON::write(t);
+
 		// t.dumpContents();
 		// t.dump();
+		/*
 		typedef classtree_t::path_t path_t;
 		typedef std::list<path_t> pathlist_t;
 		pathlist_t paths;
@@ -818,7 +822,7 @@ public:
 			it->separator = '.';
 			std::cout << *it << ": "  << t(*it).data << '\n';
 		}
-
+		 */
 		//std::cout << t.hasPath("met") << ':' << t.hasPath("met/hail") << ':' << t.hasPath("met.hail") << '\n';
 
 
