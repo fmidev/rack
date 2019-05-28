@@ -79,8 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Anomaly Detection and Removal (AnDRe) </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Detects birds and insects.</p>
-<h1><a class="anchor" id="andreintro"></a>
+<div class="textblock"><h1><a class="anchor" id="andreintro"></a>
 Introduction</h1>
 <p>This section explains <b>AnDRe</b>, the set of anomaly detection and removal functions of <b>Rack</b>. A quick reference of all the commands is found in <a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal commands</a>.</p>
 <h2><a class="anchor" id="anomalies"></a>
@@ -114,7 +113,7 @@ Detection</h1>
 </ol>
 <p>Anomaly detection commands of <b>AnDRe</b> start with <code>'&ndash;a'</code>. The commands can be listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --help andre </div></div><!-- fragment --><h2><a class="anchor" id="aBiomet"></a>
 Detecting birds and insects (single-pol)</h2>
-<p>The idea behind bird and insect detector hence "biometeor" detector is very simple. It looks for intensities lower than threshold <code>reflMax</code> and altitudes lower than <code>altitudeMax</code> (metres). The thresholds have fuzzy steepness parameters: intensity steepness <code>reflDev</code> and altitude steepness <code>altitudeDev</code>. The steepness parameters determine "half-widths" of the fuzzy responses (<a class="el" href="detailspage.html#fuzzy">Fuzzy functions</a> ).</p>
+<p>Detects birds and insects. The idea behind bird and insect detector hence "biometeor" detector is very simple. It looks for intensities lower than threshold <code>reflMax</code> and altitudes lower than <code>altitudeMax</code> (metres). The thresholds have fuzzy steepness parameters: intensity steepness <code>reflDev</code> and altitude steepness <code>altitudeDev</code>. The steepness parameters determine "half-widths" of the fuzzy responses (<a class="el" href="detailspage.html#fuzzy">Fuzzy functions</a> ).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">reflMax</td><td>- threshold: maximum expected reflectance of biometeors </td></tr>

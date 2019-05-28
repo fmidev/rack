@@ -181,6 +181,13 @@ static char&#160;</td><td class="memItemRight" valign="bottom"><b>getTypeChar</b
 static const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html#ae7914be5ea3f8e525a2f184326c4aed3">getTypeInfo</a> (const <a class="el" href="classdrain_1_1Type.html">Type</a> &amp;t)</td></tr>
 <tr class="memdesc:ae7914be5ea3f8e525a2f184326c4aed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. Purpose is to have a full set of getTypeInfo commands for templated constructs. <br /></td></tr>
 <tr class="separator:ae7914be5ea3f8e525a2f184326c4aed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4266f103a1a545898e762f3c78fd95c3"><td class="memItemLeft" align="right" valign="top">static const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html#a4266f103a1a545898e762f3c78fd95c3">guessType</a> (const std::string &amp;value)</td></tr>
+<tr class="memdesc:a4266f103a1a545898e762f3c78fd95c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a string, check if it could be stored as <code>int</code> or <code>double</code> instead of <code>std::string</code> .  <a href="#a4266f103a1a545898e762f3c78fd95c3">More...</a><br /></td></tr>
+<tr class="separator:a4266f103a1a545898e762f3c78fd95c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b17fd4ee62ad025cd859362aa3eaf73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b17fd4ee62ad025cd859362aa3eaf73"></a>
+static const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html#a4b17fd4ee62ad025cd859362aa3eaf73">guessArrayType</a> (const std::list&lt; std::string &gt; &amp;l)</td></tr>
+<tr class="memdesc:a4b17fd4ee62ad025cd859362aa3eaf73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a list of strings, suggest a matching storage type (int, double, std::string). <br /></td></tr>
+<tr class="separator:a4b17fd4ee62ad025cd859362aa3eaf73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f53b75b328be54a97de7b8d6f079025"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f53b75b328be54a97de7b8d6f079025"></a>
 static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Type.html">Type</a> &amp;t)</td></tr>
 <tr class="separator:a9f53b75b328be54a97de7b8d6f079025"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -485,6 +492,36 @@ const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>cur
 
 </div>
 </div>
+<a class="anchor" id="a4266f103a1a545898e762f3c78fd95c3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::type_info &amp; guessType </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given a string, check if it could be stored as <code>int</code> or <code>double</code> instead of <code>std::string</code> . </p>
+<dl class="section return"><dt>Returns</dt><dd>- std::type_info in priority order: int, double, std::string.</dd></dl>
+<p>TODO: manual+includes, TypeUtils, Skip escaped \ </p>
+<p>Testing string '-123.456e+789' yields</p>
+<p>0 = -123.456e+789 1 = '-123' 2 = '.456' 3 = 'e+789'</p>
+
+</div>
+</div>
 <a class="anchor" id="a9342c218638bc4b71600afe2b0be11a8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -517,8 +554,9 @@ const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>cur
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/util/<a class="el" href="Type_8h_source.html">Type.h</a></li>
+<li>drain/util/Type.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

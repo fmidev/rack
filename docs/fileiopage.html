@@ -91,12 +91,14 @@ A volume combined from three separate files (illustrated with HDFview).</div></d
 <h2><a class="anchor" id="file_quality"></a>
 Reading and combining quality data</h2>
 <p>In an operative environment, two parallel processes may perform quality control. <b>Rack</b> intelligently combines the resulting files using the following logic:</p>
-<ol type="1">
-<li>The main quality field (<code>quantity=QIND</code> ) is updated, based on either target class field (<code>quantity=CLASS</code>) or (<code>quantity=&lt;class-name&gt;</code> ).</li>
+<ul>
+<li>The main quality field (<code>quantity=QIND</code> ) is updated, based on either target class field (<code>quantity=CLASS</code>) or (<code>quantity=&lt;class-name&gt;</code> ):<ol type="1">
 <li>If overall classification (<code>quantity=CLASS</code>) is provided, <code>QIND</code> and <code>CLASS</code> will be updated directly from those.</li>
 <li>If <code>CLASS</code> is not provided, <code>QIND</code> will be updated from the specific class probability (<code>quantity=&lt;class-name&gt;</code> ).</li>
-<li>Under the group containing <code>QIND</code> (typically <code>/quality1</code> ), <code>how:task_args</code> will be updated by the names of the added classes.</li>
 </ol>
+</li>
+<li>Under the group containing <code>QIND</code> (typically <code>/quality1</code> ), <code>how:task_args</code> will be updated by the names of the added classes.</li>
+</ul>
 <p>In the following example, the quantities (detection classes) applied are those produced by <b>Rack</b> but could be thought as if they were produced by some other software, with same or similar names.</p>
 <p>Consider two quality control processes, the first producing detection of <code>EMITTER</code> and <code>JAMMING</code> , stored in file <code>volume-det1.h5</code> , containing following data (among others):</p>
 <div class="fragment"></div><!-- fragment --><p>Assume the other process detecting <code>SHIP</code> and <code>SPECKLE</code> stored in <code>volume-det2.h5</code> , respectively:</p>

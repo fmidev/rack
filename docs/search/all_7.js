@@ -143,5 +143,7 @@ var searchData=
   ['gradientvertop',['GradientVertOp',['../classdrain_1_1image_1_1GradientVertOp.html',1,'drain::image']]],
   ['groundfrometabeam',['groundFromEtaBeam',['../classrack_1_1Geometry.html#aca7e1dc19654bfab0b4c73fe3563d946',1,'rack::Geometry']]],
   ['group',['group',['../classrack_1_1ODIMPathElem.html#aab9d6dc9c732820cfa17435a5547f5bb',1,'rack::ODIMPathElem']]],
-  ['group_5ft',['group_t',['../classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb',1,'rack::ODIMPathElem']]]
+  ['group_5ft',['group_t',['../classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb',1,'rack::ODIMPathElem']]],
+  ['guessarraytype',['guessArrayType',['../classdrain_1_1Type.html#a4b17fd4ee62ad025cd859362aa3eaf73',1,'drain::Type']]],
+  ['guesstype',['guessType',['../classdrain_1_1Type.html#a4266f103a1a545898e762f3c78fd95c3',1,'drain::Type']]]
 ];

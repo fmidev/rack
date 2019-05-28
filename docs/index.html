@@ -79,10 +79,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Rack - a weather radar data processing program </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"> <div class="image">
+<div class="textblock"><p>Select input data for next command.  <div class="image">
 <img src="rack-logo-384x192.png" alt="rack-logo-384x192.png"/>
 </div>
-<p><b>Version</b> </p><div class="fragment"><div class="line">5.02</div></div><!-- fragment --><h1><a class="anchor" id="intro"></a>
+<p><b>Version</b> </p><div class="fragment"><div class="line">5.05</div></div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also support <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
 <p><code>Rack</code> is based on code developed at the Finnish Meteorological Institute since 2001. Recent development work has been also supported by the BALTRAD project, see <a href="http://www.baltrad.eu">http://www.baltrad.eu</a>.</p>
@@ -126,18 +126,12 @@ Data remapped with <code>--cCreate</code> , further coloured with <code>--palett
 <p>Inside <b>Rack</b> , a single-radar Cartesian product is technically similar to a radar composite &ndash; it is a single-radar "composite". The related commands are prefixed with <code>'c'</code>. Composite generation, projections, methods, and other options are explained in further detail in section <a class="el" href="compositespage.html">Cartesian conversions and composites</a> .</p>
 <h2><a class="anchor" id="selecting"></a>
 Selecting data</h2>
-<p>After loading or processing data, several data arrays are often obtained as a result. The array to be processed by further commands can be picked up with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on VRAD data, not all the data. The <code>&ndash;select</code> command takes the following arguments:</p>
-<ol type="1">
-<li><b>Deprecating:</b> <code>path</code> (regular expression): paths of the ODIM structure, eg. <code>"/dataset[0-9]+$"</code> </li>
-<li><code>quantity</code> (regular expression): ODIM attribute <code>quantity</code>, eg. <code>"DBZ.*"</code> </li>
-<li><code>index</code> (positive integer): first occurrence to be considered (makes sense with dataset selections)</li>
-<li><code>count</code> (positive integer): <code>index+count</code> occurrences will be considered (makes sense with dataset selections)</li>
-<li><code>elangle</code> (double:double): elevation angle range, use colon (:) as separator; single value can be issued as well.</li>
-<li><b>Deprecating:</b> <code>elangleMin</code> (double): minimum elevation angle</li>
-<li><b>Deprecating:</b> <code>elangleMax</code> (double): maximum elevation angle</li>
-</ol>
-<p>Some parameters are deprecating, hence it is better to use explicit keys is assignments, for example:</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;dataset=2:5,quantity=DBZH&#39;</span>                 &lt;commands&gt;</div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=DBZH,elangle=0.5:4.0&#39;</span>   &lt;commands&gt;</div></div><!-- fragment --><p>Selecting attribute groups (<code>what</code>, <code>where</code>, <code>how</code>) is not supported currently. The selection command can be applied practically with all the commands processing data. In computing meteorological products (<a class="el" href="index.html#products">Product generation</a>), it affects the following product only. In case of anomaly detectors (<a class="el" href="dir_ea8a319ae32ca0593ebb344597e12c2a.html">andre</a>), it applies to all subsequent operators.</p>
+<div class="fragment"><div class="line">--select, -s  &lt;path&gt;,&lt;quantity&gt;,&lt;index&gt;,&lt;count&gt;,&lt;elangle&gt;,&lt;dataset&gt;,&lt;data&gt;,&lt;elangleMin&gt;,&lt;elangleMax&gt;,&lt;groups&gt;</div><div class="line">  Data selection <span class="keywordflow">for</span> the next operation.</div><div class="line">    path= </div><div class="line">    quantity= [DBZH|VRAD|RHOHV|...]</div><div class="line">    index=0 </div><div class="line">    count=1000 </div><div class="line">    elangle=-90:90 [min[:max]]</div><div class="line">    dataset=0:65535 [min[:max]]</div><div class="line">    data=0:65535 [min[:max]]</div><div class="line">    elangleMin=-90 </div><div class="line">    elangleMax=90 </div><div class="line">    groups= [*::dataset:data:data:quality:what:where:how:OTHER]</div></div><!-- fragment --><p>Most commands apply implicit input data selection criteria, typically involving quantities and elevation angle(s). Often, the first data array matching the criteria are used.</p>
+<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on VRAD data, not all the data.</p>
+<p>The selection command can be applied practically with all the commands processing data. In computing meteorological products (<a class="el" href="index.html#products">Product generation</a>), it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
+<p>Note that some processing commands may not support explicit data selection.</p>
+<h3><a class="anchor" id="selectquantity"></a>
+Selecting by quantity only</h3>
 <p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' .</p>
 <div class="image">
 <img src="ppi-RHOHV-panel.png" alt="ppi-RHOHV-panel.png"/>

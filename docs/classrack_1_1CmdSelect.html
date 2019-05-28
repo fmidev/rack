@@ -94,6 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">CmdSelect Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Select input data for next command.  
+ <a href="classrack_1_1CmdSelect.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdSelect:</div>
 <div class="dyncontent">
@@ -163,7 +166,11 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>General commands. </p>
+<div class="textblock"><p>Select input data for next command. </p>
+<p>Most commands apply implicit input data selection criteria, typically involving quantities and elevation angle(s). Often, the first data array matching the criteria are used.</p>
+<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on VRAD data, not all the data.</p>
+<p>The selection command can be applied practically with all the commands processing data. In computing meteorological products (<a class="el" href="index.html#products">Product generation</a>), it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
+<p>Note that some processing commands may not support explicit data selection. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>main/commands.cpp</li>
 </ul>

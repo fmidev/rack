@@ -121,5 +121,7 @@ var searchData=
   ['getwidth',['getWidth',['../classdrain_1_1image_1_1AccumulationArray.html#ae7f5205133978fea4b9de9165fef5d34',1,'drain::image::AccumulationArray::getWidth()'],['../classdrain_1_1Som.html#af149cb053bc8b5fbc1364b5dbb934488',1,'drain::Som::getWidth()']]],
   ['getxscale',['getXScale',['../classdrain_1_1image_1_1GeoFrame.html#af94fbca2b0302d9005c1f2c9d22e7685',1,'drain::image::GeoFrame']]],
   ['getyscale',['getYScale',['../classdrain_1_1image_1_1GeoFrame.html#aa117ae33cef8aa8ffc36809367510581',1,'drain::image::GeoFrame']]],
-  ['groundfrometabeam',['groundFromEtaBeam',['../classrack_1_1Geometry.html#aca7e1dc19654bfab0b4c73fe3563d946',1,'rack::Geometry']]]
+  ['groundfrometabeam',['groundFromEtaBeam',['../classrack_1_1Geometry.html#aca7e1dc19654bfab0b4c73fe3563d946',1,'rack::Geometry']]],
+  ['guessarraytype',['guessArrayType',['../classdrain_1_1Type.html#a4b17fd4ee62ad025cd859362aa3eaf73',1,'drain::Type']]],
+  ['guesstype',['guessType',['../classdrain_1_1Type.html#a4266f103a1a545898e762f3c78fd95c3',1,'drain::Type']]]
 ];

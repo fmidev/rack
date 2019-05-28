@@ -89,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrack_1_1AndreOp-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -149,8 +150,8 @@ Collaboration diagram for AndreOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7a0585ae2ae96e17575a9f339e070f4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AndreOp.html#a7a0585ae2ae96e17575a9f339e070f4e">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1SrcType.html">PolarSrc</a> &gt; &amp;srcVolume, <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1DstType.html">PolarDst</a> &gt; &amp;dstVolume) const =0</td></tr>
-<tr class="memdesc:a7a0585ae2ae96e17575a9f339e070f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, results of certain detectors will be stored higher and hence applied in a wider group of data(sets).  <a href="#a7a0585ae2ae96e17575a9f339e070f4e">More...</a><br /></td></tr>
+<tr class="memitem:a7a0585ae2ae96e17575a9f339e070f4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a0585ae2ae96e17575a9f339e070f4e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>processDataSets</b> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1SrcType.html">PolarSrc</a> &gt; &amp;srcVolume, <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1DstType.html">PolarDst</a> &gt; &amp;dstVolume) const =0</td></tr>
 <tr class="separator:a7a0585ae2ae96e17575a9f339e070f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1VolumeTraversalOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1VolumeTraversalOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1VolumeTraversalOp.html">VolumeTraversalOp</a></td></tr>
 <tr class="memitem:a3cb5cd7aa5118402c16ba3607b691fbc inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cb5cd7aa5118402c16ba3607b691fbc"></a>
@@ -167,6 +168,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:abc90e17e62af135cf4db290475b1aa22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc90e17e62af135cf4db290475b1aa22"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getClassCode</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:abc90e17e62af135cf4db290475b1aa22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8ae77519ca8ed7fe09f76cd5705aad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba8ae77519ca8ed7fe09f76cd5705aad"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getClassCode</b> (<a class="el" href="classdrain_1_1Tree.html">classtree_t</a> &amp;tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit)</td></tr>
+<tr class="separator:aba8ae77519ca8ed7fe09f76cd5705aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -198,57 +208,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The base class for removal operators. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a7a0585ae2ae96e17575a9f339e070f4e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void processDataSets </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1SrcType.html">PolarSrc</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>srcVolume</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="structrack_1_1DstType.html">PolarDst</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>dstVolume</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If true, results of certain detectors will be stored higher and hence applied in a wider group of data(sets). </p>
-<p>Searches for precomputed quality field up in the hierarchy. Computes if nonexistent, and stores in pathCombinedQuality </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dstRoot</td><td>- structure to be traversed </td></tr>
-    <tr><td class="paramname">groupPath</td><td>- path to be searched for and the parent for quality1/&lt;pathCombinedQuality&gt;</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Called by (at least) RemoverOpStore combined detection results in .../quality1/(pathCombinedQuality): 'data' implies overwriting, 'data~' implies temp data (unsaved). </p>
-
-<p>Reimplemented from <a class="el" href="classrack_1_1VolumeTraversalOp.html#a04672c3e850d580aadcf73d85c75d49d">VolumeTraversalOp</a>.</p>
-
-<p>Implemented in <a class="el" href="classrack_1_1DetectorOp.html#a04672c3e850d580aadcf73d85c75d49d">DetectorOp</a>, and <a class="el" href="classrack_1_1RemoverOp.html#a04672c3e850d580aadcf73d85c75d49d">RemoverOp</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>andre/<a class="el" href="AndreOp_8h_source.html">AndreOp.h</a></li>
+<li>andre/AndreOp.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

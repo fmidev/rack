@@ -94,6 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">CmdSelectQuantity Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Set selection criteria strictly to one <code>quantity</code> .  
+ <a href="classrack_1_1CmdSelectQuantity.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdSelectQuantity:</div>
 <div class="dyncontent">
@@ -181,7 +184,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Set selection criteria strictly to one <code>quantity</code> . </p>
+<p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' . </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>main/commands.cpp</li>
 </ul>
 </div><!-- contents -->

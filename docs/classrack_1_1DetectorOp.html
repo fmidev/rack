@@ -149,9 +149,9 @@ Collaboration diagram for DetectorOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ea19bcd68a5920b10af16239014d6a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ea19bcd68a5920b10af16239014d6a2"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DetectorOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, unsigned short code=0)</td></tr>
-<tr class="separator:a8ea19bcd68a5920b10af16239014d6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f50e39be9c0a4d5a12b076800615d7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f50e39be9c0a4d5a12b076800615d7e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DetectorOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, const std::string &amp;echoClass=&quot;&quot;)</td></tr>
+<tr class="separator:a2f50e39be9c0a4d5a12b076800615d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9314d9ddafbc56c8b51d8e5aeb4ee49"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9314d9ddafbc56c8b51d8e5aeb4ee49"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#ab9314d9ddafbc56c8b51d8e5aeb4ee49">getOutputQuantity</a> () const </td></tr>
 <tr class="memdesc:ab9314d9ddafbc56c8b51d8e5aeb4ee49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quantity name, by default the name of the class in upper case letters. <br /></td></tr>
@@ -262,6 +262,16 @@ Static Protected Attributes</h2></td></tr>
 <tr class="memitem:ac7a886214c68cd701a2a5b3e8a86b963"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7a886214c68cd701a2a5b3e8a86b963"></a>
 static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>_count</b></td></tr>
 <tr class="separator:ac7a886214c68cd701a2a5b3e8a86b963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_classrack_1_1AndreOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1AndreOp')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1AndreOp.html">AndreOp</a></td></tr>
+<tr class="memitem:abc90e17e62af135cf4db290475b1aa22 inherit pub_static_methods_classrack_1_1AndreOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc90e17e62af135cf4db290475b1aa22"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getClassCode</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:abc90e17e62af135cf4db290475b1aa22 inherit pub_static_methods_classrack_1_1AndreOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8ae77519ca8ed7fe09f76cd5705aad inherit pub_static_methods_classrack_1_1AndreOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba8ae77519ca8ed7fe09f76cd5705aad"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getClassCode</b> (<a class="el" href="classdrain_1_1Tree.html">classtree_t</a> &amp;tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit)</td></tr>
+<tr class="separator:aba8ae77519ca8ed7fe09f76cd5705aad inherit pub_static_methods_classrack_1_1AndreOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for anomaly detectors. </p>
@@ -357,7 +367,7 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classrack_1_1JammingOp.html#a8f98954c0dabee0cb9c41583bc95d81f">JammingOp</a>, <a class="el" href="classrack_1_1LineOp.html#a44f14de8bc980f2170d3c69bd14e0805">LineOp</a>, <a class="el" href="classrack_1_1BiometOp.html#a44f14de8bc980f2170d3c69bd14e0805">BiometOp</a>, <a class="el" href="classrack_1_1PrecipOp.html#a44f14de8bc980f2170d3c69bd14e0805">PrecipOp</a>, <a class="el" href="classrack_1_1HydroClassBasedOp.html#a8f98954c0dabee0cb9c41583bc95d81f">HydroClassBasedOp</a>, <a class="el" href="classrack_1_1EmitterOp.html#a8f98954c0dabee0cb9c41583bc95d81f">EmitterOp</a>, <a class="el" href="classrack_1_1RhoHVLowOp.html#a8f98954c0dabee0cb9c41583bc95d81f">RhoHVLowOp</a>, <a class="el" href="classrack_1_1ShipOp.html#a8f98954c0dabee0cb9c41583bc95d81f">ShipOp</a>, <a class="el" href="classrack_1_1SpeckleOp.html#a44f14de8bc980f2170d3c69bd14e0805">SpeckleOp</a>, <a class="el" href="classrack_1_1SunOp.html#a8f98954c0dabee0cb9c41583bc95d81f">SunOp</a>, <a class="el" href="classrack_1_1TimeOp.html#a8f98954c0dabee0cb9c41583bc95d81f">TimeOp</a>, and <a class="el" href="classrack_1_1ZDRvarOp.html#a8f98954c0dabee0cb9c41583bc95d81f">ZDRvarOp</a>.</p>
+<p>Reimplemented in <a class="el" href="classrack_1_1JammingOp.html#a8f98954c0dabee0cb9c41583bc95d81f">JammingOp</a>, <a class="el" href="classrack_1_1LineOp.html#a44f14de8bc980f2170d3c69bd14e0805">LineOp</a>, <a class="el" href="classrack_1_1BiometOp.html#a44f14de8bc980f2170d3c69bd14e0805">BiometOp</a>, <a class="el" href="classrack_1_1PrecipOp.html#a44f14de8bc980f2170d3c69bd14e0805">PrecipOp</a>, <a class="el" href="classrack_1_1HydroClassBasedOp.html#a8f98954c0dabee0cb9c41583bc95d81f">HydroClassBasedOp</a>, <a class="el" href="classrack_1_1EmitterOp.html#a8f98954c0dabee0cb9c41583bc95d81f">EmitterOp</a>, <a class="el" href="classrack_1_1RhoHVLowOp.html#a8f98954c0dabee0cb9c41583bc95d81f">RhoHVLowOp</a>, <a class="el" href="classrack_1_1ShipOp.html#a8f98954c0dabee0cb9c41583bc95d81f">ShipOp</a>, <a class="el" href="classrack_1_1SpeckleOp.html#a44f14de8bc980f2170d3c69bd14e0805">SpeckleOp</a>, <a class="el" href="classrack_1_1SunOp.html#a8f98954c0dabee0cb9c41583bc95d81f">SunOp</a>, <a class="el" href="classrack_1_1ZDRvarOp.html#a8f98954c0dabee0cb9c41583bc95d81f">ZDRvarOp</a>, and <a class="el" href="classrack_1_1TimeOp.html#a8f98954c0dabee0cb9c41583bc95d81f">TimeOp</a>.</p>
 
 </div>
 </div>
@@ -409,7 +419,7 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classrack_1_1ClutterOp.html#a309800658a8db1f0c9cac196c5e7fe30">ClutterOp</a>, <a class="el" href="classrack_1_1BirdOp.html#adc50fa42529a0031d82e972ad260bace">BirdOp</a>, <a class="el" href="classrack_1_1CCorOp.html#a309800658a8db1f0c9cac196c5e7fe30">CCorOp</a>, and <a class="el" href="classrack_1_1DopplerNoiseOp.html#adc50fa42529a0031d82e972ad260bace">DopplerNoiseOp</a>.</p>
+<p>Reimplemented in <a class="el" href="classrack_1_1ClutterOp.html#a309800658a8db1f0c9cac196c5e7fe30">ClutterOp</a>, <a class="el" href="classrack_1_1BirdOp.html#adc50fa42529a0031d82e972ad260bace">BirdOp</a>, <a class="el" href="classrack_1_1DopplerNoiseOp.html#adc50fa42529a0031d82e972ad260bace">DopplerNoiseOp</a>, and <a class="el" href="classrack_1_1CCorOp.html#a309800658a8db1f0c9cac196c5e7fe30">CCorOp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +459,7 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
 <p>TODO: UNIVERSAL and several inputs?</p>
 <p>MAIN COMMAND </p>
 
-<p>Implements <a class="el" href="classrack_1_1AndreOp.html#a7a0585ae2ae96e17575a9f339e070f4e">AndreOp</a>.</p>
+<p>Implements <a class="el" href="classrack_1_1AndreOp.html">AndreOp</a>.</p>
 
 </div>
 </div>
