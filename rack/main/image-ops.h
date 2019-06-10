@@ -92,6 +92,40 @@ public:
 
 protected:
 
+	// --iResize may have changed size
+	template <class OD>
+	void updateGeometryODIM(HI5TREE & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
+
+		drain::Logger mout(this->getName(), __FUNCTION__); // = resources.mout;
+
+		OD odim;
+		typedef DstType<OD> dst_t;
+
+		DataSet<dst_t> dstDataSet(dstGroup, quantity);
+
+
+		for (typename DataSet<dst_t>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+
+			Data<dst_t> & d = dit->second;
+			if (geometry.getArea() == 0){
+				geometry.setArea(d.data.getWidth(), d.data.getHeight());
+			}
+			else if (geometry != d.data.getGeometry()) {
+				mout.warn() << "dataset group contains different geometries" << d.odim << mout.endl;
+			}
+
+			d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
+			mout.note() << "modified odim geom" << d.odim << mout.endl;
+
+
+		}
+
+		//ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
+
+	}
+
+protected:
+
 };
 
 

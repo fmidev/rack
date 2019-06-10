@@ -91,14 +91,6 @@ void ImageOpRacklet::exec() const {
 		mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
 	}
 	bool NEW_QUANTITY = !dstQuantity.empty();
-	/*
-	ODIM dstODIM;
-	dstODIM.addShortKeys(dstODIM);
-	dstODIM.setValues(resources.targetEncoding);
-	resources.targetEncoding.clear();
-
-	bool NEW_QUANTITY = !dstODIM.quantity.empty();
-	*/
 
 	// skip quantity fow later traversal, accept now all the datasetN's ?
 	// ORIG quantity => in-place
@@ -296,10 +288,21 @@ void ImageOpRacklet::exec() const {
 		// bean.traverseChannels(srcTray, dstTray);
 		mout.debug() << "dst tray after processing:\n" << dstTray << mout.endl;
 
+		drain::image::Geometry geometry(0,0);
+		drain::Variable & object = (*resources.currentHi5)["what"].data.attributes["object"];
+		if (object.toStr() == "COMP"){
+			updateGeometryODIM<CartesianODIM>((*resources.currentHi5)(*it), quantity, geometry);
+			drain::VariableMap & vmap = (*resources.currentHi5)["where"].data.attributes;
+			//vmap["xsize"] = geometry.getWidth();
+			//vmap["ysize"] = geometry.getHeight();
+		}
+		else {
+			updateGeometryODIM<PolarODIM>((*resources.currentHi5)(*it), quantity, geometry);
+		}
 
 	}
 
-	return;
+	//return;
 }
 
 class MultiThresholdOp : public drain::image::ImageOp {

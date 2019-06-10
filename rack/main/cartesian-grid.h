@@ -48,24 +48,24 @@ namespace rack {
 
 
 class CartesianGrid : public BasicCommand {
-    public: //re
+
+public:
+
 	int lonSpacing;
 	int latSpacing;
 	double width;
 	double intensity;
 
-
 	CartesianGrid() : BasicCommand("CartesianGrid","Draw lat-lon grid onto a Cartesian product.") {
 		parameters.reference("lonSpacing", lonSpacing = 1, "deg");
 		parameters.reference("latSpacing", latSpacing = 1, "deg");
-		parameters.reference("width", width = 1.0, "pix");  // , "deg");
+		parameters.reference("width", width = 1.0, "pix");
 		parameters.reference("intensity", intensity = 0.5, "");
 	};
 
 	void exec() const;
 
 };
-//// static RackLetAdapter<CartesianGrid> cGrid("cGrid");
 
 
 } // rack::

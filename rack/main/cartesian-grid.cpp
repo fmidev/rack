@@ -70,28 +70,12 @@ void CartesianGrid::exec() const {
 
 		const HI5TREE & cartesian = resources.cartesianHi5;
 
-		//const drain::VariableMap & where = cartesian["where"].data.attributes;
-		//const drain::VariableMap & where = cartesian["dataset1"]["where"].data.attributes;
-		// mout.warn() << where << mout.endl;
-		// drain::Rectangle<double> bboxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
-		/*
-			drain::VariableMap a;
-			DataSelector::getAttributes(cartesian, "dataset1", a);
-
-		 */
 		CartesianODIM odim;
 		DataTools::getAttributes(cartesian, "dataset1", odim, true);
-		//odim.addShortKeys();
-		//odim.updateFromMap(a);
-		//drain::Rectangle<double> bboxD(a["where:LL_lon"], a["where:LL_lat"], a["where:UR_lon"], a["where:UR_lat"]);
 		drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
 		composite.setBoundingBoxD(bboxD);
 		composite.setGeometry(odim.xsize, odim.ysize);
-		//composite.setGeometry(a["where:xsize"], a["where:ysize"]);
-		//const std::string projdef = a["where:projdef"];
-		//mout.warn() << "trying: " << projdef<< mout.endl;
 		composite.setProjection(odim.projdef);
-		//composite.setProjection(where["projdef"]);
 		//mout.warn() << "passed" << mout.endl;
 	}
 

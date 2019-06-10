@@ -249,6 +249,7 @@ public:
 
 				mout.info() << "File format: image" << mout.endl;
 
+
 				const bool CONVERT = !resources.targetEncoding.empty();
 
 				// If there is already a product generated with --image, use that.
@@ -261,13 +262,16 @@ public:
 					mout.note() << "encoding requested, calling "<< cmdImage.getName() << " implicitly" << mout.endl;
 					cmdImage.exec();
 				}
-				else {
+				else { // pointer (resources.currentImage) needs update
 
 					imageSelector.setParameters(resources.select);
 					resources.select.clear();
 					mout.debug(2) << imageSelector << mout.endl;
 					if (resources.setCurrentImage(imageSelector)){
 						// OK
+						if (!resources.currentImage->getScaling().isPhysical()){
+							mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
+						}
 					}
 					else {
 						mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
@@ -277,6 +281,7 @@ public:
 				}
 
 				if (!resources.currentImage->isEmpty()){
+
 
 					if (pngFileExtension.test(value)){
 						drain::image::File::write(*resources.currentImage, resources.outputPrefix + value);

@@ -43,7 +43,8 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	object = "COMP";
 
 	if (initialize & ODIMPathElem::ROOT){
-		//reference("what:object", );
+
+		// NOTE: these should be in DATASET level
 		reference("where:projdef", projdef = "");
 		reference("where:xsize", xsize = 0L);
 		reference("where:ysize", ysize = 0L);
@@ -59,11 +60,15 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("where:LL_lon", LL_lon = 0.0);
 		reference("where:LL_lat", LL_lat = 0.0);
 		reference("how:camethod", camethod = "");
+
+
 		reference("how:nodes", nodes = "");
 	}
 
 
 	if (initialize & ODIMPathElem::DATASET){
+		// reference("where:xsize", xsize);
+		// reference("where:ysize", ysize);
 	}
 
 

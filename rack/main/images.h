@@ -51,7 +51,7 @@ namespace rack {
  */
 class CmdImage : public drain::BasicCommand {
 
-public: //re
+public:
 
 	mutable DataSelector imageSelector;
 
@@ -61,22 +61,7 @@ public: //re
 	{
 	};
 
-	inline
-	void exec() const {
-
-		//drain::Logger & mout = resources.mout;
-		RackResources & resources = getResources();
-		imageSelector.setParameters(resources.select);
-		resources.select.clear();
-
-		convertImage(*resources.currentHi5, imageSelector, resources.targetEncoding, resources.grayImage);
-		resources.targetEncoding.clear();
-		//convertImage(*getResources().currentHi5, imageSelector, properties, getResources().grayImage);
-
-		resources.currentGrayImage = & resources.grayImage;
-		resources.currentImage     = & resources.grayImage;
-		//File::write(*resources.currentImage, "convert.png");
-	};
+	void exec() const;
 
 	static
 	void convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters,

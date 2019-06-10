@@ -70,8 +70,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 CommandEntry<CmdImage> cmdImage("image");
-//CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
 
+void CmdImage::exec() const {
+
+	//drain::Logger & mout = resources.mout;
+	RackResources & resources = getResources();
+	imageSelector.setParameters(resources.select);
+	resources.select.clear();
+
+	convertImage(*resources.currentHi5, imageSelector, resources.targetEncoding, resources.grayImage);
+	resources.targetEncoding.clear();
+	//convertImage(*getResources().currentHi5, imageSelector, properties, getResources().grayImage);
+
+	resources.currentGrayImage = & resources.grayImage;
+	resources.currentImage     = & resources.grayImage;
+	//File::write(*resources.currentImage, "convert.png");
+}
 
 void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters, drain::image::Image &dst){
 
