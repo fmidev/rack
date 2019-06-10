@@ -49,7 +49,7 @@ int AndreOp::getClassCode(const std::string & key){
 
 	drain::Logger mout("AndreOp", __FUNCTION__);
 
-	classtree_t &t = getClassTree();
+	classtree_t &t = getClassTree()["entries"];
 
 	classtree_t::path_t path(key, t.getSeparator());
 	mout.debug() << "path(" << path.separator << ") "<< drain::StringTools::join(path, path.separator) << mout.endl;

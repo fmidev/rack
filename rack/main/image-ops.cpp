@@ -287,6 +287,8 @@ void ImageOpRacklet::exec() const {
 		}
 
 
+		// MAIN
+
 		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
 		mout.debug()  << "src tray:\n" << srcTray << mout.endl;
 		mout.debug(1) << "dst tray before processing:\n" << dstTray << mout.endl;

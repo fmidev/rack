@@ -42,8 +42,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-/// Hierarchical object consisting of nesting objects and attributes (numeric, string, array).
+/// A partial implementation of JSON. An object consists of attributes (numeric, string, array) and nesting objects.
 /**
+ *
  *   Supports
  *   - nesting objects {... {... } }
  *   - integers (int), floats (double)

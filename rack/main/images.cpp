@@ -388,16 +388,16 @@ public:
 		}
 
 		cmdImage.imageSelector.setParameters(resources.select);
-		// below resources.select.clear();
+		// resources.select.clear(); //  below
 
-		if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
-			mout.debug(2) << "Resetting current gray image." << mout.endl;
+		//if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
+		if (resources.currentGrayImage == NULL){  // TODO: remove this
+			mout.debug() << "determining current gray image" << mout.endl;
 			mout.debug(3) << cmdImage.imageSelector << mout.endl;
 			ODIMPath path;
 			cmdImage.imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-			mout.note() << "path:" << path << mout.endl;
+			mout.debug(1) << "path: '" << path << "'" << mout.endl;
 			resources.currentGrayImage = & (*resources.currentHi5)(path)[odimARRAY].data.dataSet;
-			//resources.currentGrayImage = & DataSelector::getData(*resources.currentHi5, cmdImage.imageSelector);
 			resources.currentImage     =   resources.currentGrayImage;
 		}
 
@@ -456,22 +456,19 @@ public:
 				return;
 			}
 
-			if (!extensionRegExp.execute(filename)){
-				mout.warn() << "ext=" << extensionRegExp.result[1] << mout.endl;
-				if (extensionRegExp.result[1] == "json"){
-					drain::JSON::tree_t json;
-					drain::JSON::read(json, ifstr);
-					//mout.note() << "ext=" << json << mout.endl;
-					//drain::JSON::write(json);
-					resources.palette.convertJSON(json);
-					return;
-				}
+
+			if ((!extensionRegExp.execute(filename)) && (extensionRegExp.result[1] == "json")){
+				//mout.debug() << "ext=" << extensionRegExp.result[1] << mout.endl;
+				mout.debug() << "reading JSON file" << mout.endl;
+				resources.palette.loadJSON(ifstr);
 			}
 			else {
-				mout.warn() << "filename has no extension" << mout.endl;
+				mout.debug() << "reading TXT file" << mout.endl;
+				//mout.warn() << "ext=" << extensionRegExp.result[1] << mout.endl;
+				resources.palette.loadTXT(ifstr);
 			}
+			// mout.warn() << "filename has no extension" << mout.endl;
 
-			resources.palette.load(ifstr);
 		}
 
 		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;

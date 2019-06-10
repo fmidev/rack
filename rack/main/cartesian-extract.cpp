@@ -73,6 +73,8 @@ void CartesianExtract::extract(const std::string & channels) const {
 		DataSelector::getNextChild(resources.cartesianHi5, parent);
 	else if (ProductBase::appendResults.is(ODIMPathElem::DATA))
 		DataSelector::getLastChild(resources.cartesianHi5, parent);
+	else
+		resources.cartesianHi5.clear(); // don't append, overwrite...
 
 	path << parent; // ?
 	mout.debug() << "dst path: " << path << mout.endl;
@@ -140,6 +142,24 @@ void CartesianExtract::extract(const std::string & channels) const {
 	resources.currentHi5 = &resources.cartesianHi5;
 	resources.currentImage = NULL;
 	resources.currentGrayImage = NULL;
+
+	//resources.composite.odim.quantity
+	if (dstProduct.has(resources.composite.odim.quantity)){
+		Data<CartesianDst> & dstData = dstProduct.getData(resources.composite.odim.quantity); // OR: by odim.quantity
+		resources.currentImage = & dstData.data;
+		resources.currentGrayImage = resources.currentImage;
+		if (resources.currentImage->isEmpty()){
+			mout.warn() << "empty product data: " << dstData << mout.endl; // .getFirstData().data
+		}
+	}
+	else {
+		mout.warn() << "dstProduct does not have claimed quantity: " << resources.composite.odim.quantity << mout.endl; // .getFirstData().data
+	}
+
+	mout.warn() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
+
+	//dstGroup
+	//
 
 	/// For successfull file io:
 	resources.inputOk = true;

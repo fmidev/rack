@@ -55,7 +55,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-
+///
 /* General commands.
  *
  */
@@ -1325,18 +1325,15 @@ public:
 
 	}
 
-	/*
-	CmdAppend() : BasicCommand(__FUNCTION__, "Append inputs/outputs instead of overwriting."){
-		parameters.reference("path", path, "|data<n>|dataset<n>");
-	};
-	 */
-
 	virtual
 	void exec() const {
 
 		drain::Logger mout(name, __FUNCTION__);
 
-		if (value == "dataset")
+		if (value.empty()){
+			ProductBase::appendResults.set(ODIMPathElem::ROOT); //?
+		}
+		else if (value == "dataset")
 			ProductBase::appendResults.set(ODIMPathElem::DATASET);
 		else if (value == "data") // This is needed to distinguish between /data123 and /data
 			ProductBase::appendResults.set(ODIMPathElem::DATA);
@@ -1375,9 +1372,7 @@ public:
 	virtual
 	void exec() const {
 		drain::Logger mout(name, __FUNCTION__);
-		//ProductOp::appendResults = (append>0);
 		DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
-		//ProductOp::outputDataVerbosity = level;
 		if (!append.empty()){
 			ProductBase::appendResults.set(append);
 			mout.warn() << "option 'append' is deprecating, use --append <path> instead." << mout.endl;

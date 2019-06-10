@@ -33,13 +33,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <set>
 
-#include "Log.h"
-#include "RegExp.h"
 
 #include "Type.h"
 
 namespace drain
 {
+
+const drain::RegExp Type::trueRegExp("^[ ]*true[ ]*$", REG_EXTENDED | REG_ICASE ); // ignore case
+
+const drain::RegExp Type::falseRegExp("^[ ]*false[ ]*$", REG_EXTENDED | REG_ICASE ); // ignore case
 
 
 /**
@@ -60,10 +62,21 @@ const std::type_info & Type::guessType(const std::string & value){
 		3 = 	'e+789'
 
 	 */
+
+	// TODO: better whitespace
 	static drain::RegExp numeralRegExp("^[ ]*([-+]?[0-9]*)(\\.[0-9]+)?([eE][-+]?[0-9]+)?[ ]*$");
 
+	//static drain::RegExp booleanRegExp("^[ ]*(true|false)[ ]*$", REG_EXTENDED | REG_ICASE ); // ignore case
+
 	if (numeralRegExp.execute(value)){ // true == REJECT
-		return typeid(std::string);
+
+		if (trueRegExp.test(value) || falseRegExp.test(value)){ // "true" or "false", in any lower/upper case composition
+			return typeid(bool);
+		}
+		else {
+			return typeid(std::string);
+		}
+
 	}
 	else if (numeralRegExp.result.size() == 2){
 		return typeid(int);
@@ -84,14 +97,21 @@ const std::type_info & Type::guessArrayType(const std::list<std::string> & l){
 		s.insert(& guessType(*it));
 	}
 
+	/// Contains at least one string
 	if (s.find(& typeid(std::string)) != s.end())
 		return typeid(std::string);
 
+	/// Contains at least one decimal value
 	if (s.find(& typeid(double)) != s.end())
 		return typeid(double);
 
 	if (s.find(& typeid(int)) != s.end())
 		return typeid(int);
+
+	/// Contains only \c true and \false values
+	if (s.find(& typeid(bool)) != s.end())
+		return typeid(bool);
+
 
 	return typeid(std::string);
 }

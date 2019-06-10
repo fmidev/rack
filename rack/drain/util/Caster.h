@@ -184,48 +184,7 @@ public:
 	 *  put(&c, "67");  // 6 or 67 or ascii('6') ?
 	 *  put(&c, "C");   // 0 or 67=ascii('C') ?
 	 */
-	inline
-	void put(void *p, const char * x) const {
-
-		const std::type_info & t = getType();
-
-		if (t != typeid(void)){
-
-			if (t == typeid(std::string)){
-				//std::cout << "put(void *p, const char * x) => string\n";
-				*(std::string *)p = x;
-			}
-			else {
-
-				//  std::cout << "put(void *p, const char * x=" << x <<") => double => "<< getType().name() << "\n";
-				//  Initialization important, because x maybe empty or str non-numeric std::string.
-				std::stringstream sstr;
-				sstr << x;
-
-				/*
-				if (t == typeid(Caster)){
-					putToCasterT(p, sstr.str());
-				}
-				else */
-				if ((t == typeid(float))|| (t == typeid(double))){
-					double y = 0.0;
-					sstr >> y;
-					(this->putDouble)(p, y);
-				}
-				else {
-					long y = 0;
-					sstr >> y;
-					(this->putLong)(p, y);
-				}
-				//std::cerr << "Caster::put(p, const char* x) d=" << d << std::endl;
-				//(this->*putDouble)(p, d);
-
-			}
-		}
-		else {
-			throw std::runtime_error(std::string("Caster::put(void *, const char *), type unset"));
-		}
-	};
+	void put(void *p, const char * x) const;
 
 	/// Write to internal pointer, calls put(this->ptr, x).
 	inline
@@ -671,6 +630,9 @@ std::string Caster::get<std::string>(const void *p) const {
 		// std::cout << "note: experimental char to str\n";
 		return std::string(1, *(char *)p); // NOTE: this does not handle char array of more elements!
 	}
+	else if (getType() == typeid(bool)){
+		return *(const bool *)p ? "true" : "false";
+	}
 	else if (getType() == typeid(std::string)){
 		return *(const std::string *)p;
 	}
@@ -722,7 +684,16 @@ std::ostream & Caster::toOStreamT<void>(std::ostream &ostr, const void *p){ // c
 	return ostr;
 }
 
-/// Append nothing to the stream.
+// BOOL
+/// Append 'true' or false to the stream.
+template <>
+inline
+std::ostream & Caster::toOStreamT<bool>(std::ostream &ostr, const void *p){
+	ostr << (*(const bool *)p ? "true" : "false");
+	return ostr;
+}
+
+/// Append  to the stream.
 template <>
 inline
 std::ostream & Caster::toOStreamT<Caster>(std::ostream &ostr, const void *p){ // const {

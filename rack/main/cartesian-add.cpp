@@ -275,7 +275,7 @@ void CompositeAdd::addCartesian() const {
 
 	//DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
 	ODIMPath dataPath;
-	 resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath); // RE2
+	resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 		//resources.inputOk = false; // REMOVE?
@@ -283,11 +283,13 @@ void CompositeAdd::addCartesian() const {
 		return;
 	}
 
-
+	const ODIMPath & p = dataPath;
+	/*
 	ODIMPath p(dataPath);
 	if (p.back().is(ODIMPathElem::DATA)){
 		p.pop_back();
 	}
+	*/
 	mout.info() << "using:" << p << mout.endl;
 
 	//const DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);

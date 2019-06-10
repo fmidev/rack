@@ -53,6 +53,15 @@ void Palette::skipLine(std::ifstream &ifstr) const{
 }
 */
 
+void Palette::reset(){
+
+	colorCount = 0;
+	clear();
+	specialCodes.clear();
+	_hasAlpha = false;
+
+}
+
 void Palette::load(const std::string &filename){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
@@ -67,40 +76,65 @@ void Palette::load(const std::string &filename){
 		mout.error() << " opening file '" << filename << "' failed" << mout.endl;
 	};
 
+	// TODO RESET
+
 	mout.warn() << "size: " << filename.size() << mout.endl;
 	mout.warn() << "find: " << filename.find(".json") << mout.endl;
 
 	if (filename.find(".json") == (filename.size() - 5)){
-		drain::JSON::tree_t json;
-		drain::JSON::read(json, ifstr);
-		convertJSON(json);
+		loadJSON(ifstr);
 	}
 	else {
-		load(ifstr);
+		loadTXT(ifstr);
 	}
 }
 
-void Palette::convertJSON(const drain::JSON::tree_t & json, int depth){
+void Palette::loadJSON(std::ifstream & ifstr){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
-	// mout.warn() << "experimental, JSON not supported yet" << mout.endl;
 
-	specialCodes.clear();
+	/*
+	if (!ifstr.good()){
+		mout.error() << " reading file failed" << mout.endl;
+	};
+	*/
+	reset();
 
-	for (drain::JSON::tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
+	drain::JSON::tree_t json;
+	drain::JSON::read(json, ifstr);
 
-		bool SPECIAL = false;
+	const drain::JSON::node_t & metadata = json["metadata"].data;
+	mout.warn() << "metadata: " << metadata << mout.endl;
+	title = metadata["title"].toStr();
 
+	convertJSON(json["entries"], 0);
+
+}
+
+
+void Palette::convertJSON(const drain::JSON::tree_t & entries, int depth){
+
+	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+
+	//const drain::JSON::tree_t & entries = json["entries"];
+
+	for (drain::JSON::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
 
 		const std::string & label         = it->first;
 		const drain::JSON::tree_t & child = it->second;
 
 		const VariableMap & attr  = child.data;
 
-		double d = attr.get("index", -1);
+		const bool SPECIAL = !attr.hasKey("min");
+		const double d = attr.get("min", -1);
+
+		if (SPECIAL)
+			mout.debug() << "special code: " << label << mout.endl;
 
 		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
-		entry.label = std::string(depth*2, '_') + label;
+
+		entry.label  = std::string(depth*2, '_') + label;
+		entry.hidden = attr.get("hidden", false);
 
 		const Variable & color = attr["color"];
 		color.toContainer(entry);
@@ -111,27 +145,22 @@ void Palette::convertJSON(const drain::JSON::tree_t & json, int depth){
 }
 
 
-void Palette::load(std::ifstream & ifstr){
+void Palette::loadTXT(std::ifstream & ifstr){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
+	/*
 	if (!ifstr.good()){
-		mout.error() << " opening file failed" << mout.endl;
+		mout.error() << " reading file failed" << mout.endl;
 	};
+	*/
 
-	_hasAlpha = false;
+	reset();
 
 	double d;
-	colorCount = 0;
-	clear();
-	specialCodes.clear();
-
-	//std::vector<double> tmp;
-	//std::stringstream label;
 
 	bool SPECIAL;
 	std::string line;
-	//std::string title;
 	std::string label;
 
 	while (std::getline(ifstr, line)){
@@ -281,6 +310,7 @@ void Palette::refine(size_t n){
 
 void Palette::getLegend(TreeSVG & svg, bool up) const {
 
+	const int headerHeight = 30;
 	const int lineheight = 20;
 
 	svg->setType(NodeSVG::SVG);
@@ -289,7 +319,7 @@ void Palette::getLegend(TreeSVG & svg, bool up) const {
 	TreeSVG & header = svg["header"];
 	header->setType(NodeSVG::TEXT);
 	header->set("x", lineheight);
-	header->set("y", 1.4*lineheight);
+	header->set("y", (headerHeight * 9) / 10);
 	header->ctext = title;
 	header->set("style","font-size:20");
 
@@ -304,7 +334,7 @@ void Palette::getLegend(TreeSVG & svg, bool up) const {
 
 	int index = 0;
 	int width = 100;
-	int height = (1.5 + size() + specialCodes.size()) * lineheight;
+	//int height = (1.5 + size() + specialCodes.size()) * lineheight;
 
 	int y;
 	std::stringstream name;
@@ -315,69 +345,72 @@ void Palette::getLegend(TreeSVG & svg, bool up) const {
 	std::map<std::string,PaletteEntry >::const_iterator itSpecial = specialCodes.begin();
 
 	while ((it != end()) || (itSpecial != specialCodes.end())){
-	//for (Palette::const_iterator it = begin(); it != end(); ++it){
 
 		bool specialEntries = (itSpecial != specialCodes.end());
-		//bool specialEntries = (it == end());
 
 		const PaletteEntry & entry = specialEntries ? itSpecial->second : it->second;
 
-		name.str("");
-		name << "color";
-		name.fill('0');
-		name.width(2);
-		name << index;
-		TreeSVG & s = svg[name.str()];
-		s->setType(NodeSVG::GROUP);
+		if (!entry.hidden){
 
-		y = up ? height - (index+1) * lineheight : index * lineheight;
+			name.str("");
+			name << "color";
+			name.fill('0');
+			name.width(2);
+			name << index;
+			TreeSVG & child = svg[name.str()];
+			child->setType(NodeSVG::GROUP);
 
-		TreeSVG & rect = s["r"];
-		rect->setType(NodeSVG::RECT);
-		rect->set("x", 0);
-		rect->set("y", y);
-		rect->set("width", lineheight*1.7);
-		rect->set("height", lineheight);
-		//s["r"]->set("style", "fill:green");
+			//y = up ? height - (index+1) * lineheight : index * lineheight;
+			y = headerHeight + index*lineheight;
+
+			TreeSVG & rect = child["r"];
+			rect->setType(NodeSVG::RECT);
+			rect->set("x", 0);
+			rect->set("y", y);
+			rect->set("width", lineheight*1.7);
+			rect->set("height", lineheight);
+			//child["r"]->set("style", "fill:green");
 
 
-		style.str("");
-		switch (entry.size()){
-		case 4:
-			style << "fill-opacity:" << entry[3]/255.0 << ' ';
-			// no break
-		case 3:
-			style << "fill:rgb(" << entry[0] << ',' << entry[1] << ',' << entry[2] << ");";
-			break;
-		case 1:
-			style << "fill:rgb(" << entry[0] << ',' << entry[0] << ',' << entry[0] << ");";
-			break;
+
+			style.str("");
+			switch (entry.size()){
+			case 4:
+				style << "fill-opacity:" << entry[3]/255.0 << ' ';
+				// no break
+			case 3:
+				style << "fill:rgb(" << entry[0] << ',' << entry[1] << ',' << entry[2] << ");";
+				break;
+			case 1:
+				style << "fill:rgb(" << entry[0] << ',' << entry[0] << ',' << entry[0] << ");";
+				break;
+			}
+			rect->set("style", style.str());
+
+			TreeSVG & thr = child["th"];
+			thr->setType(NodeSVG::TEXT);
+			threshold.str("");
+			//minDBZ.precision(1);
+			if (!specialEntries)
+				threshold << it->first;
+			//	minDBZ << itSpecial->first;
+			//else
+
+			thr->ctext = threshold.str();
+			thr->set("text-anchor", "end");
+			thr->set("x", lineheight*1.5);
+			thr->set("y", y + lineheight-1);
+
+			TreeSVG & text = child["t"];
+			text->setType(NodeSVG::TEXT);
+			text->ctext = entry.label;
+			text->set("x", 2*lineheight);
+			text->set("y", y + lineheight-1);
+
+			//ostr << it->first << ':';
+			++index;
+
 		}
-		rect->set("style", style.str());
-
-		TreeSVG & thr = s["th"];
-		thr->setType(NodeSVG::TEXT);
-		threshold.str("");
-		//minDBZ.precision(1);
-		if (!specialEntries)
-			threshold << it->first;
-		//	minDBZ << itSpecial->first;
-		//else
-
-		thr->ctext = threshold.str();
-		thr->set("text-anchor", "end");
-		thr->set("x", lineheight*1.5);
-		thr->set("y", y + lineheight-1);
-
-		TreeSVG & text = s["t"];
-		text->setType(NodeSVG::TEXT);
-		text->ctext = entry.label;
-		text->set("x", 2*lineheight);
-		text->set("y", y + lineheight-1);
-
-		//ostr << it->first << ':';
-
-		++index;
 
 		if (specialEntries)
 			++itSpecial;
@@ -386,12 +419,12 @@ void Palette::getLegend(TreeSVG & svg, bool up) const {
 		//ostr << '\n';
 	}
 
+	const int height = headerHeight + index*lineheight;
+
 	background->set("width", width);
 	background->set("height", height);
 
-
 	svg->set("width", width);
-	//svg->set("height", index * lineheight);
 	svg->set("height", height);
 
 }

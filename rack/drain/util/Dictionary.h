@@ -43,7 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+/// Two-way mapping between strings and objects of template class T
+/**
+ *  TODO: hide first and second so that an entry cannot be assigned to either of them
+ */
 template <class T>
 class Dictionary : public std::pair<std::map<std::string,T>, std::map<T,std::string> > {
 

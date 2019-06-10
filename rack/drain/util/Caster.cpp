@@ -22,17 +22,69 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 #include "Caster.h"
 
 // // using namespace std;
 
 namespace drain {
+
+void Caster::put(void *p, const char * x) const {
+
+	const std::type_info & t = getType();
+
+	if (t != typeid(void)){
+
+		if (t == typeid(std::string)){
+			//std::cout << "put(void *p, const char * x) => string\n";
+			*(std::string *)p = x;
+		}
+		else {
+
+			//  std::cout << "put(void *p, const char * x=" << x <<") => double => "<< getType().name() << "\n";
+			//  Initialization important, because x maybe empty or str non-numeric std::string.
+			std::stringstream sstr;
+			sstr << x;
+
+			/*
+				if (t == typeid(Caster)){
+					putToCasterT(p, sstr.str());
+				}
+				else */
+			if ((t == typeid(float))|| (t == typeid(double))){
+				double y = 0.0;
+				sstr >> y;
+				(this->putDouble)(p, y);
+			}
+			else if (t == typeid(bool)){
+				if (Type::trueRegExp.test(x)){
+					(this->putBool)(p, true);
+				}
+				else if (Type::falseRegExp.test(x)){
+					(this->putBool)(p, false);
+				}
+				else
+					(this->putBool)(p, atof(x));
+			}
+			else {
+				long y = 0;
+				sstr >> y;
+				(this->putLong)(p, y);
+			}
+			//std::cerr << "Caster::put(p, const char* x) d=" << d << std::endl;
+			//(this->*putDouble)(p, d);
+
+		}
+	}
+	else {
+		throw std::runtime_error(std::string("Caster::put(void *, const char *), type unset"));
+	}
+}
 
 
 //void Caster::unupdateType(){
@@ -77,7 +129,7 @@ void Caster::unsetType(){
 	Caster::updateType<void>();
 }
 
- 
+
 template <>
 void Caster::updateType<std::string>(){
 

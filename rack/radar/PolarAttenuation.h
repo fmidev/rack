@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define POLAR_ATTENUATION_H_
 
 //#include "radar.h"
-#include <drain/image/ImageOp.h>
+#include <drain/imageops/ImageOp.h>
 //#include "image/ImageOp.h"
 
 

@@ -77,20 +77,6 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	DataSelector selector;
 	selector.setParameters(select);
 	selector.count = 1; // warn if not 1?
-	/*
-	mout.warn() << " currentHi5: list" << mout.endl;
-	ODIMPathList paths;
-	currentHi5->getPaths( paths);
-	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it) {
-		const ODIMPathElem & leaf = it->back();
-		if (leaf.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			mout.note() << '"' << *it << '"' << " [" << leaf.group << ']' << ' ';
-			mout << (*currentHi5)(*it).data.dataSet.properties["what:quantity"];
-			mout << mout.endl;
-		}
-
-	}
-	*/
 	ODIMPath path;
 	selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
@@ -118,10 +104,24 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	statusMap["composite"] = composite.toStr();
 	statusMap["andreSelect"] = andreSelect;
 
+	getImageInfo("img:colorImage",   &colorImage, statusMap);
+	getImageInfo("img:grayImage",    &grayImage,  statusMap);
+	getImageInfo("img:currentImage",     currentImage,     statusMap);
+	getImageInfo("img:currentGrayImage", currentGrayImage, statusMap);
 
 	return statusMap;
 }
 
+void RackResources::getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap){
+	std::stringstream sstr;
+	if (ptr){
+		ptr->toOStr(sstr);
+	}
+	else {
+		sstr << "NULL";
+	}
+	statusMap[label] = sstr.str();
+}
 
 
 bool RackResources::setCurrentImage(const DataSelector & imageSelector){

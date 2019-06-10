@@ -134,7 +134,7 @@ typedef DstType<VerticalProfileODIM> VprDst;
 
 /// Base class for all kinds of radar data
 /**
- *  \tparam DT - data type: SrcType<> or DstType<>
+ *  \tparam DT - data type: SrcType<> or DstType<> with ODIM template (PolarODIM, CartesianODIM)
  */
 template <typename DT>
 class TreeWrapper {
@@ -372,7 +372,7 @@ public:
 	}
 
 
-
+	// Data array
 	image_t & data;
 
 	// Metadata structure
@@ -407,6 +407,9 @@ protected:
 
 };
 
+/**
+ *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
+ */
 template <typename DT>  // PlainData<DT> & quality
 void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double nodataQuality, double undetectQuality) const {
 
@@ -436,7 +439,9 @@ void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, doubl
 
 
 
-
+/**
+ *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
+ */
 template <typename DT>
 inline
 std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
@@ -447,28 +452,29 @@ std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
 }
 
 
-/// Something, that contains TreeWrapper that can be retrieved by quantity keys.
+/// Something, that contains TreeWrapper and data that can be retrieved by quantity keys.
 /**
-    \tparam DDT  - datatype: PlainData<> or Data<>
+    \tparam D - data object type PlainData<> or Data<>
+    \tparam G - scalar determining the path element types of children
 
-   See SweepSrc and ProductDst below.
+   Applications: see SweepSrc and ProductDst below.
  */
-template <class D, ODIMPathElem::group_t G>
-class DataGroup : public TreeWrapper<typename D::datatype_t>, public std::map<std::string, D > { // typename T::datatype_t
+template <class DT, ODIMPathElem::group_t G>
+class DataGroup : public TreeWrapper<typename DT::datatype_t>, public std::map<std::string, DT > { // typename T::datatype_t
 public:
 
-	typedef D data_t;
-	typedef typename D::datatype_t datatype_t;
-	typedef std::map<std::string, D > map_t;
+	typedef DT data_t;
+	typedef typename DT::datatype_t datatype_t;
+	typedef std::map<std::string, DT > map_t;
 	typedef DataGroup<data_t,G> datagroup_t;
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
-	DataGroup(typename D::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
-		TreeWrapper<typename D::datatype_t>(tree) {
+	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+		TreeWrapper<typename DT::datatype_t>(tree) {
 		init(tree, *this, quantityRegExp);
 	}
 
-	DataGroup(const datagroup_t & src) : TreeWrapper<typename D::datatype_t>(src.tree) {
+	DataGroup(const datagroup_t & src) : TreeWrapper<typename DT::datatype_t>(src.tree) {
 		//adapt(src.tree, *this, src);  // ALERT: includes all the quantities, even thoug src contained only some of them
 		adapt(src, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
 		//init(src.tree, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
@@ -490,14 +496,18 @@ public:
 			mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
 			updateTree3(this->getFirstData().odim); // tree
 		}
-	*/
+		*/
 	};
+
+
+	bool has(const std::string & quantity) const {
+		return (this->find(quantity) != this->end());
+	}
 
 
 	const data_t & get(const std::string & quantity) const {
 
 		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
-
 		//mout.warn() << "const " << mout.endl;
 
 		typename datagroup_t::const_iterator it = this->find(quantity);
@@ -530,7 +540,7 @@ public:
 			ODIMPathElem child(G);
 			DataSelector::getNextChild(this->tree, child);
 			mout.debug(2) << "add: " << child << " [" << quantity << ']' << mout.endl;
-			it = this->insert(this->begin(), typename map_t::value_type(quantity, D(this->getTree()[child], quantity)));  // WAS [path]
+			it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
 			//it->second.
 			//return add(child, quantityKey);
 			return it->second;
@@ -592,6 +602,43 @@ public:
 	}
 
 
+	// experimental
+	data_t & getLastData() {
+
+		const typename datagroup_t::reverse_iterator it = this->rend();
+
+		if (it == this->rbegin()){
+			drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+			mout.error() << "no data" << mout.endl;
+			return this->get("");
+		}
+		else
+			return it->second;
+
+	}
+
+	// experimental
+	const data_t & getLastData() const {
+
+		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+
+		//mout.warn() << "const" << mout.endl;
+
+		typename datagroup_t::const_reverse_iterator it = this->rend();
+
+		if (it != this->rbegin()){
+			mout.debug(1) << "found: " << it->first << mout.endl;
+			return it->second;
+		}
+		else {
+			mout.note() << "not found, returning empty"  << mout.endl;
+			return getEmpty();
+		}
+
+
+	}
+
+
 	// TODO: consider this to destructor!
 	/*
 	inline
@@ -614,7 +661,7 @@ protected:
 
 	static
 	const data_t & getEmpty() {
-		static typename D::tree_t t;
+		static typename DT::tree_t t;
 		static data_t empty(t);
 		return empty;
 	}
@@ -625,7 +672,7 @@ protected:
 	 *   \param dst - odim wrapper for the data tree
 	 */
 	static
-	typename D::tree_t & init(typename D::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
+	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
 
 		// if (t.empty()) return; // no use, /data and /what groups still there, typically.
 
@@ -644,7 +691,7 @@ protected:
 		// add UKMO
 		const std::string datasetQuantity = t["what"].data.attributes.get("quantity", "");
 
-		for (typename D::tree_iter_t it=t.begin(); it!=t.end(); ++it){
+		for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
 
 			if (! (it->first.is(G))){
 				//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
@@ -671,7 +718,7 @@ protected:
 				mout.warn() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
 				mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
 				// Assign by path component "data3"
-				dst.insert(typename map_t::value_type(it->first, D(it->second, it->first)));
+				dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));
 				//associate(dst, it->first, it->second);
 			}
 			else {
@@ -679,7 +726,7 @@ protected:
 					drain::Logger mout("DataSet", __FUNCTION__);
 					mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
 				}
-				dst.insert(typename map_t::value_type(quantity, D(it->second, quantity)));
+				dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
 				//typename datagroup_t::reverse_iterator rit = dst.rend();
 				//mout.warn() << "last '" << "' [" << quantity << '=' << rit->first << ']' << rit->second << mout.endl;
 				//dst[quantity] = T(it->second);
@@ -698,7 +745,7 @@ protected:
 
 	static
 	//typename D::tree_t & adapt(typename D::tree_t & t, datagroup_t & dst, const datagroup_t & src){
-	typename D::tree_t & adapt(const datagroup_t & src, datagroup_t & dst){
+	typename DT::tree_t & adapt(const datagroup_t & src, datagroup_t & dst){
 
 		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 
@@ -858,7 +905,6 @@ std::ostream & operator<<(std::ostream & ostr, const Data<DT> & d){
    See SweepSrc and ProductDst below.
  */
 template <typename DT>
-//class DataSet : public DataGroup<Data<DT>,ODIMPathElem::DATA>, public QualityDataSupport<DT> { // typename T::data_t
 class DataSet : public DataGroup<Data<DT>,ODIMPathElem::DATA>, public QualityDataSupport<DT> { // typename T::data_t
 public:
 

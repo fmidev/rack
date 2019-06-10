@@ -68,8 +68,9 @@ public:
 
 	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
 
+	// TODO
 	// STATUS FLAGS
-	// TODO: OK=0,WARNING=1,ERROR=2,FATAL=3
+	// OK=0,WARNING=1,ERROR=2,FATAL=3
 	// One at time: 8-2 = 6 bits = 64 events
 	// INPUT=0
 	// OUTPUT=4
@@ -77,7 +78,7 @@ public:
 	// PRODUCT=12
 	// PRODUCT=16
 	// All simultaneously: 8 = 2+2+2+2 bits => 4 events
-
+	//drain::Flags status;
 
 	/// True, if the last input file operation has been successful. Helps in skipping operations for null data.
 	bool inputOk;
@@ -171,6 +172,10 @@ public:
 	drain::ScriptExec   scriptExec;
 
 	drain::image::ImageSampler sampler; // could be in ImageModPack?
+
+protected:
+
+	void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
 
 };
 

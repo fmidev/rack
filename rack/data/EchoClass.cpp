@@ -41,31 +41,41 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, int index
 
 	mout.debug(1) << "class: '" << pathStr << "'" << mout.endl;
 
-	const drain::JSON::tree_t::path_t path(pathStr, '.');
+	//const drain::JSON::tree_t::path_t path(pathStr, '.'); // ORIG
+	drain::JSON::tree_t & entries = tree["entries"];
 
-	drain::VariableMap & attr = tree(path).data;
-	attr["index"] = index;
+	// drain::VariableMap & attr = tree(path).data; // ORIG
+	drain::VariableMap & attr = entries[pathStr].data; // NEW (flat)   //entries[pathStr].data; // NEW (flat)
+	attr["min"] = index;
 	attr["en"] = en;
 	attr["color"].setType(typeid(int));
+
+	// Check hierarchical depth
+	drain::JSON::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
+	attr["hidden"].setType(typeid(bool));
+	attr["hidden"] = (p.size() > 2);
 
 	if (!color.empty()){
 		attr["color"] = color;
 	}
 	else {
 
-		if (path.empty()){
+		if (pathStr.empty()){
 			attr["color"] = "128,128,255";
 			return;
 		}
 
 		attr["color"] = "128,255,128";
 
-		drain::JSON::tree_t::path_t p(path);
-		p.pop_back();
+		// drain::JSON::tree_t::path_t p(path); // ORIG
+		//drain::JSON::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
+		if (!p.empty())
+			p.pop_back();
 
 		while (!p.empty()){
 			mout.debug(2) << p << mout.endl;
-			const drain::Variable & parentColor = tree(p).data["color"];
+			//const drain::Variable & parentColor = tree(p).data["color"];
+			const drain::Variable & parentColor = entries[p].data["color"];
 			if (!parentColor.isEmpty()){
 				attr["color"] = parentColor;
 				break;
@@ -79,9 +89,12 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, int index
 
 classtree_t & getClassTree(){
 
-	static classtree_t tree('.');
+	//static classtree_t tree('.');
+	static classtree_t tree('/'); // Dot used in names, but hierarchy kept flat for easier portability
 
 	if (tree.isEmpty()){
+
+		tree["metadata"].data["title"] = "Echo class";
 
 		// Technical information 0-15
 

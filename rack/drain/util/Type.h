@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "Log.h"
+#include "RegExp.h"
 
 namespace drain {
 
@@ -405,6 +406,13 @@ public:
 	const std::type_info & getTypeInfo(const Type & t){
 		return t;
 	}
+
+	static
+	const drain::RegExp trueRegExp;
+
+	static
+	const drain::RegExp falseRegExp;
+
 
 	/// Given a string, check if it could be stored as \c int or \c double instead of \c std::string .
 	/**

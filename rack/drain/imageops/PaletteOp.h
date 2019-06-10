@@ -52,7 +52,20 @@ class PaletteEntry : public std::vector<double> {
 
 public:
 
+	inline
+	PaletteEntry() : hidden(false){
+	}
+
+	/// Description appearing in legends
 	std::string label;
+
+	/// Suggests hiding the entry in legends. Does not affect colouring of images.
+	/**
+	 *   When true, indicates that this entry is less significant and can be excluded in legends
+	 *   created by
+	 *
+	 */
+	bool hidden;
 
 };
 
@@ -60,14 +73,23 @@ class Palette : public std::map<double,PaletteEntry > {
 
 public:
 
-	/// Loads a palette from text file
-	void load(std::ifstream & ifstr);
+	void reset();
 
 	/// Loads a palette from text file
 	void load(const std::string &filename);
 
+	/// Loads a palette from text file
+	void loadTXT(std::ifstream & ifstr);
+
+
+	/// Loads a palette from text file
+	void loadJSON(std::ifstream & ifstr);
+
 	/// Creates a palette from json object
-	void convertJSON(const drain::JSON::tree_t & json, int depth = 0);
+	/**
+	 *  \param json - JSON structure combining optional \c metadata and compulsory \c entries section.
+	 */
+	// void convertJSON(const drain::JSON::tree_t & json);
 
 	inline
 	bool hasAlpha() const { return _hasAlpha; };
@@ -88,6 +110,9 @@ protected:
 	bool _hasAlpha;
 	unsigned int colorCount;
 	//void skipLine(std::ifstream &ifstr) const;
+
+	/// Creates a palette from json object
+	void convertJSON(const drain::JSON::tree_t & json, int depth);
 
 };
 
