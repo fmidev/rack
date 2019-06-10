@@ -64,10 +64,10 @@ int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator 
 	drain::Logger mout("AndreOp", __FUNCTION__);
 
 	if (it == eit){ // "empty path"
-		if (!tr.data.hasKey("index")){
-			mout.note() << "missing index of existing class " << tr.data << mout.endl; // ddificult to locate, try tr.dump()
+		if (!tr.data.hasKey("min")){
+			mout.note() << "missing 'min' value (index) of existing class " << tr.data << mout.endl; // ddificult to locate, try tr.dump()
 		}
-		return tr.data["index"];
+		return tr.data["min"];
 	}
 
 	const classtree_t::path_t::value_type & key = *it;
@@ -77,7 +77,7 @@ int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator 
 		static unsigned short counter(32);
 		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
 		//tr.getPaths()
-		tr[key].data["index"] = counter;
+		tr[key].data["min"] = counter;
 		++counter;
 	}
 	else {
