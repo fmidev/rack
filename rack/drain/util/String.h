@@ -234,8 +234,7 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	}
 	*/
 
-	// Tmp
-	typename T::value_type tmpValue;
+	// 	typename T::value_type tmpValue;
 
 	if (separators.empty()){ // = no split! :-)
 
