@@ -116,14 +116,14 @@ classtree_t & getClassTree(){
 
 		// Meteorological echoes
 
-		addClass(tree, "met", 64, "Hydrometeor", "48,192,96");
-		addClass(tree, "met.rain", 68, "Rain", "64,255,128");
-		addClass(tree, "met.rain.super", 70, "Supercooled rain");
-		addClass(tree, "met.snow", 80, "Snow", "48,96,192");
-		addClass(tree, "met.snow.wet", 84, "Wet snow", "48,160,160");
-		addClass(tree, "met.graupel", 96, "Graupel", "128,255,128");
-		addClass(tree, "met.hail", 112, "Hail", "192,255,128");
-		addClass(tree, "met.hail.wet", 116, "Wet hail");
+		addClass(tree, "precip", 64, "Hydrometeor", "48,192,96");
+		addClass(tree, "precip.rain", 68, "Rain", "64,255,128");
+		addClass(tree, "precip.rain.super", 70, "Supercooled rain");
+		addClass(tree, "precip.snow", 80, "Snow", "48,96,192");
+		addClass(tree, "precip.snow.wet", 84, "Wet snow", "48,160,160");
+		addClass(tree, "precip.graupel", 96, "Graupel", "128,255,128");
+		addClass(tree, "precip.hail", 112, "Hail", "192,255,128");
+		addClass(tree, "precip.hail.wet", 116, "Wet hail");
 
 
 		/// Non-meteorological echoes

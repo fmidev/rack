@@ -269,7 +269,7 @@ public:
 					mout.debug(2) << imageSelector << mout.endl;
 					if (resources.setCurrentImage(imageSelector)){
 						// OK
-						if (!resources.currentImage->getScaling().isPhysical()){
+						if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
 							mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
 						}
 					}
