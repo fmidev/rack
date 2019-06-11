@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/Data.h>
 #include <image/Image.h>
 #include <imageops/ImageOp.h>
-#include <radar/EchoClasses.h>
 #include <string>
 
 using namespace drain::image;

@@ -33,11 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ANDRE_DETECTOR2_H_
 
 
-//#include <drain/image/MathOpPack.h>
-
-//#include "product/VolumeOp.h"
 #include "AndreOp.h"
-#include "radar/EchoClasses.h"
+// #include "radar/EchoClasses.h"
 
 namespace rack {
 

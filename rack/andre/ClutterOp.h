@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/Data.h>
 #include <data/DataSelector.h>
 #include <hi5/Hi5.h>
-#include <radar/EchoClasses.h>
 #include <util/ReferenceMap.h>
 #include <string>
 
