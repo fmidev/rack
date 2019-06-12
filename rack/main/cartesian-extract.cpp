@@ -156,7 +156,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 		mout.warn() << "dstProduct does not have claimed quantity: " << resources.composite.odim.quantity << mout.endl; // .getFirstData().data
 	}
 
-	mout.warn() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
+	mout.debug() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
 
 	//dstGroup
 	//

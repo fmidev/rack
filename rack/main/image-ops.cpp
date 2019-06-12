@@ -292,9 +292,10 @@ void ImageOpRacklet::exec() const {
 		drain::Variable & object = (*resources.currentHi5)["what"].data.attributes["object"];
 		if (object.toStr() == "COMP"){
 			updateGeometryODIM<CartesianODIM>((*resources.currentHi5)(*it), quantity, geometry);
+			// Non-standard (ODIM suggests dataset1-level xsize, ysize)
 			drain::VariableMap & vmap = (*resources.currentHi5)["where"].data.attributes;
-			//vmap["xsize"] = geometry.getWidth();
-			//vmap["ysize"] = geometry.getHeight();
+			vmap["xsize"] = geometry.getWidth();
+			vmap["ysize"] = geometry.getHeight();
 		}
 		else {
 			updateGeometryODIM<PolarODIM>((*resources.currentHi5)(*it), quantity, geometry);

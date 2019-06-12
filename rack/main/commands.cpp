@@ -491,6 +491,8 @@ public:
 		// std::string attr1value; // debug
 		// std::string attr1type;// debug
 		hi5::Hi5Base::parsePath(pathSrc, path1, attr1); //, attr1value, attr1type);
+		mout.warn() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
+
 		/*
 		mout.warn() << "path:  " << path1 << mout.endl;
 		mout.warn() << "attr:  " << attr1 << mout.endl;
@@ -549,7 +551,7 @@ public:
 
 			HI5TREE & dst1 = dstRoot(path1);
 			if (!dst1.data.attributes.hasKey(attr1)){
-				mout.warn() <<  "attribute (" << path1 << ") '" << attr1 << "' not found" << mout.endl;
+				mout.warn() <<  "attribute '" << attr1 << "' not found, path='" << path1 << "'" << mout.endl;
 			}
 			HI5TREE & dst2 = dstRoot(path2);
 			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
