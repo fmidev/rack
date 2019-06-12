@@ -115,7 +115,7 @@ protected:
 			}
 
 			d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
-			mout.note() << "modified odim geom" << d.odim << mout.endl;
+			//mout.note() << "modified odim geom" << d.odim << mout.endl;
 
 
 		}
