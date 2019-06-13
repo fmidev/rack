@@ -33,9 +33,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.06"
+#define __RACK_VERSION__ "5.07"
 
 /**
+ *   Version 5.07
+ *   - Log msg of NOTE and INFO simplified
+ *   - Image selection fixed
+ *
  *   Version 5.06
  *   - JSON palette support
  *   - bool Variable read and write for true/false as well (not only zero/nonzero)

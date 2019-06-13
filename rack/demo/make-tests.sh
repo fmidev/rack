@@ -58,7 +58,7 @@ echo -n > $TEST_CMD_FILE
 for file in ${DOC_FILES[*]}; do
 #  grep '^[ ]*\(rack\|convert\) [^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
 #  grep '^ *\([a-zA-Z]+\=[^ ]* +\)*\(rack\|convert\) [^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
-    grep '^\s*\(rack \|convert \|.*#exec\)[^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
+    grep '^\s*\(rack \|convert \|make \|.*#exec\)[^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
 done
 
 

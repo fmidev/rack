@@ -77,10 +77,15 @@ public:
 	/**
 	 *   Does not change attributes of src.
 	 *   \see updateAttributes()
-	 */
 	template <class M>
 	static
-	void getAttributes(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly = false);
+	void getAttributesOLD(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly = false);
+	*/
+
+	// consider: path is not a reference, it will be copied.
+	template <class M>
+	static
+	void getAttributes(const HI5TREE &src, const HI5TREE::path_t & path, M & attributes, bool updateOnly = false);
 
 
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
@@ -152,9 +157,65 @@ protected:
 };
 
 
-
 template <class M>
-void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly){
+void DataTools::getAttributes(const HI5TREE &src, const HI5TREE::path_t & p, M & attributes, bool updateOnly){
+
+	drain::Logger mout("DataTools", __FUNCTION__);
+
+	if (p.empty() || !p.front().isRoot()){
+		mout.debug() << "add root and restart with path= '" << p << "'" << mout.endl;
+		HI5TREE::path_t pRooted(p);
+		pRooted.push_front(HI5TREE::path_t::elem_t::ROOT);
+		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
+		return;
+	}
+
+	mout.debug() << "path= '" << p << "'" << mout.endl;
+
+	HI5TREE::path_t path;
+	std::stringstream sstr;
+
+	for (HI5TREE::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+
+		path << *pit;
+
+		mout.debug() << "check='" << path << "'" << mout.endl;
+
+		const HI5TREE & s = src(path);
+
+		for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+
+			const hi5::NodeHi5 & group = s[*git].data;
+
+			for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){
+
+				sstr.str("");
+				sstr << *git << ':' << ait->first;
+				//mout.debug(8) << "getAttributes: " << sstr.toStr() << '=' << it->second << mout.endl;
+
+				if (!updateOnly)
+					attributes[sstr.str()] = ait->second;
+				else {
+					typename M::iterator it = attributes.find(sstr.str());
+					if (it != attributes.end())
+						it->second = ait->second;
+				}
+			}
+		}
+
+		// ++pit;
+		//  if (pit == p.end())
+		// return;
+		//   path << *pit;
+
+	}
+
+}
+
+
+/*
+template <class M>
+void DataTools::getAttributesOLD(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly){
 
 	drain::Logger mout("DataTools", __FUNCTION__);
 
@@ -205,7 +266,7 @@ void DataTools::getAttributes(const HI5TREE &src, const std::string & path, M & 
 	}
 	//while (i < path.size()); //(i != std::string::npos);
 }
-
+*/
 
 
 } // rack::

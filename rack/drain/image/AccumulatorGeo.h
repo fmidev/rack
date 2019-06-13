@@ -31,10 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ACCUMULATORGEO_H_
 #define ACCUMULATORGEO_H_
 
-//#include "Geometry.h"
-
-//#include "util/Rectangle.h"
-//#include "util/Proj4.h"  // for geographical projection of radar data bins
 #include "Accumulator.h"
 #include "GeoFrame.h"
 

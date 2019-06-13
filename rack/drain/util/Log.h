@@ -113,13 +113,13 @@ public:
 	/**
 	 *   \par level - verbosity
 	 */
-	Log(int verbosityLevel = LOG_WARNING) : VT100(true), _verbosityLevel(verbosityLevel), incomingLevel(LOG_NOTICE), // !!
+	Log(int verbosityLevel = LOG_WARNING) : VT100(true), verbosityLevel(verbosityLevel), msgLevel(LOG_NOTICE), // !!
 	currentSender(NULL) {
 		resetTime();
 		//std::cerr << "start monitor, level=" << verbosityLevel << std::endl;
 	};
 
-	Log(const Log &m) : VT100(true), _verbosityLevel(m._verbosityLevel), incomingLevel(m.incomingLevel), // !!
+	Log(const Log &m) : VT100(true), verbosityLevel(m.verbosityLevel), msgLevel(m.msgLevel), // !!
 			currentSender(NULL) {
 		resetTime();
 	};
@@ -128,138 +128,36 @@ public:
 
 	//
 	inline
-	void setVerbosity(int level){ _verbosityLevel = level; };
+	void setVerbosity(int level){ verbosityLevel = level; };
 
 	inline
-	int getVerbosity(){ return _verbosityLevel; };
+	int getVerbosity(){ return verbosityLevel; };
 
 	//Logger s;
 
 
 	/// Echoes the message, and halts on error.
 	// TODO: recode this...
-	inline
-	void start(int level, const std::string & sender){
-
-		/// Flush current buffer.
-		flush();
-
-		if ((_verbosityLevel >= LOG_INFO) && (level <= _verbosityLevel)){
-			const char c = sstr.fill('0');
-			sstr.width(5);
-			sstr << getRelativeMilliseconds() << ':';
-			sstr.width(0);
-			sstr.fill(c);
-		}
-
-
-		if (level <= LOG_CRIT){
-			if (VT100)
-				sstr << "\033[1;31m";
-			sstr << "[FATAL] ";
-		}
-		else if (level <= LOG_ERR){
-			if (VT100)
-				//sstr << "\033[1;43mFAILED\033[0m"
-				sstr << "\033[1;35m";
-			sstr << "[ERROR] ";
-		}
-		else if (level <= LOG_WARNING){
-			if (VT100)
-				//sstr << "\033[1;43mFAILED\033[0m"
-				sstr << "\033[1;33m";
-			sstr << "[WARNING] ";
-		}
-		else if (level <= LOG_NOTICE){
-			if (level <= _verbosityLevel){
-				if (VT100)
-					sstr << "\033[1;29m";
-				sstr << "[NOTICE] ";
-			}
-		}
-		else if (level <= LOG_INFO){
-			if (level <= _verbosityLevel)
-				sstr << "[INFO] ";
-		}
-		else if (level <= LOG_DEBUG){
-			if (level <= _verbosityLevel){
-				if (VT100)
-					sstr << "\033[1;36m";
-			}
-            //if (level <= _verbosityLevel)
-            //      sstr << "[INFO] ";
-		}
-		else if (level <= (LOG_DEBUG+1)){
-			if (level <= _verbosityLevel){
-				if (VT100)
-					sstr << "\033[1;34m";
-			}
-		}
-		else {
-		}
-
-		if (level <= _verbosityLevel)
-			if ( !sender.empty() )
-				sstr << sender << ':' << ' ';
-
-		//if (level <= _verbosityLevel)
-		//	init(level, sender);
-		incomingLevel  = level;
-		currentSender = &sender;
-
-	};
+	void start(int level, const std::string & sender);
 
 	template <class T>
 	inline
 	void handle(int level, const T & message, const std::string & sender){
 
-		if (( &sender != currentSender ) || (level != incomingLevel)){
+		/// Start new message, if new sender or new level
+		if (( &sender != currentSender ) || (level != msgLevel)){
 			start(level, sender);
 		}
 
 		//cerr << "monitor input: " << message << '\n';
-
-		if (level <= _verbosityLevel)
+		if (level <= verbosityLevel)
 			sstr << message;
-
 		//cerr << "handle: " << message << '|';
+
 	}
 
-	inline
-	void flush(){
 
-		std::string s;
-
-		if (sstr.str().length() > 0){
-			if (VT100)
-				sstr << "\033[0m";
-			//cerr << "\033[0m" << std::flush;
-			s = sstr.str();
-			std::cerr << s << std::endl;
-			sstr.str("");  // clear!
-		}
-
-		if (incomingLevel <= LOG_ALERT){
-			std::cerr << "LOG_ALERT " << sstr.str() << std::endl;
-			std::cerr << " Fatal error, quitting." <<  incomingLevel << std::endl;
-			if (VT100)
-				std::cerr << "\033[0m" << std::flush;
-			char *c = (char *)random();
-			std::cerr << c << std::endl;
-			//////
-			exit(-1);
-		}
-		else if (incomingLevel <= LOG_ERR){
-			incomingLevel = LOG_NOTICE;
-			if (VT100)
-				std::cerr << "\033[0m" << std::flush;
-			throw std::runtime_error(s);
-		}
-
-		incomingLevel = LOG_NOTICE;
-		currentSender = NULL;
-	}
-
+	void flush();
 
 	inline
 	long getRelativeMilliseconds(){
@@ -289,10 +187,10 @@ public:
 
 protected:
 
-	int _verbosityLevel;
+	int verbosityLevel;
 	std::stringstream sstr;
 
-	int incomingLevel;
+	int msgLevel;
 	const void * currentSender;
 
 	mutable timeval _time;
@@ -362,10 +260,10 @@ public:
 	Logger & info(){ init(LOG_INFO); return *this; };
 
 
-	/// Send a short [INFO] preceeded with a time stamp.
+	/// Send a short [INFO] preceded with a time stamp.
 	Logger & timestamp(const std::string & label);
 
-	/// Send a longer [INFO] preceeded with a time stamp.
+	/// Send a longer [INFO] preceded with a time stamp.
 	Logger & timestamp();
 
 	/**

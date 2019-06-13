@@ -33,7 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-//#include <drain/imageops/RecursiveRepairerOp.h>
 #include <drain/imageops/DistanceTransformFillOp.h>
 #include <drain/image/File.h>
 
@@ -83,8 +82,10 @@ void CompositeAdd::exec() const {
 		resources.composite.dataSelector.setParameters(resources.select);
 		resources.select = "quantity=" + resources.composite.dataSelector.quantity;
 		//resources.select.clear(); //
+
+		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != resources.composite.dataSelector.quantity)){
-			mout.info() << "quantity selector changed, resetting accumulation array" << mout.endl;
+			mout.warn() << "quantity selector changed, resetting accumulation array" << mout.endl;
 			resources.composite.clear();
 			resources.composite.odim.quantity.clear();
 			resources.composite.odim.gain   = 0.0;

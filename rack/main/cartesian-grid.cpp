@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/util/Fuzzy.h>
+#include <drain/image/GeoFrame.h>
 
 #include <drain/image/File.h>
 //#include <drain/imageops/DistanceTransformFillOp.h>
@@ -60,24 +61,38 @@ void CartesianGrid::exec() const {
 
 	RackResources & resources = getResources();
 
-	Composite & composite = resources.composite;
+	// Composite & geoFrame = resources.geoFrame;
+	// drain::image::GeoFrame geoFrame(resources.composite);
+	drain::image::GeoFrame geoFrame;
 
-	if (!composite.isDefined()){
+	//if (!geoFrame.isDefined()){
 
-		mout.info() << "Defining (but not allocating) composite with input data specifications" << mout.endl;
+	mout.info() << "Defining (but not allocating) composite with input data specifications" << mout.endl;
+	/// Defining geoFrame is needed for calling  geoFrame.pix2deg(i,j,lon,lat) further below.
 
-		/// Defining composite is needed for calling  composite.pix2deg(i,j,lon,lat) further below.
+	const HI5TREE & cartesian = resources.cartesianHi5;
 
-		const HI5TREE & cartesian = resources.cartesianHi5;
+	CartesianODIM odim;
+	DataTools::getAttributes(cartesian, "dataset1", odim, true);
 
-		CartesianODIM odim;
-		DataTools::getAttributes(cartesian, "dataset1", odim, true);
-		drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
-		composite.setBoundingBoxD(bboxD);
-		composite.setGeometry(odim.xsize, odim.ysize);
-		composite.setProjection(odim.projdef);
-		//mout.warn() << "passed" << mout.endl;
+	drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+	if (bboxD.getArea() == 0.0){
+		mout.warn() << "empty bbox, returning" << mout.endl;
+		return;
 	}
+
+	geoFrame.setBoundingBoxD(bboxD);
+	geoFrame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+	geoFrame.setGeometry(odim.xsize, odim.ysize);
+
+	if (odim.projdef.empty()){
+		mout.warn() << "projdef missing, returning" << mout.endl;
+		return;
+	}
+
+	geoFrame.setProjection(odim.projdef);
+	// mout.warn() << "passed" << mout.endl;
+	// }
 
 	if ((resources.currentImage != & resources.grayImage) && (resources.currentImage != &resources.colorImage)){  // resources.grayImage.isEmpty()
 		//mout.error() << "Gray or color image not created yet, use --image " << mout.endl;
@@ -88,19 +103,20 @@ void CartesianGrid::exec() const {
 	double width = this->width;
 	if (width == 0.0)
 		width = 1.0;
-	//width = pow(latSpacing * lonSpacing, 0.25) / 100.0;
 
 	const bool RGB = (resources.currentImage == &resources.colorImage);
-
 	Image & img = RGB ? getResources().colorImage : getResources().grayImage;
 
 	const bool ALPHA = resources.currentImage->getAlphaChannelCount();
-
 	ImageFrame & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0);
 
-	const drain::Rectangle<double> & bboxD = composite.getBoundingBoxD();
-	const double lonResolution = static_cast<double>(composite.getFrameWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
-	const double latResolution = static_cast<double>(composite.getFrameHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
+	//const drain::Rectangle<double> & bboxD = geoFrame.getBoundingBoxD();
+	/*
+	const double lonResolution = static_cast<double>(geoFrame.getFrameWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
+	const double latResolution = static_cast<double>(geoFrame.getFrameHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
+	*/
+	const double lonResolution = static_cast<double>(img.getWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
+	const double latResolution = static_cast<double>(img.getHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
 
 	drain::FuzzyBell2<double> peak(0.0, width);
 	double lat, lon;
@@ -113,7 +129,7 @@ void CartesianGrid::exec() const {
 	const double fMaxAlpha = img.getEncoding().getTypeMax<double>();
 	for (size_t j = 0; j<img.getHeight(); ++j){
 		for (size_t i = 0; i<img.getWidth(); ++i){
-			composite.pix2deg(i,j,lon,lat);
+			geoFrame.pix2deg(i,j,lon,lat);
 			lonWeight = peak(lonResolution * (lon - lonSpacing*round(lon/lonSpacing)));
 			latWeight = peak(latResolution * (lat - latSpacing*round(lat/latSpacing)));
 			weight = std::max(lonWeight, latWeight);

@@ -59,16 +59,16 @@ namespace image
 /*!
 
  */
-//template <class T=double>
-
-
-
 class GeoFrame { //  See also
 
 public:
 
+	typedef unsigned int icoord_t;
+
 	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
 	GeoFrame(unsigned int width = 0, unsigned int height = 0);
+
+	// GeoFrame(const GeoFrame & gf);
 
 	//, unsigned int imageChannels=1,unsigned int alphaChannels=2);
 	virtual inline
@@ -317,6 +317,9 @@ public:
 
 protected:
 
+	int frameWidth;
+	int frameHeight;
+
 	/// Geographical scope in Radians.
 	drain::Rectangle<double> extentR;
 
@@ -331,8 +334,6 @@ protected:
 	double xScale;
 	double yScale;
 
-	int frameWidth; // size_t ?
-	int frameHeight;
 
 	/// Utility for deriving extent (degrees) required by input data
 	drain::Rectangle<double> dataExtentD;

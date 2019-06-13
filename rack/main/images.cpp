@@ -198,9 +198,15 @@ public:
 		// Create a copy (getResources().colorImage or getResources().grayImage), and point *img to it.
 		// Because getResources().currentImage is const, non-const *img is needed.
 		drain::image::Image & img = getModifiableImage(iSelector);
+		if (img.getGeometry().getVolume() == 0){
+			mout.warn() << "no image found with selector: "  << iSelector << mout.endl;
+			resources.dataOk = false;
+			return;
+		}
 
 		/// Add empty alphaSrc channel
 		img.setAlphaChannelCount(1);
+
 
 		mout.debug() << "image:"  << *resources.currentImage << mout.endl;
 		mout.debug() << "alphaSrc:"  <<  resources.currentImage->getAlphaChannel() << mout.endl;
@@ -401,13 +407,13 @@ public:
 			return;
 		}
 
-		cmdImage.imageSelector.setParameters(resources.select);
 		// resources.select.clear(); //  below
 
 		//if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
-		if (resources.currentGrayImage == NULL){  // TODO: remove this
+		if ((!resources.select.empty()) || (resources.currentGrayImage == NULL)){  // TODO: remove this
+			cmdImage.imageSelector.setParameters(resources.select);
 			mout.debug() << "determining current gray image" << mout.endl;
-			mout.debug(3) << cmdImage.imageSelector << mout.endl;
+			mout.debug(2) << cmdImage.imageSelector << mout.endl;
 			ODIMPath path;
 			cmdImage.imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 			mout.debug(1) << "path: '" << path << "'" << mout.endl;
@@ -415,8 +421,10 @@ public:
 			resources.currentImage     =   resources.currentGrayImage;
 		}
 
+		resources.select.clear();
+
 		if (resources.currentGrayImage->isEmpty()){
-			mout.note() << " current gray image is empty.";
+			mout.note() << "current gray image is empty.";
 			//return;
 		}
 
@@ -437,7 +445,8 @@ public:
 			// palettePath.parse("${palettePath}/palette-${what:quantity}.txt");
 
 
-			if (value == "default" || (resources.palette.empty() && value.empty())){
+			//if (value == "default" || (value.empty() && resources.palette.empty())){
+			if (value == "default" || value.empty()){
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
 				quantity = statusMap["what:quantity"].toStr();
 				mout.note() << "quantity=" << quantity << mout.endl;

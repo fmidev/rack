@@ -473,7 +473,7 @@ public:
 		parameters.reference("dst", pathDst = "", "/group/group2[:attr]");
 	};
 
-
+	// TODO: recognize attr,attr vs path,path
 	void exec() const {
 
 		drain::Logger mout(name, __FUNCTION__);
@@ -484,6 +484,7 @@ public:
 			return;
 		}
 
+
 		HI5TREE & dstRoot = *resources.currentHi5;
 
 		ODIMPath path1;
@@ -491,7 +492,7 @@ public:
 		// std::string attr1value; // debug
 		// std::string attr1type;// debug
 		hi5::Hi5Base::parsePath(pathSrc, path1, attr1); //, attr1value, attr1type);
-		mout.warn() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
+		mout.debug() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
 
 		/*
 		mout.warn() << "path:  " << path1 << mout.endl;
@@ -905,9 +906,13 @@ public:
 			const Command & d = it->second;
 			const ReferenceMap & params = d.getParameters();
 
-			ostr << "--" << key << ' ' << '\'';
-			params.getValues(ostr);
-			ostr << '\'' << '\n';
+			ostr << "--" << key << ' ';
+			if (!params.getKeyList().empty()){
+				ostr << "'";
+				params.getValues(ostr);
+				ostr << "'";
+			}
+			ostr << '\n';
 			//ostr << '\n';
 			// ostr << "Default values: ";
 			// params.getValues(ostr);
