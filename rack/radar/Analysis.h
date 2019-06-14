@@ -147,7 +147,7 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, Channel & dst) const {
 
-		drain::Logger mout(getImgLog(), this->name+"(FunctorOp)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
 		mout.debug() << "start" << mout.endl;
 
 		// const double dstMax = dst.scaling.getMax<double>();

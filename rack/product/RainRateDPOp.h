@@ -57,21 +57,31 @@ class RainRateDPOp: public PolarProductOp {
 public:
 
 	//RainRateDPOp(double a = 22.7, double b = 0.802) :
-	RainRateDPOp(double freezingLevel=10.0, double freezingLevelThickness=0.2, const std::string & dataThresholdParams="0.85:50.0:20.0:0.2:0.1", const std::string & dbzParams = "200.0:1.6:2000.0:2.0", const std::string & zzdrParams = "0.0122:0.820:-2.28", const std::string & kdpParams = "21.0:0.70", const std::string & kdpzdrParams = "29.7:0.89:-0.927") :
-		PolarProductOp("RainRateDP","Estimates on precipitation rate [mm/h] from dual-pol parameters."){ // Optional postprocessing: morphological closing.
+	RainRateDPOp() :
+		PolarProductOp("RainRateDP","Precip. rate [mm/h] from dual-pol using fuzzy thresholds. Alg. by Brandon Hickman"),
+		dbzRange(20.0, 50.0)
+		{ // Optional postprocessing: morphological closing.
 		//const std::string & dbzParams = "22.7:0.802:2000.0:2.0"
-		dataSelector.path = "data[0-9]+/?$";
-		//dataSelector.quantity = "^DBZH$";
-		dataSelector.quantity = "^(RHOHV|KDP|DBZH|ZDR|QIND)$";
+		dataSelector.quantity = "^(DBZH|RHOHV|KDP|ZDR|QIND)$";
 		dataSelector.count = 1;
 
-		parameters.reference("freezingLevel", this->freezingLevel = freezingLevel, "km");
+		odim.product = "SURF";
+		odim.quantity = "RATE";
+
+		parameters.reference("rhohv", rhohv = 0.85, "met");
+		parameters.reference("dbz", dbzRange.vect, "heavy:hail");
+		parameters.reference("kdp", kdp = 0.2, "heavy");
+		parameters.reference("zdr", zdr = 0.1, "heavy");
+
+
+		/*
 		parameters.reference("freezingLevelThickness", this->freezingLevelThickness = freezingLevelThickness, "km");
 		parameters.reference("dataThresholdParams", this->dataThreshodParams = dataThresholdParams, "Data limits used in decision tree when calculating rain rate. RHOHV meteorological target:DBZ hail/ice:DBZ heavy rain: KDP heavy rain: ZDR");
 		parameters.reference("dbzParams", this->dbzParams = dbzParams, "Coefficients in ...Marshall-Palmer");  //Marshall-Palmer
 		parameters.reference("kdpParams", this->kdpParams = kdpParams, "a, b in R = a * KDP^b");
 		parameters.reference("zzdrParams", this->zzdrParams = zzdrParams, "a, b and c in R = a * Z^b * ZDR^c");
 		parameters.reference("kdpzdrParams", this->kdpzdrParams = kdpzdrParams, "a, b and c in R = a * KDP^0.89 * ZDR^c");
+		 */
 
 		odim.product = "SURF";
 		// quantityMap.setQuantityDefaults(odim, "RATE", "S");
@@ -85,12 +95,12 @@ public:
 
 		// Later these...
 		// allowedEncoding.dereference("gain");
+		/*
 		allowedEncoding.clear();
 		allowedEncoding.reference("type", odim.type);
 		allowedEncoding.reference("gain", odim.gain);
 		allowedEncoding.reference("offset", odim.offset);
 		//allowedEncoding.reference("freeze", odim.freeze);
-		/*
 		allowedEncoding.reference("type", odim.type, "S");
 		allowedEncoding.reference("gain", odim.gain);
 		allowedEncoding.reference("offset", odim.offset);
@@ -115,6 +125,7 @@ public:
 	//void processSweep(const SweepSrc & src, ProductDst & dst) const;
 	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
+	/*
 	double freezingLevel;
 	double freezingLevelThickness;
 	std::string dbzParams;
@@ -122,10 +133,15 @@ public:
 	std::string kdpParams;
 	std::string kdpzdrParams;
 	std::string dataThreshodParams;
+	*/
 
 
-protected:
+// protected:
 
+	double rhohv;
+	drain::Range<double> dbzRange;
+	double kdp;
+	double zdr;
 
 
 };

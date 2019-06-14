@@ -50,6 +50,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "DataSelector.h"
 #include "DataTools.h"
+//#include "QuantityMap.h"
+
 
 using namespace drain::image;
 
@@ -343,6 +345,36 @@ public:
 		odim.offset = data.getScaling().offset;
 	}
 
+	/*
+	bool setQuantityDefaults(const std::string & quantity = "", const std::string & values = "") const {
+
+		drain::Logger mout("PlainData", __FUNCTION__);
+
+		const std::string & q = !quantity.empty() ? quantity : odim.quantity;
+
+		const bool typeSet = getQuantityMap().setQuantityDefaults(odim, q, values);
+
+		if (odim.quantity.empty()){
+			odim.quantity = q;
+		}
+
+		if (!typeSet){
+			mout.warn() << "conf for quantity=" << q << " [" << odim.type << "] not found" << mout.endl;
+		}
+		// Redesign all this... ?
+		data.setType(odim.type);
+		data.setScaling(odim.gain, odim.offset);
+
+		// Semi-kludge
+		if ((odim.quantity == "QIND") || (odim.quantity == "PROB")){
+			//dstData.data.setOptimalScale(0.0, 1.0);
+			data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
+		}
+
+		return typeSet;
+	}
+	*/
+
 	/// Sets dimensions of data array and metadata.
 	inline
 	void setGeometry(size_t cols, size_t rows){
@@ -566,6 +598,20 @@ public:
 		return getEmpty();
 
 	}
+
+	/// Creates (or overrides) data array for \c quantity and scales it
+	/**
+	 *	\param quantity -
+	 *	\param templateQuantity - predefined quantity the scaling of which is used in initialisation
+	 *	\param encodingParams (optional) - parameters overriding those of template quantity
+	 */
+	data_t & create(const std::string & quantity, const std::string & templateQuantity, const std::string & encodingParams) {
+		data_t & d = get(quantity);
+		d.setGeometry(0, 0); // in case existed already
+		//getQuantityMap().setQuantityDefaults(d, templateQuantity, encodingParams);
+		return d;
+	}
+
 
 	data_t & getFirstData() {
 

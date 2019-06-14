@@ -103,18 +103,6 @@ public:
 		//RackOp("RainRate",	"Computes rain rate [mm/h] from reflectance [dBZ].") {
 		PolarProductOp(__FUNCTION__,	"Estimates precipitation rate [mm/h] from reflectance [dBZ].") {
 
-		//parameters.reference("freezingLevel", this->freezingLevel = freezingLevel, "km");
-		//parameters.reference("freezingLevelThickness", this->freezingLevelThickness = freezingLevelThickness, "km");
-
-		/*
-			reference("z_ra", this->z_ra, z_ra);
-		reference("z_rb", this->z_rb, z_rb);
-		reference("z_sa", this->z_sa, z_sa);
-		reference("z_sb", this->z_sb, z_sb);
-		 */
-		//reference("type", odim.type, type);
-		//reference("gain", odim.gain, gain);
-
 		dataSelector.quantity = "^DBZH$";
 		dataSelector.count = 1;
 
@@ -125,42 +113,8 @@ public:
 		// target="S,0.0001,220"
 
 		odim.type = "S";
-		//odim.setTypeDefaults();
-		//odim.gain = 0.001;
-		//odim.offset = 0.0;
-
-		// Not supported.
-		/*
-		allowedEncoding.dereference("nbins");
-		allowedEncoding.dereference("nrays");
-		allowedEncoding.dereference("rscale");
-		*/
-		/*
-		allowedEncoding.reference("type", odim.type);
-		allowedEncoding.reference("gain", odim.gain);
-		allowedEncoding.reference("offset", odim.gain);
-		*/
-
-		//parameters.append(precip.parameters);
-		/*
-		parameters.reference("ar", rainFromZ.a);
-		parameters.reference("br", rainFromZ.b);
-		parameters.reference("as", snowFromZ.a);
-		parameters.reference("bs", snowFromZ.b);
-		*/
 	}
 
-	//PrecipitationZ precip;
-	// PrecipitationZ rainFromZ;
-
-	//double freezingLevel;
-	//double freezingLevelThickness;
-	/*
-	double z_ra;
-	double z_rb;
-	double z_sa;
-	double z_sb;
-	*/
 
 protected:
 

@@ -40,11 +40,13 @@ const std::string & Precipitation::getDescription() const {
 	if (descriptionExt.empty()){
 		std::stringstream s;
 		s << description;
+		/*
 		if (!presets.empty()){
 			s << "\n  Presets:";
 			for (std::map<std::string,std::string>::const_iterator it = presets.begin(); it != presets.end(); ++it)
 				s << "\n\t" << it->first << " => " << it->second;  // no trailing newline
 		}
+		*/
 		descriptionExt = s.str();
 	}
 	return descriptionExt;

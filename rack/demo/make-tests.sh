@@ -30,6 +30,8 @@ if [ "$1" == 'clean' ]; then
     exit 0
 fi
 
+rm -v *.hlp
+
 # Check that 'rack' is executable
 #rack > /dev/null
 RACK=${RACK:-`which rack`}

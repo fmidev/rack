@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/ConvOp.h"
 #include "product/RainRateOp.h"
 #include "product/RainRateDPOp.h"
-#include "product/RainRateDPSimpleOp.h"
+//#include "product/RainRateDPSimpleOp.h"
 //#include "product/RainRateZDROp.h"
 
 #include "product/DrawingOp.h"
@@ -114,7 +114,7 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 
 	static ProductAdapter<RainRateOp>    rainRate;
 	static ProductAdapter<RainRateDPOp> rainRateDP;
-	static ProductAdapter<RainRateDPSimpleOp> rainRateDPSimple;
+	// static ProductAdapter<RainRateDPSimpleOp> rainRateDPSimple;
 
 	static ProductAdapter<rack::FunctorOp> ftor;
 

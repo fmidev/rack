@@ -49,11 +49,11 @@ namespace rack
 using namespace drain::image;
 
 // These are contorolled directly from command line. See rack.cpp.
-PrecipitationZ RainRateOp::precipZrain(200.0, 1.60);
-PrecipitationZ RainRateOp::precipZsnow(223.0, 1.53); // Leinonen
-PrecipitationKDP RainRateOp::precipKDP;
+PrecipitationZ      RainRateOp::precipZrain(200.0, 1.60); // Marshall-Palmer
+PrecipitationZ      RainRateOp::precipZsnow(223.0, 1.53); // Leinonen
+PrecipitationKDP    RainRateOp::precipKDP;
 PrecipitationKDPZDR RainRateOp::precipKDPZDR;
-PrecipitationZZDR RainRateOp::precipZZDR;
+PrecipitationZZDR   RainRateOp::precipZZDR;
 
 FreezingLevel RainRateOp::freezingLevel;
 
@@ -76,6 +76,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	precipZsnow.initParameters();
 
 	const double maxQuality = dstQuality.odim.scaleInverse(1.0);
+	const double minQuality = dstQuality.odim.scaleInverse(0.5);
 	//const double undetectQuality = 0.75 * maxQuality;
 
 	//srcData.odim.toOStr(std::cout, ':', '{','}','\n');
@@ -112,7 +113,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	drain::FuzzyBell<double>     freezingLayer(0, 1000.0 * freezingLevel.thickness);
 
 	drain::FuzzyBell<double> rainQuality(2.0, 10.0, maxQuality); // QPE based on DBZH
-	drain::FuzzyBell<double> snowQuality(0.0, 5.0, maxQuality); // QPE based on DBZH
+	drain::FuzzyBell<double> snowQuality(0.0, 5.0,  maxQuality); // QPE based on DBZH
 
 	/// Check if elevation scan or a ground-level product.
 	const bool SCAN = (srcData.odim.product == "SCAN");
@@ -122,8 +123,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	const double elangleR = srcData.odim.getElangleR();
 
-	double rain, rainQ;
-	double snow, snowQ;
+	double rain; //, rainQ;
+	double snow; //, snowQ;
 
 	double rateEnc;
 	double quality;
@@ -154,19 +155,16 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		height = Geometry::heightFromEtaBeam(elangleR, beam) - relativeHeight;
 		pFreeze = freezingProbability(height);
 		pLiquid = 1.0 - pFreeze;
-		quality = 1.0 - 0.5*freezingLayer(height);
+		//quality = 1.0 - 0.5*freezingLayer(height);
+		quality = sqrt(pFreeze*pFreeze + pLiquid*pLiquid);
 
-		// if ((i&15) == 0) std::cout << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << std::endl;
+		if ((i&31) == 0)
+			mout.debug(10) << i << '\t' << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << mout.endl;
 
 		// TODO: use str height information (HEIGHT in PseudoCAPPI)
 
-		// if (i >= dstData.data.getWidth())
-		//	mout.error() << "overflow i=" << i << mout.endl;
 
 		for (int j = 0; j < srcData.odim.nrays; ++j) {
-			//if (j >= dstData.data.getHeight())
-			//	mout.error() << "overflow j=" << j << mout.endl;
-
 
 			dbz = srcData.data.get<double>(i,j);
 			if (dbz != srcData.odim.nodata){
@@ -174,8 +172,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 					dbz = srcData.odim.scaleForward(dbz);
 					rain = RainRateOp::precipZrain.rainRate(dbz); //, pFreeze);
 					snow = RainRateOp::precipZsnow.rainRate(dbz); //, pFreeze);
-					rainQ = rainQuality(rain);
-					snowQ = snowQuality(snow);
+					//rainQ = rainQuality(rain);
+					//snowQ = snowQuality(snow);
 
 					rateEnc = dstData.odim.scaleInverse(pLiquid*rain + pFreeze*snow);
 					if (rateEnc < dstMin){
@@ -191,11 +189,12 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 						dstQuality.data.put(i,j, quality);
 					}
 					dstQuality.data.put(i,j, quality*maxQuality);
+					//dstQuality.data.putScaled(i, j);
 					//dstQuality.data.put(i,j, 250.0);
 				}
 				else {
 					dstData.data.put(i,j, dstData.odim.undetect);
-					dstQuality.data.put(i,j, 0);
+					dstQuality.data.put(i,j, minQuality);
 				}
 			}
 			else

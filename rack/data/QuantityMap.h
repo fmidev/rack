@@ -151,6 +151,9 @@ public:
 
 	///
 	/**
+	 *
+	 *  \tparam D - data source type (PolarSrc, CartesianDst, ...)
+	 *
 	 *  \param quantity - the quantity according to which the encoding will be set.
 	 *  \param values - str values, comma-separated
 

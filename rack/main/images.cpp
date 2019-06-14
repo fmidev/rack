@@ -238,8 +238,8 @@ public:
 static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
 
 
-
-// NEW! Adds alpha channel containing current data.
+// Adds alpha channel containing current data.
+// NEW!
 class CmdImageTransp : public CmdImageAlphaBase {
 
 public:
@@ -464,7 +464,7 @@ public:
 				filename = s.str();
 			}
 
-			mout.warn() << "filename=" << filename << mout.endl;
+			mout.debug() << "filename=" << filename << mout.endl;
 
 			ifstr.open(filename.c_str(), std::ios::in);
 			if (!ifstr.is_open()){
