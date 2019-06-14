@@ -83,7 +83,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>rack</b></li><li class="navelem"><a class="el" href="classrack_1_1DataTools.html">DataTools</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacerack.html">rack</a></li><li class="navelem"><a class="el" href="classrack_1_1DataTools.html">DataTools</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -102,10 +102,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ec067eb5baf907e1c573648e04c381d"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
-<tr class="memitem:a8ec067eb5baf907e1c573648e04c381d"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a8ec067eb5baf907e1c573648e04c381d">getAttributes</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const std::string &amp;path, M &amp;attributes, bool updateOnly=false)</td></tr>
-<tr class="memdesc:a8ec067eb5baf907e1c573648e04c381d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses upward in hierachy to find the value of the given <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products). ">PolarODIM</a> where, what, or how attribute.  <a href="#a8ec067eb5baf907e1c573648e04c381d">More...</a><br /></td></tr>
-<tr class="separator:a8ec067eb5baf907e1c573648e04c381d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a338fbf574ccd7f68acf36cebbaf7edc0"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
+<tr class="memitem:a338fbf574ccd7f68acf36cebbaf7edc0"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a338fbf574ccd7f68acf36cebbaf7edc0">getAttributes</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;path, M &amp;attributes, bool updateOnly=false)</td></tr>
+<tr class="memdesc:a338fbf574ccd7f68acf36cebbaf7edc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses upward in hierachy to find the value of the given <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products). ">PolarODIM</a> where, what, or how attribute.  <a href="#a338fbf574ccd7f68acf36cebbaf7edc0">More...</a><br /></td></tr>
+<tr class="separator:a338fbf574ccd7f68acf36cebbaf7edc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afccb18d6cc23f6f3ab3bd16b73ab9c12"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#afccb18d6cc23f6f3ab3bd16b73ab9c12">updateAttributes</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;attributes)</td></tr>
 <tr class="memdesc:afccb18d6cc23f6f3ab3bd16b73ab9c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups.  <a href="#afccb18d6cc23f6f3ab3bd16b73ab9c12">More...</a><br /></td></tr>
 <tr class="separator:afccb18d6cc23f6f3ab3bd16b73ab9c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,7 +129,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordina
 <div class="textblock"><p>Tool for selecting datasets based on paths, quantities and min/max elevations. </p>
 <p>Applies <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> in matching. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a8ec067eb5baf907e1c573648e04c381d"></a>
+<a class="anchor" id="a338fbf574ccd7f68acf36cebbaf7edc0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -145,7 +145,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordina
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
@@ -183,7 +183,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordina
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1DataTools.html#afccb18d6cc23f6f3ab3bd16b73ab9c12" title="Copies values of what , where and how attributes to internal attributes down to data[n] groups...">updateAttributes()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1DataTools.html#afccb18d6cc23f6f3ab3bd16b73ab9c12" title="Copies values of what , where and how attributes to internal attributes down to data[n] groups...">updateAttributes()</a> template &lt;class m&gt;=""&gt; static void getAttributesOLD(const HI5TREE &amp;src, const std::string &amp; path, M &amp; attributes, bool updateOnly = false); </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['src_5ft',['src_t',['../classrack_1_1ProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb',1,'rack::ProductOp::src_t()'],['../classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6',1,'rack::RadarDataPicker::src_t()']]]
+  ['pdata_5fsrc_5ft',['pdata_src_t',['../classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db',1,'rack::RadarAccumulator']]],
+  ['polardst',['PolarDst',['../namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0',1,'rack']]],
+  ['polarsrc',['PolarSrc',['../namespacerack.html#a24649d611c860b4bc50a8f3444240cc6',1,'rack']]]
 ];

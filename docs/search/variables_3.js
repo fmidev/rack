@@ -18,6 +18,7 @@ var searchData=
   ['devaltitude',['devAltitude',['../classrack_1_1BiometOp.html#af877fbc267569e9c4300844dbdc94044',1,'rack::BiometOp']]],
   ['diag',['DIAG',['../classdrain_1_1image_1_1DistanceModel.html#afda80d11009b257012757c5d4d7f9ebd',1,'drain::image::DistanceModel']]],
   ['distancefunction',['distanceFunction',['../classdrain_1_1Som.html#a282bd9da4988a89b9e2f89f4e11458ee',1,'drain::Som']]],
+  ['dotfileextension',['dotFileExtension',['../namespacerack.html#aa7c7d1bbd875a2b8fc7d4f39fce58929',1,'rack']]],
   ['dstweight',['dstWeight',['../classdrain_1_1image_1_1OpticalFlowCore.html#ab42b55ed1704b2203cf869e6479357f2',1,'drain::image::OpticalFlowCore']]],
   ['dt',['Dt',['../classdrain_1_1image_1_1OpticalFlowCore1.html#a9f4dd89de55b694fec77651703723baf',1,'drain::image::OpticalFlowCore1']]],
   ['dummy',['dummy',['../classdrain_1_1Tree.html#ad41f42d7d9152733eb036f420c6804b1',1,'drain::Tree']]],

@@ -6,6 +6,7 @@ var searchData=
   ['allowedencoding',['allowedEncoding',['../classrack_1_1ProductBase.html#abe4ba6efd37271853e5332daed5fcd6b',1,'rack::ProductBase']]],
   ['appendresults',['appendResults',['../classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a',1,'rack::ProductBase']]],
   ['array',['ARRAY',['../classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a',1,'rack::ODIMPathElem']]],
+  ['arrayfileextension',['arrayFileExtension',['../namespacerack.html#a065c43967b089b314d28001b53da956a',1,'rack']]],
   ['arrayseparator',['arraySeparator',['../classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMap']]],
   ['attribute_5fgroups',['ATTRIBUTE_GROUPS',['../classrack_1_1ODIMPathElem.html#a91088dff85a58e36fa01ec17e5205629',1,'rack::ODIMPathElem']]],
   ['attributegroups',['attributeGroups',['../classrack_1_1EncodingODIM.html#a19c5a3a5e9d4e4dabf1e1a8102cbacc5',1,'rack::EncodingODIM']]],

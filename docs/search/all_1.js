@@ -46,6 +46,7 @@ var searchData=
   ['applyoperator',['applyOperator',['../classrack_1_1BirdOp.html#a1925aaac3b21776eb00d9f075c1b390e',1,'rack::BirdOp']]],
   ['areageometry',['AreaGeometry',['../classdrain_1_1image_1_1AreaGeometry.html',1,'drain::image']]],
   ['array',['ARRAY',['../classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a',1,'rack::ODIMPathElem']]],
+  ['arrayfileextension',['arrayFileExtension',['../namespacerack.html#a065c43967b089b314d28001b53da956a',1,'rack']]],
   ['arrayseparator',['arraySeparator',['../classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMap']]],
   ['assigncastable',['assignCastable',['../classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a',1,'drain::Castable']]],
   ['assigncontainer',['assignContainer',['../classdrain_1_1Castable.html#a821dd5d996f20fa95d327b5bfeffe403',1,'drain::Castable']]],

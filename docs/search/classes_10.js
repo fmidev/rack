@@ -18,7 +18,6 @@ var searchData=
   ['radarwindowsoftmax',['RadarWindowSoftMax',['../classrack_1_1RadarWindowSoftMax.html',1,'rack']]],
   ['radarwindowstddev',['RadarWindowStdDev',['../classrack_1_1RadarWindowStdDev.html',1,'rack']]],
   ['rainratedpop',['RainRateDPOp',['../classrack_1_1RainRateDPOp.html',1,'rack']]],
-  ['rainratedpsimpleop',['RainRateDPSimpleOp',['../classrack_1_1RainRateDPSimpleOp.html',1,'rack']]],
   ['rainrateop',['RainRateOp',['../classrack_1_1RainRateOp.html',1,'rack']]],
   ['range',['Range',['../classdrain_1_1Range.html',1,'drain']]],
   ['range_3c_20double_20_3e',['Range&lt; double &gt;',['../classdrain_1_1Range.html',1,'drain']]],

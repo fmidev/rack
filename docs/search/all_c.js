@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['label',['label',['../classdrain_1_1image_1_1PaletteEntry.html#a1dd28f5ea7b5b0780013e960944ddaa0',1,'drain::image::PaletteEntry']]],
   ['laplacehorzop',['LaplaceHorzOp',['../classdrain_1_1image_1_1LaplaceHorzOp.html',1,'drain::image']]],
   ['laplaceop',['LaplaceOp',['../classdrain_1_1image_1_1LaplaceOp.html',1,'drain::image']]],
   ['laplacevertop',['LaplaceVertOp',['../classdrain_1_1image_1_1LaplaceVertOp.html',1,'drain::image']]],
@@ -12,7 +13,9 @@ var searchData=
   ['lineop',['LineOp',['../classrack_1_1LineOp.html#abbf7557788dd825f4f8003501b652d2f',1,'rack::LineOp']]],
   ['link',['link',['../classdrain_1_1Referencer.html#aaf1ccd53fcd7ad455dbc730eecc83325',1,'drain::Referencer::link(F &amp;p)'],['../classdrain_1_1Referencer.html#ad825c88f505701be699e1180ba60b349',1,'drain::Referencer::link(F *p)']]],
   ['linkpalette',['linkPalette',['../classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81',1,'hi5::Hi5Base']]],
-  ['load',['load',['../classdrain_1_1image_1_1Palette.html#acc2ebbb4a5020535323a68d9f2778b7d',1,'drain::image::Palette::load(std::ifstream &amp;ifstr)'],['../classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01',1,'drain::image::Palette::load(const std::string &amp;filename)']]],
+  ['load',['load',['../classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01',1,'drain::image::Palette']]],
+  ['loadjson',['loadJSON',['../classdrain_1_1image_1_1Palette.html#a22349eb538b9dfebf96202d2892dc1e4',1,'drain::image::Palette']]],
+  ['loadtxt',['loadTXT',['../classdrain_1_1image_1_1Palette.html#ac4e4ee57e63e62c7ae08607b097cf82c',1,'drain::image::Palette']]],
   ['location',['location',['../classdrain_1_1image_1_1Window.html#a2f7356e1b6ebe8c2b82c33e418e4368b',1,'drain::image::Window']]],
   ['log',['Log',['../classdrain_1_1Log.html',1,'drain']]],
   ['log',['Log',['../classdrain_1_1Log.html#a0a1f0c06dafd926759fb98fdbda7c143',1,'drain::Log']]],

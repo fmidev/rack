@@ -39,7 +39,7 @@
 <area shape="rect" id="node40" href="$classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="270,857,439,884"/>
 <area shape="rect" id="node41" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="464,857,587,884"/>
 <area shape="rect" id="node42" href="$classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="57,857,111,884"/>
-<area shape="rect" id="node43" href="$classdrain_1_1Dictionary.html" title="Dictionary\&lt; T \&gt;" alt="" coords="27,768,141,795"/>
+<area shape="rect" id="node43" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="27,768,141,795"/>
 <area shape="rect" id="node45" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="219,1163,333,1189"/>
 <area shape="rect" id="node46" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="185,963,242,989"/>
 <area shape="rect" id="node48" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="755,1304,850,1331"/>

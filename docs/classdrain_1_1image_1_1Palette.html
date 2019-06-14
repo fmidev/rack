@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1Palette-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -109,19 +110,23 @@ Collaboration diagram for Palette:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc2ebbb4a5020535323a68d9f2778b7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc2ebbb4a5020535323a68d9f2778b7d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acc2ebbb4a5020535323a68d9f2778b7d">load</a> (std::ifstream &amp;ifstr)</td></tr>
-<tr class="memdesc:acc2ebbb4a5020535323a68d9f2778b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
-<tr class="separator:acc2ebbb4a5020535323a68d9f2778b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c21edd9d285c925527e3209fca54b01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01">load</a> (const std::string &amp;filename)</td></tr>
-<tr class="memdesc:a6c21edd9d285c925527e3209fca54b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file.  <a href="#a6c21edd9d285c925527e3209fca54b01">More...</a><br /></td></tr>
+<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
+<tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.  <a href="#ad20897c5c8bd47f5d4005989bead0e55">More...</a><br /></td></tr>
+<tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c21edd9d285c925527e3209fca54b01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c21edd9d285c925527e3209fca54b01"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01">load</a> (const std::string &amp;filename)</td></tr>
+<tr class="memdesc:a6c21edd9d285c925527e3209fca54b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
 <tr class="separator:a6c21edd9d285c925527e3209fca54b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78690f3b43d4ac1a36275e68f046a6d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78690f3b43d4ac1a36275e68f046a6d7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a78690f3b43d4ac1a36275e68f046a6d7">convertJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json, int depth=0)</td></tr>
-<tr class="memdesc:a78690f3b43d4ac1a36275e68f046a6d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
-<tr class="separator:a78690f3b43d4ac1a36275e68f046a6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d7736529ea585cdfe23bd37a6e61f22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d7736529ea585cdfe23bd37a6e61f22"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasAlpha</b> () const </td></tr>
+<tr class="memitem:ac4e4ee57e63e62c7ae08607b097cf82c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4e4ee57e63e62c7ae08607b097cf82c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ac4e4ee57e63e62c7ae08607b097cf82c">loadTXT</a> (std::ifstream &amp;ifstr)</td></tr>
+<tr class="memdesc:ac4e4ee57e63e62c7ae08607b097cf82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
+<tr class="separator:ac4e4ee57e63e62c7ae08607b097cf82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22349eb538b9dfebf96202d2892dc1e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22349eb538b9dfebf96202d2892dc1e4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a22349eb538b9dfebf96202d2892dc1e4">loadJSON</a> (std::ifstream &amp;ifstr)</td></tr>
+<tr class="memdesc:a22349eb538b9dfebf96202d2892dc1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
+<tr class="separator:a22349eb538b9dfebf96202d2892dc1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d7736529ea585cdfe23bd37a6e61f22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a2d7736529ea585cdfe23bd37a6e61f22">hasAlpha</a> () const </td></tr>
+<tr class="memdesc:a2d7736529ea585cdfe23bd37a6e61f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object.  <a href="#a2d7736529ea585cdfe23bd37a6e61f22">More...</a><br /></td></tr>
 <tr class="separator:a2d7736529ea585cdfe23bd37a6e61f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06f5e6d30629ef17533a5ee8ef25cd40"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06f5e6d30629ef17533a5ee8ef25cd40"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a06f5e6d30629ef17533a5ee8ef25cd40">getLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const </td></tr>
@@ -142,6 +147,13 @@ std::map&lt; std::string, <a class="el" href="classdrain_1_1image_1_1PaletteEntr
 <tr class="memdesc:ac315a0388f57b715a78a1a9426428738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Certain intensities (before scaling with gain and offset) may require special treatment. <br /></td></tr>
 <tr class="separator:ac315a0388f57b715a78a1a9426428738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a1c6140558b7c77daa3339bc6b392ebf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c6140558b7c77daa3339bc6b392ebf5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a1c6140558b7c77daa3339bc6b392ebf5">convertJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json, int depth)</td></tr>
+<tr class="memdesc:a1c6140558b7c77daa3339bc6b392ebf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
+<tr class="separator:a1c6140558b7c77daa3339bc6b392ebf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a6a99ea34171f66695c231688690c29ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a99ea34171f66695c231688690c29ce"></a>
@@ -152,26 +164,34 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b
 <tr class="separator:aaefc21e93721a9ded30c86ea863a2c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6c21edd9d285c925527e3209fca54b01"></a>
+<a class="anchor" id="a2d7736529ea585cdfe23bd37a6e61f22"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void load </td>
+          <td class="memname">bool hasAlpha </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Loads a palette from text file. </p>
-<p>Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.</p>
-<p>Treats an RGB truecolor image of N pixels as as a palette of N colors.</p><ul>
-<li></li>
-<li></li>
-</ul>
+<p>Creates a palette from json object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">json</td><td>- <a class="el" href="classdrain_1_1JSON.html">JSON</a> structure combining optional <code>metadata</code> and compulsory <code>entries</code> section. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -192,6 +212,27 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b
 <p>Extend palette to contain n entries ("colors") by adding intermediate entries ("colors") </p>
 <p>Number of colors.</p>
 <p>New number of entries. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad20897c5c8bd47f5d4005989bead0e55"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. </p>
+<p>Treats an RGB truecolor image of N pixels as as a palette of N colors.</p><ul>
+<li></li>
+<li></li>
+</ul>
 
 </div>
 </div>

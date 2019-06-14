@@ -6,6 +6,7 @@ var searchData=
   ['writegrouptodot',['writeGroupToDot',['../classrack_1_1DataOutput.html#a78e6162f48e0c5621e088b12660253bc',1,'rack::DataOutput']]],
   ['writeheader',['writeHeader',['../structdrain_1_1image_1_1SamplePicker.html#aff523114b0925df5aba08fce095a5dfc',1,'drain::image::SamplePicker::writeHeader()'],['../classrack_1_1PolarDataPicker.html#aff523114b0925df5aba08fce095a5dfc',1,'rack::PolarDataPicker::writeHeader()'],['../classrack_1_1CartesianDataPicker.html#aff523114b0925df5aba08fce095a5dfc',1,'rack::CartesianDataPicker::writeHeader()']]],
   ['writehow',['writeHow',['../classrack_1_1DetectorOp.html#acc77ee63a77db67b3336f8bcd517ef29',1,'rack::DetectorOp']]],
+  ['writeimage',['WriteImage',['../namespacerack.html#a428451d7ecf5108516078e123149c7a1',1,'rack']]],
   ['writeindexed',['writeIndexed',['../classdrain_1_1image_1_1FilePng.html#ab63cf05f0d5e2a011aca6e9019b20217',1,'drain::image::FilePng']]],
   ['writetext',['writeText',['../classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1',1,'hi5::Hi5Base::writeText(const HI5TREE &amp;src, const std::list&lt; HI5TREE::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#a222ce0bbf8b3d3727ab9fc4662f93cbd',1,'hi5::Hi5Base::writeText(const HI5TREE &amp;src, std::ostream &amp;ostr=std::cout)']]],
   ['writetodot',['writeToDot',['../classrack_1_1DataOutput.html#af177b47c7701ab0c5adbcb10f51fefa6',1,'rack::DataOutput']]]

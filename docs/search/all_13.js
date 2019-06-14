@@ -2,6 +2,7 @@ var searchData=
 [
   ['sample',['sample',['../classdrain_1_1image_1_1Sampler.html#af4992ab8ef748da2e95537d7c83f60a9',1,'drain::image::Sampler']]],
   ['sampledata',['sampleData',['../classrack_1_1CmdOutputFile.html#aaae9c08839883200707947b2b403726e',1,'rack::CmdOutputFile']]],
+  ['samplefileextension',['sampleFileExtension',['../namespacerack.html#ae24579491e45b3ad1f1b50479a3119fc',1,'rack']]],
   ['samplepicker',['SamplePicker',['../structdrain_1_1image_1_1SamplePicker.html',1,'drain::image']]],
   ['samplepicker',['SamplePicker',['../structdrain_1_1image_1_1SamplePicker.html#a16e9affb63d471857edaff45e055aa72',1,'drain::image::SamplePicker']]],
   ['sampler',['Sampler',['../classdrain_1_1image_1_1Sampler.html',1,'drain::image']]],

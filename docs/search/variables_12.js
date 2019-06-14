@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['samplefileextension',['sampleFileExtension',['../namespacerack.html#ae24579491e45b3ad1f1b50479a3119fc',1,'rack']]],
   ['scale',['scale',['../classdrain_1_1image_1_1ImageScaling.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::ImageScaling::scale()'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale()'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale()'],['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE()']]],
   ['scalefinal',['scaleFinal',['../classdrain_1_1Functor.html#a9708cfcfdc71fafc417eab90771bec18',1,'drain::Functor']]],
   ['scaling',['scaling',['../classdrain_1_1image_1_1Encoding.html#a52756a4a36f1c76ea6cfb4739d24e498',1,'drain::image::Encoding']]],
