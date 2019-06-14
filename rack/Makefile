@@ -31,7 +31,7 @@ install:
 #	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 make.tgz: Release/
-	tar cvzf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 
 tests:
