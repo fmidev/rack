@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // Algorithm is based on the study made by Brandon Hickman from The University Of Helsinki
 
 #include <drain/util/Fuzzy.h>
+#include <drain/util/FunctorPack.h>
 //#include <drain/image/SlidingWindowMedianOp.h>
 #include <drain/image/File.h>
 
@@ -53,7 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-using namespace drain::image;
+//using namespace drain::image;
 
 namespace rack {
 
@@ -109,7 +110,8 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	qmap.setQuantityDefaults(heavyDBZH, "PROB");
 	stepsoid.functor.set(dbzRange.min, +5.0);
 	stepsoid.process(srcDBZH.data, heavyDBZH.data);
-	// DBZH / hail
+	heavyDBZH.data.setPhysicalScale(0.0, 1.0);
+// DBZH / hail
 	PlainData<PolarDst> & hailDBZH = dstProduct.get("DBZH_HAIL");
 	qmap.setQuantityDefaults(hailDBZH, "PROB");
 	stepsoid.functor.set(dbzRange.max, +5.0);
@@ -145,10 +147,18 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 		stepsoid.odimSrc = srcKDP.odim;
 		stepsoid.functor.set(kdp, 0.25);
 		stepsoid.process(srcKDP.data, heavyKDP.data);
+		heavyKDP.data.setPhysicalScale(0.0, 1.0);
 	}
-	// ..
 
-
+	// KDP x DBZH
+	PlainData<PolarDst> & heavyKDPxDBZH = dstProduct.get("KDPxDBZH_FUZZY");
+	qmap.setQuantityDefaults(heavyKDPxDBZH, "PROB");
+	heavyKDPxDBZH.setGeometry(geometry);
+	drain::image::BinaryFunctorOp<MultiplicationFunctor> mul;
+	mout.warn() << heavyDBZH.data     <<  mout.endl;
+	mout.warn() << heavyKDP.data.getChannel(0)      <<  mout.endl;
+	mout.warn() << heavyKDPxDBZH.data <<  mout.endl;
+	mul.traverseChannel(heavyDBZH.data, heavyKDP.data.getChannel(0), heavyKDPxDBZH.data);
 
 }
 

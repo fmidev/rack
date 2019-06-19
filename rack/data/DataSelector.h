@@ -470,10 +470,10 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 					quantityOK = quantityRE.test(d.properties["what:quantity"]);
 					if (quantityOK){
 						quantityGroupOK = true;
-						mout.debug() << it->first << ":\t found quantity '" << d.properties["what:quantity"] << "'" << mout.endl;
+						mout.debug(1) << it->first << ":\t found quantity '" << d.properties["what:quantity"] << "'" << mout.endl;
 					}
 					else {
-						mout.debug(1) << it->first << ":\t quantity '" << quantity << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
+						mout.debug(2) << it->first << ":\t quantity '" << quantity << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
 						// allow sub-QIND, so do not: continue;
 					}
 				}

@@ -729,7 +729,7 @@ public:
 			mout.warn() << "RegExp support temporarily supressed from this version" << mout.endl;
 			return;
 		}
-
+		mout.warn() << "value: " << value << mout.endl;
 		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
 
 		//DataTools::updateAttributes(*(resources.currentHi5));
@@ -1009,7 +1009,7 @@ public:
 			ostr << "\n}\n";
 		}
 
-		std::cout << std::setw(10) << "Viola!" << std::endl;
+		//std::cout << std::setw(10) << "Voila!" << std::endl;
 	};
 
 };
@@ -1214,12 +1214,13 @@ public:
 /// Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) ODIM properties to be assigned in current H5 structure.
 /**
  *   ODIM properties can be set with
- *   - \c --/dataset2/data2:
+ *   - \c --/dataset2/data2/what:quantity=DBZH
  *
  */
 class CmdDefaultHandler : public BasicCommand {
-public: //re
-	//std::string value;
+public:
+
+
 	CmdDefaultHandler() : BasicCommand(getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};  // getRegistry().DEFAULT_HANDLER, 0,
 
 	virtual  //?
@@ -1238,6 +1239,7 @@ public: //re
 		}
 		else if (odimSyntax.execute(params) == 0) {
 			//mout.warn() << "Recognised --/ hence running applyODIM" << mout.endl;
+			mout.debug(1) << "assign: " << odimSyntax.result[1] << mout.endl;
 			getRegistry().run("setODIM", odimSyntax.result[1]);
 		}
 		else {

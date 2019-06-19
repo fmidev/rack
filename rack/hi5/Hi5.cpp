@@ -273,12 +273,13 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 				// Scan, but do not update anchor (iEnd)
 			}
 			else if (c == '['){
+				// end reading value, proceed to read type
 				attrValue = s.substr(iStart, iEnd-iStart);
 				mode = ATTR_TYPE;
 				iStart = i+1;
 			}
 			else if (END){
-				attrValue = s.substr(iStart, iEnd-iStart);
+				attrValue = s.substr(iStart, (iEnd+1)-iStart);
 				return;
 			}
 			else {
@@ -313,6 +314,7 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 
 void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
+	drain::Logger mout("Hi5Base", __FUNCTION__);
 
 	/*
 	const size_t i = line.find(':');
@@ -341,6 +343,13 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 	std::string attrType;
 
 	Hi5Base::parsePath(line, path, attrKey, attrValue, attrType);
+
+	mout.warn();
+	mout << "path="      << path      << '\n';
+	mout << "attrKey="   << attrKey   << '\n';
+	mout << "attrValue=" << attrValue << '\n';
+	mout << "attrType="  << attrType  << '\n';
+	mout << mout.endl;
 
 	/// Create the node always
 	NodeHi5 & n = dst(path).data;

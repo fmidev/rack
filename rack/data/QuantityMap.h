@@ -154,9 +154,9 @@ public:
 	 *
 	 *  \tparam D - data source type (PolarSrc, CartesianDst, ...)
 	 *
-	 *  \param quantity - the quantity according to which the encoding will be set.
-	 *  \param values - str values, comma-separated
-
+	 *  \param quantity - the quantity according to which the encoding will be set; if empty, current quantity will be used
+	 *  \param values   - comma-separated settings to override default values
+	 *
 	 *  \return - true, if type could be set / derived
 	 */
 	template <class D>
@@ -169,7 +169,12 @@ public:
 		const bool typeSet = setQuantityDefaults(dstData.odim, q, values);
 
 		if (dstData.odim.quantity.empty()){
-			dstData.odim.quantity = q;
+			if (!q.empty()){
+				dstData.odim.quantity = q;
+			}
+			else {
+				mout.warn() << "quantity neither given nor set already" << mout.endl;
+			}
 		}
 
 		if (!typeSet){
@@ -183,6 +188,11 @@ public:
 			//dstData.data.setOptimalScale(0.0, 1.0);
 			dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
+
+		if (dstData.data.getName().empty())
+			dstData.data.setName(dstData.odim.quantity);
+
+		mout.debug(1) << "final scaling for " << dstData.odim.quantity << '[' << quantity << ']' << dstData.data.getScaling() << mout.endl;
 
 		return typeSet;
 	}

@@ -174,7 +174,11 @@ void ImageOpRacklet::exec() const {
 
 			}
 
-			mout.note() << "using src: [" << dit->first << "] (dst: [" << dstQuantity << "])" << mout.endl;
+			if (NEW_QUANTITY)
+				mout.note() << "quantities: src=" << dit->first << " =>  dst=" << dstQuantity << mout.endl;
+			else
+				mout.note() << "quantity: " << dit->first << mout.endl; // "] (dst: [" << dstQuantity << "])" <<
+
 
 			srcTray.appendImage(srcData.data);
 			dstTray.appendImage(dstData.data);
@@ -214,7 +218,7 @@ void ImageOpRacklet::exec() const {
 				Data<dst_t> & dstData = NEW_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 
 				if (srcData.hasQuality()){
-					mout.note() << "using quantity[" << dit->first << "] specific quality data" << mout.endl;
+					mout.info() << "using quantity[" << dit->first << "] specific quality data" << mout.endl;
 
 					PlainData<dst_t> & srcQuality = srcData.getQualityData();
 					//mout.note() << "name: " << srcQuality.data.getName() << mout.endl;
@@ -234,7 +238,7 @@ void ImageOpRacklet::exec() const {
 				}
 				else if (DATASET_QUALITY) { // if NEW_QUANTITY, dstQuality will be local
 
-					mout.note() << "using dataset specific quality data: " << *it << mout.endl;
+					mout.info() << "using dataset specific quality data: " << *it << mout.endl;
 
 					PlainData<dst_t> & srcQuality = dstDataSet.getQualityData();
 					PlainData<dst_t> & dstQuality = NEW_QUANTITY ? dstData.getQualityData() : srcQuality;
@@ -260,7 +264,7 @@ void ImageOpRacklet::exec() const {
 		}
 		else if (DATASET_QUALITY){ // ...only.
 
-			mout.note() << *it << " has dataset-level quality data (only)"  << mout.endl;
+			mout.info() << *it << " has dataset-level quality data (only)"  << mout.endl;
 
 			PlainData<dst_t> & srcQuality = dstDataSet.getQualityData();
 

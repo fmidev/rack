@@ -137,7 +137,8 @@ bool ODIMPathElem::set(const std::string &s){
 
 	//std::cout << "OTHER: " << prefix << (int)IS_INDEXED << '\n';
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
-	this->str = prefix;
+	//this->str = prefix;
+	this->str = s;
 
 	mout.note() << "non-standard path element: " << *this << mout.endl;
 

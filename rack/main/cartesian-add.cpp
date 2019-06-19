@@ -81,7 +81,7 @@ void CompositeAdd::exec() const {
 		const std::string quantityOrig(resources.composite.dataSelector.quantity);
 		resources.composite.dataSelector.setParameters(resources.select);
 		resources.select = "quantity=" + resources.composite.dataSelector.quantity;
-		//resources.select.clear(); //
+		resources.select.clear(); // PROBLEMS HERE?
 
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != resources.composite.dataSelector.quantity)){
