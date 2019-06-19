@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "MagickDrain.h"
 #include "FilePng.h"
+#include "FilePnm.h"
 
 #include <string>
 
@@ -56,12 +57,34 @@ public:
 	//virtual ~File();
 	inline
 	static void read(Image &img, const std::string &path){
-		FilePng::read(img, path);
+
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		if (FilePng::fileNameRegExp.test(path)){
+			FilePng::read(img, path);
+		}
+		else if (FilePnm::fileNameRegExp.test(path)){
+			FilePnm::read(img, path);
+		}
+		else {
+			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+			FilePng::read(img, path);
+		}
 	}
 
 	inline
 	static void read(ImageFrame &img, const std::string &path){
-		FilePng::read(img, path);
+
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		if (FilePng::fileNameRegExp.test(path)){
+			FilePng::read(img, path);
+		}
+		else if (FilePnm::fileNameRegExp.test(path)){
+			FilePnm::read(img, path);
+		}
+		else {
+			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+			FilePng::read(img, path);
+		}
 	}
 
 	template <class T>
