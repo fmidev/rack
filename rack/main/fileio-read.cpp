@@ -84,8 +84,9 @@ void CmdInputFile::exec() const {
 		if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
 			//resources.setSource(*resources.currentHi5, *this); wronk
-		}
-		else if (pngFileExtension.test(this->value)){
+		}  //
+		else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
+			//else if (drain::image::FilePng::fileNameRegExp.test(this->value) || drain::image::FilePnm::fileNameRegExp.test(this->value)){
 			readImageFile(fullFilename);
 		}
 		else if (textFileExtension.test(this->value))
@@ -587,14 +588,13 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	if (dataElem.getIndex() == 0)
 		dataElem.index = 1;
 
-	mout.warn() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
+	mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
 	if (!resources.inputHi5[dataSetElem][dataElem]["data"].data.dataSet.isEmpty()){
 		mout.debug() << "Path " << dataSetElem << '>' << dataElem << "/data contains data already, searching further..." << mout.endl;
 		//DataSelector::getNextOrdinalPath(resources.inputHi5, pathSearch, dataPath);
 		++dataElem.index;
+		mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
 	}
-	mout.warn() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
-	// mout.debug() << "Final path " << dataPath << mout.endl;
 
 
 	HI5TREE & dst = resources.inputHi5[dataSetElem][dataElem];

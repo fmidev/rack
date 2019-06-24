@@ -732,7 +732,7 @@ public:
 		mout.warn() << "value: " << value << mout.endl;
 		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
 
-		//DataTools::updateAttributes(*(resources.currentHi5));
+		DataTools::updateAttributes(*(resources.currentHi5));
 
 
 		// List of paths in which assignments are repeated.

@@ -88,6 +88,9 @@ const drain::RegExp tiffFileExtension(".*\\.(tif|tiff)$",  REG_EXTENDED | REG_IC
 /// Syntax for recognising image files (currently, png supported).
 const drain::RegExp pngFileExtension(".*\\.(png)$", REG_EXTENDED | REG_ICASE);
 
+/// Syntax for recognising image files (currently, png supported).
+const drain::RegExp pnmFileExtension(".*\\.(p[nbgp]m)$", REG_EXTENDED | REG_ICASE); //[nbgp]
+
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
 

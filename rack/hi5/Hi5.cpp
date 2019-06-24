@@ -344,11 +344,11 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
 	Hi5Base::parsePath(line, path, attrKey, attrValue, attrType);
 
-	mout.warn();
-	mout << "path="      << path      << '\n';
-	mout << "attrKey="   << attrKey   << '\n';
-	mout << "attrValue=" << attrValue << '\n';
-	mout << "attrType="  << attrType  << '\n';
+	mout.debug();
+	mout << path      << " | ";
+	mout << attrKey   << " | ";
+	mout << attrValue << " | ";
+	mout << attrType  ;
 	mout << mout.endl;
 
 	/// Create the node always
@@ -408,6 +408,12 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 			a.setType(typeid(std::string));
 
 		a = attrValue;
+
+		if (attrKey == "quantity"){
+			if (n.attributes.get("gain", 0.0) == 0.0){
+				hi5mout.debug() << "Suggesting --completeODIM to proceed" << hi5mout.endl;
+			}
+		}
 
 		/*
 			if (typeCode){

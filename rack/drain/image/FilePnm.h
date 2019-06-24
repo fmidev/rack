@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 #ifndef FILE_PNM_H_
 #define FILE_PNM_H_
 
@@ -96,7 +96,7 @@ public:
 	 *  \param image - image
 	 *  \param pathPrefix -
 	 *
-	*/
+	 */
 	static
 	void write(const ImageFrame &image, const std::string &path);
 
@@ -159,16 +159,16 @@ void FilePnm::read(T & image, const std::string & path) {
 		return;
 	}
 
-	FileType pt;
+	FileType pt = UNDEFINED;
 	int width, height, channels, maxValue;
 
 	char c = infile.get();
 
 	switch (c){
 	case '1':
-	pt = PBM_ASC;
-	channels = 1;
-	break;
+		pt = PBM_ASC;
+		channels = 1;
+		break;
 	case '2':
 		pt = PGM_ASC;
 		channels = 1;
@@ -200,43 +200,25 @@ void FilePnm::read(T & image, const std::string & path) {
 	}
 
 	//std::string
-	 while (infile.peek() == '#'){
+	while (infile.peek() == '#'){
 		while ((c = infile.get()) !='\n' ){
-		  std::cout << c;
-		  if (infile.eof())
-			  mout.error() << "Premature end of file" << mout.endl;
-		}
-	 }
-
-	 infile >> width >> height;
-	 if ((pt != PBM_ASC) && (pt != PBM_RAW))
-		infile >> maxValue;
-
-	 initialize(image, typeid(unsigned char), Geometry(width, height, channels));
-
-	 mout.note() << image << mout.endl;
-
-	 read(image, infile);
-
-	/*
-	int i0;
-	for (unsigned int j = 0; j < height; ++j) {
-		p = row_pointers[j];
-		for (unsigned int i = 0; i < width; ++i) {
-			for (unsigned int k = 0; k < channels; ++k) {
-				i0 = channels*i + k;
-				if (bit_depth == 8) {
-					//image.at(i,j,k) = p[i0];
-					image.put(i,j,k, p[i0]);
-				}
-				else {
-					image.put(i,j,k, (p[i0*2]<<8) + (p[i0*2+1]<<0));
-					//image.at(i,j,k) = p[i0*2] + (p[i0*2+1]<<8);
-				}
-			}
+			std::cout << c;
+			if (infile.eof())
+				mout.error() << "Premature end of file" << mout.endl;
 		}
 	}
-	*/
+
+	infile >> width;
+	infile >> height;
+	if ((pt != PBM_ASC) && (pt != PBM_RAW))
+		infile >> maxValue;
+
+	initialize(image, typeid(unsigned char), Geometry(width, height, channels));
+
+	mout.debug() << image << mout.endl;
+
+	read(image, infile);
+
 
 }
 

@@ -68,9 +68,7 @@ void FilePnm::read(ImageFrame & image, std::istream & infile){ // , FileType t
 
 	Logger mout(getImgLog(), "FilePnm", __FUNCTION__);
 
-
-
-	mout.warn() << "reading image: " << image << mout.endl;
+	mout.info() << "reading image: " << image << mout.endl;
 
 	const size_t channels = image.getChannelCount();
 
@@ -108,7 +106,7 @@ void FilePnm::read(ImageFrame & image, std::istream & infile){ // , FileType t
 		mout.error() << "Sorry, this type of PNM format (" << channels << " channels) not implemented" << mout.endl;
 	}
 
-	if (infile){
+	if (!infile.eof()){
 		mout.warn() << "spurious bytes in end of file" << mout.endl;
 	}
 
