@@ -98,8 +98,8 @@ void ImageOpRacklet::exec() const {
 	const std::string quantity(imageSelector.quantity);
 
 	ODIMPathList paths;
-	//imageSelector.getPathsNEW(*resources.currentHi5, paths, true);
-	imageSelector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATASET);
+	//imageSelector.getPaths(*resources.currentHi5, paths, true);
+	imageSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
 
 	if (paths.empty()){
 		mout.warn() << "no paths found with selector: " << imageSelector << mout.endl;

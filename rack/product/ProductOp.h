@@ -387,9 +387,9 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
 	//ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	//  this->dataSelector.getPathsNEW(src, dataPaths); // RE2
+	//  this->dataSelector.getPaths(src, dataPaths); // RE2
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
+	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	std::set<ODIMPath> parents;

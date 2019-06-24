@@ -121,16 +121,25 @@ double PolarODIM::getNyquist(int errorThreshold) const {
 	drain::Logger mout("PolarODIM", __FUNCTION__);
 
 	if (quantity.substr(0,4) != "VRAD"){
-		//if (errorThreshold >= LOG_INFO)
 		mout.log(errorThreshold + 4) << "quantity not VRAD but " << quantity << mout.endl;
 		return NI;
 	}
 
 	if (NI == 0.0){
 
+
 		NI = 0.01 * wavelength * lowprf / 4.0;
 		if (NI != 0){
-			mout.log(errorThreshold + 2) << "no NI in metadata, derived from wavelength*lowprf/4.0 " << mout.endl;
+			// check dual-prf
+			if (highprf > lowprf){
+				const double NI2 = 0.01 * wavelength * highprf / 4.0;
+				mout.debug() << "dual-PDF detected, NI=" << NI << ", NI2=" << NI2 << mout.endl;
+				NI = NI*NI2 / (NI2-NI);  // HOLLEMAN & BEEKHUIS 2002
+				mout.log(errorThreshold + 4) << "derived NI=" << NI << " from dual-PRF" << mout.endl;
+			}
+			else {
+				mout.log(errorThreshold + 2) << "no NI in metadata, derived from wavelength*lowprf/4.0 " << mout.endl;
+			}
 		}
 		else {
 

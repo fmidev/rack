@@ -203,7 +203,7 @@ class CmdOutputFile : public SimpleCommand<std::string> {
 public:
 
 	CmdOutputFile() : SimpleCommand<>(__FUNCTION__, "Output current data to .hdf5, .png, .txt, .mat file. See also: --image, --outputRawImages.",
-			"filename", "", "<filename>.[h5|png|txt|mat]|-") {
+			"filename", "", "<filename>.[h5|png|pgm|txt|mat]|-") {
 	};
 
 
@@ -234,6 +234,10 @@ public:
 		// TODO: generalize select
 		// TODO: generalize image pick (current or str) for png/tif
 
+		const bool IMAGE_PNG = pngFileExtension.test(value);
+		const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
+		const bool IMAGE_TIF = tiffFileExtension.test(value);
+
 		if (h5FileExtension.test(value)){
 			mout.info() << "File format: HDF5" << mout.endl;
 			getResources().currentHi5->data.attributes["Conventions"] = "ODIM_H5/V2_2";
@@ -244,7 +248,7 @@ public:
 			hi5::Writer::writeFile(getResources().outputPrefix + value, *getResources().currentHi5);
 			//hi5::Writer::tempPathSuffix = c;
 		}
-		else if (pngFileExtension.test(value) || tiffFileExtension.test(value)) {
+		else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
 
 			// This is the simple version. See image commands (--iXxxxx)
@@ -285,16 +289,16 @@ public:
 
 				if (!resources.currentImage->isEmpty()){
 
-
-					if (pngFileExtension.test(value)){
+					if (IMAGE_PNG || IMAGE_PNM){
+						mout.debug() << "PNG or PGM format" << mout.endl;
 						drain::image::File::write(*resources.currentImage, resources.outputPrefix + value);
 					}
-					else if (tiffFileExtension.test(value)) {
+					else if (IMAGE_TIF) {
 						// see FileGeoTiff::tileWidth
 						FileGeoTIFF::write(resources.outputPrefix + value, *getResources().currentImage); //, geoTIFF.width, geoTIFF.height);
 					}
 					else {
-						mout.error() << "something went wrong" << mout.endl;
+						mout.error() << "unknown file name extension" << mout.endl;
 					}
 				}
 				else {
@@ -318,8 +322,8 @@ public:
 				//mout.info() << "sel g " << selector.groups.separator << mout.endl;
 				selector.deriveParameters(resources.select);
 				//ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
-				//selector.getPathsNEW(*getResources().currentHi5, paths, groups);
-				selector.getPathsNEW(*getResources().currentHi5, paths);
+				//selector.getPaths(*getResources().currentHi5, paths, groups);
+				selector.getPaths(*getResources().currentHi5, paths);
 				resources.select.clear();
 				// for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
 				//	mout.warn() << *it << mout.endl;
@@ -582,7 +586,7 @@ public:
 
 		ODIMPathList paths;
 		//getResources().currentHi5->getKeys(paths, options["data"]);
-		iSelector.getPathsNEW(*getResources().currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
+		iSelector.getPaths(*getResources().currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
 		/// Split filename to basename+extension.
 		static const drain::RegExp r("^(.*)(\\.[a-zA-Z0-9]+)$");

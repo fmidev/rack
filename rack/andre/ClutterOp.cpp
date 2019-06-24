@@ -98,7 +98,7 @@ const HI5TREE & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	/*
 	ODIMPathList paths;
-	selector.getPathsNEW(clutterMap, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	selector.getPaths(clutterMap, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 		mout.warn() << "path candidate " << *it << mout.endl;
 	}

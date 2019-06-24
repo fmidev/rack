@@ -126,7 +126,7 @@ public:
 	/// Sets parameters and sets \c groups parameter automatically.
 	/**
 	 *   First, resets parameters. Then derives
-	 *   Tries to guess additional filter for paths returned with getPathsNEW().
+	 *   Tries to guess additional filter for paths returned with getPaths().
 	 *
 	 *   bitmask a combination of ODIMPathElem::DATASET, ODIMPathElem::DATA, and ODIMPathElem::QUALITY.
 	 */
@@ -161,21 +161,21 @@ public:
 	// Recommended convenience function.
 	template <class T>
 	inline
-	void getPathsNEW(const HI5TREE & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
-		getPathsNEW(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
+	void getPaths(const HI5TREE & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
+		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
 	}
 
 	template <class T>
 	inline
-	void getPathsNEW(const HI5TREE & src, T & pathContainer) const {
+	void getPaths(const HI5TREE & src, T & pathContainer) const {
 
 		if (groups.value > 0){
-			getPathsNEW(src, pathContainer, groups.value);
+			getPaths(src, pathContainer, groups.value);
 		}
 		else {
 			drain::Logger mout(getName(), __FUNCTION__);
 			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
-			getPathsNEW(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
+			getPaths(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
 			//groups = groupStr;
 		}
 
@@ -193,7 +193,7 @@ public:
 	 *   See the simplified version of this function.
 	 */
 	template <class T>
-	bool getPathsNEW(const HI5TREE & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
+	bool getPaths(const HI5TREE & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
 
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
@@ -271,14 +271,14 @@ public:
 	static inline
 	void getPathsByElevation(const HI5TREE &src, const DataSelector & selector, std::map<double, ODIMPath> & m){
 		//getPathsT(src, selector, m);
-		selector.getPathsNEW(src, m, ODIMPathElem::DATASET); // TODO check
+		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
 
 
 	static inline
 	void getPathsByQuantity(const HI5TREE &src, const DataSelector & selector, std::map<std::string, ODIMPath> & m){
 		//getPathsT(src, selector, m);
-		selector.getPathsNEW(src, m, ODIMPathElem::DATASET); // TODO check
+		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
 
 
@@ -380,7 +380,7 @@ protected:
 
 
 template <class T>
-bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
+bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -493,7 +493,7 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 		/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
 		//mout.warn() << "descending to " << p << mout.endl;
 		T descendantPaths;
-		const bool quantitySubtreeOK = getPathsNEW(src, descendantPaths, quantityRE, groupFilter, p) ; // note: original "root" src
+		const bool quantitySubtreeOK = getPaths(src, descendantPaths, quantityRE, groupFilter, p) ; // note: original "root" src
 
 		if (quantitySubtreeOK)
 			quantityGroupOK = true;
@@ -524,11 +524,11 @@ bool DataSelector::getPathsNEW(const HI5TREE &src, T & pathContainer, const drai
 			}
 
 			if (currentElem.belongsTo(groupFilter)){
-				mout.debug(1) << "accepted " << p << mout.endl;
+				mout.debug(2) << "accepted " << p << mout.endl;
 				odim.clear();
 				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
 				addPathT(pathContainer, odim, p);
-				mout.debug(2) << "pathContainer size=" <<  pathContainer.size() << mout.endl;
+				mout.debug(3) << "pathContainer size=" <<  pathContainer.size() << mout.endl;
 			}
 		}
 

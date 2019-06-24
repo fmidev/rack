@@ -130,7 +130,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	/*
 	ODIMPathList paths;
-	imageSelector.getPathsNEW(*currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	imageSelector.getPaths(*currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	mout.info() << "selected: " << paths.size() << mout.endl;
 	*/
 

@@ -275,7 +275,7 @@ public:
 		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
 
 		ODIMPathList paths;
-		selector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATASET); // RE2
+		selector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET); // RE2
 
 
 		if (resources.currentHi5 == resources.currentPolarHi5){
@@ -333,7 +333,7 @@ public:
 
 		HI5TREE & dst = *getResources().currentHi5;
 		ODIMPathList paths;
-		selector.getPathsNEW(dst, paths);
+		selector.getPaths(dst, paths);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
 		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 			mout.debug() << "deleting: " << *it << mout.endl;
@@ -388,7 +388,7 @@ public:
 		DataSelector preselector;
 
 		//dst.getPaths(paths);
-		preselector.getPathsNEW(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
+		preselector.getPaths(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
 		mout.info() << "data structure contains " << paths.size() << " paths " << mout.endl;
 
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++){
@@ -400,7 +400,7 @@ public:
 		mout.note() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
 
 		ODIMPathList savedPaths;
-		selector.getPathsNEW(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		//mout.info() << "set save" << mout.endl;
 		const ODIMPathElem::group_t groupMask = selector.groups; //getGroupMask();
@@ -762,7 +762,7 @@ public:
 		}
 		else {
 			getResources().currentHi5->getPaths(pathList);
-			//pathList.getPathsNEW(*getResources().currentHi5, groupPath); // RE2
+			//pathList.getPaths(*getResources().currentHi5, groupPath); // RE2
 			// mout.warn()  << " --/ multiple, ok" << mout.endl;
 		}
 

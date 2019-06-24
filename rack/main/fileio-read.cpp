@@ -463,10 +463,10 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 
 	// Consider generalization for Carts
 	std::map<double,ODIMPath> srcPaths;
-	dataSetSelector.getPathsNEW(srcRoot, srcPaths, ODIMPathElem::DATASET);
+	dataSetSelector.getPaths(srcRoot, srcPaths, ODIMPathElem::DATASET);
 
 	std::map<double,ODIMPath> dstPaths;
-	dataSetSelector.getPathsNEW(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
+	dataSetSelector.getPaths(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
 
 
 	mout.debug() << "traverse paths" << mout.endl;

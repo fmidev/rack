@@ -39,7 +39,7 @@ namespace image
 {
 
 /// Syntax for recognising image files
-const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p[bgpn]m)$", REG_EXTENDED | REG_ICASE);
+const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
 
 
 //int FilePng::index(0);
@@ -110,7 +110,7 @@ void FilePnm::read(ImageFrame & image, std::istream & infile){ // , FileType t
 		mout.warn() << "spurious bytes in end of file" << mout.endl;
 	}
 
-	//      return true;
+	//infile.close();
 
 }
 
@@ -135,8 +135,18 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	const int width    = image.getWidth();
 	const int height   = image.getHeight();
 	const int channels = image.getChannelCount();
+	const std::type_info & type = image.getType();
+	const int maxValue = drain::Type::call<drain::typeMax, int>(type);
+	const bool SINGLE_BYTE = (maxValue < 0xff);
 
-	int color_type = UNDEFINED;
+	FileType color_type = UNDEFINED;
+
+	typedef std::vector<std::string> result_t;
+	result_t result;
+	if (!fileNameRegExp.execute(path, result)){
+		mout.debug() << "file char: " << result[4] << mout.endl;
+	}
+
 	switch (channels) {
 	case 4:
 		mout.warn() << "four-channel image, writing channels 0,1,2 only" << mout.endl;
@@ -159,32 +169,74 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		// throw std::runtime_error(s.toStr());
 	}
 
-	mout.error()  << "unimplemented code"<< mout.endl;
+	std::ofstream ofstr(path.c_str(), std::ios::out);
 
-
-	// Copy data to png array.
-	mout.info() << "Src: " << image << mout.endl;
-	//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
-	mout.debug(1) << "Copy data to png array, width=" << width << ", height=" << height << " channels=" << channels << mout.endl;
-	for (int k = 0; k < channels; ++k) {
-		//const double coeff = image.get<png_byte>(i,j,k);
-		const Channel & channel = image.getChannel(k);
-		mout.debug(2) << " channel " << k << " scaling=" << channel.getScaling() << mout.endl;
-
-		/*
-		for (int i = 0; i < width; ++i) {
-			i0 = (i*channels + k)*2;
-			for (int j = 0; j < height; ++j) {
-				// value = static_cast<int>(coeff*channel.get<double>(i,j));
-				value = static_cast<int>(conv.inv(channel.get<double>(i,j)));
-				data[j][i0+1] = static_cast<png_byte>( value     & 0xff);
-				data[j][i0  ] = static_cast<png_byte>((value>>8) & 0xff);
-			}
-		}
-		 */
-
+	if (!ofstr){
+		mout.error()  << "unsupported channel count: " << channels << mout.endl;
+		return;
 	}
 
+	ofstr << 'P' << color_type << '\n';
+
+	const FlexVariableMap & vmap = image.getProperties();
+
+	for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {
+		ofstr << '#' << ' ' << it->first << '=';
+		it->second.valueToJSON(ofstr);
+		ofstr << '\n';
+	}
+
+	ofstr << width << ' ' << height << '\n';
+
+	if (drain::Type::call<drain::typeIsSmallInt>(type))
+		ofstr << maxValue << '\n';
+	else {
+		mout.error()  << "unimplemented: double type image (needs scaling) " << mout.endl;
+		ofstr << 255 << '\n';
+	}
+
+	int i;
+	int j;
+	int value;
+
+	switch (color_type) {
+	case PGM_RAW:
+		if (SINGLE_BYTE){
+			mout.note()  << "PGM_RAW, 8 bits" << mout.endl;
+			for (j = 0; j < height; ++j) {
+				for (i = 0; i < width; ++i) {
+					ofstr.put(image.get<unsigned char>(i,j));
+				}
+			}
+		}
+		else {
+			if (maxValue > 0xffff){
+				mout.warn()  << "storage type over 16 bits (max value > 0xffff) unsupported" << mout.endl;
+			}
+			for (j = 0; j < height; ++j) {
+				for (i = 0; i < width; ++i) {
+					value = image.get<unsigned char>(i,j);
+					ofstr.put(value & 0xff);
+					value = (value >> 8);
+					ofstr.put(value & 0xff);  // check order!
+				}
+			}
+		}
+		break;
+	case PGM_ASC:
+		for (j = 0; j < height; ++j) {
+			ofstr << '\n';
+			for (i = 0; i < width; ++i) {
+				ofstr << image.get<int>(i,j) << ' ';
+			}
+		}
+		break;
+	default:
+		mout.error()  << "unimplemented code"<< mout.endl;
+		break;
+	}
+
+	ofstr.close();
 
 	mout.debug(1) << "Closing file" << mout.endl;
 	//file

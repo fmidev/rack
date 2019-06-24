@@ -68,7 +68,7 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	DataSetMap<PolarDst> dstDataSets;
 
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATA);
+	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
 
 	if (dataPaths.size() == 0)
 		mout.note() << "no dataPaths matching selector="  << this->dataSelector << mout.endl;

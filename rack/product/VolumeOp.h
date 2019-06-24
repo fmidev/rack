@@ -145,7 +145,7 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPathsNEW(src, dataPaths, ODIMPathElem::DATASET); // RE2
+	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
 	if (dataPaths.empty()){
 		mout.warn() << "no dataset's selected" << mout.endl;

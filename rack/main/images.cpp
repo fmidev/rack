@@ -421,7 +421,7 @@ public:
 			resources.currentImage     =   resources.currentGrayImage;
 		}
 
-		resources.select.clear();
+		// DONT clear yet resources.select.clear();
 
 		if (resources.currentGrayImage->isEmpty()){
 			mout.note() << "current gray image is empty.";
@@ -449,7 +449,7 @@ public:
 			if (value == "default" || value.empty()){
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
 				quantity = statusMap["what:quantity"].toStr();
-				mout.note() << "quantity=" << quantity << mout.endl;
+				mout.info() << "quantity=" << quantity << mout.endl;
 			}
 			else if (quantityRegExp.test(value)){
 				quantity = value;
@@ -648,9 +648,9 @@ public:
 		selector.setParameters(resources.select);
 		resources.select.clear();
 		mout.debug() << "selector: " << selector << mout.endl;
-		//  selector.getPathsNEW(*resources.currentHi5, paths); // RE2 // todo getFirstData
+		//  selector.getPaths(*resources.currentHi5, paths); // RE2 // todo getFirstData
 		//DataSelector::getPathsByQuantity(*resources.currentHi5, selector, m); // key==quantity, so only one (last) path obtained
-		selector.getPathsNEW(*resources.currentHi5, paths, ODIMPathElem::DATA);
+		selector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATA);
 		//size_t count = m.size();
 		size_t count = paths.size();
 		mout.info() << "found: " << count << " paths " << mout.endl;

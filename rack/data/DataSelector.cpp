@@ -296,7 +296,7 @@ bool DataSelector::getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem
 	}
 
 	ODIMPathList paths;
-	getPathsNEW(src, paths, groupFilter);
+	getPaths(src, paths, groupFilter);
 	if (paths.empty()){
 		mout.debug(3) << "no paths" << mout.endl;
 		path.clear();  // sure?
@@ -321,7 +321,7 @@ bool DataSelector::getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathEle
 	}
 
 	ODIMPathList paths;
-	getPathsNEW(src, paths, group);
+	getPaths(src, paths, group);
 	if (paths.empty()){
 		path.clear();  // sure?
 		return false;

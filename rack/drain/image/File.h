@@ -60,9 +60,11 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		if (FilePng::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNG" << mout.endl;
 			FilePng::read(img, path);
 		}
 		else if (FilePnm::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNM" << mout.endl;
 			FilePnm::read(img, path);
 		}
 		else {
@@ -76,9 +78,11 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		if (FilePng::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNG" << mout.endl;
 			FilePng::read(img, path);
 		}
 		else if (FilePnm::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNM" << mout.endl;
 			FilePnm::read(img, path);
 		}
 		else {
@@ -103,10 +107,24 @@ public:
 	//static void read(Image<unsigned char> &image,const std::string &path);
 	inline
 	static void write(const ImageFrame &img,const std::string &path){
-		FilePng::write(img, path);
+
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+		if (FilePng::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNG" << mout.endl;
+			FilePng::write(img, path);
+		}
+		else if (FilePnm::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNM" << mout.endl;
+			FilePnm::write(img, path);
+		}
+		else {
+			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+			FilePng::write(img, path);
+		}
 	}
 
-
+	/*
 	template <class T>
 	static void write(const ImageT<T> &img,const std::string &path){
 #ifdef DRAIN_MAGICK_yes
@@ -128,9 +146,7 @@ public:
 		FilePng::write(img,path);
 #endif
 	}
-
-	//static void write(const Image<unsigned char> &image,const std::string &path);
-
+	*/
 	
 };
 

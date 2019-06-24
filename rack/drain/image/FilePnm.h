@@ -219,6 +219,8 @@ void FilePnm::read(T & image, const std::string & path) {
 
 	read(image, infile);
 
+	infile.close();
+
 
 }
 
