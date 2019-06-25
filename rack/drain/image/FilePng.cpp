@@ -43,27 +43,6 @@ namespace image
 /// Syntax for recognising image files
 const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
 
-/*
-int FilePng::index(0);
-
-template <>
-void FilePng::initialize(Image & image, const std::type_info & t, const Geometry & g){
-	image.initialize(t,g);
-}
-
-template <>
-void FilePng::initialize(ImageFrame & image, const std::type_info & t, const Geometry & g){
-
-	if ((image.getType() == t) && (image.getGeometry() == g))
-		return;
-	else
-		std::runtime_error(std::string("FilePng::")+__FUNCTION__+": tried to change ImageFrame geometry");
-
-}
-*/
-
-
-
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
