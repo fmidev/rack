@@ -611,7 +611,7 @@ public:
 		resources.palette.getLegend(svg, true);
 
 		std::string outFileName = resources.outputPrefix + value;
-		//if (value.empty())
+		//if (value.emspty())
 		std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 		if (!ofstr.good()){
 			mout.error() << "could not open file: " << outFileName << mout.endl;

@@ -128,20 +128,15 @@ public:
 	};
 
 
-//protected:
-
 	/// Sets the type and allocates a data buffer.
-	inline
+	virtual inline
 	void initialize(const std::type_info &t, const Geometry & geometry){
-		// setType(t); warns
-		setStorageType(t);
-		setGeometry(geometry);
+		initialize(t, geometry.getWidth(), geometry.getHeight(), geometry.getImageChannelCount(), geometry.getAlphaChannelCount());
 	}
 
 	/// Sets the type and allocates a data buffer.
-	inline
+	virtual inline
 	void initialize(const std::type_info &t, size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
-		// setType(t); warns
 		setStorageType(t);
 		setGeometry(width, height, imageChannels, alphaChannels);
 	}
@@ -273,9 +268,6 @@ public:
 
 
 
-
-
-
 	/// Copies type, geometry and coordinate under/overflow policy of the given image. Does not copy the data.
 	inline
 	void copyShallow(const ImageFrame & src){
@@ -299,10 +291,8 @@ public:
 	}
 
 
-
 	/// Prints images geometry, buffer size and type information, and dumps the array contents. Consider toOStr...
 	void dump(std::ostream &ostr = std::cout) const;
-
 
 
 	inline
@@ -314,15 +304,7 @@ public:
 			encoding.scaling.adoptScaling(src.getScaling(), src.getType(), t);
 	}
 
-
-
 	void swap(Image & img);
-
-protected:
-
-
-	//ImageScaling scaling;
-
 
 };
 
@@ -333,32 +315,10 @@ std::ostream & operator<<(std::ostream &ostr, const Image &image){
 	return ostr;
 }
 
+}  // image::
 
-//typedef ImageList std::list<Image &>;
+}  // drain::
 
-
-}  // image
-}  // drain
-
-
-
-
-/*
-std::ostream & operator<<(std::ostream &ostr, const Image &image){
-  ostr << "Image size: " << image.width << 'x' << image.height << " buffer: "<< image.buffer.size() << '\n';
-  ostr << "Buffer type: " << image.getType().name() << "(" << image.getByteSize() << "byte=" << (image.getByteSize()*8) << "bit) \n";
-  for (size_t j=0; j<image.height; j++){
-    ostr << "Row "<< j << '\n';
-    for (size_t i=0; i<image.width; i++)
-      //ostr << i << '|' << ' '; // << image.get<double>(i,j) << '\t';
-      ostr << image.get<double>(i,j) <<'\t';
-    ostr << '\n';
-  };
-  //std::cerr << " adios \n";// << std::endl;
-  return ostr;
-}
- */
 
 #endif
 
-// Drain

@@ -43,7 +43,7 @@ const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", 
 
 
 //int FilePng::index(0);
-
+/*
 template <>
 void FilePnm::initialize(Image & image, const std::type_info & t, const Geometry & g){
 	image.initialize(t,g);
@@ -58,7 +58,7 @@ void FilePnm::initialize(ImageFrame & image, const std::type_info & t, const Geo
 		std::runtime_error(std::string("FilePng::")+__FUNCTION__+": tried to change ImageFrame geometry");
 
 }
-
+*/
 
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
  *  Writes in 8 or 16 bits, according to template class.
@@ -137,10 +137,11 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	const int channels = image.getChannelCount();
 	const std::type_info & type = image.getType();
 	const int maxValue = drain::Type::call<drain::typeMax, int>(type);
-	const bool SINGLE_BYTE = (maxValue < 0xff);
+	const bool SINGLE_BYTE = (maxValue <= 0xff);
 
-	FileType color_type = UNDEFINED;
+	FileType storage_type = UNDEFINED;
 
+	// Debugging. Consider also using for checking file extension vs channel count.
 	typedef std::vector<std::string> result_t;
 	result_t result;
 	if (!fileNameRegExp.execute(path, result)){
@@ -149,16 +150,16 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 
 	switch (channels) {
 	case 4:
-		mout.warn() << "four-channel image, writing channels 0,1,2 only" << mout.endl;
+		mout.warn() << "four-channel image; writing channels 0,1,2 only" << mout.endl;
 		// no break
 	case 3:
-		color_type = PGM_RAW;
+		storage_type = PGM_RAW;
 		break;
 	case 2:
 		mout.warn() << "two-channel image, writing channel 0" << mout.endl;
 		// no break
 	case 1:
-		color_type = PGM_RAW;
+		storage_type = PGM_RAW;
 		break;
 	case 0:
 		mout.warn() << "zero-channel image" << mout.endl;
@@ -176,18 +177,22 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		return;
 	}
 
-	ofstr << 'P' << color_type << '\n';
+	/// FILE HEADER
 
+
+	mout.debug() << "magic code: P" << storage_type << mout.endl;
+	ofstr << 'P' << storage_type << '\n';
+
+	// mout.debug() << "writing comments (metadata)" << mout.endl;
 	const FlexVariableMap & vmap = image.getProperties();
-
 	for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {
 		ofstr << '#' << ' ' << it->first << '=';
 		it->second.valueToJSON(ofstr);
 		ofstr << '\n';
 	}
 
+	// GEOMETRY
 	ofstr << width << ' ' << height << '\n';
-
 	if (drain::Type::call<drain::typeIsSmallInt>(type))
 		ofstr << maxValue << '\n';
 	else {
@@ -199,17 +204,19 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	int j;
 	int value;
 
-	switch (color_type) {
+	switch (storage_type) {
 	case PGM_RAW:
 		if (SINGLE_BYTE){
 			mout.note()  << "PGM_RAW, 8 bits" << mout.endl;
 			for (j = 0; j < height; ++j) {
 				for (i = 0; i < width; ++i) {
 					ofstr.put(image.get<unsigned char>(i,j));
+					//ofstr.
 				}
 			}
 		}
 		else {
+			mout.note()  << "PGM_RAW, 16 bits" << mout.endl;
 			if (maxValue > 0xffff){
 				mout.warn()  << "storage type over 16 bits (max value > 0xffff) unsupported" << mout.endl;
 			}
@@ -224,22 +231,22 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case PGM_ASC:
+		mout.note()  << "PGM_ASC" << mout.endl;
 		for (j = 0; j < height; ++j) {
-			ofstr << '\n';
 			for (i = 0; i < width; ++i) {
 				ofstr << image.get<int>(i,j) << ' ';
 			}
+			ofstr << '\n';
 		}
 		break;
 	default:
-		mout.error()  << "unimplemented code"<< mout.endl;
+		mout.error()  << "PBM/binary types: unimplemented code"<< mout.endl;
 		break;
 	}
 
+	mout.debug(1) << "Closing file" << mout.endl;
 	ofstr.close();
 
-	mout.debug(1) << "Closing file" << mout.endl;
-	//file
 }
 
 

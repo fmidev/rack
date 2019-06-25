@@ -92,32 +92,6 @@ public:
 	*/
 	static void write(const ImageFrame &image, const std::string &path);
 
-	/// Writes image to a file, naming it: prefix + index + ".png", using desired number of leading zeros.
-	/** Utility function esp. for debugging
-	 *
-	 *  \param image - image
-	 *  \param pathPrefix - leading part of the path: directory and filename prefix.
-	 *
-	 *
-	 */
-	static void writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i=-1, int digits=3);
-
-protected:
-
-	/// Sets target type and geometry
-	/**
-	 *  In the case of ImageFrame (typically, an image channel), type and geometry have to match already;
-	 *  otherwise an exception is thrown.
-	 *
-	 *  \tparam T - Image or ImageFrame
-	 */
-	template <class T>
-	static
-	void initialize(T &, const std::type_info & t, const Geometry & g);
-
-	static
-	int index;
-
 
 };
 
@@ -250,9 +224,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	}
 
 	// Form Image, set target type and geometry. For ImageFrame, compare target type and geometry. If differences, throw exception.
-	initialize(image, t, g);
-	//if (image.hasAlphaChannel())
-	//	image.getAlphaChannel().getScaling().setPhysicalRange(0.0, 1.0);
+	image.initialize(t, g);
 
 	mout.debug(2) << "png geometry ok, ";
 	mout << "png channels =" << channels << "\n";

@@ -167,6 +167,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 		//mout.note() << "'" << line <<  "'" << std::endl;
 
+
 		size_t i = line.find_first_not_of(" \t");
 
 		// Skip empty lines
@@ -217,6 +218,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		}
 
 		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+
 		entry.label = label;
 
 		unsigned int n=0;
@@ -246,6 +248,8 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		colorCount = entry.size();
 
 		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
+
+		label.clear();
 
 	}
 

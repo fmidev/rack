@@ -119,10 +119,10 @@ protected:
 	 *  otherwise an exception is thrown.
 	 *
 	 *  \tparam T - Image or ImageFrame
-	 */
 	template <class T>
 	static
 	void initialize(T &, const std::type_info & t, const Geometry & g);
+	 */
 
 	//void read(ImageFrame & image, std::istream & infile, FileType t);
 	static
@@ -213,7 +213,7 @@ void FilePnm::read(T & image, const std::string & path) {
 	if ((pt != PBM_ASC) && (pt != PBM_RAW))
 		infile >> maxValue;
 
-	initialize(image, typeid(unsigned char), Geometry(width, height, channels));
+	image.initialize(typeid(unsigned char), width, height, channels);
 
 	mout.debug() << image << mout.endl;
 

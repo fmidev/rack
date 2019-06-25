@@ -423,6 +423,27 @@ public:
 	 */
 	size_t getChannelIndex(const std::string & index) const;
 
+	/// Sets the type and allocates a data buffer.
+	//  Experimental for ImageFrame
+	virtual inline
+	void initialize(const std::type_info &t, const Geometry & geometry){
+
+		if ((getType() == t) && (getGeometry() == geometry))
+			return;
+		else
+			std::runtime_error(std::string("ImageFrame::")+__FUNCTION__+": tried to change ImageFrame geometry");
+
+		// initialize(t, geometry.getWidth(), geometry.getHeight(), geometry.getImageChannelCount(), geometry.getAlphaChannelCount());
+	}
+
+	/// Sets the type and allocates a data buffer.
+	//  Experimental for ImageFrame (does not change image; throws exception if change requested)
+	virtual inline
+	void initialize(const std::type_info &t, size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
+		 initialize(t, Geometry(width, height, imageChannels, alphaChannels));
+	}
+
+
 protected:
 
 	void init();
