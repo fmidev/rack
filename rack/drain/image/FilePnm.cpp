@@ -32,6 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FilePnm.h"
 #include "util/Time.h"
 
+#include "util/JSONtree.h"
+#include "util/ValueReader.h"
+
 namespace drain
 {
 
@@ -42,14 +45,131 @@ namespace image
 const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
 
 
+// , const CommentReader & commentReader
+void FilePnm::read(Image & image, const std::string & path) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	mout.info() << "path='" << path << "'" << mout.endl;
+
+	std::ifstream infile;
+	infile.open(path.c_str(), std::ios::in);
+
+	if (!infile){
+		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		return;
+	}
+
+	//std::string magic;
+	//infile >> magic;
+
+	if (infile.get() != 'P'){
+		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
+		mout.error() << "not an PNM file" << mout.endl;
+		return;
+	}
+
+	FileType pt = UNDEFINED;
+	int width, height, channels, maxValue;
+
+	int c = infile.get();
+
+	switch (c){
+	case '1':
+		pt = PBM_ASC;
+		channels = 1;
+		break;
+	case '2':
+		pt = PGM_ASC;
+		channels = 1;
+		break;
+	case '3':
+		pt = PPM_ASC;
+		channels = 3;
+		break;
+	case '4':
+		pt = PBM_RAW;
+		channels = 1;
+		break;
+	case '5':
+		pt = PGM_RAW;
+		channels = 1;
+		break;
+	case '6':
+		pt = PPM_RAW;
+		channels = 3;
+		break;
+	default:
+		mout.error() << "unrecognized PPM type" << mout.endl;
+	}
+
+	mout.note() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
+
+	while ((c = infile.get()) != '\n'){
+		// ?
+	}
+
+	std::string key;
+	//std::string value;
+	std::stringstream sstr;
+	while (infile.peek() == '#'){
+		infile.get(); // swallow '#'
+		while ((c = infile.get()) !='\n' ){
+
+			if (c == '='){
+				key = drain::StringTools::trim(sstr.str());
+				sstr.str("");
+			}
+			else
+				sstr.put(c);
+
+			if (infile.eof())
+				mout.error() << "Premature end of file" << mout.endl;
+		}
+		if (!key.empty()){
+			mout.debug(1) << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
+			//value = drain::StringTools::trim(sstr.str());
+			//mout.note() << "Assign: " << key << ": " <<  value << '/' << value.length()<< mout.endl;
+			//std::stringstream
+			// image.properties [key] = value;
+			ValueReader::scanValue(sstr.str(), image.properties[key]);
+			//image.properties[key] = value;
+			//sstr.str("");
+			//image.properties[key].toJSON(sstr);
+			//mout.note() << "Comment:" << key << ": " <<  sstr.str() << mout.endl;
+		}
+		else {
+			mout.note() << "Comment:" <<  sstr.str() << mout.endl;
+		}
+		sstr.str("");
+	}
+	mout.note() << "Done" << mout.endl;
+	infile >> width;
+	infile >> height;
+	if ((pt != PBM_ASC) && (pt != PBM_RAW))
+		infile >> maxValue;
+
+	mout.note() << "Size:" <<  width << ',' << height << mout.endl;
+
+	image.initialize(typeid(unsigned char), width, height, channels);
+
+	mout.debug() << image << mout.endl;
+
+	readFrame(image, infile);
+
+	infile.close();
+
+
+}
+
 
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
  */
-void FilePnm::read(ImageFrame & image, std::istream & infile){ // , FileType t
+void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileType t
 
-	Logger mout(getImgLog(), "FilePnm", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.info() << "reading image: " << image << mout.endl;
 
@@ -233,23 +353,6 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 }
 
 
-
-void FilePnm::writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i, int digits){
-
-	if (i >= 0){
-		//FilePng::index = i;
-	}
-
-	std::stringstream sstr;
-	sstr << pathPrefix;
-	sstr.width(digits);
-	sstr.fill('0');
-	sstr << i << ".png";
-	FilePnm::write(image, sstr.str());
-
-	//++index;
-
-}
 
 
 } // image::

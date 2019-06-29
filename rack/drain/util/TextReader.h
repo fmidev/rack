@@ -28,70 +28,48 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef JSON_TREE_H_
-#define JSON_TREE_H_
+#ifndef TEXTREADER_H_
+#define TEXTREADER_H_
 
 #include <iostream>
+#include <sstream>
 #include <list>
 #include <string>
 
-#include "../util/Tree.h"
-#include "../util/VariableMap.h"
 
 
 namespace drain
 {
 
-/// A partial implementation of JSON. An object consists of attributes (numeric, string, array) and nesting objects.
+/// Utility for scanning text segments
 /**
  *
- *   Supports
- *   - nesting objects {... {... } }
- *   - integers (int), floats (double)
  *
- *   Does not support:
- *   - arrays of arrays, arrays of objects
- *   - boolean
-
-    \example examples/JSON-example.inc
-
  */
-class JSON {
+class TextReader {
 
 public:
 
-	typedef drain::Tree<std::string, drain::VariableMap> tree_t;
-	typedef tree_t::path_t path_t;
-	typedef tree_t::node_t node_t;
-
-	/// Write a JSON file
-	static
-	void write(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
-
-
-	/// Reads and parses a JSON file
-	static
-	void read(tree_t & t, std::istream & istr);
-
-	static
-	unsigned short indentStep;
-
-protected:
-
-	// Write utils
-
-	/// Indent output with \c n spaces
+	/// Read input stream until a char in \c endChars is encountered.
+	/**
+	 *  Typically, used for reading variable values, including nested segments, hence
+	 *  recognizing closing chars.
+	 *
+	 */
 	static inline
-	void indent(std::ostream & ostr, unsigned short n){
-		for (int i = 0; i < n; ++i)
-			ostr.put(' ');
+	std::string scanSegment(std::istream & istr, const std::string & endChars){
+		std::stringstream sstr;
+		scanSegment(istr, endChars, sstr);
+		return sstr.str();
 	}
 
-	// Read utils
+	/// Read input stream until a char in \c endChars is encountered.
+	static
+	void scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
 
-	//static void skipChars(std::istream & istr, const std::string skip = " \t\n\r");
-
-	// static	std::string scanSegment(std::istream & istr, const std::string & terminator);
+	/// Read input stream until a char not in \c skipChars is encountered.
+	static
+	void skipChars(std::istream & istr, const std::string skipChars = " \t\n\r");
 
 
 };

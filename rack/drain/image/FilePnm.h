@@ -83,10 +83,13 @@ public:
 	 *
 	 *  \tparam T - Image or ImageFrame
 	 */
-	template <class T>
-	static
-	void read(T & image, const std::string & path);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+	//template <class T>
+	static  // , const CommentReader & commentReader = CommentReader()
+	void read(Image & image, const std::string & path);
 
+	/// Read image array after essential metadata (type and geometry) has been processed.
+	static
+	void readFrame(ImageFrame & image, std::istream & infile);
 
 	/// Writes image to a png file.
 	/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
@@ -100,43 +103,17 @@ public:
 	static
 	void write(const ImageFrame &image, const std::string &path);
 
-	/// Writes image to a file, naming it: prefix + index + ".png", using desired number of leading zeros.
-	/** Utility function esp. for debugging
-	 *
-	 *  \param image - image
-	 *  \param pathPrefix - leading part of the path: directory and filename prefix.
-	 *
-	 *
-	 */
-	static void writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i=-1, int digits=3);
 
 protected:
 
-
-	/// Sets target type and geometry
-	/**
-	 *  In the case of ImageFrame (typically, an image channel), type and geometry have to match already;
-	 *  otherwise an exception is thrown.
-	 *
-	 *  \tparam T - Image or ImageFrame
-	template <class T>
-	static
-	void initialize(T &, const std::type_info & t, const Geometry & g);
-	 */
-
-	//void read(ImageFrame & image, std::istream & infile, FileType t);
-	static
-	void read(ImageFrame & image, std::istream & infile);
-
-	// static
-	//int index;
 
 
 };
 
 
+/*
 template <class T>
-void FilePnm::read(T & image, const std::string & path) {
+void FilePnm::read(T & image, const std::string & path, const CommentReader & commentReader) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
@@ -199,13 +176,19 @@ void FilePnm::read(T & image, const std::string & path) {
 		// ?
 	}
 
-	//std::string
+	std::stringstream sstr;
 	while (infile.peek() == '#'){
 		while ((c = infile.get()) !='\n' ){
-			std::cout << c;
+			// std::cout << c;
 			if (infile.eof())
 				mout.error() << "Premature end of file" << mout.endl;
 		}
+		std::list<std::string> assignment;
+		drain::StringTools::split(sstr.str(), assignment, "=", " \t'\"");
+		if (assignment.size() > 1){
+
+		}
+		sstr.str("");
 	}
 
 	infile >> width;
@@ -217,13 +200,13 @@ void FilePnm::read(T & image, const std::string & path) {
 
 	mout.debug() << image << mout.endl;
 
-	read(image, infile);
+	readFrame(image, infile);
 
 	infile.close();
 
 
 }
-
+*/
 
 
 }

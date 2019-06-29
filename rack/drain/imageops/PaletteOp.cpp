@@ -120,26 +120,28 @@ void Palette::convertJSON(const drain::JSON::tree_t & entries, int depth){
 
 	for (drain::JSON::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
 
-		const std::string & label         = it->first;
+		const std::string & id         = it->first;
 		const drain::JSON::tree_t & child = it->second;
 
 		const VariableMap & attr  = child.data;
 
+		// special code: dynamically assigned value
 		const bool SPECIAL = !attr.hasKey("min");
 		const double d = attr.get("min", -1);
 
 		if (SPECIAL)
-			mout.debug() << "special code: " << label << mout.endl;
+			mout.debug() << "special code: " << id << mout.endl;
 
-		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+		PaletteEntry & entry = SPECIAL ? specialCodes[id] : (*this)[d]; // Create entry?
 
-		entry.label  = std::string(depth*2, '_') + label;
+		entry.label = attr.get("label", "");
+		// std::string(depth*2, '_') + id;
 		entry.hidden = attr.get("hidden", false);
 
 		const Variable & color = attr["color"];
 		color.toContainer(entry);
 
-		mout.debug() << "entry: " << d << '\t' << label << ':' << color << mout.endl;
+		mout.debug() << "entry: " << d << '\t' << id << ':' << color << mout.endl;
 		convertJSON(child, depth + 1);
 	}
 }

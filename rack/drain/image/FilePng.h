@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <png.h>
 
 #include "util/RegExp.h"
+#include "util/ValueReader.h"
 
 #include "Image.h"
 //#include "File.h"
@@ -78,8 +79,10 @@ public:
 	 *  \tparam T - Image or ImageFrame
 	 */
 	template <class T>
-	static
+	static  // , const CommentReader & commentReader = CommentReader()
 	void read(T & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+
+	// consider readFrame() like with PNM
 
 	/// Writes image to a png file.
 	/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
@@ -96,7 +99,7 @@ public:
 };
 
 
-template <class T>
+template <class T> // , const CommentReader & commentReader = CommentReader()
 void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
@@ -169,7 +172,8 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	//mout.debug(2) << '\n';
 	for (int i = 0; i < num_text; ++i) {
 		mout << text_ptr[i].key << '=' << text_ptr[i].text << '\n';
-		image.properties[text_ptr[i].key] = (const char *)text_ptr[i].text;
+		//image.properties[text_ptr[i].key] = (const char *)text_ptr[i].text;
+		ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
 	}
 	mout << mout.endl;
 

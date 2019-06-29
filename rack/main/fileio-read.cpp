@@ -602,12 +602,44 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	drain::image::File::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();
 
+	// Non-const, modifications may follow
+	drain::FlexVariableMap & attr = dstImage.properties;
+
+	// Displays true/false
+	mout.debug() << "Image has metadata: " << Variable(!attr.empty()) << mout.endl;
+
+	//mout.note() << attr << mout.endl;
+
+	drain::Variable & object = attr["what:object"];
+
+	if (object.isEmpty()){
+		mout.note() << "what:object empty, ? assuming polar data, 'PVOL'" << mout.endl;
+		//object = "PVOL";
+	}
+
+	if (object == "COMP"){
+		CartesianODIM odim;
+		odim.updateFromMap(attr);
+		mout.note() << odim << mout.endl;
+	}
+	else if ((object == "SCAN") || (object == "PVOL")){
+		PolarODIM odim;
+		odim.updateFromMap(attr);
+		mout.note() << odim << mout.endl;
+	}
+	else {
+		mout.note() << "what:object not SCAN, PVOL or COMP: rack provides limited support" << mout.endl;
+	}
+
+
+	/*
 	drain::VariableMap & rootAttributes = resources.inputHi5["what"].data.attributes;
 	drain::Variable & object = rootAttributes["object"];
 	if (object.isEmpty()){
 		mout.note() << "Assuming polar data" << mout.endl;
 		object = "PVOL";
 	}
+	*/
 
 	DataTools::updateAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;

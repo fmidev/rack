@@ -32,6 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "File.h"
 #include "util/Time.h"
 
+#include "util/JSONtree.h"
+
 
 namespace drain
 {
@@ -40,23 +42,6 @@ namespace image
 {
 
 int File::index(0);
-
-/*
-template <>
-void File::initialize(Image & image, const std::type_info & t, const Geometry & g){
-	image.initialize(t,g);
-}
-
-template <>
-void File::initialize(ImageFrame & image, const std::type_info & t, const Geometry & g){
-
-	if ((image.getType() == t) && (image.getGeometry() == g))
-		return;
-	else
-		std::runtime_error(std::string("FilePng::")+__FUNCTION__+": tried to change ImageFrame geometry");
-
-}
-*/
 
 void File::writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i, int digits){
 
@@ -76,12 +61,7 @@ void File::writeIndexed(const ImageFrame &image, const std::string & pathPrefix,
 }
 
 
-
-
 } // image::
 
 } // drain::
 
-
-
-// Drain

@@ -96,11 +96,23 @@ public:
 	inline
 	~ODIM(){};
 
+	/// Applied 8-digit date format, "%Y%m%d"
+	static
+	const std::string dateformat;
+
+	/// Applied 6-digit date format, "%H%M%S"
+	static
+	const std::string timeformat;
+
+
 	/// /what (obligatory)
+	/// Data object, for example "PVOL" or "COMP"
 	std::string object;
 	std::string version;
 
+	/// Nominal time, in dateformat
 	std::string date;
+	/// Nominal time, in timeformat
 	std::string time;
 	std::string source;
 
@@ -178,11 +190,6 @@ public:
 	}
 
 
-	static
-	const std::string dateformat; //, "%Y%m%d");
-
-	static
-	const std::string timeformat; // "%H%M%S");
 
 	/// Write ODIM data relevant for data level, eg. \c /dataset2, \c data4, and root.
 	/**
@@ -210,12 +217,17 @@ public:
 		//odim.copyTo(odimLimited.getKeyList(), dst);
 	}
 
+
+
+
 	// Maximum Nyquist velocity, mutable because may be updated with PolarODIM::getNyquist()
 	mutable
 	double NI;
 
 
+
 protected:
+
 
 
 	///

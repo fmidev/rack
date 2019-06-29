@@ -191,7 +191,9 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 		mout.debug() << "properties:" << it->first << mout.endl;
 		mout.debug() << "properties:" << it->first << '=' << it->second << mout.endl;
-		comments[it->first] = it->second.toStr();
+		std::stringstream sstr;
+		it->second.valueToJSON(sstr);
+		comments[it->first] = sstr.str(); //it->second.toStr();
 		//it->second.substr(0,79);
 	}
 	size_t i = 0;

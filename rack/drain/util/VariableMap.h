@@ -75,7 +75,6 @@ public:
 
 };
 
-
 /// A map of FlexVariable:s.
 class FlexVariableMap : public SmartMap<FlexVariable> { //std::map<std::string,FlexVariable> {
 

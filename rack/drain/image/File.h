@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 #ifndef DRAIN_FILE_H_
 #define DRAIN_FILE_H_
 
@@ -41,22 +41,39 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Image.h"
 #include "ImageT.h"
 
+// #include "util/MetaDataReader.h"
+
 
 namespace drain
 {
 namespace image
 {
 
-// using namespace std;
 
 class File
 {
 public:
-	//((File(const std::string &filename);
 
-	//virtual ~File();
-	inline
-	static void read(Image &img, const std::string &path){
+	static inline  // , const CommentReader & commentReader = CommentReader()
+	void read(Image &img, const std::string & path){
+
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		if (FilePnm::fileNameRegExp.test(path)){
+			mout.debug() << "file format: PNM" << mout.endl;
+			FilePnm::read(img, path); // , commentReader
+		}
+		else {
+			if (FilePng::fileNameRegExp.test(path))
+				mout.debug() << "file format: PNG" << mout.endl;
+			else
+				mout.warn() << "unrecognized extension, assuming PNG" << mout.endl;
+			FilePng::read(img, path); // , commentReader
+		}
+	}
+
+	/*
+	static inline
+	void readFrame(ImageFrame &img, const std::string & path){
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		if (FilePng::fileNameRegExp.test(path)){
@@ -65,34 +82,17 @@ public:
 		}
 		else if (FilePnm::fileNameRegExp.test(path)){
 			mout.debug() << "file format: PNM" << mout.endl;
-			FilePnm::read(img, path);
+			FilePnm::readFrame(img, path);
 		}
 		else {
 			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
 			FilePng::read(img, path);
 		}
 	}
-
-	inline
-	static void read(ImageFrame &img, const std::string &path){
-
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		if (FilePng::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNG" << mout.endl;
-			FilePng::read(img, path);
-		}
-		else if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNM" << mout.endl;
-			FilePnm::read(img, path);
-		}
-		else {
-			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
-			FilePng::read(img, path);
-		}
-	}
+	*/
 
 	template <class T>
-	static void read(ImageT<T> &img,const std::string &path){
+	static void read(ImageT<T> &img, const std::string &path){
 #ifdef DRAIN_MAGICK_yes
 		Magick::ImageT magickImage;
 		magickImage.read(path);
@@ -146,7 +146,7 @@ public:
 		FilePng::write(img,path);
 #endif
 	}
-	*/
+	 */
 
 	/// Writes image to a file, naming it: prefix + index + ".png", using desired number of leading zeros.
 	/** Utility function esp. for debugging
@@ -156,7 +156,8 @@ public:
 	 *
 	 *
 	 */
-	static void writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i=-1, int digits=3);
+	static
+	void writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i=-1, int digits=3);
 
 protected:
 

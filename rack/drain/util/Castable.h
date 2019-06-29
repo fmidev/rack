@@ -340,6 +340,11 @@ public:
 		return false;
 	}
 
+	inline
+	bool operator==(const char * s){
+		return (strcmp(getCharArray(), s) == 0);
+	}
+
 	/// Compares a value to internal data.
 	template <class T>
 	bool operator==(const T &x){

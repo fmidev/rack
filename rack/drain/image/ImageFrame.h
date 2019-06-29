@@ -383,6 +383,13 @@ public:
 		return *propertiesPtr;
 	}
 
+	/*
+	virtual inline
+	FlexVariableMap & getProperties() {
+		return *propertiesPtr;
+	}
+	*/
+
 
 	inline
 	void setName(const std::string & s){ name = s; };
