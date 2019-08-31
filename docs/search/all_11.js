@@ -11,7 +11,7 @@ var searchData=
   ['qualityoverrideop',['QualityOverrideOp',['../classdrain_1_1image_1_1QualityOverrideOp.html#abffe66edd139a8a98365d7dfcb46d5bf',1,'drain::image::QualityOverrideOp']]],
   ['qualitythresholdop',['QualityThresholdOp',['../classdrain_1_1image_1_1QualityThresholdOp.html',1,'drain::image']]],
   ['quantity',['Quantity',['../classrack_1_1Quantity.html',1,'rack']]],
-  ['quantity',['quantity',['../classrack_1_1DataSelector.html#ae2b0decb04be26b617d1c24f0deffd4f',1,'rack::DataSelector::quantity()'],['../classrack_1_1ODIM.html#ae2b0decb04be26b617d1c24f0deffd4f',1,'rack::ODIM::quantity()'],['../classrack_1_1Quantity.html#a67993ce5cbc759f6eaf3840be5dce96f',1,'rack::Quantity::Quantity()']]],
+  ['quantity',['Quantity',['../classrack_1_1Quantity.html#a67993ce5cbc759f6eaf3840be5dce96f',1,'rack::Quantity::Quantity()'],['../classrack_1_1DataSelector.html#ae2b0decb04be26b617d1c24f0deffd4f',1,'rack::DataSelector::quantity()'],['../classrack_1_1ODIM.html#ae2b0decb04be26b617d1c24f0deffd4f',1,'rack::ODIM::quantity()']]],
   ['quantitymap',['QuantityMap',['../classrack_1_1QuantityMap.html',1,'rack']]],
   ['quantizatorfunctor',['QuantizatorFunctor',['../classdrain_1_1image_1_1QuantizatorFunctor.html',1,'drain::image']]],
   ['quick_20reference',['Quick reference',['../quickpage.html',1,'']]],

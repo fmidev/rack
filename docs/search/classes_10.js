@@ -24,6 +24,8 @@ var searchData=
   ['range_3c_20int_20_3e',['Range&lt; int &gt;',['../classdrain_1_1Range.html',1,'drain']]],
   ['range_3c_20unsigned_20short_20_3e',['Range&lt; unsigned short &gt;',['../classdrain_1_1Range.html',1,'drain']]],
   ['reader',['Reader',['../classhi5_1_1Reader.html',1,'hi5']]],
+  ['reader',['Reader',['../classDeer_1_1Image_1_1Reader.html',1,'Deer::Image']]],
+  ['readerpnm',['ReaderPnm',['../classDeer_1_1Image_1_1ReaderPnm.html',1,'Deer::Image']]],
   ['rectangle',['Rectangle',['../classdrain_1_1Rectangle.html',1,'drain']]],
   ['rectangle_3c_20double_20_3e',['Rectangle&lt; double &gt;',['../classdrain_1_1Rectangle.html',1,'drain']]],
   ['referencemap',['ReferenceMap',['../classdrain_1_1ReferenceMap.html',1,'drain']]],

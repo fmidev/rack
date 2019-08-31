@@ -8,6 +8,8 @@ var searchData=
   ['dataoverlapd',['dataOverlapD',['../classdrain_1_1image_1_1GeoFrame.html#ac423361f4de7fe8e0e69279b89195bdd',1,'drain::image::GeoFrame']]],
   ['dataselector',['dataSelector',['../classrack_1_1ProductBase.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::ProductBase::dataSelector()'],['../classrack_1_1RadarAccumulator.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::RadarAccumulator::dataSelector()']]],
   ['dataset',['DATASET',['../classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c',1,'rack::ODIMPathElem']]],
+  ['date',['date',['../classrack_1_1ODIM.html#a97f8a59003c89308e7c68c51ad1173c7',1,'rack::ODIM']]],
+  ['dateformat',['dateformat',['../classrack_1_1ODIM.html#ac4fc409b2eb44f99bf93f6f7112bf0c7',1,'rack::ODIM']]],
   ['dbz',['dbz',['../classrack_1_1PrecipOp.html#a5c4677c3788d2aa44cd54c9997ad809d',1,'rack::PrecipOp']]],
   ['dbzspan',['dbzSpan',['../classrack_1_1PrecipOp.html#ac496e470b7a94a4ed86910f18664130b',1,'rack::PrecipOp']]],
   ['debugrow',['debugRow',['../classrack_1_1JammingOp.html#a3ee7d7b3015bbb8a4b44c99d6c1fa9ef',1,'rack::JammingOp']]],

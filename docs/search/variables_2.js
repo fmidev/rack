@@ -5,7 +5,7 @@ var searchData=
   ['caster',['caster',['../classdrain_1_1image_1_1Encoding.html#a9ffd5a93a98f481dc194fbb707787ccf',1,'drain::image::Encoding']]],
   ['class_5fupdate_5fthreshold',['CLASS_UPDATE_THRESHOLD',['../classrack_1_1QualityCombinerOp.html#aef11d1cdc2c56bc98493ede02420d0c5',1,'rack::QualityCombinerOp']]],
   ['classcode',['classCode',['../classrack_1_1DetectorOp.html#aa8f58b02f5dc51f8c0a1cfd0cc3d5729',1,'rack::DetectorOp']]],
-  ['commentchar',['commentChar',['../classdrain_1_1image_1_1Sampler.html#a3bc0558e8583f709b6a4bea3a029a929',1,'drain::image::Sampler']]],
+  ['commentprefix',['commentPrefix',['../classdrain_1_1image_1_1Sampler.html#a10bc5602b68078f6f924128b36d6b219',1,'drain::image::Sampler']]],
   ['coordinatepolicy',['coordinatePolicy',['../classdrain_1_1image_1_1ImageConf.html#ae2c6c9544811089b109b0e0ed6f6bd23',1,'drain::image::ImageConf']]],
   ['copygroupsuffix',['copyGroupSuffix',['../classrack_1_1DataConversionOp.html#a38897de0e9d9a487a3186b8b6cd4f864',1,'rack::DataConversionOp']]],
   ['count',['count',['../classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8',1,'rack::DataSelector::count()'],['../classdrain_1_1image_1_1AccumulationArray.html#aa6a3bf37080a0f9dfefd62b3c34f2bb6',1,'drain::image::AccumulationArray::count()']]],

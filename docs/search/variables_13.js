@@ -5,6 +5,8 @@ var searchData=
   ['textfileextension',['textFileExtension',['../namespacerack.html#a2cda91b3da2d6f2815439749807e5da5',1,'rack']]],
   ['thetabin',['thetaBin',['../classrack_1_1Coordinates.html#afb5dcd1fcdc9149052899ea88471a21f',1,'rack::Coordinates']]],
   ['tifffileextension',['tiffFileExtension',['../namespacerack.html#abb849253ff185a58aa9eb444368b5116',1,'rack']]],
+  ['time',['time',['../classrack_1_1ODIM.html#ac9d28d6163cc62e9a8f9b2d58d8148a0',1,'rack::ODIM']]],
+  ['timeformat',['timeformat',['../classrack_1_1ODIM.html#add88edc41a2353841321922f77426595',1,'rack::ODIM']]],
   ['title',['title',['../classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72',1,'drain::image::Palette']]],
   ['toostreamptr',['toOStreamPtr',['../classdrain_1_1Caster.html#a61b9661743b80ab9e031807f36e1478e',1,'drain::Caster']]],
   ['translateptr',['translatePtr',['../classdrain_1_1Caster.html#a88db546b0fd76eadc804a700e0ff0de8',1,'drain::Caster']]],

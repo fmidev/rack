@@ -8,7 +8,7 @@ var searchData=
   ['separator',['separator',['../classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154',1,'drain::SmartMap']]],
   ['size',['size',['../classdrain_1_1image_1_1SegmentStatistics.html#ae9f51f5758591221e7f66f863b4f30a7',1,'drain::image::SegmentStatistics']]],
   ['sized',['sizeD',['../classdrain_1_1image_1_1SegmentStatistics.html#a837c206bcd7afc9c5dad3977cadbfcce',1,'drain::image::SegmentStatistics']]],
-  ['skipvoid',['skipVoid',['../classdrain_1_1image_1_1Sampler.html#a08d4873581c26961a964625cec861e7e',1,'drain::image::Sampler']]],
+  ['skipvoid',['skipVoid',['../classdrain_1_1image_1_1Sampler.html#a6314bacae8db5c06ea36a9663e6813aa',1,'drain::image::Sampler']]],
   ['specialcodes',['specialCodes',['../classdrain_1_1image_1_1Palette.html#ac315a0388f57b715a78a1a9426428738',1,'drain::image::Palette::specialCodes()'],['../classdrain_1_1image_1_1PaletteOp.html#afb778066dd79154be93e699b427d845e',1,'drain::image::PaletteOp::specialCodes()']]],
   ['srcweight',['srcWeight',['../classdrain_1_1image_1_1OpticalFlowCore.html#af0d0778105cd6d1c6f268e2fb9f7adcd',1,'drain::image::OpticalFlowCore']]],
   ['startpos',['startPos',['../classdrain_1_1FuzzyTriangle.html#a55ce5cf7840850f6ed838404916a48ba',1,'drain::FuzzyTriangle']]],

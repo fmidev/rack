@@ -117,7 +117,7 @@ var searchData=
   ['commandloader',['CommandLoader',['../classdrain_1_1CommandLoader.html',1,'drain']]],
   ['commandmodule',['CommandModule',['../classrack_1_1CommandModule.html',1,'rack']]],
   ['commandregistry',['CommandRegistry',['../classdrain_1_1CommandRegistry.html',1,'drain']]],
-  ['commentchar',['commentChar',['../classdrain_1_1image_1_1Sampler.html#a3bc0558e8583f709b6a4bea3a029a929',1,'drain::image::Sampler']]],
+  ['commentprefix',['commentPrefix',['../classdrain_1_1image_1_1Sampler.html#a10bc5602b68078f6f924128b36d6b219',1,'drain::image::Sampler']]],
   ['composite',['Composite',['../classrack_1_1Composite.html#ad32ac54b34b46a0a6292ff69ea4c6bcc',1,'rack::Composite']]],
   ['composite',['Composite',['../classrack_1_1Composite.html',1,'rack']]],
   ['compositeadd',['CompositeAdd',['../classrack_1_1CompositeAdd.html',1,'rack']]],

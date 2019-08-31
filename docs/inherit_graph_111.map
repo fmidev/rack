@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structdrain_1_1image_1_1HistogramConfig.html" title="HistogramConfig" alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title="HistogramWindowConfig" alt="" coords="173,5,340,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="12,81,119,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius. " alt="" coords="181,56,333,83"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="192,107,321,133"/>
+<area shape="rect" id="node6" href="$classrack_1_1RadarWindowConfig.html" title="RadarWindowConfig" alt="" coords="185,157,328,184"/>
+<area shape="rect" id="node7" href="$classrack_1_1DopplerInversionConfig.html" title="DopplerInversionConfig" alt="" coords="388,157,547,184"/>
+</map>

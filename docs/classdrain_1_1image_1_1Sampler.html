@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1Sampler-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Sampler Class Reference</div>  </div>
@@ -132,14 +133,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>jStep</b></td></tr>
 <tr class="memitem:afec0e0170cb1ad14ba9cc956b9ffe26f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afec0e0170cb1ad14ba9cc956b9ffe26f"></a>
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>jRange</b></td></tr>
 <tr class="separator:afec0e0170cb1ad14ba9cc956b9ffe26f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bc0558e8583f709b6a4bea3a029a929"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bc0558e8583f709b6a4bea3a029a929"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a3bc0558e8583f709b6a4bea3a029a929">commentChar</a></td></tr>
-<tr class="memdesc:a3bc0558e8583f709b6a4bea3a029a929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape std::string for prefixing text no to be handled as data values. <br /></td></tr>
-<tr class="separator:a3bc0558e8583f709b6a4bea3a029a929"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08d4873581c26961a964625cec861e7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08d4873581c26961a964625cec861e7e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a08d4873581c26961a964625cec861e7e">skipVoid</a></td></tr>
-<tr class="memdesc:a08d4873581c26961a964625cec861e7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip lines, if contain missing values. <br /></td></tr>
-<tr class="separator:a08d4873581c26961a964625cec861e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10bc5602b68078f6f924128b36d6b219"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10bc5602b68078f6f924128b36d6b219"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a10bc5602b68078f6f924128b36d6b219">commentPrefix</a></td></tr>
+<tr class="memdesc:a10bc5602b68078f6f924128b36d6b219"><td class="mdescLeft">&#160;</td><td class="mdescRight">Escape std::string for prefixing text no to be handled as data values. <br /></td></tr>
+<tr class="separator:a10bc5602b68078f6f924128b36d6b219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6314bacae8db5c06ea36a9663e6813aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6314bacae8db5c06ea36a9663e6813aa"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a6314bacae8db5c06ea36a9663e6813aa">skipVoid</a></td></tr>
+<tr class="memdesc:a6314bacae8db5c06ea36a9663e6813aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skip lines, if contain missing values. <br /></td></tr>
+<tr class="separator:a6314bacae8db5c06ea36a9663e6813aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad662503fc6c8a358abfd2bfe2b756365"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad662503fc6c8a358abfd2bfe2b756365"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>voidMarker</b></td></tr>
 <tr class="separator:ad662503fc6c8a358abfd2bfe2b756365"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,10 +148,16 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>voidMarker</b>
 <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">variableMap</a></td></tr>
 <tr class="memdesc:ac488a2d8b170e246436e7a30bb246e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface that links coordinates and image data. <br /></td></tr>
 <tr class="separator:ac488a2d8b170e246436e7a30bb246e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a32fee0528b065ec8a17773f54b861b06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fee0528b065ec8a17773f54b861b06"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>commentChar</b></td></tr>
+<tr class="separator:a32fee0528b065ec8a17773f54b861b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility for sampling images (2D data), outputting formatted text data. </p>
-<p>If the commentChar has been defined, the first line contains the applied format std::string (default or user-defined). </p>
+<p>If the commentChar has been defined, the first line contains the applied format std::string (default or user-defined) and other metadata. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="af4992ab8ef748da2e95537d7c83f60a9"></a>
 <div class="memitem">

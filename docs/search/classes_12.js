@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['textreader',['TextReader',['../classdrain_1_1TextReader.html',1,'drain']]],
   ['thresholdfunctor',['ThresholdFunctor',['../classdrain_1_1image_1_1ThresholdFunctor.html',1,'drain::image']]],
   ['time',['Time',['../classdrain_1_1Time.html',1,'drain']]],
   ['timeop',['TimeOp',['../classrack_1_1TimeOp.html',1,'rack']]],
