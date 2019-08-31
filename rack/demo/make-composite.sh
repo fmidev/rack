@@ -321,7 +321,7 @@ grid=${GRID:+"--cGrid $GRID"}
 
 # -O $BASENAME-.p
 #  -o $BASENAME.tif
-DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '*DEV' -o $BASENAME-STDEV.png $NEWLINE --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --encoding 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
+DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '${QUANTITY}' --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --encoding 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
 
 # if not TILED encoding='' ?
 encoding='' 
