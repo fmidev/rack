@@ -132,12 +132,12 @@ void DataSelector::update(){
 
 	if (!path.empty()){
 		convertRegExpToRanges(path);
-		mout.warn() << "path '" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
+		mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
 
 	if (!groupStr.empty()){
 		groups   = groupStr;  // update flags
-		mout.warn() << "updating groups flag: '" << groupStr << "' => " << groups.value << " = '" << groups << "'" << mout.endl;
+		mout.info() << "updating groups flag: '" << groupStr << "' => " << groups.value << " = '" << groups << "'" << mout.endl;
 		groupStr = "";
 	}
 

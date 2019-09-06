@@ -135,7 +135,9 @@ std::ostream & operator<<(std::ostream &ostr, const RadarDataPicker<OD> & p){
 }
 
 class PolarDataPicker : public RadarDataPicker<PolarODIM> {
-  public: // repl \n 
+
+
+public:
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
 	inline
@@ -186,7 +188,8 @@ class PolarDataPicker : public RadarDataPicker<PolarODIM> {
 
 	virtual
 	inline
-	void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
+	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
+	void writeHeader(char commentPrefix, std::ostream & ostr) const {
 		ostr << commentPrefix << " proj='" <<  this->getProjection().getProjectionSrc() << "'\n";
 		double lonLL, latLL, lonUR, latUR;
 		this->getProjection().getBoundingBoxD(odim.getMaxRange(), lonLL, latLL, lonUR, latUR);
@@ -270,9 +273,9 @@ public:
 	/// Frame for converting coordinates.
 	GeoFrame frame;
 
-	virtual
-	inline
-	void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
+	virtual inline
+	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
+	void writeHeader(char commentPrefix, std::ostream & ostr) const {
 		ostr << commentPrefix << " proj='" <<  frame.getProjection()   << "'\n";
 		const drain::Rectangle<double> & bbox = frame.getBoundingBoxD();
 		ostr << commentPrefix << " BBOX='" << bbox << "'\n";

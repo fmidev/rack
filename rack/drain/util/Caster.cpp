@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+
 void Caster::put(void *p, const char * x) const {
 
 	const std::type_info & t = getType();
@@ -172,6 +174,29 @@ void Caster::updateType<std::string>(){
 	return;
 
 }
+
+/*
+std::ostream & Caster::toOStreamFloats(std::ostream & ostr, const void *p){
+
+	if (!p)
+		throw std::runtime_error("Caster::toOStreamT<double>:: null ptr as argument");
+
+	const double d = *(double *)p;
+
+	if (d == rint(d)){
+		const std::streamsize prec = ostr.precision();
+		const std::ios_base::fmtflags flags = ostr.setf(std::ios::fixed, std::ios::floatfield );
+		ostr.precision(1);
+		ostr << d;
+		ostr.setf(flags);
+		ostr.precision(prec);
+	}
+	else
+		ostr << d;
+
+	return ostr;
+}
+*/
 
 
 }  // drain::

@@ -114,7 +114,7 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 
 			if (LOCALQUALITY){
 				// TODO if (REQUIRE_STANDARD_DATA){ ?
-				mout.warn() << "using local quality data" << mout.endl;
+				mout.info() << "using local quality data" << mout.endl;
 				processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 			}
 			else if (DATASETQUALITY) {

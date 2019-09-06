@@ -162,7 +162,7 @@ public:
 		productOp.processVolume(src, dst);
 
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
-		DataTools::updateAttributes(dst);
+		DataTools::updateInternalAttributes(dst);
 		resources.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		resources.currentHi5      = & dst;
 

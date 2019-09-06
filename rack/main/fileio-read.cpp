@@ -100,10 +100,10 @@ void CmdInputFile::exec() const {
 		resources.inputOk = false;
 		mout.debug() << e.what() << mout.endl;
 		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs
-			mout.warn() << "Read error, file=" << this->value << mout.endl;
+			mout.warn() << "Read error, file: " << this->value << mout.endl;
 		}
 		else {
-			mout.error() << "Read error, file=" << this->value << mout.endl;
+			mout.error() << "Read error, file: " << this->value << mout.endl;
 			//exit(1);
 		}
 		return;
@@ -149,9 +149,9 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	}
 
 
-	//DataTools::updateAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	//DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
 	//FlexVariableMap debugMap;
-	DataTools::updateAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
 	//mout.warn() << "debugMap: " << debugMap << mout.endl;
 
 
@@ -202,7 +202,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			}
 
 		}
-		DataTools::updateAttributes(*resources.currentHi5);
+		DataTools::updateInternalAttributes(*resources.currentHi5);
 	}
 	else {
 
@@ -222,7 +222,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			appendPolarH5(srcTmp, resources.inputHi5);
 		}
 
-		DataTools::updateAttributes(*resources.currentHi5);
+		DataTools::updateInternalAttributes(*resources.currentHi5);
 		DataTools::updateCoordinatePolicy(resources.inputHi5, RackResources::polarLeft);
 
 	}
@@ -555,18 +555,22 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
 	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+
 	std::ifstream ifstr;
 	ifstr.open(fullFilename.c_str());
+
 	if (ifstr.fail()){
-		mout.error() << "nyt feilaa" << mout.endl;
+		mout.error() << "Opening file '" << fullFilename << "' failed" << mout.endl;
 		ifstr.close();
 		return;
 	}
+
 	hi5::Hi5Base::readText(getResources().inputHi5, ifstr);
+
 	ifstr.close();
-	DataTools::updateAttributes(getResources().inputHi5);
-	// Hi5Base::writeText(getResources().inputHi5, std::cout);
-	// mout.error() << "getResources().inputHi5" << mout.endl;
+
+	DataTools::updateInternalAttributes(getResources().inputHi5);
+
 }
 
 void CmdInputFile::readImageFile(const std::string & fullFilename) const {
@@ -614,7 +618,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	if (object.isEmpty()){
 		mout.note() << "what:object empty, ? assuming polar data, 'PVOL'" << mout.endl;
-		//object = "PVOL";
+		object = "PVOL";
 	}
 
 	if (object == "COMP"){
@@ -641,7 +645,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	}
 	*/
 
-	DataTools::updateAttributes(resources.inputHi5); // [dataSetElem] enough?
+	DataTools::updateInternalAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
 	if (object.toStr()=="COMP"){
@@ -659,7 +663,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
 	}
 
-	DataTools::updateAttributes(resources.inputHi5);
+	DataTools::updateInternalAttributes(resources.inputHi5);
 
 
 }

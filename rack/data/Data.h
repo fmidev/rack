@@ -261,7 +261,7 @@ public:
 	virtual inline
 	~RootData(){
 		ODIM::copyToH5<ODIMPathElem::ROOT>(this->odim, this->tree);
-		DataTools::updateAttributes(this->tree); // overrides anything?
+		DataTools::updateInternalAttributes(this->tree); // overrides anything?
 	};
 
 	typename DT::odim_t odim;
@@ -430,7 +430,7 @@ public:
 	inline
 	void updateTree2(){
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, this->tree);
-		DataTools::updateAttributes(this->tree);
+		DataTools::updateInternalAttributes(this->tree);
 	}
 
 
@@ -692,7 +692,7 @@ public:
 		//odim.copyToDataSet(this->tree);
 		//if (!DataTools::removeIfNoSave(this->tree))
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
-		DataTools::updateAttributes(this->tree); // images, including DataSet.data, TODO: skip children
+		DataTools::updateInternalAttributes(this->tree); // images, including DataSet.data, TODO: skip children
 	}
 
 	// TODO: consider this to destructor!
@@ -1030,7 +1030,8 @@ public:
 		//odim.copyToDataSet(this->tree);
 		//if (!DataTools::removeIfNoSave(this->tree))
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
-		DataTools::updateAttributes(this->tree); // images, including DataSet.data, TODO: skip children
+		DataTools::updateInternalAttributes(this->tree); // TEST2019/09 // images, including DataSet.data, TODO: skip children
+		//DataTools::updateInternalAttributes(this->tree, drain::FlexVariableMap()); // TEST2019/09 // images, including DataSet.data, TODO: skip children
 	}
 
 	// TODO: consider this to destructor!

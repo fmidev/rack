@@ -137,7 +137,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 
 	DataTools::updateCoordinatePolicy(resources.cartesianHi5, RackResources::limit);
-	DataTools::updateAttributes(resources.cartesianHi5);
+	DataTools::updateInternalAttributes(resources.cartesianHi5);
 
 	resources.currentHi5 = &resources.cartesianHi5;
 	resources.currentImage = NULL;

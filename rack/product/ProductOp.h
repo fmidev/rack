@@ -448,7 +448,7 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 	how["sw_version"] = __RACK_VERSION__;
 	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 
-	//DataTools::updateAttributes(dstProduct);
+	//DataTools::updateInternalAttributes(dstProduct);
 	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
 	//what["source"] = src["what"].data.attributes["source"];
 	//what["object"] = odim.object;

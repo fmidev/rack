@@ -88,9 +88,13 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 		if (!separator)
 			separator = this->outputSeparator;
 		char sep = 0;
+		// NEW 2019/07: keep precision through elements.
+		//std::streamsize prec = ostr.precision();
 		for (size_t i = 0; i < getElementCount(); ++i) {
-			if (sep)
+			if (sep){
 				ostr << sep;
+				//ostr.precision(prec);
+			}
 			caster.toOStream(ostr, getPtr(i));
 			sep = separator;
 		}
@@ -149,27 +153,18 @@ void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
 std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 
 	if ((getType() == typeid(char)) || isStlString()){
-	    //if (isString()){
 		ostr << '"';
-		/*
-		//isCharArrayString()
-		const char *c = getCharArray();
-		while (*c != '\0'){
-			ostr << *c;
-			++c;
-		}
-		*/
 		toStream(ostr, ','); // use JSON separator
 		ostr << '"';
 	}
 	else {
 		if (getElementCount() != 1){
 			ostr << '[';
-			toStream(ostr);
+			toStream(ostr); // why comma not explicit? ...
 			ostr << ']';
 		}
 		else
-			toStream(ostr, ',');
+			toStream(ostr, ',');  // ... but here
 	}
 	return ostr;
 }

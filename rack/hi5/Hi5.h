@@ -172,6 +172,7 @@ public:
 	 */
 
 	/// Split full path string to path object and attribute key.
+	// consider ValueReader, TextReader instead (skipping attrType)
 	/**
 	 *
 	 *   \param s - string containing path and/or attribute

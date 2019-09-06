@@ -131,7 +131,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			/// MAIN COMMAND
 			processDataSet(srcDataSet, dstProb,  dstDataSet);
 			//@ dstProb.updateTree(); // create /what, /where etc.
-			//@ DataTools::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
+			//@ DataTools::updateInternalAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
 			// update str trees?
 
 			/*
@@ -301,9 +301,17 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 
 void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
-	drain::VariableMap & a = dstData.getTree()["how"].data.attributes;
+
+	/*
+	// drain::VariableMap & a = dstData.getTree()["how"].data.attributes;
 	a["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe."+name+':'+getParameters().getKeys();
 	a["task_args"] = getParameters().getValues();
+	*/
+
+	drain::VariableMap & a = dstData.getHow();
+	a["task"] = std::string("fi.fmi.") + __RACK__ + ".AnDRe."+name;
+	a["task_args"] = getParameters().toStr(':');
+
 }
 
 

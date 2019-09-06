@@ -201,7 +201,7 @@ protected:
 		resources.select.clear();
 
 		op.processH5(*resources.currentHi5, *resources.currentHi5);
-		DataTools::updateAttributes(*resources.currentHi5);
+		DataTools::updateInternalAttributes(*resources.currentHi5);
 
 	}
 
@@ -253,7 +253,7 @@ public:
 				dstQuality.data.setScaling(dstQuality.odim.gain, dstQuality.odim.offset);
 				//@ dstQuality.updateTree();
 			}
-			//@  DataTools::updateAttributes(dstDataSetH5);
+			//@  DataTools::updateInternalAttributes(dstDataSetH5);
 
 		}
 
@@ -289,7 +289,7 @@ public:
 			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
 		}
 
-		DataTools::updateAttributes(*resources.currentHi5);
+		DataTools::updateInternalAttributes(*resources.currentHi5);
 	};
 
 };
@@ -535,8 +535,8 @@ public:
 			dst2.data.noSave = noSave1;
 			dst2.data.attributes.swap(dst1.data.attributes);
 			//dstRoot.erase(path1);
-			//DataTools::updateAttributes(dst1); // recurse subtrees
-			//DataTools::updateAttributes(dst2); // recurse subtrees
+			//DataTools::updateInternalAttributes(dst1); // recurse subtrees
+			//DataTools::updateInternalAttributes(dst2); // recurse subtrees
 
 		}
 		else { // Rename attribute
@@ -557,13 +557,13 @@ public:
 			HI5TREE & dst2 = dstRoot(path2);
 			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
 			dst1.data.attributes.erase(attr1);
-			//DataTools::updateAttributes(dst2);
+			//DataTools::updateInternalAttributes(dst2);
 			mout.debug() << "dst1 attributes now: " << dst1.data.attributes << mout.endl;
 			mout.debug() << "dst2 attributes now: " << dst2.data.attributes << mout.endl;
 			//dstRoot.erase(path1);
 		}
 
-		DataTools::updateAttributes(dstRoot);
+		DataTools::updateInternalAttributes(dstRoot);
 		//mout.error() << "argument <from,to> syntax error; regexp: " << pathSplitter.toStr() << mout.endl;
 
 		pathSrc = "";
@@ -616,21 +616,33 @@ public:
 
 		DataSelector selector; // todo implement --select
 
-		DataTools::updateAttributes(dstH5);
+		//mout.warn() << "start upd" << mout.endl;
+
+		DataTools::updateInternalAttributes(dstH5);
+
+		//DataSet<DT> dstDataSetKOKKEILU(dstH5["dataset1"]);
 
 		OD rootODIM;
 
 		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 
+			mout.note() << "main: " << it->first << mout.endl;
+
 			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.isInside(it->first.getIndex())){
 
-				mout.debug() << it->first << mout.endl;
+				//mout.note() << '@' << it->first << mout.endl;
 				DataSet<DT> dstDataSet(it->second);
+				//mout.note() << '%' << it->first << mout.endl;
+				//return;
+
 				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
 					mout.debug() << dit->first << " :" << dit->second << mout.endl;
 					PlainData<DT> & dstData = dit->second;
 
+					//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
+
 					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
+					//mout.warn() << "ODIM: " << dstData.odim << mout.endl;
 
 					if (!dstData.data.isEmpty()){
 						const size_t w = dstData.data.getWidth();
@@ -650,6 +662,8 @@ public:
 
 					//rootODIM.updateFromMap(d.data.properties);
 					//dstData.updateTree2();
+					mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
+
 					dstData.updateTree2();
 					rootODIM.update(dstData.odim);
 					//odim.copyToData(dst);
@@ -661,7 +675,6 @@ public:
 			}
 			//rootODIM.copyToRoot()
 		}
-		//rootODIM.
 
 		/*
 		if (rootODIM.date.empty())
@@ -732,7 +745,7 @@ public:
 		mout.warn() << "value: " << value << mout.endl;
 		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
 
-		DataTools::updateAttributes(*(resources.currentHi5));
+		DataTools::updateInternalAttributes(*(resources.currentHi5));
 
 
 		// List of paths in which assignments are repeated.
@@ -778,12 +791,12 @@ public:
 				ODIMPath parent = *it;
 				parent.pop_back();
 				// mout.warn() << "update attributes under: " <<  attributeGroup.result[2] << mout.endl;
-				//DataTools::updateAttributes(currentHi5(attributeGroup.result[2]));  // one step above where,what,how
-				DataTools::updateAttributes(currentHi5(parent));  // one step above where,what,how
+				//DataTools::updateInternalAttributes(currentHi5(attributeGroup.result[2]));  // one step above where,what,how
+				DataTools::updateInternalAttributes(currentHi5(parent));  // one step above where,what,how
 			}
 			else {
 				//mout.warn() << "update attributes under: " <<  *it << mout.endl;
-				DataTools::updateAttributes(currentHi5(*it));
+				DataTools::updateInternalAttributes(currentHi5(*it));
 			}
 
 		}

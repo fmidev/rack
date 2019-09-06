@@ -40,30 +40,27 @@ namespace drain
 
 
 
-/// Handler for comments.
-/*
-class CommentReader {
+/// Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data
+/*'
+ *  Applicable in reading configuration files and comments containing:
+ *  -# plain numbers, distinguishing integers and floats
+ *	-# arrays of numbers, surrounded by braces [,]
+ *	-# strings, surrounded by double hyphens (")
+ *
+ *	Applies TextReader::scanSegment in reading character streams.
+ *	Uses Type::guessArrayType() for deriving compatible storage type for arrays.
+ *
+ *
+ */
+class ValueReader  {
 
 public:
 
-	virtual inline
-	~CommentReader(){};
-
-	virtual inline
-	int readLine(const std::string & line){
-		return 0;
-	};
-
-};
-*/
-
-class ValueReader  { // : public TextReader
-
-public:
-
+	/// Read stream until a value has been extracted, with type recognition
 	static
 	void scanValue(std::istream & istr, Variable & v);
 
+	/// Read stream until a value has been extracted, with type recognition
 	static inline
 	void scanValue(const std::string & s, Variable & v){
 		std::istringstream istr(s);
@@ -72,29 +69,6 @@ public:
 
 };
 
-/*
-class MetaDataReader : public CommentReader {
-
-public:
-
-	/// Copy const. Should not be needed, though
-	inline
-	MetaDataReader(FlexVariableMap & metadata) : metadata(metadata){};
-
-	/// Copy const. Should not be needed, though
-	inline
-	MetaDataReader(const MetaDataReader & mdr) : metadata(mdr.metadata){};
-
-	virtual inline
-	~MetaDataReader(){};
-
-	virtual
-	int readLine(const std::string & line);
-
-	FlexVariableMap & metadata;
-
-};
-*/
 
 }  // drain
 

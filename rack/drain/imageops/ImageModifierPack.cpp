@@ -345,13 +345,14 @@ void ImageSampler::setReferences(){
 	parameters.reference("jStep",  sampler.jStep =  0, "vert coord step");
 	parameters.reference("iRange", sampler.iRange.vect, "horz range").fillArray = true;
 	parameters.reference("jRange", sampler.jRange.vect, "vert range").fillArray = true;
-	// parameters["jRange"].fillArray
-	parameters.reference("iStart", sampler.iRange.vect[0] = -1, "horz coord start (depr.)");
-	parameters.reference("jStart", sampler.jRange.vect[0] = -1, "vert coord start (depr.)");
-	parameters.reference("iEnd",   sampler.iRange.vect[1] = -1,  "horz coord end (depr.)");
-	parameters.reference("jEnd",   sampler.jRange.vect[1] = -1,  "vert coord end (depr.)");
-	parameters.reference("commentChar",   sampler.commentChar = "#",  "comment character");
+	parameters.reference("commentChar",   sampler.commentPrefix = "#",  "comment prefix (char or bytevalue)");
 	parameters.reference("skipVoid", sampler.skipVoid = 0,  "skip lines with invalid/missing values");
+	// Deprecating
+	parameters.reference("iStart", sampler.iRange.vect[0] = -1, "horz coord start (obsolete)");
+	parameters.reference("jStart", sampler.jRange.vect[0] = -1, "vert coord start (obsolete)");
+	parameters.reference("iEnd",   sampler.iRange.vect[1] = -1, "horz coord end (obsolete)");
+	parameters.reference("jEnd",   sampler.jRange.vect[1] = -1, "vert coord end (obsolete)");
+
 }
 
 void ImageSampler::process(Image & dst) const {  // consider void traverse(const Channel & src) const {

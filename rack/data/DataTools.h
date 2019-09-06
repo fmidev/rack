@@ -101,7 +101,7 @@ public:
 	 */
 	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
 	static
-	void updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
+	void updateInternalAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
 
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
 	/**
@@ -115,9 +115,9 @@ public:
 	 *  \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateAttributes(HI5TREE & src){
+	void updateInternalAttributes(HI5TREE & src){
 		src.data.dataSet.properties.clear();
-		updateAttributes(src, drain::FlexVariableMap());
+		updateInternalAttributes(src, drain::FlexVariableMap());
 	}
 
 	/// This \c const version does nothing.
@@ -125,7 +125,7 @@ public:
 	 *   \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateAttributes(const HI5TREE & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
+	void updateInternalAttributes(const HI5TREE & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
 		//drain::Logger mout("DataTools", __FUNCTION__);
 		//mout.warn() << "somebody called me" << mout.endl;
 	};

@@ -296,7 +296,7 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		fuzzyBright.functor.set(0.0,-0.032, overallScale);
 		fuzzyBright.process(dstData.data, dstData.data);
 	}
-	DataTools::updateAttributes(dstData.getTree()); // needed?
+	DataTools::updateInternalAttributes(dstData.getTree()); // needed?
 }
 
 

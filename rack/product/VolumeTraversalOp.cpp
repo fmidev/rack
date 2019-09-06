@@ -141,7 +141,7 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 			/// MAIN COMMAND
 			processDataSet(srcDataSet, dstDataSet);
 			//dstDataSet.updateTree(); // create /what, /where etc.
-			//DataTools::updateAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
+			//DataTools::updateInternalAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
 			// update str trees?
 
 

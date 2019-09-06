@@ -41,7 +41,7 @@ using namespace hi5;
 
 // const drain::image::CoordinatePolicy & policy,
 //void DataSelector::_updateAttributes(HI5TREE & src, const drain::VariableMap & attributes){
-void DataTools::updateAttributes(HI5TREE & src,  const drain::FlexVariableMap & attributes){
+void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariableMap & attributes){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -60,6 +60,7 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::FlexVariableMap & 
 				sstr.str("");
 				sstr << *git << ':' << it->first;
 				a[sstr.str()] = it->second;
+				// mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << mout.endl;
 				// if (it->first == "quantity") mout.warn() << "quantity=" << it->second << mout.endl;
 			}
 		}
@@ -73,6 +74,7 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::FlexVariableMap & 
 		if (img.typeIsSet())
 			a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
 	}
+
 	if (HAS_DATA){
 		drain::image::Image & img = src["data"].data.dataSet;
 		if (img.typeIsSet()){
@@ -86,9 +88,13 @@ void DataTools::updateAttributes(HI5TREE & src,  const drain::FlexVariableMap & 
 	// Traverse children (recursion)
 
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
-		if (! it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+		// mout.note() << "considering " << it->first << mout.endl;
+		//it->first.be
+		//if (! it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+		if (it->first.belongsTo(ODIMPathElem::DATA_GROUPS))
 			//if (g.find(it->first) == g.end())
-			updateAttributes(it->second,  a); // policy,
+			mout.warn() << "descending to... " << it->first << mout.endl;
+			updateInternalAttributes(it->second,  a); // policy,
 	}
 
 

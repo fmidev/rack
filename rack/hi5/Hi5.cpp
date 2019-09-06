@@ -59,7 +59,9 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
+		//it->second.valueToJSON(ostr);
 		ostr << it->second << ' ';
+		ostr << ' ';
 		it->second.typeInfo(ostr);
 		ostr << '\n';
 	}
@@ -172,10 +174,10 @@ void Hi5Base::linkPalette(const HI5TREE & palette, HI5TREE & dst){
 }
 
 // const HI5TREE &src,
-void Hi5Base::writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & keys, std::ostream & ostr) {
+void Hi5Base::writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr) {
 
 
-	for (std::list<HI5TREE::path_t>::const_iterator it = keys.begin(); it != keys.end(); ++it) {
+	for (std::list<HI5TREE::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
 
 		const std::string &key = *it;
 		src(key).data.writeText(ostr, key);
@@ -203,6 +205,7 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 }
 
 /// Split full path string to path object and attribute key.
+// consider ValueReader, TextReader instead (skipping attrType)
 void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue, std::string & attrType){
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
@@ -230,6 +233,8 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 
 		c = s.at(i);
 		END = (i == iMax);
+
+		//mout.warn() << "MODE=" << (int)mode << ", '" << s.substr(i) << "' END=" << END << mout.endl;
 
 		switch (mode) {
 
@@ -269,8 +274,10 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 			break;
 
 		case ATTR_VALUE:
-			if (c == ' '){
-				// Scan, but do not update anchor (iEnd)
+			if (END){
+				// mout.warn() << "extracting value... " << s.substr(iStart) << mout.endl;
+				attrValue = s.substr(iStart, (iEnd+1)-iStart);
+				return;
 			}
 			else if (c == '['){
 				// end reading value, proceed to read type
@@ -278,11 +285,12 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 				mode = ATTR_TYPE;
 				iStart = i+1;
 			}
-			else if (END){
-				attrValue = s.substr(iStart, (iEnd+1)-iStart);
-				return;
+			else if (c == ' '){
+				// Scan, but do not update anchor (iEnd)
+				// mout.warn() << "space" << mout.endl;
 			}
 			else {
+				// mout.warn() << "read on" << mout.endl;
 				iEnd = i+1;
 			}
 
@@ -342,11 +350,12 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 	std::string attrValue;
 	std::string attrType;
 
+	// consider ValueReader, TextReader instead (skipping attrType)
 	Hi5Base::parsePath(line, path, attrKey, attrValue, attrType);
 
-	mout.debug();
-	mout << path      << " | ";
-	mout << attrKey   << " | ";
+	mout.debug(1);
+	mout << path      << " : ";
+	mout << attrKey   << " =";
 	mout << attrValue << " | ";
 	mout << attrType  ;
 	mout << mout.endl;
@@ -398,7 +407,9 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
 		drain::Variable & a = n.attributes[attrKey];
 
-		static const char stringTypeCode = drain::Type::getTypeChar(typeid(std::string));
+		static
+		const char stringTypeCode = drain::Type::getTypeChar(typeid(std::string));
+
 		if ((typeCode) && (typeCode != stringTypeCode)){
 			//mout.warn() << "typeCode=" << typeCode << mout.endl;
 			a.setType(drain::Type::getTypeInfo(typeCode));
@@ -408,19 +419,13 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 			a.setType(typeid(std::string));
 
 		a = attrValue;
+		mout.warn() << attrKey << "=" << a << " => " << drain::Type::getTypeChar(a.getType())<< mout.endl;
 
 		if (attrKey == "quantity"){
 			if (n.attributes.get("gain", 0.0) == 0.0){
 				hi5mout.debug() << "Suggesting --completeODIM to proceed" << hi5mout.endl;
 			}
 		}
-
-		/*
-			if (typeCode){
-				mout.warn() << "typeCode=" << typeCode << " >> " << drain::Type::getTypeChar(a.getType()) << mout.endl;
-			}
-		 */
-		//n.attributes[key]
 
 	}
 

@@ -71,7 +71,8 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 		dstQind.data.fill(dstQind.odim.scaleInverse(1.0)); // max quality by default
 	};
 
-	drain::VariableMap & a = dstQind.getTree()["how"].data.attributes;
+	// drain::VariableMap & a = dstQind.getTree()["how"].data.attributes;
+	drain::VariableMap & a = dstQind.getHow();
 	a["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
 	a["task_args"] << label; //getQuantityName();
 
@@ -83,7 +84,8 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 		// dstClass.fill(0);
 	};
 
-	drain::VariableMap & howClass = dstClass.getTree()["how"].data.attributes;
+	//drain::VariableMap & howClass = dstClass.getTree()["how"].data.attributes;
+	drain::VariableMap & howClass = dstClass.getHow();
 	std::stringstream sstr;
 	sstr << label << ':' << index;
 	howClass["task_args"] << sstr.str();
@@ -136,9 +138,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 
 	std::set<std::string> classesNew;
-	srcQind.getTree()["how"].data.attributes["task_args"].toContainer(classesNew);
+	//srcQind.getTree()["how"].data.attributes["task_args"].toContainer(classesNew);
+	srcQind.getHow()["task_args"].toContainer(classesNew);
 
-	drain::Variable & task_args = dstQind.getTree()["how"].data.attributes["task_args"];
+	//drain::Variable & task_args = dstQind.getTree()["how"].data.attributes["task_args"];
+	drain::Variable & task_args = dstQind.getHow()["task_args"];
 	std::set<std::string> classes;
 	task_args.toContainer(classes);
 
@@ -221,13 +225,15 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			++it; ++itc; ++pit; ++cit;
 		}
 
-		drain::Variable & task_args_class = dstClass.getTree()["how"].data.attributes["task_args"];
+		// drain::Variable & task_args_class = dstClass.getTree()["how"].data.attributes["task_args"];
+		drain::Variable & task_args_class = dstClass.getHow()["task_args"];
 
 		std::set<std::string> classCodes;
 		task_args_class.toContainer(classCodes);
 
 		std::set<std::string> classCodesNew;
-		srcClass.getTree()["how"].data.attributes["task_args"].toContainer(classCodesNew);
+		//srcClass.getTree()["how"].data.attributes["task_args"].toContainer(classCodesNew);
+		srcClass.getHow()["task_args"].toContainer(classCodesNew);
 
 		//std::set<std::string> classCodesFinal;
 		//set_union(classCodes.begin(), classCodes.end(), classCodesNew.begin(), classCodesNew.end(), classCodesFinal.begin());
@@ -242,11 +248,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 
 		//@ dstClass.updateTree();
-		//@ DataTools::updateAttributes(dstClass.tree);
+		//@ DataTools::updateInternalAttributes(dstClass.tree);
 	}
 
 	//@ dstQind.updateTree();
-	//@ DataTools::updateAttributes(dstQind.tree);
+	//@ DataTools::updateInternalAttributes(dstQind.tree);
 
 
 

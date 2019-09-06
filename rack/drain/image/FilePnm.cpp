@@ -70,7 +70,10 @@ void FilePnm::read(Image & image, const std::string & path) {
 	}
 
 	FileType pt = UNDEFINED;
-	int width, height, channels, maxValue;
+	int width;
+	int height;
+	int channels = 1;
+	int maxValue;
 
 	int c = infile.get();
 
@@ -101,6 +104,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 		break;
 	default:
 		mout.error() << "unrecognized PPM type" << mout.endl;
+		return;
 	}
 
 	mout.note() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;

@@ -409,6 +409,31 @@ protected:
 		return ostr;
 	}
 
+	template <class F>
+	static
+	std::ostream & toOStreamFloats(std::ostream & ostr, const void *p){
+
+		if (!p)
+			throw std::runtime_error("Caster::toOStreamT<double>:: null ptr as argument");
+
+		const F d = *(F *)p;
+
+		if (d == rint(d)){
+			const std::streamsize prec = ostr.precision();
+			const std::ios_base::fmtflags flags = ostr.setf(std::ios::fixed, std::ios::floatfield );
+			ostr.precision(1);
+			ostr << d;
+			ostr.setf(flags);
+			ostr.precision(prec);
+		}
+		else
+			ostr << d;
+
+		return ostr;
+
+	}
+
+
 	/// Current type.
 	const std::type_info *type;
 
@@ -702,6 +727,19 @@ std::ostream & Caster::toOStreamT<Caster>(std::ostream &ostr, const void *p){ //
 	return ostr;
 }
 
+// Yes, to get trailing period and zero: .0
+template <>
+inline
+std::ostream & Caster::toOStreamT<float>(std::ostream & ostr, const void *p){
+	return toOStreamFloats<float>(ostr, p);
+}
+
+// Yes, to get trailing period and zero: .0
+template <>
+inline
+std::ostream & Caster::toOStreamT<double>(std::ostream & ostr, const void *p){
+	return toOStreamFloats<double>(ostr, p);
+}
 
 
 

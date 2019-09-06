@@ -172,7 +172,7 @@ class CmdImageAlpha : public CmdImageAlphaBase {
 
 public:
 
-	CmdImageAlpha() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Implies additional image, creates one if needed. See --target") {
+	CmdImageAlpha() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Implies additional image, creates one if needed. See --encoding") {
 	};
 
 	void exec() const {
@@ -294,11 +294,12 @@ public:
 		fuzzyStep.functor.set(scaling.inv(range.min), scaling.inv(range.max), 1.0);
 		*/
 		if (ImageOpRacklet::physical){
+			mout.info() << "using physical scale " << mout.endl;
 			fuzzyStep.functor.set(range.min, range.max, 1.0);
 		}
 		else {
 			//const drain::image::ImageScaling & scaling = srcImg.getScaling();
-			mout.warn() << "scaling: "  << odim << mout.endl;
+			mout.info() << "using storage type values directly (no physical scaling): "  << odim << mout.endl;
 			//odim.scaleForward()
 			const double max = Type::call<typeNaturalMax>(srcImg.getType()); // 255, 65535, or 1.0
 			//srcImg.getScaling().
@@ -310,7 +311,7 @@ public:
 		fuzzyStep.nodataValue   = limit(dstMax*nodata);
 		fuzzyStep.undetectValue = limit(dstMax*undetect);
 
-		mout.warn() << "fuzzy: "  << fuzzyStep << mout.endl;
+		mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
 		fuzzyStep.traverseChannel(srcImg.getChannel(0), dstImg.getAlphaChannel(0));
 
 	}

@@ -81,7 +81,8 @@ struct SamplePicker {
 
 	/// Optional utility. Called prior to writing the actual data to output stream.
 	virtual
-	void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {};
+	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {};
+	void writeHeader(char commentPrefix, std::ostream & ostr) const {};
 
 
 	/// Horizontal coordinate.
@@ -131,20 +132,14 @@ public:
 
 /// Utility for sampling images (2D data), outputting formatted text data.
 /**
- *   If the commentChar has been defined, the first line contains the applied format std::string (default or user-defined).
+ *   If the commentChar has been defined, the first line contains the applied format std::string (default or user-defined)
+ *   and other metadata.
  */
 class Sampler  {
 
 public:
 
-	//Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), iStart(-1), jStart(-1), iEnd(-1), jEnd(0),
-	/*
-	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), iStart(iRange.vect[0]), jStart(jRange.vect[0]), iEnd(iRange.vect[1]), jEnd(jRange.vect[1]),
-			commentChar("#"), skipVoid(0), voidMarker("void data") {
-	};
-	*/
-
-	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar("#"), skipVoid(0), voidMarker("void data") {
+	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar('#'), commentPrefix(1, commentChar), skipVoid(false), voidMarker("void data") {
 	};
 
 
@@ -153,18 +148,18 @@ public:
 
 	drain::Range<int> iRange;
 	drain::Range<int> jRange;
-	/*
-	int & iStart;
-	int & jStart;
-	int & iEnd;
-	int & jEnd;
-	*/
 
+protected:
+	mutable
+	char commentChar;
+
+public:
 	/// Escape std::string for prefixing text no to be handled as data values.
-	std::string commentChar;
+	std::string commentPrefix;
+
 
 	/// Skip lines, if contain missing values.
-	int skipVoid;
+	bool skipVoid;
 	std::string voidMarker;
 
 	/// Interface that links coordinates and image data.
@@ -238,7 +233,24 @@ public:
 		const int jStep  = (this->jStep > 0) ? this->jStep : iStep;
 
 		/// Write header, if commentChar has been set.
-		if (!commentChar.empty()){
+		if (commentPrefix.empty()){
+			commentChar = 0;
+		}
+		else {
+
+			if (commentPrefix.size() == 1){
+				commentChar = commentPrefix[0];
+			}
+			else {
+				int i;
+				drain::StringTools::convert(commentPrefix, i);
+				commentChar = i;
+				if (i < 32)
+					mout.warn() << "commentChar bytevalue: " << i << " > commentChar=" << commentChar << mout.endl;
+				else if (i > 128)
+					mout.warn() << "commentChar bytevalue: " << i << " > commentChar=" << commentChar << mout.endl;
+			}
+
 			//ostr << commentChar << " TEST\n";
 			picker.writeHeader(commentChar, ostr);
 			ostr << commentChar << " size='" << picker.width << 'x' << picker.height << "'\n";
@@ -304,7 +316,7 @@ public:
 
 				if (dataOk || (skipVoid==0)){
 					formatter.toStream(ostr, variableMap, true);
-					if  ((!dataOk) && (!commentChar.empty()))
+					if  ((!dataOk) && (commentChar))
 						ostr << ' ' << commentChar <<  voidMarker;
 					ostr << '\n';
 				}
@@ -319,27 +331,6 @@ public:
 
 };
 
-
-
-
-
-/*
-
-
-template <class T>
-std::ostream &operator<<(std::ostream &ostr,const drain::image::Point2D<T> &p)
-{
-	ostr << '[' << p.x << ',' << p.y << ']';
-    return ostr;
-}
-
-template <class T>
-std::ostream &operator<<(std::ostream &ostr,const drain::image::Point3D<T> &p)
-{
-	ostr << '[' << p.x << ',' << p.y << ',' << p.z << ']';
-    return ostr;
-}
-*/
 
 
 }

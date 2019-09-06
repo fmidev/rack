@@ -127,7 +127,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				//srcQuality.setPhysicalRange(0.0, 1.0);
 				//srcQuality.updateTree2();
 				// = ODIM::copyToH5<ODIMPathElem::DATA>(srcQuality.odim, srcQuality.getTree());
-				// = DataTools::updateAttributes(srcQuality.getTree());
+				// = DataTools::updateInternalAttributes(srcQuality.getTree());
 				srcQ.data.properties.updateFromMap(srcQ.odim); /// IMPORTANT: DataSet<CartesianDst> below will read properties.
 			}
 			else {
@@ -291,7 +291,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 	//debugChannels(channels, 200, 100);
 	//resources.currentImage = ;
-	//DataTools::updateAttributes(dstH5);
+	//DataTools::updateInternalAttributes(dstH5);
 
 }
 
@@ -409,7 +409,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	}
 
 	// NOTE: this is neededn because  resources.cartesianHi5("dataset4") above does not propagate information.
-	DataTools::updateAttributes(resources.cartesianHi5);
+	DataTools::updateInternalAttributes(resources.cartesianHi5);
 
 	// hi5::Hi5Base::deleteNoSave(resources.cartesianHi5);
 
