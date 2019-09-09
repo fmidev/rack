@@ -187,6 +187,10 @@ public:
 	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
 			std::string & attrType);
 
+	static
+	void parsePathNEW(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
+			std::string & attrType);
+
 
 	static inline
 	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey){

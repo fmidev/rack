@@ -204,6 +204,27 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 }
 
+
+void Hi5Base::parsePathNEW(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
+		std::string & attrType){
+
+	drain::Logger mout("Hi5Base", __FUNCTION__);
+
+	static
+	const drain::RegExp pathSyntax("^/?([^/][/\\w]+)(([:].+)?)$");
+
+	std::vector<std::string> p;
+	if (pathSyntax.execute(line, p)){
+
+		mout.warn() << "p0" << p[0] << mout.endl;
+		mout.warn() << "p1" << p[1] << mout.endl;
+
+	}
+
+
+}
+
+
 /// Split full path string to path object and attribute key.
 // consider ValueReader, TextReader instead (skipping attrType)
 void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue, std::string & attrType){
@@ -329,10 +350,12 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 	std::string attrValue;
 	std::string attrType;
 
+	Hi5Base::parsePathNEW(line, path, attrKey, attrValue, attrType);
+
 	// consider ValueReader, TextReader instead (skipping attrType)
 	Hi5Base::parsePath(line, path, attrKey, attrValue, attrType);
 
-	mout.debug(1);
+	mout.warn();
 	mout << path      << " : ";
 	mout << attrKey   << " =";
 	mout << attrValue << " | ";
