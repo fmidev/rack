@@ -256,6 +256,7 @@ protected:
 		this->quantity = quantity;
 		copyFrom(img);
 		//mout.warn() << "guantity finally=(" << this->quantity << '<' << quantity << ")" << mout.endl;
+		mout.warn() << *this << mout.endl;
 	}
 
 private:

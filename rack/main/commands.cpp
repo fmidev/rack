@@ -616,17 +616,16 @@ public:
 
 		DataSelector selector; // todo implement --select
 
-		//mout.warn() << "start upd" << mout.endl;
+		//mout.debug() << "start upd" << mout.endl;
 
 		DataTools::updateInternalAttributes(dstH5);
 
-		//DataSet<DT> dstDataSetKOKKEILU(dstH5["dataset1"]);
 
 		OD rootODIM;
 
 		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 
-			mout.note() << "main: " << it->first << mout.endl;
+			mout.debug() << "considering: " << it->first << mout.endl;
 
 			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.isInside(it->first.getIndex())){
 
@@ -636,7 +635,9 @@ public:
 				//return;
 
 				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+
 					mout.debug() << dit->first << " :" << dit->second << mout.endl;
+
 					PlainData<DT> & dstData = dit->second;
 
 					//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
@@ -660,20 +661,12 @@ public:
 						}
 					}
 
-					//rootODIM.updateFromMap(d.data.properties);
-					//dstData.updateTree2();
-					mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
+					//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
 
 					dstData.updateTree2();
 					rootODIM.update(dstData.odim);
-					//odim.copyToData(dst);
-					//dstData.odim.update(dstData.odim);
 				}
-				//dataSet.updateTrdtee3(rootODIM);
-
-				//dataSet.updateTree(dataSetODIM);
 			}
-			//rootODIM.copyToRoot()
 		}
 
 		/*

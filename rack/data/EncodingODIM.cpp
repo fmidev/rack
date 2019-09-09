@@ -176,16 +176,21 @@ void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
 
 void EncodingODIM::copyFrom(const drain::image::Image & data){
 
-	const drain::FlexVariableMap & m = data.properties;
+	drain::Logger mout("EncodingODIM", __FUNCTION__);
+
+	const drain::FlexVariableMap & m = data.getProperties();
 
 	for (drain::FlexVariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
 
-		const iterator oit = find(it->first);
+		const EncodingODIM::iterator oit = find(it->first);
+
 		if (oit != end()){
 			const drain::FlexVariable & srcValue = it->second;
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
+			mout.debug() << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
+
 			if (t == typeid(double)){
 				//(*this)[key] = (double)srcValue;
 				dstValue = static_cast<double>(srcValue);
@@ -202,6 +207,9 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 				dstValue = static_cast<float>(srcValue);
 			else
 				dstValue = srcValue;
+		}
+		else {
+			mout.debug() << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
 		}
 
 	}

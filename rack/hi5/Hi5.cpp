@@ -324,27 +324,6 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
-	/*
-	const size_t i = line.find(':');
-	if (i == std::string::npos){
-		// Just create a group
-		const HI5TREE::path_t path(line);
-		readTextLine(dst, path, "", "");
-	}
-	else {
-		const HI5TREE::path_t path(line.substr(0, i));
-
-		const std::string assignment = line.substr(i+1);
-		const size_t j = assignment.find('=');
-		if (j == std::string::npos){
-			readTextLine(dst, path, assignment, "");
-		}
-		else {
-			readTextLine(dst, path, assignment.substr(0,j), assignment.substr(j+1));
-		}
-	}
-	*/
-
 	HI5TREE::path_t path;
 	std::string attrKey;
 	std::string attrValue;
@@ -419,7 +398,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 			a.setType(typeid(std::string));
 
 		a = attrValue;
-		mout.warn() << attrKey << "=" << a << " => " << drain::Type::getTypeChar(a.getType())<< mout.endl;
+		// mout.warn() << attrKey << "=" << a << " => " << drain::Type::getTypeChar(a.getType())<< mout.endl;
 
 		if (attrKey == "quantity"){
 			if (n.attributes.get("gain", 0.0) == 0.0){
