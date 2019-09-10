@@ -85,14 +85,20 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 
 
 void ValueReader::scanArrayValues(const std::string & s, Variable & v){
+
 	std::list<std::string> l;
-	drain::StringTools::split(s, l, ',', " '\"\t\n\r");
+	//drain::StringTools::split(s, l, ',', " '\"\t\n\r");
+	drain::StringTools::split(s, l, ',', " '\t\n\r");
+
 	const std::type_info & atype = Type::guessArrayType(l);
+
 	v.clear();
 	v.requestType(atype);
+
 	for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-		v << *it;
+		v << drain::StringTools::trim(*it, "\"");
 	}
+
 }
 
 

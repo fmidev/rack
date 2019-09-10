@@ -60,10 +60,12 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
-		//it->second.valueToJSON(ostr);
+		it->second.valueToJSON(ostr);
+		/*
 		ostr << it->second << ' ';
 		ostr << ' ';
 		it->second.typeInfo(ostr);
+		*/
 		ostr << '\n';
 	}
 
@@ -72,10 +74,9 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':';
 		//'\t';
-		ostr << "image=" << dataSet.getWidth() << ',' << dataSet.getHeight() << ' ';
-		//ostr << d.getImageChannelCount() << ' '; // << d.getAlphaChannelCount() << ' ';
-		ostr << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getByteSize() << ']' << '\n';  // like typeInfo above
-
+		ostr << "image=" << dataSet.getWidth() << ',' << dataSet.getHeight();
+		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getByteSize() << ']' << '\n';  // like typeInfo above
+		ostr << '\n';
 	}
 
 }
@@ -95,7 +96,12 @@ drain::Logger hi5mout(hi5monitor,"Hi5");
 
 const hid_t & Hi5Base::getH5DataType(const std::type_info &type){
 
-	if (type == typeid(char)){
+
+	if (type == typeid(bool)){  // does not work
+		hi5mout.warn() << __FUNCTION__ << ": boolean type '" << type.name() << "' currently unsupported" << hi5mout.endl;
+		return H5T_NATIVE_HBOOL; // experimental
+	}
+	else if (type == typeid(char)){
 		return H5T_NATIVE_CHAR;
 	}
 	else if (type == typeid(unsigned char)){
@@ -234,6 +240,19 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 		mout.debug() << "key: " << attrKey << mout.endl;
 
 		if (assignment.size() == 2){
+
+			std::string & value = assignment[1];
+
+			if (value.empty()){
+				v.setType(typeid(std::string));
+				return;
+			}
+
+			/*
+			if (value.at(0) == '"'){
+				v.setType();
+			}
+			*/
 
 			// Test array OR type specification...
 			size_t i = assignment[1].find('[');

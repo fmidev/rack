@@ -404,6 +404,12 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const std::s
 		return;
 	}
 
+	if (d.getType() == typeid(bool)){
+		const drain::Variable d2 = d.toStr();
+		dataToH5AttributeString(d2, fid, path, attribute);
+		return;
+	}
+
 
 	int status = 0;
 
