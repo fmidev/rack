@@ -63,9 +63,9 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		it->second.valueToJSON(ostr);
 		/*
 		ostr << it->second << ' ';
-		ostr << ' ';
-		it->second.typeInfo(ostr);
 		*/
+		// ostr << ' ';
+		// it->second.typeInfo(ostr);
 		ostr << '\n';
 	}
 

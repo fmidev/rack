@@ -70,7 +70,7 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 
 	}
 
-	//const bool HAS_DATA = src.hasChild("data");
+	//const bool HAS_DATA = src.hasChild("data")
 	if (src.hasChild("data")){  // move down?
 
 		drain::image::Image & img = src["data"].data.dataSet;
@@ -85,8 +85,10 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
 
 		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			mout.debug(1) << it->first << " => ensure '/data' groups  " << mout.endl;
-			src[it->first]["data"].data.dataSet;
+			if (!it->second.data.noSave){
+				mout.debug(1) << it->first << " => ensure '/data' groups  " << mout.endl;
+				src[it->first]["data"].data.dataSet;
+			}
 		}
 
 		// mout.note() << "considering " << it->first << mout.endl;
