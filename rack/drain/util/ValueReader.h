@@ -67,6 +67,11 @@ public:
 		scanValue(istr, v);
 	};
 
+	/// Given comma-separated string of values, assign them to variable of minimum compatible type
+	static
+	void scanArrayValues(const std::string & s, Variable & v);
+
+
 };
 
 

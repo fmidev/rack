@@ -25,10 +25,6 @@ install:
 	mkdir -v --parents ${prefix}/bin
 	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1)
 	cd ${prefix}/bin; ln -si ./rack-$(shell Release/rack --version | head -1) ./rack
-#cp -vi Release/rack ${prefix}/bin/rack-${VERSION}
-
-#make.zip: Release
-#	zip $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 make.tgz: Release/
 	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `

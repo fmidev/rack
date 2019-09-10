@@ -183,21 +183,24 @@ public:
 	 *   \endcode
 	 *
 	 */
+
+	static
+	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, drain::Variable & v);
+
+	/*
 	static
 	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
 			std::string & attrType);
+	*/
 
-	static
-	void parsePathNEW(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
-			std::string & attrType);
-
-
+	/*
 	static inline
 	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey){
 		std::string attrValue;
 		std::string attrType;
 		parsePath(line, path, attrKey, attrValue, attrType);
 	}
+	*/
 
 	/// Assign a value with optional type specification.
 	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
@@ -207,8 +210,7 @@ public:
 	static
 	void readTextLine(HI5TREE &src, const std::string & line);
 
-	static
-	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
+	// static	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
 
 	/// Delete branches that have been marked with noSave=true .
 	static

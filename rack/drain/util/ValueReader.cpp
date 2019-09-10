@@ -67,20 +67,7 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 		if (value.find_first_of("[]") != std::string::npos){
 			log.warn() << "Arrays of arrays not supported (value='" << value << "')" << log.endl;
 		}
-		if (true) {
-			std::list<std::string> l;
-			drain::StringTools::split(value, l, ',', " '\"\t\n\r");
-			const std::type_info & atype = Type::guessArrayType(l);
-			//log.debug(2) << "Array attribute '" << key << "'=[" << value << "] (type="<< drain::Type::getTypeChar(atype) << ")" << log.endl;
-			v.clear();
-			v.requestType(atype);
-			//v.setType(atype);
-			// TODO, check/  v.assignContainer();
-			for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-				v << *it;
-			}
-			//vmap[key] = value;
-		}
+		scanArrayValues(value, v);
 		break;
 	default: // numeric
 		value = TextReader::scanSegment(istr, ",} \t\n\r");
@@ -95,6 +82,19 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 	//completed = true;
 
 }
+
+
+void ValueReader::scanArrayValues(const std::string & s, Variable & v){
+	std::list<std::string> l;
+	drain::StringTools::split(s, l, ',', " '\"\t\n\r");
+	const std::type_info & atype = Type::guessArrayType(l);
+	v.clear();
+	v.requestType(atype);
+	for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
+		v << *it;
+	}
+}
+
 
 /*
 int MetaDataReader::readLine(const std::string & line){
