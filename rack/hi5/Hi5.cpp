@@ -210,8 +210,7 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
-
-	mout.note() << "line: " << line << mout.endl;
+	mout.debug() << "line: " << line << mout.endl;
 
 	typedef std::vector<std::string> strVector;
 
@@ -222,7 +221,7 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 	drain::StringTools::split(line, p, ':');
 
 	path = p[0];
-	mout.note() << "path: " << path << mout.endl;
+	mout.debug() << "path: " << path << mout.endl;
 
 	if (p.size() > 1){
 
@@ -244,8 +243,8 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 				drain::ValueReader::scanArrayValues(drain::StringTools::trim(assignment[1], "[] \t\n"), v);
 			}
 			else {
-				mout.warn() << "using OLD mode type code [...] discarded" << mout.endl;
 				drain::ValueReader::scanArrayValues(drain::StringTools::trim(assignment[1].substr(0,i-1)), v);
+				mout.note() << "discarding old type code: " << assignment[1].substr(i) << ", guessing " << drain::Type::getTypeChar(v.getType()) << mout.endl;
 			}
 
 			/*
@@ -386,19 +385,19 @@ void Hi5Base::parsePath(const std::string & s, HI5TREE::path_t & path, std::stri
 
 void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 
-	drain::Logger mout("Hi5Base", __FUNCTION__);
+	//drain::Logger mout("Hi5Base", __FUNCTION__);
 
 	HI5TREE::path_t path;
 	std::string attrKey;
 	drain::Variable v;
 
-	Hi5Base::parsePathNEW(line, path, attrKey, v);
+	Hi5Base::parsePath(line, path, attrKey, v);
 
-	mout.debug();
-	mout << path      << " : ";
-	mout << attrKey   << " =";
-	mout << v << " | ";
-	mout << mout.endl;
+	hi5mout.debug();
+	hi5mout << path      << " : ";
+	hi5mout << attrKey   << " =";
+	hi5mout << v << " | ";
+	hi5mout << hi5mout.endl;
 
 
 	/// Create the node always
@@ -563,11 +562,9 @@ void Hi5Base::readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const st
 		else
 			a = value.substr(0, k2+1);
 
-		/*
 		if (typeCode){
 			mout.warn() << "typeCode=" << typeCode << " >> " << drain::Type::getTypeChar(a.getType()) << mout.endl;
 		}
-		 */
 		//n.attributes[key]
 
 	}

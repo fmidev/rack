@@ -193,14 +193,13 @@ public:
 			std::string & attrType);
 	*/
 
-	/*
+
 	static inline
 	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey){
-		std::string attrValue;
-		std::string attrType;
-		parsePath(line, path, attrKey, attrValue, attrType);
+		drain::Variable attrValue;
+		parsePath(line, path, attrKey, attrValue); // , attrType);
 	}
-	*/
+
 
 	/// Assign a value with optional type specification.
 	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
