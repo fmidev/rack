@@ -90,16 +90,16 @@ echo
 
 echo "Accept or modify the directories detected above:"
 echo 
-ask_variable HDFROOT  "Hierarchical Data Format (HDF5) library"
+ask_variable HDFROOT  "Hierarchical Data Format (HDF5), include directory"
 warn_if_unfound $HDFROOT
 
-ask_variable PROJROOT "PROJ.4 projection library"
+ask_variable PROJROOT "PROJ.4 projection library, include directory"
 warn_if_unfound $PROJROOT
 
-ask_variable GEOTIFF  "GeoTIFF include dir (leave empty if GeoTIFF not needed)"
+ask_variable GEOTIFF  "GeoTIFF include directory (leave empty if GeoTIFF not used)"
 
-ask_variable prefix "For installing Rack executable in \$prefix/bin/"
-warn_if_unfound $PROJROOT
+ask_variable prefix "Directory prefix for binary executables \$prefix/bin/"
+warn_if_unfound $prefix
 
 echo
 echo "# General compilation setup"
