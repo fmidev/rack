@@ -81,14 +81,16 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 	if (path.empty()){
-		mout.note() << " currentHi5: no path found for selector '" << select << "'" << mout.endl;
+		mout.note() << "no data groups found with selector '" << select << "'" << mout.endl;
 		//mout.debug(4) << " currentHi5:\n" << *currentHi5 << mout.endl;
 	}
-	else {
-		mout.debug(1) << "using path=" << path << mout.endl;
-		DataTools::getAttributes(*currentHi5, path, statusMap);
-		// mout.debug() << statusMap << mout.endl;
-	}
+
+	//else {
+	mout.debug(1) << "using path=" << path << mout.endl;
+	DataTools::getAttributes(*currentHi5, path, statusMap);
+	// mout.debug() << statusMap << mout.endl;
+	//}
+
 	/// Split what:source to separate fields
 	const SourceODIM sourceODIM(statusMap["what:source"].toStr());
 	statusMap.importMap(sourceODIM);

@@ -73,7 +73,6 @@ var searchData=
   ['invertpolar',['invertPolar',['../classrack_1_1RadarWindowConfig.html#ab3dc9db69672b51cab5cf074631cd434',1,'rack::RadarWindowConfig']]],
   ['invertu',['invertU',['../classdrain_1_1image_1_1OpticalFlowConfig.html#aafd79dbde52993ca198a07883617f10e',1,'drain::image::OpticalFlowConfig']]],
   ['invertv',['invertV',['../classdrain_1_1image_1_1OpticalFlowConfig.html#a22e6bd0da1a7b3af92da6bd055618080',1,'drain::image::OpticalFlowConfig']]],
-  ['io',['IO',['../classDeer_1_1Image_1_1IO.html',1,'Deer::Image']]],
   ['irreversible',['IRREVERSIBLE',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a9cb882a00c033c337f9c8eb5011f4b4b',1,'drain::image::CoordinateHandler2D']]],
   ['is',['is',['../classrack_1_1ODIMPathElem.html#a7edaf0fce79078bb4e727d8a5e1733d4',1,'rack::ODIMPathElem']]],
   ['is_5findexed',['IS_INDEXED',['../classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc',1,'rack::ODIMPathElem']]],

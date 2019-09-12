@@ -618,10 +618,13 @@ public:
 
 		//mout.debug() << "start upd" << mout.endl;
 
-		DataTools::updateInternalAttributes(dstH5);
+		DataTools::updateInternalAttributes(dstH5); //, drain::FlexVariableMap());
+		// DataTools::updateInternalAttributes(dstH5);
 
+		OD rootODIM(dstH5.data.dataSet.getProperties());
 
-		OD rootODIM;
+		mout.debug() << "odim: " << rootODIM << mout.endl;
+
 
 		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 

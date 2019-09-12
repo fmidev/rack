@@ -14,7 +14,7 @@ var searchData=
   ['readframe',['readFrame',['../classdrain_1_1image_1_1FilePnm.html#a64db91acc9b7fa39676a4799efdf2705',1,'drain::image::FilePnm']]],
   ['readimagefile',['readImageFile',['../classrack_1_1CmdInputFile.html#ad20819a360f41da67edce760f3d5edea',1,'rack::CmdInputFile']]],
   ['readtext',['readText',['../classhi5_1_1Hi5Base.html#a447cb17fc1461b4325a8e00bb45114f8',1,'hi5::Hi5Base']]],
-  ['readtextline',['readTextLine',['../classhi5_1_1Hi5Base.html#a31013248294638353c2a47d10d0022fa',1,'hi5::Hi5Base::readTextLine(HI5TREE &amp;src, const std::string &amp;line)'],['../classhi5_1_1Hi5Base.html#a6cf219dd28ff5b25841c3fe3182a8bfe',1,'hi5::Hi5Base::readTextLine(HI5TREE &amp;dst, const HI5TREE::path_t &amp;path, const std::string &amp;key, const std::string &amp;value)']]],
+  ['readtextline',['readTextLine',['../classhi5_1_1Hi5Base.html#a31013248294638353c2a47d10d0022fa',1,'hi5::Hi5Base']]],
   ['reference',['reference',['../classdrain_1_1ReferenceMap.html#a94f3781cd1039838a226b5eea04a2854',1,'drain::ReferenceMap']]],
   ['referencemap',['ReferenceMap',['../classdrain_1_1ReferenceMap.html#a4e964e562f7a529f762d82983593ac75',1,'drain::ReferenceMap::ReferenceMap(char separator=&apos;,&apos;)'],['../classdrain_1_1ReferenceMap.html#aca75f7ad535c37092ae7980e2dc714eb',1,'drain::ReferenceMap::ReferenceMap(const ReferenceMap &amp;rmap)']]],
   ['referencer',['Referencer',['../classdrain_1_1Referencer.html#a30d522da61f1a000ac15c04aa2d8406c',1,'drain::Referencer::Referencer()'],['../classdrain_1_1Referencer.html#ad8d8462da9e8b53b02e7f5907dab9edc',1,'drain::Referencer::Referencer(const Referencer &amp;r)']]],

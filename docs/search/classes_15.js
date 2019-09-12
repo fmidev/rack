@@ -32,7 +32,5 @@ var searchData=
   ['windowop_3c_20window_3c_20gaussianwindowconf_20_3e_20_3e',['WindowOp&lt; Window&lt; GaussianWindowConf &gt; &gt;',['../classdrain_1_1image_1_1WindowOp.html',1,'drain::image']]],
   ['windowop_3c_20window_3c_20windowconfig_20_3e_20_3e',['WindowOp&lt; Window&lt; WindowConfig &gt; &gt;',['../classdrain_1_1image_1_1WindowOp.html',1,'drain::image']]],
   ['windowop_3c_3e',['WindowOp&lt;&gt;',['../classdrain_1_1image_1_1WindowOp.html',1,'drain::image']]],
-  ['writer',['Writer',['../classhi5_1_1Writer.html',1,'hi5']]],
-  ['writer',['Writer',['../classDeer_1_1Image_1_1Writer.html',1,'Deer::Image']]],
-  ['writerpnm',['WriterPnm',['../classDeer_1_1Image_1_1WriterPnm.html',1,'Deer::Image']]]
+  ['writer',['Writer',['../classhi5_1_1Writer.html',1,'hi5']]]
 ];

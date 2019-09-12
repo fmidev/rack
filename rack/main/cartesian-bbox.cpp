@@ -131,12 +131,14 @@ void CartesianBBoxTest::exec() const {
 
 	overlap = bboxM.isOverLapping(resources.composite.getBoundingBoxM());
 
-	mout.note() << "overlap:" << static_cast<int>(overlap) << mout.endl;
+	mout.debug() << "overlap:" << static_cast<int>(overlap) << mout.endl;
+
+	mout.debug() << "bboxD:" << bboxD << mout.endl;
 
 	//cBBox.bbox.updateDataExtent(bD);
 	//cBBox.
 	resources.bbox.extend(bboxD);  // extern
-	mout.info() << "combined bbox:" << resources.bbox << mout.endl;
+	mout.debug() << "combined bbox:" << resources.bbox << mout.endl;
 
 	if (!overlap)
 		resources.inputOk = false;

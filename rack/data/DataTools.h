@@ -88,20 +88,6 @@ public:
 	void getAttributes(const HI5TREE &src, const HI5TREE::path_t & path, M & attributes, bool updateOnly = false);
 
 
-	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
-	/**
-	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
-	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
-	 *
-	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
-	 *
-	 *  Typically, this is called on the root.
-	 *
-	 *    \see updateAttributes(HI5TREE & src)
-	 */
-	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
-	static
-	void updateInternalAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
 
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
 	/**
@@ -130,6 +116,14 @@ public:
 		//mout.warn() << "somebody called me" << mout.endl;
 	};
 
+
+	static
+	void updateCoordinatePolicy(HI5TREE & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
+	//void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+
+
+protected:
+
 	/// Removes the children of the tree if Node::noSave is set.
 	/**
 	 *  \return - true if children were removed
@@ -147,12 +141,21 @@ public:
 	};
 
 
+	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
+	/**
+	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
+	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
+	 *
+	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
+	 *
+	 *  Typically, this is called on the root.
+	 *
+	 *    \see updateAttributes(HI5TREE & src)
+	 */
+	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
 	static
-	void updateCoordinatePolicy(HI5TREE & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
-	//void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+	void updateInternalAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
 
-
-protected:
 
 };
 

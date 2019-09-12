@@ -62,8 +62,7 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 				sstr.str("");
 				sstr << *git << ':' << it->first;
 				a[sstr.str()] = it->second;
-				// mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << mout.endl;
-				// if (it->first == "quantity") mout.warn() << "quantity=" << it->second << mout.endl;
+				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << mout.endl;
 			}
 
 		}
@@ -87,7 +86,7 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!it->second.data.noSave){
 				mout.debug(1) << it->first << " => ensure '/data' groups  " << mout.endl;
-				src[it->first]["data"].data.dataSet;
+				it->second["data"].data.dataSet;
 			}
 		}
 
@@ -130,10 +129,8 @@ void DataTools::updateCoordinatePolicy(HI5TREE & src, const drain::image::Coordi
 		//mout.warn() << "qty=" << data.getName() << " - " << data.getCoordinatePolicy() << '\n';
 	}
 
-	// const std::set<ODIMPathElem> & g = EncodingODIM::attributeGroups;
-
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
-		//const ODIMPathElem & key = it->first;
+
 		if (!it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
 			//mout.warn() << "updating " << it->first << '\n';
 			updateCoordinatePolicy(it->second, policy);
@@ -145,9 +142,4 @@ void DataTools::updateCoordinatePolicy(HI5TREE & src, const drain::image::Coordi
 	}
 }
 
-
-
 }  // rack::
-
-// Rack
- // REP

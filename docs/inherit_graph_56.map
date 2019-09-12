@@ -1,4 +1,59 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM, M \&gt;" alt="" coords="5,5,233,32"/>
-<area shape="rect" id="node2" href="$classrack_1_1VolumeOp.html" title="Base class for radar data processors. " alt="" coords="281,5,400,32"/>
+<area shape="rect" id="node1" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,419,207,461"/>
+<area shape="rect" id="node2" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="255,427,427,453"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="475,427,589,453"/>
+<area shape="rect" id="node4" href="$classrack_1_1BeamAltitudeOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin. " alt="" coords="654,49,771,76"/>
+<area shape="rect" id="node5" href="$classrack_1_1ConvOp.html" title="Computes Cb s or bottoms in kilometers for a given dBZ threshold, typically 20, 40 or 45 dBZ..." alt="" coords="677,100,748,127"/>
+<area shape="rect" id="node6" href="$classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. " alt="" coords="637,151,788,177"/>
+<area shape="rect" id="node10" href="$classrack_1_1DopplerAvgExpOp.html" title="DopplerAvgExpOp" alt="" coords="647,275,778,301"/>
+<area shape="rect" id="node11" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="671,325,755,352"/>
+<area shape="rect" id="node26" href="$classrack_1_1DrawingOp.html" title="Select and visualise a direction, range, sector or arc. " alt="" coords="669,376,756,403"/>
+<area shape="rect" id="node27" href="$classrack_1_1FunctorOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin. " alt="" coords="671,427,754,453"/>
+<area shape="rect" id="node28" href="$classrack_1_1PolarNeuralVPROp.html" title="The VPRimum dBZ value in each a vertical column. " alt="" coords="645,477,780,504"/>
+<area shape="rect" id="node29" href="$classrack_1_1QualityCombinerOp.html" title="A quick QualityCombiner . " alt="" coords="645,528,781,555"/>
+<area shape="rect" id="node30" href="$classrack_1_1RainRateDPOp.html" title="Uses DBZ, ZDR and KDP to derive rain rate. Under construction. " alt="" coords="656,579,769,605"/>
+<area shape="rect" id="node31" href="$classrack_1_1RainRateOp.html" title="Computes rain rate from dBZ. " alt="" coords="665,629,760,656"/>
+<area shape="rect" id="node32" href="$classrack_1_1SunShineOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin. " alt="" coords="665,680,760,707"/>
+<area shape="rect" id="node33" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="644,731,781,757"/>
+<area shape="rect" id="node7" href="$classrack_1_1CappiOp.html" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product. " alt="" coords="893,5,967,32"/>
+<area shape="rect" id="node8" href="$classrack_1_1EchoTopOp.html" title="Height of echo exceeding a reflectivity threshold. " alt="" coords="885,56,975,83"/>
+<area shape="rect" id="node9" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column. " alt="" coords="883,107,977,133"/>
+<area shape="rect" id="node12" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lAverageWindow \&gt;" alt="" coords="836,158,1024,199"/>
+<area shape="rect" id="node14" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lAverageWindow2 \&gt;" alt="" coords="836,223,1024,265"/>
+<area shape="rect" id="node16" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lDevWindow \&gt;" alt="" coords="836,289,1024,330"/>
+<area shape="rect" id="node18" href="$classrack_1_1DopplerCrawlerOp.html" title="DopplerCrawlerOp" alt="" coords="865,355,995,381"/>
+<area shape="rect" id="node19" href="$classrack_1_1DopplerDiffOp.html" title="Experimental. " alt="" coords="877,405,983,432"/>
+<area shape="rect" id="node20" href="$classrack_1_1DopplerReprojectOp.html" title="DopplerReprojectOp" alt="" coords="860,456,1000,483"/>
+<area shape="rect" id="node21" href="$classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="864,507,996,533"/>
+<area shape="rect" id="node23" href="$classrack_1_1DopplerWindOp.html" title="Base class for operators retrieving true wind (u,v). " alt="" coords="873,557,987,584"/>
+<area shape="rect" id="node25" href="$classrack_1_1DopplerWindowOp.html" title="Base class for Doppler average and variance. " alt="" coords="846,608,1014,635"/>
+<area shape="rect" id="node13" href="$classrack_1_1DopplerAvgOp.html" title="DopplerAvgOp" alt="" coords="1090,165,1197,192"/>
+<area shape="rect" id="node15" href="$classrack_1_1DopplerAvg2Op.html" title="DopplerAvg2Op" alt="" coords="1086,231,1201,257"/>
+<area shape="rect" id="node17" href="$classrack_1_1DopplerDevOp.html" title="DopplerDevOp" alt="" coords="1089,296,1197,323"/>
+<area shape="rect" id="node22" href="$classrack_1_1DopplerDiffPlotterOp.html" title="DopplerDiffPlotterOp" alt="" coords="1072,507,1215,533"/>
+<area shape="rect" id="node24" href="$classrack_1_1DopplerInversionOp.html" title="Derives two&#45;dimensional wind (u,v) from Doppler data. " alt="" coords="1075,557,1212,584"/>
+<area shape="rect" id="node34" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="893,731,967,757"/>
+<area shape="rect" id="node35" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="1099,684,1188,711"/>
+<area shape="rect" id="node53" href="$classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones..." alt="" coords="1097,1089,1189,1116"/>
+<area shape="rect" id="node36" href="$classrack_1_1BiometOp.html" title="Detects birds and insects. " alt="" coords="1295,279,1375,305"/>
+<area shape="rect" id="node37" href="$classrack_1_1BirdOp.html" title="BirdOp" alt="" coords="1304,329,1367,356"/>
+<area shape="rect" id="node39" href="$classrack_1_1CCorOp.html" title="CCorOp" alt="" coords="1300,380,1371,407"/>
+<area shape="rect" id="node40" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="1296,431,1375,457"/>
+<area shape="rect" id="node41" href="$classrack_1_1DopplerNoiseOp.html" title="DopplerNoiseOp" alt="" coords="1276,481,1395,508"/>
+<area shape="rect" id="node42" href="$classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones..." alt="" coords="1295,532,1376,559"/>
+<area shape="rect" id="node43" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification. " alt="" coords="1263,583,1408,609"/>
+<area shape="rect" id="node44" href="$classrack_1_1JammingOp.html" title="A detector for widespread electromagnetic interference. " alt="" coords="1289,633,1381,660"/>
+<area shape="rect" id="node45" href="$classrack_1_1LineOp.html" title="Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segmen..." alt="" coords="1304,684,1367,711"/>
+<area shape="rect" id="node46" href="$classrack_1_1PrecipOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability. " alt="" coords="1297,735,1373,761"/>
+<area shape="rect" id="node47" href="$classrack_1_1RhoHVLowOp.html" title="Marks bins with low RhoHV value as probable anomalies. " alt="" coords="1282,785,1389,812"/>
+<area shape="rect" id="node48" href="$classrack_1_1ShipOp.html" title="Detects ships. " alt="" coords="1303,836,1368,863"/>
+<area shape="rect" id="node49" href="$classrack_1_1SpeckleOp.html" title="SpeckleOp" alt="" coords="1292,887,1379,913"/>
+<area shape="rect" id="node50" href="$classrack_1_1SunOp.html" title="Detects birds and insects. " alt="" coords="1304,937,1367,964"/>
+<area shape="rect" id="node51" href="$classrack_1_1TimeOp.html" title="A radio interference detector. " alt="" coords="1301,988,1369,1015"/>
+<area shape="rect" id="node52" href="$classrack_1_1ZDRvarOp.html" title="ZDRvarOp" alt="" coords="1293,1039,1378,1065"/>
+<area shape="rect" id="node38" href="$classrack_1_1InsectOp.html" title="InsectOp" alt="" coords="1471,329,1545,356"/>
+<area shape="rect" id="node54" href="$classrack_1_1DamperOp.html" title="DamperOp" alt="" coords="1293,1089,1378,1116"/>
+<area shape="rect" id="node55" href="$classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="1280,1140,1391,1167"/>
+<area shape="rect" id="node56" href="$classrack_1_1GapFillOp.html" title="A simple gap filler based on distance transformation. " alt="" coords="1468,1115,1548,1141"/>
+<area shape="rect" id="node57" href="$classrack_1_1GapFillRecOp.html" title="Recursive, &#39;splinic&#39; gap filler based on fast averaging. " alt="" coords="1456,1165,1560,1192"/>
 </map>
