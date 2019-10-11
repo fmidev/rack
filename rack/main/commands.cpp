@@ -329,9 +329,15 @@ public:
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
-		mout.debug() << "selector: " << selector << mout.endl;
 
 		HI5TREE & dst = *getResources().currentHi5;
+
+		// Step 0
+		mout.info() << "delete existing no-save structures " << mout.endl;
+		hi5::Hi5Base::deleteNoSave(dst);
+
+		mout.debug() << "selector: " << selector << mout.endl;
+
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
@@ -382,6 +388,12 @@ public:
 
 		//RackResources & resources = getResources();
 		HI5TREE & dst = *getResources().currentHi5;
+
+		// Step 0
+		mout.info() << "delete existing no-save structures " << mout.endl;
+		hi5::Hi5Base::deleteNoSave(dst);
+
+
 
 		ODIMPathList paths;
 

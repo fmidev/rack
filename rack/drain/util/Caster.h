@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <typeinfo>
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 #include <cmath>  // for NaN
 #include <vector>
 
@@ -419,12 +420,15 @@ protected:
 		const F d = *(F *)p;
 
 		if (d == rint(d)){
+			//ostr << std::ios::fixed << std::setprecision(2) << d;
+
 			const std::streamsize prec = ostr.precision();
 			const std::ios_base::fmtflags flags = ostr.setf(std::ios::fixed, std::ios::floatfield );
 			ostr.precision(1);
 			ostr << d;
 			ostr.setf(flags);
 			ostr.precision(prec);
+
 		}
 		else
 			ostr << d;
@@ -448,11 +452,6 @@ void Caster::link(Caster &c){
 	link(c.ptr, c.getType());
 }
 
-
-
-//template <>
-//void Caster::setType<void>();
-// VOID	unsetType();
 
 template <>
 void Caster::updateType<void>();

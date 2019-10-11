@@ -336,17 +336,37 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 
 void Hi5Base::deleteNoSave(HI5TREE &src){
 
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
-		if (it->second.data.noSave){
-			src.erase(HI5TREE::path_t(it->first));
-		}
-	}
+	drain::Logger mout("Hi5Base", __FUNCTION__);
+
+	typedef std::list<HI5TREE::path_t::elem_t> path_elem_list_t;
+	std::list<std::string> sl;
+	path_elem_list_t l;
 
 	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
 		if (! it->second.data.noSave){ // needed?
+			//mout.debug(1) << "delete: " <<  it->first << mout.endl;
 			deleteNoSave(it->second);
 		}
+		else {
+			l.push_back(it->first);
+		}
 	}
+
+	for (path_elem_list_t::iterator it = l.begin(); it != l.end(); ++it){
+		HI5TREE::path_t p;
+		p << *it;
+		mout.debug(1) << "delete group: " <<  *it << mout.endl;
+		src.erase(p);
+	}
+
+	/*
+	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
+		if (it->second.data.noSave){
+			mout.debug(1) << "delete group: " <<  it->first << mout.endl;
+			src.erase(HI5TREE::path_t(it->first));
+		}
+	}
+	*/
 
 }
 
