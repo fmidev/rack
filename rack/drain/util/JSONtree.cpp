@@ -85,15 +85,19 @@ void JSON::read(tree_t & t, std::istream & istr){
 		if (c == '"'){ // New entry
 
 			key = TextReader::scanSegment(istr, "\"");
-			istr.get(); // swallow terminator
-			// log.debug(1) << " key=" << key << log.endl;
+			// log.warn() << " then1: " <<  (char)istr.peek() << log.endl;
+			//istr.get(); // swallow terminator
+			// log.warn() << " then2: " <<  (char)istr.peek() << log.endl;
 
 			node_t & vmap = t.data;
 
-			TextReader::skipChars(istr, " \t\n\r");
+			TextReader::skipWhiteSpace(istr); // Chars(istr, " \t\n\r");
+			// log.warn() << " then3: " <<  (char)istr.peek() << log.endl;
 			c = istr.get();
+			// log.warn() << " then4: " <<  (char)istr.peek() << log.endl;
+
 			if (c == ':'){
-				TextReader::skipChars(istr, " \t\n\r");
+				TextReader::skipWhiteSpace(istr) ; // Chars(istr, " \t\n\r");
 				c = istr.peek();
 
 				if (c == '{'){
@@ -107,7 +111,7 @@ void JSON::read(tree_t & t, std::istream & istr){
 				completed = true;
 			}
 			else {
-				log.error() << "Syntax error: read '" << c << "' when expecting object {...}, string \"...\", array [...], or number" << log.endl;
+				log.error() << "Syntax error: read \"" << key << "\" followed by '" << c << "' when expecting object {...}, string \"...\", array [...], or number" << log.endl;
 				return;
 			}
 		}

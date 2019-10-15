@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, int index, const std::string & en = "", const std::string & color = ""){
+void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, int index, const std::string & label = "", const std::string & color = ""){
 
 	drain::Logger mout("EchoClass", __FUNCTION__);
 
@@ -46,8 +46,8 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, int index
 
 	// drain::VariableMap & attr = tree(path).data; // ORIG
 	drain::VariableMap & attr = entries[pathStr].data; // NEW (flat)   //entries[pathStr].data; // NEW (flat)
-	attr["min"] = index;
-	attr["en"] = en;
+	attr["min"]   = index;
+	attr["label"] = label;
 	attr["color"].setType(typeid(int));
 
 	// Check hierarchical depth
@@ -98,32 +98,37 @@ classtree_t & getClassTree(){
 
 		// Technical information 0-15
 
-		addClass(tree, "tech", 0, "Unclassified", "0,0,0");
-		addClass(tree, "tech.nodata", 1, "No data");  // "0,0,0,255" ?
+		addClass(tree, "tech", 			0, "Unclassified", "0,0,0");
+		addClass(tree, "tech.nodata",	1, "No data");  // "0,0,0,255" ?
 		addClass(tree, "tech.notarget", 2, "No target"); // Empty echo
-		addClass(tree, "tech.quality", 4, "Quality problem");
-		addClass(tree, "tech.err", 8, "Data error"); //
+		addClass(tree, "tech.quality", 	4, "Quality problem");
+		addClass(tree, "tech.err", 		8, "Data error"); //
 		addClass(tree, "tech.err.time", 10, "");     // Delayed data
-		addClass(tree, "tech.class", 12, "Classifier issue");
+		addClass(tree, "tech.class",	12, "Classifier issue");
 		addClass(tree, "tech.class.reject", 13, "Classifier uncertainty");
 		addClass(tree, "tech.class.ambig", 14, "Multiple class");
 		addClass(tree, "tech.class.err", 15, "Classifier fatal error");
 
 		// User defined 32-63
-
 		addClass(tree, "user", 32, "User defined");
 
 
 		// Meteorological echoes
 
 		addClass(tree, "precip", 64, "Hydrometeor", "48,192,96");
-		addClass(tree, "precip.rain", 68, "Rain", "64,255,128");
-		addClass(tree, "precip.rain.super", 70, "Supercooled rain");
+		addClass(tree, "precip.widespread", 72, "Rain", "64,255,128");
+		addClass(tree, "precip.widespread.rain", 76, "Rain", "64,255,128");
+		addClass(tree, "precip.rain.super", 78, "Supercooled rain");
 		addClass(tree, "precip.snow", 80, "Snow", "48,96,192");
+		addClass(tree, "precip.snow.dry", 80, "Snow", "48,96,192");
 		addClass(tree, "precip.snow.wet", 84, "Wet snow", "48,160,160");
-		addClass(tree, "precip.graupel", 96, "Graupel", "128,255,128");
-		addClass(tree, "precip.hail", 112, "Hail", "192,255,128");
-		addClass(tree, "precip.hail.wet", 116, "Wet hail");
+		addClass(tree, "precip.conv", 96, "Graupel", "128,255,128");
+		addClass(tree, "precip.conv.graupel", 104, "Graupel", "128,255,128");
+		addClass(tree, "precip.conv.graupel.dry", 106, "Graupel, dry", "128,255,128");
+		addClass(tree, "precip.conv.graupel.wet", 108, "Graupel, wet", "128,255,128");
+		addClass(tree, "precip.conv.hail", 112, "Hail", "192,255,128");
+		addClass(tree, "precip.comv.hail.dry", 114, "Hail, dry");
+		addClass(tree, "precip.comv.hail.wet", 116, "Hail, wet");
 
 
 		/// Non-meteorological echoes
@@ -138,19 +143,19 @@ classtree_t & getClassTree(){
 		addClass(tree, "nonmet.clutter.sea", 152, "Sea clutter", "128,128,224");
 
 		/// Artefacts (human created)
-		//  addClass(tree, "nonmet.artef", 160, "Construction, unspecified");
-		addClass(tree, "nonmet.craft", 164, "");
-		addClass(tree, "nonmet.craft.airplane", 165, "");
-		addClass(tree, "nonmet.craft.ship", 166, "");
-		addClass(tree, "nonmet.constr", 168, "Mast, unspecied");
-		addClass(tree, "nonmet.constr.mast", 169, "");
-		addClass(tree, "nonmet.constr.pylon", 170, "");
+		addClass(tree, "nonmet.artef", 160, "");
+		addClass(tree, "nonmet.artef.vessel", 164, "");
+		addClass(tree, "nonmet.vessel.aircraft", 165, "");
+		addClass(tree, "nonmet.vessel.ship", 166, "");
+		addClass(tree, "nonmet.constr", 168, "Construction");
+		addClass(tree, "nonmet.constr.mast", 169, "Mast");
+		addClass(tree, "nonmet.constr.pylon", 170, "Pylon");
 		addClass(tree, "nonmet.constr.crane", 171, "Chimney");
 		addClass(tree, "nonmet.constr.tower", 172, "Pylon");
 		addClass(tree, "nonmet.constr.chimney", 173, "Radio mast");
 		addClass(tree, "nonmet.constr.building", 174, "");
 		addClass(tree, "nonmet.constr.wind", 175, "Wind turbine");
-		addClass(tree, "nonmet.biol", 176, "Organic matter");  // plants?
+		addClass(tree, "nonmet.biol", 176, "Organic target");
 		addClass(tree, "nonmet.biol.bat", 178, "Bat");
 		addClass(tree, "nonmet.biol.insect", 180, "Insect");
 		// addClass(tree, "nonmet.biol.insect.X XX", 18, "");
@@ -174,8 +179,8 @@ classtree_t & getClassTree(){
 		addClass(tree, "signal.noise", 232, "Receiver noise", "192,192,192");
 		addClass(tree, "signal.emitter", 240, "External emitter");
 		addClass(tree, "signal.emitter.line", 242, "Emitter line or segment");
-		addClass(tree, "signal.emitter.sun", 244, "Sun");
 		addClass(tree, "signal.emitter.jamming", 246, "Overall contamination");
+		addClass(tree, "signal.sun", 248, "Sun");
 		/*
 		t["met"]         = 64;
 		t["met"]["rain"] = 68;

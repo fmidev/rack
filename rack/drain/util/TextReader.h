@@ -50,7 +50,7 @@ class TextReader {
 
 public:
 
-	/// Read input stream until a char in \c endChars is encountered.
+	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
 	/**
 	 *  Typically, used for reading variable values, including nested segments, hence
 	 *  recognizing closing chars.
@@ -63,14 +63,18 @@ public:
 		return sstr.str();
 	}
 
-	/// Read input stream until a char in \c endChars is encountered.
+	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
 	static
 	void scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
 
 	/// Read input stream until a char not in \c skipChars is encountered.
 	static
-	void skipChars(std::istream & istr, const std::string skipChars = " \t\n\r");
+	void skipChars(std::istream & istr, const std::string skipChars); //  = " \t\n\r"
 
+	static inline
+	void skipWhiteSpace(std::istream & istr){
+		skipChars(istr, " \t\n\r");
+	}
 
 };
 
