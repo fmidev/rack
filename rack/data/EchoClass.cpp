@@ -143,17 +143,17 @@ classtree_t & getClassTree(){
 		addClass(tree, "nonmet.clutter.sea", 152, "Sea clutter", "128,128,224");
 
 		/// Artefacts (human created)
-		addClass(tree, "nonmet.artef", 160, "");
-		addClass(tree, "nonmet.artef.vessel", 164, "");
-		addClass(tree, "nonmet.vessel.aircraft", 165, "");
-		addClass(tree, "nonmet.vessel.ship", 166, "");
+		addClass(tree, "nonmet.artef", 160, "Artefact", "255,192,0");
+		addClass(tree, "nonmet.artef.vessel", 164, "Vessel");
+		addClass(tree, "nonmet.vessel.aircraft", 165, "Aircraft");
+		addClass(tree, "nonmet.vessel.ship", 166, "Ship");
 		addClass(tree, "nonmet.constr", 168, "Construction");
 		addClass(tree, "nonmet.constr.mast", 169, "Mast");
 		addClass(tree, "nonmet.constr.pylon", 170, "Pylon");
 		addClass(tree, "nonmet.constr.crane", 171, "Chimney");
-		addClass(tree, "nonmet.constr.tower", 172, "Pylon");
-		addClass(tree, "nonmet.constr.chimney", 173, "Radio mast");
-		addClass(tree, "nonmet.constr.building", 174, "");
+		addClass(tree, "nonmet.constr.tower", 172, "Tower");
+		addClass(tree, "nonmet.constr.chimney", 173, "Chimney");
+		addClass(tree, "nonmet.constr.building", 174, "Building");
 		addClass(tree, "nonmet.constr.wind", 175, "Wind turbine");
 		addClass(tree, "nonmet.biol", 176, "Organic target");
 		addClass(tree, "nonmet.biol.bat", 178, "Bat");

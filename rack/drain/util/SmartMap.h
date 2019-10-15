@@ -401,14 +401,16 @@ public:
 				//ostr << '"' << item << '"';
 			}
 			else {
-				if (item.T::getElementCount()>1){
-					// char sep2 = 0;
-					ostr << '[';
-					ostr << item;
-					ostr << ']';
+				switch (item.T::getElementCount()) {
+					case 0:
+						ostr << '[' << ']'; // or NaN?
+						break;
+					case 1:
+						ostr << item;
+						break;
+					default:
+						ostr << '[' << item << ']';
 				}
-				else
-					ostr << item;
 			}
 		}
 		// ostr << "{\n  \"value\":" << *this << ",\n";

@@ -132,7 +132,7 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
-	const node_t & vmap = json.data;
+	//const node_t & vmap = json.data;
 
 	char sep = 0;
 
@@ -140,14 +140,15 @@ void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indent
 
 	indentation += JSON::indentStep;
 
-	if (!vmap.empty()){
-		vmap.toJSON(ostr, indentation); // relies on similar formatting
+	if (!json.data.empty()){
+		json.data.toJSON(ostr, indentation); // relies on similar formatting
 		if (!json.isEmpty())
 			ostr << ','; // Add comma, if non-empty subtree coming next
 		ostr << '\n';
 	}
 
 
+	// Traverse descendants recursively
 	for (tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
 
 		if (sep){
