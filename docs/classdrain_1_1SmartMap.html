@@ -175,18 +175,33 @@ template&lt;class T2 &gt; </td></tr>
 <tr class="memitem:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">updateFromMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
 <tr class="memdesc:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map. Updates existing entries only.  <a href="#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">More...</a><br /></td></tr>
 <tr class="separator:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6e5c73c11a06c116b99c6589b4770b3"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab6e5c73c11a06c116b99c6589b4770b3"></a>
+template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:ab6e5c73c11a06c116b99c6589b4770b3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>updateFromCastableMap</b> (const <a class="el" href="classdrain_1_1SmartMap.html">drain::SmartMap</a>&lt; T2 &gt; &amp;m)</td></tr>
+<tr class="separator:ab6e5c73c11a06c116b99c6589b4770b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b167abca1d8a101208c7aa3f989ddc0"><td class="memTemplParams" colspan="2">template&lt;class T2 &gt; </td></tr>
 <tr class="memitem:a1b167abca1d8a101208c7aa3f989ddc0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a1b167abca1d8a101208c7aa3f989ddc0">importMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
 <tr class="memdesc:a1b167abca1d8a101208c7aa3f989ddc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map, overriding existing entries.  <a href="#a1b167abca1d8a101208c7aa3f989ddc0">More...</a><br /></td></tr>
 <tr class="separator:a1b167abca1d8a101208c7aa3f989ddc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed9f66a2a7ce723180ea100bf63fd53c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed9f66a2a7ce723180ea100bf63fd53c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#aed9f66a2a7ce723180ea100bf63fd53c">setValues</a> (const std::string &amp;parameters, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
-<tr class="memdesc:aed9f66a2a7ce723180ea100bf63fd53c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry. <br /></td></tr>
-<tr class="separator:aed9f66a2a7ce723180ea100bf63fd53c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3a1115648396b26b13182c5944d1097"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a1115648396b26b13182c5944d1097"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3a1115648396b26b13182c5944d1097">updateValues</a> (const std::string &amp;parameters, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
-<tr class="memdesc:ab3a1115648396b26b13182c5944d1097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters silently. <br /></td></tr>
-<tr class="separator:ab3a1115648396b26b13182c5944d1097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae991f887a5a58a5190657bc45246b663"><td class="memTemplParams" colspan="2">template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:ae991f887a5a58a5190657bc45246b663"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ae991f887a5a58a5190657bc45246b663">importCastableMap</a> (const <a class="el" href="classdrain_1_1SmartMap.html">drain::SmartMap</a>&lt; T2 &gt; &amp;m)</td></tr>
+<tr class="memdesc:ae991f887a5a58a5190657bc45246b663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map, possibly extending the map.  <a href="#ae991f887a5a58a5190657bc45246b663">More...</a><br /></td></tr>
+<tr class="separator:ae991f887a5a58a5190657bc45246b663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73dcba50de9c1b71d3daf5d10dbd30de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73dcba50de9c1b71d3daf5d10dbd30de"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">setValues</a> (const std::string &amp;entries, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
+<tr class="memdesc:a73dcba50de9c1b71d3daf5d10dbd30de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry. <br /></td></tr>
+<tr class="separator:a73dcba50de9c1b71d3daf5d10dbd30de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a887f398f0ca56f8d6884a70129cfaccf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a887f398f0ca56f8d6884a70129cfaccf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setValues</b> (const char *entries, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
+<tr class="separator:a887f398f0ca56f8d6884a70129cfaccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e51543416db88e09621c3d96f094237"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5e51543416db88e09621c3d96f094237"></a>
+template&lt;class C &gt; </td></tr>
+<tr class="memitem:a5e51543416db88e09621c3d96f094237"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValues</b> (const C &amp;container)</td></tr>
+<tr class="separator:a5e51543416db88e09621c3d96f094237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb5f415587d1a50e49ab7bdd37c6cdd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb5f415587d1a50e49ab7bdd37c6cdd7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#abb5f415587d1a50e49ab7bdd37c6cdd7">updateValues</a> (const std::string &amp;entries, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
+<tr class="memdesc:abb5f415587d1a50e49ab7bdd37c6cdd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silently. <br /></td></tr>
+<tr class="separator:abb5f415587d1a50e49ab7bdd37c6cdd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad187955f46cac33fe12947c7887cf08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad187955f46cac33fe12947c7887cf08"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> (std::ostream &amp;ostr) const </td></tr>
 <tr class="separator:aad187955f46cac33fe12947c7887cf08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,12 +241,12 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:af77bb251d598dc966c910096d590be70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#af77bb251d598dc966c910096d590be70">_setValues</a> (const std::string &amp;parameters, bool updateOnly=false, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
-<tr class="memdesc:af77bb251d598dc966c910096d590be70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns values from std::string of type "value,value2,...valueN".  <a href="#af77bb251d598dc966c910096d590be70">More...</a><br /></td></tr>
-<tr class="separator:af77bb251d598dc966c910096d590be70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae301cfe2a4bdcbf218e2e3efee421962"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae301cfe2a4bdcbf218e2e3efee421962"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>_setValues</b> (const std::list&lt; std::string &gt; &amp;p, bool updateOnly=false, char assignmentSymbol='=')</td></tr>
-<tr class="separator:ae301cfe2a4bdcbf218e2e3efee421962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7de50fd6597299ca3e8ee668d97dd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#abe7de50fd6597299ca3e8ee668d97dd8">assignEntries</a> (const std::string &amp;entries, bool updateOnly=false, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
+<tr class="memdesc:abe7de50fd6597299ca3e8ee668d97dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns values from std::string of type "value,value2,...valueN".  <a href="#abe7de50fd6597299ca3e8ee668d97dd8">More...</a><br /></td></tr>
+<tr class="separator:abe7de50fd6597299ca3e8ee668d97dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5259756db3b99151a88ccd476733da4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5259756db3b99151a88ccd476733da4b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>assignEntries</b> (const std::list&lt; std::string &gt; &amp;p, bool updateOnly=false, char assignmentSymbol='=')</td></tr>
+<tr class="separator:a5259756db3b99151a88ccd476733da4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -247,7 +262,7 @@ class drain::SmartMap&lt; T &gt;</h3>
 <p>A base class for smart maps providing methods for importing and exporting values, among others. </p>
 <p>Unlike with std::map&lt;&gt;, operator[] is defined as const, too, returning reference to a static empty instance.</p>
 <p><a class="el" href="classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others...">SmartMap</a> maintains an ordered list of keys, accessible with getKeys(). The items in the key list are appended in the order they have been created. This is order is generally different from the (alphabetical) order appearing in std::map iteration.</p>
-<p>Comma-separated values can be assigned simultaneously with <a class="el" href="classdrain_1_1SmartMap.html#aed9f66a2a7ce723180ea100bf63fd53c" title="Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...">setValues()</a> and <a class="el" href="classdrain_1_1SmartMap.html#ab3a1115648396b26b13182c5944d1097" title="Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters si...">updateValues()</a> </p>
+<p>Comma-separated values can be assigned simultaneously with <a class="el" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de" title="Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...">setValues()</a> and <a class="el" href="classdrain_1_1SmartMap.html#abb5f415587d1a50e49ab7bdd37c6cdd7" title="Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silen...">updateValues()</a> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="adf5c2b9b2cc510115fd1f16eca5488df"></a>
 <div class="memitem">
@@ -312,7 +327,7 @@ class drain::SmartMap&lt; T &gt;</h3>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ordered</td><td>- several comma-separated values can be assigned with <a class="el" href="classdrain_1_1SmartMap.html#aed9f66a2a7ce723180ea100bf63fd53c" title="Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...">setValues()</a> and <a class="el" href="classdrain_1_1SmartMap.html#ab3a1115648396b26b13182c5944d1097" title="Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters si...">updateValues()</a> </td></tr>
+    <tr><td class="paramname">ordered</td><td>- several comma-separated values can be assigned with <a class="el" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de" title="Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...">setValues()</a> and <a class="el" href="classdrain_1_1SmartMap.html#abb5f415587d1a50e49ab7bdd37c6cdd7" title="Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silen...">updateValues()</a> </td></tr>
     <tr><td class="paramname">separator</td><td>- default character used for splitting input and output. See setValues </td></tr>
   </table>
   </dd>
@@ -321,7 +336,7 @@ class drain::SmartMap&lt; T &gt;</h3>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af77bb251d598dc966c910096d590be70"></a>
+<a class="anchor" id="abe7de50fd6597299ca3e8ee668d97dd8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -329,10 +344,10 @@ class drain::SmartMap&lt; T &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void _setValues </td>
+          <td class="memname">void assignEntries </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>parameters</em>, </td>
+          <td class="paramname"><em>entries</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -367,7 +382,7 @@ class drain::SmartMap&lt; T &gt;</h3>
 
 <p>Assigns values from std::string of type "value,value2,...valueN". </p>
 <p>Allows setting values in python style function calls:</p><ol type="1">
-<li>in the definition order of parameters: "value,value2,...valueN" become assined as key=value, key2=value2, ... and so on.</li>
+<li>in the definition order of entries: "value,value2,...valueN" become assined as key=value, key2=value2, ... and so on.</li>
 <li>specified mode, allowing specific assignments "key=value,key2=value2,key3=value3"</li>
 </ol>
 <p>Mixed types like <code>"value,key4=value2,value3"</code> accepted but not encouraged. In the mixed mode, the unspecified keys become assigned in  their order of appearance. Hence, in the above example <code>value3</code> will be assigned to <code>key2</code> , not <code>key3</code>.</p>
@@ -492,6 +507,34 @@ class drain::SmartMap&lt; T &gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="ae991f887a5a58a5190657bc45246b663"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void importCastableMap </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1SmartMap.html">drain::SmartMap</a>&lt; T2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign values from a map, possibly extending the map. </p>
+<dl class="section user"><dt>m - source of keys and values</dt><dd></dd></dl>
+<p>If a key is not known, and the map is of fixed type like <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>, throws exception. </p>
+
+</div>
+</div>
 <a class="anchor" id="aa0c078ba781eecb5a494a4965108b562"></a>
 <div class="memitem">
 <div class="memproto">
@@ -564,6 +607,7 @@ class drain::SmartMap&lt; T &gt;</h3>
 
 <p>Assign values from a map, overriding existing entries. </p>
 <dl class="section user"><dt>m - source of keys and values</dt><dd></dd></dl>
+<p>If a key is not known, and the map is of fixed type like <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>, throws exception. </p>
 
 </div>
 </div>

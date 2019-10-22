@@ -4,6 +4,7 @@ var searchData=
   ['fastopticalflowop',['FastOpticalFlowOp',['../classdrain_1_1image_1_1FastOpticalFlowOp.html',1,'drain::image']]],
   ['fastopticalflowop2',['FastOpticalFlowOp2',['../classdrain_1_1image_1_1FastOpticalFlowOp2.html',1,'drain::image']]],
   ['file',['File',['../classdrain_1_1image_1_1File.html',1,'drain::image']]],
+  ['file',['File',['../classdrain_1_1File.html',1,'drain']]],
   ['filegeotiff',['FileGeoTIFF',['../classrack_1_1FileGeoTIFF.html',1,'rack']]],
   ['filemodule',['FileModule',['../classrack_1_1FileModule.html',1,'rack']]],
   ['filepng',['FilePng',['../classdrain_1_1image_1_1FilePng.html',1,'drain::image']]],

@@ -75,7 +75,6 @@ var searchData=
   ['getlastchild',['getLastChild',['../classrack_1_1DataSelector.html#a530d87567f75767db07ce6d961194548',1,'rack::DataSelector']]],
   ['getlastcommand',['getLastCommand',['../classdrain_1_1CommandRegistry.html#acfbe16f67d3f52a0ab4cc6c08d7048f6',1,'drain::CommandRegistry']]],
   ['getlastpath',['getLastPath',['../classrack_1_1DataSelector.html#ae8af2d9a004306b05a6c45055c71294c',1,'rack::DataSelector']]],
-  ['getlegend',['getLegend',['../classdrain_1_1image_1_1Palette.html#a06f5e6d30629ef17533a5ee8ef25cd40',1,'drain::image::Palette']]],
   ['getmap',['getMap',['../classdrain_1_1Registry.html#ab9056894a7cc9a645cca06b67252f917',1,'drain::Registry::getMap()'],['../classdrain_1_1Registry.html#a7c243d17a3a892b53f3ab09f51b963cf',1,'drain::Registry::getMap() const '],['../classdrain_1_1SmartMap.html#a446750d2201de3c189a5201d67ea5466',1,'drain::SmartMap::getMap()']]],
   ['getmax',['getMax',['../classrack_1_1EncodingODIM.html#ab8d12bd7baa52ea1e5140a1f98edf095',1,'rack::EncodingODIM::getMax()'],['../classdrain_1_1image_1_1DistanceModel.html#afa4c25649a1a11d2f3cbd5819eb8ee44',1,'drain::image::DistanceModel::getMax()']]],
   ['getmaxphys',['getMaxPhys',['../classdrain_1_1image_1_1ImageScaling.html#ab3852d4fa4946b11e9ab9d4bb20e87ff',1,'drain::image::ImageScaling']]],

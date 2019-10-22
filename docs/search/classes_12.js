@@ -24,6 +24,6 @@ var searchData=
   ['typemax',['typeMax',['../classdrain_1_1typeMax.html',1,'drain']]],
   ['typemin',['typeMin',['../classdrain_1_1typeMin.html',1,'drain']]],
   ['typenaturalmax',['typeNaturalMax',['../classdrain_1_1typeNaturalMax.html',1,'drain']]],
-  ['typesetter',['typesetter',['../classdrain_1_1typesetter.html',1,'drain']]],
-  ['typesetter',['typeSetter',['../structdrain_1_1Type_1_1typeSetter.html',1,'drain::Type']]]
+  ['typesetter',['typeSetter',['../structdrain_1_1Type_1_1typeSetter.html',1,'drain::Type']]],
+  ['typesetter',['typesetter',['../classdrain_1_1typesetter.html',1,'drain']]]
 ];

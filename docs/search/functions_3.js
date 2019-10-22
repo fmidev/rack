@@ -22,7 +22,6 @@ var searchData=
   ['computedifferentials',['computeDifferentials',['../classdrain_1_1image_1_1FastOpticalFlowOp.html#af6308e013d697903af88b6a8b4a2649f',1,'drain::image::FastOpticalFlowOp::computeDifferentials()'],['../classdrain_1_1image_1_1FastOpticalFlowOp2.html#af6308e013d697903af88b6a8b4a2649f',1,'drain::image::FastOpticalFlowOp2::computeDifferentials()']]],
   ['contract',['contract',['../classdrain_1_1Rectangle.html#a99316794e63ffb39fdc532d1fea46bfe',1,'drain::Rectangle']]],
   ['convert',['convert',['../classdrain_1_1StringTools.html#acaf7f4b9a98ab235c909aeebe2af6f08',1,'drain::StringTools']]],
-  ['convertjson',['convertJSON',['../classdrain_1_1image_1_1Palette.html#a1c6140558b7c77daa3339bc6b392ebf5',1,'drain::image::Palette']]],
   ['convertregexptoranges',['convertRegExpToRanges',['../classrack_1_1DataSelector.html#a710df1c0e7e58e0c48506732a1f6dd9b',1,'rack::DataSelector::convertRegExpToRanges(const std::string &amp;param)'],['../classrack_1_1DataSelector.html#a917604dd02e0fcb291e5b86a5fe30163',1,'rack::DataSelector::convertRegExpToRanges()']]],
   ['convop',['ConvOp',['../classrack_1_1ConvOp.html#a14b6f03380a8a4fc7c70cfe2f2154191',1,'rack::ConvOp']]],
   ['coordinatehandler2d',['CoordinateHandler2D',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a6340f4424405f6372a053e5f2826d44a',1,'drain::image::CoordinateHandler2D']]],

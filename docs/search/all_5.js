@@ -33,6 +33,7 @@ var searchData=
   ['execute',['execute',['../classdrain_1_1RegExp.html#a5e2381c7e6b5f99f9036c65dc60f72d6',1,'drain::RegExp::execute(const std::string &amp;str, T &amp;result) const '],['../classdrain_1_1RegExp.html#a7a47dff45dfe4646bb244fa7ac551093',1,'drain::RegExp::execute(const std::string &amp;str) const ']]],
   ['expand',['expand',['../classdrain_1_1StringMapper.html#a6e0962219865d494884bed208c5fdb65',1,'drain::StringMapper']]],
   ['exportmap',['exportMap',['../classdrain_1_1SmartMap.html#a42bfdb530c17c1e19fd95e937d754684',1,'drain::SmartMap']]],
+  ['exportsvglegend',['exportSVGLegend',['../classdrain_1_1image_1_1Palette.html#acb17c9d07c0315d0ba06fab4250d2d90',1,'drain::image::Palette']]],
   ['extend',['extend',['../classdrain_1_1Rectangle.html#a9cce1ea8675417818c9041e5dff7c0ec',1,'drain::Rectangle']]],
   ['extentd',['extentD',['../classdrain_1_1image_1_1GeoFrame.html#acc28768421141755731504a27706d6c5',1,'drain::image::GeoFrame']]],
   ['extentm',['extentM',['../classdrain_1_1image_1_1GeoFrame.html#a2aef61ee3749f9914d71a2f05e15a001',1,'drain::image::GeoFrame']]],

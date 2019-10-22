@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
@@ -108,10 +109,17 @@ Collaboration diagram for Palette:</div>
 <div class="center"><img src="classdrain_1_1image_1_1Palette__coll__graph.png" border="0" usemap="#Palette_coll__map" alt="Collaboration graph"/></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a550c0674e51a45d86b0bcc8ab049163c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a550c0674e51a45d86b0bcc8ab049163c"></a>
+typedef std::map&lt; std::string, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a></td></tr>
+<tr class="memdesc:a550c0674e51a45d86b0bcc8ab049163c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Certain intensities (before scaling with gain and offset) may require special treatment. <br /></td></tr>
+<tr class="separator:a550c0674e51a45d86b0bcc8ab049163c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
-<tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.  <a href="#ad20897c5c8bd47f5d4005989bead0e55">More...</a><br /></td></tr>
+<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad20897c5c8bd47f5d4005989bead0e55"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c21edd9d285c925527e3209fca54b01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c21edd9d285c925527e3209fca54b01"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a6c21edd9d285c925527e3209fca54b01">load</a> (const std::string &amp;filename)</td></tr>
@@ -125,13 +133,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a22349eb538b9dfebf96202d2892dc1e4">loadJSON</a> (std::ifstream &amp;ifstr)</td></tr>
 <tr class="memdesc:a22349eb538b9dfebf96202d2892dc1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file. <br /></td></tr>
 <tr class="separator:a22349eb538b9dfebf96202d2892dc1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d532fbde64960e468132b50085f8ec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d532fbde64960e468132b50085f8ec0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const std::string &amp;filename)</td></tr>
+<tr class="separator:a6d532fbde64960e468132b50085f8ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c4f27e3e6411619d8098bcc0abcc7b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c4f27e3e6411619d8098bcc0abcc7b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportTXT</b> (std::ostream &amp;ostr, char separator='\n', char separator2=0) const </td></tr>
+<tr class="separator:a5c4f27e3e6411619d8098bcc0abcc7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21b3a55e17142c1af1d1ff60c4e04dd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21b3a55e17142c1af1d1ff60c4e04dd3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json) const </td></tr>
+<tr class="separator:a21b3a55e17142c1af1d1ff60c4e04dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb17c9d07c0315d0ba06fab4250d2d90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb17c9d07c0315d0ba06fab4250d2d90"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acb17c9d07c0315d0ba06fab4250d2d90">exportSVGLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const </td></tr>
+<tr class="memdesc:acb17c9d07c0315d0ba06fab4250d2d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a legend as an SVG graphic. <br /></td></tr>
+<tr class="separator:acb17c9d07c0315d0ba06fab4250d2d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d7736529ea585cdfe23bd37a6e61f22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a2d7736529ea585cdfe23bd37a6e61f22">hasAlpha</a> () const </td></tr>
 <tr class="memdesc:a2d7736529ea585cdfe23bd37a6e61f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object.  <a href="#a2d7736529ea585cdfe23bd37a6e61f22">More...</a><br /></td></tr>
 <tr class="separator:a2d7736529ea585cdfe23bd37a6e61f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06f5e6d30629ef17533a5ee8ef25cd40"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06f5e6d30629ef17533a5ee8ef25cd40"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a06f5e6d30629ef17533a5ee8ef25cd40">getLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const </td></tr>
-<tr class="memdesc:a06f5e6d30629ef17533a5ee8ef25cd40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a legend as an SVG graphic. <br /></td></tr>
-<tr class="separator:a06f5e6d30629ef17533a5ee8ef25cd40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a2571426c4c00ee5885c8b7d63d9beae3">refine</a> (size_t n=256)</td></tr>
 <tr class="memdesc:a2571426c4c00ee5885c8b7d63d9beae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")  <a href="#a2571426c4c00ee5885c8b7d63d9beae3">More...</a><br /></td></tr>
 <tr class="separator:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,17 +159,16 @@ Public Attributes</h2></td></tr>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72">title</a></td></tr>
 <tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. Legend shows the title on top. <br /></td></tr>
 <tr class="separator:ac30fed21fe991cc8475ce543929f8b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac315a0388f57b715a78a1a9426428738"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac315a0388f57b715a78a1a9426428738"></a>
-std::map&lt; std::string, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ac315a0388f57b715a78a1a9426428738">specialCodes</a></td></tr>
-<tr class="memdesc:ac315a0388f57b715a78a1a9426428738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Certain intensities (before scaling with gain and offset) may require special treatment. <br /></td></tr>
-<tr class="separator:ac315a0388f57b715a78a1a9426428738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42338d9abd438b27e5a56d22202d873"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae42338d9abd438b27e5a56d22202d873"></a>
+<a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialCodes</b></td></tr>
+<tr class="separator:ae42338d9abd438b27e5a56d22202d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a1c6140558b7c77daa3339bc6b392ebf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c6140558b7c77daa3339bc6b392ebf5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a1c6140558b7c77daa3339bc6b392ebf5">convertJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json, int depth)</td></tr>
-<tr class="memdesc:a1c6140558b7c77daa3339bc6b392ebf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
-<tr class="separator:a1c6140558b7c77daa3339bc6b392ebf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bcf575e730c3ca80641dcce0e5f7000"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1bcf575e730c3ca80641dcce0e5f7000"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a1bcf575e730c3ca80641dcce0e5f7000">importJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json, int depth)</td></tr>
+<tr class="memdesc:a1bcf575e730c3ca80641dcce0e5f7000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
+<tr class="separator:a1bcf575e730c3ca80641dcce0e5f7000"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -215,30 +231,9 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b
 
 </div>
 </div>
-<a class="anchor" id="ad20897c5c8bd47f5d4005989bead0e55"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void reset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. </p>
-<p>Treats an RGB truecolor image of N pixels as as a palette of N colors.</p><ul>
-<li></li>
-<li></li>
-</ul>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>drain/imageops/<a class="el" href="PaletteOp_8h_source.html">PaletteOp.h</a></li>
-<li>drain/imageops/PaletteOp.cpp</li>
+<li>drain/image/<a class="el" href="Palette_8h_source.html">Palette.h</a></li>
+<li>drain/image/Palette.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

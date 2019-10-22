@@ -11,6 +11,7 @@ var searchData=
   ['variableprefix',['variablePrefix',['../classdrain_1_1StringMapper.html#a80679d2a07f2b013af404b79950f9011',1,'drain::StringMapper']]],
   ['variablesuffix',['variableSuffix',['../classdrain_1_1StringMapper.html#ad4d5f3c8b6f16c14acccaa652a4a7ca1',1,'drain::StringMapper']]],
   ['vdenominator',['vDenominator',['../classdrain_1_1image_1_1OpticalFlowCore.html#a6d4709f680bbcb44884b58328104b2fd',1,'drain::image::OpticalFlowCore']]],
+  ['vect_5ft',['vect_t',['../classdrain_1_1image_1_1PaletteEntry.html#aeb11f240f82334adde2ba9e3c4ce3070',1,'drain::image::PaletteEntry']]],
   ['vector',['Vector',['../classdrain_1_1Vector.html',1,'drain']]],
   ['verticalcatenatorop',['VerticalCatenatorOp',['../classdrain_1_1image_1_1VerticalCatenatorOp.html',1,'drain::image']]],
   ['verticalcrosssectionodim',['VerticalCrossSectionODIM',['../classrack_1_1VerticalCrossSectionODIM.html',1,'rack']]],

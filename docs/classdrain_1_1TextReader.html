@@ -103,16 +103,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aec0a01aaa024c7b8dafc9811193516ce"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextReader.html#aec0a01aaa024c7b8dafc9811193516ce">scanSegment</a> (std::istream &amp;istr, const std::string &amp;endChars)</td></tr>
-<tr class="memdesc:aec0a01aaa024c7b8dafc9811193516ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until a char in <code>endChars</code> is encountered.  <a href="#aec0a01aaa024c7b8dafc9811193516ce">More...</a><br /></td></tr>
+<tr class="memdesc:aec0a01aaa024c7b8dafc9811193516ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until any char in <code>endChars</code> is encountered. The end char will not be included, but passed in input stream.  <a href="#aec0a01aaa024c7b8dafc9811193516ce">More...</a><br /></td></tr>
 <tr class="separator:aec0a01aaa024c7b8dafc9811193516ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90a6c2b40300dd5c6cc4cfdd62269e52"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90a6c2b40300dd5c6cc4cfdd62269e52"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextReader.html#a90a6c2b40300dd5c6cc4cfdd62269e52">scanSegment</a> (std::istream &amp;istr, const std::string &amp;endChars, std::ostream &amp;ostr)</td></tr>
-<tr class="memdesc:a90a6c2b40300dd5c6cc4cfdd62269e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until a char in <code>endChars</code> is encountered. <br /></td></tr>
+<tr class="memdesc:a90a6c2b40300dd5c6cc4cfdd62269e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until any char in <code>endChars</code> is encountered. The end char will not be included, but passed in input stream. <br /></td></tr>
 <tr class="separator:a90a6c2b40300dd5c6cc4cfdd62269e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a294b02d57ce5f3779a16397cbe9563b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a294b02d57ce5f3779a16397cbe9563b2"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextReader.html#a294b02d57ce5f3779a16397cbe9563b2">skipChars</a> (std::istream &amp;istr, const std::string skipChars=&quot; \t\n\r&quot;)</td></tr>
-<tr class="memdesc:a294b02d57ce5f3779a16397cbe9563b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until a char not in <code>skipChars</code> is encountered. <br /></td></tr>
-<tr class="separator:a294b02d57ce5f3779a16397cbe9563b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f08708214f10d700a8e6ab3cc587244"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f08708214f10d700a8e6ab3cc587244"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextReader.html#a2f08708214f10d700a8e6ab3cc587244">skipChars</a> (std::istream &amp;istr, const std::string skipChars)</td></tr>
+<tr class="memdesc:a2f08708214f10d700a8e6ab3cc587244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read input stream until a char not in <code>skipChars</code> is encountered. <br /></td></tr>
+<tr class="separator:a2f08708214f10d700a8e6ab3cc587244"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a828316cbe2ea0aaa718da9ab09fd2707"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a828316cbe2ea0aaa718da9ab09fd2707"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>skipWhiteSpace</b> (std::istream &amp;istr)</td></tr>
+<tr class="separator:a828316cbe2ea0aaa718da9ab09fd2707"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility for scanning text segments. </p>
@@ -149,7 +152,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Read input stream until a char in <code>endChars</code> is encountered. </p>
+<p>Read input stream until any char in <code>endChars</code> is encountered. The end char will not be included, but passed in input stream. </p>
 <p>Typically, used for reading variable values, including nested segments, hence recognizing closing chars. </p>
 
 </div>

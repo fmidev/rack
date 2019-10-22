@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['paletteentry',['PaletteEntry',['../classdrain_1_1image_1_1PaletteEntry.html#a83bcfd633aa241e7096eb2df28facf36',1,'drain::image::PaletteEntry::PaletteEntry()'],['../classdrain_1_1image_1_1PaletteEntry.html#ab9f457fd1873cc31519f857b552141f5',1,'drain::image::PaletteEntry::PaletteEntry(const PaletteEntry &amp;entry)']]],
   ['parse',['parse',['../classdrain_1_1StringMapper.html#a87e6c0ff7fbd14d5b79f581b82354649',1,'drain::StringMapper']]],
   ['parsepath',['parsePath',['../classhi5_1_1Hi5Base.html#a7c89f2e3c2f57bf5a885181d3bda9d5a',1,'hi5::Hi5Base']]],
   ['path',['Path',['../classdrain_1_1Path.html#aead8c9652883b119959de923a2effedf',1,'drain::Path::Path(const Path&lt; T &gt; &amp;p)'],['../classdrain_1_1Path.html#a01638c5846ed22f6a7538863a68a5a82',1,'drain::Path::Path(const std::string &amp;s, char separator=&apos;/&apos;)']]],

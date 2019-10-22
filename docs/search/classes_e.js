@@ -4,6 +4,7 @@ var searchData=
   ['paletteentry',['PaletteEntry',['../classdrain_1_1image_1_1PaletteEntry.html',1,'drain::image']]],
   ['paletteop',['PaletteOp',['../classdrain_1_1image_1_1PaletteOp.html',1,'drain::image']]],
   ['path',['Path',['../classdrain_1_1Path.html',1,'drain']]],
+  ['path_3c_20std_3a_3astring_20_3e',['Path&lt; std::string &gt;',['../classdrain_1_1Path.html',1,'drain']]],
   ['pixelvectorop',['PixelVectorOp',['../classdrain_1_1image_1_1PixelVectorOp.html',1,'drain::image']]],
   ['plaindata',['PlainData',['../classrack_1_1PlainData.html',1,'rack']]],
   ['point2d',['Point2D',['../classdrain_1_1image_1_1Point2D.html',1,'drain::image']]],
