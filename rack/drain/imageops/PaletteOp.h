@@ -32,14 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define PALETTEOP_H_
 
 
-#include "image/File.h"
-#include "image/TreeSVG.h"
-
-#include "util/JSONtree.h"
-
+#include "image/Palette.h"
 
 #include "ImageOp.h"
 #include "CopyOp.h"
+
 
 
 namespace drain
@@ -47,95 +44,6 @@ namespace drain
 
 namespace image
 {
-
-class PaletteEntry : public std::vector<double> {
-
-public:
-
-	inline
-	PaletteEntry() : hidden(false){
-	}
-
-	/// Description appearing in legends
-	std::string label;
-
-	/// Suggests hiding the entry in legends. Does not affect colouring of images.
-	/**
-	 *   When true, indicates that this entry is less significant and can be excluded in legends
-	 *   created by
-	 *
-	 */
-	bool hidden;
-
-};
-
-class Palette : public std::map<double,PaletteEntry > {
-
-public:
-
-	void reset();
-
-	/// Loads a palette from text file
-	void load(const std::string &filename);
-
-	/// Loads a palette from text file
-	void loadTXT(std::ifstream & ifstr);
-
-
-	/// Loads a palette from text file
-	void loadJSON(std::ifstream & ifstr);
-
-	/// Creates a palette from json object
-	/**
-	 *  \param json - JSON structure combining optional \c metadata and compulsory \c entries section.
-	 */
-	// void convertJSON(const drain::JSON::tree_t & json);
-
-	inline
-	bool hasAlpha() const { return _hasAlpha; };
-
-	/// Returns a legend as an SVG graphic.
-	void getLegend(TreeSVG & svg, bool up = true) const;
-
-	/// Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. Legend shows the title on top.
-	std::string title;
-
-	/// Certain intensities (before scaling with gain and offset) may require special treatment.
-	std::map<std::string,PaletteEntry > specialCodes; // To be read from palette
-
-	/// Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")
-	void refine(size_t n=256);
-
-protected:
-	bool _hasAlpha;
-	unsigned int colorCount;
-	//void skipLine(std::ifstream &ifstr) const;
-
-	/// Creates a palette from json object
-	void convertJSON(const drain::JSON::tree_t & json, int depth);
-
-};
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
-	for (PaletteEntry::const_iterator it = e.begin(); it != e.end(); ++it){
-		ostr << '\t' << *it;
-	}
-	return ostr;
-}
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const Palette & p){
-
-	ostr << "Palette '" << p.title << "'\n";
-	for (std::map<std::string,PaletteEntry >::const_iterator it = p.specialCodes.begin(); it != p.specialCodes.end(); ++it){
-		ostr << '#' << it->first << ':' << it->second << '\n';
-	}
-	for (Palette::const_iterator it = p.begin(); it != p.end(); ++it){
-		ostr << it->first << ':' << it->second << '\n';
-	}
-	return ostr;
-}
 
 /// Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.
 /*! Treats an RGB truecolor image of N pixels as as a palette of N colors.

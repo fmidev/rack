@@ -51,7 +51,7 @@ namespace drain {
 
   Saves type info (like Caster) and also a pointer to external object.
   The object ie. the memory resource is provided by the user.
-  Does not support arrays. See Variable and ReferenceMap.
+  Supports arrays.
 
   \example Castable-example.cpp
    
@@ -120,12 +120,14 @@ public:
 	template <class T>
 	inline
 	Referencer & operator=(const T &x){
+		//std::cout << "Yleis\n";
 		Castable::operator=(x);
 		return *this;
 	}
 
 	inline
 	Referencer & operator=(const Castable &x){
+		//std::cout << "Kasta\n";
 		Castable::operator=(x);
 		return *this;
 	}

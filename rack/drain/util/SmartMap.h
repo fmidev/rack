@@ -243,9 +243,18 @@ public:
 			importEntry(it->first, it->second, true);
 	}
 
+	template <class T2>
+	void updateFromCastableMap(const drain::SmartMap<T2> & m){
+		for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
+			importEntry(it->first, (const Castable &)it->second, true);
+	}
+
+
 	/// Assign values from a map, overriding existing entries.
 	/**
 	 *  \par m - source of keys and values
+	 *
+	 *  If a key is not known, and the map is of fixed type like ReferenceMap,  throws exception.
 	 */
 	template <class T2>
 	void importMap(const std::map<std::string,T2> & m){
@@ -253,17 +262,38 @@ public:
 			importEntry(it->first, it->second, false);
 	}
 
+	/// Assign values from a map, possibly extending the map.
+	/**
+	 *  \par m - source of keys and values
+	 *
+	 *  If a key is not known, and the map is of fixed type like ReferenceMap,  throws exception.
+	 */
+	template <class T2>
+	void importCastableMap(const drain::SmartMap<T2> & m){
+		for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
+			importEntry(it->first, (const Castable &)it->second, false);
+	}
+
+
 	/// Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry.
 	// TODO: consider: std::string assignmentSymbols="=:", std::string separatorSymbols=", ", std::string trimSymbols=" \t\n\r",
 	inline
-	void setValues(const std::string & parameters, char assignmentSymbol='=', char separatorSymbol=0){  // char separatorSymbol=','
-		_setValues(parameters, false, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
+	void setValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){  // char separatorSymbol=','
+		assignEntries(entries, false, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
 	}
 
-	/// Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra parameters silently.
 	inline
-	void updateValues(const std::string & parameters, char assignmentSymbol='=', char separatorSymbol=0){// char separatorSymbol=','
-		_setValues(parameters, true, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
+	void setValues(const char * entries, char assignmentSymbol='=', char separatorSymbol=0){
+		assignEntries(entries, false, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
+	}
+
+	template <class C>
+	void setValues(const C & container);
+
+	/// Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silently.
+	inline
+	void updateValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){// char separatorSymbol=','
+		assignEntries(entries, true, assignmentSymbol, separatorSymbol ? separatorSymbol : separator);
 	}
 
 
@@ -425,7 +455,7 @@ protected:
 	// ?? If specific, allows also "key=value,key1=value2,...".
 	/**
 	 *   Allows setting values in python style function calls:
-	 *   -# in the definition order of parameters: "value,value2,...valueN" become assined as key=value, key2=value2, ... and so on.
+	 *   -# in the definition order of entries: "value,value2,...valueN" become assined as key=value, key2=value2, ... and so on.
 	 *   -# specified mode, allowing specific assignments "key=value,key2=value2,key3=value3"
 	 *
 	 *   Mixed types like \c "value,key4=value2,value3" accepted but not encouraged. In the mixed mode, the unspecified keys become
@@ -433,13 +463,13 @@ protected:
 	 *
 	 *   \param updateOnly - if true, skip non-existing entries silently
 	 */
-	void _setValues(const std::string & parameters, bool updateOnly = false, char assignmentSymbol='=', char separatorSymbol=0){
-		// void setValues(const std::string & parameters, char assignmentSymbol, bool updateOnly = false){
+	void assignEntries(const std::string & entries, bool updateOnly = false, char assignmentSymbol='=', char separatorSymbol=0){
+		// void setValues(const std::string & entries, char assignmentSymbol, bool updateOnly = false){
 
 		Logger mout(__FILE__, __FUNCTION__);
-		//mout.debug(10) << parameters << mout.endl;
+		//mout.debug(10) << entries << mout.endl;
 
-		if (parameters.empty()){
+		if (entries.empty()){
 			return;
 		}
 
@@ -447,13 +477,13 @@ protected:
 
 		// Input parameter assignments, separated by the separator: "a=1", "b=2", "c=3", ...
 		std::list<std::string> p;
-		drain::StringTools::split(parameters, p, std::string(1, separatorSymbol));  // separators);
+		drain::StringTools::split(entries, p, std::string(1, separatorSymbol));  // separators);
 
-		_setValues(p, updateOnly, assignmentSymbol);
+		assignEntries(p, updateOnly, assignmentSymbol);
 	}
 
 
-	void _setValues(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
+	void assignEntries(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
 
 		Logger mout(__FILE__, __FUNCTION__);
 
@@ -498,6 +528,31 @@ protected:
 	mutable	std::list<std::string> keyList;
 
 };
+
+template <class T>
+template <class C>
+void SmartMap<T>::setValues(const C & container){
+
+	Logger log(__FILE__, __FUNCTION__);
+
+	const std::list<std::string> & keys = getKeyList();
+	std::list<std::string>::const_iterator kit = keys.begin();
+
+	for (typename C::const_iterator it = container.begin(); it != container.end(); ++it){
+
+		if (kit != keys.end()){
+			// Assignment-by-order
+			(*this)[*kit] = *it;  // does not need to call import() because *kit exists.
+			++kit; // NUEVO
+		}
+		else {
+			log.error() << "too many ("<< container->size() << ") params for map of size ("<< this->size() << "), run out of keys with entry=" << *it << log.endl;
+		}
+
+	}
+
+}
+
 
 template<class T>
 std::ostream &operator<<(std::ostream &ostr, const SmartMap<T> & m){

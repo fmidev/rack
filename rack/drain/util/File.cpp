@@ -22,34 +22,73 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+ */
+//#include "Path.h"
+
+
+#include <stdexcept>
+#include <iostream>
+
+#include "Log.h"
+
+#include "File.h"
+
+namespace drain {
+
+// Note: inside [ ] no specials like \S \s \W \w ...
+const RegExp File::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([^\\. ]+)$");
+/*
+
+0 ==	 drain/examples/RegExp-example.cpp
+1  = 	'drain/examples/'
+2  = 	'drain/examples'
+3  = 	'RegExp-example'
+4  = 	'cpp'
+
 */
 
-#ifndef ECHO_CLASS_H_
-#define ECHO_CLASS_H_
 
-#include <ostream>
+/// In Linux and Unix...
+char File::separator('/');
 
-#include <drain/util/JSONtree.h>
+File::File(const std::string & s) : path(File::separator){
+	set(s);
+}
+
+void File::set(const std::string & s){
+
+	drain::Logger log(__FILE__, __FUNCTION__);
+
+	std::vector<std::string> result;
+
+	if (!pathRegExp.execute(s, result)){
+		if (result.size() == 5){
+			this->path.set(result[2]);
+			this->basename  = result[3];
+			this->extension = result[4];
+		}
+		else if (result.size() == 3){
+			this->path.set("");
+			this->basename  = result[1];
+			this->extension = result[2];
+		}
+		else {
+			for (std::size_t i = 1; i < result.size(); ++i) {
+				log.warn() << '\t' << i << "  = \t'" << result[i] << "'" << log.endl;
+			}
+			log.error() << "odd parsing results for file path: " << s << log.endl;
+		}
+	}
+	else {
+		log.error() << "could not parse file path: " << s << log.endl;
+	}
+
+}
 
 
-namespace rack {
-
-/// Tool for
-/**
- *
- */
-///typedef drain::Tree<std::string, unsigned short int> classtree_t;
-typedef drain::JSON::tree_t classtree_t;
-
-
-classtree_t & getClassTree();
-
-
-} // rack::
-
-#endif
+} // drain::

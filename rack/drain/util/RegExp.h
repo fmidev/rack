@@ -97,6 +97,7 @@ public:
 	 *
 	 *  \param str    - source string
 	 *  \param result - result of the match (STL Sequence)
+	 *
 	 *  \return - 0 on success, REG_NOMATCH on failure
 	 */
 	template <class T>

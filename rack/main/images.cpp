@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <radar/Analysis.h>
 #include <stddef.h>
 #include <util/Log.h>
-#include <util/Path.h>
+#include <util/File.h>
 #include <util/RegExp.h>
 #include <util/SmartMap.h>
 #include <util/Tree.h>
@@ -495,6 +495,8 @@ public:
 
 		}
 
+
+
 		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;
 		mout.debug(2) << resources.palette << mout.endl;
 
@@ -593,14 +595,12 @@ public: //re
 static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
-
+/*
 class CmdLegendOut : public SimpleCommand<> {
 
 public:
 
 	CmdLegendOut() : SimpleCommand<>(__FUNCTION__, "Save palette as a legend to a SVG file.", "filename", "", "<filename>.svg") {
-		//parameters.separators.clear();
-		//parameters.reference("filename", filename, "", "<filename>.svg");
 	};
 
 	void exec() const {
@@ -609,7 +609,7 @@ public:
 
 		RackResources & resources = getResources();
 		TreeSVG svg;
-		resources.palette.getLegend(svg, true);
+		resources.palette.exportSVGLegend(svg, true);
 
 		std::string outFileName = resources.outputPrefix + value;
 		//if (value.emspty())
@@ -623,6 +623,28 @@ public:
 
 };
 static CommandEntry<CmdLegendOut> cmdLegendOut("legendOut");
+*/
+
+class CmdOutputPalette : public SimpleCommand<> {
+
+public:
+
+	CmdOutputPalette() : SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	};
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+
+		RackResources & resources = getResources();
+		resources.palette.write(resources.outputPrefix + value);
+
+	};
+
+};
+static CommandEntry<CmdOutputPalette> cmdPaletteOut("paletteOut");
+static CommandEntry<CmdOutputPalette> cmdLegendOut("legendOut");
+
 
 } // namespace ::
 

@@ -41,7 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 using namespace drain::image;
 
-
 namespace rack {
 
 //void SunOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {

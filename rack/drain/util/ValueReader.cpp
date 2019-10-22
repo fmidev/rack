@@ -75,7 +75,7 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 		// v.setType(type);
 		v.requestType(type);
 		//log.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
-		log.debug(2) << "Numeric value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		log.debug(2) << "Value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
 		v = value;
 		break;
 	}

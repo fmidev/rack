@@ -29,27 +29,47 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef ECHO_CLASS_H_
-#define ECHO_CLASS_H_
+#ifndef DRAIN_FileS_H_
+#define DRAIN_FileS_H_
 
-#include <ostream>
+#include <stdexcept>
+#include <iostream>
+#include <list>
+#include <iterator>
+#include <iostream>
+#include <sstream>
+#include <list>
 
-#include <drain/util/JSONtree.h>
-
-
-namespace rack {
-
-/// Tool for
-/**
- *
- */
-///typedef drain::Tree<std::string, unsigned short int> classtree_t;
-typedef drain::JSON::tree_t classtree_t;
+#include "util/RegExp.h"
+#include "util/Path.h"
 
 
-classtree_t & getClassTree();
+namespace drain {
+
+/// Bit vector accessible also with integer values associated with strings.
+class File {
+
+public:
+
+	static
+	const RegExp pathRegExp;
+
+	static
+	char separator;
 
 
-} // rack::
+	File(const std::string & s = "");
+
+	void set(const std::string & s);
+
+	Path<std::string> path;
+	std::string basename;
+	std::string extension;
+
+};
+
+
+} // drain::
+
 
 #endif

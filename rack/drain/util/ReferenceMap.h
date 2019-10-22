@@ -50,7 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-/// Map in which each entry references a base type variable or a std::string; changing values in either are equivalent operations.
+/// A map of references to base type scalars, arrays or std::string; changing values in either are equivalent operations.
 /** A class designed for objects returned by CastableIterator. Contains a pointer to external object.
  *
  *  \example ReferenceMap-example.cpp
@@ -154,6 +154,10 @@ public:
 	template <class T>
 	inline
 	ReferenceMap & operator=(const SmartMap<T> & v){
+
+		//Logger log(__FILE__, __FUNCTION__);
+		//log.error() << "in:" << v << log.endl;
+
 		importMap(v);
 		return *this;
 	}
