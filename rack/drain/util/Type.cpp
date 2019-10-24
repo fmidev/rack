@@ -87,34 +87,7 @@ const std::type_info & Type::guessType(const std::string & value){
 
 }
 
-const std::type_info & Type::guessArrayType(const std::list<std::string> & l){
 
-
-	typedef std::set<const std::type_info *> typeset;
-
-	typeset s;
-	for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-		s.insert(& guessType(*it));
-	}
-
-	/// Contains at least one string
-	if (s.find(& typeid(std::string)) != s.end())
-		return typeid(std::string);
-
-	/// Contains at least one decimal value
-	if (s.find(& typeid(double)) != s.end())
-		return typeid(double);
-
-	if (s.find(& typeid(int)) != s.end())
-		return typeid(int);
-
-	/// Contains only \c true and \false values
-	if (s.find(& typeid(bool)) != s.end())
-		return typeid(bool);
-
-
-	return typeid(std::string);
-}
 
 
 

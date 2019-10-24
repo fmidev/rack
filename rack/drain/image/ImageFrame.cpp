@@ -39,6 +39,8 @@ namespace image {
 
 void ImageFrame::init(){
 
+	// Logger mout(__FILE__, __FUNCTION__);
+
 	properties["name"] = name; // ("security risk", if file paths included by default?)
 
 	properties["type"].link(encoding.type);
@@ -53,12 +55,12 @@ void ImageFrame::init(){
 
 	properties["coordinatePolicy"].link(coordinatePolicy.v).fillArray = true;
 
-
+	// mout.warn() << properties["coordinatePolicy"] << mout.endl;
 }
 
 void ImageFrame::setStorageType(const std::type_info &type){
 
-	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	encoding.setType(type);
 	segmentBegin.setType(type);

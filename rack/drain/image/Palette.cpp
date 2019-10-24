@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include <util/File.h>
+// #include <util/TextReader.h>
 
 #include "Palette.h"
 
@@ -192,6 +193,8 @@ void Palette::loadTXT(std::ifstream & ifstr){
 			//mout.note() << "j=" << j << mout.endl;
 
 			label = line.substr(i, j+1-i);
+
+			/// First label in the file will be the title
 			if (title.empty())
 				title = label;
 
@@ -226,12 +229,21 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
 
 		entry.value = d;
-		entry.label = label;
+		if (!label.empty()){
+			if (label.at(0) == '.'){
+				entry.hidden = true;
+				entry.label = label.substr(1);
+			}
+			else {
+				entry.hidden = false;
+				entry.label = label;
+			}
+		}
 
 		id = "";
 		id << ++index;
-		if (!label.empty())
-			id << label;
+		//if (!label.empty())
+		id << entry.label;
 		entry.id = id.toStr();
 
 
@@ -403,14 +415,22 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 		ostr << '\n';
 	}
 	ostr << '\n';
+	ostr << '\n';
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		//ostr << it->first << separator << it->second << '\n';
+		ostr << '#';
+
+		if (it->second.hidden)
+			ostr << '.';
+
 		if (!it->second.label.empty())
-			ostr << '#' << it->second.label << '\n';
+			ostr << it->second.label;
 		else
-			ostr << '#' << '?' << it->second.id << '\n';
-		// ostr << '#' << it->first << '\n';
+			ostr << '?' << it->second.id;
+
+		ostr << '\n';
+
 		it->second.toOStream(ostr, separator, separator2);
 		ostr << '\n';
 		ostr << '\n';

@@ -86,18 +86,23 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 
 void ValueReader::scanArrayValues(const std::string & s, Variable & v){
 
-	std::list<std::string> l;
-	//drain::StringTools::split(s, l, ',', " '\"\t\n\r");
-	drain::StringTools::split(s, l, ',', " '\t\n\r");
-
-	const std::type_info & atype = Type::guessArrayType(l);
+	std::vector<std::string> values;
+	drain::StringTools::split(s, values, ',', " '\t\n\r");
 
 	v.clear();
+	const std::type_info & atype = Type::guessArrayType(values);
 	v.requestType(atype);
+	v = values;
+	// std::cerr << "ValueReader::scanArrayValues " << v << std::endl;
+	//v.assignContainer(values);
 
+	/* OLD
+	v.clear();
+	v.requestType(atype);  //
 	for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
 		v << drain::StringTools::trim(*it, "\"");
 	}
+	*/
 
 }
 

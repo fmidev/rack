@@ -67,10 +67,16 @@ public:
 	size_t byteSize;
 
 	/// Information of the current type.
-	std::string type;
+	std::string type;  // synch?
 
 	/// Linear scaling
 	ImageScaling scaling;
+
+	/// Get the storage type
+	inline
+	const std::type_info & getType() const {
+		return caster.getType();
+	}
 
 	/// Set storage type
 	void setType(const std::type_info & t){
@@ -208,18 +214,32 @@ public:
 
 	inline
 	ImageLike(const ImageLike &image){
-
+		setConf(image);
+		/*
 		encoding.setType(image.getType());
 		encoding.scaling.set(image.encoding.scaling);
 		geometry.setGeometry(image.getGeometry());
 		coordinatePolicy.set(image.coordinatePolicy);
-
+		 */
 	};
+
+	inline
+	ImageLike(const ImageConf &conf){
+		setConf(conf);
+	}
+
 
 	virtual inline
 	~ImageLike(){};
 
 
+	inline
+	void setConf(const ImageConf &conf) {
+		encoding.setType(conf.encoding.getType());
+		encoding.scaling.set(conf.encoding.scaling);
+		geometry.setGeometry(conf.geometry);
+		coordinatePolicy.set(conf.coordinatePolicy);
+	}
 	// ENCODING/SCALING
 
 	// REMOVE THIS..?

@@ -189,7 +189,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	//for (std::map<std::string,Data>::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 	/// WARNING: for channels/views: getProperties instead?
 	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
-		mout.debug() << "properties:" << it->first << mout.endl;
+		//mout.debug() << "properties:" << it->first << mout.endl;
 		mout.debug() << "properties:" << it->first << '=' << it->second << mout.endl;
 		std::stringstream sstr;
 		it->second.valueToJSON(sstr);

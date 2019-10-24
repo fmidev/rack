@@ -87,6 +87,17 @@ public:
 	static  // , const CommentReader & commentReader = CommentReader()
 	void read(Image & image, const std::string & path);
 
+
+	/// Read image array after essential metadata (type and geometry) has been processed.
+	static
+	void readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile);
+
+
+	/// Read image array, assuming type and geometry already set
+	static
+	void readFrame(ImageFrame & image, const std::string & path);
+
+
 	/// Read image array after essential metadata (type and geometry) has been processed.
 	static
 	void readFrame(ImageFrame & image, std::istream & infile);

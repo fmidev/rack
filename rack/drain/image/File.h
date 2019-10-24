@@ -71,7 +71,7 @@ public:
 		}
 	}
 
-	/*
+
 	static inline
 	void readFrame(ImageFrame &img, const std::string & path){
 
@@ -89,7 +89,7 @@ public:
 			FilePng::read(img, path);
 		}
 	}
-	*/
+
 
 	template <class T>
 	static void read(ImageT<T> &img, const std::string &path){

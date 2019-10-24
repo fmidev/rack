@@ -45,29 +45,17 @@ namespace image
 const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
 
 
-// , const CommentReader & commentReader
-void FilePnm::read(Image & image, const std::string & path) {
+// drain::Type & t, drain::image::Geometry & geometry
+void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile) {
 
-	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-	mout.info() << "path='" << path << "'" << mout.endl;
-
-	std::ifstream infile;
-	infile.open(path.c_str(), std::ios::in);
-
-	if (!infile){
-		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
-		return;
-	}
-
-	//std::string magic;
-	//infile >> magic;
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (infile.get() != 'P'){
 		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
 		mout.error() << "not an PNM file" << mout.endl;
 		return;
 	}
+
 
 	FileType pt = UNDEFINED;
 	int width;
@@ -132,15 +120,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 		}
 		if (!key.empty()){
 			mout.debug(1) << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
-			//value = drain::StringTools::trim(sstr.str());
-			//mout.note() << "Assign: " << key << ": " <<  value << '/' << value.length()<< mout.endl;
-			//std::stringstream
-			// image.properties [key] = value;
-			ValueReader::scanValue(sstr.str(), image.properties[key]);
-			//image.properties[key] = value;
-			//sstr.str("");
-			//image.properties[key].toJSON(sstr);
-			//mout.note() << "Comment:" << key << ": " <<  sstr.str() << mout.endl;
+			ValueReader::scanValue(sstr.str(), properties[key]);
 		}
 		else {
 			mout.note() << "Comment:" <<  sstr.str() << mout.endl;
@@ -153,15 +133,87 @@ void FilePnm::read(Image & image, const std::string & path) {
 	if ((pt != PBM_ASC) && (pt != PBM_RAW))
 		infile >> maxValue;
 
-	mout.note() << "Size:" <<  width << ',' << height << mout.endl;
+	if (maxValue < 100){
+		mout.warn() << "suspicious max value:" <<  maxValue << mout.endl;
+	}
 
-	image.initialize(typeid(unsigned char), width, height, channels);
+	if (maxValue > 0xff){
+		if (maxValue > 0xffff){
+			mout.warn() << "suspiciously large max value:" <<  maxValue << mout.endl;
+		}
+		mout.note() << "max value (" <<  maxValue << ") over 256, using 16 bits (unsigned)"<< mout.endl;
+		conf.encoding.setType(typeid(unsigned short));
+	}
+
+	// Under constr
+	// conf.encoding.setType();
+	// conf.encoding.scaling.setPhysicalMax(maxValue);
+	if (properties.hasKey("coordinatePolicy")){
+		std::vector<int> policy;
+		properties["coordinatePolicy"].toContainer(policy);
+		conf.coordinatePolicy.set(policy);
+	}
+	conf.geometry.setGeometry(width, height, channels);
+
+
+}
+
+
+// , const CommentReader & commentReader
+void FilePnm::read(Image & image, const std::string & path) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	mout.info() << "path='" << path << "'" << mout.endl;
+
+	std::ifstream infile;
+	infile.open(path.c_str(), std::ios::in);
+
+	if (!infile){
+		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		return;
+	}
+
+
+	ImageConf conf;
+	readHeader(conf, image.properties, infile);
+
+	mout.note() << "Size:" <<  conf.geometry << mout.endl;
+	image.setConf(conf);
+	// image.initialize(conf.encoding., geometry);
 
 	mout.debug() << image << mout.endl;
 
 	readFrame(image, infile);
 
 	infile.close();
+
+
+}
+
+// , const CommentReader & commentReader
+void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	mout.info() << "reading image: " << image << mout.endl;
+
+	std::ifstream infile;
+	infile.open(path.c_str(), std::ios::in);
+
+	if (!infile){
+		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		return;
+	}
+
+	ImageConf conf;
+
+	readHeader(conf, image.properties, infile);
+
+	readFrame(image, infile);
+
+	infile.close();
+
 
 
 }

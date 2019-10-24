@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <type_traits>
 #include <limits>
 #include <list>
+#include <set>
 
 #include "Log.h"
 #include "RegExp.h"
@@ -421,9 +422,10 @@ public:
 	static
 	const std::type_info & guessType(const std::string & value);
 
-	/// Given a list of strings, suggest a matching storage type (int, double, std::string).
+	/// Given a vector or list of strings, suggest a matching storage type (int, double, std::string).
+	template <class C>
 	static
-	const std::type_info & guessArrayType(const std::list<std::string> & l);
+	const std::type_info & guessArrayType(const C & container);
 
 
 	static inline
@@ -472,6 +474,39 @@ protected:
 
 };
 
+/**
+ *   \tparam C - contrainer, esp. std::list or std::vector
+ */
+template <class C>
+const std::type_info & Type::guessArrayType(const C & l){
+
+
+	typedef std::set<const std::type_info *> typeset;
+
+	typeset s;
+	for (typename C::const_iterator it = l.begin(); it != l.end(); ++it) {
+		s.insert(& guessType(*it));
+	}
+
+	/// Contains at least one string
+	if (s.find(& typeid(std::string)) != s.end())
+		return typeid(std::string);
+
+	/// Contains at least one decimal value
+	if (s.find(& typeid(double)) != s.end())
+		return typeid(double);
+
+	if (s.find(& typeid(int)) != s.end())
+		return typeid(int);
+
+	/// Contains only \c true and \false values
+	if (s.find(& typeid(bool)) != s.end())
+		return typeid(bool);
+
+	// General fallback solution
+	return typeid(std::string);
+
+}
 
 /*
 template <>
