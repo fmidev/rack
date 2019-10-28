@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <radar/Analysis.h>
 #include <stddef.h>
 #include <util/Log.h>
-#include <util/File.h>
+#include <util/FilePath.h>
 #include <util/RegExp.h>
 #include <util/SmartMap.h>
 #include <util/Tree.h>
@@ -385,11 +385,13 @@ public:
 static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
 
+
+
 class CmdPalette : public SimpleCommand<std::string> {
 
 public:
 
-	CmdPalette() : SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.txt") {
+	CmdPalette() : SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	void exec() const {
@@ -413,6 +415,9 @@ public:
 		//if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
 		if ((!resources.select.empty()) || (resources.currentGrayImage == NULL)){  // TODO: remove this
 			cmdImage.imageSelector.setParameters(resources.select);
+			resources.setCurrentImage(cmdImage.imageSelector);
+			/*
+			cmdImage.imageSelector.setParameters(resources.select);
 			mout.debug() << "determining current gray image" << mout.endl;
 			mout.debug(2) << cmdImage.imageSelector << mout.endl;
 			ODIMPath path;
@@ -420,14 +425,11 @@ public:
 			mout.debug(1) << "path: '" << path << "'" << mout.endl;
 			resources.currentGrayImage = & (*resources.currentHi5)(path)[odimARRAY].data.dataSet;
 			resources.currentImage     =   resources.currentGrayImage;
+			*/
 		}
 
 		// DONT clear yet resources.select.clear();
 
-		if (resources.currentGrayImage->isEmpty()){
-			mout.note() << "current gray image is empty.";
-			//return;
-		}
 
 		//mout.debug(4) << "Current Gray: \n" << *resources.currentGrayImage << mout.endl;
 		//File::write(*resources.currentGrayImage, "gray.png");
@@ -438,15 +440,15 @@ public:
 			static RegExp quantityRegExp("^[A-Z]+[A-Z0-9_]*$");
 			std::string quantity;
 
-			static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
-			std::string filename;
+			//drain::File paletteFile;
+			//static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
+			std::string paletteFile;
 			std::ifstream ifstr;
 
 			// drain::StringMapper palettePath;
 			// palettePath.parse("${palettePath}/palette-${what:quantity}.txt");
 
 
-			//if (value == "default" || (value.empty() && resources.palette.empty())){
 			if (value == "default" || value.empty()){
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
 				quantity = statusMap["what:quantity"].toStr();
@@ -457,21 +459,28 @@ public:
 			}
 
 			if (quantity.empty()){
-				filename = value;
+				//paletteFile.set(value);
+				paletteFile = value;
 			}
 			else {
+				// TODO: try direct Palette::flexible QUANTITY support
 				std::stringstream s;
 				s << "palette-" << quantity << ".txt";
-				filename = s.str();
+				paletteFile = s.str();
+				//paletteFile.set(s.str());
 			}
 
-			mout.debug() << "filename=" << filename << mout.endl;
+			mout.info() << "reading palette: " << paletteFile << mout.endl;
 
-			ifstr.open(filename.c_str(), std::ios::in);
+			resources.palette.load(paletteFile, true);
+			/*
+			//ifstr.open(filename.c_str(), std::ios::in);
+			ifstr.open(paletteFile.tofilename.c_str(), std::ios::in);
 			if (!ifstr.is_open()){
+				mout.info() << "could not open palette: " << filename << mout.endl;
 				// Test
 				filename = std::string("palette/") + filename;
-				mout.note() << "retry with " << filename << mout.endl;
+				mout.note() << "retrying with " << filename << mout.endl;
 				ifstr.open(filename.c_str(), std::ios::in);
 			}
 
@@ -481,29 +490,38 @@ public:
 			}
 
 
-			if ((!extensionRegExp.execute(filename)) && (extensionRegExp.result[1] == "json")){
-				//mout.debug() << "ext=" << extensionRegExp.result[1] << mout.endl;
-				mout.debug() << "reading JSON file" << mout.endl;
-				resources.palette.loadJSON(ifstr);
-			}
-			else {
-				mout.debug() << "reading TXT file" << mout.endl;
-				//mout.warn() << "ext=" << extensionRegExp.result[1] << mout.endl;
-				resources.palette.loadTXT(ifstr);
-			}
-			// mout.warn() << "filename has no extension" << mout.endl;
+			if (!extensionRegExp.execute(filename)){
+				const std::string & ext = extensionRegExp.result[1];
+				if (ext == "json"){
+					mout.debug() << "reading JSON file" << mout.endl;
+					resources.palette.loadJSON(ifstr);
+				}
+				else if (ext == "txt"){
+					mout.debug() << "reading TXT file" << mout.endl;
+					resources.palette.loadTXT(ifstr);
+				}
+				else {
+					mout.error() << "unsupported palette file type: " << ext << mout.endl;
+					ifstr.close();
+					return;
+				}
+				mout.debug() << "read palette: " << resources.palette.getChannels() << " colors/channels,  \n" << resources.palette << mout.endl;
 
+			}
+			*/
 		}
 
+		//mout.debug(2) << resources.palette << mout.endl;
 
-
-		mout.debug(3) << "input properties" << resources.currentGrayImage->properties << mout.endl;
-		mout.debug(2) << resources.palette << mout.endl;
-
-		//mout.debug(5) << "--gain   " << resources.currentGrayImage->properties["what:gain"] << mout.endl;
-		//mout.debug(5) << "--offset " << resources.currentGrayImage->properties["what:offset"] << mout.endl;
-
-		apply();
+		if (!resources.currentGrayImage->isEmpty()){
+			mout.debug(3) << "input properties: " << resources.currentGrayImage->properties << mout.endl;
+			apply();
+		}
+		else {
+			if (!resources.currentHi5->isEmpty()){
+				mout.warn() << "data loaded, but selected/current gray image is empty, skipping.";
+			}
+		}
 
 		resources.select.clear();
 
@@ -514,6 +532,11 @@ public:
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		RackResources & resources = getResources();
+
+		if (resources.palette.empty()){
+			mout.warn() << "empty palette, giving up" << mout.endl;
+			return;
+		}
 
 
 		PaletteOp  op(resources.palette);
@@ -559,10 +582,13 @@ public:
 			}
 		}
 
-		op.setSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
-		op.setSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
+		mout.note() <<  imgOdim << mout.endl;
+		op.registerSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
+		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
-		mout.debug() << op << mout.endl;
+		// mout.note() << op << mout.endl;
+		mout.warn() << op.specialCodes << mout.endl;
+
 		//std::cout << op << std::endl;
 		// if (gain == 0.0){  TODO: or from --gain ?	gain = 1.0;
 		//op.setParameter("scale", gain);

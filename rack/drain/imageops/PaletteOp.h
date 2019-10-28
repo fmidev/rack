@@ -54,27 +54,30 @@ class PaletteOp : public ImageOp
 {
 public:
 
-	PaletteOp() : ImageOp(__FUNCTION__,"Applies colour palette to an image") {
+	PaletteOp() : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
 		this->parameters.reference("scale", scale = 1.0);
 		this->parameters.reference("offset", offset = 0.0);
 	};
 
-	PaletteOp(const Palette & palette) : ImageOp(__FUNCTION__,"Applies colour palette to an image") {
+	PaletteOp(const Palette & palette) : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
 		this->parameters.reference("scale", scale = 1.0);
 		this->parameters.reference("offset", offset = 0.0);
 		setPalette(palette);
 	};
 
 
-	PaletteOp(const std::string & filename = "") : ImageOp(__FUNCTION__,"Applies colour palette to an image") {
+	PaletteOp(const std::string & filename = "") : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
 			this->parameters.reference("scale", scale = 1.0);
 			this->parameters.reference("offset", offset = 0.0);
-			palette.load(filename);
+			myPalette.load(filename);
 		};
 
 	virtual ~PaletteOp(){};
 
-	void process(const ImageFrame &src,Image &dst) const ;
+
+	//void processOLD(const ImageFrame &src,Image &dst) const ;
+
+	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
 
 	virtual
 	void help(std::ostream & ostr = std::cout) const;
@@ -85,6 +88,11 @@ public:
 	 */
 	//void setPalette(const ImageFrame &palette) const; //,unsigned int maxColors = 256);
 	void setPalette(const Palette &palette); //,unsigned int maxColors = 256);
+
+	inline
+	const Palette & getPalette() const {
+		return *palettePtr;
+	}
 
 
 	/// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).
@@ -98,11 +106,12 @@ public:
 	/// Prescale intensities with scale*i + offset.
 	double offset;
 
-	void setSpecialCode(const std::string code, double f);
+	void registerSpecialCode(const std::string code, double f);
 
 	// protect:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
-	std::map<double,PaletteEntry > specialCodes;
+	//std::map<double,PaletteEntry > specialCodes;
+	Palette specialCodes;
 
 
 protected:
@@ -112,7 +121,8 @@ protected:
 	void makeCompatible(const ImageFrame &src, Image &dst) const;
 
 	//mutable Image paletteImage;
-	Palette palette;
+	Palette myPalette;
+	const Palette *palettePtr;
 
 };
 

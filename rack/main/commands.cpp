@@ -409,7 +409,7 @@ public:
 		}
 
 		//ODIMPathElem::group_t groupFilter = selector.deriveParameters(value);
-		mout.note() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
+		mout.debug() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
 
 		ODIMPathList savedPaths;
 		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);

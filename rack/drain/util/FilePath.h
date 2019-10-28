@@ -46,28 +46,66 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// Bit vector accessible also with integer values associated with strings.
-class File {
+/// Splits a string to base path, base filename and extension
+/**
+ *    Upon construction and after setting, splits a full path string to
+ * 	- \c path     - directory path
+ * 	- \c basename - filename without directory path and extension
+ * 	- \c ext      - extension, without dot (png, txt
+ */
+class FilePath {
 
 public:
+
+	typedef Path<std::string> path_t;
+
+	FilePath(const std::string & s = "", char separator = 0);
+
+	void set(const std::string & s);
+
+	path_t dir;
+	std::string basename;
+	std::string extension;
+
+	/// Directory path separator
+	static
+	char separator;
 
 	static
 	const RegExp pathRegExp;
 
-	static
-	char separator;
+	virtual inline
+	std::ostream & toOStr(std::ostream & ostr, char dirSeparator = 0) const {
+		if (!dir.empty()){
+			dir.toOStr(ostr, dirSeparator);
+			ostr << (dirSeparator ? dirSeparator : dir.separator);
+		}
+		ostr << basename << '.' << extension;
+		return ostr;
+	}
 
+	inline
+	void toStr(std::string & str, char separator = 0) const {
+		std::stringstream sstr;
+		toOStr(sstr, separator);
+		str = sstr.str();
+	}
 
-	File(const std::string & s = "");
-
-	void set(const std::string & s);
-
-	Path<std::string> path;
-	std::string basename;
-	std::string extension;
+	inline
+	std::string toStr(char separator = 0) const {
+		std::stringstream sstr;
+		toOStr(sstr, separator);
+		return sstr.str();
+	}
 
 };
 
+
+template <class T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const FilePath & f) {
+	return f.toOStr(ostr);
+}
 
 } // drain::
 

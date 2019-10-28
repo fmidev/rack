@@ -36,12 +36,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 
-#include "File.h"
+#include "FilePath.h"
 
 namespace drain {
 
 // Note: inside [ ] no specials like \S \s \W \w ...
-const RegExp File::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([^\\. ]+)$");
+// Consider static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
+//const RegExp File::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([^\\. ]+)$");
+const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
 /*
 
 0 ==	 drain/examples/RegExp-example.cpp
@@ -54,40 +56,48 @@ const RegExp File::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([^\\. ]+)$");
 
 
 /// In Linux and Unix...
-char File::separator('/');
+char FilePath::separator('/');
 
-File::File(const std::string & s) : path(File::separator){
+FilePath::FilePath(const std::string & s, char separator) : dir(separator ? separator : FilePath::separator){
 	set(s);
 }
 
-void File::set(const std::string & s){
+void FilePath::set(const std::string & s){
 
-	drain::Logger log(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	std::vector<std::string> result;
-
-	if (!pathRegExp.execute(s, result)){
-		if (result.size() == 5){
-			this->path.set(result[2]);
-			this->basename  = result[3];
-			this->extension = result[4];
-		}
-		else if (result.size() == 3){
-			this->path.set("");
-			this->basename  = result[1];
-			this->extension = result[2];
-		}
-		else {
-			for (std::size_t i = 1; i < result.size(); ++i) {
-				log.warn() << '\t' << i << "  = \t'" << result[i] << "'" << log.endl;
-			}
-			log.error() << "odd parsing results for file path: " << s << log.endl;
-		}
+	if (s.empty()){
+		this->dir.clear();
+		this->basename.clear();
+		this->extension.clear();
 	}
 	else {
-		log.error() << "could not parse file path: " << s << log.endl;
-	}
 
+		std::vector<std::string> result;
+
+		if (!pathRegExp.execute(s, result)){
+			if (result.size() == 5){
+				this->dir.set(result[2]);
+				this->basename  = result[3];
+				this->extension = result[4];
+			}
+			else if (result.size() == 3){
+				this->dir.set("");
+				this->basename  = result[1];
+				this->extension = result[2];
+			}
+			else {
+				for (std::size_t i = 1; i < result.size(); ++i) {
+					mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
+				}
+				mout.error() << "odd parsing results for file path: " << s << mout.endl;
+			}
+		}
+		else {
+			mout.error() << "could not parse file path: '" << s << "'" << mout.endl;
+		}
+
+	}
 }
 
 

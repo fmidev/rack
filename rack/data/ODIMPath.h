@@ -74,8 +74,12 @@ class ODIMPathElem  {
 public: // from ODIM.h
 
 
+	typedef drain::Flags flag_t;
+	typedef drain::Flags::dict_t dict_t;
+
 	/// In H5, "groups" containers of data corresponding to "directories" or "folders" in Unix and Windows.
-	typedef unsigned int group_t;
+	//typedef unsigned int group_t;
+	typedef drain::Flags::value_t group_t;
 
 	/// None (undefined)
 	static const group_t NONE = 0;
@@ -141,8 +145,6 @@ public: // from ODIM.h
 	}
 
 	//typedef std::map<group_t, std::string> dict_t;
-	typedef drain::Flags flag_t;
-	typedef drain::Flags::dict_t dict_t;
 
 	//static	const flag_t & getFlags();
 

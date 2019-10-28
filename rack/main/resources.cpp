@@ -130,14 +130,47 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	drain::Logger mout("RackResources", __FUNCTION__);
 
-	/*
-	ODIMPathList paths;
-	imageSelector.getPaths(*currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	mout.info() << "selected: " << paths.size() << mout.endl;
+	/* COPIED
+	cmdImage.imageSelector.setParameters(resources.select);
+	mout.debug() << "determining current gray image" << mout.endl;
+	mout.debug(2) << cmdImage.imageSelector << mout.endl;
+	ODIMPath path;
+	cmdImage.imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	mout.debug(1) << "path: '" << path << "'" << mout.endl;
+	resources.currentGrayImage = & (*resources.currentHi5)(path)[odimARRAY].data.dataSet;  // CREATES???
+	resources.currentImage     =   resources.currentGrayImage;
 	*/
 
+	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
+
+	drain::Flags flags(ODIMPathElem::getDictionary());
+	flags = ODIMPathElem::DATA | ODIMPathElem::QUALITY;
 	ODIMPath path;
-	// NOTE  ODIMPathElem::ARRAY cannot be searched
+	bool result = imageSelector.getPathNEW(*currentHi5, path, flags);
+
+	if (result){
+		path << odimARRAY;
+	}
+	else {
+		mout.debug() << "no image data found with image selector: " << imageSelector << ", flags='" << flags << "'" << mout.endl;
+		// EXIT_ON_DATA_FAIL  here?
+	}
+
+	mout.debug() << "derived path: '" << path << "'" << mout.endl;
+
+	drain::image::Image & img = (*currentHi5)(path).data.dataSet;
+
+	if (!img.isEmpty()){
+		DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded (or for image processing ops?)
+	}
+
+	// Hence, image may also be empty.
+	currentImage     = & img;
+	currentGrayImage = & img;
+
+	return result;
+
+	/*
 	if (imageSelector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
 		path << ODIMPathElem(ODIMPathElem::ARRAY);
@@ -147,8 +180,8 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 		if (!img.isEmpty()){
 			// mout.warn() << "selected: " << img.properties << mout.endl;
 			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded
-			currentImage = &img;
-			currentGrayImage = currentImage;
+			currentImage     = & img;
+			currentGrayImage = & img;
 			//img.getCoordinatePolicy().
 			//img.properties["coordinatePolicy"] = 3; //="1,2,3,4";
 			mout.debug(1) << "selected: " << *currentImage << mout.endl;
@@ -167,7 +200,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 		mout.warn() << "no image data found in " << path << mout.endl;
 		return false;
 	}
-
+	*/
 
 }
 
@@ -178,10 +211,5 @@ RackResources & getResources() {
 }
 
 
+} // rack::
 
-
-} /* namespace rack */
-
-// Rack
- // REP // REP
- // REP // REP // REP // REP // REP // REP // REP

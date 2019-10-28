@@ -96,7 +96,8 @@ public:
 			return true;
 		}
 		else {
-			value = 0.0;
+			// Keep raw, maybe odd marker values of nodata/undetect!
+			// value = 0.0;
 			return false;
 		}
 	}

@@ -85,14 +85,14 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 
 		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!it->second.data.noSave){
-				mout.debug(1) << it->first << " => ensure '/data' groups  " << mout.endl;
+				mout.debug(2) << it->first << " => ensure '/data' groups  " << mout.endl;
 				it->second["data"].data.dataSet;
 			}
 		}
 
 		// mout.note() << "considering " << it->first << mout.endl;
 		if (it->first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  //
-			mout.debug(1) << "descending to... " << it->first << mout.endl;
+			mout.debug(2) << "descending to... " << it->first << mout.endl;
 			updateInternalAttributes(it->second,  a); // policy,
 		}
 

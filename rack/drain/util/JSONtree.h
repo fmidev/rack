@@ -68,16 +68,30 @@ public:
 	static
 	void write(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 
+	static
+	void write(const tree_t & json, const std::string & filename);
+
+	/// Write a Windows INI file
+	static
+	void writeINI(const tree_t & t, std::ostream & ostr = std::cout, const tree_t::path_t & prefix = tree_t::path_t('.'));
+
 
 	/// Reads and parses a JSON file
 	static
 	void read(tree_t & t, std::istream & istr);
+
+
+	/// Reads and parses a Windows INI file
+	static
+	void readINI(tree_t & t, std::istream & istr);
 
 	static
 	unsigned short indentStep;
 
 protected:
 
+	// Generalize
+	static const RegExp filenameExtension;
 	// Write utils
 
 	/// Indent output with \c n spaces

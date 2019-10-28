@@ -73,22 +73,24 @@ void PaletteOp::setGrayPalette(unsigned int iChannels,unsigned int aChannels,flo
  */
 
 void PaletteOp::setPalette(const Palette & palette) {
-	this->palette = palette;
+	this->palettePtr = &palette;
 }
 
 
-void PaletteOp::setSpecialCode(const std::string code, double f) {
+void PaletteOp::registerSpecialCode(const std::string code, double f) {
 
 	Logger mout(getImgLog(), getName(), __FUNCTION__);
 
-	//if (this->palette == NULL)
-	//	throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
+	if ((this->palettePtr == NULL) || (this->palettePtr->empty()))
+		//throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
+		mout.error() << "no paletted loaded or linked " << mout.endl;
 
-	std::map<std::string,PaletteEntry >::const_iterator it = palette.specialCodes.find(code);
-	if (it != palette.specialCodes.end())
+	std::map<std::string,PaletteEntry >::const_iterator it = palettePtr->specialCodes.find(code);
+	if (it != palettePtr->specialCodes.end())
 		specialCodes[f] = it->second;
 	else {
-		mout.note() << palette << mout.endl;
+		mout.debug() << *palettePtr << mout.endl;
+		//mout.note() << palettePtr->specialCodes << mout.endl;
 		mout.warn() << "could not find entry: "<< code << '(' << f << ')' << mout.endl;
 	}
 	//std::cerr << code <<  ": setSpecialCode: could not find entry\n";
@@ -115,13 +117,24 @@ void PaletteOp::setPalette(const Image &palette) const {
  */
 
 
-void PaletteOp::makeCompatible(const ImageFrame &src,Image &dst) const {
-	//const Geometry &gSrc = src.getGeometry();
-	//const Geometry &gPal = paletteImage.getGeometry();
-	//dst.setGeometry(gSrc.getWidth(),gSrc.getHeight(),gPal.getImageChannelCount(),gPal.getAlphaChannelCount());
-	//const unsigned int alphaChannels = max(paletteImage.getAlphaChannelCount(),src.getAlphaChannelCount());
-	const unsigned int alphaChannels = palette.hasAlpha() || (src.getAlphaChannelCount()>0) ? 1 : 0;
-	dst.setGeometry(src.getWidth(), src.getHeight(), 3, alphaChannels);
+void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
+
+	Logger mout(getName(), __FUNCTION__);
+
+	if (palettePtr->empty()){
+		mout.warn() << " no palette loaded " << mout.endl;
+		dst.setGeometry(src.getGeometry());
+		return;
+	}
+
+	const ChannelGeometry & colours = palettePtr->getChannels();
+
+	mout.debug() << colours.getImageChannelCount() << ':' << colours.getAlphaChannelCount() << mout.endl;
+
+	dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
+
+	mout.debug() << "dst: " << dst << mout.endl;
+
 }
 
 
@@ -132,13 +145,93 @@ void PaletteOp::help(std::ostream & ostr) const {
 	for (std::map<double,PaletteEntry >::const_iterator cit = specialCodes.begin(); cit != specialCodes.end(); ++cit){
 		ostr << cit->first << '=' << cit->second << '\n';
 	}
-	for (std::map<std::string,PaletteEntry >::const_iterator pit = palette.specialCodes.begin(); pit != palette.specialCodes.end(); ++pit){
+	for (std::map<std::string,PaletteEntry >::const_iterator pit = palettePtr->specialCodes.begin(); pit != palettePtr->specialCodes.end(); ++pit){
 		ostr << "'" << pit->first << "'=" << pit->second << '\n';
 	}
 }
 
+void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-void PaletteOp::process(const ImageFrame &src,Image &dst) const {
+	drain::Logger mout(this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+
+	// mout.debug() << "Starting" << mout.endl;
+
+	mout.debug(1) << src << mout.endl;
+	mout.debug(1) << dst << mout.endl;
+
+	const Channel & srcChannel = src.get(0);
+
+	const size_t width  = dst.getGeometry().getWidth();
+	const size_t height = dst.getGeometry().getHeight();
+	const ChannelGeometry paletteChannels = palettePtr->getChannels();
+
+	mout.debug() << paletteChannels << mout.endl;
+
+	// Note: colouring involves also alpha, if found, so channelCount includes alpha channel(s)
+
+	size_t channelCount = dst.getGeometry().getChannelCount();
+
+	if (channelCount > paletteChannels.getChannelCount()){
+		mout.note() << "dst has " << channelCount << " colours (channels), using that of palette: " << paletteChannels.getChannelCount() << mout.endl;
+		channelCount = paletteChannels.getChannelCount();
+	}
+	else if (channelCount < paletteChannels.getChannelCount()){
+		mout.note() << "palette has " << paletteChannels.getImageChannelCount() << " colours (channels), using only that of dst: " << channelCount << mout.endl;
+	}
+
+
+	const bool hasSpecialCodes = !specialCodes.empty();  // for PolarODIM nodata & undetected
+
+	double d;
+	Palette::const_iterator it;      // lower bound
+	Palette::const_iterator itLast;  // upped bound
+
+	size_t k;
+	Palette::const_iterator cit;
+	//std::map<double,PaletteEntry >::const_iterator cit;
+	for (size_t  i = 0; i < width; ++i) {
+
+		for (size_t j = 0; j < height; ++j) {
+
+			d = srcChannel.get<double>(i,j);
+			if (hasSpecialCodes){  // PolarODIM
+
+				cit = specialCodes.find(d);
+				if (cit != specialCodes.end()){
+					for (k = 0; k < channelCount; ++k)
+						dst.get(k).put(i,j, cit->second.color[k]);
+					continue;
+				}
+			}
+
+			d = scale * d + offset;
+
+			itLast = palettePtr->begin();
+			for (it = palettePtr->begin(); it != palettePtr->end(); ++it){
+				if (it->first > d)
+					break;
+				itLast = it;
+			}
+
+			for (k = 0; k < channelCount; ++k)
+				dst.get(k).put(i,j, itLast->second.color[k]);
+
+		}
+	}
+
+
+	if (paletteChannels.getAlphaChannelCount() == 0){
+		if ((src.getGeometry().getAlphaChannelCount()>0) && (dst.getGeometry().getAlphaChannelCount()>0)){
+			mout.info() << "Copying original (1st) alpha channel" << mout.endl;
+			CopyOp().traverseChannel(src.getAlpha(), dst.getAlpha());
+		}
+	}
+
+
+}
+
+/*
+void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 
 	Logger mout(getImgLog(), name, __FUNCTION__);
 
@@ -147,9 +240,10 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 
 	makeCompatible(src,dst);
 
-	const unsigned int width  = dst.getWidth();
-	const unsigned int height = dst.getHeight();
-	const unsigned int channels = palette.hasAlpha() ? 4 : 3;
+	const size_t width  = dst.getWidth();
+	const size_t height = dst.getHeight();
+	const ChannelGeometry channels = palettePtr->getChannels();
+	//const unsigned int channels = palette.hasAlpha() ? 4 : 3;
 
 	const bool hasSpecialCodes = !specialCodes.empty();  // for PolarODIM nodata & undetected
 
@@ -162,15 +256,15 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 	unsigned int k;
 	//int code;
 	std::map<double,PaletteEntry >::const_iterator cit;
-	for (unsigned int i = 0; i < width; ++i) {
+	for (size_t  i = 0; i < width; ++i) {
 		//std::cerr << "Palette: " << i << '\t' << '\n';
-		for (unsigned int j = 0; j < height; ++j) {
+		for (size_t j = 0; j < height; ++j) {
 
 			if (hasSpecialCodes){  // PolarODIM
 				//code = src.get<double>(i,j);
 				cit = specialCodes.find(src.get<double>(i,j));
 				if (cit != specialCodes.end()){
-					for (k = 0; k < channels; ++k)
+					for (k = 0; k < channels.getChannelCount(); ++k)
 						dst.put(i,j,k, cit->second.color[k]);
 					continue;
 				}
@@ -179,42 +273,22 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 			d = scale * src.get<double>(i,j) + offset;
 
 			// TODO: stl::lower_bound
-			itLast = palette.begin();
-			for (it = palette.begin(); it != palette.end(); ++it){
+			itLast = palettePtr->begin();
+			for (it = palettePtr->begin(); it != palettePtr->end(); ++it){
 				if (it->first > d)
 					break;
 				itLast = it;
 			}
 
-			for (k = 0; k < channels; ++k)
+			for (k = 0; k < channels.getChannelCount(); ++k)
 				dst.put(i,j,k, itLast->second.color[k]);
 
-			/*
-			if (i==j){
-				//std::cout <<	"palettex " << src.get<double>(i,j) << "\t =>" << d << "\t => " << it->first << '=' << it->second << '\n';
-				dst.put(i,j,0, i*123);
-				dst.put(i,j,2, i*53);
-			}
 
-
-			if ((i<40)&&(j<40)){
-				dst.put(i,j,0, 255);
-				dst.put(i,j,1, i*6);
-				dst.put(i,j,2, (40-j)*6);
-			}
-			dst.put(i,j,0, i+j);
-			dst.put(i,j,1, 253*i+257*j);
-			*/
 		}
 	}
 
-	//File::write(dst,"palette-color.png");
 
-	//for (unsigned int k = 0; k < channels; ++k) {
-	//	dst.put(i,j,k, paletteImage.get<int>(src.get<int>(i,j)&255,0,k));  // % was not ok! for char?
-	//}
-
-	if (!palette.hasAlpha()){
+	if (channels.getAlphaChannelCount() == 0){
 		if ((src.getAlphaChannelCount()>0) && (dst.getAlphaChannelCount()>0)){
 			mout.info() << "Copying original alpha channel" << mout.endl;
 			CopyOp().traverseChannel(src.getAlphaChannel(), dst.getAlphaChannel());
@@ -222,9 +296,8 @@ void PaletteOp::process(const ImageFrame &src,Image &dst) const {
 	}
 
 
-	//return dst;
 }
-
+*/
 
 
 }

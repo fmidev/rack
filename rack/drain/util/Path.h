@@ -62,6 +62,8 @@ public:
 
 	typedef T elem_t;
 
+	typedef std::list<Path<T> > list_t;
+
 	inline
 	Path(char separator='/') : separator(separator){
 		if (!separator)
@@ -208,6 +210,9 @@ public:
 
 
 };
+
+//template <class T>
+//typedef std::list<Path<T>> PathList<T>;
 
 
 template <class T>

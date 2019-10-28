@@ -230,7 +230,9 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	mout.debug(3) << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
-	const hsize_t rank = image.getChannelCount() <= 1 ? 2 : 3;
+	/// Currently, only 1-channel data supported!
+	//const hsize_t rank = image.getChannelCount() <= 1 ? 2 : 3;
+	const hsize_t rank = 2;
 	//hsize_t dims[rank];
 	hsize_t dims[3];
 
@@ -268,40 +270,14 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	 */
 
 
-	status = H5Pset_chunk(pid,2,chunkdim);
+	status = H5Pset_chunk(pid, 2, chunkdim);
 	if (status < 0)
 		mout.warn() << ": H5Pset_chunk failed, path=" << path << mout.endl;
+
 	status = H5Pset_deflate(pid,6);  // ZLib compression level
 	if (status < 0)
 		mout.warn() << ": H5Pset_deflate failed, path=" << path << mout.endl;
 
-	/// ODIM
-	/*
-		userblock = (hsize_t)0;
-		sizeof_size = (size_t)4;
-		sizeof_addr = (size_t)4;
-		sym_ik = (int)1;
-		sym_lk = (int)1;
-		istore_k = (long)1;
-		meta_block_size = (long)0;
-	 */
-	/*
-	 *  FIXME PolarODIM Support in write
-		hi5monitor.warn() << ": H5Pset_userblock next:." << hi5monitor.endl ;
-		status = H5Pset_userblock(pid,0);
-		if (status < 0) {
-			hi5monitor.warn() << ": H5Pset_userblock failed." << hi5monitor.endl;
-			hi5monitor.note() << ": (Causes deviation from ODIM specification).";
-		}
-		else {
-			H5Pset_sizes(pid,4,4);
-			H5Pset_sym_k(pid,1,1);
-			H5Pset_istore_k(pid,1);
-			H5Pset_meta_block_size(pid,0);
-		}
-	 */
-
-	//std::cerr << path  << "\t=" << image.getType().name() << ':' << image.getByteSize() << '\n';
 
 	H5Tset_order(tid, H5T_ORDER_LE);
 	//const hid_t did = H5Dcreate(fid, path.c_str(), tid, sid, H5P_DEFAULT);
@@ -312,10 +288,7 @@ void Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const
 	/*
 	 * Write the data to the dataset using default transfer properties.
 	 */
-	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(*image.begin()));
-	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );
-	//H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBufferCONST() );
-	H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );
+	H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );  // only 1st channel segment will be read!
 	if (status < 0)
 		mout.warn() << ": H5Dwrite failed, path=" << path << mout.endl;
 

@@ -71,8 +71,12 @@ void CartesianExtract::extract(const std::string & channels) const {
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
 	if (ProductBase::appendResults.is(ODIMPathElem::DATASET))
 		DataSelector::getNextChild(resources.cartesianHi5, parent);
-	else if (ProductBase::appendResults.is(ODIMPathElem::DATA))
+	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
 		DataSelector::getLastChild(resources.cartesianHi5, parent);
+		if (parent.index == 0){
+			parent.index = 1;
+		}
+	}
 	else
 		resources.cartesianHi5.clear(); // don't append, overwrite...
 

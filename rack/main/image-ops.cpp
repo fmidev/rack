@@ -98,7 +98,6 @@ void ImageOpRacklet::exec() const {
 	const std::string quantity(imageSelector.quantity);
 
 	ODIMPathList paths;
-	//imageSelector.getPaths(*resources.currentHi5, paths, true);
 	imageSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
 
 	if (paths.empty()){
@@ -444,6 +443,25 @@ public:
 };
 
 
+class CmdPaletteLoad : public SimpleCommand<std::string> {
+
+public:
+
+	CmdPaletteLoad() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	};
+
+	virtual
+	void exec() const {
+		load(value);
+	};
+
+	void load(const std::string &s) const {
+		getResources().palette.load(s);
+	}
+
+};
+
+
 ImageRackletModule::list_t ImageRackletModule::rackletList;
 
 ImageRackletModule::ImageRackletModule(const std::string & section, const std::string & prefix){
@@ -456,6 +474,7 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 
 	// Put image utilities and other non-ops  here
 	static CommandEntry<CmdPhysical> cmdPhysical; //("iPhysical");
+	static CommandEntry<CmdPaletteLoad> cmdPaletteLoad;
 
 	ImageOpBank::map_t & ops = getImageOpBank().getMap();
 
@@ -476,6 +495,10 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 	static MultiThresholdOp mthop;
 	static ImageOpRacklet rop(mthop);
 	registry.add(rop, "MultiThreshold");
+
+	static PaletteOp remapOp(getResources().palette);
+	static ImageOpRacklet rmop(remapOp);
+	registry.add(rmop, "Palette");  // Note --palette and --iPalette
 
 	// DEBUG
 	/*

@@ -52,9 +52,9 @@ void CmdHelp::helpOnModules(std::ostream & ostr, const std::string & excludeKey)
 	for (CommandRegistry::SectionMap::const_iterator it = sections.begin(); it != sections.end(); ++it){
 		if (it->first != excludeKey){
 			if (it->first.empty())
-				ostr << " --help [<command>]" << '\n';
+				ostr << "  --help [<command>]" << '\n';
 			else
-				ostr << " --help " << it-> first << '\n';
+				ostr << "  --help " << it-> first << '\n';
 		}
 	}
 }
@@ -75,10 +75,11 @@ void CmdHelp::exec() const {
 
 	if (r.has(key)){
 		r.help(key, ostr);
+		exit(0);
 	}
 	else {
 
-		ostr << title << '\n' << std::endl;
+		ostr << title << '\n' << '\n';
 
 		if (key == "intro"){
 			helpOnModules(ostr);
@@ -92,12 +93,10 @@ void CmdHelp::exec() const {
 				r.helpSections(ostr, key);
 				helpOnModules(ostr, key);
 				// return;
-				exit(0);
 			}
 			else {
 				mout.warn() << "Help for '" << key << "'  (" << value << ") not found." << mout.endl;
 				// return;
-				exit(0);
 			}
 
 			/*
@@ -113,6 +112,10 @@ void CmdHelp::exec() const {
 		//ostr << "\t --help image" << std::endl;
 
 	}
+
+	ostr << '\n';
+
+	ostr << "For help on a commands, type:\n  --help <command>\n";
 
 	exit(0); // standard/needed?
 }

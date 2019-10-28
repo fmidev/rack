@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include <util/File.h>
+#include <util/FilePath.h>
 // #include <util/TextReader.h>
 
 #include "Palette.h"
@@ -61,15 +61,33 @@ PaletteEntry::PaletteEntry(const PaletteEntry & entry){
 
 
 void PaletteEntry::init(){
-	color.resize(4, 0);
-	color[3] = 255.0;
+	color.resize(1, 0);
+	//color[3] = 255.0;
 	map.reference("value", value);
-	map.reference("color", color);
-	//map.reference("alpha", color[3] = NAN);
+	//map.reference("color", color);
+	map.reference("alpha", alpha = 255.0);
 	//map.reference("id", id);
 	map.reference("label", label);
 	map.reference("hidden", hidden=false);
 }
+
+// Alpha check
+void PaletteEntry::checkAlpha(){
+
+	const size_t s = color.size();
+
+	switch (s){
+		case 4:
+		case 2:
+			alpha = color[s-1];
+			color.resize(s-1);
+			break;
+		default:
+			break;
+	}
+
+}
+
 
 std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char separator2) const{
 
@@ -86,15 +104,16 @@ std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char 
 		}
 
 		// ostr << separator;
-
-		ostr << color[0] << separator2;
-		ostr << color[1] << separator2;
-		ostr << color[2] << separator2;
+		for (vect_t::const_iterator it=color.begin(); it != color.end(); ++it){
+			ostr << *it << separator2;
+		}
 
 		// alpha (optional)
-		if (color.size()==4)
-			if (color[3] != 255.0)
-				ostr << color[3];
+		if (alpha < 255.0) // NOTE: can be 255 in alpha image also...
+			ostr << alpha;
+		//if (color.size()==4)
+		//	if (color[3] != 255.0)
+		//		ostr << color[3];
 
 		return ostr;
 }
@@ -102,43 +121,170 @@ std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char 
 
 void Palette::reset(){
 
-	colorCount = 0;
 	clear();
 	specialCodes.clear();
-	_hasAlpha = false;
+	channels.setChannelCount(0, 0);
 
 }
 
-void Palette::load(const std::string &filename){
+void Palette::update() const {
+
+	Logger mout("Palette", __FUNCTION__);
+
+
+	size_t i = 0;
+	size_t a = 0;
+
+	for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+
+		const PaletteEntry & entry = it->second;
+
+		if (entry.color.size() > i)
+			i = entry.color.size();
+
+		if (entry.alpha < 255.0)
+			a = 1;
+
+	}
+
+	for (Palette::const_iterator it = begin(); it != end(); ++it){
+
+		const PaletteEntry & entry = it->second;
+
+		//mout.note() << " e" << it->first << '\t' << entry.color.size() << mout.endl;
+
+		if (entry.color.size() > i)
+			i = entry.color.size();
+
+		if (entry.alpha < 255.0)
+			a = 1;
+
+	}
+
+	channels.setChannelCount(i, a);
+
+}
+
+
+void Palette::load(const std::string &filename, bool flexible){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
-	mout.note() << " Reading file=" << filename << mout.endl;
+	drain::FilePath filePath;
 
+	static const RegExp labelRE("^[A-Z]+[A-Z0-9_]*$");
 
-	std::ifstream ifstr;
-	ifstr.open(filename.c_str(), std::ios::in);
-	if (!ifstr.good()){
-		ifstr.close();
-		mout.error() << " opening file '" << filename << "' failed" << mout.endl;
-	};
-
-	reset();
-
-	drain::File filepath(filename);
-
-	if (filepath.extension == "txt"){
-		loadTXT(ifstr);
-	}
-	else if (filepath.extension == "json"){
-		loadJSON(ifstr);
+	if (labelRE.test(filename)){
+		mout.note() << " extending path: " << filename << mout.endl;
+		filePath.set(std::string("palette-") + filename + std::string(".json"));
 	}
 	else {
-		ifstr.close();
-		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
+		mout.note() << " setting filepath: " << filename << mout.endl;
+		filePath.set(filename);
 	}
 
+	// If relative path, add explicit ./
+	if (filePath.dir.empty())
+		filePath.dir.push_front(".");
+
+	const std::string s = filePath.toStr();
+	mout.note() << " Reading file=" << s << mout.endl;
+
+	std::ifstream ifstr;
+	ifstr.open(s.c_str(), std::ios::in);
+
+	if (ifstr.good()){
+
+		if (filePath.extension == "txt"){
+			loadTXT(ifstr);
+		}
+		else if (filePath.extension == "json"){
+			loadJSON(ifstr);
+		}
+		else {
+			ifstr.close();
+			mout.error() << "unknown file type: " << filePath.extension << mout.endl;
+			return;
+		}
+
+	}
+	else {
+
+		if (!flexible){
+			ifstr.close();
+			mout.error() << " opening file '" << filename << "' failed" << mout.endl;
+			return;
+		}
+		else {
+
+			// Prepare to search for  txt, json, ini files.
+			std::list<std::string> extensions;
+			extensions.push_back(filePath.extension);  // default
+
+			if (filePath.extension == "txt"){
+				extensions.push_back("json");
+				// extensions.push_back("ini");
+			}
+			else if (filePath.extension == "json"){
+				// extensions.push_back("ini");
+				extensions.push_back("txt");
+			}
+			else if (filePath.extension == "ini"){
+				extensions.push_back("json");
+				extensions.push_back("txt");
+			}
+			else {
+				mout.error() << " unsupported palette file type: '" << filePath.extension << "', filename='" << filename << "'" << mout.endl;
+				return;
+			}
+
+			// Prepare to search additional palette/ dir
+			drain::FilePath::path_t::list_t paths;
+			paths.push_back(filePath.dir);
+			if (filePath.dir.back() != "palette"){
+				// Add /<dir>/palette
+				paths.push_back(filePath.dir);
+				paths.back() << "palette";  // subdir
+			}
+
+			drain::FilePath finalFilePath;
+			finalFilePath.basename = filePath.basename;
+			for (drain::FilePath::path_t::list_t::const_iterator pit = paths.begin(); pit!=paths.end(); ++pit){
+				for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
+					finalFilePath.dir = *pit;
+					finalFilePath.extension = *eit;
+					mout.note() << "testing: " << finalFilePath.toStr() << mout.endl;
+					ifstr.open(finalFilePath.toStr().c_str(), std::ios::in);
+				}
+			}
+
+			if (!ifstr.good()){  // still not good
+				ifstr.close();
+				mout.error() << " opening file '" << filename << "' failed" << mout.endl;
+				return;
+			}
+
+			mout.warn() << "found: " << finalFilePath.toStr() << mout.endl;
+
+			reset();
+
+			if (filePath.extension == "txt"){
+				loadTXT(ifstr);
+			}
+			else if (filePath.extension == "json"){
+				loadJSON(ifstr);
+			}
+			else {
+				ifstr.close();
+				mout.error() << "unknown file type: " << filePath.extension << mout.endl;
+			}
+
+		}
+	};
+
 	ifstr.close();
+
+	//mout.note() << "Read:\n " << *this << mout.endl;
 
 }
 
@@ -248,7 +394,24 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 
 
+
+		Variable colours(typeid(PaletteEntry::value_t));
+
+		while (data >> d) {
+			colours << d;
+		}
+		colours.toContainer(entry.color);
+		entry.checkAlpha();
+
+		mout.note() << "got " << colours.getElementCount() << '/' << entry.color.size() << " colours" << mout.endl;
+
+		// TODO!
+		// if (entry.color.size() == 4)
+		//  alpha=
+
+		/*
 		unsigned int n=0;
+
 		while (true) {
 
 			if (!(data >> d))
@@ -256,7 +419,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 			//mout.note() << "got " << d << mout.endl;
 
-			if (colorCount == 0){
+			if (colorCount == 0){ // first entry
 				entry.color.resize(n+1);
 			}
 			else {
@@ -273,6 +436,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		}
 		// Now fixed.
 		colorCount = entry.color.size();
+		 */
 
 		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
 
@@ -309,7 +473,7 @@ void Palette::loadJSON(std::ifstream & ifstr){
 
 void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	//const drain::JSON::tree_t & entries = json["entries"];
 
@@ -340,6 +504,9 @@ void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 
 		entry.map.updateFromCastableMap(attr);
 
+		attr["color"].toContainer(entry.color);
+		entry.checkAlpha();
+
 		if (SPECIAL){
 			entry.value = NAN;
 		}
@@ -356,7 +523,7 @@ void Palette::write(const std::string & filename){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	drain::File filepath(filename);
+	drain::FilePath filepath(filename);
 
 	if ((filepath.extension != "txt") && (filepath.extension != "json") && (filepath.extension != "svg")){
 		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
@@ -453,6 +620,7 @@ void Palette::exportJSON(drain::JSON::tree_t & json) const {
 		const PaletteEntry & entry = it->second;
 
 		drain::JSON::tree_t & js = entries[entry.id];
+		js.data["color"] = entry.color;
 		js.data.importCastableMap(entry.map);
 		Variable & value = js.data["value"];
 		value.reset();
@@ -461,7 +629,9 @@ void Palette::exportJSON(drain::JSON::tree_t & json) const {
 
 	for (Palette::const_iterator it = begin(); it!=end(); ++it){
 		const PaletteEntry & entry = it->second;
-		entries[entry.id].data.importCastableMap(entry.map);
+		VariableMap & m = entries[entry.id].data;
+		m["color"] = entry.color;
+		m.importCastableMap(entry.map);
 	}
 
 
@@ -645,18 +815,20 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 }
 
+/*
 std::ostream & operator<<(std::ostream &ostr, const Palette & p){
 
 	ostr << "Palette '" << p.title << "'\n";
 	for (std::map<std::string,PaletteEntry >::const_iterator it = p.specialCodes.begin(); it != p.specialCodes.end(); ++it){
 		// ostr << it->second << '\n';
-		ostr << '#' << it->first << ':' << it->second << '\n';
+		ostr << '#' << it->first << ':' << '\t' << it->second << '\n';
 	}
 	for (Palette::const_iterator it = p.begin(); it != p.end(); ++it){
-		ostr << it->first << ':' << it->second << '\n';
+		ostr << it->first << ':' << '\t' << it->second << '\n';
 	}
 	return ostr;
 }
+*/
 
 
 /// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).

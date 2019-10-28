@@ -139,8 +139,9 @@ public:
 
 	const drain::image::Image *currentImage; // = NULL;
 	const drain::image::Image *currentGrayImage; // = NULL;  // data or grayImage
-	drain::image::Palette palette;  // Todo: drainize
 
+	drain::image::Palette palette;  // Todo: drainize
+	//drain::image::PaletteOp;
 
 	// Accumulator for data in polar coordinates
 	RadarAccumulator<Accumulator,PolarODIM> polarAccumulator;

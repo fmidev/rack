@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PALETTE
 #define DRAIN_PALETTE
 
-
-#include "image/File.h"
-#include "image/TreeSVG.h"
+#include "Geometry.h"
+#include "File.h"
+#include "TreeSVG.h"
 
 #include "util/JSONtree.h"
 
@@ -48,8 +48,11 @@ class PaletteEntry  {
 
 public:
 
+	/// Intensity type
+	typedef double value_t;
+
 	/// Color vector type
-	typedef std::vector<double> vect_t;
+	typedef std::vector<value_t> vect_t;
 
 
 	/// Default constructor
@@ -58,13 +61,18 @@ public:
 	/// Copy constructor
 	PaletteEntry(const PaletteEntry & entry);
 
+	void checkAlpha();
 
-	// Must be signed.
+	/// Index or threshold value. Must be signed, as images may generally have negative values.
 	double value;
 
 
-	/// Colors as three or four element vector: red, green, blue and optional alpha.
+	/// Colors, or more generally, channel values
+	//  as three or four element vector: red, green, blue and optional alpha.
 	vect_t color;
+
+	value_t alpha;
+
 
 	/// Unique label (latent)
 	std::string id;
@@ -87,16 +95,24 @@ public:
 	 *  \param separator2 - char after each color intensity value
 	 *
 	 */
-	std::ostream & toOStream(std::ostream &ostr, char separator='\n', char separator2=0) const;
+	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;
 
 	drain::ReferenceMap map;
 
 protected:
 
+
 	void init();
 
 
 };
+
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
+	return e.toOStream(ostr);
+}
+
 
 class Palette : public std::map<double,PaletteEntry > {
 
@@ -106,7 +122,10 @@ public:
 	void reset();
 
 	/// Loads a palette from text file
-	void load(const std::string &filename);
+	/**
+	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-<string> and extensions txt,json
+	 */
+	void load(const std::string & filename, bool flexible = false);
 
 	/// Loads a palette from text file
 	void loadTXT(std::ifstream & ifstr);
@@ -117,7 +136,7 @@ public:
 
 	void write(const std::string & filename);
 
-	void exportTXT(std::ostream & ostr, char separator='\n', char separator2=0) const;
+	void exportTXT(std::ostream & ostr, char separator='\t', char separator2=0) const;
 
 	void exportJSON(drain::JSON::tree_t & json) const;
 
@@ -130,12 +149,17 @@ public:
 	 */
 	// void convertJSON(const drain::JSON::tree_t & json);
 
-	inline
-	bool hasAlpha() const { return _hasAlpha; };
+	const ChannelGeometry & getChannels() const {
+		update();
+		return channels;
+	}
 
 
 	/// Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. Legend shows the title on top.
 	std::string title;
+
+	/// Some kind of identity key for the palette, typically filename to avoid reloading
+	// std::string id; ?
 
 	/// Certain intensities (before scaling with gain and offset) may require special treatment.
 	typedef std::map<std::string,PaletteEntry> spec_t;
@@ -145,8 +169,12 @@ public:
 	void refine(size_t n=256);
 
 protected:
-	bool _hasAlpha;
-	unsigned int colorCount;
+
+	void update() const;
+
+	mutable
+	ChannelGeometry channels;
+
 	//void skipLine(std::ifstream &ifstr) const;
 
 	/// Creates a palette from json object
@@ -154,13 +182,12 @@ protected:
 
 };
 
+
 inline
-std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
-	return e.toOStream(ostr);
+std::ostream & operator<<(std::ostream &ostr, const Palette & p){
+	p.exportTXT(ostr);
+	return ostr;
 }
-
-
-std::ostream & operator<<(std::ostream &ostr, const Palette & p);
 
 } // image::
 

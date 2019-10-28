@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <sstream>
+#include <fstream>
 #include <stdexcept>
 
 #include "Log.h"
@@ -52,6 +53,8 @@ namespace drain
  *
  */
 unsigned short JSON::indentStep(2);
+
+const RegExp JSON::filenameExtension("\\.([[:alnum:]]+)$");
 
 void JSON::read(tree_t & t, std::istream & istr){
 
@@ -130,6 +133,45 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 }
 
+
+/// Reads and parses a Windows INI file
+void JSON::readINI(tree_t & t, std::istream & istr){
+	drain::Logger mout("JSON", __FUNCTION__);
+	mout.error() << "unimplemented code" << mout.endl;
+}
+
+void JSON::write(const tree_t & json, const std::string & filename){
+
+	drain::Logger mout("JSON", __FUNCTION__);
+
+	std::ofstream outfile;
+	outfile.open(filename.c_str(), std::ios::out);
+
+	std::vector<std::string> result;
+	if (!filenameExtension.execute(filename, result)){
+
+		const std::string & ext = result[1];
+
+
+		if (ext == "json"){
+			JSON::write(json, outfile);
+		}
+		else if (ext == "ini"){
+			JSON::writeINI(json, outfile);
+		}
+		else {
+			mout.error() << "unknown file type: " <<  ext << mout.endl;
+		}
+	}
+	else {
+		mout.error() << "failed in extracting file type of filename: " <<  filename << mout.endl;
+	}
+
+	outfile.close();
+
+}
+
+
 void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
 	//const node_t & vmap = json.data;
@@ -186,6 +228,35 @@ void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indent
 		ostr << '\n';
 
 
+}
+
+
+
+/// Write a Windows INI file
+void JSON::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
+
+
+	for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
+		ostr << dit->first << '='; // << dit->second;
+		dit->second.valueToJSON(ostr);
+		ostr << '\n';
+	}
+	ostr << '\n';
+
+
+	// Traverse children (only)
+	for (tree_t::const_iterator it = t.begin(); it != t.end(); ++it){
+
+		tree_t::path_t path(prefix);
+		path << it->first;
+
+		ostr << '[' << path << ']' << '\n';
+
+		writeINI(it->second, ostr, path);
+
+		ostr << '\n';
+
+	}
 
 }
 

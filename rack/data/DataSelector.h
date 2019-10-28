@@ -88,14 +88,6 @@ public:
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
 	drain::Range<double> elangle;
 
-
-	/*
-	drain::Flags::value_t getGroupMask() const {
-		groups = groupStr;
-		return groups.value;
-	}
-	*/
-	//mutable
 	drain::Flags groups;
 
 protected:
