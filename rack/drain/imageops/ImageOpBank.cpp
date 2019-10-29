@@ -121,6 +121,25 @@ std::ostream & operator<<(std::ostream & ostr, const ImageOpBank & bank){
 }
 
 
+/*
+class CmdPaletteLoad : public SimpleCommand<std::string> {
+
+public:
+
+	CmdPaletteLoad() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	};
+
+	virtual
+	void exec() const {
+		load(value);
+	};
+
+	void load(const std::string &s) const {
+		getImageOpBank.palette.load(s);
+	}
+
+};
+*/
 
 ImageOpBank & getImageOpBank() {
 

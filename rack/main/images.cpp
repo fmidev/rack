@@ -412,11 +412,11 @@ public:
 
 		// resources.select.clear(); //  below
 
-		//if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
+		// if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
 		if ((!resources.select.empty()) || (resources.currentGrayImage == NULL)){  // TODO: remove this
 			cmdImage.imageSelector.setParameters(resources.select);
 			resources.setCurrentImage(cmdImage.imageSelector);
-			/*
+			/* This may be relevant, keep for 2019
 			cmdImage.imageSelector.setParameters(resources.select);
 			mout.debug() << "determining current gray image" << mout.endl;
 			mout.debug(2) << cmdImage.imageSelector << mout.endl;
@@ -437,78 +437,15 @@ public:
 
 		if (!value.empty() || resources.palette.empty()){
 
-			static RegExp quantityRegExp("^[A-Z]+[A-Z0-9_]*$");
-			std::string quantity;
-
-			//drain::File paletteFile;
-			//static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
-			std::string paletteFile;
-			std::ifstream ifstr;
-
-			// drain::StringMapper palettePath;
-			// palettePath.parse("${palettePath}/palette-${what:quantity}.txt");
-
-
 			if (value == "default" || value.empty()){
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
-				quantity = statusMap["what:quantity"].toStr();
-				mout.info() << "quantity=" << quantity << mout.endl;
+				std::string quantity = statusMap["what:quantity"].toStr();
+				mout.info() << "using current data quantity=" << quantity << mout.endl;
+				resources.palette.load(quantity, true);
 			}
-			else if (quantityRegExp.test(value)){
-				quantity = value;
-			}
+			else
+				resources.palette.load(value, true);
 
-			if (quantity.empty()){
-				//paletteFile.set(value);
-				paletteFile = value;
-			}
-			else {
-				// TODO: try direct Palette::flexible QUANTITY support
-				std::stringstream s;
-				s << "palette-" << quantity << ".txt";
-				paletteFile = s.str();
-				//paletteFile.set(s.str());
-			}
-
-			mout.info() << "reading palette: " << paletteFile << mout.endl;
-
-			resources.palette.load(paletteFile, true);
-			/*
-			//ifstr.open(filename.c_str(), std::ios::in);
-			ifstr.open(paletteFile.tofilename.c_str(), std::ios::in);
-			if (!ifstr.is_open()){
-				mout.info() << "could not open palette: " << filename << mout.endl;
-				// Test
-				filename = std::string("palette/") + filename;
-				mout.note() << "retrying with " << filename << mout.endl;
-				ifstr.open(filename.c_str(), std::ios::in);
-			}
-
-			if (!ifstr.is_open()){
-				mout.error() << "could not open palette: " << filename << mout.endl;
-				return;
-			}
-
-
-			if (!extensionRegExp.execute(filename)){
-				const std::string & ext = extensionRegExp.result[1];
-				if (ext == "json"){
-					mout.debug() << "reading JSON file" << mout.endl;
-					resources.palette.loadJSON(ifstr);
-				}
-				else if (ext == "txt"){
-					mout.debug() << "reading TXT file" << mout.endl;
-					resources.palette.loadTXT(ifstr);
-				}
-				else {
-					mout.error() << "unsupported palette file type: " << ext << mout.endl;
-					ifstr.close();
-					return;
-				}
-				mout.debug() << "read palette: " << resources.palette.getChannels() << " colors/channels,  \n" << resources.palette << mout.endl;
-
-			}
-			*/
 		}
 
 		//mout.debug(2) << resources.palette << mout.endl;
@@ -540,6 +477,7 @@ public:
 
 
 		PaletteOp  op(resources.palette);
+
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const FlexVariableMap  & props = resources.currentGrayImage->properties;
 
@@ -566,37 +504,75 @@ public:
 				*/
 				const double data_min = imgOdim.scaleInverse(-NI);
 				const double data_max = imgOdim.scaleInverse(+NI);
-				//const double data_mean = (data_max+data_min)/2.0;
 				op.scale  =   2.0/(data_max-data_min);
 				op.offset = - op.scale*(data_max+data_min)/2.0;
-				//op.offset = -1.0;
-				//op.scale = 2.0/(data_max-data_min);
 
-				//mout.warn() << odim << mout.endl;
 				mout.debug() << "expected storage value range: " << data_min << '-' << data_max << mout.endl;
-				//mout.warn() << odim.scaleInverse(0) << mout.endl;
-				//op.setSpecialCode("undetectValue", odim.scaleInverse(0.0));
+
 			}
 			else {
 				mout.warn() << "No Nyquist velocity (NI) found in metadata." << mout.endl;
 			}
 		}
 
-		mout.note() <<  imgOdim << mout.endl;
+		// mout.debug() <<  imgOdim << mout.endl;
 		op.registerSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
 		// mout.note() << op << mout.endl;
-		mout.warn() << op.specialCodes << mout.endl;
+		mout.note() << "Special codes" << op.specialCodes << mout.endl;
 
-		//std::cout << op << std::endl;
-		// if (gain == 0.0){  TODO: or from --gain ?	gain = 1.0;
-		//op.setParameter("scale", gain);
-		//op.setParameter("bias",offset);
-		op.process(*resources.currentGrayImage, resources.colorImage);
-		resources.colorImage.properties = props;
-		//File::write(resources.colorImage, "color.png");
-		resources.currentImage = & resources.colorImage;
+		// Copied form Racklet
+		std::string dstQuantity;
+		if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
+			EncodingODIM odim;
+			odim.reference("quantity", dstQuantity);
+			odim.addShortKeys();
+			odim.updateValues(resources.targetEncoding); // do not clear yet
+			mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
+		}
+
+
+		if (dstQuantity.empty()){
+			/// Use separate image
+			op.process(*resources.currentGrayImage, resources.colorImage);
+			resources.colorImage.properties = props;
+			//File::write(resources.colorImage, "color.png");
+			resources.currentImage = & resources.colorImage;
+		}
+		else {
+			/// Create new quantity in data structure
+
+			ODIMPathElem path;
+			resources.guessDatasetGroup(path);
+			mout.note() << "guessing: " << path << mout.endl;
+
+			DataSet<BasicDst> dstProduct((*resources.currentHi5)[path]);
+			Data<BasicDst> & data = dstProduct.getData(dstQuantity);
+			data.odim.updateFromMap(resources.currentGrayImage->getProperties());
+
+			//applyODIM(data.odim, dummy);
+			ProductBase::handleEncodingRequest(data.odim, resources.targetEncoding);
+			data.data.setScaling(data.odim.gain, data.odim.offset);
+			data.odim.quantity = dstQuantity;
+			resources.targetEncoding.clear();
+
+			op.process(*resources.currentGrayImage, data.data);
+
+			if (data.data.getChannelCount() == 0){
+				mout.warn() << "operation failed, result has 0 channels" << mout.endl;
+			}
+			else if (data.data.getChannelCount() == 1){
+				mout.note() << "also currentGrayImage updated " << mout.endl;
+				resources.currentGrayImage = & data.data;
+			}
+			else {
+				mout.warn() << "created multi-channel image in h5 structure, saving supported for 1st channel only" << mout.endl;
+			}
+			resources.currentImage = & data.data;
+			// d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
+		}
+
 
 	}
 };
@@ -621,55 +597,7 @@ public: //re
 static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
-/*
-class CmdLegendOut : public SimpleCommand<> {
-
-public:
-
-	CmdLegendOut() : SimpleCommand<>(__FUNCTION__, "Save palette as a legend to a SVG file.", "filename", "", "<filename>.svg") {
-	};
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
-
-		RackResources & resources = getResources();
-		TreeSVG svg;
-		resources.palette.exportSVGLegend(svg, true);
-
-		std::string outFileName = resources.outputPrefix + value;
-		//if (value.emspty())
-		std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-		if (!ofstr.good()){
-			mout.error() << "could not open file: " << outFileName << mout.endl;
-		}
-		ofstr << svg;
-		ofstr.close();
-	};
-
-};
-static CommandEntry<CmdLegendOut> cmdLegendOut("legendOut");
-*/
-
-class CmdOutputPalette : public SimpleCommand<> {
-
-public:
-
-	CmdOutputPalette() : SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
-	};
-
-	void exec() const {
-
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
-
-		RackResources & resources = getResources();
-		resources.palette.write(resources.outputPrefix + value);
-
-	};
-
-};
-static CommandEntry<CmdOutputPalette> cmdPaletteOut("paletteOut");
-static CommandEntry<CmdOutputPalette> cmdLegendOut("legendOut");
+static CommandEntry<CmdPaletteOut> cmdLegendOut("legendOut");
 
 
 } // namespace ::

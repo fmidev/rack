@@ -24,6 +24,7 @@ var searchData=
   ['getbuffer',['getBuffer',['../classdrain_1_1image_1_1ImageFrame.html#a6fe84004aaaa24a07fe6f6aa17eace7c',1,'drain::image::ImageFrame::getBuffer() const '],['../classdrain_1_1image_1_1ImageFrame.html#a21eef27d0ed5fb2f6a305484ae3d236c',1,'drain::image::ImageFrame::getBuffer()']]],
   ['getbytesize',['getByteSize',['../classdrain_1_1image_1_1Encoding.html#abe5ebf9a08643a1386b7ae582440c25c',1,'drain::image::Encoding::getByteSize()'],['../classdrain_1_1Caster.html#abe5ebf9a08643a1386b7ae582440c25c',1,'drain::Caster::getByteSize()']]],
   ['getchannelindex',['getChannelIndex',['../classdrain_1_1image_1_1ImageFrame.html#aaa6e422850b727afbb36b13864f0c217',1,'drain::image::ImageFrame']]],
+  ['getchannels',['getChannels',['../classdrain_1_1image_1_1Palette.html#acae4eb628dc4c1d783257fcaa44e7905',1,'drain::image::Palette']]],
   ['getchararray',['getCharArray',['../classdrain_1_1Castable.html#a3a9530cf4093fb11f653b89c3f16e142',1,'drain::Castable']]],
   ['getchildren',['getChildren',['../classrack_1_1DataSelector.html#ae02e2e15749e61cd789b9e5df72bf84b',1,'rack::DataSelector::getChildren()'],['../classdrain_1_1Tree.html#a75bd2c980b7798ba18d3779d59e02efb',1,'drain::Tree::getChildren()'],['../classdrain_1_1Tree.html#a88d14829b7bc872b1a33dbed6ef8a5c5',1,'drain::Tree::getChildren() const ']]],
   ['getclasstree',['getClassTree',['../namespacerack.html#aebb9f04a24086ff6bc55deb140ebc66f',1,'rack']]],
@@ -105,7 +106,7 @@ var searchData=
   ['gett',['getT',['../classdrain_1_1Caster.html#a6c49124d2bd3982b2b137fefbba426e4',1,'drain::Caster']]],
   ['gettime',['getTime',['../classrack_1_1ODIM.html#a319d627556b4a398902d3c04fe3f0c44',1,'rack::ODIM::getTime()'],['../classdrain_1_1Time.html#a297da4b0a17ce4d6459deb48f42c7e80',1,'drain::Time::getTime()']]],
   ['gettm',['getTm',['../classdrain_1_1Time.html#a46b14c4450ed7a55bacac7c526a53742',1,'drain::Time']]],
-  ['gettype',['getType',['../classdrain_1_1image_1_1ImageLike.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::image::ImageLike::getType()'],['../classdrain_1_1Command.html#a5699010e0413a53f2d81e5fad3cd6965',1,'drain::Command::getType()'],['../classdrain_1_1Caster.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::Caster::getType()'],['../classdrain_1_1Type.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::Type::getType()'],['../classrack_1_1ProductAdapter.html#aa45ac668b067c1450beca8cd28091ad8',1,'rack::ProductAdapter::getType()']]],
+  ['gettype',['getType',['../classdrain_1_1image_1_1Encoding.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::image::Encoding::getType()'],['../classdrain_1_1image_1_1ImageLike.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::image::ImageLike::getType()'],['../classdrain_1_1Command.html#a5699010e0413a53f2d81e5fad3cd6965',1,'drain::Command::getType()'],['../classdrain_1_1Caster.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::Caster::getType()'],['../classdrain_1_1Type.html#ad2487e72c79c7d937de2462db1e9f979',1,'drain::Type::getType()'],['../classrack_1_1ProductAdapter.html#aa45ac668b067c1450beca8cd28091ad8',1,'rack::ProductAdapter::getType()']]],
   ['gettypeinfo',['getTypeInfo',['../classdrain_1_1Type.html#a8ae1b46b3960f072f0c1d51220321757',1,'drain::Type::getTypeInfo(char t)'],['../classdrain_1_1Type.html#a1ddf76d245318fce5a601a24d10280a7',1,'drain::Type::getTypeInfo(const char *typeCode)'],['../classdrain_1_1Type.html#ad35bc39507f930d5331fbf2dff994245',1,'drain::Type::getTypeInfo(const std::string &amp;typeCode)'],['../classdrain_1_1Type.html#ae7914be5ea3f8e525a2f184326c4aed3',1,'drain::Type::getTypeInfo(const Type &amp;t)']]],
   ['gettypemax',['getTypeMax',['../classdrain_1_1image_1_1Encoding.html#ae731f916137be7f4795879ada093df6a',1,'drain::image::Encoding']]],
   ['gettypemin',['getTypeMin',['../classdrain_1_1image_1_1Encoding.html#a9d3d687097af640cc93c4b40bf663645',1,'drain::image::Encoding']]],
@@ -122,6 +123,6 @@ var searchData=
   ['getxscale',['getXScale',['../classdrain_1_1image_1_1GeoFrame.html#af94fbca2b0302d9005c1f2c9d22e7685',1,'drain::image::GeoFrame']]],
   ['getyscale',['getYScale',['../classdrain_1_1image_1_1GeoFrame.html#aa117ae33cef8aa8ffc36809367510581',1,'drain::image::GeoFrame']]],
   ['groundfrometabeam',['groundFromEtaBeam',['../classrack_1_1Geometry.html#aca7e1dc19654bfab0b4c73fe3563d946',1,'rack::Geometry']]],
-  ['guessarraytype',['guessArrayType',['../classdrain_1_1Type.html#a4b17fd4ee62ad025cd859362aa3eaf73',1,'drain::Type']]],
+  ['guessarraytype',['guessArrayType',['../classdrain_1_1Type.html#a3b15f55b35a4382dd6edb1046bb19818',1,'drain::Type']]],
   ['guesstype',['guessType',['../classdrain_1_1Type.html#a4266f103a1a545898e762f3c78fd95c3',1,'drain::Type']]]
 ];

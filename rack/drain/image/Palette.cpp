@@ -168,7 +168,7 @@ void Palette::update() const {
 
 void Palette::load(const std::string &filename, bool flexible){
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	drain::FilePath filePath;
 
@@ -187,8 +187,9 @@ void Palette::load(const std::string &filename, bool flexible){
 	if (filePath.dir.empty())
 		filePath.dir.push_front(".");
 
+	mout.debug() << " Initial file path: " << filePath.toStr() << mout.endl;
+
 	const std::string s = filePath.toStr();
-	mout.note() << " Reading file=" << s << mout.endl;
 
 	std::ifstream ifstr;
 	ifstr.open(s.c_str(), std::ios::in);
@@ -253,30 +254,34 @@ void Palette::load(const std::string &filename, bool flexible){
 				for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
 					finalFilePath.dir = *pit;
 					finalFilePath.extension = *eit;
-					mout.note() << "testing: " << finalFilePath.toStr() << mout.endl;
+					mout.info() << "trying: " << finalFilePath.toStr() << mout.endl;
 					ifstr.open(finalFilePath.toStr().c_str(), std::ios::in);
+					if (ifstr.good())
+						break;
 				}
+				if (ifstr.good())
+					break;
 			}
 
 			if (!ifstr.good()){  // still not good
 				ifstr.close();
-				mout.error() << " opening file '" << filename << "' failed" << mout.endl;
+				mout.error() << " opening file failed" << mout.endl;
 				return;
 			}
 
-			mout.warn() << "found: " << finalFilePath.toStr() << mout.endl;
+			mout.note() << "found: " << finalFilePath.toStr() << mout.endl;
 
 			reset();
 
-			if (filePath.extension == "txt"){
+			if (finalFilePath.extension == "txt"){
 				loadTXT(ifstr);
 			}
-			else if (filePath.extension == "json"){
+			else if (finalFilePath.extension == "json"){
 				loadJSON(ifstr);
 			}
 			else {
 				ifstr.close();
-				mout.error() << "unknown file type: " << filePath.extension << mout.endl;
+				mout.error() << "unknown file type: " << finalFilePath.extension << mout.endl;
 			}
 
 		}

@@ -33,14 +33,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_IMAGE_OPS
 #define RACK_IMAGE_OPS
 
+#include <list>
+#include <string>
+
 #include <imageops/ImageOp.h>
 #include <prog/Command.h>
 #include <prog/CommandAdapter.h>
 #include <prog/CommandRegistry.h>
 #include <util/ReferenceMap.h>
 
-#include <list>
-#include <string>
+
+#include "resources.h"
+
 
 namespace drain {
 
@@ -146,7 +150,27 @@ public:
 
 
 };
-//extern CommandEntry<CmdPhysical> cmdPhysical;
+
+
+class CmdPaletteOut : public SimpleCommand<> {
+
+public:
+
+	CmdPaletteOut() : SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	};
+
+	void exec() const {
+
+		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+
+		RackResources & resources = getResources();
+		resources.palette.write(resources.outputPrefix + value);
+
+	};
+
+};
+
+
 
 
 class ImageRackletModule : public CommandGroup {

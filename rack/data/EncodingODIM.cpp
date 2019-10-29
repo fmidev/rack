@@ -36,33 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-
-
-/*
-EncodingODIM::EncodingODIM(group_t initialize = ALL){
-	init(initialize);
-};
-
-EncodingODIM::EncodingODIM(const EncodingODIM & odim){
-	init(ALL);
-	updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
-};
-*/
-
-
-//static
-/*
-//const std::set<std::string> & EncodingODIM::createAttributeGroups(){
-
-	static std::set<std::string> s;
-	s.insert("what");
-	s.insert("where");
-	s.insert("how");
-	return s;
-
-}
-*/
-
 const std::set<ODIMPathElem> & EncodingODIM::attributeGroups(createAttributeGroups());
 
 const std::set<ODIMPathElem> & EncodingODIM::createAttributeGroups(){
@@ -74,6 +47,38 @@ const std::set<ODIMPathElem> & EncodingODIM::createAttributeGroups(){
 	return s;
 
 }
+
+void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
+
+	if (initialize & ODIMPathElem::ROOT){
+	}
+
+	if (initialize & ODIMPathElem::DATASET){
+	}
+
+	if (initialize & ODIMPathElem::DATA){
+		reference("what:type", type = "C");
+		reference("what:gain",   gain = 0.0);
+		reference("what:offset", offset = 0.0);
+		reference("what:undetect", undetect = 0.0);
+		reference("what:nodata", nodata = 0.0);
+	}
+
+}
+
+
+void EncodingODIM::initFromImage(const drain::image::Image & img){  // =""
+	init(ODIMPathElem::ALL_LEVELS);
+	EncodingODIM::copyFrom(img);
+}
+
+
+
+void EncodingODIM::clear(){
+  for (ReferenceMap::iterator it = begin(); it != end(); ++it)
+	  it->second.clear();
+}
+
 
 
 EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
@@ -106,44 +111,6 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 	return *this;
 }
 
-void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
-
-	if (initialize & ODIMPathElem::ROOT){
-	}
-
-	if (initialize & ODIMPathElem::DATASET){
-	}
-
-	if (initialize & ODIMPathElem::DATA){
-		reference("what:type", type = "C");
-		reference("what:gain",   gain = 0.0);
-		reference("what:offset", offset = 0.0);
-		reference("what:undetect", undetect = 0.0);
-		reference("what:nodata", nodata = 0.0);
-	}
-
-}
-
-
-void EncodingODIM::initFromImage(const drain::image::Image & img){  // =""
-	init(ODIMPathElem::ALL_LEVELS);
-	EncodingODIM::copyFrom(img);
-}
-
-
-/*
-template <class F>
-void declare(std::set<std::string> & keys, const std::string & key, F &x){
-	keys.insert(key);
-	reference(key, x);
-}
-*/
-
-
-void EncodingODIM::clear(){
-  for (ReferenceMap::iterator it = begin(); it != end(); ++it)
-	  it->second.clear();
-}
 
 void EncodingODIM::update(const EncodingODIM & odim){
 
@@ -159,13 +126,12 @@ void EncodingODIM::update(const EncodingODIM & odim){
 
 }
 
+// Rename to grant
 void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
 
 	const EncodingODIM::keylist_t & keys = getKeyList();
 
-	//for (EncodingODIM::iterator it = begin(); it != end(); ++it){
 	for (EncodingODIM::keylist_t::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-		//const std::string & key = it->first;
 		const size_t i = kit->find(':');  // type?
 		if (i != std::string::npos){
 			ref.reference(kit->substr(i+1), operator[](*kit));

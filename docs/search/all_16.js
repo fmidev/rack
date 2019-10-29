@@ -1,7 +1,8 @@
 var searchData=
 [
   ['validate',['validate',['../classdrain_1_1image_1_1CoordinateHandler2D.html#adee612231ce4f3661a8c39e0c2c301b8',1,'drain::image::CoordinateHandler2D::validate(Point2D&lt; int &gt; &amp;p) const '],['../classdrain_1_1image_1_1CoordinateHandler2D.html#a7ffe6c14a193501705614cd73770856b',1,'drain::image::CoordinateHandler2D::validate(int &amp;x, int &amp;y) const ']]],
-  ['value_5ft',['value_t',['../classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d',1,'drain::typeLimiter']]],
+  ['value',['value',['../classdrain_1_1image_1_1PaletteEntry.html#aee90379adb0307effb138f4871edbc5c',1,'drain::image::PaletteEntry']]],
+  ['value_5ft',['value_t',['../classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad',1,'drain::image::PaletteEntry::value_t()'],['../classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d',1,'drain::typeLimiter::value_t()']]],
   ['valuekeystostream',['valueKeysToStream',['../classdrain_1_1Flags.html#a4dd5607d3cfcf939b891b1346f80b7ef',1,'drain::Flags']]],
   ['valuereader',['ValueReader',['../classdrain_1_1ValueReader.html',1,'drain']]],
   ['variable',['Variable',['../classdrain_1_1Variable.html',1,'drain']]],
@@ -11,7 +12,7 @@ var searchData=
   ['variableprefix',['variablePrefix',['../classdrain_1_1StringMapper.html#a80679d2a07f2b013af404b79950f9011',1,'drain::StringMapper']]],
   ['variablesuffix',['variableSuffix',['../classdrain_1_1StringMapper.html#ad4d5f3c8b6f16c14acccaa652a4a7ca1',1,'drain::StringMapper']]],
   ['vdenominator',['vDenominator',['../classdrain_1_1image_1_1OpticalFlowCore.html#a6d4709f680bbcb44884b58328104b2fd',1,'drain::image::OpticalFlowCore']]],
-  ['vect_5ft',['vect_t',['../classdrain_1_1image_1_1PaletteEntry.html#aeb11f240f82334adde2ba9e3c4ce3070',1,'drain::image::PaletteEntry']]],
+  ['vect_5ft',['vect_t',['../classdrain_1_1image_1_1PaletteEntry.html#a4929b21336a74c919db0de1beaa5161d',1,'drain::image::PaletteEntry']]],
   ['vector',['Vector',['../classdrain_1_1Vector.html',1,'drain']]],
   ['verticalcatenatorop',['VerticalCatenatorOp',['../classdrain_1_1image_1_1VerticalCatenatorOp.html',1,'drain::image']]],
   ['verticalcrosssectionodim',['VerticalCrossSectionODIM',['../classrack_1_1VerticalCrossSectionODIM.html',1,'rack']]],

@@ -23,6 +23,7 @@ var searchData=
   ['simplecommand',['SimpleCommand',['../classdrain_1_1SimpleCommand.html',1,'drain']]],
   ['simplecommand_3c_20int_20_3e',['SimpleCommand&lt; int &gt;',['../classdrain_1_1SimpleCommand.html',1,'drain']]],
   ['simplecommand_3c_20std_3a_3astring_20_3e',['SimpleCommand&lt; std::string &gt;',['../classdrain_1_1SimpleCommand.html',1,'drain']]],
+  ['simplecommand_3c_3e',['SimpleCommand&lt;&gt;',['../classdrain_1_1SimpleCommand.html',1,'drain']]],
   ['simplename',['simpleName',['../classdrain_1_1simpleName.html',1,'drain']]],
   ['sizegetter',['sizeGetter',['../classdrain_1_1sizeGetter.html',1,'drain']]],
   ['sizeprober',['SizeProber',['../classdrain_1_1image_1_1SizeProber.html',1,'drain::image']]],

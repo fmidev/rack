@@ -185,16 +185,32 @@ void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & enco
 		mout.warn() << "quantity empty, odim=" << EncodingODIM(dstODIM) << mout.endl;
 	}
 
-	drain::ReferenceMap typeRef;
-
 	/// If dstODIM gain unset or type change requested, initialise with quantity defaults
+	/*
+	drain::ReferenceMap typeRef;
 	std::string type;
 	typeRef.reference("type", type = dstODIM.type);
 	typeRef.updateValues(encoding);
+	*/
+
+	EncodingODIM odim;
+	odim.type = "";
+
+	// Quantity may have been set already in dstODIM, or will be set below, at latest.
+	std::string quantity = dstODIM.quantity;
+	odim.reference("what:quantity", quantity);
+
+	odim.addShortKeys();
+	odim.updateValues(encoding);
+
+	// std::string quantity;
+	// typeRef.reference("quantity", quantity = dstODIM.quantity);
+	// typeRef.updateValues(encoding);
+	// || (quantity != dstODIM.quantity)
 	//
-	if ((dstODIM.gain == 0) || (type != dstODIM.type)){
-		mout.debug() << "type changed or gain==0, applying quantity defaults for quantity=" << dstODIM.quantity << mout.endl;
-		getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding); // type may be unset
+	if ((dstODIM.gain == 0) || (odim.type != dstODIM.type) || (quantity != dstODIM.quantity)){
+		mout.debug() << "type or quantity changed (or gain==0), applying quantity defaults for quantity=" << quantity << mout.endl;
+		getQuantityMap().setQuantityDefaults(dstODIM, quantity, encoding); // type may be unset
 
 		//if (dstODIM.optimiseVRAD())
 		//mout.note() << "not (at least here) optimized VRAD for NI :-)"  << mout.endl; // << dstODIM.NI
@@ -206,13 +222,14 @@ void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & enco
 	if (!encoding.empty()){  // user wants to change something...
 
 			// NOTE: dstODIM might be of derived class, and op[] provides access to ["rscale"] for example.
-		dstODIM.addShortKeys(typeRef); // This adapts to actual type (PolarODIM, CartesianODIM)
-		typeRef.setValues(encoding);
+		dstODIM.addShortKeys(odim); // This adapts to actual type (PolarODIM, CartesianODIM)
+		//typeRef.setValues(encoding);
+		odim.setValues(encoding);
 
 		if (dstODIM.quantity.empty()){
-			mout.warn() << "quantity not set" << mout.endl;
+			mout.warn() << "quantity not set, restarting from type: " << dstODIM.type << mout.endl;
 			dstODIM.setTypeDefaults();
-			typeRef.setValues(encoding);
+			odim.setValues(encoding);
 		}
 			mout.info() << "dstOdim: " << EncodingODIM(dstODIM) << mout.endl;
 	}

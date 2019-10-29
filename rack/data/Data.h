@@ -113,12 +113,17 @@ struct DstType : public DataType<HI5TREE, HI5TREE::iterator, Image> {
 	typedef M odim_t;
 };
 
+/// Read-only data (supports top-level ODIM properties only)
+typedef SrcType<ODIM> BasicSrc;
 
 /// Read-only data in polar coordinates
 typedef SrcType<PolarODIM const> PolarSrc;
 
 /// Read-only data in Cartesian coordinates
 typedef SrcType<CartesianODIM const> CartesianSrc;
+
+
+typedef DstType<ODIM> BasicDst;
 
 /// Writable data in polar coordinates
 typedef DstType<PolarODIM> PolarDst;

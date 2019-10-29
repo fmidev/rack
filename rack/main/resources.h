@@ -134,11 +134,22 @@ public:
 	 */
 	bool setCurrentImage(const DataSelector & imageSelector);
 
+
+	// Experimental
+	bool guessDatasetGroup(ODIMPathElem & pathElem) const;
+	// Experimental
+	ODIMPath currentPath;
+
+
 	drain::image::Image grayImage;
 	drain::image::Image colorImage;
 
+	/// Pointer to the last 2D data (image) processed
 	const drain::image::Image *currentImage; // = NULL;
+
+	/// Pointer to the last single-channel 2D data (image) processed
 	const drain::image::Image *currentGrayImage; // = NULL;  // data or grayImage
+
 
 	drain::image::Palette palette;  // Todo: drainize
 	//drain::image::PaletteOp;

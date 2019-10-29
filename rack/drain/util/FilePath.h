@@ -84,6 +84,10 @@ public:
 		return ostr;
 	}
 
+	operator std::string(){
+		return toStr();
+	}
+
 	inline
 	void toStr(std::string & str, char separator = 0) const {
 		std::stringstream sstr;

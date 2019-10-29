@@ -129,7 +129,12 @@ void Log::start(int level, const std::string & msgSender){
 	else {
 	}
 
-	if (verbosityLevel >= msgLevel)
+
+	if (verbosityLevel >= (msgLevel + 2)){
+		if (!msgSender.empty())
+			sstr << msgSender << ':' << ' ';
+	}
+	else if (verbosityLevel >= msgLevel) // Hide sender in basic notifications
 		if (((msgLevel != LOG_NOTICE) && (msgLevel != LOG_INFO)) || (verbosityLevel >= LOG_DEBUG))
 			if (!msgSender.empty())
 				sstr << msgSender << ':' << ' ';

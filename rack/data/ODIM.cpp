@@ -36,6 +36,43 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+const std::string ODIM::dateformat("%Y%m%d");
+const std::string ODIM::timeformat("%H%M%S");
+
+
+
+void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
+
+	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
+	if (initialize & ODIMPathElem::ROOT){
+		reference("what:object", object = "");
+		reference("what:version", version = "H5rad 2.2");
+		reference("what:date", date = "");
+		reference("what:time", time = "");
+		reference("what:source", source = "");
+		reference("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
+	}
+
+	if (initialize & ODIMPathElem::DATASET){
+		reference("what:product", product = "");
+		reference("what:prodpar", prodpar = "");
+		reference("what:starttime", starttime = "");
+		reference("what:startdate", startdate = "");
+		reference("what:endtime", endtime = "");
+		reference("what:enddate", enddate = "");
+		reference("how:NI", NI = 0);
+	}
+
+
+	if (initialize & ODIMPathElem::DATA){
+		reference("what:quantity", quantity = "");
+	}
+
+}
+
+
+
+
 
 void ODIM::copyTo(const std::list<std::string> & keys, HI5TREE & dst) const {
 
@@ -106,43 +143,6 @@ void ODIM::copyTo(const std::list<std::string> & keys, HI5TREE & dst) const {
 			mout.note() << "no key: " << key << mout.endl;
 		}
 		//attribute.toOStr(std::cerr); std::cerr << '\n';
-	}
-
-}
-
-
-
-
-const std::string ODIM::dateformat("%Y%m%d");
-const std::string ODIM::timeformat("%H%M%S");
-
-
-
-void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
-
-	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
-	if (initialize & ODIMPathElem::ROOT){
-		reference("what:object", object = "");
-		reference("what:version", version = "H5rad 2.2");
-		reference("what:date", date = "");
-		reference("what:time", time = "");
-		reference("what:source", source = "");
-		reference("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
-	}
-
-	if (initialize & ODIMPathElem::DATASET){
-		reference("what:product", product = "");
-		reference("what:prodpar", prodpar = "");
-		reference("what:starttime", starttime = "");
-		reference("what:startdate", startdate = "");
-		reference("what:endtime", endtime = "");
-		reference("what:enddate", enddate = "");
-		reference("how:NI", NI = 0);
-	}
-
-
-	if (initialize & ODIMPathElem::DATA){
-		reference("what:quantity", quantity = "");
 	}
 
 }

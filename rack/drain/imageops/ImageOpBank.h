@@ -116,6 +116,9 @@ public:
 	/// Supports querying operator with parameters set, eg. gaussianAverage,width=10,height=5
 	ImageOp & getComplete(const std::string & query, char separator=',', char assign='=', const drain::SmartMap<std::string> & aliasMap = drain::SmartMap<std::string>());
 
+	/// General resources
+	// Palette palette;
+
 };
 
 

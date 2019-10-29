@@ -9,7 +9,6 @@ var searchData=
   ['handlexunderflow_5fpolar',['handleXUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a8cd19025521d165e38c89969cda89cb1',1,'drain::image::CoordinateHandler2D']]],
   ['handleyunderflow_5fpolar',['handleYUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a9e985eeff83f2841c0cd89232270a57b',1,'drain::image::CoordinateHandler2D']]],
   ['has',['has',['../classdrain_1_1Registry.html#a8b09ace5fddead133ee7cefaecd415c6',1,'drain::Registry']]],
-  ['hasalpha',['hasAlpha',['../classdrain_1_1image_1_1Palette.html#a2d7736529ea585cdfe23bd37a6e61f22',1,'drain::image::Palette']]],
   ['hasoverlap',['hasOverlap',['../classdrain_1_1image_1_1ImageFrame.html#aeb61a8582a81780c508eb2f470a780c1',1,'drain::image::ImageFrame']]],
   ['haspath',['hasPath',['../classdrain_1_1Tree.html#aeea0a8ae7a6d83e08480d5430d323f94',1,'drain::Tree::hasPath(const path_t &amp;path) const '],['../classdrain_1_1Tree.html#ab57c1905f920343272b8eb0eb8fdabc3',1,'drain::Tree::hasPath(typename path_t::const_iterator it, typename path_t::const_iterator eit) const ']]],
   ['hassamesegment',['hasSameSegment',['../classdrain_1_1image_1_1ImageFrame.html#a9d592b29f22ea31932fdef779cb606f3',1,'drain::image::ImageFrame']]],
@@ -31,6 +30,6 @@ var searchData=
   ['histogramwindowconfig',['HistogramWindowConfig',['../classdrain_1_1image_1_1HistogramWindowConfig.html',1,'drain::image']]],
   ['horizontal',['Horizontal',['../structrack_1_1Horizontal.html',1,'rack']]],
   ['how',['HOW',['../classrack_1_1ODIMPathElem.html#a8fe897a670840520f73adbb3333dde40',1,'rack::ODIMPathElem']]],
-  ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html#af995687397e8f26faa9884b4f51c15f4',1,'rack::HydroClassBasedOp']]],
-  ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html',1,'rack']]]
+  ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html',1,'rack']]],
+  ['hydroclassbasedop',['HydroClassBasedOp',['../classrack_1_1HydroClassBasedOp.html#af995687397e8f26faa9884b4f51c15f4',1,'rack::HydroClassBasedOp']]]
 ];

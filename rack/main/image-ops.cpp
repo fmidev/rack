@@ -443,11 +443,11 @@ public:
 };
 
 
-class CmdPaletteLoad : public SimpleCommand<std::string> {
+class CmdPaletteIn : public SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteLoad() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	CmdPaletteIn() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	virtual
@@ -461,6 +461,9 @@ public:
 
 };
 
+// Later also this here, but legendOut requires "more global" class.
+// class CmdPaletteOut : public SimpleCommand<std::string>
+
 
 ImageRackletModule::list_t ImageRackletModule::rackletList;
 
@@ -472,9 +475,10 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 
 	registry.setSection(section, prefix);
 
-	// Put image utilities and other non-ops  here
-	static CommandEntry<CmdPhysical> cmdPhysical; //("iPhysical");
-	static CommandEntry<CmdPaletteLoad> cmdPaletteLoad;
+	// Image utilities and non-operators
+	static CommandEntry<CmdPhysical> cmdPhysical;
+	static CommandEntry<CmdPaletteIn> cmdPaletteLoad;
+	static CommandEntry<CmdPaletteOut> cmdPaletteOut;
 
 	ImageOpBank::map_t & ops = getImageOpBank().getMap();
 
@@ -496,9 +500,11 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 	static ImageOpRacklet rop(mthop);
 	registry.add(rop, "MultiThreshold");
 
+	/*  Use radar data compatible --palette instead, it supports undetect and nodata
 	static PaletteOp remapOp(getResources().palette);
 	static ImageOpRacklet rmop(remapOp);
 	registry.add(rmop, "Palette");  // Note --palette and --iPalette
+	*/
 
 	// DEBUG
 	/*

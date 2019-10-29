@@ -109,10 +109,14 @@ Collaboration diagram for PaletteEntry:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aeb11f240f82334adde2ba9e3c4ce3070"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb11f240f82334adde2ba9e3c4ce3070"></a>
-typedef std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aeb11f240f82334adde2ba9e3c4ce3070">vect_t</a></td></tr>
-<tr class="memdesc:aeb11f240f82334adde2ba9e3c4ce3070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector type. <br /></td></tr>
-<tr class="separator:aeb11f240f82334adde2ba9e3c4ce3070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971f427ed0f36249c1fe6715ceff00ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a971f427ed0f36249c1fe6715ceff00ad"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a></td></tr>
+<tr class="memdesc:a971f427ed0f36249c1fe6715ceff00ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1image_1_1Intensity.html">Intensity</a> type. <br /></td></tr>
+<tr class="separator:a971f427ed0f36249c1fe6715ceff00ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4929b21336a74c919db0de1beaa5161d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4929b21336a74c919db0de1beaa5161d"></a>
+typedef std::vector&lt; <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4929b21336a74c919db0de1beaa5161d">vect_t</a></td></tr>
+<tr class="memdesc:a4929b21336a74c919db0de1beaa5161d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector type. <br /></td></tr>
+<tr class="separator:a4929b21336a74c919db0de1beaa5161d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,18 +127,25 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#ab9f457fd1873cc31519f857b552141f5">PaletteEntry</a> (const <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &amp;entry)</td></tr>
 <tr class="memdesc:ab9f457fd1873cc31519f857b552141f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:ab9f457fd1873cc31519f857b552141f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b55b0f3829d8a719eceea697553ddcd"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4b55b0f3829d8a719eceea697553ddcd">toOStream</a> (std::ostream &amp;ostr, char separator='\n', char separator2=0) const </td></tr>
-<tr class="separator:a4b55b0f3829d8a719eceea697553ddcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f306d2ecd39b43711e05be3b78f521d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f306d2ecd39b43711e05be3b78f521d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>checkAlpha</b> ()</td></tr>
+<tr class="separator:a2f306d2ecd39b43711e05be3b78f521d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee10b4fa7e528b2d266060bcebbb3dc4"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aee10b4fa7e528b2d266060bcebbb3dc4">toOStream</a> (std::ostream &amp;ostr, char separator='\t', char separator2=0) const </td></tr>
+<tr class="separator:aee10b4fa7e528b2d266060bcebbb3dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aee90379adb0307effb138f4871edbc5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee90379adb0307effb138f4871edbc5c"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aee90379adb0307effb138f4871edbc5c">value</a></td></tr>
+<tr class="memdesc:aee90379adb0307effb138f4871edbc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index or threshold value. Must be signed, as images may generally have negative values. <br /></td></tr>
 <tr class="separator:aee90379adb0307effb138f4871edbc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1b986b4e2293838f49a63b6ca48b68a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1b986b4e2293838f49a63b6ca48b68a"></a>
-<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aeb11f240f82334adde2ba9e3c4ce3070">vect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#ab1b986b4e2293838f49a63b6ca48b68a">color</a></td></tr>
-<tr class="memdesc:ab1b986b4e2293838f49a63b6ca48b68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colors as three or four element vector: red, green, blue and optional alpha. <br /></td></tr>
+<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4929b21336a74c919db0de1beaa5161d">vect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#ab1b986b4e2293838f49a63b6ca48b68a">color</a></td></tr>
+<tr class="memdesc:ab1b986b4e2293838f49a63b6ca48b68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colors, or more generally, channel values. <br /></td></tr>
 <tr class="separator:ab1b986b4e2293838f49a63b6ca48b68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2d28b585b5fcf3544f3769c51ed121b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2d28b585b5fcf3544f3769c51ed121b"></a>
+<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
+<tr class="separator:ae2d28b585b5fcf3544f3769c51ed121b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd0d68c6d31ff249f3ae8662162663c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd0d68c6d31ff249f3ae8662162663c3"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#afd0d68c6d31ff249f3ae8662162663c3">id</a></td></tr>
 <tr class="memdesc:afd0d68c6d31ff249f3ae8662162663c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique label (latent) <br /></td></tr>
@@ -180,7 +191,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a4b55b0f3829d8a719eceea697553ddcd"></a>
+<a class="anchor" id="aee10b4fa7e528b2d266060bcebbb3dc4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -194,7 +205,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>separator</em> = <code>'\n'</code>, </td>
+          <td class="paramname"><em>separator</em> = <code>'\t'</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['value_5ft',['value_t',['../classdrain_1_1typeLimiter.html#a9a5618b259e6ffb49d766ff03e1a5f2d',1,'drain::typeLimiter']]],
-  ['vect_5ft',['vect_t',['../classdrain_1_1image_1_1PaletteEntry.html#aeb11f240f82334adde2ba9e3c4ce3070',1,'drain::image::PaletteEntry']]],
-  ['vprdst',['VprDst',['../namespacerack.html#a26d75ad7b8adc4e11abe1c8faa28a591',1,'rack']]]
+  ['spec_5ft',['spec_t',['../classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c',1,'drain::image::Palette']]],
+  ['src_5ft',['src_t',['../classrack_1_1ProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb',1,'rack::ProductOp::src_t()'],['../classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6',1,'rack::RadarDataPicker::src_t()']]]
 ];

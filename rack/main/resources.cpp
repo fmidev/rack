@@ -150,6 +150,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	if (result){
 		path << odimARRAY;
+		currentPath = path;
 	}
 	else {
 		mout.debug() << "no image data found with image selector: " << imageSelector << ", flags='" << flags << "'" << mout.endl;
@@ -203,6 +204,40 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 	*/
 
 }
+
+bool RackResources::guessDatasetGroup(ODIMPathElem & pathElem) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	pathElem.set(ODIMPathElem::DATASET, 1);
+	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);
+	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
+		DataSelector::getNextChild(*currentHi5, pathElem);
+		//path << parent;
+
+		if (pathElem == currentPath.front()){
+			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+		}
+		return true;
+	}
+	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
+		DataSelector::getLastChild(*currentHi5, pathElem);
+		if (pathElem.index == 0){
+			pathElem.index = 1;
+		}
+		//path << parent;
+		if (pathElem == currentPath.front()){
+			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+		}
+		return true;
+	}
+	else {
+		// path << parent; // DATASET1
+		//path = currentPath;
+		return false;
+	}
+}
+
 
 /// Default instance
 RackResources & getResources() {
