@@ -210,9 +210,10 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		mout.info() << "dstODIM unset, applying defaults for quantity: " << dstODIM.quantity << mout.endl;
 	}
 	else {
-		mout.info() << " (only) minor changes requested in encoding: " << encoding << mout.endl;
 		// That is, no "resetting" needed.
+		dstODIM.addShortKeys();
 		dstODIM.updateValues(encoding);
+		mout.info() << " (only) minor changes requested in encoding: " << encoding << " => " << EncodingODIM(dstODIM) << mout.endl;
 		return;
 	}
 

@@ -102,7 +102,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 
 	drain::ReferenceMap refMap;
 	if (!values.empty()){
-		dstODIM.addShortKeys(refMap);
+		dstODIM.grantShortKeys(refMap);
 		refMap.setValues(values);   // essentially, sets dstODIM.type (str values will be reset, below)
 	}
 

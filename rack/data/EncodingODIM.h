@@ -242,7 +242,7 @@ public:
 	 *
 	 *	The object itself can be given as an argument, \see addShortKeys().
 	 */
-	void addShortKeys(drain::ReferenceMap & ref);
+	void grantShortKeys(drain::ReferenceMap & ref);
 
 	/// Creates a short alias \c (attrib) for each \c (group):(attrib). Example: "gain" => "what:gain".
 	/*
@@ -250,7 +250,7 @@ public:
 	 */
 	inline
 	void addShortKeys(){
-		addShortKeys(*this);
+		grantShortKeys(*this);
 	}
 
 	/// Copies image attributes and \b type . Experimental.

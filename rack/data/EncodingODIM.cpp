@@ -127,7 +127,7 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 }
 
 // Rename to grant
-void EncodingODIM::addShortKeys(drain::ReferenceMap & ref) {
+void EncodingODIM::grantShortKeys(drain::ReferenceMap & ref) {
 
 	const EncodingODIM::keylist_t & keys = getKeyList();
 
