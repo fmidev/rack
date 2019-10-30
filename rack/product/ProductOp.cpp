@@ -126,6 +126,7 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 	if  (!productODIM.isSet()){
 
+		// If src data and product have same quantity and storage type, adapt same encoding
 		if ((srcODIM.quantity == productODIM.quantity) && (srcODIM.type == productODIM.type)){ // note: may still be empty
 			EncodingODIM srcBase(srcODIM);
 			productODIM.updateFromMap(srcBase); // Does not copy geometry (rscale, nbins, etc).
@@ -133,14 +134,15 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 		}
 
 		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
-		//	getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, encoding); // type may be unset
-		//productODIM.NI = srcODIM.NI;
 		//mout.warn() << "productODIM.update(srcODIM)" << mout.endl;
-		productODIM.update(srcODIM); // date, time, Nyquist(NI)
+		productODIM.updateLenient(srcODIM); // date, time, Nyquist(NI) - WARNING, some day setLenient may copy srcODIM encoding
 
 	}
 
 	if ((!productODIM.isSet()) && useDefaults){
+
+		//mout.warn() << "productODIM not set above?" << mout.endl;
+
 		if (!productODIM.quantity.empty()){
 			mout.note() << "setting quantity defaults for " << productODIM.quantity << mout.endl;
 			getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, productODIM.type);
@@ -177,66 +179,46 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 }
 
-void ProductBase::handleEncodingRequest(ODIM & dstODIM, const std::string & encoding){
+void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding){
 
 	drain::Logger mout("ProductBase", __FUNCTION__);
+	//mout.warn() << "start" << mout.endl;
 
-	if (dstODIM.quantity.empty()){
-		mout.warn() << "quantity empty, odim=" << EncodingODIM(dstODIM) << mout.endl;
+	if (encoding.empty()){
+		mout.debug() << "empty request" << mout.endl;
 	}
 
-	/// If dstODIM gain unset or type change requested, initialise with quantity defaults
-	/*
-	drain::ReferenceMap typeRef;
-	std::string type;
-	typeRef.reference("type", type = dstODIM.type);
-	typeRef.updateValues(encoding);
-	*/
+	const std::string origQuantity(dstODIM.quantity);
 
 	EncodingODIM odim;
 	odim.type = "";
-
-	// Quantity may have been set already in dstODIM, or will be set below, at latest.
-	std::string quantity = dstODIM.quantity;
-	odim.reference("what:quantity", quantity);
-
+	odim.reference("what:quantity", dstODIM.quantity); 	// Consider (..., bool ALLOW_QUANTITY_CHANGE=true)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 
-	// std::string quantity;
-	// typeRef.reference("quantity", quantity = dstODIM.quantity);
-	// typeRef.updateValues(encoding);
-	// || (quantity != dstODIM.quantity)
-	//
-	if ((dstODIM.gain == 0) || (odim.type != dstODIM.type) || (quantity != dstODIM.quantity)){
-		mout.debug() << "type or quantity changed (or gain==0), applying quantity defaults for quantity=" << quantity << mout.endl;
-		getQuantityMap().setQuantityDefaults(dstODIM, quantity, encoding); // type may be unset
-
-		//if (dstODIM.optimiseVRAD())
-		//mout.note() << "not (at least here) optimized VRAD for NI :-)"  << mout.endl; // << dstODIM.NI
-		//  type may be unset ?
-		mout.info() << "set quantity=" << dstODIM.quantity << ", encoding: " << EncodingODIM(dstODIM) << mout.endl;
+	if (dstODIM.quantity.empty()){
+		mout.warn() << "quantity (still) empty, odim=" << odim << mout.endl;
 	}
 
-
-	if (!encoding.empty()){  // user wants to change something...
-
-			// NOTE: dstODIM might be of derived class, and op[] provides access to ["rscale"] for example.
-		dstODIM.addShortKeys(odim); // This adapts to actual type (PolarODIM, CartesianODIM)
-		//typeRef.setValues(encoding);
-		odim.setValues(encoding);
-
-		if (dstODIM.quantity.empty()){
-			mout.warn() << "quantity not set, restarting from type: " << dstODIM.type << mout.endl;
-			dstODIM.setTypeDefaults();
-			odim.setValues(encoding);
-		}
-			mout.info() << "dstOdim: " << EncodingODIM(dstODIM) << mout.endl;
+	if (dstODIM.quantity != origQuantity){
+		mout.info() << "quantity change " << origQuantity << '>' << dstODIM.quantity << " requested, ok"  << mout.endl;
+	}
+	else if (!odim.type.empty() && (odim.type != dstODIM.type)){
+		mout.info() << "type change " << dstODIM.type << '>' << odim.type << " requested, ok" << mout.endl;
+	}
+	else if (!dstODIM.isSet()){ // quantity set, but type or gain unset
+		mout.info() << "dstODIM unset, applying defaults for quantity: " << dstODIM.quantity << mout.endl;
 	}
 	else {
-		mout.debug() << "empty encodingRequest, no changes (quantity=" << dstODIM.quantity << ", encoding: " << EncodingODIM(dstODIM) << ")" << mout.endl;
+		mout.info() << " (only) minor changes requested in encoding: " << encoding << mout.endl;
+		// That is, no "resetting" needed.
+		dstODIM.updateValues(encoding);
+		return;
 	}
-	// else	no action...
+
+	getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
+
+	//	mout.warn() << "dstODIM set now/already " << dstODIM << mout.endl;
 
 }
 

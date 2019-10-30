@@ -150,7 +150,7 @@ public:
 	 *  Fills empty values. Updates time variables.
 	 */
 	virtual
-	void update(const ODIM & odim);
+	void updateLenient(const ODIM & odim);
 
 	/// Retrieves the stored time. Returns true if successful, throws error if fail.
 	bool getTime(drain::Time & t) const;

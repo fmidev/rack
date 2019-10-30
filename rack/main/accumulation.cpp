@@ -121,7 +121,7 @@ public:
 		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		if (!resources.targetEncoding.empty()){
-			// ProductBase::handleEncodingRequest(acc.odim, resources.targetEncoding);
+			// ProductBase::completeEncoding(acc.odim, resources.targetEncoding);
 			mout.info() << "targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  << mout.endl;
 			acc.setTargetEncoding(resources.targetEncoding);
 			resources.targetEncoding.clear();

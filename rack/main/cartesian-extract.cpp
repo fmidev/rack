@@ -94,11 +94,11 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	//mout.warn() << resources.composite.odim << mout.endl;
 
-	ProductBase::handleEncodingRequest(odim, resources.composite.getTargetEncoding());
+	ProductBase::completeEncoding(odim, resources.composite.getTargetEncoding());
 
 
 	if (!resources.targetEncoding.empty()){
-		ProductBase::handleEncodingRequest(odim, resources.targetEncoding);
+		ProductBase::completeEncoding(odim, resources.targetEncoding);
 		// odim.setValues(resources.targetEncoding, '=');
 		resources.targetEncoding.clear();
 	}

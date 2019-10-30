@@ -163,7 +163,7 @@ public:
 	 *  (Set allowed encoding under construction.)
 	 */
 	static
-	void handleEncodingRequest(ODIM & productODIM, const std::string & encoding);
+	void completeEncoding(ODIM & productODIM, const std::string & encodingRequest);
 
 
 
@@ -344,7 +344,7 @@ protected:
 
 		drain::Logger mout("VolumeOp<M>::", __FUNCTION__);
 
-		ProductBase::handleEncodingRequest(dst.odim, encoding);
+		ProductBase::completeEncoding(dst.odim, encoding);
 
 		if (!dst.odim.type.empty())
 			dst.data.setType(dst.odim.type);
@@ -365,7 +365,7 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & d
 	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
 
 
-	ProductBase::handleEncodingRequest(dst.odim, this->encodingRequest);
+	ProductBase::completeEncoding(dst.odim, this->encodingRequest);
 
 	/// This applies always.
 	//dst.odim.product = odim.product;

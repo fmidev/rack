@@ -88,8 +88,8 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 
 	//dstData.odim.NI =
 	srcData.odim.getNyquist(); // to prevent warning in the next cmd
-	dstData.odim.update(odim); // product
-	dstData.odim.update(srcData.odim); // date, time, etc
+	dstData.odim.updateLenient(odim); // product
+	dstData.odim.updateLenient(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();
 	//mout.warn() << "'final' dstODIM " << dstData << mout.endl;
 

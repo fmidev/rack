@@ -132,7 +132,7 @@ public:
 	 *  Fills empty values. Updates time variables.
 	 */
 	virtual
-	void update(const PolarODIM & odim);
+	void updateLenient(const PolarODIM & odim);
 
 
 	/// For VRAD, set encoding range to cover [-NI,NI]

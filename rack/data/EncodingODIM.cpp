@@ -112,7 +112,7 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 }
 
 
-void EncodingODIM::update(const EncodingODIM & odim){
+void EncodingODIM::updateLenient(const EncodingODIM & odim){
 
 	if (type.empty())
 		type = odim.type;

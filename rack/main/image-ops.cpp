@@ -145,7 +145,7 @@ void ImageOpRacklet::exec() const {
 
 			if (NEW_QUANTITY){
 				mout.debug() << "new quantity:" << dstQuantity << mout.endl;
-				dstData.odim.update(srcData.odim);
+				dstData.odim.updateLenient(srcData.odim);
 				dstData.odim.gain = 0.0;
 				//dstData.odim.quantity = dstQuantity;
 				// mout.note() << "dstData.odim: " << dstData.odim << mout.endl;

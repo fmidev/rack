@@ -68,6 +68,7 @@ Composite::Composite() :  decay(1.0), cropping(false)
 	//dataSelector.path = ".*/(data|quality)[0-9]+/?$";  // groups  .. but quality??
 
 	//odim.reference("type", odim.type = drain::Type::getTypeChar(typeid(void)));
+	//odim.reference("type", odim.type = "C");
 	odim.reference("type", odim.type = "C");
 
 	odim.reference("gain", odim.gain);
@@ -345,7 +346,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), i, j);
 
-	odim.update(srcData.odim); // Time, date, new
+	odim.updateLenient(srcData.odim); // Time, date, new
 	if (odim.NI == 0)
 		odim.NI = srcData.odim.getNyquist();
 	++odim.ACCnum;

@@ -180,7 +180,7 @@ void CompositeAdd::addPolar() const {
 			return;
 		}
 
-		const Data<PolarSrc> polarSrc((*resources.currentPolarHi5)(dataPath)); // NOTE, not from dataSet! (because may be plain /qualityN data)
+		const Data<PolarSrc> polarSrc((*resources.currentPolarHi5)(dataPath)); // NOTE direct path, not from dataSet.getData() ! (because may be plain /qualityN data)
 
 		/// GET INPUT DATA
 		if ( !polarSrc.data.isEmpty() ){
@@ -194,9 +194,23 @@ void CompositeAdd::addPolar() const {
 
 		// mout.warn() << "composite: " << resources.composite.odim << mout.endl;
 
-		if (resources.composite.odim.gain == 0.0){
-			ProductBase::applyODIM(resources.composite.odim, polarSrc.odim);
-			ProductBase::handleEncodingRequest(resources.composite.odim, resources.composite.getTargetEncoding());
+		//if (resources.composite.odim.gain == 0.0){
+		if (!resources.composite.odim.isSet()){
+
+			resources.composite.odim.type = "";
+			resources.composite.odim.updateFromMap(polarSrc.odim);
+			//ProductBase::applyODIM(resources.composite.odim, polarSrc.odim);
+			//mout.note() << "setting encoding: " << EncodingODIM(resources.composite.odim) << mout.endl;
+			const std::string & encoding = resources.composite.getTargetEncoding();
+			if (encoding.empty()){
+				mout.note() << "adapting encoding of first data: " << EncodingODIM(resources.composite.odim) << mout.endl;
+			}
+			ProductBase::completeEncoding(resources.composite.odim, encoding); // note, needed even if encoding==""
+		}
+		else {
+			if (!resources.targetEncoding.empty()){
+				mout.warn() << "target encoding request ("<< resources.targetEncoding << ") bypassed, keeping original " << EncodingODIM(resources.composite.odim) << mout.endl;
+			}
 		}
 
 		//resources.composite.checkInputODIM(polarSrc.odim);

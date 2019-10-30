@@ -108,7 +108,7 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 	// mout.note() << "dstOdim:" << op.odim << mout.endl;
 
 	// mout.note() << "params :" << parameters << mout.endl;
-	ProductBase::handleEncodingRequest(op.odim, parameters);
+	ProductBase::completeEncoding(op.odim, parameters);
 	// mout.warn() << "dstOdim:" << op.odim << mout.endl;
 
 	op.processImage(srcData, dst);
@@ -552,7 +552,7 @@ public:
 			data.odim.updateFromMap(resources.currentGrayImage->getProperties());
 
 			//applyODIM(data.odim, dummy);
-			ProductBase::handleEncodingRequest(data.odim, resources.targetEncoding);
+			ProductBase::completeEncoding(data.odim, resources.targetEncoding);
 			data.data.setScaling(data.odim.gain, data.odim.offset);
 			data.odim.quantity = dstQuantity;
 			resources.targetEncoding.clear();

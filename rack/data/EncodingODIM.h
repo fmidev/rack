@@ -233,7 +233,7 @@ public:
 
 	/// Sets type, if unset (empty).
 	virtual
-	void update(const EncodingODIM & odim);
+	void updateLenient(const EncodingODIM & odim);
 
 
 	/// Creates a short alias \c (attrib) for each \c (group):(attrib). Example: "gain" => "what:gain".

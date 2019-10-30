@@ -115,11 +115,11 @@ protected:
 
 /*
 template <class M>
-void VolumeOp<M>::handleEncodingRequest(const std::string & encoding, PlainData<DstType<M> > & dst){
+void VolumeOp<M>::completeEncoding(const std::string & encoding, PlainData<DstType<M> > & dst){
 
 	drain::Logger mout("VolumeOp<M>::", __FUNCTION__);
 
-	ProductOp<PolarODIM,M>::handleEncodingRequest(dst.odim, encoding);
+	ProductOp<PolarODIM,M>::completeEncoding(dst.odim, encoding);
 
 	if (!dst.odim.type.empty())
 		dst.data.setType(dst.odim.type);

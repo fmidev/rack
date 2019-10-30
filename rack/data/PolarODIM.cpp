@@ -68,7 +68,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 }
 
-void PolarODIM::update(const PolarODIM & odim){
+void PolarODIM::updateLenient(const PolarODIM & odim){
 
 	//if (NI == 0.0)
 	odim.getNyquist(LOG_INFO);
@@ -80,7 +80,7 @@ void PolarODIM::update(const PolarODIM & odim){
 	}
 
 
-	ODIM::update(odim);
+	ODIM::updateLenient(odim);
 
 
 }

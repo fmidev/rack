@@ -130,7 +130,7 @@ void Log::start(int level, const std::string & msgSender){
 	}
 
 
-	if (verbosityLevel >= (msgLevel + 2)){
+	if (verbosityLevel >= (msgLevel + 1)){
 		if (!msgSender.empty())
 			sstr << msgSender << ':' << ' ';
 	}

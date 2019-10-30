@@ -164,7 +164,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	}
 
 	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
-	ProductBase::handleEncodingRequest(dst.odim, encodingRequest);
+	ProductBase::completeEncoding(dst.odim, encodingRequest);
 
 	dst.data.setScaling(dst.odim.gain, dst.odim.offset);
 	mout.debug() << "final dst: " << dst.data  << mout.endl;
@@ -190,7 +190,7 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	Data<PolarDst> & dstData = dstProduct.getData(odim.quantity); // quality data?
 
-	dstData.odim.update(vradSrc.odim);
+	dstData.odim.updateLenient(vradSrc.odim);
 	//dstData.odim.NI = vradSrc.odim.NI;
 	initDst(vradSrc.odim, dstData);
 

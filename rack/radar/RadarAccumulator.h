@@ -151,7 +151,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	}
 
 	counter += std::max(1L, srcData.odim.ACCnum);
-	odim.update(srcData.odim); // Time, date, new
+	odim.updateLenient(srcData.odim); // Time, date, new
 
 	//mout.note() << "after:  " << this->odim << mout.endl;
 
@@ -164,7 +164,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	//mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
 	DataCoder converter(srcData.odim, srcQuality.odim);
 	AC::addData(srcData.data, srcQuality.data, srcCount.data, converter);
-	odim.update(srcData.odim); // Time, date, new
+	odim.updateLenient(srcData.odim); // Time, date, new
 	counter = std::max(1L, srcData.odim.ACCnum);
 }
 

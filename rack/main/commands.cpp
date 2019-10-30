@@ -679,7 +679,7 @@ public:
 					//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
 
 					dstData.updateTree2();
-					rootODIM.update(dstData.odim);
+					rootODIM.updateLenient(dstData.odim);
 				}
 			}
 		}

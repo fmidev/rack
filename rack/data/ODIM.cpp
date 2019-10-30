@@ -188,7 +188,7 @@ bool ODIM::getEndTime(drain::Time & t) const {
 }
 
 
-void ODIM::update(const ODIM & odim){
+void ODIM::updateLenient(const ODIM & odim){
 
 	if (object.empty())
 		object = odim.object;
