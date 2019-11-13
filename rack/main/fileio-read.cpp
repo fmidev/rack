@@ -609,16 +609,22 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	// Non-const, modifications may follow
 	drain::FlexVariableMap & attr = dstImage.properties;
 
+
 	// Displays true/false
 	mout.debug() << "Image has metadata: " << Variable(!attr.empty()) << mout.endl;
 
 	//mout.note() << attr << mout.endl;
 
-	drain::Variable & object = attr["what:object"];
+	//drain::FlexVariable & object = attr["what:object"];
+	std::string object = attr["what:object"].toStr();
+	//mout.warn() << "object: '" << object << '[' << Type::getTypeChar(object.getType()) << "]', props: " <<  dstImage.properties << mout.endl;
 
-	if (object.isEmpty()){
-		mout.note() << "what:object empty, ? assuming polar data, 'PVOL'" << mout.endl;
-		object = "PVOL";
+
+	if (object.empty()){
+		object = "SCAN";
+		//if (object.isStlString()) mout.note() << "STL string" << mout.endl;
+		//if (object.isCharArrayString()) mout.note() << "charArray string" << mout.endl;
+		mout.note() << "what:object empty, assuming '"<< object <<"'" << mout.endl;
 	}
 
 	/*
@@ -651,7 +657,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	DataTools::updateInternalAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
-	if (object.toStr() == "COMP"){
+	if (object == "COMP"){
 		mout.note() << "Composite detected" << mout.endl;
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
@@ -660,10 +666,11 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
 	}
 	else {
-		if (object.toStr() == "SCAN"){
-			mout.note() << "Polar scan detected" << mout.endl;
+		if ((object == "SCAN") || (object == "PVOL")) {
+			mout.note() << "Polar object (" << object << ") detected" << mout.endl;
 		}
 		else {
+			resources.inputHi5["what"].data.attributes["what:object"] = "SCAN";
 			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout.endl;
 		}
 		PolarODIM odim;

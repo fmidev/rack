@@ -65,6 +65,15 @@ class ModifiableImage : public MultiChannel {
 
 public:
 
+
+	inline
+	void setConf(const ImageConf &conf) {
+		encoding.setType(conf.encoding.getType());
+		encoding.scaling.set(conf.encoding.scaling);
+		coordinatePolicy.set(conf.coordinatePolicy);
+		setGeometry(conf.geometry);
+	}
+
 	/// Resizes the image, keeps the current type. \see initialize().
 	/**
 
@@ -75,25 +84,9 @@ public:
 	virtual inline
 	void setGeometry(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
 
-		// const bool result =
 		geometry.setGeometry(width, height, imageChannels, alphaChannels);
 		adjustBuffer();
-		/*
-		const size_t s = geometry.getVolume() * encoding.byteSize;
-
-
-		if (s > 0)
-			buffer.resize(s);
-		else
-			buffer.resize(1);
-
-		bufferPtr = &buffer[0];
-		segmentBegin = (void *)&(*buffer.begin());
-		segmentEnd   = (void *)&(*buffer.end());
-		*/
-
 		this->channelVector.clear();
-		//updateChannelVector();
 
 	}
 

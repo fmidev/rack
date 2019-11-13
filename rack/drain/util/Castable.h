@@ -156,7 +156,10 @@ public:
 	 */
 	inline
 	size_t isEmpty() const {
-		return (getElementCount() == 0);
+		if (!isStlString())
+			return (getElementCount() == 0);
+		else
+			return ((const std::string *)caster.ptr)->empty();
 	}
 
 	/// Clears std::strings or sets numeric values to zero. Does not change type or resize.

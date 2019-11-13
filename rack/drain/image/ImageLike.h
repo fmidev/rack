@@ -198,6 +198,23 @@ public:
 
 
 
+inline
+std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
+
+	ostr << ' ' << conf.geometry << ' ' << Type::getTypeChar(conf.encoding.getType()) << '@' << (conf.encoding.getByteSize()*8) << 'b';
+	const ImageScaling & s = conf.encoding.scaling;
+	if (s.isScaled() || s.isPhysical()){
+		ostr << "*(";
+		s.toOStr(ostr);
+		ostr << ")";
+	}
+	//if (scaling.isPhysical())
+	//	ostr  << '[' << scaling.getMinPhys() << ',' << scaling.getMaxPhys() << ']';
+	//ostr << ' ' << '[' << scaling.getMin<double>() <<  ',' << scaling.getMax<double>() << ']' << ' ' << scaling.getScale() << ' ';
+	ostr << ' ' << 'c' << conf.coordinatePolicy;
+	return ostr;
+}
+
 /// A base class for images.
 /*!
  *   Generally, an ImageLike does not have to have memory. It may be a two-dimensional function,
@@ -214,7 +231,12 @@ public:
 
 	inline
 	ImageLike(const ImageLike &image){
-		setConf(image);
+		std::cerr << __FILE__ << __FUNCTION__ << " setConf/Geom has no effect\n";
+		//setConf(image);
+		encoding.setType(image.getType());
+		encoding.scaling.set(image.encoding.scaling);
+		//geometry.setGeometry(image.getGeometry());
+		coordinatePolicy.set(image.coordinatePolicy);
 		/*
 		encoding.setType(image.getType());
 		encoding.scaling.set(image.encoding.scaling);
@@ -225,14 +247,15 @@ public:
 
 	inline
 	ImageLike(const ImageConf &conf){
-		setConf(conf);
+		std::cerr << __FILE__ << __FUNCTION__ << " setConf has no effect\n";
+		//setConf(conf);
 	}
 
 
 	virtual inline
 	~ImageLike(){};
 
-
+	/*
 	inline
 	void setConf(const ImageConf &conf) {
 		encoding.setType(conf.encoding.getType());
@@ -240,6 +263,7 @@ public:
 		geometry.setGeometry(conf.geometry);
 		coordinatePolicy.set(conf.coordinatePolicy);
 	}
+	*/
 	// ENCODING/SCALING
 
 	// REMOVE THIS..?

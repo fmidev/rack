@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "util/JSONtree.h"
 #include "util/ValueReader.h"
+#include "util/TextReader.h"
 
 namespace drain
 {
@@ -97,9 +98,8 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 
 	mout.note() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
 
-	while ((c = infile.get()) != '\n'){
-		// ?
-	}
+	// while ((c = infile.get()) != '\n'){}
+	drain::TextReader::scanSegment(infile, "\n");  // NEW
 
 	std::string key;
 	//std::string value;
@@ -127,7 +127,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		}
 		sstr.str("");
 	}
-	mout.note() << "Done" << mout.endl;
+	// mout.note() << "Done" << mout.endl;
 	infile >> width;
 	infile >> height;
 	if ((pt != PBM_ASC) && (pt != PBM_RAW))
@@ -145,6 +145,8 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		conf.encoding.setType(typeid(unsigned short));
 	}
 
+	drain::TextReader::scanSegment(infile, "\n");
+
 	// Under constr
 	// conf.encoding.setType();
 	// conf.encoding.scaling.setPhysicalMax(maxValue);
@@ -153,6 +155,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		properties["coordinatePolicy"].toContainer(policy);
 		conf.coordinatePolicy.set(policy);
 	}
+
 	conf.geometry.setGeometry(width, height, channels);
 
 
@@ -177,10 +180,9 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	ImageConf conf;
 	readHeader(conf, image.properties, infile);
-
-	mout.note() << "Size:" <<  conf.geometry << mout.endl;
-	image.setConf(conf);
-	// image.initialize(conf.encoding., geometry);
+	//mout.debug() << "conf: " << conf << mout.endl;
+	//mout.debug() << "prop: " << image.properties << mout.endl;
+	image.setConf(conf); // rename initialize()
 
 	mout.debug() << image << mout.endl;
 
@@ -196,12 +198,13 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	mout.info() << "reading image: " << image << mout.endl;
+	mout.info() << "reading image: " << image << ", file=" << path << mout.endl;
 
 	std::ifstream infile;
 	infile.open(path.c_str(), std::ios::in);
 
 	if (!infile){
+		infile.close();
 		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
 		return;
 	}
@@ -209,6 +212,8 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 	ImageConf conf;
 
 	readHeader(conf, image.properties, infile);
+	mout.debug() << "conf: " << conf << mout.endl;
+	mout.debug() << "prop: " << image.properties << mout.endl;
 
 	readFrame(image, infile);
 
@@ -227,17 +232,21 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileTyp
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.info() << "reading image: " << image << mout.endl;
+	mout.info() << "reading to frame: " << image << mout.endl;
 
 	const size_t channels = image.getChannelCount();
 
+	const ImageFrame::iterator eit = image.end();
+
 	if (channels == 1){
-		ImageFrame::iterator  it = image.begin();
-		const ImageFrame::iterator eit = image.end();
-		while ((infile) && (it != eit)){
+		ImageFrame::iterator        it = image.begin();
+		// int i=0;
+		while ((!infile.eof()) && (it != eit)){
 			*it = infile.get();
 			++it;
+			// ++i;
 		}
+		// mout.debug() << "read " << i << " bytes" << mout.endl;
 		if (it != eit){
 			mout.warn() << "premature end of file: " << image << mout.endl;
 		}
@@ -246,7 +255,7 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileTyp
 		ImageFrame::iterator  rit = image.getChannel(0).begin();
 		ImageFrame::iterator  git = image.getChannel(1).begin();
 		ImageFrame::iterator  bit = image.getChannel(2).begin();
-		while (infile){
+		while (!infile.eof()){
 			*rit = infile.get();
 			++rit;
 			*git = infile.get();
@@ -255,19 +264,32 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileTyp
 			++bit;
 			// TODO CHECK
 		}
-		/*
-		if (rit != eit){
+
+		if (bit != eit){
 			mout.warn() << "premature end of file: " << image << mout.endl;
 		}
-		*/
+
 	}
 	else {
-		mout.error() << "Sorry, this type of PNM format (" << channels << " channels) not implemented" << mout.endl;
+		mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
 	}
 
+
+	if (infile.peek() != EOF)
+		mout.warn() << " spurious bytes at end of file?" << mout.endl;
+
+	/*
 	if (!infile.eof()){
-		mout.warn() << "spurious bytes in end of file" << mout.endl;
+		int i=0; // , c;
+		while (!infile.eof()){
+			// c =
+			infile.get();
+			++i;
+			//mout.warn() <<  ++i << "\t'" << (char)c << "'" << mout.endl;
+		}
+		mout.warn() << i << " spurious bytes in end of file" << mout.endl;
 	}
+	*/
 
 	//infile.close();
 
