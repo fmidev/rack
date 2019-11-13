@@ -621,20 +621,23 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		object = "PVOL";
 	}
 
+	/*
 	if (object == "COMP"){
 		CartesianODIM odim;
 		odim.updateFromMap(attr);
-		mout.note() << odim << mout.endl;
+		mout.note() << "Composite detected" << mout.endl;
+		mout.debug() << odim << mout.endl;
 	}
 	else if ((object == "SCAN") || (object == "PVOL")){
 		PolarODIM odim;
 		odim.updateFromMap(attr);
-		mout.note() << odim << mout.endl;
+		mout.note() << "Polar scan detected" << mout.endl;
+		mout.debug() <<  odim << mout.endl;
 	}
 	else {
 		mout.note() << "what:object not SCAN, PVOL or COMP: rack provides limited support" << mout.endl;
 	}
-
+	*/
 
 	/*
 	drain::VariableMap & rootAttributes = resources.inputHi5["what"].data.attributes;
@@ -648,7 +651,8 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	DataTools::updateInternalAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
-	if (object.toStr()=="COMP"){
+	if (object.toStr() == "COMP"){
+		mout.note() << "Composite detected" << mout.endl;
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
@@ -656,6 +660,12 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
 	}
 	else {
+		if (object.toStr() == "SCAN"){
+			mout.note() << "Polar scan detected" << mout.endl;
+		}
+		else {
+			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout.endl;
+		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
