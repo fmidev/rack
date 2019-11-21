@@ -419,7 +419,10 @@ protected:
 
 		const F d = *(F *)p;
 
-		if (d == rint(d)){
+		if (std::isnan(d)){
+			ostr << "NaN";  // JSON std literal
+		}
+		else if (d == rint(d)){
 			//ostr << std::ios::fixed << std::setprecision(2) << d;
 
 			const std::streamsize prec = ostr.precision();
@@ -430,8 +433,9 @@ protected:
 			ostr.precision(prec);
 
 		}
-		else
+		else {
 			ostr << d;
+		}
 
 		return ostr;
 

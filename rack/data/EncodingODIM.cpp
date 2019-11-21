@@ -155,7 +155,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
-			mout.debug() << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
+			mout.debug(4) << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
 
 			if (t == typeid(double)){
 				//(*this)[key] = (double)srcValue;
@@ -175,7 +175,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 				dstValue = srcValue;
 		}
 		else {
-			mout.debug() << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
+			mout.debug(2) << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
 		}
 
 	}

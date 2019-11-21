@@ -66,7 +66,8 @@ public:
 	}
 	*/
 
-	DetectorOp(const std::string & name = __FUNCTION__, const std::string & description = "", const std::string & echoClass = "") : AndreOp(name,description), classCode(getClassCode(echoClass)) {
+	DetectorOp(const std::string & name = __FUNCTION__, const std::string & description = "", const std::string & echoClass = "") :
+			AndreOp(name,description), classCode(getClassCode(echoClass)) {
 
 		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		//dataSelector.quantity = "DBZ.*";

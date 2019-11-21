@@ -982,20 +982,24 @@ public:
 			const ReferenceMap & m = command.getParameters();
 			const ReferenceMap::keylist_t & keys = m.getKeyList();
 			ostr << "{";
-			ostr << "  \"parameters\": {";
+			ostr << "  \"variables\": {";
 
 			char sep=0;
 
 			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
 			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
+
 				if (sep)
 					ostr << sep;
 				else
 					sep = ',';
+
+				const drain::Referencer & entry = m[*it];
+
 				ostr << "\n  \"" << *it << "\": {\n";
 				//ostr << std::setw(10) << std::left << "\"type\": \"";
-				//ostr << "    \"type\": \"";
-				const drain::Referencer & entry = m[*it];
+				/*
+				ostr << "    \"type\": \"";
 				if (entry.isString()) {
 					ostr << "string";
 				}
@@ -1003,7 +1007,7 @@ public:
 					ostr << Type::call<drain::simpleName>(entry.getType());
 				}
 				ostr << "\",\n";
-
+				*/
 				ostr << "    \"value\": ";
 				entry.valueToJSON(ostr);
 				ostr << "\n";

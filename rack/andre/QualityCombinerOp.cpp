@@ -233,7 +233,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 		std::set<std::string> classCodesNew;
 		//srcClass.getTree()["how"].data.attributes["task_args"].toContainer(classCodesNew);
-		srcClass.getHow()["task_args"].toContainer(classCodesNew);
+		srcClass.getHow()["task_args"].toContainer(classCodesNew, ',');
+
+		srcClass.getHow()["task_args"].toJSON(std::cerr, 3);
+
+		mout.debug() << " task args: " << classCodesNew.size() << mout.endl;
 
 		//std::set<std::string> classCodesFinal;
 		//set_union(classCodes.begin(), classCodes.end(), classCodesNew.begin(), classCodesNew.end(), classCodesFinal.begin());

@@ -96,7 +96,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		return;
 	}
 
-	mout.note() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
+	mout.info() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
 
 	// while ((c = infile.get()) != '\n'){}
 	drain::TextReader::scanSegment(infile, "\n");  // NEW
@@ -176,7 +176,6 @@ void FilePnm::read(Image & image, const std::string & path) {
 		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
 		return;
 	}
-
 
 	ImageConf conf;
 	readHeader(conf, image.properties, infile);

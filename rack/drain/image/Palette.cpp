@@ -95,7 +95,7 @@ std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char 
 			separator2 = separator;
 
 		//ostr << "# " << label << "\n";
-		if (isnan(value)){
+		if (std::isnan(value)){
 			//ostr << "# " << id << "\n";
 			ostr << '@' << separator;
 		}

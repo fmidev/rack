@@ -168,7 +168,6 @@ static CommandEntry<AnDReStoreCombined> anDReStoreCombined("andre", "aStoreCombi
 
 AnDReModule::AnDReModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix){
 
-	static AnDReLetAdapter<PrecipOp>   precip; // ?
 	static AnDReLetAdapter<BiometOp>   biomet;
 	static AnDReLetAdapter<BirdOp>     bird;
 	static AnDReLetAdapter<DopplerNoiseOp> dopplerNoise;
@@ -176,12 +175,16 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<InsectOp>   insect;
 	static AnDReLetAdapter<JammingOp> jamming;
 	//static AnDReLetAdapter<NoiseOp>     noise; // on hold (bak)
-	static AnDReLetAdapter<RhoHVLowOp>     rhoHV;
+	static AnDReLetAdapter<RhoHVLowOp>  rhoHV;
 	static AnDReLetAdapter<ShipOp>       ship;
 	static AnDReLetAdapter<SpeckleOp> speckle;
 
 
 	// Other detector-like operators
+	static AnDReLetAdapter<DefaultOp>   defaultOp; // ?
+	static AnDReLetAdapter<PrecipOp>   precip; // ?
+	static AnDReLetAdapter<ClutterOp>  clutter;
+	static ClutterMapRead clutterMapRead(clutter.productOp);
 
 	static AnDReLetAdapter<CCorOp>       ccor;
 	static AnDReLetAdapter<HydroClassBasedOp> hydroClass;
@@ -197,9 +200,6 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<QualityCombinerOp> qualityCombiner;
 
 
-	static AnDReLetAdapter<ClutterOp>  clutter;
-
-	static ClutterMapRead clutterMapRead(clutter.productOp);
 
 	static ClassThreshold classThreshold;
 	static Universal universal;

@@ -423,15 +423,19 @@ public:
 	/// Converts to simple iterable STL container.
 	/**
 	 *    \tparam T - std::set, std::list or std::vector
+	 *    \param container  - sequence in which elements will be assigned
+	 *    \param separator  - separator char(s) overriding separator chars of the instance; applicable only with strings
 	 */
 	template <class T>
-	void toContainer(T & container) const { // FIX raise
+	void toContainer(T & container, char separator = 0) const { // FIX raise
 
 		container.clear();
 
 		if (isString()){
 			//StringTools::split(toStr(), container, std::string(1, this->outputSeparator)," \t\n");
-			StringTools::split(toStr(), container, this->outputSeparator," \t\n");
+			if (!separator)
+				separator = this->outputSeparator;
+			StringTools::split(toStr(), container, separator," \t\n");
 		}
 		else {
 			for (size_t i = 0; i < getElementCount(); ++i) {
@@ -699,6 +703,13 @@ protected:
 	//  Does not clear()?
 	template <class T>
 	void assignContainer(const T & v, bool append=false) {
+
+		if (!append){
+			if (isStlString())
+				clear();
+			else
+				requestSize(0);
+		}
 
 		suggestType(typeid(typename T::value_type));
 		// Note: sequence of strings, will request string type...

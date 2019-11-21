@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define PRECIP_OP2_H_
 
 #include "DetectorOp.h"
+#include "QualityCombinerOp.h"
 
 //#include <drain/image/SegmentAreaOp.h>
 //#include <drain/util/Fuzzy.h>
@@ -45,6 +46,46 @@ using namespace drain::image;
 
 
 namespace rack {
+
+/// Simply, "detects" precipitation ie sets its probability.
+/**
+ *  Sets default class, typically with a low maximum prority.
+ *  Applicable in context of str detectors to prevent clear precipitation from being classified to str classes.
+ */
+class DefaultOp: public DetectorOp {
+
+public:
+
+	/**
+	 * \param prob - maximum expected reflectance of biometeors
+	 * \param maxAltitude - maximum expected altitude of biometeors
+	 * \param reflDev - fuzzy width of  \c reflMax
+	 * \param devAltitude - fuzzy width of \c maxAltitude
+	 */
+	DefaultOp() :
+		DetectorOp(__FUNCTION__, "Marks all the data values as unclassified", "tech.class.reject"){ //ECHO_CLASS_PRECIP){
+
+		//parameters.reference("class", this->defaultClass = "unclass", "marker for class");
+		// QualityCombinerOp::CLASS_UPDATE_THRESHOLD
+		parameters.reference("probability", this->probability = 0.01, "'resulting' probability");
+
+		dataSelector.quantity = "DBZH$";
+		dataSelector.count = 1;
+		REQUIRE_STANDARD_DATA = false;
+	};
+
+	///
+	//int code;
+	//std::string defaultClass;
+	double probability;
+
+protected:
+
+	virtual
+	void processData(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const;
+
+};
+
 
 /// Simply, "detects" precipitation ie sets its probability.
 /**

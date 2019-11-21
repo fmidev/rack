@@ -130,25 +130,33 @@ std::string Castable::toStr() const {
 }
 
 void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
+
 	ostr << '{' << fill << " \"value\": ";
+
 	valueToJSON(ostr);
-	ostr << ',' << fill; //",\n";
-	ostr << " \"type\": \"";
-	if (isCharArrayString())
-		ostr << '$';
-	else
-		ostr << drain::Type::getTypeChar(getType());
-	// OLD: if (getElementCount() != 1)		ostr << '[' << getElementCount() << ']';
-	ostr << "\"";
-	if ((getElementCount() != 1) || (verbosity > 1)){
+
+	if (verbosity > 1){
+		ostr << ',' << fill << " \"type\": \"";
+		if (isCharArrayString())
+			ostr << '$';
+		else
+			ostr << drain::Type::getTypeChar(getType());
+		// OLD: if (getElementCount() != 1)		ostr << '[' << getElementCount() << ']';
+		ostr << "\"";
+
+		//if (getElementCount() != 1) || (verbosity > 1)){
 		ostr << ',' << fill << " \"size\": "  << getElementCount();
+		//}
 	}
+
 	if (verbosity > 2){
 		ostr << ',' << fill << " \"inputSeparator\": \""  << inputSeparator  << "\"";
 		ostr << ',' << fill << " \"outputSeparator\": \"" << outputSeparator << "\"";
 	}
+
 	ostr << fill << '}' << fill;
 }
+
 
 std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 

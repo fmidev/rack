@@ -80,7 +80,7 @@ void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-		mout.debug() << "considering " << *it << mout.endl;
+		mout.debug(1) << "considering " << *it << mout.endl;
 
 		//const std::string parent = DataTools::getParent(*it);
 		ODIMPath parent = *it;

@@ -58,6 +58,48 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 }
 
+
+class DataMarker : public drain::UnaryFunctor {
+
+public:
+
+	DataMarker() : drain::UnaryFunctor(__FUNCTION__), value(0.5) {
+
+	}
+
+	inline
+	void set(double value){
+		this->value = value;
+		//this->update();
+	}
+
+
+	inline
+	double operator()(double x) const {
+		return value;
+	}
+
+	double value;
+
+};
+
+
+void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
+
+	drain::Logger mout(name, __FUNCTION__);
+	mout.debug() << *this << mout.endl;
+	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
+
+	//const int code = AndreOp::getClassCode(this->classCode);
+
+	RadarFunctorOp<DataMarker> marker;
+	marker.odimSrc = srcData.odim;
+	marker.functor.set(this->probability);
+	marker.process(srcData.data, dstData.data);
+
+}
+
+
 }  // rack::
 
 // Rack
