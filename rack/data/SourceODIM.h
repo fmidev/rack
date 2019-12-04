@@ -67,7 +67,8 @@ public:
 	inline
 	SourceODIM(const std::string & source = "") : source(source) {
 		init();
-		setValues(source, ':');
+		setValues(source, ':', ',');
+		//setValues(source, ':');
 		setNOD();
 	};
 

@@ -116,11 +116,6 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			initDataDst(srcData, dstClass, "CLASS");
 
 			// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
-
-			// const std::string & KEYNAME = DetectorOp::STORE ? CLASSNAME : std::string("~")+CLASSNAME;
-
-
-			// add tmp here
 			PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
 			//dstProb.tree.data.noSave = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
@@ -224,9 +219,22 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 	if (dstData.data.isEmpty()){
 
+		if (quantity.empty()){
+			//mout.warn() << "requested: " << quantity << mout.endl;
+			dstData.odim.quantity = getOutputQuantity();
+			QualityCombinerOp::initDstQuality(srcData, dstData, "PROB");
+		}
+		else {
+			dstData.odim.quantity = quantity;
+			QualityCombinerOp::initDstQuality(srcData, dstData, quantity);
+		}
+
+
+		/*
 		if (quantity.empty()){ // BIOMET, EMITTER, SHIP, etc.
 			//dstData.odim.setQuantityDefaults("PROB");
 			dstData.odim.quantity = getOutputQuantity();
+			mout.debug() << "quantity ["<< dstData.odim.quantity << "], setting defaults of PROB" << mout.endl;
 			getQuantityMap().setQuantityDefaults(dstData, "PROB");
 		}
 		else
@@ -242,6 +250,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 			dstData.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
 		}
 		dstData.data.setName(dstData.odim.quantity);
+		*/
 	}
 	else {
 		mout.debug() << "already initialized: " << EncodingODIM(dstData.odim) << mout.endl;

@@ -130,25 +130,10 @@ public:
 
 	SlidingWindowMedianOp(int width=1, int height=1, double percentage=0.5, int bins=256)
 		: SlidingWindowOp<SlidingWindowMedianWeighted>("SlidingWindowMedian", "A pipeline implementation of window median."){
-		//this->conf.width = width;
-		//this->conf.height = height;
-		//reference("width", this->width, width);
-		//reference("height", this->height, height);
 		parameters.reference("percentage", this->conf.percentage = percentage);
 		parameters.reference("bins", this->conf.bins = bins);
 	}
 	
-	//double percentage;
-	//int bins;
-
-
-protected:
-
-/*
-	void apply(const ImageFrame &src, ImageFrame &dst) const;
-
-	void apply(const ImageFrame &src, const ImageFrame &srcWeight, ImageFrame &dst,Image &dstWeight) const;
-*/
 
 };
 

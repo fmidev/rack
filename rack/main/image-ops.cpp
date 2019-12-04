@@ -92,6 +92,13 @@ void ImageOpRacklet::exec() const {
 	}
 	bool NEW_QUANTITY = !dstQuantity.empty();
 
+	if (NEW_QUANTITY){
+		mout.debug(1) << "outputs new quantity: " << dstQuantity << mout.endl;
+	}
+	else {
+		mout.debug(1) << "outputs same quantity(s) " << mout.endl;
+	}
+
 	// skip quantity fow later traversal, accept now all the datasetN's ?
 	// ORIG quantity => in-place
 	// TODO: if same quantity, use temp?
@@ -126,8 +133,10 @@ void ImageOpRacklet::exec() const {
 		bool SPECIFIC_QUALITY_MISSING  = false;
 
 		// mout.warn()
-		mout.debug(1) << "path: " << *it << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
-
+		mout.debug(1) << "path: " << *it << " contains " << QUANTITY_COUNT << " quantities, and... " << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
+		if (QUANTITY_COUNT == 0){
+			mout.warn() << "no quantities with selection /" << quantity << "/ to process" << mout.endl;
+		}
 
 		/// 1st loop: Add data, not quality yet (only check it)
 		for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
@@ -202,9 +211,12 @@ void ImageOpRacklet::exec() const {
 		}
 
 		/// Add quality, if found.
+		mout.debug(1) << "Add quality, if found" << mout.endl;
+
 		//  Case 1: at least some specific quality is used (and dataset-level )
 		if ((DATASET_QUALITY && SPECIFIC_QUALITY_FOUND) || !SPECIFIC_QUALITY_MISSING) {
 
+			mout.debug(1) << "at least some specific quality is used (and dataset-level)" << mout.endl;
 
 			//if (DATASET_QUALITY)
 			//	mout.note() << "detected dataset-level quality data: " << *it << mout.endl;
@@ -283,7 +295,7 @@ void ImageOpRacklet::exec() const {
 
 
 		// MAIN
-
+		mout.debug() << "Main" << mout.endl;
 		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
 		mout.debug()  << "src tray:\n" << srcTray << mout.endl;
 		mout.debug(1) << "dst tray before processing:\n" << dstTray << mout.endl;
@@ -292,6 +304,10 @@ void ImageOpRacklet::exec() const {
 		mout.debug() << "dst tray after processing:\n" << dstTray << mout.endl;
 
 		drain::image::Geometry geometry(0,0);
+		// Consider later DataSet<BasicDst> basic(*resources.currentHi5);
+		//basic.getWhat()["object"]....
+		// updateGeometryODIM<ODIM>((*resources.currentHi5)(*it), quantity, geometry);
+
 		drain::Variable & object = (*resources.currentHi5)["what"].data.attributes["object"];
 		if (object.toStr() == "COMP"){
 			updateGeometryODIM<CartesianODIM>((*resources.currentHi5)(*it), quantity, geometry);

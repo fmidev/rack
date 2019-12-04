@@ -56,21 +56,26 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
-	RhoHVLowOp(double threshold=0.85, double thresholdWidth=0.1, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
+	RhoHVLowOp(double threshold=0.5, double thresholdWidth=0.1, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
 		DetectorOp("RhoHVLow","Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", "nonmet"){
+
 		dataSelector.quantity = "RHOHV";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
-		parameters.reference("threshold", this->threshold = threshold, "0...1");
-		parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
+
+		parameters.reference("threshold", this->threshold.vect, "0...1[:0...1]");
+		this->threshold.min = threshold-thresholdWidth;
+		this->threshold.max = threshold+thresholdWidth;
+		//parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
 		parameters.reference("windowWidth", this->windowWidth = windowWidth, "metres");
 		parameters.reference("windowHeight", this->windowHeight = windowHeight, "degrees");
 		parameters.reference("medianPos", this->medianPos = medianPos, "0...1");
 		//parameters.reference("area", this->area, area);
 	};
 
-	double threshold;
-	double thresholdWidth;
+	//double threshold;
+	//double thresholdWidth;
+	drain::Range<double> threshold;
 
 	double windowWidth;
 	double windowHeight;
@@ -80,7 +85,6 @@ protected:
 
 	virtual
 	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
-	//void filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const;
 
 };
 

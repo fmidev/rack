@@ -143,8 +143,12 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	typeRef.updateValues(encodingRequest);
 	dst.data.setType(dst.odim.type);
 
+
+
+
+
 	if (odim.gain != 0.0){ // NOTE: now dst.odim.gain at least default (1.0)
-		mout.warn() << "Init with use ODIM: " << EncodingODIM(odim)  << mout.endl;
+		mout.warn() << "Init with ODIM: " << EncodingODIM(odim)  << mout.endl;
 		//ProductOp::
 		applyODIM(dst.odim, odim);
 	}
@@ -161,6 +165,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 			if (drain::Type::call<drain::typeIsInteger>(dst.data.getType()))
 				mout.warn() << "large int" << mout.endl;
 		}
+		dst.odim.distinguishNodata(); // change undetect
 	}
 
 	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
@@ -193,6 +198,8 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	dstData.odim.updateLenient(vradSrc.odim);
 	//dstData.odim.NI = vradSrc.odim.NI;
 	initDst(vradSrc.odim, dstData);
+
+	dstData.data.fill(dstData.odim.undetect); // NEW 2019/11
 
 	processData(vradSrc, dstData);
 	//mout.warn() << "after:" << dstData.data.getScaling() << mout.endl;
@@ -301,7 +308,7 @@ public:
 	 */
 	DopplerDevOp(int widthM = 1500, double heightD = 3.0) :
 		DopplerWindowOp<DopplerDevWindow>(__FUNCTION__, "Computes std.dev.[m/s] of Doppler field", widthM, heightD) {
-		parameters.reference("relativeScale", this->conf.relativeScale = true, "0|1");
+		parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
 
 		//this->conf.relativeScale = true;
 		odim.quantity = "VRAD_DEV"; // VRAD_C ?

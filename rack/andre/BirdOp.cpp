@@ -53,24 +53,6 @@ using namespace drain::image;
 
 namespace rack {
 
-// kludge
-void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight) {
-
-	//dataSelector.path = "da ta[0-9]+/?$";
-	//dataSelector.quantity = "^(DBZH|VRAD|WRAD|RHOHV|ZDR)$";
-	dataSelector.quantity = "^(DBZH|VRAD|VRADH|RHOHV|ZDR)$";
-	dataSelector.count = 1;
-
-	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
-	parameters.reference("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
-	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
-	parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
-	parameters.reference("zdrDevMin", this->zdrDevMin = zdrDevMin, "Minimum std.deviation of ZDR (fuzzy)");
-
-	parameters.reference("windowWidth", this->windowWidth = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-	parameters.reference("windowHeight", this->windowHeight = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
-
-}
 
 /*
 void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
@@ -82,7 +64,7 @@ void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, cons
  *
  *
  */
-void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(getName() + "::"+__FUNCTION__, feature);
 
@@ -97,6 +79,7 @@ void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & 
 	if (NEW){
 		mout.debug(1) << "creating dst image" << mout.endl;
 		//dstData.setPhysicalRange(0.0, 1.0);
+		dstData.setPhysicalRange(0.0, 1.0);
 		op.traverseChannel(src.data, dstData.data);
 		dstData.odim.prodpar = feature;
 		tmp.copyShallow(dstData.data);
@@ -130,7 +113,7 @@ void BirdOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & 
 
 }
 
-void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug(2) << "start" <<  mout.endl; //
@@ -140,10 +123,11 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 	//dstData.setPhysicalRange(0.0, 1.0);
 
 	Image tmp(typeid(unsigned char));
+	tmp.setPhysicalScale(0.0, 1.0);
 	//tmp.adoptScaling(dstData.data);
 	// 2018 ? tmp.scaling.setLimits(dstData.data.getMin<double>(), dstData.data.getMax<double>());
 
-	const double MAX = dstData.data.getEncoding().getTypeMax<double>(); //dstData.odim.scaleInverse(1);
+	// const double MAX = dstData.data.getEncoding().getTypeMax<double>(); //dstData.odim.scaleInverse(1);
 
 	/// Reduction coefficient to compensate missing measurement data
 	double overallScale = 1.0;
@@ -183,33 +167,45 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		mout.warn() << "skipping VRAD..." <<  mout.endl;
 		overallScale *= 0.5;
 	}
-	else if (vradDevMin > NI) {
-		mout.warn() << "vradDevMin (" << vradDevMin << ") exceeds NI of input: " << NI << mout.endl; // semi-fatal
-		mout.warn() << "skipping VRAD..." <<  mout.endl;
-		overallScale *= 0.5;
+	else if (vradDev.min > NI) {
+			mout.warn() << "vradDev range (" << vradDev << ") exceeds NI of input: " << NI << mout.endl; // semi-fatal
+			mout.warn() << "skipping VRAD..." <<  mout.endl;
+			overallScale *= 0.5;
 	}
 	else {
+		if (vradDev.max > NI) {
+			mout.warn() << "threshold end point of vradDev (" << vradDev << ") exceeds NI of input: " << NI << mout.endl;
+		}
 
 		FuzzyStep<double> fuzzyStep; //(0.5);
-		const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
+		//const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
 
-		if (pos > 0.0)
-			fuzzyStep.set( 0.8*pos, 1.2*pos, 255.0 );
+		if (!VRAD_FLIP)
+			fuzzyStep.set(vradDev.min, vradDev.max);
 		else
-			fuzzyStep.set( 1.2*(-pos), 0.8*(-pos), MAX );
+			fuzzyStep.set(vradDev.max, vradDev.min);
 
-		DopplerDevWindow::conf_t conf(fuzzyStep, windowWidth, windowHeight, 0.05, true, false); // require 5% samples
+		/*
+		if (vradDev.min <= vradDev.max)
+			fuzzyStep.set(vradDev.min, vradDev.max, MAX);
+			//fuzzyStep.set( 0.8*pos, 1.2*pos, MAX); // 255.0 ); ?? 2019/11
+		else
+			fuzzyStep.set(vradDev.max, vradDev.min, MAX);
+			//fuzzyStep.set( 1.2*(-pos), 0.8*(-pos), MAX );
+		 */
+		// RadarWindowConfig:
+		// int widthM=1500, double heightD=3.0, double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false
+		DopplerDevWindow::conf_t conf(fuzzyStep, window.width, window.height, 0.05, true, false); // require 5% samples
 		conf.updatePixelSize(vradSrc.odim);
 		SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
 
-		mout.warn() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
-		mout.debug(1)  << "VRAD op   " << vradDevOp <<  mout.endl;
+		//mout.warn() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
+		mout.debug(1) << "VRAD op   " << vradDevOp <<  mout.endl;
 		mout.debug()  << vradDevOp.conf.width  << 'x' << vradDevOp.conf.height <<  mout.endl;
 		mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
 		mout.debug()  << "vradSrc NI=" << vradSrc.odim.getNyquist() <<  mout.endl;
 		mout.debug(1) << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
 
-		dstData.setPhysicalRange(0.0, 1.0);
 		/*
 		dstData.data.setOptimalScale(0.0, 1.0);
 		dstData.odim.gain   = dstData.data.getScaling().scale;
@@ -236,15 +232,15 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 
 		/// NOT NEEDED?
 		SlidingWindowOpT<RadarWindowStdDev<FuzzyStep<double,double> > > wradDevFuzzifier;
-		const int w = static_cast<int>(windowWidth/wradSrc.odim.rscale);
-		const int h = static_cast<double>(wradSrc.odim.nrays) * windowHeight/360.0;
+		const int w = static_cast<int>(window.width/wradSrc.odim.rscale);
+		const int h = static_cast<double>(wradSrc.odim.nrays) * window.height/360.0;
 		wradDevFuzzifier.window.setSize(w, h);
 		wradDevFuzzifier.window.functor.set( 0.5, 0.95, 255.0);
 		wradDevFuzzifier.window.odimSrc = wradSrc.odim;
 		applyOperator(wradDevFuzzifier, tmp, "WRAD_DEV", wradSrc, dstData, dstProductAux);
 
 	}
-	 */
+	*/
 
 
 	const Data<PolarSrc> &  rhohvSrc = sweepSrc.getData("RHOHV"); // VolumeOpNew::
@@ -258,7 +254,8 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		//RadarFunctorOp<FuzzyStep<double> > rhohvFuzzifier;
 		RadarFunctorOp<FuzzyStep<double> > rhohvFuzzifier;
 		rhohvFuzzifier.odimSrc = rhohvSrc.odim;
-		rhohvFuzzifier.functor.set(rhoHVmax+(1.0-rhoHVmax)/2.0, rhoHVmax);
+		//rhohvFuzzifier.functor.set(rhoHVmax+(1.0-rhoHVmax)/2.0, rhoHVmax);
+		rhohvFuzzifier.functor.set(rhoHV.max, rhoHV.min);
 		mout.debug() << "RHOHV_LOW" << rhohvFuzzifier.functor << mout.endl;
 		applyOperator(rhohvFuzzifier, tmp, "RHOHV_LOW", rhohvSrc, dstData, dstProductAux);
 
@@ -274,15 +271,21 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 
 		mout.debug(1) << zdrSrc.odim << mout.endl;
 
+		// tmp.setPhysicalScale(0.0, 1.0);
+
 		//RadarDataFuzzifier<FuzzyStep<double,double> > zdrFuzzifier;
 		RadarFunctorOp<FuzzyTriangle<double> > zdrFuzzifier;
 		zdrFuzzifier.odimSrc = zdrSrc.odim;
-		zdrFuzzifier.functor.set(+zdrDevMin, 0.0, -zdrDevMin); // INVERSE //, -1.0, 1.0);
+		zdrFuzzifier.functor.set(+zdrAbsMin, 0.0, -zdrAbsMin); // INVERSE //, -1.0, 1.0);
 		//zdrFuzzifier.functor.set(0.5, 2.0, 255);
 		mout.debug() << "ZDR_NONZERO" << zdrFuzzifier.functor << mout.endl;
 		applyOperator(zdrFuzzifier, tmp, "ZDR_NONZERO", zdrSrc, dstData, dstProductAux);
 		//applyOperator(zdrFuzzifier, tmp, "ZDR_HIGH", zdrSrc, dstData, dstProductAux);
 
+		//mout.warn() << "ZDR_NONZERO" << zdrFuzzifier.functor << mout.endl;
+		//mout.warn() << "ZDR_NONZERO" << tmp << mout.endl;
+
+		// File::write(tmp, "ZDR_NONZERO.png");
 
 	}
 
@@ -297,6 +300,52 @@ void BirdOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 		fuzzyBright.process(dstData.data, dstData.data);
 	}
 	DataTools::updateInternalAttributes(dstData.getTree()); // needed?
+}
+
+
+// kludge
+void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
+
+	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
+
+	parameters.reference("vradDevMin", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	this->vradDev.min = 0.9 * vradDevMin;
+	this->vradDev.max = 1.0 * vradDevMin;
+
+	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
+	parameters.reference("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
+	this->rhoHV.min = 0.9 * rhoHVmax;
+	this->rhoHV.max = rhoHVmax;
+	//parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
+
+	parameters.reference("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
+
+	parameters.reference("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+	parameters.reference("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+
+}
+
+void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
+
+	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
+
+	// THIS IS INVERTED (wrt. BIRD)
+	VRAD_FLIP=true;
+	parameters.reference("vradDevMax", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	this->vradDev.min = 0.9 * vradDevMax;
+	this->vradDev.max = 1.0 * vradDevMax;
+
+	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
+	parameters.reference("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
+	this->rhoHV.min = 0.9 * rhoHVmax;
+	this->rhoHV.max = rhoHVmax;
+	//parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
+
+	parameters.reference("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
+
+	parameters.reference("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+	parameters.reference("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+
 }
 
 

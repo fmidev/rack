@@ -115,13 +115,6 @@ public:
 	 */
 	inline
 	void setType(const std::type_info &t){
-		/*
-		std::cerr << "Caster::" << __FUNCTION__ << ':' << t.name() << std::endl;
-		if (t == typeid(Caster)){
-			std::cerr << "Caster::" << __FUNCTION__ << " yes Caster" << std::endl;
-			updateCasterType(); //calls updateType<Caster>();
-		}
-		else */
 		Type::call<drain::typesetter>(*this, t);
 	}
 
@@ -171,7 +164,7 @@ public:
 		}
 	}
 
-	/// Write to internal pointer, calls put(this->ptr, x).
+	/// Write to internal pointer using put(this->ptr, x).
 	template <class T>
 	inline
 	void put(const T & x) const {  // NEW
@@ -183,7 +176,7 @@ public:
 	 *  Notice that assigning to \c char is potentially ambiguous.
 	 *  char c;
 	 *  put(&c, "67");  // 6 or 67 or ascii('6') ?
-	 *  put(&c, "C");   // 0 or 67=ascii('C') ?
+	 *  put(&c, "C");   // 0 or 67 == ascii('C') ?
 	 */
 	void put(void *p, const char * x) const;
 
@@ -238,11 +231,11 @@ public:
 		return (*toOStreamPtr)(ostr, this->ptr);
 	}
 
-
-	// Future member: enables setting Caster type.
-	void *ptr; // NEW
+	/// Future member: enables setting Caster type.
+	void *ptr; // NEW, visible for CastableIterator
 
 protected:
+
 
 	/// Sets pointers to the type-dependent conversion functions.
 	template <class F>

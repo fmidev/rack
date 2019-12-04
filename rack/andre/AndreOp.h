@@ -58,12 +58,10 @@ public:
 	~AndreOp(){};
 
 
-	static
-	int getClassCode(const std::string & key);
+	//static	int getClassCode(const std::string & key);
 
-	static
-	//classtree_t::node_t getClassCode(classtree_t::path_t & path);
-	int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
+	//static
+	//int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
 
 	virtual
 	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;

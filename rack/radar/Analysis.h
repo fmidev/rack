@@ -143,7 +143,6 @@ public:
 	/// Process the image.
 	/**
 	 */
-	inline
 	virtual
 	void traverseChannel(const Channel &src, Channel & dst) const {
 
@@ -151,8 +150,9 @@ public:
 		mout.debug() << "start" << mout.endl;
 
 		// const double dstMax = dst.scaling.getMax<double>();
-		const double dstMax = dst.getEncoding().getTypeMax<double>();
-				// drain::Type::call<drain::typeMax, double>(dst.getType());
+		//// NEW 2019/11 const double dstMax = dst.getEncoding().getTypeMax<double>();
+		// drain::Type::call<drain::typeMax, double>(dst.getType());
+		const drain::image::ImageScaling & dstScaling = dst.getScaling();
 
 		typedef drain::typeLimiter<double> Limiter;
 		Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
@@ -169,7 +169,8 @@ public:
 					*d = undetectValue;
 				else
 					//*d = dst.scaling.limit<double>(dstMax * this->functor(odimSrc.scaleForward(s2)));
-					*d = limit(dstMax * this->functor(odimSrc.scaleForward(s2)));
+					//*d = limit(dstMax * this->functor(odimSrc.scaleForward(s2)));
+					*d = limit(dstScaling.inv(this->functor(odimSrc.scaleForward(s2))));
 				++s;
 				++d;
 			}
@@ -182,7 +183,8 @@ public:
 				else if (s2 == odimSrc.undetect)
 					*d = undetectValue;
 				else
-					*d = dstMax * this->functor(odimSrc.scaleForward(s2));
+					*d = dstScaling.inv(this->functor(odimSrc.scaleForward(s2)));
+					//*d = dstMax * this->functor(odimSrc.scaleForward(s2));
 				++s;
 				++d;
 			}
@@ -247,6 +249,7 @@ public:
 	/// Compensate the polar coordinate system to correspond the Cartesian one in computations
 	bool invertPolar;
 
+	/// Minimum percentage of detected values in a window (not undetect and nodata)
 	double contributionThreshold;  //
 
 	/// If true, use speed up to -1.0...+1.0 instead of -Vnyq...+Vnyq.

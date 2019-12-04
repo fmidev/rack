@@ -55,11 +55,14 @@ void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Pola
 	//op.setParameter("max", src.getMax<double>()-2.0);
 
 	//drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
+	const unsigned int QMIN = dstProb.odim.scaleInverse(0.0);
 	const unsigned int QMAX = dstProb.odim.scaleInverse(1.0);
 	//drain::FuzzyStepsoid<double, double> fuzzyStep(threshold, -fabs(thresholdWidth), QMAX);
 	//drain::FuzzyStep<double> fuzzyStep(threshold+thresholdWidth, threshold-thresholdWidth, QMAX);
-	drain::FuzzyStep<double> fuzzyStep(threshold - thresholdWidth, threshold + thresholdWidth, QMAX);
-	mout.debug() << "fuzzy step:"  << mout.endl;
+	//drain::FuzzyStep<double> fuzzyStep(threshold - thresholdWidth, threshold + thresholdWidth, QMAX);
+	//drain::FuzzyStep<double> fuzzyStep(threshold.min, threshold.max, QMAX);
+	drain::FuzzyStep<double> fuzzyStep(threshold.max, threshold.min, QMAX);  // inverted
+	mout.debug() << "fuzzy step:" << fuzzyStep << mout.endl;
 
 	Image::const_iterator it = srcData.data.begin();
 	Image::iterator dit = dstProb.data.begin();
@@ -76,20 +79,26 @@ void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Pola
 		++it; ++dit;
 	}
 
-	/// Morphological closing
+	/// Median filtering imitating morphological closing
 	if ((windowWidth>0) && (windowHeight>0)){
+
 		const CoordinatePolicy & coordPolicy = srcData.data.getCoordinatePolicy();
 		dstProb.data.setCoordinatePolicy(coordPolicy);
 
-		Image tmp;
-		tmp.setCoordinatePolicy(coordPolicy);
-		const int w = windowWidth / srcData.odim.rscale;
-		const int h = windowHeight * 360.0 / srcData.odim.nrays;
-		SlidingWindowMedianOp median;
+		//Image tmp;
+		//tmp.setCoordinatePolicy(coordPolicy);
+		const int w = srcData.odim.getBeamBins(windowWidth);        // windowWidth / srcData.odim.rscale;
+		const int h = srcData.odim.getAzimuthalBins(windowHeight);  // windowHeight * 360.0 / srcData.odim.nrays;
 
+		SlidingWindowMedianOp median;
 		median.setSize(w,h);
 		median.conf.percentage = medianPos;
-		median.traverseChannel(dstProb.data.getChannel(0), dstProb.data.getChannel(0));
+		mout.warn() << "median: " << median << mout.endl;
+		//median.traverseChannel(dstProb.data.getChannel(0), dstProb.data.getChannel(0));
+		//median.process(dstProb.data, tmp);
+		//drain::image::FilePng::write(tmp, "mika.png");
+		median.process(dstProb.data, dstProb.data);
+		//drain::image::FilePng::write(dstProb.data, "sika.png");
 
 		/*
 		median.filter(dstProb.data, tmp);
@@ -99,19 +108,23 @@ void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Pola
 		*/
 	}
 
+	/// Mask out median values spread to \c undetect regions
 	it = srcData.data.begin();
 	dit = dstProb.data.begin();
 	while (it != srcData.data.end()){
-		if (*it != srcData.odim.nodata){
-			if (*it != srcData.odim.undetect){
-				*dit = (QMAX - static_cast<int>(*dit));
-				//*dit = fuzzyStep(srcData.odim.scaleForward(*it));
-				//*dit = 64 + fuzzyStep(srcData.odim.scaleForward(*it))/ 2;
-			}
-			else {
-				*dit = 0.0;
-			}
+		if (!srcData.odim.isValue(*it)){
+			*dit = QMIN;
 		}
+		/*
+		if (srcData.odim.isValue(*it)){
+			*dit = (QMAX - static_cast<int>(*dit));
+			// *dit = fuzzyStep(srcData.odim.scaleForward(*it));
+			// *dit = 64 + fuzzyStep(srcData.odim.scaleForward(*it))/ 2;
+		}
+		else {
+			*dit = 0.0;
+		}
+		*/
 		++it; ++dit;
 	}
 

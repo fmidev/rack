@@ -52,6 +52,7 @@ NodeSVG::NodeSVG(type t){
 }
 
 void NodeSVG::setType(type t) {
+
 	switch (t) {
 	case SVG:
 		tag = "svg";
@@ -63,10 +64,11 @@ void NodeSVG::setType(type t) {
 		reference("xmlns:svg", NodeSVG::svg);
 		reference("xmlns:xlink", NodeSVG::xlink);
 		break;
+	case TITLE:
+		tag = "title";
+		break;
 	case GROUP:
 		tag = "g";
-		//reference("x", x, 0);
-		//reference("y", y, 0);
 		break;
 	case TEXT:
 		tag = "text";

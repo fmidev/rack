@@ -710,7 +710,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 	TreeSVG & header = svg["header"];
 	header->setType(NodeSVG::TEXT);
-	header->set("x", lineheight);
+	header->set("x", lineheight/4);
 	header->set("y", (headerHeight * 9) / 10);
 	header->ctext = title;
 	header->set("style","font-size:20");
@@ -725,7 +725,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	// width and height are set in the end (element slot reserved here,for rendering order)
 
 	int index = 0;
-	int width = 100;
+	int width = 150;
 	//int height = (1.5 + size() + specialCodes.size()) * lineheight;
 
 	int y;
@@ -751,6 +751,11 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			name << index;
 			TreeSVG & child = svg[name.str()];
 			child->setType(NodeSVG::GROUP);
+
+			TreeSVG & t = child["title"];
+			t->setType(NodeSVG::TITLE);
+			// t->ctext =
+			t->ctext = name.str(); // + threshold.str();
 
 			//y = up ? height - (index+1) * lineheight : index * lineheight;
 			y = headerHeight + index*lineheight;
@@ -797,6 +802,11 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			text->ctext = entry.label;
 			text->set("x", 2*lineheight);
 			text->set("y", y + lineheight-1);
+
+			t->ctext += ' ';
+			t->ctext += threshold.str();
+			t->ctext += ' ';
+			t->ctext += entry.label;
 
 			//ostr << it->first << ':';
 			++index;

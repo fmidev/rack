@@ -59,43 +59,36 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 }
 
 
-class DataMarker : public drain::UnaryFunctor {
-
-public:
-
-	DataMarker() : drain::UnaryFunctor(__FUNCTION__), value(0.5) {
-
-	}
-
-	inline
-	void set(double value){
-		this->value = value;
-		//this->update();
-	}
-
-
-	inline
-	double operator()(double x) const {
-		return value;
-	}
-
-	double value;
-
-};
-
-
 void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(name, __FUNCTION__);
-	mout.debug() << *this << mout.endl;
-	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
 
+	mout.debug() << *this << mout.endl;
+	mout.debug(1) << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
+	mout.debug(1) << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
+
+	mout.debug(1) << " => dst: " << dstData.data.getScaling() << mout.endl;
 	//const int code = AndreOp::getClassCode(this->classCode);
 
 	RadarFunctorOp<DataMarker> marker;
 	marker.odimSrc = srcData.odim;
+
+	// const PolarODIM & odim = dstData.odim;
+	// const double probCode = dstData.odim.scaleInverse(1.0 - QualityCombinerOp::DEFAULT_QUALITY) + 2;
+	// mout.warn() << "Using prob (code value) " << probCode << mout.endl;
+	// marker.functor.set(dstData.odim.scaleForward(probCode));
+	const double pCode    = dstData.odim.scaleInverse(this->probability);
+	const double pCodeMin = dstData.odim.scaleInverse(1.0 - QualityCombinerOp::DEFAULT_QUALITY);
+
+	if (this->probability <= (1.0 - QualityCombinerOp::DEFAULT_QUALITY)){
+		mout.warn() << "prob " << this->probability << " [" << pCode << "] of 'default class' ";
+		mout        << "does not exceed limit (1 - aDefaultQuality) = " << (1.0 - QualityCombinerOp::DEFAULT_QUALITY) << " [" << pCodeMin << ']' << mout.endl;
+	}
+
 	marker.functor.set(this->probability);
+	// mout.warn() << marker << mout.endl;
 	marker.process(srcData.data, dstData.data);
+	mout.debug(1) << " => DST: " << dstData.data.getScaling() << mout.endl;
 
 }
 

@@ -95,12 +95,17 @@ public:
 };
 
 
-class ClassThreshold : public BasicCommand {
+/// Set the default quality [0.0,1.0] of radar data, typically close to 0.9.
+/**
+ *   Typically set prior to anomaly detection.
+ *
+ */
+class DefaultQuality : public BasicCommand {
 
 public:
 
-	ClassThreshold() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
-		parameters.reference("threshold", QualityCombinerOp::CLASS_UPDATE_THRESHOLD = 0.5, "0...1");
+	DefaultQuality() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
+		parameters.reference("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
 		getRegistry().add(*this, __FUNCTION__, 0);
 	};
 
@@ -121,20 +126,6 @@ public:
 	};
 
 };
-
-// These are "global" (potentially)
-
-/*
-class AnDReClassUpdateThreshold : public BasicCommand {
-    public: //re 
-	// "Toggle the support for universal ie. Dataset-wide quality indices.") {
-	AnDReClassUpdateThreshold() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
-		parameters.reference("threshold", QualityCombinerOp::CLASS_UPDATE_THRESHOLD = 0.5, "0...1");
-	};
-
-};
-static CommandEntry<AnDReClassUpdateThreshold> anDReClassUpdateThreshold("andre", "aClassThreshold");
-*/
 
 
 
@@ -197,11 +188,10 @@ AnDReModule::AnDReModule(const std::string & section, const std::string & prefix
 	static AnDReLetAdapter<DamperOp>           damper;
 	static AnDReLetAdapter<RemoverOp>         remover;
 
+
 	static AnDReLetAdapter<QualityCombinerOp> qualityCombiner;
 
-
-
-	static ClassThreshold classThreshold;
+	static DefaultQuality defaultQuality;
 	static Universal universal;
 
 }

@@ -102,7 +102,7 @@ protected:
 
 		drain::Logger mout(this->getName(), __FUNCTION__); // = resources.mout;
 
-		OD odim;
+		// OD odim;
 		typedef DstType<OD> dst_t;
 
 		DataSet<dst_t> dstDataSet(dstGroup, quantity);

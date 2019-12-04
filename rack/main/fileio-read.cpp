@@ -426,8 +426,8 @@ void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
 
 			// if dstChild EMPTY, add it now.
 			if (srcQind.data.isEmpty()){ // ie not handled above
-				mout.warn() << "src QIND empty for  ["<< quantity << "] " << srcChild;
-				mout << " (update under constr.)" << mout.endl;
+				mout.warn() << "src QIND empty for  ["<< quantity << "] " << srcChild << mout.endl;
+				mout.warn() << " (update under constr.)" << mout.endl;
 				const PlainData<PolarSrc> srcProb(src[srcChild]);  // TODO: resources and quality code?
 				QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123);
 			}

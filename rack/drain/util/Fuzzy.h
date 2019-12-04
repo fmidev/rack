@@ -35,6 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Functor.h"
+#include "Range.h"
+
 
 // using namespace std;
 
@@ -141,10 +143,12 @@ public:
 		this->setReferencesAndCopy(f);
 	}
 
+	~FuzzyStep(){};
+
 	inline
 	void set(double startPos, double endPos, double scale=1.0, double bias=0.0){
-		this->startPos = startPos;
-		this->endPos  = endPos;
+		this->range.min = startPos;
+		this->range.max = endPos;
 		this->setScale(scale, bias);
 		this->update();
 	}
@@ -157,18 +161,18 @@ public:
 
 		drain::Logger mout(this->getName(), __FUNCTION__);
 
-		this->INVERSE = (startPos > endPos);
+		this->INVERSE = (range.min > range.max);
 
 		if (!this->INVERSE){
-			leftPos  = startPos;
-			rightPos = endPos;
-			span = endPos - startPos;
+			finalRange.min  = range.min;
+			finalRange.max = range.max;
+			span = range.max - range.min;
 		}
 		else {
 			//cerr << "set INVERSE" << endl;
-			leftPos  = endPos;
-			rightPos = startPos;
-			span = startPos - endPos;
+			finalRange.min  = range.max;
+			finalRange.max = range.min;
+			span = range.min - range.max;
 		}
 
 		this->updateScale();
@@ -181,30 +185,32 @@ public:
 	virtual
 	double operator()(double x) const {
 
-		if (x <= leftPos)
+		if (x <= finalRange.min)
 			return this->biasFinal;
-		else if (x >= rightPos)
+		else if (x >= finalRange.max)
 			return this->biasFinal + this->scaleFinal;
 		else
-			return this->biasFinal + this->scaleFinal*(x-leftPos) / span;  // div by undetectValue not possible, unless start==end
+			return this->biasFinal + this->scaleFinal*(x-finalRange.min) / span;  // div by undetectValue not possible, unless start==end
 
 	}
 
-	double startPos;
-	double endPos;
+	drain::Range<double> range;
+	//double startPos;
+	//double endPos;
 
 protected:
 
 	mutable double span;
-	mutable double leftPos;
-	mutable	double rightPos;
+	drain::Range<double> finalRange;
+	//mutable double leftPos;
+	//mutable double rightPos;
 
 private:
 
 	virtual
 	void setReferences(){
-		this->parameters.reference("startPos", this->startPos);
-		this->parameters.reference("endPos", this->endPos);
+		this->parameters.reference("startPos", this->range.min);
+		this->parameters.reference("endPos", this->range.max);
 		this->parameters.reference("scale", this->scale);
 		this->parameters.reference("bias", this->bias);
 	}
@@ -236,13 +242,14 @@ public:
 		this->setReferencesAndCopy(f);
 	}
 
+	~FuzzyTriangle(){};
 
 	/// Sets the parameters of the membership function.
 	inline
 	void set(double startPos, double peakPos, double endPos, double scale=1.0, double bias=0.0){ // todo join
-		this->startPos = startPos;
+		this->range.min = startPos;
 		this->peakPos = peakPos;
-		this->endPos = endPos;
+		this->range.max = endPos;
 		this->setScale(scale, bias); //
 		this->update();
 	}
@@ -251,15 +258,15 @@ public:
 	virtual
 	void update() const {
 
-		this->INVERSE = (startPos > endPos);
+		this->INVERSE = (range.min > range.max);
 
 		if (!this->INVERSE){
-			spanLow  = startPos - peakPos;
-			spanHigh = endPos   - peakPos;
+			spanLow  = range.min - peakPos;
+			spanHigh = range.max - peakPos;
 		}
 		else {
-			spanLow  = endPos   - peakPos;
-			spanHigh = startPos - peakPos;
+			spanLow  = range.max - peakPos;
+			spanHigh = range.min - peakPos;
 		}
 
 		this->updateScale();
@@ -283,13 +290,14 @@ public:
 	};
 
 	/// Starting position
-	double startPos;
+	//double startPos;
 
 	/// Peak position
 	double peakPos;
 
 	/// End position
-	double endPos;
+	//double endPos;
+	drain::Range<double> range;
 
 protected:
 
@@ -304,9 +312,9 @@ private:
 
 	virtual
 	void setReferences(){
-		this->parameters.reference("startPos", this->startPos);
+		this->parameters.reference("startPos", this->range.min);
 		this->parameters.reference("peakPos", this->peakPos);
-		this->parameters.reference("endPos", this->endPos);
+		this->parameters.reference("endPos", this->range.max);
 		this->parameters.reference("scale", this->scale);
 		this->parameters.reference("bias", this->bias);
 	}
@@ -314,7 +322,7 @@ private:
 };
 
 
-// TODO: rename fuzzy bell?
+
 /// A smooth symmetric peak function that resembles the Gaussian bell curve.
 /**
  *   The approximation applies
@@ -333,12 +341,14 @@ public:
 		//this->update();
 	}
 
-	FuzzyBell(const FuzzyBell & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy bell function."), widthInv(1.0){
+	FuzzyBell(const FuzzyBell & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy bell function."), location(0.0), width(1.0), widthInv(1.0){
 		this->setReferencesAndCopy(f);
 		//this->update();
 	}
 
-	inline
+	virtual
+	~FuzzyBell(){};
+
 	void set(double location = 0.0, double width = 1.0, double scale=1.0, double bias=0.0){
 		this->location = location;
 		this->width = width;
@@ -403,7 +413,10 @@ public:
 		this->setReferencesAndCopy(f);
 	}
 
-	inline
+	virtual
+	~FuzzyBell2(){};
+
+	//inline
 	void set(double location = 0.0, double width = 1.0, double scale=1.0, double bias=0.0) {
 		this->location = location;
 		this->width = width;
@@ -470,6 +483,8 @@ public:
 	FuzzySigmoid(const FuzzySigmoid & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function."), absWidth(0.0) {
 		this->setReferencesAndCopy(f);
 	}
+
+	~FuzzySigmoid(){};
 
 	inline
 	void set(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0){
@@ -548,6 +563,8 @@ public:
 	FuzzyStepsoid(const FuzzyStepsoid & f): Fuzzifier<T>(__FUNCTION__), widthFinal(1.0) {
 		this->setReferencesAndCopy(f);
 	}
+
+	~FuzzyStepsoid(){};
 
 	inline
 	void set(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0){

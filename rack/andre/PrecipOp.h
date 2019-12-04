@@ -63,12 +63,10 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	DefaultOp() :
-		DetectorOp(__FUNCTION__, "Marks all the data values as unclassified", "tech.class.reject"){ //ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.class.unclass"){ //ECHO_CLASS_PRECIP){
 
-		//parameters.reference("class", this->defaultClass = "unclass", "marker for class");
-		// QualityCombinerOp::CLASS_UPDATE_THRESHOLD
-		parameters.reference("probability", this->probability = 0.01, "'resulting' probability");
-
+		parameters.reference("probability", this->probability = 0.8, "'resulting' probability");
+		UNIVERSAL = true;
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;
 		REQUIRE_STANDARD_DATA = false;

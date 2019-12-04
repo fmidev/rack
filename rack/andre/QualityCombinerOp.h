@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef QualityCombiner_SEGMENT_OP_H_
 #define QualityCombiner_SEGMENT_OP_H_
 
+#include <drain/util/Functor.h>
 
 #include <drain/image/File.h>
 
@@ -42,6 +43,47 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 using namespace drain::image;
 
 namespace rack {
+
+/// Simple class marking true data with a given constant value, typically a CLASS label.
+class DataMarker : public drain::UnaryFunctor {
+
+public:
+
+	DataMarker() : drain::UnaryFunctor(__FUNCTION__), value(0.5) {
+
+	}
+
+	inline
+	void set(double value){
+		this->value = value;
+		//this->update();
+	}
+
+
+	inline
+	double operator()(double x) const {
+		return value;
+	}
+
+	double value;
+
+};
+
+///
+/*
+class DefaultOp: public PolarProductOp {  // VolumeOp<PolarODIM>
+
+public:
+
+	DefaultOp() :
+		PolarProductOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
+	{
+
+	}
+
+
+}
+*/
 
 /// A quick QualityCombiner .
 class QualityCombinerOp: public PolarProductOp {  // VolumeOp<PolarODIM>
@@ -60,45 +102,42 @@ public:
 	inline
 	~QualityCombinerOp(){};
 
-	/// Updates QIND and QCLASS from local level (dataN/) to local level (datasetM/).
-	// ? Conditional; checks if already done.
-	// Copied from AndreOp
+	/// Updates quality specific \c QIND and \c CLASS to dataset level. Conditional; checks if already done.
 	static
 	void updateOverallQuality(const PlainData<PolarSrc> & srcQind, const PlainData<PolarSrc> & srcClass, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass); // const;
 
-	/// Updates the overall ie. maximum field.
-	// static, because external inputs like "sclutter"
+	/// Given probability data with class label, updates (?overall?) QIND
+	/**
+	 *   \param srcProb - probability of anomaly
+	 *   \param dstQind - current data quality \c QIND.
+	 *   \param label   - deprecating? anomaly class id
+	 *   \param index   - deprecating? anomaly class id
+	 */
 	static
 	void updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string &label, unsigned short index); // const;
 
 
-	/// Copied from RemoverOp
 	/// Updates QIND and QCLASS from global level (dataset) to local level (data). Conditional; checks if already done.
 	static
 	void updateLocalQuality(const DataSet<PolarSrc> & srcDataSet, Data<PolarDst> & dstData);
 
 	/// Quality index value (0.5 by default) under which CLASS information is updated. Otherwise class is "meteorogical enough".
 	static
-	double CLASS_UPDATE_THRESHOLD;
+	double DEFAULT_QUALITY;
 
+
+	static
+	void initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQind, const std::string & quantity = "");
 
 protected:
 
-	//std::string targetQuantity;
 
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
 
-	/*
-	virtual
-	void processSweep(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const;
-	*/
-
 };
 
-}
+} // rack::
 
-#endif /* POLARTOCARTESIANOP_H_ */
-
-// Rack
+#endif

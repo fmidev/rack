@@ -181,12 +181,17 @@ bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & ds
 
 bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcChannels, ImageTray<Image> & dstImages) const {
 
-	drain::Logger mout(getImgLog(), this->name+"(trays)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), this->name+"[ImageOp](trays)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
+	mout.warn() << srcChannels << mout.endl;
+	mout.warn() << dstImages   << mout.endl;
+
 
 	bool IMAGE_OVERLAP = srcChannels.hasOverlap(dstImages);
 	bool ALPHA_OVERLAP = srcChannels.alpha.hasOverlap(dstImages.alpha);
+
+	mout.warn() << "overlaps: image:" << IMAGE_OVERLAP << ", alpha=" << ALPHA_OVERLAP << mout.endl;
 
 	if (IMAGE_OVERLAP || ALPHA_OVERLAP){
 

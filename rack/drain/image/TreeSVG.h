@@ -51,7 +51,7 @@ namespace image {
 class NodeSVG: public NodeXML {
 public:
 
-	enum type { UNDEFINED, SVG, CTEXT, GROUP, TEXT, RECT, CIRC, LINE }; // check CTEXT, maybe implement in XML
+	enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE }; // check CTEXT, maybe implement in XML
 
 	NodeSVG(type t = UNDEFINED);
 

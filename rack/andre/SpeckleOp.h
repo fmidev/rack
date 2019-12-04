@@ -61,7 +61,7 @@ public:
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
-	SpeckleOp(double reflMin=0.0, int area=9) :
+	SpeckleOp(double reflMin=0.0, int area=4) :
 		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input but applies to all data in a sweep group.", "signal.noise"){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;

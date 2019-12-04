@@ -154,7 +154,7 @@ public:
 
 	/// Sets basic type or std::string, or void.
 	/**
-	 *   Internally, std::string type is anyway implemented as \c char[]
+	 *   Note: request of std::string is handled as request of \c char[]
 	 */
 	virtual inline
 	void setType(const std::type_info & t){ //, size_t n = 0
@@ -164,6 +164,7 @@ public:
 		if ((t == typeid(std::string)) || (t == typeid(char *))){
 			//std::cerr << "Variable::setType (std::string) forward, OK\n";
 			caster.setType(typeid(char));
+			// setOutputSeparator(0); NEW 2019/11
 			setOutputSeparator(0);
 			//resize(1);
 			updateSize(1);

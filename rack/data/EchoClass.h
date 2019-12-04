@@ -43,11 +43,14 @@ namespace rack {
 /**
  *
  */
-///typedef drain::Tree<std::string, unsigned short int> classtree_t;
 typedef drain::JSON::tree_t classtree_t;
 
 
 classtree_t & getClassTree();
+
+int getClassCode(const std::string & key);
+
+int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
 
 
 } // rack::

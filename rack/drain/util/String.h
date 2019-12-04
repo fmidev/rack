@@ -226,16 +226,6 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	std::string::size_type pos1 = 0; // Start of segment
 	std::string::size_type pos2 = n; // std::string::npos;  // End of segment (index of last char + 1)
 
-	/// Initial trim (with or without further split)
-	/*
-	if (TRIM){
-		// std::cerr << __FUNCTION__ << " initial trim: " << str << '\n';
-		StringTools::trimScan(str, pos1, pos2, trimChars);
-	}
-	*/
-
-	// 	typename T::value_type tmpValue;
-
 	if (separators.empty()){ // = no split! :-)
 
 		if (TRIM){

@@ -61,7 +61,8 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	// Warn if below min dBZ?
 	//const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
 	//const double max = src.data.getMax<double>()-2.0;
-	drain::FuzzyBell<double> fuzzyBell;
+	//drain::FuzzyBell<double> fuzzyBell;
+	drain::FuzzyBell2<double> fuzzyBell;
 	fuzzyBell.set(0.0, area, dst.odim.scaleInverse(1.0));
 	//SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
 	SegmentAreaOp<float,unsigned short> op(fuzzyBell, reflMin, 70.0); // dBZ!	//"min,max,mapping,mSlope,mPos"

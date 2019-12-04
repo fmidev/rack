@@ -127,6 +127,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 	drain::VariableMap & where = resources.cartesianHi5["where"].data.attributes; // dstGroup
 	where["BBOX"].setType(typeid(double));
 	where["BBOX"] = resources.composite.getBoundingBoxD().toStr();
+
 	where["BBOX_data"].setType(typeid(double));
 	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();
 	where["BBOX_data"] = bboxDataD.toStr();
@@ -134,7 +135,9 @@ void CartesianExtract::extract(const std::string & channels) const {
 	drain::Rectangle<int> bboxDataPix;
 	resources.composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
 	resources.composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
-	where["BBOX_data_pix"] = bboxDataPix.toStr();
+	where["BBOX_data_pix"].setType(typeid(short int));
+	where["BBOX_data_pix"] = bboxDataPix.toStr(); // clumsy
+	// where["BBOX_data_pix"] = bboxDataPix;
 
 	where["BBOX_overlap"].setType(typeid(double));
 	where["BBOX_overlap"] = resources.composite.getDataOverlapD().toStr();

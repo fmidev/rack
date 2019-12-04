@@ -45,6 +45,7 @@ using namespace hi5;
 
 namespace rack {
 
+/*
 int AndreOp::getClassCode(const std::string & key){
 
 	drain::Logger mout("AndreOp", __FUNCTION__);
@@ -57,7 +58,9 @@ int AndreOp::getClassCode(const std::string & key){
 	return getClassCode(t, path.begin(), path.end());
 
 }
+*/
 
+/*
 int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
 
 
@@ -88,7 +91,7 @@ int AndreOp::getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator 
 	return getClassCode(tr[key], ++it, eit);
 
 }
-
+*/
 
 }  // rack::
 

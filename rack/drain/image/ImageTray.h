@@ -133,7 +133,8 @@ public:
 	/// Returns the geometry of the first frame.
 	virtual
 	const Geometry & getGeometry() const {
-		geometry.setGeometry(this->get().getGeometry());
+		if (!this->empty())
+			geometry.setGeometry(this->get().getGeometry());
 		geometry.setChannelCount(this->size());
 		return geometry;
 	}

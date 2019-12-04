@@ -184,10 +184,18 @@ public:
 		dstData.data.setType(dstData.odim.type);
 		dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
 
-		if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
+		//if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
+		if ((q == "QIND") || (q == "PROB")){
 			//dstData.data.setOptimalScale(0.0, 1.0);
 			dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
+		else if (q == "CLASS"){
+			//dstData.data.setOptimalScale(0.0, 1.0);
+			drain::image::Image & img = dstData.data;
+			img.getScaling().setPhysicalRange(0.0, img.getEncoding().getTypeMax<double>());
+			//dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
+		}
+
 
 		if (dstData.data.getName().empty())
 			dstData.data.setName(dstData.odim.quantity);

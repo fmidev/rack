@@ -266,8 +266,7 @@ protected:
 			*/
 
 		}
-		else
-			this->dst.put(this->location, 0);
+		// else this->dst.put(this->location, 0); LEAVE undetect
 
 	};
 

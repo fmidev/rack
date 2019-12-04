@@ -405,12 +405,9 @@ void CompositeAdd::addCartesian() const {
 	j0++; // UL pixel is located at (0,-1) in the image coordinates!
 	mout.debug(1) << "sub image start coordinates: " << i0 << ',' << j0 << mout.endl;
 
-
 	resources.composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
 
-
 	//mout.warn() << "composite: " << resources.composite << mout.endl;
-
 	//drain::image::File::write(srcQuality.data, "srcQuality.png");
 
 }

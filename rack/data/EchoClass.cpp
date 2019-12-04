@@ -86,6 +86,34 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, const dra
 
 }
 
+/*
+#define ECHO_CLASS_PRECIP	4
+#define ECHO_CLASS_HAIL	8
+#define ECHO_CLASS_WET_HAIL	10
+#define ECHO_CLASS_GRAUPEL	12
+#define ECHO_CLASS_SNOW	16
+#define ECHO_CLASS_WET_SNOW	18
+#define ECHO_CLASS_RAIN	32
+#define ECHO_CLASS_SUPERCOOLED_RAIN	36
+#define ECHO_CLASS_DUST	56
+#define ECHO_CLASS_CHAFF	58
+#define ECHO_CLASS_INSECT	60
+#define ECHO_CLASS_CLUTTER	64
+#define ECHO_CLASS_MAST	84
+#define ECHO_CLASS_VEHICLE	92
+#define ECHO_CLASS_BIRD	96
+#define ECHO_CLASS_BAT	104
+#define ECHO_CLASS_ATTENUATED	192
+#define ECHO_CLASS_SPECULAR	200
+#define ECHO_CLASS_FLARE_ECHO	208
+#define ECHO_CLASS_SECOND_TRIP	216
+#define ECHO_CLASS_SUN	224
+#define ECHO_CLASS_EMITTER	240
+#define ECHO_CLASS_JAMMING	242
+#define ECHO_CLASS_NOISE	244
+#define ECHO_CLASS_DELAY	248
+*/
+
 classtree_t & getClassTree(){
 
 	//static classtree_t tree('.');
@@ -112,7 +140,8 @@ classtree_t & getClassTree(){
 		addClass(tree, "tech.err", 		8, "Data error"); //
 		addClass(tree, "tech.err.time", 10, "");     // Delayed data
 		addClass(tree, "tech.class",	12, "Classifier issue");
-		addClass(tree, "tech.class.reject", 13, "Classifier uncertainty");
+		addClass(tree, "tech.class.unclass", 13, "Unclassified", "128,128,128"); //  "reject"?
+		//addClass(tree, "tech.class.unclass", 16, "Unclassified");
 		addClass(tree, "tech.class.ambig", 14, "Multiple class");
 		addClass(tree, "tech.class.err", 15, "Classifier fatal error");
 
@@ -195,6 +224,7 @@ classtree_t & getClassTree(){
 		t["met"]["snow"].data = 72;
 		t["met"]["graupel"] = 76;
 		t["met"]["hail"] = 82;
+
 		*/
 		//unsigned short int i = t["met"]["rain"];
 
@@ -205,6 +235,52 @@ classtree_t & getClassTree(){
 	return tree;
 
 }
+
+int getClassCode(const std::string & key){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	classtree_t &t = getClassTree()["entries"];
+
+	classtree_t::path_t path(key, t.getSeparator());
+	mout.debug() << "path(" << path.separator << ") "<< drain::StringTools::join(path, path.separator) << mout.endl;
+
+	return getClassCode(t, path.begin(), path.end());
+
+}
+
+
+int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
+
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (it == eit){ // "empty path"
+		if (!tr.data.hasKey("value")){
+			mout.note() << "missing 'value' attribute (index) of existing class " << tr.data << mout.endl; // ddificult to locate, try tr.dump()
+		}
+		return tr.data["value"];
+	}
+
+	const classtree_t::path_t::value_type & key = *it;
+	//mout.note() << "entered " << key << mout.endl;
+
+	if (!tr.hasChild(key)){
+		static unsigned short counter(32);
+		mout.note() << "creating class code: *." << *it << ' ' << counter << mout.endl;
+		//tr.getPaths()
+		tr[key].data["value"] = counter;
+		++counter;
+	}
+	else {
+		mout.info() << "existing class code: *." << *it << '(' << tr[key].data.getValues() << ')' << mout.endl;
+	}
+
+	//mout.note() << "descending to " << *it << mout.endl;
+	return getClassCode(tr[key], ++it, eit);
+
+}
+
 
 }  // namespace rack
 
