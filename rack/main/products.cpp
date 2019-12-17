@@ -92,7 +92,7 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	// Polar coord met.product based on VRAD
 	static ProductAdapter<DopplerSamplerOp> dopplerSampler;  // circles
 	static ProductAdapter<DopplerAvgOp> dopplerAvg;
-	static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
+	//static ProductAdapter<DopplerAvg2Op> dopplerAvg2;
 	static ProductAdapter<DopplerDevOp> dopplerDev;
 	static ProductAdapter<DopplerInversionOp> dopplerInversion;
 	static ProductAdapter<DopplerReprojectOp> dopplerRealias;
@@ -100,6 +100,7 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<DopplerDiffPlotterOp> dopplerDiffPlotter;
 	static ProductAdapter<DopplerDiffOp> dopplerDiff;
 	static ProductAdapter<DopplerAvgExpOp> dopplerAvgExp;
+	static ProductAdapter<DopplerEccentricityOp> dopplerEccentricity;
 
 	// Vertical met.products
 	static ProductAdapter<VerticalProfileOp> verticalProfile;

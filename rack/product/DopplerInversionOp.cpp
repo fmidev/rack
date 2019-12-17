@@ -261,54 +261,5 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 
 
-void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
-
-	drain::Logger mout(getName(), __FUNCTION__);
-
-	//double azm;
-	int j1, j2;
-	double v1, v2, diff;
-
-
-	dstData.setEncoding(odim.type);
-	dstData.odim.setRange(-dMax,+dMax);
-	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
-
-	const double minPhys = dstData.odim.getMin();
-	const double maxPhys = dstData.odim.getMax();
-
-	mout.warn() << "range " << minPhys << ',' << maxPhys << mout.endl;
-
-	//PlainData<PolarDst> & dstQuality = dstData.getQualityData();
-	//setGeometry(dstData.odim, dstQuality);
-
-	for (size_t j=0; j<srcData.data.getHeight(); ++j){
-
-			//azm = srcData.odim.getAzimuth(j);
-			j1 = (j-1 + srcData.odim.nrays) % srcData.odim.nrays;
-			j2 = (j+1 + srcData.odim.nrays) % srcData.odim.nrays;
-
-			for (size_t i=0; i<srcData.data.getWidth(); ++i){
-
-				v1 = srcData.data.get<double>(i, j1);
-				v2 = srcData.data.get<double>(i, j2);
-
-				if (srcData.odim.deriveDifference(v1, v2, diff)) {
-					diff *= 0.5; // because j1,j2 have span +1-(-1) = 2
-					//diff = dstData.odim.scaleInverse(diff);
-					if ((diff>=minPhys) && (diff<=maxPhys))
-						dstData.data.putScaled(i, j, diff);
-					else
-						dstData.data.put(i,j, dstData.odim.nodata);
-				}
-				else {
-					dstData.data.put(i,j, dstData.odim.undetect);
-				}
-			}
-		}
-
-}
-
-
 
 } // ::rack

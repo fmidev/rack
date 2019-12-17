@@ -147,25 +147,17 @@ void DataSelector::update(){
 
 
 
-// Derive missing parameters.
-/**
-
-     Assumes that
-     - setParamters(const std::string & parameters)
-
-     has been called.
-
-
- */
-void DataSelector::deriveParameters(const std::string & parameters){
+// Resets, set given parameters and derives missing parameters.
+void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
-	//ODIMPathElem::group_t groupFilter = 0;
-	// groups.value = 0;
-	reset();
-	groups.value = 0;
-	data = 0; // = 0:0 ~ delete none, unless set below
+	// Consider:
+	if (clear){
+		reset();
+		groups.value = 0;
+		data = 0; // = 0:0 ~ delete none, unless set below
+	}
 
 	setParameters(parameters);
 
@@ -181,10 +173,19 @@ void DataSelector::deriveParameters(const std::string & parameters){
 			setParameters(parameters); // data range may be re-adjusted
 			mout.debug() << "opened up data group, status " << *this << mout.endl;
 		}
+		/// Speculative
 		if (AUTO_GROUPS){
 			groups.value = (ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		}
+
 	}
+
+	/// Speculative
+	/*
+	if (AUTO_GROUPS){
+		groups.value = defaultGroups; //(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	}
+	*/
 
 	if (data.max == 0){
 		/// No DATA indices nor quantities specified, hence only DATASET should be returned?
@@ -479,7 +480,7 @@ void DataSelector::convertRegExpToRanges(const std::string & param){
 /*
 bool DataSelector::isValidData(const drain::ReferenceMap & properties) const {
 	if (properties.hasKey("where:elangle"))
-		if (!elangle.isInside(properties["where:elangle"]))
+		if (!elangle.contains(properties["where:elangle"]))
 			return false;
 	//if (properties.hasKey("what:quantity")){
 	return true;
@@ -492,11 +493,11 @@ bool DataSelector::isValidPath(const ODIMPath & path) const {
 	for (ODIMPath::const_iterator it = path.begin(); it != path.end(); ++it){
 		switch (it->group) {
 			case ODIMPathElem::DATASET:
-				if (!dataset.isInside(it->index))
+				if (!dataset.contains(it->index))
 					return false;
 				break;
 			case ODIMPathElem::DATA:
-				if (!data.isInside(it->index))
+				if (!data.contains(it->index))
 					return false;
 				break;
 			default:

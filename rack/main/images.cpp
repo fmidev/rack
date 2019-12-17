@@ -87,7 +87,7 @@ void CmdImage::exec() const {
 	//File::write(*resources.currentImage, "convert.png");
 }
 
-void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters, drain::image::Image &dst){
+void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & encoding, drain::image::Image &dst){
 
 	drain::Logger mout("CmdImage", __FUNCTION__);
 
@@ -107,8 +107,8 @@ void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, 
 	op.odim.updateFromMap(srcData.odim);
 	// mout.note() << "dstOdim:" << op.odim << mout.endl;
 
-	// mout.note() << "params :" << parameters << mout.endl;
-	ProductBase::completeEncoding(op.odim, parameters);
+	// mout.note() << "params :" << encoding << mout.endl;
+	ProductBase::completeEncoding(op.odim, encoding);
 	// mout.warn() << "dstOdim:" << op.odim << mout.endl;
 
 	op.processImage(srcData, dst);

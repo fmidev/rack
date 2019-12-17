@@ -313,7 +313,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 		mout.warn() << "Swapping quantity: " << *qit << '/' << extension << mout.endl;
 
 		Data<dst_t> & dstDataOrig = dstProduct.getData(*qit);
-		Data<dst_t> & dstDataConv = dstProduct.getData(*qit+extension);
+		Data<dst_t> & dstDataConv = dstProduct.getData(*qit + extension);
 
 		dstDataOrig.swap(dstDataConv); // calls updateTree2 (consider what:quantity)
 

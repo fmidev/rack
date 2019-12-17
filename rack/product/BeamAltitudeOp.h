@@ -56,7 +56,7 @@ public:
 		PolarProductOp(__FUNCTION__,"Computes the altitude at each bin")
 	{
 
-		parameters.reference("altitudeReference", this->aboveSeaLevel = true, "0=radar site|1=sea level");
+		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = true, "0=radar site|1=sea level");
 
 		odim.product  = "ALTITUDE";
 		odim.quantity = "HGHT";

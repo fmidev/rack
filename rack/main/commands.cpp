@@ -642,7 +642,7 @@ public:
 
 			mout.debug() << "considering: " << it->first << mout.endl;
 
-			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.isInside(it->first.getIndex())){
+			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.contains(it->first.getIndex())){
 
 				//mout.note() << '@' << it->first << mout.endl;
 				DataSet<DT> dstDataSet(it->second);

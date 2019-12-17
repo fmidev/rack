@@ -134,45 +134,6 @@ public:
 
 
 
-/// Experimental
-/**
- *
- */
-class DopplerDiffOp : public DopplerOp {  // DopplerWindow unused!
-public:
-
-
-	/// Constructor
-	/**
-	 *  \param widthM - width of the window, in metres.
-	 *  \param heightD - azimuthal width of the window, in degrees.
-	 */
-	DopplerDiffOp(double dMaz = 100.0) : DopplerOp(__FUNCTION__, "From VRAD") { //, widthM, heightD) {
-		//parameters.reference("width", this->widthM = widthM, "metres");
-		parameters.reference("dMax", this->dMax = dMax, "m/s/rad");
-
-		dataSelector.quantity = "VRAD.*";
-
-		dataSelector.count = 1;
-
-		odim.type = "S";
-		odim.quantity = "VRAD_DIFF";
-
-	};
-
-	virtual inline
-	~DopplerDiffOp(){};
-
-	double dMax;
-
-	virtual
-	void processData(const Data<PolarSrc> & vradSrc, Data<PolarDst> & dstData) const;
-
-protected:
-
-
-};
-
 
 }  // ::rack
 

@@ -196,15 +196,17 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 
+	mout.debug(1) << "dstODIM: " << dstODIM << mout.endl;
+
 	if (dstODIM.quantity.empty()){
 		mout.warn() << "quantity (still) empty, odim=" << odim << mout.endl;
 	}
 
 	if (dstODIM.quantity != origQuantity){
-		mout.info() << "quantity change " << origQuantity << '>' << dstODIM.quantity << " requested, ok"  << mout.endl;
+		mout.info() << "quantity change " << origQuantity << " => " << dstODIM.quantity << " requested, ok"  << mout.endl;
 	}
 	else if (!odim.type.empty() && (odim.type != dstODIM.type)){
-		mout.info() << "type change " << dstODIM.type << '>' << odim.type << " requested, ok" << mout.endl;
+		mout.info() << "type change " << dstODIM.type << " => " << odim.type << " requested, ok" << mout.endl;
 	}
 	else if (!dstODIM.isSet()){ // quantity set, but type or gain unset
 		mout.info() << "dstODIM unset, applying defaults for quantity: " << dstODIM.quantity << mout.endl;
@@ -217,10 +219,12 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		return;
 	}
 
-	getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 
-	//	mout.warn() << "dstODIM set now/already " << dstODIM << mout.endl;
+	bool result = getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 
+	if (!result){
+		mout.warn() << "unknown quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
+	}
 }
 
 

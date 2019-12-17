@@ -317,12 +317,13 @@ public:
 			ODIMPathList paths;
 
 			if (!resources.select.empty()){
-				DataSelector selector; //( resources.select);
-				//mout.info() << "sel g " << selector.groups << mout.endl;
+				DataSelector selector;
+				selector.groups = ODIMPathElem::ALL_GROUPS; //ODIMPathElem::DATA_GROUPS;
 				//mout.info() << "sel g " << selector.groups.separator << mout.endl;
-				selector.deriveParameters(resources.select);
+				selector.deriveParameters(resources.select, false); //, ODIMPathElem::ALL_GROUPS);
 				//ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
 				//selector.getPaths(*getResources().currentHi5, paths, groups);
+				//selector.groups = ODIMPathElem::ALL_GROUPS;
 				selector.getPaths(*getResources().currentHi5, paths);
 				resources.select.clear();
 				// for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)

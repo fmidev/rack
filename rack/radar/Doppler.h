@@ -232,6 +232,48 @@ protected:
 
 };
 
+/// Smoothens Doppler field, providing quality computed as eccentricity
+class DopplerAverageWindow2 : public DopplerWindow {
+
+public:
+
+	DopplerAverageWindow2(const RadarWindowConfig & conf) : DopplerWindow(conf) {
+
+	}
+
+	typedef DopplerAverageWindow2 unweighted; // ????
+
+protected:
+
+	virtual inline
+	void write(){
+
+		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
+		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
+
+		double confidence = this->conf.ftor(this->eccentricity());
+
+		if (count > countMin){ // TODO threshold 0.5?
+
+			if (this->conf.relativeScale)
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); //
+			else
+				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
+
+			this->dstWeight.putScaled(this->location.x, this->location.y, confidence);
+			//this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
+			//this->dstWeight.putScaled(this->location.x, this->location.y, this->eccentricity());
+
+		}
+		else {
+			this->dst.put(this->location, this->odimSrc.undetect); // NOTE: may be wrong (C/S), add odimDst?
+			this->dstWeight.put(this->location, 0.0); // NOTE: may be wrong (C/S), add odimDst?
+		}
+
+	};
+
+};
+
 class DopplerDevWindow : public DopplerWindow {
 
 public:
@@ -272,16 +314,16 @@ protected:
 
 };
 
-
-class DopplerAverageWindow2 : public DopplerWindow {
+/// Computes eccentrity of Doppler speeds mapped on a Nyquist-normalized unit window.
+class DopplerEccentricityWindow : public DopplerWindow {
 
 public:
 
-	DopplerAverageWindow2(const RadarWindowConfig & conf) : DopplerWindow(conf) {
+	DopplerEccentricityWindow(const RadarWindowConfig & conf) : DopplerWindow(conf) {
 
 	}
 
-	typedef DopplerAverageWindow2 unweighted;
+	typedef DopplerEccentricityWindow unweighted; // ????
 
 protected:
 
@@ -291,23 +333,13 @@ protected:
 		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
 		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
 
-		double confidence = this->conf.ftor(this->eccentricity());
+		//double confidence = this->conf.ftor(this->eccentricity());
 
 		if (count > countMin){ // TODO threshold 0.5?
-
-			if (this->conf.relativeScale)
-				this->dst.putScaled(this->location.x, this->location.y, averageR() * M_1_PI); //
-			else
-				this->dst.putScaled(this->location.x, this->location.y, averageR() * this->radialSpeedConvInv);
-
-			this->dstWeight.putScaled(this->location.x, this->location.y, confidence);
-			//this->dstWeight.putScaled(this->location.x, this->location.y, this->conf.ftor(this->NI*stdDevR()));
-			//this->dstWeight.putScaled(this->location.x, this->location.y, this->eccentricity());
-
+			this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(this->eccentricity()));
 		}
 		else {
 			this->dst.put(this->location, this->odimSrc.undetect); // NOTE: may be wrong (C/S), add odimDst?
-			this->dstWeight.put(this->location, 0.0); // NOTE: may be wrong (C/S), add odimDst?
 		}
 
 	};

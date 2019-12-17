@@ -268,14 +268,15 @@ void DopplerWindowOp<W>::processData(const Data<PolarSrc> & vradSrc, Data<PolarD
 
 }
 
-
+/// Simple op not producing quality field.
+/*
 class DopplerAvgOp : public DopplerWindowOp<DopplerAverageWindow> {
 public:
 
-	/**
+	**
 	 *   \param width  - radial extent of window, in metres
 	 *   \param height - azimuthal extent of window, in degrees
-	 */
+	 *
 	DopplerAvgOp(int width = 1500, double height = 3.0) :
 		DopplerWindowOp<DopplerAverageWindow>(__FUNCTION__, "Smoothens Doppler field", width, height) {
 		parameters.reference("relativeScale", this->conf.relativeScale = false, "0|1");
@@ -297,59 +298,22 @@ protected:
 	}
 
 };
+*/
 
-
-class DopplerDevOp : public DopplerWindowOp<DopplerDevWindow> {
+class DopplerAvgOp : public DopplerWindowOp<DopplerAverageWindow2> {
 public:
 
 	/**
 	 *   \param width  - radial extent of window, in metres
 	 *   \param height - azimuthal extent of window, in degrees
 	 */
-	DopplerDevOp(int widthM = 1500, double heightD = 3.0) :
-		DopplerWindowOp<DopplerDevWindow>(__FUNCTION__, "Computes std.dev.[m/s] of Doppler field", widthM, heightD) {
-		parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
-
-		//this->conf.relativeScale = true;
-		odim.quantity = "VRAD_DEV"; // VRAD_C ?
-		odim.offset = 0.0;
-		odim.gain   = 0.0;
-		odim.type = "C";
-		odim.nodata = 255; // TODO
-	};
-
-	virtual ~DopplerDevOp(){};
-
-protected:
-
-	virtual inline
-	double getTypicalMin(const PolarODIM & srcODIM) const {
-		return 0.0;
-	}
-
-	virtual inline
-	double getTypicalMax(const PolarODIM & srcODIM) const {
-		return (this->conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();
-	}
-
-
-};
-
-
-class DopplerAvg2Op : public DopplerWindowOp<DopplerAverageWindow2> {
-public:
-
-	/**
-	 *   \param width  - radial extent of window, in metres
-	 *   \param height - azimuthal extent of window, in degrees
-	 */
-	DopplerAvg2Op(int width = 1500, double height = 3.0) :
-		DopplerWindowOp<DopplerAverageWindow2>(__FUNCTION__, "Smoothens Doppler field", width, height) {
-		parameters.reference("relativeScale", this->conf.relativeScale = false, "0|1");
+	DopplerAvgOp(int width = 1500, double height = 3.0) :
+		DopplerWindowOp<DopplerAverageWindow2>(__FUNCTION__, "Smoothens Doppler field, providing quality", width, height) {
+		parameters.reference("relativeScale", this->conf.relativeScale = false, "[false|true]");
 		odim.quantity = "VRAD"; // VRAD_C (corrected)?
 	};
 
-	virtual ~DopplerAvg2Op(){};
+	virtual ~DopplerAvgOp(){};
 
 	virtual inline
 	void processData(const Data<PolarSrc> & vradSrc, Data<PolarDst> & dstData) const {
@@ -392,6 +356,84 @@ protected:
 	}
 
 };
+
+
+
+class DopplerDevOp : public DopplerWindowOp<DopplerDevWindow> {
+public:
+
+	/**
+	 *   \param width  - radial extent of window, in metres
+	 *   \param height - azimuthal extent of window, in degrees
+	 */
+	DopplerDevOp(int widthM = 1500, double heightD = 3.0) :
+		DopplerWindowOp<DopplerDevWindow>(__FUNCTION__, "Computes std.dev.[m/s] of Doppler field", widthM, heightD) {
+		parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
+
+		//this->conf.relativeScale = true;
+		odim.quantity = "VRAD_DEV"; // VRAD_C ?
+		odim.offset = 0.0;
+		odim.gain   = 0.0;
+		odim.type = "C";
+		odim.nodata = 255; // TODO
+	};
+
+	virtual ~DopplerDevOp(){};
+
+protected:
+
+	virtual inline
+	double getTypicalMin(const PolarODIM & srcODIM) const {
+		return 0.0;
+	}
+
+	virtual inline
+	double getTypicalMax(const PolarODIM & srcODIM) const {
+		return (this->conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();
+	}
+
+
+};
+
+class DopplerEccentricityOp : public DopplerWindowOp<DopplerEccentricityWindow> {
+public:
+
+	/**
+	 *   \param width  - radial extent of window, in metres
+	 *   \param height - azimuthal extent of window, in degrees
+	 */
+	DopplerEccentricityOp(int widthM = 1500, double heightD = 3.0) :
+		DopplerWindowOp<DopplerEccentricityWindow>(__FUNCTION__, "Magnitude of mean unit circle mapped Doppler speeds", widthM, heightD) {
+
+		//parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
+
+		//this->conf.relativeScale = true;
+		odim.quantity = "VRAD_DEV"; // VRAD_C ?
+		odim.gain   = 1.0/200.0;
+		odim.offset = -odim.gain;
+		//odim.gain   = 1.0/200.0;
+		odim.type = "C";
+		odim.nodata = 255; // TODO
+	};
+
+	virtual ~DopplerEccentricityOp(){};
+
+protected:
+
+	virtual inline
+	double getTypicalMin(const PolarODIM & srcODIM) const {
+		return 0.0;
+	}
+
+	virtual inline
+	double getTypicalMax(const PolarODIM & srcODIM) const {
+		return +1.0;
+		//return (this->conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();
+	}
+
+
+};
+
 
 
 

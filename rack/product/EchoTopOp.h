@@ -50,9 +50,9 @@ public:
 		CumulativeProductOp(__FUNCTION__, "Computes maximum (or minimum) altitude of echo.", "WAVG,8,1"), top(top) {
 
 		parameters.reference("minDBZ", this->minDBZ = minDBZ, "dBZ");
-		parameters.reference("dbzCoord", this->dbzRef = dbzRef, "dBZ");
-		parameters.reference("altitudeCoord", this->hRef = hRef, "metres");
-		parameters.reference("altitudeReference", this->aboveSeaLevel = aboveSeaLevel, "0=radar site|1=sea level");
+		parameters.reference("dbzReference", this->dbzRef = dbzRef, "dBZ");
+		parameters.reference("altitudeReference", this->hRef = hRef, "metres");
+		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "false=radar site|true=sea level");
 
 		odim.product = "ETOP";
 		odim.quantity = "HGHT";

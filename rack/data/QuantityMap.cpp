@@ -39,23 +39,34 @@ namespace rack {
 
 void QuantityMap::initialize(){
 
-	set("DBZH", 'C').setScaling(0.5, -32);
-	set("DBZH", 'S').setScaling(0.01, -0.01*(128*256));
-	get("DBZH").setZero(-32.0);
+	Quantity & DBZH = add("DBZH");
+	DBZH.set('C').setScaling(0.5, -32);
+	DBZH.set('S').setScaling(0.01, -0.01*(128*256));
+	DBZH.setZero(-32.0);
 
-	copy("TH", get("DBZH"));
-	copy("DBZHC", get("DBZH"));
+	copy("TH",    DBZH );
+	copy("DBZHC", DBZH );
 
-	set("VRAD", 'C').setScaling(0.5, -64.0);  // nodata = 0?  IRIS
-	set("VRAD", 'S').setScaling( 0.0025, -0.0025*(256.0*128.0)); // nodata = 0?
-	const Quantity & VRAD = get("VRAD");
+	Quantity & VRAD = add("VRAD");
+	VRAD.set('C').setScaling(    0.5, -64.0);  // nodata = 0?  IRIS
+	//VRAD.set('S').setScaling( 0.0025, -0.0025*(256.0*128.0)); // nodata = 0?
+	VRAD.set('S').setRange(-100, 100);
 	copy("VRADH", VRAD);
 	copy("VRADV", VRAD);
 	copy("VRADDH", VRAD);
 	copy("VRADDV", VRAD);
 
-	set("RHOHV", 'C').setScaling(0.004); //
-	set("RHOHV", 'S').setScaling(0.0001); //
+	Quantity & VRAD_DIFF = add("VRAD_DIFF");
+	VRAD_DIFF.set('C').setRange(-32,  32.0);
+	VRAD_DIFF.set('S').setRange(-256, 256.0);
+
+	Quantity & VRAD_DEV = add("VRAD_DEV");
+	VRAD_DEV.set('C').setRange(0,  64.0);
+	VRAD_DEV.set('S').setRange(0, 128.0);
+
+	Quantity & RHOHV = add("RHOHV");
+	RHOHV.set('C').setScaling(0.004); //
+	RHOHV.set('S').setScaling(0.0001); //
 
 	set("ZDR", 'C').setScaling( 0.1, -12.8); //
 	set("ZDR", 'S').setScaling( 0.01, -0.01*(128*256)); //
@@ -66,29 +77,32 @@ void QuantityMap::initialize(){
 	set("HGHT", 'C').setScaling( 0.05);   //   255 => 12.5km
 	set("HGHT", 'S').setScaling( 0.0002); // 65535 => 13.x km
 
-	set("QIND", 'C').setScaling( 1.0/250.0);   //
-	set("QIND", 'S').setScaling( 1.0/(256.0*256.0-1.0));
-	get("QIND").setZero(0.0);
+	Quantity & QIND = add("QIND");
+	QIND.set('C').setScaling( 1.0/250.0);   //
+	QIND.set('S').setScaling( 1.0/(256.0*256.0-1.0));
+	QIND.setZero(0.0);
 
-	copy("PROB", get("QIND"));
+	copy("PROB", QIND);
 
-	set("COUNT", 'S'); // default type short int
-	set("COUNT", 'C'); //
-	set("COUNT", 'I'); //
-	set("COUNT", 'L'); //
-	set("COUNT", 'f'); // Floats needed in infinite accumulations
-	set("COUNT", 'd'); //
+	Quantity & COUNT = add("COUNT");
+	COUNT.set('S'); // default type short int
+	COUNT.set('C'); //
+	COUNT.set('I'); //
+	COUNT.set('L'); //
+	COUNT.set('f'); // Floats needed in infinite accumulations
+	COUNT.set('d'); //
 
-	set("AMVU", 'C').setRange(-100,100);
-	set("AMVU", 'c').setRange(-127,127);
-	set("AMVU", 'S').setRange(-327.68, +327.68);
-	set("AMVU", 's').setScaling(0.01);
-	set("AMVU", 'd');
-	copy("AMVV", get("AMVU"));
+	Quantity & AMVU = add("AMVU");
+	AMVU.set('C').setRange(-100,100);
+	AMVU.set('c').setRange(-127,127);
+	AMVU.set('S').setRange(-327.68, +327.68);
+	AMVU.set('s').setScaling(0.01);
+	AMVU.set('d');
+	copy("AMVV", AMVU);
 
-	set("CLASS", 'C');
-	set("CLASS", 'S');
-
+	Quantity & CLASS = add("CLASS");
+	CLASS.set('C');
+	CLASS.set('S');
 
 }
 
@@ -129,10 +143,12 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 			//std::cerr << "OK q=" << quantity << ", type=" << typechar << std::endl;
 			// initialize values to defaults
 			dstODIM = qit->second;
+			//dstODIM.updateFromMap(qit->second);
 			// finally, set desired scaling values, overriding those just set...
 			if (!values.empty()){
 				refMap.setValues(values);
 			}
+			mout.debug(1) << "updated dstODIM: "  << dstODIM << mout.endl;
 			return true;
 		}
 		else {

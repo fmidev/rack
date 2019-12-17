@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Log.h>
 #include <drain/util/Type.h>
+#include <drain/util/Range.h>
 #include "ODIM.h"
 #include "Data.h"
 
@@ -124,7 +125,18 @@ public:
 		undetectValue = std::numeric_limits<double>::min();
 	}
 
-
+	/// Sets absolute or typical range of this quantity.
+	/**
+	 *   For example, for probability the range would be [0.0, 1.0].
+	 *   Setting range is useful when data are converted from some storage type to another
+	 */
+	inline
+	void setPhysicalRange(double min, double max = std::numeric_limits<double>::max() ){
+		hasUndetectValue  = true;
+		undetectValue     = min;
+		physicalRange.min = min;
+		physicalRange.max = max;
+	}
 
 	/// Print declared encodings (storage types and scalings)
 	inline
@@ -143,6 +155,7 @@ public:
 		return ostr;
 	}
 
+	drain::Range<double> physicalRange;
 
 };
 

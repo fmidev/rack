@@ -70,8 +70,15 @@ public:
 	 *
 	 */
 	//void set(const std::string & key, char type='C', double gain=1.0, double offset=NAN);
-	inline
-	EncodingODIM & set(const std::string & key, char typecode='C'){
+	inline // EncodingODIM
+	Quantity & add(const std::string & key){ // char typecode = 'C'
+		Quantity & q = (*this)[key];
+		q.set('C');
+		return q;
+	}
+
+	inline // EncodingODIM
+	EncodingODIM & set(const std::string & key, char typecode){ // char typecode = 'C'
 		Quantity & q = (*this)[key];
 		return q.set(typecode);
 	}

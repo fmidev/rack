@@ -115,21 +115,17 @@ public:
 	 */
 	void reset(); // bool flexible = true "inclusive"
 
-	/// Sets parameters and sets \c groups parameter automatically.
-	/**
-	 *   First, resets parameters. Then derives
-	 *   Tries to guess additional filter for paths returned with getPaths().
-	 *
-	 *   bitmask a combination of ODIMPathElem::DATASET, ODIMPathElem::DATA, and ODIMPathElem::QUALITY.
-	 */
-	//void setParameters(const std::string & parameters, bool lenient);
 
-	///  Sets group mask etc
+	/// Sets given parameters and implicitly determines missing parameters
+	//  TODO: perhaps semantics unclear. Consider separating to updateParameters/ deriveImplicitParameters etc.
 	/**
-	 *  \param lenient - bool = maximize selection, false = minimize
+	 *   \param parameters - string containing parameters, like "dataset=1:3,quantity=DBZH"
+	 *   \param clear      - first reset to default state
+	 *   // groups set, if not given in \c parameters
 	 */
 	virtual
-	void deriveParameters(const std::string & parameters); //, char assignmentSymbol='=', char separatorSymbol=0);
+	void deriveParameters(const std::string & parameters, bool clear=true);// , ODIMPathElem::group_t defaultGroups = (ODIMPathElem::DATA | ODIMPathElem::QUALITY)); //, char assignmentSymbol='=', char separatorSymbol=0);
+
 
 
 	/// Retrieves paths using current selection criteria and an additional group selector.
@@ -411,13 +407,13 @@ bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::
 
 
 		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
-			if (!dataset.isInside(currentElem.index)){
+			if (!dataset.contains(currentElem.index)){
 				mout.debug(3) << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
 				continue;
 			}
 		}
 		else if (currentElem.is(ODIMPathElem::DATA)){ // what about quality?
-			if (!data.isInside(currentElem.index)){
+			if (!data.contains(currentElem.index)){
 				mout.debug(3) << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
 				continue;
 			}
@@ -438,7 +434,7 @@ bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::
 
 		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
 			if (d.properties.hasKey("where:elangle")){
-				if (!elangle.isInside(d.properties["where:elangle"])){
+				if (!elangle.contains(d.properties["where:elangle"])){
 					mout.debug() << "outside elangle range"<< mout.endl;
 					continue;
 				}
