@@ -415,17 +415,20 @@ protected:
 		if (std::isnan(d)){
 			ostr << "NaN";  // JSON std literal
 		}
-		else if (d == rint(d)){
+		/*  TODO: add at least one decimal for floating-point numbers ".0"
+		else if ((d == rint(d)) && (abs(d) < 1.0E+5)){
 			//ostr << std::ios::fixed << std::setprecision(2) << d;
 
 			const std::streamsize prec = ostr.precision();
-			const std::ios_base::fmtflags flags = ostr.setf(std::ios::fixed, std::ios::floatfield );
+			// // const std::ios_base::fmtflags flags = ostr.setf(std::ios::fixed, std::ios::floatfield );
+
 			ostr.precision(1);
 			ostr << d;
-			ostr.setf(flags);
+			// // ostr.setf(flags);
 			ostr.precision(prec);
 
 		}
+		*/
 		else {
 			ostr << d;
 		}

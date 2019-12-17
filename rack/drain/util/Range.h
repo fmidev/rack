@@ -56,6 +56,12 @@ public:
 	Range() : vect(2),min(vect[0]), max(vect[1]) { //
 	}
 
+	/// Copy constructor.
+	Range(const Range<T> & range) : vect(2), min(vect[0]), max(vect[1]) {
+		min = range.min;
+		max = range.max;
+	}
+
 	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
 	}
 
@@ -64,13 +70,19 @@ public:
 	T & min;
 	T & max;
 
+	Range & operator=(const Range<T> & range){
+		min = range.min;
+		max = range.max;
+		return *this;
+	};
+
 	Range<T> & operator=(const T &x){
 		min = x;
 		max = x;
 		return *this;
 	};
 
-	bool isInside(T x) const {
+	bool contains(T x) const {
 		return (min <= x) && (x <= max);
 	}
 

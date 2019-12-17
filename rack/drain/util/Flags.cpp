@@ -66,7 +66,7 @@ Flags & Flags::operator =(const std::string & params){
 		else {
 			// Numeric value
 			if (*it == "0"){
-				std::cout << "resetting...\n";
+				//std::cout << "resetting...\n";
 				value = 0;
 				continue;
 			}

@@ -105,7 +105,7 @@ public:
 };
 
 
-template <class T>
+//template <class T>
 inline
 std::ostream & operator<<(std::ostream & ostr, const FilePath & f) {
 	return f.toOStr(ostr);
