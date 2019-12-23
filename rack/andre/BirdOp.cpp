@@ -299,7 +299,10 @@ void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<P
 		fuzzyBright.functor.set(0.0,-0.032, overallScale);
 		fuzzyBright.process(dstData.data, dstData.data);
 	}
+
+	writeHow(dstData);
 	DataTools::updateInternalAttributes(dstData.getTree()); // needed?
+
 }
 
 
@@ -309,7 +312,7 @@ void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdr
 	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
 
 	parameters.reference("vradDevMin", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	this->vradDev.min = 0.9 * vradDevMin;
+	this->vradDev.min = 0; //0.9 * vradDevMin;
 	this->vradDev.max = 1.0 * vradDevMin;
 
 	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
@@ -332,7 +335,7 @@ void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double z
 	// THIS IS INVERTED (wrt. BIRD)
 	VRAD_FLIP=true;
 	parameters.reference("vradDevMax", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	this->vradDev.min = 0.9 * vradDevMax;
+	this->vradDev.min = 0; //0.9 * vradDevMax;
 	this->vradDev.max = 1.0 * vradDevMax;
 
 	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");

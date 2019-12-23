@@ -246,11 +246,11 @@ public:
 	// Azimuthal window height in degrees
 	double heightD;
 
-	/// Compensate the polar coordinate system to correspond the Cartesian one in computations
-	bool invertPolar;
-
 	/// Minimum percentage of detected values in a window (not undetect and nodata)
 	double contributionThreshold;  //
+
+	/// Compensate the polar coordinate system to correspond the Cartesian one in computations
+	bool invertPolar;
 
 	/// If true, use speed up to -1.0...+1.0 instead of -Vnyq...+Vnyq.
 	bool relativeScale;  //
@@ -262,7 +262,7 @@ public:
 	 */
 	RadarWindowConfig(int widthM=1500, double heightD=3.0, double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
 		drain::image::WindowConfig(1, 1), // drain::image::WindowConfig(width, height),
-		widthM(widthM), heightD(heightD), invertPolar(invertPolar), contributionThreshold(contributionThreshold), relativeScale(relativeScale) {
+		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
 	}
 
 
@@ -276,7 +276,7 @@ public:
 	RadarWindowConfig(drain::UnaryFunctor & ftor, int widthM=1500, double heightD=3.0,
 			double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
 		drain::image::WindowConfig(ftor), 		//drain::image::WindowConfig(ftor, width, height),
-		widthM(widthM), heightD(heightD), invertPolar(invertPolar), contributionThreshold(contributionThreshold), relativeScale(relativeScale) {
+		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
 		// invertPolar(false), contributionThreshold(contributionThreshold) {
 	}
 

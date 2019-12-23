@@ -577,17 +577,19 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 	ostr << "# " << title << "\n";
 	ostr << '\n';
 
-	for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
-		// ostr << it->second << '\n';
+	if (!specialCodes.empty()){
+		for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+			// ostr << it->second << '\n';
 
-		ostr << '#' << it->second.label << '\n';
-		ostr << '#' << it->first << '\n';
-		it->second.toOStream(ostr, separator, separator2);
+			ostr << '#' << it->second.label << '\n';
+			ostr << '#' << it->first << '\n';
+			it->second.toOStream(ostr, separator, separator2);
+			ostr << '\n';
+			ostr << '\n';
+		}
 		ostr << '\n';
 		ostr << '\n';
 	}
-	ostr << '\n';
-	ostr << '\n';
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		//ostr << it->first << separator << it->second << '\n';

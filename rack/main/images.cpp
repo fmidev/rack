@@ -520,7 +520,7 @@ public:
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
 		// mout.note() << op << mout.endl;
-		mout.note() << "Special codes" << op.specialCodes << mout.endl;
+		mout.note() << "Special codes: \n" << op.specialCodes << mout.endl;
 
 		// Copied form Racklet
 		std::string dstQuantity;

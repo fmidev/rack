@@ -170,6 +170,7 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
 
 	mout.info() << "start" << mout.endl;
+	//mout.warn() << "start" << mout.endl;
 
 	if (srcDataSet.size() == 0){
 		mout.warn() << "dataset contains no data, skipping" << mout.endl;
@@ -206,8 +207,11 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 		}
 
 		writeHow(dstProb);
+		//dstProb.getTree()["what"].data.attributes["mika"] = 123.456;
 		//}
 	}
+
+	//mout.warn() << "end" << dstProb.odim.quantity << mout.endl;
 
 }
 
@@ -318,7 +322,7 @@ void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
 	*/
 
 	drain::VariableMap & a = dstData.getHow();
-	a["task"] = std::string("fi.fmi.") + __RACK__ + ".AnDRe."+name;
+	a["task"] = std::string("fi.fmi.Rack.AnDRe.")+name;
 	a["task_args"] = getParameters().toStr(':');
 
 }
