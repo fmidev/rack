@@ -46,10 +46,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// Splits a string to base path, base filename and extension
+/// Extracts and stores directory path, base filename and extension
 /**
  *    Upon construction and after setting, splits a full path string to
- * 	- \c path     - directory path
+ * 	- \c dir      - directory path (Path<std::string>)
  * 	- \c basename - filename without directory path and extension
  * 	- \c ext      - extension, without dot (png, txt
  */
@@ -59,7 +59,11 @@ public:
 
 	typedef Path<std::string> path_t;
 
+	/// Constructor
 	FilePath(const std::string & s = "", char separator = 0);
+
+	/// Copy constructor
+	FilePath(const FilePath & s);
 
 	void set(const std::string & s);
 

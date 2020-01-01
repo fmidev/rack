@@ -265,6 +265,8 @@ void CommandRegistry::helpSections(std::ostream & ostr, const std::string & sect
 void CommandRegistry::toJSON(std::ostream & ostr) const {
 
 	char sep = 0;
+	ostr << "{\n";
+
 	for (map_t::const_iterator it = entryMap.begin(); it != entryMap.end(); ++it){
 		// const Command & r = it->second;
 		if (sep)
@@ -272,8 +274,10 @@ void CommandRegistry::toJSON(std::ostream & ostr) const {
 		else
 			sep = ',';
 		const drain::ReferenceMap & p = it->second.getParameters();
+		ostr << "  \"" << it->first << "\" : {\n";
+		p.toJSON(ostr, 4);
+		/*
 		const bool SINGLE = (p.size() == 1);
-		ostr << "\"" << it->first << "\" : ";
 		if (!SINGLE)
 			ostr << '{';
 		char sep2 = 0;
@@ -312,8 +316,10 @@ void CommandRegistry::toJSON(std::ostream & ostr) const {
 			//	ostr << ")";
 		}
 		//p.toJSON(ostr);
-		if (!SINGLE)
+		if (!SINGLE){
 			ostr << "\n}";
+		}
+		 */
 	}
 
 }

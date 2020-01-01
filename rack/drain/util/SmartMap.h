@@ -398,7 +398,7 @@ public:
 		const std::string space(indent, ' ');
 
 		char sep = 0;
-		//ostr << "{";
+		ostr << "{\n";
 
 		//for (std::list<std::string>::const_iterator it = getKeyList().begin(); it != getKeyList().end(); ++it){
 		for (const_iterator it = this->begin(); it != this->end(); ++it){
@@ -445,8 +445,7 @@ public:
 		}
 		// ostr << "{\n  \"value\":" << *this << ",\n";
 		//ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
-		//ostr << "\n";
-		// << space << "}\n";  // \n needed?
+		ostr << "\n" << space << "}\n";  // \n needed?
 	}
 
 protected:

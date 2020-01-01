@@ -56,11 +56,16 @@ const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
 
 
 /// In Linux and Unix...
+//  Note: pathRegExp should be flexible, respectively
 char FilePath::separator('/');
 
 FilePath::FilePath(const std::string & s, char separator) : dir(separator ? separator : FilePath::separator){
 	set(s);
 }
+
+FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), extension(p.extension){
+}
+
 
 void FilePath::set(const std::string & s){
 

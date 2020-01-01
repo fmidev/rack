@@ -66,34 +66,6 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		return;
 	}
 
-	const int width  = image.getWidth();
-	const int height = image.getHeight();
-	const int channels = image.getChannelCount();
-
-	int color_type = PNG_COLOR_TYPE_GRAY;
-	switch (channels) {
-	case 4:
-		color_type = PNG_COLOR_TYPE_RGBA;
-		break;
-	case 3:
-		color_type = PNG_COLOR_TYPE_RGB;
-		break;
-	case 2:
-		color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
-		break;
-	case 1:
-		color_type = PNG_COLOR_TYPE_GRAY;
-		break;
-	case 0:
-		mout.warn() << "zero-channel image" << mout.endl;
-		fclose(fp);
-		return;
-	default:
-		mout.error()  << "unsupported channel count: " << channels << mout.endl;
-		//throw std::runtime_error(s.toStr());
-	}
-
-
 	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr){
 		png_destroy_write_struct(&png_ptr,(png_infopp)NULL); // ? destroy null?
@@ -109,6 +81,52 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	   mout.error() << "could not allocate memory for file: " << path << mout.endl;
 	   //throw std::runtime_error(std::string("FilePng: could not allocate toOStr memory for: ")+path);
 	}
+
+
+	const int width  = image.getWidth();
+	const int height = image.getHeight();
+	const int channels = image.getChannelCount();
+
+	int color_type = PNG_COLOR_TYPE_GRAY;
+
+	switch (channels) {
+	case 4:
+		color_type = PNG_COLOR_TYPE_RGBA;
+		break;
+	case 3:
+		color_type = PNG_COLOR_TYPE_RGB;
+		break;
+	case 2:
+		color_type = PNG_COLOR_TYPE_GRAY_ALPHA;
+		break;
+	case 1:
+		color_type = PNG_COLOR_TYPE_GRAY;
+		// FUTURE extension
+		if (false){ // image.hasPalette
+			color_type = PNG_COLOR_TYPE_PALETTE;
+			const int NUM_PALETTE = 256;
+			png_color palette[NUM_PALETTE];
+			for (int i = 0; i < NUM_PALETTE; ++i) {
+				png_color & p = palette[i];
+				p.red   = i;
+				p.green = 128;
+				p.blue  = 255-i;
+			}
+			//png_color_8 color;
+			png_set_PLTE(png_ptr, info_ptr, palette, NUM_PALETTE);
+		}
+		break;
+	case 0:
+		mout.warn() << "zero-channel image" << mout.endl;
+		fclose(fp);
+		return;
+	default:
+		mout.error()  << "unsupported channel count: " << channels << mout.endl;
+		//throw std::runtime_error(s.toStr());
+	}
+
+
+
 
 
 	// Required.

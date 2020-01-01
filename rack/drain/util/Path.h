@@ -126,9 +126,12 @@ public:
 
 		std::list<std::string> l;
 		StringTools::split(p, l, separator);
+		//std::cerr << "root! (empty)\n";
 		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-			if (!it->empty())
-				*this << *it; // note: skips empty strings
+			//if (!it->empty())
+			*this << *it; // note: skips empty strings
+			/*
+			else*/
 		}
 
 	}
@@ -161,17 +164,26 @@ public:
 		return *this;
 	}
 
-	// Note: this is impossible
+	// Note: this would be ambiguous!
 	// If (elem_t == std::string), elem cannot be assigned directly, because string suggest full path assignment, at least
 	// Path<T> & operator=(const elem_t & e)
 
 	/// Append an element, unless empty string.
+	/*
 	Path<T> & operator<<(const std::string & s){
+		if (this->empty()) {
+			std::cerr << "root! (empty)\n";
+			*this << *it;
+		}
+		else {
+			// warn about empty path elements?
+		}
+
 		if (!s.empty())
 			this->push_back(s);
 		return *this;
 	}
-
+	*/
 
 	/// Append an element
 	template <class T2>

@@ -166,7 +166,7 @@ void Palette::update() const {
 }
 
 
-void Palette::load(const std::string &filename, bool flexible){
+void Palette::load(const std::string & filename, bool flexible){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
