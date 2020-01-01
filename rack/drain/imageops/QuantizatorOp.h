@@ -108,9 +108,9 @@ public:
 			mask = (mask << 1) | 1;
 
       	// Complete 1111110000
-      	mask = mask << (src.getByteSize()*8 - bits);
+      	mask = mask << (src.getElementSize()*8 - bits);
 
-        bitShift = (dst.getByteSize()-src.getByteSize())*8;
+        bitShift = (dst.getElementSize()-src.getElementSize())*8;
 	};
 	*/
 

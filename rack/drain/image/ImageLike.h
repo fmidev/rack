@@ -93,7 +93,7 @@ public:
 		}
 
 		caster.setType(t);
-		byteSize = caster.getByteSize();
+		byteSize = caster.getElementSize();
 		type.resize(1);
 		type.at(0) = drain::Type::getTypeChar(caster.getType());
 
@@ -142,7 +142,7 @@ public:
 
 	/// Returns the size in bytes of the storage type (1 for unsigned char, 2 for 16-bit types, etc.)
 	inline
-	size_t getByteSize() const { return byteSize; };
+	size_t getElementSize() const { return byteSize; };
 
 	/*
 	  problem: scaling may be linked ie different than that of encoding
@@ -201,7 +201,7 @@ public:
 inline
 std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
 
-	ostr << ' ' << conf.geometry << ' ' << Type::getTypeChar(conf.encoding.getType()) << '@' << (conf.encoding.getByteSize()*8) << 'b';
+	ostr << ' ' << conf.geometry << ' ' << Type::getTypeChar(conf.encoding.getType()) << '@' << (conf.encoding.getElementSize()*8) << 'b';
 	const ImageScaling & s = conf.encoding.scaling;
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(";

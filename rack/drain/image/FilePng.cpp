@@ -144,7 +144,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 
 
-	const int byte_depth = image.getEncoding().getByteSize(); //sizeof(T);
+	const int byte_depth = image.getEncoding().getElementSize(); //sizeof(T);
 	const int bit_depth  = byte_depth <= 2 ? byte_depth*8 : 16;
 
 	// mout.debug() << image.getGeometry() << ", orig byte_depth=" << byte_depth << ", bit_depth=" << bit_depth << mout.endl;

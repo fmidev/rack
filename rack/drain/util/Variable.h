@@ -327,10 +327,10 @@ protected:
 		this->elementCount = elementCount;
 
 		if (elementCount > 0)
-			data.resize(elementCount * getByteSize());
+			data.resize(elementCount * getElementSize());
 		else {
-			if (getByteSize() > 0)
-				data.resize(1 * getByteSize());
+			if (getElementSize() > 0)
+				data.resize(1 * getElementSize());
 			else
 				data.resize(1);
 			data[0] = 0; // for std::string toStr();
@@ -351,7 +351,7 @@ protected:
 		dataBegin = (void *) & data[0];
 
 		dataEnd.setType(getType());
-		dataEnd = (void *) & data[ getElementCount() * getByteSize() ]; // NOTE (elementCount-1) +1
+		dataEnd = (void *) & data[ getElementCount() * getElementSize() ]; // NOTE (elementCount-1) +1
 
 	}
 

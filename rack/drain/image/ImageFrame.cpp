@@ -191,7 +191,7 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	else
 		ostr << "Image";
 	ostr << " '"<< getName() << "'\t";
-	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getByteSize()*8) << 'b';
+	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
 	//if (typeIsIntegerType() || (scaling.isScaled()))
 	const ImageScaling & s = getScaling();
 	if (s.isScaled() || s.isPhysical()){
