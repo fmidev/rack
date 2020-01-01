@@ -136,7 +136,7 @@ template <>
 void Caster::updateType<std::string>(){
 
 	type = &typeid(std::string);
-	byteSize = sizeof(std::string)/sizeof(char);  // Varies... getByteSize() could retrieve
+	byteSize = sizeof(std::string)/sizeof(char);  // Varies... getElementSize() could retrieve
 
 	// NEW
 	putBool   = & Caster::putToStringT<bool>;

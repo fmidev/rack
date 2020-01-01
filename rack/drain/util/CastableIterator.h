@@ -172,7 +172,7 @@ public:
 	inline
 	CastableIterator & operator++(){
 		char *cptr = (char *)caster.ptr;
-		caster.ptr = (cptr + caster.getByteSize());
+		caster.ptr = (cptr + caster.getElementSize());
 		return *this;
 	};
 
@@ -181,14 +181,14 @@ public:
 	CastableIterator operator++(int){
 		CastableIterator tmp = *this;
 		char *cptr = (char *)caster.ptr;
-		caster.ptr = (cptr + caster.getByteSize());
+		caster.ptr = (cptr + caster.getElementSize());
 		return tmp;
 	};
 
 	inline
 	CastableIterator & operator--(){
 		char *cptr = (char *)caster.ptr;
-		caster.ptr = (cptr - caster.getByteSize());
+		caster.ptr = (cptr - caster.getElementSize());
 		return *this;
 	};
 
@@ -197,7 +197,7 @@ public:
 	CastableIterator operator--(int){
 		CastableIterator tmp = *this;
 		char *cptr = (char *)caster.ptr;
-		caster.ptr = (cptr - caster.getByteSize());
+		caster.ptr = (cptr - caster.getElementSize());
 		return tmp;
 	};
 

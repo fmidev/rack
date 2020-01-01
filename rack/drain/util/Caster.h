@@ -146,7 +146,7 @@ public:
 
 	/// Returns the size of the base type (size of an element, not of element array).
 	inline
-	size_t getByteSize() const { return byteSize; };
+	size_t getElementSize() const { return byteSize; };
 
 
 	/// Default conversion (for unconventional types). Uses std::stringstream for conversion.

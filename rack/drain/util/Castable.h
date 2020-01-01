@@ -134,24 +134,31 @@ public:
 	};
 
 	inline
-	size_t getByteSize() const {
-		return caster.getByteSize();
+	size_t getElementSize() const {
+		return caster.getElementSize();
 	};
 
 	/// Returns the length of the array, the number of elements in this entry.
 	/**
 	 *
 	 *
-	 *   \see Castable::getByteSize().
+	 *   \see Castable::getElementSize().
 	 */
 	virtual inline
 	size_t getElementCount() const {
 		return elementCount;
 	}
 
+	/// Returns the size in bytes of the target: (elementCount * elementSize)
+	virtual inline
+	size_t getSize() const {
+		return elementCount * caster.getElementSize();
+	}
+
+
 	/// Returns true, if no elements have been allocated. Does not check type. (NOTE: may change: 0 for scalars)
 	/**
-	 *   \see getByteSize()
+	 *   \see getElementSize()
 	 *   \see getElementCount()
 	 */
 	inline
@@ -453,12 +460,12 @@ public:
 	 */
 	inline
 	char * getPtr(size_t i = 0) {
-		return &((char *)caster.ptr)[i*caster.getByteSize()];
+		return &((char *)caster.ptr)[i*caster.getElementSize()];
 	}
 
 	inline
 	const char * getPtr(size_t i = 0) const {
-		return &((const char *)caster.ptr)[i*caster.getByteSize()];
+		return &((const char *)caster.ptr)[i*caster.getElementSize()];
 	}
 
 	/// If array, assigning a scalar will fill up the current array.

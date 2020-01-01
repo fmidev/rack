@@ -104,11 +104,11 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 		// Output nothing!
 		//ostr << '[' << "Ø" << ']';  // consider array.begin, end etc
 		//ostr << "alert: getElementCount()==0, elementCount=" << elementCount;
-		//ostr << " byteSize=" << getByteSize();
+		//ostr << " byteSize=" << getElementSize();
 		//ostr << " typeChar=" << drain::Type::getTypeChar(getType()) << '=' << getType().name() << '\n';
 	}
 
-	//ostr << '{' << getElementCount() << ',' << getByteSize() << '}';
+	//ostr << '{' << getElementCount() << ',' << getElementSize() << '}';
 	return ostr;
 
 }
@@ -185,7 +185,7 @@ const void Castable::typeInfo(std::ostream & ostr) const {
 		ostr << drain::Type::getTypeChar(getType());
 	//if (size_t n = getElementCount() != 1)
 	ostr << getElementCount();
-	ostr << '@' << getByteSize() << ']';
+	ostr << '@' << getElementSize() << ']';
 }
 
 
