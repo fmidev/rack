@@ -101,9 +101,9 @@ struct NodeHi5 {
 
 
 //typedef  TreeNode<NodeHi5> TreeHi5;
-//#define HI5TREE drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
-//#define HI5TREE drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
-typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> HI5TREE;
+//#define Hi5Tree drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
+//#define Hi5Tree drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> Hi5Tree;
 
 
 namespace hi5 {
@@ -126,32 +126,37 @@ public:
 
 	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
 	static
-	const hid_t & getH5DataType(const std::type_info &t);
+	hid_t getH5NativeDataType(const std::type_info &t);
 
 	/// Given a native C++ type, returns a native HDF5 data type.
 	template <class T>
 	static
-	const hid_t & getH5DataType(){ return getH5DataType(typeid(T)); }
+	hid_t getH5NativeDataType(){
+		return getH5NativeDataType(typeid(T));
+	}
+
+	static
+	hid_t getH5StringVariableLength();
 
 
 	/// Creates a 256-element RGB palette to be referenced with linkPalette().
 	static
-	HI5TREE & getPalette(HI5TREE & dst);
-	//drain::image::Image & getPalette(HI5TREE & dst);
+	//Hi5Tree & getPalette(Hi5Tree & dst);
+	drain::image::Image & getPalette(Hi5Tree & dst);
 
 	/// Links the palette that has been (or will be) created with createPalette().
 	static
-	void linkPalette(const HI5TREE & palette, HI5TREE & dst);
+	void linkPalette(const Hi5Tree & palette, Hi5Tree & dst);
 
 
 	/// Dumps the H5 structure, attributes and data properties.
 	static
-	void writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr = std::cout);
+	void writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr = std::cout);
 
 	/// Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)).
 	static
-	void writeText(const HI5TREE &src, std::ostream & ostr = std::cout){
-		std::list<HI5TREE::path_t> paths;
+	void writeText(const Hi5Tree &src, std::ostream & ostr = std::cout){
+		std::list<Hi5Tree::path_t> paths;
 		src.getPaths(paths);
 		writeText(src, paths, ostr);
 	};
@@ -162,14 +167,8 @@ public:
 	 *  The grammar should follow to that produced by writeText().
 	 */
 	static
-	void readText(HI5TREE &src, std::istream & istr = std::cin);
+	void readText(Hi5Tree &src, std::istream & istr = std::cin);
 
-	/// Assign a value with optional type specification.
-	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
-	 *   If the attribute is \c "image", creates an image with specified value (\c width,\c height ) and type.
-	 *
-	 *
-	 */
 
 	/// Split full path string to path object and attribute key.
 	// consider ValueReader, TextReader instead (skipping attrType)
@@ -183,19 +182,11 @@ public:
 	 *   \endcode
 	 *
 	 */
-
 	static
-	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, drain::Variable & v);
-
-	/*
-	static
-	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, std::string & attrValue,
-			std::string & attrType);
-	*/
-
+	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v);
 
 	static inline
-	void parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey){
+	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey){
 		drain::Variable attrValue;
 		parsePath(line, path, attrKey, attrValue); // , attrType);
 	}
@@ -207,13 +198,13 @@ public:
 	 *
 	 */
 	static
-	void readTextLine(HI5TREE &src, const std::string & line);
+	void readTextLine(Hi5Tree &src, const std::string & line);
 
-	// static	void readTextLine(HI5TREE & dst, const HI5TREE::path_t & path, const std::string & key, const std::string & value);
+	// static	void readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & key, const std::string & value);
 
 	/// Delete branches that have been marked with noSave=true .
 	static
-	void deleteNoSave(HI5TREE &src);
+	void deleteNoSave(Hi5Tree &src);
 
 
 };
@@ -223,7 +214,7 @@ public:
 std::ostream & operator<<(std::ostream &ostr, const hi5::NodeHi5 &n);
 
 /// Dumps a complete tree.
-std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree);
+std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree);
 
 
 /*

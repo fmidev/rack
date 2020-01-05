@@ -75,7 +75,7 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 			ostr << prefix << ':';
 		//'\t';
 		ostr << "image=" << dataSet.getWidth() << ',' << dataSet.getHeight();
-		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getByteSize() << ']' << '\n';  // like typeInfo above
+		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getElementSize() << ']' << '\n';  // like typeInfo above
 		ostr << '\n';
 	}
 
@@ -94,7 +94,7 @@ drain::Log hi5monitor;
 drain::Logger hi5mout(hi5monitor,"Hi5");
 
 
-const hid_t & Hi5Base::getH5DataType(const std::type_info &type){
+hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 
 
 	if (type == typeid(bool)){  // does not work
@@ -139,6 +139,14 @@ const hid_t & Hi5Base::getH5DataType(const std::type_info &type){
 	else if (type == typeid(double)){
 		return H5T_NATIVE_DOUBLE;
 	}
+	else if (type == typeid(const char *)){
+		return getH5StringVariableLength();
+	}
+	/*
+	else if (type == typeid(std::string)){
+		return getH5StringVariableLength();
+	}
+	*/
 	else {
 		hi5mout.error() << __FUNCTION__ << ": unsupported data type:'" << type.name() << '\'' << hi5mout.endl;
 		return H5T_NATIVE_UCHAR; /// TODO
@@ -146,21 +154,40 @@ const hid_t & Hi5Base::getH5DataType(const std::type_info &type){
 
 }
 
+hid_t Hi5Base::getH5StringVariableLength(){
 
-//drain::image::Image &  Hi5Base::getPalette(HI5TREE & dst){
-HI5TREE & Hi5Base::getPalette(HI5TREE & dst){
+	hid_t strtype = H5Tcopy(H5T_C_S1); // todo: delete dynamic?
+	herr_t status = H5Tset_size(strtype, H5T_VARIABLE);
+	//if (status < 0)hi5mout.error() << "H5T_C_S1 => H5Tset_size failed " << hi5mout.endl;
+	return strtype;
 
-	HI5TREE & palette = dst["palette"];
+}
 
-	drain::image::Image & data = palette.data.dataSet;
+
+//drain::image::Image &  Hi5Base::getPalette(Hi5Tree & dst){
+//Hi5Tree &
+drain::image::Image & Hi5Base::getPalette(Hi5Tree & dst){
+
+	//Hi5Tree & palette = dst["palette"];
+
+	drain::image::Image & data = dst.data.dataSet;
 	if (data.isEmpty()){
 		data.setType<unsigned char>();
 		data.setGeometry(3, 256);
+		// TEST data
+		for (int i = 0; i < 256; ++i){
+			data.put(0, i, i);
+			data.put(1, i, 128-abs(i-128));
+			data.put(2, i, 255-i);
+		}
+		/*
 		for (drain::image::Image::iterator it = data.begin(); it != data.end(); ++it){
 			*it = rand()&0xff;
 		}
-		drain::VariableMap & attributes = palette.data.attributes;
+		*/
+		drain::VariableMap & attributes = dst.data.attributes;
 		attributes["CLASS"] = "PALETTE"; // palette marker for Hi5Writer
+		//attributes["IMAGE_SUBCLASS"] = "PALETTE"; // palette marker for Hi5Writer
 		/*
 		attributes["PAL_COLORMODEL"] = "RGB";
 		// attributes["PAL_MINMAXNUMERIC"] = std::string(); // << min , max "0,255";
@@ -169,22 +196,23 @@ HI5TREE & Hi5Base::getPalette(HI5TREE & dst){
 		 */
 	}
 
-	return palette;
-	//return data;
+	//return palette;
+	return data;
 
 }
 
-void Hi5Base::linkPalette(const HI5TREE & palette, HI5TREE & dst){
-	drain::VariableMap & attributes = dst["data"].data.attributes;
+void Hi5Base::linkPalette(const Hi5Tree & palette, Hi5Tree & dst){
+	// drain::VariableMap & attributes = dst["data"].data.attributes;
+	drain::VariableMap & attributes = dst.data.attributes;
 	attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
-	attributes["PALETTE_ADDR"] = (long unsigned int) & palette; //(long unsigned int);
+	attributes["palette_link"] = (long unsigned int) & palette; //(long unsigned int);
 }
 
-// const HI5TREE &src,
-void Hi5Base::writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & paths, std::ostream & ostr) {
+// const Hi5Tree &src,
+void Hi5Base::writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr) {
 
 
-	for (std::list<HI5TREE::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
+	for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
 
 		const std::string &key = *it;
 		src(key).data.writeText(ostr, key);
@@ -192,7 +220,7 @@ void Hi5Base::writeText(const HI5TREE &src, const std::list<HI5TREE::path_t> & p
 	}
 }
 
-void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
+void Hi5Base::readText(Hi5Tree &src, std::istream & istr) {
 
 	std::string line;
 
@@ -213,11 +241,11 @@ void Hi5Base::readText(HI5TREE &src, std::istream & istr) {
 
 
 
-void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
+void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 	//drain::Logger mout("Hi5Base", __FUNCTION__);
 
-	HI5TREE::path_t path;
+	Hi5Tree::path_t path;
 	std::string attrKey;
 	drain::Variable v;
 
@@ -260,7 +288,7 @@ void Hi5Base::readTextLine(HI5TREE & dst, const std::string & line){
 /// Split full path string to path object and attribute key.
 // consider ValueReader, TextReader instead (skipping attrType)
 
-void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::string & attrKey, drain::Variable & v){
+void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v){
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
@@ -334,15 +362,15 @@ void Hi5Base::parsePath(const std::string & line, HI5TREE::path_t & path, std::s
 
 
 
-void Hi5Base::deleteNoSave(HI5TREE &src){
+void Hi5Base::deleteNoSave(Hi5Tree &src){
 
 	drain::Logger mout("Hi5Base", __FUNCTION__);
 
-	typedef std::list<HI5TREE::path_t::elem_t> path_elem_list_t;
-	std::list<std::string> sl;
+	typedef std::list<Hi5Tree::path_t::elem_t> path_elem_list_t;
+	//std::list<std::string> sl;
 	path_elem_list_t l;
 
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 		if (! it->second.data.noSave){ // needed?
 			//mout.debug(1) << "delete: " <<  it->first << mout.endl;
 			deleteNoSave(it->second);
@@ -353,25 +381,17 @@ void Hi5Base::deleteNoSave(HI5TREE &src){
 	}
 
 	for (path_elem_list_t::iterator it = l.begin(); it != l.end(); ++it){
-		HI5TREE::path_t p;
+		Hi5Tree::path_t p;
 		p << *it;
 		mout.debug(1) << "delete group: " <<  *it << mout.endl;
 		src.erase(p);
 	}
 
-	/*
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it) {
-		if (it->second.data.noSave){
-			mout.debug(1) << "delete group: " <<  it->first << mout.endl;
-			src.erase(HI5TREE::path_t(it->first));
-		}
-	}
-	*/
 
 }
 
 
-std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree){
+std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree){
 
 	tree.dump(ostr);
 	return ostr;
@@ -380,6 +400,3 @@ std::ostream & operator<<(std::ostream &ostr, const HI5TREE & tree){
 
 } // ::hi5
 
-
-// Rack
-// REP // REP

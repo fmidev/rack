@@ -54,12 +54,23 @@ namespace hi5 {
 //extern const int ATTRIBUTES;
 //extern const int DATASETS;
 
+
+//extern
+
 class Reader : public Hi5Base {
 
 public:
 
+
 	static
-	void readFile(const std::string &filename,HI5TREE &tree, int mode=(ATTRIBUTES|DATASETS));
+	const int ATTRIBUTES; // = 1;
+
+	//extern
+	static
+	const int DATASETS; // = 2;
+
+	static
+	void readFile(const std::string &filename, Hi5Tree &tree, int mode=3); //(ATTRIBUTES|DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 structure.
 	/**
@@ -68,8 +79,8 @@ public:
 	 *  \param tree - output in hi5 structure
 	 *  \param mode - switch for excluding attributes or datasets.
 	 */
-	static
-	void h5FileToTree(hid_t fid, const std::string &path, HI5TREE &tree, int mode=(ATTRIBUTES|DATASETS));
+	static  // , const std::string &path,
+	void h5FileToTree(hid_t fid, const Hi5Tree::path_t &path, Hi5Tree &tree, int mode=3); // ATTRIBUTES|DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 structure.
 	/**
@@ -79,8 +90,10 @@ public:
 	 */
 	static
 	inline
-	void h5FileToTree(hid_t fid, HI5TREE &tree, int mode=(ATTRIBUTES|DATASETS)){
-		h5FileToTree(fid, "/", tree, mode);
+	void h5FileToTree(hid_t fid, Hi5Tree &tree, int mode=3){ //(ATTRIBUTES|DATASETS)){
+		//h5FileToTree(fid, "/", tree, mode);
+		h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
+		// h5FileToTree(fid, "", tree, mode);
 	};
 
 	/*
@@ -103,7 +116,7 @@ public:
 		attribute.setType(typeid(T));
 		attribute.setSize(elements);
 
-		int status = H5Aread(aid,datatype, attribute.getPtr());
+		int status = H5Aread(aid, datatype, attribute.getPtr());
 
 		if (status < 0){
 			hi5mout.error() << "h5AttributeToData: read failed " << hi5mout.endl;
@@ -116,16 +129,9 @@ public:
 
 
 	static
-	void h5DatasetToImage(hid_t id,const std::string &path,drain::image::Image &image);
+	void h5DatasetToImage(hid_t id, const Hi5Tree::path_t &path, drain::image::Image &image);
 
-
-	//extern
-	static
-	const int ATTRIBUTES = 1;
-
-	//extern
-	static
-	const int DATASETS = 2;
+	//void h5DatasetToImage(hid_t id,const std::string &path,drain::image::Image &image);
 
 protected:
 
@@ -142,9 +148,8 @@ protected:
 
 
 
-
 //static
-//void debug(const HI5TREE &src,int level = 0);
+//void debug(const Hi5Tree &src,int level = 0);
 
 
 } // ::hi5
