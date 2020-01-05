@@ -64,24 +64,34 @@ public:
 
 	typedef std::list<Path<T> > list_t;
 
+	// Consider flags
+	/*
+	static const int BEGIN  = 1;
+	static const int MIDDLE = 2;
+	static const int END    = 4;
+	*/
+
 	inline
-	Path(char separator='/') : separator(separator){
+	Path(char separator='/') : separator(separator), rooted(true){
 		if (!separator)
 			throw std::runtime_error("Path(char separator): separator=0, did you mean empty init (\"\")");
 	};
 
-	/*
-	Path(const std::string &s, char separator='/') : separator(separator){
-		if (!separator)
-			throw std::runtime_error("Path(const string &s, char separator): separator=0");
-		set(s);
-	};
-	*/
-
 	/// Copy constructor. Note: copies also the separator.
 	inline
-	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator) {
+	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator), rooted(p.rooted) {
 	};
+
+	inline
+	Path(const std::string & s, char separator='/') : separator(separator), rooted(true) {
+		set(s);
+	};
+
+	inline
+	Path(const char *s, char separator='/') : separator(separator), rooted(true) {
+		set(s);
+	};
+
 
 	/// Constructor with an initialises element - typically a root.
 	//  PROBLEMATIC - elem may be std::string, and also the full path representation
@@ -95,43 +105,56 @@ public:
 	};
 	*/
 
-	inline
-	Path(const std::string & s, char separator='/') : separator(separator) {
-		set(s);
-	};
-
-	inline
-	Path(const char *s, char separator='/') : separator(separator) {
-		set(s);
-	};
-
 	virtual inline
 	~Path(){};
 
 	char separator;
 
-	void set(const std::string & p){
+	/// If true, recognize plain separator (e.g. "/") as a root
+	bool rooted;
 
+	inline
+	bool isRoot() const {
+		return rooted && ((this->size()==1) && this->front().empty());
+	}
+
+	void set(const std::string & p){
 
 		std::list<T>::clear();
 
-		// Here: optional / experimental "root"
-		/*
-		if (p.empty())
-			return;
-			// SUPPORT_ROOT > 0
-		if (p.at(0) == separator)
-			* this << elem_t();
-		*/
-
 		std::list<std::string> l;
 		StringTools::split(p, l, separator);
-		//std::cerr << "root! (empty)\n";
+
 		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-			//if (!it->empty())
-			*this << *it; // note: skips empty strings
+
+			if (!it->empty()){
+				*this << *it;
+			}
+			else if ((it == l.begin()) && rooted){
+				*this << *it;
+			}
+			else { // trailing: if (it == --l.end()){
+				// skip
+				// warn, esp. intermediate empties?
+			}
+
 			/*
-			else*/
+			else if (it == --l.end()){
+				// else if ((acceptEmpty & END) && (it == --l.end())){
+				// else if ((acceptEmpty & END) && ((++std::list<std::string>::const_iterator(it)) == l.end())){
+				// *this << *it;
+			}
+			else if (acceptEmpty & MIDDLE){
+				*this << *it;
+			}
+			else if ((this->size()==1) && (it->at(0)==separator)){
+
+			}
+			else {
+				// throw
+				std::cerr << "Path::set: not accepting empty element at this position '" << p << "', flags=" << acceptEmpty << "'\n";
+			}
+			 */
 		}
 
 	}
@@ -210,7 +233,10 @@ public:
 	virtual inline
 	std::ostream & toOStr(std::ostream & ostr, char separator = 0) const {
 		separator = separator ? separator : this->separator;
-		return drain::StringTools::join(*this, ostr, separator);
+		if (isRoot())
+			return (ostr << separator);
+		else
+			return drain::StringTools::join(*this, ostr, separator);
 	}
 
 	inline

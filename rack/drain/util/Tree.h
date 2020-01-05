@@ -181,10 +181,12 @@ public:
 	typename map_t::iterator end(){ return children.end(); };
 
 
-
+	/// Return child of give \c key, creating one if unexisting.
 	tree_t & operator[](const key_t & key){
 
-		//if (key.empty())			return *this;
+		// Old policy restored; keys must implement empty(), an empty key is indentified to the current node.
+		if (key.empty())
+			return *this;
 
 		iterator it = children.find(key);
 
@@ -204,6 +206,7 @@ public:
 
 	}
 
+	/// Return child of give \c key, or an empty node if noes not exist.
 	const tree_t & operator[](const key_t & key) const {
 
 		//if (key.empty())			return *this;

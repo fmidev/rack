@@ -63,7 +63,7 @@ PaletteEntry::PaletteEntry(const PaletteEntry & entry){
 void PaletteEntry::init(){
 	color.resize(1, 0);
 	//color[3] = 255.0;
-	map.reference("value", value);
+	map.reference("value", value = 0.0);
 	//map.reference("color", color);
 	map.reference("alpha", alpha = 255.0);
 	//map.reference("id", id);
@@ -182,6 +182,8 @@ void Palette::load(const std::string & filename, bool flexible){
 		mout.info() << " setting filepath: " << filename << mout.endl;
 		filePath.set(filename);
 	}
+
+	mout.debug() << " Initial dir path: '" << filePath.dir << "'" << mout.endl;
 
 	// If relative path, add explicit ./
 	if (filePath.dir.empty())
@@ -395,7 +397,8 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		id << ++index;
 		//if (!label.empty())
 		id << entry.label;
-		entry.id = id.toStr();
+
+		//entry.id = id.toStr();
 
 
 
@@ -502,7 +505,7 @@ void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 		//PaletteEntry & entry = SPECIAL ? specialCodes[id] : (*this)[d]; // Create entry?
 		PaletteEntry & entry = SPECIAL ? specialCodes[attr["value"]] : (*this)[d]; // Create entry?
 
-		entry.id = id;
+		// entry.id = id;
 		// Deprecated, transitory:
 		entry.value = attr["min"];
 		entry.label = attr["en"].toStr();
@@ -555,7 +558,7 @@ void Palette::write(const std::string & filename){
 		mout.debug() << "writing JSON palette/class file" << mout.endl;
 		drain::JSON::tree_t json;
 		exportJSON(json);
-		drain::JSON::write(json, ofstr);
+		drain::JSON::writeJSON(json, ofstr);
 	}
 	else if (filepath.extension == "txt"){
 		mout.debug() << "writing plain txt palette file" << mout.endl;
@@ -601,7 +604,7 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 		if (!it->second.label.empty())
 			ostr << it->second.label;
 		else
-			ostr << '?' << it->second.id;
+			ostr << '?'; // << it->second.id;
 
 		ostr << '\n';
 
@@ -621,12 +624,21 @@ void Palette::exportJSON(drain::JSON::tree_t & json) const {
 
 	drain::JSON::tree_t & entries =  json["entries"];
 
+	int i = 0;
+	std::stringstream key;
+
 	// Start with special codes (nodata, undetect)
 	for (spec_t::const_iterator it = specialCodes.begin(); it!=specialCodes.end(); ++it){
 
 		const PaletteEntry & entry = it->second;
 
-		drain::JSON::tree_t & js = entries[entry.id];
+		key.str("");
+		key << "special";
+		key.width(2);
+		key.fill('0');
+		key << ++i;
+
+		drain::JSON::tree_t & js = entries[key.str()]; // entries[entry.id];
 		js.data["color"] = entry.color;
 		js.data.importCastableMap(entry.map);
 		Variable & value = js.data["value"];
@@ -634,9 +646,15 @@ void Palette::exportJSON(drain::JSON::tree_t & json) const {
 		value = it->first;
 	}
 
+	i = 0;
 	for (Palette::const_iterator it = begin(); it!=end(); ++it){
 		const PaletteEntry & entry = it->second;
-		VariableMap & m = entries[entry.id].data;
+		key.str("");
+		key << "colour";
+		key.width(3);
+		key.fill('0');
+		key << ++i;
+		VariableMap & m = entries[key.str()].data; // entries[entry.id].data;
 		m["color"] = entry.color;
 		m.importCastableMap(entry.map);
 	}

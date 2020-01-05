@@ -87,7 +87,7 @@ void FilePath::set(const std::string & s){
 				this->extension = result[4];
 			}
 			else if (result.size() == 3){
-				this->dir.set("");
+				//this->dir.set("");
 				this->basename  = result[1];
 				this->extension = result[2];
 			}

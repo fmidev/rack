@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <string>
 
-#include "../util/Tree.h"
-#include "../util/VariableMap.h"
+#include "Tree.h"
+#include "VariableMap.h"
 
 
 namespace drain
@@ -64,12 +64,13 @@ public:
 	typedef tree_t::path_t path_t;
 	typedef tree_t::node_t node_t;
 
-	/// Write a JSON file
-	static
-	void write(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 
 	static
 	void write(const tree_t & json, const std::string & filename);
+
+	/// Write a JSON file
+	static
+	void writeJSON(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 
 	/// Write a Windows INI file
 	static
@@ -90,22 +91,12 @@ public:
 
 protected:
 
-	// Generalize
-	static const RegExp filenameExtension;
-	// Write utils
-
 	/// Indent output with \c n spaces
 	static inline
 	void indent(std::ostream & ostr, unsigned short n){
 		for (int i = 0; i < n; ++i)
 			ostr.put(' ');
 	}
-
-	// Read utils
-
-	//static void skipChars(std::istream & istr, const std::string skip = " \t\n\r");
-
-	// static	std::string scanSegment(std::istream & istr, const std::string & terminator);
 
 
 };

@@ -77,7 +77,7 @@ void PaletteOp::setPalette(const Palette & palette) {
 }
 
 
-void PaletteOp::registerSpecialCode(const std::string code, double f) {
+void PaletteOp::registerSpecialCode(const std::string & code, double f) {
 
 	Logger mout(getImgLog(), getName(), __FUNCTION__);
 
@@ -85,9 +85,11 @@ void PaletteOp::registerSpecialCode(const std::string code, double f) {
 		//throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
 		mout.error() << "no paletted loaded or linked " << mout.endl;
 
-	std::map<std::string,PaletteEntry >::const_iterator it = palettePtr->specialCodes.find(code);
-	if (it != palettePtr->specialCodes.end())
-		specialCodes[f] = it->second;
+	Palette::spec_t::const_iterator it = palettePtr->specialCodes.find(code);
+	if (it != palettePtr->specialCodes.end()){
+		specialCodes[f] = it->second; // copy
+		specialCodes[f].value = f;
+	}
 	else {
 		mout.debug() << *palettePtr << mout.endl;
 		//mout.note() << palettePtr->specialCodes << mout.endl;

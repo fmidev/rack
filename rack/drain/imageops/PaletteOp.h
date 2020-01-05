@@ -100,7 +100,7 @@ public:
 
 	/// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).
 	// TODO T 256, T2 32768
-	void setGrayPalette(unsigned int iChannels=3,unsigned int aChannels=0,float brightness=0.0,float contrast=1.0) const;
+	void setGrayPalette(unsigned int iChannels=3,unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;
 
 
 	/// Prescale intensities with scale*i + offset.
@@ -109,11 +109,10 @@ public:
 	/// Prescale intensities with scale*i + offset.
 	double offset;
 
-	void registerSpecialCode(const std::string code, double f);
+	void registerSpecialCode(const std::string & code, double f);
 
 	// protect:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
-	//std::map<double,PaletteEntry > specialCodes;
 	Palette specialCodes;
 
 

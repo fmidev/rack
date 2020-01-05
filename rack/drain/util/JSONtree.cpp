@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Type.h"
+#include "FilePath.h"
 #include "TextReader.h"
 #include "ValueReader.h"
 #include "JSONtree.h"
@@ -54,7 +55,7 @@ namespace drain
  */
 unsigned short JSON::indentStep(2);
 
-const RegExp JSON::filenameExtension("\\.([[:alnum:]]+)$");
+//onst RegExp JSON::filenameExtension("\\.([[:alnum:]]+)$");
 
 void JSON::read(tree_t & t, std::istream & istr){
 
@@ -140,39 +141,44 @@ void JSON::readINI(tree_t & t, std::istream & istr){
 	mout.error() << "unimplemented code" << mout.endl;
 }
 
+
+
+
 void JSON::write(const tree_t & json, const std::string & filename){
 
 	drain::Logger mout("JSON", __FUNCTION__);
 
+	const FilePath path(filename);
+	//mout.error() << "failed in extracting file type of filename: " <<  filename << mout.endl;
+
 	std::ofstream outfile;
 	outfile.open(filename.c_str(), std::ios::out);
 
-	std::vector<std::string> result;
-	if (!filenameExtension.execute(filename, result)){
+	if (!outfile){
+		mout.error() << "failed in opening file: " <<  filename << mout.endl;
+	}
+	// std::vector<std::string> result;
+	//if (!filenameExtension.execute(filename, result)){
+	//const std::string & ext = result[1];
 
-		const std::string & ext = result[1];
 
-
-		if (ext == "json"){
-			JSON::write(json, outfile);
-		}
-		else if (ext == "ini"){
-			JSON::writeINI(json, outfile);
-		}
-		else {
-			mout.error() << "unknown file type: " <<  ext << mout.endl;
-		}
+	if (path.extension == "json"){
+		JSON::writeJSON(json, outfile);
+	}
+	else if (path.extension == "ini"){
+		JSON::writeINI(json, outfile);
 	}
 	else {
-		mout.error() << "failed in extracting file type of filename: " <<  filename << mout.endl;
+		mout.error() << "unknown file type: " << path.extension << mout.endl;
 	}
+
 
 	outfile.close();
 
 }
 
 
-void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indentation){
+void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
 	//const node_t & vmap = json.data;
 
@@ -204,7 +210,7 @@ void JSON::write(const tree_t & json, std::ostream & ostr, unsigned short indent
 		ostr << '"' << it->first << '"' << ": ";
 
 		// Recursion
-		JSON::write(it->second, ostr, indentation); // + JSON::indentStep);
+		JSON::writeJSON(it->second, ostr, indentation); // + JSON::indentStep);
 
 	}
 

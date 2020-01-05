@@ -203,6 +203,19 @@ public:
 	inline
 	const std::map<std::string,std::string> & getUnitMap() const { return unitMap; };
 
+	/// Creating a common segment for
+	/*
+	template <class T>
+	static
+	size_t serialize(const SmartMap<T> & rmap, std::vector<char> & memory);
+	*/
+
+	/// Associates a map entry with a variable
+	/**
+	 *  \param key - variable name in a map
+	 *  \param x   - target variable to be linked
+	 */
+
 
 protected:
 
@@ -213,7 +226,30 @@ protected:
 
 };
 
+/*
+template <class T>
+size_t ReferenceMap::serialize(const SmartMap<T> & smap, std::vector<char> & memory){
 
+	typedef SmartMap<T> smap_t;
+
+	size_t i;
+	for (smap_t::const_iterator it = smap.begin(); it != smap.end(); ++it){
+
+		const std::string & key = it->first;
+		const Castable & value  = it->second;
+
+		if (v.isString()){
+
+			///  Variable-length string datatype.
+
+		}
+		else {
+		}
+
+	}
+
+}
+*/
 
 }  // namespace drain
 

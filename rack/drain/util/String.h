@@ -114,7 +114,7 @@ public:
 	static
 	bool trimScan(const std::string &s, size_t & pos1, size_t & pos2, const std::string &trimChars=" \t\n");
 
-	/// Splits a given std::string to a std Sequence.
+	/// Splits and trims a given std::string to a std Sequence.
 	/**
 	 *  The target sequence must implement end() and insert() operators.
 	 *
@@ -126,6 +126,7 @@ public:
 	static
 	void split(const std::string & s, T & sequence, const std::string &separators, const std::string & trimChars=" \t\n");
 
+	/// Splits and trims a given std::string to a std Sequence.
 	template <class T>
 	static inline
 	void split(const std::string & s, T & sequence, char separator=',', const std::string & trimChars=" \t\n"){

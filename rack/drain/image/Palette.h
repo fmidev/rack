@@ -75,7 +75,7 @@ public:
 
 
 	/// Unique label (latent)
-	std::string id;
+	//std::string id;
 
 	/// Description appearing in legends
 	std::string label;
