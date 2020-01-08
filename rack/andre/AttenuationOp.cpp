@@ -68,15 +68,17 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 	double zAttnBin;
 	double zAttnCumulated;
 
-	const drain::FuzzyBell<double> fuzzifier(0, dBZHalfWidth);
+	const drain::FuzzyBell<double> fuzzifier(0.0, reflHalfWidth);
 	double quality; // yes, not probability
+
+	const size_t i0 = srcData.odim.getBinIndex(5000.0);
 
 	for (size_t j = 0; j < height; ++j) {
 
 		zAttnCumulated = 0.0;
 		quality = 1.0;
 
-		for (size_t i = 0; i < width; ++i) {
+		for (size_t i = i0; i < width; ++i) {
 
 			dbzObs = srcData.data.get<double>(i,j);
 
@@ -91,12 +93,9 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 				/// one-way attenuation per one bin
 				/// two-way attenuation per one bin
 				// TODO: bin width should be in the exponent?
-				zAttnBin = c*::pow(zTrue,p) * srcData.odim.rscale * 2.0;
+				zAttnBin = (c*::pow(zTrue,p) + c2*::pow(zTrue,p2)) * srcData.odim.rscale * 2.0;
 				zAttnCumulated += zAttnBin;
 
-				//confidence = (::radar::zToDbz(zAttnCumulated)+64)*4;  // TODO
-				//quality = zAttnCumulated/100.0;  // TODO
-				//quality = 255.0/(1+quality*quality);
 				quality = fuzzifier(zAttnCumulated);
 
 				dstData.data.putScaled(i, j, 1.0 - quality);

@@ -33,24 +33,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define Attenuation_OP_H_
 
 #include "DetectorOp.h"
-//#include "QualityCombinerOp.h"
-
-//#include <drain/image/SegmentAreaOp.h>
-//#include <drain/util/Fuzzy.h>
-//#include <drain/image/MathOpPack.h>
-//#include <drain/image/File.h>
-//#include "product/Analysis.h"
-
-//using namespace drain::image;
-
 
 
 namespace rack {
 
-/// Simply, "detects" precipitation ie sets its probability.
-/**
- *  Sets default class, typically with a low maximum prority.
- *  Applicable in context of str detectors to prevent clear precipitation from being classified to str classes.
+/// Computes attenuation caused by \em precipitation.
+/*!
+ *
+ *  By Ulrich Blahak (and Isztar Zawadski, Heikki Pohjola, Jarmo Koistinen),
+ *  for liquid precipitation (including bright band):
+ *  \f[
+ *      k(Z) = 1.12\cdot10^{-4} Z_e^{0.62}
+ *  \f]
+ *  and for snow:
+ *  \f[
+ *      k(Z) = 1.1\cdot10^{-7} Z_e + 2.1\cdot10^{-5} Z_e^{0.5}
+ *  \f]
+ *
+ * Hence, the general expression for precipitation attenuation is
+ * \f[
+ *      k(Z) = c Z_e^p + c_2 Z_e^{p_2}.
+ * \f]
+ *
  */
 class AttenuationOp: public DetectorOp {
 
@@ -63,23 +67,52 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	AttenuationOp() :
-		DetectorOp(__FUNCTION__, "Computes attenuation", "distort.attn"){ //ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Computes attenuation and converts it to probability", "dist.attn.rain"){ //ECHO_CLASS_PRECIP){
 
-		parameters.reference("dBZHalfWidth", this->dBZHalfWidth=10.0, "limit of 50% quality");
+		parameters.reference("reflHalfWidth", this->reflHalfWidth=10.0, "dBZ limit of 50% quality");
 
 		// todo: "rain", "snow"
-		parameters.reference("p", this->p=0.62, "p");
-		parameters.reference("c", this->c=1.12E-7, "c");
+		parameters.reference("c", this->c=1.12E-7, "coeff");
+		parameters.reference("p", this->p=0.62, "coeff");
+
+		parameters.reference("c2", this->c2=0, "coeff");
+		parameters.reference("p2", this->p2=0, "coeff");
+
 
 		UNIVERSAL = true;
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;
 		REQUIRE_STANDARD_DATA = false;
+
+
 	};
 
-	double dBZHalfWidth;
+	virtual inline
+	void setParameters(const std::string & params, char assignmentSymbol='=', char separatorSymbol=0){
+
+		if (params == "rain"){
+			c = 1.12E-7;
+			p = 0.62;
+			c2 = 0;
+			p2 = 0;
+		}
+		else if (params == "snow"){
+			c = 1.1E-7;
+			p = 1;
+			c2 = 2.1E-5;
+			p2 = 0.5;
+		}
+		else {
+			BeanLike::setParameters(params, assignmentSymbol, separatorSymbol);
+		}
+
+	};
+
+	double reflHalfWidth;
 	double p;
 	double c;
+	double p2;
+	double c2;
 
 protected:
 
