@@ -111,7 +111,7 @@ public:
 		Logger mout(getName(), __FUNCTION__);
 
 		RackResources & resources = getResources();
-		HI5TREE *h5 = resources.currentHi5;
+		Hi5Tree *h5 = resources.currentHi5;
 		if (h5 == resources.currentPolarHi5){
 			mout.warn() << "not implemented for polar coord data" << mout.endl;
 			//MotionFillOp<PolarODIM> op;

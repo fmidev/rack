@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/File.h>
 
 #include "hi5/Hi5.h"
-#include "hi5/Hi5Read.h"
+//#include "hi5/Hi5Read.h"
 
 #include "data/DataCoder.h"
 #include "data/DataTools.h"
@@ -236,7 +236,7 @@ void CompositeAdd::addPolar() const {
 		//if (current.find("quality") == 0){
 		if (current.is(ODIMPathElem::QUALITY)){
 			mout.info()  << "plain quality data, ok (no further quality data)" << mout.endl;  // TODO: fix if quality/quality (BirdOp)
-			static const HI5TREE t;
+			static const Hi5Tree t;
 			static const PlainData<PolarSrc> empty(t);
 			resources.composite.addPolar(polarSrc, empty, 1.0, isAeqd); // Subcomposite: always 1.0.
 			//DATA_ONLY = true;

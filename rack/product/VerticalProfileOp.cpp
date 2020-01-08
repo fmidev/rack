@@ -53,7 +53,7 @@ namespace rack {
 // TODO: implement azSlots
 
 void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
-	//void VerticalProfileOp::filterGroups(const HI5TREE &src, const ODIMPathList & paths, HI5TREE &dst) const {
+	//void VerticalProfileOp::filterGroups(const Hi5Tree &src, const ODIMPathList & paths, Hi5Tree &dst) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -329,7 +329,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 		mout.debug(2) << "quantity:" << quantity << mout.endl;
 
-		//HI5TREE & group = dstDataSet[groupName];
+		//Hi5Tree & group = dstDataSet[groupName];
 		//drain::VariableMap & what = group["what"].data.attributes;
 		//what["quantity"] = quantity;
 

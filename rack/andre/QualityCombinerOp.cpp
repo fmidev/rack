@@ -71,7 +71,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		if (dstQind.odim.quantity.empty())
 			dstQind.odim.quantity = quantity;
 
-		mout.note() << "Creating quality field [" << dstQind.odim.quantity <<  "] [~" << quantity <<  ']' << mout.endl;
+		mout.debug() << "Creating quality field [" << dstQind.odim.quantity <<  "] ~=[" << quantity <<  ']' << mout.endl;
 
 		// Scaling, encoding
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
@@ -84,7 +84,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		// Fill with init value
 		if (quantity == "QIND"){
 			const double minCode = dstQind.data.getScaling().inv(QualityCombinerOp::DEFAULT_QUALITY);
-			mout.note() << "Creating QIND data with 1-qMin: " << (QualityCombinerOp::DEFAULT_QUALITY) << " [" << minCode << "]" << mout.endl;
+			mout.debug() << "Creating QIND data with 1-qMin: " << (QualityCombinerOp::DEFAULT_QUALITY) << " [" << minCode << "]" << mout.endl;
 			dstQind.data.fill(minCode);
 			//dstQind.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
 		}	// Fill with init value
@@ -99,7 +99,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 			//mout.warn() << marker << mout.endl;
 			marker.process(srcData.data, dstQind.data);
 			*/
-			mout.note() << "created empty CLASS" << mout.endl;
+			mout.debug() << "created empty CLASS" << mout.endl;
 			//dstQind.data.fill(minCode);
 			mout.debug(1) << " => DST: " << dstQind.data.getScaling() << mout.endl;
 		}
@@ -176,7 +176,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	sstr << label << ':' << index;
 	howClass["task_args"] << sstr.str();
 
-	mout.note() << "Updating QIND and CLASS data" << mout.endl;
+	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
 	Image::const_iterator  it = srcProb.data.begin();
 	Image::iterator pit = dstQind.data.begin();

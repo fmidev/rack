@@ -39,7 +39,7 @@ namespace rack {
 using namespace hi5;
 
 
-void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariableMap & attributes){
+void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -81,7 +81,7 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 	}
 
 	// Traverse children (recursion)
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
 
 		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!it->second.data.noSave){
@@ -102,7 +102,7 @@ void DataTools::updateInternalAttributes(HI5TREE & src,  const drain::FlexVariab
 	// std::cerr << "### updateAttributes"
 }
 
-bool DataTools::removeIfNoSave(HI5TREE & dst){
+bool DataTools::removeIfNoSave(Hi5Tree & dst){
 	if (dst.data.noSave){
 		drain::Logger mout("DataTools", __FUNCTION__);
 		mout.note() << "// about to resetting noSave struct: " << dst.data << mout.endl;
@@ -117,7 +117,7 @@ bool DataTools::removeIfNoSave(HI5TREE & dst){
 		return false;
 }
 
-void DataTools::updateCoordinatePolicy(HI5TREE & src, const drain::image::CoordinatePolicy & policy){
+void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -129,7 +129,7 @@ void DataTools::updateCoordinatePolicy(HI5TREE & src, const drain::image::Coordi
 		//mout.warn() << "qty=" << data.getName() << " - " << data.getCoordinatePolicy() << '\n';
 	}
 
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
 
 		if (!it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
 			//mout.warn() << "updating " << it->first << '\n';

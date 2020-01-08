@@ -265,7 +265,7 @@ public:
 
 
 	//void processH5() // see MotionFill
-	void processH5(const HI5TREE &src, HI5TREE &dst) const;
+	void processH5(const Hi5Tree &src, Hi5Tree &dst) const;
 
 
 	/// Traverse the data applicable for this product and create new, processed data (volume or polar product).
@@ -373,7 +373,7 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & d
 
 
 template <class MS, class MD>  // copied from VolumeOp::processVolume
-void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
+void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
 
@@ -435,7 +435,7 @@ void ProductOp<MS,MD>::processH5(const HI5TREE &src, HI5TREE &dst) const {
 	mout.note() << "storing product in path: " <<  parent << '|' << child << mout.endl;
 	//mout.debug(2) << "storing product in path: "  << dataSetPath << mout.endl;
 
-	HI5TREE & dstProduct = dst[parent][child]; // (dataSetPath);
+	Hi5Tree & dstProduct = dst[parent][child]; // (dataSetPath);
 	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
 
 	drain::VariableMap & how = dstProduct["how"].data.attributes;

@@ -45,12 +45,12 @@ const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinateP
 
 //drain::Logger RackResources::mout("racklet");
 RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
-		currentGrayImage(NULL), inputSelect(0), scriptExec(scriptParser.script) {
+		currentGrayImage(NULL), scriptExec(scriptParser.script) { //inputSelect(0),
 	polarAccumulator.setMethod("WAVG");
 	andreSelect = "dataset=1,count=1";
 }
 
-void RackResources::setSource(HI5TREE & dst, const drain::Command & cmd){
+void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
 
 	drain::Logger mout("RackResources", __FUNCTION__);
 

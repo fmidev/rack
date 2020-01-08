@@ -39,6 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack
 {
 
+// NOTE: see andre/AttenuationOp.h
+
 
 /// Computes attenuation caused by \em precipitation.
 /*!

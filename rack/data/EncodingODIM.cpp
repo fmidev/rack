@@ -212,7 +212,7 @@ void EncodingODIM::setRange(double min, double max) {
 
 }
 
-void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
+void EncodingODIM::checkType(Hi5Tree & dst, EncodingODIM & odim){
 
 
 	for (std::map<std::string,drain::Referencer>::iterator it = odim.begin(); it != odim.end(); ++it){
@@ -227,7 +227,7 @@ void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
 		}
 		else {
 
-			HI5TREE & dstGroup = dst[key.substr(0,i)];
+			Hi5Tree & dstGroup = dst[key.substr(0,i)];
 
 			std::cerr << "checkType: " << key << '\n';
 
@@ -248,7 +248,7 @@ void EncodingODIM::checkType(HI5TREE & dst, EncodingODIM & odim){
 	}
 
 	/*
-	for (HI5TREE::iterator it = dst.begin(); it != dst.end(); ++it) {
+	for (Hi5Tree::iterator it = dst.begin(); it != dst.end(); ++it) {
 		//checkType(it->second, odim); // TODO skip /what /where?
 	}
 	*/

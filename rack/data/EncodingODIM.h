@@ -265,7 +265,7 @@ public:
 	 */
 	static
 	inline
-	void checkType(HI5TREE & dst){
+	void checkType(Hi5Tree & dst){
 		EncodingODIM odim;
 		checkType(dst, odim);
 	} // Temp for thread-safety.
@@ -294,7 +294,7 @@ protected:
 
 
 	static
-	void checkType(HI5TREE & dst, EncodingODIM & odim); // SEE ABOVE?
+	void checkType(Hi5Tree & dst, EncodingODIM & odim); // SEE ABOVE?
 
 
 	static

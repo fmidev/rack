@@ -149,7 +149,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	mout.debug(4) << dist << mout.endl;
 	dist.process(tmpPeaks, tmpPeaks);
 	storeDebugData(2, tmpPeaks, "SHIP_HP_DIST"); // for debugging only
-	mout.warn() << tmpPeaks << mout.endl;
+	//mout.warn() << tmpPeaks << mout.endl;
 
 
 	/// Step 3: combine the two evidence field by multiplying them (fuzzy-AND operation)

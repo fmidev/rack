@@ -216,10 +216,10 @@ class PolarExtract : public SimpleCommand<std::string> {
 
 		mout.info() << "acc.odim Encoding " << EncodingODIM(acc.odim) << mout.endl;
 
-		HI5TREE & dst = resources.polarHi5;
+		Hi5Tree & dst = resources.polarHi5;
 		dst.clear();
 
-		HI5TREE & dstDataSetGroup = dst["dataset1"];
+		Hi5Tree & dstDataSetGroup = dst["dataset1"];
 		DataSet<PolarDst> dstProduct(dstDataSetGroup);
 
 		acc.odim.object = "SCAN";

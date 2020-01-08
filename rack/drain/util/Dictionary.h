@@ -105,6 +105,156 @@ std::ostream & operator<<(std::ostream & ostr, const Dictionary<T> & d) {
 	return d.toOStr(ostr);
 }
 
+
+/***
+ *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but
+ *   appended sequentally.
+ */
+template <class K, class V>
+class Dictionary2 : public std::list<std::pair<K, V> > {
+
+public:
+
+	typedef K key_t;
+	typedef V value_t;
+
+	typedef std::pair<K, V> entry_t;
+	typedef std::list<entry_t> container_t;
+
+	Dictionary2() : separator(','){};
+
+	Dictionary2(const Dictionary2 & d) : separator(d.separator){};
+
+	virtual
+	~Dictionary2(){};
+
+	//virtual
+	void add(const K & key, const V & value){
+		this->push_back(entry_t(key, value));
+	}
+
+
+	typename container_t::const_iterator findByKey(const K & key) const {
+		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (it->first == key)
+				return it;
+		}
+		return this->end();
+	}
+
+	/*
+	typename container_t::iterator findByKey(const K & key){
+		for (typename container_t::iterator it = this->begin(); it != this->end(); ++it){
+			if (it->first == key)
+				return it;
+		}
+		return this->end();
+	}
+	*/
+
+	typename container_t::const_iterator findByValue(const V & value) const {
+		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (it->second == value)
+				return it;
+		}
+		return this->end();
+	}
+
+	/*
+	typename container_t::iterator findByValue(const V & value){
+		for (typename container_t::iterator it = this->begin(); it != this->end(); ++it){
+			if (it->second == value)
+				return it;
+		}
+		return this->end();
+	}
+	*/
+
+	//virtual
+	const V & getValue(const K & key) const {
+		typename container_t::const_iterator it = findByKey(key);
+		if (it != this->end())
+			return it->second;
+		else {
+			static V empty;
+			return empty;
+		}
+
+	}
+
+	// virtual
+	const K & getKey(const V & value) const {
+		typename container_t::const_iterator it = findByValue(value);
+		if (it != this->end())
+			return it->second;
+		else {
+			static V empty;
+			return empty;
+		}
+	}
+
+	//static	const K defaultKey = K();
+	//static	const V defaultValue = V();
+	void toOstr(std::ostream & ostr = std::cout, char separator=0){
+
+			if (!separator)
+				separator = this->separator;
+
+			char sep = 0;
+			for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+				if (sep)
+					ostr << sep;
+				else
+					sep = separator;
+				ostr << it->first << '=' << it->second;
+			}
+		}
+
+		char separator;
+};
+
+template <class K, class V>
+inline
+std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
+	return dict.toOStr(ostr);
+}
+
+
+/// Associates type info
+template <class K, class V>
+class Dictionary2Ptr : public Dictionary2<K, V*> {
+
+public:
+
+	typedef Dictionary2<K, V*> parent_t;
+
+	Dictionary2Ptr(){};
+
+	virtual
+	~Dictionary2Ptr(){};
+
+	//virtual
+	void add(const K & key, const V & value){
+		Dictionary2<K, V*>::add(key, &value);
+	}
+
+	typename parent_t::container_t::const_iterator findByValue(const V & value) const {
+		return parent_t::findByValue(& value);
+	}
+
+	//virtual
+	const V & getValue(const K & key) const {
+		return *Dictionary2<K, V*>::getValue(key);
+	}
+
+	//virtual
+	const K & getKey(const V & value) const {
+		return Dictionary2<K, V*>::getKey(&value);
+	}
+
+
+};
+
 } // drain::
 
 

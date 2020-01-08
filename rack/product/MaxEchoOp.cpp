@@ -44,7 +44,7 @@ using namespace drain::image;
 
 //processSweep(data, cumulator);
 void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
-	// void MaxEchoOp::filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const {
+	// void MaxEchoOp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
 
 	drain::Logger mout(drain::getLog(), getName(), __FUNCTION__);
 	mout.debug(2) << "Starting MaxEchoOp (" << name << ") " << mout.endl;

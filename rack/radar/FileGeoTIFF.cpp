@@ -344,7 +344,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 		const drain::Type t(src.getType());
 		if ((t == 'C') || (t=='S')){
 			/// Address each ŕow directly
-			const int rowBytes = width * src.getEncoding().getByteSize();
+			const int rowBytes = width * src.getEncoding().getElementSize();
 			buffer = (unsigned char *)src.getBuffer();
 			for (int j=0; j<height; ++j){
 				if (!TIFFWriteScanline(tif, &(buffer[j * rowBytes]), j, 0))
@@ -375,7 +375,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
  */
-//void FileGeoTIFF::write(const std::string &filePath, const HI5TREE & src, const ODIMPathList & paths){
+//void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
 	Logger mout("FileGeoTIFF", __FUNCTION__);

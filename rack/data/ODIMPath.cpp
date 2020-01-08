@@ -38,21 +38,21 @@ namespace rack {
 
 const ODIMPathElem::group_t ODIMPathElem::NONE;
 const ODIMPathElem::group_t ODIMPathElem::ROOT;
-const ODIMPathElem::group_t ODIMPathElem::WHAT;
-const ODIMPathElem::group_t ODIMPathElem::WHERE;
-const ODIMPathElem::group_t ODIMPathElem::HOW;
 const ODIMPathElem::group_t ODIMPathElem::ARRAY;
 const ODIMPathElem::group_t ODIMPathElem::ATTRIBUTE_GROUPS;
 const ODIMPathElem::group_t ODIMPathElem::IS_INDEXED;
 const ODIMPathElem::group_t ODIMPathElem::DATASET;
 const ODIMPathElem::group_t ODIMPathElem::DATA;
 const ODIMPathElem::group_t ODIMPathElem::QUALITY;
+const ODIMPathElem::group_t ODIMPathElem::WHAT;
+const ODIMPathElem::group_t ODIMPathElem::WHERE;
+const ODIMPathElem::group_t ODIMPathElem::HOW;
 //const (ODIMPathElem::group_t ODIMPathElem::IS_QUALITY;
 const ODIMPathElem::group_t ODIMPathElem::OTHER;
-//const (ODIMPathElem::group_t ODIMPathElem::OTHER_INDEXED;
-const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS;
+const ODIMPathElem::group_t ODIMPathElem::PALETTE; // experimental
+const ODIMPathElem::group_t ODIMPathElem::LEGEND;  // experimental
+const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS; // ?
 
-//const std::set<std::string> & ODIM::attributeGroups(createAttributeGroups());
 
 /*
 const ODIMPathElem::flag_t & ODIMPathElem::getFlags(){
@@ -69,19 +69,27 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 
 	static ODIMPathElem::dict_t dict;
 
-	if (dict.first.empty()){
-		dict.addEntry("*", NONE);
-		dict.addEntry("", ROOT);
-		dict.addEntry("dataset", DATASET);
-		dict.addEntry("data", DATA);
-		dict.first["array"] = ARRAY;
-		dict.second[ARRAY] = "data";
-		//dict.addEntry("data", ARRAY);
-		dict.addEntry("quality", QUALITY);
-		dict.addEntry("OTHER", OTHER);
-		dict.addEntry("what", WHAT);
-		dict.addEntry("where", WHERE);
-		dict.addEntry("how", HOW);
+	if (dict.empty()){
+		dict.add("*", NONE);
+		dict.add("", ROOT);
+		dict.add("dataset", DATASET);
+
+		// NOTE: when searching for "data", DATA will be found (first) and returned
+		dict.add("data", DATA);
+		// NOTE: when searching for ARRAY, "data" will be found (first) and returned
+		dict.add("data", ARRAY);
+		dict.add("array", ARRAY);
+		//dict.first["array"] = ARRAY;
+		//dict.second[ARRAY] = "data";
+
+		//dict.add("data", ARRAY);
+		dict.add("quality", QUALITY);
+		dict.add("OTHER", OTHER);
+		dict.add("what", WHAT);
+		dict.add("where", WHERE);
+		dict.add("how", HOW);
+		dict.add("palette", PALETTE);
+		dict.add("legend", LEGEND);
 	}
 
 	return dict;
@@ -106,6 +114,10 @@ bool ODIMPathElem::set(const std::string &s){
 		//std::cout << "root" << '\n';
 		return true;
 	}
+	else if (s == "data"){
+		this->group = ARRAY; // ODIM
+		return true;
+	}
 
 	// Extract prefix (alphabets) and index (digits)
 	size_t i = 0;
@@ -119,17 +131,17 @@ bool ODIMPathElem::set(const std::string &s){
 		++i;
 	}
 	/// The non-numeric prefix
-	const std::string prefix(s.substr(0, i)); // +1?
+	const std::string prefix(s.substr(0, i));
 
 	//std::cout << "  raw: " << prefix << ':' << this->index << '\t';
 
 	/// Check if matches predefined group types
-	const dict_t::second_type & d = getDictionary().second;
-	for (dict_t::second_type::const_iterator it=d.begin(); it!=d.end(); ++it){
+	const dict_t & d = getDictionary();
+	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
 		// it->first  : group id [enum code]
 		// it->second : group prefix [string]
-		if ((prefix == it->second) && (INDEXED == isIndexed(it->first))) {
-			this->group = it->first;
+		if ((prefix == it->first) && (INDEXED == isIndexed(it->second))) {
+			this->group = it->second;
 			// std::cout << ", code: " << (int)this->group << '\n';
 			return true;
 		}
@@ -147,11 +159,13 @@ bool ODIMPathElem::set(const std::string &s){
 }
 
 const std::string & ODIMPathElem::getKey(group_t group)  {
-	static const dict_t::second_type & d = getDictionary().second;
-	const dict_t::second_type::const_iterator it = d.find(group);
+
+	static const dict_t & d = getDictionary();
+
+	const dict_t::const_iterator it = d.findByValue(group);
 	//const dict_t::const_iterator it = d.find(group); // should be always found, if group != OTHER
 	if (it != d.end()){
-		return it->second;
+		return it->first;
 	}
 	else {
 		static std::string empty("other");
@@ -229,6 +243,7 @@ bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 }
 
 // Experimental naming.
+ODIMPathElem odimROOT(ODIMPathElem::ROOT);
 ODIMPathElem odimWHERE(ODIMPathElem::WHERE);
 ODIMPathElem odimWHAT(ODIMPathElem::WHAT);
 ODIMPathElem odimARRAY(ODIMPathElem::ARRAY);

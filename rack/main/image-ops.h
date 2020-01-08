@@ -98,7 +98,7 @@ protected:
 
 	// --iResize may have changed size
 	template <class OD>
-	void updateGeometryODIM(HI5TREE & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
+	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
 		drain::Logger mout(this->getName(), __FUNCTION__); // = resources.mout;
 

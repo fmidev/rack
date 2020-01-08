@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/prog/Command.h>
 
-#include <drain/prog/CommandRegistry.h>
+//#include <drain/prog/CommandRegistry.h>
 
 #include "andre/QualityCombinerOp.h"
 #include "hi5/Hi5.h"
@@ -54,7 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 namespace rack {
-
+//static CommandEntry<CmdInputSelect> cmdInputSelect("inputSelect");
 
 void CmdInputFile::exec() const {
 
@@ -138,8 +138,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	RackResources & resources = getResources();
 
 	// InputSelect needed?
-	HI5TREE srcTmp;
-	hi5::Reader::readFile(fullFilename, srcTmp, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
+	Hi5Tree srcTmp;
+	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
 
 
@@ -274,11 +274,14 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		 */
 	}
 
+	//resources.inputHi5[odimROOT][odimROOT][odimROOT].data;
+
+
 	mout.debug() << "end" << mout.endl;
 
 }
 
-void CmdInputFile::appendCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
+void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
@@ -299,12 +302,12 @@ void CmdInputFile::appendCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const
 		if (parent.getIndex()==0)
 			parent.index = 1;
 
-		HI5TREE & dst = dstRoot[parent];
+		Hi5Tree & dst = dstRoot[parent];
 
-		for (HI5TREE::iterator it = srcRoot.begin(); it != srcRoot.end(); ++it){
+		for (Hi5Tree::iterator it = srcRoot.begin(); it != srcRoot.end(); ++it){
 
 			ODIMPathElem s(it->first); // possibly: what, where, how
-			HI5TREE & src = it->second;
+			Hi5Tree & src = it->second;
 
 			if (s.isIndexed()){
 				mout.note() << " appending " << s << " => " << parent << mout.endl;
@@ -324,14 +327,14 @@ void CmdInputFile::appendCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const
 
 }
 
-void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
+void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
 	//ODIMPathElem p(g);
 	//DataSelector::getLastChild(dst, p);
 
-	for (HI5TREE::iterator it = src.begin(); it != src.end(); ++it){
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
 
 		ODIMPathElem p(it->first); // possibly: what, where, how
 		if (p.isIndexed()){
@@ -350,13 +353,13 @@ void CmdInputFile::attachCartesianH5(HI5TREE & src, HI5TREE & dst) const {
 
 		//else
 		//	mout.warn() << " could not find path /dataset[N], result=" << p << mout.endl;
-		//HI5TREE & dst
+		//Hi5Tree & dst
 	}
 
 
 }
 
-void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
+void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 
@@ -449,7 +452,7 @@ void CmdInputFile::updateQuality(HI5TREE & src, HI5TREE & dst) const {
 
 }
 
-void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
+void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
@@ -476,7 +479,7 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 		const double   & elangle = it->first;
 		const ODIMPath & srcDataSetPath = it->second;
 
-		HI5TREE & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
+		Hi5Tree & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
 
 		mout.debug() << " Considering " << srcDataSetPath <<  " (" << elangle << ')' << mout.endl;
 
@@ -488,7 +491,7 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 			DataSelector::getNextChild(dstRoot, child);
 			mout.info() << "New elangle (" << elangle << "), appending to path=" << child << mout.endl;
 			// Create empty dstRoot[path] and swap it...
-			HI5TREE & dstDataSet = dstRoot[child];
+			Hi5Tree & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
 		}
 		else { // elangle is found in dstRoot.
@@ -499,7 +502,7 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 
 			mout.note() << "Combining datasets of elevation ("<< elangle << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << mout.endl;
 
-			HI5TREE & dstDataSet = dstRoot(dstDataSetPath);
+			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
 
 			//typedef std::map<std::string, ODIMPath> quantity_map;
 			typedef std::map<std::string, ODIMPathElem> quantity_map;
@@ -516,7 +519,7 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 
 				const std::string & quantity  = qit->first; // DBZH, or QIND or CLASS
 				const ODIMPathElem & srcChild = qit->second;  //srcPath.back();
-				HI5TREE & srcData = srcDataSet[srcChild];
+				Hi5Tree & srcData = srcDataSet[srcChild];
 
 				quantity_map::const_iterator dit = dstQuantityPaths.find(quantity);
 				if (dit == dstQuantityPaths.end()){
@@ -524,13 +527,13 @@ void CmdInputFile::appendPolarH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const {
 					ODIMPathElem dstChild(ODIMPathElem::DATA);
 					DataSelector::getNextChild(dstDataSet, dstChild);
 					mout.note() << "Add new quantity " <<  quantity << " => " << dstDataSetPath << '|' << dstChild << mout.endl;
-					HI5TREE & dstData = dstDataSet[dstChild];
+					Hi5Tree & dstData = dstDataSet[dstChild];
 					srcData.swap(dstData);
 					//continue;
 				}
 				else {
 					mout.note() << "Already [" <<  quantity << "] => " << dstDataSetPath << '|' << dit->second << ", updating its quality" << mout.endl;
-					HI5TREE & dstData = dstDataSet[dit->second];
+					Hi5Tree & dstData = dstDataSet[dit->second];
 					// DO not copy data, but quality
 					updateQuality(srcData, dstData);
 				}
@@ -601,7 +604,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	}
 
 
-	HI5TREE & dst = resources.inputHi5[dataSetElem][dataElem];
+	Hi5Tree & dst = resources.inputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst["data"].data.dataSet;
 	drain::image::File::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();

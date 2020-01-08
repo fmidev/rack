@@ -74,7 +74,7 @@ public:
 
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
-	// void filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const;
+	// void filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const;
 
 	double altitude;
 	double devAltitude;

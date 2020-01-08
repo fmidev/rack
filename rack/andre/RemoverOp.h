@@ -79,7 +79,7 @@ public:
 	void processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet)  const;
 
 	//Practically, qualityRoot == dstDataRoot
-	// void filterGroup(const HI5TREE &qualityRoot, const std::string &path, HI5TREE &dstDataRoot) const;
+	// void filterGroup(const Hi5Tree &qualityRoot, const std::string &path, Hi5Tree &dstDataRoot) const;
 
 	/// Cleaning a the data array of one quantity (measurement parameter).  Called by processDataSet.
 	/**

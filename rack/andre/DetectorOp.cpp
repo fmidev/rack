@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "main/rack.h"
 #include "hi5/Hi5.h"
-#include "hi5/Hi5Write.h"
+//#include "hi5/Hi5Write.h"
 
 //#include "radar/DataCopyOp.h"
 #include "product/DataConversionOp.h"
@@ -183,7 +183,7 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 		if (REQUIRE_STANDARD_DATA){
 			//mout.note() << "dstProb (target): " << dstProb << mout.endl;
 			mout.debug() << "requires normalized srcData" << mout.endl;
-			//const HI5TREE & tree = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity); // srcDataSet.getData(srcData.odim.quantity+'~');
+			//const Hi5Tree & tree = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity); // srcDataSet.getData(srcData.odim.quantity+'~');
 			//const PlainData<PolarSrc> srcDataNrm(tree);
 			//const PlainData<PolarSrc> & srcDataNorm = dstProb; // kokkeilu
 

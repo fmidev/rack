@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Hi5.h"
 #include <drain/util/ValueReader.h>
+#include <drain/util/Dictionary.h>
 
 
 // using namespace std;
@@ -92,6 +93,65 @@ std::ostream &operator<<(std::ostream &ostr,const hi5::NodeHi5 &n){
 //drain::Logger Hi5Base::hi5mout(Hi5Base::hi5monitor,"hi5");
 drain::Log hi5monitor;
 drain::Logger hi5mout(hi5monitor,"Hi5");
+
+
+void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Logger &mout, int lineNo){
+
+	if (status >= 0)
+		return;
+
+	mout.warn() << message;
+	if (lineNo)
+		mout << ", line=" << lineNo;
+	mout << mout.endl;
+
+}
+
+// https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
+hid_t Hi5Base::getH5StandardType(const std::type_info & type){
+
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	typedef drain::Dictionary2Ptr<hid_t, const std::type_info> dict_t;
+
+	static dict_t dict;
+	if (dict.empty()){
+
+		dict.add(H5T_STD_I8BE,  typeid(char));
+		dict.add(H5T_STD_U8BE,  typeid(unsigned char));
+		dict.add(H5T_STD_I16BE, typeid(short int));
+		dict.add(H5T_STD_U16BE, typeid(unsigned short int));
+		dict.add(H5T_STD_I32BE, typeid(int));
+		dict.add(H5T_STD_U32BE, typeid(unsigned int));
+		dict.add(H5T_STD_I64BE, typeid(long int));
+		dict.add(H5T_STD_U64BE, typeid(unsigned long int));
+
+		dict.add(H5T_IEEE_F32BE, typeid(float));
+		dict.add(H5T_IEEE_F64BE, typeid(double));
+
+		// String
+		dict.add(Hi5Base::getH5StringVariableLength(), typeid(char *));
+		dict.add(Hi5Base::getH5StringVariableLength(), typeid(const char *));
+
+		//if (type == typeid(const char *)){
+		//return getH5StringVariableLength();
+		//hid_t strtype = H5Tcopy(H5T_C_S1);
+		//herr_t status = H5Tset_size(strtype, H5T_VARIABLE);
+
+	}
+
+
+	dict_t::const_iterator it = dict.findByValue(type);
+	if (it != dict.end()){
+		mout.note() << "type_info=" << type.name() << ", size:" <<  H5Tget_size(it->first) << mout.endl;
+		return it->first;
+	}
+	else {
+		mout.warn() << "could not find HDF5 type for type_info=" << type.name() << mout.endl;
+		return 0;
+	}
+}
 
 
 hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
@@ -157,7 +217,8 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 hid_t Hi5Base::getH5StringVariableLength(){
 
 	hid_t strtype = H5Tcopy(H5T_C_S1); // todo: delete dynamic?
-	herr_t status = H5Tset_size(strtype, H5T_VARIABLE);
+	//herr_t status =
+	H5Tset_size(strtype, H5T_VARIABLE);
 	//if (status < 0)hi5mout.error() << "H5T_C_S1 => H5Tset_size failed " << hi5mout.endl;
 	return strtype;
 
@@ -307,7 +368,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 	if (p.size() > 1){
 
-		mout.debug() << "assignment: " << p[1] << mout.endl;
+		mout.debug() << "key[=value]: " << p[1] << mout.endl;
 
 		strVector assignment;
 		drain::StringTools::split(p[1], assignment, '=');
@@ -350,7 +411,8 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 		}
 		else {
-			mout.note() << "incomplete assignment: " << p[1] << mout.endl;
+			mout.debug(1) << "key only: " << p[1] << " (no assignment)" << mout.endl;
+			//mout.note() << "incomplete assignment: " << p[1] << mout.endl;
 		}
 
 	}

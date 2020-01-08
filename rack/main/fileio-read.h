@@ -35,12 +35,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/CommandRegistry.h>
 #include <drain/prog/CommandAdapter.h>
 
+#include <hi5/Hi5Read.h>
+
 //#include "data/Quantity.h"
 
 #include "resources.h"
 
 namespace rack {
 
+
+/// A debugging facility. Obsolete?
+/*
+class CmdInputSelect : public BasicCommand {
+
+public:
+
+	CmdInputSelect() : BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
+		//, "value", hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag"){};
+		parameters.reference("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
+	}
+
+};
+*/
 
 class CmdInputPrefix : public BasicCommand {
 
@@ -71,13 +87,13 @@ protected:
 
 	//void readFileAndAppendH5(const std::string & fullFilename) const;
 
-	void appendCartesianH5(HI5TREE & tmpSrc,  HI5TREE & dst) const;
-	void attachCartesianH5(HI5TREE & srcRoot, HI5TREE & dstRoot) const;
+	void appendCartesianH5(Hi5Tree & tmpSrc,  Hi5Tree & dst) const;
+	void attachCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const;
 
-	void appendPolarH5(HI5TREE & tmpSrc, HI5TREE & dst) const;
-	//void appendPolarH5OLD(HI5TREE & tmpSrc, HI5TREE & dst) const;
+	void appendPolarH5(Hi5Tree & tmpSrc, Hi5Tree & dst) const;
+	//void appendPolarH5OLD(Hi5Tree & tmpSrc, Hi5Tree & dst) const;
 
-	void updateQuality(HI5TREE & srcData, HI5TREE & dstData) const;
+	void updateQuality(Hi5Tree & srcData, Hi5Tree & dstData) const;
 
 
 	void readTextFile(const std::string & fullFilename) const;

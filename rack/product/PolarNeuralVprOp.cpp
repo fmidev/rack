@@ -39,7 +39,7 @@ namespace rack
 using namespace drain::image;
 
 
-void PolarNeuralVPROp::filter(const HI5TREE &src, const std::map<double,std::string> & srcPaths, HI5TREE &dst) const {
+void PolarNeuralVPROp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
 
 	drain::Logger mout(drain::getLog(),"PolarNeuralVPROp::filter");
 	mout.debug(1) << "start" << mout.endl;
@@ -47,10 +47,10 @@ void PolarNeuralVPROp::filter(const HI5TREE &src, const std::map<double,std::str
 
 	// TARGET DATAEARTH_RADIUS_43
 	/*
-	HI5TREE & dstDataGroup = dst["data1"];
+	Hi5Tree & dstDataGroup = dst["data1"];
 	Image & dstData = dstDataGroup["data"].data.dataSet;
 
-	HI5TREE & dstQualityGroup = dst["quality1"];
+	Hi5Tree & dstQualityGroup = dst["quality1"];
 	Image & dstQuality = dstQualityGroup["data"].data.dataSet;
 
 

@@ -71,7 +71,7 @@ public:
 	 *  \param attributeName - name of the attribute
 	 */
 	// static
-	// const drain::Variable & getAttribute(const HI5TREE &src, const std::string & path, const std::string & group, const std::string & attributeName);
+	// const drain::Variable & getAttribute(const Hi5Tree &src, const std::string & path, const std::string & group, const std::string & attributeName);
 
 	/// Collects PolarODIM /where, /what and /how attributes recursively along the path and stores them in a std::map<std::string,T> (e.g. VariableMap or ReferenceMap, ODIM).
 	/**
@@ -79,13 +79,13 @@ public:
 	 *   \see updateAttributes()
 	template <class M>
 	static
-	void getAttributesOLD(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly = false);
+	void getAttributesOLD(const Hi5Tree &src, const std::string & path, M & attributes, bool updateOnly = false);
 	*/
 
 	// consider: path is not a reference, it will be copied.
 	template <class M>
 	static
-	void getAttributes(const HI5TREE &src, const HI5TREE::path_t & path, M & attributes, bool updateOnly = false);
+	void getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & path, M & attributes, bool updateOnly = false);
 
 
 
@@ -98,28 +98,28 @@ public:
 	 *
 	 *  Typically, this is called on the root.
 	 *
-	 *  \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
+	 *  \see updateAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateInternalAttributes(HI5TREE & src){
+	void updateInternalAttributes(Hi5Tree & src){
 		src.data.dataSet.properties.clear();
 		updateInternalAttributes(src, drain::FlexVariableMap());
 	}
 
 	/// This \c const version does nothing.
 	/**
-	 *   \see updateAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes)
+	 *   \see updateAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateInternalAttributes(const HI5TREE & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
+	void updateInternalAttributes(const Hi5Tree & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
 		//drain::Logger mout("DataTools", __FUNCTION__);
 		//mout.warn() << "somebody called me" << mout.endl;
 	};
 
 
 	static
-	void updateCoordinatePolicy(HI5TREE & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
-	//void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
+	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
 
 protected:
@@ -129,14 +129,14 @@ protected:
 	 *  \return - true if children were removed
 	 */
 	static
-	bool removeIfNoSave(HI5TREE & dst);
+	bool removeIfNoSave(Hi5Tree & dst);
 
 	/// Does nothing
 	/**
 	 *  \return - false (always, as nothing will be removed)
 	 */
 	static
-	bool removeIfNoSave(const HI5TREE & src){
+	bool removeIfNoSave(const Hi5Tree & src){
 		return false;
 	};
 
@@ -150,41 +150,41 @@ protected:
 	 *
 	 *  Typically, this is called on the root.
 	 *
-	 *    \see updateAttributes(HI5TREE & src)
+	 *    \see updateAttributes(Hi5Tree & src)
 	 */
 	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
 	static
-	void updateInternalAttributes(HI5TREE & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
+	void updateInternalAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
 
 
 };
 
 
 template <class M>
-void DataTools::getAttributes(const HI5TREE &src, const HI5TREE::path_t & p, M & attributes, bool updateOnly){
+void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M & attributes, bool updateOnly){
 
 	drain::Logger mout("DataTools", __FUNCTION__);
 
 	if (p.empty() || !p.front().isRoot()){
 		mout.debug() << "add root and restart with path= '" << p << "'" << mout.endl;
-		HI5TREE::path_t pRooted(p);
-		pRooted.push_front(HI5TREE::path_t::elem_t::ROOT);
+		Hi5Tree::path_t pRooted(p);
+		pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);
 		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
 		return;
 	}
 
 	mout.debug() << "path= '" << p << "'" << mout.endl;
 
-	HI5TREE::path_t path;
+	Hi5Tree::path_t path;
 	std::stringstream sstr;
 
-	for (HI5TREE::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+	for (Hi5Tree::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){
 
 		path << *pit;
 
 		mout.debug() << "check='" << path << "'" << mout.endl;
 
-		const HI5TREE & s = src(path);
+		const Hi5Tree & s = src(path);
 
 		for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
 
@@ -218,7 +218,7 @@ void DataTools::getAttributes(const HI5TREE &src, const HI5TREE::path_t & p, M &
 
 /*
 template <class M>
-void DataTools::getAttributesOLD(const HI5TREE &src, const std::string & path, M & attributes, bool updateOnly){
+void DataTools::getAttributesOLD(const Hi5Tree &src, const std::string & path, M & attributes, bool updateOnly){
 
 	drain::Logger mout("DataTools", __FUNCTION__);
 
@@ -240,7 +240,7 @@ void DataTools::getAttributesOLD(const HI5TREE &src, const std::string & path, M
 		mout.debug(5) << "'" << subpath << "'\t" << i << mout.endl;
 		//attributes[std::string("@")+subpath] = 0;
 
-		const HI5TREE & s = src(subpath);
+		const Hi5Tree & s = src(subpath);
 
 		/////// getO
 		for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){

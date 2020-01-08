@@ -76,7 +76,7 @@ protected:
 
 	/*
 	virtual
-	HI5TREE & getDst(HI5TREE & dst) const {
+	Hi5Tree & getDst(Hi5Tree & dst) const {
 		return dst;
 	};
 	*/

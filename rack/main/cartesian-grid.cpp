@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
-#include "hi5/Hi5Read.h"
+//#include "hi5/Hi5Read.h"
 
 #include "radar/Coordinates.h"
 #include "radar/Composite.h"
@@ -70,7 +70,7 @@ void CartesianGrid::exec() const {
 	mout.info() << "Defining (but not allocating) composite with input data specifications" << mout.endl;
 	/// Defining geoFrame is needed for calling  geoFrame.pix2deg(i,j,lon,lat) further below.
 
-	const HI5TREE & cartesian = resources.cartesianHi5;
+	const Hi5Tree & cartesian = resources.cartesianHi5;
 
 	CartesianODIM odim;
 	DataTools::getAttributes(cartesian, "dataset1", odim, true);

@@ -59,7 +59,7 @@ namespace rack {
 
 /**
 
- Consider that const HI5TREE src or HI5TREE dst contain following structure:
+ Consider that const Hi5Tree src or Hi5Tree dst contain following structure:
 
  \code
  /dataset1/data1
@@ -82,7 +82,7 @@ namespace rack {
 /// Container that couples together a tree structure and a data array (drain::image::Image), according to source type (const or non-const) .
 /**
  *  The template parameters are expected to be exactly the following, all of them const or non-const:
- *  \tparam T  - HDF5 tree, as HI5TREE
+ *  \tparam T  - HDF5 tree, as Hi5Tree
  *  \tparam TI - tree iterator type
  *  \tparam D  - data array (drain::image::Image)
  */
@@ -99,7 +99,7 @@ struct DataType {
  *  \tparam M - meta data using OPERA data information model (ODIM)
  */
 template <typename M = PolarODIM const>
-struct SrcType : public DataType<HI5TREE const, HI5TREE::const_iterator, Image const> {
+struct SrcType : public DataType<Hi5Tree const, Hi5Tree::const_iterator, Image const> {
 	typedef M odim_t;
 };
 
@@ -109,7 +109,7 @@ struct SrcType : public DataType<HI5TREE const, HI5TREE::const_iterator, Image c
  *  \tparam M - meta data using OPERA data information model (ODIM)
  */
 template <typename M = PolarODIM>
-struct DstType : public DataType<HI5TREE, HI5TREE::iterator, Image> {
+struct DstType : public DataType<Hi5Tree, Hi5Tree::iterator, Image> {
 	typedef M odim_t;
 };
 
@@ -903,7 +903,7 @@ public:
 	Data(const Data<DT> & d) : PlainData<DT>(d), QualityDataSupport<DT>(d) {  // was: d.tree,    d.tree
 	}
 
-	// Data(const HI5TREE & src, const std::string & quantity = "^DBZH$");
+	// Data(const Hi5Tree & src, const std::string & quantity = "^DBZH$");
 	virtual ~Data(){};
 
 	// Experimental

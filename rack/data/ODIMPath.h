@@ -88,6 +88,7 @@ public: // from ODIM.h
 	/// Zeroth level group, identified with empty string "", or "/" which is the separator prefixed with empty string.
 	static const group_t ROOT = 1;
 
+
 	/// First level group, \c /dataset + \e digit .
 	static const group_t DATASET = 2; // 8;  // one bit (16) must be unique
 
@@ -124,14 +125,22 @@ public: // from ODIM.h
 	static const group_t ATTRIBUTE_GROUPS = WHAT|WHERE|HOW;
 
 
+	/// User defined group, name stored as a separate string. Index allowed, but only catenated in the string.
+	static const group_t ALL_GROUPS = 255; // 511!
+
+	/// Palette data (to be linked). EXPERIMENTAL
+	static const group_t PALETTE = 256;
+
+	/// Palette data (to be linked). EXPERIMENTAL
+	static const group_t LEGEND = 512;
+
 	/// User defined group, name stored as a separate string. The string may still contain numbers, but no indices will be extracted.
 	/**
 	 *   Not indexed.
 	 */
-	static const group_t OTHER   = 255 ^ IS_INDEXED; // OTHER is not indexed...
+	//static const group_t OTHER   = 255 ^ IS_INDEXED; // OTHER is not indexed...
+	static const group_t OTHER   = 1024; // OTHER is not indexed...
 
-	/// User defined group, name stored as a separate string. Index allowed, but only catenated in the string.
-	static const group_t ALL_GROUPS = 255;
 
 	static inline
 	bool isIndexed(group_t group){
@@ -236,15 +245,16 @@ public: // from ODIM.h
 
 	/// Abbreviation of (group == ROOT)
 	inline
-	bool empty() const {
-		return (group == ROOT);
-	}
-
-	/// Abbreviation of (group == ROOT)
-	inline
 	bool isRoot() const {
 		return (group == ROOT);
 	}
+
+	/// Equivalent to isRoot(). This method is required in recognizing the leading empty string. Consider "/usr/include".
+	inline
+	bool empty() const {
+		return isRoot();
+	}
+
 
 	/// Abbreviation of (group == NONE)
 	/*
@@ -331,7 +341,7 @@ protected:
 
 };
 
-
+extern ODIMPathElem odimROOT;
 extern ODIMPathElem odimWHERE;
 extern ODIMPathElem odimWHAT;
 extern ODIMPathElem odimARRAY;
@@ -368,28 +378,6 @@ typedef std::list<ODIMPath> ODIMPathList;
 
 struct ODIMPathLess {
 
-
-	/*
-	bool kompate(const ODIMPath & p1, const ODIMPath & p2) const {
-
-		const_iterator it1 = p1.begin();
-		const_iterator it2 = p2.begin();
-
-		while (true){
-
-			if (it1 == p1.end())
-				return true;
-
-			if (it2 == p2.end())
-				return false;
-
-			++it1;
-				++it2;
-
-		}
-
-	}
-	*/
 
 	// Main function
 	bool operator()(const ODIMPathElem & p1, const ODIMPathElem & p2) const {

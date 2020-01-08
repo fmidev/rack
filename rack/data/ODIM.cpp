@@ -74,7 +74,7 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 
 
-void ODIM::copyTo(const std::list<std::string> & keys, HI5TREE & dst) const {
+void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 	drain::Logger mout("ODIM", __FUNCTION__);
 
@@ -93,7 +93,7 @@ void ODIM::copyTo(const std::list<std::string> & keys, HI5TREE & dst) const {
 				mout.warn() << "no type info, skipping key=" << *it << mout.endl;
 				continue;
 			}
-			if (v.getByteSize() == 0){
+			if (v.getElementSize() == 0){
 				mout.warn() << "empty source, skipping key=" << *it << mout.endl;
 				continue;
 			}

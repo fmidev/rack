@@ -78,7 +78,7 @@ public:
 	virtual ~HistogramOp(){};
 
 	/// Ensures data to be in standard type and scaling. Makes a converted copy if needed.
-	//static	const HI5TREE & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
+	//static	const Hi5Tree & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
 	virtual
 	void setGeometry(const M & srcODIM, PlainData<dst_t > & dstData) const {
 

@@ -64,7 +64,7 @@ public:
 	void exec() const;
 
 	static
-	void convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & parameters,
+	void convertImage(const Hi5Tree & src, const DataSelector & selector, const std::string & parameters,
 			drain::image::Image &dst);
 
 

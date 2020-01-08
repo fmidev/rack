@@ -205,14 +205,14 @@ public:
 	 */
 	template <group_t G, class T>
 	static inline
-	void copyToH5(const T &odim, HI5TREE & dst) {
+	void copyToH5(const T &odim, Hi5Tree & dst) {
 		static T odimLimited(G);
 		odim.copyTo(odimLimited.getKeyList(), dst);
 	}
 
 	template <group_t G, class T>
 	static inline
-	void copyToH5(const T &odim, const HI5TREE & dst) {
+	void copyToH5(const T &odim, const Hi5Tree & dst) {
 		//static T odimLimited(G);
 		//odim.copyTo(odimLimited.getKeyList(), dst);
 	}
@@ -231,7 +231,7 @@ protected:
 
 
 	///
-	void copyTo(const std::list<std::string> & keys, HI5TREE & dst) const;
+	void copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const;
 
 
 	template <class T>

@@ -99,30 +99,28 @@ struct NodeHi5 {
 }
 
 
-
-//typedef  TreeNode<NodeHi5> TreeHi5;
-//#define Hi5Tree drain::Tree<std::string, hi5::NodeHi5, lessAlphaNum>  // std::less<std::string> >
-//#define Hi5Tree drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess>  // std::less<std::string> >
+/// The most importand and central class for handling HDF5 data in \b Rack .
 typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, rack::ODIMPathLess> Hi5Tree;
 
 
 namespace hi5 {
 
-//typedef rack::ODIMPath path_t;
-
-///
-///
 
 /// Base class for Reader and Writer, essentially just wrapping some utilities.
 class Hi5Base {
 
 public:
 
+	static
+	void handleStatus(herr_t status, const std::string & message, drain::Logger &mout, int lineNo=0);
+
 	//static
 	// drain::Log hi5monitor;
 
 	// static
 	// drain::Logger hi5mout; //(drain::monitor,"hi5");
+	static
+	hid_t getH5StandardType(const std::type_info &type);
 
 	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
 	static

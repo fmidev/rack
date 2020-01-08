@@ -51,7 +51,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 	Logger mout(getName(), __FUNCTION__);
 
 	RackResources & resources = getResources();
-	//HI5TREE & srcH5 = resources.cartesianHi5; //*resources.currentHi5;
+	//Hi5Tree & srcH5 = resources.cartesianHi5; //*resources.currentHi5;
 
 	//ODIMPathList paths;
 	ODIMPathList paths;
@@ -69,7 +69,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 		//const std::string & path = *it;
 		const ODIMPath & path = *it;
 
-		HI5TREE & srcDataSetH5 = resources.cartesianHi5(path);
+		Hi5Tree & srcDataSetH5 = resources.cartesianHi5(path);
 
 		//PlainData<CartesianDst> srcData(srcDataSetH5); // non-const "srcTray"
 		Data<CartesianDst> srcData(srcDataSetH5); // non-const "srcTray"
@@ -262,7 +262,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 	mout.info() << "storing diff channels to: " << parent << mout.endl;
 
-	HI5TREE & dstH5 = (resources.cartesianHi5)[parent];
+	Hi5Tree & dstH5 = (resources.cartesianHi5)[parent];
 	dstH5.data.noSave = (ProductBase::outputDataVerbosity==0);
 
 	DataSet<CartesianDst> dstDataSet(dstH5);
@@ -335,8 +335,8 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	//mout.debug() << "prop " << resources.cartesianHi5.data.dataSet.properties << mout.endl;
 	mout.debug() << "odim: " << odim << mout.endl;
 
-	//HI5TREE & dstH5 = (*resources.currentHi5)(path);
-	HI5TREE & dstH5 = resources.cartesianHi5[parent];
+	//Hi5Tree & dstH5 = (*resources.currentHi5)(path);
+	Hi5Tree & dstH5 = resources.cartesianHi5[parent];
 
 	if (true){ // SCOPE
 

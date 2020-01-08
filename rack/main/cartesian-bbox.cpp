@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
-#include "hi5/Hi5Read.h"
+//#include "hi5/Hi5Read.h"
 
 #include "radar/Coordinates.h"
 #include "radar/Composite.h"
@@ -66,7 +66,7 @@ void CartesianBBoxTest::exec() const {
 	}
 
 	// There may be no data, don't use Data<PolarSrc> etc here.
-	HI5TREE & p = (*resources.currentPolarHi5);
+	Hi5Tree & p = (*resources.currentPolarHi5);
 
 	// Derive range
 	drain::VariableMap & attributes = p["where"].data.attributes;

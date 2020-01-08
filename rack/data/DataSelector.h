@@ -149,13 +149,13 @@ public:
 	// Recommended convenience function.
 	template <class T>
 	inline
-	void getPaths(const HI5TREE & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
+	void getPaths(const Hi5Tree & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
 		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
 	}
 
 	template <class T>
 	inline
-	void getPaths(const HI5TREE & src, T & pathContainer) const {
+	void getPaths(const Hi5Tree & src, T & pathContainer) const {
 
 		if (groups.value > 0){
 			getPaths(src, pathContainer, groups.value);
@@ -181,15 +181,15 @@ public:
 	 *   See the simplified version of this function.
 	 */
 	template <class T>
-	bool getPaths(const HI5TREE & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
+	bool getPaths(const Hi5Tree & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
 
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
-	bool getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const;
+	bool getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const;
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	inline
-	bool getPathNEW(const HI5TREE & src, ODIMPath & path) const {
+	bool getPathNEW(const Hi5Tree & src, ODIMPath & path) const {
 
 		if (groups.value > 0){ // if (groupStr.empty())
 			return getPathNEW(src, path, groups.value);
@@ -203,22 +203,22 @@ public:
 	}
 
 	/// Returns the last path encountered with selector attributes and given groupFilter .
-	bool getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
+	bool getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
 
 	/// Returns the a path with index one greater than the retrieved last path.
-	bool getNextPath(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
+	bool getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
 
 
 	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
 	static
-	bool getLastChild(const HI5TREE & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
+	bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
 
 	/// Searches children of given type, returns a non-existing child with index greater than child.index.
 	/**
 	 *   Unused indices may be returned.
 	 */
 	static
-	bool getNewChild(const HI5TREE & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=0xff);
+	bool getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=0xff);
 
 	/// Derive a child with index one greater than the largest index encountered.
 	/**
@@ -227,16 +227,16 @@ public:
 	 *  \return - true if child's index was incremented (ie.)
 	 */
 	static
-	bool getNextChild(const HI5TREE & tree, ODIMPathElem & child);
+	bool getNextChild(const Hi5Tree & tree, ODIMPathElem & child);
 
-	//static 	bool getNextDescendant(HI5TREE & tree, (ODIMPathElem::group_t g, ODIMPath & path);
+	//static 	bool getNextDescendant(Hi5Tree & tree, (ODIMPathElem::group_t g, ODIMPath & path);
 
 	/// Searches children of given type, returns a non-existing child with index greater than child.index.
 	/**
 	 *   Unused indices may be returned.
 	 */
 	static
-	bool getChildren(const HI5TREE & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups);
+	bool getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups);
 
 
 
@@ -257,14 +257,14 @@ public:
 	 */
 	//template <class T>
 	static inline
-	void getPathsByElevation(const HI5TREE &src, const DataSelector & selector, std::map<double, ODIMPath> & m){
+	void getPathsByElevation(const Hi5Tree &src, const DataSelector & selector, std::map<double, ODIMPath> & m){
 		//getPathsT(src, selector, m);
 		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
 
 
 	static inline
-	void getPathsByQuantity(const HI5TREE &src, const DataSelector & selector, std::map<std::string, ODIMPath> & m){
+	void getPathsByQuantity(const Hi5Tree &src, const DataSelector & selector, std::map<std::string, ODIMPath> & m){
 		//getPathsT(src, selector, m);
 		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
@@ -301,7 +301,7 @@ protected:
 	template <class T>
 	static
 	inline
-	void getPathsT(const HI5TREE &src, const DataSelector & selector, T & container){
+	void getPathsT(const Hi5Tree &src, const DataSelector & selector, T & container){
 		getPaths(src, container, selector.path, selector.quantity,
 				selector.index, selector.count,
 				selector.elangle.min, selector.elangle.max); // min, max
@@ -368,7 +368,7 @@ protected:
 
 
 template <class T>
-bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
+bool DataSelector::getPaths(const Hi5Tree &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -385,7 +385,7 @@ bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::
 	}
 
 	// Current search point
-	const HI5TREE & s = src(path); // =src, if path empty
+	const Hi5Tree & s = src(path); // =src, if path empty
 
 
 	// Selector contains a rule for desired quantity. (This also indicates that quantityRE is set).
@@ -398,7 +398,7 @@ bool DataSelector::getPaths(const HI5TREE &src, T & pathContainer, const drain::
 	//const bool IS_ROOT = (path.size() == 1);
 	std::set<ODIMPathElem> datasets;
 
-	for (HI5TREE::const_iterator it = s.begin(); it != s.end(); ++it) {
+	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
 
 		//ODIMPathElem child(it->first);
 		const ODIMPathElem & currentElem = it->first;

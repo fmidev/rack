@@ -54,14 +54,14 @@ public:
 
 	/// Writes H5 structure to GraphViz (dot) format.
 	static
-	void writeToDot(std::ostream & ostr, const HI5TREE & tree, ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED));
+	void writeToDot(std::ostream & ostr, const Hi5Tree & tree, ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED));
 
 
 protected:
 
 	/// Writes H5 structure to GraphViz (dot) format.
 	static
-	void writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int & id,
+	void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & id,
 			ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED), const ODIMPath & path = ODIMPath());
 
 private:

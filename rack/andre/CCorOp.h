@@ -70,7 +70,7 @@ public:
 	// double windowHeight;
 	// double medianPos;
 
-	//void filter(const HI5TREE &src, HI5TREE &dst) const;
+	//void filter(const Hi5Tree &src, Hi5Tree &dst) const;
 
 
 	/// NEW POLICY => DetectorOpNEW

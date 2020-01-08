@@ -109,11 +109,29 @@ public:
 	hid_t imageToH5DataSet(const drain::image::Image &image, hid_t fid, const Hi5Tree::path_t & path);
 
 
-	///  Under constr
+	//  Under constr
+
+	/// Write a vector of paired values
+	/**
+	 *  This method uses std::pair as entries. Each entry consists of two values named \c first and \c second .
+	 *
+	 *  \tparam K - type of the first element, typically the key associated with the value (the second element)
+	 *  \tparam V - type of the second element, typically the value associated with the key (the first element)
+	 *
+	 *  \param v - vector containing pairs, perhaps obtaining by adding
+	 *  \param f - HDF5 file id
+	 *  \param path   - location of the target dataset
+	 *  \param label1 - label of the first value
+	 */
 	template <class K, class V>
 	static
-	void vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *label1="key", const char *label2="value");
+	void vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst="key", const char *labelSecond="value");
 	///  vectorOfPair TODO!
+
+	template <class K, class V>
+	static
+	void mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst="key", const char *labelSecond="value");
+
 
 	///  Under constr
 	static
@@ -131,7 +149,7 @@ public:
 };
 
 template <class K, class V>
-void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *label1, const char *label2){
+void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
 
 	drain::Logger mout("Writer", __FUNCTION__);
 
@@ -155,22 +173,29 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 
 	mout.warn() << "types: " << first_h5t << ", " << second_h5t << mout.endl;
 
+
 	// Create the compound datatype for memory.
 	hid_t memtype = H5Tcreate (H5T_COMPOUND, size);
 
 	// HOFFSET(pair_t, first)
-	status = H5Tinsert (memtype, label1, 0, first_h5t); // Hi5Base::getH5NativeDataType(typeid(int));
-	if (status < 0)
-		mout.error() << "H5Tinsert failed for pair.first type, path=" << path << mout.endl;
+	status = H5Tinsert (memtype, labelFirst, 0, first_h5t); // Hi5Base::getH5NativeDataType(typeid(int));
+	handleStatus(status, "H5Tinsert failed", mout, __LINE__);
+	//if (status < 0)	mout.error() << "H5Tinsert failed for pair.first type, path=" << path << mout.endl;
 
-	status = H5Tinsert (memtype, label2, sizeof(first_type), second_h5t); // Hi5Base::getH5NativeDataType(typeid(int));
-	if (status < 0)
-		mout.error() << "H5Tinsert failed for pair.second type, path=" << path << mout.endl;
+	status = H5Tinsert (memtype, labelSecond, sizeof(first_type), second_h5t); // Hi5Base::getH5NativeDataType(typeid(int));
+	handleStatus(status, "H5Tinsert failed", mout, __LINE__);
+	//if (status < 0) mout.error() << "H5Tinsert failed for pair.second type, path=" << path << mout.endl;
 
 
-	hid_t filetype = H5Tcreate (H5T_COMPOUND, size);
-	status = H5Tinsert (filetype, label1, 0, first_h5t);
-	status = H5Tinsert (filetype, label2, sizeof(first_type),  second_h5t); // TODO? Hi5Base::getH5StandardType(typeid(int));
+	const hid_t std_t1  = Hi5Base::getH5StandardType(typeid(first_type));
+	const hid_t std_t2 = Hi5Base::getH5StandardType(typeid(second_type));
+	mout.warn() << "types: " << std_t1 << ", " << std_t1 << mout.endl;
+	const hsize_t s1 = H5Tget_size(std_t1);
+	const hsize_t s2 = H5Tget_size(std_t2);
+
+	hid_t filetype = H5Tcreate (H5T_COMPOUND, s1+s2);  // size wrong if hvt_t ?
+	H5Tinsert (filetype, labelFirst, 0,    std_t1);
+	H5Tinsert (filetype, labelSecond, s1,  std_t2); // TODO? Hi5Base::getH5StandardType(typeid(int));
 
 	// Create dataspace.  Setting maximum size to NULL sets the maximum size to be the current size.
 	hsize_t dims[1]; //
@@ -185,6 +210,28 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 
 }
 
+template <class K, class V>
+void Writer::mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
+
+	drain::Logger mout("Writer", __FUNCTION__);
+
+	typedef std::vector<std::pair<K,V> > vect_t;
+	vect_t v;
+	//v.reserve(m.size());
+	v.resize(m.size());
+	typename vect_t::iterator vit = v.begin();
+	for (typename std::map<K,V>::const_iterator it = m.begin(); it != m.end(); ++it) {
+		//v.push_back(*it);
+		*vit = *it;
+		//vit->first  = it->first;
+		//vit->second = it->second;
+		mout.note() << vit->first << ':' << vit->second << mout.endl;
+		++vit;
+	}
+
+	Writer::vectorToH5Compound(v, fid, path, labelFirst, labelSecond);
+
+}
 /*
 template <>
 inline

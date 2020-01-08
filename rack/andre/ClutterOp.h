@@ -83,14 +83,14 @@ public:
 	/// Loads a clutter map
 	void setClutterMap(const std::string & filename) const;
 
-	const HI5TREE & getClutterMap(const PolarODIM & odim) const;
+	const Hi5Tree & getClutterMap(const PolarODIM & odim) const;
 
 
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 
 
-	mutable HI5TREE clutterMap;
+	mutable Hi5Tree clutterMap;
 
 protected:
 

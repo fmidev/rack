@@ -75,7 +75,7 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 }
 
 void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const {
-//void PseudoRhiOp::processVolume(const HI5TREE & src, HI5TREE &dst) const {
+//void PseudoRhiOp::processVolume(const Hi5Tree & src, Hi5Tree &dst) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 	//mout.warn() << parameters  << mout.endl;

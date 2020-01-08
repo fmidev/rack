@@ -74,7 +74,7 @@ public:
 	~VolumeTraversalOp(){};
 
 	virtual
-	void processVolume(const HI5TREE &src, HI5TREE &dst) const;
+	void processVolume(const Hi5Tree &src, Hi5Tree &dst) const;
 
 	virtual
 	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;

@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
-#include "hi5/Hi5Read.h"
+//#include "hi5/Hi5Read.h"
 
 #include "radar/Coordinates.h"
 #include "radar/Composite.h"
@@ -83,7 +83,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 	path << parent; // ?
 	mout.debug() << "dst path: " << path << mout.endl;
 
-	HI5TREE & dstGroup = resources.cartesianHi5(path);
+	Hi5Tree & dstGroup = resources.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);
 
 	mout.debug(3) << "update geodata " << mout.endl;

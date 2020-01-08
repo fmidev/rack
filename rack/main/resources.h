@@ -88,31 +88,31 @@ public:
 
 
 	/// Clears dst if source command varies.
-	void setSource(HI5TREE & dst, const drain::Command & cmd);
+	void setSource(Hi5Tree & dst, const drain::Command & cmd);
 
 
 	/// The last input file read, typically a volume. May be concatenated ie. read in incrementally.
-	HI5TREE inputHi5;
+	Hi5Tree inputHi5;
 	// SOURCE inputHi5src;
 
 	/// The polar product that has been generated from the volume.
-	HI5TREE polarHi5;
+	Hi5Tree polarHi5;
 	/// Flag for marking the origin of polarHi5
 	//SOURCE  polarHi5src;
 
 	/// A single-radar Cartesian product or a multi-radar composite (mosaic).
-	HI5TREE cartesianHi5;
+	Hi5Tree cartesianHi5;
 	/// Flag for marking the origin of cartesianHi5
 	//SOURCE  cartesianHi5src;
 
 	/// Pointer to the last HDF5 structure read or generated.
-	HI5TREE *currentHi5; // = &inputHi5;
+	Hi5Tree *currentHi5; // = &inputHi5;
 
 	/// Pointer to the last HDF5 structure in polar coordinates: input volume or polar product.
 	/**
 	 *   The data pointed to will be applied as input to a Cartesian product (single-radar or composite).
 	 */
-	HI5TREE *currentPolarHi5; // = &inputHi5;
+	Hi5Tree *currentPolarHi5; // = &inputHi5;
 
 	/// Standard (?) orientation of polar coords in radar data
 	static
@@ -124,7 +124,7 @@ public:
 
 	//static bool inputOk;
 
-	//static 	void updateCoordinatePolicy(HI5TREE & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+	//static 	void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
 	drain::VariableMap & getUpdatedStatusMap();
 
@@ -166,7 +166,7 @@ public:
 	/// Global values accessible more or less directly through commands.
 
 	//  FILE I/O
-	int inputSelect; // see fileio.cpp and hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS
+	// int inputSelect; // see fileio.cpp and hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS
 
 	/// Path prefix for input files.
 	std::string inputPrefix;

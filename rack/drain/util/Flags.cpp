@@ -57,9 +57,11 @@ Flags & Flags::operator =(const std::string & params){
 
 		// mout.warn() << " '" << *it << "'" << mout.endl;
 
-		dict_t::first_type::const_iterator dit = dictionary.first.find(*it);
+		//dict_t::first_type::const_iterator dit = dictionary.first.find(*it);
+		dict_t::const_iterator dit = dictionary.findByKey(*it);
 
-		if (dit != dictionary.first.end()){
+
+		if (dit != dictionary.end()){
 			// Alphabetic key found
 			value = value | dit->second;
 		}
@@ -79,9 +81,10 @@ Flags & Flags::operator =(const std::string & params){
 				}
 				value = value | v;
 				// Nice to know
-				dict_t::second_type::const_iterator vit = dictionary.second.find(v);
-				if (vit != dictionary.second.end()){
-					std::cout << "(assigned key '" << vit->second << "')\n";
+				//dict_t::second_type::const_iterator vit = dictionary.second.find(v);
+				dict_t::const_iterator vit = dictionary.findByValue(v);
+				if (vit != dictionary.end()){
+					std::cout << "(assigned key '" << vit->second << "')\n"; // or vit->first?
 				}
 			}
 		}
@@ -96,7 +99,8 @@ std::ostream & Flags::valueKeysToStream(std::ostream & ostr, char separator) con
 		separator = dictionary.separator;
 
 	char sep = 0;
-	for (dict_t::first_type::const_iterator it = dictionary.first.begin(); it != dictionary.first.end(); ++it){
+	//for (dict_t::first_type::const_iterator it = dictionary.first.begin(); it != dictionary.first.end(); ++it){
+	for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
 		if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
 			if (sep)
 				ostr << sep;
@@ -119,7 +123,8 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 		separator = this->separator;
 
 	char sep = 0;
-	for (dict_t::second_type::const_iterator it = dictionary.second.begin(); it != dictionary.second.end(); ++it){
+	//for (dict_t::second_type::const_iterator it = dictionary.second.begin(); it != dictionary.second.end(); ++it){
+	for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
 		if (sep)
 			ostr << sep;
 		else

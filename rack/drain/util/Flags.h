@@ -51,7 +51,8 @@ class Flags {
 public:
 
 	typedef unsigned int value_t;
-	typedef drain::Dictionary<value_t> dict_t;
+	//typedef drain::Dictionary<value_t> dict_t;
+	typedef drain::Dictionary2<std::string, value_t> dict_t;
 
 	Flags(const dict_t &dictionary, char separator = 0) : value(0), dictionary(dictionary), separator(separator?separator:dictionary.separator) {
 	}

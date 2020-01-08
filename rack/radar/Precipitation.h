@@ -58,7 +58,8 @@ public:
 
 		drain::Logger mout(name, __FUNCTION__);
 
-		static drain::RegExp presetKey("^[a-zA-Z]+");
+		static const drain::RegExp presetKey("^[a-zA-Z]+");
+
 		if (presetKey.test(p)){
 			std::map<std::string,std::string>::const_iterator it = presets.find(p);
 			if (it != presets.end()){

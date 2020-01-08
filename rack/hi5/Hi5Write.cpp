@@ -59,26 +59,34 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 	if (fid < 0)
 		mout.error() << ": H55create failed, file=" << filename << mout.endl;
 
-	// TEST
-	/*
-	drain::VariableMap m;
-	m["mika"] = 123;
-	m["flotari"] = 123.456;
-	m["rimpsu"] = "merkkijono";
-	Writer::dataToH5Compound(m, fid, "datasetX");
-	*/
 
 	/*
-	std::vector<std::pair<double, const char *> > v;
+	std::vector<std::pair<const char *, double> > v;
 	v.resize(3);
-	v[0].first  = 12.34;
-	v[0].second = "test phrase";
-	v[1].first  = 56.78;
-	v[1].second = "abcd åäö";
+	v[0].first  = "key1";
+	v[0].second = 12.34;
+	v[1].first  = "abcdåäö";
+	v[1].second = 56.78;
 	Writer::vectorToH5Compound(v, fid, "legend", "index", "coeff");
+
+
+	/// Ok with float, fails with double
+	std::map<int, float> m;
+	m[4] = 123.456;
+	m[2] = 767.898;
+	Writer::mapToH5Compound(m, fid, "legend2");
+
+	//std::map<int, const char *> m;
+
+	std::map<const char *, double> m2;
+	m2["eka"] = 1.23;
+	m2["toka"] = 4.56;
+	Writer::mapToH5Compound(m2, fid, "legend3", "index", "str");
 	*/
 
 	treeToH5File(tree, fid, "/");
+
+
 
 	int status = H5Fclose(fid);
 	if (status < 0)
@@ -109,7 +117,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 		// Notice: no attribute conversion supported.
 		//const std::string &name = image.
 		imageToH5DataSet(image, fid, path);
-		drain::Variable d(typeid(std::string));
+		//drain::Variable d(typeid(std::string));
 		if (attributes["CLASS"].toStr() == "PALETTE"){
 
 			mout.warn() << "unimplemented code (palette creation) " << path << mout.endl;
@@ -124,12 +132,13 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			//attributes["PAL_VERSION"] = "1.2";
 		}
 		else {
-			dataToH5Attribute(d="IMAGE", fid, path,"CLASS");
-			dataToH5Attribute(d="1.2", fid, path,"IMAGE_VERSION");
+			dataToH5Attribute("IMAGE", fid, path,"CLASS");
+			dataToH5Attribute("1.2", fid, path,"IMAGE_VERSION");
 			if (attributes["IMAGE_SUBCLASS"].toStr() == "IMAGE_INDEXED"){
 
 				mout.debug() << "future option: linking palette " << path << mout.endl;
 				/*
+				 TODO: add palette path using "quantity"? (Avoid re-creating quantitie?s)
 				// Create (dummy) palette:
 				drain::image::Image data;
 				data.setType<unsigned char>();
@@ -158,6 +167,9 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 				H5Awrite(aid, H5T_STD_REF_OBJ, links);
 				*/
 			}
+		}
+		if (attributes.hasKey("LEGEND")){
+
 		}
 		// return;
 	}

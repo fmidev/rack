@@ -59,7 +59,7 @@ using namespace drain::image;
 
 
 //template <class M>
-void VolumeTraversalOp::processVolume(const HI5TREE &src, HI5TREE &dst) const {
+void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
 	mout.debug(1) << "start" << mout.endl;

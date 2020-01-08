@@ -218,7 +218,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 	return; // groups.value;
 }
 
-bool DataSelector::getLastChild(const HI5TREE & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
+bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -228,7 +228,7 @@ bool DataSelector::getLastChild(const HI5TREE & tree, ODIMPathElem & child){ //,
 	}
 
 	child.index = 0; // needed
-	for (HI5TREE::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
 
 		if (it->first.getType() == child.getType()){
 			child.index = std::max(child.getIndex(), it->first.getIndex());
@@ -241,7 +241,7 @@ bool DataSelector::getLastChild(const HI5TREE & tree, ODIMPathElem & child){ //,
 
 }
 
-bool DataSelector::getNewChild(const HI5TREE & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax){
+bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -265,7 +265,7 @@ bool DataSelector::getNewChild(const HI5TREE & tree, ODIMPathElem & child, ODIMP
 
 
 
-bool DataSelector::getNextChild(const HI5TREE & tree, ODIMPathElem & child){
+bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -288,7 +288,7 @@ bool DataSelector::getNextChild(const HI5TREE & tree, ODIMPathElem & child){
 
 
 
-bool DataSelector::getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
+bool DataSelector::getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -313,7 +313,7 @@ bool DataSelector::getPathNEW(const HI5TREE & src, ODIMPath & path, ODIMPathElem
 	}
 }
 
-bool DataSelector::getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t group) const {
+bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -349,7 +349,7 @@ bool DataSelector::getLastPath(const HI5TREE & src, ODIMPath & path, ODIMPathEle
 	}
 }
 
-bool DataSelector::getNextPath(const HI5TREE & src, ODIMPath & path, ODIMPathElem::group_t group) const {
+bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group) const {
 
 	drain::Logger mout(getName(), __FUNCTION__);
 
@@ -375,9 +375,9 @@ bool DataSelector::getNextPath(const HI5TREE & src, ODIMPath & path, ODIMPathEle
 	}
 }
 
-bool DataSelector::getChildren(const HI5TREE & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups){
+bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups){
 
-	for (HI5TREE::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
 
 		const ODIMPathElem & elem = it->first;
 

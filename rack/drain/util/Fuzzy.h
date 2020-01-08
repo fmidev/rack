@@ -325,10 +325,17 @@ private:
 
 /// A smooth symmetric peak function that resembles the Gaussian bell curve.
 /**
- *   The approximation applies
  *
- *  \tparam T  - input storage type
- *  \tparam T2 - output storage type
+ * \tparam T  - input type  (typically double)
+ * \tparam T2 - output type (typically double)
+ *
+ * \param location - center of the peak
+ * \param width    - half-width of the peak; if negative, the peak will be upside down
+ * \param scale - multiplication in scaling (scale*x + bias); default=1.0
+ * \param bias  - offset in scaling (scale*x + bias); default=0.0
+ *
+ *  The approximation applies
+ *
  */
 template <class T>
 class FuzzyBell : public Fuzzifier<T> {

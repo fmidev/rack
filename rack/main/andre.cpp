@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "andre/PrecipOp.h"
 
+#include "andre/AttenuationOp.h"
 #include "andre/BioMetOp.h"
 #include "andre/BirdOp.h"
 #include "andre/ClutterOp.h"
@@ -159,6 +160,7 @@ static CommandEntry<AnDReStoreCombined> anDReStoreCombined("andre", "aStoreCombi
 
 AnDReModule::AnDReModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix){
 
+	static AnDReLetAdapter<AttenuationOp> attn;
 	static AnDReLetAdapter<BiometOp>   biomet;
 	static AnDReLetAdapter<BirdOp>     bird;
 	static AnDReLetAdapter<DopplerNoiseOp> dopplerNoise;

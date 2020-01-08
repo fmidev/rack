@@ -100,7 +100,7 @@ public:
 	 *  and calls processDataSets().
 	 */
 	virtual
-	void processVolume(const HI5TREE &src, HI5TREE &dst) const;
+	void processVolume(const Hi5Tree &src, Hi5Tree &dst) const;
 
 
 
@@ -131,7 +131,7 @@ void VolumeOp<M>::completeEncoding(const std::string & encoding, PlainData<DstTy
 
 
 template <class M>
-void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
+void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
 
@@ -160,7 +160,7 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 		//const std::string parent = DataTools::getParent(*it);
 		const ODIMPath & parent = *it;
 		//parent.pop_back();
-		const HI5TREE & srcDataSet = src(parent);
+		const Hi5Tree & srcDataSet = src(parent);
 		const double elangle = srcDataSet["where"].data.attributes["elangle"];  // PATH
 
 		//mout.debug(2) << "check elangle of "  << parent << mout.endl;
@@ -208,7 +208,7 @@ void VolumeOp<M>::processVolume(const HI5TREE &src, HI5TREE &dst) const {
 
 	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
 
-	HI5TREE & dstProduct = dst[dataSetPath];
+	Hi5Tree & dstProduct = dst[dataSetPath];
 	DataSet<DstType<M> > dstProductDataset(dstProduct); // PATH
 
 	drain::VariableMap & how = dstProduct["how"].data.attributes;

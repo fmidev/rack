@@ -74,7 +74,7 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 
 }
 
-const HI5TREE & ClutterOp::getClutterMap(const PolarODIM & odim) const {
+const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	drain::Logger mout(name, __FUNCTION__);
 

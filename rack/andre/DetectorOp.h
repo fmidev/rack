@@ -128,7 +128,7 @@ protected:
 
 
 	// This is difficult...
-	//const HI5TREE & getNormalizedData(const DataSet<> & srcDataSet, DataSet<> & dstDataSet, const std::string & quantity) const;
+	//const Hi5Tree & getNormalizedData(const DataSet<> & srcDataSet, DataSet<> & dstDataSet, const std::string & quantity) const;
 
 	// Consider raise to VolumeOp ?
 	void storeDebugData(int debugLevel, const ImageFrame & srcImage, const std::string & label) const;

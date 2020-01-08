@@ -82,7 +82,7 @@ public:
 	~AnDReLetAdapter(){};
 
 	virtual inline
-	HI5TREE & getTarget() const {
+	Hi5Tree & getTarget() const {
 		return getResources().inputHi5;
 	};
 
@@ -110,8 +110,8 @@ public:
 		mout.debug() << "Running:  " << op << mout.endl;
 		mout.debug() << "AnDRe selector: " << resources.andreSelect << mout.endl;
 
-		const HI5TREE &src = resources.inputHi5;
-		HI5TREE & dst = getTarget();  //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
+		const Hi5Tree &src = resources.inputHi5;
+		Hi5Tree & dst = getTarget();  //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
 
 		//mout.warn() << dst << mout.endl;
 		op.processVolume(src, dst);

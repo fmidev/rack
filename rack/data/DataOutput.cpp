@@ -48,7 +48,7 @@ std::string DataOutput::quoted(const ODIMPath & path){
 	return str;
 }
 
-void DataOutput::writeToDot(std::ostream & ostr, const HI5TREE & tree, ODIMPathElem::group_t selector){
+void DataOutput::writeToDot(std::ostream & ostr, const Hi5Tree & tree, ODIMPathElem::group_t selector){
 
 	drain::Logger mout("DataOutput", __FUNCTION__);
 
@@ -83,7 +83,7 @@ void DataOutput::writeToDot(std::ostream & ostr, const HI5TREE & tree, ODIMPathE
 
 }
 
-void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int & id,
+void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & id,
 		ODIMPathElem::group_t selector, const ODIMPath & path) {
 
 	drain::Logger mout("DataOutput", __FUNCTION__);
@@ -200,7 +200,7 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const HI5TREE & group, int
 	//ODIMPath prev;
 	bool first = true;
 	int indexPrev = id;
-	for (HI5TREE::const_iterator it = group.begin(); it!=group.end(); ++it){
+	for (Hi5Tree::const_iterator it = group.begin(); it!=group.end(); ++it){
 
 		ODIMPathElem e(it->first);
 

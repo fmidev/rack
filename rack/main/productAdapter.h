@@ -117,7 +117,7 @@ public:
 	// NOTE: Potentially, VolumeOp could be generalized to a RackOp, having polar OR Cartesian targets.
 	virtual
 	inline
-	HI5TREE & getTarget() const { //std::cerr << "getTarget() = polarHi5" << std::endl;
+	Hi5Tree & getTarget() const { //std::cerr << "getTarget() = polarHi5" << std::endl;
 		return getResources().polarHi5;
 	};
 
@@ -155,8 +155,8 @@ public:
 		mout.debug() << "Running: " << productOp.getName() << mout.endl;
 
 		//op.filter(getResources().inputHi5, getResources().polarHi5);
-		const HI5TREE & src = resources.inputHi5;
-		HI5TREE & dst = getTarget();  //For AnDRe ops, src serves also as dst.
+		const Hi5Tree & src = resources.inputHi5;
+		Hi5Tree & dst = getTarget();  //For AnDRe ops, src serves also as dst.
 
 		//mout.warn() << dst << mout.endl;
 		productOp.processVolume(src, dst);
@@ -174,7 +174,7 @@ public:
 	/*
 	virtual
 	inline
-	void filter(const HI5TREE &src, HI5TREE &dst) const {
+	void filter(const Hi5Tree &src, Hi5Tree &dst) const {
 		const VolumeOp & op = productOp;
 		op.filter(getResources().inputHi5, getResources().polarHi5);
 	}

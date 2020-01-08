@@ -87,7 +87,7 @@ void CmdImage::exec() const {
 	//File::write(*resources.currentImage, "convert.png");
 }
 
-void CmdImage::convertImage(const HI5TREE & src, const DataSelector & selector, const std::string & encoding, drain::image::Image &dst){
+void CmdImage::convertImage(const Hi5Tree & src, const DataSelector & selector, const std::string & encoding, drain::image::Image &dst){
 
 	drain::Logger mout("CmdImage", __FUNCTION__);
 
@@ -416,6 +416,7 @@ public:
 		if ((!resources.select.empty()) || (resources.currentGrayImage == NULL)){  // TODO: remove this
 			cmdImage.imageSelector.setParameters(resources.select);
 			resources.setCurrentImage(cmdImage.imageSelector);
+
 			/* This may be relevant, keep for 2019
 			cmdImage.imageSelector.setParameters(resources.select);
 			mout.debug() << "determining current gray image" << mout.endl;
@@ -438,6 +439,7 @@ public:
 		if (!value.empty() || resources.palette.empty()){
 
 			if (value == "default" || value.empty()){
+				// Guess label (quantity)
 				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
 				std::string quantity = statusMap["what:quantity"].toStr();
 				mout.info() << "using current data quantity=" << quantity << mout.endl;
@@ -446,6 +448,12 @@ public:
 			else
 				resources.palette.load(value, true);
 
+			/// TODO: store palette in dst /datase, or better add palette(link) to Image.
+			/*
+			mout.warn() << "palette will be also saved to: " << resources.currentPath << mout.endl;
+			Hi5Tree & dst = (*resources.currentHi5);
+			dst(resources.currentPath).data.attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
+			*/
 		}
 
 		//mout.debug(2) << resources.palette << mout.endl;
@@ -519,8 +527,8 @@ public:
 		op.registerSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
-		// mout.note() << op << mout.endl;
-		mout.note() << "Special codes: \n" << op.specialCodes << mout.endl;
+		// mout.note() << imgOdim << mout.endl;
+		mout.debug() << "OP Special codes: \n" << op.specialCodes << mout.endl;
 
 		// Copied form Racklet
 		std::string dstQuantity;
@@ -637,7 +645,7 @@ public:
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			//mout.note() << "selected: " << it->first << '=' << it->second << mout.endl;
 			mout.note() << "selected: " << *it << mout.endl;
-			HI5TREE & dst = (*resources.currentHi5)(*it);
+			Hi5Tree & dst = (*resources.currentHi5)(*it);
 			//drain::image::Image & channel = (*resources.currentHi5)(it->second)["data"].data.dataSet;
 			drain::image::Channel & channel = dst["data"].data.dataSet.getChannel(0);
 			if (channel.isEmpty()){

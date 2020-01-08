@@ -82,7 +82,7 @@ public:
 	static
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
 #endif
-	//void write(const std::string &filePath,  const HI5TREE & src, const ODIMPathList & paths);
+	//void write(const std::string &filePath,  const Hi5Tree & src, const ODIMPathList & paths);
 
 	inline
 	static

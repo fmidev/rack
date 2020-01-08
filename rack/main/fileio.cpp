@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/ODIMPath.h>
 #include <data/PolarODIM.h>
 #include <hi5/Hi5.h>
-#include <hi5/Hi5Read.h>
+//#include <hi5/Hi5Read.h>
 #include <hi5/Hi5Write.h>
 #include <image/File.h>
 #include <image/Image.h>
@@ -108,18 +108,6 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
-/// A debugging facility. Obsolete?
-class CmdInputSelect : public BasicCommand {
-
-public:
-
-	CmdInputSelect() : BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
-		//, "value", hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag"){};
-		parameters.reference("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
-	}
-
-};
-//static CommandEntry<CmdInputSelect> cmdInputSelect("inputSelect");
 
 
 /// TODO: generalize to array outfile
@@ -148,7 +136,7 @@ public:
 
 		RackResources & resources = getResources();
 
-		HI5TREE & currentHi5 = *resources.currentHi5;
+		Hi5Tree & currentHi5 = *resources.currentHi5;
 
 		rack::HistogramOp<PolarODIM> hop;
 
@@ -240,7 +228,10 @@ public:
 
 		if (h5FileExtension.test(value)){
 			mout.info() << "File format: HDF5" << mout.endl;
+
 			getResources().currentHi5->data.attributes["Conventions"] = "ODIM_H5/V2_2";
+
+
 			/// getResources().currentHi5->data.attributes["version"] = "H5rad 2.2"; // is in ODIM /what/version
 			//const char c = hi5::Writer::tempPathSuffix;
 			//if (mout.isDebug(10))
@@ -467,7 +458,7 @@ public:
 
 			mout.info() << "Sampling path: " << path << mout.endl;
 
-			const HI5TREE & src = (*resources.currentHi5)(path);
+			const Hi5Tree & src = (*resources.currentHi5)(path);
 
 			const Sampler & sampler = resources.sampler.getSampler();
 
@@ -701,7 +692,6 @@ public: //re
 
 FileModule::FileModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix) {
 
-	static RackLetAdapter<CmdInputSelect> cmdInputSelect;
 	static RackLetAdapter<CmdHistogram> hist;
 	static RackLetAdapter<CmdInputFile> cmdInputFile('i');
 	static RackLetAdapter<CmdSample> cmdSample("sample");

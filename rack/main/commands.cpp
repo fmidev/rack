@@ -211,14 +211,14 @@ class CmdCreateDefaultQuality : public BasicCommand {
 
 public:
 
-	CmdCreateDefaultQuality() : BasicCommand(__FUNCTION__, "Creates default quality field. See --undetectQuality"){
+	CmdCreateDefaultQuality() : BasicCommand(__FUNCTION__, "Creates default quality field. See --undetectWeight and --aDefault"){
 		parameters.reference("quantitySpecific", quantitySpecific=false, "[0|1]");
 	};
 
 	bool quantitySpecific;
 
 	template <class OD>
-	void processStructure(HI5TREE & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
+	void processStructure(Hi5Tree & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
 
 		drain::Logger mout(getName(), __FUNCTION__);
 
@@ -228,7 +228,7 @@ public:
 
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			mout.info() << *it  << mout.endl;
-			HI5TREE & dstDataSetH5 = dst(*it);
+			Hi5Tree & dstDataSetH5 = dst(*it);
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
 			if (quantitySpecific){
 				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
@@ -330,7 +330,7 @@ public:
 
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
-		HI5TREE & dst = *getResources().currentHi5;
+		Hi5Tree & dst = *getResources().currentHi5;
 
 		// Step 0
 		mout.info() << "delete existing no-save structures " << mout.endl;
@@ -387,7 +387,7 @@ public:
 		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
 
 		//RackResources & resources = getResources();
-		HI5TREE & dst = *getResources().currentHi5;
+		Hi5Tree & dst = *getResources().currentHi5;
 
 		// Step 0
 		mout.info() << "delete existing no-save structures " << mout.endl;
@@ -497,7 +497,7 @@ public:
 		}
 
 
-		HI5TREE & dstRoot = *resources.currentHi5;
+		Hi5Tree & dstRoot = *resources.currentHi5;
 
 		ODIMPath path1;
 		std::string attr1;
@@ -520,6 +520,11 @@ public:
 		ODIMPath path2;
 		std::string attr2;
 		hi5::Hi5Base::parsePath(pathDst, path2, attr2);
+		if (pathDst.at(0) == ':'){
+			mout.note() << " renaming attribute only" << mout.endl;
+			path2 = path1;
+		}
+
 
 		mout.debug() << "path1: " << path1 << '(' << path1.size() << ')' << " : " << attr1 << mout.endl;
 		mout.debug() << "path2: " << path2 << '(' << path2.size() << ')' << " : " << attr2 << mout.endl;
@@ -535,10 +540,10 @@ public:
 
 			mout.debug() << "renaming path '" << path1 << "' => '" << path2 << "'" << mout.endl;
 			//mout.warn() << dstRoot << mout.endl;
-			HI5TREE & dst1 = dstRoot(path1);
+			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
 				dstRoot(path2).data.noSave = true;
-			HI5TREE & dst2 = dstRoot(path2);
+			Hi5Tree & dst2 = dstRoot(path2);
 
 			const bool noSave1 = dst1.data.noSave;
 			const bool noSave2 = dst2.data.noSave;
@@ -562,11 +567,11 @@ public:
 
 			mout.debug() << "renaming attribute (" << path1 << "):" << attr1 << " => (" << path2 << "):" << attr2 << mout.endl;
 
-			HI5TREE & dst1 = dstRoot(path1);
+			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dst1.data.attributes.hasKey(attr1)){
 				mout.warn() <<  "attribute '" << attr1 << "' not found, path='" << path1 << "'" << mout.endl;
 			}
-			HI5TREE & dst2 = dstRoot(path2);
+			Hi5Tree & dst2 = dstRoot(path2);
 			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
 			dst1.data.attributes.erase(attr1);
 			//DataTools::updateInternalAttributes(dst2);
@@ -620,7 +625,7 @@ public:
 	CmdCompleteODIM() : BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
 
 	template <class OD>  // const drain::VariableMap & rootProperties,
-	void complete(HI5TREE & dstH5, OD & od) const {
+	void complete(Hi5Tree & dstH5, OD & od) const {
 
 		drain::Logger mout(getName(), __FUNCTION__);
 
@@ -638,7 +643,7 @@ public:
 		mout.debug() << "odim: " << rootODIM << mout.endl;
 
 
-		for (HI5TREE::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
+		for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 
 			mout.debug() << "considering: " << it->first << mout.endl;
 
@@ -774,7 +779,7 @@ public:
 		mout << "Attribute:"  << attributeKey << ' ';
 		mout << "Value:"      << value << mout.endl;
 
-		HI5TREE & currentHi5 = *(getResources().currentHi5);
+		Hi5Tree & currentHi5 = *(getResources().currentHi5);
 		 */
 
 		/*
@@ -833,7 +838,7 @@ public:
 
 		const classtree_t & t = getClassTree();
 
-		drain::JSON::write(t);
+		drain::JSON::writeJSON(t);
 
 
 	}
@@ -978,15 +983,19 @@ public:
 				return;
 			}
 
+			ostr << "{\n";
+			ostr << "  \"variables\": ";
+
+
 			const drain::Command & command = reg.get(params);
 			const ReferenceMap & m = command.getParameters();
+			m.toJSON(ostr, 1);
+
+			/*
 			const ReferenceMap::keylist_t & keys = m.getKeyList();
-			ostr << "{";
-			ostr << "  \"variables\": {";
 
 			char sep=0;
 
-			//for (ReferenceMap::const_iterator it = m.begin(); it!=m.end(); ++it){
 			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
 
 				if (sep)
@@ -997,17 +1006,6 @@ public:
 				const drain::Referencer & entry = m[*it];
 
 				ostr << "\n  \"" << *it << "\": {\n";
-				//ostr << std::setw(10) << std::left << "\"type\": \"";
-				/*
-				ostr << "    \"type\": \"";
-				if (entry.isString()) {
-					ostr << "string";
-				}
-				else {
-					ostr << Type::call<drain::simpleName>(entry.getType());
-				}
-				ostr << "\",\n";
-				*/
 				ostr << "    \"value\": ";
 				entry.valueToJSON(ostr);
 				ostr << "\n";
@@ -1017,6 +1015,7 @@ public:
 			if (!command.getType().empty()){
 				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
 			}
+			*/
 			ostr << "\n}\n";
 		}
 

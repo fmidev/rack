@@ -95,10 +95,10 @@ public:
 	virtual ~DataConversionOp(){};
 
 	/// Ensures data to be in standard type and scaling. Makes a converted copy if needed.
-	//static	const HI5TREE & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
+	//static	const Hi5Tree & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
 
 
-	void processH5(const HI5TREE &src, HI5TREE &dst) const;
+	void processH5(const Hi5Tree &src, Hi5Tree &dst) const;
 
 	virtual
 	void processDataSet(const DataSet< src_t> & srcSweep, DataSet<dst_t> & dstProduct) const;
@@ -185,7 +185,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 
 
 template <class M> //// copied from VolumeOp::processVolume
-void DataConversionOp<M>::processH5(const HI5TREE &src, HI5TREE &dst) const {
+void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(this->getName(), __FUNCTION__);
 
