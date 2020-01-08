@@ -78,6 +78,9 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 		zAttnCumulated = 0.0;
 		quality = 1.0;
 
+		for (size_t i = 0; i < i0; ++i) {
+			dstData.data.putScaled(i, j, 0);
+		}
 		for (size_t i = i0; i < width; ++i) {
 
 			dbzObs = srcData.data.get<double>(i,j);
@@ -101,8 +104,10 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 				dstData.data.putScaled(i, j, 1.0 - quality);
 			}
 			else {
-				dstData.data.putScaled(i, j, 1.0 - DataCoder::undetectQualityCoeff*quality); // default
+				dstData.data.putScaled(i, j, 0.9*(1.0 - quality)); // default
+				//dstData.data.putScaled(i, j, 1.0 - DataCoder::undetectQualityCoeff*quality); // default
 			}
+			//dstData.data.putScaled(i, j, 1.0 - quality);
 
 		}
 		// mout.warn() << marker << mout.endl;
