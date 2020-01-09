@@ -104,7 +104,7 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 				dstData.data.putScaled(i, j, 1.0 - quality);
 			}
 			else {
-				dstData.data.putScaled(i, j, 0.9*(1.0 - quality)); // default
+				dstData.data.putScaled(i, j, 0.75*(1.0 - quality)); // default
 				//dstData.data.putScaled(i, j, 1.0 - DataCoder::undetectQualityCoeff*quality); // default
 			}
 			//dstData.data.putScaled(i, j, 1.0 - quality);
