@@ -54,7 +54,7 @@ namespace image
 
 void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
-	Logger mout("Accumulator",__FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL "Accumulator",__FUNCTION__);
 
 	if (name == "AVG"){
 		mout.warn() << "'AVG' deprecating, using 'AVERAGE'" << mout.endl;

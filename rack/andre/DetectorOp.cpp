@@ -68,7 +68,7 @@ unsigned short int DetectorOp::_count(0);
 
 void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
@@ -167,7 +167,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
 
-	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
 	mout.info() << "start" << mout.endl;
 	//mout.warn() << "start" << mout.endl;
@@ -219,7 +219,7 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 /// If raised, make template? Cf. Volume::initDst ?
 void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, const std::string & quantity) const {
 
-	drain::Logger mout(getName() + "(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName() + "(DetectorOp)");
 
 	if (dstData.data.isEmpty()){
 
@@ -296,7 +296,7 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 	static int counter=0;
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (mout.isDebug(debugLevel)){
 		std::stringstream sstr;
@@ -331,7 +331,7 @@ void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
 
 void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) const {
 
-	drain::Logger mout(drain::getLog(), getName(), __FUNCTION__);
+	drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
 	mout.debug() << " called by " << name << mout.endl;
 	if (mout.isDebug(12))
 		File::write(dst,"andre-enh0-src.png");
@@ -375,7 +375,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 ///
 void DetectorOp::_infect(Image & dst, int windowWidth, int windowHeight, double enhancement) const {
 
-	drain::Logger mout(drain::getLog(), getName(), __FUNCTION__);
+	drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
 
 	DistanceTransformExponentialOp distOp(windowWidth, windowHeight);
 

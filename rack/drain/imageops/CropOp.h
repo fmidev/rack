@@ -82,7 +82,7 @@ public:
 	/*
 	virtual
 	void process(const ImageFrame & src, Image & dst) const{
-		drain::Logger mout(getImgLog(), name, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		//mout.debug() << "delegating back to ImageOp::processOverlappingWithTemp" << mout.endl;
 		if (processOverlappingWithTemp(src, dst))
@@ -103,7 +103,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		traverseChannelsSeparately(src, dst);
 	}
 

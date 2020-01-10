@@ -50,7 +50,7 @@ const CoordinatePolicy PolarProductOp::polarCoordPolicy(CoordinatePolicy::POLAR,
 
 void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
 
-	drain::Logger mout(name+"(CumulativeProductOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
 
 	const bool MAXIMIZE_AZM_RESOLUTION = (dstOdim.nrays == 0);
 	const bool DERIVE_NBINS  = (dstOdim.nbins == 0); // ||(dstOdim.rscale == 0.0);

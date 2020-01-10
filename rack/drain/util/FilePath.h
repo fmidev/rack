@@ -65,6 +65,10 @@ public:
 	/// Copy constructor
 	FilePath(const FilePath & s);
 
+	inline
+	~FilePath(){};
+
+
 	void set(const std::string & s);
 
 	path_t dir;

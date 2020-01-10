@@ -117,7 +117,7 @@ public:
 
 	void processDataSets(const DataSetMap<src_t> & src, DataSet<dst_t> & dstProduct) const {
 
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.debug(2) << "start" << mout.endl;
 
 		if (src.size() == 0)
@@ -225,7 +225,7 @@ public:
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		const drain::image::Image & img = srcData.data;
 
 		const int min = 0;

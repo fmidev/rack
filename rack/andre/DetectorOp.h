@@ -114,7 +114,7 @@ public:
 	 */
 	virtual
 	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "not implemented" << mout.endl;
 	}
 

@@ -90,7 +90,7 @@ namespace image
 
 ImageOp & ImageOpBank::getComplete(const std::string & query, char assignmentChar, char separatorChar, const drain::SmartMap<std::string> & aliasMap){
 
-	drain::Logger mout(getImgLog(), "ImageOpBank", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), "ImageOpBank", __FUNCTION__);
 
 	size_t index = query.find(separatorChar);
 	const bool PARAMS = (index != std::string::npos);

@@ -48,7 +48,7 @@ public:
 
 	void exec() const {
 
-		Logger mout(name, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -199,7 +199,7 @@ class PolarExtract : public SimpleCommand<std::string> {
 
 	void exec() const {
 
-		Logger mout(name, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 

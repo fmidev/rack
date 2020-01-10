@@ -44,7 +44,7 @@ namespace rack {
 
 void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
 	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
 
@@ -61,7 +61,7 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
 	mout.debug(1) << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;

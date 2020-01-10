@@ -113,7 +113,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		//drain::Logger mout(this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
+		//drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		traverseChannelsSeparately(src, dst);
 	}
 
@@ -127,7 +127,7 @@ public:
 template <class S, class D>
 void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	const std::type_info & t = typeid(dst_t); // typeid(typename T::dst_t);
 
@@ -151,7 +151,7 @@ void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) con
 template <class S, class D>
 void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	const size_t w = src.getWidth();
 	const size_t h = src.getHeight();

@@ -89,7 +89,8 @@ public:
 	virtual
 	void run(const std::string & params = "") {
 
-		drain::Logger mout(this->adapterName, __FUNCTION__);
+		//__FUNCTION__
+		drain::Logger mout(__FUNCTION__, this->adapterName.c_str());
 
 		mout.timestamp("BEGIN_ANDRE");
 

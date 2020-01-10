@@ -53,7 +53,7 @@ public:
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		if (srcData.hasQuality())
 			processDataWeighted(srcData, dstData);
 		else
@@ -62,14 +62,14 @@ public:
 
 	virtual
 	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "not implemented" << mout.endl;
 	};
 
 	/// Quality-weighted prosessing of data
 	virtual
 	void processDataWeighted(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "not implemented" << mout.endl;
 	};
 

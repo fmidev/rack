@@ -128,7 +128,7 @@ public:
 	 */
 	void run(const std::string & params = "") {
 
-		drain::Logger mout(adapterName+"::"+__FUNCTION__);
+		drain::Logger mout(__FUNCTION__, adapterName);
 
 		mout.timestamp("BEGIN_PRODUCT");
 

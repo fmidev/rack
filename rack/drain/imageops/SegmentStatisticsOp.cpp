@@ -42,7 +42,7 @@ namespace image
 
 void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	mout.debug() << dst << mout.endl;
 
@@ -71,7 +71,7 @@ void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) co
 void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 	//void SegmentStatisticsOp::traverseFrame(const ImageFrame & src, ImageFrame & dst) const {
 
-	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	const Channel & src = srcTray.get();
 	Channel & dst = dstTray.get();

@@ -57,7 +57,7 @@ HighPassOp::HighPassOp(int width, int height, double scale, double offset) :  //
 
 /// Apply to single channel with alpha.
 void HighPassOp::traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-	Logger mout(getImgLog(), getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	FastAverageOp fop(width, height);
 
@@ -81,7 +81,7 @@ void HighPassOp::traverseChannel(const Channel &src, const Channel &srcAlpha, Ch
 
 void HighPassOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	Logger mout(getImgLog(), getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	// File::write(src,"HighPass-01-src.png");
 	// mout.warn() << "src: " << src << mout.endl;

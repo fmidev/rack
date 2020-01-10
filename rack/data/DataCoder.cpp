@@ -52,7 +52,7 @@ double DataCoder::undetectQualityCoeff(0.75);
 
 void DataCoder::init(){
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	// For decoding
 	parameters.reference("SKIP_UNDETECT", SKIP_UNDETECT);

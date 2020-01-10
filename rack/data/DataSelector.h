@@ -161,7 +161,7 @@ public:
 			getPaths(src, pathContainer, groups.value);
 		}
 		else {
-			drain::Logger mout(getName(), __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, getName());
 			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
 			getPaths(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
 			//groups = groupStr;
@@ -195,7 +195,8 @@ public:
 			return getPathNEW(src, path, groups.value);
 		}
 		else {
-			drain::Logger mout(getName(), __FUNCTION__);
+			//drain::Logger mout(__FUNCTION__, getName());
+			drain::Logger mout(__FUNCTION__, __FILE__);
 			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
 			return getPathNEW(src, path, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
 		}
@@ -370,7 +371,7 @@ protected:
 template <class T>
 bool DataSelector::getPaths(const Hi5Tree &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug(3) << "considering '" << path << "/' -> ..." << mout.endl;
 

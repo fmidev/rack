@@ -39,7 +39,7 @@ namespace image {
 
 void ImageFrame::init(){
 
-	// Logger mout(__FILE__, __FUNCTION__);
+	// Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
 
 	properties["name"] = name; // ("security risk", if file paths included by default?)
 

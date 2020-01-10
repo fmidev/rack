@@ -61,7 +61,7 @@ void CmdHelp::helpOnModules(std::ostream & ostr, const std::string & excludeKey)
 
 void CmdHelp::exec() const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const CommandRegistry r = getRegistry();
 
@@ -135,7 +135,7 @@ class CmdFormatFile : public SimpleCommand<std::string> {
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 		std::stringstream sstr;
 		std::ifstream ifstr;
@@ -159,7 +159,7 @@ CommandEntry<CmdFormatFile> cmdFormatFile("formatFile");
 void CommandLoader::run(const std::string & params){
 
 
-	drain::Logger mout(name, __FUNCTION__); // = getDrainage().mout;
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getDrainage().mout( ;
 
 	Script script;
 

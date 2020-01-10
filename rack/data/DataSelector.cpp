@@ -128,7 +128,7 @@ void DataSelector::reset() {
 
 void DataSelector::update(){
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!path.empty()){
 		convertRegExpToRanges(path);
@@ -150,7 +150,7 @@ void DataSelector::update(){
 // Resets, set given parameters and derives missing parameters.
 void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	// Consider:
 	if (clear){
@@ -290,7 +290,7 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
 bool DataSelector::getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	if (count > 1){
 		mout.debug(3) << "count=" << count << ", but only 1 path will be used " << mout.endl;
@@ -315,7 +315,7 @@ bool DataSelector::getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem
 
 bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group) const {
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	if (count > 1){
 		mout.debug(3) << "count=" << count << ", but only 1 path will be used " << mout.endl;
@@ -351,7 +351,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group) const {
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!getLastPath(src, path, group)){
 		// Empty
@@ -393,7 +393,7 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 
 void DataSelector::convertRegExpToRanges(const std::string & param){
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	static drain::RegExp rangeRE("^\\[?([+-]?[[:digit:]]+)(:([+-]?[[:digit:]]+))?\\]?$");
 

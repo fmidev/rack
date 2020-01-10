@@ -61,7 +61,8 @@ using namespace drain::image;
 //template <class M>
 void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
+	//drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug(1) << "start" << mout.endl;
 
 	DataSetMap<PolarSrc> srcDataSets;
@@ -120,7 +121,7 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::Logger mout(name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
 	mout.debug(1) << "start1" << mout.endl;
 

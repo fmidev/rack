@@ -134,7 +134,7 @@ protected:
 template <class W>
 void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst> & dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	dst.odim.quantity = odim.quantity;
 
@@ -179,7 +179,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 template <class W>
 void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const Data<PolarSrc> & vradSrc = srcSweep.getData("VRAD"); // relax, allow user to modify?
 
@@ -213,7 +213,7 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 template <class W>
 void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
 	pixelConf.widthM  = this->conf.widthM;
@@ -245,7 +245,7 @@ void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const Pola
 template <class W>
 void DopplerWindowOp<W>::processData(const Data<PolarSrc> & vradSrc, Data<PolarDst> & dstData) const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		//DopplerDevWindow w;
 		//w.initialize();
@@ -318,7 +318,7 @@ public:
 	virtual inline
 	void processData(const Data<PolarSrc> & vradSrc, Data<PolarDst> & dstData) const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		drain::FuzzyBell2<double> deviationQuality(1.0, 0.125); // 50m/s
 		DopplerAverageWindow2::conf_t pixelConf(deviationQuality);
 		setPixelConf(pixelConf, vradSrc.odim);

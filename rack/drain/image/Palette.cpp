@@ -168,7 +168,7 @@ void Palette::update() const {
 
 void Palette::load(const std::string & filename, bool flexible){
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
 
 	drain::FilePath filePath;
 
@@ -529,7 +529,7 @@ void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 
 void Palette::write(const std::string & filename){
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
 
 	drain::FilePath filepath(filename);
 

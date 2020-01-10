@@ -110,7 +110,7 @@ SeparableWindowOp::SeparableWindowOp(int width, int height, double radius) :
 
 void SeparableWindowOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	// TODO: generalize!
 
@@ -140,7 +140,7 @@ void SeparableWindowOp::traverseChannel(const Channel & src, Channel & dst) cons
 //void SeparableWindowOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Image & dst, Image & dstWeight) const {
 void SeparableWindowOp::traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	Image tmp;
 	Image tmpWeight;

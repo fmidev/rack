@@ -95,7 +95,7 @@ FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : I
 
 void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
 

@@ -56,7 +56,7 @@ using namespace hi5;
 void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
 
 	//const drain::VariableMap &a = data.properties;

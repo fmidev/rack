@@ -169,7 +169,7 @@ public:
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		// drain::Logger mout(this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
+		// drain::Logger mout(__FUNCTION__,__FILE__);  //REP (this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		this->traverseMultiChannel(src, dst);
 	}
 

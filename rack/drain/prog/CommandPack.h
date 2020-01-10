@@ -174,7 +174,9 @@ class DefaultHandler : public BasicCommand {
 	inline
 	void run(const std::string & params){
 
-		Logger mout(getName());
+		//Logger mout(getName());
+		Logger mout(__FUNCTION__, __FILE__);
+
 
 		mout.debug(1) << "params: " << params << mout.endl;
 

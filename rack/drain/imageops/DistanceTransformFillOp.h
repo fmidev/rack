@@ -95,7 +95,7 @@ template <class T>
 void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 	// void DistanceTransformFillOp<T>::process(const ImageFrame &src, const ImageFrame &srcAlpha, ImageFrame & dst, ImageFrame & dstAlpha) const {
 
-	drain::Logger mout(this->name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start: " << *this << mout.endl;
 
@@ -155,7 +155,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 template <class T>
 void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
-	Logger mout(this->getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	const Geometry & srcGeometry = srcTray.getGeometry();
@@ -313,7 +313,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 template <class T>
 void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
-	Logger mout(this->getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	const Geometry & srcGeometry = srcTray.getGeometry();

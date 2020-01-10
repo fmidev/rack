@@ -55,7 +55,7 @@ namespace rack {
 void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
 	//void VerticalProfileOp::filterGroups(const Hi5Tree &src, const ODIMPathList & paths, Hi5Tree &dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
 

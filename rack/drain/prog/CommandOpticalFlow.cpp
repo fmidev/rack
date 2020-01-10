@@ -65,7 +65,7 @@ void CmdOpticalFlowBase::getDiff(size_t width, size_t height, double max, ImageT
 
 void CmdOpticalFlowBase::debugChannels(const ImageTray<const Channel> & channels, int i, int j) const {
 
-	// drain::Logger mout(this->getName(), __FUNCTION__);
+	// drain::Logger mout(__FUNCTION__, __FILE__);
 
 	std::cerr << "'" << channels.get().getName() << "':\n";
 
@@ -91,7 +91,7 @@ void CmdOpticalFlowBase::debugChannels(const ImageTray<const Channel> & channels
 
 void CmdOpticalFlowBase::exec() const {
 
-	drain::Logger mout(this->getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	/// Input images: intensity
 	ImageTray<const Channel> src;

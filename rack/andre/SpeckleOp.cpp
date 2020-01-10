@@ -55,7 +55,7 @@ namespace rack {
 //void SpeckleOp::filterImage(const RadarODIM &odimIn, const Image &src, Image &dst) const {
 void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << parameters << mout.endl;
 
 	// Warn if below min dBZ?

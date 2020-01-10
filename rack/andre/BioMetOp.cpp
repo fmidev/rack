@@ -41,7 +41,7 @@ namespace rack {
 
 void BiometOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
 
 	const int width  = srcData.data.getWidth();

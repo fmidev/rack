@@ -38,7 +38,7 @@ namespace rack {
 
 void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
 
@@ -120,7 +120,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
 

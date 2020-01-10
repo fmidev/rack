@@ -66,7 +66,7 @@ void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, cons
  */
 void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::Logger mout(getName() + "::"+__FUNCTION__, feature);
+	drain::Logger mout(__FUNCTION__, getName() + "::"+feature);
 
 	mout.debug() << "running " << feature << '/' << op.getName() << mout.endl;
 
@@ -115,7 +115,7 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 
 void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug(2) << "start" <<  mout.endl; //
 
 	//mout.error() << dstData <<  mout.endl; //

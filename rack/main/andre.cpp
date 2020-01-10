@@ -85,7 +85,7 @@ public:
 	};
 
 	void exec() const {
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.info() << "querying " << value << mout.endl;
 		//clutter.productOp.setClutterMap(value);
 		clutterOp.setClutterMap(value);

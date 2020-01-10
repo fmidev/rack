@@ -142,7 +142,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 //void QualityCombinerOp::updateOverallDetection(const PlainData<PolarDst> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 
-	drain::Logger mout(label+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, label+"(DetectorOp)");
 	mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
 	mout.debug(1) <<  EncodingODIM(dstQind.odim) << mout.endl;
 
@@ -397,7 +397,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 //void QualityCombinerOp::processSweep(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<PolarDst> & dst) const {
 
-	Logger mout(name, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	//DataDst & dstData = dst.getFirstData("QIND"); //targetQuantity);
 	//PlainData<PolarDst> & dstData = dst.getQualityData("QIND"); //targetQuantity);

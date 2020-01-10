@@ -46,7 +46,7 @@ namespace rack {
 //void SunOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 	// mout.debug() << *this << mout.endl;
 	// mout.debug(1) << "=>odimIn: " << srcData.odim << mout.endl;

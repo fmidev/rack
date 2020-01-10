@@ -57,7 +57,7 @@ namespace rack {
 
 void CartesianGrid::exec() const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	RackResources & resources = getResources();
 

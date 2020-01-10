@@ -56,7 +56,7 @@ namespace rack {
 
 void CartesianBBoxTest::exec() const {
 
-	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 
@@ -151,7 +151,7 @@ void CartesianBBoxTest::exec() const {
 
 void CartesianBBoxTile::exec() const {
 
-	Logger mout(name, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 	// TODO PROJ CHECK! => error, warn?
 
 	Composite & composite = getResources().composite;

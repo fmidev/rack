@@ -69,7 +69,7 @@ public:
     /*
     virtual inline
     void process(const ImageTray<const Channel> & srcChannels, ImageTray<Image> & dstImages) const {
-    	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+    	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
     	mout.note() << "redirecting to ImageOp::process(srcChannels, dstImages, false)" << mout.endl;
     	ImageOp::processConditional(srcChannels, dstImages, false);
     }
@@ -88,7 +88,7 @@ public:
     virtual
     inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-    	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+    	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
     	mout.note() << "discarding alpha channels, redirecting to traverseChannel(src, dst)" << mout.endl;
     	traverseChannel(src, dst);
     };
@@ -101,7 +101,7 @@ public:
 	inline
 	void makeCompatible(const ImageFrame &src, Image &dst) const  {
 
-		drain::Logger mout(getImgLog(), name, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug(2) << "src: " << src << mout.endl;
 
 		//if (!dst.typeIsSet())
@@ -141,7 +141,7 @@ protected:
 	inline
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
 
-		drain::Logger mout(getImgLog(), name, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		const double physMax = src.requestPhysicalMax(100.0);
 		const double codeMax = src.getScaling().inv(physMax);
@@ -188,7 +188,7 @@ void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) 
 {
 
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//mout.warn() << "start" << mout.endl;
 	mout.debug() << "model max" << getDistanceModel().getMax() << mout.endl;
@@ -207,7 +207,7 @@ template <class T>
 void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst) const
 {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	const DistanceModel & distanceModel = getDistanceModel();
@@ -358,7 +358,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 template <class T>
 void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	const DistanceModel & distanceModel = getDistanceModel();

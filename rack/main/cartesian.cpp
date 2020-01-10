@@ -190,7 +190,7 @@ class CompositeTimeDecay : public BasicCommand {
 
 void CompositeInit::exec() const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	RackResources & resources = getResources();
 

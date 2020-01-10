@@ -185,7 +185,7 @@ herr_t Reader::iterate(hid_t group_id, const char * member_name, void *operator_
 // It would be more elegant to hide this behind H5 class. Arrays not yet supported.const H5A_info_t *ainfo,
 herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_info_t *ainfo, void *operator_data){
 
-	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, attr_name);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL hi5::hi5monitor, __FUNCTION__, attr_name);
 
 	hi5::NodeHi5 &node = *(hi5::NodeHi5 *)operator_data;
 	drain::Variable & attribute = node.attributes[attr_name];
@@ -319,7 +319,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 // h5DatasetToImage(hid_t id, const std::string &path, drain::image::Image &image){
 void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::image::Image &image){
 
-	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
 
 	mout.debug() << "opening " << path << mout.endl;
 

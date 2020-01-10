@@ -58,7 +58,7 @@ namespace rack {
 
 void CmdInputFile::exec() const {
 
-	drain::Logger mout(name, ""); // __FUNCTION__
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
 
 	//std::cerr << name << ':' << __FUNCTION__ << '\t' << fullFilename << std::endl;
 
@@ -132,7 +132,7 @@ void CmdInputFile::exec() const {
 /// Reads hdf5 file and appends it to H5 structure. Works only with sweeps (SCAN), volume (PVOL) or Cartesian data (COMP) (having elevations).
 void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
-	drain::Logger mout(name, ""); // __FUNCTION__
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
 	mout.debug() << "start" << mout.endl;
 
 	RackResources & resources = getResources();
@@ -283,7 +283,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
 		attachCartesianH5(srcRoot, dstRoot);
@@ -329,7 +329,7 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//ODIMPathElem p(g);
 	//DataSelector::getLastChild(dst, p);
@@ -361,7 +361,7 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const QualityDataSupport<PolarSrc> srcQ(src);
 	const PlainData<PolarSrc> & srcQind  = srcQ.getQualityData("QIND");  // ie.
@@ -454,7 +454,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	RackResources & resources = getResources();
@@ -557,7 +557,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
-	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout( ;
 
 	std::ifstream ifstr;
 	ifstr.open(fullFilename.c_str());
@@ -578,7 +578,7 @@ void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
 void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
-	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 

@@ -140,7 +140,7 @@ public:
 
 	drain::image::Image & getModifiableImage(const DataSelector & selector) const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -177,7 +177,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -260,7 +260,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -333,7 +333,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -396,7 +396,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -474,7 +474,7 @@ public:
 
 	void apply() const{
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -593,7 +593,7 @@ public: //re
 	};
 
 	void exec() const {
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 		resources.palette.refine(value);
@@ -624,7 +624,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 		ODIMPathList paths;

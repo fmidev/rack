@@ -56,7 +56,7 @@ namespace rack {
 
 void CompositeAdd::exec() const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.timestamp("BEGIN_CART_EXEC");
 
@@ -138,7 +138,7 @@ void CompositeAdd::exec() const {
 // Originally crom create
 void CompositeAdd::addPolar() const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.timestamp("BEGIN_CART_CREATE");
 
@@ -283,7 +283,7 @@ void CompositeAdd::addPolar() const {
 // Originally crom create
 void CompositeAdd::addCartesian() const {
 
-	drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 
 	RackResources & resources = getResources();
 

@@ -63,7 +63,7 @@ namespace rack {
 void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<PolarDst> & dstProduct) const {
 
 	/// For monitoring cmd execution as text dump. Use --debug (or \c --verbose \c \<level\> to define verbosity.
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.info() << "start" <<  mout.endl;
 
 	// IDEA: FUZZY => PROB quality2/... so that finally class could be extracted?

@@ -71,7 +71,7 @@ namespace rack {
 void LineOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst> &dstData) const {
 
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	//const Image & src = srcData.data;

@@ -44,7 +44,7 @@ void QuadTreeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 void QuadTreeOp::process(const ImageFrame & src, ImageFrame & dst) const {
 
-	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	const size_t widthSrc  = src.getWidth();
 	const size_t heightSrc = src.getHeight();

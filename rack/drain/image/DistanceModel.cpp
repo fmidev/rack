@@ -40,7 +40,7 @@ void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, b
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << std::endl;
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
 
@@ -77,7 +77,7 @@ void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, b
 
 void DistanceModelLinear::setDecrement(dist_t horz, dist_t vert){
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (horz < 0.0) // ? when would this occur?
 		horzDecrement = 1.0;
@@ -111,7 +111,7 @@ void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool di
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 1" << std::endl;
 
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
 
@@ -149,7 +149,7 @@ void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool di
 
 void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 
-	drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (horz < 0.0){
 		mout.error() << "'horz' less than zero." << mout.endl;

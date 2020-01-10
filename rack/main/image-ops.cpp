@@ -65,7 +65,7 @@ void ImageOpRacklet::exec() const {
 
 	typedef DstType<ODIM> dst_t;
 
-	drain::Logger mout(this->getName()+"[ImageOpRacklet]", __FUNCTION__); // = resources.mout;
+	drain::Logger mout( __FUNCTION__, this->getName()+"[ImageOpRacklet]"); // = resources.mout;
 
 	RackResources & resources = getResources();
 
@@ -351,7 +351,7 @@ public:
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-		drain::Logger mout(this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
 		//traverseChannelsEqually(src, dst);
 		// traverseChannelsRepeated(src, dst);
@@ -365,7 +365,7 @@ public:
     virtual inline
     void traverseChannel(const Channel & src, Channel &dst) const {
 
-    	drain::Logger mout(this->getName(), __FUNCTION__);
+    	drain::Logger mout(__FUNCTION__, __FILE__);
 
     	const drain::image::ImageScaling & srcScale = src.getScaling();
     	const drain::image::ImageScaling & dstScale = dst.getScaling();

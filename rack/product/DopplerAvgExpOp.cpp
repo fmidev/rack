@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 void DopplerAvg::init(const Channel & src, bool horizontal){
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	const size_t n = horizontal ? src.getWidth() : src.getHeight();
 	data.resize(n);
 	odim.updateFromMap(src.getProperties());
@@ -138,7 +138,7 @@ double DopplerAvg::get(int i){ // TODO const
 
 void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "Src: " << srcData << mout.endl;
 
@@ -226,7 +226,7 @@ struct unitSpeed {
 
 void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const double NI = srcData.odim.getNyquist();
 	if (NI == 0){
@@ -339,7 +339,7 @@ void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDs
 /*
 void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	dstData.initialize(typeid(unsigned char), srcData.data.getGeometry());
 	dstData.setPhysicalRange(-1, +1);

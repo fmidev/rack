@@ -44,7 +44,7 @@ namespace image
 
 
 void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	dst.initialize(src.getType(), src.getWidth(), src.getHeight(), channels, 0);
 	dst.setScaling(src.getScaling());
@@ -63,7 +63,7 @@ void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
 
 	if (src.empty()){
 		mout.error() << "src empty" << mout.endl;
@@ -91,7 +91,7 @@ void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 //void GradientOp::traverse(const Channel &src, Channel &dst, int diLow, int djLow, int diHigh, int djHigh) const {
 void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) const {
 
-	Logger mout(getImgLog(), name+"(GradientOp)", __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"(GradientOp)", __FUNCTION__);
 
 	/// Type for internal computation (~image intensity).
 	typedef double ftype;

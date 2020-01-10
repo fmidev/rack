@@ -133,7 +133,7 @@ void VolumeOp<M>::completeEncoding(const std::string & encoding, PlainData<DstTy
 template <class M>
 void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug(2) << *this << mout.endl;

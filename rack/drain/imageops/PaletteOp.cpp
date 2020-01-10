@@ -79,7 +79,7 @@ void PaletteOp::setPalette(const Palette & palette) {
 
 void PaletteOp::registerSpecialCode(const std::string & code, double f) {
 
-	Logger mout(getImgLog(), getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if ((this->palettePtr == NULL) || (this->palettePtr->empty()))
 		//throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
@@ -121,7 +121,7 @@ void PaletteOp::setPalette(const Image &palette) const {
 
 void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
 
-	Logger mout(getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, getName());
 
 	if (palettePtr->empty()){
 		mout.warn() << " no palette loaded " << mout.endl;
@@ -154,7 +154,7 @@ void PaletteOp::help(std::ostream & ostr) const {
 
 void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
 	// mout.debug() << "Starting" << mout.endl;
 
@@ -235,7 +235,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 /*
 void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	initialize();
 

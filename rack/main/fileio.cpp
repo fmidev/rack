@@ -132,7 +132,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // getResources().mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // getResources().mout;
 
 		RackResources & resources = getResources();
 
@@ -197,7 +197,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -518,7 +518,7 @@ protected:
 	template <class P>
 	void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ofstream &ofstr) const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		//mout.warn() << dataset.getFirstData() << mout.endl;
 
@@ -566,7 +566,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = getResources().mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 		mout.note() << "Writing multiple image files" << mout.endl;
 
 		RackResources & resources = getResources();

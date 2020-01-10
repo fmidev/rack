@@ -108,7 +108,7 @@ public:
 	inline  // cf. CmdCompleteODIM
 	void exec() const {  // Suits to general base class?
 
-		Logger mout(getName(), __FUNCTION__);
+		Logger mout(__FUNCTION__, getName());
 
 		RackResources & resources = getResources();
 		Hi5Tree *h5 = resources.currentHi5;

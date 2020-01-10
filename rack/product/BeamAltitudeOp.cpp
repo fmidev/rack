@@ -46,7 +46,8 @@ using namespace drain::image;
 
 void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	drain::Logger mout(getName(), __FUNCTION__);
+	//drain::Logger mout(__FUNCTION__, getName());
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//mout.error() << "Start"  << mout.endl;
 

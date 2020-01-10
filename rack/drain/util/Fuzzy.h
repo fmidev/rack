@@ -159,7 +159,7 @@ public:
 	inline
 	void update() const {
 
-		drain::Logger mout(this->getName(), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		this->INVERSE = (range.min > range.max);
 

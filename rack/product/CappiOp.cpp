@@ -46,7 +46,7 @@ using namespace drain::image;
 
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug(2) << "start" << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 

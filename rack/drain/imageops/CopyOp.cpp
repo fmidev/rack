@@ -38,7 +38,7 @@ namespace image {
 // Consider Image::swap() ?
 void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (!dst.typeIsSet())
 		dst.setType(src.getType());

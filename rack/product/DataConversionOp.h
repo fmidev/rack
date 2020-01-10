@@ -187,7 +187,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 template <class M> //// copied from VolumeOp::processVolume
 void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(this->getName(), __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug(2) << *this << mout.endl;
@@ -235,7 +235,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 template <class M>
 void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSet<dst_t> & dstProduct) const {
 
-	drain::Logger mout(this->name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	std::set<std::string> convertedQuantities;
 
@@ -328,7 +328,7 @@ template <class M>
 void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage, const ODIM & dstOdim, drain::image::Image & dstImage) const {
 
 
-	drain::Logger mout(this->name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug(1) << "start, type=" << this->odim.type << ", geom=" << srcImage.getGeometry() << mout.endl;
 
 	// const drain::Type t(this->odim.type);
@@ -377,7 +377,7 @@ template <class M>
 void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage,
 		const ODIM & dstOdim, drain::image::ImageFrame & dstImage) const {
 
-	drain::Logger mout(this->name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug(1) << "dst:" << dstImage << mout.endl;
 

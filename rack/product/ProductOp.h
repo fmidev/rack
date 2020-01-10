@@ -138,14 +138,14 @@ public:
 	inline
 	void setEncodingRequest(const std::string &p) {
 
-		drain::Logger mout(name+"(ProductOp)", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(ProductOp)", __FUNCTION__);
 
 		try {
 			mout.debug(1) << "Checking if these are allowed" << mout.endl;
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {
-			drain::Logger mout(name, __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, __FILE__);
 			mout.warn() << " unsupported parameters in: '" << p << "', use: " << allowedEncoding.getKeys() << mout.endl;
 			return;
 		}
@@ -289,7 +289,7 @@ public:
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(this->name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "not implemented" << mout.endl;
 	};
 
@@ -317,7 +317,7 @@ protected:
 	virtual inline
 	void initDst(const MS & srcODIM, PlainData<dst_t > & dstData) const {
 
-		drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 
 		setEncoding(srcODIM, dstData);
 		setGeometry(srcODIM, dstData);
@@ -375,7 +375,8 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & d
 template <class MS, class MD>  // copied from VolumeOp::processVolume
 void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+	//drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug(2) << *this << mout.endl;
@@ -460,7 +461,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 template <class MS, class MD>
 void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
 
-	drain::Logger mout(this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 	mout.debug(2) << "start" << mout.endl;
 
 	if (src.size() == 0)
@@ -486,7 +487,8 @@ void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<D
 template <class MS, class MD>
 void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<DstType<MD> > & dstProduct) const {
 
-	drain::Logger mout(this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
+	//drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
 

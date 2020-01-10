@@ -124,6 +124,7 @@ public:
 		resetTime();
 	};
 
+
 	bool VT100;
 
 	//
@@ -220,13 +221,17 @@ class Logger { //: public LogBase {
 
 public:
 
-	Logger(const std::string & className = "", const std::string & funcName = "") :
-		monitor(getLog()), prefix(className + (funcName.empty()?"":":")+funcName), errorType(LOG_NOTICE) {
-	};
+	//Logger(const std::string & className = "", const std::string & funcName = "");
+	//Logger(const char *funcName, const char *className = NULL);
+	Logger(const char *funcName, const std::string & name = "");
 
-	Logger(Log &log, const std::string & className = "", const std::string & funcName = "") :
-		monitor(log), prefix(className + (funcName.empty()?"":":")+funcName), errorType(LOG_NOTICE) {};
+	Logger(Log &log, const char *funcName, const std::string & name = ""); //const char *className = NULL);
 
+	~Logger(){
+		// Change absolute start time to elapsed time.
+		time = monitor.getMilliseconds() - time;
+		timestamp();
+	}
 
 
 
@@ -291,6 +296,7 @@ public:
 	}
 
 
+
 	typedef void * oper;
 	static oper endl;
 
@@ -308,6 +314,12 @@ public:
 
 protected:
 
+	/**
+	 *  \param name - explicitly given classname like "Composite" or __FILE__
+	 *  \param name - __FILE__
+	 */
+	void setPrefix(const char *functionName, const char * name);
+
 	// consider className  and prefix => _memberName
 	void init(int errorType){
 		//cerr << "INIT:" << errorType << "/" << prefix << '\n';
@@ -316,19 +328,23 @@ protected:
 	};
 
 	Log & monitor;
-	mutable std::string prefix;
-	std::string className;
-	std::string functionName;
+	//mutable
+	std::string prefix;
+
+	//std::string className;
+	//std::string functionName;
 	//std::string _localName;
 	int errorType;
+	time_t time;
+
 };
 
 //std::ostream &operator<<(std::ostream &ostr, const Log &error);
 
 
-
-
 }
+
+//const std::string FEELU(__FILE__);
 
 #endif /* DEBUG_H_ */
 

@@ -79,7 +79,8 @@ protected:
 	inline
 	const UnaryFunctor & getFunctor(double scale = 0.0) const {
 
-		drain::Logger mout(getImgLog(), getName(), __FUNCTION__);
+		//drain::Logger mout(getImgLog(), __FUNCTION__, getName());
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		if (functorStr.empty()){
 			return this->functor;

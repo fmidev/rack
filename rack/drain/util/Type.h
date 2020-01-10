@@ -161,7 +161,8 @@ public:
 		case '*':
 			return typeid(void);
 		default:
-			Logger mout("Type", std::string(__FUNCTION__)+"(char c)");
+			//Logger mout("Type", std::string(__FUNCTION__)+"(char c)");
+			Logger mout(__FUNCTION__, __FILE__);
 			mout.error() << " undefined type: '" << t << "'=" << (int)t << mout.endl;
 			return typeid(void);
 		}

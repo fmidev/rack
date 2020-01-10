@@ -41,7 +41,7 @@ namespace image
 
 void QualityMixerOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.note() << "src: " << src.getGeometry() << ", dst: "  << dst.getGeometry() << mout.endl;
 
@@ -90,7 +90,7 @@ void QualityMixerOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 /*
 void QualityMixerOp::process(const ImageFrame &src, const ImageFrame &srcWeight, const ImageFrame &src2, const ImageFrame &src2Weight, Image &dst, Image &dstWeight) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	makeCompatible(src,dst);
 	makeCompatible(srcWeight,dstWeight);

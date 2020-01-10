@@ -101,7 +101,7 @@ void OpticalFlowCore2::setSrcFrames(const ImageTray<const Channel> & srcTray){
 
 void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & srcWeight, Image & dstImage, Image & dstWeight) const {
 
-	Logger mout(getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, getName());
 
 	drain::image::ImageFrame const *srcImagePtr  = &srcImage;
 	drain::image::ImageFrame const *srcWeightPtr = &srcWeight;
@@ -195,7 +195,7 @@ void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & sr
 /// Computes a differential image with channels dx, dy, dt and w (quality of gradients).
 void FastOpticalFlowOp2::computeDifferentials(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), name, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	// Source images (intensity)
 	if (src.size() < 2) {

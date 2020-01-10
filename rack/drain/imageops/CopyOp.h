@@ -118,7 +118,7 @@ public:
 
 	inline
 	void process(const ImageFrame & srcFrame, Image & dstImage) const {
-		drain::Logger mout(getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
 		mout.debug(1) << "calling makeCompatible()" << mout.endl;
 		makeCompatible(srcFrame, dstImage);
 		ImageView dst2; //(dstImage, functor.dstView);
@@ -143,7 +143,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(const Channel &src, Channel &dst) const {
-		Logger mout(getImgLog(), name, __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.debug() << "start" << mout.endl;
 		UnaryFunctorOp<CopyFunctor>::traverseChannel(src, dst);
 	}
@@ -151,7 +151,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-		Logger mout(getImgLog(), name, __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		/*
 		mout.warn() << "src     " << src << mout.endl;
 		mout.warn() << "srcAlpha" << srcAlpha << mout.endl;

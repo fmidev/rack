@@ -59,7 +59,7 @@ FreezingLevel RainRateOp::freezingLevel;
 
 void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug(1) << "Start." << mout.endl;
 

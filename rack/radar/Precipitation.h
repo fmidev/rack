@@ -56,7 +56,7 @@ public:
 	inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		static const drain::RegExp presetKey("^[a-zA-Z]+");
 

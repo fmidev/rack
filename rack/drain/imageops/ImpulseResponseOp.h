@@ -209,7 +209,7 @@ protected:
 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
-	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "delegating to traverseChannel(src, empty, dst, empty)" << mout.endl;
 	//dst.properties.updateFromMap(src.getProperties());
 	drain::image::Image empty;
@@ -222,7 +222,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) c
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	//dst.properties.updateFromMap(src.getProperties());
 	//mout.note() << dst.getProperties() << mout.endl;
@@ -236,7 +236,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
 
@@ -328,7 +328,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 template <class T>
 void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), this->getName(), __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
 

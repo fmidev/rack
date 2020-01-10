@@ -544,7 +544,8 @@ public:
 
 	const data_t & get(const std::string & quantity) const {
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //
+		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
 		//mout.warn() << "const " << mout.endl;
 
 		typename datagroup_t::const_iterator it = this->find(quantity);
@@ -562,7 +563,7 @@ public:
 
 	data_t & get(const std::string & quantity) {
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 
 		typename datagroup_t::iterator it = this->find(quantity);
 
@@ -587,7 +588,8 @@ public:
 
 	const data_t& get(const drain::RegExp & regExp) const {
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
+		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, "DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}");
 
 		//mout.warn() << "const " << mout.endl;
 
@@ -623,7 +625,9 @@ public:
 		const typename datagroup_t::iterator it = this->begin();
 
 		if (it == this->end()){
-			drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+			//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, __FILE__);
+
 			mout.error() << "no data" << mout.endl;
 			return this->get("");
 		}
@@ -634,7 +638,8 @@ public:
 
 	const data_t & getFirstData() const {
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		//mout.warn() << "const" << mout.endl;
 
@@ -671,7 +676,7 @@ public:
 	// experimental
 	const data_t & getLastData() const {
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, "DataGroup." + ODIMPathElem::getKey(G) + " {const}");
 
 		//mout.warn() << "const" << mout.endl;
 
@@ -727,7 +732,8 @@ protected:
 
 		// if (t.empty()) return; // no use, /data and /what groups still there, typically.
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		const bool USE_REGEXP = !quantityRegExp.toStr().empty();
 
@@ -798,7 +804,8 @@ protected:
 	//typename D::tree_t & adapt(typename D::tree_t & t, datagroup_t & dst, const datagroup_t & src){
 	typename DT::tree_t & adapt(const datagroup_t & src, datagroup_t & dst){
 
-		drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		if (src.empty()){
 			mout.debug(3) << "src empty" << mout.endl;
@@ -908,7 +915,7 @@ public:
 
 	// Experimental
 	void swap(Data<DT> &d){ // TODO: also for plaindata?
-		drain::Logger mout("Data<>", __FUNCTION__);
+		drain::Logger mout( __FUNCTION__, "Data<>");
 		mout.warn() << "Swap" << mout.endl;
 		this->tree.swap(d.tree);
 
@@ -976,7 +983,7 @@ public:
 
 	~DataSet(){
 
-		drain::Logger mout("DataSet", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, "DataSet");
 		switch (this->size()) {
 		case 0:
 			mout.debug(4) << "no data<n> groups" << mout.endl;

@@ -49,7 +49,7 @@ using namespace drain::image;
 
 void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(name+"(CumulativeProductOp::)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp::)", __FUNCTION__);
 	//mout.debug(2) << "starting (" << name << ") " << mout.endl;
 
 	if (srcSweeps.empty()){

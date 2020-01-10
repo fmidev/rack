@@ -59,7 +59,7 @@ namespace rack {
 void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 //void JammingOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug() << *this << mout.endl;
 
 	mout.debug() << *this << mout.endl;
@@ -304,7 +304,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 		// Dump all the features on a given beam. Store them as text file *.dat.  FIXME!
 		if (false) // TODO
 		if (j == debugRow){
-			//_mout.task = "dump";
+			//_mout( .task = "dump";
 			std::ofstream ofstr((name+".dat").c_str(), std::ios::out);
 			ofstr << "# r dBZ dBZ_smooth dBZ_modelled smoothness fit derivMod deriv\n";
 			for (size_t i = 1; i < width; ++i) {

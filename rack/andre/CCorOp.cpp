@@ -51,7 +51,7 @@ namespace rack {
 //void CCorOp::processDataSet(const DataSetSrc & src, DataSetDst & dst) const {
 void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug() << parameters << mout.endl;
 
 	const Data<PolarSrc> & srcTH   = src.getData("TH");

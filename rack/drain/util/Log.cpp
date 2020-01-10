@@ -35,6 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
+#include <string.h>
+
 #include "Log.h"
 
 namespace drain {
@@ -183,15 +185,57 @@ void Log::flush(){
 
 Logger::oper Logger::endl;
 
+// Logger(const std::string & funcName, const std::string & className) :
+Logger::Logger(const char *funcName, const std::string & className): //const char *className):
+	monitor(getLog()), errorType(LOG_NOTICE), time(getLog().getMilliseconds()){
+	// prefix(className + (funcName.empty()?"":":")+funcName),
+	setPrefix(funcName, className.c_str());
+}
+
+
+	// Logger(Log &log, const std::string & funcName, const std::string & className) :
+Logger::Logger(Log &log, const char *funcName, const std::string & className): // char *className):
+	monitor(log), errorType(LOG_NOTICE), time(log.getMilliseconds()){
+	// prefix(className + (funcName.empty()?"":":")+funcName),
+	setPrefix(funcName, className.c_str());
+}
+
+void Logger::setPrefix(const char *functionName, const char *name){
+
+	//std::stringstream sstr;
+
+	if (name){
+		const char * s2 = strrchr(name, '/');
+		if (s2 == NULL)
+			s2 = name;
+		else
+			++s2;
+
+		/// Start from s2, because dir may contain '.'
+		const char * s3 = strrchr(s2, '.');
+		if (s3 == NULL)
+			//sstr << s2;
+			prefix.assign(s2);
+		else
+			prefix.assign(s2, s3-s2);
+			//sstr.put("s2", size_t(s3-s2));
+
+		prefix.append(":");
+		//sstr << ':';
+	}
+	//sstr << ;
+	prefix.append(functionName);
+}
+
 Logger & Logger::timestamp(const std::string & label){
-	init(LOG_INFO);
+	init(LOG_DEBUG);
 	*(this) << "TIME#" << label << Logger::endl;
 	return *this;
 }
 
 Logger & Logger::timestamp(){
-	init(LOG_INFO);
-	*(this) << "TIME#";
+	init(LOG_DEBUG);
+	*(this) << "TIME# " << time;
 	return *this;
 }
 

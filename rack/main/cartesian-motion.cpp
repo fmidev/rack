@@ -48,7 +48,7 @@ namespace rack {
 
 void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const {
 
-	Logger mout(getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, getName());
 
 	RackResources & resources = getResources();
 	//Hi5Tree & srcH5 = resources.cartesianHi5; //*resources.currentHi5;
@@ -249,7 +249,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 /// The result is stored in this channel pack.
 void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, ImageTray<Channel> & channels) const {
 
-	Logger mout(getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, getName());
 
 	//mout.info() << "start" << mout.endl;
 
@@ -298,7 +298,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Channel> & channels) const {
 
-	Logger mout(getName(), __FUNCTION__);
+	Logger mout(__FUNCTION__, getName());
 
 	RackResources & resources = getResources();
 

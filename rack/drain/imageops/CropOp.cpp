@@ -38,7 +38,7 @@ namespace image {
 
 void CropOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
-	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (!dst.typeIsSet())
 		dst.setType(src.getType());
@@ -54,7 +54,7 @@ void CropOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	//Image srcView;
 
-	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.debug() << parameters << mout.endl;
 

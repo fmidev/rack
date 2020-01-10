@@ -59,7 +59,7 @@ public:
 
 	virtual inline
 	void update() const {
-		drain::Logger mout(this->name+"(Functor)", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(Functor)", __FUNCTION__);
 
 		updateScale();
 

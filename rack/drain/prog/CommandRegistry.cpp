@@ -360,7 +360,7 @@ void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
 void CommandRegistry::run(const std::string & name, const std::string & params) const {
 
-	Logger mout("CommandRegistry",  __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL "CommandRegistry",  __FUNCTION__);
 
 	const map_t::const_iterator it = find(name);
 	if (it != entryMap.end()){
@@ -408,7 +408,8 @@ void CommandRegistry::run(Script & script) const {
 void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
 		//Script & script = *this;
 
-	Logger mout(std::string(__FUNCTION__) + "(argc,argv)");
+	//Logger mout(std::string(__FUNCTION__) + "(argc,argv)");
+	Logger mout(__FUNCTION__, __FILE__);
 	mout.info() << mout.endl;
 
 	for (int i = 1; i < argc; ++i) {
@@ -424,7 +425,8 @@ void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
 
 void CommandRegistry::scriptify(const std::string & arg, Script & script) {
 
-	Logger mout(std::string(__FUNCTION__) + "(std::string)");
+	Logger mout(__FUNCTION__, __FILE__);
+	//Logger mout(std::string(__FUNCTION__) + "(std::string)");
 	//std::cerr << "ARGS: " << arg.substr(0, arg.find_last_not_of(" \t\n\r")+1) << std::endl;
 
 	const size_t n = arg.find_last_not_of(" \t\n\r");

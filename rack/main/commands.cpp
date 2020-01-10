@@ -110,7 +110,7 @@ public:
 
 	virtual
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		drain::Logger mout(getName(), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, getName());
 		getResources().select = params;
 		//BasicCommand::setParameters(params, assignmentSymbol);
 		test.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
@@ -140,7 +140,7 @@ public:
 	inline
 	void exec() const {
 
-		drain::Logger mout(getName(), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, getName());
 
 		const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
 		mout.debug() << v << mout.endl;
@@ -167,7 +167,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout; = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 		RackResources & resources = getResources();
 		if (resources.currentHi5 == &resources.cartesianHi5){
@@ -220,7 +220,7 @@ public:
 	template <class OD>
 	void processStructure(Hi5Tree & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
 
-		drain::Logger mout(getName(), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, getName());
 
 		typedef DstType<OD> DT; // ~ PolarDst, CartesianDst
 
@@ -262,7 +262,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -285,7 +285,7 @@ public:
 			processStructure<CartesianODIM>(*resources.currentHi5, paths, quantityRegExp);
 		}
 		else {
-			drain::Logger mout(getName(), __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, getName());
 			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
 		}
 
@@ -317,7 +317,7 @@ public:
 	virtual
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
 
-		// drain::Logger mout(getName(), __FUNCTION__);
+		// drain::Logger mout(__FUNCTION__, getName());
 		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
 
 		selector.convertRegExpToRanges(); // transitional op for deprecated \c path
@@ -326,7 +326,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
@@ -376,7 +376,7 @@ public:
 
 	virtual
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		//drain::Logger mout(getName(), __FUNCTION__);
+		//drain::Logger mout(__FUNCTION__, getName());
 		//selector.groups = ODIMPathElem::ALL_GROUPS; //DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY;
 		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
 		selector.convertRegExpToRanges(); // transition support...
@@ -384,7 +384,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		//RackResources & resources = getResources();
 		Hi5Tree & dst = *getResources().currentHi5;
@@ -488,7 +488,7 @@ public:
 	// TODO: recognize attr,attr vs path,path
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 		if (resources.currentHi5 == NULL){
@@ -608,7 +608,7 @@ public:
 	//CmdRename() : BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){};
 
 	void exec() const {
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "deprecated command, use '--move' instead" << mout.endl;
 		CmdMove::exec();
 	};
@@ -627,7 +627,7 @@ public:
 	template <class OD>  // const drain::VariableMap & rootProperties,
 	void complete(Hi5Tree & dstH5, OD & od) const {
 
-		drain::Logger mout(getName(), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, getName());
 
 		typedef DstType<OD> DT;
 
@@ -701,7 +701,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -747,7 +747,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -902,7 +902,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		std::ostream & ostr = std::cout;
 
@@ -968,7 +968,7 @@ public:
 	virtual
 	void run(const std::string & params = "") {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		CommandRegistry & reg = getRegistry();
 
@@ -1036,7 +1036,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 
@@ -1141,7 +1141,7 @@ public:
 	inline
 	void run(const std::string & params){
 
-		Logger mout(getName(), __FUNCTION__);
+		Logger mout(__FUNCTION__, getName());
 
 		try {
 
@@ -1237,7 +1237,7 @@ public:
 	inline
 	void run(const std::string & params){
 
-		Logger mout(getName());
+		Logger mout(__FUNCTION__, getName());
 
 		mout.debug(1) << "params: " << params << mout.endl;
 
@@ -1327,7 +1327,7 @@ public:
 	};
 
 	void exec() const {
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.warn() << "deprecating option, use '--store 2' instead" << mout.endl;
 	};
 
@@ -1347,7 +1347,7 @@ public:
 	virtual
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		if (value.empty()){
 			ProductBase::appendResults.set(ODIMPathElem::ROOT); //?
@@ -1390,7 +1390,7 @@ public:
 
 	virtual
 	void exec() const {
-		drain::Logger mout(name, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
 		if (!append.empty()){
 			ProductBase::appendResults.set(append);
@@ -1420,7 +1420,7 @@ public:
 	inline
 	void run(const std::string & params = ""){
 
-		Logger mout(getName(), __FUNCTION__);
+		Logger mout(__FUNCTION__, getName());
 
 		setParameters(params);
 		const size_t i = quantityType.find(':');
@@ -1476,7 +1476,7 @@ protected:
 
 	void editQuantityConf(const std::string & quantity, const std::string & type, const std::string & args){
 
-		Logger mout(getName(), __FUNCTION__);
+		Logger mout(__FUNCTION__, getName());
 
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];

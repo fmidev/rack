@@ -146,7 +146,7 @@ void JSON::readINI(tree_t & t, std::istream & istr){
 
 void JSON::write(const tree_t & json, const std::string & filename){
 
-	drain::Logger mout("JSON", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL "JSON", __FUNCTION__);
 
 	const FilePath path(filename);
 	//mout.error() << "failed in extracting file type of filename: " <<  filename << mout.endl;

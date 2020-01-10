@@ -53,7 +53,7 @@ namespace rack {
 
 void ClutterOp::setClutterMap(const std::string & filename) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	if (!clutterMap.getChildren().empty()){
 		if (clutterMap.data.attributes["filename"].toStr() == filename){
@@ -76,7 +76,7 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 
 const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const SourceODIM srcODIM(odim.source);
 
@@ -119,7 +119,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const Data<PolarSrc> & srcData = src.getFirstData();
 	const size_t cols = srcData.data.getWidth();

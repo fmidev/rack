@@ -330,7 +330,7 @@ void WeightedAverageMethod::updateInternalParameters(){ //const std::string & pa
 
 	/// AccumulationMethod::setParameters(params);
 
-	Logger mout(name, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	if (p<0.0){
 		mout.error() << "p negative" << mout.endl;
@@ -410,7 +410,7 @@ void WeightedAverageMethod::add(const size_t i, double value, double weight, uns
 
 void WeightedAverageMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
 
-	Logger mout(name, __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 	// mout.warn() << " start..." << mout.endl;
 
 	initDst(coder, dst);

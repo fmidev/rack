@@ -576,7 +576,7 @@ public:
 
 	virtual inline
 	void traverseChannel(const Channel & src, Channel & dst) const {
-		Logger mout(getImgLog(), name, __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.error() << "Not implemented (1/1)" << mout.endl;
 	}
 

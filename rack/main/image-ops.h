@@ -100,7 +100,7 @@ protected:
 	template <class OD>
 	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
-		drain::Logger mout(this->getName(), __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		// OD odim;
 		typedef DstType<OD> dst_t;
@@ -161,7 +161,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(name, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 		RackResources & resources = getResources();
 		resources.palette.write(resources.outputPrefix + value);

@@ -43,7 +43,7 @@ void ResizeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), name, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	const int widthSrc  = src.getWidth();
 	const int heightSrc = src.getHeight();

@@ -55,7 +55,7 @@ namespace rack {
 
 void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::Logger mout(name, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug(2) << "start" <<  mout.endl; //
 
 	//const double MAX = dstData.odim.scaleInverse(1.0); // dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
