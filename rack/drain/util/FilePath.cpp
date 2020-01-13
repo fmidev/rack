@@ -69,7 +69,7 @@ FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), exten
 
 void FilePath::set(const std::string & s){
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	if (s.empty()){
 		this->dir.clear();

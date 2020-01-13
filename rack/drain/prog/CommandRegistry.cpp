@@ -45,7 +45,7 @@ namespace drain {
 
 std::string CommandRegistry::resolveKey(const std::string & key) const {
 
-	Logger mout("Registry", __FUNCTION__);
+	Logger mout( __FUNCTION__, __FILE__);
 
 	const size_t l = key.length();
 
@@ -247,7 +247,7 @@ void CommandRegistry::helpSections(std::ostream & ostr) const {
 //template <class T>
 void CommandRegistry::helpSections(std::ostream & ostr, const std::string & section) const {
 
-	Logger mout("CommandRegistry", __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	SectionMap::const_iterator it = sections.find(section);
 	if (it == sections.end()){
@@ -327,7 +327,7 @@ void CommandRegistry::toJSON(std::ostream & ostr) const {
 
 void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
-	Logger mout("CommandRegistry",  __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	try {
 
@@ -360,7 +360,7 @@ void CommandRegistry::run(Command & cmd, const std::string & params) const {
 
 void CommandRegistry::run(const std::string & name, const std::string & params) const {
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL "CommandRegistry",  __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);  //REPL "CommandRegistry",  __FUNCTION__);
 
 	const map_t::const_iterator it = find(name);
 	if (it != entryMap.end()){
@@ -386,7 +386,7 @@ void CommandRegistry::run(const std::string & name, const std::string & params) 
 
 void CommandRegistry::run(Script & script) const {
 
-	Logger mout("CommandRegistry",  __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	/// Applied, if (expandVariables == true)
 	//  drain::StringMapper strmap("[a-zA-Z0-9_:]+");
@@ -476,7 +476,7 @@ void CommandRegistry::scriptify(const std::string & arg, Script & script) {
 
 bool CommandRegistry::appendCommand(const std::string & command, const std::string & arguments, Script & script) {
 
-	Logger mout("CommandRegistry", __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	std::string key = resolveKey(command);
 	map_t::iterator dit = find(key);

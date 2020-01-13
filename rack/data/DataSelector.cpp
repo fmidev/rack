@@ -220,7 +220,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (!ODIMPathElem::isIndexed(child.getType())){
 		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
@@ -243,7 +243,7 @@ bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //,
 
 bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (!child.isIndexed()){ // ODIMPathElem::isIndexed(child.getType())){
 		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
@@ -267,7 +267,7 @@ bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMP
 
 bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (getLastChild(tree, child)){
 		++child.index;

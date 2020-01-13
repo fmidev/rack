@@ -111,7 +111,7 @@ void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Lo
 hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	typedef drain::Dictionary2Ptr<hid_t, const std::type_info> dict_t;
 

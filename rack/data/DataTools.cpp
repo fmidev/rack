@@ -41,7 +41,7 @@ using namespace hi5;
 
 void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	/// Write to "hidden" variables of this node (src).
 	drain::FlexVariableMap & a = src.data.dataSet.properties;
@@ -119,7 +119,7 @@ bool DataTools::removeIfNoSave(Hi5Tree & dst){
 
 void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	drain::image::Image & data = src.data.dataSet;
 	if (!data.isEmpty()){

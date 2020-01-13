@@ -465,7 +465,7 @@ protected:
 	void assignEntries(const std::string & entries, bool updateOnly = false, char assignmentSymbol='=', char separatorSymbol=0){
 		// void setValues(const std::string & entries, char assignmentSymbol, bool updateOnly = false){
 
-		Logger mout(__FILE__, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__);
 		//mout.debug(10) << entries << mout.endl;
 
 		if (entries.empty()){
@@ -484,7 +484,7 @@ protected:
 
 	void assignEntries(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
 
-		Logger mout(__FILE__, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__);
 
 		const std::list<std::string> & keys = getKeyList();
 		std::list<std::string>::const_iterator kit = keys.begin();
@@ -532,7 +532,7 @@ template <class T>
 template <class C>
 void SmartMap<T>::setValues(const C & container){
 
-	Logger log(__FILE__, __FUNCTION__);
+	Logger log(__FUNCTION__, __FILE__);
 
 	const std::list<std::string> & keys = getKeyList();
 	std::list<std::string>::const_iterator kit = keys.begin();

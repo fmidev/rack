@@ -251,7 +251,7 @@ protected:
 	// deprec
 	virtual inline
 	void initFromImage(const drain::image::Image & img, const std::string & quantity){  // =""
-		drain::Logger mout(__FILE__,__FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		init(ODIMPathElem::ALL_LEVELS);
 		this->quantity = quantity;
 		copyFrom(img);

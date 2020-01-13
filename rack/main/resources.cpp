@@ -207,7 +207,7 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 bool RackResources::guessDatasetGroup(ODIMPathElem & pathElem) const {
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	pathElem.set(ODIMPathElem::DATASET, 1);
 	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);

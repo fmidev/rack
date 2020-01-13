@@ -151,21 +151,23 @@ public:
 		unitMap.clear();
 	}
 
+	/// Import map, adopting the element types.
 	template <class T>
 	inline
 	ReferenceMap & operator=(const SmartMap<T> & v){
 
-		//Logger log(__FILE__, __FUNCTION__);
+		//Logger log(__FUNCTION__, __FILE__);
 		//log.error() << "in:" << v << log.endl;
 
 		importMap(v);
 		return *this;
 	}
 
+	/// Return element associated with \c key.
 	virtual
 	mapped_type & operator[](const std::string &key){
 
-		Logger mout(__FILE__, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__);
 
 		iterator it = this->find(key);
 		if (it != this->end()) {
@@ -184,7 +186,7 @@ public:
 	virtual
 	const mapped_type & operator[](const std::string &key) const {
 
-		Logger mout(__FILE__, __FUNCTION__);
+		Logger mout(__FUNCTION__, __FILE__); //Logger mout(__FUNCTION__, __FILE__);
 
 		const_iterator it = this->find(key);
 		if (it != this->end()) {

@@ -238,7 +238,7 @@ classtree_t & getClassTree(){
 
 int getClassCode(const std::string & key){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	classtree_t &t = getClassTree()["entries"];
 
@@ -253,7 +253,7 @@ int getClassCode(const std::string & key){
 int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit){
 
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (it == eit){ // "empty path"
 		if (!tr.data.hasKey("value")){

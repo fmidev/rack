@@ -101,7 +101,7 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 
 bool ODIMPathElem::set(const std::string &s){
 
-	drain::Logger mout("ODIMPath", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	this->group = ROOT; // or none?
 	this->index = 0;

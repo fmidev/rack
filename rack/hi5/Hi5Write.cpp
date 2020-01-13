@@ -52,7 +52,7 @@ namespace hi5 {
 
 void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL hi5::hi5monitor, __FUNCTION__, __FILE__);
 
 	const hid_t fid = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 

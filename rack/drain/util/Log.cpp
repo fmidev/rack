@@ -81,6 +81,7 @@ void Log::start(int level, const std::string & msgSender){
 		sstr << getRelativeMilliseconds() << ':';
 		sstr.width(0);
 		sstr.fill(c);
+
 	}
 
 

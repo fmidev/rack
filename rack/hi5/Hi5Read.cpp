@@ -49,7 +49,7 @@ const int Reader::DATASETS(2);
 
 void Reader::readFile(const std::string & filename, Hi5Tree & tree, int mode) {
 
-	drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
+	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
 
 	// mout.warn() << "Mode: " << mode << mout.endl;
 
@@ -78,8 +78,8 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, int mode) {
 /// Recursive  , const std::string &path
 void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree & tree, int mode){
 
-	//drain::Logger mout(hi5::hi5monitor, __FILE__, __FUNCTION__);
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	//drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	// drain::Logger mout(hi5monitor, "Reader::readFile");
 
 	//static const std::string _func = "Reader::h5FileToTree";
