@@ -121,7 +121,7 @@ void PaletteOp::setPalette(const Image &palette) const {
 
 void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
 
-	Logger mout(__FUNCTION__, getName());
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (palettePtr->empty()){
 		mout.warn() << " no palette loaded " << mout.endl;
@@ -154,7 +154,7 @@ void PaletteOp::help(std::ostream & ostr) const {
 
 void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
 	// mout.debug() << "Starting" << mout.endl;
 

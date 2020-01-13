@@ -90,7 +90,7 @@ void QualityMixerOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 /*
 void QualityMixerOp::process(const ImageFrame &src, const ImageFrame &srcWeight, const ImageFrame &src2, const ImageFrame &src2Weight, Image &dst, Image &dstWeight) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	makeCompatible(src,dst);
 	makeCompatible(srcWeight,dstWeight);

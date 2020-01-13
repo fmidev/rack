@@ -70,7 +70,7 @@ public:
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		// drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
+		// drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		this->traverseChannelsSeparately(src, dst);
 	}
 
@@ -79,7 +79,7 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, Channel &dst) const {
 
-		//Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/2) (unweighted)", __FUNCTION__);
+		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/2) (unweighted)", __FUNCTION__);
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		mout.debug() << "unweighted version" << mout.endl;
@@ -101,7 +101,7 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, const Channel &srcWeight, Channel &dst, Channel &dstWeight) const {
 
-		//Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
+		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
 
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -124,7 +124,7 @@ public:
 
 	void traverseMultiChannel(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-		// Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
+		// Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		mout.debug() << "start" << mout.endl;

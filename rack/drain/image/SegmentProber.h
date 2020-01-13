@@ -124,7 +124,7 @@ public:
 	virtual
 	void init(){
 
-		drain::Logger mout("SegmentProber", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		src.adjustCoordinateHandler(handler);
 		mout.debug() << handler << mout.endl;
 		mout.debug(1) <<  src << mout.endl;
@@ -152,7 +152,7 @@ public:
 		if (handler.validate(i, j)){
 			/*
 			if (isValidPos(i,j)){
-				Logger mout("SegmentProber", __FUNCTION__);
+				Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
 				mout.warn() << "accept: " << i << ',' << j << "\t=" << src.get<double>(i,j) << '\t' << dst->get<double>(i,j) << mout.endl;
 			}
 			*/
@@ -210,7 +210,7 @@ protected:
 	virtual	inline
 	void update(int i, int j){
 		/*
-		Logger mout("SegmentProber", __FUNCTION__);
+		Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
 
 		//static size_t size = 0;
 		static size_t counter = 0;
@@ -376,9 +376,9 @@ class FillProber : public SegmentProber<int,int,SegmentProberConf<int, int> > {
 
 public:
 
-	FillProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d) {};
+	FillProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d), count(0) {};
 
-	FillProber(const Channel &s) : SegmentProber<int,int,SegmentProberConf<int, int> >(s) {};
+	FillProber(const Channel &s) : SegmentProber<int,int,SegmentProberConf<int, int> >(s), count(0) {};
 
 	virtual inline
 	void visit(int i, int j) {
@@ -409,7 +409,7 @@ class SizeProber : public SegmentProber<int,int,SegmentProberConf<int, int> > {
 
 public:
 
-	SizeProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d) {};
+	SizeProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d), size(0) {};
 
 	virtual inline
 	void clear(){

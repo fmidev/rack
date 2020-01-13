@@ -40,7 +40,7 @@ namespace image
 
 void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
 	mout.debug(2) << "src: " << src << mout.endl;
 

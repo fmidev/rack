@@ -85,7 +85,7 @@ protected:
 
 	void initialize(){
 
-		drain::Logger mout("FlowAverageWindow", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "FlowAverageWindow", __FUNCTION__);
 
 		mout.debug(1) << "srcTray:\n" << srcTray  << mout.endl;
 		mout.debug(1) << "dstTray:\n" << dstTray << mout.endl;
@@ -169,7 +169,7 @@ public:
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		// drain::Logger mout(__FUNCTION__,__FILE__);  //REP (this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
+		// drain::Logger mout(getImgLog(), __FUNCTION__,__FILE__);  //REP (this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		this->traverseMultiChannel(src, dst);
 	}
 

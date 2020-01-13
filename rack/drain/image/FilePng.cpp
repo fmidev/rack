@@ -49,7 +49,7 @@ const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXT
 */
 void FilePng::write(const ImageFrame & image, const std::string & path){
 
-	Logger mout(getImgLog(), "FilePng", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (image.isEmpty()){
 		mout.warn() << "empty image, skipping" << mout.endl;
@@ -208,7 +208,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	/// WARNING: for channels/views: getProperties instead?
 	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 		//mout.debug() << "properties:" << it->first << mout.endl;
-		mout.debug() << "properties:" << it->first << '=' << it->second << mout.endl;
+		mout.debug(2) << "properties:" << it->first << '=' << it->second << mout.endl;
 		std::stringstream sstr;
 		it->second.valueToJSON(sstr);
 		comments[it->first] = sstr.str(); //it->second.toStr();

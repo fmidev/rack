@@ -75,7 +75,7 @@ public:
 		else if (vertMultiple)
 			fill = & SlidingWindow<C,R>::fillHorz; // Vert;
 		else {
-			drain::Logger mout("SlidingWindow", __FUNCTION__);
+			drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
 			mout << "illegal sliding mode single-horz, single-vert" << mout.endl;
 			fill = & SlidingWindow<C,R>::fillBoth;
 		}
@@ -559,7 +559,7 @@ protected:
 	virtual
 	void setSize(size_t width, size_t height){
 
-		drain::Logger mout("SlidingStripe", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "SlidingStripe", __FUNCTION__);
 		//if (height > 1)
 		//	mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
 		//SlidingWindow<C,R>::setSize(width, 1);

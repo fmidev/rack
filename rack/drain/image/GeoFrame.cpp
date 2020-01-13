@@ -150,7 +150,7 @@ double GeoFrame::getYScale() const {
 
 void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
-	Logger mout("GeoFrame", __FUNCTION__);
+	Logger mout(getImgLog(), "GeoFrame", __FUNCTION__);
 
 	Rectangle<int> frame(0, 0, getFrameWidth(), getFrameHeight());
 

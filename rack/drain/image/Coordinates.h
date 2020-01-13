@@ -91,7 +91,7 @@ public:
 
 	inline
 	void set(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
-		//drain::Logger mout("CoordinatePolicy", __FUNCTION__);
+		//drain::Logger mout(getImgLog(), "CoordinatePolicy", __FUNCTION__);
 		this->xUnderFlowPolicy = xUnderFlowPolicy;
 		this->yUnderFlowPolicy = yUnderFlowPolicy;
 		this->xOverFlowPolicy  = xOverFlowPolicy;

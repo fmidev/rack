@@ -85,7 +85,7 @@ void CoordinateHandler2D::setLimits(int xMin, int yMin, int xUpperLimit, int yUp
 
 void CoordinateHandler2D::setPolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
 
-	Logger mout("CoordinateHandler2D", __FUNCTION__);
+	Logger mout(getImgLog(), "CoordinateHandler2D", __FUNCTION__);
 
 	// For bookkeeping
 	CoordinatePolicy::set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);

@@ -49,7 +49,7 @@ const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", 
 // drain::Type & t, drain::image::Geometry & geometry
 void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile) {
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (infile.get() != 'P'){
 		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
@@ -165,7 +165,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 // , const CommentReader & commentReader
 void FilePnm::read(Image & image, const std::string & path) {
 
-	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.info() << "path='" << path << "'" << mout.endl;
 
@@ -195,7 +195,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 // , const CommentReader & commentReader
 void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.info() << "reading image: " << image << ", file=" << path << mout.endl;
 
@@ -229,7 +229,7 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
  */
 void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileType t
 
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.info() << "reading to frame: " << image << mout.endl;
 

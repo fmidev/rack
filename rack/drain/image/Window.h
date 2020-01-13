@@ -138,7 +138,7 @@ public:
 	virtual inline
 	void setSrcFrames(const ImageTray<const Channel> & srcTray){
 
-		Logger mout("WindowCore", __FUNCTION__);
+		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
 
 		if (srcTray.empty()){
 			mout.error() << "src: no channels" << mout.endl;
@@ -165,7 +165,7 @@ public:
 	virtual inline
 	void setDstFrames(ImageTray<Channel> & dstTray){
 
-		Logger mout("GaussianStripe", __FUNCTION__);
+		Logger mout(getImgLog(), "GaussianStripe", __FUNCTION__);
 
 		if (dstTray.empty()){
 			mout.error() << "dst: no channels" << mout.endl;
@@ -187,13 +187,13 @@ public:
 	// Optional
 	virtual inline
 	void setSrcFrameWeight(const ImageFrame & srcW){
-		Logger mout("WindowCore", __FUNCTION__);
+		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
 		mout.warn() << "Not implemented" << mout.endl;
 	};
 
 	virtual inline
 	void setDstFrameWeight(ImageFrame & dstW){
-		Logger mout("WindowCore", __FUNCTION__);
+		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
 		mout.warn() << "Not implemented" << mout.endl;
 	};
 
@@ -267,7 +267,7 @@ public:
 	///	virtual inline
 	void setSrcFrames(const ImageTray<const Channel> & srcTray){
 
-		drain::Logger mout("MultiChannelWindowCore", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "MultiChannelWindowCore", __FUNCTION__);
 
 		mout.debug()  << "setting srcTray" << mout.endl;
 
@@ -295,7 +295,7 @@ public:
 	///	virtual inline
 	void setDstFrames(ImageTray<Channel> & dstTray){
 
-		drain::Logger mout("MultiChannelWindowCore", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "MultiChannelWindowCore", __FUNCTION__);
 
 		mout.debug()  << "setting dstTray" << mout.endl;
 

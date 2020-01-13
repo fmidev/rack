@@ -115,7 +115,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		traverseChannelsEqually(src, dst);
 	}
 
@@ -133,7 +133,7 @@ public:
 	virtual  // TODO: deprecated?
 	inline
 	void traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"[2+2]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"[2+2]", __FUNCTION__);
 		mout.note() << "delegating to: 2 x traverseChannel(2)" << mout.endl;
 		traverseChannel(src, dst);
 		traverseChannel(srcAlpha, dstAlpha);

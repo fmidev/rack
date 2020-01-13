@@ -40,7 +40,7 @@ namespace image
 
 void PixelVectorOp::makeCompatible(const ImageFrame &src, Image &dst) const  {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
 	mout.debug(2) << "src:" << src << mout.endl;
 

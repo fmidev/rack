@@ -92,7 +92,7 @@ public:
 	// Note: only a default implementation.
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		mout.error() << "not implemented; consider processChannels[Equally|Repeated|Separately]" << mout.endl;
 		// traverseChannelsEqually(src, dst);
 		// traverseChannelsRepeated(src, dst);
@@ -247,7 +247,7 @@ protected:
 	/// Set applicable internal parameters before calling traverse().
 	inline virtual
 	void initializeParameters(const ImageFrame &src, const ImageFrame &src2, const ImageFrame &dst) const {
-		//drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp) src,src2,dst", __FUNCTION__);
+		//drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp) src,src2,dst", __FUNCTION__);
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.debug() << "nothing defined (ok)" << mout.endl;
 	}

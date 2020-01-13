@@ -86,7 +86,7 @@ public:
 
 	inline
 	void setSrcFrameWeight(const ImageFrame & srcW){
-		Logger mout("WeightedOpticalFlowCore", __FUNCTION__);
+		Logger mout(getImgLog(), "WeightedOpticalFlowCore", __FUNCTION__);
 		this->srcWeight.setView(srcW);
 		//mout.debug() << "srcW: " << srcW << mout.endl;
 		mout.debug() << "srcWeight (view): " << this->srcWeight << mout.endl;
@@ -115,7 +115,7 @@ public:
 
 	inline
 	void setDstFrameWeight(const ImageFrame & dstW){
-		//Logger mout("OpticalFlowCore2", __FUNCTION__);
+		//Logger mout(getImgLog(), "OpticalFlowCore2", __FUNCTION__);
 		this->dstWeight.setView(dstW);
 		//mout.debug() << "srcW: " << srcW << mout.endl;
 		//mout.debug() << "view: " << this->srcWeight << mout.endl;
@@ -344,7 +344,7 @@ public:
 
 		nom = this->nominator();
 		/*
-		Logger mout("SlidingOpticalFlow", __FUNCTION__);
+		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 		mout.warn() << "start: " << location << mout.endl;
 		mout.note() << "uField: " << uField << mout.endl;
 		mout.note() << "vField: " << vField << mout.endl;
@@ -476,7 +476,7 @@ public:
 		// if ((location.x == 100) && (location.y == 100)) std::cout << locationHandled << '\n';
 		/*
 		if ((location.x == 70) && (location.y == 120)){
-			Logger mout("SlidingOpticalFlow", __FUNCTION__);
+			Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 			mout.note() << this->location << '\t' << p << mout.endl;
 		}
 		*/

@@ -103,7 +103,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		traverseChannelsSeparately(src, dst);
 	}
 

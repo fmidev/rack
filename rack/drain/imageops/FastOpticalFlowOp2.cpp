@@ -101,7 +101,7 @@ void OpticalFlowCore2::setSrcFrames(const ImageTray<const Channel> & srcTray){
 
 void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & srcWeight, Image & dstImage, Image & dstWeight) const {
 
-	Logger mout(__FUNCTION__, getName());
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	drain::image::ImageFrame const *srcImagePtr  = &srcImage;
 	drain::image::ImageFrame const *srcWeightPtr = &srcWeight;

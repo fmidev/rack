@@ -66,7 +66,7 @@ void AccumulationMethod::initDst(const AccumulationConverter & coder, Image & ds
 
 void AccumulationMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
 
-	Logger mout("AccumulationMethod", __FUNCTION__);
+	Logger mout(getImgLog(), "AccumulationMethod", __FUNCTION__);
 
 	mout.debug() << name <<  " extracting..." << mout.endl;
 
@@ -330,7 +330,7 @@ void WeightedAverageMethod::updateInternalParameters(){ //const std::string & pa
 
 	/// AccumulationMethod::setParameters(params);
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (p<0.0){
 		mout.error() << "p negative" << mout.endl;
@@ -410,7 +410,7 @@ void WeightedAverageMethod::add(const size_t i, double value, double weight, uns
 
 void WeightedAverageMethod::extractValue(const AccumulationConverter & coder, Image & dst) const {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	// mout.warn() << " start..." << mout.endl;
 
 	initDst(coder, dst);

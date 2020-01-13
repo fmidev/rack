@@ -99,7 +99,7 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 // Raise filterUnweighted
 void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name, "process(src,srcW,dst,dstW)");
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name, "process(src,srcW,dst,dstW)");
 	//mout.warn() <<  src      << mout.endl;
 	//mout.warn() << srcAlpha << mout.endl;
 

@@ -194,7 +194,7 @@ public:
 	virtual inline
 	void adjustCoordinateHandler(CoordinateHandler2D & handler) const {
 
-		Logger mout("Tray<T>", __FUNCTION__);
+		Logger mout(getImgLog(), "Tray<T>", __FUNCTION__);
 
 		if (this->empty()){
 			mout.warn() << "empty (no frames), leaving coordHandler intact" << mout.endl;

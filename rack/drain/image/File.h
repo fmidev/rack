@@ -57,7 +57,7 @@ public:
 	static inline  // , const CommentReader & commentReader = CommentReader()
 	void read(Image &img, const std::string & path){
 
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		if (FilePnm::fileNameRegExp.test(path)){
 			mout.debug() << "file format: PNM" << mout.endl;
 			FilePnm::read(img, path); // , commentReader
@@ -75,7 +75,7 @@ public:
 	static inline
 	void readFrame(ImageFrame &img, const std::string & path){
 
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		if (FilePng::fileNameRegExp.test(path)){
 			mout.debug() << "file format: PNG" << mout.endl;
 			FilePng::read(img, path);
@@ -108,7 +108,7 @@ public:
 	static inline
 	void write(const ImageFrame &img,const std::string &path){
 
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		if (FilePng::fileNameRegExp.test(path)){
 			mout.debug() << "file format: PNG" << mout.endl;

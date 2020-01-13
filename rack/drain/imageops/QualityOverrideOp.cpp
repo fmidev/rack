@@ -142,7 +142,7 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 /*
 void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, const ImageTray<const Channel> & src2,
 		ImageTray<Channel> & dst) const {  // RAISE for each
-	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"[3]", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"[3]", __FUNCTION__);
 	//mout.error() << "under constr" << mout.endl;
 
 	mout.debug() << "src1:" << src1.getGeometry() << mout.endl;
@@ -207,7 +207,7 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 void QualityOverrideOp::traverseChannel(const Channel & src1, const Channel & src1Weight, const Channel & src2, const Channel & src2Weight,
 		Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), name+"[2+2,2]", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"[2+2,2]", __FUNCTION__);
 
 	if (decay != 1.0)
 		mout.info() << this->getParameters() << mout.endl;
@@ -256,7 +256,7 @@ void QualityOverrideOp::traverseChannel(const Channel & src1, const Channel & sr
 
 void QualityOverrideOp::traverseFrame(const Channel &src, const Channel &srcWeight, Channel &dst, Channel &dstWeight) const {
 
-	Logger mout(getImgLog(),__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(),__FUNCTION__, __FILE__);
 
 	mout.note() << src << ", " << srcWeight << ", " << dst << ", " << dstWeight << mout.endl;
 
@@ -291,7 +291,7 @@ void QualityOverrideOp::traverseFrame(const Channel &src, const Channel &srcWeig
 void QualityOverrideOp::traverseFrame(const Channel & src, const Channel & srcWeight, const Channel & src2, const Channel & srcWeight2,
 		Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(),__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(),__FUNCTION__, __FILE__);
 
 	if (decay != 1.0)
 		mout.warn() << "Deprecating param 'decay' (" << decay << ") " << mout.endl;

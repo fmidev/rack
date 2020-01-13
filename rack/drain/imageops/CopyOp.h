@@ -118,7 +118,7 @@ public:
 
 	inline
 	void process(const ImageFrame & srcFrame, Image & dstImage) const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
 		mout.debug(1) << "calling makeCompatible()" << mout.endl;
 		makeCompatible(srcFrame, dstImage);
 		ImageView dst2; //(dstImage, functor.dstView);

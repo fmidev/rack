@@ -48,7 +48,7 @@ namespace image
 
 void ImageChannels::initialize(Image & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	dst.setChannelCount(imageChannelCount, alphaChannelCount);
 	// Reset for the next invocation.
@@ -59,7 +59,7 @@ void ImageChannels::initialize(Image & dst) const {
 
 void ImageEncoding::initialize(Image & dst) const { //(const std::string & params, char assignmentSymbol='=') {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
 	/// Step 1: change type, if requested
@@ -93,7 +93,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 //void ImageHistogram::traverseChannels(ImageTray<Channel> & dst) const {
 void ImageHistogram::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "bins: " << bins << mout.endl;
 
 	histogram.setSize(bins);
@@ -118,7 +118,7 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 
 void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.note() << value << mout.endl;
 
 	std::vector<double> v;
@@ -136,7 +136,7 @@ void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
 void ImageFill::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	//mout.note() << value << mout.endl;
 	dst.fill(Variable(value));
 }
@@ -146,7 +146,7 @@ void ImageGeometry::initialize(Image & dst) const {
 
 	//std::cerr << "TEST" << std::endl;
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	// mout.note() << "file:" << value << mout.endl;
 	//const size_t height = this->height > 0 ? this->height : width;
 	if (height == 0)
@@ -163,7 +163,7 @@ void ImageGeometry::initialize(Image & dst) const {
 
 void ImageCoordPolicy::initialize(Image & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	std::vector<int> v;
 	Variable(value, typeid(int)).toContainer(v);
@@ -208,7 +208,7 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 
 void ImageCoordPolicy::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	//mout.note() << "file:" << value << mout.endl;
 	dst.setCoordinatePolicy(policy);
 }
@@ -218,7 +218,7 @@ void ImageCoordPolicy::traverseChannel(Channel & dst) const {
 void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 //void ImagePlot::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	// Note: value is of type string
 	//mout.note() << getParameters() << mout.endl;
@@ -294,7 +294,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 //void ImagePlotFile::process(ImageDst & imageDst) const {
 void ImagePlotFile::traverseFrame(ImageFrame & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.note() << "file: " << filename << mout.endl;
 
 	//Drainage & r = getDrainage();
@@ -358,7 +358,7 @@ void ImageSampler::setReferences(){
 void ImageSampler::process(Image & dst) const {  // consider void traverse(const Channel & src) const {
 
 	//drain::Logger mout(getName() + "(ImageSampler)", __FUNCTION__);
-	drain::Logger mout(__FUNCTION__, getName() + "(ImageSampler)");
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName() + "(ImageSampler)");
 
 	drain::image::ImageReader reader(sampler.variableMap); //  reader(sampler.variableMap);
 

@@ -126,7 +126,7 @@ protected:
 
 	virtual
 	void setSize(size_t width, size_t height){
-		drain::Logger mout("SlidingStripe", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "SlidingStripe", __FUNCTION__);
 		if (height > 1)
 			mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
 		Window<GaussianWindowConf,R>::setSize(width, 1);

@@ -102,7 +102,7 @@ public:
 template <class T> // , const CommentReader & commentReader = CommentReader()
 void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
-	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.info() << "path='" << path << "'" << mout.endl;
 

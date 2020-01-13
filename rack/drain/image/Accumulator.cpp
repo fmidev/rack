@@ -54,7 +54,7 @@ namespace image
 
 void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL "Accumulator",__FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL "Accumulator",__FUNCTION__);
 
 	if (name == "AVG"){
 		mout.warn() << "'AVG' deprecating, using 'AVERAGE'" << mout.endl;
@@ -104,7 +104,7 @@ void Accumulator::setMethod(const std::string & method){
 
 void Accumulator::addData(const Image & srcData, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){
 
-	Logger mout("Accumulator",__FUNCTION__);
+	Logger mout(getImgLog(), "Accumulator",__FUNCTION__);
 
 	const unsigned int width  = srcData.getWidth();
 	const unsigned int height = srcData.getHeight();
@@ -178,7 +178,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst) const {
 
-	Logger mout("Accumulator",__FUNCTION__);
+	Logger mout(getImgLog(), "Accumulator",__FUNCTION__);
 
 
 	if ((dst.getWidth() != width) || (dst.getHeight() != height)){

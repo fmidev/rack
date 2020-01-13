@@ -127,7 +127,7 @@ public:
 	virtual inline
 	void addPixel(Point2D<int> & p){
 
-		Logger mout("SlidingOpticalFlow", __FUNCTION__);
+		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 		mout.error() << "unimplemented" << mout.endl;
 		/*
 		if (! this->coordinateHandler.validate(p))
@@ -149,7 +149,7 @@ public:
 	virtual inline
 	void removePixel(Point2D<int> & p){
 
-		Logger mout("SlidingOpticalFlow", __FUNCTION__);
+		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 		mout.error() << "unimplemented" << mout.endl;
 
 		/*

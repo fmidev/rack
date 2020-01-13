@@ -93,7 +93,7 @@ const Channel & MultiChannel::getAlphaChannel(size_t k) const {
 
 void MultiChannel::updateChannelVector() const {
 
-	Logger mout(getImgLog(), "MultiChannel", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	const size_t n = getChannelCount();
 

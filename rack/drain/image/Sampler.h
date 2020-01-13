@@ -181,7 +181,7 @@ public:
 	template <class D, class P>
 	void sample(const std::map<std::string, D> & images, const P & picker, const std::string & formatStr, std::ostream & ostr = std::cout) const { // std::string format copy ok
 
-		drain::Logger mout("Sampler", __FUNCTION__);
+		drain::Logger mout(getImgLog(), "Sampler", __FUNCTION__);
 
 		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
 

@@ -72,7 +72,7 @@ public:
 	//virtual void makeCompatible(const ImageFrame & src,Image & dst) const;
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		//drain::Logger mout(__FUNCTION__,__FILE__);  //REP (this->name+"(ImageOp::)[const ImageTray &, ImageTray &]", __FUNCTION__);
+		//drain::Logger mout(getImgLog(), __FUNCTION__,__FILE__);  //REP (this->name+"(ImageOp::)[const ImageTray &, ImageTray &]", __FUNCTION__);
 		traverseChannelsSeparately(src, dst);
 	}
 

@@ -129,7 +129,7 @@ void Palette::reset(){
 
 void Palette::update() const {
 
-	Logger mout("Palette", __FUNCTION__);
+	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
 
 	size_t i = 0;
@@ -168,7 +168,7 @@ void Palette::update() const {
 
 void Palette::load(const std::string & filename, bool flexible){
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	drain::FilePath filePath;
 
@@ -481,7 +481,7 @@ void Palette::loadJSON(std::ifstream & ifstr){
 
 void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	//const drain::JSON::tree_t & entries = json["entries"];
 
@@ -529,7 +529,7 @@ void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
 
 void Palette::write(const std::string & filename){
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	drain::FilePath filepath(filename);
 

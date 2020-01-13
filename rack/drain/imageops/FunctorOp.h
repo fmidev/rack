@@ -137,7 +137,7 @@ public:
 
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {  //  = 0;
 		//drain::Logger mout(this->getName()+"(UnaryFunctorOp)", __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.debug(1) << "invoking processChannelsSeparately()" << mout.endl;
 		ImageOp::traverseChannelsSeparately(src, dst);
 	}
@@ -153,9 +153,9 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
 
-		//Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(FunctorOp)", __FUNCTION__);
-		//Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(FunctorOp)", __FUNCTION__);
-		Logger mout(__FUNCTION__, __FILE__);
+		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(FunctorOp)", __FUNCTION__);
+		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(FunctorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.note() << "using image channels only (discarding alpha channels)" << mout.endl;
 		traverseChannel(src, dst);
 	};
@@ -178,7 +178,7 @@ protected:
 template <class T>
 void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const {
 
-	//Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(UnaryFunctorOp)", __FUNCTION__);
+	//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(UnaryFunctorOp)", __FUNCTION__);
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
@@ -274,7 +274,7 @@ public:
 	virtual
 	inline
 	void makeCompatible(const ImageFrame & src, Image & dst) const  {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
 		if (dst.isEmpty() || !dst.typeIsSet()){
 			dst.initialize(src.getType(), src.getGeometry());
 		}
@@ -290,7 +290,7 @@ public:
 	inline
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
 		mout.debug(1) << "delegating to: processChannelsRepeated(src, dst)" << mout.endl;
 		this->traverseChannelsRepeated(src, dst);
 	}
@@ -314,7 +314,7 @@ public:
 	virtual
 	void traverseChannel(const Channel &src1, const Channel &src2, Channel & dst) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)[ch1, ch2, chDst]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)[ch1, ch2, chDst]", __FUNCTION__);
 		mout.debug(1) << "start: " << *this << mout.endl;
 		mout.debug(2) << "src1: " << src1 << mout.endl;
 		mout.debug(2) << "src2: " << src2 << mout.endl;
@@ -337,7 +337,7 @@ public:
 	virtual
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
 
-		Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)", __FUNCTION__);
 		mout.debug() << "Unary init for Binary" << mout.endl; // << *this
 		//this->functor.setDstMax(dst.getMax<double>());
 		this->functor.update();
@@ -361,7 +361,7 @@ template <class T>
 void BinaryFunctorOp<T>::traverseSequentially(const Channel &src1, const Channel &src2, Channel & dst) const {
 
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)", std::string(__FUNCTION__)+"(src,src2,DST)");
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)", std::string(__FUNCTION__)+"(src,src2,DST)");
 	mout.debug() << "start, " << this->functor << mout.endl;
 	//mout.warn() << this->functor.scaleFinal << mout.endl;
 
@@ -426,7 +426,7 @@ void BinaryFunctorOp<T>::traverseSequentially(const Channel &src1, const Channel
 template <class T>
 void BinaryFunctorOp<T>::traverseSpatially(const Channel &src1, const Channel &src2, Channel & dst) const {
 
-	Logger mout(__FUNCTION__, __FILE__); //REPL this->name, std::string(__FUNCTION__)+"( src,src2, dst)");
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name, std::string(__FUNCTION__)+"( src,src2, dst)");
 	mout.debug() << "start" << mout.endl;
 
 	// // const double coeff1    = src1.getScaling().getScale();

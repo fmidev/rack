@@ -233,7 +233,7 @@ public:
 	 */
 	inline
 	void setType(const std::type_info &type){
-		Logger mout(getImgLog(), "Image", __FUNCTION__);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		setStorageType(type);
 		if (!isEmpty()){
 			mout.note() << "STYLE/ changing type of allocated image" << mout.endl;

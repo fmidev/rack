@@ -39,7 +39,7 @@ namespace image {
 
 void ImageFrame::init(){
 
-	// Logger mout(__FUNCTION__, __FILE__); //REPL __FILE__, __FUNCTION__);
+	// Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	properties["name"] = name; // ("security risk", if file paths included by default?)
 
@@ -60,7 +60,7 @@ void ImageFrame::init(){
 
 void ImageFrame::setStorageType(const std::type_info &type){
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	encoding.setType(type);
 	segmentBegin.setType(type);
@@ -89,7 +89,7 @@ void ImageFrame::adjustBuffer(){
  */
 void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t channelCount, bool catenate){
 
-	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	try {
 		setStorageType(src.getType());
@@ -167,7 +167,7 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 
 void ImageFrame::copyData(const ImageFrame & src){
 
-	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
 	if (getGeometry() != src.getGeometry()){
@@ -214,7 +214,7 @@ size_t ImageFrame::getChannelIndex(const std::string & index) const {
 
 	// consider: conv to lower case
 
-	Logger mout(getImgLog(), "ImageFrame", __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
 	if (index.empty()){
