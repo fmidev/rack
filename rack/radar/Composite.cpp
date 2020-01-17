@@ -464,7 +464,8 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 
 	drain::Time compositeTime;
 	if (!odim.getTime(compositeTime)){
-		mout.warn() << "composite date/time not set, but requested" << mout.endl;
+		mout.warn() << "time:" << odim.time << mout.endl;
+		mout.warn() << "composite date/time=(" <<  odim.date << '/' << odim.time << ") not set, but requested" << mout.endl;
 		return 0.0;
 	}
 	//compositeTime.setTime(odim.date, "%Y%m%d");

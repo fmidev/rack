@@ -34,11 +34,11 @@ done
 
 # Geographical bounding box
 # BBOX='-10.434576838640398,31.746215319325056,57.81196475014995,67.62103710275053' # OPERA
-#BBOX=${BBOX:-'-10,35,35,70'} # Europe
+# BBOX=${BBOX:-'-10,35,35,70'} # Europe
 # BBOX=${BBOX:-'16,57,35,70'}  # Finland
 # BBOX=${BBOX:-'8,53,32,70.5'} # Finland and Sweden
-#BBOX=${BBOX:-'8,47.5,33,73'}   # Baltic
-#BBOX=${BBOX:-'0,47.5,45.74,73'}   # BalticRus
+# BBOX=${BBOX:-'8,47.5,33,73'}   # Baltic
+# BBOX=${BBOX:-'0,47.5,45.74,73'}   # BalticRus
 #BBOX=${BBOX:-'-10,35,35,74'}   # EuroRus
 BBOX=${BBOX:-'6,51.3,49,70.2'} # FMI Scandinavia
 
@@ -174,7 +174,7 @@ fi
 # RANDOMWEIGHT=TRUE
 
 # Weight applied to old composite data loaded as a warm start.
-CWEIGHT=${CWEIGHT:-'0.9'}
+# CWEIGHT=1.0  # default ${CWEIGHT:-'0.9'}
 
 # Debugging
 debug=${DEBUG:+'--debug'}
@@ -211,6 +211,7 @@ NEWLINE='\
 '
 
 if [ "$INFILE" != '' ]; then
+    CWEIGHT=${CWEIGHT:-'0.9'}
     INIT="        $INFILE $time --cAddWeighted $CWEIGHT "
     #INIT="--cLoad $INFILE $time --cAddWeighted $CWEIGHT "
 else
@@ -226,12 +227,13 @@ command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inputp
 # Routine applied to each input volume (in default and TILE schemes).
 routine="$delete ${ANDRE[*]} $product $encoding "  #--cCreate"
 
+weighed=${CWEIGHT:+-"Weighted $CWEIGHT"}
 if [ "$SCHEME" == '' ]; then
-    command="$command $NEWLINE --script '$routine --cAdd' "  
+    command="$command $NEWLINE --script '$routine --cAdd${weighted}' "  
 fi 
 
 if [ "$SCHEME" == 'TILED' ]; then
-    command="$command --script '--cAdd' "  
+    command="$command --script '--cAdd${weighted}' "  
 fi 
 
 

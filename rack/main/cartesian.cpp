@@ -170,27 +170,63 @@ public:
 		RackResources & resources = getResources();
 		resources.composite.odim.date = value.substr(0,8);
 		resources.composite.odim.time = value.substr(8);
+		const size_t n = resources.composite.odim.time.length();
+		if (n < 6){
+			//drain::Logger mout(__FUNCTION__, getName());
+			//mout.info() << "appending " << (6-n) <<  " letters" << mout.endl;
+			resources.composite.odim.time.append(6-n, '0');
+		}
 		//std::cout << resources.composite.odim.date << ',' << resources.composite.odim.time << std::endl;
 	};
 
 };
 
 
+///
+// TODO: change to half-time in minutes
 class CompositeTimeDecay : public BasicCommand {
-    public: //re 
-	CompositeTimeDecay() : BasicCommand(__FUNCTION__, "Delay weight (0.0...1.0) per minute. 1=no decay. See --cTime"){
+
+	public:
+	CompositeTimeDecay() : BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
 		parameters.reference("decay", getResources().composite.decay = 1.0, "coeff");
 	};
 
 };
 
 
+/// half-time in minutes
+/**
+ *    x/2 = x * (1/2)^{t/T}
+ *
+ *	log(0.5) = t/T*log(0.5) =>
+ */
+class CompositeHalfTime : public SimpleCommand<int> {
+
+	public:
+	CompositeHalfTime() : SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
+		//parameters.reference("halftime", getResources().composite.decay = 1.0, "coeff");
+	};
+
+	inline
+	void exec() const {
+		RackResources & resources = getResources();
+		if (this->value > 0){
+			resources.composite.decay = ::pow(0.5, 1.0 / static_cast<double>(value));
+		}
+		else {
+			resources.composite.decay = 1.0;
+		}
+	}
+
+
+};
+
 
 
 
 void CompositeInit::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FUNCTION__, getName());
 
 	RackResources & resources = getResources();
 
@@ -250,6 +286,8 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 	static RackLetAdapter<CartesianSpread> cSpread;
 	static RackLetAdapter<CartesianTime> cTime;
 	static RackLetAdapter<CompositeTimeDecay> cTimeDecay;
+	static RackLetAdapter<CompositeHalfTime> cCompositeHalfTime;
+
 
 	static RackLetAdapter<CartesianCreate> cCreate("create", 'c', CartesianCreate(cAdd, cExtract));
 	static RackLetAdapter<CartesianCreateTile> cCreateTile("createTile", 0, CartesianCreateTile(cAdd, cExtract));

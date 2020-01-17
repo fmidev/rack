@@ -355,10 +355,13 @@ void CompositeAdd::addCartesian() const {
 		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
 		/// Todo: warn
 		const double delayWeight = ::pow(resources.composite.decay, delayMinutes);
-		mout.info() << "Delay weight: "  << delayWeight  << mout.endl;
+		mout.info() << "Scaled delay weight: "  << delayWeight  << mout.endl;
 		if (delayWeight < 0.01)
-			mout.warn() << "delay weight below 1%" << mout.endl;  // SKIP?
+			mout.warn() << "decay (delay weight coeff) below 0.01" << mout.endl;  // SKIP?
 		w *= delayWeight;
+	}
+	else if (resources.composite.decay > 1.0){
+		mout.warn() << "decay coeff above 1.0" << mout.endl;
 	}
 	// const double decayWeight = (decay==1.0) ? 1.0 : ::pow();
 

@@ -76,7 +76,7 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
-	drain::Logger mout("ODIM", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 	//for (ReferenceMap::const_iterator it = begin(); it != end(); ++it){
@@ -155,11 +155,13 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 bool ODIM::getTime(drain::Time & t) const {
 
-
 	try {
 		t.setTime(date, ODIM::dateformat);
 		t.setTime(time, ODIM::timeformat);
-	} catch (std::exception &e) {
+	}
+	catch (const std::exception &e) {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << e.what() << mout.endl;
 		return false;
 	}
 	return true;
@@ -170,7 +172,10 @@ bool ODIM::getStartTime(drain::Time & t) const {
 	try {
 		t.setTime(startdate, ODIM::dateformat);
 		t.setTime(starttime, ODIM::timeformat);
-	} catch (std::exception &e) {
+	}
+	catch (const std::exception &e) {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << e.what() << mout.endl;
 		return false;
 	}
 	return true;
@@ -181,7 +186,10 @@ bool ODIM::getEndTime(drain::Time & t) const {
 	try {
 		t.setTime(enddate, ODIM::dateformat);
 		t.setTime(endtime, ODIM::timeformat);
-	} catch (std::exception &e) {
+	}
+	catch (const std::exception &e) {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << e.what() << mout.endl;
 		return false;
 	}
 	return true;
