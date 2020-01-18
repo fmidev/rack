@@ -75,7 +75,7 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':';
 		//'\t';
-		ostr << "image=" << dataSet.getWidth() << ',' << dataSet.getHeight();
+		ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
 		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getElementSize() << ']' << '\n';  // like typeInfo above
 		ostr << '\n';
 	}
@@ -351,14 +351,11 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v){
 
-	drain::Logger mout("Hi5Base", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "line: " << line << mout.endl;
 
 	typedef std::vector<std::string> strVector;
-
-	//static
-	//const drain::RegExp pathSyntax("^[/]?([^: ]+)((:.*)?)$");
 
 	strVector p;
 	drain::StringTools::split(line, p, ':');
@@ -385,22 +382,21 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 				return;
 			}
 
-			/*
-			if (value.at(0) == '"'){
-				v.setType();
-			}
-			*/
-
 			// Test array OR type specification...
-			size_t i = assignment[1].find('[');
+			size_t i = value.find('[');
 
-			if ((i==0) || (i==std::string::npos)){
-				mout.debug() << "NEW mode: " << mout.endl;
-				drain::ValueReader::scanArrayValues(drain::StringTools::trim(assignment[1], "[] \t\n"), v);
+			if (i == 0){
+				mout.debug() << "NEW mode (array)" << mout.endl;
+				drain::ValueReader::scanArrayValues(drain::StringTools::trim(value, "[] \t\n"), v);
+			}
+			else if (i == std::string::npos){
+				mout.debug() << "NEW mode (non-array) " << mout.endl;
+				drain::ValueReader::scanValue(drain::StringTools::trim(value, " \t\n"), v);
+				mout.debug() << "val:" << value << '~' << v << ", type=" << v.getType().name() << mout.endl;
 			}
 			else {
-				drain::ValueReader::scanArrayValues(drain::StringTools::trim(assignment[1].substr(0,i-1)), v);
-				mout.note() << "discarding old type code: " << assignment[1].substr(i) << ", guessing " << drain::Type::getTypeChar(v.getType()) << mout.endl;
+				drain::ValueReader::scanArrayValues(drain::StringTools::trim(value.substr(0,i-1)), v);
+				mout.note() << "discarding old type code: " << value.substr(i) << ", guessing " << drain::Type::getTypeChar(v.getType()) << mout.endl;
 			}
 
 			/*
