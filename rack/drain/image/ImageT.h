@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Geometry.h"
 #include "Image.h"
 #include "Intensity.h"
-#include "Point.h"
+#include "../util/Point.h"
 
 namespace drain
 {

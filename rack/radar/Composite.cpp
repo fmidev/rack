@@ -123,16 +123,25 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	checkCompositingMethod(srcData.odim);
 
-	const bool USE_QUALITY = !srcQuality.data.isEmpty() && (priorWeight > 0.0); // && (odim.quantity == "DBZH"); // quantity != QIND
+	const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
 
-	mout.info() << "quality data: priorWeight=" << priorWeight << ',';
-	if (USE_QUALITY) {
-		mout << " input q properties: " << EncodingODIM(srcQuality.odim);
+	const bool USE_QUALITY_FIELD = USE_PRIOR_WEIGHT && !srcQuality.data.isEmpty(); // && (odim.quantity == "DBZH"); // quantity != QIND
+
+
+
+	if (USE_QUALITY_FIELD) {
+		mout.info() << " using input q: " << EncodingODIM(srcQuality.odim) << mout.endl;
+	}
+	else if (USE_PRIOR_WEIGHT) {
+		mout.info() << " using input weight=" << priorWeight << mout.endl;
+		// TODO
+		// mout.info() << "input quality exists=" << srcQuality.data.isEmpty() << ',';
 	}
 	else {
-		mout << " input q not found, empty=" << (int)srcQuality.data.isEmpty() <<  ", ok ";
+		mout.info() << " quality weighting not applied" << mout.endl;
+		if (srcQuality.data.isEmpty())
+			mout.note() << " (input quality would be available) " << mout.endl;
 	}
-	mout << mout.endl;
 
 	/// GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR
 	RadarProj pRadarToComposite;
@@ -221,8 +230,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	/// Area for main loop
 	drain::Rectangle<int> bboxPix;
-	m2pix(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxPix.lowerLeft.x,  bboxPix.lowerLeft.y);
-	m2pix(bboxM.upperRight.x, bboxM.upperRight.y, bboxPix.upperRight.x, bboxPix.upperRight.y);
+	//m2pix(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxPix.lowerLeft.x,  bboxPix.lowerLeft.y);
+	m2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
+	//m2pix(bboxM.upperRight.x, bboxM.upperRight.y, bboxPix.upperRight.x, bboxPix.upperRight.y);
+	m2pix(bboxM.upperRight, bboxPix.upperRight);
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 
 	//if (drain::Debug > 4){
@@ -242,21 +253,21 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	/// -------------------------------------------------------
 	/// DATA PROEJCTION (MAIN LOOP)
 	mout.debug() << "projecting" << mout.endl;
-	const unsigned int bins     = srcData.data.getWidth();  // TODO odimize
-	const unsigned int azimuths = srcData.data.getHeight(); // TODO odimize
-	const float RAD2J = 1.0/srcData.odim.getBeamWidth();  //static_cast<double>(azimuths) / (2.0*M_PI);
+	const int bins  = srcData.data.getWidth();  // TODO odimize
+	const int beams = srcData.data.getHeight(); // TODO odimize
+	const float RAD2J = 1.0/srcData.odim.getBeamWidth();  //static_cast<double>(beams) / (2.0*M_PI);
 	double range;
 
 	//bool computeBinSpan, restartBinSpan;
 	double azimuth; ///
-	double x,y; ///
+	//double x,y; ///
 
 	// speedup
 	/*
-	const float j2rad = (2.0*M_PI) / static_cast<double>(azimuths);
-	std::vector<double> sinLookUp(azimuths);
-	std::vector<double> cosLookUp(azimuths);
-	for (size_t a=0; a<azimuths; a++){
+	const float j2rad = (2.0*M_PI) / static_cast<double>(beams);
+	std::vector<double> sinLookUp(beams);
+	std::vector<double> cosLookUp(beams);
+	for (size_t a=0; a<beams; a++){
 		azimuth = a * j2rad;
 		sinLookUp[a] = sin(azimuth);
 		cosLookUp[a] = cos(azimuth);
@@ -272,25 +283,32 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 
 
-	double s, w;
+	double s;
+	double w = priorWeight * converter.defaultQuality;
+
+	drain::Point2D<int> pComp;
+	drain::Point2D<double> pMetric;
+
 	size_t address;
-	for (int j=bboxPix.lowerLeft.y; j>bboxPix.upperRight.y; j--){ // notice negative
+	for (pComp.y = bboxPix.lowerLeft.y; pComp.y>bboxPix.upperRight.y; --pComp.y){ // notice negative
 
 		// Beam index (azimuthal coordinate of polar input data)
-		unsigned int a;
+		int a;
 
 		// Bin index (radial coordinate of polar input data)
-		unsigned int b;
+		int b;
 
 		//if ((j&31)==0)
 		//	mout.debug(2) << j << mout.endl;
 		//for (unsigned int i=0; i<width; i++){
-		for (int i=bboxPix.lowerLeft.x; i<bboxPix.upperRight.x; i++){
+		for (pComp.x = bboxPix.lowerLeft.x; pComp.x<bboxPix.upperRight.x; ++pComp.x){
 
 
-			pix2m(i,j,x,y);
-			pRadarToComposite.projectInv(x,y);
-			range = ::sqrt(x*x + y*y);
+			//pix2m(i,j,x,y);
+			pix2m(pComp, pMetric);
+			pRadarToComposite.projectInv(pMetric.x, pMetric.y);
+			//pRadarToComposite.projectInv(x,y);
+			range = ::sqrt(pMetric.x*pMetric.x + pMetric.y*pMetric.y);
 			b = srcData.odim.getBinIndex(range);
 
 			//if (i==j)
@@ -298,29 +316,38 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 			/// TODO: check nodata
 			if ((b >= 0) && (b < bins)){  // (if non-undetectValue rstart)
-				azimuth = atan2(x,y);  // notice x <=> y  in radars
-				a = (static_cast<int>(azimuth*RAD2J)+azimuths) % azimuths;
-				//srcData.odim.getAzimuthalBins(azimuth);
+				azimuth = atan2(pMetric.x, pMetric.y);  // notice x <=> y  in radars
+				//a = (static_cast<int>(azimuth*RAD2J)+beams) % beams;
+				a = static_cast<int>(azimuth * RAD2J);
+				if (a < 0)
+					a += beams;
 
-				if (a < azimuths){
+				/*
+				if (b == 50){ //<< '\t' << (a%beams)
+					std::cerr << a << '\t' << (atan2(pMetric.x, pMetric.y)*M_PI/180.0) <<  '\n';
+				}
+				*/
 
-					address = data.address(i, j);
+				if (a < beams){
 
 					s = srcData.data.get<double>(b,a);
+
+					address = data.address(pComp.x, pComp.y);
 
 					if (converter.SKIP_UNDETECT && (s == srcData.odim.undetect)){
 						add(address, 0.0, 0.0); // weight=0.0 => only counter updated, important!
 					}
 					else {
 
-						if (USE_QUALITY){
-							w = srcQuality.data.get<double>(b,a);
+						if (USE_QUALITY_FIELD){
+							w = priorWeight * srcQuality.data.get<double>(b,a);
 							if (converter.decode(s, w))
 								add(address, s, w);
 						}
 						else {
 							if (converter.decode(s))
-								add(address, s, converter.defaultQuality);
+								add(address, s, w);
+								//add(address, s, converter.defaultQuality);
 						}
 					}
 				}
@@ -333,18 +360,20 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		// TODO: interpolation (for INJECTION)
 
 
-	//updateGeoData();
-	//const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 	drain::Rectangle<double> bboxD;
-	m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
-	m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
+	//m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
+	m2deg(bboxM.lowerLeft, bboxD.lowerLeft);
+	//m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
+	m2deg(bboxM.upperRight, bboxD.upperRight);
 	updateDataExtent(bboxD);
 
-
-
-	int i, j;
-	m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
-	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), i, j);
+	//int i, j;
+	drain::Point2D<double> cMetric;
+	drain::Point2D<int> cImg;
+	bboxM.getCenter(cMetric);
+	//m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
+	m2pix(cMetric, cImg);
+	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
 
 	odim.updateLenient(srcData.odim); // Time, date, new
 	if (odim.NI == 0)

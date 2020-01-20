@@ -78,9 +78,9 @@ public:
 
 	/// Computes the derivative (m/s)/beam. Often rescaled with beam width.
 	inline
-	bool getDerivative(const Point2D<int> &p, double & diff, bool debug=false) const {
+	bool getDerivative(const drain::Point2D<int> &p, double & diff, bool debug=false) const {
 
-		Point2D<int> pTmp;
+		drain::Point2D<int> pTmp;
 
 		pTmp.setLocation(p.x, p.y - 1);
 		if (!this->coordinateHandler.validate(pTmp))
@@ -133,11 +133,11 @@ protected:
 	 *   Uses locationLead because derivatives are computed \e around Point p .
 	 */
 	virtual
-	void addPixel(Point2D<int> &p);
+	void addPixel(drain::Point2D<int> &p);
 
 	/// Removes the pixel located at (p.x,p.y) from the window statistic/quantity.
 	virtual
-	void removePixel(Point2D<int> &p);
+	void removePixel(drain::Point2D<int> &p);
 
 	virtual
 	void write();
@@ -170,7 +170,7 @@ private:
 	double quality;
 
 	// Used for computing derivatives in addPixel/removePixel
-	Point2D<int> locationTmp;
+	drain::Point2D<int> locationTmp;
 
 	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
 	//mutable double NI;

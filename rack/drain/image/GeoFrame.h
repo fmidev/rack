@@ -169,7 +169,7 @@ public:
 	}
 
 	inline
-	void deg2pix(const drain::image::Point2D<double> & loc, drain::image::Point2D<int> & pix) const {
+	void deg2pix(const drain::Point2D<double> & loc, drain::Point2D<int> & pix) const {
 		deg2pix(loc.x, loc.y, pix.x, pix.y);
 	}
 
@@ -185,7 +185,7 @@ public:
 
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	inline
-	void pix2deg(const drain::image::Point2D<int> & pix, drain::image::Point2D<double> & loc) const {
+	void pix2deg(const drain::Point2D<int> & pix, drain::Point2D<double> & loc) const {
 		pix2deg(pix.x, pix.y, loc.x, loc.y);
 	}
 
@@ -208,6 +208,13 @@ public:
 		lat *= RAD2DEG;
 	}
 
+	virtual inline
+	void m2deg(const drain::Point2D<double> & pMetric, drain::Point2D<double> & pDeg) const {
+		projR2M.projectInv(pMetric.x, pMetric.y, pDeg.x, pDeg.y); // lon, lat);
+		pDeg.x *= RAD2DEG;
+		pDeg.y *= RAD2DEG;
+	}
+
 	/* UNTESTED
 	inline virtual
 	void LLdeg2m(const double & lon, const double & lat, double & x, double & y) const {
@@ -224,11 +231,17 @@ public:
 	 *  \par j - vertical image coordinate
 	 * Note that i increases to right, j downwards.
 	 */
-	inline
-	virtual
+	inline virtual
 	void m2pix(const double & x, const double & y, int & i, int & j) const {
 		i = static_cast<int>(0.5+ (x - extentM.lowerLeft.x) / xScale); //  xOffset
 		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
+		//j = 1-1 + static_cast<int>((y - extentM.lowerLeft.y) / yScale);
+	}
+
+	inline virtual
+	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
+		pImage.x = static_cast<int>(0.5+ (pMetric.x - extentM.lowerLeft.x) / xScale); //  xOffset
+		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentM.lowerLeft.y) / yScale);
 		//j = 1-1 + static_cast<int>((y - extentM.lowerLeft.y) / yScale);
 	}
 
@@ -248,7 +261,13 @@ public:
 	void pix2m(const int & i, const int & j, double & x, double & y) const {
 		x = (static_cast<double>(i)+0.5)*xScale + extentM.lowerLeft.x;
 		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
-		//y = static_cast<double>(1-1 + j)*yScale + extentM.lowerLeft.y;
+	}
+
+	inline
+	virtual
+	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
+		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + extentM.lowerLeft.x;
+		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentM.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.

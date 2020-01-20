@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <image/Image.h>
 #include <image/ImageChannel.h>
 #include <image/ImageLike.h>
-#include <image/Point.h>
+#include <util/Point.h>
 #include <image/SegmentProber.h>
 #include <product/DopplerOp.h>
 #include <product/ProductOp.h>
@@ -184,14 +184,14 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	/// Original value in VRAD
 	double vOrig = 0.0;
-	drain::image::Point2D<double> unitVOrig;
+	drain::Point2D<double> unitVOrig;
 
 	/// Resolved (u,v), from AMVU and AMVV
 	double u, v, quality;
 
 	/// Resolved (u,v) projected back on beam
 	double vReproj;
-	drain::image::Point2D<double> unitVReproj;
+	drain::Point2D<double> unitVReproj;
 
 
 	bool ORIG_UNDETECT;

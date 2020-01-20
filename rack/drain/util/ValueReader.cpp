@@ -48,6 +48,8 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 
 	int c = istr.peek();
 	switch (c) {
+	// consider:
+	// case '\'': // STRING
 	case '"': // STRING
 		istr.get();
 		v = TextReader::scanSegment(istr, "\"");

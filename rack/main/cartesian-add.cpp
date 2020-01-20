@@ -135,6 +135,31 @@ void CompositeAdd::exec() const {
 
 }
 
+double CompositeAdd::applyTimeDecay(double w, const ODIM & odim) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	const RackResources & resources = getResources();
+
+	if (resources.composite.decay < 1.0){
+
+		const double delayMinutes = resources.composite.getTimeDifferenceMinute(odim);  // assume update done
+		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
+
+		const double delayWeight = ::pow(resources.composite.decay, delayMinutes);
+		mout.info() << "Scaled delay weight: "  << delayWeight  << mout.endl;
+		if (delayWeight < 0.01)
+			mout.warn() << "decay (delay weight coeff) below 0.01" << mout.endl;  // SKIP?
+		w *= delayWeight;
+
+	}
+	else if (resources.composite.decay > 1.0){
+		mout.warn() << "decay coeff above 1.0" << mout.endl;
+	}
+
+	return w;
+}
+
 // Originally crom create
 void CompositeAdd::addPolar() const {
 
@@ -194,16 +219,18 @@ void CompositeAdd::addPolar() const {
 
 		// mout.warn() << "composite: " << resources.composite.odim << mout.endl;
 
-		//if (resources.composite.odim.gain == 0.0){
 		if (!resources.composite.odim.isSet()){
 
 			resources.composite.odim.type = "";
-			resources.composite.odim.updateFromMap(polarSrc.odim);
+
+			resources.composite.odim.updateLenient(polarSrc.odim);
+			//resources.composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
+
 			//ProductBase::applyODIM(resources.composite.odim, polarSrc.odim);
 			//mout.note() << "setting encoding: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			const std::string & encoding = resources.composite.getTargetEncoding();
 			if (encoding.empty()){
-				mout.note() << "adapting encoding of first data: " << EncodingODIM(resources.composite.odim) << mout.endl;
+				mout.note() << "adapting encoding of first input: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			}
 			ProductBase::completeEncoding(resources.composite.odim, encoding); // note, needed even if encoding==""
 		}
@@ -229,11 +256,9 @@ void CompositeAdd::addPolar() const {
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent  = dataPath;
 		parent.pop_back();
-		//std::string parent;
-		//std::string current;
-		//DataTools::getParentAndChild(dataPath, parent, current);
 
-		//if (current.find("quality") == 0){
+		double w = weight;
+
 		if (current.is(ODIMPathElem::QUALITY)){
 			mout.info()  << "plain quality data, ok (no further quality data)" << mout.endl;  // TODO: fix if quality/quality (BirdOp)
 			static const Hi5Tree t;
@@ -241,24 +266,31 @@ void CompositeAdd::addPolar() const {
 			resources.composite.addPolar(polarSrc, empty, 1.0, isAeqd); // Subcomposite: always 1.0.
 			//DATA_ONLY = true;
 		}
-		else if (polarSrc.hasQuality()){
-			mout.info() << "using local qualitydata" << mout.endl;
-			resources.composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), weight, isAeqd); // Subcomposite: always 1.0.
-		}
 		else {
-			mout.info() << "using shared (dataset-level) qualitydata" << mout.endl;
-			DataSet<PolarSrc> dataSetSrc((*resources.currentPolarHi5)(parent));
-			const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
-			if (!srcDataSetQuality.data.isEmpty()){
-				mout.info() << "using shared (dataset-level) quality data, path=" << parent << mout.endl;
+
+			mout.warn() << "times: " << resources.composite.odim.time << '|' << polarSrc.odim.time << mout.endl;
+
+			w = applyTimeDecay(w, polarSrc.odim);
+			mout.info() << "final quality weight=" << w << mout.endl;
+
+			if (polarSrc.hasQuality()){
+				mout.info() << "using local qualitydata" << mout.endl;
+				resources.composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), w, isAeqd); // Subcomposite: always 1.0.
 			}
 			else {
-				mout.info() << "no quality data (QIND) found under path=" << parent << mout.endl;
-				//DATA_ONLY = true;
+				DataSet<PolarSrc> dataSetSrc((*resources.currentPolarHi5)(parent));
+				//dataSetSrc.getQualityData2()
+				const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
+				if (!srcDataSetQuality.data.isEmpty()){
+					mout.info() << "using shared (dataset-level) quality data, path=" << parent << mout.endl;
+				}
+				else {
+					mout.info() << "no quality data (QIND) found under path=" << parent << mout.endl;
+					//DATA_ONLY = true;
+				}
+				resources.composite.addPolar(polarSrc, srcDataSetQuality, w, isAeqd); // Subcomposite: always 1.0.
 			}
-			resources.composite.addPolar(polarSrc, srcDataSetQuality, weight, isAeqd); // Subcomposite: always 1.0.
 		}
-
 
 		mout.debug(1) << "finished" << mout.endl;
 
@@ -287,13 +319,10 @@ void CompositeAdd::addCartesian() const {
 
 	RackResources & resources = getResources();
 
-
-	//DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
 	ODIMPath dataPath;
 	resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
-		//resources.inputOk = false; // REMOVE?
 		resources.dataOk = false;
 		return;
 	}
@@ -307,9 +336,7 @@ void CompositeAdd::addCartesian() const {
 	*/
 	mout.info() << "using:" << p << mout.endl;
 
-	//const DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5["dataset1"], resources.composite.dataSelector.quantity);
 	const DataSet<CartesianSrc> cartDataSetSrc(resources.cartesianHi5(p), resources.composite.dataSelector.quantity);
-
 
 	if (cartDataSetSrc.empty()){
 		mout.warn() << "Empty dataset(s), skipping. Selector.quantity (regexp): '" << resources.composite.dataSelector.quantity << "'" << mout.endl;
@@ -349,7 +376,9 @@ void CompositeAdd::addCartesian() const {
 	// resources.composite.ensureEncoding(cartSrc.odim, resources.targetEncoding);
 	// resources.targetEncoding.clear();
 
+	w = applyTimeDecay(w, cartSrc.odim);
 
+	/*
 	if (resources.composite.decay < 1.0){
 		const double delayMinutes = resources.composite.getTimeDifferenceMinute(cartSrc.odim);  // assume update done
 		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
@@ -363,8 +392,10 @@ void CompositeAdd::addCartesian() const {
 	else if (resources.composite.decay > 1.0){
 		mout.warn() << "decay coeff above 1.0" << mout.endl;
 	}
+	*/
 	// const double decayWeight = (decay==1.0) ? 1.0 : ::pow();
 
+	// mout.warn() << "Final weight: "  << w  << mout.endl;
 
 	mout.debug(1) << "input properties:\n" << cartSrc.odim << mout.endl;
 

@@ -752,10 +752,12 @@ public:
 		RackResources & resources = getResources();
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
-			mout.warn() << "RegExp support temporarily supressed from this version" << mout.endl;
+			mout.warn() << "RegExp support suppressed from this version" << mout.endl;
 			return;
 		}
-		mout.warn() << "value: " << value << mout.endl;
+
+		mout.debug() << "value: " << value << mout.endl;
+
 		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
 
 		DataTools::updateInternalAttributes(*(resources.currentHi5));
@@ -1242,7 +1244,8 @@ public:
 		mout.debug(1) << "params: " << params << mout.endl;
 
 		/// Syntax for recognising text files.
-		static const drain::RegExp odimSyntax("^--?(/.+)$");
+		static
+		const drain::RegExp odimSyntax("^--?(/.+)$");
 
 		if (params.empty()){
 			mout.error() << "Empty parameters" << mout.endl;

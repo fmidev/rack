@@ -30,8 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 //#include <typeinfo>
 #include <stdexcept>
-#include <iostream>
-#include <vector>
+//#include <iostream>
+//#include <vector>
 #include <string>
 
 #include <map>

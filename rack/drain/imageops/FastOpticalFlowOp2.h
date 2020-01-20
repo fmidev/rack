@@ -267,7 +267,7 @@ void SlidingOpticalFlow2<R>::initialize() {
 
 	/*
 	std::cout << "Annapa input\n";
-	drain::image::Point2D<int> p;
+	drain::Point2D<int> p;
 	std::string s;
 	while (getline(std::cin, s)){
 	//while ((std::cin>>p.x) && (std::cin>>p.y)){

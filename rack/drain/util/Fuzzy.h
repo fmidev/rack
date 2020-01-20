@@ -641,6 +641,72 @@ private:
 
 };
 
+/// A function taking shape of two peaks, with a zero in the middle .
+/*!
+ *  \tparam T  - input storage type
+ *  \tparam T2 - output storage type
+ */
+template <class T>
+class FuzzyTwinPeaks : public Fuzzifier<T> {
+
+public:
+
+	FuzzyTwinPeaks(double location=0.0, double width=1.0, double scale = 1.0,  double bias = 0.0) :
+		Fuzzifier<T>(__FUNCTION__, "Fuzzy function of two peaks.", scale, bias) {
+		setReferences();
+		set(location, width, scale, bias);
+	};
+
+	FuzzyTwinPeaks(const FuzzyTwinPeaks & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy function of two peaks.") {
+		this->setReferencesAndCopy(f);
+	}
+
+	virtual
+	~FuzzyTwinPeaks(){};
+
+	//inline
+	void set(double location = 0.0, double width = 1.0, double scale=1.0, double bias=0.0) {
+		this->location = location;
+		this->width = width;
+		this->setScale(scale, bias);
+		update();
+	}
+
+	virtual
+	void update() const {
+		this->INVERSE = (width<0.0);
+		steepness = 1.0/fabs(width);
+		this->updateScale();
+	}
+
+	inline
+	virtual
+	double operator()(double x) const {
+		x = steepness * (x - location);
+		return this->biasFinal + this->scaleFinal*(x*x)/(1.0 + x*x*x*x);
+	};
+
+
+
+	double location;
+	double width;
+
+protected:
+
+	mutable
+	double steepness;
+
+
+private:
+
+	void setReferences(){
+		this->parameters.reference("location", this->location);
+		this->parameters.reference("width", this->width);
+		this->parameters.reference("scale", this->scale);
+		this->parameters.reference("bias", this->bias);
+	}
+
+};
 
 
 } // drain::

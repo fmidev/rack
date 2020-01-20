@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <sstream>
 
-#include "../image/Point.h"
+#include "Point.h"
 
 // // using namespace std;
 
@@ -90,6 +90,12 @@ public:
 
 	inline
 	T getArea() const { return std::abs(getWidth()*getHeight()); };
+
+	inline
+	void getCenter(drain::Point2D<T> &p) const {
+		p.x = static_cast<T>((lowerLeft.x + upperRight.x)/2.0);
+		p.y = static_cast<T>((lowerLeft.y + upperRight.y)/2.0);
+	};
 
 
 	/// This becomes the intersection of r and this.
@@ -139,20 +145,12 @@ public:
 		return sstr.str();
 	}
 
-	drain::image::Point2D<T> lowerLeft;
-	drain::image::Point2D<T> upperRight;
-	/*
-	T xLowerLeft;
-	T yLowerLeft;
-	T xUpperRight;
-	T yUpperRight;
-	*/
+	drain::Point2D<T> lowerLeft;
+	drain::Point2D<T> upperRight;
 
 protected:
 
-
-	static
-	inline
+	static inline
 	void limit(const T & lowerBound, const T & upperBound, T & x){
 		if (x < lowerBound)
 			x = lowerBound;
@@ -160,26 +158,9 @@ protected:
 			x = upperBound;
 	}
 
-	//mutable std::string toStr;
 };
 
 
-/*
-template<class T> inline void Rectangle<T>::crop(const Rectangle & r)
-{
-	xLowerLeft  = std::max(xLowerLeft,r.lowerLeft.x); // at least xLL
-	//xLowerLeft  = std::min(xUpperRight,xLowerLeft);  // at max   xUR
-
-	yLowerLeft  = std::max(yLowerLeft,r.lowerLeft.y);
-	//yLowerLeft  = std::min(yUpperRight, yLowerLeft);
-
-	xUpperRight = std::min(xUpperRight, r.upperRight.x);
-	//xUpperRight = std::max(xLowerLeft, xUpperRight);
-
-	yUpperRight = std::min(yUpperRight,r.upperRight.y);
-
-}
-*/
 
 template<class T> inline void Rectangle<T>::extend(const Rectangle & r)
 {

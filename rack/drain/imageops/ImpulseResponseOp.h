@@ -252,7 +252,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
-	drain::image::Point2D<int> point;
+	drain::Point2D<int> point;
 
 	T bucket(this->conf);
 	bucket.init(src, true);
@@ -343,7 +343,7 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
 
-	drain::image::Point2D<int> point;
+	drain::Point2D<int> point;
 
 	T bucket(this->conf);
 	bucket.init(src, false);

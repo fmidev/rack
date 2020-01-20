@@ -119,7 +119,7 @@ void DopplerInversionWindow::initialize(){
 }
 
 
-void DopplerInversionWindow::addPixel(Point2D<int> &p){
+void DopplerInversionWindow::addPixel(drain::Point2D<int> &p){
 
 
 	if (getDerivative(p, diff)){
@@ -161,7 +161,7 @@ void DopplerInversionWindow::addPixel(Point2D<int> &p){
 
 }
 
-void DopplerInversionWindow::removePixel(Point2D<int> &p){
+void DopplerInversionWindow::removePixel(drain::Point2D<int> &p){
 
 
 	if (getDerivative(p, diff)){

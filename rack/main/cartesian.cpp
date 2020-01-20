@@ -200,10 +200,10 @@ class CompositeTimeDecay : public BasicCommand {
  *
  *	log(0.5) = t/T*log(0.5) =>
  */
-class CompositeHalfTime : public SimpleCommand<int> {
+class CompositeDecayTime : public SimpleCommand<int> {
 
 	public:
-	CompositeHalfTime() : SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
+	CompositeDecayTime() : SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
 		//parameters.reference("halftime", getResources().composite.decay = 1.0, "coeff");
 	};
 
@@ -286,7 +286,7 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 	static RackLetAdapter<CartesianSpread> cSpread;
 	static RackLetAdapter<CartesianTime> cTime;
 	static RackLetAdapter<CompositeTimeDecay> cTimeDecay;
-	static RackLetAdapter<CompositeHalfTime> cCompositeHalfTime;
+	static RackLetAdapter<CompositeDecayTime> cCompositeDecayTime;
 
 
 	static RackLetAdapter<CartesianCreate> cCreate("create", 'c', CartesianCreate(cAdd, cExtract));

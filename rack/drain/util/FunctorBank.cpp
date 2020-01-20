@@ -80,6 +80,9 @@ FunctorBank & getFunctorBank() {
 		static FunctorCloner<UF, FuzzySigmoid<double> > sigmoid;
 		functorBank.add(sigmoid, sigmoid.getName());
 
+		static FunctorCloner<UF, FuzzyTwinPeaks<double> > twinpeaks;
+		functorBank.add(twinpeaks, twinpeaks.getName());
+
 	}
 
 	return functorBank;

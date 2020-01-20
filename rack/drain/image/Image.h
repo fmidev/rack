@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "util/VariableMap.h"
 
 #include "Geometry.h"
-#include "Point.h"
+#include "../util/Point.h"
 #include "Intensity.h"
 #include "ImageFrame.h"
 #include "ImageChannel.h"

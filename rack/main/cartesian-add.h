@@ -62,7 +62,10 @@ public:
 
 	void exec() const;
 
+
 protected:
+
+	double applyTimeDecay(double w, const ODIM & odim) const;
 
 	CompositeAdd(const std::string & name, const std::string & description) : BasicCommand(name, description), weight(1.0){};
 

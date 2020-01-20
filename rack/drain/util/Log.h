@@ -160,6 +160,8 @@ public:
 
 	void flush();
 
+	void flush(int level, const std::string & prefix, const std::stringstream & sstr);
+
 	inline
 	long getRelativeMilliseconds(){
 		return getMilliseconds() - _millisecondsStart;
@@ -185,10 +187,11 @@ public:
 	 */
 
 
+	int verbosityLevel;
+
 
 protected:
 
-	int verbosityLevel;
 	std::stringstream sstr;
 
 	int msgLevel;
@@ -236,40 +239,63 @@ public:
 
 
 	inline
-	bool isLevel(int l){ return (l <= monitor.getVerbosity()); };
+	bool isLevel(int l){
+		return (l <= monitor.getVerbosity());
+	};
 
 	inline
-	bool isDebug(int l=0){ return (monitor.getVerbosity() >= (LOG_DEBUG+l)); };
+	bool isDebug(int l=0){
+		return (monitor.getVerbosity() >= (LOG_DEBUG+l));
+	};
 
 
 	/// Quits immediately, dumps pending messages.
 	inline
-	Logger & quit(){ init(LOG_EMERG); return *this; };
+	Logger & quit(){
+		initMessage(LOG_EMERG);
+		return *this;
+	};
 
 	/// Quits immediately, dumps pending messages.
 	inline
-	Logger & fatal(){ init(LOG_CRIT); return *this; };
+	Logger & alert(){
+		initMessage(LOG_ALERT);
+		return *this;
+	};
+
+	/// Quits immediately, dumps pending messages.
+	inline
+	Logger & fatal(){
+		initMessage(LOG_CRIT);
+		return *this;
+	};
 
 	/// Echoes
 	inline
-	Logger & error(){ init(LOG_ERR);  return *this; };
+	Logger & error(){
+		initMessage(LOG_ERR);
+		return *this;
+	};
 
 	inline
-	Logger & warn(){ init(LOG_WARNING); return *this; };
+	Logger & warn(){
+		initMessage(LOG_WARNING);
+		return *this;
+	};
 
 	/// For top-level information
 	inline
-	Logger & note(){ init(LOG_NOTICE); return *this; };
+	Logger & note(){
+		initMessage(LOG_NOTICE);
+		return *this;
+	};
 
 	inline
-	Logger & info(){ init(LOG_INFO); return *this; };
+	Logger & info(){
+		initMessage(LOG_INFO);
+		return *this;
+	};
 
-
-	/// Send a short [INFO] preceded with a time stamp.
-	Logger & timestamp(const std::string & label);
-
-	/// Send a longer [INFO] preceded with a time stamp.
-	Logger & timestamp();
 
 	/**
 	 *  Internally, this value is added to \c LOG_DEBUG.
@@ -282,18 +308,34 @@ public:
 		    - 20 - dump mass data (eg. coordinates during an image traversal)
 	 */
 	inline
-	Logger & debug(unsigned int level = 0){init(LOG_DEBUG + level); return *this; };
+	Logger & debug(unsigned int level = 0){
+		initMessage(LOG_DEBUG + level);
+		return *this;
+	};
 
 	inline
-	Logger & log(unsigned int level){init(level); return *this; };
+	Logger & log(unsigned int level){
+		initMessage(level);
+		return *this;
+	};
+
+	/// Send a short [INFO] preceded with a time stamp.
+	Logger & timestamp(const std::string & label);
+
+	/// Send a longer [INFO] preceded with a time stamp.
+	Logger & timestamp();
 
 
 	template <class T>
 	Logger &operator<<(const T & x) {
 		//cerr << "source input:" << x << '\n';
-		monitor.handle(errorType, x, prefix);
+		// OLD: monitor.handle(errorType, x, prefix);
+		if (errorType <= monitor.getVerbosity())
+			message << x;
+		//else message << "//" << x;
 		return *this;
 	}
+
 
 
 
@@ -301,16 +343,17 @@ public:
 	static oper endl;
 
 	/// Flush operation
-	Logger &operator<<(const oper & op){
-
-		monitor.flush();
-		// cerr << "ERROR TYPE=" << errorType << '\n';
+	//Logger &operator<<(const oper & op){
+	inline
+	Logger &operator<<(oper op){
+		// std::cerr << "(" << prefix << message.str() << std::endl;
+		monitor.flush(errorType, prefix, message);
+		//monitor.flush();
 		return *this;
-		// TODO: consider return void!
 	}
 
 
-
+	std::stringstream message;
 
 protected:
 
@@ -320,20 +363,13 @@ protected:
 	 */
 	void setPrefix(const char *functionName, const char * name);
 
-	// consider className  and prefix => _memberName
-	void init(int errorType){
-		//cerr << "INIT:" << errorType << "/" << prefix << '\n';
-		this->errorType = errorType;
-		monitor.start(errorType, prefix);
-	};
+	void initMessage(int errorType);
+
 
 	Log & monitor;
 	//mutable
 	std::string prefix;
 
-	//std::string className;
-	//std::string functionName;
-	//std::string _localName;
 	int errorType;
 	time_t time;
 

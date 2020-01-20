@@ -198,6 +198,11 @@ bool ODIM::getEndTime(drain::Time & t) const {
 
 void ODIM::updateLenient(const ODIM & odim){
 
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	EncodingODIM::updateLenient(odim);
+
+
 	if (object.empty())
 		object = odim.object;
 

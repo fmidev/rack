@@ -274,7 +274,7 @@ void FastOpticalFlowOp2::computeDifferentials(const ImageTray<const Channel> & s
 	}
 
 	/* speedup
-  	drain::image::Point2D p;
+  	drain::Point2D p;
 	std::vector<double> empty(dst.size(), 0);
 	for (std::size_t k=0; k<OFFSET; ++k){
 		p.setLocation(0,k);

@@ -416,7 +416,7 @@ protected:
 
 
 	virtual inline
-	void removePixel(Point2D<int> & p){
+	void removePixel(drain::Point2D<int> & p){
 		if (this->coordinateHandler.validate(p)){
 			double x = this->src.template get<double>(p);
 			if ((x != this->odimSrc.nodata) && (x != this->odimSrc.undetect))
@@ -425,7 +425,7 @@ protected:
 	};
 
 	virtual inline
-	void addPixel(Point2D<int> & p){
+	void addPixel(drain::Point2D<int> & p){
 		if (this->coordinateHandler.validate(p)){
 			double x = this->src.template get<double>(p);
 			if ((x != this->odimSrc.nodata) && (x != this->odimSrc.undetect))

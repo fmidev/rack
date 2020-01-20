@@ -202,6 +202,8 @@ ImageOpBank & getImageOpBank() {
 			bank.add(fuzzyStepSoid);
 			static UnaryFunctorOpCloner<FuzzyTriangle<double> > fuzzyTriange;
 			bank.add(fuzzyTriange);
+			static UnaryFunctorOpCloner<FuzzyTwinPeaks<double> > fuzzyTwinPeaks;
+			bank.add(fuzzyTwinPeaks);
 
 
 			//static ImageOpCloner<VerticalCatenatorOp> catenator; // causes memory error?

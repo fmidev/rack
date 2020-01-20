@@ -209,7 +209,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const {
 
-	drain::Logger mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	// mout.warn() << "is root?\n" << dst << mout.endl;
 	// mout.debug() << "Start " << accumulator.getMethod().name << mout.endl;
 
@@ -289,7 +289,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				break;
 		}
 
-		mout.info() << "extracting field " << field << mout.endl;
+		mout.debug() << "extracting field " << field << mout.endl;
 
 
 		if (type == DATA){

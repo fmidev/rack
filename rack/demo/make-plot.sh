@@ -12,7 +12,7 @@ rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox $BBOX  
   --iAverage 15 \
   --iGaussianAverage 15 \
   -o plot-spread2.png  \
-  --palette palette-RATE.txt --paletteRefine 64 --imageTransp 0:2 -o plot-spread-color.png  
-#  --palette palette-RATE.txt --paletteRefine 64 --encoding 'C,0.2,-32,1,100' --imageAlpha -o plot-spread-color.png
+  --palette palette-RATE.txt --paletteRefine 64 --imageTransp 0:2,0.5,0.2 -o plot-spread-color.png  
+#  -o plot-spread2.h5  \
 
 

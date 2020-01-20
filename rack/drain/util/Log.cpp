@@ -137,11 +137,11 @@ void Log::start(int level, const std::string & msgSender){
 		if (!msgSender.empty())
 			sstr << msgSender << ':' << ' ';
 	}
-	else if (verbosityLevel >= msgLevel) // Hide sender in basic notifications
+	else if (verbosityLevel >= msgLevel){ // Hide sender in basic notifications
 		if (((msgLevel != LOG_NOTICE) && (msgLevel != LOG_INFO)) || (verbosityLevel >= LOG_DEBUG))
 			if (!msgSender.empty())
 				sstr << msgSender << ':' << ' ';
-
+	}
 	//if (verbosityLevel >= msgLevel)
 	//	init(msgLevel, msgSender);
 
@@ -182,6 +182,81 @@ void Log::flush(){
 	msgLevel = LOG_NOTICE;
 	currentSender = NULL;
 }
+
+void Log::flush(int level, const std::string & prefix, const std::stringstream & sstr){
+
+
+	std::ostream & ostr = std::cerr;
+	// std::ostream & estr = std::cerr;
+	// std::ostream * optr = std::cerr;
+
+	if (level > verbosityLevel)
+		return; // !
+
+	/*
+	if (level <= LOG_QUIT){
+		if (VT100)
+			ostr << "\033[1;41m";
+		ostr << "[ALERT]  ";
+	}
+	else */
+	if (level <= LOG_ALERT){
+		if (VT100)
+			ostr << "\033[1;41m";
+		ostr << "[ALERT]  ";
+	}
+	else if (level <= LOG_CRIT){
+		if (VT100)
+			ostr << "\033[1;31m";
+		ostr << "[FATAL]  ";
+	}
+	else if (level <= LOG_ERR){
+		if (VT100)
+			ostr << "\033[1;36m";
+		ostr << "[ERROR]  ";
+	}
+	else if (level <= LOG_WARNING){
+		if (VT100)
+			ostr << "\033[1;33m";
+		ostr << "[WARNING] ";
+	}
+	else if (level <= LOG_NOTICE){
+		if (VT100)
+			ostr << "\033[1;29m";
+		ostr << "[NOTICE] ";
+	}
+	else if (level <= LOG_INFO){
+		ostr << "[INFO]   ";
+	}
+	else if (level == LOG_DEBUG){
+		if (VT100)
+			ostr << "\033[1;35m";
+		ostr << "[DEBUG]  ";
+	}
+	else if (level == (LOG_DEBUG+1)){
+		if (VT100)
+			ostr << "\033[1;34m";
+		ostr << "[debug]  ";
+	}
+	else {
+		ostr << "[debug]  ";
+	}
+
+	ostr << prefix << ':' << ' ' << sstr.rdbuf();
+	if (VT100)
+		ostr << "\033[0m";
+	ostr << '\n';
+
+	if (level <=  LOG_ALERT){
+		ostr << " Fatal error, quitting." << std::endl;
+		exit(-1);
+	}
+	else if ((level <= LOG_ERR) && (level < (verbosityLevel))){
+		throw std::runtime_error(sstr.str());
+	}
+
+}
+
 
 
 Logger::oper Logger::endl;
@@ -228,17 +303,29 @@ void Logger::setPrefix(const char *functionName, const char *name){
 	prefix.append(functionName);
 }
 
+void Logger::initMessage(int level){
+
+	this->errorType = level;
+	message.str("");
+	//message << prefix;
+	// OLD:
+	//monitor.start(errorType, prefix);
+
+
+}
+
 Logger & Logger::timestamp(const std::string & label){
-	init(LOG_DEBUG);
+	initMessage(LOG_DEBUG);
 	*(this) << "TIME#" << label << Logger::endl;
 	return *this;
 }
 
 Logger & Logger::timestamp(){
-	init(LOG_DEBUG);
+	initMessage(LOG_DEBUG);
 	*(this) << "TIME# " << time;
 	return *this;
 }
+
 
 }
 
