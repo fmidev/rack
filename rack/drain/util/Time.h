@@ -101,19 +101,7 @@ public:
 	 *
 	 *  The time can be adjusted using several subsequent calls.
 	 */
-	inline
-	void setTime(const std::string &time, const std::string &format, bool strict=true){
-		// setTime(0); reset seconds?
-		const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
-		if (strict && (t == NULL)){
-			throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
-		}
-		/*
-		if (*t != '\0') {
-			std::cerr << "Remaining std::string:" << std::endl;
-		}
-		*/
-	};
+	void setTime(const std::string &time, const std::string &format, bool strict=true);
 
 	inline
 	void setTime(const tm &time){
@@ -131,7 +119,9 @@ public:
 
 	/// Returns the C struct.
 	inline
-	const tm & getTm() const { return *this;};//_tm;};
+	const tm & getTm() const {
+		return *this;
+	};
 
 	/// Returns time in seconds.
 	inline
@@ -139,23 +129,7 @@ public:
 
 
 	/// Returns the std::string using formatting as defined by strftime()
-	inline
-	const std::string & str(std::string format = "") const {
-		if (format.empty())
-			timeStr = asctime((tm *)this);
-		else {
-			//const unsigned int maxSize = 256;
-			const size_t maxSize = 256;
-			static char tmp[maxSize];
-			const size_t length = strftime(tmp, maxSize, format.c_str(), (tm *)this);
-			timeStr.assign(tmp,length);
-			if (length == maxSize){
-				std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
-				// TODO: string mapper
-			}
-		}
-		return timeStr;
-	};
+	const std::string & str(const std::string & format = "") const;
 
 	inline
 	void debug(){
