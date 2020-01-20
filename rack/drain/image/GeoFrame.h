@@ -162,10 +162,11 @@ public:
 	/// Projects geographic coordinates to image coordinates.
 	virtual inline
 	void deg2pix(double lon, double lat, int & i, int & j) const {
-		double x,y; // metric
-		projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, x, y);
-		m2pix(x,y, i,j);
-		//j = height-1-j;
+		//double x,y; // metric
+		//projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, x, y);
+		//m2pix(x,y, i,j);
+		projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat);
+		m2pix(lon, lat, i,j);
 	}
 
 	inline
@@ -176,9 +177,10 @@ public:
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	virtual inline
 	void pix2deg(int i, int j, double & lon, double & lat) const {
-		double x, y; // metric
-		pix2m(i,j, x,y);
-		projR2M.projectInv(x,y, lon,lat);
+		// double x, y; // metric
+		// projR2M.projectInv(x,y, lon,lat);
+		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
+		projR2M.projectInv(lon,lat, lon,lat);
 		lon *= RAD2DEG;
 		lat *= RAD2DEG;
 	}
@@ -186,7 +188,7 @@ public:
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	inline
 	void pix2deg(const drain::Point2D<int> & pix, drain::Point2D<double> & loc) const {
-		pix2deg(pix.x, pix.y, loc.x, loc.y);
+		pix2deg(pix.x,pix.y, loc.x,loc.y);
 	}
 
 	/// Calculates the geographic coordinates of the lower left corner of a pixel at (i,j).

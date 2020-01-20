@@ -30,11 +30,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 //#include "Log.h"
-#include "Time.h"
 
 
+#include <string.h>
 #include <stdexcept>
 #include <iostream>
+
+#include "Time.h"
 
 namespace drain {
 
@@ -46,19 +48,23 @@ void Time::setTime(const std::string &time, const std::string &format, bool stri
 	}
 	/*
 		if (*t != '\0') {
-			std::cerr << "Remaining std::string:" << std::endl;
+			std::cerr << "Remaining std::string:" << t << std::endl;
 		}
 	 */
-};
+}
 
 
 const std::string & Time::str(const std::string &format) const {
 	if (format.empty()){
-		timeStr = asctime((tm *)this);
-		size_t i = timeStr.find('\n'); // yes...
-		if (i != std::string::npos)
-			timeStr = timeStr.substr(0,i);
-		// DELETE asctime *?
+		char *s = asctime((tm *)this);
+		char *newline  = strchr(s, '\n');
+		if (newline){
+			timeStr.assign(s, (newline-s));
+		}
+		else {
+			timeStr.assign(s);
+		}
+		delete s;
 	}
 	else {
 		const size_t maxSize = 256;
@@ -69,10 +75,9 @@ const std::string & Time::str(const std::string &format) const {
 			std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
 			// TODO: string mapper
 		}
-		// DELETE asctime *?
 	}
 	return timeStr;
-};
+}
 
 }
 

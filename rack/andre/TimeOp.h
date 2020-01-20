@@ -51,7 +51,7 @@ public:
 	 *   \param decayPast   - quality halving time in minutes
 	 *   \param decayFuture - quality halving time in minutes; if not set, decayPast is used.
 	 */
-	TimeOp(std::string time="NOMINAL", double decayPast = 1.0, double decayFuture = -1.0) :
+	TimeOp(const std::string & time="NOMINAL", double decayPast = 1.0, double decayFuture = -1.0) :
 		DetectorOp(__FUNCTION__,"Created quality field based on measurement time for each beam.", "tech.err.time")
 	{
 		parameters.reference("time",  this->time = time, "NOMINAL,NOW,<YYYYmmddMMHH>");

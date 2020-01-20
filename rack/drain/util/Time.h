@@ -81,11 +81,13 @@ public:
 
 	/// Sets time to UTC time.
 	/**
-	 *  \par time -   std::string presentation of time.
+	 *  \par time - unix seconds (integer)
 	 */
 	inline
-	void setTime(const time_t &time){
-		*(tm *)this = *gmtime(&time);
+	void setTime(time_t time){
+		tm *gt = gmtime(&time);
+		*(tm *)this = *gt;  // = *gmtime(&time);
+		//delete gt;
 	};
 
 	/// Sets time

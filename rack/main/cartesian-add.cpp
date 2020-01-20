@@ -226,8 +226,6 @@ void CompositeAdd::addPolar() const {
 			resources.composite.odim.updateLenient(polarSrc.odim);
 			//resources.composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
 
-			//ProductBase::applyODIM(resources.composite.odim, polarSrc.odim);
-			//mout.note() << "setting encoding: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			const std::string & encoding = resources.composite.getTargetEncoding();
 			if (encoding.empty()){
 				mout.note() << "adapting encoding of first input: " << EncodingODIM(resources.composite.odim) << mout.endl;
@@ -238,21 +236,30 @@ void CompositeAdd::addPolar() const {
 			if (!resources.targetEncoding.empty()){
 				mout.warn() << "target encoding request ("<< resources.targetEncoding << ") bypassed, keeping original " << EncodingODIM(resources.composite.odim) << mout.endl;
 			}
+			drain::Time tComp, tData;
+
+			resources.composite.odim.getTime(tComp);
+			polarSrc.odim.getTime(tData);
+			int mins = abs(tComp.getTime() - tData.getTime())/60;
+			if (mins > 120){
+				mout.warn() << "time difference " << mins << " minutes" << mout.endl;
+				mout.note() << "composite: " << tComp.str() << mout.endl;
+				mout.note() << "data:      " << tData.str() << mout.endl;
+			}
 		}
+
+
 
 		//resources.composite.checkInputODIM(polarSrc.odim);
 		// Apply user parameters.
-
 
 		mout.debug()  << "subComposite defined:\n" << resources.composite.getBoundingBoxD() << ", quantity: " << resources.composite.odim.quantity << mout.endl;
 		mout.debug(1) << "subComposite: " << resources.composite << '\n' << resources.composite.odim << mout.endl;
 		mout.debug(1) << "accumulating polar data..." << mout.endl;
 
 
-
-
-		//subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
-		//const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
+		// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
+		// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent  = dataPath;
 		parent.pop_back();
@@ -268,7 +275,6 @@ void CompositeAdd::addPolar() const {
 		}
 		else {
 
-			mout.warn() << "times: " << resources.composite.odim.time << '|' << polarSrc.odim.time << mout.endl;
 
 			w = applyTimeDecay(w, polarSrc.odim);
 			mout.info() << "final quality weight=" << w << mout.endl;
@@ -286,7 +292,6 @@ void CompositeAdd::addPolar() const {
 				}
 				else {
 					mout.info() << "no quality data (QIND) found under path=" << parent << mout.endl;
-					//DATA_ONLY = true;
 				}
 				resources.composite.addPolar(polarSrc, srcDataSetQuality, w, isAeqd); // Subcomposite: always 1.0.
 			}
@@ -378,25 +383,6 @@ void CompositeAdd::addCartesian() const {
 
 	w = applyTimeDecay(w, cartSrc.odim);
 
-	/*
-	if (resources.composite.decay < 1.0){
-		const double delayMinutes = resources.composite.getTimeDifferenceMinute(cartSrc.odim);  // assume update done
-		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
-		/// Todo: warn
-		const double delayWeight = ::pow(resources.composite.decay, delayMinutes);
-		mout.info() << "Scaled delay weight: "  << delayWeight  << mout.endl;
-		if (delayWeight < 0.01)
-			mout.warn() << "decay (delay weight coeff) below 0.01" << mout.endl;  // SKIP?
-		w *= delayWeight;
-	}
-	else if (resources.composite.decay > 1.0){
-		mout.warn() << "decay coeff above 1.0" << mout.endl;
-	}
-	*/
-	// const double decayWeight = (decay==1.0) ? 1.0 : ::pow();
-
-	// mout.warn() << "Final weight: "  << w  << mout.endl;
-
 	mout.debug(1) << "input properties:\n" << cartSrc.odim << mout.endl;
 
 	/// If a multi-radar mainComposite is being computed, a warning/note should be given is some of these properties are
@@ -418,7 +404,8 @@ void CompositeAdd::addCartesian() const {
 			mout.note() << "\t --cSize '" << resources.composite.getFrameWidth() << 'x' << resources.composite.getFrameHeight() << "'" << mout.endl;
 		}
 
-		resources.composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
+		resources.composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
+		//resources.composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 		mout.note() << "\t --cBBox '" << resources.composite.getBoundingBoxD() << "'" << mout.endl;
 		//mout.note() << "Using bounding box of the input: " << resources.composite.getBoundingBoxD() << mout.endl;
 

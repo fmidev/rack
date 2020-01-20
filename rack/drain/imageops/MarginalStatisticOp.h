@@ -62,7 +62,7 @@ public:
 	 *   \par mode - "horz" or "vert"
 	 *   \par stat - a sequence of letters, referring to statistics through Histogram::get(const char &key) .
 	 */
-	MarginalStatisticOp(std::string mode="horz", std::string stat="asmdvNX", float medianPos=0.50) :
+	MarginalStatisticOp(const std::string & mode = "horz", const std::string & stat="asmdvNX", float medianPos=0.50) :
 		ImageOp("Marginal","Computes statistics on <horz> or <vert> lines: average,sum,median,stdDev,variance,miN,maX") {
 		parameters.reference("mode", this->mode = mode);
 		parameters.reference("stat", this->stat = stat);
