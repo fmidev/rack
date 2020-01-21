@@ -56,6 +56,8 @@ void Time::setTime(const std::string &time, const std::string &format, bool stri
 
 const std::string & Time::str(const std::string &format) const {
 	if (format.empty()){
+		return Time::str("%c"); // "writes standard date and time string, e.g. Sun Oct 17 04:41:13 2010 (locale dependent)"
+		/*
 		char *s = asctime((tm *)this);
 		char *newline  = strchr(s, '\n');
 		if (newline){
@@ -64,10 +66,10 @@ const std::string & Time::str(const std::string &format) const {
 		else {
 			timeStr.assign(s);
 		}
-		delete s;
+		*/
 	}
 	else {
-		const size_t maxSize = 256;
+		static const size_t maxSize = 256;
 		static char tmp[maxSize];
 		const size_t length = strftime(tmp, maxSize, format.c_str(), (tm *)this);
 		timeStr.assign(tmp,length);
