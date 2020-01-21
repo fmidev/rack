@@ -693,6 +693,24 @@ public:
 
 protected:
 
+	inline
+	virtual
+	void updateScale() const {
+
+		this->INVERSE = (width<0.0);
+
+		if (!this->INVERSE){
+			this->scaleFinal = +2.0*this->scale;
+			this->biasFinal  =  this->bias;
+			this->absWidth = width;
+		}
+		else {
+			this->scaleFinal = -2.0*this->scale;
+			this->biasFinal  =  this->bias;
+			this->absWidth   = -width;
+		}
+	}
+
 	mutable
 	double steepness;
 
