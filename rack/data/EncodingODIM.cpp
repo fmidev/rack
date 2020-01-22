@@ -117,7 +117,7 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 	if (type.empty())
 		type = odim.type;
 
-	if (gain == 0.0){
+	if ((gain == 0.0) && (type == odim.type)){
 		gain   = odim.gain;
 		offset = odim.offset;
 		nodata = odim.nodata;
