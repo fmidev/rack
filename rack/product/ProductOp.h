@@ -222,23 +222,29 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
-	//ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	//  this->dataSelector.getPaths(src, dataPaths); // RE2
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
+	int index = 0;
+
+	// NEW
+	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET);
+	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+		mout.debug(2) << "add: " << index << '\t' << *it  << mout.endl;
+		sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(*it), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+	}
+
+
+	// OLD
+	/*
 	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	std::set<ODIMPath> parents;
-	int index = 0;
 
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
-
-		//const std::string parent = DataTools::getParent(*it);
 		ODIMPath parent = *it;
 		parent.pop_back();
-
 
 		mout.debug(2) << "check "  << *it << mout.endl;
 
@@ -249,6 +255,11 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 			//elangles << elangle;
 		}
 	}
+	*/
+
+
+	mout.debug(1) << "DataSets: "  << sweeps.size() << mout.endl;
+
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
 	dst["what"]  = src["what"];
@@ -261,7 +272,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1); // /dataset1
 	ODIMPathElem child(ODIMPathElem::DATA, 1); // /dataset1
 
-	mout.note() << "append selector" <<  ProductBase::appendResults << mout.endl;
+	mout.note() << "appendResults path: " <<  ProductBase::appendResults << mout.endl;
 	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
 		DataSelector::getNextChild(dst, parent);
 	}
