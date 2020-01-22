@@ -71,8 +71,8 @@ public:
 		this->parameters.reference("filename", filename = "-");
 
 		this->allowedEncoding.reference("type", this->odim.type = "C");
-		this->odim.quantity = "HGHT";
-		this->odim.type = "C";
+		//this->odim.quantity = "HGHT";
+		this->odim.type = "L";
 	}
 
 	virtual ~HistogramOp(){};
