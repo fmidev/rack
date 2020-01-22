@@ -155,11 +155,11 @@ public:
 					//dstData.setGeometry(1, count);
 				}
 				else {
-					//const drain::Type type(srcData.data.getType();
 					if (drain::Type::call<drain::typeIsSmallInt>(type)){
 						const size_t s = drain::Type::call<drain::sizeGetter>(type);
-						//	dstData.setGeometry(1, 1<<(s*8));
-						histogram.setSize(1<<(s*8));
+						const size_t bits = (s*8);
+						mout.note() << bits << "bits => setting " << (1<<bits) << " bins " << mout.endl;
+						histogram.setSize(1<<bits);
 					}
 					else
 						histogram.setSize(256);
