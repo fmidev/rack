@@ -61,9 +61,11 @@ public:
 		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
 
 		odim.product  = "PCAPPI";
-		//odim.quantity = "DBZH";
+		odim.type = "";
 		odim.quantity = "";
 		dataSelector.quantity = "^DBZH$";
+
+		//odim.quantity = "DBZH";
 
 	};
 
