@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/image/File.h>
 //#include <drain/util/Log.h>
 //#include <drain/util/Variable.h>
-#include <product/ProductOp.h>
+
 #include <util/Castable.h>
 #include <util/Reference.h>
 #include <util/String.h>
@@ -50,9 +50,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <stdexcept>
 #include <utility>
 
+#include "ProductBase.h"
+
 namespace rack {
 
-//std::string ProductBase::appendResults("");
+
 ODIMPathElem ProductBase::appendResults;
 
 int ProductBase::outputDataVerbosity(0);
