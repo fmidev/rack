@@ -350,35 +350,6 @@ public:
 		odim.offset = data.getScaling().offset;
 	}
 
-	/*
-	bool setQuantityDefaults(const std::string & quantity = "", const std::string & values = "") const {
-
-		drain::Logger mout("PlainData", __FUNCTION__);
-
-		const std::string & q = !quantity.empty() ? quantity : odim.quantity;
-
-		const bool typeSet = getQuantityMap().setQuantityDefaults(odim, q, values);
-
-		if (odim.quantity.empty()){
-			odim.quantity = q;
-		}
-
-		if (!typeSet){
-			mout.warn() << "conf for quantity=" << q << " [" << odim.type << "] not found" << mout.endl;
-		}
-		// Redesign all this... ?
-		data.setType(odim.type);
-		data.setScaling(odim.gain, odim.offset);
-
-		// Semi-kludge
-		if ((odim.quantity == "QIND") || (odim.quantity == "PROB")){
-			//dstData.data.setOptimalScale(0.0, 1.0);
-			data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
-		}
-
-		return typeSet;
-	}
-	*/
 
 	/// Sets dimensions of data array and metadata.
 	inline
@@ -542,11 +513,10 @@ public:
 	}
 
 
-	const data_t & get(const std::string & quantity) const {
+	const data_t & getData(const std::string & quantity) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //
-		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
-		//mout.warn() << "const " << mout.endl;
+		//drain::Logger mout(__FUNCTION__, __FILE__); //
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
 		typename datagroup_t::const_iterator it = this->find(quantity);
 
@@ -561,9 +531,10 @@ public:
 	}
 
 
-	data_t & get(const std::string & quantity) {
+	data_t & getData(const std::string & quantity) {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		//drain::Logger mout(__FUNCTION__, __FILE__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
 		typename datagroup_t::iterator it = this->find(quantity);
 
@@ -586,10 +557,10 @@ public:
 
 	}
 
-	const data_t& get(const drain::RegExp & regExp) const {
+	const data_t& getData(const drain::RegExp & regExp) const {
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, "DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}");
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		//mout.warn() << "const " << mout.endl;
 
@@ -613,7 +584,7 @@ public:
 	 *	\param encodingParams (optional) - parameters overriding those of template quantity
 	 */
 	data_t & create(const std::string & quantity, const std::string & templateQuantity, const std::string & encodingParams) {
-		data_t & d = get(quantity);
+		data_t & d = getData(quantity);
 		d.setGeometry(0, 0); // in case existed already
 		//getQuantityMap().setQuantityDefaults(d, templateQuantity, encodingParams);
 		return d;
@@ -626,10 +597,10 @@ public:
 
 		if (it == this->end()){
 			//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 			mout.error() << "no data" << mout.endl;
-			return this->get("");
+			return this->getData("");
 		}
 		else
 			return it->second;
@@ -639,7 +610,7 @@ public:
 	const data_t & getFirstData() const {
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		//mout.warn() << "const" << mout.endl;
 
@@ -664,9 +635,9 @@ public:
 		const typename datagroup_t::reverse_iterator it = this->rend();
 
 		if (it == this->rbegin()){
-			drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 			mout.error() << "no data" << mout.endl;
-			return this->get("");
+			return this->getData("");
 		}
 		else
 			return it->second;
@@ -676,7 +647,7 @@ public:
 	// experimental
 	const data_t & getLastData() const {
 
-		drain::Logger mout(__FUNCTION__, "DataGroup." + ODIMPathElem::getKey(G) + " {const}");
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}-const");
 
 		//mout.warn() << "const" << mout.endl;
 
@@ -730,12 +701,10 @@ protected:
 	static
 	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
 
-		// if (t.empty()) return; // no use, /data and /what groups still there, typically.
-
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		const bool USE_REGEXP = !quantityRegExp.toStr().empty();
+		const bool USE_REGEXP = quantityRegExp.isSet();
 
 		// Number of potential groups for debug note at end
 		unsigned short counter = 0;
@@ -762,6 +731,8 @@ protected:
 			if (USE_REGEXP){
 				++counter; // candidate count
 				if (!quantityRegExp.test(quantity)){
+					//if (it->second.hasChild("quality1"))
+					//	mout.warn() << it->first << "...rejecting, but has quality?" << mout.endl;
 					mout.debug(3) << "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
 					continue;
 				}
@@ -780,7 +751,7 @@ protected:
 			}
 			else {
 				if (dst.find(quantity) != dst.end()){ // already created
-					drain::Logger mout("DataSet", __FUNCTION__);
+					//drain::Logger mout("DataSet", __FUNCTION__);
 					mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
 				}
 				dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
@@ -792,7 +763,7 @@ protected:
 		}
 
 		if (USE_REGEXP)
-			mout.debug(1) << "collected " << dst.size() << '/' << counter << " data items with RegExp=/" << quantityRegExp.toStr() << '/' << mout.endl;
+			mout.debug(1) << "collected " << dst.size() << "(out of " << counter << ") data items with RegExp=/" << quantityRegExp.toStr() << '/' << mout.endl;
 		else
 			mout.debug(1) << "collected " << dst.size() << " data items" << mout.endl;
 
@@ -804,8 +775,10 @@ protected:
 	//typename D::tree_t & adapt(typename D::tree_t & t, datagroup_t & dst, const datagroup_t & src){
 	typename DT::tree_t & adapt(const datagroup_t & src, datagroup_t & dst){
 
+		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
+
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		// drain::Logger mout(__FUNCTION__, __FILE__);
 
 		if (src.empty()){
 			mout.debug(3) << "src empty" << mout.endl;
@@ -827,6 +800,29 @@ protected:
 
 };
 
+template <class DT, ODIMPathElem::group_t G>
+std::ostream & operator<<(std::ostream & ostr, const DataGroup<DT,G> & d){
+	// ostr << "-- dataGroup ";
+	char separator = 0;
+	drain::image::Geometry g;
+	for (typename DataGroup<DT,G>::const_iterator it = d.begin(); it != d.end(); ++it){
+		if (separator)
+			ostr << separator;
+		else {
+			separator = ',';
+			g.setGeometry(it->second.data.getGeometry());
+		}
+		ostr << it->first << '[' << drain::Type::getTypeChar(it->second.data.getType()) << ']';
+	}
+	ostr << " ("<< g << ")";
+	/*
+	ostr << d.data << ", ODIM:\t ";
+	ostr << d.odim << '\n';
+	ostr << "props: " << d.data.properties << '\n';
+	*/
+	return ostr;
+}
+
 
 /// Base class providing quality support for Data<DT> and DataSet<DT>
 template <typename DT>
@@ -835,6 +831,10 @@ class QualityDataSupport {
 public:
 
 	typedef PlainData<DT> plaindata_t;
+
+	typedef DataGroup<plaindata_t,ODIMPathElem::QUALITY> qualitygroup_t;
+
+
 
 	inline
 	QualityDataSupport(typename plaindata_t::tree_t & tree) : quality(tree) {};
@@ -853,7 +853,7 @@ public:
 	 */
 	inline
 	const plaindata_t & getQualityData(const std::string & quantity = "QIND") const {
-		return this->quality.get(quantity);
+		return this->quality.getData(quantity);
 	}
 
 	/// Finds associated quality data - maybe empty and unscaled.
@@ -863,19 +863,42 @@ public:
 	 *
 	 */
 	inline
+	const plaindata_t & getQualityData(const drain::RegExp & quantityRE) const {
+		return this->quality.getData(quantityRE);
+	}
+
+
+	/// Finds associated quality data - maybe empty and unscaled.
+	/*
+	 *  \param quantity - quality quantity, "QIND" by default.
+	 *  \return - \c data[i]/quality[j] for which \c quantity=[quantity]
+	 *
+	 */
+	inline
 	plaindata_t & getQualityData(const std::string & quantity = "QIND") {
-		return this->quality.get(quantity);
+		return this->quality.getData(quantity);
+	}
+
+
+	inline
+	bool hasQuality() const {
+		return !this->quality.empty();
 	}
 
 	inline
-	bool hasQuality(const std::string & quantity = "QIND") const {
+	bool hasQuality(const std::string & quantity) const {
 		return this->quality.find(quantity) != this->quality.end();
+	}
+
+	inline
+	const qualitygroup_t & getQuality() const {
+		return this->quality;
 	}
 
 
 protected:
 
-	DataGroup<plaindata_t,ODIMPathElem::QUALITY> quality;
+	qualitygroup_t quality;
 
 };
 
@@ -915,8 +938,9 @@ public:
 
 	// Experimental
 	void swap(Data<DT> &d){ // TODO: also for plaindata?
+
 		drain::Logger mout( __FUNCTION__, "Data<>");
-		mout.warn() << "Swap" << mout.endl;
+		mout.warn() << "Swap (experimental fct)" << mout.endl;
 		this->tree.swap(d.tree);
 
 		typename DT::odim_t odim;
@@ -943,7 +967,8 @@ std::ostream & operator<<(std::ostream & ostr, const Data<DT> & d){
 	ostr << d.odim; // << '\n';
 	//ostr << d.data.properties << '\n';
 	if (d.hasQuality()){
-		ostr << " (has quality field)";
+		//ostr << " (has quality field)";
+		ostr << "+q(" << d.getQuality() << ')';
 		/*
 		const PlainData<T,D,M> & q = d.getQuality();
 		ostr << '\t' << q.data.getGeometry() << '\t';
@@ -984,6 +1009,7 @@ public:
 	~DataSet(){
 
 		drain::Logger mout(__FUNCTION__, "DataSet");
+
 		switch (this->size()) {
 		case 0:
 			mout.debug(4) << "no data<n> groups" << mout.endl;
@@ -1000,6 +1026,7 @@ public:
 
 
 	/// Retrieves data containing the given quantity. If not found, returns an empty array.
+	/*
 	inline
 	const data_t & getData(const std::string & quantity) const {  // TODO: simply use original get()?
 		return this->get(quantity);
@@ -1017,7 +1044,7 @@ public:
 	const data_t & getData(const drain::RegExp & regExp) const { // TODO: simply use original get()?
 		return this->get(regExp);
 	}
-
+	*/
 
 	plaindata_t & getQualityData2(const std::string & quantity = "QIND", const std::string & dataQuantity = ""){ // , bool tmp = false
 		if (dataQuantity.empty())
@@ -1076,13 +1103,17 @@ protected:
 
 };
 
-
+/// Dumps quantities and geometry
+/**
+ *
+ */
 template <typename DT>
 std::ostream & operator<<(std::ostream & ostr, const DataSet<DT> & d){
+	typedef DataSet<DT> dataset_t;
 	ostr << "dataSet ";
 	char separator = 0;
 	drain::image::Geometry g;
-	for (typename DataSet<DT>::const_iterator it = d.begin(); it != d.end(); ++it){
+	for (typename dataset_t::const_iterator it = d.begin(); it != d.end(); ++it){
 		if (separator)
 			ostr << separator;
 		else {
@@ -1090,8 +1121,12 @@ std::ostream & operator<<(std::ostream & ostr, const DataSet<DT> & d){
 			g.setGeometry(it->second.data.getGeometry());
 		}
 		ostr << it->first << '[' << drain::Type::getTypeChar(it->second.data.getType()) << ']';
+		if (it->second.hasQuality())
+			ostr << "+Q(" << it->second.getQuality() << ')';
 	}
 	ostr << " ("<< g << ")";
+	if (d.hasQuality())
+		ostr << " +quality(" << d.getQuality() << ')';
 	/*
 	ostr << d.data << ", ODIM:\t ";
 	ostr << d.odim << '\n';
