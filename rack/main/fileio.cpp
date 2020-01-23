@@ -138,7 +138,8 @@ public:
 
 		Hi5Tree & currentHi5 = *resources.currentHi5;
 
-		rack::HistogramOp<PolarODIM> hop;
+		//rack::HistogramOp<PolarODIM> hop;
+		rack::HistogramOp hop;
 
 		hop.setParameters(this->getParameters());
 
@@ -675,16 +676,6 @@ public: //re
 		// exec();
 	}
 
-	/*
-	virtual
-	inline
-	void exec() const {
-		if (SRC)
-			mod.apply(getDrainage().getSrc());
-		else
-			mod.apply(getDrainage().getDst());
-	};
-	*/
 
 };
 
@@ -704,11 +695,4 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 }
 
 
-//} // namespace (unnamed)
-
-
 } // namespace rack
-
-// Rack
- // REP // REP // REP // REP // REP
- // REP // REP // REP // REP

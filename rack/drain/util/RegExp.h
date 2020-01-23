@@ -80,10 +80,13 @@ public:
 	//    bool exp(const char *toStr);
 	bool setExpression(const std::string &str);
 
-	//    bool exp(const char *toStr);
-
 	inline 
 	void clear(){ writableResult.clear(); };
+
+	inline
+	bool isSet() const {
+		return !regExpString.empty();
+	};
 
 	/// Public interface for the result
 	const std::vector<std::string> & result;

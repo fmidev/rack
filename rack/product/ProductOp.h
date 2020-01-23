@@ -98,6 +98,7 @@ public:
 
 
 	//void processH5() // see MotionFill
+	virtual // HistogramOp
 	void processH5(const Hi5Tree &src, Hi5Tree &dst) const;
 
 

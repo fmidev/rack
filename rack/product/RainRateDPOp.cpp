@@ -84,12 +84,12 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 
 	// Reserve main quantity (RATE) first
-	PlainData<PolarDst> & rateDst = dstProduct.get(odim.quantity);
+	PlainData<PolarDst> & rateDst = dstProduct.getData(odim.quantity);
 	rateDst.setGeometry(geometry);
 
 	// RHOHV
 	const PlainData<PolarSrc> & srcRHOHV = sweepSrc.getData("RHOHV");
-	PlainData<PolarDst>  & metRHOHV = dstProduct.get("RHOHV_FUZZY");
+	PlainData<PolarDst>  & metRHOHV = dstProduct.getData("RHOHV_FUZZY");
 	qmap.setQuantityDefaults(metRHOHV, "PROB");
 
 	if (srcRHOHV.data.isEmpty()){
@@ -106,20 +106,20 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	// DBZH
 	stepsoid.odimSrc = srcDBZH.odim;
 	// DBZH / heavy rain
-	PlainData<PolarDst> & heavyDBZH = dstProduct.get("DBZH_HEAVY");
+	PlainData<PolarDst> & heavyDBZH = dstProduct.getData("DBZH_HEAVY");
 	qmap.setQuantityDefaults(heavyDBZH, "PROB");
 	stepsoid.functor.set(dbzRange.min, +5.0);
 	stepsoid.process(srcDBZH.data, heavyDBZH.data);
 	heavyDBZH.data.setPhysicalScale(0.0, 1.0);
 // DBZH / hail
-	PlainData<PolarDst> & hailDBZH = dstProduct.get("DBZH_HAIL");
+	PlainData<PolarDst> & hailDBZH = dstProduct.getData("DBZH_HAIL");
 	qmap.setQuantityDefaults(hailDBZH, "PROB");
 	stepsoid.functor.set(dbzRange.max, +5.0);
 	stepsoid.process(srcDBZH.data, hailDBZH.data);
 
 	// ZDR
 	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData("ZDR");
-	PlainData<PolarDst>  & heavyZDR = dstProduct.get("ZDR_FUZZY");
+	PlainData<PolarDst>  & heavyZDR = dstProduct.getData("ZDR_FUZZY");
 	qmap.setQuantityDefaults(heavyZDR, "PROB");
 
 	if (srcZDR.data.isEmpty()){
@@ -135,7 +135,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	// KDP
 	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
-	PlainData<PolarDst>  & heavyKDP = dstProduct.get("KDP_FUZZY");
+	PlainData<PolarDst>  & heavyKDP = dstProduct.getData("KDP_FUZZY");
 	qmap.setQuantityDefaults(heavyKDP, "PROB");
 
 	if (srcKDP.data.isEmpty()){
@@ -151,7 +151,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	}
 
 	// KDP x DBZH
-	PlainData<PolarDst> & heavyKDPxDBZH = dstProduct.get("KDPxDBZH_FUZZY");
+	PlainData<PolarDst> & heavyKDPxDBZH = dstProduct.getData("KDPxDBZH_FUZZY");
 	qmap.setQuantityDefaults(heavyKDPxDBZH, "PROB");
 	heavyKDPxDBZH.setGeometry(geometry);
 	drain::image::BinaryFunctorOp<MultiplicationFunctor> mul;
