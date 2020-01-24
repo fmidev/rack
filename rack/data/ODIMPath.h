@@ -28,8 +28,9 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef BASE_ODIM_STRUCT
-#define BASE_ODIM_STRUCT
+#ifndef ODIM_PATH
+#define ODIM_PATH
+
 
 #include <ostream>
 //#include <cmath>
@@ -71,14 +72,13 @@ namespace rack {
 
 class ODIMPathElem  {
 
-public: // from ODIM.h
-
+public:
 
 	typedef drain::Flags flag_t;
 	typedef drain::Flags::dict_t dict_t;
 
-	/// In H5, "groups" containers of data corresponding to "directories" or "folders" in Unix and Windows.
-	//typedef unsigned int group_t;
+	/// In H5, "groups" correspond to "directories" or "folders" in Unix and Windows.
+
 	typedef drain::Flags::value_t group_t;
 
 	/// None (undefined)
@@ -150,42 +150,38 @@ public: // from ODIM.h
 	static inline
 	bool isQuality(group_t group){
 		return (group == QUALITY);
-		//return (group & IS_QUALITY) == IS_QUALITY;
 	}
-
-	//typedef std::map<group_t, std::string> dict_t;
-
-	//static	const flag_t & getFlags();
 
 
 	static
 	const dict_t & getDictionary();
 
-	/// User defined group, name stored as a separate string.
-	// ?
-
-	//ODIMPath::
 	group_t group;
 	typedef int index_t;
+
+	// Running index of the element. Applied also as a lower limit in path matching.
 	index_t index;
 
+	// Applied only as a upper limit in path matching.
+	index_t indexMax;
+
 	inline
-	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index) {  // root=NONE
+	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index), indexMax(index) {  // root=NONE
 	}
 
 	inline
-	ODIMPathElem(const std::string &s){
-		set(s);
-	}
-
-	inline
-	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index) {
+	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index), indexMax(e.indexMax) {
 		if (e.group == OTHER)
 			str = e.str;
 	}
 
 	inline
-	ODIMPathElem(const char *s){
+	ODIMPathElem(const std::string &s) : group(ROOT), index(0), indexMax(0){
+		set(s);
+	}
+
+	inline
+	ODIMPathElem(const char *s): group(ROOT), index(0), indexMax(0) {
 		set(s);
 	}
 
@@ -204,23 +200,24 @@ public: // from ODIM.h
 	}
 
 
-	/// Redirects to set(const std::string &) .
+	/// Calls set(const std::string &) .
 	/**
 	 *  \param  s - string corresponding a path element.
 	 */
-
 	inline
 	ODIMPathElem & operator=(const char *s){
 		set(s);
 		return *this;
 	}
 
+	/// The fundamental assignment operator
 	inline
 	bool set(group_t g, index_t i = 0){
 		group = g;
 		index = i;
+		indexMax = i; // not relevant, or check
 		if ((i>0) && !isIndexed(g)){
-			drain::Logger mout("ODIMPath", __FUNCTION__);
+			drain::Logger mout(__FUNCTION__, __FILE__);
 			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
 			return false;
 		}
@@ -316,12 +313,6 @@ public: // from ODIM.h
 		return str;
 	}
 
-	// TODO: Returns name
-	/**
-	 *   Uses "str" field as a temp storage.
-	 */
-	//const std::string & getStr() const;
-
 	/// Returns standard name. Does not check if type is OTHER.
 	static
 	const std::string & getKey(group_t g);
@@ -331,6 +322,9 @@ public: // from ODIM.h
 	const std::string & getKey() const {
 		return getKey(this->group);
 	}
+
+	/// Test if the elem has the same group, and elem.index is within [index,indexMax].
+	bool test(const ODIMPathElem & elem) const;
 
 protected:
 
@@ -382,6 +376,8 @@ struct ODIMPathLess {
 	// Main function
 	bool operator()(const ODIMPathElem & p1, const ODIMPathElem & p2) const {
 
+		return (p1<p2);
+		/*
 		if (p1.group < p2.group){
 			return true;
 		}
@@ -398,6 +394,7 @@ struct ODIMPathLess {
 		}
 		// e.g. WHAT == WHAT
 		return false;
+		*/
 	}
 
 };  // end class

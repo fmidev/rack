@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/util/Log.h>
+#include <drain/util/TextReader.h>
 
 #include "ODIMPath.h"
 
@@ -74,22 +75,21 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 		dict.add("", ROOT);
 		dict.add("dataset", DATASET);
 
-		// NOTE: when searching for "data", DATA will be found (first) and returned
-		dict.add("data", DATA);
-		// NOTE: when searching for ARRAY, "data" will be found (first) and returned
-		dict.add("data", ARRAY);
-		dict.add("array", ARRAY);
-		//dict.first["array"] = ARRAY;
-		//dict.second[ARRAY] = "data";
+		dict.add("data",    ARRAY); // new
 
-		//dict.add("data", ARRAY);
+		// NOTE: when searching for "data", DATA will be found (first) and returned
+		dict.add("data",    DATA);
+		// NOTE: when searching for ARRAY, "data" will be found (first) and returned
+		// dict.add("data",    ARRAY);
+		dict.add("array",   ARRAY);
+
 		dict.add("quality", QUALITY);
-		dict.add("OTHER", OTHER);
-		dict.add("what", WHAT);
-		dict.add("where", WHERE);
-		dict.add("how", HOW);
+		dict.add("OTHER",   OTHER);
+		dict.add("what",    WHAT);
+		dict.add("where",   WHERE);
+		dict.add("how",     HOW);
 		dict.add("palette", PALETTE);
-		dict.add("legend", LEGEND);
+		dict.add("legend",  LEGEND);
 	}
 
 	return dict;
@@ -108,7 +108,9 @@ bool ODIMPathElem::set(const std::string &s){
 	bool INDEXED = false; // to separate data and data1
 	this->str = "";
 
+
 	/// Empty string is identified with root (rethink?)
+	/*
 	if (s.empty()){
 		this->group = ROOT;
 		//std::cout << "root" << '\n';
@@ -118,8 +120,38 @@ bool ODIMPathElem::set(const std::string &s){
 		this->group = ARRAY; // ODIM
 		return true;
 	}
+	*/
+
+	static const dict_t & d = getDictionary(); // New here
+
+	// TEST1: equality
+	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
+		if (s == it->first) {
+			this->group = it->second;
+			return true;
+		}
+	}
 
 	// Extract prefix (alphabets) and index (digits)
+	std::string::const_iterator it = s.begin();
+	while (it != s.end()){
+		if ((*it>='0') && (*it<='9')){
+			INDEXED = true;
+			std::stringstream sstr(std::string(it, s.end()));
+			if (drain::TextReader::scanSegmentToValue(sstr, ":", this->index)){
+				sstr >> this->indexMax;
+				std::cout << "KUKKUU: " << this->index << "..." << this->indexMax << std::endl;
+			}
+			else
+				this->indexMax = this->index;
+			break;
+		}
+		++it;
+	}
+
+	const std::string prefix(s.begin(), it);
+
+	/*
 	size_t i = 0;
 	while(i<s.length()){
 		if ((s.at(i)>='0') && (s.at(i)<='9')){
@@ -132,24 +164,23 @@ bool ODIMPathElem::set(const std::string &s){
 	}
 	/// The non-numeric prefix
 	const std::string prefix(s.substr(0, i));
+	*/
 
 	//std::cout << "  raw: " << prefix << ':' << this->index << '\t';
 
 	/// Check if matches predefined group types
-	const dict_t & d = getDictionary();
 	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
-		// it->first  : group id [enum code]
-		// it->second : group prefix [string]
-		if ((prefix == it->first) && (INDEXED == isIndexed(it->second))) {
-			this->group = it->second;
-			// std::cout << ", code: " << (int)this->group << '\n';
-			return true;
+		// it->second : group id [enum code]
+		if (INDEXED == isIndexed(it->second)) {
+			// it->first  : group prefix [string]
+			if (prefix == it->first) {
+				this->group = it->second;
+				return true;
+			}
 		}
 	}
 
-	//std::cout << "OTHER: " << prefix << (int)IS_INDEXED << '\n';
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
-	//this->str = prefix;
 	this->str = s;
 
 	mout.note() << "non-standard path element: " << *this << mout.endl;
@@ -197,12 +228,32 @@ char ODIMPathElem::getCharCode() const { // TODO: make faster?
 	}
 	else
 		return prefix.at(0);
-	/*
-	if (ODIMPath::isIndexed(group))
-		return drain::StringTools::upperCase(prefix.at(0));
-	else
-		return prefix.at(0);
-	*/
+
+}
+
+bool ODIMPathElem::test(const ODIMPathElem & elem) const {
+
+	if (elem.group != this->group){
+		return false;
+	}
+	else if (elem.isIndexed()){
+		// same group, indexed (DATASET, DATA, QUALITY)
+		std::cout <<  this->index  << '(' << elem.index << ')' << this->indexMax << '!';
+		if (elem.index < this->index){
+			std::cout << "below " <<  this->index  << '!';
+			return false;
+		}
+		else if (elem.index > this->indexMax){
+			std::cout << "above " <<  this->indexMax << '!';
+			return false;
+		}
+		else
+			return true;
+	}
+	else { // same group, not indexed (WHAT, WHERE, HOW, ARRAY)
+		return true;
+	}
+
 }
 
 bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){
@@ -211,13 +262,12 @@ bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){
 		return false;
 	}
 	else { // same group
-		//if (ODIMPath::isIndexed(e1.group))
 		if (e1.isIndexed())
 			return (e1.getIndex() == e2.getIndex());
 		else if (e1.group == ODIMPathElem::OTHER)
 			return (e1.getPrefix() == e2.getPrefix());
 		else
-			return false;
+			return (e1.group == e2.group);
 	}
 }
 
@@ -225,10 +275,30 @@ bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){
 
 bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 
+
+	if (e1.group < e2.group){
+		return true;
+	}
+	else if (e1.group > e2.group){
+		return false;
+	}
+	else { // e1.group == e2.group
+		if (e1.isIndexed()){
+			return (e1.getIndex() < e2.getIndex());
+		}
+		else if (e1.group == ODIMPathElem::OTHER){ // e1.is(ODIMPathElem::OTHER)
+			//return e1.str < e1.str;
+			return (const std::string &)e1 < (const std::string &)e2 ;
+		}
+	}
+	// e.g. WHAT == WHAT
+	return false;
+
+	/*
 	if (e1.group != e2.group){
 		return (e1.group < e2.group);
 	}
-	else { //if (e1.group == e2.group){
+	else { //  (e1.group == e2.group)
 		if (e1.isIndexed()){
 			return (e1.getIndex() < e2.getIndex());
 		}
@@ -240,6 +310,7 @@ bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 			return false; // equal?
 
 	}
+	*/
 }
 
 // Experimental naming.

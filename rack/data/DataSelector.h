@@ -60,7 +60,7 @@ namespace rack {
 class DataSelector : public drain::BeanLike {
 public:
 
-
+	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
 			unsigned int index=0, unsigned int count = 1000,
 			double elangleMin = -90.0, double elangleMax = 90.0);
@@ -106,8 +106,9 @@ public:
 	/**
 	 *  \deprecated Use \c dataset and \c data parameters instead
 	 */
-	std::string path;
+	std::string path; // temporary!
 
+	ODIMPath pathMatcher;
 
 	/// Restore default values.
 	/**
@@ -152,6 +153,11 @@ public:
 	void getPaths(const Hi5Tree & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
 		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
 	}
+
+	// Nuevo
+	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const;
+
+
 
 	template <class T>
 	inline

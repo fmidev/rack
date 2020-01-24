@@ -63,11 +63,12 @@ void TextReader::skipChars(std::istream & istr, const std::string chars){
 }
 
 
-//std::string
-void TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
+
+bool TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	//size_t count = 0;
 	int c;
 
 	// NOTE: in case of istringstream, while(!istr.eof()) or while(istr) do not work
@@ -75,7 +76,7 @@ void TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 
 		c = istr.get(); //istr.peek(); // no eof triggered until this
 		if (istr.eof())
-			return;
+			return false;
 
 		if (c == '\\'){
 			mout.warn() << "special char: " << c << mout.endl; // todo: interpret \t, \n ?
@@ -84,17 +85,20 @@ void TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 			c = istr.get();
 			if (!istr){
 				//mout.warn() << "str=" << ostr.str() << mout.endl;
-				mout.warn() << "premature file end" << mout.endl; // , str=" << ostr.str()
-				return; // ostr.str();
+				mout.warn() << "premature end of file" << mout.endl; // , str=" << ostr.str()
+				return false; // ostr.str();
 			}
 			ostr.put(c);
+			//++count;
 			continue;
 		}
 
-		if (endChars.find(c) == std::string::npos)
+		if (endChars.find(c) == std::string::npos){
 			ostr.put(c);
-		else // does not swallow endChars! (maybe comma)
-			return ;
+			//++count;
+		}
+		else // end char found! Note: does not swallow endChars (maybe comma)
+			return true;
 
 		//istr.get();
 	}
@@ -102,10 +106,18 @@ void TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 	//mout.warn() << "premature file end, str=" << ostr.str() << mout.endl;
 	mout.warn() << "premature end of file, last char=" << c << mout.endl;
 
-	return; // ostr.str();
+	return false; // ostr.str();
 }
 
 
+// Specified implementation
+template <>
+bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst){
+	std::stringstream sstr;
+	bool result = scanSegment(istr, endChars, sstr);
+	dst.assign(sstr.str());
+	return result;
+}
 
 
 } // drain::

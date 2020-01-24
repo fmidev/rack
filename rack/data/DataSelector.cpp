@@ -101,6 +101,9 @@ void DataSelector::init() {
 
 void DataSelector::reset() {
 
+	path = "";
+	pathMatcher.clear();
+
 	quantity = "";
 
 	index = 0;
@@ -121,7 +124,6 @@ void DataSelector::reset() {
 	groupStr = ""; //dataset:data:quality"; // or groups.toStr?
 	groups.value = (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
-	path = "";
 
 }
 
@@ -131,9 +133,11 @@ void DataSelector::update(){
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!path.empty()){
-		convertRegExpToRanges(path);
-		mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
+		pathMatcher.set(path);
+		//convertRegExpToRanges(path);
+		//mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
+
 
 	if (!groupStr.empty()){
 		groups   = groupStr;  // update flags
@@ -286,6 +290,11 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 	}
 }
 
+void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const {
+
+	drain::Logger mout(__FUNCTION__, getName());
+
+}
 
 
 bool DataSelector::getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {

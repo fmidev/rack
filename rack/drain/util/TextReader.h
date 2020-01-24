@@ -64,8 +64,17 @@ public:
 	}
 
 	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
+	/**
+	 *  \return - \c true if end char was found; \c false at end-of-file
+	 */
 	static
-	void scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
+	bool scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
+
+	//static	bool scanSegment(std::istream & istr, const std::string & endChars, std::strin & ostr);
+
+	template <class T>
+	static
+	bool scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst);
 
 	/// Read input stream until a char not in \c skipChars is encountered.
 	static
@@ -77,6 +86,20 @@ public:
 	}
 
 };
+
+// Specified implementation
+template <>
+bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst);
+
+// Default implementation for basic (numeric) types
+template <class T>
+bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst){
+	std::stringstream sstr;
+	bool result = scanSegment(istr, endChars, sstr);
+	sstr >> dst;
+	return result;
+}
+
 
 
 } // ::drain
