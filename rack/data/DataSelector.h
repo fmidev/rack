@@ -45,6 +45,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
 
+#include "ODIMPathMatcher.h"
+
+
 namespace rack {
 
 
@@ -108,7 +111,7 @@ public:
 	 */
 	std::string path; // temporary!
 
-	ODIMPath pathMatcher;
+	ODIMPathMatcher pathMatcher;
 
 	/// Restore default values.
 	/**

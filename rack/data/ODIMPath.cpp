@@ -30,7 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/util/Log.h>
-#include <drain/util/TextReader.h>
 
 #include "ODIMPath.h"
 
@@ -98,6 +97,10 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 
 
 
+void ODIMPathElem::extractIndex(const std::string &s){
+	std::stringstream sstr(s);
+	sstr >> this->index;
+}
 
 bool ODIMPathElem::set(const std::string &s){
 
@@ -136,7 +139,9 @@ bool ODIMPathElem::set(const std::string &s){
 	std::string::const_iterator it = s.begin();
 	while (it != s.end()){
 		if ((*it>='0') && (*it<='9')){
+			extractIndex(std::string(it, s.end()));
 			INDEXED = true;
+			/*
 			std::stringstream sstr(std::string(it, s.end()));
 			if (drain::TextReader::scanSegmentToValue(sstr, ":", this->index)){
 				sstr >> this->indexMax;
@@ -144,6 +149,7 @@ bool ODIMPathElem::set(const std::string &s){
 			}
 			else
 				this->indexMax = this->index;
+			*/
 			break;
 		}
 		++it;
@@ -194,7 +200,6 @@ const std::string & ODIMPathElem::getKey(group_t group)  {
 	static const dict_t & d = getDictionary();
 
 	const dict_t::const_iterator it = d.findByValue(group);
-	//const dict_t::const_iterator it = d.find(group); // should be always found, if group != OTHER
 	if (it != d.end()){
 		return it->first;
 	}
@@ -231,30 +236,19 @@ char ODIMPathElem::getCharCode() const { // TODO: make faster?
 
 }
 
-bool ODIMPathElem::test(const ODIMPathElem & elem) const {
+std::ostream & ODIMPathElem::toOStr(std::ostream & sstr) const {
 
-	if (elem.group != this->group){
-		return false;
-	}
-	else if (elem.isIndexed()){
-		// same group, indexed (DATASET, DATA, QUALITY)
-		std::cout <<  this->index  << '(' << elem.index << ')' << this->indexMax << '!';
-		if (elem.index < this->index){
-			std::cout << "below " <<  this->index  << '!';
-			return false;
-		}
-		else if (elem.index > this->indexMax){
-			std::cout << "above " <<  this->indexMax << '!';
-			return false;
-		}
-		else
-			return true;
-	}
-	else { // same group, not indexed (WHAT, WHERE, HOW, ARRAY)
-		return true;
-	}
+		/// Step 1: prefix (by group type)
+		sstr << getPrefix();
 
-}
+		/// Step 2: index
+		if (isIndexed(this->group))
+			sstr << this->index;
+		//sstr << '{' << this->index << '}';
+
+		return sstr;
+	};
+
 
 bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){
 

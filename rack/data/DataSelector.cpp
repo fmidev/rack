@@ -133,11 +133,20 @@ void DataSelector::update(){
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!path.empty()){
-		pathMatcher.set(path);
-		//convertRegExpToRanges(path);
-		//mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
+		//pathMatcher.set(path);
+		convertRegExpToRanges(path);
+		mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
+	else {
 
+		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET);
+		pathMatcher.back().index    = dataset.min;
+		pathMatcher.back().indexMax = dataset.max;
+		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA);
+		pathMatcher.back().index    = data.min;
+		pathMatcher.back().indexMax = data.max;
+		mout.warn() << "matcher: " << pathMatcher << '|' << *this << mout.endl;
+	}
 
 	if (!groupStr.empty()){
 		groups   = groupStr;  // update flags

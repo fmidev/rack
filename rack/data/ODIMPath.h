@@ -162,26 +162,24 @@ public:
 	// Running index of the element. Applied also as a lower limit in path matching.
 	index_t index;
 
-	// Applied only as a upper limit in path matching.
-	index_t indexMax;
 
 	inline
-	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index), indexMax(index) {  // root=NONE
+	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index){ //, indexMax(index) {  // root=NONE
 	}
 
 	inline
-	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index), indexMax(e.indexMax) {
+	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index){ // , indexMax(e.indexMax) {
 		if (e.group == OTHER)
 			str = e.str;
 	}
 
 	inline
-	ODIMPathElem(const std::string &s) : group(ROOT), index(0), indexMax(0){
+	ODIMPathElem(const std::string &s) : group(ROOT), index(0){ //, indexMax(0){
 		set(s);
 	}
 
 	inline
-	ODIMPathElem(const char *s): group(ROOT), index(0), indexMax(0) {
+	ODIMPathElem(const char *s): group(ROOT), index(0){ //, indexMax(0) {
 		set(s);
 	}
 
@@ -211,11 +209,11 @@ public:
 	}
 
 	/// The fundamental assignment operator
-	inline
+	virtual inline
 	bool set(group_t g, index_t i = 0){
 		group = g;
 		index = i;
-		indexMax = i; // not relevant, or check
+		//indexMax = i; // not relevant, or check
 		if ((i>0) && !isIndexed(g)){
 			drain::Logger mout(__FUNCTION__, __FILE__);
 			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
@@ -232,6 +230,7 @@ public:
 	 *
 	 *   \return - true if a valid ODIM path element was created
 	 */
+	virtual
 	bool set(const std::string &s);
 
 	/// Abbreviation of (group == NONE)
@@ -261,13 +260,16 @@ public:
 	}
 	*/
 
-	/// Abbreviation of (group == NONE)
+	/// Returns true, if group is DATASET, DATA or QUALITY
 	inline
 	bool isIndexed() const {
 		return isIndexed(this->group);
 	}
 
 	/// Checks if the element belongs to any of groups given.
+	/*
+	 *  Warning: DATA and DATASET "belong" to quality?... (QUALITY = DATASET | DATA )
+	 */
 	inline
 	bool belongsTo(int groupFilter) const {
 		// Notice: filter must fully "cover" group bits (especially because QUALITY = DATASET | DATA )
@@ -290,19 +292,19 @@ public:
 
 	char getCharCode() const;
 
+	/// Debugging/logging. Returns standard name. Does not check if type is OTHER.
+	static
+	const std::string & getKey(group_t g);
+
+	/// Debugging/logging. Returns standard name. Does not check if type is OTHER.
+	inline
+	const std::string & getKey() const {
+		return getKey(this->group);
+	}
+
 	/// Writes the name, including the index, to output stream.
-	std::ostream & toOStr(std::ostream & sstr) const {
-
-		/// Step 1: prefix (by group type)
-		sstr << getPrefix();
-
-		/// Step 2: index
-		if (isIndexed(this->group))
-			sstr << this->index;
-		//sstr << '{' << this->index << '}';
-
-		return sstr;
-	};
+	virtual
+	std::ostream & toOStr(std::ostream & sstr) const;
 
 	operator const std::string &() const {
 		if (this->group != OTHER){
@@ -313,21 +315,13 @@ public:
 		return str;
 	}
 
-	/// Returns standard name. Does not check if type is OTHER.
-	static
-	const std::string & getKey(group_t g);
-
-	/// Returns standard name. Does not check if type is OTHER.
-	inline
-	const std::string & getKey() const {
-		return getKey(this->group);
-	}
-
-	/// Test if the elem has the same group, and elem.index is within [index,indexMax].
-	bool test(const ODIMPathElem & elem) const;
 
 protected:
 
+	/// Given a string starting with a numeral, try to extract the index.
+	//  In ODIMPathMatcher, an index range will be extracted.
+	virtual
+	void extractIndex(const std::string &s);
 
 	mutable
 	std::string str;
