@@ -98,16 +98,14 @@ public:
 
 
 	/// Match the leading part of \c path , if \c matcher starts with root. Else, match the trailing part.
-	static
-	bool match(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path);
+	bool match(const rack::ODIMPath & path) const;
 
 	/// Match leading part of \c path.
-	static
-	bool matchHead(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path);
+	// const rack::ODIMPathMatcher & matcher,
+	bool matchHead(const rack::ODIMPath & path) const;
 
 	/// Match trailing part of \c path.
-	static
-	bool matchTail(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path);
+	bool matchTail(const rack::ODIMPath & path) const;
 
 protected:
 

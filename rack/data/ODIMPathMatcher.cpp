@@ -46,9 +46,13 @@ void ODIMPathElemMatcher::extractIndex(const std::string &s){
 	this->indexMax = 0xffff;
 	if (drain::TextReader::scanSegmentToValue(sstr, ":", this->index)){
 		//this->indexMax = this->index;
-		sstr >> this->indexMax;
+		sstr >> this->indexMax; // can this fail? For example with "1:"
 		//std::cout << "KUKKUU: " << this->index << "..." << this->indexMax << std::endl;
 	}
+	else {
+		this->indexMax = this->index;
+	}
+
 
 	if (this->indexMax < this->index){
 		mout.warn() << "indexMax(" << this->indexMax << ") < index(" << this->index << ')';
@@ -103,27 +107,29 @@ std::ostream & ODIMPathElemMatcher::toOStr(std::ostream & sstr) const {
 	return sstr;
 }
 
-bool ODIMPathMatcher::match(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path){
+// const rack::ODIMPathMatcher & matcher
+bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	if (matcher.empty())
+	if (this->empty())
 		return true;
-	else if (matcher.front().isRoot())
-		return matchHead(matcher, path);
+	else if (this->front().isRoot())
+		return matchHead(path);
 	else
-		return matchTail(matcher, path);
+		return matchTail(path);
 }
 
 
-bool ODIMPathMatcher::matchHead(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path){
+//const rack::ODIMPathMatcher & matcher
+bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug() << "matcher: " << matcher << mout.endl;
+	mout.debug() << "matcher: " << *this << mout.endl;
 	mout.debug() << "path:    " << path    << mout.endl;
 
-	rack::ODIMPathMatcher::const_iterator mit = matcher.begin();
+	rack::ODIMPathMatcher::const_iterator mit = this->begin();
 	if (mit->isRoot())
 		++mit;
 
@@ -131,7 +137,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPathMatcher & matcher, const rac
 	if (pit->isRoot())
 		++pit;
 
-	while ((mit!=matcher.end()) && (pit!=path.end())){
+	while ((mit!=this->end()) && (pit!=path.end())){
 		mout.debug(1) << *mit << ":\t" << *pit;
 		if (!mit->test(*pit)){
 			mout << '*' << mout.endl;
@@ -141,20 +147,20 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPathMatcher & matcher, const rac
 		++mit, ++pit;
 	}
 
-	return true;
+	return (mit==this->end());
 }
 
-bool ODIMPathMatcher::matchTail(const rack::ODIMPathMatcher & matcher, const rack::ODIMPath & path){
+bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug() << "matcher: " << matcher << mout.endl;
+	mout.debug() << "matcher: " << *this << mout.endl;
 	mout.debug() << "path:    " << path    << mout.endl;
 
-	rack::ODIMPathMatcher::const_reverse_iterator mit = matcher.rbegin();
+	rack::ODIMPathMatcher::const_reverse_iterator mit = this->rbegin();
 	rack::ODIMPath::const_reverse_iterator pit = path.rbegin();
 
-	while ((mit!=matcher.rend()) && (pit!=path.rend())){
+	while ((mit!=this->rend()) && (pit!=path.rend())){
 		mout.debug(1) << *mit << ":\t" << *pit;
 		if (!mit->test(*pit)){
 			mout << '*' << mout.endl;
@@ -165,7 +171,8 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPathMatcher & matcher, const rac
 	}
 	mout << mout.endl;
 
-	return true;
+	// return true;
+	return (mit==this->rend());
 }
 
 }  // namespace rack

@@ -133,20 +133,26 @@ void DataSelector::update(){
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!path.empty()){
-		//pathMatcher.set(path);
-		convertRegExpToRanges(path);
-		mout.warn() << "converting obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
+		pathMatcher.set(path);
+		// convertRegExpToRanges(path);
+		// mout.note() << "(also) converted obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
 	else {
-
-		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET);
-		pathMatcher.back().index    = dataset.min;
-		pathMatcher.back().indexMax = dataset.max;
-		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA);
-		pathMatcher.back().index    = data.min;
-		pathMatcher.back().indexMax = data.max;
-		mout.warn() << "matcher: " << pathMatcher << '|' << *this << mout.endl;
+		pathMatcher.clear();
+		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET, dataset.min, dataset.max);
+		// pathMatcher.back().index    = dataset.min;
+		// pathMatcher.back().indexMax = dataset.max;
+		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA, data.min, data.max);
+		// pathMatcher.back().index    = data.min;
+		// pathMatcher.back().indexMax = data.max;
+		// mout.warn() << "matcher: " << pathMatcher << '|' << *this << mout.endl;
 	}
+
+	quantityRegExp.clear();
+	if (quantity.empty())
+		quantityRegExp.clear();
+	else
+		quantityRegExp.setExpression(quantity);
 
 	if (!groupStr.empty()){
 		groups   = groupStr;  // update flags
@@ -198,7 +204,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 	if (AUTO_GROUPS){
 		groups.value = defaultGroups; //(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	}
-	*/
+	 */
 
 	if (data.max == 0){
 		/// No DATA indices nor quantities specified, hence only DATASET should be returned?
@@ -299,9 +305,74 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 	}
 }
 
-void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const {
+void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, getName());
+
+	if (path.empty())
+		mout.warn() << "matcher: " << pathMatcher << mout.endl;
+
+	// Current search point
+	const Hi5Tree & s = src(path); // =src, if path empty
+
+	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
+
+		//ODIMPathElem child(it->first);
+		const ODIMPathElem & currentElem = it->first;
+		//mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") include=" << currentElem.belongsTo(groupFilter) << mout.endl;
+		mout.debug(3) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
+
+
+		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
+			if (!dataset.contains(currentElem.index)){
+				mout.warn() << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
+				continue;
+			}
+			const hi5::NodeHi5 & node = it->second.data;
+			const drain::image::Image & d = node.dataSet;
+			if (d.properties.hasKey("where:elangle")){
+				if (!elangle.contains(d.properties["where:elangle"])){
+					mout.debug() << "outside elangle range"<< mout.endl;
+					continue;
+				}
+			}
+		}
+		else if (currentElem.is(ODIMPathElem::DATA)){ // what about quality?
+
+			if (!data.contains(currentElem.index)){
+				// mout.warn() << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
+				continue;
+			}
+
+			const hi5::NodeHi5 & node = it->second.data;
+			const drain::image::Image & d = node.dataSet;
+
+			if (d.properties.hasKey("what:quantity")){
+				//mout.warn() << "data quantity  [" <<  d.properties["what:quantity"] << "]" << mout.endl;
+				if (!quantityRegExp.test(d.properties["what:quantity"])){
+					mout.warn() << "data quantity  [" <<  d.properties["what:quantity"] << "], skipping" << mout.endl;
+					continue;
+				}
+
+			}
+
+		}
+
+		ODIMPath p(path);
+		p << currentElem;
+
+		if (pathMatcher.match(p)){
+			mout.warn() << "add  " << p << mout.endl;
+			addPathT(pathContainer, p);
+		}
+		else {
+			//mout.note() << "skip " << p << mout.endl;
+		}
+
+		/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
+		getPaths3(src, pathContainer, groupFilter, p); // note: original "root" src
+
+	}
 
 }
 
@@ -411,7 +482,7 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 
 void DataSelector::convertRegExpToRanges(const std::string & param){
 
-	drain::Logger mout(__FUNCTION__, getName());
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	static drain::RegExp rangeRE("^\\[?([+-]?[[:digit:]]+)(:([+-]?[[:digit:]]+))?\\]?$");
 
@@ -419,7 +490,7 @@ void DataSelector::convertRegExpToRanges(const std::string & param){
 
 	if (datasetRE.execute(param)==0){
 
-		mout.warn() << "'param=" << param << "' (with regexps) is deprecating, use form 'dataset=...' instead" << mout.endl;
+		mout.debug() << "'param=" << param << "' (with regexps) is deprecating, use form 'dataset=...' instead" << mout.endl;
 		//mout.note() << "dataset result" << drain::StringTools::join(datasetRE.result, '|') << mout.endl;
 
 		const std::string & datasetIndex = datasetRE.result[1];

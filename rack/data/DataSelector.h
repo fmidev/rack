@@ -95,6 +95,8 @@ public:
 
 protected:
 
+	drain::RegExp quantityRegExp;
+
 	std::string  groupStr; // converted to 'groups' with update.
 
 	virtual
@@ -158,7 +160,7 @@ public:
 	}
 
 	// Nuevo
-	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const;
+	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter, const ODIMPath & path = ODIMPath()) const;
 
 
 

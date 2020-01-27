@@ -144,6 +144,12 @@ public:
 		hop.setParameters(this->getParameters());
 
 		hop.dataSelector.setParameters(resources.select);
+
+		ODIMPathList paths;
+		hop.dataSelector.getPaths3(currentHi5, paths, hop.dataSelector.groups);
+
+		return;
+
 		resources.select.clear();
 
 		hop.setEncodingRequest(resources.targetEncoding);

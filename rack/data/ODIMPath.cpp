@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 #include <drain/util/Log.h>
 
@@ -62,7 +62,7 @@ const ODIMPathElem::flag_t & ODIMPathElem::getFlags(){
 	return flags;
 
 }
-*/
+ */
 
 
 const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
@@ -123,7 +123,7 @@ bool ODIMPathElem::set(const std::string &s){
 		this->group = ARRAY; // ODIM
 		return true;
 	}
-	*/
+	 */
 
 	static const dict_t & d = getDictionary(); // New here
 
@@ -138,7 +138,8 @@ bool ODIMPathElem::set(const std::string &s){
 	// Extract prefix (alphabets) and index (digits)
 	std::string::const_iterator it = s.begin();
 	while (it != s.end()){
-		if ((*it>='0') && (*it<='9')){
+		//if ((*it>='0') && (*it<='9')){
+		if ((*it<'a') || (*it>'z')){ // to detect ':' if path elem mathcing
 			extractIndex(std::string(it, s.end()));
 			INDEXED = true;
 			/*
@@ -149,7 +150,7 @@ bool ODIMPathElem::set(const std::string &s){
 			}
 			else
 				this->indexMax = this->index;
-			*/
+			 */
 			break;
 		}
 		++it;
@@ -157,22 +158,6 @@ bool ODIMPathElem::set(const std::string &s){
 
 	const std::string prefix(s.begin(), it);
 
-	/*
-	size_t i = 0;
-	while(i<s.length()){
-		if ((s.at(i)>='0') && (s.at(i)<='9')){
-			std::stringstream sstr(s.substr(i));
-			sstr >> this->index;
-			INDEXED = true;
-			break;
-		}
-		++i;
-	}
-	/// The non-numeric prefix
-	const std::string prefix(s.substr(0, i));
-	*/
-
-	//std::cout << "  raw: " << prefix << ':' << this->index << '\t';
 
 	/// Check if matches predefined group types
 	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
@@ -238,16 +223,16 @@ char ODIMPathElem::getCharCode() const { // TODO: make faster?
 
 std::ostream & ODIMPathElem::toOStr(std::ostream & sstr) const {
 
-		/// Step 1: prefix (by group type)
-		sstr << getPrefix();
+	/// Step 1: prefix (by group type)
+	sstr << getPrefix();
 
-		/// Step 2: index
-		if (isIndexed(this->group))
-			sstr << this->index;
-		//sstr << '{' << this->index << '}';
+	/// Step 2: index
+	if (isIndexed(this->group))
+		sstr << this->index;
+	//sstr << '{' << this->index << '}';
 
-		return sstr;
-	};
+	return sstr;
+}
 
 
 bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){
@@ -304,7 +289,7 @@ bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 			return false; // equal?
 
 	}
-	*/
+	 */
 }
 
 // Experimental naming.
