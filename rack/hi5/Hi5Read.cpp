@@ -367,10 +367,22 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 		mout.error() << "opening memspace failed at: " << path << mout.endl;
 		//throw std::runtime_error(_func + " opening memspace failed at " + path);
 
-	//H5Dget_type()
 
-	const hsize_t &width  = dims[1];  // NEW
-	const hsize_t &height = dims[0];  // NEW
+	/// For reading images with several channels
+	/*
+	 *  single-channel: dims = {height, width}
+	 *   multi-channel: dims = {channels,height, width}
+	 */
+	const bool MULTICHANNEL = (dims[2] > 0);
+	if (MULTICHANNEL){
+		mout.warn() << "reading multidimensional not fully supported, path=" << path << mout.endl;
+	}
+
+	const hsize_t channels = MULTICHANNEL ? dims[0] : 1;        // NEW
+	const hsize_t height =   MULTICHANNEL ? dims[1] : dims[0];  // NEW
+	const hsize_t width  =   MULTICHANNEL ? dims[2] : dims[1];  // NEW
+
+
 	//std::cerr << width << "x" << height << '\n';
 
 	//H5Tequal()
@@ -381,29 +393,29 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 	// TODO: iterate, use Type::
 	if (H5Tequal(datatype, H5T_NATIVE_UCHAR) ){
-		image.initialize(typeid(unsigned char), width,height);
+		image.initialize(typeid(unsigned char), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_CHAR)){
-		image.initialize(typeid(char), width,height);
+		image.initialize(typeid(char), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_USHORT)){
-		image.initialize(typeid(unsigned short), width,height);
+		image.initialize(typeid(unsigned short), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_STD_I16LE) && (sizeof(signed short) == 2) ){ // H5T_STD_I16LE
-		image.initialize(typeid(signed short), width,height);
+		image.initialize(typeid(signed short), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_INT)){
-		image.initialize(typeid(int), width,height);
+		image.initialize(typeid(int), width,height, channels);
 	}
 	/// Added 2016 for sclutter
 	else if (H5Tequal(datatype, H5T_NATIVE_LONG)){
-		image.initialize(typeid(long int), width,height);
+		image.initialize(typeid(long int), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_FLOAT)){
-		image.initialize(typeid(float), width,height);
+		image.initialize(typeid(float), width,height, channels);
 	}
 	else if (H5Tequal(datatype, H5T_NATIVE_DOUBLE)){
-		image.initialize(typeid(double), width,height);
+		image.initialize(typeid(double), width,height, channels);
 	}
 	// #ifdef  STDC99
 	// #endif
@@ -417,18 +429,20 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	}
 
 	//image.initialize(typeid(char>(1,1); // FOR valgrind
-
+	mout.debug(1) << "allocated image: " << image << mout.endl;
 
     // koe kooe
 	if ((image.getGeometry().getVolume() > 0) && typeOk){
 		mout.debug(2) << "calling H5Dread" << mout.endl;
 		H5O_info_t info;
 		H5Oget_info(dataset, &info);
-		//status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, &(image.buffer[0])); // valgrind?
+
 		status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, (void *)image.getBuffer()); // valgrind?
 		if (status < 0)
 			mout.warn() << "H5Dread() failed " << mout.endl;
+
 		image.setName(path);
+		mout.warn() << "DEBUG " << image << mout.endl;
 		mout.debug(2) << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
 		mout << '*' << image.getChannelCount() << '=' << image.getGeometry().getVolume() << '\n';
 		mout << '*' << image.getGeometry() << '\n';

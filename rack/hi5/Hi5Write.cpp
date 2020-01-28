@@ -209,42 +209,112 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 }
 
 
+hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims){
+
+	drain::Logger mout(__FUNCTION__, __FILE__ );
+
+	hsize_t width    = g.getWidth();
+	hsize_t height   = g.getHeight();
+	hsize_t channels = g.getChannelCount();
+
+	if (g.getArea() == 0){
+		mout.warn() << "empty image, geometry: " << g << mout.endl;
+		return 0;
+	}
+
+	const hsize_t rank = (channels <= 1) ? 2 : 3;
+
+	dims.resize(rank);
+	chunkDims.resize(rank);
+
+	switch (channels){
+		case 0:
+			mout.warn() << "unsupported image geometry: " << g << mout.endl;
+			return 0;
+		case 1:
+			dims.resize(2);
+			dims[0] = height;
+			dims[1] = width;
+			chunkDims.resize(2);
+			chunkDims[0] = std::min(hsize_t(20), height);
+			chunkDims[1] = std::min(hsize_t(20), width);
+			return 2;
+		default:
+			dims.resize(3);
+			dims[0] = channels;
+			dims[1] = height;
+			dims[2] = width;
+			chunkDims.resize(3);
+			chunkDims[0] = std::min(hsize_t(20), channels);
+			chunkDims[1] = std::min(hsize_t(20), height);
+			chunkDims[2] = std::min(hsize_t(20), width);
+			return 3;
+	}
+
+
+}
 
 
 //, const std::string & path
 hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const Hi5Tree::path_t & path){
 
 	// hi5::hi5monitor,
-	drain::Logger mout("Writer", __FUNCTION__ );
+	drain::Logger mout(__FUNCTION__, __FILE__ );
 
-	int status;
 
 	mout.debug(2) << ": starting, path=" << path << mout.endl;
 	mout.debug(3) << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
+	std::vector<hsize_t> dims;
+	std::vector<hsize_t> chunkDims;
+
+	const hsize_t rank = deriveDimensions(image.getGeometry(), dims, chunkDims);
+
+	if (!rank){
+		mout.error() << ": unsupported image data range, path=" << path << mout.endl;
+		return 0;
+	}
+
+	int status;
+
+
+	/*
 	/// Currently, only 1-channel data supported!
-	//const hsize_t rank = image.getChannelCount() <= 1 ? 2 : 3;
-	const hsize_t rank = 2;
+	const hsize_t rank = (image.getChannelCount() <= 1) ? 2 : 3;
+	//const hsize_t rank = 2;
 	//hsize_t dims[rank];
 	hsize_t dims[3];
 
+	/// ZLIB compression
+	//  PolarODIM recommendation: zlib compression level 6
+	const hsize_t  chunkdim2[2] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]) };
+	const hsize_t  chunkdim3[3] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]), std::min(hsize_t(20), dims[2])};
+	const hsize_t *chunkdim;
+
 	switch (rank){
 	case 3:
-		dims[2] = image.getChannelCount();
+		dims[0] = image.getChannelCount();
+		dims[1] = image.getHeight();
+		dims[2] = image.getWidth();
+		chunkdim = chunkdim3;
 		//std::cerr << "imageToH5DataSet: (Warning: range==3 experimental.)";
 		mout.warn() << "channels: " << image.getChannelCount() <<  " => rank==3 experimental, path=" << path << mout.endl;
+		break;
 		// no break
 	case 2:
-		dims[1] = image.getWidth();
 		dims[0] = image.getHeight();
+		dims[1] = image.getWidth();
+		dims[2] = 0;
+		chunkdim = chunkdim2;
 		break;
 	default:
 		mout.error() << ": unsupported image data range, path=" << path << mout.endl;
 		//throw std::runtime_error("imageToH5DataSet: unsupported image data range");
 	}
+	*/
 
-	const hid_t sid = H5Screate_simple(rank, dims, NULL);
+	const hid_t sid = H5Screate_simple(rank, &dims[0], NULL);
 	const hid_t TID = getH5NativeDataType(image.getType());
 	const hid_t tid = H5Tcopy(TID);
 
@@ -255,15 +325,14 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 
 	/// ZLIB compression
 	//  PolarODIM recommendation: zlib compression level 6
-	const hsize_t chunkdim[2] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]) };
+	//const hsize_t chunkdim[2] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]) };
 	/*if (dims[0]*dims[1] < 20*20){
 		chunkdim[0] = dims[0];
 		chunkdim[1] = dims[1];
 	}
 	 */
-
-
-	status = H5Pset_chunk(pid, 2, chunkdim);
+	//status = H5Pset_chunk(pid, 2, chunkdim);
+	status = H5Pset_chunk(pid, rank, &chunkDims[0]);
 	if (status < 0)
 		mout.warn() << ": H5Pset_chunk failed, path=" << path << mout.endl;
 

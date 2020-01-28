@@ -145,6 +145,18 @@ public:
 	// deprecated (exclude from save marker)
 	//static char tempPathSuffix;
 
+protected:
+
+
+
+	///
+	/**
+	 *  \return - rank: 2 for single, 3 for multichannel, or 0 in errors
+	 */
+	static
+	hsize_t deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims);
+
+
 
 };
 

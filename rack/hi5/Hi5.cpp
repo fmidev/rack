@@ -45,6 +45,8 @@ namespace hi5 {
 
 void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
 	if (attributes.empty() && dataSet.isEmpty()){
 		if (!prefix.empty())
 			ostr << prefix;
@@ -75,7 +77,11 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':';
 		//'\t';
-		ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
+		//mout.note() << dataSet.getGeometry() << mout.endl;
+		if (dataSet.getGeometry().getChannelCount() <= 1)
+			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
+		else
+			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ',' << dataSet.getChannelCount() << ']';
 		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getElementSize() << ']' << '\n';  // like typeInfo above
 		ostr << '\n';
 	}
