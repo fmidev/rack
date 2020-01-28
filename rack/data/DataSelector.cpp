@@ -149,10 +149,22 @@ void DataSelector::update(){
 	}
 
 	quantityRegExp.clear();
-	if (quantity.empty())
-		quantityRegExp.clear();
-	else
-		quantityRegExp.setExpression(quantity);
+	qualityRegExp.clear();
+
+	std::vector<std::string> s;
+	drain::StringTools::split(quantity, s, "/");
+	switch (s.size()) {
+		case 2:
+			qualityRegExp.setExpression(s[1]);
+			// no break
+		case 1:
+			quantityRegExp.setExpression(s[0]);
+			break;
+		default:
+			mout.warn() << "could not parse quantity='" << quantity << "', should be <quantity> or [<quantity>]/<quality>" << mout.endl;
+			break;
+	}
+
 
 	if (!groupStr.empty()){
 		groups   = groupStr;  // update flags
@@ -320,14 +332,16 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 		//ODIMPathElem child(it->first);
 		const ODIMPathElem & currentElem = it->first;
 		//mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") include=" << currentElem.belongsTo(groupFilter) << mout.endl;
-		mout.debug(3) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
+		mout.debug(0) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
 
 
 		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
+			/*
 			if (!dataset.contains(currentElem.index)){
 				mout.warn() << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
 				continue;
 			}
+			*/
 			const hi5::NodeHi5 & node = it->second.data;
 			const drain::image::Image & d = node.dataSet;
 			if (d.properties.hasKey("where:elangle")){
@@ -337,32 +351,51 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 				}
 			}
 		}
-		else if (currentElem.is(ODIMPathElem::DATA)){ // what about quality?
-
+		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			/*
 			if (!data.contains(currentElem.index)){
 				// mout.warn() << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
 				continue;
 			}
+			*/
+			//mout.warn() << "testing: " << currentElem << " <-> " << pathMatcher.back() << mout.endl;
+			//ODIMPathElem::index_t g = path.back().getIndex();
+			// if (currentElem.getType() == pathMatcher.back().getType()){
 
-			const hi5::NodeHi5 & node = it->second.data;
-			const drain::image::Image & d = node.dataSet;
+			//const hi5::NodeHi5 & node = it->second.data;
+			//const drain::image::Image & d = node.dataSet;
+			const drain::FlexVariableMap & v = it->second.data.dataSet.getProperties();
 
-			if (d.properties.hasKey("what:quantity")){
-				//mout.warn() << "data quantity  [" <<  d.properties["what:quantity"] << "]" << mout.endl;
-				if (!quantityRegExp.test(d.properties["what:quantity"])){
-					mout.warn() << "data quantity  [" <<  d.properties["what:quantity"] << "], skipping" << mout.endl;
+			if (v.hasKey("what:quantity")){
+
+				const std::string quantity = v["what:quantity"].toStr();
+
+				if (currentElem.is(ODIMPathElem::DATA) && !quantityRegExp.test(quantity)){
+					mout.debug(2) << "unmatching DATA quantity  [" <<  quantity << "], skipping" << mout.endl;
 					continue;
 				}
-
+				else if (currentElem.is(ODIMPathElem::QUALITY) && !qualityRegExp.test(quantity)){
+					mout.debug(2) << "unmatching QUALITY quantity  [" << quantity << "], skipping" << mout.endl;
+					continue;
+				}
+				else {
+					mout.warn() << "OK quantity matches: " << quantity << mout.endl;
+				}
 			}
-
+			else {
+				mout.warn() << "quantity missing in (image) metadata of " << path << mout.endl;
+			}
 		}
+		else {
+			//mout.warn() << "NOT testing: " << currentElem << mout.endl;
+		}
+
 
 		ODIMPath p(path);
 		p << currentElem;
 
 		if (pathMatcher.match(p)){
-			mout.warn() << "add  " << p << mout.endl;
+			mout.note() << "add  " << p << mout.endl;
 			addPathT(pathContainer, p);
 		}
 		else {

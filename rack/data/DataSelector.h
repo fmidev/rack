@@ -95,7 +95,12 @@ public:
 
 protected:
 
+	/// Data quantity (excluding quality data, like QIND or CLASS)
 	drain::RegExp quantityRegExp;
+
+	/// Quality quantity, like QIND or CLASS
+	drain::RegExp qualityRegExp;
+
 
 	std::string  groupStr; // converted to 'groups' with update.
 
