@@ -132,7 +132,7 @@ public:
 	/// Sets number of bins (nbins) and number of rays (nrays)
 	virtual
 	void setGeometry(size_t cols, size_t rows){
-		drain::Logger mout(__FUNCTION__,__FUNCTION__);
+		drain::Logger mout(__FUNCTION__,__FILE__);
 		mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
 	};
 

@@ -192,6 +192,14 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 	setParameters(parameters);
 
+	if ((data.min > 0) || (data.max > 0)){
+		mout.warn() << "'data' group selector deprecating, use [path=]dataset/" << dataset << '/' << data << " directly "<< mout.endl;
+	}
+
+	if ((dataset.min > 0) || (dataset.max < 0xffff)){
+		mout.warn() << "'dataset' group selector deprecating, use [path=]dataset" << dataset << " directly " << mout.endl;
+	}
+
 	const bool AUTO_GROUPS = (groups.value == 0); // value corresponding to empty parameter: groups="" .
 
 	// If quantity has been declared, open up remaining limits for data group.
@@ -210,6 +218,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 		}
 
 	}
+
 
 	/// Speculative
 	/*
@@ -352,18 +361,7 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 			}
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			/*
-			if (!data.contains(currentElem.index)){
-				// mout.warn() << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
-				continue;
-			}
-			*/
-			//mout.warn() << "testing: " << currentElem << " <-> " << pathMatcher.back() << mout.endl;
-			//ODIMPathElem::index_t g = path.back().getIndex();
-			// if (currentElem.getType() == pathMatcher.back().getType()){
 
-			//const hi5::NodeHi5 & node = it->second.data;
-			//const drain::image::Image & d = node.dataSet;
 			const drain::FlexVariableMap & v = it->second.data.dataSet.getProperties();
 
 			if (v.hasKey("what:quantity")){
@@ -379,11 +377,12 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 					continue;
 				}
 				else {
-					mout.warn() << "OK quantity matches: " << quantity << mout.endl;
+					// TODO: set subtreeOK = true
+					mout.debug(1) << "OK quantity matches: " << quantity << ':' << path << '|' << currentElem << mout.endl;
 				}
 			}
 			else {
-				mout.warn() << "quantity missing in (image) metadata of " << path << mout.endl;
+				mout.warn() << "quantity missing in (image) metadata of " << path << '|' << currentElem << mout.endl;
 			}
 		}
 		else {
@@ -395,7 +394,7 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 		p << currentElem;
 
 		if (pathMatcher.match(p)){
-			mout.note() << "add  " << p << mout.endl;
+			mout.debug() << "add  " << p << mout.endl;
 			addPathT(pathContainer, p);
 		}
 		else {
@@ -409,6 +408,17 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 
 }
 
+bool DataSelector::getPath3(const Hi5Tree & src, ODIMPath & path) const {
+	std::list<ODIMPath> pathContainer;
+	getPaths3(src, pathContainer, 0);
+	if (pathContainer.empty()){
+		return false;
+	}
+	else {
+		path = pathContainer.front();
+		return true;
+	}
+}
 
 bool DataSelector::getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
 

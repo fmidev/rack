@@ -126,7 +126,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug() << "matcher: " << *this << mout.endl;
+	//mout.debug() << "matcher: " << *this << mout.endl;
 	mout.debug() << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_iterator mit = this->begin();
@@ -154,22 +154,24 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug() << "matcher: " << *this << mout.endl;
+	//mout.debug() << "matcher: " << *this << mout.endl;
 	mout.debug() << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_reverse_iterator mit = this->rbegin();
 	rack::ODIMPath::const_reverse_iterator pit = path.rbegin();
 
 	while ((mit!=this->rend()) && (pit!=path.rend())){
-		mout.debug(1) << *mit << ":\t" << *pit;
+		//mout.debug(1) << *mit << ":\t" << *pit;
 		if (!mit->test(*pit)){
-			mout << '*' << mout.endl;
+			mout.debug(1) << *mit << ":\t*" << *pit << mout.endl;
+			// mout << '*' << mout.endl;
 			return false;
 		}
-		mout << mout.endl;
+		//mout << '%' << mout.endl;
+		mout.debug(1) << *mit << ":\t%" << *pit << mout.endl;
 		++mit, ++pit;
 	}
-	mout << mout.endl;
+	//mout << mout.endl;
 
 	// return true;
 	return (mit==this->rend());

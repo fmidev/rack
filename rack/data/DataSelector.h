@@ -104,13 +104,11 @@ protected:
 
 	std::string  groupStr; // converted to 'groups' with update.
 
-	virtual
-	void update();
-
 
 
 
 public:
+
 
 	/// Regular expression of accepted paths, for example ".*/data$". Deprecated
 	/**
@@ -119,6 +117,11 @@ public:
 	std::string path; // temporary!
 
 	ODIMPathMatcher pathMatcher;
+
+	/// Convert path and quantity strings to pathMatcher and quantity regexps, respectively.
+	virtual
+	void update();
+
 
 	/// Restore default values.
 	/**
@@ -164,9 +167,23 @@ public:
 		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
 	}
 
-	// Nuevo
-	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter, const ODIMPath & path = ODIMPath()) const;
+	/// Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable.
+	/**
+	 *
+	 *  \param src - HDF5 data structure
+	 *  \param pathContainer - container for paths to be found
+	 *  \param groupFilter - deprecating...
+	 *  \param path - initial path
+	 */
+	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter=ODIMPathElem::ALL_GROUPS , const ODIMPath & path = ODIMPath()) const;
 
+	/// Returns the first path encountered with selector attributes and given groupFilter .
+	/**
+	 *
+	 *  \param src - HDF5 data structure
+	 *  \param path - resulting path, if found; othewise intact
+	 */
+	bool getPath3(const Hi5Tree & src, ODIMPath & path) const;
 
 
 	template <class T>
