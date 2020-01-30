@@ -442,8 +442,8 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 			mout.warn() << "H5Dread() failed " << mout.endl;
 
 		image.setName(path);
-		mout.warn() << "DEBUG " << image << mout.endl;
-		mout.debug(2) << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
+		mout.debug(2) << "IMAGE: " << image << mout.endl;
+		//mout.debug(2) << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
 		mout << '*' << image.getChannelCount() << '=' << image.getGeometry().getVolume() << '\n';
 		mout << '*' << image.getGeometry() << '\n';
 		mout << image << mout.endl;

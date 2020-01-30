@@ -76,13 +76,14 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 	m[2] = 767.898;
 	Writer::mapToH5Compound(m, fid, "legend2");
 
-	//std::map<int, const char *> m;
+	*/
+	std::map<int, const char *> m;
 
 	std::map<const char *, double> m2;
 	m2["eka"] = 1.23;
 	m2["toka"] = 4.56;
 	Writer::mapToH5Compound(m2, fid, "legend3", "index", "str");
-	*/
+
 
 	treeToH5File(tree, fid, "/");
 
@@ -132,8 +133,14 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			//attributes["PAL_VERSION"] = "1.2";
 		}
 		else {
-			dataToH5Attribute("IMAGE", fid, path,"CLASS");
-			dataToH5Attribute("1.2", fid, path,"IMAGE_VERSION");
+			dataToH5Attribute("IMAGE", fid, path, "CLASS");
+			dataToH5Attribute("1.2", fid, path, "IMAGE_VERSION");
+			if (image.getChannelCount() == 3){
+				dataToH5Attribute("IMAGE_TRUECOLOR", fid, path, "IMAGE_SUBCLASS");
+				dataToH5Attribute("INTERLACE_PLANE", fid, path, "INTERLACE_MODE");
+			}
+
+
 			if (attributes["IMAGE_SUBCLASS"].toStr() == "IMAGE_INDEXED"){
 
 				mout.debug() << "future option: linking palette " << path << mout.endl;
@@ -241,6 +248,15 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 			return 2;
 		default:
 			dims.resize(3);
+			/*
+			dims[0] = height;
+			dims[1] = width;
+			dims[2] = channels;
+			chunkDims.resize(3);
+			chunkDims[0] = std::min(hsize_t(20), height);
+			chunkDims[1] = std::min(hsize_t(20), width);
+			chunkDims[2] = std::min(hsize_t(20), channels);
+			*/
 			dims[0] = channels;
 			dims[1] = height;
 			dims[2] = width;
