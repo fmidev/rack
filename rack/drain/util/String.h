@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <iostream>
 #include <list>
+#include <map>
 
 //#include "RegExp.h"
 
@@ -89,6 +90,14 @@ public:
 		StringTools::replace(src, from, to, dst);
 		return dst;
 	}
+
+	/// Replaces instances appearing as map keys to map values.
+	/**
+	 *  \see RegExp::replace.
+	 */
+	static
+	void replace(const std::map<std::string,std::string> & m, std::string &s, std::size_t pos = 0);
+
 
 	/// In src, replaces instances of 'from' to 'to', storing the result in dst.
 	static

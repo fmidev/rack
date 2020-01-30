@@ -198,21 +198,31 @@ public:
 	ImageHistogram() : ImageMod(__FUNCTION__, "Compute the image Histogram .") {
 		//parameters.separator = 0;
 		parameters.reference("bins", bins = 256);
+		//parameters.reference("store", store = true, "save as attribute");
+		parameters.reference("store", store = "histogram", "attribute name (empty = don't save)");
+		parameters.reference("filename", filename = "", "<filename>.txt");
+		// Todo prefix/comment
 	};
 
 	virtual
 	void traverseChannel(Channel & dst) const;
 
-	// virtual
-	// void traverseChannels(ImageTray<Channel> & dst) const;
+	virtual
+	void computeHistogram(const Channel & dst, drain::Histogram & histogram) const;
 
-	mutable drain::Histogram histogram;
+	//mutable drain::Histogram histogram;
 
-protected:
+
+
+//protected:
 
 
 	size_t bins;
-	//std::string value;
+
+	// bool
+	std::string store;
+
+	std::string filename;
 
 };
 

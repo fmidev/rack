@@ -28,6 +28,9 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+//#include "Type.h"
+#include "TypeUtils.h"
+
 #include "Histogram.h"
 
 
@@ -62,6 +65,26 @@ void Histogram::setSize(size_t s){
 	resize(bins);
 	//setScale(inMin,inMax,outMin,outMax);
 	setScale(0, bins-1);
+}
+
+
+std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::size_t value){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (drain::Type::call<drain::typeIsSmallInt>(type)){
+		const size_t s = drain::Type::call<drain::sizeGetter>(type);
+		const size_t bits = (s*8);
+		mout.debug() << bits << " bits => setting " << (1<<bits) << " bins " << mout.endl;
+		value = (1<<bits);
+	}
+	else {
+		mout.note() << "assuming " << value << " bins" << mout.endl;
+	}
+
+	//setSize(value);
+
+	return value;
 }
 
 

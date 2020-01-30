@@ -255,15 +255,11 @@ public:
 	virtual inline
 	~ImageLike(){};
 
-	/*
 	inline
-	void setConf(const ImageConf &conf) {
-		encoding.setType(conf.encoding.getType());
-		encoding.scaling.set(conf.encoding.scaling);
-		geometry.setGeometry(conf.geometry);
-		coordinatePolicy.set(conf.coordinatePolicy);
+	const ImageConf & getConf() const {
+		return *this;
 	}
-	*/
+
 	// ENCODING/SCALING
 
 	// REMOVE THIS..?

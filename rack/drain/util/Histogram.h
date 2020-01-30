@@ -57,6 +57,8 @@ namespace drain
 class Histogram : protected std::vector<unsigned long> {
 public:
 
+	typedef unsigned long count_t;
+
 	Histogram(size_t size=256);
 
 	Histogram(const Histogram & histogram);
@@ -68,8 +70,13 @@ public:
 	/// Sets the number of bins; the resolution of the histogram.
 	void setSize(size_t s);
 
+	static
+	std::size_t recommendSizeByType(const std::type_info & type, std::size_t defaultValue = 256);
+
 	inline
 	int getSize() const { return bins; };
+
+
 
 	/// Does not change the size of the histogram.
 	void clearBins();
@@ -151,6 +158,20 @@ public:
 
 	template <class T>
 	inline
+	void incrementRaw(T i){
+		++(*this)[i];
+		++sampleCountNEW;  // TODO: slow?
+	}
+
+	template <class T>
+	inline
+	void incrementRaw(T i, int count){
+		(*this)[i] += count;
+		sampleCountNEW += count;
+	}
+
+	template <class T>
+	inline
 	void decrement(T i){
 		--(*this)[scaling.inverse(i)]; // [((i-inMin)*bins)/inSpan];
 		--sampleCountNEW;
@@ -160,6 +181,20 @@ public:
 	inline
 	void decrement(T i, int count){
 		(*this)[scaling.inverse(i)] -= count; //[((i-inMin)*bins)/inSpan] -= count;
+		sampleCountNEW -= count;
+	}
+
+	template <class T>
+	inline
+	void decrementRaw(T i){
+		--(*this)[i];
+		--sampleCountNEW;
+	}
+
+	template <class T>
+	inline
+	void decrementRaw(T i, int count){
+		(*this)[i] -= count;
 		sampleCountNEW -= count;
 	}
 

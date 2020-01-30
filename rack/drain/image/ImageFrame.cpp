@@ -70,12 +70,24 @@ void ImageFrame::setStorageType(const std::type_info &type){
 
 void ImageFrame::adjustBuffer(){
 
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
 	const size_t s = geometry.getVolume() * encoding.byteSize;
 
-	if (s > 0)
-		buffer.resize(s);
-	else
-		buffer.resize(1);
+	if (s > 0){
+		//mout.warn() << "size=" << s << "\t = " << geometry.getVolume() << '*' << encoding.byteSize << mout.endl;
+		//mout.warn() << getConf() << mout.endl;
+	}
+
+	try {
+		if (s > 0)
+			buffer.resize(s);
+		else
+			buffer.resize(1);
+	}
+	catch (const std::runtime_error & e) {
+		mout.error() << "allocating image data failed" << mout.endl;
+	}
 
 	bufferPtr = &buffer[0];
 	segmentBegin = (void *)&(*buffer.begin());

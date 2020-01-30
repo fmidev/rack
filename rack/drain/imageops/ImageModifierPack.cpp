@@ -90,30 +90,103 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 }
 
 
-//void ImageHistogram::traverseChannels(ImageTray<Channel> & dst) const {
 void ImageHistogram::traverseChannel(Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.debug() << "bins: " << bins << mout.endl;
 
-	histogram.setSize(bins);
-	histogram.clearBins();
-	//dst.get().fill(v[i]);
-	for (Channel::iterator it = dst.begin(); it != dst.end(); ++it){
-		histogram.increment(*it);
+
+	//const std::type_info & type = dst.getType();
+	drain::Histogram histogram;
+
+	if (bins > 0)
+		histogram.setSize(bins);
+	else {
+		histogram.setSize(Histogram::recommendSizeByType(dst.getType(), bins));
 	}
 
-	std::cout << histogram << std::endl;
+	mout.debug() << "(initial) bins: " << bins << ",  " << histogram.getSize() << mout.endl;
 
-	//const size_t channels = std::min(v.size(), dst.size() + dst.alpha.size());
+
+	computeHistogram(dst, histogram);
+
+	const std::vector<drain::Histogram::count_t> & v = histogram.getVector();
+
+	if (!store.empty()){
+		mout.warn() << "storing in metadata " << mout.endl;
+		if (histogram.getSize() > 256)
+			mout.warn() << " storing large histogram in metadata (" << histogram.getSize() << ")" << mout.endl;
+		dst.properties[store] = v;
+	}
+
+	if (!filename.empty()){
+		mout.warn() << "storing in file " << filename << mout.endl;
+		dst.properties[store] = histogram.getVector();
+
+		std::ostream *ofstreamPtr = & std::cout;
+		std::ofstream ofstream;
+		if (filename != "-"){
+			ofstream.open(filename.c_str(), std::ios::out);
+			ofstreamPtr = & ofstream;
+		}
+		*ofstreamPtr << '#' << "dst.getEncoding()" << '\n';
+
+		for (std::vector<drain::Histogram::count_t>::const_iterator it = v.begin(); it != v.end(); ++it){
+			*ofstreamPtr << *it << ' ';
+			++it;
+		}
+		*ofstreamPtr << '\n';
+		ofstream.close();
+	}
+
+
+}
+
+void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & histogram) const {
+
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	//mout.debug() << "bins: " << bins << mout.endl;
+
 	/*
-	for (size_t i = 0; i < channels; ++i) {
-		if (i < dst.size())
-			dst.get(i).fill(v[i]);
-		else
-			dst.alpha.get(i-dst.size()).fill(v[i]);
+	switch (type) {
+		case typeid(unsigned char):
+
+			break;
+		default:
+			mout.error() << "computing histograms not" << mout.endl;
+			break;
 	}
 	*/
+
+	const std::type_info & type = dst.getType();
+
+	//const std::size_t s = 1<<(8*drain::Type::call<drain::sizeGetter>(type));
+	const std::size_t s = histogram.getSize();
+
+	mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
+
+	if ((s == 256) && (type == typeid(unsigned char))){
+		mout.note() << "direct mode: u char (fast)" << mout.endl;
+		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			histogram.incrementRaw(static_cast<unsigned short int>(*it));
+		}
+	}
+	else if ((s == 256) && (type == typeid(unsigned short int))){
+		mout.note() << "direct mode: u short (fast)" << mout.endl;
+		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			histogram.incrementRaw(static_cast<unsigned short int>(*it) >> 8);
+		}
+	}
+	else {
+		mout.note() << "scaled mode (slow)" << mout.endl;
+		histogram.setScale(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
+		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			histogram.increment(*it);
+		}
+	}
+
+	mout.note() << "finito" << mout.endl;
+
 }
 
 void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {

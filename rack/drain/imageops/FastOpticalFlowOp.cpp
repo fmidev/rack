@@ -221,11 +221,12 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		mout.warn() << w << mout.endl;
 		mout.warn() << weightTray.get() << mout.endl;
 		mout.debug(1) << scale << mout.endl;
-		ImageHistogram hist;
-		hist.histogram.setScale(0.0, scale);
+		Histogram histogram(256);
+		histogram.setScale(0.0, scale);
 		//hist.setParameter
-		hist.traverseChannel(w);
-		mout.warn() << hist.histogram << mout.endl;
+		ImageHistogram histOp;
+		histOp.computeHistogram(w, histogram);
+		mout.warn() << histogram << mout.endl;
 		// TODO:
 		File::write(w, "diff-grad-w.png");  // actually, w
 		//File::write(weightTray.get(), "diff-grad-w.png");  // actually, w

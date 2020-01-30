@@ -68,6 +68,30 @@ void StringTools::replace(const std::string &src, const std::string &search, con
 
 }
 
+void StringTools::replace(const std::map<std::string,std::string> & m, std::string & s, std::size_t pos){
+
+	std::size_t len;
+	std::size_t step;
+
+	while (pos < s.size()){
+
+		step = 1;
+
+		for (std::map<std::string,std::string>::const_iterator it = m.begin(); it!=m.end(); ++it){
+			len = it->first.length();
+			if (s.compare(pos, len, it->first) == 0){
+				s.replace(pos, len, it->second);
+				step = it->second.length();
+				break;
+			}
+		}
+
+		pos = pos + step;
+	}
+
+}
+
+
 std::string StringTools::trim(const std::string &s, const std::string & trimChars ){
 
 	std::string::size_type pos1 = 0;
