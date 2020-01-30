@@ -375,7 +375,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	 */
 	const bool MULTICHANNEL = (dims[2] > 0);
 	if (MULTICHANNEL){
-		mout.warn() << "reading multidimensional not fully supported, path=" << path << mout.endl;
+		mout.warn() << "experimental: support for multidimensional data, path=" << path << mout.endl;
 	}
 
 	const hsize_t channels = MULTICHANNEL ? dims[0] : 1;        // NEW

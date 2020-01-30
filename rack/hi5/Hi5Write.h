@@ -134,8 +134,7 @@ public:
 
 
 	///  Under constr
-	static
-	void dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std::string &path);
+	// static void dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std::string &path);
 
 
 	///  Under constr
@@ -152,6 +151,8 @@ protected:
 	///
 	/**
 	 *  \return - rank: 2 for single, 3 for multichannel, or 0 in errors
+	 *
+	 *  Handles also ZLIB compression (ODIM recommendation: zlib compression level 6)
 	 */
 	static
 	hsize_t deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims);

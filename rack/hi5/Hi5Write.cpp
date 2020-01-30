@@ -215,7 +215,10 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 }
 
-
+/*
+ * 	/// ZLIB compression
+	//  PolarODIM recommendation: zlib compression level 6
+ */
 hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims){
 
 	drain::Logger mout(__FUNCTION__, __FILE__ );
@@ -295,41 +298,6 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	int status;
 
 
-	/*
-	/// Currently, only 1-channel data supported!
-	const hsize_t rank = (image.getChannelCount() <= 1) ? 2 : 3;
-	//const hsize_t rank = 2;
-	//hsize_t dims[rank];
-	hsize_t dims[3];
-
-	/// ZLIB compression
-	//  PolarODIM recommendation: zlib compression level 6
-	const hsize_t  chunkdim2[2] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]) };
-	const hsize_t  chunkdim3[3] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]), std::min(hsize_t(20), dims[2])};
-	const hsize_t *chunkdim;
-
-	switch (rank){
-	case 3:
-		dims[0] = image.getChannelCount();
-		dims[1] = image.getHeight();
-		dims[2] = image.getWidth();
-		chunkdim = chunkdim3;
-		//std::cerr << "imageToH5DataSet: (Warning: range==3 experimental.)";
-		mout.warn() << "channels: " << image.getChannelCount() <<  " => rank==3 experimental, path=" << path << mout.endl;
-		break;
-		// no break
-	case 2:
-		dims[0] = image.getHeight();
-		dims[1] = image.getWidth();
-		dims[2] = 0;
-		chunkdim = chunkdim2;
-		break;
-	default:
-		mout.error() << ": unsupported image data range, path=" << path << mout.endl;
-		//throw std::runtime_error("imageToH5DataSet: unsupported image data range");
-	}
-	*/
-
 	const hid_t sid = H5Screate_simple(rank, &dims[0], NULL);
 	const hid_t TID = getH5NativeDataType(image.getType());
 	const hid_t tid = H5Tcopy(TID);
@@ -339,15 +307,8 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	if (pid < 0)
 		mout.warn() << ": H5Pcreate failed, path=" << path << mout.endl;
 
-	/// ZLIB compression
-	//  PolarODIM recommendation: zlib compression level 6
-	//const hsize_t chunkdim[2] = {std::min(hsize_t(20), dims[0]), std::min(hsize_t(20), dims[1]) };
-	/*if (dims[0]*dims[1] < 20*20){
-		chunkdim[0] = dims[0];
-		chunkdim[1] = dims[1];
-	}
-	 */
-	//status = H5Pset_chunk(pid, 2, chunkdim);
+	// ZLIB compression
+	// ODIM recommendation: zlib compression level 6
 	status = H5Pset_chunk(pid, rank, &chunkDims[0]);
 	if (status < 0)
 		mout.warn() << ": H5Pset_chunk failed, path=" << path << mout.endl;
@@ -534,6 +495,7 @@ void Writer::dataToH5Attribute(const drain::Variable &data, hid_t fid, const std
 }
 */
 
+/*
 size_t createCompound(const drain::VariableMap & m, hid_t obj = 0){
 
 	drain::Logger mout(hi5::hi5monitor, "Writer", __FUNCTION__);
@@ -580,16 +542,18 @@ size_t createCompound(const drain::VariableMap & m, hid_t obj = 0){
 
 	return address; // size
 }
+*/
 
-
-
+/*
 struct test_struct {
 	int index;
 	const char *label;
 };
+*/
 
 
 /// UNDER CONSTR. whole VariableMap in one struct.
+/*
 void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std::string &path){
 
 	// High-Level lib hdf5_hl  https://support.hdfgroup.org/HDF5/Tutor/h5table.html
@@ -622,33 +586,29 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
     	mout.error() << "H5Tinsert 2 failed" << mout.endl;
 
 
-    //H5Tcreate (H5T_COMPOUND, size);
-    //createCompound(m, memtype);
+    // H5Tcreate (H5T_COMPOUND, size);
+    // createCompound(m, memtype);
 
-    /*
-     * Create the compound datatype for the file.  Because the standard
-     * types we are using for the file may have different sizes than
-     * the corresponding native types, we must manually calculate the
-     * offset of each member.
-     */
+    // Create the compound datatype for the file.  Because the standard
+    // types we are using for the file may have different sizes than
+    // the corresponding native types, we must manually calculate the
+    // offset of each member.
     hid_t filetype = H5Tcreate (H5T_COMPOUND, 8 + sizeof(hvl_t)); // 64bit
     status = H5Tinsert (filetype, "index", 0, H5T_STD_I64BE); // Hi5Base::getH5NativeDataType(typeid(int));
     status = H5Tinsert (filetype, "label", 8, strtype); // Hi5Base::getH5NativeDataType(typeid(int));
-    //H5Tcreate (H5T_COMPOUND, size);
-    //createCompound(m, filetype);
+    // H5Tcreate (H5T_COMPOUND, size);
+    // createCompound(m, filetype);
 
 	std::vector<test_struct> legend;
 	legend.resize(5);
-    // keijo esim;
+    // esim;
     legend[0].index = 123;
-    legend[0].label = "mika";
+    legend[0].label = "eka";
     legend[1].index = 456;
     legend[2].label = "toka";
 
-    /*
-     * Create dataspace.  Setting maximum size to NULL sets the maximum
-     * size to be the current size.
-     */
+    // Create dataspace.  Setting maximum size to NULL sets the maximum
+    // size to be the current size.
     hsize_t dims[1]; // = {1}; // Note: whole VariableMap in one struct
     dims[0] = legend.size();
 
@@ -658,13 +618,12 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
 
     hid_t dset = H5Dcreate (fid, path.c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
-    /*
-     * Create the dataset and write the compound data to it.
-     */
+    // Create the dataset and write the compound data to it.
+
     status = H5Dwrite (dset, memtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, &legend.at(0));
 
 }
-
+*/
 
 // UNDER CONSTR.
 void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute){
