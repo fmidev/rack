@@ -76,10 +76,12 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 	m[2] = 767.898;
 	Writer::mapToH5Compound(m, fid, "legend2");
 
-	*/
 	std::map<int, const char *> m;
 
+	*/
+
 	std::map<const char *, double> m2;
+	//std::map<std::string, double> m2;
 	m2["eka"] = 1.23;
 	m2["toka"] = 4.56;
 	Writer::mapToH5Compound(m2, fid, "legend3", "index", "str");
@@ -414,8 +416,9 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 	// status = H5Awrite(aid,tid,&x);
 	// New
 	status = H5Awrite(aid, tid, d.getPtr());
-	if (status < 0)
-		mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
+	handleStatus(status, "H5Awrite failed", mout, __LINE__);
+	//if (status < 0)
+	//	mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
 
 
 	status = H5Aclose(aid);

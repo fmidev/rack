@@ -166,26 +166,21 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL "Writer", __FUNCTION__);
 
+
 	typedef std::vector<std::pair<K,V> > vect_t;
 	typedef typename vect_t::value_type pair_t;
 	typedef typename pair_t::first_type   first_type;
 	typedef typename pair_t::second_type second_type;
 
-	//const char * label1 = "key";
-	//const char * label2 = "value";
-	// pair_t::first_type
-
 	herr_t status;
 
 	const hsize_t size = sizeof(pair_t);
-
-	mout.warn() << path << ": " << v.size() << " elements, each of size " << size << mout.endl;
+	mout.warn() << path << ": " << v.size() << " elements x " << size << "b" << mout.endl;
 
 	const hid_t first_h5t  = Hi5Base::getH5NativeDataType(typeid(first_type));
 	const hid_t second_h5t = Hi5Base::getH5NativeDataType(typeid(second_type));
 
-	mout.warn() << "types: " << first_h5t << ", " << second_h5t << mout.endl;
-
+	mout.warn() << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
 
 	// Create the compound datatype for memory.
 	hid_t memtype = H5Tcreate (H5T_COMPOUND, size);
@@ -200,9 +195,9 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	//if (status < 0) mout.error() << "H5Tinsert failed for pair.second type, path=" << path << mout.endl;
 
 
-	const hid_t std_t1  = Hi5Base::getH5StandardType(typeid(first_type));
+	const hid_t std_t1 = Hi5Base::getH5StandardType(typeid(first_type));
 	const hid_t std_t2 = Hi5Base::getH5StandardType(typeid(second_type));
-	mout.warn() << "types: " << std_t1 << ", " << std_t1 << mout.endl;
+	mout.warn() << "file types: " << std_t1 << ", " << std_t2 << mout.endl;
 	const hsize_t s1 = H5Tget_size(std_t1);
 	const hsize_t s2 = H5Tget_size(std_t2);
 
@@ -215,7 +210,7 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	dims[0] = v.size();
 	hid_t space = H5Screate_simple (1, dims, NULL);
 
-	mout.warn() << "creating compound" << mout.endl;
+	mout.warn() << "creating compound (experimental)" << mout.endl;
 	hid_t dset = H5Dcreate(fid, static_cast<std::string>(path).c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
 	// Create the dataset and write the compound data to it.
