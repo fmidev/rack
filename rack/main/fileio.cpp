@@ -106,7 +106,7 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
 
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
-static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
+//static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
 
 
@@ -145,17 +145,18 @@ public:
 
 		hop.dataSelector.setParameters(resources.select);
 
+		/*
 		ODIMPathList paths;
 		hop.dataSelector.getPaths3(currentHi5, paths, hop.dataSelector.groups);
-
 		return;
+		*/
 
 		resources.select.clear();
 
 		hop.setEncodingRequest(resources.targetEncoding);
 		resources.targetEncoding.clear();
 
-		hop.processH5(currentHi5, currentHi5);
+		hop.processH5(currentHi5);
 
 		return;
 
@@ -268,7 +269,7 @@ public:
 					cmdImage.exec();
 				}
 				else { // pointer (resources.currentImage) needs update
-
+					static DataSelector imageSelector;  //
 					imageSelector.setParameters(resources.select);
 					resources.select.clear();
 					mout.debug(2) << imageSelector << mout.endl;
@@ -315,17 +316,21 @@ public:
 			ODIMPathList paths;
 
 			if (!resources.select.empty()){
+
 				DataSelector selector;
+				//selector.deriveParameters(resources.select, true);
+				selector.setParameters(resources.select);
+				mout.debug() << selector << mout.endl;
+				selector.getPaths3(*resources.currentHi5, paths, ODIMPathElem::ALL_GROUPS);
+				/* OLD
 				selector.groups = ODIMPathElem::ALL_GROUPS; //ODIMPathElem::DATA_GROUPS;
-				//mout.info() << "sel g " << selector.groups.separator << mout.endl;
 				selector.deriveParameters(resources.select, false); //, ODIMPathElem::ALL_GROUPS);
-				//ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
-				//selector.getPaths(*getResources().currentHi5, paths, groups);
-				//selector.groups = ODIMPathElem::ALL_GROUPS;
+				// ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
+				// selector.getPaths(*getResources().currentHi5, paths, groups);
+				// selector.groups = ODIMPathElem::ALL_GROUPS;
 				selector.getPaths(*getResources().currentHi5, paths);
+				*/
 				resources.select.clear();
-				// for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
-				//	mout.warn() << *it << mout.endl;
 			}
 			else {
 				resources.currentHi5->getPaths(paths);

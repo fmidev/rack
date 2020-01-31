@@ -140,14 +140,36 @@ public:
 	inline
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, getName());
+		drain::Logger mout(__FILE__, getName());
 
-		const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
-		mout.debug() << v << mout.endl;
-		RackResources & r = getResources();
-		r.select = "quantity=^(" + v + ")$";
-		r.dataOk = true;
+		//const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
+		std::string v = value;
+		if (v.find('/') != std::string::npos){
+			mout.warn() << "short form -Q  supports no slash '/', use --select quantity=" << v << mout.endl;
+		}
+		StringTools::replace(getTransTable(), v);
+		//mout.warn() << v << mout.endl;
+
+		RackResources & resources = getResources();
+		resources.select = "quantity=^(" + v + ")$";
+		resources.dataOk = true;
 		//getRegistry().run("select", "quantity=^(" + vField + ")$");
+	}
+
+protected:
+
+	static
+	const std::map<std::string,std::string> & getTransTable(){
+
+		static std::map<std::string,std::string> m;
+
+		if (m.empty()){
+			m[","] = "|";
+			m["*"] = ".*";
+			m["?"] = "[.]";
+		}
+
+		return m;
 	}
 
 };
@@ -840,7 +862,7 @@ public:
 
 		const classtree_t & t = getClassTree();
 
-		drain::JSON::writeJSON(t);
+		drain::JSONtree::writeJSON(t);
 
 
 	}

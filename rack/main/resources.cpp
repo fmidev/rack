@@ -128,7 +128,7 @@ void RackResources::getImageInfo(const char *label, const drain::image::Image *p
 
 bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
-	drain::Logger mout("RackResources", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	/* COPIED
 	cmdImage.imageSelector.setParameters(resources.select);
@@ -143,9 +143,11 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
+	ODIMPath path;
+
+	/*
 	drain::Flags flags(ODIMPathElem::getDictionary());
 	flags = ODIMPathElem::DATA | ODIMPathElem::QUALITY;
-	ODIMPath path;
 	bool result = imageSelector.getPathNEW(*currentHi5, path, flags);
 
 	if (result){
@@ -156,8 +158,15 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 		mout.debug() << "no image data found with image selector: " << imageSelector << ", flags='" << flags << "'" << mout.endl;
 		// EXIT_ON_DATA_FAIL  here?
 	}
+	*/
+	bool result = imageSelector.getPath3(*currentHi5, path);
 
-	mout.debug() << "derived path: '" << path << "'" << mout.endl;
+	if (!path.back().is(ODIMPathElem::ARRAY)){
+		mout.debug() << "adding /data" << path << "'" << mout.endl;
+		path << ODIMPathElem(ODIMPathElem::ARRAY);
+	}
+
+	mout.note() << "derived path: '" << path << "'" << mout.endl;
 
 	drain::image::Image & img = (*currentHi5)(path).data.dataSet;
 
