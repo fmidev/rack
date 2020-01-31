@@ -35,14 +35,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, const drain::Variable & code, const std::string & label = "", const std::string & color = ""){
+void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const drain::Variable & code, const std::string & label = "", const std::string & color = ""){
 
 	drain::Logger mout("EchoClass", __FUNCTION__);
 
 	mout.debug(1) << "class: '" << pathStr << "'" << mout.endl;
 
-	//const drain::JSON::tree_t::path_t path(pathStr, '.'); // ORIG
-	drain::JSON::tree_t & entries = tree["entries"];
+	//const drain::JSONtree::tree_t::path_t path(pathStr, '.'); // ORIG
+	drain::JSONtree::tree_t & entries = tree["entries"];
 
 	drain::VariableMap & attr = entries[pathStr].data;
 	attr["value"]   = code;
@@ -50,7 +50,7 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, const dra
 	attr["color"].setType(typeid(int));
 
 	// Check hierarchical depth
-	drain::JSON::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
+	drain::JSONtree::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
 	attr["hidden"].setType(typeid(bool));
 	attr["hidden"] = (p.size() > 2);
 
@@ -66,8 +66,8 @@ void addClass(drain::JSON::tree_t & tree, const std::string & pathStr, const dra
 
 		attr["color"] = "128,255,128";
 
-		// drain::JSON::tree_t::path_t p(path); // ORIG
-		//drain::JSON::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
+		// drain::JSONtree::tree_t::path_t p(path); // ORIG
+		//drain::JSONtree::tree_t::path_t p(pathStr, '.'); // Note: now split to elements
 		if (!p.empty())
 			p.pop_back();
 
@@ -123,7 +123,7 @@ classtree_t & getClassTree(){
 
 		tree["metadata"].data["title"] = "Echo class";
 
-		//drain::JSON::tree_t & entries = tree["entries"];
+		//drain::JSONtree::tree_t & entries = tree["entries"];
 
 		// Technical information 0-15
 

@@ -43,7 +43,7 @@ namespace rack {
 /**
  *
  */
-typedef drain::JSON::tree_t classtree_t;
+typedef drain::JSONtree::tree_t classtree_t;
 
 
 classtree_t & getClassTree();
