@@ -56,7 +56,7 @@ namespace drain
     \example examples/JSON-example.inc
 
  */
-class JSON {
+class JSONtree {
 
 public:
 

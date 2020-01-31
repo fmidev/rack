@@ -53,11 +53,11 @@ namespace drain
  *
  *
  */
-unsigned short JSON::indentStep(2);
+unsigned short JSONtree::indentStep(2);
 
-//onst RegExp JSON::filenameExtension("\\.([[:alnum:]]+)$");
+//onst RegExp JSONtree::filenameExtension("\\.([[:alnum:]]+)$");
 
-void JSON::read(tree_t & t, std::istream & istr){
+void JSONtree::read(tree_t & t, std::istream & istr){
 
 	drain::Logger log("JSON", __FUNCTION__);
 
@@ -106,7 +106,7 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 				if (c == '{'){
 					log.debug(2) << "Reading object '" << key << "'" << log.endl;
-					JSON::read(t[key], istr);
+					JSONtree::read(t[key], istr);
 				}
 				else {
 					log.debug(2) << "Reading value '" << key << "'" << log.endl;
@@ -136,7 +136,7 @@ void JSON::read(tree_t & t, std::istream & istr){
 
 
 /// Reads and parses a Windows INI file
-void JSON::readINI(tree_t & t, std::istream & istr){
+void JSONtree::readINI(tree_t & t, std::istream & istr){
 	drain::Logger mout("JSON", __FUNCTION__);
 	mout.error() << "unimplemented code" << mout.endl;
 }
@@ -144,7 +144,7 @@ void JSON::readINI(tree_t & t, std::istream & istr){
 
 
 
-void JSON::write(const tree_t & json, const std::string & filename){
+void JSONtree::write(const tree_t & json, const std::string & filename){
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL "JSON", __FUNCTION__);
 
@@ -163,10 +163,10 @@ void JSON::write(const tree_t & json, const std::string & filename){
 
 
 	if (path.extension == "json"){
-		JSON::writeJSON(json, outfile);
+		JSONtree::writeJSON(json, outfile);
 	}
 	else if (path.extension == "ini"){
-		JSON::writeINI(json, outfile);
+		JSONtree::writeINI(json, outfile);
 	}
 	else {
 		mout.error() << "unknown file type: " << path.extension << mout.endl;
@@ -178,7 +178,7 @@ void JSON::write(const tree_t & json, const std::string & filename){
 }
 
 
-void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short indentation){
+void JSONtree::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
 	//const node_t & vmap = json.data;
 
@@ -186,7 +186,7 @@ void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short in
 
 	ostr << "{\n";
 
-	indentation += JSON::indentStep;
+	indentation += JSONtree::indentStep;
 
 	if (!json.data.empty()){
 		json.data.toJSON(ostr, indentation); // relies on similar formatting
@@ -210,7 +210,7 @@ void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short in
 		ostr << '"' << it->first << '"' << ": ";
 
 		// Recursion
-		JSON::writeJSON(it->second, ostr, indentation); // + JSON::indentStep);
+		JSONtree::writeJSON(it->second, ostr, indentation); // + JSONtree::indentStep);
 
 	}
 
@@ -219,8 +219,8 @@ void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short in
 		ostr << '\n';
 
 	// Attributes and object are completed, hence decrement indentation for terminal char '}'
-	if (indentation >= JSON::indentStep)
-		indentation -= JSON::indentStep;
+	if (indentation >= JSONtree::indentStep)
+		indentation -= JSONtree::indentStep;
 	else {
 		drain::Logger mout("JSON", __FUNCTION__);
 		mout.warn() << "skipped negative indentation" << mout.endl;
@@ -239,7 +239,7 @@ void JSON::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short in
 
 
 /// Write a Windows INI file
-void JSON::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
+void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
 
 
 	for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
