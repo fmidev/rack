@@ -463,10 +463,10 @@ void Palette::loadJSON(std::ifstream & ifstr){
 
 	reset();
 
-	drain::JSON::tree_t json;
-	drain::JSON::read(json, ifstr);
+	drain::JSONtree::tree_t json;
+	drain::JSONtree::read(json, ifstr);
 
-	const drain::JSON::node_t & metadata = json["metadata"].data;
+	const drain::JSONtree::node_t & metadata = json["metadata"].data;
 
 	// Consider whole metadata as JSON tree?
 	title = metadata["title"].toStr();
@@ -479,16 +479,16 @@ void Palette::loadJSON(std::ifstream & ifstr){
 }
 
 
-void Palette::importJSON(const drain::JSON::tree_t & entries, int depth){
+void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	//const drain::JSON::tree_t & entries = json["entries"];
+	//const drain::JSONtree::tree_t & entries = json["entries"];
 
-	for (drain::JSON::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
+	for (drain::JSONtree::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
 
 		const std::string & id         = it->first;
-		const drain::JSON::tree_t & child = it->second;
+		const drain::JSONtree::tree_t & child = it->second;
 
 		const VariableMap & attr  = child.data;
 
@@ -556,9 +556,9 @@ void Palette::write(const std::string & filename){
 	}
 	else if (filepath.extension == "json"){
 		mout.debug() << "writing JSON palette/class file" << mout.endl;
-		drain::JSON::tree_t json;
+		drain::JSONtree::tree_t json;
 		exportJSON(json);
-		drain::JSON::writeJSON(json, ofstr);
+		drain::JSONtree::writeJSON(json, ofstr);
 	}
 	else if (filepath.extension == "txt"){
 		mout.debug() << "writing plain txt palette file" << mout.endl;
@@ -616,13 +616,13 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 }
 
 
-void Palette::exportJSON(drain::JSON::tree_t & json) const {
+void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 
 
 	VariableMap &metadata = json["metadata"].data;
 	metadata["title"] = title;
 
-	drain::JSON::tree_t & entries =  json["entries"];
+	drain::JSONtree::tree_t & entries =  json["entries"];
 
 	int i = 0;
 	std::stringstream key;
@@ -638,7 +638,7 @@ void Palette::exportJSON(drain::JSON::tree_t & json) const {
 		key.fill('0');
 		key << ++i;
 
-		drain::JSON::tree_t & js = entries[key.str()]; // entries[entry.id];
+		drain::JSONtree::tree_t & js = entries[key.str()]; // entries[entry.id];
 		js.data["color"] = entry.color;
 		js.data.importCastableMap(entry.map);
 		Variable & value = js.data["value"];

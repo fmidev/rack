@@ -162,7 +162,7 @@ std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 
 	if ((getType() == typeid(char)) || isStlString()){
 		ostr << '"';
-		toStream(ostr, ','); // use JSON separator
+		toStream(ostr, ','); // use JSONtree separator
 		ostr << '"';
 	}
 	else {

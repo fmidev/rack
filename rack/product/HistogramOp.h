@@ -72,14 +72,21 @@ public:
 	HistogramOp() : ProductOp<ODIM,ODIM>(__FUNCTION__, "Computes HDF5 histogram") {
 
 		this->parameters.reference("count", count = 0);
-		this->parameters.reference("raw", raw = false, "[0|1]");
+		this->parameters.reference("raw", raw = false, "[true|false]");
 		this->parameters.reference("min", minValue = -std::numeric_limits<double>::max());
 		this->parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
 		this->parameters.reference("filename", filename = "-");
 
 		this->allowedEncoding.reference("type", this->odim.type = "C");
+
 		//this->odim.quantity = "HGHT";
 		this->odim.type = "L";
+
+		//this->dataSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET) << ODIMPathElemMatcher(ODIMPathElem::DATA);
+		this->dataSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA);
+		this->dataSelector.count = 1;
+		this->dataSelector.quantity = "^DBZH$";
+		this->dataSelector.update();
 	}
 
 	virtual ~HistogramOp(){};
@@ -99,52 +106,14 @@ public:
 	*/
 
 
-	void processH5(const Hi5Tree &src, Hi5Tree &dst) const; /* {
-
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
-		ODIMPathList dataPaths;
-
-		this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-
-		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-			mout.note() << "add: " << *it  << mout.endl;
-			PlainData<BasicSrc> data(src(*it));
-			mout.warn() << "add: " << data  << mout.endl;
-			//sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(*it), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
-		}
-
-
-	}*/
+	void processH5(Hi5Tree &dst) const;
 
 
 	virtual
-	void processData(const Data<BasicSrc> & srcData, Data<BasicDst> & dstData) const; /* {
-
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		const drain::image::Image & img = srcData.data;
-
-		const int min = 0;
-		const int max = dstData.data.getWidth()-1;
-
-		if (!drain::Type::call<drain::typeIsSmallInt>(img.getType())){
-			mout.warn() << "src type not smallInt" << mout.endl;
-		}
-
-		int x;
-		for (drain::image::Image::const_iterator it = img.begin(); it != img.end(); ++it){
-			x = static_cast<int>(*it);
-			if ((x>min) && (x<=max)){
-				//img.ge
-				//histogram.increment(x);
-				//dstData.data.put(x, dstData.data.template get<int>(x) + 1);
-			}
-		}
-
-
-
-	};
-	*/
+	void processData(PlainData<BasicDst> & dstData) const;
+		//
+	//void processData(const PlainData<BasicSrc> & srcData, PlainData<BasicDst> & dstData) const;
+	//void processData(const Data<BasicSrc> & srcData, Data<BasicDst> & dstData) const;
 
 	/// REJECTED. Very difficult to select QUALITY quantities, if using DataSetMap->DataSet->Data->PlainData hierarchy---
 	/*

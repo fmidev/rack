@@ -413,7 +413,7 @@ protected:
 		const F d = *(F *)p;
 
 		if (std::isnan(d)){
-			ostr << "NaN";  // JSON std literal
+			ostr << "NaN";  // JSONtree std literal
 		}
 		/*  TODO: add at least one decimal for floating-point numbers ".0"
 		else if ((d == rint(d)) && (abs(d) < 1.0E+5)){

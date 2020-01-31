@@ -138,7 +138,7 @@ public:
 
 	void exportTXT(std::ostream & ostr, char separator='\t', char separator2=0) const;
 
-	void exportJSON(drain::JSON::tree_t & json) const;
+	void exportJSON(drain::JSONtree::tree_t & json) const;
 
 	/// Returns a legend as an SVG graphic.
 	void exportSVGLegend(TreeSVG & svg, bool up = true) const;
@@ -147,7 +147,7 @@ public:
 	/**
 	 *  \param json - JSON structure combining optional \c metadata and compulsory \c entries section.
 	 */
-	// void convertJSON(const drain::JSON::tree_t & json);
+	// void convertJSON(const drain::JSONtree::tree_t & json);
 
 	const ChannelGeometry & getChannels() const {
 		update();
@@ -178,7 +178,7 @@ protected:
 	//void skipLine(std::ifstream &ifstr) const;
 
 	/// Creates a palette from json object
-	void importJSON(const drain::JSON::tree_t & json, int depth);
+	void importJSON(const drain::JSONtree::tree_t & json, int depth);
 
 };
 
