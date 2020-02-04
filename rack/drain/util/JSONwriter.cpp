@@ -22,57 +22,48 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-#ifndef DRAIN_JSON_READER_H_
-#define DRAIN_JSON_READER_H_
+ */
 
-#include <string>
+#include <sstream>
+#include <fstream>
+#include <stdexcept>
 
-#include "Variable.h"
+#include "JSONwriter.h"
+
 
 namespace drain
 {
 
-/// Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data
-/*'
- *  Applicable in reading configuration files and comments containing:
- *  -# plain numbers, distinguishing integers and floats
- *	-# arrays of numbers, surrounded by braces [,]
- *	-# strings, surrounded by double hyphens (")
- *
- *	Applies TextReader::scanSegment in reading character streams.
- *	Uses Type::guessArrayType() for deriving compatible storage type for arrays.
- *
- *
- */
-class JSONreader  {
+unsigned short JSONwriter::indentStep(2);
 
-public:
+template <>
+std::ostream & JSONwriter::toStream(const std::string & x, std::ostream &ostr, unsigned short indentation){
+	return ostr << '"' << x << '"';
+}
 
-	/// Read value. Read stream until a value has been extracted, with type recognition
-	static
-	void fromStream(std::istream & istr, Variable & v);
+// Controversial. But use (int)x for example to make it a number.
+template <>
+std::ostream & JSONwriter::toStream(const char & x, std::ostream &ostr, unsigned short indentation){
+	return ostr << '"' << x << '"';
+}
 
-	/// Read value. Read stream until a value has been extracted, with type recognition
-	static inline
-	void fromStream(const std::string & s, Variable & v){
-		std::istringstream istr(s);
-		fromStream(istr, v);
-	};
-
-	/// Given comma-separated string of values, assign them to variable of minimum compatible type
-	static
-	void arrayFromStream(const std::string & s, Variable & v);
+template <>
+std::ostream & JSONwriter::toStream(const unsigned char & x, std::ostream &ostr, unsigned short indentation){
+	return ostr << static_cast<unsigned short>(x);
+}
 
 
-};
+template <>
+std::ostream & JSONwriter::toStream(const char *x, std::ostream &ostr, unsigned short indentation){
+	return ostr << '"' << x << '"';
+}
 
 
-}  // drain
 
-#endif /* META_DATA_H_*/
+
+} // drain::

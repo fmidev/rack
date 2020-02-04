@@ -32,9 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FilePnm.h"
 #include "util/Time.h"
 
-#include "util/JSONtree.h"
-#include "util/ValueReader.h"
 #include "util/TextReader.h"
+#include "util/JSON.h"
+#include "util/JSONtree.h"
 
 namespace drain
 {
@@ -120,7 +120,8 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		}
 		if (!key.empty()){
 			mout.debug(1) << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
-			ValueReader::scanValue(sstr.str(), properties[key]);
+			//ValueReader::scanValue(sstr.str(), properties[key]);
+			JSONreader::fromStream(sstr.str(), properties[key]);
 		}
 		else {
 			mout.note() << "Comment:" <<  sstr.str() << mout.endl;

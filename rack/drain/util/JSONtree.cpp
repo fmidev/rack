@@ -37,9 +37,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Type.h"
 #include "FilePath.h"
 #include "TextReader.h"
-#include "ValueReader.h"
+//#include "ValueReader.h"
 #include "JSONtree.h"
-
+#include "JSON.h"
 
 namespace drain
 {
@@ -53,7 +53,7 @@ namespace drain
  *
  *
  */
-unsigned short JSONtree::indentStep(2);
+//unsigned short JSONtree::indentStep(2);
 
 //onst RegExp JSONtree::filenameExtension("\\.([[:alnum:]]+)$");
 
@@ -106,11 +106,13 @@ void JSONtree::read(tree_t & t, std::istream & istr){
 
 				if (c == '{'){
 					log.debug(2) << "Reading object '" << key << "'" << log.endl;
+					/// RECURSION
 					JSONtree::read(t[key], istr);
 				}
 				else {
 					log.debug(2) << "Reading value '" << key << "'" << log.endl;
-					ValueReader::scanValue(istr, vmap[key]);
+					JSONreader::fromStream(istr, vmap[key]);
+					//ValueReader::scanValue(istr, vmap[key]);
 				}
 				completed = true;
 			}
@@ -178,9 +180,47 @@ void JSONtree::write(const tree_t & json, const std::string & filename){
 }
 
 
+
+template <>
+std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostream &ostr, unsigned short indentation){
+
+	const bool ATTRIBS  = !t.data.empty();
+	const bool CHILDREN = !t.isEmpty();
+
+	ostr << '{';
+
+	if (ATTRIBS)
+		ostr << '\n';
+
+	JSONwriter::mapElementsToStream(t.data, ostr, indentation);
+
+	if (ATTRIBS && CHILDREN){
+		ostr << ',';
+	}
+
+	if (CHILDREN)
+		ostr << '\n';
+
+	JSONwriter::mapElementsToStream(t, ostr, indentation);
+
+	if (ATTRIBS || CHILDREN){
+		ostr << '\n';
+		JSONwriter::indent(ostr, indentation);
+	}
+
+	ostr << '}'; // << '\n';
+
+	return ostr;
+}
+
+void JSONtree::writeJSON(const tree_t & t, std::ostream & ostr, unsigned short indentation){
+	JSONwriter::toStream(t, ostr, indentation);
+}
+
+/*
 void JSONtree::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short indentation){
 
-	//const node_t & vmap = json.data;
+
 
 	char sep = 0;
 
@@ -235,7 +275,7 @@ void JSONtree::writeJSON(const tree_t & json, std::ostream & ostr, unsigned shor
 
 
 }
-
+*/
 
 
 /// Write a Windows INI file

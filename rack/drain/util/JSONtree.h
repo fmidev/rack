@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Tree.h"
 #include "VariableMap.h"
 
+#include "JSONwriter.h"
+
 
 namespace drain
 {
@@ -86,20 +88,24 @@ public:
 	static
 	void readINI(tree_t & t, std::istream & istr);
 
-	static
-	unsigned short indentStep;
+	//static unsigned short indentStep;
 
 protected:
 
 	/// Indent output with \c n spaces
+	/*
 	static inline
 	void indent(std::ostream & ostr, unsigned short n){
 		for (int i = 0; i < n; ++i)
 			ostr.put(' ');
 	}
-
+	*/
 
 };
+
+template <>
+std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostream &ostr, unsigned short indentation);
+
 
 
 } // ::drain

@@ -28,6 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+
+#ifndef DRAIN_CASTABLE2
+#define DRAIN_CASTABLE2 "drain::Castable"
+
 #include <string.h> // Old C
 #include <typeinfo>
 #include <stdexcept>
@@ -39,9 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Caster.h"
 #include "String.h"
+#include "JSONwriter.h"
 
-#ifndef CASTABLE2
-#define CASTABLE2 "drain::Castable"
 
 
 namespace drain {
@@ -453,6 +456,43 @@ public:
 
 	}
 
+	template <class T>
+	void toMap(T & map, char separator = 0, char equalSign = '=') const {
+
+		map.clear();
+
+		if (isString()){
+			// This part could be in StringTools?
+			typedef std::list<std::string> entryList;
+			entryList entries;
+			toContainer(entries, separator);
+
+			for (entryList::const_iterator it = entries.begin(); it!=entries.end(); ++it){
+				//typename T::value_type entry;
+				typename T::key_type key;
+				typename T::mapped_type data;
+				drain::StringTools::split2(*it, key, data, std::string(1, equalSign)); // TRIM?
+				map[key] = data;
+			}
+		}
+		else {
+			for (size_t i = 0; i < getElementCount(); ++i){
+				//typename T::value_type entry;
+				typename T::key_type key;
+				typename T::mapped_type data;
+				std::stringstream sstr;
+				sstr << i;
+				sstr >> key; // entry.first;
+				std::stringstream sstr2;
+				sstr2 << caster.get<typename T::value_type>(getPtr(i));
+				sstr2 >> data;
+				map[key] = data;
+			}
+		}
+
+
+	}
+
 
 	/// Returns pointer to the array of chars without validity check.
 	/**
@@ -845,6 +885,11 @@ protected:
 template <>
 void Castable::setPtr(Castable &c);
 */
+
+template <>
+std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream & ostr, unsigned short);
+
+
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const Castable &c){

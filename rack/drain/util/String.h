@@ -142,6 +142,14 @@ public:
 		StringTools::split(s, sequence, std::string(1,separator), trimChars);
 	}
 
+	/// Splits and trims a given std::string to a std Sequence.
+	/**
+	 *  Given an empty std::string,
+	 */
+	template <class T1, class T2>
+	static
+	void split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars=" \t\n");
+
 	/// Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').
 	/**
 	 *  \see StringTools::split()
@@ -275,6 +283,45 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	}
 }
 
+
+template <class T1, class T2>
+void StringTools::split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars){
+
+	std::size_t i = s.find_first_of(separators);
+
+	if (i != std::string::npos){ // input of type "key=value" found
+		std::stringstream sstr1;
+		std::cerr << "eka " << s.substr(0, i) << '\n';
+		if (!trimChars.empty()){
+			sstr1 << StringTools::trim(s.substr(0, i), trimChars);
+		}
+		else
+			sstr1 << s.substr(0, i);
+		sstr1 >> first;
+
+		std::stringstream sstr2;
+		++i;
+		if (i<s.size()){
+			std::cerr << "toka " << s.substr(i) << '\n';
+			if (!trimChars.empty()){
+				sstr2 << StringTools::trim(s.substr(i), trimChars);
+			}
+			else
+				sstr2 << s.substr(i);
+		}
+		sstr2 >> second;
+	}
+	else {
+		std::stringstream sstr;
+		if (trimChars.empty())
+			sstr << s;
+		else
+			sstr << StringTools::trim(s, trimChars);
+		sstr >> first;
+	}
+
+
+}
 
 
 template <>

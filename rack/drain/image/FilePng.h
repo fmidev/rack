@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <png.h>
 
 #include "util/RegExp.h"
-#include "util/ValueReader.h"
+#include "util/JSON.h" // for reading attribute value
 
 #include "Image.h"
 //#include "File.h"
@@ -172,8 +172,8 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	//mout.debug(2) << '\n';
 	for (int i = 0; i < num_text; ++i) {
 		mout << text_ptr[i].key << '=' << text_ptr[i].text << '\n';
-		//image.properties[text_ptr[i].key] = (const char *)text_ptr[i].text;
-		ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
+		// ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
+		JSONreader::fromStream(text_ptr[i].text, image.properties[text_ptr[i].key]);
 	}
 	mout << mout.endl;
 

@@ -31,6 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "FilePng.h"
 //#include "util/RegExp.h"
+
+#include "util/JSONwriter.h"
 #include "util/Time.h"
 
 
@@ -210,7 +212,8 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		//mout.debug() << "properties:" << it->first << mout.endl;
 		mout.debug(2) << "properties:" << it->first << '=' << it->second << mout.endl;
 		std::stringstream sstr;
-		it->second.valueToJSON(sstr);
+		drain::JSONwriter::toStream(it->second, sstr);
+		//it->second.valueToJSON(sstr);
 		comments[it->first] = sstr.str(); //it->second.toStr();
 		//it->second.substr(0,79);
 	}

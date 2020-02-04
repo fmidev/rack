@@ -29,46 +29,82 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include <sstream>
-#include <fstream>
-#include <stdexcept>
 
-//#include "Log.h"
-//#include "Type.h"
-//#include "FilePath.h"
-//#include "TextReader.h"
-//#include "ValueReader.h"
+#include "TextReader.h"
+
 #include "JSON.h"
-
 
 namespace drain
 {
 
-unsigned short JSON::indentStep(2);
 
-template <>
-std::ostream & JSON::toStream(const std::string & x, std::ostream &ostr){
-	return ostr << '"' << x << '"';
+void JSONreader::fromStream(std::istream & istr, Variable & v){
+
+	drain::Logger log("JSONreader", __FUNCTION__);
+
+	TextReader::skipChars(istr, " \t\n\r");
+
+	std::string value;
+
+	int c = istr.peek();
+	switch (c) {
+	// consider:
+	// case '\'': // STRING
+	case '"': // STRING
+		istr.get();
+		v = TextReader::scanSegment(istr, "\"");
+		istr.get(); // swallow '"'
+		// std::cout << "String: " << value << '\n';
+		log.debug(2) << "String value '" << v << "'" << log.endl;
+		break;
+	case '[': // ARRAY TODO: chars/integer/float handling
+		istr.get();
+		value = TextReader::scanSegment(istr, "]");
+		istr.get(); // swallow ']'
+		/*
+			if (value.find_first_of("{}") != std::string::npos){
+				log.warn() << "Arrays of objects not supported (key='" << key << "')" << log.endl;
+			}
+		 */
+		if (value.find_first_of("[]") != std::string::npos){
+			log.warn() << "Arrays of arrays not supported (value='" << value << "')" << log.endl;
+		}
+		JSONreader::arrayFromStream(value, v);
+		break;
+	default: // numeric
+		value = TextReader::scanSegment(istr, ",} \t\n\r");
+		const std::type_info & type = Type::guessType(value);
+		// v.setType(type);
+		v.requestType(type);
+		//log.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		log.debug(2) << "Value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		v = value;
+		break;
+	}
+	//completed = true;
+
 }
 
-// Controversial. But use (int)x for example to make it a number.
-template <>
-std::ostream & JSON::toStream(const char & x, std::ostream &ostr){
-	return ostr << '"' << x << '"';
+
+void JSONreader::arrayFromStream(const std::string & s, Variable & v){
+
+	v.clear();
+
+	std::vector<std::string> values;
+	drain::StringTools::split(s, values, ',', " '\t\n\r");
+
+	// TODO: recurse values twice such that they become converted trough friendly types (esp. true => 1)
+	const std::type_info & atype = Type::guessArrayType(values);
+	// Likewise, Type::getCompatibleType(typeid(bool), typeid(float));
+	v.requestType(atype);
+	v = values;
+
 }
-
-template <>
-std::ostream & JSON::toStream(const unsigned char & x, std::ostream &ostr){
-	return ostr << static_cast<unsigned short>(x);
-}
-
-
-template <>
-std::ostream & JSON::toStream(const char *x, std::ostream &ostr){
-	return ostr << '"' << x << '"';
-}
-
 
 
 
 } // drain::
+
+
+
+// Drain

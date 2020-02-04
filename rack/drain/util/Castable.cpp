@@ -263,7 +263,25 @@ void Castable::assignString(const std::string &s){
 
 }
 
-}  // namespace drain
 
+template <>
+std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ostr, unsigned short indentation){
 
-// Drain
+	if (v.isCharArrayString()){
+		return JSONwriter::toStream(v.getCharArray(), ostr, indentation);
+	}
+	else if (v.isStlString()){
+		return JSONwriter::toStream(v.toStr(), ostr, indentation);
+	}
+	else if (v.getElementCount() > 1) {
+		ostr << '[';
+		v.toStream(ostr, ',');
+		ostr << ']';
+		return ostr; // JSONwriter::sequenceToStream(v, ostr);
+	}
+	else
+		return JSONwriter::plainToStream(v, ostr);
+
+}
+
+}  // drain

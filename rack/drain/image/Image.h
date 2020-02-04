@@ -36,17 +36,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 
-#include "util/Log.h"
-#include "util/Type.h"
-#include "util/TypeUtils.h"
-#include "util/Castable.h"
-#include "util/CastableIterator.h"
-
-
-#include "util/VariableMap.h"
+#include "../util/Log.h"
+#include "../util/Type.h"
+#include "../util/TypeUtils.h"
+#include "../util/Castable.h"
+#include "../util/CastableIterator.h"
+#include "../util/Point.h"
+#include "../util/VariableMap.h"
 
 #include "Geometry.h"
-#include "../util/Point.h"
 #include "Intensity.h"
 #include "ImageFrame.h"
 #include "ImageChannel.h"

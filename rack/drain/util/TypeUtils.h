@@ -183,6 +183,26 @@ public:
 };
 
 
+/**
+ *  https://en.cppreference.com/w/cpp/types/numeric_limits/is_specialized
+ */
+class typeIsScalar {
+
+public:
+
+	typedef bool value_t;
+
+	/**
+	 *  \tparam S - selector type
+	 *  \tparam T - destination type (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){ return std::numeric_limits<S>::is_specialized; }
+
+};
+
+
 class typeIsInteger { // F2
 
 public:
@@ -212,7 +232,11 @@ public:
 	 */
 	template <class S, class T>
 	static inline
-	T callback(){ return (typeid(S)==typeid(float)) || (typeid(S)==typeid(double)); }
+	T callback(){
+		return (typeid(S)==typeid(float)) || (typeid(S)==typeid(double));
+		//return std::numeric_limits<S>::is_float;
+	}
+	// { return (typeid(S)==typeid(float)) || (typeid(S)==typeid(double)); }
 
 };
 

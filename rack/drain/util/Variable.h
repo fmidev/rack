@@ -38,15 +38,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 #include "String.h"
-//#include "Castable.h"
 #include "CastableIterator.h"
-//#include "MultiCastable.h"
 #include "Reference.h"
+//#include "SmartMap.h"
+#include "JSONwriter.h"
 
 
-#include "SmartMap.h"
-
-// // // // using namespace std;
+// // // // using namespace stda;
 
 namespace drain {
 
@@ -106,6 +104,10 @@ class Referencer;
 class Variable : public Castable {
 public:
 
+	// Like in images. Should be fixed.
+	typedef CastableIterator const_iterator;
+	typedef CastableIterator iterator;
+
 	/// Default constructor generates an empty array.
 	Variable(const std::type_info &t = typeid(void)) {
 		reset();
@@ -152,36 +154,12 @@ public:
 		//this->separator = ','; // semantics ?
 	}
 
-	/// Sets basic type or std::string, or void.
+	/// Sets basic type or void.
 	/**
-	 *   Note: request of std::string is handled as request of \c char[]
+	 *   Also std::string is accepted, but handled as request of \c char array.
 	 */
-	virtual inline
-	void setType(const std::type_info & t){ //, size_t n = 0
-
-		reset(); // what if requested type already?
-
-		if ((t == typeid(std::string)) || (t == typeid(char *))){
-			//std::cerr << "Variable::setType (std::string) forward, OK\n";
-			caster.setType(typeid(char));
-			// setOutputSeparator(0); NEW 2019/11
-			setOutputSeparator(0);
-			//resize(1);
-			updateSize(1);
-			//caster.put(ptr, '\0');
-			caster.put('\0');
-		}
-		else {
-			if (t != typeid(void)){  // why not unset type
-				caster.setType(t);
-				// IS_STRING = false;
-				//resize(n);
-			}
-			else {
-				caster.setType(t); // unset
-			}
-		}
-	}
+	virtual
+	void setType(const std::type_info & t);
 
 	/// Changes type by calling setType() directly. Always supported for Variable.
 	/**
@@ -321,42 +299,25 @@ protected:
 		return true;
 	}
 
-	inline
-	bool updateSize(size_t elementCount){
+	bool updateSize(size_t elementCount);
 
-		this->elementCount = elementCount;
-
-		if (elementCount > 0)
-			data.resize(elementCount * getElementSize());
-		else {
-			if (getElementSize() > 0)
-				data.resize(1 * getElementSize());
-			else
-				data.resize(1);
-			data[0] = 0; // for std::string toStr();
-		}
-
-		caster.ptr = &data[0]; // For Castable
-
-		updateIterators();
-
-		return true;
-	}
-
-
-	inline
-	void updateIterators()  {
-
-		dataBegin.setType(getType());
-		dataBegin = (void *) & data[0];
-
-		dataEnd.setType(getType());
-		dataEnd = (void *) & data[ getElementCount() * getElementSize() ]; // NOTE (elementCount-1) +1
-
-	}
-
+	void updateIterators();
 
 };
+
+
+template <>
+inline
+std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsigned short indentation){
+	return JSONwriter::toStream((const Castable &) v);
+}
+
+
+
+
+
+
+
 
 
 class FlexVariable : public Variable {
@@ -497,6 +458,8 @@ FlexVariable & FlexVariable::link<Referencer>(Referencer &r){
 	Castable::relink(r);
 	return *this;
 }
+
+
 
 
 
