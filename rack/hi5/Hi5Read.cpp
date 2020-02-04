@@ -320,6 +320,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::image::Image &image){
 
 	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
+	herr_t status = 0;
 
 	mout.debug() << "opening " << path << mout.endl;
 
@@ -331,12 +332,17 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 		return;
 	}
 
-	const hid_t filespace = H5Dget_space(dataset);
-
 	if (H5Tget_class(H5Dget_type(dataset)) == H5T_COMPOUND){
 		mout.warn() << "skipping compound data at: " << path << mout.endl;
+		status = H5Dclose(dataset);
+		handleStatus(status, "H5Dget_type failed", mout, __LINE__);
 		return;
 	}
+
+	const hid_t filespace = H5Dget_space(dataset);
+
+
+
 
 	/// Get the native data type. (The conversion will not store the original data type.)
 	//const hid_t datatype  = H5Tget_native_type(dataset, H5T_DIR_DEFAULT);
@@ -354,7 +360,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	dims[0] = 0;
 	dims[1] = 0;
 	dims[2] = 0;
-	herr_t status = 0;
+
 
 	status = H5Sget_simple_extent_dims(filespace, dims, NULL);
 	if (status < 0)

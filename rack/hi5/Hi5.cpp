@@ -33,7 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <fstream>
 
 #include "Hi5.h"
-#include <drain/util/ValueReader.h>
+//#include <drain/util/ValueReader.h>
+#include <drain/util/JSON.h>
 #include <drain/util/Dictionary.h>
 
 
@@ -63,7 +64,8 @@ void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
-		it->second.valueToJSON(ostr);
+		drain::JSONwriter::toStream(it->second, ostr);
+		// it->second.valueToJSON(ostr);
 		/*
 		ostr << it->second << ' ';
 		*/
@@ -150,7 +152,7 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 	dict_t::const_iterator it = dict.findByValue(type);
 	if (it != dict.end()){
-		mout.note() << "type_info=" << type.name() << ", size:" <<  H5Tget_size(it->first) << mout.endl;
+		mout.debug() << "type_info=" << type.name() << ", size:" <<  H5Tget_size(it->first) << mout.endl;
 		return it->first;
 	}
 	else {
@@ -381,16 +383,22 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 		if (assignment.size() == 2){
 
-			std::string & value = assignment[1];
+			const std::string & value = assignment[1];
 
 			if (value.empty()){
 				v.setType(typeid(std::string));
 				return;
 			}
 
+			drain::JSONreader::fromStream(value, v);
+
 			// Test array OR type specification...
 			size_t i = value.find('[');
+			if ((i > 0) && (i != std::string::npos)){
+				mout.note() << "discarding old type code: " << value.substr(i) << "; instead guessed " << drain::Type::getTypeChar(v.getType()) << mout.endl;
+			}
 
+			/*
 			if (i == 0){
 				mout.debug() << "NEW mode (array)" << mout.endl;
 				drain::ValueReader::scanArrayValues(drain::StringTools::trim(value, "[] \t\n"), v);
@@ -401,14 +409,10 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 				mout.debug() << "val:" << value << '~' << v << ", type=" << v.getType().name() << mout.endl;
 			}
 			else {
-				drain::ValueReader::scanArrayValues(drain::StringTools::trim(value.substr(0,i-1)), v);
+				drain::JSONreader::fromStream(value, v);
+				//drain::ValueReader::scanArrayValues(drain::StringTools::trim(value.substr(0,i-1)), v);
 				mout.note() << "discarding old type code: " << value.substr(i) << ", guessing " << drain::Type::getTypeChar(v.getType()) << mout.endl;
 			}
-
-			/*
-			std::cout << "VALUE: ";
-			v.valueToJSON(std::cout);
-			std::cout << '\n';
 			*/
 
 		}

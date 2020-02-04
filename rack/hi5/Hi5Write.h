@@ -126,8 +126,15 @@ public:
 	template <class K, class V>
 	static
 	void vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst="key", const char *labelSecond="value");
-	///  vectorOfPair TODO!
 
+	///  TODO:
+	// template <class T> static void vectorToH5Compound(const std::vector<T> ...  )
+
+	/// Writes key-value pairs as compound data.
+	/**
+	 *   Constucts a std::vector or std::pair's , converting strings to const char *, if applied.
+	 *   Then, calls vectorToH5Compound()
+	 */
 	template <class K, class V>
 	static
 	void mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst="key", const char *labelSecond="value");
@@ -146,8 +153,6 @@ public:
 
 protected:
 
-
-
 	///
 	/**
 	 *  \return - rank: 2 for single, 3 for multichannel, or 0 in errors
@@ -157,6 +162,19 @@ protected:
 	static
 	hsize_t deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims);
 
+	template <class T>
+	class CompoundConv {
+
+	public:
+
+		typedef T conv_t;
+
+		static inline
+		const conv_t & conv(const T & x){
+			return x;
+		}
+
+	};
 
 
 };
@@ -164,8 +182,7 @@ protected:
 template <class K, class V>
 void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL "Writer", __FUNCTION__);
-
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	typedef std::vector<std::pair<K,V> > vect_t;
 	typedef typename vect_t::value_type pair_t;
@@ -175,12 +192,12 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	herr_t status;
 
 	const hsize_t size = sizeof(pair_t);
-	mout.warn() << path << ": " << v.size() << " elements x " << size << "b" << mout.endl;
+	mout.debug() << path << ": " << v.size() << " elements x " << size << "b" << mout.endl;
 
 	const hid_t first_h5t  = Hi5Base::getH5NativeDataType(typeid(first_type));
 	const hid_t second_h5t = Hi5Base::getH5NativeDataType(typeid(second_type));
 
-	mout.warn() << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
+	mout.debug(2) << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
 
 	// Create the compound datatype for memory.
 	hid_t memtype = H5Tcreate (H5T_COMPOUND, size);
@@ -197,7 +214,7 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 
 	const hid_t std_t1 = Hi5Base::getH5StandardType(typeid(first_type));
 	const hid_t std_t2 = Hi5Base::getH5StandardType(typeid(second_type));
-	mout.warn() << "file types: " << std_t1 << ", " << std_t2 << mout.endl;
+	mout.debug() << "file types: " << std_t1 << ", " << std_t2 << mout.endl;
 	const hsize_t s1 = H5Tget_size(std_t1);
 	const hsize_t s2 = H5Tget_size(std_t2);
 
@@ -210,29 +227,64 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	dims[0] = v.size();
 	hid_t space = H5Screate_simple (1, dims, NULL);
 
-	mout.warn() << "creating compound (experimental)" << mout.endl;
+	mout.note() << "experimental: creating compound at " << path << mout.endl;
 	hid_t dset = H5Dcreate(fid, static_cast<std::string>(path).c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+	handleStatus(dset, "H5Dcreate failed", mout, __LINE__);
+	if (dset < 0){
+		return;
+	}
 
 	// Create the dataset and write the compound data to it.
 	status = H5Dwrite (dset, memtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, &v.at(0));
 
 }
 
+/// For some reason HDF5 int fails, but long int does not (Native vs Standard type diff?)
+template <>
+class Writer::CompoundConv<int> {
+
+public:
+
+	typedef long int conv_t;
+
+	static inline
+	conv_t conv(int x){
+		return static_cast<conv_t>(x);
+	}
+
+};
+
+
+template <>
+class Writer::CompoundConv<std::string> {
+
+public:
+
+	typedef const char * conv_t;
+
+	static inline
+	conv_t conv(const std::string & x){
+		return x.c_str();
+	}
+
+};
+
 template <class K, class V>
 void Writer::mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
 
-	drain::Logger mout("Writer", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	typedef std::vector<std::pair<K,V> > vect_t;
-	vect_t v;
-	//v.reserve(m.size());
-	v.resize(m.size());
+	typedef typename CompoundConv<K>::conv_t key_t;
+	typedef typename CompoundConv<V>::conv_t val_t;
+
+	typedef std::vector<std::pair<key_t,val_t> > vect_t;
+	vect_t v(m.size());
+	//v.resize(m.size());
+
 	typename vect_t::iterator vit = v.begin();
 	for (typename std::map<K,V>::const_iterator it = m.begin(); it != m.end(); ++it) {
-		//v.push_back(*it);
-		*vit = *it;
-		//vit->first  = it->first;
-		//vit->second = it->second;
+		vit->first  = CompoundConv<K>::conv(it->first);
+		vit->second = CompoundConv<V>::conv(it->second);
 		mout.note() << vit->first << ':' << vit->second << mout.endl;
 		++vit;
 	}
@@ -240,6 +292,10 @@ void Writer::mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::
 	Writer::vectorToH5Compound(v, fid, path, labelFirst, labelSecond);
 
 }
+
+
+
+
 /*
 template <>
 inline

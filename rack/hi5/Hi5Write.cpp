@@ -80,13 +80,20 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
 	*/
 
-	std::map<const char *, double> m2;
-	//std::map<std::string, double> m2;
-	m2["eka"] = 1.23;
-	m2["toka"] = 4.56;
-	Writer::mapToH5Compound(m2, fid, "legend3", "index", "str");
+	//std::map<const char *, double> m2;
+	/*
+	std::map<std::string, double> m2;
+	m2["eka"]    = 1.23;
+	m2["toka"]   = 4.56;
+	m2["kolkka"] = 6.67;
 
-
+	const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1);
+	if (!tree.hasChild(legend)){
+		Hi5Tree::path_t p;
+		p << legend;
+		Writer::mapToH5Compound(m2, fid, p, "desc", "val");
+	}
+	*/
 	treeToH5File(tree, fid, "/");
 
 
@@ -177,9 +184,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 				*/
 			}
 		}
-		if (attributes.hasKey("LEGEND")){
 
-		}
 		// return;
 	}
 	else {
@@ -213,6 +218,53 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	/// Copy attributes (group or image)
 	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
 		dataToH5Attribute(it->second, fid, path, it->first);
+	}
+
+	if (attributes.hasKey("LEGEND")){
+
+		const drain::Variable & leg = attributes["LEGEND"];
+
+		mout.note() << "experimental: writing legend " << leg << mout.endl;
+
+		std::map<int, std::string> entries;
+		leg.toMap(entries, ',', ':');
+
+
+		/*
+		std::map<std::string, double> entries;
+		entries["eka"]    = 1.23;
+		entries["toka"]   = 4.56;
+		entries["kolkka"] = 6.67;
+		*/
+
+		/*
+		std::map<std::string, std::string> entries;
+		entries["eka"]    = "1.23";
+		entries["toka"]   = "4.56";
+		entries["kolkka"] = "6.67";
+		*/
+
+		/*
+		std::map<int, std::string> entries;
+		entries[12]  = "eka";
+		entries[34]  = "toka";
+		entries[567] = "kolkka";
+		 */
+
+		// NOTE: tree is relative, path is absolute (for h5 functions)
+		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
+
+		if (!tree.hasChild(legend)){
+
+			Hi5Tree::path_t p(path);
+			if (!p.empty())
+				p.pop_back(); // strip "/how"
+			p << legend;
+
+			mout.debug(2) << "legend path=" << p << mout.endl;
+			Writer::mapToH5Compound(entries, fid, p, "desc", "val");
+
+		}
 	}
 
 }
