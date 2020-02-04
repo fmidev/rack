@@ -108,35 +108,6 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 	};
 
-
-	/*
-	if (dstData.data.isEmpty()){
-
-		if (quantity.empty()){ // BIOMET, EMITTER, SHIP, etc.
-			//dstData.odim.setQuantityDefaults("PROB");
-			dstData.odim.quantity = getOutputQuantity();
-			mout.debug() << "quantity ["<< dstData.odim.quantity << "], setting defaults of PROB" << mout.endl;
-			getQuantityMap().setQuantityDefaults(dstData, "PROB");
-		}
-		else
-			getQuantityMap().setQuantityDefaults(dstData, quantity);
-
-		//dstData.data.setGeometry(srcData.data.getGeometry());
-		dstData.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
-		mout.debug() << "set geometry: " << dstData.data.getGeometry() << mout.endl;
-		//dstData.odim.nbins  = srcData.odim.nbins; // nbins, nrays, rscale
-		//dstData.odim.nrays  = srcData.odim.nrays; // nbins, nrays, rscale
-		dstData.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
-		if (quantity == "QIND"){
-			dstData.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
-		}
-		dstData.data.setName(dstData.odim.quantity);
-	}
-	else {
-		mout.debug() << "already initialized: " << EncodingODIM(dstData.odim) << mout.endl;
-		mout.debug(1) << dstData << mout.endl;
-	}
-	*/
 }
 
 //void QualityCombinerOp::updateOverallDetection(const PlainData<PolarDst> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
@@ -173,8 +144,8 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 	drain::VariableMap & howClass = dstClass.getHow();
 	std::stringstream sstr;
-	sstr << label << ':' << index;
-	howClass["task_args"] << sstr.str();
+	sstr << index << ':' << label;
+	howClass["LEGEND"] << sstr.str();
 
 	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
@@ -214,16 +185,6 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
 
-	/*
-	if (dstQind.data.isEmpty()){
-		getQuantityMap().setQuantityDefaults(dstQind, "QIND");
-		dstQind.data.setGeometry(srcQind.data.getGeometry());
-		//const
-		const double minCode = dstQind.data.getScaling().inv(QualityCombinerOp::DEFAULT_QUALITY);
-		mout.note() << "Creating QIND data with q min: " << QualityCombinerOp::DEFAULT_QUALITY << " [" << minCode << "]" << mout.endl;
-		dstQind.data.fill(minCode);
-	};
-	*/
 
 	std::set<std::string> classesNew;
 	srcQind.getHow()["task_args"].toContainer(classesNew, ',');
@@ -314,15 +275,15 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			++it; ++itc; ++pit; ++cit;
 		}
 
-		// drain::Variable & task_args_class = dstClass.getTree()["how"].data.attributes["task_args"];
-		drain::Variable & task_args_class = dstClass.getHow()["task_args"];
+		// drain::Variable & legend_class = dstClass.getTree()["how"].data.attributes["legend"];
+		drain::Variable & legend_class = dstClass.getHow()["LEGEND"];
 
 		std::set<std::string> classCodes;
-		task_args_class.toContainer(classCodes, ',');
+		legend_class.toContainer(classCodes, ',');
 
 		std::set<std::string> classCodesNew;
-		srcClass.getHow()["task_args"].toContainer(classCodesNew, ',');
-		// srcClass.getHow()["task_args"].toJSON(std::cerr, ' ', 3);
+		srcClass.getHow()["LEGEND"].toContainer(classCodesNew, ',');
+		// srcClass.getHow()["legend"].toJSON(std::cerr, ' ', 3);
 		// mout.debug() << " task args: " << classCodesNew.size() << mout.endl;
 
 		// std::set<std::string> classCodesFinal;
@@ -332,9 +293,10 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		}
 		//std::copy(classCodesNew.begin(), classCodesNew.end(), classCodes.begin());
 
-		mout.debug() << " Updating CLASS, old: " << task_args_class << mout.endl;
-		task_args_class = classCodes;
-		mout.debug() << " Updating CLASS, new: " << task_args_class << mout.endl;
+		mout.debug() << " Updating CLASS, old: " << legend_class << mout.endl;
+		legend_class = classCodes;
+		mout.debug() << " Updating CLASS, new: " << legend_class << mout.endl;
+		//LEGdstClass.getHow()["LEGEND"] = classCodes;
 		//@ dstClass.updateTree();
 		//@ DataTools::updateInternalAttributes(dstClass.tree);
 	}

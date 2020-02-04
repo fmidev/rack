@@ -233,28 +233,6 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 			QualityCombinerOp::initDstQuality(srcData, dstData, quantity);
 		}
 
-
-		/*
-		if (quantity.empty()){ // BIOMET, EMITTER, SHIP, etc.
-			//dstData.odim.setQuantityDefaults("PROB");
-			dstData.odim.quantity = getOutputQuantity();
-			mout.debug() << "quantity ["<< dstData.odim.quantity << "], setting defaults of PROB" << mout.endl;
-			getQuantityMap().setQuantityDefaults(dstData, "PROB");
-		}
-		else
-			getQuantityMap().setQuantityDefaults(dstData, quantity);
-
-		//dstData.data.setGeometry(srcData.data.getGeometry());
-		dstData.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
-		mout.debug() << "set geometry: " << dstData.data.getGeometry() << mout.endl;
-		//dstData.odim.nbins  = srcData.odim.nbins; // nbins, nrays, rscale
-		//dstData.odim.nrays  = srcData.odim.nrays; // nbins, nrays, rscale
-		dstData.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
-		if (quantity == "QIND"){
-			dstData.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
-		}
-		dstData.data.setName(dstData.odim.quantity);
-		*/
 	}
 	else {
 		mout.debug() << "already initialized: " << EncodingODIM(dstData.odim) << mout.endl;
@@ -314,12 +292,6 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 
 void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
-
-	/*
-	// drain::VariableMap & a = dstData.getTree()["how"].data.attributes;
-	a["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe."+name+':'+getParameters().getKeys();
-	a["task_args"] = getParameters().getValues();
-	*/
 
 	drain::VariableMap & a = dstData.getHow();
 	a["task"] = std::string("fi.fmi.Rack.AnDRe.")+name;

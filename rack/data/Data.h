@@ -40,17 +40,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/ReferenceMap.h>
 #include <drain/util/RegExp.h>
 #include <drain/util/Variable.h>
-// #include <drain/util/Path.h>
 
-//#include "ODIM.h"
+//#include <drain/image/Legend.h>
+
 #include "PolarODIM.h"
 #include "CartesianODIM.h"
 #include "VerticalODIM.h"
-//#include "product/DataConversionOp.h"
 
 #include "DataSelector.h"
 #include "DataTools.h"
-//#include "QuantityMap.h"
 
 
 using namespace drain::image;
@@ -386,7 +384,7 @@ public:
 	// Metadata structure
 	odim_t odim;
 
-
+	//drain::Legend legend;
 
 	// Possibly this should be somewhere else? (Too specific here?)
 	/// For this data, creates an on-off quality data.
