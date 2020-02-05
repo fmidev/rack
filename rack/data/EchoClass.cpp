@@ -34,12 +34,33 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+classdict_t & getClassDict(){
+
+	static classdict_t dict;
+	if (dict.empty()){
+		// fill!
+		getClassTree();
+	}
+	return dict;
+}
 
 void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const drain::Variable & code, const std::string & label = "", const std::string & color = ""){
 
 	drain::Logger mout("EchoClass", __FUNCTION__);
 
 	mout.debug(1) << "class: '" << pathStr << "'" << mout.endl;
+
+
+	// NEW (temporary, before legend)
+	classdict_t & dict = getClassDict();
+	dict.add(code, pathStr);
+
+
+
+
+
+
+	// OLD
 
 	//const drain::JSONtree::tree_t::path_t path(pathStr, '.'); // ORIG
 	drain::JSONtree::tree_t & entries = tree["entries"];

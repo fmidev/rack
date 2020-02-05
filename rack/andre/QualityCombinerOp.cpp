@@ -129,10 +129,9 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	};
 	*/
 
-	// drain::VariableMap & a = dstQind.getTree()["how"].data.attributes;
-	drain::VariableMap & a = dstQind.getHow();
-	a["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
-	a["task_args"] << label; //getQuantityName();
+	drain::VariableMap & qindHow = dstQind.getHow();
+	qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
+	qindHow["task_args"] << label; // like SHIPOP
 
 
 	if (dstClass.data.isEmpty()){
@@ -142,10 +141,14 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 		// dstClass.fill(0);
 	};
 
-	drain::VariableMap & howClass = dstClass.getHow();
+	drain::VariableMap & classHow = dstClass.getHow();
 	std::stringstream sstr;
-	sstr << index << ':' << label;
-	howClass["LEGEND"] << sstr.str();
+
+	const classdict_t & dict = getClassDict();
+	mout.debug(1) <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
+
+	sstr << index << ':' << dict.getValue(index);
+	classHow["LEGEND"] << sstr.str();
 
 	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
@@ -275,11 +278,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			++it; ++itc; ++pit; ++cit;
 		}
 
-		// drain::Variable & legend_class = dstClass.getTree()["how"].data.attributes["legend"];
-		drain::Variable & legend_class = dstClass.getHow()["LEGEND"];
+		// drain::Variable & classLegend = dstClass.getTree()["how"].data.attributes["legend"];
+		drain::Variable & classLegend = dstClass.getHow()["LEGEND"];
 
 		std::set<std::string> classCodes;
-		legend_class.toContainer(classCodes, ',');
+		classLegend.toContainer(classCodes, ',');
 
 		std::set<std::string> classCodesNew;
 		srcClass.getHow()["LEGEND"].toContainer(classCodesNew, ',');
@@ -293,9 +296,9 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		}
 		//std::copy(classCodesNew.begin(), classCodesNew.end(), classCodes.begin());
 
-		mout.debug() << " Updating CLASS, old: " << legend_class << mout.endl;
-		legend_class = classCodes;
-		mout.debug() << " Updating CLASS, new: " << legend_class << mout.endl;
+		mout.debug() << " Updating CLASS, old: " << classLegend << mout.endl;
+		classLegend = classCodes;
+		mout.debug() << " Updating CLASS, new: " << classLegend << mout.endl;
 		//LEGdstClass.getHow()["LEGEND"] = classCodes;
 		//@ dstClass.updateTree();
 		//@ DataTools::updateInternalAttributes(dstClass.tree);

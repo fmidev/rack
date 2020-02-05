@@ -108,8 +108,10 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 		// status = H5Giterate(file_id, "/", NULL, &iterate, &tree);
 	}
 	//else
+
+
 	status = H5Giterate(file_id, static_cast<std::string>(path).c_str(), NULL, &iterate, &tree);
-		//status = H5Giterate(file_id, path.c_str(), NULL, &iterate, &tree);
+	//status = H5Giterate(file_id, path.c_str(), NULL, &iterate, &tree);
 
 	if (status < 0)
 		mout.warn() << "H5Giterate failed, path=" << path << mout.endl;
@@ -117,12 +119,13 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 	H5G_stat_t info;
 
 	for (Hi5Tree::iterator it = tree.begin(); it != tree.end(); ++it) {
-		//const std::string &s = it->first;
-		const Hi5Tree::path_t::elem_t &s = it->first;
+
+		const Hi5Tree::path_t::elem_t & child = it->first;
+
 		Hi5Tree &subtree = it->second;
-		//const std::string p = path + separator+ s;
+		//const std::string p = path + separator+ child;
 		Hi5Tree::path_t p(path);
-		p << s;
+		p << child;
 		std::string pStr(p);
 
 		//mout.note() << "traversing: " << p << " mode=" << mode << mout.endl;
@@ -159,7 +162,12 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 
 			case H5G_DATASET:
 				if (mode & DATASETS){
-					h5DatasetToImage(file_id,p,((hi5::NodeHi5 &)subtree).dataSet);
+					if (child.is(rack::ODIMPathElem::LEGEND)){
+						mout.warn() << "skipping LEGEND at " << p << mout.endl;
+					}
+					else {
+						h5DatasetToImage(file_id, p ,((hi5::NodeHi5 &)subtree).dataSet);
+					}
 				}
 				break;
 			default:
@@ -335,7 +343,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	if (H5Tget_class(H5Dget_type(dataset)) == H5T_COMPOUND){
 		mout.warn() << "skipping compound data at: " << path << mout.endl;
 		status = H5Dclose(dataset);
-		handleStatus(status, "H5Dget_type failed", mout, __LINE__);
+		handleStatus(status, "H5Dclose failed", mout, __LINE__);
 		return;
 	}
 

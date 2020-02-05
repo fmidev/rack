@@ -193,15 +193,23 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 
 		if (path.size() > 1){ // RO
-		//if (path != "/"){
-			//gid = H5Gcreate(fid,path.c_str(),0);H5P_DEFAULT
-			const hid_t gid = H5Gcreate2(fid, static_cast<std::string>(path).c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+
+			const std::string pathStr(path);
+
+			if (H5Lexists(fid, pathStr.c_str(), H5P_DEFAULT)){
+				mout.warn() << "group exists already, skipping : " << path << mout.endl;
+				return;
+			}
+
+			int status;
+			const hid_t gid = H5Gcreate2(fid, pathStr.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 			if (gid < 0)
 				mout.warn() << ": H5Gcreate failed, path=" << path << mout.endl;
 			// TODO: close() ?
-			int status = H5Gclose(gid);
+			status = H5Gclose(gid);
 			if (status < 0)
-				mout.error() << ": H5 close failed, path=" << path << mout.endl;
+				mout.error() << ": H5Gclose failed, path=" << path << mout.endl;
 		}
 
 		//const std::string separator = (path == "/") ? "" : "/";
@@ -230,27 +238,6 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 		leg.toMap(entries, ',', ':');
 
 
-		/*
-		std::map<std::string, double> entries;
-		entries["eka"]    = 1.23;
-		entries["toka"]   = 4.56;
-		entries["kolkka"] = 6.67;
-		*/
-
-		/*
-		std::map<std::string, std::string> entries;
-		entries["eka"]    = "1.23";
-		entries["toka"]   = "4.56";
-		entries["kolkka"] = "6.67";
-		*/
-
-		/*
-		std::map<int, std::string> entries;
-		entries[12]  = "eka";
-		entries[34]  = "toka";
-		entries[567] = "kolkka";
-		 */
-
 		// NOTE: tree is relative, path is absolute (for h5 functions)
 		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
 
@@ -262,7 +249,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			p << legend;
 
 			mout.debug(2) << "legend path=" << p << mout.endl;
-			Writer::mapToH5Compound(entries, fid, p, "desc", "val");
+			Writer::mapToH5Compound(entries, fid, p, "code", "class");
 
 		}
 	}

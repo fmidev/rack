@@ -227,15 +227,31 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	dims[0] = v.size();
 	hid_t space = H5Screate_simple (1, dims, NULL);
 
-	mout.note() << "experimental: creating compound at " << path << mout.endl;
-	hid_t dset = H5Dcreate(fid, static_cast<std::string>(path).c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-	handleStatus(dset, "H5Dcreate failed", mout, __LINE__);
-	if (dset < 0){
-		return;
+
+	const std::string pathStr(path);
+	//static_cast<std::string>(path).c_str();
+	mout.note() << "experimental: creating compound at " << pathStr << mout.endl;
+
+
+	if (H5Lexists(fid, pathStr.c_str(), H5P_DEFAULT)){
+		mout.warn() << "compound object exists already (combining is not supported) : " << pathStr << mout.endl;
+	}
+	else {
+		mout.warn() << "does not exist, creating " << pathStr << mout.endl;
+		hid_t dset = H5Dcreate(fid, pathStr.c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		handleStatus(dset, "H5Dcreate failed", mout, __LINE__);
+		if (dset >= 0){
+			// Create the dataset and write the compound data to it.
+			status = H5Dwrite (dset, memtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, &v.at(0));
+			handleStatus(dset, "H5Dwrite failed", mout, __LINE__);
+			//H5Dclose();
+			status = H5Dclose(dset);
+			handleStatus(status, "H5Dclose failed", mout, __LINE__);
+		}
 	}
 
-	// Create the dataset and write the compound data to it.
-	status = H5Dwrite (dset, memtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, &v.at(0));
+	status = H5Sclose(space);
+	handleStatus(status, "H5Sclose failed", mout, __LINE__);
 
 }
 

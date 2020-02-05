@@ -36,6 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/JSONtree.h>
 
+#include <drain/util/Dictionary.h>
+
 
 namespace rack {
 
@@ -44,6 +46,10 @@ namespace rack {
  *
  */
 typedef drain::JSONtree::tree_t classtree_t;
+
+typedef drain::Dictionary2<int, std::string> classdict_t;
+
+classdict_t & getClassDict();
 
 
 classtree_t & getClassTree();
