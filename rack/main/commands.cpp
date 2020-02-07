@@ -342,7 +342,7 @@ public:
 		// drain::Logger mout(__FUNCTION__, getName());
 		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
 
-		selector.convertRegExpToRanges(); // transitional op for deprecated \c path
+		//selector.convertRegExpToRanges(); // transitional op for deprecated \c path
 
 	}
 
@@ -361,7 +361,7 @@ public:
 		mout.debug() << "selector: " << selector << mout.endl;
 
 		ODIMPathList paths;
-		selector.getPaths(dst, paths);
+		selector.getPaths3(dst, paths);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
 		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 			mout.debug() << "deleting: " << *it << mout.endl;
@@ -400,48 +400,86 @@ public:
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
 		//drain::Logger mout(__FUNCTION__, getName());
 		//selector.groups = ODIMPathElem::ALL_GROUPS; //DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY;
-		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
-		selector.convertRegExpToRanges(); // transition support...
+		selector.pathMatcher = "";
+		//selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
+		selector.setParameters(params);  // just for checking, also group syntax (dataset:data:...)
+		// selector.convertRegExpToRanges(); // transition support...
 	}
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FUNCTION__, getName());
 
 		//RackResources & resources = getResources();
 		Hi5Tree & dst = *getResources().currentHi5;
 
 		// Step 0
-		mout.info() << "delete existing no-save structures " << mout.endl;
+		mout.debug() << "delete existing no-save structures " << mout.endl;
 		hi5::Hi5Base::deleteNoSave(dst);
 
 
 
 		ODIMPathList paths;
 
+		/*
 		DataSelector preselector;
 
 		//dst.getPaths(paths);
-		preselector.getPaths(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
+		//preselector.getPaths(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
+		//preselector.getPaths3(dst, paths);
+
+		dst.getPaths(paths);
 		mout.info() << "data structure contains " << paths.size() << " paths " << mout.endl;
 
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++){
-			mout.debug(1) << "set noSave: " << *it << mout.endl;
-			dst(*it).data.noSave = true;
+			// mout.note() << "set noSave: " << *it << mout.endl;
+			if (!it->back().belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::QUALITY | ODIMPathElem::ARRAY)){
+				dst(*it).data.noSave = true;
+			}
+		}
+		*/
+
+		for (Hi5Tree::iterator it = dst.begin(); it != dst.end(); ++it){
+
+			const ODIMPathElem &e = it->first;
+
+			if (e.is(ODIMPathElem::DATASET)){
+
+				Hi5Tree & child = it->second;
+				child.data.noSave = true;
+
+				for (Hi5Tree::iterator dit = child.begin(); dit != child.end(); ++dit){
+					const ODIMPathElem &e = dit->first;
+					if (e.is(ODIMPathElem::DATA)){
+						dit->second.data.noSave = true;
+					}
+				}
+			}
+
 		}
 
+
 		//ODIMPathElem::group_t groupFilter = selector.deriveParameters(value);
-		mout.debug() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
+		//mout.debug() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
+		mout.note() << "selector for saved paths: " << selector << mout.endl;
 
 		ODIMPathList savedPaths;
-		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		//selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		selector.getPaths3(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		//mout.info() << "set save" << mout.endl;
-		const ODIMPathElem::group_t groupMask = selector.groups; //getGroupMask();
+		// OLD const ODIMPathElem::group_t groupMask = selector.groups; //getGroupMask();
 
+		/// Set SAVE for path, ie, traverse path
 		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
-			mout.debug(1) << "set save: " << *it << mout.endl;
+			mout.warn() << "set save: " << *it << mout.endl;
 			ODIMPath p;
+			//dst(*it).data.noSave = false;
+			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
+				p << *pit;
+				dst(p).data.noSave = false;
+			}
+			/* OLD
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
 				p << *pit;
 				// mout.debug(2) << " \t\t" << p << mout.endl;
@@ -454,21 +492,26 @@ public:
 				}
 				dst(p).data.noSave = false;
 			}
+			*/
 
 		}
 
 		// Traverse all the paths
 		// reverse_iterator, because dataset groups (descendants) become deleted before dataset itself.
+
+		/*
 		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 
 			if (dst(*it).data.noSave){
-				mout.debug(2) << "deleting: " << *it << mout.endl;
+				mout.warn() << "deleting: " << *it << mout.endl;
 				dst.erase(*it);
 			}
 			else
-				mout.debug() << "saving: " << *it << mout.endl;
+				mout.note() << "saving: " << *it << mout.endl;
 		}
+		*/
 
+		hi5::Hi5Base::deleteNoSave(dst);
 
 	};
 
@@ -525,8 +568,13 @@ public:
 		std::string attr1;
 		// std::string attr1value; // debug
 		// std::string attr1type;// debug
-		hi5::Hi5Base::parsePath(pathSrc, path1, attr1); //, attr1value, attr1type);
+		std::string value;
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, value);
 		mout.debug() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
+
+		if (!value.empty()){
+			mout.warn() << "value (" << value << ") not empty in " << path1 << mout.endl;
+		}
 
 		/*
 		mout.warn() << "path:  " << path1 << mout.endl;
@@ -541,7 +589,12 @@ public:
 
 		ODIMPath path2;
 		std::string attr2;
-		hi5::Hi5Base::parsePath(pathDst, path2, attr2);
+		hi5::Hi5Base::parsePath(pathDst, path2, attr2, value);
+		if (!value.empty()){
+			mout.warn() << "value (" << value << ") not empty in " << path2 << mout.endl;
+		}
+
+
 		if (pathDst.at(0) == ':'){
 			mout.note() << " renaming attribute only" << mout.endl;
 			path2 = path1;
@@ -554,7 +607,6 @@ public:
 
 		if (attr1.empty()){ // RENAME PATHS (swap two paths)
 
-			//hi5::Hi5Base::parsePath(pathDst, path2, attr2);
 			if (!attr2.empty()){
 				mout.error() << "cannot move path '" << path1 << "' to attribute '" << attr2 << "'" << mout.endl;
 				return;
@@ -758,6 +810,26 @@ public:
  *    rack volume.h5 --select data=2:4  --/what:undetect=244
  *    \endcode
  *
+ */
+
+
+/// Modifies metadata (data attributes).
+/**
+
+\~exec
+	make setODIM.hlp
+\~
+\include setODIM.hlp
+
+    \param assingment - source path consisting of group path, attribute key and value
+
+    A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
+
+    Examples:
+	\include example-assign.inc
+
+
+
  */
 class CmdSetODIM : public SimpleCommand<std::string> {
 

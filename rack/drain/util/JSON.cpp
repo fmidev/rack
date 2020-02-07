@@ -38,9 +38,9 @@ namespace drain
 {
 
 
-void JSONreader::fromStream(std::istream & istr, Variable & v){
+void JSONreader::valueFromStream(std::istream & istr, Variable & v, bool keepType){
 
-	drain::Logger log("JSONreader", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	TextReader::skipChars(istr, " \t\n\r");
 
@@ -55,7 +55,7 @@ void JSONreader::fromStream(std::istream & istr, Variable & v){
 		v = TextReader::scanSegment(istr, "\"");
 		istr.get(); // swallow '"'
 		// std::cout << "String: " << value << '\n';
-		log.debug(2) << "String value '" << v << "'" << log.endl;
+		//mout.warn() << "String value '" << v << "'" << mout.endl;
 		break;
 	case '[': // ARRAY TODO: chars/integer/float handling
 		istr.get();
@@ -63,21 +63,24 @@ void JSONreader::fromStream(std::istream & istr, Variable & v){
 		istr.get(); // swallow ']'
 		/*
 			if (value.find_first_of("{}") != std::string::npos){
-				log.warn() << "Arrays of objects not supported (key='" << key << "')" << log.endl;
+				mout.warn() << "Arrays of objects not supported (key='" << key << "')" << mout.endl;
 			}
 		 */
 		if (value.find_first_of("[]") != std::string::npos){
-			log.warn() << "Arrays of arrays not supported (value='" << value << "')" << log.endl;
+			mout.warn() << "Arrays of arrays not supported (value='" << value << "')" << mout.endl;
 		}
 		JSONreader::arrayFromStream(value, v);
 		break;
 	default: // numeric
 		value = TextReader::scanSegment(istr, ",} \t\n\r");
-		const std::type_info & type = Type::guessType(value);
-		// v.setType(type);
-		v.requestType(type);
-		//log.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
-		log.debug(2) << "Value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		if (!(v.typeIsSet() && keepType)){
+			const std::type_info & type = Type::guessType(value);
+			v.requestType(type);
+			//mout.warn() << "Value " << value << ", requested type=" << drain::Type::getTypeChar(type) << mout.endl;
+		}
+		//else // Type::call<drain::simpleName>(t)  // drain::Type::getTypeChar(v.getType())
+		//mout.warn() << "keeping type=" << Type::call<drain::simpleName>(v.getType()) << mout.endl;
+		//mout.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << mout.endl;
 		v = value;
 		break;
 	}

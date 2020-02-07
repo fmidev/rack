@@ -312,19 +312,20 @@ void Hi5Base::readText(Hi5Tree &src, std::istream & istr) {
 
 void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
-	//drain::Logger mout("Hi5Base", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	Hi5Tree::path_t path;
 	std::string attrKey;
-	drain::Variable v;
+	std::string attrValue;
+	//drain::Variable v;
 
-	Hi5Base::parsePath(line, path, attrKey, v);
+	Hi5Base::parsePath(line, path, attrKey, attrValue);
 
-	hi5mout.debug();
-	hi5mout << path      << " : ";
-	hi5mout << attrKey   << " =";
-	hi5mout << v << " | ";
-	hi5mout << hi5mout.endl;
+	mout.debug(1);
+	mout << path      << " : ";
+	mout << attrKey   << " = ";
+	mout << attrValue << " | ";
+	mout << mout.endl;
 
 	/// Create the node always
 	NodeHi5 & n = dst(path).data;
@@ -333,19 +334,38 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 		return;
 
 	if (attrKey == "image"){
-
 		n.dataSet.setType<unsigned char>();
-		n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
 
+		drain::Variable v;
+		drain::JSONreader::valueFromStream(attrValue, v);
+		switch (v.getElementCount()) {
+			case 3:
+				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1), v.get<size_t>(2));
+				break;
+			case 2:
+				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
+				break;
+			case 1:
+				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(0));
+				mout.warn() << "image height not given, assuming height=width=" << v.get<size_t>(0) << mout.endl;
+				break;
+			default:
+				mout.warn() << "wrong number of dimensions for image data: " << v << mout.endl;
+				break;
+		}
+		//n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
+		// What if dim < 2
 	}
 	else { // non-image
 
 		drain::Variable & a = n.attributes[attrKey];
-		a = v;
+		//mout.warn() << "hey " << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
+		drain::JSONreader::valueFromStream(attrValue, a, true);
+		//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
 
 		if (attrKey == "quantity"){
 			if (n.attributes.get("gain", 0.0) == 0.0){
-				hi5mout.debug() << "Suggesting --completeODIM to proceed" << hi5mout.endl;
+				mout.debug() << "Suggesting --completeODIM to proceed" << mout.endl;
 			}
 		}
 
@@ -353,44 +373,63 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 }
 
+void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & assignment){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	mout.debug() << "line: " << line << mout.endl;
+
+	drain::StringTools::split2(line, path, assignment, ":");
+
+}
+
+
 
 /// Split full path string to path object and attribute key.
 // consider ValueReader, TextReader instead (skipping attrType)
+void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, std::string & attrValue){
 
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	mout.debug() << "line: " << line << mout.endl;
+
+	std::string assignment;
+
+	Hi5Base::parsePath(line, path, assignment);
+
+	drain::StringTools::split2(assignment, attrKey, attrValue, "=");
+
+}
+
+/*
 void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "line: " << line << mout.endl;
 
-	typedef std::vector<std::string> strVector;
+	std::string assignment;
 
-	strVector p;
-	drain::StringTools::split(line, p, ':');
+	drain::StringTools::split2(line, path, assignment, ":");
 
-	path = p[0];
 	mout.debug() << "path: " << path << mout.endl;
 
-	if (p.size() > 1){
+	//if (p.size() > 1){
+	if (!assignment.empty()){
 
-		mout.debug() << "key[=value]: " << p[1] << mout.endl;
+		//mout.debug() << "key[=value]: " << p[1] << mout.endl;
+		mout.debug() << "key[=value]: " << assignment << mout.endl;
 
-		strVector assignment;
-		drain::StringTools::split(p[1], assignment, '=');
+		std::string value;
+		drain::StringTools::split2(assignment, attrKey, value, "=");
+		//mout.warn() << "split: " << attrKey << ':' << value << mout.endl;
 
-		attrKey = assignment[0];
-		mout.debug() << "key: " << attrKey << mout.endl;
+		//if (assignment.size() == 2){
+		if (!value.empty()){
 
-		if (assignment.size() == 2){
 
-			const std::string & value = assignment[1];
-
-			if (value.empty()){
-				v.setType(typeid(std::string));
-				return;
-			}
-
-			drain::JSONreader::fromStream(value, v);
+			drain::JSONreader::valueFromStream(value, v);
+			//mout.debug() << "variable: "  << v << mout.endl;
 
 			// Test array OR type specification...
 			size_t i = value.find('[');
@@ -398,26 +437,10 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 				mout.note() << "discarding old type code: " << value.substr(i) << "; instead guessed " << drain::Type::getTypeChar(v.getType()) << mout.endl;
 			}
 
-			/*
-			if (i == 0){
-				mout.debug() << "NEW mode (array)" << mout.endl;
-				drain::ValueReader::scanArrayValues(drain::StringTools::trim(value, "[] \t\n"), v);
-			}
-			else if (i == std::string::npos){
-				mout.debug() << "NEW mode (non-array) " << mout.endl;
-				drain::ValueReader::scanValue(drain::StringTools::trim(value, " \t\n"), v);
-				mout.debug() << "val:" << value << '~' << v << ", type=" << v.getType().name() << mout.endl;
-			}
-			else {
-				drain::JSONreader::fromStream(value, v);
-				//drain::ValueReader::scanArrayValues(drain::StringTools::trim(value.substr(0,i-1)), v);
-				mout.note() << "discarding old type code: " << value.substr(i) << ", guessing " << drain::Type::getTypeChar(v.getType()) << mout.endl;
-			}
-			*/
-
 		}
 		else {
-			mout.debug(1) << "key only: " << p[1] << " (no assignment)" << mout.endl;
+
+			mout.debug(1) << "key only: " << attrKey << " (no assignment)" << mout.endl;
 			//mout.note() << "incomplete assignment: " << p[1] << mout.endl;
 		}
 
@@ -426,17 +449,18 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 	// mout.note() << "key: " << attrKey << mout.endl;
 
 }
-
+*/
 
 
 
 void Hi5Base::deleteNoSave(Hi5Tree &src){
 
-	drain::Logger mout("Hi5Base", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	typedef std::list<Hi5Tree::path_t::elem_t> path_elem_list_t;
+	rack::ODIMPath l;
+	//typedef std::list<Hi5Tree::path_t::elem_t> path_elem_list_t;
 	//std::list<std::string> sl;
-	path_elem_list_t l;
+	//path_elem_list_t l;
 
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 		if (! it->second.data.noSave){ // needed?
@@ -448,7 +472,7 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 		}
 	}
 
-	for (path_elem_list_t::iterator it = l.begin(); it != l.end(); ++it){
+	for (rack::ODIMPath::const_iterator it = l.begin(); it != l.end(); ++it){
 		Hi5Tree::path_t p;
 		p << *it;
 		mout.debug(1) << "delete group: " <<  *it << mout.endl;

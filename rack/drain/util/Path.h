@@ -259,6 +259,16 @@ std::ostream & operator<<(std::ostream & ostr, const Path<T> & p) {
 	return p.toOStr(ostr);
 }
 
+template <class T>
+inline
+std::istream & operator>>(std::istream &istr, Path<T> & p) {
+	std::string s;
+	istr >> s;
+	p = s;
+	return istr;
+}
+
+
 }
 
 #endif /* Path_H_ */

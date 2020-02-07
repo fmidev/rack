@@ -111,7 +111,7 @@ void JSONtree::read(tree_t & t, std::istream & istr){
 				}
 				else {
 					log.debug(2) << "Reading value '" << key << "'" << log.endl;
-					JSONreader::fromStream(istr, vmap[key]);
+					JSONreader::valueFromStream(istr, vmap[key]);
 					//ValueReader::scanValue(istr, vmap[key]);
 				}
 				completed = true;

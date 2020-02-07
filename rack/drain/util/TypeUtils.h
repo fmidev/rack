@@ -41,22 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 /// Utility for implementing setType(const std::type_info &t) in classes supporting setType<T>().
-/**
- *
-template <class C>
-class typesetter {
-public:
-
-	typedef void value_t;
-
-	template <class T>
-	static
-	void callback(C & c){
-		c.template setType<T>();
-	}
-};
-*/
-
 class typesetter {
 public:
 
@@ -72,7 +56,11 @@ public:
 };
 
 
-
+/// Returns the basic type (integer, float, bool, string, void) as a string.
+/**
+ *  Usage:
+ *  Type::call<drain::simpleName>(t)
+ */
 class simpleName {
 
 public:
@@ -91,6 +79,9 @@ public:
 			return "void";
 		else if (t == typeid(std::string)){
 			return "string";
+		}
+		else if (t == typeid(char)){
+			return "char"; // NOTE: includes char array string
 		}
 		else if (t == typeid(bool)){
 			return "boolean";

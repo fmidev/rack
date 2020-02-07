@@ -180,6 +180,14 @@ public:
 	 *   \endcode
 	 *
 	 */
+
+	static
+	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, std::string & attrValue);
+
+	static
+	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attribute);
+
+	/*
 	static
 	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v);
 
@@ -188,6 +196,7 @@ public:
 		drain::Variable attrValue;
 		parsePath(line, path, attrKey, attrValue); // , attrType);
 	}
+	*/
 
 
 	/// Assign a value with optional type specification.

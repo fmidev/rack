@@ -55,18 +55,12 @@ void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const
 	classdict_t & dict = getClassDict();
 	dict.add(code, pathStr);
 
-
-
-
-
-
 	// OLD
-
 	//const drain::JSONtree::tree_t::path_t path(pathStr, '.'); // ORIG
 	drain::JSONtree::tree_t & entries = tree["entries"];
 
 	drain::VariableMap & attr = entries[pathStr].data;
-	attr["value"]   = code;
+	attr["value"] = code;
 	attr["label"] = label;
 	attr["color"].setType(typeid(int));
 

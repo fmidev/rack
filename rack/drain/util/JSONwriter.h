@@ -128,6 +128,11 @@ public:
 	/// Implementation for std::map<> and derived classes
 	template <class T>
 	static
+	std::ostream & sparseArrayAsMapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
+
+	/// Implementation for std::map<> and derived classes
+	template <class T>
+	static
 	std::ostream & mapElementsToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
 
 	/// Implementation for std::map<> and derived classes
@@ -205,6 +210,7 @@ std::ostream & JSONwriter::sparseSequenceToStream(const T & x, std::ostream &ost
 	char sep = 0;
 
 	ostr << '[';
+	//ostr << '{';
 
 	for (typename T::const_iterator it = x.begin(); it != x.end(); ++it){
 		//if (it->empty()){
@@ -213,12 +219,48 @@ std::ostream & JSONwriter::sparseSequenceToStream(const T & x, std::ostream &ost
 				ostr << sep << ' ';
 			else
 				sep = ',';
-			/// Recursion
+			/// Recursion ?
 			toStream(*it, ostr);
 		}
 	}
 
 	ostr << ']';
+	//ostr << '}';
+
+	return ostr;
+}
+
+template <class T>
+std::ostream & JSONwriter::sparseArrayAsMapToStream(const T & m, std::ostream &ostr, unsigned short indentation){
+
+	ostr << '{' << '\n';
+
+	indentation += JSONwriter::indentStep;
+	char sep = 0;
+	size_t index = 0;
+
+	for (typename T::const_iterator it = m.begin(); it != m.end(); ++it){
+
+		if (!T::template empty(*it)){
+
+			if (sep){
+				ostr << sep << '\n';
+			}
+			else
+				sep = ',';
+
+			JSONwriter::indent(ostr, indentation);
+			ostr << '"' << index << '"' << ':' << ' ';
+			/// Recursion
+			toStream(*it, ostr, indentation); // If elements are vectors, restart...
+
+		}
+
+		++index;
+
+	}
+	//JSONwriter::indent(ostr, indentation);
+	ostr  << '\n' << '}';
 
 	return ostr;
 }
@@ -254,7 +296,7 @@ template <class T>
 std::ostream & JSONwriter::mapToStream(const T & m, std::ostream &ostr, unsigned short indentation){
 	ostr << '{' << '\n';
 	JSONwriter::mapElementsToStream(m, ostr, indentation);
-	JSONwriter::indent(ostr, indentation);
+	JSONwriter::indent(ostr, indentation); //? before }
 	ostr  << '\n' << '}';
 	return ostr;
 }

@@ -142,7 +142,7 @@ public:
 		StringTools::split(s, sequence, std::string(1,separator), trimChars);
 	}
 
-	/// Splits and trims a given std::string to a std Sequence.
+	/// Splits and trims a given std::string to two substrings, by first separator encountered.
 	/**
 	 *  Given an empty std::string,
 	 */
@@ -290,8 +290,9 @@ void StringTools::split2(const std::string & s, T1 & first, T2 & second, const s
 	std::size_t i = s.find_first_of(separators);
 
 	if (i != std::string::npos){ // input of type "key=value" found
+
 		std::stringstream sstr1;
-		std::cerr << "eka " << s.substr(0, i) << '\n';
+		//std::cerr << "eka " << s.substr(0, i) << '\n';
 		if (!trimChars.empty()){
 			sstr1 << StringTools::trim(s.substr(0, i), trimChars);
 		}
@@ -302,7 +303,7 @@ void StringTools::split2(const std::string & s, T1 & first, T2 & second, const s
 		std::stringstream sstr2;
 		++i;
 		if (i<s.size()){
-			std::cerr << "toka " << s.substr(i) << '\n';
+			//std::cerr << "toka " << s.substr(i) << '\n';
 			if (!trimChars.empty()){
 				sstr2 << StringTools::trim(s.substr(i), trimChars);
 			}
