@@ -184,7 +184,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind, const PlainData<PolarSrc> & srcClass, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass) { //const {
 
-	drain::Logger mout("QualityCombinerOp", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
@@ -316,7 +316,8 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet, Data<PolarDst> & dstData){
 
-	drain::Logger mout("QualityCombinerOp", __FUNCTION__);
+	//drain::Logger mout("QualityCombinerOp", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	// Create in order:
 	// quality1 => QIND

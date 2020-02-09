@@ -29,75 +29,48 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 /*
- * Rectangle.h
+ * Time.h
  *
- *  Created on: Sep 9, 2010
+ *  Created on: Aug 31, 2010
  *      Author: mpeura
  */
 
-#ifndef DRAIN_RANGE_H_
-#define DRAIN_RANGE_H_
+#include <string>
+#include <iostream>
+#include <fstream>
 
-#include <ostream>
-//#include <cmath>
-//#include <string>
-//#include <sstream>
-#include <vector>
-// // using namespace std;
+#ifndef DRAIN_OUTPUT_H_
+#define DRAIN_OUTPUT_H_
 
+#include "Log.h"
 
 namespace drain {
 
-template <class T>
-class Range  {
+/// Utility for handling time. Internally, uses tm (C time structure).
+/**
+ *  Note: This class does nout (yet) support format strings of arbitrary size.
+ *  (output str length has limited size).
+ *
+ */
+class Output {
 
 public:
 
-	Range() : vect(2),min(vect[0]), max(vect[1]) { //
-	}
+	Output(const std::string & filename);
 
-	/// Copy constructor.
-	Range(const Range<T> & range) : vect(2), min(vect[0]), max(vect[1]) {
-		min = range.min;
-		max = range.max;
-	}
+	~Output();
 
-	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
-	}
+	operator std::ostream & ();
 
-	std::vector<T> vect;
-	//T vect[2]; Reference::link() caused problems
-	T & min;
-	T & max;
 
-	Range & operator=(const Range<T> & range){
-		min = range.min;
-		max = range.max;
-		return *this;
-	};
+protected:
 
-	Range<T> & operator=(const T &x){
-		min = x;
-		max = x;
-		return *this;
-	};
-
-	bool contains(T x) const {
-		return (min <= x) && (x <= max);
-	}
+	std::ofstream ofstr;
 
 };
 
-
-template <class T>
-std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
-	ostr << r.min << ':' << r.max;
-	return ostr;
-}
-
-} // namespace drain
+} // drain::
 
 
-
-#endif /* RECTANGLE_H_ */
+#endif /* DRAIN_OUTPUT_H_ */
 

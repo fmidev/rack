@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 
 #include "ODIMPath.h"
@@ -73,7 +73,7 @@ void DataOutput::writeToDot(std::ostream & ostr, const Hi5Tree & tree, ODIMPathE
 		}
 
 	}
-	*/
+	 */
 
 	ostr << "digraph G { \n";
 	ostr << "/* selector=" << selector << " */  \n";
@@ -94,8 +94,8 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 	const bool ROOT = (path.empty() || path.back().isRoot());
 
 	//if (!path.empty())
-		ostr << "\n/* " << quoted(path) << " */\n";
-		//ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
+	ostr << "\n/* " << quoted(path) << " */\n";
+	//ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
 
 	/// Draw node
 	if (ROOT){
@@ -131,7 +131,7 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 		if (e.is(ODIMPathElem::DATASET)){
 			if (where.hasKey("elangle"))
 				ostr << ':' << ' ' << where["elangle"] << "deg" << ' ';
-				//ostr << "| {image|attributes}";
+			//ostr << "| {image|attributes}";
 		}
 		else if (e.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
 			ostr << ':' << ' ' << quantity << ' ';
@@ -202,7 +202,7 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 	int indexPrev = id;
 	for (Hi5Tree::const_iterator it = group.begin(); it!=group.end(); ++it){
 
-		ODIMPathElem e(it->first);
+		const ODIMPathElem & e = it->first;
 
 		if ((e.group & selector) == 0){  // eg. DATASET, DATA, ARRAY, WHAT, WHERE, HOW
 			mout.debug() << "Skipping: " << e << mout.endl;
@@ -215,8 +215,9 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 		ostr << fill << 'R' <<  (id-1) << " -> R" <<  id << " [style=invis];\n\n"; // [style=invis]
 
 		ODIMPath p(path);  // ,'_')
-		p.push_back(e);
-
+		//p.push_back(e);
+		p << e;
+		//mout.note() << "writing: " << p << mout.endl;
 
 		/// Draw edge
 		ostr << fill;
@@ -255,4 +256,4 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 }  // rack::
 
 // Rack
- // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP
+// REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP // REP

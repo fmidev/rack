@@ -234,8 +234,8 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 		mout.note() << "experimental: writing legend " << leg << mout.endl;
 
-		if (!path.back().is(Hi5Tree::path_t::elem_t::WHERE)){ // FIX
-			mout.warn() << "legend attribute found at " << path.back() << mout.endl;
+		if (!path.back().is(Hi5Tree::path_t::elem_t::WHAT)){ // FIX
+			mout.info() << "legend attribute found at " << path.back() << ", should be at what/' " << mout.endl;
 		}
 
 

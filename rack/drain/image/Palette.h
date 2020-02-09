@@ -99,6 +99,16 @@ public:
 
 	drain::ReferenceMap map;
 
+	/// Returns the color without leading marker (like "0x").
+	void getHexColor(std::ostream & ostr) const;
+
+	inline
+	void getHexColor(std::string & str) const {
+		std::stringstream sstr;
+		getHexColor(sstr);
+		str = sstr.str();
+	}
+
 protected:
 
 
@@ -139,6 +149,9 @@ public:
 	void exportTXT(std::ostream & ostr, char separator='\t', char separator2=0) const;
 
 	void exportJSON(drain::JSONtree::tree_t & json) const;
+
+	// Export formatted
+	void exportFMT(std::ostream & ostr, const std::string & format) const;
 
 	/// Returns a legend as an SVG graphic.
 	void exportSVGLegend(TreeSVG & svg, bool up = true) const;

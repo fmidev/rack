@@ -28,6 +28,18 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include <map>
+#include <utility>
+
+
+#include <util/Cloner.h>
+#include <util/Log.h>
+#include <drain/util/Output.h>
+#include <util/Range.h>
+#include <util/Registry.h>
+#include <util/SmartMap.h>
+#include <util/Tree.h>
+#include <util/ValueScaling.h>
 
 #include <data/Data.h>
 #include <data/DataSelector.h>
@@ -43,19 +55,29 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <main/resources.h>
 //#include <radar/Analysis.h>
 #include <stddef.h>
-#include <util/Cloner.h>
-#include <util/Log.h>
-#include <util/Range.h>
-#include <util/Registry.h>
-#include <util/SmartMap.h>
-#include <util/Tree.h>
-#include <util/ValueScaling.h>
-#include <map>
-#include <utility>
+
 
 namespace rack {
 
-//CommandEntry<CmdPhysical> cmdPhysical("iPhysical");
+
+void CmdPaletteOut::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+
+	RackResources & resources = getResources();
+	if (cmdFormat.value.empty()){
+		resources.palette.write(resources.outputPrefix + value);
+	}
+	else {
+		mout.warn() << "user defined format, extension not checked: " +  cmdFormat.value << mout.endl;
+		drain::Output out(resources.outputPrefix + value);
+		resources.palette.exportFMT(out, cmdFormat.value);
+	}
+
+}
+
+
+
 
 std::string ImageOpRacklet::outputQuantity("{what:quantity}_{command}");
 

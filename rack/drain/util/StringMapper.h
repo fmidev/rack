@@ -107,8 +107,10 @@ public:
 	/// Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.
 	/**
 	 *   The Stringlet list is internal.
+	 *   \param s - string containing variables like in "Hello, ${NAME}!"
+	 *   \param convertEscaped - convert backslash+letter segments to actual chars (\t, \n } first
 	 */
-	void parse(const std::string &s);
+	void parse(const std::string &s, bool convertEscaped = false);
 
 	/// Prints the mapper in its current state, ie. some variables may have been expanded to literals.
 	/**

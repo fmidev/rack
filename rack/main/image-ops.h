@@ -159,14 +159,7 @@ public:
 	CmdPaletteOut() : SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
 	};
 
-	void exec() const {
-
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
-
-		RackResources & resources = getResources();
-		resources.palette.write(resources.outputPrefix + value);
-
-	};
+	void exec() const;
 
 };
 

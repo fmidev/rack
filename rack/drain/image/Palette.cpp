@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include <util/FilePath.h>
+#include <util/StringMapper.h>
 // #include <util/TextReader.h>
 
 #include "Palette.h"
@@ -88,6 +89,15 @@ void PaletteEntry::checkAlpha(){
 
 }
 
+void PaletteEntry::getHexColor(std::ostream & ostr) const {
+
+	for (vect_t::const_iterator it = color.begin(); it!=color.end(); ++it){
+		ostr.width(2);
+		ostr.fill('0');
+		ostr << std::hex << static_cast<int>(*it);
+	}
+
+}
 
 std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char separator2) const{
 
@@ -533,7 +543,8 @@ void Palette::write(const std::string & filename){
 
 	drain::FilePath filepath(filename);
 
-	if ((filepath.extension != "txt") && (filepath.extension != "json") && (filepath.extension != "svg")){
+	if ((filepath.extension != "txt") && (filepath.extension != "json") &&
+			(filepath.extension != "svg") && (filepath.extension != "pal")){
 		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
 		return;
 	}
@@ -564,6 +575,10 @@ void Palette::write(const std::string & filename){
 		mout.debug() << "writing plain txt palette file" << mout.endl;
 		exportTXT(ofstr,'\t', '\t');
 	}
+	else if (filepath.extension == "pal"){
+		mout.debug() << "writing formatted .pal file" << mout.endl;
+		exportFMT(ofstr, "#${label}\n set color ${color}");
+	}
 	else {
 		ofstr.close();
 		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
@@ -573,6 +588,8 @@ void Palette::write(const std::string & filename){
 }
 
 void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (!separator2)
 		separator2 = separator;
@@ -617,6 +634,8 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 
 
 void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
 	VariableMap &metadata = json["metadata"].data;
@@ -663,6 +682,73 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 
 }
 
+/*
+struct PalEntry : BeanLike {
+
+	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
+		parameters.reference("index", index);
+		parameters.reference("min", binRange.min);
+		parameters.reference("max", binRange.max);
+		parameters.reference("count", count);
+		parameters.reference("label", label);
+	};
+
+	drain::Histogram::vect_t::size_type index;
+	Range<double> binRange;
+	drain::Histogram::count_t count;
+	std::string label;
+
+};
+*/
+
+void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	PaletteEntry entry;
+	entry.color.resize(3);
+	std::string colorHex;
+
+	drain::ReferenceMap entryWrapper;
+	//entryWrapper
+	entryWrapper.reference("label", entry.label = "MIKA");
+	entryWrapper.reference("color", entry.color);
+	entryWrapper.reference("colorHex", colorHex);
+	entryWrapper.reference("value", entry.value = 123.566);
+	entryWrapper["color"].setOutputSeparator(',');
+
+	mout.warn() << "color: " << entryWrapper["color"] << mout.endl;
+	//entryWrapper["color"].toJSON();
+
+	drain::StringMapper mapper;
+	mapper.parse(format, true);
+
+	/*
+	if (!specialCodes.empty()){
+
+		for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+			entry = it->second;
+			entry.label = it->first; // ?
+			mapper.toStream(ostr, entryWrapper);
+		}
+		ostr << '\n';
+		ostr << '\n';
+	}
+	*/
+
+	for (Palette::const_iterator it = begin(); it != end(); ++it){
+		if (!it->second.hidden){
+			entry = it->second;
+			entry.getHexColor(colorHex);
+			//entry.label = it->first;
+			//entry.label = it->first; // ?
+			mapper.toStream(ostr, entryWrapper);
+		}
+	}
+	ostr << '\n';
+	ostr << '\n';
+
+}
 
 
 

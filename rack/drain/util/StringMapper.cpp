@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-void StringMapper::parse(const std::string &s) {
+void StringMapper::parse(const std::string &s, bool convertEscaped) {
 
-	drain::Logger mout("StringMapper", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "validChars=" << validChars << mout.endl;
 
@@ -50,7 +50,15 @@ void StringMapper::parse(const std::string &s) {
 	sstr << "^(.*)\\$\\{(" << validChars << ")\\}(.*)$";
 	RegExp r(sstr.str(), REG_EXTENDED); //  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 
-	parse(s,r);
+	if (convertEscaped){
+		std::string str2(s);
+		str2 = drain::StringTools::replace(str2, "\\t", "\t");
+		str2 = drain::StringTools::replace(str2, "\\n", "\n");
+		parse(str2,r);
+	}
+	else {
+		parse(s,r);
+	}
 }
 
 void StringMapper::parse(const std::string &s, RegExp &r) {

@@ -22,82 +22,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-/*
- * Rectangle.h
- *
- *  Created on: Sep 9, 2010
- *      Author: mpeura
  */
 
-#ifndef DRAIN_RANGE_H_
-#define DRAIN_RANGE_H_
 
-#include <ostream>
-//#include <cmath>
-//#include <string>
-//#include <sstream>
-#include <vector>
-// // using namespace std;
+#include "Log.h"
+#include "Output.h"
 
 
 namespace drain {
 
-template <class T>
-class Range  {
+Output::Output(const std::string & filename){ // : filename(filename){
 
-public:
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	Range() : vect(2),min(vect[0]), max(vect[1]) { //
+	if (filename.empty())
+		mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
+
+	if (filename == "-"){
+		mout.debug() << "opening standard output" << mout.endl;
 	}
-
-	/// Copy constructor.
-	Range(const Range<T> & range) : vect(2), min(vect[0]), max(vect[1]) {
-		min = range.min;
-		max = range.max;
+	else {
+		//std::string s = getResources().outputPrefix + filename;
+		ofstr.open(filename.c_str(), std::ios::out);
+		if (!ofstr.is_open()){
+			mout.error() << "opening '" << filename << "' failed" << mout.endl;
+		}
 	}
-
-	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
-	}
-
-	std::vector<T> vect;
-	//T vect[2]; Reference::link() caused problems
-	T & min;
-	T & max;
-
-	Range & operator=(const Range<T> & range){
-		min = range.min;
-		max = range.max;
-		return *this;
-	};
-
-	Range<T> & operator=(const T &x){
-		min = x;
-		max = x;
-		return *this;
-	};
-
-	bool contains(T x) const {
-		return (min <= x) && (x <= max);
-	}
-
-};
-
-
-template <class T>
-std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
-	ostr << r.min << ':' << r.max;
-	return ostr;
 }
 
-} // namespace drain
+Output::~Output(){
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.note() << "closing... " << mout.endl;
+	ofstr.close();
+}
 
 
+Output::operator std::ostream & (){
+	// drain::Logger mout(__FUNCTION__, __FILE__);
 
-#endif /* RECTANGLE_H_ */
+	if (ofstr.is_open()){
+		return ofstr;
+	}
+	else {
+		return std::cout;
+	}
 
+}
+
+
+} // drain

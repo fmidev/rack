@@ -124,7 +124,10 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			mout.debug() << "dstProb: " << dstProb << mout.endl;
 
 			/// MAIN COMMAND
-			processDataSet(srcDataSet, dstProb,  dstDataSet);
+			if (DetectorOp::STORE >= 0)
+				processDataSet(srcDataSet, dstProb,  dstDataSet);
+			// else skip! To collect legends.
+
 			//@ dstProb.updateTree(); // create /what, /where etc.
 			//@ DataTools::updateInternalAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
 			// update str trees?

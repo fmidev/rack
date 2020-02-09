@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stddef.h>
 
 #include <util/Log.h>
+#include <util/Output.h>
 #include <util/StringMapper.h>
 #include <util/Tree.h>
 #include <util/Variable.h>
@@ -111,7 +112,7 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 //static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
-
+/*
 class Output {
 
 public:
@@ -157,7 +158,7 @@ protected:
 	std::ofstream ofstr;
 
 };
-
+*/
 
 struct HistEntry : BeanLike {
 
@@ -227,19 +228,20 @@ public:
 		histogram.compute(dstData.data, dstData.data.getType());
 
 		if (!filename.empty()){
-			Output out(filename);
+
+			drain::Output out((filename == "-") ? filename : getResources().outputPrefix + filename);
 
 			std::ostream & ostr = out;
 
 			drain::StringMapper mapper;
 			if (!cmdFormat.value.empty()){
-				std::string format(cmdFormat.value);
-				format = drain::StringTools::replace(format, "\\t", "\t");
-				format = drain::StringTools::replace(format, "\\n", "\n");
-				mapper.parse(format);
+				//std::string format(cmdFormat.value);
+				//format = drain::StringTools::replace(format, "\\t", "\t");
+				//format = drain::StringTools::replace(format, "\\n", "\n");
+				mapper.parse(cmdFormat.value, true);
 			}
 			else
-				mapper.parse("${count} # ${label} (${index}) [${min}, ${max}] \n");
+				mapper.parse("${count} # ${label} (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
 
 			// Header
 			ostr << "# [0," << histogram.getSize() << "] ";
@@ -638,13 +640,15 @@ public:
 			DataSelector selector;
 			//selector.groups.value = ODIMPathElem::ALL_GROUPS;
 			selector.setParameters(resources.select);
-			selector.convertRegExpToRanges();
+			//selector.convertRegExpToRanges();
+			if (!resources.select.empty()){
+				mout.warn() << "lacking --select support, use --delete and --keep instead" << mout.endl;
+			}
 			resources.select.clear();
 
-			std::string outFileName = resources.outputPrefix + value;
-			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-			DataOutput::writeToDot(ofstr, *resources.currentHi5, selector.groups);
-			ofstr.close();
+			Output out(resources.outputPrefix + value);
+			DataOutput::writeToDot(out, *resources.currentHi5, selector.groups);
+
 
 		}
 		else {

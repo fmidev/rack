@@ -141,7 +141,7 @@ public:
 	 *    \param separator - typically comma or semicolon
 	 */
 
-	image::ImageScaling scaling;
+	ValueScaling scaling;
 
 	char separator;
 };
