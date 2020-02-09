@@ -158,6 +158,12 @@ void Referencer::link<Referencer>(Referencer &r){
 	relink(r);
 }
 
+template <>
+inline
+std::ostream & JSONwriter::toStream(const Referencer & v, std::ostream &ostr, unsigned short indentation){
+	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
+}
+
 
 }  // namespace drain
 

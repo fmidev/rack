@@ -259,8 +259,9 @@ std::ostream & JSONwriter::sparseArrayAsMapToStream(const T & m, std::ostream &o
 		++index;
 
 	}
-	//JSONwriter::indent(ostr, indentation);
-	ostr  << '\n' << '}';
+	ostr  << '\n';
+	JSONwriter::indent(ostr, indentation - JSONwriter::indentStep);
+	ostr  << '}';
 
 	return ostr;
 }
@@ -296,8 +297,10 @@ template <class T>
 std::ostream & JSONwriter::mapToStream(const T & m, std::ostream &ostr, unsigned short indentation){
 	ostr << '{' << '\n';
 	JSONwriter::mapElementsToStream(m, ostr, indentation);
+	//JSONwriter::indent(ostr, indentation); //? before }
+	ostr  << '\n';
 	JSONwriter::indent(ostr, indentation); //? before }
-	ostr  << '\n' << '}';
+	ostr  << '}';
 	return ostr;
 }
 

@@ -164,14 +164,18 @@ public:
 
 // -----------------------
 
-class LegendEntry : public std::string {
+class LegendEntry { //: public std::string {
+
 public:
+
+	std::string label;
 
 };
 
 inline
 std::ostream & operator<<(const LegendEntry & entry, std::ostream &ostr){
-	return ostr << (const std::string &)entry;
+	//return ostr << (const std::string &)entry;
+	return ostr << entry.label;
 }
 
 

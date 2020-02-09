@@ -49,6 +49,8 @@ typedef drain::JSONtree::tree_t classtree_t;
 
 typedef drain::Dictionary2<int, std::string> classdict_t;
 
+//drain::image::Palette
+
 classdict_t & getClassDict();
 
 

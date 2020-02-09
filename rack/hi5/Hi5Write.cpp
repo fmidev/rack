@@ -189,11 +189,8 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	}
 	else {
 		/// ... otherwise handle as H5Group, ie. continue iteration
-		//hid_t gid = 0;
 
-
-		if (path.size() > 1){ // RO
-
+		if (path.size() > 1){
 
 			const std::string pathStr(path);
 
@@ -238,16 +235,15 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			mout.info() << "legend attribute found at " << path.back() << ", should be at what/' " << mout.endl;
 		}
 
-
-		std::map<int, std::string> entries;
-		leg.toMap(entries, ',', ':');
-
-
 		// NOTE: tree is relative, path is absolute (for h5 functions)
 		//const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
 		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND); // essentially just "legend" ...
 
 		if (!tree.hasChild(legend)){
+
+			// Writing compounds requires classes using basic types and/or std::string.
+			std::map<int, std::string> entries;
+			leg.toMap(entries, ',', ':');
 
 			Hi5Tree::path_t p(path);
 			if (!p.empty())
@@ -258,6 +254,10 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			Writer::mapToH5Compound(entries, fid, p, "code", "class");
 
 		}
+		else {
+			mout.warn() << "legend already in path " << path << mout.endl;
+		}
+
 	}
 
 }
