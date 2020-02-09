@@ -1,3 +1,5 @@
 <map id="Legend" name="Legend">
-<area shape="rect" id="node2" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; std::\lstring \&gt;" alt="" coords="5,80,157,121"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; std::\lstring \&gt;" alt="" coords="46,184,198,225"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="170,95,269,121"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="158,5,281,32"/>
 </map>
