@@ -136,7 +136,7 @@ protected:
 	unsigned int count;
 
 	//double scaleResult;
-	ImageScaling scaling;
+	 drain::ValueScaling scaling;
 
 
 };
@@ -200,7 +200,7 @@ private:
 	/// Scales the window area and the dst intensity.
 	// double areaF;
 
-	ImageScaling scalingW;
+	 drain::ValueScaling scalingW;
 
 protected:
 

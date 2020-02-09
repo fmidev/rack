@@ -417,99 +417,53 @@ public:
 		mout.debug() << "delete existing no-save structures " << mout.endl;
 		hi5::Hi5Base::deleteNoSave(dst);
 
-
-
-		ODIMPathList paths;
-
-		/*
-		DataSelector preselector;
-
-		//dst.getPaths(paths);
-		//preselector.getPaths(dst, paths, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY );
-		//preselector.getPaths3(dst, paths);
-
-		dst.getPaths(paths);
-		mout.info() << "data structure contains " << paths.size() << " paths " << mout.endl;
-
-		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++){
-			// mout.note() << "set noSave: " << *it << mout.endl;
-			if (!it->back().belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::QUALITY | ODIMPathElem::ARRAY)){
-				dst(*it).data.noSave = true;
-			}
-		}
-		*/
-
 		for (Hi5Tree::iterator it = dst.begin(); it != dst.end(); ++it){
 
-			const ODIMPathElem &e = it->first;
+			if (it->first.is(ODIMPathElem::DATASET)){
 
-			if (e.is(ODIMPathElem::DATASET)){
+				it->second.data.noSave = true;
 
-				Hi5Tree & child = it->second;
-				child.data.noSave = true;
-
-				for (Hi5Tree::iterator dit = child.begin(); dit != child.end(); ++dit){
-					const ODIMPathElem &e = dit->first;
-					if (e.is(ODIMPathElem::DATA)){
+				for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
+					if (dit->first.is(ODIMPathElem::DATA)){
 						dit->second.data.noSave = true;
+						// Note: also for empty data keep attributes (esp. what:quantity)
+						// because quantity-specific quality may be searched for
+						for (Hi5Tree::iterator ait = dit->second.begin(); ait != dit->second.end(); ++ait){
+							if (!ait->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+								ait->second.data.noSave = true;
+						}
 					}
 				}
 			}
 
 		}
 
-
-		//ODIMPathElem::group_t groupFilter = selector.deriveParameters(value);
-		//mout.debug() << "selector for saved paths: " << selector << '|' << selector.groups << mout.endl;
-		mout.note() << "selector for saved paths: " << selector << mout.endl;
+		mout.debug(1) << "selector for saved paths: " << selector << mout.endl;
 
 		ODIMPathList savedPaths;
-		//selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		selector.getPaths3(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
-		//mout.info() << "set save" << mout.endl;
-		// OLD const ODIMPathElem::group_t groupMask = selector.groups; //getGroupMask();
-
-		/// Set SAVE for path, ie, traverse path
 		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
-			mout.warn() << "set save: " << *it << mout.endl;
+			mout.debug(1) << "set save: " << *it << mout.endl;
 			ODIMPath p;
 			//dst(*it).data.noSave = false;
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
+				//if (pit->belongsTo(ODIMPathElem::DATASET))
 				p << *pit;
 				dst(p).data.noSave = false;
 			}
-			/* OLD
-			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
-				p << *pit;
-				// mout.debug(2) << " \t\t" << p << mout.endl;
-				if (!pit->belongsTo(groupMask)){
-					if (dst(p).hasChild(odimARRAY)){
-						dst(p)[odimARRAY].data.noSave = true;
-						dst(p)[odimARRAY].data.dataSet.resetGeometry();
-						mout.debug(1) << "clearing " << p << " // data" << mout.endl;
-					}
+
+			/// Accept also tail (attribute groups)
+			if (p.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+				Hi5Tree & d = dst(p);
+				for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
+					mout.debug(1) << "also save: " << p << '|' << dit->first << mout.endl;
+					if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+						dit->second.data.noSave = false;
 				}
-				dst(p).data.noSave = false;
 			}
-			*/
 
 		}
-
-		// Traverse all the paths
-		// reverse_iterator, because dataset groups (descendants) become deleted before dataset itself.
-
-		/*
-		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
-
-			if (dst(*it).data.noSave){
-				mout.warn() << "deleting: " << *it << mout.endl;
-				dst.erase(*it);
-			}
-			else
-				mout.note() << "saving: " << *it << mout.endl;
-		}
-		*/
 
 		hi5::Hi5Base::deleteNoSave(dst);
 
@@ -802,15 +756,6 @@ public:
 };
 
 
-/**
- *    --/dataset1/what:nbins=210
- *
- *    Future feature: Select properties with \c --select , then
- *    \code
- *    rack volume.h5 --select data=2:4  --/what:undetect=244
- *    \endcode
- *
- */
 
 
 /// Modifies metadata (data attributes).
@@ -819,16 +764,15 @@ public:
 \~exec
 	make setODIM.hlp
 \~
+
 \include setODIM.hlp
 
-    \param assingment - source path consisting of group path, attribute key and value
+\param assignment - source path consisting of group path, attribute key and value
 
-    A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
+A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
 
-    Examples:
-	\include example-assign.inc
-
-
+Examples:
+\include example-assign.inc
 
  */
 class CmdSetODIM : public SimpleCommand<std::string> {

@@ -326,31 +326,30 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 	}
 }
 
-void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
+// ODIMPathElem::group_t groupFilter,
+void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (path.empty())
-		mout.warn() << "matcher: " << pathMatcher << mout.endl;
+		mout.debug(1) << "matcher: " << pathMatcher << mout.endl;
 
 	// Current search point
 	const Hi5Tree & s = src(path); // =src, if path empty
+
+	/// For dataset indices
+	std::set<ODIMPathElem::index_t> indexSet;
 
 	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
 
 		//ODIMPathElem child(it->first);
 		const ODIMPathElem & currentElem = it->first;
 		//mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") include=" << currentElem.belongsTo(groupFilter) << mout.endl;
-		mout.debug(0) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
+		//mout.debug(0) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
 
 
 		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
-			/*
-			if (!dataset.contains(currentElem.index)){
-				mout.warn() << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
-				continue;
-			}
-			*/
+
 			const hi5::NodeHi5 & node = it->second.data;
 			const drain::image::Image & d = node.dataSet;
 			if (d.properties.hasKey("where:elangle")){
@@ -359,6 +358,8 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 					continue;
 				}
 			}
+
+
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
@@ -393,8 +394,36 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 		ODIMPath p(path);
 		p << currentElem;
 
+		// Pre-match
+		if (currentElem.is(ODIMPathElem::DATASET)){
+
+			bool checked = false;
+			for (ODIMPathMatcher::const_iterator mit = pathMatcher.begin(); mit != pathMatcher.end(); ++mit){
+				if (mit->is(ODIMPathElem::DATASET)){
+					bool checked = true;
+					if (mit->test(currentElem)){
+						indexSet.insert(currentElem.getIndex());
+						break;
+					}
+				}
+			}
+
+			// 'dataset' not limited by pathMatcher, so increment count set
+			if (!checked){
+				indexSet.insert(currentElem.getIndex());
+			}
+
+			if (indexSet.size() > count){
+				mout.debug(2) << "count (" << count << ") exceeded for " << currentElem << mout.endl;
+				return;
+			}
+
+		}
+
+
 		if (pathMatcher.match(p)){
-			mout.debug() << "add  " << p << mout.endl;
+
+			mout.debug() << "add  " << drain::StringTools::join(indexSet,'*') << '=' <<indexSet.size() << ':' <<  path.front().getIndex() << '|' << p << mout.endl;
 			addPathT(pathContainer, p);
 		}
 		else {
@@ -402,7 +431,7 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 		}
 
 		/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
-		getPaths3(src, pathContainer, groupFilter, p); // note: original "root" src
+		getPaths3(src, pathContainer, p); // note: original "root" src
 
 	}
 
@@ -410,7 +439,7 @@ void DataSelector::getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathCont
 
 bool DataSelector::getPath3(const Hi5Tree & src, ODIMPath & path) const {
 	std::list<ODIMPath> pathContainer;
-	getPaths3(src, pathContainer, 0);
+	getPaths3(src, pathContainer);
 	if (pathContainer.empty()){
 		return false;
 	}

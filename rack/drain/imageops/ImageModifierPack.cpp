@@ -106,13 +106,13 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 
 	mout.debug() << "(initial) bins: " << bins << ",  " << histogram.getSize() << mout.endl;
 
-
-	computeHistogram(dst, histogram);
+	histogram.compute(dst, dst.getType());
+	//computeHistogram(dst, histogram);
 
 	const std::vector<drain::Histogram::count_t> & v = histogram.getVector();
 
 	if (!store.empty()){
-		mout.warn() << "storing in metadata " << mout.endl;
+		mout.warn() << "storing in metadata in attribute '" << store << "'" << mout.endl;
 		if (histogram.getSize() > 256)
 			mout.warn() << " storing large histogram in metadata (" << histogram.getSize() << ")" << mout.endl;
 		dst.properties[store] = v;
@@ -141,26 +141,13 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 
 }
 
+/*
 void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & histogram) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	//mout.debug() << "bins: " << bins << mout.endl;
-
-	/*
-	switch (type) {
-		case typeid(unsigned char):
-
-			break;
-		default:
-			mout.error() << "computing histograms not" << mout.endl;
-			break;
-	}
-	*/
-
 	const std::type_info & type = dst.getType();
 
-	//const std::size_t s = 1<<(8*drain::Type::call<drain::sizeGetter>(type));
 	const std::size_t s = histogram.getSize();
 
 	mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
@@ -188,6 +175,7 @@ void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & hi
 	mout.note() << "finito" << mout.endl;
 
 }
+*/
 
 void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
@@ -351,7 +339,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 			  channel.putScaled(i, j, limit(v[2+k]));
 		     }
 			 */
-			const ImageScaling & scaling = channel.getScaling();
+			const drain::ValueScaling & scaling = channel.getScaling();
 			const drain::typeLimiter<data_t>::value_t & limit = channel.getEncoding().getLimiter<data_t>();
 			channel.put(i, j, limit(scaling.inv(v[2+k])));
 			//channel.putScaled(i, j, limit(v[2+k])); // ! scaled

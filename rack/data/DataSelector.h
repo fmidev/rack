@@ -175,7 +175,8 @@ public:
 	 *  \param groupFilter - deprecating...
 	 *  \param path - initial path
 	 */
-	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter=ODIMPathElem::ALL_GROUPS , const ODIMPath & path = ODIMPath()) const;
+	//void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter=ODIMPathElem::ALL_GROUPS , const ODIMPath & path = ODIMPath()) const;
+	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & path = ODIMPath()) const;
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	/**

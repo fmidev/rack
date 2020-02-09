@@ -420,7 +420,7 @@ template <typename DT>  // PlainData<DT> & quality
 void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double nodataQuality, double undetectQuality) const {
 
 	quality.setPhysicalScale(0.0, 1.0);
-	const drain::image::ImageScaling & scaling = quality.getScaling();
+	const drain::ValueScaling & scaling = quality.getScaling();
 	const double d  = scaling.inv(dataQuality);
 	const double nd = scaling.inv(nodataQuality);
 	const double un = scaling.inv(undetectQuality);

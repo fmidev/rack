@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define HISTOGRAM_H_
 
 //
+#include <typeinfo>
 #include <cmath>
 
 #include <vector>
@@ -39,8 +40,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
+#include "Log.h"
 
-#include "LinearScaling.h"
+#include "ValueScaling.h"
+
+
 
 namespace drain
 {
@@ -58,6 +62,7 @@ class Histogram : protected std::vector<unsigned long> {
 public:
 
 	typedef unsigned long count_t;
+	typedef std::vector<count_t> vect_t;
 
 	Histogram(size_t size=256);
 
@@ -65,7 +70,8 @@ public:
 
 	virtual ~Histogram(){};
 
-	LinearScaling scaling;
+	//LinearScaling scaling;
+	ValueScaling scaling;
 
 	/// Sets the number of bins; the resolution of the histogram.
 	void setSize(size_t s);
@@ -76,35 +82,48 @@ public:
 	inline
 	int getSize() const { return bins; };
 
-
+	/// Collect distribution.
+	template <class T>
+	void compute(const T & src, const std::type_info & type = typeid(double));
 
 	/// Does not change the size of the histogram.
 	void clearBins();
 
 
-	/// Sets the expected sample count.
+	/// Sets the expected sample count. Deprecating.
 	void setSampleCount(long int n){
 		//sampleCount = n;
-		sampleCountNEW = n;
+		sampleCount = n;
 		sampleCountMedian = static_cast<size_t>(weight * static_cast<double>(n));
 	}
 
 	size_t getSampleCount() const {
-		return sampleCountNEW;
+		return sampleCount;
 	}
 
-	/// Max refers to upper limit.
-	//void setScale(int inMin, int inMax, int outMin, int outMax);
-	//void setScale(int inMin, int inMax, int outMin, int outMax){
-	//	scaling.setRange(0,inMax,outMin, outMax);
-	//}
 
 	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
 	inline
 	void setScale(double dataMin, double dataMax){
-		scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
+		scaling.setPhysicalRange(dataMin, dataMax);
+		if (bins>0)
+			scaling.setScale(dataMax/static_cast<double>(bins));
+		//scaling.s
+		// scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
 	};
 
+	inline
+	void setScale(const ValueScaling & s){
+		scaling.set(s);
+	}
+
+	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
+	/*
+	inline
+	void setScale(const ValueScaling & scaling){
+		//scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
+	};
+	*/
 
 	inline
 	int getInMin() const { return 0; };
@@ -113,12 +132,13 @@ public:
 	inline
 	int getUpperBoundIn() const { return bins; };
 
+
 	inline
-	int getOutMin() const { return scaling.forward(0); };
+	int getOutMin() const { return scaling.fwd(0); };
 
 	/// Returns the upperLimit (exclusive)
 	inline
-	int getUpperBoundOut() const { return scaling.forward(bins); };
+	int getUpperBoundOut() const { return scaling.fwd(bins); };
 
 
 
@@ -129,7 +149,7 @@ public:
 	inline
 	void setMedianPosition(double pos){
 		weight = pos;
-		sampleCountMedian = static_cast<size_t>(weight * sampleCountNEW);
+		sampleCountMedian = static_cast<size_t>(weight * sampleCount);
 	};
 
 	/*
@@ -144,58 +164,58 @@ public:
 	inline
 	void increment(T i){
 		//++(*this)[((i-inMin)*bins)/inSpan];
-		++(*this)[scaling.inverse(i)];
-		++sampleCountNEW;  // TODO: slow?
+		++(*this)[scaling.inv(i)];
+		++sampleCount;  // TODO: slow?
 	}
 
 	template <class T>
 	inline
 	void increment(T i, int count){
-		(*this)[scaling.inverse(i)] += count;
+		(*this)[scaling.inv(i)] += count;
 		//(*this)[((i-inMin)*bins)/inSpan] += count;
-		sampleCountNEW += count;
+		sampleCount += count;
 	}
 
 	template <class T>
 	inline
 	void incrementRaw(T i){
 		++(*this)[i];
-		++sampleCountNEW;  // TODO: slow?
+		++sampleCount;  // TODO: slow?
 	}
 
 	template <class T>
 	inline
 	void incrementRaw(T i, int count){
 		(*this)[i] += count;
-		sampleCountNEW += count;
+		sampleCount += count;
 	}
 
 	template <class T>
 	inline
 	void decrement(T i){
-		--(*this)[scaling.inverse(i)]; // [((i-inMin)*bins)/inSpan];
-		--sampleCountNEW;
+		--(*this)[scaling.inv(i)]; // [((i-inMin)*bins)/inSpan];
+		--sampleCount;
 	}
 
 	template <class T>
 	inline
 	void decrement(T i, int count){
-		(*this)[scaling.inverse(i)] -= count; //[((i-inMin)*bins)/inSpan] -= count;
-		sampleCountNEW -= count;
+		(*this)[scaling.inv(i)] -= count; //[((i-inMin)*bins)/inSpan] -= count;
+		sampleCount -= count;
 	}
 
 	template <class T>
 	inline
 	void decrementRaw(T i){
 		--(*this)[i];
-		--sampleCountNEW;
+		--sampleCount;
 	}
 
 	template <class T>
 	inline
 	void decrementRaw(T i, int count){
 		(*this)[i] -= count;
-		sampleCountNEW -= count;
+		sampleCount -= count;
 	}
 
 
@@ -203,47 +223,13 @@ public:
 	inline
 	T scaleOut(size_type i) const {
 		//return static_cast<T>(outMin + (i*outSpan)/bins);
-		return static_cast<T>(scaling.forward(i));
+		return static_cast<T>(scaling.fwd(i));
 	}
 
 
 
 
 	/// Statistics
-
-
-	// double (Histogram::* get)() const;
-    // map<char,double (Histogram::*)() const> getsy;
-
-	/// Returns average, min, Max, Sum, stdev, meDian
-	/**
-	 *  \par key - the letter of desired quantity: [a]verage, [s]um, std[d]ev, [vField]ariance, [m]edian, mi[n], ma[x],
-	 */
-	// DEPRECATED, see getValue
-	template <class T>
-	inline
-	T get(const char & key){
-		switch (key) {
-		case 'a':
-			return getMean<T>();
-		case 's':
-			return getSum<T>();
-		case 'm':
-			return getMedian<T>();
-		case 'd':
-			return getStdDeviation<T>();
-		case 'v':
-			return getVariance<T>();
-		case 'X':
-			return getMax<T>();
-		case 'N':
-			return getMin<T>();
-		default:
-			// Log
-			throw std::runtime_error(std::string("Histogram::get unimplemented type: ") + key);
-			return 0;
-		}
-	}
 
 	/// 
 	//  @param p applies to weighted median; for standard median, p = 0.5.
@@ -272,12 +258,11 @@ public:
 	template <class T>
 	inline
 	T getSum() const {
-		size_type _sum;
-		_sum = 0;
+		size_type sum = 0;
 		for (size_type i = 0; i < bins; i++){
-			_sum += (*this)[i] * scaleOut<T>(i); // count * nominal (should be scaled to middle)
+			sum += (*this)[i] * scaleOut<T>(i); // count * nominal (should be scaled to middle)
 		}
-		return _sum;
+		return sum;
 	}
 
 	//template <class T2>
@@ -285,8 +270,8 @@ public:
 	inline
 	T getMean() const {
 		//return scaleOut(getSum()/sampleCount);
-		if (sampleCountNEW > 0)
-		  return getSum<T>()/sampleCountNEW;
+		if (sampleCount > 0)
+		  return getSum<T>()/sampleCount;
 		else
 		  return 0;
 	}
@@ -295,11 +280,13 @@ public:
 	template <class T>
 	inline
 	T getMedian() const {
-		size_type _sum;
-		_sum = 0;
+		size_type sum;
+		const size_type limit = static_cast<size_t>(weight*sampleCount);
+
+		sum = 0;
 		for (size_type i = 0; i < bins; ++i){
-			_sum += (*this)[i];
-			if (_sum >= sampleCountMedian){
+			sum += (*this)[i];
+			if (sum >= limit){
 				return scaleOut<T>(i);
 			}
 		}
@@ -345,8 +332,8 @@ public:
 			sum  += n * f;
 			sum2 += n * (f*f);
 		}
-		sumT = static_cast<T>(sum)/sampleCountNEW;
-		return  static_cast<T>(sum2)/sampleCountNEW - sumT*sumT;
+		sumT = static_cast<T>(sum)/sampleCount;
+		return  static_cast<T>(sum2)/sampleCount - sumT*sumT;
 	}
 
 
@@ -362,7 +349,7 @@ public:
 
 
 	inline
-	const std::vector<unsigned long> getVector() const {
+	const vect_t getVector() const {
 		return *this;
 	};
 
@@ -372,48 +359,37 @@ public:
 
 	inline
 	double getValue(){
-		return (this->*getValuePtr)();
+		return (this->*statisticPtr)();
 	}
 
+	/// Return requested statistic
+	/**
+	 *
+	 *
+	 */
+	inline
+	double getValue(char c){
+		return (this->*getStatisticPtr(c))();
+	}
+
+
+	inline
 	void setValueFunc(char c){
-
-
-		switch (c) {
-		case 'a':
-			getValuePtr = & Histogram::getMean<double>;
-			break;
-		case 's':
-			getValuePtr = & Histogram::getSum<double>;
-			break;
-		case 'm':
-			getValuePtr = & Histogram::getMedian<double>;
-			break;
-		case 'd':
-			getValuePtr = & Histogram::getStdDeviation<double>;
-			break;
-		case 'v':
-			getValuePtr = & Histogram::getVariance<double>;
-			break;
-		case 'X':
-			getValuePtr = & Histogram::getMax<double>;
-			break;
-		case 'N':
-			getValuePtr = & Histogram::getMin<double>;
-			break;
-		default:
-			throw std::runtime_error(std::string("Histogram::get unimplemented type: ") + c);
-			break;
-		}
-
-
+		statisticPtr = getStatisticPtr(c);
 	}
 
 protected:
 
 	void initialize(size_t size);
 
-	double (Histogram::*getValuePtr)() const;
+	typedef double (Histogram::*stat_ptr_t)() const;
 
+	double (Histogram::*statisticPtr)() const;
+
+	stat_ptr_t getStatisticPtr(char c);
+
+
+	//double (Histogram::*)getPtr const;
 
 private:
 	/// Resolution of the histogram.
@@ -423,7 +399,7 @@ private:
 	//size_type sampleCount;
 
 	/// The actual sample count in the histogram. FOR WEIGHTED
-	size_type sampleCountNEW;
+	size_type sampleCount;
 
 	// Half of sampleCount.
 	size_type sampleCountMedian;
@@ -441,6 +417,43 @@ private:
 	*/
 
 };
+
+
+template <class T>
+void Histogram::compute(const T & dst, const std::type_info & type){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	//const std::type_info & type = dst.getType();
+
+	const std::size_t s = getSize();
+
+	//mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
+
+	if ((s == 256) && (type == typeid(unsigned char))){
+		mout.note() << "direct mode: u char (fast)" << mout.endl;
+		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			this->incrementRaw(static_cast<unsigned short int>(*it));
+		}
+	}
+	else if ((s == 256) && (type == typeid(unsigned short int))){
+		mout.note() << "direct mode: u short (fast)" << mout.endl;
+		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			this->incrementRaw(static_cast<unsigned short int>(*it) >> 8);
+		}
+	}
+	else {
+		mout.note() << "scaled mode (slow)" << mout.endl;
+		this->setScale(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
+		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			this->increment(*it);
+		}
+	}
+
+	//mout.note() << "finito" << mout.endl;
+
+}
+
 
 std::ostream & operator<<(std::ostream &ostr,const Histogram &h);
 

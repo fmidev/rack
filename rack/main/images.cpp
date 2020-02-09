@@ -289,7 +289,7 @@ public:
 
 		//fuzzyStep.functor.set(range.min, range.max, 1.0);
 		/*
-		const drain::image::ImageScaling & scaling = srcImg.getScaling();
+		const drain::ValueScaling & scaling = srcImg.getScaling();
 		mout.warn() << "scaling: "  << scaling << mout.endl;
 		fuzzyStep.functor.set(scaling.inv(range.min), scaling.inv(range.max), 1.0);
 		*/
@@ -298,7 +298,7 @@ public:
 			fuzzyStep.functor.set(range.min, range.max, 1.0);
 		}
 		else {
-			//const drain::image::ImageScaling & scaling = srcImg.getScaling();
+			//const drain::ValueScaling & scaling = srcImg.getScaling();
 			mout.info() << "using storage type values directly (no physical scaling): "  << odim << mout.endl;
 			//odim.scaleForward()
 			const double max = Type::call<typeNaturalMax>(srcImg.getType()); // 255, 65535, or 1.0

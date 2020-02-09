@@ -62,7 +62,7 @@ void Image::swap(Image & img){
 	const std::type_info & type = getType();
 	const Geometry geometry(getGeometry());
 	const CoordinatePolicy policy(getCoordinatePolicy());
-	const ImageScaling scaling(getScaling());
+	const drain::ValueScaling scaling(getScaling());
 
 	buffer.swap(img.buffer);
 

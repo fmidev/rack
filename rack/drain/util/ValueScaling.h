@@ -33,41 +33,39 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stddef.h>  // size_t
 
-#include "../util/TypeUtils.h"
+#include "TypeUtils.h"
+#include "Range.h"
 
-#include "Geometry.h"
-#include "Coordinates.h"
+//#include "Geometry.h"
+//#include "Coordinates.h"
 
 
 namespace drain
 {
 
-/// Namespace for images and image processing tools.
-namespace image
-{
 
 //extern drain::Log iLog;
 
 // If the intensities of the image correspond to a physical value (like temperature), this is the recommended way to copy.
 
 /// Linear scaling and physical range for image intensities.
-/** Internally, ImageScaling holds variables
+/** Internally,drain::ValueScaling holds variables
  *  - scale
  *  - offset
- *  - minPhysValue (optional);
+ *  - physRange.min (optional);
  *	- maxPhysValue (optional);
  *
- *  ImageScaling does not store information of storage type (no either on minimum and maximum values supported by storage types).
+ * drain::ValueScaling does not store information of storage type (no either on minimum and maximum values supported by storage types).
  *  \see drain::typeLimits
  *
  */
-class ImageScaling {
+class ValueScaling {
 public:
 
-	ImageScaling() : scale(1.0), offset(0.0), minPhysValue(0.0), maxPhysValue(0.0) {};
+	ValueScaling() : scale(1.0), offset(0.0){}; // , minPhysValue(0.0), maxPhysValue(0.0)
 
 	inline
-	ImageScaling(const ImageScaling & scaling){
+	ValueScaling(const drain::ValueScaling & scaling){
 		set(scaling);
 	};
 
@@ -89,9 +87,9 @@ public:
 	 *
 	 */
 	inline
-	void set(const ImageScaling & scaling){
+	void set(const drain::ValueScaling & scaling){
 		setScale(scaling.getScale(), scaling.getOffset());
-		setPhysicalRange(scaling.minPhysValue, scaling.maxPhysValue);
+		setPhysicalRange(scaling.physRange.min, scaling.physRange.max);
 	};
 
 
@@ -128,7 +126,7 @@ public:
 
 	/// Set scaling for which scaling.inv(x) = scaling2.inv(scaling1.fwd(x))
 	inline
-	void setConversionScale(const ImageScaling & scaling1, const ImageScaling & scaling2){
+	void setConversionScale(const drain::ValueScaling & scaling1, const drain::ValueScaling & scaling2){
 		// this->scale  = scaling1.getScale() / scaling2.getScale();
 		// this->offset = (scaling1.getOffset() - scaling2.getOffset()) / scaling2.getScale();
 		this->scale  = scaling2.getScale() / scaling1.getScale();
@@ -153,8 +151,8 @@ public:
 
 	 */
 	inline
-	void setPhysicalScale(const std::type_info & t, const ImageScaling & scaling){
-		setPhysicalRange(scaling.minPhysValue, scaling.maxPhysValue);
+	void setPhysicalScale(const std::type_info & t, const drain::ValueScaling & scaling){
+		setPhysicalRange(scaling.physRange.min, scaling.physRange.max);
 		setOptimalScale(t);
 	};
 
@@ -168,8 +166,8 @@ public:
 	/// Sets the supported range for physical values. Does not change scaling or type.
 	inline
 	void setPhysicalRange(double min, double max){ // , const std::string &unit ?
-		minPhysValue = min;
-		maxPhysValue = max;
+		physRange.min = min;
+		physRange.max = max;
 	}
 
 	/// Returns the intensity scaling factor. See set setScale()
@@ -189,22 +187,22 @@ public:
 
 	/// Returns the minimum physical value.
 	inline
-	double getMinPhys() const { return minPhysValue; }
+	double getMinPhys() const { return physRange.min; }
 
 	/// Returns the maximum physical value.
 	inline
-	double getMaxPhys() const { return maxPhysValue; }
+	double getMaxPhys() const { return physRange.max; }
 
 	/// Returns true, physical intensity range has been set.
 	inline
-	bool isPhysical() const { return (minPhysValue != maxPhysValue);  }
+	bool isPhysical() const { return (physRange.min != physRange.max);  }
 
 	/// Sets scale and offset according to physical range and current type.
 	/*   short => float
 	 *
 	 */
 	//inline
-	void adoptScaling(const ImageScaling & srcScaling, const std::type_info & srcType, const std::type_info & dstType = typeid(void));
+	void adoptScaling(const drain::ValueScaling & srcScaling, const std::type_info & srcType, const std::type_info & dstType = typeid(void));
 
 
 
@@ -212,7 +210,7 @@ public:
 	void toOStr(std::ostream & ostr) const {
 		ostr << scale << ',' << offset;
 		if (isPhysical())
-			 ostr << ' ' << '[' << minPhysValue << ',' << maxPhysValue << ']';
+			 ostr << ' ' << '[' << physRange.min << ',' << physRange.max << ']';
 	}
 
 	inline
@@ -229,21 +227,20 @@ public:
 	double offset;
 
 	/// Minimum physical value of the imaged quantity, corresponding to minCodeValue.
-	double minPhysValue;
+	// double physRange.min;
 	/// Maximum physical value of the imaged quantity, corresponding to minCodeValue.
-	double maxPhysValue;
+	// double maxPhysValue;
 
+	drain::Range<double> physRange;
 
 };
 
 inline
-std::ostream & operator<<(std::ostream &ostr, const ImageScaling & s){
+std::ostream & operator<<(std::ostream &ostr, const drain::ValueScaling & s){
 	s.toOStr(ostr);
 	return ostr;
 }
 
-
-} // image::
 } // drain::
 
 #endif

@@ -50,8 +50,8 @@ void ImageFrame::init(){
 
 	properties["scale"].link(encoding.scaling.scale);
 	properties["offset"].link(encoding.scaling.offset);
-	properties["minPhysValue"].link(encoding.scaling.minPhysValue);
-	properties["maxPhysValue"].link(encoding.scaling.maxPhysValue);
+	properties["minPhysValue"].link(encoding.scaling.physRange.min);
+	properties["maxPhysValue"].link(encoding.scaling.physRange.max);
 
 	properties["coordinatePolicy"].link(coordinatePolicy.v).fillArray = true;
 
@@ -205,7 +205,7 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	ostr << " '"<< getName() << "'\t";
 	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
 	//if (typeIsIntegerType() || (scaling.isScaled()))
-	const ImageScaling & s = getScaling();
+	const drain::ValueScaling & s = getScaling();
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(";
 		getScaling().toOStr(ostr);

@@ -225,7 +225,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		histogram.setScale(0.0, scale);
 		//hist.setParameter
 		ImageHistogram histOp;
-		histOp.computeHistogram(w, histogram);
+		histogram.compute(w, w.getType());
+		//histOp.computeHistogram(w, histogram);
 		mout.warn() << histogram << mout.endl;
 		// TODO:
 		File::write(w, "diff-grad-w.png");  // actually, w

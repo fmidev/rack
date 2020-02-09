@@ -81,7 +81,7 @@ protected:
 	double sumW;
 	unsigned int count;
 	drain::typeLimiter<double>::value_t limiter;
-	//ImageScaling dstScaling
+	// drain::ValueScaling dstScaling
 
 	void initialize(){
 

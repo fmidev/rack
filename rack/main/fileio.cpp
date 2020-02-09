@@ -29,6 +29,27 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <algorithm>
+#include <exception>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <list>
+#include <map>
+#include <sstream>
+#include <utility>
+#include <vector>
+#include <regex.h>
+#include <stddef.h>
+
+#include <util/Log.h>
+#include <util/StringMapper.h>
+#include <util/Tree.h>
+#include <util/Variable.h>
+
+#include <prog/Command.h>
+#include <prog/CommandAdapter.h>
+#include <prog/CommandPack.h>
 
 #include <data/Data.h>
 #include <data/DataOutput.h>
@@ -49,26 +70,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <main/resources.h>
 #include <product/HistogramOp.h>
 #include <product/ProductOp.h>
-#include <prog/Command.h>
-#include <prog/CommandAdapter.h>
-#include <prog/CommandPack.h>
 #include <radar/FileGeoTIFF.h>
 #include <radar/RadarDataPicker.h>
-#include <regex.h>
-#include <stddef.h>
-#include <util/Log.h>
-#include <util/Tree.h>
-#include <util/Variable.h>
-#include <algorithm>
-#include <exception>
-#include <fstream>
-#include <iostream>
-#include <limits>
-#include <list>
-#include <map>
-#include <sstream>
-#include <utility>
-#include <vector>
 
 
 
@@ -109,6 +112,69 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 //static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
 
+class Output {
+
+public:
+
+	Output(const std::string & filename){ // : filename(filename){
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		if (filename.empty())
+			mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
+
+		if (filename == "-"){
+			mout.debug() << "opening standard output" << mout.endl;
+		}
+		else {
+			std::string s = getResources().outputPrefix + filename;
+			ofstr.open(s.c_str(), std::ios::out);
+			if (!ofstr.is_open()){
+				mout.error() << "opening '" << s << "' failed" << mout.endl;
+			}
+		}
+	}
+
+	~Output(){
+		ofstr.close();
+	}
+
+	operator std::ostream & (){
+		// drain::Logger mout(__FUNCTION__, __FILE__);
+
+		if (ofstr.is_open()){
+			return ofstr;
+		}
+		else {
+			return std::cout;
+		}
+
+	};
+
+
+protected:
+
+	std::ofstream ofstr;
+
+};
+
+
+struct HistEntry : BeanLike {
+
+	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
+		parameters.reference("index", index);
+		parameters.reference("min", binRange.min);
+		parameters.reference("max", binRange.max);
+		parameters.reference("count", count);
+		parameters.reference("label", label);
+	};
+
+	drain::Histogram::vect_t::size_type index;
+	Range<double> binRange;
+	drain::Histogram::count_t count;
+	std::string label;
+
+};
 
 /// TODO: generalize to array outfile
 class CmdHistogram : public BasicCommand {
@@ -116,18 +182,19 @@ class CmdHistogram : public BasicCommand {
 public:
 
 	int count;
-	//mutable
-	double minValue;
-	//mutable
-	double maxValue;
+
+	Range<double> range;
+
+	std::string store;
 	std::string filename;
 
 	//	CmdHistogram() : SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : BasicCommand(__FUNCTION__, "Histogram") {
 		parameters.reference("count", count = 256);
-		parameters.reference("min", minValue = -std::numeric_limits<double>::max());
-		parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
-		parameters.reference("filename", filename = "-");
+		parameters.reference("range", range.vect);
+		//parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
+		parameters.reference("filename", filename="", "<filename>.txt|-");
+		parameters.reference("store", store="histogram", "<attribute_key>");
 	};
 
 	void exec() const {
@@ -138,27 +205,92 @@ public:
 
 		Hi5Tree & currentHi5 = *resources.currentHi5;
 
-		//rack::HistogramOp<PolarODIM> hop;
-		rack::HistogramOp hop;
+		DataSelector selector;
+		selector.pathMatcher.clear();
+		selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElemMatcher::DATA);
+		selector.setParameters(resources.select);
 
-		hop.setParameters(this->getParameters());
-
-		hop.dataSelector.setParameters(resources.select);
-
-		/*
-		ODIMPathList paths;
-		hop.dataSelector.getPaths3(currentHi5, paths, hop.dataSelector.groups);
-		return;
-		*/
-
+		ODIMPath path;
+		selector.getPath3(currentHi5, path);
 		resources.select.clear();
 
-		hop.setEncodingRequest(resources.targetEncoding);
-		resources.targetEncoding.clear();
+		mout.warn() << "path: " << path << mout.endl;
 
-		hop.processH5(currentHi5);
+		PlainData<BasicDst> dstData(currentHi5(path));
 
-		return;
+		// NO resources.setCurrentImage(selector);
+		// drain::image::Image & img = *resources.currentImage;
+		mout.warn() << "img " << dstData.data << mout.endl;
+
+		drain::Histogram histogram(256);
+		histogram.setScale(dstData.data.getScaling());
+		histogram.compute(dstData.data, dstData.data.getType());
+
+		if (!filename.empty()){
+			Output out(filename);
+
+			std::ostream & ostr = out;
+
+			drain::StringMapper mapper;
+			if (!cmdFormat.value.empty()){
+				std::string format(cmdFormat.value);
+				format = drain::StringTools::replace(format, "\\t", "\t");
+				format = drain::StringTools::replace(format, "\\n", "\n");
+				mapper.parse(format);
+			}
+			else
+				mapper.parse("${count} # ${label} (${index}) [${min}, ${max}] \n");
+
+			// Header
+			ostr << "# [0," << histogram.getSize() << "] ";
+			if (histogram.scaling.isPhysical())
+				ostr << '[' << histogram.scaling.physRange << ']';
+			ostr << '\n';
+
+			HistEntry entry;
+			const drain::Histogram::vect_t & v = histogram.getVector();
+
+			drain::VariableMap & dstWhat = dstData.getWhat();
+			if (dstWhat.hasKey("legend")){
+				mout.note() << "Using legend" <<  dstWhat["legend"] << mout.endl;
+				typedef std::map<int, std::string> legend;
+				legend leg;
+				dstWhat["legend"].toMap(leg, ',', ':'); // TODO: StringTools::toMap
+
+				for (legend::const_iterator it=leg.begin(); it!=leg.end(); ++it){
+					ostr << "# " << it->first << '=' << it->second << '\n';
+				}
+				for (legend::const_iterator it=leg.begin(); it!=leg.end(); ++it){
+					entry.index = it->first;
+					entry.count = v[it->first];
+					entry.binRange.min = histogram.scaling.fwd(it->first);
+					entry.binRange.max = histogram.scaling.fwd(it->first + 1);
+					entry.label = it->second; // or parameters.reference?
+					mapper.toStream(ostr, entry.getParameters());
+				}
+				ostr << '\n';
+			}
+			else {
+				mout.note() << "No legend found, writing all elements" << mout.endl;
+				for (std::size_t i=0; i<v.size(); ++i){
+					//if (v[i] > 0) ?
+					entry.index = i;
+					entry.count = v[i];
+					entry.binRange.min = histogram.scaling.fwd(i);
+					entry.binRange.max = histogram.scaling.fwd(i+1);
+					entry.label = "<label>";
+					mapper.toStream(ostr, entry.getParameters());
+				}
+				ostr << '\n';
+			}
+
+			// histogram.dump(out);
+		}
+
+		if (!store.empty()){
+			dstData.getHow()[store] = histogram.getVector();
+			//dstData.updateTree2();
+		}
 
 	}
 
@@ -191,15 +323,15 @@ public:
 		parameters.reference("path", getResources().outputPrefix = "");
 	};
 };
-extern CommandEntry< CmdOutputPrefix > cmdOutputPrefix;
+extern CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
 
 
 class CmdOutputFile : public SimpleCommand<std::string> {
 
 public:
 
-	CmdOutputFile() : SimpleCommand<>(__FUNCTION__, "Output current data to .hdf5, .png, .txt, .mat file. See also: --image, --outputRawImages.",
-			"filename", "", "<filename>.[h5|png|pgm|txt|mat]|-") {
+	CmdOutputFile() : SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
+			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|mat|dot]|-") {
 	};
 
 
@@ -321,7 +453,7 @@ public:
 				//selector.deriveParameters(resources.select, true);
 				selector.setParameters(resources.select);
 				mout.debug() << selector << mout.endl;
-				selector.getPaths3(*resources.currentHi5, paths, ODIMPathElem::ALL_GROUPS);
+				selector.getPaths3(*resources.currentHi5, paths);
 				/* OLD
 				selector.groups = ODIMPathElem::ALL_GROUPS; //ODIMPathElem::DATA_GROUPS;
 				selector.deriveParameters(resources.select, false); //, ODIMPathElem::ALL_GROUPS);

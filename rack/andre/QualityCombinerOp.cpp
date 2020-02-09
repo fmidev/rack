@@ -141,14 +141,15 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 		// dstClass.fill(0);
 	};
 
-	drain::VariableMap & classHow = dstClass.getHow();
+	//
+	drain::VariableMap & classWhat = dstClass.getWhat();
 	std::stringstream sstr;
 
 	const classdict_t & dict = getClassDict();
 	mout.debug(1) <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
 
 	sstr << index << ':' << dict.getValue(index);
-	classHow["LEGEND"] << sstr.str();
+	classWhat["legend"] << sstr.str();
 
 	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
@@ -279,27 +280,21 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		}
 
 		// drain::Variable & classLegend = dstClass.getTree()["how"].data.attributes["legend"];
-		drain::Variable & classLegend = dstClass.getHow()["LEGEND"];
+		drain::Variable & classLegend = dstClass.getWhat()["legend"];
 
 		std::set<std::string> classCodes;
 		classLegend.toContainer(classCodes, ',');
 
+		// Add (combine) new classes
 		std::set<std::string> classCodesNew;
-		srcClass.getHow()["LEGEND"].toContainer(classCodesNew, ',');
-		// srcClass.getHow()["legend"].toJSON(std::cerr, ' ', 3);
-		// mout.debug() << " task args: " << classCodesNew.size() << mout.endl;
-
-		// std::set<std::string> classCodesFinal;
-		// set_union(classCodes.begin(), classCodes.end(), classCodesNew.begin(), classCodesNew.end(), classCodesFinal.begin());
+		srcClass.getWhat()["legend"].toContainer(classCodesNew, ',');
 		for (std::set<std::string>::const_iterator it = classCodesNew.begin(); it != classCodesNew.end(); ++it){
 			classCodes.insert(*it);
 		}
-		//std::copy(classCodesNew.begin(), classCodesNew.end(), classCodes.begin());
 
 		mout.debug() << " Updating CLASS, old: " << classLegend << mout.endl;
 		classLegend = classCodes;
 		mout.debug() << " Updating CLASS, new: " << classLegend << mout.endl;
-		//LEGdstClass.getHow()["LEGEND"] = classCodes;
 		//@ dstClass.updateTree();
 		//@ DataTools::updateInternalAttributes(dstClass.tree);
 	}

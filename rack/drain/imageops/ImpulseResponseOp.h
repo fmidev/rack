@@ -494,7 +494,7 @@ protected:
 
 private:
 
-	ImageScaling scaling;
+	 drain::ValueScaling scaling;
 
 	/// Accumulating unit using natural values
 	struct entry {

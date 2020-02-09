@@ -294,12 +294,12 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 			//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
 			//  << ", coeff=" << coeff; // << byte_depth << " bytes, "
 
-			ImageScaling scalingDst;
+			drain::ValueScaling scalingDst;
 			scalingDst.setAbsoluteScale();
 			scalingDst.adoptScaling(image.getScaling(), image.getType(), typeid(unsigned short));
 			//scalingDst.setOptimalScale();
 
-			ImageScaling conv;
+			drain::ValueScaling conv;
 			conv.setConversionScale(image.getScaling(), scalingDst);
 			mout.info() << "Converting [" << drain::Type::getTypeChar(image.getType()) << "] to 16b array, scaling: " << scalingDst << mout.endl;
 			mout.debug() << "Direct conversion: " << conv << mout.endl;

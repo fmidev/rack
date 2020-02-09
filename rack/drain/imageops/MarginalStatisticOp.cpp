@@ -104,7 +104,7 @@ void MarginalStatisticOp::process(const ImageFrame &src, const ImageFrame &weigh
 
 				// STORE RESULT
 				for (s=0; s<statSize; s++){
-					dst.put(di,dj,k, histogram.get<int>(stat[s]));
+					dst.put(di,dj,k, histogram.getValue(stat[s]));
 				}
 			}
 		}
@@ -122,7 +122,7 @@ void MarginalStatisticOp::process(const ImageFrame &src, const ImageFrame &weigh
 
 				// STORE RESULT
 				for (s=0; s<statSize; s++){
-					dst.put(di,dj,k, histogram.get<int>(stat[s]));
+					dst.put(di,dj,k, histogram.getValue(stat[s]));
 				}
 			}
 		}

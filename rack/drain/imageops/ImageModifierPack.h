@@ -125,8 +125,8 @@ public:
 
 		refMap.reference("type", type);
 		//refMap.reference("scale", scaling.scale);
-		refMap.reference("min", scaling.minPhysValue, "physical_value");
-		refMap.reference("max", scaling.maxPhysValue, "physical_value");
+		refMap.reference("min", this->scaling.physRange.min, "physical_value");
+		refMap.reference("max", this->scaling.physRange.max, "physical_value");
 
 		parameters.reference("request", request, refMap.getKeys());
 		parameters.separator = 0;
@@ -149,7 +149,7 @@ protected:
 	mutable drain::ReferenceMap refMap;
 
 	mutable std::string type;
-	mutable ImageScaling scaling;
+	mutable drain::ValueScaling scaling;
 	//mutable double scale;
 	//mutable double minValue;
 	//mutable double maxValue;
@@ -207,15 +207,9 @@ public:
 	virtual
 	void traverseChannel(Channel & dst) const;
 
-	virtual
-	void computeHistogram(const Channel & dst, drain::Histogram & histogram) const;
-
+	//virtual	void computeHistogram(const Channel & dst, drain::Histogram & histogram) const;
 	//mutable drain::Histogram histogram;
-
-
-
-//protected:
-
+	//protected:
 
 	size_t bins;
 

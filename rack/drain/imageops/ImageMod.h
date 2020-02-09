@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <drain/util/LinearScaling.h>
 #include "util/BeanLike.h"
-// #include "image/ImageScaling.h"
+// #include "image/ drain::ValueScaling.h"
 #include "image/Image.h"
 //#include "ImageChannel.h"
 #include "image/ImageTray.h"

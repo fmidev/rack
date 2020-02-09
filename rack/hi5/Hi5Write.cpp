@@ -228,18 +228,24 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 		dataToH5Attribute(it->second, fid, path, it->first);
 	}
 
-	if (attributes.hasKey("LEGEND")){
+	if (attributes.hasKey("legend")){
 
-		const drain::Variable & leg = attributes["LEGEND"];
+		const drain::Variable & leg = attributes["legend"];
 
 		mout.note() << "experimental: writing legend " << leg << mout.endl;
+
+		if (!path.back().is(Hi5Tree::path_t::elem_t::WHERE)){ // FIX
+			mout.warn() << "legend attribute found at " << path.back() << mout.endl;
+		}
+
 
 		std::map<int, std::string> entries;
 		leg.toMap(entries, ',', ':');
 
 
 		// NOTE: tree is relative, path is absolute (for h5 functions)
-		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
+		//const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
+		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND); // essentially just "legend" ...
 
 		if (!tree.hasChild(legend)){
 

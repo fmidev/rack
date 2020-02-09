@@ -73,8 +73,8 @@ class CmdInputFile : public SimpleCommand<std::string>  {
 
 public:
 
-	CmdInputFile() : SimpleCommand<std::string>(__FUNCTION__, "Read h5, txt or png file",
-			"filename", "", "<filename>.[h5|hdf5|png|txt]"){ //, inputComplete(true) {
+	CmdInputFile() : SimpleCommand<std::string>(__FUNCTION__, "Read HDF5, text or image file",
+			"filename", "", "<filename>.[h5|hdf5|png|pgm|ppm|txt]"){ //, inputComplete(true) {
 	};
 
 	//mutable bool inputComplete;

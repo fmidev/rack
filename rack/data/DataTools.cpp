@@ -75,7 +75,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		drain::image::Image & img = src["data"].data.dataSet;
 		if (img.typeIsSet()){
 			a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
-			const drain::image::ImageScaling & s = img.getScaling();
+			const drain::ValueScaling & s = img.getScaling();
 			img.setScaling(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
 		}
 	}

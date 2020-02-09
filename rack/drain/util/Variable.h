@@ -309,7 +309,7 @@ protected:
 template <>
 inline
 std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsigned short indentation){
-	return JSONwriter::toStream((const Castable &) v);
+	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
 }
 
 

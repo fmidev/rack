@@ -68,7 +68,7 @@ void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	mout.debug(1) << " src:       " << src << mout.endl;
 	mout.debug(2) << " dst(orig): " << dst << mout.endl;
 	/*
-	  ImageScaling s;
+	 drain::ValueScaling s;
 	  s.adoptScaling(src.getScaling(), src.getType(), dst.getType());
 	  dst.setScaling(s);
 	*/

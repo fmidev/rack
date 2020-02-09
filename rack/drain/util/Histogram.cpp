@@ -53,8 +53,8 @@ void Histogram::initialize(size_t size){
 	//setScale(0, size);
 	setSize(size);
 	//setMedianPosition(0.5);
-	sampleCountNEW = 0;
-	weight = 0.0;
+	sampleCount = 0;
+	weight = 0.5;
 	sampleCountMedian = 0;
 	setValueFunc('a');
 }
@@ -91,25 +91,42 @@ std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::si
 void Histogram::clearBins(){
 	for (size_type i = 0; i < bins; i++)
 		(*this)[i] = 0;
-	sampleCountNEW = 0;
+	sampleCount = 0;
+}
+
+Histogram::stat_ptr_t Histogram::getStatisticPtr(char c){
+
+	switch (c) {
+	case 'a':
+		return & Histogram::getMean<double>;
+		break;
+	case 's':
+		return & Histogram::getSum<double>;
+		break;
+	case 'm':
+		return & Histogram::getMedian<double>;
+		break;
+	case 'd':
+		return & Histogram::getStdDeviation<double>;
+		break;
+	case 'v':
+		return & Histogram::getVariance<double>;
+		break;
+	case 'X':
+		return & Histogram::getMax<double>;
+		break;
+	case 'N':
+		return & Histogram::getMin<double>;
+		break;
+	default:
+		throw std::runtime_error(std::string("Histogram::getStatisticPtr unimplemented type: ") + c);
+		return & Histogram::getMean<double>;
+		break;
+	}
+
 }
 
 
-/// Max refers to upper limit.
-/*
-void Histogram::setScale(int inMin, int inMax, int outMin, int outMax){
-	// First, store the  values for future re-scalings.
-	this->inMin = inMin;
-	this->inMax = inMax;
-	this->outMin = outMin;
-	this->outMax = outMax;
-	// Then, scaling information.
-	bins = size();
-	this->inSpan = inMax-inMin;
-	this->outSpan = outMax-outMin;
-	//cout << *this;
-}
-*/
 
 void Histogram::dump(std::ostream & ostr){
 	ostr << "# i\tvalue \tcount\n";

@@ -182,8 +182,8 @@ void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
-	const ImageScaling  & ss = src.getScaling();
-	const ImageScaling  & ds = dst.getScaling();
+	const drain::ValueScaling  & ss = src.getScaling();
+	const drain::ValueScaling  & ds = dst.getScaling();
 	const bool SCALE = ss.isScaled() || ds.isScaled();
 	mout.debug() << "SCALE=" << (int)SCALE << mout.endl;
 	mout.debug() << "functor=" << this->functor << mout.endl;
@@ -365,9 +365,9 @@ void BinaryFunctorOp<T>::traverseSequentially(const Channel &src1, const Channel
 	mout.debug() << "start, " << this->functor << mout.endl;
 	//mout.warn() << this->functor.scaleFinal << mout.endl;
 
-	const ImageScaling  & s1s = src1.getScaling();
-	const ImageScaling  & s2s = src2.getScaling();
-	const ImageScaling  & ds  = dst.getScaling();
+	const drain::ValueScaling  & s1s = src1.getScaling();
+	const drain::ValueScaling  & s2s = src2.getScaling();
+	const drain::ValueScaling  & ds  = dst.getScaling();
 	const bool SCALE = s1s.isScaled() || s2s.isScaled() || ds.isScaled();
 	mout.debug() << "SCALE::" << (int)SCALE << mout.endl;
 	if (SCALE){

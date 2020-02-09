@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <vector>
 #include <map>
 
-#include "ImageScaling.h"
+#include "../util/ValueScaling.h"
 
 namespace drain
 {

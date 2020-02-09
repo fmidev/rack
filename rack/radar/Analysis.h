@@ -152,7 +152,7 @@ public:
 		// const double dstMax = dst.scaling.getMax<double>();
 		//// NEW 2019/11 const double dstMax = dst.getEncoding().getTypeMax<double>();
 		// drain::Type::call<drain::typeMax, double>(dst.getType());
-		const drain::image::ImageScaling & dstScaling = dst.getScaling();
+		const drain::ValueScaling & dstScaling = dst.getScaling();
 
 		typedef drain::typeLimiter<double> Limiter;
 		Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());

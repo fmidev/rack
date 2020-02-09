@@ -37,7 +37,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <image/Image.h>
 #include <image/ImageChannel.h>
 #include <image/ImageFrame.h>
-#include <image/ImageScaling.h>
 #include <image/ImageTray.h>
 #include <imageops/ImageOpBank.h>
 #include <main/image-ops.h>
@@ -50,6 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <util/Registry.h>
 #include <util/SmartMap.h>
 #include <util/Tree.h>
+#include <util/ValueScaling.h>
 #include <map>
 #include <utility>
 
@@ -367,8 +367,8 @@ public:
 
     	drain::Logger mout(__FUNCTION__, __FILE__);
 
-    	const drain::image::ImageScaling & srcScale = src.getScaling();
-    	const drain::image::ImageScaling & dstScale = dst.getScaling();
+    	const drain::ValueScaling & srcScale = src.getScaling();
+    	const drain::ValueScaling & dstScale = dst.getScaling();
 
     	Image::const_iterator  sit = src.begin();
 		Image::iterator dit  = dst.begin();
@@ -409,10 +409,10 @@ public:
     virtual inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
 
-    	const drain::image::ImageScaling & srcScale      = src.getScaling();
-    	const drain::image::ImageScaling & srcAlphaScale = srcAlpha.getScaling();
-    	const drain::image::ImageScaling & dstScale      = dst.getScaling();
-    	const drain::image::ImageScaling & dstAlphaScale = dstAlpha.getScaling();
+    	const drain::ValueScaling & srcScale      = src.getScaling();
+    	const drain::ValueScaling & srcAlphaScale = srcAlpha.getScaling();
+    	const drain::ValueScaling & dstScale      = dst.getScaling();
+    	const drain::ValueScaling & dstAlphaScale = dstAlpha.getScaling();
 
 
 

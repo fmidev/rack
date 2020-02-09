@@ -163,7 +163,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 			case H5G_DATASET:
 				if (mode & DATASETS){
 					if (child.is(rack::ODIMPathElem::LEGEND)){
-						mout.warn() << "skipping LEGEND at " << p << mout.endl;
+						mout.warn() << "reading legend (group) not implemented, path=" << p << mout.endl;
 					}
 					else {
 						h5DatasetToImage(file_id, p ,((hi5::NodeHi5 &)subtree).dataSet);

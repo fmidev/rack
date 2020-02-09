@@ -34,9 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stddef.h>  // size_t
 
 #include "../util/Caster.h"
+#include "../util/ValueScaling.h"
+
 #include "Geometry.h"
 #include "Coordinates.h"
-#include "ImageScaling.h"
 
 namespace drain
 {
@@ -47,7 +48,7 @@ namespace image
 
 
 
-class Encoding { //: public drain::Caster, public ImageScaling {
+class Encoding { //: public drain::Caster, publicdrain::ValueScaling {
 
 public:
 
@@ -70,7 +71,7 @@ public:
 	std::string type;  // synch?
 
 	/// Linear scaling
-	ImageScaling scaling;
+	ValueScaling scaling;
 
 	/// Get the storage type
 	inline
@@ -202,7 +203,7 @@ inline
 std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
 
 	ostr << ' ' << conf.geometry << ' ' << Type::getTypeChar(conf.encoding.getType()) << '@' << (conf.encoding.getElementSize()*8) << 'b';
-	const ImageScaling & s = conf.encoding.scaling;
+	const drain::ValueScaling & s = conf.encoding.scaling;
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(";
 		s.toOStr(ostr);
@@ -284,7 +285,7 @@ public:
 	// ENCODING/SCALING
 
 	inline
-	void setScaling(const ImageScaling &s) {
+	void setScaling(const drain::ValueScaling &s) {
 		getScaling().set(s); // note: may call useOwnScaling();
 	}
 
@@ -293,14 +294,14 @@ public:
 		getScaling().setScale(scale, offset); // note: may call useOwnScaling();
 	}
 
-	// ImageScaling
+	//drain::ValueScaling
 	virtual inline
-	const ImageScaling & getScaling() const {
+	const drain::ValueScaling & getScaling() const {
 		return encoding.scaling;
 	}
 
 	virtual inline
-	ImageScaling & getScaling() {
+	drain::ValueScaling & getScaling() {
 		return encoding.scaling;
 	}
 
@@ -315,7 +316,7 @@ public:
 	inline // double defaultMax = std::numeric_limits<double>::max()
 	double requestPhysicalMax(double defaultMax = static_cast<double>(std::numeric_limits<short int>::max())) const {
 
-		const ImageScaling & s = getScaling();
+		const drain::ValueScaling & s = getScaling();
 
 		if (s.isPhysical())
 			return s.getMaxPhys();
@@ -335,7 +336,7 @@ public:
 	inline
 	double requestPhysicalMin(double defaultMin = static_cast<double>(std::numeric_limits<short int>::min())) const {
 
-		const ImageScaling & s = getScaling();
+		const drain::ValueScaling & s = getScaling();
 
 		if (s.isPhysical())
 			return s.getMinPhys();

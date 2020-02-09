@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Geometry.h"
 #include "Coordinates.h"
 #include "ImageLike.h"
-#include "ImageScaling.h"
+#include "../util/ValueScaling.h"
 
 namespace drain
 {
@@ -85,13 +85,13 @@ public:
 
 
 	virtual inline
-	const ImageScaling & getScaling() const {
+	const drain::ValueScaling & getScaling() const {
 		return *scalingPtr;
 	}
 
-	/// Facilitates modifications provided directly by ImageScaling object.
+	/// Facilitates modifications provided directly bydrain::ValueScaling object.
 	virtual inline
-	ImageScaling & getScaling(){
+	drain::ValueScaling & getScaling(){
 		useOwnScaling();
 		return encoding.scaling; // == *scalingPtr
 	}
@@ -496,7 +496,7 @@ protected:
 
 private:
 
-	ImageScaling const * scalingPtr;
+	drain::ValueScaling const * scalingPtr;
 
 protected:
 
