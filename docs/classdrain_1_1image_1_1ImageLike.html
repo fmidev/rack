@@ -122,14 +122,15 @@ Collaboration diagram for ImageLike:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1ImageLike__coll__graph.png" border="0" usemap="#ImageLike_coll__map" alt="Collaboration graph"/></div>
 <map name="ImageLike_coll__map" id="ImageLike_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="213,184,299,211"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="93,95,171,121"/>
-<area shape="rect" id="node4" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="5,5,112,32"/>
-<area shape="rect" id="node5" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="137,5,263,32"/>
-<area shape="rect" id="node6" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="195,95,317,121"/>
-<area shape="rect" id="node7" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="350,95,426,121"/>
-<area shape="rect" id="node8" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="304,5,365,32"/>
-<area shape="rect" id="node9" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="389,5,491,32"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="246,273,333,300"/>
+<area shape="rect" id="node3" href="classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="126,184,205,211"/>
+<area shape="rect" id="node4" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="5,95,112,121"/>
+<area shape="rect" id="node5" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="137,95,263,121"/>
+<area shape="rect" id="node6" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="229,184,350,211"/>
+<area shape="rect" id="node7" href="classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="383,184,459,211"/>
+<area shape="rect" id="node8" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="356,95,417,121"/>
+<area shape="rect" id="node9" href="classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="441,95,540,121"/>
+<area shape="rect" id="node10" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="429,5,552,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -141,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c2ba13fe92fd82090ed318d33df38d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c2ba13fe92fd82090ed318d33df38d6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ImageLike</b> (const <a class="el" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;conf)</td></tr>
 <tr class="separator:a2c2ba13fe92fd82090ed318d33df38d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa1500268ec21ba9d0d18889b51b8c99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa1500268ec21ba9d0d18889b51b8c99"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setConf</b> (const <a class="el" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;conf)</td></tr>
-<tr class="separator:aaa1500268ec21ba9d0d18889b51b8c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8afb04a47ba4fa4433d388f8c3f9cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c8afb04a47ba4fa4433d388f8c3f9cd"></a>
+const <a class="el" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getConf</b> () const </td></tr>
+<tr class="separator:a9c8afb04a47ba4fa4433d388f8c3f9cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dda79abbe2ca91ac7f2f658f1611991"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dda79abbe2ca91ac7f2f658f1611991"></a>
 virtual const <a class="el" href="classdrain_1_1image_1_1Encoding.html">Encoding</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEncoding</b> () const </td></tr>
 <tr class="separator:a1dda79abbe2ca91ac7f2f658f1611991"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,18 +156,18 @@ const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageLike.html#abf5abcc07d7e1b93539acb4467637102">typeIsSet</a> () const </td></tr>
 <tr class="memdesc:abf5abcc07d7e1b93539acb4467637102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is set. <br /></td></tr>
 <tr class="separator:abf5abcc07d7e1b93539acb4467637102"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac277195f467472ba01ff16562847c23a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac277195f467472ba01ff16562847c23a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (const <a class="el" href="classdrain_1_1image_1_1ImageScaling.html">ImageScaling</a> &amp;s)</td></tr>
-<tr class="separator:ac277195f467472ba01ff16562847c23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad45cc3a44610232fe86f80d596e213e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad45cc3a44610232fe86f80d596e213e0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (const <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp;s)</td></tr>
+<tr class="separator:ad45cc3a44610232fe86f80d596e213e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92f1d0cf780ed257f29bbc5176b75791"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f1d0cf780ed257f29bbc5176b75791"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (double scale, double offset=0.0)</td></tr>
 <tr class="separator:a92f1d0cf780ed257f29bbc5176b75791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3d2959525747bc6d2febb184bd23b85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3d2959525747bc6d2febb184bd23b85"></a>
-virtual const <a class="el" href="classdrain_1_1image_1_1ImageScaling.html">ImageScaling</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getScaling</b> () const </td></tr>
-<tr class="separator:aa3d2959525747bc6d2febb184bd23b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0abb90ca65f20a747a36e94e60d6fb77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0abb90ca65f20a747a36e94e60d6fb77"></a>
-virtual <a class="el" href="classdrain_1_1image_1_1ImageScaling.html">ImageScaling</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getScaling</b> ()</td></tr>
-<tr class="separator:a0abb90ca65f20a747a36e94e60d6fb77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3891b048925c640fae49287686e42fb3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3891b048925c640fae49287686e42fb3"></a>
+virtual const <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getScaling</b> () const </td></tr>
+<tr class="separator:a3891b048925c640fae49287686e42fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab99fea8e8142d672e7a7a193eb1ebfca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab99fea8e8142d672e7a7a193eb1ebfca"></a>
+virtual <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getScaling</b> ()</td></tr>
+<tr class="separator:ab99fea8e8142d672e7a7a193eb1ebfca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40d939fde0776446ec06805eb7f4116f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageLike.html#a40d939fde0776446ec06805eb7f4116f">requestPhysicalMax</a> (double defaultMax=static_cast&lt; double &gt;(std::numeric_limits&lt; short int &gt;::max())) const </td></tr>
 <tr class="memdesc:a40d939fde0776446ec06805eb7f4116f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the actual or guessed maximum physical value,.  <a href="#a40d939fde0776446ec06805eb7f4116f">More...</a><br /></td></tr>
 <tr class="separator:a40d939fde0776446ec06805eb7f4116f"><td class="memSeparator" colspan="2">&#160;</td></tr>

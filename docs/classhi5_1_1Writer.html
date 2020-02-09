@@ -88,7 +88,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classhi5_1_1Writer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Writer Class Reference</div>  </div>
@@ -116,75 +118,108 @@ Collaboration diagram for Writer:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer_1_1CompoundConv.html">CompoundConv</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer_1_1CompoundConv_3_01int_01_4.html">CompoundConv&lt; int &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For some reason HDF5 int fails, but long int does not (Native vs Standard type diff?)  <a href="classhi5_1_1Writer_1_1CompoundConv_3_01int_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer_1_1CompoundConv_3_01std_1_1string_01_4.html">CompoundConv&lt; std::string &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9252f0da6e23a53bc57946ebed7cd1f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9252f0da6e23a53bc57946ebed7cd1f7"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a9252f0da6e23a53bc57946ebed7cd1f7">writeFile</a> (const std::string &amp;filename, const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree)</td></tr>
-<tr class="memdesc:a9252f0da6e23a53bc57946ebed7cd1f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes Rack's hi5 object to an HDF5 file. <br /></td></tr>
-<tr class="separator:a9252f0da6e23a53bc57946ebed7cd1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3092c0574b9401aa3fb0e78605ef66c7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a3092c0574b9401aa3fb0e78605ef66c7">treeToH5File</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree, hid_t fid, const std::string &amp;path)</td></tr>
-<tr class="memdesc:a3092c0574b9401aa3fb0e78605ef66c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes Rack's hi5 object to an HDF5 file.  <a href="#a3092c0574b9401aa3fb0e78605ef66c7">More...</a><br /></td></tr>
-<tr class="separator:a3092c0574b9401aa3fb0e78605ef66c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a42f25cb17a39034154bd722d5c0bfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a42f25cb17a39034154bd722d5c0bfa"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a7a42f25cb17a39034154bd722d5c0bfa">dataToH5Attribute</a> (const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;d, hid_t fid, const std::string &amp;path, const std::string &amp;attribute)</td></tr>
-<tr class="memdesc:a7a42f25cb17a39034154bd722d5c0bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> to an HDF5 attribute of a group or dataset. <br /></td></tr>
-<tr class="separator:a7a42f25cb17a39034154bd722d5c0bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca406f4ee0cd89be6d4504714c908cbd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aca406f4ee0cd89be6d4504714c908cbd">dataToH5AttributeString</a> (const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;d, hid_t fid, const std::string &amp;path, const std::string &amp;attribute)</td></tr>
-<tr class="memdesc:aca406f4ee0cd89be6d4504714c908cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and writes scalar (non-std::string) attributes to group.  <a href="#aca406f4ee0cd89be6d4504714c908cbd">More...</a><br /></td></tr>
-<tr class="separator:aca406f4ee0cd89be6d4504714c908cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba63df93abf1b2bb770f226d2a3e2f33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba63df93abf1b2bb770f226d2a3e2f33"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>linkToH5Attribute</b> (hid_t lid, hid_t fid, const std::string &amp;path, const std::string &amp;attribute)</td></tr>
+<tr class="memitem:a3533e1db33c0bd2ebf3bc9f5e33477b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3533e1db33c0bd2ebf3bc9f5e33477b6"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a3533e1db33c0bd2ebf3bc9f5e33477b6">writeFile</a> (const std::string &amp;filename, const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree)</td></tr>
+<tr class="memdesc:a3533e1db33c0bd2ebf3bc9f5e33477b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes Rack's hi5 object to an HDF5 file. <br /></td></tr>
+<tr class="separator:a3533e1db33c0bd2ebf3bc9f5e33477b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec4d4bb6775f7d746cf657ff96beb235"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aec4d4bb6775f7d746cf657ff96beb235">treeToH5File</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path)</td></tr>
+<tr class="memdesc:aec4d4bb6775f7d746cf657ff96beb235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes Rack's hi5 object to an HDF5 file.  <a href="#aec4d4bb6775f7d746cf657ff96beb235">More...</a><br /></td></tr>
+<tr class="separator:aec4d4bb6775f7d746cf657ff96beb235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d13d287cfdd75ef858667a7678f07e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d13d287cfdd75ef858667a7678f07e1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a1d13d287cfdd75ef858667a7678f07e1">dataToH5Attribute</a> (const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;d, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, const std::string &amp;attribute)</td></tr>
+<tr class="memdesc:a1d13d287cfdd75ef858667a7678f07e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> to an HDF5 attribute of a group or dataset. <br /></td></tr>
+<tr class="separator:a1d13d287cfdd75ef858667a7678f07e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e7e445ecab062a5c4dad0021d0cf69"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#ab8e7e445ecab062a5c4dad0021d0cf69">dataToH5AttributeString</a> (const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;d, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, const std::string &amp;attribute)</td></tr>
+<tr class="memdesc:ab8e7e445ecab062a5c4dad0021d0cf69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and writes scalar (non-std::string) attributes to group.  <a href="#ab8e7e445ecab062a5c4dad0021d0cf69">More...</a><br /></td></tr>
+<tr class="separator:ab8e7e445ecab062a5c4dad0021d0cf69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66753e15d4a5316e3eaa166c87c678a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66753e15d4a5316e3eaa166c87c678a3"></a>
+static hid_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a66753e15d4a5316e3eaa166c87c678a3">imageToH5DataSet</a> (const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;image, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path)</td></tr>
+<tr class="memdesc:a66753e15d4a5316e3eaa166c87c678a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a> to an HDF5 dataset. <br /></td></tr>
+<tr class="separator:a66753e15d4a5316e3eaa166c87c678a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed4839d46b51024f888f3f73c256ef8"><td class="memTemplParams" colspan="2">template&lt;class K , class V &gt; </td></tr>
+<tr class="memitem:a9ed4839d46b51024f888f3f73c256ef8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#a9ed4839d46b51024f888f3f73c256ef8">vectorToH5Compound</a> (const std::vector&lt; std::pair&lt; K, V &gt; &gt; &amp;v, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, const char *labelFirst=&quot;key&quot;, const char *labelSecond=&quot;value&quot;)</td></tr>
+<tr class="memdesc:a9ed4839d46b51024f888f3f73c256ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a vector of paired values.  <a href="#a9ed4839d46b51024f888f3f73c256ef8">More...</a><br /></td></tr>
+<tr class="separator:a9ed4839d46b51024f888f3f73c256ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb54daa09bf824de6cd94d3a39b441cb"><td class="memTemplParams" colspan="2">template&lt;class K , class V &gt; </td></tr>
+<tr class="memitem:aeb54daa09bf824de6cd94d3a39b441cb"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aeb54daa09bf824de6cd94d3a39b441cb">mapToH5Compound</a> (const std::map&lt; K, V &gt; &amp;m, hid_t fid, const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, const char *labelFirst=&quot;key&quot;, const char *labelSecond=&quot;value&quot;)</td></tr>
+<tr class="memdesc:aeb54daa09bf824de6cd94d3a39b441cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO:  <a href="#aeb54daa09bf824de6cd94d3a39b441cb">More...</a><br /></td></tr>
+<tr class="separator:aeb54daa09bf824de6cd94d3a39b441cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba63df93abf1b2bb770f226d2a3e2f33"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aba63df93abf1b2bb770f226d2a3e2f33">linkToH5Attribute</a> (hid_t lid, hid_t fid, const std::string &amp;path, const std::string &amp;attribute)</td></tr>
+<tr class="memdesc:aba63df93abf1b2bb770f226d2a3e2f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Under constr.  <a href="#aba63df93abf1b2bb770f226d2a3e2f33">More...</a><br /></td></tr>
 <tr class="separator:aba63df93abf1b2bb770f226d2a3e2f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea4e94e3f36fa599e8952b638ab9fec8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aea4e94e3f36fa599e8952b638ab9fec8">imageToH5DataSet</a> (const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;image, hid_t fid, const std::string &amp;path)</td></tr>
-<tr class="memdesc:aea4e94e3f36fa599e8952b638ab9fec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a> to an HDF5 dataset.  <a href="#aea4e94e3f36fa599e8952b638ab9fec8">More...</a><br /></td></tr>
-<tr class="separator:aea4e94e3f36fa599e8952b638ab9fec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classhi5_1_1Hi5Base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classhi5_1_1Hi5Base')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classhi5_1_1Hi5Base.html">Hi5Base</a></td></tr>
-<tr class="memitem:a559446fc0a288a9fd69aa7b80200e3d7 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static const hid_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a559446fc0a288a9fd69aa7b80200e3d7">getH5DataType</a> (const std::type_info &amp;t)</td></tr>
-<tr class="memdesc:a559446fc0a288a9fd69aa7b80200e3d7 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given type toOStr of a native C++ type, returns a native HDF5 data type.  <a href="#a559446fc0a288a9fd69aa7b80200e3d7">More...</a><br /></td></tr>
-<tr class="separator:a559446fc0a288a9fd69aa7b80200e3d7 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acef29331907362f0ea5766b9b117fcf5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memTemplParams" colspan="2"><a class="anchor" id="acef29331907362f0ea5766b9b117fcf5"></a>
+<tr class="memitem:ae8bb260b57e67f115c0a97cf8f13c29c inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8bb260b57e67f115c0a97cf8f13c29c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>handleStatus</b> (herr_t status, const std::string &amp;message, <a class="el" href="classdrain_1_1Logger.html">drain::Logger</a> &amp;mout, int lineNo=0)</td></tr>
+<tr class="separator:ae8bb260b57e67f115c0a97cf8f13c29c inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47ce7ad5d35bcae6d37273b29de98937 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47ce7ad5d35bcae6d37273b29de98937"></a>
+static hid_t&#160;</td><td class="memItemRight" valign="bottom"><b>getH5StandardType</b> (const std::type_info &amp;type)</td></tr>
+<tr class="separator:a47ce7ad5d35bcae6d37273b29de98937 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af370b9e9fa4eaaf172103cb07dc16aec inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static hid_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#af370b9e9fa4eaaf172103cb07dc16aec">getH5NativeDataType</a> (const std::type_info &amp;t)</td></tr>
+<tr class="memdesc:af370b9e9fa4eaaf172103cb07dc16aec inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given type toOStr of a native C++ type, returns a native HDF5 data type.  <a href="#af370b9e9fa4eaaf172103cb07dc16aec">More...</a><br /></td></tr>
+<tr class="separator:af370b9e9fa4eaaf172103cb07dc16aec inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c050369710c9652949a8078c78654f5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9c050369710c9652949a8078c78654f5"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:acef29331907362f0ea5766b9b117fcf5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memTemplItemLeft" align="right" valign="top">static const hid_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#acef29331907362f0ea5766b9b117fcf5">getH5DataType</a> ()</td></tr>
-<tr class="memdesc:acef29331907362f0ea5766b9b117fcf5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a native C++ type, returns a native HDF5 data type. <br /></td></tr>
-<tr class="separator:acef29331907362f0ea5766b9b117fcf5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dfa97638ce4c00cdb6debe0e5c874ea inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2dfa97638ce4c00cdb6debe0e5c874ea"></a>
-static <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a2dfa97638ce4c00cdb6debe0e5c874ea">getPalette</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst)</td></tr>
-<tr class="memdesc:a2dfa97638ce4c00cdb6debe0e5c874ea inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 256-element RGB palette to be referenced with <a class="el" href="classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81" title="Links the palette that has been (or will be) created with createPalette(). ">linkPalette()</a>. <br /></td></tr>
-<tr class="separator:a2dfa97638ce4c00cdb6debe0e5c874ea inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8819dffaf02405fc78bde31296917f81 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8819dffaf02405fc78bde31296917f81"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a8819dffaf02405fc78bde31296917f81">linkPalette</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;palette, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst)</td></tr>
-<tr class="memdesc:a8819dffaf02405fc78bde31296917f81 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
-<tr class="separator:a8819dffaf02405fc78bde31296917f81 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f7c59db9cc4e75cbb3895bac7d97ce1 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f7c59db9cc4e75cbb3895bac7d97ce1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const std::list&lt; <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
-<tr class="memdesc:a2f7c59db9cc4e75cbb3895bac7d97ce1 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
-<tr class="separator:a2f7c59db9cc4e75cbb3895bac7d97ce1 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a222ce0bbf8b3d3727ab9fc4662f93cbd inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a222ce0bbf8b3d3727ab9fc4662f93cbd"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a222ce0bbf8b3d3727ab9fc4662f93cbd">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, std::ostream &amp;ostr=std::cout)</td></tr>
-<tr class="memdesc:a222ce0bbf8b3d3727ab9fc4662f93cbd inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)). <br /></td></tr>
-<tr class="separator:a222ce0bbf8b3d3727ab9fc4662f93cbd inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a447cb17fc1461b4325a8e00bb45114f8 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a447cb17fc1461b4325a8e00bb45114f8">readText</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, std::istream &amp;istr=std::cin)</td></tr>
-<tr class="memdesc:a447cb17fc1461b4325a8e00bb45114f8 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#a2f7c59db9cc4e75cbb3895bac7d97ce1" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>.  <a href="#a447cb17fc1461b4325a8e00bb45114f8">More...</a><br /></td></tr>
-<tr class="separator:a447cb17fc1461b4325a8e00bb45114f8 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c89f2e3c2f57bf5a885181d3bda9d5a inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a7c89f2e3c2f57bf5a885181d3bda9d5a">parsePath</a> (const std::string &amp;line, <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;path, std::string &amp;attrKey, <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;v)</td></tr>
-<tr class="memdesc:a7c89f2e3c2f57bf5a885181d3bda9d5a inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a value with optional type specification.  <a href="#a7c89f2e3c2f57bf5a885181d3bda9d5a">More...</a><br /></td></tr>
-<tr class="separator:a7c89f2e3c2f57bf5a885181d3bda9d5a inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6054a25b7711ce3246c68ed1b48c12c9 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6054a25b7711ce3246c68ed1b48c12c9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>parsePath</b> (const std::string &amp;line, <a class="el" href="classdrain_1_1Path.html">HI5TREE::path_t</a> &amp;path, std::string &amp;attrKey)</td></tr>
-<tr class="separator:a6054a25b7711ce3246c68ed1b48c12c9 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31013248294638353c2a47d10d0022fa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a31013248294638353c2a47d10d0022fa">readTextLine</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const std::string &amp;line)</td></tr>
-<tr class="memdesc:a31013248294638353c2a47d10d0022fa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a value with optional type specification.  <a href="#a31013248294638353c2a47d10d0022fa">More...</a><br /></td></tr>
-<tr class="separator:a31013248294638353c2a47d10d0022fa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b4161d1e84bff5cad2a850d083be18 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8b4161d1e84bff5cad2a850d083be18"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#af8b4161d1e84bff5cad2a850d083be18">deleteNoSave</a> (<a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src)</td></tr>
-<tr class="memdesc:af8b4161d1e84bff5cad2a850d083be18 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete branches that have been marked with noSave=true . <br /></td></tr>
-<tr class="separator:af8b4161d1e84bff5cad2a850d083be18 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c050369710c9652949a8078c78654f5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memTemplItemLeft" align="right" valign="top">static hid_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a9c050369710c9652949a8078c78654f5">getH5NativeDataType</a> ()</td></tr>
+<tr class="memdesc:a9c050369710c9652949a8078c78654f5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a native C++ type, returns a native HDF5 data type. <br /></td></tr>
+<tr class="separator:a9c050369710c9652949a8078c78654f5 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5107d113299aecf9f2effe28ed54935 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5107d113299aecf9f2effe28ed54935"></a>
+static hid_t&#160;</td><td class="memItemRight" valign="bottom"><b>getH5StringVariableLength</b> ()</td></tr>
+<tr class="separator:af5107d113299aecf9f2effe28ed54935 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a482eb384e7a232e949c8f3fb017c0b09 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a482eb384e7a232e949c8f3fb017c0b09"></a>
+static <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a482eb384e7a232e949c8f3fb017c0b09">getPalette</a> (<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst)</td></tr>
+<tr class="memdesc:a482eb384e7a232e949c8f3fb017c0b09 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 256-element RGB palette to be referenced with <a class="el" href="classhi5_1_1Hi5Base.html#ad53431d3f72edbc7c40989ab2415a974" title="Links the palette that has been (or will be) created with createPalette(). ">linkPalette()</a>. <br /></td></tr>
+<tr class="separator:a482eb384e7a232e949c8f3fb017c0b09 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad53431d3f72edbc7c40989ab2415a974"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#ad53431d3f72edbc7c40989ab2415a974">linkPalette</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;palette, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst)</td></tr>
+<tr class="memdesc:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
+<tr class="separator:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adebcb71c8ba7aced01ef7840a567e10e inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adebcb71c8ba7aced01ef7840a567e10e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, const std::list&lt; <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
+<tr class="memdesc:adebcb71c8ba7aced01ef7840a567e10e inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
+<tr class="separator:adebcb71c8ba7aced01ef7840a567e10e inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5c55bae43af4e588fc51217943fbfb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac5c55bae43af4e588fc51217943fbfb"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb">writeText</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, std::ostream &amp;ostr=std::cout)</td></tr>
+<tr class="memdesc:aac5c55bae43af4e588fc51217943fbfb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)). <br /></td></tr>
+<tr class="separator:aac5c55bae43af4e588fc51217943fbfb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add2da669b032729add1d93e5a792f8db inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#add2da669b032729add1d93e5a792f8db">readText</a> (<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, std::istream &amp;istr=std::cin)</td></tr>
+<tr class="memdesc:add2da669b032729add1d93e5a792f8db inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a tree from formatted text. See <a class="el" href="classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e" title="Dumps the H5 structure, attributes and data properties. ">writeText()</a>.  <a href="#add2da669b032729add1d93e5a792f8db">More...</a><br /></td></tr>
+<tr class="separator:add2da669b032729add1d93e5a792f8db inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c7d9aeb913275da0983b01bb719fbfa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a8c7d9aeb913275da0983b01bb719fbfa">parsePath</a> (const std::string &amp;line, <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, std::string &amp;attrKey, std::string &amp;attrValue)</td></tr>
+<tr class="memdesc:a8c7d9aeb913275da0983b01bb719fbfa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split full path string to path object and attribute key.  <a href="#a8c7d9aeb913275da0983b01bb719fbfa">More...</a><br /></td></tr>
+<tr class="separator:a8c7d9aeb913275da0983b01bb719fbfa inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc1fcfd6a23ac99c212913916f0aec1 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cc1fcfd6a23ac99c212913916f0aec1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>parsePath</b> (const std::string &amp;line, <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;path, std::string &amp;attribute)</td></tr>
+<tr class="separator:a3cc1fcfd6a23ac99c212913916f0aec1 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe2356492766eb800826d1f36c6ac081 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#afe2356492766eb800826d1f36c6ac081">readTextLine</a> (<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, const std::string &amp;line)</td></tr>
+<tr class="memdesc:afe2356492766eb800826d1f36c6ac081 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a value with optional type specification.  <a href="#afe2356492766eb800826d1f36c6ac081">More...</a><br /></td></tr>
+<tr class="separator:afe2356492766eb800826d1f36c6ac081 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69610563c3be5c6fe0e885a9d612bddb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69610563c3be5c6fe0e885a9d612bddb"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a69610563c3be5c6fe0e885a9d612bddb">deleteNoSave</a> (<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src)</td></tr>
+<tr class="memdesc:a69610563c3be5c6fe0e885a9d612bddb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete branches that have been marked with noSave=true . <br /></td></tr>
+<tr class="separator:a69610563c3be5c6fe0e885a9d612bddb inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:aa07c0e876eaa5267c60dd61c3cb28055"><td class="memItemLeft" align="right" valign="top">static hsize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Writer.html#aa07c0e876eaa5267c60dd61c3cb28055">deriveDimensions</a> (const <a class="el" href="classdrain_1_1image_1_1Geometry.html">drain::image::Geometry</a> &amp;g, std::vector&lt; hsize_t &gt; &amp;dims, std::vector&lt; hsize_t &gt; &amp;chunkDims)</td></tr>
+<tr class="separator:aa07c0e876eaa5267c60dd61c3cb28055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Converts Rack's h5 structure to native h5 structure applied for file output. </p>
 <p>ODIM conventions are purposely not included in the Hi5 utilities. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aca406f4ee0cd89be6d4504714c908cbd"></a>
+<a class="anchor" id="ab8e7e445ecab062a5c4dad0021d0cf69"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -196,6 +231,97 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &amp;&#160;</td>
           <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">hid_t&#160;</td>
+          <td class="paramname"><em>fid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>attribute</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates and writes scalar (non-std::string) attributes to group. </p>
+<p>For std::string and characterArrays. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa07c0e876eaa5267c60dd61c3cb28055"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">hsize_t deriveDimensions </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Geometry.html">drain::image::Geometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; hsize_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; hsize_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>chunkDims</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>- rank: 2 for single, 3 for multichannel, or 0 in errors</dd></dl>
+<p>Handles also ZLIB compression (ODIM recommendation: zlib compression level 6) </p>
+
+</div>
+</div>
+<a class="anchor" id="aba63df93abf1b2bb770f226d2a3e2f33"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void linkToH5Attribute </td>
+          <td>(</td>
+          <td class="paramtype">hid_t&#160;</td>
+          <td class="paramname"><em>lid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -228,12 +354,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Creates and writes scalar (non-std::string) attributes to group. </p>
-<p>For std::string and characterArrays. </p>
+<p>Under constr. </p>
+<p>Under constr </p>
 
 </div>
 </div>
-<a class="anchor" id="aea4e94e3f36fa599e8952b638ab9fec8"></a>
+<a class="anchor" id="aeb54daa09bf824de6cd94d3a39b441cb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -241,10 +367,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void imageToH5DataSet </td>
+          <td class="memname">void mapToH5Compound </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;&#160;</td>
-          <td class="paramname"><em>image</em>, </td>
+          <td class="paramtype">const std::map&lt; K, V &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -255,8 +381,20 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>path</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>labelFirst</em> = <code>&quot;key&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>labelSecond</em> = <code>&quot;value&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -271,13 +409,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Converts <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a> to an HDF5 dataset. </p>
-<p>Currently, only 1-channel data supported!</p>
-<p>ZLIB compression </p>
+<p>TODO: </p>
+<p>Writes key-value pairs as compound data. Constucts a std::vector or std::pair's , converting strings to const char *, if applied. Then, calls <a class="el" href="classhi5_1_1Writer.html#a9ed4839d46b51024f888f3f73c256ef8" title="Write a vector of paired values. ">vectorToH5Compound()</a> </p>
 
 </div>
 </div>
-<a class="anchor" id="a3092c0574b9401aa3fb0e78605ef66c7"></a>
+<a class="anchor" id="aec4d4bb6775f7d746cf657ff96beb235"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -287,7 +424,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">void treeToH5File </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -299,7 +436,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em>&#160;</td>
         </tr>
         <tr>
@@ -324,9 +461,79 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </table>
   </dd>
 </dl>
-<p>Feature: do not convert paths ending with '~'. DEPRECATED</p>
 <p>... otherwise handle as H5Group, ie. continue iteration</p>
 <p>Copy attributes (group or image) </p>
+
+</div>
+</div>
+<a class="anchor" id="a9ed4839d46b51024f888f3f73c256ef8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void vectorToH5Compound </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; K, V &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">hid_t&#160;</td>
+          <td class="paramname"><em>fid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">Hi5Tree::path_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>labelFirst</em> = <code>&quot;key&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>labelSecond</em> = <code>&quot;value&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a vector of paired values. </p>
+<p>This method uses std::pair as entries. Each entry consists of two values named <code>first</code> and <code>second</code> .</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>- type of the first element, typically the key associated with the value (the second element) </td></tr>
+    <tr><td class="paramname">V</td><td>- type of the second element, typically the value associated with the key (the first element)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>- vector containing pairs, perhaps obtaining by adding </td></tr>
+    <tr><td class="paramname">f</td><td>- HDF5 file id </td></tr>
+    <tr><td class="paramname">path</td><td>- location of the target dataset </td></tr>
+    <tr><td class="paramname">label1</td><td>- label of the first value </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

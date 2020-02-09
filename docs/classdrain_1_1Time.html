@@ -117,9 +117,9 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#afc443fe98a5312e4b6f8d5fe13baf7cb">setTime</a> ()</td></tr>
 <tr class="memdesc:afc443fe98a5312e4b6f8d5fe13baf7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to current UTC time. <br /></td></tr>
 <tr class="separator:afc443fe98a5312e4b6f8d5fe13baf7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a2a67484ecc5b3ae6fe4f8eee25f440ac">setTime</a> (const time_t &amp;time)</td></tr>
-<tr class="memdesc:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to UTC time.  <a href="#a2a67484ecc5b3ae6fe4f8eee25f440ac">More...</a><br /></td></tr>
-<tr class="separator:a2a67484ecc5b3ae6fe4f8eee25f440ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80ee191b603e303fb24dff0978c17801"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a80ee191b603e303fb24dff0978c17801">setTime</a> (time_t time)</td></tr>
+<tr class="memdesc:a80ee191b603e303fb24dff0978c17801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time to UTC time.  <a href="#a80ee191b603e303fb24dff0978c17801">More...</a><br /></td></tr>
+<tr class="separator:a80ee191b603e303fb24dff0978c17801"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82b93c76233938123d0c730587e29b1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a82b93c76233938123d0c730587e29b1d">setTime</a> (const std::string &amp;time, const std::string &amp;format, bool strict=true)</td></tr>
 <tr class="memdesc:a82b93c76233938123d0c730587e29b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets time.  <a href="#a82b93c76233938123d0c730587e29b1d">More...</a><br /></td></tr>
 <tr class="separator:a82b93c76233938123d0c730587e29b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,10 +133,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setTime</b> (const tm
 time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a297da4b0a17ce4d6459deb48f42c7e80">getTime</a> () const </td></tr>
 <tr class="memdesc:a297da4b0a17ce4d6459deb48f42c7e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns time in seconds. <br /></td></tr>
 <tr class="separator:a297da4b0a17ce4d6459deb48f42c7e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24e43e6da96392670b876311f2542e44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24e43e6da96392670b876311f2542e44"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a24e43e6da96392670b876311f2542e44">str</a> (std::string format=&quot;&quot;) const </td></tr>
-<tr class="memdesc:a24e43e6da96392670b876311f2542e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the std::string using formatting as defined by strftime() <br /></td></tr>
-<tr class="separator:a24e43e6da96392670b876311f2542e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc843af53e1f2077204d5488fa3f7de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2cc843af53e1f2077204d5488fa3f7de"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Time.html#a2cc843af53e1f2077204d5488fa3f7de">str</a> (const std::string &amp;format=&quot;&quot;) const </td></tr>
+<tr class="memdesc:a2cc843af53e1f2077204d5488fa3f7de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the std::string using formatting as defined by strftime() <br /></td></tr>
+<tr class="separator:a2cc843af53e1f2077204d5488fa3f7de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0105433f9c65c14928027b3f0966b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d0105433f9c65c14928027b3f0966b7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> ()</td></tr>
 <tr class="separator:a0d0105433f9c65c14928027b3f0966b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,7 +177,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 
 </div>
 </div>
-<a class="anchor" id="a2a67484ecc5b3ae6fe4f8eee25f440ac"></a>
+<a class="anchor" id="a80ee191b603e303fb24dff0978c17801"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -187,7 +187,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
         <tr>
           <td class="memname">void setTime </td>
           <td>(</td>
-          <td class="paramtype">const time_t &amp;&#160;</td>
+          <td class="paramtype">time_t&#160;</td>
           <td class="paramname"><em>time</em></td><td>)</td>
           <td></td>
         </tr>
@@ -200,16 +200,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 </div><div class="memdoc">
 
 <p>Sets time to UTC time. </p>
-<dl class="section user"><dt>time - std::string presentation of time.</dt><dd></dd></dl>
+<dl class="section user"><dt>time - unix seconds (integer)</dt><dd></dd></dl>
 
 </div>
 </div>
 <a class="anchor" id="a82b93c76233938123d0c730587e29b1d"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void setTime </td>
@@ -235,11 +232,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sets time. </p>
@@ -254,8 +246,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>timeStr</b></t
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>drain/util/<a class="el" href="Time_8h_source.html">Time.h</a></li>
+<li>drain/util/Time.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

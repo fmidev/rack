@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['h5datasettoimage',['h5DatasetToImage',['../classhi5_1_1Reader.html#a2d7cfeec0ee1ec0fdc77d6395ef5d1dd',1,'hi5::Reader']]],
-  ['h5filetotree',['h5FileToTree',['../classhi5_1_1Reader.html#aa29516f50ae5dba911a8b8540fbca169',1,'hi5::Reader::h5FileToTree(hid_t fid, const std::string &amp;path, HI5TREE &amp;tree, int mode=(ATTRIBUTES|DATASETS))'],['../classhi5_1_1Reader.html#a994c505f20cd5f5d7a45ef19c9482fbf',1,'hi5::Reader::h5FileToTree(hid_t fid, HI5TREE &amp;tree, int mode=(ATTRIBUTES|DATASETS))']]],
+  ['h5datasettoimage',['h5DatasetToImage',['../classhi5_1_1Reader.html#afe2f7c63f77e2abaa189ee643813a450',1,'hi5::Reader']]],
+  ['h5filetotree',['h5FileToTree',['../classhi5_1_1Reader.html#a5c0a98ce87a158a8dd9f256915718ef0',1,'hi5::Reader::h5FileToTree(hid_t fid, const Hi5Tree::path_t &amp;path, Hi5Tree &amp;tree, int mode=3)'],['../classhi5_1_1Reader.html#a193b4793789ef521f4bbde4f6a8269c8',1,'hi5::Reader::h5FileToTree(hid_t fid, Hi5Tree &amp;tree, int mode=3)']]],
   ['handle',['handle',['../classdrain_1_1image_1_1CoordinateHandler2D.html#aebfb3cf49a8988e2c7208838f1a63d91',1,'drain::image::CoordinateHandler2D::handle(int &amp;x, int &amp;y) const '],['../classdrain_1_1image_1_1CoordinateHandler2D.html#a7a3a316d9a82aec1555a0cc80b5ea71e',1,'drain::image::CoordinateHandler2D::handle(Point2D&lt; int &gt; &amp;p) const '],['../classdrain_1_1Log.html#a8410143e8a10c33345f6091879a941fc',1,'drain::Log::handle()']]],
   ['handle_5fundefined',['handle_Undefined',['../classdrain_1_1image_1_1CoordinateHandler2D.html#aaf2669b3fe631962e8486e5eb0fde727',1,'drain::image::CoordinateHandler2D']]],
-  ['handleencodingrequest',['handleEncodingRequest',['../classrack_1_1ProductBase.html#a204281018f1b61801b547b8a9d2f2f61',1,'rack::ProductBase']]],
   ['handlexunderflow_5fpolar',['handleXUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a8cd19025521d165e38c89969cda89cb1',1,'drain::image::CoordinateHandler2D']]],
   ['handleyunderflow_5fpolar',['handleYUnderFlow_Polar',['../classdrain_1_1image_1_1CoordinateHandler2D.html#a9e985eeff83f2841c0cd89232270a57b',1,'drain::image::CoordinateHandler2D']]],
   ['has',['has',['../classdrain_1_1Registry.html#a8b09ace5fddead133ee7cefaecd415c6',1,'drain::Registry']]],

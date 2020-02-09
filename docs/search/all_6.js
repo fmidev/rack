@@ -10,6 +10,7 @@ var searchData=
   ['filemodule',['FileModule',['../classrack_1_1FileModule.html',1,'rack']]],
   ['filename',['filename',['../classdrain_1_1image_1_1ImageSampler.html#ae80f820219e45772366a2a68de6a54c4',1,'drain::image::ImageSampler']]],
   ['filenameregexp',['fileNameRegExp',['../classdrain_1_1image_1_1FilePng.html#aad019c3fc6bbc277d51f04ac5a857884',1,'drain::image::FilePng::fileNameRegExp()'],['../classdrain_1_1image_1_1FilePnm.html#aad019c3fc6bbc277d51f04ac5a857884',1,'drain::image::FilePnm::fileNameRegExp()']]],
+  ['filepath',['FilePath',['../classdrain_1_1FilePath.html#a759fa7d881b4c86796485c0c550fde36',1,'drain::FilePath::FilePath(const std::string &amp;s=&quot;&quot;, char separator=0)'],['../classdrain_1_1FilePath.html#ae7f167fad2393b34ec51acbf5a058488',1,'drain::FilePath::FilePath(const FilePath &amp;s)']]],
   ['filepath',['FilePath',['../classdrain_1_1FilePath.html',1,'drain']]],
   ['filepng',['FilePng',['../classdrain_1_1image_1_1FilePng.html',1,'drain::image']]],
   ['filepnm',['FilePnm',['../classdrain_1_1image_1_1FilePnm.html',1,'drain::image']]],
@@ -33,13 +34,13 @@ var searchData=
   ['frame',['frame',['../classrack_1_1CartesianDataPicker.html#a8980f428c9c7473a50a92798a7c86c15',1,'rack::CartesianDataPicker']]],
   ['freeze',['freeze',['../classrack_1_1PolarODIM.html#a2318c473b6a881a089c6856ed1438dae',1,'rack::PolarODIM']]],
   ['freezinglevel',['FreezingLevel',['../classrack_1_1FreezingLevel.html',1,'rack']]],
-  ['functor',['Functor',['../classdrain_1_1Functor.html',1,'drain']]],
   ['functor',['functor',['../classrack_1_1DopplerInversionWindow.html#a06a3c6f3d15b73e559d52065a4cb9249',1,'rack::DopplerInversionWindow']]],
+  ['functor',['Functor',['../classdrain_1_1Functor.html',1,'drain']]],
   ['functorcloner',['FunctorCloner',['../classdrain_1_1FunctorCloner.html',1,'drain']]],
   ['functorlookup',['FunctorLookUp',['../classdrain_1_1FunctorLookUp.html',1,'drain']]],
+  ['functorop',['FunctorOp',['../classrack_1_1FunctorOp.html',1,'rack']]],
   ['functorop',['FunctorOp',['../classdrain_1_1image_1_1FunctorOp.html',1,'drain::image']]],
   ['functorop',['FunctorOp',['../classdrain_1_1image_1_1FunctorOp.html#a0ae034251488e7622508ad9da6cc0d71',1,'drain::image::FunctorOp']]],
-  ['functorop',['FunctorOp',['../classrack_1_1FunctorOp.html',1,'rack']]],
   ['functorop_3c_20copyfunctor_20_3e',['FunctorOp&lt; CopyFunctor &gt;',['../classdrain_1_1image_1_1FunctorOp.html',1,'drain::image']]],
   ['functorwrapper',['FunctorWrapper',['../structdrain_1_1image_1_1FunctorWrapper.html',1,'drain::image']]],
   ['functorwrapper_3c_20copyfunctor_20_3e',['FunctorWrapper&lt; CopyFunctor &gt;',['../structdrain_1_1image_1_1FunctorWrapper.html',1,'drain::image']]],
@@ -54,5 +55,6 @@ var searchData=
   ['fuzzystep',['FuzzyStep',['../classdrain_1_1FuzzyStep.html',1,'drain']]],
   ['fuzzystepsoid',['FuzzyStepsoid',['../classdrain_1_1FuzzyStepsoid.html',1,'drain']]],
   ['fuzzytriangle',['FuzzyTriangle',['../classdrain_1_1FuzzyTriangle.html',1,'drain']]],
-  ['fwd',['fwd',['../classdrain_1_1image_1_1ImageScaling.html#a913e556878f696ec51f622578959b33f',1,'drain::image::ImageScaling']]]
+  ['fuzzytwinpeaks',['FuzzyTwinPeaks',['../classdrain_1_1FuzzyTwinPeaks.html',1,'drain']]],
+  ['fwd',['fwd',['../classdrain_1_1ValueScaling.html#a913e556878f696ec51f622578959b33f',1,'drain::ValueScaling']]]
 ];

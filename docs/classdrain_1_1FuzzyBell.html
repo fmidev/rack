@@ -271,14 +271,23 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()
 class drain::FuzzyBell&lt; T &gt;</h3>
 
 <p>A smooth symmetric peak function that resembles the Gaussian bell curve. </p>
-<p>The approximation applies</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- input storage type </td></tr>
-    <tr><td class="paramname">T2</td><td>- output storage type </td></tr>
+    <tr><td class="paramname">T</td><td>- input type (typically double) </td></tr>
+    <tr><td class="paramname">T2</td><td>- output type (typically double)</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>- center of the peak </td></tr>
+    <tr><td class="paramname">width</td><td>- half-width of the peak; if negative, the peak will be upside down </td></tr>
+    <tr><td class="paramname">scale</td><td>- multiplication in scaling (scale*x + bias); default=1.0 </td></tr>
+    <tr><td class="paramname">bias</td><td>- offset in scaling (scale*x + bias); default=0.0</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The approximation applies </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Fuzzy_8h_source.html">Fuzzy.h</a></li>
 </ul>

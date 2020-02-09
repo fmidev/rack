@@ -1,6 +1,7 @@
 var searchData=
 [
   ['valuereader',['ValueReader',['../classdrain_1_1ValueReader.html',1,'drain']]],
+  ['valuescaling',['ValueScaling',['../classdrain_1_1ValueScaling.html',1,'drain']]],
   ['variable',['Variable',['../classdrain_1_1Variable.html',1,'drain']]],
   ['variablemap',['VariableMap',['../classdrain_1_1VariableMap.html',1,'drain']]],
   ['vector',['Vector',['../classdrain_1_1Vector.html',1,'drain']]],

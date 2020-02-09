@@ -98,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Splits a string to base path, base filename and extension.  
+<p>Extracts and stores directory path, base filename and extension.  
  <a href="classdrain_1_1FilePath.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="FilePath_8h_source.html">FilePath.h</a>&gt;</code></p>
@@ -121,8 +121,13 @@ typedef <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; std::string &g
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a759fa7d881b4c86796485c0c550fde36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a759fa7d881b4c86796485c0c550fde36"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FilePath</b> (const std::string &amp;s=&quot;&quot;, char <a class="el" href="classdrain_1_1FilePath.html#a6989953791434c8ea982054551c9e154">separator</a>=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#a759fa7d881b4c86796485c0c550fde36">FilePath</a> (const std::string &amp;s=&quot;&quot;, char <a class="el" href="classdrain_1_1FilePath.html#a6989953791434c8ea982054551c9e154">separator</a>=0)</td></tr>
+<tr class="memdesc:a759fa7d881b4c86796485c0c550fde36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:a759fa7d881b4c86796485c0c550fde36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7f167fad2393b34ec51acbf5a058488"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7f167fad2393b34ec51acbf5a058488"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#ae7f167fad2393b34ec51acbf5a058488">FilePath</a> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;s)</td></tr>
+<tr class="memdesc:ae7f167fad2393b34ec51acbf5a058488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:ae7f167fad2393b34ec51acbf5a058488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2924f6cc1546444425b9f08c2ca42327"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2924f6cc1546444425b9f08c2ca42327"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;s)</td></tr>
 <tr class="separator:a2924f6cc1546444425b9f08c2ca42327"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,9 +166,9 @@ static const <a class="el" href="classdrain_1_1RegExp.html">RegExp</a>&#160;</td
 <tr class="separator:acbb3c9b37b941dcc356f92c0fdfc3dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Splits a string to base path, base filename and extension. </p>
+<div class="textblock"><p>Extracts and stores directory path, base filename and extension. </p>
 <p>Upon construction and after setting, splits a full path string to</p><ul>
-<li><code>path</code> - directory path</li>
+<li><code>dir</code> - directory path (<a class="el" href="classdrain_1_1Path.html">Path&lt;std::string&gt;</a>)</li>
 <li><code>basename</code> - filename without directory path and extension</li>
 <li><code>ext</code> - extension, without dot (png, txt </li>
 </ul>

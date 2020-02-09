@@ -123,19 +123,20 @@ Collaboration diagram for FuzzyTriangle&lt; T &gt;:</div>
 <area shape="rect" id="node5" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
 <area shape="rect" id="node6" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
 <area shape="rect" id="node7" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
+<area shape="rect" id="node9" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="182,475,305,501"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a988fe8d1bd1f4a7787cbb085140ca468"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a988fe8d1bd1f4a7787cbb085140ca468"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FuzzyTriangle</b> (double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a55ce5cf7840850f6ed838404916a48ba">startPos</a>=-1.0, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a>=0.0, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a097f4a20f1cdad70d93f93ef84eddf50">endPos</a>=+1.0, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, T <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>FuzzyTriangle</b> (double startPos=-1.0, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a>=0.0, double endPos=+1.0, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, T <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0)</td></tr>
 <tr class="separator:a988fe8d1bd1f4a7787cbb085140ca468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23f9a23f71a71b98b14cb8aa173769a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23f9a23f71a71b98b14cb8aa173769a4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>FuzzyTriangle</b> (const <a class="el" href="classdrain_1_1FuzzyTriangle.html">FuzzyTriangle</a> &amp;f)</td></tr>
 <tr class="separator:a23f9a23f71a71b98b14cb8aa173769a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac313c4de8301e362d6d8f4a5663a4172"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac313c4de8301e362d6d8f4a5663a4172"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#ac313c4de8301e362d6d8f4a5663a4172">set</a> (double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a55ce5cf7840850f6ed838404916a48ba">startPos</a>, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a>, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a097f4a20f1cdad70d93f93ef84eddf50">endPos</a>, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, double <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0.0)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#ac313c4de8301e362d6d8f4a5663a4172">set</a> (double startPos, double <a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a>, double endPos, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, double <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0.0)</td></tr>
 <tr class="memdesc:ac313c4de8301e362d6d8f4a5663a4172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameters of the membership function. <br /></td></tr>
 <tr class="separator:ac313c4de8301e362d6d8f4a5663a4172"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72b39ddfc8bbfd2c976a27030f4a54bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72b39ddfc8bbfd2c976a27030f4a54bc"></a>
@@ -196,18 +197,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a55ce5cf7840850f6ed838404916a48ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55ce5cf7840850f6ed838404916a48ba"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#a55ce5cf7840850f6ed838404916a48ba">startPos</a></td></tr>
-<tr class="memdesc:a55ce5cf7840850f6ed838404916a48ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting position. <br /></td></tr>
-<tr class="separator:a55ce5cf7840850f6ed838404916a48ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51fb63c26bffbdf9146d0b4830298386"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51fb63c26bffbdf9146d0b4830298386"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a></td></tr>
-<tr class="memdesc:a51fb63c26bffbdf9146d0b4830298386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peak position. <br /></td></tr>
+<tr class="memitem:a51fb63c26bffbdf9146d0b4830298386"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#a51fb63c26bffbdf9146d0b4830298386">peakPos</a></td></tr>
+<tr class="memdesc:a51fb63c26bffbdf9146d0b4830298386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting position.  <a href="#a51fb63c26bffbdf9146d0b4830298386">More...</a><br /></td></tr>
 <tr class="separator:a51fb63c26bffbdf9146d0b4830298386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a097f4a20f1cdad70d93f93ef84eddf50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a097f4a20f1cdad70d93f93ef84eddf50"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#a097f4a20f1cdad70d93f93ef84eddf50">endPos</a></td></tr>
-<tr class="memdesc:a097f4a20f1cdad70d93f93ef84eddf50"><td class="mdescLeft">&#160;</td><td class="mdescRight">End position. <br /></td></tr>
-<tr class="separator:a097f4a20f1cdad70d93f93ef84eddf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf36eaa1d6390131ac78743a904ab382"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf36eaa1d6390131ac78743a904ab382"></a>
+<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyTriangle.html#adf36eaa1d6390131ac78743a904ab382">range</a></td></tr>
+<tr class="memdesc:adf36eaa1d6390131ac78743a904ab382"><td class="mdescLeft">&#160;</td><td class="mdescRight">End position. <br /></td></tr>
+<tr class="separator:adf36eaa1d6390131ac78743a904ab382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1Fuzzifier"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1Fuzzifier')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1Fuzzifier.html">Fuzzifier&lt; T &gt;</a></td></tr>
 <tr class="memitem:a0d423a9cc9188ad27dc8597ac0185791 inherit pub_attribs_classdrain_1_1Fuzzifier"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d423a9cc9188ad27dc8597ac0185791"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>INVERSE</b></td></tr>
@@ -288,7 +284,23 @@ class drain::FuzzyTriangle&lt; T &gt;</h3>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line">drainage gray.png        --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle.png</div><div class="line">drainage gray.png -R 0,1 --fuzzyTriangle 0.25,0.5,0.75  -o fuzzyTriangle-phys.png</div><div class="line">drainage gray.png -T S   --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle-16bit.png</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="fragment"><div class="line">drainage gray.png        --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle.png</div><div class="line">drainage gray.png -R 0,1 --fuzzyTriangle 0.25,0.5,0.75  -o fuzzyTriangle-phys.png</div><div class="line">drainage gray.png -T S   --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle-16bit.png</div></div><!-- fragment --> </div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a51fb63c26bffbdf9146d0b4830298386"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double peakPos</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starting position. </p>
+<p>Peak position </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Fuzzy_8h_source.html">Fuzzy.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -1,36 +1,37 @@
 <map id="ClutterMapRead" name="ClutterMapRead">
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="2963,81,3115,122"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="2669,56,2784,83"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="2388,56,2471,83"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="2376,5,2483,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="2095,5,2265,32"/>
-<area shape="rect" id="node8" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="2999,157,3078,184"/>
-<area shape="rect" id="node9" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="1731,247,1820,273"/>
-<area shape="rect" id="node10" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="1425,248,1499,275"/>
-<area shape="rect" id="node11" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="1145,271,1283,297"/>
-<area shape="rect" id="node12" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="693,272,808,299"/>
-<area shape="rect" id="node13" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="319,324,491,351"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,319,207,361"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="344,269,465,296"/>
-<area shape="rect" id="node28" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="707,176,794,203"/>
-<area shape="rect" id="node16" href="$classdrain_1_1Tree.html" title="Tree\&lt; rack::ODIMPathElem,\l hi5::NodeHi5, rack::ODIMPathLess \&gt;" alt="" coords="2604,150,2849,191"/>
-<area shape="rect" id="node17" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="2372,196,2487,223"/>
-<area shape="rect" id="node19" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="2393,107,2466,133"/>
-<area shape="rect" id="node20" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="2133,56,2227,83"/>
-<area shape="rect" id="node21" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="1868,56,2021,83"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="2151,107,2209,133"/>
-<area shape="rect" id="node24" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="1886,107,2003,133"/>
-<area shape="rect" id="node25" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1565,107,1664,133"/>
-<area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1307,101,1401,128"/>
-<area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1021,163,1103,189"/>
-<area shape="rect" id="node29" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="365,217,444,244"/>
-<area shape="rect" id="node30" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="53,217,159,244"/>
-<area shape="rect" id="node31" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="43,268,169,295"/>
-<area shape="rect" id="node32" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="367,136,443,163"/>
-<area shape="rect" id="node33" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="75,97,137,124"/>
-<area shape="rect" id="node36" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="548,95,623,121"/>
-<area shape="rect" id="node34" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="55,167,157,193"/>
-<area shape="rect" id="node35" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="864,100,979,127"/>
-<area shape="rect" id="node37" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="1003,35,1121,61"/>
-<area shape="rect" id="node38" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="661,31,840,57"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="89,1069,241,1111"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="108,973,223,999"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,876,88,903"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="112,876,219,903"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="80,787,251,813"/>
+<area shape="rect" id="node8" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps. " alt="" coords="266,1077,345,1103"/>
+<area shape="rect" id="node9" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="225,660,314,687"/>
+<area shape="rect" id="node10" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="213,559,286,585"/>
+<area shape="rect" id="node11" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="161,456,298,483"/>
+<area shape="rect" id="node12" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="143,300,257,327"/>
+<area shape="rect" id="node13" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="62,199,234,225"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="37,95,238,136"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="269,199,390,225"/>
+<area shape="rect" id="node28" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="455,300,542,327"/>
+<area shape="rect" id="node16" href="$classdrain_1_1Tree.html" title="Tree\&lt; rack::ODIMPathElem,\l hi5::NodeHi5, rack::ODIMPathLess \&gt;" alt="" coords="348,965,593,1007"/>
+<area shape="rect" id="node17" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="539,876,653,903"/>
+<area shape="rect" id="node19" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="434,876,507,903"/>
+<area shape="rect" id="node20" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="389,787,483,813"/>
+<area shape="rect" id="node21" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="359,711,513,737"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="508,787,567,813"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="537,711,655,737"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="553,609,652,636"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="567,508,662,535"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="483,403,565,429"/>
+<area shape="rect" id="node29" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="415,199,494,225"/>
+<area shape="rect" id="node30" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="263,102,369,129"/>
+<area shape="rect" id="node31" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="394,102,521,129"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="518,199,594,225"/>
+<area shape="rect" id="node33" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="761,102,823,129"/>
+<area shape="rect" id="node37" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="777,249,852,276"/>
+<area shape="rect" id="node34" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="545,102,644,129"/>
+<area shape="rect" id="node35" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="533,5,656,32"/>
+<area shape="rect" id="node36" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="739,351,853,377"/>
+<area shape="rect" id="node38" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="591,403,710,429"/>
+<area shape="rect" id="node39" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="575,300,753,327"/>
 </map>

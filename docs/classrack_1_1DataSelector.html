@@ -117,13 +117,16 @@ Collaboration diagram for DataSelector:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DataSelector__coll__graph.png" border="0" usemap="#DataSelector_coll__map" alt="Collaboration graph"/></div>
 <map name="DataSelector_coll__map" id="DataSelector_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="753,7,829,33"/>
-<area shape="rect" id="node3" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="479,7,586,33"/>
-<area shape="rect" id="node4" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="256,7,427,33"/>
-<area shape="rect" id="node6" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="707,57,876,84"/>
-<area shape="rect" id="node7" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="730,108,853,135"/>
-<area shape="rect" id="node8" href="classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="764,159,819,185"/>
-<area shape="rect" id="node9" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="476,159,589,185"/>
+<area shape="rect" id="node2" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="127,261,203,288"/>
+<area shape="rect" id="node3" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="69,172,175,199"/>
+<area shape="rect" id="node4" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,89,191,115"/>
+<area shape="rect" id="node6" href="classrack_1_1ODIMPathMatcher.html" title="Test if a path partially fits group and index range. " alt="" coords="231,261,362,288"/>
+<area shape="rect" id="node7" href="classdrain_1_1Path.html" title="Path\&lt; ODIMPathElemMatcher \&gt;" alt="" coords="209,172,421,199"/>
+<area shape="rect" id="node9" href="classdrain_1_1RegExp.html" title="RegExp" alt="" coords="386,261,455,288"/>
+<area shape="rect" id="node10" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="480,261,649,288"/>
+<area shape="rect" id="node11" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="674,261,797,288"/>
+<area shape="rect" id="node12" href="classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="821,261,876,288"/>
+<area shape="rect" id="node13" href="classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; K, V \&gt;" alt="" coords="779,172,918,199"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -138,40 +141,50 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5c35257c04b743043297b3bafdf13a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c35257c04b743043297b3bafdf13a2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataSelector</b> (const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector)</td></tr>
 <tr class="separator:ac5c35257c04b743043297b3bafdf13a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c54df7ed3b930268c8d7752c101725"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
+<tr class="memdesc:ac5c54df7ed3b930268c8d7752c101725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert path and quantity strings to pathMatcher and quantity regexps, respectively. <br /></td></tr>
+<tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
 <tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore default values.  <a href="#ad20897c5c8bd47f5d4005989bead0e55">More...</a><br /></td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf49c4835792a1bc9cb7eaceafac2b0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#aedf49c4835792a1bc9cb7eaceafac2b0">deriveParameters</a> (const std::string &amp;parameters)</td></tr>
-<tr class="memdesc:aedf49c4835792a1bc9cb7eaceafac2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets parameters and sets <code>groups</code> parameter automatically.  <a href="#aedf49c4835792a1bc9cb7eaceafac2b0">More...</a><br /></td></tr>
-<tr class="separator:aedf49c4835792a1bc9cb7eaceafac2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a067dbb39aa43d9e5056cf20c5b964722"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a067dbb39aa43d9e5056cf20c5b964722"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a067dbb39aa43d9e5056cf20c5b964722">getPaths</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, T &amp;pathContainer, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter) const </td></tr>
-<tr class="memdesc:a067dbb39aa43d9e5056cf20c5b964722"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves paths using current selection criteria and an additional group selector.  <a href="#a067dbb39aa43d9e5056cf20c5b964722">More...</a><br /></td></tr>
-<tr class="separator:a067dbb39aa43d9e5056cf20c5b964722"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10ab69a31bface81d5d71c5bf6a30ccc"><td class="memTemplParams" colspan="2"><a class="anchor" id="a10ab69a31bface81d5d71c5bf6a30ccc"></a>
+<tr class="memitem:a8ef39b91e127247070b197e2778da38d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a8ef39b91e127247070b197e2778da38d">deriveParameters</a> (const std::string &amp;parameters, bool clear=true)</td></tr>
+<tr class="memdesc:a8ef39b91e127247070b197e2778da38d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets given parameters and implicitly determines missing parameters.  <a href="#a8ef39b91e127247070b197e2778da38d">More...</a><br /></td></tr>
+<tr class="separator:a8ef39b91e127247070b197e2778da38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aef2dab44e7027aaa081625115390ec"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a8aef2dab44e7027aaa081625115390ec"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a8aef2dab44e7027aaa081625115390ec">getPaths</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, T &amp;pathContainer, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter) const </td></tr>
+<tr class="memdesc:a8aef2dab44e7027aaa081625115390ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves paths using current selection criteria and an additional group selector.  <a href="#a8aef2dab44e7027aaa081625115390ec">More...</a><br /></td></tr>
+<tr class="separator:a8aef2dab44e7027aaa081625115390ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad639471ab98cb5cb4f8648ac4fbe650"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#aad639471ab98cb5cb4f8648ac4fbe650">getPaths3</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, std::list&lt; <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;pathContainer, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>()) const </td></tr>
+<tr class="memdesc:aad639471ab98cb5cb4f8648ac4fbe650"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable.  <a href="#aad639471ab98cb5cb4f8648ac4fbe650">More...</a><br /></td></tr>
+<tr class="separator:aad639471ab98cb5cb4f8648ac4fbe650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5785254ffaf2c00e9fdb8bc43761a36"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ad5785254ffaf2c00e9fdb8bc43761a36">getPath3</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) const </td></tr>
+<tr class="memdesc:ad5785254ffaf2c00e9fdb8bc43761a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first path encountered with selector attributes and given groupFilter .  <a href="#ad5785254ffaf2c00e9fdb8bc43761a36">More...</a><br /></td></tr>
+<tr class="separator:ad5785254ffaf2c00e9fdb8bc43761a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf224bc4902959880b7b0e478c1a0c9d"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaf224bc4902959880b7b0e478c1a0c9d"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a10ab69a31bface81d5d71c5bf6a30ccc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getPaths</b> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, T &amp;pathContainer) const </td></tr>
-<tr class="separator:a10ab69a31bface81d5d71c5bf6a30ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad214863b9afc82458f47f2a8f294b2a4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad214863b9afc82458f47f2a8f294b2a4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ad214863b9afc82458f47f2a8f294b2a4">getPaths</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, T &amp;pathContainer, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRE, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) const </td></tr>
-<tr class="memdesc:ad214863b9afc82458f47f2a8f294b2a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves paths using current selection criteria and an additional group selector.  <a href="#ad214863b9afc82458f47f2a8f294b2a4">More...</a><br /></td></tr>
-<tr class="separator:ad214863b9afc82458f47f2a8f294b2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6458058edac3631eff33229c036f2e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6458058edac3631eff33229c036f2e6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ad6458058edac3631eff33229c036f2e6">getPathNEW</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter) const </td></tr>
-<tr class="memdesc:ad6458058edac3631eff33229c036f2e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first path encountered with selector attributes and given groupFilter . <br /></td></tr>
-<tr class="separator:ad6458058edac3631eff33229c036f2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d79943323f87a02fd35fc2032bae38d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d79943323f87a02fd35fc2032bae38d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a1d79943323f87a02fd35fc2032bae38d">getPathNEW</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) const </td></tr>
-<tr class="memdesc:a1d79943323f87a02fd35fc2032bae38d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first path encountered with selector attributes and given groupFilter . <br /></td></tr>
-<tr class="separator:a1d79943323f87a02fd35fc2032bae38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8af2d9a004306b05a6c45055c71294c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8af2d9a004306b05a6c45055c71294c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ae8af2d9a004306b05a6c45055c71294c">getLastPath</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> group=<a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>) const </td></tr>
-<tr class="memdesc:ae8af2d9a004306b05a6c45055c71294c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last path encountered with selector attributes and given groupFilter . <br /></td></tr>
-<tr class="separator:ae8af2d9a004306b05a6c45055c71294c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85235a468a1d50ec88fcfd2f847cdcfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85235a468a1d50ec88fcfd2f847cdcfa"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a85235a468a1d50ec88fcfd2f847cdcfa">getNextPath</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> group=<a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>) const </td></tr>
-<tr class="memdesc:a85235a468a1d50ec88fcfd2f847cdcfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the a path with index one greater than the retrieved last path. <br /></td></tr>
-<tr class="separator:a85235a468a1d50ec88fcfd2f847cdcfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf224bc4902959880b7b0e478c1a0c9d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getPaths</b> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, T &amp;pathContainer) const </td></tr>
+<tr class="separator:aaf224bc4902959880b7b0e478c1a0c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1740d2039e8b1c63c4d25682652639"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:afb1740d2039e8b1c63c4d25682652639"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#afb1740d2039e8b1c63c4d25682652639">getPaths</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, T &amp;pathContainer, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRE, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) const </td></tr>
+<tr class="memdesc:afb1740d2039e8b1c63c4d25682652639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves paths using current selection criteria and an additional group selector.  <a href="#afb1740d2039e8b1c63c4d25682652639">More...</a><br /></td></tr>
+<tr class="separator:afb1740d2039e8b1c63c4d25682652639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4053f6f0edd6475e803150560e2542e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4053f6f0edd6475e803150560e2542e1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a4053f6f0edd6475e803150560e2542e1">getPathNEW</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groupFilter) const </td></tr>
+<tr class="memdesc:a4053f6f0edd6475e803150560e2542e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first path encountered with selector attributes and given groupFilter . <br /></td></tr>
+<tr class="separator:a4053f6f0edd6475e803150560e2542e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1b3f498f79754a9c5cc5455d0f906d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b1b3f498f79754a9c5cc5455d0f906d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a5b1b3f498f79754a9c5cc5455d0f906d">getPathNEW</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) const </td></tr>
+<tr class="memdesc:a5b1b3f498f79754a9c5cc5455d0f906d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first path encountered with selector attributes and given groupFilter . <br /></td></tr>
+<tr class="separator:a5b1b3f498f79754a9c5cc5455d0f906d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a411123bb5a506cb0837fb2b3a90f5dd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a411123bb5a506cb0837fb2b3a90f5dd6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a411123bb5a506cb0837fb2b3a90f5dd6">getLastPath</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> group=<a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>) const </td></tr>
+<tr class="memdesc:a411123bb5a506cb0837fb2b3a90f5dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last path encountered with selector attributes and given groupFilter . <br /></td></tr>
+<tr class="separator:a411123bb5a506cb0837fb2b3a90f5dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ba017a44d06c96025f00424cc5ac96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1ba017a44d06c96025f00424cc5ac96"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#aa1ba017a44d06c96025f00424cc5ac96">getNextPath</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> group=<a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>) const </td></tr>
+<tr class="memdesc:aa1ba017a44d06c96025f00424cc5ac96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the a path with index one greater than the retrieved last path. <br /></td></tr>
+<tr class="separator:aa1ba017a44d06c96025f00424cc5ac96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a710df1c0e7e58e0c48506732a1f6dd9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a710df1c0e7e58e0c48506732a1f6dd9b">convertRegExpToRanges</a> (const std::string &amp;param)</td></tr>
 <tr class="memdesc:a710df1c0e7e58e0c48506732a1f6dd9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporary fix: try to derive dataset and data indices from path regexp.  <a href="#a710df1c0e7e58e0c48506732a1f6dd9b">More...</a><br /></td></tr>
 <tr class="separator:a710df1c0e7e58e0c48506732a1f6dd9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,25 +230,25 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a530d87567f75767db07ce6d961194548"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a530d87567f75767db07ce6d961194548"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a530d87567f75767db07ce6d961194548">getLastChild</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child)</td></tr>
-<tr class="memdesc:a530d87567f75767db07ce6d961194548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches the children of child.getType(), or g if given, and stores the one with largest index. <br /></td></tr>
-<tr class="separator:a530d87567f75767db07ce6d961194548"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7efb3586315af7213ee456af5cff402a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a7efb3586315af7213ee456af5cff402a">getNewChild</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child, ODIMPathElem::index_t iMax=0xff)</td></tr>
-<tr class="memdesc:a7efb3586315af7213ee456af5cff402a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <a href="#a7efb3586315af7213ee456af5cff402a">More...</a><br /></td></tr>
-<tr class="separator:a7efb3586315af7213ee456af5cff402a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d48a4db0dc535db97dc29955b054b69"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a7d48a4db0dc535db97dc29955b054b69">getNextChild</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child)</td></tr>
-<tr class="memdesc:a7d48a4db0dc535db97dc29955b054b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derive a child with index one greater than the largest index encountered.  <a href="#a7d48a4db0dc535db97dc29955b054b69">More...</a><br /></td></tr>
-<tr class="separator:a7d48a4db0dc535db97dc29955b054b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae02e2e15749e61cd789b9e5df72bf84b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ae02e2e15749e61cd789b9e5df72bf84b">getChildren</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;tree, std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt; &amp;children, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groups)</td></tr>
-<tr class="memdesc:ae02e2e15749e61cd789b9e5df72bf84b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <a href="#ae02e2e15749e61cd789b9e5df72bf84b">More...</a><br /></td></tr>
-<tr class="separator:ae02e2e15749e61cd789b9e5df72bf84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32059da50630410760272b72467603fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a32059da50630410760272b72467603fa">getPathsByElevation</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, std::map&lt; double, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;m)</td></tr>
-<tr class="memdesc:a32059da50630410760272b72467603fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)  <a href="#a32059da50630410760272b72467603fa">More...</a><br /></td></tr>
-<tr class="separator:a32059da50630410760272b72467603fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d80d3a3d98a4d6dfde94789051ea3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9d80d3a3d98a4d6dfde94789051ea3e"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>getPathsByQuantity</b> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, std::map&lt; std::string, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;m)</td></tr>
-<tr class="separator:aa9d80d3a3d98a4d6dfde94789051ea3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e35615052ba35feeef9124dbd55ef7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e35615052ba35feeef9124dbd55ef7b"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a2e35615052ba35feeef9124dbd55ef7b">getLastChild</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child)</td></tr>
+<tr class="memdesc:a2e35615052ba35feeef9124dbd55ef7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches the children of child.getType(), or g if given, and stores the one with largest index. <br /></td></tr>
+<tr class="separator:a2e35615052ba35feeef9124dbd55ef7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01b38ba1a087f899c8609a43619f7550"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a01b38ba1a087f899c8609a43619f7550">getNewChild</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child, ODIMPathElem::index_t iMax=0xff)</td></tr>
+<tr class="memdesc:a01b38ba1a087f899c8609a43619f7550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <a href="#a01b38ba1a087f899c8609a43619f7550">More...</a><br /></td></tr>
+<tr class="separator:a01b38ba1a087f899c8609a43619f7550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b7be5403b4f5de2fd3a53974caf2ff"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child)</td></tr>
+<tr class="memdesc:a16b7be5403b4f5de2fd3a53974caf2ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derive a child with index one greater than the largest index encountered.  <a href="#a16b7be5403b4f5de2fd3a53974caf2ff">More...</a><br /></td></tr>
+<tr class="separator:a16b7be5403b4f5de2fd3a53974caf2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd424f2f6be4a049b8b4162d898a47e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;tree, std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt; &amp;children, <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> groups)</td></tr>
+<tr class="memdesc:a8cd424f2f6be4a049b8b4162d898a47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <a href="#a8cd424f2f6be4a049b8b4162d898a47e">More...</a><br /></td></tr>
+<tr class="separator:a8cd424f2f6be4a049b8b4162d898a47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0749bcbae08aa86b362760b2ac0c915"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ad0749bcbae08aa86b362760b2ac0c915">getPathsByElevation</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, std::map&lt; double, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;m)</td></tr>
+<tr class="memdesc:ad0749bcbae08aa86b362760b2ac0c915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)  <a href="#ad0749bcbae08aa86b362760b2ac0c915">More...</a><br /></td></tr>
+<tr class="separator:ad0749bcbae08aa86b362760b2ac0c915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeddf3d6b1339b0141ffefa7628564159"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeddf3d6b1339b0141ffefa7628564159"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>getPathsByQuantity</b> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, std::map&lt; std::string, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;m)</td></tr>
+<tr class="separator:aeddf3d6b1339b0141ffefa7628564159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -267,12 +280,12 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a4d455efceee21e97d8e21ee40e9b4a20"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a></td></tr>
 <tr class="memdesc:a4d455efceee21e97d8e21ee40e9b4a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regular expression of accepted paths, for example ".*/data$". Deprecated.  <a href="#a4d455efceee21e97d8e21ee40e9b4a20">More...</a><br /></td></tr>
 <tr class="separator:a4d455efceee21e97d8e21ee40e9b4a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaba7dd386a3deabde7b0db7357059888"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaba7dd386a3deabde7b0db7357059888"></a>
+<a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pathMatcher</b></td></tr>
+<tr class="separator:aaba7dd386a3deabde7b0db7357059888"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c54df7ed3b930268c8d7752c101725"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
-<tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02fd73d861ef2e4aabb38c0c9ff82947"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a> ()</td></tr>
 <tr class="memdesc:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the default values and sets references. <br /></td></tr>
@@ -290,10 +303,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const <a cl
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab83bce8f6cf7aa76fe7cc29adaeded55"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ab83bce8f6cf7aa76fe7cc29adaeded55"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#ab83bce8f6cf7aa76fe7cc29adaeded55">getPathsT</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, T &amp;container)</td></tr>
-<tr class="memdesc:ab83bce8f6cf7aa76fe7cc29adaeded55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses down the tree and returns matching paths as a list or map (ordered by elevation).  <a href="#ab83bce8f6cf7aa76fe7cc29adaeded55">More...</a><br /></td></tr>
-<tr class="separator:ab83bce8f6cf7aa76fe7cc29adaeded55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc72eca5b8eeac00d5008c5dad84bdc"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:afdc72eca5b8eeac00d5008c5dad84bdc"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#afdc72eca5b8eeac00d5008c5dad84bdc">getPathsT</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector, T &amp;container)</td></tr>
+<tr class="memdesc:afdc72eca5b8eeac00d5008c5dad84bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses down the tree and returns matching paths as a list or map (ordered by elevation).  <a href="#afdc72eca5b8eeac00d5008c5dad84bdc">More...</a><br /></td></tr>
+<tr class="separator:afdc72eca5b8eeac00d5008c5dad84bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c20fa2c1bdd6e57468a01fb84d2d7a8"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5c20fa2c1bdd6e57468a01fb84d2d7a8"></a>
 template&lt;class P &gt; </td></tr>
 <tr class="memitem:a5c20fa2c1bdd6e57468a01fb84d2d7a8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a5c20fa2c1bdd6e57468a01fb84d2d7a8">addPathT</a> (std::list&lt; P &gt; &amp;l, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;odim, const P &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>)</td></tr>
@@ -321,6 +334,14 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:aa69180863bec12a53080cb552469698f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa69180863bec12a53080cb552469698f"></a>
+<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#aa69180863bec12a53080cb552469698f">quantityRegExp</a></td></tr>
+<tr class="memdesc:aa69180863bec12a53080cb552469698f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. ">Data</a> quantity (excluding quality data, like QIND or CLASS) <br /></td></tr>
+<tr class="separator:aa69180863bec12a53080cb552469698f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9597939be683eb3d274ade8387e44829"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9597939be683eb3d274ade8387e44829"></a>
+<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a9597939be683eb3d274ade8387e44829">qualityRegExp</a></td></tr>
+<tr class="memdesc:a9597939be683eb3d274ade8387e44829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quality quantity, like QIND or CLASS. <br /></td></tr>
+<tr class="separator:a9597939be683eb3d274ade8387e44829"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8695a099e3e8d94c6ae0e3c16ad18dc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8695a099e3e8d94c6ae0e3c16ad18dc8"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>groupStr</b></td></tr>
 <tr class="separator:a8695a099e3e8d94c6ae0e3c16ad18dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -572,7 +593,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="aedf49c4835792a1bc9cb7eaceafac2b0"></a>
+<a class="anchor" id="a8ef39b91e127247070b197e2778da38d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -583,8 +604,18 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
           <td class="memname">void deriveParameters </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>parameters</em></td><td>)</td>
+          <td class="paramname"><em>parameters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>clear</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -594,23 +625,21 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </table>
 </div><div class="memdoc">
 
-<p>Sets parameters and sets <code>groups</code> parameter automatically. </p>
-<p>First, resets parameters. Then derives Tries to guess additional filter for paths returned with <a class="el" href="classrack_1_1DataSelector.html#a067dbb39aa43d9e5056cf20c5b964722" title="Retrieves paths using current selection criteria and an additional group selector. ">getPaths()</a>.</p>
-<p>bitmask a combination of <a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c" title="First level group, /dataset + digit . ">ODIMPathElem::DATASET</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f" title="Second level group, /data + digit . ">ODIMPathElem::DATA</a>, and ODIMPathElem::QUALITY.Sets group mask etc </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Sets given parameters and implicitly determines missing parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lenient</td><td>- bool = maximize selection, false = minimize</td></tr>
+    <tr><td class="paramname">parameters</td><td>- string containing parameters, like "dataset=1:3,quantity=DBZH" </td></tr>
+    <tr><td class="paramname">clear</td><td>- first reset to default state // groups set, if not given in <code>parameters</code> </td></tr>
   </table>
   </dd>
 </dl>
-<p>Assumes that</p><ul>
-<li>setParamters(const std::string &amp; parameters)</li>
-</ul>
-<p>has been called. </p>
+<p>Speculative</p>
+<p>Speculative</p>
 <p>No DATA indices nor quantities specified, hence only DATASET should be returned? </p>
 
 </div>
 </div>
-<a class="anchor" id="ae02e2e15749e61cd789b9e5df72bf84b"></a>
+<a class="anchor" id="a8cd424f2f6be4a049b8b4162d898a47e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -620,7 +649,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">bool getChildren </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -653,7 +682,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="a7efb3586315af7213ee456af5cff402a"></a>
+<a class="anchor" id="a01b38ba1a087f899c8609a43619f7550"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -663,7 +692,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">bool getNewChild </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -696,7 +725,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="a7d48a4db0dc535db97dc29955b054b69"></a>
+<a class="anchor" id="a16b7be5403b4f5de2fd3a53974caf2ff"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -706,7 +735,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">bool getNextChild </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -740,7 +769,42 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="a067dbb39aa43d9e5056cf20c5b964722"></a>
+<a class="anchor" id="ad5785254ffaf2c00e9fdb8bc43761a36"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getPath3 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the first path encountered with selector attributes and given groupFilter . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>- HDF5 data structure </td></tr>
+    <tr><td class="paramname">path</td><td>- resulting path, if found; othewise intact </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8aef2dab44e7027aaa081625115390ec"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -750,7 +814,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">void getPaths </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -796,18 +860,18 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </dd>
 </dl>
 <p>The full tree structure will be searched for; <code>groupFilter</code> does not affect the traversal. When retrieving quality groups, <code>groupFilter</code> should countain <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac" title="Special group on first or second level, /quality + digit , used for storing quality data...">ODIMPathElem::QUALITY</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1DataSelector.html#aedf49c4835792a1bc9cb7eaceafac2b0" title="Sets parameters and sets groups parameter automatically. ">deriveParameters()</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1DataSelector.html#a8ef39b91e127247070b197e2778da38d" title="Sets given parameters and implicitly determines missing parameters. ">deriveParameters()</a>. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ad214863b9afc82458f47f2a8f294b2a4"></a>
+<a class="anchor" id="afb1740d2039e8b1c63c4d25682652639"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool getPaths </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -848,7 +912,52 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="a32059da50630410760272b72467603fa"></a>
+<a class="anchor" id="aad639471ab98cb5cb4f8648ac4fbe650"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getPaths3 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::list&lt; <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pathContainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
+          <td class="paramname"><em>path</em> = <code><a class="el" href="classdrain_1_1Path.html">ODIMPath</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>- HDF5 data structure </td></tr>
+    <tr><td class="paramname">pathContainer</td><td>- container for paths to be found </td></tr>
+    <tr><td class="paramname">groupFilter</td><td>- deprecating... </td></tr>
+    <tr><td class="paramname">path</td><td>- initial path </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>For dataset indices</p>
+<p>Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned) </p>
+
+</div>
+</div>
+<a class="anchor" id="ad0749bcbae08aa86b362760b2ac0c915"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -858,7 +967,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">static void getPathsByElevation </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -902,7 +1011,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 
 </div>
 </div>
-<a class="anchor" id="ab83bce8f6cf7aa76fe7cc29adaeded55"></a>
+<a class="anchor" id="afdc72eca5b8eeac00d5008c5dad84bdc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -912,7 +1021,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">static void getPathsT </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
@@ -964,7 +1073,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </div><div class="memdoc">
 
 <p>Restore default values. </p>
-<p>The values set maximally accepting ie. all the groups are returned with <a class="el" href="classrack_1_1DataSelector.html#a067dbb39aa43d9e5056cf20c5b964722" title="Retrieves paths using current selection criteria and an additional group selector. ">getPaths()</a> call. </p>
+<p>The values set maximally accepting ie. all the groups are returned with <a class="el" href="classrack_1_1DataSelector.html#a8aef2dab44e7027aaa081625115390ec" title="Retrieves paths using current selection criteria and an additional group selector. ">getPaths()</a> call. </p>
 
 </div>
 </div>

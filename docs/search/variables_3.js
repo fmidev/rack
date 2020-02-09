@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data',['DATA',['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem::DATA()'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()'],['../classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5',1,'drain::Tree::data()']]],
+  ['data',['data',['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()'],['../classdrain_1_1Tree.html#aa3ff051a47d9e18487e7b819852521c5',1,'drain::Tree::data()'],['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem::DATA()']]],
   ['data2',['data2',['../classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738',1,'drain::image::AccumulationArray']]],
   ['data_5fgroups',['DATA_GROUPS',['../classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4',1,'rack::ODIMPathElem']]],
   ['dataextentd',['dataExtentD',['../classdrain_1_1image_1_1GeoFrame.html#ab5f1042b8578a768c0dd35e9f9e9eab9',1,'drain::image::GeoFrame']]],
@@ -14,6 +14,7 @@ var searchData=
   ['dbzspan',['dbzSpan',['../classrack_1_1PrecipOp.html#ac496e470b7a94a4ed86910f18664130b',1,'rack::PrecipOp']]],
   ['debugrow',['debugRow',['../classrack_1_1JammingOp.html#a3ee7d7b3015bbb8a4b44c99d6c1fa9ef',1,'rack::JammingOp']]],
   ['decay',['decay',['../classrack_1_1Composite.html#ab01a33c3f845cc963c97a17973b4e871',1,'rack::Composite']]],
+  ['default_5fquality',['DEFAULT_QUALITY',['../classrack_1_1QualityCombinerOp.html#adf21bd07f89d0441bd588ee7e5ca6154',1,'rack::QualityCombinerOp']]],
   ['defaultquality',['defaultQuality',['../classrack_1_1DataCoder.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::DataCoder::defaultQuality()'],['../classrack_1_1RadarAccumulator.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::RadarAccumulator::defaultQuality()']]],
   ['defaulttype',['defaultType',['../classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2',1,'rack::Quantity']]],
   ['detectionthreshold',['detectionThreshold',['../classrack_1_1DataCoder.html#abad7c5528d2d9fba4e33019ccbcd8bd0',1,'rack::DataCoder']]],

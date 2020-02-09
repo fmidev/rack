@@ -1,5 +1,5 @@
 <map id="InsectOp" name="InsectOp">
-<area shape="rect" id="node2" href="$classrack_1_1BirdOp.html" title="BirdOp" alt="" coords="75,468,137,495"/>
+<area shape="rect" id="node2" href="$classrack_1_1BiometeorOp.html" title="BiometeorOp" alt="" coords="57,468,155,495"/>
 <area shape="rect" id="node3" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors. " alt="" coords="61,393,151,420"/>
 <area shape="rect" id="node4" href="$classrack_1_1AndreOp.html" title="The base class for removal operators. " alt="" coords="69,319,143,345"/>
 <area shape="rect" id="node5" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors. " alt="" coords="37,244,175,271"/>

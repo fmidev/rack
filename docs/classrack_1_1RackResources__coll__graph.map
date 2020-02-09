@@ -1,48 +1,48 @@
 <map id="RackResources" name="RackResources">
-<area shape="rect" id="node2" href="$classdrain_1_1ScriptExec.html" title="ScriptExec" alt="" coords="1878,604,1965,631"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="1411,661,1526,688"/>
-<area shape="rect" id="node39" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="1672,655,1824,697"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="1187,661,1270,688"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="238,571,345,597"/>
-<area shape="rect" id="node13" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="519,347,663,373"/>
-<area shape="rect" id="node20" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="1191,548,1267,575"/>
-<area shape="rect" id="node43" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data. " alt="" coords="555,600,626,627"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="5,571,176,597"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="1691,289,1805,316"/>
-<area shape="rect" id="node26" href="$classdrain_1_1Tree.html" title="Tree\&lt; rack::ODIMPathElem,\l hi5::NodeHi5, rack::ODIMPathLess \&gt;" alt="" coords="2000,151,2245,193"/>
-<area shape="rect" id="node9" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::Accumulator,\l rack::PolarODIM \&gt;" alt="" coords="1663,452,1833,508"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="1181,296,1276,323"/>
-<area shape="rect" id="node49" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="1409,368,1528,395"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="225,207,357,233"/>
-<area shape="rect" id="node12" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title="WeightedAverageMethod" alt="" coords="780,245,948,272"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1MinimumMethod.html" title="MinimumMethod" alt="" coords="805,296,923,323"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1OverwriteMethod.html" title="OverwriteMethod" alt="" coords="803,347,925,373"/>
-<area shape="rect" id="node16" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title="MaximumWeightMethod" alt="" coords="783,397,945,424"/>
-<area shape="rect" id="node17" href="$classdrain_1_1image_1_1AverageMethod.html" title="AverageMethod" alt="" coords="807,448,921,475"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1MaximumMethod.html" title="MaximumMethod" alt="" coords="803,499,925,525"/>
-<area shape="rect" id="node19" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="1419,429,1518,456"/>
-<area shape="rect" id="node48" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="1661,340,1835,396"/>
-<area shape="rect" id="node42" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="1427,549,1510,576"/>
-<area shape="rect" id="node21" href="$classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="1144,347,1313,373"/>
-<area shape="rect" id="node22" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="1167,397,1290,424"/>
-<area shape="rect" id="node23" href="$classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="1201,448,1256,475"/>
-<area shape="rect" id="node24" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="1425,317,1512,344"/>
-<area shape="rect" id="node25" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="1200,239,1257,265"/>
-<area shape="rect" id="node50" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="1412,267,1525,293"/>
-<area shape="rect" id="node27" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="1711,116,1785,143"/>
-<area shape="rect" id="node28" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="1421,152,1516,179"/>
-<area shape="rect" id="node47" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars. " alt="" coords="2080,349,2165,376"/>
-<area shape="rect" id="node29" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="1152,152,1305,179"/>
-<area shape="rect" id="node30" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="1439,67,1498,93"/>
-<area shape="rect" id="node31" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="1170,67,1287,93"/>
-<area shape="rect" id="node32" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="815,67,913,93"/>
-<area shape="rect" id="node33" href="$classdrain_1_1image_1_1Palette.html" title="Palette" alt="" coords="2091,717,2154,744"/>
-<area shape="rect" id="node35" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="1685,772,1811,799"/>
-<area shape="rect" id="node36" href="$classdrain_1_1Path.html" title="Path\&lt; ODIMPathElem \&gt;" alt="" coords="2040,768,2205,795"/>
-<area shape="rect" id="node38" href="$classdrain_1_1ScriptParser.html" title="ScriptParser" alt="" coords="2075,665,2170,692"/>
-<area shape="rect" id="node40" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="2062,819,2183,845"/>
-<area shape="rect" id="node41" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples. " alt="" coords="1695,549,1801,576"/>
-<area shape="rect" id="node44" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="242,761,341,788"/>
-<area shape="rect" id="node45" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="2051,872,2194,899"/>
-<area shape="rect" id="node46" href="$classdrain_1_1image_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="1683,873,1813,900"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ScriptExec.html" title="ScriptExec" alt="" coords="1707,32,1794,59"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="1241,65,1355,92"/>
+<area shape="rect" id="node39" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="1501,75,1653,117"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="967,24,1050,51"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="18,215,125,241"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc. " alt="" coords="299,456,443,483"/>
+<area shape="rect" id="node19" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="971,440,1047,467"/>
+<area shape="rect" id="node43" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data. " alt="" coords="335,187,406,213"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="1520,413,1635,440"/>
+<area shape="rect" id="node27" href="$classdrain_1_1Tree.html" title="Tree\&lt; rack::ODIMPathElem,\l hi5::NodeHi5, rack::ODIMPathLess \&gt;" alt="" coords="1829,289,2075,330"/>
+<area shape="rect" id="node8" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::Accumulator,\l rack::PolarODIM \&gt;" alt="" coords="1492,544,1663,600"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="961,523,1056,549"/>
+<area shape="rect" id="node49" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="1239,477,1357,504"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="5,617,137,644"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title="WeightedAverageMethod" alt="" coords="560,584,728,611"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1MinimumMethod.html" title="MinimumMethod" alt="" coords="585,635,703,661"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1OverwriteMethod.html" title="OverwriteMethod" alt="" coords="583,304,705,331"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title="MaximumWeightMethod" alt="" coords="563,355,725,381"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1AverageMethod.html" title="AverageMethod" alt="" coords="587,405,701,432"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1MaximumMethod.html" title="MaximumMethod" alt="" coords="583,456,705,483"/>
+<area shape="rect" id="node18" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="1249,639,1347,665"/>
+<area shape="rect" id="node48" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="1490,464,1665,520"/>
+<area shape="rect" id="node42" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="1257,248,1339,275"/>
+<area shape="rect" id="node20" href="$classrack_1_1ODIMPathMatcher.html" title="Test if a path partially fits group and index range. " alt="" coords="943,833,1074,860"/>
+<area shape="rect" id="node21" href="$classdrain_1_1RegExp.html" title="RegExp" alt="" coords="974,627,1043,653"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="924,681,1093,708"/>
+<area shape="rect" id="node23" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="947,732,1070,759"/>
+<area shape="rect" id="node24" href="$classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="981,783,1036,809"/>
+<area shape="rect" id="node25" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="1255,529,1341,556"/>
+<area shape="rect" id="node26" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="980,389,1037,416"/>
+<area shape="rect" id="node50" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="1241,423,1355,449"/>
+<area shape="rect" id="node28" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="1541,261,1614,288"/>
+<area shape="rect" id="node29" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="1251,311,1345,337"/>
+<area shape="rect" id="node47" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars. " alt="" coords="1909,355,1995,381"/>
+<area shape="rect" id="node30" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="1269,136,1327,163"/>
+<area shape="rect" id="node31" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="950,135,1067,161"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="595,136,693,163"/>
+<area shape="rect" id="node33" href="$classdrain_1_1image_1_1Palette.html" title="Palette" alt="" coords="1921,609,1983,636"/>
+<area shape="rect" id="node35" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="1514,675,1641,701"/>
+<area shape="rect" id="node36" href="$classdrain_1_1Path.html" title="Path\&lt; ODIMPathElem \&gt;" alt="" coords="1869,660,2035,687"/>
+<area shape="rect" id="node38" href="$classdrain_1_1ScriptParser.html" title="ScriptParser" alt="" coords="1905,97,1999,124"/>
+<area shape="rect" id="node40" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="1891,711,2013,737"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples. " alt="" coords="1524,211,1631,237"/>
+<area shape="rect" id="node44" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="22,31,121,57"/>
+<area shape="rect" id="node45" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="1881,771,2023,797"/>
+<area shape="rect" id="node46" href="$classdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="1512,776,1643,803"/>
 </map>

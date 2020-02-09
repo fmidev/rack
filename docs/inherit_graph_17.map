@@ -1,3 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="96,5,209,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; K, V * \&gt;" alt="" coords="125,5,271,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; K, V \&gt;" alt="" coords="129,56,267,83"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Path.html" title="Path\&lt; T \&gt;" alt="" coords="157,107,239,133"/>
+<area shape="rect" id="node6" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals. " alt="" coords="149,157,247,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Path.html" title="Path\&lt; ODIMPathElem \&gt;" alt="" coords="115,208,281,235"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Path.html" title="Path\&lt; ODIMPathElemMatcher \&gt;" alt="" coords="92,259,304,285"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Path.html" title="Path\&lt; std::string \&gt;" alt="" coords="133,309,263,336"/>
+<area shape="rect" id="node11" href="$classrack_1_1DataSetList.html" title="DataSetList\&lt; DT \&gt;" alt="" coords="131,360,265,387"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Dictionary2Ptr.html" title="Associates type info. " alt="" coords="352,5,507,32"/>
+<area shape="rect" id="node9" href="$classrack_1_1ODIMPathMatcher.html" title="Test if a path partially fits group and index range. " alt="" coords="364,259,495,285"/>
 </map>

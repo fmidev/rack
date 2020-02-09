@@ -20,6 +20,7 @@ var searchData=
   ['binarypixelvectorop_3c_20multiplicationfunctor_20_3e',['BinaryPixelVectorOp&lt; MultiplicationFunctor &gt;',['../classdrain_1_1image_1_1BinaryPixelVectorOp.html',1,'drain::image']]],
   ['binarypixelvectorop_3c_20subtractionfunctor_20_3e',['BinaryPixelVectorOp&lt; SubtractionFunctor &gt;',['../classdrain_1_1image_1_1BinaryPixelVectorOp.html',1,'drain::image']]],
   ['binarythresholdfunctor',['BinaryThresholdFunctor',['../classdrain_1_1image_1_1BinaryThresholdFunctor.html',1,'drain::image']]],
+  ['biometeorop',['BiometeorOp',['../classrack_1_1BiometeorOp.html',1,'rack']]],
   ['biometop',['BiometOp',['../classrack_1_1BiometOp.html',1,'rack']]],
   ['birdop',['BirdOp',['../classrack_1_1BirdOp.html',1,'rack']]],
   ['blenderop',['BlenderOp',['../classdrain_1_1image_1_1BlenderOp.html',1,'drain::image']]]

@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
@@ -120,12 +121,12 @@ typedef void *&#160;</td><td class="memItemRight" valign="bottom"><b>oper</b></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a553fc8a640a418b23a684d4a803e617e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a553fc8a640a418b23a684d4a803e617e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Logger</b> (const std::string &amp;className=&quot;&quot;, const std::string &amp;funcName=&quot;&quot;)</td></tr>
-<tr class="separator:a553fc8a640a418b23a684d4a803e617e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc3936176df1dffd78ae894fe24fe4ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc3936176df1dffd78ae894fe24fe4ab"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Logger</b> (<a class="el" href="classdrain_1_1Log.html">Log</a> &amp;log, const std::string &amp;className=&quot;&quot;, const std::string &amp;funcName=&quot;&quot;)</td></tr>
-<tr class="separator:afc3936176df1dffd78ae894fe24fe4ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b16de6205e97de172ec886f55ed614f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b16de6205e97de172ec886f55ed614f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Logger</b> (const char *funcName, const std::string &amp;name=&quot;&quot;)</td></tr>
+<tr class="separator:a4b16de6205e97de172ec886f55ed614f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeea2f2fdc67c01fe424cc6e1dfa75b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeeea2f2fdc67c01fe424cc6e1dfa75b9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Logger</b> (<a class="el" href="classdrain_1_1Log.html">Log</a> &amp;log, const char *funcName, const std::string &amp;name=&quot;&quot;)</td></tr>
+<tr class="separator:aeeea2f2fdc67c01fe424cc6e1dfa75b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f4ad00f7db12d7256c906990c6bb0c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f4ad00f7db12d7256c906990c6bb0c5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLevel</b> (int l)</td></tr>
 <tr class="separator:a2f4ad00f7db12d7256c906990c6bb0c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +137,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDebug</b> (int l=0)
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#abbb24e085aec71f848ee99b1679bd99f">quit</a> ()</td></tr>
 <tr class="memdesc:abbb24e085aec71f848ee99b1679bd99f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quits immediately, dumps pending messages. <br /></td></tr>
 <tr class="separator:abbb24e085aec71f848ee99b1679bd99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9416a6d5f7f7b5fdb0ea2042c544e4c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9416a6d5f7f7b5fdb0ea2042c544e4c7"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a9416a6d5f7f7b5fdb0ea2042c544e4c7">alert</a> ()</td></tr>
+<tr class="memdesc:a9416a6d5f7f7b5fdb0ea2042c544e4c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quits immediately, dumps pending messages. <br /></td></tr>
+<tr class="separator:a9416a6d5f7f7b5fdb0ea2042c544e4c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a618d45a0e8b3a3965c4515695258e1d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a618d45a0e8b3a3965c4515695258e1d7"></a>
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a618d45a0e8b3a3965c4515695258e1d7">fatal</a> ()</td></tr>
 <tr class="memdesc:a618d45a0e8b3a3965c4515695258e1d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quits immediately, dumps pending messages. <br /></td></tr>
@@ -154,6 +159,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDebug</b> (int l=0)
 <tr class="memitem:a23cf91c185c095ad82b971dd282d37eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23cf91c185c095ad82b971dd282d37eb"></a>
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>info</b> ()</td></tr>
 <tr class="separator:a23cf91c185c095ad82b971dd282d37eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249f432520e5a07f7beaa2f780531172"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a249f432520e5a07f7beaa2f780531172">debug</a> (unsigned int level=0)</td></tr>
+<tr class="separator:a249f432520e5a07f7beaa2f780531172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38250b255e528bb10f8a0187245000da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38250b255e528bb10f8a0187245000da"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>log</b> (unsigned int level)</td></tr>
+<tr class="separator:a38250b255e528bb10f8a0187245000da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab91c2eb8db6d5b238c37793dbf371855"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab91c2eb8db6d5b238c37793dbf371855"></a>
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#ab91c2eb8db6d5b238c37793dbf371855">timestamp</a> (const std::string &amp;label)</td></tr>
 <tr class="memdesc:ab91c2eb8db6d5b238c37793dbf371855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a short [INFO] preceded with a time stamp. <br /></td></tr>
@@ -162,19 +172,20 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDebug</b> (int l=0)
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#aca5a5b54d116a94f532d3be1f4639c36">timestamp</a> ()</td></tr>
 <tr class="memdesc:aca5a5b54d116a94f532d3be1f4639c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a longer [INFO] preceded with a time stamp. <br /></td></tr>
 <tr class="separator:aca5a5b54d116a94f532d3be1f4639c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a249f432520e5a07f7beaa2f780531172"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a249f432520e5a07f7beaa2f780531172">debug</a> (unsigned int level=0)</td></tr>
-<tr class="separator:a249f432520e5a07f7beaa2f780531172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38250b255e528bb10f8a0187245000da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38250b255e528bb10f8a0187245000da"></a>
-<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>log</b> (unsigned int level)</td></tr>
-<tr class="separator:a38250b255e528bb10f8a0187245000da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a971812497dc6ea12f3c45a34965711e3"><td class="memTemplParams" colspan="2"><a class="anchor" id="a971812497dc6ea12f3c45a34965711e3"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a971812497dc6ea12f3c45a34965711e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const T &amp;x)</td></tr>
 <tr class="separator:a971812497dc6ea12f3c45a34965711e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e3f75c0d01d5bd4c2c428a684adbe0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4e3f75c0d01d5bd4c2c428a684adbe0"></a>
-<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#af4e3f75c0d01d5bd4c2c428a684adbe0">operator&lt;&lt;</a> (const oper &amp;op)</td></tr>
-<tr class="memdesc:af4e3f75c0d01d5bd4c2c428a684adbe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush operation. <br /></td></tr>
-<tr class="separator:af4e3f75c0d01d5bd4c2c428a684adbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a8823a7603efb892836d81a6353874a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a8823a7603efb892836d81a6353874a"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a7a8823a7603efb892836d81a6353874a">operator&lt;&lt;</a> (oper op)</td></tr>
+<tr class="memdesc:a7a8823a7603efb892836d81a6353874a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush operation. <br /></td></tr>
+<tr class="separator:a7a8823a7603efb892836d81a6353874a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aef7c1c38592455c13eaa21749fbc525b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef7c1c38592455c13eaa21749fbc525b"></a>
+std::stringstream&#160;</td><td class="memItemRight" valign="bottom"><b>message</b></td></tr>
+<tr class="separator:aef7c1c38592455c13eaa21749fbc525b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -184,9 +195,11 @@ static oper&#160;</td><td class="memItemRight" valign="bottom"><b>endl</b></td><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a8265955a5130cad255d0ebc82e647e51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8265955a5130cad255d0ebc82e647e51"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (int errorType)</td></tr>
-<tr class="separator:a8265955a5130cad255d0ebc82e647e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcd3784b8a21bbfe2b5f05b9b8d360b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#abcd3784b8a21bbfe2b5f05b9b8d360b0">setPrefix</a> (const char *functionName, const char *name)</td></tr>
+<tr class="separator:abcd3784b8a21bbfe2b5f05b9b8d360b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25666041a8db43c1b9d3c88584a03dc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25666041a8db43c1b9d3c88584a03dc4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initMessage</b> (int errorType)</td></tr>
+<tr class="separator:a25666041a8db43c1b9d3c88584a03dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -196,15 +209,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a78fb15511f687fe7fdb8e3ba9613648b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78fb15511f687fe7fdb8e3ba9613648b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>prefix</b></td></tr>
 <tr class="separator:a78fb15511f687fe7fdb8e3ba9613648b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a53726c8d2e28a1e948ed39b24ed607"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a53726c8d2e28a1e948ed39b24ed607"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>className</b></td></tr>
-<tr class="separator:a7a53726c8d2e28a1e948ed39b24ed607"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a154eb6cb821623e7383e9492817627b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a154eb6cb821623e7383e9492817627b6"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>functionName</b></td></tr>
-<tr class="separator:a154eb6cb821623e7383e9492817627b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94dbc87ad6c7d2d75b43aaf40c1fd1e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94dbc87ad6c7d2d75b43aaf40c1fd1e2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>errorType</b></td></tr>
 <tr class="separator:a94dbc87ad6c7d2d75b43aaf40c1fd1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab842bdb7d02be824fb48613032b4ff36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab842bdb7d02be824fb48613032b4ff36"></a>
+time_t&#160;</td><td class="memItemRight" valign="bottom"><b>time</b></td></tr>
+<tr class="separator:ab842bdb7d02be824fb48613032b4ff36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LogSourc e is the means for a function or any program segment to "connect" to a <a class="el" href="classdrain_1_1Log.html" title="Handler for notifications sent by. ">Log</a>. </p>
@@ -241,6 +251,48 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>errorType</b></td></tr
 </ul>
 </li>
 </ul>
+
+</div>
+</div>
+<a class="anchor" id="abcd3784b8a21bbfe2b5f05b9b8d360b0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setPrefix </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- explicitly given classname like "Composite" or <b>FILE</b> </td></tr>
+    <tr><td class="paramname">name</td><td>- <b>FILE</b> </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Start from s2, because dir may contain '.' </p>
 
 </div>
 </div>

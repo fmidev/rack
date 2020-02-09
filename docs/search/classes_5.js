@@ -21,8 +21,8 @@ var searchData=
   ['functor',['Functor',['../classdrain_1_1Functor.html',1,'drain']]],
   ['functorcloner',['FunctorCloner',['../classdrain_1_1FunctorCloner.html',1,'drain']]],
   ['functorlookup',['FunctorLookUp',['../classdrain_1_1FunctorLookUp.html',1,'drain']]],
-  ['functorop',['FunctorOp',['../classdrain_1_1image_1_1FunctorOp.html',1,'drain::image']]],
   ['functorop',['FunctorOp',['../classrack_1_1FunctorOp.html',1,'rack']]],
+  ['functorop',['FunctorOp',['../classdrain_1_1image_1_1FunctorOp.html',1,'drain::image']]],
   ['functorop_3c_20copyfunctor_20_3e',['FunctorOp&lt; CopyFunctor &gt;',['../classdrain_1_1image_1_1FunctorOp.html',1,'drain::image']]],
   ['functorwrapper',['FunctorWrapper',['../structdrain_1_1image_1_1FunctorWrapper.html',1,'drain::image']]],
   ['functorwrapper_3c_20copyfunctor_20_3e',['FunctorWrapper&lt; CopyFunctor &gt;',['../structdrain_1_1image_1_1FunctorWrapper.html',1,'drain::image']]],
@@ -35,5 +35,6 @@ var searchData=
   ['fuzzysigmoid',['FuzzySigmoid',['../classdrain_1_1FuzzySigmoid.html',1,'drain']]],
   ['fuzzystep',['FuzzyStep',['../classdrain_1_1FuzzyStep.html',1,'drain']]],
   ['fuzzystepsoid',['FuzzyStepsoid',['../classdrain_1_1FuzzyStepsoid.html',1,'drain']]],
-  ['fuzzytriangle',['FuzzyTriangle',['../classdrain_1_1FuzzyTriangle.html',1,'drain']]]
+  ['fuzzytriangle',['FuzzyTriangle',['../classdrain_1_1FuzzyTriangle.html',1,'drain']]],
+  ['fuzzytwinpeaks',['FuzzyTwinPeaks',['../classdrain_1_1FuzzyTwinPeaks.html',1,'drain']]]
 ];

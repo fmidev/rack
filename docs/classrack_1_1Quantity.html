@@ -109,6 +109,9 @@ Inheritance diagram for Quantity:</div>
 Collaboration diagram for Quantity:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Quantity__coll__graph.png" border="0" usemap="#Quantity_coll__map" alt="Collaboration graph"/></div>
+<map name="Quantity_coll__map" id="Quantity_coll__map">
+<area shape="rect" id="node3" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="223,5,346,32"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -137,6 +140,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af4cb8c7df1caf878655e71883684bbc2">unsetZero</a> ()</td></tr>
 <tr class="memdesc:af4cb8c7df1caf878655e71883684bbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets neutral value for purposes of interpolation. <br /></td></tr>
 <tr class="separator:af4cb8c7df1caf878655e71883684bbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70357e54d1a712249bf49f57818ec764"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a70357e54d1a712249bf49f57818ec764">setPhysicalRange</a> (double min, double max=std::numeric_limits&lt; double &gt;::max())</td></tr>
+<tr class="memdesc:a70357e54d1a712249bf49f57818ec764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets absolute or typical range of this quantity.  <a href="#a70357e54d1a712249bf49f57818ec764">More...</a><br /></td></tr>
+<tr class="separator:a70357e54d1a712249bf49f57818ec764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02a2a68d959a404f376d926886c70f83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02a2a68d959a404f376d926886c70f83"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a02a2a68d959a404f376d926886c70f83">toOstr</a> (std::ostream &amp;ostr) const </td></tr>
 <tr class="memdesc:a02a2a68d959a404f376d926886c70f83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print declared encodings (storage types and scalings) <br /></td></tr>
@@ -156,10 +162,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a8337ce8504bfd5d505a74c80077cfb22">undetectValue</a></td></tr>
 <tr class="memdesc:a8337ce8504bfd5d505a74c80077cfb22"><td class="mdescLeft">&#160;</td><td class="mdescRight">A physical value corresponding a very small (unmeasurable) value has been defined. <br /></td></tr>
 <tr class="separator:a8337ce8504bfd5d505a74c80077cfb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab63e28a281b3682795950a2433129122"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab63e28a281b3682795950a2433129122"></a>
+<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>physicalRange</b></td></tr>
+<tr class="separator:ab63e28a281b3682795950a2433129122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure for defining. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a70357e54d1a712249bf49f57818ec764"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setPhysicalRange </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>max</em> = <code>std::numeric_limits&lt;double&gt;::max()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets absolute or typical range of this quantity. </p>
+<p>For example, for probability the range would be [0.0, 1.0]. Setting range is useful when data are converted from some storage type to another </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>data/<a class="el" href="Quantity_8h_source.html">Quantity.h</a></li>
 <li>data/Quantity.cpp</li>
 </ul>

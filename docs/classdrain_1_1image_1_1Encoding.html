@@ -100,8 +100,9 @@ Collaboration diagram for Encoding:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Encoding__coll__graph.png" border="0" usemap="#Encoding_coll__map" alt="Collaboration graph"/></div>
 <map name="Encoding_coll__map" id="Encoding_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="5,5,67,32"/>
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="91,5,192,32"/>
+<area shape="rect" id="node2" href="classdrain_1_1Caster.html" title="Caster" alt="" coords="5,95,67,121"/>
+<area shape="rect" id="node3" href="classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="91,95,189,121"/>
+<area shape="rect" id="node4" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="79,5,201,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -135,10 +136,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae731f916137be7f4795879ada093df6a"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#ae731f916137be7f4795879ada093df6a">getTypeMax</a> () const </td></tr>
 <tr class="memdesc:ae731f916137be7f4795879ada093df6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum value supported by the current storage type.  <a href="#ae731f916137be7f4795879ada093df6a">More...</a><br /></td></tr>
 <tr class="separator:ae731f916137be7f4795879ada093df6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe5ebf9a08643a1386b7ae582440c25c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe5ebf9a08643a1386b7ae582440c25c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#abe5ebf9a08643a1386b7ae582440c25c">getByteSize</a> () const </td></tr>
-<tr class="memdesc:abe5ebf9a08643a1386b7ae582440c25c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size in bytes of the storage type (1 for unsigned char, 2 for 16-bit types, etc.) <br /></td></tr>
-<tr class="separator:abe5ebf9a08643a1386b7ae582440c25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a190048746fc12d796ea6dd31aee9063b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a190048746fc12d796ea6dd31aee9063b"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#a190048746fc12d796ea6dd31aee9063b">getElementSize</a> () const </td></tr>
+<tr class="memdesc:a190048746fc12d796ea6dd31aee9063b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size in bytes of the storage type (1 for unsigned char, 2 for 16-bit types, etc.) <br /></td></tr>
+<tr class="separator:a190048746fc12d796ea6dd31aee9063b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -153,10 +154,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>byteSize</b></td></
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#a75b160f574a0be26114bae2c7686a5e1">type</a></td></tr>
 <tr class="memdesc:a75b160f574a0be26114bae2c7686a5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information of the current type. <br /></td></tr>
 <tr class="separator:a75b160f574a0be26114bae2c7686a5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52756a4a36f1c76ea6cfb4739d24e498"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52756a4a36f1c76ea6cfb4739d24e498"></a>
-<a class="el" href="classdrain_1_1image_1_1ImageScaling.html">ImageScaling</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#a52756a4a36f1c76ea6cfb4739d24e498">scaling</a></td></tr>
-<tr class="memdesc:a52756a4a36f1c76ea6cfb4739d24e498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear scaling. <br /></td></tr>
-<tr class="separator:a52756a4a36f1c76ea6cfb4739d24e498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4bad6ac9ce693394981a435470a1997"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4bad6ac9ce693394981a435470a1997"></a>
+<a class="el" href="classdrain_1_1ValueScaling.html">ValueScaling</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Encoding.html#ab4bad6ac9ce693394981a435470a1997">scaling</a></td></tr>
+<tr class="memdesc:ab4bad6ac9ce693394981a435470a1997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear scaling. <br /></td></tr>
+<tr class="separator:ab4bad6ac9ce693394981a435470a1997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ae731f916137be7f4795879ada093df6a"></a>

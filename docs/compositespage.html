@@ -92,19 +92,17 @@ A radar image composite over the Baltic area.</div></div>
 <li><b>MAXW</b> - maximum-quality (using a quality field provided with the data)</li>
 <li><b>WAVG</b>,<em>p</em>,<em>r</em>,<em>offset</em> - weighted average with data and quality enhancement coefficients <em>p</em> and <em>r</em> ; also <em>offset</em> is needed for ensuring positive data values. See also <a class="el" href="compositespage.html#specialcodes">Handling special codes</a> .</li>
 </ul>
-<p>All the commands related to compositing and Cartesian products in general start with 'c'.</p>
-<p>In its computation scheme, <b>Rack</b> supports two different schemes:</p>
+<p>The commands related to compositing and Cartesian products start with 'c'. In computation <b>Rack</b> supports two schemes:</p>
 <ul>
 <li><b>Direct</b> <b>scheme:</b> data from all the radars are added to a composite sequentially, applying a single command line</li>
 <li><b>Tiled</b> (distributed) <b>scheme:</b> data from each radar are pre-processed and stored in parallel, asynchronously; the tiles are later composited by a separate, fast process</li>
 </ul>
 <p>In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product (like pseudo CAPPI or echo height) can be computed.</p>
-<p>In the following, the compositing schemes and methods are explained in further detail.</p>
+<p>In the following, the compositing schemes and methods are explained in more detail.</p>
 <h2><a class="anchor" id="specialcodes"></a>
 Handling special codes</h2>
 <p>Radar data complying the ODIM standard applies special marker codes <code>undetect</code> and <code>nodata</code> . These codes have to be handled carefully in product generation and compositing. In <b>Rack</b> , pixel values with <code>nodata</code> are simply skipped; they are not accumulated in the composite array, for example.</p>
-<p>Handling of <code>undetect</code> can be tuned by the user with <code>&ndash;quantityConf</code> and <code>&ndash;undetectWeight</code> . The physical value or "virtual zero" replacing <code>undetect</code> codes is set using <code>&ndash;quantityConf</code> <code></code> &lt;quantity&gt;,zero=</p>
-<p>. For example, in case of dBZ, the value could be set to -32.0, at the limit of signal detection sensitivity. See also <a class="el" href="miscbook.html#quantityConf">Default encoding of quantities</a>. The corresponding relative weight is set with <code>&ndash;undetectWeight</code> <code>&lt;value&gt;</code> . The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value. The value is zero by default, which in compositing means that the location is marked as processed (a counter is incremented), but the value will not be accumulated.</p>
+<p>Handling of <code>undetect</code> can be tuned by the user with <code>&ndash;quantityConf</code> and <code>&ndash;undetectWeight</code> . The physical value or "virtual zero" replacing <code>undetect</code> codes is set using <code>&ndash;quantityConf</code> , for example, <code>&ndash;quantityConf</code> <code>DBZH</code>,zero=-32.0 (corresponding the limit of signal detection sensitivity). See also <a class="el" href="miscbook.html#quantityConf">Default encoding of quantities</a>. The corresponding relative weight is set with <code>&ndash;undetectWeight</code> <code>&lt;value&gt;</code> . The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value. The value is zero by default, which in compositing means that the location is marked as processed (a counter is incremented), but the value will not be accumulated.</p>
 <h2><a class="anchor" id="directcompositing"></a>
 Direct compositing</h2>
 <p>Creating composites in a direct mode involves the following steps:</p><ol type="1">

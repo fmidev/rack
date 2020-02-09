@@ -125,6 +125,9 @@ static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:af4e164115421b2169ea6bdbb27baead6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a73aff7f4c0a9d10e27619bdc27f03250">replace</a> (const std::string &amp;src, const std::string &amp;from, const std::string &amp;to)</td></tr>
 <tr class="separator:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5873022b7a94983670dccc2b41c8a23a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a5873022b7a94983670dccc2b41c8a23a">replace</a> (const std::map&lt; std::string, std::string &gt; &amp;m, std::string &amp;s, std::size_t pos=0)</td></tr>
+<tr class="memdesc:a5873022b7a94983670dccc2b41c8a23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces instances appearing as map keys to map values.  <a href="#a5873022b7a94983670dccc2b41c8a23a">More...</a><br /></td></tr>
+<tr class="separator:a5873022b7a94983670dccc2b41c8a23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67b8f3ca5389f4c342eac716e0850b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad67b8f3ca5389f4c342eac716e0850b0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#ad67b8f3ca5389f4c342eac716e0850b0">replace</a> (const std::string &amp;src, const std::string &amp;from, const std::string &amp;to, std::string &amp;dst)</td></tr>
 <tr class="memdesc:ad67b8f3ca5389f4c342eac716e0850b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">In src, replaces instances of 'from' to 'to', storing the result in dst. <br /></td></tr>
@@ -138,12 +141,17 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="separator:a98f3cde2adcacaf13731dc116bcec0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff42a708091328dd584df1d42fdb75c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a6ff42a708091328dd584df1d42fdb75c"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c">split</a> (const std::string &amp;s, T &amp;sequence, const std::string &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
-<tr class="memdesc:a6ff42a708091328dd584df1d42fdb75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits a given std::string to a std Sequence.  <a href="#a6ff42a708091328dd584df1d42fdb75c">More...</a><br /></td></tr>
+<tr class="memdesc:a6ff42a708091328dd584df1d42fdb75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits and trims a given std::string to a std Sequence.  <a href="#a6ff42a708091328dd584df1d42fdb75c">More...</a><br /></td></tr>
 <tr class="separator:a6ff42a708091328dd584df1d42fdb75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9df398b519e19c4456fd7641dbc0407f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a9df398b519e19c4456fd7641dbc0407f"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a9df398b519e19c4456fd7641dbc0407f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>split</b> (const std::string &amp;s, T &amp;sequence, char separator=',', const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
+<tr class="memitem:a9df398b519e19c4456fd7641dbc0407f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a9df398b519e19c4456fd7641dbc0407f">split</a> (const std::string &amp;s, T &amp;sequence, char separator=',', const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
+<tr class="memdesc:a9df398b519e19c4456fd7641dbc0407f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits and trims a given std::string to a std Sequence. <br /></td></tr>
 <tr class="separator:a9df398b519e19c4456fd7641dbc0407f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99992013bb705b8e9fa00eb9a8751c01"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:a99992013bb705b8e9fa00eb9a8751c01"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a99992013bb705b8e9fa00eb9a8751c01">split2</a> (const std::string &amp;s, T1 &amp;first, T2 &amp;second, const std::string &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
+<tr class="memdesc:a99992013bb705b8e9fa00eb9a8751c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits and trims a given std::string to two substrings, by first separator encountered.  <a href="#a99992013bb705b8e9fa00eb9a8751c01">More...</a><br /></td></tr>
+<tr class="separator:a99992013bb705b8e9fa00eb9a8751c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6662f800604359c3e3c29d0300951ec9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a6662f800604359c3e3c29d0300951ec9"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a6662f800604359c3e3c29d0300951ec9">join</a> (const T &amp;container, std::ostream &amp;ostr, char separator=0)</td></tr>
 <tr class="memdesc:a6662f800604359c3e3c29d0300951ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').  <a href="#a6662f800604359c3e3c29d0300951ec9">More...</a><br /></td></tr>
@@ -250,7 +258,7 @@ template&lt;class T &gt; </td></tr>
 </div><div class="memdoc">
 
 <p>Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ','). </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c" title="Splits a given std::string to a std Sequence. ">StringTools::split()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c" title="Splits and trims a given std::string to a std Sequence. ">StringTools::split()</a> </dd></dl>
 
 </div>
 </div>
@@ -287,7 +295,7 @@ template&lt;class T &gt; </td></tr>
 </div><div class="memdoc">
 
 <p>Writes a STL Container (list, vector, set) to a string, using an optional separator char (like ','). </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c" title="Splits a given std::string to a std Sequence. ">StringTools::split()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a6ff42a708091328dd584df1d42fdb75c" title="Splits and trims a given std::string to a std Sequence. ">StringTools::split()</a> </dd></dl>
 
 </div>
 </div>
@@ -369,6 +377,49 @@ template&lt;class T &gt; </td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a5873022b7a94983670dccc2b41c8a23a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void replace </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>pos</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replaces instances appearing as map keys to map values. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1RegExp.html#a3c48d8a30bf6dddb76838f9eab5f8b65" title="Replaces std::string segment matching search regexp to the given std::string. ">RegExp::replace</a>. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a6ff42a708091328dd584df1d42fdb75c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -413,11 +464,65 @@ template&lt;class T &gt; </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Splits a given std::string to a std Sequence. </p>
+<p>Splits and trims a given std::string to a std Sequence. </p>
 <p>The target sequence must implement end() and insert() operators.</p>
 <p>Assumes that T::operator=(std::string) exists.</p>
 <p>Given an empty std::string, returns a list containing an empty std::string. </p>
-<p>Initial trim (with or without further split) </p>
+
+</div>
+</div>
+<a class="anchor" id="a99992013bb705b8e9fa00eb9a8751c01"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void split2 </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T1 &amp;&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&#160;</td>
+          <td class="paramname"><em>second</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>separators</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>trimChars</em> = <code>&quot;&#160;\t\n&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Splits and trims a given std::string to two substrings, by first separator encountered. </p>
+<p>Given an empty std::string, </p>
 
 </div>
 </div>

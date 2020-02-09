@@ -94,6 +94,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">CmdSetODIM Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Modifies metadata (data attributes).  
+ <a href="classrack_1_1CmdSetODIM.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdSetODIM:</div>
 <div class="dyncontent">
@@ -182,8 +185,15 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>&ndash;/dataset1/what:nbins=210</p>
-<p>Future feature: Select properties with <code>&ndash;select</code> , then </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select data=2:4  --/what:undetect=244</div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>Modifies metadata (data attributes). </p>
+<div class="fragment"></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assignment</td><td>- source path consisting of group path, attribute key and value</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.</p>
+<p>Examples: </p><div class="fragment"><div class="line"><span class="preprocessor"># Set beam resolution</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h --/dataset1/where:rscale=500 -o volume-modified.h5</div><div class="line"></div><div class="line"><span class="preprocessor"># Set date and time (note string format)</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h --/what:date=<span class="stringliteral">&quot;20140827&quot;</span> --/what:time=<span class="stringliteral">&quot;093000&quot;</span> -o volume-modified.h5</div><div class="line"></div><div class="line"><span class="preprocessor"># Set freezing level</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h --/how:freeze=2.10 -o volume-modified.h5</div><div class="line"></div><div class="line"><span class="preprocessor"># Set radar location</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h --/where:lat=64.7749 --/where:lon=26.3189 -o volume-modified.h5</div><div class="line"></div></div><!-- fragment --> </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>main/commands.cpp</li>
 </ul>
 </div><!-- contents -->

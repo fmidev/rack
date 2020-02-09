@@ -27,24 +27,24 @@
 <area shape="rect" id="node24" href="$classrack_1_1CartesianRange.html" title="CartesianRange" alt="" coords="429,933,545,960"/>
 <area shape="rect" id="node25" href="$classrack_1_1CartesianSize.html" title="static RackLetAdapter&lt;CompositeMethod&gt; cMethod(&quot;cMethod&quot;); " alt="" coords="435,984,539,1011"/>
 <area shape="rect" id="node26" href="$classrack_1_1CartesianSpread.html" title="CartesianSpread" alt="" coords="428,1035,547,1061"/>
-<area shape="rect" id="node27" href="$classrack_1_1ClassThreshold.html" title="ClassThreshold" alt="" coords="431,1085,544,1112"/>
-<area shape="rect" id="node28" href="$classrack_1_1CmdAutoExec.html" title="CmdAutoExec" alt="" coords="434,1136,541,1163"/>
-<area shape="rect" id="node29" href="$classrack_1_1CmdCheckType.html" title="CmdCheckType" alt="" coords="429,1187,546,1213"/>
-<area shape="rect" id="node30" href="$classrack_1_1CmdCompleteODIM.html" title="CmdCompleteODIM" alt="" coords="417,1237,558,1264"/>
-<area shape="rect" id="node31" href="$classrack_1_1CmdConvert.html" title="CmdConvert" alt="" coords="439,1288,535,1315"/>
-<area shape="rect" id="node32" href="$classrack_1_1CmdCreateDefaultQuality.html" title="CmdCreateDefaultQuality" alt="" coords="401,1339,573,1365"/>
-<area shape="rect" id="node33" href="$classrack_1_1CmdDataOk.html" title="CmdDataOk" alt="" coords="440,1389,535,1416"/>
-<area shape="rect" id="node34" href="$classrack_1_1CmdDefaultHandler.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="419,1440,556,1467"/>
-<area shape="rect" id="node35" href="$classrack_1_1CmdDelete.html" title="CmdDelete" alt="" coords="443,1491,531,1517"/>
-<area shape="rect" id="node36" href="$classrack_1_1CmdDumpEchoClasses.html" title="CmdDumpEchoClasses" alt="" coords="406,1541,569,1568"/>
-<area shape="rect" id="node37" href="$classrack_1_1CmdDumpMap.html" title="CmdDumpMap" alt="" coords="432,1592,543,1619"/>
-<area shape="rect" id="node38" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters. " alt="" coords="435,1643,539,1669"/>
-<area shape="rect" id="node39" href="$classrack_1_1CmdGeoTiffTile.html" title="CmdGeoTiffTile" alt="" coords="430,1693,545,1720"/>
-<area shape="rect" id="node40" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile. " alt="" coords="432,1744,543,1771"/>
-<area shape="rect" id="node41" href="$classrack_1_1CmdImage.html" title="CmdImage" alt="" coords="444,1795,531,1821"/>
-<area shape="rect" id="node42" href="$classrack_1_1CmdInputPrefix.html" title="CmdInputPrefix" alt="" coords="431,1845,544,1872"/>
-<area shape="rect" id="node43" href="$classrack_1_1CmdInputSelect.html" title="A debugging facility. Obsolete? " alt="" coords="429,1896,545,1923"/>
-<area shape="rect" id="node44" href="$classrack_1_1CmdKeep.html" title="CmdKeep" alt="" coords="447,1947,527,1973"/>
-<area shape="rect" id="node45" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes. " alt="" coords="446,1997,529,2024"/>
-<area shape="rect" id="node46" href="$classrack_1_1CmdOutputPrefix.html" title="CmdOutputPrefix" alt="" coords="426,2048,549,2075"/>
+<area shape="rect" id="node27" href="$classrack_1_1CmdAutoExec.html" title="CmdAutoExec" alt="" coords="434,1085,541,1112"/>
+<area shape="rect" id="node28" href="$classrack_1_1CmdCheckType.html" title="CmdCheckType" alt="" coords="429,1136,546,1163"/>
+<area shape="rect" id="node29" href="$classrack_1_1CmdCompleteODIM.html" title="CmdCompleteODIM" alt="" coords="417,1187,558,1213"/>
+<area shape="rect" id="node30" href="$classrack_1_1CmdConvert.html" title="CmdConvert" alt="" coords="439,1237,535,1264"/>
+<area shape="rect" id="node31" href="$classrack_1_1CmdCreateDefaultQuality.html" title="CmdCreateDefaultQuality" alt="" coords="401,1288,573,1315"/>
+<area shape="rect" id="node32" href="$classrack_1_1CmdDataOk.html" title="CmdDataOk" alt="" coords="440,1339,535,1365"/>
+<area shape="rect" id="node33" href="$classrack_1_1CmdDefaultHandler.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="419,1389,556,1416"/>
+<area shape="rect" id="node34" href="$classrack_1_1CmdDelete.html" title="CmdDelete" alt="" coords="443,1440,531,1467"/>
+<area shape="rect" id="node35" href="$classrack_1_1CmdDumpEchoClasses.html" title="CmdDumpEchoClasses" alt="" coords="406,1491,569,1517"/>
+<area shape="rect" id="node36" href="$classrack_1_1CmdDumpMap.html" title="CmdDumpMap" alt="" coords="432,1541,543,1568"/>
+<area shape="rect" id="node37" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters. " alt="" coords="435,1592,539,1619"/>
+<area shape="rect" id="node38" href="$classrack_1_1CmdGeoTiffTile.html" title="CmdGeoTiffTile" alt="" coords="430,1643,545,1669"/>
+<area shape="rect" id="node39" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile. " alt="" coords="432,1693,543,1720"/>
+<area shape="rect" id="node40" href="$classrack_1_1CmdImage.html" title="CmdImage" alt="" coords="444,1744,531,1771"/>
+<area shape="rect" id="node41" href="$classrack_1_1CmdInputPrefix.html" title="A debugging facility. Obsolete? " alt="" coords="431,1795,544,1821"/>
+<area shape="rect" id="node42" href="$classrack_1_1CmdKeep.html" title="CmdKeep" alt="" coords="447,1845,527,1872"/>
+<area shape="rect" id="node43" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes. " alt="" coords="446,1896,529,1923"/>
+<area shape="rect" id="node44" href="$classrack_1_1CmdOutputPrefix.html" title="CmdOutputPrefix" alt="" coords="426,1947,549,1973"/>
+<area shape="rect" id="node45" href="$classrack_1_1CmdPhysical.html" title="CmdPhysical" alt="" coords="437,1997,537,2024"/>
+<area shape="rect" id="node46" href="$classrack_1_1CmdQuantityConf.html" title="CmdQuantityConf" alt="" coords="424,2048,551,2075"/>
 </map>

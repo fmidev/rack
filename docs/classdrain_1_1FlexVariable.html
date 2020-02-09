@@ -242,12 +242,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afb19af025055d532b8f86d8b6852ab95 inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afb19af025055d532b8f86d8b6852ab95"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>typeIsSet</b> () const </td></tr>
 <tr class="separator:afb19af025055d532b8f86d8b6852ab95 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe5ebf9a08643a1386b7ae582440c25c inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe5ebf9a08643a1386b7ae582440c25c"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getByteSize</b> () const </td></tr>
-<tr class="separator:abe5ebf9a08643a1386b7ae582440c25c inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a190048746fc12d796ea6dd31aee9063b inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a190048746fc12d796ea6dd31aee9063b"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getElementSize</b> () const </td></tr>
+<tr class="separator:a190048746fc12d796ea6dd31aee9063b inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f1040837b646f511c75f1a93378901 inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ae6f1040837b646f511c75f1a93378901">getElementCount</a> () const </td></tr>
 <tr class="memdesc:ae6f1040837b646f511c75f1a93378901 inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the array, the number of elements in this entry.  <a href="#ae6f1040837b646f511c75f1a93378901">More...</a><br /></td></tr>
 <tr class="separator:ae6f1040837b646f511c75f1a93378901 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a892cb2bc10a0af64987ea8ae1076f00f inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a892cb2bc10a0af64987ea8ae1076f00f"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a892cb2bc10a0af64987ea8ae1076f00f">getSize</a> () const </td></tr>
+<tr class="memdesc:a892cb2bc10a0af64987ea8ae1076f00f inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size in bytes of the target: (elementCount * elementSize) <br /></td></tr>
+<tr class="separator:a892cb2bc10a0af64987ea8ae1076f00f inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4345a9f2614af90d96dcef29bf6f91b inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#af4345a9f2614af90d96dcef29bf6f91b">isEmpty</a> () const </td></tr>
 <tr class="memdesc:af4345a9f2614af90d96dcef29bf6f91b inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if no elements have been allocated. Does not check type. (NOTE: may change: 0 for scalars)  <a href="#af4345a9f2614af90d96dcef29bf6f91b">More...</a><br /></td></tr>
 <tr class="separator:af4345a9f2614af90d96dcef29bf6f91b inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,10 +372,14 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>valueTo
 const void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a6cbdb3151aa68e53009a92c863f9973a">typeInfo</a> (std::ostream &amp;ostr) const </td></tr>
 <tr class="memdesc:a6cbdb3151aa68e53009a92c863f9973a inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int.". <br /></td></tr>
 <tr class="separator:a6cbdb3151aa68e53009a92c863f9973a inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3cf8ac085d8c95135b0e6464f5041d8 inherit pub_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ad3cf8ac085d8c95135b0e6464f5041d8 inherit pub_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad3cf8ac085d8c95135b0e6464f5041d8">toContainer</a> (T &amp;container) const </td></tr>
-<tr class="memdesc:ad3cf8ac085d8c95135b0e6464f5041d8 inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to simple iterable STL container.  <a href="#ad3cf8ac085d8c95135b0e6464f5041d8">More...</a><br /></td></tr>
-<tr class="separator:ad3cf8ac085d8c95135b0e6464f5041d8 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76103d83e12334357877e3049361590f inherit pub_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a76103d83e12334357877e3049361590f inherit pub_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a76103d83e12334357877e3049361590f">toContainer</a> (T &amp;container, char separator=0) const </td></tr>
+<tr class="memdesc:a76103d83e12334357877e3049361590f inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to simple iterable STL container.  <a href="#a76103d83e12334357877e3049361590f">More...</a><br /></td></tr>
+<tr class="separator:a76103d83e12334357877e3049361590f inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a981eb69fdcf1a1665cf501af618c9bbf inherit pub_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a class="anchor" id="a981eb69fdcf1a1665cf501af618c9bbf"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a981eb69fdcf1a1665cf501af618c9bbf inherit pub_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toMap</b> (T &amp;map, char separator=0, char equalSign= '=') const </td></tr>
+<tr class="separator:a981eb69fdcf1a1665cf501af618c9bbf inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d71f941502c34382f708ceaa66bb4de inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a9d71f941502c34382f708ceaa66bb4de">getPtr</a> (size_t i=0)</td></tr>
 <tr class="memdesc:a9d71f941502c34382f708ceaa66bb4de inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer to the array of chars without validity check.  <a href="#a9d71f941502c34382f708ceaa66bb4de">More...</a><br /></td></tr>
 <tr class="separator:a9d71f941502c34382f708ceaa66bb4de inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -474,6 +482,13 @@ template&lt;class T &gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classdrain_1_1Variable"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1Variable')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1Variable.html">Variable</a></td></tr>
+<tr class="memitem:ae8d48bcbf84a26f33275fd58be16403b inherit pub_types_classdrain_1_1Variable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8d48bcbf84a26f33275fd58be16403b"></a>
+typedef <a class="el" href="classdrain_1_1CastableIterator.html">CastableIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>const_iterator</b></td></tr>
+<tr class="separator:ae8d48bcbf84a26f33275fd58be16403b inherit pub_types_classdrain_1_1Variable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02af0aa6ee1476b90612b2dc3250cb21 inherit pub_types_classdrain_1_1Variable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02af0aa6ee1476b90612b2dc3250cb21"></a>
+typedef <a class="el" href="classdrain_1_1CastableIterator.html">CastableIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b></td></tr>
+<tr class="separator:a02af0aa6ee1476b90612b2dc3250cb21 inherit pub_types_classdrain_1_1Variable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1Castable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1Castable')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1Castable.html">Castable</a></td></tr>
 <tr class="memitem:aa5891ba7dc473f6bb0ae6682e15cde69 inherit pub_attribs_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5891ba7dc473f6bb0ae6682e15cde69"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69">fillArray</a></td></tr>
@@ -602,7 +617,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dd>
 <a class="el" href="classdrain_1_1Variable.html#a5082bad072d8c8b1671077cb66fdf63b" title="Sets type, if unset. ">Variable::suggestType()</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classdrain_1_1Variable.html#ac19459e30a595c3fbb607c6bd7173311">Variable</a>.</p>
+<p>Reimplemented from <a class="el" href="classdrain_1_1Variable.html#aa5d02202c1f07e573b97647425fde328">Variable</a>.</p>
 
 </div>
 </div>

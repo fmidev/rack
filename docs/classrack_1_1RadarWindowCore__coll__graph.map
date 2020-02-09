@@ -1,26 +1,27 @@
 <map id="RadarWindowCore" name="RadarWindowCore">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="297,727,449,753"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="325,649,422,676"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="310,544,437,571"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="193,544,279,571"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="187,468,285,495"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="183,392,278,419"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="313,287,396,313"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="415,184,502,211"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="458,95,537,121"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="585,5,692,32"/>
-<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="434,5,561,32"/>
-<area shape="rect" id="node13" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="561,95,682,121"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="358,95,434,121"/>
-<area shape="rect" id="node15" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="157,5,219,32"/>
-<area shape="rect" id="node18" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="25,95,100,121"/>
-<area shape="rect" id="node16" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="308,5,409,32"/>
-<area shape="rect" id="node17" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="5,235,120,261"/>
-<area shape="rect" id="node19" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="171,287,290,313"/>
-<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="141,184,320,211"/>
-<area shape="rect" id="node22" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="474,727,561,753"/>
-<area shape="rect" id="node23" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="489,649,546,676"/>
-<area shape="rect" id="node24" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="462,544,573,571"/>
-<area shape="rect" id="node25" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="464,468,571,495"/>
-<area shape="rect" id="node26" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="435,392,605,419"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="297,816,449,843"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="325,739,422,765"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="310,633,437,660"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="193,633,279,660"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="187,557,285,584"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="183,481,278,508"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="313,376,396,403"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image data. " alt="" coords="415,273,502,300"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="458,184,537,211"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="585,95,692,121"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="434,95,561,121"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="561,184,682,211"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="358,184,434,211"/>
+<area shape="rect" id="node15" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="165,95,227,121"/>
+<area shape="rect" id="node19" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="25,184,100,211"/>
+<area shape="rect" id="node16" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="311,95,409,121"/>
+<area shape="rect" id="node17" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="299,5,421,32"/>
+<area shape="rect" id="node18" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="5,324,120,351"/>
+<area shape="rect" id="node20" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="171,376,290,403"/>
+<area shape="rect" id="node21" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="141,273,320,300"/>
+<area shape="rect" id="node23" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="474,816,561,843"/>
+<area shape="rect" id="node24" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="489,739,546,765"/>
+<area shape="rect" id="node25" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="462,633,573,660"/>
+<area shape="rect" id="node26" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="464,557,571,584"/>
+<area shape="rect" id="node27" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="435,481,605,508"/>
 </map>

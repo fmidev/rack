@@ -1,4 +1,5 @@
 <map id="Encoding" name="Encoding">
-<area shape="rect" id="node2" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="5,5,67,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="91,5,192,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="5,95,67,121"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="91,95,189,121"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="79,5,201,32"/>
 </map>

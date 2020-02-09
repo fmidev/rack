@@ -117,10 +117,10 @@ typedef D&#160;</td><td class="memItemRight" valign="bottom"><b>image_t</b></td>
 struct rack::DataType&lt; T, TI, D &gt;</h3>
 
 <p>Container that couples together a tree structure and a data array (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>), according to source type (const or non-const) . </p>
-<p>Consider that const HI5TREE src or HI5TREE dst contain following structure:</p>
+<p>Consider that const Hi5Tree src or Hi5Tree dst contain following structure:</p>
 <div class="fragment"><div class="line">/dataset1/data1</div><div class="line">/dataset1/data1/quality1/data</div><div class="line">/dataset1/data2</div><div class="line">/dataset1/data3</div><div class="line">/dataset1/dataN...</div><div class="line">/dataset1/quality1/data</div><div class="line">/dataset1/quality2/data</div><div class="line">/dataset2/</div><div class="line">...</div></div><!-- fragment --><p>The classes in this section provide solutions for handling dataset-level and data-level information. The template parameters are expected to be exactly the following, all of them const or non-const: </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- HDF5 tree, as HI5TREE </td></tr>
+    <tr><td class="paramname">T</td><td>- HDF5 tree, as Hi5Tree </td></tr>
     <tr><td class="paramname">TI</td><td>- tree iterator type </td></tr>
     <tr><td class="paramname">D</td><td>- data array (<a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char, int, float). ">drain::image::Image</a>) </td></tr>
   </table>

@@ -110,9 +110,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25a40b6614565f755233080a384c35f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25a40b6614565f755233080a384c35f1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> ()</td></tr>
 <tr class="separator:a25a40b6614565f755233080a384c35f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16ff9af2b4b17fc8bf78576cdeb1d2bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a16ff9af2b4b17fc8bf78576cdeb1d2bb">set</a> (const std::string &amp;key, char typecode='C')</td></tr>
-<tr class="memdesc:a16ff9af2b4b17fc8bf78576cdeb1d2bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets quantity encoding. If gain=0.0, default values for the given type will be set as defined in <a class="el" href="classdrain_1_1Type.html" title="Utilities related to stl::type_info. ">drain::Type</a>.  <a href="#a16ff9af2b4b17fc8bf78576cdeb1d2bb">More...</a><br /></td></tr>
-<tr class="separator:a16ff9af2b4b17fc8bf78576cdeb1d2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691017418da4e20cd38c72b20390cea2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a691017418da4e20cd38c72b20390cea2">add</a> (const std::string &amp;key)</td></tr>
+<tr class="memdesc:a691017418da4e20cd38c72b20390cea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets quantity encoding. If gain=0.0, default values for the given type will be set as defined in <a class="el" href="classdrain_1_1Type.html" title="Utilities related to stl::type_info. ">drain::Type</a>.  <a href="#a691017418da4e20cd38c72b20390cea2">More...</a><br /></td></tr>
+<tr class="separator:a691017418da4e20cd38c72b20390cea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5643c1c8d1dd38c83d7d6441e32765d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5643c1c8d1dd38c83d7d6441e32765d"></a>
+<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;key, char typecode)</td></tr>
+<tr class="separator:ac5643c1c8d1dd38c83d7d6441e32765d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2739a5c07c71a88847bc39a8723b5af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2739a5c07c71a88847bc39a8723b5af"></a>
 <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const std::string &amp;key, const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;dst)</td></tr>
 <tr class="separator:ab2739a5c07c71a88847bc39a8723b5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,7 +147,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOstr<
 <tr class="separator:a02a2a68d959a404f376d926886c70f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a16ff9af2b4b17fc8bf78576cdeb1d2bb"></a>
+<a class="anchor" id="a691017418da4e20cd38c72b20390cea2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -152,21 +155,11 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toOstr<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a>&amp; set </td>
+          <td class="memname"><a class="el" href="classrack_1_1Quantity.html">Quantity</a>&amp; add </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>typecode</em> = <code>'C'</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>

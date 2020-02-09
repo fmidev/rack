@@ -92,14 +92,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classrack_1_1ProductOp-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ProductOp&lt; MS, MD &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>BAse class for polar and Cartesian products.  
+<p>Polar and Cartesian products.  
  <a href="classrack_1_1ProductOp.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ProductOp_8h_source.html">ProductOp.h</a>&gt;</code></p>
@@ -117,16 +116,19 @@ Collaboration diagram for ProductOp&lt; MS, MD &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ProductOp__coll__graph.png" border="0" usemap="#ProductOp_3_01MS_00_01MD_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="ProductOp_3_01MS_00_01MD_01_4_coll__map" id="ProductOp_3_01MS_00_01MD_01_4_coll__map">
-<area shape="rect" id="node2" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates. " alt="" coords="1281,204,1379,231"/>
-<area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="753,179,829,205"/>
-<area shape="rect" id="node7" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="1035,101,1133,128"/>
-<area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="479,207,586,233"/>
-<area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="256,207,427,233"/>
-<area shape="rect" id="node8" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="707,5,876,32"/>
-<area shape="rect" id="node9" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="730,56,853,83"/>
-<area shape="rect" id="node10" href="classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="764,107,819,133"/>
-<area shape="rect" id="node11" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="476,107,589,133"/>
-<area shape="rect" id="node13" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="1027,280,1141,307"/>
+<area shape="rect" id="node2" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates. " alt="" coords="1412,335,1509,362"/>
+<area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="884,310,960,337"/>
+<area shape="rect" id="node7" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="1165,187,1264,214"/>
+<area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="561,337,667,363"/>
+<area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="272,337,443,363"/>
+<area shape="rect" id="node8" href="classrack_1_1ODIMPathMatcher.html" title="Test if a path partially fits group and index range. " alt="" coords="857,70,987,97"/>
+<area shape="rect" id="node9" href="classdrain_1_1Path.html" title="Path\&lt; ODIMPathElemMatcher \&gt;" alt="" coords="508,71,720,98"/>
+<area shape="rect" id="node11" href="classdrain_1_1RegExp.html" title="RegExp" alt="" coords="887,127,957,154"/>
+<area shape="rect" id="node12" href="classdrain_1_1Range.html" title="Range\&lt; unsigned short \&gt;" alt="" coords="837,185,1007,211"/>
+<area shape="rect" id="node13" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="861,235,983,262"/>
+<area shape="rect" id="node14" href="classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="895,17,949,43"/>
+<area shape="rect" id="node15" href="classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; K, V \&gt;" alt="" coords="545,13,683,39"/>
+<area shape="rect" id="node17" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="1157,411,1272,438"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -151,8 +153,8 @@ Public Member Functions</h2></td></tr>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#acec585c588eec2c578c02d8ed553b316">getOutputQuantity</a> () const </td></tr>
 <tr class="memdesc:acec585c588eec2c578c02d8ed553b316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> <code>what:quantity</code> , like DBZH) <br /></td></tr>
 <tr class="separator:acec585c588eec2c578c02d8ed553b316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8273827686b65f1217d76801d20dbb55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a8273827686b65f1217d76801d20dbb55">processH5</a> (const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;dst) const </td></tr>
-<tr class="separator:a8273827686b65f1217d76801d20dbb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0181c94d575eed66cf30f08fda32e3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#ac0181c94d575eed66cf30f08fda32e3b">processH5</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const </td></tr>
+<tr class="separator:ac0181c94d575eed66cf30f08fda32e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20692e734b22f5fa48a137992adf181c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a20692e734b22f5fa48a137992adf181c">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstProduct) const </td></tr>
 <tr class="memdesc:a20692e734b22f5fa48a137992adf181c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse the data applicable for this product and create new, processed data (volume or polar product).  <a href="#a20692e734b22f5fa48a137992adf181c">More...</a><br /></td></tr>
 <tr class="separator:a20692e734b22f5fa48a137992adf181c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,22 +274,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const <a cl
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
 <tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaacaf6b3984b5227d271c0885bf1c661"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaacaf6b3984b5227d271c0885bf1c661"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>handleEncodingRequest</b> (const std::string &amp;encoding, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1ProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dst)</td></tr>
-<tr class="separator:aaacaf6b3984b5227d271c0885bf1c661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
-<tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
-<tr class="memdesc:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> <code>what:quantity</code> , like DBZH)  <a href="#a2c647c4533f71ac1551da8776912436c">More...</a><br /></td></tr>
-<tr class="separator:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
-<tr class="memitem:a204281018f1b61801b547b8a9d2f2f61 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a204281018f1b61801b547b8a9d2f2f61">handleEncodingRequest</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const std::string &amp;encoding)</td></tr>
-<tr class="memdesc:a204281018f1b61801b547b8a9d2f2f61 inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies encoding. If type is changed, resets scaling first.  <a href="#a204281018f1b61801b547b8a9d2f2f61">More...</a><br /></td></tr>
-<tr class="separator:a204281018f1b61801b547b8a9d2f2f61 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba545a82de80eee2a13172e96a13a0c8 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#aba545a82de80eee2a13172e96a13a0c8">completeEncoding</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const std::string &amp;encodingRequest)</td></tr>
+<tr class="memdesc:aba545a82de80eee2a13172e96a13a0c8 inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies encoding. If type is changed, resets scaling first.  <a href="#aba545a82de80eee2a13172e96a13a0c8">More...</a><br /></td></tr>
+<tr class="separator:aba545a82de80eee2a13172e96a13a0c8 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">applyODIM</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, bool applyDefaults=false)</td></tr>
 <tr class="memdesc:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target quantity and encoding, if unset. If input odim.  <a href="#a4d69a96f68c7fe813dada3f601b811af">More...</a><br /></td></tr>
 <tr class="separator:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,6 +291,10 @@ Additional Inherited Members</h2></td></tr>
 static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#afb880a78fc420afd98783e324338f2b0">outputDataVerbosity</a></td></tr>
 <tr class="memdesc:afb880a78fc420afd98783e324338f2b0 inherit pub_static_attribs_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if also intermediate results (1) are saved. See &ndash;aStore. <br /></td></tr>
 <tr class="separator:afb880a78fc420afd98783e324338f2b0 inherit pub_static_attribs_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
+<tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
+<tr class="memdesc:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> <code>what:quantity</code> , like DBZH)  <a href="#a2c647c4533f71ac1551da8776912436c">More...</a><br /></td></tr>
+<tr class="separator:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:abe4ba6efd37271853e5332daed5fcd6b inherit pro_attribs_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#abe4ba6efd37271853e5332daed5fcd6b">allowedEncoding</a></td></tr>
 <tr class="memdesc:abe4ba6efd37271853e5332daed5fcd6b inherit pro_attribs_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines which encoding parameters can be changed by the user from command line.  <a href="#abe4ba6efd37271853e5332daed5fcd6b">More...</a><br /></td></tr>
@@ -321,7 +317,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <div class="textblock"><h3>template&lt;class MS, class MD&gt;<br />
 class rack::ProductOp&lt; MS, MD &gt;</h3>
 
-<p>BAse class for polar and Cartesian products. </p>
+<p>Polar and Cartesian products. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">MS</td><td>- input (source) metadata type: <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products). ">PolarODIM</a> or <a class="el" href="classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single-radar or composites). ">CartesianODIM</a>. </td></tr>
@@ -411,20 +407,23 @@ class rack::ProductOp&lt; MS, MD &gt;</h3>
 
 </div>
 </div>
-<a class="anchor" id="a8273827686b65f1217d76801d20dbb55"></a>
+<a class="anchor" id="ac0181c94d575eed66cf30f08fda32e3b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void processH5 </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">HI5TREE</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>&#160;</td>
         </tr>
         <tr>
@@ -433,6 +432,11 @@ class rack::ProductOp&lt; MS, MD &gt;</h3>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Usually, the operator does not need groups sorted by elevation.</p>
 <p>Main operation </p>

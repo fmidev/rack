@@ -139,9 +139,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const std:
 <tr class="memitem:a6fc6ff0cfd240fcdce53bf537c8e78bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fc6ff0cfd240fcdce53bf537c8e78bd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportTXT</b> (std::ostream &amp;ostr, char separator='\t', char separator2=0) const </td></tr>
 <tr class="separator:a6fc6ff0cfd240fcdce53bf537c8e78bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21b3a55e17142c1af1d1ff60c4e04dd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21b3a55e17142c1af1d1ff60c4e04dd3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json) const </td></tr>
-<tr class="separator:a21b3a55e17142c1af1d1ff60c4e04dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf9afb8b4136fbbaadcdeb6904008aa2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf9afb8b4136fbbaadcdeb6904008aa2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1Tree.html">drain::JSONtree::tree_t</a> &amp;json) const </td></tr>
+<tr class="separator:adf9afb8b4136fbbaadcdeb6904008aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb17c9d07c0315d0ba06fab4250d2d90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb17c9d07c0315d0ba06fab4250d2d90"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acb17c9d07c0315d0ba06fab4250d2d90">exportSVGLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const </td></tr>
 <tr class="memdesc:acb17c9d07c0315d0ba06fab4250d2d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a legend as an SVG graphic. <br /></td></tr>
@@ -157,7 +157,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 Public Attributes</h2></td></tr>
 <tr class="memitem:ac30fed21fe991cc8475ce543929f8b72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac30fed21fe991cc8475ce543929f8b72"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72">title</a></td></tr>
-<tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. Legend shows the title on top. <br /></td></tr>
+<tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. <a class="el" href="classdrain_1_1Legend.html">Legend</a> shows the title on top. <br /></td></tr>
 <tr class="separator:ac30fed21fe991cc8475ce543929f8b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42338d9abd438b27e5a56d22202d873"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae42338d9abd438b27e5a56d22202d873"></a>
 <a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialCodes</b></td></tr>
@@ -168,10 +168,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac277f12bf13b157b9686a275f723612f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac277f12bf13b157b9686a275f723612f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> () const </td></tr>
 <tr class="separator:ac277f12bf13b157b9686a275f723612f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bcf575e730c3ca80641dcce0e5f7000"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1bcf575e730c3ca80641dcce0e5f7000"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a1bcf575e730c3ca80641dcce0e5f7000">importJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSON::tree_t</a> &amp;json, int depth)</td></tr>
-<tr class="memdesc:a1bcf575e730c3ca80641dcce0e5f7000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
-<tr class="separator:a1bcf575e730c3ca80641dcce0e5f7000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd73443bbc9e4cabe348fed0206279d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd73443bbc9e4cabe348fed0206279d8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#abd73443bbc9e4cabe348fed0206279d8">importJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSONtree::tree_t</a> &amp;json, int depth)</td></tr>
+<tr class="memdesc:abd73443bbc9e4cabe348fed0206279d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
+<tr class="separator:abd73443bbc9e4cabe348fed0206279d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -220,7 +220,7 @@ Protected Attributes</h2></td></tr>
 <p>Creates a palette from json object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">json</td><td>- <a class="el" href="classdrain_1_1JSON.html">JSON</a> structure combining optional <code>metadata</code> and compulsory <code>entries</code> section. </td></tr>
+    <tr><td class="paramname">json</td><td>- JSON structure combining optional <code>metadata</code> and compulsory <code>entries</code> section. </td></tr>
   </table>
   </dd>
 </dl>
