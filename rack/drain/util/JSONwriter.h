@@ -90,10 +90,31 @@ public:
 	}
 
 	template <class K, class V>
-	static
-	inline
+	static inline
 	std::ostream & toStream(const std::map<K,V> & m, std::ostream &ostr = std::cout, unsigned short indentation = 0){
 		return mapToStream(m, ostr, indentation); // below
+	}
+
+	// Special
+	template <class F, class S>
+	static inline
+	std::ostream & toStream(const std::pair<F,S> & x, std::ostream &ostr = std::cout, unsigned short indentation = 0){
+		JSONwriter::indent(ostr, indentation);
+		return ostr << '"' << x->first << '"'<< ':' << x->second << '\n';
+	}
+
+	// Special
+	template <class T>
+	static inline
+	std::ostream & toStream(typename T::iterator it, std::ostream &ostr = std::cout, unsigned short indentation = 0){
+		return JSONwriter::toStream(*it);
+	}
+
+	// Special
+	template <class T>
+	static inline
+	std::ostream & toStream(typename T::const_iterator it, std::ostream &ostr = std::cout, unsigned short indentation = 0){
+		return JSONwriter::toStream(*it);
 	}
 
 	// CONTRADICTORY: metadata V ("attributes") should/must be a map?
@@ -125,7 +146,16 @@ public:
 	static
 	std::ostream & sparseSequenceToStream(const T & x, std::ostream &ostr = std::cout);
 
+
 	/// Implementation for std::map<> and derived classes
+	template <class T>
+	static
+	std::ostream & arrayAsMapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
+
+	/// Implementation for std::map<> and derived classes
+	/**
+	 *   bool empty() must be defined.
+	 */
 	template <class T>
 	static
 	std::ostream & sparseArrayAsMapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
@@ -255,6 +285,39 @@ std::ostream & JSONwriter::sparseArrayAsMapToStream(const T & m, std::ostream &o
 			toStream(*it, ostr, indentation); // If elements are vectors, restart...
 
 		}
+
+		++index;
+
+	}
+	ostr  << '\n';
+	JSONwriter::indent(ostr, indentation - JSONwriter::indentStep);
+	ostr  << '}';
+
+	return ostr;
+}
+
+
+template <class T>
+std::ostream & JSONwriter::arrayAsMapToStream(const T & m, std::ostream &ostr, unsigned short indentation){
+
+	ostr << '{' << '\n';
+
+	indentation += JSONwriter::indentStep;
+	char sep = 0;
+	size_t index = 0; // todo remove paralled numeric index, use it directly?
+
+	for (typename T::const_iterator it = m.begin(); it != m.end(); ++it){
+
+		if (sep){
+			ostr << sep << '\n';
+		}
+		else
+			sep = ',';
+
+		JSONwriter::indent(ostr, indentation);
+		ostr << '"' << index << '"' << ':' << ' ';
+		/// Recursion
+		toStream(*it, ostr, indentation); // If elements are vectors, restart...
 
 		++index;
 

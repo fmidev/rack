@@ -385,6 +385,26 @@ public:
 static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
 
+class CmdPaletteRead : public SimpleCommand<std::string> {
+
+public:
+
+	CmdPaletteRead() : SimpleCommand<std::string>(__FUNCTION__, "Load palette, do not apply it (before --palette).", "filename", "", "<filename>.[txt|json]") {
+	};
+
+	void exec() const {
+
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+
+		RackResources & resources = getResources();
+
+		resources.palette.load(value, true);
+
+	}
+
+};
+static CommandEntry<CmdPaletteRead> cmdPaletteRead;
+
 
 
 class CmdPalette : public SimpleCommand<std::string> {

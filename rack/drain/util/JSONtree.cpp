@@ -111,7 +111,7 @@ void JSONtree::read(tree_t & t, std::istream & istr){
 				}
 				else {
 					log.debug(2) << "Reading value '" << key << "'" << log.endl;
-					JSONreader::valueFromStream(istr, vmap[key]);
+					JSONreader::readValue(istr, vmap[key]);
 					//ValueReader::scanValue(istr, vmap[key]);
 				}
 				completed = true;
@@ -213,7 +213,8 @@ std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostr
 	return ostr;
 }
 
-void JSONtree::writeJSON(const tree_t & t, std::ostream & ostr, unsigned short indentation){
+
+void JSONtree::writeJSON(const drain::JSONtree::tree_t & t, std::ostream & ostr, unsigned short indentation){
 	JSONwriter::toStream(t, ostr, indentation);
 }
 

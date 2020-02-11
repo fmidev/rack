@@ -144,7 +144,7 @@ public:
 		//drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
 		//	"value", true, "0,1")
 
-		parameters.reference("value", ImageOpRacklet::physical, "0|1");
+		parameters.reference("value", ImageOpRacklet::physical, "false|true");
 
 	};
 

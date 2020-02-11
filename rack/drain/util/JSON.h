@@ -56,18 +56,18 @@ public:
 
 	/// Read value. Read stream until a value has been extracted, with type recognition
 	static
-	void valueFromStream(std::istream & istr, Variable & v, bool keepType = false);
+	void readValue(std::istream & istr, Variable & v, bool keepType = false);
 
 	/// Read value. Read stream until a value has been extracted, with type recognition
 	static inline
-	void valueFromStream(const std::string & s, Variable & v, bool keepType = false){
+	void readValue(const std::string & s, Variable & v, bool keepType = false){
 		std::istringstream istr(s);
-		valueFromStream(istr, v, keepType);
+		readValue(istr, v, keepType);
 	};
 
 	/// Given comma-separated string of values, assign them to variable of minimum compatible type
 	static
-	void arrayFromStream(const std::string & s, Variable & v);
+	void readArray(const std::string & s, Variable & v);
 
 
 };

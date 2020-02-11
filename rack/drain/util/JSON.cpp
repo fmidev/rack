@@ -38,7 +38,7 @@ namespace drain
 {
 
 
-void JSONreader::valueFromStream(std::istream & istr, Variable & v, bool keepType){
+void JSONreader::readValue(std::istream & istr, Variable & v, bool keepType){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -69,7 +69,7 @@ void JSONreader::valueFromStream(std::istream & istr, Variable & v, bool keepTyp
 		if (value.find_first_of("[]") != std::string::npos){
 			mout.warn() << "Arrays of arrays not supported (value='" << value << "')" << mout.endl;
 		}
-		JSONreader::arrayFromStream(value, v);
+		JSONreader::readArray(value, v);
 		break;
 	default: // numeric
 		value = TextReader::scanSegment(istr, ",} \t\n\r");
@@ -89,7 +89,7 @@ void JSONreader::valueFromStream(std::istream & istr, Variable & v, bool keepTyp
 }
 
 
-void JSONreader::arrayFromStream(const std::string & s, Variable & v){
+void JSONreader::readArray(const std::string & s, Variable & v){
 
 	v.clear();
 

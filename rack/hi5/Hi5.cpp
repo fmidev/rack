@@ -337,7 +337,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 		n.dataSet.setType<unsigned char>();
 
 		drain::Variable v;
-		drain::JSONreader::valueFromStream(attrValue, v);
+		drain::JSONreader::readValue(attrValue, v);
 		switch (v.getElementCount()) {
 			case 3:
 				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1), v.get<size_t>(2));
@@ -360,7 +360,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 		drain::Variable & a = n.attributes[attrKey];
 		//mout.warn() << "hey " << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
-		drain::JSONreader::valueFromStream(attrValue, a, true);
+		drain::JSONreader::readValue(attrValue, a, true);
 		//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
 
 		if (attrKey == "quantity"){
@@ -428,7 +428,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 		if (!value.empty()){
 
 
-			drain::JSONreader::valueFromStream(value, v);
+			drain::JSONreader::readValue(value, v);
 			//mout.debug() << "variable: "  << v << mout.endl;
 
 			// Test array OR type specification...

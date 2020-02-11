@@ -121,7 +121,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 		if (!key.empty()){
 			mout.debug(1) << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
 			//ValueReader::scanValue(sstr.str(), properties[key]);
-			JSONreader::valueFromStream(sstr.str(), properties[key]);
+			JSONreader::readValue(sstr.str(), properties[key]);
 		}
 		else {
 			mout.note() << "Comment:" <<  sstr.str() << mout.endl;
