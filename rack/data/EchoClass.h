@@ -53,7 +53,6 @@ typedef drain::Dictionary2<int, std::string> classdict_t;
 
 classdict_t & getClassDict();
 
-
 classtree_t & getClassTree();
 
 int getClassCode(const std::string & key);

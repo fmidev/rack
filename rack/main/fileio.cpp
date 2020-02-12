@@ -69,7 +69,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <main/fileio-read.h>
 #include <main/images.h> // for calling --image on the fly
 #include <main/resources.h>
-#include <product/HistogramOp.h>
+//#include <product/HistogramOp.h>
 #include <product/ProductOp.h>
 #include <radar/FileGeoTIFF.h>
 #include <radar/RadarDataPicker.h>

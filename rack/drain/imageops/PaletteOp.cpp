@@ -144,7 +144,8 @@ void PaletteOp::help(std::ostream & ostr) const {
 
 	ImageOp::help(ostr);
 
-	for (std::map<double,PaletteEntry >::const_iterator cit = specialCodes.begin(); cit != specialCodes.end(); ++cit){
+	//for (std::map<double,PaletteEntry >::const_iterator cit = specialCodes.begin(); cit != specialCodes.end(); ++cit){
+	for (Palette::cont_t::const_iterator cit = specialCodes.begin(); cit != specialCodes.end(); ++cit){
 		ostr << cit->first << '=' << cit->second << '\n';
 	}
 	for (std::map<std::string,PaletteEntry >::const_iterator pit = palettePtr->specialCodes.begin(); pit != palettePtr->specialCodes.end(); ++pit){
@@ -162,6 +163,9 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	mout.debug(1) << dst << mout.endl;
 
 	const Channel & srcChannel = src.get(0);
+	if (src.size() > 1){
+		mout.note() << "src has " << src.size() << " > 1 channels, using first " << mout.endl;
+	}
 
 	const size_t width  = dst.getGeometry().getWidth();
 	const size_t height = dst.getGeometry().getHeight();
@@ -182,7 +186,14 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 
 
-	const bool hasSpecialCodes = !specialCodes.empty();  // for PolarODIM nodata & undetected
+	const bool SPECIAL_CODES = !specialCodes.empty();  // for PolarODIM nodata & undetected
+
+
+	const Palette & pal = *palettePtr;
+
+	const ValueScaling & scaling = srcChannel.getScaling();
+
+	const Palette::lookup_t & lut = pal.createLookUp(256, scaling);
 
 	double d;
 	Palette::const_iterator it;      // lower bound
@@ -190,13 +201,14 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	size_t k;
 	Palette::const_iterator cit;
-	//std::map<double,PaletteEntry >::const_iterator cit;
+
+
 	for (size_t  i = 0; i < width; ++i) {
 
 		for (size_t j = 0; j < height; ++j) {
 
 			d = srcChannel.get<double>(i,j);
-			if (hasSpecialCodes){  // PolarODIM
+			if (SPECIAL_CODES){  // PolarODIM
 
 				cit = specialCodes.find(d);
 				if (cit != specialCodes.end()){
@@ -206,14 +218,19 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				}
 			}
 
-			d = scale * d + offset;
+			//d = scaling.fwd(d);
+			//d = scale * d + offset; OBSOLETE
 
-			itLast = palettePtr->begin();
-			for (it = palettePtr->begin(); it != palettePtr->end(); ++it){
+			// ALERT! what if double storage type!
+			itLast = lut[d];
+			/*
+			itLast = pal.begin();
+			for (it = pal.begin(); it != pal.end(); ++it){
 				if (it->first > d)
 					break;
 				itLast = it;
 			}
+			*/
 
 			for (k = 0; k < channelCount; ++k)
 				dst.get(k).put(i,j, itLast->second.color[k]);
@@ -247,7 +264,7 @@ void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 	const ChannelGeometry channels = palettePtr->getChannels();
 	//const unsigned int channels = palette.hasAlpha() ? 4 : 3;
 
-	const bool hasSpecialCodes = !specialCodes.empty();  // for PolarODIM nodata & undetected
+	const bool SPECIAL_CODES = !specialCodes.empty();  // for PolarODIM nodata & undetected
 
 
 
@@ -262,7 +279,7 @@ void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 		//std::cerr << "Palette: " << i << '\t' << '\n';
 		for (size_t j = 0; j < height; ++j) {
 
-			if (hasSpecialCodes){  // PolarODIM
+			if (SPECIAL_CODES){  // PolarODIM
 				//code = src.get<double>(i,j);
 				cit = specialCodes.find(src.get<double>(i,j));
 				if (cit != specialCodes.end()){

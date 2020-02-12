@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DRAIN_CODEMAP
-#define DRAIN_CODEMAP
+#ifndef DRAIN_LEGEND
+#define DRAIN_LEGEND
 
 //#include "Geometry.h"
 //#include "File.h"
@@ -41,158 +41,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 #include "../util/Log.h"
-#include "../util/ValueScaling.h"
+#include "ImageCodebook.h"
 
 namespace drain
 {
-
-
-template <class T>
-//class ImageCodeMap : public std::vector<T> {
-class ImageCodeMap : public std::map<int,T> {
-
-public:
-
-	//typedef T entry_t;
-
-	typedef std::map<int,T> cont_t;
-	typedef typename cont_t::size_type size_t;
-	typedef typename cont_t::key_type     key_t;
-	typedef typename cont_t::value_type entry_t;
-
-	typedef std::vector<typename cont_t::iterator> lookup_t;
-
-
-	/// Default constructor
-	//ImageCodeMap(size_t n=0, const T & value=T()): cont_t(n, value), separator(0) {
-	ImageCodeMap() : separator(0) {
-	};
-
-	/// Copy constructor //
-	// ImageCodeMap(const cont_t & v): cont_t(v), separator(0) {
-	ImageCodeMap(const cont_t & map): separator(0) { // COPY?
-	};
-
-	lookup_t lookUp;
-
-	lookup_t & createLookUp(size_t n){
-
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
-		typename cont_t::iterator mit = this->begin();
-		//lookUp.resize(n, this->begin());
-		lookUp.resize(n, mit);
-
-		// key_t min = 0;
-		// typename cont_t::iterator mit = this->begin();
-
-		//for (typename cont_t::reverse_iterator it=this->rbegin(); it!=this->rend(); ++it){
-		for (typename cont_t::iterator it=this->begin(); it!=this->end(); ++it){
-
-			if (it->first > n){
-				lookUp.resize(it->first+1);
-			}
-
-			for (key_t i=mit->first; i<it->first; ++i){
-				lookUp[i] = mit;
-			}
-
-			//min = it->first;
-			mit = it;
-		}
-
-		return lookUp;
-	}
-
-	inline
-	const entry_t & retrieve(double intensity) const {
-
-		key_t index;
-
-		if (scaling.isScaled()){
-			index = static_cast<key_t>(scaling.inv(intensity));
-		}
-		else {
-			index = static_cast<key_t>(intensity);
-		}
-
-		return operator [](index);
-
-	}
-
-	inline
-	entry_t & retrieve(double intensity) {
-
-		key_t index;
-
-		if (scaling.isScaled()){
-			index = static_cast<key_t>(scaling.inv(intensity));
-		}
-		else {
-			index = static_cast<key_t>(intensity);
-		}
-
-		return operator [](index);
-
-	}
-
-	static inline
-	bool empty(unsigned short int i){
-		return (i==0);
-	}
-	static inline
-	bool empty(short int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(long int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(unsigned int i){
-		return (i==0);
-	}
-
-
-	template <class E>
-	static
-	bool empty(const E & e){
-		return e.empty();
-	}
-
-	///
-	/*
-	 *    \param equal - typically =, :, or -
-	 *    \param start - typically hyphen or leading parenthesis (, {, [
-	 *    \param end   - typically hyphen or trailing parenthesis ), }, [
-	 *    \param separator - typically comma or semicolon
-	 */
-
-	ValueScaling scaling;
-
-	char separator;
-};
-
-
-class ImageCodeEntry {
-public:
-
-	virtual inline
-	~ImageCodeEntry(){};
-
-	virtual
-	bool empty() const = 0;
-};
-
-
-
 
 
 
@@ -205,6 +57,8 @@ public:
 	std::string label;
 
 };
+
+
 
 inline
 std::ostream & operator<<(const LegendEntry & entry, std::ostream &ostr){
@@ -222,6 +76,7 @@ public:
 
 
 template <>
+inline
 std::ostream & JSONwriter::toStream(const Legend & l, std::ostream &ostr, unsigned short indentation){
 	return JSONwriter::mapToStream(l, ostr, indentation);
 	//return JSONwriter::sparseSequenceToStream(l, ostr);

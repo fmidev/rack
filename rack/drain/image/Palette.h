@@ -35,16 +35,59 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "File.h"
 #include "TreeSVG.h"
 
+#include "util/BeanLike.h"
+#include "util/Dictionary.h" // temporary ?
 #include "util/JSONtree.h"
+
+#include "Legend.h"
 
 
 namespace drain
 {
 
+
+
+class PaletteEntry2 : public LegendEntry, public BeanLike {
+public:
+
+	PaletteEntry2(): BeanLike(__FUNCTION__), colour(3, 0){
+		parameters.reference("label",  this->label);
+		parameters.reference("colour", this->colour);
+	}
+
+	PaletteEntry2(const PaletteEntry2 & pale): BeanLike(__FUNCTION__), colour(3, 0){
+		parameters.reference("label",  this->label = pale.label);
+		parameters.reference("colour", this->colour = pale.colour);
+	}
+
+	PaletteEntry2 & operator=(const PaletteEntry2 & pale){
+		this->label  = pale.label;
+		this->colour = pale.colour;
+		return *this;
+	}
+
+	std::vector<double> colour;
+
+	inline
+	bool empty() const {
+		return this->label.empty();
+	}
+
+};
+
+
+/*
+template <>
+inline
+std::ostream & JSONwriter::toStream(const PaletteEntry2 &e, std::ostream &ostr, unsigned short indentation){
+	return JSONwriter::mapToStream(e.getParameters(), ostr, indentation);
+}
+*/
+
 namespace image
 {
 
-class PaletteEntry  {
+class PaletteEntry : public LegendEntry, public BeanLike {
 
 public:
 
@@ -75,10 +118,10 @@ public:
 
 
 	/// Unique label (latent)
-	//std::string id;
+	std::string id; // was already obsolete?
 
 	/// Description appearing in legends
-	std::string label;
+	//  std::string label; // Legend
 
 
 	/// Suggests hiding the entry in legends. Does not affect colouring of images.
@@ -97,7 +140,7 @@ public:
 	 */
 	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;
 
-	drain::ReferenceMap map;
+	//drain::ReferenceMap map;
 
 	/// Returns the color without leading marker (like "0x").
 	void getHexColor(std::ostream & ostr) const;
@@ -124,7 +167,8 @@ std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
 }
 
 
-class Palette : public std::map<double,PaletteEntry > {
+// class Palette : public std::map<double,PaletteEntry > {
+class Palette : public ImageCodeMap<PaletteEntry> {
 
 public:
 
@@ -167,12 +211,11 @@ public:
 		return channels;
 	}
 
-
 	/// Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to this. Legend shows the title on top.
 	std::string title;
 
 	/// Some kind of identity key for the palette, typically filename to avoid reloading
-	// std::string id; ?
+	//  std::string id; ?
 
 	/// Certain intensities (before scaling with gain and offset) may require special treatment.
 	typedef std::map<std::string,PaletteEntry> spec_t;
@@ -181,6 +224,13 @@ public:
 	/// Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")
 	void refine(size_t n=256);
 
+	typedef drain::Dictionary2<int, std::string> dict_t;
+
+	dict_t dictionary; // temp?
+
+	void updateDictionary();
+
+
 protected:
 
 	void update() const;
@@ -188,7 +238,7 @@ protected:
 	mutable
 	ChannelGeometry channels;
 
-	//void skipLine(std::ifstream &ifstr) const;
+	// void skipLine(std::ifstream &ifstr) const;
 
 	/// Creates a palette from json object
 	void importJSON(const drain::JSONtree::tree_t & json, int depth);

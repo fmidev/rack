@@ -128,7 +128,11 @@ public:
 		return sstr.str();
 	}
 
-
+	inline
+	BeanLike & operator=(const BeanLike & b){
+		copy(b);
+		return *this;
+	}
 
 protected:
 

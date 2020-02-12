@@ -60,6 +60,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+
+
+class CmdPaletteIn : public SimpleCommand<std::string> {
+
+public:
+
+	CmdPaletteIn() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	};
+
+	virtual
+	void exec() const {
+		load(value);
+	};
+
+	void load(const std::string &s) const {
+		getResources().palette.load(s);
+	}
+
+};
+
+/*
 void CmdPaletteOut::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
@@ -75,6 +96,24 @@ void CmdPaletteOut::exec() const {
 	}
 
 }
+*/
+
+void CmdPaletteOut::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+
+	RackResources & resources = getResources();
+	if (cmdFormat.value.empty()){
+		resources.palette.write(resources.outputPrefix + value);
+	}
+	else {
+		mout.warn() << "user defined format, extension not checked: " +  cmdFormat.value << mout.endl;
+		drain::Output out(resources.outputPrefix + value);
+		resources.palette.exportFMT(out, cmdFormat.value);
+	}
+
+}
+
 
 
 
@@ -480,24 +519,6 @@ public:
 
 };
 
-
-class CmdPaletteIn : public SimpleCommand<std::string> {
-
-public:
-
-	CmdPaletteIn() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
-	};
-
-	virtual
-	void exec() const {
-		load(value);
-	};
-
-	void load(const std::string &s) const {
-		getResources().palette.load(s);
-	}
-
-};
 
 // Later also this here, but legendOut requires "more global" class.
 // class CmdPaletteOut : public SimpleCommand<std::string>

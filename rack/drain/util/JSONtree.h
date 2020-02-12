@@ -70,6 +70,9 @@ public:
 	/// Must be implement list concept, eg. derived from  std::list<T>
 	typedef tree_t::path_t path_t;
 
+	/// Path key type (child map key type)
+	typedef tree_t::key_t key_t;
+
 	/// Must contain attributes
 	typedef tree_t::node_t node_t;
 
@@ -87,18 +90,21 @@ public:
 	void writeINI(const tree_t & t, std::ostream & ostr = std::cout, const tree_t::path_t & prefix = tree_t::path_t('.'));
 
 
+	/// Reads and parses a JSON file
 	/**
 	 *  \tparam - tree type, especially drain::Tree<K,V>
 	 */
 	template <class T>
 	static
-	void readTree(const T & tree, std::istream & istr);
+	void readTree(T & tree, std::istream & istr);
 
 
 
 	/// Reads and parses a JSON file
 	static
-	void read(tree_t & t, std::istream & istr);
+	void read(tree_t & t, std::istream & istr){
+		readTree(t, istr);
+	}
 
 
 	/// Reads and parses a Windows INI file
@@ -125,7 +131,7 @@ std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostr
 
 
 template <class T>
-void JSONtree::readTree(const T & t, std::istream & istr){
+void JSONtree::readTree(T & t, std::istream & istr){
 
 	drain::Logger log("JSON", __FUNCTION__);
 

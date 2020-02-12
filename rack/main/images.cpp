@@ -384,7 +384,7 @@ public:
 // static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
-
+/*
 class CmdPaletteRead : public SimpleCommand<std::string> {
 
 public:
@@ -404,9 +404,9 @@ public:
 
 };
 static CommandEntry<CmdPaletteRead> cmdPaletteRead;
+*/
 
-
-
+// See also CmdPaletteIn and CmdPaletteOut in imageOps?
 class CmdPalette : public SimpleCommand<std::string> {
 
 public:

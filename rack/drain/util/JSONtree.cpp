@@ -53,10 +53,7 @@ namespace drain
  *
  *
  */
-//unsigned short JSONtree::indentStep(2);
-
-//onst RegExp JSONtree::filenameExtension("\\.([[:alnum:]]+)$");
-
+/*
 void JSONtree::read(tree_t & t, std::istream & istr){
 
 	drain::Logger log("JSON", __FUNCTION__);
@@ -135,7 +132,7 @@ void JSONtree::read(tree_t & t, std::istream & istr){
 	}
 
 }
-
+*/
 
 /// Reads and parses a Windows INI file
 void JSONtree::readINI(tree_t & t, std::istream & istr){
@@ -218,65 +215,6 @@ void JSONtree::writeJSON(const drain::JSONtree::tree_t & t, std::ostream & ostr,
 	JSONwriter::toStream(t, ostr, indentation);
 }
 
-/*
-void JSONtree::writeJSON(const tree_t & json, std::ostream & ostr, unsigned short indentation){
-
-
-
-	char sep = 0;
-
-	ostr << "{\n";
-
-	indentation += JSONtree::indentStep;
-
-	if (!json.data.empty()){
-		json.data.toJSON(ostr, indentation); // relies on similar formatting
-		if (!json.isEmpty())
-			ostr << ','; // Add comma, if non-empty subtree coming next
-		ostr << '\n';
-	}
-
-
-	// Traverse descendants recursively
-	for (tree_t::const_iterator it = json.begin(); it != json.end(); ++it){
-
-		if (sep){
-			ostr << sep << '\n';
-		}
-		else {
-			sep = ',';
-		}
-
-		indent(ostr, indentation);
-		ostr << '"' << it->first << '"' << ": ";
-
-		// Recursion
-		JSONtree::writeJSON(it->second, ostr, indentation); // + JSONtree::indentStep);
-
-	}
-
-	/// If also object was dumped above, add newline
-	if (!json.isEmpty())
-		ostr << '\n';
-
-	// Attributes and object are completed, hence decrement indentation for terminal char '}'
-	if (indentation >= JSONtree::indentStep)
-		indentation -= JSONtree::indentStep;
-	else {
-		drain::Logger mout("JSON", __FUNCTION__);
-		mout.warn() << "skipped negative indentation" << mout.endl;
-	}
-
-	indent(ostr, indentation);
-	ostr << '}'; // << indentation;
-
-	// If end of recursion, file completed, add newline.
-	if (indentation == 0)
-		ostr << '\n';
-
-
-}
-*/
 
 
 /// Write a Windows INI file
