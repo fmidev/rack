@@ -43,7 +43,9 @@ namespace drain {
 /// Set flags
 Flags & Flags::operator =(const std::string & params){
 
-	drain::Logger mout("Flags", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	value = 0;
 
 	typedef std::list<std::string> keylist;
 	keylist keys;
@@ -57,19 +59,19 @@ Flags & Flags::operator =(const std::string & params){
 
 		// mout.warn() << " '" << *it << "'" << mout.endl;
 
-		//dict_t::first_type::const_iterator dit = dictionary.first.find(*it);
 		dict_t::const_iterator dit = dictionary.findByKey(*it);
-
 
 		if (dit != dictionary.end()){
 			// Alphabetic key found
-			value = value | dit->second;
+			set(dit->second);
+			//value = value | dit->second;
 		}
 		else {
 			// Numeric value
 			if (*it == "0"){
 				//std::cout << "resetting...\n";
-				value = 0;
+				//value = 0;
+				reset();
 				continue;
 			}
 			else {
@@ -79,7 +81,8 @@ Flags & Flags::operator =(const std::string & params){
 				if (v == 0){
 					throw std::runtime_error(*it + ": key not found in Flags");
 				}
-				value = value | v;
+				set(v);
+				//value = value | v;
 				// Nice to know
 				//dict_t::second_type::const_iterator vit = dictionary.second.find(v);
 				dict_t::const_iterator vit = dictionary.findByValue(v);
@@ -93,19 +96,22 @@ Flags & Flags::operator =(const std::string & params){
 	return *this;
 }
 
-std::ostream & Flags::valueKeysToStream(std::ostream & ostr, char separator) const {
+/// List keys in their numeric order.
+std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 
-	if (!separator)
-		separator = dictionary.separator;
+	//if (!separator)separator = dictionary.separator;
 
+	/* note: instead of shifting bits of this->value, studies dictionary which can contain
+		- combined values
+		- repeated values (aliases)
+	*/
 	char sep = 0;
-	//for (dict_t::first_type::const_iterator it = dictionary.first.begin(); it != dictionary.first.end(); ++it){
 	for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
 		if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
 			if (sep)
 				ostr << sep;
 			else
-				sep = dictionary.separator;
+				sep = separator ? separator : this->separator; // dictionary.separator;
 			ostr << it->first;
 		}
 		else {
@@ -116,8 +122,7 @@ std::ostream & Flags::valueKeysToStream(std::ostream & ostr, char separator) con
 	return ostr;
 }
 
-/// List keys in their numeric order.
-std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
+std::ostream & Flags::valuesToStream(std::ostream & ostr, char separator) const {
 
 	if (!separator)
 		separator = this->separator;

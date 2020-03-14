@@ -51,23 +51,51 @@ class Flags {
 public:
 
 	typedef unsigned int value_t;
-	//typedef drain::Dictionary<value_t> dict_t;
+
 	typedef drain::Dictionary2<std::string, value_t> dict_t;
 
-	Flags(const dict_t &dictionary, char separator = 0) : value(0), dictionary(dictionary), separator(separator?separator:dictionary.separator) {
+	Flags(value_t & value, const dict_t & dictionary, char separator = 0) : value(value), dictionary(dictionary), separator(separator?separator:dictionary.separator) {
 	}
 
-	Flags(const Flags & flagset) : value(flagset.value), dictionary(flagset.dictionary), separator(flagset.separator) {
-
+	Flags(const Flags & flags) : value(flags.value), dictionary(flags.dictionary), separator(flags.separator) {
 	};
 
-	/// Set flags, combined to
+
+	/// Set desired flags. Does not unset any flag.
+	inline
+	void set(value_t x){
+		value = value | x;
+	};
+
+	/// Unset desired flags. Does not set any flag.
+	inline
+	void unset(value_t x){
+		value = (value & ~x);
+	};
+
+	/// Set desired flags. Does not unset any flag.
+	inline
+	void reset(){
+		value = 0;
+	}
+
+	/// Sets value, ie. set or unsets all the flags.
 	/**
 	 *   \param x - bit values 1, 2, 4, 8 ... etc combined with \c OR function.
 	 */
 	inline
 	Flags & operator=(value_t x){
 		value = x;
+		return *this;
+	}
+
+	/// Copies flags as an integer \c value. Same dictionary not checked.
+	/**
+	 *   \param flags -
+	 */
+	inline
+	Flags & operator=(const Flags & flags){
+		value = flags.value;
 		return *this;
 	}
 
@@ -79,7 +107,7 @@ public:
 
 	operator std::string() const {
 		std::stringstream sstr;
-		valueKeysToStream(sstr);
+		valuesToStream(sstr);
 		return sstr.str();
 	}
 
@@ -93,16 +121,16 @@ public:
 	 *   \param ostr
 	 *   \param separator - character appended between keys
 	 */
-	std::ostream & valueKeysToStream(std::ostream & ostr, char separator=0) const;
+	std::ostream & valuesToStream(std::ostream & ostr=std::cout, char separator=0) const;
 
 	/// List all the keys in their numeric order.
 	/**
 	 *   \param ostr - output stream
 	 *   \param separator - character appended between keys
 	 */
-	std::ostream & keysToStream(std::ostream & ostr, char separator=0) const;
+	std::ostream & keysToStream(std::ostream & ostr=std::cout, char separator=0) const;
 
-	value_t value;
+	value_t & value;
 
 	const dict_t & dictionary;
 
@@ -113,7 +141,7 @@ public:
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const drain::Flags & flags) {
-	return flags.valueKeysToStream(ostr);
+	return flags.keysToStream(ostr);
 }
 
 } // drain::
