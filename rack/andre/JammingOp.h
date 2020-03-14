@@ -81,7 +81,7 @@ public:
 	// \param windowWidth - windowWidth [kilometres]
 	// JammingOp(int windowWidth=5000, float windowHeight=10.0, float sensitivity = 0.5, float eWidth = 1.0f, float eHeight = 0.0f) :
 	// JammingOp(double smoothnessThreshold = 5.0, double sampleContent=0.5, double weightLower = 0.1, double maxCurvature = 0.001, double distanceMin = 40.0, int debugRow=-1) :
-	JammingOp(double smoothnessThreshold = 5.0, double distanceMin = 80.0, double weightLower = 2.0, int debugRow=-1) : // , double derivativeDifferenceMax = 0.0001
+	JammingOp(double smoothnessThreshold = 5.0, double distanceMin = 80.0, double weightLower = 10.0, int debugRow=-1) : // , double derivativeDifferenceMax = 0.0001
 		DetectorOp(__FUNCTION__,"Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.",
 				"signal.emitter.jamming")
 	{
@@ -159,13 +159,13 @@ protected:
 	/// Returns the beam-oriented derivative of the dBZ field. In case of no-data, returns std::numeric_limits<double>::max().
 	inline
 	static
-	double derivativeDBZ(const PolarODIM &odimIn, const Image &src, const int & i, const int & j, const int span = 10){
-		const int iLower = std::max(i-span, 0);
-		const double zLower = src.get<double>(iLower,j);
-		if ((zLower != odimIn.nodata)&&(zLower != odimIn.undetect)){
-			const int iUpper = std::min(i+span, static_cast<int>(src.getWidth())-1);
-			const double zUpper = src.get<double>(iUpper,j);
-			if ((zUpper != odimIn.nodata)&&(zUpper != odimIn.undetect)){
+	double derivativeDBZ(const PolarODIM &odimIn, const Image &src, int i, int j, int span = 10){
+		int iLower = std::max(i-span, 0);
+		double zLower = src.get<double>(iLower,j);
+		if  (odimIn.isValue(zLower)){
+			int iUpper = std::min(i+span, static_cast<int>(src.getWidth())-1);
+			double zUpper = src.get<double>(iUpper,j);
+			if (odimIn.isValue(zUpper)){
 				return (zUpper - zLower)/(odimIn.rscale*static_cast<double>(iUpper-iLower));
 			}
 		}

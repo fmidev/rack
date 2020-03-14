@@ -55,11 +55,11 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 	//ODIMPathList paths;
 	ODIMPathList paths;
-	DataSelector selector; //("/data[0-9]+/?$");
+	DataSelector selector(ODIMPathElem::DATA); //("/data[0-9]+/?$");
 	selector.setParameters(resources.select);
 	resources.select.clear();
 	// selector.getPaths(resources.cartesianHi5, paths); // RE2
-	selector.getPaths(resources.cartesianHi5, paths, ODIMPathElem::DATA);
+	selector.getPaths3(resources.cartesianHi5, paths);// , ODIMPathElem::DATA);
 
 	unsigned short count = 0;
 

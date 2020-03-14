@@ -87,11 +87,10 @@ public:
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		typename cont_t::const_iterator itLower = this->begin();
-		//lookUp.resize(n, this->begin());
+
 		lookUp.resize(n, itLower);
 
-		// key_t min = 0;
-		// typename cont_t::iterator itLower = this->begin();
+		// Signed, because scaling physical values may cause underflow
 		int index, indexLower=0;
 
 		//for (typename cont_t::reverse_iterator it=this->rbegin(); it!=this->rend(); ++it){
@@ -100,17 +99,17 @@ public:
 			index = static_cast<int>(scaling.inv(it->first));
 
 			if (index < 0){
-				mout.warn() << "lower bound " << it->first << " mapped to negative index (" << index << "), skipping " << mout.endl;
+				mout.warn() << "lower bound " << it->first << " mapped to index (" << index << ") < 0, skipping " << mout.endl;
 				continue;
 			}
 
 			if (static_cast<size_t>(index) >= n){
-				mout.warn() << "lower bound " << it->first << " mapped to (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
+				mout.warn() << "lower bound " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
 				continue;
 			}
 
 			if (indexLower < index){
-				mout.note() << "adding [" << indexLower << '-' << index << "[ -> \t";
+				mout.debug() << "adding [" << indexLower << '-' << index << "[ -> \t";
 				mout << '[' << itLower->first << "] // " << itLower->second << mout.endl;
 			}
 
@@ -126,7 +125,7 @@ public:
 
 		index = n;
 		if (indexLower < index){
-			mout.note() << "padding [" << indexLower << '-' << index << "[ -> \t";
+			mout.debug() << "padding [" << indexLower << '-' << index << "[ -> \t";
 			mout << '[' << itLower->first << "] // " << itLower->second << mout.endl;
 		}
 		for (int i=indexLower; i<index; ++i){
@@ -135,6 +134,41 @@ public:
 
 		return lookUp;
 	}
+
+	// inline
+	typename cont_t::const_iterator retrieve(double d) const {
+
+		typename cont_t::const_iterator it = this->begin();
+		typename cont_t::const_iterator rit = it; // result
+
+		while (it != this->end()){
+			if (it->first > d)
+				return rit;
+			rit = it;
+			++it;
+		}
+
+		return rit; // may be invalid
+
+	}
+
+	// inline
+	typename cont_t::iterator retrieve(double d) {
+
+		typename cont_t::iterator  it = this->begin();
+		typename cont_t::iterator rit = it;
+
+		while (it != this->end()){
+			if (it->first > d)
+				return rit;
+			rit = it;
+			++it;
+		}
+
+		return rit; // may be invalid
+
+	}
+
 
 	/*
 	inline

@@ -145,7 +145,8 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	drain::VariableMap & classWhat = dstClass.getWhat();
 	std::stringstream sstr;
 
-	const classdict_t & dict = getClassDict();
+	//const classdict_t & dict = getClassDict();
+	const classdict_t & dict = getClassPalette().dictionary;
 	mout.debug(1) <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
 
 	sstr << index << ':' << dict.getValue(index);

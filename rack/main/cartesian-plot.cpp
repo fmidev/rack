@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 
-
+#include <drain/util/Input.h>
 #include <drain/image/File.h>
 
 //#include <drain/imageops/RecursiveRepairerOp.h>
@@ -70,6 +70,7 @@ void CartesianPlotFile::exec() const {
 		mout.note() << " no method set, using " << composite.getMethod() << " (see --cMethod) " << mout.endl;
 	}
 
+	/*
 	const bool STDIN = (value.length()==1) && (value.at(0)=='-');
 
 	std::ifstream ifstr;
@@ -85,6 +86,10 @@ void CartesianPlotFile::exec() const {
 	}
 
 	std::istream &istr = STDIN ? std::cin : ifstr; // std::cin;
+	*/
+
+	drain::Input input(value);
+	//std::istream &istr = input;
 
 	std::string line;
 	double lat;
@@ -94,11 +99,12 @@ void CartesianPlotFile::exec() const {
 
 	std::stringstream sstr;
 
-	while ( getline(istr, line) ){
+	while ( getline((std::istream &)input, line) ){
 
 		line = line.substr(0, line.find_first_of("%#"));
+
 		if (!line.empty()){
-			// if ((line.at(0) != '%')&&(line.at(0) != '#')){
+
 			sstr.clear();
 			sstr.str(line);
 			sstr >> lon >> lat;
@@ -107,17 +113,14 @@ void CartesianPlotFile::exec() const {
 				sstr >> w;
 			else
 				w = 1.0;
-			//std::cout << '#' << line << '\n';
+			// std::cout << '#' << line << '\n';
 			// std::cout << lon << ',' << lat << '\t' << d << ',' << w << '\n';
 			composite.addUnprojected(lon, lat, d, w);
-			//std::cout << i << ' ' << x << '\t' << y << '\n';
-			//}
+
 		}
 	}
 
-	ifstr.close();
-
-
+	//ifstr.close();
 
 }
 

@@ -175,6 +175,10 @@ public:
 
 	void reset();
 
+	/// Add one color
+	//void addEntry(double min, const std::string &id, double red=0.0, double green=0.0, double blue=0.0); // alpha
+	void addEntry(double min, double red=0.0, double green=0.0, double blue=0.0, const std::string &id="", const std::string & label =""); // alpha?
+
 	/// Loads a palette from text file
 	/**
 	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-<string> and extensions txt,json
@@ -224,7 +228,7 @@ public:
 	/// Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")
 	void refine(size_t n=256);
 
-	typedef drain::Dictionary2<int, std::string> dict_t;
+	typedef drain::Dictionary2<key_t, std::string> dict_t;
 
 	dict_t dictionary; // temp?
 

@@ -69,10 +69,10 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	DataSetMap<PolarDst> dstDataSets;
 
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
+	this->dataSelector.getPaths3(src, dataPaths); //, ODIMPathElem::DATA);
 
 	if (dataPaths.size() == 0)
-		mout.note() << "no dataPaths matching selector="  << this->dataSelector << mout.endl;
+		mout.note() << "no dataPaths matching selector: "  << this->dataSelector << mout.endl;
 
 	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
 	//drain::Variable elangles(typeid(double));
@@ -84,13 +84,13 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		mout.debug(1) << "considering " << *it << mout.endl;
 
 		//const std::string parent = DataTools::getParent(*it);
-		ODIMPath parent = *it;
-		parent.pop_back();
+		const ODIMPath & parent = *it;
+		//parent.pop_back();
 
 		mout.debug(2) << "parent: " << parent << mout.endl;
-		mout.debug(3) << "parent attribs " << src(parent)["where"].data.attributes << mout.endl;
+		mout.debug(3) << "parent attribs " << src(parent)[ODIMPathElem::WHERE].data.attributes << mout.endl;
 
-		const double elangle = src(parent)["where"].data.attributes["elangle"];
+		const double elangle = src(parent)[ODIMPathElem::WHERE].data.attributes["elangle"];
 
 		if (srcDataSets.find(elangle) == srcDataSets.end()){
 

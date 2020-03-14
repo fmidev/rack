@@ -74,6 +74,21 @@ void PaletteEntry::init(){
 	parameters.reference("id", id);
 }
 
+void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
+
+	PaletteEntry entry = (*this)[min];
+	entry.value = min;
+	entry.color.resize(3);
+	entry.color[0] = red;
+	entry.color[1] = green;
+	entry.color[2] = blue;
+	entry.id = id;
+	entry.label = label;
+
+	dictionary.add(min, id);
+
+}
+
 // Alpha check
 void PaletteEntry::checkAlpha(){
 
@@ -188,7 +203,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	if (labelRE.test(filename)){
 		filePath.set(std::string("palette-") + filename + std::string(".json"));
-		mout.note() << " extending path: " << filename << " => " << filePath << mout.endl;
+		mout.info() << " extending path: " << filename << " => " << filePath << mout.endl;
 	}
 	else {
 		mout.info() << " setting filepath: " << filename << mout.endl;
@@ -205,10 +220,13 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	const std::string s = filePath.toStr();
 
+
 	std::ifstream ifstr;
 	ifstr.open(s.c_str(), std::ios::in);
 
 	if (ifstr.good()){
+
+		mout.note() << "reading: " << filePath.toStr() << mout.endl;
 
 		if (filePath.extension == "txt"){
 			loadTXT(ifstr);
@@ -225,8 +243,10 @@ void Palette::load(const std::string & filename, bool flexible){
 	}
 	else {
 
+		ifstr.close();
+
 		if (!flexible){
-			ifstr.close();
+			//ifstr.close();
 			mout.error() << " opening file '" << filename << "' failed" << mout.endl;
 			return;
 		}
@@ -283,7 +303,7 @@ void Palette::load(const std::string & filename, bool flexible){
 				return;
 			}
 
-			mout.note() << "found: " << finalFilePath.toStr() << mout.endl;
+			mout.note() << "reading: " << finalFilePath.toStr() << mout.endl;
 
 			reset();
 
@@ -543,13 +563,15 @@ void Palette::updateDictionary(){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	this->dictionary.clear();
+
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		//if (it->second.hidden)
-		mout.note() << "add " << it->first << ' ' << it->second.label << mout.endl;
-		this->dictionary.add(it->first, it->second.label);
+		mout.info() << "add " << it->first << ' ' << it->second.label << mout.endl;
+		this->dictionary.add(it->first, it->second.id);
 	}
 
-	this->dictionary.toOstr(std::cout, '\n');
+	//this->dictionary.toOstr(std::cout, '\n');
 
 }
 
@@ -766,9 +788,10 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		if (!it->second.hidden){
+			mout.warn() << it->second.id << mout.endl;
 			//entry.map.append(it->second.map, true);
 			entry = it->second; // if color.size() != 3 ??
-			entry.id = "koe";
+			//entry.id = "koe";
 			entry.getParameters().reference("color", entry.color = it->second.color); // relocate
 			entry.getParameters()["color"].setSeparator(',');
 			//entry.color = it->second.color;

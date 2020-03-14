@@ -83,6 +83,7 @@ void CmdInputFile::exec() const {
 
 		if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
+			// mout.note() << (*resources.currentHi5)("dataset1/data1")[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
 			//resources.setSource(*resources.currentHi5, *this); wronk
 		}  //
 		else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
@@ -141,7 +142,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	Hi5Tree srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
-
+	// hi5::Hi5Base::writeText(srcTmp, std::cerr);
 
 	if (mout.isDebug(6)){
 		mout.debug(2) << "input data:" << mout.endl;
@@ -462,15 +463,16 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	/// Common dataSetSelector for srcRoot and dstRoot
 	DataSelector dataSetSelector;
 	dataSetSelector.setParameters(resources.select); //??
+	dataSetSelector.pathMatcher = "dataset:"; // <fix
 	resources.select.clear();
 
 	// Consider generalization for Carts
 	std::map<double,ODIMPath> srcPaths;
-	dataSetSelector.getPaths(srcRoot, srcPaths, ODIMPathElem::DATASET);
+	dataSetSelector.getPaths3(srcRoot, srcPaths); // ODIMPathElem::DATASET);
 
 	std::map<double,ODIMPath> dstPaths;
-	dataSetSelector.getPaths(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
-
+	//dataSetSelector.getPaths(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
+	dataSetSelector.getPaths3(dstRoot, dstPaths); // RE2
 
 	mout.debug() << "traverse paths" << mout.endl;
 	/// Traverse the child paths of srcRoot dataset[i]

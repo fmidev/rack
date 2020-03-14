@@ -64,7 +64,7 @@ public:
 		odim.type = "";
 		odim.quantity = "";
 		dataSelector.quantity = "^DBZH$";
-
+		//dataSelector
 		//odim.quantity = "DBZH";
 
 	};

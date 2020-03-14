@@ -137,12 +137,36 @@ void ImageOpRacklet::exec() const {
 
 	// What about iSelector?
 	DataSelector imageSelector;
+	imageSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
 	imageSelector.setParameters(resources.select);
 	resources.select.clear();
-	imageSelector.convertRegExpToRanges();
+	//imageSelector.convertRegExpToRanges(); OLDISH
 	imageSelector.count = 1;
 	mout.debug() << "selector: " << imageSelector << mout.endl;
 
+
+	// skip quantity fow later traversal, accept now all the datasetN's ?
+	// ORIG quantity => in-place
+	// TODO: if same quantity, use temp?
+	const std::string quantity(imageSelector.quantity); // note: might be regexp
+
+	ODIMPathList paths;
+	//imageSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
+	imageSelector.getPaths3(*resources.currentHi5, paths);
+
+	if (paths.empty()){
+		mout.warn() << "no paths found with selector: " << imageSelector << mout.endl;
+		return;
+	}
+	else { //if (mout.isDebug(-1)) {
+		mout.warn() << "Selector results: " << mout.endl;
+		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
+			mout.warn() << '\t' << *it << mout.endl;
+	}
+
+
+	// DST properties
+	// Check if dst quantity has been set explicitly
 	std::string dstQuantity;
 	if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
 		EncodingODIM odim;
@@ -160,29 +184,23 @@ void ImageOpRacklet::exec() const {
 		mout.debug(1) << "outputs same quantity(s) " << mout.endl;
 	}
 
-	// skip quantity fow later traversal, accept now all the datasetN's ?
-	// ORIG quantity => in-place
-	// TODO: if same quantity, use temp?
-	const std::string quantity(imageSelector.quantity);
-
-	ODIMPathList paths;
-	imageSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
-
-	if (paths.empty()){
-		mout.warn() << "no paths found with selector: " << imageSelector << mout.endl;
-		return;
-	}
-	else if (mout.isDebug(1)) {
-		mout.warn() << "Selector results: " << mout.endl;
-		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
-			mout.warn() << *it << mout.endl;
-	}
-
 	// Main loop: visit each /dataset<n>
 	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 
 		// Results will be stored in the same datasetN.
-		DataSet<dst_t > dstDataSet((*resources.currentHi5)(*it), quantity);
+		if (it->empty()){
+			mout.error() << "empty path" << mout.endl;
+			continue;
+		}
+		if (it->begin()->isRoot()){
+			mout.warn() << "path starts with root" << mout.endl;
+			//continue;
+		}
+
+		const ODIMPathElem & e = *it->begin();
+		mout.warn() << "using: " << e << " [" << quantity << "]"<< mout.endl;
+		//DataSet<dst_t > dstDataSet((*resources.currentHi5)(*it), quantity);
+		DataSet<dst_t > dstDataSet((*resources.currentHi5)[e], quantity);
 
 		const size_t QUANTITY_COUNT = dstDataSet.size();
 
@@ -196,7 +214,17 @@ void ImageOpRacklet::exec() const {
 		// mout.warn()
 		mout.debug(1) << "path: " << *it << " contains " << QUANTITY_COUNT << " quantities, and... " << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
 		if (QUANTITY_COUNT == 0){
-			mout.warn() << "no quantities with selection /" << quantity << "/ to process" << mout.endl;
+			//mout.warn() << dstDataSet.hasQuality() << mout.endl;
+			//mout.warn() << "no quantities with regExps /" << imageSelector.quantityRegExp << " and " << imageSelector.qualityRegExp << " to process, skipping" << mout.endl;
+			mout.warn() << "no quantities with regExp " << quantity  << " to process, skipping" << mout.endl;
+			//PlainData<dst_t> & q =  dstDataSet.getQualityData();
+			//dstDataSet.getQualityData()
+			if (DATASET_QUALITY)
+				mout.warn() << "but has dataset-level quality... '" << dstDataSet.getQuality() << "'" << mout.endl;
+			// if (!q.data.isEmpty())
+			//	mout.warn() << "but has quantity quality... '" << q << "'" << mout.endl;
+
+			return;
 		}
 
 		/// 1st loop: Add data, not quality yet (only check it)
@@ -271,7 +299,6 @@ void ImageOpRacklet::exec() const {
 
 		}
 
-		/// Add quality, if found.
 		mout.debug(1) << "Add quality, if found" << mout.endl;
 
 		//  Case 1: at least some specific quality is used (and dataset-level )

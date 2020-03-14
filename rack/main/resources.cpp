@@ -47,7 +47,7 @@ const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinateP
 RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
 		currentGrayImage(NULL), scriptExec(scriptParser.script) { //inputSelect(0),
 	polarAccumulator.setMethod("WAVG");
-	andreSelect = "dataset=1,count=1";
+	andreSelect = "dataset1,count=1";
 }
 
 void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
@@ -68,17 +68,20 @@ void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
 
 drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
-	drain::Logger mout("RackResources", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
 
 	/// Step 1: copy current H5 metadata (what, where, how)
 	//DataSelector selector("data[0-9]+");
-	DataSelector selector;
+	DataSelector selector(ODIMPathElem::DATA);
+	// selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	// selector.pathMatcher.setElems(ODIMPathElem::DATA);
 	selector.setParameters(select);
 	selector.count = 1; // warn if not 1?
 	ODIMPath path;
-	selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	//selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	selector.getPath3(*currentHi5, path);
 
 	if (path.empty()){
 		mout.note() << "no data groups found with selector '" << select << "'" << mout.endl;
@@ -86,7 +89,8 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	}
 
 	//else {
-	mout.debug(1) << "using path=" << path << mout.endl;
+	mout.debug() << "using path=" << path << mout.endl;
+	//mout.note() << (*currentHi5)(path)[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
 	DataTools::getAttributes(*currentHi5, path, statusMap);
 	// mout.debug() << statusMap << mout.endl;
 	//}
@@ -106,14 +110,15 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	statusMap["composite"] = composite.toStr();
 	statusMap["andreSelect"] = andreSelect;
 
-	getImageInfo("img:colorImage",   &colorImage, statusMap);
-	getImageInfo("img:grayImage",    &grayImage,  statusMap);
-	getImageInfo("img:currentImage",     currentImage,     statusMap);
-	getImageInfo("img:currentGrayImage", currentGrayImage, statusMap);
+	getImageInfo(&colorImage, statusMap["img:colorImage"]);
+	getImageInfo(&grayImage, statusMap["img:grayImage"]);
+	getImageInfo(currentImage, statusMap["img:currentImage"]);
+	getImageInfo(currentGrayImage, statusMap["img:currentGrayImage"]);
 
 	return statusMap;
 }
 
+/*
 void RackResources::getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap){
 	std::stringstream sstr;
 	if (ptr){
@@ -124,93 +129,56 @@ void RackResources::getImageInfo(const char *label, const drain::image::Image *p
 	}
 	statusMap[label] = sstr.str();
 }
+*/
 
+void RackResources::getImageInfo(const drain::image::Image *ptr, Variable & entry) const {
+	std::stringstream sstr;
+	if (ptr){
+		ptr->toOStr(sstr);
+	}
+	else {
+		sstr << "NULL";
+	}
+	entry = sstr.str();
+}
 
 bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	/* COPIED
-	cmdImage.imageSelector.setParameters(resources.select);
-	mout.debug() << "determining current gray image" << mout.endl;
-	mout.debug(2) << cmdImage.imageSelector << mout.endl;
-	ODIMPath path;
-	cmdImage.imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	mout.debug(1) << "path: '" << path << "'" << mout.endl;
-	resources.currentGrayImage = & (*resources.currentHi5)(path)[odimARRAY].data.dataSet;  // CREATES???
-	resources.currentImage     =   resources.currentGrayImage;
-	*/
-
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
 	ODIMPath path;
 
-	/*
-	drain::Flags flags(ODIMPathElem::getDictionary());
-	flags = ODIMPathElem::DATA | ODIMPathElem::QUALITY;
-	bool result = imageSelector.getPathNEW(*currentHi5, path, flags);
+	if (imageSelector.getPath3(*currentHi5, path)){
 
-	if (result){
-		path << odimARRAY;
-		currentPath = path;
-	}
-	else {
-		mout.debug() << "no image data found with image selector: " << imageSelector << ", flags='" << flags << "'" << mout.endl;
-		// EXIT_ON_DATA_FAIL  here?
-	}
-	*/
-	bool result = imageSelector.getPath3(*currentHi5, path);
+		mout.info() << "derived path: '" << path << "'" << mout.endl;
 
-	if (!path.back().is(ODIMPathElem::ARRAY)){
-		mout.debug() << "adding /data" << path << "'" << mout.endl;
-		path << ODIMPathElem(ODIMPathElem::ARRAY);
-	}
+		drain::image::Image & img = (*currentHi5)(path)[ODIMPathElem::ARRAY].data.dataSet;
+		mout.info() << img.getProperties().get("what:quantity", "?") << ", scaling: " << img.getScaling() << "  " << img << mout.endl;
 
-	mout.note() << "derived path: '" << path << "'" << mout.endl;
-
-	drain::image::Image & img = (*currentHi5)(path).data.dataSet;
-
-	if (!img.isEmpty()){
-		DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded (or for image processing ops?)
-	}
-
-	// Hence, image may also be empty.
-	currentImage     = & img;
-	currentGrayImage = & img;
-
-	return result;
-
-	/*
-	if (imageSelector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-
-		path << ODIMPathElem(ODIMPathElem::ARRAY);
-		//const ODIMPathList::const_iterator it = paths.begin();
-		mout.info() << "selected: " << path << mout.endl;
-		drain::image::Image & img = (*currentHi5)(path).data.dataSet;
 		if (!img.isEmpty()){
-			// mout.warn() << "selected: " << img.properties << mout.endl;
-			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded
-			currentImage     = & img;
-			currentGrayImage = & img;
-			//img.getCoordinatePolicy().
-			//img.properties["coordinatePolicy"] = 3; //="1,2,3,4";
-			mout.debug(1) << "selected: " << *currentImage << mout.endl;
-			return true;
+			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded (or for image processing ops?)
 		}
 		else {
-			// consider
-			dataOk = false;
-			mout.warn() << "empty data in path: " << path << mout.endl;
-			return false;
+			mout.debug() << "empty image: " << img.properties << mout.endl;
+			mout.warn()  << "empty image: " << img << mout.endl;
 		}
+
+		// Hence, image may also be empty.
+		currentImage     = & img;
+		currentGrayImage = & img;
+
+		return true;
+
 	}
 	else {
-		// if EXIT_ON_DATA_FAIL
-		mout.note() << "selector: " << imageSelector << mout.endl;
-		mout.warn() << "no image data found in " << path << mout.endl;
+		// if (path.empty()){
+		mout.warn() << "no paths found with " << imageSelector << ", skipping..." << mout.endl;
 		return false;
 	}
-	*/
+
+
 
 }
 

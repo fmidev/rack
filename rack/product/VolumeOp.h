@@ -116,7 +116,7 @@ protected:
 template <class M>
 void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug(2) << *this << mout.endl;
@@ -128,7 +128,9 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
+	//this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
+	this->dataSelector.getPaths3(src, dataPaths); // RE2
+
 
 	if (dataPaths.empty()){
 		mout.warn() << "no dataset's selected" << mout.endl;

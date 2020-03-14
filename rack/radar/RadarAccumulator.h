@@ -103,6 +103,7 @@ public:
 	inline
 	void setTargetEncoding(const std::string & encoding){
 		targetEncoding = encoding;
+		//odim.setValues(encoding); // experimental
 	}
 
 	inline

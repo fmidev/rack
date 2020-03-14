@@ -89,7 +89,8 @@ struct NodeHi5 {
 		attributes.importMap(n.attributes); return *this;
 	};
 
-	void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
+	//void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
+	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const;
 
 	/// Experimental
 	bool noSave;  // OK!

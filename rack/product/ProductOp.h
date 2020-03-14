@@ -227,7 +227,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	int index = 0;
 
 	// NEW
-	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET);
+	this->dataSelector.getPaths3(src, dataPaths); //, ODIMPathElem::DATASET);
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 		mout.debug(2) << "add: " << index << '\t' << *it  << mout.endl;

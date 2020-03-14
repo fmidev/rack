@@ -92,7 +92,8 @@ void CmdImage::convertImage(const Hi5Tree & src, const DataSelector & selector, 
 	drain::Logger mout("CmdImage", __FUNCTION__);
 
 	ODIMPath path;
-	selector.getPathNEW(src, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	//selector.getPathNEW(src, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+	selector.getPath3(src, path);
 
 	if (path.empty()){
 		mout.warn() << "path empty" << mout.endl;
@@ -155,10 +156,8 @@ public:
 			return resources.grayImage;
 		}
 		else { // resources.currentImage != &resources.grayImage
-			mout.note() << " no current image, creating a copy (graylevel)" << mout.endl;
+			mout.note() << " currentImage not modifiable, creating a copy to grayImage" << mout.endl;
 			CmdImage::convertImage(*resources.currentHi5, selector, "", resources.grayImage);  // TODO check
-			//resources.currentGrayImage = &resources.grayImage;
-			//resources.currentImage     = &resources.grayImage;
 			return resources.grayImage;
 		}
 	}
@@ -181,16 +180,19 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector;
+		DataSelector iSelector(ODIMPathElem::QUALITY); // , ODIMPathElem::ARRAY);
+		//mout.note() << "alphaSrc selectar:"  << iSelector << mout.endl;
+		// iSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
 		iSelector.setParameters(resources.select);
 		resources.select.clear();
+		mout.note() << "alphaSrc selectar:"  << iSelector << mout.endl;
 
 		// Source image (original data)
 		ODIMPath path;
-		iSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
-		path << ODIMPathElem::ARRAY;
-		mout.debug() << "alphaSrc path:"  <<  path << mout.endl;
-		const drain::image::Image &alphaSrc = (*resources.currentHi5)(path).data.dataSet;
+		iSelector.getPath3(*resources.currentHi5, path); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		//path << ODIMPathElem::ARRAY;
+		mout.note() << "alphaSrc path:"  <<  path << mout.endl;
+		const drain::image::Image &alphaSrc = (*resources.currentHi5)(path)[ODIMPathElem::ARRAY].data.dataSet;
 		ODIM alphaSrcODIM(alphaSrc);
 
 
@@ -265,12 +267,15 @@ public:
 		RackResources & resources = getResources();
 
 		DataSelector imageSelector;
+
 		imageSelector.setParameters(resources.select);
+		imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		resources.select.clear();
 
 		// Source image (original data)
 		ODIMPath path;
-		imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		// imageSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		imageSelector.getPath3(*resources.currentHi5, path);
 		path << ODIMPathElem::ARRAY;
 		mout.debug() << "alphaSrc path:"  <<  path << mout.endl;
 		//hi5::NodeHi5 & node = (*resources.currentHi5)(path).data;
@@ -317,7 +322,7 @@ public:
 	}
 
 };
-static CommandEntry<CmdImageTransp> cmdImageTransp("imageTransp");
+static CommandEntry<CmdImageTransp> cmdImageTransp; //("imageTransp");
 
 
 
@@ -384,28 +389,6 @@ public:
 // static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
-/*
-class CmdPaletteRead : public SimpleCommand<std::string> {
-
-public:
-
-	CmdPaletteRead() : SimpleCommand<std::string>(__FUNCTION__, "Load palette, do not apply it (before --palette).", "filename", "", "<filename>.[txt|json]") {
-	};
-
-	void exec() const {
-
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
-
-		RackResources & resources = getResources();
-
-		resources.palette.load(value, true);
-
-	}
-
-};
-static CommandEntry<CmdPaletteRead> cmdPaletteRead;
-*/
-
 // See also CmdPaletteIn and CmdPaletteOut in imageOps?
 class CmdPalette : public SimpleCommand<std::string> {
 
@@ -434,8 +417,13 @@ public:
 
 		// if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
 		if ((!resources.select.empty()) || (resources.currentGrayImage == NULL)){  // TODO: remove this
+			cmdImage.imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			//mout.note() << cmdImage.imageSelector << mout.endl;
 			cmdImage.imageSelector.setParameters(resources.select);
-			resources.setCurrentImage(cmdImage.imageSelector);
+			//mout.note() << cmdImage.imageSelector << mout.endl;
+			if (resources.setCurrentImage(cmdImage.imageSelector))
+				mout.note() << "input metadata: " << resources.currentGrayImage->getProperties() << mout.endl;
+
 
 			/* This may be relevant, keep for 2019
 			cmdImage.imageSelector.setParameters(resources.select);
@@ -468,7 +456,7 @@ public:
 			else
 				resources.palette.load(value, true);
 
-			/// TODO: store palette in dst /datase, or better add palette(link) to Image.
+			/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
 			/*
 			mout.warn() << "palette will be also saved to: " << resources.currentPath << mout.endl;
 			Hi5Tree & dst = (*resources.currentHi5);
@@ -476,10 +464,17 @@ public:
 			*/
 		}
 
-		//mout.debug(2) << resources.palette << mout.endl;
+		resources.select.clear();
 
-		if (!resources.currentGrayImage->isEmpty()){
-			mout.debug(3) << "input properties: " << resources.currentGrayImage->properties << mout.endl;
+		//mout.debug(2) << resources.palette << mout.endl;
+		if (resources.currentGrayImage == NULL){
+			mout.warn() << "no current gray image, palette loaded only" << mout.endl;
+			//resources.select.clear();
+			return;
+		}
+		else if (!resources.currentGrayImage->isEmpty()){
+			//mout.warn() << "input properties: " << resources.currentGrayImage->getProperties() << mout.endl;
+			mout.debug() << "input properties: " << resources.currentGrayImage->properties << mout.endl;
 			apply();
 		}
 		else {
@@ -488,7 +483,7 @@ public:
 			}
 		}
 
-		resources.select.clear();
+
 
 	}
 
@@ -511,7 +506,7 @@ public:
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		const PolarODIM imgOdim(props);
-		mout.debug() << "input metadata: " << EncodingODIM(imgOdim) << mout.endl;
+		mout.note() << "input metadata: " << EncodingODIM(imgOdim) << mout.endl;
 
 
 		if (imgOdim.quantity.substr(0,4) != "VRAD"){
@@ -559,6 +554,8 @@ public:
 			odim.updateValues(resources.targetEncoding); // do not clear yet
 			mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
 		}
+
+		mout.note() << "params: " << op.getParameters() << mout.endl;
 
 
 		if (dstQuantity.empty()){
@@ -651,11 +648,12 @@ public:
 		//std::map<std::string,std::string> m;
 		DataSelector selector; //("data[0-9]+$");
 		selector.setParameters(resources.select);
+		selector.pathMatcher.setElems(ODIMPathElem::DATA); // | ODIMPathElem::QUALITY);
 		resources.select.clear();
 		mout.debug() << "selector: " << selector << mout.endl;
 		//  selector.getPaths(*resources.currentHi5, paths); // RE2 // todo getFirstData
 		//DataSelector::getPathsByQuantity(*resources.currentHi5, selector, m); // key==quantity, so only one (last) path obtained
-		selector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATA);
+		selector.getPaths3(*resources.currentHi5, paths); //, ODIMPathElem::DATA);
 		//size_t count = m.size();
 		size_t count = paths.size();
 		mout.info() << "found: " << count << " paths " << mout.endl;
@@ -667,7 +665,7 @@ public:
 			mout.note() << "selected: " << *it << mout.endl;
 			Hi5Tree & dst = (*resources.currentHi5)(*it);
 			//drain::image::Image & channel = (*resources.currentHi5)(it->second)["data"].data.dataSet;
-			drain::image::Channel & channel = dst["data"].data.dataSet.getChannel(0);
+			drain::image::Channel & channel = dst[ODIMPathElem::ARRAY].data.dataSet.getChannel(0);
 			if (channel.isEmpty()){
 				mout.warn() << "empty image in " << *it << "/data, skipping" << mout.endl;
 				continue;
@@ -679,9 +677,11 @@ public:
 
 			ODIMPath path;
 			mout.warn() << "note: checking parallel quality unimplemented" << mout.endl;
-			if (DataSelector().getPathNEW(dst, path, ODIMPathElem::QUALITY)){
+			DataSelector qualityDataSelector;
+			qualityDataSelector.pathMatcher.setElems(ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
+			if (qualityDataSelector.getPath3(dst, path)){
 			//if (DataSelector::getQualityPath(*resources.currentHi5, path)){
-				path << ODIMPathElem(ODIMPathElem::ARRAY);
+				//path << ODIMPathElem(ODIMPathElem::ARRAY);
 				mout.note() << "associated quality field for ["<< *it << "] found in " << path << mout.endl;
 				if (tray.alpha.empty()){
 					drain::image::Channel & quality = dst(path).data.dataSet.getChannel(0);

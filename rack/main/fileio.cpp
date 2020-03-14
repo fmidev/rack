@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stddef.h>
 
 #include <util/Log.h>
+#include <util/FilePath.h>
 #include <util/Output.h>
 #include <util/StringMapper.h>
 #include <util/Tree.h>
@@ -111,54 +112,6 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 //static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
-
-/*
-class Output {
-
-public:
-
-	Output(const std::string & filename){ // : filename(filename){
-
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
-		if (filename.empty())
-			mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
-
-		if (filename == "-"){
-			mout.debug() << "opening standard output" << mout.endl;
-		}
-		else {
-			std::string s = getResources().outputPrefix + filename;
-			ofstr.open(s.c_str(), std::ios::out);
-			if (!ofstr.is_open()){
-				mout.error() << "opening '" << s << "' failed" << mout.endl;
-			}
-		}
-	}
-
-	~Output(){
-		ofstr.close();
-	}
-
-	operator std::ostream & (){
-		// drain::Logger mout(__FUNCTION__, __FILE__);
-
-		if (ofstr.is_open()){
-			return ofstr;
-		}
-		else {
-			return std::cout;
-		}
-
-	};
-
-
-protected:
-
-	std::ofstream ofstr;
-
-};
-*/
 
 struct HistEntry : BeanLike {
 
@@ -403,10 +356,12 @@ public:
 					cmdImage.exec();
 				}
 				else { // pointer (resources.currentImage) needs update
-					static DataSelector imageSelector;  //
+					DataSelector imageSelector;  //
+					imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+					//imageSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET,1) << ODIMPathElemMatcher(ODIMPathElem::DATA,1);
 					imageSelector.setParameters(resources.select);
 					resources.select.clear();
-					mout.debug(2) << imageSelector << mout.endl;
+					mout.debug() << imageSelector << mout.endl;
 					if (resources.setCurrentImage(imageSelector)){
 						// OK
 						if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
@@ -593,14 +548,15 @@ public:
 			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 
 			DataSelector selector;
+			selector.pathMatcher.setElems(ODIMPathElem::DATASET);
 			selector.setParameters(resources.select);
-			selector.convertRegExpToRanges();
+			//selector.convertRegExpToRanges();
 			selector.count = 1;
 			//selector.data.max = 0;
 			mout.debug() << "selector: " << selector << mout.endl;
 
 			ODIMPath path;
-			selector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATASET);
+			selector.getPath3(*resources.currentHi5, path);
 
 			mout.info() << "Sampling path: " << path << mout.endl;
 
@@ -647,7 +603,7 @@ public:
 			resources.select.clear();
 
 			Output out(resources.outputPrefix + value);
-			DataOutput::writeToDot(out, *resources.currentHi5, selector.groups);
+			DataOutput::writeToDot(out, *resources.currentHi5, ODIMPathElem::ALL_GROUPS);// selector.groups);
 
 
 		}
@@ -719,16 +675,17 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector; //("/data$");
+		DataSelector iSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
 		iSelector.setParameters(resources.select);
 		resources.select.clear();
 		mout.debug() << iSelector << mout.endl;
 
 		ODIMPathList paths;
-		//getResources().currentHi5->getKeys(paths, options["data"]);
-		iSelector.getPaths(*getResources().currentHi5, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
+		iSelector.getPaths3(*getResources().currentHi5, paths); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
+		drain::FilePath fp(value);
 		/// Split filename to basename+extension.
+		/*
 		static const drain::RegExp r("^(.*)(\\.[a-zA-Z0-9]+)$");
 		r.execute(value);
 		if (r.result.size() != 3){
@@ -737,7 +694,7 @@ public:
 		}
 		const std::string & basename  = r.result[1];
 		const std::string & extension = r.result[2];
-
+		 */
 
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
@@ -761,15 +718,8 @@ public:
 			//path.pop_back(); // strip /data
 			mout.debug(2) << "constructing filename for : " << path <<mout.endl;
 
-			//ODIMPathElem root =  path.front();
-			//ODIMPathElem child  = path.back();
-			//path.pop_back();
-			//ODIMPathElem parent = path.back();
-			//mout.debug(2) << " that is: " << parent << " // " << child <<mout.endl;
-			//mout.debug(2) << " root: " << path.front() << " // " << child <<mout.endl;
-
 			std::stringstream sstr;
-			sstr << basename;
+			sstr << fp.dir << fp.basename;
 			sstr.width(3);
 			sstr.fill('0');
 			sstr << ++i << '_';
@@ -781,7 +731,7 @@ public:
 				sstr << '-';
 			}
 			sstr << img.properties["what:quantity"];
-			sstr << extension;
+			sstr << fp.extension;
 			filenameOut = sstr.str();
 
 			mout.info() << "Writing image file: " << filenameOut << '\t' << *it << mout.endl;

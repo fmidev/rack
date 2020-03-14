@@ -59,7 +59,7 @@ public:
 		}
 
 		// acc.dataSelector.path     = "data[0-9]+$";
-		acc.dataSelector.path = ""; // remove after deprecated
+		//acc.dataSelector.path = ""; // remove after deprecated
 
 		if (acc.dataSelector.quantity.empty())
 			acc.dataSelector.quantity = "^(DBZH|RATE)$";
@@ -72,12 +72,13 @@ public:
 		mout.debug() << acc << mout.endl;
 
 		// NEW
-		acc.dataSelector.convertRegExpToRanges();
+		//acc.dataSelector.convertRegExpToRanges();
 
 		//selector.data.max = 0;
 		//mout.note() << "selector: " << selector << mout.endl;
 		ODIMPath path;
-		acc.dataSelector.getPathNEW(*resources.currentHi5, path, ODIMPathElem::DATASET); //, true);
+		acc.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
+		acc.dataSelector.getPath3(*resources.currentHi5, path);  //, ODIMPathElem::DATASET); //, true);
 
 		const DataSet<PolarSrc> srcDataSet((*resources.currentPolarHi5)(path));
 		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();

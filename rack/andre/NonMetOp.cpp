@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "RhoHVLowOp.h"
+#include "NonMetOp.h"
 
 #include <drain/util/Fuzzy.h>
 
@@ -43,9 +43,9 @@ using namespace drain::image;
 
 namespace rack {
 
-//void RhoHVLowOp::filterImage(const PolarODIM &srcData.odim, const Image &src, Image &dst) const {
+//void NonMetOp::filterImage(const PolarODIM &srcData.odim, const Image &src, Image &dst) const {
 
-void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void NonMetOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -56,25 +56,18 @@ void RhoHVLowOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 	//drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
 	const unsigned int QMIN = dstProb.odim.scaleInverse(0.0);
-	const unsigned int QMAX = dstProb.odim.scaleInverse(1.0);
-	//drain::FuzzyStepsoid<double, double> fuzzyStep(threshold, -fabs(thresholdWidth), QMAX);
-	//drain::FuzzyStep<double> fuzzyStep(threshold+thresholdWidth, threshold-thresholdWidth, QMAX);
-	//drain::FuzzyStep<double> fuzzyStep(threshold - thresholdWidth, threshold + thresholdWidth, QMAX);
-	//drain::FuzzyStep<double> fuzzyStep(threshold.min, threshold.max, QMAX);
+	const unsigned int QMAX = dstProb.odim.scaleInverse(0.95);
 	drain::FuzzyStep<double> fuzzyStep(threshold.max, threshold.min, QMAX);  // inverted
 	mout.debug() << "fuzzy step:" << fuzzyStep << mout.endl;
 
 	Image::const_iterator it = srcData.data.begin();
 	Image::iterator dit = dstProb.data.begin();
 	while (it != srcData.data.end()){
-		if (*it != srcData.odim.nodata){
-			if (*it != srcData.odim.undetect){
-				*dit = fuzzyStep(srcData.odim.scaleForward(*it));
-				//*dit = 64 + fuzzyStep(srcData.odim.scaleForward(*it))/ 2;
-			}
-			else {
-				*dit = 0.0;
-			}
+		if (srcData.odim.isValue(*it)){
+			*dit = fuzzyStep(srcData.odim.scaleForward(*it));
+		}
+		else {
+			*dit = 0.0;
 		}
 		++it; ++dit;
 	}

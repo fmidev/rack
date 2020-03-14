@@ -197,7 +197,9 @@ void CompositeAdd::addPolar() const {
 		resources.dataOk = true; // return if input not ok?
 
 		ODIMPath dataPath;
-		resources.composite.dataSelector.getPathNEW(*(resources.currentPolarHi5), dataPath, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
+		//resources.composite.dataSelector.getPathNEW(*(resources.currentPolarHi5), dataPath, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
+		resources.composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //TAIL
+		resources.composite.dataSelector.getPath3(*(resources.currentPolarHi5), dataPath);
 		if (dataPath.empty()){
 			mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 			//resources.inputOk = false; // REMOVE?
@@ -325,7 +327,9 @@ void CompositeAdd::addCartesian() const {
 	RackResources & resources = getResources();
 
 	ODIMPath dataPath;
-	resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
+	resources.composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
+	resources.composite.dataSelector.getPath3(resources.cartesianHi5, dataPath);
+	//resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 		resources.dataOk = false;

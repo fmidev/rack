@@ -61,18 +61,59 @@ namespace rack {
  */
 
 
-/// Select input data for next command.
+/// Tool for selecting data for next command(s), based on paths, quantities and elevations.
 /**
 
 Most commands apply implicit input data selection criteria,
-typically involving quantities and elevation angle(s).
+typically involving data paths, quantities and/or elevation angles.
+
+Like in general in \b Rack, the parameters of \c --select are ordered, meaning that they can be issued as
+a comma-separated
+string without explicit key names, as long as they are given in order.
+Some remarks on parameters:
+
+- \c path consists of slash '/' separated \e path \e selection \e elements:
+  - a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts
+  - \c what , \c where, \c how - groups containing attributes
+  - <c> dataset<min>:<max> </c>,  <c> data<min>:<max></c> , <c> quality<min>:<max></c>   - indexed groups containing subgroups for actual data and attributes
+  - \c data - unindexed groups containing actual data arrays
+  - \e combined \e selection \e elements created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)
+    - example: <c>what|where|dataset1:3</c>
+  - in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:
+    - <c>data:</c> equals <c>data1:65535</c>; further the colon ':' can be omitted for \c dataset and \c quality (but not for \c data: , to bypass naming conflict inherent in ODIM )
+    - <c>data<index></c> equals <c> data<index>:<index></c> (ie. exact match)
+    - <c>data<index>:</c> equals <c> data<index>:65535</c>
+    - <c>data:<index></c> equals <c> data1:<index></c>
+  - in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment
+    - example: <c>what|data|quality1:5</c> matches <c>what</c>, <c>data1:5</c> and <c>quality1:5</c>
+    - example: <c>what|where|dataset1:3/what|data1:8</c> -- index ranges \e can \e vary on different levels, ie. in slash-separated elements
+- \c quantity is a regular expression
+   - example: <c>^DBZH$</c>, accepting \c DBZH only
+   - example: <c>(DBZH|TH)</c> accepts \c DBZH and \c TH , but also \c DBZHC and \c WIDTH ...
+   - future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities
+- \c elangle defines the range of antenna elevations accepted, range limits included
+    - unlike with path selectors, >c>elangle=<angle></c> abbreviates <c>elangle=<angle>:90</c> (not <c>elangle=<angle>:<angle></c>)
+    - notice that radar metadata may contain real(ized) values like 1.000004723, use \c count=1 to pick a single one within a range
+- \c count is the upper limit of accepted indices of \c dataset ; typically used with \c elangle
+
+The selection functionality is best explained with examples.
+
+\~remark
+./test-content.sh
+\~
+
+\include example-select.inc
+Note that character escaping is needed for '|' on command line.
+
+
 Often, the first data array matching the criteria are used.
 
-One can explicitly change the criteria with \c --select (\c -s) command .
-For example, in data conversions one may wish to focus on VRAD data, not all the data.
 
-The selection command can be applied practically with all the commands processing data.
-In computing meteorological products (\ref products), it affects the following product only.
+One can explicitly change the criteria with \c --select (\c -s) command .
+For example, in data conversions one may wish to focus on certain quantity -- like \c DBZH or \c VRAD -- not all the data.
+
+The selection command can be applied the most commands processing data.
+In computing meteorological products (\ref products) an compositing, it affects the following product only.
 In case of anomaly detectors (\ref andrepage), it applies to all subsequent operators.
 
 Note that some processing commands may not support explicit data selection.
@@ -143,15 +184,32 @@ public:
 		drain::Logger mout(__FILE__, getName());
 
 		//const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
+		/*
 		std::string v = value;
 		if (v.find('/') != std::string::npos){
 			mout.warn() << "short form -Q  supports no slash '/', use --select quantity=" << v << mout.endl;
 		}
 		StringTools::replace(getTransTable(), v);
 		//mout.warn() << v << mout.endl;
+		 */
+		std::string quantity;
+		std::string qualityQuantity;
+
+		StringTools::split2(value, quantity, qualityQuantity,"/");
+		StringTools::replace(getTransTable(), quantity);
+		StringTools::replace(getTransTable(), qualityQuantity);
 
 		RackResources & resources = getResources();
-		resources.select = "quantity=^(" + v + ")$";
+		if (qualityQuantity.empty()){
+			//mout.warn() << "s"  << mout.endl;
+			resources.select = "quantity=^(" + quantity + ")$";
+		}
+		else {
+			mout.warn() << "quantity-specific quality ["<< quantity << "]: check unimplemented for ["<< quantity << "]" << mout.endl;
+			resources.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
+		}
+
+
 		resources.dataOk = true;
 		//getRegistry().run("select", "quantity=^(" + vField + ")$");
 	}
@@ -288,16 +346,15 @@ public:
 
 		RackResources & resources = getResources();
 
-		//RackResources & resources = getResources();
-
-		DataSelector selector(resources.select);
+		DataSelector selector(ODIMPathElem::DATASET);
+		selector.setParameters(resources.select);
 		resources.select.clear();
 		const drain::RegExp quantityRegExp(selector.quantity);
 		selector.quantity.clear();
 		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
 
 		ODIMPathList paths;
-		selector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET); // RE2
+		selector.getPaths3(*resources.currentHi5, paths); //, ODIMPathElem::DATASET); // RE2
 
 
 		if (resources.currentHi5 == resources.currentPolarHi5){
@@ -340,8 +397,11 @@ public:
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
 
 		// drain::Logger mout(__FUNCTION__, getName());
-		selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
-
+		selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET, 0, 0xffff);
+		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA, 0, 0xffff);
+		//selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
+		selector.setParameters(params);  // just for checking, also group syntax (dataset:data:...)
 		//selector.convertRegExpToRanges(); // transitional op for deprecated \c path
 
 	}
@@ -358,7 +418,7 @@ public:
 		mout.info() << "delete existing no-save structures " << mout.endl;
 		hi5::Hi5Base::deleteNoSave(dst);
 
-		mout.debug() << "selector: " << selector << mout.endl;
+		mout.warn() << "selector: " << selector << ", matcher=" << selector.pathMatcher << mout.endl;
 
 		ODIMPathList paths;
 		selector.getPaths3(dst, paths);
@@ -398,9 +458,9 @@ public:
 
 	virtual
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		//drain::Logger mout(__FUNCTION__, getName());
+		drain::Logger mout(__FUNCTION__, getName());
 		//selector.groups = ODIMPathElem::ALL_GROUPS; //DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY;
-		selector.pathMatcher = "";
+		selector.pathMatcher.clear(); //= "";
 		//selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
 		selector.setParameters(params);  // just for checking, also group syntax (dataset:data:...)
 		// selector.convertRegExpToRanges(); // transition support...
@@ -424,12 +484,13 @@ public:
 				it->second.data.noSave = true;
 
 				for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
-					if (dit->first.is(ODIMPathElem::DATA)){
+					//if (dit->first.is(ODIMPathElem::DATA)){
+					if (dit->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 						dit->second.data.noSave = true;
 						// Note: also for empty data keep attributes (esp. what:quantity)
 						// because quantity-specific quality may be searched for
 						for (Hi5Tree::iterator ait = dit->second.begin(); ait != dit->second.end(); ++ait){
-							if (!ait->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+							if (!ait->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))// | ODIMPathElem::ARRAY))
 								ait->second.data.noSave = true;
 						}
 					}
@@ -438,17 +499,19 @@ public:
 
 		}
 
+		//hi5::Hi5Base::writeText(dst, std::cerr);
+
 		mout.debug(1) << "selector for saved paths: " << selector << mout.endl;
 
 		ODIMPathList savedPaths;
 		selector.getPaths3(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
-			mout.debug(1) << "set save: " << *it << mout.endl;
+
+			//mout.warn() << "set save: " << *it << mout.endl;
+
 			ODIMPath p;
-			//dst(*it).data.noSave = false;
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
-				//if (pit->belongsTo(ODIMPathElem::DATASET))
 				p << *pit;
 				dst(p).data.noSave = false;
 			}
@@ -457,13 +520,15 @@ public:
 			if (p.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 				Hi5Tree & d = dst(p);
 				for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
-					mout.debug(1) << "also save: " << p << '|' << dit->first << mout.endl;
-					if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
+					//mout.warn() << "also save: " << p << '|' << dit->first << mout.endl;
+					if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::ARRAY))
 						dit->second.data.noSave = false;
 				}
 			}
 
 		}
+
+		//hi5::Hi5Base::writeText(dst, std::cerr);
 
 		hi5::Hi5Base::deleteNoSave(dst);
 
@@ -659,7 +724,7 @@ public:
 
 		typedef DstType<OD> DT;
 
-		DataSelector selector; // todo implement --select
+		//DataSelector selector; // todo implement --select
 
 		//mout.debug() << "start upd" << mout.endl;
 
@@ -675,7 +740,7 @@ public:
 
 			mout.debug() << "considering: " << it->first << mout.endl;
 
-			if (it->first.is(ODIMPathElem::DATASET) && selector.dataset.contains(it->first.getIndex())){
+			if (it->first.is(ODIMPathElem::DATASET)){ // && selector.dataset.contains(it->first.getIndex())){
 
 				//mout.note() << '@' << it->first << mout.endl;
 				DataSet<DT> dstDataSet(it->second);
@@ -867,6 +932,7 @@ public:
 // Various dumps
 
 
+/*
 class CmdDumpEchoClasses : public BasicCommand {
 
 public:
@@ -884,6 +950,7 @@ public:
 	}
 
 };
+*/
 
 class CmdDumpMap : public BasicCommand {
 
@@ -1626,7 +1693,7 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<CmdConvert> cmdConvert;
 	static RackLetAdapter<CmdDelete> cmdDelete;
 	static RackLetAdapter<CmdDumpMap> cmdDumpMap; // obsolete?
-	static RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
+	//static RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
 
 	static RackLetAdapter<CmdHelpRack> help("help", 'h');
 	static RackLetAdapter<CmdHelpExample> cmdHelpExample;

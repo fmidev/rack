@@ -57,7 +57,7 @@ Output::Output(const std::string & filename){ // : filename(filename){
 
 Output::~Output(){
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.note() << "closing... " << mout.endl;
+	mout.debug() << "closing... " << mout.endl;
 	ofstr.close();
 }
 

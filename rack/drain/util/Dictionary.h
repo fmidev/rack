@@ -47,6 +47,7 @@ namespace drain {
 /**
  *  TODO: hide first and second so that an entry cannot be assigned to either of them
  */
+/*
 template <class T>
 class Dictionary : public std::pair<std::map<std::string,T>, std::map<T,std::string> > {
 
@@ -104,7 +105,7 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary<T> & d) {
 	return d.toOStr(ostr);
 }
-
+*/
 
 /***
  *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but
@@ -129,8 +130,9 @@ public:
 	~Dictionary2(){};
 
 	//virtual
-	void add(const K & key, const V & value){
+	entry_t & add(const K & key, const V & value){
 		this->push_back(entry_t(key, value));
+		return this->back();
 	}
 
 
@@ -142,22 +144,22 @@ public:
 		return this->end();
 	}
 
-	/*
-	typename container_t::iterator findByKey(const K & key){
-		for (typename container_t::iterator it = this->begin(); it != this->end(); ++it){
-			if (it->first == key)
-				return it;
-		}
-		return this->end();
-	}
-	*/
-
 	typename container_t::const_iterator findByValue(const V & value) const {
 		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
 			if (it->second == value)
 				return it;
 		}
 		return this->end();
+	}
+
+	inline
+	bool hasKey(const K & key) const {
+		return (findByKey(key) != this->end());
+	}
+
+	inline
+	bool hasValue(const V & value) const {
+		return (findByValue(value) != this->end());
 	}
 
 	/*
@@ -186,37 +188,38 @@ public:
 	const K & getKey(const V & value) const {
 		typename container_t::const_iterator it = findByValue(value);
 		if (it != this->end())
-			return it->second;
+			return it->first;
 		else {
-			static V empty;
+			static K empty;
 			return empty;
 		}
 	}
 
 	//static	const K defaultKey = K();
 	//static	const V defaultValue = V();
-	void toOstr(std::ostream & ostr = std::cout, char separator=0){
+	void toOStr(std::ostream & ostr = std::cout, char separator=0) const {
 
-			if (!separator)
-				separator = this->separator;
+		if (!separator)
+			separator = this->separator;
 
-			char sep = 0;
-			for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
-				if (sep)
-					ostr << sep;
-				else
-					sep = separator;
-				ostr << it->first << '=' << it->second;
-			}
+		char sep = 0;
+		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (sep)
+				ostr << sep;
+			else
+				sep = separator;
+			ostr << it->first << '=' << it->second;
 		}
+	}
 
-		char separator;
+	char separator;
 };
 
 template <class K, class V>
 inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
-	return dict.toOStr(ostr);
+	dict.toOStr(ostr);
+	return ostr;
 }
 
 

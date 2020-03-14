@@ -126,36 +126,17 @@ public:
 		StringTools::split(p, l, separator);
 
 		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-
-			if (!it->empty()){
-				*this << *it;
-			}
-			else if ((it == l.begin()) && rooted){
-				*this << *it;
-			}
-			else { // trailing: if (it == --l.end()){
-				// skip
-				// warn, esp. intermediate empties?
-			}
-
-			/*
-			else if (it == --l.end()){
-				// else if ((acceptEmpty & END) && (it == --l.end())){
-				// else if ((acceptEmpty & END) && ((++std::list<std::string>::const_iterator(it)) == l.end())){
-				// *this << *it;
-			}
-			else if (acceptEmpty & MIDDLE){
-				*this << *it;
-			}
-			else if ((this->size()==1) && (it->at(0)==separator)){
-
-			}
-			else {
-				// throw
-				std::cerr << "Path::set: not accepting empty element at this position '" << p << "', flags=" << acceptEmpty << "'\n";
-			}
-			 */
+			// root/empty logic moved to append
+			*this << *it;
 		}
+
+	}
+
+	/// Clear path, and add up to 5 first elements
+	void setElems(const elem_t & e1, const elem_t & e2=elem_t(), const elem_t & e3=elem_t(), const elem_t & e4=elem_t(), const elem_t & e5=elem_t()){
+
+		std::list<T>::clear();
+		*this << e1 << e2 << e3 << e4 << e5;
 
 	}
 
@@ -208,10 +189,30 @@ public:
 	}
 	*/
 
-	/// Append an element
-	template <class T2>
-	Path<T> & operator<<(const T2 & elem){
-		this->push_back(elem);
+	/*
+	inline
+	Path<T> & operator<<(const char *elem){
+		*this <<
+	}
+	*/
+
+	/// Append an element. If path is rooted, allows empty (root) element only as the first.
+	// template <class T2>
+	// Path<T> & operator<<(const T2 & elem){
+	Path<T> & operator<<(const elem_t & elem){
+
+		if (!elem.empty()){
+			this->push_back(elem);
+		}
+		else if (this->empty() && rooted){
+			this->push_back(elem);
+		}
+		else { // trailing: if (it == --l.end()){
+			// skip
+			// warn, esp. intermediate empties?
+		}
+
+		//this->push_back(elem);
 		return *this;
 	}
 

@@ -72,7 +72,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.debug(1) << "start1" << mout.endl;
+	mout.debug(1) << "start1" << CLASSNAME << mout.endl;
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();

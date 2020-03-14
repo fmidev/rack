@@ -187,7 +187,8 @@ public:
 
 protected:
 
-	void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
+	// void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
+	void getImageInfo(const drain::image::Image *ptr, Variable & entry) const;
 
 };
 

@@ -22,57 +22,56 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-/*
- * Time.h
- *
- *  Created on: Aug 31, 2010
- *      Author: mpeura
  */
 
-#include <string>
-#include <iostream>
-#include <fstream>
-
-#ifndef DRAIN_OUTPUT_H_
-#define DRAIN_OUTPUT_H_
 
 #include "Log.h"
+#include "Input.h"
+
 
 namespace drain {
 
-/// Output utility. Opens stdout with "-". Closes upon destruction.
-/**
- *  Note: This class does nout (yet) support format strings of arbitrary size.
- *  (output str length has limited size).
- *
- */
-class Output {
+Input::Input(const std::string & filename){ // : filename(filename){
 
-public:
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	/// Opens stdout with "-".
-	Output(const std::string & filename);
+	if (filename.empty())
+		mout.error() << "filename empty (use '-' for stdin)" << mout.endl;
 
-	/// Closes upon destruction.
-	~Output();
+	if (filename == "-"){
+		mout.debug() << "opening standard output" << mout.endl;
+	}
+	else {
+		ifstr.open(filename.c_str(), std::ios::in);
+		if (!ifstr.is_open()){
+			mout.error() << "opening '" << filename << "' failed" << mout.endl;
+		}
+	}
+}
 
-	operator std::ostream & ();
-
-
-protected:
-
-	std::ofstream ofstr;
-
-};
-
-} // drain::
+Input::~Input(){
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.debug() << "closing... " << mout.endl;
+	ifstr.close();
+}
 
 
-#endif /* DRAIN_OUTPUT_H_ */
+Input::operator std::istream & (){
+	// drain::Logger mout(__FUNCTION__, __FILE__);
 
+	if (ifstr.is_open()){
+		return ifstr;
+	}
+	else {
+		return std::cin;
+	}
+
+}
+
+
+} // drain

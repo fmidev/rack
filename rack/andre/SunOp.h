@@ -56,20 +56,18 @@ class SunOp: public DetectorOp {
 public:
 
 	/**
-	 * \param reflMax - maximum expected reflectance of Suneors
-	 * \param maxAltitude - maximum expected altitude of Suneors
-	 * \param reflDev - fuzzy width of  \c reflMax
-	 * \param devAltitude - fuzzy width of \c maxAltitude
+	 * \param beamWidth - "virtual" width of the solar beam; actually the effective beam width of the radar
+	 * \param sensitivity - coefficient
 	 */
-	SunOp(double width = 1.0, double sensitivity=0.5) :
+	SunOp(double beamWidth = 1.0, double sensitivity=0.75) :
 		DetectorOp("Sun","Draw the sun beam", "signal.sun"){
-		parameters.reference("width", this->width = width, "deg");
+		parameters.reference("beamWidth", this->beamWidth = beamWidth, "deg");
 		parameters.reference("sensitivity", this->sensitivity = sensitivity, "0...1");
 		dataSelector.quantity = "^DBZH$";
 	};
 
-	/// Threshold for reflectance Z.
-	double width;
+
+	double beamWidth;
 
 	/// Intensity in which sector marked.
 	double sensitivity;
@@ -78,7 +76,6 @@ protected:
 
 	virtual
 	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
-	//void filterImage(const PolarODIM &odim, const Image &src, Image &dst) const;
 
 };
 

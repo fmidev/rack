@@ -93,7 +93,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	}
 
 	ODIMPath path;
-	DataSelector selector;
+	DataSelector selector(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	selector.quantity = "CLUTTER";
 
 	/*
@@ -104,7 +104,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	}
 	*/
 
-	if (selector.getPathNEW(clutterMap, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+	if (selector.getPath3(clutterMap, path)){ //, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 		mout.debug() << "found " << path << mout.endl;
 		return clutterMap(path);
 	}

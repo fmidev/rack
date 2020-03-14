@@ -191,9 +191,36 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	const Palette & pal = *palettePtr;
 
+	const std::type_info & type  = srcChannel.getType();
+
 	const ValueScaling & scaling = srcChannel.getScaling();
+	mout.warn() << "scaling " << scaling << mout.endl;
+
+	const bool SCALED = scaling.isScaled();
+	const bool UCHAR  = (type == typeid(unsigned char))      && !SCALED;
+	const bool USHORT = (type == typeid(unsigned short int)) && !SCALED;
+
+	if (UCHAR){
+		mout.warn() << "UCHAR" << mout.endl;
+	}
+	else if (USHORT){
+		mout.warn() << "USHORT" << mout.endl;
+	}
+	else if (SCALED){
+		mout.warn() << "scaled palette, " << drain::Type::getTypeChar(type) << ", " << scaling << mout.endl;
+	}
+	else {
+		//mout.warn() << "scaled palette, " << drain::Type::call<drain::tynameGetter>(type)<< ', ' << scaling << mout.endl;
+		mout.warn() << "unscaled palette, " << drain::Type::getTypeChar(type) << ", " << scaling << mout.endl;
+	}
 
 	const Palette::lookup_t & lut = pal.createLookUp(256, scaling);
+
+	if (mout.isDebug(2)){
+		for (size_t i=0; i<lut.size(); ++i){
+			mout.note() << i << "\t" << lut[i]->first << "\t" << scaling.fwd(i) << "\t" << pal.retrieve(scaling.fwd(i))->first  << mout.endl;
+		}
+	}
 
 	double d;
 	Palette::const_iterator it;      // lower bound
@@ -209,7 +236,6 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 			d = srcChannel.get<double>(i,j);
 			if (SPECIAL_CODES){  // PolarODIM
-
 				cit = specialCodes.find(d);
 				if (cit != specialCodes.end()){
 					for (k = 0; k < channelCount; ++k)
@@ -218,11 +244,23 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				}
 			}
 
-			//d = scaling.fwd(d);
-			//d = scale * d + offset; OBSOLETE
+			if (UCHAR){
+				itLast = lut[static_cast<int>(d)];
+			}
+			else if (USHORT){
+				itLast = lut[static_cast<int>(d) >> 8];
+			}
+			else if (SCALED){
+				itLast = pal.retrieve(scaling.fwd(d));
+			}
+			else {
+				itLast = pal.retrieve(d);
+			}
 
+			// itLast = lut[static_cast<int>(d)];
+			// d = scaling.fwd(d);
+			// d = scale * d + offset; OBSOLETE
 			// ALERT! what if double storage type!
-			itLast = lut[d];
 			/*
 			itLast = pal.begin();
 			for (it = pal.begin(); it != pal.end(); ++it){

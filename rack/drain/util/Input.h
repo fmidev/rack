@@ -39,40 +39,40 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <fstream>
 
-#ifndef DRAIN_OUTPUT_H_
-#define DRAIN_OUTPUT_H_
+#ifndef DRAIN_INPUT_H_
+#define DRAIN_INPUT_H_
 
 #include "Log.h"
 
 namespace drain {
 
-/// Output utility. Opens stdout with "-". Closes upon destruction.
+/// Input utility. Opens stdIn with "-". Closes upon destruction.
 /**
  *  Note: This class does nout (yet) support format strings of arbitrary size.
  *  (output str length has limited size).
  *
  */
-class Output {
+class Input {
 
 public:
 
-	/// Opens stdout with "-".
-	Output(const std::string & filename);
+	/// Opens stdIn with "-".
+	Input(const std::string & filename);
 
 	/// Closes upon destruction.
-	~Output();
+	~Input();
 
-	operator std::ostream & ();
+	operator std::istream & ();
 
 
 protected:
 
-	std::ofstream ofstr;
+	std::ifstream ifstr;
 
 };
 
 } // drain::
 
 
-#endif /* DRAIN_OUTPUT_H_ */
+#endif /* DRAIN_InPUT_H_ */
 

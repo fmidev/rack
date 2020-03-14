@@ -43,41 +43,39 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace hi5 {
 
 
+//void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
-void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
+void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	if (attributes.empty() && dataSet.isEmpty()){
-		if (!prefix.empty())
-			ostr << prefix;
-		if (noSave)
-			ostr << '~';
-		ostr << '\n';
-		return;
-	}
-
+	/// show only "big" groups explicitly?
+	/// if (prefix.back().belongsTo(...))
+	/// or Uncomment:
+	//if (attributes.empty() && dataSet.isEmpty()){
+	//if (!prefix.empty())
+	ostr << prefix;
 	if (noSave)
 		ostr << '~';
+	ostr << '\n';
+	//	return;
+	//}
+
 
 	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
 		drain::JSONwriter::toStream(it->second, ostr);
-		// it->second.valueToJSON(ostr);
-		/*
-		ostr << it->second << ' ';
-		*/
-		// ostr << ' ';
-		// it->second.typeInfo(ostr);
 		ostr << '\n';
 	}
 
 	//const drain::image::Image &d = n.dataSet;
 	if (dataSet.getVolume() > 0){
-		if (!prefix.empty())
-			ostr << prefix << ':';
+
+		ostr << prefix;
+		//if (noSave) ostr << '~';
+		ostr << ':';
 		//'\t';
 		//mout.note() << dataSet.getGeometry() << mout.endl;
 		if (dataSet.getGeometry().getChannelCount() <= 1)
@@ -280,12 +278,9 @@ void Hi5Base::linkPalette(const Hi5Tree & palette, Hi5Tree & dst){
 // const Hi5Tree &src,
 void Hi5Base::writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr) {
 
-
 	for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
-
-		const std::string &key = *it;
+		const std::string & key = *it;
 		src(key).data.writeText(ostr, key);
-
 	}
 }
 
@@ -458,9 +453,6 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	rack::ODIMPath l;
-	//typedef std::list<Hi5Tree::path_t::elem_t> path_elem_list_t;
-	//std::list<std::string> sl;
-	//path_elem_list_t l;
 
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 		if (! it->second.data.noSave){ // needed?

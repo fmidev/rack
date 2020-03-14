@@ -196,7 +196,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	/// Usually, the operator does not need groups sorted by elevation.
 	mout.debug(2) << "collect the applicable paths"  << mout.endl;
 	ODIMPathList dataPaths;
-	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
+	this->dataSelector.getPaths3(src, dataPaths); //, ODIMPathElem::DATA);
 
 	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	// Parents are needed because converted data are stored in parallel.
@@ -209,9 +209,9 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 		//mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
 		//mout.debug() << *it << mout.endl;
 
-		ODIMPath parentPath = *it;
-		parentPath.pop_back();
-		ODIMPathElem & parent = parentPath.back();
+		const ODIMPath & parentPath = *it;
+		//parentPath.pop_back();
+		const ODIMPathElem & parent = parentPath.back();
 
 		mout.debug() << "check " << parent << '<' << *it << mout.endl;
 
