@@ -29,11 +29,102 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include "util/JSON.h"
+
+#include "image/Palette.h"
 
 #include "EchoClass.h"
 
 namespace rack {
 
+
+drain::image::Palette & getClassPalette(){
+
+	static drain::image::Palette palette;
+
+	if (palette.empty()){
+
+		palette.addEntry(10, 240,240,240, "tech.err.time", "Timing problem");
+		palette.addEntry(13, 144,144,144, "tech.class.unclass", "Unclassified");
+		palette.addEntry(64, 80,208,80, "precip", "Precipitation");
+		palette.addEntry(72, 32,248,96, "precip.widespread", "Rain");
+		palette.addEntry(80, 0,208,255, "precip.snow", "Snow");
+		palette.addEntry(104, 176,0,255, "precip.conv.graupel", "Graupel");
+		palette.addEntry(112, 224,128,255, "precip.conv.hail", "Hail");
+		palette.addEntry(128, 255,192,0, "nonmet", "Non-meteorological");
+		palette.addEntry(144, 180,96,0, "nonmet.clutter", "Clutter");
+		palette.addEntry(148, 160,92,64, "nonmet.clutter.ground", "Ground clutter");
+		palette.addEntry(152, 128,128,160, "nonmet.clutter.sea", "Sea clutter");
+		palette.addEntry(166, 170,208,255, "nonmet.artef.vessel.ship", "Ship");
+		palette.addEntry(176, 255,64,64, "nonmet.biol", "Organic target");
+		palette.addEntry(180, 255,248,0, "nonmet.biol.insect", "Insects");
+		palette.addEntry(184, 255,0,128, "nonmet.biol.bird", "Birds");
+		palette.addEntry(196, 255,224,224, "dist.attn.rain", "Attenuation in rain");
+		palette.addEntry(232, 240,240,240, "signal.noise", "Receiver noise");
+		palette.addEntry(240, 240,240,128, "signal.emitter", "External emitter");
+		palette.addEntry(242, 240,208,224, "signal.emitter.line", "Emitter line or segment");
+		palette.addEntry(246, 240,224,208, "signal.emitter.jamming", "Jamming");
+		palette.addEntry(248, 255,255,192, "signal.sun", "Sun");
+
+		/*
+		palette.addEntry(13, 144,144,144, "tech.class.reject", "Unclassified");
+		palette.addEntry(64, 80,208,80, "precip", "Precipitation");
+		palette.addEntry(72, 32,248,96, "precip.widespread", "Rain");
+		palette.addEntry(80, 0,208,255, "precip.snow", "Snow");
+		palette.addEntry(104, 176,0,255, "precip.conv.graupel", "Graupel");
+		palette.addEntry(112, 224,128,255, "precip.conv.hail", "Hail");
+		palette.addEntry(128, 255,192,0, "nonmet", "Non-meteorological");
+		palette.addEntry(148, 160,92,64, "nonmet.clutter.ground", "Ground clutter");
+		palette.addEntry(152, 128,128,160, "nonmet.clutter.sea", "Sea clutter");
+		palette.addEntry(166, 170,208,255, "nonmet.artef.vessel.ship", "Ship");
+		palette.addEntry(176, 255,64,64, "nonmet.biol", "Organic target");
+		palette.addEntry(180, 255,248,0, "nonmet.biol.insect", "Insects");
+		palette.addEntry(184, 255,0,128, "nonmet.biol.bird", "Birds");
+		palette.addEntry(232, 240,240,240, "signal.noise", "Receiver noise");
+		palette.addEntry(240, 240,240,128, "signal.emitter", "External emitter");
+		palette.addEntry(246, 240,224,208, "signal.emitter.jamming", "Jamming");
+		palette.addEntry(248, 255,255,128, "signal.sun", "Sun");
+		 */
+		// drain::JSONwriter::toStream(palette);
+
+	}
+
+	return palette;
+
+}
+
+
+int getClassCode(const std::string & id){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	static drain::image::Palette & palette = getClassPalette();
+	static int counter = 0;
+
+	typedef drain::image::Palette::dict_t dict_t;
+
+	dict_t & dict = palette.dictionary;
+
+	if (!dict.hasValue(id)){
+		double d;
+		while(counter < 256){
+			d = static_cast<double>(counter);
+			if (!dict.hasKey(d)){
+				dict.add(d, id);
+				mout.warn() << "key '" << id << "' was not found in class (palette) dictionary, added it with index=" << counter << mout.endl;
+				return counter;
+			}
+			++counter;
+		}
+		mout.error() << "could not add entry for '" << id << "', all the indices [0,255] in use" << mout.endl;
+	}
+
+	return static_cast<int>(palette.dictionary.getKey(id));
+
+}
+
+
+/*
 classdict_t & getClassDict(){
 
 	static classdict_t dict;
@@ -100,35 +191,9 @@ void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const
 	}
 
 }
-
-/*
-#define ECHO_CLASS_PRECIP	4
-#define ECHO_CLASS_HAIL	8
-#define ECHO_CLASS_WET_HAIL	10
-#define ECHO_CLASS_GRAUPEL	12
-#define ECHO_CLASS_SNOW	16
-#define ECHO_CLASS_WET_SNOW	18
-#define ECHO_CLASS_RAIN	32
-#define ECHO_CLASS_SUPERCOOLED_RAIN	36
-#define ECHO_CLASS_DUST	56
-#define ECHO_CLASS_CHAFF	58
-#define ECHO_CLASS_INSECT	60
-#define ECHO_CLASS_CLUTTER	64
-#define ECHO_CLASS_MAST	84
-#define ECHO_CLASS_VEHICLE	92
-#define ECHO_CLASS_BIRD	96
-#define ECHO_CLASS_BAT	104
-#define ECHO_CLASS_ATTENUATED	192
-#define ECHO_CLASS_SPECULAR	200
-#define ECHO_CLASS_FLARE_ECHO	208
-#define ECHO_CLASS_SECOND_TRIP	216
-#define ECHO_CLASS_SUN	224
-#define ECHO_CLASS_EMITTER	240
-#define ECHO_CLASS_JAMMING	242
-#define ECHO_CLASS_NOISE	244
-#define ECHO_CLASS_DELAY	248
 */
 
+/*
 classtree_t & getClassTree(){
 
 	//static classtree_t tree('.');
@@ -233,14 +298,6 @@ classtree_t & getClassTree(){
 		addClass(tree, "signal.emitter.line", 242, "Emitter line or segment", "240,240,192");
 		addClass(tree, "signal.emitter.jamming", 246, "Overall contamination", "255,240,192");
 		addClass(tree, "signal.sun", 248, "Sun", "255,255,192");
-		/*
-		t["met"]         = 64;
-		t["met"]["rain"] = 68;
-		t["met"]["snow"].data = 72;
-		t["met"]["graupel"] = 76;
-		t["met"]["hail"] = 82;
-
-		*/
 		//unsigned short int i = t["met"]["rain"];
 
 	}
@@ -250,7 +307,9 @@ classtree_t & getClassTree(){
 	return tree;
 
 }
+*/
 
+/*
 int getClassCode(const std::string & key){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -295,6 +354,34 @@ int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, class
 	return getClassCode(tr[key], ++it, eit);
 
 }
+*/
+/*
+#define ECHO_CLASS_PRECIP	4
+#define ECHO_CLASS_HAIL	8
+#define ECHO_CLASS_WET_HAIL	10
+#define ECHO_CLASS_GRAUPEL	12
+#define ECHO_CLASS_SNOW	16
+#define ECHO_CLASS_WET_SNOW	18
+#define ECHO_CLASS_RAIN	32
+#define ECHO_CLASS_SUPERCOOLED_RAIN	36
+#define ECHO_CLASS_DUST	56
+#define ECHO_CLASS_CHAFF	58
+#define ECHO_CLASS_INSECT	60
+#define ECHO_CLASS_CLUTTER	64
+#define ECHO_CLASS_MAST	84
+#define ECHO_CLASS_VEHICLE	92
+#define ECHO_CLASS_BIRD	96
+#define ECHO_CLASS_BAT	104
+#define ECHO_CLASS_ATTENUATED	192
+#define ECHO_CLASS_SPECULAR	200
+#define ECHO_CLASS_FLARE_ECHO	208
+#define ECHO_CLASS_SECOND_TRIP	216
+#define ECHO_CLASS_SUN	224
+#define ECHO_CLASS_EMITTER	240
+#define ECHO_CLASS_JAMMING	242
+#define ECHO_CLASS_NOISE	244
+#define ECHO_CLASS_DELAY	248
+*/
 
 
 }  // namespace rack

@@ -31,6 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIM_PATH_MATCHER
 #define ODIM_PATH_MATCHER
 
+
+#include <drain/util/Dictionary.h>
+
 #include "ODIMPath.h"
 
 
@@ -42,19 +45,41 @@ public:
 
 	inline
 	ODIMPathElemMatcher(group_t group = ROOT, index_t index = 0, index_t indexMax = 0xffff) :
-		ODIMPathElem(group, index), indexMax(indexMax) {
+		ODIMPathElem(group, index), indexMax(indexMax),  flags(this->group, ODIMPathElem::getDictionary(), '|'){
+		//flags = group;
 	};
 
 
 	inline
-	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) : ODIMPathElem(e), indexMax(e.indexMax) {
+	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) : ODIMPathElem(e), indexMax(e.indexMax),
+	flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		//flags = e.flags.value;
+		group  = e.group;
 	}
 
 	inline
-	ODIMPathElemMatcher(const std::string &s) : indexMax(0xffff) {
+	ODIMPathElemMatcher(const std::string &s) : indexMax(0xffff), flags(this->group, ODIMPathElem::getDictionary(), '|') {
 		set(s);
 	}
 
+	//  ambiguous! index 5 could mean range 5:5 or 0:0xffff ?
+	/*
+	inline
+	ODIMPathElemMatcher & operator=(const ODIMPathElemMatcher & elem){
+		index = 0;
+		indexMax = 0xffff;
+		group = elem.getType();
+		return *this;
+	}
+	*/
+
+	inline
+	ODIMPathElemMatcher & operator=(ODIMPathElem::group_t g){
+		index = 0;
+		indexMax = 0xffff;
+		group = g;
+		return *this;
+	}
 
 	/// Test if the elem has the same group, and elem.index is within [index,indexMax].
 	bool test(const ODIMPathElem & elem) const;
@@ -62,14 +87,21 @@ public:
 	// Applied only as a upper limit in path matching.
 	index_t indexMax;
 
+	drain::Flags flags;
+
 	virtual
 	std::ostream & toOStr(std::ostream & sstr) const;
 
 
 protected:
 
+	/// Extracts index range of type <index>[:<indexMax>]
 	virtual
 	void extractIndex(const std::string &s);
+
+
+	virtual
+	bool extractPrefix(const std::string &s, bool indexed);
 
 
 };
@@ -84,7 +116,10 @@ class ODIMPathMatcher : public drain::Path<ODIMPathElemMatcher> {
 
 public:
 
-	ODIMPathMatcher(const std::string & path = "") : drain::Path<ODIMPathElemMatcher>(path) {
+	ODIMPathMatcher() : drain::Path<ODIMPathElemMatcher>() {
+	}
+
+	ODIMPathMatcher(const std::string & path) : drain::Path<ODIMPathElemMatcher>(path) {
 		//set(path);
 	}
 
@@ -107,10 +142,10 @@ public:
 	/// Match trailing part of \c path.
 	bool matchTail(const rack::ODIMPath & path) const;
 
-protected:
+	/// Match single element. If matcher path does not contain it, return defaultValue.
+	bool matchElem(const rack::ODIMPathElem & elem, bool defaultValue = true) const;
 
-	/// Given a string starting with a numeral, try to extract an index range <min>:<max> .
-	//void extractIndex(const std::string &s){
+protected:
 
 };
 

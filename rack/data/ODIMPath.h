@@ -183,6 +183,8 @@ public:
 		set(s);
 	}
 
+	inline
+	~ODIMPathElem(){};
 
 	/// Redirects to set(const std::string &) .
 	/**
@@ -322,6 +324,9 @@ protected:
 	//  In ODIMPathMatcher, an index range will be extracted.
 	virtual
 	void extractIndex(const std::string &s);
+
+	virtual
+	bool extractPrefix(const std::string &s, bool indexed);
 
 	mutable
 	std::string str;

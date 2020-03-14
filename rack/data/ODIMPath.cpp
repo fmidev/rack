@@ -74,13 +74,11 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 		dict.add("", ROOT);
 		dict.add("dataset", DATASET);
 
-		dict.add("data",    ARRAY); // new
-
-		// NOTE: when searching for "data", DATA will be found (first) and returned
+		// NOTE: when searching by key  "data", ARRAY will be found (first) and returned
+		// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
+		dict.add("data",    ARRAY);
 		dict.add("data",    DATA);
-		// NOTE: when searching for ARRAY, "data" will be found (first) and returned
-		// dict.add("data",    ARRAY);
-		dict.add("array",   ARRAY);
+		//dict.add("array",   ARRAY);
 
 		dict.add("quality", QUALITY);
 		dict.add("OTHER",   OTHER);
@@ -102,6 +100,45 @@ void ODIMPathElem::extractIndex(const std::string &s){
 	sstr >> this->index;
 }
 
+bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	static
+	const dict_t & d = ODIMPathElem::getDictionary(); // New here
+
+	// plain mtach (esp. "dataset" and "quality" without indices
+	dict_t::const_iterator pit = d.end();
+
+	/// Check first if prefix AND index match.
+	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
+
+		if (prefix == it->first) {
+
+			// test only if indexed-modes match (this actually only is for data vs data1...N)
+			if (indexed == isIndexed(it->second)) {
+				// it->first is the group prefix [string]
+				this->group = it->second;
+				return true;
+			}
+
+			// well, prefix matched anyway, so save as a secondary match
+			pit = it;
+		}
+
+	}
+
+	if (pit != d.end()){
+		this->group = pit->second;
+		mout.warn() << " -> setting implicit/lenient " << prefix << '=' << this->group << mout.endl;
+		return true;
+	}
+
+	return false;
+
+}
+
+
 bool ODIMPathElem::set(const std::string &s){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -111,54 +148,38 @@ bool ODIMPathElem::set(const std::string &s){
 	bool INDEXED = false; // to separate data and data1
 	this->str = "";
 
+	static
+	const dict_t & d = ODIMPathElem::getDictionary(); // New here
 
-	/// Empty string is identified with root (rethink?)
-	/*
-	if (s.empty()){
-		this->group = ROOT;
-		//std::cout << "root" << '\n';
-		return true;
-	}
-	else if (s == "data"){
-		this->group = ARRAY; // ODIM
-		return true;
-	}
-	 */
-
-	static const dict_t & d = getDictionary(); // New here
 
 	// TEST1: equality
-	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
-		if (s == it->first) {
-			this->group = it->second;
-			return true;
-		}
-	}
+	/*
+	dict_t::const_iterator dit = d.findByKey(s);
+	if (dit != d.end()){
+		this->group = dit->second;
+		mout.note() << "direct: " << dit->first << '~' << dit->second << mout.endl;
+		return true;
+	}*/
 
-	// Extract prefix (alphabets) and index (digits)
+
+	// Separate prefix (alphabets) and index (digits)
 	std::string::const_iterator it = s.begin();
 	while (it != s.end()){
-		//if ((*it>='0') && (*it<='9')){
-		if ((*it<'a') || (*it>'z')){ // to detect ':' if path elem mathcing
+		if ((*it==':') || ((*it>='0') && (*it<='9'))){ // testing colon is "forward declaration" of index range
+			//if ((*it<'a') || (*it>'z')){ // to detect ':' if path elem mathcing
 			extractIndex(std::string(it, s.end()));
 			INDEXED = true;
-			/*
-			std::stringstream sstr(std::string(it, s.end()));
-			if (drain::TextReader::scanSegmentToValue(sstr, ":", this->index)){
-				sstr >> this->indexMax;
-				std::cout << "KUKKUU: " << this->index << "..." << this->indexMax << std::endl;
-			}
-			else
-				this->indexMax = this->index;
-			 */
 			break;
 		}
 		++it;
 	}
 
+
+	if (extractPrefix(std::string(s.begin(), it), INDEXED))
+		return true;
+
+	/*
 	const std::string prefix(s.begin(), it);
-
-
 	/// Check if matches predefined group types
 	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
 		// it->second : group id [enum code]
@@ -170,6 +191,8 @@ bool ODIMPathElem::set(const std::string &s){
 			}
 		}
 	}
+	 */
+
 
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->str = s;

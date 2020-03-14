@@ -54,21 +54,21 @@ namespace rack {
 
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
 /**
- *    Future version will use:
- *    - data=
- *    - dataset=
- *
- *    Applies drain::RegExp in matching.
+ *  \see rack::CmdSelect
  */
 class DataSelector : public drain::BeanLike {
 public:
 
 	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
-			unsigned int index=0, unsigned int count = 1000,
+			// unsigned int index=0,
+			unsigned int count = 1000,
 			double elangleMin = -90.0, double elangleMax = 90.0);
 
 	DataSelector(const std::string & parameters = "");
+
+	/// Inits pathmatcher
+	DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);
 
 	DataSelector(const DataSelector & selector);
 
@@ -79,11 +79,11 @@ public:
 	std::string quantity;
 
 	// Path criteria
-	drain::Range<unsigned short> dataset;
-	drain::Range<unsigned short> data;
+	// drain::Range<unsigned short> dataset;
+	// drain::Range<unsigned short> data;
 
 	/// The (minimum) index of the key in the list of matching keys.
-	unsigned int index;
+	//  unsigned int index;
 
 	/// The maximum length of the list of matching keys.
 	unsigned int count;
@@ -91,7 +91,8 @@ public:
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
 	drain::Range<double> elangle;
 
-	drain::Flags groups;
+	//drain::Flags groups;
+	//virtual	void setParameters(const std::string & parameters);
 
 protected:
 
@@ -161,11 +162,18 @@ public:
 	 *   \see deriveParameters().
 	 */
 	// Recommended convenience function.
+	/*
 	template <class T>
 	inline
 	void getPaths(const Hi5Tree & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
 		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
 	}
+	*/
+	/*
+	inline
+	void getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const {
+		getPaths3(src, pathContainer);
+	}*/
 
 	/// Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable.
 	/**
@@ -176,7 +184,9 @@ public:
 	 *  \param path - initial path
 	 */
 	//void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter=ODIMPathElem::ALL_GROUPS , const ODIMPath & path = ODIMPath()) const;
-	void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & path = ODIMPath()) const;
+	//void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & path = ODIMPath()) const;
+	template <class T>
+	bool getPaths3(const Hi5Tree & src, T & pathContainer, const ODIMPath & path = ODIMPath()) const;
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	/**
@@ -186,11 +196,14 @@ public:
 	 */
 	bool getPath3(const Hi5Tree & src, ODIMPath & path) const;
 
+	/*
 
 	template <class T>
 	inline
 	void getPaths(const Hi5Tree & src, T & pathContainer) const {
-
+		drain::Logger mout(__FUNCTION__, getName());
+		mout.note() << "deprecating" <<  mout.endl;
+		getPaths3(src, pathContainer);
 		if (groups.value > 0){
 			getPaths(src, pathContainer, groups.value);
 		}
@@ -200,8 +213,8 @@ public:
 			getPaths(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
 			//groups = groupStr;
 		}
-
 	}
+		 */
 
 
 	/// Retrieves paths using current selection criteria and an additional group selector.
@@ -214,28 +227,25 @@ public:
 	 *
 	 *   See the simplified version of this function.
 	 */
-	template <class T>
-	bool getPaths(const Hi5Tree & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
+	//template <class T>
+	//bool getPaths(const Hi5Tree & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
 
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
-	bool getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const;
+	/*
+	inline
+	bool getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << "obsolete" << mout.endl;
+		return getPath3(src, path);
+	}
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	inline
 	bool getPathNEW(const Hi5Tree & src, ODIMPath & path) const {
-
-		if (groups.value > 0){ // if (groupStr.empty())
-			return getPathNEW(src, path, groups.value);
-		}
-		else {
-			//drain::Logger mout(__FUNCTION__, getName());
-			drain::Logger mout(__FUNCTION__, __FILE__);
-			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
-			return getPathNEW(src, path, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
-		}
-
+		return getPath3(src, path);
 	}
+    */
 
 	/// Returns the last path encountered with selector attributes and given groupFilter .
 	bool getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
@@ -291,18 +301,21 @@ public:
 	 *   \param m
 	 */
 	//template <class T>
+	/*
 	static inline
 	void getPathsByElevation(const Hi5Tree &src, const DataSelector & selector, std::map<double, ODIMPath> & m){
 		//getPathsT(src, selector, m);
 		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
+	 */
 
-
+	/*
 	static inline
 	void getPathsByQuantity(const Hi5Tree &src, const DataSelector & selector, std::map<std::string, ODIMPath> & m){
 		//getPathsT(src, selector, m);
 		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
 	}
+	*/
 
 
 
@@ -310,7 +323,9 @@ public:
 	/**
 	 *   Variable 'path' will be probably obsolete in future.
 	 */
-	void convertRegExpToRanges(const std::string & param);
+	inline
+	void convertRegExpToRanges(const std::string & param){
+	}
 
 	/// Temporary fix: try to derive dataset and data indices from deprecated 'path' regexp (and also, quantity, current first param.)
 	/**
@@ -333,6 +348,7 @@ protected:
 	 *   Applicable for ODIMPathList and std::map<double,std::string>.
 	 *   \param container - ODIMPathList and std::map<double,std::string>
 	 */
+	/*
 	template <class T>
 	static
 	inline
@@ -341,55 +357,92 @@ protected:
 				selector.index, selector.count,
 				selector.elangle.min, selector.elangle.max); // min, max
 	}
-
+ */
 
 	/// NEW Collects paths to a list.
+	/*
 	template <class P>
 	static
 	void addPathT(std::list<P> & l, const PolarODIM & odim, const P & path){ l.push_back(path); }
-
+*/
 
 	/// Collects paths to a set. (unused?)
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
 	 */
+	/*
 	template <class P>
 	static inline
 	void addPathT(std::set<P> & l, const PolarODIM & odim, const P & path){
 		l.insert(path);
 	}
-
+*/
 
 	/// Collects paths by their elevation angle (elangle).
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	 */
 	template <class P>
 	static inline
 	void addPathT(std::map<double,P> & m, const PolarODIM & odim, const std::string & path){
 		m[odim.elangle] = path;
 	}
+ */
 
 
 	/// Collects paths by their quantity, eg. DBZH, VRAD, and RHOHV.
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	 */
 	template <class P>
 	static inline
 	void addPathT(std::map<std::string,P> & m, const PolarODIM & odim, const std::string & path){
 		m[odim.quantity] = path;
 	}
 
-	template <class P>
+	static inline
+	bool addPath3(std::map<double,ODIMPath> & m, const PolarODIM & odim, const ODIMPath &path){
+		m[odim.elangle] = path;
+		return false;// ??
+	}
+
+	static inline
+	bool addPath3(std::list<ODIMPath> & l, const PolarODIM & odim, const ODIMPath &path){
+		l.push_back(path);
+		return false;// ??
+	}
+*/
+
+	/**
+	 *  \param l - container for paths
+	 */
+	static inline
+	bool addPath3(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
+		PolarODIM odim;
+		odim.updateFromCastableMap(props);
+		l.push_back(path);
+		return false;// ??
+	}
+
+	/**
+	 *  \param l - container for paths
+	 */
+	static inline
+	bool addPath3(std::map<double,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
+		PolarODIM odim;
+		odim.updateFromCastableMap(props);
+		m[odim.elangle] = path;
+		return false;// ??
+	}
+
+
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
 	 */
+	template <class P>
 	static inline
 	bool addPathT(std::list<P> & l, const std::string &path){
 		l.push_back(path);
 		return false;// ??
-	} // ??
+	}
 
 
 	/// Add a std::string. Search ends with the first entry encountered. (?)
@@ -401,183 +454,170 @@ protected:
 
 };
 
-
 template <class T>
-bool DataSelector::getPaths(const Hi5Tree &src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path) const {
+bool DataSelector::getPaths3(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug(3) << "considering '" << path << "/' -> ..." << mout.endl;
-
-	// ODIM struct is needed to communicate keys for maps (elangle or quantity) to addPathT
-	PolarODIM odim;
-
 	if (path.empty())
-		mout.debug(3) << "empty path (ok)"  << mout.endl;
-	else if (!src.hasPath(path)){
-		mout.warn() << "data structure has no path:"  << path << mout.endl;
-		return false;
-	}
+		mout.debug(1) << "matcher: " << pathMatcher << mout.endl;
 
 	// Current search point
 	const Hi5Tree & s = src(path); // =src, if path empty
 
+	// ODIM struct is needed to communicate keys for maps (elangle or quantity) to addPathT
+	PolarODIM odim;
 
-	// Selector contains a rule for desired quantity. (This also indicates that quantityRE is set).
-	const bool QUANTITY_CONSTRAINT = !quantity.empty();
+	/// For dataset indices
+	std::set<ODIMPathElem::index_t> dataSetIndices;
 
-
-	// Changed to true, if a descendant contains the desired quantity.
-	bool quantityGroupOK = QUANTITY_CONSTRAINT ? false : true;
-
-	//const bool IS_ROOT = (path.size() == 1);
-	std::set<ODIMPathElem> datasets;
+	const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
+	//bool quantityChecked = false;
+	bool quantityFound   = false;
+	//bool resultOK = true;
 
 	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
 
-		//ODIMPathElem child(it->first);
+		bool quantityOk = !quantityRequired; //
+
 		const ODIMPathElem & currentElem = it->first;
-		//mout.debug(3) << "*it='" << it->first << "' (" << it->first.group << "),\t currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") include=" << currentElem.belongsTo(groupFilter) << mout.endl;
-		mout.debug(3) << "currentElem=" << "'" << currentElem <<"' (" << currentElem.group <<  ") incl=" << currentElem.belongsTo(groupFilter) << mout.endl;
+		mout.debug() << "currentElem='" << currentElem << "'" << mout.endl;
 
+		const drain::image::Image & d    = it->second.data.dataSet; // for ODIM
+		const drain::FlexVariableMap & v = d.getProperties();
 
+		// Check ELANGLE (in datasets) or quantity (in data/quality)
 		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
-			if (!dataset.contains(currentElem.index)){
-				mout.debug(3) << "dataset " << currentElem.index << " not in [" <<  dataset << "], skipping" << mout.endl;
-				continue;
-			}
-		}
-		else if (currentElem.is(ODIMPathElem::DATA)){ // what about quality?
-			if (!data.contains(currentElem.index)){
-				mout.debug(3) << "data " << currentElem.index << " not in [" <<  data << "], skipping" << mout.endl;
-				continue;
-			}
-		}
 
-		const hi5::NodeHi5 & node = it->second.data;
-
-		// Currently, there is no switch to exclude/include no-save (temporary) structures.
-		if (node.noSave){
-			mout.debug(3) << "noSave data, ok: " << it->first << mout.endl;
-			//continue;
-		}
-
-
-		// In indexed DATASET/QUALITY/DATA groups, images are the metadata containers
-		const drain::image::Image & d = node.dataSet;
-		//mout.note() << "reconsidering " << currentElem << ':' << d.properties["what:quantity"] << mout.endl;
-
-		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
-			if (d.properties.hasKey("where:elangle")){
-				if (!elangle.contains(d.properties["where:elangle"])){
-					mout.debug() << "outside elangle range"<< mout.endl;
+			if (v.hasKey("where:elangle")){
+				if (!elangle.contains(v["where:elangle"])){
+					mout.debug() << "outside elangle range" << mout.endl;
 					continue;
 				}
 			}
-		}
 
-		bool quantityOK = true;
-		if (QUANTITY_CONSTRAINT){
-
-			// IS this check needed (here)? Consider above: QUANTITY_CONSTRAINT && (currentElem.is(ODIMPathElem::DATA) || currentElem.is(ODIMPathElem::QUALITY) )
-			if (currentElem.is(ODIMPathElem::ARRAY)){
-				if (groupFilter & ODIMPathElem::ARRAY){
-					mout.warn() << "path " << path << '/' << currentElem << " will not be detected; ARRAY does not support quantity (request=" << quantity << ")" << mout.endl;
-				}
+			if (dataSetIndices.size() >= count){
+				mout.debug() << "count (" << dataSetIndices.size() << ">=" << count << ") already completed for " << currentElem << mout.endl;
+				continue;
 			}
 
-			if (currentElem.is(ODIMPathElem::DATA) || currentElem.is(ODIMPathElem::QUALITY) ){
+		}
+		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
-				if (d.properties.hasKey("what:quantity")){
+			if (quantityRequired){
 
-					quantityOK = quantityRE.test(d.properties["what:quantity"]);
-					if (quantityOK){
-						quantityGroupOK = true;
-						mout.debug(1) << it->first << ":\t found quantity '" << d.properties["what:quantity"] << "'" << mout.endl;
+				if (v.hasKey("what:quantity")){
+
+					const std::string quantity = v["what:quantity"].toStr();
+
+					if (qualityRegExp.isSet()){ // NOTE: at least, do not test quantity after this!
+						//quantityOk = false;
+						if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(quantity)){
+							mout.debug(2) << "matching QUALITY quantity  [" << quantity << "], skipping" << mout.endl;
+							quantityOk    = true;
+							quantityFound = true;
+						}
+					}
+					else if (quantityRegExp.test(quantity)){
+						mout.debug(1) << "OK quantity matches: " << quantity << ": " << path << '|' << currentElem << mout.endl;
+						quantityOk    = true;
+						quantityFound = true;
 					}
 					else {
-						mout.debug(2) << it->first << ":\t quantity '" << quantity << "' !~ '" << d.properties["what:quantity"] << "'" << mout.endl;
-						// allow sub-QIND, so do not: continue;
+						mout.debug(2) << "unmatching DATA quantity  [" <<  quantity << "], skipping" << mout.endl;
+						//NO continue; have to descend for quality (QIND) below!
+						//quantityOk = false;
 					}
+
 				}
 				else {
-					if (currentElem.belongsTo(groupFilter))
-						mout.warn() << "testing '" << quantity << "': no what:quantity in " << path << '/' << it->first  << mout.endl;
-					// else check  currentElem.is(ODIMPathElem::QUALITY) and QIND?
+					mout.warn() << "quantity missing in (image) metadata of " << path << '|' << currentElem << mout.endl;
 				}
 			}
 		}
-
+		else {
+			//mout.warn() << "NOT testing: " << currentElem << mout.endl;
+		}
 
 
 		ODIMPath p(path);
 		p << currentElem;
 
-		/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
-		//mout.warn() << "descending to " << p << mout.endl;
-		T descendantPaths;
-		const bool quantitySubtreeOK = getPaths(src, descendantPaths, quantityRE, groupFilter, p) ; // note: original "root" src
 
-		if (quantitySubtreeOK)
-			quantityGroupOK = true;
+		if (currentElem.is(ODIMPathElem::DATASET)){
 
+			if (pathMatcher.match(p) && (dataSetIndices.size() < count)){
 
-		/// Accept (elevation and quantities)
-		bool accept = true;
+				typename T::iterator tit = pathContainer.end();
+				addPath3(pathContainer, v, p); // accept tentatively, maybe cancelled below
 
-		if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			if (!quantityOK)
-				accept = false;
-		}
-		else if (currentElem.is(ODIMPathElem::DATASET)){
-			if (!quantitySubtreeOK)
-				accept = false;
-		}
-
-		if (accept){
-
-			// COUNTER. Otherways accepted now, only check the counter. Counter must not be incremented before this point.
-			if (currentElem.is(ODIMPathElem::DATASET)){
-				datasets.insert(currentElem);
-				mout.debug(2) << "now dataset count=" << datasets.size() << " latest=" << currentElem << mout.endl;
-				if (datasets.size() > count){
-					mout.debug(1) << " count=" << count << " exceeded, returning" << mout.endl;
-					return true; // = dump this currentElem and its descendants
+				// RECURSION
+				quantityOk = getPaths3(src, pathContainer, p);
+				if (quantityOk || !quantityRequired){
+					mout.debug() << "yes, was ok: " << p << mout.endl;
 				}
+				else {
+					mout.debug() << "oops, removing: " << p << mout.endl;
+					pathContainer.erase(--tit);
+				}
+				// check over flow
+			}
+			else {
+				// not collecting DATASET's but traversing
+				getPaths3(src, pathContainer, p);
 			}
 
-			if (currentElem.belongsTo(groupFilter)){
-				mout.debug(2) << "accepted " << p << mout.endl;
-				odim.clear();
-				odim.copyFrom(d);  // OK, uses true type ie. full precision, also handles img type
-				addPathT(pathContainer, odim, p);
-				mout.debug(3) << "pathContainer size=" <<  pathContainer.size() << mout.endl;
+		}
+		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			//mout.warn() << "descending D/Q :" << currentElem << mout.endl;
+			if (quantityOk && pathMatcher.match(p)){
+				addPath3(pathContainer, v, p);
 			}
+			getPaths3(src, pathContainer, p);
+		}
+		else {
+			/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
+			if (pathMatcher.match(p)){
+				addPath3(pathContainer, v, p);
+			}
+			getPaths3(src, pathContainer, p); // note: original "root" src
+			quantityOk = true; //?
 		}
 
-
-		// Note: all the descendantPaths (if exist) are confirmed already in the inner call.
-		mout.debug(3) << "adding descendants: " << descendantPaths.size() << mout.endl;
-
-		// Append descendant paths now (all have been accepted already)
-		for (typename T::const_iterator it = descendantPaths.begin(); it != descendantPaths.end(); ++it){
-			pathContainer.insert(pathContainer.end(), *it);
-			//pathContainer.insert(*it);
+		if (quantityOk){
+			const ODIMPathElem & e = p.front();
+			if (pathMatcher.matchElem(e, true)){
+				mout.debug(1) << "stem: " << e  << mout.endl;
+				dataSetIndices.insert(e.getIndex());
+			}
+			//mout.warn() << "datasets: " << drain::StringTools::join(dataSetIndices,'*') << '=' <<dataSetIndices.size() << ':' <<  p.front().getIndex() << '|' << p << mout.endl;
 		}
-
-		//mout.warn() << "pathContainer size=" <<  pathContainer.size() << mout.endl;
 
 	}
+	//mout.warn() << "quantityFound " << p << " -> ..."<< mout.endl;
 
-	return quantityGroupOK;
+	return (quantityFound || !quantityRequired);
 }
 
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
-	ostr << selector.getParameters();
+	ostr << selector.getParameters() << ", matcher=" << selector.pathMatcher;
 	return ostr;
 }
+
+
+// Experimental
+class DatasetSelector : public DataSelector {
+
+public:
+
+	DatasetSelector(){
+		parameters.dereference("path");
+		pathMatcher.setElems(ODIMPathElem::DATASET);
+	}
+
+};
 
 } // rack::
 

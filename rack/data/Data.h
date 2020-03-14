@@ -298,8 +298,7 @@ public:
 			data(tree["data"].data.dataSet),
 			odim(data, quantity) // reads data.properties?
 			{
-
-		//data.setScaling(odim.gain, odim.offset);
+				//data.setScaling(odim.gain, odim.offset);
 			}
 
 	/// Copy constructor, also for referencing non-const as const.
@@ -469,10 +468,10 @@ template <class DT, ODIMPathElem::group_t G>
 class DataGroup : public TreeWrapper<typename DT::datatype_t>, public std::map<std::string, DT > { // typename T::datatype_t
 public:
 
+	typedef DataGroup<DT,G> datagroup_t; // this type
 	typedef DT data_t;
 	typedef typename DT::datatype_t datatype_t;
 	typedef std::map<std::string, DT > map_t;
-	typedef DataGroup<data_t,G> datagroup_t;
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
@@ -717,10 +716,24 @@ protected:
 
 		for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
 
+
 			if (! (it->first.is(G))){
 				//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
 				continue;
 			}
+
+			/*
+			if (USE_REGEXP){ // be more flexible, accept also quality for now
+				if (! (it->first.belongsTo(G | ODIMPathElem::QUALITY)))
+					continue;
+			}
+			else {
+				if (! (it->first.is(G)))
+					//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
+					continue;
+			}
+			*/
+
 
 			const std::string dataQuantity = it->second["what"].data.attributes["quantity"];
 
