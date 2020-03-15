@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef IMAGE_SCALING_H_
-#define IMAGE_SCALING_H_ "ImageScaling 0.1,  2017/09 Markus.Peura@fmi.fi"
+#ifndef IMAGE_SCALING2_H_
+#define IMAGE_SCALING2_H_ "ImageScaling 0.1,  2017/09 Markus.Peura@fmi.fi"
 
 #include <stddef.h>  // size_t
 

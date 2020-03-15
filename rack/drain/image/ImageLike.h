@@ -71,7 +71,7 @@ public:
 	std::string type;  // synch?
 
 	/// Linear scaling
-	ValueScaling scaling;
+	drain::ValueScaling scaling;
 
 	/// Get the storage type
 	inline
