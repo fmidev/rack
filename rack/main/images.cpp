@@ -180,7 +180,8 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector(ODIMPathElem::QUALITY); // , ODIMPathElem::ARRAY);
+		DataSelector iSelector(ODIMPathElem::DATA);
+		//DataSelector iSelector(ODIMPathElem::QUALITY); // , ODIMPathElem::ARRAY);
 		//mout.note() << "alphaSrc selectar:"  << iSelector << mout.endl;
 		// iSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
 		iSelector.setParameters(resources.select);
