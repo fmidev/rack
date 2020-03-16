@@ -188,93 +188,118 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	const bool SPECIAL_CODES = !specialCodes.empty();  // for PolarODIM nodata & undetected
 
-
 	const Palette & pal = *palettePtr;
 
-	const std::type_info & type  = srcChannel.getType();
+	//const std::type_info & type  = srcChannel.getType();
+	const Encoding & encoding = srcChannel.getEncoding();
 
 	const ValueScaling & scaling = srcChannel.getScaling();
-	mout.warn() << "scaling " << scaling << mout.endl;
+	mout.warn() << "srcChannel  " << srcChannel   << mout.endl;
+	//mout.warn() << "src    scaling " << encoding.scaling << mout.endl;
+	//mout.warn() << "src getScaling " << srcChannel.getScaling() << mout.endl;
+	// encoding.scaling.
+	mout.warn() << "src    scaling " << scaling << mout.endl;
 
 	const bool SCALED = scaling.isScaled();
-	const bool UCHAR  = (type == typeid(unsigned char))      && !SCALED;
-	const bool USHORT = (type == typeid(unsigned short int)) && !SCALED;
+	const bool UCHAR  = (encoding.getType() == typeid(unsigned char));      // && !SCALED;
+	const bool USHORT = (encoding.getType() == typeid(unsigned short int)) ;// && !SCALED;
 
-	if (UCHAR){
-		mout.warn() << "UCHAR" << mout.endl;
-	}
-	else if (USHORT){
-		mout.warn() << "USHORT" << mout.endl;
-	}
-	else if (SCALED){
-		mout.warn() << "scaled palette, " << drain::Type::getTypeChar(type) << ", " << scaling << mout.endl;
-	}
-	else {
-		//mout.warn() << "scaled palette, " << drain::Type::call<drain::tynameGetter>(type)<< ', ' << scaling << mout.endl;
-		mout.warn() << "unscaled palette, " << drain::Type::getTypeChar(type) << ", " << scaling << mout.endl;
-	}
 
-	const Palette::lookup_t & lut = pal.createLookUp(256, scaling);
-
-	if (mout.isDebug(2)){
-		for (size_t i=0; i<lut.size(); ++i){
-			mout.note() << i << "\t" << lut[i]->first << "\t" << scaling.fwd(i) << "\t" << pal.retrieve(scaling.fwd(i))->first  << mout.endl;
-		}
-	}
-
+	// intensity (gray level)
 	double d;
-	Palette::const_iterator it;      // lower bound
-	Palette::const_iterator itLast;  // upped bound
+	// lower bound
+	Palette::const_iterator it;
+	// upped bound
+	Palette::const_iterator itLast;
 
 	size_t k;
 	Palette::const_iterator cit;
 
+	if (UCHAR || USHORT){
 
-	for (size_t  i = 0; i < width; ++i) {
+		double min = scaling.fwd(0.0);
+		double max = scaling.fwd(encoding.getTypeMax<double>());
 
-		for (size_t j = 0; j < height; ++j) {
+		ValueScaling sc;
+		sc.setPhysicalScale(typeid(unsigned char), min, max);
+		const Palette::lookup_t & lut = pal.createLookUp(256, sc);
 
-			d = srcChannel.get<double>(i,j);
-			if (SPECIAL_CODES){  // PolarODIM
-				cit = specialCodes.find(d);
-				if (cit != specialCodes.end()){
-					for (k = 0; k < channelCount; ++k)
-						dst.get(k).put(i,j, cit->second.color[k]);
-					continue;
+		mout.warn() << "image data " << encoding.scaling << ' ';
+		if (UCHAR){
+			mout << "UCHAR";
+		}
+		else if (USHORT){
+			mout << "USHORT";
+		}
+		mout << min << ".." << max << '/' << encoding.getTypeMax<double>() << ", using lookup table of 256 elements, " << sc << mout.endl;
+
+		if (mout.isDebug(2)){
+			for (size_t i=0; i<lut.size(); ++i){
+				mout.note() << i << "\t" << lut[i]->first << "\t" << sc.fwd(i) << "\t" << pal.retrieve(sc.fwd(i))->first  << mout.endl;
+			}
+		}
+
+		for (size_t  i = 0; i < width; ++i) {
+
+			for (size_t j = 0; j < height; ++j) {
+
+				d = srcChannel.get<double>(i,j);
+				if (SPECIAL_CODES){  // PolarODIM
+					cit = specialCodes.find(d);
+					if (cit != specialCodes.end()){
+						for (k = 0; k < channelCount; ++k)
+							dst.get(k).put(i,j, cit->second.color[k]);
+						continue;
+					}
 				}
-			}
 
-			if (UCHAR){
-				itLast = lut[static_cast<int>(d)];
-			}
-			else if (USHORT){
-				itLast = lut[static_cast<int>(d) >> 8];
-			}
-			else if (SCALED){
-				itLast = pal.retrieve(scaling.fwd(d));
-			}
-			else {
-				itLast = pal.retrieve(d);
-			}
+				if (UCHAR){
+					itLast = lut[static_cast<int>(d)];
+				}
+				else { // if (USHORT){
+					itLast = lut[static_cast<int>(d) >> 8];
+				}
 
-			// itLast = lut[static_cast<int>(d)];
-			// d = scaling.fwd(d);
-			// d = scale * d + offset; OBSOLETE
-			// ALERT! what if double storage type!
-			/*
-			itLast = pal.begin();
-			for (it = pal.begin(); it != pal.end(); ++it){
-				if (it->first > d)
-					break;
-				itLast = it;
+				for (k = 0; k < channelCount; ++k)
+					dst.get(k).put(i,j, itLast->second.color[k]);
+
 			}
-			*/
-
-			for (k = 0; k < channelCount; ++k)
-				dst.get(k).put(i,j, itLast->second.color[k]);
-
 		}
 	}
+	else {
+
+		mout.warn() << "using (slow) retrieval: " << srcChannel << mout.endl;
+		//mout.warn() << "using (slow) retrieval, scaled=" << SCALED << ',' << drain::Type::getTypeChar(encoding.getType()) << ", " << scaling << mout.endl;
+
+		for (size_t  i = 0; i < width; ++i) {
+
+			for (size_t j = 0; j < height; ++j) {
+
+				d = srcChannel.get<double>(i,j);
+				if (SPECIAL_CODES){  // PolarODIM
+					cit = specialCodes.find(d);
+					if (cit != specialCodes.end()){
+						for (k = 0; k < channelCount; ++k)
+							dst.get(k).put(i,j, cit->second.color[k]);
+						continue;
+					}
+				}
+
+				if (SCALED){
+					itLast = pal.retrieve(scaling.fwd(d));
+				}
+				else {
+					itLast = pal.retrieve(d);
+				}
+
+				for (k = 0; k < channelCount; ++k)
+					dst.get(k).put(i,j, itLast->second.color[k]);
+
+			}
+		}
+	}
+
+
 
 
 	if (paletteChannels.getAlphaChannelCount() == 0){

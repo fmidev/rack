@@ -176,7 +176,7 @@ void DataSelector::update(){
 
 	if (pathMatcher.empty() && !quantity.empty()){
 		pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-		mout.warn() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
+		mout.debug() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
 		path = pathMatcher;
 	}
 

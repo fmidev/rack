@@ -531,7 +531,11 @@ bool DataSelector::getPaths3(const Hi5Tree & src, T & pathContainer, const ODIMP
 
 				}
 				else {
-					mout.warn() << "quantity missing in (image) metadata of " << path << '|' << currentElem << mout.endl;
+					if (currentElem.is(ODIMPathElem::DATA))
+						mout.warn();
+					else
+						mout.info();
+					mout << "quantity missing in (image) metadata of " << path << '/' << currentElem << mout.endl;
 				}
 			}
 		}

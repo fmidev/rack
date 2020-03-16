@@ -93,7 +93,6 @@ public:
 		// Signed, because scaling physical values may cause underflow
 		int index, indexLower=0;
 
-		//for (typename cont_t::reverse_iterator it=this->rbegin(); it!=this->rend(); ++it){
 		for (typename cont_t::const_iterator it=this->begin(); it!=this->end(); ++it){
 
 			index = static_cast<int>(scaling.inv(it->first));
