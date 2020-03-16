@@ -75,6 +75,7 @@ void CmdImage::exec() const {
 
 	//drain::Logger & mout = resources.mout;
 	RackResources & resources = getResources();
+	imageSelector.pathMatcher.setElems(ODIMPathElem::DATA);
 	imageSelector.setParameters(resources.select);
 	resources.select.clear();
 
@@ -180,7 +181,7 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector(ODIMPathElem::DATA);
+		DataSelector iSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		//DataSelector iSelector(ODIMPathElem::QUALITY); // , ODIMPathElem::ARRAY);
 		//mout.note() << "alphaSrc selectar:"  << iSelector << mout.endl;
 		// iSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
@@ -267,10 +268,9 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector imageSelector;
-
+		DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		imageSelector.setParameters(resources.select);
-		imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		//imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		resources.select.clear();
 
 		// Source image (original data)
@@ -333,8 +333,6 @@ public:
 
 	CmdImageFlatten() : SimpleCommand<>(__FUNCTION__, "Removes a alpha (transparency) channel. Adds a new background of given color.",
 			"bgcolor", "0", "<gray>|<red>,<green>,<blue>") {
-		// parameters.separators.clear();
-		// parameters.reference("value", value, "0,0,0", "<gray>|<red>,<green>,<blue>");
 	};
 
 	void exec() const {
@@ -365,8 +363,8 @@ public:
 
 		double alpha;
 
-		Variable colorVector;
-		colorVector.setType(typeid(size_t));
+		Variable colorVector(typeid(size_t));
+		// colorVector.setType(typeid(size_t));
 		colorVector = value;
 
 		size_t address;
@@ -414,6 +412,10 @@ public:
 			return;
 		}
 
+		if (!resources.targetEncoding.empty()){
+			mout.warn() << "target encoding not supported (yet):" << resources.targetEncoding << mout.endl;
+			resources.targetEncoding.clear();
+		}
 		// resources.select.clear(); //  below
 
 		// if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
