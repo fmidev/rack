@@ -136,32 +136,32 @@ void ImageOpRacklet::exec() const {
 	 */
 
 	// What about iSelector?
-	DataSelector imageSelector;
-	imageSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-	imageSelector.setParameters(resources.select);
+	DataSelector datasetSelector(ODIMPathElem::DATASET);;
+	//datasetSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
+	datasetSelector.setParameters(resources.select);
 	resources.select.clear();
-	//imageSelector.convertRegExpToRanges(); OLDISH
-	imageSelector.count = 1;
-	mout.debug() << "selector: " << imageSelector << mout.endl;
+	//datasetSelector.convertRegExpToRanges(); OLDISH
+	datasetSelector.count = 1;
+	mout.debug() << "selector: " << datasetSelector << mout.endl;
 
 
 	// skip quantity fow later traversal, accept now all the datasetN's ?
 	// ORIG quantity => in-place
 	// TODO: if same quantity, use temp?
-	const std::string quantity(imageSelector.quantity); // note: might be regexp
+	const std::string quantity(datasetSelector.quantity); // note: might be regexp
 
 	ODIMPathList paths;
-	//imageSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
-	imageSelector.getPaths3(*resources.currentHi5, paths);
+	//datasetSelector.getPaths(*resources.currentHi5, paths, ODIMPathElem::DATASET);
+	datasetSelector.getPaths3(*resources.currentHi5, paths);
 
 	if (paths.empty()){
-		mout.warn() << "no paths found with selector: " << imageSelector << mout.endl;
+		mout.warn() << "no paths found with selector: " << datasetSelector << mout.endl;
 		return;
 	}
 	else { //if (mout.isDebug(-1)) {
-		mout.warn() << "Selector results: " << mout.endl;
+		mout.debug() << "Selector results: " << mout.endl;
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it)
-			mout.warn() << '\t' << *it << mout.endl;
+			mout.info() << "Selector results: " << '\t' << *it << mout.endl;
 	}
 
 
@@ -185,22 +185,27 @@ void ImageOpRacklet::exec() const {
 	}
 
 	// Main loop: visit each /dataset<n>
-	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
+	// Results will be stored in the same datasetN.
+	for (ODIMPathList::iterator it = paths.begin(); it != paths.end(); ++it){
 
-		// Results will be stored in the same datasetN.
 		if (it->empty()){
 			mout.error() << "empty path" << mout.endl;
 			continue;
 		}
+
 		if (it->begin()->isRoot()){
-			mout.warn() << "path starts with root" << mout.endl;
-			//continue;
+			mout.warn() << "path starts with root, trimming it..." << mout.endl;
+			it->pop_front();
+			if (it->empty()){
+				mout.error() << "empty path" << mout.endl;
+				continue;
+			}
 		}
 
 		const ODIMPathElem & e = *it->begin();
-		mout.warn() << "using: " << e << " [" << quantity << "]"<< mout.endl;
-		//DataSet<dst_t > dstDataSet((*resources.currentHi5)(*it), quantity);
-		DataSet<dst_t > dstDataSet((*resources.currentHi5)[e], quantity);
+		mout.info() << "using: " << e << " [" << quantity << "]"<< mout.endl;
+
+		DataSet<dst_t> dstDataSet((*resources.currentHi5)[e], quantity);
 
 		const size_t QUANTITY_COUNT = dstDataSet.size();
 
@@ -215,7 +220,7 @@ void ImageOpRacklet::exec() const {
 		mout.debug(1) << "path: " << *it << " contains " << QUANTITY_COUNT << " quantities, and... " << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
 		if (QUANTITY_COUNT == 0){
 			//mout.warn() << dstDataSet.hasQuality() << mout.endl;
-			//mout.warn() << "no quantities with regExps /" << imageSelector.quantityRegExp << " and " << imageSelector.qualityRegExp << " to process, skipping" << mout.endl;
+			//mout.warn() << "no quantities with regExps /" << datasetSelector.quantityRegExp << " and " << datasetSelector.qualityRegExp << " to process, skipping" << mout.endl;
 			mout.warn() << "no quantities with regExp " << quantity  << " to process, skipping" << mout.endl;
 			//PlainData<dst_t> & q =  dstDataSet.getQualityData();
 			//dstDataSet.getQualityData()
