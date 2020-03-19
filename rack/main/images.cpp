@@ -412,10 +412,12 @@ public:
 			return;
 		}
 
+		/* Handled in apply()
 		if (!resources.targetEncoding.empty()){
 			mout.warn() << "target encoding not supported (yet):" << resources.targetEncoding << mout.endl;
 			resources.targetEncoding.clear();
 		}
+		*/
 		// resources.select.clear(); //  below
 
 		// if (resources.currentGrayImage != &resources.grayImage){  // TODO: remove this
@@ -562,7 +564,8 @@ public:
 
 
 		if (dstQuantity.empty()){
-			/// Use separate image
+			/// Future option: also in hdf5 structure
+			mout.note() << "Using separate image (resources.colorImage)" << mout.endl;
 			op.process(*resources.currentGrayImage, resources.colorImage);
 			resources.colorImage.properties = props;
 			//File::write(resources.colorImage, "color.png");
