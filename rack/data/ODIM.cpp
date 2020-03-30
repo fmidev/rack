@@ -217,25 +217,32 @@ bool ODIM::setTime(const std::string & s){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	const size_t nDate = 8; // "YYYYmmdd"
+	const size_t nTime = 6; // "HHMMSS"
+
 	const size_t n = s.size();
 
-	date = s;
-
-	if (n <= 8){
-		mout.warn() << "suspiciously short date: " << s << " => " << date << mout.endl;
-		date.append(8 - n, '0');
+	if (n < nDate){ // short...
+		date = s;
+		date.append(nDate - n, '0'); // pad
 		time = "000000";
+		mout.warn() << "suspiciously short date: " << s << " => " << date << mout.endl;
+		return false;
 	}
-	else if (n > 8){ // default case
-		time = date.substr(8);
-		if ((n-8) < 6) // 8 first
-			time.append(6 - (n-8), '0');
-		else
-			time.erase(6 - (n-8));
-		date = date.substr(0, 8);
+	else { // default case
+		date = s.substr(0, nDate);
+		if ((n-nDate) < nTime){ // less than 6 time digits
+			time = s.substr(nDate);
+			time.append(nTime - (n-nDate), '0'); // pad
+		}
+		else {
+			time = s.substr(nDate, nTime);
+			// warn microsecs?
+		}
 	}
 
-	return true;
+	return n >= (nDate+nTime);
+
 }
 
 void ODIM::updateLenient(const ODIM & odim){
