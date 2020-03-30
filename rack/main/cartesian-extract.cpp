@@ -195,16 +195,13 @@ void CartesianSun::exec() const {
 	//RootData<CartesianDst> root(resources.cartesianHi5);
 	DataSet<CartesianDst> dst(resources.cartesianHi5[ODIMPathElem::DATASET]);
 	PlainData<CartesianDst> & dstData = dst.getData("SUNSHINE");
-
-	// Still "borrowing" composite, yet not one.
-	//dstData.odim.updateFromMap(resources.composite.odim);
+	getQuantityMap().setQuantityDefaults(dstData.odim, "PROB");
+	dstData.odim.quantity = "SUNSHINE";
 
 	const size_t width  = resources.composite.getFrameWidth();
 	const size_t height = resources.composite.getFrameHeight();
 	dstData.setGeometry(width, height);
 
-	getQuantityMap().setQuantityDefaults(dstData.odim, "PROB");
-	dstData.odim.quantity = "SUNSHINE";
 
 	Sun sun(timestamp);
 	dstData.odim.setTime(timestamp);
