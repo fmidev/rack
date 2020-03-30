@@ -46,8 +46,10 @@ namespace rack {
 
 
 
-/* 2001 (C) Harri.Hohti@fmi.fi */
-
+/*
+ * 2001 (C) Harri.Hohti@fmi.fi
+ * Original formulae from: Jean Meeus: Astronomical Formulae for Calculators (1980)
+ */
 
 
 void Sun::getSunPos(const std::string & datestr, double lon, double lat, double & azm, double & elev){

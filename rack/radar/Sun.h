@@ -36,7 +36,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <drain/util/Geo.h>
-// // using namespace std;
+
+
+/*
+ * 2001 (C) Harri.Hohti@fmi.fi
+ * Original formulae from: Jean Meeus: Astronomical Formulae for Calculators (1980)
+ */
 
 namespace rack {
 
