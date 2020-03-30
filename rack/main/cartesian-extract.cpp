@@ -196,24 +196,19 @@ void CartesianSun::exec() const {
 	DataSet<CartesianDst> dst(resources.cartesianHi5[ODIMPathElem::DATASET]);
 	PlainData<CartesianDst> & dstData = dst.getData("SUNSHINE");
 
-	//dstData.odim.projdef  = resources.composite.getProjection();
-	dstData.odim.updateFromMap(resources.composite.odim);
+	// Still "borrowing" composite, yet not one.
+	//dstData.odim.updateFromMap(resources.composite.odim);
+
 	const size_t width  = resources.composite.getFrameWidth();
 	const size_t height = resources.composite.getFrameHeight();
 	dstData.setGeometry(width, height);
-	//odim.gain = 1.0/200.0;
-	//odim.offset = -0.1;
+
 	getQuantityMap().setQuantityDefaults(dstData.odim, "PROB");
-	//dstData.odim.
 	dstData.odim.quantity = "SUNSHINE";
 
 	Sun sun(timestamp);
-	//sun.setLocation();
-	//dstData.odim.setTime(timestamp);
-	//dstData.odim.updateLenient(odim);
+	dstData.odim.setTime(timestamp);
 
-	// proj.projectInv(0.0, 0.0, lon, lat);
-	// mout.warn() << "proj\t" << (180.0*lon/M_PI) << ',' << (180.0*lat/M_PI) << mout.endl;
 	resources.composite.updateScaling();
 
 	mout.debug(1) << "main" << mout.endl;
@@ -223,7 +218,6 @@ void CartesianSun::exec() const {
 
 		for (size_t i = 0; i < width; ++i) {
 
-			//resources.composite.pix2LLdeg(i,j, lat,lon);
 			resources.composite.pix2rad(i,j, lon,lat);
 			sun.setLocation(lon, lat);
 			if (sun.elev > 0.0)
@@ -233,23 +227,15 @@ void CartesianSun::exec() const {
 		}
 	}
 
-	dstData.odim.xsize = width;
-	dstData.odim.ysize = height;
 
-	/*
-	const drain::Rectangle<double> &bboxD = getBoundingBoxD();
-	dstData.odim.LL_lon = bboxD.lowerLeft.x;
-	odim.LL_lat = bboxD.lowerLeft.y;
-	odim.UR_lon = bboxD.upperRight.x;
-	odim.UR_lat = bboxD.upperRight.y;
-	*/
-	dstData.odim.LL_lat = 123;
-	dstData.odim.xscale = 1234;
-	//ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, resources.cartesianHi5); // od
+	// Still "borrowing" composite, yet not one.
+	dstData.odim.updateGeoInfo(resources.composite);
+
+	ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, resources.cartesianHi5); // od
 
 	resources.currentHi5 = &resources.cartesianHi5;
 	DataTools::updateInternalAttributes(resources.cartesianHi5);
-	//resources.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source"] = (*resources.currentPolarHi5)[ODIMPathElem::WHAT].data.attributes["source"];
+	// resources.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source"] = "fi";
 
 }
 
