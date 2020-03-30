@@ -58,39 +58,13 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 		mout.error() << "Unset data storage type."  << mout.endl;
 
 	//ProductOp::applyODIM();
-	mout.note() << "odim: " << odim << mout.endl;
+	mout.note() << " odim: " << odim << mout.endl;
+	//mout.note() << "dodim: " << dst.odim << mout.endl;
 	setGeometry(odim, dst);
-	mout.warn() << dst << mout.endl;
-
 	//ProductOp::applyODIM(dst.odim, odim);
-
-	/*
-	dst.odim.updateFromMap(src.odim);
-
-	// const std::type_info &t = drain::Type::getType(odim.type.at(0));
-	// dst.data.setType(t);
-	dst.odim.quantity = odim.quantity;
-	dst.data.setType<unsigned char>();
-	dst.odim.setTypeDefaults();
-	dst.odim.gain     = odim.gain;
-	dst.odim.offset   = odim.offset;
-
-	dst.odim.nbins  = odim.nbins;
-	dst.odim.nrays  = odim.nrays;
-	dst.odim.rscale = odim.rscale;
-
-	dst.data.setGeometry(dst.odim.nbins, dst.odim.nrays);
-
-	*/
 
 	//dst.odim.rscale = (static_cast<double>(src.odim.nbins) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.nbins);
 	mout.debug(1) << "target nbins:" << dst.odim.nbins << " rscale:" << dst.odim.rscale << mout.endl;
-
-	// const double max = dst.data.getMax<double>();
-	// const double gainMetres = 1000*odim.gain;
-	// const double eta = src.odim.elangle * DEG2RAD;
-	// double h;
-
 
 	RadarProj4 proj(src.odim.lon, src.odim.lat);
 	proj.setProjectionDst("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def");
@@ -101,8 +75,10 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 	//mout.warn() << "timestamp " << timestamp << " <- " << src.odim.date << ':' <<  src.odim.time << mout.endl;
 
 	Sun sun(timestamp);
-	//double azm;
-	//double elev;
+	dst.odim.setTime(timestamp);
+	dst.odim.updateLenient(odim);
+	// dst.odim.updateLenient() //.setTypeDefaults
+	// mout.warn() << "odim " << dst.odim.date << '-' << dst.odim.time << mout.endl;
 
 	double a;  // azm of the beam
 	double r;  // range of the bin
@@ -122,25 +98,22 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 		for (long int i = 0; i < dst.odim.nbins; ++i) {
 			//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.gain << " m\n";
 			r = dst.odim.getBinDistance(i);
-			//proj.projectInv(r*sin(a), r*cos(a), lon, lat);
 			proj.projectFwd(r*sin(a), r*cos(a), lon, lat);
 			sun.setLocation(lon, lat);
-			//Sun::getSunPos(timestamp, lon, lat, azm, elev);
-			//if ((i==j) && ((i&7) ==0))
-			//	mout.warn() << i << '\t' << (lon*180/M_PI) << ',' << (lat*180/M_PI) << '\t' << (azm*180/M_PI) << ',' << sin(elev) << mout.endl;
 			if (sun.elev > 0.0)
 				dst.data.put(i, j, dst.odim.scaleInverse(sin(sun.elev)));
 			else
-				dst.data.put(i, j, dst.odim.undetect);
+				dst.data.put(i, j, dst.odim.undetect); // This could be conditional
 		}
 	}
 
-	dst.odim.product = odim.product;
-	dst.odim.prodpar = odim.prodpar;
+	//mout.note() << "dst odim: " << dst.odim << mout.endl;
 
-	//@ dst.updateTree();
-
-	//mout.warn() << timestamp << mout.endl;
+	//dst.odim.product = "MIKA"; // odim.product;
+	//dst.odim.undetect = 0.123456789; // odim.product;
+	//dst.odim.prodpar = odim.prodpar;
+	//dst.updateTree2();
+	//mout.note() << "dst odim: " << dst.odim << mout.endl;
 
 }
 

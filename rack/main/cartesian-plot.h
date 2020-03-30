@@ -55,6 +55,16 @@ public:
 		// Consider resources.composite.dataSelector.quantity ?
 	}
 
+	inline
+	void exec() const {
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackResources & resources = getResources();
+		resources.targetEncoding = "quantity=" + resources.composite.odim.quantity;
+		mout.deprecating() << "use --encoding " << resources.targetEncoding << " instead" << mout.endl;
+		// = "quantity=" + resources.composite.odim.quantity;
+
+	};
 
 };
 
@@ -77,6 +87,7 @@ public:
 
 	inline
 	void exec() const {
+		// consider CompositingModule::initComposite();
 		getResources().composite.allocate();      // TODO conditional
 		getResources().composite.addUnprojected(lon, lat, x, w);
 	};
@@ -104,8 +115,6 @@ public:
 	double horz;
 	double vert;
 	int loops;
-	//double decay;
-	// int height;
 
 	CartesianSpread() : BasicCommand(__FUNCTION__, "Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead"){ // Does not allocate memory."){
 		parameters.reference("horz", horz = 10, "pixels");

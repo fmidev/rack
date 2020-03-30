@@ -118,6 +118,37 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	return statusMap;
 }
 
+void RackResources::initComposite() {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	RackResources & resources = *this; //getResources();
+
+	/// Set data selector
+	if (!resources.select.empty()){
+		resources.composite.dataSelector.setParameters(resources.select);
+		resources.select.clear();
+		// resources.composite.odim.quantity.clear();
+	}
+
+	if ((resources.composite.getFrameWidth() == 0) || (resources.composite.getFrameHeight() == 0)){
+		resources.composite.setGeometry(500,500); // frame only
+		mout.warn() << "size unset, applying " << resources.composite.getFrameWidth() << ',' << resources.composite.getFrameHeight() << mout.endl;
+	}
+	resources.composite.allocate();
+
+	if (!resources.targetEncoding.empty()){
+		resources.composite.setTargetEncoding(resources.targetEncoding);
+		mout.debug() << "target encoding: " << resources.composite.getTargetEncoding() << mout.endl;
+		resources.targetEncoding.clear();
+	}
+
+
+}
+
+
+
+
 /*
 void RackResources::getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap){
 	std::stringstream sstr;

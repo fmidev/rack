@@ -44,7 +44,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Coordinates.h"
 #include "radar/Composite.h"
-//#include "radar/Extractor.h"
+
+#include "radar/Sun.h"
 
 
 #include "cartesian-extract.h"
@@ -183,11 +184,75 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 
 
+void CartesianSun::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	RackResources & resources = getResources();
+
+	resources.cartesianHi5.clear();
+
+	//RootData<CartesianDst> root(resources.cartesianHi5);
+	DataSet<CartesianDst> dst(resources.cartesianHi5[ODIMPathElem::DATASET]);
+	PlainData<CartesianDst> & dstData = dst.getData("SUNSHINE");
+
+	//dstData.odim.projdef  = resources.composite.getProjection();
+	dstData.odim.updateFromMap(resources.composite.odim);
+	const size_t width  = resources.composite.getFrameWidth();
+	const size_t height = resources.composite.getFrameHeight();
+	dstData.setGeometry(width, height);
+	//odim.gain = 1.0/200.0;
+	//odim.offset = -0.1;
+	getQuantityMap().setQuantityDefaults(dstData.odim, "PROB");
+	//dstData.odim.
+	dstData.odim.quantity = "SUNSHINE";
+
+	Sun sun(timestamp);
+	//sun.setLocation();
+	//dstData.odim.setTime(timestamp);
+	//dstData.odim.updateLenient(odim);
+
+	// proj.projectInv(0.0, 0.0, lon, lat);
+	// mout.warn() << "proj\t" << (180.0*lon/M_PI) << ',' << (180.0*lat/M_PI) << mout.endl;
+	resources.composite.updateScaling();
+
+	mout.debug(1) << "main" << mout.endl;
+	double lat, lon;
+
+	for (size_t j = 0; j < height; ++j) {
+
+		for (size_t i = 0; i < width; ++i) {
+
+			//resources.composite.pix2LLdeg(i,j, lat,lon);
+			resources.composite.pix2rad(i,j, lon,lat);
+			sun.setLocation(lon, lat);
+			if (sun.elev > 0.0)
+				dstData.data.put(i, j, dstData.odim.scaleInverse(sin(sun.elev)));
+			else
+				dstData.data.put(i, j, dstData.odim.undetect); // This could be conditional
+		}
+	}
+
+	dstData.odim.xsize = width;
+	dstData.odim.ysize = height;
+
+	/*
+	const drain::Rectangle<double> &bboxD = getBoundingBoxD();
+	dstData.odim.LL_lon = bboxD.lowerLeft.x;
+	odim.LL_lat = bboxD.lowerLeft.y;
+	odim.UR_lon = bboxD.upperRight.x;
+	odim.UR_lat = bboxD.upperRight.y;
+	*/
+	dstData.odim.LL_lat = 123;
+	dstData.odim.xscale = 1234;
+	//ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, resources.cartesianHi5); // od
+
+	resources.currentHi5 = &resources.cartesianHi5;
+	DataTools::updateInternalAttributes(resources.cartesianHi5);
+	//resources.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source"] = (*resources.currentPolarHi5)[ODIMPathElem::WHAT].data.attributes["source"];
+
+}
 
 
 }  // namespace rack::
 
-
-
-// Rack
- // REP // REP // REP // REP

@@ -196,12 +196,53 @@ bool ODIM::getEndTime(drain::Time & t) const {
 }
 
 
+
+bool ODIM::setTime(const drain::Time & t){
+
+	try {
+		date = t.str(ODIM::dateformat);
+		time = t.str(ODIM::timeformat);
+	}
+	catch (const std::exception &e) {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << e.what() << mout.endl;
+		return false;
+	}
+
+	return true;
+
+}
+
+bool ODIM::setTime(const std::string & s){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	const size_t n = s.size();
+
+	date = s;
+
+	if (n <= 8){
+		mout.warn() << "suspiciously short date: " << s << " => " << date << mout.endl;
+		date.append(8 - n, '0');
+		time = "000000";
+	}
+	else if (n > 8){ // default case
+		time = date.substr(8);
+		if ((n-8) < 6) // 8 first
+			time.append(6 - (n-8), '0');
+		else
+			time.erase(6 - (n-8));
+		date = date.substr(0, 8);
+	}
+
+	return true;
+}
+
 void ODIM::updateLenient(const ODIM & odim){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	EncodingODIM::updateLenient(odim);
-
 
 	if (object.empty())
 		object = odim.object;
@@ -220,30 +261,44 @@ void ODIM::updateLenient(const ODIM & odim){
 		date = odim.date;
 		if (!odim.time.empty())
 			time = odim.time;
-		else
-			time = "000000";
+		//else time = "000000";
 	}
+
+	if (time.empty()){
+		time = "000000";
+	}
+
 
 	if (startdate.empty())
-		startdate = "999999";
+		startdate = date; //"999999";
 
 	if (starttime.empty())
-		starttime = "999999";
+		starttime = time; // "999999";
 
-	if (odim.startdate < startdate){
-		startdate = odim.startdate;
-		starttime = odim.starttime;
-	}
-	else if ((odim.startdate == startdate) && (odim.starttime < starttime)){
-		starttime = odim.starttime;
+	if (!odim.startdate.empty()){
+		if (odim.startdate < startdate){
+			startdate = odim.startdate;
+			starttime = odim.starttime;
+		}
+		else if ((odim.startdate == startdate) && (odim.starttime < starttime)){
+			starttime = odim.starttime;
+		}
 	}
 
-	if (odim.enddate > enddate){
-		enddate = odim.enddate;
-		endtime = odim.endtime;
-	}
-	else if ((odim.enddate == enddate) && (odim.endtime > endtime)){
-		endtime = odim.endtime;
+	if (enddate.empty())
+		enddate = date; // NEW
+
+	if (endtime.empty())
+		endtime = time; // NEW
+
+	if (!odim.enddate.empty()){
+		if (odim.enddate > enddate){
+			enddate = odim.enddate;
+			endtime = odim.endtime;
+		}
+		else if ((odim.enddate == enddate) && (odim.endtime > endtime)){
+			endtime = odim.endtime;
+		}
 	}
 
 	if (source.empty())
@@ -251,6 +306,8 @@ void ODIM::updateLenient(const ODIM & odim){
 
 	if (NI == 0.0)
 		NI = odim.NI;
+
+	//mout.note() << "raimo" << starttime << ":" << enddate << mout.endl;
 
 }
 

@@ -62,8 +62,8 @@ void CartesianPlotFile::exec() const {
 
 	Composite & composite = resources.composite;
 
-	composite.allocate();
-	//composite.updateGeoData();
+	resources.initComposite(); // considers quality as well
+	// composite.allocate();
 
 	if (! composite.isMethodSet()){
 		composite.setMethod("LATEST");

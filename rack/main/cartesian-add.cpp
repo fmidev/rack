@@ -80,9 +80,10 @@ void CompositeAdd::exec() const {
 	if (!resources.select.empty()){
 		const std::string quantityOrig(resources.composite.dataSelector.quantity);
 		resources.composite.dataSelector.setParameters(resources.select);
-		resources.select = "quantity=" + resources.composite.dataSelector.quantity;
-		resources.select.clear(); // PROBLEMS HERE?
+		//resources.select = "quantity=" + resources.composite.dataSelector.quantity;
+		//resources.select.clear(); // PROBLEMS HERE?
 
+		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != resources.composite.dataSelector.quantity)){
 			mout.warn() << "quantity selector changed, resetting accumulation array" << mout.endl;
@@ -94,8 +95,8 @@ void CompositeAdd::exec() const {
 	}
 	else {
 		if (resources.composite.dataSelector.quantity.empty()){
-			mout.info() << "Setting selector for quantity=" << resources.composite.odim.quantity << mout.endl;
-			resources.composite.dataSelector.quantity = resources.composite.odim.quantity;
+			mout.info() << "Setting selector quantity=" << resources.composite.odim.quantity << mout.endl;
+			resources.composite.dataSelector.quantity = resources.composite.odim.quantity; // consider "^"+...+"$"
 		}
 	}
 
@@ -197,7 +198,6 @@ void CompositeAdd::addPolar() const {
 		resources.dataOk = true; // return if input not ok?
 
 		ODIMPath dataPath;
-		//resources.composite.dataSelector.getPathNEW(*(resources.currentPolarHi5), dataPath, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 		resources.composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //TAIL
 		resources.composite.dataSelector.getPath3(*(resources.currentPolarHi5), dataPath);
 		if (dataPath.empty()){
@@ -232,6 +232,7 @@ void CompositeAdd::addPolar() const {
 			if (encoding.empty()){
 				mout.note() << "adapting encoding of first input: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			}
+			mout.note() << "composite.odim " << resources.composite.odim << mout.endl;
 			ProductBase::completeEncoding(resources.composite.odim, encoding); // note, needed even if encoding==""
 		}
 		else {
@@ -436,6 +437,7 @@ void CompositeAdd::addCartesian() const {
 	//drain::image::File::write(srcQuality.data, "srcQuality.png");
 
 }
+
 
 
 }  // namespace rack::

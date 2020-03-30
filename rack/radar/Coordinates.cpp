@@ -50,11 +50,17 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 	mout.debug(1) << "start\n" << *this << mout.endl;
 
 	mout.debug(1) << "range=" << range << mout.endl;
-
+	/*
+	xLL = +1234567.89;
+	yLL = +1234567.89;
+	xUR = -1234567.89;
+	yUR = -1234567.89;
+	*/
 	xLL = +std::numeric_limits<double>::max();
 	yLL = +std::numeric_limits<double>::max();
 	xUR = -std::numeric_limits<double>::max();
 	yUR = -std::numeric_limits<double>::max();
+
 
 	double azimuth;
 	double x,y;
@@ -65,12 +71,15 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 		azimuth = static_cast<double>(a) * drain::DEG2RAD;
 		projectFwd(range*sin(azimuth), range*cos(azimuth), x, y);
 
-		mout.debug(5) << x << ',' << y << mout.endl;
+		//mout.debug(5) << x << ',' << y << mout.endl;
 
 		xLL = std::min(x,xLL);
 		yLL = std::min(y,yLL);
 		xUR = std::max(x,xUR);
 		yUR = std::max(y,yUR);
+
+		//mout.warn() << x << ',' << y << "\t <=> " << a << '\t' << xLL << ',' << yLL << '\t' << xUR << ',' << yUR << '\t' << mout.endl;
+
 	}
 
 	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;

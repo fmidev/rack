@@ -156,8 +156,7 @@ void Palette::reset(){
 
 void Palette::update() const {
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
-
+	Logger mout(__FUNCTION__, __FILE__);
 
 	size_t i = 0;
 	size_t a = 0;
@@ -355,8 +354,6 @@ void Palette::loadTXT(std::ifstream & ifstr){
 	while (std::getline(ifstr, line)){
 
 		//mout.note() << "'" << line <<  "'" << std::endl;
-
-
 		size_t i = line.find_first_not_of(" \t");
 
 		// Skip empty lines
@@ -431,9 +428,6 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		id << entry.label;
 		entry.id = id.toStr();
 
-
-
-
 		Variable colours(typeid(PaletteEntry::value_t));
 
 		while (data >> d) {
@@ -447,35 +441,6 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		// TODO!
 		// if (entry.color.size() == 4)
 		//  alpha=
-
-		/*
-		unsigned int n=0;
-
-		while (true) {
-
-			if (!(data >> d))
-				break; // todo detect if chars etc
-
-			//mout.note() << "got " << d << mout.endl;
-
-			if (colorCount == 0){ // first entry
-				entry.color.resize(n+1);
-			}
-			else {
-				entry.color.resize(colorCount);
-				if (i >= colorCount){
-					mout.error() << " increased color count? index=" << i << " #colors=" << colorCount << mout.endl;
-					return;
-				}
-			};
-
-			entry.color[n] = d;
-			++n;
-
-		}
-		// Now fixed.
-		colorCount = entry.color.size();
-		 */
 
 		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
 

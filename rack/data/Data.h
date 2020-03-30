@@ -754,7 +754,7 @@ protected:
 
 			if (quantity.empty()){
 				//drain::Logger mout("DataSet", __FUNCTION__);
-				mout.warn() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
+				mout.info() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
 				mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
 				// Assign by path component "data3"
 				dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));

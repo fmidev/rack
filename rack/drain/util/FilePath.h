@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef DRAIN_FileS_H_
-#define DRAIN_FileS_H_
+#ifndef DRAIN_FILES_H_
+#define DRAIN_FILES_H_
 
 #include <stdexcept>
 #include <iostream>

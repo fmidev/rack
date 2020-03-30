@@ -31,22 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GEOFRAME_H_
 #define GEOFRAME_H_
 
-//#include "Geometry.h"
-
+#include "Geometry.h"
 #include "util/Rectangle.h"
-
 #include "util/Geo.h"
-
 #include "util/Proj4.h"  // for geographical projection of radar data bins
 
-//#include "image/Image.h"
-//#include "Accumulator.h"
-
-
-
-//#include "Coordinates.h" // for site coords and bin coords.
-
-// using namespace std;
 
 namespace drain
 {
@@ -54,23 +43,25 @@ namespace drain
 namespace image
 {
 
+class GeoInfo {
+
+public:
+	// TODO: CartesianODIM compatibility
+};
 
 /// Array with georeferencing support.
 /*!
 
  */
-class GeoFrame { //  See also
+class GeoFrame  { //  See also
 
 public:
 
-	typedef unsigned int icoord_t;
+	//typedef unsigned int icoord_t;
 
-	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
+	/// Default constructor.
 	GeoFrame(unsigned int width = 0, unsigned int height = 0);
 
-	// GeoFrame(const GeoFrame & gf);
-
-	//, unsigned int imageChannels=1,unsigned int alphaChannels=2);
 	virtual inline
 	~GeoFrame(){
 	};
@@ -81,17 +72,16 @@ public:
 
 	/// Return the nominal width, not the width of the memory array which does not have to be allocated.
 	inline
-	int getFrameWidth() const {return frameWidth;};
+	int getFrameWidth() const {return frameWidth; };
 
 	/// Return the nominal height, not the height of the memory array which does not have to be allocated.
 	inline
-	int getFrameHeight() const {return frameHeight;};
+	int getFrameHeight() const {return  frameHeight; };
 
 
 	/// Sets bounding box in degrees in the target coordinate system.
 	inline
 	void setBoundingBoxD(double lonLL, double latLL, double lonUR, double latUR){
-		//static const double D2R = M_PI/180.0;
 		setBoundingBoxR(DEG2RAD*lonLL, DEG2RAD*latLL, DEG2RAD*lonUR, DEG2RAD*latUR);
 	}
 
@@ -99,8 +89,6 @@ public:
 	inline
 	void setBoundingBoxD(const drain::Rectangle<double> & bboxD){
 		setBoundingBoxD(bboxD.lowerLeft.x, bboxD.lowerLeft.y, bboxD.upperRight.x, bboxD.upperRight.y);
-		//static const double D2R = M_PI/180.0;
-		//setBoundingBoxR(DEG2RAD*bboxD.lowerLeft.x, DEG2RAD*bboxD.lowerLeft.y, D2R*bboxD.upperRight.x, D2R*bboxD.upperRight.y);
 	}
 
 	/// Sets bounding box in radians in the target coordinate system.
@@ -177,12 +165,17 @@ public:
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	virtual inline
 	void pix2deg(int i, int j, double & lon, double & lat) const {
-		// double x, y; // metric
-		// projR2M.projectInv(x,y, lon,lat);
 		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
 		projR2M.projectInv(lon,lat, lon,lat);
 		lon *= RAD2DEG;
 		lat *= RAD2DEG;
+	}
+
+	/// Calculates the geographic coordinates [rad] of the center of a pixel at (i,j).
+	virtual inline
+	void pix2rad(int i, int j, double & lon, double & lat) const {
+		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
+		projR2M.projectInv(lon,lat, lon,lat);
 	}
 
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
@@ -196,7 +189,6 @@ public:
 	void pix2LLdeg(int i,int j, double & lon, double & lat) const {
 		double x, y; // metric
 		pix2LLm(i,j, x,y);
-		//pix2m(i,height-1-j,x,y);
 		projR2M.projectInv(x,y, lon,lat);
 		lon *= RAD2DEG;
 		lat *= RAD2DEG;
@@ -204,7 +196,7 @@ public:
 
 
 	virtual inline
-	void m2deg(const double & x, const double & y, double & lon, double & lat) const {
+	void m2deg(double x, double y, double & lon, double & lat) const {
 		projR2M.projectInv(x,y, lon,lat);
 		lon *= RAD2DEG;
 		lat *= RAD2DEG;
@@ -234,17 +226,18 @@ public:
 	 * Note that i increases to right, j downwards.
 	 */
 	inline virtual
-	void m2pix(const double & x, const double & y, int & i, int & j) const {
+	void m2pix(double x, double y, int & i, int & j) const {
 		i = static_cast<int>(0.5+ (x - extentM.lowerLeft.x) / xScale); //  xOffset
+		//j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
 		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
-		//j = 1-1 + static_cast<int>((y - extentM.lowerLeft.y) / yScale);
 	}
 
 	inline virtual
 	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
 		pImage.x = static_cast<int>(0.5+ (pMetric.x - extentM.lowerLeft.x) / xScale); //  xOffset
+		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentM.lowerLeft.y) / yScale);
 		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentM.lowerLeft.y) / yScale);
-		//j = 1-1 + static_cast<int>((y - extentM.lowerLeft.y) / yScale);
+
 	}
 
 
@@ -260,9 +253,10 @@ public:
 	 */
 	inline
 	virtual
-	void pix2m(const int & i, const int & j, double & x, double & y) const {
+	void pix2m(int i, int j, double & x, double & y) const {
 		x = (static_cast<double>(i)+0.5)*xScale + extentM.lowerLeft.x;
 		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
+		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
 	}
 
 	inline
@@ -270,6 +264,7 @@ public:
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
 		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + extentM.lowerLeft.x;
 		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentM.lowerLeft.y;
+		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentM.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.
@@ -282,10 +277,10 @@ public:
 	 */
 	inline
 	virtual
-	void pix2LLm(const int & i, const int & j, double & x, double & y) const {
+	void pix2LLm(int i, int j, double & x, double & y) const {
 		x = (static_cast<double>(i))*xScale + extentM.lowerLeft.x;
 		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.lowerLeft.y;
-		//y = static_cast<double>(1-1 + j)*yScale + extentM.lowerLeft.y;
+		// y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.lowerLeft.y;
 	}
 
 
@@ -338,6 +333,7 @@ public:
 
 protected:
 
+	// drain::image::AreaGeometry frameGeometry; would be fine, but unsigned caused conversion/cast underflows
 	int frameWidth;
 	int frameHeight;
 

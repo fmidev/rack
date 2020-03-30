@@ -82,6 +82,9 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 		if (its->first == itd->first){
 
+			//mout.warn() << its->first << mout.endl;
+			//return;
+
 			const DataSet<PolarSrc> & srcDataSet = its->second;
 			DataSet<PolarDst> & dstDataSet = itd->second;
 
@@ -144,6 +147,8 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 				return;
 			}
 
+			//hi5::Writer::writeFile("testo.h5", );
+			//mout.warn() << dstDataSet << mout.endl;
 			/*
 			File::write(srcProb.data, "srcProb.png");
 			if (!dstQind.data.isEmpty())
@@ -154,6 +159,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
 			//File::write(dstQind.data, "dstQind2.png");
 			//File::write(dstClass.data, "dstClass2.png");
+			//mout.note() << dstDataSet << mout.endl;
 
 		}
 		else {

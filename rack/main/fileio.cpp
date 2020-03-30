@@ -129,6 +129,7 @@ struct HistEntry : BeanLike {
 	std::string label;
 
 };
+static HistEntry histEntryHelper;
 
 /// TODO: generalize to array outfile
 class CmdHistogram : public BasicCommand {
@@ -143,13 +144,16 @@ public:
 	std::string filename;
 
 	//	CmdHistogram() : SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
-	CmdHistogram() : BasicCommand(__FUNCTION__, "Histogram") {
+	CmdHistogram() : BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
 		parameters.reference("count", count = 256);
 		parameters.reference("range", range.vect);
 		//parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
 		parameters.reference("filename", filename="", "<filename>.txt|-");
 		parameters.reference("store", store="histogram", "<attribute_key>");
 	};
+
+	// virtual	inline const std::string & getDescription() const { return description; };
+
 
 	void exec() const {
 
@@ -159,18 +163,20 @@ public:
 
 		Hi5Tree & currentHi5 = *resources.currentHi5;
 
-		DataSelector selector;
-		selector.pathMatcher.clear();
-		selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElemMatcher::DATA);
+		DataSelector selector(ODIMPathElemMatcher::DATA);
+		//selector.pathMatcher.clear();
+		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElemMatcher::DATA);
 		selector.setParameters(resources.select);
 
 		ODIMPath path;
 		selector.getPath3(currentHi5, path);
 		resources.select.clear();
 
-		mout.warn() << "path: " << path << mout.endl;
+
 
 		PlainData<BasicDst> dstData(currentHi5(path));
+
+		mout.note() << "path: " << path << " [" << dstData.odim.quantity << ']' << mout.endl;
 
 		// NO resources.setCurrentImage(selector);
 		// drain::image::Image & img = *resources.currentImage;
@@ -194,7 +200,7 @@ public:
 				mapper.parse(cmdFormat.value, true);
 			}
 			else
-				mapper.parse("${count} # ${label} (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
+				mapper.parse("${count} # '${label}' (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
 
 			// Header
 			ostr << "# [0," << histogram.getSize() << "] ";
@@ -228,12 +234,19 @@ public:
 			else {
 				mout.note() << "No legend found, writing all elements" << mout.endl;
 				for (std::size_t i=0; i<v.size(); ++i){
-					//if (v[i] > 0) ?
+
 					entry.index = i;
 					entry.count = v[i];
 					entry.binRange.min = histogram.scaling.fwd(i);
 					entry.binRange.max = histogram.scaling.fwd(i+1);
-					entry.label = "<label>";
+
+					if (i == dstData.odim.nodata)
+						entry.label = "nodata";
+					else if (i == dstData.odim.undetect)
+						entry.label = "undetect";
+					else
+						entry.label.clear();
+
 					mapper.toStream(ostr, entry.getParameters());
 				}
 				ostr << '\n';
@@ -670,8 +683,8 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
-		mout.note() << "Writing multiple image files" << mout.endl;
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		//mout.note() << "Writing multiple image files" << mout.endl;
 
 		RackResources & resources = getResources();
 
@@ -683,18 +696,10 @@ public:
 		ODIMPathList paths;
 		iSelector.getPaths3(*getResources().currentHi5, paths); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
-		drain::FilePath fp(value);
-		/// Split filename to basename+extension.
-		/*
-		static const drain::RegExp r("^(.*)(\\.[a-zA-Z0-9]+)$");
-		r.execute(value);
-		if (r.result.size() != 3){
-			mout.error() << " Could not detect image format for " << value << mout.endl;
-			return;
-		}
-		const std::string & basename  = r.result[1];
-		const std::string & extension = r.result[2];
-		 */
+		/// Split filename to dir+basename+extension.
+		drain::FilePath fp(resources.outputPrefix + value);
+
+		mout.note() << "Writing multiple image files: " << fp.dir << ' ' << fp.basename << "???_*." << fp.extension << mout.endl;
 
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
@@ -731,7 +736,7 @@ public:
 				sstr << '-';
 			}
 			sstr << img.properties["what:quantity"];
-			sstr << fp.extension;
+			sstr << '.' << fp.extension;
 			filenameOut = sstr.str();
 
 			mout.info() << "Writing image file: " << filenameOut << '\t' << *it << mout.endl;

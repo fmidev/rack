@@ -103,6 +103,13 @@ public:
 	inline
 	void setTargetEncoding(const std::string & encoding){
 		targetEncoding = encoding;
+		if (odim.quantity.empty()){
+			//drain::ReferenceMap m;
+			ODIM m;
+			m.reference("what:quantity", odim.quantity);
+			m.addShortKeys();
+			m.updateValues(encoding);
+		}
 		//odim.setValues(encoding); // experimental
 	}
 

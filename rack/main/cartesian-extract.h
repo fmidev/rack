@@ -66,6 +66,31 @@ public:
 };
 /// static RackLetAdapter<CompositeExtract> cExtract("cExtract");
 
+/// Creates a single-radar Cartesian data set (2D data of both quantity and quality).
+/**
+ *   Accumulates data to a temporary array ("subcomposite"= and extracts that to a Cartesian product (HDF5).
+ *
+ *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
+ *
+ */
+class CartesianSun : public BasicCommand {
+
+public:
+
+	CartesianSun() : BasicCommand(__FUNCTION__,
+			"Sunshine to a Cartesian product.") //, extractCmd(extractCmd)
+	{
+		parameters.reference("timestamp", timestamp="200527071845");
+		//parameters.reference("quantity", odim.quantity="SUNSHINE");
+	}
+
+
+	void exec() const;
+
+	std::string timestamp;
+
+};
+
 
 
 } // rack::

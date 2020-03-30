@@ -86,28 +86,40 @@ void CartesianODIM::setGeometry(size_t cols, size_t rows){
 	if (ysize)
 		yscale = yscale * static_cast<double>(ysize) / static_cast<double>(rows);
 
+	// or getScale
+
 	xsize = cols;
 	ysize = rows;
 
-	/*
-	// Determining horizontal and vertical scale in meters.
-	// More reliably computed from degrees than from the metric BoundingBoxM, because the latter can actually be in radians!
-	// Uses a 2 x 2 pix box in the centre of the grid.
-	const int im = xsize/2;
-	const int jm = ysize/2;
-	drain::Rectangle<double> box;
-	pix2deg(im-1, jm-1, box.lowerLeft.x,  box.lowerLeft.y);
-	pix2deg(im+1, jm+1, box.upperRight.x, box.upperRight.y);
-	//mout.warn() << box << mout.endl;
-	odim.xscale = (box.upperRight.x-box.lowerLeft.x )/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS;
-	odim.yscale = (box.lowerLeft.y -box.upperRight.y)/2.0 * DEG2RAD * 2.0 * rack::Geometry::EARTH_RADIUS * cos(DEG2RAD*(box.lowerLeft.y+box.upperRight.y)/2.0);
-	*/
+}
+
+void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
+
+	xsize = geoFrame.getFrameWidth();
+	ysize = geoFrame.getFrameHeight();
+
+	projdef = geoFrame.getProjection();
+
+
+	const drain::Rectangle<double> &bboxD = geoFrame.getBoundingBoxD();
+	LL_lon = bboxD.lowerLeft.x;
+	LL_lat = bboxD.lowerLeft.y;
+	UR_lon = bboxD.upperRight.x;
+	UR_lat = bboxD.upperRight.y;
+
+	/// Complete other cornerpoints (non-ODIM)
+	double x2,y2;
+	geoFrame.pix2LLdeg(0,-1, x2,y2); // (vertically outside)
+	UL_lon = x2;
+	UL_lat = y2;
+	geoFrame.pix2LLdeg(xsize,ysize-1, x2,y2);  // (horizontally outside)
+	LR_lon = x2;
+	LR_lat = y2;
+
+	xscale = geoFrame.getXScale();
+	yscale = geoFrame.getYScale();
+
 }
 
 
-
 }  // namespace rack
-
-
-
-// Rack

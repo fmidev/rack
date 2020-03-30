@@ -194,11 +194,11 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	const Encoding & encoding = srcChannel.getEncoding();
 
 	const ValueScaling & scaling = srcChannel.getScaling();
-	mout.warn() << "srcChannel  " << srcChannel   << mout.endl;
+	mout.warn() << "srcChannel " << srcChannel   << mout.endl;
 	//mout.warn() << "src    scaling " << encoding.scaling << mout.endl;
 	//mout.warn() << "src getScaling " << srcChannel.getScaling() << mout.endl;
 	// encoding.scaling.
-	mout.warn() << "src    scaling " << scaling << mout.endl;
+	//mout.warn() << "src    scaling " << scaling << mout.endl;
 
 	const bool SCALED = scaling.isScaled();
 	const bool UCHAR  = (encoding.getType() == typeid(unsigned char));      // && !SCALED;
@@ -216,15 +216,16 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	Palette::const_iterator cit;
 
 	if (UCHAR || USHORT){
+	//if (false){
 
 		double min = scaling.fwd(0.0);
 		double max = scaling.fwd(encoding.getTypeMax<double>());
 
 		ValueScaling sc;
 		sc.setPhysicalScale(typeid(unsigned char), min, max);
-		const Palette::lookup_t & lut = pal.createLookUp(256, sc);
+		const Palette::lookup_t & lut = pal.createLookUp(256, sc, USHORT ? 8 : 0);
 
-		mout.warn() << "image data " << encoding.scaling << ' ';
+		mout.note() << "creating look-up table for input: " << encoding.scaling << ' ';
 		if (UCHAR){
 			mout << "UCHAR";
 		}

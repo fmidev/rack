@@ -105,7 +105,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool autoProj) {
 
-	drain::Logger mout("Composite", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
 
@@ -190,10 +190,11 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		pRadarToComposite.setProjectionDst(getProjection());
 		if (cropping){
 			//drain::Rectangle<double> bboxM;
-			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM);
+			mout.note() << "Orig: " << getBoundingBoxM() << mout.endl;
+			mout.note() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxM << mout.endl;
 			cropWithM(bboxM);
-			//mout.toOStr() << "Cropped to: " << getBoundingBoxM() << mout.endl;
+			mout.warn() << "Cropped to: " << getBoundingBoxM() << mout.endl;
 			if (getBoundingBoxM().getArea() == 0){
 				mout.info() << "Cropping returned empty area." << mout.endl;
 				mout.note() << "Data outside bounding box, returning" << mout.endl;
@@ -422,8 +423,10 @@ void Composite::updateNodeMap(const std::string & node, int i, int j){
 
 void Composite::updateGeoData(){
 
-	drain::Logger mout("Composite", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	odim.updateGeoInfo(*this);
+	/*
 	odim.projdef = getProjection();
 	odim.xsize   = getFrameWidth();
 	odim.ysize   = getFrameHeight();
@@ -441,26 +444,10 @@ void Composite::updateGeoData(){
 	odim.LR_lon = x2;
 	odim.LR_lat = y2;
 
-	// Determining horizontal and vertical scale in meters.
-	// More reliably computed from degrees than from the metric BoundingBoxM, because the latter can actually be in radians!
-	// Uses a 2 x 2 pix bboxDeg in the centre of the grid.
-	/*
-	if (projR2M.isLongLat()){
-		mout.info() << "approx xscale and yscale (LON-LAT grid)" << mout.endl;
-		const int im = getFrameWidth()/2;
-		const int jm = getFrameHeight()/2;
-		drain::Rectangle<double> bboxDeg;
-		pix2deg(im-1, jm-1, bboxDeg.lowerLeft.x,  bboxDeg.lowerLeft.y);
-		pix2deg(im+1, jm+1, bboxDeg.upperRight.x, bboxDeg.upperRight.y);
-
-		odim.xscale = (bboxDeg.upperRight.x-bboxDeg.lowerLeft.x )/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS * cos(DEG2RAD*(bboxDeg.lowerLeft.y+bboxDeg.upperRight.y)/2.0);
-		odim.yscale = (bboxDeg.lowerLeft.y -bboxDeg.upperRight.y)/2.0 * drain::DEG2RAD * drain::EARTH_RADIUS; //
-	}
-	else {
-	*/
-		//drain::Rectangle<double> & bboxM = getBoundingBoxM();
 	odim.xscale = getXScale();
 	odim.yscale = getYScale();
+	*/
+
 
 	// Produces ...,12568,12579,bymin,dkbor,dkrom,dksin,...
 	odim.nodes = nodeMap.getKeys();
@@ -474,9 +461,6 @@ void Composite::updateGeoData(){
 	else {
 		mout.info() << "could not derive composite source NOD from nodes: " << odim.nodes << mout.endl;
 	}
-	//}
-	//odim.source = odim.nodes.substr(0, std::min<size_t>(2, odim.nodes.length()));
-	// mout.warn() << odim.nodes << mout.endl;
 
 	odim.camethod = getMethod().name;
 

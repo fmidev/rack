@@ -160,7 +160,10 @@ public:
 	// Accumulator for data in Cartesian coordinates
 	Composite composite;
 
+	void initComposite();
+
 	drain::Rectangle<double> bbox;
+
 	std::string projStr;
 
 	/// Global values accessible more or less directly through commands.

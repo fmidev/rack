@@ -59,29 +59,29 @@ public:
     
 
 	/// Forward projection.
-	virtual
+	virtual virtual
 	void projectFwd(double & x, double & y) const {};
 
 	/// Forward projection.
-	virtual
+	virtual virtual
 	void projectFwd(const double & x, const double & y, double & x2, double & y2) const {};
 
     /// Forward projection.
-    virtual
+	virtual virtual
     void projectFwd(double & x, double & y, double & z) const {};
 
 
     /// Inverse projection.
-    inline
+    virtual inline
     void projectInv(double & x, double & y) const {};
 
 
     /// Inverse projection from (x2,y2) to (x,y).
-    inline
+    virtual inline
     void projectInv(const double & x2, const double & y2, double & x, double & y) const {};
 
     /// Inverse projection.
-    inline
+    virtual inline
     void projectInv(double & x, double & y, double & z) const {};
 
     

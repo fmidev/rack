@@ -161,6 +161,13 @@ public:
 	/// Retrieves the end time. Returns true if successful, throws error if fail.
 	bool getEndTime(drain::Time & t) const;
 
+	/// Sets \c date and \c time . Returns true if successful, throws error if fail.
+	bool setTime(const drain::Time & t);
+
+	/// Sets \c date and \c time given a string of  Returns true if successful, throws error if fail.
+	bool setTime(const std::string & s);
+
+
 	/// Returns recommended coordinate policy. Redefined in PolarODIM.
 	virtual inline
 	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {

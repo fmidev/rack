@@ -65,6 +65,9 @@ public:
 
 	CompositingModule(const std::string & section = "cart", const std::string & prefix = "c");
 
+	//static	void initComposite();
+
+
 };
 
 }

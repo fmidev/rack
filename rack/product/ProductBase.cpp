@@ -197,7 +197,13 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 
-	mout.debug(1) << "dstODIM: " << dstODIM << mout.endl;
+	//mout.debug(1)
+	/*
+	mout.warn() << odim.getKeys() << mout.endl;
+	mout.warn() << "request: " << encoding << mout.endl;
+	mout.warn() << "dstODIM.quantity: " << dstODIM.quantity << mout.endl;
+	mout.warn() << "odim: " << odim << mout.endl;
+	*/
 
 	if (dstODIM.quantity.empty()){
 		mout.warn() << "quantity (still) empty, odim=" << odim << mout.endl;
@@ -220,6 +226,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		return;
 	}
 
+	//mout.warn() << "quantity [" << dstODIM.quantity << "]" << mout.endl;
 
 	bool result = getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 

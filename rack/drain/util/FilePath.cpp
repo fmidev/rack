@@ -60,10 +60,12 @@ const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
 char FilePath::separator('/');
 
 FilePath::FilePath(const std::string & s, char separator) : dir(separator ? separator : FilePath::separator){
+	dir.trailing = true;
 	set(s);
 }
 
 FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), extension(p.extension){
+	dir.trailing = p.dir.trailing;
 }
 
 
@@ -81,13 +83,17 @@ void FilePath::set(const std::string & s){
 		std::vector<std::string> result;
 
 		if (!pathRegExp.execute(s, result)){
+
+			// for (std::size_t i = 1; i < result.size(); ++i)
+			//   mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
+
 			if (result.size() == 5){
-				this->dir.set(result[2]);
+				// this->dir.set(result[2]);  // excludes trailing separator '/'
+				this->dir.set(result[1]);     // includes trailing separator '/'
 				this->basename  = result[3];
 				this->extension = result[4];
 			}
 			else if (result.size() == 3){
-				//this->dir.set("");
 				this->basename  = result[1];
 				this->extension = result[2];
 			}

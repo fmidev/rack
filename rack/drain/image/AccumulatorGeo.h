@@ -61,7 +61,8 @@ public:
 	virtual
 	inline
 	void allocate(){
-		AccumulationArray::setGeometry(frameWidth,frameHeight);
+		//AccumulationArray::setGeometry(frameWidth,frameHeight);
+		AccumulationArray::setGeometry(frameWidth, frameHeight);
 	};
 
 	inline

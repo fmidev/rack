@@ -31,7 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef CART_ODIM_STRUCT
 #define CART_ODIM_STRUCT
 
+#include <drain/image/GeoFrame.h>
+
 #include "ODIM.h"
+
 namespace rack {
 
 
@@ -82,12 +85,9 @@ public:
 	 *  \see Composite::updateGeoData() on how they are originally set
 	 */
 	void setGeometry(size_t cols, size_t rows);
-	/*
-	{
-		xsize = cols;
-		ysize = rows;
-	}
-	*/
+
+	/// Updates size, projection and bounding box.
+	void updateGeoInfo(const drain::image::GeoFrame & geoFrame);
 
 	/// WHERE
 	std::string projdef;

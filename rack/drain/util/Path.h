@@ -72,23 +72,23 @@ public:
 	*/
 
 	inline
-	Path(char separator='/') : separator(separator), rooted(true){
+	Path(char separator='/') : separator(separator), rooted(true), trailing(false){
 		if (!separator)
 			throw std::runtime_error("Path(char separator): separator=0, did you mean empty init (\"\")");
 	};
 
 	/// Copy constructor. Note: copies also the separator.
 	inline
-	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator), rooted(p.rooted) {
+	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator), rooted(p.rooted), trailing(p.trailing) {
 	};
 
 	inline
-	Path(const std::string & s, char separator='/') : separator(separator), rooted(true) {
+	Path(const std::string & s, char separator='/') : separator(separator), rooted(true), trailing(false) {
 		set(s);
 	};
 
 	inline
-	Path(const char *s, char separator='/') : separator(separator), rooted(true) {
+	Path(const char *s, char separator='/') : separator(separator), rooted(true), trailing(false) {
 		set(s);
 	};
 
@@ -112,6 +112,9 @@ public:
 
 	/// If true, recognize plain separator (e.g. "/") as a root
 	bool rooted;
+
+	/// If true, allow trailing empties
+	bool trailing;
 
 	inline
 	bool isRoot() const {
@@ -202,14 +205,17 @@ public:
 	Path<T> & operator<<(const elem_t & elem){
 
 		if (!elem.empty()){
+			// Always allow non-empty element
 			this->push_back(elem);
 		}
 		else if (this->empty() && rooted){
+			// Allow empty element in root
 			this->push_back(elem);
 		}
-		else { // trailing: if (it == --l.end()){
-			// skip
-			// warn, esp. intermediate empties?
+		else if (trailing){
+			// Allow empties as intermediate(?) and trailing elements
+			// trailing: if (it == --l.end()){
+			this->push_back(elem);
 		}
 
 		//this->push_back(elem);

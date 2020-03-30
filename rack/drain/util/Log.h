@@ -283,10 +283,26 @@ public:
 		return *this;
 	};
 
+	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
+	inline
+	Logger & obsolete(){
+		initMessage(LOG_WARNING);
+		message << "OBSOLETE. ";
+		return *this;
+	};
+
 	/// For top-level information
 	inline
 	Logger & note(){
 		initMessage(LOG_NOTICE);
+		return *this;
+	};
+
+	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
+	inline
+	Logger & deprecating(){
+		initMessage(LOG_NOTICE);
+		message << "DEPRECATING. ";
 		return *this;
 	};
 

@@ -307,10 +307,6 @@ void Logger::initMessage(int level){
 
 	this->errorType = level;
 	message.str("");
-	//message << prefix;
-	// OLD:
-	//monitor.start(errorType, prefix);
-
 
 }
 

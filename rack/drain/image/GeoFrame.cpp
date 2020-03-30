@@ -79,6 +79,7 @@ GeoFrame::GeoFrame(const GeoFrame & gf) : projR2M(gf.projR2M), xScale(1), yScale
 
 void GeoFrame::setGeometry(unsigned int w,unsigned int h) {
 
+	//frameGeometry.setArea(w, h);
 	frameWidth = w;
 	frameHeight = h;
 	updateScaling();
@@ -146,28 +147,46 @@ double GeoFrame::getYScale() const {
 	}
 }
 
+/// Notice: changed! For LatLon, consider approx? See composite
+void GeoFrame::updateScaling()
+{
+	if (projR2M.isSet()){
+
+		// set metric bbox
+		projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentM.lowerLeft.x,  extentM.lowerLeft.y);
+		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentM.upperRight.x, extentM.upperRight.y);
+
+		xScale = (extentM.upperRight.x - extentM.lowerLeft.x) / getFrameWidth();
+		yScale = (extentM.upperRight.y - extentM.lowerLeft.y) / getFrameHeight();
+	}
+}
 
 
 void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
-	Logger mout(getImgLog(), "GeoFrame", __FUNCTION__);
+	Logger mout(__FUNCTION__, __FILE__);
+	//mout.warn() << "me " << *this << mout.endl;
 
 	Rectangle<int> frame(0, 0, getFrameWidth(), getFrameHeight());
 
 	Rectangle<int> cropper;
 	m2pix(xLL,yLL, cropper.lowerLeft.x,  cropper.upperRight.y); // j swapped  "upside down"
 	m2pix(xUR,yUR, cropper.upperRight.x, cropper.lowerLeft.y);  // j swapped  "upside down"
-	// mout.warn() << " frame:" << frame <<  " crop0:" << cropper;
+	//mout.warn() << " frame:" << frame <<  " crop0:" << cropper << mout.endl;
 
+	// Why both? Perhaps just rounding
 	cropper.lowerLeft.x--;
 	cropper.lowerLeft.y--;
 	cropper.upperRight.x++;
 	cropper.upperRight.y++;
 	frame.crop(cropper);
-	// mout.warn()  << " crop:" << cropper << " => frame:" << frame << mout.endl;
+	//mout.warn()  << " crop:" << cropper << " => frame:" << frame << mout.endl;
+	//mout.warn()  << " fatal:" << (frameHeight-1) << '-' <<  frame.upperRight.y << '*' << yScale << '+' << extentM.lowerLeft.y << mout.endl;
 
 	pix2LLm(frame.lowerLeft.x,  frame.upperRight.y,  xLL, yLL); // j swapped  "upside down"
 	pix2LLm(frame.upperRight.x, frame.lowerLeft.y,   xUR, yUR); // j swapped  "upside down"
+
+	// mout.warn()  << xLL << ',' << yLL << '\t' << xUR << ',' << yUR << mout.endl;
 
 	/// Reset area and rescale
 	setBoundingBoxM(xLL, yLL, xUR, yUR);
@@ -183,32 +202,6 @@ void GeoFrame::setProjection(const std::string &s){
 }
 
 
-/// Notice: changed! For LatLon, consider approx? See composite
-void GeoFrame::updateScaling()
-{
-	if (projR2M.isSet()){
-
-		// set metric bbox
-		projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentM.lowerLeft.x,  extentM.lowerLeft.y);
-		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentM.upperRight.x, extentM.upperRight.y);
-
-		// set xScale and yScale
-		/*
-		if (projR2M.isLongLat()){ // approximate!
-			const int im = getFrameWidth()/2;
-			const int jm = getFrameHeight()/2;
-			drain::Rectangle<double> pixelDeg;
-			pix2deg(im-1, jm-1, pixelDeg.lowerLeft.x,  pixelDeg.lowerLeft.y);
-			pix2deg(im+1, jm+1, pixelDeg.upperRight.x, pixelDeg.upperRight.y);
-			xScale = (pixelDeg.upperRight.x-pixelDeg.lowerLeft.x )/2.0 * DEG2RAD * EARTH_RADIUS * cos(DEG2RAD*(pixelDeg.lowerLeft.y+pixelDeg.upperRight.y)/2.0);
-			yScale = (pixelDeg.lowerLeft.y -pixelDeg.upperRight.y)/2.0 * DEG2RAD * EARTH_RADIUS;
-		}
-		else {
-		}*/
-		xScale = (extentM.upperRight.x - extentM.lowerLeft.x) / getFrameWidth();
-		yScale = (extentM.upperRight.y - extentM.lowerLeft.y) / getFrameHeight();
-	}
-}
 
 
 
@@ -238,6 +231,7 @@ std::ostream & GeoFrame::toOStr(std::ostream & ostr) const {
 	ostr << "   scope, metres:  [" << getBoundingBoxM() << "]\n";
 	ostr << "   scope, radians: [" << getBoundingBoxR() << "]\n";
 	ostr << "   scope, degrees: [" << getBoundingBoxD() << "]\n";
+	ostr << "   resolution, metres/pix: (" << xScale << ',' << yScale << "]\n";
 
 	return ostr;
 

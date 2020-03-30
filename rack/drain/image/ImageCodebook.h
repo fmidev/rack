@@ -82,7 +82,7 @@ public:
 	mutable
 	lookup_t lookUp;
 
-	lookup_t & createLookUp(size_t n, const ValueScaling & scaling) const {
+	lookup_t & createLookUp(size_t n, const ValueScaling & scaling, int shiftBits = 0) const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -95,15 +95,16 @@ public:
 
 		for (typename cont_t::const_iterator it=this->begin(); it!=this->end(); ++it){
 
-			index = static_cast<int>(scaling.inv(it->first));
+			index = (static_cast<int>(scaling.inv(it->first)) >> shiftBits);
 
 			if (index < 0){
-				mout.warn() << "lower bound " << it->first << " mapped to index (" << index << ") < 0, skipping " << mout.endl;
+				mout.warn() << "threshold " << it->first << " mapped to index (" << index << ") < 0, skipping " << mout.endl;
 				continue;
 			}
 
-			if (static_cast<size_t>(index) >= n){
-				mout.warn() << "lower bound " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
+			//if (static_cast<size_t>(index) >= n){
+			if (index >= n){
+				mout.warn() << "threshold " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
 				continue;
 			}
 

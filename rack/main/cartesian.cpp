@@ -54,7 +54,6 @@ namespace rack {
 
 
 
-
 class CompositeDefaultQuality : public BasicCommand { //SimpleCommand<double> {
 
 public:
@@ -97,7 +96,11 @@ public:
 
 	CompositeInit() : BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
 
-	void exec() const;
+	inline
+	void exec() const {
+		getResources().initComposite();
+		//CompositingModule::initComposite();
+	}
 
 };
 
@@ -223,8 +226,9 @@ class CompositeDecayTime : public SimpleCommand<int> {
 
 
 
-
-void CompositeInit::exec() const {
+/*
+//void CompositeInit::exec() const {
+void CompositingModule::initComposite() {
 
 	drain::Logger mout(__FUNCTION__, getName());
 
@@ -251,7 +255,7 @@ void CompositeInit::exec() const {
 
 
 }
-
+*/
 
 
 
@@ -291,6 +295,7 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 
 	static RackLetAdapter<CartesianCreate> cCreate("create", 'c', CartesianCreate(cAdd, cExtract));
 	static RackLetAdapter<CartesianCreateTile> cCreateTile("createTile", 0, CartesianCreateTile(cAdd, cExtract));
+	static RackLetAdapter<CartesianSun> cCreateSun("createSun", 0); //, CartesianSun(cExtract));
 
 
 	static RackLetAdapter<CartesianOpticalFlow> opticalFlow("opticalFlow");

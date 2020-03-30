@@ -57,22 +57,22 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL "Accumulator",__FUNCTION__);
 
 	if (name == "AVG"){
-		mout.warn() << "'AVG' deprecating, using 'AVERAGE'" << mout.endl;
+		mout.deprecating() << "'AVG' => using 'AVERAGE'" << mout.endl;
 		setMethod("AVERAGE", params);
 		return;
 	}
 	else if (name == "MIN"){
-		mout.warn() << "'MIN' deprecating, using 'MINIMUM'" << mout.endl;
+		mout.deprecating() << "'MIN' => using 'MINIMUM'" << mout.endl;
 		setMethod("MINIMUM", params);
 		return;
 	}
 	else if (name == "MAX"){
-		mout.warn() << "'MAX' deprecating, using 'MAXIMUM'" << mout.endl;
+		mout.deprecating() << "'MAX' => using 'MAXIMUM'" << mout.endl;
 		setMethod("MAXIMUM", params);
 		return;
 	}
 	else if (name == "OVERWRITE"){
-		mout.warn() << "'OVERWRITE' deprecating, using 'LATEST'" << mout.endl;
+		mout.deprecating() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
 		setMethod("LATEST", params);
 		return;
 	}
@@ -86,7 +86,8 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 	}
 	else {
 		//this->toStream(std::cerr);
-		throw std::runtime_error(std::string("Accumulator::setMethod: unknown method: ") + name);
+		mout.error() << "unknown method: " << name << mout.endl;
+		//throw std::runtime_error(std::string("Accumulator::setMethod: unknown method: ") + name);
 	}
 
 }
