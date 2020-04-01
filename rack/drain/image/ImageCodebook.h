@@ -42,10 +42,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "../util/Log.h"
 #include "../util/ValueScaling.h"
+#include "../util/LookUp.h"
 
 namespace drain
 {
 
+/*
 template <class T>
 class LookUp : public std::vector<T> {
 
@@ -55,6 +57,7 @@ public:
 	int byteSize;
 
 };
+*/
 
 ///
 /**   \tparam double - type of lower bound of the value range associated with an entry
@@ -62,17 +65,14 @@ public:
  *
  */
 template <class T>
-//class ImageCodeMap : public std::vector<T> {
-class ImageCodeMap : public std::map<double,T> {
+class ImageCodeMap : public std::map<double,T> { // : public std::vector<T> {
 
 public:
 
 	typedef std::map<double,T> cont_t;
-	//typedef typename cont_t::size_type size_t;
 	typedef typename cont_t::key_type     key_t;
 	typedef typename cont_t::value_type entry_t;
-
-
+	//typedef typename cont_t::size_type size_t;
 
 	/// Default constructor
 	//ImageCodeMap(size_t n=0, const T & value=T()): cont_t(n, value), separator(0) {
@@ -88,7 +88,7 @@ public:
 	/// LOOK-UP table, consider outsourcing this
 
 	//typedef std::vector<typename cont_t::const_iterator> lookup_t;
-	typedef LookUp<typename cont_t::const_iterator> lookup_t;
+	typedef drain::LookUp<typename cont_t::const_iterator> lookup_t;
 
 	mutable
 	lookup_t lookUp;
@@ -116,7 +116,7 @@ public:
 		}
 
 		const int n = (1 << (lookUp.byteSize*8 - lookUp.bitShift));
-		mout.warn() << "type=" << drain::Type::getTypeChar(type) << ", creating " << n << " lookup entries" << mout.endl;
+		mout.debug() << "type=" << drain::Type::getTypeChar(type) << ", creating " << n << " lookup entries" << mout.endl;
 
 		typename cont_t::const_iterator itLower = this->begin();
 
@@ -131,25 +131,24 @@ public:
 			index = static_cast<int>(scaling.inv(it->first));
 
 			if (index < 0){
-				mout.warn() << "threshold " << it->first << " mapped to negative index " << index << " (before bitShift), skipping " << mout.endl;
+				mout.warn() << "underflow threshold " << it->first << " mapped to negative index " << index << " (before bitShift), skipping " << mout.endl;
 				continue;
 			}
 
 			index = (index >> lookUp.bitShift);
 
-			//if (static_cast<size_t>(index) >= n){
 			if (index >= n){
-				mout.warn() << "threshold " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
+				mout.warn() << "overflow: threshold " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
 				continue;
 			}
 
 			if (indexLower < index){
-				mout.note() << "adding index range [" << indexLower << '-' << index << "[ -> ";
+				mout.debug() << "adding index range [" << indexLower << '-' << index << "[ -> ";
 				mout << "(" << itLower->first << ") => {" << itLower->second << '}';
 				mout << mout.endl;
 			}
 			else {
-				mout.warn() << "downscaling: entry skipped at [" << index << "] => " << it->first << mout.endl;
+				mout.note() << "accuracy loss: skipped entry [" << index << "] => " << it->first << mout.endl;
 			}
 
 			/// Fill up interval [indexLower, index[

@@ -49,18 +49,32 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
 /// Look-up tables.
+//  Works well...
 template <class T>
 class LookUp : public std::vector<T> {
+
 public:
 
-	LookUp(size_t size, double scale=1.0) : std::vector<T>(size), max(getScale()), scale(scale*static_cast<double>(max)), scaleInv(1.0/this->scale) {
+	int bitShift;
+	int byteSize;
+
+};
+
+
+/// Look-up tables.
+template <class T>
+class LookUp2 : public std::vector<T> {
+public:
+
+	LookUp2(size_t size, double scale=1.0) : std::vector<T>(size), max(getScale()), scale(scale*static_cast<double>(max)), scaleInv(1.0/this->scale) {
 		if (scale == 0.0)
 			throw std::runtime_error("LookUp: scale=0.0 not allowed.");
 		//init();
 	} ; // if (size == 0) throw std::runtime_error("LookUp: undetectValue sized lookup not allowed.");
 
-	virtual ~LookUp(){};
+	virtual ~LookUp2(){};
 
 	const T max;
 
@@ -98,10 +112,10 @@ protected:
  *
  */
 template <class T, class F>  //=1.0, typename OFFSET=0.0>
-class FunctorLookUp : public LookUp<T> {
+class FunctorLookUp : public LookUp2<T> {
 public:
 
-	FunctorLookUp(size_t size, double scale, double scaleIndex = 1.0, double offsetIndex=0.0) : LookUp<T>(size, scale), scaleIndex(scaleIndex), offsetIndex(offsetIndex) {
+	FunctorLookUp(size_t size, double scale, double scaleIndex = 1.0, double offsetIndex=0.0) : LookUp2<T>(size, scale), scaleIndex(scaleIndex), offsetIndex(offsetIndex) {
 		init();
 	};
 
