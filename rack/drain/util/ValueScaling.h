@@ -65,6 +65,10 @@ public:
 	ValueScaling() : scale(1.0), offset(0.0){}; // , minPhysValue(0.0), maxPhysValue(0.0)
 
 	inline
+	ValueScaling(double scale, double offset): scale(scale), offset(offset) {
+	};
+
+	inline
 	ValueScaling(const drain::ValueScaling & scaling){
 		set(scaling);
 	};
