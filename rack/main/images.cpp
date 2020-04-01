@@ -427,7 +427,7 @@ public:
 			cmdImage.imageSelector.setParameters(resources.select);
 			//mout.note() << cmdImage.imageSelector << mout.endl;
 			if (resources.setCurrentImage(cmdImage.imageSelector))
-				mout.note() << "input metadata: " << resources.currentGrayImage->getProperties() << mout.endl;
+				mout.debug(2) << "input metadata: " << resources.currentGrayImage->getProperties() << mout.endl;
 
 
 			/* This may be relevant, keep for 2019
@@ -511,7 +511,7 @@ public:
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		const PolarODIM imgOdim(props);
-		mout.note() << "input metadata: " << EncodingODIM(imgOdim) << mout.endl;
+		mout.note() << "input encoding: " << EncodingODIM(imgOdim) << mout.endl;
 
 
 		if (imgOdim.quantity.substr(0,4) != "VRAD"){
@@ -523,13 +523,14 @@ public:
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
 
-				mout.info() << "Doppler speed (VRAD), using relative scale, NI=" << NI << " orig NI=" << props["how:NI"] << mout.endl;
+				mout.note() << "Doppler speed (VRAD), using relative scale, NI=" << NI << " orig NI=" << props["how:NI"] << mout.endl;
 				/*
 					f(data_min) = scale*data_min + offset == -1.0
 					f(data_max) = scale*data_max + offset == +1.0
 					scale = (+1 - -1) / ( data_max-data_min )
 					offset = scale*(data_min+data_max) / 2.0
 				*/
+
 				const double data_min = imgOdim.scaleInverse(-NI);
 				const double data_max = imgOdim.scaleInverse(+NI);
 				op.scale  =   2.0/(data_max-data_min);
@@ -553,10 +554,10 @@ public:
 		// Copied form Racklet
 		std::string dstQuantity;
 		if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
-			EncodingODIM odim;
-			odim.reference("quantity", dstQuantity);
-			odim.addShortKeys();
-			odim.updateValues(resources.targetEncoding); // do not clear yet
+			EncodingODIM odimEncoding;
+			odimEncoding.reference("quantity", dstQuantity);
+			odimEncoding.addShortKeys();
+			odimEncoding.updateValues(resources.targetEncoding); // do not clear yet
 			mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
 		}
 
@@ -565,7 +566,9 @@ public:
 
 		if (dstQuantity.empty()){
 			/// Future option: also in hdf5 structure
-			mout.note() << "Using separate image (resources.colorImage)" << mout.endl;
+			mout.info() << "Using separate image (resources.colorImage)" << mout.endl;
+
+			/// MAIN
 			op.process(*resources.currentGrayImage, resources.colorImage);
 			resources.colorImage.properties = props;
 			//File::write(resources.colorImage, "color.png");
@@ -576,7 +579,7 @@ public:
 
 			ODIMPathElem path;
 			resources.guessDatasetGroup(path);
-			mout.note() << "guessing: " << path << mout.endl;
+			mout.debug() << "derived path (elem): " << path << mout.endl;
 
 			DataSet<BasicDst> dstProduct((*resources.currentHi5)[path]);
 			Data<BasicDst> & data = dstProduct.getData(dstQuantity);
@@ -586,8 +589,8 @@ public:
 			ProductBase::completeEncoding(data.odim, resources.targetEncoding);
 			data.data.setScaling(data.odim.gain, data.odim.offset);
 			data.odim.quantity = dstQuantity;
-			resources.targetEncoding.clear();
 
+			/// MAIN
 			op.process(*resources.currentGrayImage, data.data);
 
 			if (data.data.getChannelCount() == 0){
@@ -595,7 +598,7 @@ public:
 			}
 			else if (data.data.getChannelCount() == 1){
 				mout.note() << "also currentGrayImage updated " << mout.endl;
-				resources.currentGrayImage = & data.data;
+				resources.currentGrayImage = & data.data; // ?
 			}
 			else {
 				mout.warn() << "created multi-channel image in h5 structure, saving supported for 1st channel only" << mout.endl;
@@ -604,7 +607,7 @@ public:
 			// d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
 		}
 
-
+		resources.targetEncoding.clear();
 	}
 };
 static CommandEntry<CmdPalette> cmdPalette("palette");

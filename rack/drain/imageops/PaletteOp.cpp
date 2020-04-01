@@ -155,7 +155,7 @@ void PaletteOp::help(std::ostream & ostr) const {
 
 void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
 	// mout.debug() << "Starting" << mout.endl;
 
@@ -166,6 +166,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	if (src.size() > 1){
 		mout.note() << "src has " << src.size() << " > 1 channels, using first " << mout.endl;
 	}
+
+	mout.warn() << "srcChannel " << srcChannel   << mout.endl;
 
 	const size_t width  = dst.getGeometry().getWidth();
 	const size_t height = dst.getGeometry().getHeight();
@@ -193,8 +195,9 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	//const std::type_info & type  = srcChannel.getType();
 	const Encoding & encoding = srcChannel.getEncoding();
 
-	const ValueScaling & scaling = srcChannel.getScaling();
-	mout.warn() << "srcChannel " << srcChannel   << mout.endl;
+	//const ValueScaling & scaling = srcChannel.getScaling();
+	const ValueScaling scaling(scale, offset);
+
 	//mout.warn() << "src    scaling " << encoding.scaling << mout.endl;
 	//mout.warn() << "src getScaling " << srcChannel.getScaling() << mout.endl;
 	// encoding.scaling.
@@ -218,21 +221,17 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	if (UCHAR || USHORT){
 	//if (false){
 
-		double min = scaling.fwd(0.0);
-		double max = scaling.fwd(encoding.getTypeMax<double>());
+		//double min = scaling.fwd(0.0);
+		//double max = scaling.fwd(encoding.getTypeMax<double>());
 
-		ValueScaling sc;
-		sc.setPhysicalScale(typeid(unsigned char), min, max);
-		const Palette::lookup_t & lut = pal.createLookUp(256, sc, USHORT ? 8 : 0);
+		ValueScaling sc(scale, offset);
+		//sc.setPhysicalScale(typeid(unsigned char), min, max);
 
-		mout.note() << "creating look-up table for input: " << encoding.scaling << ' ';
-		if (UCHAR){
-			mout << "UCHAR";
-		}
-		else if (USHORT){
-			mout << "USHORT";
-		}
-		mout << min << ".." << max << '/' << encoding.getTypeMax<double>() << ", using lookup table of 256 elements, " << sc << mout.endl;
+		//const Palette::lookup_t & lut = pal.createLookUp(256, sc, USHORT ? 8 : 0);
+		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
+
+		mout.note() << "created look-up table" << lut.size() << " for input: " << drain::Type::getTypeChar(encoding.getType()) << mout.endl;
+		mout.note() << "scaling: " << encoding.scaling << " => " << sc << mout.endl;
 
 		if (mout.isDebug(2)){
 			for (size_t i=0; i<lut.size(); ++i){
@@ -258,7 +257,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 					itLast = lut[static_cast<int>(d)];
 				}
 				else { // if (USHORT){
-					itLast = lut[static_cast<int>(d) >> 8];
+					itLast = lut[static_cast<int>(d) >> lut.bitShift];
 				}
 
 				for (k = 0; k < channelCount; ++k)
