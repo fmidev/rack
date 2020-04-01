@@ -97,10 +97,14 @@ public:
 };
 
 
-/// Returns the sizeof() of a type.
+/// Returns the sizeof() of a type. Accepts \c void (and returns size 0), which is not supported by std::numeric_limits.
 /**
  *  Usage:
  *  Type::call<drain::sizeGetter>(t)
+ *
+ *  sizeof() returns size in bytes, so 1 for char, 2 for short int and so on.
+ *
+ *  Todo: renaming to byteSizeGetter, and adding bitSizeGetter
  */
 class sizeGetter {
 
