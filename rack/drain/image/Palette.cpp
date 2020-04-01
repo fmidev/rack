@@ -194,11 +194,12 @@ void Palette::update() const {
 
 void Palette::load(const std::string & filename, bool flexible){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	Logger mout(__FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
 	drain::FilePath filePath;
 
-	static const RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
+	static const drain::RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
 
 	if (labelRE.test(filename)){
 		filePath.set(std::string("palette-") + filename + std::string(".json"));

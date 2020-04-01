@@ -46,6 +46,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+template <class T>
+class LookUp : public std::vector<T> {
+
+public:
+
+	int bitShift;
+	int byteSize;
+
+};
+
 ///
 /**   \tparam double - type of lower bound of the value range associated with an entry
  *    \tparam T - entry type (LegendEntry, PaletteEntry, HistogramEntry)
@@ -77,14 +87,36 @@ public:
 
 	/// LOOK-UP table, consider outsourcing this
 
-	typedef std::vector<typename cont_t::const_iterator> lookup_t;
+	//typedef std::vector<typename cont_t::const_iterator> lookup_t;
+	typedef LookUp<typename cont_t::const_iterator> lookup_t;
 
 	mutable
 	lookup_t lookUp;
 
-	lookup_t & createLookUp(size_t n, const ValueScaling & scaling, int shiftBits = 0) const {
+	/// TODO? createLookUp(encoding, n=0);
+	//lookup_t & createLookUp(int n, const ValueScaling & scaling, int shiftBits = 0) const {
+	lookup_t & createLookUp(const std::type_info & type, const ValueScaling & scaling) const { // todo N?
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		if (type == typeid(unsigned short)){
+			lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
+			lookUp.bitShift	= 6; // note => 16 - 6 = 10bits => 1024 entries
+		}
+		else if (type == typeid(unsigned char)){
+			lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
+			lookUp.bitShift	= 0;
+		}
+		else {
+			mout.note() << "not supported for type " << drain::Type::getTypeChar(type) << mout.endl;
+			lookUp.byteSize = 0;
+			lookUp.bitShift = 0;
+			lookUp.clear();
+			return lookUp;
+		}
+
+		const int n = (1 << (lookUp.byteSize*8 - lookUp.bitShift));
+		mout.warn() << "type=" << drain::Type::getTypeChar(type) << ", creating " << n << " lookup entries" << mout.endl;
 
 		typename cont_t::const_iterator itLower = this->begin();
 
@@ -93,14 +125,17 @@ public:
 		// Signed, because scaling physical values may cause underflow
 		int index, indexLower=0;
 
+		/// Main loop: traverses entries, and fills up lookUp indices between entries.
 		for (typename cont_t::const_iterator it=this->begin(); it!=this->end(); ++it){
 
-			index = (static_cast<int>(scaling.inv(it->first)) >> shiftBits);
+			index = static_cast<int>(scaling.inv(it->first));
 
 			if (index < 0){
-				mout.warn() << "threshold " << it->first << " mapped to index (" << index << ") < 0, skipping " << mout.endl;
+				mout.warn() << "threshold " << it->first << " mapped to negative index " << index << " (before bitShift), skipping " << mout.endl;
 				continue;
 			}
+
+			index = (index >> lookUp.bitShift);
 
 			//if (static_cast<size_t>(index) >= n){
 			if (index >= n){
@@ -109,11 +144,15 @@ public:
 			}
 
 			if (indexLower < index){
-				mout.debug() << "adding [" << indexLower << '-' << index << "[ -> \t";
-				mout << '[' << itLower->first << "] // " << itLower->second << mout.endl;
+				mout.note() << "adding index range [" << indexLower << '-' << index << "[ -> ";
+				mout << "(" << itLower->first << ") => {" << itLower->second << '}';
+				mout << mout.endl;
+			}
+			else {
+				mout.warn() << "downscaling: entry skipped at [" << index << "] => " << it->first << mout.endl;
 			}
 
-			//for (key_t i=itLower->first; i<it->first; ++i){
+			/// Fill up interval [indexLower, index[
 			for (int i=indexLower; i<index; ++i){
 				lookUp[i] = itLower;
 			}
