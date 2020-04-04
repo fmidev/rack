@@ -1090,39 +1090,84 @@ public:
 				return;
 			}
 
-			ostr << "{\n";
-			ostr << "  \"variables\": ";
-
-
 			const drain::Command & command = reg.get(params);
 			const ReferenceMap & m = command.getParameters();
-			m.toJSON(ostr, 1);
+
+
+			const ReferenceMap::unitmap_t & u = m.getUnitMap();
+
+			//ostr << "# " << m << mout.endl;
+
+
+			ostr << "{\n";
+			JSONwriter::indent(ostr, 2);
+			ostr << "\"title\": \"" << command.getDescription() << '"' << ',' << '\n';
+			JSONwriter::indent(ostr, 2);
+			ostr << "\"variables\": {";
 
 			/*
+			JSONwriter::mapElementsToStream(m, m.getKeyList(), ostr, 4);
+			ostr << '\n';
+			JSONwriter::indent(ostr, 2);
+			ostr << "}\n";
+			*/
+			//m.toJSON(ostr, 1);
+
 			const ReferenceMap::keylist_t & keys = m.getKeyList();
 
 			char sep=0;
 
+			//JSONtree::tree_t & vars = tree["variables"];
+
 			for (ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
+
+				const drain::Referencer & entry = m[*it];
 
 				if (sep)
 					ostr << sep;
 				else
 					sep = ',';
 
-				const drain::Referencer & entry = m[*it];
+				ostr << '\n';
 
-				ostr << "\n  \"" << *it << "\": {\n";
-				ostr << "    \"value\": ";
-				entry.valueToJSON(ostr);
-				ostr << "\n";
-				ostr << "  }";
+				JSONwriter::indent(ostr, 4);
+				ostr << "\"" << *it << "\": {\n";
+
+				ReferenceMap::unitmap_t::const_iterator uit = u.find(*it);
+				if (uit != u.end()){
+					JSONwriter::indent(ostr, 6);
+					ostr << "\"title\": ";
+					JSONwriter::toStream(uit->second, ostr);
+					ostr << ',' << '\n';
+				}
+
+				JSONwriter::indent(ostr, 6);
+				ostr << "\"value\": ";
+				JSONwriter::toStream(entry, ostr);
+				ostr << '\n';
+
+				JSONwriter::indent(ostr, 4);
+				ostr << '}';
+
 			}
-			ostr << "  }";
+
+			//JSONwriter::toStream(tree, ostr);
+
+
+			ostr << '\n';
+			JSONwriter::indent(ostr, 2);
+			ostr << '}'; // variables
+
+
+
+			/*
 			if (!command.getType().empty()){
 				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
 			}
 			*/
+			//JSONwriter::indent(ostr, 2);
+			//ostr << "}\n";
+
 			ostr << "\n}\n";
 		}
 
