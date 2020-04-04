@@ -168,6 +168,12 @@ public:
 	/// Implementation for std::map<> and derived classes
 	template <class T>
 	static
+	std::ostream & mapElementsToStream(const T & m, const std::list<typename T::key_type> & k, std::ostream &ostr = std::cout, unsigned short indentation = 0);
+
+
+	/// Implementation for std::map<> and derived classes
+	template <class T>
+	static
 	std::ostream & mapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
 
 
@@ -175,7 +181,7 @@ public:
 	unsigned short indentStep;
 
 
-protected:
+//protected:
 
 	/// Indent output with \c n spaces
 	static inline
@@ -355,6 +361,34 @@ std::ostream & JSONwriter::mapElementsToStream(const T & m, std::ostream &ostr, 
 
 	return ostr;
 }
+
+/// Implementation for std::map<> and derived classes
+template <class T>
+std::ostream & JSONwriter::mapElementsToStream(const T & m, const std::list<typename T::key_type> & keys, std::ostream &ostr, unsigned short indentation){
+
+	indentation += JSONwriter::indentStep;
+
+	char sep = 0;
+
+	for (typename std::list<typename T::key_type>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+		// for (typename T::const_iterator it = m.begin(); it != m.end(); ++it){
+
+		if (sep){
+			ostr << sep << '\n';
+		}
+		else
+			sep = ',';
+
+		JSONwriter::indent(ostr, indentation);
+		ostr << '"' << *it << '"' << ':' << ' ';
+		/// No: recursion breaks this top-level order-by-list
+		toStream(m[*it], ostr, indentation); // If elements are vectors, restart...
+
+	}
+
+	return ostr;
+}
+
 
 template <class T>
 std::ostream & JSONwriter::mapToStream(const T & m, std::ostream &ostr, unsigned short indentation){
