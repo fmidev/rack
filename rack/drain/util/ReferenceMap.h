@@ -200,10 +200,11 @@ public:
 		}
 	}
 
+	typedef std::map<std::string,std::string> unitmap_t;
 
 	/// Returns measurement unit information of the actual map entries.
 	inline
-	const std::map<std::string,std::string> & getUnitMap() const { return unitMap; };
+	const unitmap_t & getUnitMap() const { return unitMap; };
 
 	/// Creating a common segment for
 	/*
@@ -223,7 +224,7 @@ protected:
 
 	/// Defines the units of each element.
 	// Questionable: consider SmartReference etc. with caster and unit info?
-	std::map<std::string,std::string> unitMap;
+	unitmap_t unitMap;
 
 
 };
