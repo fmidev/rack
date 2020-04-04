@@ -275,7 +275,9 @@ void CommandRegistry::toJSON(std::ostream & ostr) const {
 			sep = ',';
 		const drain::ReferenceMap & p = it->second.getParameters();
 		ostr << "  \"" << it->first << "\" : {\n";
-		p.toJSON(ostr, 4);
+		drain::JSONwriter::mapElementsToStream(p, p.getKeyList(), ostr, 4);
+		ostr << "\n  }";
+		//p.toJSON(ostr, 4);
 		/*
 		const bool SINGLE = (p.size() == 1);
 		if (!SINGLE)
