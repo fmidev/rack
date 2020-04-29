@@ -422,6 +422,7 @@ protected:
 		return false;// ??
 	}
 
+	/// Add path to a map, using elevation angle as index. (Assumes polar data)
 	/**
 	 *  \param l - container for paths
 	 */
@@ -430,6 +431,18 @@ protected:
 		PolarODIM odim;
 		odim.updateFromCastableMap(props);
 		m[odim.elangle] = path;
+		return false;// ??
+	}
+
+	/// Add path to a map, using timestamp (\c what:startdate + \c what:starttime ) as index. (Assumes polar data)
+	/**
+	 *  \param m - container for paths
+	 */
+	static inline
+	bool addPath3(std::map<std::string,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
+		PolarODIM odim;
+		odim.updateFromCastableMap(props);
+		m[odim.startdate + odim.starttime] = path;
 		return false;// ??
 	}
 

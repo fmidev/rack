@@ -457,6 +457,21 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
+	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
+	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
+	// mout.warn() << sourceDst << " => " << sourceSrc << mout.endl;
+	if (!sourceDst.isEmpty()){
+		if (!sourceSrc.isEmpty()){
+			if (sourceSrc.toStr() != sourceDst.toStr()){
+				mout.warn() << "what:source changed in creating combined volume:" << mout.endl;
+				mout.warn() << "  dst: '" << sourceDst << "'" << mout.endl;
+				mout.warn() << "  src: '" << sourceSrc << "'" << mout.endl;
+			}
+		}
+		else {
+			mout.warn() << "what:source empty, assuming: " << sourceDst << mout.endl;
+		}
+	}
 
 	RackResources & resources = getResources();
 
@@ -467,25 +482,32 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	resources.select.clear();
 
 	// Consider generalization for Carts
-	std::map<double,ODIMPath> srcPaths;
-	dataSetSelector.getPaths3(srcRoot, srcPaths); // ODIMPathElem::DATASET);
+	typedef std::map<std::string,ODIMPath> sweepMap;
 
-	std::map<double,ODIMPath> dstPaths;
-	//dataSetSelector.getPaths(dstRoot, dstPaths, ODIMPathElem::DATASET); // RE2
-	dataSetSelector.getPaths3(dstRoot, dstPaths); // RE2
+	sweepMap srcPaths;
+	dataSetSelector.getPaths3(srcRoot, srcPaths);
+
+	sweepMap dstPaths;
+	dataSetSelector.getPaths3(dstRoot, dstPaths);
+
+	for (sweepMap::const_iterator it = dstPaths.begin(); it != dstPaths.end(); ++it){
+		mout.warn() << " DST " << it->second <<  "\t (" << it->first << ')' << mout.endl;
+	}
+
 
 	mout.debug() << "traverse paths" << mout.endl;
 	/// Traverse the child paths of srcRoot dataset[i]
-	for (std::map<double,ODIMPath>::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
+	for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
 
-		const double   & elangle = it->first;
+		//const double   & elangle = it->first;
+		const sweepMap::key_type & elangle = it->first; // rename => key
 		const ODIMPath & srcDataSetPath = it->second;
 
 		Hi5Tree & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
 
 		mout.debug() << " Considering " << srcDataSetPath <<  " (" << elangle << ')' << mout.endl;
 
-		std::map<double,ODIMPath>::const_iterator eit = dstPaths.find(elangle);
+		sweepMap::const_iterator eit = dstPaths.find(elangle);
 
 		if (eit == dstPaths.end()){ // New elangle, add this \c dataset directly.
 
@@ -502,14 +524,14 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 			const ODIMPath & dstDataSetPath = eit->second;
 
-			mout.note() << "Combining datasets of elevation ("<< elangle << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << mout.endl;
+			mout.note() << "Combining datasets of elevation ("<< elangle << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << "("<< eit->first << ")" << mout.endl;
 
 			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
 
 			//typedef std::map<std::string, ODIMPath> quantity_map;
 			typedef std::map<std::string, ODIMPathElem> quantity_map;
 
-
+			// CONFLICT!? Or ok with ODIMPathElem::DATA to use
 			quantity_map srcQuantityPaths;
 			DataSelector::getChildren(srcDataSet, srcQuantityPaths, ODIMPathElem::DATA);  // consider children
 

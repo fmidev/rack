@@ -65,8 +65,8 @@ public:
 
 	/// Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved.
 	// raise
-	inline
-	double project(double azmR, double u, double v) const {
+	static inline
+	double project(double azmR, double u, double v) {
 		// double speed = sqrt(u*u + v*v);
 		return u*sin(azmR) + v*cos(azmR);
 	}
@@ -74,8 +74,8 @@ public:
 
 	// Re-alias
 	// x - 2*Vm*math.floor((Vm+x)/2.0/Vm)
-	inline
-	double alias(double v, double vNyq) const {
+	static inline
+	double alias(double v, double vNyq) {
 		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));  // consider vNyq2
 	}
 

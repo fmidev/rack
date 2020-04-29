@@ -32,12 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef POLAR_SLIDINGWINDOWOP_H_
 #define POLAR_SLIDINGWINDOWOP_H_
 
-#include <drain/image/SlidingWindowOp.h>
+#include <drain/imageops/SlidingWindowOp.h>
+
+#include "../radar/Analysis.h" // temp
 #include "PolarProductOp.h"
 
-namespace drain {
-
-namespace radar {
+namespace rack {
 
 
 template <class W>
@@ -45,11 +45,18 @@ class PolarSlidingWindowOp : public PolarProductOp {
 
 public:
 
-	PolarSlidingWindowOp(const std::string &name, const std::string &description) : PolarProductOp(name,description) {
-		parameters.append(conf.getParameters());
-	};
 
 	typename W::conf_t conf;
+
+	PolarSlidingWindowOp(const std::string & name = __FUNCTION__, const std::string &description = "") : PolarProductOp(name,description) {
+
+		parameters.reference("width", this->conf.widthM = 1500, "metres");
+		parameters.reference("height", this->conf.heightD = 3.0, "deg");
+		parameters.reference("threshold", this->conf.contributionThreshold = 0.5, "percentage");
+		parameters.reference("compensate", this->conf.invertPolar = false, "cart/polar");
+		// parameters.append(conf.getParameters());
+	};
+
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
@@ -62,16 +69,38 @@ public:
 
 	virtual
 	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
+
 		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "not implemented" << mout.endl;
+		//mout.warn() << "not implemented" << mout.endl;
+		typename W::conf_t pixelConf;
+		this->setPixelConf(pixelConf, srcData.odim); // what about other parameters?
+
+		SlidingWindowOp<W> op(pixelConf);
+		mout.debug() << op << mout.endl;
+		mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
+		mout.debug() << "pixelConf.contributionThreshold " << pixelConf.contributionThreshold << mout.endl;
+		mout.debug() << "op.conf.contributionThreshold " << op.conf.contributionThreshold << mout.endl;
+		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
+		//op.process(vradSrc.data, dstData.data);
+		//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));
+		op.traverseChannel(srcData.data, dstData.data);
+
+		dstData.odim.prodpar = this->parameters.getValues();
+
 	};
 
 	/// Quality-weighted prosessing of data
 	virtual
 	void processDataWeighted(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "not implemented" << mout.endl;
+		mout.warn() << "not implemented, calling for plain data" << mout.endl;
+
+		processPlainData(srcData, dstData);
+
 	};
+
+
+	void setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const;
 
 
 protected:
@@ -80,36 +109,47 @@ protected:
 
 };
 
-}
 
-/*
-class PolarSlidingWindowOp : public PolarProductOp {
+template <class W>
+void PolarSlidingWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const {
 
-public:
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	PolarSlidingWindowOp(SlidingWindow & w,const std::string &name, const std::string &description) : PolarProductOp(name,description) {
-				//SlidingWindowOp(w,name,description,parameterNames,defaultValues) {
-		//reference("altitude", this->altitude, altitude);
-		reference("width", width);
-		reference("height", height);
-	};
+	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
+	pixelConf.widthM  = this->conf.widthM;
+	pixelConf.heightD = this->conf.heightD;
+	pixelConf.invertPolar   = this->conf.invertPolar;
+	pixelConf.contributionThreshold  = this->conf.contributionThreshold;
+	pixelConf.relativeScale = this->conf.relativeScale;
 
 
-	virtual void initialize() const {
-		window.setSize(width,height);
+	pixelConf.updatePixelSize(odim);
+
+	if (pixelConf.width == 0){
+		mout.note() << this->conf.width  << mout.endl;
+		mout.note() << this->conf.widthM << mout.endl;
+		mout.note() << *this << mout.endl;
+		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
+		pixelConf.width = 1;
 	}
 
-	int width;
-	int height;
+	if (pixelConf.height == 0){
+		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.nrays) <<"), setting window height=1 " << mout.endl;
+		pixelConf.height = 1;
+	}
 
-protected:
-	SlidingWindow & window;
-	mutable std::vector<double> lookupSin;
-	mutable std::vector<double> lookupCos;
-};
 
 }
-*/
+
+class PolarSlidingAvgOp : public PolarSlidingWindowOp< RadarWindowAvg<RadarWindowConfig> > {
+public:
+
+	inline
+	PolarSlidingAvgOp() : PolarSlidingWindowOp< RadarWindowAvg<RadarWindowConfig> >(__FUNCTION__, "descr"){
+	};
+
+};
+
 
 }
 

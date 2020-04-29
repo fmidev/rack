@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/EchoTopOp.h"
 #include "product/MaxEchoOp.h"
 
+#include "product/PolarSlidingWindowOp.h"
+
 #include "product/DopplerOp.h"
 #include "product/DopplerAvgExpOp.h"
 #include "product/DopplerWindowOp.h"
@@ -88,6 +90,14 @@ ProductModule::ProductModule(const std::string & section, const std::string & pr
 	static ProductAdapter<CappiOp>   cappi;
 	static ProductAdapter<EchoTopOp> echoTop;
 	static ProductAdapter<MaxEchoOp> maxEcho;
+
+	//static ProductAdapter<PolarSlidingWindowOp<RadarWindowAvg> > test;
+	//PolarSlidingWindowOp<RadarWindowAvg<drain::FuzzyStep<double,double> > test;
+	//RadarWindowAvg<drain::FuzzyStep<double,double> > test;rack::RadarWindowConfig
+	//DopplerDevWindow test;
+
+	//static ProductAdapter<PolarSlidingWindowOp<RadarWindowAvg<RadarWindowConfig> > > test;
+	static ProductAdapter<PolarSlidingAvgOp> test;
 
 	// Polar coord met.product based on VRAD
 	static ProductAdapter<DopplerSamplerOp> dopplerSampler;  // circles
