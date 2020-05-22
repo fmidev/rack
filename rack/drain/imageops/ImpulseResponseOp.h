@@ -67,13 +67,22 @@ public:
 	virtual
 	void reset() = 0;
 
+	/// When traversing up or left, add a encoded value to bucket in position i.
+	virtual
+	void addLeft(int i, double value, double weight) = 0;
+
 	/// When traversing down or right, add a encoded value to bucket in position i.
 	virtual
-	void add1(int i, double value, double weight) = 0;
+	void addRight(int i, double value, double weight) = 0;
+
+	/// When traversing down or right, add a encoded value to bucket in position i.
+	virtual
+	void addDown(int i, double value, double weight) = 0;
 
 	/// When traversing up or left, add a encoded value to bucket in position i.
 	virtual
-	void add2(int i, double value, double weight) = 0;
+	void addUp(int i, double value, double weight) = 0;
+
 
 	/// Return natural (not encoded) value at position i.
 	virtual
@@ -271,13 +280,13 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 				point.setLocation(i, j);
 				coordHandler.handle(point);
 				//if (coordHandler.validate(point)){
-				bucket.add1(point.x, src.get<double>(point.x, point.y), defaultWeight);
+				bucket.addLeft(point.x, src.get<double>(point.x, point.y), defaultWeight);
 				//}
 
 				point.setLocation(width-1-i, j);
 				coordHandler.handle(point);
 				// if (coordHandler.validate(point)){
-				bucket.add2(point.x, src.get<double>(point.x, point.y), defaultWeight);
+				bucket.addRight(point.x, src.get<double>(point.x, point.y), defaultWeight);
 				//}
 
 			}
@@ -296,13 +305,13 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 				point.setLocation(i, j);
 				coordHandler.handle(point);
 				//if (coordHandler.validate(point)){
-				bucket.add1(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				bucket.addLeft(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
 				//}
 
 				point.setLocation(width-1-i, j);
 				coordHandler.handle(point);
 				// if (coordHandler.validate(point)){
-				bucket.add2(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				bucket.addRight(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
 				// }
 
 			}
@@ -361,11 +370,11 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 				point.setLocation(i, j);
 				coordHandler.handle(point); //if (coordHandler.validate(point)){
-				bucket.add1(point.y, src.get<double>(point.x, point.y), defaultWeight);
+				bucket.addLeft(point.y, src.get<double>(point.x, point.y), defaultWeight);
 
 				point.setLocation(i, height-1-j);
 				coordHandler.handle(point); //if (coordHandler.validate(point))
-				bucket.add2(point.y, src.get<double>(point.x, point.y), defaultWeight);
+				bucket.addRight(point.y, src.get<double>(point.x, point.y), defaultWeight);
 
 			}
 
@@ -382,11 +391,11 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 				point.setLocation(i, j);
 				coordHandler.handle(point); //if (coordHandler.validate(point)){
-				bucket.add1(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				bucket.addLeft(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
 
 				point.setLocation(i, height-1-j);
 				coordHandler.handle(point); // if (coordHandler.validate(point)){
-				bucket.add2(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
+				bucket.addRight(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
 
 			}
 
@@ -410,134 +419,6 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 
 
-
-
-
-
-// IMPLEMENTATIONS
-
-
-struct ImpulseAvgConf : public BeanLike {
-
-	inline
-	ImpulseAvgConf() : BeanLike(__FUNCTION__, "yes"){
-		// this->parameters.reference("decayHorz", decayHorz = 0.9);
-		// this->parameters.reference("decayVert", decayVert = 0.9);
-		this->parameters.reference("decay", decay = 0.9);
-		// this->parameters.reference("decayVert", decayVert = 0.9);
-	};
-
-	inline
-	ImpulseAvgConf(const ImpulseAvgConf & conf) : BeanLike(__FUNCTION__, "yes"){
-		this->parameters.reference("decay", decay = conf.decay);
-		// this->parameters.reference("decayHorz", decayHorz = conf.decayHorz);
-		// this->parameters.reference("decayVert", decayVert = conf.decayHorz);
-	};
-
-	double decay;
-	//double decayHorz;
-	//double decayVert;
-
-};
-
-
-/// Averaging operator. A simple example implementation of ImpulseBucket
-/**
- \code
-   drainage image.png --impulseAvg  0.5            -o impulseAvg.png
-   drainage image.png --impulseAvg  0.2,20,20      -o impulseAvgMarg.png
-   drainage image-rgba.png --target S --impulseAvg  0.5 -o impulseAvg-16b.png
- \endcode
- */
-class ImpulseAvg : public ImpulseBucket<ImpulseAvgConf> {
-
-public:
-
-
-	inline
-	ImpulseAvg(){
-
-	};
-
-	inline
-	ImpulseAvg(const ImpulseAvg & avg){
-		decay = avg.decay;
-	}
-
-	inline
-	ImpulseAvg(const ImpulseAvgConf & conf){
-		decay = conf.decay;
-	}
-
-	virtual
-	void init(const Channel & src, bool horizontal);
-
-	virtual
-	void reset();
-
-	/// Accumulate encoded value
-	virtual
-	void add1(int i, double value, double weight);
-
-	/// Accumulate encoded value
-	virtual
-	void add2(int i, double value, double weight);
-
-	virtual
-	double get(int i);
-
-	virtual
-	double getWeight(int i);
-
-
-protected:
-
-private:
-
-	 drain::ValueScaling scaling;
-
-	/// Accumulating unit using natural values
-	struct entry {
-
-		double x;
-		double w;
-
-		inline void set(double value, double weight){
-			x = value;
-			w = weight;
-		}
-
-	};
-
-	/*
-	 *  \param xNew - value to be added
-	 *  \param wNew - weight of xNew
-	 */
-	inline
-	void mix(entry & prev, const entry & e, double decay){
-
-		double w1 = decay*e.w;
-		double w2 = (1.0-decay);
-
-		if (decay < 1.0)
-			prev.x =(w1*e.x + w2*prev.x) / (w1 + w2);
-		else // decay==1.0
-			prev.x = e.x;
-
-		prev.w = w1 + w2*prev.w;
-
-	}
-
-	typedef std::pair<entry,entry> entryPair;
-	typedef std::vector<entryPair> container;
-
-	container data;
-
-	entry e;
-	entryPair latest; // utility
-
-
-};
 
 
 

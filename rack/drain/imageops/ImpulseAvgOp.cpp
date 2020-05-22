@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "image/FilePng.h"
 
 #include "ImageOp.h"
-#include "ImpulseResponseOp.h"
+#include "ImpulseAvgOp.h"
 
 namespace drain
 {
@@ -70,15 +70,27 @@ void ImpulseAvg::reset(){
 }
 
 
-void ImpulseAvg::add1(int i, double value, double weight){
+void ImpulseAvg::addLeft(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.first, e, decay);
+	mix(latest.first, e, decays[0]);
 	data[i].first = latest.first;
 }
 
-void ImpulseAvg::add2(int i, double value, double weight){
+void ImpulseAvg::addRight(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.second, e, decay);
+	mix(latest.second, e, decays[2]);
+	data[i].second = latest.second;
+}
+
+void ImpulseAvg::addDown(int i, double value, double weight){
+	e.set(scaling.fwd(value), weight);
+	mix(latest.first, e, decays[1]);
+	data[i].first = latest.first;
+}
+
+void ImpulseAvg::addUp(int i, double value, double weight){
+	e.set(scaling.fwd(value), weight);
+	mix(latest.second, e, decays[3]);
 	data[i].second = latest.second;
 }
 

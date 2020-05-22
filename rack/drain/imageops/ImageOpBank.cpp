@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "DifferentialOp.h"
 #include "HighBoostOp.h"
 #include "HighPassOp.h"
-#include "ImpulseResponseOp.h"
+#include "ImpulseAvgOp.h"
 #include "MarginalStatisticOp.h"
 //#include "MotionExtrapolatorOp.h"
 //#include "MotionIllustratorOp.h"
