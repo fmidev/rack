@@ -781,12 +781,16 @@ protected:
 			else {
 				requestSize(v.size());
 				typename T::const_iterator it = v.begin();
+				typename T::const_iterator itLast = it;
 				for (size_t i = 0; i<getElementCount(); ++i){
 					if (it == v.end()){
 						if (fillArray)
-							it = v.begin();
+							it = itLast; //v.begin(); WHAT if empty?
 						else
 							return;
+					}
+					else {
+						itLast = it;
 					}
 					caster.put(getPtr(i), *it);
 					++it;
