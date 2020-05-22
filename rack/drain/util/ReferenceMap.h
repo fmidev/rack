@@ -116,13 +116,14 @@ public:
 
 
 	/// Adopts the references of r. If replace==false, only new entries are appended.
-	void append(ReferenceMap & r, bool replace=true){
+	void append(ReferenceMap & rMap, bool replace=true){
 		//std::cerr << __FILE__ << " -> " << __FUNCTION__ <<  std::endl;
-		const std::list<std::string> & keys = r.getKeyList();
+		const std::list<std::string> & keys = rMap.getKeyList();
 		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 			//std::cerr << " -> " << *it <<  std::endl;
 			if (replace || !hasKey(*it)){
-				reference(*it, r[*it], r.unitMap[*it]);
+				Referencer & item = rMap[*it];
+				reference(*it, item, rMap.unitMap[*it]).fillArray = item.fillArray;
 			}
 		}
 	}
