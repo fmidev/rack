@@ -116,7 +116,6 @@ public:
 	 *   \param horz - horizontal distance scale, "width".
 	 *   \param vert - vertical radius, "height"; if negative, set equal to horizontal
 	 *
-	 *   Diagonal (dx+dy) and "knight" (2dx+dy or dx+2dy) values will be adjusted as well.
 	 *
 	 *   Special values:
 	 *   - negative value: spread to infinity (ie. identified with positive infinity)
@@ -145,70 +144,29 @@ public:
 	inline
 	void init(){
 		setTopology(topology);
-		setRadius(width, height);
+		setRadius(widths[0], heights[0]);
 	}
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
-	virtual
+	inline
 	void setTopology(unsigned short topology){
 
 		this->topology = topology;
-		KNIGHT = false;
-		DIAG   = false;
-
-		switch (topology) {
-			case 2:
-				KNIGHT = true;
-				// no break
-			case 1:
-				DIAG   = true;
-				// no break
-			case 0:
-				break;
-			default:
-				break;
-		}
 
 	};
 
-	// NEW
+	/// Creates a list of DistanceElements
+	/**
+	 *   Diagonal (dx+dy) and "chess knight" (2dx+dy or dx+2dy) values will be adjusted as well.
+	 *
+	 */
 	virtual
 	void createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward=true) const;
 
-	virtual
-	void mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const;
+	// virtual	void mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const;
 
 	virtual
 	double decrease(double value, double coeff) const = 0;
-
-	// virtual	double trueDistance(short int dx, short int dy) const = 0;
-
-
-	/// Decreases value by horizonal decay
-	virtual
-	dist_t decreaseHorz(dist_t x) const = 0;
-
-	/// Decreases value by vertical decay
-	virtual 
-	dist_t decreaseVert(dist_t x) const = 0;
-
-	/// Decreases value by diagonal decay
-	virtual
-	dist_t decreaseDiag(dist_t x) const = 0;
-
-	/// Decreases value by a chess knight step (2-up, 1-left) decay
-	virtual 
-	dist_t decreaseKnightHorz(dist_t x) const = 0;
-
-	/// Decreases value by a chess knight step (2-up, 1-left) decay
-	virtual
-	dist_t decreaseKnightVert(dist_t x) const = 0;
-
-	/// Diagnonal +1/-1 steps on/off.
-	bool DIAG;
-
-	/// Chess knight move computation on/off.
-	bool KNIGHT;
 
 	unsigned short int topology; // NEEDED, separately?
 
@@ -223,23 +181,35 @@ protected:
 	 *
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
-	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), DIAG(true), KNIGHT(true) {
-		parameters.reference("width",  width=10.0,  "pix");
-		parameters.reference("height", height=-1.0, "pix");
+	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), widths(2, 10.0), heights(2, -1.0) {
+		parameters.reference("width",  widths,  "pix").fillArray = true;
+		parameters.reference("height", heights, "pix").fillArray = true;
 		parameters.reference("topology", topology=2, "0|1|2");
 		setMax(255); // warning
 	};
 
+	DistanceModel(const DistanceModel & dm) : BeanLike(dm.name, dm.description), widths(dm.widths), heights(dm.heights){
+		parameters.reference("width",  widths,  "pix").fillArray = true;
+		parameters.reference("height", heights, "pix").fillArray = true;
+		parameters.reference("topology", topology=2, "0|1|2");
+		setMax(255); // warning
+	}
+
 
 	// Internal parameter applied upon initParams?
-	dist_t width;
+	// dist_t width;
+	std::vector<dist_t> widths;
 
 	// Internal parameter applied upon initParams
-	dist_t height;
+	// dist_t height;
+	std::vector<dist_t> heights;
 
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).
 	dist_t maxCodeValue;
+
+	dist_t horzDec;
+    dist_t vertDec;
 
 
 };
@@ -251,7 +221,7 @@ class DistanceModelLinear : public DistanceModel
 public:
 
 	DistanceModelLinear() : DistanceModel(__FUNCTION__){
-		setRadius(width, height);
+		setRadius(widths[0], heights[0]);
 	};
 
 	void setRadius(dist_t horz, dist_t vert = NAN); // bool diag=true, bool knight=true);
@@ -260,13 +230,9 @@ public:
 
 	virtual
 	DistanceElement getElement(short dx, short dy) const {
-
-		//return DistanceElement(dx, dy, sqrt(horzDecrement*horzDecrement + vertDecrement*vertDecrement) );
-		double dx2 = static_cast<double>(dx) * horzDecrement;
-		double dy2 = static_cast<double>(dy) * vertDecrement;
-		//std::cout << dx2 << ',' << dy2 << '\n';
+		double dx2 = static_cast<double>(dx) * horzDec;
+		double dy2 = static_cast<double>(dy) * vertDec;
 		return DistanceElement(dx, dy, sqrt(dx2*dx2 + dy2*dy2));
-
 	}
 
 	// NEW
@@ -280,7 +246,7 @@ public:
 	// virtual	double trueDistance(short int dx, short int dy) const {}
 
 
-
+	/*
 	inline
 	dist_t decreaseHorz(dist_t x) const {
 		if (x > horzDecrement)
@@ -320,17 +286,19 @@ public:
 		else
 			return 0;
 	};
+	*/
 
 protected:
 //private:
 	
 	//T max;
+	/*
 	dist_t horzDecrement;
 	dist_t vertDecrement;
 	dist_t diagDecrement;
 	dist_t knightDecrementHorz;
 	dist_t knightDecrementVert;
-	
+	*/
 };
 
 /**
@@ -346,7 +314,7 @@ class DistanceModelExponential : public DistanceModel {
 public:
 
 	DistanceModelExponential() : DistanceModel(__FUNCTION__){
-		setRadius(width, height);
+		setRadius(widths[0], heights[0]);
 	};
 
 	void setRadius(dist_t horz,    dist_t vert = NAN);
@@ -355,12 +323,10 @@ public:
 
 	virtual inline
 	DistanceElement getElement(short dx, short dy) const {
-		double hLog = static_cast<double>(dx) * log(horzDecay);
-		double vLog = static_cast<double>(dy) * log(vertDecay);
+		double hLog = static_cast<double>(dx) * log(horzDec);
+		double vLog = static_cast<double>(dy) * log(vertDec);
 		return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
 	}
-
-	//virtual void createChain(DistanceNeighbourhood & chain, short topology = 1) const;
 
 	// NEW
 	virtual inline
@@ -369,7 +335,7 @@ public:
 	};
 
 
-
+	/*
 	inline
 	dist_t decreaseHorz(dist_t x) const {
 		return static_cast<dist_t>(horzDecay*x);
@@ -394,16 +360,17 @@ public:
 	dist_t decreaseKnightVert(dist_t x) const {
 		return (knightDecayVert*x);
 	};
-
+	*/
 
 protected:
-//private:
 	
+	/*
 	dist_t horzDecay;
     dist_t vertDecay;
     dist_t diagDecay;
     dist_t knightDecayHorz;
     dist_t knightDecayVert;
+	*/
 
 };
 
@@ -413,5 +380,52 @@ protected:
 }
 	
 #endif /*DISTANCETRANSFORMOP_H_*/
+/*
+		KNIGHT = false;
+		DIAG   = false;
+
+		switch (topology) {
+			case 2:
+				KNIGHT = true;
+				// no break
+			case 1:
+				DIAG   = true;
+				// no break
+			case 0:
+				break;
+			default:
+				break;
+		}
+		*/
+/*
+/// Decreases value by horizonal decay
+virtual
+dist_t decreaseHorz(dist_t x) const = 0;
+
+/// Decreases value by vertical decay
+virtual
+dist_t decreaseVert(dist_t x) const = 0;
+
+/// Decreases value by diagonal decay
+virtual
+dist_t decreaseDiag(dist_t x) const = 0;
+
+/// Decreases value by a chess knight step (2-up, 1-left) decay
+virtual
+dist_t decreaseKnightHorz(dist_t x) const = 0;
+
+/// Decreases value by a chess knight step (2-up, 1-left) decay
+virtual
+dist_t decreaseKnightVert(dist_t x) const = 0;
+*/
+
+
+/*
+/// Diagnonal +1/-1 steps on/off.
+bool DIAG;
+
+/// Chess knight move computation on/off.
+bool KNIGHT;
+*/
 
 // Drain

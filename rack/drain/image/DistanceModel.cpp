@@ -62,16 +62,17 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, unsigned short to
 	}
 }
 
+/*
 void DistanceModel::mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const {
 	mirroredChain.clear();
 	for (DistanceNeighbourhood::const_iterator it=chain.begin(); it!=chain.end(); ++it){
 		mirroredChain.push_back(DistanceElement(-it->diff.x, -it->diff.y, it->coeff));
 	}
 }
+*/
 
 void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
 
-	//std::cerr << getName() << ':' <<__FUNCTION__ << std::endl;
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -79,31 +80,29 @@ void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, b
 
 
 	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-	this->width  = horz;
-	this->height = vert;
-
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 3" << std::endl;
+	this->widths[0]  = horz;
+	this->heights[0] = vert;
 
 	if (getMax() == 0.0){
 		mout.warn() << "max unset " << mout.endl; // ", " << diag << mout.endl;
 	}
 
-	dist_t horzDec = getMax();
-	dist_t vertDec = getMax();
+	dist_t h = getMax();
+	dist_t v = getMax();
 
 	if (horz < 0.0)
-		horzDec = 0.0;    // no decrement, spread to infinity
+		h = 0.0;    // no decrement, spread to infinity
 	else if (horz > 0.0)
-		horzDec = (getMax()/horz  + 0.0); // "default"
+		h = (getMax()/horz  + 0.0); // "default"
 
 	if (std::isnan(vert))
-		vertDec = horzDec;
+		v = h;
 	else if (vert < 0.0)
-		vertDec = 0.0;   // no decrement, spread to infinity
+		v = 0.0;   // no decrement, spread to infinity
 	else if (vert > 0.0)
-		vertDec = (getMax()/vert + 0.0); // "default"
+		v = (getMax()/vert + 0.0); // "default"
 
-	setDecrement(horzDec, vertDec);  // handles diag and knight
+	setDecrement(h, v);  // handles diag and knight
 
 }
 
@@ -113,15 +112,16 @@ void DistanceModelLinear::setDecrement(dist_t horz, dist_t vert){
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (horz < 0.0) // ? when would this occur?
-		horzDecrement = 1.0;
+		horzDec = 1.0;
 	else
-		horzDecrement = horz;
+		horzDec = horz;
 
 	if (vert < 0.0)
-		vertDecrement = horzDecrement;
+		vertDec = horzDec;
 	else
-		vertDecrement = vert;
+		vertDec = vert;
 
+	/*
 	diagDecrement =       sqrt(    horzDecrement*horzDecrement +     vertDecrement*vertDecrement);
 	knightDecrementHorz = sqrt(4.0*horzDecrement*horzDecrement +     vertDecrement*vertDecrement);   //diagDecrement * sqrt(5.0)/sqrt(2.0);
 	knightDecrementVert = sqrt(    horzDecrement*horzDecrement + 4.0*vertDecrement*vertDecrement);
@@ -135,7 +135,7 @@ void DistanceModelLinear::setDecrement(dist_t horz, dist_t vert){
 		mout << ") ";
 	}
 	mout << mout.endl;
-
+	*/
 }
 
 /*
@@ -163,43 +163,39 @@ void DistanceModelLinear::createChain(DistanceNeighbourhood & chain, unsigned sh
 }
 */
 
-void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
 
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 1" << std::endl;
+void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
 
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
-
-	this->width  = horz;
-	this->height = vert;
+	this->widths[0]  = horz;
+	this->heights[0] = vert;
 	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 3" << std::endl;
 
-	dist_t horzDec = 0.0;
-	dist_t vertDec = 0.0;
+	dist_t h = 0.0;
+	dist_t v = 0.0;
 
 	// TODO: interpret handle 0 and -1 better
-
 	if (horz < 0.0)
-		horzDec = 1.0;    // no decay, spread to infinity
+		h = 1.0;    // no decay, spread to infinity
 	else if (horz == 0.0)
-		horzDec = 0.0;    // full decay
+		h = 0.0;    // full decay, ~ peak
 	else if (horz > 0.0)
-		horzDec = pow(0.5, 2.0/horz);  // 0.5^(1/horz)
+		h = pow(0.5, 2.0/horz);  // 0.5^(1/horz)
 
 	if (std::isnan(vert))      // default; copy horz
-		vertDec = horzDec;
+		v = h;
 	else if (vert < 0.0)  // no decay, spread to infinity
-		vertDec = 1.0;
+		v = 1.0;
 	else if (vert == 0.0)
-		vertDec = 0.0;   // full decay
+		v = 0.0;   // full decay, ~ peak
 	else
-		vertDec = pow(0.5, 2.0/vert);  // 0.5^(1/horz)
+		v = pow(0.5, 2.0/vert);  // 0.5^(1/horz)
 
-	setDecrement(horzDec, vertDec);
+	setDecrement(h, v);
 
 }
 
@@ -217,11 +213,11 @@ void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 		// throw std::runtime_error("setDecrement: 'horz' greater than 1.0.");
 	}
 	else
-		horzDecay = horz;  // 0.5^(1/horz)  ????
+		horzDec = horz;  // 0.5^(1/horz)  ????
 
 
 	if (std::isnan(vert)){
-		vertDecay = horzDecay;
+		vertDec = horzDec;
 	}
 	else if (vert < 0.0){
 		mout.error() << "'vert' less than zero." << mout.endl;
@@ -230,14 +226,15 @@ void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 		mout.error() << "'vert' greater than 1.0." << mout.endl;
 	}
 	else
-		vertDecay = vert;
+		vertDec = vert;
 
-	const double hLog = log(horzDecay);
-	const double vLog = log(vertDecay);
+	/*
+	const double hLog = log(horzDec);
+	const double vLog = log(vertDec);
+
 	diagDecay =       exp(-sqrt(    hLog*hLog +     vLog*vLog));
 	knightDecayHorz = exp(-sqrt(4.0*hLog*hLog +     vLog*vLog));
 	knightDecayVert = exp(-sqrt(    hLog*hLog + 4.0*vLog*vLog));
-
 
 	mout.debug() << "decays: " << horzDecay << ", " << vertDecay;
 	if (DIAG){
@@ -248,6 +245,7 @@ void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 		mout << ") ";
 	}
 	mout << mout.endl;
+	*/
 
 }
 
