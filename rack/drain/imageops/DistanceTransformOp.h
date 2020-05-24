@@ -187,12 +187,10 @@ template <class T>
 void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 {
 
-
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	//mout.warn() << "start" << mout.endl;
 	mout.debug() << "model max" << getDistanceModel().getMax() << mout.endl;
-
 
 	//File::write(dst,"DistanceTransformOp-dst0.png");
 	traverseDownRight(src,dst);
@@ -239,8 +237,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	// Experimental (element topology not yet implemented)
 	bool HORZ = true;
-	range & inner = HORZ ? horz : vert;
-	range & outer = HORZ ? vert : horz;
+	range & inner     = HORZ ? horz : vert;
+	range & outer     = HORZ ? vert : horz;
 	int & innerValue  = HORZ ? p.x : p.y;
 	int & outerValue  = HORZ ? p.y : p.x;
 
@@ -257,14 +255,14 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	{
 		for (innerValue=inner.first; innerValue<=inner.second; innerValue++)
 		{
+			// MISSING: coordinateHandler.handle(p);?
 
 			// Take source value as default
 			d = src.get<dist_t>(p);  // todo  convert to dst scale?
 
 			// Compare to previous value
 			dTest = dst.get<dist_t>(p);
-			if (dTest > d)
-			{
+			if (dTest > d){
 				d = dTest;
 			}
 
@@ -277,10 +275,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 				}
 			}
 
-
 			if (d > 0)
 				dst.put(p,d);
-
 
 		};
 	};
@@ -288,8 +284,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 }
 
 
-//public WritableRaster traverseUpLeft(Raster srcDist, WritableRaster dst){
-//template <class T=unsigned char,class T2=unsigned char>
+
 template <class T>
 void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) const {
 
@@ -304,7 +299,6 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 	mout.debug(1) << "coordHandler:" << coordinateHandler << mout.endl;
 
 	// proximity (inverted distance)
-	//typedef float dist_t;
 	dist_t d;
 	dist_t dTest;
 
@@ -341,10 +335,8 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 				}
 			}
 
-
 			if (d>0)
 				dst.put(p,d);
-
 
 		}
 	}

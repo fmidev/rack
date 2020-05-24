@@ -115,10 +115,6 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	mout.debug(2)  << "init params, using alpha: " << mout.endl;
 	this->initializeParameters(src.getAlpha(), dst.getAlpha());
 
-	if (this->distanceModel.KNIGHT){
-		//mout.warn() << "with chess knight 2+1 distance " << mout.endl;
-		//mout.warn() << this->distanceModel.getParameters() << mout.endl;
-	}
 
 	mout.debug()   << "calling traverseDownRight" << mout.endl;
 	// mout.debug(1)  << src << mout.endl;
