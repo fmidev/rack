@@ -47,6 +47,50 @@ namespace image
 {
 
 
+class DistanceElement {
+public:
+
+	// Todo: sync with DistanceModel::dist_t
+	typedef float dist_t;
+
+	const drain::Point2D<short int> diff;
+
+	inline
+	DistanceElement(short int di, short int dj, const dist_t coeff) : diff(di,dj), coeff(coeff) {
+	};
+
+	inline
+	DistanceElement(const DistanceElement & elem) : diff(elem.diff), coeff(elem.coeff) {
+	};
+
+	virtual
+	~DistanceElement(){
+	};
+
+	// Saves connection even with changing weights
+	const dist_t coeff;
+
+};
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const DistanceElement & d){
+	ostr << d.diff << ':' << d.coeff;
+	return ostr;
+}
+
+
+typedef std::list<DistanceElement> DistanceNeighbourhood;
+
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chain){
+	for (DistanceNeighbourhood::const_iterator it=chain.begin(); it!=chain.end(); ++it){
+		ostr << *it << '\n';
+	}
+	return ostr;
+}
+
+
 class DistanceModel : public BeanLike {
 	
 public:
@@ -95,6 +139,9 @@ public:
 	virtual 
 	void setDecrement(dist_t horz, dist_t vert = NAN) = 0; // , bool diag=true, bool knight=true) = 0;
 
+	virtual
+	DistanceElement getElement(short dx, short dy) const = 0;
+
 	inline
 	void init(){
 		setTopology(topology);
@@ -124,10 +171,18 @@ public:
 
 	};
 
+	// NEW
+	virtual
+	void createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward=true) const;
 
-	/// Decreases value by horizonal decay
-	//virtual
-	//dist_t decrease(dist_t coeff, dist_t x) const = 0;
+	virtual
+	void mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const;
+
+	virtual
+	double decrease(double value, double coeff) const = 0;
+
+	// virtual	double trueDistance(short int dx, short int dy) const = 0;
+
 
 	/// Decreases value by horizonal decay
 	virtual
@@ -156,6 +211,8 @@ public:
 	bool KNIGHT;
 
 	unsigned short int topology; // NEEDED, separately?
+
+
 
 protected:
 
@@ -201,16 +258,28 @@ public:
 
 	void setDecrement(dist_t horz, dist_t vert = NAN); // bool diag=true, bool knight=true);
 
-
-	/*
 	virtual
-	dist_t decrease(dist_t coeff, dist_t x) const {
-		if (x >= coeff)
-			return x-coeff;
-		else
-			return 0;
+	DistanceElement getElement(short dx, short dy) const {
+
+		//return DistanceElement(dx, dy, sqrt(horzDecrement*horzDecrement + vertDecrement*vertDecrement) );
+		double dx2 = static_cast<double>(dx) * horzDecrement;
+		double dy2 = static_cast<double>(dy) * vertDecrement;
+		//std::cout << dx2 << ',' << dy2 << '\n';
+		return DistanceElement(dx, dy, sqrt(dx2*dx2 + dy2*dy2));
+
+	}
+
+	// NEW
+	virtual inline
+	double decrease(double value, double coeff) const {
+		return value - coeff;
 	};
-	*/
+
+	// virtual void createChain(DistanceNeighbourhood & chain, short topology = 1) const;
+
+	// virtual	double trueDistance(short int dx, short int dy) const {}
+
+
 
 	inline
 	dist_t decreaseHorz(dist_t x) const {
@@ -252,7 +321,8 @@ public:
 			return 0;
 	};
 
-private:
+protected:
+//private:
 	
 	//T max;
 	dist_t horzDecrement;
@@ -283,6 +353,23 @@ public:
 
 	void setDecrement(dist_t horz, dist_t vert = NAN);
 
+	virtual inline
+	DistanceElement getElement(short dx, short dy) const {
+		double hLog = static_cast<double>(dx) * log(horzDecay);
+		double vLog = static_cast<double>(dy) * log(vertDecay);
+		return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
+	}
+
+	//virtual void createChain(DistanceNeighbourhood & chain, short topology = 1) const;
+
+	// NEW
+	virtual inline
+	double decrease(double value, double coeff) const {
+		return value * coeff;
+	};
+
+
+
 	inline
 	dist_t decreaseHorz(dist_t x) const {
 		return static_cast<dist_t>(horzDecay*x);
@@ -308,7 +395,9 @@ public:
 		return (knightDecayVert*x);
 	};
 
-private:
+
+protected:
+//private:
 	
 	dist_t horzDecay;
     dist_t vertDecay;

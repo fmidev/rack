@@ -36,6 +36,39 @@ namespace drain {
 namespace image {
 
 
+void DistanceModel::createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward) const {
+
+	const signed char sign = forward ? +1 : -1;
+
+	switch (topology) {
+	case 2:
+		chain.push_back(getElement(sign*-1, sign*-2));
+		chain.push_back(getElement(sign*+1, sign*-2));
+		chain.push_back(getElement(sign*-2, sign*-1));
+		chain.push_back(getElement(sign*+2, sign*-1));
+		// no break
+	case 1:
+		// 8-adjacency
+		chain.push_back(getElement(sign*-1, sign*-1));
+		chain.push_back(getElement(sign*+1, sign*-1));
+		// no break
+	case 0:
+		// 4-adjacency
+		chain.push_back(getElement(sign*-1,       0));
+		chain.push_back(getElement(      0, sign*-1));
+		break;
+	default:
+		break;
+	}
+}
+
+void DistanceModel::mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const {
+	mirroredChain.clear();
+	for (DistanceNeighbourhood::const_iterator it=chain.begin(); it!=chain.end(); ++it){
+		mirroredChain.push_back(DistanceElement(-it->diff.x, -it->diff.y, it->coeff));
+	}
+}
+
 void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << std::endl;
@@ -105,6 +138,30 @@ void DistanceModelLinear::setDecrement(dist_t horz, dist_t vert){
 
 }
 
+/*
+void DistanceModelLinear::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
+	switch (topology) {
+	case 2:
+		chain.push_back(DistanceElement(-1,-2, this->knightDecrementVert));
+		chain.push_back(DistanceElement(+1,-2, this->knightDecrementVert));
+		chain.push_back(DistanceElement(-2,-1, this->knightDecrementHorz));
+		chain.push_back(DistanceElement(+2,-1, this->knightDecrementHorz));
+		// no break
+	case 1:
+		// 8-adjacency
+		chain.push_back(DistanceElement(-1,-1, this->diagDecrement));
+		chain.push_back(DistanceElement(+1,-1, this->diagDecrement));
+		// no break
+	case 0:
+		// 4-adjacency
+		chain.push_back(DistanceElement(-1, 0, this->horzDecrement));
+		chain.push_back(DistanceElement( 0,-1, this->vertDecrement));
+		break;
+	default:
+		break;
+	}
+}
+*/
 
 void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
 
@@ -194,8 +251,30 @@ void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
 
 }
 
-
-
+/*
+void DistanceModelExponential::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
+	switch (topology) {
+	case 2:
+		chain.push_back(DistanceElement(-1,-2, this->knightDecayVert));
+		chain.push_back(DistanceElement(+1,-2, this->knightDecayVert));
+		chain.push_back(DistanceElement(-2,-1, this->knightDecayHorz));
+		chain.push_back(DistanceElement(+2,-1, this->knightDecayHorz));
+		// no break
+	case 1:
+		// 8-adjacency
+		chain.push_back(DistanceElement(-1,-1, this->diagDecay));
+		chain.push_back(DistanceElement(+1,-1, this->diagDecay));
+		// no break
+	case 0:
+		// 4-adjacency
+		chain.push_back(DistanceElement(-1, 0, this->horzDecay));
+		chain.push_back(DistanceElement( 0,-1, this->vertDecay));
+		break;
+	default:
+		break;
+	}
+}
+*/
 
 }
 }
