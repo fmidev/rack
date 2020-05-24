@@ -249,11 +249,13 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	mout.debug(1) << "outer range:" << outer.first << ':' << outer.second << mout.endl;
 	mout.debug(1) << "inner range:" << inner.first << ':' << inner.second << mout.endl;
 
+	DistanceNeighbourhood chain;
+	distanceModel.createChain(chain, distanceModel.topology);
+
 	// Todo: extended area
 	for (outerValue=outer.first; outerValue<=outer.second; outerValue++)
 	{
 		for (innerValue=inner.first; innerValue<=inner.second; innerValue++)
-		//for (px=0; px<width; px++)
 		{
 
 			// Take source value as default
@@ -266,80 +268,13 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 				d = dTest;
 			}
 
-			// Compare to upper left neighbour
-			if (distanceModel.DIAG){
-				pTest.setLocation(px-1,py-1);
+			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
+				pTest.setLocation(px+it->diff.x, py+it->diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-				if (dTest > d)
-				{
-					d = dTest;
-				}
-			}
-
-			// Compare to upper neighbour
-			pTest.setLocation(px,py-1);
-			coordinateHandler.handle(pTest);
-			dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
-			if (dTest > d)
-			{
-				d = dTest;
-			}
-
-			// Compare to upper right neighbour
-			if (distanceModel.DIAG){
-				pTest.setLocation(px+1,py-1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-				if (dTest > d)
-				{
-					d = dTest;
-				}
-			}
-
-			// Compare to left neighbour
-			pTest.setLocation(px-1,py);
-			coordinateHandler.handle(pTest);
-			dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
-			if (dTest > d)
-			{
-				d = dTest;
-			}
-
-			if (distanceModel.KNIGHT){
-
-				// Compare to further upper, left neighbour
-				pTest.setLocation(px-1, py-2);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
+				dTest = distanceModel.decrease(dst.get<dist_t>(pTest), it->coeff);
 				if (dTest > d){
 					d = dTest;
 				}
-
-				// Compare to further upper, right neighbour
-				pTest.setLocation(px+1, py-2);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-				// Compare to further left, upper  neighbour
-				pTest.setLocation(px-2, py-1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-				// Compare to further right, upper neighbour
-				pTest.setLocation(px+2, py-1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
 			}
 
 
@@ -381,6 +316,8 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 	int & px = p.x;
 	int & py = p.y;
 
+	DistanceNeighbourhood chain;
+	distanceModel.createChain(chain, distanceModel.topology, false);
 
 	for (py=coordinateHandler.getYMax(); py>=0; --py)
 	{
@@ -395,77 +332,15 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 				d = dTest;
 			}
 
-			// Compare to lower left neighbour
-			if (distanceModel.DIAG){
-				pTest.setLocation(px-1,py+1);
+			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
+				pTest.setLocation(px+it->diff.x, py+it->diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
+				dTest = distanceModel.decrease(dst.get<dist_t>(pTest), it->coeff);
 				if (dTest > d){
 					d = dTest;
 				}
 			}
 
-			// Compare to lower neighbour
-			pTest.setLocation(px,py+1);
-			coordinateHandler.handle(pTest);
-			dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
-			if (dTest > d){
-				d = dTest;
-			}
-
-			// Compare to lower right neighbour
-			if (distanceModel.DIAG){
-				pTest.setLocation(px+1,py+1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-			}
-
-			// Compare to right neighbour
-			pTest.setLocation(px+1,py);
-			coordinateHandler.handle(pTest);
-			dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
-			if (dTest > d){
-				d = dTest;
-			}
-
-			if (distanceModel.KNIGHT){
-
-				// Compare to further lower, right neighbour
-				pTest.setLocation(px+1, py+2);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-				// Compare to further lower, left neighbour
-				pTest.setLocation(px-1, py+2);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-				// Compare to further right, lower  neighbour
-				pTest.setLocation(px+2, py+1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-				// Compare to further left, lower neighbour
-				pTest.setLocation(px-2, py+1);
-				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-				if (dTest > d){
-					d = dTest;
-				}
-
-			} // knight
 
 			if (d>0)
 				dst.put(p,d);
@@ -543,3 +418,156 @@ public:
 #endif /*DISTANCETRANSFORMOP_H_*/
 
 // Drain
+
+/*
+// Compare to upper left neighbour
+if (distanceModel.DIAG){
+	pTest.setLocation(px-1,py-1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
+	if (dTest > d)
+	{
+		d = dTest;
+	}
+}
+
+// Compare to upper neighbour
+pTest.setLocation(px,py-1);
+coordinateHandler.handle(pTest);
+dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
+if (dTest > d)
+{
+	d = dTest;
+}
+
+// Compare to upper right neighbour
+if (distanceModel.DIAG){
+	pTest.setLocation(px+1,py-1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
+	if (dTest > d)
+	{
+		d = dTest;
+	}
+}
+
+// Compare to left neighbour
+pTest.setLocation(px-1,py);
+coordinateHandler.handle(pTest);
+dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
+if (dTest > d)
+{
+	d = dTest;
+}
+
+if (distanceModel.KNIGHT){
+
+	// Compare to further upper, left neighbour
+	pTest.setLocation(px-1, py-2);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further upper, right neighbour
+	pTest.setLocation(px+1, py-2);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further left, upper  neighbour
+	pTest.setLocation(px-2, py-1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further right, upper neighbour
+	pTest.setLocation(px+2, py-1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+}
+*/
+
+
+/*
+// Compare to lower left neighbour
+if (distanceModel.DIAG){
+	pTest.setLocation(px-1,py+1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+}
+
+// Compare to lower neighbour
+pTest.setLocation(px,py+1);
+coordinateHandler.handle(pTest);
+dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
+if (dTest > d){
+	d = dTest;
+}
+
+// Compare to lower right neighbour
+if (distanceModel.DIAG){
+	pTest.setLocation(px+1,py+1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+}
+
+// Compare to right neighbour
+pTest.setLocation(px+1,py);
+coordinateHandler.handle(pTest);
+dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
+if (dTest > d){
+	d = dTest;
+}
+
+if (distanceModel.KNIGHT){
+
+	// Compare to further lower, right neighbour
+	pTest.setLocation(px+1, py+2);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further lower, left neighbour
+	pTest.setLocation(px-1, py+2);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further right, lower  neighbour
+	pTest.setLocation(px+2, py+1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+	// Compare to further left, lower neighbour
+	pTest.setLocation(px-2, py+1);
+	coordinateHandler.handle(pTest);
+	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
+	if (dTest > d){
+		d = dTest;
+	}
+
+} // knight
+*/
