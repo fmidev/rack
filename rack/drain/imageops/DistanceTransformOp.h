@@ -35,7 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include "image/DistanceModel.h"
+#include "image/DistanceModelLinear.h"
+#include "image/DistanceModelExponential.h"
 
 #include "ImageOp.h"
 
@@ -57,13 +58,13 @@ class DistanceTransformOp : public ImageOp
 
 public:
 
-	typedef typename T::dist_t dist_t;
+	typedef float dist_t;
     
     virtual ~DistanceTransformOp(){};
 
     inline
-    void setRadius(dist_t width, dist_t height){
-    	distanceModel.setRadius(width, height);
+    void setRadius(dist_t width, dist_t height=NAN, dist_t width2=NAN, dist_t height2=NAN){
+    	distanceModel.setRadius(width, height, width2, height2);
     };
 
     /*
@@ -125,11 +126,11 @@ protected:
 
 	//int topology;
 
-	DistanceTransformOp(const std::string &name, const std::string &description, double width, double height) :
+	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height) :
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
 		distanceModel.setTopology(2);
-		distanceModel.setRadius(width, height);
+		distanceModel.setRadius(width, height, width, height);
 	};
 
 
@@ -148,7 +149,6 @@ protected:
 
 		mout.debug() << "src of type=" << Type::getTypeChar(src.getType()) << ", scaling: " << src.getScaling();
 
-
 		if (src.getScaling().isPhysical()){
 			mout.info() << "ok, physical scaling: ";
 		}
@@ -160,10 +160,9 @@ protected:
 		}
 		mout << "physMax=" << physMax << " => " << codeMax << mout.endl;
 
-
 		distanceModel.setMax(codeMax);
 		// distanceModel.setMax(src.getMax<double>()); // why not dst
-		distanceModel.init();
+		distanceModel.update(); // radii
 	}
 
 
@@ -371,7 +370,7 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(double horz = 10.0, double vert = NAN) :
+	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN) :
 	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities. Set decrements.", horz, vert) {
 	};
 
@@ -398,7 +397,7 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(double horz = 10.0, double vert = NAN) :
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN) :
 		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert) {
 	};
 
@@ -411,155 +410,3 @@ public:
 
 // Drain
 
-/*
-// Compare to upper left neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px-1,py-1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-	if (dTest > d)
-	{
-		d = dTest;
-	}
-}
-
-// Compare to upper neighbour
-pTest.setLocation(px,py-1);
-coordinateHandler.handle(pTest);
-dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
-if (dTest > d)
-{
-	d = dTest;
-}
-
-// Compare to upper right neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px+1,py-1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-	if (dTest > d)
-	{
-		d = dTest;
-	}
-}
-
-// Compare to left neighbour
-pTest.setLocation(px-1,py);
-coordinateHandler.handle(pTest);
-dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
-if (dTest > d)
-{
-	d = dTest;
-}
-
-if (distanceModel.KNIGHT){
-
-	// Compare to further upper, left neighbour
-	pTest.setLocation(px-1, py-2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further upper, right neighbour
-	pTest.setLocation(px+1, py-2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further left, upper  neighbour
-	pTest.setLocation(px-2, py-1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further right, upper neighbour
-	pTest.setLocation(px+2, py-1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-}
-*/
-
-
-/*
-// Compare to lower left neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px-1,py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-}
-
-// Compare to lower neighbour
-pTest.setLocation(px,py+1);
-coordinateHandler.handle(pTest);
-dTest = distanceModel.decreaseVert(dst.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-}
-
-// Compare to lower right neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px+1,py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseDiag(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-}
-
-// Compare to right neighbour
-pTest.setLocation(px+1,py);
-coordinateHandler.handle(pTest);
-dTest = distanceModel.decreaseHorz(dst.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-}
-
-if (distanceModel.KNIGHT){
-
-	// Compare to further lower, right neighbour
-	pTest.setLocation(px+1, py+2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further lower, left neighbour
-	pTest.setLocation(px-1, py+2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further right, lower  neighbour
-	pTest.setLocation(px+2, py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-	// Compare to further left, lower neighbour
-	pTest.setLocation(px-2, py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dst.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-	}
-
-} // knight
-*/

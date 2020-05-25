@@ -55,7 +55,7 @@ class DistanceTransformFillOp : public DistanceTransformOp<T>
 public:
 
 	// proximity (inverted distance)
-	typedef typename T::dist_t dist_t;
+	typedef float dist_t;
 
 	virtual
 	~DistanceTransformFillOp(){};
@@ -76,7 +76,7 @@ public:
 
 protected:
 
-	DistanceTransformFillOp(const std::string &name, const std::string &description, double horz = 10.0, double vert = NAN) :
+	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN) :
 		DistanceTransformOp<T>(name, description, horz, vert) {
 	};
 
