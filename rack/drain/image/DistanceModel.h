@@ -50,13 +50,13 @@ namespace image
 class DistanceElement {
 public:
 
-	// Todo: sync with DistanceModel::dist_t
-	typedef float dist_t;
+	// Todo: sync with DistanceModel::float
+	//typedef float float;
 
 	const drain::Point2D<short int> diff;
 
 	inline
-	DistanceElement(short int di, short int dj, const dist_t coeff) : diff(di,dj), coeff(coeff) {
+	DistanceElement(short int di, short int dj, const float coeff) : diff(di,dj), coeff(coeff) {
 	};
 
 	inline
@@ -68,7 +68,7 @@ public:
 	};
 
 	// Saves connection even with changing weights
-	const dist_t coeff;
+	const float coeff;
 
 };
 
@@ -91,68 +91,77 @@ std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chai
 }
 
 
+/// Base class for linear and exponential distances in rectangular pixel images.
 class DistanceModel : public BeanLike {
 	
 public:
 
-	typedef float dist_t;
+	static
+	const float nan_f; // = std::numeric_limits<float>::quiet_NaN();
+	//typedef float float;
 
 	virtual ~DistanceModel(){};
 
 	/// Set maximum (expected) code value. Radii, if given, will set pixel-to-pixel decrements scaled to this value.
 	inline
-	void setMax(dist_t maxCodeValue){ this->maxCodeValue = maxCodeValue; };
+	void setMax(float maxCodeValue){ this->maxCodeValue = maxCodeValue; };
 
 	/// Returns the maximum (expected) code value.
 	inline
-	dist_t getMax() const { return maxCodeValue; };
+	float getMax() const { return maxCodeValue; };
 
 	// virtual
-	//void getRadius(dist_t & horz, dist_t & vert) const = 0;
+	//void getRadius(float & horz, float & vert) const = 0;
 
 	/// Sets the geometry of the distance model.
 	/**
 	 * 	The values are in float, as eg. half-width radius may be sharp, under 1.0.
-	 *   \param horz - horizontal distance scale, "width".
-	 *   \param vert - vertical radius, "height"; if negative, set equal to horizontal
-	 *
+	 *   \param horz - horizontal distance, "width".
+	 *   \param vert - vertical distance, "height"; if negative, set equal to horizontal
 	 *
 	 *   Special values:
-	 *   - negative value: spread to infinity (ie. identified with positive infinity)
+	 *   - NaN: use default value (\c horz for \c vert and \c horzRight; \c vert for \vertUp )
+	 *   - negative value: no decay; continue to infinity with constant value
 	 *   - zero: sharp decay, value is zero in neighboring pixels
-	 *   - in addition: if vert is NaN, value of horz is copied.
 	 *
 	 */
 	virtual 
-	void setRadius(dist_t horz, dist_t vert = NAN) = 0; //, bool diag=true, bool knight=true) = 0;
+	void setRadius(float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f) = 0; //, bool diag=true, bool knight=true) = 0;
 	
-	/// Sets the distance geometry directly by modifying decrement/decay coefficients. Alternative to setRadii().
+	/// Set the distance geometry directly by modifying decrement/decay coefficients. Alternative to setRadus().
 	///
 	/**
+	 *  Set final decrement or decay per pixel. The exact definition varies in subclasses; the decay may be linear
+	 *  decrement as with DistanceModelLinear or multiplicative as with DistanceModelExponential .
 	 *
-	 *   \param horz - horizontal distance decrement/decay
-	 *   \param vert - vertical distance decrement/decay; if negative, set equal to horizontal
+	 *   \param horz     - horizontal distance decrement/decay
+	 *   \param vert     - vertical   distance decrement/decay; if NaN, set equal to \c horz
+	 *   \param horzLeft - horizontal distance decrement/decay; if NaN, set equal to \c horz
+	 *   \param vertUp   - vertical   distance decrement/decay; if NaN, set equal to \c vert
 	 *
-	 *   Diagonal (dx+dy) and "knight" (2dx+dy or dx+2dy) values will be adjusted as well.
+	 *   Special values:
+	 *   - NaN: use default value
+	 *   - negative value: no decay; continue to infinity with constant value
+	 *   - zero: sharp decay, value is zero in neighboring pixels
+	 *
+	 *
 	 */
 	virtual 
-	void setDecrement(dist_t horz, dist_t vert = NAN) = 0; // , bool diag=true, bool knight=true) = 0;
+	void setDecrement(float horz, float vert = NAN, float horzRight = NAN, float vertUp = NAN) = 0; // , bool diag=true, bool knight=true) = 0;
 
 	virtual
-	DistanceElement getElement(short dx, short dy) const = 0;
+	DistanceElement getElement(short dx, short dy, bool forward=true) const = 0;
 
 	inline
-	void init(){
-		setTopology(topology);
-		setRadius(widths[0], heights[0]);
+	void update(){
+		//setTopology(topology);
+		setRadius(widths[0], heights[0], widths[1], heights[1]);
 	}
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
 	inline
 	void setTopology(unsigned short topology){
-
 		this->topology = topology;
-
 	};
 
 	/// Creates a list of DistanceElements
@@ -163,13 +172,10 @@ public:
 	virtual
 	void createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward=true) const;
 
-	// virtual	void mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const;
-
 	virtual
-	double decrease(double value, double coeff) const = 0;
+	float decrease(float value, float coeff) const = 0;
 
 	unsigned short int topology; // NEEDED, separately?
-
 
 
 protected:
@@ -186,6 +192,8 @@ protected:
 		parameters.reference("height", heights, "pix").fillArray = true;
 		parameters.reference("topology", topology=2, "0|1|2");
 		setMax(255); // warning
+		drain::Logger mout(getImgLog(), __FUNCTION__, getName());
+		mout.warn() << *this << mout.endl;
 	};
 
 	DistanceModel(const DistanceModel & dm) : BeanLike(dm.name, dm.description), widths(dm.widths), heights(dm.heights){
@@ -196,190 +204,30 @@ protected:
 	}
 
 
-	// Internal parameter applied upon initParams?
-	// dist_t width;
-	std::vector<dist_t> widths;
+	// Horizontal distance(s); right (and left) "radius". Internal parameter applied upon initParams?
+	std::vector<float> widths;
 
-	// Internal parameter applied upon initParams
-	// dist_t height;
-	std::vector<dist_t> heights;
+	// Vertical distance(s); downward (and upward) "radius". Internal parameter applied upon initParams
+	std::vector<float> heights;
 
+	/// Final decrement or decay per pixel in horizontal direction. Derived from widths; definition varies in subclasses.
+	float horzDec;
+	float horzDec2;
+	/// Final decrement or decay	per pixel in vertical direction. Derived from heights; definition varies in subclasses.
+    float vertDec;
+    float vertDec2;
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).
-	dist_t maxCodeValue;
-
-	dist_t horzDec;
-    dist_t vertDec;
-
+	float maxCodeValue;
 
 };
-
-
-class DistanceModelLinear : public DistanceModel
-{
-
-public:
-
-	DistanceModelLinear() : DistanceModel(__FUNCTION__){
-		setRadius(widths[0], heights[0]);
-	};
-
-	void setRadius(dist_t horz, dist_t vert = NAN); // bool diag=true, bool knight=true);
-
-	void setDecrement(dist_t horz, dist_t vert = NAN); // bool diag=true, bool knight=true);
-
-	virtual
-	DistanceElement getElement(short dx, short dy) const {
-		double dx2 = static_cast<double>(dx) * horzDec;
-		double dy2 = static_cast<double>(dy) * vertDec;
-		return DistanceElement(dx, dy, sqrt(dx2*dx2 + dy2*dy2));
-	}
-
-	// NEW
-	virtual inline
-	double decrease(double value, double coeff) const {
-		return value - coeff;
-	};
-
-	// virtual void createChain(DistanceNeighbourhood & chain, short topology = 1) const;
-
-	// virtual	double trueDistance(short int dx, short int dy) const {}
-
-
-	/*
-	inline
-	dist_t decreaseHorz(dist_t x) const {
-		if (x > horzDecrement)
-			return x-horzDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	dist_t decreaseVert(dist_t x) const {
-		if (x > vertDecrement)
-			return x-vertDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	dist_t decreaseDiag(dist_t x) const {
-		if (x > diagDecrement)
-			return x-diagDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	dist_t decreaseKnightHorz(dist_t x) const {
-		if (x > knightDecrementHorz)
-			return x-knightDecrementHorz;
-		else
-			return 0;
-	};
-
-	inline
-	dist_t decreaseKnightVert(dist_t x) const {
-		if (x > knightDecrementVert)
-			return x-knightDecrementVert;
-		else
-			return 0;
-	};
-	*/
-
-protected:
-//private:
-	
-	//T max;
-	/*
-	dist_t horzDecrement;
-	dist_t vertDecrement;
-	dist_t diagDecrement;
-	dist_t knightDecrementHorz;
-	dist_t knightDecrementVert;
-	*/
-};
-
-/**
- *  In this model, the diagonal decay is computed as
- *  \$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x)) } ;
- *  \$
- *  because
- *  \$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x)) } ;
- *  \$
- */
-class DistanceModelExponential : public DistanceModel {
-
-public:
-
-	DistanceModelExponential() : DistanceModel(__FUNCTION__){
-		setRadius(widths[0], heights[0]);
-	};
-
-	void setRadius(dist_t horz,    dist_t vert = NAN);
-
-	void setDecrement(dist_t horz, dist_t vert = NAN);
-
-	virtual inline
-	DistanceElement getElement(short dx, short dy) const {
-		double hLog = static_cast<double>(dx) * log(horzDec);
-		double vLog = static_cast<double>(dy) * log(vertDec);
-		return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
-	}
-
-	// NEW
-	virtual inline
-	double decrease(double value, double coeff) const {
-		return value * coeff;
-	};
-
-
-	/*
-	inline
-	dist_t decreaseHorz(dist_t x) const {
-		return static_cast<dist_t>(horzDecay*x);
-	};
-
-	inline
-	dist_t decreaseVert(dist_t x) const {
-		return static_cast<dist_t>(vertDecay*x);
-	};
-
-	inline
-	dist_t decreaseDiag(dist_t x) const {
-		return (diagDecay*x);
-	};
-
-	inline
-	dist_t decreaseKnightHorz(dist_t x) const {
-		return (knightDecayHorz*x);
-	};
-
-	inline
-	dist_t decreaseKnightVert(dist_t x) const {
-		return (knightDecayVert*x);
-	};
-	*/
-
-protected:
-	
-	/*
-	dist_t horzDecay;
-    dist_t vertDecay;
-    dist_t diagDecay;
-    dist_t knightDecayHorz;
-    dist_t knightDecayVert;
-	*/
-
-};
-
 
 
 }
 }
 	
 #endif /*DISTANCETRANSFORMOP_H_*/
+
 /*
 		KNIGHT = false;
 		DIAG   = false;
@@ -397,29 +245,114 @@ protected:
 				break;
 		}
 		*/
+
 /*
 /// Decreases value by horizonal decay
 virtual
-dist_t decreaseHorz(dist_t x) const = 0;
+float decreaseHorz(float x) const = 0;
 
 /// Decreases value by vertical decay
 virtual
-dist_t decreaseVert(dist_t x) const = 0;
+float decreaseVert(float x) const = 0;
 
 /// Decreases value by diagonal decay
 virtual
-dist_t decreaseDiag(dist_t x) const = 0;
+float decreaseDiag(float x) const = 0;
 
 /// Decreases value by a chess knight step (2-up, 1-left) decay
 virtual
-dist_t decreaseKnightHorz(dist_t x) const = 0;
+float decreaseKnightHorz(float x) const = 0;
 
 /// Decreases value by a chess knight step (2-up, 1-left) decay
 virtual
-dist_t decreaseKnightVert(dist_t x) const = 0;
+float decreaseKnightVert(float x) const = 0;
+*/
+/*
+	inline
+	float decreaseHorz(float x) const {
+		if (x > horzDecrement)
+			return x-horzDecrement;
+		else
+			return 0;
+	};
+
+	inline
+	float decreaseVert(float x) const {
+		if (x > vertDecrement)
+			return x-vertDecrement;
+		else
+			return 0;
+	};
+
+	inline
+	float decreaseDiag(float x) const {
+		if (x > diagDecrement)
+			return x-diagDecrement;
+		else
+			return 0;
+	};
+
+	inline
+	float decreaseKnightHorz(float x) const {
+		if (x > knightDecrementHorz)
+			return x-knightDecrementHorz;
+		else
+			return 0;
+	};
+
+	inline
+	float decreaseKnightVert(float x) const {
+		if (x > knightDecrementVert)
+			return x-knightDecrementVert;
+		else
+			return 0;
+	};
+	*/
+
+//T max;
+/*
+float horzDecrement;
+float vertDecrement;
+float diagDecrement;
+float knightDecrementHorz;
+float knightDecrementVert;
 */
 
 
+
+/*
+	inline
+	float decreaseHorz(float x) const {
+		return static_cast<float>(horzDecay*x);
+	};
+
+	inline
+	float decreaseVert(float x) const {
+		return static_cast<float>(vertDecay*x);
+	};
+
+	inline
+	float decreaseDiag(float x) const {
+		return (diagDecay*x);
+	};
+
+	inline
+	float decreaseKnightHorz(float x) const {
+		return (knightDecayHorz*x);
+	};
+
+	inline
+	float decreaseKnightVert(float x) const {
+		return (knightDecayVert*x);
+	};
+	*/
+/*
+	float horzDecay;
+    float vertDecay;
+    float diagDecay;
+    float knightDecayHorz;
+    float knightDecayVert;
+	*/
 /*
 /// Diagnonal +1/-1 steps on/off.
 bool DIAG;

@@ -35,31 +35,33 @@ namespace drain {
 
 namespace image {
 
+const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 
 void DistanceModel::createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward) const {
 
-	const signed char sign = forward ? +1 : -1;
+	//const signed char sign = forward ? +1 : -1;
 
 	switch (topology) {
 	case 2:
-		chain.push_back(getElement(sign*-1, sign*-2));
-		chain.push_back(getElement(sign*+1, sign*-2));
-		chain.push_back(getElement(sign*-2, sign*-1));
-		chain.push_back(getElement(sign*+2, sign*-1));
+		chain.push_back(getElement(-1, -2, forward));
+		chain.push_back(getElement(+1, -2, forward));
+		chain.push_back(getElement(-2, -1, forward));
+		chain.push_back(getElement(+2, -1, forward));
 		// no break
 	case 1:
 		// 8-adjacency
-		chain.push_back(getElement(sign*-1, sign*-1));
-		chain.push_back(getElement(sign*+1, sign*-1));
+		chain.push_back(getElement(-1, -1, forward));
+		chain.push_back(getElement(+1, -1, forward));
 		// no break
 	case 0:
 		// 4-adjacency
-		chain.push_back(getElement(sign*-1,       0));
-		chain.push_back(getElement(      0, sign*-1));
+		chain.push_back(getElement(-1,  0, forward));
+		chain.push_back(getElement( 0, -1, forward));
 		break;
 	default:
 		break;
 	}
+
 }
 
 /*
@@ -69,210 +71,8 @@ void DistanceModel::mirrorChain(const DistanceNeighbourhood & chain, DistanceNei
 		mirroredChain.push_back(DistanceElement(-it->diff.x, -it->diff.y, it->coeff));
 	}
 }
-*/
+ */
 
-void DistanceModelLinear::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
-
-
-	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
-
-
-	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-	this->widths[0]  = horz;
-	this->heights[0] = vert;
-
-	if (getMax() == 0.0){
-		mout.warn() << "max unset " << mout.endl; // ", " << diag << mout.endl;
-	}
-
-	dist_t h = getMax();
-	dist_t v = getMax();
-
-	if (horz < 0.0)
-		h = 0.0;    // no decrement, spread to infinity
-	else if (horz > 0.0)
-		h = (getMax()/horz  + 0.0); // "default"
-
-	if (std::isnan(vert))
-		v = h;
-	else if (vert < 0.0)
-		v = 0.0;   // no decrement, spread to infinity
-	else if (vert > 0.0)
-		v = (getMax()/vert + 0.0); // "default"
-
-	setDecrement(h, v);  // handles diag and knight
-
-}
-
-
-void DistanceModelLinear::setDecrement(dist_t horz, dist_t vert){
-
-	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-
-	if (horz < 0.0) // ? when would this occur?
-		horzDec = 1.0;
-	else
-		horzDec = horz;
-
-	if (vert < 0.0)
-		vertDec = horzDec;
-	else
-		vertDec = vert;
-
-	/*
-	diagDecrement =       sqrt(    horzDecrement*horzDecrement +     vertDecrement*vertDecrement);
-	knightDecrementHorz = sqrt(4.0*horzDecrement*horzDecrement +     vertDecrement*vertDecrement);   //diagDecrement * sqrt(5.0)/sqrt(2.0);
-	knightDecrementVert = sqrt(    horzDecrement*horzDecrement + 4.0*vertDecrement*vertDecrement);
-
-	mout.debug() << "decs: " << horzDecrement << ", " << vertDecrement;
-	if (DIAG){
-		mout << ", (" << diagDecrement;
-		if (KNIGHT){
-			mout << ", (" << knightDecrementHorz << ','  << knightDecrementVert << ") ";
-		}
-		mout << ") ";
-	}
-	mout << mout.endl;
-	*/
-}
-
-/*
-void DistanceModelLinear::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
-	switch (topology) {
-	case 2:
-		chain.push_back(DistanceElement(-1,-2, this->knightDecrementVert));
-		chain.push_back(DistanceElement(+1,-2, this->knightDecrementVert));
-		chain.push_back(DistanceElement(-2,-1, this->knightDecrementHorz));
-		chain.push_back(DistanceElement(+2,-1, this->knightDecrementHorz));
-		// no break
-	case 1:
-		// 8-adjacency
-		chain.push_back(DistanceElement(-1,-1, this->diagDecrement));
-		chain.push_back(DistanceElement(+1,-1, this->diagDecrement));
-		// no break
-	case 0:
-		// 4-adjacency
-		chain.push_back(DistanceElement(-1, 0, this->horzDecrement));
-		chain.push_back(DistanceElement( 0,-1, this->vertDecrement));
-		break;
-	default:
-		break;
-	}
-}
-*/
-
-
-void DistanceModelExponential::setRadius(dist_t horz, dist_t vert){ // , bool diag, bool knight){
-
-	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
-	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-
-	this->widths[0]  = horz;
-	this->heights[0] = vert;
-	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 3" << std::endl;
-
-	dist_t h = 0.0;
-	dist_t v = 0.0;
-
-	// TODO: interpret handle 0 and -1 better
-	if (horz < 0.0)
-		h = 1.0;    // no decay, spread to infinity
-	else if (horz == 0.0)
-		h = 0.0;    // full decay, ~ peak
-	else if (horz > 0.0)
-		h = pow(0.5, 2.0/horz);  // 0.5^(1/horz)
-
-	if (std::isnan(vert))      // default; copy horz
-		v = h;
-	else if (vert < 0.0)  // no decay, spread to infinity
-		v = 1.0;
-	else if (vert == 0.0)
-		v = 0.0;   // full decay, ~ peak
-	else
-		v = pow(0.5, 2.0/vert);  // 0.5^(1/horz)
-
-	setDecrement(h, v);
-
-}
-
-
-void DistanceModelExponential::setDecrement(dist_t horz, dist_t vert){
-
-	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-
-	if (horz < 0.0){
-		mout.error() << "'horz' less than zero." << mout.endl;
-		//throw std::runtime_error();
-	}
-	else if (horz > 1.0) {
-		mout.error() << "'horz' greater than 1.0." << mout.endl;
-		// throw std::runtime_error("setDecrement: 'horz' greater than 1.0.");
-	}
-	else
-		horzDec = horz;  // 0.5^(1/horz)  ????
-
-
-	if (std::isnan(vert)){
-		vertDec = horzDec;
-	}
-	else if (vert < 0.0){
-		mout.error() << "'vert' less than zero." << mout.endl;
-	}
-	else if (vert > 1.0) {
-		mout.error() << "'vert' greater than 1.0." << mout.endl;
-	}
-	else
-		vertDec = vert;
-
-	/*
-	const double hLog = log(horzDec);
-	const double vLog = log(vertDec);
-
-	diagDecay =       exp(-sqrt(    hLog*hLog +     vLog*vLog));
-	knightDecayHorz = exp(-sqrt(4.0*hLog*hLog +     vLog*vLog));
-	knightDecayVert = exp(-sqrt(    hLog*hLog + 4.0*vLog*vLog));
-
-	mout.debug() << "decays: " << horzDecay << ", " << vertDecay;
-	if (DIAG){
-		mout << ", (" << diagDecay;
-		if (KNIGHT){
-			mout << ", (" << knightDecayHorz << ','  << knightDecayVert << ") ";
-		}
-		mout << ") ";
-	}
-	mout << mout.endl;
-	*/
-
-}
-
-/*
-void DistanceModelExponential::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
-	switch (topology) {
-	case 2:
-		chain.push_back(DistanceElement(-1,-2, this->knightDecayVert));
-		chain.push_back(DistanceElement(+1,-2, this->knightDecayVert));
-		chain.push_back(DistanceElement(-2,-1, this->knightDecayHorz));
-		chain.push_back(DistanceElement(+2,-1, this->knightDecayHorz));
-		// no break
-	case 1:
-		// 8-adjacency
-		chain.push_back(DistanceElement(-1,-1, this->diagDecay));
-		chain.push_back(DistanceElement(+1,-1, this->diagDecay));
-		// no break
-	case 0:
-		// 4-adjacency
-		chain.push_back(DistanceElement(-1, 0, this->horzDecay));
-		chain.push_back(DistanceElement( 0,-1, this->vertDecay));
-		break;
-	default:
-		break;
-	}
-}
-*/
 
 }
 }
