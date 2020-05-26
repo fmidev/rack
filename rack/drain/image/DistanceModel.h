@@ -192,8 +192,8 @@ protected:
 		parameters.reference("height", heights, "pix").fillArray = true;
 		parameters.reference("topology", topology=2, "0|1|2");
 		setMax(255); // warning
-		drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-		mout.warn() << *this << mout.endl;
+		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
+		// mout.warn() << *this << mout.endl;
 	};
 
 	DistanceModel(const DistanceModel & dm) : BeanLike(dm.name, dm.description), widths(dm.widths), heights(dm.heights){

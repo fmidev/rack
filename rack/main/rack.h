@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.28"
+#define __RACK_VERSION__ "5.29"
 
 /**
+ *   Version 5.29
+ *   - Distance transforms using dynamic DistanceElement's
+ *   - FillArray bug
+ *
  *   Version 5.28
  *   - Sweep indexing also by timestamp
  *
