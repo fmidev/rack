@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DOPPLER_AvgExpOP_H_
 
 #include <drain/imageops/ImpulseResponseOp.h>
+#include <drain/imageops/ImpulseAvgOp.h>
 
 #include "../data/DataCoder.h"
 #include "DopplerOp.h"
@@ -60,12 +61,12 @@ public:
 
 	inline
 	DopplerAvg(const ImpulseAvg & avg){
-		decay = avg.decay;
+		decays = avg.decays;
 	}
 
 	inline
 	DopplerAvg(const ImpulseAvgConf & conf){
-		decay = conf.decay;
+		decays = conf.decays;
 	}
 
 	virtual
@@ -75,10 +76,20 @@ public:
 	void reset();
 
 	virtual
-	void add1(int i, double value, double weight);
+	void addLeft(int i, double value, double weight);
 
 	virtual
-	void add2(int i, double value, double weight);
+	void addRight(int i, double value, double weight);
+
+	virtual inline
+	void addDown(int i, double value, double weight){
+		addLeft(i, value, weight);
+	}
+
+	virtual inline
+	void addUp(int i, double value, double weight){
+		addRight(i, value, weight);
+	}
 
 	/// Return natural (not encoded) value at position i.
 	virtual

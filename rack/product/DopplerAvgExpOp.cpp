@@ -61,7 +61,7 @@ void DopplerAvg::reset(){
 }
 
 
-void DopplerAvg::add1(int i, double value, double weight){
+void DopplerAvg::addLeft(int i, double value, double weight){
 
 	if (odim.isValue(value)){
 		// if (i == 100) 	std::cerr << __FUNCTION__ << ": " << value << '\n';
@@ -72,12 +72,12 @@ void DopplerAvg::add1(int i, double value, double weight){
 		e.set(0.0, 0.0, 0.0);
 	}
 
-	mix(latest.first, e, decay);
+	mix(latest.first, e, decays[0]);
 	data[i].first = latest.first;
 
 }
 
-void DopplerAvg::add2(int i, double value, double weight){
+void DopplerAvg::addRight(int i, double value, double weight){
 
 	if (odim.isValue(value)){
 		// if (i == 100)  std::cerr << __FUNCTION__ << ": " << value << '\n';
@@ -91,7 +91,7 @@ void DopplerAvg::add2(int i, double value, double weight){
 		e.set(0.0, 0.0, 0.0);
 	}
 
-	mix(latest.second, e, decay);
+	mix(latest.second, e, decays[1]);
 	data[i].second = latest.second;
 
 }
@@ -257,7 +257,7 @@ void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDs
 
 	double vrad, W, weight;
 
-	double decay = conf.decay;
+	double decay = conf.decays[0];
 
 	const double wOld = 0.5; // smoothNess;
 	const double wNew = 0.5; // 1.0-smoothNess;
