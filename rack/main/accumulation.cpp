@@ -29,14 +29,209 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-
+#include <drain/util/Input.h>
 
 #include "commands.h"
 #include "accumulation.h"
 
 #include "product/ProductOp.h"
+//#include "radar/Geometry.h"
+#include "radar/Coordinates.h"
 
 namespace rack {
+
+class PolarSite : public BasicCommand {
+
+public:
+
+	double lon;
+	double lat;
+
+	PolarSite() : BasicCommand(__FUNCTION__,
+			"Set radar size location of the accumulated data. Also size etc., if --encoding set."){
+		parameters.reference("lon", lon = 0.0, "degrees");
+		parameters.reference("lat", lat = 0.0, "degrees");
+	}
+
+	void exec() const {
+
+		Logger mout(__FUNCTION__, __FILE__);
+
+		RackResources & resources = getResources();
+		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
+		acc.odim.lat = lat;
+		acc.odim.lon = lon;
+
+		if (!resources.targetEncoding.empty()){
+			allocateAccumulator();
+		}
+
+	}
+
+	static
+	void allocateAccumulator() {
+
+		Logger mout(__FUNCTION__, __FILE__);
+
+		RackResources & resources = getResources();
+		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
+		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
+
+			if (resources.targetEncoding.empty()){
+				mout.error() << "missing --encoding to set polar geometry: " << acc.odim.getKeys() << mout.endl;
+				return;
+			}
+
+			acc.odim.addShortKeys();
+			acc.odim.setValues(resources.targetEncoding);
+
+			acc.setGeometry(acc.odim.nbins, acc.odim.nrays);
+			// mout.warn() << acc.odim  << mout.endl;
+
+		}
+	}
+
+};
+
+// TODO. combine Cartesian & Polar
+class PolarPlot : public BasicCommand {
+
+public:
+
+	double lon;
+	double lat;
+	double value;
+	double weight;
+
+	PolarPlot() : BasicCommand(__FUNCTION__, "Add a single data point."){
+		parameters.reference("lon", lon = 0.0, "longitude");
+		parameters.reference("lat", lat = 0.0, "latitude");
+		parameters.reference("value", value = 0.0, "value");
+		parameters.reference("weight", weight = 1.0, "weight");
+	};
+
+
+	void exec() const {
+
+		Logger mout(__FUNCTION__, __FILE__);
+
+		RackResources & resources = getResources();
+
+		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
+
+		// if ((acc.odim.lat ???) || (acc.getHeight()==0)){
+		PolarSite::allocateAccumulator();
+
+		///  Converts the polar coordinates for a radar to geographical coordinates.
+		RadarProj proj;
+		proj.setSiteLocationDeg(acc.odim.lon, acc.odim.lat);
+		proj.setLatLonProjection();
+		mout.warn() << proj << mout.endl;
+		//drain::Point2D<double> point(lon*drain::DEG2RAD, lat*drain::DEG2RAD);
+		//proj.projectInv(point.x, point.y); // lon, lat,
+		//mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
+
+		drain::Point2D<double> point;
+		proj.projectInv(lon*drain::DEG2RAD, lat*drain::DEG2RAD, point.x, point.y); // lon, lat,
+		//point.x *= drain::RAD2DEG;
+		//point.y *= drain::RAD2DEG;
+		mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
+		double r = point.x*point.x + point.y*point.y;
+		//mout.warn() << "AEQD coords: " << point << mout.endl;
+
+	};
+
+
+};
+
+// TODO. combine Cartesian & Polar
+class PolarPlotFile : public SimpleCommand<std::string> {
+
+public:
+
+	PolarPlotFile() : SimpleCommand<>(__FUNCTION__, "Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.",
+			"file", "", "filename"){
+	};
+
+	void exec() const;
+};
+
+void PolarPlotFile::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
+
+	RackResources & resources = getResources();
+
+	//Composite & composite = resources.composite;
+	RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
+
+	PolarSite::allocateAccumulator();
+
+	RadarProj proj;
+	proj.setSiteLocationDeg(acc.odim.lon, acc.odim.lat);
+	proj.setLatLonProjection();
+	mout.warn() << proj << mout.endl;
+
+	drain::Point2D<double> metricCoord;
+	drain::Point2D<int> radarCoord;
+
+	drain::Input input(value);
+
+	std::string line;
+	drain::Point2D<double> geoCoord;
+	double d;
+	double w;
+
+	std::stringstream sstr;
+
+	double r2, r, azm;
+	r = acc.odim.getMaxRange();
+	const double r2max = r*r;
+	size_t addr;
+
+	while ( getline((std::istream &)input, line) ){
+
+		line = line.substr(0, line.find_first_of("%#"));
+
+		if (!line.empty()){
+
+			sstr.clear();
+			sstr.str(line);
+			sstr >> geoCoord.x >> geoCoord.y;
+			sstr >> d;
+			if (!sstr.eof())
+				sstr >> w;
+			else
+				w = 1.0;
+			// std::cout << '#' << line << '\n';
+			// std::cout << lon << ',' << lat << '\t' << d << ',' << w << '\n';
+			proj.projectInv(geoCoord.x*drain::DEG2RAD, geoCoord.y*drain::DEG2RAD, metricCoord.x, metricCoord.y); // lon, lat,
+			//std::cout << geoCoord << '\t' << d << ',' << w << '\t' << metricCoord << '\n';
+
+			r2 = metricCoord.x*metricCoord.x + metricCoord.y*metricCoord.y;
+			if (r2 <= r2max){
+				radarCoord.x = acc.odim.getBinIndex(sqrt(r2));
+				azm = atan2(metricCoord.x, metricCoord.y);
+				if (azm < 0.0)
+					azm += (2.0*M_PI);
+				radarCoord.y = acc.odim.getRayIndex(azm);
+				mout.debug(2) << "adding " << geoCoord << " => "<< radarCoord << mout.endl;
+				addr = acc.data.address(radarCoord.x, radarCoord.y);
+				acc.add(addr, d, w);
+			}
+			else {
+				mout.debug(2) << "outside radar range: " << geoCoord << " => " << metricCoord << mout.endl;
+			}
+		}
+
+	}
+
+	//ifstr.close();
+
+}
+
+
+
 
 
 class PolarAdd : public BasicCommand {
@@ -58,8 +253,8 @@ public:
 			acc.setMethod("AVERAGE"); // TODO: add pMethod command?
 		}
 
-		// acc.dataSelector.path     = "data[0-9]+$";
-		//acc.dataSelector.path = ""; // remove after deprecated
+		// acc.dataSelector.path = "data[0-9]+$";
+		// acc.dataSelector.path = ""; // remove after deprecated
 
 		if (acc.dataSelector.quantity.empty())
 			acc.dataSelector.quantity = "^(DBZH|RATE)$";
@@ -189,8 +384,8 @@ public:
 };
 
 class PolarExtract : public SimpleCommand<std::string> {
-    public: //re 
-	//std::string value;
+
+public:
 
 	PolarExtract() : SimpleCommand<std::string>(__FUNCTION__, "Extract polar-coordinate data that has been accumulated.",
 			"channels", "dw", "Layers: data,count,weight,std.deviation") {
@@ -254,9 +449,13 @@ class PolarExtract : public SimpleCommand<std::string> {
 
 AccumulationModule::AccumulationModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix) {
 
+	static RackLetAdapter<PolarSite>        polarSite;
+	static RackLetAdapter<PolarPlot>        polarPlot;
+	static RackLetAdapter<PolarPlotFile>    polarPlotFile;
+
 	static RackLetAdapter<PolarAdd>         polarAdd;
 	static RackLetAdapter<PolarAddWeighted> polarAddW;
-	static RackLetAdapter<PolarExtract> polarExtract;
+	static RackLetAdapter<PolarExtract>     polarExtract;
 
 
 }

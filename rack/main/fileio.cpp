@@ -306,6 +306,7 @@ public:
 	void exec() const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
+		//drain::Logger mout(getName(), __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -351,66 +352,66 @@ public:
 
 
 			// This is the simple version. See image commands (--iXxxxx)
-			try {
+			// try {
 
-				mout.info() << "File format: image" << mout.endl;
+			mout.info() << "File format: image" << mout.endl;
 
 
-				const bool CONVERT = !resources.targetEncoding.empty();
+			const bool CONVERT = !resources.targetEncoding.empty();
 
-				// If there is already a product generated with --image, use that.
-				// if (resources.select.empty() && ((resources.currentImage == &resources.grayImage) || (resources.currentImage == &resources.colorImage))){
-				//   && resources.targetEncoding.empty() && resources.targetEncoding.empty()
-				if (resources.select.empty() && (resources.currentImage != NULL) && !CONVERT){
-					mout.debug() << "Writing current image, no conversion " << mout.endl;
-				}
-				else if (CONVERT){
-					mout.note() << "encoding requested, calling "<< cmdImage.getName() << " implicitly" << mout.endl;
-					cmdImage.exec();
-				}
-				else { // pointer (resources.currentImage) needs update
-					DataSelector imageSelector;  //
-					imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-					//imageSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET,1) << ODIMPathElemMatcher(ODIMPathElem::DATA,1);
-					imageSelector.setParameters(resources.select);
-					resources.select.clear();
-					mout.debug() << imageSelector << mout.endl;
-					if (resources.setCurrentImage(imageSelector)){
-						// OK
-						if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
-							mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
-						}
-					}
-					else {
-						mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
-						return;
-					}
-
-				}
-
-				if (!resources.currentImage->isEmpty()){
-
-					if (IMAGE_PNG || IMAGE_PNM){
-						mout.debug() << "PNG or PGM format" << mout.endl;
-						drain::image::File::write(*resources.currentImage, resources.outputPrefix + value);
-					}
-					else if (IMAGE_TIF) {
-						// see FileGeoTiff::tileWidth
-						FileGeoTIFF::write(resources.outputPrefix + value, *getResources().currentImage); //, geoTIFF.width, geoTIFF.height);
-					}
-					else {
-						mout.error() << "unknown file name extension" << mout.endl;
+			// If there is already a product generated with --image, use that.
+			// if (resources.select.empty() && ((resources.currentImage == &resources.grayImage) || (resources.currentImage == &resources.colorImage))){
+			//   && resources.targetEncoding.empty() && resources.targetEncoding.empty()
+			if (resources.select.empty() && (resources.currentImage != NULL) && !CONVERT){
+				mout.debug() << "Writing current image, no conversion " << mout.endl;
+			}
+			else if (CONVERT){
+				mout.note() << "encoding requested, calling "<< cmdImage.getName() << " implicitly" << mout.endl;
+				cmdImage.exec();
+			}
+			else { // pointer (resources.currentImage) needs update
+				DataSelector imageSelector;  //
+				imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+				//imageSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET,1) << ODIMPathElemMatcher(ODIMPathElem::DATA,1);
+				imageSelector.setParameters(resources.select);
+				resources.select.clear();
+				mout.debug() << imageSelector << mout.endl;
+				if (resources.setCurrentImage(imageSelector)){
+					// OK
+					if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
+						mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
 					}
 				}
 				else {
-					mout.warn() << "empty data, skipped" << mout.endl;
+					mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
+					return;
 				}
 
+			}
+
+			if (!resources.currentImage->isEmpty()){
+
+				if (IMAGE_PNG || IMAGE_PNM){
+					mout.debug() << "PNG or PGM format" << mout.endl;
+					drain::image::File::write(*resources.currentImage, resources.outputPrefix + value);
+				}
+				else if (IMAGE_TIF) {
+					// see FileGeoTiff::tileWidth
+					FileGeoTIFF::write(resources.outputPrefix + value, *getResources().currentImage); //, geoTIFF.width, geoTIFF.height);
+				}
+				else {
+					mout.error() << "unknown file name extension" << mout.endl;
+				}
+			}
+			else {
+				mout.warn() << "empty data, skipped" << mout.endl;
+			}
+			/*
 			} catch (std::exception &e) {
 				mout.warn() << "failed in writing " << value << ": " << e.what() << mout.endl;
 			} catch (...) {
 				mout.warn() << "failed in writing " << value << mout.endl;
-			}
+			}*/
 		}
 		else if (textFileExtension.test(value) || (value == "-")){
 
