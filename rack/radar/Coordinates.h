@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Constants.h"
 //#include "radar.h"
 
+// See also RadarProj4 @ Geometry?
 
 namespace rack {
 

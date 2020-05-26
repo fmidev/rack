@@ -165,22 +165,22 @@ public:
 	inline
 	void setPosition(int i, int j) const {
 
-		static const double DEG2RAD = M_PI/180.0;
-		static const double RAD2DEG = 180.0/M_PI;
+		//static const double DEG2RAD = M_PI/180.0;
+		//static const double RAD2DEG = 180.0/M_PI;
 
 		this->current_i = i;
 		this->current_j = j;
 		current_range = odim.getBinDistance(i);
 		current_azm   = static_cast<double>(j) * J2AZMDEG;  // odim.getAzm
 
-		current_sin   = sin(current_azm*DEG2RAD);
-		current_cos   = cos(current_azm*DEG2RAD);
+		current_sin   = sin(current_azm * drain::DEG2RAD);
+		current_cos   = cos(current_azm * drain::DEG2RAD);
 
 		x = current_range*current_sin;
 		y = current_range*current_cos;
 		proj.projectFwd(current_range*current_sin, current_range*current_cos, lon, lat);
-		lon *= RAD2DEG;
-		lat *= RAD2DEG;
+		lon *= drain::RAD2DEG;
+		lat *= drain::RAD2DEG;
 
 	}
 

@@ -43,12 +43,7 @@ namespace rack
 {
 
 
-
-/// Equals M_PI/180.0
-//extern double DEG2RAD;
-
-/// Equals 180.0/M_PI
-//extern double RAD2DEG;
+// See also RadarProj @ Coordinates?
 
 class RadarProj4 : public drain::Proj4 {
 
