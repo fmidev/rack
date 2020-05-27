@@ -86,6 +86,7 @@ public:
 			acc.odim.setValues(resources.targetEncoding);
 
 			acc.setGeometry(acc.odim.nbins, acc.odim.nrays);
+			acc.count.fill(1); // no weight, ie "undetect" values.
 			// mout.warn() << acc.odim  << mout.endl;
 
 		}
@@ -191,7 +192,7 @@ void PolarPlotFile::exec() const {
 
 	while ( getline((std::istream &)input, line) ){
 
-		line = line.substr(0, line.find_first_of("%#"));
+		line = drain::StringTools::trim(line.substr(0, line.find_first_of("%#")));
 
 		if (!line.empty()){
 

@@ -56,17 +56,6 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	/*
-	if (std::isnan(vert))
-		vert = horz;
-
-	if (std::isnan(horzLeft))
-		horzLeft = horz;
-
-	if (std::isnan(vertUp))
-		vertUp = vert;
-	*/
-
 	this->widths[0]  = horz;
 	this->widths[1]  = horzLeft;
 	this->heights[0] = vert;
@@ -81,28 +70,6 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	float vDown  = radius2Dec(vert,     hRight);
 	float vUp    = radius2Dec(vertUp,   vDown);
 
-	/*
-	float h = 0.0;
-	float v = 0.0;
-
-	// TODO: interpret handle 0 and -1 better
-	if (horz < 0.0)
-		h = 1.0;    // no decay, spread to infinity
-	else if (horz == 0.0)
-		h = 0.0;    // full decay, ~ peak
-	else if (horz > 0.0)
-		h = pow(0.5, 2.0/horz);  // 0.5^(1/horz)
-
-	if (std::isnan(vert))      // default; copy horz
-		v = h;
-	else if (vert < 0.0)  // no decay, spread to infinity
-		v = 1.0;
-	else if (vert == 0.0)
-		v = 0.0;   // full decay, ~ peak
-	else
-		v = pow(0.5, 2.0/vert);  // 0.5^(1/horz)
-
-	 */
 	setDecrement(hRight, vDown, hLeft, vUp);
 
 }
@@ -129,58 +96,11 @@ float DistanceModelExponential::checkDec(float d, float dDefault) const {
 void DistanceModelExponential::setDecrement(float horz, float vert, float horzRight, float vertUp){
 
 	//drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-
 	horzDec  = checkDec(horz);
 	horzDec2 = checkDec(horzRight, horzDec);
 
 	vertDec  = checkDec(vert,   horzDec);
 	vertDec2 = checkDec(vertUp, vertDec);
-
-
-	/*
-	if (horz < 0.0){
-		mout.error() << "'horz' less than zero." << mout.endl;
-		//throw std::runtime_error();
-	}
-	else if (horz > 1.0) {
-		mout.error() << "'horz' greater than 1.0." << mout.endl;
-		// throw std::runtime_error("setDecrement: 'horz' greater than 1.0.");
-	}
-	else
-		horzDec = horz;  // 0.5^(1/horz)  ????
-
-
-	if (std::isnan(vert)){
-		vertDec = horzDec;
-	}
-	else if (vert < 0.0){
-		mout.error() << "'vert' less than zero." << mout.endl;
-	}
-	else if (vert > 1.0) {
-		mout.error() << "'vert' greater than 1.0." << mout.endl;
-	}
-	else
-		vertDec = vert;
-	*/
-
-	/*
-	const float hLog = log(horzDec);
-	const float vLog = log(vertDec);
-
-	diagDecay =       exp(-sqrt(    hLog*hLog +     vLog*vLog));
-	knightDecayHorz = exp(-sqrt(4.0*hLog*hLog +     vLog*vLog));
-	knightDecayVert = exp(-sqrt(    hLog*hLog + 4.0*vLog*vLog));
-
-	mout.debug() << "decays: " << horzDecay << ", " << vertDecay;
-	if (DIAG){
-		mout << ", (" << diagDecay;
-		if (KNIGHT){
-			mout << ", (" << knightDecayHorz << ','  << knightDecayVert << ") ";
-		}
-		mout << ") ";
-	}
-	mout << mout.endl;
-	*/
 
 }
 

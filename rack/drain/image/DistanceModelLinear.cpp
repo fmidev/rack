@@ -57,44 +57,16 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
 	//mout.warn() << "calling DM Linear! " << horz << ", " << vert  << mout.endl; // ", " << diag << mout.
 
-	/*
-	if (std::isnan(vert))
-		vert = horz;
-
-	if (std::isnan(horzLeft))
-		horzLeft = horz;
-
-	if (std::isnan(vertUp))
-		vertUp = vert;
-	 */
-
 	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
 	this->widths[0]  = horz;
 	this->widths[1]  = horzLeft;
 	this->heights[0] = vert;
 	this->heights[1] = vertUp;
-	mout.warn() << this->getParameters() << mout.endl;
+	mout.debug() << this->getParameters() << mout.endl;
 
 	if (getMax() == 0.0){
 		mout.warn() << "max unset " << mout.endl; // ", " << diag << mout.endl;
 	}
-
-	/*
-	float h = getMax();
-	float v = getMax();
-
-	if (horz < 0.0)
-		h = 0.0;    // no decrement, spread to infinity
-	else if (horz > 0.0)
-		h = (getMax()/horz  + 0.0); // "default"
-
-	if (std::isnan(vert))
-		v = h;
-	else if (vert < 0.0)
-		v = 0.0;   // no decrement, spread to infinity
-	else if (vert > 0.0)
-		v = (getMax()/vert + 0.0); // "default"
-	*/
 
 	// Decrements
 	float hRight = radius2Dec(horz,     1.0); // getMax()
@@ -102,7 +74,7 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	float vDown  = radius2Dec(vert,     hRight);
 	float vUp    = radius2Dec(vertUp,   vDown);
 
-	mout.warn() << "Decrements " << hRight << ',' << hLeft << ' ' << vDown << ',' << vUp << mout.endl; // ", " << diag << mout.endl;
+	//mout.warn() << "Decrements " << hRight << ',' << hLeft << ' ' << vDown << ',' << vUp << mout.endl; // ", " << diag << mout.endl;
 
 	setDecrement(hRight, vDown, hLeft, vUp);  // handles diag and knight
 
@@ -136,7 +108,7 @@ void DistanceModelLinear::setDecrement(float horz, float vert, float horzRight, 
 	vertDec  = checkDec(vert,   horzDec);
 	vertDec2 = checkDec(vertUp, vertDec);
 
-	mout.warn() << "Decrements " << horzDec << ':' << horzDec2 << ',' << vertDec << ':' << vertDec2 << mout.endl; // ", " << diag << mout.endl;
+	mout.debug() << "Decrements " << horzDec << ':' << horzDec2 << ',' << vertDec << ':' << vertDec2 << mout.endl; // ", " << diag << mout.endl;
 
 	/*
 	diagDecrement =       sqrt(    horzDecrement*horzDecrement +     vertDecrement*vertDecrement);

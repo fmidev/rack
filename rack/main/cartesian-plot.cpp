@@ -70,26 +70,9 @@ void CartesianPlotFile::exec() const {
 		mout.note() << " no method set, using " << composite.getMethod() << " (see --cMethod) " << mout.endl;
 	}
 
-	/*
-	const bool STDIN = (value.length()==1) && (value.at(0)=='-');
 
-	std::ifstream ifstr;
-	if (!STDIN){
-		ifstr.open(value.c_str());
-		if (! ifstr){
-			mout.warn() << " plotfile: opening file failed: " << value << mout.endl; // or eof?
-			//inpu tOk = false;
-			ifstr.close();
-			return;
-		}
-
-	}
-
-	std::istream &istr = STDIN ? std::cin : ifstr; // std::cin;
-	*/
 
 	drain::Input input(value);
-	//std::istream &istr = input;
 
 	std::string line;
 	double lat;
@@ -101,7 +84,8 @@ void CartesianPlotFile::exec() const {
 
 	while ( getline((std::istream &)input, line) ){
 
-		line = line.substr(0, line.find_first_of("%#"));
+		// line = line.substr(0, line.find_first_of("%#"));
+		line = drain::StringTools::trim(line.substr(0, line.find_first_of("%#")));
 
 		if (!line.empty()){
 
