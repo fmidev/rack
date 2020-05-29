@@ -65,7 +65,7 @@ void DataCoder::init(){
 
 	const Quantity &q = getQuantityMap().get(dataODIM.quantity);
 
-	SKIP_UNDETECT = ((!q.hasUndetectValue) || (DataCoder::undetectQualityCoeff==0));
+	SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
 	if (SKIP_UNDETECT){
 		undetectValue = -std::numeric_limits<double>::max();

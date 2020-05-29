@@ -109,6 +109,11 @@ public:
 	virtual
 	void encodeWeight(double & weight) const;
 
+	virtual inline
+	void encodeDiff(double & diff) const {
+		diff = qualityODIM.scaleInverse(diff);
+	};
+
 	/// Creates a naive quality field: data=1.0, undetect/nodata=0.0
 	/**
 	 *   Class-specific extension, ie not inherited from base class.

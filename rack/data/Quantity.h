@@ -58,7 +58,7 @@ public:
 	char defaultType;
 
 	/// True, if a value corresponding a very small (unmeasurable) value has been defined.
-	bool hasUndetectValue;
+	//bool hasUndetectValue;
 
 	/// A physical value corresponding a very small (unmeasurable) value has been defined.
 	/*
@@ -67,7 +67,8 @@ public:
 	double undetectValue;
 
 	/// Default constructor
-	Quantity(): defaultType('\0'), hasUndetectValue(false), undetectValue(0.0) {
+	Quantity(): defaultType('\0'), undetectValue(std::numeric_limits<double>::signaling_NaN()) {
+		//undetectValue = std::numeric_limits<double>::signaling_NaN();
 	}
 
 	/// Declare encoding (a storage type and scaling) for this quantity.
@@ -110,19 +111,25 @@ public:
 			return get(t.at(0));
 	}
 
+	/// True, if a value corresponding a very small (unmeasurable) value has been defined.
+	inline
+	bool hasUndetectValue() const {
+		return !std::isnan(undetectValue);
+	}
 
 	/// Sets neutral value for purposes of interpolation.
 	inline
 	void setZero(double value){
-		hasUndetectValue = true;
+		//hasUndetectValue = true;
 		undetectValue = value;
 	}
 
 	/// Sets neutral value for purposes of interpolation.
 	inline
 	void unsetZero(){
-		hasUndetectValue = false;
-		undetectValue = std::numeric_limits<double>::min();
+		undetectValue = std::numeric_limits<double>::signaling_NaN();
+		// hasUndetectValue = false;
+		//undetectValue = std::numeric_limits<double>::min();
 	}
 
 	/// Sets absolute or typical range of this quantity.
@@ -132,10 +139,10 @@ public:
 	 */
 	inline
 	void setPhysicalRange(double min, double max = std::numeric_limits<double>::max() ){
-		hasUndetectValue  = true;
-		undetectValue     = min;
-		physicalRange.min = min;
-		physicalRange.max = max;
+		// hasUndetectValue  = true;
+		// undetectValue     = min;
+		setZero(min);
+		physicalRange.set(min, max);
 	}
 
 	/// Print declared encodings (storage types and scalings)
@@ -150,7 +157,7 @@ public:
 			}
 			ostr << '\n';
 		}
-		if (hasUndetectValue)
+		if (hasUndetectValue())
 			ostr << '\t' << "virtual zero=" << undetectValue << '\n';
 		return ostr;
 	}
