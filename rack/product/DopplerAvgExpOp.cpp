@@ -180,10 +180,10 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 
 		// Handle undetect
 		const Quantity & qty = qm.get(srcData.odim.quantity); // VRAD?
-		double udc = qty.hasUndetectValue ? DataCoder::undetectQualityCoeff : 0.0;
+		double udc = qty.hasUndetectValue() ? DataCoder::undetectQualityCoeff : 0.0;
 
 		if (DataCoder::undetectQualityCoeff > 0.0){
-			if (qty.hasUndetectValue)
+			if (qty.hasUndetectValue())
 				mout.warn() << "using undetectQualityCoeff=" << udc << ", actual value still indefinite" << mout.endl;
 			else
 				mout.note() << "quantity=" << srcData.odim.quantity << ", discarding 'undetect' values" << mout.endl;

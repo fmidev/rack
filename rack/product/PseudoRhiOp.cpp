@@ -171,9 +171,9 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 	mout.debug()  << "Using quality info:" << mout.endl;
 	mout.debug(1) << quantityInfo << mout.endl;
 
-	const bool SKIP_UNDETECT = !quantityInfo.hasUndetectValue;
+	const bool SKIP_UNDETECT = !quantityInfo.hasUndetectValue();
 	const double undetectValue = quantityInfo.undetectValue;
-	mout.debug() << "Has zero:" << (int)quantityInfo.hasUndetectValue << mout.endl;
+	mout.debug() << "Has zero:" << (int)quantityInfo.hasUndetectValue() << mout.endl;
 
 	/// bin index
 	int bin;

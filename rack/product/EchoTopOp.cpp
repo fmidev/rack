@@ -57,7 +57,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 	const QuantityMap & qm = getQuantityMap();
 	const Quantity & HGHT = qm.get("HGHT");
-	const double undetectWeight = HGHT.hasUndetectValue ? DataCoder::undetectQualityCoeff : 0.0;
+	const double undetectWeight = HGHT.hasUndetectValue() ? DataCoder::undetectQualityCoeff : 0.0;
 
 
 	mout.info() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
