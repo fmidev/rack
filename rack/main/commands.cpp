@@ -1266,7 +1266,7 @@ public:
 	inline
 	CmdEncoding() : BasicCommand(__FUNCTION__, "Sets encodings parameters for polar and Cartesian products, including composites.") {
 
-		parameters.separator = ','; // s = ",";
+		parameters.separator = ',';
 		parameters.reference("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
 		parameters.reference("gain", odim.gain = 0.0, "scaling coefficient");
 		parameters.reference("offset", odim.offset = 0.0, "bias");
@@ -1297,14 +1297,27 @@ public:
 
 		try {
 
+
+			std::string test1;
+			std::string test2;
+			drain::ReferenceMap refmap;
+			refmap.reference("type", test1);
+			refmap.reference("gain", test2);
+			refmap.setValues(params);
+			mout.warn() << "refmap: " << refmap << mout.endl;
+
+			mout.warn() << "p keys: " << parameters.getKeys() << mout.endl;
+
+
 			/// Main action: store it for later use (by proceeding commands).
 			getResources().targetEncoding = params;
 
 			/// Also check and warn of unknown parameters
 			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
 
-			// mout.note() << "pars: " << parameters << mout.endl;
-			// mout.note() << "odim: " << odim << mout.endl;
+			mout.note() << "(user) params: " << params << mout.endl;
+			mout.note() << "parameters:    " << parameters << mout.endl;
+			mout.note() << "odim: " << odim << mout.endl;
 			odim.setTypeDefaults();
 
 			// Reassign (to odim).
@@ -1558,6 +1571,7 @@ class CmdQuantityConf : public BasicCommand {
 
 public:
 
+	// Odim used for interface only. Zero used internally.
 	CmdQuantityConf(): BasicCommand(__FUNCTION__, "1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
 		//parameters.separator = ',';
 		parameters.reference("quantity:type", quantityType = "", "quantity (DBZH,VRAD,...) and storage type (C,S,d,f,...)");
@@ -1575,16 +1589,27 @@ public:
 
 		Logger mout(__FUNCTION__, getName());
 
-		setParameters(params);
-		const size_t i = quantityType.find(':');
-		const std::string quantity = quantityType.substr(0, i);
-		const std::string type = (i != std::string::npos) ? quantityType.substr(i+1) : std::string("");
-		const std::string args = (i != std::string::npos) ? params.substr(i+1) : std::string();
+		setParameters(params); // used for syntacx checking (AND zero)
+		// std::string prefix; // dummy; same as quantityType, eg. "DBZH" or "DBZH:S"
+		std::string quantity;
+		std::string args;
+		drain::StringTools::split2(params, quantity, args, ":");
+		std::string type;
+		drain::StringTools::split2(quantityType, quantity, type, ":");
+
+		//const size_t i = quantityType.find(':');
+		//const std::string quantity = quantityType.substr(0, i);
+		//const std::string type = (i != std::string::npos) ? quantityType.substr(i+1) : std::string("");
+		//const std::string args = (i != std::string::npos) ? params.substr(i+1) : std::string();
+
+		mout.debug() << quantity << "(" << type << "): " << args << mout.endl;
 
 		QuantityMap & m = getQuantityMap();
-		mout.debug() << quantity << '(' << type << ')' << mout.endl;
 
-		if (quantity.empty()){
+		if (!quantity.empty()){
+			editQuantityConf(quantity, type, args);
+		}
+		else {
 			if (getResources().select.empty()){
 				// No quantity given, dump all the quantities
 				std::cout << "Quantities:\n";
@@ -1607,9 +1632,6 @@ public:
 					mout.warn() << "no matches with. " << regExp << mout.endl;
 			}
 		}
-		else {
-			editQuantityConf(quantity, type, args);
-		}
 
 		quantityType.clear();
 		zero = std::numeric_limits<double>::min();  // what about max?
@@ -1620,22 +1642,27 @@ protected:
 
 	std::string quantityType;
 
-	//std::string quantityType;
-
+	EncodingODIM odim;
 
 	double zero;
-	EncodingODIM odim;
 
 
 	void editQuantityConf(const std::string & quantity, const std::string & type, const std::string & args){
 
 		Logger mout(__FUNCTION__, getName());
 
+		if (quantity.empty()){
+			mout.error() << "quantity empty" << mout.endl;
+			return;
+		}
+
+		mout.debug() << quantity << "(" << type << "): " << args << mout.endl;
+
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];
 
 		if (zero != std::numeric_limits<double>::min()){
-			if (std::isnan(zero))        // TODO: convert toStr to double NaN
+			if (std::isnan(zero)) // DOES NOT WORK.. convert toStr to double NaN
 				q.unsetZero();
 			else
 				q.setZero(zero);
@@ -1647,15 +1674,20 @@ protected:
 
 			const char typecode = type.at(0);
 			q.defaultType = typecode;
-			q.set(typecode).setScaling(1.0, 0); //.updateValues(params);
-			//const size_t i = params.find(',');
+
 			if (!args.empty()){
-				mout.debug(1) << "setting other params " << args << mout.endl;
-				q.set(typecode).updateValues(args);
+				// Note: resets scaling; expect it to be reset here
+				EncodingODIM & currentEncoding = q.set(typecode);
+				currentEncoding.setScaling(1.0, 0); //.updateValues(params);
+
+				EncodingODIM newEncoding(q.get(typecode));
+				newEncoding.addShortKeys();
+				newEncoding.setValues(args);
+				mout.debug() << "setting other params " << newEncoding << mout.endl;
+
+				currentEncoding.updateFromCastableMap(newEncoding);
+				//q.set(typecode).updateValues(args);
 			}
-			//q[typecode].updateValues(params);
-			//q[typecode].type = type; // setc by set() above
-			//std::cout << "setting default type " << type << '\t';
 
 			mout.debug() << "set default type for :" << quantity << '\n' << q << mout.endl;
 		}
