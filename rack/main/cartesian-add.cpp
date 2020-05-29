@@ -232,7 +232,7 @@ void CompositeAdd::addPolar() const {
 			if (encoding.empty()){
 				mout.note() << "adapting encoding of first input: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			}
-			mout.note() << "composite.odim " << resources.composite.odim << mout.endl;
+			mout.debug() << "storing metadata: " << resources.composite.odim << mout.endl;
 			ProductBase::completeEncoding(resources.composite.odim, encoding); // note, needed even if encoding==""
 		}
 		else {
