@@ -41,10 +41,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/Data.h"
 #include "data/DataCoder.h"
+#include "data/QuantityMap.h"
 #include "Geometry.h"
 #include "product/ProductOp.h"
 
-// // using namespace std;
 
 namespace rack {
 
@@ -195,7 +195,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 		if ((p2 - floor(p2)) == 0.0){
 			mout.info() << "WAVG with p=" << p << " = 2N, positive pow() results" << mout.endl;
 			const Quantity & q = getQuantityMap().get(dataODIM.quantity);
-			if (q.hasUndetectValue){
+			if (q.hasUndetectValue()){
 				const double bias = wavgParams.get("bias", 0.0);
 				if (bias > q.undetectValue){
 					mout.warn() << "WAVG with p=" << p <<" = 2N, undetectValue=" << q.undetectValue << " < bias="<< bias  << mout.endl;
@@ -287,10 +287,20 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				type = QUALITY;
 				odimQuality = odimOut;
 				odimQuality.quantity += "DEV";
-				odimQuality.gain *= 20.0;  // ?
-				//const std::type_info & t = Type::getType(odimFinal.type);
-				odimQuality.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
-				//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
+				//const QuantityMap & qm = getQuantityMap();
+				if (qm.hasQuantity(odimQuality.quantity)){
+					qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
+					mout.note() << "found quantyConf[" << odimQuality.quantity << "], OK" << mout.endl;
+					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
+				}
+				else {
+					odimQuality.gain *= 20.0;  // ?
+					//const std::type_info & t = Type::getType(odimFinal.type);
+					odimQuality.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
+					//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
+					mout.warn() << "quantyConf[" << odimQuality.quantity << "] not found, using somewhat arbitary scaling:" << mout.endl;
+					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
+				}
 				break;
 			default:
 				mout.error() << "Unsupported field code: '" << field << "'" << mout.endl;
@@ -339,7 +349,13 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
 
 		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
-
+		if (type != DATA){
+			double test=10.0;
+			mout.warn() << "Encode inv odimQuality 10.0 => " << odimQuality.scaleInverse(10.0) << mout.endl;
+			mout.warn() << "Encode fwd odimQuality 10.0 => " << odimQuality.scaleForward(10.0) << mout.endl;
+			converter.encodeStdDev(test);
+			mout.warn() << "Encode STDEV 10.0" << test << mout.endl;
+		}
 		this->Accumulator::extractField(field, converter, dstData.data);
 
 		//mout.debug()  << "dstData: " << dstData.odim << mout.endl;
