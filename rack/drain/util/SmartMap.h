@@ -485,27 +485,43 @@ protected:
 	void assignEntries(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
 
 		Logger mout(__FUNCTION__, __FILE__);
+		const std::string assignmentSymbols(1, assignmentSymbol);
 
 		const std::list<std::string> & keys = getKeyList();
 		std::list<std::string>::const_iterator kit = keys.begin();
+
+		bool acceptOrderedParams = true;
 
 		for (std::list<std::string>::const_iterator pit = p.begin(); pit != p.end(); ++pit){
 
 			// Check specific assignment, ie. check if the key=value is given explicitly.
 			if (assignmentSymbol){ // typically '='
+				std::string key;
+				std::string value;
+				if (StringTools::split2(*pit, key, value, assignmentSymbols)){
+					// mout.warn() << " specified " <<  key << "=\t" << value << mout.endl;
+					importEntry(key, value, updateOnly);
+					acceptOrderedParams = false;
+					continue;
+				}
+				/*
 				size_t i = pit->find(assignmentSymbol);
 				if (i != std::string::npos){
 					importEntry(pit->substr(0,i), pit->substr(i+1), updateOnly);
-					// (*this)[pit->substr(0,i)] = pit->substr(i+1);  // (*this)[key] = value ;
-					///// ++pit;
+					acceptOrderedParams = false;
 					continue;
 				}
+				*/
 			}
 
-			// Key and assignment symbol not given, ok.
+			// Key and assignment symbol not given.
 
 			if (kit != keys.end()){
 				// Assignment-by-order
+				if (!acceptOrderedParams){
+					mout.warn() << "unspecified (ordered) param ["<< *kit << "=] '" << *pit << "' given after specified params" << mout.endl;
+				}
+				//mout.warn() << " ordered  " <<   << mout.endl;
 				(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
 				++kit; // NUEVO
 			}
