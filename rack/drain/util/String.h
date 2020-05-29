@@ -148,7 +148,7 @@ public:
 	 */
 	template <class T1, class T2>
 	static
-	void split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars=" \t\n");
+	bool split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars=" \t\n");
 
 	/// Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').
 	/**
@@ -285,7 +285,7 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 
 
 template <class T1, class T2>
-void StringTools::split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars){
+bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars){
 
 	std::size_t i = s.find_first_of(separators);
 
@@ -311,6 +311,7 @@ void StringTools::split2(const std::string & s, T1 & first, T2 & second, const s
 				sstr2 << s.substr(i);
 		}
 		sstr2 >> second;
+		return true;
 	}
 	else {
 		std::stringstream sstr;
@@ -319,6 +320,7 @@ void StringTools::split2(const std::string & s, T1 & first, T2 & second, const s
 		else
 			sstr << StringTools::trim(s, trimChars);
 		sstr >> first;
+		return false;
 	}
 
 
