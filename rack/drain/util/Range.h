@@ -53,22 +53,32 @@ class Range  {
 
 public:
 
-	Range() : vect(2),min(vect[0]), max(vect[1]) { //
+	Range() : vect(2, 0), min(vect[0]), max(vect[1]) { //
 	}
 
 	/// Copy constructor.
 	Range(const Range<T> & range) : vect(2), min(vect[0]), max(vect[1]) {
-		min = range.min;
-		max = range.max;
+		set(range);
 	}
 
 	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
+		set(min, max);
 	}
 
 	std::vector<T> vect;
 	//T vect[2]; Reference::link() caused problems
 	T & min;
 	T & max;
+
+	void set(T min, T max){
+		this->min = min;
+		this->max = max;
+	}
+
+	void set(const Range<T> & range){
+		this->min = range.min;
+		this->max = range.max;
+	}
 
 	Range & operator=(const Range<T> & range){
 		min = range.min;
