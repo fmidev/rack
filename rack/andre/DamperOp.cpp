@@ -57,7 +57,7 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 	const QuantityMap & qMap = getQuantityMap();
 	if (qMap.hasQuantity(srcData.odim.quantity)){
 		const Quantity & quantity = qMap.get(srcData.odim.quantity);
-		if (quantity.hasUndetectValue){
+		if (quantity.hasUndetectValue()){
 			mout.info() << "using physical undetect value: " << quantity.undetectValue << ", set by --quantityConf" << mout.endl;
 			minVal = quantity.undetectValue;
 		}
