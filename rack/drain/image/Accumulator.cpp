@@ -221,6 +221,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 			break;
 		case 's':
 		case 'S':
+			//mout.warn() << coder << mout.endl;
 			methodPtr->extractDev(coder, dst);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;

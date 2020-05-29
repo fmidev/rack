@@ -146,11 +146,9 @@ void AccumulationMethod::extractDev(const AccumulationConverter & coder, Image &
 
 
 void OverwriteMethod::add(const size_t i, double value, double weight) const{
-	//coder.decode(value, weight);
-	//double value = vField;
-	//double weight = w;
-	//if (w > 0.0){
+
 	unsigned int count = ++accumulationArray.count.at(i);
+
 	if (weight > 0.0){
 		if (count > 1) {
 			// Special feature: the diffence between last and current value is saved in data2.
@@ -159,21 +157,42 @@ void OverwriteMethod::add(const size_t i, double value, double weight) const{
 		accumulationArray.data.at(i)   = value;
 		accumulationArray.weight.at(i) = weight;
 	}
-	//}
-
 
 }
 
 void OverwriteMethod::extractDev(const AccumulationConverter & coder, Image & dst) const {
 
 	double diff;
+	const double noData   = coder.getNoDataMarker();
+	//coder.
+	//unsigned int count = 0;
+
 	const size_t s = dst.getVolume();
 	for (size_t i = 0; i < s; ++i){
-		//if (accumulationArray.count.at(i) > 0){
-		diff = static_cast<double>(accumulationArray.data2.at(i));
-		coder.encodeDiff(diff);
-		dst.put(i, diff);
-		//}
+		switch (accumulationArray.count.at(i)) {
+			case 2:
+				diff = static_cast<double>(accumulationArray.data2.at(i));
+				coder.encodeDiff(diff);
+				dst.put(i, diff);
+				break;
+			case 1:
+				// dst.put(i, diff);
+				dst.put(i, noData);
+				break;
+			default:
+				dst.put(i, noData);
+				break;
+		}
+		/*
+		if (accumulationArray.count.at(i) > 0){
+		  diff = static_cast<double>(accumulationArray.data2.at(i));
+		  coder.encodeDiff(diff);
+		  dst.put(i, diff);
+		}
+		else {
+			dst.put(i, noData);
+		}
+		*/
 	}
 
 }
