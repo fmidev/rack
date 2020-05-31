@@ -47,6 +47,11 @@ void QuantityMap::initialize(){
 	copy("TH",    DBZH );
 	copy("DBZHC", DBZH );
 
+	Quantity & DBZHDEV = add("DBZHDEV"); // RadarAccumulator
+	DBZHDEV.set('C').setScaling(1, -128);
+	DBZHDEV.set('S').setRange(-100.0, +100.0);
+	DBZHDEV.setZero(0.0);
+
 	Quantity & VRAD = add("VRAD");
 	VRAD.set('C').setScaling(    0.5, -64.0);  // nodata = 0?  IRIS
 	//VRAD.set('S').setScaling( 0.0025, -0.0025*(256.0*128.0)); // nodata = 0?
