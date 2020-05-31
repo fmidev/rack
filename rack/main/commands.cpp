@@ -1297,7 +1297,7 @@ public:
 
 		try {
 
-
+			/*
 			std::string test1;
 			std::string test2;
 			drain::ReferenceMap refmap;
@@ -1307,17 +1307,17 @@ public:
 			mout.warn() << "refmap: " << refmap << mout.endl;
 
 			mout.warn() << "p keys: " << parameters.getKeys() << mout.endl;
+			*/
 
-
-			/// Main action: store it for later use (by proceeding commands).
+			/// Main action: store the value for later commands.
 			getResources().targetEncoding = params;
 
 			/// Also check and warn of unknown parameters
 			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
 
-			mout.note() << "(user) params: " << params << mout.endl;
-			mout.note() << "parameters:    " << parameters << mout.endl;
-			mout.note() << "odim: " << odim << mout.endl;
+			//mout.note() << "(user) params: " << params << mout.endl;
+			//mout.note() << "parameters:    " << parameters << mout.endl;
+			mout.debug() << "odim: " << odim << mout.endl;
 			odim.setTypeDefaults();
 
 			// Reassign (to odim).
