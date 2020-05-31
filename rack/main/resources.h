@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#pragma once
+// # pragma once
 #ifndef RACK_RESOURCES_H_
 #define RACK_RESOURCES_H_
 
