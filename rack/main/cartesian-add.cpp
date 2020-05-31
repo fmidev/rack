@@ -176,6 +176,8 @@ void CompositeAdd::addPolar() const {
 	}
 
 	bool isAeqd = false;
+	mout.warn() << resources.composite.getBoundingBoxD().getArea() << mout.endl;
+	mout.warn() << resources.composite  << mout.endl;
 
 	if (!resources.composite.isDefined()){
 
@@ -186,7 +188,6 @@ void CompositeAdd::addPolar() const {
 
 		if (!resources.projStr.empty())
 			resources.composite.setProjection(resources.projStr);
-		//subComposite.setProjection(resources.composite.getProjection());
 		else
 			isAeqd = true;
 		// see single below

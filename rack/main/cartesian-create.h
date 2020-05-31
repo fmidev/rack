@@ -94,10 +94,25 @@ public:
 
 	inline
 	void exec() const {
-		getResources().composite.setCropping(true);
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		RackResources & resources = getResources();
+
+		if (!resources.composite.geometryIsSet())
+			mout.error() << "Composite geometry undefined, cannot create tile" << mout.endl;
+
+		if (! resources.composite.bboxIsSet())
+			mout.error() << "Bounding box undefined, cannot create tile" << mout.endl;
+
+		if (! resources.composite.projectionIsSet()) // or use first input (bbox reset)
+			mout.error() << "Projection undefined, cannot create tile" << mout.endl;
+
+		resources.composite.setCropping(true);
 		addCmd.exec();
 		extractCmd.exec();
-		getResources().composite.setCropping(false);
+		resources.composite.setCropping(false);
+
 	}
 
 private:
@@ -119,6 +134,32 @@ public:
 };
 
 
+/// Creates a single-radar Cartesian data set (2D data of both quantity and quality).
+/**
+ *   Accumulates data to a temporary array ("subcomposite"= and extracts that to a Cartesian product (HDF5).
+ *
+ *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
+ *
+ */
+class CartesianReset : public BasicCommand {
+
+public:
+
+	CartesianReset() : BasicCommand(__FUNCTION__, "Clears the current Cartesian product."){
+	}
+
+	inline
+	void exec() const {
+		RackResources & resources = getResources();
+		resources.composite.reset();
+		resources.composite.setTargetEncoding("");
+		resources.projStr.clear();
+		//resources.currentHi5 = resources.currentPolarHi5;
+		resources.currentGrayImage = NULL;
+		resources.currentImage     = NULL;
+	}
+
+};
 
 } // rack::
 

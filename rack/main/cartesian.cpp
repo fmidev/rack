@@ -286,6 +286,7 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 	static RackLetAdapter<CartesianProj> cProj;  // shared
 	static RackLetAdapter<CartesianQuantity> cQuantity;
 	static RackLetAdapter<CartesianRange> cRange;
+	static RackLetAdapter<CartesianReset> cReset;
 	static RackLetAdapter<CartesianSize> cSize;
 	static RackLetAdapter<CartesianSpread> cSpread;
 	static RackLetAdapter<CartesianTime> cTime;

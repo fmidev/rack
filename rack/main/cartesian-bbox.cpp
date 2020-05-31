@@ -60,9 +60,20 @@ void CartesianBBoxTest::exec() const {
 
 	RackResources & resources = getResources();
 
-	if ( ! resources.composite.isDefined() ){
-		mout.warn() << "Composite undefined, skipping." << mout.endl;
+	if ( ! resources.composite.bboxIsSet() ){
+		// error() ?
+		mout.warn() << "Bounding box undefined, skipping." << mout.endl;
 		return;
+	}
+
+	if ( ! resources.composite.projectionIsSet() ){
+		// Maybe ok
+		mout.note() << "Projection undefined." << mout.endl;
+	}
+
+	if ( ! resources.composite.geometryIsSet() ){
+		// Maybe ok
+		mout.note() << "Composite array geometry undefined" << mout.endl;
 	}
 
 	// There may be no data, don't use Data<PolarSrc> etc here.
@@ -104,8 +115,6 @@ void CartesianBBoxTest::exec() const {
 
 	// New: also store
 	drain::Rectangle<double> bboxD;
-	//double x,y;
-	//drain::Rectangle<int> bInt;
 	int i,j;
 
 	resources.composite.m2deg(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxD.lowerLeft.x, bboxD.lowerLeft.y);
