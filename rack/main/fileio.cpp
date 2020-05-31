@@ -612,7 +612,7 @@ public:
 			selector.setParameters(resources.select);
 			//selector.convertRegExpToRanges();
 			if (!resources.select.empty()){
-				mout.warn() << "lacking --select support, use --delete and --keep instead" << mout.endl;
+				mout.warn() << "no --select support for this command, use --delete and --keep instead" << mout.endl;
 			}
 			resources.select.clear();
 
