@@ -66,6 +66,49 @@ public:
 	~GeoFrame(){
 	};
 
+	inline
+	void reset(){
+		setGeometry(0, 0);
+		setBoundingBoxD(0,0,0,0);
+		//extentD.set(+180.0, +90.0, -180.0, -90.0);
+	}
+
+	/// Returns true, if the geographical extent has been set.
+	/**
+	 *
+	 */
+	inline
+	bool projectionIsSet() const {
+		return projR2M.isSet();
+	};
+
+	/// Return true, if array area is greater than zero.
+	inline
+	bool geometryIsSet() const {
+		return ((frameWidth > 0) && (frameHeight > 0));
+	};
+
+	/// Returns true, if the bounding box (geographical extent) has been set.
+	/**
+	 *  Problem: sometimes bbox will be initisalized to negative "direction" to make it adapt to
+	 *  a (set of) new bounding box(es).
+	 */
+	inline
+	bool bboxIsSet() const {
+		return (extentD.getArea() > 0.0);
+	};
+
+	/// Returns true, if the projection, array area and geographical extent bounding box has been set.
+	/**
+	 * 	This function is used in creating single-radar products where the bounding box will be
+	 *  matched to that of the radar scope, by default.
+	 */
+	inline
+	bool isDefined() const {
+		return geometryIsSet() && projectionIsSet() && bboxIsSet();
+	};
+
+
 	// Notice that someday this does NOT allocate memory. @see allocate();
 	virtual
 	void setGeometry(unsigned int width, unsigned int height);
@@ -288,15 +331,6 @@ public:
 	void updateScaling();
 
 
-	/// Returns true, if the geographical extent has been set.
-	/**
-	 * 	This function is used in creating single-radar products where the bounding box will be
-	 *  matched to that of the radar scope, by default.
-	 */
-	inline
-	bool isDefined() const {
-		return (extentD.getArea() > 0.0);
-	};
 
 
 	/// Sets the projection of the composite image as a proj4 std::string.
@@ -330,6 +364,7 @@ public:
 	drain::Proj4 projR2M;
 
 	std::ostream & toOStr(std::ostream & ostr) const ;
+
 
 protected:
 

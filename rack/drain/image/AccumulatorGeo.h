@@ -66,6 +66,12 @@ public:
 	};
 
 	inline
+	void reset(){
+		AccumulationArray::reset();
+		GeoFrame::reset();
+	}
+
+	inline
 	void addUnprojected(double lon, double lat, double value, double weight){
 		int i,j;
 		size_t a;

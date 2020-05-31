@@ -68,6 +68,7 @@ GeoFrame::GeoFrame(unsigned int frameWidth,unsigned int frameHeight) :
 
 }
 
+
 /*
 GeoFrame::GeoFrame(const GeoFrame & gf) : projR2M(gf.projR2M), xScale(1), yScale(1) {
 	setGeometry(gf.getFrameWidth(), gf.getFrameHeight());

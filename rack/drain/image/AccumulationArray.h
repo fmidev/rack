@@ -129,6 +129,12 @@ public:
 	/// Resets the accumulation array values to undetectValue. Does not change the geometry.
 	void clear();
 
+	/// Collapses the accumulation geometries to zero area.
+	inline
+	void reset(){
+		setGeometry(0, 0);
+	};
+
 
 	/// Returns the width of the accumulation array.
 	inline
