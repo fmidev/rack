@@ -167,7 +167,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		mout.note() << "src has " << src.size() << " > 1 channels, using first " << mout.endl;
 	}
 
-	mout.warn() << "srcChannel " << srcChannel   << mout.endl;
+	mout.debug() << "srcChannel " << srcChannel   << mout.endl;
 
 	const size_t width  = dst.getGeometry().getWidth();
 	const size_t height = dst.getGeometry().getHeight();
