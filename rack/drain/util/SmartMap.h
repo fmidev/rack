@@ -526,8 +526,10 @@ protected:
 				++kit; // NUEVO
 			}
 			else {
-				if (!updateOnly)
+				if (!updateOnly){
+					mout.warn() << "keys: "<< this->getKeys() << mout.endl;
 					mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
+				}
 				//return; // NUEVO
 			}
 
