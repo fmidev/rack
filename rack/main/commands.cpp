@@ -418,7 +418,7 @@ public:
 		mout.info() << "delete existing no-save structures " << mout.endl;
 		hi5::Hi5Base::deleteNoSave(dst);
 
-		mout.warn() << "selector: " << selector << ", matcher=" << selector.pathMatcher << mout.endl;
+		mout.debug() << "selector: " << selector << ", matcher=" << selector.pathMatcher << mout.endl;
 
 		ODIMPathList paths;
 		selector.getPaths3(dst, paths);
