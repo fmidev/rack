@@ -204,7 +204,7 @@ public:
 		drain::image::Image & img = getModifiableImage(iSelector);
 		if (img.getGeometry().getVolume() == 0){
 			mout.warn() << "no image found with selector: "  << iSelector << mout.endl;
-			resources.dataOk = false;
+			resources.errorFlags.set(RackResources::DATA_ERROR); // resources.errorFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
 		}
 
@@ -402,12 +402,12 @@ public:
 
 		RackResources & resources = getResources();
 
-		if (!resources.inputOk){
+		if (resources.errorFlags.isSet(RackResources::INPUT_ERROR)){
 			mout.warn() << "input failed, skipping" << mout.endl;
 			return;
 		}
 
-		if (!resources.dataOk){
+		if (resources.errorFlags.isSet(RackResources::DATA_ERROR)){   // !resources.dataOk){
 			mout.warn() << "data error, skipping" << mout.endl;
 			return;
 		}

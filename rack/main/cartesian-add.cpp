@@ -63,14 +63,14 @@ void CompositeAdd::exec() const {
 	RackResources & resources = getResources();
 
 	// Check
-	if ( !resources.inputOk ){
+	if (resources.errorFlags.isSet(RackResources::INPUT_ERROR) ){ // ! resources.inputOk){
 		mout.note() << "last input inapplicable, skipping it" << mout.endl;
 		resources.select.clear(); // ?
 		return;
 	}
 
 	// Check
-	if (! resources.dataOk){
+	if (resources.errorFlags.isSet(RackResources::DATA_ERROR) ){ // (! resources.dataOk){
 		mout.note() << "last DATA inapplicable, skipping it" << mout.endl;
 		resources.select.clear(); // ?
 		return;
@@ -193,10 +193,12 @@ void CompositeAdd::addPolar() const {
 		// see single below
 	}
 
+	// mout.warn() << "FLAGS: " << resources.errorFlags << mout.endl;
+
 
 	try {
-
-		resources.dataOk = true; // return if input not ok?
+		resources.errorFlags.reset();
+		//resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false; // return if input not ok?
 
 		ODIMPath dataPath;
 		resources.composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //TAIL
@@ -204,7 +206,7 @@ void CompositeAdd::addPolar() const {
 		if (dataPath.empty()){
 			mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
 			//resources.inputOk = false; // REMOVE?
-			resources.dataOk = false;
+			resources.errorFlags.set(RackResources::DATA_ERROR); // resources.errorFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
 		}
 
@@ -216,11 +218,12 @@ void CompositeAdd::addPolar() const {
 		}
 		else {
 			mout.warn() << "skipping empty input data: quantity=" << polarSrc.odim.quantity << ", path:" << dataPath << "/data" << mout.endl;  // was: dataSetPath
-			resources.dataOk = false; // REMOVE?
+			resources.errorFlags.set(RackResources::DATA_ERROR); // resources.errorFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false; // REMOVE?
 			return;
 		}
 
 		// mout.warn() << "composite: " << resources.composite.odim << mout.endl;
+		// mout.warn() << "FLAGS: " << resources.errorFlags << mout.endl;
 
 		if (!resources.composite.odim.isSet()){
 
@@ -300,6 +303,7 @@ void CompositeAdd::addPolar() const {
 				resources.composite.addPolar(polarSrc, srcDataSetQuality, w, isAeqd); // Subcomposite: always 1.0.
 			}
 		}
+		//mout.warn() << "FLAGS: " << resources.errorFlags << mout.endl;
 
 		mout.debug(1) << "finished" << mout.endl;
 
@@ -334,7 +338,7 @@ void CompositeAdd::addCartesian() const {
 	//resources.composite.dataSelector.getPathNEW((resources.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;
-		resources.dataOk = false;
+		resources.errorFlags.set(RackResources::DATA_ERROR);  // resources.dataOk = false;
 		return;
 	}
 

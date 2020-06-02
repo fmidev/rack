@@ -67,10 +67,21 @@ public:
 		value = value | x;
 	};
 
+	inline
+	void set(const std::string & key){
+		set(dictionary.getValue(key));
+	};
+
+
 	/// Unset desired flags. Does not set any flag.
 	inline
 	void unset(value_t x){
 		value = (value & ~x);
+	};
+
+	inline
+	void unset(const std::string & key){
+		unset(dictionary.getValue(key));
 	};
 
 	/// Set desired flags. Does not unset any flag.
@@ -78,6 +89,17 @@ public:
 	void reset(){
 		value = 0;
 	}
+
+	/// Unset desired flags. Does not set any flag.
+	inline
+	bool isSet(value_t x){
+		return (value & x) != 0;
+	};
+
+	inline
+	bool isSet(const std::string & key){
+		return isSet(dictionary.getValue(key));
+	};
 
 	/// Sets value, ie. set or unsets all the flags.
 	/**

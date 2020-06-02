@@ -315,12 +315,13 @@ public:
 			return;
 		}
 
-		if (!resources.inputOk){
+		if (resources.errorFlags.isSet(RackResources::INPUT_ERROR)){
 			mout.warn() << "input failed, skipping" << mout.endl;
 			return;
 		}
 
-		if (!resources.dataOk){
+		//if (!resources.dataOk){
+		if (resources.errorFlags.isSet(RackResources::DATA_ERROR)){
 			mout.warn() << "data error, skipping" << mout.endl;
 			return;
 		}
@@ -384,6 +385,7 @@ public:
 				}
 				else {
 					mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
+					resources.errorFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 					return;
 				}
 
@@ -400,10 +402,12 @@ public:
 					FileGeoTIFF::write(resources.outputPrefix + value, *getResources().currentImage); //, geoTIFF.width, geoTIFF.height);
 				}
 				else {
+					resources.errorFlags.set(RackResources::PARAMETER_ERROR || RackResources::OUTPUT_ERROR);
 					mout.error() << "unknown file name extension" << mout.endl;
 				}
 			}
 			else {
+				resources.errorFlags.set(RackResources::DATA_ERROR);
 				mout.warn() << "empty data, skipped" << mout.endl;
 			}
 			/*
@@ -490,6 +494,7 @@ public:
 
 			const Data<PolarSrc> & srcMainData = product.getData(mainQuantity); // intervals//product.getData("HGHT"); // intervals
 			if (srcMainData.data.isEmpty()){
+				resources.errorFlags.set(RackResources::DATA_ERROR);
 				mout.warn() << "zero dimension data (for " << mainQuantity << "), giving up." << mout.endl;
 				return;
 			}

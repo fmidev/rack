@@ -150,7 +150,8 @@ void CartesianBBoxTest::exec() const {
 	mout.debug() << "combined bbox:" << resources.bbox << mout.endl;
 
 	if (!overlap)
-		resources.inputOk = false;
+		resources.errorFlags.set(RackResources::INPUT_ERROR);
+		//resources.inputOk = false;
 
 	if (value > 1){
 		exit(overlap ? 0 : value);

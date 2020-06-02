@@ -68,24 +68,6 @@ public:
 
 	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
 
-	// TODO
-	// STATUS FLAGS
-	// OK=0,WARNING=1,ERROR=2,FATAL=3
-	// One at time: 8-2 = 6 bits = 64 events
-	// INPUT=0
-	// OUTPUT=4
-	// DATA=8
-	// PRODUCT=12
-	// PRODUCT=16
-	// All simultaneously: 8 = 2+2+2+2 bits => 4 events
-	//drain::Flags status;
-
-	/// True, if the last input file operation has been successful. Helps in skipping operations for null data.
-	bool inputOk;
-
-	/// True, if the last retrieved data was found (and non-empty?). Helps in skipping operations for null data.
-	bool dataOk;
-
 
 	/// Clears dst if source command varies.
 	void setSource(Hi5Tree & dst, const drain::Command & cmd);
@@ -188,7 +170,45 @@ public:
 
 	drain::image::ImageSampler sampler; // could be in ImageModPack?
 
+
+	// TODO
+	// STATUS FLAGS
+	// OK=0,WARNING=1,ERROR=2,FATAL=3
+	// One at time: 8-2 = 6 bits = 64 events
+	// INPUT=0
+	// OUTPUT=4
+	// DATA=8
+	// PRODUCT=12
+	// PRODUCT=16
+	// All simultaneously: 8 = 2+2+2+2 bits => 4 events
+	//drain::Flags status;
+
+	/// True, if the last input file operation has been successful. Helps in skipping operations for null data.
+	// bool inputOk;
+
+	/// True, if the last retrieved data was found (and non-empty?). Helps in skipping operations for null data.
+	// bool dataOk;
+
+	/*RackResources	 * INPUT_OK
+	 * METADATA_OK
+	 * WRITE_OK
+	 * INCOMPLETE_PRODUCT
+	 */
+
+
+	static const drain::Flags::value_t INPUT_ERROR;//     = 1;
+	static const drain::Flags::value_t DATA_ERROR;//      = 2;
+	static const drain::Flags::value_t METADATA_ERROR;//  = 4;
+	static const drain::Flags::value_t OUTPUT_ERROR;//    = 8;
+	static const drain::Flags::value_t PARAMETER_ERROR;// = 16;
+	//static const drain::Flags::value_t IO_ERROR;// = INPUT_ERROR | OUTPUT_ERROR;
+
+	drain::Flags errorFlags; //(value, dict, ',');
+
 protected:
+
+	drain::Flags::value_t errorFlagValue;
+	drain::Flags::dict_t  errorFlagDict;
 
 	// void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
 	void getImageInfo(const drain::image::Image *ptr, Variable & entry) const;

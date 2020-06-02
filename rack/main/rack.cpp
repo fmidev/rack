@@ -140,11 +140,14 @@ int process(int argc, const char **argv) {
 	 * WRITE_OK
 	 * INCOMPLETE_PRODUCT
 	 */
-	if (getResources().inputOk)
-		return 0; //result; future option
+	//if (getResources().inputOk)
+	return getResources().errorFlags;
+	/*
+	if (getResources().errorFlags.isSet(255))
+		return getResources().errorFlag; //result; future option
 	else
-		return 1;
-
+		return 0;
+	*/
 
 }
 

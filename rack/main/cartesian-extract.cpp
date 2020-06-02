@@ -170,8 +170,8 @@ void CartesianExtract::extract(const std::string & channels) const {
 	//
 
 	/// For successfull file io:
-	resources.inputOk = true;
-	resources.dataOk = true;
+	resources.errorFlags.unset(RackResources::INPUT_ERROR); // resources.inputOk = false;
+	resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false;
 	//mout.warn() << "created" << mout.endl;
 
 	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);

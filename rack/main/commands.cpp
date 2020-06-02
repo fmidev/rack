@@ -210,7 +210,7 @@ public:
 		}
 
 
-		resources.dataOk = true;
+		resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false;
 		//getRegistry().run("select", "quantity=^(" + vField + ")$");
 	}
 
@@ -1245,7 +1245,7 @@ public:
 			it->second.typeInfo(ostr);
 			ostr << '\n';
 		}
-		// ostr << statusMap << std::endl;
+		ostr << "errorFlags: " << getResources().errorFlags << std::endl;
 
 	};
 
@@ -1365,6 +1365,7 @@ public:
 };
 
 
+/*
 class CmdDataOk : public BasicCommand {
 
 public:
@@ -1372,6 +1373,36 @@ public:
 	CmdDataOk() : BasicCommand(__FUNCTION__, "Status of last select."){
 		parameters.reference("flag", getResources().dataOk = true);
 	};
+};
+*/
+
+class CmdErrorFlags : public SimpleCommand<std::string> {
+
+public:
+
+	CmdErrorFlags() : SimpleCommand<std::string>(__FUNCTION__, "Status of last select.", "flags"){
+		//parameters.reference("flags", value);
+	};
+
+	virtual inline
+	void setParameters(const std::string & params, char assignmentSymbol='=') {
+		Logger mout(__FUNCTION__, getName());
+
+		RackResources & resources = getResources();
+		if (params.empty() || (params == "0")){
+			resources.errorFlags.reset();
+		}
+		else {
+		  resources.errorFlags = params;
+		}
+
+		value = params; // TODO: resources.errorFlags.toStr()
+	}
+
+protected:
+
+
+
 };
 
 
@@ -1760,7 +1791,8 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<CmdExpandVariables2> expandVariables("expandVariables");
 
 	static RackLetAdapter<CmdAutoExec> cmdAutoExec;
-	static RackLetAdapter<CmdDataOk> dataOk("dataOk", -1);
+	//static RackLetAdapter<CmdDataOk> dataOk("dataOk", -1);
+	static RackLetAdapter<CmdErrorFlags> errorFlags;
 	static RackLetAdapter<UndetectWeight> undetectWeight("undetectWeight");
 
 	static RackLetAdapter<CmdSelectQuantity> cmdSelectQuantity("quantity",'Q');

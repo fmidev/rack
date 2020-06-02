@@ -69,7 +69,7 @@ void CmdInputFile::exec() const {
 
 	std::string fullFilename = resources.inputPrefix + value;
 
-	resources.inputOk = true;
+	resources.errorFlags.unset(RackResources::INPUT_ERROR); // resources.inputOk = false;
 
 	//const CommandRegistry & r = drain::getRegistry();
 	//mout.warn() << "lastCommand: '" << CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
@@ -98,7 +98,8 @@ void CmdInputFile::exec() const {
 
 	}
 	catch (std::exception & e) {
-		resources.inputOk = false;
+		//resources.inputOk = false;
+		resources.errorFlags.set(RackResources::INPUT_ERROR);
 		mout.debug() << e.what() << mout.endl;
 		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs
 			mout.warn() << "Read error, file: " << this->value << mout.endl;
@@ -120,8 +121,11 @@ void CmdInputFile::exec() const {
 
 
 	if (resources.scriptParser.autoExec > 0){
-		mout.info() << "auto execution..." << (int)resources.inputOk << mout.endl;
-		if (resources.inputOk || (resources.scriptParser.autoExec > 1))
+		// mout.info() << "auto execution..." << (int)resources.inputOk << mout.endl;
+		mout.info() << "auto execution... Error flags:" << resources.errorFlags << mout.endl;
+		//.set(RackResources::INPUT_ERROR);
+		//if (resources.inputOk || (resources.scriptParser.autoExec > 1))
+		if (!resources.errorFlags.isSet(RackResources::INPUT_ERROR) || (resources.scriptParser.autoExec > 1))
 			resources.scriptExec.run();
 	}
 

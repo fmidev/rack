@@ -43,11 +43,23 @@ const CoordinatePolicy RackResources::polarLeft(CoordinatePolicy::POLAR, Coordin
 
 const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT,CoordinatePolicy::LIMIT);
 
-//drain::Logger RackResources::mout("racklet");
-RackResources::RackResources() : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
-		currentGrayImage(NULL), scriptExec(scriptParser.script) { //inputSelect(0),
+const drain::Flags::value_t RackResources::INPUT_ERROR     = 1;
+const drain::Flags::value_t RackResources::DATA_ERROR      = 2;
+const drain::Flags::value_t RackResources::METADATA_ERROR  = 4;
+const drain::Flags::value_t RackResources::OUTPUT_ERROR    = 8;
+const drain::Flags::value_t RackResources::PARAMETER_ERROR = 16;
+
+//drain::Logger RackResources::mout("racklet"); inputOk(true), dataOk(true),
+RackResources::RackResources() : currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
+		currentGrayImage(NULL), scriptExec(scriptParser.script), errorFlags(errorFlagValue, errorFlagDict, ',') { //inputSelect(0),
 	polarAccumulator.setMethod("WAVG");
 	andreSelect = "dataset1,count=1";
+	errorFlagDict.add("INPUT",     INPUT_ERROR);
+	errorFlagDict.add("METADATA",  METADATA_ERROR);
+	errorFlagDict.add("DATA",      DATA_ERROR);
+	errorFlagDict.add("OUTPUT",    OUTPUT_ERROR);
+	errorFlagDict.add("PARAMETER", PARAMETER_ERROR);
+	errorFlags.reset();
 }
 
 void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
@@ -105,7 +117,8 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
 	/// Miscellaneous
 	statusMap["version"] = __RACK_VERSION__;
-	statusMap["inputOk"] = static_cast<int>(inputOk);
+	//statusMap["inputOk"] = static_cast<int>(inputOk);
+	statusMap["errorFlags"] << errorFlags;
 	// statusMap["accumulator"] = acc.toStr();
 	statusMap["composite"] = composite.toStr();
 	statusMap["andreSelect"] = andreSelect;
