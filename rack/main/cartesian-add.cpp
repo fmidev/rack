@@ -176,8 +176,8 @@ void CompositeAdd::addPolar() const {
 	}
 
 	bool isAeqd = false;
-	mout.warn() << resources.composite.getBoundingBoxD().getArea() << mout.endl;
-	mout.warn() << resources.composite  << mout.endl;
+	// mout.warn() << resources.composite.getBoundingBoxD().getArea() << mout.endl;
+	mout.debug() << resources.composite  << mout.endl;
 
 	if (!resources.composite.isDefined()){
 

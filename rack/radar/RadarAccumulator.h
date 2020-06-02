@@ -349,6 +349,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
 
 		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
+		/*
 		if (type != DATA){
 			double test=10.0;
 			mout.warn() << "Encode inv odimQuality 10.0 => " << odimQuality.scaleInverse(10.0) << mout.endl;
@@ -356,6 +357,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			converter.encodeStdDev(test);
 			mout.warn() << "Encode STDEV 10.0" << test << mout.endl;
 		}
+		*/
 		this->Accumulator::extractField(field, converter, dstData.data);
 
 		//mout.debug()  << "dstData: " << dstData.odim << mout.endl;
