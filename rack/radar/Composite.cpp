@@ -166,7 +166,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		pRadarToComposite.setProjectionDst(getProjection());
 
-		if ((getFrameWidth() == 0)||(getFrameHeight() == 0)){
+		if (! geometryIsSet()){
 			setGeometry(500, 500);
 			mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
 		}
@@ -191,10 +191,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		if (cropping){
 			//drain::Rectangle<double> bboxM;
 			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM);
-			mout.note() << "Orig: " << getBoundingBoxM() << mout.endl;
-			mout.note() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxM << mout.endl;
+			mout.debug() << "Orig: " << getBoundingBoxM() << mout.endl;
+			mout.debug() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxM << mout.endl;
 			cropWithM(bboxM);
-			mout.warn() << "Cropped to: " << getBoundingBoxM() << mout.endl;
+			mout.info() << "Cropped to: " << getBoundingBoxM() << mout.endl;
 			if (getBoundingBoxM().getArea() == 0){
 				mout.info() << "Cropping returned empty area." << mout.endl;
 				mout.note() << "Data outside bounding box, returning" << mout.endl;
@@ -231,9 +231,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	/// Area for main loop
 	drain::Rectangle<int> bboxPix;
-	//m2pix(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxPix.lowerLeft.x,  bboxPix.lowerLeft.y);
 	m2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
-	//m2pix(bboxM.upperRight.x, bboxM.upperRight.y, bboxPix.upperRight.x, bboxPix.upperRight.y);
 	m2pix(bboxM.upperRight, bboxPix.upperRight);
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 

@@ -229,7 +229,24 @@ public:
 	CartesianDataPicker(drain::ReferenceMap & variableMap, const CartesianODIM & odim) : RadarDataPicker<CartesianODIM>(variableMap,odim) {
 
 		drain::Logger mout(__FUNCTION__, __FUNCTION__);
+
+
 		setSize(odim.xsize, odim.ysize);
+		frame.setGeometry(odim.xsize, odim.ysize);
+		if (!frame.geometryIsSet()){
+			mout.warn() << "Array geometry undefined?" << mout.endl;
+		}
+
+		frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+		if (!frame.bboxIsSet()){
+			mout.warn() << "Bounding box undefined?" << mout.endl;
+		}
+
+		frame.setProjection(odim.projdef);
+		if (!frame.projectionIsSet()){
+			mout.warn() << "Projection undefined?" << mout.endl;
+		}
+		/* keep for a while
 		if (!odim.projdef.empty()){
 			frame.setProjection(odim.projdef);
 		}
@@ -237,10 +254,10 @@ public:
 			mout.note() << odim << mout.endl;
 			mout.warn() << "no projdef in metadata, cannot derive geographical coords (LON,LAT)" << mout.endl;
 		}
-		frame.setGeometry(odim.xsize, odim.ysize);
-		frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+		*/
 
 		if (!frame.isDefined()){
+			//mout.warn() << "Geo frame properties undefined, incomplete metadata?" << mout.endl;
 			mout.note() << odim << mout.endl;
 			mout.note() << frame << mout.endl;
 			mout.note() << frame.getBoundingBoxR() << mout.endl;
