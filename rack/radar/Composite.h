@@ -154,7 +154,7 @@ public:
 	 */
 	void updateGeoData();
 
-	//std::map<std::string, drain::Variable> nodeMap;
+	/// Node keys (like "fivan") associated with upper left corner pixel coordinates [int] of the "tile".
 	drain::VariableMap nodeMap;
 
 	/// Range [km] for single-radar products. Typically 250 km.

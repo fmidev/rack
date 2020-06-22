@@ -147,6 +147,9 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	RadarProj pRadarToComposite;
 	pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
 
+	if (odim.source.empty())
+		odim.source = srcData.odim.source; // for tile (single-radar "composite")
+
 	mout.debug(1) << "Info: \"" << *this << '"' << mout.endl;
 	//mout.debug(1) << "undetectValue=" << undetectValue << mout.endl;
 
@@ -402,6 +405,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	/// Cartesian
 	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.xsize/2, j0 + cartSrc.odim.ysize/2);
 	//updateGeoData();
+	//mout.warn() << "nodemap keys: " << nodeMap << mout.endl;
 
 	// Update geographical extent (optional information)
 	const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
@@ -424,40 +428,24 @@ void Composite::updateGeoData(){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	odim.updateGeoInfo(*this);
-	/*
-	odim.projdef = getProjection();
-	odim.xsize   = getFrameWidth();
-	odim.ysize   = getFrameHeight();
-
-	const drain::Rectangle<double> &bboxD = getBoundingBoxD();
-	odim.LL_lon = bboxD.lowerLeft.x;
-	odim.LL_lat = bboxD.lowerLeft.y;
-	odim.UR_lon = bboxD.upperRight.x;
-	odim.UR_lat = bboxD.upperRight.y;
-	double x2,y2;
-	pix2LLdeg(0,-1, x2,y2); // (vertically outside)
-	odim.UL_lon = x2;
-	odim.UL_lat = y2;
-	pix2LLdeg(getFrameWidth(), getFrameHeight()-1, x2,y2);  // (horizontally outside)
-	odim.LR_lon = x2;
-	odim.LR_lat = y2;
-
-	odim.xscale = getXScale();
-	odim.yscale = getYScale();
-	*/
-
 
 	// Produces ...,12568,12579,bymin,dkbor,dkrom,dksin,...
 	odim.nodes = nodeMap.getKeys();
 
-	//if (odim.source.empty()) { // nodeMap.size() > 1){ // consider AccNUM
-	//if (nodeMap.size() > 1){ // consider AccNUM
-	const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
-	if (nodSyntax.execute(odim.nodes) == 0){
-		odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
+	// if (odim.source.empty()) { // nodeMap.size() > 1){ // consider AccNUM
+
+	// ? this used to be commented
+	if (nodeMap.size() > 1){ // consider AccNUM
+		const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
+		if (nodSyntax.execute(odim.nodes) == 0){
+			odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
+		}
+		else {
+			mout.info() << "could not derive composite source NOD from nodes: " << odim.nodes << mout.endl;
+		}
 	}
 	else {
-		mout.info() << "could not derive composite source NOD from nodes: " << odim.nodes << mout.endl;
+		//odim.source = "xx";
 	}
 
 	odim.camethod = getMethod().name;
