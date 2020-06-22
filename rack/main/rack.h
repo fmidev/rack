@@ -32,9 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.30"
+#define __RACK_VERSION__ "5.31"
 
 /**
+ *   Version 5.31
+ *   - Source NOD in tiled compositing
+ *   - BBOX vector output (where::BBOX was through string conv)
+ *   - GeoTIFF output: GDAL metadata
+ *
  *   Version 5.29
  *   - Distance transforms using dynamic DistanceElement's
  *   - FillArray bug
