@@ -139,6 +139,7 @@ public:
 		v.push_back(this->lowerLeft.y);
 		v.push_back(this->upperRight.x);
 		v.push_back(this->upperRight.y);
+		return v;
 	}
 
 	/// Write corner points to a stream
