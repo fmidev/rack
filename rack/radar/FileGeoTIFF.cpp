@@ -139,9 +139,11 @@ void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string 
 	this->sample = sample;
 	this->role   = role;
 
+	/*
 	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
 		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
 	};
+	*/
 
 }
 
@@ -158,12 +160,8 @@ typedef drain::Tree<std::string,NodeGDAL> TreeGDAL;
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-
-
 	return drain::NodeXML::toOStr(ostr, tree);
-	//return NodeGDAL::toOStr(ostr, t);
 }
-
 
 
 //drain::Variable FileGeoTIFF::ties(typeid(double));
