@@ -37,13 +37,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <drain/util/Log.h>
-//#include <drain/util/ProjectionFrame.h>
+#include <drain/util/TreeXML.h>
 #include <drain/image/AccumulatorGeo.h>
-
 #include <drain/image/File.h>
-//#include <gdal/gdal.h>
 
 #include "main/rack.h"
+
 #include "FileGeoTIFF.h"
 
 
@@ -72,6 +71,11 @@ int FileGeoTIFF::tileHeight(256);
 #include <geo_normalize.h>
 
 
+// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_nodata.html
+#ifndef TIFFTAG_GDAL_METADATA //# ASCII tag (code 42113
+#define TIFFTAG_GDAL_METADATA 42112 // 0xa481 // 42113
+#endif
+
 #ifndef TIFFTAG_GDAL_NODATA //# ASCII tag (code 42113
 #define TIFFTAG_GDAL_NODATA 42113 // 0xa481 // 42113
 #endif
@@ -84,14 +88,90 @@ namespace rack
 
 
 // // using namespace std;
-using namespace drain;
+//using namespace drain;
+
+
+// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
+class NodeGDAL: public drain::NodeXML {
+public:
+
+	enum type { ROOT, ITEM }; // check CTEXT, maybe implement in XML
+
+	NodeGDAL(type t = ROOT);
+
+	void set(const drain::Variable & ctext, int sample=0, const std::string & role = "");
+
+	//static
+	//std::ostream & toOStr(std::ostream &ostr, const drain::Tree<std::string,NodeGDAL> & t);
+
+protected:
+
+	void setType(type t);
+
+	int sample;
+
+	std::string role;
+
+};
+
+NodeGDAL::NodeGDAL(type t){
+	setType(t);
+	this->id = -1;
+	//this->name = "~";
+}
+
+void NodeGDAL::setType(type t){
+
+	if (t == ROOT){
+		tag = "GDALMetadata";
+	}
+	else {
+		tag = "Item";
+		reference("sample", sample = 0);
+		reference("role",   role = "");
+	}
+
+}
+
+void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string & role){
+	setType(ITEM);
+	this->ctext  = ctext.toStr();
+	this->sample = sample;
+	this->role   = role;
+
+	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
+		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
+	};
+
+}
+
+/*
+std::ostream & NodeSVG::toOStr(std::ostream &ostr, const TreeSVG & tree){
+	ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
+	ostr << '\n';
+	NodeXML::toOStr(ostr, tree);
+	return ostr;
+}
+*/
+
+typedef drain::Tree<std::string,NodeGDAL> TreeGDAL;
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
+
+
+	return drain::NodeXML::toOStr(ostr, tree);
+	//return NodeGDAL::toOStr(ostr, t);
+}
+
+
 
 //drain::Variable FileGeoTIFF::ties(typeid(double));
 
 
 void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidth=0, int tileHeight = 0){
 
-	Logger mout("FileGeoTIFF", __FUNCTION__);
+	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 
 	const drain::FlexVariableMap & prop = src.properties;
 
@@ -105,12 +185,12 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	TIFFSetField(tif,TIFFTAG_PLANARCONFIG,  PLANARCONFIG_CONTIG);
 
 	const drain::Type t(src.getType());
-	mout.debug() << " bytes=" << Type::call<drain::sizeGetter>(t) << mout.endl;
+	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
 	switch ((const char)t) {
 		case 'C':
 			// no break
 		case 'S':
-			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*Type::call<drain::sizeGetter>(t));
+			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*drain::Type::call<drain::sizeGetter>(t));
 			break;
 		default:
 			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
@@ -150,15 +230,45 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
 
 
+	// GDALMetadata etc
 	// usr/include/gdal/rawdataset.h
 	// Non-standard http://www.gdal.org/frmt_gtiff.html
+
+	//const int TIFFTAG_KOE = 65001;
+	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
+	// "gdal-metadata"
+	static const TIFFFieldInfo xtiffFieldInfo[] = {
+			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
+			{ TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
+	};
+	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 2);
+
+	TreeGDAL gdalInfo;
+	gdalInfo["SCALE"]->set(prop.get("what:gain", 1.0),    0, "scale");
+	gdalInfo["OFFSET"]->set(prop.get("what:offset", 0.0), 0, "offset");
+	//mout.warn() << gdalInfo << mout.endl;
+	/*
+	<GDALMetadata >
+	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
+	<Item name="SCALE" role="scale" sample="0" >0.5</Item>
+	</GDALMetadata>
+	*/
+
+	std::stringstream gdal;
+	gdal << gdalInfo;
+	mout.debug() << gdal.str() << mout.endl;
+	TIFFSetField(tif, TIFFTAG_GDAL_METADATA, gdal.str().c_str());
+	//TIFFSetField(tif, TIFFTAG_GDAL_METADATA, "<GDALMetadata><Item name=\"SCALE\" sample=\"0\" role=\"scale\">0.003</Item></GDALMetadata>");
+
 	std::string nodata = prop["what:nodata"];
 	if (!nodata.empty()){
 		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
+		/*
 		static const TIFFFieldInfo xtiffFieldInfo[] = {
 				{ TIFFTAG_GDAL_NODATA, 1, 1, TIFF_ASCII,  FIELD_CUSTOM, 0, 0, const_cast<char*>("nodata-marker") },
 		};
 		TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
+		*/
 		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
 		TIFFSetField(tif, TIFFTAG_GDAL_NODATA, nodata.c_str());
 	}
@@ -170,7 +280,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 		return;
 	}
 
-	const Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
+	const drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
 
 	drain::image::GeoFrame frame;
 	//frame.
@@ -248,7 +358,7 @@ void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
 void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 0, int tileHeight = 0)
 {
 
-	Logger mout("FileGeoTIFF", __FUNCTION__);
+	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 
 	const int width  = src.getWidth();
 	const int height = src.getHeight();
@@ -378,7 +488,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 //void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
-	Logger mout("FileGeoTIFF", __FUNCTION__);
+	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 	//mout.note() << src.properties << mout.endl;
 
 	/// Open TIFF file for writing
