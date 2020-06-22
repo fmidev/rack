@@ -130,6 +130,17 @@ public:
 		return (xOverLap && yOverLap);
 	};
 
+	/// Write corner points to a vector [llX, llY, urX, urY]
+	inline
+	std::vector<T> toVector() const {
+		std::vector<T> v;
+		v.reserve(4);
+		v.push_back(this->lowerLeft.x);
+		v.push_back(this->lowerLeft.y);
+		v.push_back(this->upperRight.x);
+		v.push_back(this->upperRight.y);
+	}
+
 	/// Write corner points to a stream
 	template <class S>
 	inline
