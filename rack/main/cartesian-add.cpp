@@ -234,6 +234,7 @@ void CompositeAdd::addPolar() const {
 
 			const std::string & encoding = resources.composite.getTargetEncoding();
 			if (encoding.empty()){
+				// This is somewhat disturbing but perhaps worth it.
 				mout.note() << "adapting encoding of first input: " << EncodingODIM(resources.composite.odim) << mout.endl;
 			}
 			mout.debug() << "storing metadata: " << resources.composite.odim << mout.endl;
@@ -247,8 +248,8 @@ void CompositeAdd::addPolar() const {
 
 			resources.composite.odim.getTime(tComp);
 			polarSrc.odim.getTime(tData);
-			int mins = abs(tComp.getTime() - tData.getTime())/60;
-			if (mins > 120){
+			int mins = abs(tComp.getTime() - tData.getTime())/60; // why abs?
+			if (mins > 120){ // TODO tunable threshold + varying levels of warnings
 				mout.warn() << "time difference " << mins << " minutes" << mout.endl;
 				mout.note() << "composite: " << tComp.str() << mout.endl;
 				mout.note() << "data:      " << tData.str() << mout.endl;

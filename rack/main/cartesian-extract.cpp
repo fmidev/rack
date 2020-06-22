@@ -90,16 +90,18 @@ void CartesianExtract::extract(const std::string & channels) const {
 	mout.debug(3) << "update geodata " << mout.endl;
 	resources.composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-	CartesianODIM odim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-	odim.updateFromMap(resources.composite.odim);
+	// NEW 2020/06
+	RootData<CartesianDst> dstRoot(resources.cartesianHi5);
+	//CartesianODIM odim; // needed? yes, because Extract uses (Accumulator &), not Composite.
+	dstRoot.odim.updateFromMap(resources.composite.odim);
 
 	//mout.warn() << resources.composite.odim << mout.endl;
 
-	ProductBase::completeEncoding(odim, resources.composite.getTargetEncoding());
+	ProductBase::completeEncoding(dstRoot.odim, resources.composite.getTargetEncoding());
 
 
 	if (!resources.targetEncoding.empty()){
-		ProductBase::completeEncoding(odim, resources.targetEncoding);
+		ProductBase::completeEncoding(dstRoot.odim, resources.targetEncoding);
 		// odim.setValues(resources.targetEncoding, '=');
 		resources.targetEncoding.clear();
 	}
@@ -111,23 +113,27 @@ void CartesianExtract::extract(const std::string & channels) const {
 	//mout.note() << "dst odim: " << odim << mout.endl;
 	mout.debug(1) << "extracting..." << mout.endl;
 
-	resources.composite.extract(odim, dstProduct, channels);
+	resources.composite.extract(dstRoot.odim, dstProduct, channels);
 
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
+	// CONSIDER
+	drain::VariableMap & how = dstRoot.getHow();
 
-	ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.cartesianHi5); // odim.copyToRoot(resources.cartesianHi5);
+	// CHECK success (order counts) ?
+	// ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.cartesianHi5);
 
-	drain::VariableMap & how = resources.cartesianHi5["how"].data.attributes;
-	//drain::VariableMap & how = dstGroup["how"].data.attributes;
-	how["software"] = __RACK__;
+	//drain::VariableMap & how = resources.cartesianHi5["how"].data.attributes;
+
+	how["software"]   = __RACK__;
 	how["sw_version"] = __RACK_VERSION__;
 	// Non-standard
 	how["tags"] = resources.composite.nodeMap.toStr(':');
 
 	// Non-standard
-	drain::VariableMap & where = resources.cartesianHi5["where"].data.attributes; // dstGroup
+	//drain::VariableMap & where = resources.cartesianHi5["where"].data.attributes; // dstGroup
+	drain::VariableMap & where = dstRoot.getWhere();
 	where["BBOX"].setType(typeid(double));
-	where["BBOX"] = resources.composite.getBoundingBoxD().toStr();
+	where["BBOX"] = resources.composite.getBoundingBoxD().toStr(); // todo get vector?
 
 	where["BBOX_data"].setType(typeid(double));
 	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();
@@ -176,7 +182,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);
 	//statusMap["what:quantity"] = ;
-	statusMap.updateFromMap(odim);
+	statusMap.updateFromMap(dstRoot.odim);
 	//resources.getUpdatedStatusMap();
 
 }

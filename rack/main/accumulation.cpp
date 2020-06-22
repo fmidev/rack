@@ -136,9 +136,9 @@ public:
 		proj.projectInv(lon*drain::DEG2RAD, lat*drain::DEG2RAD, point.x, point.y); // lon, lat,
 		//point.x *= drain::RAD2DEG;
 		//point.y *= drain::RAD2DEG;
-		mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
-		double r = point.x*point.x + point.y*point.y;
-		//mout.warn() << "AEQD coords: " << point << mout.endl;
+		//mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
+		// double r = point.x*point.x + point.y*point.y;
+		// mout.warn() << "AEQD coords: " << point << mout.endl;
 
 	};
 
