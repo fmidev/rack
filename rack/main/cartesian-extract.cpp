@@ -92,16 +92,17 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	// NEW 2020/06
 	RootData<CartesianDst> dstRoot(resources.cartesianHi5);
-	//CartesianODIM odim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-	dstRoot.odim.updateFromMap(resources.composite.odim);
+	//CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
+	CartesianODIM & rootOdim = dstRoot.odim; // TEST
+	rootOdim.updateFromMap(resources.composite.odim);
 
 	//mout.warn() << resources.composite.odim << mout.endl;
 
-	ProductBase::completeEncoding(dstRoot.odim, resources.composite.getTargetEncoding());
+	ProductBase::completeEncoding(rootOdim, resources.composite.getTargetEncoding());
 
 
 	if (!resources.targetEncoding.empty()){
-		ProductBase::completeEncoding(dstRoot.odim, resources.targetEncoding);
+		ProductBase::completeEncoding(rootOdim, resources.targetEncoding);
 		// odim.setValues(resources.targetEncoding, '=');
 		resources.targetEncoding.clear();
 	}
@@ -113,15 +114,15 @@ void CartesianExtract::extract(const std::string & channels) const {
 	//mout.note() << "dst odim: " << odim << mout.endl;
 	mout.debug(1) << "extracting..." << mout.endl;
 
-	resources.composite.extract(dstRoot.odim, dstProduct, channels);
+	resources.composite.extract(rootOdim, dstProduct, channels);
 
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
-	// CONSIDER
-	drain::VariableMap & how = dstRoot.getHow();
 
 	// CHECK success (order counts) ?
-	// ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.cartesianHi5);
+	//ODIM::copyToH5<ODIMPathElem::ROOT>(rootOdim, resources.cartesianHi5);
 
+	// CONSIDER
+	drain::VariableMap & how = dstRoot.getHow();
 	//drain::VariableMap & how = resources.cartesianHi5["how"].data.attributes;
 
 	how["software"]   = __RACK__;
@@ -182,7 +183,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 
 	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);
 	//statusMap["what:quantity"] = ;
-	statusMap.updateFromMap(dstRoot.odim);
+	statusMap.updateFromMap(rootOdim);
 	//resources.getUpdatedStatusMap();
 
 }
