@@ -75,7 +75,7 @@ public:
 
 	template <class K, class T, class C>
 	static
-	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & t, const std::string & name = "");
+	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & t, const std::string & defaultTag = "");
 
 	std::string ctext;
 
@@ -94,7 +94,7 @@ protected:
 typedef drain::Tree<std::string,NodeXML> TreeXML;
 
 template <class K, class T, class C> //, class C>
-std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tree, const std::string & tag){
+std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tree, const std::string & defaultTag){
 
 	const std::map<std::string, Tree<K,T,C> > & children = tree.getChildren();
 
@@ -102,14 +102,16 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tr
 	ostr << '<';
 	//<< tree.data.tag << ' ';
 	if (tree->getTag().empty())
-		ostr << tag << ' ';
+		ostr << defaultTag << ' ';
 	else {
 		ostr << tree->getTag() << ' ';
-		// TODO if (tree.data.name.empty())
-		ostr << "name=\"" << tag << '"' << ' ';
+		// TODO if (tree.data.name.empty()) ?
+		if (!defaultTag.empty())
+			ostr << "name=\"" << defaultTag << '"' << ' ';
 	}
-	//ostr << "name='";
-	ostr << "id=\"" << tree.data.id << '"' << ' ';
+
+	if (tree.data.id >= 0)
+		ostr << "id=\"" << tree.data.id << '"' << ' ';
 
 	/// iterate attributes
 	for (ReferenceMap::const_iterator it = tree->begin(); it != tree->end(); it++){
@@ -118,6 +120,7 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tr
 		sstr << it->second;
 		if (!sstr.str().empty()){
 			ostr << it->first << "=\"" << it->second << '"' << ' ';
+			//ostr << "test=\"" << sstr.str() << '"' << ' ';
 		}
 	}
 
@@ -142,7 +145,9 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tr
 		// add end </TAG>
 		ostr << '<' << '/' << tree->getTag() << '>';
 		ostr << '\n';  // TODO nextline
-		ostr << "<!-- " << tree.data.id << " /-->\n";
+
+		if (tree.data.id >= 0)
+			ostr << "<!-- " << tree.data.id << " /-->\n";
 	}
 	return ostr;
 }
