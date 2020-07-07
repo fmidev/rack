@@ -97,7 +97,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 				mout.warn() << "unset type in srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
 				return;
 			}
-			if ((srcData.odim.nbins==0) || (srcData.odim.nrays==0)){
+			if ((srcData.odim.geometry.width==0) || (srcData.odim.geometry.height==0)){
 				mout.warn() << "empty geom in odim of srcData [" << srcDataSet.begin()->first << "]: " << srcData.odim << mout.endl;
 				return;
 			}

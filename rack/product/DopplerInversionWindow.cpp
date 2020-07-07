@@ -53,7 +53,7 @@ namespace rack {
 
 void DopplerInversionWindow::initialize(){
 
-	drain::Logger mout("DopplerInversionWindow", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.warn() << mout.endl;
 
 	setImageLimits();

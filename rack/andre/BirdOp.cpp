@@ -208,7 +208,7 @@ void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<P
 
 		/*
 		dstData.data.setOptimalScale(0.0, 1.0);
-		dstData.odim.gain   = dstData.data.getScaling().scale;
+		dstData.odim.scale   = dstData.data.getScaling().scale;
 		dstData.odim.offset = dstData.data.getScaling().offset;
 		*/
 
@@ -233,7 +233,7 @@ void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<P
 		/// NOT NEEDED?
 		SlidingWindowOpT<RadarWindowStdDev<FuzzyStep<double,double> > > wradDevFuzzifier;
 		const int w = static_cast<int>(window.width/wradSrc.odim.rscale);
-		const int h = static_cast<double>(wradSrc.odim.nrays) * window.height/360.0;
+		const int h = static_cast<double>(wradSrc.odim.geometry.height) * window.height/360.0;
 		wradDevFuzzifier.window.setSize(w, h);
 		wradDevFuzzifier.window.functor.set( 0.5, 0.95, 255.0);
 		wradDevFuzzifier.window.odimSrc = wradSrc.odim;

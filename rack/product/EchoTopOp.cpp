@@ -126,18 +126,18 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 			continue;
 
 		iSweep = sweep.odim.getBinIndex(binDistance); // static_cast<int>(binDistance/sweep.odim.rscale + 0.5);
-		if (iSweep >= sweep.odim.nbins)
+		if (iSweep >= sweep.odim.geometry.width)
 			continue;
 
 		h = Geometry::heightFromEtaBeta(eta, beta);
 		//mout.warn() << "h=" << h << mout.endl;
 		wHeight = heightQuality(h);
 		wUndetect = 0.10 + 0.40*(1.0-wHeight);
-		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.nbins)){
+		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
 		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.nrays) / accumulator.getHeight();
+			jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
 
 			x = sweep.data.get<double>(iSweep,jSweep);
 

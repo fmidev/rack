@@ -57,12 +57,12 @@ public:
 		dataSelector.count = 1;  // or 0?  does not need input data arrays
 
 		odim.product = "SUNSHINE";
-		odim.nbins = 500;
-		odim.nrays = 360;
+		odim.geometry.width = 500;
+		odim.geometry.height = 360;
 		odim.rscale = 500;
 
 		odim.type = "C";
-		odim.gain = 1.0/200.0;
+		odim.scale = 1.0/200.0;
 		odim.offset = -0.1;
 
 		//parameters.reference("quantity", odim.quantity);
@@ -76,7 +76,7 @@ public:
 
 
 		this->allowedEncoding.reference("type", odim.type);
-		this->allowedEncoding.reference("gain", odim.gain);
+		this->allowedEncoding.reference("gain", odim.scale);
 		this->allowedEncoding.reference("offset", odim.offset);
 
 

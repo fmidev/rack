@@ -272,7 +272,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		DataSet<PolarDst> tupla((*resources.currentHi5)["dataset1"]);
 		Data<PolarDst> & rouhio = tupla.getData("SUURIMO");
 		rouhio.initialize(typeid(unsigned char),123, 456);
-		rouhio.odim.gain = 1.23456789;
+		rouhio.odim.scale = 1.23456789;
 		rouhio.odim.elangle = 12345.678;
 
 		mout.warn() << rouhio << mout.endl;

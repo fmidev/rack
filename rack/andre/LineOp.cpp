@@ -81,7 +81,7 @@ void LineOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst>
 
 	/// Scale parameters to pixel intensities and coordinates.
 	const double thresholdDistance = static_cast<double>(lengthMin)*1000.0/srcData.odim.rscale; // double, but essentially in pixel coordinates (i)
-	const double widthMaxBins =  widthMax/360.0*static_cast<double>(srcData.odim.nbins);
+	const double widthMaxBins =  widthMax/360.0*static_cast<double>(srcData.odim.geometry.width);
 
 	Image srcElong;
 	DistanceTransformExponentialOp(thresholdDistance/2.5, 1).process(srcData.data, srcElong);
@@ -159,8 +159,8 @@ void LineOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst>
 
 
 	/*
-	/// Using srcData.odim.gain is stable
-	HighPassOp highPass(width, height, 10.0*srcData.odim.gain, -30.0);
+	/// Using srcData.odim.scale is stable
+	HighPassOp highPass(width, height, 10.0*srcData.odim.scale, -30.0);
 	highPass.process(srcData.data, tmp);  // Actually does not need extra tmp.
 	if (mout.isDebug(10)){
 		tmp.properties["highPass"] = highPass.getParameters().getValues();

@@ -73,7 +73,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	const int width  = srcData.odim.getBeamBins(windowWidth);
 			//static_cast<int>(windowWidth / srcData.odim.rscale + 0.5);
 	const int height = srcData.odim.getAzimuthalBins(windowHeight);
-			// static_cast<int>((windowHeight/360.0) * srcData.odim.nrays + 0.5);
+			// static_cast<int>((windowHeight/360.0) * srcData.odim.geometry.height + 0.5);
 
 	mout.debug(2) << "window: " << width << ',' << height << mout.endl;
 
@@ -108,7 +108,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	storeDebugData(2, srcQuality, "SHIP_Q");
 	HighPassOp highpass(width, height);
 	//highpass.offset = -0.2; // cuts off low values
-	//highpass.scale = (-highpass.offset + 0.5) / (reflDev / srcData.odim.gain) * srcData.data.getMax<double>(); // => x==reflDev => prob = 0.5
+	//highpass.scale = (-highpass.offset + 0.5) / (reflDev / srcData.odim.scale) * srcData.data.getMax<double>(); // => x==reflDev => prob = 0.5
 	mout.debug(4) << highpass << mout.endl;
 	highpass.process(tmpFuzzyDBZ, srcQuality, tmpHighPass, srcQuality);
 	tmpHighPass.setPhysicalScale(0.0, 1.0);

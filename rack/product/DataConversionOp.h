@@ -43,7 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <image/Image.h>
 #include <image/ImageFrame.h>
 #include <product/ProductOp.h>
-#include <util/LinearScaling.h>
+//#include <util/LinearScaling.h>
+#include <util/ValueScaling.h>
 #include <util/Log.h>
 #include <util/RegExp.h>
 #include <util/SmartMap.h>
@@ -85,7 +86,7 @@ public:
 				ProductOp<M, M>(__FUNCTION__, "Converts HDF5 data to use desired data type, scaling and encoding") {
 
 		this->allowedEncoding.reference("what:type", this->odim.type = type);
-		this->allowedEncoding.reference("what:gain", this->odim.gain = gain);
+		this->allowedEncoding.reference("what:gain", this->odim.scale = gain);
 		this->allowedEncoding.reference("what:offset", this->odim.offset = offset);
 		this->allowedEncoding.reference("what:undetect", this->odim.undetect = undetect);
 		this->allowedEncoding.reference("what:nodata", this->odim.nodata = nodata);
@@ -310,7 +311,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 	mout.debug(2) << "Swap & mark for delete" << mout.endl;
 	for (std::set<std::string>::const_iterator qit = convertedQuantities.begin(); qit != convertedQuantities.end(); ++qit){
 
-		mout.warn() << "Swapping quantity: " << *qit << '/' << extension << mout.endl;
+		mout.debug() << "Swapping quantity: " << *qit << '/' << extension << mout.endl;
 
 		Data<dst_t> & dstDataOrig = dstProduct.getData(*qit);
 		Data<dst_t> & dstDataConv = dstProduct.getData(*qit + extension);
@@ -342,7 +343,7 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 			drain::image::Image tmp;
 			tmp.setType(t);
 			tmp.setGeometry(g);
-			tmp.setScaling(dstOdim.gain, dstOdim.offset);
+			tmp.setScaling(dstOdim.scale, dstOdim.offset);
 			traverseImageFrame(srcOdim, srcImage, dstOdim, tmp);
 			dstImage.swap(tmp);
 			//dstImage.copyDeep(tmp);
@@ -365,7 +366,7 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 	else {
 		dstImage.setType(t);
 		dstImage.setGeometry(g);
-		dstImage.setScaling(dstOdim.gain, dstOdim.offset);
+		dstImage.setScaling(dstOdim.scale, dstOdim.offset);
 		mout.debug(1) << "dst:" << dstImage << mout.endl;
 		traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 	}
@@ -401,8 +402,8 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	mout.debug(1) << "dst props: " << dstImage.properties << mout.endl;
 	//std::cerr << dst.properties << std::endl;
 
-	//const drain::LinearScaling scaling(srcOdim.gain, srcOdim.offset, odim.gain, odim.offset);
-	const drain::LinearScaling scaling(srcOdim.gain, srcOdim.offset, dstOdim.gain, dstOdim.offset);
+	// const drain::LinearScaling scaling(srcOdim.scale, srcOdim.offset, dstOdim.scale, dstOdim.offset);
+	const drain::ValueScaling scaling(srcOdim.scale, srcOdim.offset, dstOdim.scale, dstOdim.offset);
 
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dstOdim.type);
@@ -437,7 +438,8 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 			//  x = srcOdim.scaleForward(x);
 			//  x = dst.odim.scaleInverse(x);
 			// *d = dstImage.limit<double>( x );
-			*d = limit( scaling.forward(x) );
+			// *d = limit( scaling.forward(x) );
+			*d = limit( scaling.fwd(x) );
 			//dstImage.scaling.limit<double>( scaling.forward(x) );
 		}
 

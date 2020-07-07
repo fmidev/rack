@@ -81,7 +81,7 @@ void NonMetOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 		//Image tmp;
 		//tmp.setCoordinatePolicy(coordPolicy);
 		const int w = srcData.odim.getBeamBins(windowWidth);        // windowWidth / srcData.odim.rscale;
-		const int h = srcData.odim.getAzimuthalBins(windowHeight);  // windowHeight * 360.0 / srcData.odim.nrays;
+		const int h = srcData.odim.getAzimuthalBins(windowHeight);  // windowHeight * 360.0 / srcData.odim.geometry.height;
 
 		SlidingWindowMedianOp median;
 		median.setSize(w,h);

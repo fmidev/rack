@@ -290,7 +290,7 @@ public:
 	data(tree["data"].data.dataSet),
 	odim(data, data.properties.get("what:quantity",""))
 	{
-		//data.setScaling(odim.gain, odim.offset);
+		//data.setScaling(odim.scale, odim.offset);
 	}
 
 	/// Constructor referring to HDF5 structure
@@ -298,7 +298,7 @@ public:
 			data(tree["data"].data.dataSet),
 			odim(data, quantity) // reads data.properties?
 			{
-				//data.setScaling(odim.gain, odim.offset);
+				//data.setScaling(odim.scale, odim.offset);
 			}
 
 	/// Copy constructor, also for referencing non-const as const.
@@ -310,7 +310,7 @@ public:
 		data(this->tree["data"].data.dataSet),
 		odim(d.odim)
 	{
-		//data.setScaling(odim.gain, odim.offset);
+		//data.setScaling(odim.scale, odim.offset);
 	}
 
 	inline
@@ -336,14 +336,14 @@ public:
 	void copyEncoding(const PlainData<DT2> & srcData){
 		odim.importMap(srcData.odim);
 		data.setType(odim.type);
-		data.setScaling(odim.gain, odim.offset);
+		data.setScaling(odim.scale, odim.offset);
 		//data.setGeometry(data.);
 	}
 
 	inline
 	void setPhysicalRange(double min, double max){
 		data.setPhysicalScale(min, max);
-		odim.gain   = data.getScaling().scale;
+		odim.scale   = data.getScaling().scale;
 		odim.offset = data.getScaling().offset;
 	}
 
@@ -395,7 +395,7 @@ public:
 	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
 		qualityData.setEncoding(typeid(unsigned char));
 		createSimpleQualityData(qualityData.data, dataQuality, nodataQuality, undetectQuality);
-		qualityData.odim.gain   = qualityData.data.getScaling().scale;
+		qualityData.odim.scale   = qualityData.data.getScaling().scale;
 		qualityData.odim.offset = qualityData.data.getScaling().offset;
 	}
 

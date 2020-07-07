@@ -58,7 +58,7 @@ void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	if (initialize & ODIMPathElem::DATA){
 		reference("what:type", type = "C");
-		reference("what:gain",   gain = 0.0);
+		reference("what:gain",   scale = 0.0);
 		reference("what:offset", offset = 0.0);
 		reference("what:undetect", undetect = 0.0);
 		reference("what:nodata", nodata = 0.0);
@@ -103,7 +103,7 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 	if (type.empty())
 		type = "C";
 
-	this->gain = gain;
+	this->scale = gain;
 	this->offset = offset;
 	this->undetect = undetect;
 	this->nodata = nodata;
@@ -117,8 +117,8 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 	if (type.empty())
 		type = odim.type;
 
-	if ((gain == 0.0) && (type == odim.type)){
-		gain   = odim.gain;
+	if ((scale == 0.0) && (type == odim.type)){
+		scale   = odim.scale;
 		offset = odim.offset;
 		nodata = odim.nodata;
 		undetect = odim.undetect;
@@ -199,12 +199,12 @@ void EncodingODIM::setRange(double min, double max) {
 		nodata   = maxData;
 
 		if (drain::Type::call<drain::typeIsInteger>(t)){
-			gain = (max-min) / static_cast<double>((maxData-1) - (minData+1));
-			offset = min - gain*(minData+1);
+			scale = (max-min) / static_cast<double>((maxData-1) - (minData+1));
+			offset = min - scale*(minData+1);
 			//drain::Logger mout("QuantityMap", __FUNCTION__);
 		}
 		else {
-			gain = 1.0;
+			scale = 1.0;
 			offset = 0.0;
 		}
 

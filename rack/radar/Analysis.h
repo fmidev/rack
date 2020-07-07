@@ -314,6 +314,7 @@ public:
 
 	SlidingRadarWindow(const C & conf) : SlidingWindow<C,R>(conf), rangeNorm(1), rangeNormEnd(2), countMin(0) {
 		this->resetAtEdges = conf.invertPolar;
+		//this->resetAtEdges = true; //conf.invertPolar;
 	};
 
 	virtual
@@ -324,11 +325,14 @@ public:
 	 *
 	 */
 	void setSrcFrame(const drain::image::ImageFrame & src){
+
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//mout.debug()  << "src Scaling0: " << src.getScaling() << mout.endl;
+		mout.note() << "src props for odim: " << src.getProperties() << mout.endl;
+
 		this->odimSrc.updateFromMap(src.getProperties());
 		mout.info()  << "NI=" << this->odimSrc.getNyquist(LOG_WARNING) << mout.endl;
-		mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
+		mout.warn() << "copied odim: " << this->odimSrc << mout.endl;
 
 		SlidingWindow<C, R>::setSrcFrame(src);
 		mout.debug(1)  << "src Scaling: " << src.getScaling() << mout.endl;
@@ -345,15 +349,10 @@ public:
 
 protected:
 
-	inline
-	void setImageLimits() const {
-		this->src.adjustCoordinateHandler(this->coordinateHandler);
-	}
-
 	virtual
 	void initialize(){
 		setImageLimits();
-		setRangeNorm(); // replaced by reset() and setLoopLimits()
+		setRangeNorm(); // interplay setLoopLimits(), with reset() and
 		//if (drain::Type::call<drain::typeIsSmallInt>(this->src.getType()) && drain::Type::call<drain::drain::typeIsSmallInt>(this->dst.getType())){
 		if (drain::Type::call<drain::typeIsSmallInt>(this->dst.getType())){
 			drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
@@ -361,26 +360,31 @@ protected:
 			mout.info() << "(not implemented: functor scaling for small int dst)"  << mout.endl;  // << this->odimSrc
 		}
 		// what about reset(); ?
+		reset();
 	};
 
 
+	inline
+	void setImageLimits() const {
+		this->src.adjustCoordinateHandler(this->coordinateHandler);
+	}
 
 	/// To compensate polar geometry, set applicable range for pixel area scaling.
 	void setRangeNorm(){
 
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 
-		if (this->odimSrc.nrays == 0)
-			mout.error() << "src odim.nrays==0" << mout.endl;
+		if (this->odimSrc.geometry.height == 0)
+			mout.error() << "src odim.geometry.height==0" << mout.endl;
 
 		/// Distance [bins] at which a bin is (nearly) square, ie. beam-perpendicular and beam-directional steps are equal.
-		const double r = static_cast<double>(this->odimSrc.nrays) / (2.0*M_PI);
-
+		const double r = static_cast<double>(this->odimSrc.geometry.height) / (2.0*M_PI);
+		const int max = static_cast<int>(this->odimSrc.geometry.width);
 
 		rangeNorm    = static_cast<int>(r);
 		/// Distance [bins] at which a single azimuthal step is equal to conf.height steps at rangeNorm.
 		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.height));
-		if ((rangeNorm <= 0) || (rangeNormEnd >= this->odimSrc.nbins)){
+		if ((rangeNorm <= 0) || (rangeNormEnd >= max)){
 
 			mout.note() << rangeNorm << '-' << rangeNormEnd << mout.endl;
 		}
@@ -491,8 +495,11 @@ protected:
 
 	virtual	inline
 	void write(){
-		if (count > 0)
+		if (count > 0){
+			//if (this->location.x == this->location.y)
+			//	std::cerr << sum << '\t' << count << '\n';
 			this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(sum/static_cast<double>(count)));
+		}
 		else
 			this->dst.put(this->location, this->odimSrc.undetect); // ?
 	};

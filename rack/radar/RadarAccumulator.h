@@ -229,7 +229,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 	OD odimFinal;
 	odimFinal = odimOut;
-	odimFinal.gain = 0.0; // ?
+	odimFinal.scale = 0.0; // ?
 
 	const QuantityMap & qm = getQuantityMap();
 
@@ -294,7 +294,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
 				}
 				else {
-					odimQuality.gain *= 20.0;  // ?
+					odimQuality.scale *= 20.0;  // ?
 					//const std::type_info & t = Type::getType(odimFinal.type);
 					odimQuality.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
 					//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!

@@ -61,10 +61,10 @@ public:
 		PolarProductOp("PolarNeuralVPR","Computes NeuralVPR.")
 		{
 		// TODO already ref'd
-		parameters.reference("nbins", odim.nbins = nbins);
-		parameters.reference("nrays", odim.nrays = nrays);
+		parameters.reference("nbins", odim.geometry.width = nbins);
+		parameters.reference("nrays", odim.geometry.height = nrays);
 		parameters.reference("rscale", odim.rscale = rscale);
-		parameters.reference("gain", odim.gain = gain);
+		parameters.reference("gain", odim.scale = gain);
 		parameters.reference("offset", odim.offset = offset);
 		//dataSelector.path = "^.*/data[0-9]+/?$";  ///
 

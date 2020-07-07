@@ -77,7 +77,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	getQuantityMap().setQuantityDefaults(dstHeight, "HGHT", "S");
 	//dstHeight.setQuantityDefaults("HGHT","S");
 	dstHeight.odim.offset = 0.0;
-	dstHeight.odim.gain = 0.25;
+	dstHeight.odim.scale = 0.25;
 	//dstHeight.data.setType<unsigned short>();
 	dstHeight.data.setGeometry(1, odim.levels);
 	for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
@@ -221,13 +221,13 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 			/// Distance (in metres) to the last measurement requested by the user.
 			const double beamMax = Geometry::beamFromEtaGround(eta, odim.range * 1000.0);
-			const double beamMaxMeasured = srcData.odim.nbins*srcData.odim.rscale + beamOffset;
+			const double beamMaxMeasured = srcData.odim.geometry.width*srcData.odim.rscale + beamOffset;
 			if (beamMax > beamMaxMeasured)
 				mout.info() << "requested maximum distance " << beamMax << " greater than measured distance " << beamMaxMeasured << mout.endl;
 
 
-			const int startRay = srcData.odim.nrays * (odim.startaz / 360.0);  //
-			const int stopRay  = srcData.odim.nrays * (odim.stopaz / 360.0) + (odim.stopaz > odim.startaz ? 0 : srcData.odim.nrays);  // Sector goes over 360 deg
+			const int startRay = srcData.odim.geometry.height * (odim.startaz / 360.0);  //
+			const int stopRay  = srcData.odim.geometry.height * (odim.stopaz / 360.0) + (odim.stopaz > odim.startaz ? 0 : srcData.odim.geometry.height);  // Sector goes over 360 deg
 			mout.debug(3) << "rays: "  << startRay << "..." << stopRay << mout.endl;
 
 
@@ -239,8 +239,8 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 				binStart = 0;
 
 			int binEnd   = static_cast<int>( (beamMax-srcData.odim.rstart) / srcData.odim.rscale) ;
-			if (binEnd > srcData.odim.nbins)
-				binEnd = srcData.odim.nbins;
+			if (binEnd > srcData.odim.geometry.width)
+				binEnd = srcData.odim.geometry.width;
 
 			// (Altitude check is within the loop)
 
@@ -267,7 +267,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			double lon, lat;
 			*/
 
-			//for (int i = 0; i<srcData.odim.nbins; i++){
+			//for (int i = 0; i<srcData.odim.geometry.width; i++){
 			for (int i = binStart; i<binEnd; i++){
 				beam     = beamOffset + static_cast<double>(i)*srcData.odim.rscale;
 				altitude = Geometry::heightFromEtaBeam(eta, beam);
@@ -280,7 +280,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 					//for (size_t j = 0; j<data.getHeight(); j++){
 					for (int j0 = startRay; j0<stopRay; j0++){
-						j = ((j0+srcData.odim.nrays) % srcData.odim.nrays);
+						j = ((j0+srcData.odim.geometry.height) % srcData.odim.geometry.height);
 						x = srcData.data.get<double>(i,j);
 						if (x != srcData.odim.nodata){
 							if (x != srcData.odim.undetect){ // TODO: HANDLE?
@@ -291,14 +291,14 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 									x = dbzToZ(srcData.odim.scaleForward(x));
 								else
 									x = srcData.odim.scaleForward(x);
-								j2 = (odim.azSlots * j)/srcData.odim.nrays;
+								j2 = (odim.azSlots * j)/srcData.odim.geometry.height;
 								profile.at(j2, k)        += x * qFinal;
 								profileQuality.at(j2, k) += qFinal;
 								profileCount.at(j2, k)   += 1;
 							}
 							/*
 							if (COLLECT_LATLON){
-								azm = static_cast<double>(j)/static_cast<double>(srcData.odim.nrays)*360.0 * DEG2RAD;
+								azm = static_cast<double>(j)/static_cast<double>(srcData.odim.geometry.height)*360.0 * DEG2RAD;
 								proj.projectFwd(range*sin(azm), range*cos(azm), lon, lat);
 								lon *= RAD2DEG;
 								lat *= RAD2DEG;
@@ -366,7 +366,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			PlainData<VprDst> & dstCountData   = dstData.getQualityData("COUNT"); // could be anything (except QIND)
 			qm.setQuantityDefaults(dstCountData, "COUNT","I");
 			//dstCountData.odim.offset = 0.0;
-			//dstCountData.odim.gain   = 1.0;
+			//dstCountData.odim.scale   = 1.0;
 			//dstCountData.odim.quantity = quantity+"_COUNT";  // TODO OPERA
 			dstCountData.data.setGeometry(geometry);  // why not geom?
 

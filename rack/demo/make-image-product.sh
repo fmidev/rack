@@ -79,10 +79,11 @@ echo $cmd
 eval $cmd
 
 #if [ ! -f $OUTFILE_LEGEND ]; then
-    echo "# Creating legend..."
-    cmd="convert tmp.svg  $OUTFILE_LEGEND"
-    echo $cmd
-    eval $cmd
+echo "# Creating legend..."
+#cmd="convert tmp.svg  $OUTFILE_LEGEND"
+cmd="inkscape -z --export-png $OUTFILE_LEGEND tmp.svg"
+echo $cmd
+eval $cmd
 #fi
 
 cmd="convert +append $OUTFILE_RGB $OUTFILE_LEGEND $OUTFILE_PROD"

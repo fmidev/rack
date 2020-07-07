@@ -58,14 +58,13 @@ class AreaGeometry { //: protected AreaGeometryStruct {
 
 public:
 
-	//inline
-	//AreaGeometry() : width(0), height(0), area(0){};
-
-	//AreaGeometry(size_t width, size_t height=1) : width(width), height(height), area(width*height){};
 	inline
 	AreaGeometry(size_t width=0, size_t height=0)  : width(0), height(0), area(0){
 		setArea(width, height?height:width);
 	};
+
+	inline
+	virtual ~AreaGeometry(){};
 
 	/*
 	inline
@@ -75,7 +74,7 @@ public:
 
 	inline
 	const AreaGeometryStruct & getAreaGeometryStruct() const {
-		return *this;
+	return *this;
 	}
 	*/
 
@@ -135,6 +134,9 @@ public:
 
 	inline
 	ChannelGeometry() : imageChannelCount(0), alphaChannelCount(0), channelCount(0) {};
+
+	inline
+	virtual ~ChannelGeometry(){};
 
     void setChannelCount(size_t imageChannelCount, size_t alphaChannelCount = 0);
     void setAlphaChannelCount(size_t alphaChannelCount);

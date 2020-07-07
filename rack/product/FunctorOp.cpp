@@ -103,8 +103,8 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		mout.error() << e.what() << mout.endl;
 	}
 	/*
-	for (long int i = 0; i < dst.odim.nbins; ++i) {
-		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.gain << " m\n";
+	for (long int i = 0; i < dst.odim.geometry.width; ++i) {
+		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
 		h = Geometry::heightFromEtaGround(eta, i*dst.odim.rscale)/gainMetres;
 		if (h < max)
 			dst.data.put(i, h);

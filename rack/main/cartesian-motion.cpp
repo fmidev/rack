@@ -90,7 +90,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 		if (!srcData.data.isEmpty()){
 
-			srcData.data.setScaling(srcData.odim.gain, srcData.odim.offset);
+			srcData.data.setScaling(srcData.odim.scale, srcData.odim.offset);
 			//mout.note() << "Using " << *it << ':' << srcData.data.getGeometry() << mout.endl;
 			mout.note() << "Using " << *it << ": " << path << ' ';
 			mout <<  srcData.data.getGeometry() << ':' << Type::getTypeChar(srcData.data.getType()) << mout.endl;
@@ -351,7 +351,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 		amvu.setPhysicalRange(-100.0, +100.0);
 		amvu.data.setName("AMVU"); // for debugging
 		if (odim.xscale){
-			amvu.odim.gain = odim.xscale / timestep;
+			amvu.odim.scale = odim.xscale / timestep;
 		}
 		else {
 			mout.warn() << "no xscale, cannot set  [m/s] scaling for horz (u) component" << mout.endl;
@@ -368,7 +368,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 		amvv.setPhysicalRange(-100.0, +100.0);
 		amvv.data.setName("AMVV"); // for debugging
 		if (odim.yscale){
-			amvv.odim.gain = odim.yscale / timestep;
+			amvv.odim.scale = odim.yscale / timestep;
 		}
 		else {
 			mout.warn() << "no yscale, cannot set  [m/s] scaling for vert (v) component" << mout.endl;
@@ -377,7 +377,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 		//amvv.updateTree2();
 		channels.set(amvv.data.getChannel(0), 1);
 
-		mout.info() << "motion scale: (" << amvu.odim.gain << "," << amvv.odim.gain << ") m/s" << mout.endl;
+		mout.info() << "motion scale: (" << amvu.odim.scale << "," << amvv.odim.scale << ") m/s" << mout.endl;
 
 		PlainData<CartesianDst> & qind = dstDataSet.getQualityData();
 		qmap.setQuantityDefaults(qind, "QIND");

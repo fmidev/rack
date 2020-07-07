@@ -83,37 +83,6 @@ void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 	//_createQualityField()
 
 
-	/*
-	const drain::LinearScaling scaleDBZ(srcData.odim.gain, srcData.odim.offset);
-	mout.debug(1) << "scaleDBZ: " << scaleDBZ << mout.endl;
-
-
-	/// Descending fuzzy step, located at (max) altitude.
-	const drain::FuzzyStep<double,float> fuzzyAltitude(maxAltitude, -devAltitude);
-
-	/// Descending fuzzy step, located at max intensity
-	const drain::FuzzyStep<float,float> fuzzyDBZ(reflMax, -reflDev);
-
-	float s;
-	float c1; // fuzzy altitude
-	float c2; // fuzzy reflectivity
-	//const float maxD = dstProb.data.getMax<float>()-1.0f;  TODO gain,
-	const float maxD = 253.0;
-	const float eta = srcData.odim.elangle * M_PI/180.0;
-	for (int i = 0; i < width; ++i) {
-		fuzzyAltitude.filter(Geometry::heightFromEtaBeam(eta,i*srcData.odim.rscale),c1);
-		//std::cerr << i << '\t' << scaleDBZ.forward(i) << '\t' << (scaleDBZ.forward(i)*2.0 + 64.0) << std::endl;
-		for (int j = 0; j < height; ++j) {
-			s = src.get<float>(i,j);
-			if ((s == srcData.odim.undetect) || (s == srcData.odim.nodata))
-				continue;
-			fuzzyDBZ.filter(scaleDBZ.forward(s), c2);
-			dstProb.data.put(i, j, maxD*c1*c2);
-			//dstProb.data.put(i,j,scaleDBZ.forward(s)*2.0 + 64.0);  // = 0.5, -32
-		}
-	}
-
-  */
 
 }
 

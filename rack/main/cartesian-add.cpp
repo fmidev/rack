@@ -78,6 +78,7 @@ void CompositeAdd::exec() const {
 
 	/// Set input data selector (typically, by quantity)
 	if (!resources.select.empty()){
+		// mout.warn() << "Setting selector=" << resources.select << mout.endl;
 		const std::string quantityOrig(resources.composite.dataSelector.quantity);
 		resources.composite.dataSelector.setParameters(resources.select);
 		//resources.select = "quantity=" + resources.composite.dataSelector.quantity;
@@ -89,7 +90,7 @@ void CompositeAdd::exec() const {
 			mout.warn() << "quantity selector changed, resetting accumulation array" << mout.endl;
 			resources.composite.clear();
 			resources.composite.odim.quantity.clear();
-			resources.composite.odim.gain   = 0.0;
+			resources.composite.odim.scale   = 0.0;
 			resources.composite.odim.offset = 0.0;
 		}
 	}
@@ -411,7 +412,7 @@ void CompositeAdd::addCartesian() const {
 		resources.composite.setProjection(cartSrc.odim.projdef);
 
 		if (resources.composite.getFrameWidth()*resources.composite.getFrameHeight() == 0){
-			resources.composite.setGeometry(cartSrc.odim.xsize, cartSrc.odim.ysize);
+			resources.composite.setGeometry(cartSrc.odim.geometry.width, cartSrc.odim.geometry.height);
 			mout.note() << "\t --cSize '" << resources.composite.getFrameWidth() << 'x' << resources.composite.getFrameHeight() << "'" << mout.endl;
 		}
 

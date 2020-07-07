@@ -68,10 +68,15 @@ public:
 		dst2.setView(d2);
 	}
 
+
+	// Unneeded!? (Unchanged)
+	/*
 	inline
 	void setImageLimits() const {
 		src.adjustCoordinateHandler(coordinateHandler);
 	}
+	*/
+
 
 	virtual
 	void initialize();

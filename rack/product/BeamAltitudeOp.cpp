@@ -58,35 +58,35 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst
 
 	/*
 	//dst.odim = src.odim; // elangle, starttime etc.
-	dst.odim.gain = 123.456;
+	dst.odim.scale = 123.456;
 	mout.warn() << "dst.odim" << dst.odim << mout.endl;
-	mout.error() << "dst.odim.gain" << dst.odim.gain << mout.endl;
+	mout.error() << "dst.odim.scale" << dst.odim.scale << mout.endl;
 	*/
 	/*
 	const std::type_info &t = drain::Type::getType(odim.type.at(0));
 	dst.data.setType(t);
 	dst.odim.setTypeDefaults(t);
-	dst.odim.gain     = odim.gain;
+	dst.odim.scale     = odim.scale;
 	dst.odim.offset   = odim.offset;
 	//dst.odim.nodata   = odim.nodata;
 	//dst.odim.undetect = odim.undetect;
 	dst.odim.quantity = "HGHT";
-	dst.odim.nrays = 1;
-	dst.odim.rscale = (static_cast<double>(src.odim.nbins) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.nbins);
+	dst.odim.geometry.height = 1;
+	dst.odim.rscale = (static_cast<double>(src.odim.geometry.width) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.geometry.width);
 	 */
 
 	//dst.odim.elangle = src.odim.elangle;
 
-	//mout.debug(1) << "target nbins:" << dst.odim.nbins << " rscale:" << dst.odim.rscale << mout.endl;
+	//mout.debug(1) << "target nbins:" << dst.odim.geometry.width << " rscale:" << dst.odim.rscale << mout.endl;
 
-	//dst.data.setGeometry(dst.odim.nbins, 1);
+	//dst.data.setGeometry(dst.odim.geometry.width, 1);
 	const double max = drain::Type::call<drain::typeMax, double>(dst.data.getType());  //dst.data.scaling.getMax<double>();
 
-	const double gainMetres = 1000*odim.gain;
+	const double gainMetres = 1000*odim.scale;
 	const double eta = src.odim.elangle * drain::DEG2RAD;
 	double h;
-	for (long int i = 0; i < dst.odim.nbins; ++i) {
-		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.gain << " m\n";
+	for (long int i = 0; i < dst.odim.geometry.width; ++i) {
+		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
 		h = Geometry::heightFromEtaGround(eta, i*dst.odim.rscale)/gainMetres;
 		if (h < max)
 			dst.data.put(i, h);

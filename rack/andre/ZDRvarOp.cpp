@@ -78,7 +78,7 @@ void ZDRvarOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	if ((windowWidth>0) && (windowHeight>0)){
 		Image tmp;
 		const int w = windowWidth / srcData.odim.rscale;
-		const int h = windowHeight * 360.0 / srcData.odim.nrays;
+		const int h = windowHeight * 360.0 / srcData.odim.geometry.height;
 		SlidingWindowMedianOp median;
 
 		median.setSize(w,h);

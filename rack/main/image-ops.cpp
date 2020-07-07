@@ -242,14 +242,14 @@ void ImageOpRacklet::exec() const {
 
 			/// Apply physical values as thresholds etc
 			if (ImageOpRacklet::physical)
-				srcData.data.setScaling(srcData.odim.gain, srcData.odim.offset);
+				srcData.data.setScaling(srcData.odim.scale, srcData.odim.offset);
 			else
 				srcData.data.setScaling(1.0, 0.0); // WARNING: in future, direct linking with ODIM offset and gain will cause unexpected changes?
 
 			if (NEW_QUANTITY){
 				mout.debug() << "new quantity:" << dstQuantity << mout.endl;
 				dstData.odim.updateLenient(srcData.odim);
-				dstData.odim.gain = 0.0;
+				dstData.odim.scale = 0.0;
 				//dstData.odim.quantity = dstQuantity;
 				// mout.note() << "dstData.odim: " << dstData.odim << mout.endl;
 				dstData.odim.addShortKeys();
@@ -267,7 +267,7 @@ void ImageOpRacklet::exec() const {
 				dstData.data.setType(dstData.odim.type);
 				//dstData.setPhysicalRange();
 				dstData.data.getScaling().setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
-				dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+				dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
 				//dstData.se
 				// dstData.data.setPhysicalScale(dstData.odim.getMin(), dstData.odim.getMax());
 				dstData.data.setName(dstQuantity);
@@ -328,7 +328,7 @@ void ImageOpRacklet::exec() const {
 					//mout.note() << "name: " << srcQuality.data.getName() << mout.endl;
 
 					srcQuality.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-					srcQuality.data.setScaling(srcQuality.odim.gain, srcQuality.odim.offset);
+					srcQuality.data.setScaling(srcQuality.odim.scale, srcQuality.odim.offset);
 					srcTray.alpha.set(srcQuality.data);
 
 					PlainData<dst_t> & dstQuality = NEW_QUANTITY ? dstData.getQualityData() : srcQuality;
@@ -348,7 +348,7 @@ void ImageOpRacklet::exec() const {
 					PlainData<dst_t> & dstQuality = NEW_QUANTITY ? dstData.getQualityData() : srcQuality;
 
 					srcQuality.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-					srcQuality.data.setScaling(srcQuality.odim.gain, srcQuality.odim.offset);
+					srcQuality.data.setScaling(srcQuality.odim.scale, srcQuality.odim.offset);
 					srcTray.alpha.set(srcQuality.data);
 
 					dstQuality.copyEncoding(srcQuality);
@@ -373,7 +373,7 @@ void ImageOpRacklet::exec() const {
 			PlainData<dst_t> & srcQuality = dstDataSet.getQualityData();
 
 			srcQuality.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
-			srcQuality.data.setScaling(srcQuality.odim.gain, srcQuality.odim.offset);
+			srcQuality.data.setScaling(srcQuality.odim.scale, srcQuality.odim.offset);
 			srcTray.alpha.set(srcQuality.data);
 
 			PlainData<dst_t> & dstQuality = NEW_QUANTITY ? dstDataSet.getData(dstQuantity).getQualityData() : srcQuality;

@@ -74,14 +74,14 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	setEncoding(srcData.odim, dstData);
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+	dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
 
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
 	/// Some product generators may have user defined accumulation methods.
 	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":",","));
 	accumulator.checkCompositingMethod(dstData.odim);
-	accumulator.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+	accumulator.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
 	mout.debug() << (const Accumulator &) accumulator << mout.endl;

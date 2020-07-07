@@ -67,18 +67,18 @@ void PolarSector::adjustIndices(const PolarODIM & odim){
 	bin1 = static_cast<int>((range1 - odim.rstart) / odim.rscale*1000.0);
 	bin2 = static_cast<int>((range2 - odim.rstart) / odim.rscale*1000.0);
 
-	if (bin1 >= odim.nbins)
-		bin1 = odim.nbins-1;
+	if (bin1 >= odim.geometry.width)
+		bin1 = odim.geometry.width-1;
 
-	if (bin2 > odim.nbins)
-		bin2 = odim.nbins;
+	if (bin2 > odim.geometry.width)
+		bin2 = odim.geometry.width;
 
 	/// todo: re-adjust ranges?
 
-	ray1 = static_cast<int>(azm1/360.0*odim.nrays);
-	ray2 = static_cast<int>(azm2/360.0*odim.nrays);
-	ray1 = ray1 %  odim.nrays;
-	ray2 = ray2 % (odim.nrays*2);
+	ray1 = static_cast<int>(azm1/360.0*odim.geometry.height);
+	ray2 = static_cast<int>(azm2/360.0*odim.geometry.height);
+	ray1 = ray1 %  odim.geometry.height;
+	ray2 = ray2 % (odim.geometry.height*2);
 
 
 }
@@ -92,14 +92,14 @@ void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1
 		ray2 = this->ray2;
 	}
 	else {
-		ray1 = this->azm1*srcOdim.nrays/360.0;
-		ray2 = this->azm2*srcOdim.nrays/360.0;
+		ray1 = this->azm1*srcOdim.geometry.height/360.0;
+		ray2 = this->azm2*srcOdim.geometry.height/360.0;
 	}
 
-	ray1 = ray1 % srcOdim.nrays;
-	ray2 = ray2 % srcOdim.nrays;
+	ray1 = ray1 % srcOdim.geometry.height;
+	ray2 = ray2 % srcOdim.geometry.height;
 	if (ray2 < ray1)
-		ray2 += srcOdim.nrays;
+		ray2 += srcOdim.geometry.height;
 
 	if (this->bin2 != this->bin1 ){
 		bin1 = this->bin1;
@@ -115,9 +115,9 @@ void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1
 		bin1 = 0;
 	}
 
-	if (bin2 > srcOdim.nbins){
+	if (bin2 > srcOdim.geometry.width){
 		mout.warn() << "bin2 too large (" << bin2 << "), setting to nbins"<< mout.endl;
-		bin2 = srcOdim.nbins;
+		bin2 = srcOdim.geometry.width;
 	}
 
 	if (bin1 > bin2){

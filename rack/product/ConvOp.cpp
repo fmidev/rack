@@ -46,9 +46,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/PolarSmoother.h"
 
 
+
 #include "CappiOp.h"
 #include "EchoTopOp.h"
 #include "MaxEchoOp.h"
+
+#include "PolarSlidingWindowOp.h"
 
 #include "ConvOp.h"
 
@@ -86,6 +89,8 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	maxOp.processDataSets(srcSweeps, dstProduct);
 	Data<PolarDst> & maxEcho = dstProduct.getData(maxOp.odim.quantity); // ensure
 	//mout.warn() << "maxEcho " << maxEcho.odim << mout.endl;
+	maxEcho.updateTree2();
+	mout.warn() << "maxEcho " << maxEcho << mout.endl;
 
 	CappiOp cappiOp;
 	if (USE_FCELL){
@@ -109,7 +114,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 
 
 
-	// Product
+	// Product (ie. the result)
 	Data<PolarDst> & dstData = dstProduct.getData(odim.quantity); // main data
 	qm.setQuantityDefaults(dstData, odim.quantity);
 	// See code at the end
@@ -127,10 +132,9 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData();
 	qm.setQuantityDefaults(dstQuality, "QIND");
 
-	const drain::image::Geometry g(dstData.odim.nbins, dstData.odim.nrays);
+	const drain::image::Geometry g(dstData.odim.geometry.width, dstData.odim.geometry.height);
 	dstData.data.setGeometry(g);
 	dstData.data.clear();
-	//@ dstData.updateTree();
 	//mout.warn() << "Destination data:" << dstData << mout.endl;
 
 	dstQuality.data.setGeometry(g);
@@ -155,8 +159,25 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	qm.setQuantityDefaults(fuzzyCell, "PROB");
 	//@ fuzzyCell.updateTree();  // if (ProductOp::outputDataVerbosity > 0){
 	//
-	if (USE_FCELL)
+	if (USE_FCELL){
+		//RadarWindowAvg<RadarWindowConfig> avg;
+		//PolarSlidingAvgOp avgOp;
+		//avgOp.processData()
 		PolarSmoother::filter(dstData.odim, cappi.data, fuzzyCell.data, cellDiameter*1000.0);
+
+		// NEW
+
+		Data<PolarDst> & fuzzyCell2 = dstProduct.getData("FCELL2");
+		qm.setQuantityDefaults(fuzzyCell2, "PROB");
+		PolarSlidingAvgOp avgOp;
+		//avgOp.conf.
+		avgOp.conf.widthM  = cellDiameter*1000.0; // smoothAzm;
+		avgOp.conf.heightD = cellDiameter*1000.0; // smoothRad;
+		mout.warn() << "cappi.odim: " << cappi.odim << mout.endl;
+		//avgOp.setPixelConf();
+		avgOp.processPlainData(maxEcho, fuzzyCell2);
+
+	}
 
 	Data<PolarDst> & fuzzyEchoTop = dstProduct.getData("FETOP");
 	qm.setQuantityDefaults(fuzzyEchoTop, "PROB");
@@ -168,9 +189,9 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	fuzzyEchoTopOp.process(echoTop.data, fuzzyEchoTop.data);
 
 	drain::image::DistanceTransformExponentialOp smoothOp;
-	//smoothOp.distanceModel.setRadius(smoothRad * 1000.0 / srcData.odim.rscale, smoothAzm * static_cast<double>(srcData.odim.nbins) / 360.0);
+	//smoothOp.distanceModel.setRadius(smoothRad * 1000.0 / srcData.odim.rscale, smoothAzm * static_cast<double>(srcData.odim.geometry.width) / 360.0);
 	double horz = smoothRad * 1000.0 / dstData.odim.rscale;
-	double vert = smoothAzm * static_cast<double>(dstData.odim.nbins) / 360.0;
+	double vert = smoothAzm * static_cast<double>(dstData.odim.geometry.width) / 360.0;
 	smoothOp.setRadius(horz, vert);
 	// Consider GaussianPolar
 	if ((horz > 0) && (vert > 0.0)){
@@ -216,7 +237,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	//drain::image::GammaOp(gamma).process(dstData.data, dstData.data);
 
 	if (!encodingRequest.empty()){  // Larissa
-		const double gainOrig = dstData.odim.gain;
+		const double gainOrig = dstData.odim.scale;
 		dstData.odim.setValues(encodingRequest);
 		Image::iterator  it = dstData.data.begin();
 		Image::iterator mit = maxEcho.data.begin();

@@ -49,8 +49,8 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("where:nbins",  nbins = 0L);
-		reference("where:nrays",  nrays = 0L);
+		reference("where:nbins",  geometry.width  = 0L); //  nb ins = 0L);
+		reference("where:nrays",  geometry.height = 0L); //  nr ays = 0L);
 		reference("where:rscale", rscale = 0.0);
 		reference("where:elangle", elangle = 0.0);
 		reference("where:rstart", rstart = 0.0);
@@ -92,10 +92,10 @@ void PolarODIM::updateLenient(const PolarODIM & odim){
 double PolarODIM::getMaxRange(bool warn) const {
 
 	if (!warn)
-		return rstart + static_cast<double>(nbins)*rscale;
+		return rstart + static_cast<double>(geometry.width)*rscale;
 	else {
 		drain::Logger mout("PolarODIM", __FUNCTION__);
-		if (nbins == 0){
+		if (geometry.width == 0){
 			mout.warn() << "nbins==0" << mout.endl;
 		}
 		if (rscale == 0){
@@ -103,7 +103,7 @@ double PolarODIM::getMaxRange(bool warn) const {
 			// mout.warn() << "rscale==0, returning default range=" << PolarODIM::defaultRange << 'm' << mout.endl;
 			// return 250000;
 		}
-		double r = rscale*static_cast<double>(nbins);
+		double r = rscale*static_cast<double>(geometry.width);
 		if (r == 0.0){
 			if (PolarODIM::defaultRange > 0){
 				r = PolarODIM::defaultRange;

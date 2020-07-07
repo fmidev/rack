@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Geometry.h"
 #include "radar/Doppler.h"
-#include "radar/PolarSmoother.h"
+//#include "radar/PolarSmoother.h"
 
 #include "DopplerInversionWindow.h"
 
@@ -246,7 +246,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 		vradDevOp.window.countThreshold = (width*height)/5;  // require 20% of valid samples
 		//const double pos = 5.4321/vradSrc.odim.NI;
 		//vradDevOp.window.functor.set( 0.8*pos, 1.2*pos, 255.0 );
-		vradDevOp.window.functor.gain = 0.01;
+		vradDevOp.window.functor.scale = 0.01;
 		vradDevOp.window.functor.offset = 0.0;
 		vradDevOp.window.odimSrc = srcData.odim;
 		vradDevOp.filter(srcData.data, dstQuality.data);

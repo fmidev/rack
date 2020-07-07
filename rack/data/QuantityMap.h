@@ -189,7 +189,7 @@ public:
 		}
 		// Redesign all this...
 		dstData.data.setType(dstData.odim.type);
-		dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+		dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
 
 		//if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
 		if ((q == "QIND") || (q == "PROB")){

@@ -68,7 +68,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	//const int w = src.odim.getBeamBins(lengthMin*1000.0); // (static_cast<int>(lengthMin)*1000)/src.odim.rscale;
 
 	/// Maximum segment height in pixels.
-	const int h = src.odim.getAzimuthalBins(thicknessMax); // (thicknessMax*src.odim.nrays)/360;
+	const int h = src.odim.getAzimuthalBins(thicknessMax); // (thicknessMax*src.odim.geometry.height)/360;
 
 	/// Maximum segment thickness in degrees, relative to full circle (360deg)
 	const double hD = static_cast<double>(thicknessMax)/360.0;

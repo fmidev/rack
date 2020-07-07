@@ -70,7 +70,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	//
 	dstDataU.data.setGeometry(count, 1);
 	dstDataU.odim.quantity = "X"; // ???
-	//dstDataU.odim.gain = 1.0;
+	//dstDataU.odim.scale = 1.0;
 	dstDataU.data.fill(dstDataU.odim.undetect);
 	//initDst(srcData, dstDataU);
 	//
@@ -79,7 +79,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	dstDataV.setEncoding(typeid(double));
 	dstDataV.data.setGeometry(count, 1);
 	dstDataV.odim.quantity = "Y";
-	//dstDataV.odim.gain = 1.0;
+	//dstDataV.odim.scale = 1.0;
 	dstDataV.data.fill(dstDataV.odim.undetect);
 	//initDst(srcData, dstDataV);
 
@@ -96,7 +96,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	size_t index = 0;
 	int j2;
 	for (int j=w.ray1; j<w.ray2; ++j){
-		j2 = (j+srcData.odim.nrays)%srcData.odim.nrays;
+		j2 = (j+srcData.odim.geometry.height)%srcData.odim.geometry.height;
 		for (int i = w.bin1; i<w.bin2; ++i){
 			d = srcData.data.get<double>(i, j2);
 			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
@@ -155,7 +155,7 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	PlainData<PolarDst> & dstData1 = dstProduct.getData("VRAD_NORM");
 	dstData1.setEncoding(srcData.odim.type);
 	dstData1.odim.setRange(-1.0, 1.0);
-	dstData1.data.setScaling(dstData1.odim.gain, dstData1.odim.offset);
+	dstData1.data.setScaling(dstData1.odim.scale, dstData1.odim.offset);
 	dstData1.data.setGeometry(count, 1);
 	dstData1.odim.quantity = "VRAD_NORM";
 	dstData1.data.fill(dstData1.odim.undetect);
@@ -182,8 +182,8 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	for (int j=w.ray1; j<w.ray2; ++j){
 
 		azm = srcData.odim.getBeamWidth() * static_cast<double>(j);
-		j1 = (j-1 + srcData.odim.nrays) % srcData.odim.nrays;
-		j2 = (j+1 + srcData.odim.nrays) % srcData.odim.nrays;
+		j1 = (j-1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
+		j2 = (j+1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
 
 		for (int i = w.bin1; i<w.bin2; ++i){
 

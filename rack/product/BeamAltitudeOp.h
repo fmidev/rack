@@ -65,13 +65,13 @@ public:
 		dataSelector.count = 1;
 
 		this->allowedEncoding.reference("type",   odim.type = "C");
-		this->allowedEncoding.reference("gain",   odim.gain = 0.1);
+		this->allowedEncoding.reference("gain",   odim.scale = 0.1);
 		this->allowedEncoding.reference("offset", odim.offset = 0.0);
 
-		odim.nrays = 1;
+		odim.geometry.height = 1;
 
 		// allowedEncoding.reference("type", odim.type, "S");
-		// allowedEncoding.reference("gain", odim.gain, 0.001);
+		// allowedEncoding.reference("gain", odim.scale, 0.001);
 
 	};
 
@@ -82,10 +82,10 @@ protected:
 
 	virtual
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		dstData.odim.nbins = (odim.nbins>0) ? odim.nbins : srcODIM.nbins;
-		dstData.odim.nrays = 1;
-		dstData.odim.rscale = (static_cast<double>(srcODIM.nbins) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.nbins);
-		dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+		dstData.odim.geometry.width = (odim.geometry.width>0) ? odim.geometry.width : srcODIM.geometry.width;
+		dstData.odim.geometry.height = 1;
+		dstData.odim.rscale = (static_cast<double>(srcODIM.geometry.width) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.geometry.width);
+		dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
 	};
 
 

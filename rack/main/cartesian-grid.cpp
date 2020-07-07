@@ -83,7 +83,7 @@ void CartesianGrid::exec() const {
 
 	geoFrame.setBoundingBoxD(bboxD);
 	geoFrame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
-	geoFrame.setGeometry(odim.xsize, odim.ysize);
+	geoFrame.setGeometry(odim.geometry.width, odim.geometry.height);
 
 	if (odim.projdef.empty()){
 		mout.warn() << "projdef missing, returning" << mout.endl;

@@ -80,7 +80,7 @@ public:
 		odim.quantity = "RATE";
 		odim.type = "S";
 		odim.setTypeDefaults();
-		odim.gain = 0.0001;
+		odim.scale = 0.0001;
 		odim.offset = 0.0;
 		 */
 
@@ -89,18 +89,18 @@ public:
 		/*
 		allowedEncoding.clear();
 		allowedEncoding.reference("type", odim.type);
-		allowedEncoding.reference("gain", odim.gain);
+		allowedEncoding.reference("gain", odim.scale);
 		allowedEncoding.reference("offset", odim.offset);
 		//allowedEncoding.reference("freeze", odim.freeze);
 		allowedEncoding.reference("type", odim.type, "S");
-		allowedEncoding.reference("gain", odim.gain);
+		allowedEncoding.reference("gain", odim.scale);
 		allowedEncoding.reference("offset", odim.offset);
 		*/
 
 		/*
 		allowedEncoding.reference("rscale", odim.rscale);
-		allowedEncoding.reference("nrays", odim.nrays);
-		allowedEncoding.reference("nbins", odim.nbins);
+		allowedEncoding.reference("nrays", odim.geometry.height);
+		allowedEncoding.reference("nbins", odim.geometry.width);
 		*/
 
 	};

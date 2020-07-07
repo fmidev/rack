@@ -147,15 +147,7 @@ void DataSelector::update(){
 		// convertRegExpToRanges(path);
 		// mout.note() << "(also) converted obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
 	}
-	path = pathMatcher;
-	/*
-	else {
-		pathMatcher.clear();
-		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET, dataset.min, dataset.max);
-		pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA, data.min, data.max);
-		// mout.warn() << "matcher: " << pathMatcher << '|' << *this << mout.endl;
-	}
-	*/
+	path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
 
 	quantityRegExp.clear();
 	qualityRegExp.clear();

@@ -77,7 +77,7 @@ void AccumulationArray::clear(){
 
 std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & cumulator){
 	ostr << "AccumulationArray " << cumulator.getWidth() << 'x' << cumulator.getHeight() << ' ';
-	//ostr << cumulator.getMethodStr() << '['<< cumulator.getP()  << ',' << cumulator.getR() << ']' << " gain,offset:" << cumulator.getGain() << ',' << cumulator.getOffset() << ' ';
+	//ostr << cumulator.getMethodStr() << '['<< cumulator.getP()  << ',' << cumulator.getR() << ']' << " scale,offset:" << cumulator.getGain() << ',' << cumulator.getOffset() << ' ';
 	return ostr;
 }
 

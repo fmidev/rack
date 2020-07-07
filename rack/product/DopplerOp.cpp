@@ -74,7 +74,7 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 		dstData.odim.setRange(-NI_4,+NI_4);
 	}
 
-	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+	dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
 
 	const double minPhys = dstData.odim.getMin();
 	const double maxPhys = dstData.odim.getMax();
@@ -87,8 +87,8 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 	for (size_t j=0; j<srcData.data.getHeight(); ++j){
 
 			//azm = srcData.odim.getAzimuth(j);
-			j1 = (j-1 + srcData.odim.nrays) % srcData.odim.nrays;
-			j2 = (j+1 + srcData.odim.nrays) % srcData.odim.nrays;
+			j1 = (j-1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
+			j2 = (j+1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
 
 			for (size_t i=0; i<srcData.data.getWidth(); ++i){
 
@@ -404,7 +404,7 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	ProductBase::applyODIM(dstData.odim, odim, true);
-	dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+	dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.relative_NI_threshold = relative_NI_threshold;

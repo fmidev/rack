@@ -107,9 +107,9 @@ class PolarSector : public drain::BeanLike {
 
 	inline
 	int getSafeRay(const PolarODIM & odim, int j){
-		j = j%odim.nrays;
+		j = j%odim.geometry.height;
 		if (j < 0)
-			j += odim.nrays;
+			j += odim.geometry.height;
 		return j;
 	}
 

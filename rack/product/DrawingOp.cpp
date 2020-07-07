@@ -88,13 +88,13 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setRange(p1,p2);
 		w.adjustIndices(dstData.odim);
 		if (w.bin2 > w.bin1){
-			for (int j=0; j<dstData.odim.nrays; ++j){
+			for (int j=0; j<dstData.odim.geometry.height; ++j){
 				dstData.data.put(w.bin1, j, marker);
 				dstData.data.put(w.bin2, j, marker);
 			}
 		}
 		else {
-			for (int j=0; j<dstData.odim.nrays; ++j){
+			for (int j=0; j<dstData.odim.geometry.height; ++j){
 				dstData.data.put(w.bin1, j, marker);
 			}
 		}
@@ -109,7 +109,7 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		}
 		break;
 	case 's': // sector
-		w.setAzimuth(p1,p2); //odim.nrays;
+		w.setAzimuth(p1,p2); //odim.geometry.height;
 		w.setRange(p3,p4);
 		w.adjustIndices(dstData.odim);
 		mout.debug() << w << mout.endl;
@@ -120,7 +120,7 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		}
 		j1 = w.getSafeRay(dstData.odim, w.ray1);
 		j2 = w.getSafeRay(dstData.odim, w.ray2);
-		//j0 = (w.ray2+dstData.odim.nrays) % dstData.odim.nrays;
+		//j0 = (w.ray2+dstData.odim.geometry.height) % dstData.odim.geometry.height;
 		for (int i = w.bin1; i<w.bin2; ++i){
 			dstData.data.put(i, j1, marker);
 			dstData.data.put(i, j2, marker);

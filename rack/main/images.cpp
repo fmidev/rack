@@ -233,7 +233,7 @@ public:
 		mout.debug(2) << "copier: " << copier << mout.endl;
 		copier.traverseImageFrame(alphaSrcODIM, alphaSrc, copier.odim, img.getAlphaChannel());
 
-		img.properties["what.gainAlpha"]   = copier.odim.gain;
+		img.properties["what.scaleAlpha"]   = copier.odim.scale;
 		img.properties["what.offsetAlpha"] = copier.odim.offset;
 
 	}
@@ -282,7 +282,7 @@ public:
 		//hi5::NodeHi5 & node = (*resources.currentHi5)(path).data;
 		drain::image::Image &srcImg = (*resources.currentHi5)(path).data.dataSet; // Yes non-const, see below
 		EncodingODIM odim(srcImg);
-		srcImg.setScaling(odim.gain, odim.offset);
+		srcImg.setScaling(odim.scale, odim.offset);
 
 		// Dst image
 		// Create a copy (getResources().colorImage or getResources().grayImage), and point *img to it.
@@ -515,7 +515,7 @@ public:
 
 
 		if (imgOdim.quantity.substr(0,4) != "VRAD"){
-			op.scale   = imgOdim.gain;   // props.get("what:gain", 1.0);
+			op.scale   = imgOdim.scale;   // props.get("what:gain", 1.0);
 			op.offset  = imgOdim.offset; // props.get("what:offset",0.0);
 		}
 		else { // rescale relative to NI (percentage -100% ... +100%)
@@ -587,7 +587,7 @@ public:
 
 			//applyODIM(data.odim, dummy);
 			ProductBase::completeEncoding(data.odim, resources.targetEncoding);
-			data.data.setScaling(data.odim.gain, data.odim.offset);
+			data.data.setScaling(data.odim.scale, data.odim.offset);
 			data.odim.quantity = dstQuantity;
 
 			/// MAIN

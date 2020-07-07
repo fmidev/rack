@@ -69,7 +69,9 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	// First, check if it is a simple, single prefix
+	//mout.warn() << "current: " << flags << ", setting prefix=" << prefix << ", indexed=" << indexed << mout.endl;
+
+	// First, check if it is a simple, single prefix (conforming to base class ODIMPathElem)
 	if (ODIMPathElem::extractPrefix(prefix, indexed)){
 		//flags = this->group;
 		//mout.warn() << " -> setting single-type " << prefix << "=" << group << " => " << flags << mout.endl;
@@ -79,18 +81,19 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 	}
 
 	try {
+		//mout.warn() << "current: " << flags;
 		flags = prefix;
-		//mout.warn() << " -> setting " << prefix << '=' << flags.value << mout.endl;
+		// mout.warn() << " => flags=" << flags << '=' << flags.value  << mout.endl;
 		if (indexed){
-			if (flags.value & ODIMPathElem::ARRAY){
-				mout.note() << " -> adjusting 'data' to indexed 'data[]'" << mout.endl;
+			if (flags.isSet(ODIMPathElem::ARRAY)){ //  value & ODIMPathElem::ARRAY){
+				mout.debug() << " -> adjusting 'data' to indexed 'data[]'" << mout.endl;
 				flags.unset(ODIMPathElem::ARRAY);
 				flags.set(ODIMPathElem::DATA);
 			}
 		}
 		else {
-			if (flags.value & ODIMPathElem::DATA){
-				mout.note() << " -> adjusting indexed 'data[]' to 'data'" << mout.endl;
+			if (flags.isSet(ODIMPathElem::DATA)){ // if (flags.value & ODIMPathElem::DATA){
+				mout.debug() << " -> adjusting indexed 'data[]' to 'data'" << mout.endl;
 				flags.unset(ODIMPathElem::DATA);
 				flags.set(ODIMPathElem::ARRAY);
 			}

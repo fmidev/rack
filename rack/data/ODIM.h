@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/ReferenceMap.h>
 #include <drain/util/Rectangle.h>
 #include <drain/util/Time.h>
+#include <drain/image/Geometry.h>
 
 #include "hi5/Hi5.h"
 #include "radar/Constants.h"
@@ -74,7 +75,7 @@ namespace rack {
 
 
 /// ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)
-class ODIM : public EncodingODIM {
+class ODIM : public EncodingODIM { //, public  {
 
 public:
 
@@ -95,6 +96,8 @@ public:
 
 	inline
 	~ODIM(){};
+
+	drain::image::AreaGeometry geometry;
 
 	/// Applied 8-digit date format, "%Y%m%d"
 	static
@@ -132,8 +135,9 @@ public:
 	/// Sets number of bins (nbins) and number of rays (nrays)
 	virtual
 	void setGeometry(size_t cols, size_t rows){
-		drain::Logger mout(__FUNCTION__,__FILE__);
-		mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
+		geometry.setArea(cols, rows);
+		// drain::Logger mout(__FUNCTION__,__FILE__);
+		// mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
 	};
 
 	/*
@@ -277,6 +281,11 @@ private:
 };
 
 
+inline
+std::ostream & operator<<(std::ostream &ostr, const ODIM & odim){
+	odim.drain::SmartMap<drain::Referencer>::toOStream(ostr);
+	return ostr;
+}
 
 }  // namespace rack
 

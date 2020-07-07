@@ -69,7 +69,7 @@ public:
 		odim.quantity = "";  // will be chosen by dataselector
 
 		allowedEncoding.reference("type", odim.type = "d");
-		//allowedEncoding.reference("gain", odim.gain, 0.5);
+		//allowedEncoding.reference("gain", odim.scale, 0.5);
 		//allowedEncoding.reference("offset", odim.offset, -32.0);
 
 		dataSelector.quantity = "^DBZH$";

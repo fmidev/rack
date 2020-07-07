@@ -110,7 +110,7 @@ protected:
 		dataSelector.count = 1;
 		allowedEncoding.clear();
 		allowedEncoding.reference("type", odim.type);
-		allowedEncoding.reference("gain", odim.gain);
+		allowedEncoding.reference("gain", odim.scale);
 
 	};
 
@@ -147,7 +147,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 
 
 
-	if (odim.gain != 0.0){ // NOTE: now dst.odim.gain at least default (1.0)
+	if (odim.scale != 0.0){ // NOTE: now dst.odim.scale at least default (1.0)
 		mout.warn() << "Init with ODIM: " << EncodingODIM(odim)  << mout.endl;
 		//ProductOp::
 		applyODIM(dst.odim, odim);
@@ -159,7 +159,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 			//mout.note() << EncodingODIM(inputODIM) << mout.endl;
 			mout.debug()  << "small int: " << EncodingODIM(dst.odim)  << mout.endl;
 			mout.debug(1) << "small int: " << dst.data  << mout.endl;
-			// dstData.data.setScaling(dstData.odim.gain, dstData.odim.offset);
+			// dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
 		}
 		else {
 			if (drain::Type::call<drain::typeIsInteger>(dst.data.getType()))
@@ -171,7 +171,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
 	ProductBase::completeEncoding(dst.odim, encodingRequest);
 
-	dst.data.setScaling(dst.odim.gain, dst.odim.offset);
+	dst.data.setScaling(dst.odim.scale, dst.odim.offset);
 	mout.debug() << "final dst: " << dst.data  << mout.endl;
 }
 
@@ -234,7 +234,7 @@ void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const Pola
 	}
 
 	if (pixelConf.height == 0){
-		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.nrays) <<"), setting window height=1 " << mout.endl;
+		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.geometry.height) <<"), setting window height=1 " << mout.endl;
 		pixelConf.height = 1;
 	}
 
@@ -373,7 +373,7 @@ public:
 		//this->conf.relativeScale = true;
 		odim.quantity = "VRAD_DEV"; // VRAD_C ?
 		odim.offset = 0.0;
-		odim.gain   = 0.0;
+		odim.scale   = 0.0;
 		odim.type = "C";
 		odim.nodata = 255; // TODO
 	};
@@ -409,9 +409,9 @@ public:
 
 		//this->conf.relativeScale = true;
 		odim.quantity = "VRAD_DEV"; // VRAD_C ?
-		odim.gain   = 1.0/200.0;
-		odim.offset = -odim.gain;
-		//odim.gain   = 1.0/200.0;
+		odim.scale   = 1.0/200.0;
+		odim.offset = -odim.scale;
+		//odim.scale   = 1.0/200.0;
 		odim.type = "C";
 		odim.nodata = 255; // TODO
 	};

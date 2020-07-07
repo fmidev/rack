@@ -203,6 +203,8 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & d
 
 	ProductBase::completeEncoding(dst.odim, this->encodingRequest);
 
+	// NEW 2020/06
+	dst.data.setScaling(dst.odim.scale, dst.odim.offset);
 	/// This applies always.
 	//dst.odim.product = odim.product;
 }
@@ -341,10 +343,17 @@ void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<
 
 	const Data<src_t > & srcData = srcSweep.getFirstData();
 
-	Data<DstType<MD> > & dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();
+	mout.debug() << "target quantity: " << odim.quantity << mout.endl;
 
-	if (dstData.odim.quantity.empty())
-		dstData.odim.quantity = odim.quantity;
+	// NEW 2020/06
+	const std::string & quantity = !odim.quantity.empty() ? odim.quantity : srcData.odim.quantity;
+	Data<DstType<MD> > & dstData =  dstProduct.getData(quantity);
+	dstData.odim.quantity = quantity;
+
+	// OLD
+	// Data<DstType<MD> > & dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();
+	//if (dstData.odim.quantity.empty())
+	//	dstData.odim.quantity = odim.quantity;
 
 	//mout.debug() << "calling setEncoding" << mout.endl;
 	//setEncoding(srcData.odim, dstData.odim);

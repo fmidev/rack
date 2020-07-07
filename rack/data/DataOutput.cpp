@@ -234,10 +234,14 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 		ostr << fill << id << " -> " << '"' << quoted(p) << '"';
 		//if (id & 2) ostr <<  " [style=dotted] ";
 		ostr << " ;\n"; // [style=invis]
-		// TEST
+
+		// Display variable collector (TOO DETAILED!)
+		/*
 		if (!ROOT)
 			//ostr << fill << quoted(p) << ":ATTR -> " << quoted(path) << ":IMG" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
 			ostr << fill << quoted(p) << " -> " << quoted(path) << "" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
+		*/
+
 		ostr << '\n';
 
 		indexPrev = id;

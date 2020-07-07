@@ -160,7 +160,7 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 	/*
 	else if (!encoding.empty()){
 		mout.note() << EncodingODIM(productODIM) << mout.endl;
-		mout.warn() << " productODIM.gain set, tried to reset with: " << encoding << mout.endl;
+		mout.warn() << " productODIM.scale set, tried to reset with: " << encoding << mout.endl;
 	}
 	*/
 

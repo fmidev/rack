@@ -65,15 +65,15 @@ public:
 	PolarProductOp(const std::string & name = __FUNCTION__, const std::string & description = "") : VolumeOp<PolarODIM>(name, description) {
 
 		allowedEncoding.reference("type", odim.type = "C");
-		allowedEncoding.reference("gain", odim.gain);
+		allowedEncoding.reference("gain", odim.scale);
 		allowedEncoding.reference("offset", odim.offset);
 		// 2018
 		allowedEncoding.reference("undetect", odim.undetect);
 		allowedEncoding.reference("nodata", odim.nodata);
 
 		allowedEncoding.reference("rscale", odim.rscale);
-		allowedEncoding.reference("nrays", odim.nrays);
-		allowedEncoding.reference("nbins", odim.nbins);
+		allowedEncoding.reference("nrays", odim.geometry.height);
+		allowedEncoding.reference("nbins", odim.geometry.width);
 
 		aboveSeaLevel = true;
 
@@ -91,10 +91,10 @@ protected:
 
 	inline
 	void copyPolarGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		dstData.odim.nbins  = srcODIM.nbins;
-		dstData.odim.nrays  = srcODIM.nrays;
+		dstData.odim.geometry.width  = srcODIM.geometry.width;
+		dstData.odim.geometry.height  = srcODIM.geometry.height;
 		dstData.odim.rscale = srcODIM.rscale;
-		dstData.data.setGeometry(dstData.odim.nbins, dstData.odim.nrays);
+		dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
 		if (!dstData.odim.type.empty()){
 			dstData.data.setType(dstData.odim.type.at(0));
 		}

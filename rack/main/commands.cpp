@@ -319,7 +319,7 @@ public:
 						mout.warn() << "quality data exists already, overwriting" << mout.endl;
 					dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 					qmap.setQuantityDefaults(dstQuality, "QIND");
-					dstQuality.data.setScaling(dstQuality.odim.gain, dstQuality.odim.offset);
+					dstQuality.data.setScaling(dstQuality.odim.scale, dstQuality.odim.offset);
 					//@ dstQuality.updateTree();
 				}
 			}
@@ -330,7 +330,7 @@ public:
 					mout.warn() << "quality data exists already, overwriting" << mout.endl;
 				dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 				qmap.setQuantityDefaults(dstQuality, "QIND");
-				dstQuality.data.setScaling(dstQuality.odim.gain, dstQuality.odim.offset);
+				dstQuality.data.setScaling(dstQuality.odim.scale, dstQuality.odim.offset);
 				//@ dstQuality.updateTree();
 			}
 			//@  DataTools::updateInternalAttributes(dstDataSetH5);
@@ -768,7 +768,7 @@ public:
 						if (dstData.odim.quantity.empty()){
 							dstData.odim.quantity = dit->first;
 						}
-						if (dstData.odim.gain == 0){
+						if (dstData.odim.scale == 0){
 							mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
 							getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
 						}
@@ -1268,15 +1268,15 @@ public:
 
 		parameters.separator = ',';
 		parameters.reference("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		parameters.reference("gain", odim.gain = 0.0, "scaling coefficient");
+		parameters.reference("gain", odim.scale = 0.0, "scaling coefficient");
 		parameters.reference("offset", odim.offset = 0.0, "bias");
 		parameters.reference("undetect", odim.undetect = 0.0, "marker");
 		parameters.reference("nodata", odim.nodata = 0.0, "marker");
 
 		/// Polar-specific
 		parameters.reference("rscale", odim.rscale = 0.0, "metres");
-		parameters.reference("nrays", odim.nrays = 0L, "count");
-		parameters.reference("nbins", odim.nbins = 0l, "count");
+		parameters.reference("nrays", odim.geometry.height = 0L, "count");
+		parameters.reference("nbins", odim.geometry.width = 0l, "count");
 
 		/// Experimental, for image processing
 		parameters.reference("quantity", odim.quantity = "", "string");
@@ -1607,7 +1607,7 @@ public:
 		//parameters.separator = ',';
 		parameters.reference("quantity:type", quantityType = "", "quantity (DBZH,VRAD,...) and storage type (C,S,d,f,...)");
 		//parameters.reference("type", odim.type, "C", "storage type (C,S,d,f,...)");
-		parameters.reference("gain", odim.gain = 0.0, "scaling coefficient");
+		parameters.reference("gain", odim.scale = 0.0, "scaling coefficient");
 		parameters.reference("offset", odim.offset = 0.0, "bias");
 		parameters.reference("undetect", odim.undetect = 0.0, "marker");
 		parameters.reference("nodata", odim.nodata = 0.0, "marker");

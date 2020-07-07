@@ -109,7 +109,7 @@ protected:
 		odim.type = drain::Type::getTypeChar(srcImage.getType());
 		//odim.updateFromMap(rootProperties);
 		odim.updateFromMap(srcImage.properties);
-		if (odim.gain == 0){
+		if (odim.scale == 0){
 			if (!odim.quantity.empty())
 				getQuantityMap().setQuantityDefaults(odim, odim.quantity);
 		}

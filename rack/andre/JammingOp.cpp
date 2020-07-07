@@ -204,7 +204,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 		double fit; //, r2;
 		// inertia; sumR=0.0,
 		//double sumR2=0.0, sumR2M=0.0, sumM=0.0, sumRM=0.0;
-		double distanceMaxM = static_cast<double>(src.odim.nbins)*src.odim.rscale;
+		double distanceMaxM = static_cast<double>(src.odim.geometry.width)*src.odim.rscale;
 		double distanceMinM = distanceMin * 1000.0;
 		drain::FuzzyBell<double> fuzzyLocation(0.0, (distanceMaxM-distanceMinM)/10.0, 1.0);
 		double weight;

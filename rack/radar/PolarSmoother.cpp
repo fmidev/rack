@@ -104,11 +104,11 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 
 	GaussianStripeVertPolarWeighted window2(static_cast<double>(radiusBins), radiusBins*2);
 	//GaussianStripeWeighted<false> window2(radiusBins*2, static_cast<double>(radiusBins));
-	//window2.setRangeNorm(static_cast<double>(odimSrc.rscale* odimSrc.nrays) / (2.0*M_PI));
-	//window2.setRangeNorm(static_cast<double>(odimSrc.rscale* odimSrc.nrays) / (2.0*M_PI));
+	//window2.setRangeNorm(static_cast<double>(odimSrc.rscale* odimSrc.geometry.height) / (2.0*M_PI));
+	//window2.setRangeNorm(static_cast<double>(odimSrc.rscale* odimSrc.geometry.height) / (2.0*M_PI));
 	window2.setRangeNorm(odimSrc);
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
-	//static_cast<double>(odimSrc.nrays) * (M_PI/180.0) / static_cast<double>(odimSrc.rscale);
+	//static_cast<double>(odimSrc.geometry.height) * (M_PI/180.0) / static_cast<double>(odimSrc.rscale);
 	//mout.warn() << "tmp scale:" << tmp.getChannel(0).getScaling() << mout.endl;
 	window2.setSrcFrame(tmp);
 	window2.setSrcFrameWeight(tmpWeighted);

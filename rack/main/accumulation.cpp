@@ -85,7 +85,7 @@ public:
 			acc.odim.addShortKeys();
 			acc.odim.setValues(resources.targetEncoding);
 
-			acc.setGeometry(acc.odim.nbins, acc.odim.nrays);
+			acc.setGeometry(acc.odim.geometry.width, acc.odim.geometry.height);
 			acc.count.fill(1); // no weight, ie "undetect" values.
 			// mout.warn() << acc.odim  << mout.endl;
 
@@ -297,16 +297,16 @@ public:
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			//acc.odim.update(srcData.odim);
-			acc.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
+			acc.setGeometry(srcData.odim.geometry.width, srcData.odim.geometry.height);
 			acc.odim.type = "S";
-			acc.odim.nbins  = srcData.odim.nbins;
-			acc.odim.nrays  = srcData.odim.nrays;
+			acc.odim.geometry.width  = srcData.odim.geometry.width;
+			acc.odim.geometry.height  = srcData.odim.geometry.height;
 			acc.odim.rscale = srcData.odim.rscale;
-			acc.odim.gain = 0.0; // !!
+			acc.odim.scale = 0.0; // !!
 			acc.odim.ACCnum = 0;
 		}
-		else if ((srcData.odim.nbins != acc.getWidth()) || (srcData.odim.nrays != acc.getHeight())){
-			mout.warn() << "Input geometry (" << srcData.odim.nbins << 'x' << srcData.odim.nrays << ')';
+		else if ((srcData.odim.geometry.width != acc.getWidth()) || (srcData.odim.geometry.height != acc.getHeight())){
+			mout.warn() << "Input geometry (" << srcData.odim.geometry.width << 'x' << srcData.odim.geometry.height << ')';
 			mout        << " different from: " << acc.getWidth() << 'x' << acc.getHeight() << ", skipping..." << mout.endl;
 			return;
 		}

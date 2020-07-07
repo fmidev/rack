@@ -60,8 +60,8 @@ public:
 		odim.product = "PRHI";
 
 		parameters.reference("az_angle", odim.az_angle = az_angle, "deg");
-		parameters.reference("xsize", odim.xsize = xsize, "pix");
-		parameters.reference("ysize", odim.ysize = ysize, "pix");
+		parameters.reference("xsize", odim.geometry.width = xsize, "pix");
+		parameters.reference("ysize", odim.geometry.height = ysize, "pix");
 
 		parameters.reference("minRange",  odim.minRange = minRange, "km");
 		parameters.reference("range",  odim.range = range, "km");
@@ -74,11 +74,11 @@ public:
 
 		// reference("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
 		//reference("type", odim.type, "C"); // TODO
-		//reference("gain", odim.gain, 0.5);
+		//reference("gain", odim.scale, 0.5);
 		//reference("offset", odim.offset, -32.0);
 
 		allowedEncoding.reference("type", odim.type = "C");  // TODO: automatic?
-		allowedEncoding.reference("gain", odim.gain);
+		allowedEncoding.reference("gain", odim.scale);
 		allowedEncoding.reference("offset", odim.offset);
 
 		dataSelector.quantity = "^DBZH$";

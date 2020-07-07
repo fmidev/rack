@@ -169,7 +169,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 		//const char typechar = dstODIM.type.at(0);
 		const drain::Type t(dstODIM.type);
 		mout.debug() << "applying universal defaults (1,0,min,max) for typechar=" << t << mout.endl;
-		dstODIM.gain   = 1.0;
+		dstODIM.scale   = 1.0;
 		dstODIM.offset = 0.0;
 		dstODIM.undetect = drain::Type::call<drain::typeMin, double>(t); //drain::Type::getMin<double>(typechar);
 		dstODIM.nodata =   drain::Type::call<drain::typeMax, double>(t); //drain::Type::call<drain::typeMax,double>(typechar);

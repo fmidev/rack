@@ -62,10 +62,17 @@ namespace drain
 class ValueScaling {
 public:
 
+	/*
 	ValueScaling() : scale(1.0), offset(0.0){}; // , minPhysValue(0.0), maxPhysValue(0.0)
 
 	inline
 	ValueScaling(double scale, double offset): scale(scale), offset(offset) {
+	};
+	*/
+
+	inline
+	ValueScaling(double scale=1.0, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0) {
+		setScale(scale, offset, scaleOut, offsetOut);
 	};
 
 	inline
@@ -98,12 +105,29 @@ public:
 
 
 	/// If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.
+	/*
 	inline
 	void setScale(double scale, double offset = 0.0){
 		this->scale  = scale;
 		this->offset = offset;
 	}
+	*/
 
+	/// If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.
+	inline
+	void setScale(double scale, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0){
+		this->scale  = scale/scaleOut;
+		this->offset = (offset - offsetOut)/scaleOut;
+	}
+
+	/*
+	inline
+	void set(double gainIn=1.0, double offsetIn=0.0, double gainOut=1.0, double offsetOut=0.0){
+		gain = gainIn/gainOut;
+		offset = (offsetIn-offsetOut)/gainOut;
+		gainInv = gainOut/gainIn;
+	}
+	*/
 
 	/// If the intensities of the image correspond to an absolute value (like count) then the scale should be reset to unity with this function.
 	inline

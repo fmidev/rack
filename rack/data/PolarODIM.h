@@ -76,10 +76,10 @@ public:
 
 
 	/// Number of range bins in each ray
-	long   nbins;
+	// long   nb ins;
 
 	/// Number of range bins in each ray
-	long   nrays;
+	// long   nr ays;
 
 	/// Beam-directional bin length [m]
 	double rscale;
@@ -120,12 +120,14 @@ public:
 		return polarLeft;
 	}
 
-	/// Sets number of bins (nbins) and number of rays (nrays)
+	/// Sets number of bins (geometry.width) and number of rays (geometry.height)
+	/*
 	inline
 	void setGeometry(size_t cols, size_t rows){
 		nbins = cols;
 		nrays = rows;
 	}
+	*/
 
 	/// Updates object, quantity, product and time information.
 	/*!
@@ -160,7 +162,7 @@ public:
 	/// Azimuthal resolution in radians.
 	inline
 	double getBeamWidth() const {
-		return 2.0*M_PI/static_cast<double>(nrays);
+		return 2.0*M_PI/static_cast<double>(geometry.height);
 	};
 
 	bool deriveDifference(double v1, double v2, double & dOmega) const;
@@ -197,14 +199,14 @@ public:
 	/// Returns the index of a ray at a given azimuth [radians].
 	inline
 	int getRayIndex(double d) const {
-		return static_cast<int>(d*static_cast<double>(nrays)/(2.0*M_PI)) ;
+		return static_cast<int>(d*static_cast<double>(geometry.height)/(2.0*M_PI)) ;
 	}
 
 	/// Returns the azimuth in radians of the bin with vertical index j.
 	template <class T>
 	inline
 	double getAzimuth(T j) const {
-		return static_cast<double>(j)*2.0*M_PI / static_cast<double>(nrays);
+		return static_cast<double>(j)*2.0*M_PI / static_cast<double>(geometry.height);
 	}
 
 	/// Returns the span of bins for the given azimuthal span.
@@ -213,7 +215,7 @@ public:
 	 */
 	inline
 	int getAzimuthalBins(double degree) const {
-		return static_cast<int>(degree * static_cast<double>(nrays)/360.0 + 0.5) ;
+		return static_cast<int>(degree * static_cast<double>(geometry.height)/360.0 + 0.5) ;
 	}
 
 	/// Returns the span of bins for the given distance range in meters.

@@ -46,8 +46,8 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 		// NOTE: these should be in DATASET level
 		reference("where:projdef", projdef = "");
-		reference("where:xsize", xsize = 0L);
-		reference("where:ysize", ysize = 0L);
+		reference("where:xsize", geometry.width  = 0L); //xsize = 0L);
+		reference("where:ysize", geometry.height = 0L); //ysize = 0L);
 		reference("where:xscale", xscale = 0.0);
 		reference("where:yscale", yscale = 0.0);
 		//
@@ -60,7 +60,6 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("where:LL_lon", LL_lon = 0.0);
 		reference("where:LL_lat", LL_lat = 0.0);
 		reference("how:camethod", camethod = "");
-
 
 		reference("how:nodes", nodes = "");
 	}
@@ -81,22 +80,26 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 void CartesianODIM::setGeometry(size_t cols, size_t rows){
 
-	if (xsize)
-		xscale = xscale * static_cast<double>(xsize) / static_cast<double>(cols);
-	if (ysize)
-		yscale = yscale * static_cast<double>(ysize) / static_cast<double>(rows);
+	std::cerr << "CartesianODIM::setGeometry (re)scaling. \n";
+
+	if (geometry.width)
+		xscale = xscale * static_cast<double>(geometry.width) / static_cast<double>(cols);
+	if (geometry.height)
+		yscale = yscale * static_cast<double>(geometry.height) / static_cast<double>(rows);
 
 	// or getScale
+	// xscale = geoFrame.getXScale();
+	// yscale = geoFrame.getYScale();
 
-	xsize = cols;
-	ysize = rows;
+	geometry.width = cols;
+	geometry.height = rows;
 
 }
 
 void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 
-	xsize = geoFrame.getFrameWidth();
-	ysize = geoFrame.getFrameHeight();
+	geometry.width = geoFrame.getFrameWidth();
+	geometry.height = geoFrame.getFrameHeight();
 
 	projdef = geoFrame.getProjection();
 
@@ -112,7 +115,7 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 	geoFrame.pix2LLdeg(0,-1, x2,y2); // (vertically outside)
 	UL_lon = x2;
 	UL_lat = y2;
-	geoFrame.pix2LLdeg(xsize,ysize-1, x2,y2);  // (horizontally outside)
+	geoFrame.pix2LLdeg(geometry.width,geometry.height-1, x2,y2);  // (horizontally outside)
 	LR_lon = x2;
 	LR_lat = y2;
 

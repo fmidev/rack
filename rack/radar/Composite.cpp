@@ -71,12 +71,12 @@ Composite::Composite() :  decay(1.0), cropping(false)
 	//odim.reference("type", odim.type = "C");
 	odim.reference("type", odim.type = "C");
 
-	odim.reference("gain", odim.gain);
+	odim.reference("gain", odim.scale);
 	odim.reference("offset", odim.offset);
 	odim.reference("undetect", odim.undetect);
 	odim.reference("nodata", odim.nodata);
 
-	odim.gain = 0.0;
+	odim.scale = 0.0;
 
 	//static DataCoder converter;
 	//setConverter(converter);
@@ -403,7 +403,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	++odim.ACCnum;
 
 	/// Cartesian
-	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.xsize/2, j0 + cartSrc.odim.ysize/2);
+	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.geometry.width/2, j0 + cartSrc.odim.geometry.height/2);
 	//updateGeoData();
 	//mout.warn() << "nodemap keys: " << nodeMap << mout.endl;
 

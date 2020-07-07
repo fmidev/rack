@@ -52,25 +52,25 @@ namespace rack {
 
 void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dstData) const {
 
-	dstData.odim.xsize = odim.xsize;
-	dstData.odim.ysize = odim.ysize;
-	if (dstData.odim.xsize == 0){
-		dstData.odim.xsize = 200;
+	dstData.odim.geometry.width = odim.geometry.width;
+	dstData.odim.geometry.height = odim.geometry.height;
+	if (dstData.odim.geometry.width == 0){
+		dstData.odim.geometry.width = 200;
 	}
-	if (dstData.odim.ysize == 0){
-		dstData.odim.ysize = 100;
+	if (dstData.odim.geometry.height == 0){
+		dstData.odim.geometry.height = 100;
 	}
 	dstData.odim.minheight = odim.minheight;
 	dstData.odim.maxheight = odim.maxheight;
 	dstData.odim.minRange  = odim.minRange;
 	dstData.odim.range     = odim.range;
-	dstData.odim.xscale    = (odim.range - odim.minRange)/static_cast<double>(odim.xsize);
-	dstData.odim.yscale    = (odim.maxheight - odim.minheight)/static_cast<double>(odim.ysize);
+	dstData.odim.xscale    = (odim.range - odim.minRange)/static_cast<double>(odim.geometry.width);
+	dstData.odim.yscale    = (odim.maxheight - odim.minheight)/static_cast<double>(odim.geometry.height);
 
 	if (!dstData.odim.type.empty()){
 		dstData.data.setType(dstData.odim.type.at(0));
 	}
-	dstData.data.setGeometry(odim.xsize, odim.ysize);
+	dstData.data.setGeometry(odim.geometry.width, odim.geometry.height);
 
 }
 
@@ -106,7 +106,7 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 	// mout.warn() << odim         << mout.endl;
 	// mout.warn() << dstData.odim << mout.endl;
 
-	if ((odim.xsize==0) || (odim.ysize==0)){
+	if ((odim.geometry.width==0) || (odim.geometry.height==0)){
 		mout.warn() << "empty image: " <<  dstData.data.getGeometry() << mout.endl;
 		return;
 	}
@@ -117,15 +117,15 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 	dstQuality.odim.quantity = "QIND";
 	initDst(srcData.odim, dstQuality);
 	//dstQuality.setQuantityDefaults("QIND");
-	//dstQuality.data.setGeometry(odim.xsize, odim.ysize);
+	//dstQuality.data.setGeometry(odim.geometry.width, odim.geometry.height);
 	//quantityMap.setQuantityDefaults(dstQuality, "QIND");
 	//dstQuality.data.setGeometry(dstData.data.getGeometry());
 	//@ dstQuality.updateTree();
 	const double Q_MAX = dstQuality.odim.scaleInverse(1.0);  // 255
 
 	/// Todo: range (kms) already in dst odim?
-	const double rangeResolution = 1000.0 * dstData.odim.xscale; //(odim.range - odim.minRange) / static_cast<double>(odim.xsize);
-	const double heightResolution = dstData.odim.yscale; // (odim.maxheight - odim.minheight) / static_cast<double>(odim.ysize);
+	const double rangeResolution = 1000.0 * dstData.odim.xscale; //(odim.range - odim.minRange) / static_cast<double>(odim.geometry.width);
+	const double heightResolution = dstData.odim.yscale; // (odim.maxheight - odim.minheight) / static_cast<double>(odim.geometry.height);
 
 	const double beamWidth2 = beamWidth*beamWidth*(M_PI/180.0)*(M_PI/180.0);
 
@@ -183,7 +183,7 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 
 	/// MAIN LOOPS
 	//  Traverse range (horz dimension)
-	for (int i = 0; i < odim.xsize; ++i) {
+	for (int i = 0; i < odim.geometry.width; ++i) {
 
 		beta   = (1000.0*odim.minRange + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 
@@ -205,7 +205,7 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 		DataSetMap<PolarSrc>::const_iterator itStart = src.begin();
 
 		//  Traverse altitude (vert dimension)
-		for (int k = 0; k < odim.ysize; ++k) {
+		for (int k = 0; k < odim.geometry.height; ++k) {
 
 			h   = odim.minheight + static_cast<double>(k) * heightResolution;
 			etaPixel = Geometry::etaFromBetaH(beta, h);
@@ -227,9 +227,9 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 
 					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta0, beta) / srcData.odim.rscale - srcData.odim.rstart);
 
-					if ((bin >= 0) && (bin < srcData.odim.nbins)){
+					if ((bin >= 0) && (bin < srcData.odim.geometry.width)){
 
-						x = srcData.data.get<double>(bin, (azm*srcData.odim.nrays)/360);
+						x = srcData.data.get<double>(bin, (azm*srcData.odim.geometry.height)/360);
 
 						/// Use this value, if it is valid
 						//if ((x != srcData.odim.undetect) && (x != srcData.odim.nodata)){
@@ -302,7 +302,7 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 				// if ((x > 0.0) && !UNDETECT_LOWER && !UNDETECT_UPPER){
 				//	x =  (weightLower*xLower + weightUpper*xUpper) / x;
 				if (UNDETECT_LOWER && UNDETECT_UPPER){
-					dstData.data.put(i, odim.ysize-1-k, odim.undetect );
+					dstData.data.put(i, odim.geometry.height-1-k, odim.undetect );
 				}
 				else {
 					if (UNDETECT_LOWER)
@@ -311,32 +311,32 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 						weightUpper = 0.0;
 					x =  (weightLower*xLower + weightUpper*xUpper) / (weightLower + weightUpper);
 					//if (x > undetectValue)
-					dstData.data.put(i, odim.ysize-1-k, dstData.odim.scaleInverse(x) );
+					dstData.data.put(i, odim.geometry.height-1-k, dstData.odim.scaleInverse(x) );
 				}
-				dstQuality.data.put(i, odim.ysize-1-k, Q_MAX * std::max(weightLower, weightUpper) );
+				dstQuality.data.put(i, odim.geometry.height-1-k, Q_MAX * std::max(weightLower, weightUpper) );
 			}
 			else if (USE_UPPER){
 				//if (xUpper > undetectValue)
 				if (!UNDETECT_UPPER)
-					dstData.data.put(i, odim.ysize-1-k, dstData.odim.scaleInverse(xUpper) );
+					dstData.data.put(i, odim.geometry.height-1-k, dstData.odim.scaleInverse(xUpper) );
 				else
-					dstData.data.put(i, odim.ysize-1-k, odim.undetect );
-				dstQuality.data.put(i, odim.ysize-1-k, Q_MAX * weightUpper );
+					dstData.data.put(i, odim.geometry.height-1-k, odim.undetect );
+				dstQuality.data.put(i, odim.geometry.height-1-k, Q_MAX * weightUpper );
 			}
 			else if (USE_LOWER){
 				if (! UNDETECT_LOWER)
 				//if (xLower > undetectValue)
-					dstData.data.put(i, odim.ysize-1-k, dstData.odim.scaleInverse(xLower) );
+					dstData.data.put(i, odim.geometry.height-1-k, dstData.odim.scaleInverse(xLower) );
 				else
-					dstData.data.put(i, odim.ysize-1-k, odim.undetect );
-				dstQuality.data.put(i, odim.ysize-1-k, Q_MAX * weightLower );
+					dstData.data.put(i, odim.geometry.height-1-k, odim.undetect );
+				dstQuality.data.put(i, odim.geometry.height-1-k, Q_MAX * weightLower );
 			}
 			else { // mark as no-data
-				dstData.data.put(i, odim.ysize-1 - k, odim.nodata);
-				dstQuality.data.put(i, odim.ysize-1 - k, 0);
+				dstData.data.put(i, odim.geometry.height-1 - k, odim.nodata);
+				dstQuality.data.put(i, odim.geometry.height-1 - k, 0);
 			}
 
-			//if (USE_LOWER)					dstData.data.put(i, odim.ysize-1-k, 192);
+			//if (USE_LOWER)					dstData.data.put(i, odim.geometry.height-1-k, 192);
 
 			// mout.debug(1) << "elev=" << it->first << "\t : " << it->second << mout.endl;
 

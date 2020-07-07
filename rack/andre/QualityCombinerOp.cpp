@@ -77,7 +77,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
 
 		// Geometry
-		dstQind.setGeometry(srcData.odim.nbins, srcData.odim.nrays);
+		dstQind.setGeometry(srcData.odim.geometry.width, srcData.odim.geometry.height);
 		mout.debug() << "set geometry: " << dstQind.data.getGeometry() << mout.endl;
 		dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
 

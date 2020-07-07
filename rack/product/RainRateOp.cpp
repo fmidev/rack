@@ -147,7 +147,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	// mout.note() << srcData.odim << mout.endl;
 	// mout.warn() << dstData << mout.endl;
 
-	for (int i = 0; i < srcData.odim.nbins; ++i) {
+	for (int i = 0; i < srcData.odim.geometry.width; ++i) {
 
 
 		// if (SCAN){
@@ -164,7 +164,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		// TODO: use str height information (HEIGHT in PseudoCAPPI)
 
 
-		for (int j = 0; j < srcData.odim.nrays; ++j) {
+		for (int j = 0; j < srcData.odim.geometry.height; ++j) {
 
 			dbz = srcData.data.get<double>(i,j);
 			if (dbz != srcData.odim.nodata){

@@ -79,7 +79,7 @@ public:
 
 
 
-	/// Sets number of cols (xsize) and number of rows (ysize). Recomputes xscale and yscale.
+	/// Sets number of cols (geometry.width == xsize) and number of rows (geometry.height == ysize). Recomputes xscale and yscale.
 	/**
 	 *  \note Rescaling xscale and yscale is based on integers.
 	 *  \see Composite::updateGeoData() on how they are originally set
@@ -91,8 +91,8 @@ public:
 
 	/// WHERE
 	std::string projdef;
-	long xsize;
-	long ysize;
+	// long xs ize;
+	// long ys ize;
 	double xscale;
 	double yscale;
 	//drain::Rectangle<double> bboxD ?

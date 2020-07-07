@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/ReferenceMap.h>
 #include <drain/util/Rectangle.h>
 #include <drain/util/Time.h>
+#include <drain/util/ValueScaling.h>
 
 #include "hi5/Hi5.h"
 #include "radar/Constants.h"
@@ -71,7 +72,7 @@ namespace rack {
  *
  *  See also: LinearScaling (could be used as base class?)
  */
-class EncodingODIM : public drain::ReferenceMap {  // public ODIMPathElem,
+class EncodingODIM : public drain::ValueScaling, public drain::ReferenceMap {  // public ODIMPathElem,
 
 public:
 
@@ -113,8 +114,8 @@ public:
 	std::string type;
 
 	/// data[n]/what (obligatory)
-	double gain;
-	double offset;
+	//double scale;
+	//double offset;
 	double nodata;
 	double undetect;
 
@@ -124,7 +125,7 @@ public:
 
 	inline
 	bool isSet() const {
-		return ((gain != 0.0) && (!type.empty()) && (type.at(0) != '*'));
+		return ((scale != 0.0) && (!type.empty()) && (type.at(0) != '*'));
 	}
 
 	/// Checks if data encoding is similar (storage type, gain, offset, undetect and nodata are the same).
@@ -133,7 +134,7 @@ public:
 	inline
 	bool haveSimilarEncoding(const EncodingODIM & odim1, const EncodingODIM & odim2){
 		return  (odim1.type == odim2.type) &&
-				(odim1.gain == odim2.gain) &&
+				(odim1.scale == odim2.scale) &&
 				(odim1.offset == odim2.offset) &&
 				(odim1.undetect == odim2.undetect) &&
 				(odim1.nodata == odim2.nodata)
@@ -158,7 +159,7 @@ public:
 				mout.warn() << "different types: " << this->type << '/' << typechar << mout.endl;
 		}
 
-		gain = 1.0;
+		scale  = 1.0;
 	    offset = 0.0;
 
 	    //if (!type.empty()){ // ?
@@ -189,13 +190,13 @@ public:
 	/// Converts a quantity from storage scale: y = offset + gain*y .
 	inline
 	double scaleForward(double x) const {
-		return offset + gain*x;
+		return offset + scale*x;
 	}
 
 	/// Converts a quantity to storage scale: x = (y-offset)/gain .
 	inline
 	double scaleInverse(double y) const {
-		return (y-offset)/gain;
+		return (y-offset)/scale;
 	}
 
 	/// Returns the minimum physical value that can be returned using current storage type, gain and offset.
@@ -207,7 +208,7 @@ public:
 	/// Functor (why inverse?)
 	inline
 	double operator()(double y) const {
-		return (y-offset)/gain;
+		return (y-offset)/scale;
 	}
 
 

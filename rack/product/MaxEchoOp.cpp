@@ -114,11 +114,11 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		// TODO: derive iStart and iEnd instead.
 
-		if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.nbins)){
+		if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
 			for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-				jSweep = (j * sweep.odim.nrays) / accumulator.getHeight();
+				jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
 
 				value = sweep.data.get<double>(iSweep,jSweep);
 
