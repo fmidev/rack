@@ -33,15 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/*
-template <>
-void Castable::setPtr(Castable &c){
-	caster.ptr = c.caster.ptr;
-	caster.setType(c.getType());
-	elementCount = c.elementCount; // TODO
-	outputSeparator = c.outputSeparator; // ?
-}
-*/
 
 void Castable::relink(Castable & c){
 

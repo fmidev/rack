@@ -89,8 +89,8 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	maxOp.processDataSets(srcSweeps, dstProduct);
 	Data<PolarDst> & maxEcho = dstProduct.getData(maxOp.odim.quantity); // ensure
 	//mout.warn() << "maxEcho " << maxEcho.odim << mout.endl;
-	maxEcho.updateTree2();
-	mout.warn() << "maxEcho " << maxEcho << mout.endl;
+	//maxEcho.updateTree2();
+	//mout.warn() << "maxEcho " << maxEcho << mout.endl;
 
 	CappiOp cappiOp;
 	if (USE_FCELL){
@@ -101,6 +101,9 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 		cappiOp.processDataSets(srcSweeps, dstProduct);
 	}
 	Data<PolarDst> & cappi = dstProduct.getData(cappiOp.odim.quantity);
+	dstProduct.updateTree3(cappi.odim); // IMPORTANT
+	//cappi.updateTree2();
+	mout.warn() << "cappi " << cappi << mout.endl;
 
 	EchoTopOp echoTopOp;
 	if (USE_FETOP){
@@ -125,8 +128,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	}
 	*/
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	mout.note() << ODIM(dstData.odim) << mout.endl;
-	//mout.note() << PolarODIM(dstData.odim) << mout.endl;
+	mout.note() << "dstData.odim: " << ODIM(dstData.odim) << mout.endl;
 
 	// Product quality (?)
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData();
@@ -175,7 +177,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 		avgOp.conf.heightD = cellDiameter*1000.0; // smoothRad;
 		mout.warn() << "cappi.odim: " << cappi.odim << mout.endl;
 		//avgOp.setPixelConf();
-		avgOp.processPlainData(maxEcho, fuzzyCell2);
+		avgOp.processPlainData(cappi, fuzzyCell2);
 
 	}
 

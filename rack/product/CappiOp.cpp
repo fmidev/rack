@@ -97,16 +97,14 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	double binDistance;
 
 	// Source value coordinate?
-	int iSweep;
+	size_t iSweep;
+	int t; // test
 
 	// Source y coordinate?
-	int jSweep;
+	size_t jSweep;
 
 	/// Measurement, encoded
 	double value;
-
-	/// Measurement, decoded
-	//double dbz;
 
 	/// Beam weight
 	double beamWeight; // 0.0...1.0;
@@ -138,7 +136,11 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		if (binDistance < sweep.odim.rstart)
 			continue;
 
-		iSweep = sweep.odim.getBinIndex(binDistance);
+		t = sweep.odim.getBinIndex(binDistance);
+		if (t < 0)
+			continue;
+
+		iSweep = static_cast<size_t>(t);
 		if (iSweep >= sweep.odim.geometry.width)
 			continue;
 
@@ -150,7 +152,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 			jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
 
-			value = sweep.data.get<double>(iSweep,jSweep);
+			value = sweep.data.get<double>(iSweep, jSweep);
 
 			// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
 

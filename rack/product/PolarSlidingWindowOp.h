@@ -78,7 +78,7 @@ public:
 		drain::Logger mout(__FUNCTION__, __FILE__);
 		//mout.warn() << "not implemented" << mout.endl;
 		typename W::conf_t pixelConf;
-		this->setPixelConf(pixelConf, srcData.odim); // what about other parameters?
+		this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
 
 		mout.warn() << "srcData.odim: " << srcData.odim << mout.endl;
 
@@ -112,7 +112,8 @@ public:
 
 protected:
 
-	void setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const;
+	/// Convert azimuthal and radial quantities to pixels
+	void setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const;
 
 
 
@@ -120,7 +121,7 @@ protected:
 
 
 template <class W>
-void PolarSlidingWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const PolarODIM & odim) const {
+void PolarSlidingWindowOp<W>::setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 

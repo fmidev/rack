@@ -69,15 +69,13 @@ public:
 	typedef CastableIterator iterator;
 
 	inline
-	ImageFrame() : //buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]),
-			scalingPtr(&encoding.scaling), propertiesPtr(&properties){
+	ImageFrame() : propertiesPtr(&properties), scalingPtr(&encoding.scaling) {
 		adjustBuffer();
 		init();
 	};
 
 	inline
-	ImageFrame(const ImageFrame & src) : ImageLike(src), //buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]),
-			scalingPtr(&encoding.scaling), propertiesPtr(&properties){
+	ImageFrame(const ImageFrame & src) : ImageLike(src), propertiesPtr(&properties), scalingPtr(&encoding.scaling) {
 		adjustBuffer();
 		init();
 		// copy properties? (no)
@@ -412,17 +410,6 @@ public:
 	virtual
 	const Channel & getAlphaChannel(size_t i=0) const = 0;
 
-	/*
-	inline
-	Channel & operator[](size_t i){
-		return getChannel(i);
-	}
-
-	inline
-	const Channel & operator[](size_t i) const {
-		return getChannel(i);
-	}
-	*/
 
 	/// Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format.
 	/**
@@ -494,9 +481,6 @@ protected:
 		return (bufferPtr != &buffer[0]);
 	};  // TODO: first channel not
 
-private:
-
-	drain::ValueScaling const * scalingPtr;
 
 protected:
 
@@ -518,17 +502,12 @@ protected:
 		return (T*)&buffer[ a*encoding.byteSize ];
 	}
 
-	/*
-	template <class T>
-	inline
-	const void * retrieve(size_t a) const {
-		return (const T*)&buffer[ a*encoding.byteSize ];
-	}
-	*/
-
-//private:
 
 	std::vector<unsigned char> buffer; // non-private, for Image::swap().
+
+private:
+
+	drain::ValueScaling const * scalingPtr;
 
 };
 

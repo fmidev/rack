@@ -204,10 +204,12 @@ protected:
 	}
 
 
-	// Horizontal distance(s); right (and left) "radius". Internal parameter applied upon initParams?
+	/// parameters["width"], two elements
+	//  Horizontal distance(s); right (and left) "radius". Internal parameter applied upon initParams?
 	std::vector<float> widths;
 
-	// Vertical distance(s); downward (and upward) "radius". Internal parameter applied upon initParams
+	/// parameters["height"], two elements
+	//  Vertical distance(s); downward (and upward) "radius". Internal parameter applied upon initParams
 	std::vector<float> heights;
 
 	/// Final decrement or decay per pixel in horizontal direction. Derived from widths; definition varies in subclasses.

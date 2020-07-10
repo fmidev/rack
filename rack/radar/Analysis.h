@@ -321,6 +321,7 @@ public:
 	~SlidingRadarWindow(){};
 
 	/// Sets input image and retrieves ODIM metadata from image Properties.
+	//  Redefines Window<C,R>::setSrcFrame(ImageFrame)
 	/**
 	 *
 	 */

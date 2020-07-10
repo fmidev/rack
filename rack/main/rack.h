@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.31"
+#define __RACK_VERSION__ "5.4"
 
 /**
+ *   Version 5.4
+ *   - geometry.{width,height} replaces {nbins,nrays} in PolarODIM and {xsize,ysize} in CartesianODIM
+ *   - EncodingODIM uses ValueScaling as base class
+ *
  *   Version 5.31
  *   - Source NOD in tiled compositing
  *   - BBOX vector output (where::BBOX was through string conv)

@@ -172,8 +172,6 @@ public:
 		// : buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]) {
 		//Logger mout(getImgLog(), "Image(T, w,h,c,ca)", __FUNCTION__);
 		initialize(t, Geometry(width, height, channelCount, alphaChannelCount));
-		//setType(t);  ///
-		//setGeometry(width, height, channelCount, alphaChannelCount);
 		//mout.warn() << *this << mout.endl;
 	};
 
@@ -183,8 +181,6 @@ public:
 		// buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]) {
 		//Logger mout(getImgLog(), "Image(w,h,c,ca)", __FUNCTION__);
 		initialize(typeid(unsigned char), width, height, channelCount, alphaChannelCount);
-		// setType<unsigned char>();  ///
-		//setGeometry(width, height, channelCount, alphaChannelCount);
 		//mout.warn() << *this << mout.endl;
 	};
 
@@ -243,7 +239,6 @@ public:
 	template <class T>
 	inline
 	void setType(){
-		//Castable::setType(typeid(T));
 		setType(typeid(T));
 	}
 
@@ -263,9 +258,7 @@ public:
 	inline
 	void copyShallow(const ImageFrame & src){
 		initialize(src.getType(), src.getGeometry());
-		//setType(src.getType());
 		setScaling(src.getScaling());
-		//setGeometry(src.getGeometry());
 		setCoordinatePolicy(src.getCoordinatePolicy());
 	}
 
@@ -274,11 +267,6 @@ public:
 	void copyDeep(const ImageFrame &src){
 		copyShallow(src);
 		copyData(src);
-		/*
-		const_iterator sit = src.begin();
-		for (iterator it = begin(); it != end(); ++it,++sit)
-		 *it = *sit;
-		 */
 	}
 
 

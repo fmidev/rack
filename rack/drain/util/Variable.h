@@ -319,7 +319,7 @@ std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsi
 
 
 
-
+/// FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also relinked to an external target.
 class FlexVariable : public Variable {
 
 public:
@@ -358,7 +358,7 @@ public:
 	void setType(const std::type_info & t){
 
 		if (!requestType(t)){
-			throw std::runtime_error(std::string("FlexVariable") + __FUNCTION__ + ": illegal for referenced variable");
+			throw std::runtime_error(std::string("FlexVariable::") + __FUNCTION__ + ": illegal for referenced variable");
 		}
 
 	}
@@ -396,7 +396,7 @@ public:
 				std::cerr << "FlexVariable::" << __FUNCTION__ << " warning: resize for linked Variable not yet implemented " << std::endl;
 			}
 			if (elementCount != getElementCount()){
-				throw std::runtime_error(std::string("FlexVariable") + __FUNCTION__ + ": illegal for referenced variable");
+				throw std::runtime_error(std::string("FlexVariable::") + __FUNCTION__ + ": illegal for referenced variable");
 				// = return false;
 			}
 			return true;

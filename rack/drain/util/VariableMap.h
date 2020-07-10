@@ -44,25 +44,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Variable.h"
 #include "SmartMap.h"
 
-// // // using namespace std;
 
 namespace drain {
 
-
-//typedef std::map<std::string,Variable> VariableMap;
-
 /// A map of Variables.
-class VariableMap : public SmartMap<Variable> { //std::map<std::string,Variable> {
+class VariableMap : public SmartMap<Variable> {
 
 public:
 
-	inline  // strictness_t s=OPEN,
-	//VariableMap(bool ordered=true, char separator='\0') : SmartMap<Variable>(ordered, separator){
+	/// Default constructor
+	inline
 	VariableMap(char separator = '\0') : SmartMap<Variable>(separator){
 	};
 
+
+	/// Copy constructor
 	inline
-	// vField.ordered
 	VariableMap(const VariableMap & v) : SmartMap<Variable>(v.separator){ // vField.ordered,
 		importMap(v);
 	};
