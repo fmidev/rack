@@ -107,7 +107,7 @@ bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
 	static
 	const dict_t & d = ODIMPathElem::getDictionary(); // New here
 
-	// plain mtach (esp. "dataset" and "quality" without indices
+	// plain match (esp. "dataset" and "quality" without indices
 	dict_t::const_iterator pit = d.end();
 
 	/// Check first if prefix AND index match.

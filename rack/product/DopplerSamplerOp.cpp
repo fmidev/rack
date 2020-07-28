@@ -40,7 +40,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
+	const Data<PolarSrc> & srcData = srcSweep.getData("VRAD");
 
 	if (srcData.data.isEmpty()){
 		mout.warn() << "data empty" << mout.endl;
@@ -50,14 +50,19 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 
 	w.adjustIndices(srcData.odim);
-	if (w.ray2 < w.ray1){
-		w.ray2 += 360;
+	if (w.ray.max < w.ray.min){
+		w.ray.max += 360;
 	}
-	mout.warn() << w.ray1 << '-' << w.ray2 << mout.endl;
 
-	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
+	mout.note() << "odim       : " << srcData.odim << mout.endl;
+	mout.warn() << "range      : " << w.range << mout.endl;
+	mout.warn() << "bin indices: " << w.bin << mout.endl;
+	mout.warn() << "azm        : " << w.azm   << mout.endl;
+	mout.warn() << "ray indices: " << w.ray << mout.endl;
 
-	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
+	mout.warn() << "azm.min: " << w.azm.min << " => ray.min="  <<  srcData.odim.getRayIndex(w.azm.min) << mout.endl;
+
+	size_t count = (w.ray.max - w.ray.min) * (w.bin.max - w.bin.min);
 	//mout.warn() << "size " << count << mout.endl;
 
 	PlainData<PolarDst> & dstDataU = dstProduct.getData("X");
@@ -94,10 +99,10 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	double d,x,y;
 	size_t index = 0;
-	int j2;
-	for (int j=w.ray1; j<w.ray2; ++j){
-		j2 = (j+srcData.odim.geometry.height)%srcData.odim.geometry.height;
-		for (int i = w.bin1; i<w.bin2; ++i){
+	unsigned int j2;
+	for (unsigned int j=w.ray.min; j<w.ray.max; ++j){
+		j2 = (j+srcData.odim.geometry.height) % srcData.odim.geometry.height;
+		for (unsigned int i = w.bin.min; i<w.bin.max; ++i){
 			d = srcData.data.get<double>(i, j2);
 			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
 			if (srcData.odim.isValue(d)){
@@ -132,10 +137,10 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	// DopplerInversionWindow dw;
 
 	w.adjustIndices(srcData.odim);
-	if (w.ray2 < w.ray1){
-		w.ray2 += 360;
+	if (w.ray.max < w.ray.min){
+		w.ray.max += 360;
 	}
-	mout.warn() << "rays: " << w.ray1 << '-' << w.ray2 << mout.endl;
+	mout.warn() << "rays: " << w.ray.min << '-' << w.ray.max << mout.endl;
 
 	const double NI = srcData.odim.getNyquist();
 
@@ -143,7 +148,7 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 
 	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
 
-	size_t count = (w.ray2-w.ray1) * (w.bin2-w.bin1);
+	size_t count = (w.ray.max - w.ray.min) * (w.bin.max - w.bin.min);
 	//mout.warn() << "size " << count << mout.endl;
 
 	PlainData<PolarDst> & dstDataU = dstProduct.getData("AZM"); // deg
@@ -179,13 +184,13 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	int j2;
 
 	size_t index = 0;
-	for (int j=w.ray1; j<w.ray2; ++j){
+	for (int j=w.ray.min; j<w.ray.max; ++j){
 
 		azm = srcData.odim.getBeamWidth() * static_cast<double>(j);
 		j1 = (j-1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
 		j2 = (j+1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
 
-		for (int i = w.bin1; i<w.bin2; ++i){
+		for (int i = w.bin.min; i<w.bin.max; ++i){
 
 			v1 = srcData.data.get<double>(i, j1);
 			v2 = srcData.data.get<double>(i, j2);

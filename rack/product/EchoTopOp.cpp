@@ -78,7 +78,9 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	double binDistance;
 
 	// Source x coordinate?
-	int iSweep;
+	// int i2;
+	size_t iSweep;
+
 
 	// Source y coordinate?
 	int jSweep;
@@ -126,6 +128,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 			continue;
 
 		iSweep = sweep.odim.getBinIndex(binDistance); // static_cast<int>(binDistance/sweep.odim.rscale + 0.5);
+
 		if (iSweep >= sweep.odim.geometry.width)
 			continue;
 

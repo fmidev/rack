@@ -193,13 +193,19 @@ public:
 	/// Returns the index of bin at given (bin center) distance along the beam.
 	inline
 	int getBinIndex(double d) const {
-		return static_cast<int>((d-rstart)/rscale) ;
+		return static_cast<int>((d - rstart) / rscale) ;
 	}
 
 	/// Returns the index of a ray at a given azimuth [radians].
 	inline
 	int getRayIndex(double d) const {
-		return static_cast<int>(d*static_cast<double>(geometry.height)/(2.0*M_PI)) ;
+		return static_cast<int>(d * static_cast<double>(geometry.height)/(2.0 * M_PI)) ;
+	}
+
+	/// Returns the index of a ray at a given azimuth [degrees].
+	inline
+	int getDRayIndex(double d) const {
+		return static_cast<int>(d * static_cast<double>(geometry.height) / 360.0) ;
 	}
 
 	/// Returns the azimuth in radians of the bin with vertical index j.

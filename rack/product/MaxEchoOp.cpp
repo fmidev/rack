@@ -78,7 +78,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	double binDistance;
 
 	// Source value coordinate?
-	int iSweep;
+	size_t iSweep;
 
 	// Source y coordinate?
 	int jSweep;
@@ -110,7 +110,8 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 		//weight = weight*weight;
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
-		iSweep = static_cast<int>(binDistance/sweep.odim.rscale + 0.5);
+		iSweep = sweep.odim.getBinIndex(binDistance);
+		// iSweep = static_cast<int>(binDistance/sweep.odim.rscale + 0.5);
 
 		// TODO: derive iStart and iEnd instead.
 

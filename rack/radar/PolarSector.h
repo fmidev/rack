@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 
 #include <drain/util/BeanLike.h>
+#include <drain/util/Range.h>
 
 #include "data/PolarODIM.h"
 
@@ -46,36 +47,36 @@ namespace rack {
 class PolarSector : public drain::BeanLike {
     public: //re 
 	PolarSector() : drain::BeanLike(__FUNCTION__) {
-		parameters.reference("azm1", azm1 = 0.0, "deg");
-		parameters.reference("azm2", azm2 = 0.0, "deg");
-		parameters.reference("range1", range1 = 0, "km");
-		parameters.reference("range2", range2 = 0, "km");
-		parameters.reference("ray1", ray1 = 0, "index");
-		parameters.reference("ray2", ray2 = 0, "index");
-		parameters.reference("bin1", bin1 = 0, "index");
-		parameters.reference("bin2", bin2 = 0, "index");
+		parameters.reference("azm",   azm.vect,   "deg");
+		parameters.reference("range", range.vect, "km");
+		parameters.reference("ray",   ray.vect,   "index");
+		parameters.reference("bin",   bin.vect,   "index");
 	}
 
 	/// Start azimuth [deg]
-	double azm1;
+	drain::Range<double> azm;
+	// double azm1;
 
 	/// End azimuth [deg]
-	double azm2;
+	//  double azm2;
 
 	/// Start distance [km]
-	int range1;  // km
+	drain::Range<int> range;
+	//  int range1;  // km
 	/// End distance [km]
-	int range2;  // km
+	//  int range2;  // km
 
 	/// Start beam [index]
-	int ray1;
+	drain::Range<int> ray;
+	// int ray1;
 	/// Start beam [index]
-	int ray2;
+	// int ray2;
 
 	/// Start bin [index]
-	int bin1;
+	drain::Range<int> bin;
+	//  int bin1;
 	/// End bin [index]
-	int bin2;
+	//  int bin2;
 
 	void reset();
 
@@ -83,12 +84,14 @@ class PolarSector : public drain::BeanLike {
 	inline
 	void setRange(int range, int range2 = 0){
 		if (range2 < range){
-			this->range1 = range2;
-			this->range2 = range;
+			this->range.set(range2, range);
+			// this->range1 = range2;
+			// this->range2 = range;
 		}
 		else {
-			this->range1 = range;
-			this->range2 = range2;
+			this->range.set(range, range2);
+			// this->range1 = range;
+			// this->range2 = range2;
 		}
 	};
 
@@ -96,18 +99,16 @@ class PolarSector : public drain::BeanLike {
 	inline
 	void setAzimuth(double azm, double azm2 = std::numeric_limits<double>::max()){
 
-		this->azm1 = azm;
-
 		if (azm2 != std::numeric_limits<double>::max())
-			this->azm2 = azm2;
+			this->azm.set(azm, azm2);
 		else
-			this->azm2 = azm;
+			this->azm.set(azm, azm);
 
 	};
 
 	inline
 	int getSafeRay(const PolarODIM & odim, int j){
-		j = j%odim.geometry.height;
+		j = j % odim.geometry.height;
 		if (j < 0)
 			j += odim.geometry.height;
 		return j;

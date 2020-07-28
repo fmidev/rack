@@ -181,6 +181,9 @@ void CartesianExtract::extract(const std::string & channels) const {
 	resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false;
 	//mout.warn() << "created" << mout.endl;
 
+	// NEW 2020/07
+	resources.select.clear();
+
 	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);
 	//statusMap["what:quantity"] = ;
 	statusMap.updateFromMap(rootOdim);

@@ -80,7 +80,7 @@ class ODIM : public EncodingODIM { //, public  {
 public:
 
 	inline
-	ODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
+	ODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
 		init(initialize);
 	};
 
@@ -94,10 +94,21 @@ public:
 		initFromImage(image, quantity);
 	};
 
+	/*
+	inline
+	ODIM(drain::image::Image & image, const std::string & quantity="") : geometryREF(image.geometry) {
+		initFromImage(image, quantity);
+	};
+	*/
+
 	inline
 	~ODIM(){};
 
+	//const drain::image::AreaGeometry geometry;
+
 	drain::image::AreaGeometry geometry;
+
+	//const drain::image::AreaGeometry & geometryTEST;
 
 	/// Applied 8-digit date format, "%Y%m%d"
 	static
