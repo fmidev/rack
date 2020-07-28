@@ -110,12 +110,19 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 			//drain::Variable & attribute = dst[key.substr(0,i)].data.attributes[key.substr(i+1)];
 
 			// DEPRECATED? ODIM contains correct types (but for some attributes only?)
+			/*
 			if ((t == typeid(int)) || (t == typeid(long))){
 				attribute.setType(typeid(long));
 			}
 			else if ((t == typeid(float)) || (t == typeid(double))){
 				attribute.setType(typeid(double));
 			}
+			*/
+			//if (drain::Type::call<drain::typeIsScalar>(t)){
+			if (drain::Type::call<drain::typeIsInteger>(t))
+				attribute.setType(typeid(long));
+			else if (drain::Type::call<drain::typeIsFloat>(t))
+				attribute.setType(typeid(double));
 			else {
 				//std::cerr << "setType: std::string" << std::endl;
 				attribute.setType(typeid(std::string));

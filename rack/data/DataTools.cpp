@@ -115,7 +115,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 				sstr.str("");
 				sstr << *git << ':' << it->first;
 				a[sstr.str()] = it->second;
-				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << mout.endl;
+				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
 			}
 
 		}

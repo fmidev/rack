@@ -51,6 +51,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	if (initialize & ODIMPathElem::DATASET){
 		reference("where:nbins",  geometry.width  = 0L); //  nb ins = 0L);
 		reference("where:nrays",  geometry.height = 0L); //  nr ays = 0L);
+		//reference("where:test",  test = 123L); //
 		reference("where:rscale", rscale = 0.0);
 		reference("where:elangle", elangle = 0.0);
 		reference("where:rstart", rstart = 0.0);
@@ -61,6 +62,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		reference("how:highprf", highprf = 0.0);
 		reference("how:lowprf", lowprf = 0.0);
 		// reference("how:NI", NI = 0);
+		//std::cerr << drain::Type::getTypeChar((*this)["where:jimpo"].getType()) << '\n';
 	}
 
 	if (initialize & ODIMPathElem::DATA){
