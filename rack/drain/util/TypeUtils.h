@@ -178,8 +178,12 @@ public:
 };
 
 
+/// Checks if type is numeric.
 /**
  *  https://en.cppreference.com/w/cpp/types/numeric_limits/is_specialized
+ *
+ *  Usage:
+ *  Type::call<drain::typeIsScalar>(t)
  */
 class typeIsScalar {
 
@@ -197,7 +201,11 @@ public:
 
 };
 
-
+/**
+ *  Usage:
+ *  Type::call<drain::typeIsInteger>(t)
+ *
+ */
 class typeIsInteger { // F2
 
 public:

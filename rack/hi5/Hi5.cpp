@@ -67,6 +67,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 			ostr << prefix << ':'; //'\t';
 		ostr << it->first << '=';
 		drain::JSONwriter::toStream(it->second, ostr);
+		//ostr << ' ' << drain::Type::getTypeChar(it->second.getType());
 		ostr << '\n';
 	}
 
