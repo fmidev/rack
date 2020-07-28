@@ -201,8 +201,13 @@ void CompositeAdd::addPolar() const {
 		resources.errorFlags.reset();
 		//resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false; // return if input not ok?
 
+		ODIMPathMatcher & pm = resources.composite.dataSelector.pathMatcher;
+		if (pm.empty())
+			pm.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //TAIL
+		else if (pm.back().is(ODIMPathElem::DATASET))
+			pm.push_back(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
 		ODIMPath dataPath;
-		resources.composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //TAIL
 		resources.composite.dataSelector.getPath3(*(resources.currentPolarHi5), dataPath);
 		if (dataPath.empty()){
 			mout.warn() << "create composite: no group found with selector:" << resources.composite.dataSelector << mout.endl;

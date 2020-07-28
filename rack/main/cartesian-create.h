@@ -68,9 +68,15 @@ public:
 	inline
 	void exec() const {
 
+		drain::Logger mout(__FUNCTION__, __FILE__);
+
 		RackResources & resources = getResources();
 
 		addCmd.exec();
+		if (resources.errorFlags.value > 0){
+			mout.warn() << "errors (" << resources.errorFlags << "), skipping extraction" << mout.endl;
+			return;
+		}
 		extractCmd.exec();
 
 		resources.cartesianHi5["what"].data.attributes["source"] = (*resources.currentPolarHi5)["what"].data.attributes["source"];
