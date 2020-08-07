@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Log.h>
 #include <drain/util/RegExp.h>
+#include <drain/util/Input.h>
 
 #include <drain/prog/Command.h>
 
@@ -45,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
 #include "data/ODIM.h"
+#include "data/ODIMValidator.h"
 #include "fileio.h"
 #include "fileio-read.h"
 
@@ -54,15 +56,87 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 namespace rack {
-//static CommandEntry<CmdInputSelect> cmdInputSelect("inputSelect");
+
+
+
+void CmdInputValidatorFile::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	typedef std::list<ODIMValidator> validator_list_t;
+	validator_list_t validators;
+
+	drain::Input infile(value);
+	std::istream & istr = infile;
+	std::string line;
+	while (getline(istr, line)){
+		drain::StringTools::trim(line, " \n\t\r");
+		validators.push_back(ODIMValidator());
+		ODIMValidator & validator = validators.back();
+		validator.assign(line);
+		std::cout << 'X' << line << std::endl;
+		std::cout << 'V' << validator << std::endl;
+		std::cout << '\n';
+		line.clear();
+	}
+
+	RackResources & resources = getResources();
+
+	if (resources.currentHi5){
+
+		ODIMPathList dataPaths;
+		resources.currentHi5->getPaths(dataPaths); // ALL
+		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+
+			std::cout << '#' << *it;
+
+			validator_list_t::const_iterator wit = validators.end();
+			for (validator_list_t::const_iterator vit = validators.begin(); vit != validators.end(); ++vit){
+				std::stringstream sstr;
+				sstr << it->separator << *it;
+				if (vit->pathRegExp.test(sstr.str())){
+					wit = vit;
+					break;
+				}
+			}
+
+			if (wit == validators.end()){
+				mout.warn() << "REJECT: " << *it << mout.endl;
+				return;
+			}
+			else {
+				mout.info() << "RegExp: " << wit->pathRegExp.toStr() << mout.endl;
+				mout.note() << "ACCEPT: " << *it << mout.endl;
+			}
+
+			const Hi5Tree & t = (*resources.currentHi5)(*it);
+			if (t.data.dataSet.isEmpty()){
+				std::cout << " GROUP" << '\n';
+				const VariableMap & a = t.data.attributes;
+				for (VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){
+					std::cout << '\t' << it->back() << " ATTRIB:" << ait->first << '\n';
+				}
+			}
+			else {
+				std::cout << " DATA" << '\n';
+			}
+			std::cout << '\n';
+
+		}
+	}
+	else
+		mout.warn() << "no current H5 data" << mout.endl;
+
+}
+
+
 
 void CmdInputFile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
-
-	//std::cerr << name << ':' << __FUNCTION__ << '\t' << fullFilename << std::endl;
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.timestamp("BEGIN_FILEREAD");
+
 	mout.note() << "reading: '" << value << "'" << mout.endl;
 
 	RackResources & resources = getResources();

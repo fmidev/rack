@@ -794,11 +794,13 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 	static RackLetAdapter<CmdHistogram> hist;
 	static RackLetAdapter<CmdInputFile> cmdInputFile('i');
 	static RackLetAdapter<CmdSample> cmdSample("sample");
-	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
+	static RackLetAdapter<CmdInputValidatorFile> cmdInputValidatorFile;
+
 	static RackLetAdapter<CmdInputPrefix> cmdInputPrefix;
 	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
 	static RackLetAdapter<CmdOutputFile> cmdOutputFile('o');
 	static RackLetAdapter<CmdOutputRawImages> cmdOutputRawImages('O');
+	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
 
 }
 

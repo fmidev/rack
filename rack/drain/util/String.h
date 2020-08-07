@@ -106,7 +106,7 @@ public:
 
 	/// Returns a string without leading and trailing whitespace (or str undesired chars).
 	static
-	std::string trim(const std::string &s, const std::string &trimChars=" \t\n");
+	std::string trim(const std::string &s, const std::string &trimChars=" \t\n\r");
 
 	/// Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).
 	/**

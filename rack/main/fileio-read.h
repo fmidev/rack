@@ -118,10 +118,25 @@ protected:
 
 	}
 
+};
+
+class CmdInputValidatorFile : public SimpleCommand<std::string>  {
+
+public:
+
+	CmdInputValidatorFile() : SimpleCommand<std::string>(__FUNCTION__, "Read CVS file ",
+			"filename", "", "<filename>.cvs"){ //, inputComplete(true) {
 	};
 
+	void exec() const;
 
-}
+
+};
+
+
+} // rack
+
+
 
 /*
 template <class OD>

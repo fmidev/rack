@@ -82,7 +82,8 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	// if (clutterMap.getChildren().empty()){ // Load map
 	drain::StringMapper filepath;
-	filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
+	//filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
+	filepath.parse(this->pathSyntax);
 	const std::string filename = filepath.toStr(srcODIM);
 	mout.note() << "clutter map: '" << filename << "'" << mout.endl;
 	setClutterMap(filename); // Note: load new only when needed
