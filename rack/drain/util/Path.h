@@ -130,7 +130,7 @@ public:
 
 		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
 			// root/empty logic moved to append
-			*this << *it;
+			*this << (const elem_t &)*it;
 		}
 
 	}
@@ -219,6 +219,13 @@ public:
 		}
 
 		//this->push_back(elem);
+		return *this;
+	}
+
+	/// Append a path.
+	//Path<T> & operator<<(const Path<T> & path){
+	Path<T> & appendPath(const Path<T> & path){
+		this->insert(this->end(), path.begin(), path.end());
 		return *this;
 	}
 

@@ -96,6 +96,32 @@ public:
 
 };
 
+/// Returns the basic type (integer, float, bool, string, void) as a string.
+/**
+ *  Usage:
+ *  Type::call<drain::simpleName>(t)
+ */
+class complexName {
+
+public:
+
+	typedef std::string value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed (argument)
+	 *  \tparam T - return type  (practically value_t)
+	 */
+	template <class S, class T>
+	static
+	T callback(){
+		//const std::type_info & t = typeid(S);
+		std::stringstream sstr;
+		sstr << (std::numeric_limits<S>::is_signed ? "signed" : "unsigned");
+		sstr << ' ' << simpleName::callback<S,T>();
+		return sstr.str();
+	}
+
+};
 
 /// Returns the sizeof() of a type. Accepts \c void (and returns size 0), which is not supported by std::numeric_limits.
 /**
@@ -222,7 +248,11 @@ public:
 
 };
 
-
+/**
+ *  Usage:
+ *  Type::call<drain::typeIsFloat>(t)
+ *
+ */
 class typeIsFloat { // F2
 
 public:
@@ -248,7 +278,7 @@ public:
 /**
  *  Usage:
  *  \code
- *   Type::call<drain::typeIsSmallInt, bool>(t)
+ *    Type::call<drain::typeIsSmallInt>(t)
  *  \endcode
  */
 class typeIsSmallInt {

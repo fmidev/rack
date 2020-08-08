@@ -49,14 +49,14 @@ namespace rack {
 // .*/quality[1-9][0-9]*/what/nodata;Attribute;real;FALSE;
 
 
-class ODIMValidator {
+class ODIMNodeValidator {
 
 public:
 
 	typedef drain::Dictionary2<H5I_type_t, std::string> h5dict_t;
 
 
-	ODIMValidator & assign(const std::string & line);
+	ODIMNodeValidator & assign(const std::string & line);
 
 	std::ostream & toOStr(std::ostream & ostr) const;
 
@@ -81,10 +81,23 @@ protected:
 
 
 inline
-std::ostream & operator<<(std::ostream & ostr, const ODIMValidator & v){
+std::ostream & operator<<(std::ostream & ostr, const ODIMNodeValidator & v){
 	return v.toOStr(ostr);
 }
 
+class ODIMValidator : public std::list<ODIMNodeValidator> {
+public:
+
+	/// Searches for an entry with matching \c pathRegExp
+	/**
+	 *  Works like STL find(), but uses regExp for comparison.
+	 *  \param path - path to be checked, including root, eg. "/dataset2/data4/what"
+	 *  \param h5type - H5I_GROUP, H5I_ATTRIB or H%I_DATASET
+	 *  \return iterator pointing to the matching entry, if found; else end().
+	 */
+	const_iterator validate(const std::string & path, H5I_type_t h5type = H5I_GROUP) const;
+
+};
 
 }  // namespace rack
 

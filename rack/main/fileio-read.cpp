@@ -63,19 +63,18 @@ void CmdInputValidatorFile::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	typedef std::list<ODIMValidator> validator_list_t;
-	validator_list_t validators;
+	ODIMValidator validator;
 
 	drain::Input infile(value);
 	std::istream & istr = infile;
 	std::string line;
 	while (getline(istr, line)){
 		drain::StringTools::trim(line, " \n\t\r");
-		validators.push_back(ODIMValidator());
-		ODIMValidator & validator = validators.back();
-		validator.assign(line);
+		validator.push_back(ODIMNodeValidator());
+		ODIMNodeValidator & nodeValidator = validator.back();
+		nodeValidator.assign(line);
 		std::cout << 'X' << line << std::endl;
-		std::cout << 'V' << validator << std::endl;
+		std::cout << 'V' << nodeValidator << std::endl;
 		std::cout << '\n';
 		line.clear();
 	}
@@ -88,39 +87,64 @@ void CmdInputValidatorFile::exec() const {
 		resources.currentHi5->getPaths(dataPaths); // ALL
 		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-			std::cout << '#' << *it;
+			//std::cout << '#' << *it;
+			ODIMPath p;
+			p << ODIMPathElem::ROOT;
+			p.appendPath(*it);
+			// p.insert(p.end(), it->begin(), it->end());
 
-			validator_list_t::const_iterator wit = validators.end();
-			for (validator_list_t::const_iterator vit = validators.begin(); vit != validators.end(); ++vit){
-				std::stringstream sstr;
-				sstr << it->separator << *it;
-				if (vit->pathRegExp.test(sstr.str())){
-					wit = vit;
-					break;
-				}
-			}
+			ODIMValidator::const_iterator wit = validator.validate(p, H5I_GROUP);
 
-			if (wit == validators.end()){
-				mout.warn() << "REJECT: " << *it << mout.endl;
+			if (wit == validator.end()){
+				mout.warn() << "REJECT path: " << p << mout.endl;
 				return;
 			}
 			else {
-				mout.info() << "RegExp: " << wit->pathRegExp.toStr() << mout.endl;
-				mout.note() << "ACCEPT: " << *it << mout.endl;
+				mout.debug(1) << "RegExp: " << wit->pathRegExp.toStr() << mout.endl;
+				mout.debug() << "ACCEPT path: " << p << mout.endl;
 			}
 
 			const Hi5Tree & t = (*resources.currentHi5)(*it);
 			if (t.data.dataSet.isEmpty()){
-				std::cout << " GROUP" << '\n';
+				// std::cout << " GROUP" << '\n';
 				const VariableMap & a = t.data.attributes;
 				for (VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){
-					std::cout << '\t' << it->back() << " ATTRIB:" << ait->first << '\n';
+					std::string attributePath(p);
+					attributePath.push_back(p.separator);
+					attributePath.append(ait->first);
+					ODIMValidator::const_iterator wit = validator.validate(attributePath, H5I_ATTR);
+					if (wit == validator.end()){
+						mout.warn() << "UNKNOWN attribute: " << attributePath << mout.endl;
+						continue;
+					}
+					const std::type_info & rType = wit->basetype.getType();
+					const std::type_info & aType = ait->second.getType();
+
+					mout.note() << "TYPES: ";
+					mout << drain::Type::call<drain::complexName>(aType);
+					mout << ", expecting: " << drain::Type::call<drain::complexName>(rType);
+					mout << mout.endl;
+
+					if (aType == rType){
+						mout.info() << "FULLY ACCEPT attribute: " << attributePath << mout.endl;
+					}
+					else {
+						// TODO: numeric ws.
+						mout.warn() << "TYPE deviation: " << attributePath ;
+						mout << drain::Type::call<drain::simpleName>(aType);
+						mout << ", should be: " << drain::Type::call<drain::simpleName>(rType);
+						mout << mout.endl;
+					}
+
+					// mout.note() << "ACCEPT attribute path: " << attributePath << mout.endl;
+					//std::cout << '\t' << it->back() << " ATTRIB:" << ait->first << '\n';
 				}
 			}
 			else {
-				std::cout << " DATA" << '\n';
+				mout.note() << "ACCEPT data: " << p << mout.endl;
+				//std::cout << " DATA" << '\n';
 			}
-			std::cout << '\n';
+			//std::cout << '\n';
 
 		}
 	}
@@ -133,7 +157,7 @@ void CmdInputValidatorFile::exec() const {
 
 void CmdInputFile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, getName());
 
 	mout.timestamp("BEGIN_FILEREAD");
 

@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-const ODIMValidator::h5dict_t & ODIMValidator::getH5TypeDict(){
+const ODIMNodeValidator::h5dict_t & ODIMNodeValidator::getH5TypeDict(){
 
 	static
 	h5dict_t dict;
@@ -50,7 +50,7 @@ const ODIMValidator::h5dict_t & ODIMValidator::getH5TypeDict(){
 }
 
 
-ODIMValidator & ODIMValidator::assign(const std::string & s){
+ODIMNodeValidator & ODIMNodeValidator::assign(const std::string & s){
 
 	std::vector<std::string> v;
 
@@ -89,7 +89,7 @@ ODIMValidator & ODIMValidator::assign(const std::string & s){
 
 }
 
-std::ostream & ODIMValidator::toOStr(std::ostream & ostr) const {
+std::ostream & ODIMNodeValidator::toOStr(std::ostream & ostr) const {
 
 	ostr << '@';
 
@@ -110,6 +110,18 @@ std::ostream & ODIMValidator::toOStr(std::ostream & ostr) const {
 
 	return ostr;
 
+}
+
+ODIMValidator::const_iterator ODIMValidator::validate(const std::string &path, H5I_type_t h5type) const {
+
+	for (const_iterator it=begin(); it!=end(); ++it){
+		if (it->h5Type == h5type){
+			if (it->pathRegExp.test(path))
+				return it;
+		}
+	}
+
+	return end();
 }
 
 
