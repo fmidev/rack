@@ -168,6 +168,7 @@ std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 	return ostr;
 }
 
+
 const void Castable::typeInfo(std::ostream & ostr) const {
 	ostr << '[';
 	if (isString())

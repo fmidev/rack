@@ -56,6 +56,49 @@ public:
 };
 
 
+/// Returns the sizeof() of a type. Accepts \c void (and returns size 0), which is not supported by std::numeric_limits.
+/**
+ *  Usage:
+ *  Type::call<drain::sizeGetter>(t)
+ *
+ *  sizeof() returns size in bytes, so 1 for char, 2 for short int and so on.
+ *
+ *  Todo: renaming to byteSizeGetter, and adding bitSizeGetter
+ */
+class sizeGetter {
+
+public:
+
+	typedef std::size_t value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed
+	 *  \tparam T - destination type  (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){
+		return static_cast<T>(getSize<S>()); // static cast unneeded in these ?
+	}
+
+protected:
+
+	// Must be here to get template<void> implemented
+	template <class S>
+	static inline
+	size_t getSize(){
+		return sizeof(S);
+	}
+
+};
+
+template <>
+inline
+size_t sizeGetter::getSize<void>(){
+	return 0;
+}
+// todo:: std::string?
+
 /// Returns the basic type (integer, float, bool, string, void) as a string.
 /**
  *  Usage:
@@ -116,56 +159,25 @@ public:
 	T callback(){
 		//const std::type_info & t = typeid(S);
 		std::stringstream sstr;
-		sstr << (std::numeric_limits<S>::is_signed ? "signed" : "unsigned");
-		sstr << ' ' << simpleName::callback<S,T>();
+		if (std::numeric_limits<S>::is_specialized){
+			if (std::numeric_limits<S>::is_integer)
+				if (std::numeric_limits<S>::is_signed)
+					sstr <<   "signed integer";
+				else
+					sstr << "unsigned integer";
+			else
+				sstr << "float";
+		}
+		else {
+			sstr << " non-numeric";
+		}
+		//sstr << '(' << (sizeof(S)*8) << ')';
+		sstr << " (" << sizeGetter::callback<S, std::size_t>() << " bits)";
+		//sstr << ' ' << simpleName::callback<S,T>();
 		return sstr.str();
 	}
 
 };
-
-/// Returns the sizeof() of a type. Accepts \c void (and returns size 0), which is not supported by std::numeric_limits.
-/**
- *  Usage:
- *  Type::call<drain::sizeGetter>(t)
- *
- *  sizeof() returns size in bytes, so 1 for char, 2 for short int and so on.
- *
- *  Todo: renaming to byteSizeGetter, and adding bitSizeGetter
- */
-class sizeGetter {
-
-public:
-
-	typedef std::size_t value_t;
-
-	/**
-	 *  \tparam S - type to be analyzed
-	 *  \tparam T - destination type  (practically value_t)
-	 */
-	template <class S, class T>
-	static
-	inline
-	T callback(){
-		return static_cast<T>(getSize<S>()); // static cast unneeded in these ?
-	}
-
-protected:
-
-	// Must be here to get template<void> implemented
-	template <class S>
-	static inline
-	size_t getSize(){
-		return sizeof(S);
-	}
-
-};
-
-template <>
-inline
-size_t sizeGetter::getSize<void>(){
-	return 0;
-}
-// todo:: std::string?
 
 /// Returns the compiler specific ie. non-standard name of the type.
 class nameGetter {

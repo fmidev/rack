@@ -120,22 +120,49 @@ void CmdInputValidatorFile::exec() const {
 					const std::type_info & rType = wit->basetype.getType();
 					const std::type_info & aType = ait->second.getType();
 
+					/*
 					mout.note() << "TYPES: ";
 					mout << drain::Type::call<drain::complexName>(aType);
 					mout << ", expecting: " << drain::Type::call<drain::complexName>(rType);
 					mout << mout.endl;
+					*/
+
+					std::stringstream sstr;
+					sstr <<  p << ':' << ait->first << '=';
+					ait->second.valueToJSON(sstr);
+					if (ait->second.isString())
+						sstr << " string";
+					else
+						sstr << ' ' << drain::Type::call<drain::complexName>(aType);
 
 					if (aType == rType){
-						mout.info() << "FULLY ACCEPT attribute: " << attributePath << mout.endl;
+						mout.info() << "COMPLIANT attribute type: " << sstr.str() << mout.endl;
 					}
 					else {
-						// TODO: numeric ws.
-						mout.warn() << "TYPE deviation: " << attributePath ;
-						mout << drain::Type::call<drain::simpleName>(aType);
-						mout << ", should be: " << drain::Type::call<drain::simpleName>(rType);
-						mout << mout.endl;
+						sstr << ", should be " << drain::Type::call<drain::complexName>(rType);
+						if ((drain::Type::call<drain::typeIsScalar>(aType) == drain::Type::call<drain::typeIsScalar>(rType)) ||
+								(drain::Type::call<drain::typeIsInteger>(aType) == drain::Type::call<drain::typeIsInteger>(rType)) ||
+								(drain::Type::call<drain::typeIsFloat>(aType) == drain::Type::call<drain::typeIsFloat>(rType))){
+							mout.info() << "Slightly INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+						}
+						else if ((drain::Type::call<drain::typeIsScalar>(aType) && !drain::Type::call<drain::typeIsScalar>(rType))){
+							mout.note() << "Moderately INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+						}
+						else {
+							mout.warn() << "INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+						}
 					}
 
+					// Value test
+					if (wit->valueRegExp.isSet()){
+						sstr << " regExp='" <<  wit->valueRegExp.toStr() << "'";
+						if (wit->valueRegExp.test(ait->second)){ // convert on the fly
+							mout.debug() << "COMPLIANT attribute value: " << sstr.str() << mout.endl;
+						}
+						else {
+							mout.warn() << "INCOMPLIANT attribute value: " << sstr.str() << mout.endl;
+						}
+					}
 					// mout.note() << "ACCEPT attribute path: " << attributePath << mout.endl;
 					//std::cout << '\t' << it->back() << " ATTRIB:" << ait->first << '\n';
 				}

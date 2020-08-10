@@ -424,6 +424,9 @@ public:
 
 	void toJSON(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
 
+
+	//template <class T>
+	//T & valueToJSON(T & ostr = std::cout) const;
 	std::ostream & valueToJSON(std::ostream & ostr = std::cout) const;
 
 	/// Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int."
@@ -888,6 +891,27 @@ protected:
 /*
 template <>
 void Castable::setPtr(Castable &c);
+*/
+/*
+template <class T>
+T & Castable::valueToJSON(T & ostr) const {
+
+	if ((getType() == typeid(char)) || isStlString()){
+		ostr << '"';
+		toStream(ostr, ','); // use JSONtree separator
+		ostr << '"';
+	}
+	else {
+		if (getElementCount() != 1){
+			ostr << '[';
+			toStream(ostr); // why comma not explicit? ...
+			ostr << ']';
+		}
+		else
+			toStream(ostr, ',');  // ... but here
+	}
+	return ostr;
+}
 */
 
 template <>
