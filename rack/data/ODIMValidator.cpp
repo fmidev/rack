@@ -54,7 +54,7 @@ ODIMNodeValidator & ODIMNodeValidator::assign(const std::string & s){
 
 	std::vector<std::string> v;
 
-	drain::StringTools::split(s, v, ';');
+	drain::StringTools::split(s, v, ';', " \n\t\r");
 
 	pathRegExp.setExpression(v[0]);
 

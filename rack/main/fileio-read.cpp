@@ -69,12 +69,12 @@ void CmdInputValidatorFile::exec() const {
 	std::istream & istr = infile;
 	std::string line;
 	while (getline(istr, line)){
-		drain::StringTools::trim(line, " \n\t\r");
+		//line = drain::StringTools::trim(line, " \n\t\r");
 		validator.push_back(ODIMNodeValidator());
 		ODIMNodeValidator & nodeValidator = validator.back();
 		nodeValidator.assign(line);
-		std::cout << 'X' << line << std::endl;
-		std::cout << 'V' << nodeValidator << std::endl;
+		std::cout << "L: " << line << std::endl;
+		std::cout << "V: " << nodeValidator << std::endl;
 		std::cout << '\n';
 		line.clear();
 	}
@@ -87,11 +87,9 @@ void CmdInputValidatorFile::exec() const {
 		resources.currentHi5->getPaths(dataPaths); // ALL
 		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-			//std::cout << '#' << *it;
 			ODIMPath p;
 			p << ODIMPathElem::ROOT;
 			p.appendPath(*it);
-			// p.insert(p.end(), it->begin(), it->end());
 
 			ODIMValidator::const_iterator wit = validator.validate(p, H5I_GROUP);
 
@@ -120,13 +118,7 @@ void CmdInputValidatorFile::exec() const {
 					const std::type_info & rType = wit->basetype.getType();
 					const std::type_info & aType = ait->second.getType();
 
-					/*
-					mout.note() << "TYPES: ";
-					mout << drain::Type::call<drain::complexName>(aType);
-					mout << ", expecting: " << drain::Type::call<drain::complexName>(rType);
-					mout << mout.endl;
-					*/
-
+					// Compose variable info: <path>:<key>=<value> <type>.
 					std::stringstream sstr;
 					sstr <<  p << ':' << ait->first << '=';
 					ait->second.valueToJSON(sstr);
@@ -135,8 +127,9 @@ void CmdInputValidatorFile::exec() const {
 					else
 						sstr << ' ' << drain::Type::call<drain::complexName>(aType);
 
+					/// Type test
 					if (aType == rType){
-						mout.info() << "COMPLIANT attribute type: " << sstr.str() << mout.endl;
+						mout.debug() << "COMPLIANT attribute type: " << sstr.str() << mout.endl;
 					}
 					else {
 						sstr << ", should be " << drain::Type::call<drain::complexName>(rType);
@@ -153,7 +146,7 @@ void CmdInputValidatorFile::exec() const {
 						}
 					}
 
-					// Value test
+					/// Value test
 					if (wit->valueRegExp.isSet()){
 						sstr << " regExp='" <<  wit->valueRegExp.toStr() << "'";
 						if (wit->valueRegExp.test(ait->second)){ // convert on the fly
@@ -163,15 +156,11 @@ void CmdInputValidatorFile::exec() const {
 							mout.warn() << "INCOMPLIANT attribute value: " << sstr.str() << mout.endl;
 						}
 					}
-					// mout.note() << "ACCEPT attribute path: " << attributePath << mout.endl;
-					//std::cout << '\t' << it->back() << " ATTRIB:" << ait->first << '\n';
 				}
 			}
 			else {
-				mout.note() << "ACCEPT data: " << p << mout.endl;
-				//std::cout << " DATA" << '\n';
+				mout.debug() << "ACCEPT data: " << p << mout.endl;
 			}
-			//std::cout << '\n';
 
 		}
 	}
