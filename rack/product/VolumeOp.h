@@ -167,12 +167,6 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	//mout.note() << "first elange =" << sweeps.begin()->first << " DS =" << sweeps.begin()->second << mout.endl;
 	//mout.note() << "first qty =" << sweeps.begin()->second.begin()->first << " D =" << sweeps.begin()->second.getFirstData() << mout.endl;
 
-	// Copy metadata from the input volume (note that dst may have been cleared above)
-	dst["what"]  = src["what"];
-	dst["where"] = src["where"];
-	dst["how"]   = src["how"];
-	dst["what"].data.attributes["object"] = this->odim.object;
-	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	ODIMPathElem dataSetPath(ODIMPathElem::DATASET, 1);
 	//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))
@@ -194,17 +188,27 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
 
 	Hi5Tree & dstProduct = dst[dataSetPath];
-	DataSet<DstType<M> > dstProductDataset(dstProduct); // PATH
+
+	// Copy metadata from the input volume (note that dst may have been cleared above)
+	drain::VariableMap & what = dstProduct["what"].data.attributes;
+	what = src["what"].data.attributes;
+	what["object"] = this->odim.object;
+	what["version"] = this->odim.version;
+
+	dst["where"] = src["where"];
 
 	drain::VariableMap & how = dstProduct["how"].data.attributes;
+	how = src["how"].data.attributes;
+	how["software"] = __RACK__;
+	how["sw_version"] = __RACK_VERSION__;
+	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
+	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
+
+	DataSet<DstType<M> > dstProductDataset(dstProduct); // PATH
 
 	/// Main operation
 	this->processDataSets(sweeps, dstProductDataset);
 
-	//
-	how["software"] = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
-	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 
 	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
 	//what["source"] = src["what"].data.attributes["source"];

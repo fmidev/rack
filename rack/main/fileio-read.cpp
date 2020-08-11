@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Log.h>
 #include <drain/util/RegExp.h>
-#include <drain/util/Input.h>
+//#include <drain/util/Input.h>
 
 #include <drain/prog/Command.h>
 
@@ -46,7 +46,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
 #include "data/ODIM.h"
-#include "data/ODIMValidator.h"
 #include "fileio.h"
 #include "fileio-read.h"
 
@@ -56,118 +55,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 namespace rack {
-
-
-
-void CmdInputValidatorFile::exec() const {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	ODIMValidator validator;
-
-	drain::Input infile(value);
-	std::istream & istr = infile;
-	std::string line;
-	while (getline(istr, line)){
-		//line = drain::StringTools::trim(line, " \n\t\r");
-		validator.push_back(ODIMNodeValidator());
-		ODIMNodeValidator & nodeValidator = validator.back();
-		nodeValidator.assign(line);
-		std::cout << "L: " << line << std::endl;
-		std::cout << "V: " << nodeValidator << std::endl;
-		std::cout << '\n';
-		line.clear();
-	}
-
-	RackResources & resources = getResources();
-
-	if (resources.currentHi5){
-
-		ODIMPathList dataPaths;
-		resources.currentHi5->getPaths(dataPaths); // ALL
-		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-
-			ODIMPath p;
-			p << ODIMPathElem::ROOT;
-			p.appendPath(*it);
-
-			ODIMValidator::const_iterator wit = validator.validate(p, H5I_GROUP);
-
-			if (wit == validator.end()){
-				mout.warn() << "REJECT path: " << p << mout.endl;
-				return;
-			}
-			else {
-				mout.debug(1) << "RegExp: " << wit->pathRegExp.toStr() << mout.endl;
-				mout.debug() << "ACCEPT path: " << p << mout.endl;
-			}
-
-			const Hi5Tree & t = (*resources.currentHi5)(*it);
-			if (t.data.dataSet.isEmpty()){
-				// std::cout << " GROUP" << '\n';
-				const VariableMap & a = t.data.attributes;
-				for (VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){
-					std::string attributePath(p);
-					attributePath.push_back(p.separator);
-					attributePath.append(ait->first);
-					ODIMValidator::const_iterator wit = validator.validate(attributePath, H5I_ATTR);
-					if (wit == validator.end()){
-						mout.warn() << "UNKNOWN attribute: " << attributePath << mout.endl;
-						continue;
-					}
-					const std::type_info & rType = wit->basetype.getType();
-					const std::type_info & aType = ait->second.getType();
-
-					// Compose variable info: <path>:<key>=<value> <type>.
-					std::stringstream sstr;
-					sstr <<  p << ':' << ait->first << '=';
-					ait->second.valueToJSON(sstr);
-					if (ait->second.isString())
-						sstr << " string";
-					else
-						sstr << ' ' << drain::Type::call<drain::complexName>(aType);
-
-					/// Type test
-					if (aType == rType){
-						mout.debug() << "COMPLIANT attribute type: " << sstr.str() << mout.endl;
-					}
-					else {
-						sstr << ", should be " << drain::Type::call<drain::complexName>(rType);
-						if ((drain::Type::call<drain::typeIsScalar>(aType) == drain::Type::call<drain::typeIsScalar>(rType)) ||
-								(drain::Type::call<drain::typeIsInteger>(aType) == drain::Type::call<drain::typeIsInteger>(rType)) ||
-								(drain::Type::call<drain::typeIsFloat>(aType) == drain::Type::call<drain::typeIsFloat>(rType))){
-							mout.info() << "Slightly INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
-						}
-						else if ((drain::Type::call<drain::typeIsScalar>(aType) && !drain::Type::call<drain::typeIsScalar>(rType))){
-							mout.note() << "Moderately INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
-						}
-						else {
-							mout.warn() << "INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
-						}
-					}
-
-					/// Value test
-					if (wit->valueRegExp.isSet()){
-						sstr << " regExp='" <<  wit->valueRegExp.toStr() << "'";
-						if (wit->valueRegExp.test(ait->second)){ // convert on the fly
-							mout.debug() << "COMPLIANT attribute value: " << sstr.str() << mout.endl;
-						}
-						else {
-							mout.warn() << "INCOMPLIANT attribute value: " << sstr.str() << mout.endl;
-						}
-					}
-				}
-			}
-			else {
-				mout.debug() << "ACCEPT data: " << p << mout.endl;
-			}
-
-		}
-	}
-	else
-		mout.warn() << "no current H5 data" << mout.endl;
-
-}
 
 
 

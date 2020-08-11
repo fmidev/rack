@@ -794,7 +794,7 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 	static RackLetAdapter<CmdHistogram> hist;
 	static RackLetAdapter<CmdInputFile> cmdInputFile('i');
 	static RackLetAdapter<CmdSample> cmdSample("sample");
-	static RackLetAdapter<CmdInputValidatorFile> cmdInputValidatorFile;
+	//static RackLetAdapter<CmdInputValidatorFile> cmdInputValidatorFile;
 
 	static RackLetAdapter<CmdInputPrefix> cmdInputPrefix;
 	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
