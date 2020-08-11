@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.41"
+#define __RACK_VERSION__ "5.42"
 
 /**
+ *   Version 5.42
+ *   - ODIM Validator
+ *
  *   Version 5.4
  *   - geometry.{width,height} replaces {nbins,nrays} in PolarODIM and {xsize,ysize} in CartesianODIM
  *   - EncodingODIM uses ValueScaling as base class

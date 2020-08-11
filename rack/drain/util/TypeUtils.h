@@ -172,7 +172,7 @@ public:
 			sstr << " non-numeric";
 		}
 		//sstr << '(' << (sizeof(S)*8) << ')';
-		sstr << " (" << sizeGetter::callback<S, std::size_t>() << " bits)";
+		sstr << " (" << (8 * sizeGetter::callback<S, std::size_t>()) << " bits)";
 		//sstr << ' ' << simpleName::callback<S,T>();
 		return sstr.str();
 	}

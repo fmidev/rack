@@ -56,7 +56,7 @@ ODIMNodeValidator & ODIMNodeValidator::assign(const std::string & s){
 
 	drain::StringTools::split(s, v, ';', " \n\t\r");
 
-	pathRegExp.setExpression(v[0]);
+	pathRegExp.setExpression(std::string("^") + v[0] + "$");
 
 	h5Type = getH5TypeDict().getKey(v[1]);
 

@@ -1501,7 +1501,7 @@ public:
 
 void CmdValidate::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, getName());
 
 	ODIMValidator validator;
 
@@ -1524,21 +1524,28 @@ void CmdValidate::exec() const {
 	if (resources.currentHi5){
 
 		ODIMPathList dataPaths;
+
 		resources.currentHi5->getPaths(dataPaths); // ALL
+
 		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
 			ODIMPath p;
 			p << ODIMPathElem::ROOT;
 			p.appendPath(*it);
 
-			ODIMValidator::const_iterator wit = validator.validate(p, H5I_GROUP);
+			ODIMValidator::const_iterator wit;
+
+			if (p.back().is(ODIMPathElem::ARRAY))
+				wit = validator.validate(p, H5I_DATASET);
+			else
+				wit = validator.validate(p, H5I_GROUP);
 
 			if (wit == validator.end()){
 				mout.warn() << "REJECT path: " << p << mout.endl;
 				return;
 			}
 			else {
-				mout.debug(1) << "RegExp: " << wit->pathRegExp.toStr() << mout.endl;
+				mout.debug(1) << "RegExp: " << wit->pathRegExp.toStr() << mout.endl; //.toStr()
 				mout.debug() << "ACCEPT path: " << p << mout.endl;
 			}
 
@@ -1554,6 +1561,9 @@ void CmdValidate::exec() const {
 					if (wit == validator.end()){
 						mout.warn() << "UNKNOWN attribute: " << attributePath << mout.endl;
 						continue;
+					}
+					else {
+						mout.debug(1) << "ACCEPT attribute path: " << attributePath << mout.endl;
 					}
 					const std::type_info & rType = wit->basetype.getType();
 					const std::type_info & aType = ait->second.getType();
