@@ -1,11 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std.dev, sum. " alt="" coords="147,5,229,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; T \&gt;" alt="" coords="115,56,261,83"/>
-<area shape="rect" id="node4" href="$classdrain_1_1LookUp.html" title="Look&#45;up tables. " alt="" coords="139,107,237,133"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Matrix.html" title="Matrix\&lt; T \&gt;" alt="" coords="143,157,233,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1WeightedVector.html" title="WeightedVector\&lt; T \&gt;" alt="" coords="115,208,261,235"/>
-<area shape="rect" id="node9" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; std::\lstring \&gt;" alt="" coords="112,259,264,301"/>
-<area shape="rect" id="node5" href="$classdrain_1_1FunctorLookUp.html" title="Values are available from [0,2PI]. " alt="" coords="312,107,471,133"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Vector.html" title="Vector\&lt; T \&gt;" alt="" coords="345,157,437,184"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Legend.html" title="Legend" alt="" coords="359,267,423,293"/>
+<area shape="rect" id="node1" href="$classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities. " alt="" coords="5,31,77,57"/>
+<area shape="rect" id="node2" href="$classhi5_1_1Reader.html" title="Reader" alt="" coords="125,5,189,32"/>
+<area shape="rect" id="node3" href="$classhi5_1_1Writer.html" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output. " alt="" coords="129,56,186,83"/>
 </map>

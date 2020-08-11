@@ -119,7 +119,7 @@ Collaboration diagram for DistanceTransformLinearOp:</div>
 <area shape="rect" id="node3" href="classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="27,399,102,425"/>
 <area shape="rect" id="node4" href="classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="27,323,110,349"/>
 <area shape="rect" id="node5" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
-<area shape="rect" id="node10" href="classdrain_1_1image_1_1DistanceModel.html" title="DistanceModel" alt="" coords="141,323,250,349"/>
+<area shape="rect" id="node10" href="classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images. " alt="" coords="141,323,250,349"/>
 <area shape="rect" id="node6" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
 <area shape="rect" id="node7" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
 <area shape="rect" id="node9" href="classdrain_1_1image_1_1DistanceModelLinear.html" title="DistanceModelLinear" alt="" coords="126,399,270,425"/>
@@ -128,13 +128,13 @@ Collaboration diagram for DistanceTransformLinearOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afdbca01f0b85400ed273780e05031003"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afdbca01f0b85400ed273780e05031003"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformLinearOp</b> (double horz=10.0, double vert=NAN)</td></tr>
-<tr class="separator:afdbca01f0b85400ed273780e05031003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ea3e7981065e7cb3b9cff1cd70d790a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ea3e7981065e7cb3b9cff1cd70d790a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformLinearOp</b> (float horz=10.0, float vert=NAN)</td></tr>
+<tr class="separator:a8ea3e7981065e7cb3b9cff1cd70d790a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1DistanceTransformOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html">DistanceTransformOp&lt; DistanceModelLinear &gt;</a></td></tr>
-<tr class="memitem:a3084404312306129cf1a4ea436aedb05 inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3084404312306129cf1a4ea436aedb05"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRadius</b> (dist_t width, dist_t height)</td></tr>
-<tr class="separator:a3084404312306129cf1a4ea436aedb05 inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4413a90a0473b4570f5a5ae48976a0ba inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4413a90a0473b4570f5a5ae48976a0ba"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRadius</b> (dist_t width, dist_t height=NAN, dist_t width2=NAN, dist_t height2=NAN)</td></tr>
+<tr class="separator:a4413a90a0473b4570f5a5ae48976a0ba inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92845681c0e54f107128c4335d7798b0 inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92845681c0e54f107128c4335d7798b0"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseChannels</b> (const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;dst) const</td></tr>
 <tr class="separator:a92845681c0e54f107128c4335d7798b0 inherit pub_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,17 +221,20 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStream</b>
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classdrain_1_1image_1_1DistanceTransformOp"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1image_1_1DistanceTransformOp')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html">DistanceTransformOp&lt; DistanceModelLinear &gt;</a></td></tr>
-<tr class="memitem:ad433cac729e3708e8d9929176e00bcf9 inherit pub_types_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad433cac729e3708e8d9929176e00bcf9"></a>
-typedef DistanceModelLinear::dist_t&#160;</td><td class="memItemRight" valign="bottom"><b>dist_t</b></td></tr>
-<tr class="separator:ad433cac729e3708e8d9929176e00bcf9 inherit pub_types_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f56d20ac99dd6cb1479f1cc01344ba inherit pub_types_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9f56d20ac99dd6cb1479f1cc01344ba"></a>
+typedef float&#160;</td><td class="memItemRight" valign="bottom"><b>dist_t</b></td></tr>
+<tr class="separator:ab9f56d20ac99dd6cb1479f1cc01344ba inherit pub_types_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1DistanceTransformOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html">DistanceTransformOp&lt; DistanceModelLinear &gt;</a></td></tr>
-<tr class="memitem:a158ee0c9aa34cff20dd38accd1c5d482 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a158ee0c9aa34cff20dd38accd1c5d482"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformOp</b> (const std::string &amp;name, const std::string &amp;description, double width, double height)</td></tr>
-<tr class="separator:a158ee0c9aa34cff20dd38accd1c5d482 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2721dc0925bdb56f57f724804cd516f8 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2721dc0925bdb56f57f724804cd516f8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformOp</b> (const std::string &amp;name, const std::string &amp;description, float width, float height)</td></tr>
+<tr class="separator:a2721dc0925bdb56f57f724804cd516f8 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a032942e96a55c787b02618cb0ace6984 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html#a032942e96a55c787b02618cb0ace6984">initializeParameters</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;src, const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;dst) const</td></tr>
 <tr class="memdesc:a032942e96a55c787b02618cb0ace6984 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets internal parameters.  <a href="#a032942e96a55c787b02618cb0ace6984">More...</a><br /></td></tr>
 <tr class="separator:a032942e96a55c787b02618cb0ace6984 inherit pro_methods_classdrain_1_1image_1_1DistanceTransformOp"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -96,6 +96,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Dictionary2&lt; K, V &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Two-way mapping between strings and objects of template class T.  
+ <a href="classdrain_1_1Dictionary2.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Dictionary2&lt; K, V &gt;:</div>
 <div class="dyncontent">
@@ -127,24 +132,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6637a2f715177b112bbc63a784d56df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6637a2f715177b112bbc63a784d56df"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Dictionary2</b> (const <a class="el" href="classdrain_1_1Dictionary2.html">Dictionary2</a> &amp;d)</td></tr>
 <tr class="separator:af6637a2f715177b112bbc63a784d56df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a511d9c11cd38eb40b3bc108eb63c1c00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a511d9c11cd38eb40b3bc108eb63c1c00"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const K &amp;key, const V &amp;value)</td></tr>
-<tr class="separator:a511d9c11cd38eb40b3bc108eb63c1c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fab103344aa7984409c1ed450585f3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fab103344aa7984409c1ed450585f3b"></a>
+entry_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const K &amp;key, const V &amp;value)</td></tr>
+<tr class="separator:a1fab103344aa7984409c1ed450585f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e4f0818e177dbaf53c4336e7ffce631"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e4f0818e177dbaf53c4336e7ffce631"></a>
 container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>findByKey</b> (const K &amp;key) const </td></tr>
 <tr class="separator:a6e4f0818e177dbaf53c4336e7ffce631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af926b7914f6af190747e637f6485da92"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af926b7914f6af190747e637f6485da92"></a>
 container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>findByValue</b> (const V &amp;value) const </td></tr>
 <tr class="separator:af926b7914f6af190747e637f6485da92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692576493c02a1bb940ca901c965d8a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a692576493c02a1bb940ca901c965d8a2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasKey</b> (const K &amp;key) const </td></tr>
+<tr class="separator:a692576493c02a1bb940ca901c965d8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ce49743c7e297d30020f74f17ca648d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ce49743c7e297d30020f74f17ca648d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasValue</b> (const V &amp;value) const </td></tr>
+<tr class="separator:a0ce49743c7e297d30020f74f17ca648d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8baeb3aec6bb6ab7d22d65a17c2731c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8baeb3aec6bb6ab7d22d65a17c2731c9"></a>
 const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (const K &amp;key) const </td></tr>
 <tr class="separator:a8baeb3aec6bb6ab7d22d65a17c2731c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefff8c5133867818df132650fbb7ad1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aefff8c5133867818df132650fbb7ad1a"></a>
 const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKey</b> (const V &amp;value) const </td></tr>
 <tr class="separator:aefff8c5133867818df132650fbb7ad1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf8159fc43101a49806041298471d3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebf8159fc43101a49806041298471d3e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toOstr</b> (std::ostream &amp;ostr=std::cout, char separator=0)</td></tr>
-<tr class="separator:aebf8159fc43101a49806041298471d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa953257cdde7624cc5ee08c95cb857a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa953257cdde7624cc5ee08c95cb857a5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStr</b> (std::ostream &amp;ostr=std::cout, char separator=0) const </td></tr>
+<tr class="separator:aa953257cdde7624cc5ee08c95cb857a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -152,7 +163,13 @@ Public Attributes</h2></td></tr>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class K, class V&gt;<br />
+class drain::Dictionary2&lt; K, V &gt;</h3>
+
+<p>Two-way mapping between strings and objects of template class T. </p>
+<p>TODO: hide first and second so that an entry cannot be assigned to either of them </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Dictionary_8h_source.html">Dictionary.h</a></li>
 </ul>
 </div><!-- contents -->

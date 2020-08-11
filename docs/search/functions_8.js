@@ -10,6 +10,7 @@ var searchData=
   ['hasoverlap',['hasOverlap',['../classdrain_1_1image_1_1ImageFrame.html#aeb61a8582a81780c508eb2f470a780c1',1,'drain::image::ImageFrame']]],
   ['haspath',['hasPath',['../classdrain_1_1Tree.html#aeea0a8ae7a6d83e08480d5430d323f94',1,'drain::Tree::hasPath(const path_t &amp;path) const '],['../classdrain_1_1Tree.html#ab57c1905f920343272b8eb0eb8fdabc3',1,'drain::Tree::hasPath(typename path_t::const_iterator it, typename path_t::const_iterator eit) const ']]],
   ['hassamesegment',['hasSameSegment',['../classdrain_1_1image_1_1ImageFrame.html#a9d592b29f22ea31932fdef779cb606f3',1,'drain::image::ImageFrame']]],
+  ['hasundetectvalue',['hasUndetectValue',['../classrack_1_1Quantity.html#a8150a70ebdee3493fef39b5f56223d2f',1,'rack::Quantity']]],
   ['havesimilarencoding',['haveSimilarEncoding',['../classrack_1_1EncodingODIM.html#a4fe9ea39b05471f7f8480480800f70b1',1,'rack::EncodingODIM']]],
   ['heightfrometabeam',['heightFromEtaBeam',['../classrack_1_1Geometry.html#aecf1f69ebb33757e115e18bb7dcbd119',1,'rack::Geometry']]],
   ['heightfrometabeta',['heightFromEtaBeta',['../classrack_1_1Geometry.html#a132cca9e51feec6f34d1156485142337',1,'rack::Geometry']]],

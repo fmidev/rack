@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['label',['label',['../classdrain_1_1image_1_1PaletteEntry.html#a1dd28f5ea7b5b0780013e960944ddaa0',1,'drain::image::PaletteEntry']]],
   ['laplacehorzop',['LaplaceHorzOp',['../classdrain_1_1image_1_1LaplaceHorzOp.html',1,'drain::image']]],
   ['laplaceop',['LaplaceOp',['../classdrain_1_1image_1_1LaplaceOp.html',1,'drain::image']]],
   ['laplacevertop',['LaplaceVertOp',['../classdrain_1_1image_1_1LaplaceVertOp.html',1,'drain::image']]],
@@ -21,10 +20,13 @@ var searchData=
   ['loadjson',['loadJSON',['../classdrain_1_1image_1_1Palette.html#a22349eb538b9dfebf96202d2892dc1e4',1,'drain::image::Palette']]],
   ['loadtxt',['loadTXT',['../classdrain_1_1image_1_1Palette.html#ac4e4ee57e63e62c7ae08607b097cf82c',1,'drain::image::Palette']]],
   ['location',['location',['../classdrain_1_1image_1_1Window.html#a2f7356e1b6ebe8c2b82c33e418e4368b',1,'drain::image::Window']]],
-  ['log',['Log',['../classdrain_1_1Log.html',1,'drain']]],
   ['log',['Log',['../classdrain_1_1Log.html#a0a1f0c06dafd926759fb98fdbda7c143',1,'drain::Log']]],
+  ['log',['Log',['../classdrain_1_1Log.html',1,'drain']]],
   ['logger',['Logger',['../classdrain_1_1Logger.html',1,'drain']]],
   ['lon',['lon',['../classrack_1_1PolarODIM.html#aa96391e04b5977c50b96d77bea86a01d',1,'rack::PolarODIM::lon()'],['../classrack_1_1RadarDataPicker.html#aa96391e04b5977c50b96d77bea86a01d',1,'rack::RadarDataPicker::lon()']]],
   ['lookup',['LookUp',['../classdrain_1_1LookUp.html',1,'drain']]],
+  ['lookup2',['LookUp2',['../classdrain_1_1LookUp2.html',1,'drain']]],
+  ['lookup_3c_20typename_20cont_5ft_3a_3aconst_5fiterator_20_3e',['LookUp&lt; typename cont_t::const_iterator &gt;',['../classdrain_1_1LookUp.html',1,'drain']]],
+  ['lookup_5ft',['lookup_t',['../classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396',1,'drain::ImageCodeMap']]],
   ['lowercase',['lowerCase',['../classdrain_1_1StringTools.html#a2484b12763cf5058d634dffbfbd567ba',1,'drain::StringTools::lowerCase(std::string &amp;s, size_t n=std::numeric_limits&lt; size_t &gt;::max())'],['../classdrain_1_1StringTools.html#af4e164115421b2169ea6bdbb27baead6',1,'drain::StringTools::lowerCase(char c)']]]
 ];

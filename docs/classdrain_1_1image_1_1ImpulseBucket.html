@@ -124,14 +124,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a20dcbdfbd0ec77afc802522bb7e379c1">reset</a> ()=0</td></tr>
 <tr class="memdesc:a20dcbdfbd0ec77afc802522bb7e379c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear statistics before traversing each row or column. <br /></td></tr>
 <tr class="separator:a20dcbdfbd0ec77afc802522bb7e379c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecb963810153119017a9f7d20c42efee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecb963810153119017a9f7d20c42efee"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#aecb963810153119017a9f7d20c42efee">add1</a> (int i, double value, double weight)=0</td></tr>
-<tr class="memdesc:aecb963810153119017a9f7d20c42efee"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
-<tr class="separator:aecb963810153119017a9f7d20c42efee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57c0fbeab224c321863d806cd34957bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57c0fbeab224c321863d806cd34957bd"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a57c0fbeab224c321863d806cd34957bd">add2</a> (int i, double value, double weight)=0</td></tr>
-<tr class="memdesc:a57c0fbeab224c321863d806cd34957bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
-<tr class="separator:a57c0fbeab224c321863d806cd34957bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f100b341c73df8513718581de06ed83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f100b341c73df8513718581de06ed83"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a8f100b341c73df8513718581de06ed83">addLeft</a> (int i, double value, double weight)=0</td></tr>
+<tr class="memdesc:a8f100b341c73df8513718581de06ed83"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a8f100b341c73df8513718581de06ed83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5c25d4d9827dce227a534b3d940c3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c5c25d4d9827dce227a534b3d940c3a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a1c5c25d4d9827dce227a534b3d940c3a">addRight</a> (int i, double value, double weight)=0</td></tr>
+<tr class="memdesc:a1c5c25d4d9827dce227a534b3d940c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a1c5c25d4d9827dce227a534b3d940c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9098eb9c53e80e4639265279bf19b094"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9098eb9c53e80e4639265279bf19b094"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a9098eb9c53e80e4639265279bf19b094">addDown</a> (int i, double value, double weight)=0</td></tr>
+<tr class="memdesc:a9098eb9c53e80e4639265279bf19b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a9098eb9c53e80e4639265279bf19b094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac576b035a69885554a31df10b5d84da2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac576b035a69885554a31df10b5d84da2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#ac576b035a69885554a31df10b5d84da2">addUp</a> (int i, double value, double weight)=0</td></tr>
+<tr class="memdesc:ac576b035a69885554a31df10b5d84da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:ac576b035a69885554a31df10b5d84da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14cdeb6ed8a30ca4f6dcd5e3bbb1b2f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14cdeb6ed8a30ca4f6dcd5e3bbb1b2f8"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a14cdeb6ed8a30ca4f6dcd5e3bbb1b2f8">get</a> (int i)=0</td></tr>
 <tr class="memdesc:a14cdeb6ed8a30ca4f6dcd5e3bbb1b2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return natural (not encoded) value at position i. <br /></td></tr>

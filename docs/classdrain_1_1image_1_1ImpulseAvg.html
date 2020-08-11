@@ -99,7 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Averaging operator. A simple example implementation of <a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html">ImpulseBucket</a>.  
  <a href="classdrain_1_1image_1_1ImpulseAvg.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="ImpulseResponseOp_8h_source.html">ImpulseResponseOp.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="ImpulseAvgOp_8h_source.html">ImpulseAvgOp.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ImpulseAvg:</div>
 <div class="dyncontent">
@@ -139,14 +139,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
 <tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear statistics before traversing each row or column. <br /></td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c6ae75b129f81890b323013a510ca4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69c6ae75b129f81890b323013a510ca4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#a69c6ae75b129f81890b323013a510ca4">add1</a> (int i, double value, double weight)</td></tr>
-<tr class="memdesc:a69c6ae75b129f81890b323013a510ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
-<tr class="separator:a69c6ae75b129f81890b323013a510ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e9949de45a8f750d1de6e0946017dd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e9949de45a8f750d1de6e0946017dd7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#a3e9949de45a8f750d1de6e0946017dd7">add2</a> (int i, double value, double weight)</td></tr>
-<tr class="memdesc:a3e9949de45a8f750d1de6e0946017dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
-<tr class="separator:a3e9949de45a8f750d1de6e0946017dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c51671e03510dfff10440bce24c4fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2c51671e03510dfff10440bce24c4fa"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#ab2c51671e03510dfff10440bce24c4fa">addLeft</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:ab2c51671e03510dfff10440bce24c4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
+<tr class="separator:ab2c51671e03510dfff10440bce24c4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88a85dfb966a5d1ea559d3ae3edc9d7f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#a88a85dfb966a5d1ea559d3ae3edc9d7f">addRight</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
+<tr class="separator:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e130b46003173c61d37239f10606bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9e130b46003173c61d37239f10606bb"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#ab9e130b46003173c61d37239f10606bb">addDown</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:ab9e130b46003173c61d37239f10606bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
+<tr class="separator:ab9e130b46003173c61d37239f10606bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a756150caa14f6ac009a98670b26abf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a756150caa14f6ac009a98670b26abf"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#a0a756150caa14f6ac009a98670b26abf">addUp</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:a0a756150caa14f6ac009a98670b26abf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulate encoded value. <br /></td></tr>
+<tr class="separator:a0a756150caa14f6ac009a98670b26abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaffbdf086ccd97f17d783590c5b5a1fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaffbdf086ccd97f17d783590c5b5a1fd"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseAvg.html#aaffbdf086ccd97f17d783590c5b5a1fd">get</a> (int i)</td></tr>
 <tr class="memdesc:aaffbdf086ccd97f17d783590c5b5a1fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return natural (not encoded) value at position i. <br /></td></tr>
@@ -194,6 +202,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStream</b>
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -202,9 +213,9 @@ Additional Inherited Members</h2></td></tr>
 typedef <a class="el" href="structdrain_1_1image_1_1ImpulseAvgConf.html">ImpulseAvgConf</a>&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td></tr>
 <tr class="separator:a1c7e24a23288145c5e55cf0b82525524 inherit pub_types_classdrain_1_1image_1_1ImpulseBucket"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structdrain_1_1image_1_1ImpulseAvgConf.html">ImpulseAvgConf</a></td></tr>
-<tr class="memitem:ab01a33c3f845cc963c97a17973b4e871 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab01a33c3f845cc963c97a17973b4e871"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>decay</b></td></tr>
-<tr class="separator:ab01a33c3f845cc963c97a17973b4e871 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf18e979783432db13cd2a7ad9b8506 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaf18e979783432db13cd2a7ad9b8506"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>decays</b></td></tr>
+<tr class="separator:acaf18e979783432db13cd2a7ad9b8506 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f334f14441ffc0392abd27fd2f809cb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -262,8 +273,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>drain/imageops/<a class="el" href="ImpulseResponseOp_8h_source.html">ImpulseResponseOp.h</a></li>
-<li>drain/imageops/ImpulseResponseOp.cpp</li>
+<li>drain/imageops/<a class="el" href="ImpulseAvgOp_8h_source.html">ImpulseAvgOp.h</a></li>
+<li>drain/imageops/ImpulseAvgOp.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

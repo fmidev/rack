@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['m2pix',['m2pix',['../classdrain_1_1image_1_1GeoFrame.html#adde6f30da8b9dfff0b6aeff9b36111d0',1,'drain::image::GeoFrame']]],
+  ['m2pix',['m2pix',['../classdrain_1_1image_1_1GeoFrame.html#a354c3c86fe4a331105a1fb5a425d5168',1,'drain::image::GeoFrame']]],
   ['magickdrain',['MagickDrain',['../classdrain_1_1image_1_1MagickDrain.html',1,'drain::image']]],
   ['magnitudeop',['MagnitudeOp',['../classdrain_1_1image_1_1MagnitudeOp.html',1,'drain::image']]],
   ['makecompatible',['makeCompatible',['../classdrain_1_1image_1_1ChannelCatenatorOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::ChannelCatenatorOp::makeCompatible()'],['../classdrain_1_1image_1_1CopyOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::CopyOp::makeCompatible()'],['../classdrain_1_1image_1_1CropOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::CropOp::makeCompatible()'],['../classdrain_1_1image_1_1DifferentialOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::DifferentialOp::makeCompatible()'],['../classdrain_1_1image_1_1DistanceTransformOp.html#a4c8f215362551b925a2658eebf9aa6fe',1,'drain::image::DistanceTransformOp::makeCompatible()'],['../classdrain_1_1image_1_1FastOpticalFlowOp.html#a4c8f215362551b925a2658eebf9aa6fe',1,'drain::image::FastOpticalFlowOp::makeCompatible()'],['../classdrain_1_1image_1_1FastOpticalFlowOp2.html#a4c8f215362551b925a2658eebf9aa6fe',1,'drain::image::FastOpticalFlowOp2::makeCompatible()'],['../classdrain_1_1image_1_1BinaryFunctorOp.html#a4c8f215362551b925a2658eebf9aa6fe',1,'drain::image::BinaryFunctorOp::makeCompatible()'],['../classdrain_1_1image_1_1ImageOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::ImageOp::makeCompatible(const ImageFrame &amp;src, Image &amp;dst) const '],['../classdrain_1_1image_1_1ImageOp.html#a28411fbfe84425a94035d0ab09864d53',1,'drain::image::ImageOp::makeCompatible(const ImageFrame &amp;src1, const ImageFrame &amp;src2, Image &amp;dst) const '],['../classdrain_1_1image_1_1PaletteOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::PaletteOp::makeCompatible()'],['../classdrain_1_1image_1_1PixelVectorOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::PixelVectorOp::makeCompatible()'],['../classdrain_1_1image_1_1QuadTreeOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::QuadTreeOp::makeCompatible()'],['../classdrain_1_1image_1_1QualityOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::QualityOp::makeCompatible()'],['../classdrain_1_1image_1_1ResizeOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::ResizeOp::makeCompatible()'],['../classdrain_1_1image_1_1SegmentAreaOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::SegmentAreaOp::makeCompatible()'],['../classdrain_1_1image_1_1SegmentStatisticsOp.html#ab0ab246666e59a1bfa3d76ea523acb35',1,'drain::image::SegmentStatisticsOp::makeCompatible()'],['../classdrain_1_1image_1_1TransposeOp.html#a4c8f215362551b925a2658eebf9aa6fe',1,'drain::image::TransposeOp::makeCompatible()']]],
   ['map',['map',['../classdrain_1_1Som.html#ac38a26e2355ddc27f9701cdcf4719f26',1,'drain::Som']]],
   ['map_5ft',['map_t',['../classrack_1_1RadarDataPicker.html#ab89674900a5be75e3fb828e826bb9daf',1,'rack::RadarDataPicker']]],
   ['mapdopplerspeed',['mapDopplerSpeed',['../classrack_1_1PolarODIM.html#ad43dd28d7882c726e50ed7b51d8153da',1,'rack::PolarODIM']]],
-  ['mapelementstostream',['mapElementsToStream',['../classdrain_1_1JSONwriter.html#a5c16d0e2edec68211b56a8c750028491',1,'drain::JSONwriter']]],
+  ['mapelementstostream',['mapElementsToStream',['../classdrain_1_1JSONwriter.html#a5c16d0e2edec68211b56a8c750028491',1,'drain::JSONwriter::mapElementsToStream(const T &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)'],['../classdrain_1_1JSONwriter.html#ac26eec534cde22b9ae2a7bbba4ff5281',1,'drain::JSONwriter::mapElementsToStream(const T &amp;m, const std::list&lt; typename T::key_type &gt; &amp;k, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)']]],
   ['mapreader',['MapReader',['../classdrain_1_1MapReader.html',1,'drain']]],
   ['maptoh5compound',['mapToH5Compound',['../classhi5_1_1Writer.html#aeb54daa09bf824de6cd94d3a39b441cb',1,'hi5::Writer']]],
   ['maptostream',['mapToStream',['../classdrain_1_1JSONwriter.html#a0eafb28b0a34bf0620717860c4f9a35a',1,'drain::JSONwriter']]],
@@ -17,12 +17,13 @@ var searchData=
   ['marginalstatisticop',['MarginalStatisticOp',['../classdrain_1_1image_1_1MarginalStatisticOp.html#a916547629334e8fbcef8202c07367dc8',1,'drain::image::MarginalStatisticOp']]],
   ['markervalue',['markerValue',['../classdrain_1_1image_1_1SegmentProberConf.html#ab4dd9abdd7e87125453f9084b0a374d3',1,'drain::image::SegmentProberConf']]],
   ['match',['match',['../classrack_1_1ODIMPathMatcher.html#a2f79af8e551c69daacd2fa8ae9eb3804',1,'rack::ODIMPathMatcher']]],
+  ['matchelem',['matchElem',['../classrack_1_1ODIMPathMatcher.html#a43ce24abad4ace7cc9c0341cfd5268cf',1,'rack::ODIMPathMatcher']]],
   ['matchhead',['matchHead',['../classrack_1_1ODIMPathMatcher.html#aca1a4b70d1b43b4180c04c9d31e48007',1,'rack::ODIMPathMatcher']]],
   ['matchtail',['matchTail',['../classrack_1_1ODIMPathMatcher.html#a7ac78a5dbf988248fe7286a1d0e7503d',1,'rack::ODIMPathMatcher']]],
   ['matrix',['Matrix',['../classdrain_1_1Matrix.html',1,'drain']]],
   ['max',['max',['../classdrain_1_1image_1_1Intensity.html#a1cb4313fca04c9e4d3aefdf6cb58961f',1,'drain::image::Intensity']]],
   ['maxaltitude',['maxAltitude',['../classrack_1_1BiometOp.html#aee2baa24566d72db8cf547ee8855fa31',1,'rack::BiometOp']]],
-  ['maxcodevalue',['maxCodeValue',['../classdrain_1_1image_1_1DistanceModel.html#ab521c1e8bc83134281d205418bc48988',1,'drain::image::DistanceModel']]],
+  ['maxcodevalue',['maxCodeValue',['../classdrain_1_1image_1_1DistanceModel.html#a84e365820cf9fe4e5e51a5c07da69db0',1,'drain::image::DistanceModel']]],
   ['maxechoop',['MaxEchoOp',['../classrack_1_1MaxEchoOp.html',1,'rack']]],
   ['maxechoop',['MaxEchoOp',['../classrack_1_1MaxEchoOp.html#a07847512814c402f957bb4fa56bc3667',1,'rack::MaxEchoOp']]],
   ['maxheight',['maxheight',['../classrack_1_1VerticalCrossSectionODIM.html#a94e1ba35c5cbc671756c3f45b7789cb6',1,'rack::VerticalCrossSectionODIM']]],
@@ -53,5 +54,6 @@ var searchData=
   ['multichannelwindowcore',['MultiChannelWindowCore',['../classdrain_1_1image_1_1MultiChannelWindowCore.html',1,'drain::image']]],
   ['multiplicationfunctor',['MultiplicationFunctor',['../classdrain_1_1image_1_1MultiplicationFunctor.html',1,'drain::image']]],
   ['multithresholdop',['MultiThresholdOp',['../classrack_1_1MultiThresholdOp.html',1,'rack']]],
+  ['miscellaneous_20commands_20and_20scripts',['Miscellaneous commands and scripts',['../pointdata.html',1,'']]],
   ['meteorological_20products',['Meteorological products',['../productspage.html',1,'']]]
 ];

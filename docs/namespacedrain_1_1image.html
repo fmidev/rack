@@ -160,7 +160,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DifferentialOp.html">DifferentialOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual base class for horizontal and vertical intensity derivatives.  <a href="classdrain_1_1image_1_1DifferentialOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceElement.html">DistanceElement</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for linear and exponential distances in rectangular pixel images.  <a href="classdrain_1_1image_1_1DistanceModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelExponential.html">DistanceModelExponential</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,6 +240,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array with georeferencing support.  <a href="classdrain_1_1image_1_1GeoFrame.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoInfo.html">GeoInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Geometry.html">Geometry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -543,6 +548,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a54b633979b178786aa6cdc1d67ad38c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54b633979b178786aa6cdc1d67ad38c3"></a>
+typedef std::list&lt; <a class="el" href="classdrain_1_1image_1_1DistanceElement.html">DistanceElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceNeighbourhood</b></td></tr>
+<tr class="separator:a54b633979b178786aa6cdc1d67ad38c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97c1d2dda98de00276c47c969a1eb7ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97c1d2dda98de00276c47c969a1eb7ae"></a>
 typedef <a class="el" href="classdrain_1_1Tree.html">drain::Tree</a>&lt; std::string, <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSVG</b></td></tr>
 <tr class="separator:a97c1d2dda98de00276c47c969a1eb7ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -570,6 +578,12 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:ab6ac95733f11453104668ab5b776eafd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6ac95733f11453104668ab5b776eafd"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html">CoordinateHandler2D</a> &amp;handler)</td></tr>
 <tr class="separator:ab6ac95733f11453104668ab5b776eafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb665e85762b35702e4ed040cf2e1e6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb665e85762b35702e4ed040cf2e1e6d"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1DistanceElement.html">DistanceElement</a> &amp;d)</td></tr>
+<tr class="separator:aeb665e85762b35702e4ed040cf2e1e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c8a78fdb23b20c6c00fcdc8b3ca98f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57c8a78fdb23b20c6c00fcdc8b3ca98f"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const DistanceNeighbourhood &amp;chain)</td></tr>
+<tr class="separator:a57c8a78fdb23b20c6c00fcdc8b3ca98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d9525c9a684f4bb5f7d99c99a2b7904"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d9525c9a684f4bb5f7d99c99a2b7904"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a> &amp;frame)</td></tr>
 <tr class="separator:a9d9525c9a684f4bb5f7d99c99a2b7904"><td class="memSeparator" colspan="2">&#160;</td></tr>

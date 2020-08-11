@@ -125,15 +125,15 @@ Collaboration diagram for DistanceTransformOp&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ad433cac729e3708e8d9929176e00bcf9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad433cac729e3708e8d9929176e00bcf9"></a>
-typedef T::dist_t&#160;</td><td class="memItemRight" valign="bottom"><b>dist_t</b></td></tr>
-<tr class="separator:ad433cac729e3708e8d9929176e00bcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9f56d20ac99dd6cb1479f1cc01344ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9f56d20ac99dd6cb1479f1cc01344ba"></a>
+typedef float&#160;</td><td class="memItemRight" valign="bottom"><b>dist_t</b></td></tr>
+<tr class="separator:ab9f56d20ac99dd6cb1479f1cc01344ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3084404312306129cf1a4ea436aedb05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3084404312306129cf1a4ea436aedb05"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRadius</b> (dist_t width, dist_t height)</td></tr>
-<tr class="separator:a3084404312306129cf1a4ea436aedb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4413a90a0473b4570f5a5ae48976a0ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4413a90a0473b4570f5a5ae48976a0ba"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRadius</b> (dist_t width, dist_t height=NAN, dist_t width2=NAN, dist_t height2=NAN)</td></tr>
+<tr class="separator:a4413a90a0473b4570f5a5ae48976a0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92845681c0e54f107128c4335d7798b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92845681c0e54f107128c4335d7798b0"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseChannels</b> (const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;dst) const </td></tr>
 <tr class="separator:a92845681c0e54f107128c4335d7798b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,12 +220,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStream</b>
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a158ee0c9aa34cff20dd38accd1c5d482"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a158ee0c9aa34cff20dd38accd1c5d482"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformOp</b> (const std::string &amp;name, const std::string &amp;description, double width, double height)</td></tr>
-<tr class="separator:a158ee0c9aa34cff20dd38accd1c5d482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2721dc0925bdb56f57f724804cd516f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2721dc0925bdb56f57f724804cd516f8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceTransformOp</b> (const std::string &amp;name, const std::string &amp;description, float width, float height)</td></tr>
+<tr class="separator:a2721dc0925bdb56f57f724804cd516f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a032942e96a55c787b02618cb0ace6984"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceTransformOp.html#a032942e96a55c787b02618cb0ace6984">initializeParameters</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;src, const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;dst) const </td></tr>
 <tr class="memdesc:a032942e96a55c787b02618cb0ace6984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets internal parameters.  <a href="#a032942e96a55c787b02618cb0ace6984">More...</a><br /></td></tr>
 <tr class="separator:a032942e96a55c787b02618cb0ace6984"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -8,7 +8,8 @@ var searchData=
   ['weightedwindowcore',['WeightedWindowCore',['../classdrain_1_1image_1_1WeightedWindowCore.html',1,'drain::image']]],
   ['what',['WHAT',['../classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70',1,'rack::ODIMPathElem']]],
   ['where',['WHERE',['../classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3',1,'rack::ODIMPathElem']]],
-  ['width',['width',['../classrack_1_1SunOp.html#a9df23e056f5d1a0388cd8190431c0e03',1,'rack::SunOp::width()'],['../classdrain_1_1image_1_1WindowConfig.html#a2474a5474cbff19523a51eb1de01cda4',1,'drain::image::WindowConfig::width()']]],
+  ['width',['width',['../classdrain_1_1image_1_1WindowConfig.html#a2474a5474cbff19523a51eb1de01cda4',1,'drain::image::WindowConfig']]],
+  ['widths',['widths',['../classdrain_1_1image_1_1DistanceModel.html#ad89a044565b443215e01a34306c099f6',1,'drain::image::DistanceModel']]],
   ['window',['Window',['../classdrain_1_1image_1_1Window.html',1,'drain::image']]],
   ['window',['Window',['../classdrain_1_1image_1_1Window.html#aa0c8e4ce19863476bcfde6d82a815c77',1,'drain::image::Window::Window(size_t width=1, size_t height=0)'],['../classdrain_1_1image_1_1Window.html#a29478648baa7e175e5be6f90329b858f',1,'drain::image::Window::Window(const C &amp;conf)']]],
   ['window_3c_20c_2c_20radarwindowcore_20_3e',['Window&lt; C, RadarWindowCore &gt;',['../classdrain_1_1image_1_1Window.html',1,'drain::image']]],
@@ -49,6 +50,6 @@ var searchData=
   ['writeini',['writeINI',['../classdrain_1_1JSONtree.html#a4fb791cda9a23523a128cfe9a8cf63d2',1,'drain::JSONtree']]],
   ['writejson',['writeJSON',['../classdrain_1_1JSONtree.html#a4e2e0dd40ddb63cd7e66cbbf0983c0bf',1,'drain::JSONtree']]],
   ['writer',['Writer',['../classhi5_1_1Writer.html',1,'hi5']]],
-  ['writetext',['writeText',['../classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
+  ['writetext',['writeText',['../structhi5_1_1NodeHi5.html#a5c394b8bf02f2e1b95ada1628079b08f',1,'hi5::NodeHi5::writeText()'],['../classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
   ['writetodot',['writeToDot',['../classrack_1_1DataOutput.html#a12951b3058c5f05346b99e5c321dcfbb',1,'rack::DataOutput']]]
 ];

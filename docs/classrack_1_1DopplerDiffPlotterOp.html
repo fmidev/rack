@@ -111,16 +111,18 @@ Collaboration diagram for DopplerDiffPlotterOp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DopplerDiffPlotterOp__coll__graph.png" border="0" usemap="#DopplerDiffPlotterOp_coll__map" alt="Collaboration graph"/></div>
 <map name="DopplerDiffPlotterOp_coll__map" id="DopplerDiffPlotterOp_coll__map">
-<area shape="rect" id="node2" href="classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="285,427,417,453"/>
-<area shape="rect" id="node3" href="classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="244,337,328,364"/>
+<area shape="rect" id="node2" href="classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="360,469,492,496"/>
+<area shape="rect" id="node3" href="classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="283,380,367,407"/>
 <area shape="rect" id="node4" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="219,261,334,288"/>
 <area shape="rect" id="node5" href="classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,172,192,199"/>
 <area shape="rect" id="node6" href="classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,81,207,123"/>
 <area shape="rect" id="node7" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="216,172,337,199"/>
-<area shape="rect" id="node8" href="classrack_1_1PolarSector.html" title="PolarSector" alt="" coords="354,337,445,364"/>
-<area shape="rect" id="node9" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="367,261,443,288"/>
+<area shape="rect" id="node8" href="classrack_1_1PolarSector.html" title="PolarSector" alt="" coords="451,380,542,407"/>
+<area shape="rect" id="node9" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="365,261,441,288"/>
 <area shape="rect" id="node10" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="362,172,469,199"/>
 <area shape="rect" id="node11" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="330,89,501,115"/>
+<area shape="rect" id="node13" href="classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="466,261,565,288"/>
+<area shape="rect" id="node14" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="589,261,711,288"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -129,14 +131,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ce7da261a86e9fd7575ae8f06a93f7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ce7da261a86e9fd7575ae8f06a93f7d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>processDataSet</b> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweep, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstProduct) const </td></tr>
 <tr class="separator:a1ce7da261a86e9fd7575ae8f06a93f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classrack_1_1DopplerOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1DopplerOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1DopplerOp.html">DopplerOp</a></td></tr>
-<tr class="memitem:af056584f8c79add11a43f4e09164c596 inherit pub_methods_classrack_1_1DopplerOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af056584f8c79add11a43f4e09164c596"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerOp.html#af056584f8c79add11a43f4e09164c596">project</a> (double azmR, double u, double v) const </td></tr>
-<tr class="memdesc:af056584f8c79add11a43f4e09164c596 inherit pub_methods_classrack_1_1DopplerOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved. <br /></td></tr>
-<tr class="separator:af056584f8c79add11a43f4e09164c596 inherit pub_methods_classrack_1_1DopplerOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aced1cbe2620553c0ca3b9ba5dddbb429 inherit pub_methods_classrack_1_1DopplerOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aced1cbe2620553c0ca3b9ba5dddbb429"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>alias</b> (double v, double vNyq) const </td></tr>
-<tr class="separator:aced1cbe2620553c0ca3b9ba5dddbb429 inherit pub_methods_classrack_1_1DopplerOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70cee512e9ca4028df8cc01032137669"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -151,6 +145,14 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>alias</b> (double v
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_classrack_1_1DopplerOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1DopplerOp')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1DopplerOp.html">DopplerOp</a></td></tr>
+<tr class="memitem:afc655eba502fc731a7ad0020401a5f33 inherit pub_static_methods_classrack_1_1DopplerOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc655eba502fc731a7ad0020401a5f33"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerOp.html#afc655eba502fc731a7ad0020401a5f33">project</a> (double azmR, double u, double v)</td></tr>
+<tr class="memdesc:afc655eba502fc731a7ad0020401a5f33 inherit pub_static_methods_classrack_1_1DopplerOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved. <br /></td></tr>
+<tr class="separator:afc655eba502fc731a7ad0020401a5f33 inherit pub_static_methods_classrack_1_1DopplerOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7c82866767354f40c13e8d9aee3fa4 inherit pub_static_methods_classrack_1_1DopplerOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7c82866767354f40c13e8d9aee3fa4"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><b>alias</b> (double v, double vNyq)</td></tr>
+<tr class="separator:a7a7c82866767354f40c13e8d9aee3fa4 inherit pub_static_methods_classrack_1_1DopplerOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1DopplerSamplerOp"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1DopplerSamplerOp')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1DopplerSamplerOp.html">DopplerSamplerOp</a></td></tr>
 <tr class="memitem:a532377e6c85ae76e914160a1706b5b08 inherit pub_attribs_classrack_1_1DopplerSamplerOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a532377e6c85ae76e914160a1706b5b08"></a>
 <a class="el" href="classrack_1_1PolarSector.html">PolarSector</a>&#160;</td><td class="memItemRight" valign="bottom"><b>w</b></td></tr>

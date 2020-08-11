@@ -1,10 +1,11 @@
 <map id="EncodingODIM" name="EncodingODIM">
-<area shape="rect" id="node5" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="157,304,215,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="133,155,239,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="101,80,271,107"/>
-<area shape="rect" id="node6" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="5,379,119,405"/>
-<area shape="rect" id="node7" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="143,379,229,405"/>
-<area shape="rect" id="node8" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="253,379,433,405"/>
-<area shape="rect" id="node9" href="$classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="238,453,315,480"/>
-<area shape="rect" id="node10" href="$classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="339,453,478,480"/>
+<area shape="rect" id="node6" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="157,304,215,331"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="74,155,173,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="197,155,303,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="165,80,335,107"/>
+<area shape="rect" id="node7" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="5,379,119,405"/>
+<area shape="rect" id="node8" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="143,379,229,405"/>
+<area shape="rect" id="node9" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="253,379,433,405"/>
+<area shape="rect" id="node10" href="$classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="238,453,315,480"/>
+<area shape="rect" id="node11" href="$classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="339,453,478,480"/>
 </map>

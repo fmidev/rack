@@ -91,7 +91,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classdrain_1_1JSONwriter-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">JSONwriter Class Reference</div>  </div>
@@ -110,7 +109,7 @@ template&lt;&gt; </td></tr>
 <tr class="separator:afac951241c98af69bfae6063708cc1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0609e4ba25b8f2081502b818c112a1e"><td class="memTemplParams" colspan="2"><a class="anchor" id="af0609e4ba25b8f2081502b818c112a1e"></a>
 template&lt;&gt; </td></tr>
-<tr class="memitem:af0609e4ba25b8f2081502b818c112a1e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSONtree::tree_t</a> &amp;t, std::ostream &amp;ostr, unsigned short indentation)</td></tr>
+<tr class="memitem:af0609e4ba25b8f2081502b818c112a1e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const <a class="el" href="classdrain_1_1JSONtree.html#a4dc9ffea71b2840ec39b2e92f2b0bd66">drain::JSONtree::tree_t</a> &amp;t, std::ostream &amp;ostr, unsigned short indentation)</td></tr>
 <tr class="separator:af0609e4ba25b8f2081502b818c112a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42ae888c545d1f094f52e1751a410bdc"><td class="memTemplParams" colspan="2"><a class="anchor" id="a42ae888c545d1f094f52e1751a410bdc"></a>
 template&lt;&gt; </td></tr>
@@ -128,6 +127,10 @@ template&lt;&gt; </td></tr>
 template&lt;&gt; </td></tr>
 <tr class="memitem:ab12ad0c510c96f76ba2577648571cfb6"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const char *x, std::ostream &amp;ostr, unsigned short indentation)</td></tr>
 <tr class="separator:ab12ad0c510c96f76ba2577648571cfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84eb61f6860833d575534b379fb831dc"><td class="memTemplParams" colspan="2"><a class="anchor" id="a84eb61f6860833d575534b379fb831dc"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a84eb61f6860833d575534b379fb831dc"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const <a class="el" href="classdrain_1_1Referencer.html">Referencer</a> &amp;v, std::ostream &amp;ostr, unsigned short indentation)</td></tr>
+<tr class="separator:a84eb61f6860833d575534b379fb831dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee0b9b5f27212e97febe724d01d8f6c9"><td class="memTemplParams" colspan="2"><a class="anchor" id="aee0b9b5f27212e97febe724d01d8f6c9"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:aee0b9b5f27212e97febe724d01d8f6c9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, std::ostream &amp;ostr, unsigned short indentation)</td></tr>
@@ -151,6 +154,18 @@ template&lt;class T &gt; </td></tr>
 template&lt;class K , class V &gt; </td></tr>
 <tr class="memitem:af5d809f469463ea9cb8cf55d9426af74"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const std::map&lt; K, V &gt; &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
 <tr class="separator:af5d809f469463ea9cb8cf55d9426af74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0475132f0b79d44433489224fd189d9d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a0475132f0b79d44433489224fd189d9d"></a>
+template&lt;class F , class S &gt; </td></tr>
+<tr class="memitem:a0475132f0b79d44433489224fd189d9d"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (const std::pair&lt; F, S &gt; &amp;x, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
+<tr class="separator:a0475132f0b79d44433489224fd189d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1329a2bf495f9446f37c7f1d0a435539"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1329a2bf495f9446f37c7f1d0a435539"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a1329a2bf495f9446f37c7f1d0a435539"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (typename T::iterator it, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
+<tr class="separator:a1329a2bf495f9446f37c7f1d0a435539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab42ad237fbd78d36d6835e82bb2af78a"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab42ad237fbd78d36d6835e82bb2af78a"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab42ad237fbd78d36d6835e82bb2af78a"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (typename T::const_iterator it, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
+<tr class="separator:ab42ad237fbd78d36d6835e82bb2af78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c4b6e372ceef90e153b458a11dc8f9c"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1c4b6e372ceef90e153b458a11dc8f9c"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a1c4b6e372ceef90e153b458a11dc8f9c"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a1c4b6e372ceef90e153b458a11dc8f9c">plainToStream</a> (const T &amp;x, std::ostream &amp;ostr=std::cout)</td></tr>
@@ -164,6 +179,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:afcb4b96a6b451534f84dd3011ede75f9"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#afcb4b96a6b451534f84dd3011ede75f9">sparseSequenceToStream</a> (const T &amp;x, std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:afcb4b96a6b451534f84dd3011ede75f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classdrain_1_1JSONwriter.html#a6d34feb5d013d95ef59aa8c64bb36180" title="Implementation for std::vector&lt;&gt;, std::vector&lt;list&gt; and std::vector&lt;set&gt; ">sequenceToStream()</a> , but skipping elements of empty() == true.  <a href="#afcb4b96a6b451534f84dd3011ede75f9">More...</a><br /></td></tr>
 <tr class="separator:afcb4b96a6b451534f84dd3011ede75f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b00b33a2aa86ecda43b70d2222e64e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae4b00b33a2aa86ecda43b70d2222e64e"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#ae4b00b33a2aa86ecda43b70d2222e64e">arrayAsMapToStream</a> (const T &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
+<tr class="memdesc:ae4b00b33a2aa86ecda43b70d2222e64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for std::map&lt;&gt; and derived classes.  <a href="#ae4b00b33a2aa86ecda43b70d2222e64e">More...</a><br /></td></tr>
+<tr class="separator:ae4b00b33a2aa86ecda43b70d2222e64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6803fc380d499fe2f4c8422d26132440"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a6803fc380d499fe2f4c8422d26132440"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a6803fc380d499fe2f4c8422d26132440">sparseArrayAsMapToStream</a> (const T &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
 <tr class="memdesc:a6803fc380d499fe2f4c8422d26132440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for std::map&lt;&gt; and derived classes.  <a href="#a6803fc380d499fe2f4c8422d26132440">More...</a><br /></td></tr>
@@ -172,26 +191,70 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a5c16d0e2edec68211b56a8c750028491"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a5c16d0e2edec68211b56a8c750028491">mapElementsToStream</a> (const T &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
 <tr class="memdesc:a5c16d0e2edec68211b56a8c750028491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for std::map&lt;&gt; and derived classes.  <a href="#a5c16d0e2edec68211b56a8c750028491">More...</a><br /></td></tr>
 <tr class="separator:a5c16d0e2edec68211b56a8c750028491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac26eec534cde22b9ae2a7bbba4ff5281"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ac26eec534cde22b9ae2a7bbba4ff5281"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#ac26eec534cde22b9ae2a7bbba4ff5281">mapElementsToStream</a> (const T &amp;m, const std::list&lt; typename T::key_type &gt; &amp;k, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
+<tr class="memdesc:ac26eec534cde22b9ae2a7bbba4ff5281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for std::map&lt;&gt; and derived classes.  <a href="#ac26eec534cde22b9ae2a7bbba4ff5281">More...</a><br /></td></tr>
+<tr class="separator:ac26eec534cde22b9ae2a7bbba4ff5281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eafb28b0a34bf0620717860c4f9a35a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a0eafb28b0a34bf0620717860c4f9a35a"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a0eafb28b0a34bf0620717860c4f9a35a"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a0eafb28b0a34bf0620717860c4f9a35a">mapToStream</a> (const T &amp;m, std::ostream &amp;ostr=std::cout, unsigned short indentation=0)</td></tr>
 <tr class="memdesc:a0eafb28b0a34bf0620717860c4f9a35a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation for std::map&lt;&gt; and derived classes. <br /></td></tr>
 <tr class="separator:a0eafb28b0a34bf0620717860c4f9a35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42bb0ff9161a1f14d88e096d5d20cc2a"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a42bb0ff9161a1f14d88e096d5d20cc2a">indent</a> (std::ostream &amp;ostr, unsigned short n)</td></tr>
+<tr class="memdesc:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indent output with <code>n</code> spaces. <br /></td></tr>
+<tr class="separator:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac1741a484d2ce917fc05b978a95cdbc2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1741a484d2ce917fc05b978a95cdbc2"></a>
 static unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>indentStep</b></td></tr>
 <tr class="separator:ac1741a484d2ce917fc05b978a95cdbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42bb0ff9161a1f14d88e096d5d20cc2a"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONwriter.html#a42bb0ff9161a1f14d88e096d5d20cc2a">indent</a> (std::ostream &amp;ostr, unsigned short n)</td></tr>
-<tr class="memdesc:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indent output with <code>n</code> spaces. <br /></td></tr>
-<tr class="separator:a42bb0ff9161a1f14d88e096d5d20cc2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae4b00b33a2aa86ecda43b70d2222e64e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; arrayAsMapToStream </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>indentation</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implementation for std::map&lt;&gt; and derived classes. </p>
+<p>Recursion </p>
+
+</div>
+</div>
 <a class="anchor" id="a5c16d0e2edec68211b56a8c750028491"></a>
 <div class="memitem">
 <div class="memproto">
@@ -232,6 +295,55 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Implementation for std::map&lt;&gt; and derived classes. </p>
 <p>Recursion </p>
+
+</div>
+</div>
+<a class="anchor" id="ac26eec534cde22b9ae2a7bbba4ff5281"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; mapElementsToStream </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::list&lt; typename T::key_type &gt; &amp;&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>indentation</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implementation for std::map&lt;&gt; and derived classes. </p>
+<p>No: recursion breaks this top-level order-by-list </p>
 
 </div>
 </div>
@@ -311,6 +423,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Implementation for std::map&lt;&gt; and derived classes. </p>
+<p>bool empty() must be defined. </p>
 <p>Recursion </p>
 
 </div>
@@ -360,6 +473,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <li>drain/util/JSONtree.cpp</li>
 <li>drain/util/<a class="el" href="JSONtree_8h_source.html">JSONtree.h</a></li>
 <li>drain/util/JSONwriter.cpp</li>
+<li>drain/util/<a class="el" href="Reference_8h_source.html">Reference.h</a></li>
 <li>drain/util/<a class="el" href="Variable_8h_source.html">Variable.h</a></li>
 </ul>
 </div><!-- contents -->

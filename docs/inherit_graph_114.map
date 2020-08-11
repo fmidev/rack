@@ -1,3 +1,51 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1ValueReader.html" title="Utility for extracting JSON&#45;compatible strings, numbers or arrays of numbers in text data..." alt="" coords="5,5,103,32"/>
+<area shape="rect" id="node2" href="$classrack_1_1DataGroup.html" title="DataGroup\&lt; Data\&lt; DT\l \&gt;, ODIMPathElem::DATA \&gt;" alt="" coords="271,173,462,214"/>
+<area shape="rect" id="node4" href="$classrack_1_1DataGroup.html" title="DataGroup\&lt; plaindata\l_t, ODIMPathElem::QUALITY \&gt;" alt="" coords="261,238,472,279"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Tray.html" title="Set of images, usable for general calls of type traverseFrame(src, dst) . " alt="" coords="327,588,407,615"/>
+<area shape="rect" id="node7" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; T \&gt;" alt="" coords="293,639,440,665"/>
+<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others..." alt="" coords="309,689,424,716"/>
+<area shape="rect" id="node9" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; PaletteEntry \&gt;" alt="" coords="261,740,472,767"/>
+<area shape="rect" id="node11" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; std::\lstring \&gt;" alt="" coords="291,791,443,833"/>
+<area shape="rect" id="node13" href="$classrack_1_1DataGroup.html" title="Something, that contains TreeWrapper and data that can be retrieved by quantity keys. " alt="" coords="294,1009,439,1036"/>
+<area shape="rect" id="node14" href="$classrack_1_1DataSetMap.html" title="DataSetMap\&lt; DT \&gt;" alt="" coords="298,857,435,884"/>
+<area shape="rect" id="node15" href="$classrack_1_1Quantity.html" title="Structure for defining. " alt="" coords="331,908,402,935"/>
+<area shape="rect" id="node16" href="$classrack_1_1QuantityMap.html" title="QuantityMap" alt="" coords="319,959,415,985"/>
+<area shape="rect" id="node17" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="277,304,456,331"/>
+<area shape="rect" id="node19" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="281,355,452,381"/>
+<area shape="rect" id="node36" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="290,405,443,432"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1Tray.html" title="Tray\&lt; const drain::\limage::Channel \&gt;" alt="" coords="301,457,433,498"/>
+<area shape="rect" id="node40" href="$classdrain_1_1image_1_1Tray.html" title="Tray\&lt; drain::image\l::Channel \&gt;" alt="" coords="301,522,432,563"/>
+<area shape="rect" id="node3" href="$classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc). " alt="" coords="547,159,659,185"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support. " alt="" coords="545,640,661,667"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Palette.html" title="Palette" alt="" coords="572,740,635,767"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Legend.html" title="Legend" alt="" coords="571,799,635,825"/>
+<area shape="rect" id="node18" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="544,304,663,331"/>
+<area shape="rect" id="node20" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="550,355,657,381"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l S, D \&gt;" alt="" coords="735,350,883,391"/>
+<area shape="rect" id="node22" href="$classdrain_1_1NodeXML.html" title="NodeXML" alt="" coords="769,416,849,443"/>
+<area shape="rect" id="node25" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="753,521,864,548"/>
+<area shape="rect" id="node32" href="$classrack_1_1SourceODIM.html" title="SourceODIM" alt="" coords="759,467,858,493"/>
+<area shape="rect" id="node33" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l double, double \&gt;" alt="" coords="735,154,883,195"/>
+<area shape="rect" id="node34" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l int, int \&gt;" alt="" coords="735,219,883,261"/>
+<area shape="rect" id="node35" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="SegmentProberConf\&lt;\l T, D \&gt;" alt="" coords="735,285,883,326"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1NodeSVG.html" title="NodeSVG" alt="" coords="935,441,1016,468"/>
+<area shape="rect" id="node24" href="$classrack_1_1NodeGDAL.html" title="NodeGDAL" alt="" coords="931,391,1020,417"/>
+<area shape="rect" id="node26" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="947,521,1004,548"/>
+<area shape="rect" id="node27" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="1101,471,1215,497"/>
+<area shape="rect" id="node28" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="1115,521,1201,548"/>
+<area shape="rect" id="node29" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="1068,572,1248,599"/>
+<area shape="rect" id="node30" href="$classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="1327,547,1404,573"/>
+<area shape="rect" id="node31" href="$classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="1296,597,1435,624"/>
+<area shape="rect" id="node37" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="556,405,651,432"/>
+<area shape="rect" id="node39" href="$classdrain_1_1image_1_1ImageTray.html" title="ImageTray\&lt; const drain\l::image::Channel \&gt;" alt="" coords="523,457,683,498"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1ImageTray.html" title="ImageTray\&lt; drain::image\l::Channel \&gt;" alt="" coords="520,574,687,615"/>
+<area shape="rect" id="node42" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="299,107,435,149"/>
+<area shape="rect" id="node43" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data. " alt="" coords="557,85,649,112"/>
+<area shape="rect" id="node44" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data. " alt="" coords="40,31,179,57"/>
+<area shape="rect" id="node45" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data. " alt="" coords="306,56,427,83"/>
+<area shape="rect" id="node46" href="$classrack_1_1RootData.html" title="RootData\&lt; DT \&gt;" alt="" coords="307,5,427,32"/>
+<area shape="rect" id="node47" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; Data\&lt;\l DT \&gt;::datatype_t \&gt;" alt="" coords="37,173,182,214"/>
+<area shape="rect" id="node48" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; DT::datatype_t \&gt;" alt="" coords="5,1009,213,1036"/>
+<area shape="rect" id="node49" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; plaindata\l_t::datatype_t \&gt;" alt="" coords="29,238,190,279"/>
+<area shape="rect" id="node50" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="554,523,653,549"/>
 </map>

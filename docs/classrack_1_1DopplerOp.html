@@ -88,7 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrack_1_1DopplerOp-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -136,26 +136,15 @@ Collaboration diagram for DopplerOp:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:af056584f8c79add11a43f4e09164c596"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af056584f8c79add11a43f4e09164c596"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerOp.html#af056584f8c79add11a43f4e09164c596">project</a> (double azmR, double u, double v) const </td></tr>
-<tr class="memdesc:af056584f8c79add11a43f4e09164c596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved. <br /></td></tr>
-<tr class="separator:af056584f8c79add11a43f4e09164c596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aced1cbe2620553c0ca3b9ba5dddbb429"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aced1cbe2620553c0ca3b9ba5dddbb429"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>alias</b> (double v, double vNyq) const </td></tr>
-<tr class="separator:aced1cbe2620553c0ca3b9ba5dddbb429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
-<tr class="memitem:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70cee512e9ca4028df8cc01032137669"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
-<tr class="separator:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classrack_1_1VolumeOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1VolumeOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1VolumeOp.html">VolumeOp&lt; PolarODIM &gt;</a></td></tr>
-<tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
-<tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#a042b490c00ab091b44727e5a27246b0b">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
-<tr class="memdesc:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="#a042b490c00ab091b44727e5a27246b0b">More...</a><br /></td></tr>
-<tr class="separator:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:afc655eba502fc731a7ad0020401a5f33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc655eba502fc731a7ad0020401a5f33"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerOp.html#afc655eba502fc731a7ad0020401a5f33">project</a> (double azmR, double u, double v)</td></tr>
+<tr class="memdesc:afc655eba502fc731a7ad0020401a5f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects wind (u,v) to beam direction (rad). Unit (typically m/s) is preserved. <br /></td></tr>
+<tr class="separator:afc655eba502fc731a7ad0020401a5f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7c82866767354f40c13e8d9aee3fa4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7c82866767354f40c13e8d9aee3fa4"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><b>alias</b> (double v, double vNyq)</td></tr>
+<tr class="separator:a7a7c82866767354f40c13e8d9aee3fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -175,6 +164,17 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
+<tr class="memitem:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70cee512e9ca4028df8cc01032137669"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
+<tr class="separator:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1VolumeOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1VolumeOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1VolumeOp.html">VolumeOp&lt; PolarODIM &gt;</a></td></tr>
+<tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
+<tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#a042b490c00ab091b44727e5a27246b0b">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
+<tr class="memdesc:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="#a042b490c00ab091b44727e5a27246b0b">More...</a><br /></td></tr>
+<tr class="separator:a042b490c00ab091b44727e5a27246b0b inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae31e7761befc43085af74869862df2db"></a>
 static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>

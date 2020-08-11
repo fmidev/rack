@@ -109,7 +109,9 @@ Collaboration diagram for ODIMPathElemMatcher:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ODIMPathElemMatcher__coll__graph.png" border="0" usemap="#ODIMPathElemMatcher_coll__map" alt="Collaboration graph"/></div>
 <map name="ODIMPathElemMatcher_coll__map" id="ODIMPathElemMatcher_coll__map">
-<area shape="rect" id="node2" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="29,5,143,32"/>
+<area shape="rect" id="node2" href="classrack_1_1ODIMPathElem.html" title="ODIMPathElem" alt="" coords="5,185,120,212"/>
+<area shape="rect" id="node3" href="classdrain_1_1Flags.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="145,185,199,212"/>
+<area shape="rect" id="node4" href="classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="103,96,241,123"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -124,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9abfb7d9e059d6876b2c26de9c7a670"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9abfb7d9e059d6876b2c26de9c7a670"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathElemMatcher</b> (const std::string &amp;s)</td></tr>
 <tr class="separator:ad9abfb7d9e059d6876b2c26de9c7a670"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ea15fa16f2bf50563b4e65c46ebfde"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88ea15fa16f2bf50563b4e65c46ebfde"></a>
+<a class="el" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">ODIMPathElem::group_t</a> g)</td></tr>
+<tr class="separator:a88ea15fa16f2bf50563b4e65c46ebfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa462a4362af5b7a58d1d3eb472f18c22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa462a4362af5b7a58d1d3eb472f18c22"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElemMatcher.html#aa462a4362af5b7a58d1d3eb472f18c22">test</a> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;elem) const </td></tr>
 <tr class="memdesc:aa462a4362af5b7a58d1d3eb472f18c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if the elem has the same group, and elem.index is within [index,indexMax]. <br /></td></tr>
@@ -203,6 +208,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4851e94d03a2d0c970f7366142aac15f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4851e94d03a2d0c970f7366142aac15f"></a>
 index_t&#160;</td><td class="memItemRight" valign="bottom"><b>indexMax</b></td></tr>
 <tr class="separator:a4851e94d03a2d0c970f7366142aac15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b2dbb68bd713a9114a4563cacc13090"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b2dbb68bd713a9114a4563cacc13090"></a>
+<a class="el" href="classdrain_1_1Flags.html">drain::Flags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="separator:a7b2dbb68bd713a9114a4563cacc13090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1ODIMPathElem"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1ODIMPathElem')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td></tr>
 <tr class="memitem:aab9d6dc9c732820cfa17435a5547f5bb inherit pub_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab9d6dc9c732820cfa17435a5547f5bb"></a>
 <a class="el" href="classrack_1_1ODIMPathElem.html#a4a2df06876f7fb7870c7a257c97561ab">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>group</b></td></tr>
@@ -215,8 +223,11 @@ index_t&#160;</td><td class="memItemRight" valign="bottom"><b>index</b></td></tr
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae8fdc4f52a127ef297a7965f42d2a5cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8fdc4f52a127ef297a7965f42d2a5cf"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElemMatcher.html#ae8fdc4f52a127ef297a7965f42d2a5cf">extractIndex</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:ae8fdc4f52a127ef297a7965f42d2a5cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a string starting with a numeral, try to extract the index. <br /></td></tr>
+<tr class="memdesc:ae8fdc4f52a127ef297a7965f42d2a5cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts index range of type &lt;index&gt;[:&lt;indexMax&gt;]. <br /></td></tr>
 <tr class="separator:ae8fdc4f52a127ef297a7965f42d2a5cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79b6cdd0b4ef339ae7d787f255d066a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79b6cdd0b4ef339ae7d787f255d066a5"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>extractPrefix</b> (const std::string &amp;s, bool indexed)</td></tr>
+<tr class="separator:a79b6cdd0b4ef339ae7d787f255d066a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -344,6 +355,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></
 
 <p>Writes the name, including the index, to output stream. </p>
 <p>Step 1: prefix (by group type)</p>
+<p>Step 1b: prefix (by group type)</p>
 <p>Step 2: index</p>
 <p>Step 1: prefix (by group type)</p>
 <p>Step 2: index </p>

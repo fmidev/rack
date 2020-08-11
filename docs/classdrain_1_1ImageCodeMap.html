@@ -90,13 +90,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdrain_1_1ImageCodeMap-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ImageCodeMap&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="ImageCodebook_8h_source.html">ImageCodebook.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ImageCodeMap&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -107,76 +108,107 @@ Collaboration diagram for ImageCodeMap&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1ImageCodeMap__coll__graph.png" border="0" usemap="#ImageCodeMap_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="ImageCodeMap_3_01T_01_4_coll__map" id="ImageCodeMap_3_01T_01_4_coll__map">
-<area shape="rect" id="node3" href="classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="120,95,219,121"/>
-<area shape="rect" id="node4" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="108,5,231,32"/>
+<area shape="rect" id="node3" href="classdrain_1_1LookUp.html" title="LookUp\&lt; typename cont\l_t::const_iterator \&gt;" alt="" coords="155,96,320,137"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a94ef681c80224ce954a884fb0bf285be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94ef681c80224ce954a884fb0bf285be"></a>
-typedef T&#160;</td><td class="memItemRight" valign="bottom"><b>entry_t</b></td></tr>
-<tr class="separator:a94ef681c80224ce954a884fb0bf285be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5e5a9ed31ef7bbd0f2e372a10de75f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5e5a9ed31ef7bbd0f2e372a10de75f7"></a>
-typedef std::vector&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cont_t</b></td></tr>
-<tr class="separator:ac5e5a9ed31ef7bbd0f2e372a10de75f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79a06b05edd2b1678b97ce014d1eebe0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79a06b05edd2b1678b97ce014d1eebe0"></a>
-typedef cont_t::size_type&#160;</td><td class="memItemRight" valign="bottom"><b>size_t</b></td></tr>
-<tr class="separator:a79a06b05edd2b1678b97ce014d1eebe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad47bda1954d6259e99bf496a40b2cba8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad47bda1954d6259e99bf496a40b2cba8"></a>
-typedef T&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
-<tr class="separator:ad47bda1954d6259e99bf496a40b2cba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc76091aa5be55ccca142b143c4cdbe2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc76091aa5be55ccca142b143c4cdbe2"></a>
+typedef std::map&lt; double, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cont_t</b></td></tr>
+<tr class="separator:acc76091aa5be55ccca142b143c4cdbe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7644d875288731493a83dd40f7acb108"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7644d875288731493a83dd40f7acb108"></a>
+typedef cont_t::key_type&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
+<tr class="separator:a7644d875288731493a83dd40f7acb108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a258ac2ac47afb99f919786aeb415e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a258ac2ac47afb99f919786aeb415e7"></a>
+typedef cont_t::value_type&#160;</td><td class="memItemRight" valign="bottom"><b>entry_t</b></td></tr>
+<tr class="separator:a8a258ac2ac47afb99f919786aeb415e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9147d125ba3ffe998696681793388396"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9147d125ba3ffe998696681793388396"></a>
+typedef <a class="el" href="classdrain_1_1LookUp.html">drain::LookUp</a>&lt; typename cont_t::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a></td></tr>
+<tr class="memdesc:a9147d125ba3ffe998696681793388396"><td class="mdescLeft">&#160;</td><td class="mdescRight">LOOK-UP table, consider outsourcing this. <br /></td></tr>
+<tr class="separator:a9147d125ba3ffe998696681793388396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3dd4e6ed5194f3cabdd680ce1559ae9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3dd4e6ed5194f3cabdd680ce1559ae9b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a3dd4e6ed5194f3cabdd680ce1559ae9b">ImageCodeMap</a> (size_t n=0, const T &amp;value=T())</td></tr>
-<tr class="memdesc:a3dd4e6ed5194f3cabdd680ce1559ae9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a3dd4e6ed5194f3cabdd680ce1559ae9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6814353a6f82b80c194c1dc40d50edd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6814353a6f82b80c194c1dc40d50edd3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a6814353a6f82b80c194c1dc40d50edd3">ImageCodeMap</a> (const cont_t &amp;v)</td></tr>
-<tr class="memdesc:a6814353a6f82b80c194c1dc40d50edd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor //. <br /></td></tr>
-<tr class="separator:a6814353a6f82b80c194c1dc40d50edd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97f767c5536d77d929962333d54d9a8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97f767c5536d77d929962333d54d9a8f"></a>
-const entry_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double intensity) const </td></tr>
-<tr class="separator:a97f767c5536d77d929962333d54d9a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a890d2ecdb36f1cc782d975a88fc7fbfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a890d2ecdb36f1cc782d975a88fc7fbfa"></a>
-entry_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double intensity)</td></tr>
-<tr class="separator:a890d2ecdb36f1cc782d975a88fc7fbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a08daa0d445d5f5fdc19e0a90ee3bbec5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08daa0d445d5f5fdc19e0a90ee3bbec5"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (unsigned short int i)</td></tr>
-<tr class="separator:a08daa0d445d5f5fdc19e0a90ee3bbec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3785bb71941eb3c0125a220515579dd1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3785bb71941eb3c0125a220515579dd1"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (short int i)</td></tr>
-<tr class="separator:a3785bb71941eb3c0125a220515579dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a837ac7b0d8856849c2f9f38985448fa6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a837ac7b0d8856849c2f9f38985448fa6"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (int i)</td></tr>
-<tr class="separator:a837ac7b0d8856849c2f9f38985448fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c424330c168bdedd4fe57612594b9b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c424330c168bdedd4fe57612594b9b1"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (long int i)</td></tr>
-<tr class="separator:a1c424330c168bdedd4fe57612594b9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ac1d74698b7e11339e4bdf71f32ba6a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ac1d74698b7e11339e4bdf71f32ba6a"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (unsigned int i)</td></tr>
-<tr class="separator:a1ac1d74698b7e11339e4bdf71f32ba6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada0b9ce4070e669320eb9c3c7ccd2f48"><td class="memTemplParams" colspan="2"><a class="anchor" id="ada0b9ce4070e669320eb9c3c7ccd2f48"></a>
-template&lt;class E &gt; </td></tr>
-<tr class="memitem:ada0b9ce4070e669320eb9c3c7ccd2f48"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>empty</b> (const E &amp;e)</td></tr>
-<tr class="separator:ada0b9ce4070e669320eb9c3c7ccd2f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b294d8d640ab11ab52b14613fcfd9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40b294d8d640ab11ab52b14613fcfd9c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a40b294d8d640ab11ab52b14613fcfd9c">ImageCodeMap</a> ()</td></tr>
+<tr class="memdesc:a40b294d8d640ab11ab52b14613fcfd9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a40b294d8d640ab11ab52b14613fcfd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b6e75b9c8da25338e3d9d7b4199ffd4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b6e75b9c8da25338e3d9d7b4199ffd4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9b6e75b9c8da25338e3d9d7b4199ffd4">ImageCodeMap</a> (const cont_t &amp;map)</td></tr>
+<tr class="memdesc:a9b6e75b9c8da25338e3d9d7b4199ffd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor //. <br /></td></tr>
+<tr class="separator:a9b6e75b9c8da25338e3d9d7b4199ffd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac56e1f3f0a2323d288da69c65273cf8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#ac56e1f3f0a2323d288da69c65273cf8c">createLookUp</a> (const std::type_info &amp;type, const <a class="el" href="classdrain_1_1ValueScaling.html">ValueScaling</a> &amp;scaling) const </td></tr>
+<tr class="memdesc:ac56e1f3f0a2323d288da69c65273cf8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO? createLookUp(encoding, n=0);.  <a href="#ac56e1f3f0a2323d288da69c65273cf8c">More...</a><br /></td></tr>
+<tr class="separator:ac56e1f3f0a2323d288da69c65273cf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a029fb3f008a577441fbe6020554319f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a029fb3f008a577441fbe6020554319f9"></a>
+cont_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double d) const </td></tr>
+<tr class="separator:a029fb3f008a577441fbe6020554319f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b767db8d62772b2929da33308829171"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b767db8d62772b2929da33308829171"></a>
+cont_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double d)</td></tr>
+<tr class="separator:a2b767db8d62772b2929da33308829171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab4bad6ac9ce693394981a435470a1997"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4bad6ac9ce693394981a435470a1997"></a>
-<a class="el" href="classdrain_1_1ValueScaling.html">ValueScaling</a>&#160;</td><td class="memItemRight" valign="bottom"><b>scaling</b></td></tr>
-<tr class="separator:ab4bad6ac9ce693394981a435470a1997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef05c46954d42363daa8edb90a75d5a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ef05c46954d42363daa8edb90a75d5a"></a>
+<a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lookUp</b></td></tr>
+<tr class="separator:a5ef05c46954d42363daa8edb90a75d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6989953791434c8ea982054551c9e154"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6989953791434c8ea982054551c9e154"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br />
+class drain::ImageCodeMap&lt; T &gt;</h3>
+
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">double</td><td>- type of lower bound of the value range associated with an entry </td></tr>
+    <tr><td class="paramname">T</td><td>- entry type (<a class="el" href="classdrain_1_1LegendEntry.html">LegendEntry</a>, PaletteEntry, HistogramEntry) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ac56e1f3f0a2323d288da69c65273cf8c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a>&amp; createLookUp </td>
+          <td>(</td>
+          <td class="paramtype">const std::type_info &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1ValueScaling.html">ValueScaling</a> &amp;&#160;</td>
+          <td class="paramname"><em>scaling</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO? createLookUp(encoding, n=0);. </p>
+<p>Main loop: traverses entries, and fills up lookUp indices between entries.</p>
+<p>Fill up interval [indexLower, index[ </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>drain/image/<a class="el" href="Legend_8h_source.html">Legend.h</a></li>
+<li>drain/image/<a class="el" href="ImageCodebook_8h_source.html">ImageCodebook.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

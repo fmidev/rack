@@ -89,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1image_1_1DistanceModelLinear-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DistanceModelLinear Class Reference</div>  </div>
@@ -99,7 +100,7 @@ Inheritance diagram for DistanceModelLinear:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1DistanceModelLinear__inherit__graph.png" border="0" usemap="#DistanceModelLinear_inherit__map" alt="Inheritance graph"/></div>
 <map name="DistanceModelLinear_inherit__map" id="DistanceModelLinear_inherit__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1DistanceModel.html" title="DistanceModel" alt="" coords="23,80,132,107"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images. " alt="" coords="23,80,132,107"/>
 <area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="39,5,115,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -108,7 +109,7 @@ Collaboration diagram for DistanceModelLinear:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1DistanceModelLinear__coll__graph.png" border="0" usemap="#DistanceModelLinear_coll__map" alt="Collaboration graph"/></div>
 <map name="DistanceModelLinear_coll__map" id="DistanceModelLinear_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1DistanceModel.html" title="DistanceModel" alt="" coords="51,323,161,349"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images. " alt="" coords="51,323,161,349"/>
 <area shape="rect" id="node3" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="68,247,144,273"/>
 <area shape="rect" id="node4" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
 <area shape="rect" id="node5" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
@@ -117,46 +118,35 @@ Collaboration diagram for DistanceModelLinear:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1b136fd15151956f39d4b0445e6215b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#ae1b136fd15151956f39d4b0445e6215b">setRadius</a> (dist_t horz, dist_t vert=NAN)</td></tr>
-<tr class="memdesc:ae1b136fd15151956f39d4b0445e6215b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the geometry of the distance model.  <a href="#ae1b136fd15151956f39d4b0445e6215b">More...</a><br /></td></tr>
-<tr class="separator:ae1b136fd15151956f39d4b0445e6215b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6340496f63473b87c6086eea7523622c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a6340496f63473b87c6086eea7523622c">setDecrement</a> (dist_t horz, dist_t vert=NAN)</td></tr>
-<tr class="separator:a6340496f63473b87c6086eea7523622c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a028aec264d04e8287eff3321f1949142"><td class="memItemLeft" align="right" valign="top">dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a028aec264d04e8287eff3321f1949142">decreaseHorz</a> (dist_t x) const </td></tr>
-<tr class="memdesc:a028aec264d04e8287eff3321f1949142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decreases value by horizonal decay.  <a href="#a028aec264d04e8287eff3321f1949142">More...</a><br /></td></tr>
-<tr class="separator:a028aec264d04e8287eff3321f1949142"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d92bde9ec8478603c77d0bf8030f44f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d92bde9ec8478603c77d0bf8030f44f"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a5d92bde9ec8478603c77d0bf8030f44f">decreaseVert</a> (dist_t x) const </td></tr>
-<tr class="memdesc:a5d92bde9ec8478603c77d0bf8030f44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decreases value by vertical decay. <br /></td></tr>
-<tr class="separator:a5d92bde9ec8478603c77d0bf8030f44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed7105f72ff53f69286095eb45d87f5c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed7105f72ff53f69286095eb45d87f5c"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#aed7105f72ff53f69286095eb45d87f5c">decreaseDiag</a> (dist_t x) const </td></tr>
-<tr class="memdesc:aed7105f72ff53f69286095eb45d87f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decreases value by diagonal decay. <br /></td></tr>
-<tr class="separator:aed7105f72ff53f69286095eb45d87f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9e482d6dbdc6572ec68f25c689aea47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9e482d6dbdc6572ec68f25c689aea47"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#ae9e482d6dbdc6572ec68f25c689aea47">decreaseKnightHorz</a> (dist_t x) const </td></tr>
-<tr class="memdesc:ae9e482d6dbdc6572ec68f25c689aea47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decreases value by a chess knight step (2-up, 1-left) decay. <br /></td></tr>
-<tr class="separator:ae9e482d6dbdc6572ec68f25c689aea47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83f601d169b8212c35f16028c8653416"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83f601d169b8212c35f16028c8653416"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a83f601d169b8212c35f16028c8653416">decreaseKnightVert</a> (dist_t x) const </td></tr>
-<tr class="memdesc:a83f601d169b8212c35f16028c8653416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decreases value by a chess knight step (2-up, 1-left) decay. <br /></td></tr>
-<tr class="separator:a83f601d169b8212c35f16028c8653416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42900118edb3e92be0fecd60c9148944"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a42900118edb3e92be0fecd60c9148944">setRadius</a> (float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f)</td></tr>
+<tr class="separator:a42900118edb3e92be0fecd60c9148944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90fa1ab50dd6caf14949323de421934f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html#a90fa1ab50dd6caf14949323de421934f">setDecrement</a> (float horz, float vert=nan_f, float horzRight=nan_f, float vertUp=nan_f)</td></tr>
+<tr class="separator:a90fa1ab50dd6caf14949323de421934f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae066e51d6505de3a1c5541d94f01555b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae066e51d6505de3a1c5541d94f01555b"></a>
+virtual <a class="el" href="classdrain_1_1image_1_1DistanceElement.html">DistanceElement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getElement</b> (short dx, short dy, bool forward=true) const </td></tr>
+<tr class="separator:ae066e51d6505de3a1c5541d94f01555b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a44e4e4274290c92fab6c7bb8184165"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a44e4e4274290c92fab6c7bb8184165"></a>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>decrease</b> (float value, float coeff) const </td></tr>
+<tr class="separator:a1a44e4e4274290c92fab6c7bb8184165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
-<tr class="memitem:ae2667e619df9360aa807f28a871cdf27 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2667e619df9360aa807f28a871cdf27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ae2667e619df9360aa807f28a871cdf27">setMax</a> (dist_t <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ab521c1e8bc83134281d205418bc48988">maxCodeValue</a>)</td></tr>
-<tr class="memdesc:ae2667e619df9360aa807f28a871cdf27 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum (expected) code value. Radii, if given, will set pixel-to-pixel decrements scaled to this value. <br /></td></tr>
-<tr class="separator:ae2667e619df9360aa807f28a871cdf27 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa4c25649a1a11d2f3cbd5819eb8ee44 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa4c25649a1a11d2f3cbd5819eb8ee44"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#afa4c25649a1a11d2f3cbd5819eb8ee44">getMax</a> () const </td></tr>
-<tr class="memdesc:afa4c25649a1a11d2f3cbd5819eb8ee44 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum (expected) code value. <br /></td></tr>
-<tr class="separator:afa4c25649a1a11d2f3cbd5819eb8ee44 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02fd73d861ef2e4aabb38c0c9ff82947"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
-<tr class="separator:a02fd73d861ef2e4aabb38c0c9ff82947 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96459c823c018ab31fcf6b25bc6200b7 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96459c823c018ab31fcf6b25bc6200b7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a96459c823c018ab31fcf6b25bc6200b7">setTopology</a> (unsigned short topology)</td></tr>
-<tr class="memdesc:a96459c823c018ab31fcf6b25bc6200b7 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps) <br /></td></tr>
-<tr class="separator:a96459c823c018ab31fcf6b25bc6200b7 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a883a79f0accbe062042ad7d8fad7cb64 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a883a79f0accbe062042ad7d8fad7cb64"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a883a79f0accbe062042ad7d8fad7cb64">setMax</a> (float <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a84e365820cf9fe4e5e51a5c07da69db0">maxCodeValue</a>)</td></tr>
+<tr class="memdesc:a883a79f0accbe062042ad7d8fad7cb64 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum (expected) code value. Radii, if given, will set pixel-to-pixel decrements scaled to this value. <br /></td></tr>
+<tr class="separator:a883a79f0accbe062042ad7d8fad7cb64 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98632dc7ad7933a1726917647cf85eb5 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98632dc7ad7933a1726917647cf85eb5"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a98632dc7ad7933a1726917647cf85eb5">getMax</a> () const </td></tr>
+<tr class="memdesc:a98632dc7ad7933a1726917647cf85eb5 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum (expected) code value. <br /></td></tr>
+<tr class="separator:a98632dc7ad7933a1726917647cf85eb5 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5c54df7ed3b930268c8d7752c101725 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c54df7ed3b930268c8d7752c101725"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
+<tr class="separator:ac5c54df7ed3b930268c8d7752c101725 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8cbe72680871e480e75d9be00cbf34 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad8cbe72680871e480e75d9be00cbf34"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#aad8cbe72680871e480e75d9be00cbf34">setTopology</a> (unsigned short topology)</td></tr>
+<tr class="memdesc:aad8cbe72680871e480e75d9be00cbf34 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps) <br /></td></tr>
+<tr class="separator:aad8cbe72680871e480e75d9be00cbf34 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aedb75e1733f847ac8b196edeb9236b inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a7aedb75e1733f847ac8b196edeb9236b">createChain</a> (DistanceNeighbourhood &amp;chain, unsigned short topology, bool forward=true) const </td></tr>
+<tr class="memdesc:a7aedb75e1733f847ac8b196edeb9236b inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a list of DistanceElements.  <a href="#a7aedb75e1733f847ac8b196edeb9236b">More...</a><br /></td></tr>
+<tr class="separator:a7aedb75e1733f847ac8b196edeb9236b inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:aaf3ffaa82357163ef4fb62c292994fdf inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf3ffaa82357163ef4fb62c292994fdf"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const </td></tr>
@@ -193,29 +183,25 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStream</b>
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
-<tr class="memitem:ab9f56d20ac99dd6cb1479f1cc01344ba inherit pub_types_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9f56d20ac99dd6cb1479f1cc01344ba"></a>
-typedef float&#160;</td><td class="memItemRight" valign="bottom"><b>dist_t</b></td></tr>
-<tr class="separator:ab9f56d20ac99dd6cb1479f1cc01344ba inherit pub_types_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
-<tr class="memitem:afda80d11009b257012757c5d4d7f9ebd inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afda80d11009b257012757c5d4d7f9ebd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#afda80d11009b257012757c5d4d7f9ebd">DIAG</a></td></tr>
-<tr class="memdesc:afda80d11009b257012757c5d4d7f9ebd inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diagnonal +1/-1 steps on/off. <br /></td></tr>
-<tr class="separator:afda80d11009b257012757c5d4d7f9ebd inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92bf29556700001f2ab21143999eb206 inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92bf29556700001f2ab21143999eb206"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a92bf29556700001f2ab21143999eb206">KNIGHT</a></td></tr>
-<tr class="memdesc:a92bf29556700001f2ab21143999eb206 inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chess knight move computation on/off. <br /></td></tr>
-<tr class="separator:a92bf29556700001f2ab21143999eb206 inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae402e2a208e9b3d35b596d760ad91ced inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae402e2a208e9b3d35b596d760ad91ced"></a>
-unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>topology</b></td></tr>
-<tr class="separator:ae402e2a208e9b3d35b596d760ad91ced inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0e7927bbfef5bf7d8fa0bf77d34cc695"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e7927bbfef5bf7d8fa0bf77d34cc695"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>radius2Dec</b> (float r, float rDefault=-1.0) const </td></tr>
+<tr class="separator:a0e7927bbfef5bf7d8fa0bf77d34cc695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad322b11f0612b9c52072ddf7e400d68a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad322b11f0612b9c52072ddf7e400d68a"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>checkDec</b> (float d, float dDefault=1.0) const </td></tr>
+<tr class="separator:ad322b11f0612b9c52072ddf7e400d68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
 <tr class="memitem:a3430dc22b6f95463ca1c9a8d14a2e181 inherit pro_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a3430dc22b6f95463ca1c9a8d14a2e181">DistanceModel</a> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="memdesc:a3430dc22b6f95463ca1c9a8d14a2e181 inherit pro_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for digital distance models. Supports 4-, 8- and extended "chess knight" distance.  <a href="#a3430dc22b6f95463ca1c9a8d14a2e181">More...</a><br /></td></tr>
 <tr class="separator:a3430dc22b6f95463ca1c9a8d14a2e181 inherit pro_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5837aebf1c5ef480f327f0f7e7933689 inherit pro_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5837aebf1c5ef480f327f0f7e7933689"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceModel</b> (const <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a> &amp;dm)</td></tr>
+<tr class="separator:a5837aebf1c5ef480f327f0f7e7933689 inherit pro_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f334f14441ffc0392abd27fd2f809cb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -226,20 +212,44 @@ unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>topolog
 <tr class="memitem:a1ceeab16092b2af6eae16f9d5c2f509f inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ceeab16092b2af6eae16f9d5c2f509f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
 <tr class="separator:a1ceeab16092b2af6eae16f9d5c2f509f inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd36d7881ea8503d5c5824e7a5ad6c7e"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
-<tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
+<tr class="memitem:ae402e2a208e9b3d35b596d760ad91ced inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae402e2a208e9b3d35b596d760ad91ced"></a>
+unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>topology</b></td></tr>
+<tr class="separator:ae402e2a208e9b3d35b596d760ad91ced inherit pub_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
+<tr class="memitem:ab83918d851dc59bbdaff9938e018da9e inherit pub_static_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab83918d851dc59bbdaff9938e018da9e"></a>
+static const float&#160;</td><td class="memItemRight" valign="bottom"><b>nan_f</b> = std::numeric_limits&lt;float&gt;::quiet_NaN()</td></tr>
+<tr class="separator:ab83918d851dc59bbdaff9938e018da9e inherit pub_static_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1DistanceModel"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1DistanceModel')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1DistanceModel.html">DistanceModel</a></td></tr>
-<tr class="memitem:a78fd712efd1a7eb9f54b112b74635fe1 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78fd712efd1a7eb9f54b112b74635fe1"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
-<tr class="separator:a78fd712efd1a7eb9f54b112b74635fe1 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f9169401646c75e21c03c4dcd394239 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f9169401646c75e21c03c4dcd394239"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
-<tr class="separator:a3f9169401646c75e21c03c4dcd394239 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab521c1e8bc83134281d205418bc48988 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab521c1e8bc83134281d205418bc48988"></a>
-dist_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ab521c1e8bc83134281d205418bc48988">maxCodeValue</a></td></tr>
-<tr class="memdesc:ab521c1e8bc83134281d205418bc48988 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling). <br /></td></tr>
-<tr class="separator:ab521c1e8bc83134281d205418bc48988 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89a044565b443215e01a34306c099f6 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad89a044565b443215e01a34306c099f6"></a>
+std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ad89a044565b443215e01a34306c099f6">widths</a></td></tr>
+<tr class="memdesc:ad89a044565b443215e01a34306c099f6 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">parameters["width"], two elements <br /></td></tr>
+<tr class="separator:ad89a044565b443215e01a34306c099f6 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac032f42e021b3c2f8227633cb2007709 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac032f42e021b3c2f8227633cb2007709"></a>
+std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ac032f42e021b3c2f8227633cb2007709">heights</a></td></tr>
+<tr class="memdesc:ac032f42e021b3c2f8227633cb2007709 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">parameters["height"], two elements <br /></td></tr>
+<tr class="separator:ac032f42e021b3c2f8227633cb2007709 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a08d6bec46b67e7932e30eb6463788 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50a08d6bec46b67e7932e30eb6463788"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a50a08d6bec46b67e7932e30eb6463788">horzDec</a></td></tr>
+<tr class="memdesc:a50a08d6bec46b67e7932e30eb6463788 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final decrement or decay per pixel in horizontal direction. Derived from widths; definition varies in subclasses. <br /></td></tr>
+<tr class="separator:a50a08d6bec46b67e7932e30eb6463788 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065dd42a8994479732e2f990cdab5500 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a065dd42a8994479732e2f990cdab5500"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>horzDec2</b></td></tr>
+<tr class="separator:a065dd42a8994479732e2f990cdab5500 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae3940776274daeccc222b2debcf89a inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ae3940776274daeccc222b2debcf89a"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a2ae3940776274daeccc222b2debcf89a">vertDec</a></td></tr>
+<tr class="memdesc:a2ae3940776274daeccc222b2debcf89a inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Final decrement or decay per pixel in vertical direction. Derived from heights; definition varies in subclasses. <br /></td></tr>
+<tr class="separator:a2ae3940776274daeccc222b2debcf89a inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d10858e5227d7dbf2a3fc3093a6c225 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d10858e5227d7dbf2a3fc3093a6c225"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>vertDec2</b></td></tr>
+<tr class="separator:a9d10858e5227d7dbf2a3fc3093a6c225 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e365820cf9fe4e5e51a5c07da69db0 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84e365820cf9fe4e5e51a5c07da69db0"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a84e365820cf9fe4e5e51a5c07da69db0">maxCodeValue</a></td></tr>
+<tr class="memdesc:a84e365820cf9fe4e5e51a5c07da69db0 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling). <br /></td></tr>
+<tr class="separator:a84e365820cf9fe4e5e51a5c07da69db0 inherit pro_attribs_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
@@ -252,36 +262,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a028aec264d04e8287eff3321f1949142"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">dist_t decreaseHorz </td>
-          <td>(</td>
-          <td class="paramtype">dist_t&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Decreases value by horizonal decay. </p>
-<p>Decreases value by horizonal decay </p>
-
-<p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ae737238bad7d096fc2bb8d5a19807b2b">DistanceModel</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6340496f63473b87c6086eea7523622c"></a>
+<a class="anchor" id="a90fa1ab50dd6caf14949323de421934f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -291,14 +272,26 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">void setDecrement </td>
           <td>(</td>
-          <td class="paramtype">dist_t&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>horz</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dist_t&#160;</td>
-          <td class="paramname"><em>vert</em> = <code>NAN</code>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vert</em> = <code>nan_f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>horzRight</em> = <code>nan_f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vertUp</em> = <code>nan_f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -312,21 +305,13 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets the distance geometry directly by modifying decrement/decay coefficients. Alternative to setRadii().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">horz</td><td>- horizontal distance decrement/decay </td></tr>
-    <tr><td class="paramname">vert</td><td>- vertical distance decrement/decay; if negative, set equal to horizontal</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Diagonal (dx+dy) and "knight" (2dx+dy or dx+2dy) values will be adjusted as well. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ace90288d62b14f5654f98e29f34f9807">DistanceModel::setDecrement()</a> </dd></dl>
 
-<p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#aa69a834f2dd31f46045ba73b56a13a49">DistanceModel</a>.</p>
+<p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ace90288d62b14f5654f98e29f34f9807">DistanceModel</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae1b136fd15151956f39d4b0445e6215b"></a>
+<a class="anchor" id="a42900118edb3e92be0fecd60c9148944"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -336,14 +321,26 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         <tr>
           <td class="memname">void setRadius </td>
           <td>(</td>
-          <td class="paramtype">dist_t&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>horz</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dist_t&#160;</td>
-          <td class="paramname"><em>vert</em> = <code>NAN</code>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vert</em> = <code>nan_f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>horzLeft</em> = <code>nan_f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>vertUp</em> = <code>nan_f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -357,29 +354,15 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a61be6d96b330ff9114e3bf9f7c96c2ff" title="Sets the geometry of the distance model. ">DistanceModel::setRadius()</a> </dd></dl>
 
-<p>Sets the geometry of the distance model. </p>
-<p>The values are in float, as eg. half-width radius may be sharp, under 1.0. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">horz</td><td>- horizontal distance scale, "width". </td></tr>
-    <tr><td class="paramname">vert</td><td>- vertical radius, "height"; if negative, set equal to horizontal</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Diagonal (dx+dy) and "knight" (2dx+dy or dx+2dy) values will be adjusted as well.</p>
-<p>Special values:</p><ul>
-<li>negative value: spread to infinity (ie. identified with positive infinity)</li>
-<li>zero: sharp decay, value is zero in neighboring pixels</li>
-<li>in addition: if vert is NaN, value of horz is copied. </li>
-</ul>
-
-<p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a1ceddf9817bab2e66ddbde7526bf08c0">DistanceModel</a>.</p>
+<p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a61be6d96b330ff9114e3bf9f7c96c2ff">DistanceModel</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>drain/image/<a class="el" href="DistanceModel_8h_source.html">DistanceModel.h</a></li>
-<li>drain/image/DistanceModel.cpp</li>
+<li>drain/image/<a class="el" href="DistanceModelLinear_8h_source.html">DistanceModelLinear.h</a></li>
+<li>drain/image/DistanceModelLinear.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

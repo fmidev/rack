@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['label',['label',['../classdrain_1_1image_1_1PaletteEntry.html#a1dd28f5ea7b5b0780013e960944ddaa0',1,'drain::image::PaletteEntry']]],
   ['lat',['lat',['../classrack_1_1PolarODIM.html#a7972334534f68166121a6e51b0aac2d6',1,'rack::PolarODIM::lat()'],['../classrack_1_1RadarDataPicker.html#a7972334534f68166121a6e51b0aac2d6',1,'rack::RadarDataPicker::lat()']]],
   ['learningcoefficient',['learningCoefficient',['../classdrain_1_1Som.html#a66f458d44b9a1a51da869573b2324977',1,'drain::Som']]],
   ['legend',['LEGEND',['../classrack_1_1ODIMPathElem.html#a23144efb139e0fa8a53c08aeab52c96f',1,'rack::ODIMPathElem']]],

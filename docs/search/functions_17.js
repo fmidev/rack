@@ -10,6 +10,6 @@ var searchData=
   ['writeindexed',['writeIndexed',['../classdrain_1_1image_1_1File.html#ab63cf05f0d5e2a011aca6e9019b20217',1,'drain::image::File']]],
   ['writeini',['writeINI',['../classdrain_1_1JSONtree.html#a4fb791cda9a23523a128cfe9a8cf63d2',1,'drain::JSONtree']]],
   ['writejson',['writeJSON',['../classdrain_1_1JSONtree.html#a4e2e0dd40ddb63cd7e66cbbf0983c0bf',1,'drain::JSONtree']]],
-  ['writetext',['writeText',['../classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
+  ['writetext',['writeText',['../structhi5_1_1NodeHi5.html#a5c394b8bf02f2e1b95ada1628079b08f',1,'hi5::NodeHi5::writeText()'],['../classhi5_1_1Hi5Base.html#adebcb71c8ba7aced01ef7840a567e10e',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
   ['writetodot',['writeToDot',['../classrack_1_1DataOutput.html#a12951b3058c5f05346b99e5c321dcfbb',1,'rack::DataOutput']]]
 ];

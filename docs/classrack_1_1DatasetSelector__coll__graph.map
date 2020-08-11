@@ -1,0 +1,10 @@
+<map id="DatasetSelector" name="DatasetSelector">
+<area shape="rect" id="node2" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="317,351,415,377"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="96,247,172,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="55,157,162,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
+<area shape="rect" id="node7" href="$classrack_1_1ODIMPathMatcher.html" title="Test if a path partially fits group and index range. " alt="" coords="238,247,369,273"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Path.html" title="Path\&lt; ODIMPathElemMatcher \&gt;" alt="" coords="209,157,421,184"/>
+<area shape="rect" id="node10" href="$classdrain_1_1RegExp.html" title="RegExp" alt="" coords="393,247,462,273"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="490,247,613,273"/>
+</map>

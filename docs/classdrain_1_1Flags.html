@@ -106,7 +106,7 @@ Collaboration diagram for Flags:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Flags__coll__graph.png" border="0" usemap="#Flags_coll__map" alt="Collaboration graph"/></div>
 <map name="Flags_coll__map" id="Flags_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; K, V \&gt;" alt="" coords="5,96,144,123"/>
+<area shape="rect" id="node2" href="classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="5,96,144,123"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,15 +121,43 @@ typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ab427a344d1581de7abb253d421e78f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ab427a344d1581de7abb253d421e78f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> (const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dictionary, char separator=0)</td></tr>
-<tr class="separator:a8ab427a344d1581de7abb253d421e78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fc1077884564d59b835bfdd277293d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02fc1077884564d59b835bfdd277293d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> (const <a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;flagset)</td></tr>
-<tr class="separator:a02fc1077884564d59b835bfdd277293d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9ffbbebac28289dad5590988448a8b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9ffbbebac28289dad5590988448a8b2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> (value_t &amp;value, const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dictionary, char separator=0)</td></tr>
+<tr class="separator:ab9ffbbebac28289dad5590988448a8b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad17cd16ab2de7a2c2de373c219a27a71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad17cd16ab2de7a2c2de373c219a27a71"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> (const <a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;flags)</td></tr>
+<tr class="separator:ad17cd16ab2de7a2c2de373c219a27a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace477529ce314f43f48566b4ac7d2fe1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace477529ce314f43f48566b4ac7d2fe1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#ace477529ce314f43f48566b4ac7d2fe1">set</a> (value_t x)</td></tr>
+<tr class="memdesc:ace477529ce314f43f48566b4ac7d2fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set desired flags. Does not unset any flag. <br /></td></tr>
+<tr class="separator:ace477529ce314f43f48566b4ac7d2fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27543b61ba83e0200ed367eeb4733549"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27543b61ba83e0200ed367eeb4733549"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:a27543b61ba83e0200ed367eeb4733549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a056725587ebd7cba94645cff685ff342"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a056725587ebd7cba94645cff685ff342"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a056725587ebd7cba94645cff685ff342">unset</a> (value_t x)</td></tr>
+<tr class="memdesc:a056725587ebd7cba94645cff685ff342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag. <br /></td></tr>
+<tr class="separator:a056725587ebd7cba94645cff685ff342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a87510783ef1c1d1b1c3cdbfe41b543"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a87510783ef1c1d1b1c3cdbfe41b543"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>unset</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:a6a87510783ef1c1d1b1c3cdbfe41b543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad20897c5c8bd47f5d4005989bead0e55"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
+<tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set desired flags. Does not unset any flag. <br /></td></tr>
+<tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6052d3e828d958f3199abbbadb77a7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6052d3e828d958f3199abbbadb77a7c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#ad6052d3e828d958f3199abbbadb77a7c">isSet</a> (value_t x)</td></tr>
+<tr class="memdesc:ad6052d3e828d958f3199abbbadb77a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag. <br /></td></tr>
+<tr class="separator:ad6052d3e828d958f3199abbbadb77a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd6780754605d6976fe52fbefd8f43a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fd6780754605d6976fe52fbefd8f43a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:a1fd6780754605d6976fe52fbefd8f43a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9d9e931719b570694c968d8346adb7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#ab9d9e931719b570694c968d8346adb7c">operator=</a> (value_t x)</td></tr>
-<tr class="memdesc:ab9d9e931719b570694c968d8346adb7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set flags, combined to.  <a href="#ab9d9e931719b570694c968d8346adb7c">More...</a><br /></td></tr>
+<tr class="memdesc:ab9d9e931719b570694c968d8346adb7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets value, ie. set or unsets all the flags.  <a href="#ab9d9e931719b570694c968d8346adb7c">More...</a><br /></td></tr>
 <tr class="separator:ab9d9e931719b570694c968d8346adb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06226664843ddb5768ef91dcdf5ba97b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a06226664843ddb5768ef91dcdf5ba97b">operator=</a> (const <a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;flags)</td></tr>
+<tr class="memdesc:a06226664843ddb5768ef91dcdf5ba97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies flags as an integer <code>value</code>. Same dictionary not checked.  <a href="#a06226664843ddb5768ef91dcdf5ba97b">More...</a><br /></td></tr>
+<tr class="separator:a06226664843ddb5768ef91dcdf5ba97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47b7832b8119262e10a80534e6cf6019"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a47b7832b8119262e10a80534e6cf6019">operator=</a> (const std::string &amp;params)</td></tr>
 <tr class="memdesc:a47b7832b8119262e10a80534e6cf6019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set flags.  <a href="#a47b7832b8119262e10a80534e6cf6019">More...</a><br /></td></tr>
 <tr class="separator:a47b7832b8119262e10a80534e6cf6019"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,18 +167,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a1ad675bd89b6202a8d4a2832828ca8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a1ad675bd89b6202a8d4a2832828ca8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator value_t</b> () const </td></tr>
 <tr class="separator:a2a1ad675bd89b6202a8d4a2832828ca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dd5607d3cfcf939b891b1346f80b7ef"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a4dd5607d3cfcf939b891b1346f80b7ef">valueKeysToStream</a> (std::ostream &amp;ostr, char separator=0) const </td></tr>
-<tr class="memdesc:a4dd5607d3cfcf939b891b1346f80b7ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display current value as key values of which the value is composed with <code>OR</code> function.  <a href="#a4dd5607d3cfcf939b891b1346f80b7ef">More...</a><br /></td></tr>
-<tr class="separator:a4dd5607d3cfcf939b891b1346f80b7ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8da4e99419121256bd8e3f275882451f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a8da4e99419121256bd8e3f275882451f">keysToStream</a> (std::ostream &amp;ostr, char separator=0) const </td></tr>
-<tr class="memdesc:a8da4e99419121256bd8e3f275882451f"><td class="mdescLeft">&#160;</td><td class="mdescRight">List all the keys in their numeric order.  <a href="#a8da4e99419121256bd8e3f275882451f">More...</a><br /></td></tr>
-<tr class="separator:a8da4e99419121256bd8e3f275882451f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a5eb9cf75694ad276807d837850f8a7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a0a5eb9cf75694ad276807d837850f8a7">valuesToStream</a> (std::ostream &amp;ostr=std::cout, char separator=0) const </td></tr>
+<tr class="memdesc:a0a5eb9cf75694ad276807d837850f8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display current value as key values of which the value is composed with <code>OR</code> function.  <a href="#a0a5eb9cf75694ad276807d837850f8a7">More...</a><br /></td></tr>
+<tr class="separator:a0a5eb9cf75694ad276807d837850f8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88a87348390d3952bdf0e5b1a678258"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#af88a87348390d3952bdf0e5b1a678258">keysToStream</a> (std::ostream &amp;ostr=std::cout, char separator=0) const </td></tr>
+<tr class="memdesc:af88a87348390d3952bdf0e5b1a678258"><td class="mdescLeft">&#160;</td><td class="mdescRight">List all the keys in their numeric order.  <a href="#af88a87348390d3952bdf0e5b1a678258">More...</a><br /></td></tr>
+<tr class="separator:af88a87348390d3952bdf0e5b1a678258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae3b151b77723ed23610cb39452468b5b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3b151b77723ed23610cb39452468b5b"></a>
-value_t&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:ae3b151b77723ed23610cb39452468b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd9004a5f5ac5493e147e4525f936e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fd9004a5f5ac5493e147e4525f936e4"></a>
+value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
+<tr class="separator:a6fd9004a5f5ac5493e147e4525f936e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bccdb4bdd6ae3540aba464a9d67ee89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bccdb4bdd6ae3540aba464a9d67ee89"></a>
 const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dictionary</b></td></tr>
 <tr class="separator:a8bccdb4bdd6ae3540aba464a9d67ee89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +189,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></t
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Bit vector accessible also with integer values associated with strings. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a8da4e99419121256bd8e3f275882451f"></a>
+<a class="anchor" id="af88a87348390d3952bdf0e5b1a678258"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -169,7 +197,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></t
           <td class="memname">std::ostream &amp; keysToStream </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em>, </td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -219,10 +247,42 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></t
 </table>
 </div><div class="memdoc">
 
-<p>Set flags, combined to. </p>
+<p>Sets value, ie. set or unsets all the flags. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>- bit values 1, 2, 4, 8 ... etc combined with <code>OR</code> function. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a06226664843ddb5768ef91dcdf5ba97b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1Flags.html">Flags</a>&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;&#160;</td>
+          <td class="paramname"><em>flags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies flags as an integer <code>value</code>. Same dictionary not checked. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flags</td><td>- </td></tr>
   </table>
   </dd>
 </dl>
@@ -253,15 +313,15 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></t
 
 </div>
 </div>
-<a class="anchor" id="a4dd5607d3cfcf939b891b1346f80b7ef"></a>
+<a class="anchor" id="a0a5eb9cf75694ad276807d837850f8a7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; valueKeysToStream </td>
+          <td class="memname">std::ostream &amp; valuesToStream </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em>, </td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

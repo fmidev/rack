@@ -132,6 +132,10 @@ const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;
 const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a1e02fe4b68ec465074240868e45e5c27">get</a> (const std::string &amp;t) const </td></tr>
 <tr class="memdesc:a1e02fe4b68ec465074240868e45e5c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the scaling for a given storage type. <br /></td></tr>
 <tr class="separator:a1e02fe4b68ec465074240868e45e5c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8150a70ebdee3493fef39b5f56223d2f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8150a70ebdee3493fef39b5f56223d2f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a8150a70ebdee3493fef39b5f56223d2f">hasUndetectValue</a> () const </td></tr>
+<tr class="memdesc:a8150a70ebdee3493fef39b5f56223d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if a value corresponding a very small (unmeasurable) value has been defined. <br /></td></tr>
+<tr class="separator:a8150a70ebdee3493fef39b5f56223d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e570151ef01e52d6e343a86cc60b803"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e570151ef01e52d6e343a86cc60b803"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a4e570151ef01e52d6e343a86cc60b803">setZero</a> (double value)</td></tr>
 <tr class="memdesc:a4e570151ef01e52d6e343a86cc60b803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets neutral value for purposes of interpolation. <br /></td></tr>
@@ -154,13 +158,8 @@ Public Attributes</h2></td></tr>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2">defaultType</a></td></tr>
 <tr class="memdesc:af5140d15bd9d808ec01bb06f3ae465e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default storage type. <br /></td></tr>
 <tr class="separator:af5140d15bd9d808ec01bb06f3ae465e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a613a5e62d0a669c3e8c2e77bf394652b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a613a5e62d0a669c3e8c2e77bf394652b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a613a5e62d0a669c3e8c2e77bf394652b">hasUndetectValue</a></td></tr>
-<tr class="memdesc:a613a5e62d0a669c3e8c2e77bf394652b"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if a value corresponding a very small (unmeasurable) value has been defined. <br /></td></tr>
-<tr class="separator:a613a5e62d0a669c3e8c2e77bf394652b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8337ce8504bfd5d505a74c80077cfb22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8337ce8504bfd5d505a74c80077cfb22"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a8337ce8504bfd5d505a74c80077cfb22">undetectValue</a></td></tr>
-<tr class="memdesc:a8337ce8504bfd5d505a74c80077cfb22"><td class="mdescLeft">&#160;</td><td class="mdescRight">A physical value corresponding a very small (unmeasurable) value has been defined. <br /></td></tr>
+<tr class="memitem:a8337ce8504bfd5d505a74c80077cfb22"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a8337ce8504bfd5d505a74c80077cfb22">undetectValue</a></td></tr>
+<tr class="memdesc:a8337ce8504bfd5d505a74c80077cfb22"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if a value corresponding a very small (unmeasurable) value has been defined.  <a href="#a8337ce8504bfd5d505a74c80077cfb22">More...</a><br /></td></tr>
 <tr class="separator:a8337ce8504bfd5d505a74c80077cfb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab63e28a281b3682795950a2433129122"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab63e28a281b3682795950a2433129122"></a>
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>physicalRange</b></td></tr>
@@ -203,6 +202,22 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 <p>Sets absolute or typical range of this quantity. </p>
 <p>For example, for probability the range would be [0.0, 1.0]. Setting range is useful when data are converted from some storage type to another </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8337ce8504bfd5d505a74c80077cfb22"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double undetectValue</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>True, if a value corresponding a very small (unmeasurable) value has been defined. </p>
+<p>A physical value corresponding a very small (unmeasurable) value has been defined. </p>
 
 </div>
 </div>

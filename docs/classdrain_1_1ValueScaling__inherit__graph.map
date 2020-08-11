@@ -1,0 +1,9 @@
+<map id="ValueScaling" name="ValueScaling">
+<area shape="rect" id="node2" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="131,80,241,107"/>
+<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="157,155,215,181"/>
+<area shape="rect" id="node4" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="5,229,119,256"/>
+<area shape="rect" id="node5" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="143,229,229,256"/>
+<area shape="rect" id="node6" href="$classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="253,229,433,256"/>
+<area shape="rect" id="node7" href="$classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="238,304,315,331"/>
+<area shape="rect" id="node8" href="$classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="339,304,478,331"/>
+</map>

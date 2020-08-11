@@ -1,6 +1,9 @@
 <map id="PolarODIM" name="PolarODIM">
-<area shape="rect" id="node2" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="77,304,135,331"/>
-<area shape="rect" id="node3" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="51,229,161,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,155,159,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,80,191,107"/>
+<area shape="rect" id="node2" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="187,336,245,363"/>
+<area shape="rect" id="node3" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="61,247,171,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="28,171,127,197"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="5,81,128,108"/>
+<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="172,171,279,197"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="152,81,323,108"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="196,247,303,273"/>
 </map>

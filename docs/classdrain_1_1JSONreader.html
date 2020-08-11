@@ -102,18 +102,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5b071d3db6981b8d8604b816795404fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b071d3db6981b8d8604b816795404fb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#a5b071d3db6981b8d8604b816795404fb">valueFromStream</a> (std::istream &amp;istr, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
-<tr class="memdesc:a5b071d3db6981b8d8604b816795404fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
-<tr class="separator:a5b071d3db6981b8d8604b816795404fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e6dff339f317c25d499f6922c746d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e6dff339f317c25d499f6922c746d4"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#a96e6dff339f317c25d499f6922c746d4">valueFromStream</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
-<tr class="memdesc:a96e6dff339f317c25d499f6922c746d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
-<tr class="separator:a96e6dff339f317c25d499f6922c746d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a340442130b2dbf15b2c1821b956af467"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a340442130b2dbf15b2c1821b956af467"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#a340442130b2dbf15b2c1821b956af467">arrayFromStream</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v)</td></tr>
-<tr class="memdesc:a340442130b2dbf15b2c1821b956af467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given comma-separated string of values, assign them to variable of minimum compatible type. <br /></td></tr>
-<tr class="separator:a340442130b2dbf15b2c1821b956af467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f0490132dcfa395ca51e2e5aa20477"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99f0490132dcfa395ca51e2e5aa20477"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#a99f0490132dcfa395ca51e2e5aa20477">readValue</a> (std::istream &amp;istr, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
+<tr class="memdesc:a99f0490132dcfa395ca51e2e5aa20477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
+<tr class="separator:a99f0490132dcfa395ca51e2e5aa20477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b52a789570aaccc2484ca6082735143"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b52a789570aaccc2484ca6082735143"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#a8b52a789570aaccc2484ca6082735143">readValue</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
+<tr class="memdesc:a8b52a789570aaccc2484ca6082735143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
+<tr class="separator:a8b52a789570aaccc2484ca6082735143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a9ddb7ea0105ffc1e646590887aa3c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8a9ddb7ea0105ffc1e646590887aa3c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSONreader.html#af8a9ddb7ea0105ffc1e646590887aa3c">readArray</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v)</td></tr>
+<tr class="memdesc:af8a9ddb7ea0105ffc1e646590887aa3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given comma-separated string of values, assign them to variable of minimum compatible type. <br /></td></tr>
+<tr class="separator:af8a9ddb7ea0105ffc1e646590887aa3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data. </p>

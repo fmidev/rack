@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structrack_1_1DataType.html" title="DataType\&lt; Hi5Tree,\l Hi5Tree::iterator,\l Image \&gt;" alt="" coords="5,5,147,61"/>
-<area shape="rect" id="node2" href="$structrack_1_1DstType.html" title="Writable data type. " alt="" coords="195,20,301,47"/>
+<area shape="rect" id="node1" href="$structrack_1_1DataType.html" title="DataType\&lt; Hi5Tree const,\l Hi5Tree::const_iterator,\l Image const &#160;\&gt;" alt="" coords="5,5,183,61"/>
+<area shape="rect" id="node2" href="$structrack_1_1SrcType.html" title="Read&#45;only data type. " alt="" coords="231,20,337,47"/>
 </map>

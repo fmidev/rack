@@ -116,12 +116,15 @@ Collaboration diagram for DataCoder:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DataCoder__coll__graph.png" border="0" usemap="#DataCoder_coll__map" alt="Collaboration graph"/></div>
 <map name="DataCoder_coll__map" id="DataCoder_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="24,297,100,324"/>
-<area shape="rect" id="node3" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node8" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="99,247,209,273"/>
-<area shape="rect" id="node4" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node6" href="structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation. " alt="" coords="203,348,361,375"/>
-<area shape="rect" id="node7" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="120,348,177,375"/>
+<area shape="rect" id="node2" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="271,311,347,337"/>
+<area shape="rect" id="node3" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="256,171,363,197"/>
+<area shape="rect" id="node8" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="137,260,247,287"/>
+<area shape="rect" id="node4" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="239,81,409,108"/>
+<area shape="rect" id="node6" href="structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation. " alt="" coords="347,361,506,388"/>
+<area shape="rect" id="node7" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="145,361,202,388"/>
+<area shape="rect" id="node9" href="classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="119,171,217,197"/>
+<area shape="rect" id="node10" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="92,81,215,108"/>
+<area shape="rect" id="node11" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="5,260,112,287"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -151,6 +154,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#a460ecea9553e404de19b15e871af4506">encodeWeight</a> (double &amp;weight) const </td></tr>
 <tr class="memdesc:a460ecea9553e404de19b15e871af4506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts natural-scale data to storage data containing marker codes etc. <br /></td></tr>
 <tr class="separator:a460ecea9553e404de19b15e871af4506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af999664e4bf9d96ba34379c8cf097325"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af999664e4bf9d96ba34379c8cf097325"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#af999664e4bf9d96ba34379c8cf097325">encodeDiff</a> (double &amp;diff) const </td></tr>
+<tr class="memdesc:af999664e4bf9d96ba34379c8cf097325"><td class="mdescLeft">&#160;</td><td class="mdescRight">When using unsigned types, encoding typically requires adding a positive bias and scaling the data. <br /></td></tr>
+<tr class="separator:af999664e4bf9d96ba34379c8cf097325"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a> ()</td></tr>
 <tr class="memdesc:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a naive quality field: data=1.0, undetect/nodata=0.0.  <a href="#a02fd73d861ef2e4aabb38c0c9ff82947">More...</a><br /></td></tr>
 <tr class="separator:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +197,9 @@ const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1image_1_1AccumulationConverter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a></td></tr>
 <tr class="memitem:a374292554300ca155b9a043bb0654407 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a374292554300ca155b9a043bb0654407"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html#a374292554300ca155b9a043bb0654407">encodeCount</a> (double &amp;weight) const </td></tr>
@@ -198,10 +208,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a81b19efb309da0bfb1196cf0bd1a6c7d inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81b19efb309da0bfb1196cf0bd1a6c7d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>encodeStdDev</b> (double &amp;stdDev) const </td></tr>
 <tr class="separator:a81b19efb309da0bfb1196cf0bd1a6c7d inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af999664e4bf9d96ba34379c8cf097325 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af999664e4bf9d96ba34379c8cf097325"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html#af999664e4bf9d96ba34379c8cf097325">encodeDiff</a> (double &amp;diff) const </td></tr>
-<tr class="memdesc:af999664e4bf9d96ba34379c8cf097325 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="mdescLeft">&#160;</td><td class="mdescRight">When using unsigned types, encoding typically requires adding a positive bias and scaling the data. <br /></td></tr>
-<tr class="separator:af999664e4bf9d96ba34379c8cf097325 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0657ecf2cccd24c31ac9c6bd81482a2 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0657ecf2cccd24c31ac9c6bd81482a2"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html#ab0657ecf2cccd24c31ac9c6bd81482a2">getNoDataMarker</a> () const </td></tr>
 <tr class="memdesc:ab0657ecf2cccd24c31ac9c6bd81482a2 inherit pub_methods_structdrain_1_1image_1_1AccumulationConverter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value when weight==0.0. Physically, this relates to results obtained under measurement accuracy. <br /></td></tr>

@@ -116,14 +116,17 @@ Collaboration diagram for DopplerAvg:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DopplerAvg__coll__graph.png" border="0" usemap="#DopplerAvg_coll__map" alt="Collaboration graph"/></div>
 <map name="DopplerAvg_coll__map" id="DopplerAvg_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImpulseBucket.html" title="ImpulseBucket\&lt; ImpulseAvg\lConf \&gt;" alt="" coords="5,399,196,440"/>
-<area shape="rect" id="node3" href="structdrain_1_1image_1_1ImpulseAvgConf.html" title="ImpulseAvgConf" alt="" coords="43,323,161,349"/>
-<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="76,247,152,273"/>
-<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="111,157,218,184"/>
-<area shape="rect" id="node10" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="199,247,309,273"/>
-<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="79,81,250,108"/>
-<area shape="rect" id="node8" href="classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="220,406,307,433"/>
-<area shape="rect" id="node9" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="233,323,291,349"/>
+<area shape="rect" id="node2" href="classdrain_1_1image_1_1ImpulseBucket.html" title="ImpulseBucket\&lt; ImpulseAvg\lConf \&gt;" alt="" coords="221,425,411,467"/>
+<area shape="rect" id="node3" href="structdrain_1_1image_1_1ImpulseAvgConf.html" title="ImpulseAvgConf" alt="" coords="257,349,375,376"/>
+<area shape="rect" id="node4" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="278,260,354,287"/>
+<area shape="rect" id="node5" href="classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="263,171,369,197"/>
+<area shape="rect" id="node10" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="137,260,247,287"/>
+<area shape="rect" id="node6" href="classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="248,81,419,108"/>
+<area shape="rect" id="node8" href="classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="110,433,197,459"/>
+<area shape="rect" id="node9" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="125,349,182,376"/>
+<area shape="rect" id="node11" href="classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="119,171,217,197"/>
+<area shape="rect" id="node12" href="classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="101,81,224,108"/>
+<area shape="rect" id="node13" href="classdrain_1_1image_1_1AreaGeometry.html" title="Rectangle of width x height . " alt="" coords="5,260,112,287"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -143,14 +146,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
 <tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear statistics before traversing each row or column. <br /></td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c6ae75b129f81890b323013a510ca4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69c6ae75b129f81890b323013a510ca4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#a69c6ae75b129f81890b323013a510ca4">add1</a> (int i, double value, double weight)</td></tr>
-<tr class="memdesc:a69c6ae75b129f81890b323013a510ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
-<tr class="separator:a69c6ae75b129f81890b323013a510ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e9949de45a8f750d1de6e0946017dd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e9949de45a8f750d1de6e0946017dd7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#a3e9949de45a8f750d1de6e0946017dd7">add2</a> (int i, double value, double weight)</td></tr>
-<tr class="memdesc:a3e9949de45a8f750d1de6e0946017dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
-<tr class="separator:a3e9949de45a8f750d1de6e0946017dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c51671e03510dfff10440bce24c4fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2c51671e03510dfff10440bce24c4fa"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#ab2c51671e03510dfff10440bce24c4fa">addLeft</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:ab2c51671e03510dfff10440bce24c4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:ab2c51671e03510dfff10440bce24c4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88a85dfb966a5d1ea559d3ae3edc9d7f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#a88a85dfb966a5d1ea559d3ae3edc9d7f">addRight</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a88a85dfb966a5d1ea559d3ae3edc9d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32147c46a4cfdd72e19a4050673f2b4a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32147c46a4cfdd72e19a4050673f2b4a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#a32147c46a4cfdd72e19a4050673f2b4a">addDown</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:a32147c46a4cfdd72e19a4050673f2b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing down or right, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a32147c46a4cfdd72e19a4050673f2b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3182a5914024c1850a8b4d40696502a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3182a5914024c1850a8b4d40696502a1"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#a3182a5914024c1850a8b4d40696502a1">addUp</a> (int i, double value, double weight)</td></tr>
+<tr class="memdesc:a3182a5914024c1850a8b4d40696502a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">When traversing up or left, add a encoded value to bucket in position i. <br /></td></tr>
+<tr class="separator:a3182a5914024c1850a8b4d40696502a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaffbdf086ccd97f17d783590c5b5a1fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaffbdf086ccd97f17d783590c5b5a1fd"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerAvg.html#aaffbdf086ccd97f17d783590c5b5a1fd">get</a> (int i)</td></tr>
 <tr class="memdesc:aaffbdf086ccd97f17d783590c5b5a1fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return natural (not encoded) value at position i. <br /></td></tr>
@@ -199,6 +210,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>toOStream</b>
 <tr class="memitem:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fb53f25449610fe7f993dcda987ad4"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const </td></tr>
 <tr class="separator:a32fb53f25449610fe7f993dcda987ad4 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa897ca394ecd81120c1d2a06d00795d"></a>
+<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:aaa897ca394ecd81120c1d2a06d00795d inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -206,9 +220,9 @@ Public Attributes</h2></td></tr>
 <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
 <tr class="separator:a8473461553535729ebeb24cfcf6fffac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structdrain_1_1image_1_1ImpulseAvgConf.html">ImpulseAvgConf</a></td></tr>
-<tr class="memitem:ab01a33c3f845cc963c97a17973b4e871 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab01a33c3f845cc963c97a17973b4e871"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>decay</b></td></tr>
-<tr class="separator:ab01a33c3f845cc963c97a17973b4e871 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf18e979783432db13cd2a7ad9b8506 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaf18e979783432db13cd2a7ad9b8506"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>decays</b></td></tr>
+<tr class="separator:acaf18e979783432db13cd2a7ad9b8506 inherit pub_attribs_structdrain_1_1image_1_1ImpulseAvgConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

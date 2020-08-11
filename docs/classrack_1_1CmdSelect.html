@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Select input data for next command.  
+<p>Tool for selecting data for next command(s), based on paths, quantities and elevations.  
  <a href="classrack_1_1CmdSelect.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdSelect:</div>
@@ -166,10 +166,51 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Select input data for next command. </p>
-<p>Most commands apply implicit input data selection criteria, typically involving quantities and elevation angle(s). Often, the first data array matching the criteria are used.</p>
-<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on VRAD data, not all the data.</p>
-<p>The selection command can be applied practically with all the commands processing data. In computing meteorological products (<a class="el" href="index.html#products">Product generation</a>), it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
+<div class="textblock"><p>Tool for selecting data for next command(s), based on paths, quantities and elevations. </p>
+<p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
+<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are ordered, meaning that they can be issued as a comma-separated string without explicit key names, as long as they are given in order. Some remarks on parameters:</p>
+<ul>
+<li><code>path</code> consists of slash '/' separated <em>path</em> <em>selection</em> <em>elements:</em> <ul>
+<li>a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts</li>
+<li><code>what</code> , <code>where</code>, <code>how</code> - groups containing attributes</li>
+<li><code> dataset&lt;min&gt;:&lt;max&gt; </code>, <code> data&lt;min&gt;:&lt;max&gt;</code> , <code> quality&lt;min&gt;:&lt;max&gt;</code> - indexed groups containing subgroups for actual data and attributes</li>
+<li><code>data</code> - unindexed groups containing actual data arrays</li>
+<li><em>combined</em> <em>selection</em> <em>elements</em> created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)<ul>
+<li>example: <code>what|where|dataset1:3</code></li>
+</ul>
+</li>
+<li>in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:<ul>
+<li><code>data:</code> equals <code>data1:65535</code>; further the colon ':' can be omitted for <code>dataset</code> and <code>quality</code> (but not for <code>data:</code> , to bypass naming conflict inherent in <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> )</li>
+<li><code>data&lt;index&gt;</code> equals <code> data&lt;index&gt;:&lt;index&gt;</code> (ie. exact match)</li>
+<li><code>data&lt;index&gt;:</code> equals <code> data&lt;index&gt;:65535</code></li>
+<li><code>data:&lt;index&gt;</code> equals <code> data1:&lt;index&gt;</code></li>
+</ul>
+</li>
+<li>in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment<ul>
+<li>example: <code>what|data|quality1:5</code> matches <code>what</code>, <code>data1:5</code> and <code>quality1:5</code></li>
+<li>example: <code>what|where|dataset1:3/what|data1:8</code> &ndash; index ranges <em>can</em> <em>vary</em> on different levels, ie. in slash-separated elements</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>quantity</code> is a regular expression<ul>
+<li>example: <code>^DBZH$</code>, accepting <code>DBZH</code> only</li>
+<li>example: <code>(DBZH|TH)</code> accepts <code>DBZH</code> and <code>TH</code> , but also <code>DBZHC</code> and <code>WIDTH</code> ...</li>
+<li>future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities</li>
+</ul>
+</li>
+<li><code>elangle</code> defines the range of antenna elevations accepted, range limits included<ul>
+<li>unlike with path selectors, &gt;c&gt;elangle=&lt;angle&gt; abbreviates <code>elangle=&lt;angle&gt;:90</code> (not <code>elangle=&lt;angle&gt;:&lt;angle&gt;</code>)</li>
+<li>notice that radar metadata may contain real(ized) values like 1.000004723, use <code>count=1</code> to pick a single one within a range</li>
+</ul>
+</li>
+<li><code>count</code> is the upper limit of accepted indices of <code>dataset</code> ; typically used with <code>elangle</code> </li>
+</ul>
+<p>The selection functionality is best explained with examples.</p>
+<div class="fragment"><div class="line"><span class="preprocessor"># For text output, select paths STARTING with &#39;dataset2&#39;, &#39;dataset3&#39;, ..., &#39;dataset5&#39;. </span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select /dataset2:5 -o volume-select.txt</div><div class="line"></div><div class="line"><span class="preprocessor"># For text output, select paths ENDING with &#39;what&#39;, &#39;where&#39;, or &#39;how&#39;. </span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where|how&#39;</span> -o volume-select.txt</div><div class="line"></div><div class="line"><span class="preprocessor"># For text output, select &#39;where&#39; groups of 3 lowest elevations from 0.5 degrees upwards </span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select where,elangle=0.5,count=3 -o volume-select.txt</div><div class="line"></div><div class="line"><span class="preprocessor"># For text output, select paths of elevations up to 6.0 degrees </span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=:6.0 -o volume-select.txt</div><div class="line"></div><div class="line"><span class="preprocessor"># For text output, select what and where groups of elevations from 0.5 to 5.0 degrees</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where,elangle=0.5:7&#39;</span> -o volume-select.txt</div><div class="line"></div><div class="line"><span class="preprocessor"># For single-image output, select DBZH  </span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=1.5,quantity=DBZH -o volume-DBZH.png</div><div class="line"></div><div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=^TH$,elangle=1.5:10,count=3&#39;</span> --pCappi 1500 -o pCappi-TH-1500m.h5</div><div class="line"></div></div><!-- fragment --><p> Note that character escaping is needed for '|' on command line.</p>
+<p>Often, the first data array matching the criteria are used.</p>
+<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
+<p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="index.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
 <p>Note that some processing commands may not support explicit data selection. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>main/commands.cpp</li>

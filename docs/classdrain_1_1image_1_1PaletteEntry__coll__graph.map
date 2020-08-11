@@ -1,4 +1,6 @@
 <map id="PaletteEntry" name="PaletteEntry">
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
+<area shape="rect" id="node2" href="$classdrain_1_1LegendEntry.html" title="LegendEntry" alt="" coords="5,247,100,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="124,247,200,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="109,157,215,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="77,81,247,108"/>
 </map>

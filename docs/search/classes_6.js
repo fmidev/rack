@@ -14,8 +14,9 @@ var searchData=
   ['gaussianwindowconf',['GaussianWindowConf',['../classdrain_1_1image_1_1GaussianWindowConf.html',1,'drain::image']]],
   ['geoframe',['GeoFrame',['../classdrain_1_1image_1_1GeoFrame.html',1,'drain::image']]],
   ['geographical',['Geographical',['../structrack_1_1Geographical.html',1,'rack']]],
-  ['geometry',['Geometry',['../classdrain_1_1image_1_1Geometry.html',1,'drain::image']]],
+  ['geoinfo',['GeoInfo',['../classdrain_1_1image_1_1GeoInfo.html',1,'drain::image']]],
   ['geometry',['Geometry',['../classrack_1_1Geometry.html',1,'rack']]],
+  ['geometry',['Geometry',['../classdrain_1_1image_1_1Geometry.html',1,'drain::image']]],
   ['gradienthorzop',['GradientHorzOp',['../classdrain_1_1image_1_1GradientHorzOp.html',1,'drain::image']]],
   ['gradientop',['GradientOp',['../classdrain_1_1image_1_1GradientOp.html',1,'drain::image']]],
   ['gradientvertop',['GradientVertOp',['../classdrain_1_1image_1_1GradientVertOp.html',1,'drain::image']]]

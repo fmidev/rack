@@ -10,6 +10,5 @@ var searchData=
   ['arrayseparator',['arraySeparator',['../classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMap']]],
   ['attribute_5fgroups',['ATTRIBUTE_GROUPS',['../classrack_1_1ODIMPathElem.html#a91088dff85a58e36fa01ec17e5205629',1,'rack::ODIMPathElem']]],
   ['attributegroups',['attributeGroups',['../classrack_1_1EncodingODIM.html#a19c5a3a5e9d4e4dabf1e1a8102cbacc5',1,'rack::EncodingODIM']]],
-  ['azm1',['azm1',['../classrack_1_1PolarSector.html#ad1692118e590b548d4025b14945f5f91',1,'rack::PolarSector']]],
-  ['azm2',['azm2',['../classrack_1_1PolarSector.html#ae763b1049feea6008f3a2f84616ec67e',1,'rack::PolarSector']]]
+  ['azm',['azm',['../classrack_1_1PolarSector.html#a59d300ec1e9e4402d56b8177e4ed218a',1,'rack::PolarSector']]]
 ];

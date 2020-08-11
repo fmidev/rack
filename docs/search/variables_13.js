@@ -9,6 +9,7 @@ var searchData=
   ['timeformat',['timeformat',['../classrack_1_1ODIM.html#add88edc41a2353841321922f77426595',1,'rack::ODIM']]],
   ['title',['title',['../classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72',1,'drain::image::Palette']]],
   ['toostreamptr',['toOStreamPtr',['../classdrain_1_1Caster.html#a61b9661743b80ab9e031807f36e1478e',1,'drain::Caster']]],
+  ['trailing',['trailing',['../classdrain_1_1Path.html#a58982e85ec0310094e372d18bd795851',1,'drain::Path']]],
   ['translateptr',['translatePtr',['../classdrain_1_1Caster.html#a88db546b0fd76eadc804a700e0ff0de8',1,'drain::Caster']]],
   ['tree',['tree',['../classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f',1,'rack::TreeWrapper']]],
   ['trimchars',['trimChars',['../classdrain_1_1MapReader.html#a48a50d9d6b609001cf5650310b2c3a42',1,'drain::MapReader']]],

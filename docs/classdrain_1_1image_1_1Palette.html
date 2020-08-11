@@ -102,13 +102,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for Palette:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Palette__inherit__graph.png" border="0" usemap="#Palette_inherit__map" alt="Inheritance graph"/></div>
+<map name="Palette_inherit__map" id="Palette_inherit__map">
+<area shape="rect" id="node2" href="classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; PaletteEntry \&gt;" alt="" coords="5,80,216,107"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Palette:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Palette__coll__graph.png" border="0" usemap="#Palette_coll__map" alt="Collaboration graph"/></div>
 <map name="Palette_coll__map" id="Palette_coll__map">
-<area shape="rect" id="node3" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="219,5,346,32"/>
+<area shape="rect" id="node2" href="classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; PaletteEntry \&gt;" alt="" coords="493,41,704,68"/>
+<area shape="rect" id="node4" href="classdrain_1_1LookUp.html" title="LookUp\&lt; typename cont\l_t::const_iterator \&gt;" alt="" coords="223,57,388,98"/>
+<area shape="rect" id="node6" href="classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="535,92,662,119"/>
+<area shape="rect" id="node7" href="classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; key_t,\l std::string \&gt;" alt="" coords="531,143,667,185"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -117,12 +123,33 @@ Public Types</h2></td></tr>
 <tr class="memitem:a550c0674e51a45d86b0bcc8ab049163c"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a></td></tr>
 <tr class="memdesc:a550c0674e51a45d86b0bcc8ab049163c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some kind of identity key for the palette, typically filename to avoid reloading.  <a href="#a550c0674e51a45d86b0bcc8ab049163c">More...</a><br /></td></tr>
 <tr class="separator:a550c0674e51a45d86b0bcc8ab049163c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77eee4a29d47d3bc4dba721556ee5c03"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77eee4a29d47d3bc4dba721556ee5c03"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; key_t, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a77eee4a29d47d3bc4dba721556ee5c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classdrain_1_1ImageCodeMap"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1ImageCodeMap')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap&lt; PaletteEntry &gt;</a></td></tr>
+<tr class="memitem:acc76091aa5be55ccca142b143c4cdbe2 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc76091aa5be55ccca142b143c4cdbe2"></a>
+typedef std::map&lt; double, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cont_t</b></td></tr>
+<tr class="separator:acc76091aa5be55ccca142b143c4cdbe2 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7644d875288731493a83dd40f7acb108 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7644d875288731493a83dd40f7acb108"></a>
+typedef cont_t::key_type&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
+<tr class="separator:a7644d875288731493a83dd40f7acb108 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a258ac2ac47afb99f919786aeb415e7 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a258ac2ac47afb99f919786aeb415e7"></a>
+typedef cont_t::value_type&#160;</td><td class="memItemRight" valign="bottom"><b>entry_t</b></td></tr>
+<tr class="separator:a8a258ac2ac47afb99f919786aeb415e7 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9147d125ba3ffe998696681793388396 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9147d125ba3ffe998696681793388396"></a>
+typedef <a class="el" href="classdrain_1_1LookUp.html">drain::LookUp</a>&lt; typename cont_t::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a></td></tr>
+<tr class="memdesc:a9147d125ba3ffe998696681793388396 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">LOOK-UP table, consider outsourcing this. <br /></td></tr>
+<tr class="separator:a9147d125ba3ffe998696681793388396 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad20897c5c8bd47f5d4005989bead0e55"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25d7fdab9f214438a7426a2105c6be66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25d7fdab9f214438a7426a2105c6be66"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a25d7fdab9f214438a7426a2105c6be66">addEntry</a> (double min, double red=0.0, double green=0.0, double blue=0.0, const std::string &amp;id=&quot;&quot;, const std::string &amp;label=&quot;&quot;)</td></tr>
+<tr class="memdesc:a25d7fdab9f214438a7426a2105c6be66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one color. <br /></td></tr>
+<tr class="separator:a25d7fdab9f214438a7426a2105c6be66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88e6ff2a6dffa1ab171816a5d2c08c55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a88e6ff2a6dffa1ab171816a5d2c08c55">load</a> (const std::string &amp;filename, bool flexible=false)</td></tr>
 <tr class="memdesc:a88e6ff2a6dffa1ab171816a5d2c08c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a palette from text file.  <a href="#a88e6ff2a6dffa1ab171816a5d2c08c55">More...</a><br /></td></tr>
 <tr class="separator:a88e6ff2a6dffa1ab171816a5d2c08c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,8 +167,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const std:
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportTXT</b> (std::ostream &amp;ostr, char separator='\t', char separator2=0) const </td></tr>
 <tr class="separator:a6fc6ff0cfd240fcdce53bf537c8e78bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf9afb8b4136fbbaadcdeb6904008aa2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf9afb8b4136fbbaadcdeb6904008aa2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1Tree.html">drain::JSONtree::tree_t</a> &amp;json) const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1JSONtree.html#a4dc9ffea71b2840ec39b2e92f2b0bd66">drain::JSONtree::tree_t</a> &amp;json) const </td></tr>
 <tr class="separator:adf9afb8b4136fbbaadcdeb6904008aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6461c9315427c2820357f17c1c462fa5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6461c9315427c2820357f17c1c462fa5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportFMT</b> (std::ostream &amp;ostr, const std::string &amp;format) const </td></tr>
+<tr class="separator:a6461c9315427c2820357f17c1c462fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb17c9d07c0315d0ba06fab4250d2d90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb17c9d07c0315d0ba06fab4250d2d90"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acb17c9d07c0315d0ba06fab4250d2d90">exportSVGLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const </td></tr>
 <tr class="memdesc:acb17c9d07c0315d0ba06fab4250d2d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a legend as an SVG graphic. <br /></td></tr>
@@ -152,6 +182,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a2571426c4c00ee5885c8b7d63d9beae3">refine</a> (size_t n=256)</td></tr>
 <tr class="memdesc:a2571426c4c00ee5885c8b7d63d9beae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")  <a href="#a2571426c4c00ee5885c8b7d63d9beae3">More...</a><br /></td></tr>
 <tr class="separator:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd41e39f689532308287a25c02e20928"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd41e39f689532308287a25c02e20928"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateDictionary</b> ()</td></tr>
+<tr class="separator:afd41e39f689532308287a25c02e20928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classdrain_1_1ImageCodeMap"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1ImageCodeMap')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap&lt; PaletteEntry &gt;</a></td></tr>
+<tr class="memitem:a40b294d8d640ab11ab52b14613fcfd9c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40b294d8d640ab11ab52b14613fcfd9c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a40b294d8d640ab11ab52b14613fcfd9c">ImageCodeMap</a> ()</td></tr>
+<tr class="memdesc:a40b294d8d640ab11ab52b14613fcfd9c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a40b294d8d640ab11ab52b14613fcfd9c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b6e75b9c8da25338e3d9d7b4199ffd4 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b6e75b9c8da25338e3d9d7b4199ffd4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9b6e75b9c8da25338e3d9d7b4199ffd4">ImageCodeMap</a> (const cont_t &amp;map)</td></tr>
+<tr class="memdesc:a9b6e75b9c8da25338e3d9d7b4199ffd4 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor //. <br /></td></tr>
+<tr class="separator:a9b6e75b9c8da25338e3d9d7b4199ffd4 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac56e1f3f0a2323d288da69c65273cf8c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#ac56e1f3f0a2323d288da69c65273cf8c">createLookUp</a> (const std::type_info &amp;type, const <a class="el" href="classdrain_1_1ValueScaling.html">ValueScaling</a> &amp;scaling) const</td></tr>
+<tr class="memdesc:ac56e1f3f0a2323d288da69c65273cf8c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO? createLookUp(encoding, n=0);.  <a href="#ac56e1f3f0a2323d288da69c65273cf8c">More...</a><br /></td></tr>
+<tr class="separator:ac56e1f3f0a2323d288da69c65273cf8c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a029fb3f008a577441fbe6020554319f9 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a029fb3f008a577441fbe6020554319f9"></a>
+cont_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double d) const</td></tr>
+<tr class="separator:a029fb3f008a577441fbe6020554319f9 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b767db8d62772b2929da33308829171 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b767db8d62772b2929da33308829171"></a>
+cont_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>retrieve</b> (double d)</td></tr>
+<tr class="separator:a2b767db8d62772b2929da33308829171 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -162,6 +213,16 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memitem:ae42338d9abd438b27e5a56d22202d873"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae42338d9abd438b27e5a56d22202d873"></a>
 <a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialCodes</b></td></tr>
 <tr class="separator:ae42338d9abd438b27e5a56d22202d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7665eab93f7f63a944893e7a5238a181"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7665eab93f7f63a944893e7a5238a181"></a>
+<a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dictionary</b></td></tr>
+<tr class="separator:a7665eab93f7f63a944893e7a5238a181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classdrain_1_1ImageCodeMap"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1ImageCodeMap')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap&lt; PaletteEntry &gt;</a></td></tr>
+<tr class="memitem:a5ef05c46954d42363daa8edb90a75d5a inherit pub_attribs_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ef05c46954d42363daa8edb90a75d5a"></a>
+<a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lookUp</b></td></tr>
+<tr class="separator:a5ef05c46954d42363daa8edb90a75d5a inherit pub_attribs_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6989953791434c8ea982054551c9e154"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
+<tr class="separator:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -169,7 +230,7 @@ Protected Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> () const </td></tr>
 <tr class="separator:ac277f12bf13b157b9686a275f723612f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd73443bbc9e4cabe348fed0206279d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd73443bbc9e4cabe348fed0206279d8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#abd73443bbc9e4cabe348fed0206279d8">importJSON</a> (const <a class="el" href="classdrain_1_1Tree.html">drain::JSONtree::tree_t</a> &amp;json, int depth)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#abd73443bbc9e4cabe348fed0206279d8">importJSON</a> (const <a class="el" href="classdrain_1_1JSONtree.html#a4dc9ffea71b2840ec39b2e92f2b0bd66">drain::JSONtree::tree_t</a> &amp;json, int depth)</td></tr>
 <tr class="memdesc:abd73443bbc9e4cabe348fed0206279d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
 <tr class="separator:abd73443bbc9e4cabe348fed0206279d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">

@@ -143,9 +143,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac73735501b9163692bbbd827e45460d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac73735501b9163692bbbd827e45460d8"></a>
 <a class="el" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp;n)</td></tr>
 <tr class="separator:ac73735501b9163692bbbd827e45460d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a702fe1cef48f8ead0f7520b496f2e020"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a702fe1cef48f8ead0f7520b496f2e020"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> (std::ostream &amp;ostr=std::cout, const std::string &amp;prefix=&quot;&quot;) const </td></tr>
-<tr class="separator:a702fe1cef48f8ead0f7520b496f2e020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c394b8bf02f2e1b95ada1628079b08f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhi5_1_1NodeHi5.html#a5c394b8bf02f2e1b95ada1628079b08f">writeText</a> (std::ostream &amp;ostr=std::cout, const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;prefix=<a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a>()) const </td></tr>
+<tr class="separator:a5c394b8bf02f2e1b95ada1628079b08f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -164,7 +163,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div class="textblock"><p>Rack's hi5 structure that uses Rack classes (Tree, Data, Image). </p>
 <p>Node to be used in a h5 structure, ie. TreeNode&lt;NodeHi5&gt;. A node serves both as a group or a data set; if a data set is empty its node is treated as a group.</p>
 <p>ODIM conventions are purposely not included in the Hi5 utilities. For example, path naming conventions (dataset1/data3/...) and some special attributes like Conventions="ODIM_H5/V2_0" are left to the application code. </p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a5c394b8bf02f2e1b95ada1628079b08f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeText </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em> = <code><a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>show only "big" groups explicitly? if (prefix.back().belongsTo(...)) or Uncomment: </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>hi5/<a class="el" href="Hi5_8h_source.html">Hi5.h</a></li>
 <li>hi5/Hi5.cpp</li>
 </ul>

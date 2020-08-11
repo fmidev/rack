@@ -101,6 +101,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><code>#include &lt;<a class="el" href="ValueScaling_8h_source.html">ValueScaling.h</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for ValueScaling:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1ValueScaling__inherit__graph.png" border="0" usemap="#ValueScaling_inherit__map" alt="Inheritance graph"/></div>
+<map name="ValueScaling_inherit__map" id="ValueScaling_inherit__map">
+<area shape="rect" id="node2" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="131,80,241,107"/>
+<area shape="rect" id="node3" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="157,155,215,181"/>
+<area shape="rect" id="node4" href="classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites). " alt="" coords="5,229,119,256"/>
+<area shape="rect" id="node5" href="classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="143,229,229,256"/>
+<area shape="rect" id="node6" href="classrack_1_1VerticalCrossSectionODIM.html" title="VerticalCrossSectionODIM" alt="" coords="253,229,433,256"/>
+<area shape="rect" id="node7" href="classrack_1_1RhiODIM.html" title="RhiODIM" alt="" coords="238,304,315,331"/>
+<area shape="rect" id="node8" href="classrack_1_1VerticalProfileODIM.html" title="VerticalProfileODIM" alt="" coords="339,304,478,331"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for ValueScaling:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1ValueScaling__coll__graph.png" border="0" usemap="#ValueScaling_coll__map" alt="Collaboration graph"/></div>
@@ -111,6 +125,9 @@ Collaboration diagram for ValueScaling:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a34f7fa8db0ab5a162094d0b954d6fbc6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34f7fa8db0ab5a162094d0b954d6fbc6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ValueScaling</b> (double <a class="el" href="classdrain_1_1ValueScaling.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, double <a class="el" href="classdrain_1_1ValueScaling.html#a129303e4bd38a8cdba722b6238ed56e9">offset</a>=0.0, double scaleOut=1.0, double offsetOut=0.0)</td></tr>
+<tr class="separator:a34f7fa8db0ab5a162094d0b954d6fbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dcf08c5fc7e8530930aa1a32062ce91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7dcf08c5fc7e8530930aa1a32062ce91"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ValueScaling</b> (const <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp;scaling)</td></tr>
 <tr class="separator:a7dcf08c5fc7e8530930aa1a32062ce91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,10 +142,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memitem:ac5ea76f6cfa4043f26a8404a32cbadd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#ac5ea76f6cfa4043f26a8404a32cbadd1">set</a> (const <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp;scaling)</td></tr>
 <tr class="memdesc:ac5ea76f6cfa4043f26a8404a32cbadd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy scale and offset as well as physical range, if applied.  <a href="#ac5ea76f6cfa4043f26a8404a32cbadd1">More...</a><br /></td></tr>
 <tr class="separator:ac5ea76f6cfa4043f26a8404a32cbadd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1e6f816414ccf2bbc6bf1dc9dd39576"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1e6f816414ccf2bbc6bf1dc9dd39576"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#ae1e6f816414ccf2bbc6bf1dc9dd39576">setScale</a> (double <a class="el" href="classdrain_1_1ValueScaling.html#a80d402d10e8341004c0caf10133b80ab">scale</a>, double <a class="el" href="classdrain_1_1ValueScaling.html#a129303e4bd38a8cdba722b6238ed56e9">offset</a>=0.0)</td></tr>
-<tr class="memdesc:ae1e6f816414ccf2bbc6bf1dc9dd39576"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. <br /></td></tr>
-<tr class="separator:ae1e6f816414ccf2bbc6bf1dc9dd39576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a850c37f57574ea10ae8141cb6a3b3dae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#a850c37f57574ea10ae8141cb6a3b3dae">setScale</a> (double <a class="el" href="classdrain_1_1ValueScaling.html#a80d402d10e8341004c0caf10133b80ab">scale</a>, double <a class="el" href="classdrain_1_1ValueScaling.html#a129303e4bd38a8cdba722b6238ed56e9">offset</a>=0.0, double scaleOut=1.0, double offsetOut=0.0)</td></tr>
+<tr class="memdesc:a850c37f57574ea10ae8141cb6a3b3dae"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.  <a href="#a850c37f57574ea10ae8141cb6a3b3dae">More...</a><br /></td></tr>
+<tr class="separator:a850c37f57574ea10ae8141cb6a3b3dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a542eacc1d7d834bcf0f766cf3fc88c12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a542eacc1d7d834bcf0f766cf3fc88c12"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#a542eacc1d7d834bcf0f766cf3fc88c12">setAbsoluteScale</a> ()</td></tr>
 <tr class="memdesc:a542eacc1d7d834bcf0f766cf3fc88c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the intensities of the image correspond to an absolute value (like count) then the scale should be reset to unity with this function. <br /></td></tr>
@@ -162,11 +178,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a106f9cbe197e2ddb96f103a458c3d1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae50271c4601fea3b476bf9f1cdc84cff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae50271c4601fea3b476bf9f1cdc84cff"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#ae50271c4601fea3b476bf9f1cdc84cff">getScale</a> () const </td></tr>
-<tr class="memdesc:ae50271c4601fea3b476bf9f1cdc84cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the intensity scaling factor. See set <a class="el" href="classdrain_1_1ValueScaling.html#ae1e6f816414ccf2bbc6bf1dc9dd39576" title="If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. ">setScale()</a> <br /></td></tr>
+<tr class="memdesc:ae50271c4601fea3b476bf9f1cdc84cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the intensity scaling factor. See set <a class="el" href="classdrain_1_1ValueScaling.html#a850c37f57574ea10ae8141cb6a3b3dae" title="If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. ">setScale()</a> <br /></td></tr>
 <tr class="separator:ae50271c4601fea3b476bf9f1cdc84cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09cc56b8985acee32c7d5c0fd6c52e02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09cc56b8985acee32c7d5c0fd6c52e02"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#a09cc56b8985acee32c7d5c0fd6c52e02">getOffset</a> () const </td></tr>
-<tr class="memdesc:a09cc56b8985acee32c7d5c0fd6c52e02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the intensity scaling offset, ie. b in a*x + b . See set <a class="el" href="classdrain_1_1ValueScaling.html#ae1e6f816414ccf2bbc6bf1dc9dd39576" title="If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. ">setScale()</a> <br /></td></tr>
+<tr class="memdesc:a09cc56b8985acee32c7d5c0fd6c52e02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the intensity scaling offset, ie. b in a*x + b . See set <a class="el" href="classdrain_1_1ValueScaling.html#a850c37f57574ea10ae8141cb6a3b3dae" title="If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. ">setScale()</a> <br /></td></tr>
 <tr class="separator:a09cc56b8985acee32c7d5c0fd6c52e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e3e7fa70e1d3f2342580991105779f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ValueScaling.html#a8e3e7fa70e1d3f2342580991105779f5">isScaled</a> () const </td></tr>
 <tr class="memdesc:a8e3e7fa70e1d3f2342580991105779f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if scaling has effect ie. scale!=1.0 or offset!=0.0.  <a href="#a8e3e7fa70e1d3f2342580991105779f5">More...</a><br /></td></tr>
@@ -300,6 +316,55 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <li><code>short</code> int</li>
 <li><code>unsigned</code> short int </li>
 </ul>
+
+</div>
+</div>
+<a class="anchor" id="a850c37f57574ea10ae8141cb6a3b3dae"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setScale </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scaleOut</em> = <code>1.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>offsetOut</em> = <code>0.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. </p>
+<p>If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function. </p>
 
 </div>
 </div>

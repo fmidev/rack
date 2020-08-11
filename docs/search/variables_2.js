@@ -9,7 +9,7 @@ var searchData=
   ['contributionthreshold',['contributionThreshold',['../classrack_1_1RadarWindowConfig.html#ad628690d04de57617a34af4a10939914',1,'rack::RadarWindowConfig']]],
   ['coordinatepolicy',['coordinatePolicy',['../classdrain_1_1image_1_1ImageConf.html#ae2c6c9544811089b109b0e0ed6f6bd23',1,'drain::image::ImageConf']]],
   ['copygroupsuffix',['copyGroupSuffix',['../classrack_1_1DataConversionOp.html#a38897de0e9d9a487a3186b8b6cd4f864',1,'rack::DataConversionOp']]],
-  ['count',['count',['../classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8',1,'rack::DataSelector::count()'],['../classdrain_1_1image_1_1AccumulationArray.html#aa6a3bf37080a0f9dfefd62b3c34f2bb6',1,'drain::image::AccumulationArray::count()'],['../classrack_1_1HistogramOp.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'rack::HistogramOp::count()']]],
+  ['count',['count',['../classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8',1,'rack::DataSelector::count()'],['../classdrain_1_1image_1_1AccumulationArray.html#aa6a3bf37080a0f9dfefd62b3c34f2bb6',1,'drain::image::AccumulationArray::count()']]],
   ['counter',['counter',['../classrack_1_1DopplerSegmentProber.html#a617a47c70795bcff659815ad0efd2266',1,'rack::DopplerSegmentProber::counter()'],['../classrack_1_1RadarAccumulator.html#a2d593f0ada8a5818ada3f6410141bcad',1,'rack::RadarAccumulator::counter()']]],
   ['current_5fazm',['current_azm',['../classrack_1_1PolarDataPicker.html#aca60444d6b2c8593d77ebe7446cce723',1,'rack::PolarDataPicker']]],
   ['current_5fcos',['current_cos',['../classrack_1_1PolarDataPicker.html#ab51dd8fdafb3d85a55ce2a69a743be8f',1,'rack::PolarDataPicker']]],

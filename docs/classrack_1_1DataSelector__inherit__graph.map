@@ -1,3 +1,4 @@
 <map id="DataSelector" name="DataSelector">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="17,5,93,32"/>
+<area shape="rect" id="node3" href="$classrack_1_1DatasetSelector.html" title="DatasetSelector" alt="" coords="5,155,121,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="25,5,101,32"/>
 </map>

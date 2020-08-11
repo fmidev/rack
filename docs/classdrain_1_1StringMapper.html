@@ -117,9 +117,9 @@ Collaboration diagram for StringMapper:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a217d574919cebeffcfd86702dc994b18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a217d574919cebeffcfd86702dc994b18">StringMapper</a> (const std::string &amp;validKeys=&quot;[a-zA-Z0-9_]+&quot;, const std::string &amp;variablePrefix=&quot;${&quot;, const std::string &amp;variableSuffix=&quot;}&quot;)</td></tr>
 <tr class="separator:a217d574919cebeffcfd86702dc994b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87e6c0ff7fbd14d5b79f581b82354649"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a87e6c0ff7fbd14d5b79f581b82354649">parse</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:a87e6c0ff7fbd14d5b79f581b82354649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.  <a href="#a87e6c0ff7fbd14d5b79f581b82354649">More...</a><br /></td></tr>
-<tr class="separator:a87e6c0ff7fbd14d5b79f581b82354649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af437a7ee920e944773d62dad3b85588c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#af437a7ee920e944773d62dad3b85588c">parse</a> (const std::string &amp;s, bool convertEscaped=false)</td></tr>
+<tr class="memdesc:af437a7ee920e944773d62dad3b85588c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.  <a href="#af437a7ee920e944773d62dad3b85588c">More...</a><br /></td></tr>
+<tr class="separator:af437a7ee920e944773d62dad3b85588c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0b801ae87425dde0229e5dc3820d8da"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ab0b801ae87425dde0229e5dc3820d8da">toStream</a> (std::ostream &amp;ostr) const </td></tr>
 <tr class="memdesc:ab0b801ae87425dde0229e5dc3820d8da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the mapper in its current state, ie. some variables may have been expanded to literals.  <a href="#ab0b801ae87425dde0229e5dc3820d8da">More...</a><br /></td></tr>
 <tr class="separator:ab0b801ae87425dde0229e5dc3820d8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +172,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>validCha
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A tool for expanding variables embedded in a std::string to literals. </p>
-<p>The input variables are provided as a map, which is allowed to change dynamically. The input std::string, issued with <a class="el" href="classdrain_1_1StringMapper.html#a87e6c0ff7fbd14d5b79f581b82354649" title="Converts a std::string containing variables like in &quot;Hello, ${NAME}!&quot; to a list of StringLet&#39;s...">parse()</a>, contains the variables as "$key" or "${key}", a format familiar in Unix shell. </p>
+<p>The input variables are provided as a map, which is allowed to change dynamically. The input std::string, issued with <a class="el" href="classdrain_1_1StringMapper.html#af437a7ee920e944773d62dad3b85588c" title="Converts a std::string containing variables like in &quot;Hello, ${NAME}!&quot; to a list of StringLet&#39;s...">parse()</a>, contains the variables as "$key" or "${key}", a format familiar in Unix shell. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a217d574919cebeffcfd86702dc994b18"></a>
 <div class="memitem">
@@ -254,7 +254,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>validCha
 
 </div>
 </div>
-<a class="anchor" id="a87e6c0ff7fbd14d5b79f581b82354649"></a>
+<a class="anchor" id="af437a7ee920e944773d62dad3b85588c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -262,14 +262,31 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>validCha
           <td class="memname">void parse </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>convertEscaped</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's. </p>
-<p>The <a class="el" href="classdrain_1_1Stringlet.html" title="A helper class for StringMapper. ">Stringlet</a> list is internal. </p>
+<p>The <a class="el" href="classdrain_1_1Stringlet.html" title="A helper class for StringMapper. ">Stringlet</a> list is internal. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>- string containing variables like in "Hello, ${NAME}!" </td></tr>
+    <tr><td class="paramname">convertEscaped</td><td>- convert backslash+letter segments to actual chars (, <br />
+ } first </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

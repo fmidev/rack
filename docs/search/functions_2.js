@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['bboxisset',['bboxIsSet',['../classdrain_1_1image_1_1GeoFrame.html#a87fff7748c30414e3a36b715a97994ee',1,'drain::image::GeoFrame']]],
   ['beamfrombetah',['beamFromBetaH',['../classrack_1_1Geometry.html#a6efbb09c1a4a741fe8e8391c939f1222',1,'rack::Geometry']]],
   ['beamfrometabeta',['beamFromEtaBeta',['../classrack_1_1Geometry.html#a7fdd663c4d8134a875d58a11b1f8c3ab',1,'rack::Geometry']]],
   ['beamfrometaground',['beamFromEtaGround',['../classrack_1_1Geometry.html#a85e0e6ceb0b77dba801bbe1c4bf25eee',1,'rack::Geometry']]],
