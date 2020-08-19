@@ -155,9 +155,9 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	}
 
 
-	//DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	//DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
 	//FlexVariableMap debugMap;
-	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only elangle needed at this point?
+	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
 	//mout.warn() << "debugMap: " << debugMap << mout.endl;
 
 
@@ -486,7 +486,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	dataSetSelector.pathMatcher = "dataset:"; // <fix
 	resources.select.clear();
 
-	// Consider generalization for Carts
+	/// TIMESTAMP-based order ( Consider generalization for Carts)
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
 	sweepMap srcPaths;
@@ -496,7 +496,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	dataSetSelector.getPaths3(dstRoot, dstPaths);
 
 	for (sweepMap::const_iterator it = dstPaths.begin(); it != dstPaths.end(); ++it){
-		mout.warn() << " DST " << it->second <<  "\t (" << it->first << ')' << mout.endl;
+		mout.info() << "exists: " << it->second <<  "\t (" << it->first << ')' << mout.endl;
 	}
 
 
@@ -505,31 +505,31 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
 
 		//const double   & elangle = it->first;
-		const sweepMap::key_type & elangle = it->first; // rename => key
+		const sweepMap::key_type & timestamp = it->first; // rename => key
 		const ODIMPath & srcDataSetPath = it->second;
 
 		Hi5Tree & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
 
-		mout.debug() << " Considering " << srcDataSetPath <<  " (" << elangle << ')' << mout.endl;
+		mout.debug() << " Considering " << srcDataSetPath <<  " (" << timestamp << ')' << mout.endl;
 
-		sweepMap::const_iterator eit = dstPaths.find(elangle);
+		sweepMap::const_iterator eit = dstPaths.find(timestamp);
 
-		if (eit == dstPaths.end()){ // New elangle, add this \c dataset directly.
+		if (eit == dstPaths.end()){ // New timestamp, add this \c dataset directly.
 
 			ODIMPathElem child(ODIMPathElem::DATASET);
 			DataSelector::getNextChild(dstRoot, child);
-			mout.info() << "New elangle (" << elangle << "), appending to path=" << child << mout.endl;
+			mout.note() << "New timestamp (" << timestamp << "), appending to path=" << child << mout.endl;
 			// Create empty dstRoot[path] and swap it...
 			Hi5Tree & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
 		}
-		else { // elangle is found in dstRoot.
+		else { // timestamp is found in dstRoot.
 
 			static const DataSelector dataSelector;
 
 			const ODIMPath & dstDataSetPath = eit->second;
 
-			mout.note() << "Combining datasets of elevation ("<< elangle << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << "("<< eit->first << ")" << mout.endl;
+			mout.warn() << "Combining datasets of timestamp ("<< timestamp << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << "("<< eit->first << ")" << mout.endl;
 
 			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
 
