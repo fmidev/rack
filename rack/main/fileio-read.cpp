@@ -163,7 +163,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	/// True, if user seems to provide
 	const CommandRegistry & r = drain::getRegistry();
-	const bool APPEND_INPUT = (r.getLastCommand() == this->name) || (r.getLastCommand() == "CmdSetODIM");
+	const std::string &lastCmd = r.getLastCommand();
+	const bool APPEND_INPUT = (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
 	const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
@@ -222,6 +223,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		//if ((!multipleInput) || (resources.scriptParser.autoExec>0)){ // TODO ..or..
 		// SINGLE_INPUT ||
 		if ((AUTO_EXEC || resources.inputHi5.isEmpty()) || !APPEND_INPUT){
+			mout.debug() << "AUTO_EXEC: " << AUTO_EXEC << mout.endl;
 			resources.inputHi5.swap(srcTmp);
 		}
 		else {
