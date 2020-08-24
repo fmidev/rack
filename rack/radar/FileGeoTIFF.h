@@ -34,28 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Log.h>
 #include <drain/image/Image.h>
 
-/*
-#include <drain/image/AccumulationConverter.h>
-#include <drain/image/AccumulatorGeo.h>
-#include <drain/util/Rectangle.h>
-#include <drain/util/Type.h>
-
-#include "hi5/Hi5.h"
-#include "hi5/Hi5Write.h"  // debugging
-#include "data/ODIM.h"
-#include "data/Data.h"
-#include "data/DataSelector.h"
-*/
-//#include "Coordinates.h"
-
-
 namespace rack
 {
 
-using namespace drain::image;
-
-
-// // using namespace std;
 
 /// For writing images in GeoTIFF format. Reading not supported currently.
 /**
@@ -72,8 +53,7 @@ public:
 	*/
 	//static void write(const Image &image,const std::string &path);
 #ifdef GEOTIFF_NO // geotiff //RACKGEOTIFF
-	static
-	inline
+	static inline
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0){
 		drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 		mout.warn() << "binary compiled without TIFF/GeoTIFF support, skipping" << mout.endl;
@@ -82,10 +62,8 @@ public:
 	static
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
 #endif
-	//void write(const std::string &filePath,  const Hi5Tree & src, const ODIMPathList & paths);
 
-	inline
-	static
+	static inline
 	void write(const std::string & path, const drain::image::Image & src){
 		write(path, src, tileWidth, tileHeight); // static defaults, see below
 	};
@@ -103,7 +81,4 @@ private:
 
 } // rack::
 
-#endif //
-
-// Rack
- // REP
+#endif

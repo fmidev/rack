@@ -133,7 +133,6 @@ public:
     		throw std::runtime_error("Proj4::project(): projDst NULL");
 
     	pj_transform(projDst,projSrc, 1, 1, &x, &y, NULL);
-
     };
 
 
@@ -178,13 +177,10 @@ public:
 
     	if (projSrc == NULL){
     		projStrSrc.clear();
-    		//	throw std::runtime_error("Proj4::project(): projSrc NULL");
     	}
     	else {
-    		//projStrSrc.assign(pj_get_def(projSrc, 0));
     		char *s = pj_get_def(projSrc, 0);
     		projStrSrc.assign(s);
-    		//delete s;
     		free(s);
     	}
     	return projStrSrc;
@@ -194,12 +190,10 @@ public:
     const std::string & getProjectionDst() const {
     	if (projDst == NULL){
     		projStrDst.clear();
-    		//throw std::runtime_error("Proj4::project(): projDst NULL");
     	}
     	else {
     		char *s = pj_get_def(projDst, 0);
     		projStrDst.assign(s);
-    		//delete s;
     		free(s);
     	}
        	return projStrDst;
@@ -208,7 +202,6 @@ public:
     
     inline
     std::string getErrorString() const {
-    	//projErrorStr = pj_strerrno(*pj_get_errno_ref());
     	return std::string(pj_strerrno(*pj_get_errno_ref()));
     };
 
@@ -226,9 +219,6 @@ public:
 protected:
 
     void _setProjection(const std::string &src, projPJ &p);
-
-	//std::string projStr;  // obsolete?
-	//mutable std::string projErrorStr;
 	
     projPJ projSrc;
     projPJ projDst;

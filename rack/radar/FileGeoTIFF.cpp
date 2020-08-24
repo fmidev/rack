@@ -309,16 +309,16 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 
 }
 
-
 void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
-	GTIFKeySet(gtif, GTModelTypeGeoKey, TYPE_SHORT, 1, ModelGeographic);
-	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT, 1, RasterPixelIsArea);
+	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
+	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea);
 	// GTIFKeySet(gtif, GTCitationGeoKey, TYPE_ASCII, 0, "Just An Example");
-	GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-	GTIFKeySet(gtif, GeogCitationGeoKey, TYPE_ASCII, 7, "WGS 84");
-	GTIFKeySet(gtif, GeogAngularUnitsGeoKey, TYPE_SHORT,  1, Angular_Degree);
-	GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);  //6377298.556);
-	GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257223563);// 300.8017);
+	// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84); <= WRONG! GCS_WGS_84
+	GTIFKeySet(gtif, GeographicTypeGeoKey,    TYPE_SHORT,  1, GCS_WGS_84); // 4326 correct!
+	GTIFKeySet(gtif, GeogCitationGeoKey,      TYPE_ASCII,  7, "WGS 84");
+	GTIFKeySet(gtif, GeogAngularUnitsGeoKey,  TYPE_SHORT,  1, Angular_Degree);
+	//GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);  //6377298.556);
+	//GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257223563);// 300.8017);
 }
 
 
@@ -482,9 +482,6 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 				mout.warn() << "where:projdef empty" << mout.endl;
 
 			drain::Proj4 proj;
-
-			//pj_is_
-
 			proj.setProjectionDst(projstr);
 			if (proj.isLongLat()){
 				mout.info() << "writing 4326 longlat" << mout.endl;

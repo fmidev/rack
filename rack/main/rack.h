@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.42"
+#define __RACK_VERSION__ "5.43"
 
 /**
+ *   Version 5.43
+ *   - Append sweeps: accept --inputPrefix
+ *
  *   Version 5.42
  *   - ODIM Validator
  *
