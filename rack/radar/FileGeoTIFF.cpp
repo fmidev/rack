@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <drain/util/Log.h>
+#include <drain/util/Time.h>
 #include <drain/util/TreeXML.h>
 #include <drain/image/AccumulatorGeo.h>
 #include <drain/image/File.h>
@@ -204,8 +205,15 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	const std::string software = std::string(__RACK__) + " " + std::string(__RACK_VERSION__);
 	TIFFSetField(tif,TIFFTAG_SOFTWARE, software.c_str());
 
-	const std::string datetime = prop.get("what:date", "") + prop.get("what:time", "");
-	TIFFSetField(tif, TIFFTAG_DATETIME, datetime.c_str() );
+
+	drain::Time datetime;
+	datetime.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
+	datetime.setTime(prop.get("what:time", "000000"), "%H%M%S");
+
+	TIFFSetField(tif, TIFFTAG_DATETIME, datetime.str("%Y:%m:%d %H:%M:%S").c_str() );
+	// const std::string datetime = prop.get("what:date", "") + prop.get("what:time", "");
+	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.c_str() );
+
 
 	const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
 	TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
@@ -491,8 +499,10 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 				mout.info() << "writing metric projection" << mout.endl;
 				//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
 				//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
-				if (!GTIFSetFromProj4(gtif, projstr.c_str()))
+				if (!GTIFSetFromProj4(gtif, projstr.c_str())){
 					mout.warn() << "failed in setting GeoTIFF projection, where:projdef='" << projstr << "'" << mout.endl;
+					mout.note() << "consider: gdal_translate -a_srs '" << projstr << "' " << path << ' ' << path << 'f' << mout.endl;
+				}
 			}
 			/*
 			// usr/include/gdal/rawdataset.h

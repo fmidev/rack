@@ -63,13 +63,25 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	mout.info() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
 
 
+	/// Derivative
+	/*
+	drain::image::Image & src = sweep.data;
+	drain::image::Image deriv(typeid(unsigned short), sweep.data.getGeometry());
+	deriv.initialize(typeid(unsigned short), sweep.data.getGeometry());
+
+	for (size_t i=0; i != deriv.getWidth(); ++i){
+		for (size_t j=0; j != deriv.getHeight(); ++j){
+			double a = sweep.odim.getAzimuth(i);
+
+		}
+	}
+	*/
+
+
 	// Elevation angle
 	const double eta = sweep.odim.elangle * drain::DEG2RAD;
 
-	//const double altitudeFinal = aboveSeaLevel ? (altitude - sweep.odim.height) : altitude;
 
-	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	//drain::FuzzyPeak<double,double> beamPower(0.0, 0.1*DEG2RAD, 1.0);
 
 	/// Ground angle
 	double beta;
