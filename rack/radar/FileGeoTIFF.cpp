@@ -47,20 +47,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FileGeoTIFF.h"
 
 
-namespace rack
-{
-
-int FileGeoTIFF::tileWidth(256);
-int FileGeoTIFF::tileHeight(256);
-
-}
+int rack::FileGeoTIFF::tileWidth(256);
+int rack::FileGeoTIFF::tileHeight(256);
 
 
+#ifdef GEOTIFF_NO
+
+int rack::FileGeoTIFF::compression(1); // = NONE, but see below
+
+#else
 
 
-
-
-#ifndef GEOTIFF_NO //  geotiff //RACKGEOTIFF
+// #ifndef GEOTIFF_NO //  geotiff //RACKGEOTIFF
 //#ifdef GEOTIFF_USE //  geotiff //RACKGEOTIFF
 
 #include <proj_api.h>
@@ -84,6 +82,24 @@ int FileGeoTIFF::tileHeight(256);
 namespace rack
 {
 
+
+int FileGeoTIFF::compression(COMPRESSION_LZW); // = tunable in fileio.cpp
+
+
+const drain::Dictionary2<int, std::string> & FileGeoTIFF::getCompressionDict(){
+
+	if (compressionDict.empty()){
+		// Populate
+		compressionDict.add(COMPRESSION_NONE,     "NONE");
+		compressionDict.add(COMPRESSION_LZW,      "LZW");
+		compressionDict.add(COMPRESSION_PACKBITS, "PACKBITS");
+	}
+
+	return compressionDict;
+}
+
+
+drain::Dictionary2<int, std::string> FileGeoTIFF::compressionDict;
 
 
 // https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
@@ -162,7 +178,8 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 
 	TIFFSetField(tif,TIFFTAG_IMAGEWIDTH,    width);
 	TIFFSetField(tif,TIFFTAG_IMAGELENGTH,   height);
-	TIFFSetField(tif,TIFFTAG_COMPRESSION,   COMPRESSION_NONE);
+	//TIFFSetField(tif,TIFFTAG_COMPRESSION,   COMPRESSION_NONE);
+	TIFFSetField(tif,TIFFTAG_COMPRESSION,   FileGeoTIFF::compression);
 	TIFFSetField(tif,TIFFTAG_PHOTOMETRIC,   PHOTOMETRIC_MINISBLACK);
 	TIFFSetField(tif,TIFFTAG_PLANARCONFIG,  PLANARCONFIG_CONTIG);
 

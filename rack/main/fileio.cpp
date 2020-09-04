@@ -281,6 +281,24 @@ public:
 };
 
 
+class CmdOutputGeoTiff : public BasicCommand {
+
+public:
+
+	CmdOutputGeoTiff() : BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
+		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
+		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
+		parameters.reference("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+	};
+
+
+protected:
+
+	//drain::Dictionary2<int, std::string> dict;
+
+};
+
+
 
 // Cf. InputPrefix
 class CmdOutputPrefix : public BasicCommand {
@@ -800,6 +818,7 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
 	static RackLetAdapter<CmdOutputFile> cmdOutputFile('o');
 	static RackLetAdapter<CmdOutputRawImages> cmdOutputRawImages('O');
+	static RackLetAdapter<CmdOutputGeoTiff> cmdOutputGeoTiff;
 	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
 
 }

@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_GEO_TIFF_H
 
 #include <drain/util/Log.h>
+#include <drain/util/Dictionary.h>
 #include <drain/image/Image.h>
 
 namespace rack
@@ -53,14 +54,21 @@ public:
 	*/
 	//static void write(const Image &image,const std::string &path);
 #ifdef GEOTIFF_NO // geotiff //RACKGEOTIFF
+
 	static inline
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0){
 		drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 		mout.warn() << "binary compiled without TIFF/GeoTIFF support, skipping" << mout.endl;
 	};
+
 #else
+
 	static
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
+
+	static
+	const drain::Dictionary2<int, std::string> & getCompressionDict();
+
 #endif
 
 	static inline
@@ -68,9 +76,16 @@ public:
 		write(path, src, tileWidth, tileHeight); // static defaults, see below
 	};
 
+	// Defaults
 	static int tileWidth;
 	static int tileHeight;
+	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
+	static int compression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
 
+protected:
+
+	static
+	drain::Dictionary2<int, std::string> compressionDict;
 
 private:
 
