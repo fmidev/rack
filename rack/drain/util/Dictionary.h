@@ -212,6 +212,12 @@ public:
 		}
 	}
 
+	std::string toStr(char separator=0) const {
+		std::stringstream sstr;
+		this->toOStr(sstr, separator);
+		return sstr.str();
+	}
+
 	char separator;
 };
 
