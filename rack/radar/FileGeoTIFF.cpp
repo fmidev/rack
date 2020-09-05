@@ -92,6 +92,7 @@ const drain::Dictionary2<int, std::string> & FileGeoTIFF::getCompressionDict(){
 		// Populate
 		compressionDict.add(COMPRESSION_NONE,     "NONE");
 		compressionDict.add(COMPRESSION_LZW,      "LZW");
+		compressionDict.add(COMPRESSION_DEFLATE,  "DEFLATE");
 		compressionDict.add(COMPRESSION_PACKBITS, "PACKBITS");
 	}
 
