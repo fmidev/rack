@@ -73,12 +73,23 @@ public:
 	};
 
 
+	template <class T2>
 	inline
-	void set(T xLowerLeft, T yLowerLeft, T xUpperRight, T yUpperRight){
-		this->lowerLeft.x  = xLowerLeft;
-		this->lowerLeft.y  = yLowerLeft;
-		this->upperRight.x = xUpperRight;
-		this->upperRight.y = yUpperRight;
+	void set(T2 xLowerLeft, T2 yLowerLeft, T2 xUpperRight, T2 yUpperRight){
+		this->lowerLeft.setLocation(xLowerLeft, yLowerLeft);
+		this->upperRight.setLocation(xUpperRight, yUpperRight);
+	}
+
+	template <class T2>
+	inline
+	void set(const Point2D<T2> & lowerLeft, const Point2D<T2> & upperRight){
+		this->lowerLeft.setLocation(lowerLeft);
+		this->upperRight.setLocation(upperRight);
+	}
+
+	inline
+	void set(const Rectangle & r){
+		set(r.lowerLeft, r.upperRight);
 	};
 
 
