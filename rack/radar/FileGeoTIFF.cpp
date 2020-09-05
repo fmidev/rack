@@ -57,10 +57,6 @@ int rack::FileGeoTIFF::compression(1); // = NONE, but see below
 
 #else
 
-
-// #ifndef GEOTIFF_NO //  geotiff //RACKGEOTIFF
-//#ifdef GEOTIFF_USE //  geotiff //RACKGEOTIFF
-
 #include <proj_api.h>
 
 
@@ -69,7 +65,7 @@ int rack::FileGeoTIFF::compression(1); // = NONE, but see below
 #include <xtiffio.h>
 #include <geo_normalize.h>
 
-
+// https://en.wikipedia.org/wiki/TIFF
 // https://www.awaresystems.be/imaging/tiff/tifftags/gdal_nodata.html
 #ifndef TIFFTAG_GDAL_METADATA //# ASCII tag (code 42113
 #define TIFFTAG_GDAL_METADATA 42112 // 0xa481 // 42113
