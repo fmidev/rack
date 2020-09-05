@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.43"
+#define __RACK_VERSION__ "5.44"
 
 /**
+ *   Version 5.44
+ *   - GeoTIFF: Compression added, with new --outputTiffConf  <tilewidth>,<tileheight>,<compression>
+ *   - Recognition of metric bbox in --cBBox
+ *
  *   Version 5.43
  *   - Append sweeps: accept --inputPrefix
  *

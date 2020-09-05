@@ -49,8 +49,8 @@ namespace rack {
 
 
 class CartesianBBox : public BasicCommand {
-    public: //re
-	//drain::Rectangle<double> bbox;
+
+public:
 
 	CartesianBBox() : BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
 		RackResources & resources = getResources();
@@ -60,17 +60,23 @@ class CartesianBBox : public BasicCommand {
 		parameters.reference("urLat", resources.bbox.upperRight.y = 0.0, "deg");
 	};
 
-	inline
-	void exec() const {
-		RackResources & resources = getResources();
-		resources.composite.setBoundingBoxD(resources.bbox); //llLon, llLat, urLon, urLat);
-	};
+	void exec() const;
+
+private:
+
+	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
+	static inline
+	bool isMetric(double x, double limit){
+		return (x < -limit) || (x > limit);
+	}
 
 };
-// static RackLetAdapter<CartesianBBox> cBBox("cBBox");
+
 
 class CartesianBBoxReset : public BasicCommand {
-    public: //re
+
+public:
+
 	CartesianBBoxReset() : BasicCommand(__FUNCTION__, "Resets the bounding box (to be set again according to the next radar data).") {};
 
 	inline
@@ -90,7 +96,9 @@ class CartesianBBoxReset : public BasicCommand {
 
  */
 class CartesianBBoxTest : public SimpleCommand<int> { //
-    public: //re
+
+public:
+
 	mutable bool overlap;
 
 	CartesianBBoxTest() : SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
@@ -104,12 +112,10 @@ class CartesianBBoxTest : public SimpleCommand<int> { //
 		value = static_cast<int>(overlap);
 	}
 
-	//drain::Rectangle<double> & refBBox;
 
 	void exec() const;
 
 };
-//// static RackLetAdapter<CartesianBBoxTest> cBBoxTest("cBBoxTest");
 
 
 class CartesianBBoxTile : public BasicCommand {
@@ -128,9 +134,6 @@ public:
 	void exec() const;
 
 };
-//// static RackLetAdapter<CartesianBBoxTile> cBBoxTile("cBBoxTile");
-
-
 
 
 } // rack::
