@@ -272,7 +272,7 @@ class CmdGeoTiffTile : public BasicCommand {
 
 public:
 
-	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size") {
+	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating; use --outputTiffConf instead") {
 		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
 	};
@@ -281,11 +281,11 @@ public:
 };
 
 
-class CmdOutputGeoTiff : public BasicCommand {
+class CmdOutputTiffConf : public BasicCommand {
 
 public:
 
-	CmdOutputGeoTiff() : BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
+	CmdOutputTiffConf() : BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
 		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
 		parameters.reference("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
@@ -818,7 +818,7 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
 	static RackLetAdapter<CmdOutputFile> cmdOutputFile('o');
 	static RackLetAdapter<CmdOutputRawImages> cmdOutputRawImages('O');
-	static RackLetAdapter<CmdOutputGeoTiff> cmdOutputGeoTiff;
+	static RackLetAdapter<CmdOutputTiffConf> cmdOutputTiffConf;
 	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
 
 }
