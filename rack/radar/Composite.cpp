@@ -201,8 +201,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	else {
 		mout.info() << "Using user-defined projection: " << getProjection() << mout.endl;
 		pRadarToComposite.setProjectionDst(getProjection());
+		pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput);
+
 		if (cropping){
-			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
 			mout.debug() << "Orig: " << getBoundingBoxM() << mout.endl;
 			mout.debug() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxInput << mout.endl;
 			cropWithM(bboxInput);
@@ -235,7 +237,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	/// Limit to data extent
 	//drain::Rectangle<double> bboxNatCommon(bboxInput);
-	drain::Rectangle<double> & bboxNatCommon = bboxInput;
+	//drain::Rectangle<double> & bboxNatCommon = bboxInput;
 	//mout.warn() << "input bbox:" <<  bboxNatCommon << mout.endl;
 
 	/// Area for main loop
@@ -250,12 +252,12 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.warn() << "cropping with bboxM (metric): " <<  getBoundingBoxM()  << mout.endl;
 		bboxNatCommon.crop(getBoundingBoxM());
 	}*/
-	bboxNatCommon.crop(getBoundingBoxM());
+	bboxInput.crop(getBoundingBoxM());
 
 	drain::Rectangle<int> bboxPix;
-	m2pix(bboxNatCommon.lowerLeft,  bboxPix.lowerLeft);
-	m2pix(bboxNatCommon.upperRight, bboxPix.upperRight);
-	mout.debug() << "cropped, data:" << bboxNatCommon << ", pix area: " << bboxPix << mout.endl;
+	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
+	m2pix(bboxInput.upperRight, bboxPix.upperRight);
+	mout.debug() << "cropped, data:" << bboxInput << ", pix area: " << bboxPix << mout.endl;
 
 
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
@@ -386,15 +388,15 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	drain::Rectangle<double> bboxD;
 	//m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
-	m2deg(bboxNatCommon.lowerLeft, bboxD.lowerLeft);
+	m2deg(bboxInput.lowerLeft, bboxD.lowerLeft);
 	//m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
-	m2deg(bboxNatCommon.upperRight, bboxD.upperRight);
+	m2deg(bboxInput.upperRight, bboxD.upperRight);
 	updateDataExtent(bboxD);
 
 	//int i, j;
 	drain::Point2D<double> cMetric;
 	drain::Point2D<int> cImg;
-	bboxNatCommon.getCenter(cMetric);
+	bboxInput.getCenter(cMetric);
 	//m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
 	m2pix(cMetric, cImg);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
