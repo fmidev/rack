@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <proj_api.h>
 
-// // using namespace std;
+#include "Dictionary.h"
 
 
 namespace drain
@@ -57,7 +57,9 @@ public:
 	Proj4(const Proj4 &p);
 
 	virtual ~Proj4(); 
-    
+
+    typedef drain::Dictionary2<int, std::string> epsg_dict_t;
+
 	/// Sets source projection.
 	inline
 	void setProjectionSrc(const std::string &str){ _setProjection(str, projSrc); };
@@ -215,7 +217,10 @@ public:
     bool isSet() const {
     	return ((projSrc != NULL) && (projDst != NULL));
     }
-        
+
+    static const epsg_dict_t & getEpsgDict();
+
+
 protected:
 
     void _setProjection(const std::string &src, projPJ &p);
@@ -223,18 +228,21 @@ protected:
     projPJ projSrc;
     projPJ projDst;
 
+    static
+    epsg_dict_t epsgDict;
+
+
 private:
     
     mutable std::string projStrSrc;
     mutable std::string projStrDst;
- 
 	
 };
 
 std::ostream & operator<<(std::ostream & ostr, const Proj4 &p);
 
-}
+} // drain
+
 
 #endif /*PROJ4_H_*/
 
-// Drain
