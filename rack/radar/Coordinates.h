@@ -80,14 +80,16 @@ public:
 
 
 	/// Given radar's range, returns the metric bounding box using the current projection.
-	void determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const;
+	//void determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const;
 
 
 	/// Given radar's range, returns the metric bounding box using the current projection.
+	/*
 	inline
 	void determineBoundingBoxD(double range, drain::Rectangle<double> & bbox) const {
 		determineBoundingBoxD(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 	}
+	*/
 
 
 };

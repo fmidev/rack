@@ -34,11 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Geometry.h"
 #include "Coordinates.h"
 
-// g++ -I. -c radar__coorz.cpp 
-
-// huom. virhe tekstin kohdassa r/2PI R => r/R
-// 
-// // using namespace std;
 
 namespace rack {
 
@@ -50,43 +45,48 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 	mout.debug(1) << "start\n" << *this << mout.endl;
 
 	mout.debug(1) << "range=" << range << mout.endl;
-	/*
-	xLL = +1234567.89;
-	yLL = +1234567.89;
-	xUR = -1234567.89;
-	yUR = -1234567.89;
-	*/
+
 	xLL = +std::numeric_limits<double>::max();
 	yLL = +std::numeric_limits<double>::max();
 	xUR = -std::numeric_limits<double>::max();
 	yUR = -std::numeric_limits<double>::max();
 
-
 	double azimuth;
 	double x,y;
 
-	const unsigned int azimuthStep = 12;
+	// Redesign this
+	const int azimuthStep = 6;
 	for (int a = 0; a < 360; a += azimuthStep) {
 
+		/// Map AEQD => target (composite)
 		azimuth = static_cast<double>(a) * drain::DEG2RAD;
 		projectFwd(range*sin(azimuth), range*cos(azimuth), x, y);
 
 		//mout.debug(5) << x << ',' << y << mout.endl;
-
-		xLL = std::min(x,xLL);
-		yLL = std::min(y,yLL);
-		xUR = std::max(x,xUR);
-		yUR = std::max(y,yUR);
+		xLL = std::min(x, xLL);
+		yLL = std::min(y, yLL);
+		xUR = std::max(x, xUR);
+		yUR = std::max(y, yUR);
 
 		//mout.warn() << x << ',' << y << "\t <=> " << a << '\t' << xLL << ',' << yLL << '\t' << xUR << ',' << yUR << '\t' << mout.endl;
 
 	}
+
+	/*
+	if (isLongLat()){
+		xLL *= drain::RAD2DEG;
+		yLL *= drain::RAD2DEG;
+		xUR *= drain::RAD2DEG;
+		yUR *= drain::RAD2DEG;
+	}
+	*/
 
 	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
 
 
 }
 
+/* Makes no sense
 void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
 
 	drain::Logger mout("RadarProj", __FUNCTION__);
@@ -104,7 +104,7 @@ void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, 
 	double azimuth;
 	double x,y;
 
-	const unsigned int azimuthStep = 12;
+	const unsigned int azimuthStep = 6;
 	for (int a = 0; a < 360; a += azimuthStep) {
 
 		azimuth = static_cast<double>(a) * drain::DEG2RAD;
@@ -122,7 +122,7 @@ void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, 
 	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
 
 }
-
+*/
 
 
 Coordinates::Coordinates(){

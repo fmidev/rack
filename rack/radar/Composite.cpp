@@ -103,7 +103,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 }
 
-void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool autoProj) {
+void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool projAEQD) {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -113,7 +113,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 
 	if (!projR2M.isSet())
-		autoProj = true;
+		projAEQD = true;
 
 	odim.object = "COMP";
 
@@ -147,56 +147,65 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	RadarProj pRadarToComposite;
 	pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
 
+	drain::Rectangle<double> bboxInput;
+
 	if (odim.source.empty())
 		odim.source = srcData.odim.source; // for tile (single-radar "composite")
+
+	if (! geometryIsSet()){
+		setGeometry(500, 500);
+		mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
+	}
 
 	mout.debug(1) << "Info: \"" << *this << '"' << mout.endl;
 	//mout.debug(1) << "undetectValue=" << undetectValue << mout.endl;
 
 	// Defined here, because later used for data update.
-	drain::Rectangle<double> bboxM;
+	//drain::Rectangle<double> bboxM;
 
-	if (autoProj || !isDefined()){
 
-		if (autoProj){
+	if (projAEQD || !isDefined()){
+
+		if (projAEQD){
 			mout.info() << "Using default projection aeqd (azimuthal equidistant)." << mout.endl;
 			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
 			// mout.debug() << aeqdStr << mout.endl;
 			setProjection(aeqdStr);
 		}
 
-		//mout.note(1) << "Using projection: " << getProjection() << mout.endl;
-
 		pRadarToComposite.setProjectionDst(getProjection());
 
-		if (! geometryIsSet()){
-			setGeometry(500, 500);
-			mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
-		}
-
-		if (PolarODIM::defaultRange > 0.0){
-			mout.info() << "Using default range: " << (PolarODIM::defaultRange) << mout.endl;
-			pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
+		double range = PolarODIM::defaultRange;
+		if (range > 0.0){
+			mout.info() << "Using predefined range: " << range << mout.endl;
+			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
 		}
 		else {
-			mout.info() << "Using maximum range: " << srcData.odim.getMaxRange(false) << mout.endl;
-			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
+			range = srcData.odim.getMaxRange(false);
+			mout.info() << "Using maximum range: " << range << mout.endl;
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
 		}
-		setBoundingBoxM(bboxM);
 
-		//setBoundingBoxD(bboxD); !?
-		mout.debug() << "BBoxM: " << bboxM << ", range:" << srcData.odim.getMaxRange(true)<< mout.endl;
+		mout.debug() << "Range:" << range << " (max: "<< srcData.odim.getMaxRange(true) << ')' << mout.endl;
+
+		//drain::Rectangle<double> bboxNat;
+		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
+
+		mout.debug() << "Detected 'native' bbox " << bboxInput << mout.endl;
+
+		setBoundingBoxM(bboxInput);
+
+		// mout.note() << "Now this: " << *this << mout.endl;
 
 	}
 	else {
 		mout.info() << "Using user-defined projection: " << getProjection() << mout.endl;
 		pRadarToComposite.setProjectionDst(getProjection());
 		if (cropping){
-			//drain::Rectangle<double> bboxM;
-			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxM);
+			pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
 			mout.debug() << "Orig: " << getBoundingBoxM() << mout.endl;
-			mout.debug() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxM << mout.endl;
-			cropWithM(bboxM);
+			mout.debug() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxInput << mout.endl;
+			cropWithM(bboxInput);
 			mout.info() << "Cropped to: " << getBoundingBoxM() << mout.endl;
 			if (getBoundingBoxM().getArea() == 0){
 				mout.info() << "Cropping returned empty area." << mout.endl;
@@ -213,8 +222,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	// mout.warn() << "range: " << (srcData.odim.getMaxRange() / 1000.0) << " km "<< mout.endl;
 	if (!pRadarToComposite.isSet()){
 		mout.error() << "source or dst projection is unset " << mout.endl;
+		return;
 	}
-
 
 	if (mout.isDebug(2)){
 		/// Check mapping for the origin (= location of the radar)?
@@ -225,17 +234,30 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 
 	/// Limit to data extent
-	pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxM);
-	//mout.warn() << "bbox composite:" <<  getBoundingBoxM() << ", data:" << bboxM << '\n';
-	bboxM.crop(getBoundingBoxM());
-	//mout.warn() << "cropped, data:" << bboxM << '\n';
-
-
+	//drain::Rectangle<double> bboxNatCommon(bboxInput);
+	drain::Rectangle<double> & bboxNatCommon = bboxInput;
+	//mout.warn() << "input bbox:" <<  bboxNatCommon << mout.endl;
 
 	/// Area for main loop
+	/*
+	if (pRadarToComposite.isLongLat()){
+		mout.warn() << "cropping with bboxR (radians):" <<  getBoundingBoxR()  << mout.endl;
+		bboxNatCommon.crop(getBoundingBoxR());
+		//deg2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
+		//deg2pix(bboxM.upperRight, bboxPix.upperRight);
+	}
+	else {
+		mout.warn() << "cropping with bboxM (metric): " <<  getBoundingBoxM()  << mout.endl;
+		bboxNatCommon.crop(getBoundingBoxM());
+	}*/
+	bboxNatCommon.crop(getBoundingBoxM());
+
 	drain::Rectangle<int> bboxPix;
-	m2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
-	m2pix(bboxM.upperRight, bboxPix.upperRight);
+	m2pix(bboxNatCommon.lowerLeft,  bboxPix.lowerLeft);
+	m2pix(bboxNatCommon.upperRight, bboxPix.upperRight);
+	mout.debug() << "cropped, data:" << bboxNatCommon << ", pix area: " << bboxPix << mout.endl;
+
+
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 
 	//if (drain::Debug > 4){
@@ -257,7 +279,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	mout.debug() << "projecting" << mout.endl;
 	const int bins  = srcData.data.getWidth();  // TODO odimize
 	const int beams = srcData.data.getHeight(); // TODO odimize
-	const float RAD2J = 1.0/srcData.odim.getBeamWidth();  //static_cast<double>(beams) / (2.0*M_PI);
+	const float RAD2J = 1.0/srcData.odim.getBeamWidth();
 	double range;
 
 	//bool computeBinSpan, restartBinSpan;
@@ -364,15 +386,15 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	drain::Rectangle<double> bboxD;
 	//m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
-	m2deg(bboxM.lowerLeft, bboxD.lowerLeft);
+	m2deg(bboxNatCommon.lowerLeft, bboxD.lowerLeft);
 	//m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
-	m2deg(bboxM.upperRight, bboxD.upperRight);
+	m2deg(bboxNatCommon.upperRight, bboxD.upperRight);
 	updateDataExtent(bboxD);
 
 	//int i, j;
 	drain::Point2D<double> cMetric;
 	drain::Point2D<int> cImg;
-	bboxM.getCenter(cMetric);
+	bboxNatCommon.getCenter(cMetric);
 	//m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
 	m2pix(cMetric, cImg);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
