@@ -249,7 +249,6 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	TreeGDAL gdalInfo;
 	gdalInfo["SCALE"]->set(prop.get("what:gain", 1.0),    0, "scale");
 	gdalInfo["OFFSET"]->set(prop.get("what:offset", 0.0), 0, "offset");
-	//mout.warn() << gdalInfo << mout.endl;
 	/*
 	<GDALMetadata >
 	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
@@ -261,22 +260,16 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	gdal << gdalInfo;
 	mout.debug() << gdal.str() << mout.endl;
 	TIFFSetField(tif, TIFFTAG_GDAL_METADATA, gdal.str().c_str());
-	//TIFFSetField(tif, TIFFTAG_GDAL_METADATA, "<GDALMetadata><Item name=\"SCALE\" sample=\"0\" role=\"scale\">0.003</Item></GDALMetadata>");
 
 	std::string nodata = prop["what:nodata"];
 	if (!nodata.empty()){
 		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
-		/*
-		static const TIFFFieldInfo xtiffFieldInfo[] = {
-				{ TIFFTAG_GDAL_NODATA, 1, 1, TIFF_ASCII,  FIELD_CUSTOM, 0, 0, const_cast<char*>("nodata-marker") },
-		};
-		TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
-		*/
 		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
 		TIFFSetField(tif, TIFFTAG_GDAL_NODATA, nodata.c_str());
 	}
 
 
+	/// Projection
 	std::string projdef = prop["where:projdef"];
 	if (projdef.empty()){
 		mout.note() << "where:projdef missing, no TIFF tags written" << mout.endl;
@@ -286,47 +279,64 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	const drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
 
 	drain::image::GeoFrame frame;
-	//frame.
 	frame.setGeometry(width, height);
 	frame.setProjection(projdef);
 	frame.setBoundingBoxD(bboxD);
-	//mout.debug() << "prjSrc: " << frame.getProjection() << mout.endl;
-	//const drain::Rectangle<double> & bboxM = frame.getBoundingBoxM();
-	//mout.warn() << "BBox: "  << bboxM << mout.endl;
 
-	double tiepoints[6] = {0,0,0,0,0,0};
+
+
+	mout.warn() << "BBoxM: " << frame.getBoundingBoxM() << mout.endl;
+
+	double tiepoints[6]; // = {0,0,0,0,0,0};
 
 	// Image coords
-	const int i = width/2;
-	const int j = height/2;
+	// const int i = width/2;
+	// const int j = height/2;
+	drain::Point2D<int>    imagePos;
 
 	// Geographical coords (degrees or meters)
-	double x, y;
+	drain::Point2D<double>   geoPos;
+	//double x, y;
 
 	if (frame.isLongLat()){
-		frame.pix2deg(i,j, x,y);
+		imagePos.setLocation(width/2, height/2);
+		frame.pix2LLdeg(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 	else { // metric
-		frame.pix2m(i,j, x,y);
+		imagePos.setLocation(0, int(height-1));
+		frame.pix2LLm(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 
-	tiepoints[0] = static_cast<double>(i);
-	tiepoints[1] = static_cast<double>(j);
-	tiepoints[2] = 0;
-	tiepoints[3] = x;
-	tiepoints[4] = y;
-	tiepoints[5] = 0;
-	mout.debug() << "Tiepoint (center): " << i << ',' << j << " => " << x << ',' << y << mout.endl;
+	tiepoints[0] = static_cast<double>(imagePos.x);
+	tiepoints[1] = static_cast<double>(imagePos.y);
+	tiepoints[2] = 0.0;
+	tiepoints[3] = geoPos.x;
+	tiepoints[4] = geoPos.y;
+	tiepoints[5] = 0.0;
+	mout.debug() << "Tiepoint: " << imagePos << " => " << geoPos << mout.endl;
 
 	TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
 
-	double pixscale[3] = {1,1,0};
+	double pixscale[3]; // = {1,1,0};
 	//std::cerr << "frame: " << frame.getProjection() << '\n';
 	const drain::Rectangle<double> & bbox = frame.isLongLat() ? bboxD : frame.getBoundingBoxM();
-	pixscale[0] = (bbox.upperRight.x - bbox.lowerLeft.x)/ static_cast<double>(frame.getFrameWidth());
-	pixscale[1] = (bbox.upperRight.y - bbox.lowerLeft.y)/ static_cast<double>(frame.getFrameHeight());
+	//frame.getXScale()?
+	mout.debug() << "Scale: " << frame.getXScale() << ", " << frame.getYScale() << mout.endl;
 
-	TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3,pixscale);
+	pixscale[0] = bbox.getWidth()   / static_cast<double>(frame.getFrameWidth()); // upperRight.x - bbox.lowerLeft.x
+	pixscale[1] = bbox.getHeight() / static_cast<double>(frame.getFrameHeight()); // bbox.upperRight.y - bbox.lowerLeft.y
+	pixscale[2] = 0.0;
+
+	mout.debug() << "BBox: " << bbox << mout.endl;
+	mout.debug() << "ScaleX: " << pixscale[0] << ' ' << bbox.getWidth() << ' ' << frame.getFrameWidth() << ' ' << width << mout.endl;
+	mout.debug() << "ScaleY: " << pixscale[1] << mout.endl;
+
+	printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
+
+	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
+	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
+
+	TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3, pixscale);
 
 
 }
