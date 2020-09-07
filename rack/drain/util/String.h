@@ -201,7 +201,11 @@ public:
 	 */
 	template <class T>
 	static
-	const T & convert(const std::string &str, T & tmp);
+	const T & convert(const std::string &s, T & tmp);
+
+	template <class T>
+	static
+	T convert(const std::string &s);
 
 	template <class T>
 	static
@@ -340,9 +344,17 @@ inline
 const T & StringTools::convert(const std::string &str, T & dst	){
 	std::stringstream sstr(str);
 	sstr >> dst;
-	//std::cerr << __FUNCTION__ << ": " << str << '>' << target << '\n';
 	return dst;
 }
+
+template <class T>
+inline
+T StringTools::convert(const std::string &s){
+	T dst;
+	StringTools::convert(s, dst);
+	return dst;
+}
+
 
 template <>
 inline
