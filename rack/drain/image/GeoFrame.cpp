@@ -87,33 +87,89 @@ void GeoFrame::setGeometry(unsigned int w,unsigned int h) {
 
 }
 
+void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double latUR){
+
+	Logger mout(__FUNCTION__, __FILE__);
+
+	if (isMetric(lonLL, 180.0) && isMetric(latLL, 90.0) && isMetric(lonUR, 180.0) && isMetric(latUR, 90.0)){
+
+		mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
+		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
+
+		if (!projectionIsSet()){
+			mout.error() << "projection must be set prior to setting metric bbox (" << ")" << mout.endl;
+			return;
+		}
+
+		if (projR2M.isLongLat()){
+			mout.error() << "trying to set metric bbox (" << ") on long-lat proj: "; // << resources.bbox
+			mout         <<  getProjection() << mout.endl;
+			return;
+		}
+
+		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
+		//extentNative.set(lonLL, latLL, lonUR, latUR); // bypass rounding errors...
+
+		//resources.bbox.set(resources.composite.getBoundingBoxD());
+		/*
+		mout.note() << "bbox in degrees: " << getBoundingBoxD() << mout.endl;
+		mout.note() << "bbox in metres:  " << getBoundingBoxM() << mout.endl;
+		std::cerr.precision(12);
+		std::cerr << getBoundingBoxM() << " bboxM " << std::endl;
+
+		std::cerr << "rounding M->M: " << lonLL << ',' << latLL;
+		projR2M.projectInv(lonLL, latLL);
+		std::cerr << " => " << lonLL << ',' << latLL << std::endl;
+		projR2M.projectFwd(lonLL, latLL);
+		std::cerr << "\n            => " << lonLL << ',' << latLL << std::endl;
+		*/
+	}
+	else {
+		mout.note() << "experimental: setting deg bbox: " << mout.endl; // << resources.bbox
+		mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
+		setBoundingBoxD(lonLL, latLL, lonUR, latUR);
+	}
+
+
+}
 
 
 
 void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double latUR) {
-	extentR.lowerLeft.x  = lonLL;
-	extentR.lowerLeft.y  = latLL;
-	extentR.upperRight.x = lonUR;
-	extentR.upperRight.y = latUR;
 
-	extentD.lowerLeft.x  = lonLL*RAD2DEG;
-	extentD.lowerLeft.y  = latLL*RAD2DEG;
-	extentD.upperRight.x = lonUR*RAD2DEG;
-	extentD.upperRight.y = latUR*RAD2DEG;
+	extentR.set(lonLL, latLL, lonUR, latUR);
+
+	updateBoundingBoxD();
+	updateBoundingBoxM();
 
 	updateScaling();
 
 }
 
 void GeoFrame::setBoundingBoxM(double xLL,double yLL,double xUR,double yUR) {
-	//double lonLL = 0.0, latLL, lonUR, latUR;
-	Rectangle<double> bboxDst(0,0,0,0);
+
 	if (projR2M.isSet()){
+		//Rectangle<double> bboxDst(0,0,0,0);
+		/*
 		projR2M.projectInv(xLL, yLL, bboxDst.lowerLeft.x,  bboxDst.lowerLeft.y);
 		projR2M.projectInv(xUR, yUR, bboxDst.upperRight.x, bboxDst.upperRight.y);
+		setBoundingBoxR(bboxDst);
+		*/
+		// Set main BBOX (long, lat in radians)
+		projR2M.projectInv(xLL, yLL, extentR.lowerLeft.x,  extentR.lowerLeft.y);
+		projR2M.projectInv(xUR, yUR, extentR.upperRight.x, extentR.upperRight.y);
+		// Set (scale) to degrees
+		updateBoundingBoxD();
 	}
-	//setBoundingBoxR(lonLL,latLL,lonUR,latUR);
-	setBoundingBoxR(bboxDst); //.lowerLeft.x,  bboxDst.lowerLeft.y, bboxDst.upperRight.x, bboxDst.upperRight.y);
+	else {
+		Logger mout(__FUNCTION__, __FILE__);
+		mout.warn() << "Tryng to set metric BBOX prior to setting projection";
+	}
+
+	// Set exact metric bbox
+	extentNative.set(xLL, yLL, xUR, yUR);
+
+	updateScaling();
 }
 
 void GeoFrame::getCenterPixel(drain::Rectangle<double> & p) const {
@@ -124,6 +180,7 @@ void GeoFrame::getCenterPixel(drain::Rectangle<double> & p) const {
 }
 
 /// Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").
+/*
 double GeoFrame::getXScale() const {
 	if (projR2M.isLongLat()){ // approximate!
 		drain::Rectangle<double> p;
@@ -135,8 +192,11 @@ double GeoFrame::getXScale() const {
 		return xScale;
 	}
 }
+*/
+
 
 /// Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").
+/*
 double GeoFrame::getYScale() const {
 	if (projR2M.isLongLat()){ // approximate!
 		drain::Rectangle<double> p;
@@ -147,19 +207,82 @@ double GeoFrame::getYScale() const {
 		return yScale;
 	}
 }
+*/
+/// Assuming up-to-date bbox [rad], adjust bbox [deg]
+void GeoFrame::updateBoundingBoxD(){
+	extentD.lowerLeft.x  = RAD2DEG * extentR.lowerLeft.x;
+	extentD.lowerLeft.y  = RAD2DEG * extentR.lowerLeft.y;
+	extentD.upperRight.x = RAD2DEG * extentR.upperRight.x;
+	extentD.upperRight.y = RAD2DEG * extentR.upperRight.y;
+}
+
+/// Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale.
+void GeoFrame::updateBoundingBoxM(){
+
+	if (projR2M.isSet()){
+		projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentNative.lowerLeft.x,  extentNative.lowerLeft.y);
+		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentNative.upperRight.x, extentNative.upperRight.y);
+	}
+	else {
+		// warn?
+	}
+
+	/*
+	if (isLongLat()){ // ie. native coords went radial above
+		extentNative.lowerLeft.x  *= RAD2DEG;
+		extentNative.lowerLeft.y  *= RAD2DEG;
+		extentNative.upperRight.x *= RAD2DEG;
+		extentNative.upperRight.y *= RAD2DEG;
+	}
+	*/
+
+}
 
 /// Notice: changed! For LatLon, consider approx? See composite
 void GeoFrame::updateScaling()
 {
+	Logger mout(__FUNCTION__, __FILE__);
+	// QUICK FIX, TODO redesign
+	/*
 	if (projR2M.isSet()){
-
-		// set metric bbox
-		projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentM.lowerLeft.x,  extentM.lowerLeft.y);
-		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentM.upperRight.x, extentM.upperRight.y);
-
-		xScale = (extentM.upperRight.x - extentM.lowerLeft.x) / getFrameWidth();
-		yScale = (extentM.upperRight.y - extentM.lowerLeft.y) / getFrameHeight();
+		projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentNative.lowerLeft.x,  extentNative.lowerLeft.y);
+		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentNative.upperRight.x, extentNative.upperRight.y);
 	}
+	*/
+
+	//if (projR2M.isSet() && projR2M.isLongLat()){
+	if (false){
+
+		// if (projR2M.isLongLat()){  // approximate!
+		drain::Rectangle<double> p;
+		getCenterPixel(p);
+		xScale = (p.upperRight.x-p.lowerLeft.x )/2.0 * DEG2RAD * EARTH_RADIUS * cos(DEG2RAD*(p.lowerLeft.y+p.upperRight.y)/2.0);
+		yScale = (p.lowerLeft.y -p.upperRight.y)/2.0 * DEG2RAD * EARTH_RADIUS;
+		// return (p.upperRight.x-p.lowerLeft.x )/2.0 * DEG2RAD * EARTH_RADIUS * cos(DEG2RAD*(p.lowerLeft.y+p.upperRight.y)/2.0);
+		// yScale = (pixelDeg.lowerLeft.y -pixelDeg.upperRight.y)/2.0 * DEG2RAD * EARTH_RADIUS;
+		//	}
+		/*
+			else {
+			// set metric bbox ?
+			projR2M.projectFwd(extentR.lowerLeft.x,  extentR.lowerLeft.y,  extentNative.lowerLeft.x,  extentNative.lowerLeft.y);
+			projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentNative.upperRight.x, extentNative.upperRight.y);
+			xScale = (extentNative.upperRight.x - extentNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
+			yScale = (extentNative.upperRight.y - extentNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
+		}
+		*/
+
+	}
+	else {
+		if (geometryIsSet()){
+			xScale = (extentNative.upperRight.x - extentNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
+			yScale = (extentNative.upperRight.y - extentNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
+		}
+		//Logger mout(__FUNCTION__, __FILE__);
+		//mout.warn() << "Tryng to update scaling prior to setting projection";
+	}
+
+	//mout.warn() << " scaling " << xScale << ',' << yScale << mout.endl;
+
 }
 
 
@@ -182,7 +305,7 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 	cropper.upperRight.y++;
 	frame.crop(cropper);
 	//mout.warn()  << " crop:" << cropper << " => frame:" << frame << mout.endl;
-	//mout.warn()  << " fatal:" << (frameHeight-1) << '-' <<  frame.upperRight.y << '*' << yScale << '+' << extentM.lowerLeft.y << mout.endl;
+	//mout.warn()  << " fatal:" << (frameHeight-1) << '-' <<  frame.upperRight.y << '*' << yScale << '+' << extentNative.lowerLeft.y << mout.endl;
 
 	pix2LLm(frame.lowerLeft.x,  frame.upperRight.y,  xLL, yLL); // j swapped  "upside down"
 	pix2LLm(frame.upperRight.x, frame.lowerLeft.y,   xUR, yUR); // j swapped  "upside down"
@@ -197,8 +320,18 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
 
 
+
 void GeoFrame::setProjection(const std::string &s){
+
+	Logger mout(__FUNCTION__, __FILE__);
+
 	projR2M.setProjectionDst(s);
+
+	// consider BBOX update BBOXm => BBOXr or vice versa.
+	if (isLongLat()){
+		// ..
+	}
+
 	updateScaling();
 }
 
@@ -224,16 +357,13 @@ void GeoFrame::updateDataExtent(const drain::Rectangle<double> & inputExtentD)
 std::ostream & GeoFrame::toOStr(std::ostream & ostr) const {
 
 	ostr << "frame " << this->getFrameWidth() << 'x' << this->getFrameHeight() << "\n";
-	//ostr << (const drain::image::AccumulationArray &)acc << '\n';
-	//ostr << "   resolution, metres: " << acc.getScaleX() << 'x' << acc.getScaleY() << "\n";
-	ostr << "   coord system: " << getCoordinateSystem() << '\n';
-	ostr << "   proj:  " << getProjection() << '\n';
+	ostr << "   input coords: " << getCoordinateSystem() << '\n';
+	ostr << "   projection:   " << getProjection() << '\n';
 
-	ostr << "   scope, metres:  [" << getBoundingBoxM() << "]\n";
-	ostr << "   scope, radians: [" << getBoundingBoxR() << "]\n";
-	ostr << "   scope, degrees: [" << getBoundingBoxD() << "]\n";
-	ostr << "   resolution, metres/pix: (" << xScale << ',' << yScale << "]\n";
-
+	ostr << "   bbox, nat.units: [" << getBoundingBoxM() << "]\n";
+	ostr << "   bbox, radians:   [" << getBoundingBoxR() << "]\n";
+	ostr << "   bbox, degrees:   [" << getBoundingBoxD() << "]\n";
+	ostr << "   resolution, metres/pix: (" << xScale << ',' << yScale << ")\n";
 	return ostr;
 
 }

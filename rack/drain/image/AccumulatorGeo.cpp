@@ -40,7 +40,14 @@ namespace drain
 namespace image
 {
 
-
+std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo & acc){
+	ostr << "AccumulatorGeo/ ";
+	ostr << (const GeoFrame &)acc;
+	ostr << (const drain::image::AccumulationArray &)acc << '\n';
+	ostr << "   allocated (" << acc.getWidth() << 'x' << acc.getHeight() << ") \n";
+	return ostr;
+}
+/*
 std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo & acc){
 	ostr << "AccumulatorGeo (frame " << acc.getFrameWidth() << 'x' << acc.getFrameHeight() << ") \n";
 	ostr << (const drain::image::AccumulationArray &)acc << '\n';
@@ -55,6 +62,7 @@ std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo 
 
 	return ostr;
 }
+*/
 
 
 } // namespace image

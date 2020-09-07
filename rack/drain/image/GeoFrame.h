@@ -122,6 +122,22 @@ public:
 	int getFrameHeight() const {return  frameHeight; };
 
 
+	/// Sets bounding box in degrees OR in metres in the target coordinate system.
+	/**
+	 *   Checks if a coordinate looks like degrees, that is, longitude is within [-90,+90] and latitude within [-180,+180].
+	 *   Assumes that small absolute values suggest degrees, larger are metres.
+	 *   Projection has to be set prior to setting metric bbox.
+	 *
+	 */
+	void setBoundingBox(double lonLL, double latLL, double lonUR, double latUR);
+
+	/// Sets bounding box in degrees in the target coordinate system.
+	inline
+	void setBoundingBox(const drain::Rectangle<double> & bbox){
+		setBoundingBox(bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
+	}
+
+
 	/// Sets bounding box in degrees in the target coordinate system.
 	inline
 	void setBoundingBoxD(double lonLL, double latLL, double lonUR, double latUR){
@@ -134,14 +150,15 @@ public:
 		setBoundingBoxD(bboxD.lowerLeft.x, bboxD.lowerLeft.y, bboxD.upperRight.x, bboxD.upperRight.y);
 	}
 
+
+	/// Sets bounding box in radians in the target coordinate system.
+	void setBoundingBoxR(double lonLL, double latLL, double lonUR, double latUR);
+
 	/// Sets bounding box in radians in the target coordinate system.
 	inline
 	void setBoundingBoxR(const drain::Rectangle<double> & bboxR){
 		setBoundingBoxR(bboxR.lowerLeft.x, bboxR.lowerLeft.y, bboxR.upperRight.x, bboxR.upperRight.y);
 	}
-
-	/// Sets bounding box in radians in the target coordinate system.
-	void setBoundingBoxR(double lonLL, double latLL, double lonUR, double latUR);
 
 
 	/// Sets bounding box in meters in the target coordinate system.
@@ -153,6 +170,19 @@ public:
 		setBoundingBoxM(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 	}
 
+protected:
+
+	/// Given BBox in geo coords [rad], adjust geo coords [deg]
+	void updateBoundingBoxD(); //double lonLL, double latLL, double lonUR, double latUR);
+
+	/// Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale.
+	void updateBoundingBoxM(); // double lonLL, double latLL, double lonUR, double latUR);
+
+
+	/// Geometric scaling.
+	void updateScaling();
+
+public:
 
 
 
@@ -162,7 +192,7 @@ public:
 
 	/// Returns the geographical scope in Meters.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxM() const { return extentM; };
+	const drain::Rectangle<double> & getBoundingBoxM() const { return extentNative; };
 
 	/// Returns the geographical scope in Radians.
 	inline
@@ -170,11 +200,18 @@ public:
 
 	void getCenterPixel(drain::Rectangle<double> & pixelD) const;
 
-	/// Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").
-	double getYScale() const;
+	/// Return horizontal resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").
+	inline
+	double getXScale() const {
+		return xScale;
+	}
 
 	/// Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").
-	double getXScale() const;
+	inline
+	double getYScale() const {
+		return yScale;
+	}
+
 
 
 	///  Crops the initial bounding box with a given bounding box.
@@ -193,9 +230,6 @@ public:
 	/// Projects geographic coordinates to image coordinates.
 	virtual inline
 	void deg2pix(double lon, double lat, int & i, int & j) const {
-		//double x,y; // metric
-		//projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, x, y);
-		//m2pix(x,y, i,j);
 		projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat);
 		m2pix(lon, lat, i,j);
 	}
@@ -270,16 +304,16 @@ public:
 	 */
 	inline virtual
 	void m2pix(double x, double y, int & i, int & j) const {
-		i = static_cast<int>(0.5+ (x - extentM.lowerLeft.x) / xScale); //  xOffset
-		//j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
-		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentM.lowerLeft.y) / yScale);
+		i = static_cast<int>(0.5+ (x - extentNative.lowerLeft.x) / xScale); //  xOffset
+		//j = frameHeight-1 - static_cast<int>(0.5+ (y - extentNative.lowerLeft.y) / yScale);
+		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentNative.lowerLeft.y) / yScale);
 	}
 
 	inline virtual
 	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
-		pImage.x = static_cast<int>(0.5+ (pMetric.x - extentM.lowerLeft.x) / xScale); //  xOffset
-		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentM.lowerLeft.y) / yScale);
-		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentM.lowerLeft.y) / yScale);
+		pImage.x = static_cast<int>(0.5+ (pMetric.x - extentNative.lowerLeft.x) / xScale); //  xOffset
+		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentNative.lowerLeft.y) / yScale);
+		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentNative.lowerLeft.y) / yScale);
 
 	}
 
@@ -297,17 +331,17 @@ public:
 	inline
 	virtual
 	void pix2m(int i, int j, double & x, double & y) const {
-		x = (static_cast<double>(i)+0.5)*xScale + extentM.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
-		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentM.lowerLeft.y;
+		x = (static_cast<double>(i)+0.5)*xScale + extentNative.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentNative.lowerLeft.y;
+		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentNative.lowerLeft.y;
 	}
 
 	inline
 	virtual
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
-		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + extentM.lowerLeft.x;
-		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentM.lowerLeft.y;
-		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentM.lowerLeft.y;
+		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + extentNative.lowerLeft.x;
+		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentNative.lowerLeft.y;
+		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentNative.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.
@@ -321,14 +355,11 @@ public:
 	inline
 	virtual
 	void pix2LLm(int i, int j, double & x, double & y) const {
-		x = (static_cast<double>(i))*xScale + extentM.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.lowerLeft.y;
-		// y = (static_cast<double>(frameHeight-1 - j))*yScale + extentM.lowerLeft.y;
+		x = (static_cast<double>(i))*xScale + extentNative.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentNative.lowerLeft.y;
+		// y = (static_cast<double>(frameHeight-1 - j))*yScale + extentNative.lowerLeft.y;
 	}
 
-
-	/// Geometric scaling.
-	void updateScaling();
 
 
 
@@ -379,7 +410,7 @@ protected:
 	drain::Rectangle<double> extentD;
 
 	/// Geographical scope in Meters.
-	drain::Rectangle<double> extentM;
+	drain::Rectangle<double> extentNative;
 
 
 	// ... needed in mapping...
@@ -393,7 +424,11 @@ protected:
 	/// Utility for deriving extent (degrees) required by input data
 	drain::Rectangle<double> dataOverlapD;
 
-
+	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
+	static inline
+	bool isMetric(double x, double limit){
+		return (x < -limit) || (x > limit);
+	}
 
 };
 
