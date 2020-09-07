@@ -136,6 +136,9 @@ void CartesianExtract::extract(const std::string & channels) const {
 	where["BBOX"].setType(typeid(double));
 	where["BBOX"] = resources.composite.getBoundingBoxD().toVector(); // Str(); // todo get vector?
 
+	where["BBOX_metric"].setType(typeid(double));
+	where["BBOX_metric"] = resources.composite.getBoundingBoxM().toVector(); // Str(); // todo get vector?
+
 	where["BBOX_data"].setType(typeid(double));
 	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();
 	where["BBOX_data"] = bboxDataD.toVector(); // Str();
@@ -216,7 +219,8 @@ void CartesianSun::exec() const {
 	Sun sun(timestamp);
 	dstData.odim.setTime(timestamp);
 
-	resources.composite.updateScaling();
+	mout.warn() << "check bbox and scaling? " << resources.composite << mout.endl;
+	//resources.composite.updateScaling();
 
 	mout.debug(1) << "main" << mout.endl;
 	double lat, lon;

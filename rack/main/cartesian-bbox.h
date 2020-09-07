@@ -65,10 +65,12 @@ public:
 private:
 
 	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
+	/*
 	static inline
 	bool isMetric(double x, double limit){
 		return (x < -limit) || (x > limit);
 	}
+	*/
 
 };
 

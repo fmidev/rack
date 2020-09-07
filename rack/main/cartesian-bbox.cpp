@@ -58,6 +58,9 @@ void CartesianBBox::exec() const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	RackResources & resources = getResources();
+
+	resources.composite.setBoundingBox(resources.bbox);
+	/*
 	drain::Point2D<double> & ll = resources.bbox.lowerLeft;
 	drain::Point2D<double> & ur = resources.bbox.upperRight;
 
@@ -83,7 +86,7 @@ void CartesianBBox::exec() const {
 	}
 
 	resources.composite.setBoundingBoxD(resources.bbox);
-
+	*/
 }
 
 void CartesianBBoxTest::exec() const {
