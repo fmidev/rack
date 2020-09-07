@@ -148,6 +148,7 @@ bool ODIMPathElem::set(const std::string &s){
 	bool INDEXED = false; // to separate data and data1
 	this->str = "";
 
+	// Try removing this...
 	static
 	const dict_t & d = ODIMPathElem::getDictionary(); // New here
 
