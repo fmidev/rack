@@ -494,7 +494,7 @@ bool DataSelector::getPaths3(const Hi5Tree & src, T & pathContainer, const ODIMP
 		bool quantityOk = !quantityRequired; //
 
 		const ODIMPathElem & currentElem = it->first;
-		mout.debug() << "currentElem='" << currentElem << "'" << mout.endl;
+		mout.debug(1) << "currentElem='" << currentElem << "'" << mout.endl;
 
 		const drain::image::Image & d    = it->second.data.dataSet; // for ODIM
 		const drain::FlexVariableMap & v = d.getProperties();

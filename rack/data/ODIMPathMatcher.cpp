@@ -185,7 +185,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug() << "path:    " << path    << mout.endl;
+	mout.debug(1) << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_iterator mit = this->begin();
 	if (mit->isRoot())
@@ -213,7 +213,7 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug() << "path:    " << path    << mout.endl;
+	mout.debug(1) << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_reverse_iterator mit = this->rbegin();
 	rack::ODIMPath::const_reverse_iterator pit = path.rbegin();
