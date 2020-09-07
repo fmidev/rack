@@ -272,7 +272,7 @@ class CmdGeoTiffTile : public BasicCommand {
 
 public:
 
-	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating; use --outputTiffConf instead") {
+	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
 		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
 	};
@@ -281,6 +281,61 @@ public:
 };
 
 
+class CmdOutputConf : public BasicCommand {
+
+public:
+
+	CmdOutputConf() : BasicCommand(__FUNCTION__, "Format specific configurations") {
+
+		parameters.separator = ':';
+		parameters.reference("format", format, "h5|png|tif");
+		parameters.reference("params", params, "<key>=<value>[,<key2>=<value2>,...]");
+
+		gtiffConf.reference("tilewidth", FileGeoTIFF::tileWidth=256);
+		gtiffConf.reference("tileheight", FileGeoTIFF::tileHeight=0);
+		gtiffConf.reference("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+
+	};
+
+	std::string format;
+	std::string params;
+
+	virtual inline
+	void setParameters(const std::string & params, char assignmentSymbol=0) {
+		BasicCommand::setParameters(params, 0); // sep = ':'
+	}
+
+	void exec() const {
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		// mout.warn() << format << mout.endl;
+		// mout.note() << params << mout.endl;
+		// todo: shared resource for output conf:  refMap of refMaps...
+		// todo recognize tif,TIFF
+		if (format == "h5"){
+			mout.warn() << "(future extension)" << mout.endl;
+		}
+		else if (format == "png"){
+			mout.warn() << "(future extension)" << mout.endl;
+		}
+		else if (format == "tif"){
+			// mout.note() <<  gtiffConf.getKeys() << mout.endl;
+			gtiffConf.setValues(params);
+			mout.info() << gtiffConf << mout.endl;
+		}
+		else {
+			mout.warn() << "format '" << format << "' not recognized" << mout.endl;
+		}
+
+	}
+
+	mutable
+	drain::ReferenceMap gtiffConf;
+
+};
+
+/*
 class CmdOutputTiffConf : public BasicCommand {
 
 public:
@@ -292,12 +347,8 @@ public:
 	};
 
 
-protected:
-
-	//drain::Dictionary2<int, std::string> dict;
-
 };
-
+*/
 
 
 // Cf. InputPrefix
@@ -818,7 +869,8 @@ FileModule::FileModule(const std::string & section, const std::string & prefix) 
 	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
 	static RackLetAdapter<CmdOutputFile> cmdOutputFile('o');
 	static RackLetAdapter<CmdOutputRawImages> cmdOutputRawImages('O');
-	static RackLetAdapter<CmdOutputTiffConf> cmdOutputTiffConf;
+	static RackLetAdapter<CmdOutputConf> cmdOutputConf;
+	//static RackLetAdapter<CmdOutputTiffConf> cmdOutputTiffConf;
 	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
 
 }
