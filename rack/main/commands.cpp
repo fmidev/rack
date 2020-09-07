@@ -1513,9 +1513,8 @@ void CmdValidate::exec() const {
 		validator.push_back(ODIMNodeValidator());
 		ODIMNodeValidator & nodeValidator = validator.back();
 		nodeValidator.assign(line);
-		std::cout << "L: " << line << std::endl;
-		std::cout << "V: " << nodeValidator << std::endl;
-		std::cout << '\n';
+		mout.debug(1) << "L: " << line          << mout.endl;
+		mout.debug(1) << "V: " << nodeValidator << mout.endl;
 		line.clear();
 	}
 
