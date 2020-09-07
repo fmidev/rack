@@ -201,7 +201,7 @@ void CommandRegistry::help(const Command & cmd, std::ostream & ostr, bool parame
 		if (separator)
 			ostr << separator;
 		else
-			separator = ',';
+			separator = params.separator; //',';
 
 		ostr << '<' << *kit << '>';
 	}
