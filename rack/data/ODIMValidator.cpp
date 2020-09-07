@@ -91,7 +91,7 @@ ODIMNodeValidator & ODIMNodeValidator::assign(const std::string & s){
 
 std::ostream & ODIMNodeValidator::toOStr(std::ostream & ostr) const {
 
-	ostr << '@';
+	//ostr << '@';
 
 	ostr << pathRegExp.toStr() << ';';
 
