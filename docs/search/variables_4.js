@@ -10,6 +10,6 @@ var searchData=
   ['elevationangles',['elevationAngles',['../classrack_1_1Geometry.html#abfa52d53af3c7e628575db0feaed7007',1,'rack::Geometry']]],
   ['entry',['entry',['../structdrain_1_1Cloner.html#a782ed1c824d52f671820fbc7cc1ee82f',1,'drain::Cloner']]],
   ['extentd',['extentD',['../classdrain_1_1image_1_1GeoFrame.html#acc28768421141755731504a27706d6c5',1,'drain::image::GeoFrame']]],
-  ['extentm',['extentM',['../classdrain_1_1image_1_1GeoFrame.html#a2aef61ee3749f9914d71a2f05e15a001',1,'drain::image::GeoFrame']]],
+  ['extentnative',['extentNative',['../classdrain_1_1image_1_1GeoFrame.html#aa62d76381480fdca3dbc29454aea544f',1,'drain::image::GeoFrame']]],
   ['extentr',['extentR',['../classdrain_1_1image_1_1GeoFrame.html#a2bcaf3a2a603f5901c2d26716e96c6be',1,'drain::image::GeoFrame']]]
 ];

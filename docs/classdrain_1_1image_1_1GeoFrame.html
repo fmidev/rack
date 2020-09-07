@@ -90,6 +90,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1GeoFrame-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -116,9 +118,10 @@ Collaboration diagram for GeoFrame:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1GeoFrame__coll__graph.png" border="0" usemap="#GeoFrame_coll__map" alt="Collaboration graph"/></div>
 <map name="GeoFrame_coll__map" id="GeoFrame_coll__map">
-<area shape="rect" id="node2" href="classdrain_1_1Proj4.html" title="Proj4" alt="" coords="5,109,57,136"/>
-<area shape="rect" id="node3" href="classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="81,109,224,136"/>
-<area shape="rect" id="node4" href="classdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="87,5,218,32"/>
+<area shape="rect" id="node2" href="classdrain_1_1Proj4.html" title="Proj4" alt="" coords="64,215,116,241"/>
+<area shape="rect" id="node3" href="classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; int, std\l::string \&gt;" alt="" coords="5,96,145,137"/>
+<area shape="rect" id="node5" href="classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="159,215,301,241"/>
+<area shape="rect" id="node6" href="classdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="170,103,301,130"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -156,6 +159,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a64ef20068374ccd6f392f011bd49accb">getFrameHeight</a> () const </td></tr>
 <tr class="memdesc:a64ef20068374ccd6f392f011bd49accb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the nominal height, not the height of the memory array which does not have to be allocated. <br /></td></tr>
 <tr class="separator:a64ef20068374ccd6f392f011bd49accb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a807c51e5a83d81210c0a6032150bff9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a807c51e5a83d81210c0a6032150bff9d">setBoundingBox</a> (double lonLL, double latLL, double lonUR, double latUR)</td></tr>
+<tr class="memdesc:a807c51e5a83d81210c0a6032150bff9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in degrees OR in metres in the target coordinate system.  <a href="#a807c51e5a83d81210c0a6032150bff9d">More...</a><br /></td></tr>
+<tr class="separator:a807c51e5a83d81210c0a6032150bff9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06ebdf07233f68a4c9438acf07683a74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06ebdf07233f68a4c9438acf07683a74"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a06ebdf07233f68a4c9438acf07683a74">setBoundingBox</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bbox)</td></tr>
+<tr class="memdesc:a06ebdf07233f68a4c9438acf07683a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in degrees in the target coordinate system. <br /></td></tr>
+<tr class="separator:a06ebdf07233f68a4c9438acf07683a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af65f3c0932617231c8f683e3935c13ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af65f3c0932617231c8f683e3935c13ef"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#af65f3c0932617231c8f683e3935c13ef">setBoundingBoxD</a> (double lonLL, double latLL, double lonUR, double latUR)</td></tr>
 <tr class="memdesc:af65f3c0932617231c8f683e3935c13ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in degrees in the target coordinate system. <br /></td></tr>
@@ -164,14 +174,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ad855038ed631d0ab07082b7782b53fd6">setBoundingBoxD</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxD)</td></tr>
 <tr class="memdesc:ad855038ed631d0ab07082b7782b53fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in degrees in the target coordinate system. <br /></td></tr>
 <tr class="separator:ad855038ed631d0ab07082b7782b53fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ddfda34d2ce7d7de5ba83d4b90fe3f2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a9ddfda34d2ce7d7de5ba83d4b90fe3f2">setBoundingBoxR</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxR)</td></tr>
-<tr class="memdesc:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in radians in the target coordinate system. <br /></td></tr>
-<tr class="separator:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a390b18a7cd0504f070e816f6f6b2f377"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a390b18a7cd0504f070e816f6f6b2f377"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a390b18a7cd0504f070e816f6f6b2f377">setBoundingBoxR</a> (double lonLL, double latLL, double lonUR, double latUR)</td></tr>
 <tr class="memdesc:a390b18a7cd0504f070e816f6f6b2f377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in radians in the target coordinate system. <br /></td></tr>
 <tr class="separator:a390b18a7cd0504f070e816f6f6b2f377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ddfda34d2ce7d7de5ba83d4b90fe3f2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a9ddfda34d2ce7d7de5ba83d4b90fe3f2">setBoundingBoxR</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxR)</td></tr>
+<tr class="memdesc:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in radians in the target coordinate system. <br /></td></tr>
+<tr class="separator:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c6e4fea89e5da96316eacc0f629c273"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c6e4fea89e5da96316eacc0f629c273"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a8c6e4fea89e5da96316eacc0f629c273">setBoundingBoxM</a> (double xLL, double yLL, double xUR, double yUR)</td></tr>
 <tr class="memdesc:a8c6e4fea89e5da96316eacc0f629c273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in meters in the target coordinate system. <br /></td></tr>
@@ -195,14 +205,14 @@ const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt;
 <tr class="memitem:af58e26adb35c92909a8fdb7619a87fa6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af58e26adb35c92909a8fdb7619a87fa6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>getCenterPixel</b> (<a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;pixelD) const </td></tr>
 <tr class="separator:af58e26adb35c92909a8fdb7619a87fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af94fbca2b0302d9005c1f2c9d22e7685"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af94fbca2b0302d9005c1f2c9d22e7685"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#af94fbca2b0302d9005c1f2c9d22e7685">getXScale</a> () const </td></tr>
+<tr class="memdesc:af94fbca2b0302d9005c1f2c9d22e7685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return horizontal resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon"). <br /></td></tr>
+<tr class="separator:af94fbca2b0302d9005c1f2c9d22e7685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa117ae33cef8aa8ffc36809367510581"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa117ae33cef8aa8ffc36809367510581"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aa117ae33cef8aa8ffc36809367510581">getYScale</a> () const </td></tr>
 <tr class="memdesc:aa117ae33cef8aa8ffc36809367510581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon"). <br /></td></tr>
 <tr class="separator:aa117ae33cef8aa8ffc36809367510581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af94fbca2b0302d9005c1f2c9d22e7685"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af94fbca2b0302d9005c1f2c9d22e7685"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#af94fbca2b0302d9005c1f2c9d22e7685">getXScale</a> () const </td></tr>
-<tr class="memdesc:af94fbca2b0302d9005c1f2c9d22e7685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon"). <br /></td></tr>
-<tr class="separator:af94fbca2b0302d9005c1f2c9d22e7685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85a3b02fb314dd015b2b38ae1fb977e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad85a3b02fb314dd015b2b38ae1fb977e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ad85a3b02fb314dd015b2b38ae1fb977e">cropWithM</a> (<a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxM)</td></tr>
 <tr class="memdesc:ad85a3b02fb314dd015b2b38ae1fb977e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the initial bounding box with a given bounding box. <br /></td></tr>
@@ -254,9 +264,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>pix2m</b> (co
 <tr class="memitem:aab0068172464f4591bd1faf1d906122e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aab0068172464f4591bd1faf1d906122e">pix2LLm</a> (int i, int j, double &amp;x, double &amp;y) const </td></tr>
 <tr class="memdesc:aab0068172464f4591bd1faf1d906122e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.  <a href="#aab0068172464f4591bd1faf1d906122e">More...</a><br /></td></tr>
 <tr class="separator:aab0068172464f4591bd1faf1d906122e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28f8306f05beb2f699ce9ebb423c500e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a28f8306f05beb2f699ce9ebb423c500e">updateScaling</a> ()</td></tr>
-<tr class="memdesc:a28f8306f05beb2f699ce9ebb423c500e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometric scaling.  <a href="#a28f8306f05beb2f699ce9ebb423c500e">More...</a><br /></td></tr>
-<tr class="separator:a28f8306f05beb2f699ce9ebb423c500e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc75a90901beaaaae8e17375515160e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc75a90901beaaaae8e17375515160e9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#acc75a90901beaaaae8e17375515160e9">setProjection</a> (const std::string &amp;projDef)</td></tr>
 <tr class="memdesc:acc75a90901beaaaae8e17375515160e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the projection of the composite image as a proj4 std::string. <br /></td></tr>
@@ -294,6 +301,26 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ae6a1d1793900cc3865ae7a8629ae3d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radial to metric. <br /></td></tr>
 <tr class="separator:ae6a1d1793900cc3865ae7a8629ae3d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a49da90ba5af6261dc68ca11ae4740a04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a49da90ba5af6261dc68ca11ae4740a04">updateBoundingBoxD</a> ()</td></tr>
+<tr class="memdesc:a49da90ba5af6261dc68ca11ae4740a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given BBox in geo coords [rad], adjust geo coords [deg].  <a href="#a49da90ba5af6261dc68ca11ae4740a04">More...</a><br /></td></tr>
+<tr class="separator:a49da90ba5af6261dc68ca11ae4740a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa06864fef1d2ff553109df8a6c44d60c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa06864fef1d2ff553109df8a6c44d60c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aa06864fef1d2ff553109df8a6c44d60c">updateBoundingBoxM</a> ()</td></tr>
+<tr class="memdesc:aa06864fef1d2ff553109df8a6c44d60c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale. <br /></td></tr>
+<tr class="separator:aa06864fef1d2ff553109df8a6c44d60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f8306f05beb2f699ce9ebb423c500e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a28f8306f05beb2f699ce9ebb423c500e">updateScaling</a> ()</td></tr>
+<tr class="memdesc:a28f8306f05beb2f699ce9ebb423c500e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometric scaling.  <a href="#a28f8306f05beb2f699ce9ebb423c500e">More...</a><br /></td></tr>
+<tr class="separator:a28f8306f05beb2f699ce9ebb423c500e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae7ca8775344b0165d803c7a81f657044"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7ca8775344b0165d803c7a81f657044"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ae7ca8775344b0165d803c7a81f657044">isMetric</a> (double x, double limit)</td></tr>
+<tr class="memdesc:ae7ca8775344b0165d803c7a81f657044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]. <br /></td></tr>
+<tr class="separator:ae7ca8775344b0165d803c7a81f657044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:ac995d2487f1e00d19fc05941a9e4e89a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac995d2487f1e00d19fc05941a9e4e89a"></a>
@@ -310,10 +337,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>frameHeight</b></td></
 <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#acc28768421141755731504a27706d6c5">extentD</a></td></tr>
 <tr class="memdesc:acc28768421141755731504a27706d6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geographical scope in Degrees. <br /></td></tr>
 <tr class="separator:acc28768421141755731504a27706d6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aef61ee3749f9914d71a2f05e15a001"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2aef61ee3749f9914d71a2f05e15a001"></a>
-<a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a2aef61ee3749f9914d71a2f05e15a001">extentM</a></td></tr>
-<tr class="memdesc:a2aef61ee3749f9914d71a2f05e15a001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geographical scope in Meters. <br /></td></tr>
-<tr class="separator:a2aef61ee3749f9914d71a2f05e15a001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa62d76381480fdca3dbc29454aea544f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa62d76381480fdca3dbc29454aea544f"></a>
+<a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aa62d76381480fdca3dbc29454aea544f">extentNative</a></td></tr>
+<tr class="memdesc:aa62d76381480fdca3dbc29454aea544f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geographical scope in Meters. <br /></td></tr>
+<tr class="separator:aa62d76381480fdca3dbc29454aea544f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ccbdf0c5b972f5de8c857ce3b448634"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ccbdf0c5b972f5de8c857ce3b448634"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>xScale</b></td></tr>
 <tr class="separator:a3ccbdf0c5b972f5de8c857ce3b448634"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -581,9 +608,80 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>yScale</b></td></tr
 
 </div>
 </div>
+<a class="anchor" id="a807c51e5a83d81210c0a6032150bff9d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>lonLL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>latLL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>lonUR</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>latUR</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets bounding box in degrees OR in metres in the target coordinate system. </p>
+<p>Checks if a coordinate looks like degrees, that is, longitude is within [-90,+90] and latitude within [-180,+180]. Assumes that small absolute values suggest degrees, larger are metres. <a class="el" href="classdrain_1_1Projection.html">Projection</a> has to be set prior to setting metric bbox. </p>
+
+</div>
+</div>
+<a class="anchor" id="a49da90ba5af6261dc68ca11ae4740a04"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateBoundingBoxD </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given BBox in geo coords [rad], adjust geo coords [deg]. </p>
+<p>Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon").</p>
+<p>Return vertical resolution of a pixel in meters (if metric) or degrees (if unprojected, "latlon"). Assuming up-to-date bbox [rad], adjust bbox [deg] </p>
+
+</div>
+</div>
 <a class="anchor" id="a28f8306f05beb2f699ce9ebb423c500e"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void updateScaling </td>
@@ -592,6 +690,11 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>yScale</b></td></tr
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Geometric scaling. </p>

@@ -23,6 +23,7 @@ var searchData=
   ['defaultquality',['DefaultQuality',['../classrack_1_1DefaultQuality.html',1,'rack']]],
   ['detectorop',['DetectorOp',['../classrack_1_1DetectorOp.html',1,'rack']]],
   ['dictionary2',['Dictionary2',['../classdrain_1_1Dictionary2.html',1,'drain']]],
+  ['dictionary2_3c_20int_2c_20std_3a_3astring_20_3e',['Dictionary2&lt; int, std::string &gt;',['../classdrain_1_1Dictionary2.html',1,'drain']]],
   ['dictionary2_3c_20k_2c_20v_20_2a_20_3e',['Dictionary2&lt; K, V * &gt;',['../classdrain_1_1Dictionary2.html',1,'drain']]],
   ['dictionary2_3c_20key_5ft_2c_20std_3a_3astring_20_3e',['Dictionary2&lt; key_t, std::string &gt;',['../classdrain_1_1Dictionary2.html',1,'drain']]],
   ['dictionary2_3c_20std_3a_3astring_2c_20value_5ft_20_3e',['Dictionary2&lt; std::string, value_t &gt;',['../classdrain_1_1Dictionary2.html',1,'drain']]],

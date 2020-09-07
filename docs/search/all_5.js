@@ -35,7 +35,7 @@ var searchData=
   ['exportsvglegend',['exportSVGLegend',['../classdrain_1_1image_1_1Palette.html#acb17c9d07c0315d0ba06fab4250d2d90',1,'drain::image::Palette']]],
   ['extend',['extend',['../classdrain_1_1Rectangle.html#a9cce1ea8675417818c9041e5dff7c0ec',1,'drain::Rectangle']]],
   ['extentd',['extentD',['../classdrain_1_1image_1_1GeoFrame.html#acc28768421141755731504a27706d6c5',1,'drain::image::GeoFrame']]],
-  ['extentm',['extentM',['../classdrain_1_1image_1_1GeoFrame.html#a2aef61ee3749f9914d71a2f05e15a001',1,'drain::image::GeoFrame']]],
+  ['extentnative',['extentNative',['../classdrain_1_1image_1_1GeoFrame.html#aa62d76381480fdca3dbc29454aea544f',1,'drain::image::GeoFrame']]],
   ['extentr',['extentR',['../classdrain_1_1image_1_1GeoFrame.html#a2bcaf3a2a603f5901c2d26716e96c6be',1,'drain::image::GeoFrame']]],
   ['extract',['extract',['../classrack_1_1CartesianExtract.html#ac343fb0c4304adfc5b464f6f7338745f',1,'rack::CartesianExtract']]],
   ['extractcount',['extractCount',['../classdrain_1_1image_1_1AccumulationMethod.html#a8383bda0c09ade538b8401164005501b',1,'drain::image::AccumulationMethod']]],

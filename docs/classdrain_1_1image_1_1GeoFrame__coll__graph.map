@@ -1,5 +1,6 @@
 <map id="GeoFrame" name="GeoFrame">
-<area shape="rect" id="node2" href="$classdrain_1_1Proj4.html" title="Proj4" alt="" coords="5,109,57,136"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="81,109,224,136"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="87,5,218,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Proj4.html" title="Proj4" alt="" coords="64,215,116,241"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; int, std\l::string \&gt;" alt="" coords="5,96,145,137"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="159,215,301,241"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="170,103,301,130"/>
 </map>

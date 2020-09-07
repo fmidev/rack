@@ -225,6 +225,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdMove.html">CmdMove</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename or move data groups and attributes.  <a href="classrack_1_1CmdMove.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputConf.html">CmdOutputConf</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputFile.html">CmdOutputFile</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputPrefix.html">CmdOutputPrefix</a></td></tr>
@@ -784,8 +786,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:a2aa7967063a57013889c360fab5770af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2aa7967063a57013889c360fab5770af"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Tree.html">TreeGDAL</a> &amp;tree)</td></tr>
 <tr class="separator:a2aa7967063a57013889c360fab5770af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac06fcce1d4ad3faa3c94960ae5ac9b36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac06fcce1d4ad3faa3c94960ae5ac9b36"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpTIFFDirectory</b> (TIFF *tif, const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;src, int tileWidth=0, int tileHeight=0)</td></tr>
+<tr class="memitem:ac06fcce1d4ad3faa3c94960ae5ac9b36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#ac06fcce1d4ad3faa3c94960ae5ac9b36">SetUpTIFFDirectory</a> (TIFF *tif, const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;src, int tileWidth=0, int tileHeight=0)</td></tr>
 <tr class="separator:ac06fcce1d4ad3faa3c94960ae5ac9b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b481ebd5e8b98b5aea978213c291746"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b481ebd5e8b98b5aea978213c291746"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUpGeoKeys_4326_LongLat</b> (GTIF *gtif)</td></tr>
@@ -870,7 +871,21 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
 <tr class="separator:ac10447db375e68c7f4ccf225f5311067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Version 5.42</p><ul>
+<div class="textblock"><p>Version 5.45</p><ul>
+<li>Output format confs generalized: &ndash;outputConf (replaced &ndash;outputTiffConf)</li>
+<li>Plain numeric EPSG codes recognized in &ndash;cProj </li>
+</ul>
+<p>, some (4236, 3067) also predefined for portability</p><ul>
+<li>GeoFrame refactored (Metric =&gt; Native)</li>
+</ul>
+<p>Version 5.44</p><ul>
+<li>GeoTIFF: Compression added, with new &ndash;outputTiffConf &lt;tilewidth&gt;,&lt;tileheight&gt;,&lt;compression&gt;</li>
+<li>Recognition of metric bbox in &ndash;cBBox</li>
+</ul>
+<p>Version 5.43</p><ul>
+<li>Append sweeps: accept &ndash;inputPrefix</li>
+</ul>
+<p>Version 5.42</p><ul>
 <li><a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) ">ODIM</a> Validator</li>
 </ul>
 <p>Version 5.4</p><ul>
@@ -1000,6 +1015,45 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
 </div><div class="memdoc">
 <p>Main program - renamed to facilitate calls from outside, esp. JNI calls. The standard main() will call this directly. </p>
 <p>Main "loop". </p>
+
+</div>
+</div>
+<a class="anchor" id="ac06fcce1d4ad3faa3c94960ae5ac9b36"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rack::SetUpTIFFDirectory </td>
+          <td>(</td>
+          <td class="paramtype">TIFF *&#160;</td>
+          <td class="paramname"><em>tif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileWidth</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileHeight</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Projection </p>
 
 </div>
 </div>

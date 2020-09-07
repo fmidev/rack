@@ -31,6 +31,7 @@ var searchData=
   ['isempty',['isEmpty',['../classdrain_1_1Castable.html#af4345a9f2614af90d96dcef29bf6f91b',1,'drain::Castable::isEmpty()'],['../classdrain_1_1Tree.html#a479432127ee77145cc19d6a2d1590821',1,'drain::Tree::isEmpty()']]],
   ['ishorizontal',['isHorizontal',['../classdrain_1_1image_1_1Window.html#a7146be17431bd1be2f35abf4c8e4676b',1,'drain::image::Window']]],
   ['isindexed',['isIndexed',['../classrack_1_1ODIMPathElem.html#a185fc5b59bed53df62b6f546ff576c19',1,'rack::ODIMPathElem']]],
+  ['ismetric',['isMetric',['../classdrain_1_1image_1_1GeoFrame.html#ae7ca8775344b0165d803c7a81f657044',1,'drain::image::GeoFrame']]],
   ['isnormalized',['isNormalized',['../classrack_1_1QuantityMap.html#af494bf3e5edf8f5c7f598e5f8eb8541c',1,'rack::QuantityMap']]],
   ['isphysical',['isPhysical',['../classdrain_1_1ValueScaling.html#a9fd14397eb1e25f05340e861f37134bd',1,'drain::ValueScaling']]],
   ['isreference',['isReference',['../classdrain_1_1FlexVariable.html#a9bb56632903c970d0c69e6382b52c5b0',1,'drain::FlexVariable']]],
