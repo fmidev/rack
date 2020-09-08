@@ -136,8 +136,8 @@ void CartesianExtract::extract(const std::string & channels) const {
 	where["BBOX"].setType(typeid(double));
 	where["BBOX"] = resources.composite.getBoundingBoxD().toVector(); // Str(); // todo get vector?
 
-	where["BBOX_metric"].setType(typeid(double));
-	where["BBOX_metric"] = resources.composite.getBoundingBoxM().toVector(); // Str(); // todo get vector?
+	where["BBOX_native"].setType(typeid(double));
+	where["BBOX_native"] = resources.composite.getBoundingBoxM().toVector(); // Str(); // todo get vector?
 
 	where["BBOX_data"].setType(typeid(double));
 	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();

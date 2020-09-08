@@ -93,7 +93,7 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 	if (isMetric(lonLL, 180.0) && isMetric(latLL, 90.0) && isMetric(lonUR, 180.0) && isMetric(latUR, 90.0)){
 
-		mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
+		//mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
 		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
 
 		if (!projectionIsSet()){
@@ -108,26 +108,16 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 		}
 
 		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
-		//extentNative.set(lonLL, latLL, lonUR, latUR); // bypass rounding errors...
 
-		//resources.bbox.set(resources.composite.getBoundingBoxD());
-		/*
-		mout.note() << "bbox in degrees: " << getBoundingBoxD() << mout.endl;
-		mout.note() << "bbox in metres:  " << getBoundingBoxM() << mout.endl;
-		std::cerr.precision(12);
-		std::cerr << getBoundingBoxM() << " bboxM " << std::endl;
+		mout.note() << "experimental: setting metric bbox: " << getBoundingBoxM() << mout.endl; // << resources.bbox
 
-		std::cerr << "rounding M->M: " << lonLL << ',' << latLL;
-		projR2M.projectInv(lonLL, latLL);
-		std::cerr << " => " << lonLL << ',' << latLL << std::endl;
-		projR2M.projectFwd(lonLL, latLL);
-		std::cerr << "\n            => " << lonLL << ',' << latLL << std::endl;
-		*/
 	}
 	else {
+
 		mout.note() << "experimental: setting deg bbox: " << mout.endl; // << resources.bbox
 		mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
 		setBoundingBoxD(lonLL, latLL, lonUR, latUR);
+
 	}
 
 
@@ -149,16 +139,11 @@ void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double lat
 void GeoFrame::setBoundingBoxM(double xLL,double yLL,double xUR,double yUR) {
 
 	if (projR2M.isSet()){
-		//Rectangle<double> bboxDst(0,0,0,0);
-		/*
-		projR2M.projectInv(xLL, yLL, bboxDst.lowerLeft.x,  bboxDst.lowerLeft.y);
-		projR2M.projectInv(xUR, yUR, bboxDst.upperRight.x, bboxDst.upperRight.y);
-		setBoundingBoxR(bboxDst);
-		*/
+		// TODO if latlon!
 		// Set main BBOX (long, lat in radians)
 		projR2M.projectInv(xLL, yLL, extentR.lowerLeft.x,  extentR.lowerLeft.y);
 		projR2M.projectInv(xUR, yUR, extentR.upperRight.x, extentR.upperRight.y);
-		// Set (scale) to degrees
+		// Rescale also to degrees
 		updateBoundingBoxD();
 	}
 	else {
@@ -166,7 +151,7 @@ void GeoFrame::setBoundingBoxM(double xLL,double yLL,double xUR,double yUR) {
 		mout.warn() << "Tryng to set metric BBOX prior to setting projection";
 	}
 
-	// Set exact metric bbox
+	/// Set exact metric bbox
 	extentNative.set(xLL, yLL, xUR, yUR);
 
 	updateScaling();

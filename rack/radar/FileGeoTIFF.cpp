@@ -269,23 +269,49 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	}
 
 
+
+
+
 	/// Projection
 	std::string projdef = prop["where:projdef"];
 	if (projdef.empty()){
-		mout.note() << "where:projdef missing, no TIFF tags written" << mout.endl;
+		mout.note() << "where:projdef missing, no GeoTIFF projection info written" << mout.endl;
 		return;
 	}
 
-	const drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
 
 	drain::image::GeoFrame frame;
 	frame.setGeometry(width, height);
 	frame.setProjection(projdef);
-	frame.setBoundingBoxD(bboxD);
+	const drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
+	if (frame.isLongLat()){
+		frame.setBoundingBoxD(bboxD);
+	}
+	else {
+		const drain::Variable & p = prop["where:BBOX_native"];
+		std::vector<double> v;
+		p.toContainer(v);
+		if (v.size() == 4){
+			frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
+			mout.note() << "Setting exact (metric) BBOX=";
+			char sep = ' ';
+			v = frame.getBoundingBoxM().toVector(); // Back!
+			char buffer[256];
+			for (size_t i=0; i<v.size(); ++i){
+				mout << sep;
+				sep = ',';
+				snprintf(buffer, sizeof(buffer), "%.2f", v[i]);
+				mout << buffer;
+			}
+			mout << mout.endl;
+		}
+		else {
+			mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
+			frame.setBoundingBoxD(bboxD);
+		}
+	}
 
-
-
-	mout.warn() << "BBoxM: " << frame.getBoundingBoxM() << mout.endl;
+	//frame.getBoundingBoxM().toStream();
 
 	double tiepoints[6]; // = {0,0,0,0,0,0};
 
@@ -303,8 +329,9 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 		frame.pix2LLdeg(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 	else { // metric
-		imagePos.setLocation(0, int(height-1));
-		frame.pix2LLm(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		imagePos.setLocation(0, 0); //int(height));
+		frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 
 	tiepoints[0] = static_cast<double>(imagePos.x);
@@ -331,7 +358,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	mout.debug() << "ScaleX: " << pixscale[0] << ' ' << bbox.getWidth() << ' ' << frame.getFrameWidth() << ' ' << width << mout.endl;
 	mout.debug() << "ScaleY: " << pixscale[1] << mout.endl;
 
-	printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
+	//printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
 
 	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
 	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;

@@ -182,9 +182,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a9ddfda34d2ce7d7de5ba83d4b90fe3f2">setBoundingBoxR</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxR)</td></tr>
 <tr class="memdesc:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in radians in the target coordinate system. <br /></td></tr>
 <tr class="separator:a9ddfda34d2ce7d7de5ba83d4b90fe3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6e4fea89e5da96316eacc0f629c273"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c6e4fea89e5da96316eacc0f629c273"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a8c6e4fea89e5da96316eacc0f629c273">setBoundingBoxM</a> (double xLL, double yLL, double xUR, double yUR)</td></tr>
-<tr class="memdesc:a8c6e4fea89e5da96316eacc0f629c273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in meters in the target coordinate system. <br /></td></tr>
+<tr class="memitem:a8c6e4fea89e5da96316eacc0f629c273"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a8c6e4fea89e5da96316eacc0f629c273">setBoundingBoxM</a> (double xLL, double yLL, double xUR, double yUR)</td></tr>
+<tr class="memdesc:a8c6e4fea89e5da96316eacc0f629c273"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bounding box in meters in the target coordinate system.  <a href="#a8c6e4fea89e5da96316eacc0f629c273">More...</a><br /></td></tr>
 <tr class="separator:a8c6e4fea89e5da96316eacc0f629c273"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3ef487147faf3c1a34a427e8bc2ce67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3ef487147faf3c1a34a427e8bc2ce67"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ac3ef487147faf3c1a34a427e8bc2ce67">setBoundingBoxM</a> (const <a class="el" href="classdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bboxM)</td></tr>
@@ -646,6 +645,47 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>yScale</b></td></tr
 
 <p>Sets bounding box in degrees OR in metres in the target coordinate system. </p>
 <p>Checks if a coordinate looks like degrees, that is, longitude is within [-90,+90] and latitude within [-180,+180]. Assumes that small absolute values suggest degrees, larger are metres. <a class="el" href="classdrain_1_1Projection.html">Projection</a> has to be set prior to setting metric bbox. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8c6e4fea89e5da96316eacc0f629c273"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setBoundingBoxM </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xLL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>yLL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xUR</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>yUR</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets bounding box in meters in the target coordinate system. </p>
+<p>Set exact metric bbox </p>
 
 </div>
 </div>
