@@ -30,7 +30,8 @@ function guess_dir(){
     local i
     
     # Step 1: try standard
-    for i in /{usr,var}{,/local}/$TYPE ; do
+    for i in /{usr,var}{,/local}/${TYPE}{,64,/${FILE%.*},/lib${FILE%.*},/x86_64-linux-gnu} ; do
+	echo "... $i/$FILE"
 	if [ -f $i/$FILE ]; then
 	    P=$i/$FILE
 	    break
@@ -43,19 +44,17 @@ function guess_dir(){
 	local cmd="locate --regex '$FILE$'" # [1-9]?
 	echo "# $KEY: trying: $cmd"
 	eval $cmd
-	local P=`locate --regex ${FILE}$ | fgrep -v /doc | tail -1`
-	#local P=`$cmd | fgrep -v /doc | tail -1`
-	#echo " -> $KEY="$P""
+	P=`locate --regex ${FILE}$ | fgrep -v /doc | tail -1`
     fi
 
     # Strip filename 
     P=${P%/*}
     local P_old
     eval  P_old=\$$KEY
-    if [ "$P" != "$P_old" ]; then
-	echo "# Previous value: $KEY=$P_old"
-	#echo $KEY="$P"
-    fi
+    #if [ "$P" != "$P_old" ]; then
+    echo "# Previous value: $KEY=$P_old"
+    #echo $KEY="$P"
+    #fi
     eval $KEY="$P"
     echo 
 }
@@ -111,7 +110,7 @@ echo
 #ask_variable GEOTIFF_INCLUDE  "GeoTIFF include directory (leave empty if GeoTIFF not used)"
 
 
-#echo
+
 echo "# Checking if 'pkg-config' utility is available"
 PKGC=''
 if pkg-config --version > /dev/null ; then
@@ -125,7 +124,7 @@ CCFLAGS='' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
 LDFLAGS=''
 
 #for i in hdf5 proj png ${GEOTIFF_INCLUDE:+'tiff'} ${GEOTIFF_INCLUDE:+'geotiff'}; do
-for i in hdf5 proj png tiff geotiff; do
+for i in hdf5 proj_api png tiff geotiff; do
 
     if [ "$PKGC" != '' ]; then
 
@@ -151,8 +150,9 @@ for i in hdf5 proj png tiff geotiff; do
     #VALUE=${value:+"-I$value"}
     CCFLAGS="$CCFLAGS -I$value"
 
+    i=${i%_*} # proj_api => proj
     key=${i^^}_LIB
-    guess_dir lib ${key} lib$i.a
+    guess_dir lib ${key} lib$i.so
     ask_variable ${key} "Library dir for $i"
     eval value=\$${key}
     if [ -e "$value" ]; then
