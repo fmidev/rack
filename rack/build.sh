@@ -53,7 +53,6 @@ echo "Consider setting:"
 echo "export LD_LIBRARY_PATH=$HDFROOT/lib:$PROJROOT/lib:$LD_LIBRARY_PATH"
 echo "export PATH=$PATH:$RACKROOT/bin"
 
-
 exit 0
 
 
