@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include "util/Dictionary.h"
+#include "drain/util/Dictionary.h"
 
 
 namespace drain {

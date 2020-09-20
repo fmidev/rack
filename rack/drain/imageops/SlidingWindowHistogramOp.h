@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "SlidingWindowOp.h"
 //#include "SlidingOp.h"  // NEW 2015
-#include "util/Histogram.h"
+#include "drain/util/Histogram.h"
 
 namespace drain
 {

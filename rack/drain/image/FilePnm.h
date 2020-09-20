@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <exception>
 
 
-#include "util/RegExp.h"
+#include "drain/util/RegExp.h"
 #include "Image.h"
 
 

@@ -45,11 +45,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/ODIMPath.h>
 #include <hi5/Hi5.h>
 #include <main/rack.h>
-#include <util/Log.h>
-#include <util/RegExp.h>
-#include <util/SmartMap.h>
-#include <util/Tree.h>
-#include <util/Variable.h>
+#include "drain/util/Log.h"
+#include "drain/util/RegExp.h"
+#include "drain/util/SmartMap.h"
+#include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
 #include <exception>
 #include <iostream>
 #include <list>

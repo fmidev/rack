@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <andre/DetectorOp.h>
 #include <data/Data.h>
-#include <image/Image.h>
-#include <image/Window.h>
-#include <imageops/ImageOp.h>
+#include "drain/image/Image.h"
+#include "drain/image/Window.h"
+#include "drain/imageops/ImageOp.h"
 #include <string>
 
 using namespace drain::image;

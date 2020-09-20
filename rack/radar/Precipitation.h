@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/BeanLike.h>
-#include <drain/util/RegExp.h>
+#include "drain/util/BeanLike.h"
+#include "drain/util/RegExp.h"
 
 #ifndef PRECIPITATION_H_
 #define PRECIPITATION_H_

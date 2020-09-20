@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "util/Fuzzy.h"
-#include "util/Log.h"
+#include "drain/util/Fuzzy.h"
+#include "drain/util/Log.h"
 
-#include "image/File.h"
+#include "drain/image/File.h"
 
 //#include "FunctorOp.h"
 //#include "DifferentialOp.h"
@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "QuadraticSmootherOp.h"
 //#include "RecursiveRepairerOp.h"
 #include "DistanceTransformOp.h"
-#include "util/FunctorPack.h"
+#include "drain/util/FunctorPack.h"
 #include "FunctorOp.h"
 #include "GaussianAverageOp.h"
 #include "ResizeOp.h"

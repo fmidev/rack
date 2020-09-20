@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <ostream>
 
-#include "image/FilePng.h"
+#include "drain/image/FilePng.h"
 
 #include "ImageOp.h"
 

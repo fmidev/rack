@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include "image/DistanceModelLinear.h"
-#include "image/DistanceModelExponential.h"
+#include "drain/image/DistanceModelLinear.h"
+#include "drain/image/DistanceModelExponential.h"
 
 #include "ImageOp.h"
 

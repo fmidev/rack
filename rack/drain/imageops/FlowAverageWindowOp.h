@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "CopyOp.h"
 // #include "Window.h"
 //
-#include "util/TypeUtils.h"
+#include "drain/util/TypeUtils.h"
 #include "SlidingWindowOp.h"
 
 namespace drain

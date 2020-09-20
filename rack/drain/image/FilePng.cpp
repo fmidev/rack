@@ -30,10 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "FilePng.h"
-//#include "util/RegExp.h"
+//#include "drain/util/RegExp.h"
 
-#include "util/JSONwriter.h"
-#include "util/Time.h"
+#include "drain/util/JSONwriter.h"
+#include "drain/util/Time.h"
 
 
 namespace drain

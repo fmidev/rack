@@ -34,12 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cmath>
 
 #include "ImageOp.h"
-//#include "util/Functor.h"
-//#include "util/Fuzzy.h"
-//#include "util/Registry.h"
-#include "util/FunctorBank.h"
+//#include "drain/util/Functor.h"
+//#include "drain/util/Fuzzy.h"
+//#include "drain/util/Registry.h"
+#include "drain/util/FunctorBank.h"
 
-#include "util/FunctorPack.h"
+#include "drain/util/FunctorPack.h"
 
 namespace drain
 {

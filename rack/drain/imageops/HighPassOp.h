@@ -34,10 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "SlidingWindowAverage.h"
 #include "ImageOp.h"
 
-//#include "util/FunctorPack.h"
-//#include "image/File.h"
-//#include "imageops/FunctorOp.h"
-#include "imageops/ImageOp.h"
+//#include "drain/util/FunctorPack.h"
+//#include "drain/image/File.h"
+//#include "drain/imageops/FunctorOp.h"
+#include "drain/imageops/ImageOp.h"
 
 //#include "FastAverageOp.h"
 

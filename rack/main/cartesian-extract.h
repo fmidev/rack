@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include <drain/prog/CommandAdapter.h>
+#include "drain/prog/CommandAdapter.h"
 
 #include "resources.h"
 

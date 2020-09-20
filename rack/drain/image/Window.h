@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include "util/Functor.h"
+#include "drain/util/Functor.h"
 #include "ImageView.h"
 #include "ImageTray.h"
 //#include "ImageOp.h"

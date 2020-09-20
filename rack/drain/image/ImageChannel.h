@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stddef.h>  // size_t
 
-#include "util/CastableIterator.h"
-#include "util/VariableMap.h"
-#include "util/TypeUtils.h"
+#include "drain/util/CastableIterator.h"
+#include "drain/util/VariableMap.h"
+#include "drain/util/TypeUtils.h"
 #include "ImageFrame.h"
 
 

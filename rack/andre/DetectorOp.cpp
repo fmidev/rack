@@ -31,14 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 // DEBUGGING
-#include <drain/image/File.h>
-#include <drain/util/Log.h>
-#include <drain/util/FunctorPack.h>
+#include "drain/image/File.h"
+#include "drain/util/Log.h"
+#include "drain/util/FunctorPack.h"
 
-#include <drain/imageops/DistanceTransformOp.h>
-#include <drain/imageops/FunctorOp.h>
-#include <drain/imageops/GammaOp.h>
-#include <drain/imageops/MarginalStatisticOp.h>
+#include "drain/imageops/DistanceTransformOp.h"
+#include "drain/imageops/FunctorOp.h"
+#include "drain/imageops/GammaOp.h"
+#include "drain/imageops/MarginalStatisticOp.h"
 
 //#include "main/rack.h"
 #include "hi5/Hi5.h"

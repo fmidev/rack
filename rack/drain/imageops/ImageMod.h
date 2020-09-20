@@ -31,12 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_MODIFIER_H_
 #define IMAGE_MODIFIER_H_
 
-//#include <drain/util/LinearScaling.h>
-#include "util/BeanLike.h"
-// #include "image/ drain::ValueScaling.h"
-#include "image/Image.h"
+//#include "drain/util/LinearScaling.h"
+#include "drain/util/BeanLike.h"
+// #include "drain/image/ drain::ValueScaling.h"
+#include "drain/image/Image.h"
 //#include "ImageChannel.h"
-#include "image/ImageTray.h"
+#include "drain/image/ImageTray.h"
 //#include "Sampler.h"
 
 

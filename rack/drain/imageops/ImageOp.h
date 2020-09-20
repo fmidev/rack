@@ -31,13 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGENEWOP_H_
 #define IMAGENEWOP_H_
 
-//#include <drain/util/LinearScaling.h>
-#include "util/BeanLike.h"
-// #include "util/LinearScaling.h"
-//#include "util/Data.h"
-//#include "util/Options.h"
-//#include "util/Tree.h"
-//#include "util/ReferenceMap.h"
+//#include "drain/util/LinearScaling.h"
+#include "drain/util/BeanLike.h"
+// #include "drain/util/LinearScaling.h"
+//#include "drain/util/Data.h"
+//#include "drain/util/Options.h"
+//#include "drain/util/Tree.h"
+//#include "drain/util/ReferenceMap.h"
 #include "ImageMod.h"
 //#include "ImageView.h"
 //#include "Image.h"

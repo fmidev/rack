@@ -32,12 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include <drain/image/File.h>
-#include <drain/image/Intensity.h>
-#include <drain/imageops/CopyOp.h>
-#include <drain/imageops/DistanceTransformFillOp.h>
-//#include <drain/imageops/RecursiveRepairerOp.h>
-#include <drain/imageops/BlenderOp.h>
+#include "drain/image/File.h"
+#include "drain/image/Intensity.h"
+#include "drain/imageops/CopyOp.h"
+#include "drain/imageops/DistanceTransformFillOp.h"
+//#include "drain/imageops/RecursiveRepairerOp.h"
+#include "drain/imageops/BlenderOp.h"
 
 
 

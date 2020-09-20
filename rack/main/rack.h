@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.45"
+#define __RACK_VERSION__ "5.5"
 
 /**
+ *   Version 5.45
+ *   - IDE update (Eclipse Embedded C/C++ plugin)
+ *   - $CCFLAGS and $LDFLAGS redesigned in configure.sh and build.sh
+ *
  *   Version 5.45
  *   - Output format confs generalized: --outputConf (replaced --outputTiffConf)
  *   - Plain numeric EPSG codes recognized in --cProj <value> , some (4236, 3067) also predefined for portability

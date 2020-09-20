@@ -39,14 +39,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 
-#include <drain/image/Image.h>
-//#include <drain/util/StringTools.h>
-#include <drain/util/Tree.h>
+#include "drain/image/Image.h"
+//#include "drain/util/StringTools.h"
+#include "drain/util/Tree.h"
 
 /*
-#include <drain/image/Image.h>
-#include <drain/image/ImageView.h>
-#include <drain/image/ImageOp.h>
+#include "drain/image/Image.h"
+#include "drain/image/ImageView.h"
+#include "drain/image/ImageOp.h"
 */
 
 

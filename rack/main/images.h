@@ -35,11 +35,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <data/DataSelector.h>
 #include <hi5/Hi5.h>
-//#include <image/Image.h>
-#include <image/Image.h>
+//#include "drain/image/Image.h"
+#include "drain/image/Image.h"
 #include <main/resources.h>
-#include <prog/CommandAdapter.h>
-#include <util/Tree.h>
+#include "drain/prog/CommandAdapter.h"
+#include "drain/util/Tree.h"
 #include <string>
 
 

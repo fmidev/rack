@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ImageOp.h"
 
 #include "FastAverageOp.h"
-#include "util/FunctorPack.h"
+#include "drain/util/FunctorPack.h"
 
 
 namespace drain

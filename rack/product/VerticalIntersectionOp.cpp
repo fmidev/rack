@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <set>
-#include <drain/image/ImageT.h>
+#include "drain/image/ImageT.h"
 #include "radar/Constants.h"
 #include "radar/Geometry.h"
 #include "VerticalIntersectionOp.h"

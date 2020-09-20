@@ -34,13 +34,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 
 
-#include <drain/util/Log.h>
-#include <drain/util/RegExp.h>
-//#include <drain/util/Input.h>
+#include "drain/util/Log.h"
+#include "drain/util/RegExp.h"
+//#include "drain/util/Input.h"
 
-#include <drain/prog/Command.h>
+#include "drain/prog/Command.h"
 
-//#include <drain/prog/CommandRegistry.h>
+//#include "drain/prog/CommandRegistry.h"
 
 #include "andre/QualityCombinerOp.h"
 #include "hi5/Hi5.h"

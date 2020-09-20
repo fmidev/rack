@@ -36,10 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <hdf5.h>
 
-#include <drain/util/Dictionary.h>
-#include <drain/util/RegExp.h>
-#include <drain/util/Type.h>
-#include <drain/util/Variable.h>
+#include "drain/util/Dictionary.h"
+#include "drain/util/RegExp.h"
+#include "drain/util/Type.h"
+#include "drain/util/Variable.h"
 
 #include "ODIMPath.h"
 

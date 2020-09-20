@@ -18,8 +18,8 @@ fi
 
 source $CONF_FILE
 
-USE_GEOTIFF=${GEOTIFF:+'YES'}
-USE_GEOTIFF=${USE_GEOTIFF:-'NO'}
+#USE_GEOTIFF=${GEOTIFF:+'YES'}
+#USE_GEOTIFF=${USE_GEOTIFF:-'NO'}
 echo "Using GeoTIFF: ${USE_GEOTIFF}"
 
 #pushd rack
@@ -29,7 +29,8 @@ if [ $# != 0 ]; then
 fi
 
 
-make drainroot=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
+#make drainroot=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
+make RACK_DIR=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
 if [ $? != 0 ]; then
     echo "ERROR: Compiling rack failed"
     exit 1

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define PALETTEOP_H_
 
 
-#include "image/Palette.h"
+#include "drain/image/Palette.h"
 
 #include "ImageOp.h"
 #include "CopyOp.h"

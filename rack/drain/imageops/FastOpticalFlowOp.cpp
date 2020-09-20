@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "util/Fuzzy.h"
-#include "image/File.h"
+#include "drain/util/Fuzzy.h"
+#include "drain/image/File.h"
 
 #include "FastOpticalFlowOp.h"
 #include "FunctorOp.h"

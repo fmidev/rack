@@ -32,8 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <ostream>
 
-#include <drain/util/Log.h>
-#include <drain/prog/Command.h>
+#include "drain/util/Log.h"
+#include "drain/prog/Command.h"
 
 #include "data/ODIM.h"
 #include "andre/AndreOp.h"

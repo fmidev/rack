@@ -31,10 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef COMPOSITE2_H_
 #define COMPOSITE2_H_
 
-#include <drain/image/AccumulationConverter.h>
+#include "drain/image/AccumulationConverter.h"
 
-#include <drain/image/AccumulatorGeo.h>
-#include <drain/util/Rectangle.h>
+#include "drain/image/AccumulatorGeo.h"
+#include "drain/util/Rectangle.h"
 
 #include "hi5/Hi5.h"
 #include "data/CartesianODIM.h"

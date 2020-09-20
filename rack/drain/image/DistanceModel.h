@@ -35,9 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include "util/BeanLike.h"
+#include "drain/util/BeanLike.h"
 
-#include "imageops/ImageOp.h"
+#include "drain/imageops/ImageOp.h"
 
 
 namespace drain

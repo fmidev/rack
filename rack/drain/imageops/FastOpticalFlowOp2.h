@@ -34,9 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <math.h>
 
-#include "util/Fuzzy.h"
+#include "drain/util/Fuzzy.h"
 
-#include "image/File.h"
+#include "drain/image/File.h"
 
 #include "FastOpticalFlowOp.h" // OpticalFlowConfig, OpticalFlowCore1
 

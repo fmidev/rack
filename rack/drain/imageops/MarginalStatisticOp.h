@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "math.h"
 
-#include "util/Histogram.h"
+#include "drain/util/Histogram.h"
 
 
 #include "ImageOp.h"

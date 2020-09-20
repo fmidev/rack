@@ -40,8 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include "util/RegExp.h"
-#include "util/Path.h"
+#include "drain/util/RegExp.h"
+#include "drain/util/Path.h"
 
 
 namespace drain {

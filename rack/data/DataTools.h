@@ -36,14 +36,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <map>
 
-#include <drain/util/BeanLike.h>
+#include "drain/util/BeanLike.h"
 
-#include <drain/util/ReferenceMap.h>
-#include <drain/util/RegExp.h>
+#include "drain/util/ReferenceMap.h"
+#include "drain/util/RegExp.h"
 
-#include <drain/util/Variable.h>
+#include "drain/util/Variable.h"
 
-#include <drain/image/Coordinates.h>
+#include "drain/image/Coordinates.h"
 
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle

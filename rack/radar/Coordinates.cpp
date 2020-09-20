@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <math.h>
 #include <limits>
-#include <drain/util/Log.h>
+#include "drain/util/Log.h"
 #include "Geometry.h"
 #include "Coordinates.h"
 

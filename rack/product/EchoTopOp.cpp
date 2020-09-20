@@ -29,9 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include "EchoTopOp.h"
-// #include <drain/image/File.h>
+// #include "drain/image/File.h"
 
-#include <drain/util/Fuzzy.h>
+#include "drain/util/Fuzzy.h"
 
 #include "radar/Constants.h"
 

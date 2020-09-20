@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include "CappiOp.h"
-// #include <drain/image/File.h>
+// #include "drain/image/File.h"
 
-#include <drain/util/Fuzzy.h>
-#include <drain/util/Geo.h>
+#include "drain/util/Fuzzy.h"
+#include "drain/util/Geo.h"
 
 //#include "data/Conversion.h"
 #include "radar/Constants.h"

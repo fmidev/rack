@@ -35,9 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "File.h"
 #include "TreeSVG.h"
 
-#include "util/BeanLike.h"
-#include "util/Dictionary.h" // temporary ?
-#include "util/JSONtree.h"
+#include "drain/util/BeanLike.h"
+#include "drain/util/Dictionary.h" // temporary ?
+#include "drain/util/JSONtree.h"
 
 #include "Legend.h"
 

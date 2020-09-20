@@ -39,8 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <png.h>
 
-#include "util/RegExp.h"
-#include "util/JSON.h" // for reading attribute value
+#include "drain/util/RegExp.h"
+#include "drain/util/JSON.h" // for reading attribute value
 
 #include "Image.h"
 //#include "File.h"

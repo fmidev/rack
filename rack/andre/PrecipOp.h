@@ -35,10 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "DetectorOp.h"
 #include "QualityCombinerOp.h"
 
-//#include <drain/image/SegmentAreaOp.h>
-//#include <drain/util/Fuzzy.h>
-//#include <drain/image/MathOpPack.h>
-//#include <drain/image/File.h>
+//#include "drain/image/SegmentAreaOp.h"
+//#include "drain/util/Fuzzy.h"
+//#include "drain/image/MathOpPack.h"
+//#include "drain/image/File.h"
 //#include "product/Analysis.h"
 
 using namespace drain::image;

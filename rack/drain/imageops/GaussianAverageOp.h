@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GaussianBlurOP_H_
 
 
-#include "image/GaussianWindow.h"
+#include "drain/image/GaussianWindow.h"
 #include "WindowOp.h"
 
 namespace drain

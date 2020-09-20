@@ -32,10 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include <util/FilePath.h>
-#include <util/StringMapper.h>
+#include "drain/util/FilePath.h"
+#include "drain/util/StringMapper.h"
 //
-#include <util/Output.h>
+#include "drain/util/Output.h"
 
 #include "Palette.h"
 

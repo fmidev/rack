@@ -34,18 +34,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/DataTools.h>
 #include <data/PolarODIM.h>
 #include <data/QuantityMap.h>
-#include <image/ImageChannel.h>
-#include <image/ImageLike.h>
-#include <image/Window.h>
-#include <imageops/CopyOp.h>
-#include <imageops/FunctorOp.h>
-#include <imageops/SlidingWindowOp.h>
+#include "drain/image/ImageChannel.h"
+#include "drain/image/ImageLike.h"
+#include "drain/image/Window.h"
+#include "drain/imageops/CopyOp.h"
+#include "drain/imageops/FunctorOp.h"
+#include "drain/imageops/SlidingWindowOp.h"
 #include <radar/Analysis.h>
 #include <radar/Doppler.h>
-#include <util/FunctorPack.h>
-#include <util/Fuzzy.h>
-#include <util/Log.h>
-#include <util/RegExp.h>
+#include "drain/util/FunctorPack.h"
+#include "drain/util/Fuzzy.h"
+#include "drain/util/Log.h"
+#include "drain/util/RegExp.h"
 
 
 using namespace drain;

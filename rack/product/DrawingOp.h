@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef Drawing_OP_H_
 #define Drawing_OP_H_
 
-#include <drain/util/Variable.h>
+#include "drain/util/Variable.h"
 
 #include "PolarProductOp.h"
 #include "radar/PolarWindow.h"

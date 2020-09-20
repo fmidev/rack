@@ -36,8 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-#include "util/ReferenceMap.h"
-//#include "util/DataScaling.h"
+#include "drain/util/ReferenceMap.h"
+//#include "drain/util/DataScaling.h"
 
 #include "../util/Point.h"
 #include "ImageT.h"

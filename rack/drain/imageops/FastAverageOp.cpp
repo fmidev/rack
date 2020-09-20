@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include "image/FilePng.h"
+#include "drain/image/FilePng.h"
 #include "FastAverageOp.h"
 
 

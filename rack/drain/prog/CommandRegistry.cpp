@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <map>
 
-#include "util/TypeUtils.h"
-#include "util/String.h"
-#include "util/StringMapper.h"
+#include "drain/util/TypeUtils.h"
+#include "drain/util/String.h"
+#include "drain/util/StringMapper.h"
 #include "CommandRegistry.h"
 
 

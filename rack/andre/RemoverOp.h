@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_RemoverOP_H_
 
 
-#include <drain/util/Fuzzy.h>
-#include <drain/image/Intensity.h>
-#include <drain/image/File.h>
+#include "drain/util/Fuzzy.h"
+#include "drain/image/Intensity.h"
+#include "drain/image/File.h"
 
 #include "hi5/Hi5.h"
 #include "data/Data.h"

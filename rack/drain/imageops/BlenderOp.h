@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "QualityMixerOp.h"
 #include "QualityOverrideOp.h"
 
-#include "util/FunctorPack.h"
+#include "drain/util/FunctorPack.h"
 //#include "SlidingStripeAverageOp.h"
 
 namespace drain

@@ -34,14 +34,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "radar/ODIM.h"
 #include "EmitterOp.h"
 
-#include <drain/util/FunctorPack.h>
-#include <drain/util/Fuzzy.h>
+#include "drain/util/FunctorPack.h"
+#include "drain/util/Fuzzy.h"
 // debugging
-#include <drain/image/File.h>
-#include <drain/imageops/DistanceTransformOp.h>
-#include <drain/imageops/HighPassOp.h>
-#include <drain/imageops/MarginalStatisticOp.h>
-#include <drain/imageops/SlidingWindowMedianOp.h>
+#include "drain/image/File.h"
+#include "drain/imageops/DistanceTransformOp.h"
+#include "drain/imageops/HighPassOp.h"
+#include "drain/imageops/MarginalStatisticOp.h"
+#include "drain/imageops/SlidingWindowMedianOp.h"
 
 
 

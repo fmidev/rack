@@ -31,16 +31,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "CCorOp.h"
 
-#include <drain/util/Fuzzy.h>
-#include <drain/image/File.h>
-#include <drain/imageops/SlidingWindowMedianOp.h>
+#include "drain/util/Fuzzy.h"
+#include "drain/image/File.h"
+#include "drain/imageops/SlidingWindowMedianOp.h"
 
 #include "hi5/Hi5Write.h"
 //#include "data/ODIM.h"
 //#include "main/rack.h"
 
-//#include <drain/imageops/SegmentAreaOp.h>
-//#include <drain/image/MathOpPack.h>
+//#include "drain/imageops/SegmentAreaOp.h"
+//#include "drain/image/MathOpPack.h"
 
 using namespace drain::image;
 

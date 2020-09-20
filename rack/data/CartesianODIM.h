@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef CART_ODIM_STRUCT
 #define CART_ODIM_STRUCT
 
-#include <drain/image/GeoFrame.h>
+#include "drain/image/GeoFrame.h"
 
 #include "ODIM.h"
 

@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-#include <drain/image/File.h>
-//#include <drain/imageops/ImpulseResponseOp.h>
+#include "drain/image/File.h"
+//#include "drain/imageops/ImpulseResponseOp.h"
 
 #include "DopplerAvgExpOp.h"
 

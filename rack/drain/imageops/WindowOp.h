@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define WINDOWOP_H_
 
 #include "ImageOp.h"
-#include "image/Window.h"
+#include "drain/image/Window.h"
 
 namespace drain
 {

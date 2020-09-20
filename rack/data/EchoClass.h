@@ -34,10 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <ostream>
 
-#include <drain/util/JSONtree.h>
+#include "drain/util/JSONtree.h"
 
-#include <drain/util/Dictionary.h>
-#include <drain/image/Palette.h>
+#include "drain/util/Dictionary.h"
+#include "drain/image/Palette.h"
 
 namespace rack {
 

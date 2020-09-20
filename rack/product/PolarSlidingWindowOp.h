@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef POLAR_SLIDINGWINDOWOP_H_
 #define POLAR_SLIDINGWINDOWOP_H_
 
-#include <drain/imageops/SlidingWindowOp.h>
+#include "drain/imageops/SlidingWindowOp.h"
 
 #include "../radar/Analysis.h" // temp
 #include "PolarProductOp.h"

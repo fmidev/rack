@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GEO_TIFF_H
 #define RACK_GEO_TIFF_H
 
-#include <drain/util/Log.h>
-#include <drain/util/Dictionary.h>
-#include <drain/image/Image.h>
+#include "drain/util/Log.h"
+#include "drain/util/Dictionary.h"
+#include "drain/image/Image.h"
 
 namespace rack
 {

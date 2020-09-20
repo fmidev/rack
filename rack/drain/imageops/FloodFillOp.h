@@ -34,9 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <ostream>
 
-#include "image/Coordinates.h"
-#include "image/FilePng.h"
-#include "image/SegmentProber.h"
+#include "drain/image/Coordinates.h"
+#include "drain/image/FilePng.h"
+#include "drain/image/SegmentProber.h"
 
 #include "ImageOp.h"
 

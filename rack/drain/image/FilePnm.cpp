@@ -30,11 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include "FilePnm.h"
-#include "util/Time.h"
+#include "drain/util/Time.h"
 
-#include "util/TextReader.h"
-#include "util/JSON.h"
-#include "util/JSONtree.h"
+#include "drain/util/TextReader.h"
+#include "drain/util/JSON.h"
+#include "drain/util/JSONtree.h"
 
 namespace drain
 {

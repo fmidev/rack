@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef TREESVG_H_
 #define TREESVG_H_
 
-#include "util/TreeXML.h"
+#include "drain/util/TreeXML.h"
 
 namespace drain {
 

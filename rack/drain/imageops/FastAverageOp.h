@@ -32,8 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define FASTAVERAGEOP_H_
 
 //#include "SlidingStripeOp.h"
-//#include "image/Window.h"
-#include "image/SlidingWindow.h"
+//#include "drain/image/Window.h"
+#include "drain/image/SlidingWindow.h"
 #include "WindowOp.h"
 
 namespace drain

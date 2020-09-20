@@ -30,11 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include "util/Log.h"
+#include "drain/util/Log.h"
 
-#include "util/Registry.h"
-#include "util/Cloner.h"
-#include "util/Fuzzy.h"
+#include "drain/util/Registry.h"
+#include "drain/util/Cloner.h"
+#include "drain/util/Fuzzy.h"
 
 #include "ImageOpBank.h"
 
@@ -71,7 +71,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "RecursiveRepairerOp.h"
 #include "ResizeOp.h"
 #include "RunLengthOp.h"
-//#include "image/SegmentProber.h"
+//#include "drain/image/SegmentProber.h"
 #include "SegmentAreaOp.h"
 #include "SegmentStatisticsOp.h"
 #include "SlidingWindowHistogramOp.h"

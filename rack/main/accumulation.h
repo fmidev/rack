@@ -32,8 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ACCUMULATION
 #define RACK_ACCUMULATION
 
-#include <drain/prog/CommandRegistry.h>
-#include <drain/prog/CommandAdapter.h>
+#include "drain/prog/CommandRegistry.h"
+#include "drain/prog/CommandAdapter.h"
 
 #include "resources.h"
 

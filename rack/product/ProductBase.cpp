@@ -36,15 +36,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <data/QuantityMap.h>
-//#include <drain/image/File.h>
-//#include <drain/util/Log.h>
-//#include <drain/util/Variable.h>
+//#include "drain/image/File.h"
+//#include "drain/util/Log.h"
+//#include "drain/util/Variable.h"
 
-#include <util/Castable.h>
-#include <util/Reference.h>
-#include <util/String.h>
-#include <util/Type.h>
-#include <util/TypeUtils.h>
+#include "drain/util/Castable.h"
+#include "drain/util/Reference.h"
+#include "drain/util/String.h"
+#include "drain/util/Type.h"
+#include "drain/util/TypeUtils.h"
 //#include "data/Quantity.h"
 #include <limits>
 //#include <stdexcept>

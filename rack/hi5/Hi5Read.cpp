@@ -30,10 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <data/ODIMPath.h>
-//#include <drain/util/Log.h>
+//#include "drain/util/Log.h"
 #include <hi5/Hi5Read.h>
-#include <util/Log.h>
-#include <util/Variable.h>
+#include "drain/util/Log.h"
+#include "drain/util/Variable.h"
 #include <map>
 #include <utility>
 // using namespace std;

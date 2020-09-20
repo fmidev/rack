@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 
-//#include <drain/util/BeanLike.h>
-#include <drain/image/GaussianWindow.h>
+//#include "drain/util/BeanLike.h"
+#include "drain/image/GaussianWindow.h"
 
 
 #include "data/PolarODIM.h"

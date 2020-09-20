@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DopplerNoise_H_
 
 //#include "PolarProductOp.h"
-#include <drain/imageops/ImageOp.h>
+#include "drain/imageops/ImageOp.h"
 #include "DetectorOp.h"
 #include "../radar/Doppler.h"
 

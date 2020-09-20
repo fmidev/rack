@@ -33,11 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <data/DataSelector.h>
-#include <prog/Command.h>
+#include "drain/prog/Command.h"
 #include <radar/Composite.h>
 #include <radar/RadarAccumulator.h>
-#include <util/Log.h>
-#include <util/SmartMap.h>
+#include "drain/util/Log.h"
+#include "drain/util/SmartMap.h"
 
 #include <main/cartesian.h>  // for cmdFormat called by
 #include <main/cartesian-add.h>

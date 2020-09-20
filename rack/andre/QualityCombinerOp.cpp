@@ -35,17 +35,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <utility>
 
-#include <drain/util/Log.h>
-#include <drain/util/SmartMap.h>
-#include <drain/util/Tree.h>
-#include <drain/util/Variable.h>
+#include "drain/util/Log.h"
+#include "drain/util/SmartMap.h"
+#include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
 
 #include <data/Data.h>
 #include <data/PolarODIM.h>
 #include <data/QuantityMap.h>
 #include <hi5/Hi5.h>
-#include <image/Image.h>
-#include <image/ImageFrame.h>
+#include "drain/image/Image.h"
+#include "drain/image/ImageFrame.h"
 #include <main/rack.h>
 
 #include <radar/Analysis.h>

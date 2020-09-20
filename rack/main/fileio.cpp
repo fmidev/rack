@@ -42,16 +42,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <regex.h>
 #include <stddef.h>
 
-#include <util/Log.h>
-#include <util/FilePath.h>
-#include <util/Output.h>
-#include <util/StringMapper.h>
-#include <util/Tree.h>
-#include <util/Variable.h>
+#include "drain/util/Log.h"
+#include "drain/util/FilePath.h"
+#include "drain/util/Output.h"
+#include "drain/util/StringMapper.h"
+#include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
 
-#include <prog/Command.h>
-#include <prog/CommandAdapter.h>
-#include <prog/CommandPack.h>
+#include "drain/prog/Command.h"
+#include "drain/prog/CommandAdapter.h"
+#include "drain/prog/CommandPack.h"
 
 #include <data/Data.h>
 #include <data/DataOutput.h>
@@ -62,10 +62,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <hi5/Hi5.h>
 //#include <hi5/Hi5Read.h>
 #include <hi5/Hi5Write.h>
-#include <image/File.h>
-#include <image/Image.h>
-#include <image/Sampler.h>
-#include <imageops/ImageModifierPack.h>
+#include "drain/image/File.h"
+#include "drain/image/Image.h"
+#include "drain/image/Sampler.h"
+#include "drain/imageops/ImageModifierPack.h"
 #include <main/fileio.h>
 #include <main/fileio-read.h>
 #include <main/images.h> // for calling --image on the fly

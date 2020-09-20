@@ -37,10 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
-#include "util/Range.h"
-#include "util/ReferenceMap.h"
-#include "util/StringMapper.h"
-#include "image/Image.h"
+#include "drain/util/Range.h"
+#include "drain/util/ReferenceMap.h"
+#include "drain/util/StringMapper.h"
+#include "drain/image/Image.h"
 
 namespace drain
 {

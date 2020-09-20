@@ -32,10 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GapFillerOP_H_
 #define GapFillerOP_H_
 
-#include <drain/util/Fuzzy.h>
-#include <drain/image/Intensity.h>
-//#include <drain/image/MathOpPack.h>
-#include <drain/image/File.h>
+#include "drain/util/Fuzzy.h"
+#include "drain/image/Intensity.h"
+//#include "drain/image/MathOpPack.h"
+#include "drain/image/File.h"
 
 #include "radar/Geometry.h"
 #include "RemoverOp.h"

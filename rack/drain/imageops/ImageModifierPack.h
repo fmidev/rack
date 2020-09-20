@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_MODIFIER_PACK_H
 #define IMAGE_MODIFIER_PACK_H
 
-#include "util/Histogram.h"
-#include "image/Sampler.h"
+#include "drain/util/Histogram.h"
+#include "drain/image/Sampler.h"
 
 #include "ImageMod.h"
 

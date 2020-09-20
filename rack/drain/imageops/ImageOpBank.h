@@ -35,13 +35,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <map>
 
-//#include "util/Log.h"
+//#include "drain/util/Log.h"
 
-//#include "util/Registry.h"
-//#include "util/Cloner.h"
-#include "util/Bank.h"
-#include "util/FunctorPack.h"
-#include "util/RegExp.h"
+//#include "drain/util/Registry.h"
+//#include "drain/util/Cloner.h"
+#include "drain/util/Bank.h"
+#include "drain/util/FunctorPack.h"
+#include "drain/util/RegExp.h"
 
 #include "ImageOp.h"
 #include "FunctorOp.h"

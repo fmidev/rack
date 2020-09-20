@@ -34,12 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <map>
 #include <set>
-//#include <drain/util/Debug.h>
-//#include <drain/util/ReferenceMap.h>
+//#include "drain/util/Debug.h"
+//#include "drain/util/ReferenceMap.h"
 
-#include "util/Log.h"
-#include "util/BeanLike.h"
-#include "util/ReferenceMap.h"
+#include "drain/util/Log.h"
+#include "drain/util/BeanLike.h"
+#include "drain/util/ReferenceMap.h"
 //#include "CommandRegistry.hsepa"
 
 

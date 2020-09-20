@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <exception>
 
-#include <drain/util/Log.h>
+#include "drain/util/Log.h"
 
 
 #include "hi5/Hi5.h"

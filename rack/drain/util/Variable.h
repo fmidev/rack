@@ -109,12 +109,14 @@ public:
 	typedef CastableIterator iterator;
 
 	/// Default constructor generates an empty array.
+	inline
 	Variable(const std::type_info &t = typeid(void)) {
 		reset();
 		setType(t);
 	};
 
 	/// Copies type, data and separator char.
+	inline
 	Variable(const Variable & v) {
 		reset();
 		this->outputSeparator = v.outputSeparator;
@@ -123,12 +125,14 @@ public:
 	};
 
 	/// Copies type, data and separator char.
+	inline
 	Variable(const Castable & c) {
 		reset();
 		assignCastable(c);
 	};
 
 	/// Copies type, data and separator char.
+	inline
 	Variable(const char * s) {
 		reset();
 		assignString(s);

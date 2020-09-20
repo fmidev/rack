@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ODIM_PATH_MATCHER
 
 
-#include <drain/util/Dictionary.h>
+#include "drain/util/Dictionary.h"
 
 #include "ODIMPath.h"
 

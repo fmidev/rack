@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/util/Input.h>
+#include "drain/util/Input.h"
 
 #include "commands.h"
 #include "accumulation.h"

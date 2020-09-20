@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <math.h>
 
-//#include "image/ImageTray.h"
-#include "image/File.h"
+//#include "drain/image/ImageTray.h"
+#include "drain/image/File.h"
 
 //#include "SlidingWindow.h"
 #include "SlidingWindowOp.h"

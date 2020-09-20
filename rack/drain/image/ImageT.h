@@ -39,8 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <ostream>
 
-#include "util/Log.h"
-//#include "util/Options.h"
+#include "drain/util/Log.h"
+//#include "drain/util/Options.h"
 
 //#include "Geometry.h"
 #include "Image.h"

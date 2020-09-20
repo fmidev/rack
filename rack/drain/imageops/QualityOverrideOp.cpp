@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "QualityOverrideOp.h"
-#include "image/FilePng.h"
+#include "drain/image/FilePng.h"
 
 namespace drain
 {

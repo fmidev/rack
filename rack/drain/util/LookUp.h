@@ -42,8 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <exception>
 
-#include "util/Type.h"
-#include "util/TypeUtils.h"
+#include "drain/util/Type.h"
+#include "drain/util/TypeUtils.h"
 
 // // using namespace std;
 

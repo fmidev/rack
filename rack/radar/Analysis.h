@@ -33,23 +33,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include <drain/util/Log.h>
-#include <drain/util/Fuzzy.h>
+#include "drain/util/Log.h"
+#include "drain/util/Fuzzy.h"
 
-//#include <drain/image/FuzzyOp.h>
+//#include "drain/image/FuzzyOp.h"
 
-#include <drain/util/Functor.h>
-#include <drain/util/FunctorBank.h>
-#include <drain/util/TypeUtils.h>
+#include "drain/util/Functor.h"
+#include "drain/util/FunctorBank.h"
+#include "drain/util/TypeUtils.h"
 
-#include <drain/image/Window.h>
-#include <drain/image/SegmentProber.h>
-#include <drain/image/SlidingWindow.h>
-#include <drain/image/GaussianWindow.h>
-#include <drain/imageops/FunctorOp.h>
-#include <drain/imageops/GaussianAverageOp.h>
+#include "drain/image/Window.h"
+#include "drain/image/SegmentProber.h"
+#include "drain/image/SlidingWindow.h"
+#include "drain/image/GaussianWindow.h"
+#include "drain/imageops/FunctorOp.h"
+#include "drain/imageops/GaussianAverageOp.h"
 
-//#include <drain/image/SequentialImageOp.h>
+//#include "drain/image/SequentialImageOp.h"
 
 #include "data/ODIM.h"
 #include "data/Quantity.h"

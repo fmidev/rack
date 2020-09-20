@@ -32,19 +32,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <data/Data.h>
 #include <data/PolarODIM.h>
 #include <data/QuantityMap.h>
-//#include <drain/image/SegmentProber.h> // for crawler
-#include <image/Image.h>
-#include <image/ImageChannel.h>
-#include <image/ImageLike.h>
-#include <util/Point.h>
-#include <image/SegmentProber.h>
+//#include "drain/image/SegmentProber.h" // for crawler
+#include "drain/image/Image.h"
+#include "drain/image/ImageChannel.h"
+#include "drain/image/ImageLike.h"
+#include "drain/util/Point.h"
+#include "drain/image/SegmentProber.h"
 #include <product/DopplerOp.h>
 #include <product/ProductOp.h>
 #include <stddef.h>
 #include <syslog.h>
-#include <util/Log.h>
-#include <util/SmartMap.h>
-#include <util/TypeUtils.h>
+#include "drain/util/Log.h"
+#include "drain/util/SmartMap.h"
+#include "drain/util/TypeUtils.h"
 #include <map>
 //#include <stdexcept>
 #include <string>
