@@ -280,6 +280,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	}
 
 
+
 	drain::image::GeoFrame frame;
 	frame.setGeometry(width, height);
 	frame.setProjection(projdef);
@@ -370,8 +371,9 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 
 void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
-	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea);
-	// GTIFKeySet(gtif, GTCitationGeoKey, TYPE_ASCII, 0, "Just An Example");
+	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
+	//GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
+
 	// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84); <= WRONG! GCS_WGS_84
 	GTIFKeySet(gtif, GeographicTypeGeoKey,    TYPE_SHORT,  1, GCS_WGS_84); // 4326 correct!
 	GTIFKeySet(gtif, GeogCitationGeoKey,      TYPE_ASCII,  7, "WGS 84");
@@ -555,6 +557,10 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 					mout.note() << "consider: gdal_translate -a_srs '" << projstr << "' " << path << ' ' << path << 'f' << mout.endl;
 				}
 			}
+
+			// NEW
+			GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
+			//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
 			/*
 			// usr/include/gdal/rawdataset.h
 			// Non-standard http://www.gdal.org/frmt_gtiff.html
