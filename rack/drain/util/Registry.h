@@ -34,9 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <set>
 
-#include "../util/Log.h"
-#include "../util/ReferenceMap.h"
-#include "../util/VariableMap.h"
+#include "Log.h"
+#include "Dictionary.h"
+#include "ReferenceMap.h"
+#include "VariableMap.h"
 //#include "../util/StringMapper.h"
 
 //#include "Command.h"
@@ -109,11 +110,16 @@ public:
 		return (name.length() == 1) ? entryMap.find(getKey(name.at(0))) : entryMap.find(name);
 	};
 
+	inline
+	const drain::Dictionary2<char, std::string> & getAliases() const {
+		return aliasesNew;
+	}
+
 protected:
 
 	map_t entryMap;
-	std::map<char,std::string> aliases;
-	std::map<std::string,char> aliasesInv;
+
+	drain::Dictionary2<char, std::string> aliasesNew;
 
 };
 
@@ -124,8 +130,7 @@ void Registry<T>::add(T & r, const std::string & name, char alias){
 	entryMap.insert(std::pair<std::string, T &>(name, r));
 
 	if (alias){
-		aliases[alias]   = name;
-		aliasesInv[name] = alias;
+		aliasesNew.add(alias, name);
 	}
 
 }
@@ -140,22 +145,33 @@ bool Registry<T>::has(const std::string & name) const {
 
 template <class T>
 const std::string & Registry<T>::getKey(char alias) const{
-	static const std::string empty;
-	const std::map<char,std::string>::const_iterator it = aliases.find(alias);
-	if (it != aliases.end())
+
+	Dictionary2<char,std::string>::const_iterator it = aliasesNew.findByKey(alias);
+
+	if (it != aliasesNew.end())
 		return it->second;
-	else
+	else{
+		static const std::string empty;
 		return empty;
+	}
+
+
 }
 
 
 template <class T>
 char Registry<T>::getAlias(const std::string &name) const{
-	const std::map<std::string,char>::const_iterator it = aliasesInv.find(name);
-	if (it != aliasesInv.end())
-		return it->second;
-	else
+
+	Dictionary2<char,std::string>::const_iterator it = aliasesNew.findByValue(name);
+
+	if (it != aliasesNew.end()){
+		return it->first;
+	}
+	else{
+		//std::cout << "not found: " << name << '\n';
 		return 0;
+	}
+
 }
 
 template <class T>

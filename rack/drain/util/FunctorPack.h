@@ -28,12 +28,12 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef MATHOP_H_
-#define MATHOP_H_
+#ifndef FUNCTORPACK_H_
+#define FUNCTORPACK_H_
 
 #include <cmath>
 
-#include "../util/Functor.h"
+#include "Functor.h"
 
 
 namespace drain
