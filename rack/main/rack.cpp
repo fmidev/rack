@@ -57,8 +57,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "image-ops.h"
 #include "rack.h"
 
-// using namespace std;
-
 
 namespace rack {
 
@@ -132,6 +130,7 @@ int process(int argc, const char **argv) {
 	registry.runCommands(argc, argv);
 
 	//mout.timestamp("END_RACK");
+	//std::cout << registry.getAliases() << '\n';
 	mout << "end" << mout.endl;
 
 	/* TODO: more status flags
