@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "5.5"
 
 /**
- *   Version 5.45
+ *   Version 5.5
  *   - IDE update (Eclipse Embedded C/C++ plugin)
  *   - $CCFLAGS and $LDFLAGS redesigned in configure.sh and build.sh
  *
