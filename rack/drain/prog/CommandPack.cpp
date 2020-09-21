@@ -63,7 +63,7 @@ void CmdHelp::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const CommandRegistry r = getRegistry();
+	const CommandRegistry &r = getRegistry();
 
 	std::ostream & ostr = std::cout;
 

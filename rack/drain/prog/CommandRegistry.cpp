@@ -158,7 +158,6 @@ drain::VariableMap & CommandRegistry::getStatusMap(bool update){
 void CommandRegistry::help(std::ostream & ostr) const {
 
 	for (map_t::const_iterator it = entryMap.begin(); it != entryMap.end(); ++it){
-
 		ostr << it->first << '\n';
 		const Command & r = it->second;
 		help(r, ostr, false);
@@ -172,11 +171,22 @@ void CommandRegistry::help(const std::string & key, std::ostream & ostr, bool pa
 	const map_t::const_iterator it = find(key);
 
 	if (it != entryMap.end()){
-		ostr << "--" << it->first;
+		ostr << "* --" << it->first;
+		Dictionary2<char, std::string>::const_iterator ait = aliasesNew.findByValue(it->first);
+		//ostr << " | " << aliasesNew << it->first;
+		if (ait != aliasesNew.end()){
+			ostr << ", -" << ait->first;
+		}
+		else {
+			ostr << "( no alias in )"  << ((long unsigned int)& aliasesNew) << ' ' << aliasesNew << '\n';
+		}
+		//ostr << aliasesNew << '\n';
+		/*
 		const std::map<std::string,char>::const_iterator ait = aliasesInv.find(it->first);
 		if (ait != aliasesInv.end()){
 			ostr << ", -" << ait->second;
 		}
+		*/
 		//ostr << '\n';
 		help(it->second, ostr, parameterDescriptions);
 	}
@@ -392,6 +402,8 @@ void CommandRegistry::run(Script & script) const {
 
 	/// Applied, if (expandVariables == true)
 	//  drain::StringMapper strmap("[a-zA-Z0-9_:]+");
+
+	//std::list<std::string> l;
 
 	for (Script::iterator it = script.begin(); it != script.end(); ++it){
 

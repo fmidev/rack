@@ -54,6 +54,10 @@ public:
 	CommandRegistry() : DEFAULT_HANDLER("DefaultCmd"), expandVariables(false), statusFormatter("[a-zA-Z0-9_:]+") {
 		++index; };
 
+	CommandRegistry(const CommandRegistry & r){
+		std::cerr << "CommandRegistry called copy const \n";
+	}
+
 	typedef std::map<std::string, std::set<std::string> > SectionMap;
 
 	virtual
@@ -136,7 +140,6 @@ public:
 	 */
 	inline
 	void runCommands(int argc, const char **argv){
-	//void runCommands(int argc, char **argv){
 		Script script;
 		scriptify(argc, argv, script);
 		run(script);

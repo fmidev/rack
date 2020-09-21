@@ -136,14 +136,14 @@ public: //re
 
 //CommandScriptExec::CommandScriptExec(CommandScript & script) : BasicCommand(name, alias, "Execute a script."), script(script) {}
 class ScriptExec : public BasicCommand {
-    public: //re 
+
+public:
 
 	inline
 	ScriptExec(Script & script) : BasicCommand(__FUNCTION__, "Execute a script."), script(script) {};
 
 
-	virtual
-	inline
+	virtual inline
 	void exec() const {
 		getRegistry().run(script);
 	};
