@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <set>
 #include <map>
+#include <list>
 
 #include "drain/util/TypeUtils.h"
 #include "drain/util/String.h"
@@ -155,15 +156,18 @@ drain::VariableMap & CommandRegistry::getStatusMap(bool update){
 }
 
 
+
 void CommandRegistry::help(std::ostream & ostr) const {
 
 	for (map_t::const_iterator it = entryMap.begin(); it != entryMap.end(); ++it){
-		ostr << it->first << '\n';
-		const Command & r = it->second;
-		help(r, ostr, false);
+		//ostr << it->first << '\n';
+		//const Command & r = it->second;
+		//help(r, ostr, false);
+		help(it->first, ostr, false); // This way finds aliases, too
 		ostr << '\n';
 	}
 }
+
 
 //template <class T>
 void CommandRegistry::help(const std::string & key, std::ostream & ostr, bool parameterDescriptions) const {
@@ -171,23 +175,12 @@ void CommandRegistry::help(const std::string & key, std::ostream & ostr, bool pa
 	const map_t::const_iterator it = find(key);
 
 	if (it != entryMap.end()){
-		ostr << "* --" << it->first;
+		ostr << "--" << it->first;
 		Dictionary2<char, std::string>::const_iterator ait = aliasesNew.findByValue(it->first);
 		//ostr << " | " << aliasesNew << it->first;
 		if (ait != aliasesNew.end()){
 			ostr << ", -" << ait->first;
 		}
-		else {
-			ostr << "( no alias in )"  << ((long unsigned int)& aliasesNew) << ' ' << aliasesNew << '\n';
-		}
-		//ostr << aliasesNew << '\n';
-		/*
-		const std::map<std::string,char>::const_iterator ait = aliasesInv.find(it->first);
-		if (ait != aliasesInv.end()){
-			ostr << ", -" << ait->second;
-		}
-		*/
-		//ostr << '\n';
 		help(it->second, ostr, parameterDescriptions);
 	}
 	else {
@@ -404,11 +397,23 @@ void CommandRegistry::run(Script & script) const {
 	//  drain::StringMapper strmap("[a-zA-Z0-9_:]+");
 
 	//std::list<std::string> l;
+	//	Script parallel;
+
+	// Script parallelTasks;
 
 	for (Script::iterator it = script.begin(); it != script.end(); ++it){
 
 		Command & cmd = it->first;
 		const std::string & params = it->second;
+
+		/*
+		if (!parallel.empty()){
+			//parellel.p
+			Script & parallelTask = parallelTasks.push_back(__x);
+			std::list<std::string> l;
+			std::list<char> a;
+		}
+		*/
 
 		// std::cout << cmd << std::endl;
 		// mout.debug() << "cmd=(" << cmd.getName() << "); params=" << params << mout.endl;
