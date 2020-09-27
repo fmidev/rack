@@ -88,6 +88,7 @@ public:
 	void help(const std::string & key, std::ostream & ostr = std::cout, bool paramDescriptions = true) const;
 
 	/// Help on a specific cmd.  // TODO: template T for Command concept instances
+	// protect? Does not give aliases
 	void help(const Command & cmd, std::ostream & ostr = std::cout, bool paramDescriptions = false) const;
 
 	/// Help on sections
