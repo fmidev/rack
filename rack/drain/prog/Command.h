@@ -122,12 +122,23 @@ class BasicCommand : public Command {  // Todo consider BeanLike
 public:
 
 	inline
-	BasicCommand(const std::string & name, const std::string & description) : Command(), name(name), description(description) {
+	BasicCommand(const std::string & name, const std::string & description) : Command(), parallel(false), name(name), description(description) {
+
 		if (name.find(' ') != std::string::npos){
-			std::cerr << "BasicCommand(): name contains space(s): " << name << " descr=" << description << std::endl;
-			exit(1);
+			Logger mout(__FILE__, __FUNCTION__);
+			mout.error() << "BasicCommand(): name contains space(s): " << name << " descr=" << description << mout.endl;
+			// std::cerr << "BasicCommand(): name contains space(s): " << name << " descr=" << description << std::endl;
+			// exit(1);
 		}
+
 	};
+
+	inline
+	BasicCommand(const BasicCommand & cmd): Command(), parallel(cmd.parallel), name(cmd.name), description(cmd.description) {
+		// remember to call importParameters()
+		//parameters.copyStruct(cmd.parameters, cmd, *this); // FIX: may be wrong (cmd has linked members, this has none, yet.
+	}
+
 
 	virtual
 	inline
@@ -142,8 +153,7 @@ public:
 	const ReferenceMap & getParameters() const { return parameters; };
 
 
-	virtual
-	inline
+	virtual inline
 	void setParameters(const std::string & params, char assignmentSymbol='=') {
 		//const bool ALLOW_SPECIFIC = (parameters.separator != '\0'); //!parameters.separators.empty();  // consider automatic
 		if (parameters.separator)
@@ -151,6 +161,17 @@ public:
 		else
 			parameters.setValues(params, '\0', false);
 	}
+
+	template <class T>
+	void setParameters(const SmartMap<T> & p){
+		parameters.setValues(p);
+	}
+
+	template <class T>
+	void setParameter(const std::string & key, const T & value) {
+		parameters[key] = value;
+	}
+
 
 	/// Sets new parameters and runs.
 	//  Note: semantics are a bit weird ( const would be more intuitive)
@@ -166,6 +187,8 @@ public:
 	inline
 	void exec() const {};
 
+	// Experimental
+	bool parallel;
 
 protected:
 
@@ -174,6 +197,10 @@ protected:
 	const std::string description;
 
 	ReferenceMap parameters;
+
+	void importParams(const BasicCommand & cmd){
+		parameters.copyStruct(cmd.parameters, cmd, *this); // FIX: may be wrong (cmd has linked members, this has none, yet.
+	}
 
 };
 
@@ -199,6 +226,11 @@ public:
 			std::cerr << "warning: param key empty for: " << name << std::endl;
 
 		parameters.reference(key, value = initValue, unit);
+	};
+
+	SimpleCommand(const SimpleCommand & cmd) :  BasicCommand(cmd.name, cmd.description) {
+		parameters.separator = '\0';
+		parameters.reference(cmd.parameters.getKeys(), value = cmd.value); // kludge
 	};
 
 	inline
