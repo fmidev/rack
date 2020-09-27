@@ -39,11 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_RANGE_H_
 
 #include <ostream>
-//#include <cmath>
-//#include <string>
-//#include <sstream>
 #include <vector>
-// // using namespace std;
 
 
 namespace drain {
@@ -66,7 +62,7 @@ public:
 	}
 
 	std::vector<T> vect;
-	//T vect[2]; Reference::link() caused problems
+	// tested T vect[2]; Reference::link() caused problems
 	T & min;
 	T & max;
 
@@ -92,8 +88,33 @@ public:
 		return *this;
 	};
 
+	inline
 	bool contains(T x) const {
 		return (min <= x) && (x <= max);
+	}
+
+	inline
+	bool limit(T x) const {
+		if (x < min)
+			return min;
+		else if (x > max)
+			return max;
+		else
+			return x;
+	}
+
+	// Returns (max - min) which may be negative if max
+	inline
+	T width(){
+		return max - min;
+	}
+
+	inline
+	T span(){
+		if (max > min)
+			return max - min;
+		else
+			return min - max;
 	}
 
 };
