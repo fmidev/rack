@@ -31,9 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef Cloner_H_
 #define Cloner_H_
 
-#include <list>
+//#include <list>
+#include <set>
 #include <exception>
-
+#include <iostream>
 
 namespace drain {
 
@@ -47,9 +48,6 @@ struct ClonerBase {
 
 	virtual
 	~ClonerBase(){
-		for (typename ptrlist_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){
-			delete *it;
-		}
 	};
 
 
@@ -67,33 +65,56 @@ struct ClonerBase {
 	virtual
 	const T & get() const = 0;
 
+	// Return the number of cloned instances.
+	virtual
+	size_t count() = 0;
 
 protected:
 
-	// Structure for storing pointers until the target objects should be deleted.
-	typedef std::list<T *> ptrlist_t;
 
-	std::list<T *> ptrs;
 
 };
 
 
-/// Wrapper for derived class T2, returning base class T.
+/// Wrapper for derived class S, returning base class T.
 /**
  *  \tparam T  - visible base class
- *  \tparam T2 - internal, wrapped class (not accessible as T2&)
+ *  \tparam S - internal wrapped class derived from T
+ *
  */
-template <class T, class T2>
+template <class T, class S>
 struct Cloner : public ClonerBase<T> {
 
 	//typedef ClonerBase<T> clonerbase_t;
+	Cloner(){};
+
+	/// Copy constructor
+	Cloner(const Cloner<T,S> & c) : src(c.src){
+	};
+
+	/// Constructor with source object (copied)
+	Cloner(const S & s) : src(s){
+	};
 
 	virtual
-	~Cloner(){};
+	~Cloner(){
+		clear();
+		/*
+		for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){
+			std::cout << "delete" << (long int)*it << '\n';
+			delete *it;
+		}
+		*/
+	};
 
+	/// Implements interface
 	T & clone(){
-		T *p = new T2(entry);  // NOTE: parameterReferences must be done
-		this->ptrs.push_front(p);
+		return cloneOrig();
+	};
+
+	S & cloneOrig(){
+		S *p = new S(src);  // NOTE: parameterReferences must be done
+		this->ptrs.insert(p); //push_front(p);
 		return *p;
 	};
 
@@ -106,7 +127,7 @@ struct Cloner : public ClonerBase<T> {
 	 */
 	virtual
 	const T & get() const {
-		return entry;
+		return src;
 	};
 
 	/// Returns a reference to a default instance
@@ -115,19 +136,59 @@ struct Cloner : public ClonerBase<T> {
 	 */
 	virtual
 	T & get() {
-		return entry;
+		return src;
 	};
+
+	virtual inline
+	size_t count(){
+		return ptrs.size();
+	}
+
+	/// Remove cloned
+	inline
+	void clear(){
+		for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){
+			//delete *it;
+			clear(*it);
+		}
+	}
+
+	/// Remove cloned entry
+	inline
+	void clear(S *ptr){
+
+		if (ptrs.find(ptr) != ptrs.end()){
+			std::cout << "deleting " << (long int)ptr << '\n';
+			//delete ptr;
+			//ptrs.erase(ptr);
+		}
+		else {
+			std::cout << "already deleted: " << (long int)ptr << '\n';
+			// warn?
+		}
+
+	}
+
+
+//protected:
+
+	/// Default instance, also the source for cloning.
+	//static S entry;  // Consider non-static
+	S src;  // Consider non-static
 
 protected:
 
-	/// Default instance, also the source for cloning.
-	static T2 entry;  // Consider non-static
+	// Structure for storing pointers until the target objects should be deleted.
+	//typedef std::list<T *> ptrlist_t;
+	typedef std::set<S *> ptr_container_t;
+
+	ptr_container_t ptrs;
 
 
 };
 
-template <class T, class T2>
-T2 Cloner<T,T2>::entry;
+//template <class T, class S>
+//S Cloner<T,S>::entry;
 
 
 
