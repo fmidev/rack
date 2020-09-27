@@ -393,7 +393,7 @@ public:
 		return sstr.str();
 	}
 
-	void toJSON(std::ostream & ostr, size_t indent = 0) const {
+	void toJSON(std::ostream & ostr = std::cout, size_t indent = 0) const {
 
 		const std::string space(indent, ' ');
 
@@ -401,6 +401,7 @@ public:
 		ostr << "{\n";
 
 		//for (std::list<std::string>::const_iterator it = getKeyList().begin(); it != getKeyList().end(); ++it){
+		// NOTE: alphabetic order. Should JSON dump have orig. order?
 		for (const_iterator it = this->begin(); it != this->end(); ++it){
 			//const string & key = *it;
 			const std::string & key = it->first;
@@ -527,7 +528,11 @@ protected:
 			}
 			else {
 				if (!updateOnly){
-					mout.warn() << "keys: "<< this->getKeys() << mout.endl;
+					// mout.warn() << "keys: "<< this->getKeys() << mout.endl;
+					// mout.warn() << "this: "<< *this << mout.endl;
+					// std::stringstream sstr;
+					// toJSON(sstr);
+					// mout.warn() << "json: "<< sstr.str() << mout.endl;
 					mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 				}
 				//return; // NUEVO
@@ -563,7 +568,7 @@ void SmartMap<T>::setValues(const C & container){
 			++kit; // NUEVO
 		}
 		else {
-			log.error() << "too many ("<< container->size() << ") params for map of size ("<< this->size() << "), run out of keys with entry=" << *it << log.endl;
+			log.error() << "too many ("<< container.size() << ") params for map of size ("<< this->size() << "), run out of keys with entry=" << *it << log.endl;
 		}
 
 	}
