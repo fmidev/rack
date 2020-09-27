@@ -101,12 +101,22 @@ public:
 		setPtr(p);
 	}
 
-	/// Set pointer to p.
+	/// Set pointer to &p.
+	/**
+	 *  \tparam T - target object (if Castable or Referencer redirected to relink() )
+	 */
 	template <class F>
 	inline
 	void link(F *p){
-		setPtr<F>(p);
+		setPtr(p);
 	}
+
+	/// NEW. Set pointer to p, of given type.
+	inline
+	void link(void *p, const std::type_info &t){
+		setPtr(p, t);
+	}
+
 
 	/// Explicit linking for Castable class(es).
 	/**
