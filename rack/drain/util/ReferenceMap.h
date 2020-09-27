@@ -67,9 +67,9 @@ public:
 	// ReferenceMap(bool ordered, char separator) : SmartMap<Referencer>(ordered, separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 	ReferenceMap(char separator=',') : SmartMap<Referencer>(separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 
-	/// Copy constructor copies only the separators (doesn't copy the items).
+	/// Copy constructor copies only the separators; does not copy the items. \see copy()
 	inline
-	ReferenceMap(const ReferenceMap & rmap) : SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
+	ReferenceMap(const ReferenceMap & rmap): SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
 	};
 
 	/// Associates a map entry with a variable
@@ -149,17 +149,49 @@ public:
 	virtual inline
 	void clear(){
 		SmartMap<Referencer>::clear();
+		keyList.clear();
 		unitMap.clear();
 	}
+
+	/// Experimental. Copies references and values of a structure to another.
+	/**
+	 *  Also updates key list and unit map.
+	 */
+	template <class T>
+	inline
+	void copyStruct(const ReferenceMap & m, const T & src, T & dst, bool copyValues = false){
+
+		Logger log(__FUNCTION__, __FILE__);
+		log.warn() << "experimental" << log.endl;
+
+		clear();
+		typedef unsigned long addr_t;
+		const addr_t srcAddr = (addr_t)(&src);
+		const addr_t dstAddr = (addr_t)(&dst);
+		for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
+			const std::string & key = *it;
+			const Referencer & r = m[key];
+			addr_t relativeAddr = ((addr_t)r.getPtr()) - srcAddr;
+			// log.warn() << "member '" << key << "' address:" << relativeAddr << log.endl;
+			Referencer & d = std::map<std::string,Referencer>::operator[](key);
+			d.link((void *)(dstAddr + relativeAddr), r.getType());
+			// d.setInputSeparator()
+			// d.setSeparator(arraySeparator);
+		}
+		separator = m.separator;
+		arraySeparator = m.arraySeparator;
+		keyList = m.keyList;
+		unitMap = m.unitMap;
+
+	}
+
 
 	/// Import map, adopting the element types.
 	template <class T>
 	inline
 	ReferenceMap & operator=(const SmartMap<T> & v){
-
 		//Logger log(__FUNCTION__, __FILE__);
 		//log.error() << "in:" << v << log.endl;
-
 		importMap(v);
 		return *this;
 	}
