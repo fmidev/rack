@@ -569,7 +569,7 @@ protected:
 	/// Stores the pointer and its storage type F.
 	template <class F>
 	void setPtr(F &p){
-		caster.link(p);
+		caster.link(p); // could use setPtr(void *p, const std::type_info &t) ?
 		elementCount = 1;
 	}
 
