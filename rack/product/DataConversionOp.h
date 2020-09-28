@@ -32,11 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DATACONVERSIONOP2_H_
 #define DATACONVERSIONOP2_H_
 
-#include <data/Data.h>
-#include <data/ODIM.h>
-#include <data/ODIMPath.h>
-#include <data/Quantity.h>
-#include <data/QuantityMap.h>
+#include "data/Data.h"
+#include "data/ODIM.h"
+#include "data/ODIMPath.h"
+#include "data/Quantity.h"
+#include "data/QuantityMap.h"
 //#include "drain/util/LinearScaling.h"
 #include <hi5/Hi5.h>
 #include "drain/image/Geometry.h"

@@ -35,13 +35,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <data/QuantityMap.h>
+#include "data/QuantityMap.h"
 #include "drain/image/Geometry.h"
 #include "drain/image/ImageT.h"
-#include <product/ProductOp.h>
-#include <product/VerticalProfileOp.h>
-#include <radar/Constants.h>
-#include <radar/Geometry.h>
+#include "product/ProductOp.h"
+#include "product/VerticalProfileOp.h"
+#include "radar/Constants.h"
+#include "radar/Geometry.h"
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
 #include <map>
@@ -67,7 +67,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	}
 
 	/// Trick. Mutable member referenced by odim.
-	interval = (odim.maxheight - odim.minheight) / static_cast<double>(odim.levels);
+	interval = (odim.height.max - odim.height.min) / static_cast<double>(odim.levels);
 	//mout.warn() << "interval" << interval << mout.endl;
 	//mout.warn() << "odim " << odim << mout.endl;
 
@@ -81,7 +81,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	//dstHeight.data.setType<unsigned short>();
 	dstHeight.data.setGeometry(1, odim.levels);
 	for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
-		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.minheight + static_cast<double>(odim.levels-1 - k) * interval));
+		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.height.min + static_cast<double>(odim.levels-1 - k) * interval));
 	//@ dstHeight.updateTree();
 
 	//setGeometry(dstHeight);
@@ -215,30 +215,30 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			const double beamOffset = srcData.odim.rstart + srcData.odim.rscale/2.0;
 
 			/// Distance (in metres) to the first measurement requested by the user.
-			const double beamMin = Geometry::beamFromEtaGround(eta, odim.minRange * 1000.0);
+			const double beamMin = Geometry::beamFromEtaGround(eta, odim.range.min * 1000.0);
 			if (beamMin < beamOffset)
 				mout.info() << "requested minimum distance " << beamMin << " smaller than measured distance " << beamOffset << mout.endl;
 
 			/// Distance (in metres) to the last measurement requested by the user.
-			const double beamMax = Geometry::beamFromEtaGround(eta, odim.range * 1000.0);
+			const double beamMax = Geometry::beamFromEtaGround(eta, odim.range.max * 1000.0);
 			const double beamMaxMeasured = srcData.odim.geometry.width*srcData.odim.rscale + beamOffset;
 			if (beamMax > beamMaxMeasured)
 				mout.info() << "requested maximum distance " << beamMax << " greater than measured distance " << beamMaxMeasured << mout.endl;
 
 
-			const int startRay = srcData.odim.geometry.height * (odim.startaz / 360.0);  //
-			const int stopRay  = srcData.odim.geometry.height * (odim.stopaz / 360.0) + (odim.stopaz > odim.startaz ? 0 : srcData.odim.geometry.height);  // Sector goes over 360 deg
+			const int startRay = srcData.odim.geometry.height * (odim.azm.min / 360.0);  //
+			const int stopRay  = srcData.odim.geometry.height * (odim.azm.max / 360.0) + (odim.azm.max > odim.azm.min ? 0 : srcData.odim.geometry.height);  // Sector goes over 360 deg
 			mout.debug(3) << "rays: "  << startRay << "..." << stopRay << mout.endl;
 
 
 			/// Bin altitude in metres.
 			double altitude;
 
-			int binStart = static_cast<int>( (beamMin-srcData.odim.rstart) / srcData.odim.rscale);
+			unsigned int binStart = static_cast<int>( (beamMin-srcData.odim.rstart) / srcData.odim.rscale);
 			if (binStart < 0)
 				binStart = 0;
 
-			int binEnd   = static_cast<int>( (beamMax-srcData.odim.rstart) / srcData.odim.rscale) ;
+			unsigned int binEnd   = static_cast<unsigned int>( (beamMax-srcData.odim.rstart) / srcData.odim.rscale) ;
 			if (binEnd > srcData.odim.geometry.width)
 				binEnd = srcData.odim.geometry.width;
 
@@ -268,13 +268,13 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			*/
 
 			//for (int i = 0; i<srcData.odim.geometry.width; i++){
-			for (int i = binStart; i<binEnd; i++){
+			for (unsigned int i = binStart; i<binEnd; i++){
 				beam     = beamOffset + static_cast<double>(i)*srcData.odim.rscale;
 				altitude = Geometry::heightFromEtaBeam(eta, beam);
 				// if (COLLECT_LATLON)
 				//	range = Geometry::groundFromEtaBeam(eta, beam);
 
-				k = odim.levels-1 - static_cast<int>((altitude-odim.minheight) / interval); // inverse vertical coordinate (image convention)
+				k = odim.levels-1 - static_cast<int>((altitude - odim.height.min) / interval); // inverse vertical coordinate (image convention)
 				// Check altitude
 				if ((k >= 0) && (k < odim.levels)){
 

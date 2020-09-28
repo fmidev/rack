@@ -32,13 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef PseudoRhiOP_OP_H_
 #define PseudoRhiOP_OP_H_
 
-
-#include <data/Data.h>
-#include <data/DataSelector.h>
-#include <data/PolarODIM.h>
-#include <data/VerticalODIM.h>
-#include <product/VolumeOp.h>
 #include <string>
+
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/PolarODIM.h"
+#include "data/VerticalODIM.h"
+#include "product/VolumeOp.h"
 
 namespace rack {
 
@@ -63,10 +63,18 @@ public:
 		parameters.reference("xsize", odim.geometry.width = xsize, "pix");
 		parameters.reference("ysize", odim.geometry.height = ysize, "pix");
 
+		odim.range.set(minRange, range);
+		parameters.reference("range",  odim.range.vect,  "km");
+
+		odim.height.set(minHeight, maxHeight);
+		parameters.reference("height", odim.height.vect, "m" );
+
+		/*
 		parameters.reference("minRange",  odim.minRange = minRange, "km");
 		parameters.reference("range",  odim.range = range, "km");
 		parameters.reference("minHeight", odim.minheight = minHeight, "m");
 		parameters.reference("maxHeight", odim.maxheight = maxHeight, "m");
+		*/
 		//reference("levels", odim.levels, levels);
 
 		parameters.reference("beamWidth", this->beamWidth = beamWidth, "deg");

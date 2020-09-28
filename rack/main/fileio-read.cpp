@@ -147,18 +147,13 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	Hi5Tree srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
-	// hi5::Hi5Base::writeText(srcTmp, std::cerr);
-
 	if (mout.isDebug(6)){
 		mout.debug(2) << "input data:" << mout.endl;
 		hi5::Hi5Base::writeText(srcTmp, std::cerr);
 	}
 
 
-	//DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
-	//FlexVariableMap debugMap;
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
-	//mout.warn() << "debugMap: " << debugMap << mout.endl;
 
 
 	/// True, if user seems to provide
@@ -184,7 +179,6 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		resources.currentHi5 = & resources.cartesianHi5;
 
 		// SINGLE_INPUT ||
-		//if (AUTO_EXEC || ProductBase::appendResults.isUnset() || resources.cartesianHi5.isEmpty()){
 		if (AUTO_EXEC || ProductBase::appendResults.isRoot() || resources.cartesianHi5.isEmpty()){
 			resources.cartesianHi5.swap(srcTmp);
 			//mout.note() << resources.cartesianHi5 << mout.endl;
@@ -235,54 +229,6 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	}
 
-
-	//mout.warn() << resources.currentHi5->data.dataSet.properties << mout.endl;
-
-	if (false){
-
-		mout.warn() << "eka" << mout.endl;
-		Data<PolarDst> eka((*resources.currentHi5)["dataset1"]["data2"]);
-		mout.note() << eka << mout.endl;
-
-		mout.warn() << "moka" << mout.endl;
-		Data<PolarDst> moka(eka);
-		mout.note() << moka << mout.endl;
-
-		/*
-		mout.warn() << "toka" << mout.endl;
-		const DataSet<PolarSrc> konsta((*resources.currentHi5)["dataset1"], drain::RegExp("H"));  //REGEXP
-		mout.note() << "konsta:\n" << konsta << mout.endl;
-		const PlainData<PolarSrc> & aapeli = konsta.getData("TH");
-		mout.warn() << aapeli << mout.endl;
-		 */
-		DataSet<PolarDst> muuttio((*resources.currentHi5)["dataset1"], drain::RegExp("Å"));
-		mout.warn() << "pair" << mout.endl;
-		DataSet<PolarDst>::value_type valu("KEPATH", eka);
-		mout.warn() << "sertti" << mout.endl;
-		muuttio.insert(valu);
-		//moka.odim.quantity  = "XXXXX"; OK, but overridden by eka later
-		eka.odim.offset = 12.3;
-
-
-		/*
-		DataSet<PolarDst> muuttio((*resources.currentHi5)["dataset1"]);
-		Data<PolarDst> & uusi = muuttio.getData("SUURO");
-		PlainData<PolarDst> & laatu = uusi.getQualityData("LAATU");
-		laatu.initialize(typeid(unsigned short),123, 456);
-		mout.warn() << uusi << mout.endl;
-		mout.debug() << laatu << mout.endl;
-
-		DataSet<PolarDst> tupla((*resources.currentHi5)["dataset1"]);
-		Data<PolarDst> & rouhio = tupla.getData("SUURIMO");
-		rouhio.initialize(typeid(unsigned char),123, 456);
-		rouhio.odim.scale = 1.23456789;
-		rouhio.odim.elangle = 12345.678;
-
-		mout.warn() << rouhio << mout.endl;
-		 */
-	}
-
-	//resources.inputHi5[odimROOT][odimROOT][odimROOT].data;
 
 
 	mout.debug() << "end" << mout.endl;

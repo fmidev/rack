@@ -40,16 +40,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
 
-#include <data/Data.h>
-#include <data/PolarODIM.h>
-#include <data/QuantityMap.h>
+#include "data/Data.h"
+#include "data/PolarODIM.h"
+#include "data/QuantityMap.h"
 #include <hi5/Hi5.h>
 #include "drain/image/Image.h"
 #include "drain/image/ImageFrame.h"
 #include <main/rack.h>
 
-#include <radar/Analysis.h>
-#include <data/EchoClass.h>
+#include "radar/Analysis.h"
+#include "data/EchoClass.h"
 
 #include "QualityCombinerOp.h"
 

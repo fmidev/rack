@@ -127,7 +127,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			mout.debug() << "dstProb: " << dstProb << mout.endl;
 
 			/// MAIN COMMAND
-			if (DetectorOp::STORE >= 0)
+			if (DetectorOp::STORE)
 				processDataSet(srcDataSet, dstProb,  dstDataSet);
 			// else skip! To collect legends.
 

@@ -49,18 +49,17 @@ namespace drain
  *  \tparam K - key type
  */
 template <class T, class K=std::string>
-class Bank2 : protected std::map<std::string, ClonerBase<T> *> {
+class Bank2 : protected std::map<K, ClonerBase<T> *> {
 
 public:
-
-	//typedef std::string str_t;
 
 	/// Public key type. (Key type used in the public interface.)
 	typedef K key_t;
 
+	///
 	typedef ClonerBase<T> cloner_t;
 
-	typedef std::map<std::string, cloner_t *> map_t;
+	typedef std::map<K, cloner_t *> map_t;
 
 	/// Adds class D as an internal instance.
 	/**

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "DamperOp.h"
 
-#include "../data/QuantityMap.h"
+#include "data/QuantityMap.h"
 
 // using namespace drain::image;
 // using namespace hi5;

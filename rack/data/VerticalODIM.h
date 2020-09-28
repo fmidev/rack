@@ -69,12 +69,12 @@ public:
 	/// Vertical resolution in m
 	double yscale;
 
-
+	drain::Range<double> height;
 	/// Minimum height in meters above mean sea level
-	double minheight;
+	//double minheight;
 
 	/// Maximum height in meters above mean sea level
-	double maxheight;
+	//double maxheight;
 
 	/// Nyquist velocity
 	double NI;
@@ -108,17 +108,19 @@ public:
 	// where (radar site)
 	double lon;
 	double lat;
-	double height;
+	//double height;
 
 	// where (profile)
 	long int levels;
 	double interval;
-	double minRange;
-	double range;  // was 'maxRange', should be 'range'
+	//double minRange;
+	//double range;  // was 'maxRange', should be 'range'
+	drain::Range<double> range;
 
 	// where
-	double startaz; // non-stardard for profile
-	double stopaz; // non-stardard for profile
+	drain::Range<double> azm;
+	//double startaz; // non-stardard for profile
+	//double stopaz; // non-stardard for profile
 	long int azSlots;  // non-stardard
 
 
@@ -164,9 +166,9 @@ public:
 
 
 	//long int azSlots;  // non-stardard
-
-	double minRange; // nonstandard
-	double range;
+	drain::Range<double> range;
+	//double minRange; // nonstandard
+	//double range;
 
 	inline
 	RhiODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : VerticalCrossSectionODIM(initialize) {

@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define PolarProduct_OP_H_
 
 //
-
 #include "VolumeOp.h"
-#include "../data/PolarODIM.h"
+
+#include "data/PolarODIM.h"
 
 namespace rack {
 

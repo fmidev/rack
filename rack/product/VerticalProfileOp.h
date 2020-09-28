@@ -32,12 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef VERTICALProfileOp_H_
 #define VERTICALProfileOp_H_
 
-#include <data/Data.h>
-#include <data/DataSelector.h>
-#include <data/PolarODIM.h>
-#include <data/VerticalODIM.h>
-#include <product/VolumeOp.h>
 #include <string>
+
+#include "data/Data.h"
+#include "data/DataSelector.h"
+//#include "data/PolarODIM.h"
+#include "data/VerticalODIM.h"
+#include "product/VolumeOp.h"
+
 
 namespace rack {
 
@@ -52,13 +54,22 @@ public:
 	VerticalProfileOp(double minRange=10, double range=100, double minHeight=0, double maxHeight=10000, long int levels=100, double startaz=0.0, double stopaz=359.99, long int azSlots=1) :
 		VolumeOp<VerticalProfileODIM>(__FUNCTION__ ,"Computes vertical dBZ distribution in within range [minRange,maxRange] km.") { // std::string type="d", double gain=0.5, double offset=-32.0) :
 
-		parameters.reference("minRange",  odim.minRange = minRange, "km");
-		parameters.reference("range",  odim.range = range, "km");
-		parameters.reference("minHeight", odim.minheight = minHeight, "m");
-		parameters.reference("maxHeight", odim.maxheight = maxHeight, "m");
+		odim.range.set(minRange, range);
+		parameters.reference("range",  odim.range.vect, "km"); //  = range
+		// parameters.reference("minRange",  odim.minRange = minRange, "km");
+		//parameters.reference("range",  odim.range = range, "km");
+
+		odim.height.set(minHeight, maxHeight);
+		parameters.reference("height", odim.height.vect, "m");
+		//parameters.reference("minHeight", odim.height.min = minHeight, "m");
+		//parameters.reference("maxHeight", odim.height.max = maxHeight, "m");
+
 		parameters.reference("levels", odim.levels = levels);
-		parameters.reference("startaz", odim.startaz = startaz, "deg");
-		parameters.reference("stopaz", odim.stopaz = stopaz, "deg");
+
+		odim.azm.set(startaz, stopaz);
+		parameters.reference("azm", odim.azm.vect, "deg");
+		// parameters.reference("startaz", odim.startaz = startaz, "deg");
+		// parameters.reference("stopaz", odim.stopaz = stopaz, "deg");
 		parameters.reference("azSlots", odim.azSlots = azSlots);
 
 		odim.reference("interval", interval);

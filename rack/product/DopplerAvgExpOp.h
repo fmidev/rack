@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/imageops/ImpulseResponseOp.h"
 #include "drain/imageops/ImpulseAvgOp.h"
 
-#include "../data/DataCoder.h"
+#include "data/DataCoder.h"
 #include "DopplerOp.h"
 
 

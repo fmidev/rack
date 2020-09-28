@@ -29,14 +29,14 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <data/Quantity.h>
-#include <data/QuantityMap.h>
+#include "data/Quantity.h"
+#include "data/QuantityMap.h"
 //#include "drain/util/Log.h"
 //#include "drain/util/Variable.h"
 #include "drain/image/Image.h"
-#include <product/ProductOp.h>
-#include <product/PseudoRhiOp.h>
-#include <radar/Geometry.h>
+#include "product/ProductOp.h"
+#include "product/PseudoRhiOp.h"
+#include "radar/Geometry.h"
 #include "drain/util/Log.h"
 #include <algorithm>
 #include <cmath>
@@ -60,12 +60,12 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 	if (dstData.odim.geometry.height == 0){
 		dstData.odim.geometry.height = 100;
 	}
-	dstData.odim.minheight = odim.minheight;
-	dstData.odim.maxheight = odim.maxheight;
-	dstData.odim.minRange  = odim.minRange;
+	dstData.odim.height = odim.height;
+	//dstData.odim.maxheight = odim.maxheight;
+	//dstData.odim.minRange  = odim.minRange;
 	dstData.odim.range     = odim.range;
-	dstData.odim.xscale    = (odim.range - odim.minRange)/static_cast<double>(odim.geometry.width);
-	dstData.odim.yscale    = (odim.maxheight - odim.minheight)/static_cast<double>(odim.geometry.height);
+	dstData.odim.xscale    = (odim.range.max - odim.range.min)/static_cast<double>(odim.geometry.width);
+	dstData.odim.yscale    = (odim.height.max - odim.height.min)/static_cast<double>(odim.geometry.height);
 
 	if (!dstData.odim.type.empty()){
 		dstData.data.setType(dstData.odim.type.at(0));
@@ -183,9 +183,9 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 
 	/// MAIN LOOPS
 	//  Traverse range (horz dimension)
-	for (int i = 0; i < odim.geometry.width; ++i) {
+	for (unsigned int i = 0; i < odim.geometry.width; ++i) {
 
-		beta   = (1000.0*odim.minRange + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
+		beta   = (1000.0*odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 
 		REVERSE = (beta < 0.0);
 
@@ -205,9 +205,9 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 		DataSetMap<PolarSrc>::const_iterator itStart = src.begin();
 
 		//  Traverse altitude (vert dimension)
-		for (int k = 0; k < odim.geometry.height; ++k) {
+		for (unsigned int k = 0; k < odim.geometry.height; ++k) {
 
-			h   = odim.minheight + static_cast<double>(k) * heightResolution;
+			h   = odim.height.min + static_cast<double>(k) * heightResolution;
 			etaPixel = Geometry::etaFromBetaH(beta, h);
 
 			if (etaPixel > etaUpper){

@@ -53,12 +53,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/prog/CommandAdapter.h"
 #include "drain/prog/CommandPack.h"
 
-#include <data/Data.h>
-#include <data/DataOutput.h>
-#include <data/DataSelector.h>
-#include <data/DataTools.h>
-#include <data/ODIMPath.h>
-#include <data/PolarODIM.h>
+#include "data/Data.h"
+#include "data/DataOutput.h"
+#include "data/DataSelector.h"
+#include "data/DataTools.h"
+#include "data/ODIMPath.h"
+#include "data/PolarODIM.h"
 #include <hi5/Hi5.h>
 //#include <hi5/Hi5Read.h>
 #include <hi5/Hi5Write.h>
@@ -70,10 +70,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <main/fileio-read.h>
 #include <main/images.h> // for calling --image on the fly
 #include <main/resources.h>
-//#include <product/HistogramOp.h>
-#include <product/ProductOp.h>
-#include <radar/FileGeoTIFF.h>
-#include <radar/RadarDataPicker.h>
+//#include "product/HistogramOp.h"
+#include "product/ProductOp.h"
+#include "radar/FileGeoTIFF.h"
+#include "radar/RadarDataPicker.h"
 
 
 

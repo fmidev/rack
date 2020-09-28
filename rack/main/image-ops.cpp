@@ -41,11 +41,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Tree.h"
 #include "drain/util/ValueScaling.h"
 
-#include <data/Data.h>
-#include <data/DataSelector.h>
-#include <data/ODIM.h>
-#include <data/ODIMPath.h>
-#include <data/QuantityMap.h>
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/ODIM.h"
+#include "data/ODIMPath.h"
+#include "data/QuantityMap.h"
 #include "drain/image/Image.h"
 #include "drain/image/ImageChannel.h"
 #include "drain/image/ImageFrame.h"
@@ -53,7 +53,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/imageops/ImageOpBank.h"
 #include <main/image-ops.h>
 #include <main/resources.h>
-//#include <radar/Analysis.h>
+//#include "radar/Analysis.h"
 #include <stddef.h>
 
 

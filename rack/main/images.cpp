@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <data/Data.h>
-#include <data/DataSelector.h>
-#include <data/ODIMPath.h>
-#include <data/PolarODIM.h>
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/ODIMPath.h"
+#include "data/PolarODIM.h"
 #include <hi5/Hi5.h>
 #include "drain/image/Image.h"
 #include "drain/image/ImageChannel.h"
@@ -42,10 +42,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/PaletteOp.h"
 #include <main/resources.h>
-#include <product/DataConversionOp.h>
+#include "product/DataConversionOp.h"
 #include "drain/prog/Command.h"
 #include "drain/prog/CommandAdapter.h"
-#include <radar/Analysis.h>
+#include "radar/Analysis.h"
 #include <stddef.h>
 #include "drain/util/Log.h"
 #include "drain/util/FilePath.h"

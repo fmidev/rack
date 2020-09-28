@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_IMAGES
 #define RACK_IMAGES
 
-#include <data/DataSelector.h>
+#include "data/DataSelector.h"
 #include <hi5/Hi5.h>
 //#include "drain/image/Image.h"
 #include "drain/image/Image.h"

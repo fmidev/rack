@@ -53,13 +53,10 @@ public:
 		const std::string & key = productOp.getName();
 		if (nameCutter.execute(key) == 0){ // Matches
 			getRegistry().add(*this, nameCutter.result[1], 0);
-			// addEntry(*this, nameCutter.result[1], 0);
 		}
 		else {
 			getRegistry().add(*this, key, 0);
-			//addEntry(*this, name, 0);
 		}
-		//addEntry(*this, productOp.getName(), 0);
 	};
 
 	~ProductAdapter(){};
@@ -68,7 +65,8 @@ public:
 
 	const std::string adapterName;
 
-	inline const std::string & getName() const { return productOp.getName(); };
+	inline
+	const std::string & getName() const { return productOp.getName(); };
 
 
 	/// Returns a description for help functions.
@@ -115,17 +113,12 @@ public:
 
 
 	// NOTE: Potentially, VolumeOp could be generalized to a RackOp, having polar OR Cartesian targets.
-	virtual
-	inline
+	virtual inline
 	Hi5Tree & getTarget() const { //std::cerr << "getTarget() = polarHi5" << std::endl;
 		return getResources().polarHi5;
 	};
 
 	virtual
-	//void run(const VariableMap & parameters = VariableMap()) { rackLet.run(parameters); };
-	/**
-	 *  Like AnDReLetAdapter, but filters inputHi5 to polarHi5.
-	 */
 	void run(const std::string & params = "") {
 
 		drain::Logger mout(__FUNCTION__, adapterName);
@@ -169,21 +162,10 @@ public:
 		mout.timestamp("END_PRODUCT");
 	};
 
-	/// By default, source and destination objects are separate.
-	//  (For AnDRe, source and destination are the same object.)
-	/*
-	virtual
-	inline
-	void filter(const Hi5Tree &src, Hi5Tree &dst) const {
-		const VolumeOp & op = productOp;
-		op.filter(getResources().inputHi5, getResources().polarHi5);
-	}
-	*/
 
 	virtual
 	inline
 	std::ostream & toOstream(std::ostream & ostr) const {
-		//const VolumeOp<PolarODIM> & op = productOp;
 		ostr << adapterName << ": " << productOp;
 		return ostr;
 	}
@@ -197,6 +179,5 @@ protected:
 
 } /* namespace rack */
 
-#endif /* RACK_PRODUCTS */
+#endif /* RACK_PRODUCT_ADAPTER */
 
-// Rack

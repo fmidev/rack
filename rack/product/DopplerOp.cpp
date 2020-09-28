@@ -29,17 +29,17 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <data/Data.h>
-#include <data/PolarODIM.h>
-#include <data/QuantityMap.h>
+#include "data/Data.h"
+#include "data/PolarODIM.h"
+#include "data/QuantityMap.h"
 //#include "drain/image/SegmentProber.h" // for crawler
 #include "drain/image/Image.h"
 #include "drain/image/ImageChannel.h"
 #include "drain/image/ImageLike.h"
 #include "drain/util/Point.h"
 #include "drain/image/SegmentProber.h"
-#include <product/DopplerOp.h>
-#include <product/ProductOp.h>
+#include "product/DopplerOp.h"
+#include "product/ProductOp.h"
 #include <stddef.h>
 #include <syslog.h>
 #include "drain/util/Log.h"

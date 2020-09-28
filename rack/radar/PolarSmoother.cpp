@@ -33,11 +33,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/FunctorPack.h"
+#include "drain/imageops/FunctorOp.h"
+
 //#include "drain/image/Coordinates.h"
 #include "PolarSmoother.h"
 #include "Analysis.h"
 #include "PolarWindow.h"
-#include "drain/imageops/FunctorOp.h"
 
 using namespace drain::image;
 

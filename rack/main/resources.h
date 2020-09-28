@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_RESOURCES_H_
 #define RACK_RESOURCES_H_
 
-#include <data/DataSelector.h>
-//#include <data/ODIM.h>
-#include <data/PolarODIM.h>
+#include "data/DataSelector.h"
+//#include "data/ODIM.h"
+#include "data/PolarODIM.h"
 //#include "drain/image/Coordinates.h"
 //#include "drain/image/Image.h"
 #include <hi5/Hi5.h>
@@ -47,8 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/imageops/PaletteOp.h"
 #include "drain/prog/CommandPack.h"
 #include "drain/prog/CommandRegistry.h"
-#include <radar/Composite.h>
-#include <radar/RadarAccumulator.h>
+#include "radar/Composite.h"
+#include "radar/RadarAccumulator.h"
 #include "drain/util/Rectangle.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Tree.h"

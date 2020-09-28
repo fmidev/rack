@@ -35,10 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "PolarSlidingWindowOp.h"
 
-#include <data/Data.h>
-#include <data/DataSelector.h>
-#include <data/PolarODIM.h>
-#include <data/QuantityMap.h>
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/PolarODIM.h"
+#include "data/QuantityMap.h"
 //#include "drain/imageops/SlidingWindowHistogramOp.h"
 //#include "drain/imageops/SlidingWindowOp.h"
 //#include "drain/util/Fuzzy.h"

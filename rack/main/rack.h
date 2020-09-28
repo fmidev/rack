@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.5"
+#define __RACK_VERSION__ "5.6"
 
 /**
+ *   Version 5.6
+ *   - Initial tests for parallel computation (openmp)
+ *   - ReferenceMap supports copying references, if a common struct applied
+ *
  *   Version 5.5
  *   - IDE update (Eclipse Embedded C/C++ plugin)
  *   - $CCFLAGS and $LDFLAGS redesigned in configure.sh and build.sh

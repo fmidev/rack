@@ -52,8 +52,10 @@ void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs
 		reference("where:xscale", xscale = 0.0);
 		reference("where:yscale", yscale = 0.0);
 
-		reference("where:minheight",  minheight = 0.0);
-		reference("where:maxheight",  maxheight = 0.0);
+		//reference("where:minheight",  minheight = 0.0);
+		//reference("where:maxheight",  maxheight = 0.0);
+		reference("where:minheight",  height.vect[0] = 0.0);
+		reference("where:maxheight",  height.vect[1] = 0.0);
 
 		reference("how:NI",  NI = 0.0);
 	}
@@ -77,18 +79,25 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 	if (initialize & ODIMPathElem::ROOT){
 		reference("where:lon", lon = 0.0);
 		reference("where:lat", lat = 0.0);
-		reference("where:height", height = 0.0);
+		height = 0.0;
+		reference("where:height", height.vect[0]);
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
 		reference("where:levels",  levels = 0L);
 		reference("where:interval",  interval = 0.0);
 
-		reference("how:minRange", minRange = 0.0);// where or how??
-		reference("how:range", range = 0.0);// where or how??
+		//reference("how:minRange", minRange = 0.0);// where or how??
+		//reference("how:range", range = 0.0);// where or how??
+		// Product will use range (Range object)
+		reference("how:minRange", range.vect[0] = 0.0);// where or how??
+		reference("how:range",    range.vect[1] = 0.0);// where or how??
 
-		reference("where:startaz", startaz = 0.0);
-		reference("where:stopaz", stopaz = 0.0);
+		reference("where:startaz", azm.vect[0] = 0.0);
+		reference("where:stopaz",  azm.vect[1] = 0.0);
+		// reference("where:startaz", startaz = 0.0);
+		// reference("where:stopaz", stopaz = 0.0);
+
 		reference("where:azSlots", azSlots = 1L);
 	}
 
@@ -109,10 +118,10 @@ void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("where:minRange", minRange = 0.0);  // where or how??
-		reference("where:range", range = 0.0);        // where or how??
+		reference("where:minRange", range.vect[0] = 0.0);  // where or how??
+		reference("where:range",    range.vect[1] = 0.0);  // where or how??
 		reference("where:az_angle", az_angle = 0.0);
-		reference("where:angles", angles = 0.0);
+		reference("where:angles",   angles = 0.0);
 	}
 
 	if (initialize & ODIMPathElem::DATA){

@@ -104,7 +104,8 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 		//ostr << " size = \"10,8\";\n";
 		ostr << "  rankdir=TB;\n"; //  ordering=out;\n";
 		ostr << "  ranksep=0.2;\n"; //  ordering=out;\n";
-		ostr << "  node [shape=record];\n"; // parallelogram
+		//ostr << "  node [shape=record];\n"; // caused problems in new dot versions
+		ostr << "  node [shape=box];\n"; // parallelogram
 		ostr << "  tailport=s;\n";
 		ostr << '\n';
 
@@ -141,12 +142,13 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 
 		//ostr << "| { <IMG>";
 		if (!group.data.dataSet.isEmpty()){
-			ostr << "| <IMG>";
+			//ostr << "| <IMG>";
 			ostr << group.data.dataSet.getGeometry();
 		}
 		if (!group.data.attributes.empty()){
-			ostr << '|' << "<ATTR>";
-			ostr << " attributes ";
+			//ostr << '|' << "<ATTR>";
+			//ostr << " attributes ";
+			ostr << "...";
 		}
 		//ostr << '}';
 

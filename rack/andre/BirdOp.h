@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define BIRD_H_
 
 #include <andre/DetectorOp.h>
-#include <data/Data.h>
+#include "data/Data.h"
 #include "drain/image/Image.h"
 #include "drain/image/Window.h"
 #include "drain/imageops/ImageOp.h"

@@ -46,37 +46,7 @@ using namespace drain::image;
 
 void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	//drain::Logger mout(__FUNCTION__, getName());
 	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	//mout.error() << "Start"  << mout.endl;
-
-	//if (odim.type.empty())
-	//	mout.error() << "Unset data storage type."  << mout.endl;
-
-	// dst.odim.updateFromMap(src.odim);
-
-	/*
-	//dst.odim = src.odim; // elangle, starttime etc.
-	dst.odim.scale = 123.456;
-	mout.warn() << "dst.odim" << dst.odim << mout.endl;
-	mout.error() << "dst.odim.scale" << dst.odim.scale << mout.endl;
-	*/
-	/*
-	const std::type_info &t = drain::Type::getType(odim.type.at(0));
-	dst.data.setType(t);
-	dst.odim.setTypeDefaults(t);
-	dst.odim.scale     = odim.scale;
-	dst.odim.offset   = odim.offset;
-	//dst.odim.nodata   = odim.nodata;
-	//dst.odim.undetect = odim.undetect;
-	dst.odim.quantity = "HGHT";
-	dst.odim.geometry.height = 1;
-	dst.odim.rscale = (static_cast<double>(src.odim.geometry.width) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.geometry.width);
-	 */
-
-	//dst.odim.elangle = src.odim.elangle;
-
 	//mout.debug(1) << "target nbins:" << dst.odim.geometry.width << " rscale:" << dst.odim.rscale << mout.endl;
 
 	//dst.data.setGeometry(dst.odim.geometry.width, 1);
@@ -85,7 +55,7 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst
 	const double gainMetres = 1000*odim.scale;
 	const double eta = src.odim.elangle * drain::DEG2RAD;
 	double h;
-	for (long int i = 0; i < dst.odim.geometry.width; ++i) {
+	for (unsigned int i = 0; i < dst.odim.geometry.width; ++i) {
 		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
 		h = Geometry::heightFromEtaGround(eta, i*dst.odim.rscale)/gainMetres;
 		if (h < max)

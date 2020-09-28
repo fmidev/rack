@@ -68,6 +68,7 @@ int process(int argc, const char **argv) {
 	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
 
 	if (argc == 1) {
+		//drain::getRegistry().help();
 		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\nHelp:  rack -h\n" ;
 		return 1;
 	}

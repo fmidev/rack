@@ -32,10 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include <data/DataSelector.h>
+#include "data/DataSelector.h"
 #include "drain/prog/Command.h"
-#include <radar/Composite.h>
-#include <radar/RadarAccumulator.h>
+#include "radar/Composite.h"
+#include "radar/RadarAccumulator.h"
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
 

@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <data/QuantityMap.h>
+#include "data/QuantityMap.h"
 //#include "drain/image/File.h"
 //#include "drain/util/Log.h"
 //#include "drain/util/Variable.h"

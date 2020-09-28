@@ -30,18 +30,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <andre/BirdOp.h>
-#include <data/DataSelector.h>
-#include <data/DataTools.h>
-#include <data/PolarODIM.h>
-#include <data/QuantityMap.h>
+#include "data/DataSelector.h"
+#include "data/DataTools.h"
+#include "data/PolarODIM.h"
+#include "data/QuantityMap.h"
 #include "drain/image/ImageChannel.h"
 #include "drain/image/ImageLike.h"
 #include "drain/image/Window.h"
 #include "drain/imageops/CopyOp.h"
 #include "drain/imageops/FunctorOp.h"
 #include "drain/imageops/SlidingWindowOp.h"
-#include <radar/Analysis.h>
-#include <radar/Doppler.h>
+#include "radar/Analysis.h"
+#include "radar/Doppler.h"
 #include "drain/util/FunctorPack.h"
 #include "drain/util/Fuzzy.h"
 #include "drain/util/Log.h"
