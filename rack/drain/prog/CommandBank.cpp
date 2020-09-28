@@ -95,7 +95,7 @@ void CommandBank::run(ScriptTxt & script){
 			if (it->first == ")"){
 				mout.warn() << "Invoke parallel runs" << mout.endl;
 				#pragma omp parallel for
-				for (int i = 0; i < parallelRuns.size(); ++i) {
+				for (size_t i = 0; i < parallelRuns.size(); ++i) {
 					mout.warn() << "Start parallel run #" << i << mout.endl;
 					parallelRuns[i].run();
 					mout.warn() << "Ended parallel run #" << i << mout.endl;
