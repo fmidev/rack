@@ -29,12 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-//#include "drain/image/File.h"  // debugging
-
 #include "drain/util/Log.h"
-//#include "drain/util/LinearScaling.h"
-//#include "drain/util/Type.h"
-
 // #include "File.h"  // debugging
 
 #include "AccumulationArray.h"
