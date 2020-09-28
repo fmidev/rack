@@ -40,8 +40,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
-
+/// Container and execution tools for commands derived from Command.
+/**
+ *   # Storage for commands, providing list, help and cloning facilities
+ *   # Utilities for creating scripts and programs
+ *
+ */
 class CommandBank : public BankSuper<BasicCommand> {
 
 public:
