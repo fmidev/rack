@@ -41,7 +41,7 @@ namespace drain {
 
 
 /// Set flags
-Flags & Flags::operator =(const std::string & params){
+void Flags::assign(const std::string & params){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -59,9 +59,9 @@ Flags & Flags::operator =(const std::string & params){
 
 		// mout.warn() << " '" << *it << "'" << mout.endl;
 
-		dict_t::const_iterator dit = dictionary.findByKey(*it);
+		dict_t::const_iterator dit = dictionaryRef.findByKey(*it);
 
-		if (dit != dictionary.end()){
+		if (dit != dictionaryRef.end()){
 			// Alphabetic key found
 			set(dit->second);
 			//value = value | dit->second;
@@ -85,15 +85,15 @@ Flags & Flags::operator =(const std::string & params){
 				//value = value | v;
 				// Nice to know
 				//dict_t::second_type::const_iterator vit = dictionary.second.find(v);
-				dict_t::const_iterator vit = dictionary.findByValue(v);
-				if (vit != dictionary.end()){
+				dict_t::const_iterator vit = dictionaryRef.findByValue(v);
+				if (vit != dictionaryRef.end()){
 					std::cout << "(assigned key '" << vit->second << "')\n"; // or vit->first?
 				}
 			}
 		}
 	}
 
-	return *this;
+	//return *this;
 }
 
 /// List keys in their numeric order.
@@ -106,7 +106,7 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 		- repeated values (aliases)
 	*/
 	char sep = 0;
-	for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
+	for (dict_t::const_iterator it = dictionaryRef.begin(); it != dictionaryRef.end(); ++it){
 		if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
 			if (sep)
 				ostr << sep;
@@ -122,14 +122,14 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 	return ostr;
 }
 
-std::ostream & Flags::valuesToStream(std::ostream & ostr, char separator) const {
+std::ostream & Flags::toStream(std::ostream & ostr, char separator) const {
 
 	if (!separator)
 		separator = this->separator;
 
 	char sep = 0;
 	//for (dict_t::second_type::const_iterator it = dictionary.second.begin(); it != dictionary.second.end(); ++it){
-	for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
+	for (dict_t::const_iterator it = dictionaryRef.begin(); it != dictionaryRef.end(); ++it){
 		if (sep)
 			ostr << sep;
 		else

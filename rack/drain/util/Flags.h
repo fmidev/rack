@@ -54,23 +54,44 @@ public:
 
 	typedef drain::Dictionary2<std::string, value_t> dict_t;
 
-	Flags(value_t & value, const dict_t & dictionary, char separator = 0) : value(value), dictionary(dictionary), separator(separator?separator:dictionary.separator) {
+	inline
+	Flags(value_t & value, const dict_t & d, char separator = 0) : value(value), separator(separator?separator:d.separator), dictionaryRef(d) {
 	}
 
-	Flags(const Flags & flags) : value(flags.value), dictionary(flags.dictionary), separator(flags.separator) {
+	//Flags(const dict_t & d, value_t & value, char separator = 0) : value(value), separator(separator?separator:d.separator), dictionaryRef(d) {
+	//}
+
+	inline
+	Flags(const Flags & flags) : value(flags.value), separator(flags.separator), dictionaryRef(flags.dictionaryRef){
 	};
 
 
-	/// Set desired flags. Does not unset any flag.
+	/// Set desired flags. Does not reset any flag.
 	inline
 	void set(value_t x){
 		value = value | x;
 	};
 
+	/// Set desired flags. Does not reset any flag.
+	/*
+	inline
+	void set(value_t x, value_t & dst){
+		dst = dst | x;
+	};
+	*/
+
+
 	inline
 	void set(const std::string & key){
-		set(dictionary.getValue(key));
+		set(dictionaryRef.getValue(key));
 	};
+
+	/*
+	inline
+	void set(const std::string & key, value_t & dst){
+		set(dictionaryRef.getValue(key), dst);
+	};
+	*/
 
 
 	/// Unset desired flags. Does not set any flag.
@@ -79,10 +100,18 @@ public:
 		value = (value & ~x);
 	};
 
+	/// Unset desired flags. Does not set any flag.
 	inline
 	void unset(const std::string & key){
-		unset(dictionary.getValue(key));
+		unset(dictionaryRef.getValue(key));
 	};
+
+	/// Unset desired flags. Does not set any flag.
+	inline
+	void unset(value_t x, value_t & dst){
+		dst = (dst & ~x);
+	};
+
 
 	/// Set desired flags. Does not unset any flag.
 	inline
@@ -98,38 +127,58 @@ public:
 
 	inline
 	bool isSet(const std::string & key){
-		return isSet(dictionary.getValue(key));
+		return isSet(dictionaryRef.getValue(key));
 	};
+
+
+	// For some reason this cannot be templated (see below)
+	inline
+	Flags & operator=(const Flags &x){
+		assign(x);
+		return *this;
+	}
+
+
+	/// Sets value, ie. set or unsets all the flags.
+	/**
+	 *   \param x - bit values 1, 2, 4, 8 ... etc combined with \c OR function.
+	 */
+	template <class T>
+	inline
+	Flags & operator=(const T &x){
+		assign(x);
+		return *this;
+	}
 
 	/// Sets value, ie. set or unsets all the flags.
 	/**
 	 *   \param x - bit values 1, 2, 4, 8 ... etc combined with \c OR function.
 	 */
 	inline
-	Flags & operator=(value_t x){
+    void assign(value_t x){
 		value = x;
-		return *this;
 	}
 
-	/// Copies flags as an integer \c value. Same dictionary not checked.
+	/// Copies flags as an integer \c value. Same dictionaryRef not checked.
 	/**
 	 *   \param flags -
 	 */
 	inline
-	Flags & operator=(const Flags & flags){
+	void assign(const Flags & flags){
 		value = flags.value;
-		return *this;
 	}
 
 	/// Set flags
 	/**
 	 *   \param x - comma separated keys or bit values 1, 2, 4, 8
 	 */
-	Flags & operator=(const std::string & params);
+	void assign(const std::string & params);
 
+
+	inline
 	operator std::string() const {
 		std::stringstream sstr;
-		valuesToStream(sstr);
+		toStream(sstr);
 		return sstr.str();
 	}
 
@@ -143,7 +192,8 @@ public:
 	 *   \param ostr
 	 *   \param separator - character appended between keys
 	 */
-	std::ostream & valuesToStream(std::ostream & ostr=std::cout, char separator=0) const;
+	// Todo rename toStream?
+	std::ostream & toStream(std::ostream & ostr=std::cout, char separator=0) const;
 
 	/// List all the keys in their numeric order.
 	/**
@@ -154,10 +204,59 @@ public:
 
 	value_t & value;
 
-	const dict_t & dictionary;
 
 	char separator;
 
+protected:
+
+	const dict_t & dictionaryRef;
+
+};
+
+class Flags2 : public Flags {
+
+protected:
+
+	value_t ownValue;
+
+public:
+
+	dict_t dictionary;
+
+	Flags2(char separator = ',') : Flags(ownValue, dictionary, separator){
+	}
+
+	Flags2(const Flags2 & flags) : Flags(
+			ownValue = flags.value,
+			flags.usesOwnDict() ? dictionary=flags.dictionary : flags.dictionaryRef,
+			flags.separator){
+	}
+
+	/*
+	Flags2(char separator = ',') : Flags(dictionary, ownValue, separator){
+	}
+
+	Flags2(const Flags2 & flags) : Flags(
+			flags.usesOwnDict() ? dictionary=flags.dictionary : flags.dictionaryRef,
+			ownValue = flags.value,
+			flags.separator){
+	}
+	*/
+
+
+	/// Sets value, ie. set or unsets all the flags.
+	template <class T>
+	inline
+	Flags2 & operator=(const T &x){
+		assign(x);
+		return *this;
+	}
+
+protected:
+
+	bool usesOwnDict() const {
+		return (&dictionaryRef == &dictionary);
+	}
 };
 
 
