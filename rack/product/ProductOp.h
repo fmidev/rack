@@ -38,24 +38,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_PRODUCT_OP
 #define RACK_PRODUCT_OP "ProductOP"
 
-
-#include "data/Data.h"
-#include "data/DataSelector.h"
-#include "data/ODIM.h"
-#include "data/ODIMPath.h"
-#include <hi5/Hi5.h>
-#include <main/rack.h>
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
-#include "drain/util/SmartMap.h"
-#include "drain/util/Tree.h"
-#include "drain/util/Variable.h"
 #include <exception>
 #include <iostream>
 #include <list>
 #include <map>
 #include <set>
 #include <string>
+
+#include "drain/util/Log.h"
+#include "drain/util/RegExp.h"
+#include "drain/util/SmartMap.h"
+#include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
+
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/ODIM.h"
+#include "data/ODIMPath.h"
+#include "hi5/Hi5.h"
+#include "main/rack.h"
+
 
 
 #include "ProductBase.h"
