@@ -91,11 +91,11 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 	mout.debug(1) << "main" << mout.endl;
 
 
-	for (long int j = 0; j < dst.odim.geometry.height; ++j) {
+	for (unsigned int j = 0; j < dst.odim.geometry.height; ++j) {
 
 		a = dst.odim.getAzimuth(j);
 
-		for (long int i = 0; i < dst.odim.geometry.width; ++i) {
+		for (unsigned int i = 0; i < dst.odim.geometry.width; ++i) {
 			//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
 			r = dst.odim.getBinDistance(i);
 			proj.projectFwd(r*sin(a), r*cos(a), lon, lat);
