@@ -122,18 +122,20 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
 			//dstProb.tree.data.noSave = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
-			dstProb.setNoSave(DetectorOp::STORE == 0);
+			//dstProb.setNoSave(DetectorOp::STORE == 0);
+			dstProb.setNoSave(!DetectorOp::STORE);
 
 			mout.debug() << "dstProb: " << dstProb << mout.endl;
 
 			/// MAIN COMMAND
-			if (DetectorOp::STORE)
+			//if (DetectorOp::STORE) // ???
 				processDataSet(srcDataSet, dstProb,  dstDataSet);
 			// else skip! To collect legends.
 
 			//@ dstProb.updateTree(); // create /what, /where etc.
 			//@ DataTools::updateInternalAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
 			// update str trees?
+
 
 			/*
 			const PlainData<PolarSrc> & srcProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? srcDataSet.getQualityData(CLASSNAME) : srcData.getQualityData(CLASSNAME); // slows, due to src/dst const
