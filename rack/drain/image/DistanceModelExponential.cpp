@@ -120,30 +120,6 @@ DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool fo
 	}
 }
 
-/*
-void DistanceModelExponential::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
-	switch (topology) {
-	case 2:
-		chain.push_back(DistanceElement(-1,-2, this->knightDecayVert));
-		chain.push_back(DistanceElement(+1,-2, this->knightDecayVert));
-		chain.push_back(DistanceElement(-2,-1, this->knightDecayHorz));
-		chain.push_back(DistanceElement(+2,-1, this->knightDecayHorz));
-		// no break
-	case 1:
-		// 8-adjacency
-		chain.push_back(DistanceElement(-1,-1, this->diagDecay));
-		chain.push_back(DistanceElement(+1,-1, this->diagDecay));
-		// no break
-	case 0:
-		// 4-adjacency
-		chain.push_back(DistanceElement(-1, 0, this->horzDecay));
-		chain.push_back(DistanceElement( 0,-1, this->vertDecay));
-		break;
-	default:
-		break;
-	}
-}
-*/
 
 }
 }

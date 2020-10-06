@@ -110,21 +110,7 @@ void DistanceModelLinear::setDecrement(float horz, float vert, float horzRight, 
 
 	mout.debug() << "Decrements " << horzDec << ':' << horzDec2 << ',' << vertDec << ':' << vertDec2 << mout.endl; // ", " << diag << mout.endl;
 
-	/*
-	diagDecrement =       sqrt(    horzDecrement*horzDecrement +     vertDecrement*vertDecrement);
-	knightDecrementHorz = sqrt(4.0*horzDecrement*horzDecrement +     vertDecrement*vertDecrement);   //diagDecrement * sqrt(5.0)/sqrt(2.0);
-	knightDecrementVert = sqrt(    horzDecrement*horzDecrement + 4.0*vertDecrement*vertDecrement);
 
-	mout.debug() << "decs: " << horzDecrement << ", " << vertDecrement;
-	if (DIAG){
-		mout << ", (" << diagDecrement;
-		if (KNIGHT){
-			mout << ", (" << knightDecrementHorz << ','  << knightDecrementVert << ") ";
-		}
-		mout << ") ";
-	}
-	mout << mout.endl;
-	*/
 }
 
 DistanceElement DistanceModelLinear::getElement(short dx, short dy, bool forward) const {
@@ -143,30 +129,6 @@ DistanceElement DistanceModelLinear::getElement(short dx, short dy, bool forward
 
 
 
-/*
-void DistanceModelLinear::createChain(DistanceNeighbourhood & chain, unsigned short topology) const {
-	switch (topology) {
-	case 2:
-		chain.push_back(DistanceElement(-1,-2, this->knightDecrementVert));
-		chain.push_back(DistanceElement(+1,-2, this->knightDecrementVert));
-		chain.push_back(DistanceElement(-2,-1, this->knightDecrementHorz));
-		chain.push_back(DistanceElement(+2,-1, this->knightDecrementHorz));
-		// no break
-	case 1:
-		// 8-adjacency
-		chain.push_back(DistanceElement(-1,-1, this->diagDecrement));
-		chain.push_back(DistanceElement(+1,-1, this->diagDecrement));
-		// no break
-	case 0:
-		// 4-adjacency
-		chain.push_back(DistanceElement(-1, 0, this->horzDecrement));
-		chain.push_back(DistanceElement( 0,-1, this->vertDecrement));
-		break;
-	default:
-		break;
-	}
-}
-*/
 
 }
 }
