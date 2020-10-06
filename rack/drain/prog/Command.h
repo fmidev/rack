@@ -122,7 +122,7 @@ class BasicCommand : public Command {  // Todo consider BeanLike
 public:
 
 	inline
-	BasicCommand(const std::string & name, const std::string & description) : Command(), parallel(false), name(name), description(description) {
+	BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {
 
 		if (name.find(' ') != std::string::npos){
 			Logger mout(__FILE__, __FUNCTION__);
@@ -134,7 +134,7 @@ public:
 	};
 
 	inline
-	BasicCommand(const BasicCommand & cmd): Command(), parallel(cmd.parallel), name(cmd.name), description(cmd.description) {
+	BasicCommand(const BasicCommand & cmd): Command(), section(cmd.section), name(cmd.name), description(cmd.description) {
 		// remember to call importParameters()
 		//parameters.copyStruct(cmd.parameters, cmd, *this); // FIX: may be wrong (cmd has linked members, this has none, yet.
 	}
@@ -188,7 +188,10 @@ public:
 	void exec() const {};
 
 	// Experimental
-	bool parallel;
+	//bool parallel;
+
+	// Optional bit flag(s) marking the command type (compare with manual page sections)
+	int section;
 
 protected:
 
@@ -219,7 +222,7 @@ public:
 	T value;
 
 	SimpleCommand(const std::string & name, const std::string & description,
-			const std::string & key, const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
+			const std::string & key="value", const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
 
 		parameters.separator = '\0';
 		if (key.empty())
