@@ -43,10 +43,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-
+// Container storing entries of different classes derived from T.
 /**
+ *  A single entry for each class D derived from T can be stored.
+ *  The that \i base entry, any number of entries can be cloned.
+ *  The cloned entries are of type D, yet accessible only through
+ *  a reference of base class T .
+ *
  *  \tparam T - value type (base type for cloning)
  *  \tparam K - key type
+ *
+ *  An entry may have several keys. Single-char keys (aliases) are provided by SuperBank
  */
 template <class T, class K=std::string>
 class Bank2 : protected std::map<K, ClonerBase<T> *> {
@@ -73,9 +80,21 @@ public:
 	D & add(const K & key){
 		//const std::string & k = ;
 		static drain::Cloner<T,D> cloner;
-		set(resolve(key), cloner);
+		set(key, cloner); // why resolve here? Alias should not be used in add calls.
+		//set(resolve(key), cloner); // why resolve here? Alias should not be used in add calls.
 		return cloner.src;
 	}
+
+	// Add something that has getName()
+	/*
+	template <class D>
+	D & add(){
+		//const std::string & k = ;
+		static drain::Cloner<T,D> cloner;
+		set(cloner.src.getName(), cloner);
+		return cloner.src;
+	}
+	*/
 
 	/// Adds class D as an external instance.
 	/**
@@ -89,7 +108,8 @@ public:
 	template <class D>
 	D & addExternal(const K & key, D & entry){
 		static drain::Cloner<T,D> cloner(entry);
-		set(resolve(key), cloner);
+		//set(resolve(key), cloner);
+		set(key, cloner);
 		return cloner.src;
 	}
 
@@ -211,6 +231,7 @@ public:
 	D & add(const std::string & key, char alias=0){
 		if (alias)
 			setAlias(alias, key);
+		// TODO: what if the KEY is a single char?
 		return Bank2<T, std::string>::template add<D>(key);
 	}
 
@@ -223,6 +244,7 @@ public:
 	D & addExternal(const std::string & key, char alias, D & entry){
 		if (alias)
 			setAlias(alias, key);
+		// TODO: what if the KEY is a single char?
 		return Bank2<T, std::string>::template addExternal<D>(key, entry);
 	}
 
@@ -274,6 +296,7 @@ public:
 	/**
 	 *
 	 */
+	// TODO: what is the KEY is a single char?
 	virtual inline
 	const std::string & resolve(const key_t & value) const {
 		//std::cout << __FUNCTION__ << ':' << value << '\n';
