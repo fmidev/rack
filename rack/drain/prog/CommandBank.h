@@ -50,9 +50,17 @@ class CommandBank : public BankSuper<BasicCommand> {
 
 public:
 
+	/*
+	template <class T>
+	void add2(){
+		const T & src = Bank2<T>::add(key)
+	}
+	*/
+
 	///
 	std::string defaultCmd;
 
+	/// A mini program executed after each cmd until ']' or ')' is encountered
 	ScriptTxt routine;
 
 	/// Converts command and parameter strings to executable command objects.
