@@ -58,19 +58,19 @@ struct ImpulseAvgConf : public BeanLike {
 
 	inline
 	ImpulseAvgConf() : BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(4, 0.75){
-		// this->parameters.reference("decayHorz", decayHorz = 0.9);
-		// this->parameters.reference("decayVert", decayVert = 0.9);
-		this->parameters.reference("decay", decays).fillArray = true;
-		//this->parameters.reference("decay", decay = 0.9);
-		// this->parameters.reference("decayVert", decayVert = 0.9);
+		// this->parameters.link("decayHorz", decayHorz = 0.9);
+		// this->parameters.link("decayVert", decayVert = 0.9);
+		this->parameters.link("decay", decays).fillArray = true;
+		//this->parameters.link("decay", decay = 0.9);
+		// this->parameters.link("decayVert", decayVert = 0.9);
 	};
 
 	inline
 	ImpulseAvgConf(const ImpulseAvgConf & conf) :
 		BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(4, 0.75){
-		this->parameters.reference("decay", decays).fillArray = true;
-		// this->parameters.reference("decayHorz", decayHorz = conf.decayHorz);
-		// this->parameters.reference("decayVert", decayVert = conf.decayHorz);
+		this->parameters.link("decay", decays).fillArray = true;
+		// this->parameters.link("decayHorz", decayHorz = conf.decayHorz);
+		// this->parameters.link("decayVert", decayVert = conf.decayHorz);
 	};
 
 	//double decay;

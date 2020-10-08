@@ -45,27 +45,27 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
 	if (initialize & ODIMPathElem::ROOT){
-		reference("what:object", object = "");
-		reference("what:version", version = "H5rad 2.2");
-		reference("what:date", date = "");
-		reference("what:time", time = "");
-		reference("what:source", source = "");
-		reference("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
+		link("what:object", object = "");
+		link("what:version", version = "H5rad 2.2");
+		link("what:date", date = "");
+		link("what:time", time = "");
+		link("what:source", source = "");
+		link("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("what:product", product = "");
-		reference("what:prodpar", prodpar = "");
-		reference("what:starttime", starttime = "");
-		reference("what:startdate", startdate = "");
-		reference("what:endtime", endtime = "");
-		reference("what:enddate", enddate = "");
-		reference("how:NI", NI = 0);
+		link("what:product", product = "");
+		link("what:prodpar", prodpar = "");
+		link("what:starttime", starttime = "");
+		link("what:startdate", startdate = "");
+		link("what:endtime", endtime = "");
+		link("what:enddate", enddate = "");
+		link("how:NI", NI = 0);
 	}
 
 
 	if (initialize & ODIMPathElem::DATA){
-		reference("what:quantity", quantity = "");
+		link("what:quantity", quantity = "");
 	}
 
 }

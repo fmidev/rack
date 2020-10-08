@@ -92,6 +92,15 @@ public:
 		return *this;
 	}
 
+	/*
+	template <class T>
+	inline
+	FlexVariableMap & link(const std::string &key, T & target){
+		(*this)[key].link(target);
+		return *this;
+	};
+	*/
+
 };
 
 // std::ostream &operator<<(std::ostream &ostr, const VariableMap &m);

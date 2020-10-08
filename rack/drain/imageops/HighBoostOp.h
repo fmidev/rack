@@ -75,9 +75,9 @@ class HighBoostOp : public ImageOp
 public:
 
 	HighBoostOp(int width=3, int height=3, double coeff=0.5) : ImageOp(__FUNCTION__, "Mixture of original and high-pass filtered image") {
-		parameters.reference("width",  this->width = width);
-		parameters.reference("height", this->height = height);
-		parameters.reference("coeff",  this->coeff = coeff);
+		parameters.link("width",  this->width = width);
+		parameters.link("height", this->height = height);
+		parameters.link("coeff",  this->coeff = coeff);
 	};
     
 	virtual

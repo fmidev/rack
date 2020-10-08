@@ -51,7 +51,7 @@ class CartesianQuantity : public BasicCommand {
 public:
 
 	CartesianQuantity() : BasicCommand(__FUNCTION__, "Set quantity of the composite.") {
-		parameters.reference("quantity", getResources().composite.odim.quantity);
+		parameters.link("quantity", getResources().composite.odim.quantity);
 		// Consider resources.composite.dataSelector.quantity ?
 	}
 
@@ -79,10 +79,10 @@ public:
 
 	inline
 	CartesianPlot() : BasicCommand(__FUNCTION__, "Add a single data point."){
-		parameters.reference("lon", lon = 0.0, "longitude");
-		parameters.reference("lat", lat = 0.0, "latitude");
-		parameters.reference("x", x = 0.0, "value");
-		parameters.reference("w", w = 1.0, "weight");
+		parameters.link("lon", lon = 0.0, "longitude");
+		parameters.link("lat", lat = 0.0, "latitude");
+		parameters.link("x", x = 0.0, "value");
+		parameters.link("w", w = 1.0, "weight");
 	};
 
 	inline
@@ -117,9 +117,9 @@ public:
 	int loops;
 
 	CartesianSpread() : BasicCommand(__FUNCTION__, "Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead"){ // Does not allocate memory."){
-		parameters.reference("horz", horz = 10, "pixels");
-		parameters.reference("vert", vert = 0,  "pixels");
-		parameters.reference("loops",  loops = 0, "N");
+		parameters.link("horz", horz = 10, "pixels");
+		parameters.link("vert", vert = 0,  "pixels");
+		parameters.link("loops",  loops = 0, "N");
 	};
 
 	void exec() const;

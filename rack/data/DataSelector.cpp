@@ -84,26 +84,26 @@ void DataSelector::init() {
 
 	reset();
 
-	parameters.reference("path", path);
-	parameters.reference("quantity", quantity, "DBZH|VRAD|RHOHV|...");
-	//parameters.reference("index", index);
-	parameters.reference("elangle", elangle.vect, "min[:max]");
-	parameters.reference("count", count);
-	//parameters.reference("dataset", dataset.vect, "min[:max]");
+	parameters.link("path", path);
+	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
+	//parameters.link("index", index);
+	parameters.link("elangle", elangle.vect, "min[:max]");
+	parameters.link("count", count);
+	//parameters.link("dataset", dataset.vect, "min[:max]");
 	//parameters["dataset"].fillArray = true;
-	//parameters.reference("data", data.vect, "min[:max]");
+	//parameters.link("data", data.vect, "min[:max]");
 	//parameters["data"].fillArray = true;
 
 	// Deprecating, use "elangle=min:max" instead
-	parameters.reference("elangleMin", elangle.min, "(deprecating)");
-	parameters.reference("elangleMax", elangle.max, "(deprecating)");
+	parameters.link("elangleMin", elangle.min, "(deprecating)");
+	parameters.link("elangleMax", elangle.max, "(deprecating)");
 
 	/*
 	groups = ODIMPathElem::ALL_GROUPS;
-	std::stringst	parameters.reference("count", count);
+	std::stringst	parameters.link("count", count);
 	ream sstr;
 	groups.keysToStream(sstr);
-	parameters.reference("groups", groupStr, sstr.str());
+	parameters.link("groups", groupStr, sstr.str());
 	 */
 }
 

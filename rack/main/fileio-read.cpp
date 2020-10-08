@@ -115,7 +115,7 @@ void CmdInputFile::exec() const {
 	// ZELECT
 	resources.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
-	mout.debug(3) << "resources.getUpdatedStatusMap()" << mout.endl;
+	mout.debug() << "resources.getUpdatedStatusMap()" << mout.endl;
 	resources.getUpdatedStatusMap();
 
 	mout.timestamp("END_FILEREAD");
@@ -154,6 +154,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
+	//mout.warn() << "updateInternal" << mout.endl;
 
 
 	/// True, if user seems to provide
@@ -223,6 +224,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		else {
 			appendPolarH5(srcTmp, resources.inputHi5);
 		}
+
 
 		DataTools::updateInternalAttributes(*resources.currentHi5);
 		DataTools::updateCoordinatePolicy(resources.inputHi5, RackResources::polarLeft);

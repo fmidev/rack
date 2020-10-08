@@ -80,8 +80,8 @@ public:
 	 */
 	QualityOverrideOp(quality_t advantage = 1.0, quality_t decay = 1.0): QualityOp(__FUNCTION__,
 			"Compares two images, preserving pixels having higher alpha value. Src alpha is pre-multiplied with advantage."){
-		parameters.reference("advantage", this->advantage = advantage, "0.8..1.2");
-		parameters.reference("decay", this->decay = decay, "0...1");
+		parameters.link("advantage", this->advantage = advantage, "0.8..1.2");
+		parameters.link("decay", this->decay = decay, "0...1");
 	};
 
 	virtual

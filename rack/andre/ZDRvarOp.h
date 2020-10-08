@@ -59,12 +59,12 @@ public:
 		dataSelector.quantity = "ZDRvar";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
-		parameters.reference("threshold", this->threshold = threshold);
-		parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth);
-		parameters.reference("windowWidth", this->windowWidth = windowWidth);
-		parameters.reference("windowHeight", this->windowHeight = windowHeight);
-		parameters.reference("medianPos", this->medianPos = medianPos);
-		//parameters.reference("area", this->area, area);
+		parameters.link("threshold", this->threshold = threshold);
+		parameters.link("thresholdWidth", this->thresholdWidth = thresholdWidth);
+		parameters.link("windowWidth", this->windowWidth = windowWidth);
+		parameters.link("windowHeight", this->windowHeight = windowHeight);
+		parameters.link("medianPos", this->medianPos = medianPos);
+		//parameters.link("area", this->area, area);
 	};
 
 	double threshold;

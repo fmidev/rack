@@ -193,7 +193,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 
 	EncodingODIM odim;
 	odim.type = "";
-	odim.reference("what:quantity", dstODIM.quantity); 	// Consider (..., bool ALLOW_QUANTITY_CHANGE=true)
+	odim.link("what:quantity", dstODIM.quantity); 	// Consider (..., bool ALLOW_QUANTITY_CHANGE=true)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 

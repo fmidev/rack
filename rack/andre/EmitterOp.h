@@ -65,9 +65,9 @@ public:
 	EmitterOp(double lengthMin=5.0, double thicknessMax=5.0, double sensitivity=0.5) :
 		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", "signal.emitter.line")
 	{
-		parameters.reference("lengthMin", this->lengthMin = lengthMin, "km");
-		parameters.reference("thicknessMax",  this->thicknessMax = thicknessMax, "deg");
-		parameters.reference("sensitivity",  this->sensitivity = sensitivity, "0...1");
+		parameters.link("lengthMin", this->lengthMin = lengthMin, "km");
+		parameters.link("thicknessMax",  this->thicknessMax = thicknessMax, "deg");
+		parameters.link("sensitivity",  this->sensitivity = sensitivity, "0...1");
 		REQUIRE_STANDARD_DATA = true;
 	}
 

@@ -41,27 +41,27 @@ int PolarODIM::defaultRange(250000); // metres
 void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	if (initialize & ODIMPathElem::ROOT){
-		reference("what:object", object = "PVOL");  // // or SCAN...
-		reference("where:lon", lon = 0.0);
-		reference("where:lat", lat = 0.0);
-		reference("where:height", height = 0.0);
-		reference("how:freeze", freeze = 10.0);
+		link("what:object", object = "PVOL");  // // or SCAN...
+		link("where:lon", lon = 0.0);
+		link("where:lat", lat = 0.0);
+		link("where:height", height = 0.0);
+		link("how:freeze", freeze = 10.0);
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("where:nbins",  geometry.width  = 0L); //  nb ins = 0L);
-		reference("where:nrays",  geometry.height = 0L); //  nr ays = 0L);
-		//reference("where:test",  test = 123L); //
-		reference("where:rscale", rscale = 0.0);
-		reference("where:elangle", elangle = 0.0);
-		reference("where:rstart", rstart = 0.0);
-		reference("where:a1gate", a1gate = 0L);
-		reference("where:startaz", startaz = 0.0);
-		reference("where:stopaz",   stopaz = 0.0);
-		reference("how:wavelength", wavelength = 0.0);
-		reference("how:highprf", highprf = 0.0);
-		reference("how:lowprf", lowprf = 0.0);
-		// reference("how:NI", NI = 0);
+		link("where:nbins",  geometry.width  = 0L); //  nb ins = 0L);
+		link("where:nrays",  geometry.height = 0L); //  nr ays = 0L);
+		//link("where:test",  test = 123L); //
+		link("where:rscale", rscale = 0.0);
+		link("where:elangle", elangle = 0.0);
+		link("where:rstart", rstart = 0.0);
+		link("where:a1gate", a1gate = 0L);
+		link("where:startaz", startaz = 0.0);
+		link("where:stopaz",   stopaz = 0.0);
+		link("how:wavelength", wavelength = 0.0);
+		link("how:highprf", highprf = 0.0);
+		link("how:lowprf", lowprf = 0.0);
+		// link("how:NI", NI = 0);
 		//std::cerr << drain::Type::getTypeChar((*this)["where:jimpo"].getType()) << '\n';
 	}
 

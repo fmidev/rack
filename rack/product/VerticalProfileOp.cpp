@@ -89,7 +89,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	// const VerticalProfileODIM & odimFinal = odim;
 	/*
 	VerticalProfileODIM odimFinal; //(odim);
-	odimFinal.reference("interval", interval);
+	odimFinal.link("interval", interval);
 	odimFinal.importMap(odim);
 	*/
 	//@? dstProduct.updateTree(odim);  // check

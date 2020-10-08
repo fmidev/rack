@@ -149,7 +149,7 @@ public:
 
 	CmdSelect() : BasicCommand(__FUNCTION__, "Data selection for the next operation."){
 		parameters.append(test.getParameters());
-		//parameters.reference("selector", getResources().select, DataSelector().getParameters().getKeys());
+		//parameters.link("selector", getResources().select, DataSelector().getParameters().getKeys());
 		//parameters.separator = 0;
 	};
 
@@ -296,7 +296,7 @@ class CmdCreateDefaultQuality : public BasicCommand {
 public:
 
 	CmdCreateDefaultQuality() : BasicCommand(__FUNCTION__, "Creates default quality field. See --undetectWeight and --aDefault"){
-		parameters.reference("quantitySpecific", quantitySpecific=false, "[0|1]");
+		parameters.link("quantitySpecific", quantitySpecific=false, "[0|1]");
 	};
 
 	bool quantitySpecific;
@@ -569,8 +569,8 @@ public:
 
 	/// Default constructor
 	CmdMove() : BasicCommand(__FUNCTION__, "Rename or move data groups and attributes."){
-		parameters.reference("src", pathSrc = "", "/group/group2[:attr]");
-		parameters.reference("dst", pathDst = "", "/group/group2[:attr]");
+		parameters.link("src", pathSrc = "", "/group/group2[:attr]");
+		parameters.link("dst", pathDst = "", "/group/group2[:attr]");
 	};
 
 	// TODO: recognize attr,attr vs path,path
@@ -966,8 +966,8 @@ public:
 	//options["dumpMap"].syntax = "<regexp>[:<file>]"
 	CmdDumpMap() : BasicCommand(__FUNCTION__, "Dump variable map, filtered by keys, to std or file.") {
 		parameters.separator = ':'; //s = ":";
-		parameters.reference("filter", filter = "", "regexp");
-		parameters.reference("filename", filename = "", "std::string");
+		parameters.link("filter", filter = "", "regexp");
+		parameters.link("filename", filename = "", "std::string");
 	};
 
 	void exec() const {
@@ -1187,7 +1187,7 @@ public:
 
 	CmdFormatOut() : SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
 		//parameters.separators.clear();
-		//parameters.reference("filename", filename, "");
+		//parameters.link("filename", filename, "");
 	};
 
 	void exec() const {
@@ -1271,19 +1271,19 @@ public:
 	CmdEncoding() : BasicCommand(__FUNCTION__, "Sets encodings parameters for polar and Cartesian products, including composites.") {
 
 		parameters.separator = ',';
-		parameters.reference("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		parameters.reference("gain", odim.scale = 0.0, "scaling coefficient");
-		parameters.reference("offset", odim.offset = 0.0, "bias");
-		parameters.reference("undetect", odim.undetect = 0.0, "marker");
-		parameters.reference("nodata", odim.nodata = 0.0, "marker");
+		parameters.link("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
+		parameters.link("gain", odim.scale = 0.0, "scaling coefficient");
+		parameters.link("offset", odim.offset = 0.0, "bias");
+		parameters.link("undetect", odim.undetect = 0.0, "marker");
+		parameters.link("nodata", odim.nodata = 0.0, "marker");
 
 		/// Polar-specific
-		parameters.reference("rscale", odim.rscale = 0.0, "metres");
-		parameters.reference("nrays", odim.geometry.height = 0L, "count");
-		parameters.reference("nbins", odim.geometry.width = 0l, "count");
+		parameters.link("rscale", odim.rscale = 0.0, "metres");
+		parameters.link("nrays", odim.geometry.height = 0L, "count");
+		parameters.link("nbins", odim.geometry.width = 0l, "count");
 
 		/// Experimental, for image processing
-		parameters.reference("quantity", odim.quantity = "", "string");
+		parameters.link("quantity", odim.quantity = "", "string");
 
 		//getQuantityMap().setTypeDefaults(odim, "C");
 		odim.setTypeDefaults("C"); // ??
@@ -1305,8 +1305,8 @@ public:
 			std::string test1;
 			std::string test2;
 			drain::ReferenceMap refmap;
-			refmap.reference("type", test1);
-			refmap.reference("gain", test2);
+			refmap.link("type", test1);
+			refmap.link("gain", test2);
 			refmap.setValues(params);
 			mout.warn() << "refmap: " << refmap << mout.endl;
 
@@ -1363,7 +1363,7 @@ class CmdAutoExec : public BasicCommand {
 public:
 
 	CmdAutoExec() : BasicCommand(__FUNCTION__, "Execute script automatically after each input. See --script") {
-		parameters.reference("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
+		parameters.link("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
 	}
 
 };
@@ -1375,7 +1375,7 @@ class CmdDataOk : public BasicCommand {
 public:
 
 	CmdDataOk() : BasicCommand(__FUNCTION__, "Status of last select."){
-		parameters.reference("flag", getResources().dataOk = true);
+		parameters.link("flag", getResources().dataOk = true);
 	};
 };
 */
@@ -1385,7 +1385,7 @@ class CmdErrorFlags : public SimpleCommand<std::string> {
 public:
 
 	CmdErrorFlags() : SimpleCommand<std::string>(__FUNCTION__, "Status of last select.", "flags"){
-		//parameters.reference("flags", value);
+		//parameters.link("flags", value);
 	};
 
 	virtual inline
@@ -1415,7 +1415,7 @@ class UndetectWeight : public BasicCommand {  // TODO: move to general commands,
 public:
 
 	UndetectWeight() : BasicCommand(__FUNCTION__, "Set the relative weight of data values assigned 'undetect'."){
-		parameters.reference("weight", DataCoder::undetectQualityCoeff, "0...1");
+		parameters.link("weight", DataCoder::undetectQualityCoeff, "0...1");
 	};
 
 
@@ -1657,7 +1657,7 @@ class OutputDataVerbosity : public BasicCommand {
 public:
 
 	OutputDataVerbosity() : BasicCommand(__FUNCTION__, "Determines if also intermediate results (1) are saved. Replacing --aStore ?") {
-		parameters.reference("level", ProductBase::outputDataVerbosity = 0, "0=default,1=intermediate results|2=extra debug results");
+		parameters.link("level", ProductBase::outputDataVerbosity = 0, "0=default,1=intermediate results|2=extra debug results");
 	};
 
 	void exec() const {
@@ -1714,9 +1714,9 @@ class CmdStore : public BasicCommand {
 public:
 
 	CmdStore() : BasicCommand(__FUNCTION__, "Set how intermediate and final outputs are stored. See --append"){
-		parameters.reference("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
-		//parameters.reference("append",  ProductBase::appendResults = "", "|data|dataset");
-		parameters.reference("append",  append, "|data|dataset (deprecated)");
+		parameters.link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
+		//parameters.link("append",  ProductBase::appendResults = "", "|data|dataset");
+		parameters.link("append",  append, "|data|dataset (deprecated)");
 	};
 
 	//int level;
@@ -1742,13 +1742,13 @@ public:
 	// Odim used for interface only. Zero used internally.
 	CmdQuantityConf(): BasicCommand(__FUNCTION__, "1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
 		//parameters.separator = ',';
-		parameters.reference("quantity:type", quantityType = "", "quantity (DBZH,VRAD,...) and storage type (C,S,d,f,...)");
-		//parameters.reference("type", odim.type, "C", "storage type (C,S,d,f,...)");
-		parameters.reference("gain", odim.scale = 0.0, "scaling coefficient");
-		parameters.reference("offset", odim.offset = 0.0, "bias");
-		parameters.reference("undetect", odim.undetect = 0.0, "marker");
-		parameters.reference("nodata", odim.nodata = 0.0, "marker");
-		parameters.reference("zero", zero = std::numeric_limits<double>::min(), "value");// what about max?
+		parameters.link("quantity:type", quantityType = "", "quantity (DBZH,VRAD,...) and storage type (C,S,d,f,...)");
+		//parameters.link("type", odim.type, "C", "storage type (C,S,d,f,...)");
+		parameters.link("gain", odim.scale = 0.0, "scaling coefficient");
+		parameters.link("offset", odim.offset = 0.0, "bias");
+		parameters.link("undetect", odim.undetect = 0.0, "marker");
+		parameters.link("nodata", odim.nodata = 0.0, "marker");
+		parameters.link("zero", zero = std::numeric_limits<double>::min(), "value");// what about max?
 
 	}
 
@@ -1878,8 +1878,8 @@ struct CmdVerbose2 : public BasicCommand {
 	int imageLevel;
 
 	CmdVerbose2() : BasicCommand(__FUNCTION__, "Set verbosity level") {
-		parameters.reference("level", level = 5);
-		parameters.reference("imageLevel", imageLevel = 4);
+		parameters.link("level", level = 5);
+		parameters.link("imageLevel", imageLevel = 4);
 	};
 
 	inline

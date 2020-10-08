@@ -59,8 +59,8 @@ class CompositeDefaultQuality : public BasicCommand { //SimpleCommand<double> {
 public:
 
 	CompositeDefaultQuality() : BasicCommand(__FUNCTION__, "Set default quality (for data without quality field)"){
-		//parameters.reference("weight", getResources().cDefaultQuality = 0.75, "0...1");
-		parameters.reference("weight", getResources().composite.defaultQuality = 0.75, "0...1");
+		//parameters.link("weight", getResources().cDefaultQuality = 0.75, "0...1");
+		parameters.link("weight", getResources().composite.defaultQuality = 0.75, "0...1");
 	};
 
 };
@@ -75,7 +75,7 @@ public:
 
 	CartesianProj() : BasicCommand(__FUNCTION__, "Set projection"){
 		parameters.separator = 0;
-		parameters.reference("projstr", getResources().projStr, "Proj4 syntax");
+		parameters.link("projstr", getResources().projStr, "Proj4 syntax");
 	};
 
 
@@ -139,8 +139,8 @@ public:
 
 	inline
 	CartesianSize() : BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
-		parameters.reference("width",  width = 400, "pixels");
-		parameters.reference("height", height = 0, "pixels");
+		parameters.link("width",  width = 400, "pixels");
+		parameters.link("height", height = 0, "pixels");
 	};
 
 	inline
@@ -165,7 +165,7 @@ public:
 	CartesianTime() : SimpleCommand<>(__FUNCTION__, "Modify the time of the current composite. See --cTimeDecay ",
 			"time", "201412091845", "YYYYmmddHHMMSS"){
 		//parameters.separators.clear();
-		//parameters.reference("time",  time,  "201412091845", "YYYYmmddHHMMSS");
+		//parameters.link("time",  time,  "201412091845", "YYYYmmddHHMMSS");
 	};
 
 	inline
@@ -191,7 +191,7 @@ class CompositeTimeDecay : public BasicCommand {
 
 	public:
 	CompositeTimeDecay() : BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
-		parameters.reference("decay", getResources().composite.decay = 1.0, "coeff");
+		parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
 	};
 
 };
@@ -207,7 +207,7 @@ class CompositeDecayTime : public SimpleCommand<int> {
 
 	public:
 	CompositeDecayTime() : SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
-		//parameters.reference("halftime", getResources().composite.decay = 1.0, "coeff");
+		//parameters.link("halftime", getResources().composite.decay = 1.0, "coeff");
 	};
 
 	inline

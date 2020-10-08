@@ -52,7 +52,7 @@ public:
 
 	QuantizatorFunctor(int bits = 4) : UnaryFunctor(__FUNCTION__,
 				"Quantize to n bits. (For integer images)"), mask(0), bitShift(0) {
-			parameters.reference("bits", this->bits = bits);
+			parameters.link("bits", this->bits = bits);
 	};
 
 

@@ -75,8 +75,8 @@ public:
 	inline
 	QualityThresholdOp(double threshold=0.0, double replace=NAN) :
 		QualityOp(__FUNCTION__, "Threshold data with quality") {
-		parameters.reference("threshold", this->threshold = threshold, "0.0...1.0");
-		parameters.reference("replace", this->replace = replace);
+		parameters.link("threshold", this->threshold = threshold, "0.0...1.0");
+		parameters.link("replace", this->replace = replace);
 	};
 
 	virtual inline

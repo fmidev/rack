@@ -54,9 +54,9 @@ public:
 	TimeOp(const std::string & time="NOMINAL", double decayPast = 1.0, double decayFuture = -1.0) :
 		DetectorOp(__FUNCTION__,"Created quality field based on measurement time for each beam.", "tech.err.time")
 	{
-		parameters.reference("time",  this->time = time, "NOMINAL,NOW,<YYYYmmddMMHH>");
-		parameters.reference("decayPast",  this->decayPast = decayPast, "mins");
-		parameters.reference("decayFuture",  this->decayFuture =  decayFuture, "mins");
+		parameters.link("time",  this->time = time, "NOMINAL,NOW,<YYYYmmddMMHH>");
+		parameters.link("decayPast",  this->decayPast = decayPast, "mins");
+		parameters.link("decayFuture",  this->decayFuture =  decayFuture, "mins");
 		UNIVERSAL = true;
 		REQUIRE_STANDARD_DATA = false;
 

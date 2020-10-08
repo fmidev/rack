@@ -70,10 +70,10 @@ public:
 		odim.quantity = "RATE";
 		odim.type = "S";
 
-		parameters.reference("rhohv", rhohv = 0.85, "met");
-		parameters.reference("dbz", dbzRange.vect, "heavy:hail").fillArray = true;
-		parameters.reference("kdp", kdpRange.vect, "heavy").fillArray = true;
-		parameters.reference("zdr", zdrRange.vect, "heavy").fillArray = true;
+		parameters.link("rhohv", rhohv = 0.85, "met");
+		parameters.link("dbz", dbzRange.vect, "heavy:hail").fillArray = true;
+		parameters.link("kdp", kdpRange.vect, "heavy").fillArray = true;
+		parameters.link("zdr", zdrRange.vect, "heavy").fillArray = true;
 
 		// quantityMap.setQuantityDefaults(odim, "RATE", "S");
 		/*
@@ -85,22 +85,22 @@ public:
 		 */
 
 		// Later these...
-		// allowedEncoding.dereference("gain");
+		// allowedEncoding.delink("gain");
 		/*
 		allowedEncoding.clear();
-		allowedEncoding.reference("type", odim.type);
-		allowedEncoding.reference("gain", odim.scale);
-		allowedEncoding.reference("offset", odim.offset);
-		//allowedEncoding.reference("freeze", odim.freeze);
-		allowedEncoding.reference("type", odim.type, "S");
-		allowedEncoding.reference("gain", odim.scale);
-		allowedEncoding.reference("offset", odim.offset);
+		allowedEncoding.link("type", odim.type);
+		allowedEncoding.link("gain", odim.scale);
+		allowedEncoding.link("offset", odim.offset);
+		//allowedEncoding.link("freeze", odim.freeze);
+		allowedEncoding.link("type", odim.type, "S");
+		allowedEncoding.link("gain", odim.scale);
+		allowedEncoding.link("offset", odim.offset);
 		*/
 
 		/*
-		allowedEncoding.reference("rscale", odim.rscale);
-		allowedEncoding.reference("nrays", odim.geometry.height);
-		allowedEncoding.reference("nbins", odim.geometry.width);
+		allowedEncoding.link("rscale", odim.rscale);
+		allowedEncoding.link("nrays", odim.geometry.height);
+		allowedEncoding.link("nbins", odim.geometry.width);
 		*/
 
 	};

@@ -65,7 +65,7 @@ public:
 	DefaultOp() :
 		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.class.unclass"){ //ECHO_CLASS_PRECIP){
 
-		parameters.reference("probability", this->probability = 0.8, "'resulting' probability");
+		parameters.link("probability", this->probability = 0.8, "'resulting' probability");
 		UNIVERSAL = true;
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;
@@ -103,9 +103,9 @@ public:
 	PrecipOp(double probMax=0.50, double dbz=20.0, double dbzSpan=+10.0) :
 		DetectorOp(__FUNCTION__, "Detects precipitation...", "precip"){ //ECHO_CLASS_PRECIP){
 
-		parameters.reference("probMax", this->probMax = probMax, "probability");
-		parameters.reference("dbz", this->dbz = dbz, "dBZ");
-		parameters.reference("dbzSpan", this->dbzSpan = dbzSpan, "dBZ");
+		parameters.link("probMax", this->probMax = probMax, "probability");
+		parameters.link("dbz", this->dbz = dbz, "dBZ");
+		parameters.link("dbzSpan", this->dbzSpan = dbzSpan, "dBZ");
 
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;

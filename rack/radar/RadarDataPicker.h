@@ -62,12 +62,12 @@ public:
 	/// Default constructor
 	RadarDataPicker(drain::ReferenceMap & variableMap, const OD & odim) : drain::image::SamplePicker(variableMap), odim(odim) {
 
-		variableMap.reference("i", current_i = 0);
-		variableMap.reference("j", current_j = 0);
-		variableMap.reference("LON", lon = 0.0);
-		variableMap.reference("LAT", lat = 0.0);
-		variableMap.reference("X", x = 0.0);
-		variableMap.reference("Y", y = 0.0);
+		variableMap.link("i", current_i = 0);
+		variableMap.link("j", current_j = 0);
+		variableMap.link("LON", lon = 0.0);
+		variableMap.link("LAT", lat = 0.0);
+		variableMap.link("X", x = 0.0);
+		variableMap.link("Y", y = 0.0);
 
 	}
 
@@ -152,8 +152,8 @@ public:
 		proj.setLocation(odim.lon, odim.lat);
 		proj.setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84");
 
-		variableMap.reference("RANGE", current_range = 0.0);
-		variableMap.reference("AZM", current_azm = 0.0);
+		variableMap.link("RANGE", current_range = 0.0);
+		variableMap.link("AZM", current_azm = 0.0);
 
 		setSize(odim.geometry.width, odim.geometry.height);
 
@@ -264,7 +264,7 @@ public:
 			mout.warn() << "frame could not be defined, incomplete metadata? (above)" << mout.endl;
 		}
 
-		variableMap.reference("j2", this->current_j2 = 0);
+		variableMap.link("j2", this->current_j2 = 0);
 
 		variableMap.separator = ','; // bug? Was not initialized
 		mout.debug() << "variableMap: " << variableMap << mout.endl;

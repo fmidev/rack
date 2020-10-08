@@ -51,9 +51,9 @@ class SegmentProberConf : public drain::ReferenceMap {
 public:
 
 	SegmentProberConf(S anchorMin=1, S anchorMax=255.0, D markerValue = 1) : markerValue(markerValue){
-		reference("anchorMin", this->anchorMin = anchorMin, "intensity");
-		reference("anchorMax", this->anchorMax = anchorMax, "intensity");
-		//reference("value", value);
+		link("anchorMin", this->anchorMin = anchorMin, "intensity");
+		link("anchorMax", this->anchorMax = anchorMax, "intensity");
+		//link("value", value);
 	}
 
 	S anchorMin;

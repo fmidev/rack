@@ -55,22 +55,22 @@ class PaletteOp : public ImageOp
 public:
 
 	PaletteOp() : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
-		this->parameters.reference("scale", scale = 1.0);
-		this->parameters.reference("offset", offset = 0.0);
+		this->parameters.link("scale", scale = 1.0);
+		this->parameters.link("offset", offset = 0.0);
 		specialCodes.title = "Special codes";
 	};
 
 	PaletteOp(const Palette & palette) : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
-		this->parameters.reference("scale", scale = 1.0);
-		this->parameters.reference("offset", offset = 0.0);
+		this->parameters.link("scale", scale = 1.0);
+		this->parameters.link("offset", offset = 0.0);
 		specialCodes.title = "Special codes";
 		setPalette(palette);
 	};
 
 
 	PaletteOp(const std::string & filename = "") : ImageOp(__FUNCTION__,"Applies colour palette to an image"), palettePtr(&myPalette) {
-			this->parameters.reference("scale", scale = 1.0);
-			this->parameters.reference("offset", offset = 0.0);
+			this->parameters.link("scale", scale = 1.0);
+			this->parameters.link("offset", offset = 0.0);
 			specialCodes.title = "Special codes";
 			myPalette.load(filename);
 		};

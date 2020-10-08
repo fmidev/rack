@@ -106,7 +106,7 @@ public:
 		if (odim.quantity.empty()){
 			//drain::ReferenceMap m;
 			ODIM m;
-			m.reference("what:quantity", odim.quantity);
+			m.link("what:quantity", odim.quantity);
 			m.addShortKeys();
 			m.updateValues(encoding);
 		}

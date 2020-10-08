@@ -68,9 +68,9 @@ public:
 		dataSelector.quantity = "HCLASS";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
-		parameters.reference("nonMet", this->nonMet = nonMet);
-		//parameters.reference("smooth", this->smooth, smooth);
-		parameters.reference("NOMET", this->NOMET = NOMET); // VAISALA code
+		parameters.link("nonMet", this->nonMet = nonMet);
+		//parameters.link("smooth", this->smooth, smooth);
+		parameters.link("NOMET", this->NOMET = NOMET); // VAISALA code
 	};
 
 

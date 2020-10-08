@@ -49,8 +49,8 @@ public:
 
 	PolarSite() : BasicCommand(__FUNCTION__,
 			"Set radar size location of the accumulated data. Also size etc., if --encoding set."){
-		parameters.reference("lon", lon = 0.0, "degrees");
-		parameters.reference("lat", lat = 0.0, "degrees");
+		parameters.link("lon", lon = 0.0, "degrees");
+		parameters.link("lat", lat = 0.0, "degrees");
 	}
 
 	void exec() const {
@@ -105,10 +105,10 @@ public:
 	double weight;
 
 	PolarPlot() : BasicCommand(__FUNCTION__, "Add a single data point."){
-		parameters.reference("lon", lon = 0.0, "longitude");
-		parameters.reference("lat", lat = 0.0, "latitude");
-		parameters.reference("value", value = 0.0, "value");
-		parameters.reference("weight", weight = 1.0, "weight");
+		parameters.link("lon", lon = 0.0, "longitude");
+		parameters.link("lat", lat = 0.0, "latitude");
+		parameters.link("value", value = 0.0, "value");
+		parameters.link("weight", weight = 1.0, "weight");
 	};
 
 
@@ -379,7 +379,7 @@ class PolarAddWeighted : public PolarAdd {
 public:
 
 	PolarAddWeighted() : PolarAdd(__FUNCTION__, "Adds the current product to the composite applying weight.") {
-		parameters.reference("weight", this->weight = weight, "0...1");//, count(1) {
+		parameters.link("weight", this->weight = weight, "0...1");//, count(1) {
 	};
 
 };
@@ -391,7 +391,7 @@ public:
 	PolarExtract() : SimpleCommand<std::string>(__FUNCTION__, "Extract polar-coordinate data that has been accumulated.",
 			"channels", "dw", "Layers: data,count,weight,std.deviation") {
 		// RackLet(__FUNCTION__,"Extract polar-coordinate data that has been accumulated.") {
-		// parameters.reference("channels", channels, "dw", "Accumulation layers to be extracted");
+		// parameters.link("channels", channels, "dw", "Accumulation layers to be extracted");
 	};
 
 	void exec() const {

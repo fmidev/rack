@@ -309,45 +309,45 @@ void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<P
 // kludge
 void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
+	parameters.link("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
 
-	parameters.reference("vradDevMin", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	parameters.link("vradDevMin", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
 	this->vradDev.min = 0; //0.9 * vradDevMin;
 	this->vradDev.max = 1.0 * vradDevMin;
 
-	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
-	parameters.reference("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
+	// parameters.link("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
+	parameters.link("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
 	this->rhoHV.min = 0.9 * rhoHVmax;
 	this->rhoHV.max = rhoHVmax;
-	//parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
+	//parameters.link("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
 
-	parameters.reference("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
+	parameters.link("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
 
-	parameters.reference("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-	parameters.reference("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+	parameters.link("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+	parameters.link("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
 
 }
 
 void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.reference("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
+	parameters.link("dbzPeak", this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
 
 	// THIS IS INVERTED (wrt. BIRD)
 	VRAD_FLIP=true;
-	parameters.reference("vradDevMax", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	parameters.link("vradDevMax", this->vradDev.vect, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
 	this->vradDev.min = 0; //0.9 * vradDevMax;
 	this->vradDev.max = 1.0 * vradDevMax;
 
-	// parameters.reference("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
-	parameters.reference("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
+	// parameters.link("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
+	parameters.link("rhoHVmax", this->rhoHV.vect, "Fuzzy threshold of maximum rhoHV value");
 	this->rhoHV.min = 0.9 * rhoHVmax;
 	this->rhoHV.max = rhoHVmax;
-	//parameters.reference("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
+	//parameters.link("rhoHVmax", this->rhoHVmax = rhoHVmax, "Maximum rhoHV value (fuzzy)");
 
-	parameters.reference("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
+	parameters.link("zdrAbsMin", this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
 
-	parameters.reference("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-	parameters.reference("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+	parameters.link("windowWidth", this->window.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+	parameters.link("windowHeight", this->window.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
 
 }
 

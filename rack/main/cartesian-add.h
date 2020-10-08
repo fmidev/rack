@@ -85,7 +85,7 @@ class CartesianAddWeighted : public CompositeAdd {
 public:
 
 	CartesianAddWeighted() : CompositeAdd(__FUNCTION__, "Adds the current product to the composite applying weight.") {
-		parameters.reference("weight", this->weight = weight, "0...1");
+		parameters.link("weight", this->weight = weight, "0...1");
 	};
 
 };

@@ -232,9 +232,9 @@ ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 void BlenderOp::initRefs() {
 	drain::SmartMap<std::string> aliasMap;
 	getSmootherAliasMap(aliasMap);
-	parameters.reference("smooth", this->smootherKey, aliasMap.toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
-	parameters.reference("mix", this->mixerKey, "b[/coeff:<coeff>]|m; (quality) mix, (quality) max");
-	parameters.reference("loops", this->loops, "number of repetitions");
+	parameters.link("smooth", this->smootherKey, aliasMap.toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
+	parameters.link("mix", this->mixerKey, "b[/coeff:<coeff>]|m; (quality) mix, (quality) max");
+	parameters.link("loops", this->loops, "number of repetitions");
 }
 
 }  // namespace image

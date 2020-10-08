@@ -73,9 +73,9 @@ public:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		dataSelector.count = 1;
-		parameters.reference("decay", this->decay = decay);
-		parameters.reference("pathSyntax", this->pathSyntax = pathSyntax);
-		// parameters.reference("filename", this->filename, filename);
+		parameters.link("decay", this->decay = decay);
+		parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
+		// parameters.link("filename", this->filename, filename);
 	};
 
 

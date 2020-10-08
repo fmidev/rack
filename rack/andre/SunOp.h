@@ -61,8 +61,8 @@ public:
 	 */
 	SunOp(double beamWidth = 1.0, double sensitivity=0.75) :
 		DetectorOp("Sun","Draw the sun beam", "signal.sun"){
-		parameters.reference("beamWidth", this->beamWidth = beamWidth, "deg");
-		parameters.reference("sensitivity", this->sensitivity = sensitivity, "0...1");
+		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
+		parameters.link("sensitivity", this->sensitivity = sensitivity, "0...1");
 		dataSelector.quantity = "^DBZH$";
 	};
 

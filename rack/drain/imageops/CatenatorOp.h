@@ -50,8 +50,8 @@ public:
 
 	//CatenatorOp(const std::string & p="") : ImageBaseOp("CatenatorOp","Catenates images, mode=vert|depth (vertically or in-depth, by adding channels). Horz not yet implemented.",
 	CatenatorOp(double scale=1.0, double offset=0.0) : ImageOp(__FUNCTION__, "Catenates images"){
-		parameters.reference("scale", this->scale = scale);
-		parameters.reference("offset", this->offset = offset);
+		parameters.link("scale", this->scale = scale);
+		parameters.link("offset", this->offset = offset);
 		//setParameters(p);
 	};
 

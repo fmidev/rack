@@ -116,11 +116,11 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 struct HistEntry : BeanLike {
 
 	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
-		parameters.reference("index", index);
-		parameters.reference("min", binRange.min);
-		parameters.reference("max", binRange.max);
-		parameters.reference("count", count);
-		parameters.reference("label", label);
+		parameters.link("index", index);
+		parameters.link("min", binRange.min);
+		parameters.link("max", binRange.max);
+		parameters.link("count", count);
+		parameters.link("label", label);
 	};
 
 	drain::Histogram::vect_t::size_type index;
@@ -145,11 +145,11 @@ public:
 
 	//	CmdHistogram() : SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
-		parameters.reference("count", count = 256);
-		parameters.reference("range", range.vect);
-		//parameters.reference("max", maxValue = +std::numeric_limits<double>::max());
-		parameters.reference("filename", filename="", "<filename>.txt|-");
-		parameters.reference("store", store="histogram", "<attribute_key>");
+		parameters.link("count", count = 256);
+		parameters.link("range", range.vect);
+		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
+		parameters.link("filename", filename="", "<filename>.txt|-");
+		parameters.link("store", store="histogram", "<attribute_key>");
 	};
 
 	// virtual	inline const std::string & getDescription() const { return description; };
@@ -273,8 +273,8 @@ class CmdGeoTiffTile : public BasicCommand {
 public:
 
 	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
-		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
-		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
+		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
+		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
 	};
 
 
@@ -288,12 +288,12 @@ public:
 	CmdOutputConf() : BasicCommand(__FUNCTION__, "Format specific configurations") {
 
 		parameters.separator = ':';
-		parameters.reference("format", format, "h5|png|tif");
-		parameters.reference("params", params, "<key>=<value>[,<key2>=<value2>,...]");
+		parameters.link("format", format, "h5|png|tif");
+		parameters.link("params", params, "<key>=<value>[,<key2>=<value2>,...]");
 
-		gtiffConf.reference("tilewidth", FileGeoTIFF::tileWidth=256);
-		gtiffConf.reference("tileheight", FileGeoTIFF::tileHeight=0);
-		gtiffConf.reference("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+		gtiffConf.link("tilewidth", FileGeoTIFF::tileWidth=256);
+		gtiffConf.link("tileheight", FileGeoTIFF::tileHeight=0);
+		gtiffConf.link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
 
 	};
 
@@ -341,9 +341,9 @@ class CmdOutputTiffConf : public BasicCommand {
 public:
 
 	CmdOutputTiffConf() : BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
-		parameters.reference("tilewidth", FileGeoTIFF::tileWidth=256);
-		parameters.reference("tileheight", FileGeoTIFF::tileHeight=0);
-		parameters.reference("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
+		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
+		parameters.link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
 	};
 
 
@@ -357,7 +357,7 @@ class CmdOutputPrefix : public BasicCommand {
 public:
 
 	CmdOutputPrefix() : BasicCommand(__FUNCTION__, "Path prefix for output files."){
-		parameters.reference("path", getResources().outputPrefix = "");
+		parameters.link("path", getResources().outputPrefix = "");
 	};
 };
 extern CommandEntry<CmdOutputPrefix> cmdOutputPrefix;

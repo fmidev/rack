@@ -48,8 +48,8 @@ class FreezingLevel : public drain::BeanLike {
 public:
 
 	FreezingLevel() : BeanLike(__FUNCTION__, "Freezing level modelled simply as its height and thickness."){
-		parameters.reference("height", height = NAN, "km");
-		parameters.reference("thickness", thickness = 0.1, "km");
+		parameters.link("height", height = NAN, "km");
+		parameters.link("thickness", thickness = 0.1, "km");
 	}
 
 	virtual

@@ -42,22 +42,22 @@ void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs
 
 		// compiler test...
 #ifdef INT64_C
-		reference("where:xsize", xsize = INT64_C(0));
-		reference("where:ysize", ysize = INT64_C(0));
+		link("where:xsize", xsize = INT64_C(0));
+		link("where:ysize", ysize = INT64_C(0));
 #else
-		reference("where:xsize", xsize = 0L);
-		reference("where:ysize", ysize = 0L);
+		link("where:xsize", xsize = 0L);
+		link("where:ysize", ysize = 0L);
 #endif
 
-		reference("where:xscale", xscale = 0.0);
-		reference("where:yscale", yscale = 0.0);
+		link("where:xscale", xscale = 0.0);
+		link("where:yscale", yscale = 0.0);
 
-		//reference("where:minheight",  minheight = 0.0);
-		//reference("where:maxheight",  maxheight = 0.0);
-		reference("where:minheight",  height.vect[0] = 0.0);
-		reference("where:maxheight",  height.vect[1] = 0.0);
+		//link("where:minheight",  minheight = 0.0);
+		//link("where:maxheight",  maxheight = 0.0);
+		link("where:minheight",  height.vect[0] = 0.0);
+		link("where:maxheight",  height.vect[1] = 0.0);
 
-		reference("how:NI",  NI = 0.0);
+		link("how:NI",  NI = 0.0);
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
@@ -77,28 +77,28 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 	object = "XSEC";
 
 	if (initialize & ODIMPathElem::ROOT){
-		reference("where:lon", lon = 0.0);
-		reference("where:lat", lat = 0.0);
+		link("where:lon", lon = 0.0);
+		link("where:lat", lat = 0.0);
 		height = 0.0;
-		reference("where:height", height.vect[0]);
+		link("where:height", height.vect[0]);
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("where:levels",  levels = 0L);
-		reference("where:interval",  interval = 0.0);
+		link("where:levels",  levels = 0L);
+		link("where:interval",  interval = 0.0);
 
-		//reference("how:minRange", minRange = 0.0);// where or how??
-		//reference("how:range", range = 0.0);// where or how??
+		//link("how:minRange", minRange = 0.0);// where or how??
+		//link("how:range", range = 0.0);// where or how??
 		// Product will use range (Range object)
-		reference("how:minRange", range.vect[0] = 0.0);// where or how??
-		reference("how:range",    range.vect[1] = 0.0);// where or how??
+		link("how:minRange", range.vect[0] = 0.0);// where or how??
+		link("how:range",    range.vect[1] = 0.0);// where or how??
 
-		reference("where:startaz", azm.vect[0] = 0.0);
-		reference("where:stopaz",  azm.vect[1] = 0.0);
-		// reference("where:startaz", startaz = 0.0);
-		// reference("where:stopaz", stopaz = 0.0);
+		link("where:startaz", azm.vect[0] = 0.0);
+		link("where:stopaz",  azm.vect[1] = 0.0);
+		// link("where:startaz", startaz = 0.0);
+		// link("where:stopaz", stopaz = 0.0);
 
-		reference("where:azSlots", azSlots = 1L);
+		link("where:azSlots", azSlots = 1L);
 	}
 
 	if (initialize & ODIMPathElem::DATA){
@@ -113,15 +113,15 @@ void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
 	object = "XSEC";
 
 	if (initialize & ODIMPathElem::ROOT){
-		reference("where:lon", lon = 0.0);
-		reference("where:lat", lat = 0.0);
+		link("where:lon", lon = 0.0);
+		link("where:lat", lat = 0.0);
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		reference("where:minRange", range.vect[0] = 0.0);  // where or how??
-		reference("where:range",    range.vect[1] = 0.0);  // where or how??
-		reference("where:az_angle", az_angle = 0.0);
-		reference("where:angles",   angles = 0.0);
+		link("where:minRange", range.vect[0] = 0.0);  // where or how??
+		link("where:range",    range.vect[1] = 0.0);  // where or how??
+		link("where:az_angle", az_angle = 0.0);
+		link("where:angles",   angles = 0.0);
 	}
 
 	if (initialize & ODIMPathElem::DATA){

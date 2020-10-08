@@ -94,18 +94,18 @@ public:
 	inline
 	SegmentAreaOp(double min=1.0, double max=static_cast<double>(0xffff)) : //, const std::string & mapping="d", double scale=1.0, double offset=0.0) :
     	SegmentOp(__FUNCTION__, "Computes segment sizes.") {
-		parameters.reference("min", this->min = min);
-		parameters.reference("max", this->max = max);
-		//parameters.reference("functor", this->functorName);
-		parameters.reference("functor", this->functorStr);  //  eg. "FuzzyStep"
-		//parameters.reference("functorParams", this->functorParams);
+		parameters.link("min", this->min = min);
+		parameters.link("max", this->max = max);
+		//parameters.link("functor", this->functorName);
+		parameters.link("functor", this->functorStr);  //  eg. "FuzzyStep"
+		//parameters.link("functorParams", this->functorParams);
     };
 
 	inline
 	SegmentAreaOp(const drain::UnaryFunctor & ftor, double min=1, double max=static_cast<double>(0xffff)) : //, const std::string & mapping="d", double scale=1.0, double offset=0.0) :
     	SegmentOp(__FUNCTION__, "Computes segment sizes", ftor) {
-		parameters.reference("min", this->min = min);
-		parameters.reference("max", this->max = max);
+		parameters.link("min", this->min = min);
+		parameters.link("max", this->max = max);
     };
 
 	/// Resizes dst to width and height of src. Ensures integer type.

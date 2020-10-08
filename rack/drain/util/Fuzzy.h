@@ -209,10 +209,10 @@ private:
 
 	virtual
 	void setReferences(){
-		this->parameters.reference("startPos", this->range.min);
-		this->parameters.reference("endPos", this->range.max);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("startPos", this->range.min);
+		this->parameters.link("endPos", this->range.max);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -312,11 +312,11 @@ private:
 
 	virtual
 	void setReferences(){
-		this->parameters.reference("startPos", this->range.min);
-		this->parameters.reference("peakPos", this->peakPos);
-		this->parameters.reference("endPos", this->range.max);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("startPos", this->range.min);
+		this->parameters.link("peakPos", this->peakPos);
+		this->parameters.link("endPos", this->range.max);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -393,10 +393,10 @@ protected:
 private:
 
 	void setReferences(){
-		this->parameters.reference("location", this->location);
-		this->parameters.reference("width", this->width);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("location", this->location);
+		this->parameters.link("width", this->width);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -462,10 +462,10 @@ protected:
 private:
 
 	void setReferences(){
-		this->parameters.reference("location", this->location);
-		this->parameters.reference("width", this->width);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("location", this->location);
+		this->parameters.link("width", this->width);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -544,10 +544,10 @@ protected:
 private:
 
 	void setReferences(){
-		this->parameters.reference("location", this->location);
-		this->parameters.reference("width", this->width);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("location", this->location);
+		this->parameters.link("width", this->width);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -633,10 +633,10 @@ protected:
 private:
 
 	void setReferences(){
-		this->parameters.reference("location", this->location);
-		this->parameters.reference("width", this->width);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("location", this->location);
+		this->parameters.link("width", this->width);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };
@@ -715,10 +715,10 @@ protected:
 private:
 
 	void setReferences(){
-		this->parameters.reference("location", this->location);
-		this->parameters.reference("width", this->width);
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
+		this->parameters.link("location", this->location);
+		this->parameters.link("width", this->width);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 	}
 
 };

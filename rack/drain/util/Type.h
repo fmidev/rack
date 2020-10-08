@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <typeinfo>
 //#include <type_traits>
-#include <limits>
+//#include <limits>
 #include <list>
 #include <set>
 
@@ -262,7 +262,9 @@ public:
 		else {
 			Logger mout(__FUNCTION__, __FILE__);
 			mout.error() << "unimplemented type: ..." << t.name() << mout.endl;
-			return T(); //F::template callback<char,T>();
+			//return T(); //F::template callback<char,T>();
+			// Problem with ref types
+			return F::template callback<char,T>();
 		}
 
 	}

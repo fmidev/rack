@@ -54,7 +54,7 @@ public:
     
 	RunLengthOp(const std::string &name, double threshold=0) :
 		ImageOp(name, "Computes lengths of segments of intensity above threshold.") {
-		parameters.reference("threshold", this->threshold = threshold);
+		parameters.link("threshold", this->threshold = threshold);
 	};
 
 	double threshold;

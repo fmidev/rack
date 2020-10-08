@@ -55,33 +55,33 @@ public:
 		VolumeOp<VerticalProfileODIM>(__FUNCTION__ ,"Computes vertical dBZ distribution in within range [minRange,maxRange] km.") { // std::string type="d", double gain=0.5, double offset=-32.0) :
 
 		odim.range.set(minRange, range);
-		parameters.reference("range",  odim.range.vect, "km"); //  = range
-		// parameters.reference("minRange",  odim.minRange = minRange, "km");
-		//parameters.reference("range",  odim.range = range, "km");
+		parameters.link("range",  odim.range.vect, "km"); //  = range
+		// parameters.link("minRange",  odim.minRange = minRange, "km");
+		//parameters.link("range",  odim.range = range, "km");
 
 		odim.height.set(minHeight, maxHeight);
-		parameters.reference("height", odim.height.vect, "m");
-		//parameters.reference("minHeight", odim.height.min = minHeight, "m");
-		//parameters.reference("maxHeight", odim.height.max = maxHeight, "m");
+		parameters.link("height", odim.height.vect, "m");
+		//parameters.link("minHeight", odim.height.min = minHeight, "m");
+		//parameters.link("maxHeight", odim.height.max = maxHeight, "m");
 
-		parameters.reference("levels", odim.levels = levels);
+		parameters.link("levels", odim.levels = levels);
 
 		odim.azm.set(startaz, stopaz);
-		parameters.reference("azm", odim.azm.vect, "deg");
-		// parameters.reference("startaz", odim.startaz = startaz, "deg");
-		// parameters.reference("stopaz", odim.stopaz = stopaz, "deg");
-		parameters.reference("azSlots", odim.azSlots = azSlots);
+		parameters.link("azm", odim.azm.vect, "deg");
+		// parameters.link("startaz", odim.startaz = startaz, "deg");
+		// parameters.link("stopaz", odim.stopaz = stopaz, "deg");
+		parameters.link("azSlots", odim.azSlots = azSlots);
 
-		odim.reference("interval", interval);
+		odim.link("interval", interval);
 
 		odim.object = "VP";  // used by VolumeOp::processVolume
 		odim.product = "VP"; // used by VericalProfileOp::processVolume
 
 		odim.quantity = "";  // will be chosen by dataselector
 
-		allowedEncoding.reference("type", odim.type = "d");
-		//allowedEncoding.reference("gain", odim.scale, 0.5);
-		//allowedEncoding.reference("offset", odim.offset, -32.0);
+		allowedEncoding.link("type", odim.type = "d");
+		//allowedEncoding.link("gain", odim.scale, 0.5);
+		//allowedEncoding.link("offset", odim.offset, -32.0);
 
 		dataSelector.quantity = "^DBZH$";
 

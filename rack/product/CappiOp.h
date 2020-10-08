@@ -55,10 +55,10 @@ public:
 		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", "WAVG,1,8,-40")
 		{
 
-		parameters.reference("altitude", this->altitude = altitude, "metres");
-		parameters.reference("weightMin", this->weightMin = weightMin, "scalar");
-		parameters.reference("weightExponent", this->weightExponent = weightExponent, "scalar");
-		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
+		parameters.link("altitude", this->altitude = altitude, "metres");
+		parameters.link("weightMin", this->weightMin = weightMin, "scalar");
+		parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
+		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
 
 		odim.product  = "PCAPPI";
 		odim.type = "";

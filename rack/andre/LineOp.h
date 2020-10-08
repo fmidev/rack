@@ -74,14 +74,14 @@ public:
 		DetectorOp(__FUNCTION__, "Detects lines caused by electromagnetic interference.", "signal.emitter.line")
 	{
 		REQUIRE_STANDARD_DATA = true;
-		parameters.reference("lengthMin",  this->lengthMin = lengthMin, "km");
-		parameters.reference("widthMax", this->widthMax = widthMax, "deg");
-		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");
-		parameters.reference("reflMin2", this->reflMin2 = reflMin2, "dBZ");
-		parameters.reference("reflMin3", this->reflMin3 = reflMin3, "dBZ");
-		//parameters.reference("sensitivity",  this->sensitivity,  sensitivity);
-		// parameters.reference("enhancement",  this->enhancement,  enhancement);
-		// parameters.reference("eHeight",  this->eHeight, eHeight);
+		parameters.link("lengthMin",  this->lengthMin = lengthMin, "km");
+		parameters.link("widthMax", this->widthMax = widthMax, "deg");
+		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
+		parameters.link("reflMin2", this->reflMin2 = reflMin2, "dBZ");
+		parameters.link("reflMin3", this->reflMin3 = reflMin3, "dBZ");
+		//parameters.link("sensitivity",  this->sensitivity,  sensitivity);
+		// parameters.link("enhancement",  this->enhancement,  enhancement);
+		// parameters.link("eHeight",  this->eHeight, eHeight);
 		dataSelector.quantity = "DBZ.*";
 		//double d =
 	}

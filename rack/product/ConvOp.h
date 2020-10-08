@@ -114,20 +114,20 @@ public:
 	ConvOp(double maxEchoThreshold = 25.0, double cellDiameter = 3.0, double echoTopThreshold = 2.0, double echoTopDBZ = 20.0, double smoothRad = 0.0, double smoothAzm = 0.0) :
 		PolarProductOp(__FUNCTION__, "Computes the probability of convection based on fuzzy cell intensity, area and height."), top(true) {
 
-		parameters.reference("maxEchoThreshold", this->maxEchoThreshold = maxEchoThreshold, "dBZ");
-		parameters.reference("cellDiameter", this->cellDiameter = cellDiameter, "km");
-		parameters.reference("echoTopThreshold", this->echoTopThreshold = echoTopThreshold, "km");
-		parameters.reference("echoTopDBZ", this->echoTopDBZ = echoTopDBZ, "dBZ");
+		parameters.link("maxEchoThreshold", this->maxEchoThreshold = maxEchoThreshold, "dBZ");
+		parameters.link("cellDiameter", this->cellDiameter = cellDiameter, "km");
+		parameters.link("echoTopThreshold", this->echoTopThreshold = echoTopThreshold, "km");
+		parameters.link("echoTopDBZ", this->echoTopDBZ = echoTopDBZ, "dBZ");
 
-		parameters.reference("smoothAzm", this->smoothAzm = smoothAzm, "deg");
-		parameters.reference("smoothRad", this->smoothRad = smoothRad, "km");
+		parameters.link("smoothAzm", this->smoothAzm = smoothAzm, "deg");
+		parameters.link("smoothRad", this->smoothRad = smoothRad, "km");
 
-		allowedEncoding.reference("nbins", odim.geometry.width = 0l);
-		allowedEncoding.reference("rscale", odim.rscale = 0.0);
+		allowedEncoding.link("nbins", odim.geometry.width = 0l);
+		allowedEncoding.link("rscale", odim.rscale = 0.0);
 
 		// Larissa
-		allowedEncoding.reference("undetect", odim.undetect = 0.0);
-		allowedEncoding.reference("nodata",   odim.nodata = 0.0);
+		allowedEncoding.link("undetect", odim.undetect = 0.0);
+		allowedEncoding.link("nodata",   odim.nodata = 0.0);
 
 		dataSelector.quantity = "^DBZH$";
 

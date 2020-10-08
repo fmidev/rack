@@ -112,9 +112,9 @@ public:
 
 	inline
 	ImageReader(ReferenceMap & ref) : SamplePicker(ref) {//static int dummy;
-		ref.reference("i", current_i = 0);
-		ref.reference("j", current_j = 0);
-		ref.reference("j2", current_j2 = 0);
+		ref.link("i", current_i = 0);
+		ref.link("j", current_j = 0);
+		ref.link("j2", current_j2 = 0);
 	}
 
 	inline
@@ -200,8 +200,8 @@ public:
 				mout.warn() << key << ": empty image " << it->second << mout.endl;
 			*/
 			mout.debug(1) << "referencing: " << key << ',' << minusStr << key << mout.endl;
-			variableMap.reference(key, values[key]=0);
-			variableMap.reference(minusStr+key, values[minusStr+key]=0);
+			variableMap.link(key, values[key]=0);
+			variableMap.link(minusStr+key, values[minusStr+key]=0);
 		}
 		mout.debug() << "variables: " << variableMap << mout.endl;
 

@@ -222,7 +222,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 		else {
 			//hsize_t dims = new hsize_t[2];
 			H5Sget_simple_extent_dims(aspace, &elements, NULL);
-			mout.debug() << " Reading attribute: " << attr_name;
+			mout.debug(1) << " Reading attribute: " << attr_name;
 			mout << "  rank: " << rank;
 			mout << "  elements: " << elements << mout.endl;
 		}

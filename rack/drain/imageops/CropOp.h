@@ -69,10 +69,10 @@ public:
 
 	inline
 	CropOp(int width=0, int height=0, int i0=0, int j0=0) : ImageOp (__FUNCTION__, "Crop image.") {
-		 parameters.reference("width", this->width  = width);
-		 parameters.reference("height",this->height = height);
-		 parameters.reference("i", this->i0 = i0);
-		 parameters.reference("j", this->j0 = j0);
+		 parameters.link("width", this->width  = width);
+		 parameters.link("height",this->height = height);
+		 parameters.link("i", this->i0 = i0);
+		 parameters.link("j", this->j0 = j0);
 		 //setParameters(p);
 	};
 

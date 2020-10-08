@@ -60,8 +60,8 @@ class ScalingFunctor : public UnaryFunctor {
 public:
 
 	ScalingFunctor(double scale = 1.0, double bias = 0.0) : UnaryFunctor(__FUNCTION__, "Rescales values linerarly: y = scale*x + bias", scale, bias){
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 	};
 
 	//virtual
@@ -106,8 +106,8 @@ class RemappingFunctor : public UnaryFunctor {
 public:
 
 	RemappingFunctor(double fromValue = 0.0, double toValue = 0.0) : UnaryFunctor(__FUNCTION__, "Rescales intensities linerarly") , fromValue(fromValue), toValue(toValue) {
-		this->getParameters().reference("fromValue", this->fromValue = fromValue);
-		this->getParameters().reference("toValue", this->toValue = toValue);
+		this->getParameters().link("fromValue", this->fromValue = fromValue);
+		this->getParameters().link("toValue", this->toValue = toValue);
 	};
 
 	//virtual
@@ -144,8 +144,8 @@ class ThresholdFunctor : public UnaryFunctor {
 public:
 
 	ThresholdFunctor(double threshold = 0.5, double replace = 0.0) : UnaryFunctor(__FUNCTION__, "Resets values lower than a threshold") , threshold(threshold), replace(replace) {
-		this->getParameters().reference("threshold", this->threshold = threshold);
-		this->getParameters().reference("replace", this->replace = replace);
+		this->getParameters().link("threshold", this->threshold = threshold);
+		this->getParameters().link("replace", this->replace = replace);
 	};
 
 	inline
@@ -174,7 +174,7 @@ class BinaryThresholdFunctor : public ThresholdFunctor {
 public: //re
 
 	BinaryThresholdFunctor(double threshold = 0.5, double replace = 0.0, double replaceHigh = 1.0) : ThresholdFunctor(threshold, replace),  replaceHigh(replaceHigh) {
-		this->getParameters().reference("replaceHigh", this->replaceHigh = replaceHigh);
+		this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
 	};
 
 	inline
@@ -208,8 +208,8 @@ class AdditionFunctor : public BinaryFunctor {
 public:
 
 	AdditionFunctor(double scale = 1.0, double bias = 0.0) : BinaryFunctor(__FUNCTION__, "Adds values", scale, bias){
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 	};
 
 	inline
@@ -233,8 +233,8 @@ class SubtractionFunctor : public BinaryFunctor {
 public:
 
 	SubtractionFunctor(double scale = 1.0, double bias = 0.0) : BinaryFunctor(__FUNCTION__, "Subtracts values", scale, bias){  // , bool LIMIT=false
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 	};
 
 	inline
@@ -271,8 +271,8 @@ class MultiplicationFunctor : public BinaryFunctor {
 public:
 
 	MultiplicationFunctor(double scale = 1.0, double bias = 0.0) : BinaryFunctor(__FUNCTION__, "Rescales intensities linerarly", scale, bias){
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 		// update();
 	};
 
@@ -295,8 +295,8 @@ class DivisionFunctor : public BinaryFunctor {
 public:
 
 	DivisionFunctor(double scale = 1.0, double bias = 0.0) : BinaryFunctor(__FUNCTION__, "Rescales intensities linerarly", scale, bias){
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 		//update();
 	};
 
@@ -340,9 +340,9 @@ class MixerFunctor : public BinaryFunctor {
 public:
 
 	MixerFunctor(double coeff=0.5, double scale=1.0, double bias=0.0) : BinaryFunctor(__FUNCTION__, "Rescales intensities linerarly", scale, bias), coeff(coeff), scaleFinal2(1.0){
-		this->getParameters().reference("coeff", this->coeff);
-		this->getParameters().reference("scale", this->scale);
-		this->getParameters().reference("bias", this->bias);
+		this->getParameters().link("coeff", this->coeff);
+		this->getParameters().link("scale", this->scale);
+		this->getParameters().link("bias", this->bias);
 		update();
 		//updateScale();
 	};

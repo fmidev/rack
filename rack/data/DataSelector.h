@@ -630,7 +630,7 @@ class DatasetSelector : public DataSelector {
 public:
 
 	DatasetSelector(){
-		parameters.dereference("path");
+		parameters.delink("path");
 		pathMatcher.setElems(ODIMPathElem::DATASET);
 	}
 

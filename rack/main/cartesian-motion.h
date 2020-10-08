@@ -96,9 +96,9 @@ class CmdMotionFill : public BasicCommand {
 public:
 
 	CmdMotionFill() : BasicCommand(__FUNCTION__, "Fills vectors to open areas."){
-		this->parameters.reference("width",  this->conf.width  = 5, "pixels");
-		this->parameters.reference("height", this->conf.height = 5, "pixels");
-		this->parameters.reference("qualitySensitive", this->qualitySensitive = true, "0,1");
+		this->parameters.link("width",  this->conf.width  = 5, "pixels");
+		this->parameters.link("height", this->conf.height = 5, "pixels");
+		this->parameters.link("qualitySensitive", this->qualitySensitive = true, "0,1");
 	};
 
 

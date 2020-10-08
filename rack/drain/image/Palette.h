@@ -51,13 +51,13 @@ class PaletteEntry2 : public LegendEntry, public BeanLike {
 public:
 
 	PaletteEntry2(): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.reference("label",  this->label);
-		parameters.reference("colour", this->colour);
+		parameters.link("label",  this->label);
+		parameters.link("colour", this->colour);
 	}
 
 	PaletteEntry2(const PaletteEntry2 & pale): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.reference("label",  this->label = pale.label);
-		parameters.reference("colour", this->colour = pale.colour);
+		parameters.link("label",  this->label = pale.label);
+		parameters.link("colour", this->colour = pale.colour);
 	}
 
 	PaletteEntry2 & operator=(const PaletteEntry2 & pale){

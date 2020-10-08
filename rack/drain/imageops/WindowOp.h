@@ -56,22 +56,22 @@ public:
 
 	WindowOp(const std::string & name = __FUNCTION__, const std::string & description="") :
 		ImageOp(name, description) {
-		this->parameters.reference("width",  conf.width);  // NEW 2017
-		this->parameters.reference("height", conf.height);  // NEW 2017
+		this->parameters.link("width",  conf.width);  // NEW 2017
+		this->parameters.link("height", conf.height);  // NEW 2017
 
 	};
 
 	WindowOp(const std::string & name, const std::string & description, unsigned int width, unsigned int height) :
 		ImageOp(name, description) {
-		this->parameters.reference("width",  conf.width = width);   // NEW 2017
-		this->parameters.reference("height", conf.height = height);  // NEW 2017
+		this->parameters.link("width",  conf.width = width);   // NEW 2017
+		this->parameters.link("height", conf.height = height);  // NEW 2017
 		setSize(width, height);
 	};
 
 	WindowOp(typename W::conf_t & c, const std::string & name = __FUNCTION__, const std::string & description="") :
 		ImageOp(name, description), conf(c) {
-		this->parameters.reference("width",  conf.width);
-		this->parameters.reference("height", conf.height);
+		this->parameters.link("width",  conf.width);
+		this->parameters.link("height", conf.height);
 
 	};
 

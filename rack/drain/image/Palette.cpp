@@ -66,12 +66,12 @@ PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__){
 void PaletteEntry::init(){
 	color.resize(1, 0);
 	//color[3] = 255.0;
-	parameters.reference("value", value = 0.0);
-	//parameters.reference("color", color);
-	parameters.reference("alpha", alpha = 255.0);
-	parameters.reference("label", label);
-	parameters.reference("hidden", hidden=false);
-	parameters.reference("id", id);
+	parameters.link("value", value = 0.0);
+	//parameters.link("color", color);
+	parameters.link("alpha", alpha = 255.0);
+	parameters.link("label", label);
+	parameters.link("hidden", hidden=false);
+	parameters.link("id", id);
 }
 
 void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
@@ -697,11 +697,11 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 struct PalEntry : BeanLike {
 
 	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
-		parameters.reference("index", index);
-		parameters.reference("min", binRange.min);
-		parameters.reference("max", binRange.max);
-		parameters.reference("count", count);
-		parameters.reference("label", label);
+		parameters.link("index", index);
+		parameters.link("min", binRange.min);
+		parameters.link("max", binRange.max);
+		parameters.link("count", count);
+		parameters.link("label", label);
 	};
 
 	drain::Histogram::vect_t::size_type index;
@@ -719,17 +719,17 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 	PaletteEntry entry;
 	entry.id = "test";
 	entry.color.resize(3);
-	entry.getParameters().reference("color", entry.color);
+	entry.getParameters().link("color", entry.color);
 
 	std::string colorHex;
-	entry.getParameters().reference("colorHex", colorHex);
+	entry.getParameters().link("colorHex", colorHex);
 	/*
 	drain::ReferenceMap entryWrapper;
 	//entryWrapper
-	entryWrapper.reference("label", entry.label = "MIKA");
-	entryWrapper.reference("color", entry.color);
-	entryWrapper.reference("colorHex", colorHex);
-	entryWrapper.reference("value", entry.value = 123.566);
+	entryWrapper.link("label", entry.label = "MIKA");
+	entryWrapper.link("color", entry.color);
+	entryWrapper.link("colorHex", colorHex);
+	entryWrapper.link("value", entry.value = 123.566);
 	entryWrapper["color"].setOutputSeparator(',');
 	*/
 
@@ -758,7 +758,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 			//entry.map.append(it->second.map, true);
 			entry = it->second; // if color.size() != 3 ??
 			//entry.id = "koe";
-			entry.getParameters().reference("color", entry.color = it->second.color); // relocate
+			entry.getParameters().link("color", entry.color = it->second.color); // relocate
 			entry.getParameters()["color"].setSeparator(',');
 			//entry.color = it->second.color;
 			entry.getHexColor(colorHex);

@@ -46,10 +46,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 class SourceODIM : public drain::ReferenceMap {
+//class SourceODIM : public drain::FlexVariableMap {
 
 public:
 
 	std::string source;
+
 	std::string WMO;
 	std::string RAD;
 	std::string NOD;
@@ -57,6 +59,7 @@ public:
 	std::string ORG;
 	std::string CTY;
 	std::string CMT;
+	std::string WIGOS;
 
 	/// Sets NOD, WMO, RAD, CTY and ORG
 	/**
@@ -64,26 +67,12 @@ public:
 	 *
 	 *   Note: some radars have had semicolon as separator: RAD:NL51;PLC:nldhl
 	 */
-	inline
-	SourceODIM(const std::string & source = "") : source(source) {
-		init();
-		setValues(source, ':', ',');
-		//setValues(source, ':');
-		setNOD();
-	};
+	SourceODIM(const std::string & source = "");
+
+	SourceODIM(const SourceODIM & s);
 
 
-	inline
-	SourceODIM(const SourceODIM & s){
-		init();
-		updateFromMap(s);
-		setNOD();
-	};
-
-	/// Sets NOD, WMO, RAD, CTY and ORG
-	// ----
-
-	/// Derives a most standard name. Returns the first-non empty value of NOD, RAD, WMO, PLC, ORG, CTY, CMT.
+	/// Derives a most standard name. Returns the first-non empty value of NOD, RAD, WMO, WIGOS, PLC, ORG, CTY, CMT.
 	/**
 	 *  Codes in checked in their order of initialization, see init().
 	 */
@@ -91,11 +80,10 @@ public:
 
 private:
 
-	//inline
 	void init();
 
 	/// Assigns NOD if empty, and CMT
-	//inline
+	/// Sets NOD, WMO, RAD, CTY and ORG
 	void setNOD();
 
 };

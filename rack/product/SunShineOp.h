@@ -65,9 +65,9 @@ public:
 		odim.scale = 1.0/200.0;
 		odim.offset = -0.1;
 
-		//parameters.reference("quantity", odim.quantity);
-		parameters.reference("timestamp", timestamp="200527071845");
-		parameters.reference("quantity", odim.quantity="SUNSHINE");
+		//parameters.link("quantity", odim.quantity);
+		parameters.link("timestamp", timestamp="200527071845");
+		parameters.link("quantity", odim.quantity="SUNSHINE");
 
 		odim.quantity = "SUNSHINE";
 		//dataSelector.quantity = "";
@@ -75,9 +75,9 @@ public:
 		// However, if a user wants to use quantity, /dataN/ should be reached.
 
 
-		this->allowedEncoding.reference("type", odim.type);
-		this->allowedEncoding.reference("gain", odim.scale);
-		this->allowedEncoding.reference("offset", odim.offset);
+		this->allowedEncoding.link("type", odim.type);
+		this->allowedEncoding.link("gain", odim.scale);
+		this->allowedEncoding.link("offset", odim.offset);
 
 
 	};

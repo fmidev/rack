@@ -78,7 +78,7 @@ public:
 	 *  \param x   - target variable to be linked
 	 */
 	template <class F>
-	Referencer & reference(const std::string & key, F &x, const std::string & unit = std::string()){
+	Referencer & link(const std::string & key, F &x, const std::string & unit = std::string()){
 
 		if (find(key) == end()) // not  already referenced
 			keyList.push_back(key);
@@ -123,7 +123,7 @@ public:
 			//std::cerr << " -> " << *it <<  std::endl;
 			if (replace || !hasKey(*it)){
 				Referencer & item = rMap[*it];
-				reference(*it, item, rMap.unitMap[*it]).fillArray = item.fillArray;
+				link(*it, item, rMap.unitMap[*it]).fillArray = item.fillArray;
 			}
 		}
 	}
@@ -132,7 +132,7 @@ public:
 
 	/// Removes an entry from the map.
 	inline
-	void dereference(const std::string & key){
+	void delink(const std::string & key){
 		std::map<std::string,Referencer>::erase(key);
 		for (std::list<std::string>::iterator it = keyList.begin(); it != keyList.end(); ++it)
 			if (*it == key){

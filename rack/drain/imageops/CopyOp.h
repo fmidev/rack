@@ -81,11 +81,11 @@ class CopyFunctor : public UnaryFunctor {
 public:
 
 	CopyFunctor(double scale = 1.0, double bias = 0.0) : UnaryFunctor(__FUNCTION__, "Copies current view to: f=full image, i=image channels, a=alpha channel(s), 0=1st, 1=2nd,...", scale, bias){
-		//this->parameters.reference("srcView", srcView = "f");
-		this->parameters.reference("dstView", dstView = "");
-		this->parameters.reference("scale", this->scale);
-		this->parameters.reference("bias", this->bias);
-		//this->parameters.reference("LIMIT", this->LIMIT);
+		//this->parameters.link("srcView", srcView = "f");
+		this->parameters.link("dstView", dstView = "");
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
+		//this->parameters.link("LIMIT", this->LIMIT);
 	};
 
 	//virtual
@@ -109,7 +109,7 @@ public:
 
 	CopyOp(double scale = 1.0, double bias = 0, bool LIMIT=true) : UnaryFunctorOp<CopyFunctor>(true, true) {
 		this->functor.setScale(scale, bias);
-		//this->parameters.reference("LIMIT", this->LIMIT=LIMIT);
+		//this->parameters.link("LIMIT", this->LIMIT=LIMIT);
 	}
 
 	virtual

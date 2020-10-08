@@ -64,16 +64,16 @@ public:
 	inline
 	PolarProductOp(const std::string & name = __FUNCTION__, const std::string & description = "") : VolumeOp<PolarODIM>(name, description) {
 
-		allowedEncoding.reference("type", odim.type = "C");
-		allowedEncoding.reference("gain", odim.scale);
-		allowedEncoding.reference("offset", odim.offset);
+		allowedEncoding.link("type", odim.type = "C");
+		allowedEncoding.link("gain", odim.scale);
+		allowedEncoding.link("offset", odim.offset);
 		// 2018
-		allowedEncoding.reference("undetect", odim.undetect);
-		allowedEncoding.reference("nodata", odim.nodata);
+		allowedEncoding.link("undetect", odim.undetect);
+		allowedEncoding.link("nodata", odim.nodata);
 
-		allowedEncoding.reference("rscale", odim.rscale);
-		allowedEncoding.reference("nrays", odim.geometry.height);
-		allowedEncoding.reference("nbins", odim.geometry.width);
+		allowedEncoding.link("rscale", odim.rscale);
+		allowedEncoding.link("nrays", odim.geometry.height);
+		allowedEncoding.link("nbins", odim.geometry.width);
 
 		aboveSeaLevel = true;
 

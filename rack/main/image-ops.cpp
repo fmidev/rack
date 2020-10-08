@@ -170,7 +170,7 @@ void ImageOpRacklet::exec() const {
 	std::string dstQuantity;
 	if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
 		EncodingODIM odim;
-		odim.reference("quantity", dstQuantity);
+		odim.link("quantity", dstQuantity);
 		odim.addShortKeys();
 		odim.updateValues(resources.targetEncoding); // do not clear yet
 		mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
@@ -423,8 +423,8 @@ class MultiThresholdOp : public drain::image::ImageOp {
 public:
 
 	MultiThresholdOp() : drain::image::ImageOp(__FUNCTION__) {
-		parameters.reference("range",  range.vect,  "accepted range [min:max]");
-		parameters.reference("target", target.vect, "result values for rejected values [low:high]");
+		parameters.link("range",  range.vect,  "accepted range [min:max]");
+		parameters.link("target", target.vect, "result values for rejected values [low:high]");
 		parameters["range"].fillArray = true;
 		parameters["target"].fillArray = true;
 

@@ -144,7 +144,7 @@ public:
  *  Usage:
  *  Type::call<drain::simpleName>(t)
  */
-class complexName {
+class complexNameOLD {
 
 public:
 
@@ -179,6 +179,92 @@ public:
 
 };
 
+
+
+class complexName {
+
+public:
+
+	//typedef std::string value_t;
+	typedef const std::string & value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed (argument)
+	 *  \tparam T - return type  (practically value_t)
+	 */
+	template <class S, class T>
+	static
+	T callback(){
+		// typedef std::numeric_limits<S> nlim;
+		// return numInfo<nlim::is_specialized, nlim::is_integer, nlim::is_signed>::s;
+		static std::string s;
+
+		if (s.empty()){
+			std::stringstream sstr;
+			if (std::numeric_limits<S>::is_specialized){
+				if (std::numeric_limits<S>::is_integer){
+					if (std::numeric_limits<S>::is_signed)
+						sstr << "signed";
+					else
+						sstr << "unsigned";
+					sstr << "integer";
+				}
+				else
+					sstr << "float";
+			}
+			else {
+				sstr << " non-numeric";
+			}
+			sstr << " (" << (8 * sizeGetter::callback<S, std::size_t>()) << "b)";
+			s = sstr.str();
+		}
+
+		return s;
+
+	}
+
+
+
+};
+
+// Experimental template exercise... (works ok)
+/**
+ *  \tparam N - is numeric
+ *  \tparam T - is integer
+ *  \tparam S - is signed
+template <bool N, bool T, bool S> //, std::string STR = "">
+struct numInfo { //: protected numInfoBase {
+	static std::string s;
+};
+
+// Default: non-numeric (N==false)
+template <bool N, bool T, bool S>
+std::string complexName::numInfo<N,T,S>::s("non-numeric");
+
+// Numeric, float
+template <bool S>
+struct complexName::numInfo<true,false,S> {
+	static std::string s;
+};
+
+template <bool S>
+std::string complexName::numInfo<true,false,S>::s("float");
+
+// Numeric, integer
+template <bool S>
+struct complexName::numInfo<true,true,S> {
+	static std::string s; //("non-numeric");
+};
+
+template <>
+std::string complexName::numInfo<true,true,true>::s("signed integer");
+
+template <>
+std::string complexName::numInfo<true,true,false>::s("unsigned integer");
+ */
+
+
+
 /// Returns the compiler specific ie. non-standard name of the type.
 class nameGetter {
 
@@ -193,6 +279,7 @@ public:
 	}
 
 };
+
 
 /**
  *  \tparam T - return type

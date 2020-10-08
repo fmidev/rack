@@ -59,7 +59,7 @@ class CmdOpticalFlowBase :  public BeanWrapper<FastOpticalFlowOp2> {
 public:
 
 	CmdOpticalFlowBase() {
-		//bean.parameters.reference("smoothing", smoothing="doubleSmoother:coeff=0.95", "imageOp");
+		//bean.parameters.link("smoothing", smoothing="doubleSmoother:coeff=0.95", "imageOp");
 		//average,gaussianAverage,distanceTransformFill
 	}
 

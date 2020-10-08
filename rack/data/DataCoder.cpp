@@ -55,11 +55,11 @@ void DataCoder::init(){
 	drain::Logger mout(__FUNCTION__, getName());
 
 	// For decoding
-	parameters.reference("SKIP_UNDETECT", SKIP_UNDETECT);
-	parameters.reference("undetectValue", undetectValue);
+	parameters.link("SKIP_UNDETECT", SKIP_UNDETECT);
+	parameters.link("undetectValue", undetectValue);
 	// For encoding
-	parameters.reference("minCodeValue", minCodeValue);
-	parameters.reference("detectionThreshold", detectionThreshold);
+	parameters.link("minCodeValue", minCodeValue);
+	parameters.link("detectionThreshold", detectionThreshold);
 
 	minCodeValue = dataODIM.getMin();
 

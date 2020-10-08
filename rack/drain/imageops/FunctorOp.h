@@ -77,7 +77,7 @@ public:
 		p.append(this->functor.getParameters());
 		if (adaptLimit){
 			if (!p.empty()) // ?
-				p.reference("LIMIT", this->LIMIT);
+				p.link("LIMIT", this->LIMIT);
 		}
 	}
 

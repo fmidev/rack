@@ -130,7 +130,7 @@ class CmdFormatFile : public SimpleCommand<std::string> {
 
 	CmdFormatFile() : SimpleCommand<>(__FUNCTION__, "Read format for metadata dump from a file","filename","","std::string") {
 		// parameters.separators.clear();
-		// parameters.reference("filename", filename, "");
+		// parameters.link("filename", filename, "");
 	};
 
 	void exec() const {

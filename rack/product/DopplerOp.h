@@ -106,8 +106,8 @@ public:
 	 *  \param widthM - width of the window, in metres.
 	 */
 	DopplerDiffOp(double dMaz = 100.0) : DopplerOp(__FUNCTION__, "Azimuthal difference of VRAD") { //, widthM, heightD) {
-		//parameters.reference("width", this->widthM = widthM, "metres");
-		parameters.reference("dMax", this->dMax = dMax, "m/s");
+		//parameters.link("width", this->widthM = widthM, "metres");
+		parameters.link("dMax", this->dMax = dMax, "m/s");
 
 		dataSelector.quantity = "VRAD.*";
 
@@ -139,9 +139,9 @@ public:
 	inline
 	DopplerReprojectOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
-		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
-		parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
-		parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
+		parameters.link("nyquist", odim.NI = 100.0, "max-unamb-velocity");
+		parameters.link("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
+		parameters.link("quantity", odim.quantity = "VRAD", "output-quantity");
 
 		dataSelector.count = 1;
 		dataSelector.quantity = "^(AMVU|AMVV|VRAD)$";
@@ -169,9 +169,9 @@ public:
 	inline
 	DopplerCrawlerOp() : DopplerOp(__FUNCTION__, "Creates virtual ") {
 
-		parameters.reference("nyquist", odim.NI = 100.0, "max-unamb-velocity");
-		parameters.reference("threshold", relative_NI_threshold=0.9, "relative speed");
-		//parameters.reference("quantity", odim.quantity = "VRAD", "output-quantity");
+		parameters.link("nyquist", odim.NI = 100.0, "max-unamb-velocity");
+		parameters.link("threshold", relative_NI_threshold=0.9, "relative speed");
+		//parameters.link("quantity", odim.quantity = "VRAD", "output-quantity");
 
 		dataSelector.count = 1;
 		dataSelector.quantity = "^VRAD";

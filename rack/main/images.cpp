@@ -253,9 +253,9 @@ public:
 	double nodata;
 
 	CmdImageTransp() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Uses copied image, creating one if needed.") {
-		parameters.reference("range",    range.vect, "min:max");
-		parameters.reference("undetect", undetect=0, "opacity of 'undetect' pixels");
-		parameters.reference("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
+		parameters.link("range",    range.vect, "min:max");
+		parameters.link("undetect", undetect=0, "opacity of 'undetect' pixels");
+		parameters.link("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
 		parameters["range"].fillArray = true;
 
 		range.min = -std::numeric_limits<double>::max();
@@ -555,7 +555,7 @@ public:
 		std::string dstQuantity;
 		if (!resources.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
 			EncodingODIM odimEncoding;
-			odimEncoding.reference("quantity", dstQuantity);
+			odimEncoding.link("quantity", dstQuantity);
 			odimEncoding.addShortKeys();
 			odimEncoding.updateValues(resources.targetEncoding); // do not clear yet
 			mout.debug() << "new quantity? - " << dstQuantity << mout.endl;

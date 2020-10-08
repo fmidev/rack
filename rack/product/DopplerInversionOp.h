@@ -85,8 +85,8 @@ protected:
 	 */
 	DopplerWindOp(const std::string & name, const std::string & description, int widthM = 500, double heightD = 3.0) :
 		DopplerOp(name, description) { //, widthM, heightD) {
-		parameters.reference("width", this->widthM = widthM, "metres");
-		parameters.reference("height", this->heightD = heightD, "degrees");
+		parameters.link("width", this->widthM = widthM, "metres");
+		parameters.link("height", this->heightD = heightD, "degrees");
 
 		dataSelector.count = 1;
 
@@ -114,11 +114,11 @@ public:
 	 */
 	DopplerInversionOp(int widthM = 500, double heightD = 3.0, double nyquistVelocity=0.0) :
 		DopplerWindOp(__FUNCTION__, "Derives 2D wind (u,v) from aliased Doppler data.", widthM, heightD) { //, widthM, heightD) {
-		// parameters.reference("nyquist", nyquist = nyquistVelocity, "m/s");
-		//parameters.reference("VVP", VVP=false, "0|1"); // SLOTS
-		//parameters.reference("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
-		parameters.reference("altitudeWeight", altitudeWeight, "Functor:a:b:c..."); // ??
-		//parameters.reference("testSigns", testSigns = 3, "bits");
+		// parameters.link("nyquist", nyquist = nyquistVelocity, "m/s");
+		//parameters.link("VVP", VVP=false, "0|1"); // SLOTS
+		//parameters.link("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
+		parameters.link("altitudeWeight", altitudeWeight, "Functor:a:b:c..."); // ??
+		//parameters.link("testSigns", testSigns = 3, "bits");
 
 		dataSelector.count = 1;
 

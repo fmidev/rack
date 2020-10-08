@@ -389,10 +389,10 @@ public:
 		//parameters.append(blender.getParameters(), false);
 		//blender.setParameter("mix", "b");
 		// New. Blender will be obsolete
-		parameters.reference("resize", resize = 0, "0.0..1.0|pix");
-		parameters.reference("threshold", threshold = NAN, "value");
-		parameters.reference("spread", spread   = 0, "0|1");
-		parameters.reference("smooth", smoother = 0, "0|1");
+		parameters.link("resize", resize = 0, "0.0..1.0|pix");
+		parameters.link("threshold", threshold = NAN, "value");
+		parameters.link("spread", spread   = 0, "0|1");
+		parameters.link("smooth", smoother = 0, "0|1");
 	}
 
 	/// Creates a double precision image of 2+1 channels for storing motion (uField,vField) and quality (q).

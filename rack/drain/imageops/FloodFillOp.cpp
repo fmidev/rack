@@ -84,12 +84,12 @@ protected:
 
 FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : ImageOp(__FUNCTION__,
 		"Fills an area starting at (i,j) having intensity in [min,max], with a value.") {
-	parameters.reference("i", this->i0 = i, "coord");
-	parameters.reference("j", this->j0 = j, "coord");
+	parameters.link("i", this->i0 = i, "coord");
+	parameters.link("j", this->j0 = j, "coord");
 	// parameters.append(conf);
-	parameters.reference("min", this->conf.anchorMin = min, "intensity");
-	parameters.reference("max", this->conf.anchorMax = max, "intensity");
-	parameters.reference("value", this->conf.markerValue = value, "intensity");
+	parameters.link("min", this->conf.anchorMin = min, "intensity");
+	parameters.link("max", this->conf.anchorMax = max, "intensity");
+	parameters.link("value", this->conf.markerValue = value, "intensity");
 }
 
 

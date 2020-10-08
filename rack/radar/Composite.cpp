@@ -66,14 +66,14 @@ Composite::Composite() :  decay(1.0), cropping(false)
 	dataSelector.quantity = ""; // "DBZH";
 	//dataSelector.path = ".*/(data|quality)[0-9]+/?$";  // groups  .. but quality??
 
-	//odim.reference("type", odim.type = drain::Type::getTypeChar(typeid(void)));
-	//odim.reference("type", odim.type = "C");
-	odim.reference("type", odim.type = "C");
+	//odim.link("type", odim.type = drain::Type::getTypeChar(typeid(void)));
+	//odim.link("type", odim.type = "C");
+	odim.link("type", odim.type = "C");
 
-	odim.reference("gain", odim.scale);
-	odim.reference("offset", odim.offset);
-	odim.reference("undetect", odim.undetect);
-	odim.reference("nodata", odim.nodata);
+	odim.link("gain", odim.scale);
+	odim.link("offset", odim.offset);
+	odim.link("undetect", odim.undetect);
+	odim.link("nodata", odim.nodata);
 
 	odim.scale = 0.0;
 

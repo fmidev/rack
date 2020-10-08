@@ -65,8 +65,8 @@ public:
 		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input but applies to all data in a sweep group.", "signal.noise"){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;
-		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");
-		parameters.reference("area", this->area = area, "bins");
+		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
+		parameters.link("area", this->area = area, "bins");
 		REQUIRE_STANDARD_DATA = false;
 	};
 

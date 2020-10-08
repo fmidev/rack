@@ -68,10 +68,10 @@ public:
 	BiometOp(double reflMax=-10.0, int maxAltitude=500, double reflDev=5.0, int devAltitude=1000) :
 		DetectorOp(__FUNCTION__, "Detects birds and insects.", "nonmet.biol"){
 
-		parameters.reference("reflMax", this->reflMax = reflMax, "dBZ");
-		parameters.reference("maxAltitude", this->maxAltitude = maxAltitude, "m");
-		parameters.reference("reflDev", this->reflDev = reflDev, "dBZ");
-		parameters.reference("devAltitude", this->devAltitude = devAltitude, "m");
+		parameters.link("reflMax", this->reflMax = reflMax, "dBZ");
+		parameters.link("maxAltitude", this->maxAltitude = maxAltitude, "m");
+		parameters.link("reflDev", this->reflDev = reflDev, "dBZ");
+		parameters.link("devAltitude", this->devAltitude = devAltitude, "m");
 		dataSelector.quantity = "DBZH$";
 		REQUIRE_STANDARD_DATA = false;
 	};

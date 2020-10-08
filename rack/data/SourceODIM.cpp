@@ -35,6 +35,35 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+SourceODIM::SourceODIM(const std::string & source) : source(source) {
+	init();
+	importEntries(source, ':', ',', false, LOG_NOTICE);
+	//importEntries(source, ':', ',', true);
+	//setValues(source, ':', ',');
+	setNOD();
+};
+
+
+SourceODIM::SourceODIM(const SourceODIM & s){
+	init();
+	updateFromMap(s);
+	setNOD();
+};
+
+
+void SourceODIM::init(){
+	// Considered prefix "where:source", but gets complicated for default constructor.  (?)
+	link("NOD", NOD);
+	link("RAD", RAD);
+	link("WMO", WMO);
+	link("ORG", ORG);
+	link("CTY", CTY);
+	link("PLC", PLC);
+	link("CMT", CMT);
+	//(*this)["NOD"].link(NOD);
+//	link("WIGOS", WIGOS);
+}
+
 
 const std::string & SourceODIM::getSourceCode() const {
 
@@ -43,6 +72,7 @@ const std::string & SourceODIM::getSourceCode() const {
 	TRY_RETURN(NOD); // TODO: add options for desired order
 	TRY_RETURN(RAD);
 	TRY_RETURN(WMO);
+	TRY_RETURN(WIGOS); // NEW 2020
 	TRY_RETURN(ORG);
 	TRY_RETURN(CTY);
 	TRY_RETURN(PLC);
@@ -56,17 +86,6 @@ const std::string & SourceODIM::getSourceCode() const {
 	return empty;
 }
 
-
-void SourceODIM::init(){
-	// Considered prefix "where:source", but gets complicated for default constructor.  (?)
-	reference("NOD", NOD);
-	reference("RAD", RAD);
-	reference("WMO", WMO);
-	reference("ORG", ORG);
-	reference("CTY", CTY);
-	reference("PLC", PLC);
-	reference("CMT", CMT);
-}
 
 /// Tries to resolve NOD code from partial or deprecated metadata
 /**

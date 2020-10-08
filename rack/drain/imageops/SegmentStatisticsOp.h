@@ -85,10 +85,10 @@ public:
 	inline
 	SegmentStatisticsOp(const std::string & statistics="d", double min=1, double max=255, double scale=1.0, double offset=0) :
     	SegmentOp("SegmentStatistics","Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation") {
-		parameters.reference("statistics", this->statistics = statistics, "aAxXyYsSlve");
-		parameters.reference("min", this->min = min);
-		parameters.reference("max", this->max = max);
-		parameters.reference("functor", this->functorStr);  //  = "FuzzyStep"
+		parameters.link("statistics", this->statistics = statistics, "aAxXyYsSlve");
+		parameters.link("min", this->min = min);
+		parameters.link("max", this->max = max);
+		parameters.link("functor", this->functorStr);  //  = "FuzzyStep"
     };
 
 

@@ -60,7 +60,7 @@ public:
 	 *  \par replace   - substitute value for intensities not reaching minDBZ
 	 */
 	TransposeOp(): ImageOp(__FUNCTION__,"Flips image matrix around its corner."){
-		// reference("threshold", this->threshold = threshold);
+		// link("threshold", this->threshold = threshold);
 	};
 
 

@@ -50,10 +50,10 @@ public:
 
 	PolarSlidingWindowOp(const std::string & name = __FUNCTION__, const std::string &description = "") : PolarProductOp(name,description) {
 
-		parameters.reference("width", this->conf.widthM = 1500, "metres");
-		parameters.reference("height", this->conf.heightD = 3.0, "deg");
-		parameters.reference("threshold", this->conf.contributionThreshold = 0.5, "percentage");
-		parameters.reference("invertPolar", this->conf.invertPolar = false, "cart/polar");
+		parameters.link("width", this->conf.widthM = 1500, "metres");
+		parameters.link("height", this->conf.heightD = 3.0, "deg");
+		parameters.link("threshold", this->conf.contributionThreshold = 0.5, "percentage");
+		parameters.link("invertPolar", this->conf.invertPolar = false, "cart/polar");
 		// parameters.append(conf.getParameters());
 	};
 

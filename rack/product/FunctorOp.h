@@ -64,15 +64,15 @@ public:
 		dataSelector.count = 1;
 
 
-		parameters.reference("ftor", ftorSetup, "Functor:a:b:c..."); // See DopplerDealiasOp
+		parameters.link("ftor", ftorSetup, "Functor:a:b:c..."); // See DopplerDealiasOp
 
 
-		this->allowedEncoding.reference("type", odim.type = "C");
-		this->allowedEncoding.reference("gain", odim.scale = 0.1);
-		this->allowedEncoding.reference("offset", odim.offset = 0.0);
+		this->allowedEncoding.link("type", odim.type = "C");
+		this->allowedEncoding.link("gain", odim.scale = 0.1);
+		this->allowedEncoding.link("offset", odim.offset = 0.0);
 		odim.geometry.height = 1;
-		// allowedEncoding.reference("type", odim.type, "S");
-		// allowedEncoding.reference("gain", odim.scale, 0.001);
+		// allowedEncoding.link("type", odim.type, "S");
+		// allowedEncoding.link("gain", odim.scale, 0.001);
 
 	};
 

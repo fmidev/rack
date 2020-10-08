@@ -136,8 +136,8 @@ class PrecipitationZ : public Precipitation {
 protected:
 
 	void setParameterReferences(){
-		parameters.reference("a", this->a = a);
-		parameters.reference("b", this->b = b);
+		parameters.link("a", this->a = a);
+		parameters.link("b", this->b = b);
 		presets["Marshall-Palmer"] = "200,1.6";
 		initParameters();  // todo lower
 	}
@@ -176,8 +176,8 @@ class PrecipitationKDP : public Precipitation {
 protected:
 
 	void setParameterReferences(){
-		parameters.reference("a", a);
-		parameters.reference("b", b);
+		parameters.link("a", a);
+		parameters.link("b", b);
 		presets["Leinonen2012"] = "21,0.72";
 	}
 
@@ -213,9 +213,9 @@ class PrecipitationZZDR : public Precipitation {
 protected:
 
 	void setParameterReferences(){
-		parameters.reference("a", this->a);
-		parameters.reference("b", this->b);
-		parameters.reference("c", this->c);
+		parameters.link("a", this->a);
+		parameters.link("b", this->b);
+		parameters.link("c", this->c);
 		//presets[""]
 	}
 
@@ -253,9 +253,9 @@ public:
 protected:
 
 	void setParameterReferences(){
-		parameters.reference("a", a);
-		parameters.reference("b", b);
-		parameters.reference("c", c);
+		parameters.link("a", a);
+		parameters.link("b", b);
+		parameters.link("c", c);
 		//presets[""]
 	}
 };

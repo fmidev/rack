@@ -67,10 +67,10 @@ class ResizeOp : public ImageOp {
 public:
 
 	ResizeOp(size_t width=0, size_t height=0, const std::string & interpolation = "n") : ImageOp(__FUNCTION__, "Resize geometry and scale intensities") {
-		this->parameters.reference("width",  this->width=width, "pix");
-		this->parameters.reference("height", this->height=height, "pix");
-		this->parameters.reference("interpolation", this->interpolation=interpolation, "n=nearest,b=bilinear");
-		this->parameters.reference("scale", this->scale = 1.0, "rescaling factor");
+		this->parameters.link("width",  this->width=width, "pix");
+		this->parameters.link("height", this->height=height, "pix");
+		this->parameters.link("interpolation", this->interpolation=interpolation, "n=nearest,b=bilinear");
+		this->parameters.link("scale", this->scale = 1.0, "rescaling factor");
 	}
 
 	inline

@@ -158,10 +158,10 @@ public:
 
 	DopplerAvgExpOp() : PolarProductOp(__FUNCTION__, "Doppler field smoother with exponential decay weighting") {
 		parameters.append(conf.getParameters());
-		parameters.reference("horzExtension", horzExt = 0, "pix");
-		parameters.reference("vertExtension", vertExt = 0, "pix");
-		//parameters.reference("decay", decay = 0.8, "[0.0,1.0]");
-		//parameters.reference("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
+		parameters.link("horzExtension", horzExt = 0, "pix");
+		parameters.link("vertExtension", vertExt = 0, "pix");
+		//parameters.link("decay", decay = 0.8, "[0.0,1.0]");
+		//parameters.link("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
 		dataSelector.count = 1;
 
 		dataSelector.quantity = "VRAD[H]?";

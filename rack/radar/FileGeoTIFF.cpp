@@ -132,8 +132,8 @@ void NodeGDAL::setType(type t){
 	}
 	else {
 		tag = "Item";
-		reference("sample", sample = 0);
-		reference("role",   role = "");
+		link("sample", sample = 0);
+		link("role",   role = "");
 	}
 
 }

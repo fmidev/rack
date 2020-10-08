@@ -267,9 +267,9 @@ public:
 
 
 	WeightedAverageMethod(AccumulationArray & c) : AccumulationMethod("WAVG", c), bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
-		parameters.reference("p", p);
-		parameters.reference("r", r);
-		parameters.reference("bias", bias);
+		parameters.link("p", p);
+		parameters.link("r", r);
+		parameters.link("bias", bias);
 	};
 
 

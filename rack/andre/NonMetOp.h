@@ -63,14 +63,14 @@ public:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 
-		parameters.reference("threshold", this->threshold.vect, "0...1[:0...1]");
+		parameters.link("threshold", this->threshold.vect, "0...1[:0...1]");
 		this->threshold.min = threshold-thresholdWidth;
 		this->threshold.max = threshold+thresholdWidth;
-		//parameters.reference("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
-		parameters.reference("windowWidth", this->windowWidth = windowWidth, "metres");
-		parameters.reference("windowHeight", this->windowHeight = windowHeight, "degrees");
-		parameters.reference("medianPos", this->medianPos = medianPos, "0...1");
-		//parameters.reference("area", this->area, area);
+		//parameters.link("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
+		parameters.link("windowWidth", this->windowWidth = windowWidth, "metres");
+		parameters.link("windowHeight", this->windowHeight = windowHeight, "degrees");
+		parameters.link("medianPos", this->medianPos = medianPos, "0...1");
+		//parameters.link("area", this->area, area);
 	};
 
 	//double threshold;

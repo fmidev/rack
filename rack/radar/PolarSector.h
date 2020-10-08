@@ -47,10 +47,10 @@ namespace rack {
 class PolarSector : public drain::BeanLike {
     public: //re 
 	PolarSector() : drain::BeanLike(__FUNCTION__) {
-		parameters.reference("azm",   azm.vect,   "deg");
-		parameters.reference("range", range.vect, "km");
-		parameters.reference("ray",   ray.vect,   "index");
-		parameters.reference("bin",   bin.vect,   "index");
+		parameters.link("azm",   azm.vect,   "deg");
+		parameters.link("range", range.vect, "km");
+		parameters.link("ray",   ray.vect,   "index");
+		parameters.link("bin",   bin.vect,   "index");
 	}
 
 	/// Start azimuth [deg]

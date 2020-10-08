@@ -106,7 +106,7 @@ class DefaultQuality : public BasicCommand {
 public:
 
 	DefaultQuality() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
-		parameters.reference("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
+		parameters.link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
 		getRegistry().add(*this, __FUNCTION__, 0);
 	};
 
@@ -144,7 +144,7 @@ class AnDReStoreCombined : public SimpleCommand<std::string> {
 	AnDReStoreCombined() : SimpleCommand<std::string>(__FUNCTION__, "Store combined detection results in .../quality1/<path> : 'data' for overwriting, 'data~' for tmp (unsaved).",
 			"path", "data~", "std::string"){
 		//parameters.separators.clear();
-		//parameters.reference("path", path, "data~", "std::string");
+		//parameters.link("path", path, "data~", "std::string");
 	};
 
 	void exec() const {

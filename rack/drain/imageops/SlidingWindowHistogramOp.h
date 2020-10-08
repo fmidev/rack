@@ -235,9 +235,9 @@ public:
 		"A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)"){
 		//this->conf.width = width;
 		//this->conf.height = height;
-		parameters.reference("valueFunc", this->conf.valueFunc = valueFunc, "asmdvXN");
-		parameters.reference("percentage", this->conf.percentage = percentage);
-		parameters.reference("bins", this->conf.bins = bins);
+		parameters.link("valueFunc", this->conf.valueFunc = valueFunc, "asmdvXN");
+		parameters.link("percentage", this->conf.percentage = percentage);
+		parameters.link("bins", this->conf.bins = bins);
 	}
 
 };

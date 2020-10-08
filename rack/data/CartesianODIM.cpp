@@ -45,29 +45,29 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	if (initialize & ODIMPathElem::ROOT){
 
 		// NOTE: these should be in DATASET level
-		reference("where:projdef", projdef = "");
-		reference("where:xsize", geometry.width  = 0L); //xsize = 0L);
-		reference("where:ysize", geometry.height = 0L); //ysize = 0L);
-		reference("where:xscale", xscale = 0.0);
-		reference("where:yscale", yscale = 0.0);
+		link("where:projdef", projdef = "");
+		link("where:xsize", geometry.width  = 0L); //xsize = 0L);
+		link("where:ysize", geometry.height = 0L); //ysize = 0L);
+		link("where:xscale", xscale = 0.0);
+		link("where:yscale", yscale = 0.0);
 		//
-		reference("where:UR_lon", UR_lon = 0.0);
-		reference("where:UR_lat", UR_lat = 0.0);
-		reference("where:UL_lon", UL_lon = 0.0);
-		reference("where:UL_lat", UL_lat = 0.0);
-		reference("where:LR_lon", LR_lon = 0.0);
-		reference("where:LR_lat", LR_lat = 0.0);
-		reference("where:LL_lon", LL_lon = 0.0);
-		reference("where:LL_lat", LL_lat = 0.0);
-		reference("how:camethod", camethod = "");
+		link("where:UR_lon", UR_lon = 0.0);
+		link("where:UR_lat", UR_lat = 0.0);
+		link("where:UL_lon", UL_lon = 0.0);
+		link("where:UL_lat", UL_lat = 0.0);
+		link("where:LR_lon", LR_lon = 0.0);
+		link("where:LR_lat", LR_lat = 0.0);
+		link("where:LL_lon", LL_lon = 0.0);
+		link("where:LL_lat", LL_lat = 0.0);
+		link("how:camethod", camethod = "");
 
-		reference("how:nodes", nodes = "");
+		link("how:nodes", nodes = "");
 	}
 
 
 	if (initialize & ODIMPathElem::DATASET){
-		// reference("where:xsize", xsize);
-		// reference("where:ysize", ysize);
+		// link("where:xsize", xsize);
+		// link("where:ysize", ysize);
 	}
 
 

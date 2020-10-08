@@ -56,22 +56,22 @@ public:
 	}
 
 	DrawingOp() : PolarProductOp("DrawingOp", "Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].") {
-		parameters.reference("shape", shape = "direction", "[direction|range|sector|arc]");
-		parameters.reference("p1", p1 = 0.0);
-		parameters.reference("p2", p2 = 0.0);
-		parameters.reference("p3", p3 = 0.0);
-		parameters.reference("p4", p4 = 0.0);
+		parameters.link("shape", shape = "direction", "[direction|range|sector|arc]");
+		parameters.link("p1", p1 = 0.0);
+		parameters.link("p2", p2 = 0.0);
+		parameters.link("p3", p3 = 0.0);
+		parameters.link("p4", p4 = 0.0);
 		/*
-		reference("azm1", w.azm1, 0.0, "deg");
-		reference("range1", w.range1, 0, "km");
-		reference("azm2", w.azm2, 0.0, "deg");
-		reference("range2", w.range2, 0, "km");
-		reference("ray1", w.ray1, 0, "index");
-		reference("bin1", w.bin1, 0, "index");
-		reference("ray2", w.ray2, 0, "index");
-		reference("bin2", w.bin2, 0, "index");
+		link("azm1", w.azm1, 0.0, "deg");
+		link("range1", w.range1, 0, "km");
+		link("azm2", w.azm2, 0.0, "deg");
+		link("range2", w.range2, 0, "km");
+		link("ray1", w.ray1, 0, "index");
+		link("bin1", w.bin1, 0, "index");
+		link("ray2", w.ray2, 0, "index");
+		link("bin2", w.bin2, 0, "index");
 		*/
-		parameters.reference("marker", this->marker = 255, "intensity");
+		parameters.link("marker", this->marker = 255, "intensity");
 		dataSelector.quantity = "";
 		dataSelector.count = 1;
 	};

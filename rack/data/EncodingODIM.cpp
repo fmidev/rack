@@ -57,11 +57,11 @@ void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 	}
 
 	if (initialize & ODIMPathElem::DATA){
-		reference("what:type", type = "C");
-		reference("what:gain",   scale = 0.0);
-		reference("what:offset", offset = 0.0);
-		reference("what:undetect", undetect = 0.0);
-		reference("what:nodata", nodata = 0.0);
+		link("what:type", type = "C");
+		link("what:gain",   scale = 0.0);
+		link("what:offset", offset = 0.0);
+		link("what:undetect", undetect = 0.0);
+		link("what:nodata", nodata = 0.0);
 	}
 
 }
@@ -134,7 +134,7 @@ void EncodingODIM::grantShortKeys(drain::ReferenceMap & ref) {
 	for (EncodingODIM::keylist_t::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
 		const size_t i = kit->find(':');  // type?
 		if (i != std::string::npos){
-			ref.reference(kit->substr(i+1), operator[](*kit));
+			ref.link(kit->substr(i+1), operator[](*kit));
 			//alias(key.substr(i+1), key);
 		}
 	}

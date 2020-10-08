@@ -76,8 +76,8 @@ protected:
 	PixelVectorOp(const std::string & name, const std::string & description) :
 		ImageOp(name,description + " Post-scaling with desired functor."), rescale(0.0), POW(1.0), INVPOW(1.0) { //, l(1){ , rescale(0.0),
 		parameters.separator = ':';
-		parameters.reference("functor", this->functorName);
-		parameters.reference("params", this->functorParams);
+		parameters.link("functor", this->functorName);
+		parameters.link("params", this->functorParams);
 	};
 
 	double rescale;

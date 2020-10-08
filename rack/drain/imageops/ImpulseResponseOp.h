@@ -171,9 +171,9 @@ public:
 	inline
 	void init(){
 		this->parameters.append(this->conf.getParameters());
-		this->parameters.reference("extendHorz", extendHorz = 0, "pix"); // for avoiding border effects, include pixels beyond main area
-		this->parameters.reference("extendVert", extendVert = 0, "pix"); // for avoiding border effects, include pixels beyond main area
-		this->parameters.reference("weightThreshold", weightThreshold = 0.05, "[0..1.0]"); //
+		this->parameters.link("extendHorz", extendHorz = 0, "pix"); // for avoiding border effects, include pixels beyond main area
+		this->parameters.link("extendVert", extendVert = 0, "pix"); // for avoiding border effects, include pixels beyond main area
+		this->parameters.link("weightThreshold", weightThreshold = 0.05, "[0..1.0]"); //
 
 	};
 

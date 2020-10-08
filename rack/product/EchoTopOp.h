@@ -49,10 +49,10 @@ public:
 	EchoTopOp(bool top = true, double minDBZ = 20.0, double dbzRef = -50.0, double hRef = 15000.0, bool aboveSeaLevel=true) : //, const std::string & type="C", double gain=0.01, long int nbins=0, double rscale=0) :
 		CumulativeProductOp(__FUNCTION__, "Computes maximum (or minimum) altitude of echo.", "WAVG,8,1"), top(top) {
 
-		parameters.reference("minDBZ", this->minDBZ = minDBZ, "dBZ");
-		parameters.reference("dbzReference", this->dbzRef = dbzRef, "dBZ");
-		parameters.reference("altitudeReference", this->hRef = hRef, "metres");
-		parameters.reference("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "false=radar site|true=sea level");
+		parameters.link("minDBZ", this->minDBZ = minDBZ, "dBZ");
+		parameters.link("dbzReference", this->dbzRef = dbzRef, "dBZ");
+		parameters.link("altitudeReference", this->hRef = hRef, "metres");
+		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "false=radar site|true=sea level");
 
 		odim.product = "ETOP";
 		odim.quantity = "HGHT";

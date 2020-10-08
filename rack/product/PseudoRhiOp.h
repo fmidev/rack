@@ -59,35 +59,35 @@ public:
 		odim.object = "XSEC";
 		odim.product = "PRHI";
 
-		parameters.reference("az_angle", odim.az_angle = az_angle, "deg");
-		parameters.reference("xsize", odim.geometry.width = xsize, "pix");
-		parameters.reference("ysize", odim.geometry.height = ysize, "pix");
+		parameters.link("az_angle", odim.az_angle = az_angle, "deg");
+		parameters.link("xsize", odim.geometry.width = xsize, "pix");
+		parameters.link("ysize", odim.geometry.height = ysize, "pix");
 
 		odim.range.set(minRange, range);
-		parameters.reference("range",  odim.range.vect,  "km");
+		parameters.link("range",  odim.range.vect,  "km");
 
 		odim.height.set(minHeight, maxHeight);
-		parameters.reference("height", odim.height.vect, "m" );
+		parameters.link("height", odim.height.vect, "m" );
 
 		/*
-		parameters.reference("minRange",  odim.minRange = minRange, "km");
-		parameters.reference("range",  odim.range = range, "km");
-		parameters.reference("minHeight", odim.minheight = minHeight, "m");
-		parameters.reference("maxHeight", odim.maxheight = maxHeight, "m");
+		parameters.link("minRange",  odim.minRange = minRange, "km");
+		parameters.link("range",  odim.range = range, "km");
+		parameters.link("minHeight", odim.minheight = minHeight, "m");
+		parameters.link("maxHeight", odim.maxheight = maxHeight, "m");
 		*/
-		//reference("levels", odim.levels, levels);
+		//link("levels", odim.levels, levels);
 
-		parameters.reference("beamWidth", this->beamWidth = beamWidth, "deg");
-		parameters.reference("beamPowerThreshold", this->weightThreshold = beamPowerThreshold, "0..1");
+		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
+		parameters.link("beamPowerThreshold", this->weightThreshold = beamPowerThreshold, "0..1");
 
-		// reference("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
-		//reference("type", odim.type, "C"); // TODO
-		//reference("gain", odim.scale, 0.5);
-		//reference("offset", odim.offset, -32.0);
+		// link("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
+		//link("type", odim.type, "C"); // TODO
+		//link("gain", odim.scale, 0.5);
+		//link("offset", odim.offset, -32.0);
 
-		allowedEncoding.reference("type", odim.type = "C");  // TODO: automatic?
-		allowedEncoding.reference("gain", odim.scale);
-		allowedEncoding.reference("offset", odim.offset);
+		allowedEncoding.link("type", odim.type = "C");  // TODO: automatic?
+		allowedEncoding.link("gain", odim.scale);
+		allowedEncoding.link("offset", odim.offset);
 
 		dataSelector.quantity = "^DBZH$";
 

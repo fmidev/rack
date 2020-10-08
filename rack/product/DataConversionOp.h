@@ -85,11 +85,11 @@ public:
 			double undetect=0.0, double nodata=255.0, std::string copyGroupSuffix="") :
 				ProductOp<M, M>(__FUNCTION__, "Converts HDF5 data to use desired data type, scaling and encoding") {
 
-		this->allowedEncoding.reference("what:type", this->odim.type = type);
-		this->allowedEncoding.reference("what:gain", this->odim.scale = gain);
-		this->allowedEncoding.reference("what:offset", this->odim.offset = offset);
-		this->allowedEncoding.reference("what:undetect", this->odim.undetect = undetect);
-		this->allowedEncoding.reference("what:nodata", this->odim.nodata = nodata);
+		this->allowedEncoding.link("what:type", this->odim.type = type);
+		this->allowedEncoding.link("what:gain", this->odim.scale = gain);
+		this->allowedEncoding.link("what:offset", this->odim.offset = offset);
+		this->allowedEncoding.link("what:undetect", this->odim.undetect = undetect);
+		this->allowedEncoding.link("what:nodata", this->odim.nodata = nodata);
 
 	}
 

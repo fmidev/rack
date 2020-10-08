@@ -99,18 +99,18 @@ protected:
 	DopplerWindowOp(const std::string & name, const std::string & description, int widthM, double heightD) :
 			DopplerOp(name, description), conf() { //, threshold(0.5), compensatePolar(true), relativeScale(relativeScale) {
 
-		parameters.reference("width", this->conf.widthM = widthM, "metres");
-		parameters.reference("height", this->conf.heightD = heightD, "deg");
+		parameters.link("width", this->conf.widthM = widthM, "metres");
+		parameters.link("height", this->conf.heightD = heightD, "deg");
 		//parameters.append(conf, false); // TODO: Window::conf parameters ?
-		parameters.reference("threshold", this->conf.contributionThreshold = 0.5, "percentage");
-		parameters.reference("compensate", this->conf.invertPolar = false, "cart/polar[0|1]");
-		//parameters.reference("relativeScale", this->conf.relativeScale = false, "0|1");
+		parameters.link("threshold", this->conf.contributionThreshold = 0.5, "percentage");
+		parameters.link("compensate", this->conf.invertPolar = false, "cart/polar[0|1]");
+		//parameters.link("relativeScale", this->conf.relativeScale = false, "0|1");
 
 
 		dataSelector.count = 1;
 		allowedEncoding.clear();
-		allowedEncoding.reference("type", odim.type);
-		allowedEncoding.reference("gain", odim.scale);
+		allowedEncoding.link("type", odim.type);
+		allowedEncoding.link("gain", odim.scale);
 
 	};
 
@@ -139,7 +139,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	dst.odim.quantity = odim.quantity;
 
 	drain::ReferenceMap typeRef;
-	typeRef.reference("type", dst.odim.type = odim.type);
+	typeRef.link("type", dst.odim.type = odim.type);
 	typeRef.updateValues(encodingRequest);
 	dst.data.setType(dst.odim.type);
 
@@ -279,7 +279,7 @@ public:
 	 *
 	DopplerAvgOp(int width = 1500, double height = 3.0) :
 		DopplerWindowOp<DopplerAverageWindow>(__FUNCTION__, "Smoothens Doppler field", width, height) {
-		parameters.reference("relativeScale", this->conf.relativeScale = false, "0|1");
+		parameters.link("relativeScale", this->conf.relativeScale = false, "0|1");
 		odim.quantity = "VRAD"; // VRAD_C (corrected)?
 	};
 
@@ -309,7 +309,7 @@ public:
 	 */
 	DopplerAvgOp(int width = 1500, double height = 3.0) :
 		DopplerWindowOp<DopplerAverageWindow2>(__FUNCTION__, "Smoothens Doppler field, providing quality", width, height) {
-		parameters.reference("relativeScale", this->conf.relativeScale = false, "[false|true]");
+		parameters.link("relativeScale", this->conf.relativeScale = false, "[false|true]");
 		odim.quantity = "VRAD"; // VRAD_C (corrected)?
 	};
 
@@ -368,7 +368,7 @@ public:
 	 */
 	DopplerDevOp(int widthM = 1500, double heightD = 3.0) :
 		DopplerWindowOp<DopplerDevWindow>(__FUNCTION__, "Computes std.dev.[m/s] of Doppler field", widthM, heightD) {
-		parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
+		parameters.link("relativeScale", this->conf.relativeScale = true, "true|false");
 
 		//this->conf.relativeScale = true;
 		odim.quantity = "VRAD_DEV"; // VRAD_C ?
@@ -405,7 +405,7 @@ public:
 	DopplerEccentricityOp(int widthM = 1500, double heightD = 3.0) :
 		DopplerWindowOp<DopplerEccentricityWindow>(__FUNCTION__, "Magnitude of mean unit circle mapped Doppler speeds", widthM, heightD) {
 
-		//parameters.reference("relativeScale", this->conf.relativeScale = true, "true|false");
+		//parameters.link("relativeScale", this->conf.relativeScale = true, "true|false");
 
 		//this->conf.relativeScale = true;
 		odim.quantity = "VRAD_DEV"; // VRAD_C ?

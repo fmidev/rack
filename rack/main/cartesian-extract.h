@@ -53,7 +53,7 @@ public:
 
 	CartesianExtract() : SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
 			"value", "dw", "Layers: data,count,weight,std.deviation") {
-		//parameters.reference("channels", channels, "dw", "Accumulation layers to be extracted");
+		//parameters.link("channels", channels, "dw", "Accumulation layers to be extracted");
 	};
 
 	void extract(const std::string & channels) const;
@@ -80,8 +80,8 @@ public:
 	CartesianSun() : BasicCommand(__FUNCTION__,
 			"Sunshine to a Cartesian product.") //, extractCmd(extractCmd)
 	{
-		parameters.reference("timestamp", timestamp="200527071845");
-		//parameters.reference("quantity", odim.quantity="SUNSHINE");
+		parameters.link("timestamp", timestamp="200527071845");
+		//parameters.link("quantity", odim.quantity="SUNSHINE");
 	}
 
 

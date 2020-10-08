@@ -188,18 +188,18 @@ protected:
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
 	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), widths(2, 10.0), heights(2, -1.0) {
-		parameters.reference("width",  widths,  "pix").fillArray = true;
-		parameters.reference("height", heights, "pix").fillArray = true;
-		parameters.reference("topology", topology=2, "0|1|2");
+		parameters.link("width",  widths,  "pix").fillArray = true;
+		parameters.link("height", heights, "pix").fillArray = true;
+		parameters.link("topology", topology=2, "0|1|2");
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		// mout.warn() << *this << mout.endl;
 	};
 
 	DistanceModel(const DistanceModel & dm) : BeanLike(dm.name, dm.description), widths(dm.widths), heights(dm.heights){
-		parameters.reference("width",  widths,  "pix").fillArray = true;
-		parameters.reference("height", heights, "pix").fillArray = true;
-		parameters.reference("topology", topology=2, "0|1|2");
+		parameters.link("width",  widths,  "pix").fillArray = true;
+		parameters.link("height", heights, "pix").fillArray = true;
+		parameters.link("topology", topology=2, "0|1|2");
 		setMax(255); // warning
 	}
 

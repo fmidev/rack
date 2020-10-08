@@ -61,7 +61,7 @@ public:
 		dataSelector.quantity = "^(TH|DBZH)$";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
-		parameters.reference("reflHalfWidth", this->reflHalfWidth = reflHalfWidth, "dBZ");
+		parameters.link("reflHalfWidth", this->reflHalfWidth = reflHalfWidth, "dBZ");
 	};
 
 	double reflHalfWidth;

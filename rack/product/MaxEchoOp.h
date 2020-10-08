@@ -61,9 +61,9 @@ public:
 		CumulativeProductOp("MaxEcho","Computes...", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
 		{
 
-		parameters.reference("altitude", this->altitude = altitude, "metres");
-		parameters.reference("devAltitude", this->devAltitude = devAltitude, "metres");
-		parameters.reference("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
+		parameters.link("altitude", this->altitude = altitude, "metres");
+		parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
+		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 
 		dataSelector.quantity = "^DBZH$";
 

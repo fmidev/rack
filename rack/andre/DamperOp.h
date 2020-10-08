@@ -72,9 +72,9 @@ public:
 
 		dataSelector.quantity = "^DBZH$";
 
-		parameters.reference("threshold", this->threshold = threshold);
-		parameters.reference("undetectThreshold", this->undetectThreshold = undetectThreshold);
-		parameters.reference("minValue", this->minValue = minValue);
+		parameters.link("threshold", this->threshold = threshold);
+		parameters.link("undetectThreshold", this->undetectThreshold = undetectThreshold);
+		parameters.link("minValue", this->minValue = minValue);
 
 	};
 

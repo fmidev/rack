@@ -60,10 +60,10 @@ public:
 	 */
 	ShipOp(double reflMin = 25.0, double reflDev = 15.0, int windowWidth = 1500, double windowHeight = 3.0) :
 		DetectorOp(__FUNCTION__,"Detects ships based on their high absolute reflectivity and local reflectivity difference.", "nonmet.artef.vessel.ship"){
-		parameters.reference("reflMin", this->reflMin = reflMin, "dBZ");
-		parameters.reference("reflDev", this->reflDev = reflDev, "dBZ");
-		parameters.reference("windowWidth", this->windowWidth = windowWidth, "m");
-		parameters.reference("windowHeight", this->windowHeight = windowHeight, "deg");
+		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
+		parameters.link("reflDev", this->reflDev = reflDev, "dBZ");
+		parameters.link("windowWidth", this->windowWidth = windowWidth, "m");
+		parameters.link("windowHeight", this->windowHeight = windowHeight, "deg");
 		dataSelector.quantity = "^DBZH$";
 		REQUIRE_STANDARD_DATA = false;
 		//REQUIRE_STANDARD_DATA = true;  // HighPassOp

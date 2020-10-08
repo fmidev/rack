@@ -56,13 +56,13 @@ void NodeSVG::setType(type t) {
 	switch (t) {
 	case SVG:
 		tag = "svg";
-		reference("x", x = 0);
-		reference("y", y = 0);
-		reference("width", width = 0);
-		reference("height", height = 0);
-		reference("xmlns", NodeSVG::svg);
-		reference("xmlns:svg", NodeSVG::svg);
-		reference("xmlns:xlink", NodeSVG::xlink);
+		link("x", x = 0);
+		link("y", y = 0);
+		link("width", width = 0);
+		link("height", height = 0);
+		link("xmlns", NodeSVG::svg);
+		link("xmlns:svg", NodeSVG::svg);
+		link("xmlns:xlink", NodeSVG::xlink);
 		break;
 	case TITLE:
 		tag = "title";
@@ -72,26 +72,26 @@ void NodeSVG::setType(type t) {
 		break;
 	case TEXT:
 		tag = "text";
-		reference("x", x = 0);
-		reference("y", y = 0);
-		reference("text-anchor", text_anchor = "");
+		link("x", x = 0);
+		link("y", y = 0);
+		link("text-anchor", text_anchor = "");
 		break;
 	case RECT:
 		tag = "rect";
-		reference("x", x = 0);
-		reference("y", y = 0);
-		reference("width", width = 0);
-		reference("height", height = 0);
+		link("x", x = 0);
+		link("y", y = 0);
+		link("width", width = 0);
+		link("height", height = 0);
 		break;
 	case CIRC:
 		tag = "circ";
-		reference("x", x = 0);
-		reference("y", y = 0);
-		reference("radius", radius = 0);
+		link("x", x = 0);
+		link("y", y = 0);
+		link("radius", radius = 0);
 		break;
 	case CTEXT:
 		tag = "";
-		//reference("x", x, 0);
+		//link("x", x, 0);
 		break;
 	case UNDEFINED:
 	default:
@@ -99,9 +99,9 @@ void NodeSVG::setType(type t) {
 	}
 
 	//if ((t = TEXT)||(t == TEXT)){
-	reference("style", style = "");
-	reference("fill", fill = "");
-	reference("opacity", opacity = ""); // string, so silent if empty
+	link("style", style = "");
+	link("fill", fill = "");
+	link("opacity", opacity = ""); // string, so silent if empty
 
 
 }

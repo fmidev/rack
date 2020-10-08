@@ -73,7 +73,7 @@ class GammaFunctor : public drain::UnaryFunctor
 public:
 
 	GammaFunctor(double gamma = 1.0) : UnaryFunctor(__FUNCTION__, "Gamma correction for brightness."){ // , fromValue(fromValue), toValue(toValue) {
-		this->getParameters().reference("gamma", this->gamma = gamma, "0.0...");
+		this->getParameters().link("gamma", this->gamma = gamma, "0.0...");
 	};
 
 	//virtual

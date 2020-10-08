@@ -169,7 +169,7 @@ ImageOpBank & getImageOpBank() {
 
 
 			///	Binary functors - operations on two inputs
-			static BinaryFunctorOpCloner<AdditionFunctor> add; // addOp.imageOp.reference("LIMIT2", addOp.imageOp.LIMIT=true);
+			static BinaryFunctorOpCloner<AdditionFunctor> add; // addOp.imageOp.link("LIMIT2", addOp.imageOp.LIMIT=true);
 			bank.add(add, "add");
 			static BinaryFunctorOpCloner<DivisionFunctor> div;
 			bank.add(div, "div");

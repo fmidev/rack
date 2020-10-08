@@ -85,10 +85,10 @@ public:
 		DetectorOp(__FUNCTION__,"Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.",
 				"signal.emitter.jamming")
 	{
-		parameters.reference("smoothnessThreshold", this->smoothnessThreshold = smoothnessThreshold, "dBZ");
-		parameters.reference("distanceMin", this->distanceMin = distanceMin, "km");
-		parameters.reference("weightLower", this->weightLower = weightLower, "[0.0...1.0]");
-		parameters.reference("debugRow", this->debugRow = debugRow, "index");
+		parameters.link("smoothnessThreshold", this->smoothnessThreshold = smoothnessThreshold, "dBZ");
+		parameters.link("distanceMin", this->distanceMin = distanceMin, "km");
+		parameters.link("weightLower", this->weightLower = weightLower, "[0.0...1.0]");
+		parameters.link("debugRow", this->debugRow = debugRow, "index");
 
 		UNIVERSAL = true;
 		REQUIRE_STANDARD_DATA = true;

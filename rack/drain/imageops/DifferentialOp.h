@@ -60,9 +60,9 @@ protected:
 
 	DifferentialOp(const std::string & name, const std::string & description, size_t channels=1, int radius=1) : // , double scale=1.0, double bias=0.0
 			ImageOp(name, description), channels(channels) {
-		//parameters.reference("span",  this->span = span, "pix");
-		parameters.reference("radius",  this->radius = radius, "pix");
-		parameters.reference("LIMIT",  this->LIMIT = true, "0|1");
+		//parameters.link("span",  this->span = span, "pix");
+		parameters.link("radius",  this->radius = radius, "pix");
+		parameters.link("LIMIT",  this->LIMIT = true, "0|1");
 	};
 
 	virtual

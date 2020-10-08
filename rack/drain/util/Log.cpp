@@ -28,14 +28,15 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
+
 /*
- * Debug.h
+ * Log.h
  *
  *  Created on: Aug 20, 2010
  *      Author: mpeura
  */
 
-#include <string.h>
+#include <string.h> // strrchr()
 
 #include "Log.h"
 

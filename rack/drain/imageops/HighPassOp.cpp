@@ -45,11 +45,11 @@ namespace image
 
 HighPassOp::HighPassOp(int width, int height, double scale, double offset) :  //  bool LIMIT=true ('false' would make no sense)
 			ImageOp(__FUNCTION__,"High-pass filter for recognizing details."){
-	parameters.reference("width", this->width = width);
-	parameters.reference("height",this->height = height>0 ? height : width);
-	parameters.reference("scale", this->scale = scale);
-	this->parameters.reference("offset", this->offset = offset);
-	this->parameters.reference("LIMIT", this->LIMIT = true);
+	parameters.link("width", this->width = width);
+	parameters.link("height",this->height = height>0 ? height : width);
+	parameters.link("scale", this->scale = scale);
+	this->parameters.link("offset", this->offset = offset);
+	this->parameters.link("LIMIT", this->LIMIT = true);
 }
 
 

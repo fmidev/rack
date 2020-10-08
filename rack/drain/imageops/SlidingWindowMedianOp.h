@@ -130,8 +130,8 @@ public:
 
 	SlidingWindowMedianOp(int width=1, int height=1, double percentage=0.5, int bins=256)
 		: SlidingWindowOp<SlidingWindowMedianWeighted>("SlidingWindowMedian", "A pipeline implementation of window median."){
-		parameters.reference("percentage", this->conf.percentage = percentage);
-		parameters.reference("bins", this->conf.bins = bins);
+		parameters.link("percentage", this->conf.percentage = percentage);
+		parameters.link("bins", this->conf.bins = bins);
 	}
 	
 

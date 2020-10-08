@@ -50,8 +50,8 @@ public:
 
 	ImageChannels() : ImageMod(__FUNCTION__, "Redefine channel geometry. See also --geometry") {
 
-		parameters.reference("imageChannels", imageChannelCount = 1UL);
-		parameters.reference("alphaChannels", alphaChannelCount = 0UL);
+		parameters.link("imageChannels", imageChannelCount = 1UL);
+		parameters.link("alphaChannels", alphaChannelCount = 0UL);
 
 	};
 
@@ -86,7 +86,7 @@ public:
 	*/
 
 	ImageCoordPolicy() : ImageMod(__FUNCTION__, "Coordinate under/overflow policy: 0=UNDEFINED, 1=LIMIT, 2=WRAP, 3=MIRROR, 4=POLAR"){
-		parameters.reference("policy", value, "<xUF>[,<yUF>[,<xOF>,<yOF>]]");
+		parameters.link("policy", value, "<xUF>[,<yUF>[,<xOF>,<yOF>]]");
 		parameters.separator = 0;
 	};
 
@@ -123,12 +123,12 @@ public:
 	ImageEncoding() : ImageMod(__FUNCTION__, "Set desired target properties") { // TODO
 
 
-		refMap.reference("type", type);
-		//refMap.reference("scale", scaling.scale);
-		refMap.reference("min", this->scaling.physRange.min, "physical_value");
-		refMap.reference("max", this->scaling.physRange.max, "physical_value");
+		refMap.link("type", type);
+		//refMap.link("scale", scaling.scale);
+		refMap.link("min", this->scaling.physRange.min, "physical_value");
+		refMap.link("max", this->scaling.physRange.max, "physical_value");
 
-		parameters.reference("request", request, refMap.getKeys());
+		parameters.link("request", request, refMap.getKeys());
 		parameters.separator = 0;
 
 	};
@@ -173,7 +173,7 @@ public:
 	ImageFill() : ImageMod(__FUNCTION__, "Fill the image with intensity <value>[,<green>,<blue>[,alpha]]. See also 'plotfile'.") {
 			 // "value", "0", "<value>[,<green>,<blue>[,alpha]]") {
 		parameters.separator = 0;
-		parameters.reference("value", value);
+		parameters.link("value", value);
 	};
 
 	virtual
@@ -197,10 +197,10 @@ public:
 
 	ImageHistogram() : ImageMod(__FUNCTION__, "Compute the image Histogram .") {
 		//parameters.separator = 0;
-		parameters.reference("bins", bins = 256);
-		//parameters.reference("store", store = true, "save as attribute");
-		parameters.reference("store", store = "histogram", "attribute name (empty = don't save)");
-		parameters.reference("filename", filename = "", "<filename>.txt");
+		parameters.link("bins", bins = 256);
+		//parameters.link("store", store = true, "save as attribute");
+		parameters.link("store", store = "histogram", "attribute name (empty = don't save)");
+		parameters.link("filename", filename = "", "<filename>.txt");
 		// Todo prefix/comment
 	};
 
@@ -237,10 +237,10 @@ public:
 	inline
 	ImageGeometry() : ImageMod(__FUNCTION__, "Create image with given geometry. See also --channels") {
 
-		parameters.reference("width", width = 0UL, "pix");
-		parameters.reference("heigh", height = 0UL, "pix");
-		parameters.reference("imageChannels", imageChannelCount = 1UL);
-		parameters.reference("alphaChannels", alphaChannelCount = 0UL);
+		parameters.link("width", width = 0UL, "pix");
+		parameters.link("heigh", height = 0UL, "pix");
+		parameters.link("imageChannels", imageChannelCount = 1UL);
+		parameters.link("alphaChannels", alphaChannelCount = 0UL);
 
 	};
 
@@ -280,7 +280,7 @@ public:
 	ImagePlot() : ImageMod(__FUNCTION__, "Set intensity at (i,j) to (f1,f2,f3,...)."){
 		// See 'plotFile' and 'fill'.",	"value", "0,0,0", "<i>,<j>,<f1>[,f2,f3,alpha]" ) {
 		parameters.separator = 0;
-		parameters.reference("value", value="0,0,0", "<i>,<j>,<f1>[,f2,f3,alpha]");
+		parameters.link("value", value="0,0,0", "<i>,<j>,<f1>[,f2,f3,alpha]");
 
 	};
 
@@ -298,7 +298,7 @@ class ImagePlotFile: public ImageMod {
 public:
 
 	ImagePlotFile() : ImageMod(__FUNCTION__, "Plots a given file.  See 'plot'."){
-		parameters.reference("filename", filename = "",  "string");
+		parameters.link("filename", filename = "",  "string");
 	};
 
 	virtual
@@ -326,7 +326,7 @@ public:
 	/// Default constructor.
 	ImageSampler();
 	// WARN: sampler not allocated upon this point.
-	//	parameters.reference("file", filename = "",  "string");
+	//	parameters.link("file", filename = "",  "string");
 
 	/// Runs Sampler on the given image.
 	/**

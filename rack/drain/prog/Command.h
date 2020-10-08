@@ -228,12 +228,12 @@ public:
 		if (key.empty())
 			std::cerr << "warning: param key empty for: " << name << std::endl;
 
-		parameters.reference(key, value = initValue, unit);
+		parameters.link(key, value = initValue, unit);
 	};
 
 	SimpleCommand(const SimpleCommand & cmd) :  BasicCommand(cmd.name, cmd.description) {
 		parameters.separator = '\0';
-		parameters.reference(cmd.parameters.getKeys(), value = cmd.value); // kludge
+		parameters.link(cmd.parameters.getKeys(), value = cmd.value); // kludge
 	};
 
 	inline

@@ -64,9 +64,9 @@ public:
 	 */
 	MarginalStatisticOp(const std::string & mode = "horz", const std::string & stat="asmdvNX", float medianPos=0.50) :
 		ImageOp("Marginal","Computes statistics on <horz> or <vert> lines: average,sum,median,stdDev,variance,miN,maX") {
-		parameters.reference("mode", this->mode = mode);
-		parameters.reference("stat", this->stat = stat);
-		parameters.reference("medianPos", this->medianPos = medianPos);
+		parameters.link("mode", this->mode = mode);
+		parameters.link("stat", this->stat = stat);
+		parameters.link("medianPos", this->medianPos = medianPos);
 	};
 
 	/// Unweighted computation

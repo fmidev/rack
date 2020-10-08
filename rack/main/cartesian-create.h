@@ -134,7 +134,7 @@ class CartesianRange : public BasicCommand { //SimpleCommand<double> {
 public:
 
 	CartesianRange() : BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
-		parameters.reference("range", PolarODIM::defaultRange, "km");
+		parameters.link("range", PolarODIM::defaultRange, "km");
 	};
 
 };

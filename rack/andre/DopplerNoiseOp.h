@@ -65,9 +65,9 @@ public:
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 
-		parameters.reference("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
-		parameters.reference("windowWidth", this->conf.widthM = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-		parameters.reference("windowHeight", this->conf.heightD = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
+		parameters.link("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
+		parameters.link("windowWidth", this->conf.widthM = windowWidth, "window width, beam-directional (m)"); //, "[m]");
+		parameters.link("windowHeight", this->conf.heightD = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
 
 	};
 

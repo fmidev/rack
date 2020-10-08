@@ -46,7 +46,7 @@ GaussianAverageOp::GaussianAverageOp(int width, int height, double radius) :
 
 	this->conf.width = width;
 	this->conf.height = height;
-	parameters.reference("radius", this->conf.radius = radius, "distance, relative to width and height, where gaussian kernel obtains value 0.5.");
+	parameters.link("radius", this->conf.radius = radius, "distance, relative to width and height, where gaussian kernel obtains value 0.5.");
 
 }
 

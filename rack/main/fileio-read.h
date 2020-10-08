@@ -52,7 +52,7 @@ public:
 
 	CmdInputSelect() : BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
 		//, "value", hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag"){};
-		parameters.reference("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
+		parameters.link("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
 	}
 
 };
@@ -63,7 +63,7 @@ class CmdInputPrefix : public BasicCommand {
 public:
 
 	CmdInputPrefix() : BasicCommand(__FUNCTION__, "Path prefix for input files."){
-		parameters.reference("path", getResources().inputPrefix = "");
+		parameters.link("path", getResources().inputPrefix = "");
 	};
 };
 
