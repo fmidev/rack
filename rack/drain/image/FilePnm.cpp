@@ -153,7 +153,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 	// conf.encoding.scaling.setPhysicalMax(maxValue);
 	if (properties.hasKey("coordinatePolicy")){
 		std::vector<int> policy;
-		properties["coordinatePolicy"].toContainer(policy);
+		properties["coordinatePolicy"].toSequence(policy);
 		conf.coordinatePolicy.set(policy);
 	}
 

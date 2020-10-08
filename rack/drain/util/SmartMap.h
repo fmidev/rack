@@ -385,7 +385,11 @@ public:
 		return sstr.str();
 	}
 
+	/// Write map as a JSON code
 	void toJSON(std::ostream & ostr = std::cout, size_t indent = 0) const;
+
+	/// Debugging
+	void dump(std::ostream & ostr = std::cout) const;
 
 
 
@@ -557,11 +561,12 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 	char sep = 0;
 	ostr << "{\n";
 
-	//for (std::list<std::string>::const_iterator it = getKeyList().begin(); it != getKeyList().end(); ++it){
 	// NOTE: alphabetic order. Should JSON dump have orig. order?
 	for (const_iterator it = this->begin(); it != this->end(); ++it){
-		//const string & key = *it;
+
 		const std::string & key = it->first;
+		const T & item = it->second; //(*this)[key];
+
 		if (sep){
 			ostr << sep;
 			ostr << '\n';
@@ -571,7 +576,6 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 		}
 		//ostr << '\n';
 		ostr << space << "\"" << key << "\" : ";
-		const T & item = it->second; //(*this)[key];
 
 		//if (item.getType() == typeid(std::string)){
 		if (item.T::isString()){
@@ -606,6 +610,17 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 	ostr << "\n" << space << "}\n";  // \n needed?
 }
 
+template <class T>
+void SmartMap<T>::dump(std::ostream & ostr) const {
+
+	//const std::string space(indent, ' ');
+	for (const_iterator it = this->begin(); it != this->end(); ++it){
+		ostr << it->first << ':' <<  ' ';
+		it->second.info(ostr);
+		ostr << '\n';
+	}
+
+}
 
 template<class T>
 std::ostream &operator<<(std::ostream &ostr, const SmartMap<T> & m){

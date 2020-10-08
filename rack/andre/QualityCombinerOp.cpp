@@ -192,11 +192,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 
 	std::set<std::string> classesNew;
-	srcQind.getHow()["task_args"].toContainer(classesNew, ',');
+	srcQind.getHow()["task_args"].toSequence(classesNew, ',');
 
 	drain::Variable & task_args = dstQind.getHow()["task_args"];
 	std::set<std::string> classes;
-	task_args.toContainer(classes, ',');
+	task_args.toSequence(classes, ',');
 
 	bool update = false;
 
@@ -284,11 +284,11 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		drain::Variable & classLegend = dstClass.getWhat()["legend"];
 
 		std::set<std::string> classCodes;
-		classLegend.toContainer(classCodes, ',');
+		classLegend.toSequence(classCodes, ',');
 
 		// Add (combine) new classes
 		std::set<std::string> classCodesNew;
-		srcClass.getWhat()["legend"].toContainer(classCodesNew, ',');
+		srcClass.getWhat()["legend"].toSequence(classCodesNew, ',');
 		for (std::set<std::string>::const_iterator it = classCodesNew.begin(); it != classCodesNew.end(); ++it){
 			classCodes.insert(*it);
 		}

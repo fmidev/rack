@@ -45,8 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-class SourceODIM : public drain::ReferenceMap {
-//class SourceODIM : public drain::FlexVariableMap {
+//class SourceODIM : public drain::ReferenceMap {
+class SourceODIM : public drain::FlexVariableMap {
 
 public:
 

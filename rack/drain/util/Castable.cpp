@@ -169,7 +169,7 @@ std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 }
 
 
-const void Castable::typeInfo(std::ostream & ostr) const {
+void Castable::typeInfo(std::ostream & ostr) const {
 	ostr << '[';
 	if (isString())
 		ostr << '#';
@@ -182,7 +182,14 @@ const void Castable::typeInfo(std::ostream & ostr) const {
 
 
 
-
+void Castable::info(std::ostream & ostr) const {
+	valueToJSON(ostr);
+	ostr << ' ' << Type::call<complexName>(getType()); // << '(' << (getElementSize()*8) << ')';
+	size_t n = getElementCount();
+	if (n > 1)
+		ostr << " * " << n;
+	//ostr << '\n';
+}
 
 
 Castable & Castable::assignCastable(const Castable &c){

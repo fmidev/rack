@@ -291,7 +291,7 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	else {
 		const drain::Variable & p = prop["where:BBOX_native"];
 		std::vector<double> v;
-		p.toContainer(v);
+		p.toSequence(v);
 		if (v.size() == 4){
 			frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
 			mout.note() << "Setting exact (metric) BBOX=";

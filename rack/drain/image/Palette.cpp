@@ -434,7 +434,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		while (data >> d) {
 			colours << d;
 		}
-		colours.toContainer(entry.color);
+		colours.toSequence(entry.color);
 		entry.checkAlpha();
 
 		mout.note() << "got " << colours.getElementCount() << '/' << entry.color.size() << " colours" << mout.endl;
@@ -512,7 +512,7 @@ void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
 
 		entry.getParameters().updateFromCastableMap(attr);
 
-		attr["color"].toContainer(entry.color);
+		attr["color"].toSequence(entry.color);
 		entry.checkAlpha();
 
 		if (SPECIAL){

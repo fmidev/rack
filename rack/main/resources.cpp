@@ -108,9 +108,13 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 	//}
 
 	/// Split what:source to separate fields
+	mout.warn() << "eka"  << mout.endl;
 	const SourceODIM sourceODIM(statusMap["what:source"].toStr());
-	statusMap.importMap(sourceODIM);
 
+	mout.warn() << "importMap"  << mout.endl;
+	statusMap.importCastableMap(sourceODIM);
+
+	mout.warn() << "PolarODIM" << mout.endl;
 	const PolarODIM odim(statusMap);
 	//mout.warn() << odim << mout.endl;
 	statusMap["how:NI"] = odim.getNyquist();

@@ -183,7 +183,7 @@ void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 	mout.note() << value << mout.endl;
 
 	std::vector<double> v;
-	Variable(value, typeid(double)).toContainer(v);
+	Variable(value, typeid(double)).toSequence(v);
 
 	const size_t channels = std::min(v.size(), dst.size() + dst.alpha.size());
 	for (size_t i = 0; i < channels; ++i) {
@@ -227,7 +227,7 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	std::vector<int> v;
-	Variable(value, typeid(int)).toContainer(v);
+	Variable(value, typeid(int)).toSequence(v);
 
 	/// Check values
 	for (size_t i = 0; i < v.size(); ++i) {
@@ -286,9 +286,9 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 
 	typedef double data_t;
 	std::vector<data_t> v;
-	//Variable(value, typeid(data_t)).toContainer(v);
+	//Variable(value, typeid(data_t)).toSequence(v);
 	StringTools::split(value, v, ',');
-	//Variable(value, typeid(data_t)).toContainer(v);
+	//Variable(value, typeid(data_t)).toSequence(v);
 
 	if (v.size() <= 2){
 		mout.warn() << "coordinates ("<< value << ") given but no intensities; returning";

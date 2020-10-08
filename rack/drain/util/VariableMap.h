@@ -60,7 +60,7 @@ public:
 
 	/// Copy constructor
 	inline
-	VariableMap(const VariableMap & v) : SmartMap<Variable>(v.separator){ // vField.ordered,
+	VariableMap(const VariableMap & v) : SmartMap<Variable>(v.separator){
 		importMap(v);
 	};
 
@@ -73,17 +73,21 @@ public:
 };
 
 /// A map of FlexVariable:s.
-class FlexVariableMap : public SmartMap<FlexVariable> { //std::map<std::string,FlexVariable> {
+class FlexVariableMap : public SmartMap<FlexVariable> {
 
 public:
 
-	inline  // strictness_t s=OPEN,
+	inline
 	FlexVariableMap(char separator = '\0') : SmartMap<FlexVariable>(separator){
 	};
 
+	/// Copies a map like VariableMap does - creates an own entry for every input entry.
+	/**
+	 *   Does not try to create references (links), ie does not copy pointers even if input has referencing entries.
+	 */
 	inline
-	FlexVariableMap(const FlexVariableMap & v) : SmartMap<FlexVariable>(v.separator){ // vField.ordered,
-		importMap(v);
+	FlexVariableMap(const FlexVariableMap & m) : SmartMap<FlexVariable>(m.separator){ // vField.ordered,
+		importMap(m);
 	};
 
 	inline
@@ -92,14 +96,14 @@ public:
 		return *this;
 	}
 
-	/*
+
 	template <class T>
 	inline
 	FlexVariableMap & link(const std::string &key, T & target){
 		(*this)[key].link(target);
 		return *this;
 	};
-	*/
+
 
 };
 

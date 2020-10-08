@@ -115,10 +115,11 @@ void CmdInputFile::exec() const {
 	// ZELECT
 	resources.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
-	mout.debug() << "resources.getUpdatedStatusMap()" << mout.endl;
+	mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
 	resources.getUpdatedStatusMap();
 
 	mout.timestamp("END_FILEREAD");
+	mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
 
 
 	if (resources.scriptParser.autoExec > 0){

@@ -417,30 +417,30 @@ public:
 		outputSeparator = c;
 	}
 
-	//template <class S> // std::ostream
 	std::ostream & toStream(std::ostream & ostr = std::cout, char separator='\0') const;
 
 	std::string toStr() const;
 
 	void toJSON(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
 
-
-	//template <class T>
-	//T & valueToJSON(T & ostr = std::cout) const;
 	std::ostream & valueToJSON(std::ostream & ostr = std::cout) const;
 
 	/// Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int."
-	const void typeInfo(std::ostream & ostr) const;
+	void typeInfo(std::ostream & ostr) const;
+
+	/// Writes a bit longer type indentifier and size in bytes, for example "unsigned int(8) for char and "signed int(16) for signed short int."
+	virtual
+	void info(std::ostream & ostr = std::cout) const;
 
 
-	/// Converts to simple iterable STL container.
+	/// Converts data to a STL Sequence, for example std::set, std::list or std::vector .
 	/**
 	 *    \tparam T - std::set, std::list or std::vector
 	 *    \param container  - sequence in which elements will be assigned
 	 *    \param separator  - separator char(s) overriding separator chars of the instance; applicable only with strings
 	 */
 	template <class T>
-	void toContainer(T & container, char separator = 0) const { // FIX raise
+	void toSequence(T & container, char separator = 0) const { // FIX raise
 
 		container.clear();
 
@@ -468,7 +468,7 @@ public:
 			// This part could be in StringTools?
 			typedef std::list<std::string> entryList;
 			entryList entries;
-			toContainer(entries, separator);
+			toSequence(entries, separator);
 
 			for (entryList::const_iterator it = entries.begin(); it!=entries.end(); ++it){
 				//typename T::value_type entry;

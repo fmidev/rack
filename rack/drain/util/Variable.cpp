@@ -94,6 +94,13 @@ void Variable::updateIterators()  {
 }
 
 
+void FlexVariable::info(std::ostream & ostr) const {
+	Castable::info(ostr);
+	if (isReference())
+		ostr << " <reference>";
+	else
+		ostr << " <own>";
+}
 /*
 template <>
 std::ostream & JSONwriter::toStream(const drain::Variable & v, std::ostream &ostr, unsigned short indentation){

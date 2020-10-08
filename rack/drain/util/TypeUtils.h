@@ -201,21 +201,26 @@ public:
 
 		if (s.empty()){
 			std::stringstream sstr;
+			size_t n = sizeGetter::callback<S, std::size_t>();
 			if (std::numeric_limits<S>::is_specialized){
 				if (std::numeric_limits<S>::is_integer){
 					if (std::numeric_limits<S>::is_signed)
 						sstr << "signed";
 					else
 						sstr << "unsigned";
-					sstr << "integer";
+					sstr << ' ';
+					if (n==1)
+						sstr << "char";
+					else
+						sstr << "integer";
 				}
 				else
 					sstr << "float";
 			}
 			else {
-				sstr << " non-numeric";
+				sstr << "non-numeric";
 			}
-			sstr << " (" << (8 * sizeGetter::callback<S, std::size_t>()) << "b)";
+			sstr << " (" << (8 * n) << "b)";
 			s = sstr.str();
 		}
 

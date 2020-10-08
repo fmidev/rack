@@ -407,6 +407,9 @@ public:
 		}
 	}
 
+	virtual
+	void info(std::ostream & ostr = std::cout) const;
+
 protected:
 
 	/// Returns true, if the internal pointer directs to external data object, ie. internal data vector is not used.
@@ -417,7 +420,7 @@ protected:
 	 *
 	 */
 	inline
-	bool isReference(){
+	bool isReference() const {
 		return (caster.ptr != (void *) &data[0]);
 	}
 
