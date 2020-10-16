@@ -32,10 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <fstream>
 
-#include "Hi5.h"
-//#include "drain/util/ValueReader.h"
-#include "drain/util/JSON.h"
 #include "drain/util/Dictionary.h"
+#include "drain/util/TypeUtils.h"
+#include "drain/util/JSON.h"
+
+#include "Hi5.h"
 
 
 // using namespace std;
@@ -83,7 +84,9 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
 		else
 			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ',' << dataSet.getChannelCount() << ']';
+		// TODO:
 		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getElementSize() << ']' << '\n';  // like typeInfo above
+		// ostr << " # " << drain::Type::call<drain::complexName>(dataSet.getType());
 		ostr << '\n';
 	}
 
