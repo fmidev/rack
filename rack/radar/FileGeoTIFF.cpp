@@ -538,38 +538,39 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 
 			if (!projstr.empty()){
 				mout.info() << "where:projdef= " << projstr << mout.endl;
-			}
-			else
-				mout.warn() << "where:projdef empty" << mout.endl;
+				drain::Proj4 proj;
+				proj.setProjectionDst(projstr);
+				if (proj.isLongLat()){
+					mout.info() << "writing 4326 longlat" << mout.endl;
+					SetUpGeoKeys_4326_LongLat(gtif);
+				}
+				else {
+					mout.info() << "writing metric projection" << mout.endl;
+					//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
+					//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
+					if (!GTIFSetFromProj4(gtif, projstr.c_str())){
+						mout.warn() << "failed in setting GeoTIFF projection, where:projdef='" << projstr << "'" << mout.endl;
+						mout.note() << "consider: gdal_translate -a_srs '" << projstr << "' " << path << ' ' << path << 'f' << mout.endl;
+					}
+				}
 
-			drain::Proj4 proj;
-			proj.setProjectionDst(projstr);
-			if (proj.isLongLat()){
-				mout.info() << "writing 4326 longlat" << mout.endl;
-				SetUpGeoKeys_4326_LongLat(gtif);
+				// NEW
+				GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
+				//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
+				/*
+				// usr/include/gdal/rawdataset.h
+				// Non-standard http://www.gdal.org/frmt_gtiff.html
+				std::string nodata = src.properties["what:nodata"];
+				if (!nodata.empty()){
+					mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
+					GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
+				}
+				 */
 			}
 			else {
-				mout.info() << "writing metric projection" << mout.endl;
-				//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-				//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
-				if (!GTIFSetFromProj4(gtif, projstr.c_str())){
-					mout.warn() << "failed in setting GeoTIFF projection, where:projdef='" << projstr << "'" << mout.endl;
-					mout.note() << "consider: gdal_translate -a_srs '" << projstr << "' " << path << ' ' << path << 'f' << mout.endl;
-				}
+				mout.warn() << "where:projdef empty, writing plain TIFF" << mout.endl;
 			}
 
-			// NEW
-			GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
-			//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
-			/*
-			// usr/include/gdal/rawdataset.h
-			// Non-standard http://www.gdal.org/frmt_gtiff.html
-			std::string nodata = src.properties["what:nodata"];
-			if (!nodata.empty()){
-				mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
-				GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
-			}
-			 */
 			GTIFWriteKeys(gtif);
 
 			GTIFFree(gtif);
