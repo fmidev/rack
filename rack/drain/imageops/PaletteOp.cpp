@@ -269,7 +269,22 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	else {
 
 		mout.warn() << "using (slow) retrieval: " << srcChannel << mout.endl;
+		mout.note() << "scaling: " << scaling << mout.endl;
 		//mout.warn() << "using (slow) retrieval, scaled=" << SCALED << ',' << drain::Type::getTypeChar(encoding.getType()) << ", " << scaling << mout.endl;
+
+		if (mout.isDebug(1)){
+			mout.debug() << "first entries of palette: " << mout.endl;
+			mout.debug() << '\n';
+			for (size_t  i = 0; i < 25; ++i) {
+				mout << i << '>' << scaling.fwd(i) << '\t';
+				itLast = pal.retrieve(scaling.fwd(i));
+				mout << itLast->first << '\t';
+				for (k = 0; k < channelCount; ++k)
+					mout << itLast->second.color[k] << '\t';
+				mout << '\n';
+			}
+			mout << mout.endl;
+		}
 
 		for (size_t  i = 0; i < width; ++i) {
 
