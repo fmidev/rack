@@ -829,9 +829,9 @@ public:
 };
 // static CommandEntry<CmdOutputRawImages> cmdOutputRawImages("outputRawImages",'O');
 
-//class CmdSample : public drain::CmdSampler {
 class CmdSample : public drain::Command {
-public: //re
+
+public:
 
 	//CmdSample() : CmdSampler(getResources().sampler, __FUNCTION__, "Sampling configuration. See --format and --outFile '*.dat'."){}; // __FUNCTION__) {};
 
