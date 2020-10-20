@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
+#include "drain/util/BeanLike.h"
 #include "drain/util/Range.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/StringMapper.h"
@@ -135,13 +136,22 @@ public:
  *   If the commentChar has been defined, the first line contains the applied format std::string (default or user-defined)
  *   and other metadata.
  */
-class Sampler  {
+class Sampler : public BeanLike {
 
 public:
 
-	Sampler() : iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar('#'), commentPrefix(1, commentChar), skipVoid(false), voidMarker("void data") {
+	inline
+	Sampler() : BeanLike(__FUNCTION__, "Extract samples from image"), iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar('#'), commentPrefix(1, commentChar), skipVoid(false), voidMarker("void data") {
+		parameters.link("iStep",  iStep, "horz coord step");
+		parameters.link("jStep",  jStep, "vert coord step");
+		parameters.link("i", iRange.vect, "horz index or range").fillArray = true;
+		parameters.link("j", jRange.vect, "vert index or range").fillArray = true;
+		parameters.link("commentChar",   commentPrefix = "#",  "comment prefix (char or bytevalue)");
+		parameters.link("skipVoid", skipVoid = 0,  "skip lines with invalid/missing values");
 	};
 
+	// Named conf, to separate ImageMod::parameters (BeanLike)
+	//ReferenceMap conf;
 
 	int iStep;
 	int jStep;
@@ -149,14 +159,17 @@ public:
 	drain::Range<int> iRange;
 	drain::Range<int> jRange;
 
+
+
 protected:
+
 	mutable
 	char commentChar;
 
 public:
+
 	/// Escape std::string for prefixing text no to be handled as data values.
 	std::string commentPrefix;
-
 
 	/// Skip lines, if contain missing values.
 	bool skipVoid;
@@ -261,6 +274,11 @@ public:
 			ostr << commentChar << " sampleRows=" << iN << "\n";
 			ostr << commentChar << " sampleCols=" << jN << "\n";
 			ostr << commentChar << " samples=" << (iN*jN) << "\n";
+			for (ReferenceMap::const_iterator it = parameters.begin(); it != parameters.end(); ++it){
+				ostr << commentChar << ' ' << it->first << '=';
+				it->second.valueToJSON(ostr);
+				ostr << '\n';
+			}
 			if (!formatStr.empty())
 				ostr << commentChar << " format='" << formatStr << "'\n"; // formatStr instead of format, to save double slash \\n \\t
 			else

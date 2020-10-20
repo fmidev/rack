@@ -402,12 +402,15 @@ ImageSampler::ImageSampler() : ImageMod(__FUNCTION__, "Extract samples. See --fo
 }
 
 void ImageSampler::setReferences(){
+	parameters.append(sampler.getParameters());
+	/*
 	parameters.link("iStep",  sampler.iStep = 10, "horz coord step");
 	parameters.link("jStep",  sampler.jStep =  0, "vert coord step");
 	parameters.link("i", sampler.iRange.vect, "horz index or range").fillArray = true;
 	parameters.link("j", sampler.jRange.vect, "vert index or range").fillArray = true;
 	parameters.link("commentChar",   sampler.commentPrefix = "#",  "comment prefix (char or bytevalue)");
 	parameters.link("skipVoid", sampler.skipVoid = 0,  "skip lines with invalid/missing values");
+	*/
 	// Deprecating
 	/*
 	parameters.link("iStart", sampler.iRange.vect[0] = -1, "horz coord start (obsolete)");
