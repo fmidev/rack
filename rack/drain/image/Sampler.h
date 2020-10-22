@@ -60,7 +60,9 @@ struct SamplePicker {
 	 *  \param ref - flexible container in which the values in each location will be written.
 	 */
 	inline
-	SamplePicker(ReferenceMap & ref) : ref(ref) {
+	SamplePicker(ReferenceMap & variableMap) : variableMap(variableMap) {
+		infoMap.link("width",  width  = 0);
+		infoMap.link("height", height = 0);
 	}
 
 	virtual inline
@@ -81,9 +83,8 @@ struct SamplePicker {
 	}
 
 	/// Optional utility. Called prior to writing the actual data to output stream.
-	virtual
-	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {};
-	void writeHeader(char commentPrefix, std::ostream & ostr) const {};
+	//virtual
+	//void writeHeader(char commentPrefix, std::ostream & ostr) const {};
 
 
 	/// Horizontal coordinate.
@@ -98,8 +99,12 @@ struct SamplePicker {
 	int width;
 	int height;
 
+	/// Information to be should in output file header.
+	FlexVariableMap infoMap;
 
-	ReferenceMap & ref;
+	/// Container for image data, including data derived thereof. Updated in every image position (i,j).
+	/// Formatted and displayed in each row or the output file.
+	ReferenceMap & variableMap;
 
 };
 
@@ -113,9 +118,9 @@ public:
 
 	inline
 	ImageReader(ReferenceMap & ref) : SamplePicker(ref) {//static int dummy;
-		ref.link("i", current_i = 0);
-		ref.link("j", current_j = 0);
-		ref.link("j2", current_j2 = 0);
+		variableMap.link("i", current_i = 0);
+		variableMap.link("j", current_j = 0);
+		variableMap.link("j2", current_j2 = 0);
 	}
 
 	inline
@@ -140,15 +145,7 @@ class Sampler : public BeanLike {
 
 public:
 
-	inline
-	Sampler() : BeanLike(__FUNCTION__, "Extract samples from image"), iStep(10), jStep(0), iRange(-1,-1), jRange(-1,-1), commentChar('#'), commentPrefix(1, commentChar), skipVoid(false), voidMarker("void data") {
-		parameters.link("iStep",  iStep, "horz coord step");
-		parameters.link("jStep",  jStep, "vert coord step");
-		parameters.link("i", iRange.vect, "horz index or range").fillArray = true;
-		parameters.link("j", jRange.vect, "vert index or range").fillArray = true;
-		parameters.link("commentChar",   commentPrefix = "#",  "comment prefix (char or bytevalue)");
-		parameters.link("skipVoid", skipVoid = 0,  "skip lines with invalid/missing values");
-	};
+	Sampler();
 
 	// Named conf, to separate ImageMod::parameters (BeanLike)
 	//ReferenceMap conf;
@@ -158,15 +155,6 @@ public:
 
 	drain::Range<int> iRange;
 	drain::Range<int> jRange;
-
-
-
-protected:
-
-	mutable
-	char commentChar;
-
-public:
 
 	/// Escape std::string for prefixing text no to be handled as data values.
 	std::string commentPrefix;
@@ -178,6 +166,13 @@ public:
 	/// Interface that links coordinates and image data.
 	mutable
 	ReferenceMap variableMap;
+
+	/// Returns character, also supporting numeric ASCII values between 32 and 128.
+	char getCommentChar() const;
+
+	/// Use given format or generate default
+	std::string getFormat(const std::string & formatStr) const;
+
 
 	/// Main function
 	/**
@@ -194,13 +189,12 @@ public:
 	template <class D, class P>
 	void sample(const std::map<std::string, D> & images, const P & picker, const std::string & formatStr, std::ostream & ostr = std::cout) const { // std::string format copy ok
 
-		drain::Logger mout(getImgLog(), "Sampler", __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, getName());
+
 
 		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
 
-		const bool FORMAT = !formatStr.empty();
-		std::string format = drain::StringTools::replace(formatStr, "\\n", "\n"); // "\\n", "\n");
-		format = drain::StringTools::replace(format, "\\t", "\t");
+		std::string format = getFormat(formatStr);
 
 		// Service: associate file keys with data
 		// mout.debug() << "check minus" << mout.endl;
@@ -208,10 +202,6 @@ public:
 		static const std::string minusStr("-");
 		for (typename std::map<std::string, D>::const_iterator it = images.begin(); it != images.end(); ++it){
 			const std::string & key = it->first;
-			/*
-			if (it->second.isEmpty())  // not required from D!
-				mout.warn() << key << ": empty image " << it->second << mout.endl;
-			*/
 			mout.debug(1) << "referencing: " << key << ',' << minusStr << key << mout.endl;
 			variableMap.link(key, values[key]=0);
 			variableMap.link(minusStr+key, values[minusStr+key]=0);
@@ -219,61 +209,27 @@ public:
 		mout.debug() << "variables: " << variableMap << mout.endl;
 
 
-		/// If format not explicitly set, use all the variables => create default format.
-		if (!FORMAT){
-			mout.debug() << "constructing default format (all the quantities)" << mout.endl;
-			std::stringstream sstr;
-			const std::list<std::string> & keys = variableMap.getKeyList();
-			char separator = 0;
-			for (std::list<std::string>::const_iterator it=keys.begin(); it!=keys.end(); ++it){
-				if (!it->empty()){
-					if (it->at(0) != '-'){
-						if (separator)
-							sstr << separator;
-						else
-							separator = ',';
-						sstr << '$' << '{' << *it << '}';
-					}
-				}
-				else {
-					mout.warn() << "empty quantity" << mout.endl;
-				}
-			}
-			format = sstr.str();
-		}
-
 		const int iStep  = this->iStep;
 		const int jStep  = (this->jStep > 0) ? this->jStep : iStep;
 
-		/// Write header, if commentChar has been set.
-		if (commentPrefix.empty()){
-			commentChar = 0;
-		}
-		else {
+		const char commentChar = getCommentChar();
+		if (commentChar){
+			/// Write header, if commentChar has been set.
 
-			if (commentPrefix.size() == 1){
-				commentChar = commentPrefix[0];
-			}
-			else {
-				int i;
-				drain::StringTools::convert(commentPrefix, i);
-				commentChar = i;
-				if (i < 32)
-					mout.warn() << "commentChar bytevalue: " << i << " > commentChar=" << commentChar << mout.endl;
-				else if (i > 128)
-					mout.warn() << "commentChar bytevalue: " << i << " > commentChar=" << commentChar << mout.endl;
+			// ostr << commentChar << " TEST\n";
+			// picker.writeHeader(commentChar, ostr);
+			// ostr << commentChar << " size='" << picker.width << 'x' << picker.height << "'\n";
+
+			ostr << commentChar << commentChar << " input properties " << '\n';
+
+			for (FlexVariableMap::const_iterator it = picker.infoMap.begin(); it != picker.infoMap.end(); ++it){
+				ostr << commentChar << ' ' << it->first << '=';
+				it->second.valueToJSON(ostr);
+				ostr << '\n';
 			}
 
-			//ostr << commentChar << " TEST\n";
-			picker.writeHeader(commentChar, ostr);
-			ostr << commentChar << " size='" << picker.width << 'x' << picker.height << "'\n";
-			const int iN = picker.width/iStep;
-			const int jN = picker.height/jStep;
-			ostr << commentChar << " iStep=" << iStep << "\n";
-			ostr << commentChar << " jStep=" << jStep << "\n";
-			ostr << commentChar << " sampleRows=" << iN << "\n";
-			ostr << commentChar << " sampleCols=" << jN << "\n";
-			ostr << commentChar << " samples=" << (iN*jN) << "\n";
+			ostr << commentChar << commentChar << " sampling parameters " << '\n';
+
 			for (ReferenceMap::const_iterator it = parameters.begin(); it != parameters.end(); ++it){
 				ostr << commentChar << ' ' << it->first << '=';
 				it->second.valueToJSON(ostr);
@@ -283,8 +239,20 @@ public:
 				ostr << commentChar << " format='" << formatStr << "'\n"; // formatStr instead of format, to save double slash \\n \\t
 			else
 				ostr << commentChar << " format='" << format << "'\n";
+
+			ostr << commentChar << commentChar << " resulting geometry " << '\n';
+			const int iN = picker.width/iStep;
+			const int jN = picker.height/jStep;
+			ostr << commentChar << " rows=" << iN << "\n";
+			ostr << commentChar << " rols=" << jN << "\n";
+			ostr << commentChar << " samples=" << (iN*jN) << "\n";
+
+
 		}
 
+		/// Final formatter
+		format = drain::StringTools::replace(format, "\\n", "\n");
+		format = drain::StringTools::replace(format, "\\t", "\t");
 		// Note: supports leading minus sign
 		drain::StringMapper formatter("-?[a-zA-Z0-9_]+"); // WAS: "-?[a-zA-Z0-9_]+" with odd "-?"
 		formatter.parse(format);
@@ -314,8 +282,8 @@ public:
 		// => Set them in SamplePicker.
 		double x;
 		bool dataOk;
-		for (int j = jStart; j<jEnd; j+=jStep){
-			for (int i = iStart; i<iEnd; i+=iStep){
+		for (int j = jStart; j<=jEnd; j+=jStep){
+			for (int i = iStart; i<=iEnd; i+=iStep){
 
 				picker.setPosition(i, j);
 

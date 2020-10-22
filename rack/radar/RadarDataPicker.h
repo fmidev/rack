@@ -157,6 +157,13 @@ public:
 
 		setSize(odim.geometry.width, odim.geometry.height);
 
+		infoMap["lon"] = odim.lon;
+		infoMap["lat"] = odim.lat;
+		Rectangle<double> bbox;
+		// std::vector<double> bbox(4);
+		//this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox[0], bbox[1], bbox[2], bbox[3]);
+		this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
+		infoMap["bbox"] = bbox.toVector();
 
 	}
 
@@ -187,15 +194,15 @@ public:
 	inline
 	const RadarProj4 & getProjection() const { return proj; };
 
-	virtual
-	inline
-	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
+	/*
+	virtual inline
 	void writeHeader(char commentPrefix, std::ostream & ostr) const {
 		ostr << commentPrefix << " proj='" <<  this->getProjection().getProjectionSrc() << "'\n";
 		double lonLL, latLL, lonUR, latUR;
 		this->getProjection().getBoundingBoxD(odim.getMaxRange(), lonLL, latLL, lonUR, latUR);
 		ostr << commentPrefix << " bbox='" <<  lonLL << ',' <<  latLL << ',' << lonUR << ',' << latUR << "'\n";
 	};
+	*/
 
  protected:
 
@@ -270,6 +277,10 @@ public:
 		mout.debug() << "variableMap: " << variableMap << mout.endl;
 		mout.debug() << "frame: " << frame << mout.endl;
 
+		infoMap["bbox"] = frame.getBoundingBoxD().toVector();
+		infoMap["proj"] = frame.getProjection();
+		//infoMap["bbox"] = frame.getBoundingBoxD();
+
 	}
 
 
@@ -291,8 +302,8 @@ public:
 	/// Frame for converting coordinates.
 	GeoFrame frame;
 
+	/*
 	virtual inline
-	//void writeHeader(const std::string & commentPrefix, std::ostream & ostr) const {
 	void writeHeader(char commentPrefix, std::ostream & ostr) const {
 		ostr << commentPrefix << " proj='" <<  frame.getProjection()   << "'\n";
 		const drain::Rectangle<double> & bbox = frame.getBoundingBoxD();
@@ -300,6 +311,7 @@ public:
 		ostr << commentPrefix << " XRANGE='" <<  bbox.lowerLeft.x << ':' <<  bbox.upperRight.x << "'\n";
 		ostr << commentPrefix << " YRANGE='" <<  bbox.lowerLeft.y << ':' <<  bbox.upperRight.y << "'\n";
 	};
+	*/
 
 };
 
