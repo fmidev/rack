@@ -92,13 +92,13 @@ std::string Sampler::getFormat(const std::string & formatStr) const {
 
 	/// If format not explicitly set, use all the variables => create default format.
 	//if (!FORMAT){
-	mout.debug() << "constructing default format (all the quantities)" << mout.endl;
+	mout.debug() << "format not given, using default (all the quantities)" << mout.endl;
 	std::stringstream sstr;
 	const std::list<std::string> & keys = variableMap.getKeyList();
 	char separator = 0;
 	for (std::list<std::string>::const_iterator it=keys.begin(); it!=keys.end(); ++it){
 		if (!it->empty()){
-			if (it->at(0) != '-'){
+			if (it->at(0) != '-'){ // Skip negatives
 				if (separator)
 					sstr << separator;
 				else
@@ -110,20 +110,10 @@ std::string Sampler::getFormat(const std::string & formatStr) const {
 			mout.warn() << "empty quantity" << mout.endl;
 		}
 	}
+	mout.note() << "format: using default: " << sstr.str() << mout.endl;
 	return sstr.str();
 }
 
-
-/*
-std::ostream & NodeSVG::toOStr(std::ostream &ostr, const TreeSVG & tree){
-	ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
-	ostr << '\n';
-	//NodeXML::toOStr()
-	//NodeXML::toOStr(ostr, tree, "svg");
-	NodeXML::toOStr(ostr, tree);
-	return ostr;
-}
-*/
 
 
 }  // namespace image

@@ -194,7 +194,7 @@ public:
 
 		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
 
-		std::string format = getFormat(formatStr);
+		// std::string format = getFormat(formatStr);
 
 		// Service: associate file keys with data
 		// mout.debug() << "check minus" << mout.endl;
@@ -207,6 +207,8 @@ public:
 			variableMap.link(minusStr+key, values[minusStr+key]=0);
 		}
 		mout.debug() << "variables: " << variableMap << mout.endl;
+
+		std::string format = getFormat(formatStr);
 
 
 		const int iStep  = this->iStep;
