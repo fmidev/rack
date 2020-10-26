@@ -366,10 +366,16 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 
 	// mout.debug() << "writing comments (metadata)" << mout.endl;
 	const FlexVariableMap & vmap = image.getProperties();
-	for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {
-		ofstr << '#' << ' ' << it->first << '=';
-		it->second.valueToJSON(ofstr);
-		ofstr << '\n';
+	if (vmap.hasKey("")){
+		mout.note() << "overriding comments" << mout.endl;
+		ofstr << vmap.get("", "");
+	}
+	else {
+		for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {
+			ofstr << '#' << ' ' << it->first << '=';
+			it->second.valueToJSON(ofstr);
+			ofstr << '\n';
+		}
 	}
 
 	// GEOMETRY

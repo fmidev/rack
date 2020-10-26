@@ -420,9 +420,7 @@ public:
 		}
 		else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
-
 			// This is the simple version. See image commands (--iXxxxx)
-			// try {
 
 			mout.info() << "File format: image" << mout.endl;
 
@@ -468,7 +466,7 @@ public:
 				}
 				else if (IMAGE_TIF) {
 					// see FileGeoTiff::tileWidth
-					FileGeoTIFF::write(resources.outputPrefix + value, *getResources().currentImage); //, geoTIFF.width, geoTIFF.height);
+					FileGeoTIFF::write(resources.outputPrefix + value, *resources.currentImage); //, geoTIFF.width, geoTIFF.height);
 				}
 				else {
 					resources.errorFlags.set(RackResources::PARAMETER_ERROR || RackResources::OUTPUT_ERROR);

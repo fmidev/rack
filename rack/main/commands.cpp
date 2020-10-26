@@ -1209,8 +1209,18 @@ public:
 		//mout.warn() << r.statusFormatter << mout.endl;
 
 
-		if ((value == "")||(value == "-"))
+		if ((value == "")||(value == "-")){
 			std::cout << reg.statusFormatter;
+		}
+		else if (value == "image"){
+			//resources.
+			if (!resources.select.empty())
+				resources.setCurrentImage(resources.select);
+			drain::image::Image *ptr = (drain::image::Image *)resources.currentImage;
+			std::stringstream sstr;
+			sstr << reg.statusFormatter;
+			ptr->properties[""] = sstr.str();
+		}
 		else {
 			const std::string outFileName = getResources().outputPrefix + value;
 			mout.info() << "writing " << outFileName << mout.endl;
