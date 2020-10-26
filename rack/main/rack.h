@@ -35,8 +35,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "5.61"
 
 /**
+ *   Version 5.62
+ *   - Sample command: iRange,jRange =>  i,j to support sampling a single position
+ *   - PGM comment override option
+ *
  *   Version 5.61
- *   - More support for ODIM 2.3: how:
+ *   - More support for ODIM 2.3: what:source WIGOS
  *
  *   Version 5.6
  *   - Initial tests for parallel computation (openmp)
