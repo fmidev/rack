@@ -425,10 +425,13 @@ public:
 			cmdImage.imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 			//mout.note() << cmdImage.imageSelector << mout.endl;
 			cmdImage.imageSelector.setParameters(resources.select);
-			//mout.note() << cmdImage.imageSelector << mout.endl;
-			if (resources.setCurrentImage(cmdImage.imageSelector))
+			//mout.note() << cmdImage.imageSelector << mout.endl;images
+			ODIMPath path = resources.setCurrentImage(cmdImage.imageSelector);
+			//if (resources.setCurrentImage(cmdImage.imageSelector))
+			if (!path.empty()){
+				mout.info() << "guessed current image, path: " << path << mout.endl;
 				mout.debug(2) << "input metadata: " << resources.currentGrayImage->getProperties() << mout.endl;
-
+			}
 
 			/* This may be relevant, keep for 2019
 			cmdImage.imageSelector.setParameters(resources.select);

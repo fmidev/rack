@@ -114,7 +114,8 @@ public:
 	/*
 	 *  \return true, if non-empty image was found
 	 */
-	bool setCurrentImage(const DataSelector & imageSelector);
+	// bool
+	ODIMPath setCurrentImage(const DataSelector & imageSelector);
 
 
 	// Experimental

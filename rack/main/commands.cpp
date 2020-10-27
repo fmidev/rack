@@ -1216,10 +1216,24 @@ public:
 			//resources.
 			if (!resources.select.empty())
 				resources.setCurrentImage(resources.select);
-			drain::image::Image *ptr = (drain::image::Image *)resources.currentImage;
-			std::stringstream sstr;
-			sstr << reg.statusFormatter;
-			ptr->properties[""] = sstr.str();
+			else if (resources.currentImage == NULL){
+				mout.warn() << "current image unset, using first applicable path"  << mout.endl;
+				mout.note() << "consider -Q <quantity> or --select <params>"  << mout.endl;
+				ODIMPath p = resources.setCurrentImage(DataSelector(ODIMPathElem::DATASET, ODIMPathElem::DATA));
+				if (!p.empty()){
+					mout.note() << "guessed path: " << p << mout.endl;
+				}
+			}
+
+			if (resources.currentImage){
+				drain::image::Image *ptr = (drain::image::Image *)resources.currentImage;
+				std::stringstream sstr;
+				sstr << reg.statusFormatter;
+				ptr->properties[""] = sstr.str();
+			}
+			else {
+				mout.error() << "failed in setting/guessing current image"  << mout.endl;
+			}
 		}
 		else {
 			const std::string outFileName = getResources().outputPrefix + value;

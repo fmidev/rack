@@ -368,7 +368,9 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	const FlexVariableMap & vmap = image.getProperties();
 	if (vmap.hasKey("")){
 		mout.note() << "overriding comments" << mout.endl;
-		ofstr << vmap.get("", "");
+		ofstr << '#' << ' ' << drain::StringTools::replace( vmap.get("", ""), "\n", "\n# ");
+		// ofstr << vmap.get("", "");
+		ofstr << '\n';
 	}
 	else {
 		for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {

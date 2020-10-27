@@ -190,7 +190,8 @@ void RackResources::getImageInfo(const drain::image::Image *ptr, Variable & entr
 	entry = sstr.str();
 }
 
-bool RackResources::setCurrentImage(const DataSelector & imageSelector){
+//bool
+ODIMPath RackResources::setCurrentImage(const DataSelector & imageSelector){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -217,16 +218,17 @@ bool RackResources::setCurrentImage(const DataSelector & imageSelector){
 		currentImage     = & img;
 		currentGrayImage = & img;
 
-		return true;
+		//return true;
 
 	}
 	else {
+		path.clear();
 		// if (path.empty()){
 		mout.warn() << "no paths found with " << imageSelector << ", skipping..." << mout.endl;
-		return false;
+		//return false;
 	}
 
-
+	return path;
 
 }
 

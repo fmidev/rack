@@ -444,8 +444,10 @@ public:
 				imageSelector.setParameters(resources.select);
 				resources.select.clear();
 				mout.debug() << imageSelector << mout.endl;
-				if (resources.setCurrentImage(imageSelector)){
+				ODIMPath path = resources.setCurrentImage(imageSelector);
+				if (!path.empty()){
 					// OK
+					mout.info() << "using image path: " << path << mout.endl;
 					if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
 						mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
 					}
