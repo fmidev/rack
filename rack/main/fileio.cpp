@@ -733,7 +733,7 @@ protected:
 			dataMap.insert(typename P::map_t::value_type(q.odim.quantity, q));
 		}
 		else {
-			mout.note() << "no quality data" << mout.endl;
+			mout.info() << "no quality data" << mout.endl;
 		}
 
 		sampler.sample(dataMap, picker, format, ofstr);

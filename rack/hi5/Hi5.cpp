@@ -314,20 +314,38 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	Hi5Tree::path_t path;
+
+	// OLD -> -> _
+	// std::string attrKey;
+	// std::string attrValue;
+	// Hi5Base::parsePath(line, path, attrKey, attrValue);
+
+	// NEW
+	std::string assignment;
+	//Hi5Base::parsePath(line, path, assignment);
+	drain::StringTools::split2(line, path, assignment, ":");
+}
+
+//void Hi5Base::readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & assignment){
+void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	// NEW
+
 	std::string attrKey;
 	std::string attrValue;
-	//drain::Variable v;
+	const bool VALUE_GIVEN = drain::StringTools::split2(assignment, attrKey, attrValue, "=");
 
-	Hi5Base::parsePath(line, path, attrKey, attrValue);
 
 	mout.debug(1);
-	mout << path      << " : ";
+	//mout << path      << " : ";
 	mout << attrKey   << " = ";
 	mout << attrValue << " | ";
 	mout << mout.endl;
 
 	/// Create the node always
-	NodeHi5 & n = dst(path).data;
+	// NodeHi5 & n = dst(path).data;
+	NodeHi5 & n = dst.data;
 
 	if (attrKey.empty())
 		return;
@@ -359,12 +377,13 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 		drain::Variable & a = n.attributes[attrKey];
 		//mout.warn() << "hey " << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
-		drain::JSONreader::readValue(attrValue, a, true);
-		//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
-
-		if (attrKey == "quantity"){
-			if (n.attributes.get("gain", 0.0) == 0.0){
-				mout.debug() << "Suggesting --completeODIM to proceed" << mout.endl;
+		if (VALUE_GIVEN){
+			drain::JSONreader::readValue(attrValue, a, true);
+			//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
+			if (attrKey == "quantity"){
+				if (n.attributes.get("gain", 0.0) == 0.0){
+					mout.debug() << "Consider --completeODIM to proceed" << mout.endl;
+				}
 			}
 		}
 
@@ -372,6 +391,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 }
 
+/*
 void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & assignment){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -381,7 +401,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 	drain::StringTools::split2(line, path, assignment, ":");
 
 }
-
+*/
 
 
 /// Split full path string to path object and attribute key.
@@ -393,8 +413,8 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 	mout.debug() << "line: " << line << mout.endl;
 
 	std::string assignment;
-
-	Hi5Base::parsePath(line, path, assignment);
+	//Hi5Base::parsePath(line, path, assignment);
+	drain::StringTools::split2(line, path, assignment, ":");
 
 	drain::StringTools::split2(assignment, attrKey, attrValue, "=");
 

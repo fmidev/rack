@@ -185,8 +185,8 @@ public:
 	static
 	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, std::string & attrValue);
 
-	static
-	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attribute);
+	//static
+	//void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attribute);
 
 	/*
 	static
@@ -207,6 +207,10 @@ public:
 	 */
 	static
 	void readTextLine(Hi5Tree &src, const std::string & line);
+
+	static
+	//void readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & assignment);
+	void assignAttribute(Hi5Tree & dst, const std::string & assignment);
 
 	// static	void readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & key, const std::string & value);
 

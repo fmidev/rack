@@ -228,7 +228,8 @@ protected:
 		if (m.empty()){
 			m[","] = "|";
 			m["*"] = ".*";
-			m["?"] = "[.]";
+			m["?"] = ".";
+			//m["?"] = "[.]";
 		}
 
 		return m;
@@ -865,8 +866,43 @@ public:
 
 		mout.debug() << "value: " << value << mout.endl;
 
-		hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
+		Hi5Tree & src = *(resources.currentHi5);
 
+		static
+		const drain::RegExp re("^(.*(data|what|where|how)):([a-zA-Z0-9_]+(=.+)?)$");
+
+		std::string assignment;
+		DataSelector s(resources.select);
+		resources.select.clear();
+
+		std::vector<std::string> result;
+		if (re.execute(value, result)){
+			s.pathMatcher.set(value);
+			mout.debug() << "pathMatcher: " << s.pathMatcher << mout.endl;
+		}
+		else {
+			//const ODIMPath path = result[1];
+			s.pathMatcher.set(result[1]);
+			// mout.note() << "pathMatcher: " << s.pathMatcher << mout.endl;
+			mout.note() << "selector: " << s << mout.endl;
+			assignment = result[3];
+			mout.warn() << "assignment:  " << assignment    << mout.endl;
+		}
+
+
+		ODIMPathList paths;
+		s.getPaths3(src, paths);
+
+		for (ODIMPathList::const_iterator it=paths.begin(); it!= paths.end(); ++it) {
+			mout.warn() << *it << mout.endl;
+			Hi5Tree & d = src(*it);
+			if (!assignment.empty()){
+				hi5::Hi5Base::assignAttribute(d, assignment);
+			}
+		}
+
+		/// OLD
+		// hi5::Hi5Base::readTextLine(*(resources.currentHi5), value);
 		DataTools::updateInternalAttributes(*(resources.currentHi5));
 
 
