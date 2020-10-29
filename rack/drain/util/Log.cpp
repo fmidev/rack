@@ -264,9 +264,11 @@ Logger::oper Logger::endl;
 
 // Logger(const std::string & funcName, const std::string & className) :
 Logger::Logger(const char *funcName, const std::string & className): //const char *className):
+//Logger::Logger(const char *funcName, const char *className):
 	monitor(getLog()), errorType(LOG_NOTICE), time(getLog().getMilliseconds()){
 	// prefix(className + (funcName.empty()?"":":")+funcName),
 	setPrefix(funcName, className.c_str());
+	//setPrefix(funcName, className);
 }
 
 

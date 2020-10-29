@@ -48,6 +48,9 @@ const drain::Flags::value_t RackResources::DATA_ERROR      = 2;
 const drain::Flags::value_t RackResources::METADATA_ERROR  = 4;
 const drain::Flags::value_t RackResources::OUTPUT_ERROR    = 8;
 const drain::Flags::value_t RackResources::PARAMETER_ERROR = 16;
+/* TODO: more status flags
+ * INCOMPLETE_PRODUCT ?
+ */
 
 //drain::Logger RackResources::mout("racklet"); inputOk(true), dataOk(true),
 RackResources::RackResources() : currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),

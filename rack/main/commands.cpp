@@ -892,6 +892,13 @@ public:
 
 		ODIMPathList paths;
 		s.getPaths3(src, paths);
+		if (paths.empty()){
+			mout.warn() << "no paths found:  "  << mout.endl;
+			mout.warn() << "isSingle:  " << s.pathMatcher.isSingle() << mout.endl;
+			ODIMPath path;
+			s.pathMatcher.extract(path);
+			paths.push_back(path);
+		}
 
 		for (ODIMPathList::const_iterator it=paths.begin(); it!= paths.end(); ++it) {
 			mout.warn() << *it << mout.endl;

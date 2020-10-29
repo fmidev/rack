@@ -227,6 +227,7 @@ public:
 	//Logger(const std::string & className = "", const std::string & funcName = "");
 	//Logger(const char *funcName, const char *className = NULL);
 	Logger(const char *funcName, const std::string & name = "");
+	//Logger(const char *funcName, const char * name);
 
 	Logger(Log &log, const char *funcName, const std::string & name = ""); //const char *className = NULL);
 

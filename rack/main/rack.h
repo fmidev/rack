@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "5.62"
+#define __RACK_VERSION__ "5.63"
 
 /**
+ *   Version 5.63
+ *   - --setODIM: support indexed search, like: --/dataset1:5/data3/what:quanity=DBZH
+ *
  *   Version 5.62
  *   - Sample command: iRange,jRange =>  i,j to support sampling a single position
  *   - PGM comment override option

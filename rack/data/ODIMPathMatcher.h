@@ -74,6 +74,17 @@ public:
 	*/
 
 	inline
+	bool isSingle() const {
+		return (!isIndexed()) || (index == indexMax);
+		/*
+		if (isIndexed())
+			return (it->index == it->indexMax);
+		else
+			return true;
+		 */
+	}
+
+	inline
 	ODIMPathElemMatcher & operator=(ODIMPathElem::group_t g){
 		index = 0;
 		indexMax = 0xffff;
@@ -131,6 +142,11 @@ public:
 		//set(path);
 	}
 
+	/// Checks if corresponds to a single path, implying that all the index ranges are singletons.
+	bool isSingle() const;
+
+	/// Assuming single path is
+	bool extract(ODIMPath & path) const;
 
 	/// Match the leading part of \c path , if \c matcher starts with root. Else, match the trailing part.
 	bool match(const rack::ODIMPath & path) const;

@@ -130,18 +130,20 @@ int process(int argc, const char **argv) {
 	/// Main "loop".
 	registry.runCommands(argc, argv);
 
-	//mout.timestamp("END_RACK");
-	//std::cout << registry.getAliases() << '\n';
-	mout << "end" << mout.endl;
+	// mout.timestamp("END_RACK");
+	// std::cout << registry.getAliases() << '\n';
+	// mout << "end" << mout.endl;
+	RackResources & resources = getResources();
 
-	/* TODO: more status flags
-	 * INPUT_OK
-	 * METADATA_OK
-	 * WRITE_OK
-	 * INCOMPLETE_PRODUCT
-	 */
+	if ((mout.isLevel(LOG_WARNING)) && (resources.errorFlags > 0)){
+		std::cerr << resources.errorFlags.value << ' ' << resources.errorFlags << " ERROR\n";
+		//std::cerr << '[';
+		//resources.errorFlags.keysToStream(std::cerr, ',');
+		//std::cerr << ']';
+	}
+
 	//if (getResources().inputOk)
-	return getResources().errorFlags;
+	return resources.errorFlags;
 	/*
 	if (getResources().errorFlags.isSet(255))
 		return getResources().errorFlag; //result; future option

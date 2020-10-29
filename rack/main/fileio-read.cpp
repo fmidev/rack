@@ -60,7 +60,8 @@ namespace rack {
 
 void CmdInputFile::exec() const {
 
-	drain::Logger mout(__FILE__, getName());
+	drain::Logger mout(getName().c_str(), __FILE__);
+	//__FUNCTION__, __FILE__
 
 	mout.timestamp("BEGIN_FILEREAD");
 

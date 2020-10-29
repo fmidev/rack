@@ -100,6 +100,8 @@ void Flags::assign(const std::string & params){
 std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 
 	//if (!separator)separator = dictionary.separator;
+	if (!separator)
+		separator = this->separator;
 
 	/* note: instead of shifting bits of this->value, studies dictionary which can contain
 		- combined values
@@ -111,7 +113,7 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 			if (sep)
 				ostr << sep;
 			else
-				sep = separator ? separator : this->separator; // dictionary.separator;
+				sep = separator;
 			ostr << it->first;
 		}
 		else {

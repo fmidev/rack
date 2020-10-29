@@ -165,6 +165,32 @@ std::ostream & ODIMPathElemMatcher::toOStr(std::ostream & sstr) const {
 	return sstr;
 }
 
+
+
+
+/// Checks if corresponds to a single path, implying that all the index ranges are singletons.
+bool ODIMPathMatcher::isSingle() const {
+
+	for (const_iterator it=this->begin(); it!=this->end(); ++it){
+		if (!it->isSingle())
+			return false;
+	}
+
+	return true;
+}
+
+/// Extracts a single, "deterministic" path only. TODO: extract maximally N branches.
+bool ODIMPathMatcher::extract(ODIMPath & path) const {
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	for (const_iterator it=this->begin(); it!=this->end(); ++it){
+		if (!it->isSingle())
+			mout.warn() << "elem has range: " << *it << ", using min index=" << it->index << mout.endl;
+		path << *it;
+	}
+}
+
+
 // const rack::ODIMPathMatcher & matcher
 bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 
