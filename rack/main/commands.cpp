@@ -881,29 +881,31 @@ public:
 			mout.debug() << "pathMatcher: " << s.pathMatcher << mout.endl;
 		}
 		else {
-			//const ODIMPath path = result[1];
 			s.pathMatcher.set(result[1]);
-			// mout.note() << "pathMatcher: " << s.pathMatcher << mout.endl;
-			mout.note() << "selector: " << s << mout.endl;
+			mout.info()  << "pathMatcher: " << s.pathMatcher << mout.endl;
+			mout.debug() << "selector: " << s << mout.endl;
 			assignment = result[3];
-			mout.warn() << "assignment:  " << assignment    << mout.endl;
+			mout.debug(1) << "assignment:  " << assignment    << mout.endl;
 		}
 
 
 		ODIMPathList paths;
 		s.getPaths3(src, paths);
 		if (paths.empty()){
-			mout.warn() << "no paths found:  "  << mout.endl;
-			mout.warn() << "isSingle:  " << s.pathMatcher.isSingle() << mout.endl;
+			mout.debug() << "no paths found, so trying creating one:" << s.pathMatcher  << mout.endl;
+			mout.debug(1) << "isSingle:  " << s.pathMatcher.isSingle() << mout.endl;
 			ODIMPath path;
 			s.pathMatcher.extract(path);
 			paths.push_back(path);
 		}
 
 		for (ODIMPathList::const_iterator it=paths.begin(); it!= paths.end(); ++it) {
-			mout.warn() << *it << mout.endl;
 			Hi5Tree & d = src(*it);
-			if (!assignment.empty()){
+			if (assignment.empty()){
+				mout.debug() << *it << mout.endl;
+			}
+			else {
+				mout.info() << *it << '=' << assignment << mout.endl;
 				hi5::Hi5Base::assignAttribute(d, assignment);
 			}
 		}
