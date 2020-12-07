@@ -222,6 +222,10 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	png_text *text_ptr = new png_text[comments.size()];
 	for (std::map<std::string,std::string>::const_iterator it = comments.begin(); it != comments.end(); it++){
 		// std::cout << "PngFile:" << it->first << ':' << it->second << '\n';
+		if (it->first.empty()){
+			mout.note() << "Skipping comment with zero length keyword" << mout.endl;
+			continue;
+		}
 		text_ptr[i].key  = (char *)it->first.c_str();
 		text_ptr[i].text = (char *)it->second.c_str();
 		text_ptr[i].text_length = it->second.length();

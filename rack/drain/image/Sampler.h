@@ -82,6 +82,9 @@ struct SamplePicker {
 		current_j2 = height-1 - j;
 	}
 
+	// TODO: min/max coord control, like CoordHandler for checking min and max.
+	//bool checkPosition()
+
 	/// Optional utility. Called prior to writing the actual data to output stream.
 	//virtual
 	//void writeHeader(char commentPrefix, std::ostream & ostr) const {};
@@ -191,6 +194,10 @@ public:
 
 		drain::Logger mout(__FUNCTION__, getName());
 
+		if (images.empty()){
+			mout.error() << "no image data (channels) provided: " << mout.endl;
+			return;
+		}
 
 		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
 
@@ -279,9 +286,7 @@ public:
 
 
 		// Main loop: traverse image area with (i,j)
-		// But no referencing here because some applications might prefer derived variables like
-		// j2=(height-1-j) or geographical coords.
-		// => Set them in SamplePicker.
+		// SamplePicker has set variableMap references (ie. geographical coords j2=(height-1-j) ).
 		double x;
 		bool dataOk;
 		for (int j = jStart; j<=jEnd; j+=jStep){

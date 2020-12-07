@@ -177,6 +177,7 @@ public:
 			d.link((void *)(dstAddr + relativeAddr), r.getType());
 			// d.setInputSeparator()
 			// d.setSeparator(arraySeparator);
+			d = r; // value
 		}
 		separator = m.separator;
 		arraySeparator = m.arraySeparator;

@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <utility>
 #include <vector>
 #include <regex.h>
-#include <stddef.h>
+// #include <stddef.h>
 
 #include "drain/util/Log.h"
 #include "drain/util/FilePath.h"
@@ -91,10 +91,10 @@ const drain::RegExp h5FileExtension("^((.*\\.(h5|hdf5|hdf))|((.*/)?[\\w]+))$",  
 const drain::RegExp tiffFileExtension(".*\\.(tif|tiff)$",  REG_EXTENDED | REG_ICASE);
 
 /// Syntax for recognising image files (currently, png supported).
-const drain::RegExp pngFileExtension(".*\\.(png)$", REG_EXTENDED | REG_ICASE);
+//const drain::RegExp pngFileExtension(".*\\.(png)$", REG_EXTENDED | REG_ICASE);
 
 /// Syntax for recognising image files (currently, png supported).
-const drain::RegExp pnmFileExtension(".*\\.(p[nbgp]m)$", REG_EXTENDED | REG_ICASE); //[nbgp]
+//const drain::RegExp pnmFileExtension(".*\\.(p[nbgp]m)$", REG_EXTENDED | REG_ICASE); //[nbgp]
 
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
@@ -188,7 +188,7 @@ public:
 
 		if (!filename.empty()){
 
-			drain::Output out((filename == "-") ? filename : getResources().outputPrefix + filename);
+			drain::Output out((filename == "-") ? filename : resources.outputPrefix + filename);
 
 			std::ostream & ostr = out;
 
@@ -358,6 +358,8 @@ public:
 
 	CmdOutputPrefix() : BasicCommand(__FUNCTION__, "Path prefix for output files."){
 		parameters.link("path", getResources().outputPrefix = "");
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.warn() <<  "parameters: " << parameters << " ("<< parameters.size() << " params)" << mout.endl;
 	};
 };
 extern CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
@@ -401,7 +403,7 @@ public:
 		// TODO: generalize select
 		// TODO: generalize image pick (current or str) for png/tif
 
-		const bool IMAGE_PNG = pngFileExtension.test(value);
+		const bool IMAGE_PNG = drain::image::FilePng::fileNameRegExp.test(value);  //pngFileExtension.test(value);
 		const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
 		const bool IMAGE_TIF = tiffFileExtension.test(value);
 

@@ -329,7 +329,7 @@ public:
 
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//mout.debug()  << "src Scaling0: " << src.getScaling() << mout.endl;
-		mout.note() << "src props for odim: " << src.getProperties() << mout.endl;
+		mout.debug(1) << "src props for odim: " << src.getProperties() << mout.endl;
 
 		this->odimSrc.updateFromMap(src.getProperties());
 		mout.info()  << "NI=" << this->odimSrc.getNyquist(LOG_WARNING) << mout.endl;

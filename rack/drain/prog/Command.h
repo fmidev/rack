@@ -45,18 +45,86 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+class Context {
+
+public:
+
+	Context() : id(++counter){
+	}
+
+	long int getId(){
+		return id;
+	}
+	// std::string name;
+
+	//protected:
+
+	long int id;
+
+private:
+
+	static long int counter;
+
+
+
+};
+
+/*
+
+template <class C>
+class Contextual {
+public:
+
+	Contextual() : contextPtr(NULL){
+	}
+
+	void setContext(C & context){
+		contextPtr = & context;
+	}
+
+	Context & getBaseContext() const {
+		if (contextPtr != NULL){
+			return *contextPtr;
+		}
+		else {
+			static Context defaultContext;
+			return defaultContext;
+		}
+	}
+
+	//template <class C>
+	C & getContext() const {
+		if (contextPtr != NULL){
+			return (C &)*contextPtr;
+		}
+		else {
+			static C defaultContext;
+			return defaultContext;
+		}
+	}
+
+
+protected:
+
+	// Note: common base class. The actual object may be a derived class.
+	Context *contextPtr;
+
+};
+*/
 
 
 /// Base class for commands: typically actions taking parameters but also plain variable assignments and parameterless actions.
 /**
  *
  */
-class Command {
+class Command { //: public Contextual<Context> {
 
 public:
 
 	inline
-	Command(){};
+	Command() : contextPtr(NULL) {};
+
+	//inline	Command(Command & cmd){};
 
 	virtual inline
 	~Command(){};
@@ -84,13 +152,13 @@ public:
 		//mout.warn() << params << mout.endl;
 
 		const ReferenceMap::const_iterator it = params.begin();
-		if (it == params.end())
+		if (it == params.end()) // empty
 			return false;
 		else
 			return it->second.getType() != typeid(void);  // ???
 	};
 
-	/// Description of result, comparable to a return type of a function.
+	/// Description of result, comparable to a return type of a function. ?
 	virtual inline
 	const std::string & getType() const {
 		static const std::string empty;
@@ -99,13 +167,61 @@ public:
 
 
 	// Currently, non-const, because may run
+	/**
+	 *  See exec const below.
+	 */
 	virtual
 	void run(const std::string & params) = 0;
 
 
 
+	void setContext(Context & ctx){
+		contextPtr = & ctx;
+	};
+
+	Context & getBaseContext() const {
+		if (contextPtr != NULL){
+			return *contextPtr;
+		}
+		else {
+			static Context defaultContext;
+			return defaultContext;
+		}
+	}
+
+	/// Returns the linked context.
+	/**
+	 *  Risky: The actual object may be a derived class.
+	 */
+	template <class C>
+	C & getContext() const {
+		if (contextPtr != NULL){
+			return (C &)*contextPtr;
+		}
+		else {
+			static C defaultContext;
+			return defaultContext;
+		}
+	}
+
+
+	protected:
+
+		// Note: common base class. The actual object may be a derived class.
+		Context *contextPtr;
+
 };
 
+inline
+std::ostream & operator<<(std::ostream & ostr, const Command &cmd){
+	ostr << cmd.getName();
+	if (cmd.hasArguments()){
+		ostr << '(' << cmd.getParameters() << ')';
+	}
+	return ostr;
+}
+
+// See new implementations in CommandBank, CommandUtils.
 typedef std::list<std::pair<Command &, std::string> > Script; // TODO: move
 
 
@@ -121,22 +237,12 @@ class BasicCommand : public Command {  // Todo consider BeanLike
 
 public:
 
-	inline
-	BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {
 
-		if (name.find(' ') != std::string::npos){
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error() << "BasicCommand(): name contains space(s): " << name << " descr=" << description << mout.endl;
-			// std::cerr << "BasicCommand(): name contains space(s): " << name << " descr=" << description << std::endl;
-			// exit(1);
-		}
-
-	};
+	BasicCommand(const std::string & name, const std::string & description);
 
 	inline
 	BasicCommand(const BasicCommand & cmd): Command(), section(cmd.section), name(cmd.name), description(cmd.description) {
 		// remember to call importParameters()
-		//parameters.copyStruct(cmd.parameters, cmd, *this); // FIX: may be wrong (cmd has linked members, this has none, yet.
 	}
 
 
@@ -153,14 +259,10 @@ public:
 	const ReferenceMap & getParameters() const { return parameters; };
 
 
-	virtual inline
-	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		//const bool ALLOW_SPECIFIC = (parameters.separator != '\0'); //!parameters.separators.empty();  // consider automatic
-		if (parameters.separator)
-			parameters.setValues(params, assignmentSymbol); //
-		else
-			parameters.setValues(params, '\0', false);
-	}
+	virtual
+	void setParameters(const std::string & args, char assignmentSymbol='=');
+
+
 
 	template <class T>
 	void setParameters(const SmartMap<T> & p){
@@ -191,6 +293,9 @@ public:
 	//bool parallel;
 
 	// Optional bit flag(s) marking the command type (compare with manual page sections)
+	/**
+	 *  Typically, zero section for "hidden" commands, which do not appear in section helps.
+	 */
 	int section;
 
 protected:

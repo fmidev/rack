@@ -29,14 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
  
-/*
- * RackLet.cpp
- *
- *  Created on: Nov 17, 2014
- *      Author: mpe
- */
-
-//#include <fstream>
+// New design (2020)
 
 #include "drain/util/Log.h"
 
@@ -45,15 +38,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-typename ScriptTxt::entry_t & ScriptTxt::add(const std::string & cmd, const std::string & params){
+typename Script2::entry_t & Script2::add(const std::string & cmd, const std::string & params){
 	this->push_back(typename list_t::value_type(cmd, params));
 	return back();
 }
 
 
 
-void ScriptTxt::entryToStream(const typename ScriptTxt::entry_t & entry, std::ostream & ostr) const {
-	ostr << entry.first << '=' << entry.second << '\n';
+void Script2::entryToStream(const typename Script2::entry_t & entry, std::ostream & ostr) const {
+	if (entry.second.empty())
+		ostr << entry.first << '\n';
+	else
+		ostr << entry.first << '=' << entry.second << '\n';
 }
 
 
@@ -71,20 +67,21 @@ void Program::run() const {
 	for (const_iterator it = this->begin(); it != this->end(); ++it) {
 		BasicCommand & cmd = *(*it);
 		mout.warn() << "  executing " << cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
+		mout.note() << "  context: "  << cmd.getBaseContext().getId() << mout.endl;
 		cmd.exec();
 	}
 
 }
 
-void Program::entryToStream(const list_t::value_type & entry, std::ostream & ostr) const{
-	ostr << entry->getName() << '(' << entry->getParameters().getValues() << ')';
+void Program::entryToStream(const list_t::value_type & entry, std::ostream & ostr) const {
+	if (entry->getParameters().empty())
+		ostr << entry->getName();
+	else
+		ostr << entry->getName() << '(' << entry->getParameters().getValues() << ')';
 }
 
 
-// -----------------------
 
-
-
-} /* namespace drain */
+}
 
 // Rack

@@ -79,7 +79,7 @@ public:
 	 *  \tparam T - Image or ImageFrame
 	 */
 	template <class T>
-	static  // , const CommentReader & commentReader = CommentReader()
+	static
 	void read(T & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
 
 	// consider readFrame() like with PNM

@@ -29,13 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
  
-/*
- * TreeSVG.cpp
- *
- *  Created on: Jun 24, 2012
- *      Author: mpeura
- */
-
 #include "Sampler.h"
 
 namespace drain {
@@ -56,6 +49,8 @@ Sampler::Sampler() : BeanLike(__FUNCTION__, "Extract samples from image"),
 	parameters.link("j", jRange.vect, "vert index or range").fillArray = true;
 	parameters.link("commentChar",   commentPrefix,  "comment prefix (char or bytevalue)");
 	parameters.link("skipVoid", skipVoid,  "skip lines with invalid/missing values");
+	//parameters.link("iStart", iRange.vect[0], "first horz index or range").fillArray = true;
+	//parameters.link("jStart", jRange.vect[0], "second vert index or range").fillArray = true;
 };
 
 char Sampler::getCommentChar() const {

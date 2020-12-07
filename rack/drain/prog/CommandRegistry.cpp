@@ -396,8 +396,8 @@ void CommandRegistry::run(Script & script) const {
 	/// Applied, if (expandVariables == true)
 	//  drain::StringMapper strmap("[a-zA-Z0-9_:]+");
 
-	//std::list<std::string> l;
-	//	Script parallel;
+	// std::list<std::string> l;
+	// Script parallel;
 
 	// Script parallelTasks;
 
@@ -425,7 +425,6 @@ void CommandRegistry::run(Script & script) const {
 }
 
 void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
-		//Script & script = *this;
 
 	//Logger mout(std::string(__FUNCTION__) + "(argc,argv)");
 	Logger mout(__FUNCTION__, __FILE__);
@@ -433,13 +432,12 @@ void CommandRegistry::scriptify(int argc, const char **argv, Script & script) {
 
 	for (int i = 1; i < argc; ++i) {
 		const std::string command   = argv[i];
-		const std::string arguments = (i+1)<argc ? argv[i+1] : "";
-				//argv[std::min(i+1, argc-1)];
+		const std::string arguments = ((i+1) < argc) ? argv[i+1] : "";
 		if (appendCommand(command, arguments, script))
-		//if (appendCommand(command, arguments))
 			++i;
+		//if (appendCommand(command, arguments))
 	}
-	//runCommands(argList);
+
 }
 
 void CommandRegistry::scriptify(const std::string & arg, Script & script) {
@@ -493,11 +491,39 @@ void CommandRegistry::scriptify(const std::string & arg, Script & script) {
 
 }
 
+
+
+class CmdDummy : public SimpleCommand<bool> {
+
+public:
+
+	CmdDummy() : SimpleCommand<bool>(__FUNCTION__, "Parallel utility.", "On/off"){
+	};
+
+	inline
+	void exec() const {
+		drain::Logger mout(__FUNCTION__, getName());
+		//value = !value;
+		mout.note() << "Parallel (" << value << ')' << mout.endl;
+	}
+
+};
+
 bool CommandRegistry::appendCommand(const std::string & command, const std::string & arguments, Script & script) {
 
 	Logger mout(__FUNCTION__, __FILE__);
 
+	if (command.length()==1){
+		// Special commands like '(' and ')'
+		mout.warn() << " skipping: " << command << mout.endl;
+		static CmdDummy sleepy;
+		sleepy.value = !sleepy.value;
+		script.push_back(Script::value_type(sleepy, command)); // !
+		return false;
+	}
+
 	std::string key = resolveKey(command);
+
 	map_t::iterator dit = find(key);
 
 	if (dit != entryMap.end()){

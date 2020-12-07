@@ -42,7 +42,7 @@ namespace drain
 namespace image
 {
 
-/// Syntax for recognising image files
+/// Syntax for recognising PNM image files
 const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
 
 

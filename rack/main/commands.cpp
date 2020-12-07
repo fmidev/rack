@@ -860,6 +860,7 @@ public:
 		RackResources & resources = getResources();
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
+			resources.errorFlags.set(RackResources::PARAMETER_ERROR);
 			mout.warn() << "RegExp support suppressed from this version" << mout.endl;
 			return;
 		}
@@ -893,7 +894,7 @@ public:
 		s.getPaths3(src, paths);
 		if (paths.empty()){
 			mout.debug() << "no paths found, so trying creating one:" << s.pathMatcher  << mout.endl;
-			mout.debug(1) << "isSingle:  " << s.pathMatcher.isSingle() << mout.endl;
+			mout.debug(1) << "isLiteral:  " << s.pathMatcher.isLiteral() << mout.endl;
 			ODIMPath path;
 			s.pathMatcher.extract(path);
 			paths.push_back(path);
@@ -1988,6 +1989,7 @@ CommandModule::CommandModule(){ //
 	static RackLetAdapter<CmdEncoding> cmdTarget("target", 't');  // old
 	static RackLetAdapter<CmdEncoding> cmdEncoding("encoding", 'e');  // new
 	static RackLetAdapter<CmdFormatOut> cmdFormatOut;
+	static RackLetAdapter<CmdSleep> cmdSleep;
 
 
 	static RackLetAdapter<drain::CmdDebug> cmdDebug;

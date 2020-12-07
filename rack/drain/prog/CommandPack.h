@@ -32,6 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef COMMANDPACK_H_
 #define COMMANDPACK_H_
 
+#include <unistd.h>
+
 #include "CommandRegistry.h"
 #include "CommandAdapter.h"
 
@@ -153,7 +155,8 @@ public:
 };
 
 class CmdFormat : public SimpleCommand<std::string> {
-    public: //re 
+
+public: //re
 
 	CmdFormat() :  SimpleCommand<std::string>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "format","") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
 	};
@@ -174,7 +177,6 @@ class DefaultHandler : public BasicCommand {
 	inline
 	void run(const std::string & params){
 
-		//Logger mout(getName());
 		Logger mout(__FUNCTION__, __FILE__);
 
 
@@ -219,7 +221,7 @@ class CmdExpandVariables : public BasicCommand {
 
 public:
 
-	CmdExpandVariables() : BasicCommand(__FUNCTION__, "Toggle variable expansion on/off") {
+	CmdExpandVariables() : BasicCommand(__FUNCTION__, "Toggle variable expansions on/off") {
 	};
 
 	inline
@@ -227,6 +229,23 @@ public:
 		CommandRegistry & r = getRegistry();
 		r.expandVariables = !r.expandVariables;
 	};
+
+};
+
+class CmdSleep : public SimpleCommand<int> {
+
+public:
+
+	CmdSleep() : SimpleCommand<int>(__FUNCTION__, "Debugging utility.", "seconds"){
+	};
+
+	inline
+	void exec() const {
+		drain::Logger mout(__FUNCTION__, getName());
+		mout.note() << "waiting for (" << value << " s)" << mout.endl;
+		sleep(value);
+		mout.note() << "ended (" << value << " s)"<< mout.endl;
+	}
 
 };
 

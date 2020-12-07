@@ -150,18 +150,6 @@ std::ostream & ODIMPathElemMatcher::toOStr(std::ostream & sstr) const {
 	if (ODIMPathElem::isIndexed(flags.value))
 		sstr << this->index << ':' << this->indexMax;
 
-	/// Step 1: prefix (by group type)
-	//sstr << '(' << flags << ')';
-	/// Step 1b: prefix (by group type)
-	//sstr << getPrefix(); // avoid "other"
-
-	/// Step 2: index
-	//if (isIndexed(this->group))
-	//sstr << '[';
-	// sstr << this->index << ':' << this->indexMax;
-	//sstr << ']';
-	//sstr << '{' << this->index << '}';
-
 	return sstr;
 }
 
@@ -169,7 +157,7 @@ std::ostream & ODIMPathElemMatcher::toOStr(std::ostream & sstr) const {
 
 
 /// Checks if corresponds to a single path, implying that all the index ranges are singletons.
-bool ODIMPathMatcher::isSingle() const {
+bool ODIMPathMatcher::isLiteral() const {
 
 	for (const_iterator it=this->begin(); it!=this->end(); ++it){
 		if (!it->isSingle())
@@ -179,7 +167,7 @@ bool ODIMPathMatcher::isSingle() const {
 	return true;
 }
 
-/// Extracts a single, "deterministic" path only. TODO: extract maximally N branches.
+/// Extracts a single, "deterministic" path only. TODO: enumerate, extract maximally N branches.
 bool ODIMPathMatcher::extract(ODIMPath & path) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -205,7 +193,7 @@ bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 }
 
 
-//const rack::ODIMPathMatcher & matcher
+
 bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

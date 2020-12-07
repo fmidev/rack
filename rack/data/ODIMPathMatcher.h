@@ -127,32 +127,33 @@ class ODIMPathMatcher : public drain::Path<ODIMPathElemMatcher> {
 
 public:
 
+	/// Basic constructor
 	ODIMPathMatcher() : drain::Path<ODIMPathElemMatcher>() {
 	}
 
-	ODIMPathMatcher(const std::string & path) : drain::Path<ODIMPathElemMatcher>(path) {
-		//set(path);
-	}
-
-	ODIMPathMatcher(const char * path) : drain::Path<ODIMPathElemMatcher>(path) {
-		//set(path);
-	}
-
+	/// Copy constructor
 	ODIMPathMatcher(const ODIMPathMatcher & matcher) : drain::Path<ODIMPathElemMatcher>(matcher) {
-		//set(path);
 	}
+
+	/// Almost copy constructor
+	ODIMPathMatcher(const std::string & path) : drain::Path<ODIMPathElemMatcher>(path) {
+	}
+
+	/// Almost copy constructor
+	ODIMPathMatcher(const char * path) : drain::Path<ODIMPathElemMatcher>(path) {
+	}
+
 
 	/// Checks if corresponds to a single path, implying that all the index ranges are singletons.
-	bool isSingle() const;
+	bool isLiteral() const;
 
-	/// Assuming single path is
+	/// Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.
 	bool extract(ODIMPath & path) const;
 
 	/// Match the leading part of \c path , if \c matcher starts with root. Else, match the trailing part.
 	bool match(const rack::ODIMPath & path) const;
 
 	/// Match leading part of \c path.
-	// const rack::ODIMPathMatcher & matcher,
 	bool matchHead(const rack::ODIMPath & path) const;
 
 	/// Match trailing part of \c path.
@@ -161,17 +162,10 @@ public:
 	/// Match single element. If matcher path does not contain it, return defaultValue.
 	bool matchElem(const rack::ODIMPathElem & elem, bool defaultValue = true) const;
 
-protected:
-
 };
-
-
-
 
 
 }  // namespace rack
 
 
 #endif
-
-// Rack

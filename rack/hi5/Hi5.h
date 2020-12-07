@@ -59,6 +59,9 @@ namespace hi5 {
 extern drain::Log hi5monitor;
 extern drain::Logger hi5mout;
 
+/// Syntax for recognising HDF5 filenames.
+extern
+const drain::RegExp fileNameRegExp;
 
 /// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
 /**

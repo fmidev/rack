@@ -29,12 +29,16 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+
+// New design (2020)
+
 #ifndef COMMAND_BANK_H_
 #define COMMAND_BANK_H_
 
 #include <iostream>
 
 #include "drain/util/Bank.h"
+#include "drain/util/Flags.h"
 #include "Command.h"
 
 
@@ -56,35 +60,40 @@ public:
 		const T & src = Bank2<T>::add(key)
 	}
 	*/
+	Flags2 sections;
 
 	///
 	std::string defaultCmd;
 
 	/// A mini program executed after each cmd until ']' or ')' is encountered
-	ScriptTxt routine;
+	Script2 routine;
 
 	/// Converts command and parameter strings to executable command objects.
-	//  Note: Appends commands to the program
-	void compile(const ScriptTxt & script, Program & prog) const ;
+	//  Note: *Appends* commands to the end of the program
+	void append(const Script2 & script, Program & prog, Context & context) const ;
 
 	void remove(Program & prog) const ;
 
-	void run(ScriptTxt & script);
+	/// Unlike compile, "interprets" script by running it command by command. \see compile()
+	//void run(ScriptTxt & script, drain::Context & context);
+	void run(Script2 & script, ClonerBase<Context> & contextSrc);
 
-	void scriptify(int argc, const char **argv, ScriptTxt & script);
+	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.
+	void scriptify(int argc, const char **argv, Script2 & script);
 
-	void scriptify(const std::string & line, ScriptTxt & script);
+	/// Splits a command line to a list of commands, that is, a script.
+	void scriptify(const std::string & cmdLine, Script2 & script);
 
 	/// Converts a Unix/Linux command line to pairs (cmd,params) of strings.
 	/**
-	 *  Starts from argument 1 instead of 0.
+	 *  \return - true if command argument (argNext) was digested.
 	 */
-	bool scriptify(const std::string & arg, const std::string & argNext, ScriptTxt & script);
+	bool scriptify(const std::string & arg, const std::string & argNext, Script2 & script);
+
 
 	void help(const std::string & key, std::ostream & ostr = std::cout);
 
-
-	void help(std::ostream & ostr = std::cout);
+	void help(unsigned int sectionFilter = 0xffffffff, std::ostream & ostr = std::cout);
 
 	/// Checked key and respective command
 	void info(const std::string & key, const BasicCommand & cmd, std::ostream & ostr = std::cout) const ;

@@ -80,6 +80,8 @@ void CmdInputFile::exec() const {
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
 	// mout.warn() << "inputComplete: " << (int)inputComplete << mout.endl;
 	// mout.warn() << "autoExec:      " << (int)cmdAutoExec.exec << mout.endl;
+	const bool IMAGE_PNG = drain::image::FilePng::fileNameRegExp.test(value);
+	const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
 
 	try {
 
@@ -88,7 +90,8 @@ void CmdInputFile::exec() const {
 			// mout.note() << (*resources.currentHi5)("dataset1/data1")[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
 			//resources.setSource(*resources.currentHi5, *this); wronk
 		}  //
-		else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
+		//else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
+		else if (IMAGE_PNG || IMAGE_PNM){
 			//else if (drain::image::FilePng::fileNameRegExp.test(this->value) || drain::image::FilePnm::fileNameRegExp.test(this->value)){
 			readImageFile(fullFilename);
 		}
@@ -605,9 +608,12 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	if (object.empty()){
+		object = resources.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
+		//std::cout << resources.inputHi5[ODIMPathElem::WHAT] << '\n';
+	}
+
+	if (object.empty()){ // unneeded? See below.
 		object = "SCAN";
-		//if (object.isStlString()) mout.note() << "STL string" << mout.endl;
-		//if (object.isCharArrayString()) mout.note() << "charArray string" << mout.endl;
 		mout.note() << "what:object empty, assuming '"<< object <<"'" << mout.endl;
 	}
 
@@ -629,20 +635,12 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	}
 	*/
 
-	/*
-	drain::VariableMap & rootAttributes = resources.inputHi5["what"].data.attributes;
-	drain::Variable & object = rootAttributes["object"];
-	if (object.isEmpty()){
-		mout.note() << "Assuming polar data" << mout.endl;
-		object = "PVOL";
-	}
-	*/
 
 	DataTools::updateInternalAttributes(resources.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
-	if (object == "COMP"){
-		mout.note() << "Composite detected" << mout.endl;
+	if ((object == "COMP")|| (object == "IMAGE") ){
+		mout.note() << "Cartesian product detected" << mout.endl;
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);

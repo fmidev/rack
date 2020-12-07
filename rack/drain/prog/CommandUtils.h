@@ -29,6 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+// New design (2020)
+
 #ifndef COMMANDUTILS_H_
 #define COMMANDUTILS_H_
 
@@ -41,7 +43,7 @@ namespace drain {
 
 
 template <class T>
-class Scrupt : public std::list<T> {
+class CommandSequence : public std::list<T> {
 
 public:
 
@@ -62,11 +64,11 @@ public:
 };
 
 
-// typedef Scrupt<std::string>    ScriptTxt;
+// typedef Scrupt<std::string>    Script2;
 
 
 
-class ScriptTxt : public Scrupt<std::pair<std::string,std::string> > {
+class Script2 : public CommandSequence<std::pair<std::string,std::string> > {
 
 public:
 
@@ -79,7 +81,7 @@ public:
 };
 
 
-class Program : public Scrupt<BasicCommand *> {
+class Program : public CommandSequence<BasicCommand *> {
 
 
 public:
@@ -95,6 +97,7 @@ public:
 
 
 };
+
 
 
 

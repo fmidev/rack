@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include "drain/util/Dictionary.h"
+#include "Dictionary.h"
 
 
 namespace drain {
@@ -80,6 +80,7 @@ public:
 	};
 	*/
 
+	int getValue(const std::string & key) const;
 
 	inline
 	void set(const std::string & key){

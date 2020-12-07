@@ -52,12 +52,12 @@ extern
 const drain::RegExp tiffFileExtension;
 
 /// Syntax for recognising Portable Networks Image image file.
-extern
-const drain::RegExp pngFileExtension;
+//extern
+//const drain::RegExp pngFileExtension;
 
 /// Syntax for recognising PNM (PGM,PPM) image file.
-extern
-const drain::RegExp pnmFileExtension;
+//extern
+//const drain::RegExp pnmFileExtension;
 
 /// Syntax for recognising text files.
 extern

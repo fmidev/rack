@@ -68,7 +68,7 @@ public:
 		PPM_RAW=6
 	};
 
-	/// Syntax for recognising png files.
+	/// Syntax for recognising pnm files.
 	static
 	const drain::RegExp fileNameRegExp;
 

@@ -98,13 +98,14 @@ struct Cloner : public ClonerBase<T> {
 
 	virtual
 	~Cloner(){
-		clear();
-		/*
+		//std::cerr << "Goodbye" << std::endl;
+		//clear();
 		for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){
-			std::cout << "delete" << (long int)*it << '\n';
-			delete *it;
+			S *ptr = *it;
+			//std::cout << "deleting " << *ptr << ", at #" << (long int)ptr << '\n';
+			std::cout << "deleting at #" << (long int)ptr << '\n';
+			delete ptr;
 		}
-		*/
 	};
 
 	/// Implements interface
@@ -144,23 +145,31 @@ struct Cloner : public ClonerBase<T> {
 		return ptrs.size();
 	}
 
-	/// Remove cloned
+	/// Remove cloned entries
+	/*
 	inline
 	void clear(){
 		for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){
-			//delete *it;
-			clear(*it);
+			S *ptr = *it;
+			std::cout << "deleting " << *ptr << ", at #" << (long int)ptr << '\n';
+			delete ptr;
 		}
+		ptrs.clear();
 	}
+	*/
 
 	/// Remove cloned entry
 	inline
 	void clear(S *ptr){
 
-		if (ptrs.find(ptr) != ptrs.end()){
+		const typename ptr_container_t::iterator it = ptrs.find(ptr);
+
+		if (it != ptrs.end()){
+			//std::cout << "deleting " << *ptr << ", at #" << (long int)ptr << '\n';
+			//std::cout << *ptr  << '\n';
 			std::cout << "deleting " << (long int)ptr << '\n';
-			//delete ptr;
-			//ptrs.erase(ptr);
+			delete ptr;
+			//ptrs.erase(it);
 		}
 		else {
 			std::cout << "already deleted: " << (long int)ptr << '\n';

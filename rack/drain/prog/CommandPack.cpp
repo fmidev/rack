@@ -124,9 +124,9 @@ CommandEntry<CmdFormat> cmdFormat("format");
 
 
 class CmdFormatFile : public SimpleCommand<std::string> {
-    public: //re 
 
-	//std::string filename;
+public:
+
 
 	CmdFormatFile() : SimpleCommand<>(__FUNCTION__, "Read format for metadata dump from a file","filename","","std::string") {
 		// parameters.separators.clear();
@@ -155,6 +155,8 @@ class CmdFormatFile : public SimpleCommand<std::string> {
 
 };
 CommandEntry<CmdFormatFile> cmdFormatFile("formatFile");
+
+
 
 void CommandLoader::run(const std::string & params){
 

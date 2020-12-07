@@ -96,6 +96,33 @@ void Flags::assign(const std::string & params){
 	//return *this;
 }
 
+int Flags::getValue(const std::string & args) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	value = 0;
+
+	typedef std::list<std::string> keylist;
+	keylist keys;
+
+	if (this->separator)
+		drain::StringTools::split(args, keys, this->separator);
+	else
+		keys.push_front(args); // single entry, including whatever punctuation...
+
+	for (keylist::const_iterator it = keys.begin(); it !=keys.end(); ++it) {
+
+		dict_t::const_iterator dit = dictionaryRef.findByKey(*it);
+
+		if (dit != dictionaryRef.end()){
+			value |=  dit->second;
+		}
+
+	}
+
+	return value;
+}
+
 /// List keys in their numeric order.
 std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 

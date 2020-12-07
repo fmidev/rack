@@ -46,13 +46,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-//struct RadarDataSampler : drain::image::Sampler {
-//}
-
 /// Base class for utilities traversing radar data with Sampler.
 /**
     \tparam OD - odim type (PolarODIM or CartesianODIM)
 
+
+	TODO: min/max coord control, like CoordHandler for checking min and max.  => drain::Sampler
  */
 template <class OD>
 class RadarDataPicker : public drain::image::SamplePicker {
@@ -83,8 +82,7 @@ public:
 	/// Map type compatible with Sampler
 	typedef std::map<std::string, const data_t &> map_t;
 
-
-	// Note: setPosition(int i, int j) defined in derived classes.
+	// setPosition(i,j) in derived classes.
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
 	inline
@@ -172,9 +170,6 @@ public:
 	inline
 	void setPosition(int i, int j) const {
 
-		//static const double DEG2RAD = M_PI/180.0;
-		//static const double RAD2DEG = 180.0/M_PI;
-
 		this->current_i = i;
 		this->current_j = j;
 		current_range = odim.getBinDistance(i);
@@ -196,12 +191,7 @@ public:
 
 	/*
 	virtual inline
-	void writeHeader(char commentPrefix, std::ostream & ostr) const {
-		ostr << commentPrefix << " proj='" <<  this->getProjection().getProjectionSrc() << "'\n";
-		double lonLL, latLL, lonUR, latUR;
-		this->getProjection().getBoundingBoxD(odim.getMaxRange(), lonLL, latLL, lonUR, latUR);
-		ostr << commentPrefix << " bbox='" <<  lonLL << ',' <<  latLL << ',' << lonUR << ',' << latUR << "'\n";
-	};
+	void writeHeader(char commentPrefix, std::ostream & ostr) const {	};
 	*/
 
  protected:
@@ -301,17 +291,6 @@ public:
 
 	/// Frame for converting coordinates.
 	GeoFrame frame;
-
-	/*
-	virtual inline
-	void writeHeader(char commentPrefix, std::ostream & ostr) const {
-		ostr << commentPrefix << " proj='" <<  frame.getProjection()   << "'\n";
-		const drain::Rectangle<double> & bbox = frame.getBoundingBoxD();
-		ostr << commentPrefix << " BBOX='" << bbox << "'\n";
-		ostr << commentPrefix << " XRANGE='" <<  bbox.lowerLeft.x << ':' <<  bbox.upperRight.x << "'\n";
-		ostr << commentPrefix << " YRANGE='" <<  bbox.lowerLeft.y << ':' <<  bbox.upperRight.y << "'\n";
-	};
-	*/
 
 };
 

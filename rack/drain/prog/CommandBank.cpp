@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <fstream>
 
+
 #include "drain/util/Log.h"
 
 #include "CommandUtils.h"
@@ -47,11 +48,23 @@ namespace drain {
 
 
 /// Appends program with commands fo the script
-void CommandBank::compile(const ScriptTxt & script, Program & prog) const {
-	for (ScriptTxt::const_iterator it = script.begin(); it!=script.end(); ++it) {
+/*
+void CommandBank::append(const Script2 & script, Program & prog) const {
+	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
 		prog.add(clone(it->first)).setParameters(it->second);
 	}
 }
+*/
+
+void CommandBank::append(const Script2 & script, Program & prog, Context & ctx) const {
+	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
+		BasicCommand & cmd = clone(it->first);
+		cmd.setParameters(it->second);
+		cmd.setContext(ctx);
+		prog.add(cmd);
+	}
+}
+
 
 // Future extension.
 void CommandBank::remove(Program & prog) const {
@@ -63,60 +76,83 @@ void CommandBank::remove(Program & prog) const {
 }
 
 
-void CommandBank::run(ScriptTxt & script){
+void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 
 	Logger mout(__FILE__, __FUNCTION__); // warni
 
-	bool PARALLEL = false;
-	std::vector<Program> parallelRuns;
+	bool PARALLEL_MODE = false;
 
-	for (ScriptTxt::const_iterator it = script.begin(); it != script.end(); ++it) {
 
-		if (it->first == "("){
-			PARALLEL = true;
+	std::vector<Program> threads;
+
+	for (Script2::const_iterator it = script.begin(); it != script.end(); ++it) {
+
+		mout.note() << it->first << mout.endl;
+
+		if (it->first == "["){
+			PARALLEL_MODE = true;
 			continue;
 		}
 
-		if (!PARALLEL){
+		const bool USE_ROUTINE = !routine.empty();
+
+		if (!PARALLEL_MODE){
+
+			// Check here if routine exists (the current cmd may set the routine, and the it should not be run).
+
 			BasicCommand & cmd = get(it->first); // or clone, to keep defaults? => consider FLAG save-params
 			cmd.setParameters(it->second);
 			//cmd.run(it->second);
 			cmd.exec();
-			if (!routine.empty()){
+			if (USE_ROUTINE){
 				Program prog;
-				compile(routine, prog);
+				append(routine, prog, contextSrc.get());
 				prog.run();
 			}
-			// TODO: when to automatically clear routine?
+			// TODO: when to automatically clear routine? Perhaps upon \)
 		}
 		else {
 
 			// If all runs collected, run them
-			if (it->first == ")"){
-				mout.warn() << "Invoke parallel runs" << mout.endl;
+			if (it->first == "]"){
+				PARALLEL_MODE = false;
+				mout.note() << "Start threads" << mout.endl;
 				#pragma omp parallel for
-				for (size_t i = 0; i < parallelRuns.size(); ++i) {
-					mout.warn() << "Start parallel run #" << i << mout.endl;
-					parallelRuns[i].run();
-					mout.warn() << "Ended parallel run #" << i << mout.endl;
+				for (size_t i = 0; i < threads.size(); ++i) {
+					mout.warn() << "Start thread #" << i << mout.endl;
+					threads[i].run();
+					//mout.warn() << "Ended thread #" << i << mout.endl;
 				}
-				PARALLEL =false;
-				continue;
+				mout.note() << "Completed..." << mout.endl;
+				routine.clear(); // consider
+				//continue;
 			}
 			else { // continue collecting
 
-				mout.warn() << "Preparing parallel run for " << it->first << '(' << it->second << ')' <<  mout.endl;
-				const size_t i = parallelRuns.size();
+				mout.note() << "Preparing thread: " << it->first << '(' << it->second << ')' <<  mout.endl;
+				//const size_t i = threads.size();
 				// Append new (sub)script
-				parallelRuns.push_back(Program());
-				Program & prog = parallelRuns[i];
+				threads.push_back(Program());
+				Program & prog = threads.back();
+				//Program & prog = threads[i];
 				BasicCommand & cmd = clone(it->first);
 
-				//prog.add(&cmd, it->second);
-				prog.add(cmd).setParameters(it->second);
-				if (!routine.empty()){ // Technically unneeded, but for mout.debg()
-					mout.warn() << "constructing script " <<  mout.endl;
-					compile(routine, prog);
+
+				cmd.setParameters(it->second);
+				Context & ctx = contextSrc.clone();
+				ctx.id = 1000 + threads.size();
+				cmd.setContext(ctx);
+				prog.add(cmd);
+				//cmd.setContext(context); // compare to Resources (shared)
+				/*
+				 inside cmd:
+				 Context c = getContext(); // compare to getResources():
+				 RackLet ctx = getContext();
+
+				*/
+				if (USE_ROUTINE){ // Technically unneeded, but for mout below...
+					mout.note() << "constructing thread " <<  mout.endl;
+					append(routine, prog, ctx); // append
 				}
 				//
 			}
@@ -132,7 +168,7 @@ void CommandBank::run(ScriptTxt & script){
 /**
  *  Starts from argument 1 instead of 0.
  */
-void CommandBank::scriptify(int argc, const char **argv, ScriptTxt & script){
+void CommandBank::scriptify(int argc, const char **argv, Script2 & script){
 
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
@@ -162,7 +198,7 @@ void CommandBank::scriptify(int argc, const char **argv, ScriptTxt & script){
 	}
 }
 
-void CommandBank::scriptify(const std::string & line, ScriptTxt & script){
+void CommandBank::scriptify(const std::string & line, Script2 & script){
 
 	Logger mout(__FILE__, __FUNCTION__); //
 
@@ -186,7 +222,7 @@ void CommandBank::scriptify(const std::string & line, ScriptTxt & script){
 	}
 }
 
-bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, ScriptTxt & script){
+bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, Script2 & script){
 
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
@@ -204,20 +240,13 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 				return false;
 			}
 			else {
-				/*
-					++i;
-					if (i<argc)
-						script.add(key, argv[i]);
-					//else // help?
-					//	mout.warn() << arg << ": argument missing (premature end of command line), i=" << i <<  mout.endl;
-				 *
-				 */
 				script.add(key, argNext);
 				return true;
 			}
 		}
 		else {
-			mout.warn() << arg << ": ???"  <<  mout.endl;
+			mout.warn() << "undefined command: " << arg <<  mout.endl;
+			throw std::runtime_error(arg + ": command not found");
 		}
 
 	}
@@ -238,7 +267,19 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
  *
  */
 void CommandBank::help(const std::string & key, std::ostream & ostr){
+
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
+
+	if (key.empty()){
+		help(0, ostr);
+	}
+	else {
+		int filter = sections.getValue(key);
+		if (filter > 0){
+			help(filter, ostr);
+			return;
+		}
+	}
 
 	const std::string & cmdLong = resolveHyphens(key);
 
@@ -250,10 +291,12 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 	}
 }
 
-void CommandBank::help(std::ostream & ostr){
+void CommandBank::help(unsigned int sectionFilter, std::ostream & ostr){
 
 	for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
-		info(it->first, it->second->get(), ostr);
+		if ((it->second->get().section & sectionFilter) > 0){
+			info(it->first, it->second->get(), ostr);
+		}
 	}
 	//std::flush(ostr);
 }
@@ -270,6 +313,7 @@ void CommandBank::info(const std::string & key, const BasicCommand & cmd, std::o
 		ostr << ' ' << '(' << params << ')';
 	ostr << '\n';
 	ostr << "  " << cmd.getDescription() << '\n';
+	ostr << '\n';
 }
 
 
