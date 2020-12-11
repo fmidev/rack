@@ -70,7 +70,8 @@ public:
 
 	/// Converts command and parameter strings to executable command objects.
 	//  Note: *Appends* commands to the end of the program
-	void append(const Script2 & script, Program & prog, Context & context) const ;
+	//void append(const Script2 & script, Program & prog, Context & context) const ;
+	void append(const Script2 & script, Program & prog) const ;
 
 	void remove(Program & prog) const ;
 

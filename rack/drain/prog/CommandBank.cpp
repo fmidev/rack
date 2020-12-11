@@ -56,14 +56,15 @@ void CommandBank::append(const Script2 & script, Program & prog) const {
 }
 */
 
-void CommandBank::append(const Script2 & script, Program & prog, Context & ctx) const {
+
+void CommandBank::append(const Script2 & script, Program & prog) const {
 	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
 		BasicCommand & cmd = clone(it->first);
 		cmd.setParameters(it->second);
-		cmd.setContext(ctx);
 		prog.add(cmd);
 	}
 }
+
 
 
 // Future extension.
@@ -105,8 +106,10 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 			//cmd.run(it->second);
 			cmd.exec();
 			if (USE_ROUTINE){
-				Program prog;
-				append(routine, prog, contextSrc.get());
+				Program prog(contextSrc.get());
+				//prog.setContext(ctx);
+				append(routine, prog); //, contextSrc.get());
+				//prog.append(*this, routine);
 				prog.run();
 			}
 			// TODO: when to automatically clear routine? Perhaps upon \)
@@ -134,14 +137,13 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 				// Append new (sub)script
 				threads.push_back(Program());
 				Program & prog = threads.back();
-				//Program & prog = threads[i];
-				BasicCommand & cmd = clone(it->first);
-
-
-				cmd.setParameters(it->second);
 				Context & ctx = contextSrc.clone();
 				ctx.id = 1000 + threads.size();
-				cmd.setContext(ctx);
+				prog.setContext(ctx);
+
+				BasicCommand & cmd = clone(it->first);
+				cmd.setParameters(it->second);
+				//cmd.setContext(ctx);
 				prog.add(cmd);
 				//cmd.setContext(context); // compare to Resources (shared)
 				/*
@@ -151,8 +153,9 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 
 				*/
 				if (USE_ROUTINE){ // Technically unneeded, but for mout below...
-					mout.note() << "constructing thread " <<  mout.endl;
-					append(routine, prog, ctx); // append
+					mout.note() << "appending script to thread " <<  mout.endl;
+					//prog.append(*this, routine);
+					append(routine, prog); // append
 				}
 				//
 			}

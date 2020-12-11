@@ -33,45 +33,34 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_RESOURCES_H_
 #define RACK_RESOURCES_H_
 
-#include "data/DataSelector.h"
-//#include "data/ODIM.h"
-#include "data/PolarODIM.h"
-//#include "drain/image/Coordinates.h"
-//#include "drain/image/Image.h"
-#include <hi5/Hi5.h>
+#include <string>
+
 #include "drain/image/Image.h"
-//#include "drain/image/Sampler.h"
-//#include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/PaletteOp.h"
-//#include "drain/imageops/PaletteOp.h"
 #include "drain/prog/CommandPack.h"
 #include "drain/prog/CommandRegistry.h"
-#include "radar/Composite.h"
-#include "radar/RadarAccumulator.h"
 #include "drain/util/Rectangle.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Tree.h"
-#include <string>
+
+#include "data/DataSelector.h"
+#include "data/PolarODIM.h"
+#include "hi5/Hi5.h"
+
+#include "radar/Composite.h"
+#include "radar/RadarAccumulator.h"
 
 
 namespace rack {
 
 
-/// A container for shared resources applied by RackLets.
-/**
- *
- */
-class RackResources {
+// Resources provided separately for each thread.
+class RackContext : public drain::Context {
 
 public:
 
-	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
-
-
-	/// Clears dst if source command varies.
-	void setSource(Hi5Tree & dst, const drain::Command & cmd);
-
+	RackContext();
 
 	/// The last input file read, typically a volume. May be concatenated ie. read in incrementally.
 	Hi5Tree inputHi5;
@@ -84,8 +73,6 @@ public:
 
 	/// A single-radar Cartesian product or a multi-radar composite (mosaic).
 	Hi5Tree cartesianHi5;
-	/// Flag for marking the origin of cartesianHi5
-	//SOURCE  cartesianHi5src;
 
 	/// Pointer to the last HDF5 structure read or generated.
 	Hi5Tree *currentHi5; // = &inputHi5;
@@ -95,6 +82,25 @@ public:
 	 *   The data pointed to will be applied as input to a Cartesian product (single-radar or composite).
 	 */
 	Hi5Tree *currentPolarHi5; // = &inputHi5;
+
+
+};
+
+/// A container for shared resources applied by RackLets.
+/**
+ *
+ */
+class RackResources : public RackContext {
+
+public:
+
+	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
+
+
+	/// Clears dst if source command varies.
+	void setSource(Hi5Tree & dst, const drain::Command & cmd);
+
+
 
 	/// Standard (?) orientation of polar coords in radar data
 	static
@@ -172,29 +178,6 @@ public:
 	drain::image::ImageSampler sampler; // could be in ImageModPack?
 
 
-	// TODO
-	// STATUS FLAGS
-	// OK=0,WARNING=1,ERROR=2,FATAL=3
-	// One at time: 8-2 = 6 bits = 64 events
-	// INPUT=0
-	// OUTPUT=4
-	// DATA=8
-	// PRODUCT=12
-	// PRODUCT=16
-	// All simultaneously: 8 = 2+2+2+2 bits => 4 events
-	//drain::Flags status;
-
-	/// True, if the last input file operation has been successful. Helps in skipping operations for null data.
-	// bool inputOk;
-
-	/// True, if the last retrieved data was found (and non-empty?). Helps in skipping operations for null data.
-	// bool dataOk;
-
-	/*RackResources	 * INPUT_OK
-	 * METADATA_OK
-	 * WRITE_OK
-	 * INCOMPLETE_PRODUCT
-	 */
 
 
 	static const drain::Flags::value_t INPUT_ERROR;//     = 1;
@@ -204,12 +187,10 @@ public:
 	static const drain::Flags::value_t PARAMETER_ERROR;// = 16;
 	//static const drain::Flags::value_t IO_ERROR;// = INPUT_ERROR | OUTPUT_ERROR;
 
-	drain::Flags errorFlags; //(value, dict, ',');
+	drain::Flags2 errorFlags; //(value, dict, ',');
 
 protected:
 
-	drain::Flags::value_t errorFlagValue;
-	drain::Flags::dict_t  errorFlagDict;
 
 	// void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
 	void getImageInfo(const drain::image::Image *ptr, Variable & entry) const;

@@ -57,8 +57,21 @@ void Script2::entryToStream(const typename Script2::entry_t & entry, std::ostrea
 
 BasicCommand & Program::add(BasicCommand & cmd){ // const std::string & params = ""){
 	push_back(& cmd);
+	if (!cmd.contextIsSet() && contextIsSet())
+		cmd.setContext(getBaseContext());
 	return cmd;
 }
+
+/*
+void Program::append(const CommandBank & commandBank, const Script2 & script){
+	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
+		BasicCommand & cmd = commands.clone(it->first);
+		cmd.setParameters(it->second);
+		cmd.setContext(getBaseContext());
+		add(cmd);
+	}
+}
+*/
 
 
 void Program::run() const {

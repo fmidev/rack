@@ -69,18 +69,32 @@ private:
 
 };
 
-/*
-
-template <class C>
 class Contextual {
+
 public:
 
-	Contextual() : contextPtr(NULL){
-	}
+	inline
+	Contextual() : contextPtr(NULL) {};
 
-	void setContext(C & context){
-		contextPtr = & context;
-	}
+	inline
+	Contextual(const Contextual & c){
+		setContext(c.getBaseContext());
+	};
+
+	inline
+	Contextual(Context & ctx){
+		setContext(ctx);
+	};
+
+	inline
+	void setContext(Context & ctx){
+		contextPtr = &ctx;
+	};
+
+	inline
+	bool contextIsSet(){
+		return (contextPtr != NULL);
+	};
 
 	Context & getBaseContext() const {
 		if (contextPtr != NULL){
@@ -92,7 +106,11 @@ public:
 		}
 	}
 
-	//template <class C>
+	/// Returns the linked context.
+	/**
+	 *  Risky: The actual object may be a derived class.
+	 */
+	template <class C>
 	C & getContext() const {
 		if (contextPtr != NULL){
 			return (C &)*contextPtr;
@@ -110,19 +128,18 @@ protected:
 	Context *contextPtr;
 
 };
-*/
 
 
 /// Base class for commands: typically actions taking parameters but also plain variable assignments and parameterless actions.
 /**
  *
  */
-class Command { //: public Contextual<Context> {
+class Command : public Contextual {
 
 public:
 
 	inline
-	Command() : contextPtr(NULL) {};
+	Command(){}; // : contextPtr(NULL) {};
 
 	//inline	Command(Command & cmd){};
 
@@ -174,7 +191,7 @@ public:
 	void run(const std::string & params) = 0;
 
 
-
+	/*
 	void setContext(Context & ctx){
 		contextPtr = & ctx;
 	};
@@ -188,11 +205,13 @@ public:
 			return defaultContext;
 		}
 	}
+	*/
 
 	/// Returns the linked context.
 	/**
 	 *  Risky: The actual object may be a derived class.
 	 */
+	/*
 	template <class C>
 	C & getContext() const {
 		if (contextPtr != NULL){
@@ -209,6 +228,7 @@ public:
 
 		// Note: common base class. The actual object may be a derived class.
 		Context *contextPtr;
+	*/
 
 };
 

@@ -76,24 +76,6 @@ public:
 
 			std::stringstream sstr;
 			sstr << productOp.getDescription(); // << '\n';
-			/*
-			EncodingODIM odim(productOp.odim);
-			sstr << "  # Encoding: "; // << EncodingODIM(productOp.odim);
-			for (EncodingODIM::const_iterator it = odim.begin(); it != odim.end(); ++it){
-				const std::string & key = it->first;
-				const size_t i = key.find(':');
-				if (i != std::string::npos){
-					//alias(key.substr(i+1), key);
-					sstr << key.substr(i+1) << '=' << it->second << ',';
-				}
-			}
-			const std::string k = productOp.getAllowedEncoding().getKeys();
-			if (!k.empty())
-				sstr << " user modifiable: " << k;
-			sstr << '\n';
-			//sstr << "  # Selector: " << productOp.dataSelector;
-			sstr << "  # Input quantities: " << productOp.dataSelector.quantity;
-			*/
 			descriptionFull = sstr.str();
 			//+ "\n# Selector: " + productOp.dataSelector;
 		}
@@ -130,6 +112,9 @@ public:
 
 		RackResources & resources = getResources();
 
+		setContext(resources);
+		RackContext & ctx  = getContext<RackContext>(); // OMP
+
 		if (!resources.select.empty()){
 			mout.debug() << "Setting data selector: " << resources.select << mout.endl;
 			productOp.dataSelector.setParameters(resources.select);
@@ -148,7 +133,7 @@ public:
 		mout.debug() << "Running: " << productOp.getName() << mout.endl;
 
 		//op.filter(getResources().inputHi5, getResources().polarHi5);
-		const Hi5Tree & src = resources.inputHi5;
+		const Hi5Tree & src = ctx.inputHi5;
 		Hi5Tree & dst = getTarget();  //For AnDRe ops, src serves also as dst.
 
 		//mout.warn() << dst << mout.endl;

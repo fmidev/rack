@@ -81,14 +81,19 @@ public:
 };
 
 
-class Program : public CommandSequence<BasicCommand *> {
-
+class Program : public CommandSequence<BasicCommand *> , public Contextual{
 
 public:
 
-	//typedef std::list<BasicCommand *> list_t;
+	inline
+	Program(){};
+
+	inline
+	Program(Context & ctx) : Contextual(ctx){};
 
 	BasicCommand & add(BasicCommand & cmd);
+
+	//void append(const CommandBank & commandBank, const Script2 & script);
 
 	void run() const;
 

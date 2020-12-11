@@ -39,6 +39,10 @@ using namespace drain::image;
 
 namespace rack {
 
+RackContext::RackContext(): currentHi5(&inputHi5), currentPolarHi5(&inputHi5) {
+
+}
+
 const CoordinatePolicy RackResources::polarLeft(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT, CoordinatePolicy::WRAP);
 
 const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT,CoordinatePolicy::LIMIT);
@@ -53,15 +57,14 @@ const drain::Flags::value_t RackResources::PARAMETER_ERROR = 16;
  */
 
 //drain::Logger RackResources::mout("racklet"); inputOk(true), dataOk(true),
-RackResources::RackResources() : currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL),
-		currentGrayImage(NULL), scriptExec(scriptParser.script), errorFlags(errorFlagValue, errorFlagDict, ',') { //inputSelect(0),
+RackResources::RackResources() : currentImage(NULL), currentGrayImage(NULL), scriptExec(scriptParser.script) { //inputSelect(0),, errorFlags(errorFlagValue, errorFlagDict, ',')
 	polarAccumulator.setMethod("WAVG");
 	andreSelect = "dataset1,count=1";
-	errorFlagDict.add("INPUT",     INPUT_ERROR);
-	errorFlagDict.add("METADATA",  METADATA_ERROR);
-	errorFlagDict.add("DATA",      DATA_ERROR);
-	errorFlagDict.add("OUTPUT",    OUTPUT_ERROR);
-	errorFlagDict.add("PARAMETER", PARAMETER_ERROR);
+	errorFlags.dictionary.add("INPUT",     INPUT_ERROR);
+	errorFlags.dictionary.add("METADATA",  METADATA_ERROR);
+	errorFlags.dictionary.add("DATA",      DATA_ERROR);
+	errorFlags.dictionary.add("OUTPUT",    OUTPUT_ERROR);
+	errorFlags.dictionary.add("PARAMETER", PARAMETER_ERROR);
 	errorFlags.reset();
 }
 
@@ -168,19 +171,6 @@ void RackResources::initComposite() {
 
 
 
-
-/*
-void RackResources::getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap){
-	std::stringstream sstr;
-	if (ptr){
-		ptr->toOStr(sstr);
-	}
-	else {
-		sstr << "NULL";
-	}
-	statusMap[label] = sstr.str();
-}
-*/
 
 void RackResources::getImageInfo(const drain::image::Image *ptr, Variable & entry) const {
 	std::stringstream sstr;
