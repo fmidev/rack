@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/prog/CommandAdapter.h"
+#include "drain/prog/CommandBankUtils.h"
 
 
 #include "hi5/Hi5.h"
@@ -97,7 +98,9 @@ int process(int argc, const char **argv) {
 	//registry.setSection("formulae", "");
 
 	drain::CommandBank & cmdBank = drain::getCommandBank();
-	cmdBank.sections.dictionary.add("formulae", 32);
+
+
+	cmdBank.sections.dictionary.add("formulae", 32); // OR: constants?
 
 	//drain::BeanAdapterCommand<PrecipitationZ> precipZrain(RainRateOp::precipZrain);
 	drain::BeanCommand<PrecipitationZ, PrecipitationZ&> precipZrain(RainRateOp::precipZrain);
@@ -117,11 +120,28 @@ int process(int argc, const char **argv) {
 
 	drain::BeanCommand<FreezingLevel,FreezingLevel&> freezingLevel(RainRateOp::freezingLevel);
 	cmdBank.addExternal(freezingLevel, "freezingLevel");
-	//pFreezingLevel.height =
-	/*
 
-	*/
-	//cmdBank.help();
+	drain::CommandWrapper<drain::CmdVerbosity> verbosityCmd;
+	drain::HelpCmd help(cmdBank);
+	cmdBank.addExternal(help, "help", 'h');
+
+	try {
+		drain::Script2 script;
+		cmdBank.scriptify(argc, argv, script);
+		mout.info() << "preparing script: " << mout.endl;
+		script.toStream();
+
+		mout.info() << "converting script " << mout.endl;
+
+		drain::Cloner<drain::Context, drain::Context> contextCloner;
+		mout.info() << "running script " << mout.endl;
+		cmdBank.run(script, contextCloner);
+		//cmdBank.help();
+
+	}
+	catch (const std::exception & e) {
+		mout.warn() << e.what() << mout.endl;
+	}
 
 	CompositingModule compositing("cart", "c");
 
