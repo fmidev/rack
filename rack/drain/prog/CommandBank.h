@@ -115,11 +115,6 @@ public:
 	/// Checked key and respective command
 	void info(const std::string & key, const command_t & cmd, std::ostream & ostr = std::cout) const ;
 
-	static
-	void simplifyName(std::string & name, const std::set<std::string> & prune, char prefix=0);
-
-	static
-	std::set<std::string> & prunes();
 
 protected:
 
@@ -136,70 +131,6 @@ protected:
 
 };
 
-/// Global command registry.
-extern
-CommandBank & getCommandBank();
-
-
-/// Creates an instance of command class C in section S of the global command registry.
-/**
- * \tparam C - command
- *
- */
-template <class C>
-class CommandWrapper : public C {
-public:
-
-	CommandWrapper(const std::string & name, char alias){
-		getCommandBank().add<C>(name,alias); //.section = S;
-	}
-
-	CommandWrapper(char prefix = 0){
-		std::string name = C::getName();
-		CommandBank::simplifyName(name, CommandBank::prunes(), prefix);
-		getCommandBank().add<C>(name);
-	}
-
-};
-
-
-template <class B>
-class BeanCommandEntry : public CommandWrapper<BeanCommand<B> > {
-
-public:
-	BeanCommandEntry(char prefix = 0) : CommandWrapper<BeanCommand<B> >(prefix){
-	};
-
-};
-
-
-
-
-class HelpCmd : public SimpleCommand<std::string> {
-
-public:
-
-	inline
-	HelpCmd(CommandBank & bank, const std::string & key=__FUNCTION__, const std::string & description = "Display help.") :
-		SimpleCommand<std::string>(key, description, "[command|sections]"), bank(bank) {};
-
-	inline
-	void exec() const {
-
-		if (value.empty())
-			bank.help();
-		else {
-			bank.help(value);
-		}
-
-	}
-
-	protected:
-
-		// Copy constructor should copy this as well...
-		CommandBank & bank;
-
-	};
 
 } /* namespace drain */
 

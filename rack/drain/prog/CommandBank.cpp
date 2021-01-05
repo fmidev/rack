@@ -73,66 +73,7 @@ void CommandBank::remove(Program & prog) const {
 	}
 }
 
-std::set<std::string> & CommandBank::prunes(){
-	static std::set<std::string> s;
-	if (s.empty()){
-		s.insert("Cmd");
-		s.insert("Command");
-	}
-	return s;
-}
 
-
-void CommandBank::simplifyName(std::string & name, const std::set<std::string> & prune, char prefix){
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	std::stringstream sstr;
-
-	if (prefix){
-		sstr << prefix;
-	}
-	size_t i = 0;
-
-	bool lowerCase = (prefix == 0);
-
-	while (i < name.size()) {
-
-		mout.debug() << ' ' << i << '\t' << name.at(i) << mout.endl;
-		size_t len = 0;
-
-		for (std::set<std::string>::const_iterator it=prune.begin(); it!=prune.end(); ++it){
-			// std::cerr << " ..." << *it;
-			len = it->length();
-			if (name.compare(i, len, *it) == 0){
-				// std::cerr << "*";
-				break;
-			}
-			len = 0;
-		}
-
-		if (len > 0){
-			i += len;
-		}
-		else {
-			if (lowerCase){
-				char c = name.at(i);
-				if ((c>='A') && (c<='Z'))
-					c = ('a' + (c-'A'));
-				sstr << c;
-				lowerCase = false;
-			}
-			else {
-				sstr << name.at(i);
-			}
-			++i;
-		}
-		//mout.debug()
-		//std::cerr << '\n';
-	}
-
-	name = sstr.str();
-};
 
 
 /// Run a single command
@@ -358,6 +299,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 
 	if (!cmdLong.empty()){
 		info(cmdLong, get(key), ostr);
+		//  TODO: "see-also" commands as a list, which is checked.
 	}
 	else {
 		mout.error() << "not found: " << key << mout.endl;
@@ -432,12 +374,6 @@ const std::string & CommandBank::resolveHyphens(const key_t & key) const {
 	}
 }
 
-
-/// Global program command registry.
-CommandBank & getCommandBank(){
-	static CommandBank commandBank;
-	return commandBank;
-}
 
 
 
