@@ -47,7 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-class CartesianGrid : public BasicCommand {
+class CartesianGrid : public drain::BasicCommand {
 
 public:
 
@@ -56,7 +56,7 @@ public:
 	double width;
 	double intensity;
 
-	CartesianGrid() : BasicCommand("CartesianGrid","Draw lat-lon grid onto a Cartesian product.") {
+	CartesianGrid() : drain::BasicCommand("CartesianGrid","Draw lat-lon grid onto a Cartesian product.") {
 		parameters.link("lonSpacing", lonSpacing = 1, "deg");
 		parameters.link("latSpacing", latSpacing = 1, "deg");
 		parameters.link("width", width = 1.0, "pix");

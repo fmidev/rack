@@ -87,6 +87,7 @@ public:
 
 	};
 
+	/*
 	virtual inline
 	void setParameters(const std::string & params, char assignmentSymbol='=', char separatorSymbol=0){
 
@@ -107,6 +108,7 @@ public:
 		}
 
 	};
+	*/
 
 	double reflHalfWidth;
 	double p;

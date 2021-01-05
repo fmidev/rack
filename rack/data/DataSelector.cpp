@@ -107,6 +107,7 @@ void DataSelector::init() {
 	 */
 }
 
+
 void DataSelector::reset() {
 
 	path = "";
@@ -120,21 +121,17 @@ void DataSelector::reset() {
 	elangle.min = -90.0;
 	elangle.max = +90.0; // unflexible
 
-	/*
-	dataset.min = 0;
-	dataset.max = std::numeric_limits<unsigned short>::max();
-	//dataset.max = flexible ? std::numeric_limits<unsigned short>::max() : 0;
-
-	data.min = 0;
-	// flexible ?
-	data.max = std::numeric_limits<unsigned short>::max();
-
-	//
-	groupStr = ""; //dataset:data:quality"; // or groups.toStr?
-	groups.value = (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	 */
 
 }
+
+/*
+virtual
+void DataSelector::updateGroups(){
+	drain::Logger mout(__FUNCTION__, getName());
+	mout.warn() << "final flags: " << groups << mout.endl;
+}
+*/
+
 
 
 void DataSelector::update(){
@@ -167,8 +164,11 @@ void DataSelector::update(){
 	}
 
 	if (pathMatcher.empty() && !quantity.empty()){
-		pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-		mout.debug() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
+
+		if (! pathMatcher.front().is(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			mout.warn() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
+		}
 		path = pathMatcher;
 	}
 

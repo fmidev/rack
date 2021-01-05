@@ -46,7 +46,7 @@ namespace drain
 {
 
 
-
+/*   = old
 class PaletteEntry2 : public LegendEntry, public BeanLike {
 public:
 
@@ -74,7 +74,7 @@ public:
 	}
 
 };
-
+*/
 
 /*
 template <>

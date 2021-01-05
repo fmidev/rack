@@ -69,13 +69,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-CommandEntry<CmdImage> cmdImage("image");
+drain::CommandEntry<CmdImage> cmdImage("image");
 
 void CmdImage::exec() const {
 
+	drain::Logger mout(__FILE__, getName());
+
 	//drain::Logger & mout = resources.mout;
 	RackResources & resources = getResources();
-	imageSelector.pathMatcher.setElems(ODIMPathElem::DATA);
+	mout.note() << "Relying on new ImageSelector" << mout.endl;
+	//imageSelector.pathMatcher.setElems(ODIMPathElem::DATA);
 	imageSelector.setParameters(resources.select);
 	resources.select.clear();
 
@@ -132,11 +135,11 @@ namespace {
 
 
 // Adds alpha channel containing current data.
-class CmdImageAlphaBase : public BasicCommand {
+class CmdImageAlphaBase : public drain::BasicCommand {
 
 public:
 
-	CmdImageAlphaBase(const std::string & name, const std::string & description) :  BasicCommand(name, description){
+	CmdImageAlphaBase(const std::string & name, const std::string & description) :  drain::BasicCommand(name, description){
 	}
 
 
@@ -238,8 +241,8 @@ public:
 
 	}
 };
-// static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
-static CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
+// static drain::CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
+static drain::CommandEntry<CmdImageAlpha> cmdImageAlpha("imageAlpha");
 
 
 // Adds alpha channel containing current data.
@@ -307,12 +310,12 @@ public:
 			//const drain::ValueScaling & scaling = srcImg.getScaling();
 			mout.info() << "using storage type values directly (no physical scaling): "  << odim << mout.endl;
 			//odim.scaleForward()
-			const double max = Type::call<typeNaturalMax>(srcImg.getType()); // 255, 65535, or 1.0
+			const double max = drain::Type::call<drain::typeNaturalMax>(srcImg.getType()); // 255, 65535, or 1.0
 			//srcImg.getScaling().
 			fuzzyStep.functor.set(odim.scaleForward(max*range.min), odim.scaleForward(max*range.max), 1.0);
 		}
 
-		const double dstMax = Type::call<typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
+		const double dstMax = drain::Type::call<drain::typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
 		drain::typeLimiter<double>::value_t limit = dstImg.getEncoding().getLimiter<double>();  // t is type_info, char or std::string.
 		fuzzyStep.nodataValue   = limit(dstMax*nodata);
 		fuzzyStep.undetectValue = limit(dstMax*undetect);
@@ -323,15 +326,15 @@ public:
 	}
 
 };
-static CommandEntry<CmdImageTransp> cmdImageTransp; //("imageTransp");
+static drain::CommandEntry<CmdImageTransp> cmdImageTransp; //("imageTransp");
 
 
 
-class CmdImageFlatten : public SimpleCommand<std::string> {
+class CmdImageFlatten : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdImageFlatten() : SimpleCommand<>(__FUNCTION__, "Removes a alpha (transparency) channel. Adds a new background of given color.",
+	CmdImageFlatten() : drain::SimpleCommand<>(__FUNCTION__, "Removes a alpha (transparency) channel. Adds a new background of given color.",
 			"bgcolor", "0", "<gray>|<red>,<green>,<blue>") {
 	};
 
@@ -363,7 +366,7 @@ public:
 
 		double alpha;
 
-		Variable colorVector(typeid(size_t));
+		drain::Variable colorVector(typeid(size_t));
 		// colorVector.setType(typeid(size_t));
 		colorVector = value;
 
@@ -385,15 +388,15 @@ public:
 	};
 
 };
-// static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
-static CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
+// static drain::CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
+static drain::CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
 // See also CmdPaletteIn and CmdPaletteOut in imageOps?
-class CmdPalette : public SimpleCommand<std::string> {
+class CmdPalette : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPalette() : SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
+	CmdPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	void exec() const {
@@ -456,7 +459,7 @@ public:
 
 			if (value == "default" || value.empty()){
 				// Guess label (quantity)
-				VariableMap & statusMap = getResources().getUpdatedStatusMap(); // getRegistry().getStatusMap(true);
+				drain::VariableMap & statusMap = getResources().getUpdatedStatusMap(); // drain::getRegistry().getStatusMap(true);
 				std::string quantity = statusMap["what:quantity"].toStr();
 				mout.info() << "using current data quantity=" << quantity << mout.endl;
 				resources.palette.load(quantity, true);
@@ -510,7 +513,7 @@ public:
 		PaletteOp  op(resources.palette);
 
 		// The intensities will  be mapped first: f' = gain*f + offset
-		const FlexVariableMap  & props = resources.currentGrayImage->properties;
+		const drain::FlexVariableMap  & props = resources.currentGrayImage->properties;
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		const PolarODIM imgOdim(props);
@@ -613,12 +616,12 @@ public:
 		resources.targetEncoding.clear();
 	}
 };
-static CommandEntry<CmdPalette> cmdPalette("palette");
+static drain::CommandEntry<CmdPalette> cmdPalette("palette");
 
 
-class CmdPaletteRefine : public SimpleCommand<int> {
+class CmdPaletteRefine : public drain::SimpleCommand<int> {
 public: //re
-	CmdPaletteRefine() : SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 256){
+	CmdPaletteRefine() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 256){
 	};
 
 	void exec() const {
@@ -630,11 +633,11 @@ public: //re
 
 	}
 };
-// static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
-static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
+// static drain::CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
+static drain::CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
-static CommandEntry<CmdPaletteOut> cmdLegendOut("legendOut");
+static drain::CommandEntry<CmdPaletteOut> cmdLegendOut("legendOut");
 
 
 } // namespace ::
@@ -645,10 +648,10 @@ static CommandEntry<CmdPaletteOut> cmdLegendOut("legendOut");
 
 
 
-class CmdPlot : public SimpleCommand<std::string> {
+class CmdPlot : public drain::SimpleCommand<std::string> {
 public:
 
-	CmdPlot() : SimpleCommand<std::string>(__FUNCTION__, "Plot", "i,j,...", "0,0"){
+	CmdPlot() : drain::SimpleCommand<std::string>(__FUNCTION__, "Plot", "i,j,...", "0,0"){
 	};
 
 	void exec() const {
@@ -723,8 +726,8 @@ public:
 
 	}
 };
-static CommandEntry<CmdPlot> cmdPlot;
-//static CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
+static drain::CommandEntry<CmdPlot> cmdPlot;
+//static drain::CommandEntry<CmdPaletteRefine> cmdPaletteRefine("paletteRefine");
 
 
 

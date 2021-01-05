@@ -137,7 +137,7 @@ public:
 	/// Prints name, description and parameters using BeanLike::toOStr(). Virtual, so derived classes may extend output.
 	virtual inline
 	void help(std::ostream & ostr = std::cout) const {
-		toOStream(ostr);
+		toStream(ostr);
 	}
 
 protected:

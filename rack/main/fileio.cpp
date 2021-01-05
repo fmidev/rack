@@ -113,9 +113,9 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 //static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
-struct HistEntry : BeanLike {
+struct HistEntry : drain::BeanLike {
 
-	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
+	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
 		parameters.link("index", index);
 		parameters.link("min", binRange.min);
 		parameters.link("max", binRange.max);
@@ -124,7 +124,7 @@ struct HistEntry : BeanLike {
 	};
 
 	drain::Histogram::vect_t::size_type index;
-	Range<double> binRange;
+	drain::Range<double> binRange;
 	drain::Histogram::count_t count;
 	std::string label;
 
@@ -132,19 +132,19 @@ struct HistEntry : BeanLike {
 static HistEntry histEntryHelper;
 
 /// TODO: generalize to array outfile
-class CmdHistogram : public BasicCommand {
+class CmdHistogram : public drain::BasicCommand {
 
 public:
 
 	int count;
 
-	Range<double> range;
+	drain::Range<double> range;
 
 	std::string store;
 	std::string filename;
 
-	//	CmdHistogram() : SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
-	CmdHistogram() : BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
+	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
+	CmdHistogram() : drain::BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
 		parameters.link("count", count = 256);
 		parameters.link("range", range.vect);
 		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
@@ -193,11 +193,11 @@ public:
 			std::ostream & ostr = out;
 
 			drain::StringMapper mapper;
-			if (!cmdFormat.value.empty()){
+			if (!drain::cmdFormat.value.empty()){
 				//std::string format(cmdFormat.value);
 				//format = drain::StringTools::replace(format, "\\t", "\t");
 				//format = drain::StringTools::replace(format, "\\n", "\n");
-				mapper.parse(cmdFormat.value, true);
+				mapper.parse(drain::cmdFormat.value, true);
 			}
 			else
 				mapper.parse("${count} # '${label}' (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
@@ -268,11 +268,11 @@ public:
 
 
 
-class CmdGeoTiffTile : public BasicCommand {
+class CmdGeoTiffTile : public drain::BasicCommand {
 
 public:
 
-	CmdGeoTiffTile() : BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
+	CmdGeoTiffTile() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
 		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
 	};
@@ -281,11 +281,11 @@ public:
 };
 
 
-class CmdOutputConf : public BasicCommand {
+class CmdOutputConf : public drain::BasicCommand {
 
 public:
 
-	CmdOutputConf() : BasicCommand(__FUNCTION__, "Format specific configurations") {
+	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
 
 		parameters.separator = ':';
 		parameters.link("format", format, "h5|png|tif");
@@ -300,15 +300,18 @@ public:
 	std::string format;
 	std::string params;
 
+	/*
 	virtual inline
 	void setParameters(const std::string & params, char assignmentSymbol=0) {
-		BasicCommand::setParameters(params, 0); // sep = ':'
+		 drain::BasicCommand::setParameters(params, 0); // sep = ':'
 	}
+	*/
 
 	void exec() const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
+		mout.warn() << "Redesigned (setParameters dropped). Check results." << mout.endl;
 		// mout.warn() << format << mout.endl;
 		// mout.note() << params << mout.endl;
 		// todo: shared resource for output conf:  refMap of refMaps...
@@ -336,11 +339,11 @@ public:
 };
 
 /*
-class CmdOutputTiffConf : public BasicCommand {
+class CmdOutputTiffConf : public drain::BasicCommand {
 
 public:
 
-	CmdOutputTiffConf() : BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
+	CmdOutputTiffConf() : drain::BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
 		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
 		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
 		parameters.link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
@@ -352,24 +355,24 @@ public:
 
 
 // Cf. InputPrefix
-class CmdOutputPrefix : public BasicCommand {
+class CmdOutputPrefix : public drain::BasicCommand {
 
 public:
 
-	CmdOutputPrefix() : BasicCommand(__FUNCTION__, "Path prefix for output files."){
+	CmdOutputPrefix() : drain::BasicCommand(__FUNCTION__, "Path prefix for output files."){
 		parameters.link("path", getResources().outputPrefix = "");
-		Logger mout(__FILE__, __FUNCTION__);
-		mout.warn() <<  "parameters: " << parameters << " ("<< parameters.size() << " params)" << mout.endl;
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		//mout.warn() <<  "parameters: " << parameters << " ("<< parameters.size() << " params)" << mout.endl;
 	};
 };
-extern CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
+extern drain::CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
 
 
-class CmdOutputFile : public SimpleCommand<std::string> {
+class CmdOutputFile : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdOutputFile() : SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
+	CmdOutputFile() : drain::SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|mat|dot]|-") {
 	};
 
@@ -391,7 +394,6 @@ public:
 			return;
 		}
 
-		//if (!resources.dataOk){
 		if (resources.errorFlags.isSet(RackResources::DATA_ERROR)){
 			mout.warn() << "data error, skipping" << mout.endl;
 			return;
@@ -408,13 +410,12 @@ public:
 		const bool IMAGE_TIF = tiffFileExtension.test(value);
 
 		if (h5FileExtension.test(value)){
+
 			mout.info() << "File format: HDF5" << mout.endl;
 
 			getResources().currentHi5->data.attributes["Conventions"] = "ODIM_H5/V2_2";
-
-
 			/// getResources().currentHi5->data.attributes["version"] = "H5rad 2.2"; // is in ODIM /what/version
-			//const char c = hi5::Writer::tempPathSuffix;
+			//  const char c = hi5::Writer::tempPathSuffix;
 			//if (mout.isDebug(10))
 			//	hi5::Writer::tempPathSuffix = 0; // save also paths with '~' suffix.
 			hi5::Writer::writeFile(getResources().outputPrefix + value, *getResources().currentHi5);
@@ -425,7 +426,6 @@ public:
 			// This is the simple version. See image commands (--iXxxxx)
 
 			mout.info() << "File format: image" << mout.endl;
-
 
 			const bool CONVERT = !resources.targetEncoding.empty();
 
@@ -440,8 +440,9 @@ public:
 				cmdImage.exec();
 			}
 			else { // pointer (resources.currentImage) needs update
-				DataSelector imageSelector;  //
-				imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+				ImageSelector imageSelector;  //
+				//imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
 				//imageSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET,1) << ODIMPathElemMatcher(ODIMPathElem::DATA,1);
 				imageSelector.setParameters(resources.select);
 				resources.select.clear();
@@ -497,9 +498,15 @@ public:
 
 				DataSelector selector;
 				//selector.deriveParameters(resources.select, true);
+				selector.pathMatcher.clear();
 				selector.setParameters(resources.select);
-				mout.debug() << selector << mout.endl;
+				//mout.warn() << selector << mout.endl;
 				selector.getPaths3(*resources.currentHi5, paths);
+				/*
+				for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it) {
+					mout.warn() << *it << mout.endl;
+				}
+				*/
 				/* OLD
 				selector.groups = ODIMPathElem::ALL_GROUPS; //ODIMPathElem::DATA_GROUPS;
 				selector.deriveParameters(resources.select, false); //, ODIMPathElem::ALL_GROUPS);
@@ -658,7 +665,7 @@ public:
 
 				mout.debug() << "sampling polar data" << mout.endl;
 				const DataSet<PolarSrc> dataset(src, drain::RegExp(selector.quantity));
-				sampleData<PolarDataPicker>(dataset, sampler, cmdFormat.value, ofstr);
+				sampleData<PolarDataPicker>(dataset, sampler, drain::cmdFormat.value, ofstr);
 
 			}
 			else {
@@ -672,7 +679,7 @@ public:
 				}
 				*/
 
-				sampleData<CartesianDataPicker>(dataset, sampler, cmdFormat.value, ofstr);
+				sampleData<CartesianDataPicker>(dataset, sampler, drain::cmdFormat.value, ofstr);
 
 			}
 
@@ -692,7 +699,7 @@ public:
 			}
 			resources.select.clear();
 
-			Output out(resources.outputPrefix + value);
+			drain::Output out(resources.outputPrefix + value);
 			DataOutput::writeToDot(out, *resources.currentHi5, ODIMPathElem::ALL_GROUPS);// selector.groups);
 
 
@@ -743,17 +750,17 @@ protected:
 	}
 
 };
-// static CommandEntry<CmdOutputFile> cmdOutputFile("outputFile",'o');
+// static drain::CommandEntry<CmdOutputFile> cmdOutputFile("outputFile",'o');
 
 
 
 
 
-class CmdOutputRawImages : public SimpleCommand<std::string> {
+class CmdOutputRawImages : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdOutputRawImages() : SimpleCommand<std::string>(__FUNCTION__, "Output datasets to png files named filename[NN].ext.",
+	CmdOutputRawImages() : drain::SimpleCommand<std::string>(__FUNCTION__, "Output datasets to png files named filename[NN].ext.",
 			"filename", "", "string") {
 	};
 
@@ -765,7 +772,8 @@ public:
 
 		RackResources & resources = getResources();
 
-		DataSelector iSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
+		//DataSelector iSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
+		ImageSelector iSelector;
 		iSelector.setParameters(resources.select);
 		resources.select.clear();
 		mout.debug() << iSelector << mout.endl;
@@ -829,31 +837,61 @@ public:
 	};
 
 };
-// static CommandEntry<CmdOutputRawImages> cmdOutputRawImages("outputRawImages",'O');
 
-class CmdSample : public drain::Command {
+
+
+class CmdSample : public drain::BeanerCommand<drain::image::ImageSampler> {
 
 public:
 
-	//CmdSample() : CmdSampler(getResources().sampler, __FUNCTION__, "Sampling configuration. See --format and --outFile '*.dat'."){}; // __FUNCTION__) {};
+	// Main
+	virtual
+	const bean_t & getBean() const {
+		return getResources().sampler;
+	};
 
+
+	// Main
+	virtual
+	bean_t & getBean(){
+		return getResources().sampler;
+	};
+
+	/*
 	inline
 	const std::string & getName() const {
 		return getResources().sampler.getName();
 	};
 
 	inline
-	const std::string & getDescription() const { return getResources().sampler.getDescription(); };
+	const std::string & getDescription() const {
+		return getResources().sampler.getDescription();
+	};
+
+	virtual	inline
+	const drain::ReferenceMap & getParameters() const {
+		return getResources().sampler.getParameters();
+	};
 
 	virtual
-	inline
-	const drain::ReferenceMap & getParameters() const { return getResources().sampler.getParameters(); };
+	void setParameters(const drain::VariableMap & params){
+		getResources().sampler.setParameters(params);
+	};
 
+	virtual
+	void setParameters(const std::string & parameters, char assignmentSymbol='='){
+		getResources().sampler.setParameters(parameters, assignmentSymbol);
+	}
+	*/
+
+
+	/*
 	void run(const std::string & parameters){
 		getResources().sampler.setParameters(parameters);
 		// mod.setParameters(parameters);
 		// exec();
 	}
+	*/
 
 
 };

@@ -53,7 +53,6 @@ namespace drain {
 /*
  *  Commands are stored in a map of type  std::map<std::string, T &>.
  *
- *  Command sections can be used for grouping.
  *
  *  \see drain::Bank<T>
  */

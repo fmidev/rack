@@ -49,7 +49,8 @@ namespace rack
 using namespace drain::image;
 
 // These are contorolled directly from command line. See rack.cpp.
-PrecipitationZ      RainRateOp::precipZrain(200.0, 1.60); // Marshall-Palmer
+//PrecipitationZ      RainRateOp::precipZrain(200.0, 1.60); // Marshall-Palmer
+PrecipitationZ      RainRateOp::precipZrain(222.2, 1.1111); // Marshall-Palmer
 PrecipitationZ      RainRateOp::precipZsnow(223.0, 1.53); // Leinonen
 PrecipitationKDP    RainRateOp::precipKDP;
 PrecipitationKDPZDR RainRateOp::precipKDPZDR;

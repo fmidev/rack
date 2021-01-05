@@ -155,29 +155,50 @@ public:
 
 	/// Experimental. Copies references and values of a structure to another.
 	/**
-	 *  Also updates key list and unit map.
+	 * 	\param m - links to the members of the source object
+	 * 	\param src - the source object
+	 * 	\param copyValues - copy also the member values of the source object
+	 * 	\param linkExternal - if yes, link also target variables outside the source object
+	 *
+	 *  Also updates key list and unit map?
 	 */
 	template <class T>
-	inline
-	void copyStruct(const ReferenceMap & m, const T & src, T & dst, bool copyValues = false){
+	void copyStruct(const ReferenceMap & m, const T & src, T & dst, bool copyValues = true, bool linkExternal = false){
 
-		Logger log(__FUNCTION__, __FILE__);
-		log.warn() << "experimental" << log.endl;
+		Logger mout(__FUNCTION__, __FILE__);
+		long s = sizeof(T); // yes signed
+		mout.warn() << "experimental, obj.size=" << s << mout.endl;
 
 		clear();
+
 		typedef unsigned long addr_t;
+		typedef          long addr_diff_t;
+
 		const addr_t srcAddr = (addr_t)(&src);
 		const addr_t dstAddr = (addr_t)(&dst);
 		for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
 			const std::string & key = *it;
-			const Referencer & r = m[key];
-			addr_t relativeAddr = ((addr_t)r.getPtr()) - srcAddr;
-			// log.warn() << "member '" << key << "' address:" << relativeAddr << log.endl;
-			Referencer & d = std::map<std::string,Referencer>::operator[](key);
-			d.link((void *)(dstAddr + relativeAddr), r.getType());
-			// d.setInputSeparator()
-			// d.setSeparator(arraySeparator);
-			d = r; // value
+			const Referencer & srcRef = m[key];
+			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
+			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
+			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
+				Referencer & dstMemberRef = std::map<std::string,Referencer>::operator[](key); // key order?
+				dstMemberRef.link((void *)(dstAddr + relativeAddr), srcRef.getType());
+				// d.setInputSeparator()
+				// d.setSeparator(arraySeparator);
+				if (copyValues)
+					dstMemberRef = srcRef; // value
+			}
+			else {
+				if (linkExternal){
+					Referencer & dstRef = std::map<std::string,Referencer>::operator[](key); // key order?
+					dstRef.link((void *)srcVarAddr, srcRef.getType());
+					if (copyValues)
+						dstRef = srcRef;
+				}
+				else
+					mout.warn() << "skipping external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+			}
 		}
 		separator = m.separator;
 		arraySeparator = m.arraySeparator;

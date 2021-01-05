@@ -315,7 +315,7 @@ void CompositeAdd::addPolar() const {
 		mout.debug(1) << "finished" << mout.endl;
 
 		if (isAeqd){
-			getRegistry().getStatusMap(false)["RANGE"] = polarSrc.odim.getMaxRange();
+			drain::getRegistry().getStatusMap(false)["RANGE"] = polarSrc.odim.getMaxRange();
 		}
 
 		//resources.currentHi5 = & resources.cartesianHi5;

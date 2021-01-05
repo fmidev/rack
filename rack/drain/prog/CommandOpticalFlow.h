@@ -54,7 +54,7 @@ using namespace image;
  *   This utility provides interfacing for those data.
  *
  */
-class CmdOpticalFlowBase :  public BeanWrapper<FastOpticalFlowOp2> {
+class CmdOpticalFlowBase :  public BeanCommand<FastOpticalFlowOp2> {
 
 public:
 

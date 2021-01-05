@@ -56,11 +56,11 @@ namespace rack {
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CartesianCreate : public BasicCommand {
+class CartesianCreate : public drain::BasicCommand {
 
 public:
 
-	CartesianCreate(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : BasicCommand(__FUNCTION__,
+	CartesianCreate(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : drain::BasicCommand(__FUNCTION__,
 			"Maps the current polar product to a Cartesian product."), addCmd(addCmd), extractCmd(extractCmd)
 	{
 	}
@@ -89,11 +89,11 @@ private:
 };
 
 
-class CartesianCreateTile : public BasicCommand {
+class CartesianCreateTile : public drain::BasicCommand {
 
 public:
 
-	CartesianCreateTile(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : BasicCommand(__FUNCTION__,
+	CartesianCreateTile(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : drain::BasicCommand(__FUNCTION__,
 			"Maps the current polar product to a tile to be used in compositing."), addCmd(addCmd), extractCmd(extractCmd)
 	{
 	}
@@ -129,11 +129,11 @@ private:
 };
 
 
-class CartesianRange : public BasicCommand { //SimpleCommand<double> {
+class CartesianRange : public drain::BasicCommand { //SimpleCommand<double> {
 
 public:
 
-	CartesianRange() : BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
+	CartesianRange() : drain::BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
 		parameters.link("range", PolarODIM::defaultRange, "km");
 	};
 
@@ -147,11 +147,11 @@ public:
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CartesianReset : public BasicCommand {
+class CartesianReset : public drain::BasicCommand {
 
 public:
 
-	CartesianReset() : BasicCommand(__FUNCTION__, "Clears the current Cartesian product."){
+	CartesianReset() : drain::BasicCommand(__FUNCTION__, "Clears the current Cartesian product."){
 	}
 
 	inline

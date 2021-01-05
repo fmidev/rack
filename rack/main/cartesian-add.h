@@ -54,11 +54,11 @@ namespace rack {
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CompositeAdd : public BasicCommand {  // NEW 2017/06
+class CompositeAdd : public drain::BasicCommand {  // NEW 2017/06
 
 public:
 
-	CompositeAdd() : BasicCommand(__FUNCTION__, "Adds the current product to the composite."), weight(1.0) {};
+	CompositeAdd() : drain::BasicCommand(__FUNCTION__, "Adds the current product to the composite."), weight(1.0) {};
 
 	void exec() const;
 
@@ -67,7 +67,7 @@ protected:
 
 	double applyTimeDecay(double w, const ODIM & odim) const;
 
-	CompositeAdd(const std::string & name, const std::string & description) : BasicCommand(name, description), weight(1.0){};
+	CompositeAdd(const std::string & name, const std::string & description) : drain::BasicCommand(name, description), weight(1.0){};
 
 	void addPolar() const;
 	void addCartesian() const;

@@ -203,6 +203,8 @@ public:
 	 */
 	std::ostream & keysToStream(std::ostream & ostr=std::cout, char separator=0) const;
 
+	std::string keysToStr(char separator=0) const;
+
 	value_t & value;
 
 
@@ -233,16 +235,6 @@ public:
 			flags.separator){
 	}
 
-	/*
-	Flags2(char separator = ',') : Flags(dictionary, ownValue, separator){
-	}
-
-	Flags2(const Flags2 & flags) : Flags(
-			flags.usesOwnDict() ? dictionary=flags.dictionary : flags.dictionaryRef,
-			ownValue = flags.value,
-			flags.separator){
-	}
-	*/
 
 
 	/// Sets value, ie. set or unsets all the flags.

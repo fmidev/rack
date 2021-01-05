@@ -81,7 +81,7 @@ public:
 };
 
 
-class Program : public CommandSequence<BasicCommand *> , public Contextual{
+class Program : public CommandSequence<Command *> , public Contextual{
 
 public:
 
@@ -91,7 +91,7 @@ public:
 	inline
 	Program(Context & ctx) : Contextual(ctx){};
 
-	BasicCommand & add(BasicCommand & cmd);
+	Command & add(Command & cmd);
 
 	//void append(const CommandBank & commandBank, const Script2 & script);
 
@@ -103,8 +103,24 @@ public:
 
 };
 
+/// Structure for implementing threads in parallelized OpenMP \c for loop.
+class ProgramVector : public std::vector<Program> {
 
+public:
 
+	inline
+	Program & add(){
+		push_back(Program());
+		return back();
+	};
+
+	inline
+	Program & add(Context & ctx){
+		push_back(Program(ctx));
+		return back();
+	};
+
+};
 
 
 

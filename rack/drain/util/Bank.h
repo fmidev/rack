@@ -43,6 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+// NEW
+
 // Container storing entries of different classes derived from T.
 /**
  *  A single entry for each class D derived from T can be stored.
@@ -62,6 +64,9 @@ public:
 
 	/// Public key type. (Key type used in the public interface.)
 	typedef K key_t;
+
+	/// Base type of cloned objects.
+	typedef T value_t;
 
 	///
 	typedef ClonerBase<T> cloner_t;
@@ -127,7 +132,7 @@ public:
 			return it->second->clone();
 		}
 		else {
-			throw std::runtime_error(resolve(key) + ": no such entry");
+			throw std::runtime_error(resolve(key) + '[' + key + "]: no such entry");
 		}
 	}
 
@@ -139,7 +144,7 @@ public:
 			return it->second->get();
 		}
 		else {
-			throw std::runtime_error(resolve(key) + ": no such entry");
+			throw std::runtime_error(resolve(key) + '[' + key + "]: no such entry");
 		}
 	}
 
@@ -224,6 +229,7 @@ public:
 
 	typedef Bank2<T, std::string> bank_t;
 	typedef typename bank_t::key_t key_t;
+	typedef T data_t;
 
 	// Overrides
 
@@ -235,13 +241,15 @@ public:
 		return Bank2<T, std::string>::template add<D>(key);
 	}
 
+	/*
 	template <class D>
-	D & addExternal(const std::string & key, D & entry){
+	D & addExternal(D & entry, const std::string & key ){
 		return Bank2<T, std::string>::template addExternal<D>(key, entry);
 	}
+	*/
 
 	template <class D>
-	D & addExternal(const std::string & key, char alias, D & entry){
+	D & addExternal(D & entry, const std::string & key, char alias = 0){
 		if (alias)
 			setAlias(alias, key);
 		// TODO: what if the KEY is a single char?
@@ -320,6 +328,16 @@ protected:
 
 };
 
+
+
+
+
+
+
+
+
+
+// OLD:
 
 /// A registry that contains items that can be cloned with clone() or referenced directly with get().
 template <class T>

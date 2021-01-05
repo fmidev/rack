@@ -80,8 +80,8 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 		return;
 	}
 
-	const drain::image::AreaGeometry & geometry = srcDBZH.data.getGeometry();
-	const QuantityMap & qmap = getQuantityMap();
+	//const drain::image::AreaGeometry & geometry = srcDBZH.data.getGeometry();
+	//const QuantityMap & qmap = getQuantityMap();
 
 	// Reserve main quantity (RATE) first!
 	PlainData<PolarDst> & rateDst = dstProduct.getData(odim.quantity);

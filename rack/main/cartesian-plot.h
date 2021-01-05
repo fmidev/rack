@@ -46,11 +46,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-class CartesianQuantity : public BasicCommand {
+class CartesianQuantity : public drain::BasicCommand {
 
 public:
 
-	CartesianQuantity() : BasicCommand(__FUNCTION__, "Set quantity of the composite.") {
+	CartesianQuantity() : drain::BasicCommand(__FUNCTION__, "Set quantity of the composite.") {
 		parameters.link("quantity", getResources().composite.odim.quantity);
 		// Consider resources.composite.dataSelector.quantity ?
 	}
@@ -68,7 +68,7 @@ public:
 
 };
 
-class CartesianPlot : public BasicCommand {
+class CartesianPlot : public drain::BasicCommand {
 
 public:
 
@@ -78,7 +78,7 @@ public:
 	double w;
 
 	inline
-	CartesianPlot() : BasicCommand(__FUNCTION__, "Add a single data point."){
+	CartesianPlot() : drain::BasicCommand(__FUNCTION__, "Add a single data point."){
 		parameters.link("lon", lon = 0.0, "longitude");
 		parameters.link("lat", lat = 0.0, "latitude");
 		parameters.link("x", x = 0.0, "value");
@@ -96,11 +96,11 @@ public:
 
 
 
-class CartesianPlotFile : public SimpleCommand<std::string> {
+class CartesianPlotFile : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CartesianPlotFile() : SimpleCommand<>(__FUNCTION__, "Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.",
+	CartesianPlotFile() : drain::SimpleCommand<>(__FUNCTION__, "Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.",
 			"file", "", "filename"){
 	};
 
@@ -108,7 +108,7 @@ public:
 };
 
 
-class CartesianSpread : public BasicCommand {
+class CartesianSpread : public drain::BasicCommand {
 
 public:
 
@@ -116,7 +116,7 @@ public:
 	double vert;
 	int loops;
 
-	CartesianSpread() : BasicCommand(__FUNCTION__, "Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead"){ // Does not allocate memory."){
+	CartesianSpread() : drain::BasicCommand(__FUNCTION__, "Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead"){ // Does not allocate memory."){
 		parameters.link("horz", horz = 10, "pixels");
 		parameters.link("vert", vert = 0,  "pixels");
 		parameters.link("loops",  loops = 0, "N");

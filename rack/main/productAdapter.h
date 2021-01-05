@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_PRODUCT_ADAPTER
 
 #include "commands.h"
+#include "resources.h"
 
 namespace rack {
 
@@ -43,19 +44,21 @@ namespace rack {
  *  \tparam T - product operator, like CappiOp.
  */
 template <class T>
-class ProductAdapter : public Command {
+//class ProductAdapter : public drain::Command {
+class ProductAdapter : public drain::BeanCommand<T,T> {
 
 public:
 
-	ProductAdapter(bool add = true) : Command(), adapterName(std::string("ProductAdapter<")+productOp.getName()+">"){ // adapterName("test")
+	//ProductAdapter(bool add = true) : drain::Command(), adapterName(std::string("ProductAdapter<")+productOp.getName()+">"){ // adapterName("test")
+	ProductAdapter(bool add = true) : drain::BeanCommand<T,T>(), adapterName(std::string("ProductAdapter<")+productOp.getName()+">"){
 
-		static RegExp nameCutter("^(.*)(Op|Functor)$");
+		static drain::RegExp nameCutter("^(.*)(Op|Functor)$");
 		const std::string & key = productOp.getName();
 		if (nameCutter.execute(key) == 0){ // Matches
-			getRegistry().add(*this, nameCutter.result[1], 0);
+			drain::getRegistry().add(*this, nameCutter.result[1], 0);
 		}
 		else {
-			getRegistry().add(*this, key, 0);
+			drain::getRegistry().add(*this, key, 0);
 		}
 	};
 
@@ -65,11 +68,9 @@ public:
 
 	const std::string adapterName;
 
-	inline
-	const std::string & getName() const { return productOp.getName(); };
-
 
 	/// Returns a description for help functions.
+	/*
 	const std::string & getDescription() const {
 
 		if (descriptionFull.empty()){
@@ -81,12 +82,28 @@ public:
 		}
 		return descriptionFull;
 	}
+	*/
+
+	/*
+	inline
+	const std::string & getName() const { return productOp.getName(); };
 
 
-	const ReferenceMap & getParameters() const {
+	const drain::ReferenceMap & getParameters() const {
 		return productOp.getParameters();
 	};
 
+
+	void setParameters(const std::string & args, char assignmentSymbol='='){
+		productOp.setParameters(args, assignmentSymbol);
+	};
+
+	//void setParameters(const drain::SmartMap<T> & args){
+	void setParameters(const drain::VariableMap & args){
+		productOp.setParameters(args);
+		//productOp.setParameters((const drain::SmartMap<T> &) args);
+	};
+	*/
 
 	/// Returns a description for help functions.
 	const std::string & getType() const {
@@ -112,8 +129,11 @@ public:
 
 		RackResources & resources = getResources();
 
-		setContext(resources);
-		RackContext & ctx  = getContext<RackContext>(); // OMP
+		//RackContext & test = resources;
+
+		this->setContext(resources);
+
+		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
 
 		if (!resources.select.empty()){
 			mout.debug() << "Setting data selector: " << resources.select << mout.endl;
@@ -157,7 +177,7 @@ public:
 
 protected:
 
-	mutable std::string descriptionFull;
+//	mutable std::string descriptionFull;
 
 };
 

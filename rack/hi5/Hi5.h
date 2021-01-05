@@ -188,20 +188,6 @@ public:
 	static
 	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, std::string & attrValue);
 
-	//static
-	//void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attribute);
-
-	/*
-	static
-	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v);
-
-	static inline
-	void parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey){
-		drain::Variable attrValue;
-		parsePath(line, path, attrKey, attrValue); // , attrType);
-	}
-	*/
-
 
 	/// Assign a value with optional type specification.
 	/**  Creates a node in src, creates the desired attribute with given value of specified storage type.
@@ -216,6 +202,12 @@ public:
 	void assignAttribute(Hi5Tree & dst, const std::string & assignment);
 
 	// static	void readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & key, const std::string & value);
+
+	/// Traverse subtree setting noSave=true .
+	/*
+	static
+	void markNoSave(Hi5Tree &src, bool noSave=true);
+	*/
 
 	/// Delete branches that have been marked with noSave=true .
 	static

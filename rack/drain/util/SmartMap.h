@@ -213,7 +213,7 @@ public:
 	/// Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[].
 	/**
 	 *   \param updateOnly - if true, only existing elements are updated, otherwise skipped; if false, tries to add elements.
-	 *   \param criticality - if true, only existing elements are updated, otherwise skipped; if false, tries to add elements.
+	 *   \param criticality - UNUSED!
 	 */
 	template <class T2>
 	//void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
@@ -265,7 +265,9 @@ public:
 
 	/// Assign values from a map, possibly extending the map.
 	/**
-	 *  \par m - source of keys and values
+	 *  \param m - source of keys and values
+	 *  \param updateOnly - bypass unexisting keys silently, otherwise throw exception.
+	 *  \param criticality - define sensibility if new keys cannot be added (LOG_NOTE, LOG_ERROR)
 	 *
 	 *  If a key is not known, and the map is of fixed type like ReferenceMap,  throws exception.
 	 */
@@ -387,6 +389,9 @@ public:
 
 	/// Write map as a JSON code
 	void toJSON(std::ostream & ostr = std::cout, size_t indent = 0) const;
+
+	/// Write map as a JSON code (array or scalar)
+	void valuesToJSON(std::ostream & ostr = std::cout) const;
 
 	/// Debugging
 	void dump(std::ostream & ostr = std::cout) const;
@@ -608,6 +613,61 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 	// ostr << "{\n  \"value\":" << *this << ",\n";
 	//ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
 	ostr << "\n" << space << "}\n";  // \n needed?
+}
+
+template <class T>
+void SmartMap<T>::valuesToJSON(std::ostream & ostr) const {
+
+
+	char sep = 0;
+
+	if (this->size() > 1)
+			ostr << "[";
+
+	// NOTE: alphabetic order. Should JSON dump have orig. order?
+	for (const_iterator it = this->begin(); it != this->end(); ++it){
+
+		//const std::string & key = it->first;
+		const T & item = it->second; //(*this)[key];
+
+		if (sep){
+			ostr << sep;
+			ostr << ' ';
+		}
+		else {
+			sep = ',';
+		}
+
+		if (item.T::isString()){
+			ostr << '"';
+			const char *c = item.getCharArray();
+			while (*c != '\0'){
+				if (*c == '"')
+					ostr << '\\';  // TODO; implement also \n \t ...
+				ostr << *c;
+				++c;
+			}
+			ostr << '"';
+			//ostr << '"' << item << '"';
+		}
+		else {
+			switch (item.T::getElementCount()) {
+				case 0:
+					ostr << '[' << ']'; // or NaN?
+					break;
+				case 1:
+					ostr << item;
+					break;
+				default:
+					ostr << '[' << item << ']';
+			}
+		}
+
+	}
+
+	if (this->size() > 1)
+		ostr << "]";
+
 }
 
 template <class T>

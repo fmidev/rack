@@ -55,7 +55,7 @@ void Script2::entryToStream(const typename Script2::entry_t & entry, std::ostrea
 
 
 
-BasicCommand & Program::add(BasicCommand & cmd){ // const std::string & params = ""){
+Command & Program::add(Command & cmd){ // const std::string & params = ""){
 	push_back(& cmd);
 	if (!cmd.contextIsSet() && contextIsSet())
 		cmd.setContext(getBaseContext());
@@ -78,7 +78,7 @@ void Program::run() const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 	for (const_iterator it = this->begin(); it != this->end(); ++it) {
-		BasicCommand & cmd = *(*it);
+		Command & cmd = *(*it);
 		mout.warn() << "  executing " << cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
 		mout.note() << "  context: "  << cmd.getBaseContext().getId() << mout.endl;
 		cmd.exec();
@@ -89,8 +89,14 @@ void Program::run() const {
 void Program::entryToStream(const list_t::value_type & entry, std::ostream & ostr) const {
 	if (entry->getParameters().empty())
 		ostr << entry->getName();
-	else
-		ostr << entry->getName() << '(' << entry->getParameters().getValues() << ')';
+	else {
+		// entry->getParameter("s")
+		// ostr << entry->getName() << '(' << entry->getParameters().getValues() << ')';
+		ostr << entry->getName() << '(';
+		entry->getParameters().valuesToJSON(ostr);
+		ostr << ')';
+	}
+
 }
 
 

@@ -40,24 +40,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <map>
 
-#include "../util/Log.h"
-#include "../util/ValueScaling.h"
-#include "../util/LookUp.h"
+#include "drain/util/Log.h"
+#include "drain/util/ValueScaling.h"
+#include "drain/util/LookUp.h"
 
 namespace drain
 {
-
-/*
-template <class T>
-class LookUp : public std::vector<T> {
-
-public:
-
-	int bitShift;
-	int byteSize;
-
-};
-*/
 
 ///
 /**   \tparam double - type of lower bound of the value range associated with an entry
@@ -85,21 +73,26 @@ public:
 	};
 
 
-	/// LOOK-UP table, consider outsourcing this
-
-	//typedef std::vector<typename cont_t::const_iterator> lookup_t;
+	/// LOOK-UP table
 	typedef drain::LookUp<typename cont_t::const_iterator> lookup_t;
 
 	mutable
 	lookup_t lookUp;
 
-	/// TODO? createLookUp(encoding, n=0);
-	//lookup_t & createLookUp(int n, const ValueScaling & scaling, int shiftBits = 0) const {
+	/// Creates a vector of 256 or 65535 entries for fast retrieval.
+	/**
+	 *   A codebook is assumed to be a sparse list, only containing entries where the values (colors) change.
+	 *   The corresponding lookup table contains an entry for each encountered integer index.
+	 *
+	 *   TODO: count parameter (now automatic)
+	 *   TODO: interval fill up function (mixer)
+	 */
 	lookup_t & createLookUp(const std::type_info & type, const ValueScaling & scaling) const { // todo N?
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
-		if (type == typeid(unsigned short)){
+		// Todo: add support for signed short and signed char ?
+		if (type == typeid(unsigned short)){ // 1024 entries (not 65535)
 			lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
 			lookUp.bitShift	= 6; // note => 16 - 6 = 10bits => 1024 entries
 		}
@@ -208,73 +201,7 @@ public:
 	}
 
 
-	/*
-	inline
-	const entry_t & retrieve(double intensity) const {
 
-		key_t index;
-
-		if (scaling.isScaled()){
-			index = static_cast<key_t>(scaling.inv(intensity));
-		}
-		else {
-			index = static_cast<key_t>(intensity);
-		}
-
-		return operator [](index);
-
-	}
-
-	inline
-	entry_t & retrieve(double intensity) {
-
-		key_t index;
-
-		if (scaling.isScaled()){
-			index = static_cast<key_t>(scaling.inv(intensity));
-		}
-		else {
-			index = static_cast<key_t>(intensity);
-		}
-
-		return operator [](index);
-
-	}
-	*/
-
-	// Rename to entryEmpty?
-	/*
-	static inline
-	bool empty(unsigned short int i){
-		return (i==0);
-	}
-	static inline
-	bool empty(short int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(long int i){
-		return (i==0);
-	}
-
-	static inline
-	bool empty(unsigned int i){
-		return (i==0);
-	}
-
-
-	template <class E>
-	static
-	bool empty(const E & e){
-		return e.empty();
-	}
-	*/
 
 	///
 	/*

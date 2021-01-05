@@ -53,9 +53,10 @@ class CmdImage : public drain::BasicCommand {
 
 public:
 
-	mutable DataSelector imageSelector;
+	//mutable DataSelector imageSelector;
+	mutable ImageSelector imageSelector;
 
-	CmdImage() : BasicCommand(__FUNCTION__,
+	CmdImage() : drain::BasicCommand(__FUNCTION__,
 			"Copies data to a separate image object. Encoding can be changed with --target .")
 			// , imageSelector(".*/data/?$","")
 	{
@@ -69,7 +70,7 @@ public:
 
 
 };
-extern CommandEntry<CmdImage> cmdImage;
+extern drain::CommandEntry<CmdImage> cmdImage;
 
 
 

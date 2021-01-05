@@ -54,11 +54,11 @@ namespace rack {
 
 
 
-class CompositeDefaultQuality : public BasicCommand { //SimpleCommand<double> {
+class CompositeDefaultQuality : public drain::BasicCommand { //SimpleCommand<double> {
 
 public:
 
-	CompositeDefaultQuality() : BasicCommand(__FUNCTION__, "Set default quality (for data without quality field)"){
+	CompositeDefaultQuality() : drain::BasicCommand(__FUNCTION__, "Set default quality (for data without quality field)"){
 		//parameters.link("weight", getResources().cDefaultQuality = 0.75, "0...1");
 		parameters.link("weight", getResources().composite.defaultQuality = 0.75, "0...1");
 	};
@@ -69,11 +69,11 @@ public:
 
 
 // This is defined here because Create needs this
-class CartesianProj : public BasicCommand {
+class CartesianProj : public drain::BasicCommand {
 
 public:
 
-	CartesianProj() : BasicCommand(__FUNCTION__, "Set projection"){
+	CartesianProj() : drain::BasicCommand(__FUNCTION__, "Set projection"){
 		parameters.separator = 0;
 		parameters.link("projstr", getResources().projStr, "Proj4 syntax");
 	};
@@ -90,11 +90,11 @@ public:
 
 
 
-class CompositeInit : public BasicCommand {
+class CompositeInit : public drain::BasicCommand {
 
 public:
 
-	CompositeInit() : BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
+	CompositeInit() : drain::BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
 
 	inline
 	void exec() const {
@@ -107,14 +107,14 @@ public:
 
 
 /*
-CartesianBBoxTest() : SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
+CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
 			"mode", 0, "If no overlap and n==0, only set inputOk=false. Else exit with return value n."	) {
  */
 
-class CompositeMethod : public SimpleCommand<std::string> {
+class CompositeMethod : public drain::SimpleCommand<std::string> {
 public:
 
-	CompositeMethod() : SimpleCommand<std::string>(__FUNCTION__, "Method to be used in accumulating the (weighted) values.",
+	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__, "Method to be used in accumulating the (weighted) values.",
 			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
 		getResources().composite.setMethod(value);
 	};
@@ -130,7 +130,7 @@ public:
 
 
 
-class CartesianSize : public BasicCommand {
+class CartesianSize : public drain::BasicCommand {
 
 public:
 
@@ -138,7 +138,7 @@ public:
 	int height;
 
 	inline
-	CartesianSize() : BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
+	CartesianSize() : drain::BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
 		parameters.link("width",  width = 400, "pixels");
 		parameters.link("height", height = 0, "pixels");
 	};
@@ -157,12 +157,12 @@ public:
 
 
 
-class CartesianTime : public SimpleCommand<std::string> {
+class CartesianTime : public drain::SimpleCommand<std::string> {
 
 public:
 
 	inline
-	CartesianTime() : SimpleCommand<>(__FUNCTION__, "Modify the time of the current composite. See --cTimeDecay ",
+	CartesianTime() : drain::SimpleCommand<>(__FUNCTION__, "Modify the time of the current composite. See --cTimeDecay ",
 			"time", "201412091845", "YYYYmmddHHMMSS"){
 		//parameters.separators.clear();
 		//parameters.link("time",  time,  "201412091845", "YYYYmmddHHMMSS");
@@ -187,10 +187,10 @@ public:
 
 ///
 // TODO: change to half-time in minutes
-class CompositeTimeDecay : public BasicCommand {
+class CompositeTimeDecay : public drain::BasicCommand {
 
 	public:
-	CompositeTimeDecay() : BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
+	CompositeTimeDecay() : drain::BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
 		parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
 	};
 
@@ -203,10 +203,10 @@ class CompositeTimeDecay : public BasicCommand {
  *
  *	log(0.5) = t/T*log(0.5) =>
  */
-class CompositeDecayTime : public SimpleCommand<int> {
+class CompositeDecayTime : public drain::SimpleCommand<int> {
 
 	public:
-	CompositeDecayTime() : SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
+	CompositeDecayTime() : drain::SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
 		//parameters.link("halftime", getResources().composite.decay = 1.0, "coeff");
 	};
 

@@ -43,89 +43,32 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Command.h"
 #include "CommandRegistry.h"
 
-using namespace drain;
+#include "CommandBank.h"
+
 
 namespace drain {
 
-/// Base for derived classes using member BeanLikes or referenced BeanLikes.
-/**
- *   \tparam B  - bean class
- *   \tparam BS - same as B, or reference of B
- */
-template <class B, class BS>
-class BeanAdapter : public Command {
-
-public:
-
-	BeanAdapter(){};
-
-	BeanAdapter(B & bean) : bean(bean) {};
-
-	typedef B bean_t;
-
-	BS bean;
-
-	inline
-	const std::string & getName() const { return bean.getName(); };
-
-	inline
-	const std::string & getDescription() const { return bean.getDescription(); };
-
-	virtual
-	inline
-	const ReferenceMap & getParameters() const { return bean.getParameters(); };  // or getParameters
-
-	virtual
-	inline
-	void run(const std::string & params = ""){
-		bean.setParameters(params);
-		exec();
-	}
-
-	virtual
-	void exec() const = 0;
 
 
-};
-
-/// Wraps operators into commands
-template <class B>
-class BeanWrapper : public BeanAdapter<B, B> {
-};
-
-
-/// Applies a referenced bean.
-template <class B>
-class BeanRefAdapter : public BeanAdapter<B, B &> {
-
-public:
-
-	BeanRefAdapter(B & bean) : BeanAdapter<B,B&>(bean) { //
-	};
-
-	BeanRefAdapter(BeanRefAdapter<B> & a) : BeanAdapter<B,B&>(a.bean) { //
-	};
-};
-
-/// Adapter registered directly as a command entry upon construction.
+/// Adapter registered directly as a command entry upon construction. Needed? typedef CommandEntry<BeanCommand>
 /*
  *  \tparam BeanLike
- */
+
 template <class B>
-class BeanRefEntry : public BeanRefAdapter<B> {
+class BeanRefEntry : public BeanCommand<B,B&> { // why not directly public BeanCommand<B, B &>
 
 public:
 
-	BeanRefEntry(B & bean) : BeanRefAdapter<B>(bean) {
+	BeanRefEntry(B & bean) : BeanCommand<B,B&>(bean) {
 		getRegistry().add(*this, bean.getName(), 0);
 	};
 
-	BeanRefEntry(B & bean, const std::string & cmdName, char alias = 0) : BeanRefAdapter<B>(bean) {
+	BeanRefEntry(B & bean, const std::string & cmdName, char alias = 0) : BeanCommand<B,B&>(bean) {
 		getRegistry().add(*this, cmdName, alias);
 	};
 
 
-	BeanRefEntry(B & bean, const std::string & section, const std::string & cmdName, char alias = 0) : BeanRefAdapter<B>(bean) {
+	BeanRefEntry(B & bean, const std::string & section, const std::string & cmdName, char alias = 0) : BeanCommand<B,B&>(bean) {
 		getRegistry().add(section, *this, cmdName, alias);
 	};
 
@@ -133,23 +76,18 @@ public:
 	~BeanRefEntry(){};
 
 	/// Bean may be peaceful.
-	/*
-	virtual
-	void run(const std::string & params){
-		this->bean.setParameters(params);
-	};
-	*/
-
 	virtual
 	void exec() const {};
 };
-
+*/
 
 
 /// A command that is automatically added to CommandRegistry upon initialization.
 /**
  *
  *  \tparam T - base class, usually Command
+ *
+ *  \see CommandWrapper, the newer implementation
  */
 template <class T>
 class CommandEntry : public T {
@@ -179,8 +117,15 @@ public:
 
 };
 
+/*
+template <class T>
+class BeanCommandEntry : public CommandEntry<BeanCommand<T> > {
+}
+*/
 
-} /* namespace drain */
+}
+
+/* namespace drain */
 
 #endif /* DRAINLET_H_ */
 

@@ -219,15 +219,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	Palette::const_iterator cit;
 
 	if (UCHAR || USHORT){
-	//if (false){
-
-		//double min = scaling.fwd(0.0);
-		//double max = scaling.fwd(encoding.getTypeMax<double>());
 
 		ValueScaling sc(scale, offset);
 		//sc.setPhysicalScale(typeid(unsigned char), min, max);
 
-		//const Palette::lookup_t & lut = pal.createLookUp(256, sc, USHORT ? 8 : 0);
 		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
 
 		mout.note() << "created look-up table" << lut.size() << " for input: " << drain::Type::getTypeChar(encoding.getType()) << mout.endl;
@@ -244,6 +239,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			for (size_t j = 0; j < height; ++j) {
 
 				d = srcChannel.get<double>(i,j);
+
+				// Check if special handling is needed
 				if (SPECIAL_CODES){  // PolarODIM
 					cit = specialCodes.find(d);
 					if (cit != specialCodes.end()){
@@ -253,6 +250,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 					}
 				}
 
+				// If needed, prescale to fit number of entries
 				if (UCHAR){
 					itLast = lut[static_cast<int>(d)];
 				}
@@ -291,6 +289,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			for (size_t j = 0; j < height; ++j) {
 
 				d = srcChannel.get<double>(i,j);
+
 				if (SPECIAL_CODES){  // PolarODIM
 					cit = specialCodes.find(d);
 					if (cit != specialCodes.end()){

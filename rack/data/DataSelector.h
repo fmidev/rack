@@ -161,30 +161,14 @@ public:
 	 *
 	 *   \see deriveParameters().
 	 */
-	// Recommended convenience function.
-	/*
-	template <class T>
-	inline
-	void getPaths(const Hi5Tree & src, T & pathContainer, ODIMPathElem::group_t groupFilter) const {
-		getPaths(src, pathContainer, drain::RegExp(quantity), groupFilter, ODIMPath());
-	}
-	*/
-	/*
-	inline
-	void getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter) const {
-		getPaths3(src, pathContainer);
-	}*/
 
 	/// Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable.
 	/**
 	 *
 	 *  \param src - HDF5 data structure
 	 *  \param pathContainer - container for paths to be found
-	 *  \param groupFilter - deprecating...
-	 *  \param path - initial path
+	 *  \param path - search path, root by default
 	 */
-	//void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, ODIMPathElem::group_t groupFilter=ODIMPathElem::ALL_GROUPS , const ODIMPath & path = ODIMPath()) const;
-	//void getPaths3(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & path = ODIMPath()) const;
 	template <class T>
 	bool getPaths3(const Hi5Tree & src, T & pathContainer, const ODIMPath & path = ODIMPath()) const;
 
@@ -196,56 +180,9 @@ public:
 	 */
 	bool getPath3(const Hi5Tree & src, ODIMPath & path) const;
 
-	/*
-
-	template <class T>
-	inline
-	void getPaths(const Hi5Tree & src, T & pathContainer) const {
-		drain::Logger mout(__FUNCTION__, getName());
-		mout.note() << "deprecating" <<  mout.endl;
-		getPaths3(src, pathContainer);
-		if (groups.value > 0){
-			getPaths(src, pathContainer, groups.value);
-		}
-		else {
-			drain::Logger mout(__FUNCTION__, getName());
-			mout.note() << "groups flag unset, using DATA + DATASET" << mout.endl;
-			getPaths(src, pathContainer, (ODIMPathElem::DATA | ODIMPathElem::DATASET));
-			//groups = groupStr;
-		}
-	}
-		 */
-
 
 	/// Retrieves paths using current selection criteria and an additional group selector.
-	/*
-	 *   \tparam T - container class supporting addPathT(), e.g. std::set, std::list or std::vector.
-	 *   \param src - the data structure searched for paths
-	 *   \param container - container for found paths
-	 *   \param groupFilter - selector (ODIMPath group types) for the lowest groups to be added in container,
-	 *   \return - true quantity was found
-	 *
-	 *   See the simplified version of this function.
-	 */
-	//template <class T>
-	//bool getPaths(const Hi5Tree & src, T & pathContainer, const drain::RegExp & quantityRE, ODIMPathElem::group_t groupFilter, const ODIMPath & path ) const;
-
-
 	/// Returns the first path encountered with selector attributes and given groupFilter .
-	/*
-	inline
-	bool getPathNEW(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t groupFilter) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "obsolete" << mout.endl;
-		return getPath3(src, path);
-	}
-
-	/// Returns the first path encountered with selector attributes and given groupFilter .
-	inline
-	bool getPathNEW(const Hi5Tree & src, ODIMPath & path) const {
-		return getPath3(src, path);
-	}
-    */
 
 	/// Returns the last path encountered with selector attributes and given groupFilter .
 	bool getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
@@ -298,23 +235,8 @@ public:
 
 	/// Traverses down the tree and returns matching paths as a map with elevations as keys.
 	/**
-	 *   \param m
-	 */
-	//template <class T>
-	/*
-	static inline
 	void getPathsByElevation(const Hi5Tree &src, const DataSelector & selector, std::map<double, ODIMPath> & m){
-		//getPathsT(src, selector, m);
-		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
-	}
-	 */
-
-	/*
-	static inline
 	void getPathsByQuantity(const Hi5Tree &src, const DataSelector & selector, std::map<std::string, ODIMPath> & m){
-		//getPathsT(src, selector, m);
-		selector.getPaths(src, m, ODIMPathElem::DATASET); // TODO check
-	}
 	*/
 
 
@@ -322,20 +244,20 @@ public:
 	/// Temporary fix: try to derive dataset and data indices from path regexp.
 	/**
 	 *   Variable 'path' will be probably obsolete in future.
-	 */
 	inline
 	void convertRegExpToRanges(const std::string & param){
 	}
+	 */
 
 	/// Temporary fix: try to derive dataset and data indices from deprecated 'path' regexp (and also, quantity, current first param.)
 	/**
 	 *   Variable 'path' will be probably obsolete in future.
-	 */
 	inline
 	void convertRegExpToRanges(){
 		convertRegExpToRanges(this->path);
 		//convertRegExpToRanges(this->quantity);
 	};
+	 */
 
 protected:
 
@@ -343,81 +265,39 @@ protected:
 	/// Sets the default values and sets references.
 	void init();
 
+	//virtual void updateGroups();
+
 	/// Traverses down the tree and returns matching paths as a list or map (ordered by elevation).
-	/**
-	 *   Applicable for ODIMPathList and std::map<double,std::string>.
-	 *   \param container - ODIMPathList and std::map<double,std::string>
-	 */
-	/*
-	template <class T>
-	static
-	inline
-	void getPathsT(const Hi5Tree &src, const DataSelector & selector, T & container){
-		getPaths(src, container, selector.path, selector.quantity,
-				selector.index, selector.count,
-				selector.elangle.min, selector.elangle.max); // min, max
-	}
- */
 
 	/// NEW Collects paths to a list.
 	/*
-	template <class P>
-	static
 	void addPathT(std::list<P> & l, const PolarODIM & odim, const P & path){ l.push_back(path); }
-*/
+	*/
 
 	/// Collects paths to a set. (unused?)
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	 */
-	/*
-	template <class P>
-	static inline
-	void addPathT(std::set<P> & l, const PolarODIM & odim, const P & path){
+		void addPathT(std::set<P> & l, const PolarODIM & odim, const P & path){
 		l.insert(path);
 	}
-*/
+	*/
 
 	/// Collects paths by their elevation angle (elangle).
-	/**
-	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	template <class P>
-	static inline
-	void addPathT(std::map<double,P> & m, const PolarODIM & odim, const std::string & path){
-		m[odim.elangle] = path;
-	}
- */
-
+	// void addPathT(std::map<double,P> & m, const PolarODIM & odim, const std::string & path){
 
 	/// Collects paths by their quantity, eg. DBZH, VRAD, and RHOHV.
-	/**
-	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	template <class P>
-	static inline
-	void addPathT(std::map<std::string,P> & m, const PolarODIM & odim, const std::string & path){
-		m[odim.quantity] = path;
-	}
+	// addPathT(std::map<std::string,P> & m, const PolarODIM & odim, const std::string & path){
+	// addPath3(std::map<double,ODIMPath> & m, const PolarODIM & odim, const ODIMPath &path){
+	// addPath3(std::list<ODIMPath> & l, const PolarODIM & odim, const ODIMPath &path){
 
-	static inline
-	bool addPath3(std::map<double,ODIMPath> & m, const PolarODIM & odim, const ODIMPath &path){
-		m[odim.elangle] = path;
-		return false;// ??
-	}
-
-	static inline
-	bool addPath3(std::list<ODIMPath> & l, const PolarODIM & odim, const ODIMPath &path){
-		l.push_back(path);
-		return false;// ??
-	}
-*/
 
 	/**
 	 *  \param l - container for paths
 	 */
 	static inline
 	bool addPath3(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
-		PolarODIM odim;
-		odim.updateFromCastableMap(props);
+		//PolarODIM odim;
+		//odim.updateFromCastableMap(props);
 		l.push_back(path);
 		return false;// ??
 	}
@@ -449,7 +329,7 @@ protected:
 
 	/**
 	 *  \tparam P - list type: ODIMPath (preferred) or std::string
-	 */
+
 	template <class P>
 	static inline
 	bool addPathT(std::list<P> & l, const std::string &path){
@@ -464,7 +344,7 @@ protected:
 		str.assign(path);
 		return true;  // ??
 	};
-
+	*/
 };
 
 template <class T>
@@ -629,12 +509,27 @@ class DatasetSelector : public DataSelector {
 
 public:
 
-	DatasetSelector(){
+	DatasetSelector() : DataSelector(ODIMPathElem::DATASET){
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		parameters.delink("path");
-		pathMatcher.setElems(ODIMPathElem::DATASET);
+		mout.info() << "experimental: not re-setting DATASET" << mout.endl;
+		//pathMatcher.setElems(ODIMPathElem::DATASET);
 	}
 
 };
+
+// Experimental
+class ImageSelector : public DataSelector {
+
+public:
+
+	ImageSelector() : DataSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY) {
+		parameters.delink("path");
+		// pathMatcher.setElems(ODIMPathElem::DATASET);
+	}
+
+};
+
 
 } // rack::
 

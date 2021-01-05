@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
+#include "drain/util/Log.h"
 
 #include "drain/image/File.h"
 
@@ -48,7 +49,7 @@ namespace rack {
 
 void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const {
 
-	Logger mout(__FUNCTION__, getName());
+	drain::Logger mout(__FUNCTION__, getName());
 
 	RackResources & resources = getResources();
 	//Hi5Tree & srcH5 = resources.cartesianHi5; //*resources.currentHi5;
@@ -93,7 +94,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 			srcData.data.setScaling(srcData.odim.scale, srcData.odim.offset);
 			//mout.note() << "Using " << *it << ':' << srcData.data.getGeometry() << mout.endl;
 			mout.note() << "Using " << *it << ": " << path << ' ';
-			mout <<  srcData.data.getGeometry() << ':' << Type::getTypeChar(srcData.data.getType()) << mout.endl;
+			mout <<  srcData.data.getGeometry() << ':' << drain::Type::getTypeChar(srcData.data.getType()) << mout.endl;
 			//<< srcData.data << mout.endl;
 			mout.debug() << srcData.odim << mout.endl;
 
@@ -249,7 +250,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 /// The result is stored in this channel pack.
 void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, ImageTray<Channel> & channels) const {
 
-	Logger mout(__FUNCTION__, getName());
+	 drain::Logger mout(__FUNCTION__, getName());
 
 	//mout.info() << "start" << mout.endl;
 
@@ -298,7 +299,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Channel> & channels) const {
 
-	Logger mout(__FUNCTION__, getName());
+	 drain::Logger mout(__FUNCTION__, getName());
 
 	RackResources & resources = getResources();
 

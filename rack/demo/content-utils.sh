@@ -68,11 +68,11 @@ function TEST(){
     # Actually...
     # Note: clean what:source
     # weird chars cause binary mode, and premature end of (f)grep scanning
-    cmd="rack $INFILE --/what:source= $* " #-o $OUTFILE"
-    echo "# $cmd"
+    cmd="rack $INFILE --/what:source= $*" #-o $OUTFILE"
+    echo "# $cmd -o $OUTFILE "   # "Note: ~ unfiltered"
     
     # Save also txt file, pruning nosave-marked '~' objects. Note: source string causes binary mode?
-    eval "$cmd -o - " > $TXTFILE.raw
+    eval "$cmd -o -" > $TXTFILE.raw
     fgrep '~' -v $TXTFILE.raw > $TXTFILE
     #eval "$cmd -o - " | fgrep -v '~' > $TXTFILE
     if [ $? != 0 ]; then

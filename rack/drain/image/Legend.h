@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <map>
 
-#include "../util/Log.h"
+#include "drain/util/Log.h"
 #include "ImageCodebook.h"
 
 namespace drain

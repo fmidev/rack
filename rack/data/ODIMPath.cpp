@@ -179,22 +179,6 @@ bool ODIMPathElem::set(const std::string &s){
 	if (extractPrefix(std::string(s.begin(), it), INDEXED))
 		return true;
 
-	/*
-	const std::string prefix(s.begin(), it);
-	/// Check if matches predefined group types
-	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
-		// it->second : group id [enum code]
-		if (INDEXED == isIndexed(it->second)) {
-			// it->first  : group prefix [string]
-			if (prefix == it->first) {
-				this->group = it->second;
-				return true;
-			}
-		}
-	}
-	 */
-
-
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->str = s;
 
@@ -297,23 +281,6 @@ bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 	// e.g. WHAT == WHAT
 	return false;
 
-	/*
-	if (e1.group != e2.group){
-		return (e1.group < e2.group);
-	}
-	else { //  (e1.group == e2.group)
-		if (e1.isIndexed()){
-			return (e1.getIndex() < e2.getIndex());
-		}
-		else if (e1.group == ODIMPathElem::OTHER){
-			return (e1.getPrefix() < e2.getPrefix());
-			//strcmp(e1.getPrefix().c_str(), e2.getPrefix().c_str());
-		}
-		else
-			return false; // equal?
-
-	}
-	 */
 }
 
 // Experimental naming.

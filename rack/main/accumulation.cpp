@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "drain/util/Input.h"
+#include "drain/util/Log.h"
 
 #include "commands.h"
 #include "accumulation.h"
@@ -40,14 +41,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-class PolarSite : public BasicCommand {
+class PolarSite : public drain::BasicCommand {
 
 public:
 
 	double lon;
 	double lat;
 
-	PolarSite() : BasicCommand(__FUNCTION__,
+	PolarSite() : drain::BasicCommand(__FUNCTION__,
 			"Set radar size location of the accumulated data. Also size etc., if --encoding set."){
 		parameters.link("lon", lon = 0.0, "degrees");
 		parameters.link("lat", lat = 0.0, "degrees");
@@ -55,7 +56,7 @@ public:
 
 	void exec() const {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
@@ -71,7 +72,7 @@ public:
 	static
 	void allocateAccumulator() {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
@@ -95,7 +96,7 @@ public:
 };
 
 // TODO. combine Cartesian & Polar
-class PolarPlot : public BasicCommand {
+class PolarPlot : public drain::BasicCommand {
 
 public:
 
@@ -104,7 +105,7 @@ public:
 	double value;
 	double weight;
 
-	PolarPlot() : BasicCommand(__FUNCTION__, "Add a single data point."){
+	PolarPlot() : drain::BasicCommand(__FUNCTION__, "Add a single data point."){
 		parameters.link("lon", lon = 0.0, "longitude");
 		parameters.link("lat", lat = 0.0, "latitude");
 		parameters.link("value", value = 0.0, "value");
@@ -114,7 +115,7 @@ public:
 
 	void exec() const {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -146,11 +147,11 @@ public:
 };
 
 // TODO. combine Cartesian & Polar
-class PolarPlotFile : public SimpleCommand<std::string> {
+class PolarPlotFile : public drain::SimpleCommand<std::string> {
 
 public:
 
-	PolarPlotFile() : SimpleCommand<>(__FUNCTION__, "Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.",
+	PolarPlotFile() : drain::SimpleCommand<>(__FUNCTION__, "Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.",
 			"file", "", "filename"){
 	};
 
@@ -235,16 +236,16 @@ void PolarPlotFile::exec() const {
 
 
 
-class PolarAdd : public BasicCommand {
+class PolarAdd : public drain::BasicCommand {
 
 public:
 
-	PolarAdd() : BasicCommand(__FUNCTION__, "Add polar data to accumulation array."), weight(1.0) { //, count(1) {
+	PolarAdd() : drain::BasicCommand(__FUNCTION__, "Add polar data to accumulation array."), weight(1.0) { //, count(1) {
 	};
 
 	void exec() const {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -364,7 +365,7 @@ public:
 
 protected:
 
-	PolarAdd(const std::string & name, const std::string & description) : BasicCommand(name, description), weight(1.0){};
+	PolarAdd(const std::string & name, const std::string & description) : drain::BasicCommand(name, description), weight(1.0){};
 
 	double weight;
 
@@ -384,11 +385,11 @@ public:
 
 };
 
-class PolarExtract : public SimpleCommand<std::string> {
+class PolarExtract : public drain::SimpleCommand<std::string> {
 
 public:
 
-	PolarExtract() : SimpleCommand<std::string>(__FUNCTION__, "Extract polar-coordinate data that has been accumulated.",
+	PolarExtract() : drain::SimpleCommand<std::string>(__FUNCTION__, "Extract polar-coordinate data that has been accumulated.",
 			"channels", "dw", "Layers: data,count,weight,std.deviation") {
 		// RackLet(__FUNCTION__,"Extract polar-coordinate data that has been accumulated.") {
 		// parameters.link("channels", channels, "dw", "Accumulation layers to be extracted");
@@ -396,7 +397,7 @@ public:
 
 	void exec() const {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
 
@@ -460,8 +461,8 @@ AccumulationModule::AccumulationModule(const std::string & section, const std::s
 
 
 }
-//static CommandEntry<PolarAdd> polarAdd("pAdd");
-//static CommandEntry<PolarExtract> polarExtract("pExtract");
+//static drain::CommandEntry<PolarAdd> polarAdd("pAdd");
+//static drain::CommandEntry<PolarExtract> polarExtract("pExtract");
 
 
 

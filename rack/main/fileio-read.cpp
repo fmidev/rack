@@ -73,8 +73,8 @@ void CmdInputFile::exec() const {
 
 	resources.errorFlags.unset(RackResources::INPUT_ERROR); // resources.inputOk = false;
 
-	//const CommandRegistry & r = drain::getRegistry();
-	//mout.warn() << "lastCommand: '" << CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
+	//const drain::CommandRegistry & r = drain::getRegistry();
+	//mout.warn() << "lastCommand: '" << drain::CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
 
 	// Kludge. Check if last command was str than 1) file read or 2) odim assignment ( --/path:key=value )
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
@@ -102,7 +102,7 @@ void CmdInputFile::exec() const {
 		}
 
 	}
-	catch (std::exception & e) {
+	catch (const std::exception & e) {
 		//resources.inputOk = false;
 		resources.errorFlags.set(RackResources::INPUT_ERROR);
 		mout.debug() << e.what() << mout.endl;
@@ -163,7 +163,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	/// True, if user seems to provide
-	const CommandRegistry & r = drain::getRegistry();
+	const drain::CommandRegistry & r = drain::getRegistry();
 	const std::string &lastCmd = r.getLastCommand();
 	const bool APPEND_INPUT = (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
 	const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
@@ -598,7 +598,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	// Displays true/false
-	mout.debug() << "Image has metadata: " << Variable(!attr.empty()) << mout.endl;
+	mout.debug() << "Image has metadata: " << drain::Variable(!attr.empty()) << mout.endl;
 
 	//mout.note() << attr << mout.endl;
 

@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <exception>
 
 #include "drain/util/Log.h"
+#include "drain/prog/CommandAdapter.h"
 
 
 #include "hi5/Hi5.h"
@@ -73,7 +74,7 @@ int process(int argc, const char **argv) {
 		return 1;
 	}
 
-	CommandRegistry & registry = drain::getRegistry();
+	drain::CommandRegistry & registry = drain::getRegistry();
 
 	//registry.setSection("", "");
 	CommandModule commands;
@@ -93,17 +94,34 @@ int process(int argc, const char **argv) {
 
 	//getResources().composite.setMethod("MAX");
 
-	registry.setSection("formulae", "");
-	BeanRefEntry<PrecipitationZ> rainZ(RainRateOp::precipZrain, "precipZrain");
-	BeanRefEntry<PrecipitationZ> snowZ(RainRateOp::precipZsnow, "precipZsnow");
-	BeanRefEntry<PrecipitationKDP> pKDP(RainRateOp::precipKDP, "precipKDP");
-	BeanRefEntry<PrecipitationZZDR> pZZDR(RainRateOp::precipZZDR, "precipZZDR");
-	BeanRefEntry<PrecipitationKDPZDR> pKDPZDR(RainRateOp::precipKDPZDR, "precipKDPZDR");
-	BeanRefEntry<FreezingLevel> pFreezingLevel(RainRateOp::freezingLevel);
+	//registry.setSection("formulae", "");
+
+	drain::CommandBank & cmdBank = drain::getCommandBank();
+	cmdBank.sections.dictionary.add("formulae", 32);
+
+	//drain::BeanAdapterCommand<PrecipitationZ> precipZrain(RainRateOp::precipZrain);
+	drain::BeanCommand<PrecipitationZ, PrecipitationZ&> precipZrain(RainRateOp::precipZrain);
+	cmdBank.addExternal(precipZrain, "precipZrain");
+
+	drain::BeanCommand<PrecipitationZ, PrecipitationZ&> precipZsnow(RainRateOp::precipZsnow);
+	cmdBank.addExternal(precipZsnow, "precipZsnow");
+
+	drain::BeanCommand<PrecipitationKDP, PrecipitationKDP&> precipKDP(RainRateOp::precipKDP);
+	cmdBank.addExternal(precipKDP, "precipKDP");
+
+	drain::BeanCommand<PrecipitationZZDR, PrecipitationZZDR&> precipZZDR(RainRateOp::precipZZDR);
+	cmdBank.addExternal(precipZZDR, "precipZZDR");
+
+	drain::BeanCommand<PrecipitationKDPZDR,PrecipitationKDPZDR&> precipKDPZDR(RainRateOp::precipKDPZDR);
+	cmdBank.addExternal(precipKDPZDR, "precipKDPZDR");
+
+	drain::BeanCommand<FreezingLevel,FreezingLevel&> freezingLevel(RainRateOp::freezingLevel);
+	cmdBank.addExternal(freezingLevel, "freezingLevel");
 	//pFreezingLevel.height =
 	/*
 
 	*/
+	//cmdBank.help();
 
 	CompositingModule compositing("cart", "c");
 

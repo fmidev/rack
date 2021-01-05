@@ -151,6 +151,14 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 	return ostr;
 }
 
+/// List keys in their numeric order.
+std::string Flags::keysToStr(char separator) const {
+	std::stringstream sstr;
+	keysToStream(sstr, separator);
+	return sstr.str();
+}
+
+
 std::ostream & Flags::toStream(std::ostream & ostr, char separator) const {
 
 	if (!separator)

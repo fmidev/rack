@@ -62,11 +62,11 @@ namespace rack {
 
 
 
-class CmdPaletteIn : public SimpleCommand<std::string> {
+class CmdPaletteIn : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteIn() : SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	CmdPaletteIn() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	virtual
@@ -103,13 +103,13 @@ void CmdPaletteOut::exec() const {
 	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
 	RackResources & resources = getResources();
-	if (cmdFormat.value.empty()){
+	if (drain::cmdFormat.value.empty()){
 		resources.palette.write(resources.outputPrefix + value);
 	}
 	else {
-		mout.warn() << "user defined format, extension not checked: " +  cmdFormat.value << mout.endl;
+		mout.warn() << "user defined format, extension not checked: " +  drain::cmdFormat.value << mout.endl;
 		drain::Output out(resources.outputPrefix + value);
-		resources.palette.exportFMT(out, cmdFormat.value);
+		resources.palette.exportFMT(out, drain::cmdFormat.value);
 	}
 
 }
@@ -553,7 +553,7 @@ public:
 
 
 // Later also this here, but legendOut requires "more global" class.
-// class CmdPaletteOut : public SimpleCommand<std::string>
+// class CmdPaletteOut : public drain::SimpleCommand<std::string>
 
 
 ImageRackletModule::list_t ImageRackletModule::rackletList;
@@ -562,14 +562,14 @@ ImageRackletModule::ImageRackletModule(const std::string & section, const std::s
 
 	drain::Logger mout(__FUNCTION__);
 
-	CommandRegistry & registry = getRegistry();
+	drain::CommandRegistry & registry = drain::getRegistry();
 
 	registry.setSection(section, prefix);
 
 	// Image utilities and non-operators
-	static CommandEntry<CmdPhysical> cmdPhysical;
-	static CommandEntry<CmdPaletteIn> cmdPaletteLoad;
-	static CommandEntry<CmdPaletteOut> cmdPaletteOut;
+	static drain::CommandEntry<CmdPhysical> cmdPhysical;
+	static drain::CommandEntry<CmdPaletteIn> cmdPaletteLoad;
+	static drain::CommandEntry<CmdPaletteOut> cmdPaletteOut;
 
 	ImageOpBank::map_t & ops = getImageOpBank().getMap();
 

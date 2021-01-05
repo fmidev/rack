@@ -48,8 +48,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-typedef BeanRefAdapter<drain::image::ImageOp> ImageOpAdapter;
+//drain::BeanRefAdapter<drain::image::ImageOp>
 
+typedef drain::BeanCommand<image::ImageOp, image::ImageOp &> ImageOpAdapter;
+//BeanCommand<B, B &>
 }
 
 
@@ -80,9 +82,19 @@ public:
 
 
 	/// Copy constructor.
-	ImageOpRacklet(const ImageOpRacklet & a) : ImageOpAdapter(a.bean), key(a.key) {
+	ImageOpRacklet(const ImageOpRacklet & a) : drain::ImageOpAdapter(a.bean), key(a.key) {
 		//imageOp.getParameters().updateFromMap(a.imageOp.getParameters());
 	}
+
+	void setParameters(const std::string & args, char assignmentSymbol='='){
+		bean.setParameters(args, assignmentSymbol);
+	};
+
+	//void setParameters(const drain::SmartMap<T> & args){
+	void setParameters(const drain::VariableMap & args){
+		bean.setParameters(args);
+		//productOp.setParameters((const drain::SmartMap<T> &) args);
+	};
 
 	virtual
 	void exec() const;
@@ -152,11 +164,11 @@ public:
 };
 
 
-class CmdPaletteOut : public SimpleCommand<> {
+class CmdPaletteOut : public drain::SimpleCommand<> {
 
 public:
 
-	CmdPaletteOut() : SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	CmdPaletteOut() : drain::SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
 	};
 
 	void exec() const;
@@ -166,7 +178,7 @@ public:
 
 
 
-class ImageRackletModule : public CommandGroup {
+class ImageRackletModule : public drain::CommandGroup {
 
 public:
 

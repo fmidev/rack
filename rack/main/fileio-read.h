@@ -46,11 +46,11 @@ namespace rack {
 
 /// A debugging facility. Obsolete?
 /*
-class CmdInputSelect : public BasicCommand {
+class CmdInputSelect : public drain::BasicCommand {
 
 public:
 
-	CmdInputSelect() : BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
+	CmdInputSelect() : drain::BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
 		//, "value", hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag"){};
 		parameters.link("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
 	}
@@ -58,22 +58,22 @@ public:
 };
 */
 
-class CmdInputPrefix : public BasicCommand {
+class CmdInputPrefix : public drain::BasicCommand {
 
 public:
 
-	CmdInputPrefix() : BasicCommand(__FUNCTION__, "Path prefix for input files."){
+	CmdInputPrefix() : drain::BasicCommand(__FUNCTION__, "Path prefix for input files."){
 		parameters.link("path", getResources().inputPrefix = "");
 	};
 };
 
 
 
-class CmdInputFile : public SimpleCommand<std::string>  {
+class CmdInputFile : public drain::SimpleCommand<std::string>  {
 
 public:
 
-	CmdInputFile() : SimpleCommand<std::string>(__FUNCTION__, "Read HDF5, text or image file",
+	CmdInputFile() : drain::SimpleCommand<std::string>(__FUNCTION__, "Read HDF5, text or image file",
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|ppm|txt]"){ //, inputComplete(true) {
 	};
 

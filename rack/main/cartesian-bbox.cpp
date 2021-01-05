@@ -195,13 +195,13 @@ void CartesianBBoxTest::exec() const {
 
 void CartesianBBoxTile::exec() const {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	// TODO PROJ CHECK! => error, warn?
 
 	Composite & composite = getResources().composite;
 
 	/// Use composite's bbox as a starting point.
-	Rectangle<double> bboxTile = composite.getBoundingBoxD();
+	drain::Rectangle<double> bboxTile = composite.getBoundingBoxD();
 
 	/// Crop to desired size. (ie. section of the two bboxes)
 	bboxTile.crop(bbox);

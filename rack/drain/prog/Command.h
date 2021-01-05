@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Log.h"
 #include "drain/util/BeanLike.h"
 #include "drain/util/ReferenceMap.h"
+#include "drain/util/VariableMap.h"
 //#include "CommandRegistry.hsepa"
 
 
@@ -139,9 +140,9 @@ class Command : public Contextual {
 public:
 
 	inline
-	Command(){}; // : contextPtr(NULL) {};
+	Command(): section(1) {}; //
 
-	//inline	Command(Command & cmd){};
+	// inline	Command(const Command & cmd){}; //  : section(cmd.section)
 
 	virtual inline
 	~Command(){};
@@ -156,7 +157,20 @@ public:
 	virtual
 	const std::string & getDescription() const = 0;
 
-	// TODO: setParameters?
+	virtual inline
+	void setParameters(const std::string & args, char assignmentSymbol='='){
+		//Logger mout("Command(" + getName()+ ")", __FUNCTION__);
+		Logger mout(__FUNCTION__, getName());
+		mout.info() << "forwarding to setParameters(const VariableMap & ), consider direct implementation " << mout.endl;
+		VariableMap argm;
+		argm.setValues(args, assignmentSymbol);
+		setParameters(argm);
+	};
+
+	// TODO: setParameters? void setParameters(const VariableMap & params)
+	virtual
+	void setParameters(const VariableMap & params) = 0;
+	// Could also need/replace   void setParameters(const std::map<std::string,T> & p)
 
 	virtual
 	const ReferenceMap & getParameters() const = 0;
@@ -182,54 +196,32 @@ public:
 		return empty;
 	};
 
+	/// Run the command with current parameter values.
+	virtual	inline
+	void exec() const {};
 
-	// Currently, non-const, because may run
+	/// Convenience. Sets parameters and executes the command.
 	/**
-	 *  See exec const below.
-	 */
+	 *  \see exec() .
+
 	virtual
 	void run(const std::string & params) = 0;
-
-
-	/*
-	void setContext(Context & ctx){
-		contextPtr = & ctx;
-	};
-
-	Context & getBaseContext() const {
-		if (contextPtr != NULL){
-			return *contextPtr;
-		}
-		else {
-			static Context defaultContext;
-			return defaultContext;
-		}
-	}
-	*/
-
-	/// Returns the linked context.
-	/**
-	 *  Risky: The actual object may be a derived class.
 	 */
-	/*
-	template <class C>
-	C & getContext() const {
-		if (contextPtr != NULL){
-			return (C &)*contextPtr;
-		}
-		else {
-			static C defaultContext;
-			return defaultContext;
-		}
+	virtual
+	inline
+	void run(const std::string & params = ""){
+		setParameters(params);
+		exec();
 	}
 
 
-	protected:
+	// Optional bit flags marking the command type (compare with manual page sections)
+	/**
+	 *  Typically, zero section is for "hidden" commands not appearing in help dumps.
+	 */
+	int section;
 
-		// Note: common base class. The actual object may be a derived class.
-		Context *contextPtr;
-	*/
-
+	/// Promoted
 };
 
 inline
@@ -247,7 +239,7 @@ typedef std::list<std::pair<Command &, std::string> > Script; // TODO: move
 
 
 
-/// Simple implementation of Command. Adds description and parameters to members.
+/// Simple implementation of Command: adds \c name , \c description and \c parameters .
 /** Wrapper for simple template classes; no member functions are required.
  *  BasicDrainLet implements getDescription(), getParameters(), setParameters().
  *  The default implementation of run() calls setParameters() and exec().
@@ -260,8 +252,9 @@ public:
 
 	BasicCommand(const std::string & name, const std::string & description);
 
-	inline
-	BasicCommand(const BasicCommand & cmd): Command(), section(cmd.section), name(cmd.name), description(cmd.description) {
+	inline  //
+	///BasicCommand(const BasicCommand & cmd): Command(cmd), section(cmd.section), name(cmd.name), description(cmd.description) {
+	BasicCommand(const BasicCommand & cmd): Command(cmd), name(cmd.name), description(cmd.description) {
 		// remember to call importParameters()
 	}
 
@@ -282,11 +275,9 @@ public:
 	virtual
 	void setParameters(const std::string & args, char assignmentSymbol='=');
 
-
-
-	template <class T>
-	void setParameters(const SmartMap<T> & p){
-		parameters.setValues(p);
+	inline
+	void setParameters(const VariableMap & params){
+		parameters.importCastableMap(params);
 	}
 
 	template <class T>
@@ -297,6 +288,8 @@ public:
 
 	/// Sets new parameters and runs.
 	//  Note: semantics are a bit weird ( const would be more intuitive)
+	/*
+
 	virtual
 	inline
 	void run(const std::string & params = ""){
@@ -308,15 +301,15 @@ public:
 	virtual
 	inline
 	void exec() const {};
+	*/
 
-	// Experimental
-	//bool parallel;
-
-	// Optional bit flag(s) marking the command type (compare with manual page sections)
+	// Optional bit flags marking the command type (compare with manual page sections)
 	/**
 	 *  Typically, zero section for "hidden" commands, which do not appear in section helps.
 	 */
-	int section;
+	//int section;
+
+
 
 protected:
 
@@ -326,7 +319,8 @@ protected:
 
 	ReferenceMap parameters;
 
-	void importParams(const BasicCommand & cmd){
+	template <class T>
+	void importParams(const T & cmd){
 		parameters.copyStruct(cmd.parameters, cmd, *this); // FIX: may be wrong (cmd has linked members, this has none, yet.
 	}
 
@@ -358,14 +352,15 @@ public:
 
 	SimpleCommand(const SimpleCommand & cmd) :  BasicCommand(cmd.name, cmd.description) {
 		parameters.separator = '\0';
-		parameters.link(cmd.parameters.getKeys(), value = cmd.value); // kludge
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+		//parameters.link(cmd.parameters.getKeys(), value = cmd.value); // kludge
 	};
 
 	inline
-	operator const T &() const { return value; }; // needed?
+	operator const T &() const { return value; }; // needed? TODO remove
 
 	inline
-	operator       T &(){ return value; }; // needed?
+	operator       T &(){ return value; }; // needed?TODO remove
 
 	inline
 	SimpleCommand<T> & operator =(const T &s){ value = s; return *this; };
@@ -376,6 +371,131 @@ protected:
 
 };
 
+
+/// Retrieves bean dynamically for each call.
+template <class B>
+class BeanerCommand : public Command {
+
+public:
+
+	typedef B bean_t;
+
+	// Main
+	virtual
+	const bean_t & getBean() const = 0;
+
+	// Main
+	virtual
+	bean_t & getBean() = 0;
+
+
+
+
+	inline
+	const std::string & getName() const {
+		return getBean().getName();
+	};
+
+	inline
+	const std::string & getDescription() const {
+		return getBean().getDescription();
+	};
+
+	virtual	inline
+	const drain::ReferenceMap & getParameters() const {
+		return getBean().getParameters();
+	};
+
+	virtual
+	void setParameters(const drain::VariableMap & params){
+		getBean().setParameters(params);
+	};
+
+	virtual
+	void setParameters(const std::string & parameters, char assignmentSymbol='='){
+		getBean().setParameters(parameters, assignmentSymbol);
+	}
+
+};
+
+/// Base for derived classes using member BeanLikes or referenced BeanLikes.
+/**
+ *  Beans implement getName(), getDescription(), getParameters()
+ *
+ *   \tparam B  - bean class
+ *   \tparam BS - same as B, or reference of B
+ */
+template <class B, class B2=B>
+class BeanCommand : public Command {
+
+public:
+
+	BeanCommand(){
+	};
+
+	BeanCommand(const BeanCommand & cmd) :  bean(cmd.bean){
+	};
+
+	BeanCommand(B & b) : bean(b) {
+	};
+
+	typedef B bean_t;
+
+	B2 bean;
+
+	inline
+	const std::string & getName() const {
+		return bean.getName();
+	};
+
+	inline
+	const std::string & getDescription() const {
+		return bean.getDescription();
+	};
+
+	virtual
+	inline
+	const ReferenceMap & getParameters() const {
+		return bean.getParameters();
+	};  // or getParameters
+
+	//virtual
+	void setParameters(const std::string & args, char assignmentSymbol='='){
+		bean.setParameters(args, assignmentSymbol);
+	}
+
+	///
+	//virtual
+	void setParameters(const VariableMap & params){
+		bean.setParameters(params);
+	}
+
+
+};
+
+
+
+
+
+/// Applies a referenced bean.
+template <class B>
+class BeanAdapterCommand : protected B, public BasicCommand {
+
+public:
+
+	BeanAdapterCommand() : B(), BasicCommand(B::getName(), B::getDescription()) { //
+	};
+
+	BeanAdapterCommand(B & bean) : B(), BasicCommand(B::getName(), B::getDescription()) { //
+		adapt(bean);
+	};
+
+	void adapt(B & bean){
+		//this->BasicCommand::parameters.append(bean.getParameters());
+		this->parameters.append(bean.getParameters());
+	}
+
+};
 
 
 } /* namespace drain */

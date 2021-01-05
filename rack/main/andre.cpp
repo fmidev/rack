@@ -75,13 +75,13 @@ namespace rack {
 
 
 
-class ClutterMapRead : public SimpleCommand<std::string> {
+class ClutterMapRead : public drain::SimpleCommand<std::string> {
 
 public:
 
-	ClutterMapRead(ClutterOp & op) : SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTER quantity.", "filename",""),
+	ClutterMapRead(ClutterOp & op) : drain::SimpleCommand<std::string>(__FUNCTION__, "Read a file containing CLUTTER quantity.", "filename",""),
 			clutterOp(op) {
-		getRegistry().add(*this, __FUNCTION__, 0);
+		drain::getRegistry().add(*this, __FUNCTION__, 0);
 	};
 
 	void exec() const {
@@ -101,24 +101,24 @@ public:
  *   Typically set prior to anomaly detection.
  *
  */
-class DefaultQuality : public BasicCommand {
+class DefaultQuality : public drain::BasicCommand {
 
 public:
 
-	DefaultQuality() : BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
+	DefaultQuality() : drain::BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
 		parameters.link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
-		getRegistry().add(*this, __FUNCTION__, 0);
+		drain::getRegistry().add(*this, __FUNCTION__, 0);
 	};
 
 };
 
 
-class Universal : public BasicCommand {
+class Universal : public drain::BasicCommand {
 
 public:
 
-	Universal() : BasicCommand(__FUNCTION__, "Toggle the support for universal ie. Dataset-wide quality indices."){
-		getRegistry().add(*this, __FUNCTION__, 0);
+	Universal() : drain::BasicCommand(__FUNCTION__, "Toggle the support for universal ie. Dataset-wide quality indices."){
+		drain::getRegistry().add(*this, __FUNCTION__, 0);
 	};
 
 	void exec() const {
@@ -137,11 +137,11 @@ public:
 
 /// Keep combined OBSOLETE?
 /*
-class AnDReStoreCombined : public SimpleCommand<std::string> {
+class AnDReStoreCombined : public drain::SimpleCommand<std::string> {
     public: //re 
 	//std::string path;
 
-	AnDReStoreCombined() : SimpleCommand<std::string>(__FUNCTION__, "Store combined detection results in .../quality1/<path> : 'data' for overwriting, 'data~' for tmp (unsaved).",
+	AnDReStoreCombined() : drain::SimpleCommand<std::string>(__FUNCTION__, "Store combined detection results in .../quality1/<path> : 'data' for overwriting, 'data~' for tmp (unsaved).",
 			"path", "data~", "std::string"){
 		//parameters.separators.clear();
 		//parameters.link("path", path, "data~", "std::string");
@@ -152,7 +152,7 @@ class AnDReStoreCombined : public SimpleCommand<std::string> {
 	};
 
 };
-static CommandEntry<AnDReStoreCombined> anDReStoreCombined("andre", "aStoreCombined");
+static drain::CommandEntry<AnDReStoreCombined> anDReStoreCombined("andre", "aStoreCombined");
 */
 
 // } // namespace ::

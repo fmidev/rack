@@ -32,8 +32,8 @@ TEST    --select elangle=:6.0
 REQUIRE dataset3/where
 EXCLUDE data1
 
-TITLE "For text output, select what and where groups of elevations from 0.5 to 5.0 degrees"
-TEST    --select "'what|where,elangle=0.5:7'"
+TITLE "For text output, select what and where groups of elevations from 0.5 to 6.0 degrees"
+TEST    --select "'what|where,elangle=0.5:6'"
 REQUIRE dataset4/{data1,where}
 EXCLUDE dataset1 data1
 
@@ -41,7 +41,7 @@ TITLE "For single-image output, select DBZH  "
 OUTFILE='volume-DBZH.png'
 TEST    --select 'elangle=1.5,quantity=DBZH'
 REQUIRE dataset3/data.
-EXCLUDE dataset1 data1
+EXCLUDE dataset1/ data1/
 
 TITLE "For a Pseudo CAPPI product, change default input selection"
 OUTFILE='pCappi-TH-1500m.h5'
@@ -151,12 +151,12 @@ REQUIRE dataset.*/data3/data
 TITLE "Keep dataset[i] group with elangle 5.0 degrees, at lowest"
 TEST    --keep elangle=5.0:90.0
 REQUIRE dataset.*/data1
-EXCLUDE dataset1
+EXCLUDE dataset1/
 
 TITLE "Keep three dataset[i] groups with lowest elangle "
 TEST    --keep elangle=-90.0:90.0,count=3
 REQUIRE dataset.*
-EXCLUDE dataset4
+EXCLUDE dataset4/
 
 INFILE='volume-detected.h5'
 
@@ -213,4 +213,3 @@ TITLE "Move and rename attribute"
 TEST --move dataset1/where:nrays,dataset1/how:imageheight
 REQUIRE dataset1/how:imageheight
 EXCLUDE dataset1/where:nrays
-

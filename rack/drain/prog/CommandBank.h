@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Bank.h"
 #include "drain/util/Flags.h"
 #include "Command.h"
+#include "CommandUtils.h"
 
 
 namespace drain {
@@ -50,34 +51,32 @@ namespace drain {
  *   # Utilities for creating scripts and programs
  *
  */
-class CommandBank : public BankSuper<BasicCommand> {
+class CommandBank : public BankSuper<Command> { // BankSuper<BasicCommand> {
 
 public:
 
-	/*
-	template <class T>
-	void add2(){
-		const T & src = Bank2<T>::add(key)
-	}
-	*/
+	typedef data_t command_t;
+
+	/// Set name and brief description of a program, to appear in help dumps.
+	inline
+	void setTitle(const std::string & title){
+		this->title = title;
+	};
+
+
 	Flags2 sections;
+	// Optional section flags for typical programs.
+	static Flags2::value_t GENERAL;
+	static Flags2::value_t INPUT;
+	static Flags2::value_t OUTPUT;
+	static Flags2::value_t IO;  // INPUT || OUTPUT
+	static Flags2::value_t SPECIAL;
 
 	///
 	std::string defaultCmd;
 
 	/// A mini program executed after each cmd until ']' or ')' is encountered
 	Script2 routine;
-
-	/// Converts command and parameter strings to executable command objects.
-	//  Note: *Appends* commands to the end of the program
-	//void append(const Script2 & script, Program & prog, Context & context) const ;
-	void append(const Script2 & script, Program & prog) const ;
-
-	void remove(Program & prog) const ;
-
-	/// Unlike compile, "interprets" script by running it command by command. \see compile()
-	//void run(ScriptTxt & script, drain::Context & context);
-	void run(Script2 & script, ClonerBase<Context> & contextSrc);
 
 	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.
 	void scriptify(int argc, const char **argv, Script2 & script);
@@ -92,16 +91,44 @@ public:
 	bool scriptify(const std::string & arg, const std::string & argNext, Script2 & script);
 
 
+	/// Converts command strings to executable command objects, appending them to a program.
+	/**
+	 *   Note: *appends* commands to the end of the program, use prog.clear() if needed.
+	 */
+	//  void append(const Script2 & script, Program & prog, Context & context) const ;
+	void append(const Script2 & script, Program & prog) const ;
+
+	void remove(Program & prog) const;
+
+	/// Run a single command
+	void run(const std::string & cmd, const std::string & params, Context & ctx);
+
+	/// Unlike compile, "interprets" script by running it command by command. \see compile()
+	//void run(ScriptTxt & script, drain::Context & context);
+	void run(Script2 & script, ClonerBase<Context> & contextSrc);
+
+
 	void help(const std::string & key, std::ostream & ostr = std::cout);
 
 	void help(unsigned int sectionFilter = 0xffffffff, std::ostream & ostr = std::cout);
 
 	/// Checked key and respective command
-	void info(const std::string & key, const BasicCommand & cmd, std::ostream & ostr = std::cout) const ;
+	void info(const std::string & key, const command_t & cmd, std::ostream & ostr = std::cout) const ;
+
+	static
+	void simplifyName(std::string & name, const std::set<std::string> & prune, char prefix=0);
+
+	static
+	std::set<std::string> & prunes();
 
 protected:
 
-	/// Given alias or long key, possibly prefixed by hyphens, return the long key if a command exists.
+
+
+	/// Name of the program, to appear in help dumps etc.
+	std::string title;
+
+	/// Given an alias or a long key, possibly prefixed by hyphens, return the long key if a command exists.
 	/**
 	 *
 	 */
@@ -109,10 +136,71 @@ protected:
 
 };
 
+/// Global command registry.
+extern
+CommandBank & getCommandBank();
 
+
+/// Creates an instance of command class C in section S of the global command registry.
+/**
+ * \tparam C - command
+ *
+ */
+template <class C>
+class CommandWrapper : public C {
+public:
+
+	CommandWrapper(const std::string & name, char alias){
+		getCommandBank().add<C>(name,alias); //.section = S;
+	}
+
+	CommandWrapper(char prefix = 0){
+		std::string name = C::getName();
+		CommandBank::simplifyName(name, CommandBank::prunes(), prefix);
+		getCommandBank().add<C>(name);
+	}
+
+};
+
+
+template <class B>
+class BeanCommandEntry : public CommandWrapper<BeanCommand<B> > {
+
+public:
+	BeanCommandEntry(char prefix = 0) : CommandWrapper<BeanCommand<B> >(prefix){
+	};
+
+};
+
+
+
+
+class HelpCmd : public SimpleCommand<std::string> {
+
+public:
+
+	inline
+	HelpCmd(CommandBank & bank, const std::string & key=__FUNCTION__, const std::string & description = "Display help.") :
+		SimpleCommand<std::string>(key, description, "[command|sections]"), bank(bank) {};
+
+	inline
+	void exec() const {
+
+		if (value.empty())
+			bank.help();
+		else {
+			bank.help(value);
+		}
+
+	}
+
+	protected:
+
+		// Copy constructor should copy this as well...
+		CommandBank & bank;
+
+	};
 
 } /* namespace drain */
 
-#endif /* DRAINLET_H_ */
-
-// Rack
+#endif

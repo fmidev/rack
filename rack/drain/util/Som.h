@@ -287,7 +287,7 @@ double euclideanDistance2(const T & x1, const T & x2) {
 
 	double d, result = 0.0;
 
-	for (int i = 0; i < x1.size(); ++i) {// todo iterate
+	for (size_t i = 0; i < x1.size(); ++i) {// todo iterate
 		d = x1[i]-x2[i]; // todo dist();
 		result += d*d;
 	}
@@ -299,7 +299,7 @@ double euclideanDistance2(const T & x1, const T & x2) {
 template <class T>
 void vectorMix(const T & x1, const T & x2, double coeff, T & m){ // todo iterate
 
-	for (int k = 0; k < x1.size(); ++k)
+	for (size_t k = 0; k < x1.size(); ++k)
 		m[k] = (1.0-coeff)*x1[k] + coeff*x2[k];
 
 }
@@ -317,7 +317,7 @@ Som<>::Som(int width, int height){
 template <class T>
 void uniformRandomVector256(std::vector<T> & x) {
 
-	for (int k = 0; k < x.size(); ++k)
+	for (size_t k = 0; k < x.size(); ++k)
 		x[k] = static_cast<T>(rand() & 0xff);
 	//x[k] = static_cast<T2>(rand() & 0xffff)/static_cast<T2>(0xf00);
 

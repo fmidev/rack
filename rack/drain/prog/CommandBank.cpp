@@ -46,20 +46,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+Flags2::value_t CommandBank::GENERAL = 1;
+Flags2::value_t CommandBank::INPUT = 2;
+Flags2::value_t CommandBank::OUTPUT = 4;
+Flags2::value_t CommandBank::IO = INPUT | OUTPUT;
+Flags2::value_t CommandBank::SPECIAL = 8;
+
 
 /// Appends program with commands fo the script
-/*
 void CommandBank::append(const Script2 & script, Program & prog) const {
 	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
-		prog.add(clone(it->first)).setParameters(it->second);
-	}
-}
-*/
-
-
-void CommandBank::append(const Script2 & script, Program & prog) const {
-	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
-		BasicCommand & cmd = clone(it->first);
+		command_t & cmd = clone(it->first);
 		cmd.setParameters(it->second);
 		prog.add(cmd);
 	}
@@ -76,6 +73,82 @@ void CommandBank::remove(Program & prog) const {
 	}
 }
 
+std::set<std::string> & CommandBank::prunes(){
+	static std::set<std::string> s;
+	if (s.empty()){
+		s.insert("Cmd");
+		s.insert("Command");
+	}
+	return s;
+}
+
+
+void CommandBank::simplifyName(std::string & name, const std::set<std::string> & prune, char prefix){
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	std::stringstream sstr;
+
+	if (prefix){
+		sstr << prefix;
+	}
+	size_t i = 0;
+
+	bool lowerCase = (prefix == 0);
+
+	while (i < name.size()) {
+
+		mout.debug() << ' ' << i << '\t' << name.at(i) << mout.endl;
+		size_t len = 0;
+
+		for (std::set<std::string>::const_iterator it=prune.begin(); it!=prune.end(); ++it){
+			// std::cerr << " ..." << *it;
+			len = it->length();
+			if (name.compare(i, len, *it) == 0){
+				// std::cerr << "*";
+				break;
+			}
+			len = 0;
+		}
+
+		if (len > 0){
+			i += len;
+		}
+		else {
+			if (lowerCase){
+				char c = name.at(i);
+				if ((c>='A') && (c<='Z'))
+					c = ('a' + (c-'A'));
+				sstr << c;
+				lowerCase = false;
+			}
+			else {
+				sstr << name.at(i);
+			}
+			++i;
+		}
+		//mout.debug()
+		//std::cerr << '\n';
+	}
+
+	name = sstr.str();
+};
+
+
+/// Run a single command
+void CommandBank::run(const std::string & cmdKey, const std::string & params, Context & ctx){
+	Logger mout(__FILE__, __FUNCTION__);
+
+	//BasicCommand
+	command_t & cmd = get(cmdKey);
+
+	if (cmd.contextIsSet())
+		mout.warn() << "replacing context " << mout.endl;
+	cmd.setContext(ctx);
+	cmd.run(params);
+}
+
+
 
 void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 
@@ -83,8 +156,8 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 
 	bool PARALLEL_MODE = false;
 
-
-	std::vector<Program> threads;
+	//	std::vector<Program> threads;
+	ProgramVector threads;
 
 	for (Script2::const_iterator it = script.begin(); it != script.end(); ++it) {
 
@@ -101,7 +174,7 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 
 			// Check here if routine exists (the current cmd may set the routine, and the it should not be run).
 
-			BasicCommand & cmd = get(it->first); // or clone, to keep defaults? => consider FLAG save-params
+			value_t & cmd = get(it->first); // or clone, to keep defaults? => consider FLAG save-params
 			cmd.setParameters(it->second);
 			//cmd.run(it->second);
 			cmd.exec();
@@ -120,44 +193,35 @@ void CommandBank::run(Script2 & script, ClonerBase<Context> & contextSrc){
 			if (it->first == "]"){
 				PARALLEL_MODE = false;
 				mout.note() << "Start threads" << mout.endl;
+
 				#pragma omp parallel for
 				for (size_t i = 0; i < threads.size(); ++i) {
-					mout.warn() << "Start thread #" << i << mout.endl;
+					// MINIMAL CONTENT. No mout here, unless new instance!
+					// std::cout << "Start thread #" << i << std::endl;
 					threads[i].run();
-					//mout.warn() << "Ended thread #" << i << mout.endl;
 				}
 				mout.note() << "Completed..." << mout.endl;
 				routine.clear(); // consider
-				//continue;
+
 			}
 			else { // continue collecting
 
-				mout.note() << "Preparing thread: " << it->first << '(' << it->second << ')' <<  mout.endl;
-				//const size_t i = threads.size();
-				// Append new (sub)script
-				threads.push_back(Program());
-				Program & prog = threads.back();
+				// Append new thread.
 				Context & ctx = contextSrc.clone();
 				ctx.id = 1000 + threads.size();
-				prog.setContext(ctx);
+				Program & prog = threads.add(ctx);
 
-				BasicCommand & cmd = clone(it->first);
+				mout.note() << "Preparing thread " << ctx.id << ':' << it->first << '(' << it->second << ')' <<  mout.endl;
+
+				value_t & cmd = clone(it->first);
 				cmd.setParameters(it->second);
-				//cmd.setContext(ctx);
 				prog.add(cmd);
-				//cmd.setContext(context); // compare to Resources (shared)
-				/*
-				 inside cmd:
-				 Context c = getContext(); // compare to getResources():
-				 RackLet ctx = getContext();
 
-				*/
-				if (USE_ROUTINE){ // Technically unneeded, but for mout below...
+				if (USE_ROUTINE){ // Technically unneeded, but for mout...
 					mout.note() << "appending script to thread " <<  mout.endl;
-					//prog.append(*this, routine);
 					append(routine, prog); // append
 				}
-				//
+
 			}
 
 		}
@@ -193,7 +257,8 @@ void CommandBank::scriptify(int argc, const char **argv, Script2 & script){
 			// Swallowed argNext as well
 			++i;
 			if (i == argc){
-				mout.warn() << arg << ": argument missing (premature end of command line), i=" << i <<  mout.endl;
+				// Some commands like --help are fine with and without arg (when ending line).
+				//mout.warn() << arg << ": argument missing (premature end of command line), i=" << i <<  mout.endl;
 				return;
 			}
 		}
@@ -274,7 +339,12 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (key.empty()){
-		help(0, ostr);
+		ostr << "For help on a commands, type:\n ";
+		ostr << "  --help <command>\n";
+		ostr << '\n';
+		ostr << "For help on a command sctions, type:\n ";
+		ostr << "  --help [" << sections.keysToStr('|') << "]\n";
+		//help(0, ostr);
 	}
 	else {
 		int filter = sections.getValue(key);
@@ -296,6 +366,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 
 void CommandBank::help(unsigned int sectionFilter, std::ostream & ostr){
 
+	ostr << title << '\n' << std::endl;
 	for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
 		if ((it->second->get().section & sectionFilter) > 0){
 			info(it->first, it->second->get(), ostr);
@@ -306,7 +377,7 @@ void CommandBank::help(unsigned int sectionFilter, std::ostream & ostr){
 
 
 /// Checked key and respective command
-void CommandBank::info(const std::string & key, const BasicCommand & cmd, std::ostream & ostr) const {
+void CommandBank::info(const std::string & key, const value_t & cmd, std::ostream & ostr) const {
 	ostr << "--" << key;
 	char alias = getAlias(key);
 	if (alias)
@@ -362,7 +433,11 @@ const std::string & CommandBank::resolveHyphens(const key_t & key) const {
 }
 
 
-
+/// Global program command registry.
+CommandBank & getCommandBank(){
+	static CommandBank commandBank;
+	return commandBank;
+}
 
 
 

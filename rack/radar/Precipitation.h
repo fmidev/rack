@@ -52,6 +52,7 @@ public:
 	~Precipitation(){};
 
 	/// Redefined such that if argument is a preset, reinvoke with its arguments.
+	/*
 	virtual
 	inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
@@ -77,9 +78,11 @@ public:
 
 		initParameters();
 	};
+	*/
 
-	virtual
-	const std::string & getDescription() const;
+
+	// virtual
+	// const std::string & getDescription() const;
 
 protected:
 
@@ -94,8 +97,8 @@ protected:
 
 private:
 
-	mutable
-	std::string descriptionExt;
+	//mutable
+	//std::string descriptionExt;
 
 };
 

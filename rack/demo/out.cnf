@@ -1,9 +1,9 @@
 # Metadata for radar 'fiuta'
 
-SOURCE="WMO:02870,RAD:FI47,PLC:Utaj‰rvi,NOD:fiuta"
+SOURCE="WMO:02870,RAD:FI47,PLC:Utaj√§rvi,NOD:fiuta"
 NOD="fiuta"
 WMO="02870"
-PLC="Utaj‰rvi"
+PLC="Utaj√§rvi"
 LAT="64.7749"
 LON="26.3189"
 HEIGHT="118"

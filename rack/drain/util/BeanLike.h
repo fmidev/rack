@@ -45,7 +45,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-// using namespace std;
 
 /// Something which has a name, a description and possibly some parameters of varying type.
 /**
@@ -58,10 +57,12 @@ public:
 	virtual inline
 	~BeanLike(){};
 
+	/// Return the name of an instance.
 	virtual inline
 	const std::string & getName() const { return name; };
 
 
+	/// Return a brief description.
 	virtual inline
 	const std::string & getDescription() const { return description; };
 
@@ -75,14 +76,23 @@ public:
 		update();
 	};
 
-	/// Sets parameters
+	/// Set parameters
 	/**
-	 *  This function is virtual because derived classes may redefine it to update str members.
 	 */
 	template <class T>
 	inline
 	void setParameters(const std::map<std::string,T> & p){
 		parameters.importMap(p);
+		update();
+	}
+
+	/// Set parameters
+	/**
+	 */
+	template <class T>
+	inline
+	void setParameters(const SmartMap<T> & p){
+		parameters.importCastableMap(p);
 		update();
 	}
 
@@ -113,9 +123,17 @@ public:
 	inline
 	ReferenceMap & getParameters() { return parameters; };
 
+	/// Grants access to (if above hidden)
+	/*
+	inline
+	void shareParameters(ReferenceMap & rmap) {
+		return rmap.append(parameters);
+	};
+	*/
+
 
 	virtual inline
-	void toOStream(std::ostream & ostr) const {
+	void toStream(std::ostream & ostr) const {
 		//ostr << name << ':' << parameters;
 		ostr << name << ": " << description << '\n';
 		ostr << '\t' << parameters << '\n';
@@ -124,7 +142,7 @@ public:
 	inline
 	std::string toStr() const {
 		std::stringstream sstr;
-		toOStream(sstr);
+		toStream(sstr);
 		return sstr.str();
 	}
 
@@ -164,7 +182,7 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const BeanLike & bean){
-	bean.toOStream(ostr);
+	bean.toStream(ostr);
 	return ostr;
 }
 

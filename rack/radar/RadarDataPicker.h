@@ -157,7 +157,7 @@ public:
 
 		infoMap["lon"] = odim.lon;
 		infoMap["lat"] = odim.lat;
-		Rectangle<double> bbox;
+		drain::Rectangle<double> bbox;
 		// std::vector<double> bbox(4);
 		//this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox[0], bbox[1], bbox[2], bbox[3]);
 		this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);

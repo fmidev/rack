@@ -187,7 +187,7 @@ void CartesianExtract::extract(const std::string & channels) const {
 	// NEW 2020/07
 	resources.select.clear();
 
-	VariableMap & statusMap = getRegistry().getStatusMap(); // getStatusMap(true);
+	drain::VariableMap & statusMap = drain::getRegistry().getStatusMap(); // getStatusMap(true);
 	//statusMap["what:quantity"] = ;
 	statusMap.updateFromMap(rootOdim);
 	//resources.getUpdatedStatusMap();

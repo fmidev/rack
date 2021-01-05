@@ -421,56 +421,6 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 }
 
-/*
-void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, drain::Variable & v){
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	mout.debug() << "line: " << line << mout.endl;
-
-	std::string assignment;
-
-	drain::StringTools::split2(line, path, assignment, ":");
-
-	mout.debug() << "path: " << path << mout.endl;
-
-	//if (p.size() > 1){
-	if (!assignment.empty()){
-
-		//mout.debug() << "key[=value]: " << p[1] << mout.endl;
-		mout.debug() << "key[=value]: " << assignment << mout.endl;
-
-		std::string value;
-		drain::StringTools::split2(assignment, attrKey, value, "=");
-		//mout.warn() << "split: " << attrKey << ':' << value << mout.endl;
-
-		//if (assignment.size() == 2){
-		if (!value.empty()){
-
-
-			drain::JSONreader::readValue(value, v);
-			//mout.debug() << "variable: "  << v << mout.endl;
-
-			// Test array OR type specification...
-			size_t i = value.find('[');
-			if ((i > 0) && (i != std::string::npos)){
-				mout.note() << "discarding old type code: " << value.substr(i) << "; instead guessed " << drain::Type::getTypeChar(v.getType()) << mout.endl;
-			}
-
-		}
-		else {
-
-			mout.debug(1) << "key only: " << attrKey << " (no assignment)" << mout.endl;
-			//mout.note() << "incomplete assignment: " << p[1] << mout.endl;
-		}
-
-	}
-
-	// mout.note() << "key: " << attrKey << mout.endl;
-
-}
-*/
-
 
 
 void Hi5Base::deleteNoSave(Hi5Tree &src){
@@ -498,6 +448,20 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 
 
 }
+
+/*
+void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
+
+	//drain::Logger mout(__FUNCTION__, __FILE__);
+
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
+		it->second.data.noSave = noSave;
+		markNoSave(it->second, noSave);
+	}
+
+
+}
+*/
 
 
 std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree){

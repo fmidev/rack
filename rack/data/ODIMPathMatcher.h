@@ -32,13 +32,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ODIM_PATH_MATCHER
 
 
-#include "drain/util/Dictionary.h"
+//#include "drain/util/Dictionary.h"
 
 #include "ODIMPath.h"
 
 
 namespace rack {
 
+/// Element in a chain in testing a path for a match.
+/*
+ *  Index range [index,indexMax] is applied in testing path elements of a same group.
+ *  \see ODIMPathMatcher
+ */
 class ODIMPathElemMatcher : public ODIMPathElem {
 
 public:
@@ -76,12 +81,6 @@ public:
 	inline
 	bool isSingle() const {
 		return (!isIndexed()) || (index == indexMax);
-		/*
-		if (isIndexed())
-			return (it->index == it->indexMax);
-		else
-			return true;
-		 */
 	}
 
 	inline
@@ -117,9 +116,9 @@ protected:
 
 };
 
-/// Test if a path partially fits group and index range.
+/// Structure for testing if a path matches a given sequence of path elements.
 /**
- *
+ *  Path will be matched from its start or end - not in the middle.
  *  Uses index range [index,indexMax] in testing path elements of same group.
  *
  */
@@ -148,7 +147,7 @@ public:
 	bool isLiteral() const;
 
 	/// Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.
-	bool extract(ODIMPath & path) const;
+	void extract(ODIMPath & path) const;
 
 	/// Match the leading part of \c path , if \c matcher starts with root. Else, match the trailing part.
 	bool match(const rack::ODIMPath & path) const;

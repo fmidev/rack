@@ -54,7 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-/// Commands for conversions to Cartesian coordinate system, including generation of radar image composites.
+/// drain::Commands for conversions to Cartesian coordinate system, including generation of radar image composites.
 /*!
  *  Add an instance of CompositingModule to the main program.
  *

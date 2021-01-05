@@ -48,11 +48,11 @@ namespace rack {
 
 
 
-class CartesianBBox : public BasicCommand {
+class CartesianBBox : public drain::BasicCommand {
 
 public:
 
-	CartesianBBox() : BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
+	CartesianBBox() : drain::BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
 		RackResources & resources = getResources();
 		parameters.link("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
 		parameters.link("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
@@ -75,11 +75,11 @@ private:
 };
 
 
-class CartesianBBoxReset : public BasicCommand {
+class CartesianBBoxReset : public drain::BasicCommand {
 
 public:
 
-	CartesianBBoxReset() : BasicCommand(__FUNCTION__, "Resets the bounding box (to be set again according to the next radar data).") {};
+	CartesianBBoxReset() : drain::BasicCommand(__FUNCTION__, "Resets the bounding box (to be set again according to the next radar data).") {};
 
 	inline
 	void exec() const {
@@ -97,13 +97,13 @@ public:
  *   -# "exit"    (or "1"); exits, returning value 0 (overlap) or 1 (no overlap)
 
  */
-class CartesianBBoxTest : public SimpleCommand<int> { //
+class CartesianBBoxTest : public drain::SimpleCommand<int> { //
 
 public:
 
 	mutable bool overlap;
 
-	CartesianBBoxTest() : SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
+	CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
 			"mode", 0, "If no overlap, set inputOk=false. If also mode>1, exit with return value <mode>."	) {
 	};
 
@@ -120,13 +120,13 @@ public:
 };
 
 
-class CartesianBBoxTile : public BasicCommand {
+class CartesianBBoxTile : public drain::BasicCommand {
 
 public:
 
-	Rectangle<double> bbox;
+	drain::Rectangle<double> bbox;
 
-	CartesianBBoxTile() : BasicCommand(__FUNCTION__, "Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.") {
+	CartesianBBoxTile() : drain::BasicCommand(__FUNCTION__, "Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.") {
 		parameters.link("llLon", bbox.lowerLeft.x = 0.0, "deg");
 		parameters.link("llLat", bbox.lowerLeft.y = 0.0, "deg");
 		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg");

@@ -91,11 +91,11 @@ protected:
 
 // NOTE: could be under general ProductAdapter (see RackLetAdapter and AndreAdapter), if (currentH5 == cartesian)
 /*
-class CmdMotionFill : public BasicCommand {
+class CmdMotionFill : public drain::BasicCommand {
 
 public:
 
-	CmdMotionFill() : BasicCommand(__FUNCTION__, "Fills vectors to open areas."){
+	CmdMotionFill() : drain::BasicCommand(__FUNCTION__, "Fills vectors to open areas."){
 		this->parameters.link("width",  this->conf.width  = 5, "pixels");
 		this->parameters.link("height", this->conf.height = 5, "pixels");
 		this->parameters.link("qualitySensitive", this->qualitySensitive = true, "0,1");
@@ -108,7 +108,7 @@ public:
 	inline  // cf. CmdCompleteODIM
 	void exec() const {  // Suits to general base class?
 
-		Logger mout(__FUNCTION__, getName());
+		 drain::Logger mout(__FUNCTION__, getName());
 
 		RackResources & resources = getResources();
 		Hi5Tree *h5 = resources.currentHi5;

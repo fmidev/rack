@@ -72,7 +72,9 @@ void BasicCommand::setParameters(const std::string & args, char assignmentSymbol
 		parameters.setValues(args, '\0', false);
 }
 
-BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {
+//BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {
+
+BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), name(name), description(description) {
 
 	if (name.find(' ') != std::string::npos){
 		Logger mout(__FILE__, __FUNCTION__);
@@ -84,6 +86,4 @@ BasicCommand::BasicCommand(const std::string & name, const std::string & descrip
 };
 
 
-} /* namespace drain */
-
-// Rack
+}  // drain::

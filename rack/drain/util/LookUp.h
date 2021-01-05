@@ -52,10 +52,16 @@ namespace drain {
 
 /// Look-up tables.
 //  Works well...
+/** Basis for look up tables indexed with a small integer (value).
+ *  Applied especially in palettes using 256 colours. Supports bit shifting to prescale, say,
+ *  initial values in range 0...65536  to 0...1024.
+ *
+ */
 template <class T>
 class LookUp : public std::vector<T> {
 
 public:
+
 
 	int bitShift;
 	int byteSize;

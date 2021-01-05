@@ -106,7 +106,7 @@ public:
 	virtual
 	inline
 	void help(std::ostream & ostr = std::cout) const {
-		toOStream(ostr);
+		toStream(ostr);
 	}
 
 	/// Converts dst to ImageTray<Channel> and calls traverseFrame(ImageTray<Channel> &) .

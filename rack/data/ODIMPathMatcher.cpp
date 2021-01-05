@@ -168,7 +168,7 @@ bool ODIMPathMatcher::isLiteral() const {
 }
 
 /// Extracts a single, "deterministic" path only. TODO: enumerate, extract maximally N branches.
-bool ODIMPathMatcher::extract(ODIMPath & path) const {
+void ODIMPathMatcher::extract(ODIMPath & path) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	for (const_iterator it=this->begin(); it!=this->end(); ++it){

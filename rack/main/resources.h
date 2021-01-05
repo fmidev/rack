@@ -39,10 +39,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/PaletteOp.h"
 #include "drain/prog/CommandPack.h"
-#include "drain/prog/CommandRegistry.h"
+
+#include "drain/prog/CommandRegistry.h" // OLD
+//#include "drain/prog/CommandBank.h"     // NEW
+
 #include "drain/util/Rectangle.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
 
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
@@ -193,7 +197,7 @@ protected:
 
 
 	// void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
-	void getImageInfo(const drain::image::Image *ptr, Variable & entry) const;
+	void getImageInfo(const drain::image::Image *ptr, drain::Variable & entry) const;
 
 };
 
@@ -202,9 +206,12 @@ RackResources & getResources();
 
 
 
+//typedef drain::BeanCommand<image::ImageOp, image::ImageOp &> ImageOpAdapter;
+
+
 /// Adapter for commands designed for Rack.
 /**
- *    \tparam T - class derived from Command
+ *    \tparam T - class derived from drain::Command
  */
 template <class T>
 class RackLetAdapter : public T {
@@ -212,11 +219,11 @@ class RackLetAdapter : public T {
 public:
 
 
-	RackLetAdapter(const std::string & key = "", char alias = 0){ // : Command("cart", name, alias) {
+	RackLetAdapter(const std::string & key = "", char alias = 0){ // : drain::Command("cart", name, alias) {
 		add(key, alias);
 	};
 
-	RackLetAdapter(const std::string & key, char alias, const T & value) : T(value) { // : Command("cart", name, alias) {
+	RackLetAdapter(const std::string & key, char alias, const T & value) : T(value) { // : drain::Command("cart", name, alias) {
 		add(key, alias);
 	};
 
@@ -228,18 +235,32 @@ public:
 
 		const std::string & k = key.empty() ? T::getName() : key;
 
-		static RegExp nameCutter("^(Cmd|Cartesian|Composite|Polar)(.*)$");
+		static drain::RegExp nameCutter("^(Cmd|Cartesian|Composite|Polar)(.*)$");
 
 		if (nameCutter.execute(k) == 0){ // matches
 			//std::cerr << "adding () " << nameCutter.result[2] << std::endl;
-			getRegistry().add(*this, nameCutter.result[2], alias);
+			drain::getRegistry().add(*this, nameCutter.result[2], alias);
+			// drain::getCommandBank().addExternal(nameCutter.result[2], alias, *this);
+			// creates new: drain::getCommandBank().add<T>(nameCutter.result[2], alias);
 		}
 		else {
-			getRegistry().add(*this, k, alias);
-			//std::cerr << "adding    " << k << std::endl;
+			drain::getRegistry().add(*this, k, alias);
+			// drain::getCommandBank().addExternal(k, alias, *this);
+			// std::cerr << "adding    " << k << std::endl;
 		}
 
 	}
+
+	inline
+	void setParameters(const std::string & args, char assignmentSymbol='='){
+		T::setParameters(args, assignmentSymbol);
+	}
+
+	inline
+	void setParameters(const drain::VariableMap & p){
+		T::setParameters(p);
+	};
+
 	/*
 	const std::string & getName() const {
 		return T::getName();

@@ -47,11 +47,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-class CartesianExtract : public SimpleCommand<std::string> {
+class CartesianExtract : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CartesianExtract() : SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
+	CartesianExtract() : drain::SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
 			"value", "dw", "Layers: data,count,weight,std.deviation") {
 		//parameters.link("channels", channels, "dw", "Accumulation layers to be extracted");
 	};
@@ -73,11 +73,11 @@ public:
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CartesianSun : public BasicCommand {
+class CartesianSun : public drain::BasicCommand {
 
 public:
 
-	CartesianSun() : BasicCommand(__FUNCTION__,
+	CartesianSun() : drain::BasicCommand(__FUNCTION__,
 			"Sunshine to a Cartesian product.") //, extractCmd(extractCmd)
 	{
 		parameters.link("timestamp", timestamp="200527071845");

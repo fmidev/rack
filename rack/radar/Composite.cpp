@@ -323,16 +323,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		// Bin index (radial coordinate of polar input data)
 		int b;
 
-		//if ((j&31)==0)
-		//	mout.debug(2) << j << mout.endl;
-		//for (unsigned int i=0; i<width; i++){
 		for (pComp.x = bboxPix.lowerLeft.x; pComp.x<bboxPix.upperRight.x; ++pComp.x){
 
-
-			//pix2m(i,j,x,y);
 			pix2m(pComp, pMetric);
 			pRadarToComposite.projectInv(pMetric.x, pMetric.y);
-			//pRadarToComposite.projectInv(x,y);
 			range = ::sqrt(pMetric.x*pMetric.x + pMetric.y*pMetric.y);
 			b = srcData.odim.getBinIndex(range);
 
@@ -372,7 +366,6 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 						else {
 							if (converter.decode(s))
 								add(address, s, w);
-								//add(address, s, converter.defaultQuality);
 						}
 					}
 				}
@@ -386,17 +379,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 
 	drain::Rectangle<double> bboxD;
-	//m2deg(bboxM.lowerLeft.x,  bboxM.lowerLeft.y,  bboxD.lowerLeft.x,  bboxD.lowerLeft.y);
-	m2deg(bboxInput.lowerLeft, bboxD.lowerLeft);
-	//m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
+	m2deg(bboxInput.lowerLeft,  bboxD.lowerLeft);
 	m2deg(bboxInput.upperRight, bboxD.upperRight);
 	updateDataExtent(bboxD);
 
-	//int i, j;
+	// Non-standard: add position of radar in image coords
 	drain::Point2D<double> cMetric;
 	drain::Point2D<int> cImg;
 	bboxInput.getCenter(cMetric);
-	//m2pix((bboxM.lowerLeft.x + bboxM.upperRight.x)/2.0,  (bboxM.lowerLeft.y+bboxM.upperRight.y)/2.0,  i,  j);
 	m2pix(cMetric, cImg);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
 

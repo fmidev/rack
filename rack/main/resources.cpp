@@ -88,7 +88,7 @@ drain::VariableMap & RackResources::getUpdatedStatusMap() {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	VariableMap & statusMap = getRegistry().getStatusMap(true); // comes with updated commands (NEW)
+	VariableMap & statusMap = drain::getRegistry().getStatusMap(true); // comes with updated commands (NEW)
 
 	/// Step 1: copy current H5 metadata (what, where, how)
 	//DataSelector selector("data[0-9]+");
