@@ -40,14 +40,107 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Log.h"
 #include "drain/util/ReferenceMap.h"
 
-#include "Command.h"
-#include "CommandRegistry.h"
+//#include "Command.h"
+//#include "CommandRegistry.h"
 
 #include "CommandBank.h"
 
 
 namespace drain {
 
+/// Creates an instance of command class C.
+//  in section S of the global command registry.
+/**
+ * \tparam C - command
+ *
+ */
+/*
+template <class C> //, char PREFIX=0, int SECTIONS=1>
+class CommandWrapper : public C {
+public:
+
+	/// Add a command to the shared command bank.
+	CommandWrapper(const std::string & name, char alias = 0){
+		getCommandBank().add<C>(name,alias); //.section = S;
+	}
+
+};
+*/
+
+/// Creates an instance of command class C, deriving command name from the class name and prefixing if desired.
+//  in section S of the global command registry.
+/**
+ * \tparam CMD - command
+ * \tparam PREFIX - optional prefix, added to lower-case initialized
+ * \tparam SECTIONS - command sections flags
+ */
+template <class CMD, char PREFIX=0, int SECTIONS=1>
+class CommandWrapper : public CMD {
+public:
+
+	/// Add a command to the shared command bank.
+	CommandWrapper(const std::string & name, char alias = 0){
+		getCommandBank().add<CMD>(name,alias); //.section = S;
+	}
+
+	/// Add a command to the shared command bank, deriving command name automatically from the class name.
+	CommandWrapper(char alias = 0){
+		//std::string name = CMD::getName();
+		std::string name = this->getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+		try {
+			//getCommandBank().add<CMD>(name, alias).section = SECTIONS;
+			// Note cast. Otherwise infinite loop, if CommandWrapper passed and re-constructed.
+			getCommandBank().addExternal((CMD &)(*this), name, alias).section = SECTIONS;
+		}
+		catch (const std::exception &e) {
+			std::cerr << __FUNCTION__ << ':' << name << ':'  << e.what() << '\n';
+			std::cerr << name << ':' <<  ((CMD *)this)->getParameters() << '\n';
+		}
+	}
+
+	// Consider alternatively: set(prefix, sectionTitle, sectionFlag) ?
+	static
+	void setSectionTitle(const std::string & title=""){
+		getCommandBank().sections.add(title, SECTIONS);
+	}
+
+	/// Return the flag(s) marking this section.
+	static inline
+	int getSectionFlag(){
+		return SECTIONS;
+	}
+
+	/// Return the character used as prefix for the commands in this section.
+	static inline
+	char getPrefix(){
+		return PREFIX;
+	}
+
+};
+
+template <class C>
+class BankCommandWrapper : public C {
+public:
+
+	/// Add a command to the shared command bank, deriving command name automatically from the class name.
+	BankCommandWrapper(CommandBank & b, char alias = 0) : C(b){
+		std::string name = C::getName();
+		CommandBank::deriveCmdName(name);
+		getCommandBank().add<C>(name, alias);
+	}
+
+};
+
+
+template <class B>
+class BeanCommandEntry : public CommandWrapper<BeanCommand<B> > {
+
+public:
+	BeanCommandEntry(char prefix = 0) : CommandWrapper<BeanCommand<B> >(prefix){
+	};
+
+};
 
 
 /// Adapter registered directly as a command entry upon construction. Needed? typedef CommandEntry<BeanCommand>
@@ -89,6 +182,7 @@ public:
  *
  *  \see CommandWrapper, the newer implementation
  */
+/*
 template <class T>
 class CommandEntry : public T {
 
@@ -116,12 +210,8 @@ public:
 
 
 };
-
-/*
-template <class T>
-class BeanCommandEntry : public CommandEntry<BeanCommand<T> > {
-}
 */
+
 
 }
 

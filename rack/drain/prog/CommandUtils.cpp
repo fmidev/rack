@@ -38,14 +38,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-typename Script2::entry_t & Script2::add(const std::string & cmd, const std::string & params){
+typename Script::entry_t & Script::add(const std::string & cmd, const std::string & params){
 	this->push_back(typename list_t::value_type(cmd, params));
 	return back();
 }
 
 
 
-void Script2::entryToStream(const typename Script2::entry_t & entry, std::ostream & ostr) const {
+void Script::entryToStream(const typename Script::entry_t & entry, std::ostream & ostr) const {
 	if (entry.second.empty())
 		ostr << entry.first << '\n';
 	else
@@ -58,16 +58,17 @@ void Script2::entryToStream(const typename Script2::entry_t & entry, std::ostrea
 Command & Program::add(Command & cmd){ // const std::string & params = ""){
 	push_back(& cmd);
 	if (!cmd.contextIsSet() && contextIsSet())
-		cmd.setContext(getBaseContext());
+		cmd.setExternalContext(getContext<Context>());
+		//cmd.setExternalContext(getBaseContext());
 	return cmd;
 }
 
 /*
-void Program::append(const CommandBank & commandBank, const Script2 & script){
-	for (Script2::const_iterator it = script.begin(); it!=script.end(); ++it) {
+void Program::append(const CommandBank & commandBank, const Script & script){
+	for (Script::const_iterator it = script.begin(); it!=script.end(); ++it) {
 		BasicCommand & cmd = commands.clone(it->first);
 		cmd.setParameters(it->second);
-		cmd.setContext(getBaseContext());
+		cmd.setExternalContext(getBaseContext());
 		add(cmd);
 	}
 }
@@ -79,8 +80,8 @@ void Program::run() const {
 	Logger mout(__FILE__, __FUNCTION__);
 	for (const_iterator it = this->begin(); it != this->end(); ++it) {
 		Command & cmd = *(*it);
-		mout.warn() << "  executing " << cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
-		mout.note() << "  context: "  << cmd.getBaseContext().getId() << mout.endl;
+		//mout.warn() << "  executing " << cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
+		//mout.note() << "  context: "  << cmd.getContext<>().getId() << mout.endl;
 		cmd.exec();
 	}
 

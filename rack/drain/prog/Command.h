@@ -41,95 +41,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/BeanLike.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/VariableMap.h"
-//#include "CommandRegistry.hsepa"
 
+//#include "drain/util/Cloner.h"
+#include "Context.h"
 
 namespace drain {
-
-class Context {
-
-public:
-
-	Context() : id(++counter){
-	}
-
-	long int getId(){
-		return id;
-	}
-	// std::string name;
-
-	//protected:
-
-	long int id;
-
-private:
-
-	static long int counter;
-
-
-
-};
-
-class Contextual {
-
-public:
-
-	inline
-	Contextual() : contextPtr(NULL) {};
-
-	inline
-	Contextual(const Contextual & c){
-		setContext(c.getBaseContext());
-	};
-
-	inline
-	Contextual(Context & ctx){
-		setContext(ctx);
-	};
-
-	inline
-	void setContext(Context & ctx){
-		contextPtr = &ctx;
-	};
-
-	inline
-	bool contextIsSet(){
-		return (contextPtr != NULL);
-	};
-
-	Context & getBaseContext() const {
-		if (contextPtr != NULL){
-			return *contextPtr;
-		}
-		else {
-			static Context defaultContext;
-			return defaultContext;
-		}
-	}
-
-	/// Returns the linked context.
-	/**
-	 *  Risky: The actual object may be a derived class.
-	 */
-	template <class C>
-	C & getContext() const {
-		if (contextPtr != NULL){
-			return (C &)*contextPtr;
-		}
-		else {
-			static C defaultContext;
-			return defaultContext;
-		}
-	}
-
-
-protected:
-
-	// Note: common base class. The actual object may be a derived class.
-	Context *contextPtr;
-
-};
-
 
 /// Base class for commands: typically actions taking parameters but also plain variable assignments and parameterless actions.
 /**
@@ -140,9 +56,12 @@ class Command : public Contextual {
 public:
 
 	inline
-	Command(): section(1) {}; //
+	Command(): section(1), execRoutine(false) {}; //
 
-	// inline	Command(const Command & cmd){}; //  : section(cmd.section)
+	inline
+	Command(const Command & cmd) : section(cmd.section), execRoutine(cmd.execRoutine){
+		// setParameters(cmd.getParameters()); they do not exist yet!
+	}
 
 	virtual inline
 	~Command(){};
@@ -157,19 +76,26 @@ public:
 	virtual
 	const std::string & getDescription() const = 0;
 
-	virtual inline
-	void setParameters(const std::string & args, char assignmentSymbol='='){
+	virtual
+	void setParameters(const std::string & args) = 0;
+	/*, char assignmentSymbol='='){
 		//Logger mout("Command(" + getName()+ ")", __FUNCTION__);
 		Logger mout(__FUNCTION__, getName());
-		mout.info() << "forwarding to setParameters(const VariableMap & ), consider direct implementation " << mout.endl;
+		mout.warn() << "forwarding to setParameters(const VariableMap & ), consider direct implementation " << mout.endl;
 		VariableMap argm;
-		argm.setValues(args, assignmentSymbol);
+		//argm.importEntries(entries, assignmentSymbol, separatorSymbol, updateOnly, criticality)
+		argm.setValues(args, assignmentSymbol); // FAIL, no support for ordered args
 		setParameters(argm);
 	};
+	*/
 
-	// TODO: setParameters? void setParameters(const VariableMap & params)
 	virtual
-	void setParameters(const VariableMap & params) = 0;
+	void setParameters(const VariableMap & args) = 0;
+	// void setParameters(const std::map<std::string,std::string> & args) = 0;
+
+	//virtual
+	//void setParameters(const SmartMapBase & params) = 0;
+
 	// Could also need/replace   void setParameters(const std::map<std::string,T> & p)
 
 	virtual
@@ -203,9 +129,6 @@ public:
 	/// Convenience. Sets parameters and executes the command.
 	/**
 	 *  \see exec() .
-
-	virtual
-	void run(const std::string & params) = 0;
 	 */
 	virtual
 	inline
@@ -215,13 +138,18 @@ public:
 	}
 
 
-	// Optional bit flags marking the command type (compare with manual page sections)
+	// Optional bit(s) marking the command type (compare with manual page sections)
 	/**
 	 *  Typically, zero section is for "hidden" commands not appearing in help dumps.
 	 */
 	int section;
 
-	/// Promoted
+	/// After executing this command run a routine, if defined.
+	bool execRoutine;
+
+	/// Future option: single-code Dynamic functions: handle the command string
+	// virtual void setKey(const std::string & key) const {}
+
 };
 
 inline
@@ -234,7 +162,7 @@ std::ostream & operator<<(std::ostream & ostr, const Command &cmd){
 }
 
 // See new implementations in CommandBank, CommandUtils.
-typedef std::list<std::pair<Command &, std::string> > Script; // TODO: move
+//typedef std::list<std::pair<Command &, std::string> > Script; // TODO: move
 
 
 
@@ -249,34 +177,44 @@ class BasicCommand : public Command {  // Todo consider BeanLike
 
 public:
 
-
 	BasicCommand(const std::string & name, const std::string & description);
 
-	inline  //
-	///BasicCommand(const BasicCommand & cmd): Command(cmd), section(cmd.section), name(cmd.name), description(cmd.description) {
+	inline
 	BasicCommand(const BasicCommand & cmd): Command(cmd), name(cmd.name), description(cmd.description) {
 		// remember to call importParameters()
 	}
 
 
-	virtual
-	inline
+	virtual	inline
 	const std::string & getName() const { return name; };
 
-	virtual
-	inline
+	virtual	inline
 	const std::string & getDescription() const { return description; };
 
-	virtual
-	inline
+	virtual	inline
 	const ReferenceMap & getParameters() const { return parameters; };
 
 
 	virtual
-	void setParameters(const std::string & args, char assignmentSymbol='=');
+	void setParameters(const std::string & args); //, char assignmentSymbol='=');
+
+	/*
+	template <class T>
+	inline
+	void setParameters(const SmartMap<T> & params){
+		parameters.importCastableMap(params);
+	}
+	*/
+
 
 	inline
 	void setParameters(const VariableMap & params){
+		parameters.importCastableMap(params);
+	}
+
+	template <class T>
+	inline
+	void setParameters(const SmartMap<T> & params){
 		parameters.importCastableMap(params);
 	}
 
@@ -286,28 +224,6 @@ public:
 	}
 
 
-	/// Sets new parameters and runs.
-	//  Note: semantics are a bit weird ( const would be more intuitive)
-	/*
-
-	virtual
-	inline
-	void run(const std::string & params = ""){
-		// std::cerr << " Command::run: " << params << std::endl;
-		setParameters(params);
-		exec();
-	}
-
-	virtual
-	inline
-	void exec() const {};
-	*/
-
-	// Optional bit flags marking the command type (compare with manual page sections)
-	/**
-	 *  Typically, zero section for "hidden" commands, which do not appear in section helps.
-	 */
-	//int section;
 
 
 
@@ -344,32 +260,76 @@ public:
 			const std::string & key="value", const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
 
 		parameters.separator = '\0';
-		if (key.empty())
-			std::cerr << "warning: param key empty for: " << name << std::endl;
+		//if (key.empty())
+		//std::cerr << "warning: param key empty for: " << name << std::endl;
 
 		parameters.link(key, value = initValue, unit);
 	};
 
-	SimpleCommand(const SimpleCommand & cmd) :  BasicCommand(cmd.name, cmd.description) {
+	SimpleCommand(const SimpleCommand & cmd):  BasicCommand(cmd) {
 		parameters.separator = '\0';
+		//parameters.separator = cmd.parameters.separator;
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 		//parameters.link(cmd.parameters.getKeys(), value = cmd.value); // kludge
 	};
 
-	inline
-	operator const T &() const { return value; }; // needed? TODO remove
-
-	inline
-	operator       T &(){ return value; }; // needed?TODO remove
-
-	inline
-	SimpleCommand<T> & operator =(const T &s){ value = s; return *this; };
+	/*
+	void setParameters(const std::string & args){
+		const std::string & key = parameters.begin()->first;
+		Variable v(typeid(T));
+		if (key.empty()){
+			v = args;
+		}
+		else {
+			const std::string assignment = key+"=";
+			const size_t n = assignment.length();
+			if (args.compare(0,n,key)==0){
+				v = args.substr(n);
+			}
+			else
+				v = args;
+		}
+		value = v;
+	}
+	*/
+	//inline operator const T &() const { return value; }; // needed? TODO remove
+	//inline operator       T &(){ return value; }; // needed?TODO remove
+	// inline SimpleCommand<T> & operator =(const T &s){ value = s; return *this; };
 
 protected:
 
 
 
 };
+
+/// Command stored as a single entry in CommandBank and becomes "renamed" upon setKey() prior to execution.
+/**
+ *
+ */
+/*
+class DynamicCommand : public drain::Command {
+
+public:
+
+	virtual
+	void exec() const {
+		Context & ctx = getContext<Context>();
+		drain::Logger mout(ctx.log,__FUNCTION__, __FILE__);
+		mout.note() << "I am " << getName() << ", invoked as " << key << mout.endl;
+	}
+
+	virtual
+	void setKey(const std::string & cmdKey) const {
+		key = cmdKey;
+	}
+
+protected:
+
+	mutable
+	std::string key;
+
+};
+*/
 
 
 /// Retrieves bean dynamically for each call.
@@ -406,14 +366,22 @@ public:
 		return getBean().getParameters();
 	};
 
+
 	virtual
 	void setParameters(const drain::VariableMap & params){
 		getBean().setParameters(params);
 	};
 
+	/*
+	template <class T>
+	void setParameters(const drain::SmartMap<T> & params){
+		getBean().setParameters(params);
+	};
+	*/
+
 	virtual
-	void setParameters(const std::string & parameters, char assignmentSymbol='='){
-		getBean().setParameters(parameters, assignmentSymbol);
+	void setParameters(const std::string & parameters){ //, char assignmentSymbol='='){
+		getBean().setParameters(parameters, '='); //assignmentSymbol);
 	}
 
 };
@@ -434,6 +402,8 @@ public:
 	};
 
 	BeanCommand(const BeanCommand & cmd) :  bean(cmd.bean){
+		// TODO: test two parameter sets.
+		//bean.parameters.copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	BeanCommand(B & b) : bean(b) {
@@ -460,8 +430,8 @@ public:
 	};  // or getParameters
 
 	//virtual
-	void setParameters(const std::string & args, char assignmentSymbol='='){
-		bean.setParameters(args, assignmentSymbol);
+	void setParameters(const std::string & args){ //, char assignmentSymbol='='){
+		bean.setParameters(args,'='); // assignmentSymbol);
 	}
 
 	///
@@ -475,27 +445,49 @@ public:
 
 
 
-
-
-/// Applies a referenced bean.
 template <class B>
-class BeanAdapterCommand : protected B, public BasicCommand {
+class BeanRefCommand : public drain::BeanCommand<B, B&> {
 
 public:
 
-	BeanAdapterCommand() : B(), BasicCommand(B::getName(), B::getDescription()) { //
-	};
+	BeanRefCommand(B & bean) : drain::BeanCommand<B,B&>(bean){
+	}
 
-	BeanAdapterCommand(B & bean) : B(), BasicCommand(B::getName(), B::getDescription()) { //
+	BeanRefCommand(const B & bean) : drain::BeanCommand<B,B&>(bean){
+	}
+
+	BeanRefCommand(const BeanRefCommand<B> & beanRefCmd) : drain::BeanCommand<B,B&>(beanRefCmd.bean){
+	}
+
+
+};
+
+
+
+/// Applies a referenced bean.
+/*
+template <class B>
+class BeanAdapterCommand : public BasicCommand {
+
+public:
+
+	BeanAdapterCommand(const BeanAdapterCommand & cmd) : BasicCommand(cmd.getName(), cmd.getDescription()) {
+		//this->parameters.append(cmd.getParameters());
+		//this->parameters.append(bean.getParameters());
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.error() << "unimplemented" << mout.endl;
+	}
+
+	BeanAdapterCommand(B & bean) : BasicCommand(bean.getName(), bean.getDescription()) { //
 		adapt(bean);
-	};
+	}
 
 	void adapt(B & bean){
-		//this->BasicCommand::parameters.append(bean.getParameters());
 		this->parameters.append(bean.getParameters());
 	}
 
 };
+*/
 
 
 } /* namespace drain */

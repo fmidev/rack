@@ -32,12 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef COMMAND_OFLOW_H_
 #define COMMAND_OFLOW_H_
 
-#include "CommandRegistry.h"
+//#include "CommandRegistry.h"
 #include "CommandAdapter.h"
 
-#include "../imageops/FastOpticalFlowOp.h"
-#include "../imageops/FastOpticalFlowOp2.h"
-#include "../imageops/BlenderOp.h"
+#include "drain/imageops/FastOpticalFlowOp.h"
+#include "drain/imageops/FastOpticalFlowOp2.h"
+#include "drain/imageops/BlenderOp.h"
 
 
 namespace drain {
@@ -54,14 +54,22 @@ using namespace image;
  *   This utility provides interfacing for those data.
  *
  */
-class CmdOpticalFlowBase :  public BeanCommand<FastOpticalFlowOp2> {
+class CmdOpticalFlowBase :  public BeanCommand<FastOpticalFlow2Op> {
 
 public:
 
+	/*
 	CmdOpticalFlowBase() {
 		//bean.parameters.link("smoothing", smoothing="doubleSmoother:coeff=0.95", "imageOp");
 		//average,gaussianAverage,distanceTransformFill
 	}
+	*/
+
+	/*
+	CmdOpticalFlowBase(const CmdOpticalFlowBase & cmd) {
+		//bean.parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	}
+	*/
 
 	/// Main operation: computes differentials and produces approximation of motion
 	void exec() const;

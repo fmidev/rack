@@ -35,9 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-long int Context::counter(0);
 
-void BasicCommand::setParameters(const std::string & args, char assignmentSymbol) {
+void BasicCommand::setParameters(const std::string & args){ //, char assignmentSymbol) {
+
+	const char assignmentSymbol = '=';
 
 	if (args.empty() && !parameters.empty()){
 		Logger mout(__FILE__, getName()+":"+__FUNCTION__);
@@ -63,13 +64,18 @@ void BasicCommand::setParameters(const std::string & args, char assignmentSymbol
 			mout.warn() << ": unambiguous reset ("<< parameters.size() << " params)" << mout.endl;
 			//throw std::runtime_error(getName() + ": unambiguous reset (several params)");
 		}
+		return;
 	}
 
 	//const bool ALLOW_SPECIFIC = (parameters.separator != '\0'); //!parameters.separators.empty();  // consider automatic
 	if (parameters.separator)
 		parameters.setValues(args, assignmentSymbol); //
-	else
-		parameters.setValues(args, '\0', false);
+	else {
+		//Logger mout(__FILE__, __FUNCTION__);
+		//mout.warn() << "Trying to set values for " << getName() << " params:" << parameters << mout.endl;
+		parameters.setValues(args, assignmentSymbol);
+		//mout.warn() << "Done (" << args <<  ')' <<  mout.endl;
+	}
 }
 
 //BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {

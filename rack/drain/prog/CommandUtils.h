@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+// Consider raise: Smart list. Or streamers.
 template <class T>
 class CommandSequence : public std::list<T> {
 
@@ -61,14 +61,18 @@ public:
 	virtual
 	void entryToStream(const typename list_t::value_type & entry, std::ostream & ostr = std::cout) const = 0;
 
+	/// Tell if this routine is
+	inline
+	operator bool(){ return !this->empty(); };
+
 };
 
 
-// typedef Scrupt<std::string>    Script2;
+// typedef Scrupt<std::string>    Script;
 
 
 
-class Script2 : public CommandSequence<std::pair<std::string,std::string> > {
+class Script : public CommandSequence<std::pair<std::string,std::string> > {
 
 public:
 
@@ -93,7 +97,7 @@ public:
 
 	Command & add(Command & cmd);
 
-	//void append(const CommandBank & commandBank, const Script2 & script);
+	//void append(const CommandBank & commandBank, const Script & script);
 
 	void run() const;
 
@@ -108,12 +112,14 @@ class ProgramVector : public std::vector<Program> {
 
 public:
 
+	/// Adds a new, empty program to thread vector.
 	inline
 	Program & add(){
 		push_back(Program());
 		return back();
 	};
 
+	/// Adds a new, empty program with desired context to thread vector.
 	inline
 	Program & add(Context & ctx){
 		push_back(Program(ctx));

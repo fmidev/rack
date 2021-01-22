@@ -63,40 +63,62 @@ public:
 		this->title = title;
 	};
 
-
-	Flags2 sections;
+	drain::Flagger::dict_t sections;
 	// Optional section flags for typical programs.
-	static Flags2::value_t GENERAL;
-	static Flags2::value_t INPUT;
-	static Flags2::value_t OUTPUT;
-	static Flags2::value_t IO;  // INPUT || OUTPUT
-	static Flags2::value_t SPECIAL;
+	static const Flags::value_t GENERAL = 1;
+	static const Flags::value_t INPUT = 2;
+	static const Flags::value_t OUTPUT = 4;
+	static const Flags::value_t IO = INPUT | OUTPUT;
+	static const Flags::value_t SPECIAL = 8;
+
+	/// Words that are moved from class name prior to composing a command name.
+	static
+	std::set<std::string> & trimWords();
+
+	/// Given a command class name like MyFileReadCommand, derives a respective command line option ("myFileRead")
+	static
+	void deriveCmdName(std::string & name, char prefix=0);
+	//const std::set<std::string> & trim = trimWords());
+
+
+	template <class D, char PREFIX=0>
+	D & addExternal(D & entry, char alias = 0){
+		std::string key(entry.getName());
+		deriveCmdName(key, PREFIX);
+		return BankSuper<Command>::template addExternal<D>(entry, key, alias);
+	}
+
+	template <class D, char PREFIX=0>
+	inline
+	D & addExternal(D & entry, const std::string & key, char alias = 0){
+		return BankSuper<Command>::template addExternal<D>(entry, key, alias);
+	}
 
 	///
 	std::string defaultCmd;
 
 	/// A mini program executed after each cmd until ']' or ')' is encountered
-	Script2 routine;
+	Script routine;
 
 	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.
-	void scriptify(int argc, const char **argv, Script2 & script);
+	void scriptify(int argc, const char **argv, Script & script);
 
 	/// Splits a command line to a list of commands, that is, a script.
-	void scriptify(const std::string & cmdLine, Script2 & script);
+	void scriptify(const std::string & cmdLine, Script & script);
 
 	/// Converts a Unix/Linux command line to pairs (cmd,params) of strings.
 	/**
 	 *  \return - true if command argument (argNext) was digested.
 	 */
-	bool scriptify(const std::string & arg, const std::string & argNext, Script2 & script);
+	bool scriptify(const std::string & arg, const std::string & argNext, Script & script);
 
 
 	/// Converts command strings to executable command objects, appending them to a program.
 	/**
 	 *   Note: *appends* commands to the end of the program, use prog.clear() if needed.
 	 */
-	//  void append(const Script2 & script, Program & prog, Context & context) const ;
-	void append(const Script2 & script, Program & prog) const ;
+	//  void append(const Script & script, Program & prog, Context & context) const ;
+	void append(const Script & script, Program & prog) const ;
 
 	void remove(Program & prog) const;
 
@@ -105,15 +127,15 @@ public:
 
 	/// Unlike compile, "interprets" script by running it command by command. \see compile()
 	//void run(ScriptTxt & script, drain::Context & context);
-	void run(Script2 & script, ClonerBase<Context> & contextSrc);
+	void run(Script & script, ClonerBase<Context> & contextSrc);
 
 
 	void help(const std::string & key, std::ostream & ostr = std::cout);
 
-	void help(unsigned int sectionFilter = 0xffffffff, std::ostream & ostr = std::cout);
+	void help(Flagger::value_t sectionFilter = 0xffffffff, std::ostream & ostr = std::cout);
 
 	/// Checked key and respective command
-	void info(const std::string & key, const command_t & cmd, std::ostream & ostr = std::cout) const ;
+	void info(const std::string & key, const command_t & cmd, std::ostream & ostr = std::cout, bool detailed=true) const ;
 
 
 protected:
@@ -130,6 +152,11 @@ protected:
 	const std::string & resolveHyphens(const key_t & key) const;
 
 };
+
+
+/// Global program command registry. Optional utility.
+extern
+CommandBank & getCommandBank();
 
 
 } /* namespace drain */

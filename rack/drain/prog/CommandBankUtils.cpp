@@ -29,79 +29,73 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-
+#include "drain/util/Input.h"
 #include "CommandBankUtils.h"
 
 namespace drain {
 
 
 
-/// Global program command registry.
-CommandBank & getCommandBank(){
-	static CommandBank commandBank;
-	return commandBank;
-}
 
+void CmdExecFile::exec() const {
 
-std::set<std::string> & CommandBankUtils::prunes(){
-	static std::set<std::string> s;
-	if (s.empty()){
-		s.insert("Cmd");
-		s.insert("Command");
+	drain::Logger mout(__FUNCTION__, __FILE__); // = getDrainage().mout( ;
+
+	Script script;
+
+	std::string line;
+	drain::Input ifstr(value);
+
+	// std::ifstream ifstr;
+	// const std::string & filename = params;
+	// mout.note() << "open list: " << filename << mout.endl;
+	// ifstr.open(params.c_str());
+
+	while ( std::getline((std::ifstream &)ifstr, line) ){
+		if (!line.empty()){
+			mout.debug(1) << line << mout.endl;
+			if (line.at(0) != '#')
+				bank.scriptify(line, script);
+				//getRegistry().scriptify(line, script); // adds a line
+		}
 	}
-	return s;
+	//ifstr.close();
+	bank.run(script, contextCloner);
+	//getRegistry().run(script);
+
 }
 
-void CommandBankUtils::simplifyName(std::string & name, const std::set<std::string> & prune, char prefix){
+/*
+void CmdFormat::exec() const {
+	Context &ctx = getContext<Context>();
+	ctx.formatStr = value;
+}
 
-	Logger mout(__FILE__, __FUNCTION__);
+
+void CmdFormatFile::exec() const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 	std::stringstream sstr;
 
-	if (prefix){
-		sstr << prefix;
+	//drain::Input ifstr(value);
+	std::ifstream ifstr;
+	ifstr.open(value.c_str(), std::ios::in);
+	if (ifstr.good()){
+		for (int c = ifstr.get(); !ifstr.eof(); c = ifstr.get()){ // why not getline?
+			sstr << (char)c;
+		}
+		ifstr.close();
+		Context &ctx = getContext<Context>();
+		//Context &ctx = getContext<>();
+		ctx.formatStr = sstr.str(); // SmartContext ?
+
 	}
-	size_t i = 0;
+	else
+		mout.error() << name << ": opening file '" << value << "' failed." << mout.endl;
 
-	bool lowerCase = (prefix == 0);
-
-	while (i < name.size()) {
-
-		mout.debug() << ' ' << i << '\t' << name.at(i) << mout.endl;
-		size_t len = 0;
-
-		for (std::set<std::string>::const_iterator it=prune.begin(); it!=prune.end(); ++it){
-			// std::cerr << " ..." << *it;
-			len = it->length();
-			if (name.compare(i, len, *it) == 0){
-				// std::cerr << "*";
-				break;
-			}
-			len = 0;
-		}
-
-		if (len > 0){
-			i += len;
-		}
-		else {
-			if (lowerCase){
-				char c = name.at(i);
-				if ((c>='A') && (c<='Z'))
-					c = ('a' + (c-'A'));
-				sstr << c;
-				lowerCase = false;
-			}
-			else {
-				sstr << name.at(i);
-			}
-			++i;
-		}
-		//mout.debug()
-		//std::cerr << '\n';
-	}
-
-	name = sstr.str();
 };
+*/
 
 
 } /* namespace drain */
