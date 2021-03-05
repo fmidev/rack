@@ -117,9 +117,8 @@ if pkg-config --version > /dev/null ; then
     PKGC="pkg-config --silence-errors"
 fi
 
-# ?-std=gnu++11
-CCFLAGS='-fopenmp' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
-LDFLAGS='-fopenmp'
+CCFLAGS='-std=gnu++11 -fopenmp' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
+LDFLAGS='-std=gnu++11 -fopenmp'
 
 #for i in hdf5 proj png ${GEOTIFF_INCLUDE:+'tiff'} ${GEOTIFF_INCLUDE:+'geotiff'}; do
 for i in hdf5 proj_api png tiff geotiff; do
