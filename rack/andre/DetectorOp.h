@@ -78,6 +78,11 @@ public:
 		// std::cout << __FUNCTION__ << ':' << name << ':' << echoClass << '\n';
 	}
 
+	// inline
+	// DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA), UNIVERSAL(op.UNIVERSAL) {}
+	inline
+	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL) {};
+
 	virtual
 	~DetectorOp(){};
 
@@ -119,6 +124,8 @@ public:
 	}
 
 	//const unsigned short int CODE;
+	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards.
+	bool UNIVERSAL;
 
 protected:
 
@@ -157,8 +164,6 @@ protected:
 	 */
 	bool REQUIRE_STANDARD_DATA;
 
-	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards.
-	bool UNIVERSAL;
 
 	/// Enhances the detection result by reinforcing sectors of strong response, attenuating others. Optional utility for derived classes.
 	/**

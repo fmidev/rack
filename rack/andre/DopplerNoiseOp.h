@@ -40,9 +40,8 @@ using namespace drain::image;
 
 namespace rack {
 
-///
+/// Detects suspicious variance in Doppler speed (VRAD).
 /**
-
  *
  */
 class DopplerNoiseOp: public DetectorOp {
@@ -51,36 +50,40 @@ public:
 
 	/**
 	 *
-	 *  \param vradDevMin
-	 *  \param windowWidth
-	 *  \param windowHeight
+	 *  \param speedDevThreshold - Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)
+	 *  \param windowWidth - window width [m]
+	 *  \param windowHeightD - window height [deg]
 	 *
+	 *  \include aDopplerNoise.hlp
 	 */
 	inline
-	DopplerNoiseOp(double vradDevMin = 5.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	DopplerNoiseOp(double speedDevThreshold = 3.0, double windowWidthM = 1500, double windowHeightD = 3.0) :
 
-		DetectorOp(__FUNCTION__, "Detects variance Doppler (VRAD).", "nonmet.biol.bird"){
+		DetectorOp(__FUNCTION__, "Detects suspicious variance in Doppler speed (VRAD).", "nonmet.biol.bird"){
 
 		// dataSelector.path = "da ta[0-9]+/?$";
 		dataSelector.quantity = "^(VRAD|VRADH)$";
 		dataSelector.count = 1;
 
-		parameters.link("vradDevMin", this->vradDevMin = vradDevMin, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
-		parameters.link("windowWidth", this->conf.widthM = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-		parameters.link("windowHeight", this->conf.heightD = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
-
+		parameters.link("speedDevThreshold", this->speedDevThreshold = speedDevThreshold, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
+		parameters.link("windowWidth", this->conf.widthM = windowWidthM, "window width, beam-directional (m)"); //, "[m]");
+		parameters.link("windowHeight", this->conf.heightD = windowHeightD, "window height, azimuthal (deg)"); //, "[d]");
+		this->conf.relativeScale = false;
+		this->conf.invertPolar = true;
 	};
+
+	inline
+	DopplerNoiseOp(const DopplerNoiseOp &op):  DetectorOp(op), conf(op.conf){
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
 	virtual
 	inline
 	~DopplerNoiseOp(){};
 
-	double vradDevMin;
+	double speedDevThreshold;
 	DopplerDevWindow::conf_t conf;
-	//double windowWidth;
-	//double windowHeight;
 
-	// string functor ? TODO
 
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;

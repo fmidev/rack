@@ -175,19 +175,6 @@ public:
 		//return getTree()[ODIMPathElem(ODIMPathElem::WHERE)].data.attributes;
 	}
 
-	/*
-	inline
-	int & test(){
-		static int dummy = 1;
-		return dummy;
-	}
-
-	inline
-	const int & test() const {
-		static int dummy = 1;
-		return dummy;
-	}
-	*/
 
 	inline
 	const drain::VariableMap & getHow() const {
@@ -290,7 +277,7 @@ public:
 	data(tree["data"].data.dataSet),
 	odim(data, data.properties.get("what:quantity",""))
 	{
-		//data.setScaling(odim.scale, odim.offset);
+		//data.setScaling(odim.scaling.scale, odim.scaling.offset);
 	}
 
 	/// Constructor referring to HDF5 structure
@@ -298,25 +285,34 @@ public:
 			data(tree["data"].data.dataSet),
 			odim(data, quantity) // reads data.properties?
 			{
-				//data.setScaling(odim.scale, odim.offset);
+				//data.setScaling(odim.scaling.scale, odim.scaling.offset);
 			}
 
 	/// Copy constructor, also for referencing non-const as const.
 	/**
 	 *   Compiler returns error if odim types ar incompatible.
+	PlainData(const PlainData<DT> & d) : TreeWrapper<DT>(d.getTree()),
+		data(this->tree["data"].data.dataSet),
+		odim(data)  // NEW
+	{
+	}
 	 */
+
 	template <typename DT2>
 	PlainData(const PlainData<DT2> & d) : TreeWrapper<DT>(d.getTree()),
 		data(this->tree["data"].data.dataSet),
-		odim(d.odim)
+		// odim(d.odim) // OLD
+		odim(data)  // NEW
 	{
-		//data.setScaling(odim.scale, odim.offset);
+		//odim.updateFromMap(d.odim); // NEW
+		//odim.updateFromCastableMap(d.odim); // NEW
+		//data.setScaling(odim.scaling.scale, odim.scaling.offset);
 	}
 
 	inline
 	~PlainData(){
 		//drain::Logger mout("PlainData", __FUNCTION__);
-		//mout.debug(1) << "calling updateTree2, odim: " << odim << mout.endl;
+		//mout.debug2() << "calling updateTree2, odim: " << odim << mout.endl;
 		updateTree2();
 	}
 
@@ -336,15 +332,19 @@ public:
 	void copyEncoding(const PlainData<DT2> & srcData){
 		odim.importMap(srcData.odim);
 		data.setType(odim.type);
-		data.setScaling(odim.scale, odim.offset);
+		//data.setScaling(odim.scaling.scale, odim.scaling.offset); // needed?
+		data.setScaling(odim.scaling); // needed?
 		//data.setGeometry(data.);
 	}
 
 	inline
 	void setPhysicalRange(double min, double max){
-		data.setPhysicalScale(min, max);
-		odim.scale   = data.getScaling().scale;
-		odim.offset = data.getScaling().offset;
+		//data.setPhysicalScale(min, max);
+		data.setPhysicalRange(min, max, true);
+		// data.setOptimalScale();
+		odim.scaling.assign(data.getScaling());
+		// odim.scaling.scale   = data.getScaling().scale; // needed?
+		// odim.scaling.offset = data.getScaling().offset; // needed?
 	}
 
 
@@ -395,8 +395,8 @@ public:
 	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
 		qualityData.setEncoding(typeid(unsigned char));
 		createSimpleQualityData(qualityData.data, dataQuality, nodataQuality, undetectQuality);
-		qualityData.odim.scale   = qualityData.data.getScaling().scale;
-		qualityData.odim.offset = qualityData.data.getScaling().offset;
+		qualityData.odim.scaling.scale   = qualityData.data.getScaling().scale;
+		qualityData.odim.scaling.offset = qualityData.data.getScaling().offset;
 	}
 
 	/// TODO: consider this to destructor
@@ -418,7 +418,8 @@ protected:
 template <typename DT>  // PlainData<DT> & quality
 void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double nodataQuality, double undetectQuality) const {
 
-	quality.setPhysicalScale(0.0, 1.0);
+	quality.setPhysicalRange(0.0, 1.0, true);
+
 	const drain::ValueScaling & scaling = quality.getScaling();
 	const double d  = scaling.inv(dataQuality);
 	const double nd = scaling.inv(nodataQuality);
@@ -459,8 +460,8 @@ std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
 
 /// Something, that contains TreeWrapper and data that can be retrieved by quantity keys.
 /**
-    \tparam D - data object type PlainData<> or Data<>
-    \tparam G - scalar determining the path element types of children
+    \tparam DT - data object type: PlainData<...> or Data<...>
+    \tparam G  - the path element of children: ODIMPathElem:: DATASET, DATA, or QUALITY
 
    Applications: see SweepSrc and ProductDst below.
  */
@@ -518,7 +519,7 @@ public:
 		typename datagroup_t::const_iterator it = this->find(quantity);
 
 		if (it != this->end()){
-			mout.debug(2) << '[' << quantity << "]\t = " << it->first << mout.endl;
+			mout.debug3() << '[' << quantity << "]\t = " << it->first << mout.endl;
 			return it->second;
 		}
 		else {
@@ -533,24 +534,23 @@ public:
 		//drain::Logger mout(__FUNCTION__, __FILE__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
-		typename datagroup_t::iterator it = this->find(quantity);
-
 		//mout.warn() << "non-const " << mout.endl;
-
-		if (it != this->end()){
-			mout.debug(4) << "found " << it->first << mout.endl;
-			return it->second;
+		typename datagroup_t::iterator it;
+		#pragma omp critical  //(h5insert)
+		{
+			it = this->find(quantity);
+			if (it != this->end()){
+				mout.debug(4) << "found " << it->first << mout.endl;
+			}
+			else {
+				//mout.note() << "not found..." << mout.endl;
+				ODIMPathElem child(G);
+				DataSelector::getNextChild(this->tree, child);
+				mout.debug3() << "add: " << child << " [" << quantity << ']' << mout.endl;
+				it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
+			}
 		}
-		else {
-			//mout.note() << "not found..." << mout.endl;
-			ODIMPathElem child(G);
-			DataSelector::getNextChild(this->tree, child);
-			mout.debug(2) << "add: " << child << " [" << quantity << ']' << mout.endl;
-			it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
-			//it->second.
-			//return add(child, quantityKey);
-			return it->second;
-		}
+		return it->second;
 
 	}
 
@@ -614,7 +614,7 @@ public:
 		typename datagroup_t::const_iterator it = this->begin();
 
 		if (it != this->end()){
-			mout.debug(1) << "found: " << it->first << mout.endl;
+			mout.debug2() << "found: " << it->first << mout.endl;
 			return it->second;
 		}
 		else {
@@ -651,7 +651,7 @@ public:
 		typename datagroup_t::const_reverse_iterator it = this->rend();
 
 		if (it != this->rbegin()){
-			mout.debug(1) << "found: " << it->first << mout.endl;
+			mout.debug2() << "found: " << it->first << mout.endl;
 			return it->second;
 		}
 		else {
@@ -690,10 +690,11 @@ protected:
 		return empty;
 	}
 
-	/// Given DataSet subtree, like tree["dataset3"], constructs a data map of desired quantities.
+	/// Given a \c dataset h5 subtree, like tree["dataset3"], collects all (or desired) quantities to a data object.
 	/**
-	 *   \param t   - target data tree
-	 *   \param dst - odim wrapper for the data tree
+	 *  \param t   - target data tree
+	 *	\param dst - odim wrapper for the data tree
+	 * 	\param quantityRegExp - optional quantity filter, if only a subset is desired.
 	 */
 	static
 	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
@@ -711,72 +712,66 @@ protected:
 			mout << ", RegExp=" << quantityRegExp.toStr();
 		mout << mout.endl;
 
-		// add UKMO
-		const std::string datasetQuantity = t["what"].data.attributes.get("quantity", "");
+		// #pragma omp critical //(h5insert2)
+		{
+			// add UKMO
 
-		for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
+			//const std::string datasetQuantity = t["what"].data.attributes.get("quantity", "");
+			const std::string datasetQuantity = t[ODIMPathElem::WHAT].data.attributes.get("quantity", "");
 
 
-			if (! (it->first.is(G))){
-				//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
-				continue;
-			}
+			for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
 
-			/*
-			if (USE_REGEXP){ // be more flexible, accept also quality for now
-				if (! (it->first.belongsTo(G | ODIMPathElem::QUALITY)))
-					continue;
-			}
-			else {
-				if (! (it->first.is(G)))
+				/// Accept groups of type G only
+				if (! (it->first.is(G))){
 					//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
 					continue;
-			}
-			*/
-
-
-			const std::string dataQuantity = it->second["what"].data.attributes["quantity"];
-
-			const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
-
-			if (USE_REGEXP){
-				++counter; // candidate count
-				if (!quantityRegExp.test(quantity)){
-					//if (it->second.hasChild("quality1"))
-					//	mout.warn() << it->first << "...rejecting, but has quality?" << mout.endl;
-					mout.debug(3) << "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
-					continue;
 				}
-			}
 
-			mout.debug(3) << "accept '" << it->first << "' [" << quantity << ']' << mout.endl;
+				//const std::string dataQuantity = it->second["what"].data.attributes["quantity"];
+				const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes["quantity"];
+
+				const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
+
+				if (USE_REGEXP){
+					++counter; // candidate count
+					if (!quantityRegExp.test(quantity)){
+						//if (it->second.hasChild("quality1"))
+						//	mout.warn() << it->first << "...rejecting, but has quality?" << mout.endl;
+						mout.debug(3) << "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
+						continue;
+					}
+				}
+
+				mout.debug(3) << "accept '" << it->first << "' [" << quantity << ']' << mout.endl;
 
 
-			if (quantity.empty()){
-				//drain::Logger mout("DataSet", __FUNCTION__);
-				mout.info() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
-				mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
-				// Assign by path component "data3"
-				dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));
-				//associate(dst, it->first, it->second);
-			}
-			else {
-				if (dst.find(quantity) != dst.end()){ // already created
+				if (quantity.empty()){
 					//drain::Logger mout("DataSet", __FUNCTION__);
-					mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
+					mout.info() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
+					mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
+					// Assign by path component "data3"
+					dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));
+					//associate(dst, it->first, it->second);
 				}
-				dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
-				//typename datagroup_t::reverse_iterator rit = dst.rend();
-				//mout.warn() << "last '" << "' [" << quantity << '=' << rit->first << ']' << rit->second << mout.endl;
-				//dst[quantity] = T(it->second);
-				//associate(dst, quantity, it->second);t.
+				else {
+					if (dst.find(quantity) != dst.end()){ // already created
+						//drain::Logger mout("DataSet", __FUNCTION__);
+						mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
+					}
+					dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
+					//typename datagroup_t::reverse_iterator rit = dst.rend();
+					//mout.warn() << "last '" << "' [" << quantity << '=' << rit->first << ']' << rit->second << mout.endl;
+					//dst[quantity] = T(it->second);
+					//associate(dst, quantity, it->second);t.
+				}
 			}
-		}
+		} // end pragma
 
 		if (USE_REGEXP)
-			mout.debug(1) << "collected " << dst.size() << "(out of " << counter << ") data items with RegExp=/" << quantityRegExp.toStr() << '/' << mout.endl;
+			mout.debug3() << "matched " << dst.size() << "(out of " << counter << ") data items with RegExp=/" << quantityRegExp.toStr() << '/' << mout.endl;
 		else
-			mout.debug(1) << "collected " << dst.size() << " data items" << mout.endl;
+			mout.debug3() << "collected " << dst.size() << " data items" << mout.endl;
 
 		return t;
 	};
@@ -802,7 +797,7 @@ protected:
 			//dst.insert(typename map_t::value_type(it->first, D(it->second)));
 			dst.insert(typename map_t::value_type(it->first, it->second));
 		}
-		mout.debug(2) << "adapted " << dst.size() << " data items; " << src.begin()->first << "..." << mout.endl;
+		mout.debug3() << "adapted " << dst.size() << " data items; " << src.begin()->first << "..." << mout.endl;
 
 		//return t
 		return src.tree;

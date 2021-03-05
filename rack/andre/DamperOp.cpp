@@ -55,11 +55,13 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 	double minVal = this->minValue;
 
 	const QuantityMap & qMap = getQuantityMap();
-	if (qMap.hasQuantity(srcData.odim.quantity)){
-		const Quantity & quantity = qMap.get(srcData.odim.quantity);
-		if (quantity.hasUndetectValue()){
-			mout.info() << "using physical undetect value: " << quantity.undetectValue << ", set by --quantityConf" << mout.endl;
-			minVal = quantity.undetectValue;
+	if (isnan(minVal)){
+		if (qMap.hasQuantity(srcData.odim.quantity)){
+			const Quantity & quantity = qMap.get(srcData.odim.quantity);
+			if (quantity.hasUndetectValue()){
+				mout.info() << "using physical undetect value: " << quantity.undetectValue << ", set by --quantityConf" << mout.endl;
+				minVal = quantity.undetectValue;
+			}
 		}
 	}
 
@@ -77,9 +79,9 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 	//data.setLimits(-256.0, 255.0);
 
 	mout.note() << "data " << dstData.data << mout.endl;
-	const drain::image::Encoding & encoding = dstData.data.getEncoding();
+	const drain::image::Encoding & encoding = dstData.data.getConf();
 	//mout.note() << "encoding " << encoding.get << mout.endl;
-	mout.debug(2) << "limits: " << encoding.getTypeMin<double>() << ',' << encoding.getTypeMax<double>() << mout.endl;
+	mout.debug3() << "limits: " << encoding.getTypeMin<double>() << ',' << encoding.getTypeMax<double>() << mout.endl;
 	//data.toOStr(std::cout);
 
 	drain::typeLimiter<double>::value_t limit = encoding.getLimiter<double>();

@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_PRODUCT_OP
 #define RACK_PRODUCT_OP "ProductOP"
 
-#include <exception>
+//#include <exception>
 #include <iostream>
 #include <list>
 #include <map>
@@ -206,7 +206,8 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & d
 	ProductBase::completeEncoding(dst.odim, this->encodingRequest);
 
 	// NEW 2020/06
-	dst.data.setScaling(dst.odim.scale, dst.odim.offset);
+	//dst.data.setScaling(dst.odim.scaling.scale, dst.odim.scaling.offset);
+	dst.data.setScaling(dst.odim.scaling);
 	/// This applies always.
 	//dst.odim.product = odim.product;
 }
@@ -219,22 +220,22 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
-	mout.debug(2) << *this << mout.endl;
-	mout.debug(1) << "DataSelector: "  << this->dataSelector << mout.endl;
+	mout.debug3() << *this << mout.endl;
+	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
 
 	// Step 1: collect sweeps (/datasetN/)
 	DataSetMap<src_t> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
-	mout.debug(2) << "collect the applicable paths"  << mout.endl;
+	mout.debug3() << "collect the applicable paths"  << mout.endl;
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	int index = 0;
 
 	// NEW
-	this->dataSelector.getPaths3(src, dataPaths); //, ODIMPathElem::DATASET);
-	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATASET);
+	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-		mout.debug(2) << "add: " << index << '\t' << *it  << mout.endl;
+		mout.debug3() << "add: " << index << '\t' << *it  << mout.endl;
 		sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(*it), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 	}
 
@@ -243,7 +244,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	/*
 	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
 
-	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	std::set<ODIMPath> parents;
 
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
@@ -251,10 +252,10 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 		ODIMPath parent = *it;
 		parent.pop_back();
 
-		mout.debug(2) << "check "  << *it << mout.endl;
+		mout.debug3() << "check "  << *it << mout.endl;
 
 		if (parents.find(parent) == parents.end()){
-			mout.debug(2) << "add " << parent  << "=>" << index << mout.endl;
+			mout.debug3() << "add " << parent  << "=>" << index << mout.endl;
 			// kludge (index ~ elevation)
 			sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(parent), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			//elangles << elangle;
@@ -263,7 +264,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	*/
 
 
-	mout.debug(1) << "DataSets: "  << sweeps.size() << mout.endl;
+	mout.debug2() << "DataSets: "  << sweeps.size() << mout.endl;
 
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
@@ -285,7 +286,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	DataSelector::getNextChild(dst[parent], child);
 
 	mout.note() << "storing product in path: " <<  parent << '|' << child << mout.endl;
-	//mout.debug(2) << "storing product in path: "  << dataSetPath << mout.endl;
+	//mout.debug3() << "storing product in path: "  << dataSetPath << mout.endl;
 
 	Hi5Tree & dstProduct = dst[parent][child]; // (dataSetPath);
 	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
@@ -313,14 +314,14 @@ template <class MS, class MD>
 void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
-	mout.debug(2) << "start" << mout.endl;
+	mout.debug3() << "start" << mout.endl;
 
 	if (src.size() == 0)
 		mout.warn() << "no data" << mout.endl;
 
 	for (typename DataSetMap<src_t >::const_iterator it = src.begin(); it != src.end(); ++it) {
 
-		mout.debug(2) << "calling processDataSet for elev=" << it->first << " #datasets=" << it->second.size() << mout.endl;
+		mout.debug3() << "calling processDataSet for elev=" << it->first << " #datasets=" << it->second.size() << mout.endl;
 		processDataSet(it->second, dstProduct);
 		// TODO: detect first init?
 		// mout.warn() << "OK" << mout.endl;

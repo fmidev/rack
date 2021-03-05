@@ -146,21 +146,7 @@ public:
 	}
 
 	/// Print declared encodings (storage types and scalings)
-	inline
-	std::ostream & toOstr(std::ostream & ostr) const {
-		for (const_iterator it = begin(); it != end(); ++it){
-			if (it->first == defaultType)
-				ostr << " *";
-			ostr << '\t' << it->second;
-			if (drain::Type::call<drain::typeIsInteger>(it->first)){
-				ostr << " (min=" << it->second.getMin() << ')';
-			}
-			ostr << '\n';
-		}
-		if (hasUndetectValue())
-			ostr << '\t' << "virtual zero=" << undetectValue << '\n';
-		return ostr;
-	}
+	std::ostream & toStream(std::ostream & ostr) const;
 
 	drain::Range<double> physicalRange;
 
@@ -168,7 +154,7 @@ public:
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const Quantity & q){
-	return q.toOstr(ostr);
+	return q.toStream(ostr);
 }
 
 

@@ -119,42 +119,44 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << "start" << mout.endl;
-	mout.debug(2) << *this << mout.endl;
-	mout.debug(1) << "DataSelector: "  << this->dataSelector << mout.endl;
+	mout.debug3() << *this << mout.endl;
+	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
 
 	// Step 1: collect sweeps (/datasetN/)
 	DataSetMap<PolarSrc> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
-	mout.debug(2) << "collect the applicable paths"  << mout.endl;
+	mout.debug3() << "collect the applicable paths"  << mout.endl;
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	//this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
-	this->dataSelector.getPaths3(src, dataPaths); // RE2
+
+
+	this->dataSelector.getPaths(src, dataPaths); // RE2
 
 
 	if (dataPaths.empty()){
 		mout.warn() << "no dataset's selected" << mout.endl;
 	}
 
-	mout.debug(2) << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	drain::Variable elangles(typeid(double));
-	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (const ODIMPath & parent: dataPaths){
 
-		mout.debug(2) << "elangles (this far> "  << elangles << mout.endl;
+		mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
 
-		//const std::string parent = DataTools::getParent(*it);
-		const ODIMPath & parent = *it;
+		//const ODIMPath & parent = *it;
 		//parent.pop_back();
 		const Hi5Tree & srcDataSet = src(parent);
-		const double elangle = srcDataSet["where"].data.attributes["elangle"];  // PATH
+		const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
 
-		//mout.debug(2) << "check elangle of "  << parent << mout.endl;
+		//mout.debug3() << "check elangle of "  << parent << mout.endl;
 		mout.debug() << "testing " << parent << ", elangle=" << elangle << ':' << srcDataSet.data.dataSet << mout.endl;
 
 		//mout.note() << "src dataset1/data2 QTY = " << srcDataSet["data2"]["data"].data.dataSet << mout.endl;
 
 		if (sweeps.find(elangle) == sweeps.end()){
-			mout.debug(2) << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
+			mout.debug3() << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
 			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			elangles << elangle;
 			//mout.warn() << "add " <<  DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) ) << mout.endl;
@@ -179,36 +181,54 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			DataSelector::getNextChild(dst, dataSetPath);
 		}
 	}
+	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
+		//mout.info() << "appending to next available data group in " << dataSetPath <<  mout.endl;
+	}
+	else if (ProductBase::appendResults.is(ODIMPathElem::ROOT)){
+		if (!dst.isEmpty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
+			mout.note() << "clearing previous result, use --append [data|dataset] to avoid" <<  mout.endl;
+			dst.clear();
+		}
+	}
+	else {
+		dataSetPath = ProductBase::appendResults;
+		mout.warn() << "non-standard path location '"<< dataSetPath <<"', consider --help append " <<  mout.endl;
+	}
 	//++dataSetPath.index;
 
 	//mout.warn() << "FAILED: "  << dataSetPath << mout.endl;
-		//dataSetPath.push_back(ODIMPathElem(ODIMPathElem::DATASET, 1));
-
+	//dataSetPath.push_back(ODIMPathElem(ODIMPathElem::DATASET, 1));
 
 	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
 
-	Hi5Tree & dstProduct = dst[dataSetPath];
+	//Hi5Tree & dstProduct = dst[dataSetPath];
+
+	RootData<DstType<M> > root(dst);
+	drain::VariableMap & whatRoot = root.getWhat();
+	whatRoot["object"]  = this->odim.object;
+	whatRoot["version"] = this->odim.version;
+
+	DataSet<DstType<M> > dstProductDataset(dst[dataSetPath]); // PATH
+
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
-	drain::VariableMap & what = dstProduct["what"].data.attributes;
-	what = src["what"].data.attributes;
-	what["object"] = this->odim.object;
+	drain::VariableMap & what = dstProductDataset.getWhat(); // dstProduct["what"].data.attributes;
+	what = src[ODIMPathElem::WHAT].data.attributes;
+	what["object"]  = this->odim.object; // ?
 	what["version"] = this->odim.version;
 
-	dst["where"] = src["where"];
+	drain::VariableMap & where = dstProductDataset.getWhere(); // dstProduct["what"].data.attributes;
+	where = src[ODIMPathElem::WHERE].data.attributes;
 
-	drain::VariableMap & how = dstProduct["how"].data.attributes;
-	how = src["how"].data.attributes;
-	how["software"] = __RACK__;
+	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
+	how = src[ODIMPathElem::HOW].data.attributes;
+	how["software"]   = __RACK__;
 	how["sw_version"] = __RACK_VERSION__;
 	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
-	DataSet<DstType<M> > dstProductDataset(dstProduct); // PATH
-
-	/// Main operation
+	/// MAIN
 	this->processDataSets(sweeps, dstProductDataset);
-
 
 	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
 	//what["source"] = src["what"].data.attributes["source"];
@@ -220,8 +240,4 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 }  // namespace rack
 
 
-#endif /* RACKOP_H_ */
-
-// Rack
- // REP // REP
- // REP // REP // REP // REP
+#endif

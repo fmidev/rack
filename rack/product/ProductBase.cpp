@@ -197,7 +197,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 
-	//mout.debug(1)
+	//mout.debug2()
 	/*
 	mout.warn() << odim.getKeys() << mout.endl;
 	mout.warn() << "request: " << encoding << mout.endl;
@@ -240,7 +240,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 // Under constr.
 void ProductBase::setAllowedEncoding(const std::string & keys) {
 	std::list<std::string> l;
-	drain::StringTools::split(keys, l);
+	drain::StringTools::split(keys, l, ',');
 }
 
 void ProductBase::setODIMspecials(ODIM & dstODIM){

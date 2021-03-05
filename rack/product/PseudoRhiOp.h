@@ -60,14 +60,14 @@ public:
 		odim.product = "PRHI";
 
 		parameters.link("az_angle", odim.az_angle = az_angle, "deg");
-		parameters.link("xsize", odim.geometry.width = xsize, "pix");
-		parameters.link("ysize", odim.geometry.height = ysize, "pix");
+		parameters.link("xsize", odim.area.width = xsize, "pix");
+		parameters.link("ysize", odim.area.height = ysize, "pix");
 
 		odim.range.set(minRange, range);
-		parameters.link("range",  odim.range.vect,  "km");
+		parameters.link("range",  odim.range.tuple(),  "km");
 
-		odim.height.set(minHeight, maxHeight);
-		parameters.link("height", odim.height.vect, "m" );
+		odim.altitudeRange.set(minHeight, maxHeight);
+		parameters.link("height", odim.altitudeRange.tuple(), "m" );
 
 		/*
 		parameters.link("minRange",  odim.minRange = minRange, "km");
@@ -82,12 +82,12 @@ public:
 
 		// link("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
 		//link("type", odim.type, "C"); // TODO
-		//link("gain", odim.scale, 0.5);
-		//link("offset", odim.offset, -32.0);
+		//link("gain", odim.scaling.scale, 0.5);
+		//link("offset", odim.scaling.offset, -32.0);
 
 		allowedEncoding.link("type", odim.type = "C");  // TODO: automatic?
-		allowedEncoding.link("gain", odim.scale);
-		allowedEncoding.link("offset", odim.offset);
+		allowedEncoding.link("gain", odim.scaling.scale);
+		allowedEncoding.link("offset", odim.scaling.offset);
 
 		dataSelector.quantity = "^DBZH$";
 

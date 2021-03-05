@@ -32,17 +32,45 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ACCUMULATION
 #define RACK_ACCUMULATION
 
-#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
+#include "drain/prog/CommandBank.h"
+#include "drain/prog/CommandInstaller.h"
 
-#include "resources.h"
+namespace drain {
+
+/**
+ *  \param prefix - 'c'
+ *  \param name   - "cart"
+ *
+ */
+/*
+template <char PREFIX=0, class SECTION=GeneralSection>
+class CommandModule : protected CommandInstaller<PREFIX, SECTION>{
+*/
+
+}
+
 
 namespace rack {
 
 
-class AccumulationModule : public drain::CommandGroup {
-    public: //re 
-	AccumulationModule(const std::string & section = "prod", const std::string & prefix = "p");
+
+
+struct AccumulationSection : public drain::CommandSection {
+
+	inline
+	AccumulationSection(): CommandSection("accumulation"){
+		drain::CommandBank::trimWords().insert("Polar");
+	};
+
+};
+
+
+class AccumulationModule : public drain::CommandModule<'p', AccumulationSection>{
+
+public:
+
+	// , CommandBank & bank = getCommandBank()
+	AccumulationModule(drain::CommandBank & bank = drain::getCommandBank());
 
 
 };
@@ -52,5 +80,3 @@ class AccumulationModule : public drain::CommandGroup {
 
 
 #endif
-
-// Rack

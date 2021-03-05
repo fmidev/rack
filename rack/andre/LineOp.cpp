@@ -81,7 +81,7 @@ void LineOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst>
 
 	/// Scale parameters to pixel intensities and coordinates.
 	const double thresholdDistance = static_cast<double>(lengthMin)*1000.0/srcData.odim.rscale; // double, but essentially in pixel coordinates (i)
-	const double widthMaxBins =  widthMax/360.0*static_cast<double>(srcData.odim.geometry.width);
+	const double widthMaxBins =  widthMax/360.0*static_cast<double>(srcData.odim.area.width);
 
 	Image srcElong;
 	DistanceTransformExponentialOp(thresholdDistance/2.5, 1).process(srcData.data, srcElong);

@@ -48,7 +48,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 	//drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
 	drain::Logger mout(drain::getLog(), __FUNCTION__, __FILE__);
-	mout.debug(2) << "Starting MaxEchoOp (" << name << ") " << mout.endl;
+	mout.debug3() << "Starting MaxEchoOp (" << name << ") " << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
@@ -115,11 +115,11 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		// TODO: derive iStart and iEnd instead.
 
-		if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
+		if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.area.width)){
 
 			for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-				jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
+				jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
 
 				value = sweep.data.get<double>(iSweep,jSweep);
 

@@ -68,7 +68,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug(1) << "start" << mout.endl;
+	mout.debug2() << "start" << mout.endl;
 
 	//const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
 
@@ -134,13 +134,13 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData();
 	qm.setQuantityDefaults(dstQuality, "QIND");
 
-	const drain::image::Geometry g(dstData.odim.geometry.width, dstData.odim.geometry.height);
+	const drain::image::Geometry g(dstData.odim.area.width, dstData.odim.area.height);
 	dstData.data.setGeometry(g);
 	dstData.data.clear();
 	//mout.warn() << "Destination data:" << dstData << mout.endl;
 
 	dstQuality.data.setGeometry(g);
-	dstQuality.data.fill(dstQuality.odim.scaleInverse(1.0));
+	dstQuality.data.fill(dstQuality.odim.scaling.inv(1.0));
 	//@ dstQuality.updateTree();
 
 	//@ dstProduct.updateTree(dstData.odim);
@@ -193,7 +193,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	drain::image::DistanceTransformExponentialOp smoothOp;
 	//smoothOp.distanceModel.setRadius(smoothRad * 1000.0 / srcData.odim.rscale, smoothAzm * static_cast<double>(srcData.odim.geometry.width) / 360.0);
 	double horz = smoothRad * 1000.0 / dstData.odim.rscale;
-	double vert = smoothAzm * static_cast<double>(dstData.odim.geometry.width) / 360.0;
+	double vert = smoothAzm * static_cast<double>(dstData.odim.area.width) / 360.0;
 	smoothOp.setRadius(horz, vert);
 	// Consider GaussianPolar
 	if ((horz > 0) && (vert > 0.0)){
@@ -239,7 +239,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	//drain::image::GammaOp(gamma).process(dstData.data, dstData.data);
 
 	if (!encodingRequest.empty()){  // Larissa
-		const double gainOrig = dstData.odim.scale;
+		const double gainOrig = dstData.odim.scaling.scale;
 		dstData.odim.setValues(encodingRequest);
 		Image::iterator  it = dstData.data.begin();
 		Image::iterator mit = maxEcho.data.begin();
@@ -248,7 +248,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 				*it = dstData.odim.undetect;
 			}
 			else {
-				*it = dstData.odim.scaleInverse(gainOrig * static_cast<double>(*it));
+				*it = dstData.odim.scaling.inv(gainOrig * static_cast<double>(*it));
 			}
 			++it, ++mit;
 		}

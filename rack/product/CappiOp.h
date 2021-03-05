@@ -58,7 +58,7 @@ public:
 		parameters.link("altitude", this->altitude = altitude, "metres");
 		parameters.link("weightMin", this->weightMin = weightMin, "scalar");
 		parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
-		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "0|1");
+		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
 
 		odim.product  = "PCAPPI";
 		odim.type = "";

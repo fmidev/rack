@@ -35,15 +35,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include "drain/prog/Command.h"
-#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandPack.h"
-#include "drain/prog/CommandAdapter.h"
+//#include <drain/prog/CommandInstaller.h>
+//#include "drain/prog/Command.h"
+//#include "drain/prog/CommandRegistry.h"
+//#include "drain/prog/CommandPack.h"
+//#include "data/Quantity.h"
+// #include "andre/DetectorOp.h"
 
-#include "data/Quantity.h"
-#include "andre/DetectorOp.h"
-
-#include "resources.h"
+//#include "resources.h"
 
 
 //using namespace drain;
@@ -52,10 +51,13 @@ namespace rack {
 
 
 
-class CommandModule : public drain::CommandGroup {
+class MainModule : public drain::CommandModule<> {
 
 public:
-	CommandModule();
+
+	MainModule();
+
+
 
 };
 

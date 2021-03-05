@@ -33,18 +33,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_IMAGES
 #define RACK_IMAGES
 
-#include "data/DataSelector.h"
-#include <hi5/Hi5.h>
-//#include "drain/image/Image.h"
-#include "drain/image/Image.h"
-#include <main/resources.h>
-#include "drain/prog/CommandAdapter.h"
-#include "drain/util/Tree.h"
-#include <string>
+//#include <string>
+
+#include "drain/prog/Command.h"
+
+// #include "resources.h"
 
 
 
 namespace rack {
+
+
+struct ImageSection : public drain::CommandSection {
+
+	inline
+	ImageSection(): CommandSection("images"){
+		//hello(__FUNCTION__);
+		drain::CommandBank::trimWords().insert("Op");
+	};
+};
+
+
+class ImageModule : public drain::CommandModule<0,ImageSection> { //: public drain::CommandSection {
+
+public:
+
+	ImageModule(drain::CommandBank & bank = drain::getCommandBank());
+
+	// virtual void initialize();
+};
+
+
+
 
 /**
  *   Applied also by CartesianGrid
@@ -53,25 +73,13 @@ class CmdImage : public drain::BasicCommand {
 
 public:
 
-	//mutable DataSelector imageSelector;
-	mutable ImageSelector imageSelector;
-
 	CmdImage() : drain::BasicCommand(__FUNCTION__,
-			"Copies data to a separate image object. Encoding can be changed with --target .")
-			// , imageSelector(".*/data/?$","")
-	{
+			"Copies data to a separate image object. Encoding can be changed with --target ."){
 	};
 
 	void exec() const;
 
-	static
-	void convertImage(const Hi5Tree & src, const DataSelector & selector, const std::string & parameters,
-			drain::image::Image &dst);
-
-
 };
-extern drain::CommandEntry<CmdImage> cmdImage;
-
 
 
 

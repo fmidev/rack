@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
-//#include "drain/util/Input.h"
+#include "drain/util/Input.h"
 
 #include "drain/prog/Command.h"
 
@@ -60,18 +60,18 @@ namespace rack {
 
 void CmdInputFile::exec() const {
 
-	drain::Logger mout(getName().c_str(), __FILE__);
-	//__FUNCTION__, __FILE__
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, getName().c_str()); //, __FILE__);
 
 	mout.timestamp("BEGIN_FILEREAD");
 
-	mout.note() << "reading: '" << value << "'" << mout.endl;
+	mout.note() << "reading: "<< value << mout.endl;
 
-	RackResources & resources = getResources();
+	// TODO: expand?
+	std::string fullFilename = ctx.inputPrefix + value;
 
-	std::string fullFilename = resources.inputPrefix + value;
-
-	resources.errorFlags.unset(RackResources::INPUT_ERROR); // resources.inputOk = false;
+	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
 	//mout.warn() << "lastCommand: '" << drain::CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
@@ -87,8 +87,8 @@ void CmdInputFile::exec() const {
 
 		if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
-			// mout.note() << (*resources.currentHi5)("dataset1/data1")[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
-			//resources.setSource(*resources.currentHi5, *this); wronk
+			// mout.note() << (*ctx.currentHi5)("dataset1/data1")[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
+			//resources.setSource(*ctx.currentHi5, *this); wronk
 		}  //
 		//else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
 		else if (IMAGE_PNG || IMAGE_PNM){
@@ -104,8 +104,9 @@ void CmdInputFile::exec() const {
 	}
 	catch (const std::exception & e) {
 		//resources.inputOk = false;
-		resources.errorFlags.set(RackResources::INPUT_ERROR);
+		ctx.statusFlags.set(drain::StatusFlags::INPUT_ERROR);
 		mout.debug() << e.what() << mout.endl;
+		/*
 		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs
 			mout.warn() << "Read error, file: " << this->value << mout.endl;
 		}
@@ -113,27 +114,18 @@ void CmdInputFile::exec() const {
 			mout.error() << "Read error, file: " << this->value << mout.endl;
 			//exit(1);
 		}
+		*/
 		return;
 	}
 
-	// ZELECT
-	resources.select.clear(); // NEW: "starts a product pipe". monitor effects of this
+
+	ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
 	//mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
-	resources.getUpdatedStatusMap();
+	ctx.getStatusMap();
 
 	mout.timestamp("END_FILEREAD");
 	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
-
-
-	if (resources.scriptParser.autoExec > 0){
-		// mout.info() << "auto execution..." << (int)resources.inputOk << mout.endl;
-		mout.info() << "auto execution... Error flags:" << resources.errorFlags << mout.endl;
-		//.set(RackResources::INPUT_ERROR);
-		//if (resources.inputOk || (resources.scriptParser.autoExec > 1))
-		if (!resources.errorFlags.isSet(RackResources::INPUT_ERROR) || (resources.scriptParser.autoExec > 1))
-			resources.scriptExec.run();
-	}
 
 
 }
@@ -143,17 +135,20 @@ void CmdInputFile::exec() const {
 /// Reads hdf5 file and appends it to H5 structure. Works only with sweeps (SCAN), volume (PVOL) or Cartesian data (COMP) (having elevations).
 void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
-	mout.debug() << "start" << mout.endl;
+	RackContext & ctx = getContext<RackContext>();
 
-	RackResources & resources = getResources();
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
+
+	mout.debug() << "start: " << fullFilename << mout.endl;
+
+	//RackResources & resources = getResources();
 
 	// InputSelect needed?
 	Hi5Tree srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
 	if (mout.isDebug(6)){
-		mout.debug(2) << "input data:" << mout.endl;
+		mout.debug3() << "input data:" << mout.endl;
 		hi5::Hi5Base::writeText(srcTmp, std::cerr);
 	}
 
@@ -163,10 +158,14 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	/// True, if user seems to provide
-	const drain::CommandRegistry & r = drain::getRegistry();
-	const std::string &lastCmd = r.getLastCommand();
-	const bool APPEND_INPUT = (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
-	const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
+	// const drain::CommandRegistry & r = drain::getRegistry();
+	// const std::string &lastCmd = r.getLastCommand();
+	// const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
+	// const bool AUTO_EXEC = this->execRoutine; // NEW
+	// const bool APPEND_INPUT = false; // (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
+	// const bool APPEND_INPUT = !ctx.statusFlags.isSet(drain::CommandBank::SCRIPT_DEFINED); // TODO: check also if this command is triggering (any more)
+	// static const drain::Flagger::value_t TRIGGER_SECTION = drain::Static::get<drain::TriggerSection>().index;
+	const bool APPEND_INPUT = !ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
 	//drain::VariableMap & what = srcTmp["what"].data.attributes;
@@ -176,63 +175,66 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		object = "PVOL";
 	}
 
-	if (object.toStr() == "COMP"){
+	if ((object.toStr() == "COMP") || (object == "IMAGE")){
 
 		mout.info() << "Cartesian" << mout.endl;
 
 		//DataTools::updateCoordinatePolicy(srcTmp, RackResources::limit);
-		resources.setSource(resources.cartesianHi5, *this);
-		resources.currentHi5 = & resources.cartesianHi5;
+		// resources.setSource(ctx.cartesianHi5, *this);
+		ctx.currentHi5 = & ctx.cartesianHi5;
+		//ctx.currentCartesianHi5 = & ctx.cartesianHi5;
 
-		// SINGLE_INPUT ||
-		if (AUTO_EXEC || ProductBase::appendResults.isRoot() || resources.cartesianHi5.isEmpty()){
-			resources.cartesianHi5.swap(srcTmp);
-			//mout.note() << resources.cartesianHi5 << mout.endl;
+		// if (AUTO_EXEC  // SINGLE_INPUT ||
+		if (ProductBase::appendResults.isRoot() || ctx.cartesianHi5.isEmpty()){
+			ctx.cartesianHi5.swap(srcTmp);
+			//mout.note() << ctx.cartesianHi5 << mout.endl;
 		}
 		else if (ProductBase::appendResults.isIndexed()){
 			mout.note() << "Cartesian, append mode: " << ProductBase::appendResults << mout.endl;
-			appendCartesianH5(srcTmp, resources.cartesianHi5);
+			appendCartesianH5(srcTmp, ctx.cartesianHi5);
 		}
 		else {
 			mout.error() << "unsupported mode for ProductOp::appendResults=" << ProductBase::appendResults << mout.endl;
 		}
 
-		if (!resources.composite.isMethodSet()){
-			//const std::string m = resources.cartesianHi5["how"].data.attributes["camethod"];
-			const drain::Variable & m = resources.cartesianHi5["how"].data.attributes["camethod"];
+		if (!ctx.composite.isMethodSet()){
+			//const std::string m = ctx.cartesianHi5["how"].data.attributes["camethod"];
+			const drain::Variable & m = ctx.cartesianHi5[ODIMPathElem::HOW].data.attributes["camethod"];
 			if (!m.isEmpty()){
 				mout.info() << "adapting compositing method: " << m << mout.endl;
-				resources.composite.setMethod(m.toStr());  // TODO: try-catch if invalid?
+				ctx.composite.setMethod(m.toStr());  // TODO: try-catch if invalid?
 			}
 			else {
 				mout.note() << "no compositing method (how:camethod) in metadata of '" << value << "', consider --cMethod " << mout.endl;
 			}
 
 		}
-		DataTools::updateInternalAttributes(*resources.currentHi5);
+		/* consider... but also use cAdd
+		if (!ctx.composite.projectionIsSet()){
+			ctx.composite.odim.projdef =
+			ctx.composite.setProjection(value);
+		}
+		*/
+		DataTools::updateInternalAttributes(ctx.cartesianHi5); // *ctx.currentHi5);
 	}
 	else {
 
 		mout.info() << "Polar product" << mout.endl;
-		resources.setSource(resources.inputHi5, *this);
-		resources.currentHi5 =      & resources.inputHi5;
-		resources.currentPolarHi5 = & resources.inputHi5;
+		ctx.currentHi5 =      & ctx.inputHi5;
+		ctx.currentPolarHi5 = & ctx.inputHi5;
 		//DataTools::updateCoordinatePolicy(srcTmp, RackResources::polarLeft);
 
-		//if (ProductOp::appendResults.empty()){ // TODO ..or..
-		//if ((!multipleInput) || (resources.scriptParser.autoExec>0)){ // TODO ..or..
-		// SINGLE_INPUT ||
-		if ((AUTO_EXEC || resources.inputHi5.isEmpty()) || !APPEND_INPUT){
-			mout.debug() << "AUTO_EXEC: " << AUTO_EXEC << mout.endl;
-			resources.inputHi5.swap(srcTmp);
+		if (ctx.inputHi5.isEmpty() || !APPEND_INPUT){
+			// mout.debug() << "AUTO_EXEC: " << AUTO_EXEC << mout.endl;
+			ctx.inputHi5.swap(srcTmp);
 		}
 		else {
-			appendPolarH5(srcTmp, resources.inputHi5);
+			appendPolarH5(srcTmp, ctx.inputHi5);
 		}
 
-
-		DataTools::updateInternalAttributes(*resources.currentHi5);
-		DataTools::updateCoordinatePolicy(resources.inputHi5, RackResources::polarLeft);
+		//mout.warn() << "s" << mout.endl;
+		DataTools::updateInternalAttributes(*ctx.currentHi5);
+		DataTools::updateCoordinatePolicy(ctx.inputHi5, RackResources::polarLeft);
 
 	}
 
@@ -244,8 +246,12 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
 	mout.debug() << "start" << mout.endl;
+
 	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
 		attachCartesianH5(srcRoot, dstRoot);
 	}
@@ -265,18 +271,21 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 		Hi5Tree & dst = dstRoot[parent];
 
-		for (Hi5Tree::iterator it = srcRoot.begin(); it != srcRoot.end(); ++it){
+		for (Hi5Tree::map_t::value_type & entry: srcRoot){
+		//for (Hi5Tree::iterator it = srcRoot.begin(); it != srcRoot.end(); ++it){
 
-			ODIMPathElem s(it->first); // possibly: what, where, how
-			Hi5Tree & src = it->second;
+			const ODIMPathElem & elem = entry.first;
+			Hi5Tree & src = entry.second;
+			// ODIMPathElem s(it->first); // possibly: what, where, how
+			// Hi5Tree & src = it->second;
 
-			if (s.isIndexed()){
-				mout.note() << " appending " << s << " => " << parent << mout.endl;
+			if (elem.isIndexed()){
+				mout.note() << " appending " << elem << " => " << parent << mout.endl;
 				attachCartesianH5(src, dst);
 			}
 			else {
-				mout.note() << " replacing " << it->first << mout.endl;
-				dst[it->first].swap(it->second);   // overwrite what, where,
+				mout.note() << " replacing " << elem << mout.endl;
+				dst[elem].swap(src);   // overwrite what, where,
 			}
 
 		}
@@ -290,7 +299,9 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	//ODIMPathElem p(g);
 	//DataSelector::getLastChild(dst, p);
@@ -299,8 +310,6 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 		ODIMPathElem p(it->first); // possibly: what, where, how
 		if (p.isIndexed()){
-			//++p.index;
-			//ODIMPathElem p(s);
 			DataSelector::getNextChild(dst, p);
 			mout.note() << " appending " << p << mout.endl;
 			dst[p].swap(it->second);
@@ -312,9 +321,6 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 		src[it->first].data.noSave = true;
 
-		//else
-		//	mout.warn() << " could not find path /dataset[N], result=" << p << mout.endl;
-		//Hi5Tree & dst
 	}
 
 
@@ -322,7 +328,9 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	const QualityDataSupport<PolarSrc> srcQ(src);
 	const PlainData<PolarSrc> & srcQind  = srcQ.getQualityData("QIND");  // ie.
@@ -359,7 +367,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 		}
 		else if (quantity == "CLASS"){
-			mout.debug(2) << "Combining CLASS skipped (handled by QIND, if found)" << mout.endl;
+			mout.debug3() << "Combining CLASS skipped (handled by QIND, if found)" << mout.endl;
 			continue;
 		}
 
@@ -415,7 +423,10 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
 	mout.debug() << "start" << mout.endl;
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
@@ -433,22 +444,21 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 		}
 	}
 
-	RackResources & resources = getResources();
 
 	/// Common dataSetSelector for srcRoot and dstRoot
 	DataSelector dataSetSelector;
-	dataSetSelector.setParameters(resources.select); //??
+	dataSetSelector.consumeParameters(ctx.select); //??
 	dataSetSelector.pathMatcher = "dataset:"; // <fix
-	resources.select.clear();
+	//resources.select.clear();
 
 	/// TIMESTAMP-based order ( Consider generalization for Carts)
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
 	sweepMap srcPaths;
-	dataSetSelector.getPaths3(srcRoot, srcPaths);
+	dataSetSelector.getPaths(srcRoot, srcPaths);
 
 	sweepMap dstPaths;
-	dataSetSelector.getPaths3(dstRoot, dstPaths);
+	dataSetSelector.getPaths(dstRoot, dstPaths);
 
 	for (sweepMap::const_iterator it = dstPaths.begin(); it != dstPaths.end(); ++it){
 		mout.info() << "exists: " << it->second <<  "\t (" << it->first << ')' << mout.endl;
@@ -541,54 +551,47 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout( ;
+	RackContext & ctx = getContext<RackContext>();
 
-	std::ifstream ifstr;
-	ifstr.open(fullFilename.c_str());
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout( ;
 
-	if (ifstr.fail()){
-		mout.error() << "Opening file '" << fullFilename << "' failed" << mout.endl;
-		ifstr.close();
-		return;
-	}
+	drain::Input ifstr(fullFilename);
 
-	hi5::Hi5Base::readText(getResources().inputHi5, ifstr);
+	hi5::Hi5Base::readText(ctx.inputHi5, ifstr);
+	DataTools::updateInternalAttributes(ctx.inputHi5);
 
-	ifstr.close();
-
-	DataTools::updateInternalAttributes(getResources().inputHi5);
 
 }
 
 void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
+	RackContext & ctx = getContext<RackContext>();
 
-	RackResources & resources = getResources();
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
 
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
-	DataSelector::getLastChild(resources.inputHi5, dataSetElem);
+	DataSelector::getLastChild(ctx.inputHi5, dataSetElem);
 	if (dataSetElem.getIndex() == 0)
 		dataSetElem.index = 1;
 
 	/// Search new data[n] in the dataset found
 	ODIMPathElem dataElem(ODIMPathElem::DATA);
 	// TODO: append cmd?
-	DataSelector::getLastChild(resources.inputHi5[dataSetElem], dataElem);
+	DataSelector::getLastChild(ctx.inputHi5[dataSetElem], dataElem);
 	if (dataElem.getIndex() == 0)
 		dataElem.index = 1;
 
 	mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
-	if (!resources.inputHi5[dataSetElem][dataElem]["data"].data.dataSet.isEmpty()){
+	if (!ctx.inputHi5[dataSetElem][dataElem]["data"].data.dataSet.isEmpty()){
 		mout.debug() << "Path " << dataSetElem << '>' << dataElem << "/data contains data already, searching further..." << mout.endl;
-		//DataSelector::getNextOrdinalPath(resources.inputHi5, pathSearch, dataPath);
+		//DataSelector::getNextOrdinalPath(ctx.inputHi5, pathSearch, dataPath);
 		++dataElem.index;
 		mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
 	}
 
 
-	Hi5Tree & dst = resources.inputHi5[dataSetElem][dataElem];
+	Hi5Tree & dst = ctx.inputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst["data"].data.dataSet;
 	drain::image::File::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();
@@ -608,8 +611,8 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	if (object.empty()){
-		object = resources.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
-		//std::cout << resources.inputHi5[ODIMPathElem::WHAT] << '\n';
+		object = ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
+		//std::cout << ctx.inputHi5[ODIMPathElem::WHAT] << '\n';
 	}
 
 	if (object.empty()){ // unneeded? See below.
@@ -636,7 +639,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	*/
 
 
-	DataTools::updateInternalAttributes(resources.inputHi5); // [dataSetElem] enough?
+	DataTools::updateInternalAttributes(ctx.inputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
 	if ((object == "COMP")|| (object == "IMAGE") ){
@@ -644,25 +647,25 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5[dataSetElem]); // $ odim.copyToDataSet(resources.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.inputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.inputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 	}
 	else {
 		if ((object == "SCAN") || (object == "PVOL")) {
 			mout.note() << "Polar object (" << object << ") detected" << mout.endl;
 		}
 		else {
-			resources.inputHi5["what"].data.attributes["what:object"] = "SCAN";
+			ctx.inputHi5["what"].data.attributes["what:object"] = "SCAN";
 			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout.endl;
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5[dataSetElem]); // $odim.copyToDataSet(resources.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5); // $ odim.copyToRoot(resources.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.inputHi5[dataSetElem]); // $odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.inputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 	}
 
-	DataTools::updateInternalAttributes(resources.inputHi5);
+	DataTools::updateInternalAttributes(ctx.inputHi5);
 
 
 }

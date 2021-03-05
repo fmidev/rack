@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_BASE
 #define RACK_BASE "ProductBase"
 
-#include <exception>
+#include <stdexcept>
 #include <iostream>
 #include <list>
 #include <map>
@@ -87,7 +87,7 @@ protected:
 	ProductBase(const std::string &name, const std::string & description) : drain::BeanLike(name, description){
 		//std::cout << name << '\t' << __FILE__ << std::endl;
 		dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-		dataSelector.update();
+		dataSelector.updateBean();
 	}
 
 public:
@@ -113,11 +113,13 @@ public:
 	void help(std::ostream &ostr = std::cout, bool showDescription = true) const;
 
 
-	/// If set, appends outputs in an hdf5 structure instead of overwriting.
+	/// If set, appends outputs in an hdf5 structure instead of overwriting. \see CmdAppend .
 	/**
-	 *   -# "overwrite" =
-	 *   -# "append" =
-	 *   -# "auto": according to operators
+	 *   - empty: overwrite
+	 *   - data: write to a new \c data group in \c dataset group with the largest index.
+	 *   - data{n}: write to \c data group with index \i n in \c dataset group with the largest index.
+	 *   - dataset: write to a new \c dataset
+	 *   - dataset{n}: write to \c data1 group in \c dataset group with index \i n .
 	 */
 	static
 	ODIMPathElem appendResults;
@@ -144,7 +146,7 @@ public:
 		drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(ProductOp)", __FUNCTION__);
 
 		try {
-			mout.debug(1) << "Checking if these are allowed" << mout.endl;
+			mout.debug2() << "Checking if these are allowed" << mout.endl;
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {

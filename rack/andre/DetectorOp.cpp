@@ -51,7 +51,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "DetectorOp.h"
 
 
-using namespace drain::image;
+//using namespace drain::image;
 
 namespace rack {
 
@@ -72,7 +72,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.debug(1) << "start1" << CLASSNAME << mout.endl;
+	mout.debug2() << "start1" << CLASSNAME << mout.endl;
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
@@ -97,7 +97,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 				mout.warn() << "unset type in srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
 				return;
 			}
-			if ((srcData.odim.geometry.width==0) || (srcData.odim.geometry.height==0)){
+			if ((srcData.odim.area.width==0) || (srcData.odim.area.height==0)){
 				mout.warn() << "empty geom in odim of srcData [" << srcDataSet.begin()->first << "]: " << srcData.odim << mout.endl;
 				return;
 			}
@@ -105,7 +105,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			Data<PolarDst>  & dstData = dstDataSet.getFirstData(); // only for QIND and CLASS
 
 
-			mout.debug() << "CLASSNAME=" << CLASSNAME << " using universal=" << (SUPPORT_UNIVERSAL && UNIVERSAL) << mout.endl;
+			mout.debug() << "CLASSNAME=" << CLASSNAME << " universal=" << (SUPPORT_UNIVERSAL) << '&' <<  (UNIVERSAL) << mout.endl;
 
 			const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
 
@@ -172,7 +172,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 		++itd;
 	}
 
-	mout.debug(1) << "end" << mout.endl;
+	mout.debug2() << "end" << mout.endl;
 
 }
 
@@ -204,13 +204,13 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 		    	processData(srcData, dstProb);
 		    }
 		    else {
-		    	mout.debug() << "requesting normalized data..." << mout.endl;
+		    	mout.info() << "requesting 'normalized' data..." << mout.endl;
 		    	PlainData<PolarDst> & srcDataNorm = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity);
-				//mout.debug(2) << "got normalized data, now processing" << mout.endl;
-				mout.debug(1) << "srcDataNorm: " << srcDataNorm << mout.endl;
+				//mout.debug3() << "got normalized data, now processing" << mout.endl;
+				mout.debug() << "srcDataNorm: " << srcDataNorm << mout.endl;
 				processData(srcDataNorm, dstProb);
 		    }
-			mout.debug(1) << "dstProb (result): " << dstProb << " OK?" << mout.endl;
+			mout.debug2() << "dstProb (result): " << dstProb << " OK?" << mout.endl;
 		}
 		else {
 			mout.debug() << "no data normalization needed, ok" << mout.endl;
@@ -247,7 +247,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 	}
 	else {
 		mout.debug() << "already initialized: " << EncodingODIM(dstData.odim) << mout.endl;
-		mout.debug(1) << dstData << mout.endl;
+		mout.debug2() << dstData << mout.endl;
 	}
 }
 
@@ -258,7 +258,7 @@ const std::string & DetectorOp::getOutputQuantity() const {
 	// If unset, copy in uppercase letters.
 	if (upperCaseName.empty()) {
 		//size_t i = name.find_last_of("Op");
-		upperCaseName = name; //.substr(0, i);
+		upperCaseName = name.substr(0, name.length()-2); // Rely on "Op" in the end.
 		drain::StringTools::upperCase(upperCaseName);
 	}
 
@@ -273,7 +273,7 @@ void DetectorOp::storeDebugData(const ImageFrame & srcImage, PlainData<PolarDst>
 	PlainData<PolarDst> & dstDebugData = dstDataSet.getQualityData(quantityLabel);
 
 	// Copy ?
-	UnaryFunctorOp<ScalingFunctor>().process(srcImage, dstDebugData.data);
+	drain::image::UnaryFunctorOp<drain::ScalingFunctor>().process(srcImage, dstDebugData.data);
 	//ScaleOp().filter(srcImage, dstDebugData.data);
 
 	dstDebugData.odim.quantity = quantityLabel;
@@ -346,7 +346,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 		File::write(tmp,"andre-enh3-dtf.png");
 
 	// MultiplicationOp
-	BinaryFunctorOp<MultiplicationFunctor> mulOp;
+	drain::image::BinaryFunctorOp<drain::MultiplicationFunctor> mulOp;
 	mout.debug(10) << mulOp << mout.endl;
 	mulOp.traverseChannel(tmp.getChannel(0), dst.getChannel(0));
 	if (mout.isDebug(22))
@@ -368,7 +368,7 @@ void DetectorOp::_infect(Image & dst, int windowWidth, int windowHeight, double 
 	if (mout.isDebug(10))
 		File::write(tmp,"andre-infect-1dist.png");
 
-	BinaryFunctorOp<MixerFunctor> op;
+	drain::image::BinaryFunctorOp<drain::MixerFunctor> op;
 	op.functor.coeff = enhancement;
 	op.traverseChannel(tmp.getChannel(0), dst.getChannel(0));
 	// MixerOp(enhancement).filter(tmp,dst);

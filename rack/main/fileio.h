@@ -32,13 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_FILE_IO
 #define RACK_FILE_IO
 
-//#include "drain/prog/CommandAdapter.h"
-//#include "drain/prog/CommandRegistry.h"
-//#include "drain/util/RegExp.h"
-
-#include "drain/prog/CommandRegistry.h"
-#include "drain/util/RegExp.h"
 #include <string>
+
+#include "drain/util/RegExp.h"
+#include "drain/prog/CommandBank.h"
+#include "drain/prog/CommandInstaller.h"
+
 
 namespace rack {
 
@@ -72,11 +71,12 @@ extern
 const drain::RegExp sampleFileExtension;
 
 
-class FileModule : public drain::CommandGroup {
+class FileModule : public drain::CommandModule<> { // : public drain::CommandGroup {
 
 public:
 
-	FileModule(const std::string & section = "", const std::string & prefix = "");
+	FileModule(drain::CommandBank & bank = drain::getCommandBank());
+	//virtual void initialize();
 
 };
 

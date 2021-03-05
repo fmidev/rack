@@ -197,7 +197,7 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	const hid_t first_h5t  = Hi5Base::getH5NativeDataType(typeid(first_type));
 	const hid_t second_h5t = Hi5Base::getH5NativeDataType(typeid(second_type));
 
-	mout.debug(2) << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
+	mout.debug3() << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
 
 	// Create the compound datatype for memory.
 	hid_t memtype = H5Tcreate (H5T_COMPOUND, size);
@@ -237,7 +237,7 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 		mout.warn() << "compound object exists already (combining is not supported) : " << pathStr << mout.endl;
 	}
 	else {
-		// mout.debug(2) << "does not exist, creating " << pathStr << mout.endl;
+		// mout.debug3() << "does not exist, creating " << pathStr << mout.endl;
 		hid_t dset = H5Dcreate(fid, pathStr.c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		handleStatus(dset, "H5Dcreate failed", mout, __LINE__);
 		if (dset >= 0){
@@ -301,7 +301,7 @@ void Writer::mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::
 	for (typename std::map<K,V>::const_iterator it = m.begin(); it != m.end(); ++it) {
 		vit->first  = CompoundConv<K>::conv(it->first);
 		vit->second = CompoundConv<V>::conv(it->second);
-		mout.debug(1) << vit->first << ':' << vit->second << mout.endl;
+		mout.debug2() << vit->first << ':' << vit->second << mout.endl;
 		++vit;
 	}
 

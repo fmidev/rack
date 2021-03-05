@@ -34,87 +34,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ANDRE_PRODUCTS
 
 //#include "commands.h"
+/*
 #include "productAdapter.h"
 #include "andre/AndreOp.h"
 #include "andre/DetectorOp.h"
-
+*/
 
 // Utils
-#include "andre/QualityCombinerOp.h"
-
-#include "andre/ClutterOp.h"
+//#include "andre/QualityCombinerOp.h"
+//#include "andre/ClutterOp.h"
 
 namespace rack {
 
-template <class T>
-class AnDReLetAdapter : public ProductAdapter<T>{
 
-public:
+struct AnDReSection : public drain::CommandSection {
 
-	AnDReLetAdapter() : ProductAdapter<T>() {
+	inline	AnDReSection(): CommandSection("andre"){
+		//hello(__FUNCTION__);
+		drain::CommandBank::trimWords().insert("Op");
+		drain::CommandBank::trimWords().insert("AnDRe");
 	};
-
-
-	virtual
-	~AnDReLetAdapter(){};
-
-	virtual inline
-	Hi5Tree & getTarget() const {
-		return getResources().inputHi5;
-	};
-
-	virtual
-	void run(const std::string & params = "") {
-
-		//__FUNCTION__
-		drain::Logger mout(__FUNCTION__, this->adapterName.c_str());
-
-		mout.timestamp("BEGIN_ANDRE");
-
-		VolumeOp<PolarODIM> & op = this->productOp;
-		op.setParameters(params);
-
-		RackResources & resources = getResources();
-
-		if (!resources.select.empty()){
-			mout.debug() << "Setting AnDre data selector: " << resources.select << mout.endl;
-			resources.andreSelect = resources.select;
-			mout.debug(1) << "New values: " << op.getDataSelector() << mout.endl;
-			resources.select.clear();
-		}
-
-		op.dataSelector.setParameters(resources.andreSelect);
-
-		mout.debug() << "Running:  " << op << mout.endl;
-		mout.debug() << "AnDRe selector: " << resources.andreSelect << mout.endl;
-
-		const Hi5Tree &src = resources.inputHi5;
-		Hi5Tree & dst = getTarget();  //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
-
-		//mout.warn() << dst << mout.endl;
-		op.processVolume(src, dst);
-
-		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
-		DataTools::updateInternalAttributes(dst);
-		resources.currentPolarHi5 = & dst; // if cartesian, be careful with this...
-		resources.currentHi5      = & dst;
-
-		mout.timestamp("END_ANDRE");
-	};
-
-
-	// "Sticky" selector which not cleared after each operation.
-	//std::string selector;
 
 };
 
+class AnDReModule : drain::CommandModule<'a',AnDReSection> { //: public drain::CommandSection { //: public drain::CommandGroup {
 
-class AnDReModule : public drain::CommandGroup {
-    public: //re 
-	//AnDReModule(); //
-	AnDReModule(const std::string & section = "andre", const std::string & prefix = "a"); // : drain::CommandGroup(section, prefix); // { //,
-	//	clutterMapRead(clutter.productOp) {};
-	//AnDReModule(CommandRegistry & registry);
+public:
+
+	AnDReModule(drain::CommandBank & cmdBank = drain::getCommandBank());
+	// const std::string & section = "andre", const std::string & prefix = "a"); // : drain::CommandGroup(section, prefix); // { //,
+	// clutterMapRead(clutter.productOp) {};
+	// AnDReModule(CommandRegistry & registry);
+
 };
 
 

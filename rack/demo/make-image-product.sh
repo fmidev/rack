@@ -54,13 +54,14 @@ if [ "$PROD" != '' ]; then
     NAME=${NAME,} # lowercase first
 
     VALUES=${VALUES:-$DEFAULT_VALUES}
-    echo "rack volume.h5 --$OPERATOR $VALUES -o $NAME.h5" > $NAME-cmd.inc
-
+    #echo "rack volume.h5 --$OPERATOR $VALUES -o $NAME.h5" > $NAME-cmd.inc
+    make $OPERATOR.hlp
     
     #echo >> $NAME.cmd
-    rack --helpExample $OPERATOR | fgrep '#' | tr -d '#' > $NAME-params.inc
-    head $NAME-*.inc
-
+    #rack --helpExample $OPERATOR | fgrep '#' | tr -d '#' > $NAME-params.inc
+    #head $NAME-*.inc
+    make $OPERATOR.exm
+    
 fi
 
 

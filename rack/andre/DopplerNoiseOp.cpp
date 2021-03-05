@@ -56,12 +56,14 @@ namespace rack {
 void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug(2) << "start" <<  mout.endl; //
+	mout.debug3() << "start" <<  mout.endl; //
 
 	//const double MAX = dstData.odim.scaleInverse(1.0); // dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
 
 	//static drain::RegExp regExpVRAD("^VRAD[H]?$");
 	const Data<PolarSrc> &  vradSrc = sweepSrc.getFirstData();
+
+	mout.special() << "Data: " << vradSrc <<  mout.endl;
 
 	if (vradSrc.data.isEmpty()){
 		mout.warn() << "VRAD missing, skipping..." <<  mout.endl;
@@ -76,38 +78,55 @@ void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainDat
 		return;
 	}
 
-	if (vradDevMin > NI) {
-		mout.warn() << "vradDevMin=" << vradDevMin << " exceeds input NI="  << NI << mout.endl;
+	if (speedDevThreshold > NI) {
+		mout.warn() << "speedDevThreshold=" << speedDevThreshold << " exceeds input NI="  << NI << mout.endl;
 	}
-	else if (vradDevMin > (0.8*NI)) {
-		mout.warn() << "vradDevMin=" << vradDevMin << " close to input NI=" << NI << mout.endl;
+	else if (speedDevThreshold > (0.8*NI)) {
+		mout.warn() << "speedDevThreshold=" << speedDevThreshold << " close to input NI=" << NI << mout.endl;
+	}
+	else {
+		mout.info() << "vradSrc NI=" << NI <<  mout.endl;
 	}
 
 	FuzzyStep<double> fuzzyStep; //(0.5);
-	const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
+	const double pos = speedDevThreshold; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
 
 	if (pos > 0.0)
 		fuzzyStep.set( 0.5*pos, 1.5*pos); // scales to [0.0,1.0]
 	else
 		fuzzyStep.set( 1.5*(-pos), 0.5*(-pos)); // scales to [0.0,1.0]
 
-	DopplerDevWindow::conf_t pixelConf(fuzzyStep, conf.widthM, conf.heightD, 0.05, true, false); // require 5% samples
-	pixelConf.updatePixelSize(vradSrc.odim);
-	SlidingWindowOp<DopplerDevWindow> vradDevOp(pixelConf);
+	//DopplerDevWindow::conf_t pixelConf(fuzzyStep, conf.widthM, conf.heightD, 0.5, true, false); // require 5% samples
+	// DopplerDevWindow::conf_t pixelConf(conf.widthM, conf.heightD, 0.5, true, false); // require 5% samples
+	// pixelConf.updatePixelSize(vradSrc.odim);
 
-	mout.debug() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
-	mout.debug(1)  << "VRAD op   " << vradDevOp <<  mout.endl;
-	mout.debug()  << vradDevOp.conf.width  << 'x' << vradDevOp.conf.height <<  mout.endl;
-	mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
-	mout.debug()  << "vradSrc NI=" << vradSrc.odim.getNyquist() <<  mout.endl;
-	mout.debug(1) << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
+	mout.debug() << "vradSrc: " << ODIM(vradSrc.odim)  <<  mout.endl;
+	mout.debug() << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
+	mout.debug() << "functor: " << fuzzyStep  <<  mout.endl;
+
+	//FuzzyBell<double> fuzzyBell(0.0, speedDevThreshold, 1.0, 0); //(0.5
+
+	// DopplerDevWindow::conf_t pixelConf(fuzzyBell);
+	// DopplerDevWindow::conf_t pixelConf;
+	DopplerDevWindow::conf_t pixelConf(fuzzyStep);
+
+	this->conf.setPixelConf(pixelConf, vradSrc.odim);
+
+	mout.special()  << pixelConf.functorParameters <<  mout.endl;
+	//pixelConf.getFunctor();
+
+	SlidingWindowOp<DopplerDevWindow> op(pixelConf);
+
+	mout.debug()  << "VRAD op   " << op <<  mout.endl;
+	//mout.special()  << "window size: " << op.conf.frame <<  mout.endl;
+	//mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
 
 	dstData.setPhysicalRange(0.0, 1.0);
-	vradDevOp.traverseChannel(vradSrc.data, dstData.data);
+	op.traverseChannel(vradSrc.data, dstData.data);
 	//dstData.odim.prodpar = feature;
 
 
-	DataTools::updateInternalAttributes(dstData.getTree()); // nweeded
+	DataTools::updateInternalAttributes(dstData.getTree());
 }
 
 

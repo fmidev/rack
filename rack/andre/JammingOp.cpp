@@ -92,7 +92,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	Image stdDev; //(typeid(float), src.getGeometry());
 
 	SlidingWindowHistogramOp slidingOp(7,1,"d");
-	slidingOp.makeCompatible(src.data, stdDev);
+	slidingOp.makeCompatible(src.data.getConf(), stdDev);
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(src.data, srcWeight);
@@ -119,7 +119,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	//SlidingWindowHistogramOp(21, 1, "m", 0.1).filter(src,  srcWeight, srcSmooth, dst); // "m" median
 	SlidingWindowHistogramOp slidingOp2(10000.0/src.odim.rscale, 1, "a", 0.1);
-	slidingOp2.makeCompatible(src.data, srcSmooth);
+	slidingOp2.makeCompatible(src.data.getConf(), srcSmooth);
 	ImageTray<Channel> dstTray2;
 	dstTray2.setChannels(srcSmooth, dst.data);
 	slidingOp2.traverseChannels(srcTray, dstTray2);
@@ -204,7 +204,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 		double fit; //, r2;
 		// inertia; sumR=0.0,
 		//double sumR2=0.0, sumR2M=0.0, sumM=0.0, sumRM=0.0;
-		double distanceMaxM = static_cast<double>(src.odim.geometry.width)*src.odim.rscale;
+		double distanceMaxM = static_cast<double>(src.odim.area.width)*src.odim.rscale;
 		double distanceMinM = distanceMin * 1000.0;
 		drain::FuzzyBell<double> fuzzyLocation(0.0, (distanceMaxM-distanceMinM)/10.0, 1.0);
 		double weight;

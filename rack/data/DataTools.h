@@ -186,7 +186,7 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 
 		const Hi5Tree & s = src(path);
 
-		for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+		for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
 
 			const hi5::NodeHi5 & group = s[*git].data;
 

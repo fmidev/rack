@@ -38,13 +38,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/Image.h"
 #include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/PaletteOp.h"
-#include "drain/prog/CommandPack.h"
-
-#include "drain/prog/CommandRegistry.h" // OLD
-//#include "drain/prog/CommandBank.h"     // NEW
+//#include "drain/prog/CommandPack.h"
+//#include "drain/prog/CommandRegistry.h" // OLD
+#include "drain/prog/CommandBankUtils.h"     // NEW
 
 #include "drain/util/Rectangle.h"
 #include "drain/util/RegExp.h"
+#include "drain/util/StatusFlags.h"
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
 
@@ -52,40 +52,105 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/PolarODIM.h"
 #include "hi5/Hi5.h"
 
+
+
 #include "radar/Composite.h"
 #include "radar/RadarAccumulator.h"
 
+#include "resources-base.h"
 
 namespace rack {
 
 
+
 // Resources provided separately for each thread.
-class RackContext : public drain::Context {
+class RackContext : public drain::SmartContext, public ImageContext, public AndreContext, public Hdf5Context {
 
 public:
 
+
+
+	/// Initializes data and image pointers to default targets or NULL.
 	RackContext();
 
-	/// The last input file read, typically a volume. May be concatenated ie. read in incrementally.
-	Hi5Tree inputHi5;
-	// SOURCE inputHi5src;
+	/// Essential in cloning base context for threads (parallel execution of scripts).
+	RackContext(const RackContext & ctx);
 
-	/// The polar product that has been generated from the volume.
-	Hi5Tree polarHi5;
-	/// Flag for marking the origin of polarHi5
-	//SOURCE  polarHi5src;
+	virtual
+	~RackContext(){};
 
-	/// A single-radar Cartesian product or a multi-radar composite (mosaic).
-	Hi5Tree cartesianHi5;
 
-	/// Pointer to the last HDF5 structure read or generated.
-	Hi5Tree *currentHi5; // = &inputHi5;
+	static
+	RackContext & getSharedContext(){
+		return drain::SuperContextual<RackContext>::baseCtx();
+	}
 
-	/// Pointer to the last HDF5 structure in polar coordinates: input volume or polar product.
+
+	static
+	const drain::StringMapper variableMapper;
+
+
+
+	/// Path prefix for input files. Move to resources?
+	std::string inputPrefix;
+
+	/// Path prefix for output files. Move to resources?
+	std::string outputPrefix;
+
+	std::string targetEncoding;
+
+	// Accumulator for data in Cartesian coordinates
+	Composite composite;
+
+	// Experimental
+	bool guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem) const;
+
+	bool guessDatasetGroup(ODIMPathElem & pathElem){
+		Hi5Tree & src = getHi5(CURRENT);
+		return guessDatasetGroup(src, pathElem);
+	}
+
+	// Experimental
+	// ODIMPath currentPath;
+
+	/// Uses image selector to find 2D data in the curneent HDF5 structure
+	//static
+	ODIMPath findImage(const DataSelector & imageSelector);
+
+	// static
+	ODIMPath findImage();
+
+	/// Light and lazy
+	// sstatic
+	const drain::image::Image & getCurrentGrayImage(); //RackContext & ctx);
+
+	/// Light and lazy
+	const drain::image::Image & getCurrentImage(); //RackContext & ctx);
+
+
+	/// Ensures current image
 	/**
-	 *   The data pointed to will be applied as input to a Cartesian product (single-radar or composite).
+	 *  # selection: find a new image, if requested.
+	 *  # encoding: convert if needed	 *
 	 */
-	Hi5Tree *currentPolarHi5; // = &inputHi5;
+	const drain::image::Image & updateCurrentImage(); //RackContext & ctx);
+
+	/// Return current image, if modifiable. Else, copy (convert).
+	drain::image::Image &  getModifiableImage(); // (RackContext & ctx); // const DataSelector & selector
+
+	void convertGrayImage(const drain::image::Image & srcImage); // RackContext & ctx,
+
+	virtual inline
+	drain::VariableMap & getStatusMap(){
+		Context::updateStatus();
+		updateStatus();
+		return statusMap;
+	};
+//private:
+protected:
+
+	// Keep this class-specific.
+	void updateStatus();
 
 
 };
@@ -94,16 +159,15 @@ public:
 /**
  *
  */
-class RackResources : public RackContext {
+class RackResources : public drain::SuperContextual<RackContext> { // ,drain::SmartContext : public RackContext {
 
 public:
 
 	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
 
 
-	/// Clears dst if source command varies.
-	void setSource(Hi5Tree & dst, const drain::Command & cmd);
-
+	/// Clears dst if source command varies. Keep for later reference...
+	// void setSource(Hi5Tree & dst, const drain::Command & cmd);
 
 
 	/// Standard (?) orientation of polar coords in radar data
@@ -114,165 +178,20 @@ public:
 	static
 	const CoordinatePolicy limit;
 
-	//static bool inputOk;
-
 	//static 	void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
-	drain::VariableMap & getUpdatedStatusMap();
 
-	/// Retrieves image that matches a given selector.
-	/*
-	 *  \return true, if non-empty image was found
-	 */
-	// bool
-	ODIMPath setCurrentImage(const DataSelector & imageSelector);
-
-
-	// Experimental
-	bool guessDatasetGroup(ODIMPathElem & pathElem) const;
-	// Experimental
-	ODIMPath currentPath;
-
-
-	drain::image::Image grayImage;
-	drain::image::Image colorImage;
-
-	/// Pointer to the last 2D data (image) processed
-	const drain::image::Image *currentImage; // = NULL;
-
-	/// Pointer to the last single-channel 2D data (image) processed
-	const drain::image::Image *currentGrayImage; // = NULL;  // data or grayImage
-
-
-	drain::image::Palette palette;  // Todo: drainize
-	//drain::image::PaletteOp;
 
 	// Accumulator for data in polar coordinates
 	RadarAccumulator<Accumulator,PolarODIM> polarAccumulator;
 
-	// Accumulator for data in Cartesian coordinates
-	Composite composite;
-
-	void initComposite();
-
-	drain::Rectangle<double> bbox;
-
-	std::string projStr;
-
-	/// Global values accessible more or less directly through commands.
-
-	//  FILE I/O
-	// int inputSelect; // see fileio.cpp and hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS
-
-	/// Path prefix for input files.
-	std::string inputPrefix;
-
-	/// Path prefix for output files.
-	std::string outputPrefix;
-
-	std::string targetEncoding;
-
-	std::string select;
-	std::string andreSelect;
 
 
-	drain::ScriptParser scriptParser;
-	drain::ScriptExec   scriptExec;
-
-	drain::image::ImageSampler sampler; // could be in ImageModPack?
-
-
-
-
-	static const drain::Flags::value_t INPUT_ERROR;//     = 1;
-	static const drain::Flags::value_t DATA_ERROR;//      = 2;
-	static const drain::Flags::value_t METADATA_ERROR;//  = 4;
-	static const drain::Flags::value_t OUTPUT_ERROR;//    = 8;
-	static const drain::Flags::value_t PARAMETER_ERROR;// = 16;
-	//static const drain::Flags::value_t IO_ERROR;// = INPUT_ERROR | OUTPUT_ERROR;
-
-	drain::Flags2 errorFlags; //(value, dict, ',');
-
-protected:
-
-
-	// void getImageInfo(const char *label, const drain::image::Image *ptr, VariableMap & statusMap);
-	void getImageInfo(const drain::image::Image *ptr, drain::Variable & entry) const;
 
 };
 
 /// Default instance
 RackResources & getResources();
-
-
-
-//typedef drain::BeanCommand<image::ImageOp, image::ImageOp &> ImageOpAdapter;
-
-
-/// Adapter for commands designed for Rack.
-/**
- *    \tparam T - class derived from drain::Command
- */
-template <class T>
-class RackLetAdapter : public T {
-
-public:
-
-
-	RackLetAdapter(const std::string & key = "", char alias = 0){ // : drain::Command("cart", name, alias) {
-		add(key, alias);
-	};
-
-	RackLetAdapter(const std::string & key, char alias, const T & value) : T(value) { // : drain::Command("cart", name, alias) {
-		add(key, alias);
-	};
-
-	RackLetAdapter(char alias){
-		add("", alias);
-	}
-
-	void add(const std::string & key, char alias){
-
-		const std::string & k = key.empty() ? T::getName() : key;
-
-		static drain::RegExp nameCutter("^(Cmd|Cartesian|Composite|Polar)(.*)$");
-
-		if (nameCutter.execute(k) == 0){ // matches
-			//std::cerr << "adding () " << nameCutter.result[2] << std::endl;
-			drain::getRegistry().add(*this, nameCutter.result[2], alias);
-			// drain::getCommandBank().addExternal(nameCutter.result[2], alias, *this);
-			// creates new: drain::getCommandBank().add<T>(nameCutter.result[2], alias);
-		}
-		else {
-			drain::getRegistry().add(*this, k, alias);
-			// drain::getCommandBank().addExternal(k, alias, *this);
-			// std::cerr << "adding    " << k << std::endl;
-		}
-
-	}
-
-	inline
-	void setParameters(const std::string & args, char assignmentSymbol='='){
-		T::setParameters(args, assignmentSymbol);
-	}
-
-	inline
-	void setParameters(const drain::VariableMap & p){
-		T::setParameters(p);
-	};
-
-	/*
-	const std::string & getName() const {
-		return T::getName();
-	}
-
-	const std::string & getDescription() const {
-		return T::getDescription();
-	}
-	*/
-
-
-};
 
 
 

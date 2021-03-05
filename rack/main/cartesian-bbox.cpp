@@ -32,9 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "drain/util/Fuzzy.h"
-
+#include "drain/util/StatusFlags.h"
 #include "drain/image/File.h"
-
 #include "drain/imageops/DistanceTransformFillOp.h"
 //#include "drain/imageops/RecursiveRepairerOp.h"
 
@@ -53,14 +52,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-void CartesianBBox::exec() const {
+//void CartesianBBox::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	RackResources & resources = getResources();
+	//RackResources & resources = getResources();
+	//resources.composite.setBoundingBox(resources.bbox);
 
-	resources.composite.setBoundingBox(resources.bbox);
 	/*
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	drain::Point2D<double> & ll = resources.bbox.lowerLeft;
 	drain::Point2D<double> & ur = resources.bbox.upperRight;
 
@@ -87,42 +86,41 @@ void CartesianBBox::exec() const {
 
 	resources.composite.setBoundingBoxD(resources.bbox);
 	*/
-}
+//}
 
 void CartesianBBoxTest::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 
-	RackResources & resources = getResources();
+	RackContext & ctx = getContext<RackContext>();
 
-	if ( ! resources.composite.bboxIsSet() ){
-		// error() ?
+	if ( ! ctx.composite.bboxIsSet() ){
 		mout.warn() << "Bounding box undefined, skipping." << mout.endl;
+		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 		return;
 	}
 
-	if ( ! resources.composite.projectionIsSet() ){
-		// Maybe ok
+	if ( ! ctx.composite.projectionIsSet() ){
+		// Maybe ok (if latlong?)
 		mout.note() << "Projection undefined." << mout.endl;
 	}
 
-	if ( ! resources.composite.geometryIsSet() ){
+	if ( ! ctx.composite.geometryIsSet() ){
 		// Maybe ok
-		mout.note() << "Composite array geometry undefined" << mout.endl;
+		mout.info() << "Composite array geometry undefined" << mout.endl;
 	}
 
 	// There may be no data, don't use Data<PolarSrc> etc here.
-	Hi5Tree & p = (*resources.currentPolarHi5);
+	Hi5Tree & p = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR|RackContext::INPUT);
+	// (*ctx.currentPolarHi5);
 
 	// Derive range
-	drain::VariableMap & attributes = p["where"].data.attributes;
+	drain::VariableMap & attributes = p[ODIMPathElem::WHERE].data.attributes;
 	double lon = attributes.get("lon", 0.0);
 	double lat = attributes.get("lat", 0.0);
 	//mout.warn() << attributes << mout.endl;
 	//
 	const drain::VariableMap & a = p.hasChild("dataset1") ? p["dataset1"]["where"].data.attributes : attributes;
-	//mout.warn() << (int)p.hasChild("dataset1") << mout.endl;
-	//mout.warn() << a << mout.endl;
 
 	/*
 	 * There may be no data, don't use Data<PolarSrc> etc here.
@@ -134,61 +132,65 @@ void CartesianBBoxTest::exec() const {
 	// TODO: str than aeqd?
 	RadarProj pRadarToComposite;
 	pRadarToComposite.setSiteLocationDeg(lon, lat);
-	pRadarToComposite.setProjectionDst(resources.composite.getProjection());
+	pRadarToComposite.setProjectionDst(ctx.composite.getProjection());
 
 	drain::Rectangle<double> bboxM;
-	//resources.composite.determineBoundingBoxM(pRadarToComposite, odimIn.rscale*odimIn.geometry.width + odimIn.rscale/2.0 + odimIn.rstart, bboxM);
+	//ctx.composite.determineBoundingBoxM(pRadarToComposite, odimIn.rscale*odimIn.geometry.width + odimIn.rscale/2.0 + odimIn.rstart, bboxM);
 	if (range > 0.0) {
 		pRadarToComposite.determineBoundingBoxM(range, bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
-		//resources.composite.determineBoundingBoxM(pRadarToComposite, range, bboxM);
+		//ctx.composite.determineBoundingBoxM(pRadarToComposite, range, bboxM);
 	}
 	else {
 		mout.warn() << "could not derive range, using 250km "<< mout.endl;
 		pRadarToComposite.determineBoundingBoxM(250000, bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
-		//resources.composite.determineBoundingBoxM(pRadarToComposite, 250000, bboxM);
+		//ctx.composite.determineBoundingBoxM(pRadarToComposite, 250000, bboxM);
 	}
 
 	// New: also store
 	drain::Rectangle<double> bboxD;
 	int i,j;
 
-	resources.composite.m2deg(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxD.lowerLeft.x, bboxD.lowerLeft.y);
+	ctx.composite.m2deg(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxD.lowerLeft.x, bboxD.lowerLeft.y);
 	attributes["LL_lon"] = bboxD.lowerLeft.x;
 	attributes["LL_lat"] = bboxD.lowerLeft.y;
 
-	resources.composite.m2pix(bboxM.lowerLeft.x, bboxM.lowerLeft.y, i, j);
+	ctx.composite.m2pix(bboxM.lowerLeft.x, bboxM.lowerLeft.y, i, j);
 	attributes["LL_i"] = i;
 	attributes["LL_j"] = j;
 
-	resources.composite.m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
+	ctx.composite.m2deg(bboxM.upperRight.x, bboxM.upperRight.y, bboxD.upperRight.x, bboxD.upperRight.y);
 	attributes["UR_lon"] = bboxD.upperRight.x;
 	attributes["UR_lat"] = bboxD.upperRight.y;
 
-	resources.composite.m2pix(bboxM.upperRight.x, bboxM.upperRight.y, i, j);
+	ctx.composite.m2pix(bboxM.upperRight.x, bboxM.upperRight.y, i, j);
 	attributes["UR_i"] = i;
 	attributes["UR_j"] = j;
 
 	//dataExtentD.extend();
 
-	//mout.warn() << "comp"  << resources.composite.getBoundingBoxM() << mout.endl;
+	//mout.warn() << "comp"  << ctx.composite.getBoundingBoxM() << mout.endl;
 	//mout.warn() << "radar" << bboxM << mout.endl;
 
-	overlap = bboxM.isOverLapping(resources.composite.getBoundingBoxM());
+	//bool
+	// mutable
+	bool overlap = (bboxM.isOverLapping(ctx.composite.getBoundingBoxM()));
 
-	mout.debug() << "overlap:" << static_cast<int>(overlap) << mout.endl;
+	mout.debug() << "overlap:" << static_cast<int>(overlap) << ", bboxD: " << bboxD << mout.endl;
 
-	mout.debug() << "bboxD:" << bboxD << mout.endl;
+	//resources.bbox.extend(bboxD);  // why?
+	//mout.debug() << "combined bbox:" << resources.bbox << mout.endl;
 
-	//cBBox.bbox.updateDataExtent(bD);
-	//cBBox.
-	resources.bbox.extend(bboxD);  // extern
-	mout.debug() << "combined bbox:" << resources.bbox << mout.endl;
+	if (overlap){
+		// ctx.statusFlags.set(RackContext::BBOX_STATUS);
+		ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR);
+	}
+	else {
+		// ctx.statusFlags.unset(RackContext::BBOX_STATUS);
+		ctx.statusFlags.set(drain::StatusFlags::INPUT_ERROR);
+	}
 
-	if (!overlap)
-		resources.errorFlags.set(RackResources::INPUT_ERROR);
-
-	if (value > 1){
-		exit(overlap ? 0 : value);
+	if (mode > 1){
+		exit(overlap ? 0 : mode);
 	}
 }
 
@@ -198,7 +200,9 @@ void CartesianBBoxTile::exec() const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	// TODO PROJ CHECK! => error, warn?
 
-	Composite & composite = getResources().composite;
+	//Composite & composite = getResources().composite;
+	RackContext & ctx = getContext<RackContext>();
+	Composite & composite = ctx.composite;
 
 	/// Use composite's bbox as a starting point.
 	drain::Rectangle<double> bboxTile = composite.getBoundingBoxD();

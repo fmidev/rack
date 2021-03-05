@@ -60,11 +60,14 @@ using namespace drain::image;
 
 namespace rack {
 
-double QualityCombinerOp::DEFAULT_QUALITY(0.95);
+//double QualityCombinerOp::DEFAULT_QUALITY(0.95);
 
 void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQind, const std::string & quantity){
 
-	drain::Logger mout("QualityCombinerOp", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	//const double DEFAULT_QUALITY = 0.7;
+	const double DEFAULT_QUALITY = 1.0;
 
 	if (dstQind.data.isEmpty()){
 
@@ -77,14 +80,14 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
 
 		// Geometry
-		dstQind.setGeometry(srcData.odim.geometry.width, srcData.odim.geometry.height);
+		dstQind.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
 		mout.debug() << "set geometry: " << dstQind.data.getGeometry() << mout.endl;
 		dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
 
 		// Fill with init value
 		if (quantity == "QIND"){
-			const double minCode = dstQind.data.getScaling().inv(QualityCombinerOp::DEFAULT_QUALITY);
-			mout.debug() << "Creating QIND data with 1-qMin: " << (QualityCombinerOp::DEFAULT_QUALITY) << " [" << minCode << "]" << mout.endl;
+			const double minCode = dstQind.data.getScaling().inv(DEFAULT_QUALITY);
+			mout.debug() << "Creating QIND data with 1-qMin: " << (DEFAULT_QUALITY) << " [" << minCode << "]" << mout.endl;
 			dstQind.data.fill(minCode);
 			//dstQind.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
 		}	// Fill with init value
@@ -101,7 +104,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 			*/
 			mout.debug() << "created empty CLASS" << mout.endl;
 			//dstQind.data.fill(minCode);
-			mout.debug(1) << " => DST: " << dstQind.data.getScaling() << mout.endl;
+			mout.debug2() << " => DST: " << dstQind.data.getScaling() << mout.endl;
 		}
 
 		dstQind.data.setName(dstQind.odim.quantity);
@@ -115,7 +118,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 	drain::Logger mout(__FUNCTION__, label+"(DetectorOp)");
 	mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
-	mout.debug(1) <<  EncodingODIM(dstQind.odim) << mout.endl;
+	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
 
 	QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
 
@@ -147,7 +150,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 	//const classdict_t & dict = getClassDict();
 	const classdict_t & dict = getClassPalette().dictionary;
-	mout.debug(1) <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
+	mout.debug2() <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
 
 	sstr << index << ':' << dict.getValue(index);
 	classWhat["legend"] << sstr.str();
@@ -161,6 +164,8 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	/// Probability of anomaly
 	//double p;
 	/// Quality = 1-p
+    #pragma poista DEFAULT_QUALITY
+	const double DEFAULT_QUALITY = 0.7;
 	const double qThreshold = DEFAULT_QUALITY; // because no use to increase quality with anomaly
 	double q;
 	/// max quality this far
@@ -190,30 +195,34 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
 
+	const double DEFAULT_QUALITY = 0.7;
+
 
 	std::set<std::string> classesNew;
 	srcQind.getHow()["task_args"].toSequence(classesNew, ',');
+	mout.special() << drain::sprinter(classesNew) << mout;
 
 	drain::Variable & task_args = dstQind.getHow()["task_args"];
 	std::set<std::string> classes;
 	task_args.toSequence(classes, ',');
+	mout.special() << drain::sprinter(classes) << mout;
 
 	bool update = false;
 
-	for (std::set<std::string>::const_iterator it = classesNew.begin(); it != classesNew.end(); ++it){
-		if (classes.find(*it) == classes.end()){
+	for (const std::string & quantity: classesNew){
+		if (classes.find(quantity) == classes.end()){
 			update = true;
-			mout.info() << "adding quantity: " << *it << mout.endl;
-			task_args << *it;
+			mout.info() << "adding quantity: " << quantity << mout.endl;
+			task_args << quantity;
 		}
 		else {
-			mout.info() << "already updated quantity: " << *it << mout.endl;
+			mout.info() << "already updated quantity: " << quantity << mout.endl;
 		}
 	}
 
 
 	if (!update){
-		mout.note() << "no new quantities, returning" << mout.endl;
+		mout.info() << "no new quantities, returning" << mout.endl;
 		return;
 	}
 
@@ -327,7 +336,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	const bool UPDATE_EXISTING = dstData.hasQuality();
 
 	if (!UPDATE_EXISTING){
-		mout.debug(1) << "Skipping update, because srcData won't get it " << mout.endl;
+		mout.debug2() << "Skipping update, because srcData won't get it " << mout.endl;
 		return;
 	}
 
@@ -338,6 +347,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	PlainData<PolarDst> & dstCLASS = dstData.getQualityData("CLASS");
 
 	if (UPDATE_EXISTING){
+		mout.success() << "updating.." << mout;
 		updateOverallQuality(srcQIND, srcCLASS, dstQIND, dstCLASS);
 	}
 	else {
@@ -361,6 +371,8 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<Po
 
 	Logger mout(__FUNCTION__, __FILE__);
 
+	mout.warn() << "Src: " << src << mout;
+
 	//DataDst & dstData = dst.getFirstData("QIND"); //targetQuantity);
 	//PlainData<PolarDst> & dstData = dst.getQualityData("QIND"); //targetQuantity);
 	const PlainData<PolarSrc> & srcQuality = src.getQualityData("QIND");
@@ -374,18 +386,21 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<Po
 	}
 
 	/*
-	for (DataSet<>::const_iterator it = src.begin(); it != src.end(); ++it){
+	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
 		mout.warn() << "src data quantity:" << it->first << mout.endl;
 	}
 
-	for (DataSet<>::iterator it = dst.begin(); it != dst.end(); ++it){
+	for (DataSet<PolarDst>::iterator it = dst.begin(); it != dst.end(); ++it){
 		mout.warn() << "dst data quantity:" << it->first << mout.endl;
 	}
 	*/
 
 
+
 	/// Note: iteration in src dataset (keys), because data selector applies to it.
 	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
+
+		mout.special() << it->first << mout;
 
 		Data<PolarDst> & dstData = dst.getData(it->first);
 

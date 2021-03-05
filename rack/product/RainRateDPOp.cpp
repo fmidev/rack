@@ -90,7 +90,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	//completeEncoding(rateDst.odim, encodingRequest);
 	//applyODIM(rateDst.odim, odim, true);
-	//rateDst.data.setScaling(rateDst.odim.scale, rateDst.odim.offset); // clumsy
+	//rateDst.data.setScaling(rateDst.odim.scaling.scale, rateDst.odim.scaling.offset); // clumsy
 
 	//qmap.setQuantityDefaults(rateDst, odim.quantity, odim.type); // type also?
 	//rateDst.setGeometry(geometry);

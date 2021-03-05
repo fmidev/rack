@@ -85,8 +85,8 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 	//static const std::string _func = "Reader::h5FileToTree";
 	int status = 0;
 
-	//const std::string separator = (path == "/") ? "" : "/";
-	//const std::string separator = (path.empty()) ? "" : "/";
+	// std::cerr << "Deeper" << __FUNCTION__ << ':' << path << std::endl;
+	// path.debug();
 
 	//if (path=="/"){
 	if (path.empty()){
@@ -108,9 +108,14 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 		// status = H5Giterate(file_id, "/", NULL, &iterate, &tree);
 	}
 	//else
+	/*
+	mout.warn() << path << mout.endl;
+	mout.warn() << path.str() << mout.endl;
+	mout.warn() << path.str().c_str() << mout.endl;
+	*/
 
-
-	status = H5Giterate(file_id, static_cast<std::string>(path).c_str(), NULL, &iterate, &tree);
+	status = H5Giterate(file_id, path.str().c_str(), NULL, &iterate, &tree);
+	//status = H5Giterate(file_id, static_cast<std::string>(path).c_str(), NULL, &iterate, &tree);
 	//status = H5Giterate(file_id, path.c_str(), NULL, &iterate, &tree);
 
 	if (status < 0)
@@ -129,7 +134,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 		std::string pStr(p);
 
 		//mout.note() << "traversing: " << p << " mode=" << mode << mout.endl;
-		mout.debug(2) << "traversing: " << pStr << mout.endl;
+		mout.debug3() << "traversing: " << pStr << mout.endl;
 
 		status = H5Gget_objinfo(file_id, pStr.c_str(), false, &info);
 		//hi5monitor.note() << _func << ": called  H5Gget_objinfo, path=" << p << hi5monitor.endl;
@@ -163,7 +168,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 			case H5G_DATASET:
 				if (mode & DATASETS){
 					if (child.is(rack::ODIMPathElem::LEGEND)){
-						mout.warn() << "reading legend (group) not implemented, path=" << p << mout.endl;
+						mout.unimplemented() << "skipping legend (group) in path=" << p << mout.endl;
 					}
 					else {
 						h5DatasetToImage(file_id, p ,((hi5::NodeHi5 &)subtree).dataSet);
@@ -222,7 +227,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 		else {
 			//hsize_t dims = new hsize_t[2];
 			H5Sget_simple_extent_dims(aspace, &elements, NULL);
-			mout.debug(1) << " Reading attribute: " << attr_name;
+			mout.debug2() << " Reading attribute: " << attr_name;
 			mout << "  rank: " << rank;
 			mout << "  elements: " << elements << mout.endl;
 		}
@@ -358,7 +363,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 
 	hsize_t rank = H5Sget_simple_extent_ndims(filespace);
-	mout.debug(1) << "rank=" << rank << mout.endl;
+	mout.debug2() << "rank=" << rank << mout.endl;
 	if (rank < 2)
 		mout.warn() << "H5Sget_simple_extent_dims, problems expected with rank=" << rank << mout.endl;
 	if (rank > 3){
@@ -389,7 +394,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	 */
 	const bool MULTICHANNEL = (dims[2] > 0);
 	if (MULTICHANNEL){
-		mout.warn() << "experimental: support for multidimensional data, path=" << path << mout.endl;
+		mout.special() << "experimental: support for multidimensional data, path=" << path << mout.endl;
 	}
 
 	const hsize_t channels = MULTICHANNEL ? dims[0] : 1;        // NEW
@@ -443,11 +448,11 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	}
 
 	//image.initialize(typeid(char>(1,1); // FOR valgrind
-	mout.debug(1) << "allocated image: " << image << mout.endl;
+	mout.debug2() << "allocated image: " << image << mout.endl;
 
     // koe kooe
 	if ((image.getGeometry().getVolume() > 0) && typeOk){
-		mout.debug(2) << "calling H5Dread" << mout.endl;
+		mout.debug3() << "calling H5Dread" << mout.endl;
 		H5O_info_t info;
 		H5Oget_info(dataset, &info);
 
@@ -456,8 +461,8 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 			mout.warn() << "H5Dread() failed " << mout.endl;
 
 		image.setName(path);
-		mout.debug(2) << "IMAGE: " << image << mout.endl;
-		//mout.debug(2) << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
+		mout.debug3() << "IMAGE: " << image << mout.endl;
+		//mout.debug3() << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
 		mout << '*' << image.getChannelCount() << '=' << image.getGeometry().getVolume() << '\n';
 		mout << '*' << image.getGeometry() << '\n';
 		mout << image << mout.endl;

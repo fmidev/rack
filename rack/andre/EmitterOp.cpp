@@ -62,10 +62,10 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
 
-	dst.data.setPhysicalScale(0.0, 1.0);
-
+	//dst.data.setPhysicalScale(0.0, 1.0);
+	dst.data.setPhysicalRange(0.0, 1.0, true);
 	/// Minimum segment width in pixels.
-	//const int w = src.odim.getBeamBins(lengthMin*1000.0); // (static_cast<int>(lengthMin)*1000)/src.odim.rscale;
+	//  const int w = src.odim.getBeamBins(lengthMin*1000.0); // (static_cast<int>(lengthMin)*1000)/src.odim.rscale;
 
 	/// Maximum segment height in pixels.
 	const int h = src.odim.getAzimuthalBins(thicknessMax); // (thicknessMax*src.odim.geometry.height)/360;
@@ -87,11 +87,12 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	Image marginAvg(typeid(unsigned char), 1, imageHeight);
 	marginAvg.setCoordinatePolicy(PolarProductOp::polarCoordPolicy);
 
+	mout.special() << "Margin averages:" << mout.endl;
 	double dBZ;
 	std::vector<unsigned short int> count(imageHeight);
 	std::vector<unsigned short int> countData(imageHeight);
 	//drain::FuzzyPeak<double, unsigned char> fuzzyPeak1(10.0, 10.0, 255);
-	drain::FuzzyStepsoid<double> fuzzyStepsoid(0.5, 0.5, marginAvg.getEncoding().getTypeMax<double>());
+	drain::FuzzyStepsoid<double> fuzzyStepsoid(0.5, 0.5, marginAvg.getConf().getTypeMax<double>());
 	//drain::FuzzyStep<double, double> fuzzyStep(0.25, 0.50, 255.0);
 	for (size_t j=0; j<imageHeight; ++j){
 		unsigned short int & c = count[j];
@@ -115,11 +116,15 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	storeDebugData(2, marginAvg, "MARG");
 
+	mout.special() << "HighPass op:" << mout.endl;
+
 	HighPassOp hop(1, 3*h, 5.0);
 	hop.process(marginAvg, marginAvg);  // 2.0 from hat  marginAvg, marginAvg
 	mout.debug() << hop << mout.endl;
-	mout.debug(1) << marginAvg << mout.endl;
+	mout.debug2() << marginAvg << mout.endl;
 	storeDebugData(2, marginAvg, "MARG_HP");
+
+	mout.special() << "DistanceTransformExponentialOp op:" << mout.endl;
 
 	DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h)).process(marginAvg, marginAvg);
 	storeDebugData(2, marginAvg, "MARG_HP_DIST");
@@ -130,40 +135,49 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	DistanceTransformExponentialOp(3.0*1000.0/src.odim.rscale, 1).process(src.data, srcElong);  //  REQUIRE_NORMALIZED_DATA
 	storeDebugData(2, srcElong, "DIST-HORZ");
 
-
+	mout.special() << "RunLengthVertOp op:" << mout.endl;
 	Image rleVert;
-	rleVert.setPhysicalScale(0.0, 1.0);
+	//rleVert.setPhysicalScale(0.0, 1.0);
+	rleVert.setPhysicalRange(0.0, 1.0, true);
+
 	//mout.warn() <<  "codeMin=" << src.odim.scaleInverse(reflMin) << mout.endl;
 	//RunLengthVertOp(src.odim.scaleInverse(reflMin)).process(srcElong, rleVert);  //
 	RunLengthVertOp(0.2).process(srcElong, rleVert);  //
 	storeDebugData(2, rleVert, "RLE-VERT");
 
+	mout.special() << "RemappingFunctor op:" << mout.endl;
 	UnaryFunctorOp<RemappingFunctor> remap;
 	remap.functor.fromValue = 0.0;
 	remap.functor.toValue =   1.0;
 	remap.process(rleVert, rleVert); // note: scale=1.0
 	storeDebugData(2, rleVert, "RLE-VERT-REMAP");
 
+	mout.special() << " op:" << mout.endl;
 	UnaryFunctorOp<FuzzyBell<double> > fuzzyBell;
 	fuzzyBell.functor.set(0,hD);
 	fuzzyBell.process(rleVert, rleVert);
 	storeDebugData(2, rleVert, "RLE-VERT-FUZZY");
 
 	/// Horizontal run lengths are computed on the vertical run lengths; using src would give too long lines (inside clouds)
+	mout.special() << "RunLengthHorzOp op:" << mout.endl;
 	Image rleHorz;
-	rleHorz.setPhysicalScale(0.0, 1.0);
+	//rleHorz.setPhysicalScale(0.0, 1.0);
+	rleHorz.setPhysicalRange(0.0, 1.0, true);
 	RunLengthHorzOp(0.5).process(rleVert, rleHorz);
 	storeDebugData(2, rleHorz, "RLE-HORZ");
 
+	mout.special() << "FuzzyStep op:" << mout.endl;
 	UnaryFunctorOp<drain::FuzzyStep<double> > fuzzyStep;
 	fuzzyStep.functor.set(0,hD);
 	fuzzyStep.traverseChannel(rleHorz, rleHorz);
 	storeDebugData(2, rleHorz, "RLE-HORZ-FUZZY");
 
 	// All physical: 1.0  dst.data.setOptimalScale(0.0, 1.0);
+	mout.special() << "MultiplicationFunctor op:" << mout.endl;
 	BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(rleVert, rleHorz, dst.data);
 	storeDebugData(2, dst.data, "FINAL");
 
+	mout.special() << "MultiplicationFunctor op2:" << mout.endl;
 	BinaryFunctorOp<MultiplicationFunctor> mop;
 	mop.functor.setScale(2.0 * sensitivity);
 	mop.traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*

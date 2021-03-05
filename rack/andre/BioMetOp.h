@@ -65,6 +65,7 @@ public:
 	 * \param reflDev     - fuzzy width of  \c reflMax
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
+	inline
 	BiometOp(double reflMax=-10.0, int maxAltitude=500, double reflDev=5.0, int devAltitude=1000) :
 		DetectorOp(__FUNCTION__, "Detects birds and insects.", "nonmet.biol"){
 

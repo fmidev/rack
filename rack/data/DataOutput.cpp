@@ -42,10 +42,20 @@ std::string DataOutput::quoted(const ODIMPath & path){
 	if (path.empty() || path.back().isRoot())
 		return "root";
 
-	std::string str;
+	drain::Logger mout("DataOutput", __FUNCTION__);
+
+	//ODIMPath p(path);
+	drain::Path<std::string,'_'> p(path);
+	mout.special() << p.str() << mout.endl;
+
+	return p.str();
+
+	//std::string str = drain::sprinter(path).s
+
+	//return drain::sprinter(path, drain::SimpleTypeLayout('_')).str()
 	//if (path.si)
-	path.toStr(str, '_');
-	return str;
+	//path.str(str, '_');
+	// return path.str().replace("/", "_");
 }
 
 void DataOutput::writeToDot(std::ostream & ostr, const Hi5Tree & tree, ODIMPathElem::group_t selector){
@@ -119,10 +129,11 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 	else {
 
 		const ODIMPathElem & e = path.back();
-		const drain::VariableMap & what  = group["what"].data.attributes;
-		const drain::VariableMap & where = group["where"].data.attributes;
+		//const drain::VariableMap & what  = group["what"].data.attributes;
+		//const drain::VariableMap & where = group["where"].data.attributes;
+		const drain::FlexVariableMap & attr = group.data.dataSet.properties;
 
-		const std::string quantity = what["quantity"].toStr();
+		const std::string quantity = attr.get("what:quantity", ""); // what["quantity"].toStr();
 		ostr << fill;
 		ostr << '"' <<  quoted(path) << '"' << ' ' << '[';
 
@@ -130,12 +141,18 @@ void DataOutput::writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int
 		ostr << "label=\"";
 		ostr << e ; //<< '|';
 		if (e.is(ODIMPathElem::DATASET)){
-			if (where.hasKey("elangle"))
-				ostr << ':' << ' ' << where["elangle"] << "deg" << ' ';
+
+			if (attr.hasKey("where:elangle"))
+				ostr << ':' << ' ' << attr["where:elangle"] << "deg" << ' ';
+			//if (where.hasKey("elangle"))
+				//ostr << ':' << ' ' << where["elangle"] << "deg" << ' ';
 			//ostr << "| {image|attributes}";
 		}
 		else if (e.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
+			//std::cerr << what << std::endl;
+			//group.data.dataSet.properties.get("what:quantity", "");
 			ostr << ':' << ' ' << quantity << ' ';
+			//ostr << ':' << ' ' << group.data.dataSet.properties.get("what:quantity", "") << ' ';
 			// if (group["data"].data.dataSet.isEmpty())
 			// ostr << "| {image| }";
 		}

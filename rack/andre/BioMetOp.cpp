@@ -47,7 +47,7 @@ void BiometOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	const int width  = srcData.data.getWidth();
 	const int height = srcData.data.getHeight();
 
-	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
+	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
 
 	/// Descending fuzzy step, located at (max) altitude.
 	//const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);

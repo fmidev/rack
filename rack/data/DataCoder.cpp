@@ -67,6 +67,12 @@ void DataCoder::init(){
 
 	SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
+	/*
+	mout.warn() << "undetectQualityCoeff" << DataCoder::undetectQualityCoeff << mout;
+	mout.warn() << "q.hasUndetectValue" << dataODIM.quantity << ' ' << q.hasUndetectValue() << mout;
+	mout.warn() << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
+	*/
+
 	if (SKIP_UNDETECT){
 		undetectValue = -std::numeric_limits<double>::max();
 		detectionThreshold = undetectValue;
@@ -81,7 +87,7 @@ void DataCoder::init(){
 		}
 	}
 
-	mout.debug() << parameters.toStr() << mout.endl;
+	// mout.warn() << parameters << mout.endl;
 
 }
 

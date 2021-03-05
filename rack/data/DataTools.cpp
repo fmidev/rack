@@ -101,12 +101,26 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	/// Write to "hidden" variables of this node (src).
 	drain::FlexVariableMap & a = src.data.dataSet.properties;
 	// Init with upper level state
-	a.importMap(attributes, false, LOG_DEBUG+2);
+	a.importMap(attributes, false); //, LOG_DEBUG+2);
 	//std::cerr << "MAP now: " << a << "\n\n";
 
 	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting previous (upper-level) values.
 	std::stringstream sstr;
-	for (std::set<ODIMPathElem>::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+	// Traverse children (recursion)
+	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
+		if (it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			const drain::VariableMap & attributes = it->second.data.attributes;
+			for(drain::VariableMap::const_iterator ait = attributes.begin(); ait != attributes.end(); ait++){
+				sstr.str("");
+				sstr << it->first << ':' << ait->first;
+				a[sstr.str()] = ait->second;
+				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
+			}
+		}
+	}
+
+	/*
+	for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
 
 		if (src.hasChild(*git)){
 
@@ -121,28 +135,15 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		}
 
 	}
-
-	/*
-	if (src.hasChild(ODIMPathElem::ARRAY)){  // move down?
-
-		drain::image::Image & img = src[ODIMPathElem::ARRAY].data.dataSet;
-		if (img.typeIsSet()){
-			a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
-			const drain::ValueScaling & s = img.getScaling();
-			img.setScaling(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
-			mout.warn() << a.get("what:quantity", "?") << ", scaling " << img.getScaling() << mout.endl;
-		}
-		mout.warn() << "scaling1 " << src[ODIMPathElem::ARRAY].data.dataSet.getScaling() << mout.endl;
-	}
-	 */
+	*/
 
 
-	// Traverse children (recursion)
+	// Step 2: Traverse other children (recursion)
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
 
 		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!it->second.data.noSave){
-				mout.debug(2) << it->first << " => ensure '/data' groups  " << mout.endl;
+				mout.debug3() << it->first << " => ensure '/data' groups  " << mout.endl;
 				it->second[ODIMPathElem::ARRAY].data.dataSet;
 			}
 		}
@@ -152,7 +153,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 			if (img.typeIsSet()){
 				a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
 				drain::ValueScaling & s = img.getScaling();
-				s.setScale(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
+				s.set(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
 				//s.setScale(a["what:gain"], a["what:offset"]);
 				// Needed. As a side effect, empty data1.img will get a scaling...
 				a["scale"]  = s.scale;

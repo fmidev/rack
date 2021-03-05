@@ -265,34 +265,75 @@ public:
 		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
 	}
 
+	RadarWindowConfig(const RadarWindowConfig & conf) :
+		drain::image::WindowConfig(conf),
+		widthM(conf.widthM),
+		heightD(conf.heightD),
+		contributionThreshold(conf.contributionThreshold),
+		invertPolar(conf.invertPolar),
+		relativeScale(conf.relativeScale){
+
+	}
 
 	/**
+	 *  \tparam FT - UnaryFunctor
+	 *
 	 *  \param odimSrc - metadata of the source data
 	 *  \param ftor - scaling of the result
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
 	//RadarWindowConfig(drain::UnaryFunctor & ftor, int width=3, int height=3, double contributionThreshold = 0.5) :
-	RadarWindowConfig(drain::UnaryFunctor & ftor, int widthM=1500, double heightD=3.0,
+	template <class FT>
+	RadarWindowConfig(const FT & ftor, int widthM=1500, double heightD=3.0,
 			double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
-		drain::image::WindowConfig(ftor), 		//drain::image::WindowConfig(ftor, width, height),
+		drain::image::WindowConfig(0, 0, ftor), 		//drain::image::WindowConfig(ftor, width, height),
 		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
 		// invertPolar(false), contributionThreshold(contributionThreshold) {
 	}
 
-	inline
-	void updatePixelSize(const PolarODIM & odimSrc){
+
+
+	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const ;
+	/*
+	{
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		// pixelConf = this->conf;  PROBLEM: ftor prevents op=
+		conf.widthM  = this->widthM;
+		conf.heightD = this->heightD;
+		conf.updatePixelSize(inputODIM);
+		conf.invertPolar   = this->invertPolar;
+		conf.contributionThreshold  = this->contributionThreshold;
+		conf.relativeScale = this->relativeScale;
+
+		if (conf.frame.width <= 0){
+			mout.note() << this->frame.width  << "pix ~ " << this->widthM << "m " << mout.endl;
+			//mout.note() << *this << mout.endl;
+			mout.warn() << "Requested width (" << conf.widthM <<  " meters) smaller than rscale ("<< inputODIM.rscale <<"), setting window width=1 " << mout.endl;
+			conf.frame.width = 1;
+		}
+
+		if (conf.frame.height == 0){
+			mout.warn() << "Requested height (" << conf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/inputODIM.area.height) <<"), setting window height=1 " << mout.endl;
+			conf.frame.height = 1;
+		}
+
+	}
+	*/
+
+// protected:
+
+	void updatePixelSize(const PolarODIM & inputODIM); /**{ // DopplerWindOp wants public
 		drain::Logger mout("RadarWindowConfig", __FUNCTION__);
 		//mout.note() << odimSrc << mout.endl;
-		this->width  = odimSrc.getBeamBins(this->widthM);
-		this->height = odimSrc.getAzimuthalBins(this->heightD);
+		this->frame.width  = odimSrc.getBeamBins(this->widthM);
+		this->frame.height = odimSrc.getAzimuthalBins(this->heightD);
 		//mout.note() << this->width << '<' << this->widthM << mout.endl;
 		//mout.note() << this->height << '<' << this->heightD << mout.endl;
 	}
-
-protected:
-
-
+	*/
 
 };
 
@@ -329,14 +370,14 @@ public:
 
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//mout.debug()  << "src Scaling0: " << src.getScaling() << mout.endl;
-		mout.debug(1) << "src props for odim: " << src.getProperties() << mout.endl;
+		mout.debug2() << "src props for odim: " << src.getProperties() << mout.endl;
 
 		this->odimSrc.updateFromMap(src.getProperties());
 		mout.info()  << "NI=" << this->odimSrc.getNyquist(LOG_WARNING) << mout.endl;
-		mout.warn() << "copied odim: " << this->odimSrc << mout.endl;
+		mout.info() << "copied odim: " << EncodingODIM(this->odimSrc) << mout.endl;
 
 		SlidingWindow<C, R>::setSrcFrame(src);
-		mout.debug(1)  << "src Scaling: " << src.getScaling() << mout.endl;
+		mout.debug2()  << "src Scaling: " << src.getScaling() << mout.endl;
 	}
 
 	/*
@@ -367,7 +408,8 @@ protected:
 
 	inline
 	void setImageLimits() const {
-		this->src.adjustCoordinateHandler(this->coordinateHandler);
+		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
+		// this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
 	/// To compensate polar geometry, set applicable range for pixel area scaling.
@@ -375,16 +417,16 @@ protected:
 
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 
-		if (this->odimSrc.geometry.height == 0)
-			mout.error() << "src odim.geometry.height==0" << mout.endl;
+		if (this->odimSrc.area.height == 0)
+			mout.error() << "src odim.area.height==0" << mout.endl;
 
 		/// Distance [bins] at which a bin is (nearly) square, ie. beam-perpendicular and beam-directional steps are equal.
-		const double r = static_cast<double>(this->odimSrc.geometry.height) / (2.0*M_PI);
-		const int max = static_cast<int>(this->odimSrc.geometry.width);
+		const double r = static_cast<double>(this->odimSrc.area.height) / (2.0*M_PI);
+		const int max = static_cast<int>(this->odimSrc.area.width);
 
 		rangeNorm    = static_cast<int>(r);
-		/// Distance [bins] at which a single azimuthal step is equal to conf.height steps at rangeNorm.
-		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.height));
+		/// Distance [bins] at which a single azimuthal step is equal to conf.frame.height steps at rangeNorm.
+		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.frame.height));
 		if ((rangeNorm <= 0) || (rangeNormEnd >= max)){
 
 			mout.note() << rangeNorm << '-' << rangeNormEnd << mout.endl;
@@ -403,14 +445,14 @@ protected:
 	bool reset(){
 
 		if (this->location.x <= rangeNorm){
-			this->setLoopLimits(this->conf.width, this->conf.height);
+			this->setLoopLimits(this->conf.frame.width, this->conf.frame.height);
 		}
 		else if (this->location.x < rangeNormEnd){ // from 'height' down to 1
-			this->setLoopLimits(this->conf.width, (rangeNorm * this->conf.height)/(this->location.x+1) );
+			this->setLoopLimits(this->conf.frame.width, (rangeNorm * this->conf.frame.height)/(this->location.x+1) );
 			//std::cerr << "loop limits " << this->jMax << std::endl;
 		}
 		else {
-			this->setLoopLimits(this->conf.width, 1);
+			this->setLoopLimits(this->conf.frame.width, 1);
 		}
 		//drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//mout.warn() << this->iMax << ',' << this->jMax << '\t' << this->getSamplingArea( )<< mout.endl;
@@ -458,10 +500,30 @@ template <class C>
 class RadarWindowAvg : public SlidingRadarWindow<C> {
 public:
 
+	//drain::UnaryFunctor & myFunctor;
 
-	RadarWindowAvg(const C & cnf) : SlidingRadarWindow<C>(cnf), sum(0.0), count(0) {};
+	RadarWindowAvg(int width=0, int height=0) :
+		SlidingRadarWindow<C>(width,height),
+		//myFunctor(this->conf.getFunctor()),
+		sum(0.0),
+		count(0) {
+	};
 
-	RadarWindowAvg(int width=0, int height=0) : SlidingRadarWindow<C>(width,height), sum(0.0), count(0) {};
+	RadarWindowAvg(const RadarWindowAvg & window) :
+		SlidingRadarWindow<C>(window),
+		//myFunctor(this->conf.getFunctor(window.conf.getFunctorName())), // kludge
+		sum(0.0),
+		count(0) {
+	};
+
+	RadarWindowAvg(const C & conf) :
+		SlidingRadarWindow<C>(conf),
+		// myFunctor(this->conf.getFunctor(conf.getFunctorName())),
+		sum(0.0),
+		count(0) {
+	};
+
+
 
 
 	virtual
@@ -499,7 +561,7 @@ protected:
 		if (count > 0){
 			//if (this->location.x == this->location.y)
 			//	std::cerr << sum << '\t' << count << '\n';
-			this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(sum/static_cast<double>(count)));
+			this->dst.putScaled(this->location.x, this->location.y, this->myFunctor(sum/static_cast<double>(count)));
 		}
 		else
 			this->dst.put(this->location, this->odimSrc.undetect); // ?

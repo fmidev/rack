@@ -45,38 +45,27 @@ namespace rack {
 
 
 class PolarSector : public drain::BeanLike {
-    public: //re 
+
+public:
+
 	PolarSector() : drain::BeanLike(__FUNCTION__) {
-		parameters.link("azm",   azm.vect,   "deg");
-		parameters.link("range", range.vect, "km");
-		parameters.link("ray",   ray.vect,   "index");
-		parameters.link("bin",   bin.vect,   "index");
+		parameters.link("azm",   azmRange.tuple(),   "deg");
+		parameters.link("range", distanceRange.tuple(), "km");
+		parameters.link("ray",   rayRange.tuple(),   "index");
+		parameters.link("bin",   binRange.tuple(),   "index");
 	}
 
-	/// Start azimuth [deg]
-	drain::Range<double> azm;
-	// double azm1;
+	/// Azimuthal sector [deg]
+	drain::Range<double> azmRange;
 
-	/// End azimuth [deg]
-	//  double azm2;
+	/// Radial distance range [km]
+	drain::Range<double> distanceRange;
 
-	/// Start distance [km]
-	drain::Range<int> range;
-	//  int range1;  // km
-	/// End distance [km]
-	//  int range2;  // km
+	/// Azimuthal [index]
+	drain::Range<int> rayRange;
 
-	/// Start beam [index]
-	drain::Range<int> ray;
-	// int ray1;
-	/// Start beam [index]
-	// int ray2;
-
-	/// Start bin [index]
-	drain::Range<int> bin;
-	//  int bin1;
-	/// End bin [index]
-	//  int bin2;
+	/// Radial distance range [index]
+	drain::Range<int> binRange;
 
 	void reset();
 
@@ -84,12 +73,12 @@ class PolarSector : public drain::BeanLike {
 	inline
 	void setRange(int range, int range2 = 0){
 		if (range2 < range){
-			this->range.set(range2, range);
+			this->distanceRange.set(range2, range);
 			// this->range1 = range2;
 			// this->range2 = range;
 		}
 		else {
-			this->range.set(range, range2);
+			this->distanceRange.set(range, range2);
 			// this->range1 = range;
 			// this->range2 = range2;
 		}
@@ -100,17 +89,17 @@ class PolarSector : public drain::BeanLike {
 	void setAzimuth(double azm, double azm2 = std::numeric_limits<double>::max()){
 
 		if (azm2 != std::numeric_limits<double>::max())
-			this->azm.set(azm, azm2);
+			this->azmRange.set(azm, azm2);
 		else
-			this->azm.set(azm, azm);
+			this->azmRange.set(azm, azm);
 
 	};
 
 	inline
 	int getSafeRay(const PolarODIM & odim, int j){
-		j = j % odim.geometry.height;
+		j = j % odim.area.height;
 		if (j < 0)
-			j += odim.geometry.height;
+			j += odim.area.height;
 		return j;
 	}
 

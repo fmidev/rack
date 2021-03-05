@@ -46,11 +46,17 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 		// NOTE: these should be in DATASET level
 		link("where:projdef", projdef = "");
-		link("where:xsize", geometry.width  = 0L); //xsize = 0L);
-		link("where:ysize", geometry.height = 0L); //ysize = 0L);
+		link("where:xsize", area.width  = 0L); //xsize = 0L);
+		link("where:ysize", area.height = 0L); //ysize = 0L);
 		link("where:xscale", xscale = 0.0);
 		link("where:yscale", yscale = 0.0);
 		//
+		/*
+		LL_lon = bboxD.lowerLeft.x;
+		LL_lat = bboxD.lowerLeft.y;
+		UR_lon = bboxD.upperRight.x;
+		UR_lat = bboxD.upperRight.y;
+		 */
 		link("where:UR_lon", UR_lon = 0.0);
 		link("where:UR_lat", UR_lat = 0.0);
 		link("where:UL_lon", UL_lon = 0.0);
@@ -80,26 +86,31 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 void CartesianODIM::setGeometry(size_t cols, size_t rows){
 
-	std::cerr << "CartesianODIM::setGeometry (re)scaling. \n";
+	if ((cols == area.width) && (rows == area.height)){
+		return;
+	}
 
-	if (geometry.width)
-		xscale = xscale * static_cast<double>(geometry.width) / static_cast<double>(cols);
-	if (geometry.height)
-		yscale = yscale * static_cast<double>(geometry.height) / static_cast<double>(rows);
+	// std::cerr << "CartesianODIM::setGeometry (re)scaling. \n";
+
+	if (area.width > 0)
+		xscale *= static_cast<double>(area.width) / static_cast<double>(cols);
+
+	if (area.height > 0)
+		yscale *= static_cast<double>(area.height) / static_cast<double>(rows);
 
 	// or getScale
 	// xscale = geoFrame.getXScale();
 	// yscale = geoFrame.getYScale();
 
-	geometry.width = cols;
-	geometry.height = rows;
+	area.width = cols;
+	area.height = rows;
 
 }
 
 void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 
-	geometry.width = geoFrame.getFrameWidth();
-	geometry.height = geoFrame.getFrameHeight();
+	area.width = geoFrame.getFrameWidth();
+	area.height = geoFrame.getFrameHeight();
 
 	projdef = geoFrame.getProjection();
 
@@ -115,7 +126,7 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 	geoFrame.pix2LLdeg(0,-1, x2,y2); // (vertically outside)
 	UL_lon = x2;
 	UL_lat = y2;
-	geoFrame.pix2LLdeg(geometry.width,geometry.height-1, x2,y2);  // (horizontally outside)
+	geoFrame.pix2LLdeg(area.width,area.height-1, x2,y2);  // (horizontally outside)
 	LR_lon = x2;
 	LR_lat = y2;
 

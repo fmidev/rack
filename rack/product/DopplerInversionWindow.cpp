@@ -70,7 +70,7 @@ void DopplerInversionWindow::initialize(){
 
 	matrixInformation.set(0.0, -0.2, 250);
 
-	area = static_cast<double>(conf.width * conf.height);
+	area = static_cast<double>(conf.frame.getArea());
 
 	vMax = odimOut.getMax();
 	const double vMin = odimOut.getMin();

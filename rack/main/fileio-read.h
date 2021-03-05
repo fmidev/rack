@@ -32,9 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_FILE_IO_READ
 #define RACK_FILE_IO_READ
 
-#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-
+//#include "drain/prog/CommandRegistry.h"
+#include <drain/prog/CommandInstaller.h>
 #include <hi5/Hi5Read.h>
 
 //#include "data/Quantity.h"
@@ -58,13 +57,19 @@ public:
 };
 */
 
-class CmdInputPrefix : public drain::BasicCommand {
+class CmdInputPrefix : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdInputPrefix() : drain::BasicCommand(__FUNCTION__, "Path prefix for input files."){
-		parameters.link("path", getResources().inputPrefix = "");
+	CmdInputPrefix() : drain::SimpleCommand<std::string>(__FUNCTION__, "Path prefix for input files."){
+		//RackContext & ctx = getContext<RackContext>(); // DO NOT LINK, dynamic context!
+		//parameters.link("path", getResources().inputPrefix = "");
 	};
+
+	inline
+	void exec() const {
+		getContext<RackContext>().inputPrefix = value;
+	}
 };
 
 
@@ -75,7 +80,10 @@ public:
 
 	CmdInputFile() : drain::SimpleCommand<std::string>(__FUNCTION__, "Read HDF5, text or image file",
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|ppm|txt]"){ //, inputComplete(true) {
+		//execRoutine = true;
+		//this->section = drain::Static::get<drain::GeneralSection>().index | drain::Static::get<drain::TriggerSection>().index
 	};
+
 
 	//mutable bool inputComplete;
 
@@ -109,7 +117,7 @@ protected:
 		odim.type = drain::Type::getTypeChar(srcImage.getType());
 		//odim.updateFromMap(rootProperties);
 		odim.updateFromMap(srcImage.properties);
-		if (odim.scale == 0){
+		if (odim.scaling.scale == 0){
 			if (!odim.quantity.empty())
 				getQuantityMap().setQuantityDefaults(odim, odim.quantity);
 		}
@@ -119,6 +127,7 @@ protected:
 	}
 
 };
+
 
 
 

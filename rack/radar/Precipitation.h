@@ -37,19 +37,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack{
 
-class Precipitation : public drain::BeanLike  {
+class Precip : public drain::BeanLike  {
 
 public:
 
 
-	Precipitation(const std::string & name = "", const std::string & description = "") : drain::BeanLike(name, description) { // , parameters(true, ':')
+	Precip(const std::string & name = "", const std::string & description = "") : drain::BeanLike(name, description) { // , parameters(true, ':')
 		this->parameters.separator = ',';
 	}
 
 
 	virtual
 	inline
-	~Precipitation(){};
+	~Precip(){};
 
 	/// Redefined such that if argument is a preset, reinvoke with its arguments.
 	/*
@@ -86,12 +86,10 @@ public:
 
 protected:
 
-	virtual
-	inline
-	void initParameters(){};
+	//virtual inline
+	//void initParameters(){};
 
-	virtual
-	void setParameterReferences() = 0;
+	// virtual void setParameterReferences() = 0;
 
 	std::map<std::string,std::string> presets;
 
@@ -103,24 +101,27 @@ private:
 };
 
 
-class PrecipitationZ : public Precipitation {
-    public: //re 
+class PrecipZ : public Precip {
+
+public:
+
 	inline
-    PrecipitationZ(double a=200.0, double b=1.6) :
-    	Precipitation(__FUNCTION__, "Precipitation rate from Z (reflectivity)"), a(a), b(b){
-		setParameterReferences();
+    PrecipZ(const std::string  & name=__FUNCTION__, double a=200.0, double b=1.6) :
+    	Precip(name, "Precipitation rate from Z (reflectivity)"), a(a), b(b){
+		parameters.link("a", this->a = a);
+		parameters.link("b", this->b = b);
+		update();
 	};
 
 	inline
-	PrecipitationZ(const PrecipitationZ & p){
-		setParameterReferences();
-		BeanLike::copy(p);
+	PrecipZ(const PrecipZ & p) : Precip(p) {
+		parameters.copyStruct(p.getParameters(), p, *this);
+		update();
 	}
-	//inline 	~PrecipitationZ(){};
 
 	virtual
 	inline
-	void initParameters(){
+	void update(){
 		aInv = 1.0/a;
 		bInv = 1.0/b;
 	};
@@ -138,31 +139,48 @@ class PrecipitationZ : public Precipitation {
 
 protected:
 
-	void setParameterReferences(){
-		parameters.link("a", this->a = a);
-		parameters.link("b", this->b = b);
-		presets["Marshall-Palmer"] = "200,1.6";
-		initParameters();  // todo lower
-	}
-
 
 	double aInv;
 	double bInv;
 
 };
 
-class PrecipitationKDP : public Precipitation {
-    public: //re 
-//public:
+class PrecipZrain : public PrecipZ {
+
+public:
+
+	PrecipZrain(double a=200.0, double b=1.6) : PrecipZ(__FUNCTION__, a ,b){
+		presets["Marshall-Palmer"] = "200,1.6";
+	}
+};
+
+class PrecipZsnow : public PrecipZ {
+
+public:
+
+	PrecipZsnow(	double a=222.2, double b=1.1111) : PrecipZ(__FUNCTION__, a ,b){
+		//presets["Marshall-Palmer"] = "200,1.6";
+	}
+
+};
+
+
+class PrecipKDP : public Precip {
+
+public:
 
 	inline
-    PrecipitationKDP(double a=21.0, double b=0.72) : Precipitation(__FUNCTION__, "Precipitation rate from KDP"), a(a), b(b) {
-		setParameterReferences();
+    PrecipKDP(double a=21.0, double b=0.72) : Precip(__FUNCTION__, "Precip rate from KDP"), a(a), b(b) {
+		//setParameterReferences();
+		parameters.link("a", a);
+		parameters.link("b", b);
+		presets["Leinonen2012"] = "21,0.72";
 	};
 
-	PrecipitationKDP(const PrecipitationKDP & p){ // copy name?
-		setParameterReferences();
-		copy(p);
+	PrecipKDP(const PrecipKDP & p) : Precip(p) { // copy name?
+		parameters.copyStruct(p.getParameters(), p, *this);
+		//setParameterReferences();
+		//copy(p);
 	};
 
 
@@ -176,31 +194,29 @@ class PrecipitationKDP : public Precipitation {
 	double a;
 	double b;
 
-protected:
-
-	void setParameterReferences(){
-		parameters.link("a", a);
-		parameters.link("b", b);
-		presets["Leinonen2012"] = "21,0.72";
-	}
 
 };
 
-class PrecipitationZZDR : public Precipitation {
-    public: //re 
+class PrecipZZDR : public Precip {
 
-	PrecipitationZZDR(double a=0.0122, double b=0.820, double c=-2.28) :
-		Precipitation(__FUNCTION__, "Precipitation rate from Z and ZDR"), a(a), b(b), c(c) {
-		setParameterReferences();
+public:
+
+	PrecipZZDR(double a=0.0122, double b=0.820, double c=-2.28) :
+		Precip(__FUNCTION__, "Precipitation rate from Z and ZDR"), a(a), b(b), c(c) {
+		parameters.link("a", this->a);
+		parameters.link("b", this->b);
+		parameters.link("c", this->c);
+		// setParameterReferences();
 	};
 
 	inline
-    PrecipitationZZDR(const PrecipitationZZDR & p) {
-		setParameterReferences();
-		copy(p);
+    PrecipZZDR(const PrecipZZDR & p) : Precip(p) {
+		parameters.copyStruct(p.getParameters(), p, *this);
+		//setParameterReferences();
+		// copy(p);
 	};
 
-	//inline virtual 	~PrecipitationZZDR(){};
+	//inline virtual 	~PrecipZZDR(){};
 
 	inline
 	double rainRate(double dbz, double zdr) const {
@@ -213,35 +229,27 @@ class PrecipitationZZDR : public Precipitation {
 	double b;
 	double c;
 
-protected:
-
-	void setParameterReferences(){
-		parameters.link("a", this->a);
-		parameters.link("b", this->b);
-		parameters.link("c", this->c);
-		//presets[""]
-	}
-
 
 };
 
-class PrecipitationKDPZDR : public Precipitation {
+class PrecipKDPZDR : public Precip {
 
 public:
 
 	inline
-	PrecipitationKDPZDR(double a=29.7, double b=0.890, double c=-0.927) :
-	Precipitation(__FUNCTION__, "Precipitation rate from KDP and ZDR"), a(a), b(b), c(c) {
-		setParameterReferences();
+	PrecipKDPZDR(double a=29.7, double b=0.890, double c=-0.927) :
+	Precip(__FUNCTION__, "Precipitation rate from KDP and ZDR"), a(a), b(b), c(c) {
+		parameters.link("a", a);
+		parameters.link("b", b);
+		parameters.link("c", c);
 	};
 
 	inline
-    PrecipitationKDPZDR(const PrecipitationKDPZDR & p) {
-		setParameterReferences();
-		copy(p);
+    PrecipKDPZDR(const PrecipKDPZDR & p) : Precip(p) {
+		parameters.copyStruct(p.getParameters(), p, *this);
 	};
 
-	// inline virtual 	~PrecipitationKDPZDR(){};
+	// inline virtual 	~PrecipKDPZDR(){};
 	inline
 	double rainRate(double kdp, double zdr) const {
 		double r = -1.0;
@@ -253,14 +261,6 @@ public:
 	double b;
 	double c;
 
-protected:
-
-	void setParameterReferences(){
-		parameters.link("a", a);
-		parameters.link("b", b);
-		parameters.link("c", c);
-		//presets[""]
-	}
 };
 
 }

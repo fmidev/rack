@@ -36,6 +36,36 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/*
+void parse(const std::string & path){
+}
+*/
+
+bool ODIMPathMatcher::ensureLimitingSlash(){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	mout.unimplemented() << "implementation postponed/cancelled" << mout.endl;
+
+	/*
+	if (empty()){
+		push_front(ODIMPathElem::ROOT);
+		mout.warn() << "empty matcher, added root -> '" << *this << "'" << mout.endl;
+		return true;
+	}
+
+	if (front().empty() && back().empty()){
+		mout.info() << "no leading or trailing separator char '" << separator.character << "'" << mout.endl;
+		push_front(ODIMPathElem::ROOT);
+		mout.note() << "added leading (root) -> '" << *this << "'" << mout.endl;
+		return true;
+	}
+	*/
+
+	return false;
+
+}
+
 void ODIMPathElemMatcher::extractIndex(const std::string &s){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -82,7 +112,9 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 
 	try {
 		//mout.warn() << "current: " << flags;
-		flags = prefix;
+		//flags = prefix;
+		//flags.set(prefix);
+		flags.set(flags.getValue(prefix));
 		// mout.warn() << " => flags=" << flags << '=' << flags.value  << mout.endl;
 		if (indexed){
 			if (flags.isSet(ODIMPathElem::ARRAY)){ //  value & ODIMPathElem::ARRAY){
@@ -103,8 +135,12 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 		return true;
 	}
 	catch (const std::runtime_error & e) {
-		mout.warn() << " -> could NOT set " << prefix << " ==> ?" << flags << mout.endl;
-		return false;
+		mout.warn() << "could not set '" << prefix << "' ==> ?" << flags << mout.endl;
+		mout.note() << " -> dict: " << flags.getDict() << mout.endl;
+		mout.note() << " -> flag-sep: " << flags.separator << mout.endl;
+		mout.note() << " -> dict-sep: " << flags.getDict().separator << mout.endl;
+		mout.note() << " -> value: " << flags.getValue(prefix, '|') << mout.endl;
+	return false;
 	}
 
 }
@@ -120,7 +156,7 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 	}
 	else if (elem.isIndexed()){
 		// same group, indexed (DATASET, DATA, QUALITY)
-		mout.debug(1);
+		mout.debug2();
 		//mout.warn();
 		mout <<  this->index  << '(' << elem.index << ')' << this->indexMax << '!';
 		if (elem.index < this->index){
@@ -141,16 +177,17 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 }
 
 
-std::ostream & ODIMPathElemMatcher::toOStr(std::ostream & sstr) const {
+std::ostream & ODIMPathElemMatcher::toStream(std::ostream & ostr) const {
 
 	//for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){}
-	sstr << flags;
+	ostr << flags; // << flags.value;
+	//flags.keysToStream(ostr); // '|' !
 
 	// returns true if any of thflagsem elems is indexed (DATASET | DATA | QUALITY);
 	if (ODIMPathElem::isIndexed(flags.value))
-		sstr << this->index << ':' << this->indexMax;
+		ostr << this->index << ':' << this->indexMax;
 
-	return sstr;
+	return ostr;
 }
 
 
@@ -199,7 +236,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug(1) << "path:    " << path    << mout.endl;
+	mout.debug3() << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_iterator mit = this->begin();
 	if (mit->isRoot())
@@ -210,7 +247,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 		++pit;
 
 	while ((mit!=this->end()) && (pit!=path.end())){
-		mout.debug(1) << *mit << ":\t" << *pit;
+		mout.debug3() << *mit << ":\t" << *pit;
 		if (!mit->test(*pit)){
 			mout << '*' << mout.endl;
 			return false;
@@ -227,20 +264,20 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug(1) << "path:    " << path    << mout.endl;
+	mout.debug3() << "path:    " << path    << mout.endl;
 
 	rack::ODIMPathMatcher::const_reverse_iterator mit = this->rbegin();
 	rack::ODIMPath::const_reverse_iterator pit = path.rbegin();
 
 	while ((mit!=this->rend()) && (pit!=path.rend())){
-		//mout.debug(1) << *mit << ":\t" << *pit;
+		//mout.debug2() << *mit << ":\t" << *pit;
 		if (!mit->test(*pit)){
-			mout.debug(1) << *mit << ":\t no" << *pit << mout.endl;
+			mout.debug3() << *mit << ":\t no... " << *pit << mout.endl;
 			// mout << '*' << mout.endl;
 			return false;
 		}
 		//mout << '%' << mout.endl;
-		mout.debug(1) << *mit << ":\t YES..." << *pit << mout.endl;
+		mout.debug3() << *mit << ":\t YES... " << *pit << mout.endl;
 		++mit, ++pit;
 	}
 	//mout << mout.endl;

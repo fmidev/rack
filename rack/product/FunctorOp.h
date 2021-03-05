@@ -68,11 +68,11 @@ public:
 
 
 		this->allowedEncoding.link("type", odim.type = "C");
-		this->allowedEncoding.link("gain", odim.scale = 0.1);
-		this->allowedEncoding.link("offset", odim.offset = 0.0);
-		odim.geometry.height = 1;
+		this->allowedEncoding.link("gain", odim.scaling.scale = 0.1);
+		this->allowedEncoding.link("offset", odim.scaling.offset = 0.0);
+		odim.area.height = 1;
 		// allowedEncoding.link("type", odim.type, "S");
-		// allowedEncoding.link("gain", odim.scale, 0.001);
+		// allowedEncoding.link("gain", odim.scaling.scale, 0.001);
 
 	};
 
@@ -85,10 +85,10 @@ protected:
 
 	virtual
 	void setGeometry(const PolarODIM & srcODIM, Data<PolarDst> & dstData) const {
-		dstData.odim.geometry.width = (odim.geometry.width>0) ? odim.geometry.width : srcODIM.geometry.width;
-		dstData.odim.geometry.height = 1;
-		dstData.odim.rscale = (static_cast<double>(srcODIM.geometry.width) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.geometry.width);
-		dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
+		dstData.odim.area.width = (odim.area.width>0) ? odim.area.width : srcODIM.area.width;
+		dstData.odim.area.height = 1;
+		dstData.odim.rscale = (static_cast<double>(srcODIM.area.width) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.area.width);
+		dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	};
 
 

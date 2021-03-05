@@ -29,12 +29,12 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/prog/CommandInstaller.h>
 #include <set>
 #include <ostream>
 
 #include "drain/util/Log.h"
 #include "drain/prog/Command.h"
-
 #include "data/ODIM.h"
 #include "andre/AndreOp.h"
 #include "andre/DetectorOp.h"
@@ -67,6 +67,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // Utils
 #include "andre/QualityCombinerOp.h"
 
+#include "resources.h"
 #include "andre.h"
 
 
@@ -74,7 +75,8 @@ namespace rack {
 
 
 
-
+// This command is problematci as to cloned context.
+/*
 class ClutterMapRead : public drain::SimpleCommand<std::string> {
 
 public:
@@ -87,13 +89,15 @@ public:
 	void exec() const {
 		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.info() << "querying " << value << mout.endl;
-		//clutter.productOp.setClutterMap(value);
+		// OLD:
 		clutterOp.setClutterMap(value);
 	};
 
+	// OLD:
 	ClutterOp & clutterOp;
 
 };
+*/
 
 
 /// Set the default quality [0.0,1.0] of radar data, typically close to 0.9.
@@ -101,38 +105,163 @@ public:
  *   Typically set prior to anomaly detection.
  *
  */
-class DefaultQuality : public drain::BasicCommand {
+class AnDReDefaultQuality : public drain::SimpleCommand<float>{
 
 public:
 
-	DefaultQuality() : drain::BasicCommand(__FUNCTION__, "Quality index value below which also CLASS information will be updated.") {
-		parameters.link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
-		drain::getRegistry().add(*this, __FUNCTION__, 0);
-	};
-
-};
-
-
-class Universal : public drain::BasicCommand {
-
-public:
-
-	Universal() : drain::BasicCommand(__FUNCTION__, "Toggle the support for universal ie. Dataset-wide quality indices."){
-		drain::getRegistry().add(*this, __FUNCTION__, 0);
+	AnDReDefaultQuality() : drain::SimpleCommand<float>(__FUNCTION__,
+			"Quality index value below which also CLASS information will be updated.", "threshold", // 0.90
+			0.8, "0...1") { // getContext<RackContext>().defaultQuality
+		//parameters.link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
 	};
 
 	void exec() const {
-		// toggle
-		DetectorOp::SUPPORT_UNIVERSAL = !DetectorOp::SUPPORT_UNIVERSAL;
-	};
+		RackContext & ctx = this->template getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__ );
+		ctx.defaultQuality = value;
+	}
 
 };
 
 
+class AnDReUniversal : public drain::SimpleCommand<bool> {
+
+public:
+
+	AnDReUniversal() : drain::SimpleCommand<bool>(__FUNCTION__, "Toggle the support for universal ie. Dataset-wide quality indices.", "unversal", true){
+	};
+
+	void exec() const {
+		RackContext & ctx = this->template getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__ );
+		// ctx.statusFlags.set(ANDRE_UNIVERSAL, this->value);
+		DetectorOp::SUPPORT_UNIVERSAL = this->value;
+	};
+
+	/*
+	const std::string & getDescription() const {
+		static std::string s;
+		s =  description + " Flags:" + drain::StatusFlags::getSharedDict().toStr();
+		return s;
+	}
+	*/
+
+	// static
+	//const drain::Flagger::value_t ANDRE_UNIVERSAL;
+
+};
+
+
+//const drain::Flagger::value_t AnDReUniversal::ANDRE_UNIVERSAL = drain::StatusFlags::add("ANDRE_UNIVERSAL");
 
 
 
+template <class OP>
+class AnDReCommand : public drain::BeanCommand<OP>{
 
+public:
+
+	AnDReCommand(){
+	};
+
+	AnDReCommand(const AnDReCommand & cmd){
+		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd, *this);
+	};
+
+	/// Set implicit parameters
+	virtual
+	void update(){
+
+		RackContext & ctx = this->template getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
+
+		mout.debug() << "Applying data selector and targetEncoding " << mout.endl;
+
+		if (!ctx.select.empty()){
+			mout.info() << "Storing AnDRe selector: " << ctx.select << mout.endl;
+			ctx.andreSelect = ctx.select;
+			ctx.select.clear();
+		}
+
+		if (!ctx.andreSelect.empty()){
+			mout.special() << "Applying AnDRe data selector: " << ctx.andreSelect << mout.endl;
+			this->bean.dataSelector.setParameters(ctx.andreSelect);
+			mout.debug2() << "-> new values: " << this->bean.getDataSelector() << mout.endl;
+		}
+
+		//this->bean.UNIVERSAL = ctx.statusFlags.getValue(AnDReUniversal::ANDRE_UNIVERSAL);
+
+	}
+
+	virtual
+	void exec() const {
+
+		RackContext & ctx = this->template getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
+
+		mout.timestamp("BEGIN_ANDRE");
+		//mout.warn() = "hey!";
+
+
+
+		// this->bean.dataSelector.setParameters(ctx.andreSelect);
+
+		mout.debug() << "Running:  " << this->bean << mout.endl;
+		mout.note() << "AnDRe selector: " << ctx.andreSelect << mout.endl;
+
+		//const Hi5Tree &src = ctx.inputHi5;
+		 //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
+		Hi5Tree & dst =ctx.getHi5(RackContext::INPUT);
+		const Hi5Tree &src = dst;
+		//mout.note() << src << mout.endl;
+
+		//mout.warn() << dst << mout.endl;
+		this->bean.processVolume(src, dst);
+
+		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		DataTools::updateInternalAttributes(dst);
+		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
+		ctx.currentHi5      = & dst;
+
+		mout.timestamp("END_ANDRE");
+	};
+
+};
+
+template <class OP>
+class DetectorCommand : public AnDReCommand<OP>{
+
+public:
+
+	/*
+	DetectorCommand(): AnDReCommand(){
+	};
+
+	DetectorCommand(const DetectorCommand & cmd) : AnDReCommand(){
+		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd, *this);
+	};
+	*/
+
+	virtual
+	void update(){
+
+		RackContext & ctx = this->template getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
+
+		this->AnDReCommand<OP>::update();
+
+
+		mout.unimplemented() << "...Applying UNIVERSAL" << mout.endl;
+
+		// TODO: redesign this...
+		// DetectorOp::SUPPORT_UNIVERSAL = ctx.statusFlags.isSet(AnDReUniversal::ANDRE_UNIVERSAL);
+
+		//this->bean.UNIVERSAL = ctx.statusFlags.isSet(AnDReUniversal::ANDRE_UNIVERSAL);
+
+	}
+
+};
 
 
 /// Keep combined OBSOLETE?
@@ -155,46 +284,108 @@ class AnDReStoreCombined : public drain::SimpleCommand<std::string> {
 static drain::CommandEntry<AnDReStoreCombined> anDReStoreCombined("andre", "aStoreCombined");
 */
 
+/*
+*/
+
 // } // namespace ::
 
 
-AnDReModule::AnDReModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix){
 
-	static AnDReLetAdapter<AttenuationOp> attn;
-	static AnDReLetAdapter<BiometOp>   biomet;
-	static AnDReLetAdapter<BirdOp>     bird;
-	static AnDReLetAdapter<DopplerNoiseOp> dopplerNoise;
-	static AnDReLetAdapter<EmitterOp> emitter;
-	static AnDReLetAdapter<InsectOp>   insect;
-	static AnDReLetAdapter<JammingOp> jamming;
-	//static AnDReLetAdapter<NoiseOp>     noise; // on hold (bak)
-	static AnDReLetAdapter<NonMetOp>  nonMet;
-	static AnDReLetAdapter<ShipOp>       ship;
-	static AnDReLetAdapter<SpeckleOp> speckle;
 
+typedef drain::CommandInstaller<'a',AnDReSection> AnDReInstaller;
+
+class DetectorInstaller: public AnDReInstaller {
+
+public:
+
+	DetectorInstaller(drain::CommandBank & bank = drain::getCommandBank()) : AnDReInstaller(bank){
+	};
+
+	template <class OP>
+	//DetectorCommand<OP> & install(char alias = 0){
+	drain::Command & install(char alias = 0){
+		std::string name = OP().getName();
+		drain::CommandBank::deriveCmdName(name, getPrefix());
+		// return cmdBank.add<DetectorCommand<OP> >(name);
+		drain::Command  & cmd = cmdBank.add<DetectorCommand<OP> >(name);
+		cmd.section = getSection().index;
+		return cmd;
+
+	};
+
+};
+
+
+class RemoverInstaller: public AnDReInstaller {
+
+public:
+
+	RemoverInstaller(drain::CommandBank & bank = drain::getCommandBank()) : AnDReInstaller(bank){
+	};
+
+	/**
+	 *   AnDReCommand<OP>
+	 */
+	template <class OP>  // AnDReCommand<OP>
+	drain::Command & install(char alias = 0){
+		std::string name = OP().getName();
+		drain::CommandBank::deriveCmdName(name, getPrefix());
+		//return cmdBank.add<AnDReCommand<OP> >(name);
+		drain::Command & cmd = cmdBank.add<AnDReCommand<OP> >(name);
+		cmd.section = getSection().index;
+		return cmd;
+	};
+
+};
+
+// Alternatively, could be two separate modules: AnDReDetectorModule and AnDReRemoverModule
+AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // : CommandSection("andre"){
+
+	drain::CommandBank::trimWords().insert("Op");
+	drain::CommandBank::trimWords().insert("AnDRe");
+
+	//drain::CommandBank & bank = drain::getCommandBank();
+
+	// Shared/general AnDRe commands
+	//AnDReInstaller installer(cmdBank);
+	install<AnDReUniversal>();
+	install<AnDReDefaultQuality>();
+	install<AnDReCommand<QualityCombinerOp> >(); // qualityCombiner;
+
+
+	// Wrapper for detector ops
+	DetectorInstaller detectorInstaller(cmdBank);
+	detectorInstaller.install<AttenuationOp>(); // attn;
+	detectorInstaller.install<BiometOp>(); //   biomet;
+	detectorInstaller.install<BirdOp>(); //     bird;
+	detectorInstaller.install<DopplerNoiseOp>(); // dopplerNoise;
+	detectorInstaller.install<EmitterOp>(); // emitter;
+	detectorInstaller.install<InsectOp> (); //  insect;
+	detectorInstaller.install<JammingOp>(); // jamming;
+	//detectorInstaller.install<NoiseOp>     noise; // on hold (bak)
+	detectorInstaller.install<NonMetOp> (); // nonMet;
+	detectorInstaller.install<ShipOp>(); //       ship;
+	detectorInstaller.install<SpeckleOp>(); // speckle;
 
 	// Other detector-like operators
-	static AnDReLetAdapter<DefaultOp>   defaultOp; // ?
-	static AnDReLetAdapter<PrecipOp>   precip; // ?
-	static AnDReLetAdapter<ClutterOp>  clutter;
-	static ClutterMapRead clutterMapRead(clutter.productOp);
+	detectorInstaller.install<DefaultOp>(); //   defaultOp; // ?
+	detectorInstaller.install<PrecipOp>(); //   precip; // ?
+	detectorInstaller.install<ClutterOp>(); //  clutter;
 
-	static AnDReLetAdapter<CCorOp>       ccor;
-	static AnDReLetAdapter<HydroClassBasedOp> hydroClass;
-	static AnDReLetAdapter<SunOp>   sun;
-	static AnDReLetAdapter<TimeOp> time;
+	// ClutterMapRead clutterMapRead(clutter.bean); // RE-design
+	detectorInstaller.install<CCorOp>(); //       ccor;
+	detectorInstaller.install<HydroClassBasedOp>(); // hydroClass;
+	detectorInstaller.install<SunOp>(); //   sun;
+	detectorInstaller.install<TimeOp>(); // time;
 
-	// Removal   ops
-	static AnDReLetAdapter<GapFillOp>         gapFill; // Dist;
-	static AnDReLetAdapter<GapFillRecOp>   gapFillRec;
-	static AnDReLetAdapter<DamperOp>           damper;
-	static AnDReLetAdapter<RemoverOp>         remover;
+	// Wrapper for removal ops
+	RemoverInstaller removerInstaller(cmdBank);
+	removerInstaller.install<GapFillOp>(); //         gapFill; // Dist;
+	removerInstaller.install<GapFillRecOp>(); //   gapFillRec;
+	removerInstaller.install<DamperOp>(); //           damper;
+	removerInstaller.install<RemoverOp>(); //         remover;
 
 
-	static AnDReLetAdapter<QualityCombinerOp> qualityCombiner;
-
-	static DefaultQuality defaultQuality;
-	static Universal universal;
 
 }
 

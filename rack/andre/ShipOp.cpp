@@ -50,7 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/Geometry.h"
 
 
-using namespace drain::image;
+//using namespace drain::image;
 
 
 namespace rack {
@@ -75,12 +75,14 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	const int height = srcData.odim.getAzimuthalBins(windowHeight);
 			// static_cast<int>((windowHeight/360.0) * srcData.odim.geometry.height + 0.5);
 
-	mout.debug(2) << "window: " << width << ',' << height << mout.endl;
+	mout.debug3() << "window: " << width << ',' << height << mout.endl;
 
 
 	/// Temp image (probability field, fuzzy membership of "high reflectivity")
 	drain::image::Image tmpFuzzyDBZ;
-	tmpFuzzyDBZ.setPhysicalScale(0.0, 1.0);
+	//tmpFuzzyDBZ.setPhysicalScale(0.0, 1.0);
+	tmpFuzzyDBZ.setPhysicalRange(0.0, 1.0, true);
+	// tmpFuzzyDBZ.setOptimalScale();
 
 	/// Step 1: compute fuzzy membership of "high reflectivity"
 	RadarFunctorOp<drain::FuzzyStepsoid<double> > dbzFuzzifier; // Fuzzy step, sigmoid-like, continuous
@@ -88,10 +90,12 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	dbzFuzzifier.functor.set(reflMin, 10.0);  // minimum reflectivity (10dBZ if not set)
 	mout.debug() << "fuzzy: " << dbzFuzzifier.functor << mout.endl;
 	dbzFuzzifier.process(srcData.data, tmpFuzzyDBZ);  // compute "high reflectivity"
-	tmpFuzzyDBZ.setPhysicalScale(0.0, 1.0);
+	//tmpFuzzyDBZ.setPhysicalScale(0.0, 1.0);
+	tmpFuzzyDBZ.setPhysicalRange(0.0, 1.0, true);
+	//tmpFuzzyDBZ.setOptimalScale();
 	// Debugging
 	storeDebugData(2, tmpFuzzyDBZ, "SHIP_DBZ"); // for debugging only
-	mout.debug(1) << tmpFuzzyDBZ << mout.endl;
+	mout.debug2() << tmpFuzzyDBZ << mout.endl;
 
 	/// Step 2b: detect high peaks
 	/// Temp image for peaks
@@ -117,8 +121,11 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 	drain::image::Image tmpLap(tmpFuzzyDBZ);
 	//drain::image::Image tmpLap(srcData.data.getWidth(), srcData.data.getHeight(), 3);
-	tmpLap.setPhysicalScale(0.0, 1.0);
-	LaplaceHorzOp lapHorz(2); // not enough, detects edeges.
+	// tmpLap.setPhysicalScale(0.0, 1.0);
+	tmpLap.setPhysicalRange(0.0, 1.0, true);
+	//tmpLap.setOptimalScale();
+
+	drain::image::LaplaceHorzOp lapHorz(2); // not enough, detects edeges.
 	mout.debug(4) << lapHorz << mout.endl;
 	lapHorz.traverseChannel(tmpFuzzyDBZ, tmpLap.getChannel(0));
 	storeDebugData(2, tmpLap.getChannel(0), "SHIP_HPH"); // for debugging only
@@ -135,12 +142,12 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 	drain::image::Image tmpPeaks(typeid(unsigned char));
 
-	drain::FuzzyBell<double> fuzzyBell(5.0, width*height, tmpPeaks.getEncoding().getTypeMax<double>());
+	drain::FuzzyBell<double> fuzzyBell(5.0, width*height, tmpPeaks.getConf().getTypeMax<double>());
 	//SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, srcData.odim.scaleInverse(reflMin));
-	SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, reflMin);
+	drain::image::SegmentAreaOp<double,unsigned char> segArea(fuzzyBell, reflMin);
 	//SegmentAreaOp<double,unsigned char> segArea;
 	segArea.process(srcData.data, tmpPeaks);
-	tmpPeaks.setPhysicalScale(0.0, 1.0);
+	tmpPeaks.setPhysicalRange(0.0, 1.0, true);
 	storeDebugData(2, tmpPeaks, "SHIP_SEG");
 
 	/// Step 2b: imitate sidelobes (expontential, "IRF style"), adding them to the peaks
@@ -153,15 +160,15 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 
 	/// Step 3: combine the two evidence field by multiplying them (fuzzy-AND operation)
-	BinaryFunctorOp<MultiplicationFunctor> mulOp;
+	drain::image::BinaryFunctorOp<drain::MultiplicationFunctor> mulOp;
 	mulOp.functor.setScale(1); // = 2.0;
 	mulOp.LIMIT = true;
 	mulOp.initializeParameters(tmpLap.getChannel(0), tmpPeaks);
-	mulOp.makeCompatible(tmpPeaks, dstProb.data);
+	mulOp.makeCompatible(tmpPeaks.getConf(), dstProb.data);
 	dstProb.setPhysicalRange(0.0, 1.0);
 	mulOp.traverseChannel(tmpLap.getChannel(0), tmpPeaks, dstProb.data);
 	storeDebugData(3, dstProb.data, "SHIP_FINAL"); // for debugging only
-	mout.debug(2) << dstProb.data << mout.endl;
+	mout.debug3() << dstProb.data << mout.endl;
 
 }
 

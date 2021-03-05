@@ -38,11 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <list>
 
-
-#include "drain/image/Image.h"
-//#include "drain/util/StringTools.h"
 #include "drain/util/Tree.h"
-
+#include "drain/image/Image.h"
 
 #include "Hi5.h"
 
@@ -91,8 +88,15 @@ public:
 	static
 	inline
 	void h5FileToTree(hid_t fid, Hi5Tree &tree, int mode=3){ //(ATTRIBUTES|DATASETS)){
-		//h5FileToTree(fid, "/", tree, mode);
-		h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
+		// h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
+		Hi5Tree::path_t path;
+		path.appendElem(Hi5Tree::key_t::ROOT);
+		//std::cerr << __FUNCTION__ << ':' << path << std::endl;
+		// path.debug();
+		//path << Hi5Tree::path_t::elem_t(Hi5Tree::key_t::ROOT;
+		h5FileToTree(fid, path, tree, mode);
+		// h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
+
 		// h5FileToTree(fid, "", tree, mode);
 	};
 

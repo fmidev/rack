@@ -72,28 +72,45 @@ namespace rack {
  *
  *  See also: LinearScaling (could be used as base class?)
  */
-class EncodingODIM : public drain::ValueScaling, public drain::ReferenceMap {  // public ODIMPathElem,
+class EncodingODIM : public drain::ReferenceMap {  // public ODIMPathElem,
 
 public:
 
 	///
-	typedef unsigned char group_t;
+	typedef ODIMPathElem::group_t group_t;
+
+	drain::ValueScaling & scaling;
+	const drain::ValueScaling & scalingConst;
+
+	drain::ValueScaling ownScaling;
 
 	/// Default constructor.
 	inline
-	EncodingODIM(group_t initialize = ODIMPathElem::ALL_LEVELS){
+	EncodingODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : scaling(ownScaling), scalingConst(ownScaling){
 		init(initialize);
 	};
 
 	/// Copy constructor.
 	inline  // todo raise initFromMap (was: FromODIM)
-	EncodingODIM(const EncodingODIM & odim){
+	EncodingODIM(const EncodingODIM & odim) : scaling(ownScaling), scalingConst(ownScaling){
 		init(ODIMPathElem::ALL_LEVELS);
 		updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
 	};
 
+	/*
 	inline
-	EncodingODIM(const drain::image::Image & image){
+	EncodingODIM(const drain::image::Image & image) : scaling(image.getScaling()){
+		initFromImage(image);
+	};
+	*/
+
+	inline
+	EncodingODIM(const drain::image::Image & image) : scaling(ownScaling), scalingConst(image.getScaling()){
+		initFromImage(image);
+	};
+
+	inline
+	EncodingODIM(drain::image::Image & image) : scaling(image.getScaling()), scalingConst(image.getScaling()){
 		initFromImage(image);
 	};
 
@@ -105,6 +122,14 @@ public:
 		return *this;
 	}
 
+	// In case of const image this is not "true" ? But for const EncodingODIM, never called?
+	operator drain::ValueScaling & (){
+		return scaling;
+	}
+
+	operator const drain::ValueScaling & () const {
+		return scalingConst;
+	}
 
 
 	/// This is non-standard (not in ODIM), but a practical means of handling storage type of datasets.
@@ -125,7 +150,7 @@ public:
 
 	inline
 	bool isSet() const {
-		return ((scale != 0.0) && (!type.empty()) && (type.at(0) != '*'));
+		return ((scaling.scale != 0.0) && (!type.empty()) && (type.at(0) != '*'));
 	}
 
 	/// Checks if data encoding is similar (storage type, gain, offset, undetect and nodata are the same).
@@ -134,8 +159,8 @@ public:
 	inline
 	bool haveSimilarEncoding(const EncodingODIM & odim1, const EncodingODIM & odim2){
 		return  (odim1.type == odim2.type) &&
-				(odim1.scale == odim2.scale) &&
-				(odim1.offset == odim2.offset) &&
+				(odim1.scaling.scale == odim2.scaling.scale) &&
+				(odim1.scaling.offset == odim2.scaling.offset) &&
 				(odim1.undetect == odim2.undetect) &&
 				(odim1.nodata == odim2.nodata)
 				;
@@ -159,8 +184,9 @@ public:
 				mout.warn() << "different types: " << this->type << '/' << typechar << mout.endl;
 		}
 
-		scale  = 1.0;
-	    offset = 0.0;
+		scaling.set(1.0, 0.0);
+		// scale  = 1.0;
+	    // offset = 0.0;
 
 	    //if (!type.empty()){ // ?
 	    if (typechar != '*'){
@@ -190,13 +216,13 @@ public:
 	/// Converts a quantity from storage scale: y = offset + gain*y .
 	inline
 	double scaleForward(double x) const {
-		return offset + scale*x;
+		return scaling.offset + scaling.scale*x; // TODO: direct
 	}
 
 	/// Converts a quantity to storage scale: x = (y-offset)/gain .
 	inline
 	double scaleInverse(double y) const {
-		return (y-offset)/scale;
+		return (y-scaling.offset)/scaling.scale; // TODO: direct
 	}
 
 	/// Returns the minimum physical value that can be returned using current storage type, gain and offset.
@@ -208,7 +234,7 @@ public:
 	/// Functor (why inverse?)
 	inline
 	double operator()(double y) const {
-		return (y-offset)/scale;
+		return (y-scaling.offset)/scaling.scale;
 	}
 
 
@@ -286,7 +312,7 @@ public:
 	/// A set containing "what", "where" and "how".
 	static
 	//const std::set<std::string> & attributeGroups;
-	const std::set<ODIMPathElem> & attributeGroups;
+	const ODIMPathElemSeq & attributeGroups;
 
 
 
@@ -299,7 +325,7 @@ protected:
 
 
 	static
-	const std::set<ODIMPathElem> & createAttributeGroups();
+	const ODIMPathElemSeq & getAttributeGroups();
 
 
 private:

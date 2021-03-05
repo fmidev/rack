@@ -61,16 +61,16 @@ public:
 		PolarProductOp("PolarNeuralVPR","Computes NeuralVPR.")
 		{
 		// TODO already ref'd
-		parameters.link("nbins", odim.geometry.width = nbins);
-		parameters.link("nrays", odim.geometry.height = nrays);
+		parameters.link("nbins", odim.area.width = nbins);
+		parameters.link("nrays", odim.area.height = nrays);
 		parameters.link("rscale", odim.rscale = rscale);
-		parameters.link("gain", odim.scale = gain);
-		parameters.link("offset", odim.offset = offset);
+		parameters.link("gain", odim.scaling.scale = gain);
+		parameters.link("offset", odim.scaling.offset = offset);
 		//dataSelector.path = "^.*/data[0-9]+/?$";  ///
 
 		odim.product = "NeuralVPR";
 		odim.quantity = "DBZH";
-		odim.offset = 0;
+		odim.scaling.offset = 0;
 
 		dataSelector.quantity = "DBZ.*";
 

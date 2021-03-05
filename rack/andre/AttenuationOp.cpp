@@ -47,20 +47,20 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
-	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
+	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
 
 	mout.debug() << *this << mout.endl;
-	mout.debug(1) << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
-	mout.debug(1) << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
+	mout.debug2() << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
+	mout.debug2() << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
 
-	mout.debug(1) << " => dst: " << dstData.data.getScaling() << mout.endl;
+	mout.debug2() << " => dst: " << dstData.data.getScaling() << mout.endl;
 	//const int code = AndreOp::getClassCode(this->classCode);
 	const size_t width  = srcData.data.getWidth();
 	const size_t height = srcData.data.getHeight();
 
 	// Attn coeff
-	double c = 1.12E-7;
-	double p = 0.62;
+	//double c = 1.12E-7;
+	//double p = 0.62;
 
 	double dbzObs;
 	double zTrue;
@@ -113,7 +113,7 @@ void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<P
 		// mout.warn() << marker << mout.endl;
 
 		// marker.process(srcData.data, dstData.data);
-		mout.debug(1) << " => DST: " << dstData.data.getScaling() << mout.endl;
+		mout.debug2() << " => DST: " << dstData.data.getScaling() << mout.endl;
 
 	}
 }

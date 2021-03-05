@@ -55,7 +55,7 @@ public:
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	ZDRvarOp(double threshold=0.5, double thresholdWidth=0.1, double windowWidth=5.0, double windowHeight=5.0, double medianPos=0.3) :
-		DetectorOp("__FUNCTION__","Detects clutter. Based on dual-pol parameter ZDRvar . Optional postprocessing: morphological closing. Universal."){
+		DetectorOp(__FUNCTION__,"Detects clutter. Based on dual-pol parameter ZDRvar . Optional postprocessing: morphological closing. Universal."){
 		dataSelector.quantity = "ZDRvar";
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;

@@ -63,7 +63,7 @@ public:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 
-		parameters.link("threshold", this->threshold.vect, "0...1[:0...1]");
+		parameters.link("threshold", this->threshold.tuple(), "0...1[:0...1]");
 		this->threshold.min = threshold-thresholdWidth;
 		this->threshold.max = threshold+thresholdWidth;
 		//parameters.link("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
@@ -72,6 +72,14 @@ public:
 		parameters.link("medianPos", this->medianPos = medianPos, "0...1");
 		//parameters.link("area", this->area, area);
 	};
+
+	/*
+	inline
+	NonMetOp(const NonMetOp & op) : DetectorOp(op){
+		UNIVERSAL = true;
+		std::cerr << __FUNCTION__ << " copy const \n";
+	}
+	*/
 
 	//double threshold;
 	//double thresholdWidth;

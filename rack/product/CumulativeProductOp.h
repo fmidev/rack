@@ -84,9 +84,9 @@ protected:
 
 		// Empty values imply automagic
 		odim.type = "";
-		odim.scale = 0.0;
-		odim.geometry.height  = 0;
-		odim.geometry.width  = 0;
+		odim.scaling.scale = 0.0;
+		odim.area.height  = 0;
+		odim.area.width  = 0;
 		odim.rscale = 0.0;
 
 	};

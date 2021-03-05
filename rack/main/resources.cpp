@@ -33,41 +33,329 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "resources.h"
 #include "data/SourceODIM.h"
+#include "product/DataConversionOp.h"
 
-using namespace drain;
-using namespace drain::image;
+// using namespace drain;
+// using namespace drain::image;
 
 namespace rack {
 
-RackContext::RackContext(): currentHi5(&inputHi5), currentPolarHi5(&inputHi5) {
+
+RackContext::RackContext()
+	{
+
+	statusMap["version"] = __RACK_VERSION__;
+	statusMap["rackContext"] = "BASE";
+	// linkStatusVariables();
+}
+
+RackContext::RackContext(const RackContext & ctx): SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
+	//	currentHi5(ctx.currentHi5),
+	//	currentPolarHi5(ctx.currentPolarHi5){
+
+	//linkStatusVariables();
+	statusMap["version"] = __RACK_VERSION__;
+	statusMap["rackContext"] = "CLONED";
+}
+
+const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9:_]+");
+
+
+const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext & ctx){
+
+	RackContext & ctx = *this;
+
+	if (ctx.currentGrayImage == NULL){
+		findImage();
+		 //RackContext::findImage(ctx);
+	}
+
+	if (ctx.currentGrayImage == NULL){
+		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
+		return ctx.grayImage;
+	}
+
+	return *ctx.currentGrayImage;
+}
+
+const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ctx){
+
+	RackContext & ctx = *this;
+
+	if (ctx.currentImage == NULL){
+		findImage(); //RackContext::findImage(ctx);
+	}
+
+	if (ctx.currentImage == NULL){
+		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
+		return ctx.grayImage;
+	}
+
+	return *ctx.currentImage;
+}
+
+ODIMPath RackContext::findImage(){ //RackContext & ctx){
+	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // ImageS elector imageS elector;
+	/*
+	std::cerr << __FUNCTION__ << ':' << imageSelector << '\n';
+	std::cerr << __FUNCTION__ << ':' << imageSelector.pathMatcher.front().group << '\n';
+	std::cerr << __FUNCTION__ << ':' << imageSelector.pathMatcher.front().flags << '\n';
+	*/
+	imageSelector.consumeParameters(this->select); // ctx.findImage
+	imageSelector.ensureDataGroup();
+	return findImage(imageSelector); //ctx,
+}
+
+
+
+ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackContext & ctx,
+
+	RackContext & ctx = *this;
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
+
+	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
+
+
+	ODIMPath path;
+
+	if (src.isEmpty()){
+		mout.debug() << "No HDF5 data" << mout.endl;
+		return path;
+	}
+
+	if (imageSelector.getPath3(src, path)){
+
+		mout.ok() << "using path: '" << path << "'" << mout.endl;
+
+		drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
+		mout.info() << img.getProperties().get("what:quantity", "?") << ", scaling: " << img.getScaling() << "  " << img << mout.endl;
+
+		if (!img.isEmpty()){
+			// WHY TWICE?
+			DataTools::getAttributes(src, path, img.properties); // for image processing ops?
+			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(img.getType()))){ // CHECK LOGIC!
+				mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
+			}
+		}
+		else {
+			mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
+			mout.debug() << "empty image: " << img.properties << mout.endl;
+			mout.warn()  << "empty image: " << img << mout.endl;
+			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+		}
+
+		// Hence, image may also be empty.
+		ctx.setCurrentImages(img);
+
+	}
+	else {
+		path.clear();
+		// if (path.empty()){
+		mout.warn() << "no paths found with " << imageSelector << " (skipping?) " << mout.endl;
+		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+		//return false;
+	}
+
+	return path;
 
 }
+
+// PREPARE current
+const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & ctx,
+
+	RackContext & ctx = *this;
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	// if ctx.select ..
+	if (!ctx.select.empty()){
+		mout.info() << "selector (" << ctx.select <<  ")" << mout.endl;
+		ODIMPath path = findImage();
+		mout.info() << "selected new image ->  " << path << mout.endl;
+	}
+
+	if (!ctx.targetEncoding.empty()){
+		if (ctx.currentImage != NULL){
+			if (ctx.currentGrayImage == &ctx.grayImage){
+				mout.warn() << "re-converting gray image..." << mout.endl;
+			}
+			RackContext::convertGrayImage(*currentGrayImage); // ctx, *ctx.
+		}
+	}
+
+	if (ctx.currentImage == NULL){
+		ODIMPath path = findImage();
+		if (!path.empty())
+			mout.info() << "found image at: " << path << mout.endl;
+	}
+
+	if (ctx.currentImage == NULL){
+		mout.warn() << "image data not found"  << mout.endl;
+		//mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
+		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+		return ctx.grayImage;
+	}
+
+	return *ctx.currentImage;
+
+
+}
+
+
+//void CmdImage::convertImage(const Hi5Tree & src, const DataSelector & selector, const std::string & encoding, drain::image::Image &dst){ //  const{
+//bool CmdImage::convertGrayImage(RackContext & ctx){ //  const{
+void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // RackContext & ctx  // const{
+
+	RackContext & ctx = *this;
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	ODIM srcOdim(srcImage);
+	if (srcOdim.scaling.scale == 0){
+		mout.note() << "src image: " << srcImage << mout.endl;
+		mout.warn() << "no scaling:" << (const EncodingODIM &)srcOdim  << mout.endl;
+	}
+
+	mout.debug() << "srcEncoding: " << EncodingODIM(srcOdim) << mout.endl;
+
+
+	DataConversionOp<ODIM> op;
+	//op.odim.copyFrom(srcImage);
+
+	op.odim.updateFromCastableMap(srcOdim); // quantity etc?
+	ProductBase::completeEncoding(op.odim, ctx.targetEncoding);
+	mout.debug() << "target: '" << ctx.targetEncoding << "' -> "<< EncodingODIM(op.odim) << mout.endl;
+	ctx.targetEncoding.clear();
+
+
+	ctx.grayImage.properties.importCastableMap(op.odim); // Optional
+	op.processImage(srcOdim, srcImage, op.odim, ctx.grayImage);
+	// ctx.grayImage.setScaling(op.odim.scaling.scale, op.odim.scaling.offset);
+	mout.debug() << "result: " << ctx.grayImage << mout.endl;
+	ctx.setCurrentImages(ctx.grayImage);
+
+}
+
+
+
+drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
+
+	RackContext & ctx = *this;
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	mout.note() << " start" << mout.endl;
+
+	/// Ensure
+	//RackContext::updateCurrentImage(ctx);
+	//RackContext::findImage(ctx);
+	getCurrentImage(); // ctx
+
+	if (ctx.currentImage == NULL){
+		mout.warn() << " could not find image, yt" << mout.endl;
+		return ctx.grayImage;
+	}
+	else if (ctx.currentImage == &ctx.colorImage){
+		mout.debug() << " using already existing colour image" << mout.endl;
+		return ctx.colorImage;
+	}
+	else if (ctx.currentImage == &ctx.grayImage){
+		mout.debug() << " using already existing (additional) gray image" << mout.endl;
+		if (ctx.imagePhysical){
+			mout.warn() << " check/ensure physical scale(?)" << mout.endl;
+		}
+		return ctx.grayImage;
+	}
+	else { // ctx.currentImage != &ctx.grayImage
+		//mout.debug() << " currentImage not modifiable, creating a copy to grayImage" << mout.endl;
+		//convertGrayImage(*currentImage);
+		const drain::FlexVariable & quantity = ctx.currentGrayImage->properties["what:quantity"];
+		mout.warn() << "Experimental! Using h5-stored image, quantity=" << quantity << ", " << *ctx.currentImage << mout;
+		return *((drain::image::Image *)ctx.currentImage); // force...
+	}
+
+	return ctx.grayImage;
+}
+
 
 const CoordinatePolicy RackResources::polarLeft(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT, CoordinatePolicy::WRAP);
 
 const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT,CoordinatePolicy::LIMIT);
 
-const drain::Flags::value_t RackResources::INPUT_ERROR     = 1;
-const drain::Flags::value_t RackResources::DATA_ERROR      = 2;
-const drain::Flags::value_t RackResources::METADATA_ERROR  = 4;
-const drain::Flags::value_t RackResources::OUTPUT_ERROR    = 8;
-const drain::Flags::value_t RackResources::PARAMETER_ERROR = 16;
 /* TODO: more status flags
  * INCOMPLETE_PRODUCT ?
  */
 
-//drain::Logger RackResources::mout("racklet"); inputOk(true), dataOk(true),
-RackResources::RackResources() : currentImage(NULL), currentGrayImage(NULL), scriptExec(scriptParser.script) { //inputSelect(0),, errorFlags(errorFlagValue, errorFlagDict, ',')
-	polarAccumulator.setMethod("WAVG");
-	andreSelect = "dataset1,count=1";
-	errorFlags.dictionary.add("INPUT",     INPUT_ERROR);
-	errorFlags.dictionary.add("METADATA",  METADATA_ERROR);
-	errorFlags.dictionary.add("DATA",      DATA_ERROR);
-	errorFlags.dictionary.add("OUTPUT",    OUTPUT_ERROR);
-	errorFlags.dictionary.add("PARAMETER", PARAMETER_ERROR);
-	errorFlags.reset();
+
+
+
+bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	pathElem.set(ODIMPathElem::DATASET, 1);
+	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);
+	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
+		DataSelector::getNextChild(src, pathElem);
+		/*
+		if (pathElem == currentPath.front()){
+			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+		}
+		*/
+		return true;
+	}
+	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
+		DataSelector::getLastChild(src, pathElem);
+		if (pathElem.index == 0){
+			pathElem.index = 1;
+		}
+		//path << parent;
+		/*
+		if (pathElem == currentPath.front()){
+			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+		}
+		*/
+		return true;
+	}
+	else {
+		//path = currentPath;
+		return false;
+	}
 }
 
+
+void RackContext::updateStatus(){
+
+	updateImageStatus(statusMap);
+	updateHdf5Status(statusMap);
+
+	/// Miscellaneous
+	statusMap["select"]      = select;
+	statusMap["andreSelect"] = andreSelect;
+	statusMap["composite"] = composite.toStr();
+	// statusMap["accumulator"] = acc.toStr();
+
+}
+
+
+
+
+
+
+
+//static drain::Flagger::value_t RackResources::BBOX_STATUS = getResources().getContext().get().statusFlags.add("BBOX");
+
+
+//drain::Logger RackResources::mout("racklet"); inputOk(true), dataOk(true),
+RackResources::RackResources() { // : scriptExec(scriptParser.script) { //currentImage(NULL), currentGrayImage(NULL), inputSelect(0),, errorFlags(errorFlagValue, errorFlagDict, ',')
+	polarAccumulator.setMethod("WAVG");
+	//andreSelect = "dataset1,count=1";
+
+}
+
+/*
 void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
 
 	drain::Logger mout("RackResources", __FUNCTION__);
@@ -83,180 +371,9 @@ void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
 	m[&dst] = &cmd;
 
 }
-
-drain::VariableMap & RackResources::getUpdatedStatusMap() {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	VariableMap & statusMap = drain::getRegistry().getStatusMap(true); // comes with updated commands (NEW)
-
-	/// Step 1: copy current H5 metadata (what, where, how)
-	//DataSelector selector("data[0-9]+");
-	DataSelector selector(ODIMPathElem::DATA);
-	// selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	// selector.pathMatcher.setElems(ODIMPathElem::DATA);
-	selector.setParameters(select);
-	selector.count = 1; // warn if not 1?
-	ODIMPath path;
-	//selector.getPathNEW(*currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	selector.getPath3(*currentHi5, path);
-
-	if (path.empty()){
-		mout.note() << "no data groups found with selector '" << select << "'" << mout.endl;
-		//mout.debug(4) << " currentHi5:\n" << *currentHi5 << mout.endl;
-	}
-
-	//else {
-	mout.debug() << "using path=" << path << mout.endl;
-	//mout.note() << (*currentHi5)(path)[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
-	DataTools::getAttributes(*currentHi5, path, statusMap);
-	// mout.debug() << statusMap << mout.endl;
-	//}
-
-	/// Split what:source to separate fields
-	//mout.warn() << "eka"  << mout.endl;
-	const SourceODIM sourceODIM(statusMap["what:source"].toStr());
-
-	//mout.warn() << "importMap"  << mout.endl;
-	statusMap.importCastableMap(sourceODIM);
-
-	//mout.warn() << "PolarODIM" << mout.endl;
-	const PolarODIM odim(statusMap);
-	//mout.warn() << odim << mout.endl;
-	statusMap["how:NI"] = odim.getNyquist();
-
-	/// Miscellaneous
-	statusMap["version"] = __RACK_VERSION__;
-	//statusMap["inputOk"] = static_cast<int>(inputOk);
-	statusMap["errorFlags"] << errorFlags;
-	// statusMap["accumulator"] = acc.toStr();
-	statusMap["composite"] = composite.toStr();
-	statusMap["andreSelect"] = andreSelect;
-
-	getImageInfo(&colorImage, statusMap["img:colorImage"]);
-	getImageInfo(&grayImage, statusMap["img:grayImage"]);
-	getImageInfo(currentImage, statusMap["img:currentImage"]);
-	getImageInfo(currentGrayImage, statusMap["img:currentGrayImage"]);
-
-	return statusMap;
-}
-
-void RackResources::initComposite() {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	RackResources & resources = *this; //getResources();
-
-	/// Set data selector
-	if (!resources.select.empty()){
-		resources.composite.dataSelector.setParameters(resources.select);
-		resources.select.clear();
-		// resources.composite.odim.quantity.clear();
-	}
-
-	if ((resources.composite.getFrameWidth() == 0) || (resources.composite.getFrameHeight() == 0)){
-		resources.composite.setGeometry(500,500); // frame only
-		mout.warn() << "size unset, applying " << resources.composite.getFrameWidth() << ',' << resources.composite.getFrameHeight() << mout.endl;
-	}
-	resources.composite.allocate();
-
-	if (!resources.targetEncoding.empty()){
-		resources.composite.setTargetEncoding(resources.targetEncoding);
-		mout.debug() << "target encoding: " << resources.composite.getTargetEncoding() << mout.endl;
-		resources.targetEncoding.clear();
-	}
+*/
 
 
-}
-
-
-
-
-void RackResources::getImageInfo(const drain::image::Image *ptr, Variable & entry) const {
-	std::stringstream sstr;
-	if (ptr){
-		ptr->toOStr(sstr);
-	}
-	else {
-		sstr << "NULL";
-	}
-	entry = sstr.str();
-}
-
-//bool
-ODIMPath RackResources::setCurrentImage(const DataSelector & imageSelector){
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
-
-	ODIMPath path;
-
-	if (imageSelector.getPath3(*currentHi5, path)){
-
-		mout.info() << "derived path: '" << path << "'" << mout.endl;
-
-		drain::image::Image & img = (*currentHi5)(path)[ODIMPathElem::ARRAY].data.dataSet;
-		mout.info() << img.getProperties().get("what:quantity", "?") << ", scaling: " << img.getScaling() << "  " << img << mout.endl;
-
-		if (!img.isEmpty()){
-			DataTools::getAttributes(*currentHi5, path, img.properties); // may be unneeded (or for image processing ops?)
-		}
-		else {
-			mout.debug() << "empty image: " << img.properties << mout.endl;
-			mout.warn()  << "empty image: " << img << mout.endl;
-		}
-
-		// Hence, image may also be empty.
-		currentImage     = & img;
-		currentGrayImage = & img;
-
-		//return true;
-
-	}
-	else {
-		path.clear();
-		// if (path.empty()){
-		mout.warn() << "no paths found with " << imageSelector << ", skipping..." << mout.endl;
-		//return false;
-	}
-
-	return path;
-
-}
-
-bool RackResources::guessDatasetGroup(ODIMPathElem & pathElem) const {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	pathElem.set(ODIMPathElem::DATASET, 1);
-	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
-		DataSelector::getNextChild(*currentHi5, pathElem);
-		//path << parent;
-
-		if (pathElem == currentPath.front()){
-			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
-		}
-		return true;
-	}
-	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
-		DataSelector::getLastChild(*currentHi5, pathElem);
-		if (pathElem.index == 0){
-			pathElem.index = 1;
-		}
-		//path << parent;
-		if (pathElem == currentPath.front()){
-			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
-		}
-		return true;
-	}
-	else {
-		// path << parent; // DATASET1
-		//path = currentPath;
-		return false;
-	}
-}
 
 
 /// Default instance

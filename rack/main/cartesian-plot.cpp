@@ -58,16 +58,21 @@ void CartesianPlotFile::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
 
-	RackResources & resources = getResources();
+	// RackResources & resources = getResources();
+	// Composite & composite = resources.composite;
 
-	Composite & composite = resources.composite;
+	RackContext & ctx = getContext<RackContext>();
+	//Composite & composite = ctx.composite;
 
-	resources.initComposite(); // considers quality as well
+	ctx.composite.dataSelector.consumeParameters(ctx.select);
+	ctx.composite.allocate(); // check size?
+	ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
+
 	// composite.allocate();
 
-	if (! composite.isMethodSet()){
-		composite.setMethod("LATEST");
-		mout.note() << " no method set, using " << composite.getMethod() << " (see --cMethod) " << mout.endl;
+	if (! ctx.composite.isMethodSet()){
+		ctx.composite.setMethod("LATEST");
+		mout.note() << " no method set, using " << ctx.composite.getMethod() << " (see --cMethod) " << mout.endl;
 	}
 
 
@@ -99,7 +104,7 @@ void CartesianPlotFile::exec() const {
 				w = 1.0;
 			// std::cout << '#' << line << '\n';
 			// std::cout << lon << ',' << lat << '\t' << d << ',' << w << '\n';
-			composite.addUnprojected(lon, lat, d, w);
+			ctx.composite.addUnprojected(lon, lat, d, w);
 
 		}
 	}
@@ -113,9 +118,10 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
 
-	RackResources & resources = getResources();
+	//RackResources & resources = getResources();
+	RackContext & ctx = getContext<RackContext>();
 
-	DataSet<CartesianDst> dstDataSet((*resources.currentHi5)["dataset1"]);
+	DataSet<CartesianDst> dstDataSet((*ctx.currentHi5)["dataset1"]);
 
 	Data<CartesianDst> & dst = dstDataSet.getFirstData(); // first data encountered; consider "DBZH"?
 
@@ -152,8 +158,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	dist.setRadius(h, v);
 	*/
 
-	mout.debug(2) << name << ": pixel resolution: " << dst.odim.xscale << ',' << dst.odim.yscale << mout.endl;
-	//mout.debug(2) << dist << mout.endl;
+	mout.debug3() << name << ": pixel resolution: " << dst.odim.xscale << ',' << dst.odim.yscale << mout.endl;
+	//mout.debug3() << dist << mout.endl;
 
 
 
@@ -161,8 +167,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	// OR local?? ::
 	// PlainData<CartesianDst> & dstQuality = dst.getQuality();
 
-	mout.debug(2) << "data: "    << dst << mout.endl;
-	mout.debug(2) << "quality: " << dstQuality << mout.endl;
+	mout.debug3() << "data: "    << dst << mout.endl;
+	mout.debug3() << "quality: " << dstQuality << mout.endl;
 
 	if (dstQuality.data.isEmpty()){
 		mout.warn() << "Empty quality data, skipping..." << mout.endl;
@@ -195,11 +201,11 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	recOp.traverseChannel(dst.data.getChannel(0), dstQuality.data.getChannel(0), dst.data.getChannel(0), dstQuality.data.getChannel(0));
 	/*
 	if (recOp.loops > 0){
-		mout.debug(2) << recOp << mout.endl;
+		mout.debug3() << recOp << mout.endl;
 		recOp.filter(dst.data, dstQuality.data, dst.data, dstQuality.data);
 	}
 	else {
-		mout.debug(2) << "copying..." << mout.endl;
+		mout.debug3() << "copying..." << mout.endl;
 		CopyOp().filter(tmpWeight, dstQuality.data); // ??
 	}
 	*/
@@ -207,8 +213,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	//drain::image::File::write(dst.data,        "dstSpread-d2.png");
 	//drain::image::File::write(dstQuality.data, "dstSpread-q2.png");
 
-	resources.currentImage     = & dst.data;
-	resources.currentGrayImage = & dst.data;
+	ctx.currentImage     = & dst.data;
+	ctx.currentGrayImage = & dst.data;
 
 }
 

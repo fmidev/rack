@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Analysis.h"
 #include "PolarWindow.h"
 
-using namespace drain::image;
+//using namespace drain::image;
 
 namespace rack
 {
@@ -63,7 +63,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	tmpWeighted.setGeometry(src.getGeometry());
 	dstWeighted.setGeometry(src.getGeometry());
 
-	RadarFunctorOp<BinaryThresholdFunctor> weightMakerOp(true);
+	RadarFunctorOp<drain::BinaryThresholdFunctor> weightMakerOp(true);
 	//drain::image::UnaryFunctorOp<RadarDataFunctor<BinaryThresholdFunctor> > weightMakerOp(true);
 	weightMakerOp.odimSrc = odimSrc;
 	weightMakerOp.nodataValue   = 0.0;
@@ -96,7 +96,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	window1.setSrcFrameWeight(srcWeighted);
 	window1.setDstFrame(tmp);
 	window1.setDstFrameWeight(tmpWeighted);
-	// mout.debug(1) << window1 << mout.endl;
+	// mout.debug2() << window1 << mout.endl;
 	//std::cerr << __FUNCTION__ << '\n';
 	window1.run();
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
@@ -115,7 +115,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	window2.setSrcFrameWeight(tmpWeighted);
 	window2.setDstFrame(dst);
 	window2.setDstFrameWeight(dstWeighted);
-	mout.debug(2) << window2 << mout.endl;
+	mout.debug3() << window2 << mout.endl;
 	mout.debug() << ", rangeNorm=" << window2.getRangeNorm() << mout.endl;
 	//mout.warn() << "startar: " << window2 << mout.endl;
 	window2.run();

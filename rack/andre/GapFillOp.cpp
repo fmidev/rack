@@ -67,7 +67,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//File::write(quality,"GapFillOp-inq.png");
 
 	DistanceTransformFillLinearOp op; // op("5,5");
-	double h = width / srcData.odim.rscale;
+	double h = width / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
 	double v = height * srcData.data.getHeight() / 360.0;
 	op.setRadius(h, v);
 
@@ -90,10 +90,11 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
 
-
 	//srcData.odim.getBinIndex()
+	double h = width / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
+	double v = height * srcData.data.getHeight() / 360.0;
 
-	BlenderOp op(width /  srcData.odim.rscale, height * srcData.data.getHeight() / 360.0, 'g', 'm', loops);
+	BlenderOp op(h, v, 'g', 'm', loops);
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcData.data, srcQuality.data);

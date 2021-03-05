@@ -36,57 +36,53 @@ namespace rack
 
 void PolarSector::reset(){
 
-	azm.set(std::numeric_limits<double>::min(), std::numeric_limits<double>::min());
-	// azm1 = std::numeric_limits<double>::min(); // ~0.0
-	// azm2 = std::numeric_limits<double>::min(); // ~0.0
-	range.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
-	// range1 = std::numeric_limits<int>::max();
-	// range2 = std::numeric_limits<int>::min();
+	// natural coords
+	azmRange.set(std::numeric_limits<double>::min(), std::numeric_limits<double>::min()); // ~0
+	distanceRange.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
 
-	ray.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
-	// ray1 = std::numeric_limits<int>::max();
-	// ray2 = std::numeric_limits<int>::min();
-	bin.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
-	// bin1 = std::numeric_limits<int>::max();
-	// bin2 = std::numeric_limits<int>::min();
+	// index coords
+	rayRange.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
+	binRange.set(std::numeric_limits<int>::max(), std::numeric_limits<int>::min());
 
 }
 
-/// Given (azm1,range1) and (azm2,range2), sets (ray1, bin1) and (ray2, bin2). Returns true if any value was truncated.
+/// Given (azm1,range1) and (azm2,range2), sets (ray1, bin1) and (ray2, bin2).
 /**
  *
- *
+ *  ? Returns true if any value was truncated.
  */
 void PolarSector::adjustIndices(const PolarODIM & odim){
 
-	if (range.max < range.min){
-		int tmp = range.min;
-		range.min = range.max;
-		range.max = tmp;
+	if (distanceRange.max < distanceRange.min){
+		int tmp = distanceRange.min;
+		distanceRange.min = distanceRange.max;
+		distanceRange.max = tmp;
 	}
 
-	if (range.min < 0.0)
-		range.min = 0.0;
+	// if (distanceRange.min < 0.0)
+	// warn()
 
-	bin.min = odim.getBinIndex(1000.0 * static_cast<double>(range.min));
-	bin.max = odim.getBinIndex(1000.0 * static_cast<double>(range.max));
-	//bin.min = static_cast<int>((range.min - odim.rstart) / odim.rscale*1000.0);
-	//bin.max = static_cast<int>((range.max - odim.rstart) / odim.rscale*1000.0);
+	distanceRange.min = std::max(0.0, distanceRange.min);
 
-	if (bin.min >= odim.geometry.width){
-		bin.min  = odim.geometry.width-1;
-	}
+	int min = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.min));
+	binRange.min = std::max(0, min);
 
-	if (bin.max > odim.geometry.width){
-		bin.max = odim.geometry.width;
-	}
+	if (binRange.min > odim.area.width-1)
+		binRange.min = odim.area.width-1;
+
+	int max = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.max));
+	binRange.max = std::max(0, max);
+	if (binRange.max > odim.area.width)
+		binRange.max = odim.area.width;
+
+	binRange.set(min, max);
 
 	/// todo: re-adjust ranges?
 
-	ray.min = odim.getDRayIndex(azm.min); // static_cast<int>(azm.min/360.0*odim.geometry.height);
-	ray.max = odim.getDRayIndex(azm.max); // static_cast<int>(azm.max/360.0*odim.geometry.height);
-	ray.min = ray.min %  odim.geometry.height;
-	ray.max = ray.max % (odim.geometry.height*2);
+	rayRange.min = odim.getDRayIndex(azmRange.min); // static_cast<int>(azm.first/360.0*odim.geometry.height);
+	rayRange.max = odim.getDRayIndex(azmRange.max); // static_cast<int>(azm.second/360.0*odim.geometry.height);
+	rayRange.min = rayRange.min %  odim.area.height;
+	rayRange.max = rayRange.max % (odim.area.height*2);
 
 
 }
@@ -95,27 +91,27 @@ void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1
 
 	drain::Logger mout("PolarWindow", __FUNCTION__);
 
-	if (this->ray.max != this->ray.min ){
-		ray1 = this->ray.min;
-		ray2 = this->ray.max;
+	if (this->rayRange.max != this->rayRange.min ){
+		ray1 = this->rayRange.min;
+		ray2 = this->rayRange.max;
 	}
 	else {
-		ray1 = this->azm.min*srcOdim.geometry.height/360.0;
-		ray2 = this->azm.max*srcOdim.geometry.height/360.0;
+		ray1 = this->azmRange.min*srcOdim.area.height/360.0;
+		ray2 = this->azmRange.max*srcOdim.area.height/360.0;
 	}
 
-	ray1 = ray.min % srcOdim.geometry.height;
-	ray2 = ray.max % srcOdim.geometry.height;
+	ray1 = rayRange.min % srcOdim.area.height;
+	ray2 = rayRange.max % srcOdim.area.height;
 	if (ray2 < ray1)
-		ray2 += srcOdim.geometry.height;
+		ray2 += srcOdim.area.height;
 
-	if (this->bin.max != this->bin.min ){
-		bin1 = this->bin.min;
-		bin2 = this->bin.max;
+	if (this->binRange.max != this->binRange.min ){
+		bin1 = this->binRange.min;
+		bin2 = this->binRange.max;
 	}
 	else {
-		bin1 = (this->range.min - srcOdim.rstart) / srcOdim.rscale*1000.0;
-		bin2 = (this->range.max - srcOdim.rstart) / srcOdim.rscale*1000.0;
+		bin1 = (this->distanceRange.min - srcOdim.rstart) / srcOdim.rscale*1000.0;
+		bin2 = (this->distanceRange.max - srcOdim.rstart) / srcOdim.rscale*1000.0;
 	}
 
 	if (bin1 < 0){
@@ -123,9 +119,9 @@ void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1
 		bin1 = 0;
 	}
 
-	if (bin2 > srcOdim.geometry.width){
+	if (bin2 > srcOdim.area.width){
 		mout.warn() << "bin2 too large (" << bin2 << "), setting to nbins"<< mout.endl;
-		bin2 = srcOdim.geometry.width;
+		bin2 = srcOdim.area.width;
 	}
 
 	if (bin1 > bin2){

@@ -145,7 +145,8 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	// Dst
 	const double vMax = srcData.odim.getNyquist();
 	dstData.odim.setRange(-vMax, vMax);
-	dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);  // TODO: re-design, get rid of these
+	dstData.data.setScaling(dstData.odim.scaling); // needed?
+	// dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);  // TODO: re-design, get rid of these
 	dstData.data.properties.importMap(dstData.odim); // IMPORTANT! But get rid of the self-copying later.
 	dstData.data.setCoordinatePolicy(srcData.data.getCoordinatePolicy());
 	mout.debug() << "Dst: " << dstData << mout.endl;
@@ -236,6 +237,8 @@ void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDs
 
 	dstData.setEncoding(odim.type);
 	dstData.setPhysicalRange(-NI, +NI);
+	//dstData.data.setOptimalScale(); // unchecked
+	//dstData.PhysicalRange(-NI, +NI);
 	//dstData.initialize(typeid(unsigned short int), srcData.data.getGeometry());
 	//dstData.copyEncoding(srcData);
 	//dstData.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());

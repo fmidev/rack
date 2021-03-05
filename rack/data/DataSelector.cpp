@@ -40,59 +40,66 @@ namespace rack {
 
 using namespace hi5;
 
-DataSelector::DataSelector(const std::string & path, const std::string & quantity,
-		//unsigned int index,
+DataSelector::DataSelector(
+		const std::string & path,
+		const std::string & quantity,
 		unsigned int count,
-		double elangleMin, double elangleMax) : BeanLike(__FUNCTION__){ //, groups(ODIMPathElem::getDictionary(), ':') {
+		double elangleMin,
+		double elangleMax) : BeanLike(__FUNCTION__){
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
+
 	init();
+
 	this->path = path;
 	this->quantity = quantity;
-	//this->index = index;
 	this->count = count;
 	this->elangle.min = elangleMin;
 	this->elangle.max = elangleMax;
 
+	updateBean();
 
-	//this->groups.value = ODIMPathElem::ALL_GROUPS;
-	//std::cerr << 1 << *this << std::endl;
 }
 
 
 DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__){ //, groups(ODIMPathElem::getDictionary(), ':') {
+
 	init();
-	setParameters(parameters);
+	setParameters(parameters); // calls updateBean()
+
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(__FUNCTION__){ //, groups(ODIMPathElem::getDictionary(), ':') {
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(selector){ //, groups(ODIMPathElem::getDictionary(), ':') {
 	init();
-	copy(selector);
+	setParameters(selector.getParameters()); // calls updateBean()!
+	//this->parameters.copyStruct(selector.getParameters(), selector, *this);
 }
+
+
 /// Inits pathmatcher
+/*
 DataSelector::DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2, ODIMPathElem::group_t e3) : BeanLike(__FUNCTION__){
 	init();
 	pathMatcher.setElems(e, e2, e3);
 }
+*/
 
 
 DataSelector::~DataSelector() {
 }
 
+
+///
 void DataSelector::init() {
 
 	reset();
+	pathMatcher.separator.acceptTrailing = true;
 
 	parameters.link("path", path);
 	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
-	//parameters.link("index", index);
-	parameters.link("elangle", elangle.vect, "min[:max]");
+	parameters.link("elangle", elangle.tuple(), "min[:max]");
 	parameters.link("count", count);
-	//parameters.link("dataset", dataset.vect, "min[:max]");
-	//parameters["dataset"].fillArray = true;
-	//parameters.link("data", data.vect, "min[:max]");
-	//parameters["data"].fillArray = true;
 
 	// Deprecating, use "elangle=min:max" instead
 	parameters.link("elangleMin", elangle.min, "(deprecating)");
@@ -105,6 +112,8 @@ void DataSelector::init() {
 	groups.keysToStream(sstr);
 	parameters.link("groups", groupStr, sstr.str());
 	 */
+	//copy(selector);
+
 }
 
 
@@ -134,17 +143,33 @@ void DataSelector::updateGroups(){
 
 
 
-void DataSelector::update(){
+void DataSelector::updateBean() const {
 
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (!path.empty()){
-		pathMatcher.set(path);
-		// path = pathMatcher;
-		// convertRegExpToRanges(path);
-		// mout.note() << "(also) converted obsolete path='" << path << "' => dataset[" << dataset << "]/data[" << dataset << ']' << mout.endl;
+
+		mout.debug() << "Assigning (string) path='"  << path << "'" << mout.endl;
+
+		pathMatcher.assign(path);
+		mout.debug() << "Assigned pathMatcher: " << path << " => " << pathMatcher << mout.endl;
+
+		if (!pathMatcher.empty()){
+			if (pathMatcher.back().empty()){ // "backroot" = > appears as trailing slash '/'
+				pathMatcher.pop_back();
+				mout.note() << "stripped trailing slash '/' => " << pathMatcher << mout.endl;
+			}
+		}
+		else {
+			mout.warn() << "path matcher still empty after assigning path='" << path << "'" << mout.endl;
+		}
+
+		//path.clear();
 	}
-	path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
+	//mout.warn() << "pathMatcher >> '" << pathMatcher << "'" << mout.endl;
+
+	//path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
+	//mout.warn() << "-----> path >> '" << path << "'" << mout.endl;
 
 	quantityRegExp.clear();
 	qualityRegExp.clear();
@@ -163,13 +188,16 @@ void DataSelector::update(){
 			break;
 	}
 
+	// mout.special() << "quantity [" << quantity <<"], " << "pathMatcher: " << path << " => " << pathMatcher   << mout.endl;
+
+
 	if (pathMatcher.empty() && !quantity.empty()){
 
 		if (! pathMatcher.front().is(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-			mout.warn() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
+			mout.info() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
 		}
-		path = pathMatcher;
+		//path = pathMatcher;
 	}
 
 	/*
@@ -182,7 +210,35 @@ void DataSelector::update(){
 
 }
 
+void DataSelector::ensureDataGroup(){
 
+	drain::Logger mout(__FUNCTION__, getName());
+
+	if (pathMatcher.empty()){
+		pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		mout.debug() << "Completed pathMatcher: " << pathMatcher << mout.endl;
+	}
+	else {
+		if (pathMatcher.back().empty()){ // "backroot"
+			pathMatcher.pop_back();
+			mout.note() << "stripped trailing slash (rootlike empty elem): "  << pathMatcher << mout.endl;
+		}
+
+		if (! pathMatcher.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			if (! pathMatcher.back().is(ODIMPathElem::DATASET)){
+				mout.warn() << "Resetting pathMatcher with suspicious tail: " << pathMatcher << mout.endl;
+				pathMatcher.clear();
+			}
+			pathMatcher.push_back(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			mout.note() << "Completed pathMatcher: " << pathMatcher << mout.endl;
+		}
+	}
+
+	if (quantity.empty()){
+		mout.info() << "quantity [" << quantity <<"] unset: " << *this << mout.endl;
+	}
+
+}
 
 
 
@@ -203,11 +259,11 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 
 	/*
-	if ((data.min > 0) || (data.max > 0)){
+	if ((data.first > 0) || (data.second > 0)){
 		mout.warn() << "'data' group selector deprecating, use [path=]dataset/" << dataset << '/' << data << " directly "<< mout.endl;
 	}
 
-	if ((dataset.min > 0) || (dataset.max < 0xffff)){
+	if ((dataset.first > 0) || (dataset.second < 0xffff)){
 		mout.warn() << "'dataset' group selector deprecating, use [path=]dataset" << dataset << " directly " << mout.endl;
 	}
 
@@ -217,9 +273,9 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 	if (!quantity.empty()){
 		mout.debug() << "no quantity set " << mout.endl;
 
-		if (data.max == 0){ // Maybe this 2nd check is unneeded
-			data.min = 0;
-			data.max = std::numeric_limits<unsigned short>::max();
+		if (data.second == 0){ // Maybe this 2nd check is unneeded
+			data.first = 0;
+			data.second = std::numeric_limits<unsigned short>::max();
 			setParameters(parameters); // data range may be re-adjusted
 			mout.debug() << "opened up data group, status " << *this << mout.endl;
 		}
@@ -231,11 +287,11 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 	}
 
 
-	if (data.max == 0){
+	if (data.second == 0){
 		/// No DATA indices nor quantities specified, hence only DATASET should be returned?
 		//  Allow still all descendants to be searched.
-		data.min = 0;
-		data.max = std::numeric_limits<unsigned short>::max();
+		data.first = 0;
+		data.second = std::numeric_limits<unsigned short>::max();
 		if (AUTO_GROUPS)
 			groups.value |= (ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		mout.debug() << "status 2: " << *this << ", groups: " << groups.value << mout.endl;
@@ -254,7 +310,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 	mout.debug() << "final flags: " << groups << mout.endl;
 
-	//(ODIMPathElem::group_t groupFilter = ODIMPathElem::DATA | ODIMPathElem::QUALITY | (data.max?ODIMPathElem::DATA
+	//(ODIMPathElem::group_t groupFilter = ODIMPathElem::DATA | ODIMPathElem::QUALITY | (data.second?ODIMPathElem::DATA
 
 	if (AUTO_GROUPS)
 		mout.debug() << "group mask: " << groups << ", full selector now: " << *this << mout.endl;
@@ -333,11 +389,16 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
 bool DataSelector::getPath3(const Hi5Tree & src, ODIMPath & path) const {
 	std::list<ODIMPath> pathContainer;
-	getPaths3(src, pathContainer);
+	getPaths(src, pathContainer);
 	if (pathContainer.empty()){
 		return false;
 	}
 	else {
+		/*
+		for (ODIMPath & p: pathContainer){
+			std::cerr << __FUNCTION__ << ':' << p << '\n';
+		}
+		*/
 		path = pathContainer.front();
 		return true;
 	}
@@ -357,7 +418,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 	ODIMPathList paths;
 	//getPaths(src, paths, group);
-	getPaths3(src, paths);
+	getPaths(src, paths);
 	if (paths.empty()){
 		path.clear();  // sure?
 		return false;
@@ -390,7 +451,7 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 	if (!getLastPath(src, path, group)){
 		// Empty
-		path = ODIMPathElem(group, 1); // todo: check group is valid code (return false, if not)
+		path.setElems(ODIMPathElem(group, 1)); // todo: check group is valid code (return false, if not)
 		return true;
 	}
 	else {
@@ -425,6 +486,27 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 }
 
 
+
+// TODO: change to check pathMatcher
+/*
+void ImageSelector::updateBean(){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	if (!dummy.empty()){
+		mout.warn() << "discarding path argument for '" << dummy << "' for " << getName() << mout.endl;
+	}
+	DataSelector::updateBean();
+
+	if (pathMatcher.empty()){
+		mout.warn() << "empty pathMatcher: " << *this << mout.endl;
+	}
+	else {
+		if (!pathMatcher.back().belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
+			mout.warn() << "image pathMatcher not ending with data[] or quantity[] group: " << *this << mout.endl;
+		}
+	}
+}
+*/
 /*
 void DataSelector::convertRegExpToRanges(const std::string & param){
 
@@ -450,11 +532,11 @@ void DataSelector::convertRegExpToRanges(const std::string & param){
 		}
 
 		if (rangeRE.execute(datasetIndex) == 0){
-			mout.debug(1) << "dataset result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			mout.debug2() << "dataset result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
 			if (rangeRE.result.size() >= 2){
 				dataset = atoi(rangeRE.result[1].c_str());
 				if (rangeRE.result.size() >= 4){
-					dataset.max = atoi(rangeRE.result[3].c_str());
+					dataset.second = atoi(rangeRE.result[3].c_str());
 				}
 				mout.note() << "derived: dataset=" << dataset << mout.endl;
 			}
@@ -489,11 +571,11 @@ void DataSelector::convertRegExpToRanges(const std::string & param){
 		}
 
 		if (rangeRE.execute(dataIndex) == 0){
-			mout.debug(1) << "data result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
+			mout.debug2() << "data result: " << drain::StringTools::join(rangeRE.result,'|') << mout.endl;
 			if (rangeRE.result.size() >= 2){
 				data = atoi(rangeRE.result[1].c_str());
 				if (rangeRE.result.size() >= 4){
-					data.max = atoi(rangeRE.result[3].c_str());
+					data.second = atoi(rangeRE.result[3].c_str());
 				}
 				mout.note() << "derived: data=" << data << mout.endl;
 			}

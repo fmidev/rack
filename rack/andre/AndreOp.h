@@ -55,6 +55,8 @@ class AndreOp: public VolumeTraversalOp {
 
 public:
 
+	//AndreOp(){};
+
 	~AndreOp(){};
 
 

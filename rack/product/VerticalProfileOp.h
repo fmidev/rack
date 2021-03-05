@@ -54,20 +54,20 @@ public:
 	VerticalProfileOp(double minRange=10, double range=100, double minHeight=0, double maxHeight=10000, long int levels=100, double startaz=0.0, double stopaz=359.99, long int azSlots=1) :
 		VolumeOp<VerticalProfileODIM>(__FUNCTION__ ,"Computes vertical dBZ distribution in within range [minRange,maxRange] km.") { // std::string type="d", double gain=0.5, double offset=-32.0) :
 
-		odim.range.set(minRange, range);
-		parameters.link("range",  odim.range.vect, "km"); //  = range
+		odim.distanceRange.set(minRange, range);
+		parameters.link("range",  odim.distanceRange.tuple(), "km"); //  = range
 		// parameters.link("minRange",  odim.minRange = minRange, "km");
 		//parameters.link("range",  odim.range = range, "km");
 
-		odim.height.set(minHeight, maxHeight);
-		parameters.link("height", odim.height.vect, "m");
+		odim.altitudeRange.set(minHeight, maxHeight);
+		parameters.link("height", odim.altitudeRange.tuple(), "m");
 		//parameters.link("minHeight", odim.height.min = minHeight, "m");
 		//parameters.link("maxHeight", odim.height.max = maxHeight, "m");
 
 		parameters.link("levels", odim.levels = levels);
 
-		odim.azm.set(startaz, stopaz);
-		parameters.link("azm", odim.azm.vect, "deg");
+		odim.azmRange.set(startaz, stopaz);
+		parameters.link("azm", odim.azmRange.tuple(), "deg");
 		// parameters.link("startaz", odim.startaz = startaz, "deg");
 		// parameters.link("stopaz", odim.stopaz = stopaz, "deg");
 		parameters.link("azSlots", odim.azSlots = azSlots);
@@ -80,8 +80,8 @@ public:
 		odim.quantity = "";  // will be chosen by dataselector
 
 		allowedEncoding.link("type", odim.type = "d");
-		//allowedEncoding.link("gain", odim.scale, 0.5);
-		//allowedEncoding.link("offset", odim.offset, -32.0);
+		//allowedEncoding.link("gain", odim.scaling.scale, 0.5);
+		//allowedEncoding.link("offset", odim.scaling.offset, -32.0);
 
 		dataSelector.quantity = "^DBZH$";
 

@@ -53,6 +53,24 @@ EncodingODIM & Quantity::set(char typecode) {
 	return odim;
 }
 
+std::ostream & Quantity::toStream(std::ostream & ostr) const {
+	for (const_iterator it = begin(); it != end(); ++it){
+		//ostr.width(6);
+		if (it->first == defaultType)
+			ostr << "  *";
+		else
+			ostr << "   ";
+		ostr << it->first << ',' << it->second;
+		if (drain::Type::call<drain::typeIsInteger>(it->first)){
+			ostr << " (min=" << it->second.getMin() << ')';
+		}
+		ostr << '\n';
+	}
+	if (hasUndetectValue())
+		ostr << '\t' << "virtual zero=" << undetectValue << '\n';
+	return ostr;
+}
+
 
 }  // namespace rack
 

@@ -48,22 +48,58 @@ class ODIMPathElemMatcher : public ODIMPathElem {
 
 public:
 
+	/*
+	typedef ODIMPathElem::index_t index_t;
+	typedef ODIMPathElem::group_t group_t;
+
+	group_t group;
+	// Running index of the element. Applied also as a lower limit in path matching.
+	index_t index;
+	*/
+
+
 	inline
-	ODIMPathElemMatcher(group_t group = ROOT, index_t index = 0, index_t indexMax = 0xffff) :
-		ODIMPathElem(group, index), indexMax(indexMax),  flags(this->group, ODIMPathElem::getDictionary(), '|'){
-		//flags = group;
+	ODIMPathElemMatcher(ODIMPathElem::group_t groups = ROOT, index_t index = 0, index_t indexMax = 0xffff) :
+		// ODIMPathElem(group, index),
+		// index(index),
+		// indexMax(indexMax),
+		flags(this->group, ODIMPathElem::getDictionary(), '|'){
+		this->group = groups;
+		this->index = index;
+		this->indexMax = indexMax;
 	};
 
 
 	inline
-	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) : ODIMPathElem(e), indexMax(e.indexMax),
-	flags(this->group, ODIMPathElem::getDictionary(), '|') {
-		//flags = e.flags.value;
-		group  = e.group;
+	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) :
+		// ODIMPathElem(e),
+		// index(e.index),
+		// indexMax(e.indexMax),
+		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		this->group = e.group; // needed?
+		this->index = e.index;
+		this->indexMax = e.indexMax;
 	}
 
 	inline
-	ODIMPathElemMatcher(const std::string &s) : indexMax(0xffff), flags(this->group, ODIMPathElem::getDictionary(), '|') {
+	ODIMPathElemMatcher(const ODIMPathElem &e) :
+		// ODIMPathElem(e),
+		// index(e.index),
+		// indexMax(0xffff),
+		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		this->group  = e.group; // needed?
+		this->index = e.index;
+		this->indexMax = 0xffff; // ??
+	}
+
+	inline
+	ODIMPathElemMatcher(const std::string &s) :
+		//  index(0),
+		// indexMax(0xffff),
+		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		group = 0;
+		index = 0;
+		this->indexMax = 0xffff;
 		set(s);
 	}
 
@@ -91,16 +127,25 @@ public:
 		return *this;
 	}
 
+	inline
+	ODIMPathElemMatcher & operator=(const std::string &s){
+		index = 0;
+		indexMax = 0xffff;
+		set(s);
+		return *this;
+	}
+
+
 	/// Test if the elem has the same group, and elem.index is within [index,indexMax].
 	bool test(const ODIMPathElem & elem) const;
 
 	// Applied only as a upper limit in path matching.
 	index_t indexMax;
 
-	drain::Flags flags;
+	drain::Flagger flags;
 
 	virtual
-	std::ostream & toOStr(std::ostream & sstr) const;
+	std::ostream & toStream(std::ostream & sstr) const;
 
 
 protected:
@@ -128,19 +173,38 @@ public:
 
 	/// Basic constructor
 	ODIMPathMatcher() : drain::Path<ODIMPathElemMatcher>() {
+		separator.acceptTrailing = true;
 	}
 
 	/// Copy constructor
 	ODIMPathMatcher(const ODIMPathMatcher & matcher) : drain::Path<ODIMPathElemMatcher>(matcher) {
 	}
 
-	/// Almost copy constructor
-	ODIMPathMatcher(const std::string & path) : drain::Path<ODIMPathElemMatcher>(path) {
+	template<typename ... T>
+	ODIMPathMatcher(const ODIMPathElem & elem, const T &... rest){
+		separator.acceptTrailing = true;
+		setElems(elem, rest...);
+		//updateBean(); ?
 	}
 
 	/// Almost copy constructor
-	ODIMPathMatcher(const char * path) : drain::Path<ODIMPathElemMatcher>(path) {
+	ODIMPathMatcher(const std::string & path){
+		separator.acceptTrailing = true;
+		assign(path);
 	}
+
+	/// Almost copy constructor
+	ODIMPathMatcher(const char * path){
+		separator.acceptTrailing = true;
+		assign(path);
+	}
+
+	/// Resolves "where|where"
+	//void parse(const std::string & path);
+
+
+	/// If neither end has an empty element (appearing as slash), add one, to root.
+	bool ensureLimitingSlash();
 
 
 	/// Checks if corresponds to a single path, implying that all the index ranges are singletons.

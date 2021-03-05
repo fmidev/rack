@@ -39,7 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Proj4.h"
 #include "drain/image/AccumulatorGeo.h"
 #include "data/ODIM.h"
+#include "data/ODIMPath.h"
 #include "data/Data.h"
+#include "data/DataSelector.h"
 #include "data/DataCoder.h"
 #include "data/QuantityMap.h"
 #include "Geometry.h"
@@ -65,7 +67,7 @@ public:
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
 
 	/// Default constructor
-	RadarAccumulator() : defaultQuality(0.5), counter(0) { //, undetectValue(-52.0) {
+	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0) { //, undetectValue(-52.0) {
 		odim.type.clear();
 		//odim.ACCnum = 0;
 	}
@@ -86,6 +88,9 @@ public:
 
 	/// Input data selector.
 	DataSelector dataSelector;
+	// DataSelector dataSelector(ODIMPathElem::DATA);
+	// dataSelector.pathMatcher.setElems(ODIMPathElem::DATA);
+
 
 	/// For storing the scaling and encoding of (1st) input or user-defined values. Also for bookkeeping of date, time, sources etc.
 	/*
@@ -106,12 +111,28 @@ public:
 		if (odim.quantity.empty()){
 			//drain::ReferenceMap m;
 			ODIM m;
-			m.link("what:quantity", odim.quantity);
+			m.link("what:quantity", odim.quantity); // appends
 			m.addShortKeys();
 			m.updateValues(encoding);
 		}
 		//odim.setValues(encoding); // experimental
 	}
+
+	inline
+	void consumeTargetEncoding(std::string & encoding){
+		if (!encoding.empty()){
+			targetEncoding = encoding;
+			if (odim.quantity.empty()){
+				//drain::ReferenceMap m;
+				ODIM m;
+				m.link("what:quantity", odim.quantity); // appends
+				m.addShortKeys();
+				m.updateValues(encoding);
+			}
+		}
+		encoding.clear();
+	}
+
 
 	inline
 	const std::string & getTargetEncoding(){
@@ -229,7 +250,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 	OD odimFinal;
 	odimFinal = odimOut;
-	odimFinal.scale = 0.0; // ?
+	odimFinal.scaling.scale = 0.0; // ?
 
 	const QuantityMap & qm = getQuantityMap();
 
@@ -294,9 +315,9 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
 				}
 				else {
-					odimQuality.scale *= 20.0;  // ?
+					odimQuality.scaling.scale *= 20.0;  // ?
 					//const std::type_info & t = Type::getType(odimFinal.type);
-					odimQuality.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
+					odimQuality.scaling.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
 					//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
 					mout.warn() << "quantyConf[" << odimQuality.quantity << "] not found, using somewhat arbitary scaling:" << mout.endl;
 					mout.warn() << EncodingODIM(odimQuality) << mout.endl;

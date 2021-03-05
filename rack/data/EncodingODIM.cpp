@@ -36,16 +36,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-const std::set<ODIMPathElem> & EncodingODIM::attributeGroups(createAttributeGroups());
+//const std::set<ODIMPathElem> & EncodingODIM::attributeGroups(createAttributeGroups());
 
-const std::set<ODIMPathElem> & EncodingODIM::createAttributeGroups(){
+const ODIMPathElemSeq & EncodingODIM::attributeGroups(getAttributeGroups());
 
-	static std::set<ODIMPathElem> s;
-	s.insert(ODIMPathElem(ODIMPathElem::WHAT));
-	s.insert(ODIMPathElem(ODIMPathElem::WHERE));
-	s.insert(ODIMPathElem(ODIMPathElem::HOW));
+const ODIMPathElemSeq & EncodingODIM::getAttributeGroups(){
+	static ODIMPathElemSeq s;
+	if (s.empty()){
+		s.push_back(ODIMPathElem(ODIMPathElem::WHAT));
+		s.push_back(ODIMPathElem(ODIMPathElem::WHERE));
+		s.push_back(ODIMPathElem(ODIMPathElem::HOW));
+	}
 	return s;
-
 }
 
 void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
@@ -58,8 +60,8 @@ void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	if (initialize & ODIMPathElem::DATA){
 		link("what:type", type = "C");
-		link("what:gain",   scale = 0.0);
-		link("what:offset", offset = 0.0);
+		link("what:gain",   scaling.scale = 0.0);
+		link("what:offset", scaling.offset = 0.0);
 		link("what:undetect", undetect = 0.0);
 		link("what:nodata", nodata = 0.0);
 	}
@@ -103,8 +105,9 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 	if (type.empty())
 		type = "C";
 
-	this->scale = gain;
-	this->offset = offset;
+	this->scaling.set(gain, offset);
+	//this->scaling.scale = gain;
+	//this->scaling.offset = offset;
 	this->undetect = undetect;
 	this->nodata = nodata;
 
@@ -117,9 +120,10 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 	if (type.empty())
 		type = odim.type;
 
-	if ((scale == 0.0) && (type == odim.type)){
-		scale   = odim.scale;
-		offset = odim.offset;
+	if ((this->scaling.scale == 0.0) && (type == odim.type)){
+		this->scaling.assign(odim.scaling);
+		//scale   = odim.scale;
+		//offset = odim.offset;
 		nodata = odim.nodata;
 		undetect = odim.undetect;
 	}
@@ -129,13 +133,12 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 // Rename to grant
 void EncodingODIM::grantShortKeys(drain::ReferenceMap & ref) {
 
-	const EncodingODIM::keylist_t & keys = getKeyList();
+	//const EncodingODIM::keylist_t & keys = getKeyList();
 
-	for (EncodingODIM::keylist_t::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-		const size_t i = kit->find(':');  // type?
+	for (const std::string & key: getKeyList()){
+		const size_t i = key.find(':');  // type?
 		if (i != std::string::npos){
-			ref.link(kit->substr(i+1), operator[](*kit));
-			//alias(key.substr(i+1), key);
+			ref.link(key.substr(i+1), operator[](key));
 		}
 	}
 }
@@ -155,19 +158,10 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
-			mout.debug(4) << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
+			mout.debug3() << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
 
 			if (t == typeid(double)){
-				//(*this)[key] = (double)srcValue;
 				dstValue = static_cast<double>(srcValue);
-				//std::cerr << "DOUBLE" << key << "\n\t";
-				/*
-					std::cerr.precision(20);
-					std::cerr << (double)srcValue << "\n\t";
-					std::cerr << undetect << "\n\t";
-					//std::cerr << (const double &)srcValue << std::endl;
-					std::cerr << (const double &)(*this)[key] << std::endl;
-				 */
 			}
 			else if (t == typeid(float))
 				dstValue = static_cast<float>(srcValue);
@@ -175,11 +169,10 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 				dstValue = srcValue;
 		}
 		else {
-			mout.debug(2) << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
+			mout.debug3() << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
 		}
 
 	}
-	//type = std::string("") + drain::Type::getTypeChar(data.getType());
 	type = drain::Type::getTypeChar(data.getType());
 }
 
@@ -199,13 +192,14 @@ void EncodingODIM::setRange(double min, double max) {
 		nodata   = maxData;
 
 		if (drain::Type::call<drain::typeIsInteger>(t)){
-			scale = (max-min) / static_cast<double>((maxData-1) - (minData+1));
-			offset = min - scale*(minData+1);
+			scaling.scale = (max-min) / static_cast<double>((maxData-1) - (minData+1));
+			scaling.offset = min - scaling.scale*(minData+1);
 			//drain::Logger mout("QuantityMap", __FUNCTION__);
 		}
 		else {
-			scale = 1.0;
-			offset = 0.0;
+			scaling.set(1.0, 0.0);
+			//scaling.scale = 1.0;
+			//scaling.offset = 0.0;
 		}
 
 		//if (!defaultType)			defaultType = typecode;

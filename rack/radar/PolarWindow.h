@@ -92,9 +92,9 @@ class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeigh
 	void setRangeNorm(const PolarODIM & odim){
 		//rangeNorm = i;
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
-		rangeNorm = static_cast<double>(odim.geometry.height) / (2.0*M_PI);
+		rangeNorm = static_cast<double>(odim.area.height) / (2.0*M_PI);
 		//rangeNorm = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.geometry.height) / (2.0*M_PI);
-		rangeNormEnd = (rangeNorm * this->conf.height);
+		rangeNormEnd = (rangeNorm * this->conf.frame.height);
 		//mout.warn() << rangeNorm << '-' << rangeNormEnd << mout.endl;
 	}
 

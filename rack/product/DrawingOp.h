@@ -43,9 +43,9 @@ namespace rack {
 /// Select and visualise a direction, range, sector or arc.
 /**
  * - direction,<azm>,<range>[,<range2>]
- * - range,<range>[,<range2>]
- * - sector,<azm1>,<azm2>,<range>[,<range2>]
- * - arc,<azm1>,<azm2>,<range>
+ * - range,{range}[,{range2}]
+ * - sector,{azm1},{azm2},{range}[,{range2}]
+ * - arc,{azm1},{azm2},{range}
  *
  */
 class DrawingOp : public PolarProductOp {

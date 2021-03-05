@@ -32,20 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <math.h>
 
 #include <iostream>
-#include <map>
-#include <exception>
+
 
 #include "drain/util/Log.h"
-#include "drain/prog/CommandAdapter.h"
 #include "drain/prog/CommandBankUtils.h"
-
+#include <drain/prog/CommandInstaller.h>
 
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
 #include "hi5/Hi5Write.h"
-
-#include "radar/Precipitation.h"
-#include "product/RainRateOp.h"
 
 //#include "commands.h"
 //#include "accumulation.h"
@@ -55,10 +50,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "accumulation.h"
 #include "products.h"
 #include "cartesian.h"
+#include "science.h"
 #include "images.h"
 #include "image-ops.h"
+
 #include "rack.h"
 
+
+#include "drain/imageops/FastOpticalFlowOp2.h"
+#include "drain/imageops/FloodFillOp.h"
 
 namespace rack {
 
@@ -66,86 +66,117 @@ namespace rack {
 int process(int argc, const char **argv) {
 
 
-	drain::Logger mout("rack");
-	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
-
 	if (argc == 1) {
-		//drain::getRegistry().help();
 		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\nHelp:  rack -h\n" ;
 		return 1;
 	}
 
-	drain::CommandRegistry & registry = drain::getRegistry();
+	// drain::CommandRegistry & registry = drain::getRegistry();
 
 	//registry.setSection("", "");
-	CommandModule commands;
+	RackResources & resources = getResources();
+	RackResources::ctx_cloner_t & contextCloner = resources.getContextCloner();
+	RackContext & ctx = contextCloner.getSourceOrig(); // baseCtx
 
-	registry.run("verbose", "5"); // LOG_NOTICE
+	// NEW
+	ctx.log.setVerbosity(LOG_NOTICE);
+	// OLD
+	drain::getLog().setVerbosity(LOG_NOTICE);
+	//drain::image::getImgLog().setVerbosity(imageLevel);
+
+	drain::Logger mout(ctx.log, "rack");
+	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
+
+	mout.debug() = "Activate modules";
+
+	MainModule commandMod; // ("general");
+	FileModule fileMod; // ("general");
+	AnDReModule andreMod; // ("andre");
+	ScienceModule scienceMod; // ("science");
+	ProductModule productMod; // ("prod");
+	AccumulationModule accumulationMod; // ("acc");
+	CartesianModule cartesianMod; // ("cart");
+	ImageOpModule imageOpMod; // ("imageOps");
+	ImageModule   imageMod; // ("images");
 
 
-
-	FileModule fileio;
-
-
-	AnDReModule andre("andre", "a");
-
-
-	AccumulationModule accumulation("prod", "p");
-	ProductModule products("prod", "p");
-
-	//getResources().composite.setMethod("MAX");
-
-	//registry.setSection("formulae", "");
+	mout.debug() = "Add Rack-specific commands";
 
 	drain::CommandBank & cmdBank = drain::getCommandBank();
+	cmdBank.setTitle("Rack - a radar data processing program");
+
+	// If command is not found, it is redirected to \c --setODIM \c <arg>  which checks if it starts with a leading slash
+	cmdBank.setNotFoundHandlerCmdKey("setODIM");
+
+	// If a plain argument <arg> is given, execute it like \c --inputFile \c <arg> .
+	cmdBank.setDefaultCmdKey("inputFile");
+	// Also, add it to the commands taht trigger the script (if defined).
+	//drain::Flags::value_t trigger = cmdBank.sections.getValue("trigger");
+	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+	cmdBank.setScriptTriggerFlag(TRIGGER);
+	cmdBank.get("inputFile").section |= TRIGGER;
+
+	// cmdBank.setScriptCmd("");
 
 
-	cmdBank.sections.dictionary.add("formulae", 32); // OR: constants?
-
-	//drain::BeanAdapterCommand<PrecipitationZ> precipZrain(RainRateOp::precipZrain);
-	drain::BeanCommand<PrecipitationZ, PrecipitationZ&> precipZrain(RainRateOp::precipZrain);
-	cmdBank.addExternal(precipZrain, "precipZrain");
-
-	drain::BeanCommand<PrecipitationZ, PrecipitationZ&> precipZsnow(RainRateOp::precipZsnow);
-	cmdBank.addExternal(precipZsnow, "precipZsnow");
-
-	drain::BeanCommand<PrecipitationKDP, PrecipitationKDP&> precipKDP(RainRateOp::precipKDP);
-	cmdBank.addExternal(precipKDP, "precipKDP");
-
-	drain::BeanCommand<PrecipitationZZDR, PrecipitationZZDR&> precipZZDR(RainRateOp::precipZZDR);
-	cmdBank.addExternal(precipZZDR, "precipZZDR");
-
-	drain::BeanCommand<PrecipitationKDPZDR,PrecipitationKDPZDR&> precipKDPZDR(RainRateOp::precipKDPZDR);
-	cmdBank.addExternal(precipKDPZDR, "precipKDPZDR");
-
-	drain::BeanCommand<FreezingLevel,FreezingLevel&> freezingLevel(RainRateOp::freezingLevel);
-	cmdBank.addExternal(freezingLevel, "freezingLevel");
-
+	/*
+	mout.note() << "-- experimental commandBank --"  << mout.endl;
 	drain::CommandWrapper<drain::CmdVerbosity> verbosityCmd;
-	drain::HelpCmd help(cmdBank);
-	cmdBank.addExternal(help, "help", 'h');
+	verbosityCmd.setExternalContext(ctx);
+	drain::Context & ctx0 = verbosityCmd.getContext<drain::Context>();
+	mout.note() << ctx0.getStatus() << mout.endl;
+	RackContext & ctx1 = verbosityCmd.getContext<RackContext>();
+	mout.note() << ctx1.getStatus() << mout.endl;
+	mout.note() << "-- exp --"  << mout.endl;
+	drain::Command & status0 = cmdBank.get("status");
+	status0.exec();
+	drain::Command & status1 = cmdBank.clone("status");
+	status1.exec();
+	mout.note() << "-- EXP --"  << mout.endl;
+	status0.setExternalContext(ctx);
+	status0.exec();
+	drain::Command & status2 = cmdBank.clone("status");
+	status2.exec();
+	mout.note() << "-- EXP --"  << mout.endl;
+	*/
 
 	try {
-		drain::Script2 script;
+		mout.info() << "converting arguments to a script " << mout.endl;
+
+		drain::Script script;
 		cmdBank.scriptify(argc, argv, script);
-		mout.info() << "preparing script: " << mout.endl;
-		script.toStream();
 
-		mout.info() << "converting script " << mout.endl;
+		drain::Program prog;
+		cmdBank.append(script, ctx, prog); // ctx is stored in each cmd
 
-		drain::Cloner<drain::Context, drain::Context> contextCloner;
-		mout.info() << "running script " << mout.endl;
-		cmdBank.run(script, contextCloner);
-		//cmdBank.help();
+
+
+		mout.info() << "running, ctx.id=" << ctx.getId() << mout.endl;
+		//cmdBank.run(script, contextCloner);
+		cmdBank.run(prog, contextCloner);
+
+		mout.warn() << "debug-level:" << prog.begin()->second->getContext<drain::Context>().log.getVerbosity() << mout.endl;
+
+		if (ctx.statusFlags == 0){
+			mout.success() = "Finished.";
+		}
+		else {
+			// std::cerr << ctx.statusFlags.value << ' ' << ctx.statusFlags << " ERROR\n";
+			mout.warn() << "error flags("<< ctx.statusFlags.value << "): " << ctx.statusFlags.getKeys(',') << mout.endl;
+		}
 
 	}
 	catch (const std::exception & e) {
 		mout.warn() << e.what() << mout.endl;
+		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 	}
+	mout.note() << "debug-level:" << ctx.log.getVerbosity() << mout.endl;
 
-	CompositingModule compositing("cart", "c");
+	//mout.note() << "-- end commandBank --"  << mout.endl;
 
-	ImageRackletModule imageOps("imageOps", "i");  // Causes bug in StatusMap
+
+	return ctx.statusFlags.value;
+
 
 
 	//EncodingODIM().toOStr(std::cout)
@@ -166,22 +197,14 @@ int process(int argc, const char **argv) {
 
 
 	/// Main "loop".
-	registry.runCommands(argc, argv);
+	//registry.runCommands(argc, argv);
 
 	// mout.timestamp("END_RACK");
 	// std::cout << registry.getAliases() << '\n';
 	// mout << "end" << mout.endl;
-	RackResources & resources = getResources();
 
-	if ((mout.isLevel(LOG_WARNING)) && (resources.errorFlags > 0)){
-		std::cerr << resources.errorFlags.value << ' ' << resources.errorFlags << " ERROR\n";
-		//std::cerr << '[';
-		//resources.errorFlags.keysToStream(std::cerr, ',');
-		//std::cerr << ']';
-	}
 
 	//if (getResources().inputOk)
-	return resources.errorFlags;
 	/*
 	if (getResources().errorFlags.isSet(255))
 		return getResources().errorFlag; //result; future option

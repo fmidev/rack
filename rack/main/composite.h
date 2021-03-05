@@ -27,66 +27,75 @@ SOFTWARE.
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*//**
+*/
 
-    Copyright 2001 - 2011  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+#pragma once
 
-    This file is part of AnoRack, radar data processing utilities for C++.
-
- *  Created on: Mar 7, 2011
- *      Author: mpeura
+// SINCE 2017/06/30,
+/*  cCreate = cAdd + cExtract dw
+ *  cAdd adds current h5 (polar or cartesian).
  */
 
-#ifndef SPECKLEOP2_H_
-#define SPECKLEOP2_H_
+#ifndef RACK_COMPOSITING
+#define RACK_COMPOSITING
 
-#include "DetectorOp.h"
 
-using namespace drain::image;
+//#include "data/Quantity.h"
+#include "data/ODIM.h"
+
+//#include "drain/prog/Command.h"
+#include "drain/prog/CommandInstaller.h"
+
+
+#include "resources.h"
+
+
 
 namespace rack {
 
-/**
- *
- */
-class SpeckleOp: public DetectorOp {
+// Combines program resources and compositing functions.
 
-public:
-
-	///	Computes sizes of segments having intensity over reflMin.
-	/**
-	 *  \param reflMin - threshold reflectivity
-	 *  \param area - fuzzy threshold, at which the likelihood is 50%
-	 *
-	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
-	 */
-	inline
-	SpeckleOp(double reflMin=0.0, int area=4) :
-		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.", "signal.noise"){
-		dataSelector.quantity = "^DBZH$";
-		UNIVERSAL = true;
-		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
-		parameters.link("area", this->area = area, "bins");
-		REQUIRE_STANDARD_DATA = false;
-	};
-
-	inline
-	SpeckleOp(const SpeckleOp & op) : DetectorOp(op) {
-		parameters.copyStruct(op.getParameters(), op, *this);
-	}
-
-	double reflMin;
-	int area;
+class Compositor : public drain::BasicCommand {
 
 
 protected:
 
-	virtual
-	void processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const;
+	inline
+	Compositor(const std::string & name, const std::string & description) : drain::BasicCommand(name, description), weight(1.0) {
+	}
+
+	inline
+	Compositor(const Compositor & cmd) : drain::BasicCommand(cmd), weight(cmd.weight) {
+	}
+
+	//void initComposite();
+
+	double weight;
+
+	double applyTimeDecay(double w, const ODIM & odim) const;
+
+	// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST
+	void add(drain::Flags::value_t inputFilter) const;
+
+	void addPolar(const Hi5Tree & src) const;
+	void addCartesian(const Hi5Tree & src) const;
+	void extract(const std::string & channels) const;
+
+protected:
+
+	// Derives the
+	//Hi5Tree & getInputOLD() const;
+
+	Composite & getComposite() const;
 
 };
 
 
+
 }
 
-#endif /* POLARTOCARTESIANOP_H_ */
+
+
+#endif
+
+// Rack

@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Fuzzy.h"
 #include "drain/util/Geo.h"
+#include "drain/image/FilePng.h"
 
 //#include "data/Conversion.h"
 #include "radar/Constants.h"
@@ -47,17 +48,22 @@ using namespace drain::image;
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug(2) << "start" << mout.endl;
-	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
-	if (sweep.data.isEmpty())
-		mout.warn() << "data is empty " << mout.endl;
+	mout.debug3() << "start" << mout.endl;
+	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
+
+	if (sweep.data.isEmpty()){
+		mout.fail() << "data is empty " << mout.endl;
+		return;
+	}
 
 	const PlainData<PolarSrc> & sweepQuality = sweep.getQualityData();
 
 	const bool USE_QUALITY = ! sweepQuality.data.isEmpty();
 
-	mout.info() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
+	mout.debug() << "Elangle: " <<  sweep.odim.elangle << mout.endl;
+
+	mout.debug() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
 
 
 	double altitudeFinal;
@@ -77,12 +83,11 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		}
 	}
 
-
-	mout.info() << "Freezing level: " << sweep.odim.freeze << mout.endl;
+	mout.debug() << "Freezing level: " << sweep.odim.freeze << mout.endl;
 
 	// In this context decoding only, ie form bytevalues to physical values.
 	DataCoder coder(sweep.odim, sweepQuality.odim);
-	mout.info() << "decoder: " << coder.toStr() << mout.endl;
+	mout.debug() << "decoder: " << coder.toStr() << mout.endl;
 
 	// Elevation angle
 	const double eta = sweep.odim.getElangleR();
@@ -128,6 +133,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		// Virtual elevation angle of the bin
 		etaBin = Geometry::etaFromBetaH(beta, altitudeFinal);
 
+		//beamWeight = 1.0;
 		beamWeight = beamPower( etaBin - eta );
 		if (beamWeight < weightMin)
 			continue;
@@ -141,7 +147,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 			continue;
 
 		iSweep = static_cast<size_t>(t);
-		if (iSweep >= sweep.odim.geometry.width)
+		if (iSweep >= sweep.odim.area.width)
 			continue;
 
 		// TODO: derive iStart and iEnd instead.
@@ -150,7 +156,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
+			jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
 
 			value = sweep.data.get<double>(iSweep, jSweep);
 
@@ -176,14 +182,20 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 			address = accumulator.data.address(i,j);
 			accumulator.add(address, value, w);
-
+			//accumulator.add(address, value+i, i+j);
+			//accumulator.data.put(i, j, i+j+value);
+			//accumulator.weight.put(i, j, i+j+value);
 		}
 		//else
 			//mout.warn() << "skipping range b=" << binDistance << " i1=" << iSweep << mout.endl;
 
 	}
-
-
+	/*
+	std::stringstream filename;
+	filename << "sweep-" << sweep.odim.elangle << ".png";
+	drain::image::FilePng::write(sweep.data, filename.str());
+	drain::image::FilePng::write(accumulator.data, "acc.png");
+	*/
 }
 
 }

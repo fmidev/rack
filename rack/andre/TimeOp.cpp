@@ -134,10 +134,16 @@ void TimeOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	mout.debug() << "secondsPerBeam: " << secondsPerBeam << mout.endl;
 	double s, q;
 
-	/// Main loop
-	//std::cerr << "Mainloop...";
+	/// MAIN
+	int j2;
 	for (size_t j = 0; j < dstProb.data.getHeight(); ++j) {
-		s = secondStart + j*secondsPerBeam;
+
+		if (j < srcData.odim.a1gate)
+			j2 = j-srcData.odim.a1gate + dstProb.data.getHeight();
+		else
+			j2 = j-srcData.odim.a1gate;
+
+		s = secondStart + j2*secondsPerBeam;
 		if (s < secondRef )
 			q = maxQuality - fuzzyPast(s);
 		else

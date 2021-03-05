@@ -32,20 +32,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "data/DataSelector.h"
-#include "drain/prog/Command.h"
-#include "radar/Composite.h"
-#include "radar/RadarAccumulator.h"
 #include "drain/util/Log.h"
-#include "drain/util/SmartMap.h"
 
-#include <main/cartesian.h>  // for cmdFormat called by
-#include <main/cartesian-add.h>
-#include <main/cartesian-bbox.h>
-#include <main/cartesian-create.h>
-#include <main/cartesian-grid.h>
-#include <main/cartesian-motion.h>
-#include <main/cartesian-plot.h>
+///#include "drain/prog/Command.h"
+///
+#include "drain/prog/CommandInstaller.h"
+
+
+#include "resources.h"  // for RackContext?
+
+#include "composite.h"  // for cmdFormat called by
+#include "cartesian.h"  // for cmdFormat called by
+#include "cartesian-add.h"
+#include "cartesian-extract.h"
+#include "cartesian-bbox.h"
+#include "cartesian-create.h"
+#include "cartesian-grid.h"
+#include "cartesian-motion.h"
+#include "cartesian-plot.h"
 
 
 
@@ -54,79 +58,29 @@ namespace rack {
 
 
 
-class CompositeDefaultQuality : public drain::BasicCommand { //SimpleCommand<double> {
 
-public:
-
-	CompositeDefaultQuality() : drain::BasicCommand(__FUNCTION__, "Set default quality (for data without quality field)"){
-		//parameters.link("weight", getResources().cDefaultQuality = 0.75, "0...1");
-		parameters.link("weight", getResources().composite.defaultQuality = 0.75, "0...1");
-	};
-
-};
-
-
-
+/// First, commands applicable in any Cartesian product generation, not only radar compositeing.
 
 // This is defined here because Create needs this
-class CartesianProj : public drain::BasicCommand {
+class CartesianProj : public drain::SimpleCommand<>{ // public drain::BasicCommand {
 
 public:
 
-	CartesianProj() : drain::BasicCommand(__FUNCTION__, "Set projection"){
+	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "projstr", "", "Proj.4 syntax"){
 		parameters.separator = 0;
-		parameters.link("projstr", getResources().projStr, "Proj4 syntax");
 	};
 
 
 	inline
 	void exec() const {
-		RackResources & resources = getResources();
-		resources.composite.setProjection(resources.projStr);
+		RackContext & ctx = getContext<RackContext>();
+		//Composite & composite = getComposite();
+
+		ctx.composite.setProjection(value);
+		ctx.composite.odim.projdef = value; // ?? + "     ";
 	};
 
 };
-
-
-
-
-class CompositeInit : public drain::BasicCommand {
-
-public:
-
-	CompositeInit() : drain::BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
-
-	inline
-	void exec() const {
-		getResources().initComposite();
-		//CompositingModule::initComposite();
-	}
-
-};
-
-
-
-/*
-CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
-			"mode", 0, "If no overlap and n==0, only set inputOk=false. Else exit with return value n."	) {
- */
-
-class CompositeMethod : public drain::SimpleCommand<std::string> {
-public:
-
-	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__, "Method to be used in accumulating the (weighted) values.",
-			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
-		getResources().composite.setMethod(value);
-	};
-
-	inline
-	void exec() const {
-		getResources().composite.setMethod(value);  // method? Or Method obj?
-		getResources().polarAccumulator.setMethod(value);  // method? Or Method obj?
-	};
-
-};
-/// static RackLetAdapter<CompositeMethod> cMethod("cMethod");
 
 
 
@@ -134,24 +88,30 @@ class CartesianSize : public drain::BasicCommand {
 
 public:
 
-	int width;
-	int height;
-
 	inline
 	CartesianSize() : drain::BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
 		parameters.link("width",  width = 400, "pixels");
 		parameters.link("height", height = 0, "pixels");
 	};
 
+	CartesianSize(const CartesianSize & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
+
 	inline
 	void exec() const {
-		// int w = width  ? width  : 500;
-		// int h = height ? height : 500;
+		RackContext & ctx = getContext<RackContext>();
 		if (height == 0)
-			getResources().composite.setGeometry(width, width);
+			ctx.composite.setGeometry(width, width);
 		else
-			getResources().composite.setGeometry(width, height);
+			ctx.composite.setGeometry(width, height);
 	};
+
+protected:
+
+	int width;
+	int height;
+
 
 };
 
@@ -170,16 +130,74 @@ public:
 
 	inline
 	void exec() const {
-		RackResources & resources = getResources();
-		resources.composite.odim.date = value.substr(0,8);
-		resources.composite.odim.time = value.substr(8);
-		const size_t n = resources.composite.odim.time.length();
-		if (n < 6){
-			//drain::Logger mout(__FUNCTION__, getName());
-			//mout.info() << "appending " << (6-n) <<  " letters" << mout.endl;
-			resources.composite.odim.time.append(6-n, '0');
-		}
-		//std::cout << resources.composite.odim.date << ',' << resources.composite.odim.time << std::endl;
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.odim.setTime(value);
+		//std::cout << composite.odim.date << ',' << composite.odim.time << std::endl;
+	};
+
+};
+
+
+
+class CartesianInit : public drain::BasicCommand {
+
+public:
+
+	CartesianInit() : drain::BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>(); // %%
+		//Composite & composite = getComposite();
+		ctx.composite.dataSelector.consumeParameters(ctx.select);
+		ctx.composite.allocate();
+		ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
+	}
+
+};
+
+
+
+
+/// Commands (more) related to radar composites.
+
+
+/*
+CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
+			"mode", 0, "If no overlap and n==0, only set inputOk=false. Else exit with return value n."	) {
+ */
+
+class CompositeMethod : public drain::SimpleCommand<std::string> {
+public:
+
+	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__, "Method to be used in accumulating the (weighted) values.",
+			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
+		exec();
+	};
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>(); // %%
+		ctx.composite.setMethod(value);  // method? Or Method obj?
+		getResources().polarAccumulator.setMethod(value);  // method? Or Method obj?
+	};
+
+};
+
+
+
+class CompositeDefaultQuality : public drain::SimpleCommand<double> {
+
+public:
+
+	CompositeDefaultQuality() : drain::SimpleCommand<double>(__FUNCTION__, "Set default quality (for data without quality field)",
+			"weight", 0.75, "0...1"){
+	};
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.defaultQuality = value;
 	};
 
 };
@@ -187,12 +205,20 @@ public:
 
 ///
 // TODO: change to half-time in minutes
-class CompositeTimeDecay : public drain::BasicCommand {
+class CompositeTimeDecay : public drain::SimpleCommand<double> {  //public drain::BasicCommand {
 
 	public:
-	CompositeTimeDecay() : drain::BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
-		parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
+	CompositeTimeDecay() : drain::SimpleCommand<double>(__FUNCTION__,
+			"Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime", "weight", 1.0){
+		//parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
 	};
+
+	inline
+	void exec() const {
+		// Composite & composite = getComposite();
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.decay = value;
+	}
 
 };
 
@@ -212,12 +238,13 @@ class CompositeDecayTime : public drain::SimpleCommand<int> {
 
 	inline
 	void exec() const {
-		RackResources & resources = getResources();
+		// Composite & composite = getComposite();
+		RackContext & ctx = getContext<RackContext>();
 		if (this->value > 0){
-			resources.composite.decay = ::pow(0.5, 1.0 / static_cast<double>(value));
+			ctx.composite.decay = ::pow(0.5, 1.0 / static_cast<double>(value));
 		}
 		else {
-			resources.composite.decay = 1.0;
+			ctx.composite.decay = 1.0;
 		}
 	}
 
@@ -226,57 +253,63 @@ class CompositeDecayTime : public drain::SimpleCommand<int> {
 
 
 
+
+
+
+
 /*
-//void CompositeInit::exec() const {
-void CompositingModule::initComposite() {
-
-	drain::Logger mout(__FUNCTION__, getName());
-
-	RackResources & resources = getResources();
-
-	/// Set data selector
-	if (!resources.select.empty()){
-		resources.composite.dataSelector.setParameters(resources.select);
-		resources.select.clear();
-		// resources.composite.odim.quantity.clear();
-	}
-
-	if ((resources.composite.getFrameWidth() == 0) || (resources.composite.getFrameHeight() == 0)){
-		resources.composite.setGeometry(500,500); // frame only
-		mout.warn() << "size unset, applying " << resources.composite.getFrameWidth() << ',' << resources.composite.getFrameHeight() << mout.endl;
-	}
-	resources.composite.allocate();
-
-	if (!resources.targetEncoding.empty()){
-		resources.composite.setTargetEncoding(resources.targetEncoding);
-		mout.debug() << "target encoding: " << resources.composite.getTargetEncoding() << mout.endl;
-		resources.targetEncoding.clear();
-	}
-
-
-}
+template <class C=drain::Command>
+class CartesianCmdWrapper : public drain::CommandWrapper<C,'c', CartesianSection> {
+public:
+	CartesianCmdWrapper(char alias = 0): drain::CommandWrapper<C,'c', CartesianSection>(alias) {};
+};
 */
 
 
+CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) { // : CommandSection("cart"){
 
+	drain::CommandBank::trimWords().insert("Cartesian");
+	drain::CommandBank::trimWords().insert("Composite");
 
+	//CartesianCmdWrapper<>::get
+	//drain::CommandInstaller<'c', CartesianSection> installer;
 
+	install<CartesianCreate>('c'); // cCreate2('c');
+	install<CompositeAdd>(); // cAdd2;
+	install<CompositeAddWeighted>(); // cAddWeighted2;
+	install<CompositeDefaultQuality>(); // cDefaultQuality2;
+	install<CartesianBBox>(); // cBBox2;
+	install<CartesianBBoxReset>(); // cBBoxReset2;
+	install<CartesianBBoxTest>(); // cBBoxTest2;
+	install<CartesianBBoxTile>(); // cBBoxTile2;
+	install<CartesianExtract>(); // cExtract2;
+	install<CartesianGrid>(); // cGrid2;
+	install<CartesianInit>(); // cInit2;
+	install<CompositeMethod>(); // cMethod2;
 
+	install<CartesianPlot>(); // cPlot2;
+	install<CartesianPlotFile>(); // cPlotFile2;
+	install<CartesianProj>(); // cProj2;  // shared
+	install<CartesianRange>(); // cRange2;
+	install<CartesianReset>(); // cReset2;
+	install<CartesianSize>(); // cSize2;
+	install<CartesianSpread>(); // cSpread2;
+	install<CartesianTime>(); // cTime2;
+	install<CompositeTimeDecay>(); // Yes, both
+	install<CompositeDecayTime>(); // Yes, both
+	install<CompositeCreateTile>(); // cCreateTile2;
+	install<CartesianSun>(); // cCreateSun2;
+	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
-CompositingModule::CompositingModule(const std::string & section, const std::string & prefix) :
-		drain::CommandGroup(section, prefix) { //, cCreate("create",'c') {
-
+	/// In future, unused.
+	/*
 	static RackLetAdapter<CompositeAdd> cAdd;
 	static RackLetAdapter<CartesianAddWeighted> cAddWeighted;
-
-	//static RackLetAdapter<CompositeAddOLD> cAddOLD;
-
 	static RackLetAdapter<CompositeDefaultQuality> cDefaultQuality;
 	static RackLetAdapter<CartesianBBox> cBBox;
 	static RackLetAdapter<CartesianBBoxReset> cBBoxReset;
 	static RackLetAdapter<CartesianBBoxTest> cBBoxTest;
 	static RackLetAdapter<CartesianBBoxTile> cBBoxTile;
-
 	static RackLetAdapter<CartesianExtract> cExtract;
 	static RackLetAdapter<CartesianGrid> cGrid;
 	static RackLetAdapter<CompositeInit> cInit;
@@ -284,7 +317,6 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 	static RackLetAdapter<CartesianPlot> cPlot;
 	static RackLetAdapter<CartesianPlotFile> cPlotFile;
 	static RackLetAdapter<CartesianProj> cProj;  // shared
-	static RackLetAdapter<CartesianQuantity> cQuantity;
 	static RackLetAdapter<CartesianRange> cRange;
 	static RackLetAdapter<CartesianReset> cReset;
 	static RackLetAdapter<CartesianSize> cSize;
@@ -292,16 +324,14 @@ CompositingModule::CompositingModule(const std::string & section, const std::str
 	static RackLetAdapter<CartesianTime> cTime;
 	static RackLetAdapter<CompositeTimeDecay> cTimeDecay;
 	static RackLetAdapter<CompositeDecayTime> cCompositeDecayTime;
-
-
-	static RackLetAdapter<CartesianCreate> cCreate("create", 'c', CartesianCreate(cAdd, cExtract));
-	static RackLetAdapter<CartesianCreateTile> cCreateTile("createTile", 0, CartesianCreateTile(cAdd, cExtract));
-	static RackLetAdapter<CartesianSun> cCreateSun("createSun", 0); //, CartesianSun(cExtract));
-
-
+	static RackLetAdapter<CartesianCreate> cCreate("create", 'c');
+	static RackLetAdapter<CartesianCreateTile> cCreateTile;
+	static RackLetAdapter<CartesianSun> cCreateSun;
 	static RackLetAdapter<CartesianOpticalFlow> opticalFlow("opticalFlow");
+	//static RackLetAdapter<CartesianQuantity> cQuantity;
 
 	// static RackLetAdapter<CmdMotionFill> motionFill("motionFill"); => drain/image/ImageOpBank => FlowAverage
+	*/
 
 }
 

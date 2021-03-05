@@ -251,7 +251,7 @@ protected:
 		//if ((this->location.x == this->location.y) && (this->location.x%15  == 0))
 		//	std::cerr << "write" << this->location << ':' << '\t' << count << ':' << (this->conf.contributionThreshold * this->samplingArea) << std::endl;
 
-		double confidence = this->conf.ftor(this->eccentricity());
+		double confidence = this->myFunctor(this->eccentricity());
 
 		if (count > countMin){ // TODO threshold 0.5?
 
@@ -274,6 +274,7 @@ protected:
 
 };
 
+
 class DopplerDevWindow : public DopplerWindow {
 
 public:
@@ -292,11 +293,11 @@ protected:
 		if (count > countMin){ // TODO threshold 0.5?
 
 			if (this->conf.relativeScale)
-				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(stdDevR()));
+				this->dst.putScaled(this->location.x, this->location.y, this->myFunctor(stdDevR()));
 			else
 				//this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(c));
 				// NOTE: possibly odimSrc != odimDst, (C/S), add odimDst?
-				this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(NI * stdDevR()) );
+				this->dst.putScaled(this->location.x, this->location.y, this->myFunctor(NI * stdDevR()) );
 			/*
 			if (this->debugDiag()){
 				std::cerr << "write: " << this->location.x << ":\t" << (int) this->conf.relativeScale << '\t'
@@ -313,6 +314,7 @@ protected:
 	};
 
 };
+
 
 /// Computes eccentrity of Doppler speeds mapped on a Nyquist-normalized unit window.
 class DopplerEccentricityWindow : public DopplerWindow {
@@ -336,7 +338,7 @@ protected:
 		//double confidence = this->conf.ftor(this->eccentricity());
 
 		if (count > countMin){ // TODO threshold 0.5?
-			this->dst.putScaled(this->location.x, this->location.y, this->conf.ftor(this->eccentricity()));
+			this->dst.putScaled(this->location.x, this->location.y, this->myFunctor(this->eccentricity()));
 		}
 		else {
 			this->dst.put(this->location, this->odimSrc.undetect); // NOTE: may be wrong (C/S), add odimDst?

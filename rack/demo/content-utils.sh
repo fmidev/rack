@@ -85,7 +85,8 @@ function TEST(){
 function REQUIRE(){
     for i in $*; do
 	#rack --verbose 4 $OUTFILE -o - | grep ^$i > /dev/null
- 	cmd="grep '^$i' $TXTFILE"
+ 	#cmd="grep '^$i' $TXTFILE"
+ 	cmd="grep '$i' $TXTFILE"
 	echo $cmd
 	eval $cmd > /dev/null
 	if [ $? != 0 ]; then
@@ -100,7 +101,8 @@ function REQUIRE(){
 function EXCLUDE(){
     for i in $*; do
 	#rack --verbose 4 $OUTFILE -o - | grep ^$i > /dev/null
-	cmd="grep ^$i $TXTFILE"
+	#cmd="grep ^$i $TXTFILE"
+	cmd="grep '$i' $TXTFILE"
 	echo $cmd
 	eval $cmd > /dev/null
 	if [ $? == 0 ]; then

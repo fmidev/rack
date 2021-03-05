@@ -122,8 +122,7 @@ public:
 	void updateLocalQuality(const DataSet<PolarSrc> & srcDataSet, Data<PolarDst> & dstData);
 
 	/// Quality index value (0.5 by default) under which CLASS information is updated. Otherwise class is "meteorogical enough".
-	static
-	double DEFAULT_QUALITY;
+	//static double DEFAULT_QUALITY;
 
 
 	static

@@ -44,7 +44,7 @@ using namespace drain::image;
 void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug(2) << "Start" << mout.endl;
+	mout.debug3() << "Start" << mout.endl;
 	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	//if (sweep.data.isEmpty())
@@ -141,7 +141,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		iSweep = sweep.odim.getBinIndex(binDistance); // static_cast<int>(binDistance/sweep.odim.rscale + 0.5);
 
-		if (iSweep >= sweep.odim.geometry.width)
+		if (iSweep >= sweep.odim.area.width)
 			continue;
 
 		h = Geometry::heightFromEtaBeta(eta, beta);
@@ -152,7 +152,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.geometry.height) / accumulator.getHeight();
+			jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
 
 			x = sweep.data.get<double>(iSweep,jSweep);
 

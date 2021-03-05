@@ -64,7 +64,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		ftor.setParameters(ftorParams, '=', ':');
 		//	ftors.push_back(ftor);
 
-		const double dstMax = dst.data.getEncoding().getTypeMax<double>();
+		const double dstMax = dst.data.getConf().getTypeMax<double>();
 		typedef drain::typeLimiter<double> Limiter;
 		Limiter::value_t limit = drain::Type::call<Limiter>(dst.data.getType());
 
@@ -104,7 +104,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 	}
 	/*
 	for (long int i = 0; i < dst.odim.geometry.width; ++i) {
-		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
+		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scaling.scale << " m\n";
 		h = Geometry::heightFromEtaGround(eta, i*dst.odim.rscale)/gainMetres;
 		if (h < max)
 			dst.data.put(i, h);

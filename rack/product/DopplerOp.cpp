@@ -74,7 +74,8 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 		dstData.odim.setRange(-NI_4,+NI_4);
 	}
 
-	dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
+	//dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
+	dstData.data.setScaling(dstData.odim.scaling); // needed?
 
 	const double minPhys = dstData.odim.getMin();
 	const double maxPhys = dstData.odim.getMax();
@@ -87,8 +88,8 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 	for (size_t j=0; j<srcData.data.getHeight(); ++j){
 
 			//azm = srcData.odim.getAzimuth(j);
-			j1 = (j-1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
-			j2 = (j+1 + srcData.odim.geometry.height) % srcData.odim.geometry.height;
+			j1 = (j-1 + srcData.odim.area.height) % srcData.odim.area.height;
+			j2 = (j+1 + srcData.odim.area.height) % srcData.odim.area.height;
 
 			for (size_t i=0; i<srcData.data.getWidth(); ++i){
 
@@ -163,8 +164,8 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		dstData.odim.NI = odim.NI;
 		dstData.odim.setRange(-odim.NI, +odim.NI);
 	}
-	const double minCode = dstData.data.getEncoding().getTypeMin<double>();
-	const double maxCode = dstData.data.getEncoding().getTypeMax<double>();
+	const double minCode = dstData.data.getConf().getTypeMin<double>();
+	const double maxCode = dstData.data.getConf().getTypeMax<double>();
 
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
 	qm.setQuantityDefaults(dstQuality);
@@ -300,7 +301,7 @@ public:
 		size=0;
 		srcODIM.updateFromMap(src.getProperties());
 		NI_threshold = relative_NI_threshold * srcODIM.getNyquist(LOG_ERR);
-		limit = dst->getEncoding().getLimiter<double>();
+		limit = dst->getConf().getLimiter<double>();
 
 	}
 
@@ -404,7 +405,8 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	ProductBase::applyODIM(dstData.odim, odim, true);
-	dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
+	//dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
+	dstData.data.setScaling(dstData.odim.scaling); // needed?
 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.relative_NI_threshold = relative_NI_threshold;

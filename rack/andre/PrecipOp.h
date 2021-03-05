@@ -66,6 +66,7 @@ public:
 		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.class.unclass"){ //ECHO_CLASS_PRECIP){
 
 		parameters.link("probability", this->probability = 0.8, "'resulting' probability");
+		parameters.link("probability", this->qualityThreshold = 0.95, "minimum quality");
 		UNIVERSAL = true;
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;
@@ -76,6 +77,8 @@ public:
 	//int code;
 	//std::string defaultClass;
 	double probability;
+	double qualityThreshold;
+
 
 protected:
 

@@ -49,7 +49,7 @@ void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSe
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(RemoverOp)", __FUNCTION__);
 
-	mout.debug(1) << "start" << mout.endl;
+	mout.debug2() << "start" << mout.endl;
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
@@ -88,23 +88,20 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 	else {
 
 		const PlainData<PolarSrc> & srcDataSetQualityIndex = srcDataSet.getQualityData("QIND");
-		const bool DATASETQUALITY = !srcDataSetQualityIndex.data.isEmpty();
-		mout.debug() << "DataSet level quality: "  << (int) DATASETQUALITY <<  mout.endl;
+		const bool DATASET_QUALITY = !srcDataSetQualityIndex.data.isEmpty();
+		mout.debug() << "DataSet level quality: "  << (int) DATASET_QUALITY <<  mout.endl;
 
 		for (DataSet<PolarSrc>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
 			mout.info() << "calling processData() for " << it->first << " elangle=" << it->second.odim.elangle << mout.endl;
 
 			Data<PolarDst> & dstData = dstDataSet.getData(it->first);  // create or retrieve data
 
-			if (DATASETQUALITY)
+			if (DATASET_QUALITY)
 				QualityCombinerOp::updateLocalQuality(srcDataSet, dstData);
 
 			const Data<PolarSrc> & srcData = it->second;
-			//const PlainData<PolarSrc> & srcDataQuality = srcData.getQualityData();
-			//const bool DATAQUALITY = !srcDataQuality.data.isEmpty();
-			//
 
-			const bool LOCALQUALITY = srcData.hasQuality();
+			const bool LOCAL_QUALITY = srcData.hasQuality();
 			/*
 			if (LOCALQUALITY){
 				mout.toOStr() << "quantity '"<< srcData.odim.quantity << "' has local quality" << mout.endl;
@@ -112,12 +109,12 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 			*/
 			// principle: dstData always has own quality after this, because orig (perhaps global) q data will be modified
 
-			if (LOCALQUALITY){
+			if (LOCAL_QUALITY){
 				// TODO if (REQUIRE_STANDARD_DATA){ ?
 				mout.info() << "using local quality data" << mout.endl;
 				processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 			}
-			else if (DATASETQUALITY) {
+			else if (DATASET_QUALITY) {
 				mout.warn() << "using dataset level data" << mout.endl;
 				processData(srcData, srcDataSetQualityIndex, dstData, dstDataSet.getQualityData());
 			}
@@ -147,7 +144,7 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug(1) << "start" << mout.endl;
+	mout.debug2() << "start" << mout.endl;
 	// PlainData<PolarSrc> srcQIND = srcData.getQualityData();
 
 	if (srcQIND.data.isEmpty()){
@@ -158,7 +155,8 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// File::write(srcQIND.data, "srcQIND.png");
 	// TODO FIX use QualityThresholdOp!
 
-	const double t = threshold * srcQIND.odim.scaleInverse(1.0);
+	//const double t = threshold * srcQIND.odim.scaleInverse(1.0);
+	const double t = srcQIND.odim.scaleInverse(threshold * 1.0);
 
 	mout.debug() << " t=" << t << mout.endl;
 	/*

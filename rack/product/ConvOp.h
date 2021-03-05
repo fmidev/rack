@@ -122,7 +122,7 @@ public:
 		parameters.link("smoothAzm", this->smoothAzm = smoothAzm, "deg");
 		parameters.link("smoothRad", this->smoothRad = smoothRad, "km");
 
-		allowedEncoding.link("nbins", odim.geometry.width = 0l);
+		allowedEncoding.link("nbins", odim.area.width = 0l);
 		allowedEncoding.link("rscale", odim.rscale = 0.0);
 
 		// Larissa
@@ -133,8 +133,8 @@ public:
 
 		odim.product = "CONVECTION";
 		odim.quantity = "PROB";
-		//odim.scale = 1.0/250.0;
-		//odim.offset = 0;
+		//odim.scaling.scale = 1.0/250.0;
+		//odim.scaling.offset = 0;
 	};
 
 

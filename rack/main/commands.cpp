@@ -39,21 +39,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Input.h"
+#include "drain/util/Output.h"
+#include "drain/util/JSONwriter.h"
+#include "drain/util/Sprinter.h"
 
 #include "drain/image/Image.h"
 #include "drain/image/TreeSVG.h"
 
-#include "drain/prog/CommandRegistry.h"
+#include "drain/prog/CommandBankUtils.h"
+#include "drain/prog/CommandInstaller.h"
+
 
 #include "rack.h"
-
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
 #include "data/DataCoder.h"
 #include "data/EchoClass.h"
 #include "hi5/Hi5.h"
-#include "product/DataConversionOp.h"
 
+#include "product/DataConversionOp.h"
+#include "andre/DetectorOp.h"
+
+#include "resources.h"
 #include "commands.h"
 
 namespace rack {
@@ -64,15 +71,20 @@ namespace rack {
  *
  */
 
-class CmdBaseSelective : public drain::SimpleCommand<std::string> {
+class CmdBaseSelective : public drain::SimpleCommand<> {
 
 protected:
 
 	CmdBaseSelective(const std::string & name, const std::string & description) :
-		drain::SimpleCommand<std::string>(name, description, "selector", DataSelector().getParameters().getKeys()){
-		parameters.separator = 0;
+		drain::SimpleCommand<>(name, description, "selector", DataSelector().getParameters().getKeys()){
+		//parameters.separator = 0;
 	};
 
+	/*
+	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<>(cmd){
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
+	*/
 
 protected:
 
@@ -81,29 +93,30 @@ protected:
 
 
 
+
+
+
 /// Tool for selecting data for next command(s), based on paths, quantities and elevations.
 /**
 
-Most commands apply implicit input data selection criteria,
-typically involving data paths, quantities and/or elevation angles.
+Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.
 
 Like in general in \b Rack, the parameters of \c --select are ordered, meaning that they can be issued as
-a comma-separated
-string without explicit key names, as long as they are given in order.
-Some remarks on parameters:
+a comma-separated string without explicit key names, as long as they are given in order.
+The parameters are:
 
-- \c path consists of slash '/' separated \e path \e selection \e elements:
+- \c path consisting of slash '/' separated \e path \e selection \e elements:
   - a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts
   - \c what , \c where, \c how - groups containing attributes
-  - <c> dataset<min>:<max> </c>,  <c> data<min>:<max></c> , <c> quality<min>:<max></c>   - indexed groups containing subgroups for actual data and attributes
+  - <c> dataset{min}:{max} </c>,  <c> data{min}:{max}</c> , <c> quality{min}:{max}</c>   - indexed groups containing subgroups for actual data and attributes
   - \c data - unindexed groups containing actual data arrays
   - \e combined \e selection \e elements created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)
     - example: <c>what|where|dataset1:3</c>
   - in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:
     - <c>data:</c> equals <c>data1:65535</c>; further the colon ':' can be omitted for \c dataset and \c quality (but not for \c data: , to bypass naming conflict inherent in ODIM )
-    - <c>data<index></c> equals <c> data<index>:<index></c> (ie. exact match)
-    - <c>data<index>:</c> equals <c> data<index>:65535</c>
-    - <c>data:<index></c> equals <c> data1:<index></c>
+    - <c>data{index}</c> equals <c> data{index}:{index}</c> (ie. exact match)
+    - <c>data{index}:</c> equals <c> data{index}:65535</c>
+    - <c>data:{index}</c> equals <c> data1:{index}</c>
   - in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment
     - example: <c>what|data|quality1:5</c> matches <c>what</c>, <c>data1:5</c> and <c>quality1:5</c>
     - example: <c>what|where|dataset1:3/what|data1:8</c> -- index ranges \e can \e vary on different levels, ie. in slash-separated elements
@@ -112,7 +125,7 @@ Some remarks on parameters:
    - example: <c>(DBZH|TH)</c> accepts \c DBZH and \c TH , but also \c DBZHC and \c WIDTH ...
    - future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities
 - \c elangle defines the range of antenna elevations accepted, range limits included
-    - unlike with path selectors, >c>elangle=<angle></c> abbreviates <c>elangle=<angle>:90</c> (not <c>elangle=<angle>:<angle></c>)
+    - unlike with path selectors, <c>elangle={angle}</c> abbreviates <c>elangle={angle}:90</c> (not <c>elangle={angle}:{angle}</c>)
     - notice that radar metadata may contain real(ized) values like 1.000004723, use \c count=1 to pick a single one within a range
 - \c count is the upper limit of accepted indices of \c dataset ; typically used with \c elangle
 
@@ -123,7 +136,7 @@ The selection functionality is best explained with examples.
 \~
 
 \include example-select.inc
-Note that character escaping is needed for '|' on command line.
+Note that escaping special characters like '|' is often on command line.
 
 
 Often, the first data array matching the criteria are used.
@@ -165,58 +178,44 @@ class CmdSelect : public  CmdBaseSelective { //drain::BasicCommand {
 public:
 
 	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selection for the next operation."){
-		//parameters.append(test.getParameters());
-		//parameters.link("selector", getResources().select, test.getParameters().getKeys());
-		//parameters.separator = 0;
 	};
 
-	/*
-	virtual
-	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		drain::Logger mout(__FUNCTION__, getName());
-		getResources().select = params;
-		// drain::BasicCommand::setParameters(params, assignmentSymbol);
-		test.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
-		//mout.note() << params << " => " << test << '|' << test.groups.value << mout.endl;
-	}
-	*/
 
 	/// Only checks the validity of selector.
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, getName());
+
+		// mout.warn() << "setting: " << value << mout.endl;
+		DataSelector  test;
 
 		try {
-			test.setParameters(value);
-			getResources().select = value;
+
+			// ImageSelector itest;
+			if (ctx.log.getVerbosity() > LOG_DEBUG){
+				mout.special() << "testing: " << value << mout.endl;
+				test.setParameters(value);
+				mout.special() << "testing: => " <<  test << mout.endl;
+				ODIMPathList paths;
+				const Hi5Tree & src = ctx.getMyHi5();
+				test.getPaths(src, paths);
+				mout.special() << "path count => " <<  paths.size() << mout.endl;
+			}
+
+			// std::cerr << __FILE__ << drain::sprinter(paths) << '\n';
+			ctx.select = value;
+
 		}
 		catch (const std::exception &e) { // consider generalising this
 			mout.warn()  << "keys: " << test.getParameters().getKeys() << mout.endl;
 			mout.warn()  << "msg: "  << e.what() << mout.endl;
 			mout.error() << "error in: " << value << mout.endl;
 		}
+		// mout.special() << getName() << ctx.getId() << ':' << ctx.select << mout.endl;
+
 	};
-
-	//bool checkSyntax(const std::string & p){
-	/*
-	bool checkSyntax(){
-
-		drain::Logger mout(__FUNCTION__, getName());
-		try {
-			test.setParameters(value);
-			return true;
-		}
-		catch (const std::exception &e) {
-			mout.warn()  << "keys: " << test.getParameters().getKeys() << mout.endl;
-			mout.warn()  << "msg: "  << e.what() << mout.endl;
-			mout.error() << "error in: " << value << mout.endl;
-			return false;
-		}
-
-	}
-	*/
-
-	mutable DataSelector test;
 
 
 };
@@ -238,7 +237,9 @@ public:
 	inline
 	void exec() const {
 
-		drain::Logger mout(__FILE__, getName());
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, getName().c_str());
 
 		//const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
 		/*
@@ -256,18 +257,18 @@ public:
 		drain::StringTools::replace(getTransTable(), quantity);
 		drain::StringTools::replace(getTransTable(), qualityQuantity);
 
-		RackResources & resources = getResources();
+
 		if (qualityQuantity.empty()){
 			//mout.warn() << "s"  << mout.endl;
-			resources.select = "quantity=^(" + quantity + ")$";
+			ctx.select = "quantity=^(" + quantity + ")$";
 		}
 		else {
 			mout.warn() << "quantity-specific quality ["<< quantity << "]: check unimplemented for ["<< quantity << "]" << mout.endl;
-			resources.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
+			ctx.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
 		}
 
 
-		resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false;
+		ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
 		//getRegistry().run("select", "quantity=^(" + vField + ")$");
 	}
 
@@ -305,20 +306,22 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
-		if (resources.currentHi5 == &resources.cartesianHi5){
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+
+		if (ctx.currentHi5 == &ctx.cartesianHi5){
 			convertCurrentH5<CartesianODIM>();
 		}
-		else if (resources.currentHi5 == resources.currentPolarHi5) {
+		else if (ctx.currentHi5 == ctx.currentPolarHi5) {
 			convertCurrentH5<PolarODIM>();
 		}
 		else {
 			mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
 		}
-		resources.currentImage = NULL;
-		resources.currentGrayImage = NULL;
+		ctx.currentImage = NULL;
+		ctx.currentGrayImage = NULL;
 
 	};
 
@@ -327,42 +330,50 @@ protected:
 	template <class OD>
 	void convertCurrentH5() const {
 
-		RackResources & resources = getResources();
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
 		DataConversionOp<OD> op;
-		op.setEncodingRequest(resources.targetEncoding);
-		resources.targetEncoding.clear();
+		op.setEncodingRequest(ctx.targetEncoding);
+		ctx.targetEncoding.clear();
 
 		// mout.debug() << op.encodingRequest << mout.endl;
 		// mout.warn() << op << mout.endl;
-		op.dataSelector.setParameters(resources.select);
-		resources.select.clear();
+		op.dataSelector.consumeParameters(ctx.select);
 
-		op.processH5(*resources.currentHi5, *resources.currentHi5);
-		DataTools::updateInternalAttributes(*resources.currentHi5);
+		op.processH5(*ctx.currentHi5, *ctx.currentHi5);
+		DataTools::updateInternalAttributes(*ctx.currentHi5);
 
 	}
 
 };
 
-class CmdCreateDefaultQuality : public  drain::BasicCommand {
+class CmdCreateDefaultQuality : public drain::SimpleCommand<bool> { //public  drain::BasicCommand {
 
 public:
 
-	CmdCreateDefaultQuality() :  drain::BasicCommand(__FUNCTION__, "Creates default quality field. See --undetectWeight and --aDefault"){
-		parameters.link("quantitySpecific", quantitySpecific=false, "[0|1]");
+	CmdCreateDefaultQuality() :  drain::SimpleCommand<bool> (__FUNCTION__,
+			"Creates default quality field. See --undetectWeight and --aDefault", "quantitySpecific", false){
+		//parameters.link("quantitySpecific", quantitySpecific=false, "[0|1]");
 	};
 
-	bool quantitySpecific;
+	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd): drain::SimpleCommand<bool>(cmd){
+
+	}
+	//bool quantitySpecific;
 
 	template <class OD>
 	void processStructure(Hi5Tree & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
 
-		drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		typedef DstType<OD> DT; // ~ PolarDst, CartesianDst
 
 		const QuantityMap & qmap = getQuantityMap();
+
+		const bool & quantitySpecific = value;
 
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 			mout.info() << *it  << mout.endl;
@@ -377,7 +388,8 @@ public:
 						mout.warn() << "quality data exists already, overwriting" << mout.endl;
 					dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 					qmap.setQuantityDefaults(dstQuality, "QIND");
-					dstQuality.data.setScaling(dstQuality.odim.scale, dstQuality.odim.offset);
+					//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
+					dstQuality.data.setScaling(dstQuality.odim.scaling);// needed?
 					//@ dstQuality.updateTree();
 				}
 			}
@@ -388,7 +400,8 @@ public:
 					mout.warn() << "quality data exists already, overwriting" << mout.endl;
 				dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 				qmap.setQuantityDefaults(dstQuality, "QIND");
-				dstQuality.data.setScaling(dstQuality.odim.scale, dstQuality.odim.offset);
+				//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
+				dstQuality.data.setScaling(dstQuality.odim.scaling); // needed?
 				//@ dstQuality.updateTree();
 			}
 			//@  DataTools::updateInternalAttributes(dstDataSetH5);
@@ -400,33 +413,34 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		DataSelector selector(ODIMPathElem::DATASET);
-		selector.setParameters(resources.select);
-		resources.select.clear();
+		selector.consumeParameters(ctx.select);
+
 		const drain::RegExp quantityRegExp(selector.quantity);
 		selector.quantity.clear();
 		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
 
 		ODIMPathList paths;
-		selector.getPaths3(*resources.currentHi5, paths); //, ODIMPathElem::DATASET); // RE2
+		selector.getPaths(*ctx.currentHi5, paths); //, ODIMPathElem::DATASET); // RE2
 
 
-		if (resources.currentHi5 == resources.currentPolarHi5){
-			processStructure<PolarODIM>(*resources.currentHi5, paths, quantityRegExp);
+		if (ctx.currentHi5 == ctx.currentPolarHi5){
+			processStructure<PolarODIM>(*ctx.currentHi5, paths, quantityRegExp);
 		}
-		else if (resources.currentHi5 == &resources.cartesianHi5){
-			processStructure<CartesianODIM>(*resources.currentHi5, paths, quantityRegExp);
+		else if (ctx.currentHi5 == &ctx.cartesianHi5){
+			processStructure<CartesianODIM>(*ctx.currentHi5, paths, quantityRegExp);
 		}
 		else {
-			drain::Logger mout(__FUNCTION__, getName());
+			drain::Logger mout(ctx.log, __FUNCTION__, getName());
 			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
 		}
 
-		DataTools::updateInternalAttributes(*resources.currentHi5);
+		DataTools::updateInternalAttributes(*ctx.currentHi5);
 	};
 
 };
@@ -449,29 +463,13 @@ class CmdDelete : public CmdBaseSelective {
 public:
 
 	CmdDelete() :  CmdBaseSelective(__FUNCTION__, "Deletes selected parts of h5 structure."){
-		//parameters.append(selector.getParameters());
-		//parameters.link("selector", getResources().select, test.getParameters().getKeys());
-		//parameters.separator = 0;
 	};
-
-	/*
-	virtual
-	void setParameters(const std::string & params, char assignmentSymbol='=') {
-
-		// drain::Logger mout(__FUNCTION__, getName());
-		selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
-		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET, 0, 0xffff);
-		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATA, 0, 0xffff);
-		//selector.deriveParameters(params);  // just for checking, also group syntax (dataset:data:...)
-		selector.setParameters(params);  // just for checking, also group syntax (dataset:data:...)
-		//selector.convertRegExpToRanges(); // transitional op for deprecated \c path
-
-	}
-	*/
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		RackContext & ctx = getContext<RackContext>();
+		//Hi5Tree & dst = *getResources().currentHi5;
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 		selector.setParameters(value);
@@ -480,7 +478,7 @@ public:
 		mout.warn() << "selector: " << selector << mout.endl;
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
-		Hi5Tree & dst = *getResources().currentHi5;
+		Hi5Tree & dst = *ctx.currentHi5;
 
 		// Step 0
 		mout.info() << "delete existing no-save structures " << mout.endl;
@@ -489,7 +487,7 @@ public:
 		mout.debug() << "selector: " << selector << ", matcher=" << selector.pathMatcher << mout.endl;
 
 		ODIMPathList paths;
-		selector.getPaths3(dst, paths);
+		selector.getPaths(dst, paths);
 		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
 		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
 			mout.debug() << "deleting: " << *it << mout.endl;
@@ -527,11 +525,11 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
 
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		//RackResources & resources = getResources();
-		Hi5Tree & dst = *getResources().currentHi5;
+		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);  // *ctx.currentHi5;
 
 		// Step 0
 		mout.debug() << "delete existing no-save structures " << mout.endl;
@@ -545,14 +543,14 @@ public:
 
 		//hi5::Hi5Base::writeText(dst, std::cerr);
 
-		mout.debug(1) << "selector for saved paths: " << selector << mout.endl;
+		mout.debug2() << "selector for saved paths: " << selector << mout.endl;
 
 		ODIMPathList savedPaths;
-		selector.getPaths3(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
 
-			mout.warn() << "set save through path: " << *it << mout.endl;
+			mout.debug2() << "set save through path: " << *it << mout.endl;
 			ODIMPath p;
 			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
 				p << *pit;
@@ -566,7 +564,7 @@ public:
 			Hi5Tree & d = dst(*it);
 			for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
 				if (dit->first.is(ODIMPathElem::ARRAY)){
-					mout.debug() << "also save: " << p << '|' << dit->first << mout.endl;
+					mout.debug2() << "also save: " << p << '|' << dit->first << mout.endl;
 					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
 					dit->second.data.noSave = false;
 				}
@@ -574,7 +572,7 @@ public:
 			//
 		}
 
-		//hi5::Hi5Base::writeText(dst, std::cerr);
+		// debug: hi5::Hi5Base::writeText(dst, std::cerr);
 
 		hi5::Hi5Base::deleteNoSave(dst);
 
@@ -585,7 +583,7 @@ protected:
 	// Marks CHILDREN of src for deleting
 	void markNoSave(Hi5Tree &src, bool noSave=true) const {
 
-		//drain::Logger mout(__FUNCTION__, __FILE__);
+		//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 			//if (it->first.isIndexed()){
@@ -627,19 +625,25 @@ public:
 		parameters.link("dst", pathDst = "", "/group/group2[:attr]");
 	};
 
+	CmdMove(const CmdMove & cmd) :  drain::BasicCommand(cmd){
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
+
 	// TODO: recognize attr,attr vs path,path
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
-		if (resources.currentHi5 == NULL){
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		if (ctx.currentHi5 == NULL){
 			mout.error() << "current Hi5 == NULL" << mout.endl;
 			return;
 		}
 
 
-		Hi5Tree & dstRoot = *resources.currentHi5;
+		Hi5Tree & dstRoot = *ctx.currentHi5;
 
 		ODIMPath path1;
 		std::string attr1;
@@ -759,8 +763,9 @@ public:
 	//CmdRename() :  drain::BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){};
 
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "deprecated command, use '--move' instead" << mout.endl;
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		mout.obsolete() << "--> '--move' " << mout.endl;
 		CmdMove::exec();
 	};
 
@@ -775,10 +780,12 @@ public:
 
 	CmdCompleteODIM() : drain::BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
 
-	template <class OD>  // const drain::VariableMap & rootProperties,
+	template <class OD>
 	void complete(Hi5Tree & dstH5, OD & od) const {
 
-		drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		typedef DstType<OD> DT;
 
@@ -791,7 +798,7 @@ public:
 
 		OD rootODIM(dstH5.data.dataSet.getProperties());
 
-		mout.debug() << "odim: " << rootODIM << mout.endl;
+		mout.debug() << "Root odim: " << rootODIM << mout.endl;
 
 
 		for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
@@ -826,7 +833,7 @@ public:
 						if (dstData.odim.quantity.empty()){
 							dstData.odim.quantity = dit->first;
 						}
-						if (dstData.odim.scale == 0){
+						if (dstData.odim.scaling.scale == 0){
 							mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
 							getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
 						}
@@ -852,22 +859,22 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		RackResources & resources = getResources();
 
-		if (resources.inputHi5["what"].data.attributes["object"].toStr() == "COMP"){
-			resources.inputHi5.swap(resources.cartesianHi5);
-			resources.currentHi5 = &resources.cartesianHi5;
+		if (ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr() == "COMP"){
+			ctx.inputHi5.swap(ctx.cartesianHi5);
+			ctx.currentHi5 = &ctx.cartesianHi5;
 		}
 
-		if (resources.currentHi5 == resources.currentPolarHi5){
+		if (ctx.currentHi5 == ctx.currentPolarHi5){
 			PolarODIM odim;
-			complete(*resources.currentHi5, odim);
+			complete(*ctx.currentHi5, odim);
 		}
-		else if (resources.currentHi5 == &resources.cartesianHi5){
+		else if (ctx.currentHi5 == &ctx.cartesianHi5){
 			CartesianODIM odim;
-			complete(*resources.currentHi5, odim);
+			complete(*ctx.currentHi5, odim);
 		}
 		else {
 
@@ -908,19 +915,36 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
-			resources.errorFlags.set(RackResources::PARAMETER_ERROR);
+			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 			mout.warn() << "RegExp support suppressed from this version" << mout.endl;
 			return;
 		}
 
+		if (value.empty()){
+			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+			mout.error() << "empty command" << mout.endl;
+			//throw std::runtime_error();
+			return;
+		}
+
+		if (value.at(0) != '/'){
+			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+			mout.warn()  << "Could not handle argument '" << value << "': no leading '/' " << mout.endl;
+			mout.error() << "Dynamic command handler (" << getName() << ") failed " << mout.endl;
+			//throw std::runtime_error();
+			return;
+		}
+
+
 		mout.debug() << "value: " << value << mout.endl;
 
-		Hi5Tree & src = *(resources.currentHi5);
+		Hi5Tree & src = *(ctx.currentHi5);
 
 		mout.debug() << "try to track if argument is a path, an attribute, or a combination of both" << mout.endl;
 
@@ -928,30 +952,30 @@ public:
 		const drain::RegExp re("^(.*(data|what|where|how)):([a-zA-Z0-9_]+(=.*)?)$");
 
 		std::string assignment;
-		DataSelector s(resources.select);
-		resources.select.clear();
+		DataSelector selector; //(resources.select);
+		selector.consumeParameters(ctx.select);
 
 		std::vector<std::string> result;
 		if (re.execute(value, result)){
-			s.pathMatcher.set(value);
-			mout.debug() << "pathMatcher: " << s.pathMatcher << mout.endl;
+			selector.pathMatcher.assign(value);
+			mout.debug() << "pathMatcher: " << selector.pathMatcher << mout.endl;
 		}
 		else {
-			s.pathMatcher.set(result[1]);
-			mout.info()  << "pathMatcher: " << s.pathMatcher << mout.endl;
-			mout.debug() << "selector: " << s << mout.endl;
+			selector.pathMatcher.assign(result[1]);
+			mout.info()  << "pathMatcher: " << selector.pathMatcher << mout.endl;
+			mout.debug() << "selector: " << selector << mout.endl;
 			assignment = result[3];
-			mout.debug(1) << "assignment:  " << assignment    << mout.endl;
+			mout.debug2() << "assignment:  " << assignment    << mout.endl;
 		}
 
 
 		ODIMPathList paths;
-		s.getPaths3(src, paths);
+		selector.getPaths(src, paths);
 		if (paths.empty()){
-			mout.debug() << "no paths found, so trying creating one:" << s.pathMatcher  << mout.endl;
-			mout.debug(1) << "isLiteral:  " << s.pathMatcher.isLiteral() << mout.endl;
+			mout.debug() << "no paths found, so trying creating one:" << selector.pathMatcher  << mout.endl;
+			mout.debug2() << "isLiteral:  " << selector.pathMatcher.isLiteral() << mout.endl;
 			ODIMPath path;
-			s.pathMatcher.extract(path);
+			selector.pathMatcher.extract(path);
 			paths.push_back(path);
 		}
 
@@ -966,7 +990,7 @@ public:
 			}
 		}
 
-		DataTools::updateInternalAttributes(*(resources.currentHi5));
+		DataTools::updateInternalAttributes(*(ctx.currentHi5));
 
 	};
 
@@ -1040,11 +1064,12 @@ public:
 
 
 
-
+/*
 class CmdHelpRack : public drain::CmdHelp {
 public:
 	CmdHelpRack() : drain::CmdHelp(std::string(__RACK__) + " - a radar data processing program", "Usage: rack <input> [commands...] -o <outputFile>") {};
 };
+*/
 
 
 class CmdHelpExample : public drain::SimpleCommand<std::string> {
@@ -1057,20 +1082,29 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		std::ostream & ostr = std::cout;
 
-		const drain::CommandRegistry::map_t & map = drain::getRegistry().getMap();
+		// const drain::CommandRegistry::map_t & map = drain::getRegistry().getMap();
+		const drain::CommandBank & cmdBank = drain::getCommandBank();
+		const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
+		// drain::getCommandBank().re
 
-		const std::string key = value.substr(value.find_first_not_of('-'));
-		//mout.warn() << key << mout.endl;
+		// Light strip (could use
+		const std::string key = cmdBank.resolveFull(value);
+		//const std::string key = value.substr(value.find_first_not_of('-'));
 
-		drain::CommandRegistry::map_t::const_iterator it = map.find(key);
+		if (key != value)
+			mout.debug() << "resolved: " << value << " -> "<< key << mout.endl;
 
-		if (it != map.end()){
+		drain::CommandBank::map_t::const_iterator it = cmdMap.find(key);
 
-			const drain::Command & d = it->second;
+		if (it != cmdMap.end()){
+
+			const drain::Command & d = it->second->getSource();
 			const drain::ReferenceMap & params = d.getParameters();
 
 			ostr << "--" << key << ' ';
@@ -1102,7 +1136,7 @@ public:
 
 		}
 		else {
-
+			mout.fail() << "command " << value << " not found" << mout.endl;
 		}
 
 		exit(0);
@@ -1112,6 +1146,7 @@ public:
 
 
 };
+
 // static drain::CommandEntry<CmdHelpExample> cmdHelpExample("helpExample", 0);
 
 class CmdJSON : public drain::SimpleCommand<std::string> { // drain::BasicCommand {
@@ -1121,24 +1156,31 @@ public:
 	};
 
 	virtual
-	void run(const std::string & params = "") {
+	//void run(const std::string & params = "") {
+	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		drain::CommandRegistry & reg = drain::getRegistry();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		//drain::CommandRegistry & reg = drain::getRegistry();
+		drain::CommandBank & cmdBank = drain::getCommandBank();
+
 
 		std::ostream & ostr = std::cout;
 
-		if (params.empty()){
-			reg.toJSON(ostr);
+		if (value.empty()){
+			drain::JSONwriter::mapToStream(cmdBank.getMap(), ostr, 2);
+			//reg.toJSON(ostr);
 		}
 		else {
-			if (!reg.has(params)){
-				mout.error() << "no such key: " << params << mout.endl;
+			if (!cmdBank.has(value)){
+				mout.error() << "no such key: " << value << mout.endl;
 				return;
 			}
 
-			const drain::Command & command = reg.get(params);
+			const drain::Command & command = cmdBank.get(value);
 			const drain::ReferenceMap & m = command.getParameters();
 
 
@@ -1225,6 +1267,31 @@ public:
 };
 
 
+class CmdEcho : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dumps a formatted std::string to stdout.", "format","","std::string") {
+	};
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
+
+		//std::string format = value;
+		// format = drain::StringTools::replace(format, "\\n", "\n");
+		// format = drain::StringTools::replace(format, "\\t", "\t");
+		// std::cout << format << std::endl;
+		// std::cout << ctx.getStatus() << std::endl;
+		//drain::StringMapper statusFormatter("[a-zA-Z0-9:_]+");
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse(value+'\n', true);
+		statusFormatter.toStream(std::cout, ctx.getStatusMap());
+
+	}
+};
+
 class CmdFormatOut : public drain::SimpleCommand<std::string> {
 
 public:
@@ -1236,59 +1303,42 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
 
-		std::string & format = drain::cmdFormat.value;
-		format = drain::StringTools::replace(format, "\\n", "\n");
-		format = drain::StringTools::replace(format, "\\t", "\t");
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse(ctx.formatStr, true);
 
-		drain::CommandRegistry & reg = drain::getRegistry();
-		reg.statusFormatter.parse(format);
-		//mout.warn() << "before expansion: " << r.statusFormatter << mout.endl;
+		mout.deprecating() = "Use  -o / --outputFile [file|'-'] ";
 
-		reg.statusFormatter.expand(resources.getUpdatedStatusMap()); // needed? YES
-		//mout.warn() << r.getStatusMap() << mout.endl;
-		//mout.warn() << r.statusFormatter << mout.endl;
-
-
-		if ((value == "")||(value == "-")){
-			std::cout << reg.statusFormatter;
+		if (value == "log"){
+			mout.unimplemented() << "Logging: future option" <<  mout.endl;
+			//statusFormatter.toStream(ctx.log.getOstr, ctx.getStatus());
+			//std::cout << statusFormatter;
 		}
 		else if (value == "image"){
 			//resources.
-			if (!resources.select.empty())
-				resources.setCurrentImage(resources.select);
-			else if (resources.currentImage == NULL){
-				mout.warn() << "current image unset, using first applicable path"  << mout.endl;
-				mout.note() << "consider -Q <quantity> or --select <params>"  << mout.endl;
-				ODIMPath p = resources.setCurrentImage(DataSelector(ODIMPathElem::DATASET, ODIMPathElem::DATA));
-				if (!p.empty()){
-					mout.note() << "guessed path: " << p << mout.endl;
-				}
-			}
-
-			if (resources.currentImage){
-				drain::image::Image *ptr = (drain::image::Image *)resources.currentImage;
-				std::stringstream sstr;
-				sstr << reg.statusFormatter;
-				ptr->properties[""] = sstr.str();
-			}
-			else {
-				mout.error() << "failed in setting/guessing current image"  << mout.endl;
-			}
+			mout.deprecating() << "this command is unneed (--format is sufficient)" << mout.endl;
 		}
 		else {
-			const std::string outFileName = getResources().outputPrefix + value;
+			std::string outFileName;
+			if ((value == "")||(value == "-")){
+				outFileName = "-";
+			}
+			else
+				outFileName = ctx.outputPrefix + value;
 			mout.info() << "writing " << outFileName << mout.endl;
-			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			drain::Output ofstr(outFileName);
+			//mout.warn() <<  ctx.getStatus() << mout.endl;
+			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 			if (ofstr)
-				ofstr << reg.statusFormatter;
+				statusFormatter.toStream(ofstr, ctx.getStatusMap());
 			else
 				mout.warn() << "write error: " << outFileName << mout.endl;
 			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
-			ofstr.close();
+			//ofstr.close();
 		}
 
 		//mout.warn() << "after expansion: " << r.statusFormatter << mout.endl;
@@ -1299,49 +1349,54 @@ public:
 };
 
 
-class CmdStatus : public drain::BasicCommand {
-
+/// Consider long names, and then addShortKeys()
+class EncodingBag : public PolarODIM {
 public:
 
-	CmdStatus() : drain::BasicCommand(__FUNCTION__, "Dump information on current images.") {
-	};
+	EncodingBag(): PolarODIM(0){
+		separator = ',';
+		link("type", type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
+		link("gain", scaling.scale = 0.0, "scaling coefficient");
+		link("offset", scaling.offset = 0.0, "bias");
+		link("undetect", undetect = 0.0, "marker");
+		link("nodata", nodata = 0.0, "marker");
 
-	void exec() const {
+		/// Polar-specific
+		link("rscale", rscale = 0.0, "metres");
+		link("nrays", area.height = 0L, "count");
+		link("nbins", area.width = 0l, "count");
 
-		std::ostream & ostr = std::cout; // for now...
+		/// New: for image processing
+		link("quantity", quantity = "", "string");
 
-		const drain::VariableMap & statusMap = getResources().getUpdatedStatusMap();
+	}
 
-		for (drain::VariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
-			ostr << it->first << '=' << it->second << ' ';
-			it->second.typeInfo(ostr);
-			ostr << '\n';
-		}
-		ostr << "errorFlags: " << getResources().errorFlags << std::endl;
-
-	};
-
-
+	EncodingBag(const EncodingBag & bag): PolarODIM(0){
+		copyStruct(bag, bag, *this);
+	}
 
 };
-
 
 /// Facility for validating and storing desired technical (non-meteorological) user parameters.
 /*
  *  Quick-checks values immediately.
  *  To consider: PolarODIM and CartesianODIM ?
  */
-class CmdEncoding : public drain::BasicCommand {
+class CmdEncoding : protected EncodingBag, public drain::SimpleCommand<> { //BasicCommand {
 
 public:
 
 	inline
-	CmdEncoding() : drain::BasicCommand(__FUNCTION__, "Sets encodings parameters for polar and Cartesian products, including composites.") {
-
+	CmdEncoding() : drain::SimpleCommand<>(__FUNCTION__, // {  //drain::BasicCommand(__FUNCTION__,
+			"Sets encodings parameters for polar and Cartesian products, including composites.",
+			"", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
+	) {
+		parameters.separator = 0;
+		/*
 		parameters.separator = ',';
 		parameters.link("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		parameters.link("gain", odim.scale = 0.0, "scaling coefficient");
-		parameters.link("offset", odim.offset = 0.0, "bias");
+		parameters.link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
+		parameters.link("offset", odim.scaling.offset = 0.0, "bias");
 		parameters.link("undetect", odim.undetect = 0.0, "marker");
 		parameters.link("nodata", odim.nodata = 0.0, "marker");
 
@@ -1358,14 +1413,19 @@ public:
 		//odim.setTypeDefaults(typeid(unsigned char));
 		//std::cerr << "CmdEncoding.odim:" << odim << std::endl;
 		//std::cerr << "CmdEncoding.pars:" << parameters << std::endl;
+		 *
+		 */
 	};
 
 
-	virtual  //?
+	virtual
 	inline
-	void run(const std::string & params){
+	void exec() const { //(const std::string & params){
 
-		 drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
 
 		try {
 
@@ -1381,19 +1441,23 @@ public:
 			mout.warn() << "p keys: " << parameters.getKeys() << mout.endl;
 			*/
 
-			/// Main action: store the value for later commands.
-			getResources().targetEncoding = params;
+
+			EncodingBag enc;
 
 			/// Also check and warn of unknown parameters
-			parameters.setValues(params);  // sets type, perhaps, hence set type defaults and override them with user defs
+			enc.setValues(value);  // sets type, perhaps, hence set type defaults and override them with user defs
 
 			//mout.note() << "(user) params: " << params << mout.endl;
 			//mout.note() << "parameters:    " << parameters << mout.endl;
-			mout.debug() << "odim: " << odim << mout.endl;
-			odim.setTypeDefaults();
+			mout.debug() << "odim: " << enc << mout.endl;
+			//odim.setTypeDefaults();
+
+			/// Main action: store the value for later commands.
+			ctx.targetEncoding = value;
+			mout.debug() << "ctx.targetEncoding " << ctx.targetEncoding << mout.endl;
 
 			// Reassign (to odim).
-			parameters.setValues(params);
+			//parameters.setValues(params);
 			//mout.note() << "Re-assigned parameters: " << parameters << mout.endl;
 
 		}
@@ -1401,7 +1465,7 @@ public:
 
 			mout.warn() << "Could not set odim" << mout.endl;
 			mout.note() << "pars: " << parameters << mout.endl;
-			mout.warn() << "odim: " << odim << mout.endl;
+			//mout.warn() << "odim: " << enc << mout.endl;
 			mout.error() << e.what() << mout.endl;
 
 		}
@@ -1412,12 +1476,6 @@ public:
 	};
 
 
-private:
-
-	/// Facility for validating the parameters supplied by the user.
-	PolarODIM odim;
-
-
 
 };
 // extern drain::CommandEntry<CmdEncoding> cmdEncoding;
@@ -1425,7 +1483,7 @@ private:
 
 
 
-
+/*
 class CmdAutoExec : public drain::BasicCommand {
 
 public:
@@ -1435,6 +1493,7 @@ public:
 	}
 
 };
+*/
 
 
 /*
@@ -1456,32 +1515,16 @@ public:
 		//parameters.link("flags", value);
 	};
 
-	/*
-	virtual inline
-	void setParameters(const std::string & params, char assignmentSymbol='=') {
-		 drain::Logger mout(__FUNCTION__, getName());
-
-		RackResources & resources = getResources();
-		if (params.empty() || (params == "0")){
-			resources.errorFlags.reset();
-		}
-		else {
-		  resources.errorFlags = params;
-		}
-
-		value = params; // TODO: resources.errorFlags.toStr()
-	}
-	*/
-
 
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, getName());
-		RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+		//drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
 		if (value.empty() || (value == "0")){
-			resources.errorFlags.reset();
+			ctx.statusFlags.reset();
 		}
 		else {
-			resources.errorFlags = value;
+			ctx.statusFlags.set(value);
 		}
 	}
 
@@ -1500,7 +1543,9 @@ public:
 		parameters.link("weight", DataCoder::undetectQualityCoeff, "0...1");
 	};
 
-
+	UndetectWeight(const UndetectWeight & cmd) : BasicCommand(cmd){
+		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
+	}
 };
 
 /// Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) ODIM properties to be assigned in current H5 structure.
@@ -1509,49 +1554,56 @@ public:
  *   - \c --/dataset2/data2/what:quantity=DBZH
  *
  */
-class CmdDefaultHandler : public drain::BasicCommand {
+/*
+class CmdDefaultHandler : public drain::SimpleCommand<>{
 public:
 
 
-	CmdDefaultHandler() : drain::BasicCommand(drain::getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};
+	//CmdDefaultHandler() : drain::BasicCommand(drain::getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};
 	// drain::getRegistry().DEFAULT_HANDLER, 0,
+	CmdDefaultHandler() : drain::SimpleCommand<>(__FUNCTION__, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};
 
-	virtual  //?
+	virtual
 	inline
-	void run(const std::string & params){
+	void exec() const {
 
-		 drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
 
-		mout.debug(1) << "params: " << params << mout.endl;
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		mout.debug2() << "params: " << value << mout.endl;
 
 		/// Syntax for recognising text files.
 		static
 		const drain::RegExp odimSyntax("^--?(/.+)$");
 
-		if (params.empty()){
+		if (value.empty()){
 			mout.error() << "Empty parameters" << mout.endl;
 		}
-		else if (odimSyntax.execute(params) == 0) {
+		else if (odimSyntax.execute(value) == 0) {
 			//mout.warn() << "Recognised --/ hence running applyODIM" << mout.endl;
-			mout.debug(1) << "assign: " << odimSyntax.result[1] << mout.endl;
-			drain::getRegistry().run("setODIM", odimSyntax.result[1]);
+			mout.warn() << "assign: " << odimSyntax.result[1] << mout.endl;
+			drain::getCommandBank().run("setODIM", odimSyntax.result[1], ctx);
+			///drain::getRegistry().run("setODIM", odimSyntax.result[1]);
+
+		}
+		else if (value.at(0) == '-'){
+				mout.error() << "Unknown parameter (or invalid filename): " << value << mout.endl;
 		}
 		else {
-			if (params.at(0) == '-'){
-				mout.error() << "Unknown parameter (or invalid filename): " << params << mout.endl;
-			}
 			try {
-				mout.debug(1) << "Assuming filename, trying to read." << mout.endl;
-				drain::getRegistry().run("inputFile", params);
+				mout.debug2() << "Assuming filename, trying to read." << mout.endl;
+				drain::getCommandBank().run("inputFile", value, ctx);
+				//drain::getRegistry().run("inputFile", params);
 			} catch (std::exception & e) {
-				mout.error() << "could not handle params='" << params << "'" << mout.endl;
+				mout.error() << "could not handle params='" << value << "'" << mout.endl;
 			}
 		}
 
 	};
 
 };
-
+*/
 
 
 
@@ -1563,7 +1615,9 @@ public:
 	CmdCheckType() : drain::BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
 
 	void exec() const {
-		PolarODIM::checkType(*getResources().currentHi5);
+		RackContext & ctx = getContext<RackContext>();
+		//PolarODIM::checkType(*getResources().currentHi5);
+		PolarODIM::checkType(*ctx.currentHi5);
 	};
 
 };
@@ -1584,7 +1638,8 @@ public:
 
 void CmdValidate::exec() const {
 
-	drain::Logger mout(__FILE__, getName());
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, getName());
 
 	ODIMValidator validator;
 
@@ -1596,65 +1651,69 @@ void CmdValidate::exec() const {
 		validator.push_back(ODIMNodeValidator());
 		ODIMNodeValidator & nodeValidator = validator.back();
 		nodeValidator.assign(line);
-		mout.debug(1) << "L: " << line          << mout.endl;
-		mout.debug(1) << "V: " << nodeValidator << mout.endl;
+		mout.debug2() << "L: " << line          << mout.endl;
+		mout.debug2() << "V: " << nodeValidator << mout.endl;
 		line.clear();
 	}
 
-	RackResources & resources = getResources();
+	//RackResources & resources = getResources();
 
-	if (resources.currentHi5){
+	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
+
+	if (!src.isEmpty()){
 
 		ODIMPathList dataPaths;
 
-		resources.currentHi5->getPaths(dataPaths); // ALL
+		src.getPaths(dataPaths); // ALL
 
-		for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+		//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+		for (ODIMPath & path: dataPaths){
 
-			ODIMPath p;
-			p << ODIMPathElem::ROOT;
-			p.appendPath(*it);
+			//ODIMPath p;
+			//p.setElems(ODIMPathElem::ROOT);
+			//p << *it;
 
 			ODIMValidator::const_iterator wit;
 
-			if (p.back().is(ODIMPathElem::ARRAY))
-				wit = validator.validate(p, H5I_DATASET);
+			if (path.back().is(ODIMPathElem::ARRAY))
+				wit = validator.validate(path, H5I_DATASET);
 			else
-				wit = validator.validate(p, H5I_GROUP);
+				wit = validator.validate(path, H5I_GROUP);
 
 			if (wit == validator.end()){
-				mout.warn() << "REJECT path: " << p << mout.endl;
+				mout.warn() << "REJECT path: " << path << mout.endl;
 				return;
 			}
 			else {
-				mout.debug(1) << "RegExp: " << wit->pathRegExp.toStr() << mout.endl; //.toStr()
-				mout.debug() << "ACCEPT path: " << p << mout.endl;
+				mout.debug2() << "RegExp: " << wit->pathRegExp.toStr() << mout.endl; //.toStr()
+				mout.debug() << "ACCEPT path: " << path << mout.endl;
 			}
 
-			const Hi5Tree & t = (*resources.currentHi5)(*it);
+			const Hi5Tree & t = src(path); // (*ctx.currentHi5)(*it);
 			if (t.data.dataSet.isEmpty()){
 				// std::cout << " GROUP" << '\n';
-				const drain::VariableMap & a = t.data.attributes;
-				for (drain::VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){
-					std::string attributePath(p);
-					attributePath.push_back(p.separator);
-					attributePath.append(ait->first);
+				// const drain::VariableMap & a = t.data.attributes;
+				//for (drain::VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){
+				for (const auto & entry: t.data.attributes){
+					std::string attributePath(path);
+					attributePath.push_back(path.separator.character);
+					attributePath.append(entry.first); //ait->first);
 					ODIMValidator::const_iterator wit = validator.validate(attributePath, H5I_ATTR);
 					if (wit == validator.end()){
 						mout.warn() << "UNKNOWN attribute: " << attributePath << mout.endl;
 						continue;
 					}
 					else {
-						mout.debug(1) << "ACCEPT attribute path: " << attributePath << mout.endl;
+						mout.debug2() << "ACCEPT attribute path: " << attributePath << mout.endl;
 					}
 					const std::type_info & rType = wit->basetype.getType();
-					const std::type_info & aType = ait->second.getType();
+					const std::type_info & aType = entry.second.getType();
 
 					// Compose variable info: <path>:<key>=<value> <type>.
 					std::stringstream sstr;
-					sstr <<  p << ':' << ait->first << '=';
-					ait->second.valueToJSON(sstr);
-					if (ait->second.isString())
+					sstr << path << ':' << entry.first << '=';
+					entry.second.valueToJSON(sstr);
+					if (entry.second.isString())
 						sstr << " string";
 					else
 						sstr << ' ' << drain::Type::call<drain::complexName>(aType);
@@ -1681,7 +1740,7 @@ void CmdValidate::exec() const {
 					/// Value test
 					if (wit->valueRegExp.isSet()){
 						sstr << " regExp='" <<  wit->valueRegExp.toStr() << "'";
-						if (wit->valueRegExp.test(ait->second)){ // convert on the fly
+						if (wit->valueRegExp.test(entry.second)){ // convert on the fly
 							mout.debug() << "COMPLIANT attribute value: " << sstr.str() << mout.endl;
 						}
 						else {
@@ -1691,7 +1750,7 @@ void CmdValidate::exec() const {
 				}
 			}
 			else {
-				mout.debug() << "ACCEPT data: " << p << mout.endl;
+				mout.debug() << "ACCEPT data: " << path << mout.endl;
 			}
 
 		}
@@ -1744,8 +1803,9 @@ public:
 	};
 
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "deprecating option, use '--store 2' instead" << mout.endl;
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		mout.deprecating() = "use '--store 2' instead";
 	};
 
 };
@@ -1757,17 +1817,17 @@ class CmdAppend : public drain::SimpleCommand<std::string> {  //public drain::Ba
 
 public:
 
-	CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/outputs instead of overwriting.", "path", "", "<empty>|dataset|data"){
-
+	CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/products (empty=overwrite).", "path", "", "<amprty>|dataset[n]|data[n]"){
 	}
 
 	virtual
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		if (value.empty()){
-			ProductBase::appendResults.set(ODIMPathElem::ROOT); //?
+			ProductBase::appendResults.set(ODIMPathElem::ROOT); // = overwrite, do not append
 		}
 		else if (value == "dataset")
 			ProductBase::appendResults.set(ODIMPathElem::DATASET);
@@ -1775,7 +1835,7 @@ public:
 			ProductBase::appendResults.set(ODIMPathElem::DATA);
 		else {
 			ProductBase::appendResults.set(value); // possibly "data4" or "dataset7"
-			mout.warn() << "check path validity: "<< value << "'" << mout.endl;
+			//mout.warn() << "check path validity: "<< value << "'" << mout.endl;
 		}
 
 		/*
@@ -1802,12 +1862,19 @@ public:
 		parameters.link("append",  append, "|data|dataset (deprecated)");
 	};
 
+
+	CmdStore(const CmdStore & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	};
+
 	//int level;
 	std::string append;
 
 	virtual
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 		DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
 		if (!append.empty()){
 			ProductBase::appendResults.set(append);
@@ -1818,50 +1885,64 @@ public:
 };
 
 
+//class CmdQuantityConf : public drain::SimpleCommand<> {//public drain::BasicCommand {
 class CmdQuantityConf : public drain::BasicCommand {
 
 public:
 
+	std::string quantity;
+	std::string encoding;
+	mutable double zero;
+
 	// Odim used for interface only. Zero used internally.
+
 	CmdQuantityConf(): drain::BasicCommand(__FUNCTION__, "1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
-		//parameters.separator = ',';
-		parameters.link("quantity:type", quantityType = "", "quantity (DBZH,VRAD,...) and storage type (C,S,d,f,...)");
+		parameters.separator = ':';
+		parameters.link("quantity", quantity = "", "quantity (DBZH,VRAD,...)"); // and storage type (C,S,d,f,...)");
+		parameters.link("encoding", encoding = "", EncodingODIM().getValues());
+		/*
 		//parameters.link("type", odim.type, "C", "storage type (C,S,d,f,...)");
-		parameters.link("gain", odim.scale = 0.0, "scaling coefficient");
-		parameters.link("offset", odim.offset = 0.0, "bias");
+		parameters.link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
+		parameters.link("offset", odim.scaling.offset = 0.0, "bias");
 		parameters.link("undetect", odim.undetect = 0.0, "marker");
 		parameters.link("nodata", odim.nodata = 0.0, "marker");
-		parameters.link("zero", zero = std::numeric_limits<double>::min(), "value");// what about max?
+		*/
+		parameters.link("zero", zero = std::numeric_limits<double>::max(), "value");// what about max?
 
 	}
 
-	inline
-	void run(const std::string & params = ""){
+	CmdQuantityConf(const CmdQuantityConf & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
 
-		 drain::Logger mout(__FUNCTION__, getName());
+	/*
+	CmdQuantityConf(): drain::SimpleCommand<>(__FUNCTION__,
+			"1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
+	}
+	*/
 
-		setParameters(params); // used for syntacx checking (AND zero)
-		// std::string prefix; // dummy; same as quantityType, eg. "DBZH" or "DBZH:S"
-		std::string quantity;
-		std::string args;
-		drain::StringTools::split2(params, quantity, args, ":");
-		std::string type;
-		drain::StringTools::split2(quantityType, quantity, type, ":");
+//	void run(const std::string & params = ""){
+	void exec() const {
 
-		//const size_t i = quantityType.find(':');
-		//const std::string quantity = quantityType.substr(0, i);
-		//const std::string type = (i != std::string::npos) ? quantityType.substr(i+1) : std::string("");
-		//const std::string args = (i != std::string::npos) ? params.substr(i+1) : std::string();
-
-		mout.debug() << quantity << "(" << type << "): " << args << mout.endl;
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		QuantityMap & m = getQuantityMap();
 
 		if (!quantity.empty()){
-			editQuantityConf(quantity, type, args);
+			// consider moving selector here, try find() first?
+			editQuantityConf(quantity);
 		}
 		else {
-			if (getResources().select.empty()){
+			/*
+			if (!encoding.empty()){
+				mout.fail() << "given encoding... 'quantity' parameter is obligatory" << mout.endl;
+				return;
+			}
+			*/
+
+			// todo: if (selector.consumeParameters(ctx.select)){
+			if (ctx.select.empty()){
 				// No quantity given, dump all the quantities
 				std::cout << "Quantities:\n";
 				std::cout << m << std::endl;
@@ -1869,14 +1950,14 @@ public:
 			else {
 				// Select desired quantities. Note: on purpose, getResources().select not cleared by this operation
 				DataSelector selector;
-				selector.setParameters(getResources().select);
+				selector.setParameters(ctx.select);
 				const drain::RegExp regExp(selector.quantity);
 				bool match = false;
 				for (QuantityMap::const_iterator it = m.begin(); it != m.end(); ++it){
 					if (regExp.test(it->first)){
 						match = true;
 						mout.warn() << it->first << " matches " << regExp << mout.endl;
-						editQuantityConf(it->first, type, args);
+						editQuantityConf(it->first);
 					}
 				}
 				if (!match)
@@ -1884,63 +1965,71 @@ public:
 			}
 		}
 
-		quantityType.clear();
-		zero = std::numeric_limits<double>::min();  // what about max?
+		//quantityType.clear();
+		//double zero = std::numeric_limits<double>::min();  // what about max?
 
 	}
 
 protected:
 
-	std::string quantityType;
+	//std::string quantityType;
 
 	EncodingODIM odim;
 
-	double zero;
+	//double zero;
 
 
-	void editQuantityConf(const std::string & quantity, const std::string & type, const std::string & args){
+	void editQuantityConf(const std::string & quantity) const { //, const std::string & type, const std::string & args) const {
 
-		 drain::Logger mout(__FUNCTION__, getName());
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		if (quantity.empty()){
 			mout.error() << "quantity empty" << mout.endl;
 			return;
 		}
 
-		mout.debug() << quantity << "(" << type << "): " << args << mout.endl;
+		mout.warn() << "[" << quantity << "]: " << encoding << ", zero=" << zero << mout.endl;
 
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];
 
-		if (zero != std::numeric_limits<double>::min()){
+		//mout.warn() << "base: " << q << mout.endl;
+
+		if (zero != std::numeric_limits<double>::max()){
+			mout.warn() << "setting zero " << zero << mout.endl;
 			if (std::isnan(zero)) // DOES NOT WORK.. convert toStr to double NaN
 				q.unsetZero();
 			else
 				q.setZero(zero);
+			zero = std::numeric_limits<double>::max();
 		}
 
-		if (type.length() == 1){
 
-			mout.debug(1) << "setting default type " << type << mout.endl;
-
-			const char typecode = type.at(0);
-			q.defaultType = typecode;
-
-			if (!args.empty()){
-				// Note: resets scaling; expect it to be reset here
-				EncodingODIM & currentEncoding = q.set(typecode);
-				currentEncoding.setScaling(1.0, 0); //.updateValues(params);
-
-				EncodingODIM newEncoding(q.get(typecode));
-				newEncoding.addShortKeys();
-				newEncoding.setValues(args);
-				mout.debug() << "setting other params " << newEncoding << mout.endl;
-
-				currentEncoding.updateFromCastableMap(newEncoding);
-				//q.set(typecode).updateValues(args);
+		if (!encoding.empty()){
+			if (!q.defaultType)
+				q.defaultType = 'C';
+			// Note: resets scaling; expect it to be reset here
+			EncodingODIM odim;
+			// Step 1: detect type char
+			odim.addShortKeys();
+			odim.type = q.defaultType;
+			odim.setValues(encoding);
+			mout.warn() = odim;
+			if (odim.type.length() != 1){
+				mout.fail() << "illegal type: " << odim.type << mout.endl;
+				return;
 			}
+			const char typeChar= odim.type.at(0);
+			// Step 2: retrieve old values, set current type
+			EncodingODIM & currentEncoding = q.set(typeChar);
+			// Write over
+			currentEncoding.setValues(encoding);
+			q.defaultType = typeChar;
+			// currentEncoding.updateFromCastableMap(newEncoding);
+			//q.set(typecode).updateValues(args);
 
-			mout.debug() << "set default type for :" << quantity << '\n' << q << mout.endl;
+			mout.warn() << "set default type for :" << quantity << '\n' << q << mout.endl;
 		}
 		else {  // No type given, dump quantity conf
 			std::cout << quantity << '\n';
@@ -1955,23 +2044,34 @@ protected:
 };
 
 //
-struct CmdVerbose2 : public drain::BasicCommand {
+struct VerboseCmd : public drain::BasicCommand {
 
-	int level;
-	int imageLevel;
-
-	CmdVerbose2() : drain::BasicCommand(__FUNCTION__, "Set verbosity level") {
+	VerboseCmd() : drain::BasicCommand(__FUNCTION__, "Set verbosity level") {
 		parameters.link("level", level = 5);
 		parameters.link("imageLevel", imageLevel = 4);
 	};
 
-	inline
-	void exec() const {
-		drain::getLog().setVerbosity(level);
-		drain::image::getImgLog().setVerbosity(imageLevel);
+	VerboseCmd(const VerboseCmd & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		ctx.log.setVerbosity(level); // NEW
+		drain::getLog().setVerbosity(level);
+		drain::image::getImgLog().setVerbosity(imageLevel);
+		std::cerr << "verbosity: " << level << '\n';
+		std::cerr << "verbosity: " << ctx.log.getVerbosity() << '\n';
+		std::cerr << "verbosity: " << getContext<drain::Context>().log.getVerbosity() << '\n';
+		std::cerr << "verbosity: " << getContext<drain::SmartContext>().log.getVerbosity() << '\n';
+	};
+
+	int level;
+	int imageLevel;
+
 };
+
 
 class CmdExpandVariables2 : public drain::CmdExpandVariables {
 
@@ -1979,68 +2079,101 @@ public:
 
 	inline
 	void exec() const {
-		getResources().getUpdatedStatusMap();
+		RackContext & ctx = getContext<RackContext>();
+		ctx.getStatusMap();
 		drain::CmdExpandVariables::exec();
 	};
 
 };
 
+/*
+template <class C=drain::Command>
+class RackCmdInstaller : public installer.install<C> {
+public:
 
-CommandModule::CommandModule(){ //
+	RackCmdInstaller(char alias = 0): drain::CommandWrapper<C>(alias) {
+	};
 
-	drain::CommandRegistry & registry = drain::getRegistry();
-	RackResources & resources = getResources();
+};
+*/
 
-	static RackLetAdapter<CmdDefaultHandler> cmdDefaultHandler(registry.DEFAULT_HANDLER);
-	registry.add(resources.scriptParser, "script");
+MainModule::MainModule(){ //
 
-	static drain::ScriptExec scriptExec(resources.scriptParser.script);
-	registry.add(scriptExec, "exec");
+	// NEW
+	drain::CommandBank & cmdBank = drain::getCommandBank();
 
-	static RackLetAdapter<CmdSelect> cmdSelect("select", 's');
-	static RackLetAdapter<CmdStatus> cmdStatus;
-	static RackLetAdapter<CmdEncoding> cmdTarget("target", 't');  // old
-	static RackLetAdapter<CmdEncoding> cmdEncoding("encoding", 'e');  // new
-	static RackLetAdapter<CmdFormatOut> cmdFormatOut;
-	//static RackLetAdapter<CmdSleep> cmdSleep;
+	// Bank-referencing commands first
+	drain::HelpCmd help(cmdBank);
+	installExternal(help, 'h');
+
+	drain::CmdScript script(cmdBank);
+	installExternal(script);
+
+	drain::CmdExecFile execFile(cmdBank);
+	installExternal<drain::CmdExecFile>(execFile);
 
 
-	static RackLetAdapter<drain::CmdDebug> cmdDebug;
-	static RackLetAdapter<CmdVerbose2> cmdVerbose("verbose",'v');
-	static RackLetAdapter<drain::CommandLoader> commandLoader("execFile");
-	//static RackLetAdapter<drain::CmdExpandVariables> expandVariables;
-	static RackLetAdapter<CmdExpandVariables2> expandVariables("expandVariables");
+	// Independent commands
+	//drain::CommandInstaller<> installer(cmdBank);
 
-	static RackLetAdapter<CmdAutoExec> cmdAutoExec;
-	//static RackLetAdapter<CmdDataOk> dataOk("dataOk", -1);
-	static RackLetAdapter<CmdErrorFlags> errorFlags;
-	static RackLetAdapter<UndetectWeight> undetectWeight("undetectWeight");
+	install<CmdSelect>('s'); // cmdSelect('s'); //("select", 's');
+	install<drain::CmdStatus>(); //  cmdStatus;
+	install<drain::CmdLog>(); //  cmdLogFile; // consider abbr. -L ?
 
-	static RackLetAdapter<CmdSelectQuantity> cmdSelectQuantity("quantity",'Q');
-	static RackLetAdapter<CmdCheckType> cmdCheckType;
-	static RackLetAdapter<CmdValidate> cmdValidate;
-	static RackLetAdapter<CmdCreateDefaultQuality> cmdCreateDefaultQuality;
-	static RackLetAdapter<CmdCompleteODIM> cmdCompleteODIM;
-	static RackLetAdapter<CmdConvert> cmdConvert;
-	static RackLetAdapter<CmdDelete> cmdDelete;
-	static RackLetAdapter<CmdDumpMap> cmdDumpMap; // obsolete?
-	//static RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
+	install<CmdEncoding>('e'); // cmdEncoding('e');  //"encoding", 'e');  // new
+	install<CmdEncoding>("target");  // alias
+	install<CmdFormatOut>(); //  cmdFormatOut;
+	install<CmdEcho>(); //  cmdEcho;
 
-	static RackLetAdapter<CmdHelpRack> help("help", 'h');
-	static RackLetAdapter<CmdHelpExample> cmdHelpExample;
-	static RackLetAdapter<CmdJSON> cmdJSON;
-	static RackLetAdapter<CmdKeep> cmdKeep;
-	static RackLetAdapter<CmdRename> cmdRename("rename"); // deprecating
-	static RackLetAdapter<CmdMove> cmdMove;
-	static RackLetAdapter<CmdSetODIM> cmdSetODIM;
-	static RackLetAdapter<CmdVersion> cmdVersion;
-	static RackLetAdapter<OutputDataVerbosity> dataVebose("verboseData");
+	//installer.install<CmdSleep> cmdSleep;
 
-	static RackLetAdapter<CmdAppend>  cmdAppend;
-	static RackLetAdapter<CmdStore>  cmdStore;
+	install<drain::CmdFormat>(); //  cmdFormat;
+	install<drain::CmdFormatFile<RackContext> > (); // cmdFormatFile;
 
-	static RackLetAdapter<CmdQuantityConf> cmdQuantity;
 
+	install<drain::CmdDebug>(); //  cmdDebug;
+	install<VerboseCmd>('v');  //  cmdVerbose('v');
+	// RackLetAdapter<drain::CommandLoaderOLD> commandLoader("execFile");
+	//install<drain::CmdExpandVariables> expandVariables;
+	install<CmdExpandVariables2>(); //  expandVariables; //("expandVariables");
+
+	//install<CmdAutoExec> cmdAutoExec;
+	//install<CmdDataOk> dataOk("dataOk", -1);
+	install<CmdErrorFlags>(); //  errorFlags;
+	install<UndetectWeight>(); //  undetectWeight; //("undetectWeight");
+
+	// install<CmdSelectQuantity> cmdSelectQuantity("quantity",'Q');
+	install<CmdSelectQuantity>('Q'); //cmdSelectQuantity('Q');
+	install<CmdCheckType>(); //  cmdCheckType;
+	install<CmdValidate>(); //  cmdValidate;
+	//install<CmdCreateDefaultQuality> cmdCreateDefaultQuality;
+	install<CmdCompleteODIM>(); //  cmdCompleteODIM;
+	install<CmdConvert>(); //  cmdConvert;
+	install<CmdDelete>(); //  cmdDelete;
+	install<CmdDumpMap>(); //  cmdDumpMap; // obsolete?
+	//RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
+
+	//RackLetAdapter<CmdHelpRack> help("help", 'h'); // OBSOLETE
+	install<CmdHelpExample>(); //  cmdHelpExample; // TODO hide
+
+	install<CmdJSON>(); //  cmdJSON;
+	install<CmdKeep>(); //  cmdKeep;
+	// install<CmdRename>(); //  cmdRename; //("rename"); // deprecating
+	install<CmdMove>();
+	install<CmdSetODIM>(); //  cmdSetODIM;
+	install<CmdVersion>(); //  cmdVersion;
+	//install<OutputDataVerbosity> dataVebose("verboseData");
+
+	install<CmdAppend>(); //   cmdAppend;
+	// CommandWrapper<CmdAppend>  cmdAppend2;
+	install<CmdStore>(); //   cmdStore;
+	//CommandWrapper<CmdStore>  cmdStore2;
+
+	//RackLetAdapter<CmdQuantityConf> cmdQuantity;
+	install<CmdQuantityConf>(); //  cmdQuantity2;
+
+
+	install<CmdCreateDefaultQuality>(); //  cmdCreateDefaultQuality;
 
 }
 

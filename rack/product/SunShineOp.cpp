@@ -64,7 +64,7 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 	//ProductOp::applyODIM(dst.odim, odim);
 
 	//dst.odim.rscale = (static_cast<double>(src.odim.geometry.width) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.geometry.width);
-	mout.debug(1) << "target nbins:" << dst.odim.geometry.width << " rscale:" << dst.odim.rscale << mout.endl;
+	mout.debug2() << "target nbins:" << dst.odim.area.width << " rscale:" << dst.odim.rscale << mout.endl;
 
 	RadarProj4 proj(src.odim.lon, src.odim.lat);
 	proj.setProjectionDst("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def");
@@ -88,15 +88,15 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 	// proj.projectInv(0.0, 0.0, lon, lat);
 	// mout.warn() << "proj\t" << (180.0*lon/M_PI) << ',' << (180.0*lat/M_PI) << mout.endl;
 
-	mout.debug(1) << "main" << mout.endl;
+	mout.debug2() << "main" << mout.endl;
 
 
-	for (unsigned int j = 0; j < dst.odim.geometry.height; ++j) {
+	for (unsigned int j = 0; j < dst.odim.area.height; ++j) {
 
 		a = dst.odim.getAzimuth(j);
 
-		for (unsigned int i = 0; i < dst.odim.geometry.width; ++i) {
-			//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
+		for (unsigned int i = 0; i < dst.odim.area.width; ++i) {
+			//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scaling.scale << " m\n";
 			r = dst.odim.getBinDistance(i);
 			proj.projectFwd(r*sin(a), r*cos(a), lon, lat);
 			sun.setLocation(lon, lat);

@@ -52,28 +52,7 @@ class BeamAltitudeOp : public PolarProductOp {
 
 public:
 
-	BeamAltitudeOp() : // const std::string & type="S", double gain=100.0, long int nbins=0, double rscale=0) :
-		PolarProductOp(__FUNCTION__,"Computes the altitude at each bin")
-	{
-
-		parameters.link("aboveSeaLevel", this->aboveSeaLevel = true, "0=radar site|1=sea level");
-
-		odim.product  = "ALTITUDE";
-		odim.quantity = "HGHT";
-
-		dataSelector.quantity = "";
-		dataSelector.count = 1;
-
-		this->allowedEncoding.link("type",   odim.type = "C");
-		this->allowedEncoding.link("gain",   odim.scale = 0.1);
-		this->allowedEncoding.link("offset", odim.offset = 0.0);
-
-		odim.geometry.height = 1;
-
-		// allowedEncoding.link("type", odim.type, "S");
-		// allowedEncoding.link("gain", odim.scale, 0.001);
-
-	};
+	BeamAltitudeOp();
 
 	virtual
 	void processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const;
@@ -82,10 +61,10 @@ protected:
 
 	virtual
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		dstData.odim.geometry.width = (odim.geometry.width>0) ? odim.geometry.width : srcODIM.geometry.width;
-		dstData.odim.geometry.height = 1;
-		dstData.odim.rscale = (static_cast<double>(srcODIM.geometry.width) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.geometry.width);
-		dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
+		dstData.odim.area.width = (odim.area.width>0) ? odim.area.width : srcODIM.area.width;
+		dstData.odim.area.height = 1;
+		dstData.odim.rscale = (static_cast<double>(srcODIM.area.width) * srcODIM.rscale + srcODIM.rstart) / static_cast<double>(dstData.odim.area.width);
+		dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	};
 
 

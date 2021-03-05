@@ -38,9 +38,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string.h>
 #include <map>
 //#include <algorithm>
-#include "drain/util/Path.h"
+
 #include "drain/util/Log.h"
+
+#include "drain/util/Path.h"
 #include "drain/util/Flags.h"
+//#include "drain/util/GlobalFlags.h"
 
 
 namespace rack {
@@ -69,17 +72,20 @@ namespace rack {
  *  See also: LinearScaling (could be used as base class?)
  */
 
+//struct odim_id {};
+//typedef drain::GlobalFlags<odim_id> odim_flags;
 
 class ODIMPathElem  {
 
 public:
 
-	typedef drain::Flags flag_t;
-	typedef drain::Flags::dict_t dict_t;
+	typedef drain::Flagger flag_t;
+	typedef drain::Flagger::dict_t dict_t;
 
 	/// In H5, "groups" correspond to "directories" or "folders" in Unix and Windows.
 
-	typedef drain::Flags::value_t group_t;
+	typedef drain::Flagger::value_t group_t;
+	//typedef odim_flags::value_t group_t;
 
 	/// None (undefined)
 	static const group_t NONE = 0;
@@ -306,12 +312,12 @@ public:
 
 	/// Writes the name, including the index, to output stream.
 	virtual
-	std::ostream & toOStr(std::ostream & sstr) const;
+	std::ostream & toStream(std::ostream & sstr) const;
 
 	operator const std::string &() const {
 		if (this->group != OTHER){
 			std::stringstream sstr;
-			toOStr(sstr);
+			toStream(sstr);
 			str = sstr.str();
 		}
 		return str;
@@ -351,7 +357,7 @@ bool operator!=(const ODIMPathElem & e1, const ODIMPathElem & e2){
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p) {
-	return p.toOStr(ostr);
+	return p.toStream(ostr);
 }
 
 inline
@@ -364,9 +370,11 @@ std::istream & operator>>(std::istream & istr, ODIMPathElem & p) {
 }
 
 
-typedef drain::Path<ODIMPathElem> ODIMPath;
+typedef drain::Path<ODIMPathElem,'/',true,false,true> ODIMPath;
 
 typedef std::list<ODIMPath> ODIMPathList;
+
+typedef std::vector<ODIMPathElem> ODIMPathElemSeq;
 
 
 struct ODIMPathLess {
@@ -400,6 +408,10 @@ struct ODIMPathLess {
 
 
 
+inline
+std::ostream & operator<<(std::ostream & ostr, const ODIMPath & p) {
+	return p.toStream(ostr);
+}
 
 
 }  // namespace rack

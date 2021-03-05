@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include "drain/util/Log.h"
+#include "drain/util/GlobalFlags.h"
 
 #include "ODIMPath.h"
 
@@ -37,7 +38,7 @@ namespace rack {
 
 
 const ODIMPathElem::group_t ODIMPathElem::NONE;
-const ODIMPathElem::group_t ODIMPathElem::ROOT;
+const ODIMPathElem::group_t ODIMPathElem::ROOT; // = odim_flags::add("ROOT");
 const ODIMPathElem::group_t ODIMPathElem::ARRAY;
 const ODIMPathElem::group_t ODIMPathElem::ATTRIBUTE_GROUPS;
 const ODIMPathElem::group_t ODIMPathElem::IS_INDEXED;
@@ -51,7 +52,8 @@ const ODIMPathElem::group_t ODIMPathElem::HOW;
 const ODIMPathElem::group_t ODIMPathElem::OTHER;
 const ODIMPathElem::group_t ODIMPathElem::PALETTE; // experimental
 const ODIMPathElem::group_t ODIMPathElem::LEGEND;  // experimental
-const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS; // ?
+const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS; // = ODIMPathElem::ROOT | ODIMPathElem::DATASET | ODIMPathElem::DATA;
+		//odim_flags::getSharedDict().getValue("") (ROOT | DATASET | DATA); // ?
 
 
 /*
@@ -229,7 +231,8 @@ char ODIMPathElem::getCharCode() const { // TODO: make faster?
 
 }
 
-std::ostream & ODIMPathElem::toOStr(std::ostream & sstr) const {
+// Note; ODIMPathElemMatcher redefines
+std::ostream & ODIMPathElem::toStream(std::ostream & sstr) const {
 
 	/// Step 1: prefix (by group type)
 	sstr << getPrefix();

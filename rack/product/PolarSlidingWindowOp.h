@@ -78,13 +78,15 @@ public:
 		drain::Logger mout(__FUNCTION__, __FILE__);
 		//mout.warn() << "not implemented" << mout.endl;
 		typename W::conf_t pixelConf;
-		this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
+		//this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
+		this->conf.setPixelConf(pixelConf, srcData.odim);
 
 		mout.warn() << "srcData.odim: " << srcData.odim << mout.endl;
 
 		SlidingWindowOp<W> op(pixelConf);
 		mout.warn() << op << mout.endl;
-		mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
+		mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
+		//mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
 		mout.debug() << "pixelConf.contributionThreshold " << pixelConf.contributionThreshold << mout.endl;
 		mout.debug() << "op.conf.contributionThreshold " << op.conf.contributionThreshold << mout.endl;
 		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
@@ -113,13 +115,17 @@ public:
 protected:
 
 	/// Convert azimuthal and radial quantities to pixels
-	void setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const;
+	/*
+	void setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const {
+		conf.setPixelConf(pixelConf, odim);
+	}
+	*/
 
 
 
 };
 
-
+/*
 template <class W>
 void PolarSlidingWindowOp<W>::setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const {
 
@@ -135,21 +141,22 @@ void PolarSlidingWindowOp<W>::setPixelConf(const PolarODIM & odim, typename W::c
 
 	pixelConf.updatePixelSize(odim);
 
-	if (pixelConf.width == 0){
-		mout.note() << this->conf.width  << mout.endl;
+	if (pixelConf.frame.width == 0){
+		mout.note() << this->conf.frame.width  << mout.endl;
 		mout.note() << this->conf.widthM << mout.endl;
 		mout.note() << *this << mout.endl;
-		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
-		pixelConf.width = 1;
+		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters), smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
+		pixelConf.frame.width = 1;
 	}
 
-	if (pixelConf.height == 0){
-		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/odim.geometry.height) <<"), setting window height=1 " << mout.endl;
-		pixelConf.height = 1;
+	if (pixelConf.frame.height == 0){
+		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees), smaller than 360/nrays ("<< (360.0/odim.geometry.height) <<"), setting window height=1 " << mout.endl;
+		pixelConf.frame.height = 1;
 	}
 
 
 }
+*/
 
 class PolarSlidingAvgOp : public PolarSlidingWindowOp<RadarWindowAvg<RadarWindowConfig> > {
 public:

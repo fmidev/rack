@@ -49,12 +49,12 @@ namespace rack
 using namespace drain::image;
 
 // These are contorolled directly from command line. See rack.cpp.
-//PrecipitationZ      RainRateOp::precipZrain(200.0, 1.60); // Marshall-Palmer
-PrecipitationZ      RainRateOp::precipZrain(222.2, 1.1111); // Marshall-Palmer
-PrecipitationZ      RainRateOp::precipZsnow(223.0, 1.53); // Leinonen
-PrecipitationKDP    RainRateOp::precipKDP;
-PrecipitationKDPZDR RainRateOp::precipKDPZDR;
-PrecipitationZZDR   RainRateOp::precipZZDR;
+PrecipZrain  RainRateOp::precipZrain(200.0, 1.60); // Marshall-Palmer
+//PrecipZ    RainRateOp::precipZrain(222.2, 1.1111); // Marshall-Palmer
+PrecipZsnow  RainRateOp::precipZsnow(223.0, 1.53); // Leinonen
+PrecipKDP    RainRateOp::precipKDP;
+PrecipKDPZDR RainRateOp::precipKDPZDR;
+PrecipZZDR   RainRateOp::precipZZDR;
 
 FreezingLevel RainRateOp::freezingLevel;
 
@@ -62,7 +62,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug(1) << "Start." << mout.endl;
+	mout.debug2() << "Start." << mout.endl;
 
 	setGeometry(srcData.odim, dstData);
 
@@ -73,8 +73,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	//dstQuality.data.setGeometry(dstData.data.getGeometry());
 	//@ dstQuality.updateTree();
 
-	precipZrain.initParameters();
-	precipZsnow.initParameters();
+	precipZrain.update();
+	precipZsnow.update();
 
 	const double maxQuality = dstQuality.odim.scaleInverse(1.0);
 	const double minQuality = dstQuality.odim.scaleInverse(0.5);
@@ -130,8 +130,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	double rateEnc;
 	double quality;
 
-	const double dstMin = dstData.data.getEncoding().getTypeMin<double>();
-	const double dstMax = dstData.data.getEncoding().getTypeMax<double>();
+	const double dstMin = dstData.data.getConf().getTypeMin<double>();
+	const double dstMax = dstData.data.getConf().getTypeMax<double>();
 	//mout.warn() << dstMin << '-' << dstMax << mout.endl;
 
 	const bool USE_METADATA_FLEVEL = std::isnan(freezingLevel.height);
@@ -148,7 +148,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	// mout.note() << srcData.odim << mout.endl;
 	// mout.warn() << dstData << mout.endl;
 
-	for (int i = 0; i < srcData.odim.geometry.width; ++i) {
+	for (unsigned int i = 0; i < srcData.odim.area.width; ++i) {
 
 
 		// if (SCAN){
@@ -165,7 +165,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		// TODO: use str height information (HEIGHT in PseudoCAPPI)
 
 
-		for (int j = 0; j < srcData.odim.geometry.height; ++j) {
+		for (unsigned int j = 0; j < srcData.odim.area.height; ++j) {
 
 			dbz = srcData.data.get<double>(i,j);
 			if (dbz != srcData.odim.nodata){

@@ -46,7 +46,7 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
-	mout.debug(1) << "=>srcData.odim: " << srcData.odim << mout.endl;
+	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
 
 	/// Descending fuzzy step, located at (max) altitude.
 	//  const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);
@@ -64,10 +64,10 @@ void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Polar
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug() << *this << mout.endl;
-	mout.debug(1) << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
-	mout.debug(1) << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
+	mout.debug2() << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
+	mout.debug2() << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
 
-	mout.debug(1) << " => dst: " << dstData.data.getScaling() << mout.endl;
+	mout.debug2() << " => dst: " << dstData.data.getScaling() << mout.endl;
 	//const int code = AndreOp::getClassCode(this->classCode);
 
 	RadarFunctorOp<DataMarker> marker;
@@ -78,17 +78,17 @@ void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Polar
 	// mout.warn() << "Using prob (code value) " << probCode << mout.endl;
 	// marker.functor.set(dstData.odim.scaleForward(probCode));
 	const double pCode    = dstData.odim.scaleInverse(this->probability);
-	const double pCodeMin = dstData.odim.scaleInverse(1.0 - QualityCombinerOp::DEFAULT_QUALITY);
+	const double pCodeMin = dstData.odim.scaleInverse(1.0 - this->qualityThreshold); // QualityCombinerOp::DEFAULT_QUALITY);
 
-	if (this->probability <= (1.0 - QualityCombinerOp::DEFAULT_QUALITY)){
+	if (this->probability <= (1.0 - this->qualityThreshold)){
 		mout.warn() << "prob " << this->probability << " [" << pCode << "] of 'default class' ";
-		mout        << "does not exceed limit (1 - aDefaultQuality) = " << (1.0 - QualityCombinerOp::DEFAULT_QUALITY) << " [" << pCodeMin << ']' << mout.endl;
+		mout        << "does not exceed limit (1 - aDefaultQuality) = " << (1.0 - this->qualityThreshold) << " [" << pCodeMin << ']' << mout.endl;
 	}
 
 	marker.functor.set(this->probability);
 	// mout.warn() << marker << mout.endl;
 	marker.process(srcData.data, dstData.data);
-	mout.debug(1) << " => DST: " << dstData.data.getScaling() << mout.endl;
+	mout.debug2() << " => DST: " << dstData.data.getScaling() << mout.endl;
 
 }
 

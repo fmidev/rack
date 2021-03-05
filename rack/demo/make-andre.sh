@@ -4,8 +4,8 @@ VOLUME=${VOLUME:'volume.h5'}
 
 # Andre command with parameters embedded as ${parameter}
 ANDRE_CNF_TEMPLATE='andre-default.cmd.tpl'
-ANDRE_CNF_EMPTY='andre-default-empty.inc'   # .cmd
-ANDRE_CNF_FILLED='andre-default-filled.inc' # .cmd
+ANDRE_CNF_EMPTY='andre-default-empty.and'   # .cmd
+ANDRE_CNF_FILLED='andre-default-filled.and' # .cmd
 FORMAT="--formatFile $ANDRE_CNF_TEMPLATE --formatOut $ANDRE_CNF_FILLED "
 
 echo 
@@ -22,8 +22,8 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-fgrep -v 'FORMAT' $ANDRE_CNF_FILLED  > tmp.inc
-mv tmp.inc $ANDRE_CNF_FILLED
+fgrep -v 'FORMAT' $ANDRE_CNF_FILLED  > tmp.and
+mv tmp.and $ANDRE_CNF_FILLED
 cat "$ANDRE_CNF_FILLED"
 
-#cp andre.inc andre.tmp
+#cp andre.and andre.tmp

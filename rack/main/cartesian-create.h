@@ -37,13 +37,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-//#include "data/Quantity.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
-#include "cartesian-add.h"
-#include "cartesian-extract.h"
+//#include "cartesian-add.h"
+//#include "cartesian-extract.h"
+#include "composite.h"
 
 namespace rack {
 
@@ -56,76 +55,73 @@ namespace rack {
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CartesianCreate : public drain::BasicCommand {
+class CartesianCreate : public Compositor {
 
 public:
 
-	CartesianCreate(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : drain::BasicCommand(__FUNCTION__,
-			"Maps the current polar product to a Cartesian product."), addCmd(addCmd), extractCmd(extractCmd)
-	{
+
+	CartesianCreate() : Compositor(__FUNCTION__, "Maps the current polar product to a Cartesian product."){
 	}
+
 
 	inline
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		RackResources & resources = getResources();
+		//add(RackContext::POLAR|RackContext::CURRENT);
+		add(RackContext::POLAR|RackContext::CURRENT);
 
-		addCmd.exec();
-		if (resources.errorFlags.value > 0){
-			mout.warn() << "errors (" << resources.errorFlags << "), skipping extraction" << mout.endl;
+		if (ctx.statusFlags.value > 0){
+			mout.warn() << "errors (" << ctx.statusFlags << "), skipping extraction" << mout.endl;
 			return;
 		}
-		extractCmd.exec();
 
-		resources.cartesianHi5["what"].data.attributes["source"] = (*resources.currentPolarHi5)["what"].data.attributes["source"];
+		extract("dw");
+
+		// better without...
+		// ctx.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source2"] = (*ctx.currentPolarHi5)["what"].data.attributes["source"];
 	}
 
-private:
-
-	const CompositeAdd & addCmd;
-	const CartesianExtract & extractCmd;
 };
 
 
-class CartesianCreateTile : public drain::BasicCommand {
+class CompositeCreateTile : public Compositor { //drain::BasicCommand {
 
 public:
 
-	CartesianCreateTile(const CompositeAdd & addCmd, const CartesianExtract & extractCmd) : drain::BasicCommand(__FUNCTION__,
-			"Maps the current polar product to a tile to be used in compositing."), addCmd(addCmd), extractCmd(extractCmd)
-	{
+	inline
+	CompositeCreateTile() : Compositor(__FUNCTION__, "Maps the current polar product to a tile to be used in compositing."){
 	}
 
 	inline
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		RackResources & resources = getResources();
-
-		if (!resources.composite.geometryIsSet())
+		if (!ctx.composite.geometryIsSet())
 			mout.error() << "Composite geometry undefined, cannot create tile" << mout.endl;
 
-		if (! resources.composite.bboxIsSet())
+		if (! ctx.composite.bboxIsSet())
 			mout.error() << "Bounding box undefined, cannot create tile" << mout.endl;
 
-		if (! resources.composite.projectionIsSet()) // or use first input (bbox reset)
+		if (! ctx.composite.projectionIsSet()) // or use first input (bbox reset)
 			mout.error() << "Projection undefined, cannot create tile" << mout.endl;
 
-		resources.composite.setCropping(true);
-		addCmd.exec();
-		extractCmd.exec();
-		resources.composite.setCropping(false);
+		ctx.composite.setCropping(true);
+		add(RackContext::POLAR|RackContext::CURRENT);
+		extract("dw");
+		ctx.composite.setCropping(false);
 
 	}
 
 private:
 
 
-	const CompositeAdd & addCmd;
-	const CartesianExtract & extractCmd;
+	// const CompositeAdd & addCmd;
+	// const CompositeExtract & extractCmd;
 };
 
 
@@ -133,7 +129,13 @@ class CartesianRange : public drain::BasicCommand { //SimpleCommand<double> {
 
 public:
 
+	inline
 	CartesianRange() : drain::BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
+		parameters.link("range", PolarODIM::defaultRange, "km");
+	};
+
+	inline
+	CartesianRange(const CartesianRange & cmd) : drain::BasicCommand(__FUNCTION__, cmd.getDescription()) {
 		parameters.link("range", PolarODIM::defaultRange, "km");
 	};
 
@@ -156,13 +158,19 @@ public:
 
 	inline
 	void exec() const {
-		RackResources & resources = getResources();
-		resources.composite.reset();
-		resources.composite.setTargetEncoding("");
-		resources.projStr.clear();
-		//resources.currentHi5 = resources.currentPolarHi5;
-		resources.currentGrayImage = NULL;
-		resources.currentImage     = NULL;
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+
+		ctx.composite.reset();
+		// Consider including in reset:
+		ctx.composite.setTargetEncoding("");
+		ctx.composite.odim.source.clear();
+		ctx.composite.nodeMap.clear();
+		// ctx.composite.projR2M.clear() !
+		// ctx.projStr.clear();
+
+		ctx.unsetCurrentImages();
+
 	}
 
 };

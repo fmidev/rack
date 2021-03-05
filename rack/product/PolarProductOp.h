@@ -65,19 +65,27 @@ public:
 	PolarProductOp(const std::string & name = __FUNCTION__, const std::string & description = "") : VolumeOp<PolarODIM>(name, description) {
 
 		allowedEncoding.link("type", odim.type = "C");
-		allowedEncoding.link("gain", odim.scale);
-		allowedEncoding.link("offset", odim.offset);
+		allowedEncoding.link("gain", odim.scaling.scale);
+		allowedEncoding.link("offset", odim.scaling.offset);
 		// 2018
 		allowedEncoding.link("undetect", odim.undetect);
 		allowedEncoding.link("nodata", odim.nodata);
 
 		allowedEncoding.link("rscale", odim.rscale);
-		allowedEncoding.link("nrays", odim.geometry.height);
-		allowedEncoding.link("nbins", odim.geometry.width);
+		allowedEncoding.link("nrays", odim.area.height);
+		allowedEncoding.link("nbins", odim.area.width);
 
 		aboveSeaLevel = true;
 
+		this->odim.product = "PPROD"; // NEW
 	};
+
+
+	PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(op){
+		//odim.importMap(op.odim);
+		//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
+		allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
+	}
 
 	virtual
 	~PolarProductOp(){};
@@ -91,10 +99,10 @@ protected:
 
 	inline
 	void copyPolarGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		dstData.odim.geometry.width  = srcODIM.geometry.width;
-		dstData.odim.geometry.height  = srcODIM.geometry.height;
+		dstData.odim.area.width  = srcODIM.area.width;
+		dstData.odim.area.height  = srcODIM.area.height;
 		dstData.odim.rscale = srcODIM.rscale;
-		dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
+		dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 		if (!dstData.odim.type.empty()){
 			dstData.data.setType(dstData.odim.type.at(0));
 		}

@@ -37,30 +37,41 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include "drain/prog/CommandAdapter.h"
+//#include "drain/prog/CommandAdapter.h"
 
 #include "resources.h"
 
-#include "cartesian-extract.h"
+#include "composite.h"
 
 
 
 namespace rack {
 
-class CartesianExtract : public drain::SimpleCommand<std::string> {
+class CartesianExtract : public Compositor { // drain::SimpleCommand<std::string> {
 
 public:
 
-	CartesianExtract() : drain::SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
-			"value", "dw", "Layers: data,count,weight,std.deviation") {
-		//parameters.link("channels", channels, "dw", "Accumulation layers to be extracted");
+	CartesianExtract() : Compositor(__FUNCTION__,"Extract data that has been composited on the accumulation array"){
+		parameters.link("channels", channels="dw", "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
 	};
 
-	void extract(const std::string & channels) const;
+	CartesianExtract(const CartesianExtract & cmd) : Compositor(__FUNCTION__, cmd.getDescription()){
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
 
-	inline
+	std::string channels;
+
+	/*
+	CartesianExtract() : drain::SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
+			"value", "dw", "Layers: data,count,weight,std.deviation") {
+	};
+	*/
+
+	//void extract(const std::string & channels) const;
+
+	virtual inline
 	void exec() const {
-		extract(value);
+		extract(channels);
 	}
 
 };

@@ -103,10 +103,8 @@ echo
 #echo 
 #ask_variable HDF5_INCLUDE  "Hierarchical Data Format (HDF5), include directory"
 #warn_if_unfound $HDFROOT
-
 #ask_variable PROJ_INCLUDE "PROJ.4 projection library, include directory"
 #warn_if_unfound $PROJ_INCLUDE
-
 #ask_variable GEOTIFF_INCLUDE  "GeoTIFF include directory (leave empty if GeoTIFF not used)"
 
 
@@ -119,9 +117,9 @@ if pkg-config --version > /dev/null ; then
     PKGC="pkg-config --silence-errors"
 fi
 
-
-CCFLAGS='' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
-LDFLAGS=''
+# ?-std=gnu++11
+CCFLAGS='-fopenmp' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
+LDFLAGS='-fopenmp'
 
 #for i in hdf5 proj png ${GEOTIFF_INCLUDE:+'tiff'} ${GEOTIFF_INCLUDE:+'geotiff'}; do
 for i in hdf5 proj_api png tiff geotiff; do

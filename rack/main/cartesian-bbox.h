@@ -37,9 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-//#include "data/Quantity.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
 
@@ -53,17 +51,35 @@ class CartesianBBox : public drain::BasicCommand {
 public:
 
 	CartesianBBox() : drain::BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
+		/*
 		RackResources & resources = getResources();
 		parameters.link("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
 		parameters.link("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
 		parameters.link("urLon", resources.bbox.upperRight.x = 0.0, "deg");
 		parameters.link("urLat", resources.bbox.upperRight.y = 0.0, "deg");
+		*/
+		parameters.link("llLon", bbox.lowerLeft.x  = 0.0, "deg");
+		parameters.link("llLat", bbox.lowerLeft.y  = 0.0, "deg");
+		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg");
+		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg");
 	};
 
-	void exec() const;
+	CartesianBBox(const CartesianBBox & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.setBoundingBox(bbox);
+		// std::cerr << __FILE__ << ' ' << bbox << std::endl;
+		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	}
 
 private:
 
+	drain::Rectangle<double> bbox;
 	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
 	/*
 	static inline
@@ -83,10 +99,11 @@ public:
 
 	inline
 	void exec() const {
-		RackResources & resources = getResources();
-		resources.bbox.set(0,0,0,0);
-		resources.composite.setBoundingBoxD(0,0,0,0);
-		// options["cSource"].clear();
+		//RackResources & resources = getResources();
+		//resources.bbox.set(0,0,0,0);
+		//resources.composite.setBoundingBoxD(0,0,0,0);
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.setBoundingBox(0,0,0,0);
 	};
 
 };
@@ -97,23 +114,34 @@ public:
  *   -# "exit"    (or "1"); exits, returning value 0 (overlap) or 1 (no overlap)
 
  */
-class CartesianBBoxTest : public drain::SimpleCommand<int> { //
+class CartesianBBoxTest : public drain::BasicCommand { // public drain::SimpleCommand<int> { //
 
 public:
 
-	mutable bool overlap;
+	//mutable bool overlap;
 
+	/*
 	CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
-			"mode", 0, "If no overlap, set inputOk=false. If also mode>1, exit with return value <mode>."	) {
-	};
+			"mode", 0, "If no overlap, sets INPUT_ERROR flag, else resets. If also mode>1, exit with return value <mode>."	) {
+	};*/
 
+	CartesianBBoxTest() : drain::BasicCommand(__FUNCTION__, "Tests whether the radar range is inside the composite."){
+		parameters.link("mode", mode);
+	}
+	CartesianBBoxTest(const CartesianBBoxTest &cmd) :  drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
+
+	/*
 	virtual
 	inline
 	void run(const std::string & params = ""){
 		SimpleCommand<int>::run(params);
 		value = static_cast<int>(overlap);
 	}
-
+	*/
+	mutable
+	int mode;
 
 	void exec() const;
 
@@ -131,6 +159,10 @@ public:
 		parameters.link("llLat", bbox.lowerLeft.y = 0.0, "deg");
 		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg");
 		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg");
+	}
+
+	CartesianBBoxTile(const CartesianBBoxTile & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
 
 	void exec() const;

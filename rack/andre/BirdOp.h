@@ -76,19 +76,23 @@ protected:
 	};
 	 */
 
-	virtual
 	inline
+	BiometeorOp(const BiometeorOp & op) : DetectorOp(op) {
+		this->parameters.copyStruct(op.getParameters(), op, *this);
+	};
+
+	virtual inline
 	~BiometeorOp(){};
 
 
 	double dbzPeak;
 
 	bool VRAD_FLIP;
-	drain::Range<double> vradDev;
+	drain::Range<double> vradDevRange;
 
 	//double wradMin;
 
-	drain::Range<double> rhoHV;
+	drain::Range<double> rhoHVRange;
 
 	double zdrAbsMin;
 
@@ -147,6 +151,11 @@ public:
 
 	};
 
+	inline
+	BirdOp(const BirdOp & op) : BiometeorOp(op) {
+		this->parameters.copyStruct(op.getParameters(), op, *this);
+	};
+
 	// virtual 	inline	~BirdOp(){};
 
 protected:
@@ -169,6 +178,10 @@ public:
 		// this->vradDev.max = 0.9 *vradDevMax;
 		//this->vradDev.min = 1.1 *vradDevMax;
 	};
+
+	InsectOp(const InsectOp & op) : BiometeorOp(op) {
+		this->parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
 protected:
 

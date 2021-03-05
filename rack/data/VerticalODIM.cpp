@@ -54,8 +54,8 @@ void VerticalCrossSectionODIM::init(group_t initialize){ // ::referenceRootAttrs
 
 		//link("where:minheight",  minheight = 0.0);
 		//link("where:maxheight",  maxheight = 0.0);
-		link("where:minheight",  height.vect[0] = 0.0);
-		link("where:maxheight",  height.vect[1] = 0.0);
+		link("where:minheight",  altitudeRange.min = 0.0);
+		link("where:maxheight",  altitudeRange.max = 0.0);
 
 		link("how:NI",  NI = 0.0);
 	}
@@ -79,8 +79,8 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 	if (initialize & ODIMPathElem::ROOT){
 		link("where:lon", lon = 0.0);
 		link("where:lat", lat = 0.0);
-		height = 0.0;
-		link("where:height", height.vect[0]);
+		altitudeRange = 0.0;
+		link("where:height", altitudeRange.min); // note height vs. altitude
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
@@ -90,11 +90,11 @@ void  VerticalProfileODIM::init(group_t initialize){ // n::referenceRootAttrs(){
 		//link("how:minRange", minRange = 0.0);// where or how??
 		//link("how:range", range = 0.0);// where or how??
 		// Product will use range (Range object)
-		link("how:minRange", range.vect[0] = 0.0);// where or how??
-		link("how:range",    range.vect[1] = 0.0);// where or how??
+		link("how:minRange", distanceRange.min = 0.0);// where or how??
+		link("how:range",    distanceRange.max = 0.0);// where or how??
 
-		link("where:startaz", azm.vect[0] = 0.0);
-		link("where:stopaz",  azm.vect[1] = 0.0);
+		link("where:startaz", azmRange.min = 0.0);
+		link("where:stopaz",  azmRange.max = 0.0);
 		// link("where:startaz", startaz = 0.0);
 		// link("where:stopaz", stopaz = 0.0);
 
@@ -118,8 +118,8 @@ void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
 	}
 
 	if (initialize & ODIMPathElem::DATASET){
-		link("where:minRange", range.vect[0] = 0.0);  // where or how??
-		link("where:range",    range.vect[1] = 0.0);  // where or how??
+		link("where:minRange", range.min = 0.0);  // where or how??
+		link("where:range",    range.max = 0.0);  // where or how??
 		link("where:az_angle", az_angle = 0.0);
 		link("where:angles",   angles = 0.0);
 	}

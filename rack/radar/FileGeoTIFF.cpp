@@ -153,7 +153,7 @@ void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string 
 }
 
 
-typedef drain::Tree<std::string,NodeGDAL> TreeGDAL;
+typedef drain::Tree<NodeGDAL> TreeGDAL;
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
@@ -452,7 +452,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 				// Copy image data to tile
 				if ((w>0) && (h>0)){
 					//if (!UCHAR8){tile.setGeometry(w, h);}
-					mout.debug(1) << "TILE:" << k << ',' <<  l << '\t' << w << 'x' << h << mout.endl;
+					mout.debug2() << "TILE:" << k << ',' <<  l << '\t' << w << 'x' << h << mout.endl;
 					for (int j=0; j<h; ++j){
 						for (int i=0; i<w; ++i){
 							//buffer[j*tileWidth + i] = src.get<int>(iOffset+i, jOffset+j);
@@ -482,7 +482,7 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 		const drain::Type t(src.getType());
 		if ((t == 'C') || (t=='S')){
 			/// Address each ŕow directly
-			const int rowBytes = width * src.getEncoding().getElementSize();
+			const int rowBytes = width * src.getConf().getElementSize();
 			buffer = (unsigned char *)src.getBuffer();
 			for (int j=0; j<height; ++j){
 				if (!TIFFWriteScanline(tif, &(buffer[j * rowBytes]), j, 0))

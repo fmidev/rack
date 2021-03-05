@@ -61,16 +61,19 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	// Warn if below min dBZ?
 	//const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
 	//const double max = src.data.getMax<double>()-2.0;
-	//drain::FuzzyBell<double> fuzzyBell;
 	drain::FuzzyBell2<double> fuzzyBell;
-	fuzzyBell.set(0.0, area, dst.odim.scaleInverse(1.0));
-	//SegmentAreaOp<SegmentProber<float, unsigned short> > op(fuzzyBell, min, max); 	//"min,max,mapping,mSlope,mPos"
-	SegmentAreaOp<float,unsigned short> op(fuzzyBell, reflMin, 70.0); // dBZ!	//"min,max,mapping,mSlope,mPos"
-	//SegmentAreaOp<float,unsigned short> op(fuzzyBell, src.odim.scaleInverse(reflMin)); // "min,max,mapping,mSlope,mPos"
+	// Peak at 1.0 (one pixel, minimum speck size)
+	// Area: half-width at 25...50 pixels
+	// Gain: around 250
+	// Offset: often 1.0, because 0.0 reserved for no-data?
+	double offset = dst.odim.scaleInverse(0.0);
+	fuzzyBell.set(1.0, area, dst.odim.scaleInverse(1.0)-offset, offset);
+	SegmentAreaOp<float,unsigned short> op(fuzzyBell, reflMin); // dBZ!	//"min,max,mapping,mSlope,mPos"
+	// SegmentAreaOp<float,unsigned short> op(reflMin); // dBZ!	//"min,max,mapping,mSlope,mPos"
+	// op.functorStr = "FuzzyBell2:+2,33,240,0";
 
-	mout.note() << op << mout.endl;
-	mout.debug(1) << src.data.getCoordinatePolicy() << mout.endl;
-
+	mout.debug() << "essential operator: " << op << mout.endl;
+	mout.debug2() << src.data.getCoordinatePolicy() << mout.endl;
 	//if (mout.isDebug(10)) File::write(src.data,"SegmentAreaOp_src.png");
 
 	op.process(src.data, dst.data);

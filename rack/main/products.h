@@ -33,27 +33,53 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_PRODUCTS
 
 
+#include "drain/prog/CommandInstaller.h"
+
+//#include "resources.h"
 
 
 namespace rack {
 
-/*! Connects meteorological products to program core.
- *
- */
-class ProductModule : public drain::CommandGroup {
-
-public:
-
-	ProductModule(const std::string & section = "prod", const std::string & prefix = "p"); // : drain::CommandGroup(section, prefix){};
+template <class OP>
+class ProductCommand;
 
 
+struct ProductSection : public drain::CommandSection {
+
+	ProductSection(): CommandSection("products"){
+		// hello(__FUNCTION__); std::cerr << __FUNCTION__ << std::endl;
+		drain::CommandBank::trimWords().insert("Op");
+	};
 
 };
 
-}
 
 
+/*! Connects meteorological products to program core.
+ *
+ */
+class ProductModule : public drain::CommandModule<'p',ProductSection> { //: public drain::CommandSection {
+
+public:
+
+	ProductModule(drain::CommandBank & bank = drain::getCommandBank());
+
+
+protected:
+
+	//ProductCommand<OP>
+	template <class OP>
+	drain::Command & install(char alias = 0){  // TODO: EMBED "install2"
+		std::string name = OP().getName();
+		drain::CommandBank::deriveCmdName(name, getPrefix());
+		drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
+		cmd.section = getSection().index;
+		return cmd;
+	}
+
+	// virtual void initialize();
+};
+
+} // Rack
 
 #endif
-
-// Rack

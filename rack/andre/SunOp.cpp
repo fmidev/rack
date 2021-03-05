@@ -49,7 +49,7 @@ void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 	// mout.debug() << *this << mout.endl;
-	// mout.debug(1) << "=>odimIn: " << srcData.odim << mout.endl;
+	// mout.debug2() << "=>odimIn: " << srcData.odim << mout.endl;
 
 	double sunAzm = 0.0;
 	double sunElev = 0.0;

@@ -12,30 +12,47 @@ OUTFILE='volume-modified.h5'
 START example-select.inc
 OUTFILE='volume-select.txt'
 
-TITLE "For text output, select paths STARTING with 'dataset2', 'dataset3', ..., 'dataset5'. "
+TITLE "Index range test: select DATASET group with index 3 . "
+TEST    --select /dataset3
+REQUIRE dataset3/where dataset3/what dataset3/data1
+EXCLUDE dataset2 dataset4
+
+TITLE "Index range test: select DATASET groups with index 2...5 . "
 TEST    --select /dataset2:5
-REQUIRE dataset2/where
-EXCLUDE dataset1/data3
+REQUIRE dataset2/where dataset3/data1 dataset5/what
+EXCLUDE dataset1/ dataset6/
+
+TITLE "Index range test: select DATASET groups with index 3 at least."
+TEST    --select /dataset3:
+REQUIRE dataset3/where dataset5/what
+EXCLUDE dataset1/ dataset2/
+
+TITLE "Index range test: select DATASET groups with index 3 at largest. "
+TEST    --select /dataset:3
+REQUIRE dataset1/where dataset3/what
+EXCLUDE dataset4 dataset6
+
+
 
 TITLE "For text output, select paths ENDING with 'what', 'where', or 'how'. "
 TEST    --select "'what|where|how'"
 REQUIRE dataset1/where
-EXCLUDE data1
-
-TITLE "For text output, select 'where' groups of 3 lowest elevations from 0.5 degrees upwards "
-TEST    --select where,elangle=0.5,count=3
-REQUIRE dataset3/where
-EXCLUDE data1
+EXCLUDE 'data1$'
 
 TITLE "For text output, select paths of elevations up to 6.0 degrees "
 TEST    --select elangle=:6.0
 REQUIRE dataset3/where
-EXCLUDE data1
+EXCLUDE EXCLUDE dataset9
 
-TITLE "For text output, select what and where groups of elevations from 0.5 to 6.0 degrees"
+TITLE "For text output, select 'where' groups of 3 lowest elevations from 0.5 degrees upwards "
+TEST    --select where,elangle=0.5:90.0,count=3
+REQUIRE dataset3/where
+# bug EXCLUDE dataset9
+
+TITLE "For text output, select 'what' and 'where' groups of elevations from 0.5 to 6.0 degrees"
 TEST    --select "'what|where,elangle=0.5:6'"
 REQUIRE dataset4/{data1,where}
-EXCLUDE dataset1 data1
+EXCLUDE dataset1 
 
 TITLE "For single-image output, select DBZH  "
 OUTFILE='volume-DBZH.png'

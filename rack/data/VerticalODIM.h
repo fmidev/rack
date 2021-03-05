@@ -63,13 +63,15 @@ public:
 	/// Number of pixels in vert dimension
 	long ysize;
 
+
 	/// Horizontal resolution in m
 	double xscale;
 
 	/// Vertical resolution in m
 	double yscale;
 
-	drain::Range<double> height;
+	/// Corresponding to what:height, yet less risky for confusions with tower height or site height (altitude).
+	drain::Range<double> altitudeRange;
 	/// Minimum height in meters above mean sea level
 	//double minheight;
 
@@ -115,10 +117,10 @@ public:
 	double interval;
 	//double minRange;
 	//double range;  // was 'maxRange', should be 'range'
-	drain::Range<double> range;
+	drain::Range<double> distanceRange;
 
 	// where
-	drain::Range<double> azm;
+	drain::Range<double> azmRange;
 	//double startaz; // non-stardard for profile
 	//double stopaz; // non-stardard for profile
 	long int azSlots;  // non-stardard

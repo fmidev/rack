@@ -29,17 +29,19 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <algorithm>
-#include <exception>
+//#include <exception>
 #include <fstream>
 #include <iostream>
+/*
+#include <algorithm>
 #include <limits>
 #include <list>
 #include <map>
 #include <sstream>
 #include <utility>
 #include <vector>
-#include <regex.h>
+*/
+//#include <regex.h>
 // #include <stddef.h>
 
 #include "drain/util/Log.h"
@@ -48,10 +50,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/StringMapper.h"
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
+#include "drain/image/File.h"
+#include "drain/image/Image.h"
+#include "drain/image/Sampler.h"
+#include "drain/imageops/ImageModifierPack.h"
 
 #include "drain/prog/Command.h"
-#include "drain/prog/CommandAdapter.h"
-#include "drain/prog/CommandPack.h"
+#include "drain/prog/CommandBankUtils.h"
+#include "drain/prog/CommandInstaller.h"
 
 #include "data/Data.h"
 #include "data/DataOutput.h"
@@ -59,21 +65,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataTools.h"
 #include "data/ODIMPath.h"
 #include "data/PolarODIM.h"
-#include <hi5/Hi5.h>
-//#include <hi5/Hi5Read.h>
-#include <hi5/Hi5Write.h>
-#include "drain/image/File.h"
-#include "drain/image/Image.h"
-#include "drain/image/Sampler.h"
-#include "drain/imageops/ImageModifierPack.h"
-#include <main/fileio.h>
-#include <main/fileio-read.h>
-#include <main/images.h> // for calling --image on the fly
-#include <main/resources.h>
-//#include "product/HistogramOp.h"
+#include "hi5/Hi5.h"
+#include "hi5/Hi5Write.h"
 #include "product/ProductOp.h"
 #include "radar/FileGeoTIFF.h"
 #include "radar/RadarDataPicker.h"
+
+#include "fileio.h"
+#include "fileio-read.h"
+#include "resources.h"
 
 
 
@@ -113,6 +113,7 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
 //static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
 
+
 struct HistEntry : drain::BeanLike {
 
 	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
@@ -131,6 +132,7 @@ struct HistEntry : drain::BeanLike {
 };
 static HistEntry histEntryHelper;
 
+
 /// TODO: generalize to array outfile
 class CmdHistogram : public drain::BasicCommand {
 
@@ -146,31 +148,34 @@ public:
 	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : drain::BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
 		parameters.link("count", count = 256);
-		parameters.link("range", range.vect);
+		parameters.link("range", range.tuple());
 		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
 		parameters.link("filename", filename="", "<filename>.txt|-");
 		parameters.link("store", store="histogram", "<attribute_key>");
 	};
 
+	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
 	// virtual	inline const std::string & getDescription() const { return description; };
 
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // getResources().mout;
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // getResources().mout;
 
-		Hi5Tree & currentHi5 = *resources.currentHi5;
+		Hi5Tree & currentHi5 = *ctx.currentHi5;
 
 		DataSelector selector(ODIMPathElemMatcher::DATA);
 		//selector.pathMatcher.clear();
 		//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElemMatcher::DATA);
-		selector.setParameters(resources.select);
+		selector.setParameters(ctx.select);
 
 		ODIMPath path;
 		selector.getPath3(currentHi5, path);
-		resources.select.clear();
+		ctx.select.clear();
 
 
 
@@ -179,7 +184,7 @@ public:
 		mout.note() << "path: " << path << " [" << dstData.odim.quantity << ']' << mout.endl;
 
 		// NO resources.setCurrentImage(selector);
-		// drain::image::Image & img = *resources.currentImage;
+		// drain::image::Image & img = *ctx.currentImage;
 		mout.warn() << "img " << dstData.data << mout.endl;
 
 		drain::Histogram histogram(256);
@@ -188,16 +193,16 @@ public:
 
 		if (!filename.empty()){
 
-			drain::Output out((filename == "-") ? filename : resources.outputPrefix + filename);
+			drain::Output out((filename == "-") ? filename : ctx.outputPrefix + filename);
 
 			std::ostream & ostr = out;
 
 			drain::StringMapper mapper;
-			if (!drain::cmdFormat.value.empty()){
+			if (! ctx.formatStr.empty()){
 				//std::string format(cmdFormat.value);
 				//format = drain::StringTools::replace(format, "\\t", "\t");
 				//format = drain::StringTools::replace(format, "\\n", "\n");
-				mapper.parse(drain::cmdFormat.value, true);
+				mapper.parse(ctx.formatStr, true);
 			}
 			else
 				mapper.parse("${count} # '${label}' (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
@@ -277,7 +282,15 @@ public:
 		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
 	};
 
+	CmdGeoTiffTile(const CmdGeoTiffTile & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK); // static targets
+	}
 
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		mout.deprecating() = "In future versions, use --outputConf tif,<params>";
+	}
 };
 
 
@@ -297,19 +310,25 @@ public:
 
 	};
 
+	CmdOutputConf(const CmdOutputConf & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
 	std::string format;
 	std::string params;
 
 	/*
 	virtual inline
-	void setParameters(const std::string & params, char assignmentSymbol=0) {
+	void set Parameters(const std::string & params, char assignmentSymbol=0) {
 		 drain::BasicCommand::setParameters(params, 0); // sep = ':'
 	}
 	*/
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		mout.warn() << "Redesigned (setParameters dropped). Check results." << mout.endl;
 		// mout.warn() << format << mout.endl;
@@ -317,15 +336,17 @@ public:
 		// todo: shared resource for output conf:  refMap of refMaps...
 		// todo recognize tif,TIFF
 		if (format == "h5"){
-			mout.warn() << "(future extension)" << mout.endl;
+			mout.unimplemented() << "(future extension)" << mout.endl;
 		}
 		else if (format == "png"){
-			mout.warn() << "(future extension)" << mout.endl;
+			mout.unimplemented() << "(future extension)" << mout.endl;
 		}
 		else if (format == "tif"){
 			// mout.note() <<  gtiffConf.getKeys() << mout.endl;
-			gtiffConf.setValues(params);
-			mout.info() << gtiffConf << mout.endl;
+			if (!params.empty())
+				gtiffConf.setValues(params);
+			else
+				mout.info() << gtiffConf << mout;
 		}
 		else {
 			mout.warn() << "format '" << format << "' not recognized" << mout.endl;
@@ -355,17 +376,20 @@ public:
 
 
 // Cf. InputPrefix
-class CmdOutputPrefix : public drain::BasicCommand {
+class CmdOutputPrefix : public drain::SimpleCommand<std::string> {
+//class CmdOutputPrefix : public drain::BasicCommand {
 
 public:
 
-	CmdOutputPrefix() : drain::BasicCommand(__FUNCTION__, "Path prefix for output files."){
-		parameters.link("path", getResources().outputPrefix = "");
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn() <<  "parameters: " << parameters << " ("<< parameters.size() << " params)" << mout.endl;
+	CmdOutputPrefix() : drain::SimpleCommand<std::string> (__FUNCTION__, "Path prefix for output files."){
 	};
+
+	inline
+	void exec() const {
+		getContext<RackContext>().outputPrefix = value;
+	}
 };
-extern drain::CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
+//extern drain::CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
 
 
 class CmdOutputFile : public drain::SimpleCommand<std::string> {
@@ -374,33 +398,45 @@ public:
 
 	CmdOutputFile() : drain::SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|mat|dot]|-") {
+		//execRoutine = false;
 	};
 
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		//drain::Logger mout(getName(), __FILE__);
+		RackContext & ctx = getContext<RackContext>();
 
-		RackResources & resources = getResources();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		if (value.empty()){
 			mout.error() << "File name missing. (Use '-' for stdout.)" << mout.endl;
 			return;
 		}
 
-		if (resources.errorFlags.isSet(RackResources::INPUT_ERROR)){
+		if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
 			mout.warn() << "input failed, skipping" << mout.endl;
 			return;
 		}
 
-		if (resources.errorFlags.isSet(RackResources::DATA_ERROR)){
+		if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
 			mout.warn() << "data error, skipping" << mout.endl;
 			return;
 		}
 
-		if (value != "-")
-			mout.note() << "writing: '" << value << "'" << mout.endl;
+		std::string filename;
+
+		if (value != "-"){
+			//mout.warn() << RackContext::variableMapper << mout.endl;
+			drain::StringMapper mapper(RackContext::variableMapper);
+			mapper.parse(ctx.outputPrefix + value);
+			filename = mapper.toStr(ctx.getStatusMap());
+			mout.note() << "writing: '" << filename << "'" << mout.endl;
+		}
+		else {
+			filename = "-";
+		}
+
+		// mout.note() << "filename: " << filename << mout.endl;
 
 		// TODO: generalize select
 		// TODO: generalize image pick (current or str) for png/tif
@@ -409,17 +445,15 @@ public:
 		const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
 		const bool IMAGE_TIF = tiffFileExtension.test(value);
 
+		Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
+
 		if (h5FileExtension.test(value)){
 
 			mout.info() << "File format: HDF5" << mout.endl;
+			src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
+			hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);
+			// ctx.outputPrefix + value
 
-			getResources().currentHi5->data.attributes["Conventions"] = "ODIM_H5/V2_2";
-			/// getResources().currentHi5->data.attributes["version"] = "H5rad 2.2"; // is in ODIM /what/version
-			//  const char c = hi5::Writer::tempPathSuffix;
-			//if (mout.isDebug(10))
-			//	hi5::Writer::tempPathSuffix = 0; // save also paths with '~' suffix.
-			hi5::Writer::writeFile(getResources().outputPrefix + value, *getResources().currentHi5);
-			//hi5::Writer::tempPathSuffix = c;
 		}
 		else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
@@ -427,59 +461,45 @@ public:
 
 			mout.info() << "File format: image" << mout.endl;
 
-			const bool CONVERT = !resources.targetEncoding.empty();
-
-			// If there is already a product generated with --image, use that.
-			// if (resources.select.empty() && ((resources.currentImage == &resources.grayImage) || (resources.currentImage == &resources.colorImage))){
-			//   && resources.targetEncoding.empty() && resources.targetEncoding.empty()
-			if (resources.select.empty() && (resources.currentImage != NULL) && !CONVERT){
-				mout.debug() << "Writing current image, no conversion " << mout.endl;
+			/*
+			if (ctx.select.empty()){
+				ctx.findImage();
 			}
-			else if (CONVERT){
-				mout.note() << "encoding requested, calling "<< cmdImage.getName() << " implicitly" << mout.endl;
-				cmdImage.exec();
-			}
-			else { // pointer (resources.currentImage) needs update
-				ImageSelector imageSelector;  //
-				//imageSelector.pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			*/
+			ctx.updateCurrentImage();
 
-				//imageSelector.pathMatcher << ODIMPathElemMatcher(ODIMPathElem::DATASET,1) << ODIMPathElemMatcher(ODIMPathElem::DATA,1);
-				imageSelector.setParameters(resources.select);
-				resources.select.clear();
-				mout.debug() << imageSelector << mout.endl;
-				ODIMPath path = resources.setCurrentImage(imageSelector);
-				if (!path.empty()){
-					// OK
-					mout.info() << "using image path: " << path << mout.endl;
-					if (!(resources.currentImage->getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(resources.currentImage->getType()))){
-						mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
-					}
+			//const drain::image::Image & src = ctx.getCurrentImage(); // ImageKit::getCurrentImage(ctx);
+
+			// Use ctx.select and/or ctx.targetEncoding, if defined.
+			const drain::image::Image & src = ctx.updateCurrentImage();
+
+			if (!src.isEmpty()){
+
+				if (!ctx.formatStr.empty()){
+					mout.special() << "formatting comments" << mout.endl;
+					drain::StringMapper statusFormatter(RackContext::variableMapper);
+					//drain::StringMapper statusFormatter(ctx.formatStr, "[a-zA-Z0-9:_]+");
+					statusFormatter.parse(ctx.formatStr, true);
+					drain::image::Image &dst = (drain::image::Image &)src; // violence...
+					dst.properties[""] = statusFormatter.toStr(ctx.getStatusMap(), 0);
+					ctx.formatStr.clear(); // OK?
 				}
-				else {
-					mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
-					resources.errorFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
-					return;
-				}
-
-			}
-
-			if (!resources.currentImage->isEmpty()){
 
 				if (IMAGE_PNG || IMAGE_PNM){
 					mout.debug() << "PNG or PGM format" << mout.endl;
-					drain::image::File::write(*resources.currentImage, resources.outputPrefix + value);
+					drain::image::File::write(src, filename);
 				}
 				else if (IMAGE_TIF) {
 					// see FileGeoTiff::tileWidth
-					FileGeoTIFF::write(resources.outputPrefix + value, *resources.currentImage); //, geoTIFF.width, geoTIFF.height);
+					FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
 				}
 				else {
-					resources.errorFlags.set(RackResources::PARAMETER_ERROR || RackResources::OUTPUT_ERROR);
+					ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
 					mout.error() << "unknown file name extension" << mout.endl;
 				}
 			}
 			else {
-				resources.errorFlags.set(RackResources::DATA_ERROR);
+				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 				mout.warn() << "empty data, skipped" << mout.endl;
 			}
 			/*
@@ -489,48 +509,47 @@ public:
 				mout.warn() << "failed in writing " << value << mout.endl;
 			}*/
 		}
-		else if (textFileExtension.test(value) || (value == "-")){
+		else if (textFileExtension.test(filename) || (value == "-")){
 
 			mout.info() << "File format: TXT" << mout.endl;
 			ODIMPathList paths;
 
-			if (!resources.select.empty()){
-
+			if (!ctx.select.empty()){
 				DataSelector selector;
-				//selector.deriveParameters(resources.select, true);
-				selector.pathMatcher.clear();
-				selector.setParameters(resources.select);
-				//mout.warn() << selector << mout.endl;
-				selector.getPaths3(*resources.currentHi5, paths);
-				/*
-				for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it) {
-					mout.warn() << *it << mout.endl;
-				}
-				*/
-				/* OLD
-				selector.groups = ODIMPathElem::ALL_GROUPS; //ODIMPathElem::DATA_GROUPS;
-				selector.deriveParameters(resources.select, false); //, ODIMPathElem::ALL_GROUPS);
-				// ODIMPathElem::group_t groups = selector.quantity.empty() ? ODIMPathElem::ALL_GROUPS : ODIMPathElem::DATA_GROUPS;
-				// selector.getPaths(*getResources().currentHi5, paths, groups);
-				// selector.groups = ODIMPathElem::ALL_GROUPS;
-				selector.getPaths(*getResources().currentHi5, paths);
-				*/
-				resources.select.clear();
+				selector.consumeParameters(ctx.select);
+				// mout.warn() << selector << mout.endl;
+				selector.getPaths(src, paths);
 			}
 			else {
-				resources.currentHi5->getPaths(paths);
+				ctx.currentHi5->getPaths(paths); // ALL
 			}
 
-			if (value == "-")
-				hi5::Hi5Base::writeText(*resources.currentHi5, paths, std::cout);
-			else {
-				std::string outFileName = resources.outputPrefix + value;
-				std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-				hi5::Hi5Base::writeText(*resources.currentHi5, paths, ofstr);
-				ofstr.close();
+			drain::Output output(filename);
+
+			if (ctx.formatStr.empty()){
+				hi5::Hi5Base::writeText(src, paths, output);
 			}
+			else {
+				mout.debug() << "formatting text output" << mout.endl;
+				drain::StringMapper statusFormatter(RackContext::variableMapper);
+				statusFormatter.parse(ctx.formatStr, true);
+				statusFormatter.toStream(output, ctx.getStatusMap());
+				// ctx.formatStr.clear(); // ?
+			}
+
+			/*
+			if (value == "-")
+				hi5::Hi5Base::writeText(src, paths, std::cout);
+			else {
+				//std::string outFileName = ctx.outputPrefix + value;
+				drain::Output output(filename);
+				hi5::Hi5Base::writeText(src, paths, output);
+				//std::ofstream ofstr(filename.c_str(), std::ios::out);
+				//ofstr.close();
+			}
+			*/
 		}
-		else if (arrayFileExtension.test(value)){
+		else if (arrayFileExtension.test(filename)){
 
 			/// Currently designed only for vertical profiles produced by VerticalProfileOp (\c --pVerticalProfile )
 			/// TODO: modify DataSet such that the quantities appear in desired order.
@@ -538,16 +557,16 @@ public:
 			mout.info() << "File format: .mat (text dump of data)" << mout.endl;
 
 			DataSelector selector;
-			selector.setParameters(resources.select);
-			resources.select.clear();
+			selector.setParameters(ctx.select);
+			ctx.select.clear();
 			//selector.path = "/data$";
-			mout.debug(1) << selector << mout.endl;
+			mout.debug2() << selector << mout.endl;
 			const drain::RegExp quantityRegExp(selector.quantity);
 			const bool USE_COUNT = quantityRegExp.test("COUNT");
-			// mout.debug(2) << "use count" << static_cast<int>(USE_COUNT) << mout.endl;
+			// mout.debug3() << "use count" << static_cast<int>(USE_COUNT) << mout.endl;
 
-			const DataSet<PolarSrc> product((*resources.currentHi5)["dataset1"], drain::RegExp(selector.quantity));
-			//const DataSet<> product((*resources.currentHi5), selector);
+			const DataSet<PolarSrc> product(src["dataset1"], drain::RegExp(selector.quantity));
+			//const DataSet<> product((*ctx.currentHi5), selector);
 
 			std::string mainQuantity; // = product.getFirstData().odim.quantity;
 
@@ -562,26 +581,28 @@ public:
 				}
 				else if (mainQuantityRegExp.test(it->first)){
 					mainQuantity = it->first;
-					mout.debug(2) << "picked main quantity: " << mainQuantity << mout.endl;
+					mout.debug3() << "picked main quantity: " << mainQuantity << mout.endl;
 					break;
 				}
 			}
 
-			mout.debug(1) << "main quantity: " << mainQuantity << mout.endl;
+			mout.debug2() << "main quantity: " << mainQuantity << mout.endl;
 
 
 			const Data<PolarSrc> & srcMainData = product.getData(mainQuantity); // intervals//product.getData("HGHT"); // intervals
 			if (srcMainData.data.isEmpty()){
-				resources.errorFlags.set(RackResources::DATA_ERROR);
+				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 				mout.warn() << "zero dimension data (for " << mainQuantity << "), giving up." << mout.endl;
 				return;
 			}
 
-			std::string outFileName = resources.outputPrefix + value;
-			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			drain::Output output(filename);
+			//std::string outFileName = ctx.outputPrefix + value;
+			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			std::ofstream & ofstr = output;
 
 			/// Step 1: create header
-			//  ofstr << "## " << (*resources.currentHi5)["where"].data.attributes << '\n';
+			//  ofstr << "## " << (*ctx.currentHi5)["where"].data.attributes << '\n';
 			//  ofstr << "## " << product.tree["where"].data.attributes << '\n';
 			ofstr << "# " << mainQuantity << '\t';
 			for (DataSet<PolarSrc>::const_iterator it = product.begin(); it != product.end(); ++it){
@@ -634,56 +655,61 @@ public:
 				//std::cerr << "i=" << i << std::endl;
 			}
 
-			ofstr.close();
+			//ofstr.close();
 
 		}
 		else if (sampleFileExtension.test(value)){
 
 			mout.info() << "Sample file (.dat)" << mout.endl;
 
-			std::string outFileName = resources.outputPrefix + value;
-			std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			//std::string outFileName = ct.outputxPrefix + value;
+			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+
+			drain::Output ofstr(filename);
 
 			DataSelector selector;
 			selector.pathMatcher.setElems(ODIMPathElem::DATASET);
-			selector.setParameters(resources.select);
+			selector.setParameters(ctx.select);
 			//selector.convertRegExpToRanges();
 			selector.count = 1;
-			//selector.data.max = 0;
-			mout.debug() << "selector: " << selector << mout.endl;
+			//selector.data.second = 0;
+			mout.special() << "selector: " << selector << mout.endl;
 
 			ODIMPath path;
-			selector.getPath3(*resources.currentHi5, path);
+			selector.getPath3(src, path);
 
 			mout.info() << "Sampling path: " << path << mout.endl;
 
-			const Hi5Tree & src = (*resources.currentHi5)(path);
+			const Hi5Tree & srcDataSet = src(path);
 
-			const Sampler & sampler = resources.sampler.getSampler();
+			/// Sampling parameters have been set by --sample (CmdSample)
+			const Sampler & sampler = ctx.imageSampler.getSampler();
 
-			if (resources.currentHi5 == resources.currentPolarHi5){
+			if (ctx.currentHi5 == ctx.currentPolarHi5){
 
 				mout.debug() << "sampling polar data" << mout.endl;
-				const DataSet<PolarSrc> dataset(src, drain::RegExp(selector.quantity));
-				sampleData<PolarDataPicker>(dataset, sampler, drain::cmdFormat.value, ofstr);
+				const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
+				mout.info() << "data: " << dataset << mout.endl;
+
+				sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
 
 			}
 			else {
 
 				mout.debug() << "sampling Cartesian data: " << mout.endl;
-				const DataSet<CartesianSrc> dataset(src, drain::RegExp(selector.quantity));
-				mout.info() << "data:" << dataset << mout.endl;
+				const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
+				mout.info() << "data: " << dataset << mout.endl;
 				/*
 				for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
 					mout.warn() << "data:" << it->first << mout.endl;
 				}
 				*/
 
-				sampleData<CartesianDataPicker>(dataset, sampler, drain::cmdFormat.value, ofstr);
+				sampleData<CartesianDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
 
 			}
 
-			ofstr.close();
+			//ofstr.close();
 
 		}
 		else if (dotFileExtension.test(value)) {
@@ -691,16 +717,14 @@ public:
 			mout.info() << "Dot/Graphviz file (.dot)" << mout.endl;
 
 			DataSelector selector;
-			//selector.groups.value = ODIMPathElem::ALL_GROUPS;
-			selector.setParameters(resources.select);
-			//selector.convertRegExpToRanges();
-			if (!resources.select.empty()){
+			if (selector.consumeParameters(ctx.select)){
 				mout.warn() << "no --select support for this command, use --delete and --keep instead" << mout.endl;
 			}
-			resources.select.clear();
 
-			drain::Output out(resources.outputPrefix + value);
-			DataOutput::writeToDot(out, *resources.currentHi5, ODIMPathElem::ALL_GROUPS);// selector.groups);
+			//Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
+
+			drain::Output output(filename);
+			DataOutput::writeToDot(output, src, ODIMPathElem::ALL_GROUPS);// selector.groups);
 
 
 		}
@@ -717,9 +741,12 @@ protected:
 	 *  \tparam P - Picker class (PolarDataPicker or CartesianDataPicker)
 	 */
 	template <class P>
-	void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ofstream &ofstr) const {
+	//void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ofstream &ofstr) const {
+	void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ostream &ostr) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx  = this->template getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		//mout.warn() << dataset.getFirstData() << mout.endl;
 
@@ -745,7 +772,7 @@ protected:
 			mout.info() << "no quality data" << mout.endl;
 		}
 
-		sampler.sample(dataMap, picker, format, ofstr);
+		sampler.sample(dataMap, picker, format, ostr);
 
 	}
 
@@ -767,32 +794,36 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		RackContext & ctx  = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 		//mout.note() << "Writing multiple image files" << mout.endl;
 
-		RackResources & resources = getResources();
+		//DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
+		DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); // ImageS elector imageS elector;
+		imageSelector.consumeParameters(ctx.select);
+		imageSelector.ensureDataGroup();
+		mout.debug() << imageSelector << mout.endl;
 
-		//DataSelector iSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
-		ImageSelector iSelector;
-		iSelector.setParameters(resources.select);
-		resources.select.clear();
-		mout.debug() << iSelector << mout.endl;
-
-		ODIMPathList paths;
-		iSelector.getPaths3(*getResources().currentHi5, paths); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
 
 		/// Split filename to dir+basename+extension.
-		drain::FilePath fp(resources.outputPrefix + value);
-
+		drain::FilePath fp(ctx.outputPrefix + value);
+		mout.note() << "outputPrefix='" << ctx.outputPrefix << "'" << mout;
 		mout.note() << "Writing multiple image files: " << fp.dir << ' ' << fp.basename << "???_*." << fp.extension << mout.endl;
 
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
 
-		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++) {
+		Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
 
-			const ODIMPath & path = (*it); // modified below
-			hi5::NodeHi5 & node = (*getResources().currentHi5)(path)["data"].data;
+		ODIMPathList paths;
+		imageSelector.getPaths(src, paths); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY); // RE2
+
+		//for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); it++) {
+		for (const ODIMPath & path: paths) {
+
+			//const ODIMPath & path = (*it); // modified below
+			hi5::NodeHi5 & node = src(path)[ODIMPathElem::ARRAY].data;
 			drain::image::Image & img = node.dataSet;
 
 			mout.debug() << "testing: " << path << " => /data" <<mout.endl;
@@ -802,21 +833,24 @@ public:
 				continue;
 			}
 
-			DataTools::getAttributes((*getResources().currentHi5), path, img.properties); // may be unneeded
+			DataTools::getAttributes(src, path, img.properties); // may be unneeded
 
 			//if (path.front().isRoot()) // typically is, string started with slash '/'
 			//path.pop_back(); // strip /data
-			mout.debug(2) << "constructing filename for : " << path <<mout.endl;
+			mout.debug3() << "constructing filename for : " << path <<mout.endl;
 
 			std::stringstream sstr;
 			sstr << fp.dir << fp.basename;
 			sstr.width(3);
 			sstr.fill('0');
 			sstr << ++i << '_';
-			for (ODIMPath::const_iterator pit=path.begin(); pit!=path.end(); ++pit){
-				sstr << pit->getCharCode();
-				if (pit->isIndexed()){
-					sstr << pit->getIndex();
+			//for (ODIMPath::const_iterator pit=path.begin(); pit!=path.end(); ++pit){
+			for (const ODIMPathElem & elem: path){
+				if (elem.isRoot())
+					continue;
+				sstr << elem.getCharCode();
+				if (elem.isIndexed()){
+					sstr << elem.getIndex();
 				}
 				sstr << '-';
 			}
@@ -824,7 +858,7 @@ public:
 			sstr << '.' << fp.extension;
 			filenameOut = sstr.str();
 
-			mout.info() << "Writing image file: " << filenameOut << '\t' << *it << mout.endl;
+			mout.info() << "Writing image file: " << filenameOut << '\t' << path << mout.endl;
 			//mout.debug() << "  data :" << *it << mout.endl;
 
 			drain::image::File::write(img, filenameOut);
@@ -840,78 +874,54 @@ public:
 
 
 
-class CmdSample : public drain::BeanerCommand<drain::image::ImageSampler> {
+// BeanCommand<drain::image::ImageSampler>
+// BeanerCommand<drain::image::ImageSampler>
+//class CmdSample : public drain::SimpleCommand<> {
+//class CmdImageSampler : public drain::BeanCommand<drain::image::ImageSampler> {
+class CmdImageSampler : public drain::BeanerCommand<drain::image::ImageSampler> {
 
 public:
 
 	// Main
 	virtual
 	const bean_t & getBean() const {
-		return getResources().sampler;
+		RackContext & ctx  = getContext<RackContext>();
+		return ctx.imageSampler;
+		//return getResources().sampler;
 	};
 
 
 	// Main
 	virtual
 	bean_t & getBean(){
-		return getResources().sampler;
+		RackContext & ctx  = getContext<RackContext>();
+		return ctx.imageSampler;
+		//return getResources().sampler;
 	};
-
-	/*
-	inline
-	const std::string & getName() const {
-		return getResources().sampler.getName();
-	};
-
-	inline
-	const std::string & getDescription() const {
-		return getResources().sampler.getDescription();
-	};
-
-	virtual	inline
-	const drain::ReferenceMap & getParameters() const {
-		return getResources().sampler.getParameters();
-	};
-
-	virtual
-	void setParameters(const drain::VariableMap & params){
-		getResources().sampler.setParameters(params);
-	};
-
-	virtual
-	void setParameters(const std::string & parameters, char assignmentSymbol='='){
-		getResources().sampler.setParameters(parameters, assignmentSymbol);
-	}
-	*/
-
-
-	/*
-	void run(const std::string & parameters){
-		getResources().sampler.setParameters(parameters);
-		// mod.setParameters(parameters);
-		// exec();
-	}
-	*/
-
 
 };
 
 
 
-FileModule::FileModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix) {
+FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // : drain::CommandSection("general") {
 
-	static RackLetAdapter<CmdHistogram> hist;
-	static RackLetAdapter<CmdInputFile> cmdInputFile('i');
-	static RackLetAdapter<CmdSample> cmdSample("sample");
-	//static RackLetAdapter<CmdInputValidatorFile> cmdInputValidatorFile;
+	//drain::CommandBank & cmdBank = drain::getCommandBank();
+	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 
-	static RackLetAdapter<CmdInputPrefix> cmdInputPrefix;
-	static RackLetAdapter<CmdOutputPrefix> cmdOutputPrefix;
-	static RackLetAdapter<CmdOutputFile> cmdOutputFile('o');
-	static RackLetAdapter<CmdOutputRawImages> cmdOutputRawImages('O');
-	static RackLetAdapter<CmdOutputConf> cmdOutputConf;
-	//static RackLetAdapter<CmdOutputTiffConf> cmdOutputTiffConf;
-	static RackLetAdapter<CmdGeoTiffTile> geoTiffTile;
+	//drain::CommandInstaller<> installer(drain::getCommandBank());
+
+	install<CmdInputFile>('i').addSection(TRIGGER);
+	install<CmdOutputFile>('o'); //  cmdOutputFile('o');
+
+	install<CmdInputPrefix>(); //  cmdInputPrefix;
+	install<CmdOutputPrefix>(); //  cmdOutputPrefix;
+	install<CmdOutputRawImages>('O'); //  cmdOutputRawImages('O');
+	install<CmdOutputConf>(); // cmdOutputConf;
+	install<CmdGeoTiffTile>(); //  geoTiffTile;
+	install<CmdImageSampler>("sample"); //cmdSample("sample");
+	install<CmdHistogram>(); // hist;
+
+	//installer<CmdInputValidatorFile> cmdInputValidatorFile;
 
 }
 

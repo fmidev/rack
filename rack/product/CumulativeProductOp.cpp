@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Variable.h"
 // #include "drain/util/Fuzzy.h"
+#include "drain/image/FilePng.h"
 #include "drain/image/AccumulationMethods.h"
 // #include "RackOp.h"
 // #include "radar/Extractor.h"
@@ -50,7 +51,7 @@ using namespace drain::image;
 void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp::)", __FUNCTION__);
-	//mout.debug(2) << "starting (" << name << ") " << mout.endl;
+	//mout.debug3() << "starting (" << name << ") " << mout.endl;
 
 	if (srcSweeps.empty()){
 		mout.warn() << "no data found with selector: " << dataSelector << mout.endl;
@@ -74,14 +75,14 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	setEncoding(srcData.odim, dstData);
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	dstData.data.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
+	dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
 	/// Some product generators may have user defined accumulation methods.
 	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":",","));
 	accumulator.checkCompositingMethod(dstData.odim);
-	accumulator.setGeometry(dstData.odim.geometry.width, dstData.odim.geometry.height);
+	accumulator.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
 	mout.debug() << (const Accumulator &) accumulator << mout.endl;
@@ -103,13 +104,14 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 			mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << ", skipping" << mout.endl;
 			continue;
 		}
-		mout.debug(2) << "elangle=" << it->first << mout.endl;
+		mout.debug3() << "elangle=" << it->first << mout.endl;
 
 		processData(srcData, accumulator);
 	}
 
 	accumulator.extract(dstData.odim, dstProduct, "dw");
 
+	// drain::image::FilePng::write(dstProduct.getData("DBZH").data, "debug.png");
 	//mout.warn() << "dstProduct.updateTree" << dstData.odim << mout.endl;
 	//@= dstProduct.updateTree(dstData.odim);
 

@@ -37,14 +37,13 @@ namespace rack {
 
 SourceODIM::SourceODIM(const std::string & source) : source(source) {
 	init();
-	importEntries(source, ':', ',', false, LOG_NOTICE);
-	//importEntries(source, ':', ',', true);
-	//setValues(source, ':', ',');
+	importEntries(source, ':', ',', false); //, LOG_NOTICE);
 	setNOD();
 };
 
 
 SourceODIM::SourceODIM(const SourceODIM & s){
+
 	init();
 	updateFromMap(s);
 	setNOD();
@@ -60,12 +59,19 @@ void SourceODIM::init(){
 	link("CTY", CTY);
 	link("PLC", PLC);
 	link("CMT", CMT);
-	//(*this)["NOD"].link(NOD);
-//	link("WIGOS", WIGOS);
 }
 
 
 const std::string & SourceODIM::getSourceCode() const {
+
+	/*
+	for (const std::string & key : getKeyList()){
+		const drain::Variable & value = (*this)[key];
+		if (!value.isEmpty()){
+			return
+		}
+	}
+	*/
 
 	//sourceMap.setValues(source, ':');  // 2nd par: equal-sign
 	#define TRY_RETURN(s) if (!s.empty()) return s

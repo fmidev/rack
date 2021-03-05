@@ -37,9 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-//#include "data/Quantity.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
 
@@ -62,6 +60,10 @@ public:
 		parameters.link("width", width = 1.0, "pix");
 		parameters.link("intensity", intensity = 0.5, "");
 	};
+
+	CartesianGrid(const CartesianGrid &cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
 
 	void exec() const;
 

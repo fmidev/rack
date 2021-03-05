@@ -69,7 +69,7 @@ public:
 	AttenuationOp() :
 		DetectorOp(__FUNCTION__, "Computes attenuation and converts it to probability", "dist.attn.rain"){ //ECHO_CLASS_PRECIP){
 
-		parameters.link("reflHalfWidth", this->reflHalfWidth=10.0, "dBZ limit of 50% quality");
+		parameters.link("reflHalfWidth", this->reflHalfWidth=3.0, "dBZ limit of 50% quality");
 
 		// todo: "rain", "snow"
 		parameters.link("c", this->c=1.12E-7, "coeff");

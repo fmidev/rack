@@ -141,7 +141,7 @@ public:
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
 	inline
 	PolarDataPicker(drain::ReferenceMap & variableMap, const PolarODIM & odim) :
-		RadarDataPicker<PolarODIM>(variableMap, odim), J2AZMDEG(360.0/static_cast<double>(odim.geometry.height)),
+		RadarDataPicker<PolarODIM>(variableMap, odim), J2AZMDEG(360.0/static_cast<double>(odim.area.height)),
 		current_sin(0), current_cos(0), current_azm(0), current_range(0)
 		{
 
@@ -153,7 +153,7 @@ public:
 		variableMap.link("RANGE", current_range = 0.0);
 		variableMap.link("AZM", current_azm = 0.0);
 
-		setSize(odim.geometry.width, odim.geometry.height);
+		setSize(odim.area.width, odim.area.height);
 
 		infoMap["lon"] = odim.lon;
 		infoMap["lat"] = odim.lat;
@@ -228,8 +228,8 @@ public:
 		drain::Logger mout(__FUNCTION__, __FUNCTION__);
 
 
-		setSize(odim.geometry.width, odim.geometry.height);
-		frame.setGeometry(odim.geometry.width, odim.geometry.height);
+		setSize(odim.area.width, odim.area.height);
+		frame.setGeometry(odim.area.width, odim.area.height);
 		if (!frame.geometryIsSet()){
 			mout.warn() << "Array geometry undefined?" << mout.endl;
 		}

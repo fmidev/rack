@@ -63,50 +63,83 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	//drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug(1) << "start" << mout.endl;
+	mout.debug2() << "start" << mout.endl;
 
 	DataSetMap<PolarSrc> srcDataSets;
 	DataSetMap<PolarDst> dstDataSets;
 
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
-	this->dataSelector.getPaths3(src, dataPaths); //, ODIMPathElem::DATA);
+	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATA);
+
+	mout.note() << "Initially " << dataPaths.size() << " paths with " << this->dataSelector << mout.endl;
 
 	if (dataPaths.size() == 0)
 		mout.note() << "no dataPaths matching selector: "  << this->dataSelector << mout.endl;
 
 	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
-	//drain::Variable elangles(typeid(double));
-	//mout.warn() << "regExp: " << quantityRegExp << mout.endl;
 
 
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 
-		mout.debug(1) << "considering " << *it << mout.endl;
 
-		//const std::string parent = DataTools::getParent(*it);
-		const ODIMPath & parent = *it;
-		//parent.pop_back();
+		if (it->empty()){
+			mout.fail() << "empty path accepted by selector: " <<  this->dataSelector << mout.endl;
+			continue;
+		}
 
-		mout.debug(2) << "parent: " << parent << mout.endl;
-		mout.debug(3) << "parent attribs " << src(parent)[ODIMPathElem::WHERE].data.attributes << mout.endl;
+		mout.ok() << "considering " << *it << mout.endl;
 
-		const double elangle = src(parent)[ODIMPathElem::WHERE].data.attributes["elangle"];
+		ODIMPath::const_iterator pit = it->begin();
+
+		/*
+		if (!pit->empty()){
+			mout.warn() << "path starts by '"<< *pit << "' instead of root, with selector: " <<  this->dataSelector << mout.endl;
+		}
+		*/
+
+		// User may have modified dataselector so that odd paths appear
+
+		if (!pit->is(ODIMPathElem::DATASET)){
+			++pit;
+			if (pit == it->end()){
+				mout.warn() << "odd 2nd path elem ("<< *pit << "), with selector: " <<  this->dataSelector << mout.endl;
+			}
+		}
+
+		if (!pit->is(ODIMPathElem::DATASET)){
+			mout.warn() << "path does not start with /dataset.. :" << *it  << ", with selector: "<<  this->dataSelector << mout.endl;
+		}
+
+		//const ODIMPath & parent = *it;
+
+
+
+		mout.debug3() << "parent: " << *pit << mout.endl;
+
+		const drain::VariableMap & attribs = src[*pit][ODIMPathElem::WHERE].data.attributes;
+		mout.debug3() << "attribs " << attribs << mout.endl;
+
+
+		const double elangle = attribs["elangle"];
 
 		if (srcDataSets.find(elangle) == srcDataSets.end()){
 
-			mout.debug(1) << "add elangle="  << elangle << ':'  << parent << mout.endl;
+			mout.debug2() << "add elangle="  << elangle << ':'  << *pit << mout.endl;
 
 			// Something like: sweeps[elangle] = src[parent] .
 
 			/// its and itd for debugging
 			// DataSetMap<PolarSrc>::const_iterator its =
-			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src(parent), quantityRegExp)));
+			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src[*pit], quantityRegExp)));
 
 			// DataSetMap<PolarDst>::iterator itd =
-			dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst(parent), quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst[*pit], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
 			// elangles << elangle;
 
+		}
+		else {
+			mout.debug3() << "already contains elangle="  << elangle << ':'  << *pit << mout.endl;
 		}
 
 	}
@@ -123,7 +156,7 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
-	mout.debug(1) << "start1" << mout.endl;
+	mout.debug2() << "start1" << mout.endl;
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
@@ -155,7 +188,7 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 		//++itd;
 	}
 
-	mout.debug(1) << "end" << mout.endl;
+	mout.debug2() << "end" << mout.endl;
 
 }
 

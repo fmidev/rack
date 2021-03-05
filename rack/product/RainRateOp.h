@@ -71,11 +71,11 @@ class RainRateOp : public PolarProductOp {
 
 public:
 
-	static PrecipitationZ precipZrain;
-	static PrecipitationZ precipZsnow;
-	static PrecipitationKDP precipKDP;
-	static PrecipitationKDPZDR precipKDPZDR;
-	static PrecipitationZZDR precipZZDR;
+	static PrecipZrain precipZrain;
+	static PrecipZsnow precipZsnow;
+	static PrecipKDP   precipKDP;
+	static PrecipKDPZDR precipKDPZDR;
+	static PrecipZZDR   precipZZDR;
 
 	static FreezingLevel freezingLevel;
 

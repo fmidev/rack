@@ -80,22 +80,22 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setAzimuth(p1);
 		w.setRange(p2,p3);
 		w.adjustIndices(dstData.odim);
-		for (int i = w.bin.min; i<w.bin.max; ++i){
-			dstData.data.put(i, w.ray.min, marker);
+		for (int i = w.binRange.min; i<w.binRange.max; ++i){
+			dstData.data.put(i, w.rayRange.min, marker);
 		}
 		break;
 	case 'r': // range(s)
 		w.setRange(p1,p2);
 		w.adjustIndices(dstData.odim);
-		if (w.bin.max > w.bin.min){
-			for (size_t j=0; j<dstData.odim.geometry.height; ++j){
-				dstData.data.put(w.bin.min, j, marker);
-				dstData.data.put(w.bin.max, j, marker);
+		if (w.binRange.max > w.binRange.min){
+			for (size_t j=0; j<dstData.odim.area.height; ++j){
+				dstData.data.put(w.binRange.min, j, marker);
+				dstData.data.put(w.binRange.max, j, marker);
 			}
 		}
 		else {
-			for (size_t j=0; j<dstData.odim.geometry.height; ++j){
-				dstData.data.put(w.bin.min, j, marker);
+			for (size_t j=0; j<dstData.odim.area.height; ++j){
+				dstData.data.put(w.binRange.min, j, marker);
 			}
 		}
 		break;
@@ -103,9 +103,9 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setAzimuth(p1,p2);
 		w.setRange(p3,p3);
 		w.adjustIndices(dstData.odim);
-		for (int j=w.ray.min; j<w.ray.max; ++j){
+		for (int j=w.rayRange.min; j<w.rayRange.max; ++j){
 			j1 = w.getSafeRay(dstData.odim, j);
-			dstData.data.put(w.bin.min, j1, marker);
+			dstData.data.put(w.binRange.min, j1, marker);
 		}
 		break;
 	case 's': // sector
@@ -113,15 +113,15 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setRange(p3,p4);
 		w.adjustIndices(dstData.odim);
 		mout.debug() << w << mout.endl;
-		for (int j=w.ray.min; j<w.ray.max; ++j){
+		for (int j=w.rayRange.min; j<w.rayRange.max; ++j){
 			j1 = w.getSafeRay(dstData.odim, j);
-			dstData.data.put(w.bin.min, j1, marker);
-			dstData.data.put(w.bin.max, j1, marker);
+			dstData.data.put(w.binRange.min, j1, marker);
+			dstData.data.put(w.binRange.max, j1, marker);
 		}
-		j1 = w.getSafeRay(dstData.odim, w.ray.min);
-		j2 = w.getSafeRay(dstData.odim, w.ray.max);
+		j1 = w.getSafeRay(dstData.odim, w.rayRange.min);
+		j2 = w.getSafeRay(dstData.odim, w.rayRange.max);
 		//j0 = (w.ray2+dstData.odim.geometry.height) % dstData.odim.geometry.height;
-		for (int i = w.bin.min; i<w.bin.max; ++i){
+		for (int i = w.binRange.min; i<w.binRange.max; ++i){
 			dstData.data.put(i, j1, marker);
 			dstData.data.put(i, j2, marker);
 		}

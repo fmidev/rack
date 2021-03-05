@@ -70,12 +70,12 @@ Composite::Composite() :  decay(1.0), cropping(false)
 	//odim.link("type", odim.type = "C");
 	odim.link("type", odim.type = "C");
 
-	odim.link("gain", odim.scale);
-	odim.link("offset", odim.offset);
+	odim.link("gain", odim.scaling.scale);
+	odim.link("offset", odim.scaling.offset);
 	odim.link("undetect", odim.undetect);
 	odim.link("nodata", odim.nodata);
 
-	odim.scale = 0.0;
+	odim.scaling.scale = 0.0;
 
 	//static DataCoder converter;
 	//setConverter(converter);
@@ -98,6 +98,10 @@ void Composite::checkQuantity(const std::string & quantity){
 		}
 	}
 
+
+	// mout.special() << "Setting quantity" << quantity << mout.endl;
+
+	// omp critical?
 	this->odim.quantity = quantity;
 
 }
@@ -107,9 +111,6 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
-
-	//DataSet<PolarDst> varjo(srcData.tree["dataset1"]);  // TODO REMOVE XX
-
 
 	if (!projR2M.isSet())
 		projAEQD = true;
@@ -156,8 +157,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
 	}
 
-	mout.debug(1) << "Info: \"" << *this << '"' << mout.endl;
-	//mout.debug(1) << "undetectValue=" << undetectValue << mout.endl;
+	mout.debug2() << "Info: \"" << *this << '"' << mout.endl;
+	//mout.debug2() << "undetectValue=" << undetectValue << mout.endl;
 
 	// Defined here, because later used for data update.
 	//drain::Rectangle<double> bboxM;
@@ -230,7 +231,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		/// Check mapping for the origin (= location of the radar)?
 		double _x,_y;
 		pRadarToComposite.projectFwd(0.0, 0.0, _x,_y);
-		mout.debug(2) << "Test origin mapping: " << _x << ' ' << _y << mout.endl;
+		mout.debug3() << "Test origin mapping: " << _x << ' ' << _y << mout.endl;
 	}
 
 
@@ -272,7 +273,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	mout.debug() << "allocating" << mout.endl;
 	allocate();
-	//mout.debug(1) << "allocated" << mout.endl;
+	//mout.debug2() << "allocated" << mout.endl;
 	//std::cerr << count << std::endl;
 
 	/// -------------------------------------------------------
@@ -416,7 +417,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	++odim.ACCnum;
 
 	/// Cartesian
-	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.geometry.width/2, j0 + cartSrc.odim.geometry.height/2);
+	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.area.width/2, j0 + cartSrc.odim.area.height/2);
 	//updateGeoData();
 	//mout.warn() << "nodemap keys: " << nodeMap << mout.endl;
 

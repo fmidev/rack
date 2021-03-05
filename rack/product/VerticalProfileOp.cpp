@@ -67,7 +67,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	}
 
 	/// Trick. Mutable member referenced by odim.
-	interval = (odim.height.max - odim.height.min) / static_cast<double>(odim.levels);
+	interval = (odim.altitudeRange.max - odim.altitudeRange.min) / static_cast<double>(odim.levels);
 	//mout.warn() << "interval" << interval << mout.endl;
 	//mout.warn() << "odim " << odim << mout.endl;
 
@@ -76,12 +76,12 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	Data<VprDst> & dstHeight = dstProduct.getData("HGHT"); //.odim.quantity = "HGHT";
 	getQuantityMap().setQuantityDefaults(dstHeight, "HGHT", "S");
 	//dstHeight.setQuantityDefaults("HGHT","S");
-	dstHeight.odim.offset = 0.0;
-	dstHeight.odim.scale = 0.25;
+	dstHeight.odim.scaling.offset = 0.0;
+	dstHeight.odim.scaling.scale = 0.25;
 	//dstHeight.data.setType<unsigned short>();
 	dstHeight.data.setGeometry(1, odim.levels);
 	for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
-		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.height.min + static_cast<double>(odim.levels-1 - k) * interval));
+		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.altitudeRange.min + static_cast<double>(odim.levels-1 - k) * interval));
 	//@ dstHeight.updateTree();
 
 	//setGeometry(dstHeight);
@@ -102,7 +102,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	const drain::RegExp decibels("(T|DBZ)(H|V)");
 
 
-	mout.debug(2) << "Step 1: initialize accumulation arrays." << mout.endl;
+	mout.debug3() << "Step 1: initialize accumulation arrays." << mout.endl;
 
 	// Temporary storage for eacg quantity
 	std::map<std::string,ImageT<double> > sumDataMap; //quantityGroup;
@@ -115,14 +115,14 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	proj.setProjectionDst("+proj=longlat +datum=WGS84 +no_defs");
 	 */
 
-	mout.debug(2) << "Step 2: main loop - collect profile data." << mout.endl;
+	mout.debug3() << "Step 2: main loop - collect profile data." << mout.endl;
 
 	std::set<double> elangles;
 
 	/// Traverse elevation angles
 	for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it) {
 
-		mout.debug(2) << "Sweep:" << it->first << mout.endl;
+		mout.debug3() << "Sweep:" << it->first << mout.endl;
 
 		const DataSet<PolarSrc> & sweep = it->second;
 
@@ -175,7 +175,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 					//proj.setLocation(srcData.odim.lon, srcData.odim.lat);
 					//double lon, lat;
 					//dstData.odim.lat =
-					const double meanRange = 1000.0*(odim.minRange + odim.range)/2.0;
+					const double meanRange = 1000.0*(odim.firstRange + odim.range)/2.0;
 					const double meanAzm   = static_cast<double>(static_cast<int>(odim.startaz + odim.stopaz) % 360);
 
 					//proj.projectFwd(meanRange, meanAzm, odimFinal.lon, odimFinal.lat);
@@ -215,19 +215,19 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			const double beamOffset = srcData.odim.rstart + srcData.odim.rscale/2.0;
 
 			/// Distance (in metres) to the first measurement requested by the user.
-			const double beamMin = Geometry::beamFromEtaGround(eta, odim.range.min * 1000.0);
+			const double beamMin = Geometry::beamFromEtaGround(eta, odim.distanceRange.min * 1000.0);
 			if (beamMin < beamOffset)
 				mout.info() << "requested minimum distance " << beamMin << " smaller than measured distance " << beamOffset << mout.endl;
 
 			/// Distance (in metres) to the last measurement requested by the user.
-			const double beamMax = Geometry::beamFromEtaGround(eta, odim.range.max * 1000.0);
-			const double beamMaxMeasured = srcData.odim.geometry.width*srcData.odim.rscale + beamOffset;
+			const double beamMax = Geometry::beamFromEtaGround(eta, odim.distanceRange.max * 1000.0);
+			const double beamMaxMeasured = srcData.odim.area.width*srcData.odim.rscale + beamOffset;
 			if (beamMax > beamMaxMeasured)
 				mout.info() << "requested maximum distance " << beamMax << " greater than measured distance " << beamMaxMeasured << mout.endl;
 
 
-			const int startRay = srcData.odim.geometry.height * (odim.azm.min / 360.0);  //
-			const int stopRay  = srcData.odim.geometry.height * (odim.azm.max / 360.0) + (odim.azm.max > odim.azm.min ? 0 : srcData.odim.geometry.height);  // Sector goes over 360 deg
+			const int startRay = srcData.odim.area.height * (odim.azmRange.min / 360.0);  //
+			const int stopRay  = srcData.odim.area.height * (odim.azmRange.max / 360.0) + (odim.azmRange.max > odim.azmRange.min ? 0 : srcData.odim.area.height);  // Sector goes over 360 deg
 			mout.debug(3) << "rays: "  << startRay << "..." << stopRay << mout.endl;
 
 
@@ -239,14 +239,14 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 				binStart = 0;
 
 			unsigned int binEnd   = static_cast<unsigned int>( (beamMax-srcData.odim.rstart) / srcData.odim.rscale) ;
-			if (binEnd > srcData.odim.geometry.width)
-				binEnd = srcData.odim.geometry.width;
+			if (binEnd > srcData.odim.area.width)
+				binEnd = srcData.odim.area.width;
 
 			// (Altitude check is within the loop)
 
 			mout.debug() << "Bins:    "  << binStart << '-' << binEnd << mout.endl;
 			mout.debug() << "Beam[m]: "  << beamMin << '-' << beamMax << mout.endl;
-			mout.debug(1) << srcData.odim << mout.endl;
+			mout.debug2() << srcData.odim << mout.endl;
 
 			//if (beamStart )
 			int k = 0; // level index (vertical coordinate)
@@ -274,13 +274,13 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 				// if (COLLECT_LATLON)
 				//	range = Geometry::groundFromEtaBeam(eta, beam);
 
-				k = odim.levels-1 - static_cast<int>((altitude - odim.height.min) / interval); // inverse vertical coordinate (image convention)
+				k = odim.levels-1 - static_cast<int>((altitude - odim.altitudeRange.min) / interval); // inverse vertical coordinate (image convention)
 				// Check altitude
 				if ((k >= 0) && (k < odim.levels)){
 
 					//for (size_t j = 0; j<data.getHeight(); j++){
 					for (int j0 = startRay; j0<stopRay; j0++){
-						j = ((j0+srcData.odim.geometry.height) % srcData.odim.geometry.height);
+						j = ((j0+srcData.odim.area.height) % srcData.odim.area.height);
 						x = srcData.data.get<double>(i,j);
 						if (x != srcData.odim.nodata){
 							if (x != srcData.odim.undetect){ // TODO: HANDLE?
@@ -291,7 +291,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 									x = dbzToZ(srcData.odim.scaleForward(x));
 								else
 									x = srcData.odim.scaleForward(x);
-								j2 = (odim.azSlots * j)/srcData.odim.geometry.height;
+								j2 = (odim.azSlots * j)/srcData.odim.area.height;
 								profile.at(j2, k)        += x * qFinal;
 								profileQuality.at(j2, k) += qFinal;
 								profileCount.at(j2, k)   += 1;
@@ -316,7 +316,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	} // end elevations
 
 
-	mout.debug(2) << "Step 3: copy profiles to structure" << mout.endl;
+	mout.debug3() << "Step 3: copy profiles to structure" << mout.endl;
 
 
 	/// Second loop: copy the profile(s), each quantity at a time.
@@ -327,7 +327,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 		Data<VprDst> & dstData = it->second;
 
-		mout.debug(2) << "quantity:" << quantity << mout.endl;
+		mout.debug3() << "quantity:" << quantity << mout.endl;
 
 		//Hi5Tree & group = dstDataSet[groupName];
 		//drain::VariableMap & what = group["what"].data.attributes;
@@ -339,8 +339,8 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 			//dstData.data.setGeometry(1, odim.levels);
 			/*
 			for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
-				//dstData.data.put(k, odim.minheight + static_cast<double>(odim.levels-1 - k) * interval);
-				dstData.data.put(k, dstData.odim.scaleInverse(odim.minheight + static_cast<double>(odim.levels-1 - k) * interval));
+				//dstData.data.put(k, odim.firstheight + static_cast<double>(odim.levels-1 - k) * interval);
+				dstData.data.put(k, dstData.odim.scaleInverse(odim.firstheight + static_cast<double>(odim.levels-1 - k) * interval));
 
 			dstData.updateTree();
 			*/
@@ -365,8 +365,8 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 			PlainData<VprDst> & dstCountData   = dstData.getQualityData("COUNT"); // could be anything (except QIND)
 			qm.setQuantityDefaults(dstCountData, "COUNT","I");
-			//dstCountData.odim.offset = 0.0;
-			//dstCountData.odim.scale   = 1.0;
+			//dstCountData.odim.scaling.offset = 0.0;
+			//dstCountData.odim.scaling.scale   = 1.0;
 			//dstCountData.odim.quantity = quantity+"_COUNT";  // TODO OPERA
 			dstCountData.data.setGeometry(geometry);  // why not geom?
 

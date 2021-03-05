@@ -57,13 +57,13 @@ public:
 		dataSelector.count = 1;  // or 0?  does not need input data arrays
 
 		odim.product = "SUNSHINE";
-		odim.geometry.width = 500;
-		odim.geometry.height = 360;
+		odim.area.width = 500;
+		odim.area.height = 360;
 		odim.rscale = 500;
 
 		odim.type = "C";
-		odim.scale = 1.0/200.0;
-		odim.offset = -0.1;
+		odim.scaling.scale = 1.0/200.0;
+		odim.scaling.offset = -0.1;
 
 		//parameters.link("quantity", odim.quantity);
 		parameters.link("timestamp", timestamp="200527071845");
@@ -76,8 +76,8 @@ public:
 
 
 		this->allowedEncoding.link("type", odim.type);
-		this->allowedEncoding.link("gain", odim.scale);
-		this->allowedEncoding.link("offset", odim.offset);
+		this->allowedEncoding.link("gain", odim.scaling.scale);
+		this->allowedEncoding.link("offset", odim.scaling.offset);
 
 
 	};

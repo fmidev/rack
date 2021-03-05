@@ -36,36 +36,45 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  cAdd adds current h5 (polar or cartesian).
  */
 
-#ifndef RACK_COMPOSITING
-#define RACK_COMPOSITING
+#ifndef RACK_CARTESIAN
+#define RACK_CARTESIAN
 
 
+#include "drain/prog/CommandInstaller.h"
 
-#include "drain/prog/CommandRegistry.h"
-
-
-#include "drain/prog/CommandAdapter.h"
-#include "data/Quantity.h"
-#include "data/CartesianODIM.h"
 #include "resources.h"
-
+// #include "cartesian.h"
 
 
 namespace rack {
 
 
-/// drain::Commands for conversions to Cartesian coordinate system, including generation of radar image composites.
-/*!
- *  Add an instance of CompositingModule to the main program.
+
+
+struct CartesianSection : public drain::CommandSection {
+
+	inline CartesianSection(): CommandSection("cart"){
+
+		drain::CommandBank::trimWords().insert("Cartesian");
+		drain::CommandBank::trimWords().insert("Composite");
+
+	};
+
+};
+
+
+/// drain::Commands for conversions to Cartesian coordinate system, including radar image composites.
+/**
+ *  Combines program resources and compositing functions.
+ *  Adds an instance of CartesianModule to the CommandBank. Invoked from main program.
  *
  */
-class CompositingModule : public drain::CommandGroup {
+class CartesianModule : drain::CommandModule<'c', CartesianSection> {
 
 public:
 
-	CompositingModule(const std::string & section = "cart", const std::string & prefix = "c");
-
-	//static	void initComposite();
+	/// Default constructor. Invoked from the main program. Installs commands to the shared CommandBank.
+	CartesianModule(drain::CommandBank & bank = drain::getCommandBank());
 
 
 };

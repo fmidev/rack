@@ -44,9 +44,9 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 
 	drain::Logger mout("RadarProj", __FUNCTION__);
 
-	mout.debug(1) << "start\n" << *this << mout.endl;
+	mout.debug2() << "start\n" << *this << mout.endl;
 
-	mout.debug(1) << "range=" << range << mout.endl;
+	mout.debug2() << "range=" << range << mout.endl;
 
 	xLL = +std::numeric_limits<double>::max();
 	yLL = +std::numeric_limits<double>::max();
@@ -83,7 +83,7 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 	}
 	*/
 
-	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
+	mout.debug2() << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
 
 
 }
@@ -93,9 +93,9 @@ void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, 
 
 	drain::Logger mout("RadarProj", __FUNCTION__);
 
-	mout.debug(1) << "start " << *this << mout.endl;
+	mout.debug2() << "start " << *this << mout.endl;
 
-	mout.debug(1) << "range=" << range << mout.endl;
+	mout.debug2() << "range=" << range << mout.endl;
 
 	xLL = +std::numeric_limits<double>::max();
 	yLL = +std::numeric_limits<double>::max();
@@ -121,7 +121,7 @@ void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, 
 		yUR = std::max(y,yUR);
 	}
 
-	mout.debug(1) << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
+	mout.debug2() << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
 
 }
 */

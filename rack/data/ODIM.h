@@ -90,9 +90,21 @@ public:
 	};
 
 	inline
-	ODIM(const drain::image::Image & image, const std::string & quantity=""){
+	ODIM(const drain::image::Image & image, const std::string & quantity="") : EncodingODIM(image) {
 		initFromImage(image, quantity);
 	};
+
+	inline
+	ODIM(drain::image::Image & image, const std::string & quantity="") : EncodingODIM(image) {
+		initFromImage(image, quantity);
+	};
+
+	/*
+	inline
+	ODIM(const drain::image::Image & image, const std::string & quantity="") : EncodingODIM(image) {
+		initFromImage(image, quantity);
+	};
+	*/
 
 	/*
 	inline
@@ -106,7 +118,7 @@ public:
 
 	//const drain::image::AreaGeometry geometry;
 
-	drain::image::AreaGeometry geometry;
+	drain::image::AreaGeometry area;
 
 	//const drain::image::AreaGeometry & geometryTEST;
 
@@ -144,20 +156,15 @@ public:
 	long ACCnum;
 
 	/// Sets number of bins (nbins) and number of rays (nrays)
-	virtual
+	virtual inline
 	void setGeometry(size_t cols, size_t rows){
-		geometry.setArea(cols, rows);
-		// drain::Logger mout(__FUNCTION__,__FILE__);
-		// mout.warn() << "trying to set geometry for plain ODIM; geom=(" << cols << ',' << rows << ")" << mout.endl;
+		area.set(cols, rows);
 	};
 
-	/*
 	virtual
-	void setGeometry(const drain::image::AreaGeometry & geometry){
-		setGeometry(geometry.getWidth(), geometry.getHeight());
+	void setGeometry(const drain::image::AreaGeometry & g){
+		setGeometry(g.getWidth(), g.getHeight());
 	};
-	*/
-
 
 
 	/// Updates object, quantity, product and time information.
@@ -294,7 +301,7 @@ private:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const ODIM & odim){
-	odim.drain::SmartMap<drain::Referencer>::toOStream(ostr);
+	odim.drain::SmartMap<drain::Referencer>::toStream(ostr);
 	return ostr;
 }
 

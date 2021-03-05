@@ -111,14 +111,14 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	// hi5::hi5monitor,
 	drain::Logger mout("Writer", __FUNCTION__);
 
-	mout.debug(1)  << "path=" << path << mout.endl;
+	mout.debug2()  << "path=" << path << mout.endl;
 
 	const hi5::NodeHi5 & node = tree.data;
 	const drain::VariableMap  & attributes = node.attributes;
 	const drain::image::Image & image = node.dataSet;
 
 	if (node.noSave){ // attributes["~tmp~"].getS
-		mout.debug(1) << "skipping temporary object " << path << mout.endl;
+		mout.debug2() << "skipping temporary object " << path << mout.endl;
 		return;
 	}
 
@@ -229,7 +229,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 		const drain::Variable & leg = attributes["legend"];
 
-		mout.note() << "experimental: writing legend " << leg << mout.endl;
+		mout.special() << "experimental: writing legend " << leg << mout.endl;
 
 		if (!path.back().is(Hi5Tree::path_t::elem_t::WHAT)){ // FIX
 			mout.info() << "legend attribute found at " << path.back() << ", should be at what/' " << mout.endl;
@@ -250,7 +250,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 				p.pop_back(); // strip "/how"
 			p << legend;
 
-			mout.debug(2) << "legend path=" << p << mout.endl;
+			mout.debug3() << "legend path=" << p << mout.endl;
 			Writer::mapToH5Compound(entries, fid, p, "code", "class");
 
 		}
@@ -272,7 +272,7 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 
 	hsize_t width    = g.getWidth();
 	hsize_t height   = g.getHeight();
-	hsize_t channels = g.getChannelCount();
+	hsize_t channels = g.channels.getChannelCount();
 
 	if (g.getArea() == 0){
 		mout.warn() << "empty image, geometry: " << g << mout.endl;
@@ -328,7 +328,7 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	drain::Logger mout(__FUNCTION__, __FILE__ );
 
 
-	mout.debug(2) << ": starting, path=" << path << mout.endl;
+	mout.debug3() << ": starting, path=" << path << mout.endl;
 	mout.debug(3) << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
@@ -405,7 +405,7 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 
 	drain::Logger mout("Writer", __FUNCTION__);
 
-	mout.debug(1)  << "path=" << path << mout.endl;
+	mout.debug2()  << "path=" << path << mout.endl;
 
 	if (d.isCharArrayString() || (d.getType() == typeid(std::string))){
 		dataToH5AttributeString(d, fid, path, attribute);
@@ -488,7 +488,7 @@ void Writer::dataToH5AttributeString(const drain::Variable & data, hid_t fid, co
 	// hi5::hi5monitor,
 	drain::Logger mout("Writer", __FUNCTION__ );
 
-	mout.debug(1)  << "path=" << path << mout.endl;
+	mout.debug2()  << "path=" << path << mout.endl;
 
 	if (!data.isString()){
 		//mout.note() << "converting attribute " << attribute << "='" << data << "'  to string" << mout.endl;

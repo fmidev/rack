@@ -37,15 +37,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-//#include "data/Quantity.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
 
 
 namespace rack {
 
+/*
 class CartesianQuantity : public drain::BasicCommand {
 
 public:
@@ -60,13 +59,15 @@ public:
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 		RackResources & resources = getResources();
-		resources.targetEncoding = "quantity=" + resources.composite.odim.quantity;
-		mout.deprecating() << "use --encoding " << resources.targetEncoding << " instead" << mout.endl;
+		//RackContext & ctx = getContext();
+		RackResources::baseCtx().targetEncoding = "quantity=" + resources.composite.odim.quantity;
+		mout.deprecating() << "use --encoding " << RackResources::baseCtx().targetEncoding << " instead" << mout.endl;
 		// = "quantity=" + resources.composite.odim.quantity;
 
 	};
 
 };
+*/
 
 class CartesianPlot : public drain::BasicCommand {
 
@@ -88,8 +89,9 @@ public:
 	inline
 	void exec() const {
 		// consider CompositingModule::initComposite();
-		getResources().composite.allocate();      // TODO conditional
-		getResources().composite.addUnprojected(lon, lat, x, w);
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.allocate();      // TODO conditional
+		ctx.composite.addUnprojected(lon, lat, x, w);
 	};
 
 };

@@ -113,8 +113,13 @@ decay=${DECAY:+"$ctime --cTimeDecay $DECAY"}
 # Composite from tiles
 # SCHEME=tiled
 
+inprefix=${INPREFIX:+"--inputPrefix $INPREFIX"} # inputPrefix
+outprefix=${OUTPREFIX:+"--outputPrefix $OUTPREFIX"} # inputPrefix
+
+#OUTDIR=${OUTDIR:-'.'}
+
 # Temporary directory in which the tiled are written.
-TILEDIR=${TILEDIR:-'./tiles'}
+TILEDIR=${TILEDIR:-"tiles"}
 
 # In using TILE scheme, the maximum number of parallel processes. 
 PROCESSES=${PROCESSES:-'4'}
@@ -123,7 +128,7 @@ PROCESSES=${PROCESSES:-'4'}
 FORMAT=${FORMAT:-'h5'}
 
 # Filename of the output product
-OUTFILE=${OUTFILE:-'composite'${ANDRE:+'-a'$ANDRE}${CONF:+'-c'$CONF}${METHOD:+"-$METHOD"}'.h5'}
+OUTFILE=${OUTFILE:-"composite"${ANDRE:+'-a'$ANDRE}${CONF:+'-c'$CONF}${METHOD:+"-$METHOD"}'.h5'}
 
 BASENAME=${OUTFILE%.*}
 
@@ -218,10 +223,8 @@ else
     INIT="$NEWLINE --cProj '$PROJ' $NEWLINE --cSize $SIZE --cBBox $BBOX $bboxtile  $encoding --cInit"
 fi
 
-inputprefix=${INPUTPREFIX:+"--inputPrefix $INPUTPREFIX"} # inputPrefix
-
 # PART 1: Initial part    # --encoding $CTYPE
-command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inputprefix $verbose" 
+command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inprefix $outprefix $verbose" 
 
 
 # Routine applied to each input volume (in default and TILE schemes).
@@ -329,7 +332,7 @@ DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENA
 
 # if not TILED encoding='' ?
 encoding='' 
-command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE-o $OUTFILE $DEMOFILES"
+command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE -o $OUTFILE $DEMOFILES"
 
 #fi 0,47,36,73
 echo

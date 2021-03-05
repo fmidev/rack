@@ -31,16 +31,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Input.h"
 #include "drain/util/Log.h"
+#include "drain/prog/CommandBankUtils.h"
+#include "drain/prog/CommandSections.h"
+#include "drain/prog/CommandInstaller.h"
 
-#include "commands.h"
-#include "accumulation.h"
 
 #include "product/ProductOp.h"
-//#include "radar/Geometry.h"
 #include "radar/Coordinates.h"
+
+#include "resources.h"
+#include "accumulation.h"
 
 namespace rack {
 
+/**
+ *   This command should be called in main thread.
+ */
 class PolarSite : public drain::BasicCommand {
 
 public:
@@ -56,15 +62,18 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
 		RackResources & resources = getResources();
+		RackContext ctx = resources.baseCtx();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 		acc.odim.lat = lat;
 		acc.odim.lon = lon;
 
-		if (!resources.targetEncoding.empty()){
+		if (!ctx.targetEncoding.empty()){
 			allocateAccumulator();
+			// ctx.targetEncoding.clear?
 		}
 
 	}
@@ -72,21 +81,23 @@ public:
 	static
 	void allocateAccumulator() {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
 		RackResources & resources = getResources();
+		RackContext ctx = resources.baseCtx();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 
-			if (resources.targetEncoding.empty()){
+			if (resources.baseCtx().targetEncoding.empty()){
 				mout.error() << "missing --encoding to set polar geometry: " << acc.odim.getKeys() << mout.endl;
 				return;
 			}
 
 			acc.odim.addShortKeys();
-			acc.odim.setValues(resources.targetEncoding);
+			acc.odim.setValues(resources.baseCtx().targetEncoding);
 
-			acc.setGeometry(acc.odim.geometry.width, acc.odim.geometry.height);
+			acc.setGeometry(acc.odim.area.width, acc.odim.area.height);
 			acc.count.fill(1); // no weight, ie "undetect" values.
 			// mout.warn() << acc.odim  << mout.endl;
 
@@ -115,9 +126,10 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
 		RackResources & resources = getResources();
+		RackContext ctx = resources.baseCtx();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 
@@ -128,7 +140,7 @@ public:
 		RadarProj proj;
 		proj.setSiteLocationDeg(acc.odim.lon, acc.odim.lat);
 		proj.setLatLonProjection();
-		mout.warn() << proj << mout.endl;
+		mout.note() << proj << mout.endl;
 		//drain::Point2D<double> point(lon*drain::DEG2RAD, lat*drain::DEG2RAD);
 		//proj.projectInv(point.x, point.y); // lon, lat,
 		//mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
@@ -147,6 +159,9 @@ public:
 };
 
 // TODO. combine Cartesian & Polar
+/**
+ *   This command can be run in thread.
+ */
 class PolarPlotFile : public drain::SimpleCommand<std::string> {
 
 public:
@@ -160,9 +175,10 @@ public:
 
 void PolarPlotFile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
-
 	RackResources & resources = getResources();
+	RackContext ctx = resources.baseCtx();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
 
 	//Composite & composite = resources.composite;
 	RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
@@ -217,12 +233,12 @@ void PolarPlotFile::exec() const {
 				if (azm < 0.0)
 					azm += (2.0*M_PI);
 				radarCoord.y = acc.odim.getRayIndex(azm);
-				mout.debug(2) << "adding " << geoCoord << " => "<< radarCoord << mout.endl;
+				mout.debug3() << "adding " << geoCoord << " => "<< radarCoord << mout.endl;
 				addr = acc.data.address(radarCoord.x, radarCoord.y);
 				acc.add(addr, d, w);
 			}
 			else {
-				mout.debug(2) << "outside radar range: " << geoCoord << " => " << metricCoord << mout.endl;
+				mout.debug3() << "outside radar range: " << geoCoord << " => " << metricCoord << mout.endl;
 			}
 		}
 
@@ -233,9 +249,10 @@ void PolarPlotFile::exec() const {
 }
 
 
-
-
-
+///
+/**
+ *   This command can be run in thread.
+ */
 class PolarAdd : public drain::BasicCommand {
 
 public:
@@ -245,15 +262,18 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
 
 		RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 
-		if (!acc.isMethodSet()){
-			acc.setMethod("AVERAGE"); // TODO: add pMethod command?
-		}
+		//if (!acc.isMethodSet()){
+		acc.setMethod("AVERAGE"); // TODO: add pMethod command?
+		//}
+		// OR check at least
 
 		// acc.dataSelector.path = "data[0-9]+$";
 		// acc.dataSelector.path = ""; // remove after deprecated
@@ -261,23 +281,24 @@ public:
 		if (acc.dataSelector.quantity.empty())
 			acc.dataSelector.quantity = "^(DBZH|RATE)$";
 
-		if (!resources.select.empty()){
-			acc.dataSelector.setParameters(resources.select);
-			resources.select.clear();
-		}
+		/// OR: resources.baseCtx().select
+		acc.dataSelector.consumeParameters(ctx.select);
 
 		mout.debug() << acc << mout.endl;
+		mout.info() << acc.dataSelector << mout.endl;
+		mout.debug()<< "DataCoder::undetectQualityCoeff: " << DataCoder::undetectQualityCoeff << mout.endl;
 
-		// NEW
-		//acc.dataSelector.convertRegExpToRanges();
 
-		//selector.data.max = 0;
+		const Hi5Tree & src = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR);
+
+		//selector.data.second = 0;
 		//mout.note() << "selector: " << selector << mout.endl;
+
 		ODIMPath path;
 		acc.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-		acc.dataSelector.getPath3(*resources.currentHi5, path);  //, ODIMPathElem::DATASET); //, true);
+		acc.dataSelector.getPath3(src, path);  //, ODIMPathElem::DATASET); //, true);
 
-		const DataSet<PolarSrc> srcDataSet((*resources.currentPolarHi5)(path));
+		const DataSet<PolarSrc> srcDataSet(src(path));
 		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();
 		// mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
 
@@ -298,16 +319,16 @@ public:
 
 		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
 			//acc.odim.update(srcData.odim);
-			acc.setGeometry(srcData.odim.geometry.width, srcData.odim.geometry.height);
+			acc.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
 			acc.odim.type = "S";
-			acc.odim.geometry.width  = srcData.odim.geometry.width;
-			acc.odim.geometry.height  = srcData.odim.geometry.height;
+			acc.odim.area.width  = srcData.odim.area.width;
+			acc.odim.area.height  = srcData.odim.area.height;
 			acc.odim.rscale = srcData.odim.rscale;
-			acc.odim.scale = 0.0; // !!
+			acc.odim.scaling.scale = 0.0; // !!
 			acc.odim.ACCnum = 0;
 		}
-		else if ((srcData.odim.geometry.width != acc.getWidth()) || (srcData.odim.geometry.height != acc.getHeight())){
-			mout.warn() << "Input geometry (" << srcData.odim.geometry.width << 'x' << srcData.odim.geometry.height << ')';
+		else if ((srcData.odim.area.width != acc.getWidth()) || (srcData.odim.area.height != acc.getHeight())){
+			mout.warn() << "Input geometry (" << srcData.odim.area.width << 'x' << srcData.odim.area.height << ')';
 			mout        << " different from: " << acc.getWidth() << 'x' << acc.getHeight() << ", skipping..." << mout.endl;
 			return;
 		}
@@ -318,11 +339,11 @@ public:
 
 		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
-		if (!resources.targetEncoding.empty()){
-			// ProductBase::completeEncoding(acc.odim, resources.targetEncoding);
+		if (!resources.baseCtx().targetEncoding.empty()){
+			// ProductBase::completeEncoding(acc.odim, resources.baseCtx().targetEncoding);
 			mout.info() << "targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  << mout.endl;
-			acc.setTargetEncoding(resources.targetEncoding);
-			resources.targetEncoding.clear();
+			acc.setTargetEncoding(resources.baseCtx().targetEncoding);
+			resources.baseCtx().targetEncoding.clear();
 		}
 
 
@@ -346,7 +367,7 @@ public:
 			mout << mout.endl;
 		}
 
-
+		// MAINS
 		if (srcDataSet.hasQuality("COUNT")){
 			mout.note() << "COUNT field detected, using restored weighted sums" << mout.endl;
 			const PlainData<PolarSrc> & srcCount = srcDataSet.getQualityData("COUNT");
@@ -385,6 +406,11 @@ public:
 
 };
 
+// TODO. combine Cartesian & Polar
+/**
+ *   Typically, this command is run in main thread, as the accumulation array is shared.
+ *   It is also possible to run this in thread, storing the product in local polar product.
+ */
 class PolarExtract : public drain::SimpleCommand<std::string> {
 
 public:
@@ -397,16 +423,18 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
 		RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
 
 		RadarAccumulator<Accumulator,PolarODIM> & acc = resources.polarAccumulator;
 
 		/// Clumsy?
-		if (!resources.targetEncoding.empty()){
-			acc.setTargetEncoding(resources.targetEncoding);
-			resources.targetEncoding.clear();
+		if (!resources.baseCtx().targetEncoding.empty()){
+			acc.setTargetEncoding(resources.baseCtx().targetEncoding);
+			resources.baseCtx().targetEncoding.clear();
 		}
 		//
 		const QuantityMap & qm = getQuantityMap();
@@ -414,7 +442,7 @@ public:
 
 		mout.info() << "acc.odim Encoding " << EncodingODIM(acc.odim) << mout.endl;
 
-		Hi5Tree & dst = resources.polarHi5;
+		Hi5Tree & dst = ctx.polarHi5;
 		dst.clear();
 
 		Hi5Tree & dstDataSetGroup = dst["dataset1"];
@@ -436,34 +464,74 @@ public:
 		//mout.warn() << "ODIM lat" <<  acc.odim << mout.endl;
 		ODIM::copyToH5<ODIMPathElem::ROOT>(acc.odim, dst);
 
-		dst["how"].data.attributes["software"]   = __RACK__;
-		dst["how"].data.attributes["sw_version"] = __RACK_VERSION__;
+		dst[ODIMPathElem::HOW].data.attributes["software"]   = __RACK__;
+		dst[ODIMPathElem::HOW].data.attributes["sw_version"] = __RACK_VERSION__;
 
-		resources.currentHi5 = & dst;
-		resources.currentPolarHi5 = & dst;
-		resources.currentImage = NULL;
-		resources.currentGrayImage = NULL;
+		ctx.currentHi5 = & dst;
+		ctx.currentPolarHi5 = & dst;
+		ctx.currentImage = NULL;
+		ctx.currentGrayImage = NULL;
 
 	};
 
 
 };
 
-AccumulationModule::AccumulationModule(const std::string & section, const std::string & prefix) : drain::CommandGroup(section, prefix) {
+/*
+struct AccumulationSection : public drain::CommandSection {
 
-	static RackLetAdapter<PolarSite>        polarSite;
-	static RackLetAdapter<PolarPlot>        polarPlot;
-	static RackLetAdapter<PolarPlotFile>    polarPlotFile;
+	inline
+	AccumulationSection(): CommandSection("accumulation"){
+		// hello(__FUNCTION__);
+		drain::CommandBank::trimWords().insert("Polar");
+		// std::cout << __FUNCTION__ << ' ' << std::endl;
+	};
 
-	static RackLetAdapter<PolarAdd>         polarAdd;
-	static RackLetAdapter<PolarAddWeighted> polarAddW;
-	static RackLetAdapter<PolarExtract>     polarExtract;
+};
+*/
 
+
+/*
+class AccumulationInstaller : public drain::CommandInstaller<'p', AccumulationModule> {
+public:
+	//AccumulationInstaller(char alias = 0): drain::CommandWrapper<C,'p',128>(alias) {};
+};
+*/
+
+
+AccumulationModule::AccumulationModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // : CommandSection("accumulation"){
+
+	drain::CommandBank::trimWords().insert("Polar");
+
+	// drain::CommandInstaller<'p', AccumulationSection>installer;
+	//AccumulationInstaller installer;
+
+	install<PolarSite>(); //        polarSite;
+	install<PolarPlot>(); //        polarPlot;
+	install<PolarPlotFile>(); //     polarPlotFile;
+
+	install<PolarAdd>(); //         polarAdd;
+	install<PolarAddWeighted>(); //  polarAddW;
+	install<PolarExtract>(); //      polarExtract;
 
 }
-//static drain::CommandEntry<PolarAdd> polarAdd("pAdd");
-//static drain::CommandEntry<PolarExtract> polarExtract("pExtract");
 
+
+/*
+void AccumulationModule::initialize(){ // : CommandSection("accumulation"){
+	drain::CommandBank::trimWords().insert("Polar");
+
+	//drain::CommandInstaller<'p', AccumulationSection>installer;
+
+	install<PolarSite>(); //        polarSite;
+	install<PolarPlot>(); //        polarPlot;
+	install<PolarPlotFile>(); //     polarPlotFile;
+
+	install<PolarAdd>(); //         polarAdd;
+	install<PolarAddWeighted>(); //  polarAddW;
+	install<PolarExtract>(); //      polarExtract;
+}
+*/
 
 
 } // namespace rack::

@@ -189,7 +189,9 @@ public:
 		}
 		// Redesign all this...
 		dstData.data.setType(dstData.odim.type);
-		dstData.data.setScaling(dstData.odim.scale, dstData.odim.offset);
+		//dstData.data.scaling.set(dstData.odim.scaling);
+		//dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
+		dstData.data.setScaling(dstData.odim.scaling); // needed?
 
 		//if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
 		if ((q == "QIND") || (q == "PROB")){
@@ -199,7 +201,7 @@ public:
 		else if (q == "CLASS"){
 			//dstData.data.setOptimalScale(0.0, 1.0);
 			drain::image::Image & img = dstData.data;
-			img.getScaling().setPhysicalRange(0.0, img.getEncoding().getTypeMax<double>());
+			img.setPhysicalRange(0.0, img.getConf().getTypeMax<double>());
 			//dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
 
@@ -207,7 +209,7 @@ public:
 		if (dstData.data.getName().empty())
 			dstData.data.setName(dstData.odim.quantity);
 
-		mout.debug(1) << "final scaling for " << dstData.odim.quantity << '[' << quantity << ']' << dstData.data.getScaling() << mout.endl;
+		mout.debug2() << "final scaling for " << dstData.odim.quantity << '[' << quantity << ']' << dstData.data.getScaling() << mout.endl;
 
 		return typeSet;
 	}

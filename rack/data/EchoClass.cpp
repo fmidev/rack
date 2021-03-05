@@ -139,7 +139,7 @@ void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const
 
 	drain::Logger mout("EchoClass", __FUNCTION__);
 
-	mout.debug(1) << "class: '" << pathStr << "'" << mout.endl;
+	mout.debug2() << "class: '" << pathStr << "'" << mout.endl;
 
 
 	// NEW (temporary, before legend)
@@ -178,7 +178,7 @@ void addClass(drain::JSONtree::tree_t & tree, const std::string & pathStr, const
 			p.pop_back();
 
 		while (!p.empty()){
-			mout.debug(2) << p << mout.endl;
+			mout.debug3() << p << mout.endl;
 			//const drain::Variable & parentColor = tree(p).data["color"];
 			const drain::Variable & parentColor = entries[p].data["color"];
 			if (!parentColor.isEmpty()){

@@ -115,7 +115,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 
 	drain::Logger mout("QuantityMap", __FUNCTION__);
 
-	mout.debug(2) << "for quantity=" << quantity << ", values=" << values << mout.endl;
+	mout.debug3() << "for quantity=" << quantity << ", values=" << values << mout.endl;
 	//if (quantity.empty())
 	//	quantity = dstODIM.quantity;
 
@@ -125,11 +125,11 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 		refMap.setValues(values);   // essentially, sets dstODIM.type (str values will be reset, below)
 	}
 
-	mout.debug(2) << "searching for quantity=" << quantity << mout.endl;
+	mout.debug3() << "searching for quantity=" << quantity << mout.endl;
 	const_iterator it = find(quantity);
 	if (it != end()){
 
-		mout.debug(1) << "found quantity '"  << quantity << "'" << mout.endl;
+		mout.debug2() << "found quantity '"  << quantity << "'" << mout.endl;
 
 		/// Use user-defined type. If not supplied, use default type.
 		if (dstODIM.type.empty()) {
@@ -153,7 +153,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 			if (!values.empty()){
 				refMap.setValues(values);
 			}
-			mout.debug(1) << "updated dstODIM: "  << dstODIM << mout.endl;
+			mout.debug2() << "updated dstODIM: "  << dstODIM << mout.endl;
 			return true;
 		}
 		else {
@@ -169,8 +169,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 		//const char typechar = dstODIM.type.at(0);
 		const drain::Type t(dstODIM.type);
 		mout.debug() << "applying universal defaults (1,0,min,max) for typechar=" << t << mout.endl;
-		dstODIM.scale   = 1.0;
-		dstODIM.offset = 0.0;
+		dstODIM.scaling.set(1.0, 0.0); // check! Maybe "physical" range 0.0 ...1.0 better than gain=1.0
 		dstODIM.undetect = drain::Type::call<drain::typeMin, double>(t); //drain::Type::getMin<double>(typechar);
 		dstODIM.nodata =   drain::Type::call<drain::typeMax, double>(t); //drain::Type::call<drain::typeMax,double>(typechar);
 		// finally, set desired scaling values, overriding those just set...

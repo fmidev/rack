@@ -37,11 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "drain/prog/CommandRegistry.h"
-#include "drain/prog/CommandAdapter.h"
-//#include "data/Quantity.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
+#include "composite.h"
 
 
 namespace rack {
@@ -54,24 +53,23 @@ namespace rack {
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CompositeAdd : public drain::BasicCommand {  // NEW 2017/06
+class CompositeAdd : public Compositor { //drain::BasicCommand {  // NEW 2017/06
 
 public:
 
-	CompositeAdd() : drain::BasicCommand(__FUNCTION__, "Adds the current product to the composite."), weight(1.0) {};
+	CompositeAdd() : Compositor(__FUNCTION__, "Adds the current product to the composite."){}; //, weight(1.0) {};
 
-	void exec() const;
+	virtual inline
+	void exec() const {
+		// Accept Cartesian and polar
+		add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+	}
 
 
 protected:
 
-	double applyTimeDecay(double w, const ODIM & odim) const;
+	//double applyTimeDecay(double w, const ODIM & odim) const;
 
-	CompositeAdd(const std::string & name, const std::string & description) : drain::BasicCommand(name, description), weight(1.0){};
-
-	void addPolar() const;
-	void addCartesian() const;
-	double weight;
 };
 
 
@@ -80,14 +78,23 @@ protected:
 /**
  *  --cAddWeighted (Creates reference => accepts command line argument).
  */
-class CartesianAddWeighted : public CompositeAdd {
+class CompositeAddWeighted : public Compositor {
 
 public:
 
-	CartesianAddWeighted() : CompositeAdd(__FUNCTION__, "Adds the current product to the composite applying weight.") {
+	CompositeAddWeighted() : Compositor(__FUNCTION__, "Adds the current product to the composite applying weight.") {
 		parameters.link("weight", this->weight = weight, "0...1");
 	};
 
+	CompositeAddWeighted(const CompositeAddWeighted & cmd) : Compositor(cmd){
+		//parameters.link("weight", this->weight = weight, "0...1");
+		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	}
+
+	virtual inline
+	void exec() const {
+		add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+	}
 };
 
 

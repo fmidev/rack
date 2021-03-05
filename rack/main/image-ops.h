@@ -37,78 +37,34 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "drain/imageops/ImageOp.h"
-#include "drain/prog/Command.h"
-#include "drain/prog/CommandAdapter.h"
-#include "drain/prog/CommandRegistry.h"
-#include "drain/util/ReferenceMap.h"
+#include <drain/prog/CommandInstaller.h>
+//#include "drain/util/ReferenceMap.h"
 
 
 #include "resources.h"
 
 
-namespace drain {
 
 //drain::BeanRefAdapter<drain::image::ImageOp>
 
-typedef drain::BeanCommand<image::ImageOp, image::ImageOp &> ImageOpAdapter;
-//BeanCommand<B, B &>
-}
+//typedef drain::BeanRefCommand<drain::image::ImageOp> ImageOpCmd;
 
 
 namespace rack {
 
 
+class ImageOpExec {
 
-/// Designed for Rack
-class ImageOpRacklet : public drain::ImageOpAdapter {
 
 public:
 
-	/// Constructor that adapts an operator and its name.
-	/**
-	 *  \param op - image operator to be used
-	 *  \param key - command name
-	 */
-	ImageOpRacklet(drain::image::ImageOp & imageOp, const std::string & key) : drain::ImageOpAdapter(imageOp), key(key) {
-	};
+	/// Shared function, to minimize copies in template classes.
+	void execOp(const drain::image::ImageOp & imageOp, RackContext & ctx) const;
 
+	// static bool physical; //? or just next!  MOVE
 
-	/// Constructor that adapts an operator and its name.
-	/**
-	 *  \param op - image operator to be used througjh reference
-	 */
-	ImageOpRacklet(drain::image::ImageOp & imageOp) : drain::ImageOpAdapter(imageOp), key(imageOp.getName()) {
-	};
+	//static std::string outputQuantitySyntax; // MOVE
 
-
-	/// Copy constructor.
-	ImageOpRacklet(const ImageOpRacklet & a) : drain::ImageOpAdapter(a.bean), key(a.key) {
-		//imageOp.getParameters().updateFromMap(a.imageOp.getParameters());
-	}
-
-	void setParameters(const std::string & args, char assignmentSymbol='='){
-		bean.setParameters(args, assignmentSymbol);
-	};
-
-	//void setParameters(const drain::SmartMap<T> & args){
-	void setParameters(const drain::VariableMap & args){
-		bean.setParameters(args);
-		//productOp.setParameters((const drain::SmartMap<T> &) args);
-	};
-
-	virtual
-	void exec() const;
-
-	/// Name of this operator, to be recognized
-	const std::string key;
-
-	static std::string outputQuantity;
-
-	static bool physical;
-
-protected:
-
-	// --iResize may have changed size
 	template <class OD>
 	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
@@ -140,55 +96,76 @@ protected:
 
 	}
 
-protected:
+
+
 
 };
 
 
+
+
+
+
+/// Directive. Set physical scale on or off.
 /**
  *   Applied also by CartesianGrid
  */
-class CmdPhysical : public drain::BasicCommand { //SimpleCommand<bool> {
+class CmdPhysical : public drain::SimpleCommand<bool> {
 
 public:
 
-	CmdPhysical() :  drain::BasicCommand(__FUNCTION__, "Flag. Handle intensities as physical quantities instead of storage typed values."){
-		//drain::SimpleCommand<bool>(__FUNCTION__, "Handle intensities as physical quantities like dBZ (instead of that of storage type).",
-		//	"value", true, "0,1")
-
-		parameters.link("value", ImageOpRacklet::physical, "false|true");
-
+	CmdPhysical() :  drain::SimpleCommand<bool>(__FUNCTION__,
+			"Flag. Handle intensities as physical quantities instead of storage typed values.", "physical", false){
+		//parameters.link("value", ImageOpExec::physical);
 	};
+
+	virtual
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		ctx.imagePhysical = value;
+	}
 
 
 };
 
 
-class CmdPaletteOut : public drain::SimpleCommand<> {
 
-public:
-
-	CmdPaletteOut() : drain::SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+struct ImageOpSection : public drain::CommandSection {
+	inline	ImageOpSection(): CommandSection("imageOps"){
+		drain::CommandBank::trimWords().insert("Functor"); // Functor
 	};
-
-	void exec() const;
-
 };
 
 
+template <class OP>
+class RackImageOpCmd;
 
 
-class ImageRackletModule : public drain::CommandGroup {
+class ImageOpModule : public drain::CommandModule<'i',ImageOpSection> {
+	//: public drain::CommandSection { // : public drain::CommandGroup {
 
 public:
 
-	typedef std::list<ImageOpRacklet> list_t;
+	ImageOpModule();
 
-	static
-	list_t rackletList;
+	/// Add ImageOp command to registry (CommandBank).
+	// \tparam OP - Class derived from ImageOp
+	template <class OP>
+	void install(const std::string & name = OP().getName()){
 
+		try {
 
-	ImageRackletModule(const std::string & section = "image", const std::string & prefix = "i");
+			std::string key(name);
+			drain::CommandBank::deriveCmdName(key, getPrefix());
+
+			drain::Command & cmd = cmdBank.add<RackImageOpCmd<OP> >(key);
+			cmd.section = getSection().index;
+		}
+		catch (const std::exception &e) {
+			std::cerr << "error: ImageOpInstaller: " << name  << '\n';
+			std::cerr << "error: " << e.what() << '\n';
+		}
+	}
 
 };
 

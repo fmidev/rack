@@ -111,18 +111,18 @@ public:
 		 drain::Logger mout(__FUNCTION__, getName());
 
 		RackResources & resources = getResources();
-		Hi5Tree *h5 = resources.currentHi5;
-		if (h5 == resources.currentPolarHi5){
+		Hi5Tree *h5 = ctx.currentHi5;
+		if (h5 == ctx.currentPolarHi5){
 			mout.warn() << "not implemented for polar coord data" << mout.endl;
 			//MotionFillOp<PolarODIM> op;
 		}
-		else if (h5 == &resources.cartesianHi5){
+		else if (h5 == &ctx.cartesianHi5){
 			mout.note() << "dst: cartesianHi5" << mout.endl;
 			MotionFillOp<CartesianODIM> op;
 			op.conf.width  = this->conf.width;
 			op.conf.height = this->conf.height;
 			op.qualitySensitive = this->qualitySensitive;
-			op.processH5(resources.cartesianHi5);
+			op.processH5(ctx.cartesianHi5);
 		}
 		else {
 			mout.warn() << "no class found for currentHi5" << mout.endl;

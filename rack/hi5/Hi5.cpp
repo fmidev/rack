@@ -81,7 +81,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 		ostr << ':';
 		//'\t';
 		//mout.note() << dataSet.getGeometry() << mout.endl;
-		if (dataSet.getGeometry().getChannelCount() <= 1)
+		if (dataSet.getGeometry().channels.getChannelCount() <= 1)
 			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
 		else
 			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ',' << dataSet.getChannelCount() << ']';
@@ -325,6 +325,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 	std::string assignment;
 	//Hi5Base::parsePath(line, path, assignment);
 	drain::StringTools::split2(line, path, assignment, ":");
+	assignAttribute(dst(path), assignment);
 }
 
 //void Hi5Base::readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & assignment){
@@ -338,7 +339,7 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 	const bool VALUE_GIVEN = drain::StringTools::split2(assignment, attrKey, attrValue, "=");
 
 
-	mout.debug(1);
+	mout.debug2();
 	//mout << path      << " : ";
 	mout << attrKey   << " = ";
 	mout << attrValue << " | ";
@@ -431,7 +432,7 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 		if (! it->second.data.noSave){ // needed?
-			//mout.debug(1) << "delete: " <<  it->first << mout.endl;
+			//mout.debug2() << "delete: " <<  it->first << mout.endl;
 			deleteNoSave(it->second);
 		}
 		else {
@@ -442,7 +443,7 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 	for (rack::ODIMPath::const_iterator it = l.begin(); it != l.end(); ++it){
 		Hi5Tree::path_t p;
 		p << *it;
-		mout.debug(1) << "delete group: " <<  *it << mout.endl;
+		mout.debug2() << "delete group: " <<  *it << mout.endl;
 		src.erase(p);
 	}
 

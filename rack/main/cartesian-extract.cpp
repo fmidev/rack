@@ -55,181 +55,41 @@ namespace rack {
 
 
 
-void CartesianExtract::extract(const std::string & channels) const {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	RackResources & resources = getResources();
-
-
-	// Append results - why not, but Cartesian was typically used for subcompositing
-	// resources.cartesianHi5.clear();
-	resources.setSource(resources.cartesianHi5, *this);
-
-	//ODIMPath path("dataset1");
-	ODIMPath path;
-
-	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	if (ProductBase::appendResults.is(ODIMPathElem::DATASET))
-		DataSelector::getNextChild(resources.cartesianHi5, parent);
-	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
-		DataSelector::getLastChild(resources.cartesianHi5, parent);
-		if (parent.index == 0){
-			parent.index = 1;
-		}
-	}
-	else
-		resources.cartesianHi5.clear(); // don't append, overwrite...
-
-	path << parent; // ?
-	mout.debug() << "dst path: " << path << mout.endl;
-
-	Hi5Tree & dstGroup = resources.cartesianHi5(path);
-	DataSet<CartesianDst> dstProduct(dstGroup);
-
-	mout.debug(3) << "update geodata " << mout.endl;
-	resources.composite.updateGeoData(); // TODO check if --plot cmds don't need
-
-	// NEW 2020/06
-	RootData<CartesianDst> dstRoot(resources.cartesianHi5);
-	//CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-	CartesianODIM & rootOdim = dstRoot.odim; // TEST
-	rootOdim.updateFromMap(resources.composite.odim);
-
-	//mout.warn() << resources.composite.odim << mout.endl;
-
-	ProductBase::completeEncoding(rootOdim, resources.composite.getTargetEncoding());
-
-
-	if (!resources.targetEncoding.empty()){
-		ProductBase::completeEncoding(rootOdim, resources.targetEncoding);
-		// odim.setValues(resources.targetEncoding, '=');
-		resources.targetEncoding.clear();
-	}
-
-
-	//
-	//mout.warn() << "composite: " << resources.composite.odim << mout.endl;
-	//mout.warn() << "composite: " << resources.composite << mout.endl;
-	//mout.note() << "dst odim: " << odim << mout.endl;
-	mout.debug(1) << "extracting..." << mout.endl;
-
-	resources.composite.extract(rootOdim, dstProduct, channels);
-
-	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
-
-	// CHECK success (order counts) ?
-	//ODIM::copyToH5<ODIMPathElem::ROOT>(rootOdim, resources.cartesianHi5);
-
-	// CONSIDER
-	drain::VariableMap & how = dstRoot.getHow();
-	//drain::VariableMap & how = resources.cartesianHi5["how"].data.attributes;
-
-	how["software"]   = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
-	// Non-standard
-	how["tags"] = resources.composite.nodeMap.toStr(':');
-
-	// Non-standard
-	//drain::VariableMap & where = resources.cartesianHi5["where"].data.attributes; // dstGroup
-	drain::VariableMap & where = dstRoot.getWhere();
-	where["BBOX"].setType(typeid(double));
-	where["BBOX"] = resources.composite.getBoundingBoxD().toVector(); // Str(); // todo get vector?
-
-	where["BBOX_native"].setType(typeid(double));
-	where["BBOX_native"] = resources.composite.getBoundingBoxM().toVector(); // Str(); // todo get vector?
-
-	where["BBOX_data"].setType(typeid(double));
-	const drain::Rectangle<double> & bboxDataD = resources.composite.getDataExtentD();
-	where["BBOX_data"] = bboxDataD.toVector(); // Str();
-
-	drain::Rectangle<int> bboxDataPix;
-	resources.composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
-	resources.composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
-	where["BBOX_data_pix"].setType(typeid(short int));
-	where["BBOX_data_pix"] = bboxDataPix.toVector(); // Str(); // clumsy
-	// where["BBOX_data_pix"] = bboxDataPix;
-
-	where["BBOX_overlap"].setType(typeid(double));
-	where["BBOX_overlap"] = resources.composite.getDataOverlapD().toStr();
-
-
-	DataTools::updateCoordinatePolicy(resources.cartesianHi5, RackResources::limit);
-	DataTools::updateInternalAttributes(resources.cartesianHi5);
-
-	resources.currentHi5 = &resources.cartesianHi5;
-	resources.currentImage = NULL;
-	resources.currentGrayImage = NULL;
-
-	//resources.composite.odim.quantity
-	if (dstProduct.has(resources.composite.odim.quantity)){
-		Data<CartesianDst> & dstData = dstProduct.getData(resources.composite.odim.quantity); // OR: by odim.quantity
-		resources.currentImage = & dstData.data;
-		resources.currentGrayImage = resources.currentImage;
-		if (resources.currentImage->isEmpty()){
-			mout.warn() << "empty product data: " << dstData << mout.endl; // .getFirstData().data
-		}
-	}
-	else {
-		mout.warn() << "dstProduct does not have claimed quantity: " << resources.composite.odim.quantity << mout.endl; // .getFirstData().data
-	}
-
-	mout.debug() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
-
-	//dstGroup
-	//
-
-	/// For successfull file io:
-	resources.errorFlags.unset(RackResources::INPUT_ERROR); // resources.inputOk = false;
-	resources.errorFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false;
-	//mout.warn() << "created" << mout.endl;
-
-	// NEW 2020/07
-	resources.select.clear();
-
-	drain::VariableMap & statusMap = drain::getRegistry().getStatusMap(); // getStatusMap(true);
-	//statusMap["what:quantity"] = ;
-	statusMap.updateFromMap(rootOdim);
-	//resources.getUpdatedStatusMap();
-
-}
-
-
-
-
 void CartesianSun::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	RackResources & resources = getResources();
+	//RackResources & resources = getResources();
+	RackContext & ctx = getContext<RackContext>();
 
-	resources.cartesianHi5.clear();
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-	//RootData<CartesianDst> root(resources.cartesianHi5);
-	DataSet<CartesianDst> dst(resources.cartesianHi5[ODIMPathElem::DATASET]);
+	ctx.cartesianHi5.clear();
+
+	//RootData<CartesianDst> root(ctx.cartesianHi5);
+	DataSet<CartesianDst> dst(ctx.cartesianHi5[ODIMPathElem::DATASET]);
 	PlainData<CartesianDst> & dstData = dst.getData("SUNSHINE");
 	getQuantityMap().setQuantityDefaults(dstData.odim, "PROB");
 	dstData.odim.quantity = "SUNSHINE";
 
-	const size_t width  = resources.composite.getFrameWidth();
-	const size_t height = resources.composite.getFrameHeight();
+	const size_t width  = ctx.composite.getFrameWidth();
+	const size_t height = ctx.composite.getFrameHeight();
 	dstData.setGeometry(width, height);
 
 
 	Sun sun(timestamp);
 	dstData.odim.setTime(timestamp);
 
-	mout.warn() << "check bbox and scaling? " << resources.composite << mout.endl;
-	//resources.composite.updateScaling();
+	mout.warn() << "check bbox and scaling? " << ctx.composite << mout.endl;
+	//ctx.composite.updateScaling();
 
-	mout.debug(1) << "main" << mout.endl;
+	mout.debug2() << "main" << mout.endl;
 	double lat, lon;
 
 	for (size_t j = 0; j < height; ++j) {
 
 		for (size_t i = 0; i < width; ++i) {
 
-			resources.composite.pix2rad(i,j, lon,lat);
+			ctx.composite.pix2rad(i,j, lon,lat);
 			sun.setLocation(lon, lat);
 			if (sun.elev > 0.0)
 				dstData.data.put(i, j, dstData.odim.scaleInverse(sin(sun.elev)));
@@ -240,13 +100,13 @@ void CartesianSun::exec() const {
 
 
 	// Still "borrowing" composite, yet not one.
-	dstData.odim.updateGeoInfo(resources.composite);
+	dstData.odim.updateGeoInfo(ctx.composite);
 
-	ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, resources.cartesianHi5); // od
+	ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, ctx.cartesianHi5); // od
 
-	resources.currentHi5 = &resources.cartesianHi5;
-	DataTools::updateInternalAttributes(resources.cartesianHi5);
-	// resources.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source"] = "fi";
+	ctx.currentHi5 = &ctx.cartesianHi5;
+	DataTools::updateInternalAttributes(ctx.cartesianHi5);
+	// ctx.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source"] = "fi";
 
 }
 
