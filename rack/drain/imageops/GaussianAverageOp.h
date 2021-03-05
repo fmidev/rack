@@ -48,18 +48,18 @@ namespace image
 
 
   \code
-    drainage shapes.png --gaussianAverage 25   -o gaussianAverage.png
+    drainage shapes.png --iGaussianAverage 25   -o gaussianAverage.png
   \endcode
 
   If the source image contains several channels, each channel is treated separately.
 
   \code
-     drainage shapes.png      --gaussianAverage 5,25  -o gaussianAverage-vert.png
-     drainage image-rgba.png --gaussianAverage 25    -o gaussianAverageWeighted.png
+     drainage shapes.png     --iGaussianAverage 5,25  -o gaussianAverage-vert.png
+     drainage image-rgba.png --iGaussianAverage 25    -o gaussianAverageWeighted.png
   \endcode
 
   \~exec
-  	  # rainage orvokki-rgba.png --gaussianAverage 25,25 -o flower-blurred.png
+  	  # rainage orvokki-rgba.png --iGaussianAverage 25,25 -o flower-blurred.png
   \~
 
  */
@@ -68,9 +68,15 @@ class GaussianAverageOp : public WindowOp<Window<GaussianWindowConf> > //WindowO
 public:
 
 	/**
-	 *  \param halfWidth - distance relative to width and height, where gaussian kernel obtains value 0.5.
+	 *  \param halfWidth - iDistance relative to width and height, where gaussian kernel obtains value 0.5.
 	 */
 	GaussianAverageOp(int width=1, int height=0, double halfwidth=0.5);
+
+	inline
+	GaussianAverageOp(const GaussianAverageOp & op) : WindowOp<Window<GaussianWindowConf> >(op) {
+	  //this->parameters.copyStruct(op.getParameters(), op, *this);
+		this->parameters.copyStruct(op.getParameters(), op.conf, conf);
+	};
 
 	/// Delegates the invocation separately for each channel.
 	/**

@@ -33,15 +33,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Functor.h"
+#include "Cloner.h"
 #include "Bank.h"
 
 namespace drain
 {
 
 // Note: there is probably need for Bank<BinaryFunctor>, too.
-typedef Bank<UnaryFunctor> FunctorBank;
+typedef BankSuper<UnaryFunctor> FunctorBank;
 
 
+/*
 template <class T, class T2>
 class FunctorCloner : public Cloner<T,T2> {
 public:
@@ -53,7 +55,7 @@ public:
 	}
 
 };
-
+*/
 
 extern
 FunctorBank & getFunctorBank();

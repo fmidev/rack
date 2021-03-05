@@ -56,25 +56,33 @@ public:
 
 	WindowOp(const std::string & name = __FUNCTION__, const std::string & description="") :
 		ImageOp(name, description) {
-		this->parameters.link("width",  conf.width);  // NEW 2017
-		this->parameters.link("height", conf.height);  // NEW 2017
+		//this->parameters.append(conf.getParameters());
+		this->parameters.link("width",  conf.frame.width);
+		this->parameters.link("height", conf.frame.height);
 
 	};
 
 	WindowOp(const std::string & name, const std::string & description, unsigned int width, unsigned int height) :
 		ImageOp(name, description) {
-		this->parameters.link("width",  conf.width = width);   // NEW 2017
-		this->parameters.link("height", conf.height = height);  // NEW 2017
+		//this->parameters.append(conf.getParameters());
+		this->parameters.link("width",  conf.frame.width);
+		this->parameters.link("height", conf.frame.height);
 		setSize(width, height);
 	};
 
 	WindowOp(typename W::conf_t & c, const std::string & name = __FUNCTION__, const std::string & description="") :
 		ImageOp(name, description), conf(c) {
-		this->parameters.link("width",  conf.width);
-		this->parameters.link("height", conf.height);
-
+		//this->parameters.append(conf.getParameters());
+		this->parameters.link("width",  conf.frame.width);
+		this->parameters.link("height", conf.frame.height);
 	};
 
+	WindowOp(const WindowOp<W> & op) : ImageOp(op), conf(op.conf){
+		//this->parameters.copyStruct(op.getParameters(), op, *this, ReferenceMap::extLinkPolicy::LINK);
+		//this->parameters.copyStruct(op.getParameters(), op.conf, conf);
+		this->parameters.link("width",  conf.frame.width);
+		this->parameters.link("height", conf.frame.height);
+	}
 
 	virtual ~WindowOp(){};
 
@@ -82,17 +90,11 @@ public:
 	//void setSize(unsigned int width, unsigned int height = 0){
 	inline
 	void setSize(unsigned int width){
-		conf.width  = width;
-		conf.height = width;
+		setSize(width, width);
 	}
 
 	void setSize(unsigned int width, unsigned int height){
-		conf.width = width;
-		/*if (height == 0)
-			conf.height = width;
-		else
-		*/
-		conf.height = height;
+		conf.frame.set(width, height);
 	}
 
 

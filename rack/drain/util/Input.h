@@ -64,6 +64,10 @@ public:
 
 	operator std::istream & ();
 
+	inline
+	operator bool (){
+		return static_cast<bool>(ifstr);
+	};
 
 protected:
 

@@ -55,7 +55,7 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 		v = TextReader::scanSegment(istr, "\"");
 		istr.get(); // swallow '"'
 		// std::cout << "String: " << value << '\n';
-		log.debug(2) << "String value '" << v << "'" << log.endl;
+		log.debug3() << "String value '" << v << "'" << log.endl;
 		break;
 	case '[': // ARRAY TODO: chars/integer/float handling
 		istr.get();
@@ -76,8 +76,8 @@ void ValueReader::scanValue(std::istream & istr, Variable & v){
 		const std::type_info & type = Type::guessType(value);
 		// v.setType(type);
 		v.requestType(type);
-		//log.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
-		log.debug(2) << "Value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		//log.debug3() << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
+		log.debug3() << "Value " << value << ", type=" << drain::Type::getTypeChar(type) << log.endl;
 		v = value;
 		break;
 	}

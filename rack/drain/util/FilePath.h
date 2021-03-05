@@ -57,10 +57,10 @@ class FilePath {
 
 public:
 
-	typedef Path<std::string> path_t;
+	typedef Path<std::string,'/',true,false,true> path_t;
 
 	/// Constructor
-	FilePath(const std::string & s = "", char separator = 0);
+	FilePath(const std::string & s = "");
 
 	/// Copy constructor
 	FilePath(const FilePath & s);
@@ -76,48 +76,52 @@ public:
 	std::string extension;
 
 	/// Directory path separator
-	static
-	char separator;
+	//static
+	//char separator;
 
-	static
-	const RegExp pathRegExp;
+	//static const RegExp pathRegExp;
 
-	virtual inline
-	std::ostream & toOStr(std::ostream & ostr, char dirSeparator = 0) const {
+
+	virtual
+	std::ostream & toStream(std::ostream & ostr) const { //, char dirSeparator = 0) const {
+
 		if (!dir.empty()){
-			dir.toOStr(ostr, dirSeparator);
-			ostr << (dirSeparator ? dirSeparator : dir.separator);
+			ostr << dir;
+			if (!dir.back().empty())
+				ostr << dir.separator.character;
 		}
+
 		ostr << basename << '.' << extension;
 		return ostr;
 	}
 
-	operator std::string(){
-		return toStr();
-	}
-
-	inline
-	void toStr(std::string & str, char separator = 0) const {
+	// Not inhrerited?
+	virtual
+	std::string  str() const {
 		std::stringstream sstr;
-		toOStr(sstr, separator);
-		str = sstr.str();
-	}
-
-	inline
-	std::string toStr(char separator = 0) const {
-		std::stringstream sstr;
-		toOStr(sstr, separator);
+		toStream(sstr);
 		return sstr.str();
 	}
 
+	inline
+	FilePath & operator<<(const FilePath & path){
+		this->dir << path.dir;
+		if (this->basename.empty())
+			std::cerr << __FILE__ << " warning: dropped:" << this->basename << '\n';
+		this->basename  = path.basename;
+		this->extension = path.extension;
+		//this->insert(this->end(), path.begin(), path.end());
+		return *this;
+	}
+
+
 };
 
-
-//template <class T>
 inline
-std::ostream & operator<<(std::ostream & ostr, const FilePath & f) {
-	return f.toOStr(ostr);
+std::ostream & operator<<(std::ostream & ostr, const FilePath & p) {
+	return p.toStream(ostr);
 }
+
 
 } // drain::
 

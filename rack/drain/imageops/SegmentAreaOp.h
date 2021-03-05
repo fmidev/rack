@@ -47,34 +47,33 @@ namespace image
 {
 
 
-/// Computes sizes connected pixel areas. For more complicated statistics, see SegmentStatisticsOp.
+/// Computes sizes of connected pixel areas.
 /**
 
-    SegmentProber
-	\tparam S - source type for SegmentProber<S,D>
-	\tparam D - destination type for SegmentProber<S,D>
-
+	\tparam S - source image type for SegmentProber<S,D>
+	\tparam D - destination image type for SegmentProber<S,D>
 	\tparam T - prober class, eg. SegmentProber
-	Note: current designed matches SegmentProber quite explicitly.
 
- \code
-   drainage shapes.png --segmentArea 64 -o segmentArea.png
-   drainage gray.png --physicalRange 0.0,1.0 --segmentArea 0.5 -o segmentAreaPhys.png
- \endcode
+Note: current designed for SegmentProber.
 
- \code
-   drainage shapes.png --segmentArea 64,255,FuzzyStep:300:0 -o segmentAreaInv.png
- \endcode
+\code
+drainage shapes.png --iSegmentArea 64:255 -o segmentArea.png
+drainage gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
+\endcode
 
- \code
-   drainage shapes.png --segmentArea 64,255,FuzzyStepsoid:100:20 -o segmentAreaStepsoid.png
- \endcode
+\code
+drainage shapes.png --iSegmentArea 64:255,FuzzyStep:300:0 -o segmentAreaInv.png
+\endcode
 
- \code
-   drainage shapes.png --segmentArea 32,255,FuzzyBell:200:50 -o segmentAreaBell.png
- \endcode
+\code
+drainage shapes.png --iSegmentArea 64:255,FuzzyStepsoid:100:20 -o segmentAreaStepsoid.png
+\endcode
 
-	\see SegmentStatisticsOp
+\code
+drainage shapes.png --iSegmentArea 32:255,FuzzyBell:200:50 -o segmentAreaBell.png
+\endcode
+
+\see SegmentStatisticsOp
 
  */
 template <class S, class D>
@@ -91,25 +90,29 @@ public:
 	 * \par scale - parameter depending on \c mapping
 	 * \par offset - parameter depending on \c mapping
 	 */
-	inline
-	SegmentAreaOp(double min=1.0, double max=static_cast<double>(0xffff)) : //, const std::string & mapping="d", double scale=1.0, double offset=0.0) :
+	inline  // static_cast<double>(0xffff)
+	SegmentAreaOp(double min=1.0, double max=std::numeric_limits<double>::max()) :
+	//SegmentAreaOp(double min=1.0, double max=static_cast<double>(0xffff)) :
     	SegmentOp(__FUNCTION__, "Computes segment sizes.") {
-		parameters.link("min", this->min = min);
-		parameters.link("max", this->max = max);
-		//parameters.link("functor", this->functorName);
-		parameters.link("functor", this->functorStr);  //  eg. "FuzzyStep"
-		//parameters.link("functorParams", this->functorParams);
+		parameters.link("intensity", this->intensity.tuple(), "min:max");
+		parameters.link("functor", this->functorStr);  //  eg. "FuzzyStep:params"
+		this->intensity.set(min, max);
     };
 
-	inline
-	SegmentAreaOp(const drain::UnaryFunctor & ftor, double min=1, double max=static_cast<double>(0xffff)) : //, const std::string & mapping="d", double scale=1.0, double offset=0.0) :
+	inline // double max=static_cast<double>(0xffff)
+	SegmentAreaOp(const drain::UnaryFunctor & ftor, double min=1.0, double max=std::numeric_limits<double>::max()) : //, const std::string & mapping="d", double scale=1.0, double offset=0.0) :
     	SegmentOp(__FUNCTION__, "Computes segment sizes", ftor) {
-		parameters.link("min", this->min = min);
-		parameters.link("max", this->max = max);
+		parameters.link("intensity", this->intensity.tuple(), "min:max");
+		this->intensity.set(min, max);
     };
+
+	SegmentAreaOp(const SegmentAreaOp & op) : SegmentOp(op){
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
 	/// Resizes dst to width and height of src. Ensures integer type.
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	//void makeCompatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
@@ -125,26 +128,30 @@ public:
 
 
 template <class S, class D>
-void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
+void SegmentAreaOp<S,D>::getDstConf(const ImageConf & src, ImageConf & dst) const {
+// void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	const std::type_info & t = typeid(dst_t); // typeid(typename T::dst_t);
 
-	if (!dst.typeIsSet()){
+	/*if (!dst.typeIsSet()){
 		dst.setType(t);
 	}
-	else if (Type::call<typeIsFloat>(dst.getType())){
+	else*/
+	if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
 		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
 	}
 
-	dst.setGeometry(src.getWidth(), src.getHeight(),
-				std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
+	dst.setArea(src);
+	// dst.setGeometry(src.getWidth(), src.getHeight(),
+	// std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
+	dst.setChannelCount(std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
 
-	if (clearDst)
-		dst.clear();
+	//if (clearDst)
+	//	dst.clear();
 
 }
 
@@ -153,58 +160,49 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	const size_t w = src.getWidth();
-	const size_t h = src.getHeight();
+	drain::Range<src_t> raw;
+	raw.min = src.getScaling().inv(this->intensity.min);
+	raw.max = (this->intensity.max == std::numeric_limits<double>::max()) ? src.getConf().getTypeMax<src_t>() : src.getScaling().inv(this->intensity.max);
 
-	const src_t minRaw = src.getScaling().inv(min);
-	const src_t maxRaw = (max == std::numeric_limits<double>::max()) ? src.getEncoding().getTypeMax<src_t>() : src.getScaling().inv(max);
-
-	if (minRaw <= src.getEncoding().getTypeMin<src_t>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getEncoding().getTypeMin<src_t>() << mout.endl;
+	if (raw.min <= src.getConf().getTypeMin<src_t>()){
+		mout.warn()  << "min value=" << (double)raw.min <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<src_t>() << mout.endl;
 	}
 
-	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
-	mout.debug(1) << "src: " << src << mout.endl;
-	mout.debug(1) << "dst: " << dst << mout.endl;
+	mout.special()  << "raw range: " << (double)raw.min << '-' << (double)raw.max << mout.endl;
+	mout.debug2() << "src: " << src << mout.endl;
+	mout.debug2() << "dst: " << dst << mout.endl;
 
-	//SegmentProber<S,D> floodFill(src, dst);
 	SizeProber sizeProber(src, dst);
-	sizeProber.conf.anchorMin = minRaw;
-	sizeProber.conf.anchorMax = maxRaw;
-	mout.debug(1) << "areaProber:" << sizeProber << mout.endl;
+	sizeProber.conf.anchor.set(raw.min, raw.max);
+	mout.debug2() << "areaProber:" << sizeProber << mout.endl;
 
 	FillProber floodFill(src, dst);
-	floodFill.conf.anchorMin = minRaw;
-	floodFill.conf.anchorMax = maxRaw;
-	mout.debug(1) << "floodFill: " << floodFill << mout.endl;
-	//floodFill.init();
-	//T floodFill(src, dst);
+	floodFill.conf.anchor.set(raw.min, raw.max); // Min = raw.min;
+	mout.debug2() << "Floodfill: " << floodFill << mout.endl;
 
-	//const size_t dMax = dst.getMax<size_t>();
-	// const typename T::dst_t dMax = dst.getMax<typename T::dst_t>();
-	// mout.warn() << "dMax " << (double)dMax << mout.endl;
-	const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;
+	const double scale = drain::Type::call<typeNaturalMax>(dst.getType());
+	// const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;
 
-	mout.debug() << "Scale: " << scale << mout.endl;
+	const UnaryFunctor & ftor = getFunctor(scale); // scale problematic, but needed for const Ftor
 
-	const UnaryFunctor & ftor = getFunctor(scale);
-	//const UnaryFunctor & ftor = getFunctor(dst.getMax<T::dst_t>());
-
-	mout.debug() << "Functor: " << ftor.getName() << '(' << ftor.getParameters() << ')' << mout.endl;
+	mout.warn() << "Scale: " << scale << mout.endl;
+	mout.warn() << "Final functor: " << ftor.getName() << '(' << ftor.getParameters() << ')' << mout.endl;
 	/*
 	mout.warn() << "Functor: 1 =>" << ftor(1.0) << mout.endl;
 	mout.warn() << "Functor: 100 =>" << ftor(100.0) << mout.endl;
 	mout.warn() << "Functor: 10000 =>" << ftor(10000.0) << mout.endl;
 	*/
-	//mout.debug(1);
-	mout << mout.endl;
+	//mout.debug2();
 
 	typedef drain::typeLimiter<dst_t> Limiter;
-	typename Limiter::value_t limit = dst.getEncoding().getLimiter<dst_t>();
+	typename Limiter::value_t limit = dst.getConf().getLimiter<dst_t>();
+
+	const size_t width = src.getWidth();
+	const size_t height = src.getHeight();
 
 	size_t sizeMapped;
-	for (size_t i=0; i<w; i++){
-		for (size_t j=0; j<h; j++){
+	for (size_t i=0; i<width; i++){
+		for (size_t j=0; j<height; j++){
 
 			// STAGE 1: detect size.
 			sizeProber.probe(i,j);

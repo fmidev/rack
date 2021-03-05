@@ -47,23 +47,25 @@ namespace image
   The width and the height, if unset, will be set automatically according to radius.
 
   \code
-    ainage image.png --gaussianAverage 15   -o gaussianAverage.png
+    ainage image.png --iGaussianAverage 15   -o gaussianAverage.png
   \endcode
 
   If the source image contains several channels, each channel is treated separately.
 
   \code
-     ainage image.png        --gaussianAverage 5,25  -o gaussianAverage-vert.png
-     ainage orvokki-rgba.png --gaussianAverage 25,25 -o flower-blurred.png
+     ainage image.png        --iGaussianAverage 5,25  -o gaussianAverage-vert.png
+     ainage orvokki-rgba.png --iGaussianAverage 25,25 -o flower-blurred.png
   \endcode
 
  */
+// Consider diff assert here! ^^
+
 class SeparableWindowOp : public WindowOp<GaussianStripe<WindowCore> >
 {
 public:
 
 	/**
-	 *  \param halfWidth - distance relative to width and height, where gaussian kernel obtains value 0.5.
+	 *  \param halfWidth - iDistance relative to width and height, where gaussian kernel obtains value 0.5.
 	 */
 	SeparableWindowOp(int width=1, int height=0, double halfwidth=0.5);
 
@@ -103,7 +105,7 @@ SeparableWindowOp::SeparableWindowOp(int width, int height, double radius) :
 
 	this->conf.width = width;
 	this->conf.height = height;
-	parameters.link("radius", this->conf.radius = radius, "distance, relative to width and height, where gaussian kernel obtains value 0.5.");
+	parameters.link("radius", this->conf.radius = radius, "iDistance, relative to width and height, where gaussian kernel obtains value 0.5.");
 
 }
 

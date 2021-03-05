@@ -40,105 +40,140 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-/// Set flags
-void Flags::assign(const std::string & params){
+
+FlagResolver::value_t FlagResolver::getFreeBit(const dict_t & dict){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	value = 0;
-
-	typedef std::list<std::string> keylist;
-	keylist keys;
-
-	if (separator)
-		drain::StringTools::split(params, keys, this->separator);
-	else
-		keys.push_front(params);
-
-	for (keylist::const_iterator it = keys.begin(); it !=keys.end(); ++it) {
-
-		// mout.warn() << " '" << *it << "'" << mout.endl;
-
-		dict_t::const_iterator dit = dictionaryRef.findByKey(*it);
-
-		if (dit != dictionaryRef.end()){
-			// Alphabetic key found
-			set(dit->second);
-			//value = value | dit->second;
-		}
-		else {
-			// Numeric value
-			if (*it == "0"){
-				//std::cout << "resetting...\n";
-				//value = 0;
-				reset();
-				continue;
-			}
-			else {
-				value_t v;
-				std::stringstream sstr(*it);
-				sstr >> v;
-				if (v == 0){
-					throw std::runtime_error(*it + ": key not found in Flags");
-				}
-				set(v);
-				//value = value | v;
-				// Nice to know
-				//dict_t::second_type::const_iterator vit = dictionary.second.find(v);
-				dict_t::const_iterator vit = dictionaryRef.findByValue(v);
-				if (vit != dictionaryRef.end()){
-					std::cout << "(assigned key '" << vit->second << "')\n"; // or vit->first?
-				}
-			}
-		}
+	value_t full = 0;
+	for (dict_t::const_iterator it = dict.begin(); it != dict.end(); ++it){
+		full = full | it->second;
 	}
 
-	//return *this;
+	mout.debug2() << "sum:" << full << mout.endl;
+
+	value_t i = 1;
+	while (full>0){
+		mout.debug2() << "checking bit:" << i << " vs.\t" << full << mout.endl;
+		full = (full>>1);
+		i = (i<<1);
+	}
+
+	mout.debug() << "released: " << i << mout.endl;
+
+	return i;
+
 }
 
-int Flags::getValue(const std::string & args) const {
+
+FlagResolver::value_t FlagResolver::add(dict_t &dict, const dict_t::key_t & key, value_t i){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	value = 0;
+	if (dict.hasKey(key)){
+		mout.info() << key << " already in dict: " << dict << mout.endl;
+		return dict.getValue(key);
+	}
+
+	if (i==0)
+		i = getFreeBit(dict);
+
+	if (i>0){
+		dict.add(key, i);
+	}
+	else {
+		mout.warn() << key << " could not get a valid (non-zero) bit flag for dict: " << dict << mout.endl;
+	}
+
+	return i;
+};
+
+
+FlagResolver::value_t FlagResolver::getValue(const dict_t & dict, const key_t & args, char separator){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	value_t v = ::atoi(args.c_str()); // Debugging option: numeric bit flag
+	if (v > 0)
+		return v;
 
 	typedef std::list<std::string> keylist;
 	keylist keys;
 
-	if (this->separator)
-		drain::StringTools::split(args, keys, this->separator);
+	if (!separator)
+		separator = dict.separator;
+
+	if (separator)
+		drain::StringTools::split(args, keys, separator);
 	else
 		keys.push_front(args); // single entry, including whatever punctuation...
 
+	//drain::StringTools::split(args, keys, dict.separator);
+
 	for (keylist::const_iterator it = keys.begin(); it !=keys.end(); ++it) {
 
-		dict_t::const_iterator dit = dictionaryRef.findByKey(*it);
-
-		if (dit != dictionaryRef.end()){
-			value |=  dit->second;
+		if (*it == "0"){
+			continue;
 		}
+		// mout.warn() << " '" << *it << "'" << mout.endl;
 
+		dict_t::const_iterator dit = dict.findByKey(*it);
+
+		if (dit != dict.end()){ // String key match,
+			// Numeric value for an alphabetic key was found
+			v = (v | dit->second);
+		}
+		else {
+			// Numeric value
+			value_t x;
+			std::stringstream sstr(*it);
+			sstr >> x;
+			if (x == 0){
+				throw std::runtime_error(*it + ": key not found in Flags");
+			}
+			v = v | x;
+			// Nice to know
+			/*
+			dict_t::const_iterator vit = dictionaryRef.findByValue(v);
+			if (vit != dictionaryRef.end()){
+				std::cout << "(assigned key '" << vit->second << "')\n"; // or vit->first?
+			}
+			*/
+		}
 	}
 
-	return value;
+	return v;
 }
 
+
 /// List keys in their numeric order.
-std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
+std::string FlagResolver::getKeys(const dict_t &dict, value_t v, char separator){
+	std::stringstream sstr;
+	keysToStream(dict, v, sstr, separator);
+	return sstr.str();
+}
 
-	//if (!separator)separator = dictionary.separator;
-	if (!separator)
-		separator = this->separator;
 
-	/* note: instead of shifting bits of this->value, studies dictionary which can contain
+
+//
+
+/// List keys in their numeric order.
+std::ostream & FlagResolver::keysToStream(const dict_t &dict, value_t value, std::ostream & ostr, char separator) {
+
+	/* note: instead of shifting bits of this->value, traverses the dictionary which can contain
 		- combined values
 		- repeated values (aliases)
 	*/
+
+	if (!separator)
+		separator = dict.separator;
+
 	char sep = 0;
-	for (dict_t::const_iterator it = dictionaryRef.begin(); it != dictionaryRef.end(); ++it){
+
+	for (dict_t::const_iterator it = dict.begin(); it != dict.end(); ++it){
 		if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
 			if (sep)
-				ostr << sep;
+				ostr <<  sep;// "{" << (int)(sep) << "}" <<
 			else
 				sep = separator;
 			ostr << it->first;
@@ -151,15 +186,31 @@ std::ostream & Flags::keysToStream(std::ostream & ostr, char separator) const {
 	return ostr;
 }
 
-/// List keys in their numeric order.
-std::string Flags::keysToStr(char separator) const {
-	std::stringstream sstr;
-	keysToStream(sstr, separator);
-	return sstr.str();
+
+
+
+/// Set flags
+void Flagger::assign(const key_t & args){
+
+	if (args.empty()){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		// Should it reset or skip?
+		mout.warn() << "Skipping empty assignment" << mout.endl;
+		return;
+	}
+
+	if (args == "0"){
+		reset();
+		return;
+	}
+
+	value = getValue(args);
+
 }
 
 
-std::ostream & Flags::toStream(std::ostream & ostr, char separator) const {
+/*
+std::ostream & Flagger::toStream(std::ostream & ostr, char separator) const {
 
 	if (!separator)
 		separator = this->separator;
@@ -177,7 +228,21 @@ std::ostream & Flags::toStream(std::ostream & ostr, char separator) const {
 	return ostr;
 
 }
+*/
 
+/*
+Flags::value_t Flags::add(const dict_t::key_t & key, value_t i){
+
+
+	if (!usesOwnDict()){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.fail() << "could not add " << key << " to external (const) dictionary:" << dictionaryRef << mout.endl;
+		return 0;
+	}
+
+	return Flagger::add(dictionary, key, i);
+};
+*/
 
 
 

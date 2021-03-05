@@ -361,7 +361,7 @@ public:
 			u = this->uDenominator()/nom;
 			v = this->vDenominator()/nom;
 			quality = sqrt(nom/this->W);
-			//quality = this->srcWeight.template get<data_t>(this->location); // gradient stability
+			//quality = this->srcWeight.template get<data_t>(this->location); // iGradient stability
 			//quality = predictionError(u, v); // TODO multiply with gradQuality
 			//quality = this->srcWeight.getScaled(this->location.x, this->location.y);
 			//quality = sqrt(nom/W) * this->srcWeight.getScaled(this->location.x, this->location.y); // predictionError(u, v); // TODO multiply with gradQuality
@@ -428,9 +428,9 @@ void SlidingOpticalFlow<R>::initialize() {
 	this->setLoopLimits();
 
 	mout.debug() << "window: "  << *this << mout.endl;
-	mout.debug(2) << "Dx: " << this->Dx << mout.endl;
-	mout.debug(2) << "Dy: " << this->Dy << mout.endl;
-	mout.debug(2) << "Dt: " << this->Dt << mout.endl;
+	mout.debug3() << "Dx: " << this->Dx << mout.endl;
+	mout.debug3() << "Dy: " << this->Dy << mout.endl;
+	mout.debug3() << "Dt: " << this->Dt << mout.endl;
 
 	//clear();
 	//fill(0, 0);
@@ -529,8 +529,8 @@ public:
 
 \~exec
    # Dots to diamonds
-   # rainage --geometry 256,256,1 --plot 128,128,100 --distanceTransform 256,256,0 -o diamond1.png
-   # rainage --geometry 256,256,1 --plot 148,118,100 --distanceTransform 256,256,0 -o diamond2.png
+   # rainage --geometry 256,256,1 --plot 128,128,100 --iDistanceTransform 256,256,0 -o diamond1.png
+   # rainage --geometry 256,256,1 --plot 148,118,100 --iDistanceTransform 256,256,0 -o diamond2.png
    make diamond1.png diamond2.png
 \~
 

@@ -42,17 +42,15 @@ namespace image {
 // Needed? Cf.    ImageFrame::toOStr
 void Image::dump(std::ostream & ostr) const {
 
+	ostr << *this << '\n';
 	for (size_t i = 0; i < getChannelCount(); ++i) {
-		getChannel(i).toOStr(ostr);
+		ostr << "- channel(" << i << "): " << getChannel(i);
+		//getChannel(i).toOStr(ostr);
 		ostr << '\n';
 	}
-
-	//ostr << "bytesize=" << getB << '\n';
-
-
-	ostr << "begin=" << (long)begin() << '\n';
-	ostr << "end=  " << (long)end() << '\n';
-	properties.toOStream(ostr);
+	ostr << "begin: " << (long)begin() << '\n';
+	ostr << "  end: " << (long)end() << '\n';
+	properties.toStream(ostr);
 	ostr << '\n';
 }
 

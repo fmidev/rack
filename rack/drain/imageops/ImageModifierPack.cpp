@@ -33,8 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 #include <fstream>
 #include "drain/util/Log.h"
-#include "drain/image/Sampler.h"
+#include "drain/image/CoordinateHandler.h"
 #include "drain/image/File.h"
+#include "drain/image/Sampler.h"
 //#include "ImageMod.h"
 #include "ImageModifierPack.h"
 
@@ -73,7 +74,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 	}
 
 	/// Step 2: Set default values, based on its current type.
-	scaling.set(dst.getScaling());
+	scaling.assign(dst.getScaling());
 	/// Reset given values
 	refMap.setValues(request);
 	// Apply
@@ -86,7 +87,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 	*/
 
 	mout.debug() << scaling.toStr() << mout.endl;
-	mout.debug(1) << dst << mout.endl;
+	mout.debug2() << dst << mout.endl;
 }
 
 
@@ -286,8 +287,11 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 
 	typedef double data_t;
 	std::vector<data_t> v;
-	//Variable(value, typeid(data_t)).toSequence(v);
+
 	StringTools::split(value, v, ',');
+
+	Point2D<int> point;
+
 	//Variable(value, typeid(data_t)).toSequence(v);
 
 	if (v.size() <= 2){
@@ -313,9 +317,10 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 		n = nChannels;
 	}
 
-	CoordinateHandler2D coordHandler; //(dst.getWidth(), dst.getHeight(), dst.getCoordinatePolicy());
-	coordHandler.setPolicy(dst.get().getCoordinatePolicy());
-	coordHandler.setLimits(dst.getGeometry().getWidth(), dst.getGeometry().getHeight());
+	CoordinateHandler2D coordHandler(dst.get(0));
+	//coordHandler.set(dst);
+	// coordHandler.setPolicy(dst.get().getCoordinatePolicy());
+	// coordHandler.setLimits(dst.getGeometry().getWidth(), dst.getGeometry().getHeight());
 	int i = v[0];
 	int j = v[1];
 
@@ -329,18 +334,8 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 			else {
 				//mout.warn() << k << "normi channel <=" << vField[2+k] << mout.endl;
 			}
-			// coordHandler.setPolicy(channel.getCoordinatePolicy());
-			// coordHandler.setLimits(channel.getWidth(), channel.getHeight());
-			/*
-			i = v[0];
-			j = v[1];
-		    if (!coordHandler.handle(i, j)){
-			  const drain::typeLimiter<data_t>::value_t & limit = channel.getLimiter<data_t>();
-			  channel.putScaled(i, j, limit(v[2+k]));
-		     }
-			 */
 			const drain::ValueScaling & scaling = channel.getScaling();
-			const drain::typeLimiter<data_t>::value_t & limit = channel.getEncoding().getLimiter<data_t>();
+			const drain::typeLimiter<data_t>::value_t & limit = channel.getConf().getLimiter<data_t>();
 			channel.put(i, j, limit(scaling.inv(v[2+k])));
 			//channel.putScaled(i, j, limit(v[2+k])); // ! scaled
 			// channel.put(i, j, v[2+k]);
@@ -397,12 +392,9 @@ void ImagePlotFile::traverseFrame(ImageFrame & dst) const {
 }
 
 
-ImageSampler::ImageSampler() : ImageMod(__FUNCTION__, "Extract samples. See --format."){
-	setReferences();
-}
 
-void ImageSampler::setReferences(){
-	parameters.append(sampler.getParameters());
+// void ImageSampler::setReferences(){
+//	parameters.append(sampler.getParameters());
 	/*
 	parameters.link("iStep",  sampler.iStep = 10, "horz coord step");
 	parameters.link("jStep",  sampler.jStep =  0, "vert coord step");
@@ -420,9 +412,7 @@ void ImageSampler::setReferences(){
 	parameters.link("iRange", sampler.iRange.vect, "horz range (obsolete)").fillArray = true;
 	parameters.link("jRange", sampler.jRange.vect, "vert range (obsolete)").fillArray = true;
 	*/
-
-
-}
+// }
 
 void ImageSampler::process(Image & dst) const {  // consider void traverse(const Channel & src) const {
 

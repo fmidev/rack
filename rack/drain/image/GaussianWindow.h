@@ -73,7 +73,8 @@ public:
 
 	virtual inline
 	void setImageLimits() const {
-		this->src.adjustCoordinateHandler(this->coordinateHandler);
+		this->coordinateHandler.set(this->src.getConf());
+		//this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
 
@@ -86,8 +87,8 @@ public:
 
 		//const int n = this->conf.width*this->conf.height; // width*1 or 1*height
 		// (DIR?this->conf.width:this->conf.height);
-		const int n    = std::max(this->conf.width, this->conf.height); // width*1 or 1*height
-		const int bias = std::min(this->iMin, this->jMin);
+		const int n    = std::max(this->conf.frame.width, this->conf.frame.height); // width*1 or 1*height
+		const int bias = std::min(this->iRange.min, this->jRange.min);
 		lookUp.resize(n);
 		//weightSum = 0.0;
 		value_t f;
@@ -98,7 +99,7 @@ public:
 		}
 
 		int iNorm;
-		mout.debug() << this->conf.width << 'x' << this->conf.height << mout.endl;
+		mout.debug() << "frame:" << this->conf.frame << mout.endl;
 		for (int i = 0; i < n; ++i) {
 			iNorm = (i + bias);
 			f = exp2(-static_cast<double>(iNorm*iNorm) / radiusAbs2);

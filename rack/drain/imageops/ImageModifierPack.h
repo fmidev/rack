@@ -49,11 +49,14 @@ class ImageChannels : public ImageMod {
 public:
 
 	ImageChannels() : ImageMod(__FUNCTION__, "Redefine channel geometry. See also --geometry") {
-
 		parameters.link("imageChannels", imageChannelCount = 1UL);
 		parameters.link("alphaChannels", alphaChannelCount = 0UL);
-
 	};
+
+	ImageChannels(const ImageChannels & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
 
 	virtual
 	void initialize(Image & dst) const;
@@ -90,6 +93,10 @@ public:
 		parameters.separator = 0;
 	};
 
+	ImageCoordPolicy(const ImageCoordPolicy & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
 	/// Sets the policy
 	void initialize(Image & dst) const;
 
@@ -122,7 +129,6 @@ public:
 
 	ImageEncoding() : ImageMod(__FUNCTION__, "Set desired target properties") { // TODO
 
-
 		refMap.link("type", type);
 		//refMap.link("scale", scaling.scale);
 		refMap.link("min", this->scaling.physRange.min, "physical_value");
@@ -132,6 +138,11 @@ public:
 		parameters.separator = 0;
 
 	};
+
+	ImageEncoding(const ImageEncoding & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+		refMap.copyStruct(op.refMap, op, *this); // should work? UniTuple instances use local (inside-object) memory
+	}
 
 	virtual
 	void initialize(Image & dst) const;
@@ -176,6 +187,11 @@ public:
 		parameters.link("value", value);
 	};
 
+	ImageFill(const ImageFill & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
+
 	virtual
 	void traverseChannel(Channel & dst) const;
 
@@ -203,6 +219,10 @@ public:
 		parameters.link("filename", filename = "", "<filename>.txt");
 		// Todo prefix/comment
 	};
+
+	ImageHistogram(const ImageHistogram & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
 	virtual
 	void traverseChannel(Channel & dst) const;
@@ -244,6 +264,10 @@ public:
 
 	};
 
+	ImageGeometry(const ImageGeometry & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
 	virtual
 	void initialize(Image & dst) const;
 
@@ -267,9 +291,9 @@ protected:
 /**
 \code
 drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192  -o plot-dots.png
-drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192 --target S --copy f -o plot-dots-16b.png
+drainage --geometry 256,256,1 --plot 96,96,255 --plot 160,96,208  --plot 128,160,192 --target S --iCopy f -o plot-dots-16b.png
 drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192  -o plot-dots-rgba.png
-drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192 --target S --copy f -o plot-dots-rgba-16b.png
+drainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192 --target S --iCopy f -o plot-dots-rgba-16b.png
 \endcode
  *
  */
@@ -284,10 +308,17 @@ public:
 
 	};
 
+	ImagePlot(const ImagePlot & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
+
 	virtual
 	void traverseChannels(ImageTray<Channel> & dst) const;
 
 protected:
+
+
 
 	std::string value;
 };
@@ -300,6 +331,10 @@ public:
 	ImagePlotFile() : ImageMod(__FUNCTION__, "Plots a given file.  See 'plot'."){
 		parameters.link("filename", filename = "",  "string");
 	};
+
+	ImagePlotFile(const ImagePlotFile & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
 	virtual
 	void traverseFrame(ImageFrame & dst) const;
@@ -316,7 +351,7 @@ protected:
   As convenience, provides also a filename
  \code
  drainage gray.png  --sample file=samples-gray.txt
- drainage image.png --format '{i},{j}\t {0},{-2}' --sample 50,50,file=samples.txt
+ drainage image.png --format '${i},${j}\t ${0},${-2}' --sample 50,50,file=samples.txt
  \endcode
  */
 class ImageSampler : public ImageMod {
@@ -324,9 +359,15 @@ class ImageSampler : public ImageMod {
 public:
 
 	/// Default constructor.
-	ImageSampler();
-	// WARN: sampler not allocated upon this point.
+	ImageSampler() : ImageMod(__FUNCTION__, "Extract samples. See --format.") {
+		parameters.append(sampler.getParameters());
+	}
 	//	parameters.link("file", filename = "",  "string");
+
+	ImageSampler(const ImageSampler & op) : ImageMod(op), sampler(op.sampler) {
+		//parameters.append(sampler.getParameters());
+		parameters.copyStruct(op.sampler.getParameters(), op.sampler, this->sampler);
+	};
 
 	/// Runs Sampler on the given image.
 	/**
@@ -336,28 +377,34 @@ public:
 	void process(Image & dst) const;
 
 	inline
-	const Sampler & getSampler(){ return sampler; };
+	const Sampler & getSampler(){
+		return sampler;
+	};
 
 	virtual inline
-	const std::string & getFormat() const {return format;};
+	const std::string & getFormat() const {
+		return format;
+	};
 
+	/*
 	virtual inline
-	std::string & getFormat(){return format;};
+	std::string & getFormat(){
+		return format;
+	};
+	*/
+
+	/// If defined, sampler will directly write to this file. The default constructor does not reference this.
+	std::string filename;
 
 protected:
 
 	ImageSampler(const std::string & name, const std::string & description) : ImageMod(name, description){
-		//setReferences();
+		parameters.append(sampler.getParameters());
 	}
 
 
-	void setReferences();
-
-	//
 	mutable Sampler sampler;
 
-	/// Optional utility for commands using direct file output. The default constructor does not reference this.
-	std::string filename;
 
 	/// Output format, e.g. '{LON} {LAT} {AMVU} {AMVV} {QIND}'
 	std::string format;

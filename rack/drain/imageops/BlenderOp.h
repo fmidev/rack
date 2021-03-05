@@ -64,11 +64,11 @@ namespace image
    \f$c\f$ is the mixing coefficient between 0.0 and 1.0.
 
    \code
-   	drainage shapes.png --blender 25,mix=b/coeff:0.25 -o hazy25a.png
-   	drainage shapes.png --blender 25,mix=b/coeff:0.50 -o hazy50a.png
-   	drainage shapes.png --blender 25,mix=b/coeff:0.75 -o hazy75a.png
-   	drainage shapes.png --blender 25,smooth=g,mix=b/coeff:0.25 -o hazy25g.png
-   	drainage shapes.png --blender 25,mix=m            -o hazyMax.png
+   	drainage shapes.png --iBlender 25,mix=b/coeff:0.25 -o hazy25a.png
+   	drainage shapes.png --iBlender 25,mix=b/coeff:0.50 -o hazy50a.png
+   	drainage shapes.png --iBlender 25,mix=b/coeff:0.75 -o hazy75a.png
+   	drainage shapes.png --iBlender 25,smooth=avgGauss,mix=b/coeff:0.25 -o hazy25g.png
+   	drainage shapes.png --iBlender 25,mix=m            -o hazyMax.png
    \endcode
 
 	This operator can be also used for restoring images containing specks of low quality.
@@ -76,12 +76,12 @@ namespace image
        make flowers-rgba.png  #exec
     \~
    \code
-     drainage flowers-rgba.png --blender 50,smooth=a,mix=m -o restored-a1.png
-     drainage flowers-rgba.png --blender 50,smooth=a,mix=m,loops=3 -o restored-a3.png
-     drainage flowers-rgba.png --blender 50,smooth=g,mix=m -o restored-g1.png
-     drainage flowers-rgba.png --blender 50,smooth=g,mix=m,loops=3 -o restored-g3.png
-     drainage flowers-rgba.png --blender 50,smooth=d -o restored--d.png
-     drainage flowers-rgba.png --blender 50,smooth=D -o restored--D.png
+     drainage flowers-rgba.png --iBlender 50,smooth=avg,mix=m -o restored-a1.png
+     drainage flowers-rgba.png --iBlender 50,smooth=avg,mix=m,loops=3 -o restored-a3.png
+     drainage flowers-rgba.png --iBlender 50,smooth=avgGauss,mix=m -o restored-ag1.png
+     drainage flowers-rgba.png --iBlender 50,smooth=avgGauss,mix=m,loops=3 -o restored-ag3.png
+     drainage flowers-rgba.png --iBlender 50,smooth=dist    -o restored--d.png
+     drainage flowers-rgba.png --iBlender 50,smooth=distExp -o restored--dexp.png
    \endcode
 
 
@@ -97,22 +97,32 @@ public:
 	// TODO: re-consider the order of params?
 	BlenderOp(int width=5, int height=0, char smoother='a', char mixer='m', unsigned short loops=1) :  // , double coeff=0.5
 		WindowOp<>(__FUNCTION__, "Smoothes image repeatedly, mixing original image with the result at each round.", width, height){
-		initRefs();
+		// initRefs();
+		parameters.link("smooth", this->smootherKey, getSmootherAliasMap<false>().toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
+		parameters.link("mix", this->mixerKey, "b[/coeff:<coeff>]|m; (quality) mix, (quality) max");
+		parameters.link("loops", this->loops, "number of repetitions");
 		this->smootherKey = smoother;
 		this->mixerKey = mixer;
 		this->loops = loops;
 	};
 
 	// Every Op should have a copy const
-	BlenderOp(const BlenderOp & op) :
-		WindowOp<>(__FUNCTION__, "Smoothes image repeatedly, mixing original image with the result at each round.", op.conf.width, op.conf.height){
-		initRefs();
+	BlenderOp(const BlenderOp & op) : WindowOp<>(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
 	};
+
 
 
 	inline
 	const std::string & getSmootherKey(){
 		return smootherKey;
+	}
+
+	virtual inline
+	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
+		if (conf.frame.height == 0){
+			conf.frame.height = conf.frame.width;
+		}
 	}
 
 	/// Main operation, requires weighted image data.
@@ -135,11 +145,42 @@ protected:
 
 	//mutable	drain::SmartMap<std::string> aliasMap;
 
-	void getSmootherAliasMap(drain::SmartMap<std::string> & aliasMap, bool weighted=false) const;
+	template <bool WEIGHTED=false>
+	static
+	const drain::SmartMap<std::string> & getSmootherAliasMap() {
+		static drain::SmartMap<std::string> aliasMap;
+		if (aliasMap.empty()){
+			/// Use plain names (not prefixed)
+			aliasMap["a"] = "average";
+			aliasMap["f"] = "flowAverage"; // magnitude/energy saving
+			aliasMap["g"] = "gaussianAverage";
+			aliasMap["d"] = WEIGHTED ? "distanceTransformFill"    : "distanceTransform";
+			aliasMap["D"] = WEIGHTED ? "distanceTransformFillExp" : "distanceTransformExp";
+			// NEW
+			aliasMap["avg"] = "average";
+			aliasMap["avgFlow"] = "flowAverage"; // magnitude/energy saving
+			aliasMap["avgGauss"] = "gaussianAverage";
+			aliasMap["dist"] = WEIGHTED ? "distanceTransformFill"    : "distanceTransform";
+			aliasMap["distExp"] = WEIGHTED ? "distanceTransformFillExp" : "distanceTransformExp";
+		}
+		return aliasMap;
+	}
+
+	template <bool WEIGHTED=false>
+	static
+	const drain::SmartMap<std::string> & getMixerAliasMap(){
+		static drain::SmartMap<std::string> aliasMap;
+		aliasMap["b"] = WEIGHTED ? "qualityMixer"    : "mix";
+		aliasMap["m"] = WEIGHTED ? "qualityOverride" : "max";
+		// NEW
+		aliasMap["mix"] = WEIGHTED ? "qualityMixer"    : "mix";
+		aliasMap["max"] = WEIGHTED ? "qualityOverride" : "max";
+		return aliasMap;
+	}
 
 
 	// int width=5, int height=0, char smoother='a', char mixer='m', unsigned short loops=1
-	void initRefs();
+	//void initRefs();
 
 	//double coeff;
 	unsigned short loops;

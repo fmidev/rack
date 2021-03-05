@@ -56,8 +56,14 @@ public:
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
 
+	virtual
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
+	//void makeCompatible(const ImageFrame & src, Image & dst) const;
+
+
 protected:
 
+	inline
 	DifferentialOp(const std::string & name, const std::string & description, size_t channels=1, int radius=1) : // , double scale=1.0, double bias=0.0
 			ImageOp(name, description), channels(channels) {
 		//parameters.link("span",  this->span = span, "pix");
@@ -65,8 +71,11 @@ protected:
 		parameters.link("LIMIT",  this->LIMIT = true, "0|1");
 	};
 
-	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	inline
+	DifferentialOp(const DifferentialOp & op) : ImageOp(op), radius(op.radius), channels(op.channels), LIMIT(op.LIMIT)  {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	};
+
 
 	// double bias;
 	// double scale;
@@ -106,9 +115,9 @@ protected:
  *    src(i,j)-src(i-1,j).
  *
  \~exec
-  drainage shapes.png --gradient 1 --channels 3    -o gradient-rg.png
-  drainage shapes.png --gradient 2 --channels 3    -o gradient-rg2.png
-  drainage shapes.png --gradient 1 --magnitude ''  -o gradient.png
+  drainage shapes.png --iGradient 1 --channels 3    -o gradient-rg.png
+  drainage shapes.png --iGradient 2 --channels 3    -o gradient-rg2.png
+  drainage shapes.png --iGradient 1 --iMagnitude ''  -o gradient.png
  \~
  */
 class GradientOp : public DifferentialOp
@@ -118,6 +127,10 @@ public:
 	GradientOp(int radius=1) : DifferentialOp(__FUNCTION__,
 			"Computes horizontal and vertical derivatives: df/di and df/dj.", 2, radius) { // , scale, bias
 	};
+
+	GradientOp(const GradientOp & op) : DifferentialOp(op){
+	}
+
 
 protected:
 
@@ -134,8 +147,8 @@ protected:
  *    src(i,j)-src(i-1,j).
  *
  \~exec
-  drainage shapes.png --gradientHorz +1 -o gradientHorzRight.png
-  drainage shapes.png --gradientHorz -1 -o gradientHorzLeft.png
+  drainage shapes.png --iGradientHorz +1 -o gradientHorzRight.png
+  drainage shapes.png --iGradientHorz -1 -o gradientHorzLeft.png
  \~
  */
 class GradientHorzOp : public GradientOp
@@ -156,8 +169,8 @@ public:
  *    src(i,j+radius)-src(i,j-radius).
  * 
  \~exec
-  drainage shapes.png --gradientVert +1  -o gradientVertDown.png
-  drainage shapes.png --gradientVert -1  -o gradientVertUp.png
+  drainage shapes.png --iGradientVert +1  -o gradientVertDown.png
+  drainage shapes.png --iGradientVert -1  -o gradientVertUp.png
  \~
  */
 class GradientVertOp : public GradientOp
@@ -181,9 +194,9 @@ public:
  *    src(i,j)-src(i,j-1).
  *
  \~exec
-   drainage shapes.png --laplace 1  --channels 3  -o laplace-rg.png
-   drainage shapes.png --laplace 1  --magnitude ''  -o laplace.png
-   drainage shapes.png --laplace -1 --magnitude ''  -o laplaceNeg.png
+   drainage shapes.png --iLaplace 1  --channels 3     -o laplace-rg.png
+   drainage shapes.png --iLaplace 1  --iMagnitude ''  -o laplace.png
+   drainage shapes.png --iLaplace -1 --iMagnitude ''  -o laplaceNeg.png
  \~
  */
 class LaplaceOp : public DifferentialOp {
@@ -210,8 +223,8 @@ protected:
      src(i+di,j)-src(i-di,j)^2.
 
  \~exec
-   drainage shapes.png --laplaceHorz +1  -o laplaceHorz.png
-   drainage shapes.png --laplaceHorz -1 -o laplaceHorz2.png
+   drainage shapes.png --iLaplaceHorz +1  -o laplaceHorz.png
+   drainage shapes.png --iLaplaceHorz -1 -o laplaceHorz2.png
  \~
 
  */
@@ -239,8 +252,8 @@ Computes second vertical derivative:
   dy2 = src(i,j)-src(i,j-1)^2.
 
 \~exec
-  drainage shapes.png --laplaceVert +1  -o laplaceVert.png
-  drainage shapes.png --laplaceVert -1 -o laplaceVert2.png
+  drainage shapes.png --iLaplaceVert +1  -o laplaceVert.png
+  drainage shapes.png --iLaplaceVert -1 -o laplaceVert2.png
 \~
 
  */

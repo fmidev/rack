@@ -65,7 +65,8 @@ class JSONtree {
 public:
 
 	/// The "native" drain::JSON tree, yet others can be used in templates.
-	typedef drain::Tree<std::string, drain::VariableMap> tree_t;
+	//typedef drain::Tree<std::string, drain::VariableMap> tree_t;
+	typedef drain::Tree<drain::VariableMap> tree_t;
 
 	/// Must be implement list concept, eg. derived from  std::list<T>
 	typedef tree_t::path_t path_t;
@@ -85,9 +86,10 @@ public:
 	static // deprecated?
 	void writeJSON(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 
+
 	/// Write a Windows INI file
 	static
-	void writeINI(const tree_t & t, std::ostream & ostr = std::cout, const tree_t::path_t & prefix = tree_t::path_t('.'));
+	void writeINI(const tree_t & t, std::ostream & ostr = std::cout, const tree_t::path_t & prefix = tree_t::path_t());
 
 
 	/// Reads and parses a JSON file
@@ -179,12 +181,12 @@ void JSONtree::readTree(T & t, std::istream & istr){
 				c = istr.peek();
 
 				if (c == '{'){
-					log.debug(2) << "Reading object '" << key << "'" << log.endl;
+					log.debug3() << "Reading object '" << key << "'" << log.endl;
 					/// RECURSION
 					JSONtree::readTree(t[key], istr);
 				}
 				else {
-					log.debug(2) << "Reading value '" << key << "'" << log.endl;
+					log.debug3() << "Reading value '" << key << "'" << log.endl;
 					JSONreader::readValue(istr, vmap[key]);
 					//ValueReader::scanValue(istr, vmap[key]);
 				}

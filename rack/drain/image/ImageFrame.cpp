@@ -43,17 +43,18 @@ void ImageFrame::init(){
 
 	properties["name"] = name; // ("security risk", if file paths included by default?)
 
-	properties["type"].link(encoding.type);
+	properties["type"].link(conf.type);
 
-	// properties["width"].link(geometry.width);
-	// properties["height"].link(geometry.height);
+	// properties["width"].link(width);
+	// properties["height"].link(height);
 
-	properties["scale"].link(encoding.scaling.scale);
-	properties["offset"].link(encoding.scaling.offset);
-	properties["minPhysValue"].link(encoding.scaling.physRange.min);
-	properties["maxPhysValue"].link(encoding.scaling.physRange.max);
+	properties["scale"].link(conf.scale); // may be linked "away"
+	properties["offset"].link(conf.offset);
+	// TODO: properties["physRange"].link(scaling.physRange);
+	properties["minPhysValue"].link(conf.physRange.min);
+	properties["maxPhysValue"].link(conf.physRange.max);
 
-	properties["coordinatePolicy"].link(coordinatePolicy.v).fillArray = true;
+	properties["coordinatePolicy"].link(getCoordinatePolicy().tuple()).fillArray = true;
 
 	// mout.warn() << properties["coordinatePolicy"] << mout.endl;
 }
@@ -62,7 +63,7 @@ void ImageFrame::setStorageType(const std::type_info &type){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	encoding.setType(type);
+	conf.setType(type);
 	segmentBegin.setType(type);
 	segmentEnd.setType(type);
 
@@ -72,10 +73,16 @@ void ImageFrame::adjustBuffer(){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	const size_t s = geometry.getVolume() * encoding.byteSize;
+	/*
+	mout.warn() << "Area: " << area << '=' <<  area.getArea() << mout;
+	mout.warn() << "Chns: " << channels << '=' <<  channels.getChannelCount() << mout;
+	mout.warn() << geometry << '=' <<  getVolume() << '@' <<  encoding.byteSize << mout;
+	*/
+
+	const size_t s = getVolume() * conf.byteSize;
 
 	if (s > 0){
-		//mout.warn() << "size=" << s << "\t = " << geometry.getVolume() << '*' << encoding.byteSize << mout.endl;
+		//mout.warn() << "size=" << s << "\t = " << getVolume() << '*' << encoding.byteSize << mout.endl;
 		//mout.warn() << getConf() << mout.endl;
 	}
 
@@ -110,16 +117,17 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 		throw std::runtime_error("setView: source type undefined");
 	}
 
-	if (buffer.size() > encoding.byteSize){// isView() inapplicable, returns false at new images
+	if (buffer.size() > conf.byteSize){// isView() inapplicable, returns false at new images
 		throw std::runtime_error("setView: buffer not empty; non-empty image cannot view another image.");
 	}
 
 	// getter used, because possibly forwarded view-> view->
-	scalingPtr    = & src.getScaling();
+	conf.linkScaling(src.getScaling());
+	//scalingPtr    = & src.getScaling();
 	propertiesPtr = & src.getProperties(); // what about (alpha) channel scaling?
 
 	if (catenate){
-		geometry.setGeometry(src.getWidth(), src.getHeight()*channelCount,1,0);
+		conf.setGeometry(src.getWidth(), src.getHeight()*channelCount,1,0);
 	}
 	else {
 		const size_t k0 = channelStart;
@@ -136,7 +144,7 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 		const size_t a1 = std::max(i,k1);
 		const size_t alphaChannelCount = a1-a0;
 
-		geometry.setGeometry(src.getWidth(), src.getHeight(), imageChannelCount, alphaChannelCount);
+		conf.setGeometry(src.getWidth(), src.getHeight(), imageChannelCount, alphaChannelCount);
 
 		// Reconsider scaling, if only alpha channel(s)
 		/*
@@ -149,11 +157,11 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	setCoordinatePolicy(src.getCoordinatePolicy());
 
 
-	bufferPtr    = & src.bufferPtr[address(channelStart*geometry.getArea()) * encoding.byteSize];
+	bufferPtr    = & src.bufferPtr[address(channelStart*getArea()) * conf.byteSize];
 
 	// NOTE: (void *) needed, because bufferPtr is <unsigned char *> while these segment iterators vary.
 	segmentBegin = (void *)& bufferPtr[address(0)];
-	segmentEnd   = (void *)& bufferPtr[address(geometry.getVolume()) * encoding.byteSize];
+	segmentEnd   = (void *)& bufferPtr[address(getVolume()) * conf.byteSize];
 
 	segmentBegin.setType(src.getType());
 	segmentEnd.setType(src.getType());
@@ -203,12 +211,23 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	else
 		ostr << "Image";
 	ostr << " '"<< getName() << "'\t";
-	ostr << ' ' << geometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
+	ostr << getGeometry() << ' ' << Type::getTypeChar(conf.getType()) << '@' << (conf.getElementSize()*8) << 'b';
+
+	// Scaling is worth displaying only if it "exists" ...
+	//const drain::ValueScaling & s = getScaling();
+	const Encoding & s = getConf();
+	if (s.isScaled() || s.isPhysical()){
+		ostr << "*(" << s << (s.hasOwnScaling() ? '!' : '&') << ")\t";
+		// ostr << "*(" << s << ")";
+	}
+
+	/*
+	ostr << ' ' << getgeometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
 	//if (typeIsIntegerType() || (scaling.isScaled()))
 	const drain::ValueScaling & s = getScaling();
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(";
-		getScaling().toOStr(ostr);
+		getScaling().toStream(ostr);
 		ostr << ")";
 	}
 
@@ -216,12 +235,14 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	//	ostr  << '[' << scaling.getMinPhys() << ',' << scaling.getMaxPhys() << ']';
 	//ostr << ' ' << '[' << scaling.getMin<double>() <<  ',' << scaling.getMax<double>() << ']' << ' ' << scaling.getScale() << ' ';
 	ostr << ' ' << 'c' << getCoordinatePolicy();
+	*/
+
 	ostr << ' ' << (size_t) segmentBegin << ' ' << (size_t) segmentEnd << ' ';
 
 
 }
 
-
+/*
 size_t ImageFrame::getChannelIndex(const std::string & index) const {
 
 	// consider: conv to lower case
@@ -264,14 +285,17 @@ size_t ImageFrame::getChannelIndex(const std::string & index) const {
 	return i;
 
 }
-
-
-
-
-
+*/
 
 
 }  // image::
+
+template <>
+std::ostream & drain::SprinterBase::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout) {
+	src.toOStr(ostr); // consider using something from the layout
+	return ostr;
+}
+
+
 }  // drain::
 
-// Drain

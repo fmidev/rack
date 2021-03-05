@@ -36,13 +36,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 
-#include "../util/Log.h"
-#include "../util/Type.h"
-#include "../util/TypeUtils.h"
-#include "../util/Castable.h"
-#include "../util/CastableIterator.h"
-#include "../util/Point.h"
-#include "../util/VariableMap.h"
+#include "drain/util/Log.h"
+#include "drain/util/Type.h"
+#include "drain/util/TypeUtils.h"
+#include "drain/util/Castable.h"
+#include "drain/util/CastableIterator.h"
+#include "drain/util/Point.h"
+#include "drain/util/VariableMap.h"
 
 #include "Geometry.h"
 #include "Intensity.h"
@@ -63,13 +63,25 @@ class ModifiableImage : public MultiChannel {
 
 public:
 
+	virtual inline
+	const ImageConf & getConf() const {
+		return conf;
+	}
+
+	/*
+	virtual inline
+	ImageConf & getConf() {
+		return conf;
+	}
+	*/
+
 
 	inline
 	void setConf(const ImageConf &conf) {
-		encoding.setType(conf.encoding.getType());
-		encoding.scaling.set(conf.encoding.scaling);
-		coordinatePolicy.set(conf.coordinatePolicy);
-		setGeometry(conf.geometry);
+		this->conf.setConf(conf);
+		//setCoordinatePolicy(conf.getCoordinatePolicy());
+		//setGeometry(conf);
+		update();
 	}
 
 	/// Resizes the image, keeps the current type. \see initialize().
@@ -81,23 +93,25 @@ public:
 	// 	Consider old feature: \return true if geometry was changed, otherwise false.
 	virtual inline
 	void setGeometry(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
-
-		geometry.setGeometry(width, height, imageChannels, alphaChannels);
-		adjustBuffer();
-		this->channelVector.clear();
-
+		conf.getGeometry().set(width, height, imageChannels, alphaChannels);
+		// geometry.setGeometry(width, height, imageChannels, alphaChannels);
+		update();
 	}
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline
 	void setGeometry(const AreaGeometry &g){
-		setGeometry(g.getWidth(), g.getHeight());
+		conf.channels.set(1, 0); // ? CONSIDER area geom?
+		conf.area.set(g);
+		//setGeometry(g.getWidth(), g.getHeight());
+		update();
 	};
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline
 	void setGeometry(const Geometry &g){
-		setGeometry(g.getWidth(), g.getHeight(), g.getImageChannelCount(), g.getAlphaChannelCount());
+		conf.getGeometry().assign(g);
+		update();
 	};
 
 
@@ -109,20 +123,25 @@ public:
 
 	inline
 	void setChannelCount(size_t ni, size_t na = 0){
-		setGeometry(getWidth(), getHeight(), ni, na);
+		conf.channels.set(ni, na);
+		update();
 	};
 
 
 	inline
 	void setAlphaChannelCount(size_t k){
-		setGeometry(getWidth(), getHeight(), getImageChannelCount(), k);
+		conf.channels.setAlphaChannelCount(k);
+		update();
+		//setGeometry(getWidth(), getHeight(), getImageChannelCount(), k);
 	};
 
 
 	/// Sets the type and allocates a data buffer.
 	virtual inline
-	void initialize(const std::type_info &t, const Geometry & geometry){
-		initialize(t, geometry.getWidth(), geometry.getHeight(), geometry.getImageChannelCount(), geometry.getAlphaChannelCount());
+	void initialize(const std::type_info &t, const Geometry & g){
+		setStorageType(t);
+		setGeometry(g);
+		//initialize(t, g.area.getWidth(), g.area.getHeight(), g.channels.getImageChannelCount(), g.channels.getAlphaChannelCount());
 	}
 
 	/// Sets the type and allocates a data buffer.
@@ -141,7 +160,13 @@ public:
 		setGeometry(width,height,imageChannels,alphaChannels);
 	}
 	*/
+private:
 
+	inline
+	void update(){
+		adjustBuffer();
+		this->channelVector.clear();
+	}
 
 };
 
@@ -198,24 +223,24 @@ public:
 
 	inline
 	operator const Channel &() const {
-		if (getChannelCount() == 0){
+		if (conf.getChannelCount() == 0){
 			throw std::runtime_error("Image: no channels for cast");
 		}
-		else if (getChannelCount() > 1){
+		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), "Image", __FUNCTION__);
-			mout.warn() << "several channelCount=" << getChannelCount() << ">1, returning first." << mout.endl;
+			mout.warn() << "several channelCount=" << conf.getChannelCount() << ">1, returning first." << mout.endl;
 		}
 		return getChannel(0);
 	}
 
 	inline
 	operator Channel &(){
-		if (getChannelCount() == 0){
+		if (conf.getChannelCount() == 0){
 			throw std::runtime_error("Image: no channels for cast");
 		}
-		else if (getChannelCount() > 1){
+		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), "Image", __FUNCTION__);
-			mout.warn() << "several channelCount=" << getChannelCount() << ">1, returning first." << mout.endl;
+			mout.warn() << "several channelCount=" << conf.getChannelCount() << ">1, returning first." << mout.endl;
 		}
 		return getChannel(0);
 	}
@@ -229,10 +254,10 @@ public:
 	void setType(const std::type_info &type){
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		setStorageType(type);
-		if (!isEmpty()){
+		if (!conf.isEmpty()){
 			mout.note() << "STYLE/ changing type of allocated image" << mout.endl;
 		}
-		setGeometry(getGeometry());
+		conf.setGeometry(getGeometry());
 	};
 
 	/// Sets the storage type of the image - typically unsigned char, unsigned int or float.
@@ -257,9 +282,15 @@ public:
 	/// Copies type, geometry and coordinate under/overflow policy of the given image. Does not copy the data.
 	inline
 	void copyShallow(const ImageFrame & src){
-		initialize(src.getType(), src.getGeometry());
-		setScaling(src.getScaling());
+		// conf.setConf(src.getConf());
+		setStorageType(src.getType());
+		conf.setScaling(src.getScaling());  // NOTE: pointer-selected
+		conf.setGeometry(src.getGeometry());
 		setCoordinatePolicy(src.getCoordinatePolicy());
+
+		//initialize(src.getType(), src.getGeometry());
+		//setScaling(src.getScaling());
+		//setCoordinatePolicy(src.getCoordinatePolicy());
 	}
 
 	/// Copies the type, geometry, coordinate policy and data of the given image.
@@ -275,12 +306,12 @@ public:
 
 
 	inline
-	void adoptScaling(const ImageFrame & src, const std::type_info & t = typeid(void)){
-		useOwnScaling(); // needed?
+	void adoptScaling(const ImageConf & src, const std::type_info & t = typeid(void)){
+		conf.useOwnScaling(); // needed?
 		if (t == typeid(void))
-			encoding.scaling.adoptScaling(src.getScaling(), src.getType(), getType());
+			conf.adoptScaling(src.getScaling(), src.getType(), conf.getType());
 		else
-			encoding.scaling.adoptScaling(src.getScaling(), src.getType(), t);
+			conf.adoptScaling(src.getScaling(), src.getType(), t);
 	}
 
 	void swap(Image & img);

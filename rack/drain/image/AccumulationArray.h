@@ -40,9 +40,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/util/Variable.h"
 //#include "drain/util/DataScaling.h"
 
-#include "../util/Point.h"
+#include "drain/util/Point.h"
 #include "ImageT.h"
-#include "Coordinates.h"
+//#include "Coordinates.h"
+#include "CoordinateHandler.h"
 
 //#include "AccumulationRules.h"
 

@@ -54,10 +54,10 @@ namespace image
 
 
  \code
-   drainage shapes.png --floodFill  100,100,min=50,value=128 -o shapes-fill.png
-   drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,5,value=128   -o shapes-fill-wrap.png
-   drainage shapes-wrap.png --coordPolicy 2 --floodFill 5,128,value=192 -o shapes-fill-wrap-h.png
-   drainage shapes-wrap.png --coordPolicy 2 --floodFill 128,5,value=96  -o shapes-fill-wrap-v.png
+   drainage shapes.png --iFloodFill  100:100,intensity=50:255,value=128 -o shapes-fill.png
+   drainage shapes-wrap.png --coordPolicy 2 --iFloodFill 5:5,value=128   -o shapes-fill-wrap.png
+   drainage shapes-wrap.png --coordPolicy 2 --iFloodFill 5:128,value=192 -o shapes-fill-wrap-h.png
+   drainage shapes-wrap.png --coordPolicy 2 --iFloodFill 128:5,value=96  -o shapes-fill-wrap-v.png
  \endcode
 
 */
@@ -67,7 +67,8 @@ class FloodFillOp : public ImageOp {
 public:
 
 	FloodFillOp(int i=0, int j=0, double min=1.0, double max=65536.0, double value=1.0);
-	//FloodFillOp(int i=0, int j=0);
+
+	FloodFillOp(const FloodFillOp & op);
 
 	//virtual void makeCompatible(const ImageFrame & src,Image & dst) const;
 	virtual
@@ -79,15 +80,23 @@ public:
 	virtual
 	void traverseChannel(const Channel & src, Channel & dst) const;
 
+	void traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		mout.warn() = "Alpha channels not supported, calling traverseChannel(src, dst).";
+		traverseChannel(src, dst);
+	}
+
 	/**
 	 *  \tparam C - conf
 	 */
 	//template <class C> 	void fill(const Channel & src, int i, int j, Channel & dst) const;
 
+
+	/// Mutable, for coord handler ?
+	Point2D<int> startPoint;
+	//  mutable int i0;
 	/// Mutable, for coord handler
-	mutable int i0;
-	/// Mutable, for coord handler
-	mutable int j0;
+	//  mutable int j0;
 
 	SegmentProberConf<double,double> conf;
 

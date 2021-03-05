@@ -255,7 +255,7 @@ void SlidingOpticalFlow2<R>::initialize() {
 	this->location.setLocation(0,0);
 
 	mout.debug() << "window: "  << *this << mout.endl;
-	mout.debug(1);
+	mout.debug2();
 	mout << "GXX: " << this->GXX << '\n';
 	mout << "GXY: " << this->GXY << '\n';
 	mout << "GXX: " << this->GYY << '\n';
@@ -355,13 +355,13 @@ public:
 
 \~exec
    # Dots to diamonds
-   # rainage --geometry 256,256,1 --plot 128,128,100 --distanceTransform 256,256,0 -o diamond1.png
-   # rainage --geometry 256,256,1 --plot 148,118,100 --distanceTransform 256,256,0 -o diamond2.png
+   # rainage --geometry 256,256,1 --plot 128,128,100 --iDistanceTransform 256,256,0 -o diamond1.png
+   # rainage --geometry 256,256,1 --plot 148,118,100 --iDistanceTransform 256,256,0 -o diamond2.png
    make diamond1.png diamond2.png
 \~
 
 \code
-drainage diamond1.png diamond2.png --opticalFlow 25,25 --format '${i} ${j2} ${-0} ${1} ${A0}' --sample 10,10,file=oflow.dat
+drainage diamond1.png diamond2.png --iOpticalFlow 25,25 --format '${i} ${j2} ${-0} ${1} ${A0}' --sample 10,10,file=oflow.dat
 \endcode
 
 \~exec
@@ -377,13 +377,13 @@ convert -frame 2 +append oflow-result??.png oflow-panel2.png
 \~
 
  */
-class FastOpticalFlowOp2 : public SlidingWindowOp<SlidingOpticalFlowWeighted2> { // = window_t
+class FastOpticalFlow2Op : public SlidingWindowOp<SlidingOpticalFlowWeighted2> { // = window_t
 
 public:
 
 	typedef window_t::data_t data_t;
 
-	FastOpticalFlowOp2(int width=5, int height=5): //, double smoothing=0.01) : //, double gradPow=2.0) : //, double gradWidth = 16) :
+	FastOpticalFlow2Op(int width=5, int height=5): //, double smoothing=0.01) : //, double gradPow=2.0) : //, double gradWidth = 16) :
 		SlidingWindowOp<SlidingOpticalFlowWeighted2>(__FUNCTION__, "Optical flow computed based on differential accumulation layers.")
 		 {
 		//parameters.append(blender.getParameters(), false);
@@ -393,13 +393,24 @@ public:
 		parameters.link("threshold", threshold = NAN, "value");
 		parameters.link("spread", spread   = 0, "0|1");
 		parameters.link("smooth", smoother = 0, "0|1");
+		setSize(width, height);
 	}
 
-	/// Creates a double precision image of 2+1 channels for storing motion (uField,vField) and quality (q).
-	virtual
 	inline
-	void makeCompatible(const ImageFrame & src, Image & dst) const  {
-		dst.initialize(typeid(OpticalFlowCore2::data_t), src.getWidth(), src.getHeight(), 2, 1);
+	FastOpticalFlow2Op(const FastOpticalFlow2Op & op): SlidingWindowOp<SlidingOpticalFlowWeighted2>(op) {
+		//std::cerr << __FUNCTION__ << op.getParameters() << '\n';
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
+
+	/// Creates a double precision image of 2+1 channels for storing motion (uField,vField) and quality (q).
+	virtual inline
+	//void makeCompatible(const ImageFrame & src, Image & dst) const  {
+	void getDstConf(const ImageConf & src, ImageConf & dst) const  {
+		//dst.initialize(typeid(OpticalFlowCore2::data_t), src.getWidth(), src.getHeight(), 2, 1);
+		dst.setType(typeid(OpticalFlowCore2::data_t));
+		dst.setArea(src);
+		dst.setChannelCount(2, 1);
 	};
 
 	virtual inline

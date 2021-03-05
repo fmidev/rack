@@ -38,9 +38,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "Log.h"
-#include "Reference.h"
 #include "String.h"
+#include "Reference.h"
 #include "SmartMap.h"
+
+#include "Range.h"
+
 
 #ifndef REFERENCE_MAP
 #define REFERENCE_MAP
@@ -72,6 +75,18 @@ public:
 	ReferenceMap(const ReferenceMap & rmap): SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
 	};
 
+	// Temporary catch for Range
+	template <class F>
+	Referencer & link(const std::string & key, Range<F> &x, const std::string & unit = std::string()){
+        //#pragma deprecating (This will be removed)
+		Logger mout(__FUNCTION__, __FILE__);
+		mout.deprecating() << key << '[' << unit << ']' << mout.endl;
+		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << key << '[' << unit << ']' << '\n';
+		return link(key, &x, typeid(F), 2, unit);
+		// return x;
+	}
+
+
 	/// Associates a map entry with a variable
 	/**
 	 *  \param key - variable name in a map
@@ -92,6 +107,27 @@ public:
 		return r;
 	}
 
+
+	/// For arrays.
+	inline
+	Referencer & link(const std::string & key, void *ptr, const std::type_info &type, size_t count, const std::string & unit = std::string()){
+
+		if (find(key) == end()) // not  already referenced
+			keyList.push_back(key);
+
+		Referencer & r = std::map<std::string,Referencer>::operator[](key);
+		r.setSeparator(arraySeparator); // applicable, if array type element
+		r.link(ptr, type, count);
+		unitMap[key] = unit;
+		return r;
+
+	}
+
+	/// Convenience: create a reference to a scalar. For arrays, use the
+	inline
+	Referencer & link(const std::string & key, void *ptr, const std::type_info &type, const std::string & unit = std::string()){
+		return link(key, ptr, type, 1, unit);
+	}
 
 	/// Associates a map entry with a variable, adding key in the beginning of key list.
 	/**
@@ -142,6 +178,23 @@ public:
 		unitMap.erase(key);
 	}
 
+	/// Adds a null entry, expecting the link later.
+	/**
+	 *  The key will be added in the key list.
+	 *
+	 */
+	void reserve(const std::string & key){
+
+		if (find(key) == end()) // not  already referenced
+			keyList.push_back(key);
+
+		// Create
+		// Referencer & r =
+		std::map<std::string,Referencer>::operator[](key);
+		// Now r type is unset. (ptr undefined)
+
+	}
+
 	/// Removes all the elements of the map.
 	/**
 	 *  Clears the map and its ordered keylist (and units).
@@ -153,23 +206,35 @@ public:
 		unitMap.clear();
 	}
 
+	/** Alternatives in handling a link which is outside the source object.
+	 *
+	 */
+	typedef enum {
+		LINK,    /**< Link also external targets */
+		RESERVE, /**< No not link, but add entry (void) */
+		SKIP,    /**< No action */
+		ERROR    /**< Throw exception */
+	} extLinkPolicy;
+
 	/// Experimental. Copies references and values of a structure to another.
 	/**
 	 * 	\param m - links to the members of the source object
 	 * 	\param src - the source object
-	 * 	\param copyValues - copy also the member values of the source object
-	 * 	\param linkExternal - if yes, link also target variables outside the source object
+	 * 	\param dst - the destination object
 	 *
 	 *  Also updates key list and unit map?
 	 */
 	template <class T>
-	void copyStruct(const ReferenceMap & m, const T & src, T & dst, bool copyValues = true, bool linkExternal = false){
+	void copyStruct(const ReferenceMap & m, const T & src, T & dst, extLinkPolicy policy=RESERVE) {
+		//, bool copyValues = true, bool linkExternal = false){
 
 		Logger mout(__FUNCTION__, __FILE__);
 		long s = sizeof(T); // yes signed
-		mout.warn() << "experimental, obj.size=" << s << mout.endl;
+		//mout.warn() << "experimental, obj.size=" << s << mout.endl;
 
-		clear();
+		// Clearing is bad, it resets work of base class constructors
+		// if (policy==LINK)
+		//	clear();
 
 		typedef unsigned long addr_t;
 		typedef          long addr_diff_t;
@@ -182,27 +247,38 @@ public:
 			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
 			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
 			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
-				Referencer & dstMemberRef = std::map<std::string,Referencer>::operator[](key); // key order?
-				dstMemberRef.link((void *)(dstAddr + relativeAddr), srcRef.getType());
-				// d.setInputSeparator()
-				// d.setSeparator(arraySeparator);
-				if (copyValues)
-					dstMemberRef = srcRef; // value
+				Referencer & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
+				//mout.warn() << "local: " << key << ':' << srcRef.getElementCount() << mout.endl;
+				dstMemberRef.copyFormat(srcRef);
+				dstMemberRef = srcRef; // value
 			}
 			else {
-				if (linkExternal){
-					Referencer & dstRef = std::map<std::string,Referencer>::operator[](key); // key order?
-					dstRef.link((void *)srcVarAddr, srcRef.getType());
-					if (copyValues)
-						dstRef = srcRef;
+				//mout.warn() << "external: " << key     << mout.endl;
+				switch (policy) {
+				case LINK:
+					link(key, (void *)srcVarAddr, srcRef.getType(), srcRef.getElementCount()).copyFormat(srcRef);
+					break;
+				case RESERVE:
+					reserve(key);
+					//mout.warn() << "reserved: " << key     << mout.endl;
+					//mout.warn() << "keyList:  " << getKeys() << mout.endl;
+					break;
+				case SKIP:
+					mout.debug() << "skipping external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+					break;
+				case ERROR:
+					mout.error() << "external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+					break;
+				default:
+					mout.warn() << "unknown enum option in handling external variable '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
 				}
-				else
-					mout.warn() << "skipping external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
 			}
 		}
+
+		// Shared properties.
+		//keyList = m.keyList;
 		separator = m.separator;
 		arraySeparator = m.arraySeparator;
-		keyList = m.keyList;
 		unitMap = m.unitMap;
 
 	}
@@ -229,6 +305,8 @@ public:
 			return it->second;
 		}
 		else {
+			mout.warn() << "current contents: " << *this << mout.endl;
+
 			mout.error() << "key '" << key <<"' not declared (referenced)" << mout.endl;
 			//throw std::runtime_error(key + ": ReferenceMap & operator[] : key not found");
 			static mapped_type empty;

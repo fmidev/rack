@@ -87,8 +87,8 @@ protected:
 
 		drain::Logger mout(getImgLog(), "FlowAverageWindow", __FUNCTION__);
 
-		mout.debug(1) << "srcTray:\n" << srcTray  << mout.endl;
-		mout.debug(1) << "dstTray:\n" << dstTray << mout.endl;
+		mout.debug2() << "srcTray:\n" << srcTray  << mout.endl;
+		mout.debug2() << "dstTray:\n" << dstTray << mout.endl;
 
 		if (srcWeight.isEmpty())
 			mout.debug() << "no src alpha"  << mout.endl;
@@ -108,7 +108,7 @@ protected:
 		setLoopLimits();
 		this->location.setLocation(0,0);
 
-		limiter = this->dst.getEncoding().getLimiter<double>();
+		limiter = this->dst.getConf().getLimiter<double>();
 
 		sum.resize(dstTray.size(), 0.0);
 		fillBoth();
@@ -123,7 +123,8 @@ protected:
 	};
 
 	void setImageLimits() const {
-		src.adjustCoordinateHandler(this->coordinateHandler);
+		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
+		//src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
 	virtual
@@ -166,6 +167,9 @@ public:
 class FlowAverageOp : public SlidingWindowOp<FlowAverageWindowWeighted> {
 
 public:
+
+	FlowAverageOp() : SlidingWindowOp<FlowAverageWindowWeighted>(__FUNCTION__, "Window average that preserves the magnitude"){
+	};
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {

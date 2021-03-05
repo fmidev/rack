@@ -46,24 +46,30 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	// mout.debug() << "start" << mout.endl;
+
 	int hResult = 0;
 
 	const int width  = src.getWidth();
 	const int height = src.getHeight();
-	const CoordinateHandler2D handler(width, height, src.getCoordinatePolicy());
+	const CoordinateHandler2D handler(src);
+
+	// mout.warn() << dst << mout.endl;
 
 	Point2D<int> p;
 
 	int pos;
 	int length;
 	int lengthTag;
-	const int lengthMax = dst.getEncoding().getTypeMax<int>();
+	const int lengthMax = dst.getConf().getTypeMax<int>();
 
 	// Use may give 'threshold' as a relative [0.0,1.0] or absolute value.
 	// => Convert to unambiguous thresholdAbs.
 	const double thresholdAbs = src.getScaling().inv(threshold);
 
 	for (int j=0; j<height; j++){
+
+		// mout.warn() << "Line" << j << mout.endl;
 
 		pos = 0;  // pos will never decrease
 		length = 0;
@@ -110,7 +116,7 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 /// Computes lengths of horizontal or vertical segments.
 /**
 \code
-drainage image.png  --runLengthHorz 128  -o out.png
+drainage image.png  --iRunLengthHorz 128  -o out.png
 \endcode
 
 To detect line segments longer than 255 the user should use 16-bit result image, \c --type \c 16 .
@@ -125,6 +131,7 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	const int width  = src.getWidth();
 	const int height = src.getHeight();
 	const CoordinateHandler2D handler(width, height, src.getCoordinatePolicy());
+	//const CoordinateHandler2D handler(src);
 
 	Point2D<int> p;
 
@@ -133,13 +140,17 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	int pos; // pos will never decrease
 	int length;
 	int lengthTag;
-	const int lengthMax = dst.getEncoding().getTypeMax<int>();
+	const int lengthMax = dst.getConf().getTypeMax<int>();
 
 	// Use may give 'threshold' as a relative [0.0,1.0] or absolute value.
 	// => Convert to unambiguous thresholdAbs.
 	const double thresholdAbs = src.getScaling().inv(threshold);
 
-	mout.debug(2) << "lengthMax=" << lengthMax << mout.endl;
+	mout.debug2() << "coordHandler: " << handler << mout.endl;
+	mout.debug2() << "lengthMax=" << lengthMax << mout.endl;
+	mout.debug2() << "src: " << src << mout.endl;
+	mout.debug2() << "dst: " << dst << mout.endl;
+
 
 	for (int i=0; i<width; i++){
 

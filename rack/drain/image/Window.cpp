@@ -28,7 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include "../util/Point.h"
+//#include "drain/util/Point.h"
 #include "Window.h"
 
 namespace drain
@@ -37,11 +37,41 @@ namespace drain
 namespace image
 {
 
-IdentityFunctor WindowConfig::idFtor;
+std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
+	ostr << "WindowConfig:: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();
+	//ostr << "WindowConfig: " << conf.getFunctorName() << ':' << conf.getFunctorParams();
+	//ostr << "WindowConfig: " << "conf.getFunctorName()";
+	return ostr;
+}
+
+/*
+std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
+	// const drain::UnaryFunctor & ftor = conf.getFunctor();
+	// ostr << "WindowConfig:: " << conf.frame << ':' << ftor.getName()<< '>' << ftor.getgetParameters();
+	//ostr << "WindowConfig:: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();
+	ostr << "WindowConfig:: " << conf.frame;
+	// std::cerr << __FILE__ << '\n';
+	return ostr;
+}
+*/
+
+//IdentityFunctor WindowConfig::idFtor;
+
 
 }
 
 }
+
+/*
+std::ostream & operator<<(std::ostream & ostr, const drain::image::WindowConfig & conf){
+	//const drain::UnaryFunctor & ftor = conf.getFunctor();
+	//ostr << "WindowConfig:: " << conf.frame << ':' << ftor.getName()<< '>' << ftor.getgetParameters();
+	ostr << "WindowConfig:: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();
+	// ostr << "WindowConfig:: "; // << conf.frame;
+	// std::cerr << __FILE__ << '\n';
+	return ostr;
+}
+*/
 
 
 // Drain

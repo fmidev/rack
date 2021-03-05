@@ -91,7 +91,8 @@ protected:
 
 //#define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
 
-typedef drain::Tree<std::string,NodeXML> TreeXML;
+//typedef drain::Tree<std::string,NodeXML> TreeXML;
+typedef drain::Tree<NodeXML> TreeXML;
 
 template <class K, class T, class C> //, class C>
 std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tree, const std::string & defaultTag){

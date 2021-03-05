@@ -29,15 +29,18 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 #ifndef IMAGELIKE_H_
-#define IMAGELIKE_H_ "ImageLike 0.1,  2017/10 Markus.Peura@fmi.fi"
+#define IMAGELIKE_H_ "ImageLike 1.1,  2020/02 Markus.Peura@fmi.fi"
 
+/*
 #include <stddef.h>  // size_t
 
-#include "../util/Caster.h"
+##include "../util/Caster.h"
 #include "../util/ValueScaling.h"
 
 #include "Geometry.h"
 #include "Coordinates.h"
+*/
+#include "ImageConf.h"
 
 namespace drain
 {
@@ -47,175 +50,6 @@ namespace image
 {
 
 
-
-class Encoding { //: public drain::Caster, publicdrain::ValueScaling {
-
-public:
-
-	inline
-	Encoding(){
-		setType(typeid(unsigned char));
-	}
-
-	Encoding(const Encoding & encoding){
-		setType(encoding.caster.getType());
-	}
-
-	/// In base class(es), mainly for storing storage type. In derived classes, also for value conversions.
-	Caster caster;
-
-	// Size of the storage type (1 for 8 bits, 2 for 16 bits, etc.)
-	size_t byteSize;
-
-	/// Information of the current type.
-	std::string type;  // synch?
-
-	/// Linear scaling
-	drain::ValueScaling scaling;
-
-	/// Get the storage type
-	inline
-	const std::type_info & getType() const {
-		return caster.getType();
-	}
-
-	/// Set storage type
-	void setType(const std::type_info & t){
-
-		if (t == typeid(bool)){
-			//mout.warn() << "storage type 'bool' not supported, using 'unsigned char'" << mout.endl;
-			setType(typeid(unsigned char)); // re-invoke
-		}
-		else if (t == typeid(std::string)){
-			//mout.error() << "storage type 'std::string' not applicable to images" << mout.endl;
-			//setType(typeid(unsigned char));
-			throw std::runtime_error("storage type 'std::string' not applicable to images");
-			return;
-		}
-
-		caster.setType(t);
-		byteSize = caster.getElementSize();
-		type.resize(1);
-		type.at(0) = drain::Type::getTypeChar(caster.getType());
-
-	}
-
-	/// Convenience
-	template <class T>
-	inline
-	void setType(){
-		setType(typeid(T));
-	}
-
-	template <class T>
-	inline
-	typename drain::typeLimiter<T>::value_t getLimiter() const {
-		return drain::Type::call<drain::typeLimiter<T> >(caster.getType());
-	}
-
-	/// Returns the minimum value supported by the current storage type.
-	/**
-	 *   Does not check the actual image data.
-	 *
-	 *   \see getMax()
-	 *   \see getLimiter()
-	 *   \see setType()
-	 */
-	template <class T>
-	inline
-	T getTypeMin() const {
-		return Type::call<typeMin, T>(caster.getType());
-	}
-
-	/// Returns the maximum value supported by the current storage type. \see setType()
-	/**
-	 *   Does not check the actual image data.
-	 *
-	 *   \see getMin()
-	 *   \see getLimiter()
-	 *   \see setType()
-	 */
-	template <class T>
-	inline
-	T getTypeMax() const {
-		return Type::call<typeMax, T>(caster.getType());
-	}
-
-	/// Returns the size in bytes of the storage type (1 for unsigned char, 2 for 16-bit types, etc.)
-	inline
-	size_t getElementSize() const { return byteSize; };
-
-	/*
-	  problem: scaling may be linked ie different than that of encoding
-	inline
-	void setPhysicalScale(double min, double max){
-		scaling.setPhysicalScale(caster.getType(), min, max);
-	}
-	*/
-
-
-
-
-
-
-};
-
-
-/// Struct for image data.
-class ImageConf {
-
-public:
-
-
-	inline
-	ImageConf(const drain::Type & t = typeid(unsigned char), size_t width=0, size_t height=0, size_t imageChannels=1, size_t alphaChannels=0) {
-		encoding.setType(t);
-		// encoding.scaling...
-		geometry.setArea(width, height ? height : width);
-		geometry.setChannelCount(imageChannels, alphaChannels);
-	}
-
-	//inline 	ImageConf() : byteSize(0) {	setType(typeid(void));}
-
-	inline
-	ImageConf(const ImageConf & conf) : encoding(conf.encoding), geometry(conf.geometry), coordinatePolicy(conf.coordinatePolicy) {
-		//encoding.setType(conf.getType());
-	}
-
-
-	// A single channel may have specific scaling, or scaling linked to main image object.
-	//ImageScaling scaling;
-	Encoding encoding;
-
-	/// Dimensions of the image: width, height, image channel count, alpha channel count
-	Geometry geometry;
-
-	/// Rules to handle under- and overflows of horizontal and vertical coordinates
-	CoordinatePolicy coordinatePolicy;
-
-
-
-};
-
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
-
-	ostr << ' ' << conf.geometry << ' ' << Type::getTypeChar(conf.encoding.getType()) << '@' << (conf.encoding.getElementSize()*8) << 'b';
-	const drain::ValueScaling & s = conf.encoding.scaling;
-	if (s.isScaled() || s.isPhysical()){
-		ostr << "*(";
-		s.toOStr(ostr);
-		ostr << ")";
-	}
-	//if (scaling.isPhysical())
-	//	ostr  << '[' << scaling.getMinPhys() << ',' << scaling.getMaxPhys() << ']';
-	//ostr << ' ' << '[' << scaling.getMin<double>() <<  ',' << scaling.getMax<double>() << ']' << ' ' << scaling.getScale() << ' ';
-	ostr << ' ' << 'c' << conf.coordinatePolicy;
-	return ostr;
-}
-
 /// A base class for images.
 /*!
  *   Generally, an ImageLike does not have to have memory. It may be a two-dimensional function,
@@ -223,7 +57,8 @@ std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
  */
 //  Consider: in future, may be merged to ImageConf ?
 //  Consider : ImageLike<CONF> : protected CONF {
-class ImageLike : protected ImageConf {  // or rename ImageBase
+
+class ImageLike { // public ImageConf {  // or rename ImageBase
 
 public:
 
@@ -233,196 +68,169 @@ public:
 	inline
 	ImageLike(const ImageLike &image){
 		std::cerr << __FILE__ << __FUNCTION__ << " setConf/Geom has no effect\n";
-		//setConf(image);
-		encoding.setType(image.getType());
-		encoding.scaling.set(image.encoding.scaling);
-		//geometry.setGeometry(image.getGeometry());
-		coordinatePolicy.set(image.coordinatePolicy);
-		/*
-		encoding.setType(image.getType());
-		encoding.scaling.set(image.encoding.scaling);
-		geometry.setGeometry(image.getGeometry());
-		coordinatePolicy.set(image.coordinatePolicy);
-		 */
+		conf.setConf(image.conf);
+		//conf.setEncoding(image.getEncoding());
+		//conf.setCoordinatePolicy(image.getCoordinatePolicy());
 	};
 
+	/*
 	inline
 	ImageLike(const ImageConf &conf){
 		std::cerr << __FILE__ << __FUNCTION__ << " setConf has no effect\n";
 		//setConf(conf);
 	}
-
+	*/
 
 	virtual inline
 	~ImageLike(){};
 
+	/*
 	inline
 	const ImageConf & getConf() const {
-		return *this;
+		return conf; // *this;
 	}
 
-	// ENCODING/SCALING
-
-	// REMOVE THIS..?
 	virtual inline
 	const Encoding & getEncoding() const {
-		return encoding;
+		return conf; // *this;
+	}
+	*/
+	/// Get the storage type
+	inline
+	const std::type_info & getType() const {
+		return conf.caster.getType();
 	}
 
-
-	/// Returns the storage type of the image (typically unsigned char, unsigned int or float).
-	/*
-	 */
-	inline
-	const std::type_info & getType() const { return encoding.caster.getType(); };
-
-	/// Returns true, if type is set.
 	inline
 	bool typeIsSet() const {
-		return encoding.caster.typeIsSet();
+		return conf.caster.typeIsSet();
 	};
 
-	// ENCODING/SCALING
 
-	inline
-	void setScaling(const drain::ValueScaling &s) {
-		getScaling().set(s); // note: may call useOwnScaling();
-	}
-
-	inline
-	void setScaling(double scale, double offset=0.0) {
-		getScaling().setScale(scale, offset); // note: may call useOwnScaling();
-	}
-
-	//drain::ValueScaling
-	virtual inline
-	const drain::ValueScaling & getScaling() const {
-		return encoding.scaling;
-	}
-
-	virtual inline
-	drain::ValueScaling & getScaling() {
-		return encoding.scaling;
-	}
-
-
-	// These must be here, because getScaling() may be behind a link.
-	// Consider getEncoding
-
-	/// Returns the actual or guessed maximum physical value,
-	/**
-	 *  Is physical range is unset, and the storage type is a "small" integer, the value is guessed.
-	 */
-	inline // double defaultMax = std::numeric_limits<double>::max()
-	double requestPhysicalMax(double defaultMax = static_cast<double>(std::numeric_limits<short int>::max())) const {
-
-		const drain::ValueScaling & s = getScaling();
-
-		if (s.isPhysical())
-			return s.getMaxPhys();
-		else {
-			const std::type_info & t = getType();
-			if (Type::call<drain::typeIsSmallInt>(t))
-				return s.fwd(Type::call<typeMax, double>(t));
-			else
-				return defaultMax;
-		}
-	}
-
-	/// Returns the actual or guessed minimum physical value,
-	/**
-	 *  Is physical range is unset, and the storage type is a "small" integer, the value is guessed.
-	 */
-	inline
-	double requestPhysicalMin(double defaultMin = static_cast<double>(std::numeric_limits<short int>::min())) const {
-
-		const drain::ValueScaling & s = getScaling();
-
-		if (s.isPhysical())
-			return s.getMinPhys();
-		else {
-			const std::type_info & t = getType();
-			if (Type::call<drain::typeIsSmallInt>(t))
-				return s.fwd(Type::call<typeMin, double>(t));
-			else
-				return defaultMin;
-		}
-	}
-
-
-	// GEOMETRY
-
-	virtual	inline
+	virtual inline // CHECK if virtual needed
 	const Geometry & getGeometry() const {
-		return geometry;
+		return conf;
 	}
 
-	// Frequently needed convenience functions.
 
 	inline
-	size_t getWidth() const { return getGeometry().getWidth();};
+	size_t getWidth() const {
+		return conf.getWidth();
+	};
 
 	inline
-	size_t getHeight() const { return getGeometry().getHeight();};
+	size_t getHeight() const {
+		return conf.getHeight();
+	};
 
 	inline
-	size_t getChannelCount() const { return getGeometry().getChannelCount();};
+	size_t getArea() const {
+		return conf.getArea();
+	};
 
 	inline
-	const size_t getImageChannelCount() const { return getGeometry().getImageChannelCount();};
+	size_t getChannelCount() const {
+		return conf.getChannelCount(); // getGeometry unneeded?
+	};
+
 
 	inline
-	const size_t getAlphaChannelCount() const { return getGeometry().getAlphaChannelCount();};
+	const size_t getImageChannelCount() const {
+		return conf.getImageChannelCount();
+	};
+
 
 	inline
-	bool hasAlphaChannel() const { return (getGeometry().getAlphaChannelCount()>0);};
+	const size_t getAlphaChannelCount() const {
+		return conf.getAlphaChannelCount();
+	};
+
 
 	inline
-	const size_t getVolume() const { return getGeometry().getVolume();};
+	bool hasAlphaChannel() const {
+		return conf.hasAlphaChannel();
+	};
+
 
 	inline
-	bool isEmpty() const { return (getGeometry().getVolume() == 0);	};
+	size_t getVolume() const {
+		return conf.getVolume();
+	};
 
+	inline
+	bool isEmpty() const {
+		return conf.isEmpty();
+	};
 
-	// Modifiable (read & write) properties.
+	/// Coord policy
+	inline
+	const CoordinatePolicy & getCoordinatePolicy() const {
+		return conf.coordinatePolicy;
+	}
 
-	/// Does not set any CoordinateHandler object.
+	/// Coord policy
+	inline
+	CoordinatePolicy & getCoordinatePolicy(){
+		return conf.coordinatePolicy;
+	}
+
+	// TODO: lower?
 	template <class T>
 	inline
 	void setCoordinatePolicy(const T & policy){
-		coordinatePolicy.set(policy);
+		conf.coordinatePolicy.set(policy);
 	}
 
+	// TODO: lower?
 	inline
-	void setCoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
-		coordinatePolicy.set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
+	void setCoordinatePolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy){
+		conf.coordinatePolicy.set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
 	}
 
-	inline
-	const CoordinatePolicy & getCoordinatePolicy() const {
-		return coordinatePolicy;
+	virtual inline
+	const drain::ValueScaling & getScaling() const {
+		return conf.getScaling();
 	}
 
-	/// Copies image limits and coordinate overflow policy to external coordinate handler.
+
+	// Notice: scaling is modifiable.
+	virtual inline
+	drain::ValueScaling & getScaling() {
+		return conf.getScaling();
+	}
+
+	// Notice: scaling is modifiable.
+	virtual inline
+	void setScaling(const drain::ValueScaling & scaling){
+		conf.setScaling(scaling);
+	}
+
+	// Notice: scaling is modifiable.
+	virtual inline
+	void setScaling(double scale, double offset){
+		conf.setScaling(scale, offset);
+	}
+
+
+
+	template <class T>
 	inline
-	void adjustCoordinateHandler(CoordinateHandler2D & handler) const {
-		handler.setLimits(getGeometry().getWidth(), getGeometry().getHeight());
-		handler.setPolicy(getCoordinatePolicy());
-	};
+	typename drain::typeLimiter<T>::value_t getLimiter() const {
+		return drain::Type::call<drain::typeLimiter<T> >(conf.caster.getType());
+	}
+
+
 
 
 
 protected:
 
+	ImageConf conf;
 
 };
-
-
 
 
 } // image::
 } // drain::
 
-#endif /* IMAGE_SCALING_H_*/
-
-// Drain
+#endif /* IMAGELIKE_H_*/

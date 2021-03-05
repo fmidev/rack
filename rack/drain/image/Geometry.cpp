@@ -42,6 +42,50 @@ namespace image
 {
 
 
+size_t Geometry::getChannelIndex(const std::string & index) const {
+
+	// consider: conv to lower case
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+
+	if (index.empty()){
+		mout.warn() << "index str empty, returning 0" << mout.endl;
+		return 0;
+	}
+
+	size_t i = 0;
+
+	switch (index.at(0)) {
+	case 'r':  // red
+		i = 0;
+		break;
+	case 'g':  // green
+		i =  1;
+		break;
+	case 'b':  // blue
+		i =  2;
+		break;
+	case 'a':  // alpha
+		i =  getImageChannelCount();
+		break;
+	default:
+		/// Number
+		std::stringstream sstr(index);
+		sstr >> i;
+		if ((i == 0) && (index != "0"))
+			throw std::range_error(index + "<-- Image::getChannelIndex: unknown channel symbol");
+	}
+
+	if (i >= getChannelCount()){
+		mout.warn() << "index " << i << " larger than channelCount " << getChannelCount() << mout.endl;
+	}
+
+	return i;
+
+}
+
+/*
 void AreaGeometry::setWidth(size_t w){
 	width = w;
 	update();
@@ -61,8 +105,9 @@ void AreaGeometry::setArea(size_t w, size_t h){
 void AreaGeometry::update(){
 	area = width * height;
 }
+*/
 
-
+/*
 void ChannelGeometry::setChannelCount(size_t i, size_t a){
 	imageChannelCount = i;
 	alphaChannelCount = a;
@@ -74,10 +119,8 @@ void ChannelGeometry::setAlphaChannelCount(size_t a){
 	alphaChannelCount = a;
 	update();
 }
+*/
 
-void ChannelGeometry::update(){
-	channelCount = imageChannelCount+alphaChannelCount;
-}
 
 // using namespace std;
 	
@@ -89,6 +132,7 @@ Geometry::Geometry() : width(0), height(0), channelCount(0), imageChannelCount(0
 }
 */
 
+/*
 Geometry::Geometry(size_t width, size_t height, size_t imageChannelCount, size_t alphaChannelCount)
 {
 	setGeometry(width, height, imageChannelCount, alphaChannelCount);
@@ -100,9 +144,9 @@ Geometry::Geometry(const Geometry & g){
 
 Geometry::~Geometry(){
 }
+*/
 
-
-
+/*
 void Geometry::setGeometry(size_t width, size_t height, size_t imageChannelCount, size_t alphaChannelCount){
 
 	setArea(width, height);
@@ -110,27 +154,21 @@ void Geometry::setGeometry(size_t width, size_t height, size_t imageChannelCount
 	//const bool change  = (this->width != width) || (this->height != height) ||
 	//		(this->imageChannelCount != imageChannelCount) || (this->alphaChannelCount != alphaChannelCount);
 
-	/*
-	this->width = width;
-	this->height = height;
-	this->imageChannelCount = imageChannelCount;
-	this->alphaChannelCount = alphaChannelCount;
-	this->channelCount = imageChannelCount + alphaChannelCount;
-	*/
 	update();
 	//return change;
 } 
-	
+*/
 
 
 
 
-
+/*
 void Geometry::update(){
-	AreaGeometry::update();
+	AreaGeometry::updateTuple();
 	ChannelGeometry::update();
 	volume = area * channelCount;
 }
+*/
 
 
 /*
@@ -151,6 +189,7 @@ std::ostream & operator<<(std::ostream &ostr, const Geometry & g) {
 }
 */
  
+/*
 std::string &Geometry::toString(std::string & s) const
 {
     std::stringstream sstr;
@@ -159,6 +198,7 @@ std::string &Geometry::toString(std::string & s) const
 	s = sstr.str();
     return s;
 }
+*/
 
 
 }

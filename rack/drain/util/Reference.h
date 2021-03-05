@@ -113,8 +113,9 @@ public:
 
 	/// NEW. Set pointer to p, of given type.
 	inline
-	void link(void *p, const std::type_info &t){
+	void link(void *p, const std::type_info &t, size_t count=1){
 		setPtr(p, t);
+		elementCount = count;
 	}
 
 
@@ -168,10 +169,19 @@ void Referencer::link<Referencer>(Referencer &r){
 	relink(r);
 }
 
+/// "Friend class" template implementation
 template <>
 inline
 std::ostream & JSONwriter::toStream(const Referencer & v, std::ostream &ostr, unsigned short indentation){
 	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
+}
+
+
+/// "Friend class" template implementation
+template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Referencer & x, const SprinterLayout & layout) {
+	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
 }
 
 

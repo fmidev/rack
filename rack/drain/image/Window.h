@@ -28,13 +28,16 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef WINDOW_H_
-#define WINDOW_H_
+#ifndef DRAIN_WINDOW_H_
+#define DRAIN_WINDOW_H_
 
+#include "drain/util/Frame.h"
 #include "drain/util/Functor.h"
+#include "drain/util/FunctorBank.h"
+#include "drain/util/Static.h"
 #include "ImageView.h"
 #include "ImageTray.h"
-//#include "ImageOp.h"
+#include "CoordinateHandler.h"
 
 
 namespace drain
@@ -50,40 +53,156 @@ namespace image
  *
  *   A class derived from WindowConfig should \e not contain information of source or destination data, but of the "window itself".
  */
-class WindowConfig {  // TODO: public BeanLike
+class WindowConfig { //: public BeanLike { // {  // TODO:
 
 public:
 
+	//IdentityFunctor f;
+
+	/*
 	inline
-	WindowConfig(int width=1, int height=1) : width(width), height(height), ftor(idFtor) {
+	WindowConfig(int width=1, int height=0) : frame(width, height ? height : width){
+		ftorMapEntry = getFunctorBank().get<IdentityFunctor>(); //  getMap().begin();
+		//ftor(idFtor) {
+		// parameters.link("width", frame.width, "pix");
+		// parameters.link("height", frame.height, "pix");
+	};
+	*/
+
+	template <class FT=IdentityFunctor>
+	inline
+	WindowConfig(int width=1, int height=0, const FT & functor = FT()) : frame(width,height ? height : width){
+		// Cloner<UnaryFunctor,FT> & cloner = Static::get<Cloner<UnaryFunctor,FT>,FunctorBank::bank_id>();
+		// ftorMapEntry.first = functor.getName(); // cloner.getSource().getName();  // === functor.getName();
+		//clonerBase = & Static::get<Cloner<UnaryFunctor,FT>,FunctorBank::bank_id>();
+		key = functor.getName();
+		functorParameters.importCastableMap(functor.getParameters());
 	};
 
 	inline
-	WindowConfig(UnaryFunctor & functor, int width=1, int height=1) : width(width), height(height), ftor(functor) {
+	WindowConfig(const WindowConfig & conf) :
+		// BeanLike(conf),
+		frame(conf.frame),
+		key(conf.key)
+		//clonerBase(conf.clonerBase)
+	{
+		//ftorMapEntry = getFunctorBank().find2<IdentityFunctor>(); //  .getMap().begin();
+		functorParameters.importCastableMap(conf.functorParameters); // maybe different from cloned ones!
+		//parameters.copyStruct(conf.parameters, conf, *this);
 	};
 
-	/// Width of the window, in pixels.
-    int width;
 
-	/// Height of the window, in pixels.
-    int height;
+	// Width and height of the window, in pixels.
+	Frame2D<int> frame;
 
     inline
-    int getWidth() const { return width; };
+    int getWidth() const {
+    	return frame.width;
+    };
 
     inline
-    int getHeight() const { return height>0 ? height : width; };
+    /// int getHeight() const { return frame.height>0 ? frame.height : frame.width; }; // ???
+    int getHeight() const {
+    	return frame.height;
+    	//return frame.height>0 ? frame.height : frame.width;
+    };
 
-    // Could/should be const?
-    UnaryFunctor & ftor;
+    typedef typename FunctorBank::map_t fmap_t;
+    typedef typename fmap_t::const_iterator ftor_entry_t;
+
+    VariableMap functorParameters;
+
+    /// Get the cloner of the current functor type.
+    /*
+    inline
+	const FunctorBank::cloner_t & getFunctorCloner() const{
+        return *clonerBase; //this->ftorMapEntry.second;
+    };
+    */
+
+    /// Changes the current functor and returns the source of it.
+    inline
+	void setFunctor(const std::string & ftorKey){
+
+    	FunctorBank & functorBank = getFunctorBank();
+    	const std::string k = functorBank.resolve(ftorKey); // empty ok, idFtor!
+
+    	const fmap_t & m = functorBank.getMap();
+    	ftor_entry_t it = m.find(k);
+    	if (it != m.end()){
+        	//this->ftorMapEntry = *it; //->second->clone();
+    		//this->ftorMapEntry.first = k; // it->first; //->second->clone();
+    		//this->ftorMapEntry.second = it->second;
+    		//clonerBase = it->second;
+    		key = it->first;
+    	}
+    	else {
+    		//this->ftorMapEntry = getFunctorBank().get<IdentityFunctor>();
+    		//this->ftorMapEntry = getFunctorBank().get<IdentityFunctor>();
+    		throw std::runtime_error(ftorKey + '[' + k + "]: no such entry, using IdentityFunctor");
+    	}
+    	//return it->second->getSource();
+    };
+
+    /*
+    inline
+	UnaryFunctor & getFunctor(const std::string & ftorKey){
+    	setFunctor(ftorKey);
+    	return getFunctor();
+    }
+
+
+    /// Get an instance of the current functor type.
+    inline
+    UnaryFunctor & getFunctor() const {
+    	UnaryFunctor & ftor = getFunctorCloner().getCloned();
+    	ftor.setParameters(functorParameters);
+    	return ftor;
+    };
+    */
+
+    //const fmap_t::key_type & getFunctorName() const;
+
+    // Needed?
+
+    inline
+	const fmap_t::key_type & getFunctorName() const {
+    	return key;
+    };
+
+
+
+    /// Return the parameters to be set for proceeding getFunctor() calls.
+    inline
+	const VariableMap & getFunctorParams() const{
+        return functorParameters;
+    };
+
 
 protected:
 
-    // Could/should be const?
-    static IdentityFunctor idFtor;
-
+    //const typename FunctorBank::map_t::key_type *key;
+    std::string key;
+    //typename FunctorBank::map_t::const_iterator ftorMapEntry;
+    //typename FunctorBank::map_t::value_type ftorMapEntry;
+   // ClonerBase<UnaryFunctor> * clonerBase;
 
 };
+
+std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf);
+
+
+
+/*
+std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
+	//const UnaryFunctor & ftor = conf.getFunctor();
+	// ostr << "WindowConfig:: " << conf.frame << ':' << ftor.getName()<< '>' << ftor.getParameters();
+	ostr << "WindowConfig:: "; // << conf.frame;
+	std::cerr << __FILE__ << '\n';
+	return ostr;
+}
+*/
+
 
 /// Provides splitting frames
 /**
@@ -288,7 +407,7 @@ public:
 			mout.debug()  << "no srcTray.alpha" << mout.endl;
 		}
 
-		mout.debug(1) << this->srcTray << mout.endl;
+		mout.debug2() << this->srcTray << mout.endl;
 
 	};
 
@@ -317,7 +436,7 @@ public:
 			// mout.warn()  << "setting empty srcTray" << mout.endl;
 		}
 
-		mout.debug(1) << this->dstTray << mout.endl;
+		mout.debug2() << this->dstTray << mout.endl;
 
 		/*
 		if (dstTray.size() != 2){
@@ -340,26 +459,63 @@ public:
  *  \tparam R - source and target images, and their setters.
  */
 template <class C = WindowConfig, class R = WindowCore>
-class Window : public R // consider : public BeanLike ?
-{
+class Window : public R { // consider : public BeanLike ?
+
 public:
 
 	typedef C conf_t;
 
 	conf_t conf;
 
+	UniCloner<UnaryFunctor> unicloner;
+
+	// Final function, set upon instantiation
+	drain::UnaryFunctor & myFunctor;
+
 	/// Constructor with geometry setting option.
-	Window(size_t width=1, size_t height=0) : resetAtEdges(false), iMin(0), iMax(0), jMin(0), jMax(0){
+	Window(size_t width=1, size_t height=0) :
+		//conf(width, height),
+		unicloner(getFunctorBank()),
+		myFunctor(unicloner.getCloned(conf.getFunctorName())), //
+		//myFunctor(this->conf.getFunctor()),
+		resetAtEdges(false),
+		SCALE(true),
+		iRange(0,0),
+		jRange(0,0)
+	{
   		setSize(width, height==0 ? width : height);
+  		myFunctor.setParameters(conf.functorParameters);
 		location.setLocation(0, 0);
 	};
 
 	/// Constructor adapting given configuration.
-	Window(const C & conf) : conf(conf), resetAtEdges(false), iMin(0), iMax(0), jMin(0), jMax(0){
-		setSize(conf.width, conf.height);
+	Window(const C & conf) :
+		conf(conf),
+		unicloner(getFunctorBank()),
+		myFunctor(unicloner.getCloned(conf.getFunctorName())), //
+		// myFunctor(this->conf.getFunctor(conf.getFunctorName())), //
+		resetAtEdges(false),
+		SCALE(true),
+		iRange(0,0),
+		jRange(0,0)
+	{
+		setSize(conf.frame.width, conf.frame.height);
+  		myFunctor.setParameters(conf.functorParameters);
 		location.setLocation(0, 0);
 	}
 
+	Window(const Window & window) :
+		conf(window.conf),
+		myFunctor(this->conf.getFunctor(window.conf.getFunctorName())),
+		resetAtEdges(window.resetAtEdges),
+		SCALE(window.SCALE),
+		iRange(window.iRange),
+		jRange(window.jRange)
+	{
+		setSize(conf.frame.width, conf.frame.height);
+		myFunctor.setParameters(window.conf.functorParameters);
+		location.setLocation(0, 0);
+	}
 	// Future option...
 	/*
 	Window(const R & core, size_t width=1, size_t height=0) : R(core), resetAtEdges(false){
@@ -370,20 +526,24 @@ public:
 
 	/// Destructor
 	virtual
-	~Window(){};
+	~Window(){
+		//  << this->conf.getFunctorCloner().size() <<
+		//std::cerr << "Erasing: myFunctor " << std::endl;
+	};
 
 	/// Sets the window size
 	//  Not final, because some derived classes like SlidingStripe's need to redefine this
 	virtual inline
 	void setSize(size_t width, size_t height){
-		conf.width = width;
-		conf.height = height;
+		conf.frame.set(width, height);
 	}
 
 
 	/// Returns the nominal area in pixels
 	inline
-    size_t getArea(){ return conf.width * conf.height;};
+    size_t getArea(){
+		return conf.frame.getArea();
+	};
 
 	/// Returns the area which has eventually been scaled (in a non-linear coordinate system)
 	inline
@@ -426,7 +586,7 @@ protected:
 	 *   One may think of a boat. Boats typically move more easily forward or backward (ie. "horizontally") than sideways ("vertically").
 	 */
 	virtual inline
-	bool isHorizontal() const { return (this->conf.width > this->conf.height); };
+	bool isHorizontal() const { return (this->conf.frame.width > this->conf.frame.height); };
 
 
 	// For 1) cleaning numerical residues and 2) updating window parameters
@@ -470,26 +630,30 @@ protected:
     virtual
     void setImageLimits() const = 0;
 
-
+    // Window limits, not image limits
+    mutable Range<int> iRange;
+    mutable Range<int> jRange;
+    /*
     mutable int iMin;
     mutable int iMax;
     mutable int jMin;
     mutable int jMax;
+	*/
 
     /// Sets the actual traversal range inside the window. Sometimes applied dynamically by reset().
 	virtual inline
 	void setLoopLimits(int width, int height){
 		samplingArea = width * height;
-		iMin = -(static_cast<int>(width)-1)/2;   // note unsigned risk!
-		iMax = width/2;
-		jMin = -(static_cast<int>(height)-1)/2;
-		jMax = height/2;
+		iRange.min = -(static_cast<int>(width)-1)/2;   // note unsigned risk!
+		iRange.max = width/2;
+		jRange.min = -(static_cast<int>(height)-1)/2;
+		jRange.max = height/2;
 	}
 
 	/// Sets the actual traversal range inside the window. Sometimes applied dynamically by reset().
 	inline
 	void setLoopLimits(){
-		setLoopLimits(conf.width, conf.height);
+		setLoopLimits(conf.frame.width, conf.frame.height);
 	}
 
 
@@ -507,12 +671,11 @@ protected:
 
 template <class C, class R>
 void Window<C,R>::toStream(std::ostream &ostr) const {
-	ostr << "Window: " << conf.width << 'x' <<  conf.height << ' ';
-	ostr << '[' << iMin << ',' << jMin << ',' << iMax << ',' << jMax << ']';
+	ostr << "Window: " << conf.frame << ' ';
+	ostr << '[' << iRange << '|' << jRange << ']';
 	//ostr << " in (" << srcWidth << 'x' <<  srcHeight << ") ";
-	ostr << '@' << location << '\n';
-	ostr << coordinateHandler << '\n';
-	//ostr << "src: " << src << " scaling:" << scaleResult << '\n';
+	ostr << '@' << location << ',' << coordinateHandler << ' ';
+	ostr << "functor: " << this->myFunctor << '\n';
 	/*
 	ostr << "src: " << src << " scaling:" << (int)SCALE << '\n';
 	ostr << "dst: " << dst << '\n';
@@ -530,12 +693,16 @@ void Window<P,R>::run(){
 	int &i = location.x;
 	int &j = location.y;
 
-	const int iMax = coordinateHandler.getXMax();
-	const int jMax = coordinateHandler.getYMax();
+	//const int iMax = coordinateHandler.getXRange().max;
+	//const int jMax = coordinateHandler.getYRange().max;
+
+	const Range<int> & horzRange = coordinateHandler.getXRange();
+	const Range<int> & vertRange = coordinateHandler.getYRange();
+
 
 	if (isHorizontal()){
-		for (j = 0; j <= jMax; ++j) {
-			for (i = 0; i <= iMax; ++i) {
+		for (j = 0; j <= vertRange.max; ++j) {
+			for (i = 0; i <= horzRange.max; ++i) {
 				update();
 				write();
 			}
@@ -546,8 +713,8 @@ void Window<P,R>::run(){
 		}
 	}
 	else {
-		for (i = 0; i <= iMax; ++i) {
-			for (j = 0; j <= jMax; ++j) {
+		for (i = 0; i <= horzRange.max; ++i) {
+			for (j = 0; j <= vertRange.max; ++j) {
 				update();
 				write();
 			}
@@ -561,21 +728,20 @@ void Window<P,R>::run(){
 }
 
 
-
-
-
 template <class P, class R>
 inline
-std::ostream & operator<<(std::ostream &ostr, const Window<P,R> &w){
+std::ostream & operator<<(std::ostream &ostr, const drain::image::Window<P,R> &w){
 	w.toStream(ostr);
 	return ostr;
 }
 
 
+} // image
 
-}
 
-}
+} // drain
+
+
 
 #endif /*WINDOWOP_H_*/
 

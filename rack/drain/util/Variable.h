@@ -148,6 +148,25 @@ public:
 
 	virtual ~Variable(){};
 
+	//template <class T>
+	Variable & append(){
+		return *this;
+	}
+
+	template <class T, class ...TT>
+	Variable & append(const T &x, const TT& ...rest){
+		Castable::operator<<(x);
+		append(rest...);
+		return *this;
+	}
+
+	template <class T, class ...TT>
+	Variable & set(const T &x, const TT& ...rest){
+		clear();
+		(*this) = x;
+		return append(rest...);
+	}
+
 	/// Does not change separator chars.
 	inline
 	void reset(){
@@ -310,13 +329,22 @@ protected:
 };
 
 
+/// "Friend class" template implementation
 template <>
 inline
 std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsigned short indentation){
 	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
 }
 
-
+/// "Friend class" template implementation
+//return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
+/*
+template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout) {
+	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+}
+*/
 
 
 

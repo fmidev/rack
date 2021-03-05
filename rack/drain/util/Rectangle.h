@@ -35,14 +35,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef RECTANGLE2_H_
-#define RECTANGLE2_H_
+#ifndef DRAIN_RECTANGLE2_H_
+#define DRAIN_RECTANGLE2_H_
 
-#include <ostream>
+//#include <ostream>
 #include <cmath>
-#include <string>
-#include <sstream>
+// #include <string>
+// #include <sstream>
+#include <vector>
 
+#include "UniTuple.h"
 #include "Point.h"
 
 // // using namespace std;
@@ -56,11 +58,39 @@ namespace drain {
  *  \see drain::Range<T>
  *
  */
+
+
 template <class T>
-class Rectangle {
+struct Rectangle : public drain::UniTuple<T,4> {
+
+	Point2D<T> lowerLeft;
+	Point2D<T> upperRight;
+	// consider Range<T> x, Range<T> y,
+
+	Rectangle(T x=0, T y=0, T x2=0, T y2=0) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2) {
+		this->set(x, y, x2, y2);
+	}
+
+
+	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
+		this->assign(r);
+	};
+
+	Rectangle<T> & operator=(const Rectangle<T> & rect){
+		this->set(rect.tuple());
+		return *this;
+	}
+
+/*
+};
+template <class T>
+class Rectangle : public UniTuple<T,4> {
 public:
 
-	Rectangle(){
+	drain::Point2D<T> lowerLeft;
+	drain::Point2D<T> upperRight;
+
+	Rectangle() : lowerLeft(this->arr, 2), upperRight(this->arr, 2){
 		set(0, 0, 0, 0);
 	};
 
@@ -69,16 +99,27 @@ public:
 	};
 
 	Rectangle(const Rectangle & r){
+		// consider *this = r;
 		set(r.lowerLeft.x, r.lowerLeft.y, r.upperRight.x, r.upperRight.y);
 	};
+*/
 
+	/*
+	template <class T2>
+	inline
+	void set(){
+
+	}
 
 	template <class T2>
 	inline
 	void set(T2 xLowerLeft, T2 yLowerLeft, T2 xUpperRight, T2 yUpperRight){
-		this->lowerLeft.setLocation(xLowerLeft, yLowerLeft);
-		this->upperRight.setLocation(xUpperRight, yUpperRight);
+		this->lowerLeft.set(xLowerLeft, yLowerLeft);
+		this->upperRight.set(xUpperRight, yUpperRight);
+		//this->lowerLeft.setLocation(xLowerLeft, yLowerLeft);
+		//this->upperRight.setLocation(xUpperRight, yUpperRight);
 	}
+
 
 	template <class T2>
 	inline
@@ -87,11 +128,12 @@ public:
 		this->upperRight.setLocation(upperRight);
 	}
 
+
 	inline
 	void set(const Rectangle & r){
 		set(r.lowerLeft, r.upperRight);
 	};
-
+	*/
 
 	inline
 	T getWidth() const { return (this->upperRight.x - this->lowerLeft.x); };
@@ -145,15 +187,19 @@ public:
 	inline
 	std::vector<T> toVector() const {
 		std::vector<T> v;
+		UniTuple<T,4>::toSequence(v);
+		/*
 		v.reserve(4);
 		v.push_back(this->lowerLeft.x);
 		v.push_back(this->lowerLeft.y);
 		v.push_back(this->upperRight.x);
 		v.push_back(this->upperRight.y);
+		*/
 		return v;
 	}
 
 	/// Write corner points to a stream
+	/*
 	template <class S>
 	inline
 	void toStream(S & ostr, char separator=',') const {
@@ -167,9 +213,7 @@ public:
 		toStream(sstr, separator);
 		return sstr.str();
 	}
-
-	drain::Point2D<T> lowerLeft;
-	drain::Point2D<T> upperRight;
+	*/
 
 protected:
 

@@ -114,7 +114,7 @@ void Accumulator::addData(const Image & srcData, const AccumulationConverter & c
 	double value;
 	double weight;
 	converter.encodeWeight(priorWeight);  // important
-	mout.debug() << converter << mout.endl;
+	//mout.warn() << "converter: " << converter << mout.endl;
 	Point2D<int> p;
 
 	for (unsigned int i = 0; i < width; ++i) {
@@ -204,7 +204,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 
 	//if ((field >= 'A') && (field <= 'Z')) field = field-'A'+'a';
 
-	mout.debug(1) << "field " << field << mout.endl;
+	mout.debug2() << "field " << field << mout.endl;
 
 	switch (field){
 		case 'd':

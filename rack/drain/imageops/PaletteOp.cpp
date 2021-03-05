@@ -118,8 +118,8 @@ void PaletteOp::setPalette(const Image &palette) const {
 }
  */
 
-
-void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
+void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
+//void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -129,11 +129,12 @@ void PaletteOp::makeCompatible(const ImageFrame &src, Image &dst) const {
 		return;
 	}
 
-	const ChannelGeometry & colours = palettePtr->getChannels();
+	// const ChannelGeometry & colours = palettePtr->getChannels();
+	// mout.debug() << colours << mout;
 
-	mout.debug() << colours.getImageChannelCount() << ':' << colours.getAlphaChannelCount() << mout.endl;
-
-	dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
+	dst.setArea(src);
+	dst.setChannelCount(palettePtr->getChannels());
+	//dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
 
 	mout.debug() << "dst: " << dst << mout.endl;
 
@@ -159,8 +160,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	// mout.debug() << "Starting" << mout.endl;
 
-	mout.debug(1) << src << mout.endl;
-	mout.debug(1) << dst << mout.endl;
+	mout.debug2() << src << mout.endl;
+	mout.debug2() << dst << mout.endl;
 
 	const Channel & srcChannel = src.get(0);
 	if (src.size() > 1){
@@ -177,7 +178,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	// Note: colouring involves also alpha, if found, so channelCount includes alpha channel(s)
 
-	size_t channelCount = dst.getGeometry().getChannelCount();
+	size_t channelCount = dst.getGeometry().channels.getChannelCount();
 
 	if (channelCount > paletteChannels.getChannelCount()){
 		mout.note() << "dst has " << channelCount << " colours (channels), using that of palette: " << paletteChannels.getChannelCount() << mout.endl;
@@ -193,7 +194,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	const Palette & pal = *palettePtr;
 
 	//const std::type_info & type  = srcChannel.getType();
-	const Encoding & encoding = srcChannel.getEncoding();
+	const ImageConf & encoding = srcChannel.getConf();
 
 	//const ValueScaling & scaling = srcChannel.getScaling();
 	const ValueScaling scaling(scale, offset);
@@ -207,7 +208,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	const bool UCHAR  = (encoding.getType() == typeid(unsigned char));      // && !SCALED;
 	const bool USHORT = (encoding.getType() == typeid(unsigned short int)) ;// && !SCALED;
 
-
+	// const bool DST_USHORT =
 	// intensity (gray level)
 	double d;
 	// lower bound
@@ -225,8 +226,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
 
-		mout.note() << "created look-up table" << lut.size() << " for input: " << drain::Type::getTypeChar(encoding.getType()) << mout.endl;
-		mout.note() << "scaling: " << encoding.scaling << " => " << sc << mout.endl;
+		mout.info() << "created look-up table[" << lut.size() << "] for input: " << drain::Type::getTypeChar(encoding.getType()) << mout.endl;
+		mout.info() << "scaling: " << encoding.getScaling() << " => " << sc << mout.endl;
 
 		if (mout.isDebug(2)){
 			for (size_t i=0; i<lut.size(); ++i){
@@ -317,7 +318,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 
 	if (paletteChannels.getAlphaChannelCount() == 0){
-		if ((src.getGeometry().getAlphaChannelCount()>0) && (dst.getGeometry().getAlphaChannelCount()>0)){
+		if ((src.getGeometry().channels.getAlphaChannelCount()>0) && (dst.getGeometry().channels.getAlphaChannelCount()>0)){
 			mout.info() << "Copying original (1st) alpha channel" << mout.endl;
 			CopyOp().traverseChannel(src.getAlpha(), dst.getAlpha());
 		}

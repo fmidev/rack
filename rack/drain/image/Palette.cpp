@@ -216,9 +216,9 @@ void Palette::load(const std::string & filename, bool flexible){
 	if (filePath.dir.empty())
 		filePath.dir.push_front(".");
 
-	mout.debug() << " Initial file path: " << filePath.toStr() << mout.endl;
+	mout.debug() << " Initial file path: " << filePath.str() << mout.endl;
 
-	const std::string s = filePath.toStr();
+	const std::string s = filePath.str();
 
 
 	std::ifstream ifstr;
@@ -226,7 +226,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	if (ifstr.good()){
 
-		mout.note() << "reading: " << filePath.toStr() << mout.endl;
+		mout.note() << "reading: " << filePath.str() << mout.endl;
 
 		if (filePath.extension == "txt"){
 			loadTXT(ifstr);
@@ -279,7 +279,7 @@ void Palette::load(const std::string & filename, bool flexible){
 			if (filePath.dir.back() != "palette"){
 				// Add /<dir>/palette
 				paths.push_back(filePath.dir);
-				paths.back() << "palette";  // subdir
+				paths.back().appendElem("palette");  // subdir
 			}
 
 			drain::FilePath finalFilePath;
@@ -288,12 +288,14 @@ void Palette::load(const std::string & filename, bool flexible){
 				for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
 					finalFilePath.dir = *pit;
 					finalFilePath.extension = *eit;
-					mout.info() << "trying: " << finalFilePath.toStr() << mout.endl;
-					ifstr.open(finalFilePath.toStr().c_str(), std::ios::in);
-					if (ifstr.good())
+					mout.info() << "trying... " << finalFilePath << mout.endl;
+					mout.info() << "a.k.a.... " << finalFilePath.str().c_str() << mout.endl;
+					ifstr.open(finalFilePath.str().c_str(), std::ios::in);
+					//if (ifstr.good())
+					if (ifstr.is_open())
 						break;
 				}
-				if (ifstr.good())
+				if (ifstr.is_open())
 					break;
 			}
 
@@ -303,7 +305,7 @@ void Palette::load(const std::string & filename, bool flexible){
 				return;
 			}
 
-			mout.note() << "reading: " << finalFilePath.toStr() << mout.endl;
+			mout.note() << "reading: " << finalFilePath.str() << mout.endl;
 
 			reset();
 
@@ -443,7 +445,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		// if (entry.color.size() == 4)
 		//  alpha=
 
-		mout.debug(2) << entry.label << '\t' << entry << mout.endl;
+		mout.debug3() << entry.label << '\t' << entry << mout.endl;
 
 		label.clear();
 

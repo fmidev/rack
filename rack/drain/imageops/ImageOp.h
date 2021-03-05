@@ -28,20 +28,12 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef IMAGENEWOP_H_
-#define IMAGENEWOP_H_
+#ifndef DRAIN_IMAGE_OP_H_
+#define DRAIN_IMAGE_OP_H_
 
-//#include "drain/util/LinearScaling.h"
 #include "drain/util/BeanLike.h"
-// #include "drain/util/LinearScaling.h"
-//#include "drain/util/Data.h"
-//#include "drain/util/Options.h"
-//#include "drain/util/Tree.h"
-//#include "drain/util/ReferenceMap.h"
+#include "drain/image/CoordinateHandler.h"
 #include "ImageMod.h"
-//#include "ImageView.h"
-//#include "Image.h"
-//#include "ImageTray.h"
 
 
 
@@ -61,6 +53,9 @@ public:
 
     inline
     virtual ~ImageOp(){};
+
+
+    //  const std::string & getName();
 
 	/// Main interface. Typically splits processing to each channel.
 	/**
@@ -114,6 +109,17 @@ public:
     };
 
 
+    /// Given source image, determine respective dest image configuration.
+    /**
+     *  \return true, if independent (non-overlapping) image is needed.
+     */
+    virtual inline
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {  // TODO: src, src2, dst
+    	dst.setEncoding(src.getEncoding());
+    	dst.setGeometry(src.getGeometry()); //geometry = src.geometry;
+    	dst.setCoordinatePolicy(src.getCoordinatePolicy());
+    	//return false;
+    }
 
 	/// Depending on the operator, modifies the geometry and type of dst.
 	/*  This default implementation
@@ -121,8 +127,8 @@ public:
 	 *  -# sets dst type, if unset, to that of src
 	 *  -# sets dst geometry to that of src
 	 */
-	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	virtual // TODO: non-virtual, ie, final!
+	void makeCompatible(const ImageConf & src, Image & dst) const;
 
 	/// Modifies the geometry and type of dst to fit the computation result.
 	/*
@@ -131,7 +137,7 @@ public:
 	 *  - else, calls makeCompatible(src1, dst); src2 has no effect.
 	 */
 	virtual
-	void makeCompatible(const ImageFrame & src1, const ImageFrame & src2, Image & dst) const;
+	void makeCompatible2(const ImageFrame & src1, const ImageFrame & src2, Image & dst) const;
 
 
 	/// Prints name, description and parameters using BeanLike::toOStr(). Virtual, so derived classes may extend output.
@@ -146,9 +152,16 @@ protected:
      *  \param  weight_supported - not supported (0), flexibly supported (1) or required (2)
      *  \param  tmp_required - temporary image needed, if src and dst are same or overlapping.
      */
-    inline  // , bool tmp_required=false    // , TMP_REQUIRED(tmp_required)
-    ImageOp(const std::string &name = __FUNCTION__, const std::string &description="")  : ImageMod(name, description)
-    {};
+    inline  //  = std::string(__FUNCTION__).substr(0, ::strlen(__FUNCTION__)-2
+    ImageOp(const std::string &name = __FUNCTION__, const std::string &description="")  : ImageMod(name, description){
+    };
+
+    /**
+     *  This is needed, otherwise parameters(parameters) is called through BeanLike(BeanLike).
+     */
+    inline
+    ImageOp(const ImageOp & op)  : ImageMod(op.name, op.description){
+    };
 
 	virtual
 	bool processOverlappingWithTemp(const ImageFrame & src, Image & dst) const;
@@ -227,8 +240,9 @@ protected:
 
     static inline
     void adaptCoordinateHandler(const Channel & src, CoordinateHandler2D & handler){
-    	handler.setLimits(src.getWidth(), src.getHeight());
-    	handler.setPolicy(src.getCoordinatePolicy());
+    	handler.set(src.getGeometry(), src.getCoordinatePolicy());
+    	// handler.setLimits(src.getWidth(), src.getHeight());
+    	// handler.setPolicy(src.getCoordinatePolicy());
     }
 
 

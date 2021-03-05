@@ -44,12 +44,19 @@ namespace drain {
 
 namespace image {
 
+class NodeSVG;
+
+typedef drain::Tree<NodeSVG> TreeSVG;
+
+
 /// A node for TreeXML
 /**
   \example TreeSVG-example.cpp
  */
 class NodeSVG: public NodeXML {
 public:
+
+	//typedef drain::Tree<NodeSVG> tree_t;
 
 	enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE }; // check CTEXT, maybe implement in XML
 
@@ -58,7 +65,7 @@ public:
 	void setType(type t);
 
 	static
-	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<std::string,NodeSVG> & t);
+	std::ostream & toOStr(std::ostream &ostr, const TreeSVG & t);
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static
@@ -82,9 +89,6 @@ protected:
 	std::string text_anchor;
 
 };
-
-
-typedef drain::Tree<std::string,NodeSVG> TreeSVG;
 
 
 

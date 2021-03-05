@@ -91,7 +91,9 @@ public:
 	 * \]
 	 */
 	inline
-	double getSize() const { return static_cast<double>(size);};
+	double getSize() const {
+		return static_cast<double>(size);
+	};
 
 	/// Returns the horizontal coordinate of centre of mass.
 	/**
@@ -150,7 +152,9 @@ public:
 	 */
 	inline
 	double getVariance() const {
-		return getVarianceHorz() + getVarianceVert();
+		updateStats();
+		return cxx + cyy;
+		//return getVarianceHorz() + getVarianceVert();
 	};
 
 	inline

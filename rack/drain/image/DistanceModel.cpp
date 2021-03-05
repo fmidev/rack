@@ -37,23 +37,23 @@ namespace image {
 
 const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 
-void DistanceModel::createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward) const {
+void DistanceModel::createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward) const {
 
-	//const signed char sign = forward ? +1 : -1;
+	chain.clear();
 
 	switch (topology) {
-	case 2:
+	case PIX_CHESS_CONNECTED:
 		chain.push_back(getElement(-1, -2, forward));
 		chain.push_back(getElement(+1, -2, forward));
 		chain.push_back(getElement(-2, -1, forward));
 		chain.push_back(getElement(+2, -1, forward));
 		// no break
-	case 1:
+	case PIX_8_CONNECTED:
 		// 8-adjacency
 		chain.push_back(getElement(-1, -1, forward));
 		chain.push_back(getElement(+1, -1, forward));
 		// no break
-	case 0:
+	case PIX_4_CONNECTED:
 		// 4-adjacency
 		chain.push_back(getElement(-1,  0, forward));
 		chain.push_back(getElement( 0, -1, forward));
@@ -64,14 +64,6 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, unsigned short to
 
 }
 
-/*
-void DistanceModel::mirrorChain(const DistanceNeighbourhood & chain, DistanceNeighbourhood & mirroredChain) const {
-	mirroredChain.clear();
-	for (DistanceNeighbourhood::const_iterator it=chain.begin(); it!=chain.end(); ++it){
-		mirroredChain.push_back(DistanceElement(-it->diff.x, -it->diff.y, it->coeff));
-	}
-}
- */
 
 
 }

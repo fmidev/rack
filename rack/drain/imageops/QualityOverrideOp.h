@@ -47,18 +47,18 @@ namespace image
 
 \~exec
   # onvert  image.png -rotate 180 image-rot.png
-  # rainage image-rot.png --copy f --view r --copy a --view f -o image-rot-rgba.png
+  # rainage image-rot.png --iCopy f --view r --iCopy a --view f -o image-rot-rgba.png
   make image-rot-rgba.png # exec
 \~
 
  \code
-   drainage image-rgba.png image-rot-rgba.png  --qualityOverride '0.99' -o qualityOverride.png
+   drainage image-rgba.png image-rot-rgba.png  --iQualityOverride '0.99' -o qualityOverride.png
  \endcode
 
 \~exec
-  drainage image-rgba.png      --view F --resize 240,560 -o qualityOverride-s1.png
-  drainage image-rot-rgba.png  --view F --resize 240,560 -o qualityOverride-s2.png
-  drainage qualityOverride.png --view F --resize 240,560 -o qualityOverride-d.png
+  drainage image-rgba.png      --view F --iResize 240,560 -o qualityOverride-s1.png
+  drainage image-rot-rgba.png  --view F --iResize 240,560 -o qualityOverride-s2.png
+  drainage qualityOverride.png --view F --iResize 240,560 -o qualityOverride-d.png
   convert -frame 1 +append qualityOverride-{s1,s2,d}.png -resize 560x560 qualityOverride-panel.png
 \~
 

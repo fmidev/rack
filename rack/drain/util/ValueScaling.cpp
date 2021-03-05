@@ -51,15 +51,15 @@ void ValueScaling::setOptimalScale(const std::type_info & t){ // , const std::st
 		// set physical zero in storage-type zero (consider -32...+50 Celsius)
 		if (Type::call<drain::isSigned>(t)){ // ie. codeMin < 0.0
 			if (physRange.max > -physRange.min){
-				setScale(physRange.max/codeMax);
+				set(physRange.max/codeMax, 0.0);
 			}
 			else {
-				setScale(physRange.min/codeMin);
+				set(physRange.min/codeMin, 0.0);
 			}
 		}
 		else {
 			const double s = (physRange.max - physRange.min)/(codeMax-codeMin);
-			setScale(s, physRange.min - s*codeMin);
+			set(s, physRange.min - s*codeMin);
 		}
 	}
 	else { // warn? (esp. for int and long int)
@@ -80,10 +80,10 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 
 	mout.debug() << "Src scaling: " <<  srcScaling << ", type: " << Type::getTypeChar(srcType) << mout.endl;
 	if (srcScaling.isPhysical()  && (dstType != typeid(void))){
-		mout.debug(1) << "Ok, copying physical scaling of src" << mout.endl;
+		mout.debug2() << "Ok, copying physical scaling of src" << mout.endl;
 		//setPhysicalRange(srcScaling.getMinPhys(), srcScaling.getMaxPhys());
 		if (srcType == dstType){
-			set(srcScaling);
+			assign(srcScaling);
 		}
 		else {
 			setPhysicalScale(dstType, srcScaling.getMinPhys(), srcScaling.getMaxPhys());
@@ -91,12 +91,12 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		}
 	}
 	else {
-		mout.debug(1) << "Src has no physical scaling, trying to guess..." << mout.endl;
+		mout.debug2() << "Src has no physical scaling, trying to guess..." << mout.endl;
 		if (Type::call<drain::typeIsSmallInt>(srcType) && Type::call<drain::typeIsSmallInt>(dstType)){
 			if (srcType == dstType){
-				mout.debug(1) << "Src[" << Type::getTypeChar(srcType) << "], ";
+				mout.debug2() << "Src[" << Type::getTypeChar(srcType) << "], ";
 				mout << " Dst[" << Type::getTypeChar(dstType) << "] " << mout.endl;
-				set(srcScaling);
+				assign(srcScaling);
 				mout.debug() << *this << mout.endl;
 			}
 			else {
@@ -104,7 +104,7 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 				mout << " Dst[" << Type::getTypeChar(dstType) << "] " << mout.endl;
 				const double maxS = drain::Type::call<drain::typeMax, double>(srcType);
 				const double maxD = drain::Type::call<drain::typeMax, double>(dstType);
-				setScale(srcScaling.getScale() * maxS/maxD);
+				set(srcScaling.getScale() * maxS/maxD, 0.0);
 				//setScale(srcScaling.getScale() * Type::call<Type::maxD>(srcType)/Type::call<Type::maxD>(dstType));
 				if (srcScaling.getOffset() != 0.0){
 					mout.warn() << " offset ("<< srcScaling.getOffset() << ") conversion unimplemented "<< mout.endl;
@@ -116,11 +116,11 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		else if (Type::call<drain::typeIsInteger>(srcType) && Type::call<drain::typeIsInteger>(dstType)) {
 			mout.note() << "Int-to-int (either large)";
 			mout        << "Src[" << Type::getTypeChar(srcType) << "], Dst[" << Type::getTypeChar(dstType) << "] " << mout.endl;
-			set(srcScaling);
+			assign(srcScaling);
 		}
 		else if (Type::call<drain::typeIsInteger>(dstType)) { // src float
 			mout.warn() << "Src[" << Type::getTypeChar(srcType) << "], float data without physical scaling, dst[" << Type::getTypeChar(dstType) << "] problems ahead" << mout.endl;
-			set(srcScaling);
+			assign(srcScaling);
 		}
 		else if (Type::call<drain::typeIsInteger>(srcType)) { // src float
 			mout.note() << "No physical range set for adopting ";
@@ -138,7 +138,7 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		else {
 			mout.debug() << "Float types: src[" << Type::getTypeChar(srcType) << "], dst[" << Type::getTypeChar(dstType) << "]" << mout.endl;
 			// TODO: assume
-			set(srcScaling);
+			assign(srcScaling);
 		}
 	}
 

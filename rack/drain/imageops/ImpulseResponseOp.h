@@ -141,9 +141,9 @@ public:
  \tparam - Accumulating unit that also handles decoding/encoding of the values, must define ::conf
 
  \code
-   drainage shapes.png --impulseAvg  0.9,5,5 -o shapes-impulse-90.png
-   drainage shapes.png --impulseAvg  0.5,5,5 -o shapes-impulse-50.png
-   drainage shapes.png --impulseAvg  0.1,5,5 -o shapes-impulse-10.png
+   drainage shapes.png --iImpulseAvg  0.9,5,5 -o shapes-impulse-90.png
+   drainage shapes.png --iImpulseAvg  0.5,5,5 -o shapes-impulse-50.png
+   drainage shapes.png --iImpulseAvg  0.1,5,5 -o shapes-impulse-10.png
  \endcode
 
  */
@@ -180,6 +180,24 @@ public:
 	inline
 	~ImpulseResponseOp(){};
 
+
+	/*
+	virtual	inline
+	void makeCompatible(const ImageFrame &src, Image &dst) const  {
+
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		//mout.debug3() << "src: " << src << mout.endl;
+
+		if (dst.getType() != src.getType()){
+			mout.note() << " changing dst image type: " << dst.getType().name() << '>' << src.getType().name() << mout.endl;
+		}
+
+		dst.copyShallow(src);
+		mout.warn() << dst << mout.endl;
+		// mout.debug(3) << "dst: " << dst << mout.endl;
+
+	};
+	*/
 
 	//virtual void makeCompatible(const ImageFrame & src,Image & dst) const;
 	virtual
@@ -219,12 +237,11 @@ protected:
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
 	mout.debug() << "delegating to traverseChannel(src, empty, dst, empty)" << mout.endl;
-	//dst.properties.updateFromMap(src.getProperties());
+
 	drain::image::Image empty;
 	traverseChannel(src, empty, dst, empty);
-	//traverseChannelHorz(src, empty, dst, empty);
-	//traverseChannelVert(dst, empty, dst, empty);
 
 }
 
@@ -233,8 +250,10 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	//dst.properties.updateFromMap(src.getProperties());
-	//mout.note() << dst.getProperties() << mout.endl;
+	dst.setScaling(src.getScaling());
+	dstWeight.setScaling(srcWeight.getScaling());
+
+	mout.warn() << dst.getProperties() << mout.endl;
 
 	traverseChannelHorz(src, srcWeight, dst, dstWeight);
 	traverseChannelVert(dst, dstWeight, dst, dstWeight);
@@ -259,7 +278,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 	//const double weightThreshold = 0.1;
 	double w;
 
-	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
+	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry().area, src.getCoordinatePolicy());
 
 	drain::Point2D<int> point;
 

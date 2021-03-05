@@ -53,6 +53,8 @@ class ImageMod : public BeanLike {
 
 public:
 
+	bool physicalScale;
+
 	/// Run this modifier for an image.
 	/**
 	 *  The default implementation redirects to traverseChannel(Channel & dst) .
@@ -120,8 +122,15 @@ protected:
 	 *  \param in_place - 0 = separate dst required, 1 = separate dst encouraged, 2 = dst is allowed to be src
 	 */
 	inline
-	ImageMod(const std::string &name = __FUNCTION__, const std::string &description="")  : BeanLike(name, description)
-		{};
+	ImageMod(const std::string &name = __FUNCTION__, const std::string &description="")  :
+		// Remove trailing "Op", if it exists. Start find from the end-2
+		BeanLike(name.substr(0, name.find("Op", name.size()-2)), description) , physicalScale(true) {
+
+	};
+
+	inline
+	ImageMod(const ImageMod & op) : BeanLike(op) , physicalScale(true) {
+	};
 
 	inline
 	virtual ~ImageMod(){};

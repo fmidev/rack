@@ -65,7 +65,14 @@ public:
 
 	inline
 	Channel(const Channel & channel){
-		encoding.scaling.set(channel.getScaling());
+		//conf.setConf() TOO GENERAL, discards scalingPtr
+		setStorageType(channel.getType());
+		conf.setScaling(channel.getScaling());  // NOTE: pointer-selected
+		conf.setGeometry(channel.getGeometry());
+		setCoordinatePolicy(channel.getCoordinatePolicy());
+		//conf.setConf(channel.getConf());
+
+		// conf.setEncoding(channel.getEncoding());
 	};
 
 	virtual inline
@@ -123,13 +130,13 @@ public:
 	inline
 	void setView(const ImageFrame & src, size_t channel){
 		ImageFrame::setView(src, channel, 1);
-		geometry.setChannelCount(1,0);
+		conf.channels.set(1,0);
 	}
 
 	inline
 	void setView(const Channel & src){
 		ImageFrame::setView(src, 0, 1);
-		geometry.setChannelCount(1,0);
+		conf.channels.set(1,0);
 	}
 
 
@@ -147,7 +154,7 @@ public:
 
 	inline
 	MultiChannel(const MultiChannel & img){
-		this->setScaling(img.getScaling());
+		this->conf.setScaling(img.getScaling());
 	};
 
 

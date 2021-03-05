@@ -99,15 +99,15 @@ void OpticalFlowCore2::setSrcFrames(const ImageTray<const Channel> & srcTray){
 }
 
 
-void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & srcWeight, Image & dstImage, Image & dstWeight) const {
+void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & srcWeight, Image & dstImage, Image & dstWeight) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	drain::image::ImageFrame const *srcImagePtr  = &srcImage;
 	drain::image::ImageFrame const *srcWeightPtr = &srcWeight;
 
-	dstImage.adoptScaling(srcImage);
-	dstWeight.adoptScaling(srcWeight);
+	dstImage.adoptScaling(srcImage.getConf());
+	dstWeight.adoptScaling(srcWeight.getConf());
 
 	mout.debug() << "src:  " << srcImage  << mout.endl;
 	mout.debug() << "srcW: " << srcWeight << mout.endl;
@@ -141,9 +141,9 @@ void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & sr
 
 	if (optThreshold()){
 		UnaryFunctorOp<ThresholdFunctor> op;
-		srcImage.requestPhysicalMin();
+		srcImage.getConf().requestPhysicalMin();
 		op.functor.threshold = threshold;
-		op.functor.replace = srcImage.requestPhysicalMin();
+		op.functor.replace = srcImage.getConf().requestPhysicalMin();
 				//srcImage.getScaling().inv(srcImage.getMin<double>());
 		//mout.warn() << "running: " << op.getParameters() << mout.endl;
 		mout.info() << "run: " << op.getName() << ':' << op.getParameters() << mout.endl;
@@ -161,7 +161,7 @@ void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & sr
 
 	if (optSmoother()){
 		drain::image::GaussianAverageOp op;
-		op.setSize(conf.width, conf.height);
+		op.setSize(conf.frame.width, conf.frame.height);
 		mout.info() << "run: " << op.getName() << ':'<< op.getParameters() << mout.endl;
 		op.process(*srcImagePtr, *srcWeightPtr, dstImage, dstWeight);
 		srcImagePtr  = & dstImage;
@@ -171,7 +171,7 @@ void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & sr
 	if (optSpread()){
 		//drain::image::DistanceTransformFillExponentialOp op;
 		drain::image::DistanceTransformExponentialOp op;
-		op.setRadius(conf.width, conf.height);
+		op.setRadius(conf.frame.width, conf.frame.height);
 		mout.info() << "run: " << op.getName() << ':' << op.getParameters() << mout.endl;
 		op.process(*srcImagePtr,  dstImage);
 		op.process(*srcWeightPtr, dstWeight);
@@ -193,7 +193,7 @@ void FastOpticalFlowOp2::preprocess(const Channel & srcImage, const Channel & sr
 
 
 /// Computes a differential image with channels dx, dy, dt and w (quality of gradients).
-void FastOpticalFlowOp2::computeDifferentials(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
+void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -209,7 +209,7 @@ void FastOpticalFlowOp2::computeDifferentials(const ImageTray<const Channel> & s
 	const Channel & src2 = src.get(1);
 
 	// Use source alphas, if provided
-	const int a = src.getGeometry().getAlphaChannelCount();
+	const int a = src.getGeometry().channels.getAlphaChannelCount();
 	const bool USE_ALPHA  = (a>0);
 	const bool USE_ALPHA2 = (a>1);
 
@@ -242,8 +242,8 @@ void FastOpticalFlowOp2::computeDifferentials(const ImageTray<const Channel> & s
 	}
 
 	// ! Scale should be set already in getSrc().
-	const double scale = src.get().requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
-	mout.debug(1) << " src: " << src1 << mout.endl;
+	const double scale = src.get().getConf().requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
+	mout.debug2() << " src: " << src1 << mout.endl;
 
 	for (size_t i = 0; i < dst.size(); ++i) {
 		Channel & d = dst.get(i);

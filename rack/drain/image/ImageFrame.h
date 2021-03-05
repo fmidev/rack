@@ -33,14 +33,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stddef.h>  // size_t
 
-#include "../util/CastableIterator.h"
-#include "../util/VariableMap.h"
-#include "../util/TypeUtils.h"
+#include "drain/util/CastableIterator.h"
+#include "drain/util/Sprinter.h"
+#include "drain/util/TypeUtils.h"
+#include "drain/util/VariableMap.h"
+#include "drain/util/ValueScaling.h"
 
 #include "Geometry.h"
 #include "Coordinates.h"
 #include "ImageLike.h"
-#include "../util/ValueScaling.h"
 
 namespace drain
 {
@@ -63,19 +64,23 @@ class Channel;
  */
 class ImageFrame : public ImageLike {
 
+
 public:
+
+
+
 
 	typedef CastableIterator const_iterator;  // TODO...
 	typedef CastableIterator iterator;
 
 	inline
-	ImageFrame() : propertiesPtr(&properties), scalingPtr(&encoding.scaling) {
+	ImageFrame() : propertiesPtr(&properties) { //, scalingPtr(&conf.getScaling()) {
 		adjustBuffer();
 		init();
 	};
 
 	inline
-	ImageFrame(const ImageFrame & src) : ImageLike(src), propertiesPtr(&properties), scalingPtr(&encoding.scaling) {
+	ImageFrame(const ImageFrame & src) : ImageLike(src), propertiesPtr(&properties) { // , scalingPtr(&conf.getScaling()) {
 		adjustBuffer();
 		init();
 		// copy properties? (no)
@@ -83,40 +88,28 @@ public:
 
 
 	virtual inline
-	const drain::ValueScaling & getScaling() const {
-		return *scalingPtr;
+	const ImageConf & getConf() const {
+		return conf; // *this;
 	}
 
-	/// Facilitates modifications provided directly bydrain::ValueScaling object.
-	virtual inline
-	drain::ValueScaling & getScaling(){
-		useOwnScaling();
-		return encoding.scaling; // == *scalingPtr
-	}
-
-
-
+	/*
 	inline
-	void setPhysicalScale(double min, double max){
-		//this->scaling.setPhysicalScale(getType(), min, max);
-		getScaling().setPhysicalScale(getType(), min, max);
+	ImageConf & getConf() {
+		return conf; // *this;
 	}
+	*/
 
-
-	/// Sets channel specific scaling instead of shared scaling
+	/// Sets the supported range for physical values and optionally adjusts the scaling for maximal resolution.
 	inline
-	void useOwnScaling() {
-		if (scalingPtr != &encoding.scaling){
-			// copy (inclusing physical range):
-			encoding.scaling.set(*scalingPtr);
-			scalingPtr = &encoding.scaling;
-		}
+	void setPhysicalRange(const Range<double> &range, bool rescale=false){
+		conf.setPhysicalRange(range, rescale);
 	}
 
-
-
-
-
+	/// Sets the supported range for physical values and optionally adjusts the scaling for maximal resolution.
+	inline
+	void setPhysicalRange(double min, double max, bool rescale=false){
+		conf.setPhysicalRange(min, max, rescale);
+	}
 
 
 	/// Returns iterator pointing to the first image element.
@@ -161,7 +154,7 @@ public:
 	// Note: this may change if box view is implemented in future. (viewBox width,height, offset i,j)
 	inline
 	size_t address(size_t i, size_t j) const {
-		return ( + j * geometry.getWidth() + i);
+		return ( + j * conf.area.getWidth() + i);
 	}
 
 	/// Computes the index location from image coordinates. Does not involve bit resolution.
@@ -170,7 +163,7 @@ public:
 	 */
 	inline
 	size_t address(size_t i, size_t j, size_t k) const {
-		return ( + k*geometry.getArea() + j*geometry.getWidth() + i);
+		return ( + k*conf.area.getArea() + j*conf.area.getWidth() + i);
 	}
 
 	/// Returns the pointer to the start of the image array.
@@ -185,9 +178,6 @@ public:
 		return &buffer[0];   /// CHECK?
 	};
 
-
-
-
 	// END ImageCore...
 
 	/// Sets the intensity in location \c i to \c x. See \address
@@ -198,7 +188,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, T x){
-		encoding.caster.put( & bufferPtr[address(i) * encoding.byteSize], x);  // why address(i)?
+		conf.caster.put( & bufferPtr[address(i) * conf.byteSize], x);  // why address(i)?
 	}
 
 	/// Sets the intensity at location \c i,j to \c x. See address().
@@ -210,7 +200,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, size_t j, T x){
-		encoding.caster.put( & bufferPtr[address(i,j) * encoding.byteSize], x);
+		conf.caster.put( & bufferPtr[address(i,j) * conf.byteSize], x);
 	}
 
 	/// Sets the intensity at location \c i,j,k to \c x.
@@ -225,7 +215,7 @@ public:
 	template <class T>
 	inline
 	void put(size_t i, size_t j, size_t k, T x){
-		encoding.caster.put( & bufferPtr[address(i,j,k)*encoding.byteSize], x);
+		conf.caster.put( & bufferPtr[address(i,j,k)*conf.byteSize], x);
 	}
 
 
@@ -236,7 +226,7 @@ public:
 	template <class T, class P>
 	inline
 	void put(const Point2D<P> &p, T x){
-		encoding.caster.put( & bufferPtr[address(p.x,p.y)*encoding.byteSize], x);
+		conf.caster.put( & bufferPtr[address(p.x,p.y)*conf.byteSize], x);
 	}
 
 
@@ -247,7 +237,7 @@ public:
 	// TODO: consider virtual, with Channel::scalingPtr->inv(x) and Image::scaling.inv(x)    Could be just as fast, though...
 	inline
 	void putScaled(size_t i, size_t j, double x){
-		encoding.caster.put( & bufferPtr[address(i,j) * encoding.byteSize], getScaling().inv(x));
+		conf.caster.put( & bufferPtr[address(i,j) * conf.byteSize], getScaling().inv(x));
 	}
 
 
@@ -260,7 +250,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i) const {
-		return encoding.caster.get<T>( & bufferPtr[address(i)*encoding.byteSize] );
+		return conf.caster.get<T>( & bufferPtr[address(i)*conf.byteSize] );
 	}
 
 	/// Gets the intensity at location \c i,j .
@@ -271,7 +261,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i, size_t j) const {
-		return encoding.caster.get<T>( & bufferPtr[address(i,j) * encoding.byteSize ] );
+		return conf.caster.get<T>( & bufferPtr[address(i,j) * conf.byteSize ] );
 	}
 
 	/// Gets the intensity at location \c i,j,k .
@@ -283,7 +273,7 @@ public:
 	template <class T>
 	inline
 	T get(size_t i, size_t j, size_t k) const {
-		return encoding.caster.get<T>( & bufferPtr[address(i,j,k) * encoding.byteSize] );
+		return conf.caster.get<T>( & bufferPtr[address(i,j,k) * conf.byteSize] );
 	}
 
 	/// Get intensity in original physical scale.
@@ -293,7 +283,7 @@ public:
 	// TODO: consider virtual, with Channel::scalingPtr->fwd(x) and Image::scaling.fwd(x)    Could be just as fast, though...
 	inline
 	double getScaled(size_t i, size_t j) const {
-		return getScaling().fwd(encoding.caster.get<double>( & bufferPtr[address(i,j) * encoding.byteSize ] ));
+		return getScaling().fwd(conf.caster.get<double>( & bufferPtr[address(i,j) * conf.byteSize ] ));
 	}
 
 	/// Gets the intensity at location \c p=(i,j) .
@@ -303,7 +293,7 @@ public:
 	template <class T,class P>
 	inline
 	T get(const Point2D<P> &p) const {
-		return encoding.caster.get<T>( & bufferPtr[address(p.x,p.y) * encoding.byteSize ] );
+		return conf.caster.get<T>( & bufferPtr[address(p.x,p.y) * conf.byteSize ] );
 	}
 
 
@@ -311,7 +301,7 @@ public:
 	inline
 	void putPixel(const Point2D<P> &p, const std::vector<T> & pixel) const {
 		for (typename std::vector<T>::size_type i = 0; i < pixel.size(); ++i) {
-			encoding.caster.put( & bufferPtr[address(p.x,p.y,i)*encoding.byteSize], pixel[i]);
+			conf.caster.put( & bufferPtr[address(p.x,p.y,i)*conf.byteSize], pixel[i]);
 		}
 	}
 
@@ -320,7 +310,7 @@ public:
 	inline
 	void getPixel(const Point2D<P> &p, std::vector<T> & pixel) const {
 		for (typename std::vector<T>::size_type i = 0; i < pixel.size(); ++i) {
-			pixel[i] = encoding.caster.get<T>( & bufferPtr[address(p.x,p.y,i)*encoding.byteSize]);
+			pixel[i] = conf.caster.get<T>( & bufferPtr[address(p.x,p.y,i)*conf.byteSize]);
 		}
 	}
 
@@ -415,14 +405,14 @@ public:
 	/**
 	 *   Given a numeric channel index, returns it as a number.
 	 */
-	size_t getChannelIndex(const std::string & index) const;
+	//size_t getChannelIndex(const std::string & index) const;
 
 	/// Sets the type and allocates a data buffer.
 	//  Experimental for ImageFrame
 	virtual inline
 	void initialize(const std::type_info &t, const Geometry & geometry){
 
-		if ((getType() == t) && (getGeometry() == geometry))
+		if ((conf.getType() == t) && (conf.getGeometry() == geometry))
 			return;
 		else
 			std::runtime_error(std::string("ImageFrame::")+__FUNCTION__+": tried to change ImageFrame geometry");
@@ -452,7 +442,7 @@ protected:
 	iterator segmentBegin;
 	iterator segmentEnd;
 
-	// Caster encoding.caster;
+	// Caster caster;
 
 	// Size of the storage type (1 for 8 bits, 2 for 16 bits, etc.)
 	//size_t byteSize;
@@ -499,7 +489,7 @@ protected:
 	template <class T>
 	inline
 	T * retrieve(size_t a){
-		return (T*)&buffer[ a*encoding.byteSize ];
+		return (T*)&buffer[ a*conf.byteSize ];
 	}
 
 
@@ -507,9 +497,11 @@ protected:
 
 private:
 
-	drain::ValueScaling const * scalingPtr;
+	//drain::ValueScaling const * scalingPtr;
 
 };
+
+
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const ImageFrame & src){
@@ -520,6 +512,10 @@ std::ostream & operator<<(std::ostream &ostr, const ImageFrame & src){
 
 
 } // image::
+
+template <>
+std::ostream & drain::SprinterBase::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout);
+
 } // drain::
 
 #endif /* IMAGE_FRAME_H_*/

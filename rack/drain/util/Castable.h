@@ -42,8 +42,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "Caster.h"
+#include "UniTuple.h"
 #include "String.h"
+
 #include "JSONwriter.h"
+#include "Sprinter.h" // partially overlapping with JSONwriter?
 
 
 
@@ -79,14 +82,10 @@ public:
 		caster.unsetType();
 	};
 
-	/// Copy constructor
+	/// Copy constructor: copies the layout and thepointer to the target.
 	Castable(const Castable &c) : fillArray(false), elementCount(0) {
-		//setSeparator();
-		setInputSeparator(c.inputSeparator);
-		setOutputSeparator(c.outputSeparator);
-		//setPtr(c);
+		copyFormat(c);
 		setPtr(c.caster.ptr, c.caster.getType());
-		elementCount = c.elementCount;
 	}
 
 	// Obsolete?
@@ -344,25 +343,33 @@ public:
 			return caster.get<T>(); //caster.get<T>(ptr);
 	}
 
-
+	// TODO: PAIR
+	/*
+	template <class T>
+	// operator std::pair<T,T>() const {
+	}
+	*/
 
 	inline
-	bool operator==(const Castable &x){
-		//(this->*putCastable)(x);
+	bool operator==(const Castable &x) const{
 		throw std::runtime_error("Castable: operator== not implemented.");
 		return false;
 	}
 
 	inline
-	bool operator==(const char * s){
-		return (strcmp(getCharArray(), s) == 0);
+	bool operator==(const char * s) const {
+		if (isCharArrayString()) // 2021
+			return (strcmp(getCharArray(), s) == 0);
+		else
+			return (caster.get<std::string>() == s);
 	}
 
 	/// Compares a value to internal data.
 	template <class T>
-	bool operator==(const T &x){
+	bool operator==(const T &x) const{
 		return (caster.get<T>() == x);  //(caster.get<T>(ptr) == x);
 	}
+
 
 	/// Compares a value to inner data.
 	/**
@@ -514,7 +521,13 @@ public:
 	/// If array, assigning a scalar will fill up the current array.
 	bool fillArray;
 
-
+	/// Copies array layout and formatting: separators, element count, fillArray flag.
+	void copyFormat(const Castable & c){
+		this->elementCount    = c.elementCount;
+		this->inputSeparator  = c.inputSeparator;
+		this->outputSeparator = c.outputSeparator;
+		this->fillArray       = c.fillArray;
+	}
 
 
 protected:
@@ -566,11 +579,24 @@ protected:
 		elementCount = 1;
 	}
 
+
 	/// Stores the pointer and its storage type F.
 	template <class F>
 	void setPtr(F &p){
 		caster.link(p); // could use setPtr(void *p, const std::type_info &t) ?
 		elementCount = 1;
+	}
+
+	/// Sets the data pointer and its explicit type.
+	/*
+	 *  Function of this kind must be available for general (8bit) memory allocators.
+	 */
+	inline
+	void setPtr(void *p, const std::type_info &t, size_t count=1){
+		//if (t == typeid(void))
+		//	throw std::runtime_error(std::string(__FUNCTION__) + ": explicit void type given");
+		caster.link(p, t);
+		elementCount = count;
 	}
 
 	/// Stores the pointer, storage type F, and size (element count) on the vector.
@@ -579,23 +605,39 @@ protected:
 	 */
 	template <class F>
 	void setPtr(std::vector<F> &v){
-		caster.link(&v[0]);
-		// caster.ptr = &v[0];
-		// caster.setType<F>();
-		elementCount = v.size();
+		setPtr(&v[0], typeid(F), v.size());
+		// caster.link(&v[0]);
+		// elementCount = v.size();
 	}
 
-	/// Sets the data pointer and its explicit type.
-	/*
-	 *  Function of this kind must be available for general (8bit) memory allocators.
+	/// Stores the pair as an array of two elements.
+	/**
+	 *   The pointer is set to the first.
 	 */
-	inline
-	void setPtr(void *p, const std::type_info &t){
-		//if (t == typeid(void))
-		//	throw std::runtime_error(std::string(__FUNCTION__) + ": explicit void type given");
-		caster.link(p, t);
-		elementCount = 1;
+	/*
+	template <class F>
+	// void setPtr(std::pair<F,F> &p){
+		setPtr(&p, typeid(F), 2);
+		//caster.link((F*)&v);
+		fillArray = true; // if a scalar is assigned, assign to both elements
+		//elementCount = 2;
 	}
+	*/
+
+	/// Stores the elements as an array.
+	/**
+	 *   The pointer is set to the first.
+	 */
+	template <class F, size_t N>
+	void setPtr(UniTuple<F,N> & tuple){
+		setPtr(tuple.begin(), typeid(F), N);
+		// caster.link((T*)& tuple);
+		fillArray = true; // (?)  if a scalar is assigned, assign to both elements
+		// elementCount = N;
+	}
+
+
+
 
 	/// Copies the link and element count.
 	void relink(Castable & c);
@@ -917,6 +959,10 @@ T & Castable::valueToJSON(T & ostr) const {
 template <>
 std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream & ostr, unsigned short);
 
+
+/// "Friend class" template implementation
+template <>
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout);
 
 
 inline

@@ -45,23 +45,23 @@ namespace image
 
 /** 
 	\code
-	drainage gray.png --median 5 -o median.png
+	drainage gray.png --iMedian 5 -o median.png
 	\endcode
 
 	\code
-	drainage gray.png --median 3,7 -o medianVert.png
+	drainage gray.png --iMedian 3,7 -o medianVert.png
 	\endcode
 
 	\code
-	drainage gray.png --median 5,5,0.1 -o median010.png
+	drainage gray.png --iMedian 5,5,0.1 -o median010.png
 	\endcode
 
 	\code
-	drainage gray.png --median 5,5,0.9 -o median090.png
+	drainage gray.png --iMedian 5,5,0.9 -o median090.png
 	\endcode
 
 	\code
-	drainage image.png --median 5 -o median-color.png
+	drainage image.png --iMedian 5 -o median-color.png
 	\endcode
  */
 //template <class R = WindowCore>

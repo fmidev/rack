@@ -63,7 +63,7 @@ public:
 	/// Views the whole image
 	inline
 	void setView(const ImageFrame & src){
-		ImageFrame::setView(src, 0, src.getChannelCount());
+		ImageFrame::setView(src, 0, src.getGeometry().getChannelCount());
 	}
 
 	/// Views a single channel. Resulting channel type is image, regardless of target channel type (image or alpha),
@@ -73,7 +73,7 @@ public:
 	inline
 	void setView(const ImageFrame & src, size_t channel){
 		ImageFrame::setView(src, channel, 1);
-		geometry.setChannelCount(1,0);
+		conf.channels.set(1,0);
 	}
 
 

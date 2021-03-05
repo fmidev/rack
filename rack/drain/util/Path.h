@@ -45,17 +45,70 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iterator>
 
 
-#include "String.h"
+#include "String.h" // ?
+#include "UniTuple.h"
+#include "Sprinter.h"
 
 
 
 namespace drain {
 
-
-/**
- *   \tparam T - path element, eg. PathElement
+/// Determines if separators will be stored in the path.
+/*
+ *
+ *  In unix style, intermediate separators are accepted but not stored.
+ *
+ *  Note that technically, accepting leading, intermediate or trailing separators means also
+ *  accepting \e empty path elements, respectively.
+ *
+ *  When using strings as path elements, the root is identfied with an empty string -- not actually with the separator char like '/'.
+ *
  */
-template <class T>
+struct PathSeparatorPolicy : UniTuple<bool,3> {
+
+	// Separator character
+	char character;
+
+	/// If true, allow leading empties (ie leading separators) // Accepts one. to start with.
+	bool & acceptLeading;
+
+	/// If true, allow empty elements in the middle (appearing as repeated separators)
+	bool & acceptRepeated;
+
+	/// If true, allow trailing empty elements (appearing as repeated separators)
+	bool & acceptTrailing;
+
+	PathSeparatorPolicy(char separator='/', bool lead=true, bool repeated=false, bool trail=true) :
+			character(separator), acceptLeading(next()), acceptRepeated(next()), acceptTrailing(next()) {
+		set(lead, repeated, trail);
+		if (!separator)
+			throw std::runtime_error("PathSeparatorPolict (char separator): separator=0, did you mean empty init (\"\")");
+	}
+	PathSeparatorPolicy(const PathSeparatorPolicy &policy) :  UniTuple<bool,3>(policy),
+			character(policy.character), acceptLeading(next()), acceptRepeated(next()), acceptTrailing(next()) {
+	};
+
+
+};
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const PathSeparatorPolicy & policy) {
+	ostr << "Separator='" << policy.character << "', policy=" << policy.tuple();
+	return ostr;
+}
+
+
+///
+/**
+ *
+ *   \tparam T    - path element, eg. PathElement
+ *   \tparam SEP  -
+ *   \tparam ALEAD
+ *   \tparam AREPEAT
+ *   \tparam ATRAIL
+ *
+ */
+template <class T,char SEP='/', bool ALEAD=true, bool AREPEAT=false, bool ATRAIL=true>
 class Path : public std::list<T> {
 
 public:
@@ -64,96 +117,167 @@ public:
 
 	typedef std::list<Path<T> > list_t;
 
+	const PathSeparatorPolicy separator;
+
 	// Consider flags
-	/*
-	static const int BEGIN  = 1;
-	static const int MIDDLE = 2;
-	static const int END    = 4;
-	*/
+	//inline	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL) {};
+	/// Initialize with given path
+	inline
+	Path(const std::string & s="") : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+		appendPath(s, 0);
+		//assign(s); // , sep) <- consider split here!
+	};
+
+	// Either this or previous is unneeded?
+	template<typename ... TT>
+	Path(const elem_t &elem, const TT &... rest){
+		appendElems(elem, rest...);
+	}
+
 
 	inline
-	Path(char separator='/') : separator(separator), rooted(true), trailing(false){
-		if (!separator)
-			throw std::runtime_error("Path(char separator): separator=0, did you mean empty init (\"\")");
+	Path(const char *s) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: s, char separator='/') : separator(separator) {
+		appendPath(s, 0); //assign(s);
 	};
 
 	/// Copy constructor. Note: copies also the separator.
 	inline
-	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator), rooted(p.rooted), trailing(p.trailing) {
+	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator){
 	};
 
-	inline
-	Path(const std::string & s, char separator='/') : separator(separator), rooted(true), trailing(false) {
-		set(s);
-	};
-
-	inline
-	Path(const char *s, char separator='/') : separator(separator), rooted(true), trailing(false) {
-		set(s);
-	};
-
-
-	/// Constructor with an initialises element - typically a root.
-	//  PROBLEMATIC - elem may be std::string, and also the full path representation
-	/**
-	 *  The root might correspond to an empty string.
-	 */
-	/*
-	inline
-	Path(const elem_t & e, char separator='/') : separator(separator) {
-		this->push_back(e);
-	};
-	*/
 
 	virtual inline
 	~Path(){};
 
-	char separator;
 
-	/// If true, recognize plain separator (e.g. "/") as a root
-	bool rooted;
-
-	/// If true, allow trailing empties
-	bool trailing;
-
+	/// Note that an empty path is not a root.
+	//  Todo: also accept empty path as a root? Perhaps no, because appending may cause relative.
 	inline
 	bool isRoot() const {
-		return rooted && ((this->size()==1) && this->front().empty());
+		return ((this->size()==1) && this->front().empty());
+		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
 	}
 
-	void set(const std::string & p){
+	/// Removes trailing empty elements, except for the root itself.
+	void removeTrailing(){
+		if ((this->size() > 1)){
+			if (this->back().empty()){
+				this->pop_back();
+				removeTrailing();
+			}
+		}
+	}
 
-		std::list<T>::clear();
+	/// Main method for adding elements.
+	void appendElem(const elem_t & elem){
 
-		std::list<std::string> l;
-		StringTools::split(p, l, separator);
+		if (!elem.empty()){
+			// Always allow non-empty element
+			// std::cerr << __FUNCTION__ << ":" << elem << '\n';
+			if (!separator.acceptRepeated)
+				removeTrailing();
+			this->push_back(elem);
+		}
+		// elem EMPTY:
+		else if (this->empty()){
+			if (separator.acceptLeading)
+				this->push_back(elem); // empty
+			// std::cerr << __FUNCTION__ << " leading=" << separator.acceptLeading << " "<< separator.character  << '\n';
+		}
+		else if (this->back().empty()){
+			//std::cerr << __FUNCTION__<< " repeating=" << separator.acceptRepeated << " " << separator.character << '\n';
+			if (separator.acceptRepeated){
+				this->push_back(elem);
+			}
+		}
+		else if (separator.acceptTrailing){
+			// std::cerr << __FUNCTION__ << " trailing="  << separator.acceptTrailing << " " << separator.character << '\n';
+			this->push_back(elem); // empty
+		}
+		else {
+			std::cerr << __FUNCTION__ << "? failed in appending: " << sprinter(*this) << '\n';
+		}
 
-		for (std::list<std::string>::const_iterator it = l.begin(); it != l.end(); ++it) {
-			// root/empty logic moved to append
-			*this << (const elem_t &)*it;
+	};
+
+	template<typename ... TT>
+	void appendElems(const elem_t & elem, const TT &... rest) {
+		appendElem(elem);
+		appendElems(rest...);
+	}
+
+	/// Clear the path and append elements.
+	template<typename ... TT>
+	void setElems(const elem_t & elem, const TT &... rest){
+		this->clear();
+		appendElems(elem, rest...);
+	}
+
+	/// Extract elements from the string, starting at position i.
+	void appendPath(const std::string & p, size_t start=0){
+
+		if (start == p.length()){
+			// Last char in the string has been passed by one, meaning that: previous elem was empty
+			// That is: the previous char was a separator.
+			appendElems(elem_t()); // Try to append empty.
+			return;
+		}
+
+		// Append next segment, ie. up to next separator char.
+		size_t nextSep = p.find(separator.character, start);
+
+		// Remaining string...
+		if (nextSep==std::string::npos){
+			// ... is a single element
+			appendElem(p.substr(start));
+			return;
+		}
+		else {
+			// ... contains separator, hence contains several elements
+			appendElem(p.substr(start, nextSep - start)); // maybe empty, nextSep==start
+			appendPath(p, nextSep + 1);
 		}
 
 	}
 
-	/// Clear path, and add up to 5 first elements
-	void setElems(const elem_t & e1, const elem_t & e2=elem_t(), const elem_t & e3=elem_t(), const elem_t & e4=elem_t(), const elem_t & e5=elem_t()){
+	/// Replaces the full path
+	void assign(const std::string & p){
 
-		std::list<T>::clear();
-		*this << e1 << e2 << e3 << e4 << e5;
+		// Assignment could be done directly, if all accepted:
+		// StringTools::split(p, *this, separator.character);
+		// ... but then illegal paths could become accepted.
+
+		this->clear();
+
+		// Note: given empty string, nothing will be appended.
+		// Especially, no empty element ("root"), either.
+		if (p.empty())
+			return;
+
+		appendPath(p, 0);
+
 
 	}
 
+	/// Assigns a path directly with std::list assignment.
+	/**
+	 *  Should be safe, because separator policy is the same.
+	 */
 	Path<T> & operator=(const Path<T> & p){
 		std::list<T>::operator=(p);
+		//return assignPa(*this);
 		return *this;
 	}
 
 	/// Conversion from str path type
+	/**
+	 *   Does separator checking, trims leading or trailing paths if needed.
+	 */
 	template <class T2>
 	Path<T> & operator=(const Path<T2> & p){
-		std::list<T>::clear();
+		this->clear();
 		for (typename Path<T2>::const_iterator it = p.begin(); it != p.end(); ++it) {
-			*this << *it;
+			appendElems(*it);
 		}
 		return *this;
 	}
@@ -161,13 +285,13 @@ public:
 
 	inline
 	Path<T> & operator=(const std::string & p){
-		set(p);
+		assign(p);
 		return *this;
 	}
 
 	inline
 	Path<T> & operator=(const char *p){
-		set(p);
+		assign(p);
 		return *this;
 	}
 
@@ -177,22 +301,6 @@ public:
 
 	/// Append an element, unless empty string.
 	/*
-	Path<T> & operator<<(const std::string & s){
-		if (this->empty()) {
-			std::cerr << "root! (empty)\n";
-			*this << *it;
-		}
-		else {
-			// warn about empty path elements?
-		}
-
-		if (!s.empty())
-			this->push_back(s);
-		return *this;
-	}
-	*/
-
-	/*
 	inline
 	Path<T> & operator<<(const char *elem){
 		*this <<
@@ -200,34 +308,25 @@ public:
 	*/
 
 	/// Append an element. If path is rooted, allows empty (root) element only as the first.
-	// template <class T2>
-	// Path<T> & operator<<(const T2 & elem){
 	Path<T> & operator<<(const elem_t & elem){
-
-		if (!elem.empty()){
-			// Always allow non-empty element
-			this->push_back(elem);
-		}
-		else if (this->empty() && rooted){
-			// Allow empty element in root
-			this->push_back(elem);
-		}
-		else if (trailing){
-			// Allow empties as intermediate(?) and trailing elements
-			// trailing: if (it == --l.end()){
-			this->push_back(elem);
-		}
-
-		//this->push_back(elem);
+		appendElem(elem);
 		return *this;
 	}
 
-	/// Append a path.
-	//Path<T> & operator<<(const Path<T> & path){
-	Path<T> & appendPath(const Path<T> & path){
+	inline
+	Path<T> & operator<<(const Path<T> & path){
 		this->insert(this->end(), path.begin(), path.end());
 		return *this;
 	}
+
+
+	// Experimental
+	template <class T2>
+	Path<T> & operator<<(const T2 & strlike){
+		appendPath((const std::string &) strlike);
+		return *this;
+	}
+
 
 	/// Extract last element.
 	Path<T> & operator>>(elem_t & e){
@@ -236,41 +335,74 @@ public:
 		return *this;
 	}
 
+	/// Path is written like a list, adding the separator between items. Exception: root is displayed as separator.
+	/**
+	 *
+	 *
+	 *
+	 */
+	virtual
+	std::ostream & toStream(std::ostream & ostr) const { //, char dirSeparator = 0) const {
 
-	operator std::string () const {
+		if (isRoot())
+			ostr << separator.character;
+		else {
+			static const SprinterLayout layout("/", "", "", "");
+			layout.arrayChars.separator = separator.character;
+			// SprinterLayout layout;
+			// layout.arrayChars.set(0, separator.character,0);
+			// layout.stringChars.fill(0);
+			SprinterBase::sequenceToStream(ostr, *this, layout);
+		}
+
+		//SprinterBase::toStream(ostr, *this, layout);
+		return ostr;
+	}
+
+	virtual
+	std::string  str() const {
 		std::stringstream sstr;
-		toOStr(sstr);
+		toStream(sstr);
 		return sstr.str();
 	}
 
-
-	virtual inline
-	std::ostream & toOStr(std::ostream & ostr, char separator = 0) const {
-		separator = separator ? separator : this->separator;
-		if (isRoot())
-			return (ostr << separator);
-		else
-			return drain::StringTools::join(*this, ostr, separator);
+	virtual
+	operator std::string() const {
+		return str();
 	}
 
-	inline
-	void toStr(std::string & str, char separator = 0) const {
-		std::stringstream sstr;
-		toOStr(sstr, separator);
-		str = sstr.str();
+	std::ostream & debug(std::ostream & ostr = std::cout) const {
+		//ostr << "Path<" << typeid(T).name() << "> " << separator << "\n";
+		ostr << "Path elems:" << this->size() << " sep:" << separator << " typeid: " << typeid(T).name() << "\n";
+		ostr << *this << '\n';
+		int i=0;
+		for (typename Path<T>::const_iterator it = this->begin(); it != this->end(); ++it) {
+			//if (it->empty())
+			//	ostr << "  " << i << '\t' << "{empty}" << '\n';		//else
+			ostr << "    " << i << '\t' << *it << '\n';
+			++i;
+		}
+		return ostr;
 	}
 
+protected:
+
+	/// Terminal function for variadic templates
+	void appendElems(){
+	}
+
+	/// Terminal function for variadic templates
+	void setElems(){
+	};
 
 };
 
-//template <class T>
-//typedef std::list<Path<T>> PathList<T>;
 
 
-template <class T>
+template <class T, char SEP='/', bool ALEAD=true, bool AREPEAT=false, bool ATRAIL=true>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Path<T> & p) {
-	return p.toOStr(ostr);
+std::ostream & operator<<(std::ostream & ostr, const Path<T,SEP,ALEAD,AREPEAT,ATRAIL> & p) {
+	return p.toStream(ostr);
 }
 
 template <class T>
@@ -281,6 +413,15 @@ std::istream & operator>>(std::istream &istr, Path<T> & p) {
 	p = s;
 	return istr;
 }
+
+/*
+template <class T>
+inline
+Path<T> & operator<<(Path<T> & path, const Path<T> & path2){
+	path.insert(path.end(), path2.begin(), path2.end());
+	return path;
+}
+*/
 
 
 }

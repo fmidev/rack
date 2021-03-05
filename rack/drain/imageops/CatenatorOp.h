@@ -55,6 +55,10 @@ public:
 		//setParameters(p);
 	};
 
+	CatenatorOp(const CatenatorOp & op){
+		this->parameters.copyStruct(op.parameters, op, *this);
+	};
+
 	virtual ~CatenatorOp(){};
 	//void process(const ImageFrame &src,Image &dst) const;
 
@@ -81,8 +85,14 @@ public:
 	/// Modifies the geometry and type of dst.
 	/*  This default implementation
 	 */
-	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	//virtual
+	//void make Compatible(const ImageFrame & src, Image & dst) const;
+	inline
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {
+		dst.setType(src.getType());
+		dst.setGeometry(src.getWidth(), src.getHeight()*src.getChannelCount(), 1);
+		//dst.initialize(src.getType(), src.getWidth(), src.getHeight()*src.getChannelCount(), 1);
+	}
 
 	void process(const ImageFrame &src, Image &dst) const; // { process(src, dst, gain, offset); };
 

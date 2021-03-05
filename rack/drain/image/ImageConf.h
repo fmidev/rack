@@ -242,6 +242,7 @@ public:
 			setOptimalScale();
 	}
 
+
 	inline
 	void setOptimalScale(){
 		getScaling().setOptimalScale(getType());
@@ -251,6 +252,7 @@ public:
 	void setOptimalPhysicalScale(double min, double max){ // , const std::string &unit ?
 		setPhysicalRange(min, max, true);
 	}
+
 
 	/// Returns the minimum value supported by the current storage type.
 	/**

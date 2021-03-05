@@ -54,7 +54,7 @@ public:
 
 	/// Default constructor
 	inline
-	VariableMap(char separator = '\0') : SmartMap<Variable>(separator){
+	VariableMap(char separator = ',') : SmartMap<Variable>(separator){
 	};
 
 

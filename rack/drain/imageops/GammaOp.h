@@ -54,14 +54,14 @@ namespace image
    detectable down to applied bit resolution.
 
    \code
-   drainage gray.png --physicalRange 0,1 --gamma 2.0 -o gamma-bright.png
-   drainage gray.png --physicalRange 0,1 --gamma 0.5 -o gamma-dark.png
+   drainage gray.png --physicalRange 0:1 --iGamma 2.0 -o gamma-bright.png
+   drainage gray.png --physicalRange 0:1 --iGamma 0.5 -o gamma-dark.png
    \endcode
 
 
    \code
-   drainage color.png --physicalRange 0,1 --gamma 2.0 -o gamma-color-bright.png
-   drainage color.png --physicalRange 0,1 --gamma 0.5 -o gamma-color-dark.png
+   drainage color.png --physicalRange 0:1 --iGamma 2.0 -o gamma-color-bright.png
+   drainage color.png --physicalRange 0:1 --iGamma 0.5 -o gamma-color-dark.png
    \endcode
 
  *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving
@@ -72,8 +72,13 @@ class GammaFunctor : public drain::UnaryFunctor
 
 public:
 
-	GammaFunctor(double gamma = 1.0) : UnaryFunctor(__FUNCTION__, "Gamma correction for brightness."){ // , fromValue(fromValue), toValue(toValue) {
+	GammaFunctor(double gamma = 1.0) : UnaryFunctor(__FUNCTION__, "Gamma correction for brightness."){
 		this->getParameters().link("gamma", this->gamma = gamma, "0.0...");
+	};
+
+	GammaFunctor(const GammaFunctor & ftor) : UnaryFunctor(ftor){
+		this->getParameters().link("gamma", this->gamma = ftor.gamma, "0.0..");
+		//this->getParameters().copyStruct(ftor.getParameters(), ftor, *this);
 	};
 
 	//virtual

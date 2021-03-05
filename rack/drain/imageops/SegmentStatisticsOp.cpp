@@ -40,6 +40,32 @@ namespace drain
 namespace image
 {
 
+//virtual
+void SegmentStatisticsOp::getDstConf(const ImageConf & src, ImageConf & dst) const {  // TODO: src, src2, dst
+
+	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
+
+	mout.debug() << dst << mout.endl;
+
+	const std::type_info & t = typeid(unsigned short);
+
+	if (!dst.typeIsSet()){
+		dst.setType(t);
+	}
+	else if (Type::call<typeIsFloat>(dst.getType())){
+		dst.setType(t);
+		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
+		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
+	}
+
+	/// Todo: check view-images?
+	dst.setArea(src);
+	dst.setChannelCount(statistics.size(), dst.getAlphaChannelCount());
+	//dst.setGeometry(src.getWidth(), src.getHeight(), statistics.size(), dst.getAlphaChannelCount());
+
+}
+
+/*
 void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
@@ -64,7 +90,7 @@ void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) co
 		dst.clear();
 
 }
-
+*/
 
 
 ///
@@ -84,13 +110,14 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	const float heightF = static_cast<float>(height);
 	const float areaF  = widthF*heightF;
 
-	//const int minI = static_cast<int>(min);
-	//const int maxI = static_cast<int>(max);
-	const double minRaw = src.getScaling().inv(min);
-	const double maxRaw = (max == std::numeric_limits<double>::max()) ? src.getEncoding().getTypeMax<double>() : src.getScaling().inv(max);
+	// Smells like redesigning
+	const double minRaw = src.getScaling().inv(intensity.min);
+	const double maxRaw = (intensity.max == std::numeric_limits<double>::max()) ?
+			src.getConf().getTypeMax<double>() :
+			src.getScaling().inv(intensity.max);
 
-	if (minRaw <= src.getEncoding().getTypeMin<double>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getEncoding().getTypeMin<double>() << mout.endl;
+	if (minRaw <= src.getConf().getTypeMin<double>()){
+		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<double>() << mout.endl;
 	}
 
 	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
@@ -98,27 +125,26 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 
 	/// TODO: should use the actual types of src and dst.
 	FillProber floodFill(src);
-	floodFill.conf.anchorMin = minRaw;
-	floodFill.conf.anchorMax = maxRaw;
+	floodFill.conf.anchor.set(minRaw,maxRaw);
 	floodFill.init();
 
 	SegmentStatisticsProber<int,int> prober(src, dst, statistics);
-	prober.conf.anchorMin = minRaw;
-	prober.conf.anchorMax = maxRaw;
+	prober.conf.anchor.set(minRaw,maxRaw) ; //Min = minRaw;
+	// prober.conf.anchorMax = maxRaw;
 	prober.conf.markerValue = 1;
 	prober.init();
 
-	const UnaryFunctor & functor = getFunctor(dst.getEncoding().getTypeMax<double>());  // what if dst float?
-	mout.debug(1) << functor.getName() << ':' << functor << mout.endl;
+	const UnaryFunctor & functor = getFunctor(dst.getConf().getTypeMax<double>());  // what if dst float?
+	mout.debug2() << functor.getName() << ':' << functor << mout.endl;
 
-	const float prescale = dst.getEncoding().getTypeMax<float>();
+	const float prescale = dst.getConf().getTypeMax<float>();
 
 	//mout.note(3) << *this << mout.endl;
-	mout.debug(1) << "statistics: " << statistics << " count=" << count << '\n';
+	mout.debug2() << "statistics: " << statistics << " count=" << count << '\n';
 	mout << "src: " << src  << '\n';
 	mout << "dst: " << dst  << '\n';
-	mout << "range:" << (float)min  << '-' << (float)max;
-	mout << "dst scale:" << (float)min  << '-' << (float)max;
+	mout << "range:" << intensity;
+	//mout << "dst scale:" << (float)intensity.min  << '-' << (float)max;
 	mout << mout.endl;
 
 	mout.debug() << "prober:" << prober    << mout.endl;

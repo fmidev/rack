@@ -79,9 +79,9 @@ protected:
 		// scaling.setScale(scaling.getScale() * static_cast<double>(this->getArea()));  // replaced by count
 
 
-		mout.debug(2) << "scaling (including area): " << scaling.toStr() << mout.endl;
-		// mout.debug(2) << "scaleResult(by area)=" << scaleResult   << mout.endl;
-		mout.debug(2) << this->dst.getCoordinatePolicy() << mout.endl;
+		mout.debug3() << "scaling (including area): " << scaling.toStr() << mout.endl;
+		// mout.debug3() << "scaleResult(by area)=" << scaleResult   << mout.endl;
+		mout.debug3() << this->dst.getCoordinatePolicy() << mout.endl;
 		//coordinateHandler.setLimits(src.getWidth(), src.getWidth())
 		//ImageOp::adaptCoordinateHandler(src, coordinateHandler);
 
@@ -128,7 +128,11 @@ protected:
 
 	virtual	inline
 	void setImageLimits() const {
-		this->src.adjustCoordinateHandler(this->coordinateHandler);
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		mout.debug() << this->src << mout.endl;
+		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
+		mout.debug() << this->coordinateHandler << mout.endl;
+		// this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
 
@@ -256,14 +260,14 @@ protected:
   Implemented as two consequent SlidingStripeOp's: horizontal filtering followed by a vertical one.
 
  \code
-  drainage shapes.png --average 25   -o average.png
-  drainage shapes.png --average 5,55 -o average-vert.png
+  drainage shapes.png --iAverage 25   -o average.png
+  drainage shapes.png --iAverage 5,55 -o average-vert.png
  \endcode
 
   If the source image contains several channels, each channel is treated separately.
 
  \code
-  drainage shapes.png --average 25  -o average-rgb.png
+  drainage shapes.png --iAverage 25  -o average-rgb.png
  \endcode
 
  \~exec
@@ -272,7 +276,7 @@ protected:
 
  This operator applies weighted averaging, if a weight image (alpha channel) is provided.
  \code
-  drainage image-rgba.png --average 15 -o average-weighted.png
+  drainage image-rgba.png --iAverage 15 -o average-weighted.png
  \endcode
 
   \see BlenderOp
@@ -281,11 +285,16 @@ class FastAverageOp : public WindowOp< Window<WindowConfig> > {
 
 public:
 
-	FastAverageOp(int width=1, int height=0) : WindowOp<Window<WindowConfig> >(__FUNCTION__, "Window averaging with optional weighting support.", width, height) { //, 1, 2, false) {
-
+	FastAverageOp(int width=1, int height=0) : WindowOp<Window<WindowConfig> >(__FUNCTION__,
+			"Window averaging with optional weighting support.", width, height) {
 	};
 
-
+	FastAverageOp(const FastAverageOp & op) : WindowOp<Window<WindowConfig> >(op) {
+		//Logger mout(getImgLog(), __FUNCTION__);
+		//mout.warn() << "src: " << op.getParameters() << " =>  copyStruct ..." << mout.endl;
+		//parameters.copyStruct(op.getParameters(), op, *this);
+		//mout.warn() << "dst: " << this->getParameters() << " <= this" << mout.endl;
+	}
 
 	/// Delegates the invocation separately for each channel.
 	/**

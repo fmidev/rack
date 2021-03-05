@@ -188,7 +188,7 @@ public:
 	void extractField(char field, const AccumulationConverter & converter, Image & dst) const;
 
 	inline
-	std::string toStr(){
+	std::string toStr() const {
 		std::stringstream sstr;
 		toStream(sstr);
 		return sstr.str();

@@ -45,11 +45,11 @@ namespace drain
 namespace image
 {
 
-/// Computes horizontal or vertical intensity statistics: average, sum, ...
+/// Computes horizontal or vertical intensity statistics: iAverage, sum, ...
 /**
 
  \code
-   drainage gray.png --marginStat horz,asmdvNX,0.50 --resize 100,270 -o marginStat.png
+   drainage gray.png --iMarginStat horz,asmdvNX,0.50 --iResize 100,270 -o marginStat.png
  \endcode
 
  */
@@ -63,7 +63,7 @@ public:
 	 *   \par stat - a sequence of letters, referring to statistics through Histogram::get(const char &key) .
 	 */
 	MarginalStatisticOp(const std::string & mode = "horz", const std::string & stat="asmdvNX", float medianPos=0.50) :
-		ImageOp("Marginal","Computes statistics on <horz> or <vert> lines: average,sum,median,stdDev,variance,miN,maX") {
+		ImageOp("MarginStat","Computes statistics on <horz> or <vert> lines: iAverage,sum,median,stdDev,variance,miN,maX") {
 		parameters.link("mode", this->mode = mode);
 		parameters.link("stat", this->stat = stat);
 		parameters.link("medianPos", this->medianPos = medianPos);

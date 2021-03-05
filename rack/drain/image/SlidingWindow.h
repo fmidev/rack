@@ -90,21 +90,29 @@ public:
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
 
-		mout.debug(2) << "initialize" << mout.endl;
+		mout.debug3() << "calling initialize" << mout.endl;
 		initialize();
 
-		mout.debug(2) << (*this) << mout.endl;
+		//this->myFunctor.updateBean();
+		mout.debug2() << (*this) << mout.endl;
+		//mout.warn() << "final functor:" << this->myFunctor << mout.endl;
+		/*
+		for (int i=0; i<50; ++i){
+			std::cerr << __FUNCTION__ << i << '\t' << this->myFunctor(i) << '\n';
+		}
+		*/
 
 		(this->*fill)();
-		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
 		write();
 
 		if (this->isHorizontal()){
-			mout.debug(3) << "slideHorz" << mout.endl;
+			mout.debug2() << "start slideHorz" << mout.endl;
 			slideHorz();
+			mout.debug2() << "end slideHorz" << mout.endl;
 		}
 		else {
-			mout.debug(3) << "slideVert" << mout.endl;
+			mout.debug2() << "slideVert" << mout.endl;
 			slideVert();
 		}
 	}
@@ -116,15 +124,15 @@ public:
 	void runHorz(){
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
-		mout.debug(2) << "start" << mout.endl;
+		mout.debug3() << "start" << mout.endl;
 
-		mout.debug(2) << "initialize" << mout.endl;
+		mout.debug3() << "initialize" << mout.endl;
 		initialize();
 
-		mout.debug(2) << (*this) << mout.endl;
+		mout.debug3() << (*this) << mout.endl;
 
 		fill();
-		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
 		write();
 
 		mout.debug(3) << "slideHorz" << mout.endl;
@@ -138,15 +146,15 @@ public:
 	void runVert(){
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
-		mout.debug(2) << "start" << mout.endl;
+		mout.debug3() << "start" << mout.endl;
 
-		mout.debug(2) << "initialize" << mout.endl;
+		mout.debug3() << "initialize" << mout.endl;
 		initialize();
 
-		mout.debug(2) << (*this) << mout.endl;
+		mout.debug3() << (*this) << mout.endl;
 
 		fill();
-		mout.debug(2) << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
 		write();
 
 		mout.debug(3) << "slideVert" << mout.endl;
@@ -276,16 +284,16 @@ protected:
 	/**
 	 *  High-level functionality of a sliding window.
 	 *
-	 *  @return true, if the new location is within im		mout.debug(2) << window << mout.endl;
+	 *  @return true, if the new location is within im		mout.debug3() << window << mout.endl;
 	 *  age, otherways false.
 	 */
 	inline // FINAL
 	bool moveDown(){
 
 		++this->location.y;
-		if (this->location.y <= this->coordinateHandler.getYMax()){ //  < this->srcHeight){
-			locationLead.y  = this->location.y + this->jMax;
-			locationTrail.y = this->location.y + this->jMin-1;
+		if (this->location.y <= this->coordinateHandler.getYRange().max){ //  < this->srcHeight){
+			locationLead.y  = this->location.y + this->jRange.max;
+			locationTrail.y = this->location.y + this->jRange.min - 1;
 			(this->*updateVert)();
 			return true;
 		}
@@ -306,8 +314,8 @@ protected:
 
 		--this->location.y;
 		if (this->location.y >= 0){
-			locationLead.y  = this->location.y + this->jMin;
-			locationTrail.y = this->location.y + this->jMax+1;
+			locationLead.y  = this->location.y + this->jRange.min;
+			locationTrail.y = this->location.y + this->jRange.max + 1;
 			(this->*updateVert)();
 			return true;
 		}
@@ -327,9 +335,9 @@ protected:
 	bool moveRight(){
 
 		++this->location.x;
-		if (this->location.x <= this->coordinateHandler.getXMax()){ // this->srcWidth){
-			locationLead.x  = this->location.x + this->iMax;
-			locationTrail.x = this->location.x + this->iMin-1;
+		if (this->location.x <= this->coordinateHandler.getXRange().max){ // this->srcWidth){
+			locationLead.x  = this->location.x + this->iRange.max;
+			locationTrail.x = this->location.x + this->iRange.min-1;
 			(this->*updateHorz)();
 			return true;
 		}
@@ -351,8 +359,8 @@ protected:
 
 		--this->location.x;
 		if (this->location.x >= 0){
-			locationLead.x  = this->location.x + this->iMin;
-			locationTrail.x = this->location.x + this->iMax+1;
+			locationLead.x  = this->location.x + this->iRange.min;
+			locationTrail.x = this->location.x + this->iRange.max+1;
 			(this->*updateHorz)();
 			return true;
 		}
@@ -382,8 +390,8 @@ protected:
 		//drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
 		this->clear();
 		//mout.warn() << "init window" << mout.endl;
-		for (int i = this->iMin; i <= this->iMax; i++) {
-			for (int j = this->jMin; j <= this->jMax; j++) {
+		for (int i = this->iRange.min; i <= this->iRange.max; i++) {
+			for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 				this->locationTmp.setLocation(this->location.x+i, this->location.y+j);
 				this->addPixel(this->locationTmp);
 			}
@@ -398,7 +406,7 @@ protected:
 	inline
 	void fillHorz(){
 		this->clear();
-		for (int i = this->iMin; i <= this->iMax; i++) {
+		for (int i = this->iRange.min; i <= this->iRange.max; i++) {
 			this->locationTmp.setLocation(this->location.x+i, this->location.y);
 			this->addPixel(this->locationTmp);
 		}
@@ -412,7 +420,7 @@ protected:
 	inline
 	void fillVert(){
 		this->clear();
-		for (int j = this->jMin; j <= this->jMax; j++) {
+		for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 			this->locationTmp.setLocation(this->location.x, this->location.y+j);
 			this->addPixel(this->locationTmp);
 		}
@@ -443,10 +451,10 @@ protected:
 	void (SlidingWindow<C,R>::* updateVert)();
 
 
-	/// In \i moving horizontally, updates the window centered at current location. Calls removePixel() and addPixel().
+	/// In moving horizontally, updates the window centered at current location. Calls removePixel() and addPixel().
 	void updateHorzMultiple() {
 
-		for (int j = this->jMin; j <= this->jMax; j++) {
+		for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 
 			locationTmp.setLocation(locationTrail.x, this->location.y + j);
 			this->removePixel(locationTmp);
@@ -467,10 +475,10 @@ protected:
 
 	}
 
-	/// In \i moving vertically, updates the window centered at current location. Calls removePixel() and addPixel().
+	/// In moving vertically, updates the window centered at current location. Calls removePixel() and addPixel().
 	void updateVertMultiple(){
 
-		for (int i=this->iMin; i<=this->iMax; i++) {
+		for (int i=this->iRange.min; i<=this->iRange.max; i++) {
 
 			locationTmp.setLocation(this->location.x + i, locationTrail.y);
 			this->removePixel(locationTmp);
@@ -512,8 +520,8 @@ protected:
 	 *
 	 *   \param p - location at which contribution should be removed
 	 *	const int h = (conf.height>0.0) ? conf.height : conf.width;
-	//GaussianStripeVert window2(h, 0.5*conf.radius*static_cast<double>(h));
-	GaussianStripe2<false> window2(h, 0.5*conf.radius*static_cast<double>(h));
+	//GaussianStripeVert window2(h, 0.5*conf.radius*static_cast{double}(h));
+	GaussianStripe2<false> window2(h, 0.5*conf.radius*static_cast{double}(h));
 	 *
 	 *   The argument p is \em not validated in advance but
 	 *   it should be checked within the implementation using coordinateHandler.validate(p), for example.

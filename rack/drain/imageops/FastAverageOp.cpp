@@ -60,18 +60,19 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 
 
 	Image tmp(dst.getType());
-	makeCompatible(src,tmp);
-	mout.debug(3) << "src: " << src << mout.endl;
-	mout.debug(3) << "tmp: " << tmp << mout.endl;
-	mout.debug(3) << "dst: " << dst << mout.endl;
+	makeCompatible(src.getConf(), tmp);
+	mout.debug3() << "src: " << src << mout.endl;
+	mout.debug3() << "tmp: " << tmp << mout.endl;
+	mout.debug3() << "dst: " << dst << mout.endl;
 
 	// Accelerate computation if (1 x H) or (W x 1) window.
 	if (conf.getWidth() > 1){
 		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(conf.getWidth()); // <WindowConfig>
 		window1.setSrcFrame(src);
 		window1.setDstFrame(tmp);
-		mout.debug(1) << window1 << mout.endl;
+		mout.debug2() << window1 << mout.endl;
 		window1.run();
+		mout.special() << window1 << mout.endl;
 	}
 	else {
 		mout.info() << "Special case optimized: 1xH window" << mout.endl;
@@ -79,10 +80,12 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 	}
 
 	if (conf.getHeight() > 1){
+		mout.special() << conf.frame << mout.endl;
 		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(conf.getHeight()); // <WindowConfig>
+		mout.debug2() << window2 << mout.endl;
 		window2.setSrcFrame(tmp);
 		window2.setDstFrame(dst);
-		mout.debug(1) << window2 << mout.endl;
+		mout.debug2() << window2 << mout.endl;
 		window2.run();
 	}
 	else {
@@ -106,8 +109,8 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	Image tmp; //(src);
 	Image tmpAlpha; //(srcAlpha);
 
-	makeCompatible(src, tmp);
-	makeCompatible(srcAlpha, tmpAlpha);
+	makeCompatible(src.getConf(), tmp);
+	makeCompatible(srcAlpha.getConf(), tmpAlpha);
 	//mout.warn() << "tmp:      " << tmp      << mout.endl;
 	//mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
 

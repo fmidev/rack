@@ -88,6 +88,10 @@ public:
 		return !regExpString.empty();
 	};
 
+	void setFlags(int flags){
+		this->flags = flags;
+	};
+
 	/// Public interface for the result
 	const std::vector<std::string> & result;
 
@@ -144,13 +148,16 @@ public:
 
 	int flags;
 
+	/// Native result type, also for external result object.
+	typedef std::vector<std::string> result_t;
+
 protected:
 
 	regex_t regExpBinary;  // this is weird  FIXME: check pointer aspect
 
 	std::string regExpString;
 
-	mutable std::vector<std::string> writableResult;
+	mutable result_t writableResult;
 
 private:
 	int expectedMatchCount() const;

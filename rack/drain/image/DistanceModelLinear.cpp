@@ -57,11 +57,11 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
 	//mout.warn() << "calling DM Linear! " << horz << ", " << vert  << mout.endl; // ", " << diag << mout.
 
-	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-	this->widths[0]  = horz;
-	this->widths[1]  = horzLeft;
-	this->heights[0] = vert;
-	this->heights[1] = vertUp;
+	mout.debug2() << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
+	this->widths.forward   = horz;
+	this->widths.backward  = horzLeft;
+	this->heights.forward  = vert;
+	this->heights.backward = vertUp;
 	mout.debug() << this->getParameters() << mout.endl;
 
 	if (getMax() == 0.0){

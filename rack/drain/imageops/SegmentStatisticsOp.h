@@ -46,32 +46,32 @@ namespace image
 
 	For example, the unscaled area is obtained with \c 'A':
 	\code
-	drainage shapes.png --segmentStats A,64 -o segmentStat-area.png
+	drainage shapes.png --iSegmentStats A,64 -o segmentStat-area.png
 	\endcode
 
 	Respectively, the scaled area is obtained with \c 'a'.
 	\code
-	drainage shapes.png --segmentStats a,64,functor=FuzzyStep:0.5:0.75  -o segmentStat-areaRel.png
+	drainage shapes.png --iSegmentStats a,64,functor=FuzzyStep:0.5:0.75  -o segmentStat-areaRel.png
 	\endcode
 
 	The relative vertical position can be computed similarly, with \c 'y'.
 	\~exec
-	 drainage shapes.png --segmentStats y,64 -o segmentStat-y.png
+	 drainage shapes.png --iSegmentStats y,64 -o segmentStat-y.png
 	\~
 
   \code
-	drainage shapes.png --segmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png
-	drainage shapes.png --segmentStats h,64 -o segmentStat-horz.png
-	drainage shapes.png --segmentStats v,64 -o segmentStat-vert.png
-	drainage shapes.png --segmentStats e,32 -o segmentStat-elong.png
-	drainage shapes.png --segmentStats s,32,functor=FuzzyStepsoid:0:10 -o segmentStat-variance.png
+	drainage shapes.png --iSegmentStats x,64,functor=FuzzyStep:100:0 -o segmentStat-x.png
+	drainage shapes.png --iSegmentStats h,64 -o segmentStat-horz.png
+	drainage shapes.png --iSegmentStats v,64 -o segmentStat-vert.png
+	drainage shapes.png --iSegmentStats e,32 -o segmentStat-elong.png
+	drainage shapes.png --iSegmentStats s,32,functor=FuzzyStepsoid:0:10 -o segmentStat-variance.png
   \endcode
 
 	Several statistics can be computed simultaneously simply. For example,
 	elongation (e), slimness (l) and y-coordinate (y):
 
 	\code
-		drainage shapes.png --segmentStats ely,64,255 -o segmentStat-ely.png
+		drainage shapes.png --iSegmentStats ely,64:255 -o segmentStat-ely.png
     \endcode
 
  */
@@ -84,25 +84,31 @@ public:
 	 */
 	inline
 	SegmentStatisticsOp(const std::string & statistics="d", double min=1, double max=255, double scale=1.0, double offset=0) :
-    	SegmentOp("SegmentStatistics","Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation") {
-		parameters.link("statistics", this->statistics = statistics, "aAxXyYsSlve");
-		parameters.link("min", this->min = min);
-		parameters.link("max", this->max = max);
+    	SegmentOp(__FUNCTION__,"Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation") {
+		parameters.link("statistics", this->statistics = statistics, "aAxXyYsSlhve");
+		parameters.link("intensity", this->intensity.tuple(), "min:max");
+		//parameters.link("min", this->min = min);
+		//parameters.link("max", this->max = max);
 		parameters.link("functor", this->functorStr);  //  = "FuzzyStep"
+		this->intensity.set(min,max);
     };
 
+	SegmentStatisticsOp(const SegmentStatisticsOp & op) : SegmentOp(__FUNCTION__, "Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation."){
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
 
     std::string statistics;
 
 	/// Resizes dst, ensures src area and channel count for each stat. .
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	//void makeCompatible(const ImageFrame & src, Image & dst) const;
 
-protected:
+    void getDstConf(const ImageConf & src, ImageConf & dst) const; // TODO: src, src2, dst
 
+
+//protected:
 
     virtual
     void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
-    //void traverseChannel(const Channel & src , Channel &dst) const;
 
 
    

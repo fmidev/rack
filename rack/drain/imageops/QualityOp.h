@@ -50,7 +50,8 @@ public:
 
 	/// Essentially same as in ImageOp?
 	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	//void makeCompatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const;
 
 	// TODO:
 

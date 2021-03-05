@@ -38,67 +38,70 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_RANGE_H_
 #define DRAIN_RANGE_H_
 
-#include <ostream>
-#include <vector>
+//#include <ostream>
+//
+//#include <utility>
 
+#include "UniTuple.h"
 
 namespace drain {
 
-template <class T>
-class Range  {
 
+
+template <class T>
+class Range : public drain::UniTuple<T,2> {
 public:
 
-	Range() : vect(2, 0), min(vect[0]), max(vect[1]) { //
-	}
-
-	/// Copy constructor.
-	Range(const Range<T> & range) : vect(2), min(vect[0]), max(vect[1]) {
-		set(range);
-	}
-
-	Range(T min, T max) : vect(2), min(vect[0]=min), max(vect[1]=max) { //
-		set(min, max);
-	}
-
-	std::vector<T> vect;
-	// tested T vect[2]; Reference::link() caused problems
 	T & min;
 	T & max;
 
-	void set(T min, T max){
-		this->min = min;
-		this->max = max;
-	}
+	/// Default constructor.
+	Range(T min=T(), T max=T()) : min(this->next()),  max(this->next()) {
+		this->set(min, max);
+	};
 
-	void set(const Range<T> & range){
-		this->min = range.min;
-		this->max = range.max;
-	}
+	/// Copy constructor.
+	Range(const Range & r) :  min(this->next()), max(this->next()){
+		this->set(r.tuple());
+	};
 
+	// Reference (parasite)
+	template <size_t N>
+	Range(drain::UniTuple<T,N> & tuple, size_t i) :
+		drain::UniTuple<T,2>(tuple, i), // start in new pos!
+		min(this->next()),max(this->next()){
+	};
+
+
+	/// Default assignment operator
 	Range & operator=(const Range<T> & range){
-		min = range.min;
-		max = range.max;
+		this->assign(range);
 		return *this;
 	};
 
-	Range<T> & operator=(const T &x){
-		min = x;
-		max = x;
+	Range & operator=(const UniTuple<T,2> & range){
+		this->assign(range);
+		//this->set(range);
+		return *this;
+	};
+
+
+	Range<T> & operator=(T x){
+		this->set(x, x);
 		return *this;
 	};
 
 	inline
 	bool contains(T x) const {
-		return (min <= x) && (x <= max);
+		return (this->min <= x) && (x <= this->max);
 	}
 
 	inline
 	bool limit(T x) const {
-		if (x < min)
-			return min;
-		else if (x > max)
-			return max;
+		if (x < this->min)
+			return this->min;
+		else if (x > this->max)
+			return this->max;
 		else
 			return x;
 	}
@@ -106,25 +109,29 @@ public:
 	// Returns (max - min) which may be negative if max
 	inline
 	T width(){
-		return max - min;
+		return this->max - this->min;
 	}
 
+	// Returns abs(max - min).
 	inline
 	T span(){
-		if (max > min)
-			return max - min;
+		if (this->max > this->min)
+			return this->max - this->min;
 		else
-			return min - max;
+			return this->min - this->max;
 	}
 
 };
 
-
+/*
 template <class T>
 std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
 	ostr << r.min << ':' << r.max;
 	return ostr;
 }
+*/
+
+
 
 } // namespace drain
 

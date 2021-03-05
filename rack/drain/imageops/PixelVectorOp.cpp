@@ -37,15 +37,14 @@ namespace drain
 namespace image
 {
 
-
-void PixelVectorOp::makeCompatible(const ImageFrame &src, Image &dst) const  {
+void PixelVectorOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
+//void PixelVectorOp::makeCompatible(const ImageFrame &src, Image &dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
-	mout.debug(2) << "src:" << src << mout.endl;
+	mout.debug3() << "src:" << src << mout.endl;
 
 	if (!dst.typeIsSet())
-		//dst.setType(src.getType());
 		dst.setType<unsigned short>();
 
 	dst.setGeometry(src.getWidth(), src.getHeight(), 1);

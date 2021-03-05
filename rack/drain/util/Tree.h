@@ -103,21 +103,38 @@ namespace drain {
  *  \endcode
  *
  */
-template <class K, class T, class C=std::less<std::string> >
+
+// Example:
+// typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
+
+
+/// Sorted tree structure.
+/**
+ * \tparam T - node type, containing user-designed data. Ideally, only this needed in template implementation.
+ * \tparam P - applied path structure, essentially works like std::list
+ * \tparam C - path element comparison functor, should be compatible with Path<P>::key_t.
+ */
+//template <class K, class T, char SEP, class C=std::less<std::string> >
+template <class T, class P=drain::Path<std::string,'/'>, class C=std::less<std::string> >
 class Tree {
 public:
 
-	typedef K key_t;
+	//typedef K key_t;
 	typedef T node_t;
-	typedef drain::Path<K> path_t;
-	typedef drain::Tree<K,T,C> tree_t;
-	typedef std::map<K,Tree<K,T,C>, C> map_t;
+	typedef P path_t;
+	typedef typename path_t::elem_t key_t;
+	typedef drain::Tree<T,P,C> tree_t;
+	typedef std::map<key_t,tree_t> map_t;
+	//typedef drain::Path<K,SEP> path_t;
+	//typedef drain::Tree<K,T,SEP,C> tree_t;
+	//typedef std::map<K,Tree<K,T,SEP,C>, C> map_t;
 
 	/// Default constructor.
-	Tree(char separator = '/') :  separator(separator) {}; //parent(*this),
+	//Tree(char separator = '/') :  separator(separator) {}; //parent(*this),
+	Tree(){}; // :  separator(separator) {}; //parent(*this),
 
-	/// Copy constructor
-	Tree(const Tree &t) : data(t.data), separator(t.separator) {}; //parent(*this),
+	/// Copy constructor; copy only node data at the root.
+	Tree(const Tree &t) : data(t.data){}; //, separator(t.separator) {}; //parent(*this),
 
 	/// Copies the data of another node. Does traverse the children.
 	// TODO: what to do with the separator?
@@ -200,7 +217,7 @@ public:
 				return operator()(key);
 			}
 			*/
-			children[key].separator = separator;
+			//children[key].separator = separator;
 			return children[key];
 		}
 
@@ -241,7 +258,8 @@ public:
 	template <class S>
 	inline
 	tree_t & operator()(const S & path){
-		return operator()(path_t(path, this->separator));
+		return operator()(path_t(path));
+		//return operator()(path_t(path, this->separator));
 		//return get(path.begin(), path.end());
 	}
 
@@ -258,7 +276,8 @@ public:
 	template <class S>
 	inline
 	const tree_t & operator()(const S & path) const {
-		return operator()(path_t(path, this->separator));
+		return operator()(path_t(path));
+		//return operator()(path_t(path, this->separator));
 		// return get(path.begin(), path.end());
 	}
 
@@ -416,11 +435,14 @@ public:
 	}
 
 
+	/*
 	template <class S>
 	inline
 	bool hasPath(const S & pathStr) const {
-		return hasPath(path_t(pathStr, this->separator));
+		//return hasPath(path_t(pathStr, this->separator));
+		return hasPath(path_t(pathStr)); // should not be needed? be more automatic
 	}
+	*/
 
 
 	inline
@@ -523,9 +545,10 @@ protected:
 	// cooperator[]
 };
 
-template <class K, class T, class C>
-const Tree<K,T,C> Tree<K,T,C>::dummy;
-
+//template <class K, class T, char SEP, class C>
+//const Tree<K,T,SEP,C> Tree<K,T,SEP,C>::dummy;
+template <class T, class P, class C>
+const Tree<T,P,C> Tree<T,P,C>::dummy;
 
 }
 

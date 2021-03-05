@@ -120,7 +120,8 @@ protected:
 
 	void initialize() const {};
 
-	void makeCompatible(const ImageFrame &src, Image &dst) const;
+	void getDstConf(const ImageConf &src, ImageConf &dst) const;
+	//void makeCompatible(const ImageFrame &src, Image &dst) const;
 
 	//mutable Image paletteImage;
 	Palette myPalette;

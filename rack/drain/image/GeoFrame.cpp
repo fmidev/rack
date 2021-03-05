@@ -132,6 +132,7 @@ void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double lat
 	updateBoundingBoxD();
 	updateBoundingBoxM();
 
+
 	updateScaling();
 
 }
@@ -209,7 +210,13 @@ void GeoFrame::updateBoundingBoxM(){
 		projR2M.projectFwd(extentR.upperRight.x, extentR.upperRight.y, extentNative.upperRight.x, extentNative.upperRight.y);
 	}
 	else {
+		// drain::Logger mout(__FUNCTION__, __FILE__);
+		// mout.debug() << "could not (yet) set metric/native bbox" << mout.endl;
 		// warn?
+		if (isLongLat()){ // ie. native coords went radial above
+			//mout.warn() << "LAN-LON.. could set R native bbox" << mout.endl;
+			extentNative.assign(extentD);
+		}
 	}
 
 	/*

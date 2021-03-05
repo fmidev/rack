@@ -49,9 +49,9 @@ namespace image
  \~
 
  \code
-   drainage image-rgba.png image-rot-rgba.png --qualityMixer '0.20' -o qualityOverride20.png
-   drainage image-rgba.png image-rot-rgba.png --qualityMixer '0.50' -o qualityOverride50.png
-   drainage image-rgba.png image-rot-rgba.png --qualityMixer '0.80' -o qualityOverride80.png
+   drainage image-rgba.png image-rot-rgba.png --iQualityMixer '0.20' -o qualityOverride20.png
+   drainage image-rgba.png image-rot-rgba.png --iQualityMixer '0.50' -o qualityOverride50.png
+   drainage image-rgba.png image-rot-rgba.png --iQualityMixer '0.80' -o qualityOverride80.png
  \endcode
  */
 class QualityMixerOp : public ImageOp

@@ -65,7 +65,8 @@ public:
 
 
 	virtual
-	void makeCompatible(const ImageFrame &src, Image &dst) const;
+	//void makeCompatible(const ImageFrame &src, Image &dst) const;
+	void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const;
 
 
 	std::string functorName;
@@ -116,7 +117,7 @@ public:
 		if (src2.hasOverlap(dst)){
 			Image tmp;
 			tmp.copyDeep(src2);
-			makeCompatible(src1, dst);
+			makeCompatible(src1.getConf(), dst);
 			traverseFrame(src1, tmp, dst);
 			/*
 			const ImageTray<const Channel> srcTray1(src1);
@@ -126,7 +127,7 @@ public:
 			*/
 		}
 		else {
-			makeCompatible(src1, dst);
+			makeCompatible(src1.getConf(), dst);
 			/*
 			const ImageTray<const Channel> srcTray1(src1);
 			const ImageTray<const Channel> srcTray2(src2);
@@ -135,6 +136,12 @@ public:
 			traverseFrame(src1, src2, dst); // lower
 		}
 	};
+
+	virtual
+	void traverseChannels(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
+		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		mout.unimplemented() << "traverseChannels for one srcTray only " << mout.endl;
+	}
 
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, const ImageTray<const Channel> & src2,
@@ -202,15 +209,16 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 
 	double x=0.0, sum=0.0;
 
-	mout.debug(2) << *this << mout.endl;
-	//mout.debug(2) << "src1: " << src1  << mout.endl;
-	//mout.debug(2) << "src2: " << src2 << mout.endl;
-	//mout.debug(2) << "dst:  " << dst  << mout.endl;
+	mout.debug3() << *this << mout.endl;
+	//mout.debug3() << "src1: " << src1  << mout.endl;
+	//mout.debug3() << "src2: " << src2 << mout.endl;
+	//mout.debug3() << "dst:  " << dst  << mout.endl;
 
 	FunctorBank & functorBank = getFunctorBank();
 
 	if (!functorBank.has(functorName)){
 		//functorBank.help(std::cerr);
+		mout.note() << functorBank << mout.endl;
 		mout.error() << "functor not found: " << functorName << mout.endl;
 		return;
 	}
@@ -226,12 +234,12 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 	}
 
 	scalingFunctor.setParameters(functorParams);
-	mout.debug(1) << scalingFunctor.getName() << ':' << scalingFunctor << mout.endl;
+	mout.debug2() << scalingFunctor.getName() << ':' << scalingFunctor << mout.endl;
 
 	const double coeff = (rescale>0.0) ? 1.0/rescale : 1.0/static_cast<double>(channels);
 	const bool USE_POW    = (POW != 1.0);
 	const bool USE_INVPOW = (INVPOW != 1.0);
-	mout.debug(2) << "coeff " << coeff << mout.endl;
+	mout.debug3() << "coeff " << coeff << mout.endl;
 	const BinaryFunctor & f = binaryFunctor;
 	size_t a;
 	for (int j = 0; j < height; j++) {
@@ -266,7 +274,7 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 \~
 
  \code
-   drainage image.png image-rot.png  --distance FuzzyStep:0,255 -o distance-step.png
+   drainage image.png image-rot.png  --iDistance FuzzyStep:0,255 -o distance-step.png
  \endcode
 
  \see ProductOp
@@ -294,7 +302,7 @@ public:
   make image-rot.png
 \~
 \code
-  drainage image.png image-rot.png --product FuzzyStep:0,155  -o product-step.png
+  drainage image.png image-rot.png --iProduct FuzzyStep:0,155  -o product-step.png
 \endcode
 
  *  \see DistanceOp
@@ -317,8 +325,8 @@ public:
  dst(i,j) = \sqrt{ src(i,j,0)^2 + ... + src(i,j,k)^2 }.
 
  \code
- drainage image.png --magnitude FuzzyStep:0,255   -o magnitude-step.png
- drainage image.png --magnitude FuzzyBell:0,-150  -o magnitude-bell.png
+ drainage image.png --iMagnitude FuzzyStep:0,255   -o magnitude-step.png
+ drainage image.png --iMagnitude FuzzyBell:0,-150  -o magnitude-bell.png
  \endcode
 
  \see DistanceOp

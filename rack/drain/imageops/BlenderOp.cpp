@@ -74,14 +74,10 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	const bool WEIGHTED = src.hasAlpha();
 
-	/// Single-pass, and no mixing needed
-	//const bool SIMPLE = (smootherKey == 'd')||(smootherKey == 'D');
-	// if (SIMPLE && (loops > 1))
-	// mout.note() << "single-loop distance op, requested loops=" << loops << mout.endl;
-
 	unsigned short loopsFinal = loops;
 
 	ImageOp & smootherOp = getSmoother(smootherKey, WEIGHTED, loopsFinal);
+
 	// Set width,height leniently
 	if (smootherOp.getParameters().hasKey("width"))
 		smootherOp.setParameter("width", conf.getWidth());
@@ -151,7 +147,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		mixerOp.traverseChannels(src, tmp);
 		++loop;
 
-		mout.debug() << "round (tmp->dst):  " << loop << mout.endl;
+		mout.info() << "round (tmp->dst):  " << loop << mout.endl;
 		smootherOp.traverseChannels(tmp, dst);
 		mixerOp.traverseChannels(src, dst);
 		++loop;
@@ -163,7 +159,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 }
 
-
+/*
 void BlenderOp::getSmootherAliasMap(drain::SmartMap<std::string> & aliasMap, bool weighted) const {
 	//static drain::SmartMap<std::string> aliasMap;
 	aliasMap["a"] = "average";
@@ -172,20 +168,13 @@ void BlenderOp::getSmootherAliasMap(drain::SmartMap<std::string> & aliasMap, boo
 	aliasMap["d"] = weighted ? "distanceTransformFill"    : "distanceTransform";
 	aliasMap["D"] = weighted ? "distanceTransformFillExp" : "distanceTransformExp";
 }
+*/
 
 ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigned short & loops) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	drain::SmartMap<std::string> aliasMap;
-	getSmootherAliasMap(aliasMap, weighted);
-	/*
-	drain::SmartMap<std::string> aliasMap;
-	aliasMap["a"] = "average";
-	aliasMap["f"] = "flowAverage"; // magnitude/energy saving
-	aliasMap["g"] = "gaussianAverage";
-	aliasMap["d"] = weighted ? "distanceTransformFill"    : "distanceTransform";
-	aliasMap["D"] = weighted ? "distanceTransformFillExp" : "distanceTransformExp";
-	*/
+	const drain::SmartMap<std::string> & aliasMap = weighted ? getSmootherAliasMap<true>() : getSmootherAliasMap<false>();
+
 	ImageOpBank & bank = getImageOpBank();
 
 	if (key == "blender"){
@@ -209,12 +198,16 @@ ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 
 	ImageOpBank & bank = getImageOpBank();
 
+	/*
 	drain::SmartMap<std::string> aliasMap;
 	aliasMap["b"] = weighted ? "qualityMixer" : "mix";
 	aliasMap["m"] = weighted ? "qualityOverride" : "max";
+	*/
+	const drain::SmartMap<std::string> & aliasMap = weighted ? getMixerAliasMap<true>() : getMixerAliasMap<false>();
 
 	const Variable v(key, typeid(double));
 	if ((double)v > 0.0){
+		//mout.debug() <<
 		ImageOp & op = bank.get(aliasMap["b"]);
 		op.setParameter("coeff", v);
 		return op;
@@ -224,18 +217,10 @@ ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 		return op;
 	}
 
-	// ImageOp & op = bank.getComplete(key,':','/', aliasMap);
-	// return op;
 
 }
 
-void BlenderOp::initRefs() {
-	drain::SmartMap<std::string> aliasMap;
-	getSmootherAliasMap(aliasMap);
-	parameters.link("smooth", this->smootherKey, aliasMap.toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
-	parameters.link("mix", this->mixerKey, "b[/coeff:<coeff>]|m; (quality) mix, (quality) max");
-	parameters.link("loops", this->loops, "number of repetitions");
-}
+
 
 }  // namespace image
 

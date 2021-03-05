@@ -197,25 +197,61 @@ public:
 
 	//static	const K defaultKey = K();
 	//static	const V defaultValue = V();
-	void toOStr(std::ostream & ostr = std::cout, char separator=0) const {
+	void toStream(std::ostream & ostr = std::cout, char separator=0) const {
 
 		if (!separator)
 			separator = this->separator;
 
 		char sep = 0;
 		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
+
 			ostr << it->first << '=' << it->second;
 		}
 	}
 
 	std::string toStr(char separator=0) const {
 		std::stringstream sstr;
-		this->toOStr(sstr, separator);
+		this->toStream(sstr, separator);
 		return sstr.str();
+	}
+
+	void keysToStream(std::ostream & ostr = std::cout, char separator=0) const {
+
+		if (!separator)
+			separator = this->separator;
+
+		char sep = 0;
+		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+
+			if (sep)
+				ostr << sep;
+			else
+				sep = separator;
+
+			ostr << it->first; // << '=' << it->second;
+		}
+	}
+
+	void valuesToStream(std::ostream & ostr = std::cout, char separator=0) const {
+
+		if (!separator)
+			separator = this->separator;
+
+		char sep = 0;
+		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+
+			if (sep)
+				ostr << sep;
+			else
+				sep = separator;
+
+			ostr << it->second;
+		}
 	}
 
 	char separator;
@@ -224,9 +260,10 @@ public:
 template <class K, class V>
 inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
-	dict.toOStr(ostr);
+	dict.toStream(ostr);
 	return ostr;
 }
+
 
 
 /// Associates type info

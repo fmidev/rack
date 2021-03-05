@@ -54,6 +54,13 @@ namespace image
 template <class F>
 struct FunctorWrapper {
 	F functor;
+
+	FunctorWrapper(){};
+
+	FunctorWrapper(const FunctorWrapper<F> & op) : functor(op.functor) {
+		//functor.getParameters().copyStruct(op.functor.getParameters(), op.functor, functor);
+	};
+
 };
 
 
@@ -71,6 +78,12 @@ public:
 
 	FunctorOp() : LIMIT(false){};
 
+	FunctorOp(const FunctorOp & op) : ImageOp(op), LIMIT(op.LIMIT){
+		this->getParameters().copyStruct(op.getParameters(), op, *this);  // will add LIMIT (only)
+	};
+
+	virtual ~FunctorOp(){};
+
 	inline
 	void adaptParameters(bool adaptLimit = false){
 		ReferenceMap & p = this->getParameters();
@@ -82,7 +95,6 @@ public:
 	}
 
 	bool LIMIT;
-
 
 protected:
 
@@ -109,9 +121,6 @@ protected:
 	};
 
 
-	virtual ~FunctorOp(){};
-
-
 
 };
 
@@ -132,13 +141,17 @@ public:
 	UnaryFunctorOp(bool adaptParams = true, bool adoptLimit = true) : FunctorOp<F>(adaptParams, adoptLimit) {
 	};
 
+	inline
+	UnaryFunctorOp(const UnaryFunctorOp<F> & op) : FunctorOp<F>(false, false){
+		this->parameters.copyStruct(op.parameters, op, *this);
+	};
 
 	virtual ~UnaryFunctorOp(){};
 
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {  //  = 0;
 		//drain::Logger mout(this->getName()+"(UnaryFunctorOp)", __FUNCTION__);
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.debug(1) << "invoking processChannelsSeparately()" << mout.endl;
+		mout.debug2() << "invoking processChannelsSeparately()" << mout.endl;
 		ImageOp::traverseChannelsSeparately(src, dst);
 	}
 
@@ -169,7 +182,7 @@ protected:
 
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		// mout.warn() << *this << mout.endl;
-		this->functor.update();
+		this->functor.updateBean();
 
 	}
 
@@ -190,13 +203,13 @@ void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 
 	if (mout.isDebug(2)){
 		for (int i = 0; i < 256; i+=8) {
-			std::cout << i << "\t -> " << ss.fwd(i) << "\t" << this->functor(ss.fwd(i)) << '\n';
+			std::cout <<  __FILE__ << ':' << __FUNCTION__ << ':' << i << "\t -> " << ss.fwd(i) << "\t" << this->functor(ss.fwd(i)) << '\n';
 		}
 	}
 
 	if (SCALE){
-		mout.debug(1) << "ss scale:" << ss << mout.endl;
-		mout.debug(1) << "ds scale:" << ds << mout.endl;
+		mout.debug2() << "ss scale:" << ss << mout.endl;
+		mout.debug2() << "ds scale:" << ds << mout.endl;
 	}
 
 	Channel::const_iterator s  = src.begin();
@@ -225,7 +238,7 @@ void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
 
 		//typedef drain::typeLimiter<double> Limiter;
-		drain::typeLimiter<double>::value_t limiter = dst.getEncoding().getLimiter<double>(); //Type::call<Limiter>(dst.getType());
+		drain::typeLimiter<double>::value_t limiter = dst.getLimiter<double>(); //Type::call<Limiter>(dst.getType());
 		if (!SCALE){
 			while (d != dst.end()){
 				*d = limiter(this->functor(static_cast<double>(*s)));
@@ -268,37 +281,27 @@ public:
 	BinaryFunctorOp(bool adaptParams = true, bool adoptLimit = true) : FunctorOp<F>(adaptParams, adoptLimit) { // , LIMIT(false)
 	};
 
+	BinaryFunctorOp(const BinaryFunctorOp & op) : FunctorOp<F>(false, false){
+		this->parameters.copyStruct(op.parameters, op, *this);
+	};
+
 	virtual
 	~BinaryFunctorOp(){};
 
-	virtual
-	inline
-	void makeCompatible(const ImageFrame & src, Image & dst) const  {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
-		if (dst.isEmpty() || !dst.typeIsSet()){
-			dst.initialize(src.getType(), src.getGeometry());
-		}
-		mout.debug() << dst << mout.endl;
-		/*
-		if (dstScaling.getScale() == 0.0){
-
-		}
-		*/
-	}
 
 
 	inline
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(BinaryFunctorOp::)", __FUNCTION__);
-		mout.debug(1) << "delegating to: processChannelsRepeated(src, dst)" << mout.endl;
+		mout.debug2() << "delegating to: processChannelsRepeated(src, dst)" << mout.endl;
 		this->traverseChannelsRepeated(src, dst);
 	}
 
 	virtual  inline
 	void traverseChannel(const Channel &src, Channel & dst) const {
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.debug(1) << "delegating unary src to binary, with src2=dst: (src, dst) => (src,dst, dst) " << mout.endl;
+		mout.debug2() << "delegating unary src to binary, with src2=dst: (src, dst) => (src,dst, dst) " << mout.endl;
 		traverseChannel(src, dst, dst);
 	}
 
@@ -315,9 +318,9 @@ public:
 	void traverseChannel(const Channel &src1, const Channel &src2, Channel & dst) const {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)[ch1, ch2, chDst]", __FUNCTION__);
-		mout.debug(1) << "start: " << *this << mout.endl;
-		mout.debug(2) << "src1: " << src1 << mout.endl;
-		mout.debug(2) << "src2: " << src2 << mout.endl;
+		mout.debug2() << "start: " << *this << mout.endl;
+		mout.debug3() << "src1: " << src1 << mout.endl;
+		mout.debug3() << "src2: " << src2 << mout.endl;
 
 		if ((src1.getGeometry() == src2.getGeometry()) && (src1.getGeometry() == dst.getGeometry()) ){
 			traverseSequentially(src1, src2, dst);
@@ -340,7 +343,7 @@ public:
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(BinaryFunctorOp)", __FUNCTION__);
 		mout.debug() << "Unary init for Binary" << mout.endl; // << *this
 		//this->functor.setDstMax(dst.getMax<double>());
-		this->functor.update();
+		this->functor.updateBean();
 
 	}
 
@@ -350,7 +353,7 @@ public:
 		//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		//mout.warn() << "Binary init for Binary" << *this << mout.endl;
 		//this->functor.setDstMax(dst.getMax<double>());
-		this->functor.update();
+		this->functor.updateBean();
 
 	}
 
@@ -403,8 +406,8 @@ void BinaryFunctorOp<T>::traverseSequentially(const Channel &src1, const Channel
 		mout.debug() << "LIMIT=True" << mout.endl;
 		if (!drain::Type::call<drain::typeIsInteger>(dst.getType()))
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
-		//typedef drain::typeLimiter<double> Limiter;
-		drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>(); //Type::call<Limiter>(dst.getType());
+		//typedef drain::typeLimiter<double> Limiter; getEncoding().
+		drain::typeLimiter<double>::value_t limit = dst.getLimiter<double>(); //Type::call<Limiter>(dst.getType());
 		if (!SCALE){
 			while (d != dst.end()){
 				*d = limit(this->functor(*s1, *s2));
@@ -439,8 +442,8 @@ void BinaryFunctorOp<T>::traverseSpatially(const Channel &src1, const Channel &s
 	const size_t height2   = src2.getHeight();
 	CoordinateHandler2D handler2(width2, height2, src2.getCoordinatePolicy());
 
-	mout.debug(1) << handler1 << mout.endl;
-	mout.debug(1) << handler2 << mout.endl;
+	mout.debug2() << handler1 << mout.endl;
+	mout.debug2() << handler2 << mout.endl;
 
 	const size_t width    = dst.getWidth();   //std::max(width1, width2);
 	const size_t height   = dst.getHeight(); // std::max(height2, height2);
@@ -484,9 +487,10 @@ void BinaryFunctorOp<T>::traverseSpatially(const Channel &src1, const Channel &s
 		mout.debug() << "LIMIT=true" << mout.endl;
 		if (!drain::Type::call<drain::typeIsInteger>(dst.getType()))
 			mout.warn() << "float dst type, but LIMIT applied" << dst << mout.endl;
-		//typedef drain::typeLimiter<double> Limiter;
-		//Limiter::value_t limiterPtr = Type::call<Limiter>(dst.getType());
-		drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>();
+		// typedef drain::typeLimiter<double> Limiter;
+		// Limiter::value_t limiterPtr = Type::call<Limiter>(dst.getType());
+		// .getEncoding()
+		drain::typeLimiter<double>::value_t limit = dst.getLimiter<double>();
 
 		if (!SCALE){
 			mout.debug() << "SCALE=false" << mout.endl;

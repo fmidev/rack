@@ -84,12 +84,28 @@ protected:
 
 FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : ImageOp(__FUNCTION__,
 		"Fills an area starting at (i,j) having intensity in [min,max], with a value.") {
-	parameters.link("i", this->i0 = i, "coord");
-	parameters.link("j", this->j0 = j, "coord");
+	parameters.link("location",  this->startPoint.tuple(),  "i:j");
+	parameters.link("intensity", this->conf.anchor.tuple(), "min:max").fillArray = false;
+	parameters.link("value",    this->conf.markerValue = value, "intensity");
+
+	this->conf.anchor.set(min,max);
+
+
+	//parameters.link("i", this->i0 = i, "coord");
+	//parameters.link("j", this->j0 = j, "coord");
 	// parameters.append(conf);
-	parameters.link("min", this->conf.anchorMin = min, "intensity");
-	parameters.link("max", this->conf.anchorMax = max, "intensity");
-	parameters.link("value", this->conf.markerValue = value, "intensity");
+
+	//parameters.link("min", this->conf.anchorMin = min, "intensity");
+	//parameters.link("max", this->conf.anchorMax = max, "intensity");
+	//parameters.link("value", this->conf.markerValue = value, "intensity");
+}
+
+FloodFillOp::FloodFillOp(const FloodFillOp & op) : ImageOp(op){
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	//mout.warn() << "parameters" << mout.endl;
+	parameters.copyStruct(op.getParameters(), op, *this);
+	//parameters.copyStruct(op.getParameters(), op.conf, this->conf); // CONTAINED in obj
+	// mout.warn() << parameters << mout.endl;
 }
 
 
@@ -102,22 +118,23 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 	CoordinateHandler2D preHandler(src.getGeometry());
 	preHandler.setPolicy(CoordinatePolicy::WRAP);
 	mout.debug() << preHandler << mout.endl;
-	if (preHandler.handle(i0, j0)){
-		mout.info() << "tuned coordinates => (" << i0 << ',' << j0 << ')' << mout.endl;
+	Point2D<int> point(startPoint);
+	if (preHandler.handle(point)){
+		mout.info() << "tuned coordinates => (" << point << ')' << mout.endl;
 	}
 
 	if (Type::call<typeIsFloat>(src.getType()) || Type::call<typeIsFloat>(dst.getType()) ) {
-		mout.debug(1) << "type: double" << mout.endl;
+		mout.debug2() << "type: double" << mout.endl;
 		//SegmentProber<double,double,SegmentProberConf<double,double> > fill(src, dst);
 		FillProber fill(src, dst);
 		//PickySegmentProber fill(src, dst);
 		fill.conf.updateFromMap(conf);
 		fill.conf.markerValue = dst.getScaling().inv(conf.markerValue);
 		fill.init();
-		fill.probe(i0, j0);
+		fill.probe(point.x, point.y);
 	}
 	else {
-		mout.debug(1) << "type: integral" << mout.endl;
+		mout.debug2() << "type: integral" << mout.endl;
 		FillProber fill(src, dst);
 		//SegmentProber<int,int,SegmentProberConf<int,int> > fill(src, dst);
 		//PickySegmentProber fill(src, dst);
@@ -128,7 +145,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		//mout.warn() << conf << '>' << conf.markerValue << mout.endl;
 		mout.debug() << fill << '>' << fill.conf.markerValue << mout.endl;
 		//fill.count = 0;
-		fill.probe(i0, j0);
+		fill.probe(point.x, point.y);
 
 		//fill.scan();
 		//mout.warn() << "fill.count: " << fill.count <<  mout.endl;

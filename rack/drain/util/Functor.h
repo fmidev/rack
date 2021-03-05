@@ -45,33 +45,29 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+// consider: template<N,T=double> : UniTuple<T,N>()
+// or add variadic set() to SmartMap
+
 /// Base class for sequential computations. Optional scaling utilities.
 class Functor : public BeanLike {
 
 public:
 
+
 	inline
 	void setScale(double scale, double bias=0.0) {
 		this->scale = scale;
 		this->bias  = bias;
-		update();
+		updateBean();
 	}
 
 	virtual inline
-	void update() const {
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(Functor)", __FUNCTION__);
-
+	void updateBean() const {
 		updateScale();
-
-		mout.debug(1) << "final scale,bias: " << this->scaleFinal << ',' << this->biasFinal << mout.endl;
+		//drain::Logger mout(__FUNCTION__, __FILE__);
+		//mout.debug2() << "final scale,bias: " << this->scaleFinal << ',' << this->biasFinal << mout.endl;
 	}
 
-	virtual
-	inline
-	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
-		BeanLike::setParameters(p, assignmentSymbol, separatorSymbol);
-		update();
-	};
 
 protected:
 
@@ -79,16 +75,24 @@ protected:
 	Functor(const std::string & name, const std::string & description="", double scale=1.0, double bias=0.0) : BeanLike(name, description),
 		scale(scale), bias(bias), scaleFinal(scale), biasFinal(bias) {} // dstMax(0.0),
 
+	Functor(const Functor & fct) : BeanLike(fct) {
+		setScale(fct.scale, fct.bias);
+	};
+
+	/*
+	Functor(const Functor & fct) : BeanLike(fct){
+		parameters.copyStruct(fct.parameters, fct, *this); //
+	}
+	*/
+
 	virtual
 	~Functor(){};
 
-	inline
-	virtual
-	void updateScale() const {
+	virtual inline
 
+	void updateScale() const {
 		this->scaleFinal = scale; // * SCALE;
 		this->biasFinal  = bias;  // * SCALE;
-
 	}
 
 	/// Relative scale, typically 1. Optional.
@@ -112,6 +116,7 @@ protected:
 struct UnaryFunctor : public Functor {
 
 	UnaryFunctor(const std::string & name, const std::string & description="", double scale=1.0, double bias=0.0) : Functor(name, description, scale, bias) {}
+
 
 	virtual
 	double operator()(double s) const = 0;

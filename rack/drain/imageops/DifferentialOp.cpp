@@ -43,6 +43,28 @@ namespace image
 {
 
 
+void DifferentialOp::getDstConf(const ImageConf & src, ImageConf & dst) const {  // TODO: src, src2, dst
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	dst.setEncoding(src);
+	dst.setArea(src.getGeometry()); // EROR?
+	dst.setChannelCount(channels, 0);
+	//dst.initialize(src.getType(), src.getWidth(), src.getHeight(), channels, 0);
+	//dst.setScaling(src.getScaling());
+
+	// For unsigned small ints (uchar, ushort), move origin
+	const std::type_info & t = dst.getType();
+	if (drain::Type::call<drain::typeIsSmallInt>(t) && (!Type::call<drain::isSigned>(t)) && (dst.getScaling().getOffset()==0.0)){
+		const double s = dst.getScaling().getScale()*2.0;
+		mout.note() << "Unsigned small integer type (with offset=0.0), changing scaling from " << dst.getScaling();
+		dst.setScaling(s, -s * Type::call<typeMax,double>(t)/2.0);
+		mout << " to " << dst.getScaling() << mout.endl;
+		//dst.setOptimalScale();
+	}
+}
+
+/*
 void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -60,6 +82,7 @@ void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	}
 
 }
+*/
 
 void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
@@ -116,7 +139,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 	const ftype spanCoeff = 0.5/static_cast<ftype>(abs(di)+abs(dj));
 
 	mout.debug() << this->getParameters() << mout.endl;
-	mout.debug(1) << "spanCoeff:" << spanCoeff << ", SCALE:" << (int)SCALE << mout.endl;
+	mout.debug2() << "spanCoeff:" << spanCoeff << ", SCALE:" << (int)SCALE << mout.endl;
 
 	Point2D<int> pLo;
 	Point2D<int> pHi;
@@ -159,7 +182,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 
 		mout.debug() << "LIMIT=true" << mout.endl;
 
-		drain::typeLimiter<ftype>::value_t limit = dst.getEncoding().getLimiter<ftype>();
+		drain::typeLimiter<ftype>::value_t limit = dst.getConf().getLimiter<ftype>();
 		if (!SCALE){
 			mout.debug() << "SCALE=false" << mout.endl;
 			for (int j = 0; j < height; j++) {
@@ -238,7 +261,7 @@ void LaplaceOp::traverse(const Channel &src, Channel &dst, int di, int dj) const
 	mout.debug(3) << getParameters() << mout.endl;
 	//mout.debug(3) << " bias=" << bias << " scale=" << scale << mout.endl;
 
-	drain::typeLimiter<double>::value_t limit = dst.getEncoding().getLimiter<double>(); // Type::call<Limiter>(dst.getType());
+	drain::typeLimiter<double>::value_t limit = dst.getConf().getLimiter<double>(); // Type::call<Limiter>(dst.getType());
 
 	Point2D<int> pLo;
 	Point2D<int> pHi;

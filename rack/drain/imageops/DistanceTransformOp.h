@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
+#include "drain/image/CoordinateHandler.h"
 #include "drain/image/DistanceModelLinear.h"
 #include "drain/image/DistanceModelExponential.h"
 
@@ -57,6 +58,7 @@ class DistanceTransformOp : public ImageOp
 {
 
 public:
+
 
 	typedef float dist_t;
     
@@ -94,16 +96,35 @@ public:
     	traverseChannel(src, dst);
     };
 
+    /// Ensures dst the same geometry and type with src.
+    /*
+     */
+    virtual inline
+    void getDstConf(const ImageConf &src, ImageConf & dst) const {
+
+    	// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
+
+    	dst.setGeometry(src.getGeometry());
+    	// Alpha?
+    	//dst.setScaling(1,0, 0.0,1.0);
+    	dst.setPhysicalRange(0.0, 1.0);
+
+    	dst.coordinatePolicy.set(src.coordinatePolicy);
+
+    	//return false; // does not need separate image(s)
+    }
 
 	/// Ensures dst the same geometry and type with src.
 	/*
 	 */
+
+    /*
 	virtual
 	inline
-	void makeCompatible(const ImageFrame &src, Image &dst) const  {
+	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.debug(2) << "src: " << src << mout.endl;
+		mout.debug3() << "src: " << src << mout.endl;
 
 		//if (!dst.typeIsSet())
 			//dst.setType(src.getType());
@@ -118,6 +139,7 @@ public:
 		mout.debug(3) << "dst: " << dst << mout.endl;
 
 	};
+	*/
 
 
 protected:
@@ -129,9 +151,19 @@ protected:
 	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height) :
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
-		distanceModel.setTopology(2);
+		//this->distanceModel.setTopology(2);
 		distanceModel.setRadius(width, height, width, height);
 	};
+
+	DistanceTransformOp(const DistanceTransformOp & op) : ImageOp(op) {
+		parameters.append(this->distanceModel.getParameters());
+		//distModel.setTopology(2);
+		setParameters(op.getParameters());
+		//const T distanceModel
+		//distModel.setRadius(op.getDistanceModel()distModel.width);
+		//this->parameters.copyStruct(op.parameters, op.distanceModel, this->distanceModel);
+	};
+
 
 
 	/// Sets internal parameters
@@ -144,15 +176,16 @@ protected:
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-		const double physMax = src.requestPhysicalMax(100.0);
-		const double codeMax = src.getScaling().inv(physMax);
+		// WAS: src (all)  // .getEncoding()
+		const double physMax = dst.getConf().requestPhysicalMax(100.0);
+		const double codeMax = dst.getScaling().inv(physMax);
 
-		mout.debug() << "src of type=" << Type::getTypeChar(src.getType()) << ", scaling: " << src.getScaling();
+		mout.debug() << "dst of type=" << Type::getTypeChar(dst.getType()) << ", scaling: " << dst.getScaling();
 
-		if (src.getScaling().isPhysical()){
+		if (dst.getScaling().isPhysical()){
 			mout.info() << "ok, physical scaling: ";
 		}
-		else if (Type::call<typeIsSmallInt>(src.getType())){
+		else if (Type::call<typeIsSmallInt>(dst.getType())){
 			mout.note() << "no physical scaling, but small int, guessing: ";
 		}
 		else {
@@ -161,7 +194,7 @@ protected:
 		mout << "physMax=" << physMax << " => " << codeMax << mout.endl;
 
 		distanceModel.setMax(codeMax);
-		// distanceModel.setMax(src.getMax<double>()); // why not dst
+		// distModel.setMax(dst.getMax<double>()); // why not dst
 		distanceModel.update(); // radii
 	}
 
@@ -207,15 +240,22 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
-	const DistanceModel & distanceModel = getDistanceModel();
-	mout.debug(1) << "distanceModel:" << distanceModel << mout.endl;
+	//const DistanceModel & distModel = getDistanceModel();
+	mout.debug2() << "distModel:" << this->distanceModel << mout.endl;
 
-	CoordinateHandler2D coordinateHandler;
-	src.adjustCoordinateHandler(coordinateHandler);
-	mout.debug(1) << "coordHandler:" << coordinateHandler << mout.endl;
+	DistanceNeighbourhood chain;
+	this->distanceModel.createChain(chain, true);
+
+	CoordinateHandler2D coordinateHandler(src); // TODO: change param to ImageConf
+	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
+
+	const ValueScaling src2dst(src.getScaling(), dst.getScaling());
+
+	for (double d: {0.0, 0.5, 1.0, 255.0, 65535.0}){
+		mout.special() << d << " => " << src2dst.fwd(d) << " inv:" << src2dst.inv(d) << mout;
+	}
 
 	// proximity (inverted distance)
-
 	dist_t d;
 	dist_t dTest;
 
@@ -224,40 +264,31 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	// Point in the target image
 	Point2D<int> p;
-	int &px = p.x;
-	int &py = p.y;
 
+	const Range<int> & xRange = coordinateHandler.getXRange();
+	const Range<int> & yRange = coordinateHandler.getYRange();
 
-	// Experimental
-	// Possibly wrong. Theres are not interchangible due to to scanning element geometry?
-	typedef std::pair<int,int> range;
-	range horz(0, coordinateHandler.getXMax()); // note: including 0 and max.
-	range vert(0, coordinateHandler.getYMax()); // note: including 0 and max.
-
-	// Experimental (element topology not yet implemented)
+	// Experimental (element horz/vert topology not yet implemented)
+	// Possibly wrong...  not interchangible due to to scanning element geometry?
+	/*
 	bool HORZ = true;
-	range & inner     = HORZ ? horz : vert;
-	range & outer     = HORZ ? vert : horz;
+	const Range<int> & inner     = HORZ ? xRange : yRange;
+	const Range<int> & outer     = HORZ ? yRange : xRange;
 	int & innerValue  = HORZ ? p.x : p.y;
 	int & outerValue  = HORZ ? p.y : p.x;
+	mout.debug2() << "outer range:" << outer << mout.endl;
+	mout.debug2() << "inner range:" << inner << mout.endl;
+	*/
 
-	std::pair<int,int> g;
 
-	mout.debug(1) << "outer range:" << outer.first << ':' << outer.second << mout.endl;
-	mout.debug(1) << "inner range:" << inner.first << ':' << inner.second << mout.endl;
+	// Todo: extended area, needs coordinateHandler.handle(p);?
+	//for (outerValue=outer.min; outerValue<=outer.max; outerValue++){
+	//	for (innerValue=inner.min; innerValue<=inner.max; innerValue++){
+	for (p.y=0; p.y<yRange.max; ++p.y){
+		for (p.x=0; p.x<xRange.max; ++p.x){
 
-	DistanceNeighbourhood chain;
-	distanceModel.createChain(chain, distanceModel.topology);
-
-	// Todo: extended area
-	for (outerValue=outer.first; outerValue<=outer.second; outerValue++)
-	{
-		for (innerValue=inner.first; innerValue<=inner.second; innerValue++)
-		{
-			// MISSING: coordinateHandler.handle(p);?
-
-			// Take source value as default
-			d = src.get<dist_t>(p);  // todo  convert to dst scale?
+			// Take (converted) source value as default
+			d = src2dst.fwd(src.get<dist_t>(p));
 
 			// Compare to previous value
 			dTest = dst.get<dist_t>(p);
@@ -265,10 +296,10 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 				d = dTest;
 			}
 
-			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
-				pTest.setLocation(px+it->diff.x, py+it->diff.y);
+			for (const DistanceElement & elem: chain){
+				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decrease(dst.get<dist_t>(pTest), it->coeff);
+				dTest = this->distanceModel.decrease(dst.get<dist_t>(pTest), elem.coeff);
 				if (dTest > d){
 					d = dTest;
 				}
@@ -290,12 +321,17 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
-	const DistanceModel & distanceModel = getDistanceModel();
-	mout.debug(1) << "distanceModel:" << distanceModel << mout.endl;
+	//const DistanceModel & distModel = getDistanceModel();
+	mout.debug2() << "distModel:" << this->distanceModel << mout.endl;
 
-	CoordinateHandler2D coordinateHandler;
-	src.adjustCoordinateHandler(coordinateHandler);
-	mout.debug(1) << "coordHandler:" << coordinateHandler << mout.endl;
+	DistanceNeighbourhood chain;
+	this->distanceModel.createChain(chain, false);
+
+	CoordinateHandler2D coordinateHandler(src);
+	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
+
+	//const ValueScaling src2dst(src.scaling.scale, src.scaling.offset, dst.scaling.scale, dst.scaling.offset);
+	const ValueScaling src2dst(src.getScaling(), dst.getScaling());
 
 	// proximity (inverted distance)
 	dist_t d;
@@ -306,18 +342,16 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 
 	// Point in the target image
 	Point2D<int> p;
-	int & px = p.x;
-	int & py = p.y;
 
-	DistanceNeighbourhood chain;
-	distanceModel.createChain(chain, distanceModel.topology, false);
 
-	for (py=coordinateHandler.getYMax(); py>=0; --py)
-	{
-		for (px=coordinateHandler.getXMax(); px>=0; --px)
-		{
-			// Source
-			d = src.get<dist_t>(p);
+	const Range<int> & xRange = coordinateHandler.getXRange();
+	const Range<int> & yRange = coordinateHandler.getYRange();
+
+	for (p.y=yRange.max; p.y>=0; --p.y){
+		for (p.x=xRange.max; p.x>=0; --p.x){
+
+			// Take (converted) source value as default
+			d = src2dst.fwd(src.get<dist_t>(p));
 
 			// Compare to previous value
 			dTest = dst.get<dist_t>(p);
@@ -325,10 +359,10 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 				d = dTest;
 			}
 
-			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
-				pTest.setLocation(px+it->diff.x, py+it->diff.y);
+			for (const DistanceElement & elem: chain){
+				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decrease(dst.get<dist_t>(pTest), it->coeff);
+				dTest = this->distanceModel.decrease(dst.get<dist_t>(pTest), elem.coeff);
 				if (dTest > d){
 					d = dTest;
 				}
@@ -356,11 +390,11 @@ make dots-16bit.png #make
 
 Examples:
 \code
-drainage dots.png       --distanceTransform 70      -o dist.png
-drainage dots.png       --distanceTransform 70,70,0 -o dist-diamond.png
-drainage dots.png       --distanceTransform 70,70,1 -o dist-simple.png
-drainage dots.png       --distanceTransform 25,10  -o dist-horz.png
-drainage dots-16bit.png --distanceTransform 25    -o dist-16b.png
+drainage dots.png       --iDistanceTransform 70      -o dist.png
+drainage dots.png       --iDistanceTransform 70,70,0 -o dist-diamond.png
+drainage dots.png       --iDistanceTransform 70,70,1 -o dist-simple.png
+drainage dots.png       --iDistanceTransform 25,10  -o dist-horz.png
+drainage dots-16bit.png --iDistanceTransform 25    -o dist-16b.png
 
 \endcode
 
@@ -381,9 +415,9 @@ public:
 
 Examples:
  \code
- drainage dots.png       --distanceTransformExp 25    -o distExp.png
- drainage dots.png       --distanceTransformExp 25,10 -o distExp-horz.png
- drainage dots-16bit.png --distanceTransformExp 25    -o distExp-16b.png
+ drainage dots.png       --iDistanceTransformExp 25    -o distExp.png
+ drainage dots.png       --iDistanceTransformExp 25,10 -o distExp-horz.png
+ drainage dots-16bit.png --iDistanceTransformExp 25    -o distExp-16b.png
  \endcode
 
  TODO: gnuplot curves

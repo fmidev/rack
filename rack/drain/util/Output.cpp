@@ -30,7 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include "Log.h"
+//#include "Log.h"
+#include <stdexcept>
 #include "Output.h"
 
 
@@ -38,26 +39,27 @@ namespace drain {
 
 Output::Output(const std::string & filename){ // : filename(filename){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (filename.empty())
-		mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
+		throw std::runtime_error("drain::Output(...):  filename empty (use '-' for stdout)");
+		//mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
 
 	if (filename == "-"){
-		mout.debug() << "opening standard output" << mout.endl;
+		//mout.debug() << "opening standard output" << mout.endl;
 	}
 	else {
-		//std::string s = getResources().outputPrefix + filename;
 		ofstr.open(filename.c_str(), std::ios::out);
-		if (!ofstr.is_open()){
-			mout.error() << "opening '" << filename << "' failed" << mout.endl;
+		if (!ofstr.is_open()){//"drain::Output(...):  filename empty (use '-' for stdout)"
+			throw std::runtime_error(filename + ": drain::Output(filename) opening failed");
+			//mout.error() << "opening '" << filename << "' failed" << mout.endl;
 		}
 	}
 }
 
 Output::~Output(){
-	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug() << "closing... " << mout.endl;
+	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// mout.debug() << "closing... " << mout.endl;
 	ofstr.close();
 }
 

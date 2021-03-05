@@ -44,8 +44,7 @@ namespace image
 GaussianAverageOp::GaussianAverageOp(int width, int height, double radius) :
 		WindowOp<Window<GaussianWindowConf> >(__FUNCTION__, "Gaussian blur implemented as quick Wx1 and 1xH filtering.") {
 
-	this->conf.width = width;
-	this->conf.height = height;
+	this->conf.frame.set(width, height);
 	parameters.link("radius", this->conf.radius = radius, "distance, relative to width and height, where gaussian kernel obtains value 0.5.");
 
 }
@@ -56,10 +55,15 @@ void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) cons
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	// TODO: generalize!
+	mout.special() << "conf: " << conf.frame << ':' << conf.radius << mout.endl;
 
 	Image tmp(dst.getType());
-	makeCompatible(src, tmp);
+	makeCompatible(src.getConf(), tmp);
 	//makeCompatible(src, dst); // unneeded in traverse?
+
+	mout.special() << "src: "  << src << mout.endl;
+	mout.special() << "tmp: "  << tmp << mout.endl;
+
 
 	//GaussianStripe<true> window1(conf.width, 0.5*conf.radius*static_cast<double>(conf.width));
 	GaussianStripe<true> window1(conf.getWidth(), conf.radius);
@@ -88,8 +92,8 @@ void GaussianAverageOp::traverseChannel(const Channel & src, const Channel & src
 
 	Image tmp(dst.getType());
 	Image tmpWeight(dstWeight.getType());
-	makeCompatible(src, tmp);
-	makeCompatible(srcWeight, tmpWeight);
+	makeCompatible(src.getConf(), tmp);
+	makeCompatible(srcWeight.getConf(), tmpWeight);
 
 	//
 	GaussianStripeWeighted<true> window1(conf.getWidth(), conf.radius);

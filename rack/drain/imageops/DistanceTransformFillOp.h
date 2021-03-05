@@ -46,7 +46,7 @@ namespace image
 /// Template for DistanceTransformFillLinearOp and DistanceTransformFillExponentialOp
 /**
 
-  \tparam T - distance model, like DistanceModelLinear or DistanceModelExponential
+  \tparam T - iDistance model, like DistanceModelLinear or DistanceModelExponential
 
  */
 template <class T>
@@ -59,6 +59,21 @@ public:
 
 	virtual
 	~DistanceTransformFillOp(){};
+
+    virtual inline
+    void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const {
+
+    	// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
+
+    	dstConf.setGeometry(srcConf.getGeometry());
+    	if (!dstConf.hasAlphaChannel())
+    		dstConf.setAlphaChannelCount(1);
+
+    	dstConf.setPhysicalRange(0.0, 1.0); // ??
+
+    	// dstConf.coordinatePolicy.set(srcConf.coordinatePolicy);
+
+    }
 
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
 
@@ -74,11 +89,15 @@ public:
 	};
 
 
+
 protected:
 
 	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN) :
 		DistanceTransformOp<T>(name, description, horz, vert) {
 	};
+
+	//DistanceTransformFillOp(const DistanceTransformFillOp & op) : DistanceTransformOp<T>(op) {
+	//};
 
 
 	void traverseDownRight(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
@@ -99,8 +118,8 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 	mout.debug() << "start: " << *this << mout.endl;
 
-	mout.debug(1)  << "src: " << src << mout.endl;
-	mout.debug(1)  << "dst: " << dst << mout.endl;
+	mout.debug2()  << "src: " << src << mout.endl;
+	mout.debug2()  << "dst: " << dst << mout.endl;
 
 
 	if (!src.hasAlpha() || !dst.hasAlpha()){
@@ -110,15 +129,20 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 		return;
 	}
 
-	// mout.debug(2)  << "init params: " << mout.endl;
+	// mout.debug3()  << "init params: " << mout.endl;
 	// this->initializeParameters(src.get(),      dst.get());
-	mout.debug(2)  << "init params, using alpha: " << mout.endl;
+	mout.debug3()  << "init params, using alpha: " << mout.endl;
 	this->initializeParameters(src.getAlpha(), dst.getAlpha());
+
+	dst.getAlpha().fill(0);
+
+	//drain::image::File::write(src.getAlpha(), "dts-a.png");
+	//drain::image::File::write(dst.getAlpha(),"dt0-a.png");
 
 
 	mout.debug()   << "calling traverseDownRight" << mout.endl;
-	// mout.debug(1)  << src << mout.endl;
-	// mout.debug(1)  << dst << mout.endl;
+	// mout.debug2()  << src << mout.endl;
+	// mout.debug2()  << dst << mout.endl;
 	traverseDownRight(src, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -128,7 +152,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	 */
 
 	mout.debug()  << "calling traverseUpLeft" << mout.endl;
-	// mout.debug(1)  << dst << mout.endl;
+	// mout.debug2()  << dst << mout.endl;
 	traverseUpLeft(dst, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -154,74 +178,89 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
-	const Geometry & srcGeometry = srcTray.getGeometry();
+	//const Geometry & srcGeometry = srcTray.getGeometry();
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
 
-	CoordinateHandler2D coordinateHandler;
-	srcTray.adjustCoordinateHandler(coordinateHandler);
-	mout.debug(1) << "coordHandler" << coordinateHandler << mout.endl;
+	CoordinateHandler2D coordinateHandler(srcTray.get(0));
+	//srcTray.adjustCoordinateHandler(coordinateHandler);
+	mout.warn() << "coordHandler" << coordinateHandler << mout.endl;
 
-
-	// Winning distance
-	dist_t d;
-	// Distance candidate
-	dist_t dTest;
 
 	// Intensities (graylevel)
-	std::vector<double> pixel(srcGeometry.getImageChannelCount());
+	//std::vector<double> pixel(srcGeometry.getImageChannelCount());
 
-	mout.debug() << "channel depth:" << pixel.size() << '=' << srcGeometry.getImageChannelCount() << '=' << dstTray.getGeometry().getImageChannelCount() << mout.endl;
-	//mout.debug(2) << "src alpha:" << srcAlpha << mout.endl;
-	//mout.debug(2) << "dst alpha:" << dstAlpha << mout.endl;
+	//mout.debug() << "channel depth:" << pixel.size() << '=' << srcGeometry.getImageChannelCount() << '=' << dstTray.getGeometry().channels.getImageChannelCount() << mout.endl;
+	//mout.debug3() << "src alpha:" << srcAlpha << mout.endl;
+	//mout.debug3() << "dst alpha:" << dstAlpha << mout.endl;
 
 	/// Current cursor location
 	Point2D<int> p;
-	int &px = p.x;
-	int &py = p.y;
-
 	Point2D<int> pTest;
 	Point2D<int> pWin;
 
-
-	const DistanceModel & distanceModel = this->getDistanceModel();
-
 	DistanceNeighbourhood chain;
-	distanceModel.createChain(chain, distanceModel.topology, true);
+	this->distanceModel.createChain(chain, true);
 
-	mout.debug(1) << "distanceModel" << distanceModel << mout.endl;
+	mout.debug2() << "distModel" << this->distanceModel << mout.endl;
+
+
+	// Winning distance
+	dist_t dWin;
+	// Distance candidate
+	dist_t dTest;
+
+	const size_t K = std::min(srcTray.size(), dstTray.size());
+
+	const Range<int> & xRange = coordinateHandler.getXRange();
+	const Range<int> & yRange = coordinateHandler.getYRange();
+
+	size_t address;
+	size_t addressWin;
+
 	mout.debug() << "main loop" << mout.endl;
+	for (p.y=0; p.y<=yRange.max; ++p.y){// TODO check < vs <=
+		for (p.x=0; p.x<=xRange.max; ++p.x){ // TODO check < vs <=
 
-	for (py=0; py<=coordinateHandler.getYMax(); py++){// TODO check < vs <=
-		for (px=0; px<=coordinateHandler.getXMax(); px++){ // TODO check < vs <=
+			address = dstAlpha.address(p.x, p.y);
 
 			// Take source value as default
-			d = srcAlpha.get<dist_t>(p);
-			pWin.setLocation(-1, -1);
+			dWin = srcAlpha.get<dist_t>(address);
+			pWin.setLocation(p);
+			//pWin.setLocation(-1, -1);
 
-			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
-				pTest.setLocation(px+it->diff.x, py+it->diff.y);
+			for (const DistanceElement & elem: chain){
+				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decrease(dstAlpha.get<dist_t>(pTest), it->coeff);
-				if (dTest > d){
-					d = dTest;
+				dTest = this->distanceModel.decrease(dstAlpha.get<dist_t>(pTest), elem.coeff);
+				if (dTest > dWin){
+					dWin = dTest;
 					pWin = pTest;
 				}
 			}
 
-			// Finally, update target image (if data found)
-			if (d > 0.0){
 
-				if ((pWin.x != -1) && (pWin.y != -1)){
-					dstTray.getPixel(pWin, pixel);
+			// Finally, update target image (if data found)
+			if (dWin > 0.0){
+
+				dstAlpha.put(address, dWin);
+
+				addressWin = dstAlpha.address(pWin.x, pWin.y);
+
+				if (addressWin != address){
+					for (size_t k=0; k<K; ++k)
+						dstTray.get(k).put(address, dstTray.get(k).get<dist_t>(addressWin));
+						//dstTray.get(k).at(address) = dstTray.get(k).at(addressWin);
+					// dstTray.getPixel(pWin, pixel);
 				}
 				else {
-					srcTray.getPixel(p, pixel);
+					for (size_t k=0; k<K; ++k)
+						dstTray.get(k).put(address, srcTray.get(k).get<dist_t>(address));
+						// dstTray.get(k).at(address) = srcTray.get(k).at(address);
+					//srcTray.getPixel(p, pixel);
 				}
-
-				dstAlpha.put(p, d);
-				dstTray.putPixel(p, pixel);
+				//dstTray.putPixel(p, pixel);
 			}
 
 		}
@@ -242,69 +281,82 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	mout.debug() << "start" << mout.endl;
 
-	const Geometry & srcGeometry = srcTray.getGeometry();
+	mout.debug2() << "this->distanceModel" << this->distanceModel << mout.endl;
 
-	CoordinateHandler2D coordinateHandler;
-	srcTray.adjustCoordinateHandler(coordinateHandler);
+	DistanceNeighbourhood chain;
+	this->distanceModel.createChain(chain, false);
+
+	//const Geometry & srcGeometry = srcTray.getGeometry();
+
+	CoordinateHandler2D coordinateHandler(srcTray.get(0));
+	// srcTray.adjustCoordinateHandler(coordinateHandler);
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
 
-	// proximity (inverted distance)
-	//typedef float dist_t;
-	dist_t d;
-	dist_t dTest;
-
-	std::vector<double> pixel(srcGeometry.getImageChannelCount());
+	//std::vector<double> pixel(srcGeometry.getImageChannelCount());
 	//std::vector<int> pixelTmp(srcGeometry.getImageChannelCount());
 
 	/// Current cursor location
 	Point2D<int> p;
-	int & px = p.x;
-	int & py = p.y;
-
 	Point2D<int> pTest;
 	Point2D<int> pWin;
 
-	const DistanceModel & distanceModel = this->getDistanceModel();
+	// proximity (inverted distance)
+	dist_t dWin;
+	dist_t dTest;
 
-	DistanceNeighbourhood chain;
-	distanceModel.createChain(chain, distanceModel.topology, false);
+	size_t address;
+	size_t addressWin;
 
-	mout.debug(1) << "distanceModel" << distanceModel << mout.endl;
+	const size_t K = std::min(srcTray.size(), dstTray.size());
+
+	const Range<int> & xRange = coordinateHandler.getXRange();
+	const Range<int> & yRange = coordinateHandler.getYRange();
 
 	mout.debug() << "main loop" << mout.endl;
 
-	for (py=coordinateHandler.getYMax(); py>=0; py--){
-		for (px=coordinateHandler.getXMax(); px>=0; px--){
+	for (p.y=yRange.max; p.y>=0; --p.y){
+		for (p.x=xRange.max; p.x>=0; --p.x){
 
-			d = srcAlpha.get<dist_t>(p);
-			srcTray.getPixel(p,pixel); // move down
-			pWin.setLocation(-1, -1);
+			address = dstAlpha.address(p.x, p.y);
 
-			for (DistanceNeighbourhood::const_iterator it = chain.begin(); it != chain.end(); ++it){
-				pTest.setLocation(px+it->diff.x, py+it->diff.y);
+			dWin = srcAlpha.get<dist_t>(address);
+			pWin.setLocation(p);
+			//srcTray.getPixel(p,pixel); // move own
+			//pWin.setLocation(-1, -1);
+
+			for (const DistanceElement & elem: chain){
+				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
-				dTest = distanceModel.decrease(dstAlpha.get<dist_t>(pTest), it->coeff);
-				if (dTest > d){
-					d = dTest;
+				dTest = this->distanceModel.decrease(dstAlpha.get<dist_t>(pTest), elem.coeff);
+				if (dTest > dWin){
+					dWin = dTest;
 					pWin = pTest;
 				}
 			}
 
 
 			// Finally, update target image (if stronger data found)
-			if (d > 0.0){
+			if (dWin > 0.0){
 
-				if ((pWin.x != -1) && (pWin.y != -1)){
-					dstTray.getPixel(pWin, pixel);
+				dstAlpha.put(address, dWin);
+
+				addressWin = dstAlpha.address(pWin.x, pWin.y);
+				//if ((pWin.x != -1) && (pWin.y != -1)){
+
+				if (addressWin != address){ //(( pWin != p))
+					for (size_t k=0; k<K; ++k)
+						dstTray.get(k).put(address,dstTray.get(k).get<dist_t>(addressWin));
+					//dstTray.getPixel(pWin, pixel);
 				}
 				else {
-					srcTray.getPixel(p, pixel);
+					for (size_t k=0; k<K; ++k)
+						dstTray.get(k).put(address,srcTray.get(k).get<dist_t>(address));
+					//srcTray.getPixel(p, pixel);
 				}
 
-				dstAlpha.put(p, d);
-				dstTray.putPixel(p, pixel);
+				//dstTray.putPixel(p, pixel);
 			}
 
 		}
@@ -329,7 +381,7 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 
 Examples:
  \code
- drainage dots-rgba.png --distanceTransformFill 30 -o distFill-linear.png --view i -o distFillPlain-linear.png
+ drainage dots-rgba.png --iDistanceTransformFill 30 -o distFill-linear.png --view i -o distFillPlain-linear.png
  \endcode
 
 \~no exec
@@ -354,7 +406,7 @@ public:
 
 Examples:
  \code
- drainage dots-rgba.png --distanceTransformFillExp 15 -o distFill-exp.png --view i -o distFillPlain-exp.png
+ drainage dots-rgba.png --iDistanceTransformFillExp 15 -o distFill-exp.png --view i -o distFillPlain-exp.png
  \endcode
 
 \~no exec
@@ -382,170 +434,3 @@ public:
 
 #endif /* DISTANCETRANSFORMFILL_H_ */
 
-/*
-// Compare to upper left neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px-1,py-1);
-	coordinateHandler.handle(pTest); //,width,height);
-	dTest = distanceModel.decreaseDiag(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-}
-
-// Compare to upper neighbour
-pTest.setLocation(px,py-1);
-coordinateHandler.handle(pTest); //width,height);
-dTest = distanceModel.decreaseVert(dstAlpha.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-	pWin = pTest;
-}
-
-// Compare to upper right neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px+1,py-1);
-	coordinateHandler.handle(pTest); //width,height);
-	dTest = distanceModel.decreaseDiag(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-}
-
-// Compare to left neighbour
-pTest.setLocation(px-1,py);
-coordinateHandler.handle(pTest); //,width,height);
-dTest = distanceModel.decreaseHorz(dstAlpha.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-	pWin = pTest;
-}
-
-// HORSE
-if (distanceModel.KNIGHT){
-
-	// Compare to further upper left neighbour
-	pTest.setLocation(px-1, py-2);
-	coordinateHandler.handle(pTest); //width,height);
-	dTest = distanceModel.decreaseKnightVert(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further upper right neighbour
-	pTest.setLocation(px+1, py-2);
-	coordinateHandler.handle(pTest); //width,height);
-	dTest = distanceModel.decreaseKnightVert(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further left upper neighbour
-	pTest.setLocation(px-2, py-1);
-	coordinateHandler.handle(pTest); //,width,height);
-	dTest = distanceModel.decreaseKnightHorz(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further right upper neighbour
-	pTest.setLocation(px+2, py-1);
-	coordinateHandler.handle(pTest); //,width,height);
-	dTest = distanceModel.decreaseKnightHorz(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-}
-*/
-
-/*
-// Compare to lower left neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px-1,py+1);
-	coordinateHandler.handle(pTest); //,width,height);
-	dTest = distanceModel.decreaseDiag(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-}
-
-// Compare to lower neighbour
-pTest.setLocation(px,py+1);
-coordinateHandler.handle(pTest); //,width,height);
-dTest = distanceModel.decreaseVert(dstAlpha.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-	pWin = pTest;
-}
-
-// Compare to lower right neighbour
-if (distanceModel.DIAG){
-	pTest.setLocation(px+1,py+1);
-	coordinateHandler.handle(pTest); //,width,height);
-	dTest = distanceModel.decreaseDiag(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-}
-
-// Compare to right neighbour
-pTest.setLocation(px+1,py);
-coordinateHandler.handle(pTest); //width,height);
-dTest = distanceModel.decreaseHorz(dstAlpha.get<dist_t>(pTest));
-if (dTest > d){
-	d = dTest;
-	pWin = pTest;
-}
-
-// Chess knight's move: +2+1
-if (distanceModel.KNIGHT){
-
-	// Compare to further lower left neighbour
-	pTest.setLocation(px+1, py+2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further lower right neighbour
-	pTest.setLocation(px-1, py+2);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightVert(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further right lower neighbour
-	pTest.setLocation(px+2, py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-	// Compare to further left lower neighbour
-	pTest.setLocation(px-2, py+1);
-	coordinateHandler.handle(pTest);
-	dTest = distanceModel.decreaseKnightHorz(dstAlpha.get<dist_t>(pTest));
-	if (dTest > d){
-		d = dTest;
-		pWin = pTest;
-	}
-
-}
-*/
-
-// Drain

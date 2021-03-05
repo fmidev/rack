@@ -43,7 +43,7 @@ namespace drain {
 // Note: inside [ ] no specials like \S \s \W \w ...
 // Consider static RegExp extensionRegExp("\\.([[:alnum:]]+)$");
 //const RegExp File::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([^\\. ]+)$");
-const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
+//const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
 /*
 
 0 ==	 drain/examples/RegExp-example.cpp
@@ -57,15 +57,15 @@ const RegExp FilePath::pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
 
 /// In Linux and Unix...
 //  Note: pathRegExp should be flexible, respectively
-char FilePath::separator('/');
+//char FilePath::separator('/');
 
-FilePath::FilePath(const std::string & s, char separator) : dir(separator ? separator : FilePath::separator){
-	dir.trailing = true;
+FilePath::FilePath(const std::string & s){
+	//dir.separator.acceptLeading = true;
+	//dir.separator.acceptTrailing = false; //??
 	set(s);
 }
 
 FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), extension(p.extension){
-	dir.trailing = p.dir.trailing;
 }
 
 
@@ -73,23 +73,27 @@ void FilePath::set(const std::string & s){
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
 
+	this->dir.clear();
+	this->basename.clear();
+	this->extension.clear();
+
 	if (s.empty()){
-		this->dir.clear();
-		this->basename.clear();
-		this->extension.clear();
+		// noi ^
 	}
 	else {
 
-		std::vector<std::string> result;
+		const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
+		RegExp::result_t result;
 
 		if (!pathRegExp.execute(s, result)){
 
+			//std::cerr << "Regepp: " << sprinter(result) << '\n';
 			// for (std::size_t i = 1; i < result.size(); ++i)
 			//   mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
 
 			if (result.size() == 5){
-				// this->dir.set(result[2]);  // excludes trailing separator '/'
-				this->dir.set(result[1]);     // includes trailing separator '/'
+				// this->dir.assign(result[2]);  // excludes trailing separator '/'
+				this->dir.assign(result[1]);     // includes trailing separator '/'
 				this->basename  = result[3];
 				this->extension = result[4];
 			}
@@ -98,16 +102,14 @@ void FilePath::set(const std::string & s){
 				this->extension = result[2];
 			}
 			else {
-				for (std::size_t i = 1; i < result.size(); ++i) {
-					mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
-				}
+				mout.warn() << "Regepp: " <<	sprinter(result) << mout.endl;
 				mout.error() << "odd parsing results for file path: " << s << mout.endl;
 			}
 		}
 		else {
 			mout.error() << "could not parse file path: '" << s << "'" << mout.endl;
 		}
-
+		//std::cerr << "Result: " << this->dir << this->basename << this->extension << std::endl;
 	}
 }
 

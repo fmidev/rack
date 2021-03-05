@@ -119,7 +119,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 				mout.error() << "Premature end of file" << mout.endl;
 		}
 		if (!key.empty()){
-			mout.debug(1) << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
+			mout.debug2() << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
 			//ValueReader::scanValue(sstr.str(), properties[key]);
 			JSONreader::readValue(sstr.str(), properties[key]);
 		}
@@ -143,7 +143,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 			mout.warn() << "suspiciously large max value:" <<  maxValue << mout.endl;
 		}
 		mout.note() << "max value (" <<  maxValue << ") over 256, using 16 bits (unsigned)"<< mout.endl;
-		conf.encoding.setType(typeid(unsigned short));
+		conf.setType(typeid(unsigned short));
 	}
 
 	drain::TextReader::scanSegment(infile, "\n");
@@ -153,11 +153,13 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 	// conf.encoding.scaling.setPhysicalMax(maxValue);
 	if (properties.hasKey("coordinatePolicy")){
 		std::vector<int> policy;
+		//properties["coordinatePolicy"].toSequence(policy);
+		//conf.coordinatePolicy.set(policy);
 		properties["coordinatePolicy"].toSequence(policy);
-		conf.coordinatePolicy.set(policy);
+		conf.coordinatePolicy.fromSequence(policy);
 	}
 
-	conf.geometry.setGeometry(width, height, channels);
+	conf.setGeometry(width, height, channels);
 
 
 }
@@ -433,7 +435,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		break;
 	}
 
-	mout.debug(1) << "Closing file" << mout.endl;
+	mout.debug2() << "Closing file" << mout.endl;
 	ofstr.close();
 
 }

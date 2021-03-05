@@ -99,7 +99,7 @@ public:
 		histogram.setSize(this->conf.bins);
 		histogram.setSampleCount(this->getArea());
 		//histogram.setScale(src.getMin<int>(), src.getMax<int>(), dst.getMin<int>(), dst.getMax<int>());
-		histogram.setScale(this->src.getEncoding().template getTypeMin<int>(), this->src.getEncoding().template getTypeMax<int>());
+		histogram.setScale(this->src.getConf().template getTypeMin<int>(), this->src.getConf().template getTypeMax<int>());
 
 		if (!this->conf.valueFunc.empty())
 			histogram.setValueFunc(this->conf.valueFunc.at(0));
@@ -127,7 +127,8 @@ protected:
 
 	virtual inline
 	void setImageLimits() const {
-		this->src.adjustCoordinateHandler(this->coordinateHandler);
+		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
+		// this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
 	virtual inline
@@ -209,17 +210,17 @@ protected:
 
 };
 
-/// Window histogram for computing [asmdvNX] = average, sum, median, stddev, variance, miN, maX
+/// Window histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX
 /**
 
 \code
-  drainage gray.png --histogram 5,5,a -o hist-avg.png
-  drainage gray.png -T S --histogram 15,15,s -o hist-sum.png
-  drainage gray.png --histogram 5,5,m -o hist-med.png
-  drainage gray.png --histogram 5,5,d -o hist-dev.png
-  drainage gray.png --histogram 5,5,v -o hist-var.png
-  drainage gray.png --histogram 5,5,N -o hist-min.png
-  drainage gray.png --histogram 5,5,X -o hist-max.png
+  drainage gray.png --iWindowHistogram 5,5,a -o hist-avg.png
+  drainage gray.png -T S --iWindowHistogram 15,15,s -o hist-sum.png
+  drainage gray.png --iWindowHistogram 5,5,m -o hist-med.png
+  drainage gray.png --iWindowHistogram 5,5,d -o hist-dev.png
+  drainage gray.png --iWindowHistogram 5,5,v -o hist-var.png
+  drainage gray.png --iWindowHistogram 5,5,N -o hist-iMin.png
+  drainage gray.png --iWindowHistogram 5,5,X -o hist-iMax.png
 \endcode
 
  \see SlidingWindowMedian

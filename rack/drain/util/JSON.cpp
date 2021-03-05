@@ -80,7 +80,7 @@ void JSONreader::readValue(std::istream & istr, Variable & v, bool keepType){
 		}
 		//else // Type::call<drain::simpleName>(t)  // drain::Type::getTypeChar(v.getType())
 		//mout.warn() << "keeping type=" << Type::call<drain::simpleName>(v.getType()) << mout.endl;
-		//mout.debug(2) << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << mout.endl;
+		//mout.debug3() << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << mout.endl;
 		v = value;
 		break;
 	}

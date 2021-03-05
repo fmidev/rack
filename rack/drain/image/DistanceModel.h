@@ -36,12 +36,34 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <math.h>
 
 #include "drain/util/BeanLike.h"
+#include "drain/util/UniTuple.h"
 
 #include "drain/imageops/ImageOp.h"
 
 
+
 namespace drain
 {
+
+template <typename T>
+class Radius : public drain::UniTuple<T,2> {
+public:
+
+	T & forward;
+	T & backward;
+
+	/// Default constructor.
+	Radius(T forward=T(), T backward=T()) : forward(this->at(0)), backward(this->at(1)) {
+		this->set(forward, backward);
+	};
+
+	/// Copy constructor.
+	Radius(const Radius & r) : forward(this->at(0)),  backward(this->at(1)) {
+		this->set(r.forward, r.backward);
+	};
+
+};
+
 
 namespace image
 {
@@ -74,13 +96,14 @@ public:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const DistanceElement & d){
-	ostr << d.diff << ':' << d.coeff;
+	//ostr.setf(std::ostream::showpos);
+	ostr << std::showpos << d.diff << std::noshowpos << ": " << d.coeff;
 	return ostr;
 }
 
 
-typedef std::list<DistanceElement> DistanceNeighbourhood;
-
+//typedef std::list<DistanceElement> DistanceNeighbourhood;
+typedef std::vector<DistanceElement> DistanceNeighbourhood; // faster...
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chain){
@@ -95,6 +118,8 @@ std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chai
 class DistanceModel : public BeanLike {
 	
 public:
+
+	typedef unsigned short topol_t;
 
 	static
 	const float nan_f; // = std::numeric_limits<float>::quiet_NaN();
@@ -155,12 +180,12 @@ public:
 	inline
 	void update(){
 		//setTopology(topology);
-		setRadius(widths[0], heights[0], widths[1], heights[1]);
+		setRadius(widths.forward, heights.forward, widths.backward, heights.backward);
 	}
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
 	inline
-	void setTopology(unsigned short topology){
+	void setTopology(topol_t topology){
 		this->topology = topology;
 	};
 
@@ -169,14 +194,22 @@ public:
 	 *   Diagonal (dx+dy) and "chess knight" (2dx+dy or dx+2dy) values will be adjusted as well.
 	 *
 	 */
-	virtual
-	void createChain(DistanceNeighbourhood & chain, unsigned short topology, bool forward=true) const;
+	//virtual
+	void createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward=true) const;
+
+	inline
+	void createChain(DistanceNeighbourhood & chain, bool forward=true) const {
+		createChain(chain, this->topology, forward);
+	}
 
 	virtual
 	float decrease(float value, float coeff) const = 0;
 
-	unsigned short int topology; // NEEDED, separately?
+	topol_t topology; // NEEDED, separately?
 
+	static const topol_t PIX_4_CONNECTED = 0;
+	static const topol_t PIX_8_CONNECTED = 1;
+	static const topol_t PIX_CHESS_CONNECTED = 2;
 
 protected:
 
@@ -187,36 +220,32 @@ protected:
 	 *
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
-	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), widths(2, 10.0), heights(2, -1.0) {
-		parameters.link("width",  widths,  "pix").fillArray = true;
-		parameters.link("height", heights, "pix").fillArray = true;
-		parameters.link("topology", topology=2, "0|1|2");
+	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), widths(10.0, 10.0), heights(-1.0, -1.0) {
+		parameters.link("width",  widths.tuple(),  "pix").fillArray = true;
+		parameters.link("height", heights.tuple(), "pix").fillArray = true;
+		parameters.link("topology", topology=PIX_CHESS_CONNECTED, "0|1|2");
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		// mout.warn() << *this << mout.endl;
 	};
 
-	DistanceModel(const DistanceModel & dm) : BeanLike(dm.name, dm.description), widths(dm.widths), heights(dm.heights){
-		parameters.link("width",  widths,  "pix").fillArray = true;
-		parameters.link("height", heights, "pix").fillArray = true;
-		parameters.link("topology", topology=2, "0|1|2");
-		setMax(255); // warning
+	DistanceModel(const DistanceModel & dm) : BeanLike(dm), widths(dm.widths), heights(dm.heights){
+		parameters.copyStruct(dm.getParameters(), dm, *this);
+		// setTopology(dm.topology);
+		setMax(dm.getMax()); // warning
 	}
 
 
-	/// parameters["width"], two elements
 	//  Horizontal distance(s); right (and left) "radius". Internal parameter applied upon initParams?
-	std::vector<float> widths;
+	drain::Radius<float> widths;
 
-	/// parameters["height"], two elements
-	//  Vertical distance(s); downward (and upward) "radius". Internal parameter applied upon initParams
-	std::vector<float> heights;
+	drain::Radius<float> heights;
 
 	/// Final decrement or decay per pixel in horizontal direction. Derived from widths; definition varies in subclasses.
-	float horzDec;
+	float horzDec; // todo: pair
 	float horzDec2;
 	/// Final decrement or decay	per pixel in vertical direction. Derived from heights; definition varies in subclasses.
-    float vertDec;
+    float vertDec; // todo: pair
     float vertDec2;
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).

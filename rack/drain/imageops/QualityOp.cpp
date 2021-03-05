@@ -38,22 +38,22 @@ namespace drain
 namespace image
 {
 
-void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
+void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
+//void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
-	mout.debug(2) << "src: " << src << mout.endl;
+	mout.debug3() << "src: " << src << mout.endl;
 
+	mout.unimplemented() << "overlap check possibly missing" << mout;
+	/*
 	if (dst.hasSameSegment(src)){
 		mout.debug() << "dst == src, ok" << mout.endl;
 		return;
 	}
+	*/
 
-	if (!dst.typeIsSet()){
-		dst.setType(src.getType());
-		// dst.setScale(src.getScale()); // NEW
-	}
-
+	// unneeded	if (!dst.typeIsSet()){ dst.setType(src.getType());
 
 	if (!Type::call<typeIsInteger>(dst.getType())){
 		//dst.scaling.setScale(src.scaling.getScale());

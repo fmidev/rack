@@ -110,7 +110,7 @@ public:
 
 	inline
 	T & at(size_t i, size_t j){
-		return *(T *)&buffer[ address(i,j)*encoding.byteSize ];
+		return *(T *) & buffer[ address(i,j) * conf.byteSize ];
 	};
 
 	/*

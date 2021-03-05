@@ -28,10 +28,12 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef SEGMENT_OP_H
-#define SEGMENT_OP_H
+#ifndef DRAIN_SEGMENT_OP_H
+#define DRAIN_SEGMENT_OP_H
 
 #include <math.h>
+
+//#include "drain/util/Cloner.h"
 
 #include "drain/util/FunctorBank.h"
 #include "drain/image/SegmentProber.h"
@@ -48,14 +50,13 @@ namespace image
 /**
  *
  */
-class SegmentOp: public ImageOp
-{
+class SegmentOp: public ImageOp {
+
 public:
 
-	//SegmentOp
-	double min;  // TODO: instead consider criterion method inside(i,j)
-	double max;
-	//SegmentProberConf<int,int> conf;
+	Range<double> intensity;
+	// double min;  // TODO: instead consider criterion method inside(i,j)
+	// double max;
 
 	bool clearDst;
 
@@ -66,32 +67,62 @@ protected:
 
 	inline
 	SegmentOp(const std::string & name, const std::string & description) :
-		ImageOp(name, description), min(0), max(0), clearDst(true), functor(identityFtor) {
+		ImageOp(name, description),
+		intensity(0,0),
+		clearDst(true),
+		unicloner(getFunctorBank()),
+		functor(identityFtor)
+	{
 	}
 
 	SegmentOp(const std::string & name, const std::string & description, const drain::UnaryFunctor & ftor) :
-		ImageOp(name, description + " ftor=" + ftor.getName()), min(0), max(0), clearDst(true), functor(ftor) {
+		ImageOp(name, description + " ftor=" + ftor.getName()),
+		intensity(0,0),
+		clearDst(true),
+		unicloner(getFunctorBank()),
+		functor(ftor) {
 	}
 
+	mutable
+	UniCloner<UnaryFunctor> unicloner;
 
-
-	/// Returns a functor: the member functor or retrieved from FunctorBank
+	/// Retrieve functor to process the result: either the functor defined as functorStr or member functor (identity by default).
+	/**
+	 *  \param scale - default scaling, possibly overridden by functor parameters
+	 *  \param bias  - default bias, possibly overridden by functor parameters
+	 */
 	inline
-	const UnaryFunctor & getFunctor(double scale = 0.0) const {
+	const UnaryFunctor & getFunctor(double scale = 0.0, double bias = 0.0) const {
 
-		//drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 		if (functorStr.empty()){
+			// Use my functor.
 			return this->functor;
 		}
 		else {
-			UnaryFunctor & f = drain::getFunctor(functorStr, ':');
-			if (scale > 0.0)
-				f.setScale(scale, 0);
-			mout.debug(2) << " ftor: " << f << mout.endl;
-			//mout.warn() << "cftor: " << (const UnaryFunctor &)f << mout.endl;
-			return f;
+			// Override with a cloned functor instance.
+			std::string functorName;
+			std::string functorParams;
+			drain::StringTools::split2(this->functorStr, functorName, functorParams, ":");
+			if (unicloner.bank.has(functorName)){
+				UnaryFunctor & f =  unicloner.getCloned(functorName); // drain::getFunctor(functorStr, ':');
+				if (scale > 0.0)
+					f.setScale(scale, bias);
+				f.setParameters(functorParams);
+				mout.debug3() << " ftor: " << f << mout.endl;
+				// mout.warn() << "cftor: " << (const UnaryFunctor &)f << mout.endl;
+				return f;
+			}
+			else {
+				mout.fail() << "Functor '" << functorName << "' not found. Available functors:" << mout.endl;
+				//std::cerr << unicloner.bank
+				mout.note() << "Available functors:\n" << unicloner.bank << mout.endl;
+				//static const SprinterLayout layout("\n", "<?>", "\0=;", "''");
+				//SprinterBase::sequenceToStream(std::cerr, unicloner.bank, layout);
+				mout.warn() << "using default ftor: " << this->functor << mout.endl;
+				return this->functor;
+			}
 		}
 	}
 
@@ -104,6 +135,7 @@ protected:
 
 
 };
+
 
 } // namespace image
 

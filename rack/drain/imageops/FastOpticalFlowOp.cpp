@@ -137,8 +137,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		mout.error() << "dst image tray does not have enough channels (3)" << mout.endl;
 	}
 
-	const double scale = src1.requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
-	mout.debug(1) << " src: " << src1 << mout.endl;
+	const double scale = src1.getConf().requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
+	mout.debug2() << " src: " << src1 << mout.endl;
 
 	for (size_t i = 0; i < dst.size(); ++i) {
 		Channel & d = dst.get(i);
@@ -162,8 +162,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	ImageTray<const Channel> srcTray2;
 	srcTray2.setChannels(src2);
 
-	mout.debug(1) << " diff: dst=" << dst << mout.endl;
-	mout.debug(1) << " diff: &dt=" << dt  << mout.endl;
+	mout.debug2() << " diff: dst=" << dst << mout.endl;
+	mout.debug2() << " diff: &dt=" << dt  << mout.endl;
 
 	mout.debug() << "Computing time derivative" << mout.endl;
 	BinaryFunctorOp<SubtractionFunctor>().traverseChannel(src2, src1, dt);
@@ -192,7 +192,9 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	mout.debug(3) << "g2 (gradients of src)" << mout.endl;
 	Image grad2(typeid(OpticalFlowCore1::data_t)); // , dst.getGeometry()  //
 	grad2.setName("Grad2");
-	grad2.setPhysicalScale(-scale, scale);
+	grad2.setPhysicalRange(-scale, scale, true);
+	// grad2.setOptimalScale();
+
 	grad2.setGeometry(dst.getGeometry());
 	ImageTray<Channel> gradTray2;
 	gradTray2.setChannels(grad2);
@@ -203,7 +205,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		File::write(gradTray2.get(1), "diff-dy2.png");
 	}
 
-	mout.debug(1) << "Determining gradient quality (stability between g2 and g1)" << mout.endl;
+	mout.debug2() << "Determining gradient quality (stability between g2 and g1)" << mout.endl;
 	/// Gradient quality = gradient stability * gradient magnitude
 	// (part 1: gradient unchangedness)
 
@@ -220,7 +222,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	if (mout.isDebug(3)){
 		mout.warn() << w << mout.endl;
 		mout.warn() << weightTray.get() << mout.endl;
-		mout.debug(1) << scale << mout.endl;
+		mout.debug2() << scale << mout.endl;
 		Histogram histogram(256);
 		histogram.setScale(0.0, scale);
 		//hist.setParameter
@@ -241,7 +243,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	Image srcMixed; // = src2;
 	BinaryFunctorOp<MixerFunctor> mixOp;
 	mixOp.functor.coeff = 0.5;
-	mixOp.makeCompatible(src1, srcMixed);
+	mixOp.makeCompatible(src1.getConf(), srcMixed);
 	mixOp.traverseChannel(src1, src2, srcMixed.getChannel(0));
 	if (mout.isDebug(3)){
 		File::write(srcMixed, "src-mixed.png");

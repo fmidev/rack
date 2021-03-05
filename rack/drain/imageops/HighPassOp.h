@@ -61,7 +61,7 @@ namespace image
  *   Internally, applies the fast SlidingStripeAverage and SubstractOp .
  *
  \code
-   drainage gray.png --highPass '5,5,10.0' -o highPass.png
+   drainage gray.png --iHighPass '5,5,10.0' -o highPass.png
  \endcode
  */
 class HighPassOp : public ImageOp

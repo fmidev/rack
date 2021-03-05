@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Castable.h"
 #include "String.h"
 
+#include "Sprinter.h"
+
 //#include <regex.h> // wants malloc?
 
 // g++ deer_regexp.cpp -o deer_regexp
@@ -121,11 +123,6 @@ public:
 			return defaultValue;
 		else {
 			// return static_cast<std::string>(it->second);  DOES NOT WORK, http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization
-			// return (std::string)(it->second);   //it->second.toStr();
-			// std::stringstream sstr; ?? FULL
-			// sstr << *this;
-			//return sstr.str();
-			//return it->second.toStr();
 			return it->second;
 		}
 	}
@@ -213,11 +210,10 @@ public:
 	/// Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[].
 	/**
 	 *   \param updateOnly - if true, only existing elements are updated, otherwise skipped; if false, tries to add elements.
-	 *   \param criticality - UNUSED!
 	 */
 	template <class T2>
 	//void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
-	void importEntry(const std::string & key, const T2 & value, bool updateOnly = true, unsigned int criticality = LOG_DEBUG){
+	void importEntry(const std::string & key, const T2 & value, bool updateOnly = true) { //, unsigned int criticality = LOG_DEBUG){
 
 		iterator rit = this->find(key);
 
@@ -242,13 +238,16 @@ public:
 	/**
 	 *   \param entries - string containing key=value pairs separated by separator
 	 */
-	void importEntries(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0, bool updateOnly = false, unsigned int criticality = LOG_ERR);
+	void importEntries(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0, bool updateOnly = false);
+	//, unsigned int criticality = LOG_ERR);
+
 
 	/**
 	 *   \param entries - a sequence containing key=value pairs separated by separator
 	 *   TODO: sequence
 	 */
-	void importEntries(const std::list<std::string> & entries, char assignmentSymbol='=', bool updateOnly = false, unsigned int criticality = LOG_ERR);
+	void importEntries(const std::list<std::string> & entries, char assignmentSymbol='=', bool updateOnly = false);
+	// , unsigned int criticality = LOG_ERR);
 
 
 	/// Assign values from a map, overriding existing entries.
@@ -258,9 +257,9 @@ public:
 	 *  If a key is not known, and the map is of fixed type like ReferenceMap,  throws exception.
 	 */
 	template <class T2>
-	void importMap(const std::map<std::string,T2> & m, bool updateOnly = false, unsigned int criticality = LOG_ERR){
+	void importMap(const std::map<std::string,T2> & m, bool updateOnly = false){ //, unsigned int criticality = LOG_ERR){
 		for (typename std::map<std::string,T2>::const_iterator it = m.begin(); it != m.end(); ++it)
-			importEntry(it->first, it->second, updateOnly, criticality); // false);
+			importEntry(it->first, it->second, updateOnly); //, criticality); // false);
 	}
 
 	/// Assign values from a map, possibly extending the map.
@@ -273,8 +272,11 @@ public:
 	 */
 	template <class T2>
 	void importCastableMap(const drain::SmartMap<T2> & m, bool updateOnly = false, unsigned int criticality = LOG_ERR){
-		for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
-			importEntry(it->first, (const Castable &)it->second, updateOnly, criticality); // false);
+		for (const typename SmartMap<T2>::keylist_t::value_type &key : m.getKeyList()){
+			importEntry(key, (const Castable &)m[key], updateOnly);
+		}
+		// for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
+		//	importEntry(it->first, (const Castable &)it->second, updateOnly); //, criticality); // false);
 	}
 
 	/// Assign values from a map. Updates existing entries only.
@@ -285,16 +287,14 @@ public:
 	template <class T2>
 	inline
 	void updateFromMap(const std::map<std::string,T2> & m){
-		importMap(m, true, LOG_DEBUG);
-		// for (typename std::map<std::string,T2>::const_iterator it = m.begin(); it != m.end(); ++it)
-		//	(it->first, it->second, LOG_DEBUG); //true);
+		importMap(m, true); //, LOG_DEBUG);
 	}
 
 	/// Convenience
 	template <class T2>
 	inline
 	void updateFromCastableMap(const drain::SmartMap<T2> & m){
-		importCastableMap(m, true, LOG_DEBUG);
+		importCastableMap(m, true); //, LOG_DEBUG);
 		// for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
 		//	importEntry(it->first, (const Castable &)it->second, LOG_DEBUG); //true);
 	}
@@ -304,12 +304,12 @@ public:
 	// TODO: consider: std::string assignmentSymbols="=:", std::string separatorSymbols=", ", std::string trimSymbols=" \t\n\r",
 	inline
 	void setValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){  // char separatorSymbol=','
-		importEntries(entries, assignmentSymbol, separatorSymbol, false, LOG_ERR);
+		importEntries(entries, assignmentSymbol, separatorSymbol, false);  //, LOG_ERR);
 	}
 
 	inline
 	void setValues(const char * entries, char assignmentSymbol='=', char separatorSymbol=0){
-		importEntries(entries, assignmentSymbol, separatorSymbol, false, LOG_ERR);
+		importEntries(entries, assignmentSymbol, separatorSymbol, false); //, LOG_ERR);
 	}
 
 	template <class S>
@@ -318,7 +318,7 @@ public:
 	/// Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silently.
 	inline
 	void updateValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){// char separatorSymbol=','
-		importEntries(entries, assignmentSymbol, separatorSymbol, true, LOG_DEBUG);
+		importEntries(entries, assignmentSymbol, separatorSymbol, true); //, LOG_DEBUG);
 	}
 
 
@@ -375,15 +375,15 @@ public:
 	 *    \param end   - typically hyphen or trailing parenthesis ), }, [
 	 *    \param separator - typically comma or semicolon
 	 */
-	template <class S>
-	void toOStream(S & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const;
-
+	// template <class S>
+	// S & toStream(S & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const;
+	std::ostream & toStream(std::ostream & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const;
 
 
 	//std::string toStr(char equal='=', char start='{', char end='}', char separator=0) const {
 	std::string toStr(char equal='=', char start=0, char end=0, char separator=0) const {
 		std::stringstream sstr;
-		toOStream(sstr, equal, start, end, separator);
+		toStream(sstr, equal, start, end, separator);
 		return sstr.str();
 	}
 
@@ -425,7 +425,9 @@ protected:
 };
 
 template <class T>
-void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymbol, char separatorSymbol, bool updateOnly, unsigned int criticality){
+void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymbol, char separatorSymbol, bool updateOnly){
+	//, unsigned int criticality){
+
 	// void setValues(const std::string & entries, char assignmentSymbol, bool updateOnly = false){
 
 	Logger mout(__FUNCTION__, __FILE__);
@@ -435,18 +437,24 @@ void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymb
 		return;
 	}
 
-	separatorSymbol = separatorSymbol ? separatorSymbol : separator;
 
 	// Input parameter assignments, separated by the separator: "a=1", "b=2", "c=3", ...
 	std::list<std::string> p;
-	drain::StringTools::split(entries, p, std::string(1, separatorSymbol));  // separators);
-
-	importEntries(p, assignmentSymbol, updateOnly, criticality);
+	separatorSymbol = separatorSymbol ? separatorSymbol : separator;
+	if (separatorSymbol)
+		drain::StringTools::split(entries, p, std::string(1, separatorSymbol));  // separators);
+	else {
+		// no separator => single-param cmd, BUT explicit key=value possible
+		// mout.warn() << "push back entries:" << entries << mout.endl;
+		p.push_back(entries);
+	}
+	importEntries(p, assignmentSymbol, updateOnly); //, criticality);
 }
 
 template <class T>
 //void assignEntries2(const std::list<std::string> & p, bool updateOnly = false, char assignmentSymbol='='){
-void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmentSymbol, bool updateOnly, unsigned int criticality){
+void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmentSymbol, bool updateOnly){
+	//, unsigned int criticality){
 
 	Logger mout(__FUNCTION__, __FILE__);
 	const std::string assignmentSymbols(1, assignmentSymbol);
@@ -454,9 +462,16 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 	const std::list<std::string> & keys = getKeyList();
 	std::list<std::string>::const_iterator kit = keys.begin();
 
+
 	bool acceptOrderedParams = true;
 
+	// mout.warn() << " assignmentSymbol: " <<  assignmentSymbol << mout.endl;
+	// mout.warn() << " size: " <<  this->size() << mout.endl;
+
+
 	for (std::list<std::string>::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+
+		//mout.warn() << " entry: " << *pit << mout.endl;
 
 		// Check specific assignment, ie. check if the key=value is given explicitly.
 		if (assignmentSymbol){ // typically '='
@@ -464,10 +479,21 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 			std::string value;
 			if (StringTools::split2(*pit, key, value, assignmentSymbols)){
 				// mout.warn() << " specified " <<  key << "=\t" << value << mout.endl;
-				//importEntry(key, value, updateOnly);
-				importEntry(key, value, updateOnly, criticality);
+				if (this->size()==1){
+					iterator it = this->begin();
+					if (key == it->first)
+						it->second = value;
+					else
+						it->second = *pit;
+					return;
+				}
+
+				importEntry(key, value, updateOnly); //, criticality);
 				acceptOrderedParams = false;
 				continue;
+			}
+			else {
+				// mout.warn() << " could not split: " << *pit << mout.endl;
 			}
 		}
 
@@ -476,23 +502,21 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 		if (kit != keys.end()){
 			// Assignment-by-order
 			if (!acceptOrderedParams){
-				mout.warn() << "unspecified (ordered) param ["<< *kit << "=] '" << *pit << "' given after specified params" << mout.endl;
+				mout.warn() << "positional arg '" << *pit << "' for ["<< *kit << "] given after explicit args" << mout.endl;
 			}
 			//mout.warn() << " ordered  " <<   << mout.endl;
 			(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
 			++kit; // NUEVO
 		}
 		else {
-			//mout.log(criticality) << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
-
+			//mout.log(criticality)
+			// << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 			if (!updateOnly){
 				mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 			}
 
-			//return; // NUEVO
 		}
 
-		// ++kit;  NUEVO
 
 	}
 }
@@ -523,19 +547,28 @@ void SmartMap<T>::setValuesSEQ(const S & sequence){
 }
 
 template <class T>
-template <class S>
-void SmartMap<T>::toOStream(S & ostr, char equal, char startChar, char endChar, char separatorChar) const {
+//template <class S>
+std::ostream & SmartMap<T>::toStream(std::ostream & ostr, char equal, char startChar, char endChar, char separatorChar) const {
 
+	// Otherways ok, but key order not used
+	//return SprinterBase::sequenceToStream(ostr, *this, SprinterBase::jsonLayout);
+	return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
+
+	/*
 	const std::list<std::string> & keys = this->getKeyList();
 
 	separatorChar = separatorChar ? separatorChar : this->separator;
-	separatorChar = separatorChar ? separatorChar : ',';  // needed?
+	//separatorChar = separatorChar ? separatorChar : ',';  // needed?
+	char sep = 0;
 
 	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 
-		if (separatorChar){
-			if (it != keys.begin())
-				ostr << separatorChar;
+		if (sep){
+			//if (it != keys.begin())
+			ostr << sep;
+		}
+		else {
+			sep = separator;
 		}
 
 		ostr << *it << equal;
@@ -544,18 +577,9 @@ void SmartMap<T>::toOStream(S & ostr, char equal, char startChar, char endChar, 
 		ostr << (*this)[*it];
 		if (endChar)
 			ostr << endChar;
-		/*
-		const_iterator pit = this->find(*it);
-		if (pit != this->end()){
-			ostr << "pit->second";
-		}
-		else {
-			std::cerr << *it << " not found\n";
-			ostr << "SmartMap test";
-		}
-		*/
-	}
 
+	}
+	*/
 }
 
 template <class T>
@@ -606,12 +630,13 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 					ostr << item;
 					break;
 				default:
-					ostr << '[' << item << ']';
+					JSONwriter::toStream(item, ostr); // Better! Forces commas.
+					// ostr << '[' << item << ']';
 			}
 		}
 	}
 	// ostr << "{\n  \"value\":" << *this << ",\n";
-	//ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
+	// ostr << "  \"type\":" << drain::Type::getTypeChar(getType()) << ",\n";
 	ostr << "\n" << space << "}\n";  // \n needed?
 }
 
@@ -684,7 +709,7 @@ void SmartMap<T>::dump(std::ostream & ostr) const {
 
 template<class T>
 std::ostream &operator<<(std::ostream &ostr, const SmartMap<T> & m){
-	m.toOStream(ostr, '=', 0, 0, m.separator);
+	m.toStream(ostr, '=', 0, 0, m.separator);
 	return ostr;
 }
 

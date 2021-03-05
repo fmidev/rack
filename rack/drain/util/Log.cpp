@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <string.h> // strrchr()
+#include <stdexcept>
 
 #include "Log.h"
 
@@ -63,197 +64,111 @@ Log & getImgLog(){
 
 }
 
-/// Echoes the message, and halts on error.
-// TODO: recode this...
-void Log::start(int level, const std::string & msgSender){
+/*
+#define	LOG_EMERG	0	// system is unusable //
+#define	LOG_ALERT	1	// action must be taken immediately //  RACK examples
+#define	LOG_CRIT	2	// critical conditions //
+#define	LOG_ERR		3	// error conditions //              //  File read/write failed
+#define	LOG_WARNING	4	// warning conditions //            //  HDF5 empty or contains no relevant data
+#define	LOG_NOTICE	5	// normal but significant condition //  No volumes used for a composite
+#define	LOG_INFO	6	// informational //                 //  Read/Write File, start/end of operator
+#define	LOG_DEBUG	7	// debug-level messages             //  Store variable
+*/
 
-	/// Flush current buffer (Should be done already, but if not...)
-	flush();
-
-	msgLevel = level;
-	currentSender = &msgSender;
-
-	if (msgLevel > verbosityLevel)
-		return;
-
-	if ((verbosityLevel > LOG_INFO) && (verbosityLevel >= msgLevel)){
-		const char c = sstr.fill('0');
-		sstr.width(5);
-		sstr << getRelativeMilliseconds() << ':';
-		sstr.width(0);
-		sstr.fill(c);
-
+const notif_dict_t & Log::getDict(){
+	static notif_dict_t dict;
+	if (dict.empty()){
+		dict.resize(64);
+		dict[LOG_EMERG].set("EMERG", 101);
+		dict[LOG_ALERT].set("ALERT", 91);
+		dict[LOG_CRIT].set("FATAL", 41);
+		dict[LOG_ERR].set("ERROR", 31);
+		dict[LOG_WARNING].set("WARNING", 33);
+		dict[LOG_NOTICE].set("NOTICE", 29);
+		dict[LOG_INFO].set("INFO", 0);
+		dict[LOG_DEBUG].set("DEBUG", 35);
+		dict[LOG_DEBUG+1].set("debug", 34);
+		dict[LOG_DEBUG+2].set("debug", 90);
 	}
-
-
-	if (msgLevel <= LOG_CRIT){
-		if (VT100)
-			sstr << "\033[1;31m";
-		sstr << "[FATAL]  ";
-	}
-	else if (msgLevel <= LOG_ERR){
-		if (VT100)
-			//sstr << "\033[1;43mFAILED\033[0m"
-			sstr << "\033[1;35m";
-		sstr << "[ERROR]  ";
-	}
-	else if (msgLevel <= LOG_WARNING){
-		if (VT100)
-			//sstr << "\033[1;43mFAILED\033[0m"
-			sstr << "\033[1;33m";
-		sstr << "[WARNING] ";
-	}
-	else if (msgLevel <= LOG_NOTICE){
-		if (verbosityLevel >= msgLevel){
-			if (VT100)
-				sstr << "\033[1;29m";
-			sstr << "[NOTICE] ";
-		}
-	}
-	else if (msgLevel <= LOG_INFO){
-		if (verbosityLevel >= msgLevel)
-			sstr << "[INFO]   ";
-	}
-	else if (msgLevel <= LOG_DEBUG){
-		if (verbosityLevel >= msgLevel){
-			if (VT100)
-				sstr << "\033[1;36m";
-			sstr << "[DEBUG]  ";
-		}
-		//if (verbosityLevel >= msgLevel)
-		//      sstr << "[INFO] ";
-	}
-	else if (msgLevel <= (LOG_DEBUG+1)){
-		if (verbosityLevel >= msgLevel){
-			if (VT100)
-				sstr << "\033[1;34m";
-			sstr << "[debug]  ";
-		}
-	}
-	else {
-	}
-
-
-	if (verbosityLevel >= (msgLevel + 1)){
-		if (!msgSender.empty())
-			sstr << msgSender << ':' << ' ';
-	}
-	else if (verbosityLevel >= msgLevel){ // Hide sender in basic notifications
-		if (((msgLevel != LOG_NOTICE) && (msgLevel != LOG_INFO)) || (verbosityLevel >= LOG_DEBUG))
-			if (!msgSender.empty())
-				sstr << msgSender << ':' << ' ';
-	}
-	//if (verbosityLevel >= msgLevel)
-	//	init(msgLevel, msgSender);
-
-
+	return dict;
 }
 
-void Log::flush(){
+/*
+void Notification::set(const std::string & key, const std::string & vt100color){
+	this->key = key;
+	this->vt100color = vt100color;
+}
+*/
 
-	std::string s; // debug
-
-	if (!sstr.str().empty()){
-		if (VT100)
-			sstr << "\033[0m";
-		//cerr << "\033[0m" << std::flush;
-		s = sstr.str();
-		std::cerr << s << std::endl;
+void Notification::set(const std::string & key, int vt100color){
+	this->key = key;
+	if (vt100color > 0){
+		std::stringstream sstr; //"\033[1;31m";//"\033[0m";
+		sstr << "\033[1;" << vt100color << 'm';
+		this->vt100color = sstr.str();
 	}
-
-	if (msgLevel <= LOG_ALERT){
-		std::cerr << "LOG_ALERT " << sstr.str() << std::endl;
-		std::cerr << " Fatal error, quitting." <<  msgLevel << std::endl;
-		if (VT100)
-			std::cerr << "\033[0m" << std::flush;
-		// char *c = (char *)random(); // ???
-		// std::cerr << c << std::endl;
-		//////
-		exit(-1);
-	}
-	else if (msgLevel <= LOG_ERR){
-		msgLevel = LOG_NOTICE;
-		if (VT100)
-			std::cerr << "\033[0m" << std::flush;
-		sstr.str("");
-		throw std::runtime_error(s);
-	}
-
-	sstr.str("");  // clear!
-	msgLevel = LOG_NOTICE;
-	currentSender = NULL;
+	else
+		this->vt100color = "\033[0m"; // VT100_RESET
 }
 
-void Log::flush(int level, const std::string & prefix, const std::stringstream & sstr){
-
-
-	std::ostream & ostr = std::cerr;
-	// std::ostream & estr = std::cerr;
-	// std::ostream * optr = std::cerr;
+void Log::flush(level_t level, const std::string & prefix, const std::stringstream & sstr){
 
 	if (level > verbosityLevel)
 		return; // !
 
-	/*
-	if (level <= LOG_QUIT){
-		if (VT100)
-			ostr << "\033[1;41m";
-		ostr << "[ALERT]  ";
-	}
-	else */
-	if (level <= LOG_ALERT){
-		if (VT100)
-			ostr << "\033[1;41m";
-		ostr << "[ALERT]  ";
-	}
-	else if (level <= LOG_CRIT){
-		if (VT100)
-			ostr << "\033[1;31m";
-		ostr << "[FATAL]  ";
-	}
-	else if (level <= LOG_ERR){
-		if (VT100)
-			ostr << "\033[1;36m";
-		ostr << "[ERROR]  ";
-	}
-	else if (level <= LOG_WARNING){
-		if (VT100)
-			ostr << "\033[1;33m";
-		ostr << "[WARNING] ";
-	}
-	else if (level <= LOG_NOTICE){
-		if (VT100)
-			ostr << "\033[1;29m";
-		ostr << "[NOTICE] ";
-	}
-	else if (level <= LOG_INFO){
-		ostr << "[INFO]   ";
-	}
-	else if (level == LOG_DEBUG){
-		if (VT100)
-			ostr << "\033[1;35m";
-		ostr << "[DEBUG]  ";
-	}
-	else if (level == (LOG_DEBUG+1)){
-		if (VT100)
-			ostr << "\033[1;34m";
-		ostr << "[debug]  ";
+	static
+	const notif_dict_t & dict = getDict();
+
+	if (level < dict.size()){
+		const Notification & n = dict[level];
+		flush(level, n, prefix, sstr);
 	}
 	else {
-		ostr << "[debug]  ";
+		const static Notification unknown("???", 35);
+		flush(level, unknown, prefix, sstr);
 	}
 
-	ostr << prefix << ':' << ' ' << sstr.rdbuf();
+
+}
+
+void Log::flush(level_t level, const Notification & notif, const std::string & prefix, const std::stringstream & sstr){
+
+
+	if (level > verbosityLevel)
+		return; // !
+
+	std::ostream & ostr = *ostrPtr; // std::cerr;
+
 	if (VT100)
-		ostr << "\033[0m";
+		ostr << notif.vt100color;
+
+	ostr << '['; ;
+	ostr.width(8);
+	ostr << notif.key << ']' << ' ';
+
+	if (!prefix.empty() && (level < (verbosityLevel)))
+		ostr << prefix << ':' << ' ';
+
+	//if (!sstr.eof())
+	//sstr.gcount()
+	std::streambuf *buf = sstr.rdbuf();
+
+	if (buf->in_avail() > 0) // IMPORTANT! Otherwiae corrupts (swallows) output stream
+		ostr << buf;
+	//ostr << sstr.str();
+
+	if (VT100)
+		ostr << "\033[0m"; // END
 	ostr << '\n';
 
-	if (level <=  LOG_ALERT){
+	if (level <=  LOG_EMERG){ // 0
 		ostr << " Fatal error, quitting." << std::endl;
 		exit(-1);
 	}
 	else if ((level <= LOG_ERR) && (level < (verbosityLevel))){
-		throw std::runtime_error(sstr.str());
+		std::stringstream sstr2;
+		sstr2 << sstr.rdbuf();
+		throw std::runtime_error(sstr2.str());
 	}
 
 }
@@ -262,37 +177,32 @@ void Log::flush(int level, const std::string & prefix, const std::stringstream &
 
 Logger::oper Logger::endl;
 
-// Logger(const std::string & funcName, const std::string & className) :
-Logger::Logger(const char *funcName, const std::string & className): //const char *className):
-//Logger::Logger(const char *funcName, const char *className):
-	monitor(getLog()), errorType(LOG_NOTICE), time(getLog().getMilliseconds()){
-	// prefix(className + (funcName.empty()?"":":")+funcName),
+Logger::Logger(const char *funcName, const std::string & className):
+	monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
-	//setPrefix(funcName, className);
 }
 
-
-	// Logger(Log &log, const std::string & funcName, const std::string & className) :
 Logger::Logger(Log &log, const char *funcName, const std::string & className): // char *className):
-	monitor(log), errorType(LOG_NOTICE), time(log.getMilliseconds()){
-	// prefix(className + (funcName.empty()?"":":")+funcName),
+	monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
 }
 
 void Logger::setPrefix(const char *functionName, const char *name){
 
-	//std::stringstream sstr;
-
 	if (name){
+
+		if (*name == '\0')
+			return;
+
 		const char * s2 = strrchr(name, '/');
-		if (s2 == NULL)
+		if (s2 == nullptr)
 			s2 = name;
 		else
 			++s2;
 
 		/// Start from s2, because dir may contain '.'
 		const char * s3 = strrchr(s2, '.');
-		if (s3 == NULL)
+		if (s3 == nullptr)
 			//sstr << s2;
 			prefix.assign(s2);
 		else
@@ -306,12 +216,19 @@ void Logger::setPrefix(const char *functionName, const char *name){
 	prefix.append(functionName);
 }
 
-void Logger::initMessage(int level){
-
-	this->errorType = level;
+/*
+void Logger::initMessage(level_t level){
+	notif_ptr = NULL;
+	this->level = level;
 	message.str("");
-
 }
+
+void Logger::initMessage(level_t level, const Notification & notif){
+	notif_ptr = &notif;
+	this->level = level;
+	message.str("");
+}
+*/
 
 Logger & Logger::timestamp(const std::string & label){
 	initMessage(LOG_DEBUG);

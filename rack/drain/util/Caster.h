@@ -28,15 +28,15 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef CASTER
-#define CASTER
+#ifndef DRAIN_CASTER
+#define DRAIN_CASTER
 
 //#include <typeinfo>
 #include <stdexcept>
 #include <iostream>
-#include <iomanip>
+//#include <iomanip>
 #include <cmath>  // for NaN
-#include <vector>
+//#include <vector>
 
 
 

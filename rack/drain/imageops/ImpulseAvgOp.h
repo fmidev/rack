@@ -33,7 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <ostream>
-//#include "drain/utility>
+
+
+#include "drain/util/UniTuple.h"
 
 #include "drain/image/Coordinates.h"
 #include "drain/image/FilePng.h"
@@ -47,8 +49,45 @@ namespace drain
 namespace image
 {
 
+template <class T>
+class Decay2 : public UniTuple<T,2> {
+
+public:
+
+	double & forward;
+	double & backward;
+
+	Decay2(double decay = 1.0) : forward(this->next()), backward(this->next()) {
+		this->fill(decay);
+	}
+
+	// Reference
+	template <size_t N>
+	Decay2(drain::UniTuple<T,N> & tuple, size_t i) : drain::UniTuple<T,2>(tuple, i),  forward(this->next()), backward(this->next()){
+	};
+};
+
+template <class T>
+struct Decay4 : public drain::UniTuple<T,4> {
+
+	Decay2<T> horz;
+	Decay2<T> vert;
+
+	Decay4(T decay=0.5) : horz(this->tuple(), 0), vert(this->tuple(), 2) {
+		this->fill(decay);
+	}
 
 
+	Decay4(const Decay4 & r) : horz(this->tuple(), 0), vert(this->tuple(), 2){
+		this->assign(r);
+	};
+
+	Decay4 & operator=(const Decay4<T> & decay){
+		this->set(decay.tuple());
+		return *this;
+	}
+
+};
 
 
 // IMPLEMENTATIONS
@@ -56,25 +95,27 @@ namespace image
 
 struct ImpulseAvgConf : public BeanLike {
 
+
 	inline
-	ImpulseAvgConf() : BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(4, 0.75){
+	ImpulseAvgConf() : BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
 		// this->parameters.link("decayHorz", decayHorz = 0.9);
 		// this->parameters.link("decayVert", decayVert = 0.9);
-		this->parameters.link("decay", decays).fillArray = true;
+		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
 		//this->parameters.link("decay", decay = 0.9);
 		// this->parameters.link("decayVert", decayVert = 0.9);
 	};
 
 	inline
 	ImpulseAvgConf(const ImpulseAvgConf & conf) :
-		BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(4, 0.75){
-		this->parameters.link("decay", decays).fillArray = true;
+		BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
+		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
 		// this->parameters.link("decayHorz", decayHorz = conf.decayHorz);
 		// this->parameters.link("decayVert", decayVert = conf.decayHorz);
 	};
 
+	Decay4<double> decays;
 	//double decay;
-	std::vector<double> decays;
+	//std::vector<double> decays;
 	//double decayHorz;
 	//double decayVert;
 
@@ -84,9 +125,9 @@ struct ImpulseAvgConf : public BeanLike {
 /// Averaging operator. A simple example implementation of ImpulseBucket
 /**
  \code
-   drainage image.png --impulseAvg  0.5            -o impulseAvg.png
-   drainage image.png --impulseAvg  0.2,20,20      -o impulseAvgMarg.png
-   drainage image-rgba.png --target S --impulseAvg  0.5 -o impulseAvg-16b.png
+   drainage image.png --iImpulseAvg  0.5            -o impulseAvg.png
+   drainage image.png --iImpulseAvg  0.2,20,20      -o impulseAvgMarg.png
+   drainage image-rgba.png --target S --iImpulseAvg  0.5 -o impulseAvg-16b.png
  \endcode
  */
 class ImpulseAvg : public ImpulseBucket<ImpulseAvgConf> {
@@ -149,11 +190,11 @@ private:
 	struct entry {
 
 		double x;
-		double w;
+		double weight;
 
 		inline void set(double value, double weight){
-			x = value;
-			w = weight;
+			this->x = value;
+			this->weight = weight;
 		}
 
 	};
@@ -165,7 +206,7 @@ private:
 	inline
 	void mix(entry & prev, const entry & e, double decay){
 
-		double w1 = decay*e.w;
+		double w1 = decay*e.weight;
 		double w2 = (1.0-decay);
 
 		if (decay < 1.0)
@@ -173,7 +214,7 @@ private:
 		else // decay==1.0
 			prev.x = e.x;
 
-		prev.w = w1 + w2*prev.w;
+		prev.weight = w1 + w2*prev.weight;
 
 	}
 

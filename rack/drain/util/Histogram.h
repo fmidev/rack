@@ -107,14 +107,14 @@ public:
 	void setScale(double dataMin, double dataMax){
 		scaling.setPhysicalRange(dataMin, dataMax);
 		if (bins>0)
-			scaling.setScale(dataMax/static_cast<double>(bins));
+			scaling.set(dataMax/static_cast<double>(bins), 0.0);
 		//scaling.s
 		// scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
 	};
 
 	inline
 	void setScale(const ValueScaling & s){
-		scaling.set(s);
+		scaling.assign(s);
 	}
 
 	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.

@@ -48,7 +48,7 @@ void ImpulseAvg::init(const Channel & src, bool horizontal){
 
 	const size_t n = horizontal ? src.getWidth() : src.getHeight();
 	data.resize(n);
-	scaling.set(src.getScaling());
+	scaling.assign(src.getScaling());
 
 	mout.debug() << "Data vector, n=" << n << mout.endl;
 	mout.debug() << "Scaling: " << scaling << mout.endl;
@@ -72,39 +72,39 @@ void ImpulseAvg::reset(){
 
 void ImpulseAvg::addLeft(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.first, e, decays[0]);
+	mix(latest.first, e, decays.horz.forward);
 	data[i].first = latest.first;
 }
 
 void ImpulseAvg::addRight(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.second, e, decays[2]);
+	mix(latest.second, e, decays.horz.backward);
 	data[i].second = latest.second;
 }
 
 void ImpulseAvg::addDown(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.first, e, decays[1]);
+	mix(latest.first, e, decays.vert.forward);
 	data[i].first = latest.first;
 }
 
 void ImpulseAvg::addUp(int i, double value, double weight){
 	e.set(scaling.fwd(value), weight);
-	mix(latest.second, e, decays[3]);
+	mix(latest.second, e, decays.vert.backward);
 	data[i].second = latest.second;
 }
 
 
 double ImpulseAvg::getWeight(int i){  // TODO const
 	const entryPair & d = data[i];
-	return (d.first.w + d.second.w) / 2.0;
+	return (d.first.weight + d.second.weight) / 2.0;
 }
 
 double ImpulseAvg::get(int i){ // TODO const
 	const entryPair & d = data[i];
-	double w = d.first.w + d.second.w;
+	double w = d.first.weight + d.second.weight;
 	if (w > 0.0)
-		return ((d.first.w*d.first.x + d.second.w*d.second.x) / w);
+		return ((d.first.weight*d.first.x + d.second.weight*d.second.x) / w);
 	else
 		return 0.0; // or code?
 }

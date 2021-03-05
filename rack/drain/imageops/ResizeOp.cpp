@@ -35,10 +35,13 @@ namespace drain {
 
 namespace image {
 
-void ResizeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
+void ResizeOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
+//void ResizeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	const size_t w = this->width  ? this->width  : dst.getWidth();
 	const size_t h = this->height ? this->height : dst.getHeight();
-	dst.initialize(src.getType(), w, h, src.getImageChannelCount(), src.getAlphaChannelCount());
+	dst.setArea(w, h);
+	dst.setChannelCount(src.channels);
+	//dst.initialize(src.getType(), w, h, src.getImageChannelCount(), src.getAlphaChannelCount());
 }
 
 void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {

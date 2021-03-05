@@ -32,70 +32,74 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define POINT_H_
 
 
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <string>
+//#include <vector>
+//#include <iostream>
+//#include <sstream>
+//#include <string>
+
+#include "UniTuple.h"
 
 namespace drain
 {
 
-//namespace image {
-
-// using namespace std;
-
 
 template <class T>
-class Point2D
-{
-public:
+struct Point2D : public drain::UniTuple<T,2> {
 
-	Point2D() : x(0), y(0)
-	{
-    };
+	T &x;
+	T &y;
 
-	//Point2D(const T &x,const T &y) : x(x), y(y)
-	Point2D(T x, T y) : x(x), y(y)
-	{
-    };
+	Point2D(T x=0, T y=0) : x(this->next()), y(this->next()){
+		this->set(x, y);
+	};
 
+	Point2D(const Point2D & p) : x(this->next()), y(this->next()){
+		this->set(p.tuple());
+	};
 
-	template <class T2>
-	bool operator==(const Point2D<T2> &other) const
-	{
-		if ((*this).x == other.x && (*this).y == other.y)
-			return true;
-		return false;
+	// Reference
+	template <size_t N>
+	Point2D(drain::UniTuple<T,N> & tuple, size_t i) :
+		drain::UniTuple<T,2>(tuple, i),  // start in new pos!
+		x(this->next()), y(this->next()){
+	};
+
+	Point2D & operator=(const Point2D & p){
+		this->set(p.tuple());
+		return *this;
 	}
 
-	template <class T2>
-	bool operator!=(const Point2D<T2> &other) const
-	{
-		return !((*this) == other);
-	}
-
+	// set(x, y);
     template <class T2>
     Point2D<T> & setLocation(T2 x, T2 y){
-    	this->x = static_cast<T>(x);
-    	this->y = static_cast<T>(y);
+    	this->set(x, y);
+    	// this->x = static_cast<T>(x);
+    	// this->y = static_cast<T>(y);
     	return *this;
     }
 
     template <class T2>
     Point2D<T> & setLocation(const Point2D<T2> & p){
-    	this->x = static_cast<T>(p.x);
-    	this->y = static_cast<T>(p.y);
+    	this->set(p);
+    	// this->x = static_cast<T>(p.x);
+    	// this->y = static_cast<T>(p.y);
     	return *this;
     }
 
-
-    T x;
-    T y;
-
-
 };
 
+template <class T>
+struct Point3D : public drain::UniTuple<T,3> {
 
+	T &x;
+	T &y;
+	T &z;
+
+	Point3D(T x=0, T y=0, T z=0) : x(this->at(0)=x), y(this->at(1)=y), z(this->at(2)=z){
+	};
+
+	Point3D(const Point3D & p) : x(this->at(0)=p.x), y(this->at(1)=p.y), z(this->at(2)=p.z){
+	};
 
 
 
@@ -103,6 +107,7 @@ public:
 
 //-----------------------------------------
 
+/*
 template <class T>
 class Point3D : public Point2D<T>
 {
@@ -116,6 +121,8 @@ public:
     {
     };
     
+ */
+
 	template <class T2>
     void setLocation(const T2 & x, const T2 & y,  const T2 & z){
     	this->x = static_cast<T>(x);
@@ -128,13 +135,13 @@ public:
     	*this = p;	
     }
 
-    T z;
+
 };
 
 
 
 
-
+/*
 template <class T>
 std::ostream &operator<<(std::ostream &ostr,const drain::Point2D<T> &p)
 {
@@ -148,6 +155,7 @@ std::ostream &operator<<(std::ostream &ostr,const drain::Point3D<T> &p)
 	ostr << '[' << p.x << ',' << p.y << ',' << p.z << ']';
     return ostr;
 }
+*/
 
 // }
 

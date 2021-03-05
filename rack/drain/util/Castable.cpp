@@ -283,4 +283,21 @@ std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ost
 
 }
 
+/// "Friend class" template implementation
+template <>
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout) {
+
+	// Semi-kludge: imitate intended layout
+	if (&layout == &SprinterBase::jsonLayout){
+		x.valueToJSON(ostr);
+		return ostr;
+	}
+	else {
+		return drain::SprinterBase::basicToStream(ostr, x, "");
+	}
+
+}
+
+
+
 }  // drain

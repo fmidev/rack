@@ -59,14 +59,27 @@ public:
 	/// Opens stdout with "-".
 	Output(const std::string & filename);
 
+	// Output(std::ostream & ostr);
+
 	/// Closes upon destruction.
 	~Output();
 
 	operator std::ostream & ();
 
+	inline
+	operator std::ofstream & (){
+		return ofstr;
+	}
+
+	inline
+	operator bool (){
+		return static_cast<bool>(ofstr);
+	};
+
 
 protected:
 
+	//std::ostream   ostr;
 	std::ofstream ofstr;
 
 };

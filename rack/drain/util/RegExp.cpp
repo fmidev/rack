@@ -62,7 +62,7 @@ RegExp::RegExp(const std::string &str, int flags) :  result(writableResult), fla
 
 // Lack of this caused memory leakages.
 RegExp::RegExp(const RegExp &r) :  result(writableResult), flags(r.flags){
-	regcomp(&regExpBinary,"",0);  // IMPORTANT, because setExpression calls regfree.
+	regcomp(&regExpBinary,"", flags);  // IMPORTANT, because setExpression calls regfree.
 	setExpression(r.regExpString);
 }
 

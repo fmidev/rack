@@ -29,383 +29,119 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef COORDINATES_H_
-#define COORDINATES_H_
+#ifndef COORD_POLICY_H_
+#define COORD_POLICY_H_
 
 #include <ostream>
 #include <stdexcept>
 
-//#include "ImageLike.h"
-//#include "Image.h"
-#include "../util/Log.h"
-
+#include "drain/util/Log.h"
+#include "drain/util/Frame.h"
+#include "drain/util/Point.h"
+#include "drain/util/Range.h"
+#include "drain/util/StatusFlags.h"
+#include "drain/util/UniTuple.h"
 
 #include "Geometry.h"
 
-#include "../util/Point.h"
-
 namespace drain {
 
+
 namespace image {
+
+
+
+typedef unsigned short coord_pol_t;
+
+typedef drain::Dictionary2<std::string,coord_pol_t> coord_policy_dict_t;
+
+
+//typedef drain::GlobalFlags<coord_pol_t> coord_policy_flags;
+
+// Only 2D, or templated?
+/*
+struct CoordinatePolicyFlags {
+	static const coord_pol_t UNDEFINED = 0;
+	static const coord_pol_t LIMIT;
+	static const coord_pol_t WRAP;
+	static const coord_pol_t MIRROR;
+	static const coord_pol_t POLAR;
+};
+*/
+
+/*
+typedef enum { // consider GlobalFlagger
+	UNDEFINED = 0,
+	LIMIT = 1, // = constexpr drain::GlobalFlags<long>::add("LIMIT"),
+	WRAP = 2,
+	MIRROR = 3,
+	POLAR = 4
+} coord_pol_t;
+*/
+
+//typedef drain::GlobalFlags<Coordinates> coord_policy_flags;
 
 /// Policies for coordinate underflows and overflows.
 /**
  *
  */
-class CoordinatePolicy {
+class CoordinatePolicy : public UniTuple<coord_pol_t,4> {
 
 public:
 
-	static const int UNDEFINED;
-	static const int LIMIT;
-	static const int WRAP;
-	static const int MIRROR;
-	static const int POLAR;
-	//static const int DROP=4;
+	coord_pol_t & xUnderFlowPolicy;
+	coord_pol_t & yUnderFlowPolicy;
+	coord_pol_t & xOverFlowPolicy;
+	coord_pol_t & yOverFlowPolicy;
+
+
+	// Don't use enum (difficult to export/import).
+	static const coord_pol_t UNDEFINED;// = 0;
+	static const coord_pol_t LIMIT;    // = 1;
+	static const coord_pol_t WRAP; 	   // = 2;
+	static const coord_pol_t MIRROR;   // = 3;
+	static const coord_pol_t POLAR;    // = 4;
+
 
 	inline
-	CoordinatePolicy(int p = LIMIT) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
-		set(p);
+	CoordinatePolicy(coord_pol_t p = LIMIT) :
+		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
+		fill(p); // or set(p, p, p, p); // No auto fill.
 	};
 
 	inline
-	CoordinatePolicy(const CoordinatePolicy & policy) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
-		set(policy);
+	CoordinatePolicy(const CoordinatePolicy & policy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
+		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
+		assign(policy);
 	};
 
 	inline
-	CoordinatePolicy(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy) : v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
+	CoordinatePolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
+		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
 		set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
 	};
 
 	inline
 	CoordinatePolicy & operator=(const CoordinatePolicy & policy){
-		set(policy);
+		assign(policy);
 		return *this;
 	}
 
 	inline
-	void set(const CoordinatePolicy & policy){
-		set(policy.xUnderFlowPolicy, policy.yUnderFlowPolicy, policy.xOverFlowPolicy, policy.yOverFlowPolicy);
-	}
-
-	inline
-	void set(int xUnderFlowPolicy, int yUnderFlowPolicy, int xOverFlowPolicy, int yOverFlowPolicy){
-		//drain::Logger mout(getImgLog(), "CoordinatePolicy", __FUNCTION__);
-		this->xUnderFlowPolicy = xUnderFlowPolicy;
-		this->yUnderFlowPolicy = yUnderFlowPolicy;
-		this->xOverFlowPolicy  = xOverFlowPolicy;
-		this->yOverFlowPolicy  = yOverFlowPolicy;
-		// mout.note() << *this << mout.endl;
-	}
-
-	inline
-	void set(int policy){
-		set(policy, policy, policy, policy);
-	}
-
-	inline
-	void set(const std::vector<int> & v){
-		// CoordinatePolicy & operator=(const std::vector<int> & v){
-		if (v.size()!=4){
-			throw std::runtime_error("CoordinatePolicy::set v size not 4");
-			return; //  *this;
+	bool isSet(){
+		for (coord_pol_t p: tuple()){
+			if (p == UNDEFINED)
+				return false;
 		}
-		set(v[0], v[1], v[2], v[3]);
+		return true;
 	}
 
-	inline
-	operator const std::vector<int> & (){
-		/*
-		v.resize(4);
-		v[0] = xUnderFlowPolicy;
-		v[1] = yUnderFlowPolicy;
-		v[2] = xOverFlowPolicy;
-		v[3] = yOverFlowPolicy;
-		*/
-		return v;
-	}
-
-	std::vector<int> v;
-	int & xUnderFlowPolicy;
-	int & yUnderFlowPolicy;
-	int & xOverFlowPolicy;
-	int & yOverFlowPolicy;
-
-protected:
-
-	//mutable	std::vector<int> v;
-
+	static
+	coord_policy_dict_t & dict; // Unused, future option
 
 };
 
-class CoordinateHandler2D : protected CoordinatePolicy {
 
-public:
-
-	CoordinateHandler2D(const drain::image::AreaGeometry & area = AreaGeometry(), const CoordinatePolicy &p = CoordinatePolicy());
-
-	/// Constrcutor
-	/**
-	 *  \par xUpperLimit - value above maximum allowed value
-	 *  \par xUpperLimit - value above maximum allowed value
-	 */
-	CoordinateHandler2D(int xUpperLimit, int yUpperLimit, const CoordinatePolicy &p = CoordinatePolicy());
-
-	CoordinateHandler2D(const CoordinateHandler2D &h);
-
-	virtual
-	~CoordinateHandler2D(){};
-
-	static const int UNCHANGED  = 0;
-	static const int X_OVERFLOW = 1;
-	static const int X_UNDERFLOW= 2;
-	static const int Y_OVERFLOW = 4;
-	static const int Y_UNDERFLOW= 8;
-
-	/// Inverse move would not result original position.
-	static const int IRREVERSIBLE = 128;
-
-	/// Sets minimum values and outer upper limits for x and y.
-	void setLimits(int xMin, int yMin, int xUpperLimit, int yUpperLimit);
-
-	/// Sets outer upper limits for x and y.
-	void setLimits(int xUpperLimit,int yUpperLimit);
-
-	inline
-	int getXMax() const { return _xMax; };
-
-	inline
-	int getYMax() const { return _yMax; };
-
-	/// Assigns internal function pointers.
-	inline
-	void setPolicy(const CoordinatePolicy &p) { setPolicy(p.xUnderFlowPolicy, p.yUnderFlowPolicy, p.xOverFlowPolicy, p.yOverFlowPolicy); };
-
-	/// Assigns internal function pointers.
-	void setPolicy(int xUnderFlowPolicy, int yUnderFlowPolicy,  int xOverFlowPolicy, int yOverFlowPolicy);
-
-	/// Set the same policy in all the directions.
-	inline
-	void setPolicy(int p){
-		setPolicy(p, p, p, p);
-	}
-
-
-	inline
-	const CoordinatePolicy & getPolicy() const { return *this; }
-
-
-	/// Ensures the validity of the coordinates. If inside limits, arguments (x,y) remain intact and 0 is returned.
-	/**
-	 *
-	 *   \return - value that describes overflow; zero if no limits crossed and hence, x and y intact.
-	 *
-	 *   \see CoordinateHandler2D::IRREVERSIBLE  and str constants.
-	 *   \see validate()
-	 *
-	 */
-	virtual
-	inline
-	int handle(int &x,int &y) const {
-
-		result = 0;
-
-		if (x < _xMin)
-			result |= (this->*_handleXUnderFlow)(x,y);
-
-		if (x >= _xUpperLimit)
-			result |= (this->*_handleXOverFlow)(x,y);
-
-		if (y < _yMin)
-			result |= (this->*_handleYUnderFlow)(x,y);
-
-		if (y >= _yUpperLimit)
-			result |= (this->*_handleYOverFlow)(x,y);
-
-		return result;
-
-	}
-
-	/// Calls handle(int &x,int &y)
-	inline
-	int handle(Point2D<int> &p) const {
-		return handle(p.x, p.y);
-	}
-
-	/// Handles the coordinate, returning \c true if the position is reversible.
-	inline
-	bool validate(Point2D<int> &p) const {
-		return (handle(p.x, p.y) & CoordinateHandler2D::IRREVERSIBLE) == 0;
-	}
-
-	/// Handles the coordinate, returning \c true if the position is reversible.
-	inline
-	bool validate(int &x, int &y) const {
-		return (handle(x, y) & CoordinateHandler2D::IRREVERSIBLE) == 0;
-	}
-
-private:
-
-	mutable int result;
-
-protected:
-
-	//CoordinatePolicy policy;
-
-
-
-	int _xMin;
-	int _xMax;
-	int _xUpperLimit;
-	int _yMin;
-	int _yMax;
-	int _yUpperLimit;
-
-	int (CoordinateHandler2D::*_handleXUnderFlow)(int &x, int &y) const;
-	int (CoordinateHandler2D::*_handleXOverFlow)(int &x, int &y) const;
-	int (CoordinateHandler2D::*_handleYUnderFlow)(int &x, int &y) const;
-	int (CoordinateHandler2D::*_handleYOverFlow)(int &x, int &y) const;
-
-
-	/// Does nothing to the coordinates
-	int handle_Undefined(int &x, int &y) const {
-		return 0;
-	};
-
-	// LIMIT
-	///
-	int handleXUnderFlow_Limit( int &x, int &y) const {
-		x = _xMin;
-		return X_UNDERFLOW | IRREVERSIBLE;
-	};
-
-	///
-	int handleYUnderFlow_Limit( int &x, int &y) const {
-		y = _yMin;
-		return Y_UNDERFLOW | IRREVERSIBLE;
-	};
-
-	int handleXOverFlow_Limit( int &x, int &y) const {
-		x = _xMax;
-		return X_OVERFLOW | IRREVERSIBLE;
-	};
-
-	int handleYOverFlow_Limit( int &x, int &y) const {
-		y = _yMax;
-		return Y_OVERFLOW | IRREVERSIBLE;
-	};
-
-	// WRAP
-	///
-	int handleXUnderFlow_Wrap( int &x, int &y) const {
-		// Assuming minValue = 0
-		x = x % _xUpperLimit + _xUpperLimit;
-		return X_UNDERFLOW;
-	};
-
-	///
-	int handleYUnderFlow_Wrap( int &x, int &y) const {
-		// Assuming minValue = 0
-		y = y % _yUpperLimit + _yUpperLimit;
-		return Y_UNDERFLOW;
-	};
-
-	///
-	int handleXOverFlow_Wrap( int &x, int &y) const {
-		// Assuming minValue = 0
-		x = x % _xUpperLimit;
-		return X_OVERFLOW;
-	};
-
-	///
-	int handleYOverFlow_Wrap( int &x, int &y) const {
-		// Assuming minValue = 0
-		y = y % _yUpperLimit;
-		return Y_OVERFLOW;
-	};
-
-	// MIRROR
-	///
-	int handleXUnderFlow_Mirror( int &x, int &y) const {
-		x = _xMin-x;
-		return X_UNDERFLOW;
-	};
-
-	///
-	int handleYUnderFlow_Mirror( int &x, int &y) const {
-		y = _yMin-y;
-		return Y_UNDERFLOW;
-	};
-
-	///
-	int handleXOverFlow_Mirror( int &x, int &y) const {
-		x = 2*_xMax - x;
-		return X_OVERFLOW;
-	};
-
-	///
-	int handleYOverFlow_Mirror( int &x, int &y) const {
-		y = 2*_yMax - y;
-		return Y_OVERFLOW;
-	};
-
-	// POLAR
-	///
-	/**
-	 *  Especially, maps x=-1 to x=0.
-	 *
-	 */
-	int handleXUnderFlow_Polar( int &x, int &y) const {
-		x = _xMin - x - 1;
-		y = (y + _yUpperLimit/2) % _yUpperLimit;
-		//std::cout << "handleXUnderFlow_Polar ";
-		return X_UNDERFLOW; // ??
-	};
-
-	///
-	/**
-	 *  Especially, maps y=-1 to y=0.
-	 *
-	 */
-	int handleYUnderFlow_Polar( int &x, int &y) const {
-		y = _yMin - y - 1;
-		x = (x + _xUpperLimit/2) % _xUpperLimit;
-		return Y_UNDERFLOW; // ??
-	};
-
-	///
-	int handleXOverFlow_Polar( int &x, int &y) const {
-		x = 2*_xMax - x + 1;
-		y = (y + _yUpperLimit/2) % _yUpperLimit;
-		return X_OVERFLOW; // ??
-	};
-
-	///
-	int handleYOverFlow_Polar( int &x, int &y) const {
-		y = 2*_yMax - y + 1;
-		x = (x + _xUpperLimit/2) % _xUpperLimit;
-		return X_OVERFLOW; // ??
-	};
-
-	/*
-    Alternative approach would be to coord in dependent have:
-    int handleAUnderFlow_Limit(const int &a,const int &b,
-          const int &aMin, const int &aMax, 
-          const int &bMin, const int &bMax )
-	 */
-
-
-	// etc.
-
-};
-
-// using namespace std;
-
-std::ostream & operator<<(std::ostream & ostr, const CoordinatePolicy & policy);
-
-
-std::ostream & operator<<(std::ostream & ostr, const CoordinateHandler2D & handler);
 
 } // image
 

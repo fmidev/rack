@@ -45,8 +45,8 @@ Sampler::Sampler() : BeanLike(__FUNCTION__, "Extract samples from image"),
 		voidMarker("void data") {
 	parameters.link("iStep",  iStep, "horz coord step");
 	parameters.link("jStep",  jStep, "vert coord step");
-	parameters.link("i", iRange.vect, "horz index or range").fillArray = true;
-	parameters.link("j", jRange.vect, "vert index or range").fillArray = true;
+	parameters.link("i", iRange.tuple(), "horz index or range").fillArray = true;
+	parameters.link("j", jRange.tuple(), "vert index or range").fillArray = true;
 	parameters.link("commentChar",   commentPrefix,  "comment prefix (char or bytevalue)");
 	parameters.link("skipVoid", skipVoid,  "skip lines with invalid/missing values");
 	//parameters.link("iStart", iRange.vect[0], "first horz index or range").fillArray = true;

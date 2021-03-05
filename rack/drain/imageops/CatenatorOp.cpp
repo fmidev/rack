@@ -38,9 +38,11 @@ namespace drain
 namespace image
 {
 
+/*
 void ChannelCatenatorOp::makeCompatible(const ImageFrame &src, Image &dst) const {
 	dst.initialize(src.getType(), src.getWidth(), src.getHeight()*src.getChannelCount(), 1);
 }
+*/
 
 void ChannelCatenatorOp::process(const ImageFrame &src,Image &dst) const {
 

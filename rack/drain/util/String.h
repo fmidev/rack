@@ -131,24 +131,30 @@ public:
 	 *
 	 *  Given an empty std::string, returns a list containing an empty std::string.
 	 */
-	template <class T>
+	template <class T, class C>
 	static
-	void split(const std::string & s, T & sequence, const std::string &separators, const std::string & trimChars=" \t\n");
+	void split(const std::string & s, T & sequence, const C &separators, const std::string & trimChars=" \t\n");
 
 	/// Splits and trims a given std::string to a std Sequence.
+	/*
 	template <class T>
 	static inline
 	void split(const std::string & s, T & sequence, char separator=',', const std::string & trimChars=" \t\n"){
 		StringTools::split(s, sequence, std::string(1,separator), trimChars);
 	}
+	*/
 
 	/// Splits and trims a given std::string to two substrings, by first separator encountered.
 	/**
+	 *  \tparam T1 - target of 1st part ("key")
+	 *  \tparam T2 - target of 1st part ("value")
+	 *  \tparam C - character or string (any char in which will split)
+	 *
 	 *  Given an empty std::string,
 	 */
-	template <class T1, class T2>
+	template <class T1, class T2, class C>
 	static
-	bool split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars=" \t\n");
+	bool split2(const std::string & s, T1 & first, T2 & second, const C &separators, const std::string & trimChars=" \t\n");
 
 	/// Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').
 	/**
@@ -237,8 +243,8 @@ private:
 };
 
 
-template <class T>
-void StringTools::split(const std::string & str, T & sequence, const std::string & separators, const std::string & trimChars){
+template <class T, class C>
+void StringTools::split(const std::string & str, T & sequence, const C & separators, const std::string & trimChars){
 
 	sequence.clear();
 
@@ -248,7 +254,7 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 	std::string::size_type pos1 = 0; // Start of segment
 	std::string::size_type pos2 = n; // std::string::npos;  // End of segment (index of last char + 1)
 
-	if (separators.empty()){ // = no split! :-)
+	if (false){ //separators.empty()){ // = no split! :-)
 
 		if (TRIM){
 			StringTools::trimScan(str, pos1, pos2, trimChars);
@@ -280,7 +286,9 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 				if (TRIM)
 					StringTools::trimScan(str, pos1, pos2, trimChars);
 				appendSubstring(sequence, str, pos1, pos2-pos1);
-				++pos; // for the next round
+				pos  = str.find_first_not_of(trimChars, pos+1); // if separator is space, or other also in trimChars
+				//pos  = str.find_last_not_of(trimChars, pos);
+				//++pos; // for the next round
 			}
 
 		}
@@ -288,8 +296,8 @@ void StringTools::split(const std::string & str, T & sequence, const std::string
 }
 
 
-template <class T1, class T2>
-bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const std::string &separators, const std::string & trimChars){
+template <class T1, class T2, class S>
+bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S & separators, const std::string & trimChars){
 
 	std::size_t i = s.find_first_of(separators);
 

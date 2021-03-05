@@ -156,7 +156,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	/// Main action
 	//if (drain::Debug > 2)
-	mout.debug(2) << "reading data" << mout.endl;
+	mout.debug3() << "reading data" << mout.endl;
 
 	png_read_png(png_ptr, info_ptr, png_transforms, NULL);
 
@@ -165,11 +165,11 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 
 	/// Read comments
-	mout.debug(2) << "reading image comments" << mout.endl;
+	mout.debug3() << "reading image comments" << mout.endl;
 	int num_text = 0;
 	png_textp text_ptr = NULL;
 	png_get_text(png_ptr, info_ptr,&text_ptr, &num_text);
-	//mout.debug(2) << '\n';
+	//mout.debug3() << '\n';
 	for (int i = 0; i < num_text; ++i) {
 		mout << text_ptr[i].key << '=' << text_ptr[i].text << '\n';
 		// ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
@@ -208,19 +208,19 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	Geometry g(image.getGeometry());
 
 	// This test enables read into an alpha channel.
-	if  ((channels!=g.getChannelCount())||(width!=g.getWidth())||(height!=g.getHeight())){
+	if  ((channels!=g.channels.getChannelCount()) || (width!=g.area.getWidth()) || (height!=g.area.getHeight())){
 		switch (channels) {
 		case 4:
-			g.setGeometry(width,height,3,1);
+			g.set(width,height,3,1);
 			break;
 		case 3:
-			g.setGeometry(width,height,3);
+			g.setGeometry(width,height,3); // check alpha=0!
 			break;
 		case 2:
-			g.setGeometry(width,height,1,1);
+			g.set(width,height,1,1);
 			break;
 		case 1:
-			g.setGeometry(width,height,1);
+			g.setGeometry(width,height,1); // check alpha=0!
 			break;
 		default:
 			throw std::runtime_error(std::string("FilePng: invalid channel count in : ")+path);
@@ -230,7 +230,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	// Form Image, set target type and geometry. For ImageFrame, compare target type and geometry. If differences, throw exception.
 	image.initialize(t, g);
 
-	mout.debug(2) << "png geometry ok, ";
+	mout.debug3() << "png geometry ok, ";
 	mout << "png channels =" << channels << "\n";
 	mout << "png bit_depth=" << bit_depth << "\n";
 	mout << mout.endl;

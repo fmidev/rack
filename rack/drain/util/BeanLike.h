@@ -73,7 +73,7 @@ public:
 	virtual inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 		parameters.setValues(p, assignmentSymbol, separatorSymbol);
-		update();
+		updateBean();
 	};
 
 	/// Set parameters
@@ -83,7 +83,7 @@ public:
 	inline
 	void setParameters(const std::map<std::string,T> & p){
 		parameters.importMap(p);
-		update();
+		updateBean();
 	}
 
 	/// Set parameters
@@ -93,7 +93,7 @@ public:
 	inline
 	void setParameters(const SmartMap<T> & p){
 		parameters.importCastableMap(p);
-		update();
+		updateBean();
 	}
 
 	/// Sets a single parameter
@@ -101,7 +101,7 @@ public:
 	inline
 	void setParameter(const std::string &p, const F &value){
 		parameters[p] = value;
-		update();
+		updateBean();
 	}
 
 	/// Gets a single parameter
@@ -146,11 +146,14 @@ public:
 		return sstr.str();
 	}
 
+
 	inline
-	BeanLike & operator=(const BeanLike & b){
-		copy(b);
+	BeanLike & operator=(const BeanLike & b){ //
+		//copy(b);
+		parameters.importMap(b.getParameters()); // 2021
 		return *this;
 	}
+
 
 protected:
 
@@ -159,7 +162,8 @@ protected:
 	}
 
 	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
-		copy(b);
+		// copy(b);
+		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
 	}
 
 
@@ -169,13 +173,17 @@ protected:
 
 	ReferenceMap parameters;  // todo separate (Beanlet)
 
+	/// Called after setParameters()
+	virtual inline
+	void updateBean() const {};
+
 	// Copy variables
+	/*
 	void copy(const BeanLike & b){
 		parameters.importMap(b.getParameters());
 	}
+	*/
 
-	virtual inline
-	void update(){};
 
 };
 

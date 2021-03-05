@@ -45,7 +45,7 @@ namespace image
 /**! 
 
  \code
- drainage image.png --transpose -o transpose.png
+ drainage image.png --iTranspose -o transpose.png
  \endcode
 
 
@@ -63,28 +63,37 @@ public:
 		// link("threshold", this->threshold = threshold);
 	};
 
-
-	inline
-	virtual void makeCompatible(const ImageFrame &src,Image &dst) const  {
+	virtual inline
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {
+	//virtual void make Compatible(const ImageFrame &src,Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name + "(ImageOp::_makeCompatible)");
 
-		if (!dst.typeIsSet())
-			dst.setType(src.getType());
+		// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
 
 		const size_t & width = src.getWidth();
 		const size_t & height = src.getHeight();
 		const size_t & iChannels = src.getImageChannelCount();
 		const size_t & aChannels = src.getAlphaChannelCount();
 
+		/*
 		if ((dst.getHeight()==width) && (dst.getWidth()==height) &&
 				(dst.getImageChannelCount()==iChannels) && (dst.getAlphaChannelCount()==aChannels) ){
 			mout.debug() << "dst with ok geometry" << mout.endl;
 			return;
 		}
+		*/
 
 		/// Turn
 		dst.setGeometry(height, width, iChannels, aChannels);
+
+		const CoordinatePolicy & pol = src.getCoordinatePolicy();
+		dst.setCoordinatePolicy(
+				pol.yUnderFlowPolicy,
+				pol.xUnderFlowPolicy,
+				pol.yOverFlowPolicy,
+				pol.xUnderFlowPolicy
+		);
 
 		mout.debug() << "dst:" << dst << mout.endl;
 

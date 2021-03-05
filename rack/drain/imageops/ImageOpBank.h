@@ -46,7 +46,54 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ImageOp.h"
 #include "FunctorOp.h"
 
+#include "drain/prog/Command.h"
+#include "drain/prog/CommandBank.h"
 
+#include "drain/util/Cloner.h"
+#include "drain/util/Fuzzy.h"
+
+
+
+
+#include "GammaOp.h"
+#include "RunLengthOp.h"
+
+#include "BlenderOp.h"
+
+#include "CatenatorOp.h"
+#include "CopyOp.h"
+#include "CropOp.h"
+#include "DistanceTransformFillOp.h"
+#include "DistanceTransformOp.h"
+#include "FastAverageOp.h"
+//#include "FastOpticalFlowOp.h"
+#include "FlowAverageWindowOp.h" // for SlidingWindowOp
+#include "FloodFillOp.h"
+#include "FunctorOp.h"
+#include "GammaOp.h"
+#include "GaussianAverageOp.h"
+#include "DifferentialOp.h"
+#include "HighBoostOp.h"
+#include "HighPassOp.h"
+#include "ImpulseAvgOp.h"
+#include "MarginalStatisticOp.h"
+//#include "MotionExtrapolatorOp.h"
+//#include "MotionIllustratorOp.h"
+#include "PaletteOp.h"
+#include "PixelVectorOp.h"
+#include "QualityMixerOp.h"
+#include "QualityOverrideOp.h"
+#include "QuantizatorOp.h"
+//#include "RecursiveRepairerOp.h"
+#include "ResizeOp.h"
+#include "RunLengthOp.h"
+//#include "drain/image/SegmentProber.h"
+#include "SegmentAreaOp.h"
+#include "SegmentStatisticsOp.h"
+#include "SlidingWindowHistogramOp.h"
+#include "SlidingWindowMedianOp.h"
+#include "SlidingWindowOp.h"
+#include "TransposeOp.h"
 // using namespace std;
 
 namespace drain
@@ -82,35 +129,32 @@ class BinaryFunctorOpCloner : public ImageOpCloner<BinaryFunctorOp<F> > {
 
 
 
-
 class ImageOpBank : public Bank<ImageOp> {
 
 public:
 
+	//CommandBank & cmdBank;
+
+	//ImageOpBank(CommandBank & cmdBank) : cmdBank(cmdBank) {
+	ImageOpBank() {
+	};
+
 	virtual
 	~ImageOpBank(){}
 
-	template <class T>
-	void add(T & op, const std::string & name){
-		Bank<ImageOp>::add(op, name);
-	}
+	/// Add ImageOp command to registry (CommandBank).
+	/**
+	 * \tparam OP - Class derived from ImageOp or Command
+	 */
+	template <class OP>
+	OP & install(const std::string & name = OP().getName()){
 
-	template <class T>
-	void add(T & op){
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-		std::string name = op.getName();
-		StringTools::lowerCase(name, 1);
-		//name[0] = (name[0]+'a')-'A';
-
-		static drain::RegExp nameCutter("^(.*)(Op|Functor)$");
-		if (nameCutter.execute(name) == 0){
-			//std::cerr << name << '>' << nameCutter << std::endl;
-			Bank<ImageOp>::add(op, nameCutter.result[1]);
-		}
-		else {
-			Bank<ImageOp>::add(op, name);
-		}
-
+		std::string key(name);
+		drain::CommandBank::deriveCmdName(key, 0);
+		mout.warn() << name << ">" <<  OP().getName() << '>' << key << '\n';
+		return Bank<ImageOp>::add<OP>(key);
 	}
 
 	/// Supports querying operator with parameters set, eg. gaussianAverage,width=10,height=5
@@ -126,9 +170,151 @@ public:
 std::ostream & operator<<(std::ostream & ostr, const ImageOpBank & bank);
 
 
+
 // consider separate
 extern
 ImageOpBank & getImageOpBank();
+
+template <class T>
+void installImageOps(T & installer) {
+
+
+	try {
+		//installer.install<CmdHistogram>();
+
+		installer.template install<UnaryFunctorOp<RemappingFunctor> >("Remap");
+		installer.template install<UnaryFunctorOp<NegateFunctor> >();
+
+		installer.template install<UnaryFunctorOp<ScalingFunctor> >("Rescale");
+		installer.template install<UnaryFunctorOp<ThresholdFunctor> >();
+		installer.template install<UnaryFunctorOp<BinaryThresholdFunctor> >("ThresholdBinary");
+
+
+		///	Binary functors - operations on two inputs
+		installer.template install<BinaryFunctorOp<AdditionFunctor> >("Add");
+		installer.template install<BinaryFunctorOp<DivisionFunctor> >("Div");
+		installer.template install<BinaryFunctorOp<MaximumFunctor> >("Max");
+		installer.template install<BinaryFunctorOp<MinimumFunctor> >("Min");
+		installer.template install<BinaryFunctorOp<MixerFunctor> >("Mix");
+		installer.template install<BinaryFunctorOp<MultiplicationFunctor> >("Mul");
+		installer.template install<BinaryFunctorOp<SubtractionFunctor> >("Sub");
+
+
+		/// Fuzzy remapping ops
+		/**
+		\code
+		drainage image.png --iFuzzyBell 0.5,0.2 -o fuzzyBell.png
+		drainage image.png --iFuzzyStep 0.4,0.6 -o fuzzyThreshold.png
+		\endcode
+		 */
+		installer.template install<UnaryFunctorOp<FuzzyBell<double> > >();
+		installer.template install<UnaryFunctorOp<FuzzyBell2<double> > >();
+		installer.template install<UnaryFunctorOp<FuzzyStep<double> >  >();
+		installer.template install<UnaryFunctorOp<FuzzyStepsoid<double> > >();
+		installer.template install<UnaryFunctorOp<FuzzyTriangle<double> > >();
+		installer.template install<UnaryFunctorOp<FuzzyTwinPeaks<double> > >();
+
+
+		installer.template install<ChannelCatenatorOp>("Catenate");
+
+		installer.template install<CopyOp>();
+		installer.template install<CropOp>();
+
+		installer.template install<DistanceTransformLinearOp>("DistanceTransform");  // consider rename op
+		installer.template install<DistanceTransformExponentialOp>("DistanceTransformExp");  // consider rename op
+		installer.template install<DistanceTransformFillLinearOp>("DistanceTransformFill"); // consider rename op
+		installer.template install<DistanceTransformFillExponentialOp>("DistanceTransformFillExp");  // consider rename op
+
+		installer.template install<FastAverageOp>("Average");
+
+		installer.template install<FlowAverageOp>();
+
+		installer.template install<BlenderOp>();
+
+		installer.template install<ImpulseResponseOp<ImpulseAvg> >("impulseAvg"); // consider getName -> avg.getName()
+
+
+		//static ImageOpCloner<FastOpticalFlowOp> fastopticalflow;
+		//bank.template install< >(fastopticalflow);
+
+		installer.template install<FloodFillOp>();
+
+		// static ImageOpCloner<FunctorOp> functor;
+			installer.template install<UnaryFunctorOp<GammaFunctor> >();
+
+		//installer.template install<QuantizatorOp>();
+		installer.template install<UnaryFunctorOp<QuantizatorFunctor> >();
+
+		installer.template install<GaussianAverageOp>();
+
+		/// Differential ops
+		installer.template install<GradientOp>();
+		installer.template install<GradientHorzOp>();
+		installer.template install<GradientVertOp>();
+		installer.template install<LaplaceOp>();
+		installer.template install<LaplaceHorzOp>();
+		installer.template install<LaplaceVertOp>();
+
+
+		installer.template install<HighBoostOp>();
+
+		installer.template install<HighPassOp>();
+
+		installer.template install<MarginalStatisticOp>("marginStat"); // consider rename op
+
+		//static ImageOpCloner<MotionExtrapolatorOp> motionextrapolator;
+		//static ImageOpCloner<MotionIllustratorOp> motionillustrator;
+		//static ImageOpCloner<PaletteOp> palette;
+
+		//static ImageOpCloner<PixelVectorOp> pixelvector;
+		//bank.template install< >(pixelvector, "pixelvector");
+		installer.template install<DistanceOp>();
+		installer.template install<ProductOp>();
+		installer.template install<MagnitudeOp>();
+
+		//static ImageOpCloner<Distance2Op> distance2;
+		//bank.template install< >(distance2);
+
+		// installer.template install<QuadraticSmootherOp>();
+		// static ImageOpCloner<QuadraticSmootherOp> quadraticSmoother;
+		// bank.template install< >(quadraticSmoother);
+		installer.template install<QualityThresholdOp>();
+
+		installer.template install<QualityMixerOp>();
+
+		installer.template install<QualityOverrideOp>();
+
+
+		installer.template install<ResizeOp>();
+
+		//static ImageOpCloner<RecursiveRepairerOp> recursiveRepairer;
+		//bank.template install< >(recursiveRepairer);
+
+		installer.template install<RunLengthHorzOp>();
+		installer.template install<RunLengthVertOp>();
+
+		installer.template install<SegmentAreaOp<float,unsigned short> >();
+		installer.template install<SegmentStatisticsOp>("segmentStats");
+
+
+		installer.template install<SlidingWindowHistogramOp>("windowHistogram");
+		installer.template install<SlidingWindowMedianOp>("median");
+		installer.template install<TransposeOp>();
+
+		//static ImageOpCloner<ImageOp> image;
+		//static ImageOpCloner<SequentialImageOp> sequentialimage;
+		//bank.template install< >(sequentialimage, "sequentialimage");
+		//static ImageOpCloner<SlidingWindowOp> slidingWindow;
+		//bank.template install< >(slidingWindow);
+		//static ImageOpCloner<WindowOp> window;
+		//bank.install< >(window, "window");
+
+	} catch (std::exception & e) {
+		std::cerr << "Bank " << e.what() << std::endl;
+	}
+
+
+}
 
 
 }

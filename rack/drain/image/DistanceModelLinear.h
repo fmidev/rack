@@ -87,56 +87,6 @@ protected:
 #endif /*DISTANCETRANSFORMOP_H_*/
 
 
-/*
-	inline
-	float decreaseHorz(float x) const {
-		if (x > horzDecrement)
-			return x-horzDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	float decreaseVert(float x) const {
-		if (x > vertDecrement)
-			return x-vertDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	float decreaseDiag(float x) const {
-		if (x > diagDecrement)
-			return x-diagDecrement;
-		else
-			return 0;
-	};
-
-	inline
-	float decreaseKnightHorz(float x) const {
-		if (x > knightDecrementHorz)
-			return x-knightDecrementHorz;
-		else
-			return 0;
-	};
-
-	inline
-	float decreaseKnightVert(float x) const {
-		if (x > knightDecrementVert)
-			return x-knightDecrementVert;
-		else
-			return 0;
-	};
-	*/
-
-//T max;
-/*
-float horzDecrement;
-float vertDecrement;
-float diagDecrement;
-float knightDecrementHorz;
-float knightDecrementVert;
-*/
 
 
 

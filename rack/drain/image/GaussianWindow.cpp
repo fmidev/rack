@@ -42,11 +42,11 @@ void GaussianStripe<true,WindowCore>::update() {
 
 	value = 0.0;
 	weightSum = 0.0;
-	for (int i = this->iMin; i <= this->iMax; i++) {
+	for (int i = this->iRange.min; i <= this->iRange.max; i++) {
 		locationTmp.setLocation(location.x+i, location.y);
 		if (coordinateHandler.validate(locationTmp)){
-			w = lookUp[i-iMin];
-			//value += lookUp[i-iMin] * src.get<double>(locationTmp);
+			w = lookUp[i-iRange.min];
+			//value += lookUp[i-iRange.min] * src.get<double>(locationTmp);
 			value     += w * src.get<value_t>(locationTmp);
 			weightSum += w;
 		}
@@ -62,11 +62,11 @@ void GaussianStripe<false,WindowCore>::update() {
 
 	value = 0.0;
 	weightSum = 0.0;
-	for (int j = this->jMin; j <= this->jMax; j++) {
+	for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 		locationTmp.setLocation(location.x, location.y+j);
 		if (coordinateHandler.validate(locationTmp)){
-			w = lookUp[j-jMin];
-			//value += (lookUp[j-jMin] * src.get<value_t>(locationTmp));
+			w = lookUp[j-jRange.min];
+			//value += (lookUp[j-jRange.min] * src.get<value_t>(locationTmp));
 			value     += w * src.get<value_t>(locationTmp);
 			weightSum += w;
 		}
@@ -87,10 +87,10 @@ void GaussianStripe<true, WeightedWindowCore>::update() {
 	this->value = 0.0;
 	sumW  = 0.0;
 	this->weightSum = 0.0;
-	for (int i = this->iMin; i <= this->iMax; i++) {
+	for (int i = this->iRange.min; i <= this->iRange.max; i++) {
 		this->locationTmp.setLocation(this->location.x+i, this->location.y);
 		if (this->coordinateHandler.validate(this->locationTmp)){
-			w = this->lookUp[i-iMin];
+			w = this->lookUp[i-iRange.min];
 			sumW += w;
 			w *= this->srcWeight.get<double>(this->locationTmp);
 			this->weightSum += w;
@@ -112,10 +112,10 @@ void GaussianStripe<false, WeightedWindowCore>::update() {
 	this->value = 0.0;
 	sumW  = 0.0;
 	this->weightSum = 0.0;
-	for (int j = this->jMin; j <= this->jMax; j++) {
+	for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 		this->locationTmp.setLocation(this->location.x, this->location.y+j);
 		if (this->coordinateHandler.validate(this->locationTmp)){
-			w = this->lookUp[j-this->jMin];
+			w = this->lookUp[j-this->jRange.min];
 			sumW += w;
 			w *= this->srcWeight.get<double>(this->locationTmp);
 			this->weightSum += w;

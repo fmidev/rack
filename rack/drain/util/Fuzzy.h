@@ -59,16 +59,20 @@ public:
 	Fuzzifier(const std::string & name, const std::string & description="", double scale=1.0, double bias=0.0) : UnaryFunctor(name, description, scale, bias),
 	INVERSE(false) {};  // srcMax(1.0),
 
+	// Auto ok
+	// Fuzzifier(const Fuzzifier<T> & op) : UnaryFunctor(op), INVERSE(op.INVERSE){}
+
 	virtual
 	inline
 	~Fuzzifier(){};
 
 	/// Updates internal variables. Should be called after modifying public members.
-	virtual
-	inline
-	void update() const {
+	/*
+	virtual	inline
+	void updateBean() const {
 		updateScale();
 	}
+	*/
 
 	mutable
 	bool INVERSE;
@@ -89,17 +93,19 @@ protected:
 		}
 	}
 
+	/*
 	inline
 	void setReferencesAndCopy(const BeanLike & b){
 		setReferences();
 		this->copy(b);
-		this->update();
+		this->updateBean();
 	};
+	*/
 
 private:
 
-	virtual
-	void setReferences() = 0;
+	//virtual
+	//void setReferences() = 0;
 
 };
 
@@ -110,16 +116,16 @@ private:
  *
 
  Examples with and without physical scaling to (0.0,1.0), setting step at 50% intensity (128 and 0.5):
- \code
-	drainage gray.png        --fuzzyStep 128,64,255 -o fuzzyStep.png
-	drainage gray.png -R 0,1 --fuzzyStep 0.5,0.25   -o fuzzyStep-phys.png
- \endcode
+\code
+drainage gray.png        --iFuzzyStep 128:64,255 -o fuzzyStep.png
+drainage gray.png -R 0:1 --iFuzzyStep 0.5:0.25   -o fuzzyStep-phys.png
+\endcode
 
 When changing storage type, scaling must be given explicitly (here 256, from \c C to \c S ) or physically with \c -R :
- \code
-    drainage gray.png         -T S --fuzzyStep 128,64,255 -o fuzzyStep-16bit.png
-	drainage gray.png  -R 0,1 -T S --fuzzyStep 0.25,0.5   -o fuzzyStep-16bit-phys.png
- \endcode
+\code
+drainage gray.png         -T S --iFuzzyStep 128:64,255 -o fuzzyStep-16bit.png
+drainage gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5   -o fuzzyStep-16bit-phys.png
+\endcode
 
  */
 template <class T> //,class T2>
@@ -135,12 +141,17 @@ public:
 	 *
 	 */
 	FuzzyStep(T startPos = -1.0, T endPos = 1.0, double scale = 1.0, double bias = 0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy step function.", scale, bias), span(1.0) {
-		setReferences();
+		this->parameters.link("position", this->range.tuple());
+		//this->parameters.link("endPos", this->range.max);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
+		// setReferences();
 		set(startPos, endPos, scale, bias);
 	};
 
-	FuzzyStep(const FuzzyStep & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy step function."), span(1.0){
-		this->setReferencesAndCopy(f);
+	FuzzyStep(const FuzzyStep<T> & f) : Fuzzifier<T>(f), span(1.0){
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		updateBean();
 	}
 
 	~FuzzyStep(){};
@@ -150,14 +161,14 @@ public:
 		this->range.min = startPos;
 		this->range.max = endPos;
 		this->setScale(scale, bias);
-		this->update();
+		this->updateBean();
 	}
 
 
 
 	virtual
 	inline
-	void update() const {
+	void updateBean() const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -177,7 +188,7 @@ public:
 
 		this->updateScale();
 
-		mout.debug(1) << this->scaleFinal << ',' << this->biasFinal << mout.endl;
+		mout.debug2() << this->scaleFinal << ',' << this->biasFinal << mout.endl;
 
 	}
 
@@ -194,26 +205,18 @@ public:
 
 	}
 
+	//std::pair<double,double> range;
 	drain::Range<double> range;
-	//double startPos;
-	//double endPos;
 
 protected:
 
 	mutable double span;
+
+	//
+	mutable
 	drain::Range<double> finalRange;
-	//mutable double leftPos;
-	//mutable double rightPos;
+	//std::pair<double,double> finalRange;
 
-private:
-
-	virtual
-	void setReferences(){
-		this->parameters.link("startPos", this->range.min);
-		this->parameters.link("endPos", this->range.max);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
 
 };
 
@@ -223,9 +226,9 @@ private:
  *  \tparam T2 - output storage type
  *
 	\code
-	drainage gray.png        --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle.png
-	drainage gray.png -R 0,1 --fuzzyTriangle 0.25,0.5,0.75  -o fuzzyTriangle-phys.png
-	drainage gray.png -T S   --fuzzyTriangle 64,128,192,255 -o fuzzyTriangle-16bit.png
+	drainage gray.png        --iFuzzyTriangle 64:192,128,255 -o fuzzyTriangle.png
+	drainage gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
+	drainage gray.png -T S   --iFuzzyTriangle 64:192,128,255 -o fuzzyTriangle-16bit.png
 	\endcode
  */
 template <class T>  //,class T2>
@@ -234,12 +237,17 @@ class FuzzyTriangle : public Fuzzifier<T> {
 public:
 
 	FuzzyTriangle(double startPos=-1.0, double peakPos=0.0, double endPos=+1.0, double scale = 1.0, T bias = 0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function.", scale, bias){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
-		setReferences();
+		this->parameters.link("position", this->range.tuple());
+		this->parameters.link("peakPos", this->peakPos);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
 		set(startPos, peakPos, endPos, scale, bias);
+		updateBean();
 	};
 
-	FuzzyTriangle(const FuzzyTriangle & f): Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function."){
-		this->setReferencesAndCopy(f);
+	FuzzyTriangle(const FuzzyTriangle & f): Fuzzifier<T>(f){
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		updateBean();
 	}
 
 	~FuzzyTriangle(){};
@@ -251,22 +259,20 @@ public:
 		this->peakPos = peakPos;
 		this->range.max = endPos;
 		this->setScale(scale, bias); //
-		this->update();
+		this->updateBean();
 	}
 
 
 	virtual
-	void update() const {
+	void updateBean() const {
 
 		this->INVERSE = (range.min > range.max);
 
 		if (!this->INVERSE){
-			spanLow  = range.min - peakPos;
-			spanHigh = range.max - peakPos;
+			span.set(range.min - peakPos, range.max - peakPos);
 		}
 		else {
-			spanLow  = range.max - peakPos;
-			spanHigh = range.min - peakPos;
+			span.set(range.max - peakPos, range.min - peakPos);
 		}
 
 		this->updateScale();
@@ -278,46 +284,30 @@ public:
 	double operator()(double x) const {
 
 		x = x - peakPos;
-		if (x > spanHigh)
+		if (x > span.max)
 			return this->biasFinal;
 		else if (x > 0.0)
-			return this->biasFinal + this->scaleFinal*(1.0 - x/spanHigh);
-		else if (x > spanLow)
-			return this->biasFinal + this->scaleFinal*(1.0 - x/spanLow);
+			return this->biasFinal + this->scaleFinal*(1.0 - x/span.max);
+		else if (x > span.min)
+			return this->biasFinal + this->scaleFinal*(1.0 - x/span.min);
 		else // x < spanHi
 			return this->biasFinal;
 
 	};
 
 	/// Starting position
-	//double startPos;
+	/// End position
+	drain::Range<double> range;
 
 	/// Peak position
 	double peakPos;
 
-	/// End position
-	//double endPos;
-	drain::Range<double> range;
 
 protected:
 
 	mutable
-	double spanLow;
+	drain::Range<double> span;
 
-	mutable
-	double spanHigh;
-
-
-private:
-
-	virtual
-	void setReferences(){
-		this->parameters.link("startPos", this->range.min);
-		this->parameters.link("peakPos", this->peakPos);
-		this->parameters.link("endPos", this->range.max);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
 
 };
 
@@ -343,14 +333,18 @@ class FuzzyBell : public Fuzzifier<T> {
 public:
 
 	FuzzyBell(double location=0.0, double width=1.0, double scale = 1.0, double bias = 0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy bell function.", scale, bias), widthInv(1.0) { //	location(location), scale(scale), a(1.0/width), INVERSE(a<0.0) {};
-		setReferences();
-		set(location, width, scale, bias);
-		//this->update();
+		//setReferences();
+		this->parameters.link("location", this->location = location);
+		this->parameters.link("width", this->width = width);
+		this->parameters.link("scale", this->scale = scale);
+		this->parameters.link("bias", this->bias = bias);
+		//set(location, width, scale, bias);
+		this->updateBean();
 	}
 
-	FuzzyBell(const FuzzyBell & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy bell function."), location(0.0), width(1.0), widthInv(1.0){
-		this->setReferencesAndCopy(f);
-		//this->update();
+	FuzzyBell(const FuzzyBell & f) : Fuzzifier<T>(f) {
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		this->updateBean();
 	}
 
 	virtual
@@ -360,12 +354,12 @@ public:
 		this->location = location;
 		this->width = width;
 		this->setScale(scale, bias);
-		this->update();
+		this->updateBean();
 	}
 
 
 	virtual
-	void update() const {
+	void updateBean() const {
 		this->widthInv = 1.0/width;
 		this->INVERSE = (width<0.0);
 		this->updateScale();
@@ -385,19 +379,10 @@ public:
 
 protected:
 
-
 	//double scale;
 	mutable
 	double widthInv;
 
-private:
-
-	void setReferences(){
-		this->parameters.link("location", this->location);
-		this->parameters.link("width", this->width);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
 
 };
 
@@ -412,12 +397,17 @@ class FuzzyBell2 : public Fuzzifier<T> {
 public:
 
 	FuzzyBell2(double location=0.0, double width=1.0, double scale = 1.0,  double bias = 0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy Gaussian-like bell function.", scale, bias) {
-		setReferences();
-		set(location, width, scale, bias);
+		//setReferences();
+		this->parameters.link("location", this->location = location);
+		this->parameters.link("width", this->width = width);
+		this->parameters.link("scale", this->scale = scale);
+		this->parameters.link("bias", this->bias = bias);
+		updateBean();
 	};
 
-	FuzzyBell2(const FuzzyBell2 & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy Gaussian-like bell function.") {
-		this->setReferencesAndCopy(f);
+	FuzzyBell2(const FuzzyBell2 & f) : Fuzzifier<T>(f) {
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		updateBean();
 	}
 
 	virtual
@@ -428,7 +418,7 @@ public:
 		this->location = location;
 		this->width = width;
 		this->setScale(scale, bias);
-		update();
+		updateBean();
 	}
 
 
@@ -444,7 +434,7 @@ public:
 
 
 	virtual
-	void update() const {
+	void updateBean() const {
 		steepness = sqrt(sqrt(2.0)-1.0)/width;
 		this->INVERSE = (width<0.0);
 		this->updateScale();
@@ -459,15 +449,6 @@ protected:
 	double steepness;
 
 
-private:
-
-	void setReferences(){
-		this->parameters.link("location", this->location);
-		this->parameters.link("width", this->width);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
-
 };
 
 /// A smooth step function, by default from -1.0 to +1.0.
@@ -481,14 +462,20 @@ class FuzzySigmoid  : public Fuzzifier<T> {
 public:
 
 	FuzzySigmoid(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0) :
-		Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function.", scale, bias), absWidth(0.0) { // : location(location), width(fabs(width)), scale(width<0.0 ? -scale : scale), bias(bias)
-		this->setReferences();
-		set(location, width, scale, bias);
+		Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function.", scale, bias), absWidth(0.0) {
+		this->parameters.link("location", this->location = location);
+		this->parameters.link("width", this->width = width);
+		this->parameters.link("scale", this->scale = scale);
+		this->parameters.link("bias", this->bias = bias);
+		this->updateBean();
 	};
 
 
-	FuzzySigmoid(const FuzzySigmoid & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy sign function."), absWidth(0.0) {
-		this->setReferencesAndCopy(f);
+	FuzzySigmoid(const FuzzySigmoid & f) : Fuzzifier<T>(f), absWidth(f.absWidth) {
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		//this->setReferencesAndCopy(f);
+		//set(location, width, scale, bias);
+		this->updateBean();
 	}
 
 	~FuzzySigmoid(){};
@@ -498,7 +485,7 @@ public:
 		this->location = location;
 		this->width = width;
 		this->setScale(scale, bias); //
-		this->update();
+		this->updateBean();
 	}
 
 
@@ -541,15 +528,6 @@ protected:
 	double absWidth;
 
 
-private:
-
-	void setReferences(){
-		this->parameters.link("location", this->location);
-		this->parameters.link("width", this->width);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
-
 };
 
 /// A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width. Otherwise like FuzzySigmoid.
@@ -563,12 +541,17 @@ class FuzzyStepsoid  : public Fuzzifier<T> {
 public:
 
 	FuzzyStepsoid(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy step function", scale, bias), widthFinal(1.0) {
-		this->setReferences();
-		set(location, width, scale, bias);
+		//this->setReferences();
+		this->parameters.link("location", this->location = location);
+		this->parameters.link("width", this->width = width);
+		this->parameters.link("scale", this->scale = scale);
+		this->parameters.link("bias", this->bias = bias);
+		this->updateBean();
 	};
 
-	FuzzyStepsoid(const FuzzyStepsoid & f): Fuzzifier<T>(__FUNCTION__), widthFinal(1.0) {
-		this->setReferencesAndCopy(f);
+	FuzzyStepsoid(const FuzzyStepsoid & f): Fuzzifier<T>(f), widthFinal(f.widthFinal) {
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		this->updateBean();
 	}
 
 	~FuzzyStepsoid(){};
@@ -578,11 +561,11 @@ public:
 		this->location = location;
 		this->width    = width;
 		this->setScale(scale, bias); //
-		this->update();
+		this->updateBean();
 	}
 
 	virtual
-	void update() const {
+	void updateBean() const {
 		this->INVERSE = (width<0.0);
 		this->updateScale();
 		widthFinal = fabs(width);
@@ -626,18 +609,8 @@ protected:
 
 	}
 
-
 	mutable
 	double widthFinal;
-
-private:
-
-	void setReferences(){
-		this->parameters.link("location", this->location);
-		this->parameters.link("width", this->width);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
 
 };
 
@@ -653,12 +626,18 @@ public:
 
 	FuzzyTwinPeaks(double location=0.0, double width=1.0, double scale = 1.0,  double bias = 0.0) :
 		Fuzzifier<T>(__FUNCTION__, "Fuzzy function of two peaks.", scale, bias) {
-		setReferences();
-		set(location, width, scale, bias);
+		//setReferences();
+		// set(location, width, scale, bias);
+		this->parameters.link("location", this->location = location);
+		this->parameters.link("width", this->width = width);
+		this->parameters.link("scale", this->scale = scale);
+		this->parameters.link("bias", this->bias = bias);
+		this->updateBean();
 	};
 
 	FuzzyTwinPeaks(const FuzzyTwinPeaks & f) : Fuzzifier<T>(__FUNCTION__, "Fuzzy function of two peaks.") {
-		this->setReferencesAndCopy(f);
+		this->parameters.copyStruct(f.getParameters(), f, *this);
+		this->updateBean();
 	}
 
 	virtual
@@ -669,18 +648,18 @@ public:
 		this->location = location;
 		this->width = width;
 		this->setScale(scale, bias);
-		update();
+		updateBean();
 	}
 
 	virtual
-	void update() const {
+	void updateBean() const {
 		this->INVERSE = (width<0.0);
 		steepness = 1.0/fabs(width);
 		this->updateScale();
 	}
 
-	inline
-	virtual
+
+	virtual inline
 	double operator()(double x) const {
 		x = steepness * (x - location);
 		return this->biasFinal + this->scaleFinal*(x*x)/(1.0 + x*x*x*x);
@@ -693,8 +672,8 @@ public:
 
 protected:
 
-	inline
-	virtual
+
+	virtual inline
 	void updateScale() const {
 
 		//this->INVERSE = (width<0.0);
@@ -711,15 +690,6 @@ protected:
 	mutable
 	double steepness;
 
-
-private:
-
-	void setReferences(){
-		this->parameters.link("location", this->location);
-		this->parameters.link("width", this->width);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-	}
 
 };
 

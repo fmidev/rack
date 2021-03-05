@@ -31,11 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_CODEBOOK
 #define DRAIN_CODEBOOK
 
-//#include "Geometry.h"
-//#include "File.h"
-//#include "TreeSVG.h"
 
-//#include "drain/util/JSONtree.h"
 #include <ostream>
 #include <vector>
 #include <map>

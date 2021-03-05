@@ -73,12 +73,12 @@ public:
 /// Computes lengths of horizontal segments.
 /**
 \code
-drainage shapes1.png  --runLengthHorz 128  -o rleHorzAbs.png
-drainage shapes1.png  --physicalRange 0,1 --runLengthHorz 0.75  -o rleHorz.png
+drainage shapes1.png  --iRunLengthHorz 128  -o rleHorzAbs.png
+drainage shapes1.png  --physicalRange 0:1 --iRunLengthHorz 0.75  -o rleHorz.png
 \endcode
 
 To detect line segments longer than 255 the user should use 16-bit result image, \c --type \c S .
-Further, \c --scale or \c --gamma command may be useful in making the results visible.
+Further, \c --iRescale or \c --iGamma command may be useful in making the results visible.
  */
 class RunLengthHorzOp : public RunLengthOp {
 
@@ -100,8 +100,8 @@ protected:
 /// Computes lengths of vertical segments.
 /**
 \code
-drainage shapes1.png  --runLengthVert 128  -o runLengthVertAbs.png
-drainage shapes1.png  --physicalRange 0,1 --runLengthVert 0.5  -o runLengthVert.png
+drainage shapes1.png  --iRunLengthVert 128  -o runLengthVertAbs.png
+drainage shapes1.png  --physicalRange 0:1 --iRunLengthVert 0.5  -o runLengthVert.png
 \endcode
  */
 class RunLengthVertOp : public RunLengthOp {

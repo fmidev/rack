@@ -54,90 +54,13 @@ namespace drain
  *
  */
 /*
-void JSONtree::read(tree_t & t, std::istream & istr){
 
-	drain::Logger log("JSON", __FUNCTION__);
-
-	if (!istr){
-		log.error() << "File read error" << log.endl;
-		return;
-	}
-
-	char c;
-
-	TextReader::skipChars(istr, " \t\n\r");
-	c = istr.get();
-	if (c != '{'){
-		//std::cerr << "Fail: " << c << '\n';
-		log.error() << "Syntax error: read '" << c << "' when expecting '{'" << log.endl;
-		return;
-	}
-
-	std::string key;
-	std::string value;
-	bool completed = false;
-
-	while (istr){
-
-		TextReader::skipChars(istr, " \t\n\r");
-
-		c = istr.get();
-
-		if (c == '"'){ // New entry
-
-			key = TextReader::scanSegment(istr, "\"");
-			// log.warn() << " then1: " <<  (char)istr.peek() << log.endl;
-			//istr.get(); // swallow terminator
-			// log.warn() << " then2: " <<  (char)istr.peek() << log.endl;
-
-			node_t & vmap = t.data;
-
-			TextReader::skipWhiteSpace(istr); // Chars(istr, " \t\n\r");
-			// log.warn() << " then3: " <<  (char)istr.peek() << log.endl;
-			c = istr.get();
-			// log.warn() << " then4: " <<  (char)istr.peek() << log.endl;
-
-			if (c == ':'){
-				TextReader::skipWhiteSpace(istr) ; // Chars(istr, " \t\n\r");
-				c = istr.peek();
-
-				if (c == '{'){
-					log.debug(2) << "Reading object '" << key << "'" << log.endl;
-					/// RECURSION
-					JSONtree::read(t[key], istr);
-				}
-				else {
-					log.debug(2) << "Reading value '" << key << "'" << log.endl;
-					JSONreader::readValue(istr, vmap[key]);
-					//ValueReader::scanValue(istr, vmap[key]);
-				}
-				completed = true;
-			}
-			else {
-				log.error() << "Syntax error: read \"" << key << "\" followed by '" << c << "' when expecting object {...}, string \"...\", array [...], or number" << log.endl;
-				return;
-			}
-		}
-		else if (c == '}')
-			return;
-		else if (c == ','){
-			if (!completed) // comma encountered after empty segment
-				log.warn() << "empty section after key=" << key << log.endl;
-			completed = false; // trap for subsequent check
-		}
-		else { // TODO: warn if comma encountered after empty
-			log.error() << "Syntax error: char '" << c << "', expected '\"', '}' or ','" << log.endl;
-		}
-
-	}
-
-}
 */
 
 /// Reads and parses a Windows INI file
 void JSONtree::readINI(tree_t & t, std::istream & istr){
 	drain::Logger mout("JSON", __FUNCTION__);
-	mout.error() << "unimplemented code" << mout.endl;
+	mout.unimplemented() << "unimplemented code" << mout.endl;
 }
 
 

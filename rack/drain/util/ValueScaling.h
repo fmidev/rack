@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stddef.h>  // size_t
 
 #include "TypeUtils.h"
+
+#include "UniTuple.h"
 #include "Range.h"
 
 //#include "Geometry.h"
@@ -59,83 +61,80 @@ namespace drain
  *  \see drain::typeLimits
  *
  */
-class ValueScaling {
+class ValueScaling : public UniTuple<double,4>{
 public:
 
-	/*
-	ValueScaling() : scale(1.0), offset(0.0){}; // , minPhysValue(0.0), maxPhysValue(0.0)
+	/// Multiplicative coefficient \i a in: y = ax + b
+	double & scale;
+
+	/// Additive coefficient \i b in: y = ax + b
+	double & offset;
+
+	/// Minimum and maximum physical value of the imaged quantity (not limited to corresponding to minCodeValue?).
+	drain::Range<double> physRange;
+
 
 	inline
-	ValueScaling(double scale, double offset): scale(scale), offset(offset) {
+	ValueScaling(double scale=1.0, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0) :
+		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+	{
+		setConversionScale(scale, offset, scaleOut, offsetOut);
+		physRange.set(0,0);
 	};
-	*/
 
 	inline
-	ValueScaling(double scale=1.0, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0) {
-		setScale(scale, offset, scaleOut, offsetOut);
+	ValueScaling(const drain::ValueScaling & scaling) :
+		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+	{
+		this->assign(scaling);
 	};
 
 	inline
-	ValueScaling(const drain::ValueScaling & scaling){
-		set(scaling);
-	};
-
-	/// Forward scaling: given encoded value x, returns corresponding value (possibly physically meaningful).
-	inline
-	double fwd(double x) const {
-		return scale*x + offset;
-	}
-
-	/// Inverse scaling: given physically meaningful value y, returns the corresponding code value.
-	inline
-	double inv(double y) const {
-		return (y - offset) / scale;
-	}
-
-	/// Copy scale and offset as well as physical range, if applied.
-	/**
-	 * If the intensities of the image correspond to a physical value (like temperature), this is the recommended way to copy.
-	 *
-	 */
-	inline
-	void set(const drain::ValueScaling & scaling){
-		setScale(scaling.getScale(), scaling.getOffset());
-		setPhysicalRange(scaling.physRange.min, scaling.physRange.max);
+	ValueScaling(const drain::ValueScaling & scalingIn, const drain::ValueScaling & scalingOut) :
+		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+	{
+		setConversionScale(scalingIn, scalingOut);
+		//this->assign(scaling);
 	};
 
 
-	/// If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.
-	/*
-	inline
-	void setScale(double scale, double offset = 0.0){
-		this->scale  = scale;
-		this->offset = offset;
-	}
-	*/
 
-	/// If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.
-	inline
-	void setScale(double scale, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0){
-		this->scale  = scale/scaleOut;
-		this->offset = (offset - offsetOut)/scaleOut;
+	/// Set linear scaling
+	virtual inline
+	void setScaling(double scale, double offset){
+		this->set(scale, offset); // virtual IMPORTANT for channels/view
 	}
 
-	/*
-	inline
-	void set(double gainIn=1.0, double offsetIn=0.0, double gainOut=1.0, double offsetOut=0.0){
-		gain = gainIn/gainOut;
-		offset = (offsetIn-offsetOut)/gainOut;
-		gainInv = gainOut/gainIn;
+	virtual
+	void setScaling(const ValueScaling & scaling){
+		this->assign(scaling);
 	}
-	*/
+
+	/// Get linear scaling
+	virtual inline  // LATER: scalingPtr!
+	const ValueScaling & getScaling() const {
+		return *this;
+	}
+
+	/// Get linear scaling
+	virtual inline // LATER: scalingPtr!
+	ValueScaling & getScaling(){
+		return *this;
+	}
+
+
+	ValueScaling & operator=(const ValueScaling & scaling){
+		this->assign(scaling);
+		return *this;
+	}
 
 	/// If the intensities of the image correspond to an absolute value (like count) then the scale should be reset to unity with this function.
 	inline
 	void setAbsoluteScale(){
-		setScale(1.0, 0.0);
+		set(1.0, 0.0);
 	}
 
-	/// For "small" integral types, resets offset and scale such that maximum code value corrensponds to 1.0 (100% intensity).
+	/// For "small integer" types, resets offset and scale such that maximum code value corresponds to 1.0 (100% intensity).
 	/**  Applies to:
 	 * 	- \c char
 	 * 	- \c unsigned char
@@ -144,21 +143,22 @@ public:
 	 */
 	inline
 	void setNormalScale(const std::type_info & t){
-
 		if (Type::call<drain::typeIsSmallInt>(t))
-			setScale(1.0/drain::Type::call<drain::typeMax,double>(t), 0.0);
+			set(1.0/drain::Type::call<drain::typeMax,double>(t), 0.0);
 		else  // warn? (esp. for int and long int)
-			setScale(1.0, 0.0); // absolute scale
-
+			set(1.0, 0.0); // absolute scale
 	}
 
-	/// Set scaling for which scaling.inv(x) = scaling2.inv(scaling1.fwd(x))
+	/// If the intensities of the image correspond to a physical value (like temperature), then the scaling coefficient should be set with this function.
 	inline
-	void setConversionScale(const drain::ValueScaling & scaling1, const drain::ValueScaling & scaling2){
-		// this->scale  = scaling1.getScale() / scaling2.getScale();
-		// this->offset = (scaling1.getOffset() - scaling2.getOffset()) / scaling2.getScale();
-		this->scale  = scaling2.getScale() / scaling1.getScale();
-		this->offset = (scaling2.getOffset() - scaling1.getOffset()) / scaling1.getScale();;
+	void setConversionScale(double scale, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0){
+		set(scale/scaleOut, (offset - offsetOut)/scaleOut);
+	}
+
+	/// Set scaling for which scaling.inv(x) = s2.inv(s1.fwd(x))
+	inline
+	void setConversionScale(const drain::ValueScaling & s1, const drain::ValueScaling & s2){
+		set(s2.scale/s1.scale, (s2.offset-s1.offset) / s1.scale);
 	}
 
 	/// If storage type is integer, adjust scale such that resolution is maximized.
@@ -168,10 +168,8 @@ public:
 	/// Sets physical range (min, max) and scales storage type accordingly.
 	inline
 	void setPhysicalScale(const std::type_info & t, double min, double max){
-		//Logger mout(getImgLog(), "ImageScaling", __FUNCTION__);
 		setPhysicalRange(min, max);
 		setOptimalScale(t);
-		//mout.warn() << "type=" << toStr() << mout.endl;
 	}
 
 	/// Sets physical range (min, max) and scales storage type accordingly.
@@ -180,22 +178,33 @@ public:
 	 */
 	inline
 	void setPhysicalScale(const std::type_info & t, const drain::ValueScaling & scaling){
-		setPhysicalRange(scaling.physRange.min, scaling.physRange.max);
+		setPhysicalRange(scaling.getPhysicalRange());
 		setOptimalScale(t);
 	};
 
+	/// Sets the supported range for physical values. Does not change scaling or type.
+	inline
+	const Range<double> & getPhysicalRange() const { // , const std::string &unit ?
+		return physRange;
+	}
 
 	/// In integer-valued images, set the physical values corresponding to [0, maxCodeValue]
 	inline
-	void setPhysicalMax(double max){
+	void setPhysicalMax(double max){ // dangerous (after min?)
 		setPhysicalRange(0.0, max);
+	}
+
+	/// Sets the supported range for physical values. Does not change scaling or type.
+	template <class T>
+	inline
+	void setPhysicalRange(const Range<T> &range){ // , const std::string &unit ?
+		physRange.assign(range);
 	}
 
 	/// Sets the supported range for physical values. Does not change scaling or type.
 	inline
 	void setPhysicalRange(double min, double max){ // , const std::string &unit ?
-		physRange.min = min;
-		physRange.max = max;
+		physRange.set(min,max);
 	}
 
 	/// Returns the intensity scaling factor. See set setScale()
@@ -211,19 +220,27 @@ public:
 	 *   Note: returns true if scale==0. Maybe false would be better.
 	 */
 	inline
-	bool isScaled() const { return (scale!=1.0) || (offset!=0.0); }
+	bool isScaled() const {
+		return (scale!=1.0) || (offset!=0.0);
+	}
 
 	/// Returns the minimum physical value.
 	inline
-	double getMinPhys() const { return physRange.min; }
+	double getMinPhys() const {
+		return physRange.min;
+	}
 
 	/// Returns the maximum physical value.
 	inline
-	double getMaxPhys() const { return physRange.max; }
+	double getMaxPhys() const {
+		return physRange.max;
+	}
 
 	/// Returns true, physical intensity range has been set.
 	inline
-	bool isPhysical() const { return (physRange.min != physRange.max);  }
+	bool isPhysical() const {
+		return (physRange.min != physRange.max);
+	}
 
 	/// Sets scale and offset according to physical range and current type.
 	/*   short => float
@@ -233,39 +250,41 @@ public:
 	void adoptScaling(const drain::ValueScaling & srcScaling, const std::type_info & srcType, const std::type_info & dstType = typeid(void));
 
 
+	/// Forward scaling: given encoded value x, returns corresponding value (possibly physically meaningful).
+	inline
+	double fwd(double x) const {
+		return scale*x + offset;
+	}
+
+	/// Inverse scaling: given physically meaningful value y, returns the corresponding code value.
+	inline
+	double inv(double y) const {
+		return (y - offset) / scale;
+	}
+
+
 
 	inline
-	void toOStr(std::ostream & ostr) const {
+	void toStream(std::ostream & ostr) const {
 		ostr << scale << ',' << offset;
 		if (isPhysical())
-			 ostr << ' ' << '[' << physRange.min << ',' << physRange.max << ']';
+			 ostr << " [" << physRange << ']';
 	}
 
 	inline
 	std::string toStr() const{
 		std::stringstream sstr;
-		toOStr(sstr);
+		toStream(sstr);
 		return sstr.str();
 	}
 
 
-	/// Multiplicative coefficient \i a in: y = ax + b
-	double scale;
-	/// Additive coefficient \i b in: y = ax + b
-	double offset;
-
-	/// Minimum physical value of the imaged quantity, corresponding to minCodeValue.
-	// double physRange.min;
-	/// Maximum physical value of the imaged quantity, corresponding to minCodeValue.
-	// double maxPhysValue;
-
-	drain::Range<double> physRange;
 
 };
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const drain::ValueScaling & s){
-	s.toOStr(ostr);
+	s.toStream(ostr);
 	return ostr;
 }
 

@@ -83,7 +83,7 @@ public:
 	virtual
 	void process(const ImageFrame &src, Image &dst) const {
 		
-		makeCompatible(src,dst);
+		makeCompatible(src.getConf(), dst);
 
 		FastAverageOp(width,height).process(src,dst);
 		

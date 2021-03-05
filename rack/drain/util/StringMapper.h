@@ -36,9 +36,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <iterator>
 #include <sstream>
+
+#include "Log.h"
 #include "RegExp.h"
-//#include "Data.h"  // to convert base types in map entries
-#include "Variable.h"  // to convert base types in map entries
+#include "Sprinter.h"
+#include "String.h"
+#include "Variable.h"
 
 namespace drain {
 
@@ -53,11 +56,13 @@ namespace drain {
 class Stringlet: public std::string {
 public:
 
-	//Stringlet( const std::map<std::string, T> & m, const std::string & s = "", bool isVariable = false)
 	inline
-	Stringlet(const std::string & s = "", bool isVariable = false) : std::string(s), isVar(isVariable) { //, _map(m) {
-		//assign(s);
+	Stringlet(const std::string & s = "", bool isVariable = false) : std::string(s), isVar(isVariable) {
 	};
+
+	/// Copy constructor.
+	Stringlet(const Stringlet & s) : std::string(s), isVar(s.isVar) {
+	}
 
 	inline
 	bool isVariable() const { return isVar; };
@@ -68,14 +73,24 @@ public:
 	inline
 	void setLiteral(const std::string &s) { assign(s); isVar = false; };
 
+	// Consider!
+	// But has to share variable syntax ${...} with string mapper(s), which recognizes it...
+	// std::ostream & toStream(std::ostream & ostr, std::map<std::string, T> & environment, bool clearMissing=true){}
 
 protected:
 
-	//const
 	bool isVar;
-	//bool literal;
-	//const std::map<std::string, T> & _map;
+
 };
+
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
+	if (s.isVariable())
+		return ostr << "${" << (const std::string &) s << "}";
+	else
+		return ostr << (const std::string &) s;
+}
 
 /**  Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string.
  *   StringMapper parses a given std::string, it splits the std::string into segments containing
@@ -98,11 +113,32 @@ public:
 	 *
 	 */
 	// TODO validKeys?
-	StringMapper(const std::string & validKeys = "[a-zA-Z0-9_]+",
-			const std::string & variablePrefix = "${", const std::string & variableSuffix = "}") :
-				width(0), fill('0'),
-				variablePrefix(variablePrefix), variableSuffix(variableSuffix), validChars(validKeys)
-				 {};
+	StringMapper(
+			const std::string & format = "",
+			const std::string & validChars = "[a-zA-Z0-9_]+"
+			) :
+				width(0),
+				fill('0')
+	{
+		setValidChars(validChars);
+		if (!format.empty())
+			parse(format);
+		regExp.setFlags(REG_EXTENDED);
+	};
+
+	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
+		//regExp.setExpression(mapper.regExp.toStr());
+		//((std::list<Stringlet> &)*this) = mapper;
+	}
+
+
+	inline
+	StringMapper & setValidChars(const std::string & chars){
+		std::stringstream sstr;
+		sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
+		regExp.setExpression(sstr.str());
+		return *this;
+	}
 
 	/// Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.
 	/**
@@ -110,47 +146,74 @@ public:
 	 *   \param s - string containing variables like in "Hello, ${NAME}!"
 	 *   \param convertEscaped - convert backslash+letter segments to actual chars (\t, \n } first
 	 */
-	void parse(const std::string &s, bool convertEscaped = false);
+	StringMapper & parse(const std::string &s, bool convertEscaped = false);
 
-	/// Prints the mapper in its current state, ie. some variables may have been expanded to literals.
+	/// Interpret commond special chars tab '\t' and newline '\n'.
+	static
+	std::string & convertEscaped(std::string &s){
+		std::string s2;
+		drain::StringTools::replace(s,  "\\t", "\t", s2);
+		drain::StringTools::replace(s2, "\\n", "\n",  s);
+		return s;
+	}
+
+
+	/// Return true, if all the elements are literal.
+	bool isLiteral() const;
+
+	/// Output a concatenated chain of stringlets: literals as such and variables surrounded with "${" and "}"
 	/**
-	 *  \par ostr - output stream
-	 *  \par m    - map containing variable values
-	 *  \par clear - if true, expand undefined variables as empty std::strings, else leave variable entry
+	 *  Prints the mapper in its current state, ie. some variables may have been expanded to literals.
+	 *
+	 *  \param ostr - output stream
 	 */
 	inline
 	std::ostream &  toStream(std::ostream & ostr) const {
-		for (StringMapper::const_iterator it = begin(); it != end(); it++){
-			if (it->isVariable())
-				ostr << variablePrefix << *it << variableSuffix;
-			else
-				ostr << *it;
-		};
+		SprinterBase::sequenceToStream(ostr, *this, SprinterBase::emptyLayout);
 		return ostr;
 	}
 
 
-	/// Expands the variables in the last parsed std::string std::string.
+	/// Expands the variables in the last
 	/**
 	 *  \par ostr - output stream
 	 *  \par m    - map containing variable values
-	 *  \par clear - if true, expand undefined variables as empty std::strings, else leave variable entry
+	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, bool clear = false) const {
-		ostr.fill(fill);
-		for (StringMapper::const_iterator it = begin(); it != end(); it++){
-			if (it->isVariable()){
-				typename std::map<std::string, T >::const_iterator mit = m.find(*it);
+	//std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, bool keepUnknowns=false) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, char replace = 0) const {
+
+		for (const Stringlet & stringlet: *this){
+			//const Stringlet & stringlet = *it;
+			if (stringlet.isVariable()){
+				typename std::map<std::string, T >::const_iterator mit = m.find(stringlet);
 				if (mit != m.end()){
-					ostr.width(width);
+					//ostr.width(width);
+					//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+					//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
 					ostr <<  mit->second;
 				}
-				else if (!clear)
-					ostr << variablePrefix << *it << variableSuffix;
+				else if (replace){
+					//else if (keepUnknowns){ // = "recycle", add back "${variable}";
+					if (replace < 0)
+						ostr <<  stringlet; // is Variable -> use layout  "${variable}";
+					else
+						ostr << (char)replace;
+					// if zero, skip silently (replace with empty string)
+					/*
+					if (replaceChar<0)
+						ostr << '#' <<  *it << '$'; // is Variable -> use layout  "${variable}";
+					else if (replaceChar>1)
+						ostr << (char)replaceChar;
+					*/
+				}
+				else {
+					// Skip unknown (unfound) key
+				}
 			}
 			else
-				ostr << *it;
+				ostr << stringlet;
 		};
 		return ostr;
 	}
@@ -161,9 +224,9 @@ public:
 	 *  \par clear - if true, expand undefined variables as empty std::strings, else leave variable entry
 	 */
 	template <class T>
-	std::string toStr(const std::map<std::string,T> &m, bool clear = false) const {
+	std::string toStr(const std::map<std::string,T> &m, int replaceChar = -1) const {
 		std::stringstream s;
-		toStream(s, m, clear);
+		toStream(s, m, replaceChar);
 		return s.str();
 	}
 
@@ -194,24 +257,24 @@ public:
 	/// Dumps the list of StringLet's
 	template <class T>
 	std::ostream &  debug(std::ostream & ostr, const std::map<std::string,T> &m ) const {
-		ostr << "StringMapper '"<< "', validChars='" << validChars << "', " <<  size() << " segments:\n";
+		ostr << "StringMapper '"<< "', RegExp='" << regExp << "', " <<  size() << " segments:\n";
 		//StringMapper::const_iterator it;
 		for (StringMapper::const_iterator it = begin(); it != end(); it++){
 			//ostr << *it;
+			ostr << '\t';
 			if (it->isVariable()){
 				//ostr << "VAR: ";
-				ostr << '\t';
 				typename std::map<std::string, T >::const_iterator mit = m.find(*it);
 				if (mit != m.end())
-					ostr << '*' <<  mit->second << '*';
+					ostr << "\"" <<  mit->second << "\"";
 				else
-					ostr << '<' << *it << '>';
-				ostr << '\n';
+					ostr << *it;
 			}
 			else {
-				ostr << "\t'" << *it << "'\n";
+				ostr << "'"<<  *it << "'";
 				//ostr << "LIT: '" << *it << "'\n";
 			}
+			ostr << '\n';
 			//ostr << '\n';
 		}
 		return ostr;
@@ -220,15 +283,14 @@ public:
 	std::streamsize width;
 	char fill;
 
-	/// Prefix used, when "preserving" a variable, ie. when variable is not found in the map but
-	const std::string variablePrefix;
-	/// Prefix used, when "preserving" a variable, ie. when variable is not found in the map but
-	const std::string variableSuffix;
 
 protected:
 
-	const std::string validChars;
-	void parse(const std::string &s, RegExp &r);
+	//std::string validChars;
+
+	StringMapper & parse(const std::string &s, RegExp &r);
+	RegExp regExp;
+	//  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 
 };
 

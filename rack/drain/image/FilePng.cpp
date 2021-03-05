@@ -146,7 +146,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 
 
-	const int byte_depth = image.getEncoding().getElementSize(); //sizeof(T);
+	const int byte_depth = image.getConf().getElementSize(); //sizeof(T);
 	const int bit_depth  = byte_depth <= 2 ? byte_depth*8 : 16;
 
 	// mout.debug() << image.getGeometry() << ", orig byte_depth=" << byte_depth << ", bit_depth=" << bit_depth << mout.endl;
@@ -201,7 +201,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	//png_set_pCAL(png_ptr, info_ptr, )
 
 	// Comment texts (optional)
-	mout.debug(2) << "Adding comments " << mout.endl;
+	mout.debug3() << "Adding comments " << mout.endl;
 	std::map<std::string,std::string> comments;
 	comments["Creation_time"] = drain::Time().str();
 	// comments["Scaling"] = image.getScaling().toStr(); // FUTURE: only after known (below)
@@ -210,7 +210,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	/// WARNING: for channels/views: getProperties instead?
 	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 		//mout.debug() << "properties:" << it->first << mout.endl;
-		mout.debug(2) << "properties:" << it->first << '=' << it->second << mout.endl;
+		mout.debug3() << "properties:" << it->first << '=' << it->second << mout.endl;
 		std::stringstream sstr;
 		drain::JSONwriter::toStream(it->second, sstr);
 		//it->second.valueToJSON(sstr);
@@ -242,7 +242,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	// TODO: consider png_write_row and/or &at(row);
 
 	// Create temporary image array.
-	mout.debug(2) << "Create temporary image array " << mout.endl;
+	mout.debug3() << "Create temporary image array " << mout.endl;
 	png_byte **data;
 	data = new png_byte*[height]; //[width*channels*byte_depth];
 	for (int j = 0; j < height; ++j) {
@@ -257,21 +257,21 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	// Copy data to png array.
 	mout.info() << "Src: " << image << mout.endl;
 	//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
-	mout.debug(1) << "Copy data to png array, width=" << width << ", height=" << height << " channels=" << channels << mout.endl;
+	mout.debug2() << "Copy data to png array, width=" << width << ", height=" << height << " channels=" << channels << mout.endl;
 	for (int k = 0; k < channels; ++k) {
 		//const double coeff = image.get<png_byte>(i,j,k);
 		const Channel & channel = image.getChannel(k);
 		//mout.note()  << "im: " << image   << mout.endl;
 		//mout.note()  << "ch: " << channel << mout.endl;
 		//const double coeff = static_cast<double>((byte_depth==1) ? 0xff : 0xffff) * channel.scaling.getScale();
-		// mout.debug(1) << " channel " << k << ", coeff=" << coeff << " scaling=" << channel.scaling.toStr() << mout.endl;
-		mout.debug(2) << " channel " << k << " scaling=" << channel.getScaling() << mout.endl;
+		// mout.debug2() << " channel " << k << ", coeff=" << coeff << " scaling=" << channel.scaling.toStr() << mout.endl;
+		mout.debug3() << " channel " << k << " scaling=" << channel.getScaling() << mout.endl;
 
 		// 8 bit
 		if (byte_depth == 1){
-			// mout.debug(1) << "8 bits, height=" << height << " width=" << width << mout.endl;
+			// mout.debug2() << "8 bits, height=" << height << " width=" << width << mout.endl;
 			for (int j = 0; j < height; ++j) {
-				//mout.debug(1) << " j=" << j << mout.endl;
+				//mout.debug2() << " j=" << j << mout.endl;
 				for (int i = 0; i < width; ++i) {
 					//data[j][i*channels + k] = static_cast<png_byte>(image.at(i,j,k));
 					//data[j][i*channels + k] = image.get<png_byte>(i,j,k);
@@ -320,17 +320,17 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 			}
 		}
 	}
-	mout.debug(2) << "Setting rows" << mout.endl;
+	mout.debug3() << "Setting rows" << mout.endl;
 	// png_byte row_pointers[height];
 	//png_set_rows(png_ptr, info_ptr, row_pointers);
 	png_set_rows(png_ptr, info_ptr, data);
 
 	// Main operation
-	mout.debug(1) << "Writing array" << mout.endl;
+	mout.debug2() << "Writing array" << mout.endl;
 	int png_transforms = PNG_TRANSFORM_IDENTITY  || PNG_TRANSFORM_SHIFT;
 	png_write_png(png_ptr, info_ptr, png_transforms, NULL);
 
-	mout.debug(1) << "Closing file and freeing memory" << mout.endl;
+	mout.debug2() << "Closing file and freeing memory" << mout.endl;
 	fclose(fp);
 	png_destroy_write_struct(&png_ptr,&info_ptr);
 	//png_destroy_info ?? why not

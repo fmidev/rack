@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <ostream>
 
-#include "../util/ReferenceMap.h"
-#include "Coordinates.h"
+#include "drain/util/ReferenceMap.h"
+#include "CoordinateHandler.h"
 #include "FilePng.h"
 
 
@@ -45,26 +45,41 @@ namespace image
 {
 
 
+/// Container for parameters of SegmentProber
+/**
+ *
+ *   \tparam S - storage type of the source image data (int by default, but should be floating-type, if src is).
+ *   \tparam D - storage type of the destination image data
+ *
+ *   \author Markus.Peura@fmi.fi
+ */
 template <class S, class D>
 class SegmentProberConf : public drain::ReferenceMap {
 
 public:
 
-	SegmentProberConf(S anchorMin=1, S anchorMax=255.0, D markerValue = 1) : markerValue(markerValue){
-		link("anchorMin", this->anchorMin = anchorMin, "intensity");
-		link("anchorMax", this->anchorMax = anchorMax, "intensity");
-		//link("value", value);
+	SegmentProberConf(S anchorMin=1, S anchorMax=255.0, D markerValue = 1) : anchor(anchorMin, anchorMax), markerValue(markerValue){
+		link("anchor", this->anchor.tuple(), "intensity");
+		//link("anchorMin", this->anchorMin = anchorMin, "intensity");
+		//link("anchorMax", this->anchorMax = anchorMax, "intensity");
+		link("marker", this->markerValue, "marker not universal?");
 	}
 
-	S anchorMin;
-	S anchorMax;
+	SegmentProberConf(const SegmentProberConf & conf) : anchor(conf.anchor), markerValue(conf.markerValue){
+		// link("anchor", this->anchor.tuple(), "intensity");
+		copyStruct(conf, conf, *this);
+	}
+
+	Range<S> anchor;
 
 	/// "fill value", also dynamically changing visit marker?
 	D markerValue;
 
 	/// Criterion
+	inline
 	bool isValidIntensity(S x) const {
-		return (x >= anchorMin) && (x <= anchorMax);
+		return anchor.contains(x);
+		//return (x >= anchorMin) && (x <= anchorMax);
 	}
 
 
@@ -125,10 +140,11 @@ public:
 	void init(){
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		src.adjustCoordinateHandler(handler);
+		handler.set(src.getGeometry(), src.getCoordinatePolicy());
+		// src.adjustCoordinateHandler(handler);
 		mout.debug() << handler << mout.endl;
-		mout.debug(1) <<  src << mout.endl;
-		mout.debug(1) << *dst << mout.endl;
+		mout.debug2() <<  src << mout.endl;
+		mout.debug2() << *dst << mout.endl;
 
 	}
 

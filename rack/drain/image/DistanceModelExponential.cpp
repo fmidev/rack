@@ -56,12 +56,12 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	this->widths[0]  = horz;
-	this->widths[1]  = horzLeft;
-	this->heights[0] = vert;
-	this->heights[1] = vertUp;
+	this->widths.forward   = horz;
+	this->widths.backward  = horzLeft;
+	this->heights.forward  = vert;
+	this->heights.backward = vertUp;
 
-	mout.debug(1) << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
+	mout.debug2() << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
 
 	//std::cerr << getName() << ':' <<__FUNCTION__ << " 3" << std::endl;
 

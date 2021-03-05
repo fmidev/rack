@@ -51,7 +51,7 @@ namespace image
 
 To copy green channel to red:
  \code
- drainage image.png --copy f --view g --copy r --view f  -o copy.png
+ drainage image.png --iCopy f --view g --iCopy r --view f  -o copy.png
  \endcode
 
  To extract the third channel (#2, blue):
@@ -62,12 +62,12 @@ To copy green channel to red:
 
  To convert an image to a 16-bit image:
  \code
- drainage image.png --target S --copy f  -o copy16bit.png
+ drainage image.png --target S --iCopy f  -o copy16bit.png
  \endcode
 
 To create alpha channel from channel #1 (green):
  \code
- drainage image.png --copy f --view b --copy a  --view f -o copy-rgba.png
+ drainage image.png --iCopy f --view b --iCopy a  --view f -o copy-rgba.png
  \endcode
 
 \see ChannelCatenatorOp and \see VerticalCatenatorOp .
@@ -113,14 +113,15 @@ public:
 	}
 
 	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	//void make Compatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 
 	inline
 	void process(const ImageFrame & srcFrame, Image & dstImage) const {
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
-		mout.debug(1) << "calling makeCompatible()" << mout.endl;
-		makeCompatible(srcFrame, dstImage);
+		mout.debug2() << "calling makeCompatible()" << mout.endl;
+		makeCompatible(srcFrame.getConf(), dstImage);
 		ImageView dst2; //(dstImage, functor.dstView);
 		dst2.setView(dstImage, functor.dstView);
 		ImageTray<const Channel> srcTray; //(srcFrame);

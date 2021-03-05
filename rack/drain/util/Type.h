@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <limits>
 #include <list>
 #include <set>
+#include <stdexcept>
 
 #include "Log.h"
 #include "RegExp.h"

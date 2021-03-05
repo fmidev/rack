@@ -144,16 +144,15 @@ public:
  *  Usage:
  *  Type::call<drain::simpleName>(t)
  */
+/*
 class complexNameOLD {
 
 public:
 
 	typedef std::string value_t;
 
-	/**
-	 *  \tparam S - type to be analyzed (argument)
-	 *  \tparam T - return type  (practically value_t)
-	 */
+	//  \tparam S - type to be analyzed (argument)
+	//  \tparam T - return type  (practically value_t)
 	template <class S, class T>
 	static
 	T callback(){
@@ -178,7 +177,7 @@ public:
 	}
 
 };
-
+*/
 
 
 class complexName {
@@ -218,7 +217,10 @@ public:
 					sstr << "float";
 			}
 			else {
-				sstr << "non-numeric";
+				if (n==0)
+					sstr << "uninitialized";
+				else
+					sstr << "non-numeric";
 			}
 			sstr << " (" << (8 * n) << "b)";
 			s = sstr.str();

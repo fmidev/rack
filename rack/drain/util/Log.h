@@ -36,12 +36,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 #include <iostream>
-#include <stdexcept>
+//#include <stdexcept>
 
 //#include <ctime>
 #include <sys/time.h>
 
 #include <syslog.h>
+
+
+#include <vector>
+
 /*
 #define	LOG_EMERG	0	// system is unusable //
 #define	LOG_ALERT	1	// action must be taken immediately //  RACK examples
@@ -82,12 +86,29 @@ namespace drain {
 
 // using namespace std;
 
+struct Notification {
+
+	Notification(const std::string & key="", int vt100color=35){
+		set(key, vt100color);
+	};
+
+	//void set(const std::string & key="", const std::string & vt100color="");
+
+	void set(const std::string & key, int vt100color);
+
+
+	std::string key;
+	std::string vt100color;
+
+};
 
 // extern unsigned int Debug;  // getting obsolete
+typedef std::vector<Notification> notif_dict_t;
 
+/// Sender of log messages.
 class Logger;
 
-/// Handler for notifications sent by
+/// Handler for notifications sent by a Logger.
 /**
  *  \code
  *  debug.setVerbosity(level);
@@ -105,102 +126,82 @@ class Logger;
  * \endcode
  */
 /// TODO: add direct feed, perhaps Log::error() could instantiate a source?
-class Log  { //: public LogBase {
+class Log  {
 
 public:
+
+	/// Log verbosity level type
+	typedef unsigned short level_t;
+
 
 	///
 	/**
 	 *   \par level - verbosity
 	 */
-	Log(int verbosityLevel = LOG_WARNING) : VT100(true), verbosityLevel(verbosityLevel), msgLevel(LOG_NOTICE), // !!
-	currentSender(NULL) {
+	Log(std::ostream & ostr=std::cerr, int verbosityLevel=LOG_WARNING) : VT100(true), ostrPtr(&ostr), verbosityLevel(verbosityLevel)
+	{
 		resetTime();
 		//std::cerr << "start monitor, level=" << verbosityLevel << std::endl;
 	};
 
-	Log(const Log &m) : VT100(true), verbosityLevel(m.verbosityLevel), msgLevel(m.msgLevel), // !!
-			currentSender(NULL) {
+	Log(const Log &m) : VT100(m.VT100), ostrPtr(m.ostrPtr), verbosityLevel(m.verbosityLevel) {
 		resetTime();
 	};
 
-
-	bool VT100;
+	inline
+	void setOstr(std::ostream & ostr){
+		ostrPtr = &ostr;
+	}
 
 	//
 	inline
-	void setVerbosity(int level){ verbosityLevel = level; };
+	void setVerbosity(level_t level){
+		verbosityLevel = level;
+	};
 
 	inline
-	int getVerbosity(){ return verbosityLevel; };
+	int getVerbosity() const {
+		return verbosityLevel;
+	};
 
-	//Logger s;
+	void flush(level_t level, const std::string & prefix, const std::stringstream & sstr);
 
+	//void flush(level_t level, const Notification & notif, const std::string & prefix, const std::ostream & sstr);
+	void flush(level_t level, const Notification & notif, const std::string & prefix, const std::stringstream & sstr);
 
-	/// Echoes the message, and halts on error.
-	// TODO: recode this...
-	void start(int level, const std::string & sender);
-
-	template <class T>
-	inline
-	void handle(int level, const T & message, const std::string & sender){
-
-		/// Start new message, if new sender or new level
-		if (( &sender != currentSender ) || (level != msgLevel)){
-			start(level, sender);
-		}
-
-		//cerr << "monitor input: " << message << '\n';
-		if (level <= verbosityLevel)
-			sstr << message;
-		//cerr << "handle: " << message << '|';
-
-	}
-
-
-	void flush();
-
-	void flush(int level, const std::string & prefix, const std::stringstream & sstr);
 
 	inline
 	long getRelativeMilliseconds(){
-		return getMilliseconds() - _millisecondsStart;
+		return getMilliseconds() - millisecondsStart;
 	}
 
-	inline
+	static inline
 	long getMilliseconds(){
-		gettimeofday(&_time, NULL);
-		return (_time.tv_sec * 1000) + (_time.tv_usec / 1000);
+		timeval time;
+		gettimeofday(&time, NULL);
+		return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	}
 
 	inline
-	void resetTime(){ _millisecondsStart = getMilliseconds(); };
+	void resetTime(){
+		millisecondsStart = getMilliseconds();
+	};
 
+	bool VT100;
 
-	/*
-		template <class T>
-		Log &operator<<(const T x) {
-			//cerr << "source input:" << x << '\n';
-			monitor.handle(errorType, x, prefix);
-			return *this;
-		}
-	 */
-
-
-	int verbosityLevel;
-
+	static
+	const notif_dict_t & getDict();
 
 protected:
 
-	std::stringstream sstr;
+	std::ostream *ostrPtr;
 
-	int msgLevel;
-	const void * currentSender;
+	level_t verbosityLevel;
 
-	mutable timeval _time;
-	long _millisecondsStart;
+	long millisecondsStart;
 
-	//time_t _time;
+	//drain::Dictionary2<int, Notification> dict;
+
 };
 
 //extern Log monitor;
@@ -224,11 +225,21 @@ class Logger { //: public LogBase {
 
 public:
 
-	//Logger(const std::string & className = "", const std::string & funcName = "");
-	//Logger(const char *funcName, const char *className = NULL);
+	typedef Log::level_t level_t;
+
+	/// Start logging,
+	/**
+	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
+	 *  \param name - specifier of the source, file name for example (to be basenamed).
+	 */
 	Logger(const char *funcName, const std::string & name = "");
 	//Logger(const char *funcName, const char * name);
 
+	/// Start logging,
+	/**
+	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
+	 *  \param name - specifier of the source, file name for example (to be basenamed).
+	 */
 	Logger(Log &log, const char *funcName, const std::string & name = ""); //const char *className = NULL);
 
 	~Logger(){
@@ -237,79 +248,137 @@ public:
 		timestamp();
 	}
 
-
-
+	/// Returns true, if the log monitor level is at least l.
+	/**
+	 *   Compares the argument to  the threshold of the receiving Log monitor,
+	 *   not to the current level of this logger.
+	 */
 	inline
-	bool isLevel(int l){
-		return (l <= monitor.getVerbosity());
+	bool isLevel(level_t l){
+		return (monitor.getVerbosity() >= l);
 	};
 
+	/// Returns true, if the debug level of the monitor is at least l.
+	/**
+	 *   Compares the argument to  the threshold of the receiving Log monitor,
+	 *   not to the current level of this logger.
+	 */
 	inline
-	bool isDebug(int l=0){
-		return (monitor.getVerbosity() >= (LOG_DEBUG+l));
+	bool isDebug(level_t l=0){
+		return isLevel(LOG_DEBUG+l);
+		//return (monitor.getVerbosity() >= (LOG_DEBUG+l));
 	};
 
 
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & quit(){
-		initMessage(LOG_EMERG);
+		initMessage<LOG_EMERG>();
 		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & alert(){
-		initMessage(LOG_ALERT);
+		initMessage<LOG_ALERT>();
 		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & fatal(){
-		initMessage(LOG_CRIT);
+		initMessage<LOG_CRIT>();
 		return *this;
 	};
 
 	/// Echoes
 	inline
 	Logger & error(){
-		initMessage(LOG_ERR);
+		initMessage<LOG_ERR>();
 		return *this;
 	};
 
+	/// Light error, command execution probable. Special type of Logger::warn().
 	inline
 	Logger & warn(){
-		initMessage(LOG_WARNING);
+		initMessage<LOG_WARNING>();
+		return *this;
+	};
+
+	/// Light error, problems ahead, but command execution probable. Special type of Logger::warn().
+	inline
+	Logger & fail(){
+		static
+		const Notification notif(__FUNCTION__, 33);
+		initMessage<LOG_WARNING>(notif);
 		return *this;
 	};
 
 	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
+	//  Valid alternative should be displayed.
 	inline
 	Logger & obsolete(){
-		initMessage(LOG_WARNING);
-		message << "OBSOLETE. ";
+		static
+		const Notification notif(__FUNCTION__, 35);
+		initMessage<LOG_WARNING>(notif);
 		return *this;
 	};
+
 
 	/// For top-level information
 	inline
 	Logger & note(){
-		initMessage(LOG_NOTICE);
+		initMessage<LOG_NOTICE>();
 		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	inline
 	Logger & deprecating(){
-		initMessage(LOG_NOTICE);
-		message << "DEPRECATING. ";
+		static
+		const Notification notif(__FUNCTION__, 33);
+		initMessage<LOG_NOTICE>(notif);
+		return *this;
+	};
+
+	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
+	inline
+	Logger & unimplemented(){
+		static
+		const Notification notif(__FUNCTION__, 35);
+		initMessage<LOG_NOTICE>(notif);
+		return *this;
+	};
+
+
+	inline
+	Logger & special(){
+		static
+		const Notification notif(__FUNCTION__, 36);
+		initMessage<LOG_NOTICE>(notif);
 		return *this;
 	};
 
 	inline
+	Logger & ok(){
+		static
+		const Notification notif(__FUNCTION__, 32);
+		initMessage<LOG_INFO>(notif);
+		return *this;
+	};
+
+	inline
+	Logger & success(){
+		static
+		const Notification notif(__FUNCTION__, 92);
+		initMessage<LOG_NOTICE>(notif);
+		return *this;
+	};
+
+
+	inline
 	Logger & info(){
-		initMessage(LOG_INFO);
+		initMessage<LOG_INFO>();
 		return *this;
 	};
 
@@ -325,14 +394,34 @@ public:
 		    - 20 - dump mass data (eg. coordinates during an image traversal)
 	 */
 	inline
-	Logger & debug(unsigned int level = 0){
-		initMessage(LOG_DEBUG + level);
+	Logger & debug(){
+		initMessage<LOG_DEBUG>();
 		return *this;
 	};
 
 	inline
-	Logger & log(unsigned int level){
-		initMessage(level);
+	Logger & debug2(){
+		initMessage<LOG_DEBUG+1>();
+		return *this;
+	};
+
+	inline
+	Logger & debug3(){
+		initMessage<LOG_DEBUG+2>();
+		return *this;
+	};
+
+	inline
+	Logger & debug(level_t level){
+		static
+		const Notification notif("DEBUG*", 49);
+		initMessage<LOG_DEBUG+1>(notif); // obsolete
+		return *this;
+	};
+
+	inline
+	Logger & log(level_t level){
+		initMessage(level); // avoid
 		return *this;
 	};
 
@@ -343,29 +432,67 @@ public:
 	Logger & timestamp();
 
 
+	/// Direct flush
+	/*
+	Logger &operator=(const std::ostream & sstr) {
+		if (level <= monitor.getVerbosity())
+			monitor.flush(level, *notif_ptr, prefix, sstr);
+		return *this;
+	}
+	*/
+
+
+	/// Simple assignment and direct flush
 	template <class T>
-	Logger &operator<<(const T & x) {
-		//cerr << "source input:" << x << '\n';
-		// OLD: monitor.handle(errorType, x, prefix);
-		if (errorType <= monitor.getVerbosity())
-			message << x;
-		//else message << "//" << x;
+	Logger &operator=(const T & x) {
+		message.str();
+		this->operator <<(x);
+		monitor.flush(level, *notif_ptr, prefix, message);
+		return *this;
+	}
+
+	/// Direct
+
+	Logger &operator<<(const std::ostream & sstr) {
+		// TODO if (!message.empty())
+		//std::cerr << "ostream!" << std::endl;
+		if (level <= monitor.getVerbosity())
+			message << sstr.rdbuf();
+		//monitor.flush(level, *notif_ptr, prefix, ostr);
 		return *this;
 	}
 
 
 
+	template <class T>
+	Logger &operator<<(const T & x) {
+		//cerr << "source input:" << x << '\n';
+		// OLD: monitor.handle(level, x, prefix);
+		if (level <= monitor.getVerbosity())
+			message << x;
+		//else message << "//" << x;
+		return *this;
+	}
 
 	typedef void * oper;
 	static oper endl;
 
-	/// Flush operation
-	//Logger &operator<<(const oper & op){
+	/// Handling flush operator
 	inline
 	Logger &operator<<(oper op){
-		// std::cerr << "(" << prefix << message.str() << std::endl;
-		monitor.flush(errorType, prefix, message);
-		//monitor.flush();
+		monitor.flush(level, *notif_ptr, prefix, message);
+		return *this;
+	}
+
+	/// NEW: sending "mout" insread of "mout.endl" Handling flush operator
+	inline
+	Logger &operator<<(const Logger & l){
+
+		if (&l != this){
+			message << " NOTE: Logger" << __FUNCTION__ << " flush with non-this Logger";
+		}
+
+		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	}
 
@@ -380,15 +507,41 @@ protected:
 	 */
 	void setPrefix(const char *functionName, const char * name);
 
-	void initMessage(int errorType);
+	template <level_t L>
+	void initMessage(const Notification & notif){
+		this->notif_ptr = & notif;
+		this->level = L;
+		this->message.str("");
+	}
+	//void initMessage(level_t level);
+
+	template <level_t L>
+	void initMessage(){
+
+		static
+		const Notification & notif = Log::getDict()[L];
+
+		this->notif_ptr = &notif;
+		this->level = L;
+		this->message.str("");
+	}
+
+	inline
+	void initMessage(level_t level){
+		this->notif_ptr = & Log::getDict()[level];
+		this->level = level;
+		this->message.str("");
+	}
 
 
 	Log & monitor;
 	//mutable
 	std::string prefix;
 
-	int errorType;
+	level_t level;
 	time_t time;
+
+	const Notification * notif_ptr;
 
 };
 

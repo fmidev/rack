@@ -135,7 +135,7 @@ public:
 	const Geometry & getGeometry() const {
 		if (!this->empty())
 			geometry.setGeometry(this->get().getGeometry());
-		geometry.setChannelCount(this->size());
+		geometry.channels.set(this->size());
 		return geometry;
 	}
 
@@ -191,6 +191,7 @@ public:
 		}
 	}
 
+	/*
 	virtual inline
 	void adjustCoordinateHandler(CoordinateHandler2D & handler) const {
 
@@ -211,6 +212,7 @@ public:
 		handler.setPolicy(get().getCoordinatePolicy()); // ~policy of the first one
 
 	};
+	*/
 
 	template <class T2>
 	bool hasOverlap(const Tray<T2> & tray) const {
@@ -312,7 +314,7 @@ public:
 
 	const Geometry & getGeometry() const {
 		this->geometry.setGeometry(this->get().getGeometry());
-		this->geometry.setChannelCount(this->size(), this->alpha.size());
+		this->geometry.channels.set(this->size(), this->alpha.size());
 		return this->geometry;
 	}
 

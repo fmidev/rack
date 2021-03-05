@@ -56,7 +56,7 @@ void ImageView::setView(const ImageFrame & src, const std::string & view) {
 		ImageFrame::setView(src, 0, src.getImageChannelCount());
 		break;
 	default:
-		setView(src, src.getChannelIndex(view));
+		setView(src, src.getGeometry().getChannelIndex(view));
 	}
 }
 

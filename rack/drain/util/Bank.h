@@ -38,7 +38,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Log.h"
 #include "Registry.h"
 #include "Cloner.h"
-
+#include "Flags.h"
+#include "Sprinter.h"
+#include "Static.h"
 
 namespace drain
 {
@@ -58,7 +60,7 @@ namespace drain
  *  An entry may have several keys. Single-char keys (aliases) are provided by SuperBank
  */
 template <class T, class K=std::string>
-class Bank2 : protected std::map<K, ClonerBase<T> *> {
+class Bank : protected std::map<K, ClonerBase<T> *> {
 
 public:
 
@@ -73,6 +75,18 @@ public:
 
 	typedef std::map<K, cloner_t *> map_t;
 
+
+	struct bank_id {
+	};
+
+	template <class D>
+	static
+	Cloner<T,D> & getCloner(){
+		static Cloner<T,D> & cloner = Static::get<Cloner<T,D>, bank_id>();
+		return cloner;
+	}
+
+
 	/// Adds class D as an internal instance.
 	/**
 	 *  For each class D, a single static instance is created.
@@ -83,25 +97,20 @@ public:
 	 */
 	template <class D>
 	D & add(const K & key){
-		//const std::string & k = ;
-		static drain::Cloner<T,D> cloner;
-		set(key, cloner); // why resolve here? Alias should not be used in add calls.
-		//set(resolve(key), cloner); // why resolve here? Alias should not be used in add calls.
+		static Cloner<T,D> & cloner = Bank<T,K>::getCloner<D>(); // Static::get<Cloner<T,D>, bank_id>();
+		set(key, cloner);
 		return cloner.src;
 	}
 
 	// Add something that has getName()
-	/*
 	template <class D>
 	D & add(){
-		//const std::string & k = ;
-		static drain::Cloner<T,D> cloner;
+		static Cloner<T,D> & cloner = Bank<T,K>::getCloner<D>(); // Static::get<Cloner<T,D>, bank_id>();
 		set(cloner.src.getName(), cloner);
 		return cloner.src;
 	}
-	*/
 
-	/// Adds class D as an external instance.
+	/// Adds class D using a copy constructor on an external instance.
 	/**
 	 *  For each class D, a single static instance is created.
 	 *
@@ -111,7 +120,8 @@ public:
 	 *  Changing external instances is allowed.
 	 */
 	template <class D>
-	D & addExternal(const K & key, D & entry){
+	D & addExternal(const D & entry, const K & key){
+		//static Cloner<T,D> & cloner = Static::get<Cloner<T,D>, bank_id>();
 		static drain::Cloner<T,D> cloner(entry);
 		//set(resolve(key), cloner);
 		set(key, cloner);
@@ -129,7 +139,19 @@ public:
 	T & clone(const K & key) const {
 		typename map_t::const_iterator it = this->find(resolve(key));
 		if (it != this->end()){
-			return it->second->clone();
+			return it->second->getCloned();
+		}
+		else {
+			throw std::runtime_error(resolve(key) + '[' + key + "]: no such entry");
+		}
+	}
+
+	/// Returns the base instance.
+	inline
+	const T & get(const K & key) const {
+		typename map_t::const_iterator it = this->find(resolve(key));
+		if (it != this->end()){
+			return it->second->getSource();
 		}
 		else {
 			throw std::runtime_error(resolve(key) + '[' + key + "]: no such entry");
@@ -141,11 +163,23 @@ public:
 	T & get(const K & key){
 		typename map_t::iterator it = this->find(resolve(key));
 		if (it != this->end()){
-			return it->second->get();
+			return it->second->getSource();
 		}
 		else {
 			throw std::runtime_error(resolve(key) + '[' + key + "]: no such entry");
 		}
+	}
+
+	/// Returns a map entry: pair<Key,D *>()
+	template <class D>
+	typename map_t::const_iterator get() const {
+		static const cloner_t & cloner = Bank<T,K>::getCloner<D>();
+		for (typename map_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (it->second == &cloner)
+				return it;
+		}
+		throw std::runtime_error("find(): no such entry");
+		return this->end();
 	}
 
 	/// Return the internal static entry.
@@ -164,6 +198,19 @@ public:
 			throw std::runtime_error(key + ": no such entry");
 		}
 	}
+
+	/*
+	template <class D>
+	cloner_t & getCloner() const {
+		static const cloner_t & cloner = Bank<T,K>::getCloner<D>();
+		for (typename map_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (it->second == &cloner)
+				return it;
+		}
+		throw std::runtime_error("getCloner(): no such entry");
+		return this->end();
+	}
+	*/
 
 	/*
 	inline
@@ -188,6 +235,14 @@ public:
 		return key;
 	}
 
+	void toStream(std::ostream & ostr = std::cout) const {
+		//SprinterBase::sequenceToStream(ostr, getMap(), SprinterBase::lineLayout);
+		for (typename map_t::const_iterator it = this->begin(); it != this->end(); ++it) {
+			ostr << it->first << ':' << it->second->getSource() << '\n';
+		}
+		//std::cout << it->first << ' ' << it->second->getSource() << '\n';
+	}
+
 
 protected:
 
@@ -199,7 +254,7 @@ protected:
 		const typename map_t::iterator it = this->find(key);
 
 		if (it != this->end()){
-			// Redefined existing (making alias?)
+			// Redefined existing (making brief?)
 			if (it->second != &cloner){
 				std::cerr << __FILE__ << " warning: changing cloner source for: " << key << "\n";
 				//throw std::runtime_error(key + ": no such entry");
@@ -221,47 +276,88 @@ protected:
 
 };
 
-// WIth alias support
 template <class T>
-class BankSuper : public Bank2<T, std::string> {
+std::ostream & operator<<(std::ostream & ostr, const Bank<T> & bank) {
+	bank.toStream(ostr);
+	return ostr;
+}
+
+// WIth brief support
+template <class T>
+class BankSuper : public Bank<T, std::string>  {
 
 public:
 
-	typedef Bank2<T, std::string> bank_t;
+	typedef Bank<T, std::string> bank_t;
 	typedef typename bank_t::key_t key_t;
+	typedef typename bank_t::bank_id bank_id;
+
 	typedef T data_t;
 
-	// Overrides
-
-	template <class D>
-	D & add(const std::string & key, char alias=0){
-		if (alias)
-			setAlias(alias, key);
-		// TODO: what if the KEY is a single char?
-		return Bank2<T, std::string>::template add<D>(key);
+	BankSuper(): bank_t() { //,  sectionFlags(sections){
 	}
+
+	BankSuper(const BankSuper & bank): bank_t(bank){ //,  sectionFlags(sections){
+		std::cerr << __FUNCTION__ << ": copy const" << std::endl;
+	}
+
+
+	// Short (brief) keys  needs repeating code or Bank::add()
+	// Note: BankSuper uses same cloner as Bank. Consider leniency.
+	template <class D>
+	D & add(const std::string & key, char brief=0){
+		static Cloner<T,D> & cloner = Static::get<Cloner<T,D>, bank_id>();
+		// static const D & clonerSrc = Static<Cloner<T,D>, bank_id>::getSource().src;
+		if (brief)
+			setBriefKey(brief, key);
+		bank_t::set(key, cloner);
+		return cloner.src;
+	}
+
+	/// Add something that has getName()
+	//  Short (brief) key needs repeating code or Bank::add()
+	template <class D>
+	D & add(char brief=0){
+		static Cloner<T,D> & cloner = Static::get<Cloner<T,D>, bank_id>();
+		if (brief)
+			setBriefKey(brief, cloner.src.getName());
+		bank_t::set(cloner.src.getName(), cloner);
+		return cloner.src;
+	}
+
 
 	/*
 	template <class D>
 	D & addExternal(D & entry, const std::string & key ){
-		return Bank2<T, std::string>::template addExternal<D>(key, entry);
+		return Bank<T, std::string>::template addExternal<D>(key, entry);
 	}
 	*/
 
 	template <class D>
-	D & addExternal(D & entry, const std::string & key, char alias = 0){
-		if (alias)
-			setAlias(alias, key);
-		// TODO: what if the KEY is a single char?
-		return Bank2<T, std::string>::template addExternal<D>(key, entry);
+	D & addExternal(const D & entry, const std::string & key, char brief = 0){
+		if (brief)
+			setBriefKey(brief, key);
+		return Bank<T, std::string>::addExternal(entry, key);
+		//return Bank<T, std::string>::template addExternal<D>(entry, key);
 	}
 
+	/// Now, D::getName() is required.
+	/*  well, ok
+	template <class D>
+	D & addExternal(D & entry, char brief = 0){
+		std::string key = entry.getName()+"MIKA";
+		if (brief)
+			setBriefKey(brief, key);
+		// TODO: what if the KEY is a single char?
+		return Bank<T, std::string>::template addExternal<D>(key, entry);
+	}
+	*/
 
 
 
 	inline
-	void setAlias(char alias, const std::string & value){
-		aliases.add(alias, value);
+	void setBriefKey(char brief, const std::string & value){
+		briefKeys.add(brief, value);
 	}
 
 	inline
@@ -271,22 +367,22 @@ public:
 		else if (value.length()==1)
 			return hasAlias(value.at(0));
 		else
-			return aliases.hasValue(value);
+			return briefKeys.hasValue(value);
 	}
 
 	inline
-	bool hasAlias(char alias) const {
-		return aliases.hasKey(alias);
+	bool hasAlias(char brief) const {
+		return briefKeys.hasKey(brief);
 	}
 
 	inline
 	char getAlias(const std::string & value) const {
 		if (value.length() > 1)
-			return aliases.getKey(value);
+			return briefKeys.getKey(value);
 		else if (value.length()==1){
 			// Warn ?
 			char c = value.at(0);
-			if (aliases.hasKey(c))
+			if (briefKeys.hasKey(c))
 				return c;
 		}
 		return '\0';
@@ -296,11 +392,11 @@ public:
 
 	inline
 	const drain::Dictionary2<char, key_t> & getAliases() const {
-		return aliases;
+		return briefKeys;
 	}
 
 
-	/// Given alias or long key, returns the long key .
+	/// Given brief or long key, returns the long key .
 	/**
 	 *
 	 */
@@ -309,21 +405,121 @@ public:
 	const std::string & resolve(const key_t & value) const {
 		//std::cout << __FUNCTION__ << ':' << value << '\n';
 		if (value.length() == 1)
-			return aliases.getValue(value.at(0));
+			return briefKeys.getValue(value.at(0));
 		else
 			return value;
 	}
 
-	void toStream(std::ostream & ostr = std::cout) const {
-		for (typename bank_t::const_iterator it = this->begin(); it != this->end(); ++it) {
-			ostr << it->first << ':' << it->second->count() << '\n';
+
+	/// Set name and brief description of a program, to appear in help dumps.
+	inline
+	void setTitle(const std::string & title){
+		this->title = title;
+	};
+
+
+	Flagger::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
+		return FlagResolver::add(sections, title, index);
+	}
+
+	/*
+	CommandSection(const std::string & title) : title(title), index(drain::Flagger::getFreeBit(drain::getCommandBank().sections)){
+		std::cerr << __FUNCTION__ << ":installing " << title << '(' << index << ')' << std::endl;
+		drain::getCommandBank().sections.add(title, index);
+	}
+	*/
+
+	FlagResolver::dict_t sections;
+
+
+protected:
+
+	drain::Dictionary2<char, std::string> briefKeys;
+
+	/// For example, name of the program, to appear in help dumps etc.
+	std::string title;
+
+};
+
+
+/// Creates an entry of desired type and destroys it upon exit.
+//  TODO: extend to local bank, creating and destroying several entries.
+template <class B>
+class UniCloner {
+
+public:
+
+	typedef Bank<B> bank_t;
+
+	// Inherit type
+	typedef typename bank_t::cloner_t cloner_t;
+
+	// Inherit type
+	typedef typename cloner_t::entry_t entry_t;
+
+	// Inherit type
+	typedef typename cloner_t::index_t index_t;
+
+	const bank_t & bank;
+
+	typedef std::map<cloner_t *, std::set<index_t> > book_t;
+
+	UniCloner(const bank_t & bank) : bank(bank), idx(0) { // , cloner(nullptr)
+	};
+
+	~UniCloner(){
+		for (typename book_t::value_type & v : this->book){
+			drain::Logger mout(__FUNCTION__, __FILE__);
+			mout.debug() << "Freeing: ";
+			for (index_t i : v.second){  // << v.first->getSource().getName() not universal
+				//std::cerr << __FILE__ << ':' << __FUNCTION__ << ": dropping " << i << '\n';
+				mout << i << ", ";
+				v.first->drop(i);
+			}
+			mout << mout;
 		}
+	};
+
+	B & getCloned(const typename bank_t::key_t & key){
+
+		cloner_t & cloner = bank.getCloner(key);
+		entry_t entry = cloner.getClonerEntry();
+		idx = entry.first;
+		book[&cloner].insert(entry.first);
+		return *entry.second;
+		//return cloner.cloneUnique();
+	}
+
+	template <class T>
+	B & getCloned(){
+
+		typename bank_t::map_t::const_iterator it =  bank.template get<T>();
+		cloner_t *cloner = it->second;
+		entry_t entry = cloner->getClonerEntry();
+		idx = entry.first;
+		book[cloner].insert(entry.first);
+		return *entry.second;
+		//idx = entry.first;
+		//return *(it->second->getCloned());
+		//return cloner.cloneUnique();
+	}
+
+
+	// Returns last index
+
+	inline
+	index_t getIndex() const{
+		return idx;
 	}
 
 
 protected:
 
-	drain::Dictionary2<char, std::string> aliases;
+	book_t book;
+
+	//cloner_t *cloner;
+	//entry_t entry;
+	index_t idx;
 
 
 };
@@ -336,12 +532,11 @@ protected:
 
 
 
-
 // OLD:
-
-/// A registry that contains items that can be cloned with clone() or referenced directly with get().
+/*
+/// A registry that contains items that can be cloned with getCloned() or referenced directly with get().
 template <class T>
-class Bank : public Registry<ClonerBase<T> > {
+class BankOLD : public Registry<ClonerBase<T> > {
 
 public:
 
@@ -355,17 +550,18 @@ public:
 	inline
 	T & clone(const std::string & key) const {
 		// return this->template Registry<ClonerBase<T> >::get(key).clone();
-		return this->Registry<ClonerBase<T> >::get(key).clone();
+		return this->Registry<ClonerBase<T> >::get(key).getCloned();
 	}
 
 	inline
 	T & get(const std::string & key){
-		return this->Registry<ClonerBase<T> >::get(key).get();
+		return this->Registry<ClonerBase<T> >::get(key).getSource();
 		//return this->Registry<ClonerBase<T> >::get(key).get();
 	}
 
 
 };
+*/
 
 }
 

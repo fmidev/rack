@@ -150,6 +150,11 @@ public:
 
 	Sampler();
 
+	inline
+	Sampler(const Sampler &sampler) : BeanLike(sampler){
+		parameters.copyStruct(sampler.getParameters(), sampler, *this);
+	};
+
 	// Named conf, to separate ImageMod::parameters (BeanLike)
 	//ReferenceMap conf;
 
@@ -199,7 +204,7 @@ public:
 			return;
 		}
 
-		mout.debug(1) << "variables (initially): " << variableMap.getKeys() << mout.endl;
+		mout.debug2() << "variables (initially): " << variableMap.getKeys() << mout.endl;
 
 		// std::string format = getFormat(formatStr);
 
@@ -209,7 +214,7 @@ public:
 		static const std::string minusStr("-");
 		for (typename std::map<std::string, D>::const_iterator it = images.begin(); it != images.end(); ++it){
 			const std::string & key = it->first;
-			mout.debug(1) << "referencing: " << key << ',' << minusStr << key << mout.endl;
+			mout.debug2() << "referencing: " << key << ',' << minusStr << key << mout.endl;
 			variableMap.link(key, values[key]=0);
 			variableMap.link(minusStr+key, values[minusStr+key]=0);
 		}
@@ -308,7 +313,8 @@ public:
 				}
 
 				if (dataOk || (skipVoid==0)){
-					formatter.toStream(ostr, variableMap, true);
+					//formatter.toStream(ostr, variableMap, true);
+					formatter.toStream(ostr, variableMap, -1); // leaves ${variable} ?
 					if  ((!dataOk) && (commentChar))
 						ostr << ' ' << commentChar <<  voidMarker;
 					ostr << '\n';

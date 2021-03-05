@@ -40,48 +40,37 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Log.h"
 #include "FunctorBank.h"
 
-
-
 #include "Fuzzy.h"
+#include "FunctorPack.h"
 
-
-// using namespace std;
 
 namespace drain
 {
 
 
-FunctorBank & getFunctorBank() {
+FunctorBank & getFunctorBank() { // who uses this (limited) set?
 
 	/// Shared functor bank
 	static FunctorBank functorBank;
 
 	if (functorBank.getMap().empty()){
 
-		typedef UnaryFunctor UF;
-		static FunctorCloner<UF, IdentityFunctor> identity;
-		functorBank.add(identity, "");
+		// Double: perhaps first retrieved with "", but then cloned with key "IdentityFunctor".
+		functorBank.add<IdentityFunctor>();
+		functorBank.add<IdentityFunctor>("");
 
-		static FunctorCloner<UF, FuzzyStep<double> > step;
-		functorBank.add(step, step.getName(), 's');
+		functorBank.add<ScalingFunctor>("Scale");
+		functorBank.add<RemappingFunctor>("Remap");
+		functorBank.add<ThresholdFunctor>();
+		functorBank.add<BinaryThresholdFunctor>();
 
-		static FunctorCloner<UF, FuzzyTriangle<double> > triangle;
-		functorBank.add(triangle, triangle.getName());
-
-		static FunctorCloner<UF, FuzzyBell<double> > bell;
-		functorBank.add(bell, bell.getName(), 'b');
-
-		static FunctorCloner<UF, FuzzyBell2<double> > bell2;
-		functorBank.add(bell2, bell2.getName());
-
-		static FunctorCloner<UF, FuzzyStepsoid<double> > stepsoid;
-		functorBank.add(stepsoid, stepsoid.getName());
-
-		static FunctorCloner<UF, FuzzySigmoid<double> > sigmoid;
-		functorBank.add(sigmoid, sigmoid.getName());
-
-		static FunctorCloner<UF, FuzzyTwinPeaks<double> > twinpeaks;
-		functorBank.add(twinpeaks, twinpeaks.getName());
+		functorBank.add<FuzzyStep<double> >('s');
+		functorBank.add<FuzzyTriangle<double> >();
+		functorBank.add<FuzzyBell<double> >('b');
+		functorBank.add<FuzzyBell2<double> >();
+		functorBank.add<FuzzyStepsoid<double> >();
+		functorBank.add<FuzzySigmoid<double> >();
+		functorBank.add<FuzzyTwinPeaks<double> >();
 
 	}
 
@@ -109,7 +98,7 @@ UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 	//const std::string name(nameAndParams.substr(0, i));
 	//const std::string params(nameAndParams.substr(i+1));
 
-	mout.debug(2) << "functor name: " << name << ", params: " << params << mout.endl;
+	mout.debug3() << "functor name: " << name << ", params: " << params << mout.endl;
 
 	FunctorBank & functorBank = getFunctorBank();
 	if (!functorBank.has(name)){
@@ -117,7 +106,7 @@ UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 	}
 
 	UnaryFunctor & ftor = functorBank.get(name);  // or clone() ?
-	mout.debug(2) << ftor.getName() << ',' << ftor.getDescription() << mout.endl;
+	mout.debug3() << ftor.getName() << ',' << ftor.getDescription() << mout.endl;
 
 	ftor.setParameters(params, '=', separator);
 	mout.debug() << ftor.getParameters() << mout.endl;

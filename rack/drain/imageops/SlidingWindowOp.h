@@ -65,6 +65,8 @@ public:
 	SlidingWindowOp(typename W::conf_t & conf) : WindowOp<W>(conf, __FUNCTION__, ""){
 	};
 
+	//SlidingWindowOp(const SlidingWindowOp & op) : WindowOp<W>(op){};
+
 	virtual inline
 	~SlidingWindowOp(){};
 
@@ -89,12 +91,20 @@ public:
 		window.setSrcFrame(src);
 		window.setDstFrame(dst);
 
-		mout.debug(2) << window << mout.endl;
-		//mout.debug(2) << window.getSrc() << mout.endl;
-		//mout.debug(2) << "slide:" << mout.endl;
+		mout.debug2() << window << mout;
+		//mout.warn() << window.myFunctor.getName() << '#' << window.myFunctor.getParameters() << mout;
+
+		/*
+		for (int i=0; i<50; ++i){
+			std::cerr << __FUNCTION__ << i << '\t' << window.myFunctor(i) << '\n';
+		}
+		*/
+
+		//mout.debug3() << window.getSrc() << mout.endl;
+		//mout.debug3() << "slide:" << mout.endl;
 
 		window.run();
-		//mout.debug(2) << "end" << mout.endl;
+		//mout.debug3() << "end" << mout.endl;
 
 	};
 
@@ -116,7 +126,7 @@ public:
 		window.setDstFrame(dst);
 		window.setDstFrameWeight(dstWeight);
 
-		mout.debug(2) << window << mout.endl;
+		mout.debug3() << window << mout.endl;
 
 		window.run();
 
@@ -134,7 +144,7 @@ public:
 			typename W::unweighted window(this->conf);
 			window.setSrcFrames(src);
 			window.setDstFrames(dst);
-			mout.debug(2) << window << mout.endl;
+			mout.debug3() << window << mout.endl;
 			window.run();
 		}
 		else {
@@ -142,7 +152,7 @@ public:
 			W window(this->conf);
 			window.setSrcFrames(src);
 			window.setDstFrames(dst);
-			mout.debug(2) << window << mout.endl;
+			mout.debug3() << window << mout.endl;
 			window.run();
 		}
 

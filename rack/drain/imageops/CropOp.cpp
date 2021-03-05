@@ -35,17 +35,15 @@ namespace drain {
 
 namespace image {
 
-
-void CropOp::makeCompatible(const ImageFrame & src, Image & dst) const {
+void CropOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
+//void CropOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-
-	if (!dst.typeIsSet())
-		dst.setType(src.getType());
+	// unneeded here: if (!dst.typeIsSet()) dst.setType(src.getType());
 
 	dst.setGeometry(width, height, src.getImageChannelCount(), src.getAlphaChannelCount());
 
-	mout.debug(1) << "dst: " << dst << mout.endl;
+	mout.debug2() << "dst: " << dst << mout.endl;
 
 }
 

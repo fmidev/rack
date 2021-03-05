@@ -105,6 +105,8 @@ std::string StringTools::trim(const std::string &s, const std::string & trimChar
 
 }
 
+// https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string/237280#237280
+// CONSIDER:  istringstream iss(s); while (iss) { string subs; iss >> subs; cout << "Substring: " << sub << endl; }
 
 bool StringTools::trimScan(const std::string &s, size_t & posLeft, size_t & posRight, const std::string & trimChars){
 

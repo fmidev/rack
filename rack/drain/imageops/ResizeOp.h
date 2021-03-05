@@ -47,18 +47,18 @@ namespace image
 
   To shrink an image:
   \code
-    drainage image.png --resize 100,100  -o resizeShrink.png
+    drainage image.png --iResize 100,100  -o resizeShrink.png
   \endcode
 
   To expand an image using nearest-pixel interpolation:
   \code
-    drainage image.png --resize 1000,800    -o resizeExpand.png
-    drainage image.png --resize 1000,800,n  -o resizeExpand.png
+    drainage image.png --iResize 1000,800    -o resizeExpand.png
+    drainage image.png --iResize 1000,800,n  -o resizeExpand.png
   \endcode
 
   To expand an image using bilinear interpolation:
   \code
-  	  drainage image.png --resize 1000,800,b  -o resizeExpandBilinear.png
+  	  drainage image.png --iResize 1000,800,b  -o resizeExpandBilinear.png
   \endcode
 
  */	
@@ -111,7 +111,8 @@ public:
 	double scale;
 	//
 	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	// void make Compatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const;
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {

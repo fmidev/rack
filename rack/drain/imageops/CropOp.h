@@ -44,17 +44,17 @@ namespace image
 
 To copy part of an image to another image:
 \code
-  drainage image.png --crop 100,100  -o crop.png
+  drainage image.png --iCrop 100,100  -o crop.png
 \endcode
 
 Offset can be given as third and fourth arguments:
 \code
-  drainage image.png --crop 100,100,+100,+100  -o crop-offset.png
+  drainage image.png --iCrop 100,100,+100,+100  -o crop-offset.png
 \endcode
 
 Cropping area can be larger than the original image, and the offsets can be negative.
 \code
-  drainage image.png --crop 640,400,-100,-100  -o crop-larger.png
+  drainage image.png --iCrop 640,400,-100,-100  -o crop-larger.png
 \endcode
 
 The coordinates outside the image are applied using coordinate handler, which defines the handling separately for each direction.
@@ -76,30 +76,13 @@ public:
 		 //setParameters(p);
 	};
 
-	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
-
-	/*
-	virtual
-	void process(const ImageFrame & src, Image & dst) const{
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-
-		//mout.debug() << "delegating back to ImageOp::processOverlappingWithTemp" << mout.endl;
-		if (processOverlappingWithTemp(src, dst))
-			return;
-
-		makeCompatible(src, dst);
-
-		ImageTray<const Channel> srcTray;
-		srcTray.setChannels(src);
-
-		ImageTray<Channel> dstTray;
-		dstTray.setChannels(dst);
-
-		traverseChannels(srcTray, dstTray);
-
+	CropOp(const CropOp & op){
+		parameters.copyStruct(op.getParameters(), op, *this);
 	}
-	*/
+
+	virtual
+	//void make Compatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
