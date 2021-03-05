@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <fstream>
 
 #include "CommandBank.h"
+#include "drain/image/Image.h"
 
 
 namespace drain {
@@ -71,6 +72,7 @@ public:
 
 		// OLD
 		drain::getLog().setVerbosity(value);
+		drain::image::getImgLog().setVerbosity(value-1);
 	}
 
 };
@@ -87,24 +89,20 @@ public:
 		Context & ctx = getContext<Context>();
 		ctx.log.setVerbosity(LOG_DEBUG);
 		drain::getLog().setVerbosity(LOG_DEBUG);
+		drain::image::getImgLog().setVerbosity(LOG_DEBUG);
 		//r.run("verbose","8");  // FIXME r.setVerbosity();
 	};
 
 };
 
-class CmdLogFile : public SimpleCommand<> {
+class CmdLog : public SimpleCommand<> {
 
 public:
 
-	CmdLogFile() : SimpleCommand<>(__FUNCTION__, "Set log ", "filename", getContext<Context>().logFile) {
+	CmdLog() : SimpleCommand<>(__FUNCTION__, "Redirect log to file", "filename", "file.log") {
 	};
 
-	inline
-	void exec() const {
-		Context & ctx = getContext<Context>();
-		ctx.logFile = value;
-		// TODO: setLog ptr right away?
-	}
+	void exec() const;
 
 };
 
@@ -119,23 +117,7 @@ public:
 	CmdStatus() : drain::BasicCommand(__FUNCTION__, "Dump information on current images.") {
 	};
 
-	void exec() const {
-
-		Context & ctx = getContext<Context>();
-
-		std::ostream & ostr = std::cout; // for now...
-
-		const drain::VariableMap & statusMap = ctx.getStatus();
-
-		for (drain::VariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
-			ostr << it->first << '=' << it->second << ' ';
-			it->second.typeInfo(ostr);
-			ostr << '\n';
-		}
-		//ostr << "errorFlags: " << ctx.statusFlags << std::endl;
-
-	};
-
+	void exec() const;
 
 };
 
@@ -156,20 +138,47 @@ public:
 
 };
 
-class HelpCmd : public SimpleCommand<std::string> {
+
+/// Load script file and executes the commands immediately
+/**
+ *   Lightweight. Keeps commands until commandBank reads and stores them.
+ *
+ */
+class CmdScript : public SimpleCommand<std::string> {
 
 public:
 
-	inline
-	HelpCmd(CommandBank & bank, const std::string & key=__FUNCTION__, const std::string & description = "Display help.") :
-	SimpleCommand<std::string>(key, description, "[command|sections]"), bank(bank) {};
+	CmdScript(CommandBank & cmdBank) :
+		SimpleCommand<std::string>(__FUNCTION__, "Define script.", "script"),
+		bank(cmdBank){
+		cmdBank.scriptCmd = getName(); // mark me special
+	};
 
-	inline
-	void exec() const {
-		bank.help(value);
-		//  TODO: "see-also" commands as a list, which is checked.
-		exit(0);
-	}
+	// reconsider exec();
+
+protected:
+
+	// Copy constructor should copy this as well.
+	// FUture versions may store the script in Context!
+	CommandBank & bank;
+
+};
+
+
+/// Load script file and execute the commands immediately using current Context.
+/**
+ *
+ *   Does not store the commands into a CommandBank::script.
+ */
+class CmdExecFile : public SimpleCommand<std::string> {
+
+public:
+
+	CmdExecFile(CommandBank & cmdBank) :
+		SimpleCommand<std::string>(__FUNCTION__, "Execute commands from a file.", "filename"),
+		bank(cmdBank){
+		cmdBank.execFileCmd = getName(); // mark me special
+	};
 
 protected:
 
@@ -178,54 +187,34 @@ protected:
 
 };
 
-class CmdRoutine : public SimpleCommand<std::string> {
+
+/// CommandBank-dependent
+class HelpCmd : public SimpleCommand<std::string> {
 
 public:
 
-	CmdRoutine(CommandBank & bank) : SimpleCommand<std::string>(__FUNCTION__, "Define script.", "script"),
-		bank(bank) {};
+
+	HelpCmd(CommandBank & cmdBank) : SimpleCommand<std::string>(__FUNCTION__, "Display help.", "key", "", "command|sections"), cmdBank(cmdBank) {
+	};
 
 	inline
 	void exec() const {
-		//drain::Logger mout(__FILE__, getName());
-		//mout.debug() << "---" << mout.endl;
-		bank.scriptify(value, bank.routine);
-		//bank.routine.toStream();
-		//mout.debug() << "---" << mout.endl;
+		cmdBank.help(value);
+		//  TODO: "see-also" commands as a list, which is checked.
+		exit(0);
 	}
 
 protected:
 
-	CommandBank & bank;
+	// Copy constructor should copy this as well.
+	CommandBank & cmdBank;
 
 };
 
 
-/// Load script file and executes the commands immediately
-/**
- *   Does not store the commands into a script.
- */
-class CmdExecFile : public SimpleCommand<std::string> {
 
-public:
 
-	CmdExecFile(CommandBank & bank, ContextClonerBase & contextCloner) : SimpleCommand<std::string>(__FUNCTION__, "Execute commands from a file.", "filename"),
-		bank(bank), contextCloner(contextCloner) {
-
-	};
-
-	//CommandCommandLoader(std::set<std::string> & commandSet, const std::string & name, char alias = 0);
-
-	virtual
-	void exec() const;
-
-protected:
-
-	CommandBank & bank;
-	ContextClonerBase & contextCloner;
-};
-
-template <class C=Context>
+//template <class C=Context>
 class CmdFormat : public SimpleCommand<std::string> {
 
 public:
@@ -233,20 +222,38 @@ public:
 	CmdFormat() :  SimpleCommand<std::string>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "format","") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
 	};
 
+	inline
 	void exec() const {
-		C &ctx = getContext<C>();
+		SmartContext &ctx = getContext<SmartContext>();
 		ctx.formatStr = value;
 	}
 
 };
 
+/// Special command for handling undefined commands.
+class CmdNotFound : public SimpleCommand<> {
 
-/*
-void CmdFormat::exec() const {
-	Context &ctx = getContext<Context>();
-	ctx.formatStr = value;
-}
-*/
+public:
+
+	CmdNotFound(CommandBank & cmdBank) :
+		SimpleCommand<std::string>(__FUNCTION__, "Throw exception on unfound ", "cmdArg","")
+		//cmdBank(cmdBank)
+		{
+		section = 0; // hidden
+		cmdBank.notFoundHandlerCmdKey = "notFound"; // getName();
+	};
+
+	void exec() const {
+		Context & ctx = getContext<>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		mout.error() << "Command '" << value << "' not found." << mout.endl;
+		/// cmdBank.help() ?
+	}
+
+};
+
 
 
 

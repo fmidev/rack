@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 
-#include "CommandUtils.h"
+#include "Program.h"
 
 namespace drain {
 
@@ -44,21 +44,23 @@ typename Script::entry_t & Script::add(const std::string & cmd, const std::strin
 }
 
 
-
+/*
 void Script::entryToStream(const typename Script::entry_t & entry, std::ostream & ostr) const {
 	if (entry.second.empty())
 		ostr << entry.first << '\n';
 	else
 		ostr << entry.first << '=' << entry.second << '\n';
 }
+*/
 
 
 
 
-Command & Program::add(Command & cmd){ // const std::string & params = ""){
-	push_back(& cmd);
-	if (!cmd.contextIsSet() && contextIsSet())
-		cmd.setExternalContext(getContext<Context>());
+Command & Program::add(const list_t::value_type::first_type & key, Command & cmd){ // const std::string & params = ""){
+	//push_back(& cmd);
+	this->push_back(typename list_t::value_type(key, & cmd));
+	//if (!cmd.contextIsSet() && contextIsSet())
+	//	cmd.setExternalContext(getContext<Context>());
 		//cmd.setExternalContext(getBaseContext());
 	return cmd;
 }
@@ -79,29 +81,38 @@ void Program::run() const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 	for (const_iterator it = this->begin(); it != this->end(); ++it) {
-		Command & cmd = *(*it);
-		//mout.warn() << "  executing " << cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
+		// String...
+		const typename list_t::value_type::first_type & key = it->first;
+		Command & cmd = *it->second;
+
+		if (key == "script"){
+			mout.warn() << " EIPÄ MITÄÄN NYT script " << '(' << cmd.getParameters() << ')' << mout.endl;
+			continue;
+		}
+
+		//Command & cmd = *(*it);
+		mout.warn() << "  executing " << key << "-> " <<  cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
 		//mout.note() << "  context: "  << cmd.getContext<>().getId() << mout.endl;
 		cmd.exec();
 	}
 
 }
 
+/*
 void Program::entryToStream(const list_t::value_type & entry, std::ostream & ostr) const {
-	if (entry->getParameters().empty())
-		ostr << entry->getName();
-	else {
-		// entry->getParameter("s")
-		// ostr << entry->getName() << '(' << entry->getParameters().getValues() << ')';
-		ostr << entry->getName() << '(';
-		entry->getParameters().valuesToJSON(ostr);
+	//const typename list_t::value_type::first_type & key = kei;
+
+	ostr << entry.first << ' ' << entry.second->getName();
+	if (!entry.second->getParameters().empty()){
+		ostr << entry.second->getName() << '(';
+		entry.second->getParameters().valuesToJSON(ostr);
 		ostr << ')';
 	}
 
 }
-
+*/
 
 
 }
 
-// Rack
+

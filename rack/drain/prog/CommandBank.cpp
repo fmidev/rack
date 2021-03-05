@@ -36,28 +36,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpe
  */
 
-//#include <fstream>
+#include <iostream>
+#include <sstream>
+//#include <istream>
 
 
 #include "drain/util/Log.h"
+#include "drain/util/Input.h"
+#include "drain/util/Static.h"
 
-#include "CommandUtils.h"
 #include "CommandBank.h"
+#include "Program.h"
 
 namespace drain {
 
-const Flags::value_t CommandBank::GENERAL; // = 1;
-const Flags::value_t CommandBank::INPUT; // = 2;
-const Flags::value_t CommandBank::OUTPUT; // = 4;
-const Flags::value_t CommandBank::IO; // = INPUT | OUTPUT;
-const Flags::value_t CommandBank::SPECIAL;
 
-
+//const Flagger::value_t CommandBank::SCRIPT_DEFINED =  StatusFlags::add("SCRIPT_DEFINED");
 
 /// Global program command registry. Optional utility.
 CommandBank & getCommandBank(){
-	static CommandBank commandBank;
-	return commandBank;
+	return Static::get<CommandBank>();
+	//static CommandBank commandBank;
+	//return commandBank;
 }
 
 std::set<std::string> & CommandBank::trimWords(){
@@ -80,12 +80,14 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 	if (prefix)
 		sstr << prefix;
 
-	bool lowerCase = (prefix == 0);
+	// Check initial of the first valid char (after pruning, so possibly i>0)
+	bool checkInitialCase = true;
+
 	const size_t nameLen = name.size();
 	size_t i = 0;
 	while (i < nameLen) {
 
-		mout.debug(10) << ' ' << i << '\t' << name.at(i) << mout.endl;
+		//mout.debug(10) << ' ' << i << '\t' << name.at(i) << mout.endl;
 		size_t len = 0;
 
 		for (std::set<std::string>::const_iterator it=trims.begin(); it!=trims.end(); ++it){
@@ -117,161 +119,58 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 		}
 		else {
 			// Copy the current character
-			if (lowerCase){
-				char c = name.at(i);
-				if ((c>='A') && (c<='Z'))
-					c = ('a' + (c-'A'));
-				sstr << c;
-				lowerCase = false;
+			char c = name.at(i);
+			if (checkInitialCase){ // initial char, ensure ...
+				if (prefix != 0){ // ...Uppercase
+					if ((c>='a') && (c<='z'))
+						c = ('A' + (c-'a'));
+				}
+				else { // ...lowercase
+					if ((c>='A') && (c<='Z'))
+						c = ('a' + (c-'A'));
+				}
+				checkInitialCase = false;
 			}
-			else {
-				sstr << name.at(i);
-			}
+			sstr << c;
 			++i;
 		}
 		//mout.debug()
 		//std::cerr << '\n';
 	}
 
+	// mout.warn() << ' ' << prefix << ((int)prefix) << "\t" << name << "\t => ";
 	name = sstr.str();
+	// mout << name << mout.endl;
+
 };
 
 
 /// Appends program with commands fo the script
-void CommandBank::append(const Script & script, Program & prog) const {
+void CommandBank::append(const Script & script, Context & ctx, Program & prog) const {
+
+
 	for (Script::const_iterator it = script.begin(); it!=script.end(); ++it) {
-		command_t & cmd = clone(it->first);
-		cmd.setParameters(it->second);
-		prog.add(cmd);
-	}
-}
 
-
-
-// Future extension.
-void CommandBank::remove(Program & prog) const {
-	std::cout << "clearing prog: " << '\n';
-	prog.toStream();
-	for (Program::const_iterator it = prog.begin(); it!=prog.end(); ++it) {
-
-	}
-}
-
-
-
-
-/// Run a single command
-void CommandBank::run(const std::string & cmdKey, const std::string & params, Context & ctx){
-
-	Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	command_t & cmd = get(cmdKey);
-	//cmd.setKey(cmdKey);
-
-	if (cmd.contextIsSet())
-		mout.note() << "replacing original context " << mout.endl;
-
-	cmd.setExternalContext(ctx);
-	cmd.run(params);
-}
-
-
-
-void CommandBank::run(Script & script, ClonerBase<Context> & contextSrc){
-
-	Logger mout(contextSrc.get().log, __FUNCTION__, __FILE__); // warni
-
-	bool PARALLEL_MODE = false;
-
-	//	std::vector<Program> threads;
-	ProgramVector threads;
-
-	for (Script::const_iterator it = script.begin(); it != script.end(); ++it) {
-
-		// mout.note() << it->first << mout.endl;
-
-		if (it->first == "["){
-			PARALLEL_MODE = true;
-			continue;
-		}
-
-		//const bool ROUTINE_DEFINED = !routine.empty();
-
-		if (!PARALLEL_MODE){
-
-			// Check here if routine exists (the current cmd may set the routine, and the it should not be run).
-			value_t & cmd = get(it->first); // or clone, to keep defaults? => consider FLAG save-params
-			//cmd.setKey(it->first);
-
-			mout.note() << it->first << '(' << cmd << "), routine=" << cmd.execRoutine << mout.endl;
-
-			if (cmd.execRoutine && !routine.empty()){
-				// First command (cmd) could be run above, but here in prog for debugging (and clarity?)
-				Program prog(contextSrc.get());
-				cmd.setExternalContext(contextSrc.get());
-				prog.add(cmd).setParameters(it->second);
-				append(routine, prog); // append() has access to command registry (Prog does not)
-				//mout.note() << "Exec routine: " << prog.getContext<Context>().id << mout.endl;
-				prog.run();
-			}
-			else {
-				cmd.setParameters(it->second);
-				// mout.warn() << "Executing: " << it->first << mout.endl;
-				cmd.exec();
-				// mout.warn() << "Executed:  " << it->first << mout.endl;
-			}
-			// TODO: when to explicitly clear routine?
+		if (it->first.size()==1){
+			static BasicCommand dummy("Marker", "[marker]");
+			prog.add(it->first, dummy);
 		}
 		else {
-
-			// If all runs collected, run them
-			if (it->first == "]"){
-				PARALLEL_MODE = false;
-				mout.note() << "Start threads" << mout.endl;
-
-				#pragma omp parallel for
-				for (size_t i = 0; i < threads.size(); ++i) {
-					// MINIMAL CONTENT. No mout here, unless new instance!
-					// std::cout << "Start thread #" << i << std::endl;
-					threads[i].run();
-				}
-				mout.note() << "Threads completed." << mout.endl;
-				routine.clear(); // consider
-
-			}
-			else { // continue collecting
-
-				// Append new thread.
-				Context & ctx = contextSrc.clone();
-				ctx.id = 100 + threads.size();
-				Program & prog = threads.add(ctx);
-
-				mout.note() << "Preparing thread " << ctx.id << ':' << it->first << '(' << it->second << ')' <<  mout.endl;
-
-				value_t & cmd = clone(it->first);
-				// cmd.setKey(it->first);
-				cmd.setParameters(it->second);
-				prog.add(cmd);
-
-				if (!routine.empty()){ // Technically unneeded, but for mout...
-					mout.note() << "appending script to thread " <<  mout.endl;
-					append(routine, prog); // append
-				}
-
-			}
-
+			command_t & cmd = clone(it->first);
+			cmd.setExternalContext(ctx);
+			cmd.setParameters(it->second);
+			prog.add(it->first, cmd);
 		}
 	}
 
 }
-
 
 
 /// Converts linux command line to pairs of strings:  (<cmd>, [params])
 /**
  *  Starts from argument 1 instead of 0.
  */
-void CommandBank::scriptify(int argc, const char **argv, Script & script){
+void CommandBank::scriptify(int argc, const char **argv, Script & script) const {
 
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
@@ -302,13 +201,18 @@ void CommandBank::scriptify(int argc, const char **argv, Script & script){
 	}
 }
 
-void CommandBank::scriptify(const std::string & line, Script & script){
+void CommandBank::scriptify(const std::string & line, Script & script) const{
 
 	Logger mout(__FILE__, __FUNCTION__); //
 
 	typedef std::list<std::string> list_t;
 	list_t l;
-	drain::StringTools::split(line, l, " ");
+	//drain::StringTools::split(line, l, " ");
+	std::stringstream sstr(line);
+	while (sstr) {
+		l.push_back("");
+		sstr >> l.back();
+	}
 
 	list_t::const_iterator it = l.begin();
 	while (it != l.end()) {
@@ -326,17 +230,17 @@ void CommandBank::scriptify(const std::string & line, Script & script){
 	}
 }
 
-bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, Script & script){
+bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, Script & script) const {
 
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (arg.empty()){
-		mout.warn() << "empty arg" <<  mout.endl;
+		mout.debug() << "empty arg" <<  mout.endl;
 		return false;
 	}
 
 	if (arg.at(0) == '-'){
-		const std::string & key = resolveHyphens(arg); // handle leading hyphens and aliases
+		const std::string & key = resolveFull(arg); // handle leading hyphens and aliases
 		if (!key.empty()){
 			//const drain::ReferenceMap & params = get(key).getParameters();
 			if (get(key).getParameters().empty()){
@@ -348,24 +252,243 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 				return true;
 			}
 		}
+		else if (!notFoundHandlerCmdKey.empty()){
+			const Command & cmd = get(notFoundHandlerCmdKey);
+			if (cmd.hasArguments()){
+				size_t i = arg.find_first_not_of('-');
+				if (i != std::string::npos){
+					script.add(notFoundHandlerCmdKey, arg.substr(i));
+				}
+				else {
+					mout.warn() << "plain dash(es): " << arg <<  mout.endl;
+				}
+			}
+			else {
+				script.add(notFoundHandlerCmdKey);
+			}
+		}
 		else {
-			mout.warn() << "undefined command: " << arg <<  mout.endl;
+			mout.warn() << "undefined command: " << arg << " (and no 'notFoundHandlerCmd' set in main program)" <<  mout.endl;
 			throw std::runtime_error(arg + ": command not found");
 		}
+
 
 	}
 	else if (arg.length() == 1){ // instructions '(', ')' (more in future)
 		script.add(arg);
 	}
 	// Plain argument
-	else if (!defaultCmd.empty()){
-		script.add(defaultCmd, arg);
+	else if (!defaultCmdKey.empty()){
+		script.add(defaultCmdKey, arg);
 	}
 	else {
 		mout.error() << "defaultCmd undefined for plain argument (" << arg << ")" << mout.endl;
 	}
 	return false;
 }
+
+void CommandBank::readFile(const std::string & filename, Script & script) const {
+
+	//Context & ctx = getContext<Context>();
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	std::string line;
+	drain::Input ifstr(filename);
+
+	// mout.note() << "open list: " << filename << mout.endl;
+	// ifstr.open(params.c_str());
+
+	while ( std::getline((std::ifstream &)ifstr, line) ){
+		if (!line.empty()){
+			mout.debug2() << line << mout.endl;
+			if (line.at(0) != '#')
+				scriptify(line, script);
+		}
+	}
+
+}
+
+
+// Future extension.
+void CommandBank::remove(Program & prog) const {
+	std::cout << "clearing prog: " << '\n';
+	//prog.toStream();
+	std::cout << prog << '\n';
+	for (Program::const_iterator it = prog.begin(); it!=prog.end(); ++it) {
+
+	}
+}
+
+
+
+
+/// Run a single command
+void CommandBank::run(const std::string & cmdKey, const std::string & params, Context & ctx){
+
+	Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	command_t & cmd = get(cmdKey);
+	//cmd.setKey(cmdKey);
+
+	if (cmd.contextIsSet())
+		mout.note() << "replacing original context " << mout.endl;
+
+	cmd.setExternalContext(ctx);
+	cmd.run(params);
+}
+
+
+
+void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
+
+	// Which log? Perhaps prog first cmd ctx log?
+	//const drain::Flagger::value_t execScript = drain::Static::get<drain::TriggerSection>().index;
+
+	bool PARALLEL_MODE = false;
+
+	//	std::vector<Program> threads;
+	ProgramVector threads;
+
+	for (Program::const_iterator it = prog.begin(); it != prog.end(); ++it) {
+
+		// mout.note() << it->first << mout.endl;
+		const key_t & key =  it->first;
+		value_t & cmd     = *it->second;
+		// const std::string & cmdName = cmd.getName();
+		Context & ctx = cmd.getContext<>(); //.log;
+		Log & log = ctx.log;
+		const bool TRIGGER = (cmd.section & this->scriptTriggerFlag);
+
+		Logger mout(log, __FUNCTION__, __FILE__); // warni
+
+		//if (TRIGGER)
+		mout.debug() << "TRIGGER? " << cmd.section << '+' << this->scriptTriggerFlag << '=' << sprinter(TRIGGER) << mout.endl;
+
+		if (cmd.getName().empty()){
+			mout.warn() << "Command name empty for key='" << key << "', " << cmd << mout.endl;
+		}
+		else if (cmd.getName() == scriptCmd){ // "script"
+			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
+			mout.warn() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
+			scriptify(pit->second.toStr(), prog.routine);
+			//ctx.statusFlags.set(SCRIPT_DEFINED);
+			ctx.setStatus("script", true);
+			//ctx.setStatus(key, value)
+			continue;
+		}
+		else if (cmd.getName() == execFileCmd){ // "execFile"
+			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
+			// TODO catch
+			mout.debug() << "reading and executing commands directly from file=" << pit->second << mout.endl;
+			Script script;
+			readFile(pit->second, script);
+			mout.special() << script << mout.endl;
+			//Program test;
+			//append(script, ctx, test);
+			//mout.special() << test << mout.endl;
+			for (Script::value_type & subCmd: script){
+				run(subCmd.first, subCmd.second, ctx);
+			}
+			continue;
+		}
+		else if (key == "["){
+			mout.note() << "Switching to parallel mode." << mout.endl;
+			mout.warn() << "Step 1: compose threads." << mout.endl;
+			mout.warn() << "Hey, " << log.getVerbosity() << mout.endl;
+			PARALLEL_MODE = true;
+			continue;
+		}
+		else if (key == "]"){ 	// All the triggering commands collected, run them
+
+			if (!PARALLEL_MODE){
+				mout.warn() << "Leading brace '[' missing?" << mout.endl;
+			}
+
+			PARALLEL_MODE = false;
+
+			if (threads.empty()){
+				mout.warn() << "No threads?" << mout.endl;
+				mout.note() << "No thread-triggering commands inside braces [ <cmds> ...].  See --help trigger " << mout.endl;
+				//mout.warn() << "No threads defined? Syntax: --script '<cmd> <cmd2>...' [ <cmds> ...] " << mout.endl;
+				continue;
+			}
+			else {
+
+				mout.special() << "Start threads" << log.getVerbosity() << mout.endl;
+
+				#pragma omp parallel for
+				for (size_t i = 0; i < threads.size(); ++i) {
+					// Keep this minimal. (No variable writes here, unless local.)
+					run(threads[i], contextCloner);
+				}
+
+				mout.special() << "Threads completed." << mout.endl;
+				prog.routine.clear(); // reconsider
+			}
+
+		}
+		else if (PARALLEL_MODE && TRIGGER) {
+
+			//mout.warn() << "Prepare a new thread: " << key << '(' << cmd << ')' <<  mout.endl;
+
+			Context & ctxCloned = contextCloner.getCloned();
+			ctxCloned.log.setVerbosity(log.getVerbosity());
+
+			Program & thread = threads.add();
+
+			// Add at least the current command
+			value_t & cmdCloned = clone(key);
+			cmdCloned.setExternalContext(ctxCloned);
+			cmdCloned.setParameters(cmd.getParameters());
+			thread.add(it->first, cmdCloned);
+
+			mout.ok() << "Thread #" << threads.size() << "-" << ctxCloned.id << ':' << key << '(' << cmd << ')' <<  mout.endl;
+
+			// And also append a script, if defined.
+			if (!prog.routine.empty()){ // Technically unneeded, but for mout...
+				mout.debug() << "routine exists, appending it to thread " <<  mout.endl;
+				append(prog.routine, ctxCloned, thread); // append
+			}
+
+		}
+		else if (TRIGGER && !prog.routine.empty()){
+
+			// Check here if routine exists (the current cmd may set the routine, and the it should not be run).
+			// First command (cmd) could be run above, but here in prog for debugging (and clarity?)
+			mout.info() << "script triggering command: '" << cmd << mout.endl;
+
+			Program progSub;
+			progSub.add(key, cmd).section = 0;  // execRoutine = false; // COPIES! .setParameters(it->second);
+			append(prog.routine, cmd.getContext<Context>(), progSub); // append() has access to command registry (Prog does not)
+			//mout.note() << "Exec routine: " << prog.getContext<Context>().id << mout.endl;
+			mout.info() << "running routine: '" << key << ' ' << cmd.getParameters().getValues() << " --" << prog.routine.begin()->first<< " ...'" << mout.endl;
+			//mout.note() << "running routine: "  << prog.routine.begin()->first << "..." << mout.endl;
+			run(progSub, contextCloner);
+			// ? prog.routine.clear();
+		}
+		else {
+			mout.success() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
+			//try {
+			cmd.update(); //  --select etc
+			cmd.exec();
+			ctx.setStatus(key, cmd.getParameters().getValues());
+			/*
+			}
+			catch (const std::exception & e){
+				mout.fail() << e.what() << mout.endl;
+				mout.warn() << "stopping" << mout.endl;
+				return;
+			}
+			*/
+		}
+		// TODO: when to explicitly clear routine?
+
+	}
+
+}
+
+
 
 /**
  *
@@ -376,48 +499,47 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 
 	if (key.empty()){
 		//help(0xffffffff, ostr);
-		help(CommandBank::GENERAL, ostr);
-		/*
-		ostr << "For help on a commands, type:\n ";
-		ostr << "  --help <command>\n";
-		ostr << '\n';
-		ostr << "For help on a command sctions, type:\n ";
-		ostr << "  --help [" << sections.keysToStr('|') << "]\n";
-		*/
-		//help(0, ostr);
+		//help(CommandBank::GENERAL, ostr);
+		help(0, ostr);
 		return;
 	}
+	else if (key == "all"){
+		help(0xffffffff, ostr);
+	}
 	else {
-		// int filter = sections.getValue(key);
-		Flagger::value_t filter = 0;
-		Flagger flagger(filter, sections, ',');
-		try {
-			flagger.set(key);
-			// ostr << "Flagger: " << flagger << '(' << sections << ')' << '*' << filter << mout.endl;
+
+		// Try to find the command directly
+		const std::string & fullKey = resolveFull(key);
+
+		if (!fullKey.empty()){
+			//mout.warn() << "fullKey: " << key << " -> " << fullKey << mout.endl;
+			try {
+				info(fullKey, get(fullKey), ostr, true);
+			}
+			catch (const std::exception &e) {
+				ostr << "error: " << e.what() << '\n';
+			}
+			//  TODO: "see-also" commands as a list, which is checked.
+		}
+		else {
+
+			// Or is it a section, or several?
+			Flagger::value_t filter = FlagResolver::getValue(sections, key); // Accepts also numeric strings.
+
+			mout.deprecating() << "Flagger: " << sections << " -> " << filter << mout.endl;
 			if (filter > 0){
 				help(filter, ostr);
 				return;
 			}
+
+			mout.error() << "not found: " << key << mout.endl;
 		}
-		catch (const std::exception & e) {
-		}
+
+
+
 	}
 
-	const std::string & cmdLong = resolveHyphens(key);
 
-	if (!cmdLong.empty()){
-		//mout.warn() << "cmdLong: " << key << " -> " << cmdLong << mout.endl;
-		try {
-			info(cmdLong, get(cmdLong), ostr, true);
-		}
-		catch (const std::exception &e) {
-			ostr << "error: " << e.what() << '\n';
-		}
-		//  TODO: "see-also" commands as a list, which is checked.
-	}
-	else {
-		mout.error() << "not found: " << key << mout.endl;
-	}
 }
 
 void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
@@ -427,21 +549,22 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 	const bool TEST = false; //true;
 
 	if (sectionFilter > 0){
-		Flagger::value_t filter = 0;
-		Flagger flagger(filter, sections, ',');
-		flagger.set(sectionFilter);
-		ostr << "Section: " << flagger << '\n' << '\n';
+		//Flagger::value_t filter = FlagResolver::getValue(sections, key);
+		//Flagger::value_t filter = 0;
+		//Flagger flagger(filter, sections, ',');
+		//flagger.set(sectionFilter);
+		ostr << "Section: " << FlagResolver::getKeys(sections, sectionFilter) << '\n' << '\n';
 		for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
-			if ((it->second->get().section & sectionFilter) > 0){
+			if ((it->second->getSource().section & sectionFilter) > 0){
 				try {
 					if (!TEST){
-						info(it->first, it->second->get(), ostr, false);
+						info(it->first, it->second->getSource(), ostr, false);
 					}
 					else {
 						ostr << it->first << '\n';
 						std::stringstream sstr, sstr2;
-						Command & cmdOrig = it->second->get();
-						Command & cmdCopy = it->second->clone();
+						Command & cmdOrig = it->second->getSource();
+						Command & cmdCopy = it->second->getCloned();
 						info(it->first, cmdOrig, sstr, false);
 						info(it->first, cmdCopy, sstr2, false);
 						if (sstr.str() != sstr2.str()){
@@ -477,6 +600,8 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 	ostr << "For help on command sections, type:\n";
 	ostr << "  --help [";
 	sections.keysToStream(ostr, '|');
+	if (sections.size() > 2)
+		ostr << "|all";
 	ostr << "]\n";
 
 	//ostr << "  --help {" << sections << "}\n";
@@ -529,6 +654,10 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 			ostr << '<' << *kit << '>';
 		}
 	}
+
+	if (detailed)
+		ostr << "  (Section: " << FlagResolver::getKeys(sections,cmd.section, ',') << ')';
+
 	ostr << '\n';
 
 	ostr << ' ' << ' ' << cmd.getDescription() << '\n';
@@ -574,19 +703,19 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 /**
  *
  */
-const std::string & CommandBank::resolveHyphens(const key_t & key) const {
+const std::string & CommandBank::resolveFull(const key_t & key) const {
 
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
-	static  const std::string empty;
+	static
+	const std::string empty;
 
 	if (key.empty())
 		return empty;
 
 	const size_t hyphens = key.find_first_not_of('-');
 
-
-	// Strip leading hyphens
+	// Substring starting from first letter (strip leading hyphens)
 	std::string cmd(key, hyphens);
 
 	if (hyphens>2)
@@ -599,7 +728,6 @@ const std::string & CommandBank::resolveHyphens(const key_t & key) const {
 	//mout.warn() << "searching for " << cmd << mout.endl;
 
 	const std::string & cmdFinal = resolve(cmd);
-
 
 	const_iterator it = this->find(cmdFinal);
 	if (it != this->end()){

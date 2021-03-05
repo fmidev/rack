@@ -41,41 +41,39 @@ void BasicCommand::setParameters(const std::string & args){ //, char assignmentS
 	const char assignmentSymbol = '=';
 
 	if (args.empty() && !parameters.empty()){
-		Logger mout(__FILE__, getName()+":"+__FUNCTION__);
-		//std::cerr << __FILE__ << __FUNCTION__ << ": check empty \n";
-		//mout.info() << " empty argument" << mout.endl;
-		if (parameters.size() == 1){
-			ReferenceMap::iterator it = parameters.begin();
-			if (it->second.isString()){
-				it->second.clear();
-			}
-			else if (it->second.getType() == typeid(bool)){
-				mout.note() << it->first << ": empty assignment, interpreting as 'false'" << mout.endl;
-				it->second = false;
-			}
-			else{
-				mout.warn() << it->first << ": empty assignment of non-string" << mout.endl;
-				//throw std::runtime_error(getName()+":"+it->first + ": empty assigment '' for non-string");
-			}
-		}
-		else {
-			mout.note() <<  "parameters: " << parameters << mout.endl;
-			//std::cerr << parameters << '\n';
-			mout.warn() << ": unambiguous reset ("<< parameters.size() << " params)" << mout.endl;
-			//throw std::runtime_error(getName() + ": unambiguous reset (several params)");
-		}
-		return;
-	}
+		Logger mout(__FUNCTION__, getName());
 
-	//const bool ALLOW_SPECIFIC = (parameters.separator != '\0'); //!parameters.separators.empty();  // consider automatic
-	if (parameters.separator)
+		//mout.info() << " empty argument" << mout.endl;
+		ReferenceMap::iterator it = parameters.begin();
+
+		if (parameters.size() > 1){
+			mout.info() << "resetting 1st parameter (only): " << it->second << mout.endl;
+			//mout.note() <<  "parameters: " << parameters << mout.endl;
+		}
+
+		if (it->second.isString()){
+			it->second.clear();
+		}
+		else if (it->second.getType() == typeid(bool)){
+			mout.note() << it->first << ": empty assignment, interpreting as 'false'" << mout.endl;
+			it->second = false;
+		}
+		else{
+			mout.warn() << it->first << ": empty assignment of non-string" << mout.endl;
+			//throw std::runtime_error(getName()+":"+it->first + ": empty assigment '' for non-string");
+		}
+	}
+	else if (parameters.separator){
 		parameters.setValues(args, assignmentSymbol); //
+	}
 	else {
 		//Logger mout(__FILE__, __FUNCTION__);
 		//mout.warn() << "Trying to set values for " << getName() << " params:" << parameters << mout.endl;
 		parameters.setValues(args, assignmentSymbol);
 		//mout.warn() << "Done (" << args <<  ')' <<  mout.endl;
 	}
+
+	this->update();
 }
 
 //BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {

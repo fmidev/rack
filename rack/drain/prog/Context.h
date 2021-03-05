@@ -32,8 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_CONTEXT_H_
 #define DRAIN_CONTEXT_H_
 
+
+#include <unistd.h>  // process id, PID
+
 //#include <map>
 #include <set>
+#include <fstream>
 //#include "drain/util/Debug.h"
 //#include "drain/util/ReferenceMap.h"
 
@@ -58,10 +62,17 @@ class Context {
 public:
 
 	Context() : id(++counter){
+		statusMap["ID"] = id;        // constant
+		statusMap["PID"] = getpid(); // constant
+		statusMap["statusFlags.dictionary"] = statusFlags.dictionary.toStr();
 	}
 
 	/// Defines unique id.
-	Context(const Context & ctx) : id(++counter){
+	Context(const Context & ctx) : id(++counter + 100*ctx.id){
+		log.setVerbosity(ctx.log.getVerbosity());
+		statusMap["ID"] = id;        // constant
+		statusMap["PID"] = getpid(); // constant
+		statusMap["statusFlags.dictionary"] = statusFlags.dictionary.toStr();
 	}
 
 	long int getId(){
@@ -71,6 +82,8 @@ public:
 
 	virtual
 	~Context(){
+		if (logFileStream.is_open())
+			logFileStream.close();
 	}
 
 	Log log;
@@ -80,6 +93,7 @@ public:
 	 *
 	 */
 	std::string logFile;
+	std::ofstream logFileStream;
 
 	/// Optional facility for compact bookkeeping of issues, also in running a thread.
 	StatusFlags statusFlags;
@@ -88,8 +102,27 @@ public:
 	/**
 	 *   The basic version saves id, status flags and (expanded) logFile name
 	 */
-	virtual
-	drain::VariableMap & getStatus();
+	virtual inline
+	drain::VariableMap & getStatusMap(){
+		updateStatus();
+		return statusMap;
+	};
+
+
+	inline
+	const Variable & getStatus(const std::string & key) const {
+		updateStatus();
+		return statusMap[key];
+		//return static_cast<T>(statusMap[key]);
+	};
+
+	// non-virtual
+
+	template <class T>
+	inline
+	void setStatus(const std::string & key, const T & value){
+		statusMap[key] = value;
+	};
 
 
 	/// Report status. Typically, report final status of a thread to its base context.
@@ -104,16 +137,28 @@ public:
 		}
 	}
 
-	//protected:
 
-	long int id;
+	const long int id;
 
+protected:
+
+	//drain::FlexVariableMap statusMap;
+	mutable
+	drain::VariableMap statusMap;
+
+	void updateStatus() const {
+		//statusMap["logFile"]     = logFile;
+		statusMap["statusFlags"] = statusFlags.value;
+		statusMap["statusKeys"] = statusFlags.getKeys();
+		//return statusMap;
+	};
 
 private:
 
 	static long int counter;
 
-	drain::VariableMap statusMap;
+
+	//drain::VariableMap statusMap;
 };
 
 
@@ -126,9 +171,12 @@ class ContextKit {
 public:
 
 	inline
-	ContextKit() : expandVariables(false){
-	}
+	ContextKit() : expandVariables(false) {
+	};
 
+	// virtual	drain::FlexVariableMap & getStatus();
+
+	//
 	bool expandVariables;
 
 	///
@@ -138,12 +186,31 @@ public:
 	 */
 	std::string formatStr;
 
-	mutable drain::StringMapper statusFormatter;
-
+	// mutable drain::StringMapper statusFormatter;
 
 };
 
 class SmartContext : public Context, public ContextKit {
+
+public:
+
+	SmartContext(){
+		//linkStatusVariables();
+	};
+
+	SmartContext(const SmartContext & ctx) : Context(ctx), ContextKit(ctx){
+		//linkStatusVariables();
+	}
+
+	/// A lisiting of context variables and other resources.
+	/**
+	 *   This basic version contains id, status flags and (expanded) logFile name
+	 */
+	//virtual drain::FlexVariableMap & getStatus();
+
+private:
+
+	//void linkStatusVariables();
 
 };
 
@@ -158,9 +225,11 @@ typedef ClonerBase<Context> ContextClonerBase;
  *
  */
 
+/*
 template <class C, class BC=Context>
 class ContextCloner : public Cloner<BC,C> {
 };
+*/
 
 class Contextual {
 
@@ -207,7 +276,7 @@ public:
 	/**
 	 *  Risky: The actual object may be a derived class.
 	 */
-	template <class T> // ,class BC> //
+	template <class T=Context> // ,class BC> //
 	T & getContext() const { // int logLevel = LOG_WARNING
 		if (contextIsSet()){
 			return (T &)*contextPtr;
@@ -215,7 +284,7 @@ public:
 		else {
 			//Logger mout(__FILE__, __FUNCTION__);
 			//mout.log(logLevel) << "context not set" << mout.endl;
-			return getCloner<T>().get();
+			return getCloner<T>().getSourceOrig();
 		}
 	}
 
@@ -258,7 +327,7 @@ public:
 
 	static inline
 	C & baseCtx() {
-		return getContextCloner().get();
+		return getContextCloner().getSourceOrig();
 	}
 
 

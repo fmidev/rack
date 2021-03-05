@@ -33,8 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define COMMAND_OFLOW_H_
 
 //#include "CommandRegistry.h"
-#include "CommandAdapter.h"
-
+#include <drain/prog/CommandInstaller.h>
 #include "drain/imageops/FastOpticalFlowOp.h"
 #include "drain/imageops/FastOpticalFlowOp2.h"
 #include "drain/imageops/BlenderOp.h"

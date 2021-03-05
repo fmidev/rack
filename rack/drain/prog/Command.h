@@ -56,10 +56,10 @@ class Command : public Contextual {
 public:
 
 	inline
-	Command(): section(1), execRoutine(false) {}; //
+	Command(): section(1){}; //
 
 	inline
-	Command(const Command & cmd) : section(cmd.section), execRoutine(cmd.execRoutine){
+	Command(const Command & cmd) : section(cmd.section){
 		// setParameters(cmd.getParameters()); they do not exist yet!
 	}
 
@@ -90,8 +90,32 @@ public:
 	*/
 
 	virtual
-	void setParameters(const VariableMap & args) = 0;
-	// void setParameters(const std::map<std::string,std::string> & args) = 0;
+	void setParameters(const VariableMap & args) = 0; // REDESIGN?
+
+
+	template <class T>
+	void setParameters(const SmartMap<T> & args){
+		// TODO: set parameter X=Y ?
+		VariableMap vargs;
+		vargs.importCastableMap(args, false);
+		setParameters(vargs);
+	}
+
+	inline
+	Command & addSection(drain::Flagger::value_t i){
+		section |= i;
+		return *this;
+	}
+
+	/// Optional method for preparing command to execution.
+	/**
+	 *   This function will be called prior to running exec()
+	 */
+	virtual
+	void update(){
+	}
+
+
 
 	//virtual
 	//void setParameters(const SmartMapBase & params) = 0;
@@ -134,6 +158,7 @@ public:
 	inline
 	void run(const std::string & params = ""){
 		setParameters(params);
+		update();
 		exec();
 	}
 
@@ -145,7 +170,7 @@ public:
 	int section;
 
 	/// After executing this command run a routine, if defined.
-	bool execRoutine;
+	// bool execRoutine; -> see section flag TriggerSection;
 
 	/// Future option: single-code Dynamic functions: handle the command string
 	// virtual void setKey(const std::string & key) const {}
@@ -156,7 +181,7 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const Command &cmd){
 	ostr << cmd.getName();
 	if (cmd.hasArguments()){
-		ostr << '(' << cmd.getParameters() << ')';
+		ostr << ' ' << cmd.getParameters() << ' ';
 	}
 	return ostr;
 }
@@ -210,20 +235,21 @@ public:
 	inline
 	void setParameters(const VariableMap & params){
 		parameters.importCastableMap(params);
+		//this->update();
 	}
 
 	template <class T>
 	inline
 	void setParameters(const SmartMap<T> & params){
 		parameters.importCastableMap(params);
+		//this->update();
 	}
 
 	template <class T>
 	void setParameter(const std::string & key, const T & value) {
 		parameters[key] = value;
+		//this->update();
 	}
-
-
 
 
 
@@ -370,6 +396,7 @@ public:
 	virtual
 	void setParameters(const drain::VariableMap & params){
 		getBean().setParameters(params);
+		//this->update();
 	};
 
 	/*
@@ -380,13 +407,15 @@ public:
 	*/
 
 	virtual
-	void setParameters(const std::string & parameters){ //, char assignmentSymbol='='){
-		getBean().setParameters(parameters, '='); //assignmentSymbol);
+	void setParameters(const std::string & parameters){
+		getBean().setParameters(parameters, '=');
+		//this->update();
 	}
+
 
 };
 
-/// Base for derived classes using member BeanLikes or referenced BeanLikes.
+/// Base for derived classes using member BeanLike or referenced BeanLikes.
 /**
  *  Beans implement getName(), getDescription(), getParameters()
  *
@@ -429,15 +458,22 @@ public:
 		return bean.getParameters();
 	};  // or getParameters
 
-	//virtual
-	void setParameters(const std::string & args){ //, char assignmentSymbol='='){
-		bean.setParameters(args,'='); // assignmentSymbol);
+	virtual
+	void setParameters(const std::string & args){
+
+		Context & ctx = this->template getContext<>();
+		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
+
+		bean.setParameters(args,'=');
+		//mout.note() = "updating";
+		//this->update();
 	}
 
 	///
 	//virtual
 	void setParameters(const VariableMap & params){
 		bean.setParameters(params);
+		// this->update();
 	}
 
 

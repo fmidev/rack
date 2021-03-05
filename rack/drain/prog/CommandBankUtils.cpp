@@ -35,35 +35,89 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+void CmdLog::exec() const {
+
+	Context & ctx = getContext<Context>();
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::StringMapper mapper;
+
+	std::string s = mapper.parse(value).toStr(ctx.getStatusMap());
+
+	if (ctx.logFileStream.is_open()){
+		mout.warn() << "log file '" << ctx.logFile << "' closed by '"<< s << "'" << mout.endl;
+		ctx.log.setOstr(std::cerr);
+		ctx.logFileStream.close();
+	}
+
+	ctx.logFile = s;
+
+	ctx.logFileStream.open(ctx.logFile, std::ios::out);
+
+	if (ctx.logFileStream.is_open()){
+		ctx.log.setOstr(ctx.logFileStream);
+		mout.note() << "thread" << ctx.getId() << mout.endl;
+		mout.timestamp("START") << ctx.logFile << mout.endl;
+		mout.warn() << ctx.logFile<< mout.endl;
+		return;
+	}
+
+	ctx.log.setOstr(std::cerr);
+	mout.error() << "failed in opening log file: " << ctx.logFile << mout.endl;
+}
+
+void CmdStatus::exec() const {
+
+	Context & ctx = getContext<Context>();
+
+	std::ostream & ostr = std::cout; // for now...
+
+	const drain::VariableMap & statusMap = ctx.getStatusMap();
+
+	SprinterLayout layout;
+	layout.mapChars.separator = '\n';
+	layout.arrayChars.separator = '\n';
+	layout.stringChars.separator = '\0';
+	SprinterBase::sequenceToStream(ostr, statusMap, layout);
+	ostr << '\n';
+	//ostr << drain::sprinter(statusMap, layout) << '\n';
+
+	/*
+	for (drain::FlexVariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
+		ostr << it->first << '=' << it->second << ' ';
+		it->second.typeInfo(ostr);
+		ostr << '\n';
+	}
+	*/
+
+	//ostr << "errorFlags: " << ctx.statusFlags << std::endl;
+
+};
 
 
+/*
 void CmdExecFile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getDrainage().mout( ;
+	Context & ctx = getContext<>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getDrainage().mout( ;
 
 	Script script;
 
-	std::string line;
-	drain::Input ifstr(value);
+	std::string filename;
 
-	// std::ifstream ifstr;
-	// const std::string & filename = params;
-	// mout.note() << "open list: " << filename << mout.endl;
-	// ifstr.open(params.c_str());
+	drain::StringMapper mapper(value); // todo VALID chars what:source
 
-	while ( std::getline((std::ifstream &)ifstr, line) ){
-		if (!line.empty()){
-			mout.debug(1) << line << mout.endl;
-			if (line.at(0) != '#')
-				bank.scriptify(line, script);
-				//getRegistry().scriptify(line, script); // adds a line
-		}
-	}
-	//ifstr.close();
-	bank.run(script, contextCloner);
-	//getRegistry().run(script);
+	mout.note() << "open list: " << filename << mout.endl;
+
+	bank.readFile(value, script);
+	//bank.run(script, getCloner<Context>()); //?
+	mout.unimplemented() << "bank.run(script, getCloner<Context>())" << mout.endl;
+
+
 
 }
+*/
+
 
 /*
 void CmdFormat::exec() const {

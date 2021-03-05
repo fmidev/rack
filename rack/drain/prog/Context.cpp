@@ -39,27 +39,35 @@ namespace drain {
 
 long int Context::counter(0);
 
-drain::VariableMap & Context::getStatus(){
-	statusMap.clear();
-	statusMap["ID"]  = getId();
-	statusMap["PID"] = getpid();
-	statusMap["logFile"] = logFile;
-	statusMap["statusFlags"] = statusFlags.keysToStr();
+/*
+FlexVariableMap & SmartContext::getStatus(){
 
+	// Assign variables.
+	statusMap["statusKeys"] = statusFlags.getKeys();
+
+	// Expand bits to
+	statusFlags.exportStatus(statusMap);
 	return statusMap;
 }
+*/
+
 
 /*
-Context & Contextual::getBaseContext(int logLevel) const {
-	if (contextPtr != NULL){
-		return *contextPtr;
-	}
-	else {
-		Logger mout(__FILE__, __FUNCTION__);
-		mout.log(logLevel) << "context not set" << mout.endl;
-		static Context defaultContext;
-		return defaultContext;
-	}
+void SmartContext::linkStatusVariables(){
+
+	/// Context
+
+	/// Link members directly (to avoid repeated updates)
+	//  statusMap.link("ID", this->id);
+	statusMap.link("logFile", logFile);
+	statusMap.link("statusBits", statusFlags.value);
+
+	statusMap["ID"] = id; //const
+	statusMap["PID"] = getpid(); // constant
+
+	/// SmartContext
+	statusMap.link("expandVariables", this->expandVariables);
+	statusMap.link("formatStr", this->formatStr);
 }
 */
 

@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 
 #include "Command.h"
+#include "drain/util/Sprinter.h"
 
 
 namespace drain {
@@ -53,13 +54,14 @@ public:
 
 
 	// For debugging
+	/*
 	void toStream(std::ostream & ostr = std::cout) const {
 		for (typename list_t::const_iterator it = this->begin(); it != this->end(); ++it)
 			entryToStream(*it);
 	}
+	*/
 
-	virtual
-	void entryToStream(const typename list_t::value_type & entry, std::ostream & ostr = std::cout) const = 0;
+	// virtual void entryToStream(const typename list_t::value_type & entry, std::ostream & ostr = std::cout) const = 0;
 
 	/// Tell if this routine is
 	inline
@@ -67,8 +69,17 @@ public:
 
 };
 
-
 // typedef Scrupt<std::string>    Script;
+
+
+template <class T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const CommandSequence<T> & commands){
+	static const SprinterLayout layout("\n", "<?>", "\0=;", "''");
+	SprinterBase::sequenceToStream(ostr, commands, layout);
+	return ostr;
+}
+
 
 
 
@@ -76,33 +87,41 @@ class Script : public CommandSequence<std::pair<std::string,std::string> > {
 
 public:
 
-	typename list_t::value_type & add(const std::string & cmd, const std::string & params="");
+	typename list_t::value_type & add(const std::string & key, const std::string & params="");
 
-	virtual
-	void entryToStream(const typename list_t::value_type & entry, std::ostream & ostr = std::cout) const;
+	//virtual	void entryToStream(const typename list_t::value_type & entry, std::ostream & ostr = std::cout) const;
 
 
 };
 
 
-class Program : public CommandSequence<Command *> , public Contextual{
+
+/// Sequence consisting of Command:s retrieved from a CommandBank.
+/**
+ *   A program may contain a single routine.
+ *
+ */
+//class Program : public CommandSequence<Command *> , public Contextual{
+// consider: protected Contextual public Contextual,
+class Program :  public CommandSequence<std::pair<std::string,Command *> > {
 
 public:
 
-	inline
-	Program(){};
+	//inline	Program(){};
 
-	inline
-	Program(Context & ctx) : Contextual(ctx){};
+	//inline	Program(Context & ctx) : Contextual(ctx){};
 
-	Command & add(Command & cmd);
+	//inline	Program(Context & ctx = getCloner<Context>().get()) : Contextual(ctx){};
+
+	Command & add(const std::string & key, Command & cmd);
+	//Command & add(Command & cmd);
 
 	//void append(const CommandBank & commandBank, const Script & script);
+	Script routine;
 
 	void run() const;
 
-	virtual
-	void entryToStream(const list_t::value_type & entry, std::ostream & ostr = std::cout) const;
+	//virtual 	void entryToStream(const list_t::value_type & entry, std::ostream & ostr = std::cout) const;
 
 
 };
@@ -119,12 +138,14 @@ public:
 		return back();
 	};
 
-	/// Adds a new, empty program with desired context to thread vector.
+	/// Adds a new, empty program with desired context to thread vector
+	/*
 	inline
 	Program & add(Context & ctx){
 		push_back(Program(ctx));
 		return back();
 	};
+	*/
 
 };
 
