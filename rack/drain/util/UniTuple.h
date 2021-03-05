@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <typeinfo>
 #include <stdexcept>
 #include <string>
+//#include <set>
 
 
 namespace drain {
@@ -60,9 +61,9 @@ public:
 	typedef T* iterator;
 	typedef const T* const_iterator;
 
-	/// Proposed for tuple only; derived classes should not shadow this.
+	/// Proposed for tuples only; derived classes should not shadow this.
 	tuple_t & assign(const tuple_t & t){
-		// initTuple()
+		/*
 		iterator it = begin();
 		const_iterator tit = t.begin();
 		while(it != end()){
@@ -71,6 +72,8 @@ public:
 			++tit;
 		}
 		updateTuple();
+		*/
+		fromSequence(t);
 		return *this;
 	}
 
@@ -80,6 +83,27 @@ public:
 		updateTuple();
 		return *this;
 	}
+
+	/*
+	template <class T2>
+	tuple_t & assign(const std::set<T2> & value){
+		fromSequence(value);
+		return *this;
+	}
+
+	template <class T2>
+	tuple_t & assign(const std::vector<T2> & value){
+		fromSequence(value);
+		return *this;
+	}
+
+	template <class T2>
+	tuple_t & assign(const std::list<T2> & value){
+		fromSequence(value);
+		return *this;
+	}
+	*/
+
 
 
 	tuple_t & operator=(const tuple_t &t){
@@ -117,6 +141,12 @@ public:
 		// initTuple()
 		setIndexed(0, arg, rest...);
 		updateTuple();
+	}
+
+	template<typename S>
+	inline
+	void set(std::initializer_list<S> l){
+		fromSequence(l);
 	}
 
 	inline
@@ -217,12 +247,16 @@ public:
 	UniTuple<T,N> & fromSequence(S & sequence){
 		typename S::const_iterator cit = sequence.begin();
 		iterator it = begin();
-		while (it != end()){
+		while (cit != sequence.end()){
+			if (it == end()){
+				std::cerr << __FILE__ << ':' << __FUNCTION__ << " assigning: " << *cit << std::endl;
+				throw std::runtime_error("run out of indices");
+				break;
+			}
+			//	break;
 			*it = *cit;
 			++it;
 			++cit;
-			if (cit ==  sequence.end())
-				break;
 		}
 		return *this;
 	}
@@ -260,6 +294,10 @@ public:
 		std::stringstream sstr;
 		toStream(sstr, separator);
 		return sstr.str();
+	}
+
+	void debug(std::ostream & ostr) const {
+		ostr << "UniTuple<" << typeid(T).name() << sizeof(T) << ',' << N << ">: {" << *this << '}';
 	}
 
 	// AreaGeom etc.
@@ -305,7 +343,9 @@ protected:
 	UniTuple(UniTuple<T,N2> &tuple, size_t i=0): start(tuple.begin()+i), init(nullptr){
 		if ((i+N)> N2){
 			std::stringstream sstr;
-			sstr << __FUNCTION__ << "<," << N << ">(" << __FUNCTION__ << "<," << N2 << ">),  index(" << i << ") overflow";
+			debug(sstr);
+			sstr << ": constructor index[" << i << "] overflow with referenced tuple: ";
+			tuple.debug(sstr);
 			std::cerr <<  sstr.str() << '\n';
 			throw std::runtime_error(sstr.str());
 		}
@@ -337,7 +377,9 @@ protected:
 	void setIndexed(size_t i, T2 arg, const TT &... rest){
 		if (i>=N){
 			std::stringstream sstr;
-			sstr << "UniTuple<,"<< N << ">:" << __FUNCTION__ << " too many (" << i << ") arguments";
+			debug(sstr);
+			sstr << ':' << __FUNCTION__ << "(" << i << ',' << arg << ", ...), index overflow";
+			// TODO: dump rest
 			throw std::runtime_error(sstr.str());
 			return;
 		}
