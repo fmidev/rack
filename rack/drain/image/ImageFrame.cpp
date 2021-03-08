@@ -122,10 +122,16 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	}
 
 	// getter used, because possibly forwarded view-> view->
-	conf.linkScaling(src.getScaling());
-	//scalingPtr    = & src.getScaling();
+
+	/// ENCODING
+	conf.linkScaling(src.getScaling());    // NOTE: links also phys range
 	propertiesPtr = & src.getProperties(); // what about (alpha) channel scaling?
 
+	// mout.fail() << "src:  " << src << mout;
+	// mout.fail() << "srcS: " << src.getScaling() << mout;
+	// mout.fail() << "conf: " << conf << mout;
+
+	// GEOMETRY
 	if (catenate){
 		conf.setGeometry(src.getWidth(), src.getHeight()*channelCount,1,0);
 	}
@@ -154,9 +160,10 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 		*/
 	}
 
+	// COORDINATES
 	setCoordinatePolicy(src.getCoordinatePolicy());
 
-
+	// DATA
 	bufferPtr    = & src.bufferPtr[address(channelStart*getArea()) * conf.byteSize];
 
 	// NOTE: (void *) needed, because bufferPtr is <unsigned char *> while these segment iterators vary.
@@ -168,13 +175,14 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 
 
 	// Compose name by appending index to the source name.
-	std::stringstream sstr;
-	sstr << src.getName() << '[' << channelStart;
-	if (channelCount > 1)
-		sstr << ':' << (channelStart+channelCount-1);
-	sstr << ']';
-	setName(sstr.str());
-
+	if (!src.getName().empty()){
+		std::stringstream sstr;
+		sstr << src.getName() << '[' << channelStart;
+		if (channelCount > 1)
+			sstr << ':' << (channelStart+channelCount-1);
+		sstr << ']';
+		setName(sstr.str());
+	}
 	/*
 	std::cerr << __FUNCTION__ << '\n';
 	src.toOStr(std::cerr);
@@ -217,9 +225,10 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	//const drain::ValueScaling & s = getScaling();
 	const Encoding & s = getConf();
 	if (s.isScaled() || s.isPhysical()){
-		ostr << "*(" << s << (s.hasOwnScaling() ? '!' : '&') << ")\t";
+		ostr << "*(" << s << ")";
 		// ostr << "*(" << s << ")";
 	}
+	ostr << (s.hasOwnScaling() ? '!' : '&') << "\t";
 
 	/*
 	ostr << ' ' << getgeometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';

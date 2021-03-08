@@ -83,6 +83,7 @@ public:
 	void setEncoding(const Encoding & e){
 		setType(e.getType());
 		setScaling(e);
+		setPhysicalRange(e.getPhysicalRange());
 	}
 
 	Encoding & operator=(const Encoding & e){
@@ -353,6 +354,7 @@ public:
 	void setConf(const ImageConf & conf){
 		setEncoding(conf);
 		setGeometry(conf);
+		setCoordinatePolicy(conf.getCoordinatePolicy());
 	}
 
 
@@ -392,7 +394,8 @@ inline
 std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
 
 	ostr << ' ' << conf.getGeometry() << ' ' << Type::getTypeChar(conf.getType()) << '@' << (conf.getElementSize()*8) << 'b';
-	const drain::ValueScaling & s = conf; // .scaling;
+	//const drain::ValueScaling & s = conf; // .scaling;
+	const drain::ValueScaling & s = conf.getScaling(); // .scaling;
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(" << s << ")";
 	}

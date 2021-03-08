@@ -129,10 +129,12 @@ public:
 
 	ImageEncoding() : ImageMod(__FUNCTION__, "Set desired target properties") { // TODO
 
-		refMap.link("type", type);
-		//refMap.link("scale", scaling.scale);
-		refMap.link("min", this->scaling.physRange.min, "physical_value");
-		refMap.link("max", this->scaling.physRange.max, "physical_value");
+		refMap.link("type", encoding.type);
+		//refMap.link("scale", encoding.ValueScaling::tuple());
+		refMap.link("scale", encoding.getScaling().tuple()).fillArray = false;
+		refMap.link("range", encoding.getPhysicalRange().tuple()).fillArray = false; //physRange);
+		//refMap.link("min", this->scaling.physRange.min, "physical_value");
+		//refMap.link("max", this->scaling.physRange.max, "physical_value");
 
 		parameters.link("request", request, refMap.getKeys());
 		parameters.separator = 0;
@@ -148,7 +150,10 @@ public:
 	void initialize(Image & dst) const;
 
 	virtual
-	void traverseChannel(Channel & dst) const {};
+	void traverseChannel(Channel & dst) const {
+		//drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		//mout.fail() << "Feelu" << mout.endl;
+	};
 	//virtual
 	//void process(Image & dst) const;
 
@@ -159,8 +164,9 @@ protected:
 
 	mutable drain::ReferenceMap refMap;
 
-	mutable std::string type;
-	mutable drain::ValueScaling scaling;
+	//mutable std::string type;
+	// mutable drain::ValueScaling scaling;
+	mutable drain::image::Encoding encoding;
 	//mutable double scale;
 	//mutable double minValue;
 	//mutable double maxValue;

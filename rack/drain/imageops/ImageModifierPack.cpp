@@ -62,32 +62,41 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	mout.fail() << "Feelu" << mout.endl;
+
 
 	/// Step 1: change type, if requested
-	type.clear();
+	encoding.type.clear();
 	refMap.setValues(request);
-	if (!type.empty()){
-		if (dst.getType() != drain::Type::getTypeInfo(type)){
+	if (!encoding.type.empty()){
+		if (dst.getType() != drain::Type::getTypeInfo(encoding.type)){
 			dst.resetGeometry();
-			dst.setType(type);
+			dst.setType(encoding.type);
 		}
 	}
 
 	/// Step 2: Set default values, based on its current type.
-	scaling.assign(dst.getScaling());
+	ValueScaling & scale = encoding.getScaling();
+	scale.setScaling(dst.getScaling());
 	/// Reset given values
 	refMap.setValues(request);
 	// Apply
-	dst.setScaling(scaling);
+	//encodst.setPhysicalRange(range, true);
+	dst.setScaling(scale);
+	for (size_t k=0; k<dst.getChannelCount(); ++k){
+		dst.getChannel(k).setScaling(scale);
+	}
 	/*
 	if ((dst.scaling.minCodeValue >= 0) && (dst.scaling.minPhysValue < 0.0)){
 		/// light error
 		mout.warn() << "unsigned storage type, negative physical values not supported: " << scaling.toStr() << mout.endl;
 	}
 	*/
-
-	mout.debug() << scaling.toStr() << mout.endl;
-	mout.debug2() << dst << mout.endl;
+	mout.special() << refMap << mout.endl;
+	mout.special() << encoding << mout.endl;
+	mout.special() << dst << mout.endl;
+	mout.special() << "DEBUG" << mout.endl;
+	dst.dump();
 }
 
 

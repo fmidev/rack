@@ -328,8 +328,14 @@ public:
 	/// Pointer: redirect to actual target object
 	template <class D>
 	static
+	std::ostream & toStream(std::ostream & ostr, D *x, const SprinterLayout & layout = defaultLayout) {
+		return ostr << *x;
+	}
+
+	/// Pointer: redirect to actual target object
+	template <class D>
+	static
 	std::ostream & toStream(std::ostream & ostr, const D *x, const SprinterLayout & layout = defaultLayout) {
-		//return toStream(ostr, *x, layout);
 		return ostr << *x;
 	}
 

@@ -182,9 +182,15 @@ public:
 		setOptimalScale(t);
 	};
 
-	/// Sets the supported range for physical values. Does not change scaling or type.
+	/// Returns a typical or supported range for physical values.
 	inline
 	const Range<double> & getPhysicalRange() const { // , const std::string &unit ?
+		return physRange;
+	}
+
+	/// Returns a typical or supported range for physical values. Modifying the range will not change scaling.
+	inline
+	Range<double> & getPhysicalRange() { // , const std::string &unit ?
 		return physRange;
 	}
 

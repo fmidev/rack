@@ -114,7 +114,7 @@ void MultiChannel::updateChannelVector() const {
 
 			// Special for alpha channels:
 			if (k >= getImageChannelCount()){
-				channel.setScaling(channel.getScaling()); //channel.useOwnScaling();
+				channel.setScaling(channel.getScaling()); // Calls channel.useOwnScaling();
 				if (!channel.getScaling().isPhysical()){
 					const std::type_info & t = channel.getType();
 					if (Type::call<typeIsSmallInt>(t)){

@@ -39,31 +39,46 @@ namespace drain
 namespace image
 {
 
+void ImageOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
+
+	if ((dst.getScale()==0.0) || !dst.typeIsSet())
+		dst.setEncoding(src.getEncoding());
+
+	dst.setGeometry(src.getGeometry()); //geometry = src.geometry;
+
+	dst.setCoordinatePolicy(src.getCoordinatePolicy());
+
+}
 
 
-void ImageOp::makeCompatible(const ImageConf & src, Image & dst) const  {
+void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
+	mout.warn() << "srcConf:      " << srcConf << mout.endl;
+	mout.warn() << "dst.getConf:  " << dst.getConf() << mout.endl;
+
 	ImageConf dstConf(dst.getConf());
 
-	/// By default, use src type.
-	//  Image operator should change it, if needed. (eg. force signed, integer or float)
-	if (!dst.typeIsSet())
-		dst.setType(src.getType());
-
 	/// Coord policy is changed very rarely, so it is copied here, as a default.
-	//  Image operator should change it if needed.
-	dst.setCoordinatePolicy(src.coordinatePolicy);
+	//  Image operator can change it if needed, with getDstConf().
+	dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
 
-	mout.warn() << "src: " << src << mout.endl;
+	mout.warn() << "dstConf0:  " << dstConf << mout.endl;
 
-	getDstConf(src, dstConf);
-	mout.warn() << "dstConf:  " << dstConf << mout.endl;
-	dstConf.setScaling(src.getScaling());
-	mout.warn() << "dstConf2: " << dstConf << mout.endl;
+	/// By default, use src type. Image operator changes it if needed (e.g. signed, integer or float).
+	//if (!dst.typeIsSet())
+	// dst.setType(src.getType());
 
+	/// Should set geometry, including channel geometry.
+	getDstConf(srcConf, dstConf);
 
+	if (!dstConf.typeIsSet())
+		dstConf.setType(srcConf.getType());
+
+	mout.warn() << "dstConfRet:" << dstConf << mout.endl;
+	// dstConf.setScaling(src.getScaling());
+	// mout.warn() << "dstConf2: " << dstConf << mout.endl;
 	/*
 	if (dst.hasSameSegment(src)){
 		if (SEPARATE){
@@ -75,6 +90,7 @@ void ImageOp::makeCompatible(const ImageConf & src, Image & dst) const  {
 	*/
 
 	// Definitive storage type
+	/*
 	if (dstConf.typeIsSet()){
 		dst.setType(dstConf.getType());
 	}
@@ -83,21 +99,24 @@ void ImageOp::makeCompatible(const ImageConf & src, Image & dst) const  {
 	if (!dst.typeIsSet()){
 		dst.setType(src.getType());
 	}
+	*/
 
 
-	if (!dst.getScaling().isPhysical()){
-		mout.warn() << "dst (" << dst.getScaling() << ") has no physical range , adopting scaling of src/ dstConf(" << dstConf << ')' << mout.endl;
-		dst.adoptScaling(src);
+	if (!dstConf.isPhysical()){
+		mout.warn() << "dstConf (" << dstConf.getScaling() << ") has no physical range , adopting scaling of src (" << srcConf.getScaling() << ')' << mout.endl;
+		dstConf.adoptScaling(srcConf, srcConf.getType(), dstConf.getType());
 	}
 	else {
-		mout.debug() << "dst has physical range " << dst.getScaling() << mout.endl;
+		mout.debug() << "dst has physical range " << dstConf.getScaling() << mout.endl;
 	}
 
-	dst.setGeometry(dstConf.getGeometry());
+	dst.setConf(dstConf);
+
+	//dst.setGeometry(dstConf.getGeometry());
 
 	/// TODO: copy alpha, fill alpha?
 	if (dst.hasAlphaChannel()){
-		double maxValue = dst.getConf().getTypeMax<int>();
+		double maxValue = dst.getConf().getTypeMax<double>();
 		mout.info() << "filling alpha channel with " << maxValue << mout.endl;
 		dst.getAlphaChannel().fill(maxValue);
 	}
@@ -140,6 +159,7 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	else {
 		mout.debug2() << "passed overlap test (directly or using tmp)" << mout.endl;
 	}
+
 	mout.special() << "srcFrame:     " << srcFrame << mout;
 	mout.special() << "srcFrame Conf: " << srcFrame.getConf() << mout;
 	//mout.special() << "srcFrame Enc:  " << srcFrame.getEncoding() << mout;

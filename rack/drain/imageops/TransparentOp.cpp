@@ -41,22 +41,23 @@ namespace image
 
 
 
-void TransparentOp::makeCompatible(const ImageFrame &src,Image &dst) const  {
+// void TransparentOp::make Compatible(const ImageFrame &src,Image &dst) const  {
+void TransparentOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	if (!dst.typeIsSet())
-		dst.setType(src.getType());
+	//if (!dst.typeIsSet())
+	//	dst.setType(src.getType());
 
-	size_t w = src.getWidth();
-	size_t h = src.getHeight();
-	size_t i = src.getImageChannelCount();
-	size_t a = std::max(1UL, src.getAlphaChannelCount());
+	dst.setArea(src.getGeometry());
+	// size_t w = src.getWidth();
+	// size_t h = src.getHeight();
+	// size_t i = src.getImageChannelCount();
+	// size_t a = std::max(1UL, src.getAlphaChannelCount());
+	// dst.setGeometry(w, h, i, a);
 
-	dst.setGeometry(w, h, i, a);
+	dst.setChannelCount(src.getImageChannelCount(), std::max(1UL, src.getAlphaChannelCount()));
 	mout.debug() << "dst:" << dst << mout.endl;
-
-
 
 };
 

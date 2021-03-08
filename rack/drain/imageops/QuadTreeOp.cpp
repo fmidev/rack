@@ -35,8 +35,8 @@ namespace drain {
 
 namespace image {
 
-
-void QuadTreeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
+void QuadTreeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
+//void QuadTreeOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 	const size_t w = this->width  ? this->width  : dst.getWidth();
 	const size_t h = this->height ? this->height : dst.getHeight();
 	dst.setGeometry(w, h, src.getImageChannelCount(), src.getAlphaChannelCount());

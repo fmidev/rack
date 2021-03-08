@@ -58,7 +58,9 @@ class TransparentOp : public UnaryFunctorOp<drain::FuzzyStep<double> > {
 	};
 
 
-	virtual void makeCompatible(const ImageFrame &src,Image &dst) const ;
+	//virtual void make Compatible(const ImageFrame &src,Image &dst) const ;
+	virtual
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;

@@ -111,18 +111,16 @@ public:
 
     /// Given source image, determine respective dest image configuration.
     /**
-     *  \return true, if independent (non-overlapping) image is needed.
+     *  This default implementations
+     *  - changes type and scaling only if either is undefined in dst.
+     *  - copies geometry and coordinate policy of src.
      */
-    virtual inline
-	void getDstConf(const ImageConf & src, ImageConf & dst) const {  // TODO: src, src2, dst
-    	dst.setEncoding(src.getEncoding());
-    	dst.setGeometry(src.getGeometry()); //geometry = src.geometry;
-    	dst.setCoordinatePolicy(src.getCoordinatePolicy());
-    	//return false;
-    }
+    virtual
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
+
 
 	/// Depending on the operator, modifies the geometry and type of dst.
-	/*  This default implementation
+	/*  The old policy was to have this default implementation
 	 *  -# returns immediately, if dst==src.
 	 *  -# sets dst type, if unset, to that of src
 	 *  -# sets dst geometry to that of src

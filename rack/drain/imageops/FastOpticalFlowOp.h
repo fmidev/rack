@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef SLIDINGWINDOWOPTICALFLOWOP_H_
-#define SLIDINGWINDOWOPTICALFLOWOP_H_
+#ifndef SLIDING_WINDOW_OPTICALFLOW_OP_H_
+#define SLIDING_WINDOW_OPTICALFLOW_OP_H_
 
 #include <sstream>
 #include <math.h>
@@ -553,11 +553,17 @@ public:
 	}
 
 	/// Creates a double precision image of 2+1 channels for storing motion (uField,vField) and quality (q).
-	virtual
-	inline
-	void makeCompatible(const ImageFrame & src, Image & dst) const  {
+	virtual inline
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {
+		dst.setType(typeid(OpticalFlowCore1::data_t));
+		dst.setGeometry(src.getWidth(), src.getHeight(), 2, 1);
+	}
+
+	/*
+	void make Compatible(const ImageFrame & src, Image & dst) const  {
 		dst.initialize(typeid(OpticalFlowCore1::data_t), src.getWidth(), src.getHeight(), 2, 1);
 	};
+	*/
 
 	/// Computes an image with channels dx, dy, dt and w (quality of gradients). User may redefine this.
 	/**

@@ -77,7 +77,8 @@ public:
 	std::string interpolation;
 
 	virtual
-	void makeCompatible(const ImageFrame & src, Image & dst) const;
+	// void make Compatible(const ImageFrame & src, Image & dst) const;
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 	/// The main functionality called by traverseFrame() after image compatibility check and tmp allocations
 	/**

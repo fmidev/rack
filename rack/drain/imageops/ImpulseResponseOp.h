@@ -183,7 +183,7 @@ public:
 
 	/*
 	virtual	inline
-	void makeCompatible(const ImageFrame &src, Image &dst) const  {
+	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		//mout.debug3() << "src: " << src << mout.endl;

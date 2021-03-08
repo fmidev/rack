@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  
 // New design (2020)
 
-#include "../util/Log.h"
+#include "drain/util/Log.h"
 
 #include "Program.h"
 
@@ -44,49 +44,26 @@ typename Script::entry_t & Script::add(const std::string & cmd, const std::strin
 }
 
 
-/*
-void Script::entryToStream(const typename Script::entry_t & entry, std::ostream & ostr) const {
-	if (entry.second.empty())
-		ostr << entry.first << '\n';
-	else
-		ostr << entry.first << '=' << entry.second << '\n';
-}
-*/
-
-
 
 
 Command & Program::add(const list_t::value_type::first_type & key, Command & cmd){ // const std::string & params = ""){
-	//push_back(& cmd);
 	this->push_back(typename list_t::value_type(key, & cmd));
-	//if (!cmd.contextIsSet() && contextIsSet())
-	//	cmd.setExternalContext(getContext<Context>());
-		//cmd.setExternalContext(getBaseContext());
 	return cmd;
 }
 
-/*
-void Program::append(const CommandBank & commandBank, const Script & script){
-	for (Script::const_iterator it = script.begin(); it!=script.end(); ++it) {
-		BasicCommand & cmd = commands.clone(it->first);
-		cmd.setParameters(it->second);
-		cmd.setExternalContext(getBaseContext());
-		add(cmd);
-	}
-}
-*/
 
 
 void Program::run() const {
 
 	Logger mout(__FILE__, __FUNCTION__);
+
 	for (const_iterator it = this->begin(); it != this->end(); ++it) {
 		// String...
 		const typename list_t::value_type::first_type & key = it->first;
 		Command & cmd = *it->second;
 
 		if (key == "script"){
-			mout.warn() << " EIPÄ MITÄÄN NYT script " << '(' << cmd.getParameters() << ')' << mout.endl;
+			mout.warn() << "skipping script " << '(' << cmd.getParameters() << ')' << mout.endl;
 			continue;
 		}
 
@@ -98,19 +75,6 @@ void Program::run() const {
 
 }
 
-/*
-void Program::entryToStream(const list_t::value_type & entry, std::ostream & ostr) const {
-	//const typename list_t::value_type::first_type & key = kei;
-
-	ostr << entry.first << ' ' << entry.second->getName();
-	if (!entry.second->getParameters().empty()){
-		ostr << entry.second->getName() << '(';
-		entry.second->getParameters().valuesToJSON(ostr);
-		ostr << ')';
-	}
-
-}
-*/
 
 
 }

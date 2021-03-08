@@ -283,11 +283,13 @@ public:
 	inline
 	void copyShallow(const ImageFrame & src){
 		// conf.setConf(src.getConf());
+		conf.setConf(conf);
+		/*
 		setStorageType(src.getType());
 		conf.setScaling(src.getScaling());  // NOTE: pointer-selected
 		conf.setGeometry(src.getGeometry());
 		setCoordinatePolicy(src.getCoordinatePolicy());
-
+		*/
 		//initialize(src.getType(), src.getGeometry());
 		//setScaling(src.getScaling());
 		//setCoordinatePolicy(src.getCoordinatePolicy());

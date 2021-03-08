@@ -142,10 +142,8 @@ public:
 	 */
 	FuzzyStep(T startPos = -1.0, T endPos = 1.0, double scale = 1.0, double bias = 0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy step function.", scale, bias), span(1.0) {
 		this->parameters.link("position", this->range.tuple());
-		//this->parameters.link("endPos", this->range.max);
 		this->parameters.link("scale", this->scale);
 		this->parameters.link("bias", this->bias);
-		// setReferences();
 		set(startPos, endPos, scale, bias);
 	};
 
@@ -236,13 +234,35 @@ class FuzzyTriangle : public Fuzzifier<T> {
 
 public:
 
-	FuzzyTriangle(double startPos=-1.0, double peakPos=0.0, double endPos=+1.0, double scale = 1.0, T bias = 0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function.", scale, bias){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
+	/*
+	FuzzyTriangle() : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function."){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
 		this->parameters.link("position", this->range.tuple());
 		this->parameters.link("peakPos", this->peakPos);
 		this->parameters.link("scale", this->scale);
 		this->parameters.link("bias", this->bias);
-		set(startPos, peakPos, endPos, scale, bias);
-		updateBean();
+
+		this->range.set(-1.0, +1.0);
+		this->peakPos = std::numeric_limits<double>::signaling_NaN();
+		// this->setScale(1.0, 0);
+
+		// NOTE: Signaling NAN should throw exeption if peakPos still undefined upon functor calls.
+
+		// set(startPos, endPos, peakPos, scale, bias);
+		// updateBean();
+	};
+	*/
+
+	// std::numeric_limits<double>::signaling_NaN()
+	FuzzyTriangle(double startPos=-1.0, double endPos=+1.0, double peakPos=0.0, double scale = 1.0, T bias = 0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function.", scale, bias){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
+		this->parameters.link("position", this->range.tuple());
+		this->parameters.link("peakPos", this->peakPos);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
+
+		//this->range.set(startPos, endPos);
+		//this->setScale(scale, bias);
+		set(startPos, endPos, peakPos, scale, bias);
+		//updateBean();
 	};
 
 	FuzzyTriangle(const FuzzyTriangle & f): Fuzzifier<T>(f){
@@ -253,11 +273,20 @@ public:
 	~FuzzyTriangle(){};
 
 	/// Sets the parameters of the membership function.
+	// std::numeric_limits<double>::signaling_NaN()
 	inline
-	void set(double startPos, double peakPos, double endPos, double scale=1.0, double bias=0.0){ // todo join
-		this->range.min = startPos;
+	void set(double startPos, double endPos, double peakPos=0.0, double scale=1.0, double bias=0.0){ // todo join
+
+		this->range.set(startPos, endPos);
+
 		this->peakPos = peakPos;
-		this->range.max = endPos;
+		/*
+		if (!std::isnan(peakPos))
+			this->peakPos = peakPos;
+		else
+			this->peakPos = (startPos + endPos) / 2.0;
+		*/
+
 		this->setScale(scale, bias); //
 		this->updateBean();
 	}
@@ -265,6 +294,9 @@ public:
 
 	virtual
 	void updateBean() const {
+
+		if (!range.contains(peakPos))
+			peakPos = (range.min + range.max) / 2.0;
 
 		this->INVERSE = (range.min > range.max);
 
@@ -300,6 +332,7 @@ public:
 	drain::Range<double> range;
 
 	/// Peak position
+	mutable // adjusted if outside range
 	double peakPos;
 
 
