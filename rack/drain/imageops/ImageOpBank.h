@@ -200,19 +200,13 @@ void installImageOps(T & installer) {
 		installer.template install<BinaryFunctorOp<SubtractionFunctor> >("Sub");
 
 
-		/// Fuzzy remapping ops
-		/**
-		\code
-		drainage image.png --iFuzzyBell 0.5,0.2 -o fuzzyBell.png
-		drainage image.png --iFuzzyStep 0.4,0.6 -o fuzzyThreshold.png
-		\endcode
-		 */
-		installer.template install<UnaryFunctorOp<FuzzyBell<double> > >();
-		installer.template install<UnaryFunctorOp<FuzzyBell2<double> > >();
-		installer.template install<UnaryFunctorOp<FuzzyStep<double> >  >();
-		installer.template install<UnaryFunctorOp<FuzzyStepsoid<double> > >();
-		installer.template install<UnaryFunctorOp<FuzzyTriangle<double> > >();
-		installer.template install<UnaryFunctorOp<FuzzyTwinPeaks<double> > >();
+		/// Fuzzy remapping ops. See examples in drain/util/Fuzzy.h
+		installer.template install<UnaryFunctorOp<FuzzyBell<double>,true> >();
+		installer.template install<UnaryFunctorOp<FuzzyBell2<double>,true> >();
+		installer.template install<UnaryFunctorOp<FuzzyStep<double>,true>  >();
+		installer.template install<UnaryFunctorOp<FuzzyStepsoid<double>,true> >();
+		installer.template install<UnaryFunctorOp<FuzzyTriangle<double>,true> >();
+		installer.template install<UnaryFunctorOp<FuzzyTwinPeaks<double>,true> >();
 
 
 		installer.template install<ChannelCatenatorOp>("Catenate");
@@ -240,7 +234,7 @@ void installImageOps(T & installer) {
 		installer.template install<FloodFillOp>();
 
 		// static ImageOpCloner<FunctorOp> functor;
-			installer.template install<UnaryFunctorOp<GammaFunctor> >();
+			installer.template install<UnaryFunctorOp<GammaFunctor,true> >();
 
 		//installer.template install<QuantizatorOp>();
 		installer.template install<UnaryFunctorOp<QuantizatorFunctor> >();

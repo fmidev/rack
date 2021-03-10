@@ -40,16 +40,16 @@ namespace image
 void PixelVectorOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 //void PixelVectorOp::makeCompatible(const ImageFrame &src, Image &dst) const  {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.debug3() << "src:" << src << mout.endl;
 
-	if (!dst.typeIsSet())
-		dst.setType<unsigned short>();
+	// if (!dst.typeIsSet())		dst.setType<unsigned short>();
+	dst.setArea(src.getGeometry());
+	dst.setChannelCount(1);
+	//dst.setGeometry(src.getWidth(), src.getHeight(), 1);
 
-	dst.setGeometry(src.getWidth(), src.getHeight(), 1);
-
-	mout.debug(3) << "dst:" << dst << mout.endl;
+	mout.note() << "dst:" << dst << mout.endl;
 
 }
 

@@ -84,6 +84,13 @@ public:
 		parameters.link("decay", this->decay = decay, "0...1");
 	};
 
+	/*
+	inline
+	QualityOverrideOp(const QualityOverrideOp & op) : QualityOp(op){
+		parameters.copyStruct(op.getParameters(), op, *this);
+	};
+	*/
+
 	virtual
 	~QualityOverrideOp(){};
 
@@ -97,7 +104,7 @@ public:
 	virtual	inline
 	void traverseChannel(const Channel &src, Channel &dst) const {
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.fatal() << "Inapplicable for single channels, needs alpha channels" << mout.endl;
+		mout.error() << "Inapplicable for single channels, needs alpha channels" << mout.endl;
 	}
 
 	/// fwd as trays

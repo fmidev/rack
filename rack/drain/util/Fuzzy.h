@@ -117,14 +117,14 @@ private:
 
  Examples with and without physical scaling to (0.0,1.0), setting step at 50% intensity (128 and 0.5):
 \code
-drainage gray.png        --iFuzzyStep 128:64,255 -o fuzzyStep.png
-drainage gray.png -R 0:1 --iFuzzyStep 0.5:0.25   -o fuzzyStep-phys.png
+drainage gray.png        --iFuzzyStep 128:64    -o fuzzyStep.png
+drainage gray.png -R 0:1 --iFuzzyStep 0.5:0.25  -o fuzzyStep-phys.png
 \endcode
 
 When changing storage type, scaling must be given explicitly (here 256, from \c C to \c S ) or physically with \c -R :
 \code
-drainage gray.png         -T S --iFuzzyStep 128:64,255 -o fuzzyStep-16bit.png
-drainage gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5   -o fuzzyStep-16bit-phys.png
+drainage gray.png         -T S --iFuzzyStep 128:64   -o fuzzyStep-16bit.png
+drainage gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5 -o fuzzyStep-16bit-phys.png
 \endcode
 
  */
@@ -224,9 +224,9 @@ protected:
  *  \tparam T2 - output storage type
  *
 	\code
-	drainage gray.png        --iFuzzyTriangle 64:192,128,255 -o fuzzyTriangle.png
+	drainage gray.png        --iFuzzyTriangle 64:192,128     -o fuzzyTriangle.png
 	drainage gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
-	drainage gray.png -T S   --iFuzzyTriangle 64:192,128,255 -o fuzzyTriangle-16bit.png
+	drainage gray.png -T S   --iFuzzyTriangle 64:192,128     -o fuzzyTriangle-16bit.png
 	\endcode
  */
 template <class T>  //,class T2>
@@ -358,7 +358,11 @@ protected:
  * \param bias  - offset in scaling (scale*x + bias); default=0.0
  *
  *  The approximation applies
- *
+	\code
+	drainage gray.png        --iFuzzyBell 128,16   -o fuzzyBell.png
+	drainage gray.png -R 0:1 --iFuzzyBell 0.5,0.2  -o fuzzyBell-phys.png
+	drainage gray.png -T S   --iFuzzyBell 128,16   -o fuzzyBell-16bit.png
+	\endcode
  */
 template <class T>
 class FuzzyBell : public Fuzzifier<T> {
@@ -423,6 +427,11 @@ protected:
 /*!
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
+ *
+    drainage gray.png        --iFuzzyBell2 128,16   -o fuzzyBell2.png
+	drainage gray.png -R 0:1 --iFuzzyBell2 0.5,0.2  -o fuzzyBell2-phys.png
+	drainage gray.png -T S   --iFuzzyBell2 128,16   -o fuzzyBell2-16bit.png
+ *
  */
 template <class T>
 class FuzzyBell2 : public Fuzzifier<T> {
@@ -575,6 +584,7 @@ public:
 
 	FuzzyStepsoid(double location=0.0, double width=1.0, double scale=1.0, double bias=0.0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy step function", scale, bias), widthFinal(1.0) {
 		//this->setReferences();
+		//this->parameters.link("location", this->range.tuple()); consider
 		this->parameters.link("location", this->location = location);
 		this->parameters.link("width", this->width = width);
 		this->parameters.link("scale", this->scale = scale);
@@ -620,7 +630,6 @@ public:
 	};
 
 	double location;
-
 	double width;
 
 protected:
@@ -659,8 +668,7 @@ public:
 
 	FuzzyTwinPeaks(double location=0.0, double width=1.0, double scale = 1.0,  double bias = 0.0) :
 		Fuzzifier<T>(__FUNCTION__, "Fuzzy function of two peaks.", scale, bias) {
-		//setReferences();
-		// set(location, width, scale, bias);
+		/// TODO: use range instead
 		this->parameters.link("location", this->location = location);
 		this->parameters.link("width", this->width = width);
 		this->parameters.link("scale", this->scale = scale);
@@ -709,7 +717,6 @@ protected:
 	virtual inline
 	void updateScale() const {
 
-		//this->INVERSE = (width<0.0);
 		if (this->width >= 0.0){
 			this->scaleFinal = +2.0*this->scale;
 			this->biasFinal  =  this->bias;

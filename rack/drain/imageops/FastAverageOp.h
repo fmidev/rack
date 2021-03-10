@@ -267,7 +267,7 @@ protected:
   If the source image contains several channels, each channel is treated separately.
 
  \code
-  drainage shapes.png --iAverage 25  -o average-rgb.png
+  drainage image.png --iAverage 25  -o average-rgb.png
  \endcode
 
  \~exec
@@ -290,10 +290,7 @@ public:
 	};
 
 	FastAverageOp(const FastAverageOp & op) : WindowOp<Window<WindowConfig> >(op) {
-		//Logger mout(getImgLog(), __FUNCTION__);
-		//mout.warn() << "src: " << op.getParameters() << " =>  copyStruct ..." << mout.endl;
 		//parameters.copyStruct(op.getParameters(), op, *this);
-		//mout.warn() << "dst: " << this->getParameters() << " <= this" << mout.endl;
 	}
 
 	/// Delegates the invocation separately for each channel.

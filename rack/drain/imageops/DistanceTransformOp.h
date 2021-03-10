@@ -106,8 +106,11 @@ public:
 
     	dst.setGeometry(src.getGeometry());
     	// Alpha?
-    	//dst.setScaling(1,0, 0.0,1.0);
-    	dst.setPhysicalRange(0.0, 1.0);
+    	// dst.setScaling(1,0, 0.0,1.0);
+    	if (src.isPhysical()){
+    		dst.setPhysicalRange(src.getPhysicalRange(), true);
+    	}
+    	// dst.setPhysicalRange(0.0, 1.0);
 
     	dst.coordinatePolicy.set(src.coordinatePolicy);
 
@@ -165,13 +168,13 @@ protected:
 	};
 
 
+	//ValueScaling src2dst;
 
 	/// Sets internal parameters
 	/**
 	 *  Max value in the model should be set according to the channel which is used as control field.
 	 */
 	virtual
-	inline
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
@@ -183,7 +186,7 @@ protected:
 		mout.debug() << "dst of type=" << Type::getTypeChar(dst.getType()) << ", scaling: " << dst.getScaling();
 
 		if (dst.getScaling().isPhysical()){
-			mout.info() << "ok, physical scaling: ";
+			mout.info() << "ok, physical scaling [" << dst.getConf().getPhysicalRange() << "] : ";
 		}
 		else if (Type::call<typeIsSmallInt>(dst.getType())){
 			mout.note() << "no physical scaling, but small int, guessing: ";
@@ -205,11 +208,14 @@ protected:
 
 
 	virtual
-	const DistanceModel & getDistanceModel() const { return distanceModel; }; // const = 0; //
+	const DistanceModel & getDistanceModel() const {
+		return distanceModel;
+	};
 
 	virtual
-	DistanceModel & getDistanceModel() { return distanceModel; }; // = 0; //
-
+	DistanceModel & getDistanceModel() {
+		return distanceModel;
+	};
 
 };
   
@@ -249,7 +255,9 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	CoordinateHandler2D coordinateHandler(src); // TODO: change param to ImageConf
 	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
 
-	const ValueScaling src2dst(src.getScaling(), dst.getScaling());
+
+	const ValueScaling src2dst(dst.getConf().getTypeMax<double>()/src.getConf().getTypeMax<double>(), 0);
+	//const ValueScaling src2dst(src.getScaling(), dst.getScaling());
 
 	for (double d: {0.0, 0.5, 1.0, 255.0, 65535.0}){
 		mout.special() << d << " => " << src2dst.fwd(d) << " inv:" << src2dst.inv(d) << mout;
@@ -331,7 +339,8 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
 
 	//const ValueScaling src2dst(src.scaling.scale, src.scaling.offset, dst.scaling.scale, dst.scaling.offset);
-	const ValueScaling src2dst(src.getScaling(), dst.getScaling());
+	// const ValueScaling src2dst(src.getScaling(), dst.getScaling());
+	const ValueScaling src2dst(dst.getConf().getTypeMax<double>()/src.getConf().getTypeMax<double>(), 0);
 
 	// proximity (inverted distance)
 	dist_t d;

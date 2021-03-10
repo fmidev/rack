@@ -44,10 +44,13 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src, I
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	mout.debug() << "src: " << src.getGeometry() << ", dst: "  << dst.getGeometry() << mout.endl;
+	//mout.debug() << "src: " << src.getGeometry() << ", dst: "  << dst.getGeometry() << mout;
+	mout.info() << "src: " << src << mout;
+	mout.info() << "dst: " << dst << mout;
+	mout.warn() << getParameters() << mout;
 
 	if (src.getGeometry() != dst.getGeometry()){
-		mout.error() << "geometries not same" << mout.endl;
+		mout.error() << "geometries not same" << mout;
 	}
 
 	// assume 1 alpha channel!
@@ -56,14 +59,14 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src, I
 
 	const size_t width  = dstW.getWidth();
 	const size_t height = dstW.getHeight();
+
 	size_t address;
 	quality_t quality;
 	const bool DECAY = (decay != 1.0);
-	//const quality_t advantage  = (decay<=1.0) ? 1.0 : decay;
-	//const quality_t finalDecay = (decay<=1.0) ? decay : (1.0/decay);
 
 	ImageTray<const Channel>::const_iterator sit;
 	ImageTray<Channel>::iterator dit;
+
 	for (size_t i = 0; i < width; ++i) {
 		for (size_t j = 0; j < height; ++j) {
 			address = dstW.address(i, j);
@@ -102,11 +105,12 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 
 	const size_t width  = dstW.getWidth();
 	const size_t height = dstW.getHeight();
+
 	size_t address;
 	quality_t w1, w2;
 	ImageTray<const Channel>::const_iterator sit;
-	//ImageTray<const Channel>::const_iterator sit2;
 	ImageTray<Channel>::iterator dit;
+
 	for (size_t i = 0; i < width; ++i) {
 		for (size_t j = 0; j < height; ++j) {
 			address = dstW.address(i, j);

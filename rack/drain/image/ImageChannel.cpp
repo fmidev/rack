@@ -106,7 +106,7 @@ void MultiChannel::updateChannelVector() const {
 		// Test if segment viewed already (lazy init, prevents from re-scaling
 		// This way only new ones initialized, to prevent resetting channel specific scalings (and coord policies).
 		if (ChannelView(*this,k).hasSameSegment(channel)){
-			mout.debug2() << "channel[" << k << "] already in use, leaving scaling intact " << channel.getScaling() << mout.endl;
+			mout.debug2() << "channel[" << k << "] exists, scaling: " << channel.getScaling() << mout.endl;
 		}
 		else {
 			// links scaling to target image: channel.scalingPtr = this->scaling;
@@ -119,7 +119,7 @@ void MultiChannel::updateChannelVector() const {
 					const std::type_info & t = channel.getType();
 					if (Type::call<typeIsSmallInt>(t)){
 						channel.getScaling().setPhysicalScale(t, 0.0, 1.0);
-						mout.debug() << "using own physical scaling for channel[" << k << "], " << channel.getScaling() << mout.endl;
+						mout.debug() << "channel[" << k << "]: alpha scaling  " << channel.getScaling() << mout.endl;
 					}
 				}
 			}

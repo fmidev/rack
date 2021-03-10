@@ -516,7 +516,7 @@ bool DataSelector::getPathsDQ(const Hi5Tree & src, T & pathContainer, const ODIM
 			// addPath3(pathContainer, v, path); // ?
 		}
 		else {
-			mout.warn() << " skipping" << path << " / " << currentElem << mout;
+			mout.debug() << " skipping special: " << path << " / " << currentElem << mout;
 		}
 		/*
 		   else if (currentElem.is(ODIMPathElem::ARRAY)){

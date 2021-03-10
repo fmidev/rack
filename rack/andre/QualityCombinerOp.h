@@ -114,7 +114,14 @@ public:
 	 *   \param index   - deprecating? anomaly class id
 	 */
 	static
-	void updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string &label, unsigned short index); // const;
+	void updateOverallDetection(const drain::image::ImageFrame & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string &label, unsigned short index); // const;
+	//void updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string &label, unsigned short index); // const;
+
+	/*
+	static
+	void updateOverallDetection(const drain::image::ImageFrame & srcProb, drain::image::ImageFrame &  dstQind,  drain::image::ImageFrame & dstClass,
+			const std::string &label, unsigned short index); // const;
+	*/
 
 
 	/// Updates QIND and QCLASS from global level (dataset) to local level (data). Conditional; checks if already done.

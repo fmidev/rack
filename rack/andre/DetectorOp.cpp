@@ -107,11 +107,11 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 			mout.debug() << "CLASSNAME=" << CLASSNAME << " universal=" << (SUPPORT_UNIVERSAL) << '&' <<  (UNIVERSAL) << mout.endl;
 
-			const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
+			//const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
 
 			/// TODO: UNIVERSAL and several inputs?
 			// OVERALL QUALITY (PROB.)
-			PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(QIND) : dstData.getQualityData(QIND); // of first data (eg. TH)
+			PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("QIND") : dstData.getQualityData("QIND"); // of first data (eg. TH)
 			initDataDst(srcData, dstQind, "QIND");
 
 			// OVERALL QUALITY FIELD
@@ -125,32 +125,13 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			//dstProb.setNoSave(DetectorOp::STORE == 0);
 			dstProb.setNoSave(!DetectorOp::STORE);
 
-			mout.debug() << "dstProb: " << dstProb << mout.endl;
+			// mout.warn() << "dstProb: " << dstProb << mout.endl;
 
 			/// MAIN COMMAND
 			//if (DetectorOp::STORE) // ???
-				processDataSet(srcDataSet, dstProb,  dstDataSet);
+			processDataSet(srcDataSet, dstProb,  dstDataSet);
 			// else skip! To collect legends.
 
-			//@ dstProb.updateTree(); // create /what, /where etc.
-			//@ DataTools::updateInternalAttributes(dstProb.tree); // collect attributes from /what, /where to /data:data properties so that srcData.getQualityData() works below.
-			// update str trees?
-
-
-			/*
-			const PlainData<PolarSrc> & srcProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? srcDataSet.getQualityData(CLASSNAME) : srcData.getQualityData(CLASSNAME); // slows, due to src/dst const
-			 */
-			const PlainData<PolarSrc> srcProb(dstProb);
-
-			if (srcProb.data.isEmpty()){
-				//mout.warn() << "srcProb" << srcProb << mout.endl;
-				//mout.note() << "dstProb" << dstProb << mout.endl;
-				mout.warn() << "empty srcProb," << CLASSNAME << " univ=" << (int)(SUPPORT_UNIVERSAL && UNIVERSAL) << mout.endl;
-				return;
-			}
-
-			//hi5::Writer::writeFile("testo.h5", );
-			//mout.warn() << dstDataSet << mout.endl;
 			/*
 			File::write(srcProb.data, "srcProb.png");
 			if (!dstQind.data.isEmpty())
@@ -158,7 +139,8 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			if (!dstClass.data.isEmpty())
 				File::write(dstClass.data, "dstClass1.png");
 			 */
-			QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
+			//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
+			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
 			//File::write(dstQind.data, "dstQind2.png");
 			//File::write(dstClass.data, "dstClass2.png");
 			//mout.note() << dstDataSet << mout.endl;

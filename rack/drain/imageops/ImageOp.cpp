@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "ImageOp.h"
-#include "../image/File.h" // debugging
+#include "drain/image/File.h" // debugging
 
 
 namespace drain
@@ -55,16 +55,15 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
-	mout.warn() << "srcConf:      " << srcConf << mout.endl;
-	mout.warn() << "dst.getConf:  " << dst.getConf() << mout.endl;
+	// mout.warn() << "srcConf:      " << srcConf << mout.endl;
+	// mout.warn() << "dst.getConf:  " << dst.getConf() << mout.endl;
 
 	ImageConf dstConf(dst.getConf());
 
 	/// Coord policy is changed very rarely, so it is copied here, as a default.
 	//  Image operator can change it if needed, with getDstConf().
 	dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
-
-	mout.warn() << "dstConf0:  " << dstConf << mout.endl;
+	// mout.warn() << "dstConf0:  " << dstConf << mout.endl;
 
 	/// By default, use src type. Image operator changes it if needed (e.g. signed, integer or float).
 	//if (!dst.typeIsSet())
@@ -76,7 +75,7 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 	if (!dstConf.typeIsSet())
 		dstConf.setType(srcConf.getType());
 
-	mout.warn() << "dstConfRet:" << dstConf << mout.endl;
+	// mout.warn() << "dstConfRet:" << dstConf << mout.endl;
 	// dstConf.setScaling(src.getScaling());
 	// mout.warn() << "dstConf2: " << dstConf << mout.endl;
 	/*
@@ -101,7 +100,7 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 	}
 	*/
 
-
+	/*
 	if (!dstConf.isPhysical()){
 		mout.warn() << "dstConf (" << dstConf.getScaling() << ") has no physical range , adopting scaling of src (" << srcConf.getScaling() << ')' << mout.endl;
 		dstConf.adoptScaling(srcConf, srcConf.getType(), dstConf.getType());
@@ -109,21 +108,26 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 	else {
 		mout.debug() << "dst has physical range " << dstConf.getScaling() << mout.endl;
 	}
+	*/
+	const bool ORIG_ALPHA = dst.hasAlphaChannel();
 
 	dst.setConf(dstConf);
 
 	//dst.setGeometry(dstConf.getGeometry());
 
-	/// TODO: copy alpha, fill alpha?
-	if (dst.hasAlphaChannel()){
+	/// Some operators, like QualityOverrideOp, do not like modifying the target dst (unless empty)
+	if (dst.hasAlphaChannel() && !ORIG_ALPHA){
 		double maxValue = dst.getConf().getTypeMax<double>();
 		mout.info() << "filling alpha channel with " << maxValue << mout.endl;
 		dst.getAlphaChannel().fill(maxValue);
 	}
 
+	/*
 	mout.warn() << "final dst:    " << dst << mout;
 	mout.warn() << "final dst[0]: " << dst.getChannel(0) << mout;
-
+	ImageView view(dst, 0, 1);
+	mout.warn() << "final viewDst: " << view << mout;
+	*/
 }
 
 
@@ -161,10 +165,9 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	}
 
 	mout.special() << "srcFrame:     " << srcFrame << mout;
-	mout.special() << "srcFrame Conf: " << srcFrame.getConf() << mout;
+	mout.debug()   << "srcFrame Conf: " << srcFrame.getConf() << mout;
 	//mout.special() << "srcFrame Enc:  " << srcFrame.getEncoding() << mout;
-	mout.special() << "srcFrame Sca:  " << srcFrame.getScaling() << mout;
-	// mout.special() << "srcFrame E.S:  " << srcFrame.getEncoding().getScaling() << mout;
+	mout.debug()   << "srcFrame Sca:  " << srcFrame.getScaling() << mout;
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcFrame);
@@ -176,10 +179,7 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	dstTray.setChannels(dstImage);
 	mout.debug() << "dstTC0: " << dstTray.get(0) << mout.endl;
 
-	//process(srcTray, dstTray);
 	traverseChannels(srcTray, dstTray);
-
-	//drain::image::File::write(dstImage, "Mika.png");
 
 }
 
@@ -192,10 +192,7 @@ void ImageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Imag
 	srcTray.setChannels(src);
 	srcTray.setAlphaChannels(srcWeight);
 
-
 	ImageTray<Image> dstTray;
-	//makeCompatible(src, dst);
-	//makeCompatible(srcWeight, dstWeight);
 	dstTray.set(dst);
 	dstTray.setAlpha(dstWeight);
 

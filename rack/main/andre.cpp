@@ -201,18 +201,12 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
 		mout.timestamp("BEGIN_ANDRE");
-		//mout.warn() = "hey!";
-
-
-
-		// this->bean.dataSelector.setParameters(ctx.andreSelect);
 
 		mout.debug() << "Running:  " << this->bean << mout.endl;
 		mout.note() << "AnDRe selector: " << ctx.andreSelect << mout.endl;
 
-		//const Hi5Tree &src = ctx.inputHi5;
-		 //For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
-		Hi5Tree & dst =ctx.getHi5(RackContext::INPUT);
+		// For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
+		Hi5Tree & dst = ctx.getHi5(RackContext::INPUT);
 		const Hi5Tree &src = dst;
 		//mout.note() << src << mout.endl;
 

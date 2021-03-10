@@ -60,7 +60,7 @@ public:
 	virtual
 	~DistanceTransformFillOp(){};
 
-    virtual inline
+    virtual //inline
     void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const {
 
     	// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
@@ -69,7 +69,7 @@ public:
     	if (!dstConf.hasAlphaChannel())
     		dstConf.setAlphaChannelCount(1);
 
-    	dstConf.setPhysicalRange(0.0, 1.0); // ??
+    	//dstConf.setPhysicalRange(0.0, 1.0); // ??
 
     	// dstConf.coordinatePolicy.set(srcConf.coordinatePolicy);
 

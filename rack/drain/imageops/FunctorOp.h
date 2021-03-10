@@ -128,10 +128,13 @@ protected:
 /**!
  *   \template F - unary (single-parameter) functor
  */
-template <class F>
+template <class F,bool NORM=false,bool SIGN=false>
 class UnaryFunctorOp : public FunctorOp<F>
 {
 public:
+
+	//static const bool normalize  = NORM;
+	//static const bool signedType = SIGN;
 
 	/**
 	 *  \param adaptParameters - add all the parameters of the functors to this op's parameters
@@ -175,6 +178,29 @@ public:
 
 protected:
 
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {
+
+		if ((dst.getScale()==0.0) || !dst.typeIsSet())
+			dst.setEncoding(src.getEncoding());
+
+		// TODO: check if int, and unsigned, and minValue
+		if (SIGN && (dst.getMinPhys()>=0.0)){
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+			mout.warn() << this->functor.getName() << " would need signed type instead of : " << dst.getEncoding() << mout;
+		}
+
+		if (NORM){
+			if (SIGN)
+				dst.setPhysicalRange(-1.0, +1.0, true);
+			else
+				dst.setPhysicalRange( 0.0, +1.0, true);
+		}
+
+		dst.setGeometry(src.getGeometry()); //geometry = src.geometry;
+
+		dst.setCoordinatePolicy(src.getCoordinatePolicy());
+
+	}
 
 
 	virtual
@@ -188,8 +214,8 @@ protected:
 
 };
 
-template <class T>
-void UnaryFunctorOp<T>::traverseChannel(const Channel &src, Channel & dst) const {
+template <class T,bool NORM,bool SIGN>
+void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & dst) const {
 
 	//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(UnaryFunctorOp)", __FUNCTION__);
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);

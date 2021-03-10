@@ -140,11 +140,7 @@ public:
 
  \tparam - Accumulating unit that also handles decoding/encoding of the values, must define ::conf
 
- \code
-   drainage shapes.png --iImpulseAvg  0.9,5,5 -o shapes-impulse-90.png
-   drainage shapes.png --iImpulseAvg  0.5,5,5 -o shapes-impulse-50.png
-   drainage shapes.png --iImpulseAvg  0.1,5,5 -o shapes-impulse-10.png
- \endcode
+See examples in ImpulseAvgOp.h
 
  */
 template <class T>
@@ -251,7 +247,9 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	dst.setScaling(src.getScaling());
-	dstWeight.setScaling(srcWeight.getScaling());
+	// OLD dstWeight.setScaling(srcWeight.getScaling());
+	// NEW
+	dstWeight.setPhysicalRange({0.0, 1.0}, true);
 
 	mout.warn() << dst.getProperties() << mout.endl;
 

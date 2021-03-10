@@ -468,7 +468,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// ? prog.routine.clear();
 		}
 		else {
-			mout.success() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
+			mout.debug() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
 			//try {
 			cmd.update(); //  --select etc
 			cmd.exec();

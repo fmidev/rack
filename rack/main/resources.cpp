@@ -141,6 +141,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(img.getType()))){ // CHECK LOGIC!
 				mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
 			}
+			img.properties["path"] = drain::sprinter(path,"/").str();
 		}
 		else {
 			mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
@@ -171,10 +172,12 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 	RackContext & ctx = *this;
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	ODIMPath path;
+
 	// if ctx.select ..
 	if (!ctx.select.empty()){
 		mout.info() << "selector (" << ctx.select <<  ")" << mout.endl;
-		ODIMPath path = findImage();
+		path = findImage();
 		mout.info() << "selected new image ->  " << path << mout.endl;
 	}
 
@@ -188,7 +191,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 	}
 
 	if (ctx.currentImage == NULL){
-		ODIMPath path = findImage();
+		path = findImage();
 		if (!path.empty())
 			mout.info() << "found image at: " << path << mout.endl;
 	}
@@ -199,6 +202,8 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
 		return ctx.grayImage;
 	}
+
+	//ctx.currentImage->properties["path"] = path;
 
 	return *ctx.currentImage;
 

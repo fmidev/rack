@@ -66,8 +66,8 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//const double DEFAULT_QUALITY = 0.7;
-	const double DEFAULT_QUALITY = 1.0;
+	const double DEFAULT_QUALITY = 0.9;
+	// const double DEFAULT_QUALITY = 1.0;
 
 	if (dstQind.data.isEmpty()){
 
@@ -80,9 +80,11 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
 
 		// Geometry
-		dstQind.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
+		dstQind.setGeometry(srcData.odim.area);
 		mout.debug() << "set geometry: " << dstQind.data.getGeometry() << mout.endl;
 		dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
+
+		//mout.special() << "quality " << dstQind << mout.endl;
 
 		// Fill with init value
 		if (quantity == "QIND"){
@@ -113,24 +115,23 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 }
 
-//void QualityCombinerOp::updateOverallDetection(const PlainData<PolarDst> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
-void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
+//void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
+void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 
 	drain::Logger mout(__FUNCTION__, label+"(DetectorOp)");
-	mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
+	//mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
 	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
 
-	QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
+	//QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
 
-	/*
 	if (dstQind.data.isEmpty()){
 		mout.note() << "Creating QIND data" << mout.endl;
 		getQuantityMap().setQuantityDefaults(dstQind, "QIND");
-		dstQind.data.setGeometry(srcProb.data.getGeometry());
-		//const
-		dstQind.data.fill(dstQind.odim.scaleInverse(1.0)); // max quality by default
+		dstQind.setGeometry(srcProb.getGeometry());
+		//dstQind.data.setGeometry(srcProb.getGeometry());
+		dstQind.data.fill(dstQind.odim.scaleInverse(0.6)); // ? max quality by default
 	};
-	*/
+
 
 	drain::VariableMap & qindHow = dstQind.getHow();
 	qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
@@ -140,7 +141,7 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 	if (dstClass.data.isEmpty()){
 		mout.note() << "Creating CLASS data" << mout.endl;
 		getQuantityMap().setQuantityDefaults(dstClass, "CLASS");
-		dstClass.data.setGeometry(srcProb.data.getGeometry());
+		dstClass.data.setGeometry(srcProb.getGeometry());
 		// dstClass.fill(0);
 	};
 
@@ -157,28 +158,46 @@ void QualityCombinerOp::updateOverallDetection(const PlainData<PolarSrc> & srcPr
 
 	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
-	Image::const_iterator  it = srcProb.data.begin();
+	Image::const_iterator  it = srcProb.begin();
 	Image::iterator pit = dstQind.data.begin();
 	Image::iterator cit = dstClass.data.begin();
 
+	mout.debug() << "srcProb: " << srcProb << mout;
+	//mout.special() << '\t' << dstQind.odim.scaleForward(i)  << mout;
+	//mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
+
+	/*
+	for (int i : {0,1,64,128,192,255}){
+		mout.special() << i << mout;
+		//mout.special() << '\t' << srcProb.odim.scaleForward(i)  << mout;
+		mout.special() << '\t' << srcProb.getConf().fwd(i) << mout;
+		mout.special() << '\t' << dstQind.odim.scaleForward(i)  << mout;
+		mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
+	}
+	*/
+
 	/// Probability of anomaly
-	//double p;
-	/// Quality = 1-p
-    #pragma poista DEFAULT_QUALITY
-	const double DEFAULT_QUALITY = 0.7;
-	const double qThreshold = DEFAULT_QUALITY; // because no use to increase quality with anomaly
+	/// Quality = 1-Probability
+
+	// Yes, quality is *decreased* here.
+
+	const drain::ValueScaling & srcScale = srcProb.getConf();
+	//const double DEFAULT_QUALITY = 0.7; // redesign
+	const double classUpdateThreshold = 0.5; // because no use to increase quality with anomaly
 	double q;
 	/// max quality this far
 	double qCurrent;
-	while (it != srcProb.data.end()){
+	while (it != srcProb.end()){
 		//p = *it;
-		q = 1.0 - srcProb.odim.scaleForward(*it);
+		//q = 1.0 - srcProb.odim.scaleForward(*it);
+		//q = 1.0 - srcProb.odim.scaleForward(*it);
+		q = 1.0 - srcScale.fwd(*it);
 		//qMax = *pit;
 		qCurrent = dstQind.odim.scaleForward(*pit);
 		if (q < qCurrent){
 			//if (c < static_cast<int>(*pit) ){
 			*pit = dstQind.odim.scaleInverse(q);
-			if (q < qThreshold)
+			if (q < classUpdateThreshold)
 				*cit = index;
 		}
 		++it; ++pit; ++cit;

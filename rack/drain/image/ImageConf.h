@@ -53,12 +53,12 @@ class Encoding :  public drain::ValueScaling {  //{ //public drain::Caster,
 public:
 
 	inline
-	Encoding(const std::type_info & t = typeid(unsigned char)) : scalingPtr(this) { // :scaling(*this)
+	Encoding(const std::type_info & t = typeid(unsigned char)){ // : scalingPtr(this) {
 		setType(t);
 	}
 
 	inline
-	Encoding(const Encoding & encoding) : scalingPtr(this) { // :scaling(*this)
+	Encoding(const Encoding & encoding){ // : scalingPtr(this) {
 		setEncoding(encoding);
 		//setType(encoding.caster.getType());
 	}
@@ -161,13 +161,10 @@ public:
 
 
 	/// Sets channel specific scaling instead of shared (image-level) scaling
+	/*
 	inline
 	void useOwnScaling() {
 		if (scalingPtr != this){
-			// copy (including physical range):
-			//conf.setScaling(*scalingPtr);
-			//scaling.assign(*scalingPtr);
-			//scalingPtr = & conf; //scaling;
 			scalingPtr = this;
 		}
 	}
@@ -177,19 +174,15 @@ public:
 	bool hasOwnScaling() const {
 		return scalingPtr == this; //& conf.getScaling();
 	}
-
+	 */
 
 	/*
-	  problem: scaling may be linked ie different than that of encoding
-	inline
-	void setPhysicalScale(double min, double max){
-		scaling.setPhysicalScale(caster.getType(), min, max);
-	}
-	*/
 	virtual inline
 	const drain::ValueScaling & getScaling() const {
-		return *scalingPtr;
+		return *this;
+		//return *scalingPtr;
 	}
+	*/
 
 	/// Facilitates modifications provided directly bydrain::ValueScaling object.
 	/**
@@ -197,31 +190,35 @@ public:
 	 *   In the case of channels, this means changing from shared image-level scaling
 	 *   to channel specific scaling.
 	 */
+	/*
 	virtual inline
 	drain::ValueScaling & getScaling(){
-		useOwnScaling();
+		//useOwnScaling();
 		return *this; // return *scalingPtr; // conf; // *scalingPtr; //
 	}
 
 	virtual inline
 	void setScaling(const drain::ValueScaling & scaling){
-		useOwnScaling();
+		//useOwnScaling();
 		ValueScaling::assign(scaling);
-		//scalingPtr->assign(scaling);
-		//conf.setScaling(scaling);
 	}
+	*/
 
 	/// Set linear scaling
+	/*
 	virtual inline
 	void setScaling(double scale, double offset){
-		useOwnScaling();
+		//useOwnScaling();
 		ValueScaling::set(scale, offset); // virtual IMPORTANT for channels/view
 	}
+	*/
 
+	/*
 	virtual inline
 	void linkScaling(const drain::ValueScaling & scaling){
 		scalingPtr =  &scaling;
 	}
+	*/
 
 
 
@@ -325,7 +322,7 @@ public:
 
 private:
 
-	drain::ValueScaling const * scalingPtr;
+	//drain::ValueScaling const * scalingPtr;
 
 };
 
@@ -399,6 +396,7 @@ std::ostream & operator<<(std::ostream &ostr, const ImageConf & conf){
 	if (s.isScaled() || s.isPhysical()){
 		ostr << "*(" << s << ")";
 	}
+	//ostr << (conf.hasOwnScaling() ? '!' : '&');
 	ostr << ' ' << 'c' << conf.coordinatePolicy;
 	return ostr;
 }

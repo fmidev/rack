@@ -50,18 +50,22 @@ namespace image
 /// Gamma correction. Intensity is mapped as f' = f^(gamma)
 /*!
    Adjusts the brightness such that intensities remain monotonously inside the original scale.
-   Unline in direct linear scaling neither undeflow nor overflow occurs and details remain
+   Unlike in direct linear scaling neither underflow nor overflow occurs and visual details remain
    detectable down to applied bit resolution.
 
+	Prior to calling this function it should be ensured that the source image has normalized scale
+	(eg. with \c--physicalRange, \c -R ).
+
    \code
-   drainage gray.png --physicalRange 0:1 --iGamma 2.0 -o gamma-bright.png
-   drainage gray.png --physicalRange 0:1 --iGamma 0.5 -o gamma-dark.png
+   drainage gray.png -R 0:1 --iGamma 1.5 -o gamma-bright.png
+   drainage gray.png -R 0:1 --iGamma 2.0 -o gamma-bright.png
+   drainage gray.png -R 0:1 --iGamma 0.5 -o gamma-dark.png
    \endcode
 
 
    \code
-   drainage color.png --physicalRange 0:1 --iGamma 2.0 -o gamma-color-bright.png
-   drainage color.png --physicalRange 0:1 --iGamma 0.5 -o gamma-color-dark.png
+   drainage color.png -R 0:1 --iGamma 2.0 -o gamma-color-bright.png
+   drainage color.png -R 0:1 --iGamma 0.5 -o gamma-color-dark.png
    \endcode
 
  *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving

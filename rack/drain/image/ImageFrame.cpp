@@ -124,12 +124,13 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	// getter used, because possibly forwarded view-> view->
 
 	/// ENCODING
-	conf.linkScaling(src.getScaling());    // NOTE: links also phys range
-	propertiesPtr = & src.getProperties(); // what about (alpha) channel scaling?
+	conf.setScaling(src.getScaling());
+	//conf.linkScaling(src.getScaling());    // NOTE: links also phys range
+	propertiesPtr = & src.getProperties(); // what about scaling etc ref variables?
 
 	// mout.fail() << "src:  " << src << mout;
-	// mout.fail() << "srcS: " << src.getScaling() << mout;
-	// mout.fail() << "conf: " << conf << mout;
+	// mout.fail() << "src.sc: " << src.getScaling() << mout;
+	// mout.fail() << "cnf.sc: " << conf << mout;
 
 	// GEOMETRY
 	if (catenate){
@@ -191,15 +192,22 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	std::cerr << '\n';
 	*/
 
+	/*
+	mout.fail() << "cnf<  : " << conf << mout;
+	const ValueScaling & sc = conf.getScaling();
+	mout.fail() << "cnf>  : " << conf << mout;
+	*/
+
 }
 
 void ImageFrame::copyData(const ImageFrame & src){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug() << "start" << mout;
 
 	if (getGeometry() != src.getGeometry()){
-		mout.error() << "conflicting geometries: " << getGeometry() << " vs. " << src.getGeometry() << mout.endl;
+		mout.warn() <<  "conflicting geometries: " << *this << mout;
+		mout.error() << "conflicting geometries: " << src.getGeometry() << " vs " << getGeometry() << mout;
 		return;
 	}
 
@@ -221,14 +229,19 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	ostr << " '"<< getName() << "'\t";
 	ostr << getGeometry() << ' ' << Type::getTypeChar(conf.getType()) << '@' << (conf.getElementSize()*8) << 'b';
 
+	ostr << ' ' << getConf();
+
+	/*
 	// Scaling is worth displaying only if it "exists" ...
 	//const drain::ValueScaling & s = getScaling();
 	const Encoding & s = getConf();
-	if (s.isScaled() || s.isPhysical()){
+	//if (s.isScaled() || s.isPhysical()){
 		ostr << "*(" << s << ")";
 		// ostr << "*(" << s << ")";
-	}
+	//}
 	ostr << (s.hasOwnScaling() ? '!' : '&') << "\t";
+	*/
+
 
 	/*
 	ostr << ' ' << getgeometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
@@ -251,50 +264,6 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 
 }
 
-/*
-size_t ImageFrame::getChannelIndex(const std::string & index) const {
-
-	// consider: conv to lower case
-
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-
-
-	if (index.empty()){
-		mout.warn() << "index str empty, returning 0" << mout.endl;
-		return 0;
-	}
-
-	size_t i = 0;
-
-	switch (index.at(0)) {
-	case 'r':  // red
-		i = 0;
-		break;
-	case 'g':  // green
-		i =  1;
-		break;
-	case 'b':  // blue
-		i =  2;
-		break;
-	case 'a':  // alpha
-		i =  getImageChannelCount();
-		break;
-	default:
-		/// Number
-		std::stringstream sstr(index);
-		sstr >> i;
-		if ((i == 0) && (index != "0"))
-			throw std::range_error(index + "<-- Image::getChannelIndex: unknown channel symbol");
-	}
-
-	if (i >= getChannelCount()){
-		mout.warn() << "index " << i << " larger than channelCount " << getChannelCount() << mout.endl;
-	}
-
-	return i;
-
-}
-*/
 
 
 }  // image::

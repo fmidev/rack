@@ -73,15 +73,13 @@ public:
 		 parameters.link("height",this->height = height);
 		 parameters.link("i", this->i0 = i0);
 		 parameters.link("j", this->j0 = j0);
-		 //setParameters(p);
 	};
 
-	CropOp(const CropOp & op){
+	CropOp(const CropOp & op) : ImageOp(op) {
 		parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
 	virtual
-	//void make Compatible(const ImageFrame & src, Image & dst) const;
 	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 	inline

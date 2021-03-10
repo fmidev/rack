@@ -62,7 +62,7 @@ void CmdInputFile::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, getName().c_str()); //, __FILE__);
+	drain::Logger mout(ctx.log, getName().c_str()); // __FILE__
 
 	mout.timestamp("BEGIN_FILEREAD");
 
@@ -72,6 +72,7 @@ void CmdInputFile::exec() const {
 	std::string fullFilename = ctx.inputPrefix + value;
 
 	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
+	ctx.unsetCurrentImages();
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
 	//mout.warn() << "lastCommand: '" << drain::CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
@@ -85,14 +86,11 @@ void CmdInputFile::exec() const {
 
 	try {
 
+
 		if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
-			// mout.note() << (*ctx.currentHi5)("dataset1/data1")[ODIMPathElem::ARRAY].data.dataSet << mout.endl;
-			//resources.setSource(*ctx.currentHi5, *this); wronk
-		}  //
-		//else if (pngFileExtension.test(this->value) || pnmFileExtension.test(this->value)){
+		}
 		else if (IMAGE_PNG || IMAGE_PNM){
-			//else if (drain::image::FilePng::fileNameRegExp.test(this->value) || drain::image::FilePnm::fileNameRegExp.test(this->value)){
 			readImageFile(fullFilename);
 		}
 		else if (textFileExtension.test(this->value))
@@ -122,7 +120,9 @@ void CmdInputFile::exec() const {
 	ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
 	//mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
+	//mout.note() << "ctx.getStatusMap()" << mout;
 	ctx.getStatusMap();
+	//mout.note() << "ctx.getStatusMap() start" << mout;
 
 	mout.timestamp("END_FILEREAD");
 	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
@@ -155,21 +155,21 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
 	//mout.warn() << "updateInternal" << mout.endl;
-
+	//ctx.unsetCurrentImages();
 
 	/// True, if user seems to provide
 	// const drain::CommandRegistry & r = drain::getRegistry();
 	// const std::string &lastCmd = r.getLastCommand();
 	// const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
 	// const bool AUTO_EXEC = this->execRoutine; // NEW
-	// const bool APPEND_INPUT = false; // (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
+	// const bool SCRIPT_DEFINED = false; // (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
 	// const bool APPEND_INPUT = !ctx.statusFlags.isSet(drain::CommandBank::SCRIPT_DEFINED); // TODO: check also if this command is triggering (any more)
 	// static const drain::Flagger::value_t TRIGGER_SECTION = drain::Static::get<drain::TriggerSection>().index;
-	const bool APPEND_INPUT = !ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
+	const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
+
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
-	//drain::VariableMap & what = srcTmp["what"].data.attributes;
-	drain::Variable & object = srcTmp["what"].data.attributes["object"];
+	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
 	if (object.isEmpty()){
 		mout.warn() << "/what:object empty, assuming polar volume, 'PVOL'" << mout.endl;
 		object = "PVOL";
@@ -177,17 +177,17 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	if ((object.toStr() == "COMP") || (object == "IMAGE")){
 
-		mout.info() << "Cartesian" << mout.endl;
+		mout.info() << "Cartesian [" << object << ']' << mout.endl;
 
 		//DataTools::updateCoordinatePolicy(srcTmp, RackResources::limit);
-		// resources.setSource(ctx.cartesianHi5, *this);
 		ctx.currentHi5 = & ctx.cartesianHi5;
-		//ctx.currentCartesianHi5 = & ctx.cartesianHi5;
 
-		// if (AUTO_EXEC  // SINGLE_INPUT ||
+		// Move or append srcTmp to ctx.cartesianHi5
 		if (ProductBase::appendResults.isRoot() || ctx.cartesianHi5.isEmpty()){
+			// Move (replace)
 			ctx.cartesianHi5.swap(srcTmp);
 			//mout.note() << ctx.cartesianHi5 << mout.endl;
+			mout.info() << "Swapped: " << ctx.cartesianHi5 << mout.endl;
 		}
 		else if (ProductBase::appendResults.isIndexed()){
 			mout.note() << "Cartesian, append mode: " << ProductBase::appendResults << mout.endl;
@@ -215,17 +215,15 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			ctx.composite.setProjection(value);
 		}
 		*/
-		DataTools::updateInternalAttributes(ctx.cartesianHi5); // *ctx.currentHi5);
 	}
 	else {
 
-		mout.info() << "Polar product" << mout.endl;
+		mout.info() << "Polar product [" << object << ']' << mout.endl;
+
 		ctx.currentHi5 =      & ctx.inputHi5;
 		ctx.currentPolarHi5 = & ctx.inputHi5;
-		//DataTools::updateCoordinatePolicy(srcTmp, RackResources::polarLeft);
 
-		if (ctx.inputHi5.isEmpty() || !APPEND_INPUT){
-			// mout.debug() << "AUTO_EXEC: " << AUTO_EXEC << mout.endl;
+		if (ctx.inputHi5.isEmpty() || SCRIPT_DEFINED){
 			ctx.inputHi5.swap(srcTmp);
 		}
 		else {
@@ -233,11 +231,11 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		}
 
 		//mout.warn() << "s" << mout.endl;
-		DataTools::updateInternalAttributes(*ctx.currentHi5);
 		DataTools::updateCoordinatePolicy(ctx.inputHi5, RackResources::polarLeft);
 
 	}
 
+	DataTools::updateInternalAttributes(*ctx.currentHi5);
 
 
 	mout.debug() << "end" << mout.endl;
@@ -399,9 +397,10 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 			// if dstChild EMPTY, add it now.
 			if (srcQind.data.isEmpty()){ // ie not handled above
 				mout.warn() << "src QIND empty for  ["<< quantity << "] " << srcChild << mout.endl;
-				mout.warn() << " (update under constr.)" << mout.endl;
+				mout.unimplemented() << "numeric class index? (update under constr.)" << mout.endl;
 				const PlainData<PolarSrc> srcProb(src[srcChild]);  // TODO: resources and quality code?
-				QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123);
+				//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123);
+				QualityCombinerOp::updateOverallDetection(srcProb.data, dstQind, dstClass, quantity, (short unsigned int)123); // EXPERIMENTAL
 			}
 
 			ODIMPathElem dstChild(ODIMPathElem::QUALITY);
@@ -649,14 +648,15 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.inputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
 		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.inputHi5); // $ odim.copyToRoot(ctx.inputHi5);
+		mout.unimplemented() << "swap HDF5 for Cartesian data" << mout;
 	}
 	else {
 		if ((object == "SCAN") || (object == "PVOL")) {
-			mout.note() << "Polar object (" << object << ") detected" << mout.endl;
+			mout.note() << "Polar object (" << object << ") detected" << mout;
 		}
 		else {
 			ctx.inputHi5["what"].data.attributes["what:object"] = "SCAN";
-			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout.endl;
+			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout;
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)

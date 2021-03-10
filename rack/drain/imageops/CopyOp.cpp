@@ -43,8 +43,10 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	if (!dst.typeIsSet())
 		dst.setType(src.getType());
 
-	//if (dst.isEmpty())
-	dst.setGeometry(src.getGeometry());
+	if (dst.isEmpty())
+		dst.setGeometry(src.getGeometry());
+	else
+		dst.setArea(src.getGeometry());
 
 	if (functor.dstView.empty()){
 		dst.setChannelCount(src.getImageChannelCount(), src.getAlphaChannelCount());
@@ -66,7 +68,6 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	}
 
 	mout.debug2() << " src:       " << src << mout.endl;
-	mout.debug3() << " dst(orig): " << dst << mout.endl;
 	/*
 	 drain::ValueScaling s;
 	  s.adoptScaling(src.getScaling(), src.getType(), dst.getType());
@@ -74,6 +75,8 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	*/
 	dst.adoptScaling(src, src.getType(), dst.getType());
 	mout.debug2() << " dst:       " << dst << mout.endl;
+
+	mout.warn() << " dst(orig): " << dst << mout.endl;
 
 }
 

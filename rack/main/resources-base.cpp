@@ -56,7 +56,7 @@ std::string ImageContext::outputQuantitySyntax("${what:quantity}_${command}");
 
 void ImageContext::getImageInfo(const drain::image::Image *ptr, Variable & entry) {
 	std::stringstream sstr;
-	if (ptr){
+	if (ptr != nullptr){
 		ptr->toOStr(sstr);
 	}
 	else {

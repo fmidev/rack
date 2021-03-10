@@ -112,6 +112,13 @@ public:
 		//this->parameters.link("LIMIT", this->LIMIT=LIMIT);
 	}
 
+	CopyOp(const CopyOp & cmd) : UnaryFunctorOp<CopyFunctor>(cmd) {
+		//setParameters(p)
+		//this->functor.s
+		//this->parameters.link("LIMIT", this->LIMIT=LIMIT);
+	}
+
+
 	virtual
 	//void make Compatible(const ImageFrame & src, Image & dst) const;
 	void getDstConf(const ImageConf & src, ImageConf & dst) const;

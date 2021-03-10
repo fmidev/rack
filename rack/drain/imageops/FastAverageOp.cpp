@@ -51,8 +51,13 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		return;
 	}
 
+	drain::Frame2D<size_t> area;
+	area.setWidth(conf.getWidth());
+	area.setHeight(conf.getHeight() ? conf.getHeight() : conf.getWidth());
+
+
 	/// Special case
-	if ((conf.getWidth()==1) && (conf.getHeight()==1)){
+	if ((area.getWidth()==1) && (area.getHeight()==1)){
 		mout.info() << "Special case: 1x1 window => simple copy" << mout.endl;
 		dst.copyData(src);
 		return;
@@ -66,8 +71,8 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 	mout.debug3() << "dst: " << dst << mout.endl;
 
 	// Accelerate computation if (1 x H) or (W x 1) window.
-	if (conf.getWidth() > 1){
-		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(conf.getWidth()); // <WindowConfig>
+	if (area.getWidth() > 1){
+		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(area.getWidth()); // <WindowConfig>
 		window1.setSrcFrame(src);
 		window1.setDstFrame(tmp);
 		mout.debug2() << window1 << mout.endl;
@@ -79,9 +84,9 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		tmp.copyDeep(src);
 	}
 
-	if (conf.getHeight() > 1){
-		mout.special() << conf.frame << mout.endl;
-		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(conf.getHeight()); // <WindowConfig>
+	if (area.getHeight() > 1){
+		mout.special() << area << mout.endl;
+		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(area.getHeight()); // <WindowConfig>
 		mout.debug2() << window2 << mout.endl;
 		window2.setSrcFrame(tmp);
 		window2.setDstFrame(dst);
@@ -111,28 +116,36 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 
 	makeCompatible(src.getConf(), tmp);
 	makeCompatible(srcAlpha.getConf(), tmpAlpha);
-	//mout.warn() << "tmp:      " << tmp      << mout.endl;
-	//mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
+	tmpAlpha.setPhysicalRange(0, 1, true); // important
+
+	// mout.warn() << "tmp:      " << tmp      << mout.endl;
+	// mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
+	drain::Frame2D<size_t> area;
+	area.setWidth(conf.getWidth());
+	area.setHeight(conf.getHeight() ? conf.getHeight() : conf.getWidth());
 
 	// TODO:Generalize to SeparableWindowOp,
-	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, true> > window1(conf.getWidth());
+	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, true> > window1(area.getWidth());
 	window1.setSrcFrame(src);
 	window1.setSrcFrameWeight(srcAlpha);
 	window1.setDstFrame(tmp);
 	window1.setDstFrameWeight(tmpAlpha);
 	window1.run();
-	//FilePng::write(tmp, name+"-D.png");
-	// FilePng::write(tmpAlpha, name+"-Q.png");
+	// FilePng::write(tmp, name+"-D1.png");
+	// FilePng::write(tmpAlpha, name+"-A1.png");
 
-	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, false> > window2(conf.getHeight());
+	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, false> > window2(area.getHeight());
 	window2.setSrcFrame(tmp);
 	window2.setSrcFrameWeight(tmpAlpha);
 	window2.setDstFrame(dst);
 	window2.setDstFrameWeight(dstAlpha);
 	window2.run();
+	// FilePng::write(dst, name+"-D2.png");
+	// FilePng::write(dstAlpha, name+"-A2.png");
 
-	//mout.warn() << "check scaling of the result..." << src.getScaling() << " <=> " << dst.getScaling() << mout.endl;
-	//dst.setScaling(src.getScaling()); // ??
+
+	// mout.warn() << "check scaling: " << src.getScaling() << " ? => " << dst.getScaling() << mout.endl;
+	// dst.setScaling(src.getScaling()); // ??
 
 }
 

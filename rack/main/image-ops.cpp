@@ -105,7 +105,6 @@ public:
 
 
 
-
 void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	typedef DstType<ODIM> dst_t;

@@ -196,6 +196,7 @@ public:
 		//if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
 		if ((q == "QIND") || (q == "PROB")){
 			//dstData.data.setOptimalScale(0.0, 1.0);
+			//dstData.data.setPhysicalRange(0.0, 1.0, true);
 			dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
 		else if (q == "CLASS"){

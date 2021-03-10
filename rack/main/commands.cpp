@@ -2061,10 +2061,12 @@ struct VerboseCmd : public drain::BasicCommand {
 		ctx.log.setVerbosity(level); // NEW
 		drain::getLog().setVerbosity(level);
 		drain::image::getImgLog().setVerbosity(imageLevel);
+		/*
 		std::cerr << "verbosity: " << level << '\n';
 		std::cerr << "verbosity: " << ctx.log.getVerbosity() << '\n';
 		std::cerr << "verbosity: " << getContext<drain::Context>().log.getVerbosity() << '\n';
 		std::cerr << "verbosity: " << getContext<drain::SmartContext>().log.getVerbosity() << '\n';
+		*/
 	};
 
 	int level;

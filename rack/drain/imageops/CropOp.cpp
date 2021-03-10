@@ -43,7 +43,7 @@ void CropOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 	dst.setGeometry(width, height, src.getImageChannelCount(), src.getAlphaChannelCount());
 
-	mout.debug2() << "dst: " << dst << mout.endl;
+	mout.special() << "dst: " << dst << mout.endl;
 
 }
 

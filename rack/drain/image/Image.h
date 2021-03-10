@@ -162,11 +162,7 @@ public:
 	*/
 private:
 
-	inline
-	void update(){
-		adjustBuffer();
-		this->channelVector.clear();
-	}
+	void update();
 
 };
 
@@ -282,8 +278,8 @@ public:
 	/// Copies type, geometry and coordinate under/overflow policy of the given image. Does not copy the data.
 	inline
 	void copyShallow(const ImageFrame & src){
-		// conf.setConf(src.getConf());
-		conf.setConf(conf);
+		setConf(src.getConf()); // update() must be called
+		//updateChannelVector();
 		/*
 		setStorageType(src.getType());
 		conf.setScaling(src.getScaling());  // NOTE: pointer-selected
@@ -309,7 +305,7 @@ public:
 
 	inline
 	void adoptScaling(const ImageConf & src, const std::type_info & t = typeid(void)){
-		conf.useOwnScaling(); // needed?
+		//conf.useOwnScaling(); // needed?
 		if (t == typeid(void))
 			conf.adoptScaling(src.getScaling(), src.getType(), conf.getType());
 		else

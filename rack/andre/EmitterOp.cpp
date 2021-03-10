@@ -116,7 +116,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	storeDebugData(2, marginAvg, "MARG");
 
-	mout.special() << "HighPass op:" << mout.endl;
+	mout.special() << "HighPass op:" << mout;
 
 	HighPassOp hop(1, 3*h, 5.0);
 	hop.process(marginAvg, marginAvg);  // 2.0 from hat  marginAvg, marginAvg

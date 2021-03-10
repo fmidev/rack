@@ -124,11 +124,19 @@ struct ImpulseAvgConf : public BeanLike {
 
 /// Averaging operator. A simple example implementation of ImpulseBucket
 /**
- \code
+  \code
+   drainage shapes.png --iImpulseAvg  0.8,5,5 -o shapes-impulse-80.png
+   drainage shapes.png --iImpulseAvg  0.5,5,5 -o shapes-impulse-50.png
+   drainage shapes.png --iImpulseAvg  0.2,5,5 -o shapes-impulse-20.png
+   \endcode
+
+  \code
    drainage image.png --iImpulseAvg  0.5            -o impulseAvg.png
    drainage image.png --iImpulseAvg  0.2,20,20      -o impulseAvgMarg.png
    drainage image-rgba.png --target S --iImpulseAvg  0.5 -o impulseAvg-16b.png
  \endcode
+
+
  */
 class ImpulseAvg : public ImpulseBucket<ImpulseAvgConf> {
 

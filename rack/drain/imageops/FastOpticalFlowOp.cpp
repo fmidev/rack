@@ -210,9 +210,9 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	// (part 1: gradient unchangedness)
 
 	DistanceOp distOp;  // Consider new BinaryOp that would compute q AND means of dx and dy ?
-	distOp.functorName   = "FuzzyStep";
+	distOp.functorDef   = "FuzzyStep/0.0:100.0";
 	//distOp.functorParams = "0,0.25";
-	distOp.functorParams = "0,100.0"; // monotone is enough, not very parameter-sensitive
+	//distOp.functorParams = "0,100.0"; // monotone is enough, not very parameter-sensitive
 
 	ImageTray<Channel> weightTray;
 	weightTray.setChannels(w);

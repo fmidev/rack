@@ -62,23 +62,20 @@ class PixelVectorOp : public ImageOp
 {
 public:
 
-
-
 	virtual
-	//void makeCompatible(const ImageFrame &src, Image &dst) const;
 	void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const;
+	//void makeCompatible(const ImageFrame &src, Image &dst) const;
 
-
-	std::string functorName;
-	std::string functorParams;
+	std::string functorDef;
+	// std::string functorParams;
 
 protected:
 
 	PixelVectorOp(const std::string & name, const std::string & description) :
 		ImageOp(name,description + " Post-scaling with desired functor."), rescale(0.0), POW(1.0), INVPOW(1.0) { //, l(1){ , rescale(0.0),
-		parameters.separator = ':';
-		parameters.link("functor", this->functorName);
-		parameters.link("params", this->functorParams);
+		// parameters.separator = ':';
+		parameters.link("functor", this->functorDef);
+		// parameters.link("params", this->functorParams);
 	};
 
 	double rescale;
@@ -111,9 +108,12 @@ public:
 	virtual
 	inline
 	void process(const ImageFrame &src1, const ImageFrame &src2, Image &dst) const {
+
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+
 		mout.debug() << "imitating: " << mout.endl;
 		//process2WithTemp(src, dst);
+
 		if (src2.hasOverlap(dst)){
 			Image tmp;
 			tmp.copyDeep(src2);
@@ -216,30 +216,45 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 
 	FunctorBank & functorBank = getFunctorBank();
 
+	std::string functorName;
+	std::string functorParams;
+
+	drain::StringTools::split2(functorDef, functorName, functorParams, "/");
+
+
 	if (!functorBank.has(functorName)){
 		//functorBank.help(std::cerr);
 		mout.note() << functorBank << mout.endl;
-		mout.error() << "functor not found: " << functorName << mout.endl;
+		mout.error() << "functor '" << functorName << "' not found: " << functorDef << mout.endl;
 		return;
 	}
 
 	UnaryFunctor & scalingFunctor = functorBank.clone(functorName); // consider get? Or static from clone()
+
 	//mout.debug() << scalingFunctor.getName() << ':' << scalingFunctor.getDescription() << mout.endl;
 	//scalingFunctor.setScale(dstChannel.scaling.getMax<double>(), 0.0);
 	const std::type_info & t = dstChannel.getType();
 	if (Type::call<drain::typeIsSmallInt>(t)){
 		const double m = Type::call<typeMax, double>(t);
 		scalingFunctor.setScale(m, 0.0); // TODO consider invScale, invOffset?
-		mout.info() << "small int type, scaling with its maximum (" << m << ')' << mout.endl;
+		mout.info() << "small int type, scaling with its maximum (" << m << ')' << mout;
 	}
 
-	scalingFunctor.setParameters(functorParams);
-	mout.debug2() << scalingFunctor.getName() << ':' << scalingFunctor << mout.endl;
+	//scalingFunctor.setParameters(functorParams);
+	try {
+		scalingFunctor.setParameters(functorParams, '=', '/');
+	} catch (const std::exception & e) {
+		mout.info() << scalingFunctor << mout;
+		mout.warn() << scalingFunctor.getParameters() << mout;
+		mout.error() = e.what();
+	}
+
+	mout.debug2() << scalingFunctor.getName() << ':' << scalingFunctor << mout;
 
 	const double coeff = (rescale>0.0) ? 1.0/rescale : 1.0/static_cast<double>(channels);
 	const bool USE_POW    = (POW != 1.0);
 	const bool USE_INVPOW = (INVPOW != 1.0);
-	mout.debug3() << "coeff " << coeff << mout.endl;
+	mout.debug3() << "coeff " << coeff << mout;
 	const BinaryFunctor & f = binaryFunctor;
 	size_t a;
 	for (int j = 0; j < height; j++) {
@@ -274,7 +289,7 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 \~
 
  \code
-   drainage image.png image-rot.png  --iDistance FuzzyStep:0,255 -o distance-step.png
+   drainage image.png image-rot.png  --iDistance FuzzyStep/0:255 -o distance-step.png
  \endcode
 
  \see ProductOp
@@ -287,6 +302,7 @@ public:
 	DistanceOp() : BinaryPixelVectorOp<SubtractionFunctor>(__FUNCTION__, "Computes the distance of pixel vectors."){
 		POW    = 2.0;
 		INVPOW = 0.5;
+		//functorDef="FuzzyStep/0:200";
 	};
 
 };
@@ -302,7 +318,7 @@ public:
   make image-rot.png
 \~
 \code
-  drainage image.png image-rot.png --iProduct FuzzyStep:0,155  -o product-step.png
+  drainage image.png image-rot.png --iProduct FuzzyStep/0:155  -o product-step.png
 \endcode
 
  *  \see DistanceOp
@@ -315,6 +331,7 @@ public:
 	ProductOp() : BinaryPixelVectorOp<MultiplicationFunctor>(__FUNCTION__, "Computes the dot product of pixel vectors."){
 		POW    = 1.0;
 		INVPOW = 0.5;
+		//functorDef="FuzzyStep/0:200";
 	};
 
 };
@@ -325,8 +342,8 @@ public:
  dst(i,j) = \sqrt{ src(i,j,0)^2 + ... + src(i,j,k)^2 }.
 
  \code
- drainage image.png --iMagnitude FuzzyStep:0,255   -o magnitude-step.png
- drainage image.png --iMagnitude FuzzyBell:0,-150  -o magnitude-bell.png
+ drainage image.png --iMagnitude FuzzyStep/0:200   -o magnitude-step.png
+ drainage image.png --iMagnitude FuzzyBell/0/-150  -o magnitude-bell.png
  \endcode
 
  \see DistanceOp
@@ -341,6 +358,7 @@ public:
 	MagnitudeOp() : BinaryPixelVectorOp<MultiplicationFunctor>(__FUNCTION__, "Computes the magnitude of a pixel vector."){
 		POW = 1.0; // because x*x natively
 		INVPOW = 0.5;
+		//functorDef="FuzzyStep/0:200";
 	};
 
 	virtual
