@@ -59,14 +59,12 @@ public:
 	/**
 	 * \param prob - maximum expected reflectance of biometeors
 	 * \param maxAltitude - maximum expected altitude of biometeors
-	 * \param reflDev - fuzzy width of  \c reflMax
-	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	DefaultOp() :
 		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.class.unclass"){ //ECHO_CLASS_PRECIP){
 
 		parameters.link("probability", this->probability = 0.8, "'resulting' probability");
-		parameters.link("probability", this->qualityThreshold = 0.95, "minimum quality");
+		//parameters.link("qualityThreshold", this->qualityThreshold = 0.95, "minimum quality");
 		UNIVERSAL = true;
 		dataSelector.quantity = "DBZH$";
 		dataSelector.count = 1;
@@ -77,7 +75,7 @@ public:
 	//int code;
 	//std::string defaultClass;
 	double probability;
-	double qualityThreshold;
+	//double qualityThreshold;
 
 
 protected:

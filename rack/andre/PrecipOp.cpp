@@ -58,7 +58,7 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 }
 
-
+// TODO: join with default quality
 void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -77,13 +77,15 @@ void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<Polar
 	// const double probCode = dstData.odim.scaleInverse(1.0 - QualityCombinerOp::DEFAULT_QUALITY) + 2;
 	// mout.warn() << "Using prob (code value) " << probCode << mout.endl;
 	// marker.functor.set(dstData.odim.scaleForward(probCode));
-	const double pCode    = dstData.odim.scaleInverse(this->probability);
-	const double pCodeMin = dstData.odim.scaleInverse(1.0 - this->qualityThreshold); // QualityCombinerOp::DEFAULT_QUALITY);
+	// const double pCode    = dstData.odim.scaleInverse(this->probability);
+	// const double pCodeMin = dstData.odim.scaleInverse(1.0 - this->qualityThreshold); // QualityCombinerOp::DEFAULT_QUALITY);
 
+	/*
 	if (this->probability <= (1.0 - this->qualityThreshold)){
 		mout.warn() << "prob " << this->probability << " [" << pCode << "] of 'default class' ";
 		mout        << "does not exceed limit (1 - aDefaultQuality) = " << (1.0 - this->qualityThreshold) << " [" << pCodeMin << ']' << mout.endl;
 	}
+	*/
 
 	marker.functor.set(this->probability);
 	// mout.warn() << marker << mout.endl;

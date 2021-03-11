@@ -454,6 +454,7 @@ public:
 		}
 
 		const drain::image::Image & graySrc = ctx.getCurrentGrayImage(); // ImageKit::getCurrentGrayImage(ctx);  // no conversion
+		ctx.select = "";
 
 		if (graySrc.isEmpty()){
 			if (!ctx.currentHi5->isEmpty()){
