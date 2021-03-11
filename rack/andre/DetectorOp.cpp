@@ -288,7 +288,10 @@ void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
 
 	drain::VariableMap & a = dstData.getHow();
 	a["task"] = std::string("fi.fmi.Rack.AnDRe.")+name;
-	a["task_args"] = getParameters().toStr(':');
+	//a["task_args"] = getParameters().toStr(':');
+	static const drain::SprinterLayout layout(",", ":");
+	a["task_args"] = drain::sprinter(getParameters(), layout).str();
+
 
 }
 

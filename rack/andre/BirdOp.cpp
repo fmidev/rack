@@ -74,6 +74,8 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 
 	//Channel & channel = dstData.data;
 	//channel.properties.updateFromMap(dstData.data.getProperties());
+	//mout.success() << feature << " -> dstData: " << dstData << mout;
+
 
 	/// Save directly to target (dstData), if this is the first applied detector
 	if (NEW){
@@ -82,7 +84,9 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 		dstData.setPhysicalRange(0.0, 1.0);
 		op.traverseChannel(src.data, dstData.data);
 		dstData.odim.prodpar = feature;
-		tmp.copyShallow(dstData.data);
+		//tmp.copyShallow(dstData.data);
+		tmp.setGeometry(dstData.data.getGeometry());
+		// mout.success() << "dstData: " << dstData << mout;
 		// tmp.initialize(dstData.data.getType(), dstData.data.getGeometry());
 		// tmp.adoptScaling(dstData.data);
 	}
@@ -91,11 +95,14 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 		op.process(src.data, tmp);
 		//op.traverseChannel(src.data.getChannel(0), tmp.getChannel(0));
 		mout.debug2() << "updating dst image" << mout.endl;
+		dstData.data.getChannel(0).setPhysicalRange({0,1}, true);
+		tmp.getChannel(0).setPhysicalRange({0,1}, true);
 		BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(dstData.data, tmp, dstData.data);
 		// File::write(dstData.data, feature+".png");
 		dstData.odim.prodpar += ',';
 		dstData.odim.prodpar += feature;
 	}
+
 
 	/// Debugging: save intermediate images.
 	if (outputDataVerbosity >= 1){
@@ -291,20 +298,31 @@ void BiometeorOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<P
 
 	}
 
+	mout.debug() << "Overall scale " << overallScale << mout;
+	mout.success() << " -> dstData: " << dstData << mout;
+
 	if (dstData.data.isEmpty()){
 		mout.error() << "could not find input data; quantity=" << dataSelector.quantity;
 	}
 	else {
+		if (overallScale < 1.0){
+			mout.warn() << "Input(s) missing, rescaling with overall scale " << overallScale << mout;
+			dstData.data.getScaling().scale *= overallScale;
+			dstData.data.getScaling().offset *= overallScale;
+			dstData.odim.scaling.setScaling(dstData.data.getScaling());
+		}
 		//FunctorOp<FuzzyBell<double,double> > fuzzyBright(0.0,-8.0, dstData.odim.scaleInverse(overallScale));
 		//FuzzyBellOp fuzzyBright(0.0,-0.032, overallScale);
-		UnaryFunctorOp<FuzzyBell<double> > fuzzyBright;
-		fuzzyBright.functor.set(0.0,-0.032, overallScale);
-		fuzzyBright.process(dstData.data, dstData.data);
+		//UnaryFunctorOp<ScalingFunctor<double> > fuzzyBright;
+		//fuzzyBright.functor.set(0.0, -overallScale/2.0);
+		//fuzzyBright.functor.set(0.0,-0.032, overallScale);
+		// UnaryFunctorOp<FuzzyStep<double> > fuzzyBright;
+		// fuzzyBright.functor.set(overallScale, 0.0);
+		//fuzzyBright.process(dstData.data, dstData.data);
 	}
-
 	writeHow(dstData);
-	DataTools::updateInternalAttributes(dstData.getTree()); // needed?
-
+	//DataTools::updateInternalAttributes(dstData.getTree()); // needed?
+	mout.success() << " -> dstData: " << dstData << mout;
 }
 
 

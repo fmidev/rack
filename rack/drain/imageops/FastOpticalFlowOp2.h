@@ -354,9 +354,6 @@ public:
 
 
 \~exec
-   # Dots to diamonds
-   # rainage --geometry 256,256,1 --plot 128,128,100 --iDistanceTransform 256,256,0 -o diamond1.png
-   # rainage --geometry 256,256,1 --plot 148,118,100 --iDistanceTransform 256,256,0 -o diamond2.png
    make diamond1.png diamond2.png
 \~
 
@@ -365,14 +362,9 @@ drainage diamond1.png diamond2.png --iOpticalFlow 25,25 --format '${i} ${j2} ${-
 \endcode
 
 \~exec
-# SCALE=0.003 OUTFILE=oflow-result.png gnuplot-vectors.sh oflow.dat diamond2.png #exec
 make oflow-clean
-make oflow OFLOW=75
-make oflow OFLOW=55
-make oflow OFLOW=25
-make oflow OFLOW=15
-make oflow OFLOW=05
-convert -frame 2 +append diamond1.png diamond2.png oflow-result55.png oflow-panel.png
+make oflow-result75.png oflow-result55.png oflow-result25.png oflow-result15.png  oflow-result05.png
+make oflow-panel55.png
 convert -frame 2 +append oflow-result??.png oflow-panel2.png
 \~
 

@@ -151,10 +151,10 @@ protected:
 
 	//int topology;
 
-	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height) :
+	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height, DistanceModel::topol_t topology=2) :
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
-		//this->distanceModel.setTopology(2);
+		distanceModel.setTopology(topology);
 		distanceModel.setRadius(width, height, width, height);
 	};
 
@@ -292,8 +292,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	// Todo: extended area, needs coordinateHandler.handle(p);?
 	//for (outerValue=outer.min; outerValue<=outer.max; outerValue++){
 	//	for (innerValue=inner.min; innerValue<=inner.max; innerValue++){
-	for (p.y=0; p.y<yRange.max; ++p.y){
-		for (p.x=0; p.x<xRange.max; ++p.x){
+	for (p.y=0; p.y<=yRange.max; ++p.y){
+		for (p.x=0; p.x<=xRange.max; ++p.x){
 
 			// Take (converted) source value as default
 			d = src2dst.fwd(src.get<dist_t>(p));
@@ -413,8 +413,8 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN) :
-	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities. Set decrements.", horz, vert) {
+	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology=2) :
+	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities. Set decrements.", horz, vert, topology) {
 	};
 
 
@@ -440,8 +440,8 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN) :
-		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert) {
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=2) :
+		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert, topology) {
 	};
 
 };	    

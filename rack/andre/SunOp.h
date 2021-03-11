@@ -59,7 +59,7 @@ public:
 	 * \param beamWidth - "virtual" width of the solar beam; actually the effective beam width of the radar
 	 * \param sensitivity - coefficient
 	 */
-	SunOp(double beamWidth = 1.0, double sensitivity=0.75) :
+	SunOp(double beamWidth = 1.0, double sensitivity=0.95) :
 		DetectorOp(__FUNCTION__,"Draw the sun beam", "signal.sun"){
 		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
 		parameters.link("sensitivity", this->sensitivity = sensitivity, "0...1");

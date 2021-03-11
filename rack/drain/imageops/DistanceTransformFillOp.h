@@ -185,7 +185,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
 	//srcTray.adjustCoordinateHandler(coordinateHandler);
-	mout.warn() << "coordHandler" << coordinateHandler << mout.endl;
+	mout.debug() << "coordHandler" << coordinateHandler << mout;
 
 
 	// Intensities (graylevel)
@@ -202,8 +202,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
-
-	mout.debug2() << "distModel" << this->distanceModel << mout.endl;
+	mout.debug2() << "distModel" << this->distanceModel << mout;
 
 
 	// Winning distance

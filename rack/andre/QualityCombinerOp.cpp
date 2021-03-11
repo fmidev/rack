@@ -122,6 +122,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	//mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
 	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
 
+	mout.success() << srcProb << mout;
 	//QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
 
 	if (dstQind.data.isEmpty()){

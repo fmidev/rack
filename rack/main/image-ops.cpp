@@ -257,7 +257,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					scaling.setPhysicalRange(range);
 					//srcData.data.setPhysicalScale(srcData.odim.getMin(), srcData.odim.getMax());
 				}
-				mout.warn() << "src scaling: " << srcData.data.getScaling() << mout;
+				mout.info() << "src scaling: " << srcData.data.getScaling() << mout;
 			}
 			else {
 
@@ -265,7 +265,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//mout.warn() << "src scaling: " << srcData.data.getScaling() << mout;
 			}
 
-			mout.special() << "src :" << srcData.data << ' ' << EncodingODIM(srcData.odim) << mout.endl;
+			mout.debug() << "src :" << srcData.data << ' ' << EncodingODIM(srcData.odim) << mout.endl;
 
 			srcTray.appendImage(srcData.data);
 
@@ -354,7 +354,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 
 				//mout.special() << "dst    :" << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
-				mout.special() << "dst[0] :" << dstData.data.getChannel(0) << mout.endl;
+				mout.debug() << "dst[0] :" << dstData.data.getChannel(0) << mout.endl;
 
 				dstTray.setChannels(dstData.data); // sets all the channels
 				//dstTray.appendImage(dstData.data);
@@ -494,12 +494,12 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		// MAIN
 		mout.debug() << "Main" << mout.endl;
 		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
-		mout.warn() << "src tray :\n" << srcTray << mout.endl;
-		mout.warn() << "dst tray before:\n" << dstTray << mout.endl;
+		mout.debug() << "src tray :\n" << srcTray << mout.endl;
+		mout.debug() << "dst tray before:\n" << dstTray << mout.endl;
 		// bean.process(srcTray, dstTray); //, true);
 		bean.traverseChannels(srcTray, dstTray);
 		// bean.traverseChannels(srcTray, dstTray);
-		mout.warn() << "dst tray after:\n" << dstTray << mout.endl;
+		mout.debug() << "dst tray after:\n" << dstTray << mout.endl;
 
 		//mout.unimplemented() = "what:gain and what:offset in HDF5 struct";
 		/*

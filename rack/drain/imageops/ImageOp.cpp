@@ -168,16 +168,18 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	mout.debug()   << "srcFrame Conf: " << srcFrame.getConf() << mout;
 	//mout.special() << "srcFrame Enc:  " << srcFrame.getEncoding() << mout;
 	mout.debug()   << "srcFrame Sca:  " << srcFrame.getScaling() << mout;
+	mout.debug()   << "srcFrame Sc0:  " << srcFrame.getChannel(0).getScaling() << mout;
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcFrame);
+	mout.debug() << "srcTrCh0:  " << srcTray.get(0) << mout;
 
 	makeCompatible(srcFrame.getConf(), dstImage);
-	mout.debug() << "dstIC0: " << dstImage.getChannel(0) << mout.endl;
+	mout.debug() << "dstImCh0: " << dstImage.getChannel(0) << mout;
 
 	ImageTray<Channel> dstTray;
 	dstTray.setChannels(dstImage);
-	mout.debug() << "dstTC0: " << dstTray.get(0) << mout.endl;
+	mout.debug() << "dstTrCg0: " << dstTray.get(0) << mout;
 
 	traverseChannels(srcTray, dstTray);
 
@@ -212,7 +214,9 @@ bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & ds
 
 	if (srcFrame.hasOverlap(dstImage)){
 		mout.debug() << "overlapping images, tmp image used" << mout.endl;
-		Image tmp(dstImage.getType()); // need copy?
+		//Image tmp(dstImage.getType()); // need copy?
+		Image tmp; //(dstImage);
+		makeCompatible(srcFrame.getConf(), tmp);
 		process(srcFrame, tmp);
 		dstImage.copyDeep(tmp);
 		return true;

@@ -61,22 +61,26 @@ void SunOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 	}
 	const double scale = dstProb.odim.scaleInverse(std::min(sensitivity, 1.0));
 
+	mout.info() << " scale=" << scale << " (max="<< dstProb.odim.getMax() << ')' << mout;
+
+
 	double widthD = beamWidth * drain::DEG2RAD;
 	const drain::FuzzyBell<double> fuzzyPeak(0.0, widthD*widthD, scale); //dstProb.odim.getMax());
-	dstProb.odim.getMax();
 
 	const size_t width  = dstProb.data.getWidth();
 	const size_t height = dstProb.data.getHeight();
 
 	double e = (srcData.odim.getElangleR() - sunElev);
 	e = 0.5*e*e; // Elevation difference has smaller effect than azimuthal
+	//e = 0.1*e; // Elevation difference has smaller effect than azimuthal
 
 	double a;
 
 	for (size_t j = 0; j < height; ++j) {
 		a = srcData.odim.getAzimuth(j) - sunAzm;
+		a = a*a;
 		for (size_t i = 0; i < width; ++i) {
-			dstProb.data.put(i, j, fuzzyPeak(a*a + e));
+			dstProb.data.put(i, j, fuzzyPeak(a + e));
 		}
 	}
 

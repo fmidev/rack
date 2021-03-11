@@ -86,6 +86,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	// Compute margin peaks
 	Image marginAvg(typeid(unsigned char), 1, imageHeight);
 	marginAvg.setCoordinatePolicy(PolarProductOp::polarCoordPolicy);
+	//marginAvg.setPhysicalRange({0.0,1.0}, true);
 
 	mout.special() << "Margin averages:" << mout.endl;
 	double dBZ;
@@ -126,23 +127,27 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	mout.special() << "DistanceTransformExponentialOp op:" << mout.endl;
 
-	DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h)).process(marginAvg, marginAvg);
+	// TOPOLOGY=0
+	DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h), 0).process(marginAvg, marginAvg);
 	storeDebugData(2, marginAvg, "MARG_HP_DIST");
 
 	Image srcElong;
-	srcElong.setScaling(1.0);
+	//srcElong.setScaling(1.0);
+	srcElong.setPhysicalRange(0.0, 1.0, true);
 	/// Essentially, morphological closing, horizontally.
 	DistanceTransformExponentialOp(3.0*1000.0/src.odim.rscale, 1).process(src.data, srcElong);  //  REQUIRE_NORMALIZED_DATA
 	storeDebugData(2, srcElong, "DIST-HORZ");
 
-	mout.special() << "RunLengthVertOp op:" << mout.endl;
+	mout.special() << "RunLengthVertOp op:" << mout;
 	Image rleVert;
-	//rleVert.setPhysicalScale(0.0, 1.0);
 	rleVert.setPhysicalRange(0.0, 1.0, true);
+	mout.special() << "srcElong.sc  " << srcElong.getScaling() << "  0.5->" << srcElong.getScaling().inv(0.5) << mout;
+	mout.special() << "srcElong.sc0 " << srcElong.getChannel(0).getScaling() << "  0.5->" << srcElong.getChannel(0).getScaling().inv(0.5) << mout;
 
 	//mout.warn() <<  "codeMin=" << src.odim.scaleInverse(reflMin) << mout.endl;
 	//RunLengthVertOp(src.odim.scaleInverse(reflMin)).process(srcElong, rleVert);  //
-	RunLengthVertOp(0.2).process(srcElong, rleVert);  //
+	RunLengthVertOp(0.25).process(srcElong, rleVert);  //
+	//rleVert.setPhysicalRange(0.0, 1.0, true);
 	storeDebugData(2, rleVert, "RLE-VERT");
 
 	mout.special() << "RemappingFunctor op:" << mout.endl;
@@ -159,6 +164,7 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	storeDebugData(2, rleVert, "RLE-VERT-FUZZY");
 
 	/// Horizontal run lengths are computed on the vertical run lengths; using src would give too long lines (inside clouds)
+	/*
 	mout.special() << "RunLengthHorzOp op:" << mout.endl;
 	Image rleHorz;
 	//rleHorz.setPhysicalScale(0.0, 1.0);
@@ -176,12 +182,16 @@ void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	mout.special() << "MultiplicationFunctor op:" << mout.endl;
 	BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(rleVert, rleHorz, dst.data);
 	storeDebugData(2, dst.data, "FINAL");
+	*/
 
 	mout.special() << "MultiplicationFunctor op2:" << mout.endl;
 	BinaryFunctorOp<MultiplicationFunctor> mop;
 	mop.functor.setScale(2.0 * sensitivity);
-	mop.traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
-	//BinaryFunctorOp<MultiplicationFunctor>(2.0 * sensitivity).traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
+	rleVert.getChannel(0).setPhysicalRange(0,1, true);
+	marginAvg.getChannel(0).setPhysicalRange(0,1, true);
+	dst.data.getChannel(0).setPhysicalRange(0,1, true);
+	mop.traverseChannel(rleVert, marginAvg, dst.data); // 4.0 * sensitivity*
+	//mop.traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
 	storeDebugData(2, dst.data, "FINAL-MARGIN-WEIGHTED");
 	//_mout.writeImage(10, dst.data, "dst.data"); // ? final
 

@@ -146,6 +146,7 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	// => Convert to unambiguous thresholdAbs.
 	const double thresholdAbs = src.getScaling().inv(threshold);
 
+	mout.warn() << "src.sc: " << src.getScaling() << ",  thresholdAbs: " << thresholdAbs << mout;
 	mout.debug2() << "coordHandler: " << handler << mout.endl;
 	mout.debug2() << "lengthMax=" << lengthMax << mout.endl;
 	mout.debug2() << "src: " << src << mout.endl;

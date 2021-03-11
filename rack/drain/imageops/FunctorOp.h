@@ -383,6 +383,25 @@ public:
 
 	}
 
+protected:
+
+	/// Does not change dst geometry
+	void getDstConf(const ImageConf & src, ImageConf & dst) const {
+
+		if ((dst.getScale()==0.0) || !dst.typeIsSet())
+			dst.setEncoding(src.getEncoding());
+
+		if (dst.isEmpty()){
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+			mout.warn() << "2nd image empty, problems ahead" << *this << mout.endl;
+			dst.setGeometry(src.getGeometry());
+			dst.setCoordinatePolicy(src.getCoordinatePolicy());
+		}
+
+	}
+
+
+
 };
 
 
