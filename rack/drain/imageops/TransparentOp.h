@@ -44,17 +44,20 @@ namespace image
 
 
 class TransparentOp : public UnaryFunctorOp<drain::FuzzyStep<double> > {
+//class TransparentOp : public ImageOp {
 
-	drain::Range<double> range;
+	//drain::Range<double> range;
 
 	/// Default constructor.
 	/**
 	 *  \par minDBZ - minimum intensity passed through.
 	 *  \par replace   - substitute value for intensities not reaching minDBZ
 	 */
-	TransparentOp(): UnaryFunctorOp<drain::FuzzyStep<double> >(__FUNCTION__, "Adds transparency."){
-
-		range.set(0.5);
+	//TransparentOp(): UnaryFunctorOp<drain::FuzzyStep<double> >(__FUNCTION__, "Adds transparency."){
+	TransparentOp(): UnaryFunctorOp<drain::FuzzyStep<double> >(){ // Name?
+	//TransparentOp(): ImageOp(__FUNCTION__, "Adds transparency."){
+		//this->parameters.link("threshold",  this->range, "range");
+		//range.set(0.5);
 	};
 
 
