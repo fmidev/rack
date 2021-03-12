@@ -184,7 +184,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 
 	const drain::ValueScaling & srcScale = srcProb.getConf();
 	//const double DEFAULT_QUALITY = 0.7; // redesign
-	const double classUpdateThreshold = 0.5; // because no use to increase quality with anomaly
+	//const double classUpdateThreshold = 0.5; // because no use to increase quality with anomaly
 	double q;
 	/// max quality this far
 	double qCurrent;
@@ -198,8 +198,8 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 		if (q < qCurrent){
 			//if (c < static_cast<int>(*pit) ){
 			*pit = dstQind.odim.scaleInverse(q);
-			if (q < classUpdateThreshold)
-				*cit = index;
+			//if (q < classUpdateThreshold)
+			*cit = index;
 		}
 		++it; ++pit; ++cit;
 	}
@@ -215,8 +215,8 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
 
-	const double DEFAULT_QUALITY = 0.7;
-
+	//const double DEFAULT_QUALITY = 0.7;
+	const double QUALITY_THRESHOLD = 0.99;
 
 	std::set<std::string> classesNew;
 	srcQind.getHow()["task_args"].toSequence(classesNew, ',');
@@ -303,8 +303,8 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			if (q < qMax){
 				//if (c < static_cast<int>(*pit) ){
 				*pit = dstQind.odim.scaleInverse(q);
-				if (q < DEFAULT_QUALITY)
-					*cit = *itc;
+				//if (q < QUALITY_THRESHOLD) //DEFAULT_QUALITY)
+				*cit = *itc;
 			}
 			++it; ++itc; ++pit; ++cit;
 		}
