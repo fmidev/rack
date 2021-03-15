@@ -174,7 +174,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	drain::VariableMap & statusVariables = ctx.getStatusMap();
 	statusVariables["command"] = statusVariables.get("command", bean.getName());
 
-
+	const QuantityMap & qmap = getQuantityMap();
 
 	// Main loop (large!); visit each /dataset<n>
 	// Results will be stored in the same /dataset<n>
@@ -325,7 +325,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 					// dstData.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
 				}
-				else if (! getQuantityMap().setQuantityDefaults(dstData.odim)){
+				else if (! qmap.setQuantityDefaults(dstData.odim)){
 					mout.note();
 					mout << "no --encoding or --quantityConf for [" << dstData.odim.quantity << "], ";
 					mout << "initializing with src data, [" << srcData.odim.quantity << "]"  << mout.endl;
@@ -338,10 +338,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				// This replaces: bean.makeCompatible(srcConf, dstData.data);
 				ImageConf dstConf;
 				dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
+				dstConf.setType(srcConf.getType());
+
 				bean.getDstConf(srcConf, dstConf);
 
-				// dstAlphaChannels = dstConf.getAlphaChannelCount();
-				// Create alpha already
+				mout.warn() << "dstConf0: " << dstConf << mout;
+
+				// Create alpha as a separate channel
 				if (dstConf.getAlphaChannelCount() > 0){ // todo check if > 1 ?
 					std::string qualityQuantity = "QIND";
 					if (dstData.hasQuality(qualityQuantity)){
@@ -349,12 +352,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 						qualityQuantity = "QIND2";
 					}
 					PlainData<dst_t> & dstQuantity = dstData.getQualityData(qualityQuantity); // todo: smarter if-exists?
-					dstQuantity.setEncoding(typeid(unsigned char));
-					dstQuantity.data.setPhysicalRange(0.0, 1.0, true); // for channel as well?
+					qmap.setQuantityDefaults(dstQuantity, "QIND");
+					// dstQuantity.setEncoding(typeid(unsigned char));
+					// dstQuantity.setPhysicalRange(0, 1);
 					dstQuantity.setGeometry(dstConf.getWidth(), dstConf.getHeight());
-					// dstTray.setAlpha(dstQuantity.data);
-					dstTray.appendAlpha(dstQuantity.data);
-
+					dstTray.setAlpha(dstQuantity.data);
+					// == dstTray.alpha.set();
+					// == dstTray.appendAlpha(dstQuantity.data);
 				}
 
 				dstConf.setAlphaChannelCount(0);
@@ -377,8 +381,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 				*/
 
-				mout.warn() << "dst:" << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
-				mout.warn() << "dst[0] :" << dstData.data.getChannel(0) << mout.endl;
+				mout.warn() << "dst:    " << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
+				mout.warn() << "dst[0]: " << dstData.data.getChannel(0) << mout.endl;
 
 				// dstTray.setChannels(dstData.data); // sets all the channels
 				dstTray.appendImage(dstData.data);

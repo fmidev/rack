@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <stdexcept>
 
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H  // proj-6 wants this
 #include <proj_api.h>
 
 #include "Dictionary.h"
