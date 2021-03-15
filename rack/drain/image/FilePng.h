@@ -68,7 +68,7 @@ public:
 	const drain::RegExp fileNameRegExp;
 
 
-	/// Reads a png file to an image.
+	/// Reads a png file to Image or Channel .
 	/**
 	 *  Converts indexed (palette) images to RGB or RGBA.
 	 *  Scales data to 8 or 16 bits, according to template class.
@@ -178,9 +178,9 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	mout << mout.endl;
 
 
-	const unsigned int bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+	const unsigned int inputBitDepth = png_get_bit_depth(png_ptr, info_ptr);
 	drain::Type t;
-	switch (bit_depth) {
+	switch (inputBitDepth) {
 	case 16:
 		//image.initialize<unsigned short>();
 		t.setType<unsigned short>();
@@ -232,7 +232,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	mout.debug3() << "png geometry ok, ";
 	mout << "png channels =" << channels << "\n";
-	mout << "png bit_depth=" << bit_depth << "\n";
+	mout << "png bit_depth=" << inputBitDepth << "\n";
 	mout << mout.endl;
 
 	// TODO: use png_get_pCal(.........)
@@ -257,6 +257,25 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 		throw std::runtime_error(std::string("FilePng: unsupported bit depth in : ")+path);
 	}
 	*/
+	const unsigned int targetBitDepth = 8*image.getConf().getElementSize();
+
+	const bool from8to8  = (inputBitDepth == 8) && (targetBitDepth ==  8);
+	const bool from8to16 = (inputBitDepth == 8) && (targetBitDepth == 16);
+
+	if (from8to8) {
+		mout.debug() << "8-bit input, 8-bit target, easy..." << mout;
+	}
+	else if (from8to16) {
+		mout.note() << "-bit input, 16-bit target, rescaling..." << mout;
+	}
+	else {
+		if ((inputBitDepth == 16) && (targetBitDepth == 16)){
+			mout.debug() << "16-bit input, 16-bit target, ok..." << mout;
+		}
+		else {
+			mout.warn() << inputBitDepth << "-bit input, "<< targetBitDepth << "-bit target, problems ahead?" << mout;
+		}
+	}
 
 	png_bytep *row_pointers = png_get_rows(png_ptr, info_ptr);
 	png_bytep p;
@@ -266,13 +285,14 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 		for (unsigned int i = 0; i < width; ++i) {
 			for (unsigned int k = 0; k < channels; ++k) {
 				i0 = channels*i + k;
-				if (bit_depth == 8) {
-					//image.at(i,j,k) = p[i0];
+				if (from8to8) {
 					image.put(i,j,k, p[i0]);
+				}
+				else if (from8to16) {
+					image.put(i,j,k, p[i0]<<8);
 				}
 				else {
 					image.put(i,j,k, (p[i0*2]<<8) + (p[i0*2+1]<<0));
-					//image.at(i,j,k) = p[i0*2] + (p[i0*2+1]<<8);
 				}
 			}
 		}

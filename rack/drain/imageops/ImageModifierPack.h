@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_MODIFIER_PACK_H
 #define IMAGE_MODIFIER_PACK_H
 
+#include "drain/util/Rectangle.h"
 #include "drain/util/Histogram.h"
 #include "drain/image/Sampler.h"
 
@@ -182,6 +183,9 @@ protected:
     drainage --geometry 100,100,3,1 --fill 128,192,255,192  -o filled-rgba.png
     drainage --geometry 100,100,3 --view g --fill 255 --view f -o filled-green.png
  \endcode
+
+ \see ImagePlot
+ \see ImageBox
  */
 class ImageFill : public ImageMod {
 
@@ -351,6 +355,46 @@ protected:
 	std::string filename;
 
 };
+
+/// Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by default.
+/**
+\code
+drainage --geometry 256,256,1 --box 96,96,255 --box 160,96,208  --box 128,160,192  -o box-dots.png
+drainage --geometry 256,256,1 --box 96,96,255 --box 160,96,208  --box 128,160,192 --target S --iCopy f -o box-dots-16b.png
+drainage --geometry 256,256,3,1 --box 96,96,255,64,32,255  --box 160,96,64,255,32,208  --box 128,160,64,32,255,192  -o box-dots-rgba.png
+drainage --geometry 256,256,3,1 --box 96,96,255,64,32,255  --box 160,96,64,255,32,208  --box 128,160,64,32,255,192 --target S --iCopy f -o box-dots-rgba-16b.png
+\endcode
+ *
+ */
+class ImageBox: public ImageMod {
+
+public:
+
+	ImageBox() : ImageMod(__FUNCTION__, "Set intensity at (i:i2,j:j2) to (f1,f2,f3,...)."){
+		// See 'BoxFile' and 'fill'.",	"value", "0,0,0", "<i>,<j>,<f1>[,f2,f3,alpha]" ) {
+		//parameters.separator = 0;
+		parameters.link("i", iRange.tuple(),"i:i2").fillArray = true;
+		parameters.link("j", jRange.tuple(),"j:j2").fillArray = true;
+		parameters.link("value", value="0", "<f1>[,f2,f3,alpha]");
+
+	};
+
+	inline
+	ImageBox(const ImageBox & op) : ImageMod(op) {
+		parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
+	virtual
+	void traverseChannels(ImageTray<Channel> & dst) const;
+
+protected:
+
+	Range<int> iRange;
+	Range<int> jRange;
+	std::string value;
+
+};
+
 
 /// Traverses image, returning samples
 /**

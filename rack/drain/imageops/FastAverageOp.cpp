@@ -41,6 +41,16 @@ namespace drain
 namespace image
 {
 
+void FastAverageOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
+
+	//if ((dst.getScale()==0.0) || !dst.typeIsSet())
+	dst.setEncoding(src.getEncoding());
+
+	dst.setGeometry(src.getGeometry()); //geometry = src.geometry;
+
+	dst.setCoordinatePolicy(src.getCoordinatePolicy());
+
+}
 
 void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 
@@ -51,28 +61,29 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		return;
 	}
 
-	drain::Frame2D<size_t> area;
-	area.setWidth(conf.getWidth());
-	area.setHeight(conf.getHeight() ? conf.getHeight() : conf.getWidth());
-
+	size_t width  = conf.getWidth();
+	size_t height = conf.getHeight() ? conf.getHeight() : width;
 
 	/// Special case
-	if ((area.getWidth()==1) && (area.getHeight()==1)){
-		mout.info() << "Special case: 1x1 window => simple copy" << mout.endl;
+	if ((width==1) && (height==1)){
+		mout.note() << "Special case: 1x1 window => simple copy" << mout.endl;
 		dst.copyData(src);
 		return;
 	}
 
+	mout.special() << width << 'x' << height << mout.endl;
 
-	Image tmp(dst.getType());
-	makeCompatible(src.getConf(), tmp);
-	mout.debug3() << "src: " << src << mout.endl;
-	mout.debug3() << "tmp: " << tmp << mout.endl;
-	mout.debug3() << "dst: " << dst << mout.endl;
+
+	Image tmp;
+	tmp.setConf(src.getConf());
+	//makeCompatible(src.getConf(), tmp);
+	mout.debug()   << "src: " << src << mout.endl;
+	mout.special() << "tmp: " << tmp << mout.endl;
+	mout.special() << "dst: " << dst << mout.endl;
 
 	// Accelerate computation if (1 x H) or (W x 1) window.
-	if (area.getWidth() > 1){
-		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(area.getWidth()); // <WindowConfig>
+	if (width > 1){
+		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(width); // <WindowConfig>
 		window1.setSrcFrame(src);
 		window1.setDstFrame(tmp);
 		mout.debug2() << window1 << mout.endl;
@@ -84,9 +95,8 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		tmp.copyDeep(src);
 	}
 
-	if (area.getHeight() > 1){
-		mout.special() << area << mout.endl;
-		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(area.getHeight()); // <WindowConfig>
+	if (height > 1){
+		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(height); // <WindowConfig>
 		mout.debug2() << window2 << mout.endl;
 		window2.setSrcFrame(tmp);
 		window2.setDstFrame(dst);
@@ -111,21 +121,32 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	//mout.warn() <<  src      << mout.endl;
 	//mout.warn() << srcAlpha << mout.endl;
 
-	Image tmp; //(src);
-	Image tmpAlpha; //(srcAlpha);
+	size_t width  = conf.getWidth();
+	size_t height = conf.getHeight() ? conf.getHeight() : width;
 
-	makeCompatible(src.getConf(), tmp);
-	makeCompatible(srcAlpha.getConf(), tmpAlpha);
-	tmpAlpha.setPhysicalRange(0, 1, true); // important
+	/// Special case
+	/*
+	if ((width==1) && (height==1)){
+		mout.note() << "Special case: 1x1 window => simple copy" << mout.endl;
+		dst.copyData(src);
+		return;
+	}
+	*/
 
-	// mout.warn() << "tmp:      " << tmp      << mout.endl;
-	// mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
-	drain::Frame2D<size_t> area;
-	area.setWidth(conf.getWidth());
-	area.setHeight(conf.getHeight() ? conf.getHeight() : conf.getWidth());
+	Image tmp(src.getConf());
+	Image tmpAlpha(srcAlpha.getConf());
+
+	// makeCompatible(src.getConf(), tmp);
+	// makeCompatible(srcAlpha.getConf(), tmpAlpha);
+	// tmpAlpha.setPhysicalRange(0, 1, true); // important
+
+	mout.warn() << "tmp:      " << tmp      << mout.endl;
+	mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
+
+
 
 	// TODO:Generalize to SeparableWindowOp,
-	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, true> > window1(area.getWidth());
+	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, true> > window1(width);
 	window1.setSrcFrame(src);
 	window1.setSrcFrameWeight(srcAlpha);
 	window1.setDstFrame(tmp);
@@ -134,7 +155,7 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	// FilePng::write(tmp, name+"-D1.png");
 	// FilePng::write(tmpAlpha, name+"-A1.png");
 
-	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, false> > window2(area.getHeight());
+	SlidingStripeAverageWeighted<SlidingStripe<WindowConfig, WeightedWindowCore, false> > window2(height);
 	window2.setSrcFrame(tmp);
 	window2.setSrcFrameWeight(tmpAlpha);
 	window2.setDstFrame(dst);

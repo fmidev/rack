@@ -387,16 +387,17 @@ public:
 
 	// Possibly this should be somewhere else? (Too specific here?)
 	/// For this data, creates an on-off quality data.
-	void createSimpleQualityData(drain::image::Image & qualityImage, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const;
+	void createSimpleQualityData(drain::image::Image & qualityImage, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0) const;
 
 	// Possibly this should be somewhere else? (Too specific here?)
 	/// For this data, creates an on-off quality data.
 	inline
-	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double nodataQuality=0.0, double undetectQuality=0.5) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
+	void createSimpleQualityData(PlainData<DT> & qualityData, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
 		qualityData.setEncoding(typeid(unsigned char));
-		createSimpleQualityData(qualityData.data, dataQuality, nodataQuality, undetectQuality);
-		qualityData.odim.scaling.scale   = qualityData.data.getScaling().scale;
-		qualityData.odim.scaling.offset = qualityData.data.getScaling().offset;
+		createSimpleQualityData(qualityData.data, dataQuality, undetectQuality, nodataQuality);
+		qualityData.odim.scaling.set(qualityData.data.getScaling());
+		//qualityData.odim.scaling.scale   = qualityData.data.getScaling().scale;
+		//qualityData.odim.scaling.offset = qualityData.data.getScaling().offset;
 	}
 
 	/// TODO: consider this to destructor
@@ -416,11 +417,38 @@ protected:
  *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
  */
 template <typename DT>  // PlainData<DT> & quality
-void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double nodataQuality, double undetectQuality) const {
+void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, double dataQuality, double undetectQuality, double nodataQuality) const {
 
 	quality.setPhysicalRange(0.0, 1.0, true);
 
 	const drain::ValueScaling & scaling = quality.getScaling();
+
+	const bool DATA     = !std::isnan(dataQuality);
+	const bool UNDETECT = !std::isnan(undetectQuality);
+	const bool NODATA   = !std::isnan(nodataQuality);
+
+	// Default ie. unset values are non_signaling_NAN's, but maybe more elegant to skip calculations:
+	const double dataCode     = DATA     ? scaling.inv(dataQuality)     : 0.0;
+	const double undetectCode = UNDETECT ? scaling.inv(undetectQuality) : 0.0;
+	const double nodataCode   = NODATA   ? scaling.inv(nodataQuality)   : 0.0;
+
+	quality.setGeometry(data.getWidth(), data.getHeight());
+
+	Image::iterator  it = data.begin();
+	Image::iterator wit = quality.begin();
+	while (it != data.end()){
+		//if ((*it != odim.nodata) && (*it != odim.undetect))
+		if (UNDETECT && (*it == odim.undetect))
+			*wit = undetectCode;
+		else if (NODATA && (*it == odim.nodata))
+			*wit = nodataCode;
+		else if (DATA)
+			*wit = dataCode;
+		++it;
+		++wit;
+	}
+
+	/*
 	const double d  = scaling.inv(dataQuality);
 	const double nd = scaling.inv(nodataQuality);
 	const double un = scaling.inv(undetectQuality);
@@ -440,6 +468,7 @@ void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, doubl
 		++it;
 		++wit;
 	}
+	*/
 
 }
 
@@ -901,12 +930,65 @@ public:
 		return this->quality;
 	}
 
+	/* Well, needs quantity, primarily. So best place perhaps not here.
+	static
+	void createSimpleQualityData(PlainData<DT> & data, drain::image::Image & qualityImage, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0) const;
+
+	static inline
+	void createSimpleQualityData(PlainData<DT> & data, PlainData<DT> & qualityData, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0) const { //, double dataQuality=1.0, double nodataQuality=0.0) const {
+		qualityData.setEncoding(typeid(unsigned char));
+		createSimpleQualityData(qualityData.data, dataQuality, undetectQuality, nodataQuality);
+		qualityData.odim.scaling.set(qualityData.data.getScaling());
+		//qualityData.odim.scaling.offset =  qualityData.data.getScaling().offset;
+	}
+	*/
 
 protected:
 
 	qualitygroup_t quality;
 
 };
+
+
+// Well, needs quantity, primarily. So best place perhaps not here.
+/**
+ *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
+ */
+/*
+template <typename DT>  // PlainData<DT> & quality
+void QualityDataSupport<DT>::createSimpleQualityData(PlainData<DT> & data, drain::image::Image & quality, double dataQuality, double undetectQuality, double nodataQuality) const {
+
+	quality.setPhysicalRange(0.0, 1.0, true);
+
+	const drain::ValueScaling & scaling = quality.getScaling();
+
+	const bool DATA     = !std::isnan(dataQuality);
+	const bool UNDETECT = !std::isnan(undetectQuality);
+	const bool NODATA   = !std::isnan(nodataQuality);
+
+	// Default ie. unset values are non_signaling_NAN's, but maybe more elegant to skip calculations:
+	const double dataCode     = DATA     ? scaling.inv(dataQuality)     : 0.0;
+	const double undetectCode = UNDETECT ? scaling.inv(undetectQuality) : 0.0;
+	const double nodataCode   = NODATA   ? scaling.inv(nodataQuality)   : 0.0;
+
+	quality.setGeometry(data.getWidth(), data.getHeight());
+
+	Image::iterator  it = data.data.begin();
+	Image::iterator wit = quality.begin();
+	while (it != data.data.end()){
+		//if ((*it != odim.nodata) && (*it != odim.undetect))
+		if (UNDETECT && (*it == odim.undetect))
+			*wit = undetectCode;
+		else if (NODATA && (*it == odim.nodata))
+			*wit = nodataCode;
+		else if (DATA)
+			*wit = dataCode;
+		++it;
+		++wit;
+	}
+
+}
+*/
 
 
 /*

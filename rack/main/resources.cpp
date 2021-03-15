@@ -81,19 +81,19 @@ const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext 
 
 const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ctx){
 
-	RackContext & ctx = *this;
+	//RackContext & ctx = *this;
 
-	if (ctx.currentImage == NULL){
+	if (currentImage == NULL){
 		findImage(); //RackContext::findImage(ctx);
 	}
 
-	if (ctx.currentImage == NULL){
+	if (currentImage == NULL){
 		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
-		return ctx.grayImage;
+		return grayImage;
 	}
 
-	return *ctx.currentImage;
+	return *currentImage;
 }
 
 ODIMPath RackContext::findImage(){ //RackContext & ctx){

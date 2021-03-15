@@ -105,9 +105,11 @@ public:
     /// Apply to single channel with alpha.
     virtual inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-    	throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,srcAlpha,dst,dstAlpha) unimplemented.");
+    	//throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,srcAlpha,dst,dstAlpha) unimplemented.");
+    	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+    	mout.note() << "using image channels only (discarding alpha channels)" << mout.endl;
+    	traverseChannel(src, dst);
     };
-
 
     /// Given source image, determine respective dest image configuration.
     /**

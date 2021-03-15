@@ -41,13 +41,18 @@ namespace image
 {
 // help copy
 
-/** Copies images or channels to another image. Does not scale intensities. Target type will be set, if unset.
-  @see ScaleOp
-  The type may be one of the followings:
-  - '8'  :  unsigned char
-  - '16' :  unsigned short
+/* Defunct
+ *
+   The type may be one of the followings:
+  - 'C'  :  unsigned char
+  - 'S' :  unsigned short
   - 'src' : copied from the source
   - '*' :  keep current, or if undefined, copy from the source
+
+ */
+
+/** Copies images or channels to another image. Does not scale intensities. Target type will be set, if unset.
+
 
 To copy green channel to red:
  \code
@@ -70,8 +75,12 @@ To create alpha channel from channel #1 (green):
  drainage image.png --iCopy f --view b --iCopy a  --view f -o copy-rgba.png
  \endcode
 
-\see ChannelCatenatorOp and \see VerticalCatenatorOp .
 In \b drainage, see also \c --inputAlpha .
+
+\see VerticalCatenatorOp .
+\see ScaleOp
+
+
 
  */	
 
@@ -124,29 +133,8 @@ public:
 	void getDstConf(const ImageConf & src, ImageConf & dst) const;
 
 
-	inline
-	void process(const ImageFrame & srcFrame, Image & dstImage) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
-		mout.debug2() << "calling makeCompatible()" << mout.endl;
-		makeCompatible(srcFrame.getConf(), dstImage);
-		ImageView dst2; //(dstImage, functor.dstView);
-		dst2.setView(dstImage, functor.dstView);
-		ImageTray<const Channel> srcTray; //(srcFrame);
-		srcTray.setChannels(srcFrame);
-		ImageTray<Channel> dstTray; //(dst2);
-		dstTray.setChannels(dst2);
-		traverseChannels(srcTray, dstTray);
-	}
-
-	/*
-	virtual
-	inline
-	void traverse rame(const ImageFrame & src, ImageFrame & dst) const {
-		ImageView dst2;
-		dst2.setView(dst, functor.dstView);
-		UnaryFunctorOp<CopyFunctor>::traverse rame(src, dst2);
-	}
-	*/
+	//inline
+	void process(const ImageFrame & srcFrame, Image & dstImage) const;
 
 	virtual
 	inline

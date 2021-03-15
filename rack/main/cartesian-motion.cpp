@@ -126,7 +126,8 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 			if (!srcData.hasQuality()){
 				mout.note() << "no input quality; creating default field " << mout.endl;
 				PlainData<CartesianDst> & srcQ = srcData.getQualityData();
-				srcData.createSimpleQualityData(srcQ, 1.0, 0.0, 1.0); // undetect is often "true"
+				//srcData.createSimpleQualityData(srcQ, 1.0, 0.0, 1.0); // undetect is often "true"
+				srcData.createSimpleQualityData(srcQ, 1.0, 1.0, 0.0); // undetect is often "true"
 				// next lines better here?
 
 				//srcQuality.setPhysicalRange(0.0, 1.0);

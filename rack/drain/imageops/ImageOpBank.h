@@ -126,7 +126,41 @@ class BinaryFunctorOpCloner : public ImageOpCloner<BinaryFunctorOp<F> > {
 };
 
 
+class NegateOp : public ImageOp {
 
+public:
+
+	NegateOp() : ImageOp(__FUNCTION__, __FILE__){
+	}
+
+	virtual inline
+	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
+		traverseChannelsEqually(src, dst);
+	}
+
+
+	/// Apply to single channel.
+	virtual inline
+	void traverseChannel(const Channel & src, Channel & dst) const {
+
+		double srcMax = src.getConf().getTypeMax<double>();
+		double dstMax = dst.getConf().getTypeMax<double>();
+		double rescale = dstMax/srcMax;
+
+		Channel::const_iterator s  = src.begin();
+		Channel::iterator d = dst.begin();
+
+		while (d != dst.end()){
+			*d = dstMax - rescale*static_cast<double>(*s);
+			++s;
+			++d;
+		}
+
+	};
+
+
+
+};
 
 
 class ImageOpBank : public Bank<ImageOp> {
@@ -181,11 +215,10 @@ void installImageOps(T & installer) {
 
 	try {
 		//installer.install<CmdHistogram>();
-
-		installer.template install<UnaryFunctorOp<RemappingFunctor> >("Remap");
-		installer.template install<UnaryFunctorOp<NegateFunctor> >();
-
+		installer.template install<NegateOp>();
 		installer.template install<UnaryFunctorOp<ScalingFunctor> >("Rescale");
+		//installer.template install<UnaryFunctorOp<NegateFunctor> >();
+		installer.template install<UnaryFunctorOp<RemappingFunctor> >("Remap");
 		installer.template install<UnaryFunctorOp<ThresholdFunctor> >();
 		installer.template install<UnaryFunctorOp<BinaryThresholdFunctor> >("ThresholdBinary");
 

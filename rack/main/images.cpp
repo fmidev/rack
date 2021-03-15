@@ -466,7 +466,7 @@ public:
 			}
 			return;
 		}
-
+		//graySrc.getConf().getElementSize()
 
 		PaletteOp  op(ctx.palette);
 
@@ -703,6 +703,33 @@ public: //re
 
 
 
+class CmdImageBox : public drain::BeanCommand<drain::image::ImageBox> {
+public:
+
+	CmdImageBox(){
+	};
+
+	void exec() const {
+		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+
+		RackContext & ctx = getContext<RackContext>();
+
+		if (!ctx.select.empty())
+			ctx.unsetCurrentImages();
+
+		drain::image::Image & dst = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
+		if (dst.isEmpty()){
+			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			return;
+		}
+
+		bean.process(dst);
+	}
+};
+
+
+
 
 
 
@@ -811,10 +838,11 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());
-	install<CmdPaletteIn>(); // cmdPaletteLoad2;
-	install<CmdPaletteOut>(); //  cmdPaletteOut2;
-	install<CmdPaletteRefine>(); //  cmdPaletteRefine; //("paletteRefine");
-	install<CmdPlot>(); //  cmdPlot;
+	install<CmdPaletteIn>();
+	install<CmdPaletteOut>();
+	install<CmdPaletteRefine>();
+	install<CmdPlot>();
+	install<CmdImageBox>();
 
 };
 

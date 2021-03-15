@@ -355,6 +355,55 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 }
 
 
+void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
+
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	// Note: value is of type string
+
+	typedef double data_t;
+	std::vector<data_t> v;
+	StringTools::split(value, v, ':');
+
+
+	//Variable(value, typeid(data_t)).toSequence(v);
+	const size_t nImages = dst.size();
+	const size_t nAlphas = dst.alpha.size();
+	const size_t nChannels = nImages + nAlphas;
+
+	//const size_t channels = dst.getGeometry().getChannelCount();
+	if (v.size() > nChannels){
+		mout.warn() << "intensity vector  ("<< value << ") has " << v.size() <<" elements, limiting to channel depth " << nChannels << mout;
+		v.resize(nChannels);
+	}
+
+	const size_t n = v.size();
+
+	CoordinateHandler2D coordHandler(dst.get(0));
+
+	Point2D<int> point;
+	for (size_t k=0; k<n; ++k){
+
+		Channel & channel = (k<nImages) ? dst.get(k) : dst.getAlpha(k-nImages);
+
+		const drain::ValueScaling & scaling = channel.getScaling();
+		const drain::typeLimiter<data_t>::value_t & limit = channel.getConf().getLimiter<data_t>();
+
+		for (int j = jRange.min; j <= jRange.max; ++j) {
+			for (int i = iRange.min; i <= iRange.max; ++i) {
+				point.set(i,j);
+				coordHandler.handle(point);
+				channel.put(i, j, limit(scaling.inv(v[k])));
+			}
+		}
+	}
+
+
+
+}
+
+
+
 
 //void ImagePlotFile::process(ImageDst & imageDst) const {
 void ImagePlotFile::traverseFrame(ImageFrame & dst) const {

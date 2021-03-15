@@ -142,7 +142,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		//mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
 
 	}
-	else
+
+	if (dstQuantitySyntax.empty())
 		dstQuantitySyntax = ImageContext::outputQuantitySyntax;
 
 	mout.note() << "output quantity (syntax): " << dstQuantitySyntax << mout.endl;
@@ -238,6 +239,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Yes, of dst type, but used as src
 			Data<dst_t> & srcData = dstDataSet.getData(quantity);
 
+			// size_t dstAlphaChannels = 0;
 			// mout.warn() << "srcData: " << srcData << mout;
 
 			/// SOURCE: Add src data (always from h5 struct)
@@ -281,23 +283,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			mout.special() << "srcTray: " << srcTray << mout;
 
 			/// Target:
-			if (!USER_QUANTITY){
-				/*
-				bean.makeCompatible(srcData.data, ctx.colorImage);
-				mout.special() << "Multi-channel (Color image) dst: " << ctx.colorImage << mout;
-				dstTray.set(ctx.colorImage);
-				//dstTray.appendImage(ctx.colorImage);
-				 *
-				 */
-				mout.error() << "illegal state, output quantity " << dstQuantitySyntax << mout;
-			}
-			else {
+			if (true) {
 
 				ImageConf srcConf(srcData.data.getConf());
 				srcConf.setChannelCount(1, (DATASET_QUALITY|SPECIFIC_QUALITY_FOUND) ? 1 : 0);
 
-				//ImageConf dstConf;
-				//bean.getDstConf(srcConf, dstConf);
 
 				mout.special() << "src conf: " << srcConf << mout;
 
@@ -319,21 +309,20 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				dstData.odim.quantity = dstQuantity;
 				dstData.data.setName(dstQuantity);
 
-				// mout.special() << "eka :" << mout;
+
 				//
 				//dstData.data.scaling.physRange = srcConf.scaling.physRange;
 				// FAULTdstData.setEncoding(srcConf.getEncoding()); // here, we have no special information
-				bean.makeCompatible(srcConf, dstData.data);
-				//dstData.setEncoding(dstConf.getEncoding());
-				//dstData.setGeometry(dstConf.getGeometry()); // Possibly multi-channel, and with alpha
-				//dstData.odim.type = "C";
-				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
-
 				if (!ctx.targetEncoding.empty()){
+					//dstData.setEncoding(dstData.data.getType(), ctx.targetEncoding);
+					//mout.warn() << dstData << mout;
+					dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
 					dstData.odim.addShortKeys();
 					dstData.odim.setValues(ctx.targetEncoding);
 					dstData.odim.setTypeDefaults();
 					dstData.odim.setValues(ctx.targetEncoding);
+					dstData.data.setType(dstData.odim.type);
+
 					// dstData.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
 				}
 				else if (! getQuantityMap().setQuantityDefaults(dstData.odim)){
@@ -341,24 +330,62 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					mout << "no --encoding or --quantityConf for [" << dstData.odim.quantity << "], ";
 					mout << "initializing with src data, [" << srcData.odim.quantity << "]"  << mout.endl;
 					dstData.odim.updateFromCastableMap(srcData.odim);
+					dstData.odim.quantity = dstQuantity; // important
 				}
 
-				// Use channel, because trya will use channel
+				mout.special() << "eka :" << dstDataSet << mout;
+
+				// This replaces: bean.makeCompatible(srcConf, dstData.data);
+				ImageConf dstConf;
+				dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
+				bean.getDstConf(srcConf, dstConf);
+
+				// dstAlphaChannels = dstConf.getAlphaChannelCount();
+				// Create alpha already
+				if (dstConf.getAlphaChannelCount() > 0){ // todo check if > 1 ?
+					std::string qualityQuantity = "QIND";
+					if (dstData.hasQuality(qualityQuantity)){
+						mout.note() << qualityQuantity << " for quantity " << quantity << "already exists (using QIND2)" << mout.endl;
+						qualityQuantity = "QIND2";
+					}
+					PlainData<dst_t> & dstQuantity = dstData.getQualityData(qualityQuantity); // todo: smarter if-exists?
+					dstQuantity.setEncoding(typeid(unsigned char));
+					dstQuantity.data.setPhysicalRange(0.0, 1.0, true); // for channel as well?
+					dstQuantity.setGeometry(dstConf.getWidth(), dstConf.getHeight());
+					// dstTray.setAlpha(dstQuantity.data);
+					dstTray.appendAlpha(dstQuantity.data);
+
+				}
+
+				dstConf.setAlphaChannelCount(0);
+
+				if (!dstConf.typeIsSet())
+					dstConf.setType(srcConf.getType());
+
+				dstData.data.setConf(dstConf);
+
+				// bean.makeCompatible(srcConf, dstData.data);
+				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
+
+				// Use channel, because tray will use...
 				dstData.data.getChannel(0).setScaling(dstData.odim.scaling);
 				dstData.data.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
 
+				/*
 				if (dstData.data.hasAlphaChannel()){
 					dstData.data.getAlphaChannel().setPhysicalRange(0.0, 1.0, true);
-					//dstData.data.getAlphaChannel
 				}
+				*/
 
+				mout.warn() << "dst:" << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
+				mout.warn() << "dst[0] :" << dstData.data.getChannel(0) << mout.endl;
 
-				//mout.special() << "dst    :" << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
-				mout.debug() << "dst[0] :" << dstData.data.getChannel(0) << mout.endl;
-
-				dstTray.setChannels(dstData.data); // sets all the channels
+				// dstTray.setChannels(dstData.data); // sets all the channels
+				dstTray.appendImage(dstData.data);
 				//dstTray.appendImage(dstData.data);
 				ctx.setCurrentImages(dstData.data); // yes, last assignment applies
+
+				//dstData.updateTree2(); // because reference, hence no destructor.
 			}
 
 

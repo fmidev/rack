@@ -348,36 +348,119 @@ protected:
 
 };
 
-class CmdCreateDefaultQuality : public drain::SimpleCommand<bool> { //public  drain::BasicCommand {
+class CmdCreateDefaultQuality : public  drain::BasicCommand { // public drain::SimpleCommand<bool> { //
 
 public:
 
-	CmdCreateDefaultQuality() :  drain::SimpleCommand<bool> (__FUNCTION__,
-			"Creates default quality field. See --undetectWeight and --aDefault", "quantitySpecific", false){
+	double dataQuality;
+	double undetectQuality;
+	double nodataQuality;
+
+	// drain::SimpleCommand<bool>
+	CmdCreateDefaultQuality() :  drain::BasicCommand(__FUNCTION__,
+			"Creates default quality field. See --undetectWeight and --aDefault"){ //, "quantitySpecific", false){
 		//parameters.link("quantitySpecific", quantitySpecific=false, "[0|1]");
+		parameters.link("data",     dataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		parameters.link("undetect", undetectQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		parameters.link("nodata",   nodataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		//parameters.link("quantity", quantity="", "ODIM code");
 	};
 
-	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd): drain::SimpleCommand<bool>(cmd){
-
+	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
-	//bool quantitySpecific;
+
+
+	void exec() const {
+
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		DataSelector selector(ODIMPathElem::DATASET);
+		selector.consumeParameters(ctx.select);
+
+		if (selector.quantity.empty()){
+			selector.quantity = "^DBZH";
+			mout.note() << "selector quantity unset, setting " << selector.quantity << mout;
+		}
+
+		const drain::RegExp quantityRegExp(selector.quantity);
+
+		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
+
+		ODIMPathList paths;
+		selector.getPaths(dst, paths);
+
+		mout.note() << std::isnan(dataQuality) << mout;
+		mout.note() << std::isnan(undetectQuality) << mout;
+		mout.note() << std::isnan(nodataQuality) << mout;
+
+		if (& dst == ctx.currentPolarHi5){
+			processStructure<PolarODIM>(dst, paths, quantityRegExp);
+		}
+		else if (& dst == &ctx.cartesianHi5){
+			processStructure<CartesianODIM>(dst, paths, quantityRegExp);
+		}
+		else {
+			drain::Logger mout(ctx.log, __FUNCTION__, getName());
+			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
+		}
+
+		DataTools::updateInternalAttributes(dst);
+
+	};
+
 
 	template <class OD>
-	void processStructure(Hi5Tree & dst, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
+	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
 
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		typedef DstType<OD> DT; // ~ PolarDst, CartesianDst
+		typedef DstType<OD> DT; // PolarDst or CartesianDst
 
-		const QuantityMap & qmap = getQuantityMap();
+		//const QuantityMap & qmap = getQuantityMap();
 
-		const bool & quantitySpecific = value;
+		//const bool & quantitySpecific = value;
 
-		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
-			mout.info() << *it  << mout.endl;
-			Hi5Tree & dstDataSetH5 = dst(*it);
+
+		//for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		for (const ODIMPath & path: paths){
+
+			if (path.empty()){
+				mout.warn() << "Empty path, something went wrong." << mout.endl;
+				continue;
+			}
+
+			if (path.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATASET)){
+			}
+
+			mout.warn() << path << mout.endl;
+			Hi5Tree & dst = dstRoot(path);
+			//QualityDataSupport<DT> quality(dst);
+
+			if (path.back().is(ODIMPathElem::DATASET)){
+				DataSet<DT> dstDataSet(dst, quantityRegExp);
+				PlainData<DT> & dstData = dstDataSet.getFirstData();
+				PlainData<DT> & dstQuality = dstDataSet.getQualityData();
+				dstData.createSimpleQualityData(dstQuality, dataQuality, undetectQuality, nodataQuality);
+			}
+			else if (path.back().is(ODIMPathElem::DATA)){
+				Data<DT> dstData(dst);
+				PlainData<DT> & dstQuality = dstData.getQualityData();
+				dstData.createSimpleQualityData(dstQuality, dataQuality, undetectQuality, nodataQuality);
+			}
+			else {
+				mout.warn() << "Path " << path << " typically contains no /quality groups, skipping." << mout.endl;
+				mout.note() << "Consider --select dataset or --select data: (note colon)." << mout.endl;
+			}
+
+			//mout.warn() << quality  << mout.endl;
+
+			/*
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
 			if (quantitySpecific){
 				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
@@ -405,43 +488,13 @@ public:
 				//@ dstQuality.updateTree();
 			}
 			//@  DataTools::updateInternalAttributes(dstDataSetH5);
+			*/
+
 
 		}
 
 
 	}
-
-	void exec() const {
-
-		//RackResources & resources = getResources();
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-
-		DataSelector selector(ODIMPathElem::DATASET);
-		selector.consumeParameters(ctx.select);
-
-		const drain::RegExp quantityRegExp(selector.quantity);
-		selector.quantity.clear();
-		//if (selector.path.empty()) selector.path = "dataset[0-9]+$";  // OLD
-
-		ODIMPathList paths;
-		selector.getPaths(*ctx.currentHi5, paths); //, ODIMPathElem::DATASET); // RE2
-
-
-		if (ctx.currentHi5 == ctx.currentPolarHi5){
-			processStructure<PolarODIM>(*ctx.currentHi5, paths, quantityRegExp);
-		}
-		else if (ctx.currentHi5 == &ctx.cartesianHi5){
-			processStructure<CartesianODIM>(*ctx.currentHi5, paths, quantityRegExp);
-		}
-		else {
-			drain::Logger mout(ctx.log, __FUNCTION__, getName());
-			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
-		}
-
-		DataTools::updateInternalAttributes(*ctx.currentHi5);
-	};
 
 };
 

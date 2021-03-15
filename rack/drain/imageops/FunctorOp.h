@@ -165,16 +165,6 @@ public:
 	 */
 	void traverseChannel(const Channel &src, Channel & dst) const;
 
-	/// Policy: exclude alpha channels, ie. apply to image channels only.
-	virtual
-	void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-
-		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(FunctorOp)", __FUNCTION__);
-		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(FunctorOp)", __FUNCTION__);
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.note() << "using image channels only (discarding alpha channels)" << mout.endl;
-		traverseChannel(src, dst);
-	};
 
 protected:
 
@@ -331,12 +321,15 @@ public:
 		traverseChannel(src, dst, dst);
 	}
 
+	/*
 	virtual  inline
 	void traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		mout.warn() << "discarding alpha channels, delegating (src, srcWeight, dst, dstWeight) to plain (src, dst) " << mout.endl;
 		traverseChannel(src, dst);
 	}
+	*/
+
 
 
 	inline

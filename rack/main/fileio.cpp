@@ -397,7 +397,7 @@ class CmdOutputFile : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdOutputFile() : drain::SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
-			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|mat|dot]|-") {
+			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-") {
 		//execRoutine = false;
 	};
 
@@ -508,46 +508,6 @@ public:
 			} catch (...) {
 				mout.warn() << "failed in writing " << value << mout.endl;
 			}*/
-		}
-		else if (textFileExtension.test(filename) || (value == "-")){
-
-			mout.info() << "File format: TXT" << mout.endl;
-			ODIMPathList paths;
-
-			if (!ctx.select.empty()){
-				DataSelector selector;
-				selector.consumeParameters(ctx.select);
-				// mout.warn() << selector << mout.endl;
-				selector.getPaths(src, paths);
-			}
-			else {
-				ctx.currentHi5->getPaths(paths); // ALL
-			}
-
-			drain::Output output(filename);
-
-			if (ctx.formatStr.empty()){
-				hi5::Hi5Base::writeText(src, paths, output);
-			}
-			else {
-				mout.debug() << "formatting text output" << mout.endl;
-				drain::StringMapper statusFormatter(RackContext::variableMapper);
-				statusFormatter.parse(ctx.formatStr, true);
-				statusFormatter.toStream(output, ctx.getStatusMap());
-				// ctx.formatStr.clear(); // ?
-			}
-
-			/*
-			if (value == "-")
-				hi5::Hi5Base::writeText(src, paths, std::cout);
-			else {
-				//std::string outFileName = ctx.outputPrefix + value;
-				drain::Output output(filename);
-				hi5::Hi5Base::writeText(src, paths, output);
-				//std::ofstream ofstr(filename.c_str(), std::ios::out);
-				//ofstr.close();
-			}
-			*/
 		}
 		else if (arrayFileExtension.test(filename)){
 
@@ -729,8 +689,55 @@ public:
 
 		}
 		else {
-			// or warn?
-			mout.error() << "Unrecognized file type, writing png image file " << value  << mout.endl;
+
+
+			mout.info() << "File format: text" << mout.endl;
+
+			drain::Output output(filename);
+
+			if (ctx.formatStr.empty()){
+
+				if (textFileExtension.test(filename) || (value == "-")){
+					mout.info() << "Dumping HDF5 structure" << mout.endl;
+				}
+				else {
+					mout.error() << "Text formatting --format unset, and unknown file format: " << value << mout.endl;
+					return;
+				}
+
+				ODIMPathList paths;
+
+				if (!ctx.select.empty()){
+					DataSelector selector;
+					selector.consumeParameters(ctx.select);
+					// mout.warn() << selector << mout.endl;
+					selector.getPaths(src, paths);
+				}
+				else {
+					ctx.currentHi5->getPaths(paths); // ALL
+				}
+
+				hi5::Hi5Base::writeText(src, paths, output);
+			}
+			else {
+				mout.debug() << "formatting text output" << mout.endl;
+				drain::StringMapper statusFormatter(RackContext::variableMapper);
+				statusFormatter.parse(ctx.formatStr, true);
+				statusFormatter.toStream(output, ctx.getStatusMap());
+				// ctx.formatStr.clear(); // ?
+			}
+
+			/*
+					if (value == "-")
+						hi5::Hi5Base::writeText(src, paths, std::cout);
+					else {
+						//std::string outFileName = ctx.outputPrefix + value;
+						drain::Output output(filename);
+						hi5::Hi5Base::writeText(src, paths, output);
+						//std::ofstream ofstr(filename.c_str(), std::ios::out);
+						//ofstr.close();
+					}
+			 */
 		}
 
 	};

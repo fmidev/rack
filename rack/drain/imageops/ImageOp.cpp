@@ -75,40 +75,6 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 	if (!dstConf.typeIsSet())
 		dstConf.setType(srcConf.getType());
 
-	// mout.warn() << "dstConfRet:" << dstConf << mout.endl;
-	// dstConf.setScaling(src.getScaling());
-	// mout.warn() << "dstConf2: " << dstConf << mout.endl;
-	/*
-	if (dst.hasSameSegment(src)){
-		if (SEPARATE){
-			mout.warn() << "dst == src, SEPARATE tmp coming up? "  << mout.endl;
-		}
-		mout.debug() << "dst == src, ok" << mout.endl;
-		return;
-	}
-	*/
-
-	// Definitive storage type
-	/*
-	if (dstConf.typeIsSet()){
-		dst.setType(dstConf.getType());
-	}
-
-	// Fallback: copy src type.
-	if (!dst.typeIsSet()){
-		dst.setType(src.getType());
-	}
-	*/
-
-	/*
-	if (!dstConf.isPhysical()){
-		mout.warn() << "dstConf (" << dstConf.getScaling() << ") has no physical range , adopting scaling of src (" << srcConf.getScaling() << ')' << mout.endl;
-		dstConf.adoptScaling(srcConf, srcConf.getType(), dstConf.getType());
-	}
-	else {
-		mout.debug() << "dst has physical range " << dstConf.getScaling() << mout.endl;
-	}
-	*/
 	const bool ORIG_ALPHA = dst.hasAlphaChannel();
 
 	dst.setConf(dstConf);

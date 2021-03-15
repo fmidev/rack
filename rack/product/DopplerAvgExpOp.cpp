@@ -191,7 +191,8 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 		}
 
 		// NOTE: the actual undetectValue is NOT (yet) used!
-		srcData.createSimpleQualityData(srcQuality, 1.0, 0.0, udc);
+		//srcData.createSimpleQualityData(srcQuality, 1.0, 0.0, udc);
+		srcData.createSimpleQualityData(srcQuality, 1.0, udc, 0.0);
 
 		impOp.traverseChannel(srcData.data, srcQuality, dstData.data, dstQuality.data);
 	}

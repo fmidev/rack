@@ -80,6 +80,19 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 }
 
+void CopyOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+	mout.debug2() << "calling makeCompatible()" << mout.endl;
+	makeCompatible(srcFrame.getConf(), dstImage);
+	ImageView dst2; //(dstImage, functor.dstView);
+	dst2.setView(dstImage, functor.dstView);
+	ImageTray<const Channel> srcTray; //(srcFrame);
+	srcTray.setChannels(srcFrame);
+	ImageTray<Channel> dstTray; //(dst2);
+	dstTray.setChannels(dst2);
+	traverseChannels(srcTray, dstTray);
+}
+
 /*
 void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 

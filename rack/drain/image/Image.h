@@ -217,6 +217,14 @@ public:
 		copyShallow(image);
 	};
 
+	/// Copies the geometry of another image.
+	inline
+	Image(const ImageConf & conf){
+		setConf(conf);
+		//copyShallow(image);
+	};
+
+
 	inline
 	operator const Channel &() const {
 		if (conf.getChannelCount() == 0){

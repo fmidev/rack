@@ -293,6 +293,9 @@ public:
 		//parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
+	/// Forces equal dst image. (Future versions may support different encoding.)
+	void getDstConf(const ImageConf & src, ImageConf & dst) const;
+
 	/// Delegates the invocation separately for each channel.
 	/**
 	 *   If alpha channels are present, delegates to void process(const ImageFrame &src,const ImageFrame &srcWeight, Image &dst,Image &dstWeight) const
