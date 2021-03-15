@@ -714,7 +714,8 @@ public:
 					selector.getPaths(src, paths);
 				}
 				else {
-					ctx.currentHi5->getPaths(paths); // ALL
+					ctx.getHi5(RackContext::CURRENT).getPaths(paths);
+					//ctx.currentHi5->getPaths(paths); // ALL
 				}
 
 				hi5::Hi5Base::writeText(src, paths, output);

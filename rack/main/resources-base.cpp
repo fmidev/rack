@@ -193,6 +193,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 		DataSelector selector(ODIMPathElem::DATA);
 
+		// Do not consume (ie. leave value)
 		selector.setParameters(select);
 
 		mout.debug() << "status metadata selector: " << selector << mout.endl;
