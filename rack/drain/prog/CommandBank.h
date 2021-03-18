@@ -95,6 +95,10 @@ public:
 
 
 
+	/// Include commands from file, inserting them before iterator.
+	//void includeFile(const std::string & filename, Program & prog, Program::iterator it) const;
+
+
 	/// A mini program executed after each cmd until ']' or ')' is encountered
 	void readFile(const std::string & filename, Script & script) const;
 

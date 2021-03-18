@@ -287,9 +287,8 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 	return false;
 }
 
-void CommandBank::readFile(const std::string & filename, Script & script) const {
 
-	//Context & ctx = getContext<Context>();
+void CommandBank::readFile(const std::string & filename, Script & script) const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -308,6 +307,7 @@ void CommandBank::readFile(const std::string & filename, Script & script) const 
 	}
 
 }
+
 
 
 // Future extension.
@@ -350,7 +350,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 	//	std::vector<Program> threads;
 	ProgramVector threads;
 
-	for (Program::const_iterator it = prog.begin(); it != prog.end(); ++it) {
+	//for (Program::const_iterator it = prog.begin(); it != prog.end(); ++it) {
+	for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
 
 		// mout.note() << it->first << mout.endl;
 		const key_t & key =  it->first;
@@ -380,16 +381,23 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		else if (cmd.getName() == execFileCmd){ // "execFile"
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			// TODO catch
-			mout.debug() << "reading and executing commands directly from file=" << pit->second << mout.endl;
+			mout.info() << "embedding (inserting commands on-the-fly) from '" << pit->second << "'" << mout;
 			Script script;
 			readFile(pit->second, script);
-			mout.special() << script << mout.endl;
-			//Program test;
-			//append(script, ctx, test);
-			//mout.special() << test << mout.endl;
+			mout.debug() << script << mout.endl;
+			Program::iterator itNext = it;
+			++itNext;
 			for (Script::value_type & subCmd: script){
-				run(subCmd.first, subCmd.second, ctx);
+				mout.special() << sprinter(subCmd) << mout.endl;
+				command_t & cmd = clone(subCmd.first);
+				cmd.setExternalContext(ctx);
+				cmd.setParameters(subCmd.second);
+				//prog.add(it->first, cmd);
+				prog.insert(itNext, Program::value_type(subCmd.first, &cmd));
+				//run(subCmd.first, subCmd.second, ctx);
 			}
+			// Debug: print resulting program that contains embedded commands
+			// mout.warn() << sprinter(prog) << mout;
 			continue;
 		}
 		else if (key == "["){
