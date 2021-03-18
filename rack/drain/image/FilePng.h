@@ -104,7 +104,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	mout.info() << "path='" << path << "'" << mout.endl;
+	mout.debug() << "path='" << path << "'" << mout.endl;
 
 
 	// Try to open the file
@@ -197,7 +197,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	}
 
 	//image.setType(t);
-	mout.info() << "initialize, type " << image.getType().name() << mout.endl;
+	mout.debug() << "initialize, type " << image.getType().name() << mout.endl;
 
 	/// Copy to drain::Image
 	const unsigned int width  = png_get_image_width(png_ptr, info_ptr);

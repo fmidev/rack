@@ -86,6 +86,38 @@ protected:
 
 
 
+class GrayOp : public PixelVectorOp
+{
+
+public:
+
+	std::string coefficients;
+
+	GrayOp() : PixelVectorOp(__FUNCTION__, "Convert multi-channel image to single."){
+		parameters.clear();
+		parameters.link("coeff", coefficients="1.0", "0..1[,0..1,0..1,..]");
+		parameters.separator = 0;
+	};
+
+	virtual
+	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
+
+
+
+	/// Apply to single channel.
+	virtual inline
+	void traverseChannel(const Channel & src, Channel &dst) const {
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		mout.warn() << "already a single-channel image?" << mout;
+		dst.copyData(src);
+		//throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,dst) unimplemented.");
+	};
+
+
+};
+
+
+
 template <class F>
 class BinaryPixelVectorOp : public PixelVectorOp
 {

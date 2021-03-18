@@ -359,10 +359,10 @@ protected:
 /// Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by default.
 /**
 \code
-drainage --geometry 256,256,1 --box 96,96,255 --box 160,96,208  --box 128,160,192  -o box-dots.png
-drainage --geometry 256,256,1 --box 96,96,255 --box 160,96,208  --box 128,160,192 --target S --iCopy f -o box-dots-16b.png
-drainage --geometry 256,256,3,1 --box 96,96,255,64,32,255  --box 160,96,64,255,32,208  --box 128,160,64,32,255,192  -o box-dots-rgba.png
-drainage --geometry 256,256,3,1 --box 96,96,255,64,32,255  --box 160,96,64,255,32,208  --box 128,160,64,32,255,192 --target S --iCopy f -o box-dots-rgba-16b.png
+drainage --geometry 256,256,1 --box 112:144,144:176,192  -o boxes.png
+drainage --geometry 256,256,1 --box 112:144,144:176,192 --target S --iCopy f -o boxes-16b.png
+drainage --geometry 256,256,3,1 --box 96:100,96:100,255:64:32:255  --box 128:132,160:166,64:32:255:192  -o boxes-rgba.png
+drainage --geometry 256,256,3,1 --box 96:100,96:100,255:64:32:255  --box 128:132,160:166,64:32:255:192 --target S --iCopy f -o boxes-rgba-16b.png
 \endcode
  *
  */
@@ -375,7 +375,7 @@ public:
 		//parameters.separator = 0;
 		parameters.link("i", iRange.tuple(),"i:i2").fillArray = true;
 		parameters.link("j", jRange.tuple(),"j:j2").fillArray = true;
-		parameters.link("value", value="0", "<f1>[,f2,f3,alpha]");
+		parameters.link("value", value="0", "<f1>[:f2:f3:alpha]").fillArray = true;
 
 	};
 

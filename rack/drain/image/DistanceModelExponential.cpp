@@ -56,14 +56,11 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	this->widths.forward   = horz;
-	this->widths.backward  = horzLeft;
-	this->heights.forward  = vert;
-	this->heights.backward = vertUp;
+	// Store all
+	this->horzRadius.set(horz, horzLeft); // forward   = horz;
+	this->vertRadius.set(vert, vertUp); // forward  = vert;
 
-	mout.debug2() << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 3" << std::endl;
+	mout.debug() << "Radii: " << this->horzRadius << ", " << this->vertRadius << mout; // ", " << diag << mout.endl;
 
 	float hRight = radius2Dec(horz,     0.5);
 	float hLeft  = radius2Dec(horzLeft, hRight);
@@ -71,6 +68,8 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	float vUp    = radius2Dec(vertUp,   vDown);
 
 	setDecrement(hRight, vDown, hLeft, vUp);
+
+	mout.debug() << "Decs: " << this->horzDec << ", " << this->vertDec << mout; // ", " << diag << mout.endl;
 
 }
 
@@ -96,11 +95,11 @@ float DistanceModelExponential::checkDec(float d, float dDefault) const {
 void DistanceModelExponential::setDecrement(float horz, float vert, float horzRight, float vertUp){
 
 	//drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-	horzDec  = checkDec(horz);
-	horzDec2 = checkDec(horzRight, horzDec);
+	horzDec.forward  = checkDec(horz);
+	horzDec.backward = checkDec(horzRight, horzDec.forward);
 
-	vertDec  = checkDec(vert,   horzDec);
-	vertDec2 = checkDec(vertUp, vertDec);
+	vertDec.forward  = checkDec(vert,   horzDec.forward);
+	vertDec.backward = checkDec(vertUp, vertDec.forward);
 
 }
 
@@ -109,13 +108,13 @@ DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool fo
 	float hLog;
 	float vLog;
 	if (forward){
-		hLog = static_cast<float>(dx) * log(horzDec);
-		vLog = static_cast<float>(dy) * log(vertDec);
+		hLog = static_cast<float>(dx) * log(horzDec.forward);
+		vLog = static_cast<float>(dy) * log(vertDec.forward);
 		return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
 	}
 	else {
-		hLog = static_cast<float>(dx) * log(horzDec);
-		vLog = static_cast<float>(dy) * log(vertDec);
+		hLog = static_cast<float>(dx) * log(horzDec.backward);
+		vLog = static_cast<float>(dy) * log(vertDec.backward);
 		return DistanceElement(-dx, -dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
 	}
 }

@@ -59,12 +59,11 @@ public:
 	typedef std::list<std::string> keylist_t;
 
 	/**
-	 *  \tparam S - source type
-	 *  \tparam T - destination type
+	 *  \tparam S - source element type
+	 *  \tparam T - target map type
 	 */
 	template <class T,class S,bool STRICT=true>
 	static
-	//void setValue(std::map<std::string, T> & dstMap, const std::string & key, const S & value) {
 	void setValue(T & dstMap, const std::string & key, const S & value) {
 
 		if (STRICT){

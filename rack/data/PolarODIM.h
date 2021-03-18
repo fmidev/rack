@@ -190,6 +190,12 @@ public:
 		return rstart + (static_cast<double>(i)+0.5)*rscale;
 	}
 
+	/// Returns the radial distance covered by i consecutive bins.
+	inline
+	double getBinSpan(size_t i) const {
+		return (static_cast<double>(i))*rscale;
+	}
+
 	/// Returns the index of bin at given (bin center) distance along the beam.
 	inline
 	int getBinIndex(double d) const {

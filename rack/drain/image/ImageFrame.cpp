@@ -227,9 +227,9 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 	else
 		ostr << "Image";
 	ostr << " '"<< getName() << "'\t";
-	ostr << getGeometry() << ' ' << Type::getTypeChar(conf.getType()) << '@' << (conf.getElementSize()*8) << 'b';
+	//ostr << getGeometry() << ' ' << Type::getTypeChar(conf.getType()) << '@' << (conf.getElementSize()*8) << 'b' << ' ';
 
-	ostr << ' ' << getConf();
+	ostr << getConf();
 
 	/*
 	// Scaling is worth displaying only if it "exists" ...

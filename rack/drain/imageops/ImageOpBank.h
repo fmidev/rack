@@ -246,6 +246,7 @@ void installImageOps(T & installer) {
 
 		installer.template install<CopyOp>();
 		installer.template install<CropOp>();
+		installer.template install<GrayOp>();
 
 		installer.template install<DistanceTransformLinearOp>("DistanceTransform");  // consider rename op
 		installer.template install<DistanceTransformExponentialOp>("DistanceTransformExp");  // consider rename op

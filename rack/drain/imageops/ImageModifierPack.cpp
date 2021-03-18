@@ -62,7 +62,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	mout.fail() << "Feelu" << mout.endl;
+	//mout.fail() << "Feelu" << mout.endl;
 
 
 	/// Step 1: change type, if requested

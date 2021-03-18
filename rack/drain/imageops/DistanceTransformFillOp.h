@@ -60,20 +60,36 @@ public:
 	virtual
 	~DistanceTransformFillOp(){};
 
-    virtual //inline
-    void getDstConf(const ImageConf &srcConf, ImageConf & dstConf) const {
-
-    	// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
+    virtual
+    void getDstConf(const ImageConf & srcConf, ImageConf & dstConf) const {
 
     	dstConf.setGeometry(srcConf.getGeometry());
     	if (!dstConf.hasAlphaChannel())
     		dstConf.setAlphaChannelCount(1);
 
-    	//dstConf.setPhysicalRange(0.0, 1.0); // ??
-
-    	// dstConf.coordinatePolicy.set(srcConf.coordinatePolicy);
-
     }
+
+    /// Like ImageOp::makeCompatible(), but clears the alpha channel.
+	inline
+	void makeCompatible(const ImageFrame &src, Image &dst) const  {
+
+		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		mout.debug3() << "src: " << src << mout.endl;
+
+		ImageConf dstConf(dst.getConf());
+		dstConf.setCoordinatePolicy(src.getCoordinatePolicy());
+		getDstConf(src.getConf(), dstConf);
+
+		if (!dstConf.typeIsSet())
+			dstConf.setType(src.getType());
+
+		// Important
+		dst.getAlphaChannel().fill(0);
+
+		mout.debug(3) << "dst: " << dst << mout.endl;
+
+	};
+
 
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
 
@@ -118,23 +134,27 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 	mout.debug() << "start: " << *this << mout.endl;
 
-	mout.debug2()  << "src: " << src << mout.endl;
-	mout.debug2()  << "dst: " << dst << mout.endl;
-
-
-	if (!src.hasAlpha() || !dst.hasAlpha()){
-		mout.warn()  << "src: " << src << mout.endl;
-		mout.warn()  << "dst: " << dst << mout.endl;
-		mout.error() << "alpha missing in src and/or dst, see above warning" << mout.endl;
+	if (!src.hasAlpha()){
+		mout.warn()  << "src: " << src << mout;
+		mout.error() << "required alpha channel missing in src" << mout;
 		return;
 	}
+	else
+		mout.debug2()  << "src: " << src << mout.endl;
+
+	if (!dst.hasAlpha()){
+		mout.warn()  << "dst: " << dst << mout;
+		mout.error() << "required alpha channel missing in dst" << mout.endl;
+		return;
+	}
+	else
+		mout.debug2()  << "dst: " << dst << mout.endl;
+
 
 	// mout.debug3()  << "init params: " << mout.endl;
-	// this->initializeParameters(src.get(),      dst.get());
 	mout.debug3()  << "init params, using alpha: " << mout.endl;
 	this->initializeParameters(src.getAlpha(), dst.getAlpha());
-
-	dst.getAlpha().fill(0);
+	// dst.getAlpha().fill(0); NEW: MOved to ...
 
 	//drain::image::File::write(src.getAlpha(), "dts-a.png");
 	//drain::image::File::write(dst.getAlpha(),"dt0-a.png");
@@ -164,10 +184,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 }
 
-
-//void DistanceTransformFillOp<T>::traverseDownRight(const ImageFrame &src, const ImageFrame &srcAlpha,
-//ImageFrame &dst, ImageFrame &dstAlpha) const {
-
+/// Step 1/2: forward traversal.
 /**
  *
  *    \tparam T - DistanceModel
@@ -176,34 +193,40 @@ template <class T>
 void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.debug() << "start" << mout.endl;
 
-	//const Geometry & srcGeometry = srcTray.getGeometry();
+	mout.debug() << "distModel: " << this->distanceModel << mout;
+
+	DistanceNeighbourhood chain;
+	this->distanceModel.createChain(chain, true);
+
+	mout.debug2() << "neighbourHood " << drain::sprinter(chain) << mout;
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
 
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
-	//srcTray.adjustCoordinateHandler(coordinateHandler);
-	mout.debug() << "coordHandler" << coordinateHandler << mout;
+	mout.debug() << "coordHandler " << coordinateHandler << mout;
 
+	mout.debug3() << "src alpha:" << srcAlpha << mout.endl;
+	/*
+	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf() << mout.endl;
+	mout.debug()  << "src alpha.conf:" << srcAlpha.getWidth() << mout.endl;
+	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf().getWidth() << mout.endl;
+	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf().area << mout.endl;
+	*/
 
-	// Intensities (graylevel)
-	//std::vector<double> pixel(srcGeometry.getImageChannelCount());
-
-	//mout.debug() << "channel depth:" << pixel.size() << '=' << srcGeometry.getImageChannelCount() << '=' << dstTray.getGeometry().channels.getImageChannelCount() << mout.endl;
-	//mout.debug3() << "src alpha:" << srcAlpha << mout.endl;
-	//mout.debug3() << "dst alpha:" << dstAlpha << mout.endl;
+	mout.debug3() << "dst alpha:" << dstAlpha << mout.endl;
+	/*
+	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf() << mout.endl;
+	mout.debug()  << "dst alpha.conf:" << dstAlpha.getWidth() << mout.endl;
+	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf().getWidth() << mout.endl;
+	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf().area << mout.endl;
+	*/
 
 	/// Current cursor location
 	Point2D<int> p;
 	Point2D<int> pTest;
 	Point2D<int> pWin;
-
-	DistanceNeighbourhood chain;
-	this->distanceModel.createChain(chain, true);
-	mout.debug2() << "distModel" << this->distanceModel << mout;
-
 
 	// Winning distance
 	dist_t dWin;
@@ -215,19 +238,18 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	const Range<int> & xRange = coordinateHandler.getXRange();
 	const Range<int> & yRange = coordinateHandler.getYRange();
 
-	size_t address;
-	size_t addressWin;
+	size_t address = 0;
+	size_t addressWin = 0;
 
-	mout.debug() << "main loop" << mout.endl;
-	for (p.y=0; p.y<=yRange.max; ++p.y){// TODO check < vs <=
-		for (p.x=0; p.x<=xRange.max; ++p.x){ // TODO check < vs <=
+	mout.debug() << "main loop, K=" << K <<  mout.endl;
+	for (p.y=0; p.y<=yRange.max; ++p.y){
+		for (p.x=0; p.x<=xRange.max; ++p.x){
 
 			address = dstAlpha.address(p.x, p.y);
 
 			// Take source value as default
 			dWin = srcAlpha.get<dist_t>(address);
 			pWin.setLocation(p);
-			//pWin.setLocation(-1, -1);
 
 			for (const DistanceElement & elem: chain){
 				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
@@ -250,17 +272,21 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 				if (addressWin != address){
 					for (size_t k=0; k<K; ++k)
 						dstTray.get(k).put(address, dstTray.get(k).get<dist_t>(addressWin));
-						//dstTray.get(k).at(address) = dstTray.get(k).at(addressWin);
-					// dstTray.getPixel(pWin, pixel);
 				}
 				else {
 					for (size_t k=0; k<K; ++k)
 						dstTray.get(k).put(address, srcTray.get(k).get<dist_t>(address));
-						// dstTray.get(k).at(address) = srcTray.get(k).at(address);
-					//srcTray.getPixel(p, pixel);
 				}
-				//dstTray.putPixel(p, pixel);
+
 			}
+
+			/*
+			if ((p.x == p.y) && ((p.x&15)==0)){
+				std::cerr << p << "\t a=" << address << ", aW=" << addressWin << "\t" << dWin << '>' << dTest  <<  '\t';
+				std::cerr << p << "\t s=" << srcAlpha.get<dist_t>(address) << '=' << srcAlpha.get<dist_t>(p) <<  '\t';
+				std::cerr << p << "\t d=" << dstAlpha.get<dist_t>(address) << '=' << dstAlpha.get<dist_t>(p) <<  '\n';
+			}
+			*/
 
 		}
 	}
@@ -269,7 +295,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 
 
 
-///
+/// Step 1/2: backward traversal.
 /**
  *
  *    \tparam T - DistanceModel
@@ -285,16 +311,10 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, false);
 
-	//const Geometry & srcGeometry = srcTray.getGeometry();
-
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
-	// srcTray.adjustCoordinateHandler(coordinateHandler);
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
-
-	//std::vector<double> pixel(srcGeometry.getImageChannelCount());
-	//std::vector<int> pixelTmp(srcGeometry.getImageChannelCount());
 
 	/// Current cursor location
 	Point2D<int> p;
@@ -305,7 +325,9 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	dist_t dWin;
 	dist_t dTest;
 
+	// Current position
 	size_t address;
+	// Winning position
 	size_t addressWin;
 
 	const size_t K = std::min(srcTray.size(), dstTray.size());
@@ -313,7 +335,7 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	const Range<int> & xRange = coordinateHandler.getXRange();
 	const Range<int> & yRange = coordinateHandler.getYRange();
 
-	mout.debug() << "main loop" << mout.endl;
+	mout.debug() << "main loop, K=" << K <<  mout.endl;
 
 	for (p.y=yRange.max; p.y>=0; --p.y){
 		for (p.x=xRange.max; p.x>=0; --p.x){
@@ -322,8 +344,6 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 
 			dWin = srcAlpha.get<dist_t>(address);
 			pWin.setLocation(p);
-			//srcTray.getPixel(p,pixel); // move own
-			//pWin.setLocation(-1, -1);
 
 			for (const DistanceElement & elem: chain){
 				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
@@ -342,20 +362,16 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 				dstAlpha.put(address, dWin);
 
 				addressWin = dstAlpha.address(pWin.x, pWin.y);
-				//if ((pWin.x != -1) && (pWin.y != -1)){
 
-				if (addressWin != address){ //(( pWin != p))
+				if (addressWin != address){
 					for (size_t k=0; k<K; ++k)
 						dstTray.get(k).put(address,dstTray.get(k).get<dist_t>(addressWin));
-					//dstTray.getPixel(pWin, pixel);
 				}
 				else {
 					for (size_t k=0; k<K; ++k)
 						dstTray.get(k).put(address,srcTray.get(k).get<dist_t>(address));
-					//srcTray.getPixel(p, pixel);
 				}
 
-				//dstTray.putPixel(p, pixel);
 			}
 
 		}
@@ -369,22 +385,42 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 
 
 
+/// Spreeads values using inverse linear distance transform.
+/**
 
-/** Spreeads values using inverse linear distance transform.
-
-16-bit under construction
 \~exec
- # rainage --geometry 256,256,3,1 --plot 96,96,255,64,32,255  --plot 160,96,64,255,32,208  --plot 128,160,64,32,255,192  -o dots-rgba.png
- make dots-rgba.png
+make dots-rgba.png dots-rgba-16b.png
 \~
 
-Examples:
- \code
- drainage dots-rgba.png --iDistanceTransformFill 30 -o distFill-linear.png --view i -o distFillPlain-linear.png
- \endcode
+Examples on three distinct pixels (red, green, and blue):
+\code
+  drainage dots-rgba.png     --iDistanceTransformFill 30 -o distFill.png     --view i -o distFillPlain.png
+  drainage dots-rgba-16b.png --iDistanceTransformFill 30 -o distFill-16b.png --view i -o distFillPlain-16b.png
+  drainage dots-rgba.png     --iDistanceTransformFill 30 -o distFill.png     --view i -o distFillPlain-asym.png
+\endcode
 
-\~no exec
-  #onvert -fill white -frame 2 +append  distFill-linear.png distFillPlain-linear.png   distFill2-linear.png
+
+
+The radii do not have to be symmetric:
+\code
+  drainage dots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFill.png --view i -o distFillPlain-asym.png
+\endcode
+
+
+Examples on a graphical image:
+\~exec
+drainage graphic.png -V 0 --iNegate -o graphic-mask.png
+drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o graphic-tr-16b.png
+\~
+\code
+  drainage graphic-tr.png          --iDistanceTransformFill 20 -o distFill2.png
+  drainage graphic-tr-16b.png      --iDistanceTransformFill 20 -o distFill2-8b.png
+  drainage graphic-tr-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b.png
+\endcode
+
+\~exec
+make graphic-tr-ia.png distFill2-ia.png distFill2-8b-ia.png distFill2-16b-ia.png
+convert +append graphic-tr-ia.png distFill2-ia.png distFill-compare.png
 \~
 
 
@@ -401,16 +437,35 @@ public:
 	};
 };
 
+
 /**
 
-Examples:
- \code
- drainage dots-rgba.png --iDistanceTransformFillExp 15 -o distFill-exp.png --view i -o distFillPlain-exp.png
- \endcode
-
-\~no exec
- # onvert -fill white -frame 2 +append  distFill-exp.png distFillPlain-exp.png   distFill2-exp.png
+\~exec
+make dots-rgba.png dots-rgba-16b.png
 \~
+
+Examples:
+\code
+  drainage dots-rgba.png     --iDistanceTransformFillExp 15 -o distFill-exp.png     --view i -o distFillPlain-exp.png
+  drainage dots-rgba-16b.png --iDistanceTransformFillExp 15 -o distFill-exp-16b.png --view i -o distFillPlain-exp-16b.png
+\endcode
+
+Examples on a graphical image:
+\~exec
+drainage graphic.png -V 0 --iNegate -o graphic-mask.png
+drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o graphic-tr-16b.png
+\~
+\code
+  drainage graphic-tr.png          --iDistanceTransformFillExp 20 -o distFill2Exp.png
+  drainage graphic-tr-16b.png      --iDistanceTransformFillExp 20 -o distFill2Exp-8b.png
+  drainage graphic-tr-16b.png -T S --iDistanceTransformFillExp 20 -o distFill2Exp-16b.png
+\endcode
+
+\~exec
+make graphic-tr-ia.png distFill2Exp-ia.png distFill2Exp-8b-ia.png distFill2Exp-16b-ia.png
+convert +append graphic-tr-ia.png distFill2Exp-ia.png distFillExp-compare.png
+\~
+
 
  */
 class DistanceTransformFillExponentialOp : public DistanceTransformFillOp<DistanceModelExponential>

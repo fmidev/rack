@@ -170,7 +170,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	mout.info() << "path='" << path << "'" << mout.endl;
+	mout.debug2() << "path='" << path << "'" << mout.endl;
 
 	std::ifstream infile;
 	infile.open(path.c_str(), std::ios::in);
@@ -186,7 +186,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 	//mout.debug() << "prop: " << image.properties << mout.endl;
 	image.setConf(conf); // rename initialize()
 
-	mout.debug() << image << mout.endl;
+	mout.debug2() << image << mout.endl;
 
 	readFrame(image, infile);
 

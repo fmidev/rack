@@ -58,8 +58,8 @@ class GapFillOpBase: public RemoverOp {
 public:
 
 
-	int width;
-	float height;
+	int widthM;
+	float heightD;
 
 protected:
 
@@ -95,8 +95,8 @@ public:
 	 */
 	GapFillOp(int width = 1500, float height = 5.0) :
 		GapFillOpBase(__FUNCTION__,"Removes low-quality data with gap fill based on distance transformation.") {
-		parameters.link("width",  this->width = width,   "meters");
-		parameters.link("height", this->height = height, "degrees");
+		parameters.link("width",  this->widthM = width,   "meters");
+		parameters.link("height", this->heightD = height, "degrees");
 	};
 
 
@@ -119,8 +119,8 @@ public:
 	//"width=1500m,height=5deg,loops=3,decay=0.9"
 	GapFillRecOp(int width=1500, float height=5.0, int loops=3) : //, float decay=0.9) :
 		GapFillOpBase(__FUNCTION__, "Recursive, 'splinic' gap filler.") {
-		parameters.link("width", this->width = width,   "meters");
-		parameters.link("height",this->height = height, "degrees");
+		parameters.link("width", this->widthM = width,   "meters");
+		parameters.link("height",this->heightD = height, "degrees");
 		parameters.link("loops", this->loops = loops,   "N");
 		//link("decay", this->decay, decay, "0..1");
 		//initialize();

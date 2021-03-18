@@ -117,13 +117,13 @@ private:
 
  Examples with and without physical scaling to (0.0,1.0), setting step at 50% intensity (128 and 0.5):
 \code
-drainage gray.png        --iFuzzyStep 128:64    -o fuzzyStep.png
-drainage gray.png -R 0:1 --iFuzzyStep 0.5:0.25  -o fuzzyStep-phys.png
+drainage gray.png        --iFuzzyStep 64:192    -o fuzzyStep.png
+drainage gray.png -R 0:1 --iFuzzyStep 0.25:0.75  -o fuzzyStep-phys.png
 \endcode
 
 When changing storage type, scaling must be given explicitly (here 256, from \c C to \c S ) or physically with \c -R :
 \code
-drainage gray.png         -T S --iFuzzyStep 128:64   -o fuzzyStep-16bit.png
+drainage gray.png         -T S --iFuzzyStep 64:192   -o fuzzyStep-16bit.png
 drainage gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5 -o fuzzyStep-16bit-phys.png
 \endcode
 

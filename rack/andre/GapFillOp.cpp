@@ -50,56 +50,116 @@ namespace rack {
 using namespace drain::image;
 using namespace hi5;
 
-
+/// TODO: move to data tools etc?
+/*
+void applyMask(const PlainData<PolarSrc> & srcData, PlainData<PolarSrc> & dstData) {
+}
+*/
 
 //void GapFillOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
-		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug() << *this << mout.endl;
+	mout.debug() << *this << mout;
 
-	//const drain::VariableMap &a = data.properties;
-	//const double rscale = a.get("where:rscale",500.0);
-	//double nrays  = a.get("where:nrays",500.0);
+	//File::write(srcData.data,"GapFillOp-in.png");
+	//File::write(srcQuality.data,"GapFillOp-inq.png");
 
-	//File::write(data,"GapFillOp-in.png");
-	//File::write(quality,"GapFillOp-inq.png");
+	// DistanceTransformFillLinearOp op;
+	DistanceTransformFillExponentialOp op;
+	//FastAverageOp op;
 
-	DistanceTransformFillLinearOp op; // op("5,5");
-	double h = width / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
-	double v = height * srcData.data.getHeight() / 360.0;
-	op.setRadius(h, v);
+	// Pixels, but float, because radii.
+	double horz = widthM  / srcData.odim.rscale;
+	double vert = heightD * srcData.data.getHeight() / 360.0;
+	op.setRadius(horz, vert, horz, vert);
+	//op.setSize(horz,  vert);
 
-	//mout.warn() << op << mout.endl;
+	// Esp. radius
+	mout.debug() << op << mout;
+
+	drain::image::Image tmpData(srcData.data.getConf());
+	tmpData.setName("tmpData");
+	// mout.warn() << tmpData << mout;
+	mout.debug() << tmpData.getChannel(0) << mout;
+
+	drain::image::Image tmpQuality; //(srcQuality.data.getConf());
+	tmpQuality.setName("tmpQuality");
+	tmpQuality.copyDeep(srcQuality.data);
+
+	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip special codes
+
+	tmpQuality.setPhysicalRange(0, 255, true);
+	tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
+	// mout.warn() << tmpQuality << mout;
+	// mout.warn() << tmpQuality.getChannel(0) << mout;
+
+	//File::write(tmpQuality,"GapFillOp-intq.png");
+
+	//dstData.setEncoding(srcData.data.getType()); // itself?
+	//dstData.setGeometry(srcData.data.getGeometry()); // itself?
+	//double qNAN = std::numeric_limits<double>::quiet_NaN();
+	//dstData.createSimpleQualityData(dstQuality, NAN, 0, 0); // = skip special codes
 
 	ImageTray<const Channel> srcTray;
-	srcTray.setChannels(srcData.data, srcQuality.data);
+	srcTray.setChannels(srcData.data, tmpQuality);
+	mout.debug() << "srcTray:\n" << srcTray << mout;
+	// File::write(srcTray.get(),"GapFillOp-ind.png");
+	// File::write(srcTray.getAlpha(),"GapFillOp-inq.png");
 
 	ImageTray<Channel> dstTray;
-	dstTray.setChannels(dstData.data, dstQIND.data);
+	//dstTray.setChannels(dstData.data, dstQuality.data);
+	dstTray.setChannels(tmpData, tmpQuality);
+	mout.debug() << "dstTray:\n" << dstTray << mout;
+
+	//File::write(tmpQuality,"GapFillOp-inzq.png");
 
 	op.traverseChannels(srcTray, dstTray);
-	//op.traverseChannels(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
-	//File::write(data,"GapFillOp-out.png");
-	//File::write(quality,"GapFillOp-outq.png");
+
+	//
+
+
+	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
+	Image::iterator  it = srcData.data.begin();
+	Image::iterator tit = tmpData.begin();
+	Image::iterator dit = dstData.data.begin();
+	//double undetect = dstData.odim.undetect;
+	while (it != srcData.data.end()){
+		//if ((*it != odim.nodata) && (*it != odim.undetect))
+		if (*it == srcData.odim.undetect){
+			*dit = dstData.odim.undetect;
+		}
+		else {
+			*dit = *tit; // same encoding, direct assignment ok
+		}
+		++it;
+		++tit;
+		++dit;
+	}
+
+	// op.traverseChannels(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
+	// File::write(dstTray.get(),"GapFillOp-out.png");
+	// File::write(dstTray.getAlpha(),"GapFillOp-outq.png");
+	// File::write(tmpData,"GapFillOp-out.png");
+	// File::write(tmpQuality,"GapFillOp-outq.png");
 
 }
 
 //void GapFillRecOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
-		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 	//srcData.odim.getBinIndex()
-	double h = width / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
-	double v = height * srcData.data.getHeight() / 360.0;
+	double h = widthM / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
+	double v = heightD * srcData.data.getHeight() / 360.0;
 
 	BlenderOp op(h, v, 'g', 'm', loops);
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcData.data, srcQuality.data);
 	ImageTray<Channel> dstTray;
-	dstTray.setChannels(dstData.data, dstQIND.data);
+	dstTray.setChannels(dstData.data, dstQuality.data);
 	//op.filter(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
 	op.traverseChannels(srcTray, dstTray);
 

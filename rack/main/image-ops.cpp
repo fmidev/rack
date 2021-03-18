@@ -73,7 +73,6 @@ public:
 	 *  \param op - image operator to be used
 	 *  \param key - command name
 	 */
-	//RackImageOpCmd() : drain::BeanCommand<OP>(), key(OP().getName()) {};
 	RackImageOpCmd() : drain::BeanCommand<OP>(){
 	};
 

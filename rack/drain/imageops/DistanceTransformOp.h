@@ -69,14 +69,6 @@ public:
     	distanceModel.setRadius(width, height, width2, height2);
     };
 
-    /*
-    virtual inline
-    void process(const ImageTray<const Channel> & srcChannels, ImageTray<Image> & dstImages) const {
-    	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-    	mout.note() << "redirecting to ImageOp::process(srcChannels, dstImages, false)" << mout.endl;
-    	ImageOp::processConditional(srcChannels, dstImages, false);
-    }
-    */
 
 
     virtual
@@ -102,11 +94,8 @@ public:
     virtual inline
     void getDstConf(const ImageConf &src, ImageConf & dst) const {
 
-    	// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
-
     	dst.setGeometry(src.getGeometry());
-    	// Alpha?
-    	// dst.setScaling(1,0, 0.0,1.0);
+
     	if (src.isPhysical()){
     		dst.setPhysicalRange(src.getPhysicalRange(), true);
     	}
@@ -114,12 +103,9 @@ public:
 
     	dst.coordinatePolicy.set(src.coordinatePolicy);
 
-    	//return false; // does not need separate image(s)
+
     }
 
-	/// Ensures dst the same geometry and type with src.
-	/*
-	 */
 
     /*
 	virtual
@@ -160,15 +146,10 @@ protected:
 
 	DistanceTransformOp(const DistanceTransformOp & op) : ImageOp(op) {
 		parameters.append(this->distanceModel.getParameters());
-		//distModel.setTopology(2);
 		setParameters(op.getParameters());
-		//const T distanceModel
-		//distModel.setRadius(op.getDistanceModel()distModel.width);
-		//this->parameters.copyStruct(op.parameters, op.distanceModel, this->distanceModel);
 	};
 
 
-	//ValueScaling src2dst;
 
 	/// Sets internal parameters
 	/**
@@ -392,18 +373,19 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 
 /// Computes inverse linear distance to bright points.
 /**
+
 \~exec
-make dots.png #make
-make dots-16bit.png #make
+make dots.png
+make dots-16b.png
 \~
 
 Examples:
 \code
-drainage dots.png       --iDistanceTransform 70      -o dist.png
-drainage dots.png       --iDistanceTransform 70,70,0 -o dist-diamond.png
-drainage dots.png       --iDistanceTransform 70,70,1 -o dist-simple.png
-drainage dots.png       --iDistanceTransform 25,10  -o dist-horz.png
-drainage dots-16bit.png --iDistanceTransform 25    -o dist-16b.png
+drainage dots.png     --iDistanceTransform 70      -o dist.png
+drainage dots-16b.png --iDistanceTransform 25      -o dist-16b.png
+drainage dots.png     --iDistanceTransform 70,70,0 -o dist-diamond.png
+drainage dots.png     --iDistanceTransform 70,70,1 -o dist-simple.png
+drainage dots.png     --iDistanceTransform 40,20   -o dist-horz.png
 
 \endcode
 
@@ -425,8 +407,9 @@ public:
 Examples:
  \code
  drainage dots.png       --iDistanceTransformExp 25    -o distExp.png
- drainage dots.png       --iDistanceTransformExp 25,10 -o distExp-horz.png
  drainage dots-16bit.png --iDistanceTransformExp 25    -o distExp-16b.png
+ drainage dots.png       --iDistanceTransformExp 40,20 -o distExp-horz.png
+ drainage dots-16bit.png --iDistanceTransformExp 10:40,20:80 -o distExp-asym.png
  \endcode
 
  TODO: gnuplot curves

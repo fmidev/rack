@@ -279,6 +279,12 @@ protected:
   drainage image-rgba.png --iAverage 15 -o average-weighted.png
  \endcode
 
+\code
+  drainage graphic-tr.png          --iAverage 20 --view a -o graphicAvg-tr.png     --view i -o graphicAvg.png
+  drainage graphic-tr-16b.png      --iAverage 20 --view a -o graphicAvg-tr-8b.png  --view i -o graphicAvg-8b.png
+  drainage graphic-tr-16b.png -T S --iAverage 20 --view a -o graphicAvg-tr-16b.png --view i -o graphicAvg-16b.png
+\endcode
+
   \see BlenderOp
  */
 class FastAverageOp : public WindowOp< Window<WindowConfig> > {

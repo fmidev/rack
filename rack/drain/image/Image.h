@@ -79,8 +79,7 @@ public:
 	inline
 	void setConf(const ImageConf &conf) {
 		this->conf.setConf(conf);
-		//setCoordinatePolicy(conf.getCoordinatePolicy());
-		//setGeometry(conf);
+		setStorageType(conf.getType());
 		update();
 	}
 

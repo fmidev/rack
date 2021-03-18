@@ -47,11 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Sprinter.h"
 
-//#include <regex.h> // wants malloc?
 
-// g++ deer_regexp.cpp -o deer_regexp
-// typedef size_t int;
-// // // using namespace std;
+// TODO: use SmartMapTools for assignments
 
 namespace drain {
 
@@ -550,8 +547,7 @@ template <class T>
 //template <class S>
 std::ostream & SmartMap<T>::toStream(std::ostream & ostr, char equal, char startChar, char endChar, char separatorChar) const {
 
-	// Otherways ok, but key order not used
-	//return SprinterBase::sequenceToStream(ostr, *this, SprinterBase::jsonLayout);
+	// Otherways ok, but key order not used: SprinterBase::sequenceToStream(ostr, *this, SprinterBase::jsonLayout);
 	return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
 
 	/*

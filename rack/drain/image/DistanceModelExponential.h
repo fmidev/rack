@@ -57,7 +57,7 @@ class DistanceModelExponential : public DistanceModel {
 public:
 
 	DistanceModelExponential() : DistanceModel(__FUNCTION__){
-		setRadius(widths.forward, heights.forward);
+		setRadius(horzRadius.forward, vertRadius.forward);
 	};
 
 	void setRadius(float horz, float vert = nan_f, float horzLeft = nan_f, float vertUp = nan_f);

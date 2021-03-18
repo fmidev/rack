@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/*
+ *
 template <typename T>
 class Radius : public drain::UniTuple<T,2> {
 public:
@@ -59,6 +61,27 @@ public:
 
 	/// Copy constructor.
 	Radius(const Radius & r) : forward(this->at(0)),  backward(this->at(1)) {
+		this->set(r.forward, r.backward);
+	};
+
+};
+
+ */
+
+template <typename T>
+class Bidirectional : public drain::UniTuple<T,2> {
+public:
+
+	T & forward;
+	T & backward;
+
+	/// Default constructor.
+	Bidirectional(T forward=T(), T backward=T()) : forward(this->at(0)), backward(this->at(1)) {
+		this->set(forward, backward);
+	};
+
+	/// Copy constructor.
+	Bidirectional(const Bidirectional & r) : forward(this->at(0)),  backward(this->at(1)) {
 		this->set(r.forward, r.backward);
 	};
 
@@ -180,7 +203,7 @@ public:
 	inline
 	void update(){
 		//setTopology(topology);
-		setRadius(widths.forward, heights.forward, widths.backward, heights.backward);
+		setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
 	}
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
@@ -220,33 +243,34 @@ protected:
 	 *
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
-	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), widths(10.0, 10.0), heights(-1.0, -1.0) {
-		parameters.link("width",  widths.tuple(),  "pix").fillArray = true;
-		parameters.link("height", heights.tuple(), "pix").fillArray = true;
+	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(10.0, 10.0), vertRadius(-1.0, -1.0) {
+		parameters.link("width",  horzRadius.tuple(),  "pix").fillArray = true;
+		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
 		parameters.link("topology", topology=PIX_CHESS_CONNECTED, "0|1|2");
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		// mout.warn() << *this << mout.endl;
 	};
 
-	DistanceModel(const DistanceModel & dm) : BeanLike(dm), widths(dm.widths), heights(dm.heights){
+	DistanceModel(const DistanceModel & dm) : BeanLike(dm), horzRadius(dm.horzRadius), vertRadius(dm.vertRadius){
 		parameters.copyStruct(dm.getParameters(), dm, *this);
 		// setTopology(dm.topology);
 		setMax(dm.getMax()); // warning
 	}
 
 
-	//  Horizontal distance(s); right (and left) "radius". Internal parameter applied upon initParams?
-	drain::Radius<float> widths;
+	//  Horizontal distance(s); right and left steepness radii. Internal parameter applied upon initParams?
+	drain::Bidirectional<float> horzRadius;
 
-	drain::Radius<float> heights;
+	//  Vertical distance(s); right and left steepness radii. Internal parameter applied upon initParams?
+	drain::Bidirectional<float> vertRadius;
 
-	/// Final decrement or decay per pixel in horizontal direction. Derived from widths; definition varies in subclasses.
-	float horzDec; // todo: pair
-	float horzDec2;
-	/// Final decrement or decay	per pixel in vertical direction. Derived from heights; definition varies in subclasses.
-    float vertDec; // todo: pair
-    float vertDec2;
+
+	/// Final decrement or decay per pixel in horizontal direction. Derived from horzRadius; definition varies in subclasses.
+	drain::Bidirectional<float> horzDec;
+
+	/// Final decrement or decay	per pixel in vertical direction. Derived from vertRadius; definition varies in subclasses.
+	drain::Bidirectional<float> vertDec;
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).
 	float maxCodeValue;

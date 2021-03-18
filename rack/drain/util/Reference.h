@@ -97,8 +97,9 @@ public:
 	 */
 	template <class F>
 	inline
-	void link(F &p){
+	Referencer & link(F &p){
 		setPtr(p);
+		return *this;
 	}
 
 	/// Set pointer to &p.
@@ -107,15 +108,17 @@ public:
 	 */
 	template <class F>
 	inline
-	void link(F *p){
+	Referencer & link(F *p){
 		setPtr(p);
+		return *this;
 	}
 
 	/// NEW. Set pointer to p, of given type.
 	inline
-	void link(void *p, const std::type_info &t, size_t count=1){
+	Referencer & link(void *p, const std::type_info &t, size_t count=1){
 		setPtr(p, t);
 		elementCount = count;
+		return *this;
 	}
 
 
@@ -124,8 +127,9 @@ public:
 	 *   Essentially, makes Castable::relink visible.
 	 */
 	inline
-	void relink(Castable & c){
+	Referencer & relink(Castable & c){
 		Castable::relink(c);
+		return *this;
 	}
 
 	template <class T>
@@ -149,24 +153,27 @@ public:
 
 template <>
 inline
-void Referencer::link<void>(void *p){
+Referencer & Referencer::link<void>(void *p){
 	throw std::runtime_error(std::string("Referencer::") + __FUNCTION__ + ": void type unsupported");
+	return *this;
 }
 
 template <>
 inline
-void Referencer::link<Castable>(Castable &c){
+Referencer & Referencer::link<Castable>(Castable &c){
 	// Warning removed, because link(T) is handy for ReferenceMap::append()
 	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
 	relink(c);
+	return *this;
 }
 
 template <>
 inline
-void Referencer::link<Referencer>(Referencer &r){
+Referencer & Referencer::link<Referencer>(Referencer &r){
 	// Warning removed, because link(T) is handy for ReferenceMap::append()
 	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
 	relink(r);
+	return *this;
 }
 
 /// "Friend class" template implementation

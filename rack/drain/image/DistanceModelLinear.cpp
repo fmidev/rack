@@ -52,16 +52,13 @@ float DistanceModelLinear::radius2Dec(float r, float rDefault) const { //  = -1.
 
 void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, float vertUp){ // , bool diag, bool knight){
 
-
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-	//std::cerr << getName() << ':' <<__FUNCTION__ << " 2" << std::endl;
-	//mout.warn() << "calling DM Linear! " << horz << ", " << vert  << mout.endl; // ", " << diag << mout.
 
-	mout.debug2() << "radii: " << horz << ", " << vert << mout.endl; // ", " << diag << mout.endl;
-	this->widths.forward   = horz;
-	this->widths.backward  = horzLeft;
-	this->heights.forward  = vert;
-	this->heights.backward = vertUp;
+	this->horzRadius.set(horz, horzLeft); // forward   = horz;
+	this->vertRadius.set(vert, vertUp); // forward  = vert;
+
+	mout.debug() << "Radii: " << horzRadius << ", " << vertRadius << mout.endl; // ", " << diag << mout.endl;
+
 	mout.debug() << this->getParameters() << mout.endl;
 
 	if (getMax() == 0.0){
@@ -74,9 +71,10 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	float vDown  = radius2Dec(vert,     hRight);
 	float vUp    = radius2Dec(vertUp,   vDown);
 
-	//mout.warn() << "Decrements " << hRight << ',' << hLeft << ' ' << vDown << ',' << vUp << mout.endl; // ", " << diag << mout.endl;
 
 	setDecrement(hRight, vDown, hLeft, vUp);  // handles diag and knight
+
+	mout.debug() << "Decs: " << this->horzDec << ", " << this->vertDec << mout;
 
 }
 
@@ -102,13 +100,13 @@ void DistanceModelLinear::setDecrement(float horz, float vert, float horzRight, 
 
 	// Default decrement: 1.0
 
-	horzDec  = checkDec(horz);
-	horzDec2 = checkDec(horzRight, horzDec);
+	horzDec.forward  = checkDec(horz);
+	horzDec.backward = checkDec(horzRight, horzDec.forward);
 
-	vertDec  = checkDec(vert,   horzDec);
-	vertDec2 = checkDec(vertUp, vertDec);
+	vertDec.forward  = checkDec(vert,   horzDec.forward);
+	vertDec.backward = checkDec(vertUp, vertDec.forward);
 
-	mout.debug() << "Decrements " << horzDec << ':' << horzDec2 << ',' << vertDec << ':' << vertDec2 << mout.endl; // ", " << diag << mout.endl;
+	mout.debug() << "Decrements " << horzDec << ',' << vertDec << mout; // ", " << diag << mout.endl;
 
 
 }
@@ -120,8 +118,8 @@ DistanceElement DistanceModelLinear::getElement(short dx, short dy, bool forward
 		dy = -dy;
 	}
 
-	float distX = static_cast<float>(dx) * ((dx > 0) ? horzDec : horzDec2);
-	float distY = static_cast<float>(dy) * ((dy > 0) ? vertDec : vertDec2);
+	float distX = static_cast<float>(dx) * ((dx > 0) ? horzDec.forward : horzDec.backward);
+	float distY = static_cast<float>(dy) * ((dy > 0) ? vertDec.forward : vertDec.backward);
 
 	return DistanceElement(dx, dy, sqrt(distX*distX + distY*distY));
 

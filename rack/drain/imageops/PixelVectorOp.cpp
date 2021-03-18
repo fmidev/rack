@@ -54,6 +54,69 @@ void PixelVectorOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 }
 
 
+void GrayOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
+
+	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	const size_t channels = src.size();
+
+	std::vector<double> coeff(channels);
+
+	drain::Referencer ref;
+	ref.link(coeff);
+	ref.fillArray = true;
+	ref = coefficients; // magic
+
+	double sum=0.0;
+	for (double c: coeff){
+		sum += c;
+	}
+
+	if (sum==0.0){
+		mout.error() << "zero-sum coeffs: " << ref << " (from " << coefficients << ")" << mout;
+		return;
+	}
+
+	for (double &c: coeff){
+		c /= sum;
+	}
+
+	mout.special() << "coeffs: " << ref << " (from " << coefficients << ")" << mout;
+
+
+	Channel & dstChannel = dst.get();
+
+	const size_t width  = dstChannel.getWidth();
+	const size_t height = dstChannel.getHeight();
+
+	size_t a;
+	for (size_t j = 0; j < height; j++) {
+		for (size_t i = 0; i < width; i++) {
+
+			sum = 0.0;
+			a = dstChannel.address(i,j);
+			/*
+			for (const Channel & srcChannel : src){
+				sum += srcChannel.get<double>(a);
+			}
+			*/
+			for (size_t k = 0; k < channels; k++){
+				sum += coeff[k] * src.get(k).get<double>(a);
+			}
+			dstChannel.put(a, sum); // TODO: scale, limit?
+		}
+	}
+
+	//drain::StringTools::split(coefficients, coeff, ",");
+	//const size_t channels = src.size();
+	/*
+	if (coeff.size() < channels){
+
+	}
+	*/
+}
+
+
 }  // image::
 }  // drain::
 
