@@ -65,9 +65,9 @@ const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext 
 
 	RackContext & ctx = *this;
 
-	if (ctx.currentGrayImage == NULL){
+	if ((ctx.currentGrayImage == NULL) || !select.empty()){
 		findImage();
-		 //RackContext::findImage(ctx);
+		// RackContext::findImage(ctx);
 	}
 
 	if (ctx.currentGrayImage == NULL){
