@@ -79,6 +79,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "MarginalStatisticOp.h"
 //#include "MotionExtrapolatorOp.h"
 //#include "MotionIllustratorOp.h"
+#include "MultiThresholdOp.h"
 #include "PaletteOp.h"
 #include "PixelVectorOp.h"
 #include "QualityMixerOp.h"
@@ -246,7 +247,6 @@ void installImageOps(T & installer) {
 
 		installer.template install<CopyOp>();
 		installer.template install<CropOp>();
-		installer.template install<GrayOp>();
 
 		installer.template install<DistanceTransformLinearOp>("DistanceTransform");  // consider rename op
 		installer.template install<DistanceTransformExponentialOp>("DistanceTransformExp");  // consider rename op
@@ -296,9 +296,12 @@ void installImageOps(T & installer) {
 
 		//static ImageOpCloner<PixelVectorOp> pixelvector;
 		//bank.template install< >(pixelvector, "pixelvector");
+		installer.template install<GrayOp>();
 		installer.template install<DistanceOp>();
 		installer.template install<ProductOp>();
 		installer.template install<MagnitudeOp>();
+
+		installer.template install<MultiThresholdOp>();
 
 		//static ImageOpCloner<Distance2Op> distance2;
 		//bank.template install< >(distance2);
