@@ -103,7 +103,8 @@ double Compositor::applyTimeDecay(double w, const ODIM & odim) const {
 
 	}
 	else if (composite.decay > 1.0){
-		mout.warn() << "decay coeff above 1.0" << mout.endl;
+		mout.warn() << "decay coeff (" << composite.decay << ") above 1.0, adjusting 1.0." << mout;
+		composite.decay = 1.0;
 	}
 
 	return w;
