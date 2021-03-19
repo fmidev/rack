@@ -99,10 +99,10 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	double d,x,y;
 	size_t index = 0;
-	unsigned int j2;
-	for (unsigned int j=w.rayRange.min; j<w.rayRange.max; ++j){
+	int j2;
+	for (int j=w.rayRange.min; j<w.rayRange.max; ++j){
 		j2 = (j+srcData.odim.area.height) % srcData.odim.area.height;
-		for (unsigned int i = w.binRange.min; i<w.binRange.max; ++i){
+		for (int i = w.binRange.min; i<w.binRange.max; ++i){
 			d = srcData.data.get<double>(i, j2);
 			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
 			if (srcData.odim.isValue(d)){
