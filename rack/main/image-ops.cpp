@@ -585,11 +585,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 }
 
 
-
-
-// std::string ImageOpExec::outputQuantitySyntax("${what:quantity}_${command}");
-
-//bool ImageOpExec::physical(true);
+/*
 
 class MultiThresholdOp : public drain::image::ImageOp {
 
@@ -601,27 +597,21 @@ public:
 		parameters["range"].fillArray = true;
 		parameters["target"].fillArray = true;
 
-		range.min = 0.0;
-		range.max = 1.0;
-		target.min = 0.0;
-		target.max = 1.0;
-		//targetQuality.min = 0.0;
-		//targetQuality.max = 1.0;
+		range.set(0.0, 1.0);
+		target.set(0.0, 1.0);
+
 	};
 
 	drain::Range<double> range;
 	drain::Range<double> target;
-	// drain::Range<double> targetQuality;
 
-	// Note: only a default implementation.
-	virtual inline
+	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
-
-		//traverseChannelsEqually(src, dst);
-		// traverseChannelsRepeated(src, dst);
 		traverseChannelsSeparately(src, dst);
+		// traverseChannelsEqually(src, dst);
+		// traverseChannelsRepeated(src, dst);
 		// traverseMultiChannel(src, dst);
 
 	};
@@ -721,7 +711,7 @@ public:
 
 
 };
-
+*/
 
 
 
