@@ -718,73 +718,24 @@ public:
 
 
 /// For separate commands.
-
-
-
-/// Wraps OP of type ImageOp to a command RackImageOpCmd<OP>
-/*
-class RackImageOpInstaller {
-
-public:
-
-	RackImageOpInstaller(drain::CommandBank & bank): bank(bank){
-	}
-
-	drain::CommandBank & bank;
-
-	class ImageOpAdapter : public drain::CommandInstaller<'i',ImageOpSection> {}; // ImageOpSection
-
-
-	/// Add ImageOp command to registry (CommandBank).
-	// \tparam OP - Class derived from ImageOp
-	template <class OP>
-	void install(const std::string & name = OP().getName()){
-
-		try {
-
-			std::string key(name);
-			drain::CommandBank::deriveCmdName(key, ImageOpAdapter::getPrefix());
-
-			drain::Command & cmd = bank.add<RackImageOpCmd<OP> >(key);
-			cmd.section = ImageOpAdapter::getSection().index;
-		}
-		catch (const std::exception &e) {
-			std::cerr << "error: ImageOpInstaller: " << name  << '\n';
-			std::cerr << "error: " << e.what() << '\n';
-		}
-	}
-
-};
-*/
-
-
 // ImageRackletModule::list_t ImageRackletModule::rackletList;
-
 ImageOpModule::ImageOpModule(){ //:  CommandSection("imageOps"){
 
 	drain::CommandBank::trimWords().insert("Functor");  // { //const std::string & section, const std::string & prefix){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-
 	// NEW
 	// drain::CommandBank & cmdBank = drain::getCommandBank();
-
-	//RackImageOpInstaller installer(cmdBank);
-	//drain::image::installImageOps(installer);
+	// RackImageOpInstaller installer(cmdBank);
+	// drain::image::installImageOps(installer);
 	drain::image::installImageOps(*this);
 
-
-
 	//static MultiThresholdOp mthop;
-
 	/*  Use radar data compatible --palette instead, it supports undetect and nodata
 	static PaletteOp remapOp(getResources().palette);
 	static ImageOpRacklet rmop(remapOp);
 	registry.add(rmop, "Palette");  // Note --palette and --iPalette
 	*/
-
-
-
 
 }
 
