@@ -221,8 +221,12 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	if (UCHAR || USHORT){
 
+		// This is needed for "normalising" quantities if desired (eg. Doppler wind, unamambiguous range)
 		ValueScaling sc(scale, offset);
 		//sc.setPhysicalScale(typeid(unsigned char), min, max);
+
+		mout.warn() << "first entry: " << sprinter(*pal.begin()) << mout;
+		mout.warn() << "last  entry: " << sprinter(*pal.rbegin()) << mout;
 
 		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
 

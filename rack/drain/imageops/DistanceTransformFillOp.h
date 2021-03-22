@@ -69,24 +69,33 @@ public:
 
     }
 
+
     /// Like ImageOp::makeCompatible(), but clears the alpha channel.
-	inline
-	void makeCompatible(const ImageFrame &src, Image &dst) const  {
+    virtual // TODO: non-virtual, ie, final!
+	void makeCompatible(const ImageConf & src, Image & dst) const {
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.debug3() << "src: " << src << mout.endl;
+		mout.debug3() << "src: " << src << mout;
 
 		ImageConf dstConf(dst.getConf());
 		dstConf.setCoordinatePolicy(src.getCoordinatePolicy());
-		getDstConf(src.getConf(), dstConf);
+		getDstConf(src, dstConf);
 
 		if (!dstConf.typeIsSet())
 			dstConf.setType(src.getType());
 
+		if (!dstConf.hasAlphaChannel())
+			dstConf.setAlphaChannelCount(1);
+
+
+		dst.setConf(dstConf);
+
+		mout.debug() << "clearing alpha (use traverseChannel(s) to avoid)" << mout;
+
 		// Important
 		dst.getAlphaChannel().fill(0);
 
-		mout.debug(3) << "dst: " << dst << mout.endl;
+		mout.debug3() << "dst: " << dst << mout;
 
 	};
 
@@ -390,32 +399,33 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 
 \~exec
 make dots-rgba.png dots-rgba-16b.png
+make spots-rgba.png spots-rgba-16b.png
 \~
 
 Examples on three distinct pixels (red, green, and blue):
 \code
-  drainage dots-rgba.png     --iDistanceTransformFill 30 -o distFill.png     --view i -o distFillPlain.png
-  drainage dots-rgba-16b.png --iDistanceTransformFill 30 -o distFill-16b.png --view i -o distFillPlain-16b.png
-  drainage dots-rgba.png     --iDistanceTransformFill 30 -o distFill.png     --view i -o distFillPlain-asym.png
+  drainage spots-rgba.png     --iDistanceTransformFill 30 -o distFill.png
+  drainage spots-rgba-16b.png --iDistanceTransformFill 30 -o distFill-16b.png
 \endcode
 
 
 
 The radii do not have to be symmetric:
 \code
-  drainage dots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFill.png --view i -o distFillPlain-asym.png
+  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFill.png
 \endcode
 
 
 Examples on a graphical image:
 \~exec
 drainage graphic.png -V 0 --iNegate -o graphic-mask.png
-drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o graphic-tr-16b.png
+drainage graphic.png -a graphic-mask.png -o graphic-rgba.png
+make graphic-rgba-16b.png
 \~
 \code
-  drainage graphic-tr.png          --iDistanceTransformFill 20 -o distFill2.png
-  drainage graphic-tr-16b.png      --iDistanceTransformFill 20 -o distFill2-8b.png
-  drainage graphic-tr-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b.png
+  drainage graphic-rgba.png          --iDistanceTransformFill 20 -o distFill2.png
+  drainage graphic-rgba-16b.png      --iDistanceTransformFill 20 -o distFill2-8b.png
+  drainage graphic-rgba-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b.png
 \endcode
 
 \~exec
@@ -441,13 +451,14 @@ public:
 /**
 
 \~exec
-make dots-rgba.png dots-rgba-16b.png
+# ma ke dots-rgba.png dots-rgba-16b.png
+make spots-rgba.png spots-rgba-16b.png
 \~
 
 Examples:
 \code
-  drainage dots-rgba.png     --iDistanceTransformFillExp 15 -o distFill-exp.png     --view i -o distFillPlain-exp.png
-  drainage dots-rgba-16b.png --iDistanceTransformFillExp 15 -o distFill-exp-16b.png --view i -o distFillPlain-exp-16b.png
+  drainage spots-rgba.png     --iDistanceTransformFillExp 15 -o distFill-exp.png
+  drainage spots-rgba-16b.png --iDistanceTransformFillExp 15 -o distFill-exp-16b.png
 \endcode
 
 Examples on a graphical image:

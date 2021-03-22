@@ -106,6 +106,14 @@ public:
 
     }
 
+    /*
+    virtual // TODO: non-virtual, ie, final!
+	void makeCompatible(const ImageConf & src, Image & dst) const {
+    	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+    	mout.warn() << "derived " << mout;
+    	ImageOp::makeCompatible(src, dst);
+    }
+    */
 
     /*
 	virtual

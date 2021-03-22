@@ -272,17 +272,25 @@ protected:
 
  \~exec
    make image-rgba.png
+   make graphic-rgba.png
+   make spots-rgba.png
+   make spots-rgba-16b.png
  \~
 
  This operator applies weighted averaging, if a weight image (alpha channel) is provided.
  \code
-  drainage image-rgba.png --iAverage 15 -o average-weighted.png
+  drainage image-rgba.png --iAverage 25 -o average-weighted.png
  \endcode
 
 \code
-  drainage graphic-tr.png          --iAverage 20 --view a -o graphicAvg-tr.png     --view i -o graphicAvg.png
-  drainage graphic-tr-16b.png      --iAverage 20 --view a -o graphicAvg-tr-8b.png  --view i -o graphicAvg-8b.png
-  drainage graphic-tr-16b.png -T S --iAverage 20 --view a -o graphicAvg-tr-16b.png --view i -o graphicAvg-16b.png
+  drainage spots-rgba.png     --iAverage 50 -o spots-avg.png
+  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg.png
+\endcode
+
+\code
+  drainage graphic-rgba.png          --iAverage 20 -o graphicAvg.png
+  drainage graphic-rgba-16b.png      --iAverage 20 -o graphicAvg-8b.png
+  drainage graphic-rgba-16b.png -T S --iAverage 20 -o graphicAvg-16b.png
 \endcode
 
   \see BlenderOp

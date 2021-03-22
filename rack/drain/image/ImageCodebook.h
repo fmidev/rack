@@ -87,13 +87,28 @@ public:
 
 		drain::Logger mout(__FUNCTION__, __FILE__);
 
+		//mout.warn() << "first entry: " << sprinter(*pal.begin()) << mout;
+		//mout.warn() << "last  entry: " << sprinter(*pal.rbegin()) << mout;
+
+		lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
+
 		// Todo: add support for signed short and signed char ?
-		if (type == typeid(unsigned short)){ // 1024 entries (not 65535)
-			lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
-			lookUp.bitShift	= 6; // note => 16 - 6 = 10bits => 1024 entries
+		if (type == typeid(unsigned short)){ // 1024 entries (not 65536)
+			if ((scaling.scale == 1.0) && (scaling.offset == 0.0)){
+				double first = this->begin()->first;
+				double  last = this->rbegin()->first;
+				if ((first >= 0.0) && (last <= 255.0)){
+					lookUp.bitShift	= 0;
+					mout.note() << "short int, but not using 16 bits, coping with 256 entries" << mout;
+				}
+				else
+					lookUp.bitShift	= 6;
+			}
+			else
+
+				lookUp.bitShift	= 6; // note => 16 - 6 = 10 bits => 1024 entries
 		}
 		else if (type == typeid(unsigned char)){
-			lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
 			lookUp.bitShift	= 0;
 		}
 		else {

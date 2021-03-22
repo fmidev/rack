@@ -44,8 +44,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	}
 
 	dst.setType(src.getType());
-	dst.setGeometry(src.getWidth(), views.size()*src.getHeight());
-	//dst.setChannelCount(src.channels); // initial guess (maximum)
+	//dst.setChann elCount(src.channels); // initial guess (maximum)
 
 	Image dummy(1,1);
 	dummy.setChannelCount(src.getImageChannelCount(), src.getAlphaChannelCount()); // maximum
@@ -53,7 +52,15 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	size_t iChannels = 1;
 	size_t aChannels = 0;
 
+	size_t panels = 0;
 	for (size_t v=0; v<views.size(); ++v){
+
+
+		if (views[v] == ':'){
+			// Skip '|' border marker
+			continue;
+		} // warn of 'F', flat?
+		++panels;
 
 		std::string s;
 		s = views[v];
@@ -65,7 +72,10 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 		mout.special() << "channels... " << s << " " << iChannels << '+' << aChannels << mout.endl;
 
 	}
+
 	dst.setChannelCount(iChannels, aChannels);
+
+	dst.setArea(src.getWidth(), panels*src.getHeight());
 
 	mout.debug() << "dst: " << dst << mout.endl;
 
@@ -86,6 +96,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
 	const size_t width  = srcFrame.getWidth();
 	const size_t height = srcFrame.getHeight();
+	const double gray = dstImage.getConf().getTypeMax<double>()/2.0;
 
 	mout.warn() << "src: " << srcFrame << mout;
 	//return;
@@ -101,15 +112,25 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	ImageView view;
 	std::string viewStr;
 
+	int panel = 0;
+	//size_t addressOffset = 0;
+	bool BORDER = false;
+
+	//for (size_t v=0; v<views.size(); ++v){
 	for (size_t v=0; v<views.size(); ++v){
 
-		size_t addressOffset = dstImage.address(0, v*height);
+
+		while ((views[v] == ':') && (v<views.size())){
+			BORDER = true;
+			++v;
+		}
+		size_t addressOffset = dstImage.address(0, panel*height);
+		++panel;
 
 		viewStr = views[v];
-
-		// src
 		view.setView(srcFrame, viewStr);
 		mout.debug3() << "view:" << viewStr << ':' << view << mout;
+
 
 		// dst
 		size_t a;
@@ -126,7 +147,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 			if (kView >= view.getChannelCount())
 				kView = view.getChannelCount()-1; // last channel
 
-			mout.debug() << "copy: " << viewStr << '[' << kView  << "] => dst[" << k << ']' << '+' << v << mout;
+			mout.note() << "copy: " << viewStr << '[' << kView  << "] => dst[" << k << ']' << '+' << v << mout;
 
 			const Channel & src = view.getChannel(kView);
 			Channel & dst = dstImage.getChannel(k);
@@ -137,6 +158,16 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 					dst.put(addressOffset + a, src.get<double>(a));
 				}
 			}
+
+			if (BORDER){
+				mout.debug2() << "border" << mout;
+				for (size_t i = 0; i < width; i++) {
+					//a = src.address(i,j);
+					dst.put(addressOffset + i, gray);
+				}
+			}
+
+
 		}
 
 	}

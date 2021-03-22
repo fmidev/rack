@@ -48,9 +48,9 @@ public:
 	inline
 	MultiThresholdOp() : drain::image::ImageOp(__FUNCTION__, "Change values outside given range to target.min and target.max") {
 		parameters.link("range",  range.tuple(),  "accepted values [min:max]").fillArray = true;
-		parameters.link("target", target.tuple(), "substitutes for rejected values [low:high]").fillArray = true;
-		parameters["range"].fillArray = true;
-		parameters["target"].fillArray = true;
+		//parameters.link("target", target.tuple(), "substitutes for rejected values [low:high]").fillArray = true;
+		parameters.link("min", target.min, "value set below range.min"); //.fillArray = true;
+		parameters.link("max", target.max, "value set above range.max"); //.fillArray = true;
 
 		range.set(0.0, 1.0);  // linear range
 		target.set(0.0,1.0);  // substitite values (2 distinct values)
