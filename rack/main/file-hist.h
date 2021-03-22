@@ -1,0 +1,145 @@
+/*
+
+MIT License
+
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
+
+//#include <exception>
+#include <fstream>
+#include <iostream>
+
+
+/*
+#include "drain/util/Log.h"
+#include "drain/util/FilePath.h"
+#include "drain/util/Output.h"
+#include "drain/util/StringMapper.h"
+#include "drain/util/Tree.h"
+#include "drain/util/Variable.h"
+#include "drain/image/Image.h"
+#include "drain/image/Sampler.h"
+#include "drain/imageops/ImageModifierPack.h"
+
+#include "drain/prog/Command.h"
+#include "drain/prog/CommandBankUtils.h"
+#include "drain/prog/CommandInstaller.h"
+
+#include "data/Data.h"
+#include "data/DataOutput.h"
+#include "data/DataSelector.h"
+#include "data/DataTools.h"
+#include "data/ODIMPath.h"
+#include "data/PolarODIM.h"
+#include "hi5/Hi5.h"
+#include "hi5/Hi5Write.h"
+#include "product/ProductOp.h"
+#include "radar/FileGeoTIFF.h"
+#include "radar/RadarDataPicker.h"
+*/
+
+#include "drain/util/Histogram.h"
+//#include "drain/util/BeanLike.h"
+#include "drain/prog/Command.h"
+
+
+//#include "fileio.h"
+#include "resources.h"
+//#include "fileio-read.h"
+
+namespace rack {
+
+struct HistEntry : drain::BeanLike {
+
+	inline
+	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
+		parameters.link("index", index);
+		parameters.link("min", binRange.min);
+		parameters.link("max", binRange.max);
+		parameters.link("count", count);
+		parameters.link("label", label);
+	};
+
+	drain::Histogram::vect_t::size_type index;
+	drain::Range<double> binRange;
+	drain::Histogram::count_t count;
+	std::string label;
+
+};
+
+
+/// TODO: generalize to array outfile
+class CmdHistogram : public drain::BasicCommand {
+
+public:
+
+	int count;
+
+	drain::Range<double> range;
+
+	std::string store;
+	std::string filename;
+
+	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
+	CmdHistogram() : drain::BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
+		parameters.link("count", count = 256);
+		parameters.link("range", range.tuple());
+		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
+		parameters.link("filename", filename="", "<filename>.txt|-");
+		parameters.link("store", store="histogram", "<attribute_key>");
+	};
+
+	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
+	// virtual	inline const std::string & getDescription() const { return description; };
+
+	typedef std::map<int, std::string> legend;
+
+
+	void exec() const;
+
+	// OutputPrefix ? included or not?
+	// Consider static, called by CmdOutputFile with default hist params?
+	void writeHistogram(const drain::Histogram & histogram, const std::string & filename, const legend &leg = legend()) const;
+
+
+private:
+
+	// Try to set "nodata" and "undetect"
+	void setSpecialEntry(legend & leg, double value, const std::string & label) const;
+
+	static
+	const HistEntry histEntryHelper;
+
+};
+
+
+
+
+
+} // namespace rack
