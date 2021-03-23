@@ -326,13 +326,13 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		if ((ctx.currentImage != & ctx.grayImage) && (ctx.currentImage != & ctx.colorImage)){
-			mout.warn() << name << ": no image" << mout.endl;
+		drain::image::Image & img = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
+		if (img.isEmpty()){
+			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
 
-		// getModifiable?
-		drain::image::Image & img = (ctx.currentImage == & ctx.grayImage) ? ctx.grayImage : ctx.colorImage;
 
 		if (img.getAlphaChannelCount() == 0) {
 			mout.warn() << name << ": no alpha channel" << mout.endl;
