@@ -275,7 +275,7 @@ public:
 
 
 		RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep(true);
-		//fuzzyStep.odimSrc.updateFromMap(src.data.getProperties());
+		//fu zzyStep.odimSrc.updateFromMap(src.data.getProperties());
 		fuzzyStep.odimSrc.updateFromMap(srcAlpha.getProperties());
 
 		if (ctx.imagePhysical){

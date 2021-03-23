@@ -429,8 +429,8 @@ make graphic-rgba-16b.png
 \endcode
 
 \~exec
-make graphic-tr-ia.png distFill2-ia.png distFill2-8b-ia.png distFill2-16b-ia.png
-convert +append graphic-tr-ia.png distFill2-ia.png distFill-compare.png
+# ma ke graphic-tr-ia.png distFill2-ia.png distFill2-8b-ia.png distFill2-16b-ia.png
+# con vert +append graphic-tr-ia.png distFill2-ia.png distFill-compare.png
 \~
 
 
@@ -473,8 +473,8 @@ drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o gra
 \endcode
 
 \~exec
-make graphic-tr-ia.png distFill2Exp-ia.png distFill2Exp-8b-ia.png distFill2Exp-16b-ia.png
-convert +append graphic-tr-ia.png distFill2Exp-ia.png distFillExp-compare.png
+# ma ke graphic-tr-ia.png distFill2Exp-ia.png distFill2Exp-8b-ia.png distFill2Exp-16b-ia.png
+# con vert +append graphic-tr-ia.png distFill2Exp-ia.png distFillExp-compare.png
 \~
 
 
