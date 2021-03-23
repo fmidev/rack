@@ -84,17 +84,24 @@ public:
  *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
  *
  */
-class CartesianSun : public drain::BasicCommand {
+class CartesianSun : public drain::SimpleCommand<std::string> { //drain::BasicCommand {
 
 public:
 
-	CartesianSun() : drain::BasicCommand(__FUNCTION__,
+	CartesianSun() : drain::SimpleCommand<std::string>(__FUNCTION__, "Cartesian sun shine field.", "timestamp", "200507271845")
+	{
+		//parameters.link("timestamp", timestamp="200527071845");
+		//parameters.link("quantity", odim.quantity="SUNSHINE");
+	}
+
+	/*
+	CartesianSun() :  drain::BasicCommand(__FUNCTION__,
 			"Sunshine to a Cartesian product.") //, extractCmd(extractCmd)
 	{
 		parameters.link("timestamp", timestamp="200527071845");
 		//parameters.link("quantity", odim.quantity="SUNSHINE");
 	}
-
+	*/
 
 	void exec() const;
 

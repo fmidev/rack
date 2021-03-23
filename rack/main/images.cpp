@@ -128,6 +128,10 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+
+		//
+
+
 		DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // ImageS elector imageS elector;
 		imageSelector.consumeParameters(ctx.select);
 		imageSelector.ensureDataGroup();
@@ -149,6 +153,7 @@ public:
 		//drain::image::Image &alphaSrc =
 		return (*ctx.currentHi5)(path); //[ODIMPathElem::ARRAY].data.dataSet;
 		//return alphaSrc;
+
 	}
 
 };
@@ -175,6 +180,7 @@ public:
 
 
 		const PlainData<PolarSrc> src(getAlphaSrc(ctx));
+
 
 		//drain::image::Image & dstImg = ImageKit::getModifiableImage(ctx);
 		drain::image::Image & dstImg = ctx.getModifiableImage();
@@ -203,9 +209,9 @@ public:
 		//mout.debug3() << "alphaSrcODIM:  "  <<  alphaSrcODIM << mout.endl;
 		mout.debug3() << "odimOut: " << copier.odim << mout.endl;
 		mout.debug3() << "copier: " << copier << mout.endl;
-		//copier.traverseImageFrame(alphaSrcODIM, alphaSrc, copier.odim, img.getAlphaChannel());
 		copier.traverseImageFrame(src.odim,  src.data, copier.odim, dstImg.getAlphaChannel());
 
+		//copier.traverseImageFrame(srcODIM,  srcAlpha, copier.odim, dstImg.getAlphaChannel());
 
 		dstImg.properties["what.scaleAlpha"]   = copier.odim.scaling.scale;
 		dstImg.properties["what.offsetAlpha"] = copier.odim.scaling.offset;
@@ -249,8 +255,12 @@ public:
 
 		mout.warn() << getName() << mout.endl;
 
-		const PlainData<PolarSrc> src(getAlphaSrc(ctx));
+		//const PlainData<PolarSrc> src(getAlphaSrc(ctx));
 		// TODO: const Data<PolarSrc>, mixing data with quality
+		const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
+		ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
+
+		mout.special() << "alpha src image: " << srcAlpha << mout.endl;
 
 		// Dst image (typically, an existing coloured image)
 
@@ -261,11 +271,12 @@ public:
 			return;
 		}
 		dstImg.setAlphaChannelCount(1);
-		mout.debug() << "image:" << dstImg << mout.endl;
+		mout.special() << "dst image: " << dstImg << mout.endl;
 
 
 		RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep(true);
-		fuzzyStep.odimSrc.updateFromMap(src.data.getProperties());
+		//fuzzyStep.odimSrc.updateFromMap(src.data.getProperties());
+		fuzzyStep.odimSrc.updateFromMap(srcAlpha.getProperties());
 
 		if (ctx.imagePhysical){
 			mout.info() << "using physical scale " << mout.endl;
@@ -273,9 +284,12 @@ public:
 		}
 		else {
 			//const drain::ValueScaling & scaling = srcImg.getScaling();
-			mout.info() << "no physical scaling, using raw values of gray source: "  <<  EncodingODIM(src.odim) << mout.endl;
-			const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
-			fuzzyStep.functor.set(src.odim.scaleForward(max*range.min), src.odim.scaleForward(max*range.max), 1.0);
+			// EncodingODIM(src.odim)
+			mout.info() << "no physical scaling, using raw values of gray source: "  <<  srcAlpha.getConf()  << mout;
+			//const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
+			const double max = drain::Type::call<drain::typeNaturalMax>(srcAlpha.getType()); // 255, 65535, or 1.0
+			//fuzzyStep.functor.set(src.odim.scaleForward(max*range.min), src.odim.scaleForward(max*range.max), 1.0);
+			fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
 			mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
 		}
 
@@ -286,7 +300,8 @@ public:
 		// dstImg has unknowns source -> encoding will not be written in metadata
 
 		mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
-		fuzzyStep.traverseChannel(src.data.getChannel(0), dstImg.getAlphaChannel(0));
+		//fuzzyStep.traverseChannel(src.data.getChannel(0), dstImg.getAlphaChannel(0));
+		fuzzyStep.traverseChannel(srcAlpha.getChannel(0), dstImg.getAlphaChannel());
 
 		//mout.warn() = this->getParameters();
 

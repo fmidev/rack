@@ -298,7 +298,7 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) { /
 	install<CompositeTimeDecay>(); // Yes, both
 	install<CompositeDecayTime>(); // Yes, both
 	install<CompositeCreateTile>(); // cCreateTile2;
-	install<CartesianSun>(); // cCreateSun2;
+	install<CartesianSun>("cCreateSun"); // cCreateSun2;
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
 	/// In future, unused.

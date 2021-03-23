@@ -344,6 +344,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				mout.warn() << "dstConf0: " << dstConf << mout;
 
 				// Create alpha as a separate channel
+				/* NEWISH
 				if (dstConf.getAlphaChannelCount() > 0){ // todo check if > 1 ?
 					std::string qualityQuantity = "QIND";
 					if (dstData.hasQuality(qualityQuantity)){
@@ -358,14 +359,21 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					dstTray.setAlpha(dstQuantity.data);
 					// == dstTray.alpha.set();
 					// == dstTray.appendAlpha(dstQuantity.data);
-				}
+					dstConf.setAlphaChannelCount(0);
 
-				dstConf.setAlphaChannelCount(0);
+				}
+				*/
 
 				if (!dstConf.typeIsSet())
 					dstConf.setType(srcConf.getType());
 
-				dstData.data.setConf(dstConf);
+				// REALLY NEW
+				bean.makeCompatible(dstConf, dstData.data);
+				// NEWISH dstData.data.setConf(dstConf);
+				// TODO: alpha channel should be filled?
+				if (dstData.data.getAlphaChannelCount() > 0){
+					dstTray.setAlpha(dstData.data.getAlphaChannel());
+				}
 
 				// bean.makeCompatible(srcConf, dstData.data);
 				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
