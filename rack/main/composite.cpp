@@ -39,6 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/prog/CommandInstaller.h"
 
 
+#include "data/SourceODIM.h"
+
 #include "resources.h"  // for RackContext?
 
 #include "composite.h"  // for cmdFormat called by
@@ -186,9 +188,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
 
 	const RootData<SrcType<ODIM> > root(src);
-	//mout.info() << "now?" << mout.endl;
-	mout.note() << "debug: " << root.getWhat() << mout.endl;
-	//mout.note() << "input: " << root.getWhere() << mout.endl;
+	mout.debug() << "Src root /what: " << root.getWhat() << mout.endl;
 
 	//mout.info() << "now: vmap" << mout.endl;
 	mout.info() << "using selector: " << composite.dataSelector << mout.endl; // consider: if composite.dataSelector...?
@@ -534,6 +534,24 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 	//mout.warn() << "composite: " << composite << mout.endl;
 	//drain::image::File::write(srcQuality.data, "srcQuality.png");
 
+	if (ctx.svg.isEmpty()){
+		ctx.svg->setType(NodeSVG::SVG);
+		ctx.svg->set("width", 100);
+		ctx.svg->set("height", 200);
+
+        //svg["first"]->setType(NodeSVG::GROUP);
+        //svg["first"]->set("style", "fill:red");
+
+	}
+
+	SourceODIM odim(cartSrc.odim.source);
+	TreeSVG & node = ctx.svg[odim.NOD];
+    node->setType(NodeSVG::RECT);
+    node->set("width",  cartSrc.odim.area.width);
+    node->set("height", cartSrc.odim.area.height);
+    node["title"]->ctext = odim.NOD;
+
+
 }
 
 void Compositor::extract(const std::string & channels) const {
@@ -673,6 +691,8 @@ void Compositor::extract(const std::string & channels) const {
 
 	drain::VariableMap & statusMap = ctx.getStatusMap();
 	statusMap.updateFromMap(rootOdim);
+
+	std::cout << ctx.svg << '\n';
 
 }
 

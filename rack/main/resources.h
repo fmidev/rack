@@ -146,6 +146,10 @@ public:
 		updateStatus();
 		return statusMap;
 	};
+
+	// Story
+	drain::image::TreeSVG svg;
+
 //private:
 protected:
 
