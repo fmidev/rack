@@ -534,14 +534,11 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 	//mout.warn() << "composite: " << composite << mout.endl;
 	//drain::image::File::write(srcQuality.data, "srcQuality.png");
 
+	/*
 	if (ctx.svg.isEmpty()){
 		ctx.svg->setType(NodeSVG::SVG);
 		ctx.svg->set("width", 100);
 		ctx.svg->set("height", 200);
-
-        //svg["first"]->setType(NodeSVG::GROUP);
-        //svg["first"]->set("style", "fill:red");
-
 	}
 
 	SourceODIM odim(cartSrc.odim.source);
@@ -550,7 +547,7 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
     node->set("width",  cartSrc.odim.area.width);
     node->set("height", cartSrc.odim.area.height);
     node["title"]->ctext = odim.NOD;
-
+	*/
 
 }
 
@@ -692,7 +689,8 @@ void Compositor::extract(const std::string & channels) const {
 	drain::VariableMap & statusMap = ctx.getStatusMap();
 	statusMap.updateFromMap(rootOdim);
 
-	std::cout << ctx.svg << '\n';
+	// Spoils input.sh...
+	//std::cout << ctx.svg << '\n';
 
 }
 
