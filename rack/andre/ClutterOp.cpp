@@ -149,6 +149,9 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 	getQuantityMap().setQuantityDefaults(dstProb, "PROB");
 	dstProb.data.setGeometry(cols, rows);
 
+	bool GAMMA = (gamma != 1.0);
+	double g = 1.0/gamma;
+	double x;
 
 	double altitude;
 	double coeff;
@@ -162,8 +165,16 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 		//distance = Geometry::groundFromEtaBeam(srcData.odim.elangle, srcData.odim.getBinDistance(i));
 		//i2 = srcMap.odim.getBinIndex(distance);
 		//if (i2 < cols_map){
-		for (unsigned short j=0; j<rows; ++j){
-			dstProb.data.put(i,j, dstProb.odim.scaleInverse( coeff * srcMap.odim.scaleForward(srcMap.data.get<double>(i, j)) ));
+		if (GAMMA){
+			for (unsigned short j=0; j<rows; ++j){
+				x = srcMap.odim.scaleForward(srcMap.data.get<double>(i, j));
+				dstProb.data.put(i,j, dstProb.odim.scaleInverse( coeff * srcMap.odim.scaleForward(::pow(x, g))));
+			}
+		}
+		else {
+			for (unsigned short j=0; j<rows; ++j){
+				dstProb.data.put(i,j, dstProb.odim.scaleInverse( coeff * srcMap.odim.scaleForward(srcMap.data.get<double>(i, j)) ));
+			}
 		}
 		//}
 	}
