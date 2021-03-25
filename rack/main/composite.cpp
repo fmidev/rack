@@ -395,8 +395,12 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 			}
 		}
 		//mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
+		//drain::Point2D<>
+		//composite.projR2M.projectFwd(polarSrc.odim.lon, polarSrc.odim.lat, x, y);
 
 		mout.debug2() << "finished" << mout.endl;
+
+		//ctx.setStatus("lonPx", polarSrc.odim.lat);
 
 		if (isAeqd){
 			ctx.setStatus("RANGE", polarSrc.odim.getMaxRange());
@@ -689,6 +693,7 @@ void Compositor::extract(const std::string & channels) const {
 	drain::VariableMap & statusMap = ctx.getStatusMap();
 	statusMap.updateFromMap(rootOdim);
 
+	statusMap.updateFromMap(composite.nodeMap);
 	// Spoils input.sh...
 	//std::cout << ctx.svg << '\n';
 
