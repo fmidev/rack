@@ -295,46 +295,9 @@ public:
 
 
 	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const ;
-	/*
-	{
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
 
-		// pixelConf = this->conf;  PROBLEM: ftor prevents op=
-		conf.widthM  = this->widthM;
-		conf.heightD = this->heightD;
-		conf.updatePixelSize(inputODIM);
-		conf.invertPolar   = this->invertPolar;
-		conf.contributionThreshold  = this->contributionThreshold;
-		conf.relativeScale = this->relativeScale;
-
-		if (conf.frame.width <= 0){
-			mout.note() << this->frame.width  << "pix ~ " << this->widthM << "m " << mout.endl;
-			//mout.note() << *this << mout.endl;
-			mout.warn() << "Requested width (" << conf.widthM <<  " meters) smaller than rscale ("<< inputODIM.rscale <<"), setting window width=1 " << mout.endl;
-			conf.frame.width = 1;
-		}
-
-		if (conf.frame.height == 0){
-			mout.warn() << "Requested height (" << conf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/inputODIM.area.height) <<"), setting window height=1 " << mout.endl;
-			conf.frame.height = 1;
-		}
-
-	}
-	*/
-
-// protected:
-
-	void updatePixelSize(const PolarODIM & inputODIM); /**{ // DopplerWindOp wants public
-		drain::Logger mout("RadarWindowConfig", __FUNCTION__);
-		//mout.note() << odimSrc << mout.endl;
-		this->frame.width  = odimSrc.getBeamBins(this->widthM);
-		this->frame.height = odimSrc.getAzimuthalBins(this->heightD);
-		//mout.note() << this->width << '<' << this->widthM << mout.endl;
-		//mout.note() << this->height << '<' << this->heightD << mout.endl;
-	}
-	*/
-
+	void updatePixelSize(const PolarODIM & inputODIM);
 };
 
 
@@ -735,11 +698,12 @@ protected:
 class PolarSegmentProber : public drain::image::SizeProber { // SegmentProber<int,int>
 public:
 
-	PolarSegmentProber(const Image & src, Image & dst) : SizeProber(src.getChannel(0), dst.getChannel(0)){};
+	// PolarSegmentProber(const Image & src, Image & dst) : SizeProber(src.getChannel(0), dst.getChannel(0)){};
+
+	PolarSegmentProber(const Channel & src, Channel & dst) : SizeProber(src, dst){};
 
 	/// Operation performed in each segment location (i,j). A function to be redefined in derived classes.
-	virtual
-	inline
+	virtual inline
 	void update(int i, int j){
 		size += i;
 	}
