@@ -115,7 +115,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	double beamWeight; // 0.0...1.0;
 
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	drain::FuzzyBell<double> beamPower(0.0, 0.2*drain::DEG2RAD, 1.0);
+	drain::FuzzyBell<double> beamPower(0.0, beamWidth*drain::DEG2RAD, 1.0);
 
 	/// Measurement weight (quality)
 	double w;

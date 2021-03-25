@@ -51,7 +51,7 @@ class CappiOp : public CumulativeProductOp {
 
 public:
 
-	CappiOp(double altitude=1500.0, double weightMin = 0.01, double weightExponent=8.0, bool aboveSeaLevel=true) :
+	CappiOp(double altitude=1500.0, double weightMin = 0.01, double weightExponent=8.0, bool aboveSeaLevel=true, double beamWidth = 0.2) :
 		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", "WAVG,1,8,-40")
 		{
 
@@ -59,6 +59,7 @@ public:
 		parameters.link("weightMin", this->weightMin = weightMin, "scalar");
 		parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
+		parameters.link("beamWidth", this->beamWidth = beamWidth);
 
 		odim.product  = "PCAPPI";
 		odim.type = "";
@@ -72,7 +73,7 @@ public:
 	double altitude;
 	double weightExponent;
 	double weightMin;
-
+	double beamWidth;
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 
