@@ -76,7 +76,7 @@ drainage shapes.png --iSegmentArea 32:255,FuzzyBell:200:50 -o segmentAreaBell.pn
 \see SegmentStatisticsOp
 
  */
-template <class S, class D>
+template <class S, class D, class T=SizeProber>
 class SegmentAreaOp: public SegmentOp
 {
 public:
@@ -127,9 +127,9 @@ public:
 };
 
 
-template <class S, class D>
-void SegmentAreaOp<S,D>::getDstConf(const ImageConf & src, ImageConf & dst) const {
-// void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
+template <class S, class D, class T>
+void SegmentAreaOp<S,D,T>::getDstConf(const ImageConf & src, ImageConf & dst) const {
+	// void SegmentAreaOp<S,D>::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -146,8 +146,6 @@ void SegmentAreaOp<S,D>::getDstConf(const ImageConf & src, ImageConf & dst) cons
 	}
 
 	dst.setArea(src);
-	// dst.setGeometry(src.getWidth(), src.getHeight(),
-	// std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
 	dst.setChannelCount(std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
 
 	//if (clearDst)
@@ -155,8 +153,8 @@ void SegmentAreaOp<S,D>::getDstConf(const ImageConf & src, ImageConf & dst) cons
 
 }
 
-template <class S, class D>
-void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) const {
+template <class S, class D, class T>
+void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -165,14 +163,18 @@ void SegmentAreaOp<S,D>::traverseChannel(const Channel & src, Channel & dst) con
 	raw.max = (this->intensity.max == std::numeric_limits<double>::max()) ? src.getConf().getTypeMax<src_t>() : src.getScaling().inv(this->intensity.max);
 
 	if (raw.min <= src.getConf().getTypeMin<src_t>()){
-		mout.warn()  << "min value=" << (double)raw.min <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<src_t>() << mout.endl;
+		mout.warn() << "src scaling:   "    << src.getScaling() << mout;
+		mout.warn() << "original range:   " << intensity << mout;
+		mout.warn() << "raw (code) range: " << raw << mout;
+		mout.warn() << "min value=" << (double)raw.min <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<src_t>() << mout;
 	}
 
 	mout.special()  << "raw range: " << (double)raw.min << '-' << (double)raw.max << mout.endl;
 	mout.debug2() << "src: " << src << mout.endl;
 	mout.debug2() << "dst: " << dst << mout.endl;
 
-	SizeProber sizeProber(src, dst);
+	//SizeProber sizeProber(src, dst);
+	T sizeProber(src, dst);
 	sizeProber.conf.anchor.set(raw.min, raw.max);
 	mout.debug2() << "areaProber:" << sizeProber << mout.endl;
 
