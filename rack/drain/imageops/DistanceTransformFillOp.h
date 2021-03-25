@@ -412,7 +412,7 @@ Examples on three distinct pixels (red, green, and blue):
 
 The radii do not have to be symmetric:
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFill.png
+  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym.png
 \endcode
 
 

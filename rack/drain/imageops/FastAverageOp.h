@@ -284,7 +284,7 @@ protected:
 
 \code
   drainage spots-rgba.png     --iAverage 50 -o spots-avg.png
-  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg.png
+  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg-16b.png
 \endcode
 
 \code
