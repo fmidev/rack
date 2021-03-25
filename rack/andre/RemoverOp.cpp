@@ -174,7 +174,7 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	if (replace == "nodata"){
 		replaceCode = dstData.odim.nodata;
 	}
-	if (replace == "undetect"){
+	else if (replace == "undetect"){
 		replaceCode = dstData.odim.undetect;
 	}
 	else {
@@ -182,6 +182,7 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		//replaceCode = atof(replace);
 	}
 	//File::write(dstData.data, "dst1.png");
+	mout.note() << replace << " = > replaceCode: " << replaceCode << mout.endl;
 
 	const Image::iterator end = srcData.data.end();
 	while (it != end){
