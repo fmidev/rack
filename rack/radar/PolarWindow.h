@@ -45,12 +45,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeighted<false> { // true=horizontal, false=vertical
-  public: // repl 
 
+public:
 
-	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : drain::image::GaussianStripeWeighted<false>(height, radius), rangeNorm(10), rangeNormEnd(0) { // RANGE(0),
+	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : drain::image::GaussianStripeWeighted<false>(height, radius), normRange(10,0) {
 		this->resetAtEdges = true;
 	};
+
+	/*
+	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : drain::image::GaussianStripeWeighted<false>(height, radius), normRange.min(10), rangeNormEnd(0) { // RANGE(0),
+		this->resetAtEdges = true;
+	};
+	*/
 
 	//mutable	int RANGE;
 
@@ -64,10 +70,10 @@ class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeigh
 		//this->fill();
 
 		// Consider: {NEAR,LINEAR,FAR}
-		if (location.x < rangeNorm){
+		if (location.x < normRange.min){
 			RANGE = -1;
 		}
-		else if (location.x > (rangeNorm*this->jMax)){
+		else if (location.x > (normRange.min*this->jMax)){
 			RANGE = +1;
 		}
 		else {
@@ -84,17 +90,17 @@ class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeigh
 	/*
 	inline
 	void setRangeNorm(int i){
-		rangeNorm = i;
+		normRange.min = i;
 	}
 	*/
 
 	inline
 	void setRangeNorm(const PolarODIM & odim){
-		//rangeNorm = i;
+		//normRange.min = i;
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
-		rangeNorm = static_cast<double>(odim.area.height) / (2.0*M_PI);
-		//rangeNorm = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.geometry.height) / (2.0*M_PI);
-		rangeNormEnd = (rangeNorm * this->conf.frame.height);
+		normRange.min = static_cast<double>(odim.area.height) / (2.0*M_PI);
+		//normRange.min = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.geometry.height) / (2.0*M_PI);
+		normRange.max = (normRange.min * this->conf.frame.height);
 		//mout.warn() << rangeNorm << '-' << rangeNormEnd << mout.endl;
 	}
 
@@ -103,15 +109,16 @@ class GaussianStripeVertPolarWeighted : public drain::image::GaussianStripeWeigh
 	/// Range index, at which aspect ratio of along-beam and cross-beam distances is unity
 	inline
 	int getRangeNorm(){
-		return rangeNorm;
+		return normRange.min;
 	}
 
 protected:
 
+	drain::Range<int> normRange;
 	/// Range index, at which aspect ratio of along-beam and cross-beam distances is unity
-	int rangeNorm;
 	//int rangeNorm;
-	int rangeNormEnd;
+	//int rangeNorm;
+	//int rangeNormEnd;
 };
 
 

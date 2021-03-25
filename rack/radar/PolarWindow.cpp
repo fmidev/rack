@@ -42,7 +42,7 @@ void GaussianStripeVertPolarWeighted::update() {
 	weightSum = 0.0;
 
 	// Consider: {NEAR,LINEAR,FAR}
-	if (location.x <= rangeNorm){  // if (RANGE < 0){
+	if (location.x <= normRange.min){  // if (RANGE < 0){
 		for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 			locationTmp.setLocation(location.x, location.y + j);
 			if (coordinateHandler.validate(locationTmp)){
@@ -56,9 +56,9 @@ void GaussianStripeVertPolarWeighted::update() {
 		}
 		//value = value/weightSum;
 	}
-	else if (location.x < rangeNormEnd){ //  if (RANGE == 0){  // "normalized" ie. spread j = (rangeNorm*j)/location.x
+	else if (location.x < normRange.max){ //  if (RANGE == 0){  // "normalized" ie. spread j = (rangeNorm*j)/location.x
 		for (int j = this->jRange.min; j <= this->jRange.max; j++) {
-			locationTmp.setLocation(location.x, location.y + (rangeNorm*j)/(location.x+1));
+			locationTmp.setLocation(location.x, location.y + (normRange.min*j)/(location.x+1));
 			if (coordinateHandler.validate(locationTmp)){
 				w = lookUp[j-jRange.min];
 				sumW += w;

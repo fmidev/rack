@@ -54,7 +54,10 @@ public:
 		parameters.link("height", this->conf.heightD = 3.0, "deg");
 		parameters.link("threshold", this->conf.contributionThreshold = 0.5, "percentage");
 		parameters.link("invertPolar", this->conf.invertPolar = false, "cart/polar");
-		// parameters.append(conf.getParameters());
+
+		dataSelector.quantity = "^DBZH$";
+		dataSelector.count = 1;
+
 	};
 
 
@@ -162,7 +165,7 @@ class PolarSlidingAvgOp : public PolarSlidingWindowOp<RadarWindowAvg<RadarWindow
 public:
 
 	inline
-	PolarSlidingAvgOp() : PolarSlidingWindowOp< RadarWindowAvg<RadarWindowConfig> >(__FUNCTION__, "descr"){
+	PolarSlidingAvgOp() : PolarSlidingWindowOp< RadarWindowAvg<RadarWindowConfig> >(__FUNCTION__, "Smoothen polar data"){
 	};
 
 };
