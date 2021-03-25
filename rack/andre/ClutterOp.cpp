@@ -168,7 +168,7 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 		if (GAMMA){
 			for (unsigned short j=0; j<rows; ++j){
 				x = srcMap.odim.scaleForward(srcMap.data.get<double>(i, j));
-				dstProb.data.put(i,j, dstProb.odim.scaleInverse( coeff * srcMap.odim.scaleForward(::pow(x, g))));
+				dstProb.data.put(i,j, dstProb.odim.scaleInverse( coeff * ::pow(x, g)));
 			}
 		}
 		else {
