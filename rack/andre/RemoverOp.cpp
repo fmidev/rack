@@ -169,12 +169,24 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	Image::iterator dit = dstData.data.begin();
 	//Image::iterator dqit = dstData.data.begin();
 
+
+	double replaceCode = dstData.odim.nodata;
+	if (replace == "nodata"){
+		replaceCode = dstData.odim.nodata;
+	}
+	if (replace == "undetect"){
+		replaceCode = dstData.odim.undetect;
+	}
+	else {
+		replaceCode = drain::StringTools::convert<double>(replace);
+		//replaceCode = atof(replace);
+	}
 	//File::write(dstData.data, "dst1.png");
 
 	const Image::iterator end = srcData.data.end();
 	while (it != end){
 		if (static_cast<double>(*qit) < t)
-			*dit = dstData.odim.nodata;
+			*dit = replaceCode; //dstData.odim.nodata;
 		else
 			*dit = *it; // assume no scaling difference
 		++it;

@@ -61,6 +61,7 @@ public:
 	inline
 	RemoverOp(double threshold = 0.5): AndreOp("Remover", "Simple anomaly removal operator."){
 		parameters.link("threshold", this->threshold = threshold, "probability");
+		parameters.link("replace", this->replace = "nodata", "nodata|undetect|<value>");
 		// dataSelector.path = ".*da ta[0-9]+/?$";
 		dataSelector.quantity = "^DBZH$"; //|TV|VRAD|RHOHV|LDR|PHIDP|KDP";
 	};
@@ -108,6 +109,8 @@ private:
 
 	double threshold;
 
+	//int replace;
+	std::string replace;
 
 };
 
