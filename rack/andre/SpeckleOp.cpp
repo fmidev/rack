@@ -39,15 +39,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include "SpeckleOp.h"
-
-#include "drain/imageops/SegmentAreaOp.h"
-
-
-#include "drain/image/File.h"
 #include "drain/util/Fuzzy.h"
 
-using namespace drain::image;
+#include "drain/imageops/SegmentAreaOp.h"
+#include "drain/image/File.h"
+
+#include "radar/Analysis.h"
+#include "SpeckleOp.h"
+
+//using namespace drain::image;
 
 namespace rack {
 
@@ -58,6 +58,21 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << parameters << mout.endl;
 
+	mout.debug2() << src.data.getCoordinatePolicy() << mout.endl;
+
+
+	//const double codeValueMin = src.odim.getMin<double>();
+	const double thresholdMin = src.odim.getMin(); //src.odim.scaleForward(src.odim.getMin()); // skips 0, 1 if undetect/nodata
+
+	double thresholdFinal = this->threshold;
+	if (thresholdFinal < thresholdMin){
+		mout.warn() << "src    " << src.data.getConf() << mout;
+		mout.warn() << "src[0] " << src.data.getChannel(0).getConf() << mout;
+		mout.warn() << "src.odim " << src.odim.scaling << mout;
+		mout.warn() << "threshold ("<< thresholdFinal << "dBZ) lower than supported min (" << thresholdMin << "), adjusting it." << mout;
+		thresholdFinal = thresholdMin;
+	}
+
 	// Warn if below min dBZ?
 	//const double min = std::max(src.data.getMin<double>()+2.0, src.odim.scaleInverse(reflMin));
 	//const double max = src.data.getMax<double>()-2.0;
@@ -67,16 +82,27 @@ void SpeckleOp::processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 	// Gain: around 250
 	// Offset: often 1.0, because 0.0 reserved for no-data?
 	double offset = dst.odim.scaleInverse(0.0);
-	fuzzyBell.set(1.0, area, dst.odim.scaleInverse(1.0)-offset, offset);
-	SegmentAreaOp<float,unsigned short> op(fuzzyBell, reflMin); // dBZ!	//"min,max,mapping,mSlope,mPos"
-	// SegmentAreaOp<float,unsigned short> op(reflMin); // dBZ!	//"min,max,mapping,mSlope,mPos"
-	// op.functorStr = "FuzzyBell2:+2,33,240,0";
 
-	mout.debug() << "essential operator: " << op << mout.endl;
-	mout.debug2() << src.data.getCoordinatePolicy() << mout.endl;
+	if (invertPolar){
+		/// Distance [bins] at which a bin is (nearly) square, ie. when beam-perpendicular and beam-directional steps are equal.
+		const double r = static_cast<double>(src.odim.area.height) / (2.0*M_PI);
+		fuzzyBell.set(1.0, static_cast<double>(area)*r, dst.odim.scaleInverse(1.0)-offset, offset);
+		SegmentAreaOp<float,unsigned short,PolarSegmentProber> op2(fuzzyBell, thresholdFinal);
+		mout.debug() << "internal operator: " << op2 << mout.endl;
+		op2.process(src.data, dst.data);
+	}
+	else {
+		fuzzyBell.set(1.0, area, dst.odim.scaleInverse(1.0)-offset, offset);
+		SegmentAreaOp<float,unsigned short> op(fuzzyBell, thresholdFinal); // dBZ!	//"min,max,mapping,mSlope,mPos"
+		mout.debug() << "internal operator: " << op << mout.endl;
+		op.process(src.data, dst.data);
+	}
+
+
+
+
 	//if (mout.isDebug(10)) File::write(src.data,"SegmentAreaOp_src.png");
 
-	op.process(src.data, dst.data);
 
 	//if (mout.isDebug(10)) File::write(dst.data,"SegmentAreaOp_dst.png");
 

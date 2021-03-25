@@ -53,21 +53,25 @@ class SpeckleOp: public DetectorOp {
 
 public:
 
-	///	Computes sizes of segments having intensity over reflMin.
+	///	Computes sizes of segments having intensity over threshold.
 	/**
-	 *  \param reflMin - threshold reflectivity
+	 *  \param threshold - threshold reflectivity
 	 *  \param area - fuzzy threshold, at which the likelihood is 50%
+	 *  \param polar - use bin geometry; else scale to Cartesian bin area
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
-	SpeckleOp(double reflMin=0.0, int area=4) :
-		DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.", "signal.noise"){
+	SpeckleOp(double threshold=-20.0, int area=16, bool invertPolar=false) :
+
+	DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.", "signal.noise"){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;
-		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
-		parameters.link("area", this->area = area, "bins");
 		REQUIRE_STANDARD_DATA = false;
+
+		parameters.link("threshold", this->threshold = threshold, "dBZ");
+		parameters.link("area", this->area = area, "bins");
+		parameters.link("invertPolar", this->invertPolar = invertPolar, "bins");
 	};
 
 	inline
@@ -75,9 +79,9 @@ public:
 		parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
-	double reflMin;
+	double threshold;
 	int area;
-
+	bool invertPolar;
 
 protected:
 
