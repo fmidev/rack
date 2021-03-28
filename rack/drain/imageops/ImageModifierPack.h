@@ -387,7 +387,7 @@ public:
 	virtual
 	void traverseChannels(ImageTray<Channel> & dst) const;
 
-protected:
+//protected:
 
 	Range<int> iRange;
 	Range<int> jRange;

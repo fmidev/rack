@@ -292,6 +292,16 @@ public:
 		parameters.link(key, value = initValue, unit);
 	};
 
+	/// Constuctor designer for SimpleCommand<Unituple<> > .
+	template <class S>
+	SimpleCommand(const std::string & name, const std::string & description,
+			const std::string & key, std::initializer_list<S> l , const std::string & unit = "") : BasicCommand(name, description) {
+		// parameters.separator = '\0';
+		value = l;
+		parameters.link(key, value);
+	};
+
+
 	SimpleCommand(const SimpleCommand & cmd):  BasicCommand(cmd) {
 		parameters.separator = '\0';
 		//parameters.separator = cmd.parameters.separator;

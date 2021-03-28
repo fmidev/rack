@@ -143,7 +143,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	//RecursiveRepairerOp recOp;  // slow, smooth
 
 	// 5x5 window, block averaging, maximum-mixer
-	BlenderOp recOp(5,5, 'a', 'm', 1);
+	//BlenderOp recOp(5,5, 'a', 'm', 1);
+	BlenderOp recOp(5,5, "avg", "mix", 1);
 
 	//recOp.conf.width  = 5;
 	//recOp.conf.height = 5;

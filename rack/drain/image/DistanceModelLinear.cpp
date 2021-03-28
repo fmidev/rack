@@ -57,9 +57,8 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	this->horzRadius.set(horz, horzLeft); // forward   = horz;
 	this->vertRadius.set(vert, vertUp); // forward  = vert;
 
-	mout.debug() << "Radii: " << horzRadius << ", " << vertRadius << mout.endl; // ", " << diag << mout.endl;
-
 	mout.debug() << this->getParameters() << mout.endl;
+	mout.debug() << "Radii: " << horzRadius << ", " << vertRadius << mout; // ", " << diag << mout.endl;
 
 	if (getMax() == 0.0){
 		mout.warn() << "max unset " << mout.endl; // ", " << diag << mout.endl;
@@ -94,14 +93,14 @@ float DistanceModelLinear::checkDec(float d, float dDefault) const {
 }
 
 
-void DistanceModelLinear::setDecrement(float horz, float vert, float horzRight, float vertUp){
+void DistanceModelLinear::setDecrement(float horz, float vert, float horzLeft, float vertUp){
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	// Default decrement: 1.0
 
 	horzDec.forward  = checkDec(horz);
-	horzDec.backward = checkDec(horzRight, horzDec.forward);
+	horzDec.backward = checkDec(horzLeft, horzDec.forward);
 
 	vertDec.forward  = checkDec(vert,   horzDec.forward);
 	vertDec.backward = checkDec(vertUp, vertDec.forward);

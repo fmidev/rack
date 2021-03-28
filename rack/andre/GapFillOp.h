@@ -61,6 +61,10 @@ public:
 	int widthM;
 	float heightD;
 
+	// Originally for GapFillOpRec, but for combined op...
+	int  loops;
+	double expansionCoeff;
+
 protected:
 
 	// "Removes detected anomalies by overriding low-quality pixels with neighboring high-quality pixels."
@@ -97,6 +101,8 @@ public:
 		GapFillOpBase(__FUNCTION__,"Removes low-quality data with gap fill based on distance transformation.") {
 		parameters.link("width",  this->widthM = width,   "meters");
 		parameters.link("height", this->heightD = height, "degrees");
+		parameters.link("loops", this->loops = 0, "N");
+		parameters.link("expansionCoeff", this->expansionCoeff = 1, "1..2");
 	};
 
 
@@ -126,7 +132,7 @@ public:
 		//initialize();
 	};
 
-	int loops;
+	//int loops;
 	//float decay;
 
 protected:

@@ -138,10 +138,16 @@ void TimeOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	int j2;
 	for (size_t j = 0; j < dstProb.data.getHeight(); ++j) {
 
+		j2 = j-srcData.odim.a1gate;
+		if (j2 < 0)
+			j2 += dstProb.data.getHeight();
+
+		/*
 		if (j < srcData.odim.a1gate)
 			j2 = j-srcData.odim.a1gate + dstProb.data.getHeight();
 		else
 			j2 = j-srcData.odim.a1gate;
+		*/
 
 		s = secondStart + j2*secondsPerBeam;
 		if (s < secondRef )

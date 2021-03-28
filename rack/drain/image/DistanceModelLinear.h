@@ -58,7 +58,7 @@ public:
 	void setRadius(float horz, float vert = nan_f, float horzLeft = nan_f, float vertUp = nan_f);
 
 	/// \see DistanceModel::setDecrement()
-	void setDecrement(float horz, float vert = nan_f, float horzRight = nan_f, float vertUp = nan_f);
+	void setDecrement(float horz, float vert = nan_f, float horzLeft = nan_f, float vertUp = nan_f);
 
 	virtual
 	DistanceElement getElement(short dx, short dy, bool forward=true) const;

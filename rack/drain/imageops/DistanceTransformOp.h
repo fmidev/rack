@@ -145,7 +145,8 @@ protected:
 
 	//int topology;
 
-	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height, DistanceModel::topol_t topology=2) :
+	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height,
+			DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
 		distanceModel.setTopology(topology);

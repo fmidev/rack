@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Input.h"
 #include "drain/util/Log.h"
+#include "drain/util/Point.h"
 #include "drain/prog/CommandBankUtils.h"
 #include "drain/prog/CommandSections.h"
 #include "drain/prog/CommandInstaller.h"
@@ -47,18 +48,29 @@ namespace rack {
 /**
  *   This command should be called in main thread.
  */
-class PolarSite : public drain::BasicCommand {
+//class PolarSite : public drain::BasicCommand {
+class PolarSite : public drain::SimpleCommand<drain::Point2D<double>::tuple_t> {
 
 public:
 
-	double lon;
-	double lat;
+	//double lon;
+	//double lat;
 
+	PolarSite() : drain::SimpleCommand<drain::Point2D<double>::tuple_t> (__FUNCTION__,
+			"Set radar size location of the accumulated data. Also size etc., if --encoding set.", "location", {25.2,60.1}){
+		// parameters.link("lon", lon = 0.0, "degrees");
+		// parameters.link("lat", lat = 0.0, "degrees");
+	}
+
+	/*
 	PolarSite() : drain::BasicCommand(__FUNCTION__,
 			"Set radar size location of the accumulated data. Also size etc., if --encoding set."){
 		parameters.link("lon", lon = 0.0, "degrees");
 		parameters.link("lat", lat = 0.0, "degrees");
 	}
+	*/
+
+	//parameters.copyStruct(op.getParameters(), op, *this);
 
 	void exec() const {
 
@@ -68,8 +80,8 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
-		acc.odim.lat = lat;
-		acc.odim.lon = lon;
+		acc.odim.lon = value[0];
+		acc.odim.lat = value[1];
 
 		if (!ctx.targetEncoding.empty()){
 			allocateAccumulator();

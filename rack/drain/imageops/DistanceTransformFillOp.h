@@ -117,8 +117,9 @@ public:
 
 protected:
 
-	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN) :
-		DistanceTransformOp<T>(name, description, horz, vert) {
+	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN,
+			DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
+		DistanceTransformOp<T>(name, description, horz, vert, topology) {
 	};
 
 	//DistanceTransformFillOp(const DistanceTransformFillOp & op) : DistanceTransformOp<T>(op) {
@@ -441,9 +442,9 @@ class DistanceTransformFillLinearOp : public DistanceTransformFillOp<DistanceMod
 public:
 
 	inline
-	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN) :
+	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
 	DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha intensities.",
-			horz, vert) {
+			horz, vert, topology) {
 	};
 };
 
@@ -485,9 +486,9 @@ class DistanceTransformFillExponentialOp : public DistanceTransformFillOp<Distan
 public:
 
 	inline
-	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN) :
+	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
 	DistanceTransformFillOp<DistanceModelExponential> (__FUNCTION__, "Spreads intensities exponentially up to distance defined by alpha intensities.",
-			horz, vert) {
+			horz, vert, topology) {
 	};
 
 };

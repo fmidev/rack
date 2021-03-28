@@ -49,15 +49,15 @@ namespace image
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 3,7 -o medianVert.png
+	drainage gray.png --iMedian 3:7 -o medianVert.png
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 5,5,0.1 -o median010.png
+	drainage gray.png --iMedian 5:5,0.1 -o median010.png
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 5,5,0.9 -o median090.png
+	drainage gray.png --iMedian 5:5,0.9 -o median090.png
 	\endcode
 
 	\code

@@ -61,6 +61,15 @@ public:
 	typedef T* iterator;
 	typedef const T* const_iterator;
 
+	UniTuple() : start(this->arr), init(nullptr){
+		fill(0);
+	};
+
+	inline
+	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
+		set(t);
+	};
+
 	/// Proposed for tuples only; derived classes should not shadow this.
 	tuple_t & assign(const tuple_t & t){
 		/*
@@ -116,6 +125,11 @@ public:
 		return *this;
 	}
 
+	template<typename S>
+	tuple_t & operator=(std::initializer_list<S> l){
+		fromSequence(l);
+		return *this;
+	}
 
 	/// Return the number of elements.
 	/**
@@ -329,6 +343,7 @@ protected:
 		return *(++init);
 	}
 
+	/*
 	UniTuple() : start(this->arr), init(nullptr){
 		fill(0);
 	};
@@ -337,6 +352,7 @@ protected:
 	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
 		set(t);
 	};
+	*/
 
 	// Parasite
 	template <size_t N2>

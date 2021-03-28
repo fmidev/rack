@@ -58,6 +58,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/SunOp.h"
 #include "andre/TimeOp.h"
 
+#include "andre/TestOp.h"
+
 // ...and removal.
 #include "andre/RemoverOp.h"
 #include "andre/DamperOp.h"
@@ -371,6 +373,9 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 	detectorInstaller.install<HydroClassBasedOp>(); // hydroClass;
 	detectorInstaller.install<SunOp>(); //   sun;
 	detectorInstaller.install<TimeOp>(); // time;
+
+	detectorInstaller.install<TestOp>(); // time;
+
 
 	// Wrapper for removal ops
 	RemoverInstaller removerInstaller(cmdBank);

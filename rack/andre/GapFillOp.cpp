@@ -67,14 +67,22 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//File::write(srcQuality.data,"GapFillOp-inq.png");
 
 	// DistanceTransformFillLinearOp op;
-	DistanceTransformFillExponentialOp op;
+	//DistanceTransformFillExponentialOp op;
 	//FastAverageOp op;
 
 	// Pixels, but float, because radii.
 	double horz = widthM  / srcData.odim.rscale;
 	double vert = heightD * srcData.data.getHeight() / 360.0;
-	op.setRadius(horz, vert, horz, vert);
+	//op.setRadius(horz, vert, horz, vert);
 	//op.setSize(horz,  vert);
+	BlenderOp blenderOp(horz, vert, "avg", "max", loops, expansionCoeff);
+	DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
+
+	ImageOp & op = (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
+
+	mout.special() << "loops=" << loops << " => using " << op << mout;
+
+
 
 	// Esp. radius
 	mout.debug() << op << mout;
@@ -90,8 +98,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip quality of values, and clear quality of special codes
 
-	tmpQuality.setPhysicalRange(0, 255, true);
-	tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
+	// tmpQuality.setPhysicalRange(0, 255, true);
+	// tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
 	// mout.warn() << tmpQuality << mout;
 	// mout.warn() << tmpQuality.getChannel(0) << mout;
 
@@ -162,7 +170,7 @@ void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainD
 	double h = widthM / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
 	double v = heightD * srcData.data.getHeight() / 360.0;
 
-	BlenderOp op(h, v, 'g', 'm', loops);
+	BlenderOp op(h, v, "avg", "mix", loops);
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcData.data, srcQuality.data);

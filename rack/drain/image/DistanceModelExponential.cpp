@@ -60,7 +60,7 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	this->horzRadius.set(horz, horzLeft); // forward   = horz;
 	this->vertRadius.set(vert, vertUp); // forward  = vert;
 
-	mout.debug() << "Radii: " << this->horzRadius << ", " << this->vertRadius << mout; // ", " << diag << mout.endl;
+	//mout.warn() << "Radii: " << this->horzRadius << ", " << this->vertRadius << mout; // ", " << diag << mout.endl;
 
 	float hRight = radius2Dec(horz,     0.5);
 	float hLeft  = radius2Dec(horzLeft, hRight);
@@ -69,7 +69,7 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 
 	setDecrement(hRight, vDown, hLeft, vUp);
 
-	mout.debug() << "Decs: " << this->horzDec << ", " << this->vertDec << mout; // ", " << diag << mout.endl;
+	// mout.warn() << "Decs: " << this->horzDec << ", " << this->vertDec << mout; // ", " << diag << mout.endl;
 
 }
 
@@ -92,11 +92,11 @@ float DistanceModelExponential::checkDec(float d, float dDefault) const {
 	}
 
 }
-void DistanceModelExponential::setDecrement(float horz, float vert, float horzRight, float vertUp){
+void DistanceModelExponential::setDecrement(float horz, float vert, float horzLeft, float vertUp){
 
 	//drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 	horzDec.forward  = checkDec(horz);
-	horzDec.backward = checkDec(horzRight, horzDec.forward);
+	horzDec.backward = checkDec(horzLeft, horzDec.forward);
 
 	vertDec.forward  = checkDec(vert,   horzDec.forward);
 	vertDec.backward = checkDec(vertUp, vertDec.forward);
@@ -105,8 +105,20 @@ void DistanceModelExponential::setDecrement(float horz, float vert, float horzRi
 
 
 DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool forward) const {
-	float hLog;
-	float vLog;
+
+	if (!forward){ // Note: 180 deg, consider rotate 90deg?
+		dx = -dx;
+		dy = -dy;
+	}
+
+	float hLog = static_cast<float>(dx) * log((dx > 0) ? horzDec.forward : horzDec.backward);
+	float vLog = static_cast<float>(dy) * log((dy > 0) ? vertDec.forward : vertDec.backward);
+
+
+	return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
+
+
+	/*
 	if (forward){
 		hLog = static_cast<float>(dx) * log(horzDec.forward);
 		vLog = static_cast<float>(dy) * log(vertDec.forward);
@@ -117,6 +129,8 @@ DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool fo
 		vLog = static_cast<float>(dy) * log(vertDec.backward);
 		return DistanceElement(-dx, -dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
 	}
+	*/
+
 }
 
 

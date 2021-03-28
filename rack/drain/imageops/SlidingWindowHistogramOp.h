@@ -214,13 +214,13 @@ protected:
 /**
 
 \code
-  drainage gray.png --iWindowHistogram 5,5,a -o hist-avg.png
-  drainage gray.png -T S --iWindowHistogram 15,15,s -o hist-sum.png
-  drainage gray.png --iWindowHistogram 5,5,m -o hist-med.png
-  drainage gray.png --iWindowHistogram 5,5,d -o hist-dev.png
-  drainage gray.png --iWindowHistogram 5,5,v -o hist-var.png
-  drainage gray.png --iWindowHistogram 5,5,N -o hist-iMin.png
-  drainage gray.png --iWindowHistogram 5,5,X -o hist-iMax.png
+  drainage gray.png --iWindowHistogram 5:5,a -o hist-avg.png
+  drainage gray.png -T S --iWindowHistogram 15:15,s -o hist-sum.png
+  drainage gray.png --iWindowHistogram 5:5,m -o hist-med.png
+  drainage gray.png --iWindowHistogram 5:5,d -o hist-dev.png
+  drainage gray.png --iWindowHistogram 5:5,v -o hist-var.png
+  drainage gray.png --iWindowHistogram 5:5,N -o hist-iMin.png
+  drainage gray.png --iWindowHistogram 5:5,X -o hist-iMax.png
 \endcode
 
  \see SlidingWindowMedian
