@@ -49,6 +49,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	mout.debug() << "start" << mout.endl;
 	// File::write(src.get(), getName() + "0.png");
+	mout.info() << getParameters() << mout; //
 
 	initializeParameters(src.get(), dst.get());
 
@@ -70,31 +71,56 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 
 
-
-
 	const bool WEIGHTED = src.hasAlpha();
 
 	unsigned short loopsFinal = loops;
 
-	ImageOp & smootherOp = getSmoother(smootherKey, WEIGHTED, loopsFinal);
+	UniCloner<ImageOp> cloner(getImageOpBank());
 
-	// Set width,height leniently
-	if (smootherOp.getParameters().hasKey("width"))
-		smootherOp.setParameter("width", conf.getWidth());
-	if (smootherOp.getParameters().hasKey("height"))
-		smootherOp.setParameter("height", conf.getHeight());
-	//smootherOp.setParameters();
+	const drain::SmartMap<std::string> & spreaderAliases = WEIGHTED ? getSmootherAliasMap<true>() : getSmootherAliasMap<false>();
 
-	mout.info() << "smoother:" << smootherOp << mout.endl; // .getName() << ' ' << smoother.getName()
+	//ImageOp & spreaderOp = getSmoother(spreaderKey, WEIGHTED, loopsFinal);
+	std::string spreaderName;
+	std::string spreaderParams;
 
-	ImageOp & mixerOp = getMixer(mixerKey, WEIGHTED);
-	if (loops > 0){
-		mout.info() << "mixer:  "  << mixerOp    << mout.endl; // .getName() << ' ' << smoother.getName()
+	drain::StringTools::split2(spreader, spreaderName, spreaderParams, "/");
+	ImageOp & spreaderOp = cloner.getCloned(spreaderAliases.get(spreaderName, spreaderName)); //
+
+	// getSmoother(spreaderKey, WEIGHTED, loopsFinal);
+	const bool SPREADER_WINDOW = spreaderOp.getParameters().hasKey("width");
+
+	Frame2D<int> frame(conf.frame);
+	// Set width,height only if applicable...
+	if (SPREADER_WINDOW){
+		mout.info() << "frame: " << conf.frame << " -> " << frame << mout;
+		spreaderOp.setParameter("width", frame.tuple());
+		//spreaderOp.setParameter("height", frame.height);
 	}
+	spreaderOp.setParameters(spreaderParams, ':', '/');
+
+	mout.info() << "spreader: " << spreaderOp << mout; // .getName() << ' ' << spreader.getName()
+
+
+	const drain::SmartMap<std::string> & blenderAliases = WEIGHTED ? getMixerAliasMap<true>() : getMixerAliasMap<false>();
+
+	double coeff;
+	drain::StringTools::convert(blender, coeff);
+
+	std::string blenderKey = (coeff > 0.0) ? "blend" : blender;
+
+	ImageOp & mixerOp = cloner.getCloned(blenderAliases.get(blenderKey, blenderKey));
+	mout.info() << "blender: " << mixerOp << mout; // .getName() << ' ' << spreader.getName()
+
+	//const Variable v(key, typeid(double));
+	if (coeff > 0.0){
+		mixerOp.setParameter("coeff", coeff);
+	}
+
 
 	ImageTray<Channel> tmp;
 	Image tmpImg;
 	if (loopsFinal > 1){
+		//tmpImg.setConf(src.getConf())
 		tmpImg.initialize(src.get().getType(), src.getGeometry());
 		//tmpImg.copyShallow(src.get()); // also scaling!
 		tmp.setChannels(tmpImg);
@@ -114,7 +140,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		//std::stringstream sstr;
 		//sstr << getName() << loop;
 		//File::write(src.get(), sstr.str() + "S1.png");
-		smootherOp.traverseChannels(src, dst);
+		spreaderOp.traverseChannels(src, dst);
 		//File::write(src.get(), sstr.str() + "S2.png");
 		if (loopsFinal == 0){
 			mout.info() << "distance op, skipping remaining loops, loops=" << loops << mout.endl;
@@ -127,12 +153,18 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	else { // even
 
 		mout.info() << "pre-round (A:src->tmp):  " << loop << mout.endl;
-		smootherOp.traverseChannels(src, tmp);
+		spreaderOp.traverseChannels(src, tmp);
 		mixerOp.traverseChannels(src, tmp);
 		++loop;
 
+		if (SPREADER_WINDOW){
+			frame.width  *= expansionCoeff;
+			frame.height *= expansionCoeff;
+			spreaderOp.setParameter("width", frame);
+		}
+
 		mout.debug() << "pre-round (B:tmp->dst):  " << loop << mout.endl;
-		smootherOp.traverseChannels(tmp, dst);
+		spreaderOp.traverseChannels(tmp, dst);
 		mixerOp.traverseChannels(src, dst);
 		++loop;
 
@@ -142,13 +174,25 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	// Repeat remaining 2N loops
 	while (loop < loopsFinal){ // dst->tmp->dst
 
+		if (SPREADER_WINDOW){
+			frame.width  *= expansionCoeff;
+			frame.height *= expansionCoeff;
+			mout.special() << "frame -> " << frame << mout;
+			spreaderOp.setParameter("width", frame);
+		}
 		mout.info() << "round (dst->tmp):  " << loop << mout.endl;
-		smootherOp.traverseChannels(dst, tmp);
+		spreaderOp.traverseChannels(dst, tmp);
 		mixerOp.traverseChannels(src, tmp);
 		++loop;
 
+		if (SPREADER_WINDOW){
+			frame.width  *= expansionCoeff;
+			frame.height *= expansionCoeff;
+			spreaderOp.setParameter("width", frame);
+		}
+
 		mout.info() << "round (tmp->dst):  " << loop << mout.endl;
-		smootherOp.traverseChannels(tmp, dst);
+		spreaderOp.traverseChannels(tmp, dst);
 		mixerOp.traverseChannels(src, dst);
 		++loop;
 
@@ -170,6 +214,7 @@ void BlenderOp::getSmootherAliasMap(drain::SmartMap<std::string> & aliasMap, boo
 }
 */
 
+/*
 ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigned short & loops) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
@@ -191,35 +236,35 @@ ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigne
 	return op;
 
 }
+*/
 
+/*
 ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	ImageOpBank & bank = getImageOpBank();
 
-	/*
-	drain::SmartMap<std::string> aliasMap;
-	aliasMap["b"] = weighted ? "qualityMixer" : "mix";
-	aliasMap["m"] = weighted ? "qualityOverride" : "max";
-	*/
+	double coeff;
+	drain::StringTools::convert(key, coeff);
+
+
 	const drain::SmartMap<std::string> & aliasMap = weighted ? getMixerAliasMap<true>() : getMixerAliasMap<false>();
 
-	const Variable v(key, typeid(double));
-	if ((double)v > 0.0){
+	//const Variable v(key, typeid(double));
+	if (coeff > 0.0){
 		//mout.debug() <<
-		ImageOp & op = bank.get(aliasMap["b"]);
-		op.setParameter("coeff", v);
+		ImageOp & op = bank.get(aliasMap["mix"]);
+		op.setParameter("coeff", coeff);
 		return op;
 	}
 	else {
-		ImageOp & op = bank.getComplete(key,':','/', aliasMap);
+		ImageOp & op = bank.getComplete(key,':','/', aliasMap); // basically mix possible, but direct coeff (above) preferred
 		return op;
 	}
 
-
 }
-
+*/
 
 
 }  // namespace image

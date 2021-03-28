@@ -101,10 +101,8 @@ public:
     };
 
     inline
-    /// int getHeight() const { return frame.height>0 ? frame.height : frame.width; }; // ???
     int getHeight() const {
     	return frame.height;
-    	//return frame.height>0 ? frame.height : frame.width;
     };
 
     typedef typename FunctorBank::map_t fmap_t;
@@ -113,14 +111,12 @@ public:
     VariableMap functorParameters;
 
     /// Get the cloner of the current functor type.
-    /*
-    inline
-	const FunctorBank::cloner_t & getFunctorCloner() const{
-        return *clonerBase; //this->ftorMapEntry.second;
-    };
-    */
 
-    /// Changes the current functor and returns the source of it.
+    /// Changes the current functor specification.
+    /**
+     *  The functor name (key) is checked in the functorBank.
+     *   No actual instance is created by this function.
+     */
     inline
 	void setFunctor(const std::string & ftorKey){
 
@@ -130,41 +126,15 @@ public:
     	const fmap_t & m = functorBank.getMap();
     	ftor_entry_t it = m.find(k);
     	if (it != m.end()){
-        	//this->ftorMapEntry = *it; //->second->clone();
-    		//this->ftorMapEntry.first = k; // it->first; //->second->clone();
-    		//this->ftorMapEntry.second = it->second;
-    		//clonerBase = it->second;
     		key = it->first;
     	}
     	else {
-    		//this->ftorMapEntry = getFunctorBank().get<IdentityFunctor>();
-    		//this->ftorMapEntry = getFunctorBank().get<IdentityFunctor>();
     		throw std::runtime_error(ftorKey + '[' + k + "]: no such entry, using IdentityFunctor");
     	}
-    	//return it->second->getSource();
     };
 
-    /*
-    inline
-	UnaryFunctor & getFunctor(const std::string & ftorKey){
-    	setFunctor(ftorKey);
-    	return getFunctor();
-    }
-
-
-    /// Get an instance of the current functor type.
-    inline
-    UnaryFunctor & getFunctor() const {
-    	UnaryFunctor & ftor = getFunctorCloner().getCloned();
-    	ftor.setParameters(functorParameters);
-    	return ftor;
-    };
-    */
-
-    //const fmap_t::key_type & getFunctorName() const;
 
     // Needed?
-
     inline
 	const fmap_t::key_type & getFunctorName() const {
     	return key;
@@ -181,11 +151,8 @@ public:
 
 protected:
 
-    //const typename FunctorBank::map_t::key_type *key;
     std::string key;
-    //typename FunctorBank::map_t::const_iterator ftorMapEntry;
-    //typename FunctorBank::map_t::value_type ftorMapEntry;
-   // ClonerBase<UnaryFunctor> * clonerBase;
+
 
 };
 
@@ -193,15 +160,6 @@ std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf);
 
 
 
-/*
-std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
-	//const UnaryFunctor & ftor = conf.getFunctor();
-	// ostr << "WindowConfig:: " << conf.frame << ':' << ftor.getName()<< '>' << ftor.getParameters();
-	ostr << "WindowConfig:: "; // << conf.frame;
-	std::cerr << __FILE__ << '\n';
-	return ostr;
-}
-*/
 
 
 /// Provides splitting frames
@@ -579,6 +537,7 @@ protected:
     /// Current location of this window.
 	Point2D<int> location;
 
+	/// Number of pixels in the window (frame width*height?).
 	int samplingArea;
 
 	/// Tells if the window should be moved (traversed of slided) row-by-row (horizontally) or column-by-column (vertically).
@@ -589,20 +548,19 @@ protected:
 	bool isHorizontal() const { return (this->conf.frame.width > this->conf.frame.height); };
 
 
-	// For 1) cleaning numerical residues and 2) updating window parameters
+	/// Function determing whether array should be cleared at the edge(s). Needed for 1) cleaning numerical residues and 2) updating window parameters
 	/**
 	 *  \return - true if scanning should be ended (if window dimensions have been changed?)
 	 */
 	virtual inline
 	bool reset(){
-		//fill();
 		return true;
 	};
 
 	/**
-	 * This function must
+	 * This function \i must
 	 * -# set image limits (limits of the total scanning area)
-	 * -# set (initial) loop limits (limits of the window scanning area. typically window origin in the center)
+	 * -# set (initial) loop limits (limits of the window scanning area. Typically window origin is in the center.
 	 * -# set starting location (typically 0,0)
 	 *
 	 */
@@ -633,12 +591,7 @@ protected:
     // Window limits, not image limits
     mutable Range<int> iRange;
     mutable Range<int> jRange;
-    /*
-    mutable int iMin;
-    mutable int iMax;
-    mutable int jMin;
-    mutable int jMax;
-	*/
+
 
     /// Sets the actual traversal range inside the window. Sometimes applied dynamically by reset().
 	virtual inline
@@ -693,9 +646,6 @@ void Window<P,R>::run(){
 	int &i = location.x;
 	int &j = location.y;
 
-	//const int iMax = coordinateHandler.getXRange().max;
-	//const int jMax = coordinateHandler.getYRange().max;
-
 	const Range<int> & horzRange = coordinateHandler.getXRange();
 	const Range<int> & vertRange = coordinateHandler.getYRange();
 
@@ -743,6 +693,5 @@ std::ostream & operator<<(std::ostream &ostr, const drain::image::Window<P,R> &w
 
 
 
-#endif /*WINDOWOP_H_*/
+#endif /* Drain_WINDOWOP_H_*/
 
-// Drain

@@ -50,39 +50,42 @@ namespace image
 {
 
 
-/// Smoothes image and mixes the result with the original by coeff*100%.
+/// Smoothes image and mixes the result with the original.
 /*!
 
-   This operator produces
-   \f[
-   F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \}
-      = (1-c)F + (1-c)cM{F} + c^2M^2{F}
-   \f]
-   where
-   \f$F\f$ is an image,
-   \f$M\{\}\f$ is a FastAverage operator of size \f$W \times H\f$, and
-   \f$c\f$ is the mixing coefficient between 0.0 and 1.0.
+Example. With \c loops=2 and smooth mixing with \c coeff=c (instead of maximum), this operator produces
+\f[
+F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \}
+  = (1-c)F + (1-c)cM{F} + c^2M^2{F}
+\f]
+where
+\f$F\f$ is an image,
+\f$M\{\}\f$ is a FastAverage operator of size \f$W \times H\f$, and
+\f$c\f$ is the mixing coefficient between 0.0 and 1.0.
 
-   \code
-   	drainage shapes.png --iBlender 25,mix=b/coeff:0.25 -o hazy25a.png
-   	drainage shapes.png --iBlender 25,mix=b/coeff:0.50 -o hazy50a.png
-   	drainage shapes.png --iBlender 25,mix=b/coeff:0.75 -o hazy75a.png
-   	drainage shapes.png --iBlender 25,smooth=avgGauss,mix=b/coeff:0.25 -o hazy25g.png
-   	drainage shapes.png --iBlender 25,mix=m            -o hazyMax.png
-   \endcode
+\code
+drainage shapes.png --iBlender 25,mix=0.25 -o hazy25a.png
+drainage shapes.png --iBlender 25,mix=0.50 -o hazy50a.png
+drainage shapes.png --iBlender 25,mix=0.75 -o hazy75a.png
+drainage shapes.png --iBlender 25,avgGauss,mix=0.25 -o hazy25g.png
+drainage shapes.png --iBlender 25,mix=max -o hazyMax.png
+\endcode
 
-	This operator can be also used for restoring images containing specks of low quality.
-    \~exec
-       make flowers-rgba.png  #exec
-    \~
-   \code
-     drainage flowers-rgba.png --iBlender 50,smooth=avg,mix=m -o restored-a1.png
-     drainage flowers-rgba.png --iBlender 50,smooth=avg,mix=m,loops=3 -o restored-a3.png
-     drainage flowers-rgba.png --iBlender 50,smooth=avgGauss,mix=m -o restored-ag1.png
-     drainage flowers-rgba.png --iBlender 50,smooth=avgGauss,mix=m,loops=3 -o restored-ag3.png
-     drainage flowers-rgba.png --iBlender 50,smooth=dist    -o restored--d.png
-     drainage flowers-rgba.png --iBlender 50,smooth=distExp -o restored--dexp.png
-   \endcode
+This operator can be also used for restoring images containing specks of low quality.
+\~exec
+   make flowers-rgba.png  #exec
+\~
+
+\code
+drainage flowers-rgba.png --iBlender 51,avg,max -o restored-a1.png
+drainage flowers-rgba.png --iBlender 51,avg,mix=0.75 -o restored-a1blend.png
+drainage flowers-rgba.png --iBlender 51,avg,max,loops=3 -o restored-a3.png
+drainage flowers-rgba.png --iBlender 5,avg,max,loops=5,expansionCoeff=1.5  -o restored-a5exp.png
+drainage flowers-rgba.png --iBlender 51,avgGauss,max -o restored-ag1.png
+drainage flowers-rgba.png --iBlender 51,avgGauss,max,loops=3 -o restored-ag3.png
+drainage flowers-rgba.png --iBlender 51,spreader=dist    -o restored--d.png
+drainage flowers-rgba.png --iBlender 51,spreader=distExp -o restored--dexp.png
+\endcode
 
 
  */
@@ -91,19 +94,19 @@ class BlenderOp: public WindowOp<> {
 public:
 
 	/// Default constructor
+	// TODO Rename, and use blender only for the op that mixes filtered t unfiltered
 	/**
 	 *
 	 */
 	// TODO: re-consider the order of params?
-	BlenderOp(int width=5, int height=0, char smoother='a', char mixer='m', unsigned short loops=1) :  // , double coeff=0.5
+	// BlenderOp(int width=5, int height=0, char spreader='a', char mixer='m', unsigned short loops=1) :  // , double coeff=0.5
+	BlenderOp(int width=5, int height=0, const std::string & spreader="avg", const std::string & blender="max",
+			unsigned short loops=1, double expansionCoeff=1.0) :  // , double coeff=0.5
 		WindowOp<>(__FUNCTION__, "Smoothes image repeatedly, mixing original image with the result at each round.", width, height){
-		// initRefs();
-		parameters.link("smooth", this->smootherKey, getSmootherAliasMap<false>().toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
-		parameters.link("mix", this->mixerKey, "b[/coeff:<coeff>]|m; (quality) mix, (quality) max");
-		parameters.link("loops", this->loops, "number of repetitions");
-		this->smootherKey = smoother;
-		this->mixerKey = mixer;
-		this->loops = loops;
+		parameters.link("spreader", this->spreader = spreader, getSmootherAliasMap<false>().toStr()); //"a|g|d|D; avg, gaussianAvg, dist, distExp");
+		parameters.link("mix", this->blender = blender, "max|<coeff>: (quality) max, (quality) blend");
+		parameters.link("loops", this->loops = loops, "number of repetitions");
+		parameters.link("expansionCoeff", this->expansionCoeff = expansionCoeff, "window enlargement");
 	};
 
 	// Every Op should have a copy const
@@ -115,7 +118,7 @@ public:
 
 	inline
 	const std::string & getSmootherKey(){
-		return smootherKey;
+		return spreader;
 	}
 
 	virtual inline
@@ -151,11 +154,13 @@ protected:
 		static drain::SmartMap<std::string> aliasMap;
 		if (aliasMap.empty()){
 			/// Use plain names (not prefixed)
+			/*
 			aliasMap["a"] = "average";
 			aliasMap["f"] = "flowAverage"; // magnitude/energy saving
 			aliasMap["g"] = "gaussianAverage";
 			aliasMap["d"] = WEIGHTED ? "distanceTransformFill"    : "distanceTransform";
 			aliasMap["D"] = WEIGHTED ? "distanceTransformFillExp" : "distanceTransformExp";
+			*/
 			// NEW
 			aliasMap["avg"] = "average";
 			aliasMap["avgFlow"] = "flowAverage"; // magnitude/energy saving
@@ -170,32 +175,37 @@ protected:
 	static
 	const drain::SmartMap<std::string> & getMixerAliasMap(){
 		static drain::SmartMap<std::string> aliasMap;
-		aliasMap["b"] = WEIGHTED ? "qualityMixer"    : "mix";
-		aliasMap["m"] = WEIGHTED ? "qualityOverride" : "max";
+		//aliasMap["b"] = WEIGHTED ? "qualityMixer"    : "mix";
+		//aliasMap["m"] = WEIGHTED ? "qualityOverride" : "max";
 		// NEW
-		aliasMap["mix"] = WEIGHTED ? "qualityMixer"    : "mix";
-		aliasMap["max"] = WEIGHTED ? "qualityOverride" : "max";
+		aliasMap["blend"] = WEIGHTED ? "qualityMixer"    : "mix";
+		aliasMap["max"]   = WEIGHTED ? "qualityOverride" : "max";
 		return aliasMap;
 	}
 
 
-	// int width=5, int height=0, char smoother='a', char mixer='m', unsigned short loops=1
+	// SMOOTHING
+	std::string spreader;
+
+	// MIXING
+	std::string blender;
+
+	// int width=5, int height=0, char spreader='a', char blender='m', unsigned short loops=1
 	//void initRefs();
 
 	//double coeff;
 	unsigned short loops;
 
-	// SMOOTHING
-	std::string smootherKey;
-	/**
-	 *  \param loops - sets loops=1 if looping not supported smoother(key).
-	 */
-	ImageOp & getSmoother(const std::string & key, bool weighted, unsigned short & loops) const;
+	double expansionCoeff;
 
-	// MIXING
-	std::string mixerKey;
-	ImageOp & getMixer(const std::string & key, bool weighted) const;
+	/**
+	 *  \param loops - sets loops=1 if looping not supported spreader(key).
+	 */
+	//ImageOp & getSmoother(const std::string & key, bool weighted, unsigned short & loops) const;
+
+	//ImageOp & getMixer(const std::string & key, bool weighted) const;
 	// double coeff;
+
 
 };
 

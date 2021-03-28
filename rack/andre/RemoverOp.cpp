@@ -138,17 +138,17 @@ void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 
 }
 
-void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQIND,
-		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const {
+void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug2() << "start" << mout.endl;
-	// PlainData<PolarSrc> srcQIND = srcData.getQualityData();
+	// PlainData<PolarSrc> srcQuality = srcData.getQualityData();
 
-	if (srcQIND.data.isEmpty()){
-		mout.warn() << " src QIND empty, skipping..." << mout.endl;
+	if (srcQuality.data.isEmpty()){
+		mout.warn() << " src Quality empty, skipping..." << mout.endl;
 		return;
 	}
 
@@ -156,20 +156,14 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// TODO FIX use QualityThresholdOp!
 
 	//const double t = threshold * srcQIND.odim.scaleInverse(1.0);
-	const double t = srcQIND.odim.scaleInverse(threshold * 1.0);
+	const double t = srcQuality.odim.scaleInverse(threshold * 1.0);
 
 	mout.debug() << " t=" << t << mout.endl;
 	/*
 	mout.note() << " srcData" << srcData << mout.endl;
-	mout.warn() << " srcQuality" << srcQIND << mout.endl;
+	mout.warn() << " srcQuality" << srcQuality << mout.endl;
 	mout.note() << " dstData" << dstData << mout.endl;
 	*/
-	Image::const_iterator  it = srcData.data.begin();
-	Image::const_iterator qit = srcQIND.data.begin();
-	Image::iterator dit = dstData.data.begin();
-	//Image::iterator dqit = dstData.data.begin();
-
-
 	double replaceCode = dstData.odim.nodata;
 	if (replace == "nodata"){
 		replaceCode = dstData.odim.nodata;
@@ -178,21 +172,36 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		replaceCode = dstData.odim.undetect;
 	}
 	else {
-		replaceCode = drain::StringTools::convert<double>(replace);
-		//replaceCode = atof(replace);
+		replaceCode = dstData.odim.scaleInverse(drain::StringTools::convert<double>(replace));
 	}
-	//File::write(dstData.data, "dst1.png");
 	mout.note() << replace << " = > replaceCode: " << replaceCode << mout.endl;
+
+	const bool ZERO_QUALITY = dstQuality.odim.scaleInverse(0.0);
+	if (clearQuality){
+		mout.debug() << "zero quality code: " << ZERO_QUALITY << mout.endl;
+	}
+
+	//File::write(dstData.data, "dst1.png");
+
+	Image::const_iterator  it = srcData.data.begin();
+	Image::const_iterator qit = srcQuality.data.begin();
+	Image::iterator dit  = dstData.data.begin();
+	Image::iterator dqit = dstQuality.data.begin();
+
 
 	const Image::iterator end = srcData.data.end();
 	while (it != end){
-		if (static_cast<double>(*qit) < t)
+		if (static_cast<double>(*qit) < t){
 			*dit = replaceCode; //dstData.odim.nodata;
+			if (clearQuality)
+				*dqit = ZERO_QUALITY;
+		}
 		else
 			*dit = *it; // assume no scaling difference
 		++it;
 		++qit;
 		++dit;
+		++dqit;
 	}
 
 	// File::write(dstData.data, "dst2.png");

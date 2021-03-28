@@ -548,7 +548,7 @@ class FastOpticalFlowOp : public SlidingWindowOp<SlidingOpticalFlowWeighted> {
 public:
 
 	FastOpticalFlowOp(int width=5, int height=5): //, double smoothing=0.01) : //, double gradPow=2.0) : //, double gradWidth = 16) :
-		SlidingWindowOp<SlidingOpticalFlowWeighted>(__FUNCTION__, "A pipeline implementation of optical flow."), blender(width, height, 'a', 'b', 1) {
+		SlidingWindowOp<SlidingOpticalFlowWeighted>(__FUNCTION__, "A pipeline implementation of optical flow."), blender(width, height, "avg", "blend", 1) {
 		parameters.append(blender.getParameters(), false);
 	}
 

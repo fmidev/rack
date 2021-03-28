@@ -261,7 +261,7 @@ protected:
 
  \code
   drainage shapes.png --iAverage 25   -o average.png
-  drainage shapes.png --iAverage 5,55 -o average-vert.png
+  drainage shapes.png --iAverage 5:55 -o average-vert.png
  \endcode
 
   If the source image contains several channels, each channel is treated separately.

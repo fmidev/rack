@@ -55,7 +55,7 @@ void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) cons
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	// TODO: generalize!
-	mout.special() << "conf: " << conf.frame << ':' << conf.radius << mout.endl;
+	mout.special() << "conf: " << conf.frame << ',' << conf.radius << mout.endl;
 
 	Image tmp(dst.getType());
 	makeCompatible(src.getConf(), tmp);

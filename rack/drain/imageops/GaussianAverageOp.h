@@ -54,12 +54,12 @@ namespace image
   If the source image contains several channels, each channel is treated separately.
 
   \code
-     drainage shapes.png     --iGaussianAverage 5,25  -o gaussianAverage-vert.png
+     drainage shapes.png     --iGaussianAverage 5:25  -o gaussianAverage-vert.png
      drainage image-rgba.png --iGaussianAverage 25    -o gaussianAverageWeighted.png
   \endcode
 
   \~exec
-  	  # rainage orvokki-rgba.png --iGaussianAverage 25,25 -o flower-blurred.png
+  	  # rainage orvokki-rgba.png --iGaussianAverage 25:25 -o flower-blurred.png
   \~
 
  */

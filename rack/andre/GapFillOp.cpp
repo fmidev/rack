@@ -88,7 +88,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	tmpQuality.setName("tmpQuality");
 	tmpQuality.copyDeep(srcQuality.data);
 
-	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip special codes
+	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip quality of values, and clear quality of special codes
 
 	tmpQuality.setPhysicalRange(0, 255, true);
 	tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
@@ -109,11 +109,18 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// File::write(srcTray.getAlpha(),"GapFillOp-inq.png");
 
 	ImageTray<Channel> dstTray;
-	//dstTray.setChannels(dstData.data, dstQuality.data);
-	dstTray.setChannels(tmpData, tmpQuality);
+	//dstQuality.data.clear();
+	//dstQuality.data.setPhysicalRange(0, 250, true); // temporary scaling
+	//dstQuality.data.getChannel(0).setPhysicalRange(0, 250, true); // temporary scaling
+	//drain::image::Image foo;
+	//foo.copyDeep(srcQuality.data);
+	//foo.setConf(srcQuality.data.getConf());
+	//dstTray.setChannels(dstData.data, foo);
+	//dstTray.setChannels(tmpData, tmpQuality);
+	dstTray.setChannels(tmpData, dstQuality.data);
 	mout.debug() << "dstTray:\n" << dstTray << mout;
 
-	//File::write(tmpQuality,"GapFillOp-inzq.png");
+	//File::write(dstQuality.data,"GapFillOp-inzq.png");
 
 	op.traverseChannels(srcTray, dstTray);
 
@@ -143,7 +150,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// File::write(dstTray.getAlpha(),"GapFillOp-outq.png");
 	// File::write(tmpData,"GapFillOp-out.png");
 	// File::write(tmpQuality,"GapFillOp-outq.png");
-
+	// File::write(foo, "GapFillOp-outQ.png");
+	//File::write(dstQuality.data.getChannel(0), "GapFillOp-outQ.png");
 }
 
 //void GapFillRecOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {

@@ -59,9 +59,14 @@ class QualityMixerOp : public ImageOp
 
 public:
 
-	QualityMixerOp(double couff = 0.5): ImageOp(__FUNCTION__, "Weighted blending of two images."){
+	QualityMixerOp(double coeff = 0.5): ImageOp(__FUNCTION__, "Weighted blending of two images."){
 		parameters.link("coeff", this->coeff = coeff);
 	};
+
+	QualityMixerOp(const QualityMixerOp & op): ImageOp(op){
+		parameters.copyStruct(op.getParameters(), op, *this);
+	};
+
 
 
 	virtual

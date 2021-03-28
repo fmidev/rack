@@ -358,7 +358,7 @@ public:
 \~
 
 \code
-drainage diamond1.png diamond2.png --iOpticalFlow 25,25 --format '${i} ${j2} ${-0} ${1} ${A0}' --sample 10,10,file=oflow.dat
+drainage diamond1.png diamond2.png --iOpticalFlow 25 --format '${i} ${j2} ${-0} ${1} ${A0}' --sample 10,10,file=oflow.dat
 \endcode
 
 \~exec
