@@ -1,6 +1,0 @@
-<map id="BinaryThresholdFunctor" name="BinaryThresholdFunctor">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ThresholdFunctor.html" title="Thresholds intensity values. " alt="" coords="24,229,147,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="35,155,136,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="52,80,119,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="47,5,123,32"/>
-</map>

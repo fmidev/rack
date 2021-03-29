@@ -1,8 +1,0 @@
-<map id="RadarWindowStdDev&lt; C &gt;" name="RadarWindowStdDev&lt; C &gt;">
-<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\&lt; C \&gt;" alt="" coords="30,357,207,384"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; C, RadarWindow\lCore \&gt;" alt="" coords="9,265,229,307"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; C, RadarWindowCore \&gt;" alt="" coords="157,179,379,206"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="5,81,112,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="136,81,283,108"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="149,5,270,32"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="CmdQuantityConf" name="CmdQuantityConf">
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command. Adds description and parameters to members. " alt="" coords="12,260,127,287"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="5,171,88,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="112,171,219,197"/>
-<area shape="rect" id="node7" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="151,260,262,287"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="63,81,233,108"/>
-<area shape="rect" id="node8" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="248,171,347,197"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="257,81,380,108"/>
-</map>

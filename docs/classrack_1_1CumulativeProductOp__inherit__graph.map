@@ -1,8 +1,0 @@
-<map id="CumulativeProductOp" name="CumulativeProductOp">
-<area shape="rect" id="node5" href="$classrack_1_1CappiOp.html" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product. " alt="" coords="5,319,79,345"/>
-<area shape="rect" id="node6" href="$classrack_1_1EchoTopOp.html" title="Height of echo exceeding a reflectivity threshold. " alt="" coords="103,319,194,345"/>
-<area shape="rect" id="node7" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column. " alt="" coords="219,319,313,345"/>
-<area shape="rect" id="node2" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="91,169,206,196"/>
-<area shape="rect" id="node3" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="63,95,235,121"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="48,5,249,47"/>
-</map>

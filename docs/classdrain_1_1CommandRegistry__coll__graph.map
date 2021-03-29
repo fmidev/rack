@@ -1,6 +1,0 @@
-<map id="CommandRegistry" name="CommandRegistry">
-<area shape="rect" id="node2" href="$classdrain_1_1Registry.html" title="Registry\&lt; Command \&gt;" alt="" coords="5,157,160,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="185,157,279,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="142,81,295,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals. " alt="" coords="321,157,420,184"/>
-</map>

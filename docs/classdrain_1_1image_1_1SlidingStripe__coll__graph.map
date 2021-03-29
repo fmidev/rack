@@ -1,7 +1,0 @@
-<map id="SlidingStripe&lt; C, R, DIR &gt;" name="SlidingStripe&lt; C, R, DIR &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; C, R \&gt;" alt="" coords="27,264,187,291"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s. " alt="" coords="158,179,279,206"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="5,81,112,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="136,81,283,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="149,5,270,32"/>
-</map>

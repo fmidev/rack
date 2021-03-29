@@ -1,6 +1,0 @@
-<map id="FuzzySigmoid&lt; T &gt;" name="FuzzySigmoid&lt; T &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor. " alt="" coords="22,229,126,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="23,155,125,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="41,80,107,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="36,5,112,32"/>
-</map>

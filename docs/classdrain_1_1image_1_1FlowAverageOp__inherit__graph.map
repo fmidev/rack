@@ -1,7 +1,0 @@
-<map id="FlowAverageOp" name="FlowAverageOp">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; FlowAverage\lWindowWeighted \&gt;" alt="" coords="9,319,223,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; FlowAverageWindow\lWeighted \&gt;" alt="" coords="5,229,227,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="79,155,153,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="75,80,157,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="78,5,154,32"/>
-</map>
