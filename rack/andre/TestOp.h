@@ -53,7 +53,7 @@ public:
 	 */
 	inline
 	TestOp(double value=0.0, double prob=1.0) :
-	DetectorOp(__FUNCTION__, "Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob).", "anom.clutter"){
+	DetectorOp(__FUNCTION__, "Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob).", "nonmet.clutter"){
 		//RemoverOp(__FUNCTION__, "Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob)."){ // Optional postprocessing: morphological closing.
 
 		dataSelector.quantity = "^DBZH$";
