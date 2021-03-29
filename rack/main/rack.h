@@ -32,9 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.0"
+#define __RACK_VERSION__ "6.1"
 
 /**
+ *   Version 6.0
+ *   -- Revised program core (drain::CommandBank, drain::Program, drain::Script)
+ *   -- Parallel processing by OpenMP, introducing '[' and ']' on command line
+ *   -- Revised anomaly detection and removal
+ *   -- Migration to C++11 standard started
+ *
  *   Version 5.63
  *   - --setODIM: support indexed search, like: --/dataset1:5/data3/what:quanity=DBZH
  *
