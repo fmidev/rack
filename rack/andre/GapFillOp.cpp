@@ -148,7 +148,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
 		if (*it == srcData.odim.undetect){
 			*dit = dstData.odim.undetect;
-			*qdit = defaultQuality;
+			*dqit = defaultQuality;
 		}
 		else {
 			*dit = *tit; // same encoding, direct assignment ok
