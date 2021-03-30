@@ -1,0 +1,45 @@
+<map id="SlidingWindowHistogramWeighted" name="SlidingWindowHistogramWeighted">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="SlidingWindowHistogram\l\&lt; WeightedWindowCore \&gt;" alt="" coords="29,1265,205,1307"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; Histogram\lWindowConfig, WeightedWindow\lCore \&gt;" alt="" coords="693,1160,911,1216"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; HistogramWindowConfig,\l WeightedWindowCore \&gt;" alt="" coords="687,1068,917,1109"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="839,977,991,1004"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="867,872,964,899"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="841,759,968,786"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="992,759,1079,786"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="942,663,1041,689"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="924,587,1019,613"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="857,481,939,508"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="855,379,941,405"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="860,289,936,316"/>
+<area shape="rect" id="node14" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="755,193,854,219"/>
+<area shape="rect" id="node49" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std.dev, sum. " alt="" coords="193,289,275,316"/>
+<area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="681,89,832,115"/>
+<area shape="rect" id="node16" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="857,89,979,115"/>
+<area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="843,5,993,32"/>
+<area shape="rect" id="node18" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="885,193,946,219"/>
+<area shape="rect" id="node25" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="1063,289,1138,316"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="960,289,1039,316"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="481,289,603,316"/>
+<area shape="rect" id="node48" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="607,872,754,899"/>
+<area shape="rect" id="node21" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="588,185,731,227"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="425,193,563,219"/>
+<area shape="rect" id="node24" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="971,429,1086,456"/>
+<area shape="rect" id="node26" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="704,481,823,508"/>
+<area shape="rect" id="node27" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="647,379,826,405"/>
+<area shape="rect" id="node29" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="718,759,817,786"/>
+<area shape="rect" id="node30" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="704,663,831,689"/>
+<area shape="rect" id="node40" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="1015,977,1122,1004"/>
+<area shape="rect" id="node46" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="579,759,694,786"/>
+<area shape="rect" id="node31" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="1146,977,1247,1004"/>
+<area shape="rect" id="node32" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="1163,872,1230,899"/>
+<area shape="rect" id="node33" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="1159,759,1235,786"/>
+<area shape="rect" id="node34" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="1143,663,1250,689"/>
+<area shape="rect" id="node35" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="1111,587,1282,613"/>
+<area shape="rect" id="node37" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="173,977,391,1004"/>
+<area shape="rect" id="node38" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="207,872,309,899"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title="HistogramWindowConfig" alt="" coords="440,977,607,1004"/>
+<area shape="rect" id="node42" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="333,872,439,899"/>
+<area shape="rect" id="node43" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="355,759,449,786"/>
+<area shape="rect" id="node44" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="325,663,479,689"/>
+<area shape="rect" id="node47" href="$structdrain_1_1image_1_1HistogramConfig.html" title="HistogramConfig" alt="" coords="463,872,583,899"/>
+</map>

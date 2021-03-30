@@ -1,0 +1,5 @@
+<map id="SlidingWindow&lt; C, R &gt;" name="SlidingWindow&lt; C, R &gt;">
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingStripe.html" title="A horizontal, one&#45;dimensional SlidingWindow (Nx1). " alt="" coords="5,237,152,263"/>
+<area shape="rect" id="node5" href="$classrack_1_1SlidingRadarWindow.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result..." alt="" coords="177,229,319,271"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s. " alt="" coords="102,80,223,107"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="DopplerWindow" name="DopplerWindow">
+<area shape="rect" id="node6" href="$classrack_1_1DopplerAverageWindow.html" title="DopplerAverageWindow" alt="" coords="1077,5,1239,32"/>
+<area shape="rect" id="node7" href="$classrack_1_1DopplerAverageWindow2.html" title="Smoothens Doppler field, providing quality computed as eccentricity. " alt="" coords="1073,56,1243,83"/>
+<area shape="rect" id="node8" href="$classrack_1_1DopplerDevWindow.html" title="DopplerDevWindow" alt="" coords="1089,107,1227,133"/>
+<area shape="rect" id="node9" href="$classrack_1_1DopplerEccentricityWindow.html" title="Computes eccentrity of Doppler speeds mapped on a Nyquist&#45;normalized unit window. ..." alt="" coords="1067,157,1249,184"/>
+<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\l\&lt; RadarWindowConfig \&gt;" alt="" coords="689,74,856,115"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; RadarWindow\lConfig, RadarWindowCore \&gt;" alt="" coords="439,74,641,115"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; RadarWindowConfig,\l RadarWindowCore \&gt;" alt="" coords="185,74,391,115"/>
+</map>

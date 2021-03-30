@@ -1,0 +1,12 @@
+<map id="CommandSection" name="CommandSection">
+<area shape="rect" id="node2" href="$structdrain_1_1GeneralSection.html" title="GeneralSection" alt="" coords="197,5,308,32"/>
+<area shape="rect" id="node3" href="$structdrain_1_1HiddenSection.html" title="HiddenSection" alt="" coords="199,56,306,83"/>
+<area shape="rect" id="node4" href="$structdrain_1_1TriggerSection.html" title="TriggerSection" alt="" coords="199,107,306,133"/>
+<area shape="rect" id="node5" href="$structrack_1_1AccumulationSection.html" title="AccumulationSection" alt="" coords="180,157,325,184"/>
+<area shape="rect" id="node6" href="$structrack_1_1AnDReSection.html" title="AnDReSection" alt="" coords="198,208,307,235"/>
+<area shape="rect" id="node7" href="$structrack_1_1CartesianSection.html" title="CartesianSection" alt="" coords="191,259,314,285"/>
+<area shape="rect" id="node8" href="$structrack_1_1ImageOpSection.html" title="ImageOpSection" alt="" coords="193,309,312,336"/>
+<area shape="rect" id="node9" href="$structrack_1_1ImageSection.html" title="ImageSection" alt="" coords="201,360,304,387"/>
+<area shape="rect" id="node10" href="$structrack_1_1ProductSection.html" title="ProductSection" alt="" coords="197,411,308,437"/>
+<area shape="rect" id="node11" href="$structrack_1_1ScienceSection.html" title="ScienceSection" alt="" coords="196,461,309,488"/>
+</map>

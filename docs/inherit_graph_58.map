@@ -1,0 +1,165 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation. " alt="" coords="5,81,164,108"/>
+<area shape="rect" id="node2" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards. " alt="" coords="229,81,314,108"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="47,385,123,412"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="238,487,305,513"/>
+<area shape="rect" id="node36" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images. " alt="" coords="217,867,326,893"/>
+<area shape="rect" id="node39" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="230,1341,313,1368"/>
+<area shape="rect" id="node140" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title="ImpulseAvgConf" alt="" coords="212,1392,331,1419"/>
+<area shape="rect" id="node144" href="$classdrain_1_1image_1_1PaletteEntry.html" title="PaletteEntry" alt="" coords="224,132,319,159"/>
+<area shape="rect" id="node145" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data. " alt="" coords="236,1443,307,1469"/>
+<area shape="rect" id="node146" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="222,183,321,209"/>
+<area shape="rect" id="node148" href="$classrack_1_1FreezingLevel.html" title="FreezingLevel" alt="" coords="220,233,323,260"/>
+<area shape="rect" id="node149" href="$structrack_1_1HistEntry.html" title="HistEntry" alt="" coords="233,284,310,311"/>
+<area shape="rect" id="node150" href="$classrack_1_1PolarSector.html" title="PolarSector" alt="" coords="226,335,317,361"/>
+<area shape="rect" id="node151" href="$classrack_1_1Precip.html" title="Precip" alt="" coords="242,385,301,412"/>
+<area shape="rect" id="node158" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates. " alt="" coords="223,436,320,463"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BinaryFunctor.html" title="BinaryFunctor" alt="" coords="435,816,537,843"/>
+<area shape="rect" id="node13" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="435,487,537,513"/>
+<area shape="rect" id="node6" href="$classdrain_1_1AdditionFunctor.html" title="Adds a intensity values . " alt="" coords="707,867,820,893"/>
+<area shape="rect" id="node7" href="$classdrain_1_1DivisionFunctor.html" title="Divides image by another image. " alt="" coords="707,917,820,944"/>
+<area shape="rect" id="node8" href="$classdrain_1_1MaximumFunctor.html" title="MaximumFunctor" alt="" coords="702,968,825,995"/>
+<area shape="rect" id="node9" href="$classdrain_1_1MinimumFunctor.html" title="Minimum intensity. Prescaled input. " alt="" coords="704,1019,823,1045"/>
+<area shape="rect" id="node10" href="$classdrain_1_1MixerFunctor.html" title="Blends an image to another with given proportion. " alt="" coords="714,715,813,741"/>
+<area shape="rect" id="node11" href="$classdrain_1_1MultiplicationFunctor.html" title="Multiplies two images, with optional post scaling and offset. " alt="" coords="692,765,835,792"/>
+<area shape="rect" id="node12" href="$classdrain_1_1SubtractionFunctor.html" title="Subtracts image from another image. " alt="" coords="697,816,829,843"/>
+<area shape="rect" id="node14" href="$classdrain_1_1BinaryThresholdFunctor.html" title="Thresholds intensity values. " alt="" coords="683,664,843,691"/>
+<area shape="rect" id="node15" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor. " alt="" coords="711,157,815,184"/>
+<area shape="rect" id="node23" href="$structdrain_1_1IdentityFunctor.html" title="IdentityFunctor" alt="" coords="709,208,818,235"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CopyFunctor.html" title="CopyFunctor" alt="" coords="715,259,812,285"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1GammaFunctor.html" title="Gamma correction. Intensity is mapped as f&#39; = f^(gamma) " alt="" coords="707,309,819,336"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1QuantizatorFunctor.html" title="TODO: CopyOP should be quite similar. " alt="" coords="697,360,830,387"/>
+<area shape="rect" id="node27" href="$classdrain_1_1RemappingFunctor.html" title="Maps a single intensity value to another value. " alt="" coords="697,411,829,437"/>
+<area shape="rect" id="node28" href="$classdrain_1_1ScalingFunctor.html" title="Rescales intensities linearly: f&#39; = scale*f + offset. " alt="" coords="709,461,818,488"/>
+<area shape="rect" id="node30" href="$classdrain_1_1ThresholdFunctor.html" title="Thresholds intensity values. " alt="" coords="702,512,825,539"/>
+<area shape="rect" id="node31" href="$classdrain_1_1Fuzzifier.html" title="Fuzzifier\&lt; double \&gt;" alt="" coords="696,563,831,589"/>
+<area shape="rect" id="node35" href="$classrack_1_1DataMarker.html" title="Simple class marking true data with a given constant value, typically a CLASS label. " alt="" coords="718,613,809,640"/>
+<area shape="rect" id="node16" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. " alt="" coords="987,56,1099,83"/>
+<area shape="rect" id="node17" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="983,107,1102,133"/>
+<area shape="rect" id="node18" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0. " alt="" coords="974,157,1111,184"/>
+<area shape="rect" id="node19" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) . " alt="" coords="984,208,1101,235"/>
+<area shape="rect" id="node20" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width..." alt="" coords="972,259,1113,285"/>
+<area shape="rect" id="node21" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak. " alt="" coords="975,309,1111,336"/>
+<area shape="rect" id="node22" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle . " alt="" coords="965,5,1120,32"/>
+<area shape="rect" id="node29" href="$classdrain_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f. " alt="" coords="989,461,1097,488"/>
+<area shape="rect" id="node32" href="$classdrain_1_1FuzzyBell2.html" title="FuzzyBell2\&lt; double \&gt;" alt="" coords="968,563,1117,589"/>
+<area shape="rect" id="node33" href="$classdrain_1_1FuzzyBell.html" title="FuzzyBell\&lt; double \&gt;" alt="" coords="971,613,1114,640"/>
+<area shape="rect" id="node34" href="$classdrain_1_1FuzzyStep.html" title="FuzzyStep\&lt; double \&gt;" alt="" coords="969,512,1116,539"/>
+<area shape="rect" id="node37" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title="DistanceModelExponential" alt="" coords="397,917,575,944"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title="DistanceModelLinear" alt="" coords="414,867,558,893"/>
+<area shape="rect" id="node40" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="445,1291,527,1317"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1ImageChannels.html" title="ImageChannels" alt="" coords="429,1341,543,1368"/>
+<area shape="rect" id="node42" href="$classdrain_1_1image_1_1ImageCoordPolicy.html" title="ImageCoordPolicy" alt="" coords="421,1392,551,1419"/>
+<area shape="rect" id="node43" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of a target image. " alt="" coords="430,1443,542,1469"/>
+<area shape="rect" id="node44" href="$classdrain_1_1image_1_1ImageFill.html" title="ImageFill" alt="" coords="449,1493,523,1520"/>
+<area shape="rect" id="node45" href="$classdrain_1_1image_1_1ImageGeometry.html" title="ImageGeometry" alt="" coords="429,1544,543,1571"/>
+<area shape="rect" id="node46" href="$classdrain_1_1image_1_1ImageHistogram.html" title="ImageHistogram" alt="" coords="427,1595,545,1621"/>
+<area shape="rect" id="node47" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="449,2095,523,2121"/>
+<area shape="rect" id="node137" href="$classdrain_1_1image_1_1ImagePlot.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="445,971,527,997"/>
+<area shape="rect" id="node138" href="$classdrain_1_1image_1_1ImagePlotFile.html" title="ImagePlotFile" alt="" coords="435,1072,537,1099"/>
+<area shape="rect" id="node139" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples. " alt="" coords="433,1240,539,1267"/>
+<area shape="rect" id="node48" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title="DistanceTransformOp\l\&lt; DistanceModelExponential \&gt;" alt="" coords="663,1415,864,1457"/>
+<area shape="rect" id="node52" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title="DistanceTransformOp\l\&lt; DistanceModelLinear \&gt;" alt="" coords="679,1481,847,1522"/>
+<area shape="rect" id="node56" href="$classdrain_1_1image_1_1CatenatorOp.html" title="Operator for concatenating images vertically or as channels. " alt="" coords="715,1547,811,1573"/>
+<area shape="rect" id="node59" href="$classdrain_1_1image_1_1CropOp.html" title="CropOp" alt="" coords="730,1597,797,1624"/>
+<area shape="rect" id="node60" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives. " alt="" coords="712,1648,815,1675"/>
+<area shape="rect" id="node67" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title="DistanceTransformOp\&lt; T \&gt;" alt="" coords="672,1699,855,1725"/>
+<area shape="rect" id="node69" href="$classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color. " alt="" coords="719,1816,807,1843"/>
+<area shape="rect" id="node70" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration. " alt="" coords="706,1069,821,1096"/>
+<area shape="rect" id="node75" href="$classdrain_1_1image_1_1HighBoostOp.html" title="Enhances details by mixing original image and result of HighPassOp op. " alt="" coords="713,1867,813,1893"/>
+<area shape="rect" id="node76" href="$classdrain_1_1image_1_1HighPassOp.html" title="Finds details at one&#45;pixel scale, defined as difference of image and its low&#45;pass filtered copy..." alt="" coords="715,1917,811,1944"/>
+<area shape="rect" id="node77" href="$classdrain_1_1image_1_1ImpulseResponseOpBase.html" title="ImpulseResponseOpBase\&lt; T \&gt;" alt="" coords="660,1968,867,1995"/>
+<area shape="rect" id="node79" href="$classdrain_1_1image_1_1MarginalStatisticOp.html" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ... " alt="" coords="695,2019,831,2045"/>
+<area shape="rect" id="node80" href="$classdrain_1_1image_1_1MotionExtrapolatorOp.html" title="MotionExtrapolatorOp" alt="" coords="689,2069,837,2096"/>
+<area shape="rect" id="node81" href="$classdrain_1_1image_1_1MultiThresholdOp.html" title="MultiThresholdOp" alt="" coords="701,2120,825,2147"/>
+<area shape="rect" id="node82" href="$classdrain_1_1image_1_1NegateOp.html" title="NegateOp" alt="" coords="723,2171,804,2197"/>
+<area shape="rect" id="node83" href="$classdrain_1_1image_1_1PaletteOp.html" title="Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table..." alt="" coords="723,2221,803,2248"/>
+<area shape="rect" id="node84" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images..." alt="" coords="710,2272,817,2299"/>
+<area shape="rect" id="node92" href="$classdrain_1_1image_1_1QuadTreeOp.html" title="QuadTrees the image, stretching the image correspondingly. " alt="" coords="715,2323,811,2349"/>
+<area shape="rect" id="node93" href="$classdrain_1_1image_1_1QualityMixerOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower. " alt="" coords="707,2373,819,2400"/>
+<area shape="rect" id="node94" href="$classdrain_1_1image_1_1QualityOp.html" title="QualityOp" alt="" coords="723,2424,803,2451"/>
+<area shape="rect" id="node97" href="$classdrain_1_1image_1_1RecomposeOp.html" title="Create vertical image composed of separate views. " alt="" coords="709,2475,818,2501"/>
+<area shape="rect" id="node98" href="$classdrain_1_1image_1_1ResizeOp.html" title="Resizes the image, stretching the image correspondingly. " alt="" coords="723,2525,803,2552"/>
+<area shape="rect" id="node99" href="$classdrain_1_1image_1_1RunLengthOp.html" title="Base class for RunLengthHorzOp and RunLengthVertOp. " alt="" coords="712,2576,815,2603"/>
+<area shape="rect" id="node102" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels..." alt="" coords="718,2627,809,2653"/>
+<area shape="rect" id="node105" href="$classdrain_1_1image_1_1TransposeOp.html" title="Transpose operator. Swaps the intensities over the diagonal exis. " alt="" coords="713,2677,813,2704"/>
+<area shape="rect" id="node106" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; W \&gt;" alt="" coords="702,2728,825,2755"/>
+<area shape="rect" id="node108" href="$classdrain_1_1image_1_1FunctorOp.html" title="FunctorOp\&lt; CopyFunctor \&gt;" alt="" coords="672,1123,855,1149"/>
+<area shape="rect" id="node111" href="$classdrain_1_1image_1_1FunctorOp.html" title="FunctorOp\&lt; drain::FuzzyStep\l\&lt; double \&gt; \&gt;" alt="" coords="666,1174,861,1215"/>
+<area shape="rect" id="node114" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; FlowAverageWindow\lWeighted \&gt;" alt="" coords="653,2897,874,2938"/>
+<area shape="rect" id="node117" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; GaussianStripe\l\&lt; WindowCore \&gt; \&gt;" alt="" coords="670,2962,857,3003"/>
+<area shape="rect" id="node119" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingOptical\lFlowWeighted \&gt;" alt="" coords="674,3027,853,3069"/>
+<area shape="rect" id="node122" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingOptical\lFlowWeighted2 \&gt;" alt="" coords="674,3093,853,3134"/>
+<area shape="rect" id="node125" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingWindowHistogram\lWeighted \&gt;" alt="" coords="641,1246,885,1287"/>
+<area shape="rect" id="node128" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; SlidingWindowMedian\lWeighted \&gt;" alt="" coords="650,1325,877,1366"/>
+<area shape="rect" id="node131" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; Window\&lt; Gaussian\lWindowConf \&gt; \&gt;" alt="" coords="657,1750,869,1791"/>
+<area shape="rect" id="node133" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; Window\&lt; Window\lConfig \&gt; \&gt;" alt="" coords="661,2779,865,2821"/>
+<area shape="rect" id="node135" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt;\&gt;" alt="" coords="712,2845,815,2872"/>
+<area shape="rect" id="node49" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="DistanceTransformFillOp\l\&lt; DistanceModelExponential \&gt;" alt="" coords="942,1363,1143,1405"/>
+<area shape="rect" id="node51" href="$classdrain_1_1image_1_1DistanceTransformExponentialOp.html" title="DistanceTransformExponentialOp" alt="" coords="933,1429,1152,1456"/>
+<area shape="rect" id="node50" href="$classdrain_1_1image_1_1DistanceTransformFillExponentialOp.html" title="DistanceTransformFillExponentialOp" alt="" coords="1200,1371,1435,1397"/>
+<area shape="rect" id="node53" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="DistanceTransformFillOp\l\&lt; DistanceModelLinear \&gt;" alt="" coords="959,1481,1127,1522"/>
+<area shape="rect" id="node55" href="$classdrain_1_1image_1_1DistanceTransformLinearOp.html" title="Computes inverse linear distance to bright points. " alt="" coords="950,1547,1135,1573"/>
+<area shape="rect" id="node54" href="$classdrain_1_1image_1_1DistanceTransformFillLinearOp.html" title="Spreeads values using inverse linear distance transform. " alt="" coords="1216,1488,1419,1515"/>
+<area shape="rect" id="node57" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title="ChannelCatenatorOp" alt="" coords="971,1597,1115,1624"/>
+<area shape="rect" id="node58" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title="VerticalCatenatorOp" alt="" coords="973,1648,1113,1675"/>
+<area shape="rect" id="node61" href="$classdrain_1_1image_1_1GradientOp.html" title="Computes spatial horizontal derivatives (dx and dy). " alt="" coords="999,1699,1087,1725"/>
+<area shape="rect" id="node64" href="$classdrain_1_1image_1_1LaplaceOp.html" title="Computes second intensity derivatives. " alt="" coords="1001,1749,1085,1776"/>
+<area shape="rect" id="node62" href="$classdrain_1_1image_1_1GradientHorzOp.html" title="GradientHorzOp" alt="" coords="1259,1648,1375,1675"/>
+<area shape="rect" id="node63" href="$classdrain_1_1image_1_1GradientVertOp.html" title="GradientVertOp" alt="" coords="1261,1699,1373,1725"/>
+<area shape="rect" id="node65" href="$classdrain_1_1image_1_1LaplaceHorzOp.html" title="Computes second horizontal derivative, dx2. " alt="" coords="1261,1749,1373,1776"/>
+<area shape="rect" id="node66" href="$classdrain_1_1image_1_1LaplaceVertOp.html" title="Computes second vertical derivative, dy2. " alt="" coords="1263,1800,1371,1827"/>
+<area shape="rect" id="node68" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="Template for DistanceTransformFillLinearOp and DistanceTransformFillExponentialOp. " alt="" coords="943,1800,1142,1827"/>
+<area shape="rect" id="node71" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="967,948,1119,975"/>
+<area shape="rect" id="node72" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration. " alt="" coords="971,999,1114,1041"/>
+<area shape="rect" id="node73" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="UnaryFunctorOp\&lt; F \&gt;" alt="" coords="967,1065,1118,1092"/>
+<area shape="rect" id="node74" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation) " alt="" coords="1242,1065,1393,1092"/>
+<area shape="rect" id="node78" href="$classdrain_1_1image_1_1ImpulseResponseOp.html" title="A fill operation for one color. " alt="" coords="955,1968,1131,1995"/>
+<area shape="rect" id="node85" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\l\&lt; MultiplicationFunctor \&gt;" alt="" coords="959,2271,1126,2313"/>
+<area shape="rect" id="node88" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\l\&lt; SubtractionFunctor \&gt;" alt="" coords="965,2337,1121,2378"/>
+<area shape="rect" id="node90" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\&lt; F \&gt;" alt="" coords="955,2169,1130,2196"/>
+<area shape="rect" id="node91" href="$classdrain_1_1image_1_1GrayOp.html" title="GrayOp" alt="" coords="1009,2220,1076,2247"/>
+<area shape="rect" id="node86" href="$classdrain_1_1image_1_1MagnitudeOp.html" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector. " alt="" coords="1268,2235,1367,2261"/>
+<area shape="rect" id="node87" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images. " alt="" coords="1275,2285,1359,2312"/>
+<area shape="rect" id="node89" href="$classdrain_1_1image_1_1DistanceOp.html" title="Computes the distance between intensity vectors. " alt="" coords="1272,2344,1363,2371"/>
+<area shape="rect" id="node95" href="$classdrain_1_1image_1_1QualityOverrideOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower. " alt="" coords="978,2411,1107,2437"/>
+<area shape="rect" id="node96" href="$classdrain_1_1image_1_1QualityThresholdOp.html" title="QualityThresholdOp" alt="" coords="974,2461,1111,2488"/>
+<area shape="rect" id="node100" href="$classdrain_1_1image_1_1RunLengthHorzOp.html" title="Computes lengths of horizontal segments. " alt="" coords="977,2525,1108,2552"/>
+<area shape="rect" id="node101" href="$classdrain_1_1image_1_1RunLengthVertOp.html" title="Computes lengths of vertical segments. " alt="" coords="979,2576,1106,2603"/>
+<area shape="rect" id="node103" href="$classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes of connected pixel areas. " alt="" coords="950,2677,1135,2704"/>
+<area shape="rect" id="node104" href="$classdrain_1_1image_1_1SegmentStatisticsOp.html" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation..." alt="" coords="969,2627,1116,2653"/>
+<area shape="rect" id="node107" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window. " alt="" coords="961,2728,1124,2755"/>
+<area shape="rect" id="node109" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="UnaryFunctorOp\&lt; CopyFunctor \&gt;" alt="" coords="934,1116,1151,1143"/>
+<area shape="rect" id="node110" href="$classdrain_1_1image_1_1CopyOp.html" title="CopyOp" alt="" coords="1282,1116,1353,1143"/>
+<area shape="rect" id="node112" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="UnaryFunctorOp\&lt; drain\l::FuzzyStep\&lt; double \&gt; \&gt;" alt="" coords="959,1167,1126,1209"/>
+<area shape="rect" id="node113" href="$classdrain_1_1image_1_1TransparentOp.html" title="TransparentOp" alt="" coords="1263,1175,1371,1201"/>
+<area shape="rect" id="node115" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; FlowAverage\lWindowWeighted \&gt;" alt="" coords="936,2897,1149,2938"/>
+<area shape="rect" id="node116" href="$classdrain_1_1image_1_1FlowAverageOp.html" title="Window average that preserves the magnitude. " alt="" coords="1260,2904,1375,2931"/>
+<area shape="rect" id="node118" href="$classdrain_1_1image_1_1SeparableWindowOp.html" title="Sliding window averaging operator with optional weighting support. " alt="" coords="971,2969,1115,2996"/>
+<area shape="rect" id="node120" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lOpticalFlowWeighted \&gt;" alt="" coords="955,3027,1131,3069"/>
+<area shape="rect" id="node121" href="$classdrain_1_1image_1_1FastOpticalFlowOp.html" title="FastOpticalFlowOp" alt="" coords="1250,3035,1385,3061"/>
+<area shape="rect" id="node123" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lOpticalFlowWeighted2 \&gt;" alt="" coords="955,3093,1131,3134"/>
+<area shape="rect" id="node124" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title="FastOpticalFlow2Op" alt="" coords="1247,3100,1388,3127"/>
+<area shape="rect" id="node126" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lWindowHistogramWeighted \&gt;" alt="" coords="945,1233,1141,1274"/>
+<area shape="rect" id="node127" href="$classdrain_1_1image_1_1SlidingWindowHistogramOp.html" title="Window histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX. " alt="" coords="1225,1240,1410,1267"/>
+<area shape="rect" id="node129" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="SlidingWindowOp\&lt; Sliding\lWindowMedianWeighted \&gt;" alt="" coords="953,1298,1132,1339"/>
+<area shape="rect" id="node130" href="$classdrain_1_1image_1_1SlidingWindowMedianOp.html" title="SlidingWindowMedianOp" alt="" coords="1234,1305,1401,1332"/>
+<area shape="rect" id="node132" href="$classdrain_1_1image_1_1GaussianAverageOp.html" title="Sliding window averaging operator with optional weighting support. " alt="" coords="971,1851,1114,1877"/>
+<area shape="rect" id="node134" href="$classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support. " alt="" coords="986,2787,1099,2813"/>
+<area shape="rect" id="node136" href="$classdrain_1_1image_1_1BlenderOp.html" title="Smoothes image and mixes the result with the original. " alt="" coords="1001,2845,1084,2872"/>
+<area shape="rect" id="node141" href="$classdrain_1_1image_1_1ImpulseBucket.html" title="ImpulseBucket\&lt; ImpulseAvg\lConf \&gt;" alt="" coords="391,3151,581,3193"/>
+<area shape="rect" id="node142" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket. " alt="" coords="718,3209,809,3236"/>
+<area shape="rect" id="node143" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator. " alt="" coords="718,3159,809,3185"/>
+<area shape="rect" id="node147" href="$classrack_1_1DatasetSelector.html" title="DatasetSelector" alt="" coords="428,107,544,133"/>
+<area shape="rect" id="node152" href="$classrack_1_1PrecipKDP.html" title="PrecipKDP" alt="" coords="443,335,529,361"/>
+<area shape="rect" id="node153" href="$classrack_1_1PrecipKDPZDR.html" title="PrecipKDPZDR" alt="" coords="429,385,543,412"/>
+<area shape="rect" id="node154" href="$classrack_1_1PrecipZ.html" title="PrecipZ" alt="" coords="453,157,519,184"/>
+<area shape="rect" id="node157" href="$classrack_1_1PrecipZZDR.html" title="PrecipZZDR" alt="" coords="439,284,533,311"/>
+<area shape="rect" id="node155" href="$classrack_1_1PrecipZrain.html" title="PrecipZrain" alt="" coords="719,107,807,133"/>
+<area shape="rect" id="node156" href="$classrack_1_1PrecipZsnow.html" title="PrecipZsnow" alt="" coords="714,56,813,83"/>
+<area shape="rect" id="node159" href="$classrack_1_1ProductOp.html" title="Polar and Cartesian products. " alt="" coords="407,436,565,463"/>
+<area shape="rect" id="node160" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp. " alt="" coords="413,1021,559,1048"/>
+<area shape="rect" id="node161" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="FunctorWrapper\&lt; CopyFunctor \&gt;" alt="" coords="379,1123,593,1149"/>
+<area shape="rect" id="node162" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="FunctorWrapper\&lt; drain\l::FuzzyStep\&lt; double \&gt; \&gt;" alt="" coords="403,1174,569,1215"/>
+<area shape="rect" id="node163" href="$classdrain_1_1LegendEntry.html" title="LegendEntry" alt="" coords="37,132,132,159"/>
+</map>

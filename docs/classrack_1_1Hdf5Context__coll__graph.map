@@ -1,0 +1,31 @@
+<map id="Hdf5Context" name="Hdf5Context">
+<area shape="rect" id="node2" href="$classdrain_1_1Tree.html" title="Tree\&lt; hi5::NodeHi5,\l rack::ODIMPath, rack\l::ODIMPathLess \&gt;" alt="" coords="532,993,687,1049"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="359,904,473,931"/>
+<area shape="rect" id="node5" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image). " alt="" coords="573,904,646,931"/>
+<area shape="rect" id="node6" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="619,815,714,841"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="602,739,755,765"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char, int, float). " alt="" coords="521,815,580,841"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry. " alt="" coords="460,739,577,765"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="465,663,564,689"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="467,587,562,613"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="473,481,556,508"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="459,379,546,405"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="461,289,537,316"/>
+<area shape="rect" id="node16" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="421,193,520,219"/>
+<area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="447,89,598,115"/>
+<area shape="rect" id="node18" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="300,89,423,115"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="286,5,437,32"/>
+<area shape="rect" id="node20" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="336,193,397,219"/>
+<area shape="rect" id="node31" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="328,289,403,316"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="569,289,647,316"/>
+<area shape="rect" id="node22" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 4 \&gt;" alt="" coords="695,193,843,219"/>
+<area shape="rect" id="node23" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="867,193,1002,219"/>
+<area shape="rect" id="node24" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="767,89,915,115"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="545,193,671,219"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="179,289,301,316"/>
+<area shape="rect" id="node27" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="169,185,311,227"/>
+<area shape="rect" id="node28" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="5,193,144,219"/>
+<area shape="rect" id="node30" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="308,429,423,456"/>
+<area shape="rect" id="node32" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="647,481,766,508"/>
+<area shape="rect" id="node33" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="669,379,848,405"/>
+</map>

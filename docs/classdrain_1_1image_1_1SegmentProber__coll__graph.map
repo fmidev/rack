@@ -1,0 +1,28 @@
+<map id="SegmentProber&lt; S, D, C &gt;" name="SegmentProber&lt; S, D, C &gt;">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry. " alt="" coords="1817,173,1888,200"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1673,103,1768,129"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1446,151,1529,177"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="1133,156,1219,183"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="795,107,871,133"/>
+<area shape="rect" id="node7" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="499,76,598,103"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="205,103,356,129"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="219,52,342,79"/>
+<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="5,52,156,79"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="518,17,579,44"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="795,56,870,83"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="793,171,872,197"/>
+<area shape="rect" id="node13" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 4 \&gt;" alt="" coords="475,177,623,204"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="481,127,616,153"/>
+<area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="207,161,355,188"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="485,228,612,255"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="772,287,893,313"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="1103,316,1249,343"/>
+<area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="477,279,620,321"/>
+<area shape="rect" id="node19" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="479,345,618,372"/>
+<area shape="rect" id="node21" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="1289,68,1404,95"/>
+<area shape="rect" id="node23" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="1428,8,1547,35"/>
+<area shape="rect" id="node24" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="1087,7,1265,33"/>
+<area shape="rect" id="node27" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="783,348,882,375"/>
+<area shape="rect" id="node28" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="485,397,612,424"/>
+<area shape="rect" id="node29" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="775,399,890,425"/>
+</map>

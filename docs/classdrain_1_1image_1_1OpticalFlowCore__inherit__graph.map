@@ -1,0 +1,13 @@
+<map id="OpticalFlowCore" name="OpticalFlowCore">
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1OpticalFlowCore1.html" title="OpticalFlowCore1" alt="" coords="347,17,473,43"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1OpticalFlowCore2.html" title="OpticalFlowCore2" alt="" coords="347,71,473,98"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="5,46,132,73"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig,\l OpticalFlowCore1 \&gt;" alt="" coords="521,5,713,47"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, OpticalFlowCore1 \&gt;" alt="" coords="761,5,951,47"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1SlidingOpticalFlow.html" title="SlidingOpticalFlow\l\&lt; OpticalFlowCore1 \&gt;" alt="" coords="999,5,1149,47"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted.html" title="SlidingOpticalFlowWeighted" alt="" coords="1201,13,1386,39"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig,\l OpticalFlowCore2 \&gt;" alt="" coords="521,71,713,112"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, OpticalFlowCore2 \&gt;" alt="" coords="761,71,951,112"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="SlidingOpticalFlow2\l\&lt; OpticalFlowCore2 \&gt;" alt="" coords="999,71,1149,112"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title="SlidingOpticalFlowWeighted2" alt="" coords="1197,78,1389,105"/>
+</map>

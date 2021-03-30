@@ -1,0 +1,9 @@
+<map id="ImageOpModule" name="ImageOpModule">
+<area shape="rect" id="node2" href="$classdrain_1_1CommandModule.html" title="CommandModule\&lt; &#39;i&#39;,\l ImageOpSection \&gt;" alt="" coords="1159,71,1308,112"/>
+<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title="CommandInstaller\&lt; PREFIX,\l ImageOpSection \&gt;" alt="" coords="916,71,1109,112"/>
+<area shape="rect" id="node4" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command. " alt="" coords="696,78,808,105"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BankSuper.html" title="BankSuper\&lt; Command \&gt;" alt="" coords="476,78,647,105"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Bank.html" title="Bank\&lt; Command, std\l::string \&gt;" alt="" coords="217,5,368,47"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; char,\l std::string \&gt;" alt="" coords="228,71,357,112"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; key_t,\l value_t \&gt;" alt="" coords="225,136,361,177"/>
+</map>

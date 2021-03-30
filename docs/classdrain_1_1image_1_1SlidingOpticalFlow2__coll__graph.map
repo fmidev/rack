@@ -1,0 +1,23 @@
+<map id="SlidingOpticalFlow2&lt; R &gt;" name="SlidingOpticalFlow2&lt; R &gt;">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, R \&gt;" alt="" coords="1927,306,2116,347"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig, R \&gt;" alt="" coords="1659,200,1877,227"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="1075,248,1174,275"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="1319,296,1465,323"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="503,299,629,325"/>
+<area shape="rect" id="node21" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="775,299,889,325"/>
+<area shape="rect" id="node22" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="1339,352,1445,379"/>
+<area shape="rect" id="node7" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="1341,9,1443,36"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="1091,9,1158,36"/>
+<area shape="rect" id="node9" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="794,7,870,33"/>
+<area shape="rect" id="node10" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="513,7,619,33"/>
+<area shape="rect" id="node11" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="263,7,433,33"/>
+<area shape="rect" id="node13" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="1283,60,1501,87"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="1074,64,1175,91"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="1327,161,1457,188"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="1071,161,1178,188"/>
+<area shape="rect" id="node18" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="785,159,879,185"/>
+<area shape="rect" id="node19" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="489,159,643,185"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="1064,383,1185,409"/>
+<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="761,350,903,391"/>
+<area shape="rect" id="node26" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="763,416,901,443"/>
+</map>

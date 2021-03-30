@@ -1,0 +1,7 @@
+<map id="DistanceOp" name="DistanceOp">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title="BinaryPixelVectorOp\l\&lt; SubtractionFunctor \&gt;" alt="" coords="5,304,161,345"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images..." alt="" coords="30,229,137,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="46,155,121,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="42,80,125,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="45,5,121,32"/>
+</map>

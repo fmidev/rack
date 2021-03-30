@@ -1,0 +1,46 @@
+<map id="SlidingOpticalFlowWeighted2" name="SlidingOpticalFlowWeighted2">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="SlidingOpticalFlow2\l\&lt; OpticalFlowCore2 \&gt;" alt="" coords="210,1251,361,1292"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; OpticalFlow\lConfig, OpticalFlowCore2 \&gt;" alt="" coords="191,1159,380,1200"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; OpticalFlowConfig,\l OpticalFlowCore2 \&gt;" alt="" coords="347,1065,539,1107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1OpticalFlowCore2.html" title="OpticalFlowCore2" alt="" coords="1005,975,1131,1001"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1OpticalFlowCore.html" title="OpticalFlowCore" alt="" coords="962,847,1081,874"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="935,683,1062,710"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="1086,683,1173,710"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1057,587,1156,613"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1022,511,1117,537"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1161,405,1244,432"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="1157,303,1243,329"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="1153,213,1229,240"/>
+<area shape="rect" id="node14" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="1133,117,1232,143"/>
+<area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="1173,13,1323,39"/>
+<area shape="rect" id="node16" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="1025,13,1148,39"/>
+<area shape="rect" id="node17" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="1033,117,1095,143"/>
+<area shape="rect" id="node28" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="1020,213,1095,240"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="1401,213,1479,240"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 4 \&gt;" alt="" coords="1415,117,1563,143"/>
+<area shape="rect" id="node20" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="1257,117,1391,143"/>
+<area shape="rect" id="node21" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="1347,13,1495,39"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="1587,117,1714,143"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="566,213,687,240"/>
+<area shape="rect" id="node50" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="476,847,623,874"/>
+<area shape="rect" id="node24" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="609,109,751,151"/>
+<area shape="rect" id="node25" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="445,117,584,143"/>
+<area shape="rect" id="node27" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="996,353,1111,380"/>
+<area shape="rect" id="node29" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="877,405,995,432"/>
+<area shape="rect" id="node30" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="821,303,1000,329"/>
+<area shape="rect" id="node32" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="405,683,504,710"/>
+<area shape="rect" id="node33" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="261,587,387,613"/>
+<area shape="rect" id="node48" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="267,683,381,710"/>
+<area shape="rect" id="node49" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="141,975,248,1001"/>
+<area shape="rect" id="node34" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="636,975,737,1001"/>
+<area shape="rect" id="node35" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="659,847,725,874"/>
+<area shape="rect" id="node36" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="655,683,731,710"/>
+<area shape="rect" id="node37" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="643,587,749,613"/>
+<area shape="rect" id="node38" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="615,511,785,537"/>
+<area shape="rect" id="node40" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="761,975,980,1001"/>
+<area shape="rect" id="node41" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="809,847,911,874"/>
+<area shape="rect" id="node43" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="273,975,402,1001"/>
+<area shape="rect" id="node44" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="268,847,375,874"/>
+<area shape="rect" id="node45" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="50,683,145,710"/>
+<area shape="rect" id="node46" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="21,587,174,613"/>
+</map>

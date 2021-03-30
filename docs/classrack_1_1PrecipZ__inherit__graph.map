@@ -1,0 +1,6 @@
+<map id="PrecipZ" name="PrecipZ">
+<area shape="rect" id="node4" href="$classrack_1_1PrecipZrain.html" title="PrecipZrain" alt="" coords="5,229,93,256"/>
+<area shape="rect" id="node5" href="$classrack_1_1PrecipZsnow.html" title="PrecipZsnow" alt="" coords="117,229,216,256"/>
+<area shape="rect" id="node2" href="$classrack_1_1Precip.html" title="Precip" alt="" coords="79,80,137,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="70,5,146,32"/>
+</map>

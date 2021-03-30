@@ -1,0 +1,6 @@
+<map id="PolarSlidingAvgOp" name="PolarSlidingAvgOp">
+<area shape="rect" id="node2" href="$classrack_1_1PolarSlidingWindowOp.html" title="PolarSlidingWindowOp\l\&lt; RadarWindowAvg\&lt; RadarWindow\lConfig \&gt; \&gt;" alt="" coords="5,244,239,300"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="65,169,179,196"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="36,95,208,121"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="21,5,223,47"/>
+</map>
