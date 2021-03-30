@@ -119,6 +119,12 @@ public:
 	inline
 	void setCropping(bool cropping = true){ this->cropping = cropping; };
 
+	inline
+	bool isCropping(){
+		return cropping;
+	};
+
+
 	/// Sets quantity. Warns if input has a different quantity.
 	void checkQuantity(const std::string & quantity);
 
