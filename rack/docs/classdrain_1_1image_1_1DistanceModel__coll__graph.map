@@ -1,7 +1,0 @@
-<map id="DistanceModel" name="DistanceModel">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="73,247,149,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Bidirectional.html" title="Bidirectional\&lt; float \&gt;" alt="" coords="180,247,323,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; float, 2 \&gt;" alt="" coords="183,157,322,184"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="AdditionFunctor" name="AdditionFunctor">
-<area shape="rect" id="node2" href="$classdrain_1_1BinaryFunctor.html" title="BinaryFunctor" alt="" coords="11,155,113,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="29,80,95,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="24,5,100,32"/>
-</map>

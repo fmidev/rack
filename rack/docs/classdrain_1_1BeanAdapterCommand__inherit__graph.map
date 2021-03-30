@@ -1,8 +1,0 @@
-<map id="BeanAdapterCommand&lt; B &gt;" name="BeanAdapterCommand&lt; B &gt;">
-<area shape="rect" id="node2" href="$classB.html" title="B" alt="" coords="31,155,69,181"/>
-<area shape="rect" id="node3" href="$classA.html" title="A" alt="" coords="39,80,77,107"/>
-<area shape="rect" id="node4" href="$classBase.html" title="Base" alt="" coords="8,5,60,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="94,155,209,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="110,80,193,107"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="109,5,194,32"/>
-</map>

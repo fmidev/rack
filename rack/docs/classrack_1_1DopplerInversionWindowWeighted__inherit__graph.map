@@ -1,6 +1,0 @@
-<map id="DopplerInversionWindowWeighted" name="DopplerInversionWindowWeighted">
-<area shape="rect" id="node2" href="$classrack_1_1DopplerInversionWindow.html" title="DopplerInversionWindow" alt="" coords="33,348,200,375"/>
-<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\l\&lt; DopplerInversionConfig \&gt;" alt="" coords="25,259,208,300"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; DopplerInversion\lConfig, RadarWindowCore \&gt;" alt="" coords="7,169,226,211"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; DopplerInversion\lConfig, RadarWindowCore \&gt;" alt="" coords="21,80,212,121"/>
-</map>

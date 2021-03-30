@@ -1,8 +1,0 @@
-<map id="CartesianQuantity" name="CartesianQuantity">
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="73,260,188,287"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="31,171,113,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="5,95,91,121"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Context.html" title="Context" alt="" coords="11,5,79,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="141,171,248,197"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="117,95,288,121"/>
-</map>

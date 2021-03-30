@@ -1,5 +1,0 @@
-<map id="CmdImageBox" name="CmdImageBox">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title="BeanCommand\&lt; drain\l::image::ImageBox \&gt;" alt="" coords="5,155,157,196"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="40,80,123,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="39,5,124,32"/>
-</map>

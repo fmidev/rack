@@ -1,9 +1,0 @@
-<map id="PolarSector" name="PolarSector">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="91,247,167,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="198,247,297,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="184,157,311,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="335,247,458,273"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="335,157,485,184"/>
-</map>

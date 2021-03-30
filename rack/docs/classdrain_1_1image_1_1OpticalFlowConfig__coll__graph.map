@@ -1,7 +1,0 @@
-<map id="OpticalFlowConfig" name="OpticalFlowConfig">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="132,247,239,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="66,157,161,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="21,81,174,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="203,157,317,184"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="198,81,325,108"/>
-</map>

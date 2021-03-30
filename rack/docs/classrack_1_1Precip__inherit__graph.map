@@ -1,9 +1,0 @@
-<map id="Precip" name="Precip">
-<area shape="rect" id="node3" href="$classrack_1_1PrecipKDP.html" title="PrecipKDP" alt="" coords="5,155,92,181"/>
-<area shape="rect" id="node4" href="$classrack_1_1PrecipKDPZDR.html" title="PrecipKDPZDR" alt="" coords="117,155,231,181"/>
-<area shape="rect" id="node5" href="$classrack_1_1PrecipZ.html" title="PrecipZ" alt="" coords="255,155,322,181"/>
-<area shape="rect" id="node8" href="$classrack_1_1PrecipZZDR.html" title="PrecipZZDR" alt="" coords="347,155,441,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="193,5,269,32"/>
-<area shape="rect" id="node6" href="$classrack_1_1PrecipZrain.html" title="PrecipZrain" alt="" coords="186,229,274,256"/>
-<area shape="rect" id="node7" href="$classrack_1_1PrecipZsnow.html" title="PrecipZsnow" alt="" coords="298,229,397,256"/>
-</map>

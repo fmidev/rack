@@ -1,6 +1,0 @@
-<map id="CmdOutputRawImages" name="CmdOutputRawImages">
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="9,229,161,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="27,155,142,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="43,80,126,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="42,5,127,32"/>
-</map>

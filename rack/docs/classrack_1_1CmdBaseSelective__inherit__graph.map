@@ -1,9 +1,0 @@
-<map id="CmdBaseSelective" name="CmdBaseSelective">
-<area shape="rect" id="node6" href="$classrack_1_1CmdDelete.html" title="CmdDelete" alt="" coords="5,379,93,405"/>
-<area shape="rect" id="node7" href="$classrack_1_1CmdKeep.html" title="CmdKeep" alt="" coords="117,379,197,405"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdSelect.html" title="Tool for selecting data for next command(s), based on paths, quantities and elevations. " alt="" coords="222,379,309,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt;\&gt;" alt="" coords="88,229,227,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="100,155,215,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="116,80,199,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="115,5,200,32"/>
-</map>

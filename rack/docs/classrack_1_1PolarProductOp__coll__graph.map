@@ -1,7 +1,0 @@
-<map id="PolarProductOp" name="PolarProductOp">
-<area shape="rect" id="node2" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="452,21,624,47"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="177,5,379,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="477,78,599,105"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="207,71,349,112"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="209,137,347,163"/>
-</map>

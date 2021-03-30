@@ -1,7 +1,0 @@
-<map id="FlagResolver" name="FlagResolver">
-<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="113,80,179,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Flags.html" title="Flags" alt="" coords="5,162,60,189"/>
-<area shape="rect" id="node4" href="$classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary. " alt="" coords="85,162,207,189"/>
-<area shape="rect" id="node5" href="$classdrain_1_1GlobalFlags.html" title="GlobalFlags\&lt; status\l_flag_id \&gt;" alt="" coords="231,155,370,196"/>
-<area shape="rect" id="node6" href="$classdrain_1_1StatusFlags.html" title="StatusFlags" alt="" coords="255,244,347,271"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="GeoFrame" name="GeoFrame">
-<area shape="rect" id="node2" href="$classdrain_1_1Proj4.html" title="Proj4" alt="" coords="85,215,137,241"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; int, std\l::string \&gt;" alt="" coords="5,96,145,137"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Rectangle.html" title="Rectangle\&lt; double \&gt;" alt="" coords="173,215,316,241"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="169,103,320,130"/>
-<area shape="rect" id="node7" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; double \&gt;" alt="" coords="345,103,475,130"/>
-<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="335,13,485,39"/>
-</map>

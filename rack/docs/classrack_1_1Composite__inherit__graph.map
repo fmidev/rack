@@ -1,7 +1,0 @@
-<map id="Composite" name="Composite">
-<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="40,229,215,285"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="68,155,187,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title="Accumulator" alt="" coords="24,80,119,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing. " alt="" coords="5,5,137,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support. " alt="" coords="143,80,226,107"/>
-</map>

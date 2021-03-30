@@ -1,6 +1,0 @@
-<map id="CmdVerbosity" name="CmdVerbosity">
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; int \&gt;" alt="" coords="5,229,165,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="28,155,143,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="44,80,127,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="43,5,128,32"/>
-</map>

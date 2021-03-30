@@ -1,8 +1,0 @@
-<map id="GaussianStripeVertPolarWeighted" name="GaussianStripeVertPolarWeighted">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title="GaussianStripeWeighted\l\&lt; false \&gt;" alt="" coords="32,408,199,449"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1GaussianStripe.html" title="GaussianStripe\&lt; DIR,\l WeightedWindowCore \&gt;" alt="" coords="31,319,199,360"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf,\l WeightedWindowCore \&gt;" alt="" coords="8,229,223,271"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="39,155,191,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="67,80,164,107"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="52,5,179,32"/>
-</map>
