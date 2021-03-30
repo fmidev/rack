@@ -76,7 +76,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//op.setRadius(horz, vert, horz, vert);
 	//op.setSize(horz,  vert);
 	BlenderOp blenderOp(horz, vert, "avg", "max", loops, expansionCoeff);
-	DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
+	//DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
+	DistanceTransformFillLinearOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
 
 	ImageOp & op = (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
@@ -94,7 +95,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	drain::image::Image tmpQuality; //(srcQuality.data.getConf());
 	tmpQuality.setName("tmpQuality");
-	tmpQuality.copyDeep(srcQuality.data);
+	//tmpQuality.copyDeep(srcQuality.data); //??
+	tmpQuality.setConf(srcQuality.data.getConf()); //??
 
 	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip quality of values, and clear quality of special codes
 
@@ -136,14 +138,17 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 
 	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
-	Image::iterator  it = srcData.data.begin();
-	Image::iterator tit = tmpData.begin();
-	Image::iterator dit = dstData.data.begin();
+	const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
+	Image::iterator  it  = srcData.data.begin();
+	Image::iterator tit  = tmpData.begin();
+	Image::iterator dit  = dstData.data.begin();
+	Image::iterator dqit = dstQuality.data.begin();
 	//double undetect = dstData.odim.undetect;
 	while (it != srcData.data.end()){
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
 		if (*it == srcData.odim.undetect){
 			*dit = dstData.odim.undetect;
+			*qdit = defaultQuality;
 		}
 		else {
 			*dit = *tit; // same encoding, direct assignment ok
@@ -151,6 +156,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		++it;
 		++tit;
 		++dit;
+		++dqit;
 	}
 
 	// op.traverseChannels(srcData.data, srcData.getQualityData().data, dstData.data, dstData.getQualityData().data);
