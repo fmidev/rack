@@ -1377,17 +1377,22 @@ public:
 		}
 		else {
 			std::string outFileName;
+			drain::VariableMap & statusMap = ctx.getStatusMap();
 			if ((value == "")||(value == "-")){
 				outFileName = "-";
 			}
-			else
-				outFileName = ctx.outputPrefix + value;
+			else {
+				drain::StringMapper filenameFormatter(RackContext::variableMapper);
+				filenameFormatter.parse(ctx.outputPrefix + value, false);  //filename = mapper.toStr(ctx.getStatusMap());
+				outFileName = filenameFormatter.toStr(statusMap);
+				//outFileName = ctx.outputPrefix + value;
+			}
 			mout.info() << "writing " << outFileName << mout.endl;
 			drain::Output ofstr(outFileName);
 			//mout.warn() <<  ctx.getStatus() << mout.endl;
 			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 			if (ofstr)
-				statusFormatter.toStream(ofstr, ctx.getStatusMap());
+				statusFormatter.toStream(ofstr, statusMap);
 			else
 				mout.warn() << "write error: " << outFileName << mout.endl;
 			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
