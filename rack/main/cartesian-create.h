@@ -101,19 +101,29 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		if (!ctx.composite.geometryIsSet())
+		//Composite & composite = getComposite();
+		Composite & composite = ctx.composite;
+
+		if (!composite.geometryIsSet())
 			mout.error() << "Composite geometry undefined, cannot create tile" << mout.endl;
 
-		if (! ctx.composite.bboxIsSet())
+		if (! composite.bboxIsSet())
 			mout.error() << "Bounding box undefined, cannot create tile" << mout.endl;
 
-		if (! ctx.composite.projectionIsSet()) // or use first input (bbox reset)
+		if (! composite.projectionIsSet()) // or use first input (bbox reset)
 			mout.error() << "Projection undefined, cannot create tile" << mout.endl;
 
-		ctx.composite.setCropping(true);
+		composite.setCropping(true);
 		add(RackContext::POLAR|RackContext::CURRENT);
 		extract("dw");
-		ctx.composite.setCropping(false);
+
+		// "Debugging"
+		if (!composite.isCropping()){
+			mout.warn() << "Composite cropping switch of during op" << mout;
+			mout.error() << "Programming error in parallel comp design" << mout;
+		}
+
+		composite.setCropping(false);
 
 	}
 
