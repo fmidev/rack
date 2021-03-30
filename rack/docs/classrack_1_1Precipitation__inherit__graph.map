@@ -1,0 +1,7 @@
+<map id="Precipitation" name="Precipitation">
+<area shape="rect" id="node3" href="$classrack_1_1PrecipitationKDP.html" title="PrecipitationKDP" alt="" coords="5,155,128,181"/>
+<area shape="rect" id="node4" href="$classrack_1_1PrecipitationKDPZDR.html" title="PrecipitationKDPZDR" alt="" coords="153,155,303,181"/>
+<area shape="rect" id="node5" href="$classrack_1_1PrecipitationZ.html" title="PrecipitationZ" alt="" coords="327,155,430,181"/>
+<area shape="rect" id="node6" href="$classrack_1_1PrecipitationZZDR.html" title="PrecipitationZZDR" alt="" coords="455,155,585,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="265,5,341,32"/>
+</map>

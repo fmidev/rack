@@ -1,0 +1,46 @@
+<map id="GaussianAverageOp" name="GaussianAverageOp">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; Window\&lt; Gaussian\lWindowConf \&gt; \&gt;" alt="" coords="3055,317,3267,358"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="2656,444,2731,471"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="2307,465,2389,492"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="1866,471,1942,497"/>
+<area shape="rect" id="node45" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="2176,401,2243,428"/>
+<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="1585,471,1691,497"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="1257,471,1428,497"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; GaussianWindowConf \&gt;" alt="" coords="2755,253,2977,280"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="2474,56,2571,83"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="2146,5,2273,32"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="2166,56,2253,83"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="1855,69,1953,96"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1591,168,1685,195"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1301,235,1384,261"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="944,237,1031,264"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="595,117,671,144"/>
+<area shape="rect" id="node18" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="299,83,398,109"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="5,57,156,84"/>
+<area shape="rect" id="node20" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="19,108,142,135"/>
+<area shape="rect" id="node21" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="318,137,379,164"/>
+<area shape="rect" id="node32" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="595,168,670,195"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="593,241,672,268"/>
+<area shape="rect" id="node23" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 4 \&gt;" alt="" coords="275,192,423,219"/>
+<area shape="rect" id="node24" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="281,293,416,320"/>
+<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="7,272,155,299"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1ChannelGeometry.html" title="ChannelGeometry" alt="" coords="285,243,412,269"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="572,352,693,379"/>
+<area shape="rect" id="node50" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="2136,235,2283,261"/>
+<area shape="rect" id="node28" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="277,345,420,386"/>
+<area shape="rect" id="node29" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="279,411,418,437"/>
+<area shape="rect" id="node31" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="1112,168,1227,195"/>
+<area shape="rect" id="node33" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="1283,413,1402,440"/>
+<area shape="rect" id="node34" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="898,413,1077,440"/>
+<area shape="rect" id="node36" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="1855,185,1953,212"/>
+<area shape="rect" id="node37" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="1575,219,1701,245"/>
+<area shape="rect" id="node43" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="1847,236,1961,263"/>
+<area shape="rect" id="node49" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="2003,107,2109,133"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius. " alt="" coords="2447,296,2599,323"/>
+<area shape="rect" id="node39" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="2156,296,2263,323"/>
+<area shape="rect" id="node40" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="1857,303,1951,329"/>
+<area shape="rect" id="node41" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="1561,303,1715,329"/>
+<area shape="rect" id="node44" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="2472,399,2573,425"/>
+<area shape="rect" id="node46" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="2413,347,2632,373"/>
+<area shape="rect" id="node47" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="2159,348,2260,375"/>
+</map>

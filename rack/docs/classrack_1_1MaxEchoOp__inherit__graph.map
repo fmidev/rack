@@ -1,0 +1,6 @@
+<map id="MaxEchoOp" name="MaxEchoOp">
+<area shape="rect" id="node2" href="$classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. " alt="" coords="31,244,181,271"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="49,169,163,196"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="20,95,192,121"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,5,207,47"/>
+</map>

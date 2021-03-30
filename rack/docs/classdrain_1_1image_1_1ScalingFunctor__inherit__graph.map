@@ -1,0 +1,6 @@
+<map id="ScalingFunctor" name="ScalingFunctor">
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f. " alt="" coords="6,304,114,331"/>
+<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="9,155,111,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="27,80,93,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="22,5,98,32"/>
+</map>

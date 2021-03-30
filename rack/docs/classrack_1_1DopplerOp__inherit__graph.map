@@ -1,0 +1,19 @@
+<map id="DopplerOp" name="DopplerOp">
+<area shape="rect" id="node5" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lAverageWindow2 \&gt;" alt="" coords="769,5,957,47"/>
+<area shape="rect" id="node7" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lDevWindow \&gt;" alt="" coords="769,71,957,112"/>
+<area shape="rect" id="node9" href="$classrack_1_1DopplerWindowOp.html" title="DopplerWindowOp\&lt; Doppler\lEccentricityWindow \&gt;" alt="" coords="769,136,957,177"/>
+<area shape="rect" id="node11" href="$classrack_1_1DopplerCrawlerOp.html" title="DopplerCrawlerOp" alt="" coords="799,202,928,229"/>
+<area shape="rect" id="node12" href="$classrack_1_1DopplerDiffOp.html" title="Experimental. " alt="" coords="811,253,916,279"/>
+<area shape="rect" id="node13" href="$classrack_1_1DopplerReprojectOp.html" title="DopplerReprojectOp" alt="" coords="793,303,933,330"/>
+<area shape="rect" id="node14" href="$classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data. " alt="" coords="797,354,929,381"/>
+<area shape="rect" id="node16" href="$classrack_1_1DopplerWindOp.html" title="Base class for operators retrieving true wind (u,v). " alt="" coords="806,405,921,431"/>
+<area shape="rect" id="node18" href="$classrack_1_1DopplerWindowOp.html" title="Base class for Doppler average and variance. " alt="" coords="779,455,947,482"/>
+<area shape="rect" id="node2" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input..." alt="" coords="475,253,589,279"/>
+<area shape="rect" id="node3" href="$classrack_1_1VolumeOp.html" title="VolumeOp\&lt; PolarODIM \&gt;" alt="" coords="255,253,427,279"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ProductOp.html" title="ProductOp\&lt; const PolarODIM,\l PolarODIM \&gt;" alt="" coords="5,245,207,287"/>
+<area shape="rect" id="node6" href="$classrack_1_1DopplerAvgOp.html" title="Simple op not producing quality field. " alt="" coords="1029,13,1135,39"/>
+<area shape="rect" id="node8" href="$classrack_1_1DopplerDevOp.html" title="DopplerDevOp" alt="" coords="1028,78,1136,105"/>
+<area shape="rect" id="node10" href="$classrack_1_1DopplerEccentricityOp.html" title="DopplerEccentricityOp" alt="" coords="1005,143,1159,170"/>
+<area shape="rect" id="node15" href="$classrack_1_1DopplerDiffPlotterOp.html" title="DopplerDiffPlotterOp" alt="" coords="1011,354,1153,381"/>
+<area shape="rect" id="node17" href="$classrack_1_1DopplerInversionOp.html" title="Derives two&#45;dimensional wind (u,v) from Doppler data. " alt="" coords="1013,405,1151,431"/>
+</map>

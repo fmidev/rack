@@ -1,0 +1,29 @@
+<map id="SlidingWindowHistogram&lt; R &gt;" name="SlidingWindowHistogram&lt; R &gt;">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; Histogram\lWindowConfig, R \&gt;" alt="" coords="2037,410,2217,451"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; HistogramWindowConfig, R \&gt;" alt="" coords="1688,265,1944,292"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="1090,108,1189,135"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="1348,197,1495,224"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="503,152,629,179"/>
+<area shape="rect" id="node16" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="1368,387,1475,413"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="775,152,889,179"/>
+<area shape="rect" id="node7" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="1371,437,1472,464"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="1106,437,1173,464"/>
+<area shape="rect" id="node9" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="794,437,870,464"/>
+<area shape="rect" id="node10" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="513,437,619,464"/>
+<area shape="rect" id="node11" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="263,437,433,464"/>
+<area shape="rect" id="node13" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="1312,303,1531,329"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="1089,316,1190,343"/>
+<area shape="rect" id="node17" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title="HistogramWindowConfig" alt="" coords="1338,37,1505,64"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="1086,7,1193,33"/>
+<area shape="rect" id="node19" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="785,7,879,33"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="489,7,643,33"/>
+<area shape="rect" id="node23" href="$structdrain_1_1image_1_1HistogramConfig.html" title="HistogramConfig" alt="" coords="1079,57,1199,84"/>
+<area shape="rect" id="node25" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="1079,259,1200,285"/>
+<area shape="rect" id="node26" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="761,203,903,245"/>
+<area shape="rect" id="node27" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="763,269,901,296"/>
+<area shape="rect" id="node29" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std.dev, sum. " alt="" coords="2086,479,2169,505"/>
+<area shape="rect" id="node31" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="1767,529,1865,556"/>
+<area shape="rect" id="node32" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="1346,495,1497,521"/>
+<area shape="rect" id="node33" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="1360,545,1483,572"/>
+<area shape="rect" id="node34" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="1064,545,1215,572"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="GeoFrame" name="GeoFrame">
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title="AccumulatorGeo" alt="" coords="33,80,152,107"/>
+<area shape="rect" id="node3" href="$classrack_1_1RadarAccumulator.html" title="RadarAccumulator\&lt; drain\l::image::AccumulatorGeo,\l CartesianODIM \&gt;" alt="" coords="5,155,180,211"/>
+<area shape="rect" id="node4" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars. " alt="" coords="50,259,135,285"/>
+</map>

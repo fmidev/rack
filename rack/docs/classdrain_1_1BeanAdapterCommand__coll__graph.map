@@ -1,0 +1,11 @@
+<map id="BeanAdapterCommand&lt; B &gt;" name="BeanAdapterCommand&lt; B &gt;">
+<area shape="rect" id="node2" href="$classB.html" title="B" alt="" coords="47,260,85,287"/>
+<area shape="rect" id="node3" href="$classA.html" title="A" alt="" coords="52,171,91,197"/>
+<area shape="rect" id="node4" href="$classBase.html" title="Base" alt="" coords="5,95,57,121"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="110,260,225,287"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="123,171,206,197"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="97,95,182,121"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Context.html" title="Context" alt="" coords="103,5,171,32"/>
+<area shape="rect" id="node9" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="239,171,346,197"/>
+<area shape="rect" id="node10" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="210,95,381,121"/>
+</map>

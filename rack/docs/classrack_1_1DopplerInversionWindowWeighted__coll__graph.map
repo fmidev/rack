@@ -1,0 +1,47 @@
+<map id="DopplerInversionWindowWeighted" name="DopplerInversionWindowWeighted">
+<area shape="rect" id="node2" href="$classrack_1_1DopplerInversionWindow.html" title="DopplerInversionWindow" alt="" coords="2787,399,2953,425"/>
+<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindow.html" title="SlidingRadarWindow\l\&lt; DopplerInversionConfig \&gt;" alt="" coords="2527,217,2709,258"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; DopplerInversion\lConfig, RadarWindowCore \&gt;" alt="" coords="2111,170,2329,211"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; DopplerInversion\lConfig, RadarWindowCore \&gt;" alt="" coords="1871,170,2061,211"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="873,235,971,261"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title="CoordinateHandler2D" alt="" coords="1192,271,1339,297"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="278,139,405,165"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="559,139,674,165"/>
+<area shape="rect" id="node22" href="$structdrain_1_1Point2D.html" title="Point2D\&lt; int \&gt;" alt="" coords="1573,8,1680,35"/>
+<area shape="rect" id="node9" href="$classrack_1_1DopplerInversionConfig.html" title="DopplerInversionConfig" alt="" coords="1547,127,1706,153"/>
+<area shape="rect" id="node10" href="$classrack_1_1RadarWindowConfig.html" title="RadarWindowConfig" alt="" coords="1194,127,1337,153"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="869,121,975,148"/>
+<area shape="rect" id="node13" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="1576,351,1677,377"/>
+<area shape="rect" id="node28" href="$classdrain_1_1Fuzzifier.html" title="Fuzzifier\&lt; double \&gt;" alt="" coords="1899,345,2033,372"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="1232,329,1299,356"/>
+<area shape="rect" id="node15" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="884,292,960,319"/>
+<area shape="rect" id="node16" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="563,271,670,297"/>
+<area shape="rect" id="node31" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="867,349,977,376"/>
+<area shape="rect" id="node17" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="256,271,427,297"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniCloner.html" title="UniCloner\&lt; drain::UnaryFunctor \&gt;" alt="" coords="1517,71,1736,97"/>
+<area shape="rect" id="node20" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, K \&gt;" alt="" coords="1215,65,1316,92"/>
+<area shape="rect" id="node24" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="861,428,983,455"/>
+<area shape="rect" id="node42" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data) " alt="" coords="1222,592,1309,619"/>
+<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="545,473,688,514"/>
+<area shape="rect" id="node26" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="547,421,686,448"/>
+<area shape="rect" id="node27" href="$classdrain_1_1FuzzyBell2.html" title="FuzzyBell2\&lt; double \&gt;" alt="" coords="2353,341,2503,368"/>
+<area shape="rect" id="node29" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="1760,461,1847,488"/>
+<area shape="rect" id="node30" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="1237,461,1294,488"/>
+<area shape="rect" id="node32" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="567,353,666,380"/>
+<area shape="rect" id="node43" href="$classdrain_1_1image_1_1Encoding.html" title="Encoding" alt="" coords="884,643,960,669"/>
+<area shape="rect" id="node33" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="266,384,417,411"/>
+<area shape="rect" id="node34" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="280,333,403,360"/>
+<area shape="rect" id="node35" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="31,333,181,360"/>
+<area shape="rect" id="node36" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="549,561,684,588"/>
+<area shape="rect" id="node45" href="$classdrain_1_1image_1_1Geometry.html" title="Geometry" alt="" coords="883,592,961,619"/>
+<area shape="rect" id="node37" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="267,561,415,588"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels. " alt="" coords="2575,521,2661,548"/>
+<area shape="rect" id="node39" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame. " alt="" coords="2171,549,2269,576"/>
+<area shape="rect" id="node40" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry. " alt="" coords="1919,565,2013,592"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images. " alt="" coords="1585,592,1668,619"/>
+<area shape="rect" id="node44" href="$classdrain_1_1Caster.html" title="Caster" alt="" coords="586,669,647,696"/>
+<area shape="rect" id="node47" href="$classdrain_1_1Castable.html" title="Castable" alt="" coords="1064,684,1139,711"/>
+<area shape="rect" id="node46" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="1379,671,1493,697"/>
+<area shape="rect" id="node48" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s. " alt="" coords="1567,541,1686,568"/>
+<area shape="rect" id="node49" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; FlexVariable \&gt;" alt="" coords="1176,541,1355,568"/>
+</map>

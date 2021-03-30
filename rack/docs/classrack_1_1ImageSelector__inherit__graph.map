@@ -1,0 +1,4 @@
+<map id="ImageSelector" name="ImageSelector">
+<area shape="rect" id="node2" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations. " alt="" coords="9,80,108,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="21,5,97,32"/>
+</map>

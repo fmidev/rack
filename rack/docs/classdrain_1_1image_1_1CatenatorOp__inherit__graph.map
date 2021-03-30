@@ -1,0 +1,7 @@
+<map id="CatenatorOp" name="CatenatorOp">
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title="ChannelCatenatorOp" alt="" coords="5,304,149,331"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title="VerticalCatenatorOp" alt="" coords="174,304,314,331"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="123,155,197,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="119,80,201,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="122,5,198,32"/>
+</map>
