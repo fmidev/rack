@@ -1,17 +1,23 @@
 /** \page parallelpage Parallel computation
 
 
-\note Future extension - not fully implemented yet
+\note Future extension - experimental design
 
 \section parallel_intro Speed-up through parallel computation
 
 In processing radar data, some computations can be run independently in separate threads. 
 In \b Rack, parallel computation can be enabled flexibly on command line.
-Parallel computing is enabled for a sequence of commands put inside braces: \c [...] .
-Within braces, only the commands that will trigger a script - especially \c --inputFile -- will
-actually start a thread. In each thread, the command is run, followed by commands in a script, if defined.
-A schematic decomposition of such a command line is shown in the image below, marking thread-triggering commands \c cmd
-and other commands \c CMD. 
+Parallel computing is enabled by putting a desired command sequence inside braces: \c [...] .
+Within braces, the commands that trigger a script - especially \c --inputFile -- will
+start a thread. 
+In each thread the triggering command is run at first. Then, if a script has been defined, it will be run.
+
+Consider a command line invocation of \b Rack 
+\code
+rack --cmd --cmd ...  --sript '--cmd --cmd ...'  [ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ]  --cmd --cmd ...
+\endcode
+marking thread-triggering commands with \c CMD and other commands with \c cmd. 
+A schematic decomposition of such a line is shown below:
 \dot
   digraph parallel1 {
   
@@ -23,10 +29,10 @@ and other commands \c CMD.
   headport="n";
   fontsize=10;
   
-    CMD_INITIAL [ label="Common initialisation |<i>rack --CMD --CMD ..."];
-    CMD_SCRIPT  [ label="Script definition |<i> --sript '--cmd --cmd...' [ ", color="red", URL="\ref script" ];
-    CMD_ACTIONS [ label="Basic commands (CMD...) and \n script triggering commands (cmd..) |<i>[ --cmd1 --CMD2 --cmd3 --cmd4 -CMD5 ... ] ", color="red", URL="\ref productspage" ];
-    CMD_FINAL   [ label="Common final commands |<i> --CMD --CMD ..."];
+    CMD_INITIAL [ label="Common initialisation |<i>rack --cmd --cmd ..."];
+    CMD_SCRIPT  [ label="Script definition |<i> --sript '--cmd --cmd...' ", color="red", URL="\ref script" ];
+    CMD_ACTIONS [ label="Basic commands (cmd...) and \n script triggering commands (CMD..) |<i>[ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ] ", color="red", URL="\ref productspage" ];
+    CMD_FINAL   [ label="Common final commands |<i> --cmd --cmd ..."];
     CMD_INITIAL:i -> CMD_SCRIPT:i -> CMD_ACTIONS:i -> CMD_FINAL:i ;
   
   }
@@ -51,24 +57,24 @@ a new composite is initialized or loaded in the thread. Commands use internal lo
   headport="n";
   fontsize=10;
   
-    INITIAL	[ label="Shared initialisation |<i>rack --CMD --CMD ...  "];
+    INITIAL	[ label="Shared initialisation |<i>rack --cmd --cmd ...  "];
  	FORK	[ label="Enable threads |<i> [", color="red" ];
-	MAIN	[ label="{ <cmd1> | --CMD2 | <cmd2> |<cmd3>| --CMD5 | <end>...} "];  
+	MAIN	[ label="{ <CMD1> | --cmd2 | <CMD2> |<CMD3>| --cmd5 | <end>...} "];  
     JOIN	[ label="Join |<i>]", color="red" ];
-  	FINAL   [ label="Shared final commands |<i>  --CMD --CMD ..."];
+  	FINAL   [ label="Shared final commands |<i>  --cmd --cmd ..."];
 	
-  	THREAD1 [ label="{<i>--cmd1|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
-    THREAD2 [ label="{<i>--cmd3|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
-    THREAD3 [ label="{<i>--cmd4|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
+  	THREAD1 [ label="{<i>--CMD1|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
+    THREAD2 [ label="{<i>--CMD3|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
+    THREAD3 [ label="{<i>--CMD4|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];
 
-	INITIAL:i -> FORK:i -> MAIN:cmd1 [weight=10];
+	INITIAL:i -> FORK:i -> MAIN:CMD1 [weight=10];
 	MAIN:end  -> JOIN:i [weight=10];
  	JOIN:i ->  FINAL:i [weight=10];
 
 
-    MAIN:cmd1 -> THREAD1:i [style=dashed];
-    MAIN:cmd2 -> THREAD2:i [style=dotted];
-    MAIN:cmd3 -> THREAD3:i [style=dotted];  
+    MAIN:CMD1 -> THREAD1:i [style=dashed];
+    MAIN:CMD2 -> THREAD2:i [style=dotted];
+    MAIN:CMD3 -> THREAD3:i [style=dotted];  
 
 	THREAD1:s -> JOIN:i [style=dashed];
 	THREAD2:s -> JOIN:i [style=dotted];
@@ -77,49 +83,58 @@ a new composite is initialized or loaded in the thread. Commands use internal lo
   }
 \enddot
 
+\section parallel_examples Examples 
 
-\subsection parallel_anom Parallel anomaly detection 
+
+\subsection parallel_anom Anomaly detection 
 
 \code
 rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 -o vol-anom-paral.h5
 \endcode
 
-\subsection parallel_products Generating products for each
+\subsection parallel_products Product generation 
 
+Given a single volume as input, generate products to separate \c /dataset groups:
 \code
 rack volume.h5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-prod-paral.h5
 \endcode
 
 \subsection parallel_anom_products Anomaly detection and product generation combined
 
+As anomaly detectors are independent of each other, they can be computed in parallel, each updating the resulting quality field (\c QIND quantity)
+when completed. Finally, the combined detection field can be used for removing the anomalies in the volume. 
+
 \code
 rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-anom-prod-paral.h5
 \endcode
 
-
-\subsection parallel_acc Accumulation
-
-For accumulating polar data, Rack uses a shared accumulation array. 
-
-\code
-rack  --script '--pAdd' [ data-acc/2017*.h5 ] --encoding C --pExtract 'dw' -o accumulated-parallel.h5
-\endcode
-
-However, parallel computing does not provide much advantage in direct accumulation, where the computing task is simple
-and hence, file read is the major slowing factor.
-
 \subsection parallel_sites Product generation for each site
 
-By default, the resulting meteorological product is kept in the local context, 
-unless \c --append data was used.
+By default, unless \c --append data was used, the resulting meteorological product is kept in the local context. This means
+that data from several radars can be processed and also stored as parallel processes:
 
 \code
 rack --script '--pCappi 500 -o cappi-${NOD}.h5 --pEchoTop 20 -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
 \endcode
 
 
+\subsection parallel_acc Accumulation
+
+For accumulating polar data, Rack uses a shared accumulation array, enabling parallelizing the process in straightforward way: 
+
+\code
+rack  --script '--pAdd' [ data-acc/2017*.h5 ] --encoding C --pExtract 'dw' -o accumulated-parallel.h5
+\endcode
+
+However, parallel computing does not provide much advantage because actual computing is simple
+and file read is more a slowing factor.
+
+
 \subsection parallel_compositing Parallel compositing
 
+\subsubsection parallel_compositing_full One-pass scheme
+
+The following example creates a composite as a single command line -- as a single yet parallelized computation job:
 \code
 rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' \
        --cSize 2000,2000 --cBBox 0,47,40,73    --cInit    --script '--pCappi 1500 --cAdd' \
@@ -127,7 +142,11 @@ rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 
          --cExtract d  -o composite-parallel.h5
 \endcode
 
-See also \ref tiledcompositing .
+\subsubsection parallel_compositing_tile Tiled scheme
+
+(Under construction.) In operational environment, one typically has system-level parallel processes in receiving radar data,
+hence there is less use in designing \i parallel tiled compositing in Rack level.
+See the single-thread \ref tiledcompositing instead.
 
 
 */
