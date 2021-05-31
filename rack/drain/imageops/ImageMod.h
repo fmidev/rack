@@ -55,6 +55,18 @@ public:
 
 	bool physicalScale;
 
+	/// Tell if alpha channel(s) is required in input.
+	/**
+	 *  Future option:
+	 *  0: not used
+	 *  1: optional, supported
+	 *  2: required
+	 */
+	virtual inline
+	int srcAlpha() const {
+		return 0;
+	};
+
 	/// Run this modifier for an image.
 	/**
 	 *  The default implementation redirects to traverseChannel(Channel & dst) .

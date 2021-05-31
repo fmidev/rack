@@ -143,14 +143,33 @@ public:
 	};
 
 
+	/// Set desired flags. Does not reset any flag. \see assign().
+	inline
+	Flagger & set(value_t x){
+		this->value = (this->value | x);
+		return *this;
+	};
+
+
+	/// Set desired flags. Does not reset any flag. \see assign().
+	/**
+	 *
+	 */
+	inline
+	Flagger & set(const key_t & key){
+		set(getValue(key, separator));
+		return *this;
+	};
+
+	/*
 
 	/// Set the desired flag(s). If value==false, unset the flag(s).
 	inline
 	Flagger & set(value_t x, bool newValue=true){
 		if (newValue)
-			this->value |= x;
+			this->value = (this->value | x);
 		else
-			this->value &= ~x; //(value & ~x);
+			this->value = (this->value & ~x);
 		return *this;
 	};
 
@@ -160,6 +179,7 @@ public:
 	Flagger & set(const key_t & key, bool newValue=true){
 		return set(getValue(key, separator), newValue);
 	};
+	 */
 
 
 	/// Unset desired flags. Does not set any flag.

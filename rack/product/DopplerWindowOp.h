@@ -182,7 +182,9 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const Data<PolarSrc> & vradSrc = srcSweep.getData("VRAD"); // relax, allow user to modify?
+	const drain::RegExp quantityRe(dataSelector.quantity); // "VRADH?";
+
+	const Data<PolarSrc> & vradSrc = srcSweep.getData(quantityRe);
 
 	if (vradSrc.data.isEmpty()){
 		mout.warn() << "VRAD missing" <<  mout.endl;

@@ -213,6 +213,10 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 	else if (type == typeid(const char *)){
 		return getH5StringVariableLength();
 	}
+	else if (type == typeid(void)){
+		hi5mout.warn() << __FUNCTION__ << "void type requested, setting string type" << hi5mout;
+		return getH5StringVariableLength();
+	}
 	/*
 	else if (type == typeid(std::string)){
 		return getH5StringVariableLength();

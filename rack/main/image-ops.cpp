@@ -53,6 +53,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 #include "data/QuantityMap.h"
 
+#include "product/ProductBase.h"
+
+
 #include "image-ops.h"
 #include "resources.h"
 
@@ -103,7 +106,9 @@ public:
 
 
 
-
+/*
+ *  TODO: support to select QIND as a
+ */
 void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	typedef DstType<ODIM> dst_t;
@@ -133,19 +138,21 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	// DST properties
 	// Check if dst quantity has been set explicitly
 	std::string dstQuantitySyntax;
+	bool USER_SCALING = false;
 	if (!ctx.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
-		EncodingODIM odim;
-		odim.link("quantity", dstQuantitySyntax); // consider "what:quantity"
-		odim.addShortKeys();
-		odim.updateValues(ctx.targetEncoding); // do not clear yet
+		EncodingODIM superOdim;
+		superOdim.scaling.scale = 0.0;
+		superOdim.link("what:quantity", dstQuantitySyntax); // consider "${what:quantity}_FILT"
+		superOdim.addShortKeys();
+		superOdim.updateValues(ctx.targetEncoding); // do not clear yet
 		//mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
-
+		USER_SCALING = (superOdim.scaling.scale != 0.0);
 	}
 
 	if (dstQuantitySyntax.empty())
 		dstQuantitySyntax = ImageContext::outputQuantitySyntax;
 
-	mout.note() << "output quantity (syntax): " << dstQuantitySyntax << mout.endl;
+	mout.experimental() << "output quantity (syntax): " << dstQuantitySyntax << mout.endl;
 
 
 	const bool USER_QUANTITY = true; // !!! !dstQuantitySyntax.empty();
@@ -171,16 +178,17 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	quantitySyntaxMapper.parse(dstQuantitySyntax);
 
 	drain::VariableMap & statusVariables = ctx.getStatusMap();
-	statusVariables["command"] = statusVariables.get("command", bean.getName());
+	statusVariables["command"] = bean.getName();
 
-	const QuantityMap & qmap = getQuantityMap();
+	// const QuantityMap & qmap = getQuantityMap();
 
 	// Main loop (large!); visit each /dataset<n>
 	// Results will be stored in the same /dataset<n>
 	for (ODIMPath & path: paths){ // non-const (for stripping leading root)
 
 		if (path.empty()){
-			mout.error() << "empty path" << mout.endl;
+			mout.warn()  << "selector: " << datasetSelector << mout.endl;
+			mout.error() << "empty path?" << mout.endl;
 			continue;
 		}
 
@@ -194,12 +202,20 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		}
 
 		const ODIMPathElem & datasetElem = *path.begin();
+
+		/// This makes using QIND difficult...
 		mout.info() << "using: " << datasetElem << " / [" << datasetSelector.quantity << "]"<< mout.endl;
 
 		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.quantity);
 
 		const size_t QUANTITY_COUNT = dstDataSet.size();
-		bool DATASET_QUALITY = dstDataSet.hasQuality(); //
+
+		if (bean.srcAlpha() && (ctx.qualityGroups == 0)){
+			ctx.qualityGroups = (ODIMPathElem::DATASET | ODIMPathElem::DATA);
+			mout.special() << "alpha channel required, modified: " << ctx.qualityGroups << ", see --imageQuality" << mout;
+		}
+
+		bool DATASET_QUALITY = (ctx.qualityGroups & ODIMPathElem::DATASET) && dstDataSet.hasQuality(); //
 		bool SPECIFIC_QUALITY_FOUND    = false;
 		bool SPECIFIC_QUALITY_MISSING  = false;
 
@@ -213,7 +229,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		}
 
 		if ((QUANTITY_COUNT > 1) && quantitySyntaxMapper.isLiteral()){
-			mout.warn() << "several quantities but, single output quantity: " << quantitySyntaxMapper << mout.endl;
+			mout.warn() << "several quantities, but single output quantity: " << quantitySyntaxMapper << mout.endl;
 		}
 
 
@@ -244,9 +260,9 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			/// SOURCE: Add src data (always from h5 struct)
 			srcData.data.setScaling(srcData.odim.scaling);
 			drain::ValueScaling & scaling = srcData.data.getScaling();
-			//drain::image::Encoding & scaling = srcData.data.getEncoding();
-
 			scaling.setScaling(srcData.odim.scaling);
+			/// TODO: clarify those...
+
 			if (ctx.imagePhysical){ // user wants to give thresholds etc params in phys units
 				if (!scaling.isPhysical()){
 					drain::Range<double> range;
@@ -270,13 +286,15 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 			srcTray.appendImage(srcData.data);
 
-			if (srcData.hasQuality()){
+			// ctx.qualitySelector.pathMatcher.
+			//if (ctx.qualityGroups.test(ODIMPathElem::DATA) && srcData.hasQuality()){
+			if ((ctx.qualityGroups & ODIMPathElem::DATA) && srcData.hasQuality()){
 				mout.debug() << path << "/[" << quantity <<  "] has quality data" << mout.endl;
 				SPECIFIC_QUALITY_FOUND = true;
 			}
 			else {
 				mout.debug() <<  path << "/[" << quantity <<  "] has no quality data (ok)" << mout.endl;
-				SPECIFIC_QUALITY_MISSING = true;
+				SPECIFIC_QUALITY_MISSING = true;  // consider  && ctx.qualityGroupMatcher.test(ODIMPathElem::DATA)
 			}
 
 			mout.special() << "srcTray: " << srcTray << mout;
@@ -285,9 +303,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			if (true) {
 
 				ImageConf srcConf(srcData.data.getConf());
-				srcConf.setChannelCount(1, (DATASET_QUALITY|SPECIFIC_QUALITY_FOUND) ? 1 : 0);
-
-
+				srcConf.setChannelCount(1, (DATASET_QUALITY||SPECIFIC_QUALITY_FOUND) ? 1 : 0);
 				mout.special() << "src conf: " << srcConf << mout;
 
 				statusVariables["what:quantity"] = srcData.odim.quantity;
@@ -305,70 +321,53 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				mout.note() << quantity << '/' << srcData.odim.quantity <<  " -> " << dstQuantity << mout.endl;
 
 				Data<dst_t> & dstData = dstDataSet.getData(dstQuantity); // USER_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
-				dstData.odim.quantity = dstQuantity;
 				dstData.data.setName(dstQuantity);
 
-
-				//
-				//dstData.data.scaling.physRange = srcConf.scaling.physRange;
-				// FAULTdstData.setEncoding(srcConf.getEncoding()); // here, we have no special information
-				if (!ctx.targetEncoding.empty()){
-					//dstData.setEncoding(dstData.data.getType(), ctx.targetEncoding);
-					//mout.warn() << dstData << mout;
-					dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
-					dstData.odim.addShortKeys();
-					dstData.odim.setValues(ctx.targetEncoding);
-					dstData.odim.setTypeDefaults();
-					dstData.odim.setValues(ctx.targetEncoding);
-					dstData.data.setType(dstData.odim.type);
-
-					// dstData.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
-				}
-				else if (! qmap.setQuantityDefaults(dstData.odim)){
-					mout.note();
-					mout << "no --encoding or --quantityConf for [" << dstData.odim.quantity << "], ";
-					mout << "initializing with src data, [" << srcData.odim.quantity << "]"  << mout.endl;
-					dstData.odim.updateFromCastableMap(srcData.odim);
-					dstData.odim.quantity = dstQuantity; // important
-				}
-
-				mout.special() << "eka :" << dstDataSet << mout;
-
 				// This replaces: bean.makeCompatible(srcConf, dstData.data);
+
+				dstData.odim.updateFromMap(srcData.odim);
+				dstData.odim.quantity = dstQuantity;
+
 				ImageConf dstConf;
-				dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
-				dstConf.setType(srcConf.getType());
+				//dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
+
+				if (!ctx.targetEncoding.empty()){
+					// mout.special() << "trying: " << dstQuantity << '/' << ctx.targetEncoding << mout;
+					const QuantityMap & qmap = getQuantityMap();
+					if (qmap.hasQuantity(dstQuantity)){
+						mout.special() << "conf exists for: " << dstQuantity << mout;
+						qmap.setQuantityDefaults(dstData.odim, dstQuantity, ctx.targetEncoding);
+					}
+					else {
+						dstData.odim.updateValues(ctx.targetEncoding);
+						dstData.odim.quantity = dstQuantity; // replace syntax pattern
+						if ((dstData.odim.type != srcData.odim.type) && ! USER_SCALING){
+							mout.warn() << "type changed from: " << srcData.odim.type << " to " << dstData.odim.type << mout;
+							mout.warn() << "but no scaling set "  << mout;
+						}
+					}
+					// ProductBase::completeEncoding(dstData.odim, ctx.targetEncoding);
+					dstConf.setType(drain::Type::getTypeInfo(dstData.odim.type));
+					dstConf.setScaling(dstData.odim);
+					mout.special() << "user conf: " << dstConf << mout;
+				}
+
+				mout.debug2() << "dst dataset: " << dstDataSet << mout;
 
 				bean.getDstConf(srcConf, dstConf);
 
-				mout.warn() << "dstConf0: " << dstConf << mout;
-
-				// Create alpha as a separate channel
-				/* NEWISH
-				if (dstConf.getAlphaChannelCount() > 0){ // todo check if > 1 ?
-					std::string qualityQuantity = "QIND";
-					if (dstData.hasQuality(qualityQuantity)){
-						mout.note() << qualityQuantity << " for quantity " << quantity << "already exists (using QIND2)" << mout.endl;
-						qualityQuantity = "QIND2";
-					}
-					PlainData<dst_t> & dstQuantity = dstData.getQualityData(qualityQuantity); // todo: smarter if-exists?
-					qmap.setQuantityDefaults(dstQuantity, "QIND");
-					// dstQuantity.setEncoding(typeid(unsigned char));
-					// dstQuantity.setPhysicalRange(0, 1);
-					dstQuantity.setGeometry(dstConf.getWidth(), dstConf.getHeight());
-					dstTray.setAlpha(dstQuantity.data);
-					// == dstTray.alpha.set();
-					// == dstTray.appendAlpha(dstQuantity.data);
-					dstConf.setAlphaChannelCount(0);
-
-				}
-				*/
-
-				if (!dstConf.typeIsSet())
+				if (!dstConf.typeIsSet()){
 					dstConf.setType(srcConf.getType());
+					mout.obsolete() << " setting src type? " << dstConf.getEncoding() << mout;
+				}
+
+				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
+				mout.info() << "initial dstConf: " << dstConf << mout;
 
 				// REALLY NEW
 				bean.makeCompatible(dstConf, dstData.data);
+				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
+
 				// NEWISH dstData.data.setConf(dstConf);
 				// TODO: alpha channel should be filled?
 				if (dstData.data.getAlphaChannelCount() > 0){
@@ -376,7 +375,6 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 
 				// bean.makeCompatible(srcConf, dstData.data);
-				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
 
 				// Use channel, because tray will use...
 				dstData.data.getChannel(0).setScaling(dstData.odim.scaling);
@@ -581,7 +579,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			vmap["ysize"] = geometry.getHeight();
 		}
 		else {
-			updateGeometryODIM<PolarODIM>(dst(path), datasetSelector.quantity, geometry);
+			// mout.special() << "vmap0: " << path << mout;
+			// drain::VariableMap & vmap = dst(path)[ODIMPathElem::WHERE].data.attributes;
+			// mout.warn() << "vmap0: " << vmap << mout;
+			updateGeometryODIM<PolarODIM>(dst(path)[ODIMPathElem::WHERE], datasetSelector.quantity, geometry);
+			//mout.warn() << "vmap1: " << vmap << mout;
 		}
 
 	}

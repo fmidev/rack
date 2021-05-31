@@ -32,9 +32,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.1"
+#define __RACK_VERSION__ "6.23"
 
 /**
+ *   Version 6.23
+ *   -- Bug fix in where:lat, where:lon (originated from SmartMapTools)
+ *
+ *   Version 6.22
+ *   -- Bug fix in --cBBox and --cProj order problem
+ *
+ *   Version 6.21
+ *   -- how:angles listed in Cartesian products (ODIM 2.3), also in polar products.
+ *   -- fixed VRAD/VRADH problem in pDopplerAvg
+ *
+ *   Version 6.2
+ *   -- Revised logic in selecting (quality) data for image processing operators( -h imageOps )
+ *
  *   Version 6.0
  *   -- Revised program core (drain::CommandBank, drain::Program, drain::Script)
  *   -- Parallel processing by OpenMP, introducing '[' and ']' on command line

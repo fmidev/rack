@@ -42,18 +42,18 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, topol_t topology,
 	chain.clear();
 
 	switch (topology) {
-	case PIX_CHESS_CONNECTED:
+	case PIX_ADJACENCY_KNIGHT:
 		chain.push_back(getElement(-1, -2, forward));
 		chain.push_back(getElement(+1, -2, forward));
 		chain.push_back(getElement(-2, -1, forward));
 		chain.push_back(getElement(+2, -1, forward));
 		// no break
-	case PIX_8_CONNECTED:
+	case PIX_ADJACENCY_8:
 		// 8-adjacency
 		chain.push_back(getElement(-1, -1, forward));
 		chain.push_back(getElement(+1, -1, forward));
 		// no break
-	case PIX_4_CONNECTED:
+	case PIX_ADJACENCY_4:
 		// 4-adjacency
 		chain.push_back(getElement(-1,  0, forward));
 		chain.push_back(getElement( 0, -1, forward));

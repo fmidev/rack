@@ -176,6 +176,7 @@ public:
 		ctx.composite.setTargetEncoding("");
 		ctx.composite.odim.source.clear();
 		ctx.composite.nodeMap.clear();
+		ctx.composite.metadataMap.clear();
 		// ctx.composite.projR2M.clear() !
 		// ctx.projStr.clear();
 

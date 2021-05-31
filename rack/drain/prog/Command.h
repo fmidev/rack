@@ -97,7 +97,7 @@ public:
 	void setParameters(const SmartMap<T> & args){
 		// TODO: set parameter X=Y ?
 		VariableMap vargs;
-		vargs.importCastableMap(args, false);
+		vargs.importCastableMap(args);
 		setParameters(vargs);
 	}
 

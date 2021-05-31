@@ -138,7 +138,17 @@ public:
 		assignString(s);
 	};
 
-	/// Copies type, data and separator char. Fails with Reference?
+	/// Initialisation with type of the first element or explicit type argument.
+	template<typename T>
+	inline
+	Variable(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
+		reset();
+		setType(t);
+		assignContainer(l, true);
+	};
+
+	// Initialisation, using type of argument or explicit type argument.
+	// Copies type, data and separator char. Fails with Reference?
 	template <class T>
 	Variable(const T & value, const std::type_info &t = typeid(void)) {
 		reset();
@@ -346,6 +356,11 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable
 }
 */
 
+template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
+	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+}
 
 
 

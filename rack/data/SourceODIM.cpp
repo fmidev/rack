@@ -37,7 +37,13 @@ namespace rack {
 
 SourceODIM::SourceODIM(const std::string & source) : source(source) {
 	init();
-	importEntries(source, ':', ',', false); //, LOG_NOTICE);
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.experimental("initialized: ", *this);
+
+	importEntries(source, ':', ','); //, LOG_NOTICE);
+	// mout.experimental("imported: '", source, "' => ", *this);
+
 	setNOD();
 };
 
@@ -45,7 +51,9 @@ SourceODIM::SourceODIM(const std::string & source) : source(source) {
 SourceODIM::SourceODIM(const SourceODIM & s){
 
 	init();
+	// importCastableMap(s);
 	updateFromMap(s);
+	//updateFromCastableMap(s);
 	setNOD();
 };
 
@@ -88,7 +96,7 @@ const std::string & SourceODIM::getSourceCode() const {
 			return it->second.toStrRef(); // cast (const std::string &)
 	}
 	*/
-	static std::string empty;
+	const static std::string empty;
 	return empty;
 }
 
@@ -111,8 +119,9 @@ void SourceODIM::setNOD(){
 				NOD = CMT;
 			}
 			else {
-				drain::Logger mout("SourceODIM", __FUNCTION__);
+				drain::Logger mout(__FILE__, __FUNCTION__);
 				//NOD = getSourceCode();
+				mout.experimental(*this);
 				//mout.toOStr() << "Site code 'NOD' not found, substituting with '" << NOD << "'" << mout.endl;
 				mout.info() << "Site code 'NOD' not found, using '" << getSourceCode() << "' as node indicator " << mout.endl;
 			}

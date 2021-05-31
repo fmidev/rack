@@ -66,7 +66,7 @@ public:
 	 *  This operator is \e universal , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
-	ClutterOp(double decay=0.5, double gamma=1.0, const std::string & pathSyntax = "cluttermaps/cluttermap-${NOD}.h5") :
+	ClutterOp(double decay=0.5, double gamma=1.0, const std::string & quantity ="CLUTTER", const std::string & pathSyntax = "cluttermaps/cluttermap-${NOD}-${quantity}.h5") :
 		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter.ground"){ // Optional postprocessing: morphological closing.
 		// dataSelector.path = ". */da ta[0-9]+/?$";
 		dataSelector.quantity = "";  // or FREQ?
@@ -75,6 +75,7 @@ public:
 		dataSelector.count = 1;
 		parameters.link("decay", this->decay = decay);
 		parameters.link("gamma", this->gamma = gamma);
+		parameters.link("quantity", this->quantity = quantity);
 		parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
 		// parameters.link("filename", this->filename, filename);
 	};
@@ -82,6 +83,7 @@ public:
 
 	double decay;
 	double gamma;
+	std::string quantity;
 	std::string pathSyntax;
 
 	/// Loads a clutter map

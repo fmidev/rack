@@ -58,24 +58,16 @@ void CartesianPlotFile::exec() const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
 
-	// RackResources & resources = getResources();
-	// Composite & composite = resources.composite;
-
 	RackContext & ctx = getContext<RackContext>();
-	//Composite & composite = ctx.composite;
 
 	ctx.composite.dataSelector.consumeParameters(ctx.select);
 	ctx.composite.allocate(); // check size?
 	ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
 
-	// composite.allocate();
-
 	if (! ctx.composite.isMethodSet()){
 		ctx.composite.setMethod("LATEST");
 		mout.note() << " no method set, using " << ctx.composite.getMethod() << " (see --cMethod) " << mout.endl;
 	}
-
-
 
 	drain::Input input(value);
 
@@ -113,7 +105,7 @@ void CartesianPlotFile::exec() const {
 
 }
 
-
+// OBSOLETE? iDistranceTransform/Fill Or develop...
 void CartesianSpread::exec() const {  // TODO iDistanceFill
 
 	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;

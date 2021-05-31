@@ -280,14 +280,6 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 
 
 		composite.dataSelector.updateBean(); // quantity
-		/*
-		ODIMPathMatcher & pm = composite.dataSelector.pathMatcher;
-		if (pm.empty())
-			pm.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY); // is already a TAIL
-		else if (pm.back().is(ODIMPathElem::DATASET))
-			pm.push_back(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-		*/
-		//mout.warn() <<"Done" << mout.endl;
 		mout.info() << "composite.dataSelector: " << composite.dataSelector << mout.endl;
 
 		ODIMPath dataPath;
@@ -299,7 +291,14 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 			return;
 		}
 
+		//const Hi5Tree & srcGroup = src(dataPath);
 		const Data<PolarSrc> polarSrc(src(dataPath)); // NOTE direct path, not from dataSet.getData() ! (because may be plain /qualityN data)
+
+		//ODIMPath datasetPath(dataPath);
+		/*
+		const ODIMPathElem & datasetPath = dataPath.front();
+		mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
+		*/
 
 		/// GET INPUT DATA
 		if ( !polarSrc.data.isEmpty() ){
@@ -359,8 +358,14 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 		// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
 		// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 		ODIMPathElem current = dataPath.back();
-		ODIMPath parent  = dataPath;
+		ODIMPath parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
 		parent.pop_back();
+
+		//mout.warn() << parent << "/HOW" << src(parent)[ODIMPathElem::HOW].data.attributes << mout;
+		//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
+		const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
+		composite.metadataMap["how:angles"].setType(typeid(double));
+		composite.metadataMap["how:angles"] = how["angles"];
 
 		double w = weight;
 
@@ -407,6 +412,14 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 			// ctx.getStatus()["RANGE"] = polarSrc.odim.getMaxRange();
 			// drain::getRegistry().getStatusMap(false)["RANGE"] = polarSrc.odim.getMaxRange();
 		}
+
+		//drain::Variable & angles = composite.metadataMap["how:angles"];
+		//mout.warn() << "HOW" << polarSrc.getHow() << mout;
+		//mout.warn() << "HOW" << srcGroup[ODIMPathElem::HOW].data.attributes << mout;
+
+
+		//composite.metadataMap["how:angles"] = polarSrc.odim.angles;
+		// elangles = ;
 
 		ctx.unsetCurrentImages();
 
@@ -610,18 +623,13 @@ void Compositor::extract(const std::string & channels) const {
 		ctx.targetEncoding.clear();
 	}
 
-
-	//
 	//mout.warn() << "composite: " << composite.odim << mout.endl;
 	//mout.warn() << "composite: " << composite << mout.endl;
 	//mout.note() << "dst odim: " << odim << mout.endl;
 	mout.debug2() << "extracting..." << mout.endl;
 
 	composite.extract(rootOdim, dstProduct, channels);
-
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
-
-
 
 	/// Final step: write metadata
 
@@ -674,6 +682,12 @@ void Compositor::extract(const std::string & channels) const {
 		}
 		else {
 			mout.debug() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
+			// NEW
+			drain::VariableMap & how = dstProduct.getHow();
+			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
+			//if (composite.metadataMap.hasKey("how:angles"))
+			how["angles"].setType(typeid(double));
+			how["angles"] = composite.metadataMap["how:angles"];
 			ctx.setCurrentImages(dstData.data);
 			ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
 		}
@@ -694,6 +708,7 @@ void Compositor::extract(const std::string & channels) const {
 	statusMap.updateFromMap(rootOdim);
 
 	statusMap.updateFromMap(composite.nodeMap);
+	statusMap.updateFromMap(composite.metadataMap);
 	// Spoils input.sh...
 	//std::cout << ctx.svg << '\n';
 

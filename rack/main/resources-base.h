@@ -64,15 +64,24 @@ namespace rack {
 class ImageContext {
 public:
 
+	/// Default constr
 	ImageContext();
 
-
+	/// Copy constr
 	ImageContext(const ImageContext & ctx);
-
-
 
 	/// Defines if the next image processing operation uses scaled intentsites instead of raw byte values.
 	bool imagePhysical;
+
+	/// Defines which quality data, if any, is used as input weight.
+	/**
+	 *   Practically, only the following properties are actually used:
+	 *   - path: dataset, data or both
+	 *   - quantity: (typically QIND), future option
+	 */
+	//DataSelector qualitySelector;
+	//ODIMPathElemMatcher qualityGroups;
+	ODIMPathElem::group_t qualityGroups;
 
 	// Accessed by CmdSampler
 	drain::image::ImageSampler imageSampler;

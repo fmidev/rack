@@ -83,7 +83,7 @@ public:
 protected:
 
 	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
-		dataSelector.quantity = "VRAD";
+		dataSelector.quantity = "VRADH?";
 		dataSelector.count = 1;
 	}
 

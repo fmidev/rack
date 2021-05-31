@@ -305,6 +305,15 @@ public:
 		return *this;
 	};
 
+	template<typename T, typename ... TT>
+	inline
+	Logger & warn(const T& arg, const TT &... rest){
+		warn();
+		flush(rest...);
+		return *this;
+	};
+
+
 	/// Light error, problems ahead, but command execution probable. Special type of Logger::warn().
 	inline
 	Logger & fail(){
@@ -356,6 +365,21 @@ public:
 		static
 		const Notification notif(__FUNCTION__, 36);
 		initMessage<LOG_NOTICE>(notif);
+		return *this;
+	};
+
+	inline
+	Logger & experimental(){
+		static const Notification notif(__FUNCTION__, 94);
+		initMessage<LOG_NOTICE>(notif);
+		return *this;
+	};
+
+	template<typename T,typename ... TT>
+	inline
+	Logger & experimental(const T& arg, const TT &... rest){
+		experimental();
+		flush(arg, rest...);
 		return *this;
 	};
 
@@ -501,6 +525,15 @@ public:
 
 protected:
 
+	Log & monitor;
+	//mutable
+	std::string prefix;
+
+	level_t level;
+	time_t time;
+
+	const Notification * notif_ptr;
+
 	/**
 	 *  \param name - explicitly given classname like "Composite" or __FILE__
 	 *  \param name - __FILE__
@@ -534,14 +567,20 @@ protected:
 	}
 
 
-	Log & monitor;
-	//mutable
-	std::string prefix;
+	template<typename T, typename ... TT>
+	inline
+	Logger & flush(const T & arg, const TT &... rest){
+		*this << arg;
+		flush(rest...);
+		return *this;
+	};
 
-	level_t level;
-	time_t time;
+	inline
+	Logger & flush(){
+		monitor.flush(level, *notif_ptr, prefix, message);
+		return *this;
+	};
 
-	const Notification * notif_ptr;
 
 };
 

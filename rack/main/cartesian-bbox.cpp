@@ -90,9 +90,10 @@ namespace rack {
 
 void CartesianBBoxTest::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
-
 	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
+
 
 	if ( ! ctx.composite.bboxIsSet() ){
 		mout.warn() << "Bounding box undefined, skipping." << mout.endl;

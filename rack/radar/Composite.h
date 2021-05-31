@@ -163,6 +163,9 @@ public:
 	/// Node keys (like "fivan") associated with upper left corner pixel coordinates [int] of the "tile".
 	drain::VariableMap nodeMap;
 
+	/// EXPERIMENTAL: save elangles TODO: consider rename metadataMap (for hairy details)
+	drain::VariableMap metadataMap;
+
 	/// Range [km] for single-radar products. Typically 250 km.
 	// int defaultRange;
 

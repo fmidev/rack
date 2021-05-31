@@ -120,6 +120,13 @@ public:
 
 	drain::image::AreaGeometry area;
 
+	/// Spatial resolution in metres
+	/**
+	 *  rscale for polar data
+	 *  xscale, yscale for Cartesian data?
+	 */
+	drain::Point2D<double> resolution;
+
 	//const drain::image::AreaGeometry & geometryTEST;
 
 	/// Applied 8-digit date format, "%Y%m%d"
@@ -150,6 +157,11 @@ public:
 	std::string starttime;
 	std::string enddate;
 	std::string endtime;
+
+	// Elevation angles.
+	// In ODIM, defined for Cartesian but used more generally - for polar products - in Rack
+	//drain::Variable angles;
+	std::vector<double> angles;
 
 
 	// Number of images used in precipitation accumulation (lenient, not linked)

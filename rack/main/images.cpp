@@ -550,6 +550,8 @@ public:
 		// If user has not explicitly set a quantity, assume RGB image temporary. (Excluded in HDF write)
 		const bool NO_SAVE = encoding.quantity.empty();
 
+		drain::VariableMap & statusMap = ctx.getStatusMap();
+		statusMap["command"] = op.getName();
 
 		if (encoding.quantity.empty()){
 			std::string quantity;
@@ -557,17 +559,16 @@ public:
 			// New ...
 			drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
 			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax);
-			drain::VariableMap & statusMap = ctx.getStatusMap();
 			statusMap["what:quantity"] = quantity; // override...
-			statusMap["command"] = statusMap.get("command", "Palette");
 			encoding.quantity = quantitySyntaxMapper.toStr(statusMap);
+			mout.special() << "automatic quantity: " <<  encoding.quantity << mout;
 			//dstQuantity = quantity + "/Palette";
 		}
 
+		//if (encoding.quantity.empty()){ // NOW: never true
+		if (false){
 
-		if (encoding.quantity.empty()){ // NOW: never true
-
-			mout.info() << "Using separate image (ctx.colorImage)" << mout.endl;
+			mout.warn() << "Using separate image (ctx.colorImage)" << mout.endl;
 
 			/// MAIN
 			op.process(graySrc, ctx.colorImage);
@@ -604,6 +605,8 @@ public:
 			data.setEncoding("C");
 			//data.odim.scaling.setScale(1, 0);
 			data.data.setScaling(data.odim.scaling);
+			//if (graySrc.hasAlphaChannel())
+			//	data.data.setAlphaChannelCount(1);
 			// mout.note() << "target encoding:     " << EncodingODIM(data.odim) << mout.endl;
 			// data.setEncoding("C");
 			// if (data.odim.type)
@@ -712,10 +715,82 @@ public: //re
 		ctx.palette.refine(value);
 		//cmdPalette.apply();
 		mout.unimplemented()= "refine";
+
+		mout.warn("refine", 12356, true);
+
 		CmdPalette::apply(ctx);
 	}
 };
 
+
+/// Quality groups accepted as alpha channels
+/**
+ *
+ */
+
+
+
+class CmdImageQuality : public drain::BasicCommand { // public drain::SimpleCommand<std::string> {
+
+public:
+
+	//  drain::SimpleCommand<std::string>
+	CmdImageQuality() :  drain::BasicCommand(__FUNCTION__, "Quality groups accepted as alpha channels"){
+		// , "groups", "None"
+		parameters.link("groups", groups = "dataset:data");
+		// parameters.link("quantity", quantity = "");
+	};
+
+	CmdImageQuality(const CmdImageQuality & cmd) : drain::BasicCommand(cmd){
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	std::string groups;
+	//std::string quantity; // future option? but Data<src> needs redesign
+
+
+	virtual
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		//ctx.qualitySelector.quantity = quantity;
+		// ctx.qualityGroups.flags.reset(); // TODO reset() .clear();
+		ctx.qualityGroups = 0;
+
+		/// Clumsy assignment of /dataset<n> and /data<n> groups.
+		std::list<std::string> l;
+		drain::StringTools::split(groups, l, ",:"); // future: maybe , needed for second arg (quantity=QIND)
+
+		for (const std::string & s: l){
+			ODIMPathElem elem;
+			elem.extractPrefix(s, true);
+
+			ctx.qualityGroups = ctx.qualityGroups | elem.getType();
+
+		}
+		// matcher.flags.assign(value);
+		// matcher.flags.value = v; // OK!
+		mout.special() << ctx.qualityGroups << '#' << mout;
+		//mout.special() << ctx.qualityGroups << '#' << ctx.qualityGroups.flags << '=' << ctx.qualityGroups.flags.value << mout;
+		//mout.special() << matcher << '=' << matcher.flags << '=' << matcher.flags.value << mout;
+		//ctx.qualitySelector.pathMatcher.setElems(matcher);
+		//mout.warn() << ctx.qualitySelector << mout;
+
+
+		for (const std::string & s: {"", "dataset1", "dataset5", "data2", "data5"}) {
+			//mout.special() << s << "?\t" << ctx.quality....Matcher.match(s) << mout;
+			ODIMPathElem elem(s);
+			mout.special() << s << "?\t" << elem.belongsTo(ctx.qualityGroups) << mout;
+		}
+
+		//}
+
+	}
+
+
+};
 
 
 class CmdImageBox : public drain::BeanCommand<drain::image::ImageBox> {
@@ -848,8 +923,9 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	install<CmdImageAlpha>();
 	install<CmdImageTransp>();
 	install<CmdPaletteOut>("legendOut"); // Same as --iPaletteOut below
-	install<CmdImageFlatten>(); //  cmdImageFlatten; //("imageFlatten");
-	install<CmdPhysical>("iPhysical");
+	install<CmdImageFlatten>();
+	install<CmdPhysical>("iPhysical"); // perhaps should be imagePhysical!
+	install<CmdImageQuality>();
 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());

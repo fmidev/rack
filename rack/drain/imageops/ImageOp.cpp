@@ -57,6 +57,10 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 
 	// mout.warn() << "srcConf:      " << srcConf << mout.endl;
 	// mout.warn() << "dst.getConf:  " << dst.getConf() << mout.endl;
+	// TODO:
+	if (srcAlpha() > 0){
+		mout.warn() << "alpha required, srcConf does not mention?" << mout;
+	}
 
 	ImageConf dstConf(dst.getConf());
 

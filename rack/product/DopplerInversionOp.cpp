@@ -41,9 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Geometry.h"
 #include "radar/Doppler.h"
-//#include "radar/PolarSmoother.h"
-
-#include "DopplerInversionWindow.h"
+#include "radar/DopplerInversionWindow.h"
 
 #include "DopplerInversionOp.h"
 

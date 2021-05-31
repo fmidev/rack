@@ -231,7 +231,7 @@ public:
 		}
 		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), "Image", __FUNCTION__);
-			mout.warn() << "several channelCount=" << conf.getChannelCount() << ">1, returning first." << mout.endl;
+			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
 		}
 		return getChannel(0);
 	}
@@ -243,7 +243,7 @@ public:
 		}
 		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), "Image", __FUNCTION__);
-			mout.warn() << "several channelCount=" << conf.getChannelCount() << ">1, returning first." << mout.endl;
+			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
 		}
 		return getChannel(0);
 	}

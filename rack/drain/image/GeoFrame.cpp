@@ -97,11 +97,12 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
 
 		if (!projectionIsSet()){
-			mout.error() << "projection must be set prior to setting metric bbox (" << ")" << mout.endl;
-			return;
+			mout.warn() << "for best accuracy, set projection before metric bbox" << mout.endl;
+			//mout.error() << "projection must be set prior to setting metric bbox (" << ")" << mout.endl;
+			//return;
 		}
 
-		if (projR2M.isLongLat()){
+		if (projectionIsSet() && projR2M.isLongLat()){
 			mout.error() << "trying to set metric bbox (" << ") on long-lat proj: "; // << resources.bbox
 			mout         <<  getProjection() << mout.endl;
 			return;
@@ -109,13 +110,12 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
 
-		mout.note() << "experimental: setting metric bbox: " << getBoundingBoxM() << mout.endl; // << resources.bbox
+		mout.special() << "setting metric bbox: " << getBoundingBoxM() << mout.endl; // << resources.bbox
 
 	}
 	else {
 
-		mout.note() << "experimental: setting deg bbox: " << mout.endl; // << resources.bbox
-		mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
+		mout.special() << "setting deg bbox: " << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout;
 		setBoundingBoxD(lonLL, latLL, lonUR, latUR);
 
 	}
@@ -127,11 +127,17 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double latUR) {
 
+	Logger mout(__FUNCTION__, __FILE__);
+
 	extentR.set(lonLL, latLL, lonUR, latUR);
 
 	updateBoundingBoxD();
-	updateBoundingBoxM();
-
+	if (projectionIsSet()){
+		updateBoundingBoxM();
+	}
+	else {
+		//mout.warn() = "Projection should be set prior to bounding box";
+	}
 
 	updateScaling();
 
@@ -230,6 +236,47 @@ void GeoFrame::updateBoundingBoxM(){
 
 }
 
+
+
+
+void GeoFrame::setProjection(const std::string &s){
+
+	Logger mout(__FUNCTION__, __FILE__);
+
+	const bool METRIC_BBOX = (extentNative.getArea() > 40000);
+	const bool PROJ_SET = projectionIsSet();
+	//mout.special() << "(metric) Area: " << extentNative.getArea() << mout;
+
+	projR2M.setProjectionDst(s);
+
+	if (METRIC_BBOX){
+		if (isLongLat()){
+			/*
+			projR2M.projectInv(xLL, yLL, extentR.lowerLeft.x,  extentR.lowerLeft.y);
+			projR2M.projectInv(xUR, yUR, extentR.upperRight.x, extentR.upperRight.y);
+			// Rescale also to degrees
+			updateBoundingBoxD();
+			*/
+			mout.warn() << "Metric BBox (" << extentNative << ") incompatible with projection '" << s << "'"<< mout;
+		}
+		else {
+			if (PROJ_SET) {
+				// Problem: if proj is changed, which bbox should be used as a basis for adjusting the others?
+				//mout.warn() << "Re-adjusting Metric Bounding Box (" << extentNative << "), risk of loosing precision" << mout;
+				mout.warn("Using previous metric BBox (", extentNative, ") as reference");
+			}
+			projR2M.projectInv(extentNative.lowerLeft.x,  extentNative.lowerLeft.y,  extentR.lowerLeft.x,  extentR.lowerLeft.y);
+			projR2M.projectInv(extentNative.upperRight.x, extentNative.upperRight.y, extentR.upperRight.x, extentR.upperRight.y);
+			updateBoundingBoxD();
+		}
+	}
+	else
+		updateBoundingBoxM();
+
+	updateScaling();
+}
+
+
 /// Notice: changed! For LatLon, consider approx? See composite
 void GeoFrame::updateScaling()
 {
@@ -308,23 +355,6 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 	setBoundingBoxM(xLL, yLL, xUR, yUR);
 	setGeometry(frame.upperRight.x-frame.lowerLeft.x, frame.upperRight.y-frame.lowerLeft.y);  // +1 +1
 
-}
-
-
-
-
-void GeoFrame::setProjection(const std::string &s){
-
-	Logger mout(__FUNCTION__, __FILE__);
-
-	projR2M.setProjectionDst(s);
-
-	// consider BBOX update BBOXm => BBOXr or vice versa.
-	if (isLongLat()){
-		// ..
-	}
-
-	updateScaling();
 }
 
 

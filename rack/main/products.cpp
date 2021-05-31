@@ -145,6 +145,7 @@ public:
 
 		//mout.warn() << dst << mout.endl;
 		this->bean.processVolume(src, dst);
+		// hi5::Writer::writeFile("test1.h5", dst);
 
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateInternalAttributes(dst);
@@ -152,6 +153,8 @@ public:
 		ctx.currentHi5      = & dst;
 
 		mout.timestamp("END_PRODUCT");
+
+		// hi5::Writer::writeFile("test2.h5", dst);
 	};
 
 

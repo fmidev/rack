@@ -250,6 +250,10 @@ public:
 
 	virtual inline
 	~RootData(){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.unimplemented() << "ODIM::copyToH5<ODIMPathElem::ROOT> odim design: " <<  this->odim;
+
 		ODIM::copyToH5<ODIMPathElem::ROOT>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?
 	};

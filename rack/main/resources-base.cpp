@@ -42,11 +42,13 @@ namespace rack {
 
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
 
-ImageContext::ImageContext(): imagePhysical(true), currentImage(nullptr), currentGrayImage(nullptr) {
+ImageContext::ImageContext(): imagePhysical(true), qualityGroups(ODIMPathElem::NONE),
+		currentImage(nullptr), currentGrayImage(nullptr) {
 }
 
 ImageContext::ImageContext(const ImageContext & ctx):
 		imagePhysical(ctx.imagePhysical),
+		qualityGroups(ctx.qualityGroups),
 		currentImage(ctx.currentImage),
 		currentGrayImage(ctx.currentGrayImage) {
 }
@@ -211,7 +213,10 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 			/// Split what:source to separate fields
 			const SourceODIM sourceODIM(statusMap["what:source"].toStr());
 
+			//mout.experimental() << "statusMap.importCastableMap(sourceODIM)" << path << mout.endl;
+			//SmartMapTools::setCastableValues(statusMap, sourceODIM);
 			statusMap.importCastableMap(sourceODIM); // NOD, PLC, WIGOS, ...
+			// mout.experimental() << "statusMap.importCastableMap(sourceODIM)" << true << mout.endl;
 
 			//mout.warn() << "PolarODIM" << mout.endl;
 			const PolarODIM odim(statusMap);

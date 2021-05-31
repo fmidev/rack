@@ -340,6 +340,33 @@ protected:
 };
 
 
+///  Utility for explicitly
+class FastAverageWeightedOp : public FastAverageOp {
+
+public:
+
+	inline
+	FastAverageWeightedOp(int width=1, int height=0) : FastAverageOp(width, height) {
+	};
+
+	inline
+	FastAverageWeightedOp(const FastAverageWeightedOp & op) : FastAverageOp(op) {
+	};
+
+	/// Tell if alpha channel(s) is required in input.
+	/**
+	 *  Future option:
+	 *  0: not used
+	 *  1: optional, supported
+	 *  2: required
+	 */
+	virtual inline
+	int srcAlpha() const {
+		return 2; // required
+	};
+
+};
+
 
 }  // image::
 

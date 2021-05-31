@@ -134,6 +134,11 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 
 	dst.setArea(src);
 	dst.setChannelCount(palettePtr->getChannels());
+
+	if (src.hasAlphaChannel() && !dst.hasAlphaChannel()){
+		mout.unimplemented() << "src has alpha channel, but palette not" << mout;
+	}
+
 	//dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
 
 	mout.debug() << "dst: " << dst << mout.endl;

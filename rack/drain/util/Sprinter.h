@@ -105,6 +105,8 @@ struct TypeLayout : public UniTuple<char,3>{
 	 */
 	TypeLayout & setLayout(const char *layout);
 
+
+
 };
 
 /*   USE: TypeLayout(',')
@@ -123,6 +125,7 @@ struct SprinterLayout{
 	TypeLayout stringChars = TypeLayout('"',0, '"');
 	//std::string boolTrue  = "true";
 	//std::string boolFalse = "false";
+	//std::string nullValue = "null";
 
 	SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr){
 		this->arrayChars.setLayout(arrayChars);
@@ -163,23 +166,45 @@ public:
 	/// Put each array and object element on a separate line
 	static const SprinterLayout lineLayout;
 
+	static inline
+	void prefixToStream(std::ostream & ostr, const TypeLayout & layout){
+		if (layout.prefix)
+			ostr << layout.prefix;
+	};
+
+	static inline
+	void separatorToStream(std::ostream & ostr, const TypeLayout & layout){
+		if (layout.separator)
+			ostr << layout.separator;
+	};
+
+	static inline
+	void suffixToStream(std::ostream & ostr, const TypeLayout & layout){
+		if (layout.suffix)
+			ostr << layout.suffix;
+	};
+
+
 	// Complicated, but unversal...
 	template <class K, class V>
 	static
 	std::ostream & pairToStream(std::ostream & ostr, const std::pair<K,V> & x, const SprinterLayout & layout){
 
-		if (layout.pairChars.prefix)
-			ostr << layout.pairChars.prefix;
+		prefixToStream(ostr, layout.pairChars);
+		//if (layout.pairChars.prefix)
+		//	ostr << layout.pairChars.prefix;
 
 		toStream(ostr, x.first, layout);
 
-		if (layout.pairChars.separator)
-			ostr << layout.pairChars.separator; // First char
+		separatorToStream(ostr, layout.pairChars);
+		//if (layout.pairChars.separator)
+		//	ostr << layout.pairChars.separator; // First char
 
 		toStream(ostr, x.second, layout);
 
-		if (layout.pairChars.suffix)
-			ostr << layout.pairChars.suffix;
+		suffixToStream(ostr, layout.pairChars);
+		//if (layout.pairChars.suffix)
+		//	ostr << layout.pairChars.suffix;
 
 		return ostr;
 	}
@@ -199,22 +224,28 @@ public:
 	static
 	std::ostream & sequenceToStream(std::ostream & ostr, const T & x, const TypeLayout & myChars, const SprinterLayout & layout){
 
-		if (myChars.prefix)
-			ostr << myChars.prefix;
+		prefixToStream(ostr, myChars);
+		// if (myChars.prefix)
+		//	ostr << myChars.prefix;
 
-		char sep = 0;
+		//char sep = 0;
 		for (typename T::const_iterator it=x.begin(); it != x.end(); ++it){
+
+			if (it != x.begin())
+				separatorToStream(ostr, myChars);
 			//ostr << '[' << *it << ']';
+			/*
 			if (sep)
 				ostr << sep;
 			else
 				sep = myChars.separator;
-
+			*/
 			toStream(ostr, *it, layout);
 		}
 
-		if (myChars.suffix)
-			ostr << myChars.suffix;
+		// if (myChars.suffix)
+		//	ostr << myChars.suffix;
+		suffixToStream(ostr, myChars);
 
 		return ostr;
 
@@ -232,15 +263,21 @@ public:
 	static
 	std::ostream & mapToStream(std::ostream & ostr, const M & m, const SprinterLayout & layout, const K & keys){
 
-		if (layout.mapChars.prefix)
-			ostr << layout.mapChars.prefix;
+		prefixToStream(ostr, layout.mapChars);
+		//if (layout.mapChars.prefix)
+		//	ostr << layout.mapChars.prefix;
 
-		char sep = 0; // for (const typename K::value_type & key =
+		// char sep = 0; // for (const typename K::value_type & key =
 		for (typename K::const_iterator it=keys.begin(); it != keys.end(); ++it){
+
+			if (it != keys.begin())
+				separatorToStream(ostr, layout.mapChars);
+			/*
 			if (sep)
 				ostr << sep;
 			else
 				sep = layout.mapChars.separator;
+			*/
 
 			typename M::const_iterator mit = m.find(*it);
 			if (mit != m.end()){
@@ -252,9 +289,11 @@ public:
 
 		}
 
+		suffixToStream(ostr, layout.mapChars);
+		/*
 		if (layout.mapChars.suffix)
 			ostr << layout.mapChars.suffix;
-
+		*/
 		return ostr;
 
 	}
@@ -264,11 +303,9 @@ public:
 	template <class T>
 	static
 	std::ostream & basicToStream(std::ostream & ostr, const T & x, const TypeLayout & myChars){
-		if (myChars.prefix)
-			ostr << myChars.prefix;
+		prefixToStream(ostr, myChars);
 		ostr << x;
-		if (myChars.suffix)
-			ostr << myChars.suffix;
+		suffixToStream(ostr, myChars);
 		return ostr;
 	}
 

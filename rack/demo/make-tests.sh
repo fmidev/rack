@@ -64,19 +64,15 @@ fi
 
 
 # Collect test cases
-# Exclude commands containing '<', for examples of type cmd <param>
+# Exclude commands containing '<' or '...', for examples of type cmd <param>
 echo -n > $TEST_CMD_FILE
-#for file in ${DOC_FILES[*]}; do
-    ## grep '^\s*\(rack \|convert \|make \|.*#exec\)[^<]*' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
-    #grep '^\s*\(rack \|convert \|make \|.*#exec\)' $file  | fgrep -v '<'  >>  $TEST_CMD_FILE
-#done
 
 # Start by adding all "command.cmd" and ".inc" files
 INCLUDES=( `grep '\\include .*.\(hlp\|exm\|cut\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
 echo "make --always-make ${INCLUDES[*]} " >> $TEST_CMD_FILE
 
 
-grep '^\s*\(rack \|convert \|make \|.*#exec\)' ${DOC_FILES[*]}  | fgrep -v '<'  >>  $TEST_CMD_FILE
+grep '^\s*\(rack \|convert \|make \|.*#exec\)' ${DOC_FILES[*]}  | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
 
 
 # Append additional cases

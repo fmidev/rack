@@ -76,8 +76,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//op.setRadius(horz, vert, horz, vert);
 	//op.setSize(horz,  vert);
 	BlenderOp blenderOp(horz, vert, "avg", "max", loops, expansionCoeff);
-	//DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
-	DistanceTransformFillLinearOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
+	DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_ADJACENCY_KNIGHT);
+	//DistanceTransformFillLinearOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
 
 	ImageOp & op = (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
@@ -95,17 +95,17 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	drain::image::Image tmpQuality; //(srcQuality.data.getConf());
 	tmpQuality.setName("tmpQuality");
-	//tmpQuality.copyDeep(srcQuality.data); //??
-	tmpQuality.setConf(srcQuality.data.getConf()); //??
-
-	srcData.createSimpleQualityData(tmpQuality, NAN, 0, 0); // = skip quality of values, and clear quality of special codes
-
+	tmpQuality.copyDeep(srcQuality.data);
+	srcData.createSimpleQualityData(tmpQuality, NAN, 0.1, 0); // = skip quality of values, and clear quality of special codes
+	tmpQuality.setCoordinatePolicy(polarCoordPolicy);
+	dstQuality.data.setCoordinatePolicy(polarCoordPolicy);
 	// tmpQuality.setPhysicalRange(0, 255, true);
 	// tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
 	// mout.warn() << tmpQuality << mout;
 	// mout.warn() << tmpQuality.getChannel(0) << mout;
 
-	//File::write(tmpQuality,"GapFillOp-intq.png");
+	//File::write(srcData.data,"GapFillOp-z.png");
+	//File::write(tmpQuality,"GapFillOp-q.png");
 
 	//dstData.setEncoding(srcData.data.getType()); // itself?
 	//dstData.setGeometry(srcData.data.getGeometry()); // itself?
@@ -119,14 +119,6 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// File::write(srcTray.getAlpha(),"GapFillOp-inq.png");
 
 	ImageTray<Channel> dstTray;
-	//dstQuality.data.clear();
-	//dstQuality.data.setPhysicalRange(0, 250, true); // temporary scaling
-	//dstQuality.data.getChannel(0).setPhysicalRange(0, 250, true); // temporary scaling
-	//drain::image::Image foo;
-	//foo.copyDeep(srcQuality.data);
-	//foo.setConf(srcQuality.data.getConf());
-	//dstTray.setChannels(dstData.data, foo);
-	//dstTray.setChannels(tmpData, tmpQuality);
 	dstTray.setChannels(tmpData, dstQuality.data);
 	mout.debug() << "dstTray:\n" << dstTray << mout;
 
@@ -134,12 +126,10 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	op.traverseChannels(srcTray, dstTray);
 
-	//
-
-
 	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
-	const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
+	// const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
 	Image::iterator  it  = srcData.data.begin();
+	Image::iterator qit  = srcQuality.data.begin();
 	Image::iterator tit  = tmpData.begin();
 	Image::iterator dit  = dstData.data.begin();
 	Image::iterator dqit = dstQuality.data.begin();
@@ -148,12 +138,13 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
 		if (*it == srcData.odim.undetect){
 			*dit = dstData.odim.undetect;
-			*dqit = defaultQuality;
+			*dqit = *qit; // DOES NOT WORK! defaultQuality;
 		}
 		else {
 			*dit = *tit; // same encoding, direct assignment ok
 		}
 		++it;
+		++qit;
 		++tit;
 		++dit;
 		++dqit;

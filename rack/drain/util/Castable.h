@@ -226,6 +226,13 @@ public:
 
 
 	/// Copies elements of a list.
+	template<typename T>
+	Castable & operator=(std::initializer_list<T> l){
+		assignContainer(l);
+		return *this;
+	}
+
+	/// Copies elements of a list.
 	template <class T>
 	inline
 	Castable &operator=(const std::list<T> & l){
@@ -606,6 +613,7 @@ protected:
 	template <class F>
 	void setPtr(std::vector<F> &v){
 		setPtr(&v[0], typeid(F), v.size());
+		//setPtr(v.begin(), typeid(F), v.size()); // 2021/05/19
 		// caster.link(&v[0]);
 		// elementCount = v.size();
 	}

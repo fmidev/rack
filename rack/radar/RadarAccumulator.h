@@ -254,6 +254,13 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 	const QuantityMap & qm = getQuantityMap();
 
+	/** Determines if quality is stored in
+	 *  /dataset1/quality1/
+	 *  /dataset1/data1/quality1/
+	 */
+	bool DATA_SPECIFIC_QUALITY = false;
+
+	// Consider redesign, with a map of objects {quantity, type,}
 	for (size_t i = 0; i < quantities.length(); ++i) {
 
 		ODIM odimQuality;
@@ -264,6 +271,10 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		datatype type = DATA;
 		char field = quantities.at(i);
 		switch (field) {
+			case '/':
+				DATA_SPECIFIC_QUALITY = true;
+				continue;
+				break; // unneeded?
 			case 'm': // ???
 			case 'D':
 			case 'p': // ???
@@ -348,28 +359,36 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		//PlainData<DstType<OD> >
 		mout.debug() << "searching dstData... DATA=" << (type == DATA) << mout.endl;
-		pdata_dst_t & dstData = (type == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
-		mout.debug(3) << "dstData: " << dstData << mout.endl;
+		//pdata_dst_t & dstData = (type == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
+		//mout.debug(3) << "dstData: " << dstData << mout.endl;
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;
+		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
+		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
 
 		if (type == DATA){
 			mout.debug() << "DATA/" << field << mout.endl;
 			//mout.warn() << dstData.odim << mout.endl;
+			pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
 			dstData.odim.importMap(odimFinal);
 			dstData.data.setType(odimFinal.type);
+			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//mout.debug()  << "quantity=" << dstData.odim.quantity << mout.endl;
+			this->Accumulator::extractField(field, converter, dstData.data);
 		}
 		else {
 			mout.debug() << "QUALITY/" << field << mout.endl;
+			//pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
+			typedef QualityDataSupport<DstType<OD> > q_data_t;
+			q_data_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimFinal.quantity) : (q_data_t &) dstProduct;
+			pdata_dst_t & dstData = qualityOwner.getQualityData(odimQuality.quantity);
 			dstData.odim.updateFromMap(odimQuality);
+			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//dstData.odim.importMap(odimQuality);
+			this->Accumulator::extractField(field, converter, dstData.data);
 		}
 
-		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
-
-		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
 		/*
 		if (type != DATA){
 			double test=10.0;
@@ -379,7 +398,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			mout.warn() << "Encode STDEV 10.0" << test << mout.endl;
 		}
 		*/
-		this->Accumulator::extractField(field, converter, dstData.data);
+		//this->Accumulator::extractField(field, converter, dstData.data);
 
 		//mout.debug()  << "dstData: " << dstData.odim << mout.endl;
 		mout.debug()  << "updating local tree attributes" << mout.endl;

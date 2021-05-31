@@ -85,6 +85,13 @@ public:
 		this->set(r.forward, r.backward);
 	};
 
+	virtual inline
+	void updateTuple(){
+		if (isnan(backward))
+			backward = forward;
+	};
+
+
 };
 
 
@@ -176,6 +183,16 @@ public:
 	virtual 
 	void setRadius(float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f) = 0; //, bool diag=true, bool knight=true) = 0;
 	
+	inline
+	const Bidirectional<float> & getRadiusHorz() const {
+		return horzRadius;
+	}
+
+	inline
+	const Bidirectional<float> & getRadiusVert() const {
+		return vertRadius;
+	}
+
 	/// Set the distance geometry directly by modifying decrement/decay coefficients. Alternative to setRadus().
 	///
 	/**
@@ -230,9 +247,9 @@ public:
 
 	topol_t topology; // NEEDED, separately?
 
-	static const topol_t PIX_4_CONNECTED = 0;
-	static const topol_t PIX_8_CONNECTED = 1;
-	static const topol_t PIX_CHESS_CONNECTED = 2;
+	static const topol_t PIX_ADJACENCY_4 = 0;
+	static const topol_t PIX_ADJACENCY_8 = 1;
+	static const topol_t PIX_ADJACENCY_KNIGHT = 2;
 
 protected:
 
@@ -246,7 +263,7 @@ protected:
 	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(10.0, 10.0), vertRadius(-1.0, -1.0) {
 		parameters.link("width",  horzRadius.tuple(),  "pix").fillArray = true;
 		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
-		parameters.link("topology", topology=PIX_CHESS_CONNECTED, "0|1|2");
+		parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		// mout.warn() << *this << mout.endl;
@@ -274,6 +291,7 @@ protected:
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).
 	float maxCodeValue;
+
 
 };
 

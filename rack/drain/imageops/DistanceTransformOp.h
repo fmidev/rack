@@ -138,6 +138,18 @@ public:
 	};
 	*/
 
+    // Debugging
+
+	virtual
+	const DistanceModel & getDistanceModel() const {
+		return distanceModel;
+	};
+
+	virtual
+	DistanceModel & getDistanceModel() {
+		return distanceModel;
+	};
+
 
 protected:
 
@@ -146,7 +158,7 @@ protected:
 	//int topology;
 
 	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height,
-			DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
+			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
 		distanceModel.setTopology(topology);
@@ -156,8 +168,14 @@ protected:
 	DistanceTransformOp(const DistanceTransformOp & op) : ImageOp(op) {
 		parameters.append(this->distanceModel.getParameters());
 		setParameters(op.getParameters());
+		distanceModel.update(); // Important: handles NAN's
 	};
 
+	// Extend default range (of src) when coord policy is WRAP
+	Range<int> getHorzRange(const CoordinateHandler2D & coordinateHandler) const ;
+
+	// Extend default range (of src) when coord policy is WRAP
+	Range<int> getVertRange(const CoordinateHandler2D & coordinateHandler) const;
 
 
 	/// Sets internal parameters
@@ -192,24 +210,53 @@ protected:
 	}
 
 
+
 	void traverseDownRight(const Channel & src, Channel & dst) const ;
 
 	void traverseUpLeft(const Channel & src, Channel & dst) const ;
 
 
-	virtual
-	const DistanceModel & getDistanceModel() const {
-		return distanceModel;
-	};
-
-	virtual
-	DistanceModel & getDistanceModel() {
-		return distanceModel;
-	};
 
 };
-  
 
+template <class T>
+Range<int> DistanceTransformOp<T>::getHorzRange(const CoordinateHandler2D & coordinateHandler) const {
+
+	Range<int> xRange = coordinateHandler.getXRange();
+	const Bidirectional<float> & radiusHorz = getDistanceModel().getRadiusHorz();
+
+	if (coordinateHandler.policy.xUnderFlowPolicy == CoordinatePolicy::WRAP)
+		xRange.min -= radiusHorz.backward;
+
+	if (coordinateHandler.policy.xOverFlowPolicy == CoordinatePolicy::WRAP)
+		xRange.max += radiusHorz.forward;
+
+	return xRange;
+}
+
+template <class T>
+Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coordinateHandler) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	Range<int> yRange = coordinateHandler.getYRange();
+
+	// mout.warn() << "yRange: " << yRange << mout;
+
+	const Bidirectional<float> & radiusVert = getDistanceModel().getRadiusVert();
+
+	// mout.warn() << "radiusVert: " << radiusVert << mout;
+
+
+	if (coordinateHandler.policy.yUnderFlowPolicy == CoordinatePolicy::WRAP)
+		yRange.min -= radiusVert.backward;
+
+	if (coordinateHandler.policy.yOverFlowPolicy == CoordinatePolicy::WRAP)
+		yRange.max += radiusVert.forward;
+
+	return yRange;
+
+}
 
 template <class T>
 void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) const
@@ -262,9 +309,14 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	// Point in the target image
 	Point2D<int> p;
+	Point2D<int> pSafe;
 
-	const Range<int> & xRange = coordinateHandler.getXRange();
-	const Range<int> & yRange = coordinateHandler.getYRange();
+	//const Range<int> & xRange = coordinateHandler.getXRange();
+	//const Range<int> & yRange = coordinateHandler.getYRange();
+
+	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
+	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
+	mout.special() << xRange << ',' << yRange << mout;
 
 	// Experimental (element horz/vert topology not yet implemented)
 	// Possibly wrong...  not interchangible due to to scanning element geometry?
@@ -277,25 +329,27 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	mout.debug2() << "outer range:" << outer << mout.endl;
 	mout.debug2() << "inner range:" << inner << mout.endl;
 	*/
-
+	//Range<int>
 
 	// Todo: extended area, needs coordinateHandler.handle(p);?
-	//for (outerValue=outer.min; outerValue<=outer.max; outerValue++){
-	//	for (innerValue=inner.min; innerValue<=inner.max; innerValue++){
-	for (p.y=0; p.y<=yRange.max; ++p.y){
-		for (p.x=0; p.x<=xRange.max; ++p.x){
+	for (p.y=yRange.min; p.y<=yRange.max; ++p.y){
+		for (p.x=xRange.min; p.x<=xRange.max; ++p.x){
+
+			pSafe.setLocation(p);
+			if (coordinateHandler.handle(pSafe) == CoordinateHandler2D::IRREVERSIBLE)
+				continue;
 
 			// Take (converted) source value as default
-			d = src2dst.fwd(src.get<dist_t>(p));
+			d = src2dst.fwd(src.get<dist_t>(pSafe));
 
 			// Compare to previous value
-			dTest = dst.get<dist_t>(p);
+			dTest = dst.get<dist_t>(pSafe);
 			if (dTest > d){
 				d = dTest;
 			}
 
 			for (const DistanceElement & elem: chain){
-				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
+				pTest.setLocation(pSafe.x + elem.diff.x, pSafe.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
 				dTest = this->distanceModel.decrease(dst.get<dist_t>(pTest), elem.coeff);
 				if (dTest > d){
@@ -303,8 +357,9 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 				}
 			}
 
-			if (d > 0)
-				dst.put(p,d);
+			if (d > 0){
+				dst.put(pSafe,d);
+			}
 
 		};
 	};
@@ -341,25 +396,32 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 
 	// Point in the target image
 	Point2D<int> p;
+	Point2D<int> pSafe;
 
+	//const Range<int> & xRange = coordinateHandler.getXRange();
+	//const Range<int> & yRange = coordinateHandler.getYRange();
+	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
+	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
+	mout.special() << xRange << ',' << yRange << mout;
 
-	const Range<int> & xRange = coordinateHandler.getXRange();
-	const Range<int> & yRange = coordinateHandler.getYRange();
+	for (p.y=yRange.max; p.y>=yRange.min; --p.y){
+		for (p.x=xRange.max; p.x>=xRange.min; --p.x){
 
-	for (p.y=yRange.max; p.y>=0; --p.y){
-		for (p.x=xRange.max; p.x>=0; --p.x){
+			pSafe.setLocation(p);
+			if (coordinateHandler.handle(pSafe) == CoordinateHandler2D::IRREVERSIBLE)
+				continue;
 
 			// Take (converted) source value as default
-			d = src2dst.fwd(src.get<dist_t>(p));
+			d = src2dst.fwd(src.get<dist_t>(pSafe));
 
 			// Compare to previous value
-			dTest = dst.get<dist_t>(p);
+			dTest = dst.get<dist_t>(pSafe);
 			if (dTest > d){
 				d = dTest;
 			}
 
 			for (const DistanceElement & elem: chain){
-				pTest.setLocation(p.x + elem.diff.x, p.y + elem.diff.y);
+				pTest.setLocation(pSafe.x + elem.diff.x, pSafe.y + elem.diff.y);
 				coordinateHandler.handle(pTest);
 				dTest = this->distanceModel.decrease(dst.get<dist_t>(pTest), elem.coeff);
 				if (dTest > d){
@@ -368,11 +430,12 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 			}
 
 			if (d>0)
-				dst.put(p,d);
+				dst.put(pSafe,d);
 
 		}
 	}
-	//return dst;
+
+
 }
 
 
@@ -405,7 +468,7 @@ public:
 
 	inline
 	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology=2) :
-	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities. Set decrements.", horz, vert, topology) {
+	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities - applies decrements.", horz, vert, topology) {
 	};
 
 

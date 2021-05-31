@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 /*
  * ProductOp.h
  *
@@ -54,6 +54,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataSelector.h"
 #include "data/Data.h"
 #include "data/Quantity.h" // NEW
+
+#include "hi5/Hi5Write.h" // debugging
+
 
 #include "ProductOp.h" // NEW
 
@@ -139,11 +142,14 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	}
 
 	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
-	drain::Variable elangles(typeid(double));
+
+	// Removed, NEW 2021/05
+	//drain::Variable elangles(typeid(double));
+
 	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (const ODIMPath & parent: dataPaths){
 
-		mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
+		// mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
 
 		//const ODIMPath & parent = *it;
 		//parent.pop_back();
@@ -158,7 +164,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		if (sweeps.find(elangle) == sweeps.end()){
 			mout.debug3() << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
 			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
-			elangles << elangle;
+			// elangles << elangle;
 			//mout.warn() << "add " <<  DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) ) << mout.endl;
 		}
 		else {
@@ -203,36 +209,62 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	//Hi5Tree & dstProduct = dst[dataSetPath];
 
+	/*   /// WARNING: Root odim has to be modified explicitly, otherwise remains empty.
 	RootData<DstType<M> > root(dst);
 	drain::VariableMap & whatRoot = root.getWhat();
 	whatRoot["object"]  = this->odim.object;
 	whatRoot["version"] = this->odim.version;
+	 */
 
 	DataSet<DstType<M> > dstProductDataset(dst[dataSetPath]); // PATH
 
-
 	// Copy metadata from the input volume (note that dst may have been cleared above)
-	drain::VariableMap & what = dstProductDataset.getWhat(); // dstProduct["what"].data.attributes;
-	what = src[ODIMPathElem::WHAT].data.attributes;
-	what["object"]  = this->odim.object; // ?
-	what["version"] = this->odim.version;
+	drain::VariableMap & rootWhat = dst[ODIMPathElem::WHAT].data.attributes; // dstProduct["what"].data.attributes;
+	rootWhat = src[ODIMPathElem::WHAT].data.attributes;
+	rootWhat["object"]  = this->odim.object; // ?
+	rootWhat["version"] = this->odim.version;
 
-	drain::VariableMap & where = dstProductDataset.getWhere(); // dstProduct["what"].data.attributes;
-	where = src[ODIMPathElem::WHERE].data.attributes;
+	// drain::VariableMap & where = dstProductDataset.getWhere(); // dstProduct["what"].data.attributes;
+	// drain::VariableMap & rootWhere = dst[ODIMPathElem::WHERE].data.attributes;
+	drain::VariableMap & rootWhere = dst[ODIMPathElem::WHERE].data.attributes; //root.getWhere();
+	//where["init0"] = {0.1, 2.2};
+	rootWhere = src[ODIMPathElem::WHERE].data.attributes;
+	//mout.warn() << where << mout;
+	//rootWhere.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
+	//where.importMap(src[ODIMPathElem::WHERE].data.attributes);
+	//where.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
+	//where = src[ODIMPathElem::WHERE].data.attributes;
+	mout.experimental("src", src[ODIMPathElem::WHERE].data.attributes);
+	mout.experimental("dst", rootWhere);
 
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;
 	how["software"]   = __RACK__;
 	how["sw_version"] = __RACK_VERSION__;
+	/*
 	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
+	how["anglesV"]   = elangles;  // NEW 2021
+	 */
+
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	/// MAIN
+	//mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
 	this->processDataSets(sweeps, dstProductDataset);
 
-	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
-	//what["source"] = src["what"].data.attributes["source"];
-	//what["object"] = odim.object;
+	if (!dstProductDataset.empty()){
+		/// Todo: how to handle undefined
+		how["angles"] = dstProductDataset.getFirstData().odim.angles;
+	}
+	// mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+
+	// mout.experimental("dst2", rootWhere);
+	// hi5::Writer::writeFile("test0.h5", dst);
+
+	//}
+
+	//hi5::Writer::writeFile("test0b.h5", dst);
+
 
 }
 

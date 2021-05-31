@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <hi5/Hi5Read.h>
 #include "drain/image/Image.h"
 #include "radar/Geometry.h"
-#include <stddef.h>
+//#include <stddef.h>
 #include "drain/util/Log.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/Tree.h"
@@ -78,11 +78,11 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const SourceODIM srcODIM(odim.source);
+	SourceODIM srcODIM(odim.source);
+	srcODIM["quantity"] = quantity;      // for file path
+	srcODIM["what:quantity"] = quantity; // for data selector
 
-	// if (clutterMap.getChildren().empty()){ // Load map
 	drain::StringMapper filepath;
-	//filepath.parse("cluttermaps/cluttermap-${NOD}.h5"); // consider a set of candidates, month-stamped?
 	filepath.parse(this->pathSyntax);
 	const std::string filename = filepath.toStr(srcODIM);
 	mout.note() << "clutter map: '" << filename << "'" << mout.endl;
@@ -95,22 +95,19 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 	ODIMPath path;
 	DataSelector selector(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	selector.quantity = "CLUTTER";
+	// selector.quantity = this->quantity; // "CLUTTER";
+	// selector.setParameters("");
+	//selector.setParameter("quantity", quantity);
+	selector.setQuantity(quantity);
+	mout.debug() << "selector " << selector << mout.endl; // TODO protect quantity
 
-	/*
-	ODIMPathList paths;
-	selector.getPaths(clutterMap, paths, ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-	for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
-		mout.warn() << "path candidate " << *it << mout.endl;
-	}
-	*/
-
+	//selector.ensureDataGroup();
 	if (selector.getPath3(clutterMap, path)){ //, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-		mout.debug() << "found " << path << mout.endl;
+		mout.info() << "found " << path << mout.endl;
 		return clutterMap(path);
 	}
 	else {
-		mout.debug() << "using default path " << path << mout.endl;
+		mout.warn() << "using default path " << path << mout.endl;
 		return clutterMap["dataset1"]["data1"];
 		//return clutterMap.begin()->second.begin()->second;  // "dataset1/data1"
 	}

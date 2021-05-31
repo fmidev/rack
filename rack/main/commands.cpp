@@ -76,8 +76,10 @@ class CmdBaseSelective : public drain::SimpleCommand<> {
 protected:
 
 	CmdBaseSelective(const std::string & name, const std::string & description) :
-		drain::SimpleCommand<>(name, description, "selector", DataSelector().getParameters().getKeys()){
+		drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters().getKeyList()).str()){
+
 		//parameters.separator = 0;
+		// DataSelector().getParameters().getKeys()
 	};
 
 	/*
@@ -105,7 +107,7 @@ Like in general in \b Rack, the parameters of \c --select are ordered, meaning t
 a comma-separated string without explicit key names, as long as they are given in order.
 The parameters are:
 
-- \c path consisting of slash '/' separated \e path \e selection \e elements:
+- \c path of elements, separated by slash '/' and consisting of:
   - a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts
   - \c what , \c where, \c how - groups containing attributes
   - <c> dataset{min}:{max} </c>,  <c> data{min}:{max}</c> , <c> quality{min}:{max}</c>   - indexed groups containing subgroups for actual data and attributes
@@ -126,7 +128,7 @@ The parameters are:
    - future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities
 - \c elangle defines the range of antenna elevations accepted, range limits included
     - unlike with path selectors, <c>elangle={angle}</c> abbreviates <c>elangle={angle}:90</c> (not <c>elangle={angle}:{angle}</c>)
-    - notice that radar metadata may contain real(ized) values like 1.000004723, use \c count=1 to pick a single one within a range
+    - notice that metadata may contain floating point values like 1.000004723, use \c count=1 to pick a single one within a range
 - \c count is the upper limit of accepted indices of \c dataset ; typically used with \c elangle
 
 The selection functionality is best explained with examples.
@@ -188,7 +190,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, getName());
 
-		// mout.warn() << "setting: " << value << mout.endl;
+		//mout.warn() << "setting: " << value << mout.endl;
 		DataSelector  test;
 
 		try {
@@ -202,6 +204,7 @@ public:
 				const Hi5Tree & src = ctx.getMyHi5();
 				test.getPaths(src, paths);
 				mout.special() << "path count => " <<  paths.size() << mout.endl;
+				mout.debug3() << "paths: " <<  drain::sprinter(paths) << mout.endl;
 			}
 
 			// std::cerr << __FILE__ << drain::sprinter(paths) << '\n';
@@ -254,8 +257,8 @@ public:
 		std::string qualityQuantity;
 
 		drain::StringTools::split2(value, quantity, qualityQuantity,"/");
-		drain::StringTools::replace(getTransTable(), quantity);
-		drain::StringTools::replace(getTransTable(), qualityQuantity);
+		drain::StringTools::replace(transTable, quantity);
+		drain::StringTools::replace(transTable, qualityQuantity);
 
 
 		if (qualityQuantity.empty()){
@@ -263,34 +266,22 @@ public:
 			ctx.select = "quantity=^(" + quantity + ")$";
 		}
 		else {
-			mout.warn() << "quantity-specific quality ["<< quantity << "]: check unimplemented for ["<< quantity << "]" << mout.endl;
+			mout.warn() << "quantity-specific quality ["<< qualityQuantity << "]: strict check unimplemented for ["<< quantity << "]" << mout.endl;
 			ctx.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
 		}
 
-
 		ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
-		//getRegistry().run("select", "quantity=^(" + vField + ")$");
+
 	}
 
 protected:
 
-	static
-	const std::map<std::string,std::string> & getTransTable(){
+	static const std::map<std::string,std::string> transTable; // = {{",", "|"}};
 
-		static std::map<std::string,std::string> m;
-
-		if (m.empty()){
-			m[","] = "|";
-			m["*"] = ".*";
-			m["?"] = ".";
-			//m["?"] = "[.]";
-		}
-
-		return m;
-	}
 
 };
 
+const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 
 
 

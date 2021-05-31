@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DOPPLER_Inversion_WINDOW_H_
 
 
-#include "DopplerWindowOp.h"
+//#include "DopplerWindowOp.h"
 
 #include <cmath>
 
@@ -49,6 +49,11 @@ public:
 	DopplerInversionConfig(int widthM=1500, double heightD=3.0) :
 		RadarWindowConfig(widthM, heightD){
 	};
+
+};
+
+class DopplerInversionMoments {
+public:
 
 };
 

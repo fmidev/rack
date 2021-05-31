@@ -46,17 +46,17 @@ class PolarODIM : public ODIM {
 
 public:
 
-	PolarODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : ODIM(initialize){
+	PolarODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : ODIM(initialize), rscale(resolution.x){
 		init(initialize);
 	};
 
-	PolarODIM(const PolarODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS) {
+	PolarODIM(const PolarODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
 		initFromMap(odim);
 		getNyquist();
 	}
 
 	template <class T>
-	PolarODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS) {
+	PolarODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
 		initFromMap(m);
 		getNyquist();
 	}
@@ -69,20 +69,19 @@ public:
 	*/
 
 
-	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS) {
+	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
 		initFromImage(img, quantity);
 	}
 
-
-
-	/// Number of range bins in each ray
-	// long   nb ins;
-
-	/// Number of range bins in each ray
-	// long   nr ays;
+	inline
+	rack::PolarODIM & operator=(const rack::PolarODIM& odim){
+		updateFromMap(odim);
+		//updateFromCastableMap(odim);
+		return *this;
+	}
 
 	/// Beam-directional bin length [m]
-	double rscale;
+	double  & rscale;
 
 
 	/// Longitude position of the radar antenna (degrees), normalized to the WGS-84 reference ellipsoid and datum. Fractions of a degree are given in decimal notation.

@@ -54,6 +54,11 @@ class DistanceTransformFillOp : public DistanceTransformOp<T>
 {
 public:
 
+	virtual inline
+	int srcAlpha() const {
+		return 2; // REQUIRED
+	};
+
 	// proximity (inverted distance)
 	typedef float dist_t;
 
@@ -118,7 +123,7 @@ public:
 protected:
 
 	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN,
-			DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
+			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
 		DistanceTransformOp<T>(name, description, horz, vert, topology) {
 	};
 
@@ -405,8 +410,8 @@ make spots-rgba.png spots-rgba-16b.png
 
 Examples on three distinct pixels (red, green, and blue):
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 30 -o distFill.png
-  drainage spots-rgba-16b.png --iDistanceTransformFill 30 -o distFill-16b.png
+  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill.png
+  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-16b.png
 \endcode
 
 
@@ -442,10 +447,13 @@ class DistanceTransformFillLinearOp : public DistanceTransformFillOp<DistanceMod
 public:
 
 	inline
-	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
-	DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha intensities.",
+	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN,
+			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+
+			DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha intensities.",
 			horz, vert, topology) {
 	};
+
 };
 
 
@@ -458,8 +466,8 @@ make spots-rgba.png spots-rgba-16b.png
 
 Examples:
 \code
-  drainage spots-rgba.png     --iDistanceTransformFillExp 15 -o distFill-exp.png
-  drainage spots-rgba-16b.png --iDistanceTransformFillExp 15 -o distFill-exp-16b.png
+  drainage spots-rgba.png     --iDistanceTransformFillExp 50 -o distFill-exp.png
+  drainage spots-rgba-16b.png --iDistanceTransformFillExp 50 -o distFill-exp-16b.png
 \endcode
 
 Examples on a graphical image:
@@ -486,7 +494,8 @@ class DistanceTransformFillExponentialOp : public DistanceTransformFillOp<Distan
 public:
 
 	inline
-	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=DistanceModel::PIX_8_CONNECTED) :
+	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN,
+			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
 	DistanceTransformFillOp<DistanceModelExponential> (__FUNCTION__, "Spreads intensities exponentially up to distance defined by alpha intensities.",
 			horz, vert, topology) {
 	};

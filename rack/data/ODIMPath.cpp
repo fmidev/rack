@@ -151,9 +151,10 @@ bool ODIMPathElem::set(const std::string &s){
 	this->str = "";
 
 	// Try removing this...
+	/*
 	static
 	const dict_t & d = ODIMPathElem::getDictionary(); // New here
-
+	*/
 
 	// TEST1: equality
 	/*

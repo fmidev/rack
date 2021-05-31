@@ -52,7 +52,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("where:nbins",  area.width  = 0L); //  nb ins = 0L);
 		link("where:nrays",  area.height = 0L); //  nr ays = 0L);
 		//link("where:test",  test = 123L); //
-		link("where:rscale", rscale = 0.0);
+		link("where:rscale", resolution.x); // rscale = 0.0);
 		link("where:elangle", elangle = 0.0);
 		link("where:rstart", rstart = 0.0);
 		link("where:a1gate", a1gate = 0L);

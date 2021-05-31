@@ -101,7 +101,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	/// Write to "hidden" variables of this node (src).
 	drain::FlexVariableMap & a = src.data.dataSet.properties;
 	// Init with upper level state
-	a.importMap(attributes, false); //, LOG_DEBUG+2);
+	a.importMap(attributes); //, LOG_DEBUG+2);
 	//std::cerr << "MAP now: " << a << "\n\n";
 
 	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting previous (upper-level) values.

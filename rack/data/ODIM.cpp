@@ -61,6 +61,9 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("what:endtime", endtime = "");
 		link("what:enddate", enddate = "");
 		link("how:NI", NI = 0);
+		//link("how:angles", angles);
+		// Non-odim
+		link("how:resolution", resolution.tuple());
 	}
 
 

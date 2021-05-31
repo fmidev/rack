@@ -111,7 +111,14 @@ public:
 	}
 
 
+	inline
+	void setQuantity(const std::string & quantity){
+		this->quantity = quantity;
+		this->updateBean();
+	}
+
 	/// Regular expression of accepted PolarODIM what::quantity, for example "DBZ.?" .
+	// TODO: protect
 	std::string quantity;
 
 	// Path criteria
@@ -204,23 +211,32 @@ public:
 	 *   \see deriveParameters().
 	 */
 
-	/// Select paths based on path (chain) matching, as well as on quantity and elevation matching when applicable.
+	/// Select paths based on path matching, as well as on quantity and elevation matching when applicable.
 	/**
 	 *
 	 *  \param src - HDF5 data structure
 	 *  \param pathContainer - container for paths to be found
 	 *  \param path - search path, root by default
+	 *
+	 *  Calls getInnerPaths
 	 */
 	template <class T>
 	bool getPaths(const Hi5Tree & src, T & pathContainer) const;
 	//bool getPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path = ODIMPath()) const;
 
-	//template <class T>
-	//bool getPathsDS(const Hi5Tree & src, T & pathContainer) const;
+protected:
 
+	/// Continue path matching started with getPaths()
+	/**
+	 *
+	 *  \param src - HDF5 data structure
+	 *  \param pathContainer - container for paths to be found
+	 *  \param path - search path, dataset<n> by default
+	 */
 	template <class T>
-	bool getPathsDQ(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;
+	bool getInnerPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;
 
+public:
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	/**
@@ -341,28 +357,13 @@ bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//if (path.empty())
-	//	mout.debug2() << "matcher: " << pathMatcher << mout.endl;
-
 	// Current search point
 	const Hi5Tree & s = src;
 
-	//, const ODIMPath & path
-
-	// ODIM struct is needed to communicate keys for maps (elangle or quantity) to addPathT
-	//PolarODIM odim;
-
-	/// For dataset indices
+	/// For book keeping of traversed datasets
 	std::set<ODIMPathElem::index_t> dataSetIndices;
 
-
-	//const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
-
-	//bool quantityFound = false;
-
 	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
-
-		//bool quantityOk = !quantityRequired; //
 
 		const ODIMPathElem & currentElem = it->first;
 		mout.debug3() << "currentElem='" << currentElem << "'" << mout.endl;
@@ -391,7 +392,7 @@ bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer) const {
 				}
 			}
 
-			if (getPathsDQ(src, pathContainer, path)){
+			if (getInnerPaths(src, pathContainer, path)){
 				// Add this data set path
 				if (pathMatcher.match(path)){
 					mout.debug2() << " path matches (subtree OK) " << path << mout;
@@ -402,13 +403,17 @@ bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer) const {
 
 			//continue;
 		}
-		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATA)){
+		//else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATA)){
+		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ // 2021/04
+
 			if (currentElem.is(ODIMPathElem::DATA)){
 				mout.warn() << " DATA_GROUP '" << currentElem << "' directly under root"  << mout;
 			}
-			if (getPathsDQ(src, pathContainer, ODIMPath())){
+
+			if (getInnerPaths(src, pathContainer, ODIMPath())){
 				// added qualityX ...
 			}
+
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
 			// Consider policy..
@@ -429,7 +434,7 @@ bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer) const {
 
 
 template <class T>
-bool DataSelector::getPathsDQ(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
+bool DataSelector::getInnerPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -501,7 +506,7 @@ bool DataSelector::getPathsDQ(const Hi5Tree & src, T & pathContainer, const ODIM
 			}
 
 			// Recursion, possibly finding quality quantity
-			quantityFound |=  getPathsDQ(src, pathContainer, p);
+			quantityFound |=  getInnerPaths(src, pathContainer, p);
 
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::ARRAY)){

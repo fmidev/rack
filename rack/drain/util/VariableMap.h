@@ -64,11 +64,21 @@ public:
 		importMap(v);
 	};
 
+	/*
 	inline
 	VariableMap & operator=(const VariableMap & v){
 		importMap(v);
 		return *this;
 	}
+	*/
+
+	template <class T>
+	inline
+	VariableMap & operator=(const std::map<std::string,T> & m){
+		importMap(m); // CastableMap?
+		return *this;
+	}
+
 
 };
 

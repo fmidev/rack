@@ -323,6 +323,9 @@ public:
 		return str;
 	}
 
+	/// Given the non-numeric prefix of a group, like "dataset" or "data", set the group.
+	virtual
+	bool extractPrefix(const std::string &s, bool indexed);
 
 protected:
 
@@ -331,8 +334,6 @@ protected:
 	virtual
 	void extractIndex(const std::string &s);
 
-	virtual
-	bool extractPrefix(const std::string &s, bool indexed);
 
 	mutable
 	std::string str;

@@ -10,17 +10,22 @@ BBOX=${BBOX:-'17,57.75,32.75,70'}
 SIZE=${SIZE:-'500,750'}
 
 palette=`ls palette-${QUANTITY}.{json,txt}` &> /dev/null
-rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox $BBOX  --cSize $SIZE  \
+cmd="rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox $BBOX  --cSize $SIZE  \
   --encoding ${ENCODING} \
   --cPlotFile ${INFILE} \
   --cExtract dw \
   -o plot.png \
   --iDistanceTransformFill 7 \
   -o plot-spread1.png  \
-  --palette $palette --paletteRefine 64  -o plot-spread-color.png  
+  --palette $palette --paletteRefine 64  -o plot-spread-color.png  "
+
+
 #  --palette palette-RATE.txt --paletteRefine 64 --imageTransp 0,0.5,0.2  -o plot-spread-color.png  
 #  --palette palette-RATE.txt --paletteRefine 64 --imageTransp 0:2,0.5,0.2 -o plot-spread-color.png  
 #   --encoding C,gain=${GAIN},offset=-${GAIN},undetect=254,nodata=0,quantity=${QUANTITY} \
+
+echo $cmd
+eval $cmd
 
 #  -o plot-spread2.h5  \
 #  --iGaussianAverage 15 \

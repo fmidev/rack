@@ -153,7 +153,9 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	/// Step 2b: imitate sidelobes (expontential, "IRF style"), adding them to the peaks
 	DistanceTransformExponentialOp dist;
 	dist.setRadius(1.0, srcData.odim.getAzimuthalBins(15.0));
-	mout.debug(4) << dist << mout.endl;
+	mout.special() << dist << mout;
+	//mout.special() << dist. << mout;
+
 	dist.process(tmpPeaks, tmpPeaks);
 	storeDebugData(2, tmpPeaks, "SHIP_HP_DIST"); // for debugging only
 	//mout.warn() << tmpPeaks << mout.endl;

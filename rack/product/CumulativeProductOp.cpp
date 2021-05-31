@@ -92,7 +92,8 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	dstData.odim.updateLenient(odim); // product
 	dstData.odim.updateLenient(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();
-	//mout.warn() << "'final' dstODIM " << dstData << mout.endl;
+
+	dstData.odim.angles.clear();
 
 	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
 
@@ -105,12 +106,23 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 			continue;
 		}
 		mout.debug3() << "elangle=" << it->first << mout.endl;
+		//mout.warn() << "elangle=" << it->first << mout.endl;
 
 		processData(srcData, accumulator);
+
+		dstData.odim.angles.push_back(it->first);
+
 	}
 
+	// OK mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
 	accumulator.extract(dstData.odim, dstProduct, "dw");
+	// OK mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
+	// OK mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
+	// OK mout.warn() << "moka:" << drain::sprinter(dstData.odim) << mout;
 
+	/// Important: RELINK => resize, relocate (Address of dstData.odim.angles[0] may have changed.)
+	//  Alternatively, dstData.odim.angles.reserve(90) etc upon ODIM constr?
+	// dstData.odim.link("how:angles", dstData.odim.angles);
 	// drain::image::FilePng::write(dstProduct.getData("DBZH").data, "debug.png");
 	//mout.warn() << "dstProduct.updateTree" << dstData.odim << mout.endl;
 	//@= dstProduct.updateTree(dstData.odim);

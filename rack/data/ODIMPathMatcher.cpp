@@ -114,7 +114,8 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 		//mout.warn() << "current: " << flags;
 		//flags = prefix;
 		//flags.set(prefix);
-		flags.set(flags.getValue(prefix));
+		//flags.set(flags.getValue(prefix));
+		flags.assign(flags.getValue(prefix));
 		// mout.warn() << " => flags=" << flags << '=' << flags.value  << mout.endl;
 		if (indexed){
 			if (flags.isSet(ODIMPathElem::ARRAY)){ //  value & ODIMPathElem::ARRAY){

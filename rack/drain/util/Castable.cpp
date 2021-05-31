@@ -92,6 +92,7 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 		//std::cerr << __FUNCTION__ << " separator: " << sep << '\n';
 	}
 	else {
+		ostr << "null"; // JSON convention
 		// Output nothing!
 		//ostr << '[' << "Ø" << ']';  // consider array.begin, end etc
 		//ostr << "alert: getElementCount()==0, elementCount=" << elementCount;
@@ -285,8 +286,33 @@ std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ost
 
 /// "Friend class" template implementation
 template <>
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout) {
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout) {
 
+	if (v.isString()){
+		const TypeLayout & l = layout.stringChars;
+		SprinterBase::prefixToStream(ostr, l);
+		ostr << v;
+		SprinterBase::suffixToStream(ostr, l);
+	}
+	else if (v.getElementCount() > 1) {
+		const TypeLayout & l = layout.arrayChars;
+		SprinterBase::prefixToStream(ostr, l);
+		//SprinterBase::sequenceToStream(ostr, v, layout);
+		v.toStream(ostr, l.separator);
+		SprinterBase::suffixToStream(ostr, l);
+	}
+	else if (v.isEmpty()) {
+		ostr << "null"; // TODO: layout.nullString
+	}
+	else if (v.getType() == typeid(bool)) {
+		ostr << ((bool)v ? "true" : "false"); // Pythonic: "True", "False"
+	}
+	else {
+		ostr << v; //SprinterBase::basicToStream(ostr, v, myChars);
+	}
+
+	return ostr;
+	/*
 	// Semi-kludge: imitate intended layout
 	if (&layout == &SprinterBase::jsonLayout){
 		x.valueToJSON(ostr);
@@ -295,6 +321,7 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 	else {
 		return drain::SprinterBase::basicToStream(ostr, x, "");
 	}
+	*/
 
 }
 

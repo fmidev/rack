@@ -98,7 +98,7 @@ void DataSelector::init() {
 
 	parameters.link("path", path);
 	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
-	parameters.link("elangle", elangle.tuple(), "min[:max]");
+	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
 
 	// Deprecating, use "elangle=min:max" instead
@@ -175,7 +175,16 @@ void DataSelector::updateBean() const {
 	qualityRegExp.clear();
 
 	std::vector<std::string> s;
+
 	drain::StringTools::split(quantity, s, ":");  // experimental
+	if (s.size() == 2){
+		// Compare with --qualityQuantity
+		mout.deprecating() << "in future, slash '/' may replace colon ':' in args like " << quantity << mout.endl;
+	}
+	else {
+		drain::StringTools::split(quantity, s, "/");  // experimental
+	}
+
 	switch (s.size()) {
 		case 2:
 			qualityRegExp.setExpression(s[1]);
@@ -184,7 +193,7 @@ void DataSelector::updateBean() const {
 			quantityRegExp.setExpression(s[0]);
 			break;
 		default:
-			mout.warn() << "could not parse quantity='" << quantity << "', should be <quantity> or [<quantity>]/<quality>" << mout.endl;
+			mout.warn() << "could not parse quantity='" << quantity << "', should be <quantity> or [<quantity>]:<quality>" << mout.endl;
 			break;
 	}
 

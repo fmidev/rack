@@ -534,7 +534,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 			// Or is it a section, or several?
 			Flagger::value_t filter = FlagResolver::getValue(sections, key); // Accepts also numeric strings.
 
-			mout.deprecating() << "Flagger: " << sections << " -> " << filter << mout.endl;
+			//mout.deprecating() << "Flagger: " << sections << " -> " << filter << mout.endl;
 			if (filter > 0){
 				help(filter, ostr);
 				return;
