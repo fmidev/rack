@@ -68,7 +68,7 @@ public:
 		dataSelector.quantity = "^DBZH$";
 
 		odim.product = "MAX";
-
+		odim.quantity = "DBZH";
 	};
 
 

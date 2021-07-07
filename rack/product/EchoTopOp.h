@@ -62,6 +62,10 @@ public:
 
 	};
 
+	virtual inline
+	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
+		return odim.quantity;
+	}
 
 	double minDBZ;
 	double dbzRef; // = -50.0;

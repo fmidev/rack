@@ -76,6 +76,98 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+/// "Virtual" command extracting one sweep - actually only modifying selector
+class CmdSweep : public drain::BasicCommand {
+
+public:
+
+	CmdSweep() : drain::BasicCommand(__FUNCTION__, "Return a single sweep") {
+		parameters.link("quantity", quantity = "DBZH");
+		parameters.link("index", elevIndex = 0);
+	};
+
+	CmdSweep(const CmdSweep &cmd) : drain::BasicCommand(cmd){
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
+
+
+
+	// COnsider selector
+	std::string quantity;
+	size_t elevIndex;
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		// ODIMPathElem elem(ODIMPathElem::DATASET, 1+elevIndex);
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		//ctx.select = drain::sprinter(parameters.getMap(), "", ",", "=").str();
+		std::stringstream sstr;
+		sstr << "dataset" << (1+elevIndex) << ',' << "quantity=" << quantity;
+		ctx.select = sstr.str();
+		mout.note() << ctx.select << mout;
+		ctx.currentHi5 = ctx.currentPolarHi5;
+		ctx.unsetCurrentImages();
+
+	}
+
+
+};
+
+
+// Special command for bookkeeping of products and outputQUantities.
+class CmdOutputQuantity : public drain::SimpleCommand<> {
+
+public:
+
+	CmdOutputQuantity() : drain::SimpleCommand<>(__FUNCTION__, "Return default outout quantity","productCmd") {
+	};
+
+	typedef std::map<std::string,std::string> map_t;
+	static
+	map_t quantityMap;
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		/*
+		std::vector<std::string> s;
+		drain::StringTools::split(value, s, ",");
+		if (s[0] == "pSweep"){
+			if (s.size() > 1)
+				ctx.getStatusMap()["what:quantity"] = "";
+			else
+				ctx.getStatusMap()["what:quantity"] = "";
+		}
+		else {
+		  map_t::const_iterator it = quantityMap.find(s[0]);
+		*/
+
+		map_t::const_iterator it = quantityMap.find(value.substr(0, value.find(',')));
+		if (it != quantityMap.end()){
+			mout.note() << "found '" << it->first << "' " << mout;
+			mout.note() << "setting what:quantity: " << it->second << " " << mout;
+			ctx.getStatusMap()["what:quantity"] = it->second;
+		}
+		else {
+			mout.note() << drain::sprinter(quantityMap) << mout;
+			mout.error() << "meteorological product '" << value << "' does not exist " << mout;
+		}
+
+	}
+
+
+};
+
+CmdOutputQuantity::map_t CmdOutputQuantity::quantityMap;
+
+
+
 /// Wrapper for meteorological products derived from VolumeOp.
 /**
  *  \tparam T - product operator, like CappiOp.
@@ -93,9 +185,11 @@ public:
 	};
 
 	/// Returns a description for help functions.
+	/*
 	const std::string & getType() const {
 		return this->bean.getOutputQuantity();
 	}
+	*/
 
 
 	virtual
@@ -172,32 +266,31 @@ protected:
 };
 
 
+
+
+/*! Connects meteorological products to program core.
+ *
+ */
+
 /// Wraps OP of class ProductOp to a Command of class ProductCommand<OP>
-
-/*
-class ProductInstaller: public drain::CommandInstaller<'p',ProductSection>{
-
-public:
-
-	ProductInstaller(drain::CommandBank & bank): drain::CommandInstaller<'p',ProductSection>(bank){
-	}
-
-	// todo: ProductInstaller(bank)
-
-	template <class OP>
-	//ProductCommand<OP>
-	drain::Command & install(char alias = 0){  // TODO: EMBED "install2"
-		std::string name = OP().getName();
-		drain::CommandBank::deriveCmdName(name, getPrefix());
-		drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
-		cmd.section = getSection().index;
-		return cmd;
-	}
-
-};
-*/
+template <class OP>
+drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "install2"
+	static const OP op;
+	std::string name = op.getName(); // OP()
+	drain::CommandBank::deriveCmdName(name, getPrefix());
+	drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
+	cmd.section = getSection().index;
+	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// mout.special() << name << "\n -> " << op.getOutputQuantity() << "\t test:" << op.getOutputQuantity("TEST") << mout;
+	CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
+	return cmd;
+}
 
 
+
+
+
+//CmdSweep sweepCmd;
 
 ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
@@ -261,6 +354,27 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	install<SunShineOp>(); //  sun;
 
 
+	const drain::Flagger::value_t SECTION = getSection().index;
+	const char PREFIX = getPrefix();
+	// std::cerr << __FUNCTION__ << SECTION << ':' << PREFIX << std::endl;
+
+	/*
+	//cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
+	std::cerr << __FUNCTION__ << sweepCmd.getName() << '\n';
+	std::string key(sweepCmd.getName());
+	std::cerr << __FUNCTION__ << key << '\n';
+	drain::CommandBank::deriveCmdName(key, PREFIX);
+	std::cerr << __FUNCTION__ << key << '\n';
+	cmdBank.addExternal(sweepCmd, key);
+	*/
+
+	static CmdSweep sweepCmd;
+	cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
+
+
+	// Special command
+	static CmdOutputQuantity outputQuantityCmd;
+	cmdBank.addExternal(PREFIX, outputQuantityCmd).section = SECTION;
 
 }
 

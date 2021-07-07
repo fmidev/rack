@@ -693,6 +693,7 @@ void Compositor::extract(const std::string & channels) const {
 		}
 	}
 	else {
+		mout.experimental() << dstProduct << mout;
 		mout.warn() << "dstProduct does not have claimed quantity: " << composite.odim.quantity << mout.endl; // .getFirstData().data
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 		ctx.unsetCurrentImages();

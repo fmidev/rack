@@ -93,9 +93,23 @@ public:
 	MD odim;
 
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
+	/*
 	virtual inline
 	const std::string & getOutputQuantity() const {
 		return odim.quantity; //outputQuantity;
+	}
+	*/
+
+	/// The ODIM quantity of this product
+	/**
+	 *  \param defaultQuantity - input quantity or a quantity overriding default output quantity of this product
+	 */
+	virtual inline
+	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
+		if (!odim.quantity.empty())
+			return odim.quantity; //outputQuantity;
+		else
+			return inputQuantity;
 	}
 
 

@@ -81,19 +81,25 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	}
 
 	//const drain::image::AreaGeometry & geometry = srcDBZH.data.getGeometry();
-	//const QuantityMap & qmap = getQuantityMap();
+	const QuantityMap & qmap = getQuantityMap();
 
 	// Reserve main quantity (RATE) first!
 	PlainData<PolarDst> & rateDst = dstProduct.getData(odim.quantity);
-	//setEncoding(srcData.odim, dstData);
-	this->initDst(srcDBZH.odim, rateDst);
+	//this->initDst(srcDBZH.odim, rateDst);
+	//this->initDst(odim, rateDst);
+	//rateDst.setEncoding(odim.type, encodingRequest);
+	//rateDst.setEncoding(odim.type);
+	qmap.setQuantityDefaults(rateDst, odim.quantity, odim.type); // type also?
+	rateDst.setEncoding(odim.type, encodingRequest);
+	rateDst.setGeometry(srcDBZH.data.getGeometry());
+	rateDst.odim.rscale = srcDBZH.odim.rscale;
 
 	//completeEncoding(rateDst.odim, encodingRequest);
+	//rateDst.data.setScaling(rateDst.odim.scaling);
 	//applyODIM(rateDst.odim, odim, true);
 	//rateDst.data.setScaling(rateDst.odim.scaling.scale, rateDst.odim.scaling.offset); // clumsy
 
 	//qmap.setQuantityDefaults(rateDst, odim.quantity, odim.type); // type also?
-	//rateDst.setGeometry(geometry);
 	mout.warn() << "dst data: " << rateDst <<  mout.endl;
 
 	// RadarFunctorOp<drain::FuzzyStep<double> > step;
@@ -101,8 +107,8 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	// RHOHV
 	const PlainData<PolarSrc> & srcRHOHV = sweepSrc.getData("RHOHV");
-
-	// KEEP const bool RHOHV = !srcRHOHV.data.isEmpty();
+	const bool RHOHV = !srcRHOHV.data.isEmpty();
+	// KEEP
 
 	/*
 	PlainData<PolarDst>  & metRHOHV = dstProduct.getData("RHOHV_FUZZY");
@@ -138,7 +144,6 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	// ZDR
 	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData("ZDR");
-
 	const bool ZDR   = !srcZDR.data.isEmpty();
 	if (!ZDR){
 		mout.warn() << "ZDR missing" <<  mout.endl;
@@ -161,7 +166,6 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	// KDP
 	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
-
 	const bool KDP = !srcKDP.data.isEmpty();
 	if (!KDP){
 		mout.warn() << "KDP missing" <<  mout.endl;

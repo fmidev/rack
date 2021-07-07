@@ -101,7 +101,7 @@ public:
 	template <class CMD>
 	Command & install(const std::string & name, char alias = 0){
 		Command & cmd = cmdBank.add<CMD>(name,alias);
-		cmd.section = getSection().index;
+		cmd.section |= getSection().index; // keep TRIGGER
 		return cmd;
 	}
 
@@ -115,7 +115,7 @@ public:
 	template <class CMD>
 	Command & installExternal(CMD & cmdExt, const std::string & name, char alias = 0){
 		Command & cmd = cmdBank.addExternal(cmdExt, name,alias);// must give cmdExt, for copying
-		cmd.section = getSection().index;
+		cmd.section |= getSection().index; // keep TRIGGER
 		return cmd;
 	}
 
@@ -133,7 +133,7 @@ public:
 	static
 	Command & installShared(const std::string & name, char alias = 0){
 		Command & cmd = getCommandBank().add<CMD>(name,alias);
-		cmd.section = getSection().index;
+		cmd.section |= getSection().index; // keep TRIGGER
 		return cmd;
 	}
 

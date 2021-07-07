@@ -2160,6 +2160,10 @@ MainModule::MainModule(){ //
 	drain::CmdScript script(cmdBank);
 	installExternal(script);
 
+	//drain::CmdExecScript execScript(cmdBank);
+	//installExternal(execScript);
+	install<drain::CmdExecScript>();
+
 	drain::CmdExecFile execFile(cmdBank);
 	installExternal<drain::CmdExecFile>(execFile);
 
@@ -2167,64 +2171,60 @@ MainModule::MainModule(){ //
 	// Independent commands
 	//drain::CommandInstaller<> installer(cmdBank);
 
-	install<CmdSelect>('s'); // cmdSelect('s'); //("select", 's');
-	install<drain::CmdStatus>(); //  cmdStatus;
+	install<CmdSelect>('s'); 	install<drain::CmdStatus>();
 	install<drain::CmdLog>(); //  cmdLogFile; // consider abbr. -L ?
 
-	install<CmdEncoding>('e'); // cmdEncoding('e');  //"encoding", 'e');  // new
+	install<CmdEncoding>('e');
 	install<CmdEncoding>("target");  // alias
-	install<CmdFormatOut>(); //  cmdFormatOut;
-	install<CmdEcho>(); //  cmdEcho;
+	install<CmdFormatOut>();
+	install<CmdEcho>();
 
 	//installer.install<CmdSleep> cmdSleep;
 
-	install<drain::CmdFormat>(); //  cmdFormat;
-	install<drain::CmdFormatFile<RackContext> > (); // cmdFormatFile;
+	install<drain::CmdFormat>();
+	install<drain::CmdFormatFile<RackContext> > ();
 
 
-	install<drain::CmdDebug>(); //  cmdDebug;
-	install<VerboseCmd>('v');  //  cmdVerbose('v');
-	// RackLetAdapter<drain::CommandLoaderOLD> commandLoader("execFile");
-	//install<drain::CmdExpandVariables> expandVariables;
-	install<CmdExpandVariables2>(); //  expandVariables; //("expandVariables");
+	install<drain::CmdDebug>();
+	install<VerboseCmd>('v');
 
-	//install<CmdAutoExec> cmdAutoExec;
-	//install<CmdDataOk> dataOk("dataOk", -1);
-	install<CmdErrorFlags>(); //  errorFlags;
-	install<UndetectWeight>(); //  undetectWeight; //("undetectWeight");
+	install<CmdExpandVariables2>();
+	install<CmdErrorFlags>();
 
-	// install<CmdSelectQuantity> cmdSelectQuantity("quantity",'Q');
-	install<CmdSelectQuantity>('Q'); //cmdSelectQuantity('Q');
-	install<CmdCheckType>(); //  cmdCheckType;
-	install<CmdValidate>(); //  cmdValidate;
-	//install<CmdCreateDefaultQuality> cmdCreateDefaultQuality;
-	install<CmdCompleteODIM>(); //  cmdCompleteODIM;
-	install<CmdConvert>(); //  cmdConvert;
-	install<CmdDelete>(); //  cmdDelete;
-	install<CmdDumpMap>(); //  cmdDumpMap; // obsolete?
+	install<UndetectWeight>();
+
+
+	install<CmdSelectQuantity>('Q');
+	install<CmdCheckType>();
+	install<CmdValidate>();
+
+	install<CmdCompleteODIM>();
+	install<CmdConvert>();
+	install<CmdDelete>();
+	install<CmdDumpMap>();
 	//RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
 
-	//RackLetAdapter<CmdHelpRack> help("help", 'h'); // OBSOLETE
-	install<CmdHelpExample>(); //  cmdHelpExample; // TODO hide
 
-	install<CmdJSON>(); //  cmdJSON;
-	install<CmdKeep>(); //  cmdKeep;
-	// install<CmdRename>(); //  cmdRename; //("rename"); // deprecating
+	install<CmdHelpExample>();
+
+	install<CmdJSON>();
+	install<CmdKeep>();
+
 	install<CmdMove>();
-	install<CmdSetODIM>(); //  cmdSetODIM;
-	install<CmdVersion>(); //  cmdVersion;
-	//install<OutputDataVerbosity> dataVebose("verboseData");
-
-	install<CmdAppend>(); //   cmdAppend;
-	// CommandWrapper<CmdAppend>  cmdAppend2;
-	install<CmdStore>(); //   cmdStore;
-	//CommandWrapper<CmdStore>  cmdStore2;
-
-	//RackLetAdapter<CmdQuantityConf> cmdQuantity;
-	install<CmdQuantityConf>(); //  cmdQuantity2;
+	install<CmdSetODIM>();
+	install<CmdVersion>();
 
 
-	install<CmdCreateDefaultQuality>(); //  cmdCreateDefaultQuality;
+	install<CmdAppend>();
+
+	install<CmdStore>();
+
+
+
+	install<CmdQuantityConf>();
+
+
+	install<CmdCreateDefaultQuality>();
 
 }
 

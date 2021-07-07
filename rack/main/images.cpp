@@ -83,6 +83,8 @@ void CmdImage::exec() const {
 	drain::image::Image & dst = ctx.getModifiableImage();
 	ctx.setCurrentImages(dst);
 
+	mout.deprecating() << "This command may be removed in future versions." << mout;
+
 	//ctx.updateCurrentImage();
 
 	/*
@@ -270,8 +272,13 @@ public:
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
+		mout.special() << "dst image/plain: " << dstImg << mout.endl;
 		dstImg.setAlphaChannelCount(1);
-		mout.special() << "dst image: " << dstImg << mout.endl;
+		mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+		// dstImg.getAlphaChannel().fill(128);
+		//dstImg.setAlphaChannelCount(0);
+		//mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+		//return;
 
 
 		RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep(true);
@@ -605,11 +612,10 @@ public:
 			data.setEncoding("C");
 			//data.odim.scaling.setScale(1, 0);
 			data.data.setScaling(data.odim.scaling);
-			//if (graySrc.hasAlphaChannel())
-			//	data.data.setAlphaChannelCount(1);
 			// mout.note() << "target encoding:     " << EncodingODIM(data.odim) << mout.endl;
 			// data.setEncoding("C");
 			// if (data.odim.type)
+
 
 			// This step only for storage type (quantity (other easily discarded).
 
@@ -619,10 +625,20 @@ public:
 			//data.data.setScaling(128.0, 120); // RGB = unitless.
 			//data.odim.quantity = encoding.quantity;
 
-			mout.debug() << "target: " << data << mout.endl;
+			mout.debug() << "target: " << data << mout;
 
 			/// MAIN
 			op.process(graySrc, data.data);
+
+			// Currently, copying is possible only afterwards
+			if (graySrc.hasAlphaChannel()){
+				mout.experimental() << "copying alpha channel " << mout;
+				//data.data.setGeometry(graySrc.getGeometry(), 3, 1);
+				data.data.setAlphaChannelCount(1);
+				data.data.getAlphaChannel().copyData(graySrc.getAlphaChannel());
+			}
+
+
 
 			size_t channels = data.data.getChannelCount();
 			if (channels == 0){
@@ -634,7 +650,7 @@ public:
 				//mout.note() << "stored color image in HDF5 structure: " << elem << '[' << dstQuantity << ']' << mout.endl;
 
 				if (channels > 3){
-					mout.warn() << "only 3 channels (RGB) of " << channels << " stored" << mout.endl;
+					mout.warn() << "only 3 channels (RGB) of " << channels << " will be stored in HDF5 files" << mout.endl;
 				}
 				ctx.setCurrentImageColor(data.data);
 			}

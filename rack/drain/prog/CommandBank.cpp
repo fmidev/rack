@@ -345,21 +345,25 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 	// Which log? Perhaps prog first cmd ctx log?
 	//const drain::Flagger::value_t execScript = drain::Static::get<drain::TriggerSection>().index;
 
-	bool PARALLEL_MODE = false;
+	bool CREATE_THREADS = false;
 
 	//	std::vector<Program> threads;
 	ProgramVector threads;
 
-	//for (Program::const_iterator it = prog.begin(); it != prog.end(); ++it) {
-	for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
-
+	// Iterate commandsconst auto& kv : myMap
+	/*
+	for (auto & entry: prog) {
+		const key_t & key = entry.first;
+		value_t & cmd     = entry.second;
+	 */
+	 for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
 		// mout.note() << it->first << mout.endl;
 		const key_t & key =  it->first;
 		value_t & cmd     = *it->second;
 		// const std::string & cmdName = cmd.getName();
 		Context & ctx = cmd.getContext<>(); //.log;
 		Log & log = ctx.log;
-		const bool TRIGGER = (cmd.section & this->scriptTriggerFlag);
+		const bool TRIGGER = (cmd.section & this->scriptTriggerFlag); // AND
 
 		Logger mout(log, __FUNCTION__, __FILE__); // warni
 
@@ -378,6 +382,16 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			//ctx.setStatus(key, value)
 			continue;
 		}
+		// Explicit launch NOT needed, but a passive trigger cmd
+		/*
+		else if (cmd.getName() == execScriptCmd){
+			// Explicit launch
+			mout.experimental() << "executing script" << mout;
+			Program progSub;
+			append(prog.routine, cmd.getContext<Context>(), progSub); // append() has access to command registry (Prog does not)
+			run(progSub, contextCloner);
+		}
+		*/
 		else if (cmd.getName() == execFileCmd){ // "execFile"
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			// TODO catch
@@ -404,16 +418,16 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			mout.note() << "Switching to parallel mode." << mout.endl;
 			mout.warn() << "Step 1: compose threads." << mout.endl;
 			mout.warn() << "Hey, " << log.getVerbosity() << mout.endl;
-			PARALLEL_MODE = true;
+			CREATE_THREADS = true;
 			continue;
 		}
 		else if (key == "]"){ 	// All the triggering commands collected, run them
 
-			if (!PARALLEL_MODE){
+			if (!CREATE_THREADS){
 				mout.warn() << "Leading brace '[' missing?" << mout.endl;
 			}
 
-			PARALLEL_MODE = false;
+			CREATE_THREADS = false;
 
 			if (threads.empty()){
 				mout.warn() << "No threads?" << mout.endl;
@@ -436,7 +450,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			}
 
 		}
-		else if (PARALLEL_MODE && TRIGGER) {
+		else if (CREATE_THREADS && TRIGGER) {
 
 			//mout.warn() << "Prepare a new thread: " << key << '(' << cmd << ')' <<  mout.endl;
 

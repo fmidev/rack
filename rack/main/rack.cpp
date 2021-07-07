@@ -110,6 +110,8 @@ int process(int argc, const char **argv) {
 
 	// If a plain argument <arg> is given, execute it like \c --inputFile \c <arg> .
 	cmdBank.setDefaultCmdKey("inputFile");
+
+
 	// Also, add it to the commands taht trigger the script (if defined).
 	//drain::Flags::value_t trigger = cmdBank.sections.getValue("trigger");
 	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
@@ -117,10 +119,14 @@ int process(int argc, const char **argv) {
 	cmdBank.get("inputFile").section |= TRIGGER;
 
 	// cmdBank.setScriptCmd("");
-
+	//mout.experimental() << " TRIGGER=" << TRIGGER << mout;
+	//mout.note() << "execScript: " << cmdBank.get("execScript").section << mout;
+	//mout.note() << "execScript: " << cmdBank.clone("execScript").section << mout;
+	// cmdBank.get("execScript").section |= TRIGGER;  // why constr not applying?
+	// mout.note() << "execScript: " << cmdBank.clone("execScript").section << mout;
 
 	/*
-	mout.note() << "-- experimental commandBank --"  << mout.endl;
+	mout.note() << "-- experimental commandBank --"  << mout;
 	drain::CommandWrapper<drain::CmdVerbosity> verbosityCmd;
 	verbosityCmd.setExternalContext(ctx);
 	drain::Context & ctx0 = verbosityCmd.getContext<drain::Context>();
@@ -155,10 +161,10 @@ int process(int argc, const char **argv) {
 		//cmdBank.run(script, contextCloner);
 		cmdBank.run(prog, contextCloner);
 
-		mout.warn() << "debug-level:" << prog.begin()->second->getContext<drain::Context>().log.getVerbosity() << mout.endl;
+		// mout.warn() << "debug-level:" << prog.begin()->second->getContext<drain::Context>().log.getVerbosity() << mout.endl;
 
 		if (ctx.statusFlags == 0){
-			mout.success() = "Finished.";
+			mout.ok() = "Finished.";
 		}
 		else {
 			// std::cerr << ctx.statusFlags.value << ' ' << ctx.statusFlags << " ERROR\n";
@@ -170,9 +176,7 @@ int process(int argc, const char **argv) {
 		mout.warn() << e.what() << mout.endl;
 		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 	}
-	mout.note() << "debug-level:" << ctx.log.getVerbosity() << mout.endl;
-
-	//mout.note() << "-- end commandBank --"  << mout.endl;
+	//mout.note() << "debug-level:" << ctx.log.getVerbosity() << mout.endl;
 
 
 	return ctx.statusFlags.value;

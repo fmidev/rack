@@ -64,6 +64,42 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+template <class OD>
+void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+
+	// OD odim;
+	typedef DstType<OD> dst_t;
+
+	DataSet<dst_t> dstDataSet(dstGroup, quantity);
+
+
+	for (typename DataSet<dst_t>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+
+		Data<dst_t> & d = dit->second;
+		const drain::image::Geometry & g = d.data.getGeometry();
+
+		if (geometry.getArea() == 0){
+			geometry.setArea(g.getWidth(), g.getHeight());
+		}
+		else if (geometry.area != g.area) {
+			mout.warn() << "nominal geom: " << geometry << ", found dataset with: "<< g << mout.endl;
+			// mout.warn() << "dataset group contains different geometries" << d.odim << mout.endl;
+		}
+		else if (geometry.channels != g.channels){
+			mout.note() << "varying channel geometry: " << geometry.channels << ", dataset with: "<< g.channels << mout.endl;
+		}
+
+		d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
+		//d.odim.setArea(d.data.getWidth(), d.data.getHeight());
+		//mout.note() << "modified odim geom " << d.odim << mout.endl;
+
+
+	}
+}
+
+
 /// Designed for Rack
 
 template <class OP>

@@ -94,63 +94,6 @@ void CmdStatus::exec() const {
 };
 
 
-/*
-void CmdExecFile::exec() const {
-
-	Context & ctx = getContext<>();
-
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getDrainage().mout( ;
-
-	Script script;
-
-	std::string filename;
-
-	drain::StringMapper mapper(value); // todo VALID chars what:source
-
-	mout.note() << "open list: " << filename << mout.endl;
-
-	bank.readFile(value, script);
-	//bank.run(script, getCloner<Context>()); //?
-	mout.unimplemented() << "bank.run(script, getCloner<Context>())" << mout.endl;
-
-
-
-}
-*/
-
-
-/*
-void CmdFormat::exec() const {
-	Context &ctx = getContext<Context>();
-	ctx.formatStr = value;
-}
-
-
-void CmdFormatFile::exec() const {
-
-	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
-
-	std::stringstream sstr;
-
-	//drain::Input ifstr(value);
-	std::ifstream ifstr;
-	ifstr.open(value.c_str(), std::ios::in);
-	if (ifstr.good()){
-		for (int c = ifstr.get(); !ifstr.eof(); c = ifstr.get()){ // why not getline?
-			sstr << (char)c;
-		}
-		ifstr.close();
-		Context &ctx = getContext<Context>();
-		//Context &ctx = getContext<>();
-		ctx.formatStr = sstr.str(); // SmartContext ?
-
-	}
-	else
-		mout.error() << name << ": opening file '" << value << "' failed." << mout.endl;
-
-};
-*/
-
 
 } /* namespace drain */
 

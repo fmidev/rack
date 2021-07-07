@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <fstream>
 
 #include "CommandBank.h"
+#include "CommandSections.h"
 #include "drain/image/Image.h"
 
 
@@ -81,6 +82,7 @@ class CmdDebug : public BasicCommand {
 
 public:
 
+	inline
 	CmdDebug() : BasicCommand(__FUNCTION__, "Set verbosity to LOG_DEBUG") { // TODO
 	};
 
@@ -99,6 +101,7 @@ class CmdLog : public SimpleCommand<> {
 
 public:
 
+	inline
 	CmdLog() : SimpleCommand<>(__FUNCTION__, "Redirect log to file", "filename", "file.log") {
 	};
 
@@ -114,6 +117,7 @@ class CmdStatus : public drain::BasicCommand {
 
 public:
 
+	inline
 	CmdStatus() : drain::BasicCommand(__FUNCTION__, "Dump information on current images.") {
 	};
 
@@ -126,6 +130,7 @@ class CmdExpandVariables : public BasicCommand {
 
 public:
 
+	inline
 	CmdExpandVariables() : BasicCommand(__FUNCTION__, "Toggle variable expansions on/off") {
 	};
 
@@ -148,6 +153,7 @@ class CmdScript : public SimpleCommand<std::string> {
 
 public:
 
+	inline
 	CmdScript(CommandBank & cmdBank) :
 		SimpleCommand<std::string>(__FUNCTION__, "Define script.", "script"),
 		bank(cmdBank){
@@ -163,6 +169,72 @@ protected:
 	CommandBank & bank;
 
 };
+
+
+/// Executes the defined script
+/**
+ *   Note: automatic triggering by selected commands is often more handy.
+ *
+ */
+class CmdExecScript : public BasicCommand {
+
+public:
+
+	inline
+	CmdExecScript() :
+		BasicCommand(__FUNCTION__, "Execute script.") {
+		const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+		this->section |= TRIGGER;
+		/*
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.experimental() << "constr: TRIGGER=" << TRIGGER << mout;
+		mout.experimental() << "My sections: " << this->section << mout;
+		*/
+	};
+
+	/*
+	inline
+	CmdExecScript(const	CmdExecScript & cmd) : BasicCommand(cmd){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.experimental() << "Copy constr, their sections: " << cmd.section << mout;
+		mout.experimental() << "Copy constr, my sections:    " << this->section << mout;
+	};
+	*/
+	/*
+	CmdExecScript(CommandBank & cmdBank) :
+		BasicCommand(__FUNCTION__, "Execute script.") {
+		//cmdBank.setScriptExecCmd(getName());
+		const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+		cmdBank.setScriptTriggerFlag(TRIGGER);
+		this->section |= TRIGGER;
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.experimental() << "constr: TRIGGER=" << TRIGGER << mout;
+		mout.experimental() << *this << mout;
+		mout.experimental() << "My sections: '" << this->section << "' ." << mout;
+
+	};
+	*/
+
+	inline
+	void exec() const {
+		SmartContext & ctx = getContext<SmartContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		mout.debug() << "Executing script with '" << getName() << "' ." << mout;
+		//mout.warn() << "My sections: '" << this->section << "' ." << mout;
+		//mout.error() << "This command '" << getName() << "' cannot be run independently." << mout;
+	};
+
+	// reconsider exec();
+
+protected:
+
+	// Copy constructor should copy this as well.
+	// FUture versions may store the script in Context!
+	//CommandBank & bank;
+
+};
+
 
 
 /// Load script file and execute the commands immediately using current Context.
@@ -199,6 +271,12 @@ public:
 
 	inline
 	void exec() const {
+		if (value.empty()){
+			if (cmdBank.has("general")){
+				cmdBank.help("general");
+				exit(0);
+			}
+		}
 		cmdBank.help(value);
 		//  TODO: "see-also" commands as a list, which is checked.
 		exit(0);

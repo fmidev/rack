@@ -92,7 +92,7 @@ protected:
 
 		odim.type = "S";
 		odim.product = "AMV"; // ?
-
+		odim.quantity = "AMV"; // To be overridden tu AMVV, AMVU
 	};
 
 

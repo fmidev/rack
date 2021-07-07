@@ -235,7 +235,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 
 
-const std::string & DetectorOp::getOutputQuantity() const {
+const std::string & DetectorOp::getOutputQuantity(const std::string & inputQuantity) const {
 
 	// If unset, copy in uppercase letters.
 	if (upperCaseName.empty()) {

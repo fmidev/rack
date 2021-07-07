@@ -132,8 +132,17 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	// const ChannelGeometry & colours = palettePtr->getChannels();
 	// mout.debug() << colours << mout;
 
+	// TODO: what if src image has alpha channel?
+	const size_t alphaChannelCount = dst.getAlphaChannelCount();
+
 	dst.setArea(src);
 	dst.setChannelCount(palettePtr->getChannels());
+
+
+	if (dst.getAlphaChannelCount() != alphaChannelCount){
+		mout.warn() << "dst alpha channel count changed from " <<alphaChannelCount << " to " << dst.getAlphaChannelCount() << mout;
+	}
+
 
 	if (src.hasAlphaChannel() && !dst.hasAlphaChannel()){
 		mout.unimplemented() << "src has alpha channel, but palette not" << mout;

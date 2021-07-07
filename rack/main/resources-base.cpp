@@ -178,7 +178,7 @@ Hi5Tree & Hdf5Context::getHi5(h5_role::value_t filter) {
 		return dstShared;
 	}
 
-	mout.note() = "local, empty";
+	mout.info() = "local, empty";
 	return dst;
 
 }

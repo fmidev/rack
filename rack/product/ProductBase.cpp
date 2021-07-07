@@ -227,11 +227,14 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	}
 
 	//mout.warn() << "quantity [" << dstODIM.quantity << "]" << mout.endl;
-
-	bool result = getQuantityMap().setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
+	const QuantityMap & qmap= getQuantityMap();
+	bool result = qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 
 	if (!result){
-		mout.warn() << "unknown quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
+		if (qmap.hasQuantity(dstODIM.quantity))
+			mout.warn() << "unknown storage type [" << dstODIM.type << "] for quantity " << dstODIM.quantity << ", guessing: " << EncodingODIM(dstODIM) << mout.endl;
+		else
+			mout.warn() << "unknown quantity " << dstODIM.quantity << ", guessing: " << EncodingODIM(dstODIM) << mout.endl;
 	}
 }
 

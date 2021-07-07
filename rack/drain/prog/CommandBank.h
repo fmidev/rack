@@ -86,6 +86,14 @@ public:
 		return BankSuper<Command>::addExternal(entry, key, alias);
 	}
 
+	// Template arg PREFIX is tricky, sometimes need for dynamic
+	template <class D>
+	D & addExternal(char PREFIX, const D & entry, char alias=0){
+		std::string key(entry.getName());
+		deriveCmdName(key, PREFIX);
+		return BankSuper<Command>::addExternal(entry, key, alias);
+	}
+
 	template <class D, char PREFIX=0>
 	inline
 	D & addExternal(const D & entry, const std::string & key, char alias = 0){
@@ -205,6 +213,15 @@ public:
 		scriptCmd = s;
 	}
 
+	/// Set command for reading and executing commands from a file in the current (running) context
+	/***
+	 *   For example: "exec"
+	inline
+	void setScriptExecCmd(const std::string & s){
+		execScriptCmd = s;
+	}
+	 */
+
 
 	/// Set command for reading and executing commands from a file in the current (running) context
 	/***
@@ -218,6 +235,11 @@ public:
 	/// Command for reading and executing commands from a file in the current (running) context
 	std::string execFileCmd;
 
+
+protected:
+
+	/// Command executing the script in the current (running) context
+	// std::string execScriptCmd;
 
 
 };

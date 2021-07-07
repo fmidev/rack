@@ -73,6 +73,9 @@ public:
 		//add(RackContext::POLAR|RackContext::CURRENT);
 		add(RackContext::POLAR|RackContext::CURRENT);
 
+		// 2021/06/23
+		ctx.select.clear();
+
 		if (ctx.statusFlags.value > 0){
 			mout.warn() << "errors (" << ctx.statusFlags << "), skipping extraction" << mout.endl;
 			return;

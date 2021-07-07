@@ -93,18 +93,24 @@ public:
 	virtual inline
 	void setGeometry(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
 		conf.getGeometry().set(width, height, imageChannels, alphaChannels);
-		// geometry.setGeometry(width, height, imageChannels, alphaChannels);
 		update();
 	}
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline
-	void setGeometry(const AreaGeometry &g){
-		conf.channels.set(1, 0); // ? CONSIDER area geom?
+	void setGeometry(const AreaGeometry &g, size_t imageChannels=1, size_t alphaChannels=0){
+		conf.channels.set(imageChannels, alphaChannels); // ? CONSIDER area geom?
 		conf.area.set(g);
-		//setGeometry(g.getWidth(), g.getHeight());
 		update();
 	};
+
+	inline
+	void setGeometry(const AreaGeometry & areaGeom, const ChannelGeometry & channelGeom){
+		conf.channels.set(channelGeom); // ? CONSIDER area geom?
+		conf.area.set(areaGeom);
+		update();
+	};
+
 
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline

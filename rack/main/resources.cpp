@@ -251,7 +251,7 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 	RackContext & ctx = *this;
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-	mout.note() << " start" << mout.endl;
+	mout.note() << " getModifiableImage start" << mout.endl;
 
 	/// Ensure
 	//RackContext::updateCurrentImage(ctx);

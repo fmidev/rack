@@ -61,10 +61,10 @@ public:
 	/// Shared function, to minimize copies in template classes.
 	void execOp(const drain::image::ImageOp & imageOp, RackContext & ctx) const;
 
-	// static bool physical; //? or just next!  MOVE
+	template <class OD>
+	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const;
 
-	//static std::string outputQuantitySyntax; // MOVE
-
+	/*
 	template <class OD>
 	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
@@ -95,7 +95,7 @@ public:
 		//ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
 
 	}
-
+	*/
 
 
 

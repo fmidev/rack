@@ -40,8 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-template <class OP>
-class ProductCommand;
+//template <class OP>
+//class ProductCommand;
 
 
 struct ProductSection : public drain::CommandSection {
@@ -52,7 +52,6 @@ struct ProductSection : public drain::CommandSection {
 	};
 
 };
-
 
 
 /*! Connects meteorological products to program core.
@@ -67,18 +66,29 @@ public:
 
 protected:
 
-	//ProductCommand<OP>
+	template <class OP>
+	drain::Command & install(char alias = 0);
+
+	/*
+
 	template <class OP>
 	drain::Command & install(char alias = 0){  // TODO: EMBED "install2"
-		std::string name = OP().getName();
+		static const OP op;
+		std::string name = op.getName(); // OP()
 		drain::CommandBank::deriveCmdName(name, getPrefix());
 		drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
 		cmd.section = getSection().index;
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.special() << name << "\n -> " << op.getOutputQuantity() << "\t test:" << op.getOutputQuantity("TEST") << mout;
+		CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
 		return cmd;
 	}
+	*/
 
-	// virtual void initialize();
 };
+
+
+
 
 } // Rack
 

@@ -272,12 +272,12 @@ public:
 	/// Conversion to Castable.
 	/** Important when str Castable wants to assing this, preserving the precision in floating point numbers for example.
 	 *
-	 */
 	inline
 	operator const Castable &() const {
 		std::cerr << "operator const Castable, value=" << *this << std::endl;
 		return *this;
 	}
+	 */
 
 
 

@@ -19,7 +19,7 @@ $(DOXYROOT)/$(PROJECT_NAME):
 # Idea: generate here a minimal Doxyfile, then update it.
 $(DOXYFILE): $(DOXYROOT)/$(PROJECT_NAME) 
 	date +'# Created by $$USER on %Y %m %d %H:%M '	  > $(DOXYFILE)
-	echo PROJECT_NAME = $(PROJECT_NAME)		      >> $(DOXYFILE)
+	echo PROJECT_NAME = '"'$(PROJECT_NAME)'"'	      >> $(DOXYFILE)
 	echo PROJECT_LOGO = $(PROJECT_LOGO)		      >> $(DOXYFILE)
 	echo OUTPUT_DIRECTORY = $(DOXYROOT)/$(PROJECT_NAME)   >> $(DOXYFILE)
 	echo FILE_PATTERNS    =  $(DOXYPATTERNS) 	      >> $(DOXYFILE)

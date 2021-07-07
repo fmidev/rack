@@ -87,8 +87,11 @@ public:
 	~DetectorOp(){};
 
 	/// Returns the quantity name, by default the name of the class in upper case letters.
+	/**
+	 *   \param inputQuantity - unused by DetectorOps
+	 */
 	virtual
-	const std::string & getOutputQuantity() const;
+	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const;
 
 	//virtual inline
 	//const std::string & getOutputQuantity() const;

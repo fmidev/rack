@@ -88,21 +88,32 @@ void Composite::checkQuantity(const std::string & quantity){
 	/// TODO: regexp for accepting quantities
 
 	if (!this->odim.quantity.empty()){
+
 		if (this->odim.quantity != quantity){
-			mout.note() << "composite of quantity=" << this->odim.quantity << ", input with " << quantity << mout.endl;
+			mout.note() << "composite of quantity=" << this->odim.quantity << ", input with " << quantity << mout;
+			mout.experimental() << "Not replacing '" << this->odim.quantity << "' with '" << quantity << "'" << mout;
 		}
+
 		if (odim.ACCnum > 1){
-			if (quantity.substr(0, 4) == "VRAD"){
-				mout.warn() << "compositing VRAD directly, consider Doppler dealiasing (u,v) first" << quantity << mout.endl;
+			// quantity.find
+			//if (quantity.substr(0, 4) == "VRAD"){
+			if (quantity.find("VRAD", 0, 4) == 0){
+				mout.experimental() << "Revised VRAD check: TRUE" << mout;
+				mout.warn() << "compositing VRAD directly, consider Doppler dealiasing (u,v) first" << quantity << mout;
+			}
+			else {
+				mout.experimental() << "Revised VRAD check: FALSE" << mout;
 			}
 		}
-	}
 
+	}
+	else // <- 2021/06/23
+		this->odim.quantity = quantity;
 
 	// mout.special() << "Setting quantity" << quantity << mout.endl;
 
 	// omp critical?
-	this->odim.quantity = quantity;
+	//this->odim.quantity = quantity;
 
 }
 

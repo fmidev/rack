@@ -32,9 +32,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.23"
+#define __RACK_VERSION__ "6.25"
 
 /**
+ *   Version 6.24
+ *   -- Image geometry accepts (area, channels, alphachannels)
+ *   -- Palette cmd preserves alpha channel (by copying it)
+ *
+ *   Version 6.24
+ *   -- Restored --execScript (yet not often needed)
+ *   -- Bug fix in CommandInstaller, cmd section assignment -> logical OR
+
  *   Version 6.23
  *   -- Bug fix in where:lat, where:lon (originated from SmartMapTools)
  *

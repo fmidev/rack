@@ -1,7 +1,7 @@
 /** \page parallelpage Parallel computation
 
 
-\note Future extension - experimental design
+\note Experimental design - not tested operationally
 
 \section parallel_intro Speed-up through parallel computation
 
