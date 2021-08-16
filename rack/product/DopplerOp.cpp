@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/SegmentProber.h"
 #include "product/DopplerOp.h"
 #include "product/ProductOp.h"
-#include <stddef.h>
+//#include <stddef.h>
 #include <syslog.h>
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
@@ -51,7 +51,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+const drain::RegExp DopplerOp::regExpVRAD("^VRADH?$");
 
 void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
@@ -122,7 +122,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 
 
-	const PlainData<PolarSrc> & srcDataU    = srcSweep.getData("AMVU");
+	const PlainData<PolarSrc> & srcDataU = srcSweep.getData("AMVU");
 	if (srcDataU.data.isEmpty()){
 		mout.warn() << "AMVU input missing" << mout.endl;
 		return;
@@ -133,6 +133,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		mout.warn() << "AMVV input missing" << mout.endl;
 		return;
 	}
+
 
 	const PlainData<PolarSrc> & srcDataVRAD = srcSweep.getData("VRAD"); // maybe empty
 	const bool VRAD_SRC = !srcDataVRAD.data.isEmpty();

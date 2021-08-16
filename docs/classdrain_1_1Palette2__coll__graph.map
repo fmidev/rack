@@ -1,4 +1,7 @@
 <map id="Palette2" name="Palette2">
-<area shape="rect" id="node2" href="$classdrain_1_1ImageCodeMap.html" title="ImageCodeMap\&lt; PaletteEntry2 \&gt;" alt="" coords="16,200,233,227"/>
-<area shape="rect" id="node4" href="$classdrain_1_1LookUp.html" title="LookUp\&lt; typename cont\l_t::const_iterator \&gt;" alt="" coords="226,96,391,137"/>
+<area shape="rect" id="node1" title=" " alt="" coords="145,276,221,303"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ImageCodeMap.html" title=" " alt="" coords="61,200,304,227"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,103,227,130"/>
+<area shape="rect" id="node4" href="$classdrain_1_1LookUp.html" title=" " alt="" coords="251,96,435,137"/>
+<area shape="rect" id="node5" title=" " alt="" coords="255,5,431,47"/>
 </map>

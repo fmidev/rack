@@ -1,16 +1,19 @@
 <map id="CmdFormatFile&lt; C &gt;" name="CmdFormatFile&lt; C &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="SimpleCommand\&lt; std\l::string \&gt;" alt="" coords="204,668,356,709"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="223,592,337,619"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="180,503,263,529"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="155,427,240,453"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title="Context" alt="" coords="159,337,227,364"/>
-<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="50,248,145,275"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="21,165,174,191"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger. " alt="" coords="172,248,215,275"/>
-<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title="StatusFlags" alt="" coords="239,248,331,275"/>
-<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title="GlobalFlags\&lt; status\l_flag_id \&gt;" alt="" coords="216,157,355,199"/>
-<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="253,81,318,108"/>
-<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="236,5,335,32"/>
-<area shape="rect" id="node15" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="292,503,399,529"/>
-<area shape="rect" id="node16" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="265,427,436,453"/>
+<area shape="rect" id="node1" title=" " alt="" coords="230,759,389,785"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="225,668,394,709"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,592,371,619"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="202,503,291,529"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="171,427,264,453"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="177,337,250,364"/>
+<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,248,161,275"/>
+<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,165,196,191"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,81,213,108"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="191,248,236,275"/>
+<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="260,248,359,275"/>
+<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="232,157,387,199"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="274,81,345,108"/>
+<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="256,5,363,32"/>
+<area shape="rect" id="node15" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="321,503,437,529"/>
+<area shape="rect" id="node16" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="290,427,481,453"/>
+<area shape="rect" id="node17" title=" " alt="" coords="274,337,499,364"/>
 </map>

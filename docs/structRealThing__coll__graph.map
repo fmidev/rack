@@ -1,3 +1,4 @@
 <map id="RealThing" name="RealThing">
-<area shape="rect" id="node2" href="$structBaseThing.html" title="BaseThing" alt="" coords="5,5,89,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="7,80,94,107"/>
+<area shape="rect" id="node2" href="$structBaseThing.html" title=" " alt="" coords="5,5,96,32"/>
 </map>

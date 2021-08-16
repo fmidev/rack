@@ -1,6 +1,7 @@
 <map id="CompositeAddWeighted" name="CompositeAddWeighted">
-<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title="Compositor" alt="" coords="42,229,131,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="29,155,144,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="45,80,128,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="44,5,129,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,304,184,331"/>
+<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title=" " alt="" coords="46,229,143,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="33,155,157,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="50,80,139,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="48,5,141,32"/>
 </map>

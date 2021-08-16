@@ -63,7 +63,9 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	tmpWeighted.setGeometry(src.getGeometry());
 	dstWeighted.setGeometry(src.getGeometry());
 
-	RadarFunctorOp<drain::BinaryThresholdFunctor> weightMakerOp(true);
+	//RadarFunctorOp<drain::BinaryThresholdFunctor> weightMakerOp(true);
+	RadarFunctorOp<drain::BinaryThresholdFunctor> weightMakerOp;
+	weightMakerOp.LIMIT = true;
 	//drain::image::UnaryFunctorOp<RadarDataFunctor<BinaryThresholdFunctor> > weightMakerOp(true);
 	weightMakerOp.odimSrc = odimSrc;
 	weightMakerOp.nodataValue   = 0.0;

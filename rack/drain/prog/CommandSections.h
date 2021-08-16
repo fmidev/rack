@@ -131,6 +131,7 @@ struct TriggerSection : public CommandSection {
 
 }
 
+
 /* namespace drain */
 
 #endif /* DRAINLET_H_ */

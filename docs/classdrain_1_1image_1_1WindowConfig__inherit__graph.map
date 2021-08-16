@@ -1,7 +1,8 @@
 <map id="WindowConfig" name="WindowConfig">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius. " alt="" coords="5,80,157,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title="HistogramWindowConfig" alt="" coords="182,80,349,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead. " alt="" coords="373,80,502,107"/>
-<area shape="rect" id="node5" href="$classrack_1_1RadarWindowConfig.html" title="RadarWindowConfig" alt="" coords="526,80,669,107"/>
-<area shape="rect" id="node6" href="$classrack_1_1DopplerInversionConfig.html" title="DopplerInversionConfig" alt="" coords="518,155,677,181"/>
+<area shape="rect" id="node1" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="321,5,437,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="5,80,169,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title=" " alt="" coords="194,80,378,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="402,80,543,107"/>
+<area shape="rect" id="node5" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="567,80,722,107"/>
+<area shape="rect" id="node6" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="557,155,732,181"/>
 </map>

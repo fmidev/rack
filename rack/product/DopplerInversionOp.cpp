@@ -157,7 +157,10 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 
 	// Copy VRAD
-	PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData("VRAD");
+	PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData("VRAD"); // or odim.quantity safer? VRADH?
+	mout.warn() << "copying orig " << srcData.odim.quantity << "->" << "VRAD" << mout;
+
+	//PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData(DopplerOp::regExpVRAD); // or odim.quantity safer? VRADH?
 	//dstDataVRAD.odim.importMap(srcData.odim);
 	dstDataVRAD.copyEncoding(srcData);
 	dstDataVRAD.setGeometry(srcData.data.getGeometry());

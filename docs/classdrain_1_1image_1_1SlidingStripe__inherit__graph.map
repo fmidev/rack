@@ -1,4 +1,7 @@
 <map id="SlidingStripe&lt; C, R, DIR &gt;" name="SlidingStripe&lt; C, R, DIR &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; C, R \&gt;" alt="" coords="5,155,165,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s. " alt="" coords="25,80,146,107"/>
+<area shape="rect" id="node1" title="A horizontal, one&#45;dimensional SlidingWindow (Nx1)." alt="" coords="46,333,195,375"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,244,236,285"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="27,155,214,196"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="69,80,173,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="53,5,189,32"/>
 </map>

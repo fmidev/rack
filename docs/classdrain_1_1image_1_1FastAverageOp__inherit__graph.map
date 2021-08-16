@@ -1,6 +1,8 @@
 <map id="FastAverageOp" name="FastAverageOp">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowOp.html" title="WindowOp\&lt; Window\&lt; Window\lConfig \&gt; \&gt;" alt="" coords="5,229,209,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions. " alt="" coords="70,155,145,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image. " alt="" coords="66,80,149,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="69,5,145,32"/>
+<area shape="rect" id="node1" title="Sliding window averaging operator with optional weighting support." alt="" coords="59,319,179,345"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1FastAverageWeightedOp.html" title="Utility for explicitly." alt="" coords="27,393,210,420"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="5,229,232,271"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="78,155,159,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="73,80,164,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="78,5,159,32"/>
 </map>

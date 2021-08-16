@@ -54,13 +54,26 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 	const drain::FunctorBank & functorBank = drain::getFunctorBank();
 
 	try {
-		//const std::string ftorStr = ftorSetup.substr(iStart, iEnd-iStart);
+
+		std::string ftorName;
+		std::string ftorParams;
+		drain::StringTools::split2(ftorSetup, ftorName, ftorParams, ":");
+		/*
 		size_t iSeparator = ftorSetup.find(':');
 		const bool PARAMS = (iSeparator != std::string::npos);
-
 		const std::string ftorName   = PARAMS ? ftorSetup.substr(0, iSeparator) : ftorSetup;
 		const std::string ftorParams = PARAMS ? ftorSetup.substr(iSeparator+1) : "";
-		drain::UnaryFunctor & ftor = functorBank.clone(ftorName);
+		*/
+
+		mout.experimental("name: ", ftorName);
+		mout.experimental("pars: ", ftorParams);
+
+		// NEW
+		drain::UniCloner<drain::UnaryFunctor> localBank(functorBank);
+		drain::UnaryFunctor & ftor = localBank.getCloned(ftorName);
+		// OLD
+		// drain::UnaryFunctor & ftor = functorBank.clone(ftorName);
+
 		ftor.setParameters(ftorParams, '=', ':');
 		//	ftors.push_back(ftor);
 
@@ -99,8 +112,9 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		}
 
 	}
-	catch (std::exception & e){
-		mout.error() << e.what() << mout.endl;
+	catch (const std::exception & e){
+		mout.warn()  << functorBank << mout;
+		mout.error() << e.what() << mout;
 	}
 	/*
 	for (long int i = 0; i < dst.odim.geometry.width; ++i) {

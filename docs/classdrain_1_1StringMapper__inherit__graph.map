@@ -1,2 +1,4 @@
 <map id="StringMapper" name="StringMapper">
+<area shape="rect" id="node1" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="14,80,123,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,132,32"/>
 </map>

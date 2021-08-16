@@ -1,8 +1,10 @@
 <map id="CoordinateHandler2D" name="CoordinateHandler2D">
-<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title="Range\&lt; int \&gt;" alt="" coords="5,200,104,227"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; int, 2 \&gt;" alt="" coords="62,103,189,130"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; int \&gt;" alt="" coords="128,200,243,227"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows. " alt="" coords="267,200,389,227"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; coord_pol\l_t, 4 \&gt;" alt="" coords="230,96,373,137"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T. " alt="" coords="397,103,536,130"/>
+<area shape="rect" id="node1" title=" " alt="" coords="123,304,286,331"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title=" " alt="" coords="5,200,116,227"/>
+<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="67,103,209,130"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="141,200,269,227"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="293,200,425,227"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="253,96,409,137"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="433,103,587,130"/>
+<area shape="rect" id="node8" title=" " alt="" coords="441,5,579,47"/>
 </map>

@@ -1,5 +1,6 @@
 <map id="CmdDumpMap" name="CmdDumpMap">
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="5,155,120,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="21,80,104,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="20,5,105,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="8,229,127,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="5,155,129,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="23,80,112,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="21,5,114,32"/>
 </map>

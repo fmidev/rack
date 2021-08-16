@@ -222,21 +222,8 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
 	mout.debug() << "coordHandler " << coordinateHandler << mout;
 
-	mout.debug3() << "src alpha:" << srcAlpha << mout.endl;
-	/*
-	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf() << mout.endl;
-	mout.debug()  << "src alpha.conf:" << srcAlpha.getWidth() << mout.endl;
-	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf().getWidth() << mout.endl;
-	mout.debug()  << "src alpha.conf:" << srcAlpha.getConf().area << mout.endl;
-	*/
-
-	mout.debug3() << "dst alpha:" << dstAlpha << mout.endl;
-	/*
-	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf() << mout.endl;
-	mout.debug()  << "dst alpha.conf:" << dstAlpha.getWidth() << mout.endl;
-	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf().getWidth() << mout.endl;
-	mout.debug()  << "dst alpha.conf:" << dstAlpha.getConf().area << mout.endl;
-	*/
+	mout.debug3() << "src alpha:" << srcAlpha << mout;
+	mout.debug3() << "dst alpha:" << dstAlpha << mout;
 
 	/// Current cursor location
 	Point2D<int> p;

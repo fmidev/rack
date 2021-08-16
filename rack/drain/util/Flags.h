@@ -55,6 +55,9 @@ public:
 
 	typedef drain::Dictionary2<key_t,value_t> dict_t;
 
+	static
+	const value_t ALL; // = std::numeric_limits<FlagResolver::value_t>::max();
+
 	/*
 	inline
 	FlagResolver(const dict_t & dict, char separator = 0) : separator(separator?separator:dict.separator), dictionaryRef(dict) {

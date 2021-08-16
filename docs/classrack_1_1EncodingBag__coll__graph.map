@@ -1,13 +1,16 @@
 <map id="EncodingBag" name="EncodingBag">
-<area shape="rect" id="node2" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products). " alt="" coords="321,455,408,481"/>
-<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time) " alt="" coords="336,379,393,405"/>
-<area shape="rect" id="node4" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="236,289,347,316"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="97,171,203,197"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node8" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="242,171,341,197"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="216,81,367,108"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="391,81,514,108"/>
-<area shape="rect" id="node11" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="377,5,528,32"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Frame2D.html" title="Frame2D\&lt; size_t \&gt;" alt="" coords="372,289,507,316"/>
-<area shape="rect" id="node13" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; size_t, 2 \&gt;" alt="" coords="365,171,513,197"/>
+<area shape="rect" id="node1" title="Consider long names, and then addShortKeys()" alt="" coords="478,543,585,569"/>
+<area shape="rect" id="node2" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="486,467,577,493"/>
+<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="502,391,561,417"/>
+<area shape="rect" id="node4" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="325,301,442,328"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="141,183,257,209"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node8" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="330,183,437,209"/>
+<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="238,81,406,108"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Range.html" title=" " alt="" coords="431,81,568,108"/>
+<area shape="rect" id="node11" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="487,5,655,32"/>
+<area shape="rect" id="node12" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="511,132,658,159"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="571,301,721,328"/>
+<area shape="rect" id="node14" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="569,183,731,209"/>
 </map>

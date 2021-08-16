@@ -47,20 +47,25 @@ using namespace drain::image;
 /// A single-ray "product" storing the altitude at each bin.
 /** The main idea is to compute one equidistant arc at a time.
    Has no parameters, but target scaling shoud be "S,100" or "C,0.1", for example.
+
+   \code
+   rack volume.h5 -Q DBZH --pFunctor 'FuzzyBell:10:10' -o koe.png ; # display koe.png
+   \endcode
+
 */
 class FunctorOp : public PolarProductOp {
 
 public:
 
 	FunctorOp() : // const std::string & type="S", double gain=100.0, long int nbins=0, double rscale=0) :
-		PolarProductOp(__FUNCTION__,"Computes the altitude at each bin")
+		PolarProductOp(__FUNCTION__,"Maps values using a function")
 	{
 
 		odim.product = "FUNCTOR";
 		odim.quantity = "UNKNOWN";
 
 		dataSelector.quantity = "";
-		dataSelector.path = "dataset[0-9]+/data[0-9]+/?$";  // NOTE! A dataset for each elevation groups; should suffit for nbins and rscale. However, if a user wants to use quantity, /dataN/ should be reached.
+		//dataSelector.path = "dataset[0-9]+/data[0-9]+/?$";  // NOTE! A dataset for each elevation groups; should suffit for nbins and rscale. However, if a user wants to use quantity, /dataN/ should be reached.
 		dataSelector.count = 1;
 
 

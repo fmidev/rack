@@ -1,4 +1,5 @@
 <map id="ProductBase" name="ProductBase">
-<area shape="rect" id="node3" href="$classrack_1_1ProductOp.html" title="Polar and Cartesian products. " alt="" coords="5,155,163,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="46,5,122,32"/>
+<area shape="rect" id="node1" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="39,80,141,107"/>
+<area shape="rect" id="node3" href="$classrack_1_1ProductOp.html" title="Polar and Cartesian products." alt="" coords="5,155,175,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="49,5,131,32"/>
 </map>

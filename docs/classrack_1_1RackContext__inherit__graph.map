@@ -1,8 +1,0 @@
-<map id="RackContext" name="RackContext">
-<area shape="rect" id="node2" href="$classdrain_1_1SmartContext.html" title="SmartContext" alt="" coords="37,80,140,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Context.html" title="Context" alt="" coords="5,5,73,32"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ContextKit.html" title="Utilities. " alt="" coords="97,5,181,32"/>
-<area shape="rect" id="node5" href="$classrack_1_1ImageContext.html" title="ImageContext" alt="" coords="165,80,269,107"/>
-<area shape="rect" id="node6" href="$classrack_1_1AndreContext.html" title="AndreContext" alt="" coords="293,80,396,107"/>
-<area shape="rect" id="node7" href="$classrack_1_1Hdf5Context.html" title="Hdf5Context" alt="" coords="421,80,517,107"/>
-</map>

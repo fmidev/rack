@@ -1,5 +1,6 @@
 <map id="SprinterBase" name="SprinterBase">
-<area shape="rect" id="node2" href="$structdrain_1_1SprinterLayout.html" title="SprinterLayout" alt="" coords="21,215,128,241"/>
-<area shape="rect" id="node3" href="$structdrain_1_1TypeLayout.html" title="Small container for printing style for putting of structured objects (array, maps, pairs). " alt="" coords="29,81,120,108"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; char, 3 \&gt;" alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="29,348,134,375"/>
+<area shape="rect" id="node2" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,215,140,241"/>
+<area shape="rect" id="node3" href="$structdrain_1_1TypeLayout.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="33,81,129,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,157,32"/>
 </map>

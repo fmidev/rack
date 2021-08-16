@@ -1,6 +1,8 @@
 <map id="Histogram" name="Histogram">
-<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="192,171,291,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="115,81,266,108"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="291,81,413,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="277,5,427,32"/>
+<area shape="rect" id="node1" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="73,260,164,287"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,171,189,197"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="213,171,320,197"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="128,81,296,108"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title=" " alt="" coords="321,81,458,108"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="305,5,473,32"/>
 </map>

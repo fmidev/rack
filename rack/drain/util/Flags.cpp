@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+const FlagResolver::value_t FlagResolver::ALL = ~FlagResolver::value_t(0);
+
 
 FlagResolver::value_t FlagResolver::getFreeBit(const dict_t & dict){
 

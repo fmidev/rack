@@ -1,8 +1,10 @@
 <map id="EncodingODIM" name="EncodingODIM">
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="97,171,203,197"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="242,171,341,197"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="216,81,367,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="391,81,514,108"/>
-<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="377,5,528,32"/>
+<area shape="rect" id="node1" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="177,289,294,316"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="111,171,227,197"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="269,171,375,197"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="238,81,406,108"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="431,81,568,108"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="415,5,583,32"/>
 </map>

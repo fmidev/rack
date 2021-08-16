@@ -77,8 +77,54 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 }
 
 
+void rack::RadarFunctorBase::apply(const Channel &src, Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
+	mout.debug() << "start" << mout.endl;
+
+	// const double dstMax = dst.scaling.getMax<double>();
+	//// NEW 2019/11 const double dstMax = dst.getEncoding().getTypeMax<double>();
+	// drain::Type::call<drain::typeMax, double>(dst.getType());
+	const drain::ValueScaling & dstScaling = dst.getScaling();
+
+	typedef drain::typeLimiter<double> Limiter;
+	Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
+
+	Image::const_iterator s  = src.begin();
+	Image::iterator d = dst.begin();
+	double s2;
+	if (LIMIT){
+		while (d != dst.end()){
+			s2 = static_cast<double>(*s);
+			if (s2 == odimSrc.nodata)
+				*d = nodataValue;
+			else if (s2 == odimSrc.undetect)
+				*d = undetectValue;
+			else
+				//*d = dst.scaling.limit<double>(dstMax * this->functor(odimSrc.scaleForward(s2)));
+				//*d = limit(dstMax * this->functor(odimSrc.scaleForward(s2)));
+				*d = limit(dstScaling.inv(ftor(odimSrc.scaleForward(s2))));
+			++s;
+			++d;
+		}
+	}
+	else {
+		while (d != dst.end()){
+			s2 = static_cast<double>(*s);
+			if (s2 == odimSrc.nodata)
+				*d = nodataValue;
+			else if (s2 == odimSrc.undetect)
+				*d = undetectValue;
+			else
+				*d = dstScaling.inv(ftor(odimSrc.scaleForward(s2)));
+			//*d = dstMax * this->functor(odimSrc.scaleForward(s2));
+			++s;
+			++d;
+		}
+	}
+
+}
+
+
 } // rack::
-
-
-
 

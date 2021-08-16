@@ -52,8 +52,8 @@ public:
 
 	DopplerSamplerOp() : DopplerOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
 		parameters.append(w.getParameters());
-		dataSelector.quantity = "^(VRAD|VRADH)$";
-		dataSelector.count = 1;
+		//dataSelector.quantity = "^(VRAD|VRADH)$";
+		//dataSelector.count = 1;
 	};
 
 	virtual inline ~DopplerSamplerOp(){};
@@ -64,8 +64,8 @@ public:
 protected:
 
 	DopplerSamplerOp(const std::string & name, const std::string &description) : DopplerOp(name, description){
-		dataSelector.quantity = "VRAD";
-		dataSelector.count = 1;
+		//dataSelector.quantity = "VRAD";
+		//dataSelector.count = 1;
 	}
 
 	virtual

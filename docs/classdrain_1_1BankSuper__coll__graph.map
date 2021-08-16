@@ -1,5 +1,9 @@
 <map id="BankSuper&lt; T &gt;" name="BankSuper&lt; T &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title="Bank\&lt; T, std::string \&gt;" alt="" coords="217,15,368,42"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; char,\l std::string \&gt;" alt="" coords="228,71,357,112"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Dictionary2.html" title="Dictionary2\&lt; key_t,\l value_t \&gt;" alt="" coords="225,136,361,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="516,78,647,105"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title=" " alt="" coords="236,15,403,42"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,187,47"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="247,71,391,112"/>
+<area shape="rect" id="node5" title=" " alt="" coords="17,71,175,112"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="244,136,395,177"/>
+<area shape="rect" id="node7" title=" " alt="" coords="22,136,170,177"/>
 </map>

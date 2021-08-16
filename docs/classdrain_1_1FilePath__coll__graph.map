@@ -1,5 +1,7 @@
 <map id="FilePath" name="FilePath">
-<area shape="rect" id="node2" href="$classdrain_1_1Path.html" title="Path\&lt; std::string,&#39;\l/&#39;, true, false, true \&gt;" alt="" coords="19,171,156,212"/>
-<area shape="rect" id="node4" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path. " alt="" coords="151,81,293,108"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; bool, 3 \&gt;" alt="" coords="153,5,291,32"/>
+<area shape="rect" id="node1" title="Extracts and stores directory path, base filename and extension." alt="" coords="91,275,164,301"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Path.html" title=" " alt="" coords="51,171,204,212"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,81,143,108"/>
+<area shape="rect" id="node4" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="167,81,320,108"/>
+<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="167,5,319,32"/>
 </map>

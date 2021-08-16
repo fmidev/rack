@@ -1,9 +1,11 @@
 <map id="ImpulseAvgConf" name="ImpulseAvgConf">
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="88,261,164,288"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="53,157,159,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="21,81,191,108"/>
-<area shape="rect" id="node6" href="$structdrain_1_1image_1_1Decay4.html" title="Decay4\&lt; double \&gt;" alt="" coords="195,261,324,288"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="184,157,335,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Decay2.html" title="Decay2\&lt; double \&gt;" alt="" coords="359,157,488,184"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="348,81,499,108"/>
+<area shape="rect" id="node1" title=" " alt="" coords="145,351,273,377"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="100,261,181,288"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node6" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="212,261,357,288"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,157,369,184"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="393,157,539,184"/>
+<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="382,81,550,108"/>
 </map>

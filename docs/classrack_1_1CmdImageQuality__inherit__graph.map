@@ -1,0 +1,6 @@
+<map id="CmdImageQuality" name="CmdImageQuality">
+<area shape="rect" id="node1" title="Quality groups accepted as alpha channels." alt="" coords="5,229,145,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="13,155,137,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="31,80,120,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="29,5,122,32"/>
+</map>

@@ -130,10 +130,6 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-
-		//
-
-
 		DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // ImageS elector imageS elector;
 		imageSelector.consumeParameters(ctx.select);
 		imageSelector.ensureDataGroup();
@@ -155,6 +151,28 @@ public:
 		//drain::image::Image &alphaSrc =
 		return (*ctx.currentHi5)(path); //[ODIMPathElem::ARRAY].data.dataSet;
 		//return alphaSrc;
+
+	}
+
+	drain::image::Image & getDstImage(RackContext & ctx) const {
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		drain::image::Image & dstImg = ctx.getModifiableImage();
+
+		if (dstImg.isEmpty()){
+			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			return dstImg;
+		}
+		/// Add empty alphaSrc channel
+		mout.special() << "dst image/plain: " << dstImg << mout.endl;
+		dstImg.setAlphaChannelCount(1);
+		mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+
+		mout.debug() << "image:"       << dstImg << mout.endl;
+
+		return dstImg;
 
 	}
 
@@ -180,11 +198,10 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
-
 		const PlainData<PolarSrc> src(getAlphaSrc(ctx));
 
-
-		//drain::image::Image & dstImg = ImageKit::getModifiableImage(ctx);
+		drain::image::Image & dstImg = getDstImage(ctx);
+		/*
 		drain::image::Image & dstImg = ctx.getModifiableImage();
 		if (dstImg.isEmpty()){
 			mout.warn() << "could not get ModifiableImage" << mout.endl;
@@ -195,6 +212,7 @@ public:
 		dstImg.setAlphaChannelCount(1);
 		mout.debug() << "image:"       << dstImg << mout.endl;
 		//mout.debug() << "imageAlpha:"  << img.getAlphaChannel() << mout.endl;
+		*/
 
 		DataConversionOp<ODIM> copier; //(copierHidden);
 		copier.odim.addShortKeys();
@@ -215,29 +233,31 @@ public:
 
 		//copier.traverseImageFrame(srcODIM,  srcAlpha, copier.odim, dstImg.getAlphaChannel());
 
-		dstImg.properties["what.scaleAlpha"]   = copier.odim.scaling.scale;
+		// ???
+		dstImg.properties["what.scaleAlpha"]  = copier.odim.scaling.scale;
 		dstImg.properties["what.offsetAlpha"] = copier.odim.scaling.offset;
 
 	}
 };
 
 // Adds alpha channel containing current data.
-// NEW!
 class CmdImageTransp : public CmdImageAlphaBase {
 
 public:
 
-	drain::Range<double> range;
+	//drain::Range<double> range;
+	std::string ftor;
 	double undetect;
 	double nodata;
 	// std::vector<double> kokkeilu;
 
 	CmdImageTransp() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Uses copied image, creating one if needed.") {
-		parameters.link("range", range.tuple(), "min:max").fillArray = true;
+		//parameters.link("range", range.tuple(), "min:max").fillArray = true;
+		parameters.link("ftor", ftor, "min:max or Functor_p1_p2_p3_...");
 		parameters.link("undetect", undetect=0, "opacity of 'undetect' pixels");
 		parameters.link("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
-		range.min =  -std::numeric_limits<double>::max();
-		range.max =  +std::numeric_limits<double>::max();
+		// range.min =  -std::numeric_limits<double>::max();
+		// range.max =  +std::numeric_limits<double>::max();
 		// std::cerr << __FUNCTION__ << ' '; parameters.dump(std::cerr);
 	};
 
@@ -265,7 +285,10 @@ public:
 		mout.special() << "alpha src image: " << srcAlpha << mout.endl;
 
 		// Dst image (typically, an existing coloured image)
-
+		drain::image::Image & dstImg = getDstImage(ctx);
+		/*
+		 * OLD
+		 *
 		drain::image::Image & dstImg = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (dstImg.isEmpty()){
 			mout.warn() << "could not get ModifiableImage" << mout.endl;
@@ -279,36 +302,96 @@ public:
 		//dstImg.setAlphaChannelCount(0);
 		//mout.special() << "dst image+alpha: " << dstImg << mout.endl;
 		//return;
+		*/
 
 
-		RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep(true);
+		RadarFunctorBase radarFtor;
+		//radarFtor.LIMIT = true;
 		//fu zzyStep.odimSrc.updateFromMap(src.data.getProperties());
-		fuzzyStep.odimSrc.updateFromMap(srcAlpha.getProperties());
+		radarFtor.odimSrc.updateFromMap(srcAlpha.getProperties());
 
-		if (ctx.imagePhysical){
-			mout.info() << "using physical scale " << mout.endl;
-			fuzzyStep.functor.set(range.min, range.max, 1.0);
+		const double dstMax = drain::Type::call<drain::typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
+		drain::typeLimiter<double>::value_t limit = dstImg.getConf().getLimiter<double>();  // t is type_info, char or std::string.
+		//fuzzyStep.nodataValue   = limit(dstMax*nodata);
+		//fuzzyStep.undetectValue = limit(dstMax*undetect);
+		radarFtor.nodataValue   = limit(dstMax*nodata);
+		radarFtor.undetectValue = limit(dstMax*undetect);
+
+
+		std::string s1;
+		std::string s2;
+		drain::StringTools::split2(ftor, s1, s2, "_");
+		//std::list<std::string> l;
+		//drain::StringTools::split(ftor, l, "_");
+
+		const drain::FunctorBank & functorBank = drain::getFunctorBank();
+
+		if (functorBank.has(s1)){
+
+			drain::UniCloner<drain::UnaryFunctor> localBank(functorBank);
+
+			//mout.special() << "list " << drain::sprinter(l) << mout;
+
+			drain::UnaryFunctor & ftor2 = localBank.getCloned(s1);
+			//l.pop_front();
+
+			ftor2.setParameters(s2, '=', '_');
+			mout.special() << "functor: " << ftor2 << mout;
+
+			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), ftor2, true);
+
 		}
 		else {
-			//const drain::ValueScaling & scaling = srcImg.getScaling();
-			// EncodingODIM(src.odim)
-			mout.info() << "no physical scaling, using raw values of gray source: "  <<  srcAlpha.getConf()  << mout;
-			//const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
-			const double max = drain::Type::call<drain::typeNaturalMax>(srcAlpha.getType()); // 255, 65535, or 1.0
-			//fuzzyStep.functor.set(src.odim.scaleForward(max*range.min), src.odim.scaleForward(max*range.max), 1.0);
-			fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
-			mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
+
+			if (!s2.empty()) {
+				mout.warn()  << functorBank << mout;
+				mout.warn()  << "use range <min>:<max> or functors above, params separated with '_'" << mout;
+				mout.error() << "unknown functor: " << s1 << mout;
+				return;
+			}
+			//std::list<std::string> params;
+
+			drain::Range<double> range;
+			drain::StringTools::split2(ftor, range.min, range.max, ":");
+
+			mout.special() << "range: " << range << mout;
+
+			drain::FuzzyStep<double> fuzzyStep;
+
+			//fuzzyStep.setParameters(p, assignmentSymbol, separatorSymbol)
+			/*
+			RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep;
+			fuzzyStep.LIMIT = true;
+			fuzzyStep.odimSrc.updateFromMap(srcAlpha.getProperties());
+			*/
+
+			if (ctx.imagePhysical){
+				mout.info() << "using physical scale " << mout;
+				//fuzzyStep.functor.set(range.min, range.max, 1.0);
+				fuzzyStep.set(range.min, range.max, 1.0);
+			}
+			else {
+				//const drain::ValueScaling & scaling = srcImg.getScaling();
+				// EncodingODIM(src.odim)
+				mout.info() << "no physical scaling, using raw values of gray source: "  <<  srcAlpha.getConf()  << mout;
+				//const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
+				const double max = drain::Type::call<drain::typeNaturalMax>(srcAlpha.getType()); // 255, 65535, or 1.0
+				//fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
+				const ImageConf & ac = srcAlpha.getConf();
+				// fuzzyStep.functor.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
+				fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
+				//mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
+				mout.info() << "range: " << fuzzyStep.range << mout;
+			}
+			mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
+
+			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), fuzzyStep, true);
+
 		}
 
-		double dstMax = drain::Type::call<drain::typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
-		drain::typeLimiter<double>::value_t limit = dstImg.getConf().getLimiter<double>();  // t is type_info, char or std::string.
-		fuzzyStep.nodataValue   = limit(dstMax*nodata);
-		fuzzyStep.undetectValue = limit(dstMax*undetect);
 		// dstImg has unknowns source -> encoding will not be written in metadata
 
-		mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
-		//fuzzyStep.traverseChannel(src.data.getChannel(0), dstImg.getAlphaChannel(0));
-		fuzzyStep.traverseChannel(srcAlpha.getChannel(0), dstImg.getAlphaChannel());
+		//fuzzyStep.traverseChannel(srcAlpha.getChannel(0), dstImg.getAlphaChannel());
 
 		//mout.warn() = this->getParameters();
 

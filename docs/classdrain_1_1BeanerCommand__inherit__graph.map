@@ -1,4 +1,5 @@
 <map id="BeanerCommand&lt; B &gt;" name="BeanerCommand&lt; B &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="42,80,125,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="41,5,126,32"/>
+<area shape="rect" id="node1" title="Command stored as a single entry in CommandBank and becomes &quot;renamed&quot; upon setKey() prior to executio..." alt="" coords="5,155,180,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="48,80,137,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="46,5,139,32"/>
 </map>

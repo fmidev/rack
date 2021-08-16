@@ -79,11 +79,14 @@ public:
 		return v - (2.0*vNyq)*floor((vNyq + v)/(2.0*vNyq));  // consider vNyq2
 	}
 
+	static
+	const drain::RegExp regExpVRAD;
 
 protected:
 
 	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
-		dataSelector.quantity = "VRADH?";
+		//dataSelector.quantity = "VRADH?";
+		dataSelector.quantity = "^VRADH?$"; // avoid VRADDH
 		dataSelector.count = 1;
 	}
 

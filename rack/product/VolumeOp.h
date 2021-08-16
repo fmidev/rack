@@ -234,8 +234,8 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	//where.importMap(src[ODIMPathElem::WHERE].data.attributes);
 	//where.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
 	//where = src[ODIMPathElem::WHERE].data.attributes;
-	mout.experimental("src", src[ODIMPathElem::WHERE].data.attributes);
-	mout.experimental("dst", rootWhere);
+	mout.debug2("src /where/ : ", src[ODIMPathElem::WHERE].data.attributes);
+	mout.debug2("dst /where/ : ", rootWhere);
 
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;

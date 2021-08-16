@@ -1,5 +1,6 @@
 <map id="CmdCreateDefaultQuality" name="CmdCreateDefaultQuality">
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="34,155,149,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="50,80,133,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="49,5,134,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,229,196,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="39,155,163,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="56,80,145,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="54,5,147,32"/>
 </map>

@@ -526,7 +526,8 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 		return;
 	}
 	else if (key == "all"){
-		help(0xffffffff, ostr);
+		help(FlagResolver::ALL, ostr);
+		//help(0xffffffff, ostr);
 	}
 	else {
 
@@ -623,8 +624,14 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 	ostr << "  --help [";
 	sections.keysToStream(ostr, '|');
 	if (sections.size() > 2)
-		ostr << "|all";
+		ostr << '|' << "all";
 	ostr << "]\n";
+
+	/* ostr << "Bonus:\n";
+	ostr << drain::sprinter(sections);
+	ostr << "Done.\n";
+	*/
+
 
 	//ostr << "  --help {" << sections << "}\n";
 

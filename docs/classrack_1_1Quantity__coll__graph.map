@@ -1,4 +1,6 @@
 <map id="Quantity" name="Quantity">
-<area shape="rect" id="node3" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="223,81,346,108"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="209,5,360,32"/>
+<area shape="rect" id="node1" title="Structure for defining." alt="" coords="132,171,211,197"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,81,217,108"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Range.html" title=" " alt="" coords="241,81,379,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="226,5,394,32"/>
 </map>

@@ -1,6 +1,7 @@
 <map id="CartesianExtract" name="CartesianExtract">
-<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title="Compositor" alt="" coords="21,229,110,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="8,155,123,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="24,80,107,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="23,5,108,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,304,136,331"/>
+<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title=" " alt="" coords="22,229,119,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="9,155,133,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="26,80,115,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="24,5,117,32"/>
 </map>

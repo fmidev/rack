@@ -32,10 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.25"
+#define __RACK_VERSION__ "6.26"
 
 /**
- *   Version 6.24
+ *   Version 6.26
+ *   -- Added VRAD-VRADH flexibility to Doppler products
+ *
+ *   Version 6.25
  *   -- Image geometry accepts (area, channels, alphachannels)
  *   -- Palette cmd preserves alpha channel (by copying it)
  *

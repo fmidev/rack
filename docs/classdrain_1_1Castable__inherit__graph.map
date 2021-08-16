@@ -1,6 +1,0 @@
-<map id="Castable" name="Castable">
-<area shape="rect" id="node2" href="$classdrain_1_1CastableIterator.html" title="CastableIterator" alt="" coords="5,80,120,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Referencer.html" title="Extends Castable&#39;s interface with link() " alt="" coords="145,80,231,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Variable.html" title="Variable" alt="" coords="256,80,325,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1FlexVariable.html" title="&quot;Friend class&quot; template implementation " alt="" coords="243,155,338,181"/>
-</map>

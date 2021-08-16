@@ -164,8 +164,9 @@ public:
 		//parameters.link("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
 		dataSelector.count = 1;
 
-		dataSelector.quantity = "VRAD[H]?";
+		//dataSelector.quantity = "VRAD[H]?";
 		//dataSelector.quantity = "DBZH";
+		dataSelector.quantity = "^VRADH?$"; // avoid VRADDH
 		odim.quantity = "VRAD";
 		//odim.quantity = "DBZH";
 		odim.type = "S";

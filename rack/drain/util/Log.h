@@ -429,6 +429,15 @@ public:
 		return *this;
 	};
 
+	template<typename T,typename ... TT>
+	inline
+	Logger & debug2(const T& arg, const TT &... rest){
+		debug2();
+		flush(arg, rest...);
+		return *this;
+	};
+
+
 	inline
 	Logger & debug3(){
 		initMessage<LOG_DEBUG+2>();

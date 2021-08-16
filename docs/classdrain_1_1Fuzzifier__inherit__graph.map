@@ -1,12 +1,13 @@
 <map id="Fuzzifier&lt; T &gt;" name="Fuzzifier&lt; T &gt;">
-<area shape="rect" id="node5" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. " alt="" coords="567,5,679,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="563,56,682,83"/>
-<area shape="rect" id="node7" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0. " alt="" coords="554,107,691,133"/>
-<area shape="rect" id="node8" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) . " alt="" coords="564,157,681,184"/>
-<area shape="rect" id="node9" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width..." alt="" coords="552,208,693,235"/>
-<area shape="rect" id="node10" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak. " alt="" coords="555,259,691,285"/>
-<area shape="rect" id="node11" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle . " alt="" coords="545,309,700,336"/>
-<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="244,157,345,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="129,157,196,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="5,157,81,184"/>
+<area shape="rect" id="node1" title="A base class for fuzzy functions; also an unary functor." alt="" coords="411,157,525,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve." alt="" coords="595,5,717,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="591,56,721,83"/>
+<area shape="rect" id="node7" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="581,107,731,133"/>
+<area shape="rect" id="node8" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="593,157,719,184"/>
+<area shape="rect" id="node9" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="579,208,733,235"/>
+<area shape="rect" id="node10" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak." alt="" coords="581,259,731,285"/>
+<area shape="rect" id="node11" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="573,309,739,336"/>
+<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="253,157,363,184"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="135,157,205,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,157,87,184"/>
 </map>

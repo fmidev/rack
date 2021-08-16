@@ -1,3 +1,4 @@
 <map id="Writer" name="Writer">
-<area shape="rect" id="node2" href="$classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities. " alt="" coords="5,5,77,32"/>
+<area shape="rect" id="node1" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output." alt="" coords="12,80,75,107"/>
+<area shape="rect" id="node2" href="$classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities." alt="" coords="5,5,81,32"/>
 </map>

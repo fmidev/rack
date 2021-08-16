@@ -1,4 +1,5 @@
 <map id="CartesianDataPicker" name="CartesianDataPicker">
-<area shape="rect" id="node2" href="$classrack_1_1RadarDataPicker.html" title="RadarDataPicker\&lt; Cartesian\lODIM \&gt;" alt="" coords="5,80,196,121"/>
-<area shape="rect" id="node3" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler. " alt="" coords="49,5,152,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="31,169,186,196"/>
+<area shape="rect" id="node2" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="5,80,212,121"/>
+<area shape="rect" id="node3" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler." alt="" coords="53,5,164,32"/>
 </map>

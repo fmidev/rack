@@ -1,4 +1,6 @@
 <map id="DataGroup&lt; DT, G &gt;" name="DataGroup&lt; DT, G &gt;">
-<area shape="rect" id="node2" href="$classrack_1_1TreeWrapper.html" title="TreeWrapper\&lt; DT::datatype_t \&gt;" alt="" coords="5,184,213,211"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map. " alt="" coords="52,95,167,121"/>
+<area shape="rect" id="node1" title="Something, that contains TreeWrapper and data that can be retrieved by quantity keys." alt="" coords="153,171,311,197"/>
+<area shape="rect" id="node2" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,95,235,121"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map." alt="" coords="60,5,180,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="259,95,431,121"/>
 </map>

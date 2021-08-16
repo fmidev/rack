@@ -1,4 +1,5 @@
 <map id="RackResources" name="RackResources">
-<area shape="rect" id="node2" href="$classdrain_1_1SuperContextual.html" title="SuperContextual\&lt; RackContext \&gt;" alt="" coords="5,80,225,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="73,5,158,32"/>
+<area shape="rect" id="node1" title="A container for shared resources applied by RackLets." alt="" coords="66,155,187,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SuperContextual.html" title=" " alt="" coords="5,80,248,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="80,5,173,32"/>
 </map>

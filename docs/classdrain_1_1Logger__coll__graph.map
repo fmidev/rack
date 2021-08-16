@@ -1,4 +1,5 @@
 <map id="Logger" name="Logger">
-<area shape="rect" id="node2" href="$structdrain_1_1Notification.html" title="Notification" alt="" coords="5,5,93,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger. " alt="" coords="117,5,160,32"/>
+<area shape="rect" id="node1" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log." alt="" coords="69,95,136,121"/>
+<area shape="rect" id="node2" href="$structdrain_1_1Notification.html" title=" " alt="" coords="5,5,104,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="128,5,173,32"/>
 </map>

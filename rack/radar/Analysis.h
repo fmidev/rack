@@ -122,11 +122,31 @@ class NaturalRadarDataFunctor : public RadarDataFunctor<F>  {
 };
 */
 
-/// Convenience (abbreviation)
-template <class F>
-class RadarFunctorOp : public drain::image::UnaryFunctorOp<F> {
+
+class RadarFunctorBase  {
 public:
 
+	PolarODIM odimSrc;
+	//bool LIMIT;
+	double nodataValue;
+	double undetectValue;
+
+	RadarFunctorBase() :  nodataValue(0.0), undetectValue(0.0) {
+		//if (adaptParameters)
+		//LIMIT = limit;
+	};
+
+
+	void apply(const Channel &src, Channel & dst, const drain::UnaryFunctor & ftor, bool LIMIT = true) const;
+
+};
+
+/// Convenience (abbreviation)
+template <class F>
+class RadarFunctorOp : public RadarFunctorBase, public drain::image::UnaryFunctorOp<F> {
+public:
+
+	/*
 	PolarODIM odimSrc;
 	bool LIMIT;
 	double nodataValue;
@@ -136,15 +156,30 @@ public:
 		//if (adaptParameters)
 		this->getParameters().append(this->functor.getParameters());
 	};
+	*/
+	inline
+	RadarFunctorOp(){
+		this->LIMIT = true;
+	};
 
 
-	virtual ~RadarFunctorOp(){};
+
+	virtual inline
+	~RadarFunctorOp(){};
 
 	/// Process the image.
 	/**
 	 */
 	virtual
 	void traverseChannel(const Channel &src, Channel & dst) const {
+		apply(src, dst, this->functor, this->LIMIT);
+	}
+
+	/// Process the image.
+	/**
+	 */
+	virtual
+	void traverseChannelOLD(const Channel &src, Channel & dst) const {
 
 		drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
 		mout.debug() << "start" << mout.endl;

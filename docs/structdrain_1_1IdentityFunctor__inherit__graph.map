@@ -1,5 +1,6 @@
 <map id="IdentityFunctor" name="IdentityFunctor">
-<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title="UnaryFunctor" alt="" coords="9,155,111,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities. " alt="" coords="27,80,93,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type..." alt="" coords="22,5,98,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,229,125,256"/>
+<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="11,155,120,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="30,80,101,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="25,5,106,32"/>
 </map>

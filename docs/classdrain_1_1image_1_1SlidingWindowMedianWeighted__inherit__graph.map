@@ -1,9 +1,10 @@
 <map id="SlidingWindowMedianWeighted" name="SlidingWindowMedianWeighted">
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogramWeighted.html" title="SlidingWindowHistogramWeighted" alt="" coords="9,512,232,539"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="SlidingWindowHistogram\l\&lt; WeightedWindowCore \&gt;" alt="" coords="33,423,209,464"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title="SlidingWindow\&lt; Histogram\lWindowConfig, WeightedWindow\lCore \&gt;" alt="" coords="12,319,229,375"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Window\&lt; HistogramWindowConfig,\l WeightedWindowCore \&gt;" alt="" coords="5,229,236,271"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title="WeightedWindowCore" alt="" coords="45,155,197,181"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them..." alt="" coords="72,80,169,107"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames. " alt="" coords="57,5,184,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="19,587,247,613"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogramWeighted.html" title=" " alt="" coords="9,512,257,539"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="35,423,231,464"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="13,319,252,375"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,229,260,271"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="49,155,216,181"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="81,80,185,107"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="65,5,201,32"/>
 </map>

@@ -40,7 +40,8 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const Data<PolarSrc> & srcData = srcSweep.getData("VRAD");
+	//const Data<PolarSrc> & srcData = srcSweep.getData("VRAD");
+	const Data<PolarSrc> & srcData = srcSweep.getFirstData();  // VRAD or VRADH
 
 	if (srcData.data.isEmpty()){
 		mout.warn() << "data empty" << mout.endl;

@@ -1,20 +1,23 @@
 <map id="CmdQuantityConf" name="CmdQuantityConf">
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters . " alt="" coords="223,635,337,661"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="181,516,264,543"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="155,427,240,453"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Context.html" title="Context" alt="" coords="159,337,227,364"/>
-<area shape="rect" id="node6" href="$classdrain_1_1VariableMap.html" title="A map of Variables. " alt="" coords="50,248,145,275"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Variable \&gt;" alt="" coords="21,165,174,191"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger. " alt="" coords="172,248,215,275"/>
-<area shape="rect" id="node10" href="$classdrain_1_1StatusFlags.html" title="StatusFlags" alt="" coords="239,248,331,275"/>
-<area shape="rect" id="node11" href="$classdrain_1_1GlobalFlags.html" title="GlobalFlags\&lt; status\l_flag_id \&gt;" alt="" coords="216,157,355,199"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings. " alt="" coords="253,81,318,108"/>
-<area shape="rect" id="node13" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="236,5,335,32"/>
-<area shape="rect" id="node14" href="$classdrain_1_1ReferenceMap.html" title="ReferenceMap" alt="" coords="297,516,404,543"/>
-<area shape="rect" id="node17" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity. " alt="" coords="362,635,473,661"/>
-<area shape="rect" id="node15" href="$classdrain_1_1SmartMap.html" title="SmartMap\&lt; Referencer \&gt;" alt="" coords="265,427,436,453"/>
-<area shape="rect" id="node18" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities. " alt="" coords="487,516,585,543"/>
-<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 4 \&gt;" alt="" coords="461,427,611,453"/>
-<area shape="rect" id="node20" href="$classdrain_1_1Range.html" title="Range\&lt; double \&gt;" alt="" coords="636,427,759,453"/>
-<area shape="rect" id="node21" href="$classdrain_1_1UniTuple.html" title="UniTuple\&lt; double, 2 \&gt;" alt="" coords="622,337,773,364"/>
+<area shape="rect" id="node1" title=" " alt="" coords="313,724,452,751"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="249,635,373,661"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="203,516,293,543"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="171,427,264,453"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Context.html" title=" " alt="" coords="177,337,250,364"/>
+<area shape="rect" id="node6" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,248,161,275"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,165,196,191"/>
+<area shape="rect" id="node8" title=" " alt="" coords="5,81,213,108"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="191,248,236,275"/>
+<area shape="rect" id="node10" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="260,248,359,275"/>
+<area shape="rect" id="node11" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="232,157,387,199"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="274,81,345,108"/>
+<area shape="rect" id="node13" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="256,5,363,32"/>
+<area shape="rect" id="node14" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="327,516,443,543"/>
+<area shape="rect" id="node17" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="397,635,515,661"/>
+<area shape="rect" id="node15" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="290,427,481,453"/>
+<area shape="rect" id="node16" title=" " alt="" coords="274,337,499,364"/>
+<area shape="rect" id="node18" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="536,516,643,543"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="505,427,673,453"/>
+<area shape="rect" id="node20" href="$classdrain_1_1Range.html" title=" " alt="" coords="698,427,835,453"/>
+<area shape="rect" id="node21" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="683,337,851,364"/>
 </map>
