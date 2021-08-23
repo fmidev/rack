@@ -155,9 +155,16 @@ public:
 	~FuzzyStep(){};
 
 	inline
-	void set(double startPos, double endPos, double scale=1.0, double bias=0.0){
-		this->range.min = startPos;
-		this->range.max = endPos;
+	void set(double rangeMin, double rangeMax, double scale=1.0, double bias=0.0){
+		this->range.min = rangeMin;
+		this->range.max = rangeMax;
+		this->setScale(scale, bias);
+		this->updateBean();
+	}
+
+	inline
+	void set(const drain::Range<double> & r, double scale=1.0, double bias=0.0){
+		this->range.set(r);
 		this->setScale(scale, bias);
 		this->updateBean();
 	}

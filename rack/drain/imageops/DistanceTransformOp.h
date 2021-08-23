@@ -167,8 +167,9 @@ protected:
 
 	DistanceTransformOp(const DistanceTransformOp & op) : ImageOp(op) {
 		parameters.append(this->distanceModel.getParameters());
-		setParameters(op.getParameters());
-		distanceModel.update(); // Important: handles NAN's
+		//setParameters(op.getParameters());
+		this->distanceModel.setParameters(op.distanceModel.getParameters());
+		this->distanceModel.update(); // Important: handles NAN's
 	};
 
 	// Extend default range (of src) when coord policy is WRAP

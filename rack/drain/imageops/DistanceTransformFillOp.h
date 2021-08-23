@@ -34,6 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/File.h" // debugging
 #include "DistanceTransformOp.h"
 
+//#include "drain/util/FunctorPack.h"
+#include "drain/util/Fuzzy.h"
+#include "FunctorOp.h"
 //#include "QualityMixerOp.h"
 
 
@@ -124,7 +127,8 @@ protected:
 
 	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN,
 			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
-		DistanceTransformOp<T>(name, description, horz, vert, topology) {
+		DistanceTransformOp<T>(name, description, horz, vert, topology), alphaThreshold(0.0, 0.0) {
+		this->parameters.link("alphaThreshold", alphaThreshold.tuple(), "0..1").fillArray = true;
 	};
 
 	//DistanceTransformFillOp(const DistanceTransformFillOp & op) : DistanceTransformOp<T>(op) {
@@ -134,6 +138,9 @@ protected:
 	void traverseDownRight(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const;
 
 	void traverseUpLeft(ImageTray<Channel> & src, ImageTray<Channel> & dst) const ;
+
+	//double alphaThreshold;
+	drain::Range<double> alphaThreshold;
 
 };
 
@@ -195,6 +202,17 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 		drain::image::File::write(dstAlpha,"dtu-a.png");
 	}
 	 */
+	if (alphaThreshold.max > 0.0){ // TODO: check if (0,1) = neutral
+
+		Channel & dstAlpha = dst.alpha.get();
+
+		UnaryFunctorOp<FuzzyStep<double>,true> threshold;
+		threshold.functor.set(alphaThreshold);
+		mout.debug() << "Thresholding: "<< threshold.functor << mout;
+		// mout.debug() << threshold << mout;
+		threshold.traverseChannel(dstAlpha, dstAlpha);
+		//FilePng::write(dstAlpha, "a2.png");
+	}
 
 
 }

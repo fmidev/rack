@@ -127,14 +127,13 @@ protected:
 /// Class for using simple function objects (like std::functor) for sequential pixel iteration.
 /**!
  *   \template F - unary (single-parameter) functor
+ *   \template NORM - normalize to 0...1 (unsigned) and -1...1 (signed)
+ *   \template SIGN - select signed, else unsigned
  */
 template <class F,bool NORM=false,bool SIGN=false>
 class UnaryFunctorOp : public FunctorOp<F>
 {
 public:
-
-	//static const bool normalize  = NORM;
-	//static const bool signedType = SIGN;
 
 	/**
 	 *  \param adaptParameters - add all the parameters of the functors to this op's parameters
@@ -174,7 +173,7 @@ protected:
 			dst.setEncoding(src.getEncoding());
 
 		// TODO: check if int, and unsigned, and minValue
-		if (SIGN && (dst.getMinPhys()>=0.0)){
+		if (SIGN && (dst.getMinPhys()>=0.0)){ // bug? why not leq
 			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 			mout.warn() << this->functor.getName() << " would need signed type instead of : " << dst.getEncoding() << mout;
 		}

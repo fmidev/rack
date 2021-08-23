@@ -69,7 +69,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 		iChannels = std::max(iChannels, view.getImageChannelCount());
 		aChannels = std::max(aChannels, view.getAlphaChannelCount());
-		mout.special() << "channels... " << s << " " << iChannels << '+' << aChannels << mout.endl;
+		mout.debug() << "channels... " << s << " (" << iChannels << '+' << aChannels << ')' << mout;
 
 	}
 
@@ -98,7 +98,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	const size_t height = srcFrame.getHeight();
 	const double gray = dstImage.getConf().getTypeMax<double>()/2.0;
 
-	mout.warn() << "src: " << srcFrame << mout;
+	mout.debug() << "src: " << srcFrame << mout;
 	//return;
 
 	if (dstImage.hasAlphaChannel()){
@@ -106,7 +106,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 		dstAlpha.fill(dstAlpha.getConf().getTypeMax<double>());
 	}
 
-	mout.warn() << "dst: " << dstImage << mout;
+	mout.debug() << "dst: " << dstImage << mout;
 
 
 	ImageView view;
@@ -147,7 +147,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 			if (kView >= view.getChannelCount())
 				kView = view.getChannelCount()-1; // last channel
 
-			mout.note() << "copy: " << viewStr << '[' << kView  << "] => dst[" << k << ']' << '+' << v << mout;
+			mout.debug() << "copy: " << viewStr << '[' << kView  << "] => dst[" << k << ']' << '+' << v << mout;
 
 			const Channel & src = view.getChannel(kView);
 			Channel & dst = dstImage.getChannel(k);

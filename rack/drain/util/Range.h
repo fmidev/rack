@@ -108,13 +108,13 @@ public:
 
 	// Returns (max - min) which may be negative if max
 	inline
-	T width(){
+	T width() const {
 		return this->max - this->min;
 	}
 
 	// Returns abs(max - min).
 	inline
-	T span(){
+	T span() const {
 		if (this->max > this->min)
 			return this->max - this->min;
 		else
