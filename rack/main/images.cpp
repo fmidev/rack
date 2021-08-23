@@ -352,7 +352,15 @@ public:
 			//std::list<std::string> params;
 
 			drain::Range<double> range;
-			drain::StringTools::split2(ftor, range.min, range.max, ":");
+			//drain::Referencer r(range.tuple());
+			//r.setSeparator(':').setFill() = ftor;
+			drain::Referencer(range.tuple()).setSeparator(':').setFill().assignString(ftor);
+
+			//r.setSeparator(':');
+			//r.fillArray = true;
+			//r = ftor;
+
+			//drain::StringTools::split2(ftor, range.min, range.max, ":");
 
 			mout.special() << "range: " << range << mout;
 
@@ -368,7 +376,8 @@ public:
 			if (ctx.imagePhysical){
 				mout.info() << "using physical scale " << mout;
 				//fuzzyStep.functor.set(range.min, range.max, 1.0);
-				fuzzyStep.set(range.min, range.max, 1.0);
+				//fuzzyStep.setParameters(range, 1.0);
+				//fuzzyStep.set(range.min, range.max, 1.0);
 			}
 			else {
 				//const drain::ValueScaling & scaling = srcImg.getScaling();
@@ -379,10 +388,18 @@ public:
 				//fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
 				const ImageConf & ac = srcAlpha.getConf();
 				// fuzzyStep.functor.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				//mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
-				mout.info() << "range: " << fuzzyStep.range << mout;
+				//fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
+				range.min = ac.fwd(max*range.min);
+				range.max = ac.fwd(max*range.max);
+				// fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
+				// mout.info() << "new range: " << fuzzyStep.range << mout;
+				// mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
+			//	mout.info() << "new range: " << fuzzyStep.range << mout;
 			}
+
+			//fuzzyStep.setParameters(range, 1.0);
+			fuzzyStep.set(range, 1.0);
+
 			mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), fuzzyStep, true);

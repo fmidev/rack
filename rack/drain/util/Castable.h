@@ -171,6 +171,13 @@ public:
 			return ((const std::string *)caster.ptr)->empty();
 	}
 
+	/// Set or unset filling (padding) an array if input set is smaller
+	inline
+	Castable & setFill(bool fill=true){
+		fillArray = fill;
+		return *this;
+	}
+
 	/// Clears std::strings or sets numeric values to zero. Does not change type or resize.
 	// Has been protected, even private. Why? Essentially setting a value.
 	void clear();
@@ -406,9 +413,10 @@ public:
 	 *  \see isCharArrayString
 	 */
 	inline
-	void setSeparator(char c = ','){
+	Castable & setSeparator(char c = ','){
 		setInputSeparator(c);
 		setOutputSeparator(c);
+		return *this;
 	}
 
 	///
@@ -793,6 +801,14 @@ protected:
 	}
 
 
+
+public:
+	/* public NEW 2021 (experimental)
+	 *
+	 * useful in "stream" definitions:
+	 * drain::Referencer(range.tuple()).setSeparator(':').setFill().assignString(ftor);
+	 *
+	 */
 
 
 	/// Input type specific assign operations.
