@@ -108,39 +108,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	// RHOHV
 	const PlainData<PolarSrc> & srcRHOHV = sweepSrc.getData("RHOHV");
 	const bool RHOHV = !srcRHOHV.data.isEmpty();
-	// KEEP
 
-	/*
-	PlainData<PolarDst>  & metRHOHV = dstProduct.getData("RHOHV_FUZZY");
-	qmap.setQuantityDefaults(metRHOHV, "PROB");
-
-	if (!RHOHV){
-		mout.warn() << "RHOHV missing, fuzzifying to: " << 0.5 <<  mout.endl;
-		metRHOHV.setGeometry(geometry);
-		metRHOHV.data.fill(metRHOHV.odim.scaleInverse(0.5));
-	}
-	else {
-		stepsoid.odimSrc = srcRHOHV.odim;
-		stepsoid.functor.set(rhohv, 0.15);
-		stepsoid.process(srcRHOHV.data, metRHOHV.data);
-	}
-	*/
-
-	// DBZH
-	// DBZH / heavy rain
-	/*
-	PlainData<PolarDst> & heavyDBZH = dstProduct.getData("DBZH_HEAVY");
-	qmap.setQuantityDefaults(heavyDBZH, "PROB");
-	stepsoid.odimSrc = srcDBZH.odim;
-	stepsoid.functor.set(dbzRange.min, +5.0);
-	stepsoid.process(srcDBZH.data, heavyDBZH.data);
-	heavyDBZH.data.setPhysicalScale(0.0, 1.0);
-	// DBZH / hail
-	PlainData<PolarDst> & hailDBZH = dstProduct.getData("DBZH_HAIL");
-	qmap.setQuantityDefaults(hailDBZH, "PROB");
-	stepsoid.functor.set(dbzRange.max, +5.0);
-	stepsoid.process(srcDBZH.data, hailDBZH.data);
-	*/
 
 	// ZDR
 	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData("ZDR");
@@ -148,21 +116,6 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	if (!ZDR){
 		mout.warn() << "ZDR missing" <<  mout.endl;
 	}
-	/*
-	PlainData<PolarDst>  & heavyZDR = dstProduct.getData("ZDR_FUZZY");
-	qmap.setQuantityDefaults(heavyZDR, "PROB");
-
-	if (!ZDR){
-		mout.warn() << "ZDR missing, fuzzifying to:" << 0.5 <<  mout.endl;
-		heavyZDR.setGeometry(geometry);
-		heavyZDR.data.fill(heavyZDR.odim.scaleInverse(0.5));
-	}
-	else {
-		stepsoid.odimSrc = srcZDR.odim;
-		stepsoid.functor.set(zdr, 0.1);
-		stepsoid.process(srcZDR.data, heavyZDR.data);
-	}
-	*/
 
 	// KDP
 	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
@@ -170,22 +123,6 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	if (!KDP){
 		mout.warn() << "KDP missing" <<  mout.endl;
 	}
-	/*
-	PlainData<PolarDst>  & heavyKDP = dstProduct.getData("KDP_FUZZY");
-	qmap.setQuantityDefaults(heavyKDP, "PROB");
-
-	if (!KDP){
-		mout.warn() << "KDP missing, fuzzifying to:" << 0.5 <<  mout.endl;
-		heavyKDP.setGeometry(geometry);
-		heavyKDP.data.fill(heavyKDP.odim.scaleInverse(0.5));
-	}
-	else {
-		stepsoid.odimSrc = srcKDP.odim;
-		stepsoid.functor.set(kdp, 0.25);
-		stepsoid.process(srcKDP.data, heavyKDP.data);
-		heavyKDP.data.setPhysicalScale(0.0, 1.0);
-	}
-	*/
 
 	// KDP x DBZH... needed?
 	/*
@@ -198,8 +135,6 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	mout.warn() << heavyKDPxDBZH.data <<  mout.endl;
 	mul.traverseChannel(heavyDBZH.data, heavyKDP.data.getChannel(0), heavyKDPxDBZH.data);
 	*/
-
-
 
 
 	//double rateZ      = 0.0;
@@ -224,6 +159,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	drain::FuzzyStep<double> fuzzyKDP(kdpRange.min, kdpRange.max);
 	double weightKDP;
 
+	/// Bin-wise checks
 	bool dbzh=false;
 	bool zdr=false;
 	bool kdp=false;
@@ -232,7 +168,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	double valueKDP  = 0.0;
 	double valueZDR  = 0.0;
 
-	mout.warn() << "main loop" <<  mout.endl;
+	mout.note() << "main loop" <<  mout.endl;
 
 	typedef drain::image::Image::const_iterator iter_t;
 	iter_t itDBZH      = srcDBZH.data.begin();
@@ -242,7 +178,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 		rate = rateDst.odim.nodata;
 
-
+		// isValue==true, if value is not 'undetect' or 'nodata'
 		if (DBZH)
 			dbzh = srcDBZH.odim.isValue(*itDBZH);
 

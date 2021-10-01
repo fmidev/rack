@@ -98,11 +98,11 @@ void Composite::checkQuantity(const std::string & quantity){
 			// quantity.find
 			//if (quantity.substr(0, 4) == "VRAD"){
 			if (quantity.find("VRAD", 0, 4) == 0){
-				mout.experimental() << "Revised VRAD check: TRUE" << mout;
+				mout.experimental() << "Revised VRAD check (TRUE)" << mout;
 				mout.warn() << "compositing VRAD directly, consider Doppler dealiasing (u,v) first" << quantity << mout;
 			}
 			else {
-				mout.experimental() << "Revised VRAD check: FALSE" << mout;
+				mout.debug() << "Revised VRAD check: FALSE" << mout;
 			}
 		}
 

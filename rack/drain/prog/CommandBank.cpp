@@ -402,7 +402,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			Program::iterator itNext = it;
 			++itNext;
 			for (Script::value_type & subCmd: script){
-				mout.special() << sprinter(subCmd) << mout.endl;
+				mout.debug() << sprinter(subCmd) << mout.endl;
 				command_t & cmd = clone(subCmd.first);
 				cmd.setExternalContext(ctx);
 				cmd.setParameters(subCmd.second);

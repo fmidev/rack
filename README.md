@@ -1,4 +1,6 @@
-# rack
+rack
+====
+
 A command-line program for processing weather radar data:
 
 * Anomaly detection and removal
@@ -8,6 +10,6 @@ A command-line program for processing weather radar data:
 * Command-line interface
 * File formats: HDF5, PNG, TXT (and GeoTIFF)
 * Online [documentation](https://fmidev.github.io/rack/)
-* Quick [installation](./rack/INSTALL) guide
+* Quick [installation](./rack/INSTALL.md) guide
 
 ![Rack cover](./cover/rack-cover.png)
