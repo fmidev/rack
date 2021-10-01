@@ -1,7 +1,7 @@
 Rack installation
 =================
 
-'RACK' is a C++ based program for weather radar data processing. It supports
+**Rack** is a C++ based program for weather radar data processing. It supports
 quality control of measurement volumes, product generation and compositing, for
 example. The program works on command line; there is no graphical interface.
 
@@ -49,10 +49,10 @@ Compilation
 
 After donwloading the code, move to rack/rack/ directory and:
 
-1. Run ./configure.sh  
+1. Run `./configure.sh`  
    Edit the resulting install-rack.cnf if needed.
    
-2. Run ./build.sh  
+2. Run `./build.sh`  
    The command unzips make.zip to Release/ directory and calls 'make all' there. 
 
 After successful build, the script will prompt for a directory for installing
@@ -65,7 +65,7 @@ issue `./build.sh clean` and rerun `./build.sh`.
 If hdf5 or sz libraries raise errors upon invocation of Rack, ensure that
 both libraries are available, for example with
 
-```bash
+```
   export LD_RUN_PATH=$LD_RUN_PATH:/var/opt/lib
 ```
 
@@ -76,7 +76,7 @@ Note on Eclipse settings
 
 Rack has been developed using *Eclipse IDE*, with the following settings.
 
-All configurations:
+### All configurations
 
 * Exclude "examples" and "demo" dirs from build.
 
@@ -87,7 +87,7 @@ C++ linker, libraries:
 * png 
 * tiff, gtiff (optional)
 
-"Debug" configuration:
+### "Debug" configuration:
 
 *C++ compiler*, include paths: 
 "${workspace_loc:}"
@@ -95,7 +95,7 @@ C++ linker, libraries:
 C++ linker, library paths:
 "${workspace_loc:drain/Debug}"
 
-"Release" configuration:
+### "Release" configuration:
 
 C++ build, environment (variables)
 drainroot=/opt (or other user-defined location)
