@@ -80,7 +80,7 @@ Rack has been developed using *Eclipse IDE*, with the following settings.
 
 * Exclude "examples" and "demo" dirs from build.
 
-C++ linker, libraries: 
+**C++ linker**, libraries: 
 
 * hdf5
 * proj
@@ -89,16 +89,22 @@ C++ linker, libraries:
 
 ### "Debug" configuration:
 
-*C++ compiler*, include paths: 
-"${workspace_loc:}"
+C++ compiler, include paths:
+```
+${workspace_loc:}
+```
 
 C++ linker, library paths:
-"${workspace_loc:drain/Debug}"
+```
+${workspace_loc:drain/Debug}
+```
 
 ### "Release" configuration:
 
 C++ build, environment (variables)
+```
 drainroot=/opt (or other user-defined location)
+```
 
 C++ compiler, include paths:
 ```
