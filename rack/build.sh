@@ -47,9 +47,9 @@ fi
 
 
 echo "Success."
-#echo "Consider creating documentation by calling 'make doc' in ./rack ."
+# echo "Consider creating documentation by calling 'make doc' in ./rack ."
 echo
-echo "Consider setting:"
+echo "In library linking problems, consider adjusting env variables, esp. :"
 echo "export LD_LIBRARY_PATH=$HDFROOT/lib:$PROJROOT/lib:$LD_LIBRARY_PATH"
 echo "export PATH=$PATH:$RACKROOT/bin"
 
