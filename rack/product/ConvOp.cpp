@@ -122,8 +122,8 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	qm.setQuantityDefaults(dstData, odim.quantity);
 	// See code at the end
 	/*
-	if (!encodingRequest.empty()){
-		dstData.odim.setValues(encodingRequest);
+	if (!targetEncoding.empty()){
+		dstData.odim.setValues(targetEncoding);
 		//dstData.odim.updateFromMap(odim);
 	}
 	*/
@@ -238,9 +238,9 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 
 	//drain::image::GammaOp(gamma).process(dstData.data, dstData.data);
 
-	if (!encodingRequest.empty()){  // Larissa
+	if (!targetEncoding.empty()){  // Larissa
 		const double gainOrig = dstData.odim.scaling.scale;
-		dstData.odim.setValues(encodingRequest);
+		dstData.odim.setValues(targetEncoding);
 		Image::iterator  it = dstData.data.begin();
 		Image::iterator mit = maxEcho.data.begin();
 		while (it != dstData.data.end()){

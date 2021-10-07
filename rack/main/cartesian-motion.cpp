@@ -73,9 +73,8 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 		Hi5Tree & srcDataSetH5 = ctx.cartesianHi5(path);
 
-		//PlainData<CartesianDst> srcData(srcDataSetH5); // non-const "srcTray"
 		Data<CartesianDst> srcData(srcDataSetH5); // non-const "srcTray"
-
+		// TODO: considet Dataset, for flexibility of quality
 
 		Quantity & quantity = getQuantityMap().get(srcData.odim.quantity);
 		const EncodingODIM & encoding = quantity.get('C'); // check if exists?
@@ -124,7 +123,10 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 
 			if (!srcData.hasQuality()){
+
 				mout.note() << "no input quality; creating default field " << mout.endl;
+
+
 				PlainData<CartesianDst> & srcQ = srcData.getQualityData();
 				//srcData.createSimpleQualityData(srcQ, 1.0, 0.0, 1.0); // undetect is often "true"
 				srcData.createSimpleQualityData(srcQ, 1.0, 1.0, 0.0); // undetect is often "true"
@@ -176,7 +178,9 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				// mout.error() << "thats it" << mout.endl;
 
 				Data<CartesianDst> & srcDataMod = dstDataSet.getData(quantityMod);
-				srcDataMod.setNoSave(ProductBase::outputDataVerbosity==0);
+				mout.experimental("noSave selector modified/supressed");
+				// srcDataMod.setNoSave(ProductBase::outputDataVerbosity==0);
+				srcDataMod.setNoSave(ctx.outputDataVerbosity==0);
 
 				// mout.note() << "srcQuality scalingC: " << srcQuality.data.getScaling() << mout.endl;
 
@@ -270,7 +274,9 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 	mout.info() << "storing diff channels to: " << parent << mout.endl;
 
 	Hi5Tree & dstH5 = (ctx.cartesianHi5)[parent];
-	dstH5.data.noSave = (ProductBase::outputDataVerbosity==0);
+
+	mout.unimplemented("noSave selector supressed");
+	// dstH5.data.noSave = (ProductBase::outputDataVerbosity==0);
 
 	DataSet<CartesianDst> dstDataSet(dstH5);
 

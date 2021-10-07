@@ -41,24 +41,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-RackContext::RackContext()
-	{
-
+RackContext::RackContext(){
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "BASE";
-	// linkStatusVariables();
 }
 
 RackContext::RackContext(const RackContext & ctx): SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
-	//	currentHi5(ctx.currentHi5),
-	//	currentPolarHi5(ctx.currentPolarHi5){
-
-	//linkStatusVariables();
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "CLONED";
 }
 
 const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9:_]+");
+
+// sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
+// const drain::RegExp RackContext::variableMapperSyntax("^(.*)\\$\\{[a-zA-Z0-9:_]+)\\}(.*)$", REG_EXTENDED);
 
 
 const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext & ctx){
@@ -302,7 +298,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 
 	pathElem.set(ODIMPathElem::DATASET, 1);
 	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
+	if (appendResults.is(ODIMPathElem::DATASET)){
 		DataSelector::getNextChild(src, pathElem);
 		/*
 		if (pathElem == currentPath.front()){
@@ -311,7 +307,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 		*/
 		return true;
 	}
-	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
+	else if (appendResults.is(ODIMPathElem::DATA)){
 		DataSelector::getLastChild(src, pathElem);
 		if (pathElem.index == 0){
 			pathElem.index = 1;

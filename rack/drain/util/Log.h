@@ -273,137 +273,146 @@ public:
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & quit(){
-		initMessage<LOG_EMERG>();
-		return *this;
+		return initMessage<LOG_EMERG>();
+		// return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & alert(){
-		initMessage<LOG_ALERT>();
-		return *this;
+		return initMessage<LOG_ALERT>();
+		// return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	inline
 	Logger & fatal(){
-		initMessage<LOG_CRIT>();
-		return *this;
+		return initMessage<LOG_CRIT>();
+		// return *this;
 	};
 
 	/// Echoes
 	inline
 	Logger & error(){
-		initMessage<LOG_ERR>();
-		return *this;
+		return initMessage<LOG_ERR>();
+		// return *this;
 	};
 
 	/// Light error, command execution probable. Special type of Logger::warn().
 	inline
 	Logger & warn(){
-		initMessage<LOG_WARNING>();
-		return *this;
+		return initMessage<LOG_WARNING>();
+		// return *this;
 	};
 
 	template<typename T, typename ... TT>
 	inline
 	Logger & warn(const T& arg, const TT &... rest){
 		warn();
-		flush(rest...);
-		return *this;
+		return flush(arg, rest...);
+		// return *this;
 	};
 
 
 	/// Light error, problems ahead, but command execution probable. Special type of Logger::warn().
 	inline
 	Logger & fail(){
-		static
-		const Notification notif(__FUNCTION__, 33);
-		initMessage<LOG_WARNING>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 33);
+		return initMessage<LOG_WARNING>(notif);
+		// return *this;
 	};
 
 	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
 	//  Valid alternative should be displayed.
 	inline
 	Logger & obsolete(){
-		static
-		const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_WARNING>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 35);
+		return initMessage<LOG_WARNING>(notif);
+		// return *this;
 	};
 
 
 	/// For top-level information
 	inline
 	Logger & note(){
-		initMessage<LOG_NOTICE>();
-		return *this;
+		return initMessage<LOG_NOTICE>();
+		// return *this;
+	};
+
+	template<typename T, typename ... TT>
+	inline
+	Logger & note(const T& arg, const TT &... rest){
+		note();
+		return flush(rest...);
+		// return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	inline
 	Logger & deprecating(){
-		static
-		const Notification notif(__FUNCTION__, 33);
-		initMessage<LOG_NOTICE>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 33);
+		return initMessage<LOG_NOTICE>(notif);
+		// return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	inline
 	Logger & unimplemented(){
-		static
-		const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_NOTICE>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 35);
+		return initMessage<LOG_NOTICE>(notif);
+		// return *this;
+	};
+
+	template<typename T, typename ... TT>
+	inline
+	Logger & unimplemented(const T& arg, const TT &... rest){
+		unimplemented();
+		return flush(arg, rest...);
+		// return *this;
 	};
 
 
 	inline
 	Logger & special(){
-		static
-		const Notification notif(__FUNCTION__, 36);
-		initMessage<LOG_NOTICE>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 36);
+		return initMessage<LOG_NOTICE>(notif);
+		// return *this;
 	};
 
 	inline
 	Logger & experimental(){
 		static const Notification notif(__FUNCTION__, 94);
-		initMessage<LOG_NOTICE>(notif);
-		return *this;
+		return initMessage<LOG_NOTICE>(notif);
+		// return *this;
 	};
 
 	template<typename T,typename ... TT>
 	inline
 	Logger & experimental(const T& arg, const TT &... rest){
 		experimental();
-		flush(arg, rest...);
-		return *this;
+		return flush(arg, rest...);
+		//return *this;
 	};
 
 	inline
 	Logger & ok(){
-		static
-		const Notification notif(__FUNCTION__, 32);
-		initMessage<LOG_INFO>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 32);
+		return initMessage<LOG_INFO>(notif);
+		//return *this;
 	};
 
 	inline
 	Logger & success(){
-		static
-		const Notification notif(__FUNCTION__, 92);
-		initMessage<LOG_NOTICE>(notif);
-		return *this;
+		static const Notification notif(__FUNCTION__, 92);
+		return initMessage<LOG_NOTICE>(notif);
+		//return *this;
 	};
 
 
 	inline
 	Logger & info(){
-		initMessage<LOG_INFO>();
-		return *this;
+		return initMessage<LOG_INFO>();
+		//return *this;
 	};
 
 
@@ -419,43 +428,42 @@ public:
 	 */
 	inline
 	Logger & debug(){
-		initMessage<LOG_DEBUG>();
-		return *this;
+		return initMessage<LOG_DEBUG>();
+		// return *this;
 	};
 
 	inline
 	Logger & debug2(){
-		initMessage<LOG_DEBUG+1>();
-		return *this;
+		return initMessage<LOG_DEBUG+1>();
+		//return *this;
 	};
 
 	template<typename T,typename ... TT>
 	inline
 	Logger & debug2(const T& arg, const TT &... rest){
 		debug2();
-		flush(arg, rest...);
-		return *this;
+		return flush(arg, rest...);
+		//return *this;
 	};
 
 
 	inline
 	Logger & debug3(){
-		initMessage<LOG_DEBUG+2>();
-		return *this;
+		return initMessage<LOG_DEBUG+2>();
+		//return *this;
 	};
 
 	inline
 	Logger & debug(level_t level){
-		static
-		const Notification notif("DEBUG*", 49);
-		initMessage<LOG_DEBUG+1>(notif); // obsolete
-		return *this;
+		static const Notification notif("DEBUG*", 49);
+		return initMessage<LOG_DEBUG+1>(notif); // obsolete
+		//return *this;
 	};
 
 	inline
 	Logger & log(level_t level){
-		initMessage(level); // avoid
-		return *this;
+		return initMessage(level); // avoid
+		//return *this;
 	};
 
 	/// Send a short [INFO] preceded with a time stamp.
@@ -463,16 +471,6 @@ public:
 
 	/// Send a longer [INFO] preceded with a time stamp.
 	Logger & timestamp();
-
-
-	/// Direct flush
-	/*
-	Logger &operator=(const std::ostream & sstr) {
-		if (level <= monitor.getVerbosity())
-			monitor.flush(level, *notif_ptr, prefix, sstr);
-		return *this;
-	}
-	*/
 
 
 	/// Simple assignment and direct flush
@@ -488,10 +486,8 @@ public:
 
 	Logger &operator<<(const std::ostream & sstr) {
 		// TODO if (!message.empty())
-		//std::cerr << "ostream!" << std::endl;
 		if (level <= monitor.getVerbosity())
 			message << sstr.rdbuf();
-		//monitor.flush(level, *notif_ptr, prefix, ostr);
 		return *this;
 	}
 
@@ -500,10 +496,8 @@ public:
 	template <class T>
 	Logger &operator<<(const T & x) {
 		//cerr << "source input:" << x << '\n';
-		// OLD: monitor.handle(level, x, prefix);
 		if (level <= monitor.getVerbosity())
 			message << x;
-		//else message << "//" << x;
 		return *this;
 	}
 
@@ -524,7 +518,6 @@ public:
 		if (&l != this){
 			message << " NOTE: Logger" << __FUNCTION__ << " flush with non-this Logger";
 		}
-
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	}
@@ -550,15 +543,16 @@ protected:
 	void setPrefix(const char *functionName, const char * name);
 
 	template <level_t L>
-	void initMessage(const Notification & notif){
+	Logger & initMessage(const Notification & notif){
 		this->notif_ptr = & notif;
 		this->level = L;
 		this->message.str("");
+		return *this;
 	}
 	//void initMessage(level_t level);
 
 	template <level_t L>
-	void initMessage(){
+	Logger & initMessage(){
 
 		static
 		const Notification & notif = Log::getDict()[L];
@@ -566,13 +560,15 @@ protected:
 		this->notif_ptr = &notif;
 		this->level = L;
 		this->message.str("");
+		return *this;
 	}
 
 	inline
-	void initMessage(level_t level){
+	Logger & initMessage(level_t level){
 		this->notif_ptr = & Log::getDict()[level];
 		this->level = level;
 		this->message.str("");
+		return *this;
 	}
 
 

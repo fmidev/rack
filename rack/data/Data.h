@@ -328,8 +328,10 @@ public:
 		odim.type = drain::Type::getTypeChar(drain::Type(type));
 		odim.setTypeDefaults(type, values);
 		data.setType(type);
-		//data.setGeometry(data.);
+		// TODO: data.setScaling(odim.scaling); ??
 	}
+
+
 
 	template <class DT2>
 	inline

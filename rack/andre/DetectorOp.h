@@ -50,8 +50,7 @@ class DetectorOp : public AndreOp {
 public:
 
 	/// If true, specific detection results will be stored
-	static
-	bool STORE;
+	//static	bool STORE;
 
 	/*
 	DetectorOp(const std::string & name = __FUNCTION__, const std::string &description = "", unsigned short code = 0) : AndreOp(name,description), classCode(code ? code : 128+(++_count)) {

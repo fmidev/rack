@@ -586,9 +586,9 @@ void Compositor::extract(const std::string & channels) const {
 	ODIMPath path;
 
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	if (ProductBase::appendResults.is(ODIMPathElem::DATASET))
+	if (ctx.appendResults.is(ODIMPathElem::DATASET))
 		DataSelector::getNextChild(ctx.cartesianHi5, parent);
-	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
+	else if (ctx.appendResults.is(ODIMPathElem::DATA)){
 		DataSelector::getLastChild(ctx.cartesianHi5, parent);
 		if (parent.index == 0){
 			parent.index = 1;

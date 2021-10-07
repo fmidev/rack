@@ -75,6 +75,23 @@ void PolarSector::adjustIndices(const PolarODIM & odim){
 	if (binRange.max > odim.area.width)
 		binRange.max = odim.area.width;
 
+	/*
+	int min = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.min));
+	min = std::max(0, min);
+
+	if (min <= odim.area.width-1)
+		binRange.min = min;
+	else
+		binRange.min = odim.area.width-1;
+
+	int max = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.max));
+	max = std::max(0, max);
+	if (max < odim.area.width)
+		binRange.max = max;
+	else
+		binRange.max = odim.area.width;
+	*/
+
 	binRange.set(min, max);
 
 	/// todo: re-adjust ranges?
@@ -89,7 +106,7 @@ void PolarSector::adjustIndices(const PolarODIM & odim){
 
 void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1, int & bin2, int & ray2) const {
 
-	drain::Logger mout("PolarWindow", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (this->rayRange.max != this->rayRange.min ){
 		ray1 = this->rayRange.min;

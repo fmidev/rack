@@ -96,14 +96,14 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 	dstDataU.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataU.odim, odim, true);
-	ProductBase::completeEncoding(dstDataU.odim, encodingRequest);
+	ProductBase::completeEncoding(dstDataU.odim, targetEncoding);
 	dstDataU.data.setType(dstDataU.odim.type);
 	setGeometry(srcData.odim, dstDataU);
 	mout.debug() << "dstDataU.odim" << EncodingODIM(dstDataU.odim) << mout.endl;
 
 	dstDataV.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataV.odim, odim, true);
-	ProductBase::completeEncoding(dstDataV.odim, encodingRequest);
+	ProductBase::completeEncoding(dstDataV.odim, targetEncoding);
 	dstDataV.data.setType(dstDataV.odim.type);
 	setGeometry(srcData.odim, dstDataV);
 

@@ -38,22 +38,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/Image.h"
 #include "drain/imageops/ImageModifierPack.h"
 #include "drain/imageops/PaletteOp.h"
-//#include "drain/prog/CommandPack.h"
-//#include "drain/prog/CommandRegistry.h" // OLD
-#include "drain/prog/CommandBankUtils.h"     // NEW
-
+#include "drain/prog/CommandBankUtils.h"
 #include "drain/util/Rectangle.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/StatusFlags.h"
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
 
+#include "hi5/Hi5.h"
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
-#include "hi5/Hi5.h"
-
-
-
+#include "data/ProductConf.h"
 #include "radar/Composite.h"
 #include "radar/RadarAccumulator.h"
 
@@ -63,8 +58,11 @@ namespace rack {
 
 
 
-// Resources provided separately for each thread.
-class RackContext : public drain::SmartContext, public ImageContext, public AndreContext, public Hdf5Context {
+/// Resources provided separately for each thread.
+/**
+ *
+ */
+class RackContext : public ProductConf, public drain::SmartContext, public ImageContext, public AndreContext, public Hdf5Context {
 
 public:
 
@@ -89,6 +87,8 @@ public:
 	static
 	const drain::StringMapper variableMapper;
 
+	//static
+	//const drain::RegExp variableMapperSyntax;
 
 
 	/// Path prefix for input files. Move to resources?
@@ -97,7 +97,14 @@ public:
 	/// Path prefix for output files. Move to resources?
 	std::string outputPrefix;
 
-	std::string targetEncoding;
+
+	/// TODO: inherit from ProductBase
+	/*
+	std::string targetEncoding; // consider encodingRequest !
+	ODIMPathElem appendResults;
+	/// Determines if also intermediate results (1) are saved. See --aStore
+	int outputDataVerbosity;
+	*/
 
 	// Accumulator for data in Cartesian coordinates
 	Composite composite;

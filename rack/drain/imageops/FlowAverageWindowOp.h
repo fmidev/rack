@@ -97,10 +97,14 @@ protected:
 			mout.debug() << "no dst alpha"  << mout.endl;
 
 		if (!srcTray.checkGeometry()){
+			mout.special() << "scrTray geom: " << srcTray.getGeometry() << mout.endl;
+			mout.special() << "content geom: " << srcTray << mout.endl;
 			mout.error() << "srcTray geometry inconsistent"  << mout.endl;
 		};
 
 		if (!dstTray.checkGeometry()){
+			mout.special() << "dstTray geom: " << dstTray.getGeometry() << mout.endl;
+			mout.special() << "content geom: " << dstTray << mout.endl;
 			mout.error() << "dstTray geometry inconsistent"  << mout.endl;
 		};
 

@@ -55,7 +55,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-bool DetectorOp::STORE(false);
+//bool DetectorOp::STORE(false);
 
 //DetectorOp::Cumulation DetectorOp::cumulateDetections = DetectorOp::MAX;
 //std::string DetectorOp::dstGroupPrefix = "quality";
@@ -123,7 +123,8 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			//dstProb.tree.data.noSave = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
 			//dstProb.setNoSave(DetectorOp::STORE == 0);
-			dstProb.setNoSave(!DetectorOp::STORE);
+			//dstProb.setNoSave(!DetectorOp::STORE);
+			dstProb.setNoSave(outputDataVerbosity==0);
 
 			// mout.warn() << "dstProb: " << dstProb << mout.endl;
 

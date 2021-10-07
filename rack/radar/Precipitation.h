@@ -100,21 +100,58 @@ private:
 
 };
 
+class SingleParamPrecip : public Precip {
 
-class PrecipZ : public Precip {
+public:
+
+	virtual
+	double rainRate(double p) const = 0;
+
+protected:
+
+	inline
+	SingleParamPrecip(const std::string & name = "", const std::string & description = ""):
+		Precip(name,description) {
+
+	}
+
+
+};
+
+class DoubleParamPrecip : public Precip {
+
+public:
+
+	virtual
+	double rainRate(double p1, double p2) const = 0;
+
+protected:
+
+	inline
+	DoubleParamPrecip(const std::string & name = "", const std::string & description = ""):
+		Precip(name,description) {
+
+	}
+
+};
+
+
+
+
+class PrecipZ : public SingleParamPrecip {
 
 public:
 
 	inline
     PrecipZ(const std::string  & name=__FUNCTION__, double a=200.0, double b=1.6) :
-    	Precip(name, "Precipitation rate from Z (reflectivity)"), a(a), b(b){
+    	SingleParamPrecip(name, "Precipitation rate from Z (reflectivity)"), a(a), b(b){
 		parameters.link("a", this->a = a);
 		parameters.link("b", this->b = b);
 		update();
 	};
 
 	inline
-	PrecipZ(const PrecipZ & p) : Precip(p) {
+	PrecipZ(const PrecipZ & p) : SingleParamPrecip(p) {
 		parameters.copyStruct(p.getParameters(), p, *this);
 		update();
 	}
@@ -165,19 +202,19 @@ public:
 };
 
 
-class PrecipKDP : public Precip {
+class PrecipKDP : public SingleParamPrecip {
 
 public:
 
 	inline
-    PrecipKDP(double a=21.0, double b=0.72) : Precip(__FUNCTION__, "Precip rate from KDP"), a(a), b(b) {
+    PrecipKDP(double a=21.0, double b=0.72) : SingleParamPrecip(__FUNCTION__, "Precip rate from KDP"), a(a), b(b) {
 		//setParameterReferences();
 		parameters.link("a", a);
 		parameters.link("b", b);
 		presets["Leinonen2012"] = "21,0.72";
 	};
 
-	PrecipKDP(const PrecipKDP & p) : Precip(p) { // copy name?
+	PrecipKDP(const PrecipKDP & p) : SingleParamPrecip(p) { // copy name?
 		parameters.copyStruct(p.getParameters(), p, *this);
 		//setParameterReferences();
 		//copy(p);
@@ -197,12 +234,12 @@ public:
 
 };
 
-class PrecipZZDR : public Precip {
+class PrecipZZDR : public DoubleParamPrecip {
 
 public:
 
 	PrecipZZDR(double a=0.0122, double b=0.820, double c=-2.28) :
-		Precip(__FUNCTION__, "Precipitation rate from Z and ZDR"), a(a), b(b), c(c) {
+		DoubleParamPrecip(__FUNCTION__, "Precipitation rate from Z and ZDR"), a(a), b(b), c(c) {
 		parameters.link("a", this->a);
 		parameters.link("b", this->b);
 		parameters.link("c", this->c);
@@ -210,7 +247,7 @@ public:
 	};
 
 	inline
-    PrecipZZDR(const PrecipZZDR & p) : Precip(p) {
+    PrecipZZDR(const PrecipZZDR & p) : DoubleParamPrecip(p) {
 		parameters.copyStruct(p.getParameters(), p, *this);
 		//setParameterReferences();
 		// copy(p);
@@ -232,20 +269,20 @@ public:
 
 };
 
-class PrecipKDPZDR : public Precip {
+class PrecipKDPZDR : public DoubleParamPrecip {
 
 public:
 
 	inline
 	PrecipKDPZDR(double a=29.7, double b=0.890, double c=-0.927) :
-	Precip(__FUNCTION__, "Precipitation rate from KDP and ZDR"), a(a), b(b), c(c) {
+	DoubleParamPrecip(__FUNCTION__, "Precipitation rate from KDP and ZDR"), a(a), b(b), c(c) {
 		parameters.link("a", a);
 		parameters.link("b", b);
 		parameters.link("c", c);
 	};
 
 	inline
-    PrecipKDPZDR(const PrecipKDPZDR & p) : Precip(p) {
+    PrecipKDPZDR(const PrecipKDPZDR & p) : DoubleParamPrecip(p) {
 		parameters.copyStruct(p.getParameters(), p, *this);
 	};
 
@@ -263,10 +300,9 @@ public:
 
 };
 
-}
+}  // rack
+
 
 
 
 #endif /* PRECIPITATION_H_ */
-
-// Rack

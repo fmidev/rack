@@ -1843,6 +1843,24 @@ public:
 };
 
 
+class OutputDataVerbosity : public drain::SimpleCommand<int> {
+
+public:
+
+	OutputDataVerbosity() : drain::SimpleCommand<int>(__FUNCTION__, "Request additional (debugging) outputs"){
+	};
+
+	virtual
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		mout.deprecating() << "use '--store " << value << "' instead";
+		ctx.outputDataVerbosity = value;
+	};
+
+};
+
+/*
 class OutputDataVerbosity : public drain::BasicCommand {
 
 public:
@@ -1858,6 +1876,7 @@ public:
 	};
 
 };
+*/
 // static drain::CommandEntry<OutputDataVerbosity> dataVebose("verboseData");
 
 
@@ -1876,19 +1895,19 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		if (value.empty()){
-			ProductBase::appendResults.set(ODIMPathElem::ROOT); // = overwrite, do not append
+			ctx.appendResults.set(ODIMPathElem::ROOT); // = overwrite, do not append
 		}
 		else if (value == "dataset")
-			ProductBase::appendResults.set(ODIMPathElem::DATASET);
+			ctx.appendResults.set(ODIMPathElem::DATASET);
 		else if (value == "data") // This is needed to distinguish between /data123 and /data
-			ProductBase::appendResults.set(ODIMPathElem::DATA);
+			ctx.appendResults.set(ODIMPathElem::DATA);
 		else {
-			ProductBase::appendResults.set(value); // possibly "data4" or "dataset7"
+			ctx.appendResults.set(value); // possibly "data4" or "dataset7"
 			//mout.warn() << "check path validity: "<< value << "'" << mout.endl;
 		}
 
 		/*
-		if (!ODIMPath::isIndexed(ProductBase::appendResults.getType()) && ! (ProductBase::appendResults != ODIMPathElem::NONE)){
+		if (!ODIMPath::isIndexed(ctx.appendResults.getType()) && ! (ctx.appendResults != ODIMPathElem::NONE)){
 			mout.warn() << "illegal path elem '"<< value << "'" << mout.endl;
 		}
 		 */
@@ -1901,34 +1920,42 @@ public:
 
 
 // NOTE: order changed
-class CmdStore : public drain::BasicCommand {
+class CmdStore : public drain::SimpleCommand<int> {
 
 public:
 
-	CmdStore() : drain::BasicCommand(__FUNCTION__, "Set how intermediate and final outputs are stored. See --append"){
-		parameters.link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
-		//parameters.link("append",  ProductBase::appendResults = "", "|data|dataset");
-		parameters.link("append",  append, "|data|dataset (deprecated)");
+	CmdStore() : drain::SimpleCommand<int>(__FUNCTION__, "Request additional (debugging) outputs", "level",
+			0, "0=default,1=intermediate results|2=extra debug results"){
+			//"Set how intermediate and final outputs are stored. See --append"){
+
+		//parameters.link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
+		//parameters.link("append",  ctx.appendResults = "", "|data|dataset");
+		//parameters.link("append",  append, "|data|dataset (deprecated)");
 	};
 
-
+	/*
 	CmdStore(const CmdStore & cmd) : drain::BasicCommand(cmd) {
 		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	};
+	*/
 
-	//int level;
-	std::string append;
+	//int outputDataVerbosity;
+	//std::string append;
 
 	virtual
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-		DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
+		ctx.outputDataVerbosity = value;
+		// DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
+		//DetectorOp::STORE = ctx.outputDataVerbosity;
+		/*
 		if (!append.empty()){
-			ProductBase::appendResults.set(append);
+			ctx.appendResults.set(append);
 			mout.warn() << "option 'append' is deprecating, use --append <path> instead." << mout.endl;
 		}
+		*/
 	};
 
 };

@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 	// Algorithm is based on the study made by Brandon Hickman from The University Of Helsinki
-#ifndef RAINRATE2_H_
-#define RAINRATE2_H_
+#ifndef RAINRATE_DP_OP_H_
+#define RAINRATE_DP_OP_H_
 
 //#include "VolumeOpNew.h"
 #include "PolarProductOp.h"
@@ -113,28 +113,24 @@ public:
 	~RainRateDPOp(){};
 
 	virtual
-	//void processSweep(const SweepSrc & src, ProductDst & dst) const;
 	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
-	/*
-	double freezingLevel;
-	double freezingLevelThickness;
-	std::string dbzParams;
-	std::string zzdrParams;
-	std::string kdpParams;
-	std::string kdpzdrParams;
-	std::string dataThreshodParams;
-	*/
-
-
-// protected:
-
-	double rhohv;
 	drain::Range<double> dbzRange;
-	//double kdp;
 	drain::Range<double> kdpRange;
-	//double zdr;
 	drain::Range<double> zdrRange;
+	double rhohv;
+
+protected:
+
+	void addDebugProduct(
+			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
+			const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;
+
+	void addDebugProduct2(
+			const PlainData<PolarSrc> & srcData,  const drain::Fuzzifier<double> & fuzzyFctor,
+			const PlainData<PolarSrc> & srcData2, const drain::Fuzzifier<double> & fuzzyFctor2,
+			const DoubleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;
+
 
 };
 

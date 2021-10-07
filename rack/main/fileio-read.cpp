@@ -183,18 +183,18 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentHi5 = & ctx.cartesianHi5;
 
 		// Move or append srcTmp to ctx.cartesianHi5
-		if (ProductBase::appendResults.isRoot() || ctx.cartesianHi5.isEmpty()){
+		if (ctx.appendResults.isRoot() || ctx.cartesianHi5.isEmpty()){
 			// Move (replace)
 			ctx.cartesianHi5.swap(srcTmp);
 			//mout.note() << ctx.cartesianHi5 << mout.endl;
 			mout.info() << "Swapped: " << ctx.cartesianHi5 << mout.endl;
 		}
-		else if (ProductBase::appendResults.isIndexed()){
-			mout.note() << "Cartesian, append mode: " << ProductBase::appendResults << mout.endl;
+		else if (ctx.appendResults.isIndexed()){
+			mout.note() << "Cartesian, append mode: " << ctx.appendResults << mout.endl;
 			appendCartesianH5(srcTmp, ctx.cartesianHi5);
 		}
 		else {
-			mout.error() << "unsupported mode for ProductOp::appendResults=" << ProductBase::appendResults << mout.endl;
+			mout.error() << "unsupported mode for ProductOp::appendResults=" << ctx.appendResults << mout.endl;
 		}
 
 		if (!ctx.composite.isMethodSet()){
@@ -250,10 +250,10 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 	mout.debug() << "start" << mout.endl;
 
-	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
+	if (ctx.appendResults.is(ODIMPathElem::DATASET)){
 		attachCartesianH5(srcRoot, dstRoot);
 	}
-	else if (ProductBase::appendResults.isIndexed()){
+	else if (ctx.appendResults.isIndexed()){
 
 		if (srcRoot.isEmpty())
 			mout.warn() << " srcRoot empty" << mout.endl;
@@ -289,7 +289,7 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 		}
 	}
 	else {
-		mout.warn() << " could not find path with append=" << ProductBase::appendResults << ", swapping anyway" << mout.endl;
+		mout.warn() << " could not find path with append=" << ctx.appendResults << ", swapping anyway" << mout.endl;
 		dstRoot.swap(srcRoot);
 	}
 

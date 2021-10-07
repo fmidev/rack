@@ -121,14 +121,20 @@ public:
 				fill('0')
 	{
 		setValidChars(validChars);
+		regExp.setFlags(REG_EXTENDED);
 		if (!format.empty())
 			parse(format);
-		regExp.setFlags(REG_EXTENDED);
+		//regExp.setFlags(REG_EXTENDED); // ORDER? Should be before parse!?
 	};
 
-	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
-		//regExp.setExpression(mapper.regExp.toStr());
+	/// Initialize with the given RegExp
+	StringMapper(const RegExp & regexp) : width(0),
+			fill('0'), regExp(regexp)  {
 		//((std::list<Stringlet> &)*this) = mapper;
+	}
+
+	/// Copy constructor copies the parsed string and the regExp
+	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
 	}
 
 
@@ -285,8 +291,6 @@ public:
 
 
 protected:
-
-	//std::string validChars;
 
 	StringMapper & parse(const std::string &s, RegExp &r);
 	RegExp regExp;

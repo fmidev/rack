@@ -28,52 +28,40 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+/*
+ * ProductOp.cpp
+ *
+ *  Created on: 2021/07
+ *      Author: mpeura
+ */
 
+/*
+#include "data/QuantityMap.h"
+//#include "drain/image/File.h"
 //#include "drain/util/Log.h"
+//#include "drain/util/Variable.h"
 
-#include "Quantity.h"
+#include "drain/util/Castable.h"
+#include "drain/util/Reference.h"
+#include "drain/util/String.h"
+#include "drain/util/Type.h"
+#include "drain/util/TypeUtils.h"
+//#include "data/Quantity.h"
+#include <limits>
+//#include <stdexcept>
+#include <utility>
+
+#include "ProductConf.h"
+*/
 
 namespace rack {
 
 
+/*
+ODIMPathElem ProductBase::appendResults;
+int ProductBase::outputDataVerbosity(0);
+*/
 
-EncodingODIM & Quantity::set(char typecode) {
-
-	if (!typecode)
-		typecode = 'C';  // ???
-
-	if (!defaultType)
-		defaultType = typecode;
-
-	EncodingODIM & odim = (*this)[typecode];
-	odim.type = typecode;
-	if (!odim.isSet())
-		odim.setTypeDefaults();
-
-	return odim;
-}
-
-std::ostream & Quantity::toStream(std::ostream & ostr) const {
-	for (const_iterator it = begin(); it != end(); ++it){
-		//ostr.width(6);
-		if (it->first == defaultType)
-			ostr << "  *";
-		else
-			ostr << "   ";
-		ostr << it->first << ',' << it->second;
-		if (drain::Type::call<drain::typeIsInteger>(it->first)){
-			ostr << " (min=" << it->second.getMin() << ')';
-		}
-		ostr << '\n';
-	}
-	if (hasUndetectValue())
-		ostr << '\t' << "virtual zero=" << undetectValue << '\n';
-	return ostr;
-}
-
-
-}  // namespace rack
-
-
+}  // rack::
 
 // Rack

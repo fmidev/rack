@@ -213,6 +213,10 @@ public:
 			ctx.targetEncoding.clear();
 		}
 
+		this->bean.appendResults = ctx.appendResults;
+		this->bean.outputDataVerbosity = ctx.outputDataVerbosity;
+		/// Determines if also intermediate results (1) are saved. See --aStore
+
 
 	}
 

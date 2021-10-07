@@ -45,21 +45,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <string>
 
-#include "data/Data.h"
-#include "data/DataSelector.h"
-#include "data/ODIM.h"
-#include "data/ODIMPath.h"
-#include "hi5/Hi5.h"
-#include "main/rack.h"
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/SmartMap.h"
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
 
+#include "hi5/Hi5.h"
+#include "data/Data.h"
+#include "data/DataSelector.h"
+#include "data/ODIM.h"
+#include "data/ODIMPath.h"
+#include "data/ProductConf.h"
+//#include "main/rack.h"
+
 namespace rack {
 
 using namespace drain::image;
+
 
 
 /// Base class for radar data processors. Input can be in polar or Cartesian coordinates.
@@ -79,7 +82,7 @@ using namespace drain::image;
  *  \tparam TD - destination (output) ODIM type
  */
 //template <class TS, class TD>
-class ProductBase : public drain::BeanLike {
+class ProductBase : public ProductConf, public drain::BeanLike {
 
 protected:
 
@@ -113,20 +116,6 @@ public:
 	void help(std::ostream &ostr = std::cout, bool showDescription = true) const;
 
 
-	/// If set, appends outputs in an hdf5 structure instead of overwriting. \see CmdAppend .
-	/**
-	 *   - empty: overwrite
-	 *   - data: write to a new \c data group in \c dataset group with the largest index.
-	 *   - data{n}: write to \c data group with index \i n in \c dataset group with the largest index.
-	 *   - dataset: write to a new \c dataset
-	 *   - dataset{n}: write to \c data1 group in \c dataset group with index \i n .
-	 */
-	static
-	ODIMPathElem appendResults;
-
-	/// Determines if also intermediate results (1) are saved. See --aStore
-	static
-	int outputDataVerbosity;
 
 
 	/// Returns a map of encoding parameters that can be changed by the user.
@@ -156,7 +145,7 @@ public:
 		}
 
 		// assign.
-		encodingRequest = p;
+		targetEncoding = p;
 	}
 
 	// under construction
@@ -168,7 +157,7 @@ public:
 	 *  (Set allowed encoding under construction.)
 	 */
 	static
-	void completeEncoding(ODIM & productODIM, const std::string & encodingRequest);
+	void completeEncoding(ODIM & productODIM, const std::string & targetEncoding);
 
 
 
@@ -189,9 +178,6 @@ public:
 	 */
 	//static 	void applyUserEncoding(ODIM & productODIM, const std::string & encoding = "");
 
-
-	// Could be hidden (esp. if some quantity is definite?)
-	DataSelector dataSelector;
 
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
 	/*
@@ -223,7 +209,6 @@ protected:
 	 */
 	drain::ReferenceMap allowedEncoding;
 
-	std::string encodingRequest;
 
 
 };

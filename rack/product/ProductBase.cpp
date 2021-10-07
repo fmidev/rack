@@ -54,11 +54,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+/*
 ODIMPathElem ProductBase::appendResults;
 
 int ProductBase::outputDataVerbosity(0);
-
+*/
 
 void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 

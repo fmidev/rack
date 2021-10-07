@@ -144,7 +144,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 
 	drain::ReferenceMap typeRef;
 	typeRef.link("type", dst.odim.type = odim.type);
-	typeRef.updateValues(encodingRequest);
+	typeRef.updateValues(targetEncoding);
 	dst.data.setType(dst.odim.type);
 
 	if (odim.scaling.scale != 0.0){ // NOTE: now dst.odim.scaling.scale at least default (1.0)
@@ -169,7 +169,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	}
 
 	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
-	ProductBase::completeEncoding(dst.odim, encodingRequest);
+	ProductBase::completeEncoding(dst.odim, targetEncoding);
 
 	dst.data.setScaling(dst.odim.scaling); // needed?
 	//dst.data.setScaling(dst.odim.scaling.scale, dst.odim.scaling.offset);

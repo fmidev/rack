@@ -55,6 +55,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataSelector.h"
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
+#include "data/QuantityMap.h"
+
 #include "hi5/Hi5.h"
 #include "main/rack.h"
 
@@ -179,15 +181,42 @@ protected:
 	/// Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.
 	/**
 	 *   Determines output encoding based on
+	 *   - output data (parameters already set in dstData)
+	 *   - this->odim (values set in constructor and targetEncoding)
+	 *   - targetEncoding
+	 *
+	 *   \see setGeometry
+	 */
+	//virtual
+	//void setEncodingNEW(PlainData<dst_t > & dstData) const;
+
+	/// Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.
+	/**
+	 *   Determines output encoding based on
 	 *   - input data (srcODIM)
 	 *   - output data (parameters already set in dstData)
-	 *   - this->odim (values set in constructor and encodingRequest)
-	 *   - encodingRequest
+	 *   - this->odim (values set in constructor and targetEncoding)
+	 *   - targetEncoding
 	 *
 	 *   \see setGeometry
 	 */
 	virtual
 	void setEncoding(const ODIM & srcODIM, PlainData<dst_t > & dstData) const;
+
+	/// Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.
+	/**
+	 *   Determines output encoding based on
+	 *   - output data (parameters already set in dstData)
+	 *   - this->odim (values set in constructor and targetEncoding)
+	 *   - targetEncoding
+	 *
+	 *   \see setGeometry
+	 *
+	 *  \param quantity - if given, applied as a "template", standard quantity to be copied; also odim.type, if empty, is set.
+	 *  \param type - if given, odim.type is always changed
+	 */
+	// void ProductOp<MS,MD>::setEncodingNEW
+	void setEncodingNEW(PlainData<dst_t> & dstData, const std::string quantity = "", const std::string type = "") const;
 
 	/*
 	static
@@ -206,24 +235,80 @@ protected:
 	*/
 };
 
-// template <class M> void VolumeOp<M>::
+/**
+ *
+ *  \param quantity - if given, applied as a "template", standard quantity to be copied; also odim.type, if empty, is set.
+ *  \param type - if given, odim.type is always changed
+ */
+
 template <class MS, class MD>
-void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t > & dst) const {
+void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
+		const std::string quantity, const std::string type) const {
 
-	//ProductOp::applyDefaultODIM(dst.odim, odim);
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (dstData.odim.quantity.empty())
+		dstData.odim.quantity = quantity;
+
+	if (!type.empty())
+		dstData.odim.type = type;
+
+	const std::string & qty = quantity.empty() ? dstData.odim.quantity : quantity;
+
+	if (qty.empty()){
+		mout.warn() << "No quantity in metadata or as argument" << mout.endl;
+	}
+
+	const QuantityMap & qmap = getQuantityMap();
+	qmap.setQuantityDefaults(dstData, qty, dstData.odim.type);
+	dstData.odim.updateValues(targetEncoding);
+	qmap.setQuantityDefaults(dstData, qty, dstData.odim.type); // type also?
+	dstData.odim.updateValues(targetEncoding);
+	// update
+	dstData.data.setScaling(odim.scaling);
+
+	/// This applies always.
+	// dstData.odim.product = odim.product; ?
+}
+
+/*
+template <class MS, class MD>
+void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dst, const std::string quantity = "", const std::string type = "") const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (odim.quantity.empty())
+		odim.quantity = quantity;
+
+	if (!type.empty())
+		odim.type = type;
+
+	const std::string & qty = quantity.empty() ? odim.quantity : quantity;
+
+	const QuantityMap & qmap = getQuantityMap();
+	qmap.setQuantityDefaults(dst, qty, odim.type);
+	dst.odim.updateValues(targetEncoding);
+	qmap.setQuantityDefaults(dst, qty, dst.odim.type); // type also?
+	dst.odim.updateValues(targetEncoding);
+	// update
+	dst.data.setScaling(dst.odim.scaling);
+
+	/// This applies always.
+	// dst.odim.product = odim.product; ?
+}
+*/
+
+template <class MS, class MD>
+void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t> & dst) const {
+
 	ProductBase::applyODIM(dst.odim, this->odim);
-
-	//ProductOp::applyODIM(dst.odim, inputODIM);
 	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
+	ProductBase::completeEncoding(dst.odim, this->targetEncoding);
 
-
-	ProductBase::completeEncoding(dst.odim, this->encodingRequest);
-
-	// NEW 2020/06
-	//dst.data.setScaling(dst.odim.scaling.scale, dst.odim.scaling.offset);
+	// Set actual scaling up to date with metadata)
 	dst.data.setScaling(dst.odim.scaling);
 	/// This applies always.
-	//dst.odim.product = odim.product;
+	// dst.odim.product = odim.product;
 }
 
 
