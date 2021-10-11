@@ -84,7 +84,7 @@ include Makefile-doxygen
 #	rm -f $@
 #	zip $@ `find install-rack/ -name *.h -or -name *.cpp`
 #	zip $@ make.zip
-#	zip $@ Makefile Makefile-Doxygen Doxyfile.ini INSTALL COPYING COPYING.LESSER}
+#	zip $@ Makefile Makefile-Doxygen Doxyfile.ini INSTALL.md COPYING COPYING.LESSER}
 
 
 
