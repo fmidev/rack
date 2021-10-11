@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Composite Class Reference</title>
+<title>rack: Composite Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="rack-logo-110x55.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname"><!-- rack /-->
    </div>
   </td>
  </tr>
@@ -649,17 +650,17 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <p>The default type of target image, that is, cumulation array, is double. If no (float valued) weighting is applied, target image could be long int as well.</p>
 <h1><a class="anchor" id="specials"></a>
 Handling special codes undetect and nodata</h1>
-<p>The implementation behind a composite is based on drain::Cumulator class, which essentially consists of four 2D arrays: accumulated data ( <img class="formulaInl" alt="$\sum w_ix_i$" src="form_96.png"/>), weights ( <img class="formulaInl" alt="$\sum w_i$" src="form_97.png"/>), squared sum ( <img class="formulaInl" alt="$\sum w_ix_i^2$" src="form_98.png"/>) and count of samples ( <img class="formulaInl" alt="$N$" src="form_99.png"/>).</p>
+<p>The implementation behind a composite is based on drain::Cumulator class, which essentially consists of four 2D arrays: accumulated data ( <img class="formulaInl" alt="$\sum w_ix_i$" src="form_95.png"/>), weights ( <img class="formulaInl" alt="$\sum w_i$" src="form_96.png"/>), squared sum ( <img class="formulaInl" alt="$\sum w_ix_i^2$" src="form_97.png"/>) and count of samples ( <img class="formulaInl" alt="$N$" src="form_98.png"/>).</p>
 <p>For radar data <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> standard defines two essential special codes, <code>undetect</code> and <code>nodata</code>, which above all mark samples that are beyond the sensitivity or the range of a radar, respectively. <code>nodata</code> is also applied in marking samples where data has been rejected due to noise and str anomalies. These codes imply adding special rules to the basically "mathematical" accumulation.</p>
-<p>In the accumulation stage, each valid data sample with data value <img class="formulaInl" alt="$ x_i $" src="form_100.png"/> and its weight <img class="formulaInl" alt="$ w_i $" src="form_101.png"/> is accumulated to the arrays by calling Cumulator::add(), with the following std::exceptions:</p>
+<p>In the accumulation stage, each valid data sample with data value <img class="formulaInl" alt="$ x_i $" src="form_99.png"/> and its weight <img class="formulaInl" alt="$ w_i $" src="form_100.png"/> is accumulated to the arrays by calling Cumulator::add(), with the following std::exceptions:</p>
 <ul>
-<li>if <img class="formulaInl" alt="$ x_i = $" src="form_102.png"/> <code>undetect</code>, just increment the count <img class="formulaInl" alt="$N$" src="form_99.png"/> (which is equal to accumulating a sample with <img class="formulaInl" alt="$ w=0 $" src="form_103.png"/>)</li>
-<li>if <img class="formulaInl" alt="$ x_i = $" src="form_102.png"/> <code>nodata</code>, skip the sample, leaving accumulation arrays intact</li>
+<li>if <img class="formulaInl" alt="$ x_i = $" src="form_101.png"/> <code>undetect</code>, just increment the count <img class="formulaInl" alt="$N$" src="form_98.png"/> (which is equal to accumulating a sample with <img class="formulaInl" alt="$ w=0 $" src="form_102.png"/>)</li>
+<li>if <img class="formulaInl" alt="$ x_i = $" src="form_101.png"/> <code>nodata</code>, skip the sample, leaving accumulation arrays intact</li>
 </ul>
-<p>In the extraction stage, a result with data value <img class="formulaInl" alt="$ x_i $" src="form_100.png"/> and weight <img class="formulaInl" alt="$ w_i $" src="form_101.png"/> are extracted at each data point according to compositing principle (AVG, MAX,...) with the following special cases:</p>
+<p>In the extraction stage, a result with data value <img class="formulaInl" alt="$ x_i $" src="form_99.png"/> and weight <img class="formulaInl" alt="$ w_i $" src="form_100.png"/> are extracted at each data point according to compositing principle (AVG, MAX,...) with the following special cases:</p>
 <ul>
-<li>if <img class="formulaInl" alt="$c_i = 0$" src="form_104.png"/> and <img class="formulaInl" alt="$w_i = 0.0$" src="form_105.png"/>, return result with <img class="formulaInl" alt="$ x_i = $" src="form_102.png"/> <code>nodata</code> and <img class="formulaInl" alt="$ w_i = 0.0 $" src="form_106.png"/></li>
-<li>if <img class="formulaInl" alt="$c_i &gt; 0$" src="form_107.png"/> and <img class="formulaInl" alt="$w_i = 0.0$" src="form_105.png"/>, return result with <img class="formulaInl" alt="$ x_i = $" src="form_102.png"/> <code>undetect</code> and <img class="formulaInl" alt="$ w_i = 0.0 $" src="form_106.png"/> </li>
+<li>if <img class="formulaInl" alt="$c_i = 0$" src="form_103.png"/> and <img class="formulaInl" alt="$w_i = 0.0$" src="form_104.png"/>, return result with <img class="formulaInl" alt="$ x_i = $" src="form_101.png"/> <code>nodata</code> and <img class="formulaInl" alt="$ w_i = 0.0 $" src="form_105.png"/></li>
+<li>if <img class="formulaInl" alt="$c_i &gt; 0$" src="form_106.png"/> and <img class="formulaInl" alt="$w_i = 0.0$" src="form_104.png"/>, return result with <img class="formulaInl" alt="$ x_i = $" src="form_101.png"/> <code>undetect</code> and <img class="formulaInl" alt="$ w_i = 0.0 $" src="form_105.png"/> </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad32ac54b34b46a0a6292ff69ea4c6bcc"></a>
@@ -873,6 +874,7 @@ Handling special codes undetect and nodata</h1>
 <li>radar/Composite.cpp</li>
 </ul>
 </div><!-- contents -->
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -3,7 +3,9 @@
 
 
 PROJECT_NAME := `basename $$PWD`
+#PROJECT_NAME = RACK
 DOXYFILE = Doxyfile
+BACKUP_FILE := `date +'${DOXYFILE}%Y%m%d-%H%M'`
 DOXYROOT = doc
 DOXYPATTERNS = '*.dox *.cpp *.h'
 
@@ -28,7 +30,7 @@ $(DOXYFILE): $(DOXYROOT)/$(PROJECT_NAME)
 	cat Doxyfile.ini >> $(DOXYFILE)
 #	echo TAGFILES	 = $(DOXYROOT)/*.tag              >> $(DOXYFILE)
 #	echo GENERATE_TAGFILE = $(DOXYROOT)/$(PROJECT_NAME).tag >> $(DOXYFILE)
-	cp -v $(DOXYFILE) $(DOXYFILE).bak
+	cp -v $(DOXYFILE) $(BACKUP_FILE).bak
 	doxygen -u $(DOXYFILE)
 
 doc-clean:
@@ -36,7 +38,7 @@ doc-clean:
 
 
 doc: $(DOXYFILE)
-	echo PROJECT_NAME='' >> $^
+#	echo PROJECT_NAME='&nbsp;' >> $^
 	doxygen $^
 
 

@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: product/VolumeOp.h Source File</title>
+<title>rack: product/VolumeOp.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="rack-logo-110x55.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname"><!-- rack /-->
    </div>
   </td>
  </tr>
@@ -229,25 +230,25 @@ $(function() {
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> dataSetPath(<a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>, 1);</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))</span></div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>)){</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getIndex()){</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            dataSetPath.index = <a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getIndex();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>)){</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getIndex()){</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            dataSetPath.index = <a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getIndex();</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        }</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <a class="code" href="classrack_1_1DataSelector.html#a16b7be5403b4f5de2fd3a53974caf2ff">DataSelector::getNextChild</a>(dst, dataSetPath);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    }</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>)){</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>)){</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="comment">//mout.info() &lt;&lt; &quot;appending to next available data group in &quot; &lt;&lt; dataSetPath &lt;&lt;  mout.endl;</span></div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    }</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ODIMPathElem::ROOT</a>)){</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.is(<a class="code" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ODIMPathElem::ROOT</a>)){</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">if</span> (!dst.<a class="code" href="classdrain_1_1Tree.html#acf82f9b2937375c7b1cf3dccb3df3312">isEmpty</a>() &amp;&amp; (&amp;src != &amp;dst)){  <span class="comment">// latter is ANDRE test... (kludge)</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a0b6d5c835e9b22fb607a28ee2b311aac">note</a>() &lt;&lt; <span class="stringliteral">&quot;clearing previous result, use --append [data|dataset] to avoid&quot;</span> &lt;&lt;  mout.endl;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            dst.<a class="code" href="classdrain_1_1Tree.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a>();</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        dataSetPath = <a class="code" href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        dataSetPath = <a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>;</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#ac54737aafe0a965dc011999e93d37f00">warn</a>() &lt;&lt; <span class="stringliteral">&quot;non-standard path location &#39;&quot;</span>&lt;&lt; dataSetPath &lt;&lt;<span class="stringliteral">&quot;&#39;, consider --help append &quot;</span> &lt;&lt;  mout.endl;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    }</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="comment">//++dataSetPath.index;</span></div>
@@ -330,25 +331,26 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a7e8d276c4a8ea4d800d9b084f21aa339"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">rack::ODIMPathElem::ROOT</a></div><div class="ttdeci">static const group_t ROOT</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:95</div></div>
 <div class="ttc" id="aclassdrain_1_1Tree_html_acf82f9b2937375c7b1cf3dccb3df3312"><div class="ttname"><a href="classdrain_1_1Tree.html#acf82f9b2937375c7b1cf3dccb3df3312">drain::Tree::isEmpty</a></div><div class="ttdeci">bool isEmpty() const</div><div class="ttdoc">Clears the children of this node.</div><div class="ttdef"><b>Definition:</b> Tree.h:353</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a1884541cc245c9e95976459d1694dd70"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">rack::ODIMPathElem::WHAT</a></div><div class="ttdeci">static const group_t WHAT</div><div class="ttdoc">Metadata group /what , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:122</div></div>
+<div class="ttc" id="astructrack_1_1ProductConf_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">rack::ProductConf::appendResults</a></div><div class="ttdeci">ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:98</div></div>
 <div class="ttc" id="aclassdrain_1_1Tree_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="classdrain_1_1Tree.html#ac8bb3912a3ce86b15842e79d0b421204">drain::Tree::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the children of this node.</div><div class="ttdef"><b>Definition:</b> Tree.h:358</div></div>
 <div class="ttc" id="aclassrack_1_1VolumeOp_html"><div class="ttname"><a href="classrack_1_1VolumeOp.html">rack::VolumeOp</a></div><div class="ttdoc">Base class for radar data processors.</div><div class="ttdef"><b>Definition:</b> VolumeOp.h:88</div></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1083</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1085</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a8fe897a670840520f73adbb3333dde40"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a8fe897a670840520f73adbb3333dde40">rack::ODIMPathElem::HOW</a></div><div class="ttdeci">static const group_t HOW</div><div class="ttdoc">Metadata group /how , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:128</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html"><div class="ttname"><a href="classdrain_1_1RegExp.html">drain::RegExp</a></div><div class="ttdef"><b>Definition:</b> RegExp.h:58</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a2a1e6ca5e06231d4bb25f634bf46db08"><div class="ttname"><a href="classdrain_1_1Logger.html#a2a1e6ca5e06231d4bb25f634bf46db08">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug()</div><div class="ttdef"><b>Definition:</b> Log.h:421</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a0b6d5c835e9b22fb607a28ee2b311aac"><div class="ttname"><a href="classdrain_1_1Logger.html#a0b6d5c835e9b22fb607a28ee2b311aac">drain::Logger::note</a></div><div class="ttdeci">Logger &amp; note()</div><div class="ttdoc">For top-level information.</div><div class="ttdef"><b>Definition:</b> Log.h:339</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a2a1e6ca5e06231d4bb25f634bf46db08"><div class="ttname"><a href="classdrain_1_1Logger.html#a2a1e6ca5e06231d4bb25f634bf46db08">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug()</div><div class="ttdef"><b>Definition:</b> Log.h:430</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a0b6d5c835e9b22fb607a28ee2b311aac"><div class="ttname"><a href="classdrain_1_1Logger.html#a0b6d5c835e9b22fb607a28ee2b311aac">drain::Logger::note</a></div><div class="ttdeci">Logger &amp; note()</div><div class="ttdoc">For top-level information.</div><div class="ttdef"><b>Definition:</b> Log.h:337</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition:</b> ODIMPath.h:78</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a2c2cca41ac00b8a84eadd3e4ab36551c"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">rack::ODIMPathElem::DATASET</a></div><div class="ttdeci">static const group_t DATASET</div><div class="ttdoc">First level group, /dataset + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:99</div></div>
-<div class="ttc" id="aclassrack_1_1ProductBase_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="classrack_1_1ProductBase.html#a29b7238397966b974ac5f6978867d32a">rack::ProductBase::appendResults</a></div><div class="ttdeci">static ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductBase.h:125</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:46</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html"><div class="ttname"><a href="classdrain_1_1VariableMap.html">drain::VariableMap</a></div><div class="ttdoc">A map of Variables.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:51</div></div>
-<div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1235</div></div>
+<div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1237</div></div>
 <div class="ttc" id="aclassdrain_1_1Tree_html"><div class="ttname"><a href="classdrain_1_1Tree.html">drain::Tree&lt; hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess &gt;</a></div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae4959f5bf3904a0fa6f56a0c648a776f"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">rack::ODIMPathElem::DATA</a></div><div class="ttdeci">static const group_t DATA</div><div class="ttdoc">Second level group, /data + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:102</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ProductOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1ProductOp.html">drain::image::ProductOp</a></div><div class="ttdoc">Computes dot product of intensities of two images.</div><div class="ttdef"><b>Definition:</b> PixelVectorOp.h:359</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a16b7be5403b4f5de2fd3a53974caf2ff"><div class="ttname"><a href="classrack_1_1DataSelector.html#a16b7be5403b4f5de2fd3a53974caf2ff">rack::DataSelector::getNextChild</a></div><div class="ttdeci">static bool getNextChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</div><div class="ttdoc">Derive a child with index one greater than the largest index encountered.</div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:378</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae645a547d8405a586c62a717666c25b3"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3">rack::ODIMPathElem::WHERE</a></div><div class="ttdeci">static const group_t WHERE</div><div class="ttdoc">Metadata group /where , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:125</div></div>
 <div class="ttc" id="aclassrack_1_1VolumeOp_html_aa00e1c37f72aacc2d1ace56a19f98d09"><div class="ttname"><a href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">rack::VolumeOp::processVolume</a></div><div class="ttdeci">virtual void processVolume(const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</div><div class="ttdoc">Traverse through given volume and create new, processed data (volume or polar product).</div><div class="ttdef"><b>Definition:</b> VolumeOp.h:120</div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

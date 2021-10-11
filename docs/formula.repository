@@ -46,93 +46,87 @@
 \_form#45:$M\{\}$
 \_form#46:$W \times H$
 \_form#47:$c$
-\_form#48:$x'$
-\_form#49:\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]
-\_form#50:$a$
-\_form#51:\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]
-\_form#52:$ V_{Nyq} $
-\_form#53:$V_{Nyq}$
-\_form#54:$ W\times H $
-\_form#55:$ W\times 1 $
-\_form#56:$ 1\times H $
-\_form#57:$R(z) = \frac{1}{a}z^\frac{1}{b}$
-\_form#58:$R(z_{h},z_{dr}) = 0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
-\_form#59:$R(K_{dp}) = 21.0K_{dp}^{0.720}$
-\_form#60:$R(K_{dp},z_{dr}) = 29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
-\_form#61:$R={\frac{z}{a}}^\frac{1}{b}$
-\_form#62:$R=0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
-\_form#63:$R=21.0K_{dp}^{0.720}$
-\_form#64:$R=29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
-\_form#65:$ maxEcho $
-\_form#66:$ zCell $
-\_form#67:$ cellHeight $
-\_form#68:$ cellDiameter $
-\_form#69:$ f_{\mathrm{zMin}}$
-\_form#70:$z$
-\_form#71:$ z_w $
-\_form#72:$ f_{\mathrm{echoTop}}$
-\_form#73:$h$
-\_form#74:$ f_{\mathrm{area}}$
-\_form#75:$ a_w $
-\_form#76:\[ p_{conv} = f_{\mathrm{zMin}}(z,z_w)f_{echoTop}(z)f_{area}(a,a_w) \]
-\_form#77:\[ q_{conv} = q_{zMax}(z,z_w)q_{echoTop}(z)q_{area}(a,a_w) \]
-\_form#78:\[ Z = 200 R^{1.6} \]
-\_form#79:$R=Z/200^{0.625}$
-\_form#80:\[ Z = 2000 R^{2.0} \]
-\_form#81:$R=Z/2000^{0.5}$
-\_form#82:\[ A_s = \frac{1}{2}ra = \frac{1}{2}\alpha r^2 \]
-\_form#83:$p = \alpha r$
-\_form#84:$b(i,j)$
-\_form#85:$i$
-\_form#86:$j$
-\_form#87:\[ A_b(i,j) = \frac{1}{2}(r_2-r_1)a = \frac{1}{2}\mathrm{rscale}\cdot \frac{2\pi}{\mathrm{nrays}}(i\cdot \mathrm{rscale}) = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i \]
-\_form#88:$\mathrm{rscale}$
-\_form#89:$\mathrm{nrays}$
-\_form#90:$(i,j)$
-\_form#91:$\Phi$
-\_form#92:$\Phi = \{(i,j)\}$
-\_form#93:$ \Phi $
-\_form#94:\[ D_\Phi = \sum_\Phi i \]
-\_form#95:\[ A_\Phi = \sum_\Phi A_b(i,j) = \sum_\Phi \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} \sum_\Phi i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} D_\Phi \]
-\_form#96:$\sum w_ix_i$
-\_form#97:$\sum w_i$
-\_form#98:$\sum w_ix_i^2$
-\_form#99:$N$
-\_form#100:$ x_i $
-\_form#101:$ w_i $
-\_form#102:$ x_i = $
-\_form#103:$ w=0 $
-\_form#104:$c_i = 0$
-\_form#105:$w_i = 0.0$
-\_form#106:$ w_i = 0.0 $
-\_form#107:$c_i > 0$
-\_form#108:\[ Z = 10^{dBZ/10} \]
-\_form#109:\[ dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10 \]
-\_form#110:$\phi$
-\_form#111:$\theta$
-\_form#112:$\alpha$
-\_form#113:$+\pi/2$
-\_form#114:$\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})$
-\_form#115:\[ c^2 = a^2 + b^2 - 2ab\cos(\gamma); \]
-\_form#116:\[ \sin(\gamma)/c = \sin(\alpha)/a \Leftrightarrow c = a · \frac{\sin(\gamma)}{\sin(\alpha)} \Leftrightarrow h = c-a = a·( \frac{\sin(\gamma)}{\sin(\alpha)} - 1) \]
-\_form#117:\[ \sin(\gamma) = \sin(\eta+\pi/2) = \cos(\eta) \]
-\_form#118:$ \alpha = \pi - \gamma - \beta $
-\_form#119:\[ \sin(\alpha) = \sin(\pi-\gamma-\beta) = \sin(\beta+\gamma) = \sin(\beta + \eta+\pi/2) = \cos(\beta + \eta) \]
-\_form#120:\[ h = a·( \frac{\cos(\eta)}{\cos(\beta + \eta)} - 1) \]
-\_form#121:\[ b^2 = a^2 + c^2 - 2ac\cos\beta = a^2 + (a^2 + 2ah+ h^2) - 2a(a + h)\cos\beta = 2a(a+h) + h^2 - 2a(a + h)\cos\beta = 2a(a+h)(1-\cos\beta) + h^2 \]
-\_form#122:\[ \frac{\sin\alpha}{a} = \frac{\sin\gamma}{c} = \frac{\sin\gamma}{a+h} \Leftrightarrow \sin\alpha =\frac{a}{a+h}\sin\gamma \Rightarrow \gamma = \pi - \gamma - \alpha = \pi - (\eta+\pi/2) - \arcsin \left( \frac{a}{a+h}\sin(\eta+\pi/2) \right) \]
-\_form#123:\[ \sin(\beta)/b = \sin(\gamma)/c \Leftrightarrow \sin(\beta) * c/b = \sin(\gamma) /// = \sin(\pi-\gamma) = /// \sin(\pi-(\eta + \pi/2)) = \sin(\pi/2-\eta) = \cos(\eta) \sin(\pi/2+\eta) = \sin(\pi-(\pi/2+\eta)) = \sin(\pi/2-\eta) = \cos(\eta) \Rightarrow \eta = \arccos( \sin(\beta) * c/b ) // WRONG! ALWAYS POSITIVE! \]
-\_form#124:\[ c^2 = a^2 + b^2 - 2ab\cos\gamma \Leftrightarrow \cos\gamma = (a^2 + b^2 - c^2) / 2ab = = (a^2 + (a^2 + c^2 - 2ac\cos\beta) - c^2) / 2ab = (2a^2 - 2ac\cos\beta) / 2ab = (a-c\cos\beta) / b \]
-\_form#125:$b$
-\_form#126:$h = c - a$
-\_form#127:$g$
-\_form#128:$ \eta $
-\_form#129:$ \beta = \angle(a,c)$
-\_form#130:$ \gamma = \angle(a,b) = \eta + \pi/2 $
-\_form#131:\[ c^2 = a^2 + b^2 - 2ab·\cos(\gamma); \]
-\_form#132:\[ \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c} \]
-\_form#133:$y$
-\_form#134:\[ y = ax + b \]
-\_form#135:\[ y = a'x' + b' \]
-\_form#136:$x' = Ax + B$
-\_form#137:\[ y = ax + b = a'x' + b' \Leftrightarrow x' = (ax + b -b')/a' = (a/a')x + (b-b')/a' = Ax' + B \]
+\_form#48:\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]
+\_form#49:$a$
+\_form#50:\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]
+\_form#51:$ V_{Nyq} $
+\_form#52:$V_{Nyq}$
+\_form#53:$ W\times H $
+\_form#54:$ W\times 1 $
+\_form#55:$ 1\times H $
+\_form#56:$R(z) = \frac{1}{a}z^\frac{1}{b}$
+\_form#57:$R(z_{h},z_{dr}) = 0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
+\_form#58:$R(K_{dp}) = 21.0K_{dp}^{0.720}$
+\_form#59:$R(K_{dp},z_{dr}) = 29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
+\_form#60:$R={\frac{z}{a}}^\frac{1}{b}$
+\_form#61:$R=0.0122z_{h}^{0.820}z_{dr}^{-2.28}$
+\_form#62:$R=21.0K_{dp}^{0.720}$
+\_form#63:$R=29.7K_{dp}^{0.890}z_{dr}^{-0.927}$
+\_form#64:$ maxEcho $
+\_form#65:$ zCell $
+\_form#66:$ cellHeight $
+\_form#67:$ cellDiameter $
+\_form#68:$ f_{\mathrm{zMin}}$
+\_form#69:$z$
+\_form#70:$ z_w $
+\_form#71:$ f_{\mathrm{echoTop}}$
+\_form#72:$h$
+\_form#73:$ f_{\mathrm{area}}$
+\_form#74:$ a_w $
+\_form#75:\[ p_{conv} = f_{\mathrm{zMin}}(z,z_w)f_{echoTop}(z)f_{area}(a,a_w) \]
+\_form#76:\[ q_{conv} = q_{zMax}(z,z_w)q_{echoTop}(z)q_{area}(a,a_w) \]
+\_form#77:\[ Z = 200 R^{1.6} \]
+\_form#78:$R=Z/200^{0.625}$
+\_form#79:\[ Z = 2000 R^{2.0} \]
+\_form#80:$R=Z/2000^{0.5}$
+\_form#81:\[ A_s = \frac{1}{2}ra = \frac{1}{2}\alpha r^2 \]
+\_form#82:$p = \alpha r$
+\_form#83:$b(i,j)$
+\_form#84:$i$
+\_form#85:$j$
+\_form#86:\[ A_b(i,j) = \frac{1}{2}(r_2-r_1)a = \frac{1}{2}\mathrm{rscale}\cdot \frac{2\pi}{\mathrm{nrays}}(i\cdot \mathrm{rscale}) = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i \]
+\_form#87:$\mathrm{rscale}$
+\_form#88:$\mathrm{nrays}$
+\_form#89:$(i,j)$
+\_form#90:$\Phi$
+\_form#91:$\Phi = \{(i,j)\}$
+\_form#92:$ \Phi $
+\_form#93:\[ D_\Phi = \sum_\Phi i \]
+\_form#94:\[ A_\Phi = \sum_\Phi A_b(i,j) = \sum_\Phi \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} \sum_\Phi i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} D_\Phi \]
+\_form#95:$\sum w_ix_i$
+\_form#96:$\sum w_i$
+\_form#97:$\sum w_ix_i^2$
+\_form#98:$N$
+\_form#99:$ x_i $
+\_form#100:$ w_i $
+\_form#101:$ x_i = $
+\_form#102:$ w=0 $
+\_form#103:$c_i = 0$
+\_form#104:$w_i = 0.0$
+\_form#105:$ w_i = 0.0 $
+\_form#106:$c_i > 0$
+\_form#107:\[ Z = 10^{dBZ/10} \]
+\_form#108:\[ dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10 \]
+\_form#109:$\phi$
+\_form#110:$\theta$
+\_form#111:$\alpha$
+\_form#112:$+\pi/2$
+\_form#113:$\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})$
+\_form#114:\[ c^2 = a^2 + b^2 - 2ab\cos(\gamma); \]
+\_form#115:\[ \sin(\gamma)/c = \sin(\alpha)/a \Leftrightarrow c = a · \frac{\sin(\gamma)}{\sin(\alpha)} \Leftrightarrow h = c-a = a·( \frac{\sin(\gamma)}{\sin(\alpha)} - 1) \]
+\_form#116:\[ \sin(\gamma) = \sin(\eta+\pi/2) = \cos(\eta) \]
+\_form#117:$ \alpha = \pi - \gamma - \beta $
+\_form#118:\[ \sin(\alpha) = \sin(\pi-\gamma-\beta) = \sin(\beta+\gamma) = \sin(\beta + \eta+\pi/2) = \cos(\beta + \eta) \]
+\_form#119:\[ h = a·( \frac{\cos(\eta)}{\cos(\beta + \eta)} - 1) \]
+\_form#120:\[ b^2 = a^2 + c^2 - 2ac\cos\beta = a^2 + (a^2 + 2ah+ h^2) - 2a(a + h)\cos\beta = 2a(a+h) + h^2 - 2a(a + h)\cos\beta = 2a(a+h)(1-\cos\beta) + h^2 \]
+\_form#121:\[ \frac{\sin\alpha}{a} = \frac{\sin\gamma}{c} = \frac{\sin\gamma}{a+h} \Leftrightarrow \sin\alpha =\frac{a}{a+h}\sin\gamma \Rightarrow \gamma = \pi - \gamma - \alpha = \pi - (\eta+\pi/2) - \arcsin \left( \frac{a}{a+h}\sin(\eta+\pi/2) \right) \]
+\_form#122:\[ \sin(\beta)/b = \sin(\gamma)/c \Leftrightarrow \sin(\beta) * c/b = \sin(\gamma) /// = \sin(\pi-\gamma) = /// \sin(\pi-(\eta + \pi/2)) = \sin(\pi/2-\eta) = \cos(\eta) \sin(\pi/2+\eta) = \sin(\pi-(\pi/2+\eta)) = \sin(\pi/2-\eta) = \cos(\eta) \Rightarrow \eta = \arccos( \sin(\beta) * c/b ) // WRONG! ALWAYS POSITIVE! \]
+\_form#123:\[ c^2 = a^2 + b^2 - 2ab\cos\gamma \Leftrightarrow \cos\gamma = (a^2 + b^2 - c^2) / 2ab = = (a^2 + (a^2 + c^2 - 2ac\cos\beta) - c^2) / 2ab = (2a^2 - 2ac\cos\beta) / 2ab = (a-c\cos\beta) / b \]
+\_form#124:$b$
+\_form#125:$h = c - a$
+\_form#126:$g$
+\_form#127:$ \eta $
+\_form#128:$ \beta = \angle(a,c)$
+\_form#129:$ \gamma = \angle(a,b) = \eta + \pi/2 $
+\_form#130:\[ c^2 = a^2 + b^2 - 2ab·\cos(\gamma); \]
+\_form#131:\[ \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c} \]

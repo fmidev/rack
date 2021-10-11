@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: data/Quantity.h Source File</title>
+<title>rack: data/Quantity.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="rack-logo-110x55.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname"><!-- rack /-->
    </div>
   </td>
  </tr>
@@ -114,8 +115,8 @@ $(function() {
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;drain/util/Log.h&quot;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;drain/util/Type.h&quot;</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/Range.h&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;ODIM.h&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;Data.h&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;EncodingODIM.h&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//#include &quot;Data.h&quot;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
@@ -233,10 +234,11 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1Quantity_html_a67993ce5cbc759f6eaf3840be5dce96f"><div class="ttname"><a href="classrack_1_1Quantity.html#a67993ce5cbc759f6eaf3840be5dce96f">rack::Quantity::Quantity</a></div><div class="ttdeci">Quantity()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> Quantity.h:70</div></div>
 <div class="ttc" id="aclassrack_1_1Quantity_html_af4cb8c7df1caf878655e71883684bbc2"><div class="ttname"><a href="classrack_1_1Quantity.html#af4cb8c7df1caf878655e71883684bbc2">rack::Quantity::unsetZero</a></div><div class="ttdeci">void unsetZero()</div><div class="ttdoc">Sets neutral value for purposes of interpolation.</div><div class="ttdef"><b>Definition:</b> Quantity.h:129</div></div>
 <div class="ttc" id="aclassrack_1_1Quantity_html_ab65941d408a0f98b4c6634c2b708dda3"><div class="ttname"><a href="classrack_1_1Quantity.html#ab65941d408a0f98b4c6634c2b708dda3">rack::Quantity::get</a></div><div class="ttdeci">const EncodingODIM &amp; get(const std::string &amp;t) const</div><div class="ttdoc">Retrieve the scaling for a given storage type.</div><div class="ttdef"><b>Definition:</b> Quantity.h:106</div></div>
-<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:486</div></div>
+<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:488</div></div>
 <div class="ttc" id="aclassrack_1_1Quantity_html_af5140d15bd9d808ec01bb06f3ae465e2"><div class="ttname"><a href="classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2">rack::Quantity::defaultType</a></div><div class="ttdeci">char defaultType</div><div class="ttdoc">Default storage type.</div><div class="ttdef"><b>Definition:</b> Quantity.h:58</div></div>
 <div class="ttc" id="aclassrack_1_1Quantity_html_ad3b601f11b6fa853b5a79424eae4dd26"><div class="ttname"><a href="classrack_1_1Quantity.html#ad3b601f11b6fa853b5a79424eae4dd26">rack::Quantity::toStream</a></div><div class="ttdeci">std::ostream &amp; toStream(std::ostream &amp;ostr) const</div><div class="ttdoc">Print declared encodings (storage types and scalings)</div><div class="ttdef"><b>Definition:</b> Quantity.cpp:56</div></div>
 <div class="ttc" id="aclassrack_1_1Quantity_html_a8337ce8504bfd5d505a74c80077cfb22"><div class="ttname"><a href="classrack_1_1Quantity.html#a8337ce8504bfd5d505a74c80077cfb22">rack::Quantity::undetectValue</a></div><div class="ttdeci">double undetectValue</div><div class="ttdoc">True, if a value corresponding a very small (unmeasurable) value has been defined.</div><div class="ttdef"><b>Definition:</b> Quantity.h:67</div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

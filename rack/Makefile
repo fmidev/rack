@@ -77,8 +77,8 @@ clean-full: clean
 	rm -fv  `find -name makefile -or -name '*.mk' -or -name '*.d'` # make.tgz
 
 
-PROJECT_LOGO=demo/rack-logo-110x55.png
-PROJECT_NAME=' '
+#PROJECT_LOGO=demo/rack-logo-110x55.png
+#PROJECT_NAME=' '
 include Makefile-doxygen
 
 #	rm -f $@

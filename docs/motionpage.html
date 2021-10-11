@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Motion</title>
+<title>rack: Motion</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="rack-logo-110x55.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname"><!-- rack /-->
    </div>
   </td>
  </tr>
@@ -72,7 +73,7 @@ Motion</h1>
 <p>In radar meteorologically, motion can be divided to two phenomenon: atmospheric motion, which is motion of air and falling hydrometeors, and motion of precipitation area, which can be further divided into motion of convective and stratiform areas, for example. <b>Rack</b> is capable of detecting both of them.</p>
 <h2><a class="anchor" id="doppler"></a>
 Basic Doppler products</h2>
-<p>Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam &ndash; hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous velocity, <img class="formulaInl" alt="$ V_{Nyq} $" src="form_52.png"/>. In the following, two derived products by are presented. <br  />
+<p>Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam &ndash; hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous velocity, <img class="formulaInl" alt="$ V_{Nyq} $" src="form_51.png"/>. In the following, two derived products by are presented. <br  />
 </p>
 <h2><a class="anchor" id="dopplerAvg"></a>
 Doppler wind smoothing</h2>
@@ -84,7 +85,7 @@ Doppler wind smoothing</h2>
 <div class="line">  # threshold=0.5 [percentage]</div>
 <div class="line">  # compensate=false [cart/polar[0|1]]</div>
 <div class="line">  # relativeScale=false [false|true]</div>
-</div><!-- fragment --><p> There are several parameters, determining the window width and height, minimum percentage for the samples in the window, switch for compensating the beam broadening, as well as switch for scaling the result with maximum unambiguous speed <img class="formulaInl" alt="$V_{Nyq}$" src="form_53.png"/> (stored as <code>how:NI</code> in ODIM metadata).</p>
+</div><!-- fragment --><p> There are several parameters, determining the window width and height, minimum percentage for the samples in the window, switch for compensating the beam broadening, as well as switch for scaling the result with maximum unambiguous speed <img class="formulaInl" alt="$V_{Nyq}$" src="form_52.png"/> (stored as <code>how:NI</code> in ODIM metadata).</p>
 <div class="image">
 <img src="pDopplerAvg-VRAD-panel.png" alt=""/>
 <div class="caption">
@@ -255,8 +256,8 @@ Smoothing operators</h3>
 <img src="spread-Average-panel.png" alt=""/>
 <div class="caption">
 Vector field spread with <code>--iAverage</code>, window size 200 x 200.</div></div>
- <p>As a computational speed-up, the rectangular averaging window of size <img class="formulaInl" alt="$ W\times H $" src="form_54.png"/> is internally performed by <img class="formulaInl" alt="$ W\times 1 $" src="form_55.png"/> followed by <img class="formulaInl" alt="$ 1\times H $" src="form_56.png"/> window averaging; the narrow windows themselves are updated (accumulated) continuously, as a "pipeline", resulting in a very fast operation. As a disadvantage, rectangular patterns may also appear in the resulting images.</p>
-<p>Two-dimensional Gaussian bell function produces smooth fields. Also that operator can be a separated to two consecutive one-dimensional run of <img class="formulaInl" alt="$ W\times 1 $" src="form_55.png"/> and <img class="formulaInl" alt="$ 1\times H $" src="form_56.png"/> windows, yet without pipelining. The bell curve is principally continuous and infinite, but practically truncated to size slightly larger than those of respective rectangular averaging windows.</p>
+ <p>As a computational speed-up, the rectangular averaging window of size <img class="formulaInl" alt="$ W\times H $" src="form_53.png"/> is internally performed by <img class="formulaInl" alt="$ W\times 1 $" src="form_54.png"/> followed by <img class="formulaInl" alt="$ 1\times H $" src="form_55.png"/> window averaging; the narrow windows themselves are updated (accumulated) continuously, as a "pipeline", resulting in a very fast operation. As a disadvantage, rectangular patterns may also appear in the resulting images.</p>
+<p>Two-dimensional Gaussian bell function produces smooth fields. Also that operator can be a separated to two consecutive one-dimensional run of <img class="formulaInl" alt="$ W\times 1 $" src="form_54.png"/> and <img class="formulaInl" alt="$ 1\times H $" src="form_55.png"/> windows, yet without pipelining. The bell curve is principally continuous and infinite, but practically truncated to size slightly larger than those of respective rectangular averaging windows.</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> motion.h5 --iGaussianAverage 200:200  -o motion-GaussianAverage.h5</div>
 </div><!-- fragment --> <div class="image">
 <img src="spread-GaussianAverage-panel.png" alt=""/>
@@ -308,6 +309,7 @@ Composites of motion fields</h2>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

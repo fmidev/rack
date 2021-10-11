@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: RainRateDPOp Class Reference</title>
+<title>rack: RainRateDPOp Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="rack-logo-110x55.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname"><!-- rack /-->
    </div>
   </td>
  </tr>
@@ -70,6 +71,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classrack_1_1RainRateDPOp-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">RainRateDPOp Class Reference</div>  </div>
@@ -130,9 +132,6 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a38281d1a2c30847119881bdb87452966"><td class="memItemLeft" align="right" valign="top"><a id="a38281d1a2c30847119881bdb87452966"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>rhohv</b></td></tr>
-<tr class="separator:a38281d1a2c30847119881bdb87452966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9036da4d64dbd2f1c53f117f7d78077c"><td class="memItemLeft" align="right" valign="top"><a id="a9036da4d64dbd2f1c53f117f7d78077c"></a>
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dbzRange</b></td></tr>
 <tr class="separator:a9036da4d64dbd2f1c53f117f7d78077c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,13 +141,18 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>rhohv</b></td></tr>
 <tr class="memitem:a05f2afd504cad8847618d8d1b61886fd"><td class="memItemLeft" align="right" valign="top"><a id="a05f2afd504cad8847618d8d1b61886fd"></a>
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zdrRange</b></td></tr>
 <tr class="separator:a05f2afd504cad8847618d8d1b61886fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38281d1a2c30847119881bdb87452966"><td class="memItemLeft" align="right" valign="top"><a id="a38281d1a2c30847119881bdb87452966"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>rhohv</b></td></tr>
+<tr class="separator:a38281d1a2c30847119881bdb87452966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
-<tr class="memitem:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="ae31e7761befc43085af74869862df2db"></a>
-static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
-<tr class="separator:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0c915dfc48a145bc9ae4de128659dac9"><td class="memItemLeft" align="right" valign="top"><a id="a0c915dfc48a145bc9ae4de128659dac9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addDebugProduct</b> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcData, const <a class="el" href="classdrain_1_1Fuzzifier.html">drain::Fuzzifier</a>&lt; double &gt; &amp;fuzzyFctor, const <a class="el" href="classrack_1_1SingleParamPrecip.html">SingleParamPrecip</a> &amp;rateFnc, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstProduct) const</td></tr>
+<tr class="separator:a0c915dfc48a145bc9ae4de128659dac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb9e1e54ac5f47527b34da414d5a1fe"><td class="memItemLeft" align="right" valign="top"><a id="a7cb9e1e54ac5f47527b34da414d5a1fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addDebugProduct2</b> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcData, const <a class="el" href="classdrain_1_1Fuzzifier.html">drain::Fuzzifier</a>&lt; double &gt; &amp;fuzzyFctor, const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcData2, const <a class="el" href="classdrain_1_1Fuzzifier.html">drain::Fuzzifier</a>&lt; double &gt; &amp;fuzzyFctor2, const <a class="el" href="classrack_1_1DoubleParamPrecip.html">DoubleParamPrecip</a> &amp;rateFnc, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstProduct) const</td></tr>
+<tr class="separator:a7cb9e1e54ac5f47527b34da414d5a1fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a93ffe6cefe38ac0e1480737fe6f8c175 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a93ffe6cefe38ac0e1480737fe6f8c175"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
@@ -159,6 +163,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</
 <tr class="memitem:a4094dc5932dc44ca179e0ab748b0a047 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PolarProductOp.html#a4094dc5932dc44ca179e0ab748b0a047">deriveDstGeometry</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;dstOdim) const</td></tr>
 <tr class="memdesc:a4094dc5932dc44ca179e0ab748b0a047 inherit pro_methods_classrack_1_1PolarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derive appropriate output <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> from input sweeps, user-requested <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> and (possibly) meteorological input parameters.  <a href="classrack_1_1PolarProductOp.html#a4094dc5932dc44ca179e0ab748b0a047">More...</a><br /></td></tr>
 <tr class="separator:a4094dc5932dc44ca179e0ab748b0a047 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
+<tr class="memitem:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="ae31e7761befc43085af74869862df2db"></a>
+static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
+<tr class="separator:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
@@ -205,8 +216,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
 </div><div class="memdoc">
 <p>For monitoring cmd execution as text dump. Use &ndash;debug (or <code>&ndash;verbose</code> <code>&lt;level&gt;</code> to define verbosity.</p>
 <p>Retrieve dBZ data</p>
-<p>Z &amp; ZDR</p>
-<p>KDP &amp; ZDR</p>
+<p>Bin-wise checks</p>
 
 </div>
 </div>
@@ -215,6 +225,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
 <li>product/RainRateDPOp.cpp</li>
 </ul>
 </div><!-- contents -->
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
