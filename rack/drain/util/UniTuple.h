@@ -72,48 +72,15 @@ public:
 
 	/// Proposed for tuples only; derived classes should not shadow this.
 	tuple_t & assign(const tuple_t & t){
-		/*
-		iterator it = begin();
-		const_iterator tit = t.begin();
-		while(it != end()){
-			*it = *tit;
-			++it;
-			++tit;
-		}
-		updateTuple();
-		*/
 		fromSequence(t);
 		return *this;
 	}
 
 	tuple_t & assign(const value_t & value){
-		// initTuple();
 		fill(value);
 		updateTuple();
 		return *this;
 	}
-
-	/*
-	template <class T2>
-	tuple_t & assign(const std::set<T2> & value){
-		fromSequence(value);
-		return *this;
-	}
-
-	template <class T2>
-	tuple_t & assign(const std::vector<T2> & value){
-		fromSequence(value);
-		return *this;
-	}
-
-	template <class T2>
-	tuple_t & assign(const std::list<T2> & value){
-		fromSequence(value);
-		return *this;
-	}
-	*/
-
-
 
 	tuple_t & operator=(const tuple_t &t){
 		assign(t);
@@ -343,16 +310,6 @@ protected:
 		return *(++init);
 	}
 
-	/*
-	UniTuple() : start(this->arr), init(nullptr){
-		fill(0);
-	};
-
-	inline
-	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
-		set(t);
-	};
-	*/
 
 	// Parasite
 	template <size_t N2>
@@ -368,19 +325,6 @@ protected:
 		/*
 		*/
 	};
-
-	/*
-	template <size_t N2>
-	UniTuple(UniTuple<T,N2>::iterator, size_t count): start(tuple.begin()+i), init(nullptr){
-		if ((i+N)> N2){
-			std::stringstream sstr;
-			sstr << __FUNCTION__ << "<," << N << ">(" << __FUNCTION__ << "<," << N2 << ">),  index(" << i << ") overflow";
-			std::cerr <<  sstr.str() << '\n';
-			throw std::runtime_error(sstr.str());
-		}
-
-	};
-	*/
 
 	/// Argument stack endpoint function; final step of variadic argument set(arg, ...) .
 	void setIndexed(size_t i){
@@ -404,11 +348,9 @@ protected:
 		setIndexed(i+1, rest...);
 	}
 
-
-	// consider
-
 private:
 
+	/// Main container
 	T arr[N];
 
 };
@@ -418,49 +360,6 @@ std::ostream & operator<<(std::ostream & ostr, const UniTuple<T,N> & tuple){
 	return tuple.toStream(ostr);
 }
 
-/// An inexact heuristic for checking validity of derived classes.
-/**
- *  Compares the size of the derived class to the size required by the N elements of type T.
- *  If class size is smaller, not enough elements have defined, for sure.
- *  Note that this does not imply the opposite: equal (or larger) class size
- *  does not quarantee that N elements of type T only have been defined.
- *
- *  \tparam T2 - a class derived from UniTuple<T,N>
- */
-/*
-template <class T>
-static
-bool checkTupleSize(bool throwException = true){
-
-	const size_t tupleSize = T::size()*sizeof(typename T::value_t);
-
-	std::cerr << __FUNCTION__ << ' ' <<  sizeof(T) << " vs " << tupleSize << '\n';
-
-	return false;
-
-	/// Possibly ok.
-	if (sizeof(T) == tupleSize)
-		return true;
-
-	/// Possibly ok, but suspicious. More members defined.
-	if (sizeof(T) > tupleSize){
-		// warn?
-		std::cerr << __FUNCTION__ << ' ' <<  sizeof(T) << " vs " << tupleSize << '\n';
-		return true;
-	}
-
-	/// Certainly error.
-	if (sizeof(T) < tupleSize){
-		std::stringstream sstr;
-		//const std::type_info &t = typeid(typename T::value_t);
-		sstr << "UniTuple<,"  << T::size() << ">::" << __FUNCTION__ << ": " ;
-		// typeid(T2).name
-		sstr << "derived class " << typeid(T).name()  << " too small for " << T::size() << " members of type " << typeid(typename T::value_t).name();
-		throw std::runtime_error(sstr.str());
-		return false;
-	}
-}
-*/
 
 
 

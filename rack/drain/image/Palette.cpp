@@ -534,12 +534,10 @@ void Palette::updateDictionary(){
 	this->dictionary.clear();
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
-		//if (it->second.hidden)
 		mout.info() << "add " << it->first << ' ' << it->second.label << mout.endl;
 		this->dictionary.add(it->first, it->second.id);
 	}
 
-	//this->dictionary.toOstr(std::cout, '\n');
 
 }
 
@@ -778,7 +776,14 @@ void Palette::refine(size_t n){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
-	//const double n2 = static_cast<double>(size()-1) / static_cast<double>(n);
+	if (n==0)
+		n = refinement;
+
+	if (n==0){
+		mout.unimplemented("zero refinement; no defaults (like 256) defined") << mout.endl;
+		return;
+	}
+
 
 	Palette::iterator it = begin();
 	if (it == end()){

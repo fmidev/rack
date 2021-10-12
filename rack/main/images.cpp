@@ -356,12 +356,6 @@ public:
 			//r.setSeparator(':').setFill() = ftor;
 			drain::Referencer(range.tuple()).setSeparator(':').setFill().assignString(ftor);
 
-			//r.setSeparator(':');
-			//r.fillArray = true;
-			//r = ftor;
-
-			//drain::StringTools::split2(ftor, range.min, range.max, ":");
-
 			mout.special() << "range: " << range << mout;
 
 			drain::FuzzyStep<double> fuzzyStep;
@@ -488,6 +482,7 @@ public:
 	CmdPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
+
 	static
 	void retrieveQuantity(RackContext & ctx, std::string & quantity){
 
@@ -509,6 +504,7 @@ public:
 		}
 
 	}
+
 
 	void exec() const {
 
@@ -589,6 +585,13 @@ public:
 			return;
 		}
 		//graySrc.getConf().getElementSize()
+
+
+		if (ctx.palette.refinement > 0){
+			mout.note("Applying refinement: ", ctx.palette.refinement);
+			ctx.palette.refine();
+		}
+
 
 		PaletteOp  op(ctx.palette);
 
@@ -819,23 +822,32 @@ public:
 };
 
 class CmdPaletteRefine : public drain::SimpleCommand<int> {
-public: //re
+public:
+
 	CmdPaletteRefine() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 256){
 	};
 
 	void exec() const {
+
 		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
-		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
-		ctx.palette.refine(value);
-		//cmdPalette.apply();
-		mout.unimplemented()= "refine";
 
-		mout.warn("refine", 12356, true);
+		if (ctx.palette.empty()){
+			mout.note("Palette not yet loaded, ok");
+			ctx.palette.refinement = value;
+			return;
+		}
+
+		ctx.palette.refine(value);
+
+		//cmdPalette.apply();
+		// mout.unimplemented()= "refine";
 
 		CmdPalette::apply(ctx);
+
 	}
+
 };
 
 

@@ -343,7 +343,7 @@ public:
 	inline
 	Logger & note(const T& arg, const TT &... rest){
 		note();
-		return flush(rest...);
+		return flush(arg, rest...);
 		// return *this;
 	};
 

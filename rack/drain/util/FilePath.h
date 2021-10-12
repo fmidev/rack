@@ -71,6 +71,18 @@ public:
 
 	void set(const std::string & s);
 
+	/*
+	template<typename ... TT>
+	void set(const TT &... rest, const std::string & elem){
+		//this->clear();
+		appendElems(rest...);
+		set(elem);
+	}
+	*/
+
+
+
+
 	path_t dir;
 	std::string basename;
 	std::string extension;

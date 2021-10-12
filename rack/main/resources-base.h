@@ -47,6 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/util/StatusFlags.h"
 //#include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
+#include "drain/util/Static.h"
 
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
@@ -58,6 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+typedef std::map<std::string, std::map<unsigned short, drain::image::Palette> >  PaletteMap;
 
 
 // Consider moving ImageKit here?
@@ -118,7 +120,21 @@ public:
 	drain::image::Image colorImage;
 
 
+
 	drain::image::Palette palette;
+
+	/*
+	Palette & getPalette(const std::string & quantity, unsigned short colors){
+		PaletteMap & pMap = drain::Static::get<PaletteMap>();
+
+		Palette & p = pMap[quantity][colors];
+
+		if (p.empty()){
+			p.load(quantity, true);
+		}
+		return p;
+	}
+	*/
 
 	struct {
 		drain::Point2D<unsigned short> tilesize = 256;

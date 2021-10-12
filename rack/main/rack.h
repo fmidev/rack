@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.28"
+#define __RACK_VERSION__ "6.29"
 
 /**
+ *   Version 6.29
+ *   -- paletteRefine can (and should) be given before applying \c --palette.
+ *
  *   Version 6.26
  *   -- Added VRAD-VRADH flexibility to Doppler products
  *

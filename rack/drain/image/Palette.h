@@ -172,6 +172,9 @@ class Palette : public ImageCodeMap<PaletteEntry> {
 
 public:
 
+	inline
+	Palette() : ImageCodeMap<PaletteEntry>(), refinement(256) {
+	};
 
 	void reset();
 
@@ -226,14 +229,22 @@ public:
 	spec_t specialCodes; // To be read from palette
 
 	/// Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")
-	void refine(size_t n=256);
+	// void refine(size_t n=256);
+	void refine(size_t n=0);
 
 	typedef drain::Dictionary2<key_t, std::string> dict_t;
 
+	/// Container for special codes
 	dict_t dictionary; // temp?
 
+	///
 	void updateDictionary();
 
+	/// Request for future refinement, ie. refine() call upon next load().
+	/** It is upto applications to use this.
+	 *
+	 */
+	size_t refinement;
 
 protected:
 

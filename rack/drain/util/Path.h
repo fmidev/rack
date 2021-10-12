@@ -98,14 +98,14 @@ std::ostream & operator<<(std::ostream & ostr, const PathSeparatorPolicy & polic
 }
 
 
-///
+
 /**
  *
  *   \tparam T    - path element, eg. PathElement
- *   \tparam SEP  -
- *   \tparam ALEAD
- *   \tparam AREPEAT
- *   \tparam ATRAIL
+ *   \tparam SEP  - separator char
+ *   \tparam ALEAD - accept leading separator
+ *   \tparam AREPEAT - accept repeated separators
+ *   \tparam ATRAIL - accept trailing separator
  *
  */
 template <class T,char SEP='/', bool ALEAD=true, bool AREPEAT=false, bool ATRAIL=true>
@@ -119,8 +119,6 @@ public:
 
 	const PathSeparatorPolicy separator;
 
-	// Consider flags
-	//inline	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL) {};
 	/// Initialize with given path
 	inline
 	Path(const std::string & s="") : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {

@@ -102,7 +102,7 @@ void FilePath::set(const std::string & s){
 				this->extension = result[2];
 			}
 			else {
-				mout.warn() << "Regepp: " <<	sprinter(result) << mout.endl;
+				mout.warn() << "RegExp: " <<	sprinter(result) << mout.endl;
 				mout.error() << "odd parsing results for file path: " << s << mout.endl;
 			}
 		}
