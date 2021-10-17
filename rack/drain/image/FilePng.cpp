@@ -257,6 +257,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	mout.debug2() << "Src: " << image << mout.endl;
 	//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
 	mout.debug2() << "Copy data to png array, width=" << width << ", height=" << height << " channels=" << channels << mout.endl;
+	png_byte *row;
 	for (int k = 0; k < channels; ++k) {
 
 		const Channel & channel = image.getChannel(k);
@@ -267,8 +268,10 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 			// mout.debug2() << "8 bits, height=" << height << " width=" << width << mout.endl;
 			for (int j = 0; j < height; ++j) {
 				//mout.debug2() << " j=" << j << mout;
+				row = data[j];
 				for (int i = 0; i < width; ++i) {
-					data[j][i*channels + k] = channel.get<png_byte>(i,j) << SHIFT_SIGNED;
+					//data[j]
+					row[i*channels + k] = channel.get<png_byte>(i,j); // << SHIFT_SIGNED;
 				}
 			}
 		}
@@ -278,7 +281,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 			for (int i = 0; i < width; ++i) {
 				i0 = (i*channels + k)*2;
 				for (int j = 0; j < height; ++j) {
-					value = channel.get<int>(i,j) << SHIFT_SIGNED;
+					value = channel.get<int>(i,j); //  << SHIFT_SIGNED;
 					data[j][i0+1] = static_cast<png_byte>( value     & 0xff);
 					data[j][i0  ] = static_cast<png_byte>((value>>8) & 0xff);
 				}
@@ -322,7 +325,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	int png_transforms = PNG_TRANSFORM_IDENTITY  || PNG_TRANSFORM_SHIFT;
 	png_write_png(png_ptr, info_ptr, png_transforms, NULL);
 
-	mout.debug2() << "Closing file and freeing memory" << mout.endl;
+	mout.debug2("Closing file and freeing memory"); // << mout.endl;
 	fclose(fp);
 	png_destroy_write_struct(&png_ptr,&info_ptr);
 	//png_destroy_info ?? why not
