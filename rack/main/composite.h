@@ -68,9 +68,8 @@ protected:
 	Compositor(const Compositor & cmd) : drain::BasicCommand(cmd), weight(cmd.weight) {
 	}
 
-	//void initComposite();
 
-	double weight;
+protected:
 
 	double applyTimeDecay(double w, const ODIM & odim) const;
 
@@ -81,10 +80,7 @@ protected:
 	void addCartesian(const Hi5Tree & src) const;
 	void extract(const std::string & channels) const;
 
-protected:
-
-	// Derives the
-	//Hi5Tree & getInputOLD() const;
+	double weight;
 
 	Composite & getComposite() const;
 

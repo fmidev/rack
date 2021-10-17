@@ -90,7 +90,7 @@ public:
 };
 
 
-class CompositeCreateTile : public Compositor { //drain::BasicCommand {
+class CompositeCreateTile : public Compositor {
 
 public:
 
@@ -122,8 +122,8 @@ public:
 
 		// "Debugging"
 		if (!composite.isCropping()){
-			mout.warn() << "Composite cropping switch of during op" << mout;
-			mout.error() << "Programming error in parallel comp design" << mout;
+			mout.warn() << "Composite cropping switched off during op" << mout;
+			mout.error() << "? Programming error in parallel comp design" << mout;
 		}
 
 		composite.setCropping(false);

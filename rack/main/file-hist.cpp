@@ -34,34 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 
 
-/*
-#include "drain/util/Log.h"
-#include "drain/util/FilePath.h"
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/Tree.h"
-#include "drain/util/Variable.h"
-#include "drain/image/File.h"
-#include "drain/image/Image.h"
-#include "drain/image/Sampler.h"
-#include "drain/imageops/ImageModifierPack.h"
-
-#include "drain/prog/Command.h"
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/prog/CommandInstaller.h"
-
-#include "data/Data.h"
-#include "data/DataSelector.h"
-#include "data/DataTools.h"
-#include "data/ODIMPath.h"
-#include "data/PolarODIM.h"
-#include "hi5/Hi5.h"
-#include "hi5/Hi5Write.h"
-#include "product/ProductOp.h"
-#include "radar/FileGeoTIFF.h"
-#include "radar/RadarDataPicker.h"
- */
-
 
 #include "drain/util/Log.h"
 #include "drain/util/Output.h"
@@ -77,26 +49,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/*
-struct HistEntry : drain::BeanLike {
-
-	inline
-	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
-		parameters.link("index", index);
-		parameters.link("min", binRange.min);
-		parameters.link("max", binRange.max);
-		parameters.link("count", count);
-		parameters.link("label", label);
-	};
-
-	drain::Histogram::vect_t::size_type index;
-	drain::Range<double> binRange;
-	drain::Histogram::count_t count;
-	std::string label;
-
-};
-static HistEntry histEntryHelper;
- */
 
 const HistEntry CmdHistogram::histEntryHelper;
 
@@ -108,16 +60,12 @@ void CmdHistogram::exec() const {
 
 	Hi5Tree & currentHi5 = *ctx.currentHi5;
 
-	DataSelector selector(ODIMPathElemMatcher::DATA);
-	//selector.pathMatcher.clear();
-	//selector.pathMatcher << ODIMPathElemMatcher(ODIMPathElemMatcher::DATA);
-	selector.setParameters(ctx.select);
-
 	ODIMPath path;
+	DataSelector selector(ODIMPathElemMatcher::DATA);
+	//selector.setParameters(ctx.select);
+	selector.consumeParameters(ctx.select);
 	selector.getPath3(currentHi5, path);
-	ctx.select.clear();
-
-
+	//ctx.select.clear();
 
 	PlainData<BasicDst> dstData(currentHi5(path));
 

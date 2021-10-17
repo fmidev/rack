@@ -361,7 +361,7 @@ public:
 
 
 		double coeff = 1.0;
-		const std::string & name = acc.getMethod().name;
+		const std::string & name = acc.getMethod().getName();
 		if ((name == "AVERAGE") || (name == "WAVG")){
 
 		 	mout.debug() << "avg-type method=" << acc.getMethod() << ' ';

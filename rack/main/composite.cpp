@@ -570,9 +570,13 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 
 void Compositor::extract(const std::string & channels) const {
 
+
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	//mout.note("MIKA") << "MÄKI" << mout;
+	mout.error("MIKA") << "MÄKI" << mout;
 
 	RackResources & resources = getResources();
 
@@ -626,7 +630,7 @@ void Compositor::extract(const std::string & channels) const {
 	//mout.warn() << "composite: " << composite.odim << mout.endl;
 	//mout.warn() << "composite: " << composite << mout.endl;
 	//mout.note() << "dst odim: " << odim << mout.endl;
-	mout.debug2() << "extracting..." << mout.endl;
+	mout.debug2() << "Extracting..." << mout.endl;
 
 	composite.extract(rootOdim, dstProduct, channels);
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data

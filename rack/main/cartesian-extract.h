@@ -59,20 +59,15 @@ public:
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
 
-	std::string channels;
-
-	/*
-	CartesianExtract() : drain::SimpleCommand<>(__FUNCTION__,"Extract data that has been composited on the accumulation array",
-			"value", "dw", "Layers: data,count,weight,std.deviation") {
-	};
-	*/
-
-	//void extract(const std::string & channels) const;
-
 	virtual inline
 	void exec() const {
 		extract(channels);
 	}
+
+protected:
+
+	std::string channels;
+
 
 };
 /// static RackLetAdapter<CompositeExtract> cExtract("cExtract");

@@ -824,7 +824,7 @@ public:
 class CmdPaletteRefine : public drain::SimpleCommand<int> {
 public:
 
-	CmdPaletteRefine() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 256){
+	CmdPaletteRefine() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 0){
 	};
 
 	void exec() const {
@@ -840,8 +840,7 @@ public:
 		}
 
 		ctx.palette.refine(value);
-
-		//cmdPalette.apply();
+		// cmdPalette.apply();
 		// mout.unimplemented()= "refine";
 
 		CmdPalette::apply(ctx);
@@ -883,7 +882,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		//ctx.qualitySelector.quantity = quantity;
+		// ctx.qualitySelector.quantity = quantity;
 		// ctx.qualityGroups.flags.reset(); // TODO reset() .clear();
 		ctx.qualityGroups = 0;
 
