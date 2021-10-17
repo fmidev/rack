@@ -170,7 +170,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 			value  = src.get<double>(a);
 			weight = srcQuality.get<double>(a);
 			if (converter.decode(value, weight)){
-				add(a, value, weight, srcCount.get<unsigned int>(a));
+				add(*this, a, value, weight, srcCount.get<unsigned int>(a));
 			}
 		}
 	}
@@ -209,20 +209,20 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	switch (field){
 		case 'd':
 		case 'D':
-			methodPtr->extractValue(coder, dst);
+			methodPtr->extractValue(*this, coder, dst);
 			break;
 		case 'w':
 		case 'W':
-			methodPtr->extractWeight(coder, dst);
+			methodPtr->extractWeight(*this, coder, dst);
 			break;
 		case 'c':
 		case 'C':
-			methodPtr->extractCount(coder, dst);
+			methodPtr->extractCount(*this, coder, dst);
 			break;
 		case 's':
 		case 'S':
 			//mout.warn() << coder << mout.endl;
-			methodPtr->extractDev(coder, dst);
+			methodPtr->extractDev(*this, coder, dst);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:

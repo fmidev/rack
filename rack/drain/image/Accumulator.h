@@ -80,6 +80,7 @@ class Accumulator : public AccumulationArray {
 public:
 
 	Accumulator() :
+		/*
 		undefinedMethod(*this),
 		overwriteMethod(*this),
 		maximumMethod(*this),
@@ -87,6 +88,7 @@ public:
 		averageMethod(*this),
 		weightedAverageMethod(*this),
 		maximumWeightMethod(*this),
+		*/
 		methodPtr(&undefinedMethod)
 	{
 
@@ -113,7 +115,7 @@ public:
 	void setMethod(const AccumulationMethod & method){
 		//methodPtr = & method;
 		// std::cerr << "setMethod(const AccumulationMethod & method): " <<  method.name << std::endl;
-		setMethod(method.name, method.getParameters().getValues());  // But this limits to those already registered?
+		setMethod(method.getName(), method.getParameters().getValues());  // But this limits to those already registered?
 	}
 
 	inline
@@ -134,20 +136,22 @@ public:
 
 	void addMethod(AccumulationMethod & method){
 		// std::cerr << "addMethod:" << method.name << '\t' << method << '\n';
-		methods.insert(std::pair<std::string, AccumulationMethod &>(method.name, method));
+		methods.insert(std::pair<std::string, AccumulationMethod &>(method.getName(), method));
 	}
 
 	/// Adds decoded data that applies natural scaling.
 	inline
 	void add(const size_t i, double value, double weight) {
-		methodPtr->add(i, value, weight);
+		methodPtr->add(*this, i, value, weight);
 	}
 
 	/// Adds decoded data that applies natural scaling.
+	/*
 	inline
 	void add(const size_t i, double value, double weight, unsigned int count) {
-		methodPtr->add(i, value, weight, count);
+		methodPtr->add(*this, i, value, weight, count);
 	}
+	*/
 
 
 	/// Add (accumulate) data with given prior weight
