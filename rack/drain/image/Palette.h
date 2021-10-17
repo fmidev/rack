@@ -173,7 +173,7 @@ class Palette : public ImageCodeMap<PaletteEntry> {
 public:
 
 	inline
-	Palette() : ImageCodeMap<PaletteEntry>(), refinement(256) {
+	Palette() : ImageCodeMap<PaletteEntry>(), refinement(0) {
 	};
 
 	void reset();
