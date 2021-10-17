@@ -36,10 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-#include "drain/util/ReferenceMap.h"
+// #include "drain/util/ReferenceMap.h"
 //#include "drain/util/DataScaling.h"
 
-#include "../util/Point.h"
+#include "drain/util/BeanLike.h"
+#include "drain/util/Point.h"
 #include "ImageT.h"
 #include "Coordinates.h"
 #include "AccumulationArray.h"
@@ -64,35 +65,17 @@ namespace image
  *   -# Data measured, but precision etc. threshold not exceeded (\c undetect ) - if \c weight is undetectValue
  *
  */
-class AccumulationMethod {
+class AccumulationMethod : public BeanLike {
 public:
 
-	AccumulationMethod(AccumulationArray & c) :  name("UNDEFINED"), accumulationArray(c)  {  //  minValue(std::numeric_limits<double>::min()), minWeight(0.0),
+	//AccumulationMethod(AccumulationArray & c) :  BeanLike("UNDEFINED", __FUNCTION__), accumulationArray(c)  {  //  minValue(std::numeric_limits<double>::min()), minWeight(0.0),
+	AccumulationMethod() :  BeanLike("UNDEFINED", __FUNCTION__)  {
 	};
 
 	virtual
 	~AccumulationMethod(){};
 
-	/// Comma-separated list of parameters
-	inline
-	void setParameters(const std::string & p){
-		parameters.setValues(p);
-		updateInternalParameters();
-	}
 
-	/// Comma-separated list of parameters
-	template <class T>
-	inline
-	void setParameter(const std::string & key, const T & value){
-		parameters[key] = value;
-		updateInternalParameters();
-	}
-
-
-	inline
-	const ReferenceMap & getParameters() const {
-		return parameters;
-	};
 
 
 	/// Adds a weighted value to the accumulation array
@@ -105,16 +88,18 @@ public:
 	 *   Semantically, the weights should reflect the importance, confidence or relevance of the value.
 	 */
 	virtual inline
-	void add(const size_t i, double value, double weight) const {
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const {
 		throw std::runtime_error("AccumulationMethod::add - method/rule UNDEFINED");
 	};
 
 
 	/// Adds 'count' copies of a weighted value to the accumulation array
+	/*
 	virtual inline
-	void add(const size_t i, double value, double weight, unsigned int count) const {
-		add(i, value, weight);
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight, unsigned int count) const {
+		add(accArray, i, value, weight);
 	};
+	*/
 
 
 	/// Retrieve the accumulated values from the accumulation matrix back to a data array.
@@ -128,7 +113,7 @@ public:
 	 *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
 	 */
 	virtual
-	void extractValue(const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 
 	/// Retrieves the (average) weight of the accumulated values.
@@ -138,7 +123,7 @@ public:
 	 *  \par offset - additive coefficient applied to each retrieved value
 	 */
 	virtual
-	void extractWeight(const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 	/// Retrieves the count of values accumulated.
 	/**
@@ -147,7 +132,7 @@ public:
 	 *  \par offset - additive coefficient applied to each retrieved value
 	 */
 	virtual
-	void extractCount(const AccumulationConverter & coder, Image & dst) const;
+	void extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 	/// Retrieves the standard deviation of the accumulated values.
 	/**
@@ -157,13 +142,14 @@ public:
 	 *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
 	 */
 	virtual
-	void extractDev(const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
 
 	//virtual
 	//void extractDevInv(const AccumulationConverter & coder, Image & dst) const;
 
-	const std::string name;
+	//const std::string name;
 
+	/*
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const {
 		ostr << name;
@@ -171,21 +157,24 @@ public:
 			ostr << " [" << parameters << "]";
 		return ostr;
 	};
+	*/
 
 protected:
 
 	/// Sets variables that depend on public parameters. Called by setParameters().
-	virtual
-	void updateInternalParameters(){};
+	//virtual
+	//void updateInternalParameters(){};
 
-	void initDst(const AccumulationConverter & coder, Image & dst) const ;
+	void initDst(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const ;
 
-	AccumulationMethod(const std::string & name, AccumulationArray & c) :  name(name), accumulationArray(c)  {
+
+	// AccumulationMethod(const std::string & name, AccumulationArray & c) :  BeanLike(name, __FUNCTION__), accumulationArray(c)  {
+	//};
+
+	AccumulationMethod(const std::string & name) :  BeanLike(name, __FUNCTION__) {
 	};
 
-	ReferenceMap parameters;
-
-	AccumulationArray & accumulationArray;
+	//AccumulationArray & accumulationArray;
 
 };
 
@@ -201,13 +190,14 @@ class OverwriteMethod : public AccumulationMethod {
 
 public:
 
-	OverwriteMethod(AccumulationArray & c) : AccumulationMethod("LATEST", c) {};
+	//OverwriteMethod(AccumulationArray & c) : AccumulationMethod("LATEST", c) {};
+	OverwriteMethod() : AccumulationMethod("LATEST") {};
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
 
 	virtual
-	void extractDev(const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 
 };
@@ -216,10 +206,12 @@ class MaximumMethod : public AccumulationMethod {
 
 public:
 
-	MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAXIMUM", c) {};
+	//MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAXIMUM", c) {};
+	inline
+	MaximumMethod() : AccumulationMethod("MAXIMUM") {};
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
 
 };
 
@@ -227,10 +219,12 @@ class MinimumMethod : public AccumulationMethod {
 
 public:
 
-	MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
+	//MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
+	inline
+	MinimumMethod() : AccumulationMethod("MINIMUM") {};
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
 
 };
 
@@ -239,22 +233,24 @@ class AverageMethod : public AccumulationMethod {
 
 public:
 
-	AverageMethod(AccumulationArray & c) : AccumulationMethod("AVERAGE", c) {};
+	//AverageMethod(AccumulationArray & c) : AccumulationMethod("AVERAGE", c) {};
+	inline
+	AverageMethod() : AccumulationMethod("AVERAGE") {};
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
 
 	virtual inline
-	void add(const size_t i, double value, double weight, unsigned int count) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
-	void extractValue(const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
 
 	virtual
-	void extractWeight(const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
 
 	virtual
-	void extractDev(const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
 
 };
 
@@ -266,38 +262,42 @@ class WeightedAverageMethod : public AccumulationMethod {
 public:
 
 
-	WeightedAverageMethod(AccumulationArray & c) : AccumulationMethod("WAVG", c), bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
-		parameters.link("p", p);
-		parameters.link("r", r);
-		parameters.link("bias", bias);
+	//WeightedAverageMethod(AccumulationArray & c) : AccumulationMethod("WAVG", c), bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
+	WeightedAverageMethod() : AccumulationMethod("WAVG") { //, bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
+		parameters.link("p", p = 1.0);
+		parameters.link("r", r = 1.0);
+		parameters.link("bias", bias = 0.0);
+		updateBean();
 	};
 
 
 	virtual
-	void updateInternalParameters();
+	void updateBean();
 	//void setParameters(const std::string & parameters);
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
 
 	virtual inline
-	void add(const size_t i, double value, double weight, unsigned int count) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
-	void extractValue(const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 	virtual
-	void extractWeight(const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
 	virtual
-	void extractDev(const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
 
+	/*
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const {
 		//ostr << name << '(' << p << ',' << r << ',' << dataScaling << ')';
 		ostr << name << '(' << p << ',' << r << ',' << bias << ')';
 		return ostr;
 	};
+	*/
 
 protected:
 
@@ -323,10 +323,12 @@ class MaximumWeightMethod : public AccumulationMethod {
 
 public:
 
-	MaximumWeightMethod(AccumulationArray & c) : AccumulationMethod("MAXW", c) {};
+	//MaximumWeightMethod(AccumulationArray & c) : AccumulationMethod("MAXW", c) {};
+	inline
+	MaximumWeightMethod() : AccumulationMethod("MAXW") {};
 
 	virtual
-	void add(const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
 
 };
 
