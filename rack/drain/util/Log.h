@@ -270,127 +270,148 @@ public:
 	};
 
 
+
 	/// Quits immediately, dumps pending messages.
+	template<typename ... TT>
 	inline
-	Logger & quit(){
-		return initMessage<LOG_EMERG>();
-		// return *this;
+	Logger & quit(const TT &... rest){
+		initMessage<LOG_EMERG>();
+		flush(rest...);
+		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
+	template<typename ... TT>
 	inline
-	Logger & alert(){
-		return initMessage<LOG_ALERT>();
-		// return *this;
+	Logger & alert(const TT &... rest){
+		initMessage<LOG_ALERT>();
+		flush(rest...);
+		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
+	template<typename ... TT>
 	inline
-	Logger & fatal(){
-		return initMessage<LOG_CRIT>();
-		// return *this;
+	Logger & critical(const TT &... rest){
+		initMessage<LOG_CRIT>();
+		flush(rest...);
+		return *this;
 	};
 
 	/// Echoes
+	/*
 	inline
 	Logger & error(){
 		return initMessage<LOG_ERR>();
-		// return *this;
+	};
+	*/
+
+	template<typename ... TT>
+	inline
+	Logger & error(const TT &... rest){
+		// error();
+		initMessage<LOG_ERR>();
+		flush(rest...);
+		return *this;
 	};
 
 	/// Light error, command execution probable. Special type of Logger::warn().
+	/*
 	inline
 	Logger & warn(){
 		return initMessage<LOG_WARNING>();
-		// return *this;
+	};
+	*/
+
+	/// Possible error, but execution can continue.
+	template<typename ... TT>
+	inline
+	Logger & warn(const TT &... rest){
+		// warn();
+		initMessage<LOG_WARNING>();
+		flush(rest...);
+		return *this;
 	};
 
-	template<typename T, typename ... TT>
-	inline
-	Logger & warn(const T& arg, const TT &... rest){
-		warn();
-		return flush(arg, rest...);
-		// return *this;
-	};
 
-
-	/// Light error, problems ahead, but command execution probable. Special type of Logger::warn().
+	/// Possible error, but execution can continue. Special type of Logger::warn().
+	template<typename ... TT>
 	inline
-	Logger & fail(){
+	Logger & fail(const TT &... rest){
 		static const Notification notif(__FUNCTION__, 33);
-		return initMessage<LOG_WARNING>(notif);
-		// return *this;
+		initMessage<LOG_WARNING>(notif);
+		flush(rest...);
+		return *this;
 	};
 
 	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
 	//  Valid alternative should be displayed.
+	template<typename ... TT>
 	inline
-	Logger & obsolete(){
+	Logger & obsolete(const TT &... rest){
 		static const Notification notif(__FUNCTION__, 35);
-		return initMessage<LOG_WARNING>(notif);
-		// return *this;
+		initMessage<LOG_WARNING>(notif);
+		flush(rest...);
+		return *this;
 	};
 
 
 	/// For top-level information
+	template<typename ... TT>
 	inline
-	Logger & note(){
-		return initMessage<LOG_NOTICE>();
-		// return *this;
-	};
-
-	template<typename T, typename ... TT>
-	inline
-	Logger & note(const T& arg, const TT &... rest){
-		note();
-		return flush(arg, rest...);
-		// return *this;
+	Logger & note(const TT &... rest){
+		//note();
+		initMessage<LOG_NOTICE>();
+		flush(rest...);
+		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
+	template<typename ... TT>
 	inline
-	Logger & deprecating(){
+	Logger & deprecating(const TT &... rest){
 		static const Notification notif(__FUNCTION__, 33);
-		return initMessage<LOG_NOTICE>(notif);
-		// return *this;
+		initMessage<LOG_NOTICE>(notif);
+		flush(rest...);
+		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
+	template<typename ... TT>
 	inline
-	Logger & unimplemented(){
+	Logger & unimplemented(const TT &... rest){
 		static const Notification notif(__FUNCTION__, 35);
-		return initMessage<LOG_NOTICE>(notif);
-		// return *this;
-	};
-
-	template<typename T, typename ... TT>
-	inline
-	Logger & unimplemented(const T& arg, const TT &... rest){
-		unimplemented();
-		return flush(arg, rest...);
-		// return *this;
+		initMessage<LOG_NOTICE>(notif);
+		flush(rest...);
+		return *this;
 	};
 
 
+	template<typename ... TT>
 	inline
-	Logger & special(){
+	Logger & special(const TT &... rest){
 		static const Notification notif(__FUNCTION__, 36);
-		return initMessage<LOG_NOTICE>(notif);
-		// return *this;
+		initMessage<LOG_NOTICE>(notif);
+		flush(rest...);
+		return *this;
 	};
 
+	/*
 	inline
 	Logger & experimental(){
 		static const Notification notif(__FUNCTION__, 94);
 		return initMessage<LOG_NOTICE>(notif);
 		// return *this;
 	};
+	*/
 
-	template<typename T,typename ... TT>
+	template<typename ... TT>
 	inline
-	Logger & experimental(const T& arg, const TT &... rest){
-		experimental();
-		return flush(arg, rest...);
+	Logger & experimental(const TT &... rest){
+		static const Notification notif(__FUNCTION__, 94);
+		initMessage<LOG_NOTICE>(notif);
+		flush(rest...);
+		return *this;
 		//return *this;
 	};
 
@@ -408,11 +429,12 @@ public:
 		//return *this;
 	};
 
-
+	template<typename ... TT>
 	inline
-	Logger & info(){
-		return initMessage<LOG_INFO>();
-		//return *this;
+	Logger & info(const TT &... rest){
+		initMessage<LOG_INFO>();
+		flush(rest...);
+		return *this;
 	};
 
 
@@ -432,26 +454,23 @@ public:
 		// return *this;
 	};
 
+	template<typename ... TT>
 	inline
-	Logger & debug2(){
-		return initMessage<LOG_DEBUG+1>();
-		//return *this;
+	Logger & debug2(const TT &... rest){
+		initMessage<LOG_DEBUG+1>();
+		flush(rest...);
+		return *this;
 	};
 
-	template<typename T,typename ... TT>
+	template<typename ... TT>
 	inline
-	Logger & debug2(const T& arg, const TT &... rest){
-		debug2();
-		return flush(arg, rest...);
-		//return *this;
+	Logger & debug3(const TT &... rest){
+		initMessage<LOG_DEBUG+2>();
+		flush(rest...);
+		return *this;
 	};
 
 
-	inline
-	Logger & debug3(){
-		return initMessage<LOG_DEBUG+2>();
-		//return *this;
-	};
 
 	inline
 	Logger & debug(level_t level){
@@ -528,7 +547,7 @@ public:
 protected:
 
 	Log & monitor;
-	//mutable
+
 	std::string prefix;
 
 	level_t level;
@@ -580,11 +599,27 @@ protected:
 		return *this;
 	};
 
+	template<typename T>
+	inline
+	Logger & flush(const T & arg){
+		*this << arg;
+		monitor.flush(level, *notif_ptr, prefix, message);
+		return *this;
+	};
+
+	inline
+	Logger & flush(){
+		//monitor.flush(level, *notif_ptr, prefix, message);
+		return *this;
+	};
+
+	/*
 	inline
 	Logger & flush(){
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	};
+	*/
 
 
 };
