@@ -489,7 +489,13 @@ protected:
 	template <class T>
 	inline
 	T * retrieve(size_t a){
-		return (T*)&buffer[ a*conf.byteSize ];
+		return (T*) & buffer[ a*conf.byteSize ];
+	}
+
+	template <class T>
+	inline
+	const T * retrieve(size_t a) const {
+		return (const T*) & buffer[ a*conf.byteSize ];
 	}
 
 
