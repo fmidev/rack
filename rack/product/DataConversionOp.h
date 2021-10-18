@@ -277,7 +277,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 				continue; // to next quantity
 			}
 
-			mout.fatal() << "not implemented" << mout.endl;
+			mout.unimplemented("not implemented");
 			mout.debug() << "in-place" << mout.endl;
 			//processData(srcData, dstData);
 			//processImage(srcData.odim, srcData.data, dstData.odim, dstData.data);
