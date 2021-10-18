@@ -219,6 +219,9 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	DataSet<DstType<M> > dstProductDataset(dst[dataSetPath]); // PATH
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
+	//dstProductDataset.getWhat();
+	//RootData<DstType<M> > root(dst);
+	//drain::VariableMap & rootWhat = root.getWhat();
 	drain::VariableMap & rootWhat = dst[ODIMPathElem::WHAT].data.attributes; // dstProduct["what"].data.attributes;
 	rootWhat = src[ODIMPathElem::WHAT].data.attributes;
 	rootWhat["object"]  = this->odim.object; // ?
