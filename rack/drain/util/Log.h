@@ -274,27 +274,27 @@ public:
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
 	inline
-	Logger & quit(const TT &... rest){
+	Logger & quit(const TT &... args){
 		initMessage<LOG_EMERG>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
 	inline
-	Logger & alert(const TT &... rest){
+	Logger & alert(const TT &... args){
 		initMessage<LOG_ALERT>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
 	inline
-	Logger & critical(const TT &... rest){
+	Logger & critical(const TT &... args){
 		initMessage<LOG_CRIT>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -308,10 +308,10 @@ public:
 
 	template<typename ... TT>
 	inline
-	Logger & error(const TT &... rest){
+	Logger & error(const TT &... args){
 		// error();
 		initMessage<LOG_ERR>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -326,10 +326,10 @@ public:
 	/// Possible error, but execution can continue.
 	template<typename ... TT>
 	inline
-	Logger & warn(const TT &... rest){
+	Logger & warn(const TT &... args){
 		// warn();
 		initMessage<LOG_WARNING>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -337,10 +337,10 @@ public:
 	/// Possible error, but execution can continue. Special type of Logger::warn().
 	template<typename ... TT>
 	inline
-	Logger & fail(const TT &... rest){
+	Logger & fail(const TT &... args){
 		static const Notification notif(__FUNCTION__, 33);
 		initMessage<LOG_WARNING>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -348,10 +348,10 @@ public:
 	//  Valid alternative should be displayed.
 	template<typename ... TT>
 	inline
-	Logger & obsolete(const TT &... rest){
+	Logger & obsolete(const TT &... args){
 		static const Notification notif(__FUNCTION__, 35);
 		initMessage<LOG_WARNING>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -359,40 +359,40 @@ public:
 	/// For top-level information
 	template<typename ... TT>
 	inline
-	Logger & note(const TT &... rest){
+	Logger & note(const TT &... args){
 		//note();
 		initMessage<LOG_NOTICE>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	template<typename ... TT>
 	inline
-	Logger & deprecating(const TT &... rest){
+	Logger & deprecating(const TT &... args){
 		static const Notification notif(__FUNCTION__, 33);
 		initMessage<LOG_NOTICE>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	template<typename ... TT>
 	inline
-	Logger & unimplemented(const TT &... rest){
+	Logger & unimplemented(const TT &... args){
 		static const Notification notif(__FUNCTION__, 35);
 		initMessage<LOG_NOTICE>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 
 	template<typename ... TT>
 	inline
-	Logger & special(const TT &... rest){
+	Logger & special(const TT &... args){
 		static const Notification notif(__FUNCTION__, 36);
 		initMessage<LOG_NOTICE>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
@@ -407,37 +407,41 @@ public:
 
 	template<typename ... TT>
 	inline
-	Logger & experimental(const TT &... rest){
+	Logger & experimental(const TT &... args){
 		static const Notification notif(__FUNCTION__, 94);
 		initMessage<LOG_NOTICE>(notif);
-		flush(rest...);
+		flush(args...);
 		return *this;
-		//return *this;
-	};
-
-	inline
-	Logger & ok(){
-		static const Notification notif(__FUNCTION__, 32);
-		return initMessage<LOG_INFO>(notif);
-		//return *this;
-	};
-
-	inline
-	Logger & success(){
-		static const Notification notif(__FUNCTION__, 92);
-		return initMessage<LOG_NOTICE>(notif);
-		//return *this;
 	};
 
 	template<typename ... TT>
 	inline
-	Logger & info(const TT &... rest){
+	Logger & ok(const TT &... args){
+		static const Notification notif(__FUNCTION__, 32);
+		initMessage<LOG_INFO>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	template<typename ... TT>
+	inline
+	Logger & success(const TT &... args){
+		static const Notification notif(__FUNCTION__, 92);
+		initMessage<LOG_NOTICE>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	template<typename ... TT>
+	inline
+	Logger & info(const TT &... args){
 		initMessage<LOG_INFO>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 
+	/// Debug information.
 	/**
 	 *  Internally, this value is added to \c LOG_DEBUG.
 	 *  - LOG_DEBUG + 0 - print general debugging information
@@ -448,25 +452,28 @@ public:
 		    - 15 - save intermediate results as files
 		    - 20 - dump mass data (eg. coordinates during an image traversal)
 	 */
-	inline
-	Logger & debug(){
-		return initMessage<LOG_DEBUG>();
-		// return *this;
-	};
-
 	template<typename ... TT>
 	inline
-	Logger & debug2(const TT &... rest){
+	Logger & debug(const TT &... args){
+		initMessage<LOG_DEBUG>();
+		flush(args...);
+		return *this;
+	};
+
+	/// Debug information.
+	template<typename ... TT>
+	inline
+	Logger & debug2(const TT &... args){
 		initMessage<LOG_DEBUG+1>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
 	template<typename ... TT>
 	inline
-	Logger & debug3(const TT &... rest){
+	Logger & debug3(const TT &... args){
 		initMessage<LOG_DEBUG+2>();
-		flush(rest...);
+		flush(args...);
 		return *this;
 	};
 
