@@ -76,7 +76,7 @@ public:
 	void traverseChannels(const ImageTray<const Channel> & src1, const ImageTray<const Channel> & src2, ImageTray<Channel> & dst) const
 	{
 		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.fatal() << "not implemented" << mout.endl;
+		mout.unimplemented("implementation pending");
 	}
 	
 	double coeff;
