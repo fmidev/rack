@@ -32,9 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.29"
+#define __RACK_VERSION__ "6.30"
 
 /**
+ *   Version 6.30
+ *   -- Redesign: Logger calls with variadic templates
+ *   -- Accumulator detached from AccumulationMethod
+ *
+ *
  *   Version 6.29
  *   -- paletteRefine can (and should) be given before applying \c --palette.
  *

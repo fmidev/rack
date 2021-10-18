@@ -54,24 +54,22 @@ void DataCoder::init(){
 
 	drain::Logger mout(__FUNCTION__, getName());
 
-	// For decoding
-	parameters.link("SKIP_UNDETECT", SKIP_UNDETECT);
-	parameters.link("undetectValue", undetectValue);
-	// For encoding
-	parameters.link("minCodeValue", minCodeValue);
-	parameters.link("detectionThreshold", detectionThreshold);
-
-	minCodeValue = dataODIM.getMin();
-
 	const Quantity &q = getQuantityMap().get(dataODIM.quantity);
 
-	SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
+	// For decoding
+	parameters.link("SKIP_UNDETECT", SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0)));
+	parameters.link("undetectValue", undetectValue);
+	// For encoding
+	parameters.link("minCodeValue", minCodeValue = dataODIM.getMin());
+	parameters.link("detectionThreshold", detectionThreshold);
 
-	/*
-	mout.warn() << "undetectQualityCoeff" << DataCoder::undetectQualityCoeff << mout;
-	mout.warn() << "q.hasUndetectValue" << dataODIM.quantity << ' ' << q.hasUndetectValue() << mout;
-	mout.warn() << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
-	*/
+	//SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
+
+
+	mout.debug() << "undetectQualityCoeff" << DataCoder::undetectQualityCoeff << mout;
+	mout.debug() << "q.hasUndetectValue" << dataODIM.quantity << ' ' << q.hasUndetectValue() << mout;
+	mout.debug() << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
+
 
 	if (SKIP_UNDETECT){
 		undetectValue = -std::numeric_limits<double>::max();
