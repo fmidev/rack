@@ -576,7 +576,7 @@ void Compositor::extract(const std::string & channels) const {
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	//mout.note("MIKA") << "MÄKI" << mout;
-	mout.error() << "MÄKI" << mout;
+	//mout.error() << "MÄKI" << mout;
 
 	RackResources & resources = getResources();
 
