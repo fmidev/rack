@@ -473,7 +473,7 @@ void Composite::updateGeoData(){
 		//odim.source = "xx";
 	}
 
-	odim.camethod = getMethod().name;
+	odim.camethod = getMethod().getName(); //getNaMethod().name;
 
 
 }

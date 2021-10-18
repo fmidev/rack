@@ -206,7 +206,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 	mout.debug() << "start, quantity=" << dataODIM.quantity << mout.endl;
 
 	const AccumulationMethod & rule = this->getMethod();
-	if (rule.name == "WAVG"){
+	if (rule.getName() == "WAVG"){
 
 		const drain::ReferenceMap & wavgParams = rule.getParameters();
 		const double p = wavgParams.get("p", 1.0);
