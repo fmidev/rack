@@ -94,12 +94,11 @@ public:
 
 
 	/// Adds 'count' copies of a weighted value to the accumulation array
-	/*
 	virtual inline
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight, unsigned int count) const {
 		add(accArray, i, value, weight);
 	};
-	*/
+
 
 
 	/// Retrieve the accumulated values from the accumulation matrix back to a data array.
@@ -165,7 +164,7 @@ protected:
 	//virtual
 	//void updateInternalParameters(){};
 
-	void initDst(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const ;
+	void initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const ;
 
 
 	// AccumulationMethod(const std::string & name, AccumulationArray & c) :  BeanLike(name, __FUNCTION__), accumulationArray(c)  {
@@ -178,10 +177,12 @@ protected:
 
 };
 
+/*
 inline
 std::ostream & operator<<(std::ostream & ostr, const AccumulationMethod & accumulationMethod){
 	return accumulationMethod.toStream(ostr);
 }
+*/
 
 
 

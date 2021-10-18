@@ -72,7 +72,7 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 		return;
 	}
 	else if (name == "OVERWRITE"){
-		mout.deprecating() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
+		mout.note() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
 		setMethod("LATEST", params);
 		return;
 	}
@@ -86,8 +86,7 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 	}
 	else {
 		//this->toStream(std::cerr);
-		mout.error() << "unknown method: " << name << mout.endl;
-		//throw std::runtime_error(std::string("Accumulator::setMethod: unknown method: ") + name);
+		mout.error("unknown method: ", name);
 	}
 
 }
@@ -158,11 +157,15 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 
 void Accumulator::addData(const Image & src, const Image & srcQuality, const Image & srcCount, const AccumulationConverter & converter){
 
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
 	const unsigned int width  = src.getWidth();
 	const unsigned int height = src.getHeight();
 	size_t a;
 	double value;
 	double weight;
+
+	mout.unimplemented("count probably NOT taken into account");
 
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
@@ -170,7 +173,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 			value  = src.get<double>(a);
 			weight = srcQuality.get<double>(a);
 			if (converter.decode(value, weight)){
-				add(*this, a, value, weight, srcCount.get<unsigned int>(a));
+				add(a, value, weight, srcCount.get<unsigned int>(a));
 			}
 		}
 	}
@@ -179,7 +182,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst) const {
 
-	Logger mout(getImgLog(), "Accumulator",__FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	if ((dst.getWidth() != width) || (dst.getHeight() != height)){

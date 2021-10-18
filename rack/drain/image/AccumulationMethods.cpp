@@ -52,7 +52,7 @@ namespace drain
 namespace image
 {
 
-void AccumulationMethod::initDst(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	if (!dst.typeIsSet()){
 		if (!coder.type.empty())
@@ -64,7 +64,7 @@ void AccumulationMethod::initDst(AccumulationArray & accArray, const Accumulatio
 
 }
 
-void AccumulationMethod::extractValue(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -97,7 +97,7 @@ void AccumulationMethod::extractValue(AccumulationArray & accArray, const Accumu
 
 
 
-void AccumulationMethod::extractWeight(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	initDst(accArray, coder, dst);
 
@@ -115,7 +115,7 @@ void AccumulationMethod::extractWeight(AccumulationArray & accArray, const Accum
 }
 
 
-void AccumulationMethod::extractCount(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	//LinearScaling scaling(gain, offset);
 
@@ -129,7 +129,7 @@ void AccumulationMethod::extractCount(AccumulationArray & accArray, const Accumu
 
 }
 
-void AccumulationMethod::extractDev(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	double stdDev;
 	const size_t s = dst.getVolume();
@@ -160,7 +160,7 @@ void OverwriteMethod::add(AccumulationArray & accArray, const size_t i, double v
 
 }
 
-void OverwriteMethod::extractDev(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void OverwriteMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	double diff;
 	const double noData   = coder.getNoDataMarker();
@@ -253,7 +253,7 @@ void AverageMethod::add(AccumulationArray & accArray, const size_t i, double val
 }
 
 
-void AverageMethod::extractValue(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	initDst(accArray, coder, dst);
 
@@ -289,7 +289,7 @@ void AverageMethod::extractValue(AccumulationArray & accArray, const Accumulatio
 	}
 }
 
-void AverageMethod::extractWeight(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	//const LinearScaling scaling(gain, offset);
 
@@ -316,7 +316,7 @@ void AverageMethod::extractWeight(AccumulationArray & accArray, const Accumulati
 }
 
 
-void AverageMethod::extractDev(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	double count; // actually weight!
 	double x = 0.0;
@@ -418,7 +418,7 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 
 
 
-void WeightedAverageMethod::extractValue(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	// mout.warn() << " start..." << mout.endl;
@@ -477,7 +477,7 @@ void WeightedAverageMethod::extractValue(AccumulationArray & accArray, const Acc
 
 
 
-void WeightedAverageMethod::extractWeight(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	double weight;
 
@@ -506,7 +506,7 @@ void WeightedAverageMethod::extractWeight(AccumulationArray & accArray, const Ac
 }
 
 
-void WeightedAverageMethod::extractDev(AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	double count;
 	double weight;
