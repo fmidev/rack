@@ -66,6 +66,30 @@ public:
 	virtual inline
 	const std::string & getDescription() const { return description; };
 
+	/// Gets a single parameter
+	template <class F>
+	F getParameter(const std::string & p) const {
+		if (parameters.hasKey(p))
+			return parameters[p];
+		else {
+			throw std::runtime_error(p + ": no such parameter (BeanLike::getParameter)");
+		}
+	}
+
+	inline
+	const ReferenceMap & getParameters() const { return parameters; };
+
+	inline
+	ReferenceMap & getParameters() { return parameters; };
+
+	/// Grants access to (if above hidden)
+	/*
+	inline
+	void shareParameters(ReferenceMap & rmap) {
+		return rmap.append(parameters);
+	};
+	*/
+
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
 	/**
 	 *  This function is virtual because derived classes may redefine it to update str members.
@@ -104,39 +128,22 @@ public:
 		updateBean();
 	}
 
-	/// Gets a single parameter
-	template <class F>
-	F getParameter(const std::string & p) const {
-		if (parameters.hasKey(p))
-			return parameters[p];
-		else {
-			throw std::runtime_error(p + ": no such parameter (BeanLike::getParameter)");
-		}
+	inline
+	BeanLike & operator=(const BeanLike & b){ //
+		//copy(b);
+		parameters.importMap(b.getParameters()); // 2021
+		updateBean(); // ADDED 2021/10
+		return *this;
 	}
 
 
 
-
-	inline
-	const ReferenceMap & getParameters() const { return parameters; };
-
-	inline
-	ReferenceMap & getParameters() { return parameters; };
-
-	/// Grants access to (if above hidden)
-	/*
-	inline
-	void shareParameters(ReferenceMap & rmap) {
-		return rmap.append(parameters);
-	};
-	*/
-
-
 	virtual inline
-	void toStream(std::ostream & ostr) const {
+	std::ostream & toStream(std::ostream & ostr) const {
 		//ostr << name << ':' << parameters;
 		ostr << name << ": " << description << '\n';
 		ostr << '\t' << parameters << '\n';
+		return ostr;
 	}
 
 	inline
@@ -147,12 +154,6 @@ public:
 	}
 
 
-	inline
-	BeanLike & operator=(const BeanLike & b){ //
-		//copy(b);
-		parameters.importMap(b.getParameters()); // 2021
-		return *this;
-	}
 
 
 protected:
