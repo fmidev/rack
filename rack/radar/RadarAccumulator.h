@@ -239,8 +239,6 @@ template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	// mout.warn() << "is root?\n" << dst << mout.endl;
-	// mout.debug() << "Start " << accumulator.getMethod().name << mout.endl;
 
 	const std::type_info & t = drain::Type::getTypeInfo(odimOut.type);
 
@@ -283,7 +281,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			case 'd':
 				type = DATA;
 				odimFinal = odimOut; // consider update
-				qm.setQuantityDefaults(odimQuality, "QIND");
+				qm.setQuantityDefaults(odimQuality, "QIND"); // ?
 				odimQuality.quantity = "QIND";
 				break;
 			case 'c':
@@ -364,10 +362,13 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;
-		DataCoder converter(odimFinal, odimQuality); // (will use only either odim!)
-		mout.debug()  << "converter: " << converter.toStr() << mout.endl;
+		DataCoder dataCoder(odimFinal, odimQuality); // (will use only either odim!)
+		mout.debug()  << "dataCoder: " << dataCoder.toStr() << mout.endl;
+		mout.debug2() << "dataCoder: data: " << dataCoder.dataODIM    << mout.endl;
+		mout.debug2() << "dataCoder: qind: " << dataCoder.qualityODIM << mout.endl;
 
 		if (type == DATA){
+
 			mout.debug() << "DATA/" << field << mout.endl;
 			//mout.warn() << dstData.odim << mout.endl;
 			pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
@@ -375,7 +376,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			dstData.data.setType(odimFinal.type);
 			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//mout.debug()  << "quantity=" << dstData.odim.quantity << mout.endl;
-			this->Accumulator::extractField(field, converter, dstData.data);
+			this->Accumulator::extractField(field, dataCoder, dstData.data);
 		}
 		else {
 			mout.debug() << "QUALITY/" << field << mout.endl;
@@ -386,7 +387,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			dstData.odim.updateFromMap(odimQuality);
 			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//dstData.odim.importMap(odimQuality);
-			this->Accumulator::extractField(field, converter, dstData.data);
+			this->Accumulator::extractField(field, dataCoder, dstData.data);
 		}
 
 		/*

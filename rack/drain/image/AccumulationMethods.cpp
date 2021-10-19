@@ -72,8 +72,14 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 
 	initDst(accArray, coder, dst);
 
-	const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
-	const double noData   = coder.getNoDataMarker();
+
+	// Marker for bins having data (count > 0), but unusable value,
+	const double noReadingMarker = coder.getNoReadingMarker();
+	// const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
+
+	// Marker for bins without data (count = 0)
+	const double noDataMarker    = coder.getNoDataMarker();
+
 
 	double value;
 	double weight;
@@ -87,10 +93,10 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 				dst.put(i, value);
 			}
 			else
-				dst.put(i, minValue);
+				dst.put(i, noReadingMarker);
 		}
 		else
-			dst.put(i, noData);
+			dst.put(i, noDataMarker);
 
 	}
 }
@@ -261,8 +267,10 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 	double value;
 	double weight;
 
-	const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
-	const double noData   = coder.getNoDataMarker();
+	// Marker for bins having data (count > 0), but unusable value,
+	const double noReadingMarker = coder.getNoReadingMarker();
+	// const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
+	const double noDataMarker   = coder.getNoDataMarker();
 
 
 	const size_t s = dst.getVolume();
@@ -280,11 +288,11 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 				dst.put(i, value );
 			}
 			else {
-				dst.put(i, minValue);
+				dst.put(i, noReadingMarker); //minValue);
 			}
 		}
 		else
-			dst.put(i, noData);
+			dst.put(i, noDataMarker);
 
 	}
 }

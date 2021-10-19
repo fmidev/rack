@@ -92,6 +92,11 @@ public:
 	~DataCoder(){};
 
 	virtual
+	double getNoReadingMarker() const {
+		return dataODIM.undetect;
+	}
+
+	virtual
 	bool decode(double & value) const;
 
 	/// Converts storage data containing marker codes etc to natural scale.

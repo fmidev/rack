@@ -103,7 +103,6 @@ struct Notification {
 };
 
 // extern unsigned int Debug;  // getting obsolete
-typedef std::vector<Notification> notif_dict_t;
 
 /// Sender of log messages.
 class Logger;
@@ -133,6 +132,8 @@ public:
 	/// Log verbosity level type
 	typedef unsigned short level_t;
 
+	typedef std::vector<Notification> notif_dict_t;
+
 
 	///
 	/**
@@ -158,6 +159,8 @@ public:
 	void setVerbosity(level_t level){
 		verbosityLevel = level;
 	};
+
+	void setVerbosity(const std::string & level);
 
 	inline
 	int getVerbosity() const {

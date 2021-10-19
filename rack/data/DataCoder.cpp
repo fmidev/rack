@@ -65,10 +65,10 @@ void DataCoder::init(){
 
 	//SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
-
-	mout.debug() << "undetectQualityCoeff" << DataCoder::undetectQualityCoeff << mout;
-	mout.debug() << "q.hasUndetectValue" << dataODIM.quantity << ' ' << q.hasUndetectValue() << mout;
-	mout.debug() << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
+	mout.debug() << "DataCoder::undetectQualityCoeff: " << DataCoder::undetectQualityCoeff << mout;
+	mout.debug('[', dataODIM.quantity, ']');
+	mout << "q.hasUndetectValue: " << q.hasUndetectValue() << mout;
+	mout << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
 
 
 	if (SKIP_UNDETECT){

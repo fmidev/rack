@@ -97,6 +97,12 @@ public:
 		return value;
 	}
 
+	virtual inline
+	double getNoReadingMarker() const {
+		return 0.0;
+	}
+
+
 	/// Default output storage data type
 	std::string type;
 

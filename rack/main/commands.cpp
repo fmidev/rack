@@ -1441,29 +1441,6 @@ public:
 			"", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
 	) {
 		parameters.separator = 0;
-		/*
-		parameters.separator = ',';
-		parameters.link("type", odim.type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		parameters.link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
-		parameters.link("offset", odim.scaling.offset = 0.0, "bias");
-		parameters.link("undetect", odim.undetect = 0.0, "marker");
-		parameters.link("nodata", odim.nodata = 0.0, "marker");
-
-		/// Polar-specific
-		parameters.link("rscale", odim.rscale = 0.0, "metres");
-		parameters.link("nrays", odim.geometry.height = 0L, "count");
-		parameters.link("nbins", odim.geometry.width = 0l, "count");
-
-		/// Experimental, for image processing
-		parameters.link("quantity", odim.quantity = "", "string");
-
-		//getQuantityMap().setTypeDefaults(odim, "C");
-		odim.setTypeDefaults("C"); // ??
-		//odim.setTypeDefaults(typeid(unsigned char));
-		//std::cerr << "CmdEncoding.odim:" << odim << std::endl;
-		//std::cerr << "CmdEncoding.pars:" << parameters << std::endl;
-		 *
-		 */
 	};
 
 
@@ -1478,23 +1455,19 @@ public:
 
 		try {
 
-			/*
-			std::string test1;
-			std::string test2;
-			drain::ReferenceMap refmap;
-			refmap.link("type", test1);
-			refmap.link("gain", test2);
-			refmap.setValues(params);
-			mout.warn() << "refmap: " << refmap << mout.endl;
-
-			mout.warn() << "p keys: " << parameters.getKeys() << mout.endl;
-			*/
-
-
 			EncodingBag enc;
 
 			/// Also check and warn of unknown parameters
 			enc.setValues(value);  // sets type, perhaps, hence set type defaults and override them with user defs
+
+			drain::Range<double> range;
+			range.set(drain::Type::call<drain::typeMin, double>(enc.type), drain::Type::call<drain::typeMax, double>(enc.type));
+			if (!range.contains(enc.undetect)){
+				mout.warn() << "undetect=" << enc.undetect << " outside storage type range=" << range << mout.endl;
+			}
+			if (!range.contains(enc.nodata)){
+				mout.warn() << "nodata=" << enc.nodata << " outside storage type range=" << range << mout.endl;
+			}
 
 			//mout.note() << "(user) params: " << params << mout.endl;
 			//mout.note() << "parameters:    " << parameters << mout.endl;

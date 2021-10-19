@@ -75,20 +75,20 @@ Log & getImgLog(){
 #define	LOG_DEBUG	7	// debug-level messages             //  Store variable
 */
 
-const notif_dict_t & Log::getDict(){
-	static notif_dict_t dict;
+const Log::notif_dict_t & Log::getDict(){
+	static Log::notif_dict_t dict;
 	if (dict.empty()){
 		dict.resize(64);
 		dict[LOG_EMERG].set("EMERG", 101);
 		dict[LOG_ALERT].set("ALERT", 91);
-		dict[LOG_CRIT].set("FATAL", 41);
-		dict[LOG_ERR].set("ERROR", 31);
+		dict[LOG_CRIT].set("CRIT", 41);
+		dict[LOG_ERR].set("ERR", 31);
 		dict[LOG_WARNING].set("WARNING", 33);
 		dict[LOG_NOTICE].set("NOTICE", 29);
 		dict[LOG_INFO].set("INFO", 0);
 		dict[LOG_DEBUG].set("DEBUG", 35);
-		dict[LOG_DEBUG+1].set("debug", 34);
-		dict[LOG_DEBUG+2].set("debug", 90);
+		dict[LOG_DEBUG+1].set("DEBUG2", 34);
+		dict[LOG_DEBUG+2].set("DEBUG3", 90);
 	}
 	return dict;
 }
@@ -109,6 +109,28 @@ void Notification::set(const std::string & key, int vt100color){
 	}
 	else
 		this->vt100color = "\033[0m"; // VT100_RESET
+}
+
+void Log::setVerbosity(const std::string & level){
+
+	const size_t i = atoi(level.c_str());
+	if (i > 0){
+		setVerbosity(i);
+		return;
+	}
+
+	const drain::Log::notif_dict_t & dict = getDict();
+	for (size_t i=0; i<dict.size(); ++i){
+		const drain::Notification & notif = dict[i];
+		if (!notif.key.empty())
+			if (notif.key == level){
+				setVerbosity(i);
+				return;
+			}
+			// std::cout << i << '=' << notif.key << '\n';
+	}
+
+	throw std::runtime_error(level + " - no such error level");
 }
 
 void Log::flush(level_t level, const std::string & prefix, const std::stringstream & sstr){
