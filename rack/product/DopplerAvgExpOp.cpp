@@ -161,7 +161,10 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	//drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
 	drain::image::ImpulseResponseOp<DopplerAvg> impOp(conf);
 	impOp.setExtensions(horzExt, vertExt);
-	mout.debug() << "Op: " << impOp << mout.endl;
+	mout.special() << "Op: " << impOp << mout.endl;
+
+	mout.special() << "ThConf: " << this->conf.decays << mout.endl;
+	mout.special() << "OpConf: " << impOp.conf.decays << mout.endl;
 
 
 	if (srcData.hasQuality()){
