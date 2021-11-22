@@ -8,7 +8,8 @@ WORKDIR rack
 # RUN apt-get -c apt.conf update
 # RUN apt-get update &&
 
-RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
+#RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev
+RUN apt-get update && apt-get -y install libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
 
 RUN ls -ltr 
 ls -ltrd /usr/include/{,x86_64-linux-gnu/}{tiff,hdf5,png,proj}*
