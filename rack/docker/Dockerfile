@@ -38,6 +38,7 @@ RUN cat install-rack.cnf
 # RUN apt-get -y install libtiff-dev
 # RUN apt-get -y install 
 
+WORKDIR rack
 CMD ["./run.sh","Hello, world!"]
 
 # RUN gcc -o myapp main.c
