@@ -2160,8 +2160,6 @@ MainModule::MainModule(){ //
 	drain::CmdScript script(cmdBank);
 	installExternal(script);
 
-	//drain::CmdExecScript execScript(cmdBank);
-	//installExternal(execScript);
 	install<drain::CmdExecScript>();
 
 	drain::CmdExecFile execFile(cmdBank);
@@ -2169,8 +2167,6 @@ MainModule::MainModule(){ //
 
 
 	// Independent commands
-	//drain::CommandInstaller<> installer(cmdBank);
-
 	install<CmdSelect>('s'); 	install<drain::CmdStatus>();
 	install<drain::CmdLog>(); //  cmdLogFile; // consider abbr. -L ?
 
@@ -2180,10 +2176,8 @@ MainModule::MainModule(){ //
 	install<CmdEcho>();
 
 	//installer.install<CmdSleep> cmdSleep;
-
 	install<drain::CmdFormat>();
 	install<drain::CmdFormatFile<RackContext> > ();
-
 
 	install<drain::CmdDebug>();
 	install<VerboseCmd>('v');

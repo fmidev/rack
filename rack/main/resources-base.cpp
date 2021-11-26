@@ -212,16 +212,21 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 			/// Split what:source to separate fields
 			const SourceODIM sourceODIM(statusMap["what:source"].toStr());
-
-			//mout.experimental() << "statusMap.importCastableMap(sourceODIM)" << path << mout.endl;
-			//SmartMapTools::setCastableValues(statusMap, sourceODIM);
 			statusMap.importCastableMap(sourceODIM); // NOD, PLC, WIGOS, ...
-			// mout.experimental() << "statusMap.importCastableMap(sourceODIM)" << true << mout.endl;
 
-			//mout.warn() << "PolarODIM" << mout.endl;
 			const PolarODIM odim(statusMap);
-			//mout.warn() << odim << mout.endl;
 			statusMap["how:NI"] = odim.getNyquist();
+
+			statusMap["what:path"] = sprinter(path).str();
+			// NEW 2021
+			const drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
+			if (!img.isEmpty()){
+				const std::type_info & t = img.getType();
+				statusMap["how:bits"] = 8*drain::Type::call<drain::sizeGetter>(t);
+				statusMap["how:fulltype"] = drain::Type::call<drain::compactName>(t);
+				statusMap["how:complextype"] = drain::Type::call<drain::complexName>(t);
+			}
+
 		}
 
 	}

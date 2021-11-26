@@ -180,6 +180,54 @@ public:
 */
 
 
+class compactName {
+
+public:
+
+	typedef const std::string & value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed (argument)
+	 *  \tparam T - return type  (practically value_t)
+	 */
+	template <class S, class T>
+	static
+	T callback(){
+
+		static std::string s;
+
+		if (s.empty()){
+			std::stringstream sstr;
+			size_t n = sizeGetter::callback<S, std::size_t>();
+			if (std::numeric_limits<S>::is_specialized){
+				if (std::numeric_limits<S>::is_integer){
+					if (!std::numeric_limits<S>::is_signed)
+						sstr << 'u';
+					sstr << ' ';
+					if (n==1)
+						sstr << "char";
+					else
+						sstr << "int";
+				}
+				else
+					sstr << "float";
+			}
+			else {
+				if (n==0)
+					sstr << "void";
+				else
+					sstr << "other";
+			}
+			sstr << (8 * n);
+			s = sstr.str();
+		}
+
+		return s;
+
+	}
+
+};
+
 class complexName {
 
 public:

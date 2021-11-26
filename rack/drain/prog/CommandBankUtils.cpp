@@ -74,10 +74,14 @@ void CmdStatus::exec() const {
 	const drain::VariableMap & statusMap = ctx.getStatusMap();
 
 	SprinterLayout layout;
+
 	layout.mapChars.separator = '\n';
-	layout.arrayChars.separator = '\n';
+	layout.pairChars.setLayout("{:}");
+	//layout.arrayChars.separator = '\n';
+	layout.arrayChars.separator = ',';
 	layout.stringChars.separator = '\0';
-	SprinterBase::sequenceToStream(ostr, statusMap, layout);
+	SprinterBase::mapToStream(ostr, statusMap, layout, statusMap.getKeyList());
+	// SprinterBase::sequenceToStream(ostr, statusMap, layout);
 	ostr << '\n';
 	//ostr << drain::sprinter(statusMap, layout) << '\n';
 
