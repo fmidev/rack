@@ -167,9 +167,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:acdbb85879409ae7ba2c710f1d0c82649"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1image_1_1ChannelGeometry.html">ChannelGeometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acdbb85879409ae7ba2c710f1d0c82649">getChannels</a> () const</td></tr>
 <tr class="memdesc:acdbb85879409ae7ba2c710f1d0c82649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object.  <a href="classdrain_1_1image_1_1Palette.html#acdbb85879409ae7ba2c710f1d0c82649">More...</a><br /></td></tr>
 <tr class="separator:acdbb85879409ae7ba2c710f1d0c82649"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a2571426c4c00ee5885c8b7d63d9beae3">refine</a> (size_t n=256)</td></tr>
-<tr class="memdesc:a2571426c4c00ee5885c8b7d63d9beae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")  <a href="classdrain_1_1image_1_1Palette.html#a2571426c4c00ee5885c8b7d63d9beae3">More...</a><br /></td></tr>
-<tr class="separator:a2571426c4c00ee5885c8b7d63d9beae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab15ab3da69af1c8c1d85036c0914cb40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40">refine</a> (size_t n=0)</td></tr>
+<tr class="memdesc:ab15ab3da69af1c8c1d85036c0914cb40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")  <a href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40">More...</a><br /></td></tr>
+<tr class="separator:ab15ab3da69af1c8c1d85036c0914cb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd41e39f689532308287a25c02e20928"><td class="memItemLeft" align="right" valign="top"><a id="afd41e39f689532308287a25c02e20928"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateDictionary</b> ()</td></tr>
 <tr class="separator:afd41e39f689532308287a25c02e20928"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,8 +202,12 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialCodes</b></td></tr>
 <tr class="separator:ae42338d9abd438b27e5a56d22202d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7665eab93f7f63a944893e7a5238a181"><td class="memItemLeft" align="right" valign="top"><a id="a7665eab93f7f63a944893e7a5238a181"></a>
-<a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dictionary</b></td></tr>
+<a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a7665eab93f7f63a944893e7a5238a181">dictionary</a></td></tr>
+<tr class="memdesc:a7665eab93f7f63a944893e7a5238a181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for special codes. <br /></td></tr>
 <tr class="separator:a7665eab93f7f63a944893e7a5238a181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035cc4acd17a4350b30ff127f3c09a08"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">refinement</a></td></tr>
+<tr class="memdesc:a035cc4acd17a4350b30ff127f3c09a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request for future refinement, ie. <a class="el" href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40" title="Extend palette to contain n entries (&quot;colors&quot;) by adding intermediate entries (&quot;colors&quot;)">refine()</a> call upon next <a class="el" href="classdrain_1_1image_1_1Palette.html#a88e6ff2a6dffa1ab171816a5d2c08c55" title="Loads a palette from text file.">load()</a>.  <a href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">More...</a><br /></td></tr>
+<tr class="separator:a035cc4acd17a4350b30ff127f3c09a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1ImageCodeMap"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1ImageCodeMap')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap&lt; PaletteEntry &gt;</a></td></tr>
 <tr class="memitem:a5ef05c46954d42363daa8edb90a75d5a inherit pub_attribs_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a id="a5ef05c46954d42363daa8edb90a75d5a"></a>
 <a class="el" href="classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396">lookup_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lookUp</b></td></tr>
@@ -337,8 +341,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2571426c4c00ee5885c8b7d63d9beae3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2571426c4c00ee5885c8b7d63d9beae3">&#9670;&nbsp;</a></span>refine()</h2>
+<a id="ab15ab3da69af1c8c1d85036c0914cb40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab15ab3da69af1c8c1d85036c0914cb40">&#9670;&nbsp;</a></span>refine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,7 +351,7 @@ Protected Attributes</h2></td></tr>
           <td class="memname">void refine </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>n</em> = <code>256</code></td><td>)</td>
+          <td class="paramname"><em>n</em> = <code>0</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -356,6 +360,24 @@ Protected Attributes</h2></td></tr>
 <p>Extend palette to contain n entries ("colors") by adding intermediate entries ("colors") </p>
 <p>Number of colors.</p>
 <p>New number of entries.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a035cc4acd17a4350b30ff127f3c09a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a035cc4acd17a4350b30ff127f3c09a08">&#9670;&nbsp;</a></span>refinement</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t refinement</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Request for future refinement, ie. <a class="el" href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40" title="Extend palette to contain n entries (&quot;colors&quot;) by adding intermediate entries (&quot;colors&quot;)">refine()</a> call upon next <a class="el" href="classdrain_1_1image_1_1Palette.html#a88e6ff2a6dffa1ab171816a5d2c08c55" title="Loads a palette from text file.">load()</a>. </p>
+<p>It is upto applications to use this. </p>
 
 </div>
 </div>

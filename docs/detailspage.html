@@ -68,6 +68,12 @@ $(function() {
 <div class="title">Implementation details </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#details">Internal data structure</a></li>
+<li class="level1"><a href="#imageprocessing">Processing two-dimensional data</a></li>
+<li class="level1"><a href="#fuzzy">Fuzzy functions</a></li>
+</ul>
+</div>
 <div class="textblock"><h1><a class="anchor" id="details"></a>
 Internal data structure</h1>
 <p>Internally, radar data is stored in a tree-like hierarchical structure very analogous to that of Hierarchical Data Format (hdf5) itself. Rack also takes advantage of the OPERA Data Model (ODIM, <a href="http://eumetnet.eu/wp-content/uploads/2017/01/OPERA_hdf_description_2014.pdf">http://eumetnet.eu/wp-content/uploads/2017/01/OPERA_hdf_description_2014.pdf</a>), an encoding and naming policy applicable in HDF5 for different types of radar data like azimuthal scans, polar products and Cartesian images .</p>

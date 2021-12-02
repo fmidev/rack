@@ -68,6 +68,27 @@ $(function() {
 <div class="title">Rack - a weather radar data processing program </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#intro">Introduction</a></li>
+<li class="level1"><a href="#commands">Usage</a><ul><li class="level2"><a href="#command_line_format">Command line arguments</a></li>
+<li class="level2"><a href="#products_brief">Meteorological products</a></li>
+<li class="level2"><a href="#cartesian_brief">Converting to Cartesian images</a></li>
+<li class="level2"><a href="#selecting">Selecting data</a><ul><li class="level3"><a href="#selectquantity">Selecting by quantity only</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="level1"><a href="#modifying">Modifying data</a><ul><li class="level2"><a href="#changing">Changing attribute values</a></li>
+<li class="level2"><a href="#deleting">Deleting data</a></li>
+<li class="level2"><a href="#keeping">Keeping some, deleting other</a></li>
+<li class="level2"><a href="#renaming">Renaming and moving paths and attributes</a></li>
+<li class="level2"><a href="#conversions">Data conversions</a></li>
+<li class="level2"><a href="#target">Defining target data properties</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#quantityConf">Default encoding of quantities</a></li>
+</ul>
+</div>
 <div class="textblock"><p><em> </em> <em> </em></p>
  <div class="image">
 <img src="rack-logo-384x192.png" alt=""/>
@@ -75,19 +96,21 @@ $(function() {
 <div class="fragment"><div class="line">Version 6.28</div>
 </div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
-<p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also support <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
-<p><b>Rack</b> is based on code developed at the Finnish Meteorological Institute since 2001. Recent development work has been also supported by the BALTRAD project, see <a href="http://www.baltrad.eu">http://www.baltrad.eu</a> . The program can be downloaded from <a href="https://github.com/fmidev/rack">https://github.com/fmidev/rack</a> .</p>
-<p>As input, <b>Rack</b> accepts azimuthal scans - volumes or separate sweeps - in HDF5 files using OPERA Information Model (ODIM, <a href="http://www.eumetnet.eu/opera">http://www.eumetnet.eu/opera</a>). The polar coordinate system is applied: the radar at left, rows presenting beams clockwise, the topmost row towards North. After loading a volume, a typical operation is to compute a single-radar product. The computation is carried out in polar coordinates. The result can be mapped to a Cartesian products. The projections are calculated using the Proj4 library (<a href="http://trac.osgeo.org/proj/">http://trac.osgeo.org/proj/</a>). Output files can be written in HDF5 files, PNG image files or geo-referenced GeoTIFF files. In addition, metadata, resampled grid data and vertical profiles can be output as plain text files.</p>
+<p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
+<p><b>Rack</b> is based on code developed at the Finnish Meteorological Institute since 2001. Part of the development work has been supported by the BALTRAD project (2009-2014), see <a href="http://www.baltrad.eu">http://www.baltrad.eu</a> . The program can be downloaded from <a href="https://github.com/fmidev/rack">https://github.com/fmidev/rack</a> .</p>
+<p>As input, <b>Rack</b> accepts azimuthal scans - volumes or separate sweeps - in HDF5 files using OPERA Information Model (ODIM, <a href="http://www.eumetnet.eu/opera">http://www.eumetnet.eu/opera</a>).</p>
+<p>After loading a volume file, a typical operation is to compute a single-radar product. The computation is carried out in polar coordinates. The result can be mapped to a Cartesian products. The projections are calculated using the Proj4 library (<a href="http://trac.osgeo.org/proj/">http://trac.osgeo.org/proj/</a>). Output files can be written in HDF5 files, PNG image files or geo-referenced GeoTIFF files. In addition, metadata, resampled grid data and vertical profiles can be output as plain text files.</p>
 <p>The overall data flow is illustrated below. <br  />
 </p>
 <div class="dotgraph">
 <img src="dot_inline_dotgraph_10.png" alt="dot_inline_dotgraph_10.png" border="0" usemap="#dot_inline_dotgraph_10.map"/>
 <map name="dot_inline_dotgraph_10.map" id="dot_inline_dotgraph_10.map"><area shape="rect" href="fileiopage.html" title="Input file\nHDF5 (or PNG+TXT)" alt="" coords="4,116,118,151"/>
 <area shape="rect" href="fileiopage.html" title="Input volume" alt="" coords="152,116,231,151"/>
-<area shape="poly" href="andrepage.html" title="Anomaly detection\n and removal" alt="" coords="420,133,417,127,406,122,390,117,369,115,347,114,324,115,304,117,287,122,277,127,273,133,277,139,287,145,304,149,324,152,347,153,369,152,390,149,406,145,417,139"/>
-<area shape="poly" href="productspage.html" title="Product generation\n(in polar coordinates)" alt="" coords="429,78,425,72,413,66,395,62,372,59,347,58,322,59,299,62,281,66,269,72,265,78,269,84,281,89,299,94,322,97,347,97,372,97,395,94,413,89,425,84"/>
-<area shape="poly" href="compositespage.html" title="Cartesian products\n and compositing" alt="" coords="772,84,769,78,758,73,742,68,721,66,698,65,675,66,655,68,638,73,628,78,624,84,628,90,638,96,655,100,675,103,698,104,721,103,742,100,758,96,769,90"/>
-<area shape="rect" href="fileiopage.html" title="Output file\nHDF5, GeoTIFF, or PNG" alt="" coords="1020,135,1148,169"/>
+<area shape="poly" href="andrepage.html" title="Anomaly detection\n and removal" alt="" coords="421,134,417,128,407,122,391,118,370,115,347,114,325,115,304,118,288,122,277,128,274,134,277,140,288,145,304,150,325,152,347,153,370,152,391,150,407,145,417,140"/>
+<area shape="poly" href="productspage.html" title="Product generation\n(in polar coordinates)" alt="" coords="429,78,425,72,414,66,396,62,373,59,347,58,322,59,299,62,281,66,269,72,265,78,269,84,281,90,299,94,322,97,347,98,373,97,396,94,414,90,425,84"/>
+<area shape="poly" href="compositespage.html" title="Cartesian products\n and compositing" alt="" coords="772,80,768,74,757,68,741,64,720,61,697,60,675,61,654,64,637,68,627,74,623,80,627,86,637,91,654,96,675,99,697,99,720,99,741,96,757,91,768,86"/>
+<area shape="rect" href="fileiopage.html" title="Output file\nHDF5, GeoTIFF, or PNG" alt="" coords="1019,135,1148,169"/>
+<area shape="rect" href="productspage.html" title="Meteorological product" alt="" coords="464,63,589,97"/>
 </map>
 </div>
 <h1><a class="anchor" id="commands"></a>

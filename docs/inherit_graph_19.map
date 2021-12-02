@@ -1,23 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,505,48,532"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="119,5,305,61"/>
-<area shape="rect" id="node4" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="119,85,305,141"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="140,166,284,207"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="133,231,291,273"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="130,297,294,324"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="137,349,287,390"/>
-<area shape="rect" id="node11" href="$classdrain_1_1Dictionary2.html" title=" " alt="" coords="137,414,287,455"/>
-<area shape="rect" id="node12" href="$classdrain_1_1CommandSequence.html" title="A base class for Script and Program." alt="" coords="117,480,307,507"/>
-<area shape="rect" id="node13" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="135,531,289,557"/>
-<area shape="rect" id="node14" href="$classdrain_1_1Layer.html" title=" " alt="" coords="164,581,260,608"/>
-<area shape="rect" id="node15" href="$classdrain_1_1Path.html" title=" " alt="" coords="131,633,293,674"/>
-<area shape="rect" id="node16" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="157,699,267,725"/>
-<area shape="rect" id="node17" href="$classdrain_1_1Path.html" title=" " alt="" coords="96,749,328,776"/>
-<area shape="rect" id="node19" href="$classdrain_1_1Path.html" title=" " alt="" coords="135,801,289,842"/>
-<area shape="rect" id="node20" href="$classrack_1_1DataSetList.html" title=" " alt="" coords="139,867,285,893"/>
-<area shape="rect" id="node21" href="$classrack_1_1ODIMValidator.html" title=" " alt="" coords="153,917,271,944"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Program.html" title="Sequence consisting of Command:s retrieved from a CommandBank." alt="" coords="423,20,500,47"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Script.html" title=" " alt="" coords="432,100,491,127"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Dictionary2Ptr.html" title="Associates type info." alt="" coords="376,297,547,324"/>
-<area shape="rect" id="node18" href="$classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="391,749,531,776"/>
+<area shape="rect" id="node1" href="$classdrain_1_1compactName.html" title="Returns the basic type (integer, float, bool, string, void) as a string." alt="" coords="5,5,123,32"/>
 </map>

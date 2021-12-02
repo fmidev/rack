@@ -91,6 +91,9 @@ Public Types</h2></td></tr>
 typedef unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a></td></tr>
 <tr class="memdesc:a034d684c2bb4195c725dae147ac44a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger.">Log</a> verbosity level type. <br /></td></tr>
 <tr class="separator:a034d684c2bb4195c725dae147ac44a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5b9f7d4b5abcad2729f2d7928a0f03"><td class="memItemLeft" align="right" valign="top"><a id="a0e5b9f7d4b5abcad2729f2d7928a0f03"></a>
+typedef std::vector&lt; <a class="el" href="structdrain_1_1Notification.html">Notification</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>notif_dict_t</b></td></tr>
+<tr class="separator:a0e5b9f7d4b5abcad2729f2d7928a0f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -105,6 +108,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setOstr</b> (std::ost
 <tr class="memitem:a0f1c0d7c3bc7352ac9ae6a31647730da"><td class="memItemLeft" align="right" valign="top"><a id="a0f1c0d7c3bc7352ac9ae6a31647730da"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setVerbosity</b> (<a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a> level)</td></tr>
 <tr class="separator:a0f1c0d7c3bc7352ac9ae6a31647730da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d723839be8d1a4e5de9340a2e4e81b1"><td class="memItemLeft" align="right" valign="top"><a id="a2d723839be8d1a4e5de9340a2e4e81b1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setVerbosity</b> (const std::string &amp;level)</td></tr>
+<tr class="separator:a2d723839be8d1a4e5de9340a2e4e81b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e1e92a148925ee098c210a092e2bb32"><td class="memItemLeft" align="right" valign="top"><a id="a3e1e92a148925ee098c210a092e2bb32"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getVerbosity</b> () const</td></tr>
 <tr class="separator:a3e1e92a148925ee098c210a092e2bb32"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,9 +132,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad7bf610770b2dc36356b8ca4a7bacee1"><td class="memItemLeft" align="right" valign="top"><a id="ad7bf610770b2dc36356b8ca4a7bacee1"></a>
 static long&#160;</td><td class="memItemRight" valign="bottom"><b>getMilliseconds</b> ()</td></tr>
 <tr class="separator:ad7bf610770b2dc36356b8ca4a7bacee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2b41149003bc0fb85490538cb4a543"><td class="memItemLeft" align="right" valign="top"><a id="aed2b41149003bc0fb85490538cb4a543"></a>
+<tr class="memitem:af2c4bc41d9ae36f62f01c13023de25ac"><td class="memItemLeft" align="right" valign="top"><a id="af2c4bc41d9ae36f62f01c13023de25ac"></a>
 static const notif_dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> ()</td></tr>
-<tr class="separator:aed2b41149003bc0fb85490538cb4a543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af2c4bc41d9ae36f62f01c13023de25ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -200,7 +206,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b>
 <li>drain/util/Log.cpp</li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:141</div></div>
+<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:142</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,4 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="5,5,140,32"/>
-<area shape="rect" id="node2" href="$structdrain_1_1Cloner.html" title="Wrapper for derived class S, returning base class T." alt="" coords="188,5,307,32"/>
+<area shape="rect" id="node1" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="5,71,191,98"/>
+<area shape="rect" id="node2" href="$structdrain_1_1Cloner.html" title=" " alt="" coords="239,5,475,47"/>
+<area shape="rect" id="node5" href="$structdrain_1_1Cloner.html" title=" " alt="" coords="272,71,441,98"/>
+<area shape="rect" id="node7" href="$structdrain_1_1Cloner.html" title=" " alt="" coords="240,123,473,164"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="523,5,751,47"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1BinaryFunctorOpCloner.html" title=" " alt="" coords="799,13,1009,39"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="556,71,717,98"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="524,123,749,164"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1UnaryFunctorOpCloner.html" title=" " alt="" coords="801,130,1007,157"/>
 </map>

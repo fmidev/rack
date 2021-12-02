@@ -468,38 +468,44 @@ $(function() {
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    T * retrieve(<span class="keywordtype">size_t</span> a){</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordflow">return</span> (T*)&amp;buffer[ a*conf.byteSize ];</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordflow">return</span> (T*) &amp; buffer[ a*conf.byteSize ];</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    }</div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160; </div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160; </div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    std::vector&lt;unsigned char&gt; buffer; <span class="comment">// non-private, for Image::swap().</span></div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160; </div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160; </div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;    <span class="comment">//drain::ValueScaling const * scalingPtr;</span></div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <span class="keyword">const</span> T * retrieve(<span class="keywordtype">size_t</span> a)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;        <span class="keywordflow">return</span> (<span class="keyword">const</span> T*) &amp; buffer[ a*conf.byteSize ];</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    }</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160; </div>
 <div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160; </div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;};</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    std::vector&lt;unsigned char&gt; buffer; <span class="comment">// non-private, for Image::swap().</span></div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160; </div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160; </div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160; </div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> ImageFrame &amp; src){</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    src.toOStr(ostr);</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;}</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    <span class="comment">//drain::ValueScaling const * scalingPtr;</span></div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160; </div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;};</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160; </div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160; </div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160; </div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160; </div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160; </div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;} <span class="comment">// image::</span></div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;std::ostream &amp; drain::SprinterBase::toStream&lt;drain::image::ImageFrame&gt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp; src, <span class="keyword">const</span> SprinterLayout &amp; layout);</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> ImageFrame &amp; src){</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    src.toOStr(ostr);</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;}</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160; </div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160; </div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160; </div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* IMAGE_FRAME_H_*/</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160; </div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160; </div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;} <span class="comment">// image::</span></div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;std::ostream &amp; drain::SprinterBase::toStream&lt;drain::image::ImageFrame&gt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp; src, <span class="keyword">const</span> SprinterLayout &amp; layout);</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160; </div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* IMAGE_FRAME_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160; </div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="comment">// Drain</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassdrain_1_1Caster_html_a782412feaaee472a9271e3af5d1c7692"><div class="ttname"><a href="classdrain_1_1Caster.html#a782412feaaee472a9271e3af5d1c7692">drain::Caster::get</a></div><div class="ttdeci">T get(const void *p) const</div><div class="ttdoc">Default implementation throws an error. See specialized implementation below.</div><div class="ttdef"><b>Definition:</b> Caster.h:192</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a31407a11b8ee554a956220fe8d1c29d1"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a31407a11b8ee554a956220fe8d1c29d1">drain::image::ImageFrame::begin</a></div><div class="ttdeci">const iterator &amp; begin()</div><div class="ttdoc">Returns iterator pointing to the first image element.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:117</div></div>
@@ -532,6 +538,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a42b4b600b2b73b3021ed4e402b36c0b9"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a42b4b600b2b73b3021ed4e402b36c0b9">drain::image::ImageFrame::get</a></div><div class="ttdeci">T get(size_t i, size_t j, size_t k) const</div><div class="ttdoc">Gets the intensity at location i,j,k .</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:275</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a83de4881caa306e714d4ffb8d4cc9e9c"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a83de4881caa306e714d4ffb8d4cc9e9c">drain::image::ImageFrame::setView</a></div><div class="ttdeci">void setView(const ImageFrame &amp;src, size_t channelStart, size_t channelCount, bool catenate=false)</div><div class="ttdoc">Sets the image to view the data and scaling of another image.</div><div class="ttdef"><b>Definition:</b> ImageFrame.cpp:109</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a4971aaab9e82a8fd1506b0d550a76ddc"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a4971aaab9e82a8fd1506b0d550a76ddc">drain::image::ImageFrame::setStorageType</a></div><div class="ttdeci">void setStorageType(const std::type_info &amp;type)</div><div class="ttdoc">Sets the storage type of the image - typically unsigned char, unsigned int or float....</div><div class="ttdef"><b>Definition:</b> ImageFrame.cpp:62</div></div>
+<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:488</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:65</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Encoding_html_aedd4728b6ff636e25344761609f59694"><div class="ttname"><a href="classdrain_1_1image_1_1Encoding.html#aedd4728b6ff636e25344761609f59694">drain::image::Encoding::setPhysicalRange</a></div><div class="ttdeci">void setPhysicalRange(const Range&lt; double &gt; &amp;range, bool rescale=false)</div><div class="ttdoc">Sets channel specific scaling instead of shared (image-level) scaling.</div><div class="ttdef"><b>Definition:</b> ImageConf.h:227</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D</a></div><div class="ttdef"><b>Definition:</b> Point.h:47</div></div>

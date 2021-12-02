@@ -142,37 +142,33 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="classrack_1_1Compositor.html">Compositor</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1Compositor.html">Compositor</a> &amp; cmd) : <a class="code" href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a>(cmd), weight(cmd.weight) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">//void initComposite();</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">double</span> weight;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">double</span> applyTimeDecay(<span class="keywordtype">double</span> w, <span class="keyword">const</span> <a class="code" href="classrack_1_1ODIM.html">ODIM</a> &amp; odim) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a76357dfc94544036d4397632197e0f93">add</a>(drain::Flags::value_t inputFilter) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a287db1ad142789fe934049d41a4b18da">addPolar</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; src) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a8bb9df743d1d81858223497fa5fbf47b">addCartesian</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; src) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#af3acdcc2afa639a6adda05b764f6055d">extract</a>(<span class="keyword">const</span> std::string &amp; channels) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">// Derives the</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">//Hi5Tree &amp; getInputOLD() const;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">double</span> applyTimeDecay(<span class="keywordtype">double</span> w, <span class="keyword">const</span> <a class="code" href="classrack_1_1ODIM.html">ODIM</a> &amp; odim) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a76357dfc94544036d4397632197e0f93">add</a>(drain::Flags::value_t inputFilter) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a287db1ad142789fe934049d41a4b18da">addPolar</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; src) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#a8bb9df743d1d81858223497fa5fbf47b">addCartesian</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; src) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1Compositor.html#af3acdcc2afa639a6adda05b764f6055d">extract</a>(<span class="keyword">const</span> std::string &amp; channels) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">double</span> weight;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="classrack_1_1Composite.html">Composite</a> &amp; getComposite() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="classrack_1_1Composite.html">Composite</a> &amp; getComposite() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">// Rack</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassrack_1_1Compositor_html_a8bb9df743d1d81858223497fa5fbf47b"><div class="ttname"><a href="classrack_1_1Compositor.html#a8bb9df743d1d81858223497fa5fbf47b">rack::Compositor::addCartesian</a></div><div class="ttdeci">void addCartesian(const Hi5Tree &amp;src) const</div><div class="ttdef"><b>Definition:</b> composite.cpp:435</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>

@@ -68,6 +68,24 @@ $(function() {
 <div class="title">Meteorological products </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#products">Product generation</a><ul><li class="level2"><a href="#cappi">PseudoCAPPI</a></li>
+<li class="level2"><a href="#maxEcho">Maximum echo</a></li>
+<li class="level2"><a href="#echoTop">Echo top altitude</a></li>
+<li class="level2"><a href="#convection">Convection</a></li>
+<li class="level2"><a href="#rainRate">Rainfall rate (mm/h)  (under construction)</a></li>
+<li class="level2"><a href="#RainRateDP">Dual polarimetric rainfall rate (mm/h)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#otherproducts">Other single-radar products</a><ul><li class="level2"><a href="#verticalProfile">Vertical profile</a></li>
+<li class="level2"><a href="#pseudoRhi">Pseudo RHI</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#nonmetproducts">Other useful products</a><ul><li class="level2"><a href="#beamAlt">Beam altitude</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="textblock"><h1><a class="anchor" id="products"></a>
 Product generation</h1>
 <p>Primarily, <b>Rack</b> computes meteorological products in polar coordinate system. The resulting product is also in polar coordinates, hence called a <b>polar</b> <b>product</b>. It can be also called as an intermediate product because such a product is often processed further on, for example added to a composite or transformed to a Cartesian single-radar image. This design feature adds speed to production since many final products can be computed from the same polar product. This also facilitates developing the software, as a new meteorological algorithm needs to be programmed in a single module only.</p>
@@ -83,10 +101,6 @@ PseudoCAPPI</h2>
 <div class="line">  # weightExponent=8 [scalar]</div>
 <div class="line">  # aboveSeaLevel=true </div>
 <div class="line">  # beamWidth=0.2 </div>
-</div><!-- fragment --><p>All the parameters: </p><div class="fragment"><div class="line">   altitude=1500 [metres]</div>
-<div class="line">   weightMin=0.01 [scalar]</div>
-<div class="line">   weightExponent=8 [scalar]</div>
-<div class="line">   aboveSeaLevel=<span class="keyword">true</span> </div>
 </div><!-- fragment --><p>The Pseudo CAPPI product is computed by traversing <em>all</em> the bins of the volume data. The bins are weighted using an exponential function of the distance from reference altitude. This method allows using measurement data from upper and lower beams, when data has low quality or is missing from the closest beam(s) in some bins. <br  />
 </p>
 <p>As a default setting, the relative quality of <code>undetect</code> bins is lower than that of detected signals; this affects e.g. creation of radar image composites. The relative quality can be changed with <code>&ndash;undetectWeight</code> command.</p>
@@ -101,9 +115,6 @@ Maximum echo</h2>
 <div class="line">  # altitude=1000 [metres]</div>
 <div class="line">  # devAltitude=500 [metres]</div>
 <div class="line">  # accumulationMethod=MAXIMUM [MAXIMUM|AVERAGE|WAVG:2:2|MAXW]</div>
-</div><!-- fragment --><p>All the parameters: </p><div class="fragment"><div class="line">   altitude=1000 [metres]</div>
-<div class="line">   devAltitude=500 [metres]</div>
-<div class="line">   accumulationMethod=MAXIMUM [MAXIMUM|AVERAGE|WAVG:2:2|MAXW]</div>
 </div><!-- fragment --><p>The quality is low near and far from the radar, as precipitation may reside over and under radar beams, respectively.</p>
 <div class="image">
 <img src="pMaxEcho-DBZH-panel.png" alt="" width="0.5\textwidth"/>
@@ -117,13 +128,10 @@ Echo top altitude</h2>
 <div class="line">  # dbzReference=-50 [dBZ]</div>
 <div class="line">  # altitudeReference=15000 [metres]</div>
 <div class="line">  # aboveSeaLevel=true [false=radar site|true=sea level]</div>
-</div><!-- fragment --><p>The other parameters are the "coordinates" of a hight reference point having a very low dBZ value. The echo top altitudes are linearly interpolated towards this point. </p><div class="fragment"><div class="line">   minDBZ=20 [dBZ]</div>
-<div class="line">   dbzReference=-50 [dBZ]</div>
-<div class="line">   altitudeReference=15000 [metres]</div>
-<div class="line">   aboveSeaLevel=<span class="keyword">true</span> [<span class="keyword">false</span>=radar site|<span class="keyword">true</span>=sea level]</div>
-</div><!-- fragment --><p>The user may wish to choose a target resolution, for example: <br  />
- </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding C,0.05 --pEchoTop 20  -o echoTop8bit.h5</div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding S,1.0  --pEchoTop 20  -o echoTop16bit.h5</div>
+</div><!-- fragment --><p>The other parameters are the coordinates of a hight reference point having a very low dBZ value. The echo top altitudes are linearly interpolated towards this point.</p>
+<p>The user may wish to choose a target resolution, for example: <br  />
+ </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding C,0.05 --pEchoTop 20  -o echoTop_8bit.h5</div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding S,1.0  --pEchoTop 20  -o echoTop_16bit.h5</div>
 </div><!-- fragment --><div class="image">
 <img src="pEchoTop-HGHT-panel.png" alt="" width="0.5\textwidth"/>
 <div class="caption">
@@ -138,12 +146,6 @@ Convection</h2>
 <div class="line">  # echoTopDBZ=20 [dBZ]</div>
 <div class="line">  # smoothAzm=0 [deg]</div>
 <div class="line">  # smoothRad=0 [km]</div>
-</div><!-- fragment --><p>All the parameters: </p><div class="fragment"><div class="line">   maxEchoThreshold=25 [dBZ]</div>
-<div class="line">   cellDiameter=3 [km]</div>
-<div class="line">   echoTopThreshold=2 [km]</div>
-<div class="line">   echoTopDBZ=20 [dBZ]</div>
-<div class="line">   smoothAzm=0 [deg]</div>
-<div class="line">   smoothRad=0 [km]</div>
 </div><!-- fragment --><div class="image">
 <img src="pConv-PROB-panel.png" alt="" width="0.5\textwidth"/>
 <div class="caption">
@@ -183,8 +185,7 @@ Rainfall rate (mm/h)  (under construction)</h2>
 </div><!-- fragment --><p>These commands can be seen collectively also with <code>&ndash;help</code> <code>formulae</code> .</p>
 <p>The simpler command <code>&ndash;pRainRate</code> uses <code>&ndash;precipZrain</code> and <code>&ndash;precipZsnow</code> . It assumes that a global freezing level is available in data as ODIM variable <code>how:freeze</code> [km]. To override that, the user may apply <code>&ndash;freezingLevel</code> to set the height and thickness of the freezing level. <br  />
 </p>
-<div class="fragment"><div class="line">--pRainRate    (Section: products)</div>
-<div class="line">  Estimates precipitation rate [mm/h] from reflectance [dBZ].</div>
+<div class="fragment"><div class="line">rack volume.h5 --pRainRate -o pRainRate.h5</div>
 </div><!-- fragment --><div class="image">
 <img src="pRainRate-RATE-panel.png" alt="" width="0.5\textwidth"/>
 <div class="caption">

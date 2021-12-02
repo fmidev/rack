@@ -767,6 +767,9 @@ typedef std::vector&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIM
 typedef <a class="el" href="classdrain_1_1CommandInstaller.html">drain::CommandInstaller</a>&lt; 'a', <a class="el" href="structrack_1_1AnDReSection.html">AnDReSection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a2c77789755b24e30206e39ca8b27321e">AnDReInstaller</a></td></tr>
 <tr class="memdesc:a2c77789755b24e30206e39ca8b27321e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep combined OBSOLETE? <br /></td></tr>
 <tr class="separator:a2c77789755b24e30206e39ca8b27321e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5755912eeabf8d18117d871b26c33d06"><td class="memItemLeft" align="right" valign="top"><a id="a5755912eeabf8d18117d871b26c33d06"></a>
+typedef std::map&lt; std::string, std::map&lt; unsigned short, <a class="el" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PaletteMap</b></td></tr>
+<tr class="separator:a5755912eeabf8d18117d871b26c33d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11d4ba4789355376958886236a9d1a39"><td class="memItemLeft" align="right" valign="top"><a id="a11d4ba4789355376958886236a9d1a39"></a>
 typedef <a class="el" href="classdrain_1_1Tree.html">drain::Tree</a>&lt; <a class="el" href="classrack_1_1NodeGDAL.html">NodeGDAL</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeGDAL</b></td></tr>
 <tr class="separator:a11d4ba4789355376958886236a9d1a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -934,6 +937,10 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
 <p>This file is part of AnoRack, radar data processing utilities for C++.</p>
 <p>Created on: Mar 7, 2011 Author: mpeura</p>
 <p>#include "drain/prog/Command.h"</p>
+<p>Version 6.32 &ndash; select elangleMin,elangleMax removed</p>
+<p>Version 6.31 &ndash; Status formatting</p>
+<p>Version 6.30 &ndash; Redesign: Logger calls with variadic templates &ndash; Accumulator detached from AccumulationMethod</p>
+<p>Version 6.29 &ndash; paletteRefine can (and should) be given before applying <code>&ndash;palette</code>.</p>
 <p>Version 6.26 &ndash; Added VRAD-VRADH flexibility to Doppler products</p>
 <p>Version 6.25 &ndash; Image geometry accepts (area, channels, alphachannels) &ndash; Palette cmd preserves alpha channel (by copying it)</p>
 <p>Version 6.24 &ndash; Restored &ndash;execScript (yet not often needed) &ndash; Bug fix in CommandInstaller, cmd section assignment -&gt; logical OR</p>

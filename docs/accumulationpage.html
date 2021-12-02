@@ -68,6 +68,13 @@ $(function() {
 <div class="title">Accumulation products </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><ul><li class="level2"><a href="#acc_polar">Accumulation products</a></li>
+<li class="level2"><a href="#create_cluttermap">Application: creating clutter maps</a></li>
+<li class="level2"><a href="#acc_cart">Accumulating Cartesian data</a></li>
+</ul>
+</ul>
+</div>
 <div class="textblock"><h1><a class="anchor" id="acc_polar"></a>
 Accumulation products</h1>
 <p><b>Rack</b> can be used to accumulate polar and Cartesian data - raw data or products. Cumulative rainfall or clutter maps are examples of accumulation products than can be generated.</p>
@@ -100,7 +107,7 @@ Result of accumulation: with (left) or without (right) <code>undetect</code> rep
 </div><!-- fragment --><p>By default, quantities <code>DBZH</code> and <code>RATE</code> are used for accumulation. This can be changed with <code>&ndash;select</code> . For example, accumulation of total reflectivity (<code>TH</code> ) is obtained with: <br  />
  </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --encoding S --select <span class="stringliteral">&#39;quantity=^TH$&#39;</span> --script <span class="stringliteral">&#39;--pAdd&#39;</span> &lt;files&gt;  --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated.h5 </div>
 </div><!-- fragment --><h2><a class="anchor" id="create_cluttermap"></a>
-Creating clutter maps</h2>
+Application: creating clutter maps</h2>
 <p>As can be seen from above images, accumulating data without quality control produces anomalies in results, especially wind turbines and other clutter that has not been removed even by Doppler filtering. Utility script <code>make-cluttermap.sh</code> accumulates data and creates a clutter map applicable with anomaly detection command <code>&ndash;aClutter</code> (<a class="el" href="andrepage.html#aClutter">Detecting ground clutter</a>) . The accumulation part is similar to the processes described above. After obtaining the accumulated <code>DBZH</code> field it can converted to <code>CLUTTER</code> for example as follows:</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> accumulated0.h5 -Q DBZH --encoding C,0.004,-0.004,quantity=CLUTTER --iFuzzyStep -20:20 --keep quantity=CLUTTER -o cluttermap.h5</div>
 </div><!-- fragment --><p>One can say that the above command practically <em>defines</em> a clutter map. In other words, <b>Rack</b> contains no built-in support in creating <code>CLUTTER</code> quantity but the user may use general purpose commands as above to produce a clutter map. In this example, the accumulated <code>DBZH</code> data is simply rescaled by a fuzzy mapping and the quantity label is changed to <code>CLUTTER</code>. Other fuzzy functions can be considered as well (see <code>&ndash;iFuzzy</code> prefixed commands in <a class="el" href="imagespage.html#imageOps">List of image operators</a>).</p>

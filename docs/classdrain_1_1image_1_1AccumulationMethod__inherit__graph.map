@@ -1,9 +1,10 @@
 <map id="AccumulationMethod" name="AccumulationMethod">
-<area shape="rect" id="node1" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="5,132,165,159"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AverageMethod.html" title=" " alt="" coords="245,5,369,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1MaximumMethod.html" title=" " alt="" coords="238,56,375,83"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title=" " alt="" coords="215,107,398,133"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1MinimumMethod.html" title=" " alt="" coords="240,157,373,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1OverwriteMethod.html" title=" " alt="" coords="239,208,374,235"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="213,259,400,285"/>
+<area shape="rect" id="node1" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="135,132,295,159"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AverageMethod.html" title=" " alt="" coords="374,5,498,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1MaximumMethod.html" title=" " alt="" coords="367,56,505,83"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title=" " alt="" coords="345,107,527,133"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1MinimumMethod.html" title=" " alt="" coords="369,157,503,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1OverwriteMethod.html" title=" " alt="" coords="369,208,503,235"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="343,259,529,285"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,132,87,159"/>
 </map>
