@@ -203,7 +203,7 @@ public:
 				if (std::numeric_limits<S>::is_integer){
 					if (!std::numeric_limits<S>::is_signed)
 						sstr << 'u';
-					sstr << ' ';
+					// sstr << ' ';
 					if (n==1)
 						sstr << "char";
 					else
@@ -213,12 +213,14 @@ public:
 					sstr << "float";
 			}
 			else {
-				if (n==0)
+				if (typeid(S) == typeid(bool))
+					sstr << "bool";
+				else if (n==0)
 					sstr << "void";
 				else
-					sstr << "other";
+					sstr << "other"; // pointer, for example?
 			}
-			sstr << (8 * n);
+			//sstr << (8 * n);
 			s = sstr.str();
 		}
 
@@ -265,8 +267,10 @@ public:
 					sstr << "float";
 			}
 			else {
-				if (n==0)
-					sstr << "uninitialized";
+				if (typeid(S) == typeid(bool))
+					sstr << "bool";
+				else if (n==0)
+					sstr << "void"; // "uninitialized";
 				else
 					sstr << "non-numeric";
 			}

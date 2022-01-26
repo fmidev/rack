@@ -71,7 +71,8 @@ void CmdInputFile::exec() const {
 	// TODO: expand?
 	std::string fullFilename = ctx.inputPrefix + value;
 
-	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
+	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR);
+	ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
 	ctx.unsetCurrentImages();
 
 	//const drain::CommandRegistry & r = drain::getRegistry();

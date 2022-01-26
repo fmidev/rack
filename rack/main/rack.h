@@ -32,9 +32,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.31"
+#define __RACK_VERSION__ "6.33"
 
 /**
+ *   Version 6.32
+ *   -- Bug fix: ctx.statusFlags DATA_ERROR cleared upon new file read
+ *
+ *   Version 6.32
+ *   -- select elangleMin,elangleMax removed
+ *
+ *
+ *   Version 6.31
+ *   -- Status formatting
+ *
  *   Version 6.30
  *   -- Redesign: Logger calls with variadic templates
  *   -- Accumulator detached from AccumulationMethod

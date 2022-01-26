@@ -96,14 +96,14 @@ void DataSelector::init() {
 	reset();
 	pathMatcher.separator.acceptTrailing = true;
 
-	parameters.link("path", path);
+	parameters.link("path", path, "[/]dataset<i>[/data<j>|/quality<j>]");
 	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
 	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
 
 	// Deprecating, use "elangle=min:max" instead
-	parameters.link("elangleMin", elangle.min, "(deprecating)");
-	parameters.link("elangleMax", elangle.max, "(deprecating)");
+	// parameters.link("elangleMin", elangle.min, "(deprecating)");
+	// parameters.link("elangleMax", elangle.max, "(deprecating)");
 
 	/*
 	groups = ODIMPathElem::ALL_GROUPS;

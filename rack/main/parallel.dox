@@ -1,6 +1,9 @@
 /** \page parallelpage Parallel computation
 
 
+
+\tableofcontents
+
 \note Experimental design - not tested operationally
 
 \section parallel_intro Speed-up through parallel computation
