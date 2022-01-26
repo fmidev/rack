@@ -26,9 +26,7 @@ RUN cd rack/rack && ./build.sh
 
 
 # Complete, finalize
-
-
-COPY run.sh .
+COPY run.sh rack/
 RUN ls -ltr 
 
 WORKDIR rack
