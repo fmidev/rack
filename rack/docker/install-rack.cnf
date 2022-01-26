@@ -1,0 +1,15 @@
+# Include paths
+# CCFLAGS='-std=gnu++11 -fopenmp   -I/usr/include   -I/usr/include/x86_64-linux-gnu  -I/usr/include/libpng16  -I/usr/include/geotiff/ -I/usr/include/hdf5/serial'
+CCFLAGS='-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial'
+
+# Library paths
+# LDFLAGS='-std=gnu++11 -fopenmp -L/lib/x86_64-linux-gnu/hdf5/serial  -lhdf5 -L/usr/lib64 -lproj -lpng16 -lz -ltiff -lgeotiff'
+LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+
+# /lib/x86_64-linux-gnu/
+
+# Directory prefix for binary executable: ${prefix}/bin/
+prefix='/usr'
+
+# GeoTiff support (optional)
+USE_GEOTIFF=YES
