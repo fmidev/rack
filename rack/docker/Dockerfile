@@ -1,47 +1,39 @@
 
-FROM ubuntu
+# Install environment & dependencies for rack
 
-COPY .  rack
-WORKDIR rack
-
-# RUN ls -ltr /usr/bin
-# RUN apt-get -c apt.conf update
-# RUN apt-get update &&
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
 
-RUN ls -ltr 
 
-# RUN git clone https://github.com/fmidev/rack.git
 
-WORKDIR rack
+
+# Prepare for rack build
+
 RUN git clone https://github.com/fmidev/rack.git
 
-
-#RUN mv install-rack.cnf rack/ && cd rack && ./build.sh
-
-WORKDIR rack/rack
-RUN ./configure.sh
-
-RUN cat install-rack.cnf
-
-# RUN ./build.sh
+COPY install-rack.cnf rack/rack
 
 
-#RUN tar xvzf rack.tgz
+# RUN cp ../install-rack.cnf rack/ && cd rack && ./build.sh
 
-#RUN ls -ltr rack/
-#RUN ls -ltr rack/Release
+RUN cd rack/rack && ./build.sh
 
 
 
-# RUN apt-get -y install libtiff-dev
-# RUN apt-get -y install 
+
+
+
+
+# Complete, finalize
+
+
+COPY run.sh .
+RUN ls -ltr 
 
 WORKDIR rack
 CMD ["./run.sh","Hello, world!"]
 
-# RUN gcc -o myapp main.c
-# CMD ["./myapp"]
+
 
 
