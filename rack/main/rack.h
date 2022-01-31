@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "6.33"
 
 /**
- *   Version 6.32
+ *   Version 6.33
  *   -- Bug fix: ctx.statusFlags DATA_ERROR cleared upon new file read
  *
  *   Version 6.32

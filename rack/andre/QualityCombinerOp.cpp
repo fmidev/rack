@@ -215,8 +215,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
 
-	//const double DEFAULT_QUALITY = 0.7;
-	const double QUALITY_THRESHOLD = 0.99;
+	// const double QUALITY_THRESHOLD = 0.99;
 
 	std::set<std::string> classesNew;
 	srcQind.getHow()["task_args"].toSequence(classesNew, ',');

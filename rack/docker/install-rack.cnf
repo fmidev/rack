@@ -1,3 +1,41 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+# Conf for Docker image 'rack'
+# mpeura
+#
+
+# Hierarchical Data Format (HDF5) library
+HDFROOT='/usr/include/hdf5/serial'
+
+# PROJ.4 projection library
+PROJROOT='/usr/include'
+
+# GeoTIFF include dir (leave empty if GeoTIFF not needed)
+GEOTIFF='/usr/include/geotiff'
+
+# For installing Rack executable in $prefix/bin/
+# prefix='/var/opt'
+prefix='/usr/local'
+
+# General include options
+# /usr/include/png.h =>
+# /usr/include/libpng16/'
+# /usr/include/hdf5/serial
+# /usr/include/geotiff
+CCFLAGS='-I/usr/include/geotiff -I/usr/include/hdf5/serial  '
+# -I/usr/include/libpng16'
+
+# General library options
+# HDF5: /usr/include/hdf5/serial
+# 
+LDFLAGS='-L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+
+=======
+=======
+>>>>>>> 7647ac4c297dbaf51af9bd0aa616911d985570a9
+=======
+>>>>>>> 7647ac4c297dbaf51af9bd0aa616911d985570a9
 # Include paths
 # CCFLAGS='-std=gnu++11 -fopenmp   -I/usr/include   -I/usr/include/x86_64-linux-gnu  -I/usr/include/libpng16  -I/usr/include/geotiff/ -I/usr/include/hdf5/serial'
 CCFLAGS='-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial'
@@ -13,3 +51,10 @@ prefix='/usr'
 
 # GeoTiff support (optional)
 USE_GEOTIFF=YES
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 7647ac4c297dbaf51af9bd0aa616911d985570a9
+=======
+>>>>>>> 7647ac4c297dbaf51af9bd0aa616911d985570a9
+=======
+>>>>>>> 7647ac4c297dbaf51af9bd0aa616911d985570a9
