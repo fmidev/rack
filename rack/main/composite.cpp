@@ -651,7 +651,10 @@ void Compositor::extract(const std::string & channels) const {
 	where["BBOX"].setType(typeid(double));
 	where["BBOX"] = composite.getBoundingBoxD().toVector();
 
-	where["BBOX_native"].setType(typeid(double));
+	if (composite.isLongLat())
+		where["BBOX_native"].setType(typeid(double));
+	else
+		where["BBOX_native"].setType(typeid(long int));
 	where["BBOX_native"] = composite.getBoundingBoxM().toVector();
 
 	where["BBOX_data"].setType(typeid(double));
