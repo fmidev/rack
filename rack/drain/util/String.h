@@ -196,19 +196,27 @@ public:
 	    s.append(buffer, istr.gcount());
 	}
 
-//private:
 
-	/// Conversion from std::string to basic types.
+	/// Conversion from std::string to basic types, including std::string.
 	/**
+	 *  This version is slow for string targets (T).
+	 *
 	 *  \param str - input string
-	 *  \param tmp - "hidden" temporary value; returned reference should be read instead of this.
+	 *  \param dst - destination
 	 *
 	 *  \return - reference to the result of the conversion.
 	 */
 	template <class T>
 	static
-	const T & convert(const std::string &s, T & tmp);
+	void convert(const std::string &s, T & dst);
 
+	/// Conversion from std::string to basic types, including std::string.
+	/**
+	 *  This version is slow for string targets (T).
+	 *
+	 *  \param str - input string
+	 *  \return - converted value.
+	 */
 	template <class T>
 	static
 	T convert(const std::string &s);
@@ -218,13 +226,26 @@ public:
 	std::string & import(const T & src, std::string & target);
 
 
+//private: CONSIDER!
+
+	/// Convert only if needed. If T is std::string, returns s directly.
+	/**
+	 *  \param str - input string
+	 *  \param tmp - "hidden" temporary value; returned reference should be read instead of this.
+	 *  \return - reference to the result of the conversion.
+	 *
+	 */
+	template <class T>
+	static
+	const T & lazyConvert(const std::string &s, T & tmp);
+
 private:
 
 	template <class T>
 	static
 	void appendString(T & sequence, const std::string & str){
 		typename T::value_type tmp;
-		sequence.insert(sequence.end(), StringTools::convert(str, tmp));
+		sequence.insert(sequence.end(), StringTools::lazyConvert(str, tmp));
 	}
 
 	template <class T>
@@ -295,6 +316,10 @@ void StringTools::split(const std::string & str, T & sequence, const C & separat
 	}
 }
 
+/*
+template <>
+bool StringTools::split2(const std::string & s, std::string & first, std::string & second, const char *separators, const std::string & trimChars);
+*/
 
 template <class T1, class T2, class S>
 bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S & separators, const std::string & trimChars){
@@ -303,35 +328,48 @@ bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S
 
 	if (i != std::string::npos){ // input of type "key=value" found
 
-		std::stringstream sstr1;
-		//std::cerr << "eka " << s.substr(0, i) << '\n';
+		// std::stringstream sstr1;
+		// std::cerr << "eka " << s.substr(0, i) << '\n';
 		if (!trimChars.empty()){
-			sstr1 << StringTools::trim(s.substr(0, i), trimChars);
+			// sstr1 << StringTools::trim(s.substr(0, i), trimChars);
+			// sstr1 >> first;
+			first = lazyConvert(StringTools::trim(s.substr(0, i), trimChars), first);
 		}
-		else
-			sstr1 << s.substr(0, i);
-		sstr1 >> first;
+		else {
+			// sstr1 << s.substr(0, i);
+			// sstr1 >> first;
+			first = lazyConvert(s.substr(0, i), first);
+		}
 
-		std::stringstream sstr2;
+		//std::stringstream sstr2;
 		++i;
 		if (i<s.size()){
 			//std::cerr << "toka " << s.substr(i) << '\n';
 			if (!trimChars.empty()){
-				sstr2 << StringTools::trim(s.substr(i), trimChars);
+				// sstr2 << StringTools::trim(s.substr(i), trimChars);
+				// sstr2 >> second;
+				second = lazyConvert(StringTools::trim(s.substr(i), trimChars), second);
 			}
-			else
-				sstr2 << s.substr(i);
+			else {
+				// sstr2 << s.substr(i);
+				// sstr2 >> second;
+				second = lazyConvert(s.substr(i), second);
+			}
 		}
-		sstr2 >> second;
 		return true;
 	}
 	else {
-		std::stringstream sstr;
-		if (trimChars.empty())
-			sstr << s;
-		else
-			sstr << StringTools::trim(s, trimChars);
-		sstr >> first;
+		// std::stringstream sstr;
+		if (trimChars.empty()){
+			//sstr << s;
+			//sstr >> first;
+			first = lazyConvert(s, first);
+		}
+		else {
+			// sstr << StringTools::trim(s, trimChars);
+			// sstr >> first;
+			first = lazyConvert(StringTools::trim(s, trimChars), first);
+		}
 		return false;
 	}
 
@@ -339,17 +377,21 @@ bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S
 }
 
 
+
+
+
+
+
 template <>
 inline
-const std::string & StringTools::convert(const std::string &str, std::string & dst){
-	//target.assign(str);
+const std::string & StringTools::lazyConvert(const std::string &str, std::string & tmp){
 	return str;
 }
 
 
 template <class T>
 inline
-const T & StringTools::convert(const std::string &str, T & dst	){
+const T & StringTools::lazyConvert(const std::string &str, T & dst){
 	std::stringstream sstr(str);
 	sstr >> dst;
 	return dst;
@@ -357,11 +399,20 @@ const T & StringTools::convert(const std::string &str, T & dst	){
 
 template <class T>
 inline
-T StringTools::convert(const std::string &s){
-	T dst;
-	StringTools::convert(s, dst);
-	return dst;
+void StringTools::convert(const std::string &str, T & dst){
+	dst = lazyConvert(str, dst);
 }
+
+
+template <class T>
+inline
+T StringTools::convert(const std::string &s){
+	T tmp;
+	tmp = lazyConvert(s, tmp);
+	return tmp;
+}
+
+
 
 
 template <>
@@ -382,9 +433,5 @@ std::string & StringTools::import(const T & x, std::string & dst){
 
 } // drain::
 
-
-
-
 #endif /* STRING_H_ */
 
-// Drain

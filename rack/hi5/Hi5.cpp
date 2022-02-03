@@ -327,6 +327,8 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 	// NEW
 	std::string assignment;
+	// mout.debug() << line << " => ..." << mout;
+
 	//Hi5Base::parsePath(line, path, assignment);
 	drain::StringTools::split2(line, path, assignment, ":");
 	assignAttribute(dst(path), assignment);
@@ -342,12 +344,13 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 	std::string attrValue;
 	const bool VALUE_GIVEN = drain::StringTools::split2(assignment, attrKey, attrValue, "=");
 
-
+	/*
 	mout.debug2();
-	//mout << path      << " : ";
-	mout << attrKey   << " = ";
-	mout << attrValue << " | ";
+	mout << "'" << assignment << "' => ";
+	mout << "'" << attrKey    << "' = '";
+	mout << "'" << attrValue  << "' | ";
 	mout << mout.endl;
+	*/
 
 	/// Create the node always
 	// NodeHi5 & n = dst(path).data;

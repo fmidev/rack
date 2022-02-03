@@ -1,4 +1,4 @@
-Rack installation
+Installation
 =================
 
 **Rack** is a C++ based program for weather radar data processing. It supports

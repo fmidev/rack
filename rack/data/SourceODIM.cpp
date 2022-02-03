@@ -81,7 +81,6 @@ const std::string & SourceODIM::getSourceCode() const {
 	}
 	*/
 
-	//sourceMap.setValues(source, ':');  // 2nd par: equal-sign
 	#define TRY_RETURN(s) if (!s.empty()) return s
 	TRY_RETURN(NOD); // TODO: add options for desired order
 	TRY_RETURN(RAD);
@@ -123,7 +122,13 @@ void SourceODIM::setNOD(){
 				//NOD = getSourceCode();
 				mout.experimental(*this);
 				//mout.toOStr() << "Site code 'NOD' not found, substituting with '" << NOD << "'" << mout.endl;
-				mout.info() << "Site code 'NOD' not found, using '" << getSourceCode() << "' as node indicator " << mout.endl;
+				const std::string & code = getSourceCode();
+				if (!code.empty()){
+					mout.info() << "Site code 'NOD' not found, using '" << code << "' as node indicator " << mout.endl;
+				}
+				else {
+					mout.note() << "Site information (what:source) not found " << mout.endl;
+				}
 			}
 		}
 	}

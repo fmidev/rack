@@ -590,9 +590,13 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
 	}
 
+	// Perhaps explicitly set already
+	std::string object = ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"];
+
+	mout.warn() << ctx.inputHi5[ODIMPathElem::WHAT] << mout;
 
 	Hi5Tree & dst = ctx.inputHi5[dataSetElem][dataElem];
-	drain::image::Image & dstImage = dst["data"].data.dataSet;
+	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.dataSet;
 	drain::image::File::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();
 
@@ -600,26 +604,37 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	drain::FlexVariableMap & attr = dstImage.properties;
 
 
-	// Displays true/false
-	mout.debug() << "Image has metadata: " << drain::Variable(!attr.empty()) << mout.endl;
+	// No information, img has always (linked) attributes.
+	// mout.info() << "Image has metadata: " << drain::Variable(!attr.empty()) << mout.endl;
+	//mout.info() << d << mout;
 
-	//mout.note() << attr << mout.endl;
-
-	//drain::FlexVariable & object = attr["what:object"];
-	std::string object = attr["what:object"].toStr();
+	mout.note() << attr << mout;
+		//mout.warn() << "object empty,: '" <<
+	drain::Variable & obj = attr["what:object"];
+	if (!obj.isEmpty()){
+		if (object.empty()){
+			if (obj != object){
+				mout.warn() << "overwriting what:object '" << object << "' -> '" << obj << "'" << mout;
+			}
+			object = obj.toStr();
+		}
+	}
+	//std::string object = attr["what:object"].toStr();
 	//mout.warn() << "object: '" << object << '[' << Type::getTypeChar(object.getType()) << "]', props: " <<  dstImage.properties << mout.endl;
 
 
 	if (object.empty()){
 		object = ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
-		//std::cout << ctx.inputHi5[ODIMPathElem::WHAT] << '\n';
 	}
+
 
 	if (object.empty()){ // unneeded? See below.
 		object = "SCAN";
-		mout.note() << "what:object empty, assuming '"<< object <<"'" << mout.endl;
+		mout.note() << "what:object empty, assuming "<< object <<"'" << mout;
 	}
-
+	else {
+		mout.warn() << "object: " << object << mout;
+	}
 	/*
 	if (object == "COMP"){
 		CartesianODIM odim;
@@ -656,7 +671,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 			mout.note() << "Polar object (" << object << ") detected" << mout;
 		}
 		else {
-			ctx.inputHi5["what"].data.attributes["what:object"] = "SCAN";
+			ctx.inputHi5["what"].data.attributes["object"] = "SCAN";
 			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout;
 		}
 		PolarODIM odim;

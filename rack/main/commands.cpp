@@ -825,7 +825,7 @@ public:
 	CmdCompleteODIM() : drain::BasicCommand(__FUNCTION__, "Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings."){};
 
 	template <class OD>
-	void complete(Hi5Tree & dstH5, OD & od) const {
+	void complete(Hi5Tree & dstH5) const { // , OD & od)
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -912,13 +912,27 @@ public:
 			ctx.currentHi5 = &ctx.cartesianHi5;
 		}
 
-		if (ctx.currentHi5 == ctx.currentPolarHi5){
-			PolarODIM odim;
-			complete(*ctx.currentHi5, odim);
+		Hi5Tree & dst = *ctx.currentHi5;
+
+		if (&dst == ctx.currentPolarHi5){
+			// PolarODIM odim;
+			complete<PolarODIM>(dst); // , odim
 		}
-		else if (ctx.currentHi5 == &ctx.cartesianHi5){
-			CartesianODIM odim;
-			complete(*ctx.currentHi5, odim);
+		else if (&dst == &ctx.cartesianHi5){
+			//
+			complete<CartesianODIM>(dst); // , odim
+
+			RootData<CartesianDst> root(dst);
+			// mout.experimental(root.odim);
+
+			drain::VariableMap & where = root.getWhere();
+			mout.debug2(where);
+			GeoFrame frame(where["xsize"], where["ysize"]);
+			frame.setProjection(where["projdef"]);
+			frame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			// mout.experimental(frame);
+			root.odim.updateGeoInfo(frame);
+
 		}
 		else {
 
@@ -2157,6 +2171,8 @@ MainModule::MainModule(){ //
 	drain::HelpCmd help(cmdBank);
 	installExternal(help, 'h');
 
+	install<CmdHelpExample>();
+
 	drain::CmdScript script(cmdBank);
 	installExternal(script);
 
@@ -2164,6 +2180,7 @@ MainModule::MainModule(){ //
 
 	drain::CmdExecFile execFile(cmdBank);
 	installExternal<drain::CmdExecFile>(execFile);
+
 
 
 	// Independent commands
@@ -2198,8 +2215,6 @@ MainModule::MainModule(){ //
 	install<CmdDumpMap>();
 	//RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
 
-
-	install<CmdHelpExample>();
 
 	install<CmdJSON>();
 	install<CmdKeep>();

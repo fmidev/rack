@@ -7,7 +7,7 @@ PROJECT_NAME := `basename $$PWD`
 DOXYFILE = Doxyfile
 BACKUP_FILE := `date +'${DOXYFILE}%Y%m%d-%H%M'`
 DOXYROOT = doc
-DOXYPATTERNS = '*.dox *.cpp *.h'
+DOXYPATTERNS = '*.dox *.md *.cpp *.h'
 
 
 
