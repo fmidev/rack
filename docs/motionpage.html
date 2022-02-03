@@ -98,11 +98,11 @@ Doppler wind smoothing</h2>
 <p>The Doppler field can be smoothed with <code>&ndash;pDopplerAvg</code> command: <br  />
 </p>
 <div class="fragment"><div class="line">rack volume.h5 --pDopplerAvg &#39;1500,3,0.5,false,false&#39; -o pDopplerAvg.h5</div>
-<div class="line">  # width=1500 [metres]</div>
-<div class="line">  # height=3 [deg]</div>
-<div class="line">  # threshold=0.5 [percentage]</div>
-<div class="line">  # compensate=false [cart/polar[0|1]]</div>
-<div class="line">  # relativeScale=false [false|true]</div>
+<div class="line">  % width=1500 [metres]</div>
+<div class="line">  % height=3 [deg]</div>
+<div class="line">  % threshold=0.5 [percentage]</div>
+<div class="line">  % compensate=false [cart/polar[0|1]]</div>
+<div class="line">  % relativeScale=false [false|true]</div>
 </div><!-- fragment --><p> There are several parameters, determining the window width and height, minimum percentage for the samples in the window, switch for compensating the beam broadening, as well as switch for scaling the result with maximum unambiguous speed <img class="formulaInl" alt="$V_{Nyq}$" src="form_52.png"/> (stored as <code>how:NI</code> in ODIM metadata).</p>
 <div class="image">
 <img src="pDopplerAvg-VRAD-panel.png" alt=""/>
@@ -110,9 +110,9 @@ Doppler wind smoothing</h2>
 Raw Doppler data (left) and averaged data (right).</div></div>
  <p>There is also an exponential (yet asymmetric) <code>&ndash;pDopplerAvgExp</code> . It is recommended to use at least 16-bit resolution to store averaged fields.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pDopplerAvgExp &#39;0.75:0.75:0.75:0.75,0,0&#39; -o pDopplerAvgExp.h5</div>
-<div class="line">  # decay=0.75:0.75:0.75:0.75 </div>
-<div class="line">  # horzExtension=0 [pix]</div>
-<div class="line">  # vertExtension=0 [pix]</div>
+<div class="line">  % decay=0.75:0.75:0.75:0.75 </div>
+<div class="line">  % horzExtension=0 [pix]</div>
+<div class="line">  % vertExtension=0 [pix]</div>
 </div><!-- fragment --><div class="image">
 <img src="pDopplerAvgExp-panel.png" alt=""/>
 <div class="caption">
@@ -122,11 +122,11 @@ Doppler wind variation</h2>
 <p>The standard deviation in Doppler field can be displayed with <code>&ndash;pDopplerDev</code> command. <br  />
  The parameters are the same as in the Doppler averaging above.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pDopplerDev &#39;1500,3,0.5,false,true&#39; -o pDopplerDev.h5</div>
-<div class="line">  # width=1500 [metres]</div>
-<div class="line">  # height=3 [deg]</div>
-<div class="line">  # threshold=0.5 [percentage]</div>
-<div class="line">  # compensate=false [cart/polar[0|1]]</div>
-<div class="line">  # relativeScale=true [true|false]</div>
+<div class="line">  % width=1500 [metres]</div>
+<div class="line">  % height=3 [deg]</div>
+<div class="line">  % threshold=0.5 [percentage]</div>
+<div class="line">  % compensate=false [cart/polar[0|1]]</div>
+<div class="line">  % relativeScale=true [true|false]</div>
 </div><!-- fragment --><div class="image">
 <img src="pDopplerDev-panel.png" alt=""/>
 <div class="caption">
@@ -135,9 +135,9 @@ Raw Doppler data (left) and standard deviation (right).</div></div>
 <h2><a class="anchor" id="dopplerinv"></a>
 Deriving two-dimensional wind field from Doppler data</h2>
 <div class="fragment"><div class="line">rack volume.h5 --pDopplerInversion &#39;500,3,&#39; -o pDopplerInversion.h5</div>
-<div class="line">  # width=500 [metres]</div>
-<div class="line">  # height=3 [degrees]</div>
-<div class="line">  # altitudeWeight= [Functor:a:b:c...]</div>
+<div class="line">  % width=500 [metres]</div>
+<div class="line">  % height=3 [degrees]</div>
+<div class="line">  % altitudeWeight= [Functor:a:b:c...]</div>
 </div><!-- fragment --><p>Basic usage creates polar products, ie. a resulting array is in polar coordinates: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-widespread.h5 --pDopplerInversion 2500,90  -o amv-polar.h5</div>
 </div><!-- fragment --><p>The vector field can be stored in text format to as follows: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-widespread.h5 --pDopplerInversion 2500,90 --sample 30,30,skipVoid=1 --format <span class="stringliteral">&#39;${LON} ${LAT} ${AMVU} ${AMVV} ${QIND}&#39;</span> -o amv-polar.dat</div>
 </div><!-- fragment --><p> The filename has to have "dat" as extension. See <a class="el" href="miscbook.html#sampling">Sampling grid data</a> for further instructions of using <code>&ndash;sample</code>. The output (truncated in the middle) is as follows:</p>
@@ -236,11 +236,11 @@ Detecting motion fields</h2>
 Motion field apparent in subsequent images</h3>
 <p>The technique is called <em>optical</em> <em>flow</em>, and is based on computing spatial and temporal differentials. Further, the implementation in <b>Rack</b> applies <em>sliding</em> <em>window</em> techniques which makes the approach computationally quick even with windows of size 75x75, for example.</p>
 <p>The command, <code>&ndash;cOpticalFlow</code> , takes several parameters. The first two define the size of the sliding window. </p><div class="fragment"><div class="line">rack volume.h5 --cOpticalFlow &#39;5:5,0,null,false,false&#39; -o cOpticalFlow.h5</div>
-<div class="line">  # width=5:5 </div>
-<div class="line">  # resize=0 [0.0..1.0|pix]</div>
-<div class="line">  # threshold=null [value]</div>
-<div class="line">  # spread=false [0|1]</div>
-<div class="line">  # smooth=false [0|1]</div>
+<div class="line">  % width=5:5 </div>
+<div class="line">  % resize=0 [0.0..1.0|pix]</div>
+<div class="line">  % threshold=null [value]</div>
+<div class="line">  % spread=false [0|1]</div>
+<div class="line">  % smooth=false [0|1]</div>
 </div><!-- fragment --><p>The third parameter is an optional threshold, for example 0 (dBZ) in case of reflectivity data. Thresholding may be needed in order to filter apparent echo area edges caused radar geometry and sensitivity. <br  />
  Smoothing (1=true) is always recommended especially with radar images that have large areas of empty data ie. "undetected" echoes. Alternatively, radar data can be smoothed by some separate process or previous commands, say <code>&ndash;iAverage</code> or <code>&ndash;iGaussianAverage</code>. <br  />
 </p>

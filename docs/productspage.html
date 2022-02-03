@@ -96,11 +96,11 @@ Product generation</h1>
 PseudoCAPPI</h2>
 <p>Constant-altitude position indicator (CAPPI) is obtained with <code>&ndash;pCappi</code> command. It takes altitude as its first argument.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pCappi &#39;1500,0.01,8,true,0.2&#39; -o pCappi.h5</div>
-<div class="line">  # altitude=1500 [metres]</div>
-<div class="line">  # weightMin=0.01 [scalar]</div>
-<div class="line">  # weightExponent=8 [scalar]</div>
-<div class="line">  # aboveSeaLevel=true </div>
-<div class="line">  # beamWidth=0.2 </div>
+<div class="line">  % altitude=1500 [metres]</div>
+<div class="line">  % weightMin=0.01 [scalar]</div>
+<div class="line">  % weightExponent=8 [scalar]</div>
+<div class="line">  % aboveSeaLevel=true </div>
+<div class="line">  % beamWidth=0.2 </div>
 </div><!-- fragment --><p>The Pseudo CAPPI product is computed by traversing <em>all</em> the bins of the volume data. The bins are weighted using an exponential function of the distance from reference altitude. This method allows using measurement data from upper and lower beams, when data has low quality or is missing from the closest beam(s) in some bins. <br  />
 </p>
 <p>As a default setting, the relative quality of <code>undetect</code> bins is lower than that of detected signals; this affects e.g. creation of radar image composites. The relative quality can be changed with <code>&ndash;undetectWeight</code> command.</p>
@@ -112,9 +112,9 @@ The pseudo-CAPPI product and its quality field.</div></div>
 Maximum echo</h2>
 <p>Maximum reflectivity in vertical direction is obtained <code>&ndash;maxEcho</code> command. It takes two parametes: (minimum) <code>altitude</code> above which reflectances are considered and <code>altitudeDev</code> (altitude deviation), a fuzzy width parameter of the threshold.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pMaxEcho &#39;1000,500,MAXIMUM&#39; -o pMaxEcho.h5</div>
-<div class="line">  # altitude=1000 [metres]</div>
-<div class="line">  # devAltitude=500 [metres]</div>
-<div class="line">  # accumulationMethod=MAXIMUM [MAXIMUM|AVERAGE|WAVG:2:2|MAXW]</div>
+<div class="line">  % altitude=1000 [metres]</div>
+<div class="line">  % devAltitude=500 [metres]</div>
+<div class="line">  % accumulationMethod=MAXIMUM [MAXIMUM|AVERAGE|WAVG:2:2|MAXW]</div>
 </div><!-- fragment --><p>The quality is low near and far from the radar, as precipitation may reside over and under radar beams, respectively.</p>
 <div class="image">
 <img src="pMaxEcho-DBZH-panel.png" alt="" width="0.5\textwidth"/>
@@ -124,10 +124,10 @@ The maximum echo product and its quality field.</div></div>
 Echo top altitude</h2>
 <p>Height of precipitation can be computed with <code>&ndash;echoTop</code> command. It takes threshold reflectivity (dBZ) as its first argument.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pEchoTop &#39;20,-50,15000,true&#39; -o pEchoTop.h5</div>
-<div class="line">  # minDBZ=20 [dBZ]</div>
-<div class="line">  # dbzReference=-50 [dBZ]</div>
-<div class="line">  # altitudeReference=15000 [metres]</div>
-<div class="line">  # aboveSeaLevel=true [false=radar site|true=sea level]</div>
+<div class="line">  % minDBZ=20 [dBZ]</div>
+<div class="line">  % dbzReference=-50 [dBZ]</div>
+<div class="line">  % altitudeReference=15000 [metres]</div>
+<div class="line">  % aboveSeaLevel=true [false=radar site|true=sea level]</div>
 </div><!-- fragment --><p>The other parameters are the coordinates of a hight reference point having a very low dBZ value. The echo top altitudes are linearly interpolated towards this point.</p>
 <p>The user may wish to choose a target resolution, for example: <br  />
  </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding C,0.05 --pEchoTop 20  -o echoTop_8bit.h5</div>
@@ -140,12 +140,12 @@ Echo top product and its quality field.</div></div>
 Convection</h2>
 <p>Class probability for convective precipitation is obtained with <code>&ndash;pConv</code> command.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pConv &#39;25,3,2,20,0,0&#39; -o pConv.h5</div>
-<div class="line">  # maxEchoThreshold=25 [dBZ]</div>
-<div class="line">  # cellDiameter=3 [km]</div>
-<div class="line">  # echoTopThreshold=2 [km]</div>
-<div class="line">  # echoTopDBZ=20 [dBZ]</div>
-<div class="line">  # smoothAzm=0 [deg]</div>
-<div class="line">  # smoothRad=0 [km]</div>
+<div class="line">  % maxEchoThreshold=25 [dBZ]</div>
+<div class="line">  % cellDiameter=3 [km]</div>
+<div class="line">  % echoTopThreshold=2 [km]</div>
+<div class="line">  % echoTopDBZ=20 [dBZ]</div>
+<div class="line">  % smoothAzm=0 [deg]</div>
+<div class="line">  % smoothRad=0 [km]</div>
 </div><!-- fragment --><div class="image">
 <img src="pConv-PROB-panel.png" alt="" width="0.5\textwidth"/>
 <div class="caption">
@@ -264,7 +264,7 @@ Other useful products</h1>
 Beam altitude</h2>
 <p>For special applications, the height of the beam can be computed with <code>&ndash;beamAltitude</code> command. It takes the altitude reference point as argument (0=radar site, 1=sea level), Target properties can be set with <code>&ndash;encoding</code> command: image <code>type</code> (typically 'C' or 'd') as the first argument and <code>gain</code> (kilometres) as second. The resulting polar product is simply a function of ground distance, hence an array of <code>nbins</code> x 1 elements, but can be projected to a Cartesian product like any other polar product.</p>
 <div class="fragment"><div class="line">rack volume.h5 --pBeamAltitude &#39;true&#39; -o pBeamAltitude.h5</div>
-<div class="line">  # aboveSeaLevel=true [0=radar site|1=sea level]</div>
+<div class="line">  % aboveSeaLevel=true [0=radar site|1=sea level]</div>
 </div><!-- fragment --><div class="fragment"><div class="line">   aboveSeaLevel=<span class="keyword">true</span> [0=radar site|1=sea level]</div>
 </div><!-- fragment --><div class="image">
 <img src="pBeamAltitude-HGHT-panel.png" alt="" width="0.5\textwidth"/>

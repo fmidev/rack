@@ -70,10 +70,10 @@ $(function() {
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#quick_intro">Introduction</a><ul><li class="level2"><a href="#commands_general">General commands</a></li>
-<li class="level2"><a href="#commands_andre">Anomaly detection and removal commands</a></li>
-<li class="level2"><a href="#commands_product">Meteorological product generation commands</a></li>
-<li class="level2"><a href="#commands_cart">Compositing and Cartesian product generation commands</a></li>
-<li class="level2"><a href="#commands_images">Basic commands on images</a></li>
+<li class="level2"><a href="#commands_andre">Anomaly detection and removal</a></li>
+<li class="level2"><a href="#commands_product">Meteorological products</a></li>
+<li class="level2"><a href="#commands_cart">Compositing and Cartesian products</a></li>
+<li class="level2"><a href="#commands_images">Basic image commands</a></li>
 <li class="level2"><a href="#commands_imageOps">Image operators</a></li>
 </ul>
 </li>
@@ -85,8 +85,200 @@ Introduction</h1>
 <p>This page lists all the commands of <b>Rack</b>. The lists have been generated automatically using command-line help of the current version.</p>
 <h2><a class="anchor" id="commands_general"></a>
 General commands</h2>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_andre"></a>
-Anomaly detection and removal commands</h2>
+<div class="fragment"><div class="line">Rack - a radar data processing program</div>
+<div class="line"> </div>
+<div class="line">Section: general</div>
+<div class="line"> </div>
+<div class="line">--aDefaultQuality  &lt;threshold&gt;</div>
+<div class="line">  Quality index value below which also CLASS information will be updated.</div>
+<div class="line">--aQualityCombiner  </div>
+<div class="line">  Combines detection probabilities to overall quality field QIND (and CLASS).</div>
+<div class="line">--aUniversal  &lt;unversal&gt;</div>
+<div class="line">  Toggle the support for universal ie. Dataset-wide quality indices.</div>
+<div class="line">--append  &lt;path&gt;</div>
+<div class="line">  Append inputs/products (empty=overwrite).</div>
+<div class="line">--cAdd  </div>
+<div class="line">  Adds the current product to the composite.</div>
+<div class="line">--cAddWeighted  &lt;weight&gt;</div>
+<div class="line">  Adds the current product to the composite applying weight.</div>
+<div class="line">--cBBox  &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;</div>
+<div class="line">  Bounding box of the Cartesian product.</div>
+<div class="line">--cBBoxReset  </div>
+<div class="line">  Resets the bounding box (to be set again according to the next radar data).</div>
+<div class="line">--cBBoxTest  &lt;mode&gt;</div>
+<div class="line">  Tests whether the radar range is inside the composite.</div>
+<div class="line">--cBBoxTile  &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;</div>
+<div class="line">  Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.</div>
+<div class="line">--cCreate, -c  </div>
+<div class="line">  Maps the current polar product to a Cartesian product.</div>
+<div class="line">--cCreateSun  &lt;timestamp&gt;</div>
+<div class="line">  Cartesian sun shine field.</div>
+<div class="line">--cCreateTile  </div>
+<div class="line">  Maps the current polar product to a tile to be used in compositing.</div>
+<div class="line">--cDecayTime  &lt;time&gt;</div>
+<div class="line">  Delay half-time in minutes. 0=no decay</div>
+<div class="line">--cDefaultQuality  &lt;weight&gt;</div>
+<div class="line">  Set default quality (for data without quality field)</div>
+<div class="line">--cExtract  &lt;channels&gt;</div>
+<div class="line">  Extract data that has been composited on the accumulation array</div>
+<div class="line">--cGrid  &lt;lonSpacing&gt;,&lt;latSpacing&gt;,&lt;width&gt;,&lt;intensity&gt;</div>
+<div class="line">  Draw lat-lon grid onto a Cartesian product.</div>
+<div class="line">--cInit  </div>
+<div class="line">  Allocate memory to --cSize, applying --target and --select, if set.</div>
+<div class="line">--cMethod  &lt;method&gt;</div>
+<div class="line">  Method to be used in accumulating the (weighted) values.</div>
+<div class="line">--cOpticalFlow  &lt;width&gt;,&lt;resize&gt;,&lt;threshold&gt;,&lt;spread&gt;,&lt;smooth&gt;</div>
+<div class="line">  Optical flow computed based on differential accumulation layers.</div>
+<div class="line">--cPlot  &lt;lon&gt;,&lt;lat&gt;,&lt;x&gt;,&lt;w&gt;</div>
+<div class="line">  Add a single data point.</div>
+<div class="line">--cPlotFile  &lt;file&gt;</div>
+<div class="line">  Plot file containing rows &#39;&lt;lat&gt; &lt;lon&gt; &lt;value&gt; [weight] (skipped...)&#39;.</div>
+<div class="line">--cProj  &lt;projstr&gt;</div>
+<div class="line">  Set projection</div>
+<div class="line">--cRange  &lt;range&gt;</div>
+<div class="line">  Force a range for single-radar cartesian products (0=use-metadata).</div>
+<div class="line">--cReset  </div>
+<div class="line">  Clears the current Cartesian product.</div>
+<div class="line">--cSize  &lt;width&gt;,&lt;height&gt;</div>
+<div class="line">  Set size of the compositing array. Does not allocate memory.</div>
+<div class="line">--cSpread  &lt;horz&gt;,&lt;vert&gt;,&lt;loops&gt;</div>
+<div class="line">  Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead</div>
+<div class="line">--cTime  &lt;time&gt;</div>
+<div class="line">  Modify the time of the current composite. See --cTimeDecay </div>
+<div class="line">--cTimeDecay  &lt;weight&gt;</div>
+<div class="line">  Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime</div>
+<div class="line">--checkType  </div>
+<div class="line">  Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.</div>
+<div class="line">--completeODIM  </div>
+<div class="line">  Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.</div>
+<div class="line">--convert  </div>
+<div class="line">  Convert --select&#39;ed data to scaling and markers set by --encoding</div>
+<div class="line">--createDefaultQuality  &lt;data&gt;,&lt;undetect&gt;,&lt;nodata&gt;</div>
+<div class="line">  Creates default quality field. See --undetectWeight and --aDefault</div>
+<div class="line">--debug  </div>
+<div class="line">  Set verbosity to LOG_DEBUG</div>
+<div class="line">--delete  &lt;selector&gt;</div>
+<div class="line">  Deletes selected parts of h5 structure.</div>
+<div class="line">--dumpMap  &lt;filter&gt;:&lt;filename&gt;</div>
+<div class="line">  Dump variable map, filtered by keys, to std or file.</div>
+<div class="line">--echo  &lt;format&gt;</div>
+<div class="line">  Dumps a formatted std::string to stdout.</div>
+<div class="line">--encoding, -e  &lt;&gt;</div>
+<div class="line">  Sets encodings parameters for polar and Cartesian products, including composites.</div>
+<div class="line">--errorFlags  &lt;flags&gt;</div>
+<div class="line">  Status of last select.</div>
+<div class="line">--execFile  &lt;filename&gt;</div>
+<div class="line">  Execute commands from a file.</div>
+<div class="line">--execScript  </div>
+<div class="line">  Execute script.</div>
+<div class="line">--expandVariables  </div>
+<div class="line">  Toggle variable expansions on/off</div>
+<div class="line">--format  &lt;format&gt;</div>
+<div class="line">  Set format for data dumps (see --sample or --outputFile)</div>
+<div class="line">--formatFile  &lt;filename&gt;</div>
+<div class="line">  Read format for metadata dump from a file</div>
+<div class="line">--formatOut  &lt;filename&gt;</div>
+<div class="line">  Dumps the formatted std::string to a file or stdout.</div>
+<div class="line">--geoTiffTile  &lt;tilewidth&gt;,&lt;tileheight&gt;</div>
+<div class="line">  GeoTIFF tile size. Deprecating, use --outputConf tif:&lt;width&gt;,&lt;height&gt;</div>
+<div class="line">--help, -h  &lt;key&gt;</div>
+<div class="line">  Display help.</div>
+<div class="line">--helpExample  &lt;keyword&gt;</div>
+<div class="line">  Dump example of use and exit.</div>
+<div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;store&gt;</div>
+<div class="line">  Histogram. Optionally --format using keys index,min,max,count,label</div>
+<div class="line">--iPhysical  &lt;physical&gt;</div>
+<div class="line">  Flag. Handle intensities as physical quantities instead of storage typed values.</div>
+<div class="line">--image  </div>
+<div class="line">  Copies data to a separate image object. Encoding can be changed with --target .</div>
+<div class="line">--imageAlpha  </div>
+<div class="line">  Adds a transparency channel. Implies additional image, creates one if needed. See --encoding</div>
+<div class="line">--imageBox  &lt;i&gt;,&lt;j&gt;,&lt;value&gt;</div>
+<div class="line">  Set intensity at (i:i2,j:j2) to (f1,f2,f3,...).</div>
+<div class="line">--imageFlatten  &lt;bgcolor&gt;</div>
+<div class="line">  Removes a alpha (transparency) channel. Adds a new background of given color.</div>
+<div class="line">--imageQuality  &lt;groups&gt;</div>
+<div class="line">  Quality groups accepted as alpha channels</div>
+<div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;</div>
+<div class="line">  Adds a transparency channel. Uses copied image, creating one if needed.</div>
+<div class="line">--inputFile, -i  &lt;filename&gt;</div>
+<div class="line">  Read HDF5, text or image file</div>
+<div class="line">--inputPrefix  &lt;value&gt;</div>
+<div class="line">  Path prefix for input files.</div>
+<div class="line">--jSON  &lt;property&gt;</div>
+<div class="line">  Dump to JSON.</div>
+<div class="line">--keep  &lt;selector&gt;</div>
+<div class="line">  Keeps selected part of data structure, deletes rest.</div>
+<div class="line">--legendOut  &lt;filename&gt;</div>
+<div class="line">  Save palette as TXT, JSON or SVG.</div>
+<div class="line">--log  &lt;filename&gt;</div>
+<div class="line">  Redirect log to file</div>
+<div class="line">--move  &lt;src&gt;,&lt;dst&gt;</div>
+<div class="line">  Rename or move data groups and attributes.</div>
+<div class="line">--outputConf  &lt;format&gt;:&lt;params&gt;</div>
+<div class="line">  Format specific configurations</div>
+<div class="line">--outputFile, -o  &lt;filename&gt;</div>
+<div class="line">  Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.</div>
+<div class="line">--outputPrefix  &lt;value&gt;</div>
+<div class="line">  Path prefix for output files.</div>
+<div class="line">--outputRawImages, -O  &lt;filename&gt;</div>
+<div class="line">  Output datasets to png files named filename[NN].ext.</div>
+<div class="line">--pAdd  </div>
+<div class="line">  Add polar data to accumulation array.</div>
+<div class="line">--pAddWeighted  &lt;weight&gt;</div>
+<div class="line">  Adds the current product to the composite applying weight.</div>
+<div class="line">--pExtract  &lt;channels&gt;</div>
+<div class="line">  Extract polar-coordinate data that has been accumulated.</div>
+<div class="line">--pPlot  &lt;lon&gt;,&lt;lat&gt;,&lt;value&gt;,&lt;weight&gt;</div>
+<div class="line">  Add a single data point.</div>
+<div class="line">--pPlotFile  &lt;file&gt;</div>
+<div class="line">  Plot file containing rows &#39;&lt;lat&gt; &lt;lon&gt; &lt;value&gt; [weight] (skipped...)&#39;.</div>
+<div class="line">--pSite  &lt;location&gt;</div>
+<div class="line">  Set radar size location of the accumulated data. Also size etc., if --encoding set.</div>
+<div class="line">--palette  &lt;filename&gt;</div>
+<div class="line">  Load and apply palette.</div>
+<div class="line">--paletteIn  &lt;filename&gt;</div>
+<div class="line">  Load palette.</div>
+<div class="line">--paletteOut  &lt;filename&gt;</div>
+<div class="line">  Save palette as TXT, JSON or SVG.</div>
+<div class="line">--paletteRefine  &lt;count&gt;</div>
+<div class="line">  Refine colors</div>
+<div class="line">--plot  &lt;i,j,...&gt;</div>
+<div class="line">  Plot</div>
+<div class="line">--quantityConf  &lt;quantity&gt;:&lt;encoding&gt;:&lt;zero&gt;</div>
+<div class="line">  1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair</div>
+<div class="line">--sample  &lt;iStep&gt;,&lt;jStep&gt;,&lt;i&gt;,&lt;j&gt;,&lt;commentChar&gt;,&lt;skipVoid&gt;</div>
+<div class="line">  Extract samples. See --format.</div>
+<div class="line">--script  &lt;script&gt;</div>
+<div class="line">  Define script.</div>
+<div class="line">--select, -s  &lt;selector&gt;</div>
+<div class="line">  Data selection for the next operation.</div>
+<div class="line">--selectQuantity, -Q  &lt;quantities&gt;</div>
+<div class="line">  Like --select quantity=... but with patterns (not regexps)</div>
+<div class="line">--setODIM  &lt;assignment&gt;</div>
+<div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
+<div class="line">--status  </div>
+<div class="line">  Dump information on current images.</div>
+<div class="line">--store  &lt;level&gt;</div>
+<div class="line">  Request additional (debugging) outputs</div>
+<div class="line">--target  &lt;&gt;</div>
+<div class="line">  Sets encodings parameters for polar and Cartesian products, including composites.</div>
+<div class="line">--undetectWeight  &lt;weight&gt;</div>
+<div class="line">  Set the relative weight of data values assigned &#39;undetect&#39;.</div>
+<div class="line">--validate  &lt;filename&gt;</div>
+<div class="line">  Read CVS file </div>
+<div class="line">--verbose, -v  &lt;level&gt;,&lt;imageLevel&gt;</div>
+<div class="line">  Set verbosity level</div>
+<div class="line">--version  </div>
+<div class="line">  Displays software version and quits.</div>
+<div class="line"> </div>
+<div class="line">For help on a commands, type:</div>
+<div class="line">  --help &lt;command&gt;</div>
+<div class="line"> </div>
+<div class="line">For help on command sections, type:</div>
+<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+</div><!-- fragment --><h2><a class="anchor" id="commands_andre"></a>
+Anomaly detection and removal</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>
 <div class="line">Section: andre</div>
@@ -148,7 +340,7 @@ Anomaly detection and removal commands</h2>
 <div class="line">For help on command sections, type:</div>
 <div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_product"></a>
-Meteorological product generation commands</h2>
+Meteorological products</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>
 <div class="line">Section: products</div>
@@ -212,7 +404,7 @@ Meteorological product generation commands</h2>
 <div class="line">For help on command sections, type:</div>
 <div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_cart"></a>
-Compositing and Cartesian product generation commands</h2>
+Compositing and Cartesian products</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>
 <div class="line">Section: cart</div>
@@ -274,7 +466,7 @@ Compositing and Cartesian product generation commands</h2>
 <div class="line">For help on command sections, type:</div>
 <div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_images"></a>
-Basic commands on images</h2>
+Basic image commands</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>
 <div class="line">Section: images</div>

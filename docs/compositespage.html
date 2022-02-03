@@ -88,7 +88,7 @@ $(function() {
 </div>
 <div class="textblock"><h1><a class="anchor" id="compositing"></a>
 Compositing</h1>
-<p><b>Rack</b> can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products. On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in <b>Rack</b> . This section lists related commands and examples. A quick reference is found in <a class="el" href="quickpage.html#commands_cart">Compositing and Cartesian product generation commands</a>. Compositing motion vectors is art of its own, hence explained in a separate section, <a class="el" href="motionpage.html#motion-composites">Composites of motion fields</a> .</p>
+<p><b>Rack</b> can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products. On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in <b>Rack</b> . This section lists related commands and examples. A quick reference is found in <a class="el" href="quickpage.html#commands_cart">Compositing and Cartesian products</a>. Compositing motion vectors is art of its own, hence explained in a separate section, <a class="el" href="motionpage.html#motion-composites">Composites of motion fields</a> .</p>
  <div class="image">
 <img src="composite-baltic-pair.png" alt="" width="\textwidth"/>
 <div class="caption">
@@ -149,15 +149,17 @@ Direct compositing</h3>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
 <div class="line"> --cSize 800,1000 --cBBox 17,57.7,33,69.5    --cInit \</div>
 <div class="line">    \</div>
-<div class="line"> --script &#39;  --pCappi 500   --cAdd&#39;  \</div>
+<div class="line"> --script &#39;  -Q &#39;DBZH&#39;   --cAdd&#39;  \</div>
+<div class="line">  data/pvol_fianj.h5  \</div>
+<div class="line">  data/pvol_fiika.h5  \</div>
 <div class="line">  data/pvol_fikor.h5  \</div>
 <div class="line">  data/pvol_fikuo.h5  \</div>
+<div class="line">  data/pvol_filuo.h5  \</div>
+<div class="line">  data/pvol_fiuta.h5  \</div>
+<div class="line">  data/pvol_fivan.h5  \</div>
+<div class="line">  data/pvol_fivim.h5  \</div>
 <div class="line"> --cExtract dwsc \</div>
-<div class="line"> -o composite-fi.h5 \</div>
-<div class="line"> -o composite-fi.png -o composite-fi.tif -Q QIND -o composite-fi-QIND.png -Q COUNT -o composite-fi-COUNT.png -Q &#39;*DEV&#39; -o composite-fi-STDEV.png \</div>
-<div class="line"> -Q &#39;DBZH&#39; --palette palette-DBZH.txt  -o composite-fi-rgb.png \</div>
-<div class="line"> --imageTransp 0.1:0.2,0.3,0.7 -o composite-fi-rgba.png \</div>
-<div class="line"> -o composite-fi-h5.txt</div>
+<div class="line"> -o composite-fi.h5 </div>
 </div><!-- fragment --><p>A similar composite of CAPPI in 1000 m altitude, with quality-weighted compositing method is obtained with</p>
 <div class="fragment"><div class="line">rack   --cMethod WAVG,2,2,-32    \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>

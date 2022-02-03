@@ -97,7 +97,7 @@ $(function() {
 <div class="textblock"><p><em></em></p>
 <h1><a class="anchor" id="andreintro"></a>
 Introduction</h1>
-<p>This section explains <b>AnDRe</b>, the set of anomaly detection and removal functions of <b>Rack</b>. A quick reference of all the commands is found in <a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal commands</a>.</p>
+<p>This section explains <b>AnDRe</b>, the set of anomaly detection and removal functions of <b>Rack</b>. A quick reference of all the commands is found in <a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal</a>.</p>
 <h2><a class="anchor" id="anomalies"></a>
 Background</h2>
 <p>Practically, echoes received by a weather radar originate not only from precipitating clouds but also from insects, birds, aircraft, ships, ground, sea clutter and electromagnetic emitters illustrated in the figure below.</p>
@@ -137,15 +137,15 @@ Detection</h1>
 <li>ships</li>
 <li>speckle noise</li>
 </ol>
-<p><a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal commands</a> start with <code>'&ndash;a'</code>, and can be listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --help andre </div>
+<p><a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal</a> start with <code>'&ndash;a'</code>, and can be listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --help andre </div>
 </div><!-- fragment --><h2><a class="anchor" id="aBiomet"></a>
 Detecting birds and insects (single-pol)</h2>
 <p>Detects birds and insects. The idea behind bird and insect detector hence "biometeor" detector is very simple. It looks for intensities lower than threshold <code>reflMax</code> and altitudes lower than <code>altitudeMax</code> (metres). The thresholds have fuzzy steepness parameters: intensity steepness <code>reflDev</code> and altitude steepness <code>altitudeDev</code>. The steepness parameters determine "half-widths" of the fuzzy responses (<a class="el" href="detailspage.html#fuzzy">Fuzzy functions</a> ).</p>
 <div class="fragment"><div class="line">rack volume.h5 --aBiomet &#39;-10,500,5,1000&#39; -o aBiomet.h5</div>
-<div class="line">  # reflMax=-10 [dBZ]</div>
-<div class="line">  # maxAltitude=500 [m]</div>
-<div class="line">  # reflDev=5 [dBZ]</div>
-<div class="line">  # devAltitude=1000 [m]</div>
+<div class="line">  % reflMax=-10 [dBZ]</div>
+<div class="line">  % maxAltitude=500 [m]</div>
+<div class="line">  % reflDev=5 [dBZ]</div>
+<div class="line">  % devAltitude=1000 [m]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-biomet.png" alt=""/>
 <div class="caption">
@@ -154,23 +154,23 @@ Detection results of <code>--aBiomet</code> .</div></div>
 Detecting birds and insects (dual-pol)</h2>
 <p>There is also detectors for birds and insects using dual-pol data.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aBird &#39;0,0:3,0.72:0.8,1,2500,5&#39; -o aBird.h5</div>
-<div class="line">  # dbzPeak=0 [Typical reflectivity (DBZH)]</div>
-<div class="line">  # vradDevMin=0:3 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
-<div class="line">  # rhoHVmax=0.72:0.8 [Fuzzy threshold of maximum rhoHV value]</div>
-<div class="line">  # zdrAbsMin=1 [Fuzzy threshold of absolute ZDR]</div>
-<div class="line">  # windowWidth=2500 [window width, beam-directional (m)]</div>
-<div class="line">  # windowHeight=5 [window width, azimuthal (deg)]</div>
+<div class="line">  % dbzPeak=0 [Typical reflectivity (DBZH)]</div>
+<div class="line">  % vradDevMin=0:3 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
+<div class="line">  % rhoHVmax=0.72:0.8 [Fuzzy threshold of maximum rhoHV value]</div>
+<div class="line">  % zdrAbsMin=1 [Fuzzy threshold of absolute ZDR]</div>
+<div class="line">  % windowWidth=2500 [window width, beam-directional (m)]</div>
+<div class="line">  % windowHeight=5 [window width, azimuthal (deg)]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-bird.png" alt=""/>
 <div class="caption">
 Detection results of <code>--aBird</code> .</div></div>
  <div class="fragment"><div class="line">rack volume.h5 --aInsect &#39;-10,0:5,0.63:0.7,3,2500,5&#39; -o aInsect.h5</div>
-<div class="line">  # dbzPeak=-10 [Typical reflectivity (DBZH)]</div>
-<div class="line">  # vradDevMax=0:5 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
-<div class="line">  # rhoHVmax=0.63:0.7 [Fuzzy threshold of maximum rhoHV value]</div>
-<div class="line">  # zdrAbsMin=3 [Fuzzy threshold of absolute ZDR]</div>
-<div class="line">  # windowWidth=2500 [window width, beam-directional (m)]</div>
-<div class="line">  # windowHeight=5 [window width, azimuthal (deg)]</div>
+<div class="line">  % dbzPeak=-10 [Typical reflectivity (DBZH)]</div>
+<div class="line">  % vradDevMax=0:5 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
+<div class="line">  % rhoHVmax=0.63:0.7 [Fuzzy threshold of maximum rhoHV value]</div>
+<div class="line">  % zdrAbsMin=3 [Fuzzy threshold of absolute ZDR]</div>
+<div class="line">  % windowWidth=2500 [window width, beam-directional (m)]</div>
+<div class="line">  % windowHeight=5 [window width, azimuthal (deg)]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-insect.png" alt=""/>
 <div class="caption">
@@ -182,10 +182,10 @@ Detecting ground clutter</h2>
 <li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_3.png"/>: "sky angle",</li>
 </ul>
 <div class="fragment"><div class="line">rack volume.h5 --aClutter &#39;0.5,1,CLUTTER,cluttermaps/cluttermap-${NOD}-${quantity}.h5&#39; -o aClutter.h5</div>
-<div class="line">  # decay=0.5 </div>
-<div class="line">  # gamma=1 </div>
-<div class="line">  # quantity=CLUTTER </div>
-<div class="line">  # pathSyntax=cluttermaps/cluttermap-${NOD}-${quantity}.h5 </div>
+<div class="line">  % decay=0.5 </div>
+<div class="line">  % gamma=1 </div>
+<div class="line">  % quantity=CLUTTER </div>
+<div class="line">  % pathSyntax=cluttermaps/cluttermap-${NOD}-${quantity}.h5 </div>
 </div><!-- fragment --><div class="image">
 <img src="result-clutter.png" alt=""/>
 <div class="caption">
@@ -194,9 +194,9 @@ Detection results of <code>--aClutterMap</code> .</div></div>
 Detecting variations in Doppler wind</h2>
 <p>Faster yet less accurate bird detection is available as <code>aDopplerNoise</code> which computes standard deviation much in the same way the corresponding meteorological motion product <a class="el" href="motionpage.html#dopplerDev">Doppler wind variation</a> . It takes three parameters: speed <code>threshold</code> (m/s) as well as window width and height. The obtained deviation is converted to a detection probability by means of a fuzzy bell function.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aDopplerNoise &#39;3,1500,3&#39; -o aDopplerNoise.h5</div>
-<div class="line">  # speedDevThreshold=3 [Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)]</div>
-<div class="line">  # windowWidth=1500 [window width, beam-directional (m)]</div>
-<div class="line">  # windowHeight=3 [window height, azimuthal (deg)]</div>
+<div class="line">  % speedDevThreshold=3 [Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)]</div>
+<div class="line">  % windowWidth=1500 [window width, beam-directional (m)]</div>
+<div class="line">  % windowHeight=3 [window height, azimuthal (deg)]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-dopplerNoise.png" alt=""/>
 <div class="caption">
@@ -205,9 +205,9 @@ Detection results of <code>--aDopplerNoise</code> .</div></div>
 Detecting emitters (electromagnetic interference)</h2>
 <p>AnDRe emitter detector takes four parameters: <code>lengthMin</code> (along the beam, kilometres), <code>widthMax</code> (azimuthal degrees) and <code>sensitivity</code> (between 0.0 and 1.0). The current implementation applies median filtering twice on the data: horizontally and vertically. Then, the vertical result is subtracted from the horizontal, revealing the horizontally elongated line segments. The computed medians are biased; instead of the conventional median position (at 0.5 of the cumulative distribution) one may lighten or darken the results with the sensitivity value. A high value darkens the vertical result and lightens the horizontal result, causing more line segments in the resulting detection field.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aEmitter &#39;5,5,0.5&#39; -o aEmitter.h5</div>
-<div class="line">  # lengthMin=5 [km]</div>
-<div class="line">  # thicknessMax=5 [deg]</div>
-<div class="line">  # sensitivity=0.5 [0...1]</div>
+<div class="line">  % lengthMin=5 [km]</div>
+<div class="line">  % thicknessMax=5 [deg]</div>
+<div class="line">  % sensitivity=0.5 [0...1]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-emitter.png" alt=""/>
 <div class="caption">
@@ -216,10 +216,10 @@ Detection results of <code>--aEmitter</code> .</div></div>
 Detecting jamming</h2>
 <p>In presense of intensive nearby transmitters or receiver malfunction radar data can be contaminated by intensive overall noise. <b>Rack</b> models the shape of such intensity as a function of distance and applies curve fitting to distinguish between smoothly matching noise areas and pronounced meteorological targets.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aJamming &#39;5,80,10,-1&#39; -o aJamming.h5</div>
-<div class="line">  # smoothnessThreshold=5 [dBZ]</div>
-<div class="line">  # distanceMin=80 [km]</div>
-<div class="line">  # weightLower=10 [[0.0...1.0]]</div>
-<div class="line">  # debugRow=-1 [index]</div>
+<div class="line">  % smoothnessThreshold=5 [dBZ]</div>
+<div class="line">  % distanceMin=80 [km]</div>
+<div class="line">  % weightLower=10 [[0.0...1.0]]</div>
+<div class="line">  % debugRow=-1 [index]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-jamming1.png" alt=""/>
 <div class="caption">
@@ -232,10 +232,10 @@ Detection results of <code>--aJamming</code> .</div></div>
 Detecting sea clutter and other non-meteorogical targets</h2>
 <p>With the polarimetric quantity <em>RhoHV</em> one can easily detect some non-meteorological echoes such as sea clutter. For meteorological targets, <em>RhoHV</em> is close to 1.0 and below otherwise. For example, sea clutter can be detected with the following command:</p>
 <div class="fragment"><div class="line">rack volume.h5 --aNonMet &#39;0.2:0.6,0,0,0.95&#39; -o aNonMet.h5</div>
-<div class="line">  # threshold=0.2:0.6 [0...1[:0...1]]</div>
-<div class="line">  # windowWidth=0 [metres]</div>
-<div class="line">  # windowHeight=0 [degrees]</div>
-<div class="line">  # medianPos=0.95 [0...1]</div>
+<div class="line">  % threshold=0.2:0.6 [0...1[:0...1]]</div>
+<div class="line">  % windowWidth=0 [metres]</div>
+<div class="line">  % windowHeight=0 [degrees]</div>
+<div class="line">  % medianPos=0.95 [0...1]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-nonMet.png" alt=""/>
 <div class="caption">
@@ -245,10 +245,10 @@ Detecting ships</h2>
 <p>The ship detector takes four parameters: <code>minDBZ</code> (minimum reflectance), <code>devDBZ</code> (minimum reflectance difference in a neighborhood), <code>windowWidth</code> (neighbourhood's beam-directional width, metres), <code>windowHeight</code> (neighbourhood's azimuthal width, degrees). First, the detector function computes two separate fields: a fuzzy remapping of <code>minDBZ</code> and field resulting from high-pass filtering with given neighbourhood. Basically, the result is a fuzzy multiplication of those. <br  />
  In addition, artificial vertical "ship sidelobes" are computed for the latter field, modelling the radar echoes of highly reflective point targets. If the sidelobes also appear in the fuzzy intensity field, they become included in the final result.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aShip &#39;25,15,1500,3&#39; -o aShip.h5</div>
-<div class="line">  # reflMin=25 [dBZ]</div>
-<div class="line">  # reflDev=15 [dBZ]</div>
-<div class="line">  # windowWidth=1500 [m]</div>
-<div class="line">  # windowHeight=3 [deg]</div>
+<div class="line">  % reflMin=25 [dBZ]</div>
+<div class="line">  % reflDev=15 [dBZ]</div>
+<div class="line">  % windowWidth=1500 [m]</div>
+<div class="line">  % windowHeight=3 [deg]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-ship.png" alt=""/>
 <div class="caption">
@@ -257,9 +257,9 @@ Detection results of <code>--aShip</code> .</div></div>
 Detecting speckle noise</h2>
 <p>Speckle detection needs two parameters: <code>threshold</code> (in dBZ) and <code>area</code> (fuzzy maximal speck size). This detector focuses on distinct, small specks, giving maximum value to single-pixel segments, and progressively smaller values for larger segments. The speckle detector applies a semi-recursive flood-fill type function in computing segment sizes: the image is traversed and each segment having intensity of at least <code>threshold</code> becomes analyzed. The size of each segment fuzzily converted to an intensity of equally shaped segment in the result image.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aSpeckle &#39;-20,16,false&#39; -o aSpeckle.h5</div>
-<div class="line">  # threshold=-20 [dBZ]</div>
-<div class="line">  # area=16 [bins]</div>
-<div class="line">  # invertPolar=false [bins]</div>
+<div class="line">  % threshold=-20 [dBZ]</div>
+<div class="line">  % area=16 [bins]</div>
+<div class="line">  % invertPolar=false [bins]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-speckle3.png" alt=""/>
 <div class="caption">
@@ -274,8 +274,8 @@ Detection results of <code>--aSpeckle</code> without and with polar coordinate i
 Detecting the Sun</h2>
 <p>This detector calculates the position of the Sun and marks its with sector of given width and intensity. The detector does not analyse the data itself; sectors will be marked also inside precipitation.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aSun &#39;1,0.95&#39; -o aSun.h5</div>
-<div class="line">  # beamWidth=1 [deg]</div>
-<div class="line">  # sensitivity=0.95 [0...1]</div>
+<div class="line">  % beamWidth=1 [deg]</div>
+<div class="line">  % sensitivity=0.95 [0...1]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-sun.png" alt=""/>
 <div class="caption">
@@ -333,11 +333,11 @@ Attenuation in rain</h2>
 <img class="formulaDsp" alt="\[ k(Z) = 1.12\cdot10^{-4} Z_e^{0.62} \]" src="form_0.png"/>
 </p>
 <div class="fragment"><div class="line">rack volume.h5 --aAttenuation &#39;3,1.12e-07,0.62,0,0&#39; -o aAttenuation.h5</div>
-<div class="line">  # reflHalfWidth=3 [dBZ limit of 50% quality]</div>
-<div class="line">  # c=1.12e-07 [coeff]</div>
-<div class="line">  # p=0.62 [coeff]</div>
-<div class="line">  # c2=0 [coeff]</div>
-<div class="line">  # p2=0 [coeff]</div>
+<div class="line">  % reflHalfWidth=3 [dBZ limit of 50% quality]</div>
+<div class="line">  % c=1.12e-07 [coeff]</div>
+<div class="line">  % p=0.62 [coeff]</div>
+<div class="line">  % c2=0 [coeff]</div>
+<div class="line">  % p2=0 [coeff]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-attenuation1.png" alt=""/>
 <div class="caption">
@@ -351,7 +351,7 @@ Detection results of <code>--aAttenuation</code> .</div></div>
 Using Doppler filtering result</h2>
 <p>If both the total reflectivity (<code>TH</code> ) and Doppler filtered reflectivity are available, their difference provides information where the radar has detected static i.e. suspicious targets. The <code>CCor</code> operator computes the diffence between these and fuzzifies the result such that at the given threshold reflecitivy difference the probability of anomaly is 0.5.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aCCor &#39;40&#39; -o aCCor.h5</div>
-<div class="line">  # reflHalfWidth=40 [dBZ]</div>
+<div class="line">  % reflHalfWidth=40 [dBZ]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-cCor.png" alt=""/>
 <div class="caption">
@@ -361,9 +361,9 @@ Detection results of <code>--aCCor</code> .</div></div>
 Timing based quality</h2>
 <p>Likewise, we can associate timing based quality field that describes the extent in which each measurement bin is representative of the nomimal time of the volume or some other desired time, like the nominal time of a composite.</p>
 <div class="fragment"><div class="line">rack volume.h5 --aTime &#39;NOMINAL,1,-1&#39; -o aTime.h5</div>
-<div class="line">  # time=NOMINAL [NOMINAL,NOW,&lt;YYYYmmddMMHH&gt;]</div>
-<div class="line">  # decayPast=1 [mins]</div>
-<div class="line">  # decayFuture=-1 [mins]</div>
+<div class="line">  % time=NOMINAL [NOMINAL,NOW,&lt;YYYYmmddMMHH&gt;]</div>
+<div class="line">  % decayPast=1 [mins]</div>
+<div class="line">  % decayFuture=-1 [mins]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-time.png" alt=""/>
 <div class="caption">
