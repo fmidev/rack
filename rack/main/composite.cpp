@@ -126,7 +126,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 
 	// Check
 	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR) ){ // ! resources.inputOk){
-		mout.note() << "last input inapplicable, skipping it" << mout.endl;
+		mout.note() << "last INPUT inapplicable, skipping it" << mout.endl;
 		ctx.select.clear(); // ?
 		return;
 	}
@@ -144,7 +144,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	/// Set default method, if unset.
 	if (!composite.isMethodSet()){
 		composite.setMethod("MAXIMUM");  // ("LATEST");
-		mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout.endl;
+		mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout;
 	}
 
 	/// Set input data selector (typically, by quantity)
@@ -155,13 +155,14 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 		//composite.dataSelector.setParameters(resources.baseCtx().select);
 		composite.dataSelector.setParameters(ctx.select);  // consume (clear)?
 
+		mout.warn() << "Adjusted composite input selector=" << ctx.select << " -> " << composite.dataSelector << mout;
 		//resources.select = "quantity=" + composite.dataSelector.quantity;
 		//resources.select.clear(); // PROBLEMS HERE?
 
 		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != composite.dataSelector.quantity)){
-			mout.warn() << "quantity selector changed, resetting accumulation array" << mout.endl;
+			mout.warn() << "quantity selector changed, resetting accumulation array" << mout;
 			composite.clear();
 			composite.odim.quantity.clear();
 			composite.odim.scaling.set(0.0, 0.0);
@@ -169,8 +170,9 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	}
 	else {
 		if (composite.dataSelector.quantity.empty()){
-			mout.info() << "Setting selector quantity=" << composite.odim.quantity << mout.endl;
+			mout.info() << "Setting selector quantity=" << composite.odim.quantity << mout;
 			composite.dataSelector.quantity = composite.odim.quantity; // consider "^"+...+"$"
+			//
 		}
 	}
 
@@ -188,10 +190,10 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
 
 	const RootData<SrcType<ODIM> > root(src);
-	mout.debug() << "Src root /what: " << root.getWhat() << mout.endl;
+	mout.debug() << "Src root /what: " << root.getWhat() << mout;
 
 	//mout.info() << "now: vmap" << mout.endl;
-	mout.info() << "using selector: " << composite.dataSelector << mout.endl; // consider: if composite.dataSelector...?
+	mout.special() << "using selector: " << composite.dataSelector << mout; // consider: if composite.dataSelector...?
 
 	/// Main
 	//if (ctx.currentHi5 == ctx.currentPolarHi5){
@@ -291,14 +293,8 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 			return;
 		}
 
-		//const Hi5Tree & srcGroup = src(dataPath);
 		const Data<PolarSrc> polarSrc(src(dataPath)); // NOTE direct path, not from dataSet.getData() ! (because may be plain /qualityN data)
 
-		//ODIMPath datasetPath(dataPath);
-		/*
-		const ODIMPathElem & datasetPath = dataPath.front();
-		mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
-		*/
 
 		/// GET INPUT DATA
 		if ( !polarSrc.data.isEmpty() ){
@@ -441,9 +437,12 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 
 	Composite & composite = getComposite();
 
+	// NOTE: DATASET path needed for quality selection (below)
 	ODIMPath dataPath;
-	composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
+	//composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
 	composite.dataSelector.getPath3(src, dataPath);
+	if (dataPath.back().is(ODIMPathElem::DATA))
+		dataPath.pop_back();
 	//composite.dataSelector.getPathNEW((ctx.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout.endl;
@@ -451,16 +450,10 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 		return;
 	}
 
-	const ODIMPath & p = dataPath;
-	/*
-	ODIMPath p(dataPath);
-	if (p.back().is(ODIMPathElem::DATA)){
-		p.pop_back();
-	}
-	*/
-	mout.info() << "using:" << p << mout.endl;
+	//const ODIMPath & p = dataPath;
+	mout.info() << "using: dataset path:  " << dataPath << mout.endl;
 
-	const DataSet<CartesianSrc> cartDataSetSrc(src(p), composite.dataSelector.quantity);
+	const DataSet<CartesianSrc> cartDataSetSrc(src(dataPath), composite.dataSelector.quantity);
 
 	if (cartDataSetSrc.empty()){
 		mout.warn() << "Empty dataset(s), skipping. Selector.quantity (regexp): '" << composite.dataSelector.quantity << "'" << mout.endl;
@@ -526,7 +519,9 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 		mout.note() << "\t --cBBox '" << composite.getBoundingBoxD() << "'" << mout.endl;
-		//mout.note() << "Using bounding box of the input: " << composite.getBoundingBoxD() << mout.endl;
+		if (!composite.projR2M.isLongLat())
+			mout.note() << "\t --cBBox '" << composite.getBoundingBoxM() << "'" << mout.endl;
+				//mout.note() << "Using bounding box of the input: " << composite.getBoundingBoxD() << mout.endl;
 
 		// mout.warn() << "Defined composite: " << composite << mout.endl;
 	}

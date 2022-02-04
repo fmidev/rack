@@ -163,47 +163,32 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 
 
-bool ODIM::getTime(drain::Time & t) const {
+bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
 
 	try {
-		t.setTime(date, ODIM::dateformat);
-		t.setTime(time, ODIM::timeformat);
+		if (!dateStr.empty())
+			t.setTime(dateStr, ODIM::dateformat);
+		else
+			mout.note() << "empty date string" << mout;
+
+		if (!timeStr.empty())
+			t.setTime(timeStr, ODIM::timeformat);
+		else
+			mout.note() << "empty date string" << mout;
+
 	}
 	catch (const std::exception &e) {
 		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << e.what() << mout.endl;
+		mout.fail() << e.what() << mout;
 		return false;
 	}
+
 	return true;
 }
 
-bool ODIM::getStartTime(drain::Time & t) const {
-
-	try {
-		t.setTime(startdate, ODIM::dateformat);
-		t.setTime(starttime, ODIM::timeformat);
-	}
-	catch (const std::exception &e) {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << e.what() << mout.endl;
-		return false;
-	}
-	return true;
-}
-
-bool ODIM::getEndTime(drain::Time & t) const {
-
-	try {
-		t.setTime(enddate, ODIM::dateformat);
-		t.setTime(endtime, ODIM::timeformat);
-	}
-	catch (const std::exception &e) {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << e.what() << mout.endl;
-		return false;
-	}
-	return true;
-}
 
 
 

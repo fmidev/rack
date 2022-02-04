@@ -186,14 +186,23 @@ public:
 	virtual
 	void updateLenient(const ODIM & odim);
 
-	/// Retrieves the stored time. Returns true if successful, throws error if fail.
-	bool getTime(drain::Time & t) const;
+	/// Retrieves the stored time. Returns true if successful. // consider:  throws error if fail.
+	inline
+	bool getTime(drain::Time & t) const {
+		return getTime(t, date, time);
+	}
 
-	/// Retrieves the start time. Returns true if successful, throws error if fail.
-	bool getStartTime(drain::Time & t) const;
+	/// Retrieves the start time. Returns true if successful. // consider:  throws error if fail.
+	inline
+	bool getStartTime(drain::Time & t) const {
+		return getTime(t, startdate, starttime);
+	}
 
-	/// Retrieves the end time. Returns true if successful, throws error if fail.
-	bool getEndTime(drain::Time & t) const;
+	/// Retrieves the end time. Returns true if successful. // consider: throws error if fail.
+	inline
+	bool getEndTime(drain::Time & t) const {
+		return getTime(t, enddate, endtime);
+	}
 
 	/// Sets \c date and \c time . Returns true if successful, throws error if fail.
 	bool setTime(const drain::Time & t);
@@ -269,6 +278,8 @@ public:
 
 protected:
 
+	/// Retrieves the stored time. Returns true if successful, throws error if fail.
+	bool getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr) const;
 
 
 	///

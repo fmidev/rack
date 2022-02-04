@@ -62,7 +62,8 @@ public:
 	virtual inline
 	void exec() const {
 		// Accept Cartesian and polar
-		add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+		//add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+		add(RackContext::CURRENT);
 	}
 
 
@@ -93,7 +94,8 @@ public:
 
 	virtual inline
 	void exec() const {
-		add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+		// add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
+		add(RackContext::CURRENT);
 	}
 };
 

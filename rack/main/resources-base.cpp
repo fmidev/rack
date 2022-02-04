@@ -103,7 +103,6 @@ const Hdf5Context::h5_role::value_t Hdf5Context::PRIVATE = h5_role::add("PRIVATE
 const Hdf5Context::h5_role::value_t Hdf5Context::SHARED  = h5_role::add("SHARED"); // =64     **< Try shared first  *
 
 
-//   (CARTESIAN|POLAR|INPUT|CURRENT)
 Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
