@@ -107,7 +107,7 @@ void ImageFile::write(const ImageFrame &img,const std::string &path){
 void ImageFile::writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i, int digits){
 
 	if (i >= 0){
-		File::index = i;
+		ImageFile::index = i;
 	}
 
 	std::stringstream sstr;

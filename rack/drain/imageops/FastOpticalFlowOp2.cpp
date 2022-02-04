@@ -249,8 +249,8 @@ void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & s
 	}
 
 	if (mout.isDebug(20)){
-		File::write(src.get(0), "src1.png");
-		File::write(src.get(0), "src2.png");
+		ImageFile::write(src.get(0), "src1.png");
+		ImageFile::write(src.get(0), "src2.png");
 	}
 
 

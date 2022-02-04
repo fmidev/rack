@@ -77,7 +77,7 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 			if (i & 16)
 				tmp.put(i, debugRow, 255);
 		}
-		File::write(tmp, name+"1-srcrow.png");
+		ImageFile::write(tmp, name+"1-srcrow.png");
 		//mout.writeImage(11, tmp, "src-marked");
 	}
 
