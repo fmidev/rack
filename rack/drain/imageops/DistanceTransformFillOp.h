@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DISTANCETRANSFORMFILLOP_H_
 #define DISTANCETRANSFORMFILLOP_H_
 
-#include "drain/image/File.h" // debugging
+#include <drain/image/ImageFile.h> // debugging
 #include "DistanceTransformOp.h"
 
 //#include "drain/util/FunctorPack.h"

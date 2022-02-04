@@ -31,12 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SLIDINGWINDOWOPTICALFLOWOP2_H_
 #define SLIDINGWINDOWOPTICALFLOWOP2_H_
 
+#include <drain/image/ImageFile.h>
 #include <sstream>
 #include <math.h>
 
 #include "drain/util/Fuzzy.h"
-
-#include "drain/image/File.h"
 
 #include "FastOpticalFlowOp.h" // OpticalFlowConfig, OpticalFlowCore1
 

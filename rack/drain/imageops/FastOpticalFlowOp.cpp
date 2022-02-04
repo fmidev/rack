@@ -29,9 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/image/ImageFile.h>
 #include "drain/util/Fuzzy.h"
-#include "drain/image/File.h"
-
 #include "FastOpticalFlowOp.h"
 #include "FunctorOp.h"
 #include "DifferentialOp.h"
@@ -150,8 +149,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	}
 
 	if (mout.isDebug(20)){
-		File::write(src1, "src1.png");
-		File::write(src2, "src2.png");
+		ImageFile::write(src1, "src1.png");
+		ImageFile::write(src2, "src2.png");
 	}
 
 	Channel & dt = dst.get(2);
@@ -168,7 +167,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	mout.debug() << "Computing time derivative" << mout.endl;
 	BinaryFunctorOp<SubtractionFunctor>().traverseChannel(src2, src1, dt);
 	if (mout.isDebug(10)){
-		File::write(dt, "diff-dt.png");
+		ImageFile::write(dt, "diff-dt.png");
 		//writeDebugImage(dt, "diff-dt.png", 0.5, 0.5);
 	}
 
@@ -185,8 +184,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	ImageTray<Channel> gradTray1(dst);
 	gradientOp.traverseChannels(srcTray1, gradTray1);
 	if (mout.isDebug(10)){
-		File::write(gradTray1.get(0), "diff-dx.png");
-		File::write(gradTray1.get(1), "diff-dy.png");
+		ImageFile::write(gradTray1.get(0), "diff-dx.png");
+		ImageFile::write(gradTray1.get(1), "diff-dy.png");
 	}
 
 	mout.debug(3) << "g2 (gradients of src)" << mout.endl;
@@ -201,8 +200,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	//gradientOp.traverseFrame(src2.getChannel(0), grad2);
 	gradientOp.traverseChannels(srcTray2, gradTray2);
 	if (mout.isDebug(18)){
-		File::write(gradTray2.get(0), "diff-dx2.png");
-		File::write(gradTray2.get(1), "diff-dy2.png");
+		ImageFile::write(gradTray2.get(0), "diff-dx2.png");
+		ImageFile::write(gradTray2.get(1), "diff-dy2.png");
 	}
 
 	mout.debug2() << "Determining gradient quality (stability between g2 and g1)" << mout.endl;
@@ -231,7 +230,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		//histOp.computeHistogram(w, histogram);
 		mout.warn() << histogram << mout.endl;
 		// TODO:
-		File::write(w, "diff-grad-w.png");  // actually, w
+		ImageFile::write(w, "diff-grad-w.png");  // actually, w
 		//File::write(weightTray.get(), "diff-grad-w.png");  // actually, w
 
 	}
@@ -246,15 +245,15 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	mixOp.makeCompatible(src1.getConf(), srcMixed);
 	mixOp.traverseChannel(src1, src2, srcMixed.getChannel(0));
 	if (mout.isDebug(3)){
-		File::write(srcMixed, "src-mixed.png");
+		ImageFile::write(srcMixed, "src-mixed.png");
 	}
 
 	ImageTray<const Channel> srcMixedTray;
 	srcMixedTray.setChannels(srcMixed);
 	gradientOp.traverseChannels(srcMixedTray, gradTray1);
 	if (mout.isDebug(4)){
-		File::write(gradTray1.get(0), "diff-dx-mixed.png");
-		File::write(gradTray2.get(1), "diff-dy-mixed.png");
+		ImageFile::write(gradTray1.get(0), "diff-dx-mixed.png");
+		ImageFile::write(gradTray2.get(1), "diff-dy-mixed.png");
 		//exit(0);
 	}
 

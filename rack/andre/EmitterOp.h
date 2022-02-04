@@ -32,9 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef EMITTER_SEGMENT_OP_H_
 #define EMITTER_SEGMENT_OP_H_
 
+#include <drain/image/ImageFile.h>
 #include "drain/util/FunctorPack.h"
-
-#include "drain/image/File.h"
 
 #include "drain/imageops/SegmentAreaOp.h"
 #include "drain/imageops/RunLengthOp.h"

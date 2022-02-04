@@ -38,6 +38,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/prog/CommandBank.h"
 #include "drain/prog/CommandInstaller.h"
 
+#include "drain/util/FileInfo.h"
+
+
 #include "hi5/Hi5.h"
 
 
@@ -50,7 +53,8 @@ const drain::RegExp h5FileExtension;
 
 /// Syntax for recognising GeoTIFF files.
 extern
-const drain::RegExp tiffFileExtension;
+//const drain::RegExp tiffFileExtension;
+const drain::FileInfo fileInfoTIFF;
 
 /// Syntax for recognising Portable Networks Image image file.
 //extern

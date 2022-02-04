@@ -36,12 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
+#include <drain/image/ImageFile.h>
 #include "drain/util/Log.h"
 #include "drain/util/Time.h"
 #include "drain/util/TreeXML.h"
 #include "drain/image/AccumulatorGeo.h"
-#include "drain/image/File.h"
-
 #include "main/rack.h"
 
 #include "FileGeoTIFF.h"
@@ -80,6 +79,8 @@ namespace rack
 
 
 int FileGeoTIFF::compression(COMPRESSION_LZW); // = tunable in fileio.cpp
+
+const drain::FileInfo FileGeoTIFF::fileInfo("(tif|tiff)");
 
 
 const drain::Dictionary2<int, std::string> & FileGeoTIFF::getCompressionDict(){

@@ -28,12 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
-#ifndef DRAIN_FILE_H_
-#define DRAIN_FILE_H_
+#ifndef DRAIN_IMAGE_IMAGEFILE_H_
+#define DRAIN_IMAGE_IMAGEFILE_H_
 
 #include "MagickDrain.h"
-#include "FilePng.h"
-#include "FilePnm.h"
 
 #include <string>
 
@@ -50,12 +48,12 @@ namespace image
 {
 
 
-class File
+class ImageFile
 {
 public:
 
-	static inline  // , const CommentReader & commentReader = CommentReader()
-	void read(Image &img, const std::string & path){
+	static // inline  //
+	void read(Image &img, const std::string & path); /*{
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 		if (FilePnm::fileNameRegExp.test(path)){
@@ -70,8 +68,12 @@ public:
 			FilePng::read(img, path); // , commentReader
 		}
 	}
+	*/
 
 
+	void readFrame(ImageFrame &img, const std::string & path);
+
+	/*
 	static inline
 	void readFrame(ImageFrame &img, const std::string & path){
 
@@ -89,8 +91,9 @@ public:
 			FilePng::read(img, path);
 		}
 	}
+	*/
 
-
+/*
 	template <class T>
 	static void read(ImageT<T> &img, const std::string &path){
 #ifdef DRAIN_MAGICK_yes
@@ -99,14 +102,16 @@ public:
 		MagickDrain::convert(magickImage,img);
 #else
 		// Todo PNM support
-		FilePng::read(img,path);
+		//FilePng::read(img,path);
+		//FilePng::read(img,path);
 #endif
 	}
-
+*/
 
 	//static void read(Image<unsigned char> &image,const std::string &path);
-	static inline
-	void write(const ImageFrame &img,const std::string &path){
+	static // inline
+	void write(const ImageFrame &img,const std::string &path);
+	/*{
 
 		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -123,6 +128,7 @@ public:
 			FilePng::write(img, path);
 		}
 	}
+	*/
 
 	/*
 	template <class T>

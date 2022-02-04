@@ -30,11 +30,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include "FilePnm.h"
-#include "drain/util/Time.h"
 
-#include "drain/util/TextReader.h"
+#include "drain/util/Input.h"
 #include "drain/util/JSON.h"
 #include "drain/util/JSONtree.h"
+#include "drain/util/Output.h"
+#include "drain/util/TextReader.h"
+#include "drain/util/Time.h"
+
 
 namespace drain
 {
@@ -43,22 +46,24 @@ namespace image
 {
 
 /// Syntax for recognising PNM image files
-const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
+//const drain::RegExp FilePnm::fileNameRegExp("^((.*/)?([^/]+))\\.(p([bgpn])m)$", REG_EXTENDED | REG_ICASE);
+const drain::FileInfo FilePnm::fileInfo("p([bgpn])m");
 
 
 // drain::Type & t, drain::image::Geometry & geometry
-void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile) {
+FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile) {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	if (infile.get() != 'P'){
 		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
 		mout.error() << "not an PNM file" << mout.endl;
-		return;
+		return UNDEFINED;
 	}
 
+	FileType fileType = UNDEFINED;
+	// infile >> fileType;
 
-	FileType pt = UNDEFINED;
 	int width;
 	int height;
 	int channels = 1;
@@ -68,42 +73,43 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 
 	switch (c){
 	case '1':
-		pt = PBM_ASC;
+		fileType = PBM_ASC;
 		channels = 1;
 		break;
 	case '2':
-		pt = PGM_ASC;
+		fileType = PGM_ASC;
 		channels = 1;
 		break;
 	case '3':
-		pt = PPM_ASC;
+		fileType = PPM_ASC;
 		channels = 3;
 		break;
 	case '4':
-		pt = PBM_RAW;
+		fileType = PBM_RAW;
 		channels = 1;
 		break;
 	case '5':
-		pt = PGM_RAW;
+		fileType = PGM_RAW;
 		channels = 1;
 		break;
 	case '6':
-		pt = PPM_RAW;
+		fileType = PPM_RAW;
 		channels = 3;
 		break;
 	default:
 		mout.error() << "unrecognized PPM type" << mout.endl;
-		return;
+		return fileType;
 	}
 
 	mout.info() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
 
-	// while ((c = infile.get()) != '\n'){}
+	// Jump to end of line.
 	drain::TextReader::scanSegment(infile, "\n");  // NEW
 
 	std::string key;
-	//std::string value;
 	std::stringstream sstr;
+
+	// Read comment lines
 	while (infile.peek() == '#'){
 		infile.get(); // swallow '#'
 		while ((c = infile.get()) !='\n' ){
@@ -131,7 +137,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 	// mout.note() << "Done" << mout.endl;
 	infile >> width;
 	infile >> height;
-	if ((pt != PBM_ASC) && (pt != PBM_RAW))
+	if ((fileType != PBM_ASC) && (fileType != PBM_RAW))
 		infile >> maxValue;
 
 	if (maxValue < 100){
@@ -161,7 +167,7 @@ void FilePnm::readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap 
 
 	conf.setGeometry(width, height, channels);
 
-
+	return fileType;
 }
 
 
@@ -172,8 +178,9 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	mout.debug2() << "path='" << path << "'" << mout.endl;
 
-	std::ifstream infile;
-	infile.open(path.c_str(), std::ios::in);
+	Input infile(path);
+	// std::ifstream infile;
+	// infile.open(path.c_str(), std::ios::in);
 
 	if (!infile){
 		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
@@ -181,17 +188,32 @@ void FilePnm::read(Image & image, const std::string & path) {
 	}
 
 	ImageConf conf;
-	readHeader(conf, image.properties, infile);
+	FileType fileType = readHeader(conf, image.properties, infile);
 	//mout.debug() << "conf: " << conf << mout.endl;
 	//mout.debug() << "prop: " << image.properties << mout.endl;
-	image.setConf(conf); // rename initialize()
+
+	// Resize
+	image.setConf(conf);
 
 	mout.debug2() << image << mout.endl;
-
-	readFrame(image, infile);
-
-	infile.close();
-
+	readFrame(image, infile, fileType);
+	/*
+	switch (fileType) {
+		case PGM_RAW:
+		case PPM_RAW:
+			readFrame(image, infile);
+			break;
+		case PGM_ASC:
+		case PPM_ASC:
+			readFrameASCII(image, infile);
+			break;
+		default:
+			mout.unimplemented() << conf << mout;
+			mout.unimplemented() << "PBM file type: " << fileType << mout;
+			mout.error() << "Unsupported file type" << mout;
+			break;
+	}
+	*/
 
 }
 
@@ -202,6 +224,7 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 
 	mout.info() << "reading image: " << image << ", file=" << path << mout.endl;
 
+	/*
 	std::ifstream infile;
 	infile.open(path.c_str(), std::ios::in);
 
@@ -210,16 +233,19 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
 		return;
 	}
+	*/
+
+	Input infile(path);
 
 	ImageConf conf;
 
-	readHeader(conf, image.properties, infile);
+	FileType fileType = readHeader(conf, image.properties, infile);
 	mout.debug() << "conf: " << conf << mout.endl;
 	mout.debug() << "prop: " << image.properties << mout.endl;
 
-	readFrame(image, infile);
+	readFrame(image, infile, fileType);
 
-	infile.close();
+	//infile.close();
 
 
 
@@ -230,30 +256,68 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
  */
-void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileType t
+void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType fileType){ // , FileType t
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	mout.info() << "reading to frame: " << image << mout.endl;
 
-	const size_t channels = image.getChannelCount();
+	//const size_t channels = image.getChannelCount();
+
+	bool ARRAY_FULL = false;
 
 	const ImageFrame::iterator eit = image.end();
 
-	if (channels == 1){
-		ImageFrame::iterator        it = image.begin();
-		// int i=0;
+	if (fileType == PGM_ASC){
+		int i=0;
+		ImageFrame::iterator it = image.begin();
 		while ((!infile.eof()) && (it != eit)){
-			*it = infile.get();
+			infile >> i;
+			*it = i;
 			++it;
-			// ++i;
 		}
+		drain::TextReader::scanSegment(infile, " \t\n\r");
+
 		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		ARRAY_FULL = (it==eit);
+
 		if (it != eit){
 			mout.warn() << "premature end of file: " << image << mout.endl;
 		}
 	}
-	else if (channels == 3){
+	else if (fileType == PGM_RAW){
+		ImageFrame::iterator        it = image.begin();
+		while ((!infile.eof()) && (it != eit)){
+			*it = infile.get();
+			++it;
+		}
+		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		ARRAY_FULL = (it==eit);
+	}
+	else if (fileType == PPM_ASC){
+		int r=0, g=0, b=0;
+		ImageFrame::iterator  rit = image.getChannel(0).begin();
+		ImageFrame::iterator  git = image.getChannel(1).begin();
+		ImageFrame::iterator  bit = image.getChannel(2).begin();
+		while (!infile.eof()){
+			// how to ensure numeric char?
+			infile >> r >> g >> b;
+			*rit = r;
+			*git = g;
+			*bit = b;
+			++rit, ++git; ++bit;
+			// TODO CHECK
+		}
+
+
+		drain::TextReader::scanSegment(infile, " \t\n\r");
+		ARRAY_FULL = (bit==eit);
+
+		if (bit != eit){
+			mout.warn() << "premature end of file: " << image << mout.endl;
+		}
+	}
+	else if (fileType == PPM_RAW){
 		ImageFrame::iterator  rit = image.getChannel(0).begin();
 		ImageFrame::iterator  git = image.getChannel(1).begin();
 		ImageFrame::iterator  bit = image.getChannel(2).begin();
@@ -267,18 +331,27 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileTyp
 			// TODO CHECK
 		}
 
+		ARRAY_FULL = (bit==eit);
 		if (bit != eit){
 			mout.warn() << "premature end of file: " << image << mout.endl;
 		}
 
 	}
 	else {
-		mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
+		mout.unimplemented() << image.getConf() << mout;
+		mout.unimplemented() << "PBM file type: " << fileType << mout;
+		mout.error() << "Unsupported file type" << mout;
+		//mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
 	}
 
 
 	if (infile.peek() != EOF)
 		mout.warn() << " spurious bytes at end of file?" << mout.endl;
+
+	if (!ARRAY_FULL){
+		mout.warn() << "premature end of file: " << image << mout.endl;
+	}
+
 
 	/*
 	if (!infile.eof()){
@@ -296,6 +369,64 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile){ // , FileTyp
 	//infile.close();
 
 }
+
+/*
+void FilePnm::readFrameASCII(ImageFrame & image, std::istream & infile){
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	mout.info() << "reading to frame: " << image << mout.endl;
+
+	const size_t channels = image.getChannelCount();
+
+	const ImageFrame::iterator eit = image.end();
+
+	if (channels == 1){
+		int i=0;
+		ImageFrame::iterator        it = image.begin();
+		while ((!infile.eof()) && (it != eit)){
+			infile >> i;
+			*it = i;
+			++it;			// ++i;
+		}
+		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		if (it != eit){
+			mout.warn() << "premature end of file: " << image << mout.endl;
+		}
+	}
+	else if (channels == 3){
+		int r=0, g=0, b=0;
+		ImageFrame::iterator  rit = image.getChannel(0).begin();
+		ImageFrame::iterator  git = image.getChannel(1).begin();
+		ImageFrame::iterator  bit = image.getChannel(2).begin();
+		while (!infile.eof()){
+			// how to ensure numeric char?
+			infile >> r >> g >> b;
+			*rit = r;
+			*git = g;
+			*bit = b;
+			++rit, ++git; ++bit;
+			// TODO CHECK
+		}
+
+		if (bit != eit){
+			mout.warn() << "premature end of file: " << image << mout.endl;
+		}
+
+	}
+	else {
+		mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
+	}
+
+
+	if (infile.peek() != EOF)
+		mout.warn() << " spurious bytes at end of file?" << mout.endl;
+
+
+}
+*/
+
+
 
 
 
@@ -327,8 +458,11 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	// Debugging. Consider also using for checking file extension vs channel count.
 	typedef std::vector<std::string> result_t;
 	result_t result;
-	if (!fileNameRegExp.execute(path, result)){
-		mout.debug() << "file char: " << result[4] << mout.endl;
+	//if (!fileNameRegExp.execute(path, result)){
+	drain::FilePath filepath(path);
+	if (!fileInfo.extensionRegexp.execute(filepath.extension, result)){
+		mout.unimplemented("general path parsing");
+		mout.experimental() << "file char: " << result[1] << mout.endl;
 	}
 
 	switch (channels) {
@@ -349,21 +483,25 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		//fclose(fp);
 		return;
 	default:
-		mout.error()  << "unsupported channel count: " << channels << mout.endl;
+		mout.error()  << "unsupported channel count: " << channels << mout;
 		// throw std::runtime_error(s.toStr());
 	}
 
-	std::ofstream ofstr(path.c_str(), std::ios::out);
+	//std::ofstream ofstr(path.c_str(), std::ios::out);
+	drain::Output output(path);
+	std::ofstream & ofstr = output;
 
+	/*
 	if (!ofstr){
-		mout.error()  << "unsupported channel count: " << channels << mout.endl;
+		mout.error()  << "could not open file: " << file << mout;
 		return;
 	}
+	*/
 
 	/// FILE HEADER
 
 
-	mout.debug() << "magic code: P" << storage_type << mout.endl;
+	mout.debug() << "magic code: P" << storage_type << mout;
 	ofstr << 'P' << storage_type << '\n';
 
 	// mout.debug() << "writing comments (metadata)" << mout.endl;

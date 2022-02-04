@@ -28,39 +28,33 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/image/ImageFile.h>
-#include "PolarNeuralVprOp.h"
-#include "radar/Constants.h"
 
-namespace rack
+// #include "drain/util/Time.h"
+#include <sstream>
+#include "FileInfo.h"
+
+namespace drain
 {
 
-using namespace drain::image;
 
-
-void PolarNeuralVPROp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
-
-	drain::Logger mout(drain::getLog(),"PolarNeuralVPROp::filter");
-	mout.debug2() << "start" << mout.endl;
-
-
-	// TARGET DATAEARTH_RADIUS_43
+void FileInfo::setExtensionRegExp(const std::string & extRegExp, int flags){
+	// fileNameRegexp.setExpression(StringBuilder().create(".*\\.", r, "$").str(), flags);
+	//extensionRegexp.setExpression(StringBuilder().create("((.*/)?([^/]+)).*\\.", r, "$").str(), flags);
 	/*
-	Hi5Tree & dstDataGroup = dst["data1"];
-	Image & dstData = dstDataGroup["data"].data.dataSet;
+	std::stringstream sstr;
+	sstr << '^' << extRegExp << '$';
+	extensionRegexp.setExpression(sstr.str(), flags);
+	*/
+	extensionRegexp.setExpression(StringBuilder().create("^",extRegExp,"$").str(), flags);
+}
 
-	Hi5Tree & dstQualityGroup = dst["quality1"];
-	Image & dstQuality = dstQualityGroup["data"].data.dataSet;
-
-
-	ODIM odimOut;
-    */
-	mout.debug2() << "Finished" << mout.endl;
-
+Registry<FileInfo> & getFileInfoRegistry(){
+	static Registry<FileInfo> registry;
+	return registry;
 }
 
 
 
-}
 
-// Rack
+} // drain::
+

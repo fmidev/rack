@@ -28,9 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include "drain/image/File.h"
-
-//#include "andre/AndreOp.h"
+#include <drain/image/ImageFile.h>
 #include "radar/Geometry.h"
 
 #include "radar/Sun.h"

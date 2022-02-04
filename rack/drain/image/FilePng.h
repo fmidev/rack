@@ -39,11 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <png.h>
 
-#include "drain/util/RegExp.h"
+#include "drain/util/FileInfo.h"
+// #include "drain/util/RegExp.h"
 #include "drain/util/JSON.h" // for reading attribute value
 
 #include "Image.h"
-//#include "File.h"
 //
 
 
@@ -95,6 +95,10 @@ public:
 	*/
 	static void write(const ImageFrame &image, const std::string &path);
 
+	static FileInfo fileInfo;
+
+protected:
+	static FileInfo & initFileInfo;
 
 };
 

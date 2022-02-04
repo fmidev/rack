@@ -45,6 +45,12 @@ namespace image
 /// Syntax for recognising image files
 const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
 
+FileInfo FilePng::fileInfo("png");
+
+//FilePng::initFileInfo(getFileInfoRegistry().add(FilePng::fileInfo, "PNG"));
+FileInfo & FilePng::initFileInfo(FilePng::fileInfo);
+
+
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).

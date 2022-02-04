@@ -38,12 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DamperOP_H_
 #define DamperOP_H_
 
+#include <drain/image/ImageFile.h>
 #include <limits>
 
 #include "drain/util/Fuzzy.h"
 #include "drain/image/Intensity.h"
-#include "drain/image/File.h"
-
 #include "hi5/Hi5.h"
 #include "radar/Geometry.h"
 

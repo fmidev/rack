@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <exception>
+#include <drain/image/ImageFile.h>
 #include <fstream>
 #include <iostream>
 /*
@@ -50,7 +51,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/StringMapper.h"
 #include "drain/util/Tree.h"
 #include "drain/util/Variable.h"
-#include "drain/image/File.h"
+#include "drain/image/FilePng.h"
+#include "drain/image/FilePnm.h"
+
 #include "drain/image/Image.h"
 //#include "drain/image/Sampler.h"
 #include "drain/imageops/ImageModifierPack.h"
@@ -80,12 +83,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 /// Syntax for recognising hdf5 files.
-//  Edited 2017/07 such that also files without extension are considered h5 files.
+//  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
 const drain::RegExp h5FileExtension("^((.*\\.(h5|hdf5|hdf))|((.*/)?[\\w]+))$",  REG_EXTENDED | REG_ICASE);
+//const drain::FileInfo fileInfoH5("tif|tiff");
+
 
 /// Syntax for recognising GeoTIFF files.
-const drain::RegExp tiffFileExtension(".*\\.(tif|tiff)$",  REG_EXTENDED | REG_ICASE);
+//const drain::RegExp tiffFileExtension(".*\\.(tif|tiff)$",  REG_EXTENDED | REG_ICASE);
+
+//const drain::FileInfo fileInfoTIFF("tif|tiff");
+
 
 /// Syntax for recognising image files (currently, png supported).
 //const drain::RegExp pngFileExtension(".*\\.(png)$", REG_EXTENDED | REG_ICASE);
@@ -104,7 +112,6 @@ const drain::RegExp sampleFileExtension(".*\\.(dat)$",  REG_EXTENDED | REG_ICASE
 
 /// Syntax for recognising Graphviz DOT files.
 const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
-
 
 
 //static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
@@ -273,10 +280,10 @@ void CmdOutputFile::exec() const {
 
 	// TODO: generalize select
 	// TODO: generalize image pick (current or str) for png/tif
-
-	const bool IMAGE_PNG = drain::image::FilePng::fileNameRegExp.test(value);  //pngFileExtension.test(value);
-	const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
-	const bool IMAGE_TIF = tiffFileExtension.test(value);
+	//drain::image::FilePng::
+	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(value);  //pngFileExtension.test(value);
+	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
+	const bool IMAGE_TIF = rack::FileGeoTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
@@ -316,7 +323,7 @@ void CmdOutputFile::exec() const {
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug() << "PNG or PGM format" << mout.endl;
-			drain::image::File::write(src, filename);
+			drain::image::ImageFile::write(src, filename);
 		}
 		else if (IMAGE_TIF) {
 			// see FileGeoTiff::tileWidth
@@ -482,7 +489,7 @@ public:
 			mout.info() << "Writing image file: " << filenameOut << '\t' << path << mout.endl;
 			//mout.debug() << "  data :" << *it << mout.endl;
 
-			drain::image::File::write(img, filenameOut);
+			drain::image::ImageFile::write(img, filenameOut);
 			//getResources().currentImage = & img; NEW 2017
 
 		}

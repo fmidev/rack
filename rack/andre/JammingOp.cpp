@@ -29,13 +29,13 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/image/ImageFile.h>
 #include <algorithm>
 
-#include "drain/util/Math.h"
 #include "drain/util/Fuzzy.h"
+#include "drain/util/Math.h"
+#include "drain/util/Output.h"
 // debugging
-#include "drain/image/File.h"
-
 #include "drain/imageops/DistanceTransformFillOp.h"
 #include "drain/imageops/FastAverageOp.h"
 #include "drain/imageops/HighPassOp.h"
@@ -305,7 +305,9 @@ void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 		if (false) // TODO
 		if (j == debugRow){
 			//_mout( .task = "dump";
-			std::ofstream ofstr((name+".dat").c_str(), std::ios::out);
+			drain::Output output(name+".dat");
+			// std::ofstream ofstr((name+".dat").c_str(), std::ios::out);
+			std::ofstream & ofstr = output;
 			ofstr << "# r dBZ dBZ_smooth dBZ_modelled smoothness fit derivMod deriv\n";
 			for (size_t i = 1; i < width; ++i) {
 

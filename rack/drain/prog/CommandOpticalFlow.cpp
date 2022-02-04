@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include <fstream>
-#include "../image/File.h"
-#include "../imageops/ImageOpBank.h"
-#include "../imageops/ResizeOp.h"
+#include "drain/image/ImageFile.h"
+#include "drain/imageops/ImageOpBank.h"
+#include "drain/imageops/ResizeOp.h"
 
 //#include "CommandRegistry.h"
 //#include "CommandPack.h"
@@ -187,9 +187,9 @@ void CmdOpticalFlowBase::exec() const {
 
 	// Final debugging
 	if (mout.isDebug(20)){
-		File::write(motion.get(0), "oflow-motion-horz.png");
-		File::write(motion.get(1), "oflow-motion-vert.png");
-		File::write(motion.getAlpha(), "oflow-motion-weight.png");
+		drain::image::ImageFile::write(motion.get(0), "oflow-motion-horz.png");
+		drain::image::ImageFile::write(motion.get(1), "oflow-motion-vert.png");
+		drain::image::ImageFile::write(motion.getAlpha(), "oflow-motion-weight.png");
 	}
 
 	mout.info() << "Completed" << mout.endl;

@@ -87,10 +87,12 @@ RegExp &RegExp::operator=(const std::string &str){
 	return *this;
 }
 
-bool RegExp::setExpression(const std::string &str){
+bool RegExp::setExpression(const std::string &str, int flags){
 
 	regfree(&regExpBinary);
 	writableResult.clear();
+
+	setFlags(flags);
 
 	int result = regcomp(&regExpBinary, str.c_str(), flags);
 

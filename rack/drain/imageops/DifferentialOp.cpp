@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/image/ImageFile.h>
 #include <math.h>
 
 // #include "drain/util/Log.h"
-#include "../image/File.h"
 #include "DifferentialOp.h"
 
 

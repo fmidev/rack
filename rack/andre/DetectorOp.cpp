@@ -28,10 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include <drain/image/ImageFile.h>
 #include <stdexcept>
 
 // DEBUGGING
-#include "drain/image/File.h"
 #include "drain/util/Log.h"
 #include "drain/util/FunctorPack.h"
 
@@ -278,7 +278,7 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 		sstr << counter << '-' << label << ".png";
 		const std::string filename = sstr.str();
 		mout.debug() << "writing " << filename << mout.endl;
-		File::write(srcImage, filename);
+		ImageFile::write(srcImage, filename);
 		counter++;
 	}
 
@@ -303,7 +303,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 	drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
 	mout.debug() << " called by " << name << mout.endl;
 	if (mout.isDebug(12))
-		File::write(dst,"andre-enh0-src.png");
+		ImageFile::write(dst,"andre-enh0-src.png");
 
 	Image tmp;
 
@@ -314,7 +314,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 	mout.debug(10) << statOp << mout.endl;
 	statOp.process(dst, tmp);
 	if (mout.isDebug(20))
-		File::write(tmp,"andre-enh1-stat.png");
+		ImageFile::write(tmp,"andre-enh1-stat.png");
 
 	//GammaOp gammaOp;
 	drain::image::UnaryFunctorOp<drain::image::GammaFunctor> gammaOp;
@@ -322,21 +322,21 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 	mout.debug(10) << gammaOp << mout.endl;
 	gammaOp.traverseChannel(tmp.getChannel(0), tmp.getChannel(0));
 	if (mout.isDebug(20))
-		File::write(tmp,"andre-enh2-gamma.png");
+		ImageFile::write(tmp,"andre-enh2-gamma.png");
 
 
 	DistanceTransformExponentialOp dtfOp(1,width);
 	mout.debug(10) << dtfOp << mout.endl;
 	dtfOp.traverseChannel(tmp.getChannel(0), tmp.getChannel(0));
 	if (mout.isDebug(20))
-		File::write(tmp,"andre-enh3-dtf.png");
+		ImageFile::write(tmp,"andre-enh3-dtf.png");
 
 	// MultiplicationOp
 	drain::image::BinaryFunctorOp<drain::MultiplicationFunctor> mulOp;
 	mout.debug(10) << mulOp << mout.endl;
 	mulOp.traverseChannel(tmp.getChannel(0), dst.getChannel(0));
 	if (mout.isDebug(22))
-		File::write(dst,"andre-enh4-dst.png");
+		ImageFile::write(dst,"andre-enh4-dst.png");
 
 
 }
@@ -352,7 +352,7 @@ void DetectorOp::_infect(Image & dst, int windowWidth, int windowHeight, double 
 	mout.debug(5) << distOp << mout.endl;
 	distOp.process(dst, tmp);
 	if (mout.isDebug(10))
-		File::write(tmp,"andre-infect-1dist.png");
+		ImageFile::write(tmp,"andre-infect-1dist.png");
 
 	drain::image::BinaryFunctorOp<drain::MixerFunctor> op;
 	op.functor.coeff = enhancement;
@@ -360,7 +360,7 @@ void DetectorOp::_infect(Image & dst, int windowWidth, int windowHeight, double 
 	// MixerOp(enhancement).filter(tmp,dst);
 
 	if (mout.isDebug(10))
-		File::write(dst, "andre-infect-2mix.png");
+		ImageFile::write(dst, "andre-infect-2mix.png");
 
 }
 

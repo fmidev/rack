@@ -78,7 +78,7 @@ public:
 	RegExp &operator=(const RegExp &r);
 
 	//    bool exp(const char *toStr);
-	bool setExpression(const std::string &str);
+	bool setExpression(const std::string & str, int flags = REG_EXTENDED);
 
 	inline 
 	void clear(){ writableResult.clear(); };
@@ -151,7 +151,10 @@ public:
 	/// Native result type, also for external result object.
 	typedef std::vector<std::string> result_t;
 
+
 protected:
+
+
 
 	regex_t regExpBinary;  // this is weird  FIXME: check pointer aspect
 

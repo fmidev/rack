@@ -22,45 +22,79 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
+#ifndef DRAIN_IMAGE_FILEINFO_H_
+#define DRAIN_IMAGE_FILEINFO_H_
 
-#include "File.h"
-#include "drain/util/Time.h"
 
+//
+#include "FilePath.h"
+#include "Registry.h"
+#include "RegExp.h"
 
 
 namespace drain
 {
 
-namespace image
-{
 
-int File::index(0);
 
-void File::writeIndexed(const ImageFrame &image, const std::string & pathPrefix, int i, int digits){
+class FileInfo {
+public:
 
-	if (i >= 0){
-		File::index = i;
+	FileInfo(const std::string & r, int flags=REG_ICASE|REG_EXTENDED){
+		setExtensionRegExp(r, flags);
+	}
+	//std::string defaultExtension;
+
+	//(h5|hdf5|hdf)
+	void setExtensionRegExp(const std::string & r, int flags=REG_ICASE|REG_EXTENDED);
+
+	/// Accepts or rejects a filename extension.
+	inline
+	bool checkPath(const std::string & path) const {
+		if (path == "-")
+			return false;
+		else
+			return checkPath(FilePath(path));
 	}
 
-	std::stringstream sstr;
-	sstr << pathPrefix;
-	sstr.width(digits);
-	sstr.fill('0');
-	sstr << index << ".png";
-	FilePng::write(image, sstr.str());
+	/// Accepts or rejects a filename extension.
+	inline
+	bool checkPath(const FilePath & filePath) const {
+		return checkExtension(filePath.extension);
+	}
 
-	++index;
+	inline
+	bool checkExtension(const std::string & ext) const {
+		return extensionRegexp.test(ext);
+	}
 
-}
+	/// Regexp to be set inside parentheses
+	drain::RegExp extensionRegexp;
 
 
-} // image::
+};
 
-} // drain::
+class FileHandler {
 
+public:
+
+	//static virtual
+	//const FileInfo & getFileInfo() = 0;
+
+};
+
+// static
+// Registry<FileInfo> & getFileInfoRegistry();
+
+
+}  // drain
+
+#endif /*FILE_H_*/
+
+// Drain

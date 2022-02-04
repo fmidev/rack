@@ -38,7 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <exception>
 
 
-#include "drain/util/RegExp.h"
+#include "drain/util/FileInfo.h"
+//#include "drain/util/RegExp.h"
 #include "Image.h"
 
 
@@ -54,7 +55,7 @@ namespace image
  *  Portable N M ? (PNM) format is an old yet flexible image format
  *  for gray level and color images.
  */
-class FilePnm
+class FilePnm : public drain::FileHandler
 {
 public:
 
@@ -69,9 +70,10 @@ public:
 	};
 
 	/// Syntax for recognising pnm files.
+	//static
+	//const drain::RegExp fileNameRegExp;
 	static
-	const drain::RegExp fileNameRegExp;
-
+	const FileInfo fileInfo;
 
 	/// Reads a pnm file to an image.
 	/**
@@ -90,7 +92,7 @@ public:
 
 	/// Read image array after essential metadata (type and geometry) has been processed.
 	static
-	void readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile);
+	FileType readHeader(drain::image::ImageConf & conf, drain::FlexVariableMap & properties, std::istream & infile);
 
 
 	/// Read image array, assuming type and geometry already set
@@ -100,9 +102,13 @@ public:
 
 	/// Read image array after essential metadata (type and geometry) has been processed.
 	static
-	void readFrame(ImageFrame & image, std::istream & infile);
+	void readFrame(ImageFrame & image, std::istream & infile, FileType fileType = PGM_RAW);
 
-	/// Writes image to a png file.
+	/// Read image array after essential metadata (type and geometry) has been processed.
+	//static
+	//void readFrameASCII(ImageFrame & image, std::istream & infile);
+
+	/// Writes image to a pgm binary file.
 	/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
 	 *  Writes in 8 or 16 bits, according to template class.
 	 *  Floating point images will be scaled as 16 bit integral (unsigned short int).

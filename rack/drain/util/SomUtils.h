@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /*
  g++ drain/examples/Som-example.cpp drain/util/{Caster,Variable,Debug}.cpp drain/image/{Geometry,Coordinates,Image,FilePng}.cpp  -lpng   -o Som-example
  */
+#include <drain/image/ImageFile.h>
 #include <iostream>
 #include <vector>
 #include <list>
@@ -47,7 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "../util/Variable.h"
 
 #include "../image/Image.h"
-#include "../image/File.h"
 
 
 // // using namespace std;
