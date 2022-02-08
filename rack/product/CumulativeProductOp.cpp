@@ -86,7 +86,7 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	accumulator.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
-	mout.special() << (const Accumulator &) accumulator << mout.endl;
+	mout.debug() << (const Accumulator &) accumulator << mout.endl;
 
 	//dstData.odim.NI =
 	srcData.odim.getNyquist(); // to prevent warning in the next cmd
@@ -116,7 +116,7 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	}
 
 	//if (mout.isDebug(LOG_DEBUG))
-		accumulator.extract(dstData.odim, dstProduct, "dwC");
+	accumulator.extract(dstData.odim, dstProduct, "dwC");
 	//else
 	// OK mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
 		//accumulator.extract(dstData.odim, dstProduct, "dw");

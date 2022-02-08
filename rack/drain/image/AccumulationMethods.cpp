@@ -351,10 +351,7 @@ void AverageMethod::extractDev(const AccumulationArray & accArray, const Accumul
 
 
 
-//void WeightedAverageMethod::setParameters(const Variable & parameters){
-void WeightedAverageMethod::updateBean() const { //const std::string & params){
-
-	/// AccumulationMethod::setParameters(params);
+void WeightedAverageMethod::updateBean() const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -499,7 +496,8 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 		if (weight > 0.0){ // 001){
 
 			// scale
-			//weight = weight / static_cast<double>(accArray.count.at(i));
+			// TODO: FIX!
+			weight = weight / static_cast<double>(accArray.count.at(i));
 
 			if (USE_R)
 				weight = pow(weight, rInv);

@@ -42,24 +42,15 @@ namespace rack {
 /// Given deviation from beam in degrees, return relative (normalized) beam power
 
 double Beam::getBeamPowerDeg(double d) const {
+	// Returns 0 in the center (d=0.0) and 0.5 when d = +/-0.5*width
 	// e^x = ½ => x = ln(1/2) = - ln(2)
 	// e^(-x²) = ½ => -x = ln(1/sqrt(2)) = -ln(sqrt2) =
 	// x = ln(sqrt2)
-	const double coeff = log(sqrt(2.0));
-	double b = drain::DEG2RAD*width;
-	return exp(- (d*d) * coeff/(b*b));
-}
-
-
-
-/// Given deviation from beam in radians
-/**
- *  \return relative (normalized) beam power
- */
-double Beam::getBeamPowerRad(double d) const {
-	const double coeff = log(sqrt(2.0));
+	const double coeff = 4.0 * log(sqrt(2.0)); // 4 = 2*2 for (1/(½width))²
 	return exp(- (d*d) * coeff/(width*width));
 }
+
+
 
 
 

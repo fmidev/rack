@@ -52,10 +52,14 @@ double CappiOp::beamPowerGauss(double r) const {
 	// e^(-x²) = ½ => -x = ln(1/sqrt(2)) = -ln(sqrt2) =
 	//x = ln(sqrt2)
 	const double coeff = log(sqrt(2.0));
-	double b = drain::DEG2RAD*beamWidth;
+	double b = drain::DEG2RAD*beam.width;
 	return exp(- (r*r) * coeff/(b*b));
+
+	//return exp(- (d*d) * coeff/(width*width));
+
 }
 */
+
 
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
@@ -151,6 +155,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		//	beamWeight = beamPower( etaBin - eta );
 		//else
 		beamWeight = beam.getBeamPowerRad(etaBin - eta);
+		//beamWeight = beamPowerGauss(etaBin - eta);
 
 		if (beamWeight < weightMin)
 			continue;

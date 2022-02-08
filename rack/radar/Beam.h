@@ -71,7 +71,7 @@ public:
 	/// Gaussian beam power
 	/**
 	 * 	\param d - deviation from beam center in degrees
-	 *  \return relative (normalized) beam power
+	 *  \return relative (normalized) beam power: 0 in the center (d=0.0) and 0.5 when d = +/-0.5*width
 	 */
 	double getBeamPowerDeg(double d) const;
 
@@ -80,7 +80,10 @@ public:
 	 * 	\param d - deviation from beam center in radians
 	 *  \return relative (normalized) beam power
 	 */
-	double getBeamPowerRad(double d) const;
+	inline
+	double getBeamPowerRad(double d) const {
+		return getBeamPowerDeg(drain::RAD2DEG * d);
+	}
 
 
 	/** Fuzzy alternatives for fast computation.
