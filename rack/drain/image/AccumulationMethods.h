@@ -273,7 +273,7 @@ public:
 
 
 	virtual
-	void updateBean();
+	void updateBean() const;
 	//void setParameters(const std::string & parameters);
 
 	virtual
@@ -306,16 +306,13 @@ protected:
 
 	/// Power for data values
 	double p;
-	double pInv;
+	mutable	double pInv;
+	mutable bool USE_P;
 
 	/// Power for weights
 	double r;
-	double rInv;
-
-	bool USE_P;
-	bool USE_R;
-
-
+	mutable	double rInv;
+	mutable bool USE_R;
 
 };
 

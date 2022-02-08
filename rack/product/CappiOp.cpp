@@ -45,6 +45,18 @@ namespace rack
 using namespace drain::image;
 
 
+// r = radians
+/*
+double CappiOp::beamPowerGauss(double r) const {
+	// e^x = ½ => x = ln(1/2) = - ln(2)
+	// e^(-x²) = ½ => -x = ln(1/sqrt(2)) = -ln(sqrt2) =
+	//x = ln(sqrt2)
+	const double coeff = log(sqrt(2.0));
+	double b = drain::DEG2RAD*beamWidth;
+	return exp(- (r*r) * coeff/(b*b));
+}
+*/
+
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -63,7 +75,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	mout.debug() << "Elangle: " <<  sweep.odim.elangle << mout.endl;
 
-	mout.debug() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
+	mout.debug() << "Using quality data: " << USE_QUALITY << mout.endl;
 
 
 	double altitudeFinal;
@@ -115,7 +127,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	double beamWeight; // 0.0...1.0;
 
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	drain::FuzzyBell<double> beamPower(0.0, beamWidth*drain::DEG2RAD, 1.0);
+	// drain::FuzzyBell<double> beamPower(0.0, beamWidth*drain::DEG2RAD, 1.0);
 
 	/// Measurement weight (quality)
 	double w;
@@ -123,6 +135,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	/// Direct pixel address in the accumulation arrey.
 	size_t address;
 
+	// std::cerr << "coeff: "<< -log(sqrt(2.0)) << '\n';
 
 
 	for (size_t i = 0; i < accumulator.getWidth(); ++i) {
@@ -134,9 +147,14 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		etaBin = Geometry::etaFromBetaH(beta, altitudeFinal);
 
 		//beamWeight = 1.0;
-		beamWeight = beamPower( etaBin - eta );
+		// if ((i&16) == 0)
+		//	beamWeight = beamPower( etaBin - eta );
+		//else
+		beamWeight = beam.getBeamPowerRad(etaBin - eta);
+
 		if (beamWeight < weightMin)
 			continue;
+
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		if (binDistance < sweep.odim.rstart)
@@ -149,6 +167,10 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		iSweep = static_cast<size_t>(t);
 		if (iSweep >= sweep.odim.area.width)
 			continue;
+
+
+		//std::cerr << "cappi " << sweep.odim.elangle << '\t' << (etaBin*drain::RAD2DEG) << '\t' << '>' << ' ' << beamWeight << '\n';
+
 
 		// TODO: derive iStart and iEnd instead.
 
@@ -182,6 +204,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 			address = accumulator.data.address(i,j);
 			accumulator.add(address, value, w);
+			//accumulator.a
 			//accumulator.add(address, value+i, i+j);
 			//accumulator.data.put(i, j, i+j+value);
 			//accumulator.weight.put(i, j, i+j+value);

@@ -764,7 +764,8 @@ protected:
 				}
 
 				//const std::string dataQuantity = it->second["what"].data.attributes["quantity"];
-				const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes["quantity"];
+				//const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes["quantity"];
+				const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes.get("quantity", ""); // otherways comes "null"
 
 				const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
 

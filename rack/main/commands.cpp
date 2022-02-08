@@ -66,6 +66,35 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+
+/// Utility. Consider long names, and then addShortKeys()
+class EncodingBag : public PolarODIM {
+public:
+
+	EncodingBag(): PolarODIM(0){
+		separator = ',';
+		link("type", type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
+		link("gain", scaling.scale = 0.0, "scaling coefficient");
+		link("offset", scaling.offset = 0.0, "bias");
+		link("undetect", undetect = 0.0, "marker");
+		link("nodata", nodata = 0.0, "marker");
+
+		/// Polar-specific
+		link("rscale", rscale = 0.0, "metres");
+		link("nrays", area.height = 0L, "count");
+		link("nbins", area.width = 0l, "count");
+
+		/// New: for image processing
+		link("quantity", quantity = "", "string");
+
+	}
+
+	EncodingBag(const EncodingBag & bag): PolarODIM(0){
+		copyStruct(bag, bag, *this);
+	}
+
+};
+
 ///
 /* General commands.
  *
@@ -835,6 +864,10 @@ public:
 
 		//DataSelector selector; // todo implement --select
 
+		EncodingBag enc;
+		enc.setValues(ctx.targetEncoding);
+		// ? ctx.targetEncoding.clear();
+
 		//mout.debug() << "start upd" << mout.endl;
 
 		DataTools::updateInternalAttributes(dstH5); //, drain::FlexVariableMap());
@@ -849,46 +882,57 @@ public:
 
 			mout.debug() << "considering: " << it->first << mout.endl;
 
-			if (it->first.is(ODIMPathElem::DATASET)){ // && selector.dataset.contains(it->first.getIndex())){
+			if (!it->first.is(ODIMPathElem::DATASET))  //{ // && selector.dataset.contains(it->first.getIndex())){
+				continue;
 
-				//mout.note() << '@' << it->first << mout.endl;
-				DataSet<DT> dstDataSet(it->second);
-				//mout.note() << '%' << it->first << mout.endl;
-				//return;
+			for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
 
-				for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+				if (!dit->first.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY))
+					continue;
 
-					mout.debug() << dit->first << " :" << dit->second << mout.endl;
+				// DataSet<DT> dstDataSet(it->second);
 
-					PlainData<DT> & dstData = dit->second;
+				//for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
 
-					//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
+				mout.debug() << dit->first << " :" << dit->second << mout.endl;
+				PlainData<DT> dstData(dit->second);
+				//PlainData<DT> & dstData = dit->second;
 
-					dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
-					//mout.warn() << "ODIM: " << dstData.odim << mout.endl;
+				//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
 
-					if (!dstData.data.isEmpty()){
-						const size_t w = dstData.data.getWidth();
-						const size_t h = dstData.data.getHeight();
-						dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
-						dstData.odim.setGeometry(w, h);
-						//rootODIM.setGeometry(w, h);    // for Cartesian root-level xsize,ysize
-						//dataSetODIM.setGeometry(w, h); // for Polar  dataset-level nbins, nrays
-						if (dstData.odim.quantity.empty()){
-							dstData.odim.quantity = dit->first;
-						}
-						if (dstData.odim.scaling.scale == 0){
-							mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
-							getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
-						}
-					}
+				dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
+				//mout.warn() << "ODIM: " << dstData.odim << mout.endl;
+				dstData.odim.quantity = dstData.data.properties.get("what:quantity","");
+				dstData.odim.type = dstData.data.properties.get("what:type", enc.type);
 
-					//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
-
-					dstData.updateTree2();
-					rootODIM.updateLenient(dstData.odim);
+				if (!dstData.data.isEmpty()){
+					const size_t w = dstData.data.getWidth();
+					const size_t h = dstData.data.getHeight();
+					dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
+					dstData.odim.setGeometry(w, h);
+					//rootODIM.setGeometry(w, h);    // for Cartesian root-level xsize,ysize
+					//dataSetODIM.setGeometry(w, h); // for Polar  dataset-level nbins, nrays
 				}
+
+				if (dstData.odim.quantity.empty()){
+					//if (dit->first != "null")
+					//	dstData.odim.quantity = dit->first;
+					//else
+					dstData.odim.quantity = enc.quantity;
+					mout.special() << "quantity:" <<  dstData.odim.quantity << mout;
+				}
+				if (dstData.odim.scaling.scale == 0){
+					mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
+					getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
+				}
+
+
+				//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
+
+				dstData.updateTree2();
+				rootODIM.updateLenient(dstData.odim);
 			}
+			//}
 		}
 
 		/*
@@ -927,8 +971,11 @@ public:
 
 			drain::VariableMap & where = root.getWhere();
 			mout.debug2(where);
-			GeoFrame frame(where["xsize"], where["ysize"]);
-			frame.setProjection(where["projdef"]);
+			GeoFrame frame(where.get("xsize", root.odim.area.getWidth()), where.get("ysize", root.odim.area.getHeight()));
+			std::string projdef = where.get("projdef","");
+			if (!projdef.empty())
+				//projdef = "+proj=laea +lat_0=55.0 +lon_0=10.0 +x_0=1950000.0 +y_0=-2100000.0 +units=m +ellps=WGS84";
+				frame.setProjection(projdef);
 			frame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
 			// mout.experimental(frame);
 			root.odim.updateGeoInfo(frame);
@@ -1412,33 +1459,6 @@ public:
 };
 
 
-/// Consider long names, and then addShortKeys()
-class EncodingBag : public PolarODIM {
-public:
-
-	EncodingBag(): PolarODIM(0){
-		separator = ',';
-		link("type", type = "C", "storage type (C=unsigned char, S=unsigned short, d=double precision float, f=float,...)");
-		link("gain", scaling.scale = 0.0, "scaling coefficient");
-		link("offset", scaling.offset = 0.0, "bias");
-		link("undetect", undetect = 0.0, "marker");
-		link("nodata", nodata = 0.0, "marker");
-
-		/// Polar-specific
-		link("rscale", rscale = 0.0, "metres");
-		link("nrays", area.height = 0L, "count");
-		link("nbins", area.width = 0l, "count");
-
-		/// New: for image processing
-		link("quantity", quantity = "", "string");
-
-	}
-
-	EncodingBag(const EncodingBag & bag): PolarODIM(0){
-		copyStruct(bag, bag, *this);
-	}
-
-};
 
 /// Facility for validating and storing desired technical (non-meteorological) user parameters.
 /*

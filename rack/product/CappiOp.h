@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "RackOp.h"
 #include "CumulativeProductOp.h"
 
+#include "radar/Beam.h"
+
 namespace rack
 {
 
@@ -57,9 +59,10 @@ public:
 
 		parameters.link("altitude", this->altitude = altitude, "metres");
 		parameters.link("weightMin", this->weightMin = weightMin, "scalar");
-		parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
-		parameters.link("beamWidth", this->beamWidth = beamWidth);
+		parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
+		//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
+		parameters.link("accumulationMethod", this->accumulationMethod, "string");
 
 		odim.product  = "PCAPPI";
 		odim.type = "";
@@ -73,13 +76,15 @@ public:
 	double altitude;
 	double weightExponent;
 	double weightMin;
-	double beamWidth;
+	Beam beam;
+	//double beamWidth;
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 
 protected:
 
-
+	/// Normalized, zero-centered beam power for current beamWidth
+	double beamPowerGauss(double radians) const;
 };
 
 
