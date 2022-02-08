@@ -32,11 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.35"
+#define __RACK_VERSION__ "6.4"
 
 /**
+ *   Version 6.4
+ *   -- Data Selector: dualPRF
+ *
  *   Version 6.35
- *   -- Bug fix: Hi5 read string
+ *   -- CAPPI: from polynomial to Gaussian beam modelling
  *
  *   Version 6.34
  *   -- Bug fix: Hi5 read string

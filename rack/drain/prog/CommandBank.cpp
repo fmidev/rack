@@ -375,7 +375,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (cmd.getName() == scriptCmd){ // "script"
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
-			mout.warn() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
+			mout.debug() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
 			scriptify(pit->second.toStr(), prog.routine);
 			//ctx.statusFlags.set(SCRIPT_DEFINED);
 			ctx.setStatus("script", true);

@@ -62,8 +62,8 @@ public:
 
 	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
-			unsigned int count = 1000,
-			double elangleMin = -90.0, double elangleMax = 90.0);
+			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0}, int dualPRF = 0);
+			// double elangleMin = -90.0, double elangleMax = 90.0);
 
 	DataSelector(const std::string & parameters = "");
 
@@ -89,6 +89,7 @@ public:
 	DataSelector(const DataSelector & selector);
 
 	virtual ~DataSelector();
+
 
 
 	// Experimental. Raise to beanlike?
@@ -134,8 +135,8 @@ public:
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
 	drain::Range<double> elangle;
 
-	//drain::Flags groups;
-	//virtual	void setParameters(const std::string & parameters);
+	/// Reject or accept VRAD(VH)
+	int dualPRF;
 
 protected:
 
@@ -216,7 +217,6 @@ public:
 	 *
 	 *  \param src - HDF5 data structure
 	 *  \param pathContainer - container for paths to be found
-	 *  \param path - search path, root by default
 	 *
 	 *  Calls getInnerPaths
 	 */
@@ -461,6 +461,8 @@ bool DataSelector::getInnerPaths(const Hi5Tree & src, T & pathContainer, const O
 
 			if (quantityRequired){
 
+
+
 				if (props.hasKey("what:quantity")){
 
 					const std::string quantity = props["what:quantity"].toStr();
@@ -484,6 +486,24 @@ bool DataSelector::getInnerPaths(const Hi5Tree & src, T & pathContainer, const O
 						//quantityOk = false;
 						// continue;
 						// recursion continues below
+					}
+
+					if (quantityFound && (dualPRF != 0)){
+						double lowPRF   = props.get("how:lowprf",  0.0);
+						double hightPRF = props.get("how:highprf", lowPRF);
+						bool IS_DUAL_PRF = (lowPRF != hightPRF);
+						if (dualPRF > 0){
+							if (!IS_DUAL_PRF){
+								mout.experimental() << "dualPRF required, rejecting [" << quantity << "] at " << p << mout;
+								quantityFound = false;
+							}
+						}
+						else {
+							if (IS_DUAL_PRF){
+								mout.experimental() << "dualPRF rejected:  [" << quantity << "] at " << p << mout;
+								quantityFound = false;
+							}
+						}
 					}
 
 				}
@@ -538,154 +558,6 @@ bool DataSelector::getInnerPaths(const Hi5Tree & src, T & pathContainer, const O
 	return groupsOK;
 }
 
-/*
-template <class T>
-bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
-
-	drain::Logger mout(__FUNCTION__, __FILE__);
-
-	if (path.empty())
-		mout.debug2() << "matcher: " << pathMatcher << mout.endl;
-
-	// Current search point
-	const Hi5Tree & s = src(path); // =src, if path empty
-
-	// ODIM struct is needed to communicate keys for maps (elangle or quantity) to addPathT
-	PolarODIM odim;
-
-	/// For dataset indices
-	std::set<ODIMPathElem::index_t> dataSetIndices;
-
-	const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
-	//bool quantityChecked = false;
-	bool quantityFound   = false;
-	//bool resultOK = true;
-
-	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
-
-		bool quantityOk = !quantityRequired; //
-
-		const ODIMPathElem & currentElem = it->first;
-		mout.debug3() << "currentElem='" << currentElem << "'" << mout.endl;
-
-		const drain::image::Image & d    = it->second.data.dataSet; // for ODIM
-		const drain::FlexVariableMap & v = d.getProperties();
-
-		// Check ELANGLE (in datasets) or quantity (in data/quality)
-		if (currentElem.is(ODIMPathElem::DATASET)){ // what about quality?
-
-			if (v.hasKey("where:elangle")){
-				if (!elangle.contains(v["where:elangle"])){
-					mout.debug() << "outside elangle range" << mout.endl;
-					continue;
-				}
-			}
-
-			if (dataSetIndices.size() >= count){
-				mout.debug2() << "count (" << dataSetIndices.size() << ">=" << count << ") already completed for " << currentElem << mout.endl;
-				continue;
-			}
-
-		}
-		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-
-			if (quantityRequired){
-
-				if (v.hasKey("what:quantity")){
-
-					const std::string quantity = v["what:quantity"].toStr();
-
-					if (qualityRegExp.isSet()){ // NOTE: at least, do not test quantity after this!
-						//quantityOk = false;
-						if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(quantity)){
-							mout.debug3() << "matching QUALITY quantity  [" << quantity << "], skipping" << mout.endl;
-							quantityOk    = true;
-							quantityFound = true;
-						}
-					}
-					else if (quantityRegExp.test(quantity)){
-						mout.debug2() << "OK quantity matches: " << quantity << ": " << path << '|' << currentElem << mout.endl;
-						quantityOk    = true;
-						quantityFound = true;
-					}
-					else {
-						mout.debug3() << "unmatching DATA quantity  [" <<  quantity << "], skipping" << mout.endl;
-						//NO continue; have to descend for quality (QIND) below!
-						//quantityOk = false;
-					}
-
-				}
-				else {
-					if (currentElem.is(ODIMPathElem::DATA))
-						mout.warn();
-					else
-						mout.info();
-					mout << "quantity missing in (image) metadata of " << path << '/' << currentElem << mout.endl;
-				}
-			}
-		}
-		else {
-			//mout.warn() << "NOT testing: " << currentElem << mout.endl;
-		}
-
-
-		ODIMPath p(path);
-		p << currentElem;
-
-
-		if (currentElem.is(ODIMPathElem::DATASET)){
-
-			if (pathMatcher.match(p) && (dataSetIndices.size() < count)){
-
-				typename T::iterator tit = pathContainer.end();
-				addPath3(pathContainer, v, p); // accept tentatively, maybe cancelled below
-
-				// RECURSION
-				quantityOk = getPaths(src, pathContainer, p);
-				if (quantityOk || !quantityRequired){
-					mout.debug() << "yes, was ok: " << p << mout.endl;
-				}
-				else {
-					mout.debug() << "oops, removing: " << p << mout.endl;
-					pathContainer.erase(--tit);
-				}
-				// check over flow
-			}
-			else {
-				// not collecting DATASET's but traversing
-				quantityOk = getPaths(src, pathContainer, p); // NEW 2021/02 check
-				// getPaths(src, pathContainer, p);
-			}
-
-		}
-		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			//mout.warn() << "descending D/Q :" << currentElem << mout.endl;
-			if (quantityOk && pathMatcher.match(p)){
-				addPath3(pathContainer, v, p);
-			}
-			getPaths(src, pathContainer, p);
-		}
-		else {
-			/// Recursion: traverse descendants. Note: only quantities may be checked (and zero paths returned)
-			if (pathMatcher.match(p)){
-				addPath3(pathContainer, v, p);
-			}
-			getPaths(src, pathContainer, p); // note: original "root" src
-			quantityOk = true; //?
-		}
-
-		if (quantityOk){
-			const ODIMPathElem & e = path.front();
-			dataSetIndices.insert(e.getIndex());
-			//mout.warn() << "datasets: " << drain::StringTools::join(dataSetIndices,'*') << '=' <<dataSetIndices.size() << ':' <<  p.front().getIndex() << '|' << p << mout.endl;
-		}
-
-	}
-	//mout.warn() << "quantityFound " << p << " -> ..."<< mout.endl;
-
-	return (quantityFound || !quantityRequired);
-}
-*/
 
 
 inline
