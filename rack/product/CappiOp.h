@@ -54,7 +54,7 @@ class CappiOp : public CumulativeProductOp {
 public:
 
 	// , double weightExponent=8.0
-	CappiOp(double altitude=1000.0, double weightMin = 0.0, bool aboveSeaLevel=true, double beamWidth = 0.5) :
+	CappiOp(double altitude=1000.0, double weightMin = 0.0, bool aboveSeaLevel=true, double beamWidth = 1.0) :
 		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", "WAVG,1,8,-40")
 		{
 
