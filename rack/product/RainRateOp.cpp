@@ -160,7 +160,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		quality = sqrt(pFreeze*pFreeze + pLiquid*pLiquid);
 
 		if ((i&31) == 0)
-			mout.debug(10) << i << '\t' << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << mout.endl;
+			mout .debug3() << i << '\t' << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << mout.endl;
 
 		// TODO: use str height information (HEIGHT in PseudoCAPPI)
 

@@ -133,7 +133,7 @@ public:
 		// dst.initialize(src.getType(), src.getGeometry());
 		// dst.adoptScaling(src);
 
-		mout.debug(3) << "dst: " << dst << mout.endl;
+		mout .debug3() << "dst: " << dst << mout.endl;
 
 	};
 	*/

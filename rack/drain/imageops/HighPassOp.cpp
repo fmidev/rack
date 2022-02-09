@@ -68,7 +68,7 @@ void HighPassOp::traverseChannel(const Channel &src, const Channel &srcAlpha, Ch
 	File::write(dstAlpha, getName()+"-DA.png");
 	*/
 
-	mout.debug(3) << "subtraction" << mout.endl;
+	mout .debug3() << "subtraction" << mout.endl;
 	BinaryFunctorOp<SubtractionFunctor> sub;
 	sub.functor.setScale(scale, offset);
 	sub.LIMIT = LIMIT;
@@ -91,7 +91,7 @@ void HighPassOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	// File::write(dst, "HighPass-02-avg.png");
 
-	mout.debug(3) << "subtraction" << mout.endl;
+	mout .debug3() << "subtraction" << mout.endl;
 	BinaryFunctorOp<SubtractionFunctor> sub;
 	sub.functor.setScale(scale, offset);
 	sub.LIMIT = LIMIT;

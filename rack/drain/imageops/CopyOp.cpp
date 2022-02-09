@@ -63,7 +63,7 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 		//mout.warn() << " dst: channels:" << k << mout.endl;
 		if (k >= dst.getImageChannelCount())
 			dst.setChannelCount(k+1, dst.getAlphaChannelCount());
-		mout.debug(3) << " dst now: " << dst << mout.endl;
+		mout .debug3() << " dst now: " << dst << mout.endl;
 
 	}
 
@@ -119,7 +119,7 @@ void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 		//mout.warn() << " dst: channels:" << k << mout.endl;
 		if (k >= dst.getImageChannelCount())
 			dst.setChannelCount(k+1, dst.getAlphaChannelCount());
-		mout.debug(3) << " dst now: " << dst << mout.endl;
+		mout .debug3() << " dst now: " << dst << mout.endl;
 
 	}
 

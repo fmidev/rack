@@ -112,7 +112,7 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	HighPassOp highpass(width, height);
 	//highpass.offset = -0.2; // cuts off low values
 	//highpass.scale = (-highpass.offset + 0.5) / (reflDev / srcData.odim.scale) * srcData.data.getMax<double>(); // => x==reflDev => prob = 0.5
-	mout.debug(4) << highpass << mout.endl;
+	mout .debug3() << highpass << mout.endl;
 	highpass.process(tmpFuzzyDBZ, srcQuality, tmpHighPass, srcQuality);
 	tmpHighPass.setPhysicalScale(0.0, 1.0);
 	storeDebugData(2, tmpHighPass, "SHIP_HP"); // for debugging only
@@ -125,13 +125,13 @@ void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	//tmpLap.setOptimalScale();
 
 	drain::image::LaplaceHorzOp lapHorz(2); // not enough, detects edeges.
-	mout.debug(4) << lapHorz << mout.endl;
+	mout .debug3() << lapHorz << mout.endl;
 	lapHorz.traverseChannel(tmpFuzzyDBZ, tmpLap.getChannel(0));
 	storeDebugData(2, tmpLap.getChannel(0), "SHIP_HPH"); // for debugging only
 
 	/*
 	LaplaceVertOp lapVert(2); // not enough, detects edeges.
-	mout.debug(4) << lapVert << mout.endl;
+	mout .debug3() << lapVert << mout.endl;
 	lapVert.traverseChannel(tmpFuzzyDBZ, tmpLap[1]);
 	storeDebugData(2, tmpLap[1], "SHIP_HPV"); // for debugging only
 	BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(tmpLap[0], tmpLap[1], tmpLap[2]);

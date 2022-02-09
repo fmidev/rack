@@ -329,7 +329,7 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 
 
 	mout.debug3() << ": starting, path=" << path << mout.endl;
-	mout.debug(3) << image << mout.endl;
+	mout .debug3() << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
 	std::vector<hsize_t> dims;

@@ -358,7 +358,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		//PlainData<DstType<OD> >
 		mout.debug() << "searching dstData... DATA=" << (type == DATA) << mout.endl;
 		//pdata_dst_t & dstData = (type == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
-		//mout.debug(3) << "dstData: " << dstData << mout.endl;
+		//mout .debug3() << "dstData: " << dstData << mout.endl;
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;

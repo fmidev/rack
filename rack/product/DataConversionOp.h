@@ -392,7 +392,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	//mout.debug3() << "input name: " << src.getName() << mout.endl;
 
 	mout.debug2() << "src odim: " << EncodingODIM(srcOdim) << mout.endl;
-	mout.debug(4) << "src props:" << srcImage.properties << mout.endl;
+	mout .debug3() << "src props:" << srcImage.properties << mout.endl;
 	//std::cerr << src.properties << std::endl;
 
 

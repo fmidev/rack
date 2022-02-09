@@ -49,7 +49,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	//drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
 	drain::Logger mout(drain::getLog(), __FUNCTION__, __FILE__);
 	mout.debug3() << "Starting MaxEchoOp (" << name << ") " << mout.endl;
-	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
+	mout .debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
 	const bool WEIGHTED = !srcQuality.data.isEmpty();

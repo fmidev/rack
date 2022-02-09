@@ -602,7 +602,7 @@ void Compositor::extract(const std::string & channels) const {
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);
 
-	mout.debug(3) << "update geodata " << mout.endl;
+	mout .debug3() << "update geodata " << mout.endl;
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
 	// NEW 2020/06

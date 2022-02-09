@@ -180,7 +180,7 @@ public:
 		}
 		*/
 
-		// mout.debug(3) << "src.getMax=" << this->src.scaling.template getMax<value_t>() << mout.endl;
+		// mout .debug3() << "src.getMax=" << this->src.scaling.template getMax<value_t>() << mout.endl;
 		// this->scaleResult = this->dst.template getMax<value_t>() / this->src.template getMax<value_t>();
 		this->scaling.setConversionScale(this->src.getScaling(), this->dst.getScaling());
 		mout.debug() << "scaling:" << this->scaling << mout.endl;

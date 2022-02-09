@@ -77,7 +77,7 @@ void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
 	dst.setCoordinatePolicy(src.getCoordinatePolicy());
 
-	mout.debug(3) << "dst: " << dst << mout.endl;
+	mout .debug3() << "dst: " << dst << mout.endl;
 
 }
 

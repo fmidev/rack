@@ -390,7 +390,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		if (c == '@'){
 			SPECIAL = true;
 			++i;
-			mout.debug(3) << "reading special entry[" << label << "]" << mout.endl;
+			mout .debug3() << "reading special entry[" << label << "]" << mout.endl;
 		}
 		else {
 			SPECIAL = false;
@@ -408,7 +408,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 				mout.warn() << "suspicious line: " << line << mout.endl;
 				continue;
 			}
-			mout.debug(4) << "reading  entry[" << d << "]" << mout.endl;
+			mout .debug3() << "reading  entry[" << d << "]" << mout.endl;
 		}
 
 

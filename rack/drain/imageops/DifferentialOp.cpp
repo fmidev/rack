@@ -258,8 +258,8 @@ void LaplaceOp::traverse(const Channel &src, Channel &dst, int di, int dj) const
 	*/
 
 	//const ftype scale = getParameter("scale",ftype(1)) / span;
-	mout.debug(3) << getParameters() << mout.endl;
-	//mout.debug(3) << " bias=" << bias << " scale=" << scale << mout.endl;
+	mout .debug3() << getParameters() << mout.endl;
+	//mout .debug3() << " bias=" << bias << " scale=" << scale << mout.endl;
 
 	drain::typeLimiter<double>::value_t limit = dst.getConf().getLimiter<double>(); // Type::call<Limiter>(dst.getType());
 

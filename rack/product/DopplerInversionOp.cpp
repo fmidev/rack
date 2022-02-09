@@ -255,7 +255,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	 */
 
 	//drain::image::File::write(dst,"DopplerInversionOp.png");
-	mout.debug(3) << window.odimSrc << mout.endl;
+	mout .debug3() << window.odimSrc << mout.endl;
 
 
 }

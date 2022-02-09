@@ -311,7 +311,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 	statOp.mode = "horz";
 	statOp.stat = "m"; // median
 	statOp.medianPos = medianPos;
-	mout.debug(10) << statOp << mout.endl;
+	mout .debug3() << statOp << mout.endl;
 	statOp.process(dst, tmp);
 	if (mout.isDebug(20))
 		ImageFile::write(tmp,"andre-enh1-stat.png");
@@ -319,21 +319,21 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 	//GammaOp gammaOp;
 	drain::image::UnaryFunctorOp<drain::image::GammaFunctor> gammaOp;
 	gammaOp.functor.gamma = 4.0;
-	mout.debug(10) << gammaOp << mout.endl;
+	mout .debug3() << gammaOp << mout.endl;
 	gammaOp.traverseChannel(tmp.getChannel(0), tmp.getChannel(0));
 	if (mout.isDebug(20))
 		ImageFile::write(tmp,"andre-enh2-gamma.png");
 
 
 	DistanceTransformExponentialOp dtfOp(1,width);
-	mout.debug(10) << dtfOp << mout.endl;
+	mout .debug3() << dtfOp << mout.endl;
 	dtfOp.traverseChannel(tmp.getChannel(0), tmp.getChannel(0));
 	if (mout.isDebug(20))
 		ImageFile::write(tmp,"andre-enh3-dtf.png");
 
 	// MultiplicationOp
 	drain::image::BinaryFunctorOp<drain::MultiplicationFunctor> mulOp;
-	mout.debug(10) << mulOp << mout.endl;
+	mout .debug3() << mulOp << mout.endl;
 	mulOp.traverseChannel(tmp.getChannel(0), dst.getChannel(0));
 	if (mout.isDebug(22))
 		ImageFile::write(dst,"andre-enh4-dst.png");

@@ -172,14 +172,14 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	}
 
 	mout.debug() << "Computing gradients" << mout.endl;
-	mout.debug(3) << " - smooth1: " << src1 << mout.endl;
-	mout.debug(3) << " - smooth2: " << src2 << mout.endl;
-	mout.debug(3) << " - dstTray: "     << dst << mout.endl;
+	mout .debug3() << " - smooth1: " << src1 << mout.endl;
+	mout .debug3() << " - smooth2: " << src2 << mout.endl;
+	mout .debug3() << " - dstTray: "     << dst << mout.endl;
 
 	GradientOp gradientOp;
 	gradientOp.LIMIT = false; // todo: decide on dst storage type?
 
-	mout.debug(3) << "g1 (gradients of src" << mout.endl;
+	mout .debug3() << "g1 (gradients of src" << mout.endl;
 
 	ImageTray<Channel> gradTray1(dst);
 	gradientOp.traverseChannels(srcTray1, gradTray1);
@@ -188,7 +188,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		ImageFile::write(gradTray1.get(1), "diff-dy.png");
 	}
 
-	mout.debug(3) << "g2 (gradients of src)" << mout.endl;
+	mout .debug3() << "g2 (gradients of src)" << mout.endl;
 	Image grad2(typeid(OpticalFlowCore1::data_t)); // , dst.getGeometry()  //
 	grad2.setName("Grad2");
 	grad2.setPhysicalRange(-scale, scale, true);

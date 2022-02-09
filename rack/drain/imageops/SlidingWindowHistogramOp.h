@@ -105,9 +105,9 @@ public:
 			histogram.setValueFunc(this->conf.valueFunc.at(0));
 		histogram.setMedianPosition(this->conf.percentage);
 
-		mout.debug(3) << "a=" << this->getArea() << " " << mout.endl;
-		mout.debug(3) << "histogram=" << histogram << " " << mout.endl;
-		mout.debug(3) << this->coordinateHandler << mout.endl;
+		mout .debug3() << "a=" << this->getArea() << " " << mout.endl;
+		mout .debug3() << "histogram=" << histogram << " " << mout.endl;
+		mout .debug3() << this->coordinateHandler << mout.endl;
 
 	}
 

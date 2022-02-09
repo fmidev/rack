@@ -190,7 +190,7 @@ public:
 
 		dst.copyShallow(src);
 		mout.warn() << dst << mout.endl;
-		// mout.debug(3) << "dst: " << dst << mout.endl;
+		// mout .debug3() << "dst: " << dst << mout.endl;
 
 	};
 	*/

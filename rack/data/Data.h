@@ -528,7 +528,7 @@ public:
 		drain::Logger mout("DataGroup<" + ODIMPathElem::getKey(G)+">", __FUNCTION__);
 		switch (this->size()) {
 		case 0:
-			mout.debug(4) << "no data<n> groups" << mout.endl;
+			mout.debug3() << "no data<n> groups" << mout.endl;
 			break;
 		default:
 			mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;
@@ -575,7 +575,7 @@ public:
 		{
 			it = this->find(quantity);
 			if (it != this->end()){
-				mout.debug(4) << "found " << it->first << mout.endl;
+				mout.debug3() << "found " << it->first << mout.endl;
 			}
 			else {
 				//mout.note() << "not found..." << mout.endl;
@@ -742,7 +742,7 @@ protected:
 		// Number of potential groups for debug note at end
 		unsigned short counter = 0;
 
-		mout.debug(3) << "collecting data items";
+		mout.debug3()<< "collecting data items";
 		if (USE_REGEXP)
 			mout << ", RegExp=" << quantityRegExp.toStr();
 		mout << mout.endl;
@@ -774,12 +774,12 @@ protected:
 					if (!quantityRegExp.test(quantity)){
 						//if (it->second.hasChild("quality1"))
 						//	mout.warn() << it->first << "...rejecting, but has quality?" << mout.endl;
-						mout.debug(3) << "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
+						mout.debug3()<< "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
 						continue;
 					}
 				}
 
-				mout.debug(3) << "accept '" << it->first << "' [" << quantity << ']' << mout.endl;
+				mout.debug3()<< "accept '" << it->first << "' [" << quantity << ']' << mout.endl;
 
 
 				if (quantity.empty()){
@@ -823,7 +823,7 @@ protected:
 		// drain::Logger mout(__FUNCTION__, __FILE__);
 
 		if (src.empty()){
-			mout.debug(3) << "src empty" << mout.endl;
+			mout.debug3() << "src empty" << mout.endl;
 			return src.tree;
 		}
 
@@ -1107,7 +1107,7 @@ public:
 
 		switch (this->size()) {
 		case 0:
-			mout.debug(4) << "no data<n> groups" << mout.endl;
+			mout.debug3() << "no data<n> groups" << mout.endl;
 			break;
 		default:
 			mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;

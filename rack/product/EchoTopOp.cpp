@@ -45,7 +45,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug3() << "Start" << mout.endl;
-	mout.debug(3) << (const drain::image::Accumulator &) accumulator << mout.endl;
+	mout .debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	//if (sweep.data.isEmpty())
 	//	mout.warn() << "data is empty " << mout.endl;

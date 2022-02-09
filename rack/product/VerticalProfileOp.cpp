@@ -97,7 +97,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 	/// Common geometry for all the quantities.
 	const drain::image::Geometry geometry(odim.azSlots, odim.levels);
 
-	mout.debug(3) << geometry << mout.endl;
+	mout .debug3() << geometry << mout.endl;
 
 	const drain::RegExp decibels("(T|DBZ)(H|V)");
 
@@ -145,7 +145,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 
 			const bool DB_SCALE = decibels.test(quantity);
-			mout.debug(3) << "quantity: "  << quantity << " db scale: " << (int)DB_SCALE << mout.endl;
+			mout .debug3() << "quantity: "  << quantity << " db scale: " << (int)DB_SCALE << mout.endl;
 
 			Data<VprDst> & dstData = dstProduct.getData(quantity);
 			if (dstData.data.isEmpty()) {
@@ -228,7 +228,7 @@ void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, 
 
 			const int startRay = srcData.odim.area.height * (odim.azmRange.min / 360.0);  //
 			const int stopRay  = srcData.odim.area.height * (odim.azmRange.max / 360.0) + (odim.azmRange.max > odim.azmRange.min ? 0 : srcData.odim.area.height);  // Sector goes over 360 deg
-			mout.debug(3) << "rays: "  << startRay << "..." << stopRay << mout.endl;
+			mout .debug3() << "rays: "  << startRay << "..." << stopRay << mout.endl;
 
 
 			/// Bin altitude in metres.

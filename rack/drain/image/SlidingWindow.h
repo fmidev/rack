@@ -135,7 +135,7 @@ public:
 		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
 		write();
 
-		mout.debug(3) << "slideHorz" << mout.endl;
+		mout .debug3() << "slideHorz" << mout.endl;
 		slideHorz();
 	}
 
@@ -157,7 +157,7 @@ public:
 		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
 		write();
 
-		mout.debug(3) << "slideVert" << mout.endl;
+		mout .debug3() << "slideVert" << mout.endl;
 		slideVert();
 	}
 

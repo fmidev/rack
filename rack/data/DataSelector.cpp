@@ -285,7 +285,7 @@ bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //,
 
 		if (it->first.getType() == child.getType()){
 			child.index = std::max(child.getIndex(), it->first.getIndex());
-			mout.debug(3) << "considering (" << child << ")" << mout.endl;
+			mout .debug3() << "considering (" << child << ")" << mout.endl;
 		}
 
 	}
@@ -361,7 +361,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (count > 1){
-		mout.debug(3) << "count=" << count << ", but only 1 path will be used " << mout.endl;
+		mout .debug3() << "count=" << count << ", but only 1 path will be used " << mout.endl;
 	}
 
 	if (true){
@@ -378,13 +378,13 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 	else {
 
 		if (paths.size() > 1){
-			mout.debug(3) << "found " << paths.size() << " paths , ";
+			mout .debug3() << "found " << paths.size() << " paths , ";
 			mout << " using only one: '" << path << "'" << mout.endl;
 		}
 
 		path = paths.back();
 		if (path.empty()){
-			mout.debug(3) << "empty path found";
+			mout .debug3() << "empty path found";
 			return false;
 		}
 
