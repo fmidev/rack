@@ -37,7 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
+
+
 #include "drain/util/BeanLike.h"
+#include "drain/util/IosFormat.h"
 #include "drain/util/Range.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/StringMapper.h"
@@ -178,7 +181,7 @@ public:
 	/// Returns character, also supporting numeric ASCII values between 32 and 128.
 	char getCommentChar() const;
 
-	/// Use given format or generate default
+	/// Use given format or generate default "${var},${var2}, ..."
 	std::string getFormat(const std::string & formatStr) const;
 
 
@@ -204,7 +207,20 @@ public:
 			return;
 		}
 
+		// Save initial formatting data
+
+		//mout.special() << "fieldWidth: " << fieldWidth << ", fillChar=" << fillChar << mout;
 		mout.debug2() << "variables (initially): " << variableMap.getKeys() << mout.endl;
+
+		/// Final formatter defined here, to copy ostr precision etc.
+		// Note: supports leading minus sign
+		drain::StringMapper formatter("-?[a-zA-Z0-9_]+"); // WAS: "-?[a-zA-Z0-9_]+" with odd "-?"
+		// format = drain::StringTools::replace(format, "\\n", "\n");
+		// format = drain::StringTools::replace(format, "\\t", "\t");
+		std::string format = getFormat(formatStr);
+		formatter.parse(format, true); // convert escaped, eg. "\\n" -> "\n"
+		formatter.iosFormat.copyFrom(ostr);
+		mout.special() << "iosFormat: " << formatter.iosFormat << mout;
 
 		// std::string format = getFormat(formatStr);
 
@@ -220,7 +236,6 @@ public:
 		}
 		mout.debug() << "variables: " << variableMap << mout.endl;
 
-		std::string format = getFormat(formatStr);
 
 
 		const int iStep  = this->iStep;
@@ -263,14 +278,6 @@ public:
 
 
 		}
-
-		/// Final formatter
-		format = drain::StringTools::replace(format, "\\n", "\n");
-		format = drain::StringTools::replace(format, "\\t", "\t");
-		// Note: supports leading minus sign
-		drain::StringMapper formatter("-?[a-zA-Z0-9_]+"); // WAS: "-?[a-zA-Z0-9_]+" with odd "-?"
-		formatter.parse(format);
-		//mout.warn() << "formatter " << formatter << mout.endl;
 
 
 		int iStart = this->iRange.min; // this->iStart;

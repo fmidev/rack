@@ -201,12 +201,14 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 Logger::oper Logger::endl;
 
 Logger::Logger(const char *funcName, const std::string & className):
-	monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL){
+				message(*this),
+				monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
 }
 
-Logger::Logger(Log &log, const char *funcName, const std::string & className): // char *className):
-	monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL){
+Logger::Logger(Log &log, const char *funcName, const std::string & className):
+				message(*this),
+				monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
 }
 

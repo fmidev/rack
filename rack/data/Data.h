@@ -245,7 +245,8 @@ class RootData : public TreeWrapper<DT> {
 public:
 
 	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) {
-		// todo: init odim
+		// experimental
+		odim.copyFrom(tree.data.dataSet);
 	};
 
 	virtual inline

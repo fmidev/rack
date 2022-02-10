@@ -276,18 +276,18 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 		ctx.statusFlags.reset(); // ALL?
 		//ctx.statusFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false; // return if input not ok?
 
-		mout.debug() << "composite.dataSelector: " << composite.dataSelector << mout.endl;
+		mout.debug() << "composite.dataSelector: " << composite.dataSelector << mout;
 		// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
 		// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
 
 
 		composite.dataSelector.updateBean(); // quantity
-		mout.info() << "composite.dataSelector: " << composite.dataSelector << mout.endl;
+		mout.info() << "composite.dataSelector: " << composite.dataSelector << mout;
 
 		ODIMPath dataPath;
 		composite.dataSelector.getPath3(src, dataPath);
 		if (dataPath.empty()){
-			mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout.endl;
+			mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout;
 			//resources.inputOk = false; // REMOVE?
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
@@ -297,14 +297,14 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 
 
 		/// GET INPUT DATA
-		if ( !polarSrc.data.isEmpty() ){
-			mout.info() << "using input path:" << dataPath << ", quantity:" << polarSrc.odim.quantity << mout.endl;
-		}
-		else {
-			mout.warn() << "skipping empty input data: quantity=" << polarSrc.odim.quantity << ", path:" << dataPath << "/data" << mout.endl;  // was: dataSetPath
+
+		if (polarSrc.data.isEmpty() ){
+			mout.warn() << "skipping empty input data: quantity=" << polarSrc.odim.quantity << ", path:" << dataPath << "/data" << mout;  // was: dataSetPath
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false; // REMOVE?
 			return;
 		}
+
+		mout.info() << "Using input path:" << dataPath << " [" << polarSrc.odim.quantity << "] elangle=" << polarSrc.odim.elangle << mout;
 
 		// mout.warn() << "composite: " << composite.odim << mout.endl;
 		// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;

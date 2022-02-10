@@ -931,6 +931,8 @@ public:
 
 				dstData.updateTree2();
 				rootODIM.updateLenient(dstData.odim);
+				mout.note() << "dstData.odim.time: " << dstData.odim.time << mout.endl;
+				mout.note() << "    rootODIM.time: " << rootODIM.time << mout.endl;
 			}
 			//}
 		}
@@ -941,7 +943,14 @@ public:
 		if (rootODIM.time.empty())
 			rootODIM.time = rootODIM.starttime;
 		 */
+		/*
+		mout.special() << "Final rootODIM.time: " << rootODIM.time << mout.endl;
+		rootODIM.source = "radar.TEST";
 		ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
+		mout.special() << dstH5 << mout;
+		*/
+		DataTools::updateInternalAttributes(dstH5);
+		//hi5::Writer::writeFile("disto.h5", dstH5);
 
 	}
 
@@ -959,31 +968,42 @@ public:
 		Hi5Tree & dst = *ctx.currentHi5;
 
 		if (&dst == ctx.currentPolarHi5){
-			// PolarODIM odim;
 			complete<PolarODIM>(dst); // , odim
 		}
 		else if (&dst == &ctx.cartesianHi5){
 			//
 			complete<CartesianODIM>(dst); // , odim
 
+			// hi5::Writer::writeFile("disto2.h5", dst);
+
 			RootData<CartesianDst> root(dst);
 			// mout.experimental(root.odim);
+			//hi5::Writer::writeFile("disto3.h5", dst);
 
-			drain::VariableMap & where = root.getWhere();
+			CartesianODIM & rootODIM = root.odim;
+			//root.odim.updateFromCastableMap(dst.data.dataSet.properties);
+			mout.obsolete(root.odim);
+
+			drain::VariableMap & where = dst[ODIMPathElem::WHERE].data.attributes; //root.getWhere();
 			mout.debug2(where);
-			GeoFrame frame(where.get("xsize", root.odim.area.getWidth()), where.get("ysize", root.odim.area.getHeight()));
+			GeoFrame frame(where.get("xsize", rootODIM.area.getWidth()), where.get("ysize", rootODIM.area.getHeight()));
 			std::string projdef = where.get("projdef","");
 			if (!projdef.empty())
 				//projdef = "+proj=laea +lat_0=55.0 +lon_0=10.0 +x_0=1950000.0 +y_0=-2100000.0 +units=m +ellps=WGS84";
 				frame.setProjection(projdef);
 			frame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
 			// mout.experimental(frame);
-			root.odim.updateGeoInfo(frame);
+			rootODIM.updateGeoInfo(frame);
 
+			//hi5::Writer::writeFile("disto4.h5", dst);
+			//dst.data.attributes.updateFromCastableMap(rootODIM);
+			//mout.obsolete(dst.data.attributes);
+			//ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dst);
 		}
 		else {
 
 		}
+		//hi5::Writer::writeFile("disto5.h5", dst);
 
 
 	};

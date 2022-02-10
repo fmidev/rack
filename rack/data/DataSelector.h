@@ -386,8 +386,9 @@ bool DataSelector::getPaths(const Hi5Tree & src, T & pathContainer) const {
 
 
 			if (props.hasKey("where:elangle")){
-				if (!elangle.contains(props["where:elangle"])){
-					mout.debug() << "outside elangle range" << mout.endl;
+				double e = props["where:elangle"];
+				if (!elangle.contains(e)){
+					mout.debug("elangle ",e," outside range ",elangle);
 					continue;
 				}
 			}

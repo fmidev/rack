@@ -231,8 +231,13 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	bool result = qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 
 	if (!result){
-		if (qmap.hasQuantity(dstODIM.quantity))
-			mout.warn() << "unknown storage type [" << dstODIM.type << "] for quantity " << dstODIM.quantity << ", guessing: " << EncodingODIM(dstODIM) << mout.endl;
+		if (qmap.hasQuantity(dstODIM.quantity)){
+			if (drain::Type::call<drain::typeIsInteger>(dstODIM.type))
+				mout.warn(); // Integer: underflow/overflow possible. Bit value
+			else
+				mout.info(); // Pretty safe, only precision issues possible
+			mout << "No explicit config for storage type '" << dstODIM.type << "' for quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
+		}
 		else
 			mout.warn() << "unknown quantity " << dstODIM.quantity << ", guessing: " << EncodingODIM(dstODIM) << mout.endl;
 	}

@@ -50,38 +50,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
-class StringBuilder : public std::stringstream {
-
-public:
-
-	inline
-	StringBuilder & add(){
-		 return *this;
-	};
-
-	template<class T, typename ... TT>
-	StringBuilder & add(const T & arg, const TT &... rest) {
-		*this << arg;
-		return add(rest...);
-	}
-
-	template<typename ... TT>
-	StringBuilder & create(const TT &... rest) {
-		std::stringstream::str("");
-		return add(rest...);
-	}
-
-	// Convenience
-	/*
-	template<class T, typename ... TT>
-	const std::string & str(const T & arg, const TT &... rest) {
-		return sstr(arg, rest...).std::stringstream::str();
-	}
-	*/
-
-
-};
 class StringTools {
 
 public:

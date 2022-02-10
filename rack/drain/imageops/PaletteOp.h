@@ -100,7 +100,7 @@ public:
 
 	/// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).
 	// TODO T 256, T2 32768
-	void setGrayPalette(unsigned int iChannels=3,unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;
+	void setGrayPalette(unsigned int iChannels=3, unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;
 
 
 	/// Prescale intensities with scale*i + offset.
@@ -109,7 +109,14 @@ public:
 	/// Prescale intensities with scale*i + offset.
 	double offset;
 
-	void registerSpecialCode(const std::string & code, double f);
+	/// Connect special code (label) to intensity
+	/**
+	 *   Palette file is independent of storage type and therefore independent of numeric values used for
+	 *   special codes. That information is transmitted in image meta data, and connected to the palette with
+	 *   this function.
+	 *
+	 */
+	void registerSpecialCode(const std::string & code, double d);
 
 	// protect:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
@@ -118,7 +125,7 @@ public:
 
 protected:
 
-	void initialize() const {};
+	//void initialize() const {Image & dst};
 
 	void getDstConf(const ImageConf &src, ImageConf &dst) const;
 	//void makeCompatible(const ImageFrame &src, Image &dst) const;

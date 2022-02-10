@@ -136,6 +136,11 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	/// Sampling parameters have been set by --sample (CmdSample)
 	const Sampler & sampler = ctx.imageSampler.getSampler();
 
+	std::ostream & ostr = ofstr;
+	//ostr.width(20);
+	//ostr.fill('x');
+	ostr.precision(20);
+
 	if (ctx.currentHi5 == ctx.currentPolarHi5){
 
 		mout.debug() << "sampling polar data" << mout.endl;

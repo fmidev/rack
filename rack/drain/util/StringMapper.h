@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iterator>
 #include <sstream>
 
+#include "IosFormat.h"
 #include "Log.h"
 #include "RegExp.h"
 #include "Sprinter.h"
@@ -107,6 +108,7 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
  *
  */
 class StringMapper : public std::list<Stringlet> {
+
 public:
 
 	/** Constructor.
@@ -116,9 +118,9 @@ public:
 	StringMapper(
 			const std::string & format = "",
 			const std::string & validChars = "[a-zA-Z0-9_]+"
-			) :
-				width(0),
-				fill('0')
+			)
+//				fieldWidth(0),
+//				fillChar('0')
 	{
 		setValidChars(validChars);
 		regExp.setFlags(REG_EXTENDED);
@@ -128,8 +130,8 @@ public:
 	};
 
 	/// Initialize with the given RegExp
-	StringMapper(const RegExp & regexp) : width(0),
-			fill('0'), regExp(regexp)  {
+	StringMapper(const RegExp & regexp) : regExp(regexp)  { // fieldWidth(0),
+			//fillChar('0'),
 		//((std::list<Stringlet> &)*this) = mapper;
 	}
 
@@ -179,6 +181,8 @@ public:
 		return ostr;
 	}
 
+	IosFormat iosFormat;
+
 
 	/// Expands the variables in the last
 	/**
@@ -193,8 +197,10 @@ public:
 		for (const Stringlet & stringlet: *this){
 			//const Stringlet & stringlet = *it;
 			if (stringlet.isVariable()){
+				// Find the entry in the map
 				typename std::map<std::string, T >::const_iterator mit = m.find(stringlet);
 				if (mit != m.end()){
+					iosFormat.copyTo(ostr);
 					//ostr.width(width);
 					//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
 					//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
@@ -286,13 +292,12 @@ public:
 		return ostr;
 	}
 
-	std::streamsize width;
-	char fill;
-
 
 protected:
 
+
 	StringMapper & parse(const std::string &s, RegExp &r);
+
 	RegExp regExp;
 	//  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 

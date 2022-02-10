@@ -77,7 +77,8 @@ void PaletteOp::setPalette(const Palette & palette) {
 }
 
 
-void PaletteOp::registerSpecialCode(const std::string & code, double f) {
+// Add label
+void PaletteOp::registerSpecialCode(const std::string & code, double d) {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -87,13 +88,13 @@ void PaletteOp::registerSpecialCode(const std::string & code, double f) {
 
 	Palette::spec_t::const_iterator it = palettePtr->specialCodes.find(code);
 	if (it != palettePtr->specialCodes.end()){
-		specialCodes[f] = it->second; // copy
-		specialCodes[f].value = f;
+		specialCodes[d] = it->second; // copy
+		specialCodes[d].value = d;
 	}
 	else {
 		mout.debug() << *palettePtr << mout.endl;
 		//mout.note() << palettePtr->specialCodes << mout.endl;
-		mout.warn() << "could not find entry: "<< code << '(' << f << ')' << mout.endl;
+		mout.warn() << "could not find entry: "<< code << '(' << d << ')' << mout.endl;
 	}
 	//std::cerr << code <<  ": setSpecialCode: could not find entry\n";
 

@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "drain/util/Time.h"
 #include <sstream>
 #include "FileInfo.h"
+#include "StringBuilder.h"
 
 namespace drain
 {
@@ -45,7 +46,7 @@ void FileInfo::setExtensionRegExp(const std::string & extRegExp, int flags){
 	sstr << '^' << extRegExp << '$';
 	extensionRegexp.setExpression(sstr.str(), flags);
 	*/
-	extensionRegexp.setExpression(StringBuilder().create("^",extRegExp,"$").str(), flags);
+	extensionRegexp.setExpression(StreamBuilder().create("^",extRegExp,"$").str(), flags);
 }
 
 Registry<FileInfo> & getFileInfoRegistry(){

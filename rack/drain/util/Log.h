@@ -224,9 +224,13 @@ Log & getImgLog();
 /**
  *
  */
-class Logger { //: public LogBase {
+class Logger : public std::stringstream { //: public LogBase {
+
+	std::stringstream & message;
 
 public:
+
+
 
 	typedef Log::level_t level_t;
 
@@ -552,7 +556,6 @@ public:
 	}
 
 
-	std::stringstream message;
 
 protected:
 

@@ -598,10 +598,20 @@ public:
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const drain::FlexVariableMap  & props = graySrc.getProperties();
 		mout.debug() << "input properties: " << props << mout.endl;
+		/*
+		const drain::FlexVariable & nodata = props["what:nodata"];
+		double d = nodata;
+		mout.special() << "props: ";
+		mout.precision(20);
+		mout << nodata << '=';
+		mout.precision(20);
+		mout << d << ':' <<  drain::Type::call<drain::complexName>(nodata.getType()) << mout;
+		*/
 
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
-		const PolarODIM imgOdim(props);
-		mout.note() << "input encoding: " << EncodingODIM(imgOdim) << mout.endl;
+		//const PolarODIM imgOdim(props);
+		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
+		mout.info("input encoding: ", EncodingODIM(imgOdim));
 
 
 		if (imgOdim.quantity.substr(0,4) != "VRAD"){
@@ -635,7 +645,18 @@ public:
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
 		// mout.note() << imgOdim << mout.endl;
-		mout.debug() << "OP Special codes: \n" << op.specialCodes << mout.endl;
+		mout.warn() << "OP Special codes: \n";
+		mout.precision(20);
+		mout << op.specialCodes << mout.endl;
+
+		mout.warn() << "imgOdim.nodata: \n";
+		mout.precision(20);
+		mout << imgOdim.nodata << mout.endl;
+
+		mout.warn() << "First pixel: \n";
+		mout.precision(20);
+		mout << graySrc.get<double>(0) << mout.endl;
+
 
 		ODIM encoding;
 		//encoding.type = "C";
