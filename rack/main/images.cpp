@@ -567,7 +567,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, "Palette"); // = resources.mout;
 
 		if (ctx.palette.empty()){
-			mout.warn() << "empty palette, giving up" << mout.endl;
+			mout.warn("empty palette, giving up");
 			return;
 		}
 
@@ -576,11 +576,11 @@ public:
 
 		if (graySrc.isEmpty()){
 			if (!ctx.currentHi5->isEmpty()){
-				mout.fail() << "hdf5 data exists, but selected gray image is empty, skipping." << mout.endl;
+				mout.fail("hdf5 data exists, but selected gray image is empty, skipping.");
 				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // selector failed
 			}
 			else {
-				mout.info() << "hdf5 data empty" << mout.endl;
+				mout.info("hdf5 data empty");
 			}
 			return;
 		}
@@ -645,6 +645,7 @@ public:
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
 		// mout.note() << imgOdim << mout.endl;
+		/*
 		mout.warn() << "OP Special codes: \n";
 		mout.precision(20);
 		mout << op.specialCodes << mout.endl;
@@ -656,7 +657,7 @@ public:
 		mout.warn() << "First pixel: \n";
 		mout.precision(20);
 		mout << graySrc.get<double>(0) << mout.endl;
-
+		*/
 
 		ODIM encoding;
 		//encoding.type = "C";

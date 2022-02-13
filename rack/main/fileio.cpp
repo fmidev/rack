@@ -127,8 +127,8 @@ class CmdGeoTiffTile : public drain::BasicCommand {
 public:
 
 	CmdGeoTiffTile() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
-		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
-		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
+		parameters.link("tilewidth", FileTIFF::defaultTile.width=256);
+		parameters.link("tileheight", FileTIFF::defaultTile.height=0);
 	};
 
 	CmdGeoTiffTile(const CmdGeoTiffTile & cmd) : drain::BasicCommand(cmd) {
@@ -153,9 +153,9 @@ public:
 		parameters.link("format", format, "h5|png|tif");
 		parameters.link("params", params, "<key>=<value>[,<key2>=<value2>,...]");
 
-		gtiffConf.link("tilewidth", FileGeoTIFF::tileWidth=256);
-		gtiffConf.link("tileheight", FileGeoTIFF::tileHeight=0);
-		gtiffConf.link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+		gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
+		gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
+		gtiffConf.link("compression", FileTIFF::defaultCompression, FileTIFF::getCompressionDict().toStr('|'));
 
 	};
 

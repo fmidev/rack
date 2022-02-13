@@ -77,7 +77,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-		mout.note() << "using local composite" << mout;
+		mout.debug("Setting projection to local composite");
 
 		ctx.composite.setProjection(value);
 		ctx.composite.odim.projdef = value; // ?? + "     ";

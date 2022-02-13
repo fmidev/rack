@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.41"
+#define __RACK_VERSION__ "6.42"
 
 /**
+ *   Version 6.42
+ *   -- TIFF & GeoTIFF re-organized
+ *
  *   Version 6.41
  *   -- Logger field width, precision
  *   -- StringBuilder, StreamBuilder
