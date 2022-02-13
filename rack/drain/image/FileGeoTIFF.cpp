@@ -39,6 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FileGeoTIFF.h"
 
 #ifdef USE_GEOTIFF_YES
+#pragma JEES
+#else
+#pragma NOU
+#endif
+
+#ifdef USE_GEOTIFF_YES
 
 #include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"

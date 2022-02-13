@@ -327,9 +327,10 @@ void CmdOutputFile::exec() const {
 			drain::image::ImageFile::write(src, filename);
 		}
 		else if (IMAGE_TIF) {
-#ifdef USE_GEOTIFF
+#ifdef USE_GEOTIFF_YES
 			// see FileGeoTiff::tileWidth
 			FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
+			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
 #else
 			mout.error("No TIFF format support compiled");
 #endif
