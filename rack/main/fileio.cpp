@@ -53,6 +53,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Variable.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
+#include "drain/image/FileGeoTIFF.h"
+//#include "radar/FileGeoTIFF.h"
 
 #include "drain/image/Image.h"
 //#include "drain/image/Sampler.h"
@@ -71,7 +73,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Write.h"
 #include "product/ProductOp.h"
-#include "radar/FileGeoTIFF.h"
 //#include "radar/RadarDataPicker.h"
 
 #include "resources.h"
@@ -127,8 +128,8 @@ class CmdGeoTiffTile : public drain::BasicCommand {
 public:
 
 	CmdGeoTiffTile() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
-		parameters.link("tilewidth", FileTIFF::defaultTile.width=256);
-		parameters.link("tileheight", FileTIFF::defaultTile.height=0);
+		parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
+		parameters.link("tileheight", drain::image::FileTIFF::defaultTile.height=0);
 	};
 
 	CmdGeoTiffTile(const CmdGeoTiffTile & cmd) : drain::BasicCommand(cmd) {
@@ -283,7 +284,7 @@ void CmdOutputFile::exec() const {
 	//drain::image::FilePng::
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(value);  //pngFileExtension.test(value);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
-	const bool IMAGE_TIF = rack::FileGeoTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
+	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
@@ -326,8 +327,12 @@ void CmdOutputFile::exec() const {
 			drain::image::ImageFile::write(src, filename);
 		}
 		else if (IMAGE_TIF) {
+#ifdef USE_GEOTIFF
 			// see FileGeoTiff::tileWidth
 			FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
+#else
+			mout.error("No TIFF format support compiled");
+#endif
 		}
 		else {
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);

@@ -36,6 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
+#include "FileGeoTIFF.h"
+
+#ifdef USE_GEOTIFF_YES
+
 #include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
 #include "drain/util/Time.h"
@@ -44,15 +48,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/AccumulatorGeo.h"
 #include "main/rack.h"
 
-#include "FileGeoTIFF.h"
 
 
+//int rack::FileGeoTIFF::compression(1); // = NONE, but see below
 
-#ifdef GEOTIFF_NO
-
-int rack::FileGeoTIFF::compression(1); // = NONE, but see below
-
-#else
 
 #include <proj_api.h>
 
@@ -72,7 +71,7 @@ int rack::FileGeoTIFF::compression(1); // = NONE, but see below
 #define TIFFTAG_GDAL_NODATA 42113 // 0xa481 // 42113
 #endif
 
-namespace rack
+namespace drain::image
 {
 
 
@@ -466,8 +465,5 @@ void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src
 
 }
 
+
 #endif
-
-
-// Rack
- // REP

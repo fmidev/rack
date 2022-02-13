@@ -1857,10 +1857,10 @@ public:
 		std::cout << "HDF5 " << majnum << '.' << minnum << '.' << relnum << '\n';
 
 		std::cout << "GeoTIFF support: ";
-#ifdef  GEOTIFF_NO
-		std::cout << "no"<< '\n';
-#else
+#ifdef  USE_GEOTIFF
 		std::cout << "yes" <<  '\n';
+#else
+		std::cout << "no"<< '\n';
 #endif
 		std::cout << '\n';
 

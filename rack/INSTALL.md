@@ -103,7 +103,8 @@ ${workspace_loc:drain/Debug}
 
 C++ build, environment (variables)
 ```
-drainroot=/opt (or other user-defined location)
+Defined symbols (-D) :
+USE_GEOTIFF_${USE_GEOTIFF}
 ```
 
 C++ compiler, include paths:

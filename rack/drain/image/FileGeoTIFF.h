@@ -28,30 +28,29 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef RACK_GEO_TIFF_H
-#define RACK_GEO_TIFF_H
+#ifndef DRAIN_GEO_TIFF_H
+#define DRAIN_GEO_TIFF_H
+
+#include "FileTIFF.h"
+
+#ifdef USE_GEOTIFF_YES
+
+#include <geotiff.h>
+#include <geotiffio.h>
+#include <geo_normalize.h>
 
 #include "drain/util/Dictionary.h"
 #include "drain/util/FileInfo.h"
 #include "drain/util/Log.h"
 #include "drain/image/Image.h"
 
-#ifndef GEOTIFF_NO
 
 
-#include <geotiff.h>
-#include <geotiffio.h>
-#include <geo_normalize.h>
-
-#endif
-
-#include "FileTIFF.h"
-
-
-namespace rack
+namespace drain
 {
 
-
+	namespace image
+	{
 
 
 class FileGeoTIFF : public FileTIFF{
@@ -137,21 +136,18 @@ public:
 	 *  Floating point images will be scaled as 16 bit integral (unsigned short int).
 	*/
 	//static void write(const Image &image,const std::string &path);
-#ifdef GEOTIFF_NO // geotiff //RACKGEOTIFF
 
+	static
+	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
+
+	/*
 	static inline
 	void write(const std::string & path, const drain::image::Image & src, int defaultTileWidth, int defaultTileHeight=0){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn("binary compiled without TIFF/GeoTIFF support, skipping");
 	};
+	*/
 
-#else
-
-	static
-	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
-
-
-#endif
 
 	static inline
 	void write(const std::string & path, const drain::image::Image & src){
@@ -164,21 +160,17 @@ public:
 	void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
 
 
-
-
 protected:
 
 	GTIF *gtif;
 	// TIFF *tif = XTIFFOpen(path.c_str(), "w");
 	// GTIF *gtif = GTIFNew(tif);
 
-
-
-
 };
 
+} // image::
 
-
-} // rack::
+} // drain::
+#endif
 
 #endif
