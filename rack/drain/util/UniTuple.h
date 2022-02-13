@@ -55,7 +55,7 @@ class UniTuple {
 
 public:
 
-	typedef T  value_t;
+	typedef T  value_type;
 	typedef UniTuple<T,N> tuple_t;
 
 	typedef T* iterator;
@@ -76,7 +76,7 @@ public:
 		return *this;
 	}
 
-	tuple_t & assign(const value_t & value){
+	tuple_t & assign(const value_type & value){
 		fill(value);
 		updateTuple();
 		return *this;
@@ -87,7 +87,7 @@ public:
 		return *this;
 	}
 
-	tuple_t & operator=(const value_t & value){
+	tuple_t & operator=(const value_type & value){
 		assign(value);
 		return *this;
 	}
@@ -242,11 +242,17 @@ public:
 		return *this;
 	}
 
+
 	/// Set all the elements to i
-	void fill(T i=0){
+	void fill(T i){
 		for (iterator it = begin(); it != end(); ++it){
 			*it = i;
 		}
+	}
+
+	inline
+	void clear(){
+		fill(T());
 	}
 
 	// Self-reference for casting

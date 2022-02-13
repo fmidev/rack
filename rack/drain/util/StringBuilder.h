@@ -99,6 +99,15 @@ public:
 		//assign(streamBuilder.str());
 	}
 
+	/*
+	template<typename ... TT>
+	StringBuilder(const char *arg, const TT &... args){
+		create(arg, args...);
+		//assign(streamBuilder.str());
+	}
+	*/
+
+
 	template<typename ... TT>
 	StringBuilder & create(const TT &... args){
 		this->clear();
