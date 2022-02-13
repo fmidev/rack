@@ -36,18 +36,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
-#include <drain/image/ImageFile.h>
 #include "drain/util/Log.h"
+#include "drain/util/StringBuilder.h"
 #include "drain/util/Time.h"
 #include "drain/util/TreeXML.h"
+#include <drain/image/ImageFile.h>
 #include "drain/image/AccumulatorGeo.h"
 #include "main/rack.h"
 
 #include "FileGeoTIFF.h"
 
-
-int rack::FileGeoTIFF::tileWidth(256);
-int rack::FileGeoTIFF::tileHeight(256);
 
 
 #ifdef GEOTIFF_NO
@@ -78,26 +76,7 @@ namespace rack
 {
 
 
-int FileGeoTIFF::compression(COMPRESSION_LZW); // = tunable in fileio.cpp
 
-const drain::FileInfo FileGeoTIFF::fileInfo("(tif|tiff)");
-
-
-const drain::Dictionary2<int, std::string> & FileGeoTIFF::getCompressionDict(){
-
-	if (compressionDict.empty()){
-		// Populate
-		compressionDict.add(COMPRESSION_NONE,     "NONE");
-		compressionDict.add(COMPRESSION_LZW,      "LZW");
-		compressionDict.add(COMPRESSION_DEFLATE,  "DEFLATE");
-		compressionDict.add(COMPRESSION_PACKBITS, "PACKBITS");
-	}
-
-	return compressionDict;
-}
-
-
-drain::Dictionary2<int, std::string> FileGeoTIFF::compressionDict;
 
 
 // https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
@@ -162,94 +141,23 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 }
 
 
-//drain::Variable FileGeoTIFF::ties(typeid(double));
+void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, double offset){
 
-
-void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidth=0, int tileHeight = 0){
-
-	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
-
-	const drain::FlexVariableMap & prop = src.properties;
-
-	const size_t width  = src.getWidth();
-	const size_t height = src.getHeight();
-
-	TIFFSetField(tif,TIFFTAG_IMAGEWIDTH,    width);
-	TIFFSetField(tif,TIFFTAG_IMAGELENGTH,   height);
-	//TIFFSetField(tif,TIFFTAG_COMPRESSION,   COMPRESSION_NONE);
-	TIFFSetField(tif,TIFFTAG_COMPRESSION,   FileGeoTIFF::compression);
-	TIFFSetField(tif,TIFFTAG_PHOTOMETRIC,   PHOTOMETRIC_MINISBLACK);
-	TIFFSetField(tif,TIFFTAG_PLANARCONFIG,  PLANARCONFIG_CONTIG);
-
-	const drain::Type t(src.getType());
-	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
-	switch ((const char)t) {
-		case 'C':
-			// no break
-		case 'S':
-			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*drain::Type::call<drain::sizeGetter>(t));
-			break;
-		default:
-			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
-			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
-	}
-
-	// write as tiles
-	if (tileWidth > 0){
-
-		if (tileHeight <= 0)
-			tileHeight = tileWidth;
-
-		if (TIFFSetField(tif, TIFFTAG_TILEWIDTH,  tileWidth)==0){
-			mout.warn() << "invalid tileWidth=" << tileWidth << ", using 256"<< mout.endl;
-			TIFFSetField(tif, TIFFTAG_TILEWIDTH, 256);
-		}
-
-		if (TIFFSetField(tif,TIFFTAG_TILELENGTH,  tileHeight)==0){
-			mout.warn() << "invalid tileWidth=" << tileHeight << ", using 256"<< mout.endl;
-			TIFFSetField(tif, TIFFTAG_TILELENGTH, 256);
-		}
-
-	}
-	else {
-		TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP,  20L);
-	}
-
-	// http://www.gdal.org/frmt_gtiff.html
-	// Optional
-	const std::string software = std::string(__RACK__) + " " + std::string(__RACK_VERSION__);
-	TIFFSetField(tif,TIFFTAG_SOFTWARE, software.c_str());
-
-
-	drain::Time datetime;
-	datetime.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
-	datetime.setTime(prop.get("what:time", "000000"), "%H%M%S");
-
-	TIFFSetField(tif, TIFFTAG_DATETIME, datetime.str("%Y:%m:%d %H:%M:%S").c_str() );
-	// const std::string datetime = prop.get("what:date", "") + prop.get("what:time", "");
-	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.c_str() );
-
-
-	const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
-	TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
-
-
-	// GDALMetadata etc
-	// usr/include/gdal/rawdataset.h
-	// Non-standard http://www.gdal.org/frmt_gtiff.html
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//const int TIFFTAG_KOE = 65001;
 	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
 	// "gdal-metadata"
-	static const TIFFFieldInfo xtiffFieldInfo[] = {
+	static
+	const TIFFFieldInfo xtiffFieldInfo[] = {
 			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
 			{ TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
 	};
 	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 2);
 
 	TreeGDAL gdalInfo;
-	gdalInfo["SCALE"]->set(prop.get("what:gain", 1.0),    0, "scale");
-	gdalInfo["OFFSET"]->set(prop.get("what:offset", 0.0), 0, "offset");
+	gdalInfo["SCALE"]->set(scale, 0, "scale");
+	gdalInfo["OFFSET"]->set(offset, 0, "offset");
 	/*
 	<GDALMetadata >
 	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
@@ -260,74 +168,139 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	std::stringstream gdal;
 	gdal << gdalInfo;
 	mout.debug() << gdal.str() << mout.endl;
-	TIFFSetField(tif, TIFFTAG_GDAL_METADATA, gdal.str().c_str());
+	//TIFFSetField(tif, TIFFTAG_GDAL_METADATA, gdal.str().c_str());
+	setField(TIFFTAG_GDAL_METADATA,gdal.str());
 
-	std::string nodata = prop["what:nodata"];
+	//std::string nodata = prop["what:nodata"];
 	if (!nodata.empty()){
 		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
 		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
-		TIFFSetField(tif, TIFFTAG_GDAL_NODATA, nodata.c_str());
+		//TIFFSetField(tif, TIFFTAG_GDAL_NODATA, nodata.c_str());
+		setField(TIFFTAG_GDAL_NODATA,nodata);
 	}
 
+}
 
 
+void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	/// Projection
+	const drain::FlexVariableMap & prop = src.properties;
+
 	std::string projdef = prop["where:projdef"];
-	if (projdef.empty()){
-		mout.note() << "where:projdef missing, no GeoTIFF projection info written" << mout.endl;
-		return;
-	}
 
+	if (!projdef.empty()){
 
+		//drain::image::GeoFrame frame;
+		frame.setGeometry(src.getWidth(), src.getHeight());
+		frame.setProjection(projdef);
 
-	drain::image::GeoFrame frame;
-	frame.setGeometry(width, height);
-	frame.setProjection(projdef);
-	const drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"]);
-	if (frame.isLongLat()){
-		frame.setBoundingBoxD(bboxD);
-	}
-	else {
-		const drain::Variable & p = prop["where:BBOX_native"];
-		std::vector<double> v;
-		p.toSequence(v);
-		if (v.size() == 4){
-			frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
-			mout.note() << "Setting exact (metric) BBOX=";
-			char sep = ' ';
-			v = frame.getBoundingBoxM().toVector(); // Back!
-			char buffer[256];
-			for (size_t i=0; i<v.size(); ++i){
-				mout << sep;
-				sep = ',';
-				snprintf(buffer, sizeof(buffer), "%.2f", v[i]);
-				mout << buffer;
-			}
-			mout << mout.endl;
-		}
-		else {
-			mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
+	    drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
+		if (frame.isLongLat()){
 			frame.setBoundingBoxD(bboxD);
 		}
+		else {
+			// Debug
+			frame.setBoundingBoxD(bboxD);
+			mout.special("BBOX deg: ", frame.getBoundingBoxD());
+			mout.special() << "BBOX m  : ";
+			mout.precision(20);
+			mout << frame.getBoundingBoxM() << mout;
+
+
+			const drain::Variable & p = prop["where:BBOX_native"];
+			std::vector<double> v;
+			//drain::Rectangle<double> v;
+			p.toSequence(v);
+			drain::Rectangle<double> bboxM;
+			bboxM.fromSequence(v);
+			if (v.size() == 4){
+				//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
+				frame.setBoundingBoxM(bboxM);
+				mout.note() << "Setting exact (metric) BBOX=";
+				//char sep = ' ';
+				//v = frame.getBoundingBoxM().toVector(); // Back!
+				mout.special() << "BBOX m  : ";
+				mout.precision(20);
+				mout << frame.getBoundingBoxM() << mout;
+				/*
+				char buffer[256];
+				for (size_t i=0; i<v.size(); ++i){
+					mout << sep;
+					sep = ',';
+					snprintf(buffer, sizeof(buffer), "%.2f", v[i]);
+					mout << buffer;
+				}
+				mout << mout.endl;
+				*/
+			}
+			else {
+				mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
+				frame.setBoundingBoxD(bboxD);
+			}
+		}
+	}
+	else {
+		mout.note("where:projdef missing, no GeoTIFF projection info written");
 	}
 
-	//frame.getBoundingBoxM().toStream();
+}
 
-	double tiepoints[6]; // = {0,0,0,0,0,0};
+void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // int tileWidth, int tileHeight){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const drain::FlexVariableMap & prop = src.properties;
+
+	// http://www.gdal.org/frmt_gtiff.html
+	// Optional
+	//const std::string software = std::string(__RACK__) + " " + std::string(__RACK_VERSION__);
+	//TIFFSetField(tif,TIFFTAG_SOFTWARE, software.c_str());
+	//std::string s = drain::StringBuilder(__RACK__," ",__RACK_VERSION__);
+	setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
+
+	drain::Time datetime;
+	datetime.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
+	datetime.setTime(prop.get("what:time", "000000"), "%H%M%S");
+	setTime(datetime);
+
+	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.str("%Y:%m:%d %H:%M:%S").c_str() );
+	// const std::string datetime = prop.get("what:date", "") + prop.get("what:time", "");
+	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.c_str() );
+
+
+	const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
+	//TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
+	setField(TIFFTAG_IMAGEDESCRIPTION,desc);
+
+	// GDALMetadata etc
+	// usr/include/gdal/rawdataset.h
+	// Non-standard http://www.gdal.org/frmt_gtiff.html
+
+	setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
+
+	drain::image::GeoFrame frame;
+	adjustGeoFrame_rack(src, frame);
+	setGeoMetaData(frame);
+
+}
+
+void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	//const int width/2;
+	//const int j = height/2;
 
 	// Image coords
-	// const int i = width/2;
-	// const int j = height/2;
 	drain::Point2D<int>    imagePos;
 
 	// Geographical coords (degrees or meters)
 	drain::Point2D<double>   geoPos;
-	//double x, y;
 
 	if (frame.isLongLat()){
-		imagePos.setLocation(width/2, height/2);
+		//imagePos.setLocation(width/2, height/2);
+		imagePos.setLocation(frame.getFrameWidth()/2, frame.getFrameHeight()/2); // TODO: CHECK
 		frame.pix2LLdeg(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 	else { // metric
@@ -336,6 +309,8 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	}
 
+	//double tiepoints[6]; // = {0,0,0,0,0,0};
+	std::vector<double> tiepoints(6); // = {0,0,0,0,0,0};
 	tiepoints[0] = static_cast<double>(imagePos.x);
 	tiepoints[1] = static_cast<double>(imagePos.y);
 	tiepoints[2] = 0.0;
@@ -344,20 +319,25 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	tiepoints[5] = 0.0;
 	mout.debug() << "Tiepoint: " << imagePos << " => " << geoPos << mout.endl;
 
-	TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
+	// consider
+	//TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
+	setField(TIFFTAG_GEOTIEPOINTS,tiepoints);
 
-	double pixscale[3]; // = {1,1,0};
+	//double pixscale[3]; // = {1,1,0};
+	std::vector<double> pixscale(3);
 	//std::cerr << "frame: " << frame.getProjection() << '\n';
-	const drain::Rectangle<double> & bbox = frame.isLongLat() ? bboxD : frame.getBoundingBoxM();
+	//const drain::Rectangle<double> & bbox = frame.isLongLat() ? bboxD : frame.getBoundingBoxM();
+	const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxD() : frame.getBoundingBoxM();
+	//mout.experimental("check", )
 	//frame.getXScale()?
 	mout.debug() << "Scale: " << frame.getXScale() << ", " << frame.getYScale() << mout.endl;
 
-	pixscale[0] = bbox.getWidth()   / static_cast<double>(frame.getFrameWidth()); // upperRight.x - bbox.lowerLeft.x
+	pixscale[0] = bbox.getWidth()  / static_cast<double>(frame.getFrameWidth()); // upperRight.x - bbox.lowerLeft.x
 	pixscale[1] = bbox.getHeight() / static_cast<double>(frame.getFrameHeight()); // bbox.upperRight.y - bbox.lowerLeft.y
 	pixscale[2] = 0.0;
 
 	mout.debug() << "BBox: " << bbox << mout.endl;
-	mout.debug() << "ScaleX: " << pixscale[0] << ' ' << bbox.getWidth() << ' ' << frame.getFrameWidth() << ' ' << width << mout.endl;
+	mout.debug() << "ScaleX: " << pixscale[0] << ' ' << bbox.getWidth() << ' ' << frame.getFrameWidth()  << mout.endl; // << ' ' << width
 	mout.debug() << "ScaleY: " << pixscale[1] << mout.endl;
 
 	//printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
@@ -365,12 +345,68 @@ void SetUpTIFFDirectory(TIFF *tif, const drain::image::Image & src, int tileWidt
 	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
 	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
 
-	TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3, pixscale);
+	//TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3, pixscale);
+	setField(TIFFTAG_GEOPIXELSCALE,pixscale);
 
 
 }
 
-void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
+
+
+
+
+void FileGeoTIFF::setProjection(const std::string & projstr){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (!projstr.empty()){
+		mout.info() << "projstr= " << projstr << mout.endl;
+		drain::Proj4 proj;
+		proj.setProjectionDst(projstr);
+		setProjection(proj);
+	}
+	else {
+		mout.warn() << "where:projdef empty, skipping (writing plain TIFF)" << mout.endl;
+	}
+}
+
+
+void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (proj.isLongLat()){
+		mout.info() << "Writing EPSG:4326 (longlat)" << mout.endl;
+		//SetUpGeoKeys_4326_LongLat(gtif);
+		setProjectionLongLat();
+	}
+	else {
+		mout.info() << "Writing metric projection" << mout.endl;
+		//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
+		//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
+		if (!GTIFSetFromProj4(gtif, proj.getProjectionDst().c_str())){ // CHECK!!
+			mout.warn() << "Failed in setting GeoTIFF projection: " << proj << mout.endl;
+			mout.note() << "Consider: gdal_translate -a_srs '" << proj.getProjectionDst() << "' file.tif out.tif" << mout.endl;
+		}
+	}
+
+
+	// NEW
+	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
+	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
+	/*
+				// usr/include/gdal/rawdataset.h
+				// Non-standard http://www.gdal.org/frmt_gtiff.html
+				std::string nodata = src.properties["what:nodata"];
+				if (!nodata.empty()){
+					mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
+					GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
+				}
+	 */
+
+}
+
+void FileGeoTIFF::setProjectionLongLat(){
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
 	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
@@ -384,132 +420,6 @@ void SetUpGeoKeys_4326_LongLat(GTIF *gtif){
 }
 
 
-void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 0, int tileHeight = 0)
-{
-
-	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
-
-	const int width  = src.getWidth();
-	const int height = src.getHeight();
-
-	unsigned char *buffer = NULL;
-	//unsigned short int *buffer16b = NULL;
-
-	int tileWidth = 0;
-	int tileHeight = 0;
-	int bitspersample = 8;
-
-	TIFFGetField(tif, TIFFTAG_TILEWIDTH,  &tileWidth);
-	TIFFGetField(tif, TIFFTAG_TILELENGTH, &tileHeight);
-	TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bitspersample);
-
-	if (tileWidth > 0){
-
-		if (tileHeight == 0)
-			tileHeight = tileWidth;
-
-		const int W = (width/tileWidth);
-		const int H = (height/tileHeight);
-
-		const bool UCHAR8 = (bitspersample==8); // ? 1 : 2; // 8 or 16 bit data
-
-		drain::image::Image tile;
-		if (UCHAR8)
-			tile.setType<unsigned char>();
-		else
-			tile.setType<unsigned short int>();
-		tile.setGeometry(tileWidth, tileHeight);
-
-		mout.info() << "tiled mode:"  << tile << ", bits=" << bitspersample << mout.endl;
-
-		if ((!UCHAR8) && (width % tileWidth)){
-			mout.warn() << "16bit image, width != N*tileWidth (" << tileWidth <<"), errors may occur (libgeotiff problem?)" << mout.endl;
-		}
-
-		/// current tile-widths
-		int w;
-		int h;
-		const int wPartial = width  % tileWidth;
-		const int hPartial = height % tileHeight;
-		int iOffset;
-		int jOffset;
-		for (int l=0; l<=H; ++l){
-
-			jOffset = l*tileHeight;
-			if (l<H)
-				h = tileHeight;
-			else
-				h = hPartial;
-
-			for (int k=0; k<=W; ++k){
-
-				iOffset = k*tileWidth;
-				if (k<W)
-					w = tileWidth;
-				else // last tile is partial
-					w = wPartial;
-
-
-				// Copy image data to tile
-				if ((w>0) && (h>0)){
-					//if (!UCHAR8){tile.setGeometry(w, h);}
-					mout.debug2() << "TILE:" << k << ',' <<  l << '\t' << w << 'x' << h << mout.endl;
-					for (int j=0; j<h; ++j){
-						for (int i=0; i<w; ++i){
-							//buffer[j*tileWidth + i] = src.get<int>(iOffset+i, jOffset+j);
-							tile.put(i,j, src.get<int>(iOffset+i, jOffset+j));
-						}
-					}
-					/*
-					if ((k==W) || (l==H)){
-						std::stringstream s;
-						s << "tile" << l << k << ".png";
-						drain::image::File::write(tile, s.str());
-					}
-					*/
-					if(!TIFFWriteTile(tif, tile.getBuffer(), iOffset, jOffset, 0, 0)){
-						TIFFError("WriteImage", "TIFFWriteTile failed \n");
-					}
-
-					//if (!UCHAR8){tile.setGeometry(tileHeight, tileHeight);}
-
-				}
-			}
-		}
-
-	}
-	else {
-
-		const drain::Type t(src.getType());
-		if ((t == 'C') || (t=='S')){
-			/// Address each ŕow directly
-			const int rowBytes = width * src.getConf().getElementSize();
-			buffer = (unsigned char *)src.getBuffer();
-			for (int j=0; j<height; ++j){
-				if (!TIFFWriteScanline(tif, &(buffer[j * rowBytes]), j, 0))
-					TIFFError(__FUNCTION__, "failure in direct WriteScanline\n");
-			}
-		}
-		else {
-			/// Copy each ŕow to buffer
-			buffer = new unsigned char[width*1]; // 8 bits
-			for (int j=0; j<height; ++j){
-				for (int i=0; i<width; ++i)
-					buffer[i] = src.get<int>(i,j);
-				if (!TIFFWriteScanline(tif, buffer, j, 0))
-					TIFFError(__FUNCTION__, "failure in buffered WriteScanline\n");
-			}
-			delete buffer;
-		}
-
-	}
-
-
-}
-
-
-
-
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
  *  Writes in 8 or 16 bits, according to template class.
  *  Floating point images will be scaled as 16 bit integral (unsigned short int).
@@ -517,71 +427,33 @@ void WriteImage(TIFF *tif, const drain::image::Image & src) //, int tileWidth = 
 //void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
 void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
 
-	drain::Logger mout("FileGeoTIFF", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.note() << src.properties << mout.endl;
 
+	FileGeoTIFF file(path, "w");
+
 	/// Open TIFF file for writing
-	TIFF *tif = XTIFFOpen(path.c_str(), "w");
-	if (tif){
+	//TIFF *tif = XTIFFOpen(path.c_str(), "w");
+	//if (tif){
+	if (file.isOpen()){
 
-		GTIF *gtif = GTIFNew(tif);
-		if (gtif){
+		file.setUpTIFFDirectory(src.getConf());
+		file.setTileSize(tileWidth, tileHeight);
+		file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
+		file.writeImageData(src); //, tileSize, tileSitileWidthze/2);
 
-			//int tileSize = 256;
+		//GTIF *gtif = GTIFNew(tif);
+		// file.open();
+		std::string projstr = src.properties["where:projdef"];
 
-			//const drain::Type t(src.getType());
-			//SetUpTIFFDirectory(tif, src.getWidth(), src.getHeight());
-			SetUpTIFFDirectory(tif, src, tileWidth, tileHeight);
-			WriteImage(tif, src); //, tileSize, tileSize/2);
+		file.setProjection(projstr);
+		//GTIFWriteKeys(file.gtif);
 
-			//mout.note() << src.properties << mout.endl;
-			std::string projstr = src.properties["where:projdef"];
+		//GTIFFree(gtif);
+		//file.close();
 
-			if (!projstr.empty()){
-				mout.info() << "where:projdef= " << projstr << mout.endl;
-				drain::Proj4 proj;
-				proj.setProjectionDst(projstr);
-				if (proj.isLongLat()){
-					mout.info() << "writing 4326 longlat" << mout.endl;
-					SetUpGeoKeys_4326_LongLat(gtif);
-				}
-				else {
-					mout.info() << "writing metric projection" << mout.endl;
-					//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-					//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
-					if (!GTIFSetFromProj4(gtif, projstr.c_str())){
-						mout.warn() << "failed in setting GeoTIFF projection, where:projdef='" << projstr << "'" << mout.endl;
-						mout.note() << "consider: gdal_translate -a_srs '" << projstr << "' " << path << ' ' << path << 'f' << mout.endl;
-					}
-				}
-
-				// NEW
-				GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
-				//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
-				/*
-				// usr/include/gdal/rawdataset.h
-				// Non-standard http://www.gdal.org/frmt_gtiff.html
-				std::string nodata = src.properties["what:nodata"];
-				if (!nodata.empty()){
-					mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
-					GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
-				}
-				 */
-			}
-			else {
-				mout.warn() << "where:projdef empty, writing plain TIFF" << mout.endl;
-			}
-
-			GTIFWriteKeys(gtif);
-
-			GTIFFree(gtif);
-
-		}
-		else {
-			mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
-		}
-
-		XTIFFClose(tif);
+		//XTIFFClose(tif);
+		//file.close();
 
 	}
 	else {

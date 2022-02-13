@@ -36,19 +36,99 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Log.h"
 #include "drain/image/Image.h"
 
+#ifndef GEOTIFF_NO
+
+
+#include <geotiff.h>
+#include <geotiffio.h>
+#include <geo_normalize.h>
+
+#endif
+
+#include "FileTIFF.h"
+
+
 namespace rack
 {
 
 
-/// For writing images in GeoTIFF format. Reading not supported currently.
-/**
- */
-class FileGeoTIFF : public drain::FileHandler
-{
+
+
+class FileGeoTIFF : public FileTIFF{
 public:
 
-	static
-	const drain::FileInfo fileInfo;
+
+	FileGeoTIFF(const std::string & path = "", const char *mode = "w") : FileTIFF(path, mode), gtif(nullptr){
+		open();
+	}
+
+	inline
+	~FileGeoTIFF(){
+		//gt_close();
+		close();
+	}
+
+	inline
+	virtual
+	void open(const std::string & path, const char *mode = "w"){
+		if (isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.warn("GeoTIFF already open?");
+		}
+		else {
+			FileTIFF::open(path, mode);
+			open();
+		}
+	}
+
+
+	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
+	virtual inline
+	void open(){
+		gtif = GTIFNew(tif);
+		if (!isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("failed creating GeoTIFF file from TIFF object");
+			//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
+		}
+	}
+
+	inline virtual
+	void close(){
+		if (isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.experimental("Closing GeoTIFF...");
+			GTIFWriteKeys(gtif);
+			GTIFFree(gtif);
+			gtif = nullptr;
+		}
+		FileTIFF::close(); // ?
+	}
+
+	/// Todo: subclass
+	inline virtual
+	bool isOpen() const {
+		return FileTIFF::isOpen() && (gtif != nullptr);
+	}
+
+	/// This is between Tiff and GeoTiff?
+	/**
+	 *  \param nodata - yes, string...
+	 */
+	void setGdalMetaData(const std::string & nodata, double scale=1.0, double offset=0.0);
+
+	/// Sets projection and bounding box. Adjusts spatial resolution accordingly.
+	/**
+	 *
+	 */
+	void setGeoMetaData(const drain::image::GeoFrame & frame);
+
+	void setProjection(const std::string & proj);
+
+	void setProjection(const drain::Proj4 & proj);
+
+	void setProjectionLongLat();
+
 
 	/// Writes image to a TIIF (GeoTIFF) file.
 	/**
@@ -60,9 +140,9 @@ public:
 #ifdef GEOTIFF_NO // geotiff //RACKGEOTIFF
 
 	static inline
-	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0){
-		drain::Logger mout("FileGeoTIFF", __FUNCTION__);
-		mout.warn() << "binary compiled without TIFF/GeoTIFF support, skipping" << mout.endl;
+	void write(const std::string & path, const drain::image::Image & src, int defaultTileWidth, int defaultTileHeight=0){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("binary compiled without TIFF/GeoTIFF support, skipping");
 	};
 
 #else
@@ -70,32 +150,33 @@ public:
 	static
 	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
 
-	static
-	const drain::Dictionary2<int, std::string> & getCompressionDict();
 
 #endif
 
 	static inline
 	void write(const std::string & path, const drain::image::Image & src){
-		write(path, src, tileWidth, tileHeight); // static defaults, see below
+		write(path, src, FileTIFF::defaultTile.width, FileTIFF::defaultTile.getHeight()); // static defaults, see below
 	};
 
-	// Defaults
-	static int tileWidth;
-	static int tileHeight;
-	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
-	static int compression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+
+	void setUpTIFFDirectory_rack(const drain::image::Image & src); //, int tileWidth=0, int tileHeight = 0);
+
+	void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
+
+
+
 
 protected:
 
-	static
-	drain::Dictionary2<int, std::string> compressionDict;
+	GTIF *gtif;
+	// TIFF *tif = XTIFFOpen(path.c_str(), "w");
+	// GTIF *gtif = GTIFNew(tif);
 
-private:
 
-	//void SetUpTIFFDirectory
+
 
 };
+
 
 
 } // rack::
