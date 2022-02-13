@@ -166,8 +166,12 @@ public:
 
 	/// Sets bounding box in meters in the target coordinate system.
 	inline
+	/*
 	void setBoundingBoxM(const drain::Rectangle<double> & bboxM) {
 		setBoundingBoxM(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
+	}*/
+	void setBoundingBoxM(const drain::UniTuple<double,4> & bboxM) {
+		setBoundingBoxM(bboxM[0], bboxM[1], bboxM[2], bboxM[3]);
 	}
 
 protected:
@@ -387,7 +391,7 @@ public:
 	void updateDataExtent(const drain::Rectangle<double> &inputExtentD);
 
 	inline
-	bool isLongLat(){
+	bool isLongLat() const {
 		return projR2M.isLongLat();
 	}
 
