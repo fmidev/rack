@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "FileTIFF.h"
 
-#ifdef USE_GEOTIFF_YES
+#ifndef USE_GEOTIFF_NO
 
 #include <geotiff.h>
 #include <geotiffio.h>
@@ -137,8 +137,8 @@ public:
 	*/
 	//static void write(const Image &image,const std::string &path);
 
-	static
-	void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
+	//static
+	//void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
 
 	/*
 	static inline
@@ -149,15 +149,11 @@ public:
 	*/
 
 
-	static inline
-	void write(const std::string & path, const drain::image::Image & src){
-		write(path, src, FileTIFF::defaultTile.width, FileTIFF::defaultTile.getHeight()); // static defaults, see below
-	};
 
 
-	void setUpTIFFDirectory_rack(const drain::image::Image & src); //, int tileWidth=0, int tileHeight = 0);
+	//void setUpTIFFDirectory_rack(const drain::image::Image & src); //, int tileWidth=0, int tileHeight = 0);
 
-	void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
+	//void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
 
 
 protected:

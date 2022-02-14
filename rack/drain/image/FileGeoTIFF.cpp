@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "FileGeoTIFF.h"
 
-#ifdef USE_GEOTIFF_YES
+#ifndef USE_GEOTIFF_NO
 
 #include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
@@ -167,20 +167,29 @@ void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, doub
 	std::stringstream gdal;
 	gdal << gdalInfo;
 	mout.debug() << gdal.str() << mout.endl;
-	//TIFFSetField(tif, TIFFTAG_GDAL_METADATA, gdal.str().c_str());
 	setField(TIFFTAG_GDAL_METADATA,gdal.str());
 
 	//std::string nodata = prop["what:nodata"];
 	if (!nodata.empty()){
 		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
 		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
-		//TIFFSetField(tif, TIFFTAG_GDAL_NODATA, nodata.c_str());
 		setField(TIFFTAG_GDAL_NODATA,nodata);
 	}
+	// usr/include/gdal/rawdataset.h
+
+	// Non-standard http://www.gdal.org/frmt_gtiff.html
+	/*
+	std::string nodata = src.properties["what:nodata"];
+	if (!nodata.empty()){
+		mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
+		GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
+	}
+	*/
+
 
 }
 
-
+/*
 void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -223,16 +232,6 @@ void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::im
 				mout.special() << "BBOX m  : ";
 				mout.precision(20);
 				mout << frame.getBoundingBoxM() << mout;
-				/*
-				char buffer[256];
-				for (size_t i=0; i<v.size(); ++i){
-					mout << sep;
-					sep = ',';
-					snprintf(buffer, sizeof(buffer), "%.2f", v[i]);
-					mout << buffer;
-				}
-				mout << mout.endl;
-				*/
 			}
 			else {
 				mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
@@ -245,7 +244,9 @@ void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::im
 	}
 
 }
+*/
 
+/*
 void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // int tileWidth, int tileHeight){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -284,6 +285,7 @@ void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // i
 	setGeoMetaData(frame);
 
 }
+*/
 
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
@@ -394,13 +396,6 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
 	/*
-				// usr/include/gdal/rawdataset.h
-				// Non-standard http://www.gdal.org/frmt_gtiff.html
-				std::string nodata = src.properties["what:nodata"];
-				if (!nodata.empty()){
-					mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
-					GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
-				}
 	 */
 
 }
@@ -419,49 +414,6 @@ void FileGeoTIFF::setProjectionLongLat(){
 }
 
 
-/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
- *  Writes in 8 or 16 bits, according to template class.
- *  Floating point images will be scaled as 16 bit integral (unsigned short int).
- */
-//void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
-void FileGeoTIFF::write(const std::string &path, const drain::image::Image & src, int tileWidth, int tileHeight){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.note() << src.properties << mout.endl;
-
-	FileGeoTIFF file(path, "w");
-
-	/// Open TIFF file for writing
-	//TIFF *tif = XTIFFOpen(path.c_str(), "w");
-	//if (tif){
-	if (file.isOpen()){
-
-		file.setUpTIFFDirectory(src.getConf());
-		file.setTileSize(tileWidth, tileHeight);
-		file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
-		file.writeImageData(src); //, tileSize, tileSitileWidthze/2);
-
-		//GTIF *gtif = GTIFNew(tif);
-		// file.open();
-		std::string projstr = src.properties["where:projdef"];
-
-		file.setProjection(projstr);
-		//GTIFWriteKeys(file.gtif);
-
-		//GTIFFree(gtif);
-		//file.close();
-
-		//XTIFFClose(tif);
-		//file.close();
-
-	}
-	else {
-		mout.error() << "file open error, path=" << path << mout.endl;
-	}
-
-	return ; //-1;
-
-}
 
 }
 

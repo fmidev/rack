@@ -39,10 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/prog/CommandInstaller.h"
 
 #include "drain/util/FileInfo.h"
-
+//#include "drain/image/FileGeoTIFF.h"
 
 #include "hi5/Hi5.h"
 
+#include "resources.h"
 
 namespace rack {
 
@@ -52,9 +53,9 @@ extern
 const drain::RegExp h5FileExtension;
 
 /// Syntax for recognising GeoTIFF files.
-extern
+//extern
 //const drain::RegExp tiffFileExtension;
-const drain::FileInfo fileInfoTIFF;
+//const drain::FileInfo fileInfoTIFF;
 
 /// Syntax for recognising Portable Networks Image image file.
 //extern
@@ -85,6 +86,8 @@ public:
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-") {
 	};
 
+	//void writeGeoTIFF(const drain::image::Image & src, const std::string & filename) const;
+
 	void writeProfile(const Hi5Tree & src, const std::string & filename) const;
 
 	void writeSamples(const Hi5Tree & src, const std::string & filename) const;
@@ -93,43 +96,6 @@ public:
 
 	void exec() const;
 
-protected:
-
-	/**
-	 *  \tparam P - Picker class (PolarDataPicker or CartesianDataPicker)
-	 */
-	/*
-	template <class P>
-	void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ostream &ostr) const {
-
-		RackContext & ctx  = this->template getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-
-		P picker(sampler.variableMap, dataset.getFirstData().odim);
-
-		typename P::map_t dataMap;
-
-		for (typename DataSet<typename P::src_t>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
-			dataMap.insert(typename P::map_t::value_type(it->first, it->second));
-		}
-
-		const typename P::data_t & q = dataset.getQualityData();
-		if (!q.data.isEmpty()){
-			mout.note() << "using quality data, quantity=" << q.odim.quantity << mout.endl;
-			if (q.odim.quantity.empty()){
-				mout.warn() << " empty data, properties: \n " <<  q.data.properties  << mout.endl;
-			}
-			dataMap.insert(typename P::map_t::value_type(q.odim.quantity, q));
-		}
-		else {
-			mout.info() << "no quality data" << mout.endl;
-		}
-
-		sampler.sample(dataMap, picker, format, ostr);
-
-	}
-	*/
 
 
 };

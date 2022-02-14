@@ -60,85 +60,57 @@ namespace drain::image {
 	const FileInfo FileTIFF::fileInfo("(tif|tiff)");
 	Frame2D<int> FileTIFF::defaultTile(256, 256);
 
-	const drain::Dictionary2<int, std::string> & FileTIFF::getCompressionDict(){
+	//const drain::Dictionary2<int, std::string> & FileTIFF::getCompressionDict(){
+	const FileTIFF::dict_t & FileTIFF::getCompressionDict(){
 
-		static drain::Dictionary2<int, std::string> compressionDict;
+		static FileTIFF::dict_t compressionDict;
 
-#ifdef USE_GEOTIFF_YES
+#ifndef USE_GEOTIFF_NO
 
 		if (compressionDict.empty()){
 			// Populate
-			compressionDict.add(COMPRESSION_NONE,     "NONE");
-			compressionDict.add(COMPRESSION_LZW,      "LZW");
-			compressionDict.add(COMPRESSION_DEFLATE,  "DEFLATE");
-			compressionDict.add(COMPRESSION_PACKBITS, "PACKBITS");
+			compressionDict.add("NONE",     COMPRESSION_NONE);
+			compressionDict.add("LZW",      COMPRESSION_LZW);
+			compressionDict.add("DEFLATE",  COMPRESSION_DEFLATE);
+			compressionDict.add("PACKBITS", COMPRESSION_PACKBITS);
 		}
 #endif
 
 		return compressionDict;
 	}
 
-#ifndef USE_GEOTIFF_YES
+#ifdef USE_GEOTIFF_NO
 
-	int FileTIFF::defaultCompression(1); // = NONE, but see below
+	FileTIFF::dict_t::value_t FileTIFF::defaultCompression(1); // = NONE, but see below
 
 #else
 
-	int FileTIFF::defaultCompression(COMPRESSION_LZW); // = tunable in fileio.cpp
+	FileTIFF::dict_t::value_t FileTIFF::defaultCompression(COMPRESSION_LZW); // = tunable in fileio.cpp
 
-
-
-//drain::Variable FileGeoTIFF::ties(typeid(double));
-void FileTIFF::setTileSize(int tileWidth, int tileHeight){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	// write as tiles
-	if (tileWidth > 0){
-
-		if (tileHeight <= 0)
-			tileHeight = tileWidth;
-
-		if (setField(TIFFTAG_TILEWIDTH,tileWidth)==0){
-			mout.warn("invalid tileWidth=", tileWidth, ", using 256");
-			setField(TIFFTAG_TILEWIDTH,256);
-		}
-
-		if (setField(TIFFTAG_TILELENGTH,tileHeight)==0){
-			mout.warn("invalid tileWidth=", tileHeight, ", using 256");
-			setField(TIFFTAG_TILELENGTH,256);
-		}
-
-	}
-	else {
-		setField(TIFFTAG_ROWSPERSTRIP,20L);
-	}
-
-}
 
 void FileTIFF::setTime(const drain::Time & datetime){
 	setField(TIFFTAG_DATETIME,datetime.str("%Y:%m:%d %H:%M:%S") );
 }
 
-void FileTIFF::setUpTIFFDirectory(const drain::image::ImageConf & src){ // int tileWidth, int tileHeight){
+void FileTIFF::setDefaults(){ //const drain::image::ImageConf & src){ // int tileWidth, int tileHeight){
 
 	// drain::Logger mout("FileGeoTIFF", __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//const drain::FlexVariableMap & prop = src.properties;
+	if (!isOpen()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.error("TIFF file not open");
+		//return 0;
+	}
 
-	const size_t width  = src.getWidth();
-	const size_t height = src.getHeight();
-
-	setField(TIFFTAG_IMAGEWIDTH,width);
-	//TIFFSetField(tif,TIFFTAG_IMAGEWIDTH,    width);
-	setField(TIFFTAG_IMAGELENGTH,height);
-	//TIFFSetField(tif,TIFFTAG_COMPRESSION,   COMPRESSION_NONE);
-	setField(TIFFTAG_COMPRESSION,FileTIFF::defaultCompression);
+	setField(TIFFTAG_COMPRESSION, FileTIFF::defaultCompression);
 	setField(TIFFTAG_PHOTOMETRIC,PHOTOMETRIC_MINISBLACK);
 	setField(TIFFTAG_PLANARCONFIG,PLANARCONFIG_CONTIG);
 
 
+	/*
+	setField(TIFFTAG_IMAGEWIDTH,width);
+	setField(TIFFTAG_IMAGELENGTH,height);
 	const drain::Type t(src.getType());
 	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
 	switch ((const char)t) {
@@ -151,30 +123,8 @@ void FileTIFF::setUpTIFFDirectory(const drain::image::ImageConf & src){ // int t
 			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
 			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
 	}
-
-	//setTileSize(tif, tileWidth, tileHeight);
-	/*
-	// write as tiles
-	if (tileWidth > 0){
-
-		if (tileHeight <= 0)
-			tileHeight = tileWidth;
-
-		if (TIFFSetField(tif, TIFFTAG_TILEWIDTH,  tileWidth)==0){
-			mout.warn() << "invalid tileWidth=" << tileWidth << ", using 256"<< mout.endl;
-			TIFFSetField(tif, TIFFTAG_TILEWIDTH, 256);
-		}
-
-		if (TIFFSetField(tif,TIFFTAG_TILELENGTH,  tileHeight)==0){
-			mout.warn() << "invalid tileWidth=" << tileHeight << ", using 256"<< mout.endl;
-			TIFFSetField(tif, TIFFTAG_TILELENGTH, 256);
-		}
-
-	}
-	else {
-		TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP,  20L);
-	}
 	*/
+
 }
 
 
@@ -184,19 +134,73 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	if (!isOpen()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.error("TIFF file not open");
+		//return 0;
+	}
+
 	const int width  = src.getWidth();
 	const int height = src.getHeight();
-
-	unsigned char *buffer = NULL;
-	//unsigned short int *buffer16b = NULL;
-
-	int tileWidth = 0;
-	int tileHeight = 0;
 	int bitspersample = 8;
 
+	setField(TIFFTAG_IMAGEWIDTH,width);
+	setField(TIFFTAG_IMAGELENGTH,height);
+
+	const drain::Type t(src.getType());
+	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
+	switch ((const char)t) {
+		case 'C':
+			// no break
+		case 'S':
+			bitspersample = 8*drain::Type::call<drain::sizeGetter>(t);
+			// TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8*drain::Type::call<drain::sizeGetter>(t));
+			break;
+		default:
+			bitspersample = 8;
+			//TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
+			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
+	}
+
+	TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, bitspersample);
+
+	int tileWidth  = tile.getWidth();
+	int tileHeight = tile.getHeight();
+
+
+	if (tileWidth > 0){
+
+		if (setField(TIFFTAG_TILEWIDTH, tileWidth)==0){
+			mout.warn("invalid tile width=", tile, ", using 256");
+			setField(TIFFTAG_TILEWIDTH, 256);
+		}
+
+		if (tileHeight <= 0){
+			tileHeight = tileWidth;
+		}
+
+		if (setField(TIFFTAG_TILELENGTH, tileHeight)==0){
+			mout.warn("invalid tile height=", tile, ", using 256");
+			setField(TIFFTAG_TILELENGTH, 256);
+		}
+		mout.special("Using tiling: ", tileWidth, 'x', tileHeight);
+	}
+	else {
+		mout.special("No tiling, writing row by row");
+		setField(TIFFTAG_ROWSPERSTRIP, 20L);
+	}
+
+
+	unsigned char *buffer = nullptr;
+	//unsigned short int *buffer16b = NULL;
+
+
+
+	/*
 	TIFFGetField(tif, TIFFTAG_TILEWIDTH,  &tileWidth);
 	TIFFGetField(tif, TIFFTAG_TILELENGTH, &tileHeight);
 	TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bitspersample);
+	*/
 
 	if (tileWidth > 0){
 
@@ -301,6 +305,40 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 
 
 }
+
+/** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
+ *  Writes in 8 or 16 bits, according to template class.
+ *  Floating point images will be scaled as 16 bit integral (unsigned short int).
+ */
+//void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
+void FileTIFF::write(const std::string &path, const drain::image::Image & src){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	//mout.note() << src.properties << mout.endl;
+
+	FileTIFF file(path, "w");
+	file.setDefaults();
+	//file.setDefaultTileSize();
+	//file.setTileSize(tileWidth, tileHeight);
+	//file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
+	file.writeImageData(src); //, tileSize, tileSitileWidthze/2);
+
+	//GTIF *gtif = GTIFNew(tif);
+	// file.open();
+	std::string projstr = src.properties["where:projdef"];
+
+	// file.setProjection(projstr);
+	//GTIFWriteKeys(file.gtif);
+
+	//GTIFFree(gtif);
+		//file.close();
+
+		//XTIFFClose(tif);
+		//file.close();
+
+
+}
+
 
 #endif
 

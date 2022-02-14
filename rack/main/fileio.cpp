@@ -78,6 +78,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 #include "fileio.h"
 #include "fileio-read.h"
+#include "fileio-geotiff.h"
 #include "file-hist.h"
 
 
@@ -123,25 +124,6 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
 
 
-class CmdGeoTiffTile : public drain::BasicCommand {
-
-public:
-
-	CmdGeoTiffTile() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating, use --outputConf tif:<width>,<height>") {
-		parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
-		parameters.link("tileheight", drain::image::FileTIFF::defaultTile.height=0);
-	};
-
-	CmdGeoTiffTile(const CmdGeoTiffTile & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK); // static targets
-	}
-
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-		mout.deprecating() = "In future versions, use --outputConf tif,<params>";
-	}
-};
 
 
 class CmdOutputConf : public drain::BasicCommand {
@@ -327,11 +309,13 @@ void CmdOutputFile::exec() const {
 			drain::image::ImageFile::write(src, filename);
 		}
 		else if (IMAGE_TIF) {
-#ifdef USE_GEOTIFF_YES
+#ifndef USE_GEOTIFF_NO
 			// see FileGeoTiff::tileWidth
-			FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
+			CmdGeoTiff::write(src, filename);
+			//FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
+			//
 #else
+			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
 			mout.error("No TIFF format support compiled");
 #endif
 		}
@@ -411,7 +395,6 @@ void CmdOutputFile::exec() const {
 	}
 
 };
-
 
 
 
@@ -551,7 +534,7 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdOutputPrefix>(); //  cmdOutputPrefix;
 	install<CmdOutputRawImages>('O'); //  cmdOutputRawImages('O');
 	install<CmdOutputConf>(); // cmdOutputConf;
-	install<CmdGeoTiffTile>(); //  geoTiffTile;
+	install<CmdGeoTiff>(); //  geoTiffTile;
 	install<CmdImageSampler>("sample"); //cmdSample("sample");
 	install<CmdHistogram>(); // hist;
 
