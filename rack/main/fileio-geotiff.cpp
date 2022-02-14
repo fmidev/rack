@@ -90,15 +90,16 @@ const drain::image::FileTIFF::dict_t & CmdGeoTiff::compressionDict(drain::image:
 void CmdGeoTiff::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	/// TODO. develop FileTIFF::dict_t as Single-Flagger etc
+
 	drain::image::FileTIFF::dict_t::value_t value = drain::FlagResolver::getValue(compressionDict, compression, '\0');
-	//mout.deprecating("In future versions, use --outputConf tif,<params>");
-	mout.special("Resolved: ", compression, " => ", value);
-	//compression =
+	mout.special("Resolved: ", compression, " => ", value, " == ", drain::FlagResolver::getKeys(compressionDict, value));
 	if (compressionDict.hasValue(value)){
 		drain::image::FileTIFF::defaultCompression = value;
 	}
 	else {
-		mout.fail("Multiple compression method: ", compression, " => ", value, " not supported");
+		mout.fail("Multiple compression method: ", compression , " == ", value, " not supported");
 		mout.warn("Keeping:  <= '", compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
 	}
 }
