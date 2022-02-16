@@ -37,23 +37,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
+
+
+
+//#include <proj_api.h>
+
+/*
 #include <drain/util/Frame.h>
-
-#include "FileTIFF.h"
-
-
-
-
 #include <drain/util/Log.h>
 #include <drain/util/StringBuilder.h>
 #include <drain/util/Time.h>
-#include "drain/util/TreeXML.h"
+#include <drain/util/TreeXML.h>
 #include <drain/image/ImageFile.h>
-#include "drain/image/AccumulatorGeo.h"
-#include "main/rack.h"
+#include <drain/image/AccumulatorGeo.h>
+*/
+#include "FileTIFF.h"
 
-
-#include <proj_api.h>
 
 namespace drain::image {
 

@@ -40,26 +40,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #ifndef USE_GEOTIFF_NO
 
-#include "drain/util/Log.h"
-#include "drain/util/StringBuilder.h"
-#include "drain/util/Time.h"
-#include "drain/util/TreeXML.h"
-#include <drain/image/ImageFile.h>
-#include "drain/image/AccumulatorGeo.h"
-#include "main/rack.h"
-
-
-
-//int rack::FileGeoTIFF::compression(1); // = NONE, but see below
-
-
-#include <proj_api.h>
-
-
+//#include <proj_api.h>
+/*
 #include <geotiff.h>
 #include <geotiffio.h>
 #include <xtiffio.h>
 #include <geo_normalize.h>
+*/
+
+//#include "drain/util/Log.h"
+#include "drain/util/StringBuilder.h"
+#include "drain/util/TreeXML.h"
+#include "drain/image/AccumulatorGeo.h"
+
+//int rack::FileGeoTIFF::compression(1); // = NONE, but see below
 
 // https://en.wikipedia.org/wiki/TIFF
 // https://www.awaresystems.be/imaging/tiff/tifftags/gdal_nodata.html
