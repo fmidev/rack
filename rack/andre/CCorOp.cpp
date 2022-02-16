@@ -54,11 +54,14 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug() << parameters << mout.endl;
 
+	// TODO: select H or V
+
 	const Data<PolarSrc> & srcTH   = src.getData("TH");
 	const Data<PolarSrc> & srcDBZH = src.getData("DBZH");
 
 	if (srcTH.data.isEmpty()){
 		mout.warn() << "input data of TH missing, giving up." << mout.endl;
+		// or error flag?
 		return;
 	}
 
@@ -67,6 +70,7 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 		return;
 	}
 
+
 	const drain::image::Geometry & geometry = srcTH.data.getGeometry();
 
 	if (srcDBZH.data.getGeometry() != geometry){
@@ -74,40 +78,58 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 		return;
 	}
 
-
-	//PlainDataDst & dstProb = dst;
-			//dst.getQualityData("ACCORD");
-	//dstProb.data.setGeometry(geometry);
 	const double QMAX = dstProb.odim.scaleInverse(1.0);
 
+
+	Data<PolarDst> & dstCCOR = aux.getData("CCORH");
+	const QuantityMap & qm = getQuantityMap();
+	dstCCOR.odim.updateFromCastableMap(srcDBZH.odim);
+	dstCCOR.odim.quantity = "CCORH";
+	qm.setQuantityDefaults(dstCCOR, "DBZH", srcDBZH.odim.type);
+
+	dstCCOR.setGeometry(geometry);
+
 	/// Main loop
-	double dbzh, th;
+	double dbzh, th, diff;
 	drain::FuzzyBell<double> fuzzy(0.0, reflHalfWidth, QMAX);
 	Image::const_iterator ith   = srcTH.data.begin();
 	Image::const_iterator idbzh = srcDBZH.data.begin();
-	Image::const_iterator it = dstProb.data.begin();
+	Image::iterator        it   = dstProb.data.begin();
+	Image::iterator       cit   = dstCCOR.data.begin();
 	while (ith != srcTH.data.end()){
+
 		th = *ith;
-		if (th == srcTH.odim.nodata){
-			*it = 0;
+
+		if (th == srcTH.odim.undetect){
+			*it  = dstProb.odim.undetect;
+			*cit = dstCCOR.odim.undetect;
 		}
-		else if (th != srcTH.odim.undetect){
-			dbzh = *idbzh;
-			if (dbzh != srcDBZH.odim.nodata){
-				if (dbzh == srcDBZH.odim.undetect)
-					dbzh = -32.0;
-				else
-					dbzh = srcDBZH.odim.scaleForward(dbzh);
-				th = srcTH.odim.scaleForward(th);
-				*it = QMAX - fuzzy(dbzh - th);
-			}
+		else if (th == srcTH.odim.nodata){
+			*it  = dstProb.odim.nodata;
+			*cit = dstCCOR.odim.nodata;
 		}
 		else {
-			*it = 0;
+			dbzh = *idbzh;
+			//if (dbzh != srcDBZH.odim.nodata){
+			if (!srcDBZH.odim.isValue(dbzh)){
+				dbzh = -32.0;
+			}
+			else {
+				dbzh = srcDBZH.odim.scaleForward(dbzh);
+			}
+			th = srcTH.odim.scaleForward(th);
+			diff = th - dbzh;
+			*it  = QMAX - fuzzy(diff);
+			if (diff != 0.0)
+				*cit = dstCCOR.odim.scaleInverse(diff);
+			else
+				*cit = dstCCOR.odim.nodata;
 		}
+
 		++ith;
 		++idbzh;
 		++it;
+		++cit;
 	}
 
 	writeHow(dstProb);

@@ -62,9 +62,11 @@ public:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		parameters.link("reflHalfWidth", this->reflHalfWidth = reflHalfWidth, "dBZ");
+		//parameters.link("storeDiff", storeDiff = false);
 	};
 
 	double reflHalfWidth;
+	//boolean storeDiff;
 	// double thresholdWidth;
 	// double windowWidth;
 	// double windowHeight;
