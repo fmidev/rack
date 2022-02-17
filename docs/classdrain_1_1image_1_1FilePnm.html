@@ -83,12 +83,23 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="FilePnm_8h_source.html">FilePnm.h</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for FilePnm:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1image_1_1FilePnm__inherit__graph.png" border="0" usemap="#FilePnm_inherit__map" alt="Inheritance graph"/></div>
+<map name="FilePnm_inherit__map" id="FilePnm_inherit__map">
+<area shape="rect" title="For reading and writing images in PNM format." alt="" coords="16,80,89,107"/>
+<area shape="rect" href="classdrain_1_1FileHandler.html" title=" " alt="" coords="5,5,100,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for FilePnm:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FilePnm__coll__graph.png" border="0" usemap="#FilePnm_coll__map" alt="Collaboration graph"/></div>
 <map name="FilePnm_coll__map" id="FilePnm_coll__map">
-<area shape="rect" title="For reading and writing images in PNM format." alt="" coords="5,95,79,121"/>
-<area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="7,5,77,32"/>
+<area shape="rect" title="For reading and writing images in PNM format." alt="" coords="37,184,111,211"/>
+<area shape="rect" href="classdrain_1_1FileHandler.html" title=" " alt="" coords="5,95,100,121"/>
+<area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="125,95,194,121"/>
+<area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="124,5,195,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -112,26 +123,26 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1a2a487c00fc6bd74e9be816a2bf1efd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a1a2a487c00fc6bd74e9be816a2bf1efd">read</a> (<a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;image, const std::string &amp;path)</td></tr>
 <tr class="memdesc:a1a2a487c00fc6bd74e9be816a2bf1efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a pnm file to an image.  <a href="classdrain_1_1image_1_1FilePnm.html#a1a2a487c00fc6bd74e9be816a2bf1efd">More...</a><br /></td></tr>
 <tr class="separator:a1a2a487c00fc6bd74e9be816a2bf1efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2196d45b27caf7617294c45a1b0043"><td class="memItemLeft" align="right" valign="top"><a id="abc2196d45b27caf7617294c45a1b0043"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#abc2196d45b27caf7617294c45a1b0043">readHeader</a> (<a class="el" href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a> &amp;conf, <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;properties, std::istream &amp;infile)</td></tr>
-<tr class="memdesc:abc2196d45b27caf7617294c45a1b0043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array after essential metadata (type and geometry) has been processed. <br /></td></tr>
-<tr class="separator:abc2196d45b27caf7617294c45a1b0043"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d1a9cfecc377cbd84c3d1b8db9096b0"><td class="memItemLeft" align="right" valign="top"><a id="a6d1a9cfecc377cbd84c3d1b8db9096b0"></a>
+static FileType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a6d1a9cfecc377cbd84c3d1b8db9096b0">readHeader</a> (<a class="el" href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a> &amp;conf, <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;properties, std::istream &amp;infile)</td></tr>
+<tr class="memdesc:a6d1a9cfecc377cbd84c3d1b8db9096b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array after essential metadata (type and geometry) has been processed. <br /></td></tr>
+<tr class="separator:a6d1a9cfecc377cbd84c3d1b8db9096b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34e327b230a005ed6ae0428e291f771b"><td class="memItemLeft" align="right" valign="top"><a id="a34e327b230a005ed6ae0428e291f771b"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a34e327b230a005ed6ae0428e291f771b">readFrame</a> (<a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path)</td></tr>
 <tr class="memdesc:a34e327b230a005ed6ae0428e291f771b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array, assuming type and geometry already set. <br /></td></tr>
 <tr class="separator:a34e327b230a005ed6ae0428e291f771b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64db91acc9b7fa39676a4799efdf2705"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a64db91acc9b7fa39676a4799efdf2705">readFrame</a> (<a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, std::istream &amp;infile)</td></tr>
-<tr class="memdesc:a64db91acc9b7fa39676a4799efdf2705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array after essential metadata (type and geometry) has been processed.  <a href="classdrain_1_1image_1_1FilePnm.html#a64db91acc9b7fa39676a4799efdf2705">More...</a><br /></td></tr>
-<tr class="separator:a64db91acc9b7fa39676a4799efdf2705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dbcd6df3d60afb86c8513218ec20903"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a0dbcd6df3d60afb86c8513218ec20903">readFrame</a> (<a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, std::istream &amp;infile, FileType fileType=PGM_RAW)</td></tr>
+<tr class="memdesc:a0dbcd6df3d60afb86c8513218ec20903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array after essential metadata (type and geometry) has been processed.  <a href="classdrain_1_1image_1_1FilePnm.html#a0dbcd6df3d60afb86c8513218ec20903">More...</a><br /></td></tr>
+<tr class="separator:a0dbcd6df3d60afb86c8513218ec20903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cbbcdd5455b722eea871acf51d268af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#a0cbbcdd5455b722eea871acf51d268af">write</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path)</td></tr>
-<tr class="memdesc:a0cbbcdd5455b722eea871acf51d268af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes image to a png file.  <a href="classdrain_1_1image_1_1FilePnm.html#a0cbbcdd5455b722eea871acf51d268af">More...</a><br /></td></tr>
+<tr class="memdesc:a0cbbcdd5455b722eea871acf51d268af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read image array after essential metadata (type and geometry) has been processed.  <a href="classdrain_1_1image_1_1FilePnm.html#a0cbbcdd5455b722eea871acf51d268af">More...</a><br /></td></tr>
 <tr class="separator:a0cbbcdd5455b722eea871acf51d268af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aad019c3fc6bbc277d51f04ac5a857884"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#aad019c3fc6bbc277d51f04ac5a857884">fileNameRegExp</a></td></tr>
-<tr class="memdesc:aad019c3fc6bbc277d51f04ac5a857884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising pnm files.  <a href="classdrain_1_1image_1_1FilePnm.html#aad019c3fc6bbc277d51f04ac5a857884">More...</a><br /></td></tr>
-<tr class="separator:aad019c3fc6bbc277d51f04ac5a857884"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefc06af35d230ebe8d66e306c7362df1"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#aefc06af35d230ebe8d66e306c7362df1">fileInfo</a></td></tr>
+<tr class="memdesc:aefc06af35d230ebe8d66e306c7362df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising pnm files.  <a href="classdrain_1_1image_1_1FilePnm.html#aefc06af35d230ebe8d66e306c7362df1">More...</a><br /></td></tr>
+<tr class="separator:aefc06af35d230ebe8d66e306c7362df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>For reading and writing images in PNM format. </p>
@@ -183,8 +194,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a64db91acc9b7fa39676a4799efdf2705"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64db91acc9b7fa39676a4799efdf2705">&#9670;&nbsp;</a></span>readFrame()</h2>
+<a id="a0dbcd6df3d60afb86c8513218ec20903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dbcd6df3d60afb86c8513218ec20903">&#9670;&nbsp;</a></span>readFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,7 +213,13 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::istream &amp;&#160;</td>
-          <td class="paramname"><em>infile</em>&#160;</td>
+          <td class="paramname"><em>infile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FileType&#160;</td>
+          <td class="paramname"><em>fileType</em> = <code>PGM_RAW</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -256,8 +273,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Writes image to a png file. </p>
-<p>Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model. Writes in 8 or 16 bits, according to template class. Floating point images will be scaled as 16 bit integral (unsigned short int).</p>
+<p>Read image array after essential metadata (type and geometry) has been processed. </p>
+<p>Writes image to a pgm binary file. Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model. Writes in 8 or 16 bits, according to template class. Floating point images will be scaled as 16 bit integral (unsigned short int).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">image</td><td>- image </td></tr>
@@ -271,8 +288,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aad019c3fc6bbc277d51f04ac5a857884"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad019c3fc6bbc277d51f04ac5a857884">&#9670;&nbsp;</a></span>fileNameRegExp</h2>
+<a id="aefc06af35d230ebe8d66e306c7362df1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefc06af35d230ebe8d66e306c7362df1">&#9670;&nbsp;</a></span>fileInfo</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +298,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> fileNameRegExp</td>
+          <td class="memname">const <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a> fileInfo</td>
         </tr>
       </table>
   </td>

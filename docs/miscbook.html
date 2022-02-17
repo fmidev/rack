@@ -85,10 +85,10 @@ Scripts</h1>
 Sampling grid data</h1>
 <p>The input volume as well as the generated polar or Cartesian products can be sampled, producing a text file. The sampling is performed automatically if output file has the extension '.dat'. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o samples.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[26.319,67.9454,26.3189,67.9454]</div>
+<div class="line"># bbox=[26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573]</div>
 <div class="line"># height=360</div>
-<div class="line"># lat=64.7749</div>
-<div class="line"># lon=26.3189</div>
+<div class="line"># lat=64.77493012323975563</div>
+<div class="line"># lon=26.318880077451467514</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
@@ -97,26 +97,26 @@ Sampling grid data</h1>
 <div class="line"># j=[-1:-1]</div>
 <div class="line"># jStep=0</div>
 <div class="line"># skipVoid=false</div>
-<div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${RANGE},${AZM},${DBZH},${DBZHC},${DBZX},${HCLASS},${KDP},${PHIDP},${RHOHV},${SQI},${TH},${TX},${VRAD},${WRAD},${ZDR},${ZDRC}&#39;</div>
+<div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${RANGE},${AZM}&#39;</div>
 <div class="line">## resulting geometry </div>
 <div class="line"># rows=50</div>
 <div class="line"># rols=36</div>
 <div class="line"># samples=1800</div>
-<div class="line">5,5,26.3239,64.7995,239.678,2739.54,2750,5,0,0,0,0,0,0,0,0.212275,37.71,37.18,0,0,0,0 #void data</div>
-<div class="line">15,5,26.3331,64.8441,675.457,7720.51,7750,5,0,0,0,0,0,0,0,0.162971,38.1,36.56,0,0,0,0 #void data</div>
-<div class="line">25,5,26.3424,64.8888,1111.24,12701.5,12750,5,11.32,11.32,11.3,2,0,36.5526,0.994507,0.826271,17.91,17.45,-6.51,1.39,0.04,0.04</div>
-<div class="line">65,5,26.3796,65.0675,2854.35,32625.4,32750,5,-6.71,-6.71,-6.66,1,0.01,32.982,0.953184,0.816047,-6.05,-5.71,-6.83,0.81,-0.48,-0.48</div>
-<div class="line">75,5,26.3889,65.1122,3290.13,37606.3,37750,5,15.02,15.87,14.44,2,0.03,33.0369,0.98883,0.897899,15.12,14.48,6.95,0.95,1.11,1.28</div>
-<div class="line">85,5,26.3983,65.1569,3725.91,42587.3,42750,5,-12.46,45.5,-14.59,1,-0.03,20.9076,0.64775,0.067157,-12.12,-13.32,6.91,0.01,-0.28,9.75</div>
-<div class="line">95,5,26.4078,65.2015,4161.69,47568.3,47750,5,-6.01,52.06,-7.88,1,0.01,56.1089,0.841545,0.510628,-6.12,-7.9,-2.71,0.01,1.96,12</div>
+<div class="line">5,5,26.323942791853330192,64.799472075286843165,239.67829255605994376,2739.5354197523001858,2750,5 #void data</div>
+<div class="line">15,5,26.33313506441637486,64.844147926041983965,675.45700629435077644,7720.5089102110277963,7750,5 #void data</div>
+<div class="line">25,5,26.342357875045131266,64.888822936116270057,1111.235720032641666,12701.482400669756316,12750,5</div>
+<div class="line">65,5,26.37955778153023445,65.067514515444827339,2854.3505749858049967,32625.376362504666758,32750,5</div>
+<div class="line">75,5,26.388935755212045819,65.112185281308654794,3290.1292887240956588,37606.349852963394369,37750,5</div>
+<div class="line">85,5,26.398345264299621249,65.156855190019157931,3725.9080024623867757,42587.323343422125618,42750,5</div>
+<div class="line">95,5,26.407786479190583862,65.201524238754984708,4161.6867162006774379,47568.29683388084959,47750,5</div>
 <div class="line">...</div>
 <div class="line">    ...</div>
 <div class="line">        ...</div>
-<div class="line">455,355,25.8675,66.809,-19849.7,226883,227750,355,6.92,6.92,5.55,4,-0.08,50.6265,0.783865,0.356263,6.75,5.52,-2.21,0.01,0.4,0.4</div>
-<div class="line">465,355,25.8567,66.8536,-20285.5,231864,232750,355,4.23,4.23,3.73,4,-0.06,41.9086,0.931653,0.353257,4.06,3.78,-1.75,1.92,0.04,0.04</div>
-<div class="line">475,355,25.8459,66.8983,-20721.3,236845,237750,355,4.67,4.67,4.22,1,0.16,23.44,0.819084,0.304259,4.97,4.78,-1.31,0.01,-1.25,-1.25</div>
-<div class="line">485,355,25.8351,66.9429,-21157.1,241826,242750,355,6.03,6.03,5.17,4,0.32,54.4774,0.835854,0.420826,5.92,5.22,-2.57,1.7,-0.1,-0.1</div>
-<div class="line">495,355,25.8242,66.9875,-21592.8,246807,247750,355,7.15,7.15,5.34,4,0.42,48.4182,0.771184,0.307814,7.01,5.43,-1.78,1.71,0.91,0.91</div>
+<div class="line">455,355,25.867469096238412618,66.809011493882522359,-19849.720410779180384,226883.34249039503629,227750,355</div>
+<div class="line">465,355,25.856722844056761801,66.853646518587282799,-20285.499124517475138,231864.31598085377482,232750,355</div>
+<div class="line">475,355,25.845937395485009347,66.898280557542392444,-20721.277838255766255,236845.28947131251334,237750,355</div>
+<div class="line">485,355,25.835112523182544919,66.942913606883436728,-21157.056551994057372,241826.26296177122276,242750,355</div>
+<div class="line">495,355,25.824247998058286413,66.987545662713685601,-21592.835265732348489,246807.23645222996129,247750,355</div>
 </div><!-- fragment --><p>The default sampling step is 10 in both horizontal and vertical direction, and all the quantities are sampled. One may apply <code>&ndash;select</code> command to get desired subset of quantities. Further, <code>&ndash;format</code> modifies output layout; variables inserted like <code>${NAME}</code> are converted to actual values in output. (See <code>format</code> in the file header above).</p><ul>
 <li><em>i</em> and <em>j</em> : image coordinates, from top-left corner (bin and azimuth index in polar sampling);</li>
 <li><em>j2:</em> inverted vertical image coordinate ie. from bottom-left corner</li>
@@ -137,10 +137,10 @@ Sampling grid data</h1>
 <div class="line">    skipVoid=false [skip lines with invalid/missing values]</div>
 </div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j2} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[26.319,67.9454,26.3189,67.9454]</div>
+<div class="line"># bbox=[26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573]</div>
 <div class="line"># height=360</div>
-<div class="line"># lat=64.7749</div>
-<div class="line"># lon=26.3189</div>
+<div class="line"># lat=64.77493012323975563</div>
+<div class="line"># lon=26.318880077451467514</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
@@ -154,23 +154,23 @@ Sampling grid data</h1>
 <div class="line"># rows=50</div>
 <div class="line"># rols=12</div>
 <div class="line"># samples=600</div>
-<div class="line">60,${j2} (26.3189,65.0462) 0 #void data</div>
-<div class="line">50,${j2} (26.3189,65.0014) -13.99</div>
-<div class="line">90,${j2} (26.3189,65.1808) -10.79</div>
-<div class="line">60,${j2} (26.6396,65.0095) -11.71</div>
-<div class="line">70,${j2} (26.6932,65.0482) -5.82</div>
-<div class="line">80,${j2} (26.7469,65.0869) -10.65</div>
+<div class="line">60,${j2} (26.318899999999999295,65.046221712276846461) 0 #void data</div>
+<div class="line">50,${j2} (26.318899999999999295,65.001375835002960457) -13.990000000000009095</div>
+<div class="line">90,${j2} (26.318899999999999295,65.18075771873881763) -10.790000000000020464</div>
+<div class="line">60,${j2} (26.639625849983946893,65.009528367473237154) -11.709999999999979536</div>
+<div class="line">70,${j2} (26.693180601515052786,65.048242271160603423) -5.8199999999999931788</div>
+<div class="line">80,${j2} (26.74689089797000463,65.08693674805789442) -10.649999999999977263</div>
 <div class="line">...</div>
 <div class="line">    ...</div>
 <div class="line">        ...</div>
-<div class="line">160,${j2} (27.1823,65.3958) 0 #void data</div>
-<div class="line">170,${j2} (27.2374,65.4343) 0 #void data</div>
-<div class="line">180,${j2} (27.2927,65.4728) 6.74</div>
-<div class="line">190,${j2} (27.3482,65.5113) 19.96</div>
-<div class="line">200,${j2} (27.4038,65.5497) 0 #void data</div>
+<div class="line">160,${j2} (27.182251512133280613,65.395782362396388976) 0 #void data</div>
+<div class="line">170,${j2} (27.237391325265114972,65.434297913009174863) 0 #void data</div>
+<div class="line">180,${j2} (27.292693320975406124,65.472793119374756543) 6.7400000000000090949</div>
+<div class="line">190,${j2} (27.348158180313880905,65.511267886817819317) 19.959999999999979536</div>
+<div class="line">200,${j2} (27.403786587525736707,65.549722120116626911) 0 #void data</div>
 </div><!-- fragment --><p>Likewise, one can sample Cartesian data. Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --cSize 500,500 -c --sample 50,50  -o samples-cart.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[21.4734,62.4469,32.0369,66.9151]</div>
+<div class="line"># bbox=[21.473369970467256707,62.446873711034854182,32.036889576527535439,66.915064520295331363]</div>
 <div class="line"># height=500</div>
 <div class="line"># proj=&quot; +proj=aeqd +lon_0=26.3189 +lat_0=64.7749 +ellps=WGS84&quot;</div>
 <div class="line"># width=500</div>
@@ -181,27 +181,27 @@ Sampling grid data</h1>
 <div class="line"># j=[-1:-1]</div>
 <div class="line"># jStep=50</div>
 <div class="line"># skipVoid=false</div>
-<div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${j2},${DBZH},${QIND}&#39;</div>
+<div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${j2}&#39;</div>
 <div class="line">## resulting geometry </div>
 <div class="line"># rows=10</div>
 <div class="line"># rols=10</div>
 <div class="line"># samples=100</div>
-<div class="line">25,25,21.2287,66.7069,-224500,224500,474,65535,0 #void data</div>
-<div class="line">75,25,22.359,66.7391,-174500,224500,474,65535,0 #void data</div>
-<div class="line">125,25,23.4918,66.7632,-124500,224500,474,65535,0 #void data</div>
-<div class="line">225,25,25.7622,66.7873,-24500,224500,474,8.25,0.5</div>
-<div class="line">275,25,26.8983,66.7872,25500,224500,474,5.9,0.5</div>
-<div class="line">225,75,25.7721,66.339,-24500,174500,424,13.63,0.5</div>
-<div class="line">175,125,24.6855,65.8829,-74500,124500,374,9.42,0.5</div>
-<div class="line">225,125,25.7816,65.8906,-24500,124500,374,6.45,0.5</div>
+<div class="line">25,25,21.228718345421253133,66.706899755745297398,-224500.00000000037835,224500.00000000011642,474 #void data</div>
+<div class="line">75,25,22.358961796032421177,66.73907769969324022,-174500.00000000032014,224500.00000000011642,474 #void data</div>
+<div class="line">125,25,23.491776818551841188,66.763220178132627325,-124500.00000000026193,224500.00000000011642,474 #void data</div>
+<div class="line">225,25,25.762197152083786023,66.787306874636954035,-24500.000000000145519,224500.00000000011642,474</div>
+<div class="line">275,25,26.898324149531351424,66.787226005037581444,25499.999999999883585,224500.00000000011642,474</div>
+<div class="line">225,75,25.772101676257559433,66.338957503548726891,-24500.000000000145519,174500.00000000011642,424</div>
+<div class="line">175,125,24.685508120767291729,65.882874084457171193,-74500.000000000203727,124500.00000000011642,374</div>
+<div class="line">225,125,25.781637075153916783,65.890581400433191561,-24500.000000000145519,124500.00000000011642,374</div>
 <div class="line">...</div>
 <div class="line">    ...</div>
 <div class="line">        ...</div>
-<div class="line">275,475,26.8178,62.7511,25500,-225500,24,0,0.5 #void data</div>
-<div class="line">325,475,27.7958,62.7441,75500,-225500,24,0,0.5 #void data</div>
-<div class="line">375,475,28.773,62.7303,125500,-225500,24,65535,0 #void data</div>
-<div class="line">425,475,29.7492,62.7096,175500,-225500,24,65535,0 #void data</div>
-<div class="line">475,475,30.7237,62.682,225500,-225500,24,65535,0 #void data</div>
+<div class="line">275,475,26.817786269290291301,62.751103441315017051,25499.999999999883585,-225499.99999999994179,24 #void data</div>
+<div class="line">325,475,27.795761399096143407,62.744145342991089365,75499.999999999941792,-225499.99999999994179,24 #void data</div>
+<div class="line">375,475,28.773044441360497103,62.730303316086903465,125500,-225499.99999999994179,24 #void data</div>
+<div class="line">425,475,29.74917940080629819,62.7095878260878834,175500.00000000005821,-225499.99999999994179,24 #void data</div>
+<div class="line">475,475,30.723713757372806299,62.682014495678757271,225500.00000000011642,-225499.99999999994179,24 #void data</div>
 </div><!-- fragment --><p>Note that <code>&ndash;cCreate</code> maps a single quantity to Cartesian coordinates; the quantity can be changed with <code>&ndash;select</code> .</p>
 <h1><a class="anchor" id="templates"></a>
 Metadata output using text templates</h1>

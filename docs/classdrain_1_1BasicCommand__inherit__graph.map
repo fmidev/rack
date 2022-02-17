@@ -22,7 +22,7 @@
 <area shape="rect" id="node24" href="$classrack_1_1CmdConvert.html" title=" " alt="" coords="509,968,611,995"/>
 <area shape="rect" id="node25" href="$classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="465,1019,655,1045"/>
 <area shape="rect" id="node26" href="$classrack_1_1CmdDumpMap.html" title=" " alt="" coords="501,1069,619,1096"/>
-<area shape="rect" id="node27" href="$classrack_1_1CmdGeoTiffTile.html" title=" " alt="" coords="499,1120,621,1147"/>
+<area shape="rect" id="node27" href="$classrack_1_1CmdGeoTiff.html" title=" " alt="" coords="511,1120,609,1147"/>
 <area shape="rect" id="node28" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile." alt="" coords="500,1171,620,1197"/>
 <area shape="rect" id="node29" href="$classrack_1_1CmdImage.html" title=" " alt="" coords="513,1221,607,1248"/>
 <area shape="rect" id="node30" href="$classrack_1_1CmdImageAlphaBase.html" title=" " alt="" coords="479,1272,641,1299"/>

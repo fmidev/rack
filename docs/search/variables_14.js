@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['value_3637',['value',['../classdrain_1_1image_1_1PaletteEntry.html#aee90379adb0307effb138f4871edbc5c',1,'drain::image::PaletteEntry']]],
-  ['variablemap_3638',['variableMap',['../structdrain_1_1image_1_1SamplePicker.html#a3aa5e052b73b911d46c54052e9dc0a16',1,'drain::image::SamplePicker::variableMap()'],['../classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b',1,'drain::image::Sampler::variableMap()']]],
-  ['vertdec_3639',['vertDec',['../classdrain_1_1image_1_1DistanceModel.html#ae91c1dae195434ca7d18a4e361959dea',1,'drain::image::DistanceModel']]],
-  ['vfield_3640',['vField',['../classdrain_1_1image_1_1OpticalFlowCore.html#ad86b02afd930a9aa67c4b06e7b50a09f',1,'drain::image::OpticalFlowCore']]]
+  ['ufield_3674',['uField',['../classdrain_1_1image_1_1OpticalFlowCore.html#a0ce49a0864673a12adece48e6f7f78cf',1,'drain::image::OpticalFlowCore']]],
+  ['undetectqualitycoeff_3675',['undetectQualityCoeff',['../classrack_1_1DataCoder.html#a09c288d10631871e7ed6bfa976e28858',1,'rack::DataCoder']]],
+  ['undetectvalue_3676',['undetectValue',['../classrack_1_1DataCoder.html#a8337ce8504bfd5d505a74c80077cfb22',1,'rack::DataCoder::undetectValue()'],['../classrack_1_1Quantity.html#a8337ce8504bfd5d505a74c80077cfb22',1,'rack::Quantity::undetectValue()']]],
+  ['unitmap_3677',['unitMap',['../classdrain_1_1ReferenceMap.html#a28150896138c8fe8b56898183096d290',1,'drain::ReferenceMap']]],
+  ['universal_3678',['UNIVERSAL',['../classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa',1,'rack::DetectorOp']]],
+  ['updatehorz_3679',['updateHorz',['../classdrain_1_1image_1_1SlidingWindow.html#abb4893df844da1af09285c1d039d6ea0',1,'drain::image::SlidingWindow']]],
+  ['updatevert_3680',['updateVert',['../classdrain_1_1image_1_1SlidingWindow.html#a5dbe36eee4fdbde3cb5ffb148d774bb7',1,'drain::image::SlidingWindow']]]
 ];

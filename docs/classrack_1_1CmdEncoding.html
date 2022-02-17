@@ -84,7 +84,7 @@ Inheritance diagram for CmdEncoding:</div>
 <div class="center"><img src="classrack_1_1CmdEncoding__inherit__graph.png" border="0" usemap="#CmdEncoding_inherit__map" alt="Inheritance graph"/></div>
 <map name="CmdEncoding_inherit__map" id="CmdEncoding_inherit__map">
 <area shape="rect" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="140,528,251,555"/>
-<area shape="rect" href="classrack_1_1EncodingBag.html" title="Consider long names, and then addShortKeys()" alt="" coords="65,453,171,480"/>
+<area shape="rect" href="classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="65,453,171,480"/>
 <area shape="rect" href="classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="73,379,163,405"/>
 <area shape="rect" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="89,304,147,331"/>
 <area shape="rect" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="59,229,177,256"/>
@@ -103,7 +103,7 @@ Collaboration diagram for CmdEncoding:</div>
 <div class="center"><img src="classrack_1_1CmdEncoding__coll__graph.png" border="0" usemap="#CmdEncoding_coll__map" alt="Collaboration graph"/></div>
 <map name="CmdEncoding_coll__map" id="CmdEncoding_coll__map">
 <area shape="rect" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="2172,172,2283,199"/>
-<area shape="rect" href="classrack_1_1EncodingBag.html" title="Consider long names, and then addShortKeys()" alt="" coords="1991,145,2098,172"/>
+<area shape="rect" href="classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="1991,145,2098,172"/>
 <area shape="rect" href="classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="1810,136,1901,163"/>
 <area shape="rect" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="1670,92,1729,119"/>
 <area shape="rect" href="classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="1393,119,1511,145"/>
@@ -372,6 +372,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a83e2cc1d87ecae7039db447a6aedc277 inherit pro_methods_classrack_1_1PolarODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts Doppler speed [-NI,NI] to unit circle. <br /></td></tr>
 <tr class="separator:a83e2cc1d87ecae7039db447a6aedc277 inherit pro_methods_classrack_1_1PolarODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1ODIM"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1ODIM')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1ODIM.html">ODIM</a></td></tr>
+<tr class="memitem:a3acaffdc864ce28dc2b1dce3edc12f44 inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="a3acaffdc864ce28dc2b1dce3edc12f44"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a3acaffdc864ce28dc2b1dce3edc12f44">getTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t, const std::string &amp;dateStr, const std::string &amp;timeStr) const</td></tr>
+<tr class="memdesc:a3acaffdc864ce28dc2b1dce3edc12f44 inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="separator:a3acaffdc864ce28dc2b1dce3edc12f44 inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e0db5661338b4999175d72a8304c1f0 inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="a7e0db5661338b4999175d72a8304c1f0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyTo</b> (const std::list&lt; std::string &gt; &amp;keys, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
 <tr class="separator:a7e0db5661338b4999175d72a8304c1f0 inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,15 +413,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</
 <tr class="separator:a00d13e254639a3c36ef9d3d48274bdb9 inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c8e70649538726af44a33f292fd853 inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="a41c8e70649538726af44a33f292fd853"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a41c8e70649538726af44a33f292fd853">getTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:a41c8e70649538726af44a33f292fd853 inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:a41c8e70649538726af44a33f292fd853 inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:a41c8e70649538726af44a33f292fd853 inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ccb1f58efada64f07e73a6e809af2a3 inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="a6ccb1f58efada64f07e73a6e809af2a3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a6ccb1f58efada64f07e73a6e809af2a3">getStartTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:a6ccb1f58efada64f07e73a6e809af2a3 inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the start time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:a6ccb1f58efada64f07e73a6e809af2a3 inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the start time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:a6ccb1f58efada64f07e73a6e809af2a3 inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc9e12e25c436f533d4fb16dd7b70fab inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="adc9e12e25c436f533d4fb16dd7b70fab"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#adc9e12e25c436f533d4fb16dd7b70fab">getEndTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:adc9e12e25c436f533d4fb16dd7b70fab inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the end time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:adc9e12e25c436f533d4fb16dd7b70fab inherit pro_methods_classrack_1_1ODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the end time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:adc9e12e25c436f533d4fb16dd7b70fab inherit pro_methods_classrack_1_1ODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae105f3711b65955c2a307a1a2f9eaa81 inherit pro_methods_classrack_1_1ODIM"><td class="memItemLeft" align="right" valign="top"><a id="ae105f3711b65955c2a307a1a2f9eaa81"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#ae105f3711b65955c2a307a1a2f9eaa81">setTime</a> (const <a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t)</td></tr>

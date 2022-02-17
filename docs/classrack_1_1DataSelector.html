@@ -118,9 +118,9 @@ Collaboration diagram for DataSelector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae10bf5a9ed547ca6d122c318b7653322"><td class="memItemLeft" align="right" valign="top"><a id="ae10bf5a9ed547ca6d122c318b7653322"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DataSelector</b> (const std::string &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, const std::string &amp;<a class="el" href="classrack_1_1DataSelector.html#ae2b0decb04be26b617d1c24f0deffd4f">quantity</a>, unsigned int <a class="el" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>=1000, double elangleMin=-90.0, double elangleMax=90.0)</td></tr>
-<tr class="separator:ae10bf5a9ed547ca6d122c318b7653322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbdcea347a9d263738052c49616e3d3f"><td class="memItemLeft" align="right" valign="top"><a id="afbdcea347a9d263738052c49616e3d3f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DataSelector</b> (const std::string &amp;<a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, const std::string &amp;<a class="el" href="classrack_1_1DataSelector.html#ae2b0decb04be26b617d1c24f0deffd4f">quantity</a>, unsigned int <a class="el" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>=1000, <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; <a class="el" href="classrack_1_1DataSelector.html#aed6463391e7cfa99735362538ea8a9ad">elangle</a>={-90.0, 90.0}, int <a class="el" href="classrack_1_1DataSelector.html#afef6eb6605d0c007b9ef5d30c680fa16">dualPRF</a>=0)</td></tr>
+<tr class="separator:afbdcea347a9d263738052c49616e3d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc3cf603f4fa01b3f814d6bf25c37737"><td class="memItemLeft" align="right" valign="top"><a id="abc3cf603f4fa01b3f814d6bf25c37737"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataSelector</b> (const std::string &amp;parameters=&quot;&quot;)</td></tr>
 <tr class="separator:abc3cf603f4fa01b3f814d6bf25c37737"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +251,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#aed6463391e7cfa99735362538ea8a9ad">elangle</a></td></tr>
 <tr class="memdesc:aed6463391e7cfa99735362538ea8a9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum and maximum elevation angle (applicable with volume scan data only). <br /></td></tr>
 <tr class="separator:aed6463391e7cfa99735362538ea8a9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afef6eb6605d0c007b9ef5d30c680fa16"><td class="memItemLeft" align="right" valign="top"><a id="afef6eb6605d0c007b9ef5d30c680fa16"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#afef6eb6605d0c007b9ef5d30c680fa16">dualPRF</a></td></tr>
+<tr class="memdesc:afef6eb6605d0c007b9ef5d30c680fa16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reject or accept VRAD(VH) <br /></td></tr>
+<tr class="separator:afef6eb6605d0c007b9ef5d30c680fa16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d455efceee21e97d8e21ee40e9b4a20"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a></td></tr>
 <tr class="memdesc:a4d455efceee21e97d8e21ee40e9b4a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regular expression of accepted paths, for example ".*&amp;zwj;/data$". Deprecated.  <a href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">More...</a><br /></td></tr>
 <tr class="separator:a4d455efceee21e97d8e21ee40e9b4a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -851,8 +855,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>- HDF5 data structure </td></tr>
-    <tr><td class="paramname">pathContainer</td><td>- container for paths to be found </td></tr>
-    <tr><td class="paramname">path</td><td>- search path, root by default</td></tr>
+    <tr><td class="paramname">pathContainer</td><td>- container for paths to be found</td></tr>
   </table>
   </dd>
 </dl>

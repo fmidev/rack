@@ -115,7 +115,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a065897cd7adc944dda8446a9e7ac38cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns character, also supporting numeric ASCII values between 32 and 128. <br /></td></tr>
 <tr class="separator:a065897cd7adc944dda8446a9e7ac38cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57ff6015080a29b1f76f45dd9a5d327d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a57ff6015080a29b1f76f45dd9a5d327d">getFormat</a> (const std::string &amp;formatStr) const</td></tr>
-<tr class="memdesc:a57ff6015080a29b1f76f45dd9a5d327d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use given format or generate default.  <a href="classdrain_1_1image_1_1Sampler.html#a57ff6015080a29b1f76f45dd9a5d327d">More...</a><br /></td></tr>
+<tr class="memdesc:a57ff6015080a29b1f76f45dd9a5d327d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use given format or generate default "${var},${var2}, ...".  <a href="classdrain_1_1image_1_1Sampler.html#a57ff6015080a29b1f76f45dd9a5d327d">More...</a><br /></td></tr>
 <tr class="separator:a57ff6015080a29b1f76f45dd9a5d327d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919e9cdcffd6e81e2d7cbe5779d3e7aa"><td class="memTemplParams" colspan="2">template&lt;class D , class P &gt; </td></tr>
 <tr class="memitem:a919e9cdcffd6e81e2d7cbe5779d3e7aa"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Sampler.html#a919e9cdcffd6e81e2d7cbe5779d3e7aa">sample</a> (const std::map&lt; std::string, D &gt; &amp;images, const P &amp;picker, const std::string &amp;formatStr, std::ostream &amp;ostr=std::cout) const</td></tr>
@@ -243,7 +243,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
       </table>
 </div><div class="memdoc">
 
-<p>Use given format or generate default. </p>
+<p>Use given format or generate default "${var},${var2}, ...". </p>
 <p>If format not explicitly set, use all the variables =&gt; create default format.</p>
 
 </div>
@@ -304,8 +304,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </dl>
 <p>Modifies this-&gt;variableMap by adding an entry corresponding to the key of each data source.</p>
 <p>No referencing of coordinates is done by <a class="el" href="classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data.">Sampler</a> because applications might prefer derived variables like j2=(height-1-j) or geographical coordinates. Set them in Picker. </p>
+<p>Final formatter defined here, to copy ostr precision etc.</p>
 <p>Write header, if commentChar has been set.</p>
-<p>Final formatter</p>
 
 </div>
 </div>

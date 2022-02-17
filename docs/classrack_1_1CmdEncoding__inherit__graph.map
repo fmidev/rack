@@ -1,6 +1,6 @@
 <map id="CmdEncoding" name="CmdEncoding">
 <area shape="rect" id="node1" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="140,528,251,555"/>
-<area shape="rect" id="node2" href="$classrack_1_1EncodingBag.html" title="Consider long names, and then addShortKeys()" alt="" coords="65,453,171,480"/>
+<area shape="rect" id="node2" href="$classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="65,453,171,480"/>
 <area shape="rect" id="node3" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="73,379,163,405"/>
 <area shape="rect" id="node4" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="89,304,147,331"/>
 <area shape="rect" id="node5" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="59,229,177,256"/>

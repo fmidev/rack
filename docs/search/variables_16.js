@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['x_3645',['x',['../classrack_1_1RadarDataPicker.html#af88b946fb90d5f08b5fb740c70e98c10',1,'rack::RadarDataPicker']]],
-  ['xlink_3646',['xlink',['../classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23',1,'drain::image::NodeSVG']]],
-  ['xscale_3647',['xscale',['../classrack_1_1VerticalCrossSectionODIM.html#ac9ea1df8d926e2a6ed51a93a56ea0eea',1,'rack::VerticalCrossSectionODIM']]],
-  ['xsize_3648',['xsize',['../classrack_1_1VerticalCrossSectionODIM.html#adf0e37945d5ed8be73e1f09d87bf1da0',1,'rack::VerticalCrossSectionODIM']]]
+  ['w_3685',['w',['../classdrain_1_1image_1_1GaussianStripe.html#ad23edb8c5c93365e44165bbae0830b8b',1,'drain::image::GaussianStripe']]],
+  ['weight_3686',['weight',['../classdrain_1_1image_1_1AccumulationArray.html#afb1d67f5ad3e8a1817cadd7cf437441e',1,'drain::image::AccumulationArray']]],
+  ['what_3687',['WHAT',['../classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70',1,'rack::ODIMPathElem']]],
+  ['where_3688',['WHERE',['../classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3',1,'rack::ODIMPathElem']]],
+  ['width_3689',['width',['../classrack_1_1Beam.html#a9df23e056f5d1a0388cd8190431c0e03',1,'rack::Beam']]]
 ];

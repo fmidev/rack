@@ -137,7 +137,7 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="classdrain_1_1RegExp.html">RegExp</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classdrain_1_1RegExp.html">RegExp</a> &amp;r);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//    bool exp(const char *toStr);</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">bool</span> setExpression(<span class="keyword">const</span> std::string &amp;str);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">bool</span> setExpression(<span class="keyword">const</span> std::string &amp; str, <span class="keywordtype">int</span> flags = REG_EXTENDED);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">inline</span> </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> clear(){ writableResult.clear(); };</div>
@@ -194,66 +194,69 @@ $(function() {
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
 <div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classdrain_1_1RegExp.html#a459bb486b64485776c829812efb8cbda">  152</a></span>&#160;    <span class="keyword">typedef</span> std::vector&lt;std::string&gt; <a class="code" href="classdrain_1_1RegExp.html#a459bb486b64485776c829812efb8cbda">result_t</a>;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    regex_t regExpBinary;  <span class="comment">// this is weird  FIXME: check pointer aspect</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    std::string regExpString;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="classdrain_1_1RegExp.html#a459bb486b64485776c829812efb8cbda">result_t</a> writableResult;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">int</span> expectedMatchCount() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;};</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a1f453f1e21192fa20c4f000d41b42caa">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp; r);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    regex_t regExpBinary;  <span class="comment">// this is weird  FIXME: check pointer aspect</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    std::string regExpString;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="classdrain_1_1RegExp.html#a459bb486b64485776c829812efb8cbda">result_t</a> writableResult;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">int</span> expectedMatchCount() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;};</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">  170</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">RegExp::execute</a>(<span class="keyword">const</span> std::string &amp;src, T &amp; result)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a1f453f1e21192fa20c4f000d41b42caa">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp; r);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = regExpBinary.re_nsub + 1;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// cerr &lt;&lt; &quot;binary has subs:&quot; &lt;&lt; regExpBinary.re_nsub &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <a class="code" href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">result</a>.clear();</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">//result.resize(n);</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">  173</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">RegExp::execute</a>(<span class="keyword">const</span> std::string &amp;src, T &amp; result)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = regExpBinary.re_nsub + 1;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// cerr &lt;&lt; &quot;binary has subs:&quot; &lt;&lt; regExpBinary.re_nsub &lt;&lt; endl;</span></div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="comment">//cout &lt;&lt; &quot;resize =&gt; &quot; &lt;&lt; this-&gt;size() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    std::vector&lt;regmatch_t&gt; pmatch(n);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">result</a>.clear();</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">//result.resize(n);</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">//cout &lt;&lt; &quot;resize =&gt; &quot; &lt;&lt; this-&gt;size() &lt;&lt; endl;</span></div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="comment">//cerr &lt;&lt; &quot;\nTrying &quot; &lt;&lt; toStr.c_str() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">int</span> resultCode = regexec(&amp;regExpBinary, src.c_str(), pmatch.size(), &amp;pmatch[0], 0) ;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    std::vector&lt;regmatch_t&gt; pmatch(n);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">if</span> (resultCode != REG_NOMATCH){</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;regmatch_t&gt;::const_iterator it =  pmatch.begin(); it &lt; pmatch.end(); ++it) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keyword">const</span> regmatch_t &amp;m = *it;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            <span class="keywordflow">if</span> (m.rm_so != -1){</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                <a class="code" href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">result</a>.push_back(src.substr(m.rm_so, m.rm_eo - m.rm_so));</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        }</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">//delete[] pmatch; // valgrind herjasi muodosta: delete pmatch</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">return</span> resultCode;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="comment">//cerr &lt;&lt; &quot;\nTrying &quot; &lt;&lt; toStr.c_str() &lt;&lt; endl;</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordtype">int</span> resultCode = regexec(&amp;regExpBinary, src.c_str(), pmatch.size(), &amp;pmatch[0], 0) ;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">if</span> (resultCode != REG_NOMATCH){</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordflow">for</span> (std::vector&lt;regmatch_t&gt;::const_iterator it =  pmatch.begin(); it &lt; pmatch.end(); ++it) {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keyword">const</span> regmatch_t &amp;m = *it;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">if</span> (m.rm_so != -1){</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <a class="code" href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">result</a>.push_back(src.substr(m.rm_so, m.rm_eo - m.rm_so));</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;}</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;} <span class="comment">// drain</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="comment">//delete[] pmatch; // valgrind herjasi muodosta: delete pmatch</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">return</span> resultCode;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;}</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;} <span class="comment">// drain</span></div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">// Drain</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassdrain_1_1RegExp_html_ac53e482e5c57fe53dcd4919c1f8212b1"><div class="ttname"><a href="classdrain_1_1RegExp.html#ac53e482e5c57fe53dcd4919c1f8212b1">drain::RegExp::replace</a></div><div class="ttdeci">void replace(const std::string &amp;src, const std::string &amp;replacement, std::string &amp;dst) const</div><div class="ttdoc">Replaces std::string segment matching search regexp to the given std::string.</div><div class="ttdef"><b>Definition:</b> RegExp.h:124</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html_a90e6a4a6cb2c6a63633837370ecb2848"><div class="ttname"><a href="classdrain_1_1RegExp.html#a90e6a4a6cb2c6a63633837370ecb2848">drain::RegExp::RegExp</a></div><div class="ttdeci">RegExp(const std::string &amp;str=&quot;&quot;, int flags=REG_EXTENDED)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> RegExp.cpp:58</div></div>
-<div class="ttc" id="aclassdrain_1_1RegExp_html_ae6b5c486c22494341c6f18821222c01d"><div class="ttname"><a href="classdrain_1_1RegExp.html#ae6b5c486c22494341c6f18821222c01d">drain::RegExp::test</a></div><div class="ttdeci">bool test(const std::string &amp;str) const</div><div class="ttdoc">Tests if the regular expression accepts the given std::string.</div><div class="ttdef"><b>Definition:</b> RegExp.cpp:125</div></div>
+<div class="ttc" id="aclassdrain_1_1RegExp_html_ae6b5c486c22494341c6f18821222c01d"><div class="ttname"><a href="classdrain_1_1RegExp.html#ae6b5c486c22494341c6f18821222c01d">drain::RegExp::test</a></div><div class="ttdeci">bool test(const std::string &amp;str) const</div><div class="ttdoc">Tests if the regular expression accepts the given std::string.</div><div class="ttdef"><b>Definition:</b> RegExp.cpp:127</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html"><div class="ttname"><a href="classdrain_1_1RegExp.html">drain::RegExp</a></div><div class="ttdef"><b>Definition:</b> RegExp.h:58</div></div>
 <div class="ttc" id="anamespacedrain_html_a1f453f1e21192fa20c4f000d41b42caa"><div class="ttname"><a href="namespacedrain.html#a1f453f1e21192fa20c4f000d41b42caa">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
-<div class="ttc" id="aclassdrain_1_1RegExp_html_ab7d4a004cc8078ad21597c487ab26e0d"><div class="ttname"><a href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">drain::RegExp::execute</a></div><div class="ttdeci">int execute(const std::string &amp;str, T &amp;result) const</div><div class="ttdoc">Apply regexp matching in a string. Returns 0 on success, REG_NOMATCH on failure.</div><div class="ttdef"><b>Definition:</b> RegExp.h:170</div></div>
+<div class="ttc" id="aclassdrain_1_1RegExp_html_ab7d4a004cc8078ad21597c487ab26e0d"><div class="ttname"><a href="classdrain_1_1RegExp.html#ab7d4a004cc8078ad21597c487ab26e0d">drain::RegExp::execute</a></div><div class="ttdeci">int execute(const std::string &amp;str, T &amp;result) const</div><div class="ttdoc">Apply regexp matching in a string. Returns 0 on success, REG_NOMATCH on failure.</div><div class="ttdef"><b>Definition:</b> RegExp.h:173</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html_a39466ed0390108f619eea0a7229bf3c5"><div class="ttname"><a href="classdrain_1_1RegExp.html#a39466ed0390108f619eea0a7229bf3c5">drain::RegExp::replace</a></div><div class="ttdeci">static void replace(const std::string &amp;src, const std::string &amp;regexp, const std::string &amp;replacement, std::string &amp;dst)</div><div class="ttdoc">Replaces std::string segment matching search to the given std::string.</div><div class="ttdef"><b>Definition:</b> RegExp.h:136</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html_a8d7dd34c70c706617cf5fc85f4f93766"><div class="ttname"><a href="classdrain_1_1RegExp.html#a8d7dd34c70c706617cf5fc85f4f93766">drain::RegExp::result</a></div><div class="ttdeci">const std::vector&lt; std::string &gt; &amp; result</div><div class="ttdoc">Public interface for the result.</div><div class="ttdef"><b>Definition:</b> RegExp.h:93</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html_ade6bdd17d247cd07d6b584a54271103b"><div class="ttname"><a href="classdrain_1_1RegExp.html#ade6bdd17d247cd07d6b584a54271103b">drain::RegExp::~RegExp</a></div><div class="ttdeci">virtual ~RegExp()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> RegExp.cpp:69</div></div>

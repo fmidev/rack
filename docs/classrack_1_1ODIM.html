@@ -97,7 +97,7 @@ Inheritance diagram for ODIM:</div>
 <area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="137,155,253,181"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="99,80,290,107"/>
 <area shape="rect" title=" " alt="" coords="82,5,307,32"/>
-<area shape="rect" href="classrack_1_1EncodingBag.html" title="Consider long names, and then addShortKeys()" alt="" coords="141,453,248,480"/>
+<area shape="rect" href="classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="141,453,248,480"/>
 <area shape="rect" href="classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="139,528,250,555"/>
 <area shape="rect" href="classrack_1_1RhiODIM.html" title=" " alt="" coords="297,453,375,480"/>
 <area shape="rect" href="classrack_1_1VerticalProfileODIM.html" title=" " alt="" coords="399,453,550,480"/>
@@ -149,15 +149,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</
 <tr class="separator:a00d13e254639a3c36ef9d3d48274bdb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c8e70649538726af44a33f292fd853"><td class="memItemLeft" align="right" valign="top"><a id="a41c8e70649538726af44a33f292fd853"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a41c8e70649538726af44a33f292fd853">getTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:a41c8e70649538726af44a33f292fd853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:a41c8e70649538726af44a33f292fd853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:a41c8e70649538726af44a33f292fd853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ccb1f58efada64f07e73a6e809af2a3"><td class="memItemLeft" align="right" valign="top"><a id="a6ccb1f58efada64f07e73a6e809af2a3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a6ccb1f58efada64f07e73a6e809af2a3">getStartTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:a6ccb1f58efada64f07e73a6e809af2a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the start time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:a6ccb1f58efada64f07e73a6e809af2a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the start time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:a6ccb1f58efada64f07e73a6e809af2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc9e12e25c436f533d4fb16dd7b70fab"><td class="memItemLeft" align="right" valign="top"><a id="adc9e12e25c436f533d4fb16dd7b70fab"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#adc9e12e25c436f533d4fb16dd7b70fab">getEndTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t) const</td></tr>
-<tr class="memdesc:adc9e12e25c436f533d4fb16dd7b70fab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the end time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="memdesc:adc9e12e25c436f533d4fb16dd7b70fab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the end time. Returns true if successful. // consider: throws error if fail. <br /></td></tr>
 <tr class="separator:adc9e12e25c436f533d4fb16dd7b70fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae105f3711b65955c2a307a1a2f9eaa81"><td class="memItemLeft" align="right" valign="top"><a id="ae105f3711b65955c2a307a1a2f9eaa81"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#ae105f3711b65955c2a307a1a2f9eaa81">setTime</a> (const <a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t)</td></tr>
@@ -534,6 +534,10 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3acaffdc864ce28dc2b1dce3edc12f44"><td class="memItemLeft" align="right" valign="top"><a id="a3acaffdc864ce28dc2b1dce3edc12f44"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a3acaffdc864ce28dc2b1dce3edc12f44">getTime</a> (<a class="el" href="classdrain_1_1Time.html">drain::Time</a> &amp;t, const std::string &amp;dateStr, const std::string &amp;timeStr) const</td></tr>
+<tr class="memdesc:a3acaffdc864ce28dc2b1dce3edc12f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the stored time. Returns true if successful, throws error if fail. <br /></td></tr>
+<tr class="separator:a3acaffdc864ce28dc2b1dce3edc12f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e0db5661338b4999175d72a8304c1f0"><td class="memItemLeft" align="right" valign="top"><a id="a7e0db5661338b4999175d72a8304c1f0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyTo</b> (const std::list&lt; std::string &gt; &amp;keys, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
 <tr class="separator:a7e0db5661338b4999175d72a8304c1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>

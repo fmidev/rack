@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['map_3533',['map',['../classdrain_1_1Som.html#ac38a26e2355ddc27f9701cdcf4719f26',1,'drain::Som']]],
-  ['markervalue_3534',['markerValue',['../classdrain_1_1image_1_1SegmentProberConf.html#ab4dd9abdd7e87125453f9084b0a374d3',1,'drain::image::SegmentProberConf']]],
-  ['maxaltitude_3535',['maxAltitude',['../classrack_1_1BiometOp.html#aee2baa24566d72db8cf547ee8855fa31',1,'rack::BiometOp']]],
-  ['maxcodevalue_3536',['maxCodeValue',['../classdrain_1_1image_1_1DistanceModel.html#a84e365820cf9fe4e5e51a5c07da69db0',1,'drain::image::DistanceModel']]],
-  ['metadatamap_3537',['metadataMap',['../classrack_1_1Composite.html#adc0fde3f02c4d86f46c380376a2c1755',1,'rack::Composite']]],
-  ['methods_3538',['methods',['../classdrain_1_1image_1_1Accumulator.html#a7d75689ee33ac1f19cda9ffb68aa5e9a',1,'drain::image::Accumulator']]],
-  ['mincodevalue_3539',['minCodeValue',['../classrack_1_1DataCoder.html#a9da3724b77ffc47fba165f948d065ff1',1,'rack::DataCoder']]],
-  ['mixingfunction_3540',['mixingFunction',['../classdrain_1_1Som.html#abe521f0d95d3b8e7d58a09a8ff3be13b',1,'drain::Som']]]
+  ['lat_3570',['lat',['../classrack_1_1PolarODIM.html#a7972334534f68166121a6e51b0aac2d6',1,'rack::PolarODIM::lat()'],['../classrack_1_1RadarDataPicker.html#a7972334534f68166121a6e51b0aac2d6',1,'rack::RadarDataPicker::lat()']]],
+  ['learningcoefficient_3571',['learningCoefficient',['../classdrain_1_1Som.html#a66f458d44b9a1a51da869573b2324977',1,'drain::Som']]],
+  ['legend_3572',['LEGEND',['../classrack_1_1ODIMPathElem.html#a23144efb139e0fa8a53c08aeab52c96f',1,'rack::ODIMPathElem']]],
+  ['limit_3573',['LIMIT',['../classdrain_1_1image_1_1DifferentialOp.html#ae6e97b641da29a05154830d195e7a8b2',1,'drain::image::DifferentialOp::LIMIT()'],['../classrack_1_1RackResources.html#a6399f9316cfa7a654c14a848bb4a78cc',1,'rack::RackResources::limit()']]],
+  ['linelayout_3574',['lineLayout',['../classdrain_1_1SprinterBase.html#ac2f0ae63613f2bd33e5da9126a4778c6',1,'drain::SprinterBase']]],
+  ['location_3575',['location',['../classdrain_1_1image_1_1Window.html#a2f7356e1b6ebe8c2b82c33e418e4368b',1,'drain::image::Window']]],
+  ['logfile_3576',['logFile',['../classdrain_1_1Context.html#a3282475a2b34bec0eaaaf41a78a3b916',1,'drain::Context']]],
+  ['lon_3577',['lon',['../classrack_1_1PolarODIM.html#aa96391e04b5977c50b96d77bea86a01d',1,'rack::PolarODIM::lon()'],['../classrack_1_1RadarDataPicker.html#aa96391e04b5977c50b96d77bea86a01d',1,'rack::RadarDataPicker::lon()']]]
 ];

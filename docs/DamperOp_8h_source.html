@@ -112,65 +112,64 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef DamperOP_H_</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define DamperOP_H_</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/Fuzzy.h&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;drain/image/Intensity.h&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;drain/image/File.h&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &quot;hi5/Hi5.h&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &quot;radar/Geometry.h&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;RemoverOp.h&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacedrain_1_1image.html">drain::image</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classrack_1_1DamperOp.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DamperOp.html">DamperOp</a>: <span class="keyword">public</span> <a class="code" href="classrack_1_1RemoverOp.html">RemoverOp</a> {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">//DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minVal = -std::numeric_limits&lt;double&gt;::max()) :  // double slope=0.0,</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">   70</a></span>&#160;    <a class="code" href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">DamperOp</a>(<span class="keywordtype">double</span> threshold=0.5, <span class="keywordtype">double</span> undetectThreshold=0.1, <span class="keywordtype">double</span> minValue = NAN) :  <span class="comment">// double slope=0.0,</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="classrack_1_1RemoverOp.html">RemoverOp</a>(__FUNCTION__,<span class="stringliteral">&quot;Removes anomalies with fuzzy deletion operator.&quot;</span>){</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;^DBZH$&quot;</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;threshold = threshold);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        parameters.link(<span class="stringliteral">&quot;undetectThreshold&quot;</span>, this-&gt;undetectThreshold = undetectThreshold);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        parameters.link(<span class="stringliteral">&quot;minValue&quot;</span>, this-&gt;minValue = minValue);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;drain/image/ImageFile.h&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;drain/util/Fuzzy.h&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;drain/image/Intensity.h&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &quot;hi5/Hi5.h&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &quot;radar/Geometry.h&quot;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &quot;RemoverOp.h&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacedrain_1_1image.html">drain::image</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classrack_1_1DamperOp.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DamperOp.html">DamperOp</a>: <span class="keyword">public</span> <a class="code" href="classrack_1_1RemoverOp.html">RemoverOp</a> {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minVal = -std::numeric_limits&lt;double&gt;::max()) :  // double slope=0.0,</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">   69</a></span>&#160;    <a class="code" href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">DamperOp</a>(<span class="keywordtype">double</span> threshold=0.5, <span class="keywordtype">double</span> undetectThreshold=0.1, <span class="keywordtype">double</span> minValue = NAN) :  <span class="comment">// double slope=0.0,</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="classrack_1_1RemoverOp.html">RemoverOp</a>(__FUNCTION__,<span class="stringliteral">&quot;Removes anomalies with fuzzy deletion operator.&quot;</span>){</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;^DBZH$&quot;</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;threshold = threshold);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        parameters.link(<span class="stringliteral">&quot;undetectThreshold&quot;</span>, this-&gt;undetectThreshold = undetectThreshold);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        parameters.link(<span class="stringliteral">&quot;minValue&quot;</span>, this-&gt;minValue = minValue);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    };</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">double</span> threshold;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">double</span> undetectThreshold;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">double</span> minValue;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">double</span> threshold;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">double</span> undetectThreshold;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">double</span> minValue;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Main method. Like RemoverOp. remains dstQuality intact.</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment"></span>    <span class="keywordtype">void</span> processData(<span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarSrc&gt;</a> &amp; srcData, <span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarSrc&gt;</a> &amp; srcQuality,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                            <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstQuality) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// Main method. Like RemoverOp. remains dstQuality intact.</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment"></span>    <span class="keywordtype">void</span> processData(<span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarSrc&gt;</a> &amp; srcData, <span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarSrc&gt;</a> &amp; srcQuality,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                            <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstQuality) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* ERASEROP_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* ERASEROP_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">// Rack</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassrack_1_1RemoverOp_html"><div class="ttname"><a href="classrack_1_1RemoverOp.html">rack::RemoverOp</a></div><div class="ttdoc">The simplest possible anomaly removal operator and the base class for more complex ones.</div><div class="ttdef"><b>Definition:</b> RemoverOp.h:54</div></div>
+<div class="ttc" id="aclassrack_1_1RemoverOp_html"><div class="ttname"><a href="classrack_1_1RemoverOp.html">rack::RemoverOp</a></div><div class="ttdoc">The simplest possible anomaly removal operator and the base class for more complex ones.</div><div class="ttdef"><b>Definition:</b> RemoverOp.h:53</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
-<div class="ttc" id="aclassrack_1_1DamperOp_html_a54337b4dc9bcfe46a76b098011be0ff9"><div class="ttname"><a href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">rack::DamperOp::DamperOp</a></div><div class="ttdeci">DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minValue=NAN)</div><div class="ttdef"><b>Definition:</b> DamperOp.h:70</div></div>
+<div class="ttc" id="aclassrack_1_1DamperOp_html_a54337b4dc9bcfe46a76b098011be0ff9"><div class="ttname"><a href="classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9">rack::DamperOp::DamperOp</a></div><div class="ttdeci">DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minValue=NAN)</div><div class="ttdef"><b>Definition:</b> DamperOp.h:69</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:46</div></div>
-<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:271</div></div>
-<div class="ttc" id="aclassrack_1_1DamperOp_html"><div class="ttname"><a href="classrack_1_1DamperOp.html">rack::DamperOp</a></div><div class="ttdef"><b>Definition:</b> DamperOp.h:60</div></div>
+<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:272</div></div>
+<div class="ttc" id="aclassrack_1_1DamperOp_html"><div class="ttname"><a href="classrack_1_1DamperOp.html">rack::DamperOp</a></div><div class="ttdef"><b>Definition:</b> DamperOp.h:59</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

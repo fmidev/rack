@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhi5_1_1Writer_1_1CompoundConv_3_01int_01_4.html" title="For some reason HDF5 int fails, but long int does not (Native vs Standard type diff?..." alt="" coords="5,5,179,47"/>
+<area shape="rect" id="node1" href="$structdrain_1_1image_1_1HistogramConfig.html" title=" " alt="" coords="5,5,137,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title=" " alt="" coords="185,5,369,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="13,81,129,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="195,56,359,83"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="207,107,348,133"/>
+<area shape="rect" id="node6" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="200,157,355,184"/>
+<area shape="rect" id="node7" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="417,157,592,184"/>
 </map>
