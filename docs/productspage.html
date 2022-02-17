@@ -105,7 +105,7 @@ PseudoCAPPI</h2>
 </p>
 <p>As a default setting, the relative quality of <code>undetect</code> bins is lower than that of detected signals; this affects e.g. creation of radar image composites. The relative quality can be changed with <code>&ndash;undetectWeight</code> command.</p>
 <div class="image">
-<img src="pCappi-DBZH-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pCappi-DBZH-panel.png" alt=""/>
 <div class="caption">
 The pseudo-CAPPI product and its quality field.</div></div>
  <h2><a class="anchor" id="maxEcho"></a>
@@ -117,7 +117,7 @@ Maximum echo</h2>
 <div class="line">  % accumulationMethod=MAXIMUM [MAXIMUM|AVERAGE|WAVG:2:2|MAXW]</div>
 </div><!-- fragment --><p>The quality is low near and far from the radar, as precipitation may reside over and under radar beams, respectively.</p>
 <div class="image">
-<img src="pMaxEcho-DBZH-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pMaxEcho-DBZH-panel.png" alt=""/>
 <div class="caption">
 The maximum echo product and its quality field.</div></div>
  <h2><a class="anchor" id="echoTop"></a>
@@ -133,7 +133,7 @@ Echo top altitude</h2>
  </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding C,0.05 --pEchoTop 20  -o echoTop_8bit.h5</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding S,1.0  --pEchoTop 20  -o echoTop_16bit.h5</div>
 </div><!-- fragment --><div class="image">
-<img src="pEchoTop-HGHT-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pEchoTop-HGHT-panel.png" alt=""/>
 <div class="caption">
 Echo top product and its quality field.</div></div>
  <h2><a class="anchor" id="convection"></a>
@@ -147,7 +147,7 @@ Convection</h2>
 <div class="line">  % smoothAzm=0 [deg]</div>
 <div class="line">  % smoothRad=0 [km]</div>
 </div><!-- fragment --><div class="image">
-<img src="pConv-PROB-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pConv-PROB-panel.png" alt=""/>
 <div class="caption">
 Convection product and its quality field.</div></div>
  <p>(Under constr.)</p>
@@ -187,7 +187,7 @@ Rainfall rate (mm/h)  (under construction)</h2>
 </p>
 <div class="fragment"><div class="line">rack volume.h5 --pRainRate -o pRainRate.h5</div>
 </div><!-- fragment --><div class="image">
-<img src="pRainRate-RATE-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pRainRate-RATE-panel.png" alt=""/>
 <div class="caption">
 Rain rate [mm/h] product and its quality field.</div></div>
  <h2><a class="anchor" id="RainRateDP"></a>
@@ -235,7 +235,7 @@ Vertical profile</h2>
 <div class="line">10890   -32 0   </div>
 </div><!-- fragment --><p>The text format suits well to further illustrations with appropriate software. The curve images below have been created with <b>gnuplot</b> .</p>
 <div class="image">
-<img src="vpr-screen.png" alt="" width="0.5\textwidth"/>
+<img src="vpr-screen.png" alt=""/>
 <div class="caption">
 A graphical interface using Rack for VPR computation.</div></div>
  <p>Both the applied input quantities and the output quantities can be set with <code>&ndash;select</code> command.</p>
@@ -255,7 +255,7 @@ Pseudo RHI</h2>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --pPseudoRhi 168,500,400,0:120,0:11000,0.25 -o pseudo-rhi.h5</div>
 </div><!-- fragment --><p>The 2D data may be coloured with <code>&ndash;palette</code> command and saved as an image file. The gridded images below have been created from such images with <b>gnuplot</b> .</p>
 <div class="image">
-<img src="rhi-screen.png" alt="" width="0.5\textwidth"/>
+<img src="rhi-screen.png" alt=""/>
 <div class="caption">
 A graphical interface using Rack for Pseudo-RHI computation.</div></div>
  <h1><a class="anchor" id="nonmetproducts"></a>
@@ -267,7 +267,7 @@ Beam altitude</h2>
 <div class="line">  % aboveSeaLevel=true [0=radar site|1=sea level]</div>
 </div><!-- fragment --><div class="fragment"><div class="line">   aboveSeaLevel=<span class="keyword">true</span> [0=radar site|1=sea level]</div>
 </div><!-- fragment --><div class="image">
-<img src="pBeamAltitude-HGHT-panel.png" alt="" width="0.5\textwidth"/>
+<img src="pBeamAltitude-HGHT-panel.png" alt=""/>
 <div class="caption">
 Beam altitude product.</div></div>
   </div></div><!-- contents -->
