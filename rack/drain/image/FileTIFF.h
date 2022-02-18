@@ -43,154 +43,159 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <xtiffio.h>
 #endif
 
-namespace drain::image
+namespace drain
+{
+
+namespace image
 {
 
 
 
-	/// For writing images in basic TIFF format. Reading not supported currently.
-	/**
-	 */
-	class FileTIFF : public drain::FileHandler
-	{
-	public:
+/// For writing images in basic TIFF format. Reading not supported currently.
+/**
+ */
+class FileTIFF : public FileHandler
+{
+public:
 
 
-		static
-		const drain::FileInfo fileInfo;
+	static
+	const drain::FileInfo fileInfo;
 
-		typedef drain::FlagResolver::dict_t dict_t;
+	typedef drain::FlagResolver::dict_t dict_t;
 
-		static
-		const dict_t & getCompressionDict();
+	static
+	const dict_t & getCompressionDict();
 
-		static drain::Frame2D<int> defaultTile;
-		// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
-		//static int defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
-		static dict_t::value_t defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+	static drain::Frame2D<int> defaultTile;
+	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
+	//static int defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+	static dict_t::value_t defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
 
 #ifndef USE_GEOTIFF_NO
 
 
-		FileTIFF(const std::string & path = "", const char *mode = "w") : tif(nullptr), tile(defaultTile){
-			if (!path.empty())
-				open(path, mode);
-			//tif = XTIFFOpen(path.c_str(), mode);
-		}
+	FileTIFF(const std::string & path = "", const char *mode = "w") : tif(nullptr), tile(defaultTile){
+		if (!path.empty())
+			open(path, mode);
+		//tif = XTIFFOpen(path.c_str(), mode);
+	}
 
-		inline
-		~FileTIFF(){
-			close();
-		}
+	inline
+	~FileTIFF(){
+		close();
+	}
 
-		inline
-		virtual
-		void open(const std::string & path, const char *mode = "w"){
-			tif = XTIFFOpen(path.c_str(), mode);
-		}
+	inline
+	virtual
+	void open(const std::string & path, const char *mode = "w"){
+		tif = XTIFFOpen(path.c_str(), mode);
+	}
 
-		inline
-		virtual
-		void close(){
-			if (isOpen()){
-				drain::Logger mout(__FILE__, __FUNCTION__);
-				mout.experimental("Closing TIFF...");
-				XTIFFClose(tif);
-				tif = nullptr;
+	inline
+	virtual
+	void close(){
+		if (isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.experimental("Closing TIFF...");
+			XTIFFClose(tif);
+			tif = nullptr;
+		}
+	}
+
+	inline virtual
+	bool isOpen() const {
+		return (tif != nullptr);
+	}
+
+
+
+	inline
+	int setField(int tag, const std::string & value){
+		if (!isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("TIFF file not open");
+		}
+		return TIFFSetField(tif, tag, value.c_str());
+	}
+
+	template <class T>
+	inline
+	int setField(int tag, const std::vector<T> & value){
+		if (!isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("TIFF file not open");
+			//return 0;
+		}
+		return TIFFSetField(tif, tag, value.size(), &value.at(0));
+	}
+
+	template <class T>
+	inline
+	int setField(int tag, T value){
+		if (!isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("TIFF file not open");
+			//return 0;
+		}
+		return TIFFSetField(tif, tag, value);
+	}
+
+
+	inline
+	void useDefaultTileSize(){
+		this->tile = defaultTile;
+	}
+
+	inline
+	void setTileSize(int tileWidth, int tileHeight = 0){
+		if (tileWidth == 0){
+			tile = {0,0};
+			//this->tile = defaultTile;
+		}
+		else {
+			tile.setWidth(tileWidth);
+			if (tileHeight == 0){
+				tileHeight = tileWidth;
 			}
+			tile.setHeight(tileHeight);
 		}
+	}
 
-		inline virtual
-		bool isOpen() const {
-			return (tif != nullptr);
-		}
+	/**
+	 */
+	void setTime(const drain::Time & time);
 
+	/**
+	 *
+	 */
+	void setDefaults(); //, int tileWidth=0, int tileHeight = 0);
+	//void setDefaults(const drain::image::ImageConf & src); //, int tileWidth=0, int tileHeight = 0);
 
+	void writeImageData(const drain::image::Image & src);
 
-		inline
-		int setField(int tag, const std::string & value){
-			if (!isOpen()){
-				drain::Logger mout(__FILE__, __FUNCTION__);
-				mout.error("TIFF file not open");
-			}
-			return TIFFSetField(tif, tag, value.c_str());
-		}
-
-		template <class T>
-		inline
-		int setField(int tag, const std::vector<T> & value){
-			if (!isOpen()){
-				drain::Logger mout(__FILE__, __FUNCTION__);
-				mout.error("TIFF file not open");
-				//return 0;
-			}
-			return TIFFSetField(tif, tag, value.size(), &value.at(0));
-		}
-
-		template <class T>
-		inline
-		int setField(int tag, T value){
-			if (!isOpen()){
-				drain::Logger mout(__FILE__, __FUNCTION__);
-				mout.error("TIFF file not open");
-				//return 0;
-			}
-			return TIFFSetField(tif, tag, value);
-		}
+	/// Default implementation.
+	/**
+	 *  Practically, on should develop own method for adding metadata.
+	 */
+	static
+	void write(const std::string & path, const drain::image::Image & src);
 
 
-		inline
-		void useDefaultTileSize(){
-			this->tile = defaultTile;
-		}
+protected:
 
-		inline
-		void setTileSize(int tileWidth, int tileHeight = 0){
-			if (tileWidth == 0){
-				tile = {0,0};
-				//this->tile = defaultTile;
-			}
-			else {
-				tile.setWidth(tileWidth);
-				if (tileHeight == 0){
-					tileHeight = tileWidth;
-				}
-				tile.setHeight(tileHeight);
-			}
-		}
+	TIFF *tif;
 
-		/**
-		 */
-		void setTime(const drain::Time & time);
-
-		/**
-		 *
-		 */
-		void setDefaults(); //, int tileWidth=0, int tileHeight = 0);
-		//void setDefaults(const drain::image::ImageConf & src); //, int tileWidth=0, int tileHeight = 0);
-
-		void writeImageData(const drain::image::Image & src);
-
-		/// Default implementation.
-		/**
-		 *  Practically, on should develop own method for adding metadata.
-		 */
-		static
-		void write(const std::string & path, const drain::image::Image & src);
-
-
-	protected:
-
-		TIFF *tif;
-
-		drain::Frame2D<int> tile;
+	drain::Frame2D<int> tile;
 
 
 #endif
 
-	};
+};
 
-} // drain::image
+} // image::
+
+} // drain::
 
 
 

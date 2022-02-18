@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 /*
 
@@ -40,13 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #ifndef USE_GEOTIFF_NO
 
-//#include <proj_api.h>
-/*
-#include <geotiff.h>
-#include <geotiffio.h>
-#include <xtiffio.h>
-#include <geo_normalize.h>
-*/
 
 //#include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
@@ -65,9 +58,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define TIFFTAG_GDAL_NODATA 42113 // 0xa481 // 42113
 #endif
 
-namespace drain::image
+namespace drain
 {
 
+namespace image
+{
 
 
 
@@ -121,7 +116,7 @@ void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string 
 	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
 		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
 	};
-	*/
+	 */
 
 }
 
@@ -156,7 +151,7 @@ void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, doub
 	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
 	<Item name="SCALE" role="scale" sample="0" >0.5</Item>
 	</GDALMetadata>
-	*/
+	 */
 
 	std::stringstream gdal;
 	gdal << gdalInfo;
@@ -178,7 +173,7 @@ void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, doub
 		mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
 		GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
 	}
-	*/
+	 */
 
 
 }
@@ -238,7 +233,7 @@ void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::im
 	}
 
 }
-*/
+ */
 
 /*
 void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // int tileWidth, int tileHeight){
@@ -279,7 +274,7 @@ void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // i
 	setGeoMetaData(frame);
 
 }
-*/
+ */
 
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
@@ -409,7 +404,8 @@ void FileGeoTIFF::setProjectionLongLat(){
 
 
 
-}
+} // image::
 
+} // drain::
 
 #endif

@@ -36,25 +36,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
-
-
-
-
-//#include <proj_api.h>
-
-/*
-#include <drain/util/Frame.h>
-#include <drain/util/Log.h>
-#include <drain/util/StringBuilder.h>
-#include <drain/util/Time.h>
-#include <drain/util/TreeXML.h>
-#include <drain/image/ImageFile.h>
-#include <drain/image/AccumulatorGeo.h>
-*/
 #include "FileTIFF.h"
 
 
-namespace drain::image {
+namespace drain {
+
+namespace image {
+
 
 	const FileInfo FileTIFF::fileInfo("(tif|tiff)");
 	Frame2D<int> FileTIFF::defaultTile(256, 256);
@@ -341,9 +329,9 @@ void FileTIFF::write(const std::string &path, const drain::image::Image & src){
 
 #endif
 
+} // image::
 
-
-}
+} // drain::
 
 
 
