@@ -89,11 +89,11 @@ $(function() {
 <div class="textblock"><h1><a class="anchor" id="compositing"></a>
 Compositing</h1>
 <p><b>Rack</b> can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products. On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in <b>Rack</b> . This section lists related commands and examples. A quick reference is found in <a class="el" href="quickpage.html#commands_cart">Compositing and Cartesian products</a>. Compositing motion vectors is art of its own, hence explained in a separate section, <a class="el" href="motionpage.html#motion-composites">Composites of motion fields</a> .</p>
- <div class="image">
-<img src="composite-baltic-pair.png" alt="" width="\textwidth"/>
+<div class="image">
+<img src="composite-baltic-pair.png" alt=""/>
 <div class="caption">
 A radar image composite over the Baltic area.</div></div>
-<h2><a class="anchor" id="cmethods"></a>
+ <h2><a class="anchor" id="cmethods"></a>
 Compositing methods</h2>
 <p>Compositing can be apply several <em>compositing</em> <em>methods</em> (or rules):</p><ul>
 <li><b>AVERAGE</b> - average value</li>
@@ -178,16 +178,16 @@ Direct compositing</h3>
 <div class="line"> -o composite-fi-cappi.h5 </div>
 </div><!-- fragment --><p><b>Rack</b> installation package contains a utility script <code>make-composite.sh</code> which compiles a command line string - like the one above - and executes it. For example: </p><div class="fragment"><div class="line">PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32 SIZE=500,750 BBOX=17,57.7,33,69.5  ./make-composite.sh data/pvol_fi*.h5</div>
 </div><!-- fragment --><p>The extraction command <code>&ndash;cExtract</code> extracts one or more data layers out of the compositing (accumulation array): actual composited data ( <code>d</code> ), quality field (weight, <code>w</code> ), discrepancy (std.dev., <code>d</code> ) and count of radars (<code>c</code> ).</p>
- <div class="image">
-<img src="composite-layers.png" alt="" width="\textwidth"/>
+<div class="image">
+<img src="composite-layers.png" alt=""/>
 <div class="caption">
 Layers extracted from the accumulation array: the composite, quality field, discrepancy and count of radars.</div></div>
-<p><b>Rack</b> makes composites of any selected quantity or polar product. Examples are shown in the image below.</p>
- <div class="image">
-<img src="composite-fi-all.png" alt="" width="\textwidth"/>
+ <p><b>Rack</b> makes composites of any selected quantity or polar product. Examples are shown in the image below.</p>
+<div class="image">
+<img src="composite-fi-all.png" alt=""/>
 <div class="caption">
 Composites of CAPPI, max echo, echo top, rhoHV, and HydroClass.</div></div>
-<p><b>Hint</b>. Command lines may get lengthy in compositing. You can shorten file arguments by using general options <code>&ndash;inputPrefix</code> and <code>&ndash;outputPrefix</code> .</p>
+ <p><b>Hint</b>. Command lines may get lengthy in compositing. You can shorten file arguments by using general options <code>&ndash;inputPrefix</code> and <code>&ndash;outputPrefix</code> .</p>
 <h3><a class="anchor" id="tiledcompositing"></a>
 Tiled compositing</h3>
 <p>In a Tiled (distributed) mode, the composite is initialized as in direct mode but the tile generated is with <code>&ndash;cCreateTile</code> and then saved with <code>&ndash;outputFile</code> command. In the accumulation stage, the composite is loaded and then copied to the internal compositing array with <code>&ndash;cAdd</code>. The stages are illustrated in the diagrams below.</p>

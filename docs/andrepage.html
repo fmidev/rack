@@ -290,11 +290,11 @@ Cumulating quality fields</h1>
 <p><b>Universality</b>. Some detectors like <code>&ndash;aSpeckle</code> are <em>universal</em> , they apply not only for the quantity they have been computed on (like <code>DBZH</code>) but also other quantities (like <code>VRAD</code>). The resulting quality information is stored respectively to dataset level or data level. This policy can be toggled with <code>&ndash;aUniversal</code> .</p>
 <p>The resulting cumulative field with <code>what:quantity=QIND</code> is inverted, reflecting the probability of <em>meteorological</em> echoes, ie. quality of the data. In parallel, the classification field with <code>what:quantity=CLASS</code> is updated. The fields are updated automatically after every detection command. They reside on the dataset level or data level, depending on detector universality described above.</p>
 <p>In the removal stage, <b>AnDRe</b> combines the <code>QIND</code> and <code>CLASS</code> fields automatically. One may also combine the fields with <code>&ndash;aCombine</code> .</p>
- <div class="image">
-<img src="andre-detected-hdfview.png" alt="" width="0.9\textwidth"/>
+<div class="image">
+<img src="andre-detected-hdfview.png" alt=""/>
 <div class="caption">
 Cumulative field (top window) and distinct detection results (underlying windows).</div></div>
-<h1><a class="anchor" id="andreremoval"></a>
+ <h1><a class="anchor" id="andreremoval"></a>
 Anomaly removal</h1>
 <p>After applying preferred detectors, original data in the volume can be enhanced with the help of the overall quality field, <code>/dataset1/quality/data</code> .</p>
 <p>There are three techniques available for the removal:</p><ol type="1">
@@ -305,23 +305,23 @@ Anomaly removal</h1>
 <p>The <code>&ndash;aRemover</code> command simply replaces data values with <code>nodata</code> in locations where the quality (anomaly probability) is lower than a threshold: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt; --aRemover 0.5  -o andre-removed.h5</div>
 </div><!-- fragment --><p> By default, <code>aRemover</code> applies to practically all quantities (DBZH,TH,VRAD,RHOHV,...). This behaviour can be changed with <code>&ndash;select</code> command. <br  />
 </p>
- <div class="image">
-<img src="volume-anom-sea-remover-panel.png" alt="" width="0.5\textwidth"/>
+<div class="image">
+<img src="volume-anom-sea-remover-panel.png" alt=""/>
 <div class="caption">
 A sweep corrected by <code>--aRemover</code> with threshold 0.25 (left) and 0.75 (right).</div></div>
-<p>A smooth erasure function is implemented as <code>&ndash;aDamper</code> which decreases intensity proportionally to the quality index. It applies to reflectivity data (DBZH) only. The lower the quality index, the more intensity will be decreased. An example of the erasing approach: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt; --aDamper 0.5 -o andre-damped.h5</div>
+ <p>A smooth erasure function is implemented as <code>&ndash;aDamper</code> which decreases intensity proportionally to the quality index. It applies to reflectivity data (DBZH) only. The lower the quality index, the more intensity will be decreased. An example of the erasing approach: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt; --aDamper 0.5 -o andre-damped.h5</div>
 </div><!-- fragment --><p>The parameter defines the threshold quality. The bin values below the quality threshold will be smoothly erased.</p>
- <div class="image">
-<img src="volume-anom-sea-damper-panel.png" alt="" width="0.5\textwidth"/>
+<div class="image">
+<img src="volume-anom-sea-damper-panel.png" alt=""/>
 <div class="caption">
 A sweep corrected by <code>--aDamper</code> with threshold 0.25 (left) and 0.5 (right).</div></div>
-<p>Gap filling means replacing single values with neighboring, more reliable values. An example of the gap filling approach: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt;  --aGapFill 2000m,5deg  -o andre-gapfilled.h5</div>
+ <p>Gap filling means replacing single values with neighboring, more reliable values. An example of the gap filling approach: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt;  --aGapFill 2000m,5deg  -o andre-gapfilled.h5</div>
 </div><!-- fragment --><p>The parameters of <code>aGapFill</code> are window width and height as metres and azimuthal degrees, respectively. Internally, this operator is implemented using 8-directional <em>distance</em> <em>transform</em>.</p>
- <div class="image">
-<img src="volume-anom-sea-gapFill-panel.png" alt="" width="0.5\textwidth"/>
+<div class="image">
+<img src="volume-anom-sea-gapFill-panel.png" alt=""/>
 <div class="caption">
 A sweep corrected with gap fill parameters 1500m,3deg (left) and 2500m,7deg (right).</div></div>
-<p>Another, experimental gap filling operator <code>&ndash;aGapFillRec</code> is recursive and produces spline-like correction fields. The result is smoother but slower to compute. Internally, this operator is implemented by repeating a weighted averaging window. <br  />
+ <p>Another, experimental gap filling operator <code>&ndash;aGapFillRec</code> is recursive and produces spline-like correction fields. The result is smoother but slower to compute. Internally, this operator is implemented by repeating a weighted averaging window. <br  />
 </p>
 <p>The removal command can be applied together, for example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5  &lt;...detection commands...&gt;  --aDamper 0.5,0.1  --aGapFill 1500m,7deg  -o andre-corrected.h5</div>
 </div><!-- fragment --><h1><a class="anchor" id="otherQuality"></a>

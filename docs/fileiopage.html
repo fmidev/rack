@@ -87,7 +87,7 @@ Reading and writing HDF5 files</h1>
 </div><!-- fragment --><p>In combining sweep data to volumes, <b>Rack</b> creates and updates one <code>/dataset&lt;i&gt;</code> group for each <em>elevation</em> <em>angle</em> . Further, <b>Rack</b> creates and updates one <code>/data&lt;i&gt;</code> group for each <em>quantity</em> ; new input overwrites existing data of the same quantity.</p>
 <p>If quality information &ndash; stored under some <code>/quality</code>[i] group and marked with <code>what:quantity=QIND</code> &ndash; is read, the overall quality indices are updated automatically. See <a class="el" href="fileiopage.html#file_quality">Reading and combining quality data</a> below for further details.</p>
  <div class="image">
-<img src="volume-hdfview-small.png" alt="" width="0.9\textwidth"/>
+<img src="volume-hdfview-small.png" alt=""/>
 <div class="caption">
 A volume combined from three separate files (illustrated with HDFview).</div></div>
 <h1><a class="anchor" id="fileio_txt"></a>
@@ -128,11 +128,11 @@ Reading and writing image files</h1>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select dataset2/data:,quantity=DBZH -o sweep1.pgm</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --cProj <span class="stringliteral">&quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span> -c  -o sweep1.tif</div>
 </div><!-- fragment --><p>Note: in GeoTIFF ouputs, for unknown reasons, certain projections &ndash; for example EPSG:3844, EPSG:3035, and EPSG:3995 &ndash; raise errors in writing projection data. (See <a class="el" href="compositespage.html">Cartesian conversions and composites</a> .)</p>
-<div class="image">
-<img src="sweep.png" alt="" width="0.5\textwidth"/>
+ <div class="image">
+<img src="sweep.png" alt=""/>
 <div class="caption">
 A PNG image generated with <code>-o</code> .</div></div>
- <p>Metadata (ODIM variables) are written in the comment lines (PGM and PNM). The syntax follows that of a text dump produced with <code>&ndash;outputFile</code> as explained above with <code>volume.txt</code> , but only the last path component (<code>what</code> , <code>where</code>, <code>how</code>) is included. For example, a resulting header of a PGM file - here pruned for illustration - looks like: </p><div class="fragment"><div class="line">P5</div>
+<p>Metadata (ODIM variables) are written in the comment lines (PGM and PNM). The syntax follows that of a text dump produced with <code>&ndash;outputFile</code> as explained above with <code>volume.txt</code> , but only the last path component (<code>what</code> , <code>where</code>, <code>how</code>) is included. For example, a resulting header of a PGM file - here pruned for illustration - looks like: </p><div class="fragment"><div class="line">P5</div>
 <div class="line"><span class="preprocessor"># how:freeze=2.1</span></div>
 <div class="line"><span class="preprocessor"># how:highprf=570</span></div>
 <div class="line"><span class="preprocessor"># how:lowprf=570</span></div>
@@ -258,7 +258,7 @@ Illustrating data structure</h1>
 </div><!-- fragment --><p>The desired path can be selected with <code>&ndash;select</code> path=&lt;group&gt;[/&lt;group&gt;] or simply <code>&ndash;select</code> &lt;group&gt;[/&lt;group&gt;] because path is the first argument key. <br  />
  The most relevant groups are <code>dataset:</code> , and <code>data:</code> , and <code>quality:</code> . The colon <code></code>: is compulsory for separating <code>data&lt;index&gt;</code> groups from lower level <code>data</code> group in ODIM. In the current version, groups <code>what</code> , <code>what</code> and <code>how</code> are handled somewhat automagically. (See <a class="el" href="index.html#selecting">Selecting data</a> .)</p>
  <div class="image">
-<img src="volume-tree.png" alt="" width="0.2\textwidth"/>
+<img src="volume-tree.png" alt=""/>
 <div class="caption">
 Data structure illustrations creating by means of <code>dot</code> file output.</div></div>
 <h1><a class="anchor" id="file_details"></a>

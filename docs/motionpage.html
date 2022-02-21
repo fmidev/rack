@@ -208,7 +208,7 @@ Deriving two-dimensional wind field from Doppler data</h2>
 </div><!-- fragment --><p>Accompanied utility script <code>draw-vectors.sh</code> creates plots of vector fields using <code>gnuplot</code> utility. The original data can be in text (<code></code>.dat) or HDF5 (<code></code>.h5) format. Optional background images can be applied. For example:</p>
 <div class="fragment"><div class="line">BACKGROUND=background-dark.png OUTFILE=doppler-field.png ./draw-vectors.sh amv-cart.h5</div>
 </div><!-- fragment --><div class="image">
-<img src="doppler-field-panel.png" alt="" width="0.9\textwidth"/>
+<img src="doppler-field-panel.png" alt=""/>
 <div class="caption">
 Vector field derived by Doppler dealiasing.</div></div>
  <h2><a class="anchor" id="dopplerdealias"></a>
@@ -216,13 +216,13 @@ Dealiasing Doppler data</h2>
 <p>As shown above, <b>Rack</b> produces wind fields (u,v) directly, but also de-aliased Doppler fields can be computed. This is obtained by re-projecting the approximated (u,v) data back to radar beams and matching the result with the original aliased data. This approach cancels the smoothing effect apparent in the approximated (u,v) field. Dealiasing is done by setting <code>nyquist</code> parameter to a desired virtual maximum speed, say 50m/s:</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> amv-polar.h5 --pDopplerReproject 50 -Q VRAD -c --palette <span class="keywordflow">default</span> -o pDopplerDeAlias.png</div>
 </div><!-- fragment --><div class="image">
-<img src="pDopplerDeAlias-VRAD-panel.png" alt="" width="0.9\textwidth"/>
+<img src="pDopplerDeAlias-VRAD-panel.png" alt=""/>
 <div class="caption">
 De-aliased Doppler field.</div></div>
  <p>Alternatively, one may skip matching of the original and derived velocities with <code>matchAliased=0</code> , resulting in smoother images. <br  />
 </p>
 <div class="image">
-<img src="pDopplerDeAlias-VRAD-UNMATCHED-panel.png" alt="" width="0.9\textwidth"/>
+<img src="pDopplerDeAlias-VRAD-UNMATCHED-panel.png" alt=""/>
 <div class="caption">
 De-aliased Doppler field, without velocity matching.</div></div>
  <h2><a class="anchor" id="motiondetection"></a>

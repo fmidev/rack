@@ -13,13 +13,17 @@ fi
 NICK=$1
 VOLUME=volume-$NICK.h5
 
+
+
 #VOLUME_IMG=${VOLUME%%.*}.png
 VOLUME_IMG_PANEL=${NICK}${SITE:+"-$SITE"}-panel.png
+#VOLUME_IMG_PANEL=${NICK}-${SITE}-panel.png
 
+SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
 
 # if [ "$SITE" == '' ]; then
 # eval SITE=`rack --verbose 0 $VOLUME --format '${NOD}' --formatOut -`
-SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
+
 
 
 if [ ! -f $VOLUME ]; then
@@ -72,13 +76,13 @@ while [ ${#*} != 0 ]; do
 	VALUES=( ${VALUES[*]} )
 	VALUES="${VALUES[*]}"
 	VALUES=${VALUES// /,}
-	cmd="rack $VOLUME --$aDETECTOR $VALUES -o andre-$DETECTOR.h5"
-	echo "$cmd"
+	#cmd="rack $VOLUME --$aDETECTOR $VALUES -o andre-$DETECTOR.h5"
+	#echo "$cmd"
 	####  eval "$cmd"
-	if [ $? != '0' ]; then
-	    echo "$aDETECTOR failed"
-	    exit 1
-	fi
+	#if [ $? != '0' ]; then
+	#    echo "$aDETECTOR failed"
+	#    exit 1
+	#fi
 
 	ANOM_BASE=andre-$NICK-$DETLABEL
 	ANOM_IMG=$ANOM_BASE.png
@@ -97,9 +101,13 @@ while [ ${#*} != 0 ]; do
 
 	# $VOLUME_IMG
 
-	IMG_PANEL="result-$DETLABEL.png"
-	convert +append -frame 1 $VOLUME_IMG_PANEL $ANOM_IMG_PANEL   -resize 600x600 $IMG_PANEL
+	IMG_PANEL="result-$NICK-$DETLABEL.png"
+	#convert +append -frame 1 $VOLUME_IMG_PANEL $ANOM_IMG_PANEL   -resize 600x600 $IMG_PANEL
+	annotate="-pointsize 10 -draw 'text 10,35 \"$NICK\"'"
+	convert +append -frame 1 $VOLUME_IMG_PANEL $ANOM_IMG_PANEL  -resize 600x600 -draw 'text 8,342 "'$NICK'"'  $IMG_PANEL
 
+	#convert $IMG_PANEL -pointsize 8 -draw 'text 10,35 "'$NICK'"' result-$DETLABEL-$NICK.png
+	
 	#ls -l $IMG_PANEL 
 	ls -ltr $VOLUME  $VOLUME_IMG_PANEL $ANOM_IMG $ANOM_IMG_PANEL  $IMG_PANEL
 
