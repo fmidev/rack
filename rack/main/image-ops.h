@@ -106,17 +106,17 @@ public:
 
 
 
-/// Directive. Set physical scale on or off.
+/// Switch for image operators to use physical scale instead of storage typed values.
 /**
  *   Applied also by CartesianGrid
  */
-class CmdPhysical : public drain::SimpleCommand<bool> {
+class CmdImagePhysical : public drain::SimpleCommand<bool> {
 
 public:
 
-	CmdPhysical() :  drain::SimpleCommand<bool>(__FUNCTION__,
+	CmdImagePhysical() :  drain::SimpleCommand<bool>(__FUNCTION__,
 			"Flag. Handle intensities as physical quantities instead of storage typed values.", "physical", false){
-		//parameters.link("value", ImageOpExec::physical);
+			//parameters.link("value", ImageOpExec::physical);
 	};
 
 	virtual

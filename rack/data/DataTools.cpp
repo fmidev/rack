@@ -38,65 +38,14 @@ namespace rack {
 
 using namespace hi5;
 
-/*
-void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
-
-        drain::Logger mout(__FILE__, __FUNCTION__);
-
-        /// Write to "hidden" variables of this node (src).
-        drain::FlexVariableMap & a = src.data.dataSet.properties;
-        a.importMap(attributes);
-        //std::cerr << "MAP now: " << a << "\n\n";
-
-        /// Collect values of succeeding /what, /where, and /how groups .
-        const std::set<ODIMPathElem> & g = EncodingODIM::attributeGroups;
-        std::stringstream sstr;
-        for (std::set<ODIMPathElem>::const_iterator git = g.begin(); git != g.end(); ++git){
-                if (src.hasChild(*git)){
-                        const drain::VariableMap  & groupAttributes = src[*git].data.attributes;
-                        for(drain::VariableMap::const_iterator it = groupAttributes.begin(); it != groupAttributes.end(); it++){
-                                sstr.str("");
-                                sstr << *git << ':' << it->first;
-                                a[sstr.str()] = it->second;
-                                // if (it->first == "quantity") mout.warn() << "quantity=" << it->second << mout.endl;
-                        }
-                }
-        }
-
-        const bool HAS_DATA = src.hasChild("data");
-
-        if (HAS_DATA){  // move down?
-                const drain::image::Image & img = src["data"].data.dataSet;
-                //img.setCoordinatePolicy(policy);
-                if (img.typeIsSet())
-                        a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
-        }
-        if (HAS_DATA){
-                drain::image::Image & img = src["data"].data.dataSet;
-                if (img.typeIsSet()){
-                        const drain::ValueScaling & s = img.getScaling();
-                        img.setScaling(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
-                }
-        }
-
-
-
-        // Traverse children (recursion)
-
-        for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
-                if (! it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
-                        //if (g.find(it->first) == g.end())
-                        updateInternalAttributes(it->second,  a); // policy,
-        }
-
-
-        // std::cerr << "### updateAttributes"
-}
-*/
 
 void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	// std::string path = attributes.get("how:path","");
+	// mout.special("path: ", path);
+
 
 	/// Write to "hidden" variables of this node (src).
 	drain::FlexVariableMap & a = src.data.dataSet.properties;
@@ -107,35 +56,18 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting previous (upper-level) values.
 	std::stringstream sstr;
 	// Traverse children (recursion)
-	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
-		if (it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			const drain::VariableMap & attributes = it->second.data.attributes;
-			for(drain::VariableMap::const_iterator ait = attributes.begin(); ait != attributes.end(); ait++){
+	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
+	for (const auto & it : src){
+		if (it.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			const drain::VariableMap & attributes = it.second.data.attributes;
+			for(const auto & ait: attributes){
 				sstr.str("");
-				sstr << it->first << ':' << ait->first;
-				a[sstr.str()] = ait->second;
+				sstr << it.first << ':' << ait.first;
+				a[sstr.str()] = ait.second;
 				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
 			}
 		}
 	}
-
-	/*
-	for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
-
-		if (src.hasChild(*git)){
-
-			const drain::VariableMap & groupAttributes = src[*git].data.attributes;
-			for(drain::VariableMap::const_iterator it = groupAttributes.begin(); it != groupAttributes.end(); it++){
-				sstr.str("");
-				sstr << *git << ':' << it->first;
-				a[sstr.str()] = it->second;
-				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
-			}
-
-		}
-
-	}
-	*/
 
 
 	// Step 2: Traverse other children (recursion)
@@ -167,6 +99,11 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		// mout.note() << "considering " << it->first << mout.endl;
 		if (it->first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
 			//mout.warn() << "descending to... " << it->first << mout.endl;
+			/*
+			a["how:path"] = path;
+			a["how:path"] << it->first;
+			mout.special("pathy -> ", a["how:path"]);
+			*/
 			updateInternalAttributes(it->second,  a); // policy,
 		}
 

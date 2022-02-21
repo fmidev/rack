@@ -121,7 +121,12 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	file.setTime(t);
 
 	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
-	const std::string desc = drain::StringBuilder(prop["what:object"],':',prop["what:product"],':',prop["what:prodpar"],':',prop["what:quantity"]);
+	const std::string desc = drain::StringBuilder(
+			prop["what:object"],':',
+			prop["what:product"],':',
+			prop["what:prodpar"],':',
+			prop["what:quantity"],':',
+			prop["how:angles"]);
 	//TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
 	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc);
 

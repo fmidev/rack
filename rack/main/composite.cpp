@@ -361,7 +361,11 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 		//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
 		const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
 		composite.metadataMap["how:angles"].setType(typeid(double));
-		composite.metadataMap["how:angles"] = how["angles"];
+		//if (how.hasKey("angles")){
+
+		composite.metadataMap["how:angles"] = how.get("angles", polarSrc.odim.elangle);
+		//composite.metadataMap["how:angles"] = polarSrc.odim.elangle;
+
 
 		double w = weight;
 

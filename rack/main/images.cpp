@@ -1073,7 +1073,8 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	install<CmdImageTransp>();
 	install<CmdPaletteOut>("legendOut"); // Same as --iPaletteOut below
 	install<CmdImageFlatten>();
-	install<CmdPhysical>("iPhysical"); // perhaps should be imagePhysical!
+	install<CmdImagePhysical>("iPhysical"); // perhaps should be imagePhysical!
+	install<CmdImagePhysical>("imagePhysical");
 	install<CmdImageQuality>();
 
 	/// WAS: with prefix 'i', like image operators

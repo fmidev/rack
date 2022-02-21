@@ -199,6 +199,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		return ctx.grayImage;
 	}
 
+	// Security risk?
 	//ctx.currentImage->properties["path"] = path;
 
 	return *ctx.currentImage;
