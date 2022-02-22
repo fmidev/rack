@@ -40,10 +40,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 
-#include "drain/util/Log.h"
-
-#include "drain/util/Variable.h"
 #include "drain/image/Image.h"
+#include "drain/util/FileInfo.h"
+#include "drain/util/Log.h"
+#include "drain/util/Variable.h"
 #include "drain/util/Tree.h"
 
 #include "data/ODIMPath.h"
@@ -60,8 +60,11 @@ extern drain::Log hi5monitor;
 extern drain::Logger hi5mout;
 
 /// Syntax for recognising HDF5 filenames.
+//extern
+//const drain::RegExp fileNameRegExp;
+
 extern
-const drain::RegExp fileNameRegExp;
+drain::FileInfo fileInfo;
 
 /// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
 /**

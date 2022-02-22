@@ -103,7 +103,11 @@ public:
 				ostr << dir.separator.character;
 		}
 
-		ostr << basename << '.' << extension;
+		ostr << basename;
+
+		if (!extension.empty())
+			ostr << '.' << extension;
+
 		return ostr;
 	}
 
@@ -118,7 +122,7 @@ public:
 	inline
 	FilePath & operator<<(const FilePath & path){
 		this->dir << path.dir;
-		if (this->basename.empty())
+		if (!this->basename.empty())
 			std::cerr << __FILE__ << " warning: dropped:" << this->basename << '\n';
 		this->basename  = path.basename;
 		this->extension = path.extension;

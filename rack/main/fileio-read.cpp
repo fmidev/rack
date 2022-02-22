@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Input.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
+#include "drain/image/FileTIFF.h"
 
 
 #include "drain/prog/Command.h"
@@ -85,28 +86,32 @@ void CmdInputFile::exec() const {
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
 	// mout.warn() << "inputComplete: " << (int)inputComplete << mout.endl;
 	// mout.warn() << "autoExec:      " << (int)cmdAutoExec.exec << mout.endl;
-	// const bool IMAGE_PNG = drain::image::FilePng::fileNameRegExp.test(value);
-	// const bool IMAGE_PNM = drain::image::FilePnm::fileNameRegExp.test(value);
-	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(value);  //pngFileExtension.test(value);
-	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
+	drain::FilePath path(value);
+	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
+	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
+	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
+	const bool NO_EXTENSION = path.extension.empty();
 
 	try {
 
 
-		if (h5FileExtension.test(this->value)){
+		if (hi5::fileInfo.checkPath(value) || NO_EXTENSION){
+			if (NO_EXTENSION){
+				mout.discouraged("No file extension! Assuming HDF5...");
+			}
+			// if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
 		}
+		else if (IMAGE_TIF){
+			mout.error("Reading TIFF files not supported");
+		}
 		else if (IMAGE_PNG || IMAGE_PNM){
-			mout.warn() << "value: " << this->value << mout.endl;
-			mout.warn() << "full value: " << fullFilename << mout.endl;
-			mout.warn() << "re1: " <<  drain::image::FilePng::fileInfo.extensionRegexp << mout.endl;
-			mout.warn() << "re2: " <<  drain::image::FilePnm::fileInfo.extensionRegexp << mout.endl;
 			readImageFile(fullFilename);
 		}
 		else if (textFileExtension.test(this->value))
 			readTextFile(fullFilename);
 		else {
-			mout.error() << "Unrecognizable as a filename: " << this->value << mout.endl;
+			mout.error("Unrecognized/unsupported file type, filename: '", this->value, "'");
 		}
 
 	}
@@ -606,6 +611,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	Hi5Tree & dst = ctx.inputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.dataSet;
+	//mout.special("WHAT");
 	drain::image::ImageFile::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();
 

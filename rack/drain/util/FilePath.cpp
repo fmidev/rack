@@ -82,29 +82,54 @@ void FilePath::set(const std::string & s){
 	}
 	else {
 
-		const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
+		//static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
+		static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
+		//static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
+
+
 		RegExp::result_t result;
 
 		if (!pathRegExp.execute(s, result)){
+
+			//mout.special("Result 1: ", sprinter(result));
 
 			//std::cerr << "Regepp: " << sprinter(result) << '\n';
 			// for (std::size_t i = 1; i < result.size(); ++i)
 			//   mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
 
-			if (result.size() == 5){
+			if (result.size() == 4){
 				// this->dir.assign(result[2]);  // excludes trailing separator '/'
-				this->dir.assign(result[1]);     // includes trailing separator '/'
+				this->dir.assign(result[2]);     // includes trailing separator '/'
 				this->basename  = result[3];
-				this->extension = result[4];
 			}
-			else if (result.size() == 3){
+			else if (result.size() == 2){
 				this->basename  = result[1];
-				this->extension = result[2];
 			}
 			else {
-				mout.warn() << "RegExp: " <<	sprinter(result) << mout.endl;
+				mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
 				mout.error() << "odd parsing results for file path: " << s << mout.endl;
 			}
+
+			//mout.special("Split: ", this->dir, '|', this->basename);
+
+			static const RegExp basenameRegExp("^(.+)\\.([[:alnum:]]+)$");
+			if (!basenameRegExp.execute(this->basename, result)){
+
+				//mout.special("Result 2: ", sprinter(result));
+
+				if (result.size() == 3){
+					this->basename  = result[1];
+					this->extension = result[2];
+				}
+				else {
+					mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
+					mout.error() << "odd parsing results for file path: " << s << mout.endl;
+				}
+
+
+			}
+
+
 		}
 		else {
 			mout.error() << "could not parse file path: '" << s << "'" << mout.endl;

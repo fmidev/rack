@@ -46,13 +46,11 @@ namespace drain
 class FileInfo {
 public:
 
-	FileInfo(const std::string & r, int flags=REG_ICASE|REG_EXTENDED){
-		setExtensionRegExp(r, flags);
+	FileInfo(const std::string & extRE = "[\\w]+", int flags=REG_ICASE|REG_EXTENDED){
+		setExtensionRegExp(extRE, flags);
 	}
-	//std::string defaultExtension;
 
-	//(h5|hdf5|hdf)
-	void setExtensionRegExp(const std::string & r, int flags=REG_ICASE|REG_EXTENDED);
+	void setExtensionRegExp(const std::string & extRE, int flags=REG_ICASE|REG_EXTENDED);
 
 	/// Accepts or rejects a filename extension.
 	inline
@@ -77,6 +75,8 @@ public:
 	/// Regexp to be set inside parentheses
 	drain::RegExp extensionRegexp;
 
+	//static
+	//const drain::RegExp noExtension;
 
 };
 

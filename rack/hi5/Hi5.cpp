@@ -43,7 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace hi5 {
 
-const drain::RegExp fileNameRegExp("^((.*/)?([^/]+))\\.(h5|hdf5)$", REG_EXTENDED | REG_ICASE);
+//const drain::RegExp fileNameRegExp("^((.*/)?([^/]+))\\.(h5|hdf5)$", REG_EXTENDED | REG_ICASE);
+
+drain::FileInfo fileInfo("h5|hdf5");
+
 
 //void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 

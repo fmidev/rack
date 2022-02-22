@@ -47,15 +47,22 @@ int ImageFile::index(0);
 void ImageFile::read(Image &img, const std::string & path){
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	if (FilePnm::fileInfo.checkExtension(path)){
-		mout.debug() << "file format: PNM" << mout.endl;
+
+	/*
+	mout.warn("path: ", path);
+	mout.special("PNM: ", FilePnm::fileInfo.checkPath(path));
+	mout.special("PNG: ", FilePng::fileInfo.checkPath(path));
+	*/
+
+	if (FilePnm::fileInfo.checkPath(path)){
+		mout.debug() << "file format: PNM" << mout;
 		FilePnm::read(img, path); // , commentReader
 	}
 	else {
-		if (FilePng::fileInfo.checkExtension(path))
-			mout.debug() << "file format: PNG" << mout.endl;
+		if (FilePng::fileInfo.checkPath(path))
+			mout.debug() << "file format: PNG" << mout;
 		else
-			mout.warn() << "unrecognized extension, assuming PNG" << mout.endl;
+			mout.warn() << "unrecognized extension, assuming PNG" << mout;
 		FilePng::read(img, path); // , commentReader
 	}
 }
@@ -64,16 +71,18 @@ void ImageFile::read(Image &img, const std::string & path){
 void ImageFile::readFrame(ImageFrame &img, const std::string & path){
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	if (FilePng::fileInfo.checkExtension(path)){
+
+
+	if (FilePng::fileInfo.checkPath(path)){
 		mout.debug() << "file format: PNG" << mout.endl;
 		FilePng::read(img, path);
 	}
-	else if (FilePnm::fileInfo.checkExtension(path)){
+	else if (FilePnm::fileInfo.checkPath(path)){
 		mout.debug() << "file format: PBM/PNM" << mout.endl;
 		FilePnm::readFrame(img, path);
 	}
 	else {
-		mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+		mout.warn() << "Unrecognized extension, assuming png" << mout.endl;
 		FilePng::read(img, path);
 	}
 

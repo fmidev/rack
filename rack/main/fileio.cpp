@@ -87,8 +87,9 @@ namespace rack {
 /// Syntax for recognising hdf5 files.
 //  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
-const drain::RegExp h5FileExtension("^((.*\\.(h5|hdf5|hdf))|((.*/)?[\\w]+))$",  REG_EXTENDED | REG_ICASE);
+//const drain::RegExp h5FileExtension("^((.*\\.(h5|hdf5|hdf))|((.*/)?[\\w]+))$",  REG_EXTENDED | REG_ICASE);
 //const drain::FileInfo fileInfoH5("tif|tiff");
+//const drain::RegExp noExtension("^((.*/)?[\\w]+)$");
 
 
 /// Syntax for recognising GeoTIFF files.
@@ -264,14 +265,25 @@ void CmdOutputFile::exec() const {
 	// TODO: generalize select
 	// TODO: generalize image pick (current or str) for png/tif
 	//drain::image::FilePng::
+	/*
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(value);  //pngFileExtension.test(value);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
+	*/
+	drain::FilePath path(value);
+	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
+	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
+	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
+	const bool NO_EXTENSION = path.extension.empty();
+
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	if (h5FileExtension.test(value)){
-
+	//if (h5FileExtension.test(value)){
+	if (hi5::fileInfo.checkPath(value) || NO_EXTENSION){
+		if (NO_EXTENSION){
+			mout.discouraged("No file extension! Assuming HDF5...");
+		}
 		mout.info() << "File format: HDF5" << mout.endl;
 		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);

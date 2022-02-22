@@ -456,27 +456,35 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	FileType storage_type = UNDEFINED;
 
 	// Debugging. Consider also using for checking file extension vs channel count.
-	typedef std::vector<std::string> result_t;
-	result_t result;
-	//if (!fileNameRegExp.execute(path, result)){
+	char colorTypeChar = 0;
+	drain::RegExp::result_t result;
 	drain::FilePath filepath(path);
+	mout.experimental("Extension check, regexp=", fileInfo.extensionRegexp);
 	if (!fileInfo.extensionRegexp.execute(filepath.extension, result)){
-		mout.unimplemented("general path parsing");
-		mout.experimental() << "file char: " << result[1] << mout.endl;
+		colorTypeChar = result[1].at(0);
+		//mout.experimental() << "file char: " << result[1] << mout.endl;
 	}
+	// mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
+	mout.experimental("Result: ", sprinter(result), " color type char: ",  colorTypeChar);
 
 	switch (channels) {
 	case 4:
 		mout.warn() << "four-channel image; writing channels 0,1,2 only" << mout.endl;
 		// no break
 	case 3:
-		storage_type = PGM_RAW;
+		storage_type = PPM_RAW;
+		if (colorTypeChar != 'p'){
+			mout.warn("Odd color type char '", colorTypeChar, "' for rgb image data");
+		}
 		break;
 	case 2:
 		mout.warn() << "two-channel image, writing channel 0" << mout.endl;
 		// no break
 	case 1:
 		storage_type = PGM_RAW;
+		if (colorTypeChar != 'g'){
+			mout.warn("Odd color type char '", colorTypeChar, "' for gray image data");
+		}
 		break;
 	case 0:
 		mout.warn() << "zero-channel image" << mout.endl;
@@ -487,27 +495,17 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		// throw std::runtime_error(s.toStr());
 	}
 
-	//std::ofstream ofstr(path.c_str(), std::ios::out);
 	drain::Output output(path);
 	std::ofstream & ofstr = output;
 
-	/*
-	if (!ofstr){
-		mout.error()  << "could not open file: " << file << mout;
-		return;
-	}
-	*/
-
 	/// FILE HEADER
-
-
 	mout.debug() << "magic code: P" << storage_type << mout;
 	ofstr << 'P' << storage_type << '\n';
 
-	// mout.debug() << "writing comments (metadata)" << mout.endl;
+	mout.debug("writing comments (metadata)");
 	const FlexVariableMap & vmap = image.getProperties();
 	if (vmap.hasKey("")){
-		mout.note() << "overriding comments" << mout.endl;
+		mout.note("Comment override mode detected (comment with empty key)");
 		ofstr << '#' << ' ' << drain::StringTools::replace( vmap.get("", ""), "\n", "\n# ");
 		// ofstr << vmap.get("", "");
 		ofstr << '\n';
@@ -551,7 +549,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 			}
 			for (j = 0; j < height; ++j) {
 				for (i = 0; i < width; ++i) {
-					value = image.get<unsigned char>(i,j);
+					value = image.get<unsigned short>(i,j);
 					ofstr.put(value & 0xff);
 					value = (value >> 8);
 					ofstr.put(value & 0xff);  // check order!

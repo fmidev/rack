@@ -31,12 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataCoder.h"
 #include "data/Quantity.h"
-//#include "drain/image/AccumulationMethods.h"
-//#include "drain/image/File.h"
-//#include "drain/util/FunctorPack.h"
-//#include "drain/util/Log.h"
-//#include "drain/util/Time.h"  // decayTime
-//#include "drain/util/Variable.h"
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
 #include <limits>

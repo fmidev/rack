@@ -64,8 +64,8 @@ class FilePng
 public:
 
 	/// Syntax for recognising png files.
-	static
-	const drain::RegExp fileNameRegExp;
+	//static
+	//const drain::RegExp fileNameRegExp;
 
 
 	/// Reads a png file to Image or Channel .

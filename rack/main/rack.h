@@ -35,6 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "6.42"
 
 /**
+ *   Version 6.43
+ *   -- Bug fix: PGM 16 bit write
+ *   -- Developed further: file extension support
+ *
  *   Version 6.42
  *   -- TIFF & GeoTIFF re-organized
  *

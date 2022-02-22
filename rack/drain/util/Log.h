@@ -340,6 +340,16 @@ public:
 		return *this;
 	};
 
+	/// Warning on user's convention or action that can potentially cause errors or confusions.
+	template<typename ... TT>
+	inline
+	Logger & discouraged(const TT &... args){
+		static const Notification notif(__FUNCTION__, 35);
+		initMessage<LOG_WARNING>(notif);
+		flush(args...);
+		return *this;
+	};
+
 
 	/// Possible error, but execution can continue. Special type of Logger::warn().
 	template<typename ... TT>

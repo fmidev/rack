@@ -46,8 +46,11 @@ void FileInfo::setExtensionRegExp(const std::string & extRegExp, int flags){
 	sstr << '^' << extRegExp << '$';
 	extensionRegexp.setExpression(sstr.str(), flags);
 	*/
-	extensionRegexp.setExpression(StreamBuilder().create("^",extRegExp,"$").str(), flags);
+	extensionRegexp.setExpression(StringBuilder().create("^",extRegExp,"$"), flags);
 }
+
+//const drain::RegExp FileInfo::extensionRegExp("^((.*/)?[\\w]+)$");
+
 
 Registry<FileInfo> & getFileInfoRegistry(){
 	static Registry<FileInfo> registry;

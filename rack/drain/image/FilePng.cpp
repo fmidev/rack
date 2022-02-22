@@ -43,7 +43,7 @@ namespace image
 {
 
 /// Syntax for recognising image files
-const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
+//const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
 
 FileInfo FilePng::fileInfo("png");
 
