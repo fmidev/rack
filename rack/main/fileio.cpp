@@ -270,11 +270,13 @@ void CmdOutputFile::exec() const {
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
 	*/
+	const bool STD_OUTPUT = (value == "-");
+
 	drain::FilePath path(value);
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
-	const bool NO_EXTENSION = path.extension.empty();
+	const bool NO_EXTENSION = path.extension.empty() && !STD_OUTPUT;
 
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
