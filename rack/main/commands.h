@@ -57,9 +57,16 @@ public:
 
 	MainModule();
 
+};
 
+class HiddenModule : public drain::CommandModule<0,drain::HiddenSection> {
+
+public:
+
+	HiddenModule();
 
 };
+
 
 
 

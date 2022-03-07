@@ -269,39 +269,42 @@ public:
 */
 
 
-CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) { // : CommandSection("cart"){
+CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 
 	drain::CommandBank::trimWords().insert("Cartesian");
 	drain::CommandBank::trimWords().insert("Composite");
 
-	//CartesianCmdWrapper<>::get
-	//drain::CommandInstaller<'c', CartesianSection> installer;
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	install<CartesianCreate>('c'); // cCreate2('c');
-	install<CompositeAdd>(); // cAdd2;
-	install<CompositeAddWeighted>(); // cAddWeighted2;
-	install<CompositeDefaultQuality>(); // cDefaultQuality2;
-	install<CartesianBBox>(); // cBBox2;
-	install<CartesianBBoxReset>(); // cBBoxReset2;
-	install<CartesianBBoxTest>(); // cBBoxTest2;
-	install<CartesianBBoxTile>(); // cBBoxTile2;
-	install<CartesianExtract>(); // cExtract2;
-	install<CartesianGrid>(); // cGrid2;
-	install<CartesianInit>(); // cInit2;
-	install<CompositeMethod>(); // cMethod2;
 
-	install<CartesianPlot>(); // cPlot2;
-	install<CartesianPlotFile>(); // cPlotFile2;
-	install<CartesianProj>(); // cProj2;  // shared
-	install<CartesianRange>(); // cRange2;
-	install<CartesianReset>(); // cReset2;
-	install<CartesianSize>(); // cSize2;
-	install<CartesianSpread>(); // cSpread2;
-	install<CartesianTime>(); // cTime2;
+	install<CartesianCreate>('c');
+	install<CompositeAdd>();
+
+	install<CompositeAddWeighted>();
+	install<CompositeDefaultQuality>();
+
+	install<CartesianBBox>();
+
+	install<CartesianBBoxReset>();
+	install<CartesianBBoxTest>();
+	install<CartesianBBoxTile>();
+	install<CartesianExtract>();
+	install<CartesianGrid>();
+	install<CartesianInit>();
+	install<CompositeMethod>();
+
+	install<CartesianPlot>();
+	install<CartesianPlotFile>();
+	install<CartesianProj>();   // shared
+	install<CartesianRange>();
+	install<CartesianReset>();
+	install<CartesianSize>();
+	install<CartesianSpread>();
+	install<CartesianTime>();
 	install<CompositeTimeDecay>(); // Yes, both
 	install<CompositeDecayTime>(); // Yes, both
-	install<CompositeCreateTile>(); // cCreateTile2;
-	install<CartesianSun>("cCreateSun"); // cCreateSun2;
+	install<CompositeCreateTile>();
+	install<CartesianSun>("cCreateSun");
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
 	/// In future, unused.

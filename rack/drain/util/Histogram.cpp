@@ -64,7 +64,8 @@ void Histogram::setSize(size_t s){
 	//resize(bins,0);
 	resize(bins);
 	//setScale(inMin,inMax,outMin,outMax);
-	setScale(0, bins-1);
+	if (scaling.physRange.span() == 0)
+		setScale(0, bins-1);
 }
 
 
@@ -137,7 +138,8 @@ void Histogram::dump(std::ostream & ostr){
 
 
 std::ostream & operator<<(std::ostream & ostr, const Histogram &h){
-	ostr << "histogram(" << h.getSize() << ")\t";
+	ostr << "histogram(" << h.getSize() << ") ";
+	ostr << "scaling: " << h.scaling << "\t";
 	ostr << '[' << h.getInMin() << ','  << h.getUpperBoundIn() << '[';
 	ostr << " => ";
 	ostr << '[' << h.getOutMin() << ','  << h.getUpperBoundOut() << '[' << '\n';

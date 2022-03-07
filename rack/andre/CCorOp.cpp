@@ -81,13 +81,13 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 	const double QMAX = dstProb.odim.scaleInverse(1.0);
 
 
-	Data<PolarDst> & dstCCOR = aux.getData("CCORH");
+	Data<PolarDst> & dstAux = aux.getData("TH_DBZH"); // TODO: toggle letter
 	const QuantityMap & qm = getQuantityMap();
-	dstCCOR.odim.updateFromCastableMap(srcDBZH.odim);
-	dstCCOR.odim.quantity = "CCORH";
-	qm.setQuantityDefaults(dstCCOR, "DBZH", srcDBZH.odim.type);
+	dstAux.odim.updateFromCastableMap(srcDBZH.odim);
+	dstAux.odim.quantity = "TH_DBZH";
+	qm.setQuantityDefaults(dstAux, "DBZH", srcDBZH.odim.type); // SAFE, lower limit (like -32dBZ) never exceeded because TH-DBHZ always positive
 
-	dstCCOR.setGeometry(geometry);
+	dstAux.setGeometry(geometry);
 
 	/// Main loop
 	double dbzh, th, diff;
@@ -95,18 +95,18 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 	Image::const_iterator ith   = srcTH.data.begin();
 	Image::const_iterator idbzh = srcDBZH.data.begin();
 	Image::iterator        it   = dstProb.data.begin();
-	Image::iterator       cit   = dstCCOR.data.begin();
+	Image::iterator       cit   = dstAux.data.begin();
 	while (ith != srcTH.data.end()){
 
 		th = *ith;
 
 		if (th == srcTH.odim.undetect){
 			*it  = dstProb.odim.undetect;
-			*cit = dstCCOR.odim.undetect;
+			*cit = dstAux.odim.undetect;
 		}
 		else if (th == srcTH.odim.nodata){
 			*it  = dstProb.odim.nodata;
-			*cit = dstCCOR.odim.nodata;
+			*cit = dstAux.odim.nodata;
 		}
 		else {
 			dbzh = *idbzh;
@@ -121,9 +121,9 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 			diff = th - dbzh;
 			*it  = QMAX - fuzzy(diff);
 			if (diff != 0.0)
-				*cit = dstCCOR.odim.scaleInverse(diff);
+				*cit = dstAux.odim.scaleInverse(diff);
 			else
-				*cit = dstCCOR.odim.nodata;
+				*cit = dstAux.odim.nodata;
 		}
 
 		++ith;

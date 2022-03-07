@@ -529,6 +529,10 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 		help(FlagResolver::ALL, ostr);
 		//help(0xffffffff, ostr);
 	}
+	else if (key == "hidden"){
+			help(0, ostr);
+			//help(0xffffffff, ostr);
+	}
 	else {
 
 		// Try to find the command directly
@@ -565,57 +569,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 
 }
 
-void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
-
-	ostr << title << '\n' << std::endl;
-
-	const bool TEST = false; //true;
-
-	if (sectionFilter > 0){
-		//Flagger::value_t filter = FlagResolver::getValue(sections, key);
-		//Flagger::value_t filter = 0;
-		//Flagger flagger(filter, sections, ',');
-		//flagger.set(sectionFilter);
-		ostr << "Section: " << FlagResolver::getKeys(sections, sectionFilter) << '\n' << '\n';
-		for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
-			if ((it->second->getSource().section & sectionFilter) > 0){
-				try {
-					if (!TEST){
-						info(it->first, it->second->getSource(), ostr, false);
-					}
-					else {
-						ostr << it->first << '\n';
-						std::stringstream sstr, sstr2;
-						Command & cmdOrig = it->second->getSource();
-						Command & cmdCopy = it->second->getCloned();
-						info(it->first, cmdOrig, sstr, false);
-						info(it->first, cmdCopy, sstr2, false);
-						if (sstr.str() != sstr2.str()){
-							ostr << sstr.str()  << '\n';
-							ostr << sstr2.str() << '\n';
-							ostr << "---- ERROR " << '\n';
-						}
-						sstr.str("  ");
-						sstr2.str("  ");
-						sstr <<  cmdOrig.getParameters();
-						sstr2 << cmdCopy.getParameters();
-						if (sstr.str() != sstr2.str()){
-							ostr << sstr.str()  << '\n';
-							ostr << sstr2.str() << '\n';
-							ostr << "---- ERROR " << '\n';
-						}
-						//cmdCopy.setParameters(cmdOrig.getParameters());
-					}
-
-				}
-				catch (const std::exception &e) {
-					ostr << "error: " << e.what() << '\n';
-				}
-			}
-		}
-	}
-	// else { ?
-	ostr << '\n';
+void CommandBank::help(std::ostream & ostr){
 	ostr << "For help on a commands, type:\n";
 	ostr << "  --help <command>\n";
 	ostr << '\n';
@@ -626,6 +580,63 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 	if (sections.size() > 2)
 		ostr << '|' << "all";
 	ostr << "]\n";
+}
+
+void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
+
+	ostr << title << '\n' << std::endl;
+
+	const bool TEST = false; //true;
+
+	// if (sectionFilter > 0){
+	// Flagger::value_t filter = FlagResolver::getValue(sections, key);
+	// Flagger::value_t filter = 0;
+	// Flagger flagger(filter, sections, ',');
+	// flagger.set(sectionFilter);
+	ostr << "Section: " << FlagResolver::getKeys(sections, sectionFilter) << '\n' << '\n';
+	for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
+		Flagger::value_t sec = it->second->getSource().section;
+		if ((sec == sectionFilter) || (sec & sectionFilter) > 0){ // 1st test for HIDDEN
+			try {
+				if (!TEST){
+					info(it->first, it->second->getSource(), ostr, false);
+				}
+				else {
+					ostr << it->first << '\n';
+					std::stringstream sstr, sstr2;
+					Command & cmdOrig = it->second->getSource();
+					Command & cmdCopy = it->second->getCloned();
+					info(it->first, cmdOrig, sstr, false);
+					info(it->first, cmdCopy, sstr2, false);
+					if (sstr.str() != sstr2.str()){
+						ostr << sstr.str()  << '\n';
+						ostr << sstr2.str() << '\n';
+						ostr << "---- ERROR " << '\n';
+					}
+					sstr.str("  ");
+					sstr2.str("  ");
+					sstr <<  cmdOrig.getParameters();
+					sstr2 << cmdCopy.getParameters();
+					if (sstr.str() != sstr2.str()){
+						ostr << sstr.str()  << '\n';
+						ostr << sstr2.str() << '\n';
+						ostr << "---- ERROR " << '\n';
+					}
+					//cmdCopy.setParameters(cmdOrig.getParameters());
+				}
+
+			}
+			catch (const std::exception &e) {
+				ostr << "error: " << e.what() << '\n';
+			}
+		}
+	}
+	// }
+
+	ostr << '\n';
+
+	help(ostr);
+	// else { ?
 
 	/* ostr << "Bonus:\n";
 	ostr << drain::sprinter(sections);

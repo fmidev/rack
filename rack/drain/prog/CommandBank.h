@@ -150,9 +150,15 @@ public:
 	// Newish
 	void run(Program & prog, ClonerBase<Context> & contextCloner); // !! May be RackContext!
 
-	void help(const std::string & key, std::ostream & ostr = std::cout);
 
-	void help(Flagger::value_t sectionFilter = 0xffffffff, std::ostream & ostr = std::cout);
+	/// Basic help dump, displays help commands to proceed.
+	void help(std::ostream & ostr = std::cout);
+
+	/// Basic help dump, displays help commands to proceed.
+	void help(Flagger::value_t sectionFilter, std::ostream & ostr = std::cout);
+
+	/// Help on a specific command or section.
+	void help(const std::string & key, std::ostream & ostr = std::cout);
 
 	/// Checked key and respective command
 	void info(const std::string & key, const command_t & cmd, std::ostream & ostr = std::cout, bool detailed=true) const ;

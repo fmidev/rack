@@ -50,11 +50,11 @@ using namespace drain::image;
 
 void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp::)", __FUNCTION__);
-	//mout.debug3() << "starting (" << name << ") " << mout.endl;
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (srcSweeps.empty()){
 		mout.warn() << "no data found with selector: " << dataSelector << mout.endl;
+		// TODO: DATA ERROR?
 		return;
 	}
 
@@ -76,7 +76,8 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	setEncoding(srcData.odim, dstData);
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
+	//dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
+	dstData.data.setGeometry(dstData.odim.area);
 
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
@@ -94,7 +95,9 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	dstData.odim.updateLenient(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();
 
+	//
 	dstData.odim.angles.clear();
+	//std::vector<double> angles;
 
 	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
 

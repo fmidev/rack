@@ -65,13 +65,22 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug3() << "start" << mout.endl;
+	// mout.debug3("start");
 	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	if (sweep.data.isEmpty()){
 		mout.fail() << "data is empty " << mout.endl;
 		return;
 	}
+
+	/* For pseudoCappi
+	drain::Range<double> elangleRange;
+	elangleRange.set(+90.0, -90.0);
+	for (double e : accumulator.odim.angles){
+		elangleRange.min = std::min(elangleRange.min, e);
+		elangleRange.max = std::min(elangleRange.max, e);
+	}
+	*/
 
 	const PlainData<PolarSrc> & sweepQuality = sweep.getQualityData();
 
@@ -87,14 +96,14 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	if (aboveSeaLevel){
 		altitudeFinal = altitude - sweep.odim.height; // radar site height
 		if (altitudeFinal < 0.0){
-			mout.note() << "requested altitude ("<< altitude << "m ASL) below radar height (" << sweep.odim.height << "m ASL), using the latter." << mout.endl;
+			mout.note("requested altitude (", altitude, "m ASL) below radar, using site height (", sweep.odim.height, "m ASL).");
 			altitudeFinal = 0.0;
 		}
 	}
 	else {
 		altitudeFinal = altitude;
 		if (altitudeFinal < 0.0){
-			mout.warn() << "requested altitude ("<< altitude << ") below 0m, using 0m." << mout.endl;
+			mout.warn("requested altitude (", altitude, ") less than 0m, using 0m.");
 			altitudeFinal = 0.0;
 		}
 	}
@@ -130,6 +139,10 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	/// Beam weight
 	double beamWeight; // 0.0...1.0;
 
+	/// Prevent bell curve falling under a limit
+	const double beamWeightMin = (this->weightMin < 0.0) ? -this->weightMin : 0.0;
+
+	// double finalWeight
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
 	// drain::FuzzyBell<double> beamPower(0.0, beamWidth*drain::DEG2RAD, 1.0);
 
@@ -157,9 +170,10 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		beamWeight = beam.getBeamPowerRad(etaBin - eta);
 		//beamWeight = beamPowerGauss(etaBin - eta);
 
+		//if ((!pseudo) && (beamWeight < weightMin))
 		if (beamWeight < weightMin)
 			continue;
-
+		beamWeight = std::max(beamWeight, beamWeightMin);
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		if (binDistance < sweep.odim.rstart)
@@ -173,12 +187,9 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		if (iSweep >= sweep.odim.area.width)
 			continue;
 
-
 		//std::cerr << "cappi " << sweep.odim.elangle << '\t' << (etaBin*drain::RAD2DEG) << '\t' << '>' << ' ' << beamWeight << '\n';
 
-
 		// TODO: derive iStart and iEnd instead.
-
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
 		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
@@ -209,13 +220,9 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 			address = accumulator.data.address(i,j);
 			accumulator.add(address, value, w);
-			//accumulator.a
-			//accumulator.add(address, value+i, i+j);
-			//accumulator.data.put(i, j, i+j+value);
-			//accumulator.weight.put(i, j, i+j+value);
+			//accumulator.add(address, value, 1.0);
+
 		}
-		//else
-			//mout.warn() << "skipping range b=" << binDistance << " i1=" << iSweep << mout.endl;
 
 	}
 	/*

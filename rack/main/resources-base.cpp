@@ -221,6 +221,8 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 			const drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
 			if (!img.isEmpty()){
 				const std::type_info & t = img.getType();
+				statusMap["what:type"] = std::string(1u, drain::Type::getTypeChar(t));
+				//statusMap["what:type"] = drain::Type::getTypeChar(t);
 				statusMap["how:bits"] = 8*drain::Type::call<drain::sizeGetter>(t);
 				statusMap["how:fulltype"] = drain::Type::call<drain::compactName>(t);
 				statusMap["how:complextype"] = drain::Type::call<drain::complexName>(t);

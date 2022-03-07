@@ -50,8 +50,8 @@ struct HistEntry : drain::BeanLike {
 	inline
 	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
 		parameters.link("index", index);
-		parameters.link("min", binRange.min);
-		parameters.link("max", binRange.max);
+		parameters.link("range", binRange.tuple());
+		//parameters.link("max", binRange.max);
 		parameters.link("count", count);
 		parameters.link("label", label);
 	};
@@ -73,7 +73,7 @@ public:
 
 	drain::Range<double> range;
 
-	std::string store;
+	std::string attribute;
 	std::string filename;
 
 	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
@@ -82,7 +82,7 @@ public:
 		parameters.link("range", range.tuple());
 		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
 		parameters.link("filename", filename="", "<filename>.txt|-");
-		parameters.link("store", store="histogram", "<attribute_key>");
+		parameters.link("attribute", attribute="histogram", "<attribute_key>");
 	};
 
 	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd) {

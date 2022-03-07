@@ -56,7 +56,7 @@ class Command : public Contextual {
 public:
 
 	inline
-	Command(): section(1){}; //
+	Command(): section(0){}; //
 
 	inline
 	Command(const Command & cmd) : section(cmd.section){

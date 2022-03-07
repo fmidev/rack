@@ -431,13 +431,13 @@ void Histogram::compute(const T & dst, const std::type_info & type){
 	//mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
 
 	if ((s == 256) && (type == typeid(unsigned char))){
-		mout.note() << "direct mode: u char (fast)" << mout.endl;
+		mout.note() << "direct 256-mode: u char (fast)" << mout.endl;
 		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
 			this->incrementRaw(static_cast<unsigned short int>(*it));
 		}
 	}
 	else if ((s == 256) && (type == typeid(unsigned short int))){
-		mout.note() << "direct mode: u short (fast)" << mout.endl;
+		mout.note() << "direct 256-mode: u short (fast)" << mout.endl;
 		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
 			this->incrementRaw(static_cast<unsigned short int>(*it) >> 8);
 		}

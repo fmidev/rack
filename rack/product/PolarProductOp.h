@@ -120,8 +120,10 @@ protected:
 
     /// Derive appropriate output ODIM from input sweeps, user-requested ODIM and (possibly) meteorological input parameters.
     /**
-     *  - \c srcSweeps
-     *  - \c dstOdim
+     *  Also creates \c elangles array using srcSweeps provided.
+     *
+     *  \param srcSweeps - input data
+     *  \param dstOdim - metadata for/of output data
      *
      */
     //

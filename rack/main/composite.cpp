@@ -360,10 +360,19 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 		//mout.warn() << parent << "/HOW" << src(parent)[ODIMPathElem::HOW].data.attributes << mout;
 		//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
 		const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
-		composite.metadataMap["how:angles"].setType(typeid(double));
+
+		//drain::Variable & compositeAngles = composite.metadataMap["how:angles"];
+		//compositeAngles.setType(typeid(double));
 		//if (how.hasKey("angles")){
 
-		composite.metadataMap["how:angles"] = how.get("angles", polarSrc.odim.elangle);
+		if (how["angles"].getElementCount() > 0)
+			how["angles"].toSequence(composite.odim.angles);
+		else if (!polarSrc.odim.angles.empty())
+			composite.odim.angles = polarSrc.odim.angles;
+		else {
+			composite.odim.angles.resize(1, polarSrc.odim.elangle);
+			//compositeAngles = polarSrc.odim.elangle;
+		}
 		//composite.metadataMap["how:angles"] = polarSrc.odim.elangle;
 
 
@@ -693,7 +702,7 @@ void Compositor::extract(const std::string & channels) const {
 			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
 			//if (composite.metadataMap.hasKey("how:angles"))
 			how["angles"].setType(typeid(double));
-			how["angles"] = composite.metadataMap["how:angles"];
+			how["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
 			ctx.setCurrentImages(dstData.data);
 			ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
 		}
@@ -715,7 +724,8 @@ void Compositor::extract(const std::string & channels) const {
 	statusMap.updateFromMap(rootOdim);
 
 	statusMap.updateFromMap(composite.nodeMap);
-	statusMap.updateFromMap(composite.metadataMap);
+	//statusMap.updateFromMap(composite.metadataMap);
+	statusMap.updateFromMap(composite.odim);
 	// Spoils input.sh...
 	//std::cout << ctx.svg << '\n';
 

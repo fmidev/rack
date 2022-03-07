@@ -66,9 +66,12 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 
 	if (MAXIMIZE_AZM_RESOLUTION || DERIVE_NBINS || DERIVE_RSCALE){
 
+		dstOdim.angles.clear();
 		double range;
 
 		for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+
+			dstOdim.angles.push_back(it->first);
 
 			const DataSet<PolarSrc> & srcDataSet = it->second;
 			const Data<PolarSrc>       & srcData    = srcDataSet.getFirstData();

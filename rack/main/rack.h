@@ -32,9 +32,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.43"
+#define __RACK_VERSION__ "6.45"
 
 /**
+ *   Version 6.45
+ *   -- Added "pseudo" region to pCappi
+ *   -- Bug fix: command section bug affecting --help
+ *   -- Bug fix: Histogram resize/rescale
+ *
+ *   Version 6.44
+ *   -- aCCor also writes TH-DBHZ as quantity "TH_DBZH"
+ *
  *   Version 6.43
  *   -- Bug fix: PGM 16 bit write
  *   -- Developed further: file extension support

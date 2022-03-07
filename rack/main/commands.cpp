@@ -133,13 +133,12 @@ protected:
 
 Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.
 
-Like in general in \b Rack, the parameters of \c --select are ordered, meaning that they can be issued as
-a comma-separated string without explicit key names, as long as they are given in order.
-The parameters are:
+Like in general in \b Rack, the parameters of \c --select are positional (ordered), meaning that they can be issued as
+a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:
 
-- \c path of elements, separated by slash '/' and consisting of:
+- \c path is a string of path elements, separated by slash '/' and consisting of:
   - a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts
-  - \c what , \c where, \c how - groups containing attributes
+  - \c what , \c where, \c how - ie. the groups containing attributes
   - <c> dataset{min}:{max} </c>,  <c> data{min}:{max}</c> , <c> quality{min}:{max}</c>   - indexed groups containing subgroups for actual data and attributes
   - \c data - unindexed groups containing actual data arrays
   - \e combined \e selection \e elements created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)
@@ -160,6 +159,7 @@ The parameters are:
     - unlike with path selectors, <c>elangle={angle}</c> abbreviates <c>elangle={angle}:90</c> (not <c>elangle={angle}:{angle}</c>)
     - notice that metadata may contain floating point values like 1.000004723, use \c count=1 to pick a single one within a range
 - \c count is the upper limit of accepted indices of \c dataset ; typically used with \c elangle
+- \c dualPRF determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).
 
 The selection functionality is best explained with examples.
 
@@ -168,7 +168,7 @@ The selection functionality is best explained with examples.
 \~
 
 \include example-select.inc
-Note that escaping special characters like '|' is often on command line.
+Note that escaping special characters like '|' is often required on command line.
 
 
 Often, the first data array matching the criteria are used.
@@ -2225,7 +2225,8 @@ MainModule::MainModule(){ //
 
 
 	// Independent commands
-	install<CmdSelect>('s'); 	install<drain::CmdStatus>();
+	install<CmdSelect>('s');
+	install<drain::CmdStatus>();
 	install<drain::CmdLog>(); //  cmdLogFile; // consider abbr. -L ?
 
 	install<CmdEncoding>('e');
@@ -2277,5 +2278,53 @@ MainModule::MainModule(){ //
 	install<CmdCreateDefaultQuality>();
 
 }
+
+
+class CmdMika : public drain::BasicCommand {
+
+public:
+
+	CmdMika() : drain::BasicCommand(__FUNCTION__, "Debug") {
+
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		drain::CommandBank & cmdBank = drain::getCommandBank();
+		cmdBank.addSection("TEST1");
+		cmdBank.addSection("TEST2");
+		// mout.experimental("Karttunen", drain::Static::get<CartesianSection>().index);
+
+		// drain::CommandBank::iterator & data_type
+		for (const auto & entry: cmdBank.getMap()){
+			//mout.experimental(drain::StringBuilder(entry));
+			mout.experimental(entry.first, ':', entry.second->getSource().section);
+		}
+
+		// drain::FlagResolver::dict_t & section
+		// drain::getCommandBank().sections;
+		for (const auto & entry: cmdBank.sections){
+			mout.experimental(entry.first, ':', entry.second);
+		}
+	}
+
+protected:
+
+};
+
+HiddenModule::HiddenModule(){ //
+
+	// NEW
+
+	// Bank-referencing commands first
+	//drain::HelpCmd help(cmdBank);
+	install<CmdMika>("mika", 'M');
+
+}
+
 
 } // namespace rack

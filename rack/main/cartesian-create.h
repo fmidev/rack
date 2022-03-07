@@ -77,7 +77,7 @@ public:
 		ctx.select.clear();
 
 		if (ctx.statusFlags.value > 0){
-			mout.warn() << "errors (" << ctx.statusFlags << "), skipping extraction" << mout.endl;
+			mout.warn("errors (", ctx.statusFlags, "), skipping extraction");
 			return;
 		}
 

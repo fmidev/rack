@@ -60,6 +60,7 @@ void CmdHistogram::exec() const {
 
 	Hi5Tree & currentHi5 = *ctx.currentHi5;
 
+
 	ODIMPath path;
 	DataSelector selector(ODIMPathElemMatcher::DATA);
 	//selector.setParameters(ctx.select);
@@ -69,27 +70,41 @@ void CmdHistogram::exec() const {
 
 	PlainData<BasicDst> dstData(currentHi5(path));
 
-	mout.warn() << "data: " << dstData.data << mout.endl;
+	mout.experimental("data: ", dstData.data );
 
-	mout.note() << "path: " << path << " [" << dstData.odim.quantity << ']' << mout.endl;
+	mout.experimental("path: ", path, " [", dstData.odim.quantity, ']');
 
 	// NO resources.setCurrentImage(selector);
 	// drain::image::Image & img = *ctx.currentImage;
 	// mout.warn() << "computing hist"  << mout.endl;
 
-	drain::Histogram histogram(256);
-	histogram.setScale(dstData.data.getScaling());
-	histogram.compute(dstData.data, dstData.data.getType());
+	//( TODO: Histogram2 based on ImageCodeMap/Book (HistEntry)
+	drain::Histogram histogram(count);
+	mout.note("Initial histogram 0: ", histogram);
+	//histogram.setSize(count);
+	if (range.span() > 0.0){
+		histogram.setScale(range.min, range.max);
+	}
+	else {
+		const drain::ValueScaling & s = dstData.data.getScaling();
+		if (s.isPhysical()){
+			mout.warn("Physical range: ", s.getPhysicalRange());
+		}
+		mout.note("No range given, using scaling of data: ", s);
+		histogram.setScale(s);
+	}
+	mout.note("Initial histogram 1: ", histogram);
 
+	histogram.compute(dstData.data, dstData.data.getType());
 
 	if (!filename.empty()){
 
-		mout.warn() << "writing " << filename << mout.endl;
+		mout.note("writing ", filename);
 
 		legend leg;
 		const drain::VariableMap & dstWhat = dstData.getWhat();
 		if (dstWhat.hasKey("legend")){
-			mout.note() << "Using what:legend" <<  dstWhat["legend"] << mout.endl;
+			mout.note("Found what:legend", dstWhat["legend"], " using it!");
 			//typedef std::map<int, std::string> legend;
 			dstWhat["legend"].toMap(leg, ',', ':'); // TOD
 		}
@@ -101,38 +116,22 @@ void CmdHistogram::exec() const {
 		writeHistogram(histogram, filename, leg);
 	}
 
-	if (!store.empty()){
-		dstData.getHow()[store] = histogram.getVector();
+	if (!attribute.empty()){
+		dstData.getHow()[attribute] = histogram.getVector();
 		//dstData.updateTree2();
 	}
 
 
 }
 
-void CmdHistogram::setSpecialEntry(legend & leg, double value, const std::string & label) const {
-
-	RackContext & ctx = getContext<RackContext>();
-
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // getResources().mout;
-
-	legend::key_type i = static_cast<legend::key_type>(value);
-	if (static_cast<double>(i) != value){
-		mout.warn() << "special code '" << label << "'=" << value << " not integer" << mout;
-	}
-	/*
-	if (i < leg.begin()->first){
-		mout.warn() << "special code '" << label << "'=" << value << " smaller than" << mout;
-	}
-	*/
-	leg[i] = label;
-
-}
 
 void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std::string & filename, const legend &leg) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	mout.note("Scaling: ", histogram.scaling);
 
 	drain::Output out((filename == "-") ? filename : ctx.outputPrefix + filename);
 
@@ -142,8 +141,11 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 	if (! ctx.formatStr.empty()){
 		mapper.parse(ctx.formatStr, true);
 	}
-	else
-		mapper.parse("${count} # '${label}' (${index}) [${min}, ${max}] \n", false); // here \n IS newline...
+	else {
+		// Ensure that this uses same names as HistEntry() init.
+		// Here \n is newline, so no conevrtEscape=false ok.
+		mapper.parse("${index}\t =${count} #${label} [${range}[ \n", false);
+	}
 
 	// TODO: check tests
 	// NEW
@@ -177,7 +179,7 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 		ostr << '\n';
 	}
 	else {
-		mout.note() << "No legend supplied, writing all elements" << mout.endl;
+		mout.note("No legend supplied, writing all the (", v.size(), ") elements");
 
 		for (std::size_t i=0; i<v.size(); ++i){
 
@@ -210,6 +212,24 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 }
 
 
+void CmdHistogram::setSpecialEntry(legend & leg, double value, const std::string & label) const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // getResources().mout;
+
+	legend::key_type i = static_cast<legend::key_type>(value);
+	if (static_cast<double>(i) != value){
+		mout.warn() << "special code '" << label << "'=" << value << " not integer" << mout;
+	}
+	/*
+	if (i < leg.begin()->first){
+		mout.warn() << "special code '" << label << "'=" << value << " smaller than" << mout;
+	}
+	*/
+	leg[i] = label;
+
+}
 
 
 

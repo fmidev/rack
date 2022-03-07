@@ -89,15 +89,17 @@ int process(int argc, const char **argv) {
 
 	mout.debug() = "Activate modules";
 
-	MainModule commandMod; // ("general");
-	FileModule fileMod; // ("general");
-	AnDReModule andreMod; // ("andre");
-	ScienceModule scienceMod; // ("science");
-	ProductModule productMod; // ("prod");
-	AccumulationModule accumulationMod; // ("acc");
-	CartesianModule cartesianMod; // ("cart");
-	ImageOpModule imageOpMod; // ("imageOps");
-	ImageModule   imageMod; // ("images");
+	MainModule commandMod;
+	FileModule fileMod;
+	AnDReModule andreMod;
+	ScienceModule scienceMod;
+	ProductModule productMod;
+	AccumulationModule accumulationMod;
+	CartesianModule cartesianMod;
+	ImageOpModule imageOpMod;
+	ImageModule   imageMod;
+
+	HiddenModule   hiddenMod;
 
 
 	mout.debug() = "Add Rack-specific commands";
@@ -118,33 +120,6 @@ int process(int argc, const char **argv) {
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
 
-	// cmdBank.setScriptCmd("");
-	//mout.experimental() << " TRIGGER=" << TRIGGER << mout;
-	//mout.note() << "execScript: " << cmdBank.get("execScript").section << mout;
-	//mout.note() << "execScript: " << cmdBank.clone("execScript").section << mout;
-	// cmdBank.get("execScript").section |= TRIGGER;  // why constr not applying?
-	// mout.note() << "execScript: " << cmdBank.clone("execScript").section << mout;
-
-	/*
-	mout.note() << "-- experimental commandBank --"  << mout;
-	drain::CommandWrapper<drain::CmdVerbosity> verbosityCmd;
-	verbosityCmd.setExternalContext(ctx);
-	drain::Context & ctx0 = verbosityCmd.getContext<drain::Context>();
-	mout.note() << ctx0.getStatus() << mout.endl;
-	RackContext & ctx1 = verbosityCmd.getContext<RackContext>();
-	mout.note() << ctx1.getStatus() << mout.endl;
-	mout.note() << "-- exp --"  << mout.endl;
-	drain::Command & status0 = cmdBank.get("status");
-	status0.exec();
-	drain::Command & status1 = cmdBank.clone("status");
-	status1.exec();
-	mout.note() << "-- EXP --"  << mout.endl;
-	status0.setExternalContext(ctx);
-	status0.exec();
-	drain::Command & status2 = cmdBank.clone("status");
-	status2.exec();
-	mout.note() << "-- EXP --"  << mout.endl;
-	*/
 
 	try {
 		mout.info() << "converting arguments to a script " << mout.endl;
@@ -181,40 +156,6 @@ int process(int argc, const char **argv) {
 
 	return ctx.statusFlags.value;
 
-
-
-	//EncodingODIM().toOStr(std::cout)
-
-	//std::cout << "EncodingODIM" << EncodingODIM() << '\n';
-	/*
-	std::cout << "ODIM " << ODIM() << '\n';
-	PolarODIM odim;
-	std::cout << "PolarODIM0 " << odim << '\n';
-	odim.setTypeDefaults(typeid(unsigned short int));
-	std::cout << "PolarODIM2 " << odim << '\n';
-	getQuantityMap().setQuantityDefaults(odim, "ZDR", "C");
-	PolarODIM odimCopy(odim);
-	std::cout << "PolarODIMC " << odimCopy << '\n';
-	*/
-
-	//std::cout << "CartesianODIM" << CartesianODIM() << '\n';
-
-
-	/// Main "loop".
-	//registry.runCommands(argc, argv);
-
-	// mout.timestamp("END_RACK");
-	// std::cout << registry.getAliases() << '\n';
-	// mout << "end" << mout.endl;
-
-
-	//if (getResources().inputOk)
-	/*
-	if (getResources().errorFlags.isSet(255))
-		return getResources().errorFlag; //result; future option
-	else
-		return 0;
-	*/
 
 }
 
