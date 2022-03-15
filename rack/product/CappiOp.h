@@ -48,27 +48,36 @@ using namespace drain::image;
 
 /// Pseudo-CAPPI: the constant altitude planar position indicator product
 /**
+ *
+ *
  */
 class CappiOp : public CumulativeProductOp {
 
 public:
 
 	double altitude;
-	double weightExponent;
-	double weightMin;
+	//double weightExponent;
 	Beam beam;
+	double weightMin;
 
-	CappiOp(double altitude=1000.0, double weightMin = 0.0, bool aboveSeaLevel=true, double beamWidth = 1.0) :
-		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", "WAVG:1:8:-40")
+	/// Pseudo-CAPPI: the constant altitude planar position indicator.
+	/**
+	 *  \param altitude - altitude of the horizontal intersection
+	 *  \param aboveSeaLevel - measure altitude from sea level (true) or radar site altitude (false)
+	 *  \param beamWidth - half-power width of Gaussian beam model
+	 *  \param weightMin - threshold [0...1] for normalized beam power interpreted as weight; set -1 to include "pseudo" areas
+	 *  \param accumulationMethod - define how dBZ and weight of each bin contributes to the product
+	 */
+	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth = 1.0, double weightMin = 0.0, std::string accumulationMethod="WAVG:1:8:-40") :
+		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", accumulationMethod)
 		{
 
 		parameters.link("altitude", this->altitude = altitude, "metres");
-		// parameters.link("pseudo", this->pseudo = true, "flexible altitude");
-		parameters.link("weightMin", this->weightMin = weightMin, "scalar");
 		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
 		parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
+		parameters.link("weightMin", this->weightMin = weightMin, "-1|0...1");
+		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 		//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
-		parameters.link("accumulationMethod", this->accumulationMethod, "string");
 
 		odim.product  = "PCAPPI";
 		odim.type = "";

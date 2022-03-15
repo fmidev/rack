@@ -286,27 +286,36 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			}
 			delete str;
 			*/
+			H5A_info_t info;
+			H5Aget_info(a, &info);
+			char *str = new char[info.data_size+1];
+			str[info.data_size] = '\0';
 
 			if (H5Tis_variable_str(datatype)){
-				// mout.warn() << " variable-length" << mout.endl;
-				char *s = 0;
+				mout.experimental("variable-length string");
+				// !! char *str = 0;
 				//mout.warn() << (long int)s << '\t';
-				H5Aread(a, datatype, &s);
-				//mout << (long int)s << mout.endl;
-				attribute = std::string(s);
+				//H5Aread(a, datatype, &s);
+				H5Aread(a, datatype, str);
+				//mout << (long int)str << mout.endl;
+				attribute = std::string(str);
+				mout.experimental("variable-length string: ", attribute);
 			}
 			else {
-				H5A_info_t info;
-				H5Aget_info(a, &info);
-				//mout.warn() << " fixed-length [" << info.data_size <<  "]" << mout.endl;
-				char *str = new char[info.data_size+1];
+				// H5A_info_t info;
+				// H5Aget_info(a, &info);
+				// mout.warn() << " fixed-length [" << info.data_size <<  "]" << mout.endl;
+				// char *str = new char[info.data_size+1];
 				//mout.warn() << (long int)str << '\t';
-				str[info.data_size] = '\0';
+				//str[info.data_size] = '\0';
 				H5Aread(a, datatype, str);
 				//mout << (long int)str << mout.endl;
 				attribute = (const char *)str;
-				delete[] str;
+
 			}
+
+			delete[] str;
+
 			/*
 			H5A_info_t info;
 			H5Aget_info(a, &info);

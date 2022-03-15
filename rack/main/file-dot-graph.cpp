@@ -50,10 +50,10 @@ std::string quoted(const ODIMPath & path){
 	if (path.empty() || path.back().isRoot())
 		return "root";
 
-	drain::Logger mout("DataOutput", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	drain::Path<std::string,'_'> p(path);
-	mout.special() << p.str() << mout.endl;
+	mout.debug2() << p.str() << mout.endl;
 
 	return p.str();
 
@@ -64,7 +64,7 @@ std::string quoted(const ODIMPath & path){
 void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & id,
 		ODIMPathElem::group_t selector, const ODIMPath & path = ODIMPath()) {
 
-	drain::Logger mout("DataOutput", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	//RackContext & ctx = getContext<RackContext>();
 	//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
@@ -110,7 +110,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & id,
 
 		const std::string quantity = attr.get("what:quantity", ""); // what["quantity"].toStr();
 		ostr << fill;
-		ostr << '"' <<  quoted(path) << '"' << ' ' << '[';
+		ostr << '"' <<  '/' << quoted(path) << '"' << ' ' << '[';
 
 		// LABEL
 		ostr << "label=\"";

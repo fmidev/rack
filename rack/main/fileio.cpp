@@ -87,23 +87,6 @@ namespace rack {
 /// Syntax for recognising hdf5 files.
 //  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
-//const drain::RegExp h5FileExtension("^((.*\\.(h5|hdf5|hdf))|((.*/)?[\\w]+))$",  REG_EXTENDED | REG_ICASE);
-//const drain::FileInfo fileInfoH5("tif|tiff");
-//const drain::RegExp noExtension("^((.*/)?[\\w]+)$");
-
-
-/// Syntax for recognising GeoTIFF files.
-//const drain::RegExp tiffFileExtension(".*\\.(tif|tiff)$",  REG_EXTENDED | REG_ICASE);
-
-//const drain::FileInfo fileInfoTIFF("tif|tiff");
-
-
-/// Syntax for recognising image files (currently, png supported).
-//const drain::RegExp pngFileExtension(".*\\.(png)$", REG_EXTENDED | REG_ICASE);
-
-/// Syntax for recognising image files (currently, png supported).
-//const drain::RegExp pnmFileExtension(".*\\.(p[nbgp]m)$", REG_EXTENDED | REG_ICASE); //[nbgp]
-
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
 
@@ -115,14 +98,6 @@ const drain::RegExp sampleFileExtension(".*\\.(dat)$",  REG_EXTENDED | REG_ICASE
 
 /// Syntax for recognising Graphviz DOT files.
 const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
-
-
-//static DataSelector imageSelector(".*/data/?$","");   // Only for images. Not directly accessible.
-//static DataSelector imageSelector;  // Only images. Not directly accessible. Consider that of images.h
-
-
-
-
 
 
 
@@ -353,13 +328,10 @@ void CmdOutputFile::exec() const {
 	}
 	else if (dotFileExtension.test(value)) {
 
-		//mout.info() << "Dot/Graphviz file (.dot)" << mout.endl;
-		/*
-		DataSelector selector;
-		if (selector.consumeParameters(ctx.select)){
-		*/
+		// DataSelector selector;
+		// if (selector.consumeParameters(ctx.select))
 		if (!ctx.select.empty()){
-			mout.warn() << "no --select support for this command, use --delete and --keep instead" << mout.endl;
+			mout.warn() << "no --select support for Graphviz DOT output, use --delete and --keep instead" << mout.endl;
 			ctx.select.clear();
 		}
 
@@ -369,7 +341,7 @@ void CmdOutputFile::exec() const {
 	else {
 
 
-		mout.info() << "File format: text" << mout.endl;
+		mout.info("File format: text");
 
 		drain::Output output(filename);
 
@@ -542,15 +514,15 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	//drain::CommandInstaller<> installer(drain::getCommandBank());
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
-	install<CmdOutputFile>('o'); //  cmdOutputFile('o');
+	install<CmdOutputFile>('o');
 
-	install<CmdInputPrefix>(); //  cmdInputPrefix;
-	install<CmdOutputPrefix>(); //  cmdOutputPrefix;
-	install<CmdOutputRawImages>('O'); //  cmdOutputRawImages('O');
-	install<CmdOutputConf>(); // cmdOutputConf;
-	install<CmdGeoTiff>(); //  geoTiffTile;
-	install<CmdImageSampler>("sample"); //cmdSample("sample");
-	install<CmdHistogram>(); // hist;
+	install<CmdInputPrefix>();
+	install<CmdOutputPrefix>();
+	install<CmdOutputRawImages>('O');
+	install<CmdOutputConf>();
+	install<CmdGeoTiff>();
+	install<CmdImageSampler>("sample");
+	install<CmdHistogram>();
 
 	//installer<CmdInputValidatorFile> cmdInputValidatorFile;
 
