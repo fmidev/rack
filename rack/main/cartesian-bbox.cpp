@@ -52,41 +52,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-//void CartesianBBox::exec() const {
-
-
-	//RackResources & resources = getResources();
-	//resources.composite.setBoundingBox(resources.bbox);
-
-	/*
-	drain::Logger mout(__FUNCTION__, __FILE__);
-	drain::Point2D<double> & ll = resources.bbox.lowerLeft;
-	drain::Point2D<double> & ur = resources.bbox.upperRight;
-
-	if (isMetric(ll.x, 180.0) && isMetric(ll.y, 90.0) && isMetric(ur.x, 180.0) && isMetric(ur.y, 90.0)){
-
-		mout.note() << "experimental: setting metric bbox: " << resources.bbox << mout.endl;
-
-		if (!resources.composite.projectionIsSet()){
-			mout.error() << "projection must be set prior to setting metric bbox (" << resources.bbox << ")" << mout.endl;
-			return;
-		}
-
-		if (resources.composite.projR2M.isLongLat()){
-			mout.error() << "trying to set metric bbox (" << resources.bbox << ") on long-lat proj: ";
-			mout         << resources.composite.getProjection() << mout.endl;
-			return;
-		}
-
-		resources.composite.setBoundingBoxM(resources.bbox);
-		resources.bbox.set(resources.composite.getBoundingBoxD());
-		mout.note() << "bbox in degrees: " << resources.bbox << mout.endl;
-		return;
-	}
-
-	resources.composite.setBoundingBoxD(resources.bbox);
-	*/
-//}
 
 void CartesianBBoxTest::exec() const {
 

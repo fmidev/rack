@@ -429,9 +429,10 @@ protected:
 	drain::Rectangle<double> dataOverlapD;
 
 	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
+	template <typename D>
 	static inline
-	bool isMetric(double x, double limit){
-		return (x < -limit) || (x > limit);
+	bool isMetric(double x){
+		return (x < -D) || (x > D);
 	}
 
 };

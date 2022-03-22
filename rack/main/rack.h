@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.45"
+#define __RACK_VERSION__ "6.46"
 
 /**
+ *   Version 6.46
+ *   -- Bug fix: recognition of Metric coords (ie. large values) based on any coord exceeding.
+ *
  *   Version 6.45
  *   -- Added "pseudo" region to pCappi
  *   -- Bug fix: command section bug affecting --help
