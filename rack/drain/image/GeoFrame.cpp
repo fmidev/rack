@@ -91,7 +91,8 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 	Logger mout(__FUNCTION__, __FILE__);
 
-	if (isMetric<180.0>(lonLL) || isMetric<90.0>(latLL) || isMetric<180.0>(lonUR) || isMetric<90.0>(latUR)){
+	// FIX: 2022/03: from AND to OR
+	if (isMetric(lonLL, 180.0) || isMetric(latLL, 90.0) || isMetric(lonUR, 180.0) || isMetric(latUR, 90.0)){
 
 		//mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
 		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
