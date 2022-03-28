@@ -1,9 +1,10 @@
 #!/bin/bash
 
 #if (( ${#*} < 2 )); then
-    echo "Creates met. product example(s): command line and output files"
-    echo "Usage"
-    echo "  INPUT=volume.h5 PROD=pCappi,1500 ${0##*/} "
+echo "Creates met. product example(s): command line and output files"
+echo "Usage"
+echo "  INPUT=volume.h5 PROD=pCappi,1500 ${0##*/} "
+echo "  INPUT=volume.h5 SELECT=/dataset1:3 PROD=pCappi,1500 ${0##*/} "
 #    exit
 #fi
 
@@ -54,12 +55,8 @@ if [ "$PROD" != '' ]; then
     NAME=${NAME,} # lowercase first
 
     VALUES=${VALUES:-$DEFAULT_VALUES}
-    #echo "rack volume.h5 --$OPERATOR $VALUES -o $NAME.h5" > $NAME-cmd.inc
+
     make $OPERATOR.hlp
-    
-    #echo >> $NAME.cmd
-    #rack --helpExample $OPERATOR | fgrep '#' | tr -d '#' > $NAME-params.inc
-    #head $NAME-*.inc
     make $OPERATOR.exm
     
 fi
@@ -75,7 +72,9 @@ OUTFILE_FINAL=$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png
 
 product=${PROD:+"${ENCODING:+--encoding $ENCODING} --$OPERATOR $VALUES"}
 
-cmd="rack $INPUT $product --cSize 400,400 --select quantity=$QUANTITY -c  -o $OUTFILE_GRAY  --palette palette-${QUANTITY/_/-}.txt -o $OUTFILE_RGB --legendOut tmp.svg"
+select=${SELECT:+"--select $SELECT"} 
+
+cmd="rack $INPUT $select $product --cSize 400,400 --select quantity=$QUANTITY -c  -o $OUTFILE_GRAY  --palette palette-${QUANTITY/_/-}.txt -o $OUTFILE_RGB --legendOut tmp.svg"
 echo $cmd
 eval $cmd
 

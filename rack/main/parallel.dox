@@ -60,10 +60,10 @@ a new composite is initialized or loaded in the thread. Commands use internal lo
   headport="n";
   fontsize=10;
   
-    INITIAL	[ label="Shared initialisation |<i>rack --cmd --cmd ...  "];
- 	FORK	[ label="Enable threads |<i> [", color="red" ];
+    INITIAL	[ label="Common initialisation |<i>rack --cmd --cmd ...  "];
+ 	FORK	[ label="Start threads |<i> [", color="red" ];
 	MAIN	[ label="{ <CMD1> | --cmd2 | <CMD2> |<CMD3>| --cmd5 | <end>...} "];  
-    JOIN	[ label="Join |<i>]", color="red" ];
+    JOIN	[ label="Join threads |<i>]", color="red" ];
   	FINAL   [ label="Shared final commands |<i>  --cmd --cmd ..."];
 	
   	THREAD1 [ label="{<i>--CMD1|<s> --cmd --cmd ...}", color="red", URL="\ref input" ];

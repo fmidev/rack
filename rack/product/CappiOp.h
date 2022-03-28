@@ -75,7 +75,7 @@ public:
 		parameters.link("altitude", this->altitude = altitude, "metres");
 		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
 		parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
-		parameters.link("weightMin", this->weightMin = weightMin, "-1|0...1");
+		parameters.link("weightMin", this->weightMin = weightMin, "-0.1|0...1");
 		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 		//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 
