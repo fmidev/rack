@@ -77,16 +77,12 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	mout.special("Pixel scope: ", pix);
 
-	//drain::image::WindowCore;
-	//op.setRadius(horz, vert, horz, vert);
-	//op.setSize(horz,  vert);
-	BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
+	// BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
 	DistanceTransformFillExponentialOp distOp(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
-	//DistanceTransformFillLinearOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
 
-	ImageOp & op = (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
+	ImageOp & op = distOp; // (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
-	mout.special() << "loops=" << loops << " => using " << op << mout;
+	// mout.special() << "loops=" << loops << " => using " << op << mout;
 
 
 
@@ -133,7 +129,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
 	// const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
-	const double zeroQuality = srcQuality.odim.scaleInverse(0.0);
+	const double qualityThresholdEndoded = srcQuality.odim.scaleInverse(qualityThreshold);
 	Image::iterator  it  = srcData.data.begin();
 	Image::iterator qit  = srcQuality.data.begin();
 	Image::iterator tit  = tmpData.begin();
@@ -144,7 +140,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	while (it != srcData.data.end()){
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
 		//if (*it == srcData.odim.undetect){
-		if (*qit == zeroQuality){
+		if (*qit <= qualityThresholdEndoded){
 			//*dit = dstData.odim.undetect;
 			//*dit = dstData.odim.nodata;
 			*dqit = *qit; // DOES NOT WORK! defaultQuality;
@@ -176,7 +172,7 @@ void GapFillRecOp::processData(const PlainData<PolarSrc> & srcData, const PlainD
 	double h = widthM / srcData.odim.rscale;  //srcData.odim.getBinDistance(width); //
 	double v = heightD * srcData.data.getHeight() / 360.0;
 
-	BlenderOp op(h, v, "avg", "mix", loops);
+	BlenderOp op(h, v, "avg", "mix", loops, expansionCoeff);
 
 	ImageTray<const Channel> srcTray;
 	srcTray.setChannels(srcData.data, srcQuality.data);

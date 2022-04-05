@@ -100,8 +100,9 @@ public:
 		GapFillOpBase(__FUNCTION__,"Removes low-quality data with gap fill based on distance transformation.") {
 		parameters.link("width",  this->widthM = width,   "meters");
 		parameters.link("height", this->heightD = height, "degrees");
-		parameters.link("loops", this->loops = 0, "N");
-		parameters.link("expansionCoeff", this->expansionCoeff = 1, "1..2");
+		//parameters.link("loops", this->loops = 0, "N");
+		//parameters.link("expansionCoeff", this->expansionCoeff = 1, "window extension(1..2)");
+		parameters.link("qualityThreshold", this->qualityThreshold = 0.1, "0.0...1.0");
 	};
 
 
@@ -112,6 +113,8 @@ protected:
 	virtual
 	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 						PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQIND) const;
+
+	double qualityThreshold;
 
 };
 

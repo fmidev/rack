@@ -391,21 +391,33 @@ public:
 	 */
 	template <class T>
 	bool operator!=(const T &x){
-		return (caster.get<T>() != x);  // (caster.get<T>(ptr) != x);
+		return (caster.get<T>() != x);
 	}
 
 	/// Compares a value to inner data.
 	// strings?
 	template <class T>
 	bool operator<(const T &x){
-		return (caster.get<T>() < x); // (caster.get<T>(ptr) < x);
+		return (caster.get<T>() < x);
 	}
 
 	/// Compares a value with inner data.
 	template <class T>
 	bool operator>(const T &x){
 		return (caster.get<T>() > x);
-		//return (caster.get<T>(ptr) > x);
+	}
+
+	/// Compares a value to inner data.
+	// strings?
+	template <class T>
+	bool operator<=(const T &x){
+		return (caster.get<T>() <= x);
+	}
+
+	/// Compares a value with inner data.
+	template <class T>
+	bool operator>=(const T &x){
+		return (caster.get<T>() >= x);
 	}
 
 	/// The character used between array elements in output stream.
