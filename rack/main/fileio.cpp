@@ -33,17 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <fstream>
 #include <iostream>
-/*
-#include <algorithm>
-#include <limits>
-#include <list>
-#include <map>
-#include <sstream>
-#include <utility>
-#include <vector>
- */
-//#include <regex.h>
-// #include <stddef.h>
 
 #include "drain/util/Log.h"
 #include "drain/util/FilePath.h"
@@ -54,10 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
 #include "drain/image/FileGeoTIFF.h"
-//#include "radar/FileGeoTIFF.h"
 
 #include "drain/image/Image.h"
-//#include "drain/image/Sampler.h"
 #include "drain/imageops/ImageModifierPack.h"
 
 #include "drain/prog/Command.h"
@@ -80,6 +67,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
 #include "file-hist.h"
+#include "images.h"  // ImageSection
 
 
 namespace rack {
@@ -508,19 +496,17 @@ public:
 
 FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // : drain::CommandSection("general") {
 
-	//drain::CommandBank & cmdBank = drain::getCommandBank();
 	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
-
-	//drain::CommandInstaller<> installer(drain::getCommandBank());
+	const drain::Flagger::value_t IMAGES  = drain::Static::get<ImageSection>().index;
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');
 
 	install<CmdInputPrefix>();
 	install<CmdOutputPrefix>();
-	install<CmdOutputRawImages>('O');
+	install<CmdOutputRawImages>('O').addSection(IMAGES);
 	install<CmdOutputConf>();
-	install<CmdGeoTiff>();
+	install<CmdGeoTiff>().addSection(IMAGES);
 	install<CmdImageSampler>("sample");
 	install<CmdHistogram>();
 

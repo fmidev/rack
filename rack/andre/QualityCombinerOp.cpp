@@ -35,6 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <utility>
 
+#include "drain/image/Image.h"
+#include "drain/image/ImageFrame.h"
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
 #include "drain/util/Tree.h"
@@ -43,20 +45,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/Data.h"
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
-#include <hi5/Hi5.h>
-#include "drain/image/Image.h"
-#include "drain/image/ImageFrame.h"
-#include <main/rack.h>
-
-#include "radar/Analysis.h"
 #include "data/EchoClass.h"
+#include "hi5/Hi5.h"
+#include "radar/Analysis.h"
 
 #include "QualityCombinerOp.h"
 
 // using namespace std;
 
-using namespace drain;
-using namespace drain::image;
+//using namespace drain;
+//using namespace drain::image;
 
 namespace rack {
 
@@ -135,8 +133,10 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 
 
 	drain::VariableMap & qindHow = dstQind.getHow();
-	qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
+	//qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
+	qindHow["task"] = "fi.fmi.rack.AnDRe.Detector.OverallQuality";
 	qindHow["task_args"] << label; // like SHIPOP
+	ProductBase::setODIMsoftwareVersion(qindHow);
 
 
 	if (dstClass.data.isEmpty()){
@@ -388,7 +388,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 //void QualityCombinerOp::processSweep(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<PolarDst> & dst) const {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.warn() << "Src: " << src << mout;
 

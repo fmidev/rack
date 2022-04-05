@@ -59,6 +59,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
                    11                                       //  Write intermediate results in files
                    15                                       //  Debug 1D loops
                    20                                       //  Debug 2D loops
+
+Compare with Python: https://docs.python.org/3/library/logging.html#logging-levels
  */
 
 

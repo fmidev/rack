@@ -649,8 +649,7 @@ void Compositor::extract(const std::string & channels) const {
 	// So only "additional data stored here"
 
 	drain::VariableMap & how = dstRoot.getHow();
-	how["software"]   = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
+	ProductBase::setODIMsoftwareVersion(how);
 	// Non-standard
 	how["tags"] = composite.nodeMap.toStr(':');
 

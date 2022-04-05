@@ -47,8 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-using namespace drain::image;
-using namespace hi5;
+//using namespace drain::image;
+//using namespace hi5;
 
 /// TODO: move to data tools etc?
 /*
@@ -61,7 +61,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug() << *this << mout;
+	mout.debug(*this);
 
 	//File::write(srcData.data,"GapFillOp-in.png");
 	//File::write(srcQuality.data,"GapFillOp-inq.png");
@@ -71,12 +71,17 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//FastAverageOp op;
 
 	// Pixels, but float, because radii.
-	double horz = widthM  / srcData.odim.rscale;
-	double vert = heightD * srcData.data.getHeight() / 360.0;
+	drain::Frame2D<int> pix;
+	pix.width  = widthM  / srcData.odim.rscale;
+	pix.height = heightD * srcData.data.getHeight() / 360.0;
+
+	mout.special("Pixel scope: ", pix);
+
+	//drain::image::WindowCore;
 	//op.setRadius(horz, vert, horz, vert);
 	//op.setSize(horz,  vert);
-	BlenderOp blenderOp(horz, vert, "avg", "max", loops, expansionCoeff);
-	DistanceTransformFillExponentialOp distOp(horz, vert, DistanceModel::PIX_ADJACENCY_KNIGHT);
+	BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
+	DistanceTransformFillExponentialOp distOp(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
 	//DistanceTransformFillLinearOp distOp(horz, vert, DistanceModel::PIX_CHESS_CONNECTED);
 
 	ImageOp & op = (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
@@ -128,16 +133,20 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
 	// const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
+	const double zeroQuality = srcQuality.odim.scaleInverse(0.0);
 	Image::iterator  it  = srcData.data.begin();
 	Image::iterator qit  = srcQuality.data.begin();
 	Image::iterator tit  = tmpData.begin();
 	Image::iterator dit  = dstData.data.begin();
 	Image::iterator dqit = dstQuality.data.begin();
-	//double undetect = dstData.odim.undetect;
+
+	// Lazy: assumes srcData == dstData
 	while (it != srcData.data.end()){
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
-		if (*it == srcData.odim.undetect){
-			*dit = dstData.odim.undetect;
+		//if (*it == srcData.odim.undetect){
+		if (*qit == zeroQuality){
+			//*dit = dstData.odim.undetect;
+			//*dit = dstData.odim.nodata;
 			*dqit = *qit; // DOES NOT WORK! defaultQuality;
 		}
 		else {

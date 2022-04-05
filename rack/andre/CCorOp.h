@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "DetectorOp.h"
 
-using namespace drain::image;
+//using namespace drain::image;
 
 namespace rack {
 
@@ -65,14 +65,16 @@ public:
 		//parameters.link("storeDiff", storeDiff = false);
 	};
 
+	// Consider: Range
 	double reflHalfWidth;
-	//boolean storeDiff;
+
+	// boolean storeDiff;
 	// double thresholdWidth;
 	// double windowWidth;
 	// double windowHeight;
 	// double medianPos;
 
-	//void filter(const Hi5Tree &src, Hi5Tree &dst) const;
+	// void filter(const Hi5Tree &src, Hi5Tree &dst) const;
 
 
 	/// NEW POLICY => DetectorOpNEW

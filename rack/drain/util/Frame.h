@@ -43,30 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/*
-template <class T>
-struct Frame2D : public UniTuple<T,2> {
-
-	T &width;
-	T &height;
-	// Consider ranges
-
-	Frame2D(T w=0, T h=0): UniTuple<T,2>(), width(this->next()), height(this->next()) {
-		this->set(w,h);
-	};
-
-	Frame2D(const Frame2D & frame): UniTuple<T,2>(), width(this->next()), height(this->next()) {
-		this->assign(frame);
-	};
-
-	inline
-	T getArea(){
-		return width*height;
-	}
-
-
-};
-*/
 
 template <class T>
 class Frame2D : public drain::UniTuple<T,2> { //: protected AreaGeometryStruct {
@@ -87,7 +63,8 @@ public:
 	}
 
 	// Reference, N>=2
-	template <T N>
+	template <size_t N>
+	//template <T N>
 	Frame2D(drain::UniTuple<T,N> & tuple, T i) :
 	drain::UniTuple<T,2>(tuple, i),
 	width(this->next()),

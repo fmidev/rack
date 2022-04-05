@@ -58,7 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/QuantityMap.h"
 
 #include "hi5/Hi5.h"
-#include "main/rack.h"
+//#include "main/rack.h"
 
 
 
@@ -390,14 +390,14 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	Hi5Tree & dstProduct = dst[parent][child]; // (dataSetPath);
 	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
 
-	drain::VariableMap & how = dstProduct["how"].data.attributes;
 
 	/// Main operation
 	this->processDataSets(sweeps, dstProductDataset);
 
-	//
-	how["software"] = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
+	ProductBase::setODIMsoftwareVersion(dstProduct["how"].data.attributes);
+	//drain::VariableMap & how = dstProduct["how"].data.attributes;
+	//how["software"] = __RACK__;
+	//how["sw_version"] = __RACK_VERSION__;
 	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 
 	//DataTools::updateInternalAttributes(dstProduct);

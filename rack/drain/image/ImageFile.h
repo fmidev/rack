@@ -70,7 +70,7 @@ public:
 	}
 	*/
 
-
+	static
 	void readFrame(ImageFrame &img, const std::string & path);
 
 	/*

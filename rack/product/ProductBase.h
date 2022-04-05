@@ -187,11 +187,15 @@ public:
 	}
 	*/
 
+	static
+	void setODIMsoftwareVersion(drain::VariableMap & metadata);
+
 protected:
 
 	/// Sets target encoding.
 	static
 	void setODIMspecials(ODIM & productODIM);
+
 
 protected:
 

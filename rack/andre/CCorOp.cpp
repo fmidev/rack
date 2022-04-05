@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/imageops/SegmentAreaOp.h"
 //#include "drain/image/MathOpPack.h"
 
-using namespace drain::image;
+// using namespace drain::image;
 
 namespace rack {
 
@@ -91,7 +91,8 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 
 	/// Main loop
 	double dbzh, th, diff;
-	drain::FuzzyBell<double> fuzzy(0.0, reflHalfWidth, QMAX);
+	// drain::FuzzyBell<double> fuzzy(0.0, reflHalfWidth, QMAX);
+	drain::FuzzyStep<double> fuzzyStep(0, 2.0*reflHalfWidth, QMAX);
 	Image::const_iterator ith   = srcTH.data.begin();
 	Image::const_iterator idbzh = srcDBZH.data.begin();
 	Image::iterator        it   = dstProb.data.begin();
@@ -119,7 +120,8 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 			}
 			th = srcTH.odim.scaleForward(th);
 			diff = th - dbzh;
-			*it  = QMAX - fuzzy(diff);
+			//*it  = QMAX - fuzzyBell(diff);
+			*it  = fuzzyStep(diff);
 			if (diff != 0.0)
 				*cit = dstAux.odim.scaleInverse(diff);
 			else

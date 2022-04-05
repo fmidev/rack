@@ -50,20 +50,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataSelector.h"
 #include "data/ODIMPath.h"
-/*
-#include "data/Data.h"
-#include "data/ODIM.h"
-*/
 
-/*
-#include "hi5/Hi5.h"
-#include "main/rack.h"
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
-#include "drain/util/SmartMap.h"
-#include "drain/util/Tree.h"
-#include "drain/util/Variable.h"
-*/
+
 
 namespace rack {
 

@@ -476,8 +476,9 @@ public:
 		//mout.warn() << "ODIM lat" <<  acc.odim << mout.endl;
 		ODIM::copyToH5<ODIMPathElem::ROOT>(acc.odim, dst);
 
-		dst[ODIMPathElem::HOW].data.attributes["software"]   = __RACK__;
-		dst[ODIMPathElem::HOW].data.attributes["sw_version"] = __RACK_VERSION__;
+		ProductBase::setODIMsoftwareVersion(dst[ODIMPathElem::HOW].data.attributes);
+		//dst[ODIMPathElem::HOW].data.attributes["software"]   = __RACK__;
+		//dst[ODIMPathElem::HOW].data.attributes["sw_version"] = __RACK_VERSION__;
 
 		ctx.currentHi5 = & dst;
 		ctx.currentPolarHi5 = & dst;

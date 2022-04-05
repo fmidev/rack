@@ -33,53 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <fstream>
 #include <iostream>
-/*
-#include <algorithm>
-#include <limits>
-#include <list>
-#include <map>
-#include <sstream>
-#include <utility>
-#include <vector>
- */
-//#include <regex.h>
-// #include <stddef.h>
 
 #include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
-/*
-#include "drain/util/FilePath.h"
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/Tree.h"
-#include "drain/util/Variable.h"
-#include "drain/image/FilePng.h"
-#include "drain/image/FilePnm.h"
-*/
-//#include "drain/image/FileGeoTIFF.h"
-//#include "radar/FileGeoTIFF.h"
+#include "main/rack.h"
 
-//#include "drain/image/Image.h"
-//#include "drain/image/Sampler.h"
-//#include "drain/imageops/ImageModifierPack.h"
-
-//#include "drain/prog/Command.h"
-/*
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/prog/CommandInstaller.h"
-
-#include "data/Data.h"
-//#include "data/DataOutput.h"
-#include "data/DataSelector.h"
-#include "data/DataTools.h"
-#include "data/ODIMPath.h"
-#include "data/PolarODIM.h"
-#include "hi5/Hi5.h"
-#include "hi5/Hi5Write.h"
-#include "product/ProductOp.h"
-//#include "radar/RadarDataPicker.h"
-*/
-//#include "resources.h"
 #include "fileio-geotiff.h"
 
 namespace rack {
@@ -88,20 +46,25 @@ const drain::image::FileTIFF::dict_t & CmdGeoTiff::compressionDict(drain::image:
 
 
 void CmdGeoTiff::exec() const {
+
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	/// TODO. develop FileTIFF::dict_t as Single-Flagger etc
+	if (compression.empty()){
 
-	drain::image::FileTIFF::dict_t::value_t value = drain::FlagResolver::getValue(compressionDict, compression, '\0');
-	mout.special("Resolved: ", compression, " => ", value, " == ", drain::FlagResolver::getKeys(compressionDict, value));
-	if (compressionDict.hasValue(value)){
-		drain::image::FileTIFF::defaultCompression = value;
+		const drain::image::FileTIFF::dict_t::value_t value = drain::FlagResolver::getValue(compressionDict, compression, '\0');
+		mout.special("Resolved: '", compression, "' => ", value, " == ", drain::FlagResolver::getKeys(compressionDict, value));
+		if (compressionDict.hasValue(value)){
+			drain::image::FileTIFF::defaultCompression = value;
+		}
+		else {
+			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", compressionDict.toStr('|'));
+			mout.warn("Keeping:  <= '", compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
+		}
+
 	}
-	else {
-		mout.fail("Multiple compression method: ", compression , " == ", value, " not supported");
-		mout.warn("Keeping:  <= '", compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
-	}
+
 }
 
 
@@ -133,6 +96,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// http://www.gdal.org/frmt_gtiff.html
 	// Optional
 	file.setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
+	//file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
 
 	file.setDefaults();
 	//file.setField(, value)

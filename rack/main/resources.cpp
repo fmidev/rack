@@ -30,10 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include "hi5/Hi5.h"
-
-#include "resources.h"
 #include "data/SourceODIM.h"
 #include "product/DataConversionOp.h"
+
+#include "rack.h"
+#include "resources.h"
 
 // using namespace drain;
 // using namespace drain::image;

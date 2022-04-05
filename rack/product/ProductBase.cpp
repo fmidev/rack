@@ -50,6 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <stdexcept>
 #include <utility>
 
+#include "main/rack.h"
 #include "ProductBase.h"
 
 namespace rack {
@@ -265,6 +266,10 @@ void ProductBase::setODIMspecials(ODIM & dstODIM){
 
 }
 
+void ProductBase::setODIMsoftwareVersion(drain::VariableMap & how){
+	how["software"]   = __RACK__;
+	how["sw_version"] = __RACK_VERSION__;
+}
 
 
 

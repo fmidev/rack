@@ -45,8 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-using namespace drain::image;
-using namespace hi5;
+//using namespace drain::image;
+//using namespace hi5;
 
 /// The base class for operators removing detected anomalies by overriding low-quality pixels with neighboring high-quality pixels."
 /**

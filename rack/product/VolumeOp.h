@@ -47,8 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-//#include "hi5/H52Image.h"
-#include "main/rack.h"
+//#include "main/rack.h"
 #include "hi5/Hi5.h"
 #include "data/ODIM.h"
 #include "data/DataSelector.h"
@@ -242,8 +241,9 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;
-	how["software"]   = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
+	ProductBase::setODIMsoftwareVersion(how);
+	// how["software"]   = __RACK__;
+	// how["sw_version"] = __RACK_VERSION__;
 	/*
 	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 	how["anglesV"]   = elangles;  // NEW 2021

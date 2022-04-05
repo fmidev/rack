@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //nclude "drain/prog/CommandBank.h"
 //nclude "drain/prog/CommandInstaller.h"
 
-#include "drain/util/FileInfo.h"
+// #include "drain/util/FileInfo.h"
 #include "drain/image/FileGeoTIFF.h"
 
 //nclude "hi5/Hi5.h"
@@ -55,7 +55,7 @@ public:
 	inline
 	CmdGeoTiff() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating?, use --outputConf tif:<width>,<height>") {
 		parameters.link("tile", drain::image::FileTIFF::defaultTile.tuple());
-		parameters.link("compression", compression, compressionDict.toStr('|'));
+		parameters.link("compression", compression="", compressionDict.toStr('|'));
 		// parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
 
 		//parameters.link("tileheight", drain::image::FileTIFF::defaultTile.height=0);

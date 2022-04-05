@@ -30,17 +30,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 // Algorithm is based on the study made by Brandon Hickman from The University Of Helsinki
 
-#include <drain/image/ImageFile.h>
+
+#include "drain/image/ImageFile.h"
 #include "drain/util/Fuzzy.h"
 #include "drain/util/FunctorPack.h"
-//#include "drain/image/SlidingWindowMedianOp.h"
 #include "data/ODIM.h"
 #include "data/Data.h"
 #include "data/QuantityMap.h"
 
 #include "radar/Geometry.h"
 #include "radar/Analysis.h"
-#include "main/rack.h"
 #include "radar/Precipitation.h"
 
 #include "RainRateDPOp.h"
