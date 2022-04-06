@@ -64,8 +64,7 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const double DEFAULT_QUALITY = 0.9;
-	// const double DEFAULT_QUALITY = 1.0;
+	mout.debug("Creating quality data [", dstQind.odim.quantity, "]");
 
 	if (dstQind.data.isEmpty()){
 
@@ -86,8 +85,11 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 		// Fill with init value
 		if (quantity == "QIND"){
+			const double DEFAULT_QUALITY = 0.9;
+			// const double DEFAULT_QUALITY = 1.0;
 			const double minCode = dstQind.data.getScaling().inv(DEFAULT_QUALITY);
-			mout.debug() << "Creating QIND data with 1-qMin: " << (DEFAULT_QUALITY) << " [" << minCode << "]" << mout.endl;
+			//mout.debug("Creating quality data [", dstQind.odim.quantity, "] with value=", DEFAULT_QUALITY);
+			mout.debug("Creating QIND data with 1-(qMin=",  DEFAULT_QUALITY,  ") -> code [", minCode, "]");
 			dstQind.data.fill(minCode);
 			//dstQind.data.fill(dstData.odim.scaleInverse(1.0)); // max quality (250) by default.
 		}	// Fill with init value
@@ -120,15 +122,16 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	//mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
 	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
 
-	mout.success() << srcProb << mout;
+	mout.success(srcProb);
 	//QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
 
 	if (dstQind.data.isEmpty()){
-		mout.note() << "Creating QIND data" << mout.endl;
+		// ??? replace this with initDstQuality() or like?  Or is this for external input handling?
+		mout.note("Creating QIND data");
 		getQuantityMap().setQuantityDefaults(dstQind, "QIND");
 		dstQind.setGeometry(srcProb.getGeometry());
 		//dstQind.data.setGeometry(srcProb.getGeometry());
-		dstQind.data.fill(dstQind.odim.scaleInverse(0.6)); // ? max quality by default
+		dstQind.data.fill(dstQind.odim.scaleInverse(0.5)); // ? max / defaultQuality COMPARE with  initDstQuality
 	};
 
 

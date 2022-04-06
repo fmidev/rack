@@ -121,6 +121,7 @@ public:
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__ );
 		ctx.defaultQuality = value;
+		mout.unimplemented("Warning: this value is currently unused");
 	}
 
 };

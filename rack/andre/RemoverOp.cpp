@@ -115,7 +115,7 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 				processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 			}
 			else if (DATASET_QUALITY) {
-				mout.warn() << "using dataset level data" << mout.endl;
+				mout.note() << "using dataset-level quality data" << mout.endl;
 				processData(srcData, srcDataSetQualityIndex, dstData, dstDataSet.getQualityData());
 			}
 			else {
@@ -172,13 +172,24 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		replaceCode = dstData.odim.undetect;
 	}
 	else {
-		replaceCode = dstData.odim.scaleInverse(drain::StringTools::convert<double>(replace));
+		// std::numeric_limits<double>::quiet_NaN();
+		try {
+			double d = std::stod(replace);
+			replaceCode = dstData.odim.scaleInverse(d);
+		}
+		catch (const std::exception & e) {
+			mout.warn(e.what());
+			mout.error("Failed in converting replace='", replace, "' to a number");
+			return;
+		}
+		//drain::StringTools::lazyConvert(replace, d);
 	}
 	mout.note() << replace << " = > replaceCode: " << replaceCode << mout.endl;
 
-	const bool ZERO_QUALITY = dstQuality.odim.scaleInverse(0.0);
+	const double ZERO_QUALITY = dstQuality.odim.scaleInverse(0.0);
+	//const bool ZERO_QUALITY = dstQuality.data.getConf().getTypeMin<double>();
 	if (clearQuality){
-		mout.debug() << "zero quality code: " << ZERO_QUALITY << mout.endl;
+		mout.special() << "zero quality code: " << ZERO_QUALITY << mout.endl;
 	}
 
 	//File::write(dstData.data, "dst1.png");

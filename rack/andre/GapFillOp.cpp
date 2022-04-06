@@ -36,6 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/Intensity.h"
 #include "drain/imageops/CopyOp.h"
 #include "drain/imageops/DistanceTransformFillOp.h"
+#include "drain/imageops/FastAverageOp.h"
+
 //#include "drain/imageops/RecursiveRepairerOp.h"
 #include "drain/imageops/BlenderOp.h"
 
@@ -74,30 +76,31 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	drain::Frame2D<int> pix;
 	pix.width  = widthM  / srcData.odim.rscale;
 	pix.height = heightD * srcData.data.getHeight() / 360.0;
-
 	mout.special("Pixel scope: ", pix);
-
-	// BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
-	DistanceTransformFillExponentialOp distOp(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
-
-	ImageOp & op = distOp; // (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
 	// mout.special() << "loops=" << loops << " => using " << op << mout;
 
+	// BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
+	DistanceTransformFillExponentialOp op(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
+	// DistanceTransformFillLinearOp distOp(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
+	// ImageOp & op = distOp; // (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
-
+	//FastAverageOp op(pix.width, pix.height);
 	// Esp. radius
-	mout.debug() << op << mout;
+	mout.special(op);
 
 	drain::image::Image tmpData(srcData.data.getConf());
 	tmpData.setName("tmpData");
 	// mout.warn() << tmpData << mout;
 	mout.debug() << tmpData.getChannel(0) << mout;
 
-	drain::image::Image tmpQuality; //(srcQuality.data.getConf());
+
+	drain::image::Image tmpQuality(srcQuality.data.getConf());
 	tmpQuality.setName("tmpQuality");
+	/*
 	tmpQuality.copyDeep(srcQuality.data);
 	srcData.createSimpleQualityData(tmpQuality, NAN, 0.1, 0); // = skip quality of values, and clear quality of special codes
+	*/
 	tmpQuality.setCoordinatePolicy(polarCoordPolicy);
 	dstQuality.data.setCoordinatePolicy(polarCoordPolicy);
 	// tmpQuality.setPhysicalRange(0, 255, true);
@@ -105,8 +108,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// mout.warn() << tmpQuality << mout;
 	// mout.warn() << tmpQuality.getChannel(0) << mout;
 
-	//File::write(srcData.data,"GapFillOp-z.png");
-	//File::write(tmpQuality,"GapFillOp-q.png");
+	// ImageFile::write(srcData.data,    "GapFillOp-src-d.png");
+	// ImageFile::write(srcQuality.data, "GapFillOp-src-q.png");
 
 	//dstData.setEncoding(srcData.data.getType()); // itself?
 	//dstData.setGeometry(srcData.data.getGeometry()); // itself?
@@ -114,43 +117,54 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//dstData.createSimpleQualityData(dstQuality, NAN, 0, 0); // = skip special codes
 
 	ImageTray<const Channel> srcTray;
-	srcTray.setChannels(srcData.data, tmpQuality);
+	//srcTray.setChannels(srcData.data, tmpQuality);
+	srcTray.setChannels(srcData.data, srcQuality.data);
 	mout.debug() << "srcTray:\n" << srcTray << mout;
 	// File::write(srcTray.get(),"GapFillOp-ind.png");
 	// File::write(srcTray.getAlpha(),"GapFillOp-inq.png");
 
 	ImageTray<Channel> dstTray;
-	dstTray.setChannels(tmpData, dstQuality.data);
-	mout.debug() << "dstTray:\n" << dstTray << mout;
+	dstTray.setChannels(tmpData, tmpQuality);
+	mout.debug("dstTray:\n", dstTray );
+
 
 	//File::write(dstQuality.data,"GapFillOp-inzq.png");
 
 	op.traverseChannels(srcTray, dstTray);
+	//ImageFile::write(tmpData,   "GapFillOp-tmp-d.png");
+	//ImageFile::write(tmpQuality,"GapFillOp-tmp-q.png");
 
 	// Finally, restore UNDETECT where it was originally. (Leaves some nodata overwritten)
 	// const double defaultQuality = dstQuality.odim.scaleInverse(0.75);
-	const double qualityThresholdEndoded = srcQuality.odim.scaleInverse(qualityThreshold);
+	const double qualityThresholdEncoded = srcQuality.odim.scaleInverse(qualityThreshold);
+	mout.special("Quality threshold (raw): ", qualityThresholdEncoded);
 	Image::iterator  it  = srcData.data.begin();
 	Image::iterator qit  = srcQuality.data.begin();
 	Image::iterator tit  = tmpData.begin();
+	Image::iterator qtit = tmpQuality.begin();
 	Image::iterator dit  = dstData.data.begin();
 	Image::iterator dqit = dstQuality.data.begin();
 
 	// Lazy: assumes srcData == dstData
+	// double q;
 	while (it != srcData.data.end()){
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
-		//if (*it == srcData.odim.undetect){
-		if (*qit <= qualityThresholdEndoded){
+		// if (*it == srcData.odim.undetect){
+		//if (*it == srcData.odim.nodata){
+		//q = *qtit;
+		if (*qit <= qualityThresholdEncoded){ //  && (*qtit <= q)){
+			*dit = *tit; // same encoding, direct assignment ok
+			*dqit = *qtit;
+		}
+		else {
 			//*dit = dstData.odim.undetect;
 			//*dit = dstData.odim.nodata;
 			*dqit = *qit; // DOES NOT WORK! defaultQuality;
 		}
-		else {
-			*dit = *tit; // same encoding, direct assignment ok
-		}
 		++it;
 		++qit;
 		++tit;
+		++qtit;
 		++dit;
 		++dqit;
 	}

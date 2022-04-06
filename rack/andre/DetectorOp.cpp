@@ -105,7 +105,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			Data<PolarDst>  & dstData = dstDataSet.getFirstData(); // only for QIND and CLASS
 
 
-			mout.debug() << "CLASSNAME=" << CLASSNAME << " universal=" << (SUPPORT_UNIVERSAL) << '&' <<  (UNIVERSAL) << mout.endl;
+			mout.debug("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
 
 			//const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
 
@@ -148,7 +148,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 		}
 		else {
-			mout.warn() << "something went wrong, dst has different angle, dst=" << itd->first << " != " << its->first << mout.endl;
+			mout.warn("Something went wrong, dst has different angle, dst=", itd->first, " != ", its->first);
 			return;
 		}
 		++its;
