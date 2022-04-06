@@ -82,13 +82,13 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 	mout.special("QMAX: ", QMAX );
 
 
-	Data<PolarDst> & dstAux = aux.getData("TH_DBZH"); // TODO: toggle letter
+	Data<PolarDst> & dstDiff = aux.getData("TH_DBZH"); // TODO: toggle letter
 	const QuantityMap & qm = getQuantityMap();
-	dstAux.odim.updateFromCastableMap(srcDBZH.odim);
-	dstAux.odim.quantity = "TH_DBZH";
-	qm.setQuantityDefaults(dstAux, "DBZH", srcDBZH.odim.type); // SAFE, lower limit (like -32dBZ) never exceeded because TH-DBHZ always positive
+	dstDiff.odim.updateFromCastableMap(srcDBZH.odim);
+	dstDiff.odim.quantity = "TH_DBZH";
+	qm.setQuantityDefaults(dstDiff, "DBZH", srcDBZH.odim.type); // SAFE, lower limit (like -32dBZ) never exceeded because TH-DBHZ always positive
 
-	dstAux.setGeometry(geometry);
+	dstDiff.setGeometry(geometry);
 
 	/// Main loop
 	double dbzh, th, diff;
@@ -98,7 +98,53 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 	Image::const_iterator ith   = srcTH.data.begin();
 	Image::const_iterator idbzh = srcDBZH.data.begin();
 	Image::iterator        it   = dstProb.data.begin();
-	Image::iterator       cit   = dstAux.data.begin();
+	Image::iterator       cit   = dstDiff.data.begin();
+
+	while (ith != srcTH.data.end()){
+
+		th = *ith;
+
+		if (th == srcTH.odim.undetect){
+			*it  = dstProb.odim.undetect;
+			*cit = dstDiff.odim.undetect;
+		}
+		else if (th == srcTH.odim.nodata){
+			*it  = dstProb.odim.nodata;
+			*cit = dstDiff.odim.nodata;
+		}
+		else {
+			dbzh = *idbzh;
+			if (dbzh == srcDBZH.odim.nodata){
+				*it  = dstProb.odim.nodata;
+				*cit = dstDiff.odim.nodata;
+			}
+			else {
+				th = srcTH.odim.scaleForward(th);
+				//if (!srcDBZH.odim.isValue(dbzh)){
+				if (dbzh == srcDBZH.odim.undetect){
+					dbzh = -32.0; // TODO: should be distance dependent
+				}
+				else {
+					dbzh = srcDBZH.odim.scaleForward(dbzh);
+				}
+				diff = th - dbzh;
+				// *it  = QMAX - fuzzyBell(diff);
+				*it  = fuzzyStep(diff);
+				if (diff > 0.0) // attn correction COULD make dBZ > t
+					*cit = dstDiff.odim.scaleInverse(diff);
+				else
+					*cit = dstDiff.odim.nodata;
+			}
+		}
+
+		++ith;
+		++idbzh;
+		++it;
+		++cit;
+	}
+
+	/*
+	if (mode)
 
 	while (idbzh != srcDBZH.data.end()){
 
@@ -118,7 +164,7 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 				dbzh = srcDBZH.odim.scaleForward(dbzh);
 				th   = srcTH.odim.scaleForward(th);
 				diff = th - dbzh;
-				//*it  = QMAX - fuzzyBell(diff);
+				// *it  = QMAX - fuzzyBell(diff);
 				*it  = fuzzyStep(diff);
 				if (diff != 0.0)
 					*cit = dstAux.odim.scaleInverse(diff);
@@ -132,44 +178,11 @@ void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> &
 		++it;
 		++cit;
 	}
-	/*
-	while (ith != srcTH.data.end()){
 
-		th = *ith;
-
-		if (th == srcTH.odim.undetect){
-			*it  = dstProb.odim.undetect;
-			*cit = dstAux.odim.undetect;
-		}
-		else if (th == srcTH.odim.nodata){
-			*it  = dstProb.odim.nodata;
-			*cit = dstAux.odim.nodata;
-		}
-		else {
-			dbzh = *idbzh;
-			//if (dbzh != srcDBZH.odim.nodata){
-			if (!srcDBZH.odim.isValue(dbzh)){
-				dbzh = -32.0;
-			}
-			else {
-				dbzh = srcDBZH.odim.scaleForward(dbzh);
-			}
-			th = srcTH.odim.scaleForward(th);
-			diff = th - dbzh;
-			// *it  = QMAX - fuzzyBell(diff);
-			*it  = fuzzyStep(diff);
-			if (diff != 0.0)
-				*cit = dstAux.odim.scaleInverse(diff);
-			else
-				*cit = dstAux.odim.nodata;
-		}
-
-		++ith;
-		++idbzh;
-		++it;
-		++cit;
-	}
+	else
 	*/
+
+
 
 
 	writeHow(dstProb);
