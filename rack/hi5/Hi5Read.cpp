@@ -286,35 +286,57 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			}
 			delete str;
 			*/
-			H5A_info_t info;
-			H5Aget_info(a, &info);
-			char *str = new char[info.data_size+1];
-			str[info.data_size] = '\0';
+			// char *str = new char[info.data_size+1];
+			// str[info.data_size] = '\0';
 
+			/*
 			if (H5Tis_variable_str(datatype)){
 				mout.experimental("variable-length string");
 				// !! char *str = 0;
+				char *str = 0;
 				//mout.warn() << (long int)s << '\t';
 				//H5Aread(a, datatype, &s);
 				H5Aread(a, datatype, str);
 				//mout << (long int)str << mout.endl;
 				attribute = std::string(str);
-				mout.experimental("variable-length string: ", attribute);
+				mout.experimental("variable-length string: ", attribute, " of size: ", info.data_size);
+			}
+			...
+			*/
+
+			/** WARNING: C/Cpp H5Aread is not well documented.
+			 *  The following code may be unstable.
+			 */
+			if (H5Tis_variable_str(datatype)){
+				/** WARNING: looks like here H5Aread expects void *s as a pointer to pointer,
+				 *  and a new array is created and assigned.
+				 *  Unclear who is responsible for deleting the object.
+				 */
+				// mout.special("String: variable-length");
+				char *s = 0;
+				H5Aread(a, datatype, &s);
+				attribute = std::string(s);
+				//mout.special("String: variable-length: (", info.data_size, "+1?): ", attribute);
+				// delete s;
 			}
 			else {
-				// H5A_info_t info;
-				// H5Aget_info(a, &info);
-				// mout.warn() << " fixed-length [" << info.data_size <<  "]" << mout.endl;
-				// char *str = new char[info.data_size+1];
-				//mout.warn() << (long int)str << '\t';
-				//str[info.data_size] = '\0';
-				H5Aread(a, datatype, str);
+				/** WARNING: looks like here H5Aread treats void *s 'normally',
+				 *  as a C string (char array) in which character are copied.
+				 *
+				 */
+				H5A_info_t info;
+				H5Aget_info(a, &info);
+				//mout.special("String: fixed length (", info.data_size, "+1)");
+				char *s = new char[info.data_size+1];
+				s[info.data_size] = '\0';
+				H5Aread(a, datatype, s);
 				//mout << (long int)str << mout.endl;
-				attribute = (const char *)str;
-
+				attribute = (const char *)s;
+				delete[] s;
+				// mout.special("String: fixed length (", info.data_size, "+1): ", attribute);
 			}
 
-			delete[] str;
+			//delete[] str;
 
 			/*
 			H5A_info_t info;

@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.48"
+#define __RACK_VERSION__ "6.49"
 
 /**
+ *   Version 6.49
+ *   -- Bug fix: H5Aread / variable-length strings
+ *
  *   Version 6.48
  *   -- aGapFill to use low-quality instead of 'nodata' (which required aRemover )
  *   -- aGapFillRec fix
