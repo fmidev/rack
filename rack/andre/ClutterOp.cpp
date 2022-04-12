@@ -82,11 +82,14 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	srcODIM["quantity"] = quantity;      // for file path
 	srcODIM["what:quantity"] = quantity; // for data selector
 
+	/*
 	drain::StringMapper filepath;
-	filepath.parse(this->pathSyntax);
+	filepath.parse(this->file);
 	const std::string filename = filepath.toStr(srcODIM);
-	mout.note() << "clutter map: '" << filename << "'" << mout.endl;
-	setClutterMap(filename); // Note: load new only when needed
+	*/
+	const std::string filePath = drain::StringMapper(this->file).toStr(srcODIM);
+	mout.note() << "clutter map: '" << filePath << "'" << mout.endl;
+	setClutterMap(filePath); // Note: load new only when needed
 
 	if (clutterMap.getChildren().empty()){
 		mout.warn() << "no clutterMap available, problems ahead..." << mout.endl;

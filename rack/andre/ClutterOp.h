@@ -58,7 +58,7 @@ public:
 
 	///	Default constructor.
 	/**
-	 *  \param decay - percentage of clutter probability remaining for each 1000m lift in altitude.
+	 *  \param decay - ratio of clutter probability remaining per 1000 m  in altitude.
 	 *
 	 *  Before applying this operator (by calling processVolume), \c cluttermap has to be read first. In \b rack ,
 	 *  this is implemented with AnDReClutterMapRead, "--aClutterMapRead" in command line.
@@ -66,17 +66,18 @@ public:
 	 *  This operator is \e universal , it is computed on dBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
-	ClutterOp(double decay=0.5, double gamma=1.0, const std::string & quantity ="CLUTTER", const std::string & pathSyntax = "cluttermaps/cluttermap-${NOD}-${quantity}.h5") :
+	ClutterOp(double decay=0.5, double gamma=1.0, const std::string & quantity ="CLUTTER", const std::string & file = "cluttermaps/cluttermap-${NOD}-${quantity}.h5") :
 		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter.ground"){ // Optional postprocessing: morphological closing.
 		// dataSelector.path = ". */da ta[0-9]+/?$";
 		dataSelector.quantity = "";  // or FREQ?
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		dataSelector.count = 1;
-		parameters.link("decay", this->decay = decay);
-		parameters.link("gamma", this->gamma = gamma);
-		parameters.link("quantity", this->quantity = quantity);
-		parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
+		parameters.link("decay", this->decay = decay, "per 1000m");
+		parameters.link("gamma", this->gamma = gamma, "brightness");
+		parameters.link("quantity", this->quantity = quantity, "[CLUTTER|OBSTACLE|...]");
+		parameters.link("file", this->file = file, "path syntax");
+		//parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
 		// parameters.link("filename", this->filename, filename);
 	};
 
@@ -84,7 +85,7 @@ public:
 	double decay;
 	double gamma;
 	std::string quantity;
-	std::string pathSyntax;
+	std::string file;
 
 	/// Loads a clutter map
 	void setClutterMap(const std::string & filename) const;

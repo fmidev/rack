@@ -2322,7 +2322,7 @@ HiddenModule::HiddenModule(){ //
 
 	// Bank-referencing commands first
 	//drain::HelpCmd help(cmdBank);
-	install<CmdMika>("mika", 'M');
+	install<CmdMika>("restart", 'R');
 
 }
 

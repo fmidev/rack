@@ -29,26 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-
 #ifndef RACK_COMMANDS2
 #define RACK_COMMANDS2
 
 
-
-//#include <drain/prog/CommandInstaller.h>
-//#include "drain/prog/Command.h"
-//#include "drain/prog/CommandRegistry.h"
-//#include "drain/prog/CommandPack.h"
-//#include "data/Quantity.h"
-// #include "andre/DetectorOp.h"
-
-//#include "resources.h"
-
-
-//using namespace drain;
-
 namespace rack {
-
 
 
 class MainModule : public drain::CommandModule<> {
@@ -68,11 +53,7 @@ public:
 };
 
 
+} // rack::
 
 
-} /* namespace rack */
-
-
-#endif /* RACK_PRODUCTS */
-
-// Rack
+#endif /* RACK_COMMANDS2 */

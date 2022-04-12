@@ -520,18 +520,15 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (key.empty()){
-		//help(0xffffffff, ostr);
-		//help(CommandBank::GENERAL, ostr);
-		help(0, ostr);
+		ostr << title << '\n' << std::endl;
+		help(ostr);
 		return;
 	}
 	else if (key == "all"){
 		help(FlagResolver::ALL, ostr);
-		//help(0xffffffff, ostr);
 	}
 	else if (key == "hidden"){
-			help(0, ostr);
-			//help(0xffffffff, ostr);
+		help(0, ostr);
 	}
 	else {
 
@@ -570,6 +567,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 }
 
 void CommandBank::help(std::ostream & ostr){
+
 	ostr << "For help on a commands, type:\n";
 	ostr << "  --help <command>\n";
 	ostr << '\n';
