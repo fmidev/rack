@@ -1,0 +1,28 @@
+
+# Install environment & dependencies for rack
+
+FROM ubuntu:18.04
+RUN apt-get update 
+
+# Install libraries (runtime versions only)
+# Found using queries like: apt search libpng runtime
+RUN apt-get -y install libhdf5-100 libproj12 libpng16-16 libtiff5 libgeotiff2 libgomp1
+# libgomp1: Open MP 
+
+
+COPY bin/rack /usr/local/bin
+
+
+# Consider:
+# libgeotiff-epsg/bionic 1.4.2-1 all
+# GeoTIFF library -- EPSG Geodetic Parameter Dataset
+
+# RUN apt-get -y install libproj     libhdf5     libtiff     libgeotiff     libpng
+# RUN apt-get -y install libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
+# RUN apt-get -y install make g++ git 
+# COPY install-rack.cnf rack/rack
+# Complete, finalize
+#COPY run.sh rack/
+#RUN ls -ltr 
+WORKDIR rack
+#CMD ["./run.sh","Hello, world!"]

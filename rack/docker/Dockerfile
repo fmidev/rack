@@ -8,11 +8,6 @@ RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev li
 RUN git clone https://github.com/fmidev/rack.git
 COPY install-rack.cnf rack/rack
 
-# Build
+# Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 RUN cd rack/rack && ./build.sh
 
-# Complete, finalize
-COPY run.sh rack/
-RUN ls -ltr 
-WORKDIR rack
-CMD ["./run.sh","Hello, world!"]
