@@ -15,8 +15,7 @@ Creating a [Docker](https://docs.docker.com) runtime image with **Rack** can be 
 Test:
 
 ```bash
-  cd ./docker
-  make rack6_runtime
+  make test
 ```
 
 
