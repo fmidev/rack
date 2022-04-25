@@ -37,7 +37,7 @@ upon invocation, for example: ``make TMPFILE=rack-$$ TAG=test rack6_runtime``.
 The runtime image should be built easily with the make commands shown above but for debugging,
 the build can be performed step by step as follows.
 
-The build time image:
+Building the initial, full image containing all the dependencies:
 ```bash
   docker build . --file Dockerfile --tag rack6_full:latest
 ```
@@ -53,4 +53,12 @@ Exporting the executable from the container to the working dir:
 Building the final (runtime) image
 ```bash
   docker build . --file Dockerfile.runtime --tag rack6_runtime:latest
+```
+
+Testing a runtime container
+```bash
+  docker run rack6_runtime rack --help
+  docker run -it rack6_runtime /bin/bash
+  # rack --help
+  # ...
 ```
