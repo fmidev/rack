@@ -12,7 +12,7 @@ Creating a [Docker](https://docs.docker.com) runtime image with **Rack** can be 
   make rack6_runtime
 ```
 
-Test:
+Testing:
 
 ```bash
   make test
@@ -24,14 +24,13 @@ Slow guide
 
 The Docker support in **Rack** consists of a [directory](./) containing 
 
+- [Makefile](./Makefile) for easy building with ``make`` utility
 - [Dockerfile](./Dockerfile) for compiling a ``rack`` executable
 - A simple configuration file [install-rack.cnf](install-rack.cnf)
-- [Dockerfile-runtime](./Dockerfile-runtime) containing the executable, excluding build time dependencies
-- [Makefile](./Makefile) for easy building with **make** utility.
+- [Dockerfile.runtime](./Dockerfile.runtime) for compiling an image with the executable, excluding build dependencies
 
-
-The build steps programmed in Makefile can be listed with a plain ``make`` command. Two variables can be
-upon invocation, for example: ``make TMPFILE=rack-$$ TAG=test rack6_runtime``.
+The build steps programmed in Makefile can be listed with a plain ``make`` command. Two variables –
+``$TMPFILE`` ``$TAG`` – can be tuned upon invocation. For example: ``make TMPFILE=rack-$$ TAG=test rack6_runtime``.
 
 The runtime image should be built easily with the make commands shown above but for debugging,
 the build can be performed step by step as follows.
