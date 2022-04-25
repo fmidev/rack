@@ -25,7 +25,7 @@ Slow guide
 The Docker support in **Rack** consists of a [directory](./) containing 
 
 - [Makefile](./Makefile) for easy building with ``make`` utility
-- [Dockerfile](./Dockerfile) for compiling a ``rack`` executable
+- [Dockerfile](./Dockerfile) for compiling an image ``rack`` executable (with development libraries)
 - A simple configuration file [install-rack.cnf](install-rack.cnf)
 - [Dockerfile.runtime](./Dockerfile.runtime) for compiling an image with the executable, excluding build dependencies
 
