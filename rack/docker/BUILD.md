@@ -26,8 +26,8 @@ The Docker support in **Rack** consists of a [directory](./) containing
 
 - [Makefile](./Makefile) for easy building with ``make`` utility
 - [Dockerfile](./Dockerfile) for compiling ``rack`` executable compatible with the runtime container
-- Configuration file [install-rack.cnf](install-rack.cnf) tuned for a Docker image
-- [Dockerfile.runtime](./Dockerfile.runtime) for compiling an image with the executable (excluding build dependencies)
+- Configuration file [install-rack.cnf](install-rack.cnf) tuned for the Docker image
+- [Dockerfile.runtime](./Dockerfile.runtime) for compiling the final image with the executable (excluding build dependencies)
 
 The build steps programmed in Makefile can be listed with a plain ``make`` command. Two variables –
 ``$TMPFILE`` ``$TAG`` – can be tuned upon invocation. For example: ``make TMPFILE=rack-$$ TAG=test rack6_runtime``.
