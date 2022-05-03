@@ -13,5 +13,5 @@ COPY rack /rack
 COPY docker/install-rack.cnf /rack/rack
 
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
-RUN cd /rack && ./build.sh
+RUN cd /rack/rack && ./build.sh
 
