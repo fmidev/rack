@@ -77,7 +77,7 @@ public:
 		parameters.link("gamma", this->gamma = gamma, "brightness");
 		parameters.link("quantity", this->quantity = quantity, "CLUTTER|OBSTACLE|...");
 		parameters.link("file", this->file = file, "path syntax");
-		//parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
+		// parameters.link("pathSyntax", this->pathSyntax = pathSyntax);
 		// parameters.link("filename", this->filename, filename);
 	};
 
