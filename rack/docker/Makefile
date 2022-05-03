@@ -1,6 +1,6 @@
 
 # Default variables that can be bypassed, eg. make TMPFILE=rack-$$ TAG=test rack6_runtime
-TMPFILE := rack.tmp
+TMPFILE := rack-$${USER}.tmp
 TAG=latest
 
 # The build steps can be listed with a plain ``make`` or ``make help`` command.
