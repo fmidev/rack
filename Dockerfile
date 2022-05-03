@@ -10,7 +10,7 @@ RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev li
 
 # RUN git clone https://github.com/fmidev/rack.git
 COPY rack /rack
-COPY rack/docker/install-rack.cnf /rack/rack
+# COPY rack/docker/install-rack.cnf /rack/rack
 
 RUN ls -ltr /rack
 
