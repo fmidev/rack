@@ -90,6 +90,7 @@ public:
 	/// Loads a clutter map
 	void setClutterMap(const std::string & filename) const;
 
+	// Dev trial
 	const Hi5Tree & getClutterMap(const PolarODIM & odim) const;
 
 
