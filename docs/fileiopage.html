@@ -180,12 +180,12 @@ A PNG image generated with <code>-o</code> .</div></div>
 </div><!-- fragment --><p>Some important ODIM attributes can be added automatically with <code>&ndash;completeODIM</code> command, which sets <code>nbins</code> , <code>nrays</code> , <code>xsize</code> , and <code>ysize</code> equal to data dimensions, if already loaded as image.</p>
 <h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
-<div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;store&gt;  (Section: general)</div>
-<div class="line">  Histogram. Optionally --format using keys index,min,max,count,label</div>
+<div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>
+<div class="line">  Histogram. Optionally --format using keys index,range,count,label</div>
 <div class="line">    count=256 </div>
 <div class="line">    range=0:0 </div>
 <div class="line">    filename= [&lt;filename&gt;.txt|-]</div>
-<div class="line">    store=histogram [&lt;attribute_key&gt;]</div>
+<div class="line">    attribute=histogram [&lt;attribute_key&gt;]</div>
 </div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=TH&#39;</span> --histogram filename=histogram.dat</div>
 </div><!-- fragment --><p>The resulting file consists of lines containing values and counts </p><div class="fragment"><div class="line"><span class="preprocessor"># [0,256] </span></div>
 <div class="line">97192 # <span class="stringliteral">&#39;undetect&#39;</span> (0) [-327.68, -327.67] </div>

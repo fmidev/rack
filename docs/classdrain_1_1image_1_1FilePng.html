@@ -87,8 +87,8 @@ Collaboration diagram for FilePng:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FilePng__coll__graph.png" border="0" usemap="#FilePng_coll__map" alt="Collaboration graph"/></div>
 <map name="FilePng_coll__map" id="FilePng_coll__map">
-<area shape="rect" title="For reading and writing images in PNG format." alt="" coords="39,199,107,225"/>
-<area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="157,95,226,121"/>
+<area shape="rect" title="For reading and writing images in PNG format." alt="" coords="7,199,75,225"/>
+<area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="6,95,75,121"/>
 <area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="5,5,76,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -97,7 +97,7 @@ Collaboration diagram for FilePng:</div>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae859661a388308ba55891ac37bfc49c6"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae859661a388308ba55891ac37bfc49c6"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#ae859661a388308ba55891ac37bfc49c6">read</a> (T &amp;image, const std::string &amp;path, int png_transforms=0)</td></tr>
-<tr class="memdesc:ae859661a388308ba55891ac37bfc49c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a png file to <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a> or <a class="el" href="classdrain_1_1image_1_1Channel.html" title="Image with static geometry.">Channel</a> .  <a href="classdrain_1_1image_1_1FilePng.html#ae859661a388308ba55891ac37bfc49c6">More...</a><br /></td></tr>
+<tr class="memdesc:ae859661a388308ba55891ac37bfc49c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising png files.  <a href="classdrain_1_1image_1_1FilePng.html#ae859661a388308ba55891ac37bfc49c6">More...</a><br /></td></tr>
 <tr class="separator:ae859661a388308ba55891ac37bfc49c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cbbcdd5455b722eea871acf51d268af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a0cbbcdd5455b722eea871acf51d268af">write</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path)</td></tr>
 <tr class="memdesc:a0cbbcdd5455b722eea871acf51d268af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes image to a png file.  <a href="classdrain_1_1image_1_1FilePng.html#a0cbbcdd5455b722eea871acf51d268af">More...</a><br /></td></tr>
@@ -105,11 +105,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aad019c3fc6bbc277d51f04ac5a857884"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#aad019c3fc6bbc277d51f04ac5a857884">fileNameRegExp</a></td></tr>
-<tr class="memdesc:aad019c3fc6bbc277d51f04ac5a857884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising png files.  <a href="classdrain_1_1image_1_1FilePng.html#aad019c3fc6bbc277d51f04ac5a857884">More...</a><br /></td></tr>
-<tr class="separator:aad019c3fc6bbc277d51f04ac5a857884"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f050da814c823b31ba4941fa8c33f3e"><td class="memItemLeft" align="right" valign="top"><a id="a0f050da814c823b31ba4941fa8c33f3e"></a>
-static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fileInfo</b></td></tr>
+static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a0f050da814c823b31ba4941fa8c33f3e">fileInfo</a></td></tr>
+<tr class="memdesc:a0f050da814c823b31ba4941fa8c33f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising image files. <br /></td></tr>
 <tr class="separator:a0f050da814c823b31ba4941fa8c33f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
@@ -162,8 +160,8 @@ static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a> &amp;&#160;
 </table>
 </div><div class="memdoc">
 
-<p>Reads a png file to <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a> or <a class="el" href="classdrain_1_1image_1_1Channel.html" title="Image with static geometry.">Channel</a> . </p>
-<p>Converts indexed (palette) images to RGB or RGBA. Scales data to 8 or 16 bits, according to template class. Floating point images will be scaled as 16 bit integral (unsigned short int).</p>
+<p>Syntax for recognising png files. </p>
+<p>Reads a png file to <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a> or <a class="el" href="classdrain_1_1image_1_1Channel.html" title="Image with static geometry.">Channel</a> . Converts indexed (palette) images to RGB or RGBA. Scales data to 8 or 16 bits, according to template class. Floating point images will be scaled as 16 bit integral (unsigned short int).</p>
 <p>In addition to reading to <a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a>, supports reading to <a class="el" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry.">ImageFrame</a> if type and geometry match.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -224,32 +222,6 @@ static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a> &amp;&#160;
 <p>? png_set_traverseFrame(png_ptr, 0,PNG_FILTER_HEURISTIC_DEFAULT);</p>
 <p>WARNING: for channels/views: getProperties instead?</p>
 <p>NEW:</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aad019c3fc6bbc277d51f04ac5a857884"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad019c3fc6bbc277d51f04ac5a857884">&#9670;&nbsp;</a></span>fileNameRegExp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> fileNameRegExp</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Syntax for recognising png files. </p>
-<p>Syntax for recognising image files. </p>
 
 </div>
 </div>

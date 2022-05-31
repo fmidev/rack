@@ -243,10 +243,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td
 </div><div class="memdoc">
 
 <p>Derive appropriate output <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> from input sweeps, user-requested <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> and (possibly) meteorological input parameters. </p>
-<ul>
-<li><code>srcSweeps</code> </li>
-<li><code>dstOdim</code> </li>
-</ul>
+<p>Also creates <code>elangles</code> array using srcSweeps provided.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">srcSweeps</td><td>- input data </td></tr>
+    <tr><td class="paramname">dstOdim</td><td>- metadata for/of output data </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

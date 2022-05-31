@@ -388,6 +388,9 @@ static herr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 </table>
 </div><div class="memdoc">
 <p>Get the native data type. (The conversion will not store the original data type.)</p>
+<p>WARNING: C/Cpp H5Aread is not well documented. The following code may be unstable.</p>
+<p>WARNING: looks like here H5Aread expects void *s as a pointer to pointer, and a new array is created and assigned. Unclear who is responsible for deleting the object.</p>
+<p>WARNING: looks like here H5Aread treats void *s 'normally', as a C string (char array) in which character are copied.</p>
 
 </div>
 </div>

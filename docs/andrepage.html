@@ -140,7 +140,7 @@ Detection</h1>
 <p><a class="el" href="quickpage.html#commands_andre">Anomaly detection and removal</a> start with <code>'&ndash;a'</code>, and can be listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --help andre </div>
 </div><!-- fragment --><h2><a class="anchor" id="aBiomet"></a>
 Detecting birds and insects (single-pol)</h2>
-<p>Detects birds and insects. The idea behind bird and insect detector hence "biometeor" detector is very simple. It looks for intensities lower than threshold <code>reflMax</code> and altitudes lower than <code>altitudeMax</code> (metres). The thresholds have fuzzy steepness parameters: intensity steepness <code>reflDev</code> and altitude steepness <code>altitudeDev</code>. The steepness parameters determine "half-widths" of the fuzzy responses (<a class="el" href="detailspage.html#fuzzy">Fuzzy functions</a> ).</p>
+<p>\copydesc <a class="el" href="classrack_1_1BiometOp.html" title="Detects birds and insects.">rack::BiometOp</a></p>
 <div class="fragment"><div class="line">rack volume.h5 --aBiomet &#39;-10,500,5,1000&#39; -o aBiomet.h5</div>
 <div class="line">  % reflMax=-10 [dBZ]</div>
 <div class="line">  % maxAltitude=500 [m]</div>
@@ -182,10 +182,10 @@ Detecting ground clutter</h2>
 <li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_3.png"/>: "sky angle",</li>
 </ul>
 <div class="fragment"><div class="line">rack volume.h5 --aClutter &#39;0.5,1,CLUTTER,cluttermaps/cluttermap-${NOD}-${quantity}.h5&#39; -o aClutter.h5</div>
-<div class="line">  % decay=0.5 </div>
-<div class="line">  % gamma=1 </div>
-<div class="line">  % quantity=CLUTTER </div>
-<div class="line">  % pathSyntax=cluttermaps/cluttermap-${NOD}-${quantity}.h5 </div>
+<div class="line">  % decay=0.5 [per 1000m]</div>
+<div class="line">  % gamma=1 [brightness]</div>
+<div class="line">  % quantity=CLUTTER [CLUTTER|OBSTACLE|...]</div>
+<div class="line">  % file=cluttermaps/cluttermap-${NOD}-${quantity}.h5 [path syntax]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-clutter.png" alt=""/>
 <div class="caption">

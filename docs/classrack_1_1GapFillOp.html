@@ -71,6 +71,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classrack_1_1GapFillOp-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">GapFillOp Class Reference</div>  </div>
@@ -180,6 +181,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b>
 <tr class="memdesc:a4094dc5932dc44ca179e0ab748b0a047 inherit pro_methods_classrack_1_1PolarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derive appropriate output <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> from input sweeps, user-requested <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> and (possibly) meteorological input parameters.  <a href="classrack_1_1PolarProductOp.html#a4094dc5932dc44ca179e0ab748b0a047">More...</a><br /></td></tr>
 <tr class="separator:a4094dc5932dc44ca179e0ab748b0a047 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a9ee793c14270a74dbf1ac173b669e72f"><td class="memItemLeft" align="right" valign="top"><a id="a9ee793c14270a74dbf1ac173b669e72f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>qualityThreshold</b></td></tr>
+<tr class="separator:a9ee793c14270a74dbf1ac173b669e72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
+<tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
+<tr class="separator:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1GapFillOpBase"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1GapFillOpBase')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1GapFillOpBase.html">GapFillOpBase</a></td></tr>
@@ -199,10 +210,6 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>expansionCoeff</b><
 <tr class="memitem:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="ae31e7761befc43085af74869862df2db"></a>
 static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
 <tr class="separator:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
-<tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
-<tr class="separator:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A simple gap filler based on distance transformation. </p>

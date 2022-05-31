@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: Docker image</title>
+<title>rack: Building Rack Docker image</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,20 +65,37 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Docker image </div>  </div>
+<div class="title">Building Rack Docker image </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
-Building Rack Docker image</h1>
-<p>For creating a <a href="https://docs.docker.com">Docker image</a>, <b>Rack</b> uses</p>
-<ul>
-<li><a href="./Dockerfile">Dockerfile</a></li>
-<li>A simplified <a href="install-rack.cnf">install-rack.cnf</a> <br  />
-</li>
-</ul>
-<p>Then, the image can be created with:</p>
+Quick guide</h1>
+<p>Creating a <a href="https://docs.docker.com">Docker</a> runtime image with <b>Rack</b> can be created with:</p>
 <div class="fragment"><div class="line">cd ./docker</div>
-<div class="line">docker build . --tag rack:local</div>
+<div class="line">make rack6_runtime</div>
+</div><!-- fragment --><p>Testing:</p>
+<div class="fragment"><div class="line">make test</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1"></a>
+Slow guide</h1>
+<p>The Docker support in <b>Rack</b> consists of a <a href="./">directory</a> containing</p>
+<ul>
+<li><a href="./Makefile">Makefile</a> for easy building with <code>make</code> utility</li>
+<li><a href="./Dockerfile">Dockerfile</a> for compiling <code>rack</code> executable compatible with the runtime container</li>
+<li>Configuration file <a href="install-rack.cnf">install-rack.cnf</a> tuned for the Docker image</li>
+<li><a href="./Dockerfile.runtime">Dockerfile.runtime</a> for compiling the final image with the executable (excluding build dependencies)</li>
+</ul>
+<p>The build steps programmed in Makefile can be listed with a plain <code>make</code> command. Two variables – <code>$TMPFILE</code> <code>$TAG</code> – can be tuned upon invocation. For example: <code>make TMPFILE=rack-$$ TAG=test rack6_runtime</code>.</p>
+<p>The runtime image should be built easily with the make commands shown above but for debugging, the build can be performed step by step as follows.</p>
+<p>Building the initial, full image containing all the dependencies: </p><div class="fragment"><div class="line">docker build . --file Dockerfile --tag rack6_full:latest</div>
+</div><!-- fragment --><p>Exporting the executable from the container to the working dir: </p><div class="fragment"><div class="line">touch /tmp/rack.tmp</div>
+<div class="line">docker run --mount src=/tmp,dst=/tmp,type=bind -t rack6_full cp -fv /rack/rack/Release/rack /tmp/rack.tmp</div>
+<div class="line">mv /tmp/rack.tmp bin/rack # or cp</div>
+<div class="line">chmod a+rx bin/rack</div>
+</div><!-- fragment --><p>Building the final (runtime) image </p><div class="fragment"><div class="line">docker build . --file Dockerfile.runtime --tag rack6_runtime:latest</div>
+</div><!-- fragment --><p>Testing a runtime container </p><div class="fragment"><div class="line">docker run rack6_runtime rack --help</div>
+<div class="line">docker run -it rack6_runtime /bin/bash</div>
+<div class="line"># rack --help</div>
+<div class="line"># ...</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- HTML footer for doxygen 1.8.17-->

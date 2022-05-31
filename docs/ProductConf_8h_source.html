@@ -124,61 +124,49 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;data/DataSelector.h&quot;</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &quot;data/ODIMPath.h&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">#include &quot;data/Data.h&quot;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">#include &quot;data/ODIM.h&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">#include &quot;hi5/Hi5.h&quot;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">#include &quot;main/rack.h&quot;</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">#include &quot;drain/util/Log.h&quot;</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">#include &quot;drain/util/RegExp.h&quot;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">#include &quot;drain/util/SmartMap.h&quot;</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">#include &quot;drain/util/Tree.h&quot;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">#include &quot;drain/util/Variable.h&quot;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//using namespace drain::image;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html">   65</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1ProductConf.html">ProductConf</a> {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// INPUT:</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//using namespace drain::image;</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// Could be hidden (esp. if some quantity is definite?)</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> dataSelector;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// OUTPUT</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html">   77</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1ProductConf.html">ProductConf</a> {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">   76</a></span>&#160;    std::string <a class="code" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// INPUT:</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// Could be hidden (esp. if some quantity is definite?)</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> dataSelector;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// OUTPUT</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">   88</a></span>&#160;    std::string <a class="code" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">   86</a></span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> <a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">   98</a></span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> <a class="code" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">   92</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">outputDataVerbosity</a>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}  <span class="comment">// namespace rack</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">  104</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">outputDataVerbosity</a>;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}  <span class="comment">// namespace rack</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACK_PRODUCT_CONF */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACK_PRODUCT_CONF */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructrack_1_1ProductConf_html"><div class="ttname"><a href="structrack_1_1ProductConf.html">rack::ProductConf</a></div><div class="ttdoc">Shared properties for meteorological products and Cartesian products (composites and single-radar ima...</div><div class="ttdef"><b>Definition:</b> ProductConf.h:77</div></div>
+<div class="ttc" id="astructrack_1_1ProductConf_html"><div class="ttname"><a href="structrack_1_1ProductConf.html">rack::ProductConf</a></div><div class="ttdoc">Shared properties for meteorological products and Cartesian products (composites and single-radar ima...</div><div class="ttdef"><b>Definition:</b> ProductConf.h:65</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
-<div class="ttc" id="astructrack_1_1ProductConf_html_a0470ed466227d970c549f7c1da5a0df1"><div class="ttname"><a href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">rack::ProductConf::targetEncoding</a></div><div class="ttdeci">std::string targetEncoding</div><div class="ttdoc">How the (main) output is encoded.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:88</div></div>
-<div class="ttc" id="astructrack_1_1ProductConf_html_afb880a78fc420afd98783e324338f2b0"><div class="ttname"><a href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">rack::ProductConf::outputDataVerbosity</a></div><div class="ttdeci">int outputDataVerbosity</div><div class="ttdoc">Determines if also intermediate results (1) are saved. See –aStore.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:104</div></div>
-<div class="ttc" id="astructrack_1_1ProductConf_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">rack::ProductConf::appendResults</a></div><div class="ttdeci">ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:98</div></div>
+<div class="ttc" id="astructrack_1_1ProductConf_html_a0470ed466227d970c549f7c1da5a0df1"><div class="ttname"><a href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">rack::ProductConf::targetEncoding</a></div><div class="ttdeci">std::string targetEncoding</div><div class="ttdoc">How the (main) output is encoded.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:76</div></div>
+<div class="ttc" id="astructrack_1_1ProductConf_html_afb880a78fc420afd98783e324338f2b0"><div class="ttname"><a href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">rack::ProductConf::outputDataVerbosity</a></div><div class="ttdeci">int outputDataVerbosity</div><div class="ttdoc">Determines if also intermediate results (1) are saved. See –aStore.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:92</div></div>
+<div class="ttc" id="astructrack_1_1ProductConf_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">rack::ProductConf::appendResults</a></div><div class="ttdeci">ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:86</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition:</b> ODIMPath.h:78</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html"><div class="ttname"><a href="classrack_1_1DataSelector.html">rack::DataSelector</a></div><div class="ttdoc">Tool for selecting datasets based on paths, quantities and min/max elevations.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:59</div></div>
 <!-- HTML footer for doxygen 1.8.17-->

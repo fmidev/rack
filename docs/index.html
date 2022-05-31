@@ -93,7 +93,7 @@ $(function() {
 <div class="image">
 <img src="rack-logo-384x192.png" alt=""/>
 </div>
- <div class="fragment"><div class="line">Version 6.42</div>
+ <div class="fragment"><div class="line">Version 6.45</div>
 </div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
@@ -154,13 +154,13 @@ Selecting data</h2>
 <p>Selecting data can be done with command <code>&ndash;select</code> .</p>
 <div class="fragment"><div class="line">--select, -s  &lt;selector&gt;  (Section: general)</div>
 <div class="line">  Data selection for the next operation.</div>
-<div class="line">    selector=[&quot;path&quot;,&quot;quantity&quot;,&quot;elangle&quot;,&quot;count&quot;,&quot;dualPRF&quot;] </div>
+<div class="line">    selector={&quot;path&quot;:&quot;&quot;,&quot;quantity&quot;:&quot;&quot;,&quot;elangle&quot;:[-90,90],&quot;count&quot;:1000,&quot;dualPRF&quot;:0} </div>
 </div><!-- fragment --><p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
-<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are ordered, meaning that they can be issued as a comma-separated string without explicit key names, as long as they are given in order. The parameters are:</p>
+<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are positional (ordered), meaning that they can be issued as a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:</p>
 <ul>
-<li><code>path</code> of elements, separated by slash '/' and consisting of:<ul>
+<li><code>path</code> is a string of path elements, separated by slash '/' and consisting of:<ul>
 <li>a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts</li>
-<li><code>what</code> , <code>where</code>, <code>how</code> - groups containing attributes</li>
+<li><code>what</code> , <code>where</code>, <code>how</code> - ie. the groups containing attributes</li>
 <li><code> dataset{min}:{max} </code>, <code> data{min}:{max}</code> , <code> quality{min}:{max}</code> - indexed groups containing subgroups for actual data and attributes</li>
 <li><code>data</code> - unindexed groups containing actual data arrays</li>
 <li><em>combined</em> <em>selection</em> <em>elements</em> created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)<ul>
@@ -193,6 +193,7 @@ Selecting data</h2>
 </ul>
 </li>
 <li><code>count</code> is the upper limit of accepted indices of <code>dataset</code> ; typically used with <code>elangle</code> </li>
+<li><code>dualPRF</code> determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).</li>
 </ul>
 <p>The selection functionality is best explained with examples.</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># Index range: select dataset3, including its subgroups. </span></div>
@@ -228,7 +229,7 @@ Selecting data</h2>
 <div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=^TH$,elangle=1.5:10,count=3&#39;</span> --pCappi 1500 -o pCappi-TH-1500m.h5</div>
 <div class="line"> </div>
-</div><!-- fragment --><p> Note that escaping special characters like '|' is often on command line.</p>
+</div><!-- fragment --><p> Note that escaping special characters like '|' is often required on command line.</p>
 <p>Often, the first data array matching the criteria are used.</p>
 <p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
 <p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="productspage.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>

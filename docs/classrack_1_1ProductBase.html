@@ -207,6 +207,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d69a96f68c7fe813dada3f601b811af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">applyODIM</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, bool applyDefaults=false)</td></tr>
 <tr class="memdesc:a4d69a96f68c7fe813dada3f601b811af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target quantity and encoding, if unset. If input odim.  <a href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">More...</a><br /></td></tr>
 <tr class="separator:a4d69a96f68c7fe813dada3f601b811af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad40893c8e56e9ed0357bb7b99dcfe07f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#ad40893c8e56e9ed0357bb7b99dcfe07f">setODIMsoftwareVersion</a> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;metadata)</td></tr>
+<tr class="memdesc:ad40893c8e56e9ed0357bb7b99dcfe07f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target encoding. Strict - sets all the supplied parameters, overriding existing values,.  <a href="classrack_1_1ProductBase.html#ad40893c8e56e9ed0357bb7b99dcfe07f">More...</a><br /></td></tr>
+<tr class="separator:ad40893c8e56e9ed0357bb7b99dcfe07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -228,8 +231,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a2c647c4533f71ac1551da8776912436c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
-<tr class="memdesc:a2c647c4533f71ac1551da8776912436c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target encoding. Strict - sets all the supplied parameters, overriding existing values,.  <a href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">More...</a><br /></td></tr>
+<tr class="memitem:a2c647c4533f71ac1551da8776912436c"><td class="memItemLeft" align="right" valign="top"><a id="a2c647c4533f71ac1551da8776912436c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a2c647c4533f71ac1551da8776912436c">setODIMspecials</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
+<tr class="memdesc:a2c647c4533f71ac1551da8776912436c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target encoding. <br /></td></tr>
 <tr class="separator:a2c647c4533f71ac1551da8776912436c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -405,8 +409,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struc
 
 </div>
 </div>
-<a id="a2c647c4533f71ac1551da8776912436c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c647c4533f71ac1551da8776912436c">&#9670;&nbsp;</a></span>setODIMspecials()</h2>
+<a id="ad40893c8e56e9ed0357bb7b99dcfe07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad40893c8e56e9ed0357bb7b99dcfe07f">&#9670;&nbsp;</a></span>setODIMsoftwareVersion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -415,23 +419,23 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setODIMspecials </td>
+          <td class="memname">void setODIMsoftwareVersion </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;&#160;</td>
-          <td class="paramname"><em>productODIM</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>metadata</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Sets target encoding. Strict - sets all the supplied parameters, overriding existing values,. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>: renew allowedEncoding </dd></dl>
-<p>Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> <code>what:quantity</code> , like DBZH) Sets target encoding. </p>
+<p>Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> <code>what:quantity</code> , like DBZH) </p>
 
 </div>
 </div>
