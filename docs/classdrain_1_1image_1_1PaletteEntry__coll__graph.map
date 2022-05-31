@@ -1,8 +1,0 @@
-<map id="PaletteEntry" name="PaletteEntry">
-<area shape="rect" id="node1" title=" " alt="" coords="43,323,145,349"/>
-<area shape="rect" id="node2" href="$classdrain_1_1LegendEntry.html" title=" " alt="" coords="5,247,108,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="132,247,213,273"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="115,157,231,184"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="77,81,268,108"/>
-<area shape="rect" id="node6" title=" " alt="" coords="60,5,285,32"/>
-</map>

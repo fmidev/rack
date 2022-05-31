@@ -1,7 +1,0 @@
-<map id="AnDReDefaultQuality" name="AnDReDefaultQuality">
-<area shape="rect" id="node1" title="Set the default quality [0.0,1.0] of radar data, typically close to 0.9." alt="" coords="22,304,183,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,200,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="41,155,165,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="58,80,147,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="56,5,149,32"/>
-</map>

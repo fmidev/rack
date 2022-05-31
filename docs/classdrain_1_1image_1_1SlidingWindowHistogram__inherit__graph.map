@@ -1,7 +1,0 @@
-<map id="SlidingWindowHistogram&lt; R &gt;" name="SlidingWindowHistogram&lt; R &gt;">
-<area shape="rect" id="node1" title="Base class for median and str histogram based statistics." alt="" coords="20,333,245,360"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="22,244,243,285"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,155,260,196"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="81,80,185,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="65,5,201,32"/>
-</map>

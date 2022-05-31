@@ -1,5 +1,0 @@
-<map id="Window&lt; C, R &gt;" name="Window&lt; C, R &gt;">
-<area shape="rect" id="node1" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="8,155,139,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="21,80,125,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="5,5,141,32"/>
-</map>

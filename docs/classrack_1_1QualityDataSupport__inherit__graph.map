@@ -1,5 +1,0 @@
-<map id="QualityDataSupport&lt; DT &gt;" name="QualityDataSupport&lt; DT &gt;">
-<area shape="rect" id="node1" title="Base class providing quality support for Dataand DataSet" alt="" coords="49,5,199,47"/>
-<area shape="rect" id="node2" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="5,95,107,121"/>
-<area shape="rect" id="node3" href="$classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc)." alt="" coords="131,95,253,121"/>
-</map>

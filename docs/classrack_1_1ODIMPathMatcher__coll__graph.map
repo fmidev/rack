@@ -1,7 +1,0 @@
-<map id="ODIMPathMatcher" name="ODIMPathMatcher">
-<area shape="rect" id="node1" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="68,247,208,273"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Path.html" title=" " alt="" coords="22,171,254,197"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,81,228,108"/>
-<area shape="rect" id="node4" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="252,81,405,108"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="253,5,405,32"/>
-</map>

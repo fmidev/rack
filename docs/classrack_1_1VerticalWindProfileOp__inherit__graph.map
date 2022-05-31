@@ -1,5 +1,0 @@
-<map id="VerticalWindProfileOp" name="VerticalWindProfileOp">
-<area shape="rect" id="node1" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="31,184,196,211"/>
-<area shape="rect" id="node2" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="15,95,212,136"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="5,5,221,47"/>
-</map>

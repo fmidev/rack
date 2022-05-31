@@ -1,6 +1,0 @@
-<map id="ChannelView" name="ChannelView">
-<area shape="rect" id="node1" title="View to a single channel." alt="" coords="5,229,112,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry." alt="" coords="21,155,96,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="7,80,111,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="14,5,103,32"/>
-</map>

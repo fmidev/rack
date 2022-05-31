@@ -1,8 +1,0 @@
-<map id="FileTIFF" name="FileTIFF">
-<area shape="rect" id="node1" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="123,199,195,225"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,95,100,121"/>
-<area shape="rect" id="node3" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="125,95,194,121"/>
-<area shape="rect" id="node4" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="120,5,191,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="225,95,353,121"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="222,5,363,32"/>
-</map>

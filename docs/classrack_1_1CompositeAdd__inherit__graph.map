@@ -1,7 +1,0 @@
-<map id="CompositeAdd" name="CompositeAdd">
-<area shape="rect" id="node1" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="9,304,126,331"/>
-<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title=" " alt="" coords="19,229,116,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="5,155,129,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="23,80,112,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="21,5,114,32"/>
-</map>

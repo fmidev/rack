@@ -1,5 +1,0 @@
-<map id="DatasetSelector" name="DatasetSelector">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,132,181"/>
-<area shape="rect" id="node2" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="15,80,122,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="28,5,109,32"/>
-</map>

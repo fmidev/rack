@@ -1,8 +1,0 @@
-<map id="FunctorWrapper&lt; F &gt;" name="FunctorWrapper&lt; F &gt;">
-<area shape="rect" id="node1" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="199,5,361,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="217,80,343,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="5,155,173,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="197,155,363,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="387,155,552,181"/>
-<area shape="rect" id="node6" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="387,229,551,256"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="MultiThresholdOp" name="MultiThresholdOp">
-<area shape="rect" id="node1" title=" " alt="" coords="5,229,143,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="33,155,115,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="29,80,119,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="33,5,115,32"/>
-</map>

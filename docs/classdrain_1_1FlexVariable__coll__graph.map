@@ -1,7 +1,0 @@
-<map id="FlexVariable" name="FlexVariable">
-<area shape="rect" id="node1" title="FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also re..." alt="" coords="5,351,109,377"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Variable.html" title=" " alt="" coords="19,275,95,301"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Castable.html" title=" " alt="" coords="13,95,91,121"/>
-<area shape="rect" id="node5" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="74,171,201,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Caster.html" title=" " alt="" coords="20,5,84,32"/>
-</map>

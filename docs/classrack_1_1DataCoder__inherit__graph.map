@@ -1,5 +1,0 @@
-<map id="DataCoder" name="DataCoder">
-<area shape="rect" id="node1" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="77,80,167,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,5,87,32"/>
-<area shape="rect" id="node3" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation." alt="" coords="111,5,285,32"/>
-</map>

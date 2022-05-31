@@ -1,7 +1,0 @@
-<map id="FuzzyStepsoid&lt; T &gt;" name="FuzzyStepsoid&lt; T &gt;">
-<area shape="rect" id="node1" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="5,304,159,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="25,229,139,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="27,155,137,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="47,80,117,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="41,5,123,32"/>
-</map>

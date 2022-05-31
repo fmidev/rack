@@ -1,8 +1,0 @@
-<map id="Composite" name="Composite">
-<area shape="rect" id="node1" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="93,333,185,360"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="43,229,234,285"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="73,155,204,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="27,80,131,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing." alt="" coords="5,5,152,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="155,80,245,107"/>
-</map>

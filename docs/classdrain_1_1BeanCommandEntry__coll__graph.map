@@ -1,8 +1,0 @@
-<map id="BeanCommandEntry&lt; B &gt;" name="BeanCommandEntry&lt; B &gt;">
-<area shape="rect" id="node2" href="$classdrain_1_1CommandWrapper.html" title="CommandWrapper\&lt; BeanCommand\l\&lt; B \&gt; \&gt;" alt="" coords="5,336,239,377"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title="BeanCommand\&lt; B \&gt;" alt="" coords="49,260,195,287"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="38,171,121,197"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title="Contextual" alt="" coords="37,95,122,121"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title="Context" alt="" coords="45,5,113,32"/>
-<area shape="rect" id="node7" href="$classB.html" title="B" alt="" coords="145,171,184,197"/>
-</map>
