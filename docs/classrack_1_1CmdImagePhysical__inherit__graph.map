@@ -1,0 +1,7 @@
+<map id="CmdImagePhysical" name="CmdImagePhysical">
+<area shape="rect" id="node1" title="Switch for image operators to use physical scale instead of storage typed values." alt="" coords="28,304,175,331"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,197,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="39,155,163,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="57,80,146,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="55,5,148,32"/>
+</map>
