@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,31,100,57"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1FilePnm.html" title="For reading and writing images in PNM format." alt="" coords="148,5,221,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1FileTIFF.html" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="149,56,221,83"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1FileGeoTIFF.html" title=" " alt="" coords="269,56,368,83"/>
+</map>

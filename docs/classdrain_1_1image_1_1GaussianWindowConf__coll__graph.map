@@ -1,0 +1,9 @@
+<map id="GaussianWindowConf" name="GaussianWindowConf">
+<area shape="rect" id="node1" title="Extends WindowConfig with radius." alt="" coords="119,323,283,349"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="143,247,259,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="60,157,164,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,196,108"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,213,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="225,157,353,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="220,81,361,108"/>
+</map>

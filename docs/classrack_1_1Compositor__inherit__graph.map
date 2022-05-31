@@ -1,0 +1,11 @@
+<map id="Compositor" name="Compositor">
+<area shape="rect" id="node1" title=" " alt="" coords="456,107,553,133"/>
+<area shape="rect" id="node5" href="$classrack_1_1CartesianCreate.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="627,5,754,32"/>
+<area shape="rect" id="node6" href="$classrack_1_1CartesianExtract.html" title=" " alt="" coords="625,56,756,83"/>
+<area shape="rect" id="node7" href="$classrack_1_1CompositeAdd.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="632,107,749,133"/>
+<area shape="rect" id="node8" href="$classrack_1_1CompositeAddWeighted.html" title=" " alt="" coords="601,157,780,184"/>
+<area shape="rect" id="node9" href="$classrack_1_1CompositeCreateTile.html" title=" " alt="" coords="611,208,770,235"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="284,107,408,133"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,107,236,133"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="5,107,99,133"/>
+</map>

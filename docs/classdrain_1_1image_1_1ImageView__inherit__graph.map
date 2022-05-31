@@ -1,0 +1,6 @@
+<map id="ImageView" name="ImageView">
+<area shape="rect" id="node1" title="ImageFrame that also has channels." alt="" coords="12,229,107,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="5,155,113,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="7,80,111,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="15,5,104,32"/>
+</map>

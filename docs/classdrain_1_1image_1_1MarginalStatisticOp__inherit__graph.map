@@ -1,0 +1,6 @@
+<map id="MarginalStatisticOp" name="MarginalStatisticOp">
+<area shape="rect" id="node1" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ..." alt="" coords="5,229,156,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="40,155,121,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="35,80,126,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="40,5,121,32"/>
+</map>

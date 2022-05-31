@@ -1,0 +1,6 @@
+<map id="SubtractionFunctor" name="SubtractionFunctor">
+<area shape="rect" id="node1" title="Subtracts image from another image." alt="" coords="5,229,149,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="21,155,133,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="42,80,113,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="37,5,118,32"/>
+</map>

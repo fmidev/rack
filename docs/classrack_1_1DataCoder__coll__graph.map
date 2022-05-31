@@ -1,0 +1,17 @@
+<map id="DataCoder" name="DataCoder">
+<area shape="rect" id="node1" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="298,536,389,563"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="177,352,259,379"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="160,183,276,209"/>
+<area shape="rect" id="node8" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="306,301,423,328"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node6" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation." alt="" coords="256,403,431,429"/>
+<area shape="rect" id="node7" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="455,403,514,429"/>
+<area shape="rect" id="node9" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="311,183,418,209"/>
+<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="238,81,406,108"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Range.html" title=" " alt="" coords="431,81,568,108"/>
+<area shape="rect" id="node12" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="469,5,637,32"/>
+<area shape="rect" id="node13" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="511,132,658,159"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="526,301,675,328"/>
+<area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="522,183,685,209"/>
+</map>

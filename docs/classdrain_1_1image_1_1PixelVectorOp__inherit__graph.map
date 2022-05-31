@@ -1,0 +1,13 @@
+<map id="PixelVectorOp" name="PixelVectorOp">
+<area shape="rect" id="node1" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="403,143,517,169"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="568,41,757,82"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="575,106,750,147"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="565,172,760,199"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1GrayOp.html" title=" " alt="" coords="627,223,698,249"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="273,143,355,169"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="135,143,225,169"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,143,87,169"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1MagnitudeOp.html" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector." alt="" coords="808,5,917,32"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="818,56,907,83"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1DistanceOp.html" title="Computes the distance between intensity vectors." alt="" coords="814,113,911,140"/>
+</map>

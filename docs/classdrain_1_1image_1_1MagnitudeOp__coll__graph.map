@@ -1,0 +1,14 @@
+<map id="MagnitudeOp" name="MagnitudeOp">
+<area shape="rect" id="node1" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector." alt="" coords="88,655,197,681"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="48,564,237,605"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="5,475,120,501"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="51,399,133,425"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="59,323,149,349"/>
+<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="115,247,197,273"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="178,323,249,349"/>
+<area shape="rect" id="node7" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="98,157,214,184"/>
+<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="61,81,251,108"/>
+<area shape="rect" id="node9" title=" " alt="" coords="43,5,269,32"/>
+<area shape="rect" id="node10" href="$classdrain_1_1MultiplicationFunctor.html" title="Multiplies two images, with optional post scaling and offset." alt="" coords="145,475,303,501"/>
+<area shape="rect" id="node11" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="163,399,275,425"/>
+</map>

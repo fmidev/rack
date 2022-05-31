@@ -1,0 +1,15 @@
+<map id="NonMetOp" name="NonMetOp">
+<area shape="rect" id="node1" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="1679,78,1769,105"/>
+<area shape="rect" id="node2" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="1449,53,1545,79"/>
+<area shape="rect" id="node3" href="$classrack_1_1AndreOp.html" title="The base class for removal operators." alt="" coords="1255,53,1334,79"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors." alt="" coords="1011,53,1161,79"/>
+<area shape="rect" id="node5" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="839,53,961,79"/>
+<area shape="rect" id="node6" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="487,21,676,47"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="193,5,409,47"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="515,78,647,105"/>
+<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="223,71,379,112"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="225,137,378,163"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5,129,144,171"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Range.html" title=" " alt="" coords="1428,103,1565,130"/>
+<area shape="rect" id="node13" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="1211,103,1379,130"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ImageReader" name="ImageReader">
+<area shape="rect" id="node1" title="Reads image channels, returning scaled (physical) values." alt="" coords="6,80,115,107"/>
+<area shape="rect" id="node2" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler." alt="" coords="5,5,116,32"/>
+</map>

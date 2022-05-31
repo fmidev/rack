@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,284,68,311"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="163,5,253,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Kernel.html" title=" " alt="" coords="157,56,259,83"/>
+<area shape="rect" id="node4" href="$classdrain_1_1LookUp.html" title="Look&#45;up tables." alt="" coords="153,107,263,133"/>
+<area shape="rect" id="node5" href="$classdrain_1_1LookUp2.html" title="Look&#45;up tables." alt="" coords="149,157,267,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="157,208,259,235"/>
+<area shape="rect" id="node8" href="$classdrain_1_1NeuralVector.html" title=" " alt="" coords="135,259,281,285"/>
+<area shape="rect" id="node9" href="$classdrain_1_1PaletteEntry2.html" title=" " alt="" coords="153,309,263,336"/>
+<area shape="rect" id="node10" href="$classdrain_1_1ProgramVector.html" title="Structure for implementing threads in parallelized OpenMP for loop." alt="" coords="149,360,267,387"/>
+<area shape="rect" id="node11" href="$classdrain_1_1WeightedVector.html" title=" " alt="" coords="126,411,290,437"/>
+<area shape="rect" id="node12" href="$classLookUp3.html" title=" " alt="" coords="149,461,267,488"/>
+<area shape="rect" id="node13" href="$classdrain_1_1LookUp.html" title=" " alt="" coords="116,513,300,554"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="139,579,277,605"/>
+<area shape="rect" id="node6" href="$classdrain_1_1FunctorLookUp.html" title="Values are available from [0,2PI]." alt="" coords="348,157,521,184"/>
+<area shape="rect" id="node15" href="$classdrain_1_1Vector.html" title=" " alt="" coords="383,579,486,605"/>
+</map>

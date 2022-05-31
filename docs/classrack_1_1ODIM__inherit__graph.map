@@ -1,0 +1,14 @@
+<map id="ODIM" name="ODIM">
+<area shape="rect" id="node1" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="165,304,224,331"/>
+<area shape="rect" id="node6" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites)." alt="" coords="5,379,125,405"/>
+<area shape="rect" id="node7" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="149,379,240,405"/>
+<area shape="rect" id="node10" href="$classrack_1_1VerticalCrossSectionODIM.html" title=" " alt="" coords="264,379,456,405"/>
+<area shape="rect" id="node2" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="136,229,253,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="137,155,253,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="99,80,290,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="82,5,307,32"/>
+<area shape="rect" id="node8" href="$classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="141,453,248,480"/>
+<area shape="rect" id="node9" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="139,528,250,555"/>
+<area shape="rect" id="node11" href="$classrack_1_1RhiODIM.html" title=" " alt="" coords="297,453,375,480"/>
+<area shape="rect" id="node12" href="$classrack_1_1VerticalProfileODIM.html" title=" " alt="" coords="399,453,550,480"/>
+</map>

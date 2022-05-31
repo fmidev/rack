@@ -1,0 +1,6 @@
+<map id="GeoFrame" name="GeoFrame">
+<area shape="rect" id="node1" title="Array with georeferencing support." alt="" coords="56,5,145,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="35,80,166,107"/>
+<area shape="rect" id="node3" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="5,155,196,211"/>
+<area shape="rect" id="node4" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="55,259,147,285"/>
+</map>

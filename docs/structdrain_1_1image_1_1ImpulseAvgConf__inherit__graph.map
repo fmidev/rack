@@ -1,0 +1,7 @@
+<map id="ImpulseAvgConf" name="ImpulseAvgConf">
+<area shape="rect" id="node1" title=" " alt="" coords="52,80,180,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="11,155,221,196"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,5,157,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="5,244,104,271"/>
+<area shape="rect" id="node5" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator." alt="" coords="129,244,226,271"/>
+</map>

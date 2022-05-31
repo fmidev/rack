@@ -1,0 +1,17 @@
+<map id="ProductConf" name="ProductConf">
+<area shape="rect" id="node1" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="409,453,510,480"/>
+<area shape="rect" id="node2" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="337,364,443,391"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="131,260,212,287"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="84,171,200,197"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node7" href="$classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="256,260,396,287"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Path.html" title=" " alt="" coords="233,171,465,197"/>
+<area shape="rect" id="node9" title=" " alt="" coords="237,81,460,108"/>
+<area shape="rect" id="node10" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="484,81,637,108"/>
+<area shape="rect" id="node11" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="485,5,637,32"/>
+<area shape="rect" id="node12" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="420,260,491,287"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Range.html" title=" " alt="" coords="520,260,657,287"/>
+<area shape="rect" id="node14" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="505,171,673,197"/>
+<area shape="rect" id="node15" href="$classrack_1_1ODIMPathElem.html" title=" " alt="" coords="467,364,587,391"/>
+</map>
