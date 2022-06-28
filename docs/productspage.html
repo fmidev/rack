@@ -95,11 +95,11 @@ Product generation</h1>
 <h2><a class="anchor" id="cappi"></a>
 PseudoCAPPI</h2>
 <p>Constant-altitude position indicator (CAPPI) is obtained with <code>&ndash;pCappi</code> command. It takes altitude as its first argument.</p>
-<div class="fragment"><div class="line">rack volume.h5 --pCappi &#39;1000,0,true,1,WAVG:1:8:-40&#39; -o pCappi.h5</div>
+<div class="fragment"><div class="line">rack volume.h5 --pCappi &#39;1000,true,1,0,WAVG:1:8:-40&#39; -o pCappi.h5</div>
 <div class="line">  % altitude=1000 [metres]</div>
-<div class="line">  % weightMin=0 [scalar]</div>
 <div class="line">  % aboveSeaLevel=true </div>
 <div class="line">  % beamWidth=1 [deg]</div>
+<div class="line">  % weightMin=0 [-0.1|0...1]</div>
 <div class="line">  % accumulationMethod=WAVG:1:8:-40 [string]</div>
 </div><!-- fragment --><p>The Pseudo CAPPI product is computed by traversing <em>all</em> the bins of the volume data. The bins are weighted using an exponential function of the distance from reference altitude. This method allows using measurement data from upper and lower beams, when data has low quality or data is missing in the closest bins. <br  />
 </p>

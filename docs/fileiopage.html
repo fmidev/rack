@@ -74,9 +74,7 @@ $(function() {
 <li class="level1"><a href="#fileio_img">Reading and writing image files</a></li>
 <li class="level1"><a href="#histograms">Histograms</a></li>
 <li class="level1"><a href="#graphs">Illustrating data structure</a></li>
-<li class="level1"><a href="#file_details">Technical details</a><ul><li class="level2"><a href="#file_quality">Reading and combining quality data</a></li>
-</ul>
-</li>
+<li class="level1"><a href="#file_quality">Reading and combining quality data</a></li>
 </ul>
 </div>
 <div class="textblock"><p><b>Rack</b> supports reading sweep and volume files in HDF5 format using OPERA information model (ODIM). In addition, supports reading and writing data as images and text files.</p>
@@ -261,10 +259,8 @@ Illustrating data structure</h1>
 <img src="volume-tree.png" alt=""/>
 <div class="caption">
 Data structure illustrations creating by means of <code>dot</code> file output.</div></div>
-<h1><a class="anchor" id="file_details"></a>
-Technical details</h1>
-<h2><a class="anchor" id="file_quality"></a>
-Reading and combining quality data</h2>
+<h1><a class="anchor" id="file_quality"></a>
+Reading and combining quality data</h1>
 <p>In an operative environment, two parallel processes may perform quality control. <b>Rack</b> intelligently combines the resulting files using the following logic:</p>
 <ul>
 <li>The main quality field (<code>quantity=QIND</code> ) is updated, based on either target class field (<code>quantity=CLASS</code>) or (<code>quantity=&lt;class-name&gt;</code> ):<ol type="1">

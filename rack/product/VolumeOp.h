@@ -242,25 +242,25 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;
 	ProductBase::setODIMsoftwareVersion(how);
-	// how["software"]   = __RACK__;
-	// how["sw_version"] = __RACK_VERSION__;
-	/*
-	how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
-	how["anglesV"]   = elangles;  // NEW 2021
-	 */
+
+	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
+	// how["anglesV"]   = elangles;  // NEW 2021
+
 
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	/// MAIN
-	//mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
 	this->processDataSets(sweeps, dstProductDataset);
+
+	mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
 
 	if (!dstProductDataset.empty()){
 		/// Todo: how to handle undefined
 		how["angles"] = dstProductDataset.getFirstData().odim.angles;
+		//how["anglesXX"] = dstProductDataset.getFirstData().odim.angles;
 	}
-	// mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
-
+	mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+	mout.warn("how how", how);
 	// mout.experimental("dst2", rootWhere);
 	// hi5::Writer::writeFile("test0.h5", dst);
 

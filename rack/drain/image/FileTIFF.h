@@ -97,7 +97,7 @@ public:
 	void close(){
 		if (isOpen()){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.experimental("Closing TIFF...");
+			mout.debug("Closing TIFF...");
 			XTIFFClose(tif);
 			tif = nullptr;
 		}

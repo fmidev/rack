@@ -113,138 +113,139 @@ $(function() {
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;geotiffio.h&gt;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;geo_normalize.h&gt;</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">#include &quot;drain/util/Dictionary.h&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">#include &quot;drain/util/FileInfo.h&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">#include &quot;drain/util/Log.h&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">#include &quot;drain/image/Image.h&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span>image</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">namespace </span>image</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html">   54</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a>{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a>(<span class="keyword">const</span> std::string &amp; path = <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *mode = <span class="stringliteral">&quot;w&quot;</span>) : <a class="code" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a>(path, mode), <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>(<span class="keyword">nullptr</span>){</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    ~<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a>(){</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">//gt_close();</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        close();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>(<span class="keyword">const</span> std::string &amp; path, <span class="keyword">const</span> <span class="keywordtype">char</span> *mode = <span class="stringliteral">&quot;w&quot;</span>){</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;GeoTIFF already open?&quot;</span>);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            FileTIFF::open(path, mode);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">   87</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>(){</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> = GTIFNew(tif);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;failed creating GeoTIFF file from TIFF object&quot;</span>);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="comment">//mout.error() &lt;&lt; &quot;failed creating GeoTIFF file from TIFF object, path=&quot; &lt;&lt; path &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> close(){</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            mout.experimental(<span class="stringliteral">&quot;Closing GeoTIFF...&quot;</span>);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            GTIFWriteKeys(<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            GTIFFree(<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        FileTIFF::close(); <span class="comment">// ?</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">  110</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">return</span> FileTIFF::isOpen() &amp;&amp; (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acd6364f5e6f40badd07ea2dcafc88055">setGdalMetaData</a>(<span class="keyword">const</span> std::string &amp; nodata, <span class="keywordtype">double</span> scale=1.0, <span class="keywordtype">double</span> offset=0.0);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a>(<span class="keyword">const</span> std::string &amp; path = <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *mode = <span class="stringliteral">&quot;w&quot;</span>) : <a class="code" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a>(path, mode), <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>(<span class="keyword">nullptr</span>){</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    ~<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html">FileGeoTIFF</a>(){</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">//gt_close();</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        close();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>(<span class="keyword">const</span> std::string &amp; path, <span class="keyword">const</span> <span class="keywordtype">char</span> *mode = <span class="stringliteral">&quot;w&quot;</span>){</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;GeoTIFF already open?&quot;</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            FileTIFF::open(path, mode);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">   84</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">open</a>(){</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> = GTIFNew(tif);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;failed creating GeoTIFF file from TIFF object&quot;</span>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="comment">//mout.error() &lt;&lt; &quot;failed creating GeoTIFF file from TIFF object, path=&quot; &lt;&lt; path &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span> close(){</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()){</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            mout.debug(<span class="stringliteral">&quot;Closing GeoTIFF...&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            GTIFWriteKeys(<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            GTIFFree(<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        FileTIFF::close(); <span class="comment">// ?</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">  107</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> FileTIFF::isOpen() &amp;&amp; (<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#ae1db1c76807ecdd8d821860cdb373080">setGdalMetaDataOLD</a>(<span class="keyword">const</span> std::string &amp; nodata, <span class="keywordtype">double</span> scale=1.0, <span class="keywordtype">double</span> offset=0.0);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">//void setGdalMetaDataOLD(double nodata, double scale=1.0, double offset=0.0);</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">setGdalScale</a>(<span class="keywordtype">double</span> scale=1.0, <span class="keywordtype">double</span> offset=0.0);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">//void setGdalMetaData(double scale=1.0, double offset=0.0);</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">setGeoMetaData</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp; frame);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span> setProjection(<span class="keyword">const</span> std::string &amp; proj);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">setGdalNoData</a>(<span class="keyword">const</span> std::string &amp; nodata);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span> setProjection(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Proj4.html">drain::Proj4</a> &amp; proj);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span> setProjectionLongLat();</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="comment">//static void write(const Image &amp;image,const std::string &amp;path);</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">setGeoMetaData</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp; frame);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span> setProjection(<span class="keyword">const</span> std::string &amp; proj);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span> setProjection(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Proj4.html">drain::Proj4</a> &amp; proj);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span> setProjectionLongLat();</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">//static</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">//void write(const std::string &amp; path, const drain::image::Image &amp; src, int tileWidth, int tileHeight=0);</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    static inline</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    void write(const std::string &amp; path, const drain::image::Image &amp; src, int defaultTileWidth, int defaultTileHeight=0){</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">        drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">        mout.warn(&quot;binary compiled without TIFF/GeoTIFF support, skipping&quot;);</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="comment">//static void write(const Image &amp;image,const std::string &amp;path);</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">//static</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">//void write(const std::string &amp; path, const drain::image::Image &amp; src, int tileWidth, int tileHeight=0);</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">//void setUpTIFFDirectory_rack(const drain::image::Image &amp; src); //, int tileWidth=0, int tileHeight = 0);</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">//void adjustGeoFrame_rack(const drain::image::Image &amp; src, drain::image::GeoFrame &amp; frame);</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    static inline</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    void write(const std::string &amp; path, const drain::image::Image &amp; src, int defaultTileWidth, int defaultTileHeight=0){</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">        drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">        mout.warn(&quot;binary compiled without TIFF/GeoTIFF support, skipping&quot;);</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">  162</a></span>&#160;    GTIF *<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">// TIFF *tif = XTIFFOpen(path.c_str(), &quot;w&quot;);</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// GTIF *gtif = GTIFNew(tif);</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;};</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">//void setUpTIFFDirectory_rack(const drain::image::Image &amp; src); //, int tileWidth=0, int tileHeight = 0);</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">//void adjustGeoFrame_rack(const drain::image::Image &amp; src, drain::image::GeoFrame &amp; frame);</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;} <span class="comment">// image::</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">  170</a></span>&#160;    GTIF *<a class="code" href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">gtif</a>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="comment">// TIFF *tif = XTIFFOpen(path.c_str(), &quot;w&quot;);</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">// GTIF *gtif = GTIFNew(tif);</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;};</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;} <span class="comment">// image::</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a48e5dbcf4818ad522b75734be37952f5"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">drain::image::FileGeoTIFF::open</a></div><div class="ttdeci">virtual void open()</div><div class="ttdoc">&quot;Opens&quot; a GeoTIFF structure inside an opened TIFF file.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:87</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:229</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a50b82e0f609c5f08e6edbd7b81b5a288"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">drain::image::FileGeoTIFF::setGeoMetaData</a></div><div class="ttdeci">void setGeoMetaData(const drain::image::GeoFrame &amp;frame)</div><div class="ttdoc">Sets projection and bounding box. Adjusts spatial resolution accordingly.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:279</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Light error, command execution probable. Special type of Logger::warn().</div><div class="ttdef"><b>Definition:</b> Log.h:338</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_acc895ccf445d83efedc2f74d78152781"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">drain::image::FileGeoTIFF::isOpen</a></div><div class="ttdeci">virtual bool isOpen() const</div><div class="ttdoc">Todo: subclass.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:110</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html">drain::image::FileGeoTIFF</a></div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:57</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a48e5dbcf4818ad522b75734be37952f5"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a48e5dbcf4818ad522b75734be37952f5">drain::image::FileGeoTIFF::open</a></div><div class="ttdeci">virtual void open()</div><div class="ttdoc">&quot;Opens&quot; a GeoTIFF structure inside an opened TIFF file.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:84</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:244</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a50b82e0f609c5f08e6edbd7b81b5a288"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">drain::image::FileGeoTIFF::setGeoMetaData</a></div><div class="ttdeci">void setGeoMetaData(const drain::image::GeoFrame &amp;frame)</div><div class="ttdoc">Sets projection and bounding box. Adjusts spatial resolution accordingly.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:351</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Light error, command execution probable. Special type of Logger::warn().</div><div class="ttdef"><b>Definition:</b> Log.h:353</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_acc895ccf445d83efedc2f74d78152781"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">drain::image::FileGeoTIFF::isOpen</a></div><div class="ttdeci">virtual bool isOpen() const</div><div class="ttdoc">Todo: subclass.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:107</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html">drain::image::FileGeoTIFF</a></div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:54</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_acd6364f5e6f40badd07ea2dcafc88055"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#acd6364f5e6f40badd07ea2dcafc88055">drain::image::FileGeoTIFF::setGdalMetaData</a></div><div class="ttdeci">void setGdalMetaData(const std::string &amp;nodata, double scale=1.0, double offset=0.0)</div><div class="ttdoc">This is between Tiff and GeoTiff?</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:132</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_ae1db1c76807ecdd8d821860cdb373080"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#ae1db1c76807ecdd8d821860cdb373080">drain::image::FileGeoTIFF::setGdalMetaDataOLD</a></div><div class="ttdeci">void setGdalMetaDataOLD(const std::string &amp;nodata, double scale=1.0, double offset=0.0)</div><div class="ttdoc">This is between Tiff and GeoTiff?</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:132</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a30280a2454d72fdff47f496da96f4758"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">drain::image::FileGeoTIFF::setGdalNoData</a></div><div class="ttdeci">void setGdalNoData(const std::string &amp;nodata)</div><div class="ttdoc">This is between Tiff and GeoTiff?</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:216</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a2f61ccc7c9536029e5323dfcf19d91ef"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">drain::image::FileGeoTIFF::setGdalScale</a></div><div class="ttdeci">void setGdalScale(double scale=1.0, double offset=0.0)</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.cpp:184</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1GeoFrame_html"><div class="ttname"><a href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a></div><div class="ttdoc">Array with georeferencing support.</div><div class="ttdef"><b>Definition:</b> GeoFrame.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj4_html"><div class="ttname"><a href="classdrain_1_1Proj4.html">drain::Proj4</a></div><div class="ttdef"><b>Definition:</b> Proj4.h:52</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:320</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a98d911ada6124ca724cfb7cf16e1a88b"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">drain::image::FileGeoTIFF::gtif</a></div><div class="ttdeci">GTIF * gtif</div><div class="ttdoc">Writes image to a TIIF (GeoTIFF) file.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:162</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:335</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FileGeoTIFF_html_a98d911ada6124ca724cfb7cf16e1a88b"><div class="ttname"><a href="classdrain_1_1image_1_1FileGeoTIFF.html#a98d911ada6124ca724cfb7cf16e1a88b">drain::image::FileGeoTIFF::gtif</a></div><div class="ttdeci">GTIF * gtif</div><div class="ttdoc">Writes image to a TIIF (GeoTIFF) file.</div><div class="ttdef"><b>Definition:</b> FileGeoTIFF.h:170</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FileTIFF_html"><div class="ttname"><a href="classdrain_1_1image_1_1FileTIFF.html">drain::image::FileTIFF</a></div><div class="ttdoc">For writing images in basic TIFF format. Reading not supported currently.</div><div class="ttdef"><b>Definition:</b> FileTIFF.h:57</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

@@ -697,11 +697,11 @@ void Compositor::extract(const std::string & channels) const {
 		else {
 			mout.debug() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
 			// NEW
-			drain::VariableMap & how = dstProduct.getHow();
+			drain::VariableMap & prodHow = dstProduct.getHow();
 			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
 			//if (composite.metadataMap.hasKey("how:angles"))
-			how["angles"].setType(typeid(double));
-			how["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
+			prodHow["anglesYY"].setType(typeid(double));
+			prodHow["anglesYY"] = composite.odim.angles; //composite.metadataMap["how:angles"];
 			ctx.setCurrentImages(dstData.data);
 			ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
 		}

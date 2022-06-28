@@ -160,7 +160,6 @@ public:
 
 	// Elevation angles.
 	// In ODIM, defined for Cartesian but used more generally - for polar products - in Rack
-	//drain::Variable angles;
 	std::vector<double> angles;
 
 

@@ -76,20 +76,35 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	drain::image::FileGeoTIFF file(filename, "w");
 
-	const drain::FlexVariableMap & prop = src.properties;
+	CartesianODIM odim(src);
+	//mout.note(odim);
+
+	//const drain::FlexVariableMap & prop = src.properties;
 
 	drain::Time t;
-	t.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
-	t.setTime(prop.get("what:time", "000000"), "%H%M%S");
+	odim.getTime(t);
+	// t.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
+	// t.setTime(prop.get("what:time", "000000"), "%H%M%S");
 	file.setTime(t);
+
+	mout.warn() << "ODIM angles " << drain::sprinter(odim.angles) << mout.endl;
+	mout.warn() << "Flex angles " << src.properties << mout.endl;
 
 	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
 	const std::string desc = drain::StringBuilder(
+			odim.object,':',
+			odim.product,':',
+			odim.prodpar,':',
+			odim.quantity,':',
+			drain::sprinter(odim.angles).str()
+			);
+		/*
 			prop["what:object"],':',
 			prop["what:product"],':',
 			prop["what:prodpar"],':',
 			prop["what:quantity"],':',
 			prop["how:angles"]);
+		*/
 	//TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
 	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc);
 
@@ -107,22 +122,28 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// usr/include/gdal/rawdataset.h
 	// Non-standard http://www.gdal.org/frmt_gtiff.html
 
-	file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
-
+	//file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
+	std::string nodata;
+	drain::StringTools::import(odim.nodata, nodata);
+	//file.setGdalMetaData(nodata, odim.scaling.scale, odim.scaling.offset);
+	file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
+	file.setGdalNoData(nodata);
 
 	drain::image::GeoFrame frame;
 
-	std::string projdef = prop["where:projdef"];
+	//std::string projdef = prop["where:projdef"];
 
-	if (!projdef.empty()){
+	//if (!projdef.empty()){
+	if (!odim.projdef.empty()){
 
 		//drain::image::GeoFrame frame;
 		frame.setGeometry(src.getWidth(), src.getHeight());
-		frame.setProjection(projdef);
+		frame.setProjection(odim.projdef);
 
-		drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
+		//drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
 		if (frame.isLongLat()){
-			frame.setBoundingBoxD(bboxD);
+			//frame.setBoundingBoxD(bboxD);
+			frame.setBoundingBoxD(odim.getBoundingBoxD());
 		}
 		else {
 			// Debug
@@ -134,7 +155,8 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 			mout << frame.getBoundingBoxM() << mout;
 			*/
 
-			const drain::Variable & p = prop["where:BBOX_native"];
+
+			const drain::Variable & p = src.properties["where:BBOX_native"];
 			std::vector<double> v;
 			p.toSequence(v);
 			drain::Rectangle<double> bboxM;
@@ -148,7 +170,8 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 			}
 			else {
 				mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
-				frame.setBoundingBoxD(bboxD);
+				// frame.setBoundingBoxD(bboxD);
+				frame.setBoundingBoxD(odim.getBoundingBoxD());
 			}
 		}
 	}

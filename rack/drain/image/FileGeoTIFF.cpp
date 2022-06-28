@@ -129,7 +129,9 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 }
 
 
-void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, double offset){
+void FileGeoTIFF::setGdalMetaDataOLD(const std::string & nodata, double scale, double offset){
+// TODO: separate code without nodata marker?
+//void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -156,14 +158,84 @@ void FileGeoTIFF::setGdalMetaData(const std::string & nodata, double scale, doub
 	std::stringstream gdal;
 	gdal << gdalInfo;
 	mout.debug() << gdal.str() << mout.endl;
-	setField(TIFFTAG_GDAL_METADATA,gdal.str());
+	setField(TIFFTAG_GDAL_METADATA, gdal.str());
 
-	//std::string nodata = prop["what:nodata"];
+	// std::string nodata = prop["what:nodata"];
 	if (!nodata.empty()){
 		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
 		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
-		setField(TIFFTAG_GDAL_NODATA,nodata);
+		// TODO: separate code without nodata marker?
+		setField(TIFFTAG_GDAL_NODATA, nodata); // or should be string?
 	}
+	// usr/include/gdal/rawdataset.h
+
+	// Non-standard http://www.gdal.org/frmt_gtiff.html
+	/*
+	std::string nodata = src.properties["what:nodata"];
+	if (!nodata.empty()){
+		mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
+		GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
+	}
+	 */
+
+
+}
+
+void FileGeoTIFF::setGdalScale(double scale, double offset){
+	// TODO: separate code without nodata marker?
+	//void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//const int TIFFTAG_KOE = 65001;
+	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
+	// "gdal-metadata"
+	static
+	const TIFFFieldInfo xtiffFieldInfo[] = {
+			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
+	};
+	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
+
+	TreeGDAL gdalInfo;
+	gdalInfo["SCALE"]->set(scale, 0, "scale");
+	gdalInfo["OFFSET"]->set(offset, 0, "offset");
+	/*
+	    <GDALMetadata >
+	    <Item name="OFFSET" role="offset" sample="0" >-32</Item>
+	    <Item name="SCALE"  role="scale" sample="0" >0.5</Item>
+	    </GDALMetadata>
+	 */
+
+	std::stringstream gdal;
+	gdal << gdalInfo;
+	mout.debug() << gdal.str() << mout.endl;
+	setField(TIFFTAG_GDAL_METADATA, gdal.str());
+
+}
+
+void FileGeoTIFF::setGdalNoData(const std::string & nodata){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (nodata.empty()){
+		return;
+	}
+
+	// const int TIFFTAG_KOE = 65001;
+	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
+	// "gdal-metadata"
+	static
+	const TIFFFieldInfo xtiffFieldInfo[] = {
+			{ TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
+	};
+	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
+
+
+	// std::string nodata = prop["what:nodata"];
+	// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
+	mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
+	// TODO: separate code without nodata marker?
+	setField(TIFFTAG_GDAL_NODATA, nodata); // or should be string?
 	// usr/include/gdal/rawdataset.h
 
 	// Non-standard http://www.gdal.org/frmt_gtiff.html

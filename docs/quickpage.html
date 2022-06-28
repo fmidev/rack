@@ -97,9 +97,9 @@ Anomaly detection and removal</h2>
 <div class="line">  Detects birds and insects.</div>
 <div class="line">--aBird  &lt;dbzPeak&gt;,&lt;vradDevMin&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
 <div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
-<div class="line">--aCCor  &lt;reflHalfWidth&gt;</div>
+<div class="line">--aCCor  &lt;threshold&gt;</div>
 <div class="line">  Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.</div>
-<div class="line">--aClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;pathSyntax&gt;</div>
+<div class="line">--aClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;file&gt;</div>
 <div class="line">  Reads a ground clutter map and scales it to sweeps.</div>
 <div class="line">--aDamper  &lt;threshold&gt;,&lt;undetectThreshold&gt;,&lt;minValue&gt;</div>
 <div class="line">  Removes anomalies with fuzzy deletion operator.</div>
@@ -111,7 +111,7 @@ Anomaly detection and removal</h2>
 <div class="line">  Detects suspicious variance in Doppler speed (VRAD).</div>
 <div class="line">--aEmitter  &lt;lengthMin&gt;,&lt;thicknessMax&gt;,&lt;sensitivity&gt;</div>
 <div class="line">  Detects electromagnetic interference segments by means of window medians.</div>
-<div class="line">--aGapFill  &lt;width&gt;,&lt;height&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
+<div class="line">--aGapFill  &lt;width&gt;,&lt;height&gt;,&lt;qualityThreshold&gt;</div>
 <div class="line">  Removes low-quality data with gap fill based on distance transformation.</div>
 <div class="line">--aGapFillRec  &lt;width&gt;,&lt;height&gt;,&lt;loops&gt;</div>
 <div class="line">  Recursive, &#39;splinic&#39; gap filler.</div>
@@ -146,7 +146,7 @@ Anomaly detection and removal</h2>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_product"></a>
 Meteorological products</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
@@ -157,7 +157,7 @@ Meteorological products</h2>
 <div class="line">  Computes the altitude at each bin</div>
 <div class="line">--pBird  &lt;dbzPeak&gt;,&lt;vradDevMin&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
 <div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
-<div class="line">--pCappi  &lt;altitude&gt;,&lt;weightMin&gt;,&lt;aboveSeaLevel&gt;,&lt;beamWidth&gt;,&lt;accumulationMethod&gt;</div>
+<div class="line">--pCappi  &lt;altitude&gt;,&lt;aboveSeaLevel&gt;,&lt;beamWidth&gt;,&lt;weightMin&gt;,&lt;accumulationMethod&gt;</div>
 <div class="line">  Constant-altitude planar position indicator</div>
 <div class="line">--pConv  &lt;maxEchoThreshold&gt;,&lt;cellDiameter&gt;,&lt;echoTopThreshold&gt;,&lt;echoTopDBZ&gt;,&lt;smoothAzm&gt;,&lt;smoothRad&gt;</div>
 <div class="line">  Computes the probability of convection based on fuzzy cell intensity, area and height.</div>
@@ -210,7 +210,7 @@ Meteorological products</h2>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_cart"></a>
 Compositing and Cartesian products</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
@@ -272,13 +272,15 @@ Compositing and Cartesian products</h2>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_images"></a>
 Basic image commands</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>
 <div class="line">Section: images</div>
 <div class="line"> </div>
+<div class="line">--geoTiff  &lt;tile&gt;,&lt;compression&gt;</div>
+<div class="line">  GeoTIFF tile size. Deprecating?, use --outputConf tif:&lt;width&gt;,&lt;height&gt;</div>
 <div class="line">--iPhysical  &lt;physical&gt;</div>
 <div class="line">  Flag. Handle intensities as physical quantities instead of storage typed values.</div>
 <div class="line">--image  </div>
@@ -297,6 +299,8 @@ Basic image commands</h2>
 <div class="line">  Adds a transparency channel. Uses copied image, creating one if needed.</div>
 <div class="line">--legendOut  &lt;filename&gt;</div>
 <div class="line">  Save palette as TXT, JSON or SVG.</div>
+<div class="line">--outputRawImages, -O  &lt;filename&gt;</div>
+<div class="line">  Output datasets to png files named filename[NN].ext.</div>
 <div class="line">--palette  &lt;filename&gt;</div>
 <div class="line">  Load and apply palette.</div>
 <div class="line">--paletteIn  &lt;filename&gt;</div>
@@ -312,7 +316,7 @@ Basic image commands</h2>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
 </div><!-- fragment --><h2><a class="anchor" id="commands_imageOps"></a>
 Image operators</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
@@ -440,7 +444,7 @@ Image operators</h2>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|andre|science|products|accumulation|cart|imageOps|images|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- HTML footer for doxygen 1.8.17-->

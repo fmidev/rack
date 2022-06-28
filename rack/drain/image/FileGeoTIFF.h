@@ -39,21 +39,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <geotiffio.h>
 #include <geo_normalize.h>
 
-/*
-#include "drain/util/Dictionary.h"
-#include "drain/util/FileInfo.h"
-#include "drain/util/Log.h"
-#include "drain/image/Image.h"
-*/
-
 
 namespace drain
 {
 
-	namespace image
-	{
+namespace image
+{
 
-
+/** Extends TIFF by adding geo information in the metadata
+ *
+ *  https://gdal.org/drivers/raster/gtiff.html
+ *
+ */
 class FileGeoTIFF : public FileTIFF{
 public:
 
@@ -97,7 +94,7 @@ public:
 	void close(){
 		if (isOpen()){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.experimental("Closing GeoTIFF...");
+			mout.debug("Closing GeoTIFF...");
 			GTIFWriteKeys(gtif);
 			GTIFFree(gtif);
 			gtif = nullptr;
@@ -112,10 +109,21 @@ public:
 	}
 
 	/// This is between Tiff and GeoTiff?
+	void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);
+	//void setGdalMetaDataOLD(double nodata, double scale=1.0, double offset=0.0);
+
 	/**
 	 *  \param nodata - yes, string...
 	 */
-	void setGdalMetaData(const std::string & nodata, double scale=1.0, double offset=0.0);
+	void setGdalScale(double scale=1.0, double offset=0.0);
+
+	//void setGdalMetaData(double scale=1.0, double offset=0.0);
+
+	/// This is between Tiff and GeoTiff?
+	/**
+	 *  \param nodata - yes, string...
+	 */
+	void setGdalNoData(const std::string & nodata);
 
 	/// Sets projection and bounding box. Adjusts spatial resolution accordingly.
 	/**

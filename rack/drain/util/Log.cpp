@@ -82,7 +82,7 @@ const Log::notif_dict_t & Log::getDict(){
 		dict[LOG_EMERG].set("EMERG", 101);
 		dict[LOG_ALERT].set("ALERT", 91);
 		dict[LOG_CRIT].set("CRIT", 41);
-		dict[LOG_ERR].set("ERR", 31);
+		dict[LOG_ERR].set("ERROR", 31); // note ERR -> ERROR
 		dict[LOG_WARNING].set("WARNING", 33);
 		dict[LOG_NOTICE].set("NOTICE", 29);
 		dict[LOG_INFO].set("INFO", 0);

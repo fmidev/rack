@@ -630,13 +630,12 @@ protected:
 	/**
 	 *   The pointer is set to the first element of the vector's array segment.
 	 */
+	/*
 	template <class F>
 	void setPtr(std::vector<F> &v){
 		setPtr(&v[0], typeid(F), v.size());
-		//setPtr(v.begin(), typeid(F), v.size()); // 2021/05/19
-		// caster.link(&v[0]);
-		// elementCount = v.size();
 	}
+	*/
 
 	/// Stores the pair as an array of two elements.
 	/**

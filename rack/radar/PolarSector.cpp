@@ -58,22 +58,22 @@ void PolarSector::adjustIndices(const PolarODIM & odim){
 		distanceRange.min = distanceRange.max;
 		distanceRange.max = tmp;
 	}
-
 	// if (distanceRange.min < 0.0)
 	// warn()
-
 	distanceRange.min = std::max(0.0, distanceRange.min);
 
-	int min = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.min));
+	const int min = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.min));
 	binRange.min = std::max(0, min);
 
-	if (binRange.min > odim.area.width-1)
-		binRange.min = odim.area.width-1;
+	const int width = odim.area.width;
+
+	if (binRange.min > width-1)
+		binRange.min = width-1;
 
 	int max = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.max));
 	binRange.max = std::max(0, max);
-	if (binRange.max > odim.area.width)
-		binRange.max = odim.area.width;
+	if (binRange.max > width)
+		binRange.max = width;
 
 	/*
 	int min = odim.getBinIndex(1000.0 * static_cast<double>(distanceRange.min));

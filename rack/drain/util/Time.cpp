@@ -33,9 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <string.h>
-#include <stdexcept>
+//#include <stdexcept>
 #include <iostream>
 
+#include "Log.h"
 #include "Time.h"
 
 namespace drain {
@@ -44,7 +45,9 @@ void Time::setTime(const std::string &time, const std::string &format, bool stri
 	// setTime(0); reset seconds?
 	const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
 	if (strict && (t == NULL)){
-		throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.error() << "parse error for '"  << time << "', format='" << format << "'" << mout.endl;
+		//throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
 	}
 	/*
 		if (*t != '\0') {
@@ -74,7 +77,9 @@ const std::string & Time::str(const std::string &format) const {
 		const size_t length = strftime(tmp, maxSize, format.c_str(), (tm *)this);
 		timeStr.assign(tmp,length);
 		if (length == maxSize){
-			std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
+			drain::Logger mout(__FUNCTION__, __FILE__);
+			mout.error() << " max time str length("<< maxSize << ") exceeded " << mout.endl;
+			//std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
 			// TODO: string mapper
 		}
 	}

@@ -355,13 +355,9 @@ template&lt;class F &gt; </td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a08e5e4db33e0a592860eaeb9f41f1f7a">setPtr</a> (void *p, const std::type_info &amp;t, size_t count=1)</td></tr>
 <tr class="memdesc:a08e5e4db33e0a592860eaeb9f41f1f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the data pointer and its explicit type. <br /></td></tr>
 <tr class="separator:a08e5e4db33e0a592860eaeb9f41f1f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb7b23d54cf9d937c0ca3568d839e0fb"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
-<tr class="memitem:acb7b23d54cf9d937c0ca3568d839e0fb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#acb7b23d54cf9d937c0ca3568d839e0fb">setPtr</a> (std::vector&lt; F &gt; &amp;v)</td></tr>
-<tr class="memdesc:acb7b23d54cf9d937c0ca3568d839e0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the pointer, storage type F, and size (element count) on the vector.  <a href="classdrain_1_1Castable.html#acb7b23d54cf9d937c0ca3568d839e0fb">More...</a><br /></td></tr>
-<tr class="separator:acb7b23d54cf9d937c0ca3568d839e0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0764f01d3c4187c4835cd971a163f282"><td class="memTemplParams" colspan="2">template&lt;class F , size_t N&gt; </td></tr>
 <tr class="memitem:a0764f01d3c4187c4835cd971a163f282"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">setPtr</a> (<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; F, N &gt; &amp;tuple)</td></tr>
-<tr class="memdesc:a0764f01d3c4187c4835cd971a163f282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the pair as an array of two elements.  <a href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">More...</a><br /></td></tr>
+<tr class="memdesc:a0764f01d3c4187c4835cd971a163f282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the pointer, storage type F, and size (element count) on the vector.  <a href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">More...</a><br /></td></tr>
 <tr class="separator:a0764f01d3c4187c4835cd971a163f282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21db5fe069b6d946c01f00ddcd64591"><td class="memItemLeft" align="right" valign="top"><a id="ad21db5fe069b6d946c01f00ddcd64591"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad21db5fe069b6d946c01f00ddcd64591">relink</a> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
@@ -743,37 +739,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="acb7b23d54cf9d937c0ca3568d839e0fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb7b23d54cf9d937c0ca3568d839e0fb">&#9670;&nbsp;</a></span>setPtr() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setPtr </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; F &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Stores the pointer, storage type F, and size (element count) on the vector. </p>
-<p>The pointer is set to the first element of the vector's array segment. </p>
-
-</div>
-</div>
 <a id="a0764f01d3c4187c4835cd971a163f282"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0764f01d3c4187c4835cd971a163f282">&#9670;&nbsp;</a></span>setPtr() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0764f01d3c4187c4835cd971a163f282">&#9670;&nbsp;</a></span>setPtr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -796,8 +763,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Stores the pair as an array of two elements. </p>
-<p>The pointer is set to the first. Stores the elements as an array. The pointer is set to the first. </p>
+<p>Stores the pointer, storage type F, and size (element count) on the vector. </p>
+<p>The pointer is set to the first element of the vector's array segment. Stores the pair as an array of two elements. The pointer is set to the first. Stores the elements as an array. The pointer is set to the first. </p>
 
 </div>
 </div>

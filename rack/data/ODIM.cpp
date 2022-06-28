@@ -61,8 +61,13 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("what:endtime", endtime = "");
 		link("what:enddate", enddate = "");
 		link("how:NI", NI = 0);
-		//link("how:angles", angles);
-		// Non-odim
+
+		// Almost-ODIM: in ODIM, this is for Cartesians only
+		// angles.reserve(128); // not enough for RHI...
+		// NOTE: linking std::vector has been removed, as ptr target (address of 1st elem) to may be changed
+		// link("how:angles", angles);
+
+		// Non-ODIM:
 		link("how:resolution", resolution.tuple());
 	}
 

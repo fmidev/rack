@@ -119,7 +119,7 @@ AnDRe commands</h2>
 <div class="line">  --aJamming &#39;5,80,10,-1&#39; \</div>
 <div class="line">  --aShip    &#39;25,15,1500,3&#39; \</div>
 <div class="line">  --aSpeckle &#39;-20,16,false&#39; \</div>
-<div class="line">  --aGapFill &#39;1500,5,0,1&#39; \</div>
+<div class="line">  --aGapFill &#39;1500,5,0.1&#39; \</div>
 <div class="line">  --aRemover &#39;0.5,nodata,true&#39; \</div>
 <div class="line">-o volume-corrected.h5    </div>
 </div><!-- fragment --><p>By default, AnDRe commands apply to the full volume input. Each operator will look for quantities (typically DBZH) it needs as input. To decrease computation time, the processing can be limited using <code>&ndash;select</code> command, for example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5 --select <span class="stringliteral">&#39;dataset1:5/data1:3&#39;</span> &lt;andre-cmds&gt; ...</div>
@@ -350,8 +350,8 @@ Detection results of <code>--aAttenuation</code> .</div></div>
 <h2><a class="anchor" id="aCCor"></a>
 Using Doppler filtering result</h2>
 <p>If both the total reflectivity (<code>TH</code> ) and Doppler filtered reflectivity are available, their difference provides information where the radar has detected static i.e. suspicious targets. The <code>CCor</code> operator computes the diffence between these and fuzzifies the result such that at the given threshold reflecitivy difference the probability of anomaly is 0.5.</p>
-<div class="fragment"><div class="line">rack volume.h5 --aCCor &#39;40&#39; -o aCCor.h5</div>
-<div class="line">  % reflHalfWidth=40 [dBZ]</div>
+<div class="fragment"><div class="line">rack volume.h5 --aCCor &#39;10:30&#39; -o aCCor.h5</div>
+<div class="line">  % threshold=10:30 [dBZ range]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-cCor.png" alt=""/>
 <div class="caption">

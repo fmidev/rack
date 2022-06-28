@@ -95,9 +95,8 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	dstData.odim.updateLenient(srcData.odim); // date, time, etc
 	dstData.odim.prodpar = getParameters().getValues();
 
-	//
-	dstData.odim.angles.clear();
-	//std::vector<double> angles;
+	dstData.odim.angles.clear(); // DO NOT USE clear(), it changes address of 1st elem
+	//dstData.odim.angles.resize(0); // DO NOT USE clear(), it changes address of 1st elem
 
 	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
 
@@ -118,13 +117,18 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 
 	}
 
+	mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
+
 	//if (mout.isDebug(LOG_DEBUG))
 	accumulator.extract(dstData.odim, dstProduct, "dwC");
 	//else
 	// OK mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
 		//accumulator.extract(dstData.odim, dstProduct, "dw");
-	// OK mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
-	// OK mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
+	// OK
+	mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
+
+	// OK
+	mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
 	// OK mout.warn() << "moka:" << drain::sprinter(dstData.odim) << mout;
 
 	/// Important: RELINK => resize, relocate (Address of dstData.odim.angles[0] may have changed.)

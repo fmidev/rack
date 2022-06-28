@@ -76,6 +76,8 @@ $(function() {
 <div class="title">FileGeoTIFF Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="FileGeoTIFF_8h_source.html">FileGeoTIFF.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for FileGeoTIFF:</div>
 <div class="dyncontent">
@@ -120,9 +122,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> ()<
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#acc895ccf445d83efedc2f74d78152781">isOpen</a> () const</td></tr>
 <tr class="memdesc:acc895ccf445d83efedc2f74d78152781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Todo: subclass. <br /></td></tr>
 <tr class="separator:acc895ccf445d83efedc2f74d78152781"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd6364f5e6f40badd07ea2dcafc88055"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#acd6364f5e6f40badd07ea2dcafc88055">setGdalMetaData</a> (const std::string &amp;nodata, double scale=1.0, double offset=0.0)</td></tr>
-<tr class="memdesc:acd6364f5e6f40badd07ea2dcafc88055"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff?  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#acd6364f5e6f40badd07ea2dcafc88055">More...</a><br /></td></tr>
-<tr class="separator:acd6364f5e6f40badd07ea2dcafc88055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1db1c76807ecdd8d821860cdb373080"><td class="memItemLeft" align="right" valign="top"><a id="ae1db1c76807ecdd8d821860cdb373080"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#ae1db1c76807ecdd8d821860cdb373080">setGdalMetaDataOLD</a> (const std::string &amp;nodata, double scale=1.0, double offset=0.0)</td></tr>
+<tr class="memdesc:ae1db1c76807ecdd8d821860cdb373080"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff? <br /></td></tr>
+<tr class="separator:ae1db1c76807ecdd8d821860cdb373080"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">setGdalScale</a> (double scale=1.0, double offset=0.0)</td></tr>
+<tr class="separator:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30280a2454d72fdff47f496da96f4758"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">setGdalNoData</a> (const std::string &amp;nodata)</td></tr>
+<tr class="memdesc:a30280a2454d72fdff47f496da96f4758"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff?  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">More...</a><br /></td></tr>
+<tr class="separator:a30280a2454d72fdff47f496da96f4758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="memItemLeft" align="right" valign="top"><a id="a50b82e0f609c5f08e6edbd7b81b5a288"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">setGeoMetaData</a> (const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp;frame)</td></tr>
 <tr class="memdesc:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets projection and bounding box. Adjusts spatial resolution accordingly. <br /></td></tr>
@@ -203,22 +211,45 @@ static <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; in
 static dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>defaultCompression</b></td></tr>
 <tr class="separator:a3d499e9a6bbefcab039ad430536c9b95 inherit pub_static_attribs_classdrain_1_1image_1_1FileTIFF"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="acd6364f5e6f40badd07ea2dcafc88055"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd6364f5e6f40badd07ea2dcafc88055">&#9670;&nbsp;</a></span>setGdalMetaData()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Extends TIFF by adding geo information in the metadata</p>
+<p><a href="https://gdal.org/drivers/raster/gtiff.html">https://gdal.org/drivers/raster/gtiff.html</a> </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a30280a2454d72fdff47f496da96f4758"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30280a2454d72fdff47f496da96f4758">&#9670;&nbsp;</a></span>setGdalNoData()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void setGdalMetaData </td>
+          <td class="memname">void setGdalNoData </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>nodata</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>nodata</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is between Tiff and GeoTiff? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nodata</td><td>- yes, string... </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2f61ccc7c9536029e5323dfcf19d91ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f61ccc7c9536029e5323dfcf19d91ef">&#9670;&nbsp;</a></span>setGdalScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setGdalScale </td>
+          <td>(</td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>scale</em> = <code>1.0</code>, </td>
         </tr>
@@ -235,8 +266,6 @@ static dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>def
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>This is between Tiff and GeoTiff? </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodata</td><td>- yes, string... </td></tr>

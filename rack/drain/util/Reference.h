@@ -31,13 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <typeinfo>
 #include <stdexcept>
 #include <iostream>
-#include <vector>
-#include <string>
+//#include <vector>
+//#include <string>
 
 #include "Castable.h"
 
-#ifndef REFERENCE2
-#define REFERENCE2
+#ifndef DRAIN_REFERENCE
+#define DRAIN_REFERENCE
 
 // // using namespace std;
 
@@ -98,7 +98,14 @@ public:
 	template <class F>
 	inline
 	Referencer & link(F &p){
-		setPtr(p);
+		try {
+			setPtr(p);
+		}
+		catch (const std::exception & e){
+			//std::cerr << "Referencer & link: unsupported type?" << std::endl;
+			//throw e;
+			throw DrainException(__FILE__, ':', __FUNCTION__,": unsupported type: ", typeid(F).name());
+		}
 		return *this;
 	}
 
@@ -126,11 +133,13 @@ public:
 	/**
 	 *   Essentially, makes Castable::relink visible.
 	 */
+	/* 2022/06/27
 	inline
 	Referencer & relink(Castable & c){
 		Castable::relink(c);
 		return *this;
 	}
+	*/
 
 	template <class T>
 	inline

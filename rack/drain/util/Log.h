@@ -46,6 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <vector>
 
+#include "StringBuilder.h"
+
 /*
 #define	LOG_EMERG	0	// system is unusable //
 #define	LOG_ALERT	1	// action must be taken immediately //  RACK examples
@@ -220,6 +222,19 @@ Log & getImgLog();
 }  // namespace image
 
 
+class DrainException : public std::runtime_error {
+
+public:
+
+
+
+	// Either this or previous is unneeded?
+	template<typename T,typename ... TT>
+	DrainException(const T &elem, const TT &... rest) : std::runtime_error(drain::StringBuilder(elem, rest...)){
+	}
+
+
+};
 
 
 /// LogSourc e is the means for a function or any program segment to "connect" to a Log.

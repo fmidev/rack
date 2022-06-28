@@ -2280,11 +2280,11 @@ MainModule::MainModule(){ //
 }
 
 
-class CmdMika : public drain::BasicCommand {
+class CmdTest2 : public drain::BasicCommand {
 
 public:
 
-	CmdMika() : drain::BasicCommand(__FUNCTION__, "Debug") {
+	CmdTest2() : drain::BasicCommand(__FUNCTION__, "Debug") {
 
 	}
 
@@ -2322,7 +2322,7 @@ HiddenModule::HiddenModule(){ //
 
 	// Bank-referencing commands first
 	//drain::HelpCmd help(cmdBank);
-	install<CmdMika>("restart", 'R');
+	install<CmdTest2>("restart", 'R');
 
 }
 
