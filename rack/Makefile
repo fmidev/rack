@@ -28,7 +28,7 @@ install:
 make.tgz: Release/
 	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
-docker:
+docker-image:
 	docker build . --tag rack6_full:latest
 
 #tests:
