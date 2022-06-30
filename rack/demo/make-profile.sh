@@ -6,7 +6,8 @@
 # Under construction...
 
 FILE=${FILE:-'volume.h5'}
-rack $FILE --pVerticalProfile 40,200,0,11000,100,0,360,1 -o profile.mat
+#rack $FILE --pVerticalProfile 40,200,0,11000,100,0,360,1 -o profile.mat
+rack $FILE --pVerticalProfile 40:200,0:11000,100,0:360,1 -o profile.mat
 
 #rack $FILE --pCappi 500 --cSize 500,500 -c --palette palette-DBZH.txt -o profile-cappi.png
 

@@ -252,15 +252,15 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	/// MAIN
 	this->processDataSets(sweeps, dstProductDataset);
 
-	mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+	// mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
 
 	if (!dstProductDataset.empty()){
 		/// Todo: how to handle undefined
 		how["angles"] = dstProductDataset.getFirstData().odim.angles;
 		//how["anglesXX"] = dstProductDataset.getFirstData().odim.angles;
 	}
-	mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
-	mout.warn("how how", how);
+	//mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+	//mout.warn("how how", how);
 	// mout.experimental("dst2", rootWhere);
 	// hi5::Writer::writeFile("test0.h5", dst);
 

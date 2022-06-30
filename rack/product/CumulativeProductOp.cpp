@@ -117,18 +117,16 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 
 	}
 
-	mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
+	// mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
 
 	//if (mout.isDebug(LOG_DEBUG))
 	accumulator.extract(dstData.odim, dstProduct, "dwC");
 	//else
 	// OK mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
 		//accumulator.extract(dstData.odim, dstProduct, "dw");
-	// OK
-	mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
+	//mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
 
-	// OK
-	mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
+	//mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
 	// OK mout.warn() << "moka:" << drain::sprinter(dstData.odim) << mout;
 
 	/// Important: RELINK => resize, relocate (Address of dstData.odim.angles[0] may have changed.)

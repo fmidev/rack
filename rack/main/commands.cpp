@@ -874,9 +874,8 @@ public:
 		DataTools::updateInternalAttributes(dstH5); //, drain::FlexVariableMap());
 		// DataTools::updateInternalAttributes(dstH5);
 
-		OD rootODIM(dstH5.data.dataSet.getProperties());
-
-		mout.debug() << "Root odim: " << rootODIM << mout.endl;
+		// OD rootODIM(dstH5.data.dataSet.getProperties());
+		// mout.debug() << "Root odim: " << rootODIM << mout.endl;
 
 
 		for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
@@ -931,9 +930,9 @@ public:
 				//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
 
 				dstData.updateTree2();
-				rootODIM.updateLenient(dstData.odim);
-				mout.note() << "dstData.odim.time: " << dstData.odim.time << mout.endl;
-				mout.note() << "    rootODIM.time: " << rootODIM.time << mout.endl;
+				//rootODIM.updateLenient(dstData.odim);
+				mout.debug() << "dstData.odim.time: " << dstData.odim.time << mout.endl;
+				//mout.note() << "    rootODIM.time: " << rootODIM.time << mout.endl;
 			}
 			//}
 		}

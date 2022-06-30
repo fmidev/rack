@@ -493,6 +493,8 @@ public:
 
 	}
 
+
+
 	template <class T>
 	void toMap(T & map, char separator = 0, char equalSign = '=') const {
 

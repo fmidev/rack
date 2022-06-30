@@ -64,8 +64,10 @@ PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__){
 
 
 void PaletteEntry::init(){
-	color.resize(1, 0);
-	//color[3] = 255.0;
+
+	// color.resize(1, 0); NOVECT
+
+
 	parameters.link("value", value = 0.0);
 	//parameters.link("color", color);
 	parameters.link("alpha", alpha = 255.0);
@@ -78,7 +80,7 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 	PaletteEntry entry = (*this)[min];
 	entry.value = min;
-	entry.color.resize(3);
+	// NOVECT entry.color.resize(3);
 	entry.color[0] = red;
 	entry.color[1] = green;
 	entry.color[2] = blue;
@@ -98,7 +100,7 @@ void PaletteEntry::checkAlpha(){
 		case 4:
 		case 2:
 			alpha = color[s-1];
-			color.resize(s-1);
+			// NOVECT color.resize(s-1);
 			break;
 		default:
 			break;
@@ -108,7 +110,7 @@ void PaletteEntry::checkAlpha(){
 
 void PaletteEntry::getHexColor(std::ostream & ostr) const {
 
-	for (vect_t::const_iterator it = color.begin(); it!=color.end(); ++it){
+	for (color_t::const_iterator it = color.begin(); it!=color.end(); ++it){
 		ostr.width(2);
 		ostr.fill('0');
 		ostr << std::hex << static_cast<int>(*it);
@@ -131,7 +133,7 @@ std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char 
 		}
 
 		// ostr << separator;
-		for (vect_t::const_iterator it=color.begin(); it != color.end(); ++it){
+		for (color_t::const_iterator it=color.begin(); it != color.end(); ++it){
 			ostr << *it << separator2;
 		}
 
@@ -431,15 +433,24 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		id << entry.label;
 		entry.id = id.toStr();
 
-		Variable colours(typeid(PaletteEntry::value_t));
-
+		//Variable colours(typeid(PaletteEntry::value_t)); // NOVECT
+		PaletteEntry::color_t::iterator cit = entry.color.begin();
 		while (data >> d) {
-			colours << d;
+			//colours << d;
+			if (cit == entry.color.end()){
+				mout.error("Overflow of color elements(", entry.color.size(), "). last value: ", d);
+			}
+			else {
+				*cit = d;
+			}
+			++cit;
 		}
-		colours.toSequence(entry.color);
+		//colours.toSequence(entry.color);
+
+
 		entry.checkAlpha();
 
-		mout.note() << "got " << colours.getElementCount() << '/' << entry.color.size() << " colours" << mout.endl;
+		//mout.note() << "got " << colours.getElementCount() << '/' << entry.color.size() << " colours" << mout.endl;
 
 		// TODO!
 		// if (entry.color.size() == 4)
@@ -514,8 +525,23 @@ void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
 
 		entry.getParameters().updateFromCastableMap(attr);
 
-		attr["color"].toSequence(entry.color);
-		entry.checkAlpha();
+		// std::cerr << "keijo" << attr["color"] << std::endl;
+		// NOVECT attr["color"].toSequence(entry.color);
+		std::list<double> l;
+		attr["color"].toSequence(l);
+		switch (l.size()) {
+			case 4:
+				entry.alpha = l.back();
+				l.pop_back();
+			case 3:
+				entry.color.fromSequence(l);
+				break;
+			default:
+				mout.fail("Unsupported number of colours: ", l.size());
+		}
+
+		// NOVECT entry.color.fromSequence(attr["color"]);
+		// NOVECT entry.checkAlpha();
 
 		if (SPECIAL){
 			entry.value = NAN;
@@ -553,7 +579,7 @@ void Palette::write(const std::string & filename){
 		return;
 	}
 
-	mout.info() << "kokeilu: " << *this << mout.endl;
+	mout.info() << "writing: " << *this << mout.endl;
 
 	drain::Output ofstr(filename.c_str());
 
@@ -704,7 +730,7 @@ struct PalEntry : BeanLike {
 		parameters.link("label", label);
 	};
 
-	drain::Histogram::vect_t::size_type index;
+	drain::Histogram::color_t::size_type index;
 	Range<double> binRange;
 	drain::Histogram::count_t count;
 	std::string label;
@@ -718,8 +744,9 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	PaletteEntry entry;
 	entry.id = "test";
-	entry.color.resize(3);
-	entry.getParameters().link("color", entry.color);
+	// entry.color.resize(3); // NOVECT
+	//entry.getParameters().link("color", entry.color);
+	entry.getParameters().link("color", entry.color.tuple());
 
 	std::string colorHex;
 	entry.getParameters().link("colorHex", colorHex);
@@ -822,7 +849,7 @@ void Palette::refine(size_t n){
 		for (size_t i = 1; i < n2; ++i) {
 			c = e * static_cast<float>(i);
 			PaletteEntry & pNew = (*this)[0.01f * round(100.0*(f0 + c*(f-f0)))];
-			pNew.color.resize(s);
+			// pNew.color.resize(s);
 			for (size_t j = 0; j < s; ++j) {
 				pNew.color[j] = c*p.color[j] + (1.0f-c)*p0.color[j];
 			}
@@ -904,7 +931,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 
 			style.str("");
-			const PaletteEntry::vect_t & color = entry.color;
+			const PaletteEntry::color_t & color = entry.color;
 			switch (color.size()){
 			case 4:
 				if (color[3] != 255.0)

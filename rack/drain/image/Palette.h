@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/BeanLike.h"
 #include "drain/util/Dictionary.h" // temporary ?
 #include "drain/util/JSONtree.h"
+#include "drain/util/UniTuple.h"
 
 #include "Legend.h"
 
@@ -95,7 +96,8 @@ public:
 	typedef double value_t;
 
 	/// Color vector type
-	typedef std::vector<value_t> vect_t;
+	//typedef std::vector<value_t> color_t;
+	typedef UniTuple<value_t,3> color_t;
 
 
 	/// Default constructor
@@ -112,7 +114,7 @@ public:
 
 	/// Colors, or more generally, channel values
 	//  as three or four element vector: red, green, blue and optional alpha.
-	vect_t color;
+	color_t color;
 
 	value_t alpha;
 
