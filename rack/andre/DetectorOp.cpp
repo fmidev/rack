@@ -126,7 +126,8 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			//dstProb.setNoSave(!DetectorOp::STORE);
 			dstProb.setNoSave(outputDataVerbosity==0);
 
-			// mout.warn() << "dstProb: " << dstProb << mout.endl;
+			//mout.warn() << "dstProb: " << dstProb << mout.endl;
+			mout.debug() << "outputDataVerbosity " << outputDataVerbosity << mout.endl;
 
 			/// MAIN COMMAND
 			//if (DetectorOp::STORE) // ???
