@@ -28,45 +28,19 @@ install:
 make.tgz: Release/
 	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
-docker-image:
-	docker build . --tag rack6_full:latest
 
 #tests:
 #	cd demo; ./make-tests.sh
 
+# make docker-ubuntu18
+docker-%: Dockerfile-% 
+#	docker build . --tag rack6_full:latest
+#	echo LABEL=$* FILE1=$< TARGET=$@
+	docker build . --tag rack6_$*:latest
 
-
-# DOCUMENTATION
-#doc-all: help.txt help-drain.txt help-composite.txt help-andre.txt examples.txt doc
-#	touch help.txt
-
-#examples.txt:
-#	grep '^[ ]\+FILES\?=.*'  main/*.dox > $@
-#	grep '^[ ]\+rack [^<]*$$' main/*.dox >> $@
-
-#help.txt:
-#	rack --help > $@
-
-#help-composite.txt:
-#	rack --help cart > $@
-
-#help-drain.txt:
-#	rack --help drain > $@
-
-#help-andre.txt:
-#	rack --man andre > $@
-#	rack --man ropo >> $@
-
-#install-rack.zip: make.zip
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
-
-#clean-geotiff:
-#	rm -fv rack/Release/rack rack/Release/main/commands.o rack/Release/radar/FileGeoTIFF.o
-
-#clean-full: clean
-#	rm -fv  `find -name makefile -or -name '*.mk' -or -name '*.d'` # make.tgz
 
 
 #PROJECT_LOGO=demo/rack-logo-110x55.png
