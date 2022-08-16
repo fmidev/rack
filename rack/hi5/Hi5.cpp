@@ -45,7 +45,7 @@ namespace hi5 {
 
 //const drain::RegExp fileNameRegExp("^((.*/)?([^/]+))\\.(h5|hdf5)$", REG_EXTENDED | REG_ICASE);
 
-drain::FileInfo fileInfo("h5|hdf5");
+drain::FileInfo fileInfo("h5|hdf5|hdf");
 
 
 //void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {

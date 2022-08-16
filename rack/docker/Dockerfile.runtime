@@ -24,5 +24,7 @@ COPY bin/rack /usr/local/bin
 # Complete, finalize
 #COPY run.sh rack/
 #RUN ls -ltr 
+
 WORKDIR rack
+
 #CMD ["./run.sh","Hello, world!"]

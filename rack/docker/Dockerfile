@@ -2,9 +2,12 @@
 # Install environment & dependencies for rack
 
 FROM ubuntu:18.04
-#RUN apt-get update 
-#RUN apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
-RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
+RUN apt-get update 
+
+RUN apt-get -y install g++ 
+RUN apt-get -y install git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
+
+# RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
 
 # Prepare for rack build
 RUN git clone https://github.com/fmidev/rack.git
