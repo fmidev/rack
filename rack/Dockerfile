@@ -14,7 +14,7 @@ COPY drain main product radar /rack
 run ls -ltr /rack
 
 # Override default
-COPY install-rack-docker.cnf /rack
+COPY install-rack-docker.cnf /rack/install-rack.cnf
 
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 RUN cd /rack && ./build.sh clean && ./build.sh
