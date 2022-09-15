@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAINLET_H_
 
 //#include <map>
-#include <set>
+//#include <set>
 //#include "drain/util/Debug.h"
 //#include "drain/util/ReferenceMap.h"
 
@@ -78,20 +78,9 @@ public:
 
 	virtual
 	void setParameters(const std::string & args) = 0;
-	/*, char assignmentSymbol='='){
-		//Logger mout("Command(" + getName()+ ")", __FUNCTION__);
-		Logger mout(__FUNCTION__, getName());
-		mout.warn() << "forwarding to setParameters(const VariableMap & ), consider direct implementation " << mout.endl;
-		VariableMap argm;
-		//argm.importEntries(entries, assignmentSymbol, separatorSymbol, updateOnly, criticality)
-		argm.setValues(args, assignmentSymbol); // FAIL, no support for ordered args
-		setParameters(argm);
-	};
-	*/
 
 	virtual
 	void setParameters(const VariableMap & args) = 0; // REDESIGN?
-
 
 	template <class T>
 	void setParameters(const SmartMap<T> & args){
@@ -100,6 +89,7 @@ public:
 		vargs.importCastableMap(args);
 		setParameters(vargs);
 	}
+
 
 	inline
 	Command & addSection(drain::Flagger::value_t i){
@@ -222,15 +212,6 @@ public:
 
 	virtual
 	void setParameters(const std::string & args); //, char assignmentSymbol='=');
-
-	/*
-	template <class T>
-	inline
-	void setParameters(const SmartMap<T> & params){
-		parameters.importCastableMap(params);
-	}
-	*/
-
 
 	inline
 	void setParameters(const VariableMap & params){
@@ -409,12 +390,6 @@ public:
 		//this->update();
 	};
 
-	/*
-	template <class T>
-	void setParameters(const drain::SmartMap<T> & params){
-		getBean().setParameters(params);
-	};
-	*/
 
 	virtual
 	void setParameters(const std::string & parameters){

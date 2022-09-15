@@ -172,7 +172,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	//dstProduct.g
 	PlainData<PolarDst> & rateQuality = rateDst.getQualityData("QIND");
-	setEncodingNEW(rateDst);
+	setEncodingNEW(rateDst); // rateDst, not rateQuality?
 	getQuantityMap().setQuantityDefaults(rateQuality, "QIND", "C");
 
 	// Geometry
@@ -181,8 +181,8 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	rateQuality.setGeometry(srcDBZH.data.getGeometry());
 
-	mout.debug() << "src data: " << sweepSrc      <<  mout.endl;
-	mout.debug() << "dst data: " << rateDst.data  <<  mout.endl;
+	mout.debug("src data: ", sweepSrc);
+	mout.debug("dst data: ", rateDst.data);
 
 	// RHOHV
 	// const PlainData<PolarSrc> & srcRHOHV = sweepSrc.getData("RHOHV");
@@ -239,23 +239,67 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	double weightKDP;
 
 	// debugging
+	if (mout.isLevel(LOG_INFO)){
+
+		if (DBZH){
+			mout.special(RainRateOp::precipZrain);
+			if (mout.isLevel(LOG_DEBUG)){
+				for (int i = 0; i < 32; ++i) {
+					std::cerr << i << "dBZ\t" << RainRateOp::precipZrain.rainRate(i) << '\n';
+				}
+			}
+		}
+
+		if (KDP){
+			mout.special(RainRateOp::precipKDP);
+		}
+
+		if (DBZH && ZDR){
+			mout.special(RainRateOp::precipZZDR);
+		}
+
+		if (KDP && ZDR){
+			mout.special(RainRateOp::precipKDPZDR);
+		}
+
+		if (KDP){
+			mout.special(RainRateOp::precipKDP);
+		}
+
+		if (DBZH && ZDR){
+			mout.special(RainRateOp::precipZZDR);
+		}
+
+		if (KDP && ZDR){
+			mout.special(RainRateOp::precipKDPZDR);
+		}
+
+	}
+
+	mout.warn(parameters);
+
+	// debugging
 	if (outputDataVerbosity > 0){
 
 		mout.warn("Writing debug data");
 
 		if (DBZH){
+			mout.special(RainRateOp::precipZrain);
 			addDebugProduct(srcDBZH, thresholdDBZheavy, RainRateOp::precipZrain, dstProduct);
 		}
 
 		if (KDP){
+			mout.special(RainRateOp::precipKDP);
 			addDebugProduct(srcKDP, thresholdDBZhail, RainRateOp::precipKDP, dstProduct);
 		}
 
 		if (DBZH && ZDR){
+			mout.special(RainRateOp::precipZZDR);
 			addDebugProduct2(srcDBZH, thresholdDBZheavy, srcZDR, thresholdZDR, RainRateOp::precipZZDR, dstProduct);
 		}
 
 		if (KDP && ZDR){
+			mout.special(RainRateOp::precipKDPZDR);
 			addDebugProduct2(srcKDP, thresholdKDP, srcZDR, thresholdZDR, RainRateOp::precipKDPZDR, dstProduct);
 		}
 
@@ -340,8 +384,11 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 			}
 			else {
+				//RainRateDPOp
 				rate = RainRateOp::precipZrain.rainRate(valueDBZH);
 			}
+
+			//rate = RainRateOp::precipZrain.rainRate(valueDBZH);
 
 
 			//*it = random();

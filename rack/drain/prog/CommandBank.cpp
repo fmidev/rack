@@ -248,7 +248,9 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 				return false;
 			}
 			else {
-				script.add(key, argNext);
+				drain::StringTools::trim(argNext, "'\"");
+				//script.add(key, argNext);
+				script.add(key, drain::StringTools::trim(argNext, "'\""));
 				return true;
 			}
 		}

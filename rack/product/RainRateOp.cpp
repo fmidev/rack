@@ -73,8 +73,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	//dstQuality.data.setGeometry(dstData.data.getGeometry());
 	//@ dstQuality.updateTree();
 
-	precipZrain.update();
-	precipZsnow.update();
+	precipZrain.updateBean(); //?
+	precipZsnow.updateBean(); //?
 
 	const double maxQuality = dstQuality.odim.scaleInverse(1.0);
 	const double minQuality = dstQuality.odim.scaleInverse(0.5);

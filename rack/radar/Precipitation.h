@@ -130,7 +130,6 @@ protected:
 	inline
 	DoubleParamPrecip(const std::string & name = "", const std::string & description = ""):
 		Precip(name,description) {
-
 	}
 
 };
@@ -147,20 +146,22 @@ public:
     	SingleParamPrecip(name, "Precipitation rate from Z (reflectivity)"), a(a), b(b){
 		parameters.link("a", this->a = a);
 		parameters.link("b", this->b = b);
-		update();
+		updateBean();
 	};
 
 	inline
 	PrecipZ(const PrecipZ & p) : SingleParamPrecip(p) {
 		parameters.copyStruct(p.getParameters(), p, *this);
-		update();
+		updateBean();
 	}
 
 	virtual
 	inline
-	void update(){
+	void updateBean() const {
 		aInv = 1.0/a;
 		bInv = 1.0/b;
+		//drain::Logger mout(__FUNCTION__, __FILE__);
+		//mout.warn("coeff:", aInv, bInv);
 	};
 
 
@@ -177,8 +178,8 @@ public:
 protected:
 
 
-	double aInv;
-	double bInv;
+	mutable double aInv;
+	mutable double bInv;
 
 };
 

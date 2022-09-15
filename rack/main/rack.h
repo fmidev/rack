@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.5"
+#define __RACK_VERSION__ "6.51"
 
 /**
+ *   Version 6.51
+ *   -- Strip single and double quotes in scripting
+ *
  *   Version 6.5
  *   -- More GeoTiff resiliency in metadata errors
  *   -- Caster support for std::vector suppressed (resizing may change pointer address)
