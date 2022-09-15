@@ -9,9 +9,10 @@ RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev li
 # Prepare for rack build
 
 # RUN git clone https://github.com/fmidev/rack.git
-# COPY . /rack
-COPY drain main product radar /rack
-run ls -ltr /rack
+COPY . /rack
+# COPY Makefile Makefile-doxygen make.tgz build.sh /rack/
+# COPY drain andre main product radar  Release  /rack/
+#RUN ls -ltr /rack
 
 # Override default
 COPY install-rack-docker.cnf /rack/install-rack.cnf
