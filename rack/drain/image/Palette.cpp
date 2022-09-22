@@ -303,11 +303,11 @@ void Palette::load(const std::string & filename, bool flexible){
 
 			if (!ifstr.good()){  // still not good
 				ifstr.close();
-				mout.error() << " opening file failed" << mout.endl;
+				mout.error(" opening file '", finalFilePath.str(), "' failed");
 				return;
 			}
 
-			mout.note() << "reading: " << finalFilePath.str() << mout.endl;
+			mout.note("reading: ", finalFilePath.str());
 
 			reset();
 

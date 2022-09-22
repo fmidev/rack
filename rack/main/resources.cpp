@@ -337,7 +337,7 @@ void RackContext::updateStatus(){
 	/// Miscellaneous
 	statusMap["select"]      = select;
 	statusMap["andreSelect"] = andreSelect;
-	statusMap["composite"] = composite.toStr();
+	statusMap["composite"]   = composite.toStr();
 	// statusMap["accumulator"] = acc.toStr();
 
 }

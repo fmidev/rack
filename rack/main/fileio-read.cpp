@@ -92,6 +92,7 @@ void CmdInputFile::exec() const {
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
 	const bool NO_EXTENSION = path.extension.empty();
 
+
 	try {
 
 
@@ -136,7 +137,10 @@ void CmdInputFile::exec() const {
 
 	//mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
 	//mout.note() << "ctx.getStatusMap()" << mout;
-	ctx.getStatusMap();
+	drain::VariableMap & vmap = ctx.getStatusMap();
+
+	vmap["inputFileBasename"] = path.basename;
+
 	//mout.note() << "ctx.getStatusMap() start" << mout;
 
 	mout.timestamp("END_FILEREAD");
