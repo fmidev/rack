@@ -93,12 +93,13 @@ Collaboration diagram for PaletteEntry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1PaletteEntry__coll__graph.png" border="0" usemap="#PaletteEntry_coll__map" alt="Collaboration graph"/></div>
 <map name="PaletteEntry_coll__map" id="PaletteEntry_coll__map">
-<area shape="rect" title=" " alt="" coords="43,323,145,349"/>
+<area shape="rect" title=" " alt="" coords="121,336,224,363"/>
 <area shape="rect" href="classdrain_1_1LegendEntry.html" title=" " alt="" coords="5,247,108,273"/>
 <area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="132,247,213,273"/>
 <area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="115,157,231,184"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="77,81,268,108"/>
 <area shape="rect" title=" " alt="" coords="60,5,285,32"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="237,247,409,273"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -108,10 +109,10 @@ Public Types</h2></td></tr>
 typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a></td></tr>
 <tr class="memdesc:a971f427ed0f36249c1fe6715ceff00ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1image_1_1Intensity.html">Intensity</a> type. <br /></td></tr>
 <tr class="separator:a971f427ed0f36249c1fe6715ceff00ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4929b21336a74c919db0de1beaa5161d"><td class="memItemLeft" align="right" valign="top"><a id="a4929b21336a74c919db0de1beaa5161d"></a>
-typedef std::vector&lt; <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4929b21336a74c919db0de1beaa5161d">vect_t</a></td></tr>
-<tr class="memdesc:a4929b21336a74c919db0de1beaa5161d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector type. <br /></td></tr>
-<tr class="separator:a4929b21336a74c919db0de1beaa5161d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17a24e78ade0ab35338a22a747e857fe"><td class="memItemLeft" align="right" valign="top"><a id="a17a24e78ade0ab35338a22a747e857fe"></a>
+typedef <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a>, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a17a24e78ade0ab35338a22a747e857fe">color_t</a></td></tr>
+<tr class="memdesc:a17a24e78ade0ab35338a22a747e857fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color vector type. <br /></td></tr>
+<tr class="separator:a17a24e78ade0ab35338a22a747e857fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -188,10 +189,10 @@ Public Attributes</h2></td></tr>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aee90379adb0307effb138f4871edbc5c">value</a></td></tr>
 <tr class="memdesc:aee90379adb0307effb138f4871edbc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index or threshold value. Must be signed, as images may generally have negative values. <br /></td></tr>
 <tr class="separator:aee90379adb0307effb138f4871edbc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b986b4e2293838f49a63b6ca48b68a"><td class="memItemLeft" align="right" valign="top"><a id="ab1b986b4e2293838f49a63b6ca48b68a"></a>
-<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4929b21336a74c919db0de1beaa5161d">vect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#ab1b986b4e2293838f49a63b6ca48b68a">color</a></td></tr>
-<tr class="memdesc:ab1b986b4e2293838f49a63b6ca48b68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colors, or more generally, channel values. <br /></td></tr>
-<tr class="separator:ab1b986b4e2293838f49a63b6ca48b68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6a8ec65935cf4cd99c962fc7ec93f5"><td class="memItemLeft" align="right" valign="top"><a id="a7b6a8ec65935cf4cd99c962fc7ec93f5"></a>
+<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a17a24e78ade0ab35338a22a747e857fe">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a7b6a8ec65935cf4cd99c962fc7ec93f5">color</a></td></tr>
+<tr class="memdesc:a7b6a8ec65935cf4cd99c962fc7ec93f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colors, or more generally, channel values. <br /></td></tr>
+<tr class="separator:a7b6a8ec65935cf4cd99c962fc7ec93f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2d28b585b5fcf3544f3769c51ed121b"><td class="memItemLeft" align="right" valign="top"><a id="ae2d28b585b5fcf3544f3769c51ed121b"></a>
 <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>alpha</b></td></tr>
 <tr class="separator:ae2d28b585b5fcf3544f3769c51ed121b"><td class="memSeparator" colspan="2">&#160;</td></tr>
