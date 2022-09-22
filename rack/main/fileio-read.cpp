@@ -137,6 +137,7 @@ void CmdInputFile::exec() const {
 
 	//mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
 	//mout.note() << "ctx.getStatusMap()" << mout;
+
 	drain::VariableMap & vmap = ctx.getStatusMap();
 
 	vmap["inputFileBasename"] = path.basename;
