@@ -87,8 +87,8 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// t.setTime(prop.get("what:time", "000000"), "%H%M%S");
 	file.setTime(t);
 
-	mout.warn() << "ODIM angles " << drain::sprinter(odim.angles) << mout.endl;
-	mout.warn() << "Flex angles " << src.properties << mout.endl;
+	mout.debug() << "orig ODIM angles: " << drain::sprinter(odim.angles) << mout.endl;
+	mout.debug() << "src.properties map: " << src.properties << mout.endl;
 
 	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
 	const std::string desc = drain::StringBuilder(
