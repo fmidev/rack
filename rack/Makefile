@@ -37,7 +37,7 @@ make.tgz: Release/
 docker: Dockerfile
 #	docker build . --tag rack6_full:latest
 #	echo LABEL=$* FILE1=$< TARGET=$@
-	docker build . --tag rack6_$*:latest
+	docker build . --tag rack6_ubuntu18:latest
 
 
 clean:
