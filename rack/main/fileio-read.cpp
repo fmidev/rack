@@ -142,7 +142,9 @@ void CmdInputFile::exec() const {
 
 	vmap["inputFileBasename"] = path.basename;
 
-	//mout.note() << "ctx.getStatusMap() start" << mout;
+	path.basename.clear();
+	vmap["inputDir"] = path.str();
+	//mout.note() << path"ctx.getStatusMap() start" << mout;
 
 	mout.timestamp("END_FILEREAD");
 	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;

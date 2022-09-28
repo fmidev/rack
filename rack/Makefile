@@ -33,7 +33,8 @@ make.tgz: Release/
 #	cd demo; ./make-tests.sh
 
 # make docker-ubuntu18
-docker-%: Dockerfile-% 
+# docker-%: Dockerfile-%
+docker: Dockerfile
 #	docker build . --tag rack6_full:latest
 #	echo LABEL=$* FILE1=$< TARGET=$@
 	docker build . --tag rack6_$*:latest
