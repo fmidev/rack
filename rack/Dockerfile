@@ -1,9 +1,10 @@
-# Main level Dockerfile
+# Main level Dockerfile for ubuntu18
 # Markus Peura  fmi.fi
 
 # Install environment & dependencies for rack
 
 FROM ubuntu:18.04
+# FROM alpine:latest
 RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev 
 
 # Prepare for rack build

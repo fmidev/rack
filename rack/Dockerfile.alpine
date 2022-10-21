@@ -1,0 +1,38 @@
+# Main level Dockerfile
+# Markus Peura  fmi.fi
+
+# Install environment & dependencies for rack
+
+# FROM ubuntu:18.04
+FROM alpine:3.14
+# RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev
+RUN apk update && apk add g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev 
+
+
+# Prepare for rack build
+
+# RUN git clone https://github.com/fmidev/rack.git
+COPY . /rack
+# COPY Makefile Makefile-doxygen make.tgz build.sh /rack/
+# COPY drain andre main product radar  Release  /rack/
+
+
+# Override default: TODO: alpine
+COPY install-rack-docker-alpine.cnf /rack/install-rack.cnf
+
+# Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
+# RUN cd /rack && ./build.sh clean && ./build.sh
+WORKDIR /rack
+#RUN ls -ltr ./build.sh
+#RUN pwd
+RUN ./build.sh
+
+# Retry failed ones == list them...
+RUN ./build.sh
+
+RUN apk del g++ make proj-dev hdf5-dev tiff-dev libgeotiff libpng-dev
+# libgomp1: Open MP 
+
+# Remove build dependencies
+# RUN apt -y remove make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev
+

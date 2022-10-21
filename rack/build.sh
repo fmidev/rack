@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Installation script for 'Drain' and 'Rack'
 #

@@ -28,6 +28,9 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+
+#include "Hi5.h" // to define H5_USE_*_API_DEFAULT
+
 #ifndef Hi5WRITE
 #define Hi5WRITE
 
@@ -38,20 +41,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <list>
 
-
 #include "drain/image/Image.h"
-//#include "drain/util/StringTools.h"
 #include "drain/util/Tree.h"
-
-/*
-#include "drain/image/Image.h"
-#include "drain/image/ImageView.h"
-#include "drain/image/ImageOp.h"
-*/
-
-
-#include "Hi5.h"
-
 
 /*
  *
@@ -59,7 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  * - classify (hide methods)
  *
  */
-// using namespace std;
+
 
 namespace hi5 {
 

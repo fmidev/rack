@@ -29,6 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+// #define H5_USE_16_API_DEFAULT 1
+#define H5_USE_18_API_DEFAULT 1
+//#define H5_USE_110_API_DEFAULT 1
+
 #ifndef HI5_BASE
 #define HI5_BASE
 
@@ -49,7 +53,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 
 
-#define H5_USE_18_API 1
+
 
 // using namespace std;
 

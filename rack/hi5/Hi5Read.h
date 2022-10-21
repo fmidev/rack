@@ -29,6 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+
+#include "Hi5.h" // to define H5_USE_*_API_DEFAULT
+
+
 #ifndef Hi5READ
 #define Hi5READ
 
@@ -41,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Tree.h"
 #include "drain/image/Image.h"
 
-#include "Hi5.h"
+
 
 
 // using namespace std;

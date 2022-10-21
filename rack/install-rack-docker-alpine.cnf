@@ -1,17 +1,17 @@
-# Conf for Docker image 'rack', using Ubuntu 18.04
+# Conf for Docker image 'rack', using Alpine Linux
 
 # mpeura
  
 # Include paths
 # CCFLAGS='-std=gnu++11 -fopenmp -fPIE  -I/usr/include/geotiff -I/usr/include/hdf5/serial'
-# Alpine Linux needs -fPIE
-CCFLAGS='-std=gnu++11 -fopenmp -fPIE'
+# Alpine Linux needs -fPIE (-fopenmp?)
+CCFLAGS='-std=gnu++11 -fPIC -fPIE'
 
 
 # Library paths
 # LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
-# Alpine Linux needs -fPIE
-LDFLAGS='-std=gnu++11 -fopenmp -fPIE   -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+# Alpine Linux needs -fPIE (-fopenmp?)
+LDFLAGS='-std=gnu++11  -fPIC -fPIE  -lhdf5 -lproj -lpng -ltiff -lgeotiff'
 
 # Directory prefix for binary executable: ${prefix}/bin/
 prefix='/usr'

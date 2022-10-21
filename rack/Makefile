@@ -12,7 +12,8 @@ help:
 
 release: #unpack
 	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
-	tar xzf make.tgz --keep-newer-files
+#tar xzf make.tgz --keep-newer-files
+	tar xzf make.tgz 
 	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
 #unpack:
@@ -29,15 +30,18 @@ make.tgz: Release/
 	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 
+BASE_IMAGE=alpine
+BASE_IMAGE=ubuntu18
 #tests:
 #	cd demo; ./make-tests.sh
 
 # make docker-ubuntu18
 # docker-%: Dockerfile-%
-docker: Dockerfile
+docker: Dockerfile.${BASE_IMAGE}
 #	docker build . --tag rack6_full:latest
 #	echo LABEL=$* FILE1=$< TARGET=$@
-	docker build . --tag rack6_ubuntu18:latest
+#docker build . --tag rack6_ubuntu18:latest
+	docker build . --file $<  --tag rack6_${BASE_IMAGE}
 
 
 clean:
