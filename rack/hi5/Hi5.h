@@ -49,7 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 
 
-
+#define H5_USE_18_API 1
 
 // using namespace std;
 

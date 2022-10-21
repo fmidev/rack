@@ -485,8 +485,9 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	if ((image.getGeometry().getVolume() > 0) && typeOk){
 		mout.debug3() << "calling H5Dread" << mout.endl;
 		H5O_info_t info;
-		// H5Oget_info(dataset, &info);
-		H5Oget_info2(dataset, &info, H5O_INFO_BASIC);
+		H5Oget_info(dataset, &info);
+		//H5O_info2_t info;
+		//H5Oget_info2(dataset, &info, H5O_INFO_BASIC);
 
 
 		status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, (void *)image.getBuffer()); // valgrind?

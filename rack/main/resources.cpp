@@ -52,6 +52,9 @@ RackContext::RackContext(const RackContext & ctx): SmartContext(ctx), ImageConte
 	statusMap["rackContext"] = "CLONED";
 }
 
+/**  Colon (:) is included due to support group prefixed ODIM variable names, e.g, "where:lon"
+ *
+ */
 const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9:_]+");
 
 // sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
