@@ -71,7 +71,9 @@ $(function() {
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#fileio_h5">Reading and writing HDF5 files</a></li>
 <li class="level1"><a href="#fileio_txt">Reading and writing text files</a></li>
-<li class="level1"><a href="#fileio_img">Reading and writing image files</a></li>
+<li class="level1"><a href="#fileio_img">Reading and writing image files</a><ul><li class="level2"><a href="#geotiff_remarks">Remarks on GeoTIFF images</a></li>
+</ul>
+</li>
 <li class="level1"><a href="#histograms">Histograms</a></li>
 <li class="level1"><a href="#graphs">Illustrating data structure</a></li>
 <li class="level1"><a href="#file_quality">Reading and combining quality data</a></li>
@@ -120,13 +122,12 @@ Reading and writing image files</h1>
 <p>In addition to HDF5 format, <b>Rack</b> support three image formats:</p><ul>
 <li>Portable Network Graphics (PNG), with (<code></code>.png ) extension</li>
 <li>Portable Anymap Format (PNM), grayscale ( <code></code>.pgm ) and RGB images (<code></code>.ppm ).</li>
-<li>Geo-Referenced Tagged Image File Format (GeoTIFF, GTIF), (<code></code>.tif ), limited to writing Cartesian grayscale data; GDAL conventions are used in intensity scaling (<code>scale</code> and <code>offset</code> ).</li>
+<li>Geo-Referenced Tagged Image File Format (GeoTIFF, GTIF), (<code></code>.tif ), see ref geotiff_remarks below</li>
 </ul>
 <p>When writing data with <code>&ndash;outputFile</code> (<code>-o</code>) command, the applied image format is determined from the filename extension. By default, the first dataset encountered in the internal data structure is selected, hence typically <code>/data1/dataset1/data</code> . The source can be changed with <code>&ndash;select</code> command. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o sweep1.png</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select dataset2/data:,quantity=DBZH -o sweep1.pgm</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --cProj <span class="stringliteral">&quot;+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;</span> -c  -o sweep1.tif</div>
-</div><!-- fragment --><p>Note: in GeoTIFF ouputs, for unknown reasons, certain projections &ndash; for example EPSG:3844, EPSG:3035, and EPSG:3995 &ndash; raise errors in writing projection data. (See <a class="el" href="compositespage.html">Cartesian conversions and composites</a> .)</p>
- <div class="image">
+</div><!-- fragment --> <div class="image">
 <img src="sweep.png" alt=""/>
 <div class="caption">
 A PNG image generated with <code>-o</code> .</div></div>
@@ -176,7 +177,23 @@ A PNG image generated with <code>-o</code> .</div></div>
 </ol>
 <p>Metadata can be set before or after image inputs. Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.txt sweep1.png --/dataset1/data1/where:rscale=500  &lt;commands&gt;</div>
 </div><!-- fragment --><p>Some important ODIM attributes can be added automatically with <code>&ndash;completeODIM</code> command, which sets <code>nbins</code> , <code>nrays</code> , <code>xsize</code> , and <code>ysize</code> equal to data dimensions, if already loaded as image.</p>
-<h1><a class="anchor" id="histograms"></a>
+<h2><a class="anchor" id="geotiff_remarks"></a>
+Remarks on GeoTIFF images</h2>
+<p>Rack produces GeoTIFF images under the following limitations:</p>
+<ul>
+<li>writing is supported only</li>
+<li>grayscale is supported only</li>
+<li>applicable to Cartesian products only; polar coordinate system is not supported. GDAL conventions are used in intensity scaling (<code>scale</code> and <code>offset</code> ).</li>
+<li>support of geodetic data is minimal; use utilities like <code>gdalinfo</code> to check output</li>
+<li>some projections (e.g. <code>epsg:3844</code>, <code>epsg:3035</code>, and <code>epsg:3995</code>) raise errors – see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> for details.</li>
+<li>tiling is supported</li>
+<li>producing 16-bit output having width not multiple of tile width causes errors, for unknown reasons</li>
+</ul>
+<div class="fragment"><div class="line">--geoTiff  &lt;tile&gt;,&lt;compression&gt;  (Section: general,images)</div>
+<div class="line">  GeoTIFF tile size. Deprecating?, use --outputConf tif:&lt;width&gt;,&lt;height&gt;</div>
+<div class="line">    tile=256:0 </div>
+<div class="line">    compression= [NONE=1|LZW=5|DEFLATE=32946|PACKBITS=32773]</div>
+</div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
 <div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>
 <div class="line">  Histogram. Optionally --format using keys index,range,count,label</div>
