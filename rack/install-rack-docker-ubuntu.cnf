@@ -3,15 +3,14 @@
 # mpeura
  
 # Include paths
-# CCFLAGS='-std=gnu++11 -fopenmp -fPIE  -I/usr/include/geotiff -I/usr/include/hdf5/serial'
-# Alpine Linux needs -fPIE
-CCFLAGS='-std=gnu++11 -fopenmp -fPIE'
+CCFLAGS='-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial'
+
 
 
 # Library paths
-# LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
 # Alpine Linux needs -fPIE
-LDFLAGS='-std=gnu++11 -fopenmp -fPIE   -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+# LDFLAGS='-std=gnu++11 -fopenmp -fPIE   -lhdf5 -lproj -lpng -ltiff -lgeotiff'
 
 # Directory prefix for binary executable: ${prefix}/bin/
 prefix='/usr'

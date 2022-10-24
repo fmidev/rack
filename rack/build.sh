@@ -16,7 +16,8 @@ if [ ! -f $CONF_FILE ]; then
   ./configure.sh
 fi
 
-source $CONF_FILE
+#source $CONF_FILE # bash
+. $CONF_FILE
 
 #USE_GEOTIFF=${GEOTIFF:+'YES'}
 #USE_GEOTIFF=${USE_GEOTIFF:-'NO'}

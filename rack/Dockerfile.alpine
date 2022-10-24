@@ -3,9 +3,7 @@
 
 # Install environment & dependencies for rack
 
-# FROM ubuntu:18.04
 FROM alpine:3.14
-# RUN apt-get update && apt-get -y install g++ git make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev
 RUN apk update && apk add g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev libgomp
 
 # Prepare for rack build
@@ -18,7 +16,6 @@ COPY . /rack
 
 # Override default
 COPY install-rack-docker-alpine.cnf /rack/install-rack.cnf
-# COPY makefile.alpine /rack/makefile.defs
 
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 # (Clean is needed to remove *.o ubuntu objects, they may have been)
@@ -28,6 +25,4 @@ RUN cd /rack && ./build.sh clean && ./build.sh
 RUN apk del g++ make
 # proj-dev hdf5-dev tiff-dev libgeotiff libpng-dev
 
-# libgomp1: Open MP 
-# RUN apt -y remove make libproj-dev libhdf5-dev libtiff-dev libgeotiff-dev libpng-dev
 
