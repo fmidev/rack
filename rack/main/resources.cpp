@@ -50,6 +50,8 @@ RackContext::RackContext(){
 RackContext::RackContext(const RackContext & ctx): SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "CLONED";
+	inputPrefix = ctx.inputPrefix;
+	outputPrefix = ctx.outputPrefix;
 }
 
 /**  Colon (:) is included due to support group prefixed ODIM variable names, e.g, "where:lon"
