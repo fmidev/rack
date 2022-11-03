@@ -276,9 +276,9 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 	try {
 		scalingFunctor.setParameters(functorParams, '=', '/');
 	} catch (const std::exception & e) {
-		mout.info() << scalingFunctor << mout;
-		mout.warn() << scalingFunctor.getParameters() << mout;
-		mout.error() = e.what();
+		mout.info(scalingFunctor);
+		mout.warn(scalingFunctor.getParameters());
+		mout.error(e.what());
 	}
 
 	mout.debug2() << scalingFunctor.getName() << ':' << scalingFunctor << mout;

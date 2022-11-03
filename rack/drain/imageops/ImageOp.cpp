@@ -352,7 +352,7 @@ void ImageOp::traverseChannelsSeparately(const ImageTray<const Channel> & src, I
 	ImageTray<const Channel>::map_t::const_iterator sit  = src.begin();
 	ImageTray<Channel>::map_t::iterator dit = dst.begin();
 
-	mout.debug() = "initializeParameters";
+	mout.debug("initializeParameters");
 
 	initializeParameters(sit->second, dit->second);
 

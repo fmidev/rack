@@ -1035,8 +1035,8 @@ public:
 	// Experimental
 	void swap(Data<DT> &d){ // TODO: also for plaindata?
 
-		drain::Logger mout( __FUNCTION__, "Data<>");
-		mout.warn() << "Swap (experimental fct)" << mout.endl;
+		drain::Logger mout( __FUNCTION__, "Data<DT>");
+		mout.experimental("Swapping...");
 		this->tree.swap(d.tree);
 
 		typename DT::odim_t odim;

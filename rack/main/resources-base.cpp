@@ -83,10 +83,12 @@ void ImageContext::updateImageStatus(drain::VariableMap & statusMap) const {
 
 
 
+Hi5Tree Hdf5Context::empty;
+
 
 Hdf5Context::Hdf5Context():
-	currentHi5(&inputHi5),
-	currentPolarHi5(&inputHi5){
+	currentHi5(&polarInputHi5),
+	currentPolarHi5(&polarInputHi5){
 }
 
 Hdf5Context::Hdf5Context(const Hdf5Context &ctx):
@@ -102,82 +104,116 @@ const Hdf5Context::h5_role::value_t Hdf5Context::EMPTY   = h5_role::add("EMPTY")
 const Hdf5Context::h5_role::value_t Hdf5Context::PRIVATE = h5_role::add("PRIVATE"); // =32,
 const Hdf5Context::h5_role::value_t Hdf5Context::SHARED  = h5_role::add("SHARED"); // =64     **< Try shared first  *
 
-
+/* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
+ *
+ */
 Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const bool emptyOK = (filter & EMPTY);
+	mout.debug("filter=", filter, h5_role::getShared().getKeys(filter, '|'));
 
-	mout.debug() << "filter=" << filter << h5_role::getShared().getKeys(filter, '|') << mout.endl;
-	// const drain::Variable & inputObject = inputH5[ODIMPathElem::WHAT].data.attributes["object"];
+	/*
+	if (!(filter & (POLAR|CARTESIAN))){
+		// = auto
+		mout.debug("POLAR|CARTESIAN unset, accepting both",);
+	}
+	*/
 
+
+	// Return Cartesian product if it is non empty, or empty Cartesian is accepted.
 	if (filter & CARTESIAN){
-		if (emptyOK || !cartesianHi5.isEmpty())
+		if ((filter & EMPTY) || !cartesianHi5.isEmpty()){
+			//mout.special("KARTTUNEN");
 			return cartesianHi5;
+		}
+		//what about currentHi5 -> input? (if Cart) Was it converted (swapped)...
 	}
 
+	// Return polar data/product, if it is non empty, or empty polar is accepted.
 	if (filter & POLAR){
 
-		if (filter & CURRENT){ // = priorize current (be it input volume or product
+		if (filter & CURRENT){ // = priorize current, "latest" (be it input volume or product
 
-			if (emptyOK || (currentPolarHi5 && !currentPolarHi5->isEmpty())){
+			if ((filter & EMPTY) || (currentPolarHi5 && !currentPolarHi5->isEmpty())){
 				// require local
-				if (currentPolarHi5 == &polarHi5){
-					return polarHi5;
+				if (currentPolarHi5 == &polarProductHi5){
+					return polarProductHi5;
 				}
-				else if (currentPolarHi5 == &inputHi5){
-					return inputHi5;
+				else if (currentPolarHi5 == &polarInputHi5){
+					return polarInputHi5;
 				}
 			}
 		}
 
 		if (filter & INPUT){
-			if (emptyOK || !inputHi5.isEmpty())
-				return inputHi5;
+			if ((filter & EMPTY) || !polarInputHi5.isEmpty())
+				return polarInputHi5;
 		}
 
-		if (emptyOK || !polarHi5.isEmpty())
-			return polarHi5;
+		if ((filter & EMPTY) || !polarProductHi5.isEmpty())
+			return polarProductHi5;
 
-		if (emptyOK || !inputHi5.isEmpty())
-			return inputHi5;
+		//if ((filter & EMPTY) || !inputHi5.isEmpty())
+		//	return inputHi5;
 	}
 
 
 	if (filter & CURRENT){
-		if (emptyOK || (currentHi5 && !currentHi5->isEmpty()))
+		if ((filter & EMPTY) || (currentHi5 && !currentHi5->isEmpty()))
 			return *currentHi5;
 	}
 
-	if (emptyOK){
+	if ((filter & EMPTY)){
 		mout.error() << "something went wrong, could not find even EMPTY H5 with filter=" << filter << mout.endl;
 	}
 
-	return inputHi5;
+	// debugging
+	/*
+	if ((filter==CARTESIAN) || (filter==POLAR) || (filter==CURRENT)) {
+		mout.error("Requested strictly ", h5_role::getShared().getKeys(filter), ": not found");
+	}
+	*/
+
+	// mout.note("Requested: ", filter, '=', h5_role::getShared().getKeys(filter), ": not found");
+
+	return empty;
+	//return inputHi5;
 
 
 }
 
 
-Hi5Tree & Hdf5Context::getHi5(h5_role::value_t filter) {
+Hi5Tree & Hdf5Context::getHi5Defunct(h5_role::value_t filter) {
 
 	drain::Logger mout( __FUNCTION__, __FILE__);
 
+
+	bool emptyOk = (filter & EMPTY)>0;
+	// mout.special("Accept empty:", emptyOk);
+
 	Hi5Tree & dst = getMyHi5(filter);
-	if ((filter & EMPTY) || !dst.isEmpty()){
-		mout.debug() << "local [" << dst[ODIMPathElem::WHAT].data.attributes["object"] << ']' << mout.endl;
+	if (emptyOk || !dst.isEmpty()){
+		mout.debug("PRIVATE [", dst[ODIMPathElem::WHAT].data.attributes["object"], ']');
 		return dst;
 	}
 
-	Hi5Tree & dstShared = getStaticContext().getMyHi5(CARTESIAN);
-	if ((filter & EMPTY) || !dstShared.isEmpty()){
+	// mout.experimental("Changed/fixed CARTESIAN -> filter here");
+	Hi5Tree & dstShared = drain::Static::get<Hdf5Context>().getMyHi5(filter); //CARTESIAN);
+	if (emptyOk || !dstShared.isEmpty()){
 		// mout.note() = "shared";
-		mout.debug() << "shared [" << dstShared[ODIMPathElem::WHAT].data.attributes["object"] << ']' << mout.endl;
+		mout.debug( "SHARED [", dstShared[ODIMPathElem::WHAT].data.attributes["object"], ']');
 		return dstShared;
 	}
 
-	mout.info() = "local, empty";
+	/*
+	const Hdf5Context & ctx = getStaticContext();
+	mout.special("StaticContext: input empty=", ctx.inputHi5.isEmpty() );
+	mout.special("StaticContext: polar empty=", ctx.polarHi5.isEmpty() );
+	mout.special("StaticContext: cart  empty=", ctx.cartesianHi5.isEmpty() );
+	*/
+
+	mout.info("PRIVATE, empty");
 	return dst;
 
 }
@@ -186,11 +222,15 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 	drain::Logger mout( __FUNCTION__, __FILE__);
 
-	const Hi5Tree & src = getHi5(CURRENT);
+	const Hi5Tree & src = getMyHi5(CURRENT);
 
-	if (!src.isEmpty()){
+	if (src.isEmpty()){
+		mout.experimental("My CURRENT h5 empty, skipping status update...");
+		// NOTE: private/shared selection moved to @RackContext
+	}
+	else {
 
-		mout.debug() << "(Not empty)" << mout.endl;
+		mout.debug("(Not empty)");
 
 		DataSelector selector(ODIMPathElem::DATA);
 

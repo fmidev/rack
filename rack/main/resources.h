@@ -117,6 +117,50 @@ public:
 		return guessDatasetGroup(src, pathElem);
 	}
 
+
+
+	/**
+	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...)
+	 *  \return Requested data object, with properties defined by filter.
+	 */
+	//inline
+	//Hi5Tree & getHi5(h5_role::value_t filter);
+	//	return getHi5Full(filter);
+	// }
+
+	/**
+	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...)
+	 *  \return Requested data object, with properties defined by filter.
+	 */
+	template <typename T, typename ...TT>
+	Hi5Tree & getHi5(const T &filter, const TT &... filters){
+
+		T f(filter);
+		Hi5Tree & dst = getHi5Full(f);
+		if (f != 0)
+			return dst;
+		else
+			return getHi5(filters...);
+	}
+
+
+
+	Hi5Tree & getHi5Full(h5_role::value_t & filter);
+
+	inline
+	Hi5Tree & getHi5(){
+		return empty; // or current?
+	}
+
+	/** Get composite, preferring either shared or private (if defined).
+	 *
+	 *  Both ways, a defined composite is preferred.
+	 *
+	 *  \return Object containing compositing arrays.
+	 */
+	Composite & getComposite(h5_role::value_t filter);
+
+
 	// Experimental
 	// ODIMPath currentPath;
 

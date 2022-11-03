@@ -960,8 +960,8 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 
-		if (ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr() == "COMP"){
-			ctx.inputHi5.swap(ctx.cartesianHi5);
+		if (ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr() == "COMP"){
+			ctx.polarInputHi5.swap(ctx.cartesianHi5);
 			ctx.currentHi5 = &ctx.cartesianHi5;
 		}
 
@@ -1436,7 +1436,7 @@ public:
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(ctx.formatStr, true);
 
-		mout.deprecating() = "Use  -o / --outputFile [file|'-'] ";
+		mout.deprecating("Use  -o / --outputFile [file|'-'] instead of  ", getName());
 
 		if (value == "log"){
 			mout.unimplemented() << "Logging: future option" <<  mout.endl;
@@ -2088,11 +2088,11 @@ protected:
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		if (quantity.empty()){
-			mout.error() << "quantity empty" << mout.endl;
+			mout.error("quantity empty");
 			return;
 		}
 
-		mout.warn() << "[" << quantity << "]: " << encoding << ", zero=" << zero << mout.endl;
+		mout.debug() << "[" << quantity << "]: " << encoding << ", zero=" << zero << mout.endl;
 
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];
@@ -2118,7 +2118,7 @@ protected:
 			odim.addShortKeys();
 			odim.type = q.defaultType;
 			odim.setValues(encoding);
-			mout.warn() = odim;
+			mout.warn(odim);
 			if (odim.type.length() != 1){
 				mout.fail() << "illegal type: " << odim.type << mout.endl;
 				return;
@@ -2150,8 +2150,8 @@ protected:
 struct VerboseCmd : public drain::BasicCommand {
 
 	VerboseCmd() : drain::BasicCommand(__FUNCTION__, "Set verbosity level") {
-		parameters.link("level", level = 5);
-		parameters.link("imageLevel", imageLevel = 4);
+		parameters.link("level", level = "NOTE");
+		parameters.link("imageLevel", imageLevel = "WARNING");
 	};
 
 	VerboseCmd(const VerboseCmd & cmd) : drain::BasicCommand(cmd) {
@@ -2172,8 +2172,10 @@ struct VerboseCmd : public drain::BasicCommand {
 		*/
 	};
 
-	int level;
-	int imageLevel;
+	std::string level;
+	std::string imageLevel;
+	//int level;
+	//int imageLevel;
 
 };
 
@@ -2315,13 +2317,88 @@ protected:
 
 };
 
+class CmdHdf5Test : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdHdf5Test() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump H5 sources") {
+		//parameters.link("level", level = 5);
+	}
+
+
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+		//drain::VariableMap m;
+		//std::set<unsigned int> hset = {Hdf5Context::CURRENT};
+		//ctx.getHi5(Hdf5Context::CURRENT);
+
+		dumpStatus(ctx, "local");
+		dumpStatus(ctx.getSharedContext(), "shared");
+
+	}
+
+	void dumpStatus(RackContext & ctx, const std::string & title) const {
+
+		typedef DstType<ODIM> dst_t;
+
+		const drain::Flags & h5roles = Hdf5Context::h5_role::getShared();
+		const drain::Flags::dict_t & dict = h5roles.getDict();
+		//mout.warn(dict);
+		if (!this->value.empty()){
+			Hi5Tree & dst = ctx.getMyHi5(dict.getValue(this->value));
+			DataSet<dst_t> dstDataSet(dst("dataset1"));
+			const ODIM & odim = dstDataSet.getFirstData().odim;
+			//std::cout << "\t\t" << odim << '\n';
+			std::cout  << ctx.id << ' ' << "\t" << odim.quantity << ':' << odim.area << '\n';
+		}
+		else {
+			for (const auto & entry: dict){
+				std::cout << title << '=' << ctx.id << ' ' << entry.first << ':' << entry.second << '\n';
+				try {
+					Hi5Tree & dst = ctx.getMyHi5(entry.second);
+					DataSet<dst_t> dstDataSet(dst("dataset1"));
+					//Data<dst_t> & data = dstDataSet.getFirstData();
+					const ODIM & odim = dstDataSet.getFirstData().odim;
+					std::cout << "\t\t" << odim.quantity << ':' << odim.area << '\n';
+				}
+				catch (const std::exception & e) {
+					std::cout << "\t\t" << "---\n";
+				}
+			}
+		}
+	}
+
+};
+
+
+/*
+class CmdTrigger : public drain::BasicCommand {
+
+public:
+
+	CmdTrigger() : drain::BasicCommand(__FUNCTION__, "Trigger script") {
+	}
+
+	void exec() const {
+	}
+
+};
+*/
+
 HiddenModule::HiddenModule(){ //
 
-	// NEW
-
 	// Bank-referencing commands first
-	//drain::HelpCmd help(cmdBank);
+	// drain::HelpCmd help(cmdBank);
+
+	// install<CmdTrigger>();
+
 	install<CmdTest2>("restart", 'R');
+
+	install<CmdHdf5Test>("getMyH5");
 
 }
 

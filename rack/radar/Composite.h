@@ -166,8 +166,13 @@ public:
 	/// EXPERIMENTAL: save elangles TODO: consider rename metadataMap (for hairy details)
 	drain::VariableMap metadataMap;
 
-	/// Range [km] for single-radar products. Typically 250 km.
-	// int defaultRange;
+	/// Set input selector. See @DataSelector .
+	/**
+	 *  - if unset, use quantity
+	 *  - warn if changes detected
+	 *
+	 */
+	void updateInputSelector(const std::string & select);
 
 protected:
 

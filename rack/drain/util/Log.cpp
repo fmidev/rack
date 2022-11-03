@@ -43,7 +43,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-//Log monitor;
+
+void Notification::set(const std::string & key, int vt100color){
+	this->key = key;
+	if (vt100color > 0){
+		std::stringstream sstr; //"\033[1;31m";//"\033[0m";
+		sstr << "\033[1;" << vt100color << 'm';
+		this->vt100color = sstr.str();
+	}
+	else
+		this->vt100color = "\033[0m"; // VT100_RESET
+}
 
 
 Log & getLog(){
@@ -54,6 +64,8 @@ Log & getLog(){
 }
 
 namespace image {
+
+
 
 Log & getImgLog(){
 
@@ -78,7 +90,8 @@ Log & getImgLog(){
 const Log::notif_dict_t & Log::getDict(){
 	static Log::notif_dict_t dict;
 	if (dict.empty()){
-		dict.resize(64);
+		//dict.resize(64);
+		dict.resize(16);
 		dict[LOG_EMERG].set("EMERG", 101);
 		dict[LOG_ALERT].set("ALERT", 91);
 		dict[LOG_CRIT].set("CRIT", 41);
@@ -100,20 +113,13 @@ void Notification::set(const std::string & key, const std::string & vt100color){
 }
 */
 
-void Notification::set(const std::string & key, int vt100color){
-	this->key = key;
-	if (vt100color > 0){
-		std::stringstream sstr; //"\033[1;31m";//"\033[0m";
-		sstr << "\033[1;" << vt100color << 'm';
-		this->vt100color = sstr.str();
-	}
-	else
-		this->vt100color = "\033[0m"; // VT100_RESET
-}
-
 void Log::setVerbosity(const std::string & level){
 
-	const size_t i = atoi(level.c_str());
+	// const size_t i = atoi(level.c_str());
+	level_t i=0;
+	std::stringstream sstr(level);
+	sstr >> i;
+	// std::cout << "setVerbosity: " << level << ':' << i << '\n';
 	if (i > 0){
 		setVerbosity(i);
 		return;
@@ -122,13 +128,14 @@ void Log::setVerbosity(const std::string & level){
 	const drain::Log::notif_dict_t & dict = getDict();
 	for (size_t i=0; i<dict.size(); ++i){
 		const drain::Notification & notif = dict[i];
-		if (!notif.key.empty())
-			if (notif.key == level){
-				setVerbosity(i);
-				return;
-			}
-			// std::cout << i << '=' << notif.key << '\n';
+		//if (!notif.key.empty())
+		// std::cout << i << '=' << notif.key << '\n';
+		if (notif.key == level){
+			setVerbosity(i);
+			return;
+		}
 	}
+	//std::cout << "failed:" << level << '\n';
 
 	throw std::runtime_error(level + " - no such error level");
 }
@@ -167,6 +174,9 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 	ostr << '['; ;
 	ostr.width(8);
 	ostr << notif.key << ']' << ' ';
+
+	// Future extension (thread id?)
+	// if (id > 0)	ostr << id << ' ';
 
 	if (!prefix.empty() && (level < (verbosityLevel)))
 		ostr << prefix << ':' << ' ';

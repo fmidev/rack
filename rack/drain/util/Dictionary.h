@@ -107,7 +107,8 @@ std::ostream & operator<<(std::ostream & ostr, const Dictionary<T> & d) {
 }
 */
 
-/***
+/** Simple list based container for small dictionaries. Uses brute-force search.
+ *
  *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but
  *   appended sequentally.
  */
@@ -151,6 +152,18 @@ public:
 		}
 		return this->end();
 	}
+
+
+	/*
+	typename container_t & findByKeyNew(const K & key) {
+		for (auto & entry: *this){
+			if (entry.first == key)
+				return entry;
+		}
+		return this->front(); // todo: dummy
+	}
+	*/
+
 
 	inline
 	bool hasKey(const K & key) const {
@@ -203,14 +216,16 @@ public:
 			separator = this->separator;
 
 		char sep = 0;
-		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+		for (const auto & entry: *this){
 
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
 
-			ostr << it->first << '=' << it->second;
+			ostr << entry.first << '=' << entry.second;
+			//ostr << it->first << '=' << it->second;
 		}
 	}
 

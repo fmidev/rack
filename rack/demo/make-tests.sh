@@ -161,18 +161,17 @@ while (( $line <= iEnd )); do
     cmdbase=${cmd%-o*} # without output
     output=${cmd##*-o} # remaining part (output file)
     extension=( ${output##*.} ) # extension, trailing white space trimmed
-
-    if [ "$cmdbase" != "$cmd" ]; then
-	#cmd="$cmdbase --outputPrefix $OUTDIR/ -o $output "
-	#echo cmdbase=$cmdbase
-	#echo output=$output
-	#echo "extension='$extension'"
+    # Note: scripts problematic, so skipped.
+    if [ "$cmdbase" != "$cmd" ] && [ "${cmd/--script/}" != "$cmd" ] && [ "${cmd//[\[\]]/}" != "$cmd" ] ; then
+	# cmd="$cmdbase --outputPrefix $OUTDIR/ -o $output "
+	# echo cmdbase=$cmdbase
+	# echo output=$output
+	# echo "extension='$extension'"
 	if [ $extension == 'h5' ]; then
 	    img=${output%.*}'.png'
 	    img=${img//\'/} # problem: parallel [ ...]
 	    echo -e "$VT100_ORANGE also GENERATING IMAGE: $img $VT100_END"
 	    #echo "$cmdbase -o $img"
-	    #eval "$cmdbase -o $img"
 	    cmd="$cmdbase -o $img -o $output"
 	fi
 

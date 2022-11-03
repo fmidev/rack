@@ -138,6 +138,14 @@ public:
 	//  void append(const Script & script, Program & prog, Context & context) const ;
 	void append(const Script & script, Context & ctx, Program & prog) const ;
 
+	/// Append routine to program, and clear routine.
+	inline
+	void flushRoutine(Script & script, Context & ctx, Program & prog){
+		append(script, ctx, prog);
+		script.clear();
+	}
+
+
 	void remove(Program & prog) const;
 
 	/// Run a single command

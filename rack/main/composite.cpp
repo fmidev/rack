@@ -59,7 +59,7 @@ namespace rack {
 
 
 
-Composite & Compositor::getComposite() const {
+Composite & Compositor::getCompositeOLD() const {
 
 	RackContext & ctx  = this->template getContext<RackContext>();
 
@@ -81,7 +81,7 @@ Composite & Compositor::getComposite() const {
 
 };
 
-double Compositor::applyTimeDecay(double w, const ODIM & odim) const {
+double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & odim) const {
 
 	RackContext & ctx  = this->template getContext<RackContext>();
 
@@ -90,7 +90,7 @@ double Compositor::applyTimeDecay(double w, const ODIM & odim) const {
 	//const RackResources & resources = getResources();
 	//RackContext & ctx = getContext<RackContext>();
 
-	Composite & composite = getComposite();
+	//Composite & composite = ctx.getComposite(RackContext::PRIVATE);
 
 	if (composite.decay < 1.0){
 
@@ -114,13 +114,17 @@ double Compositor::applyTimeDecay(double w, const ODIM & odim) const {
 
 
 
-void Compositor::add(drain::Flags::value_t inputFilter) const {
+//void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter) const {
+void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, bool updateSelector) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	mout.timestamp("BEGIN_CART_ADD");
+
+	if (ctx.statusFlags)
+		mout.warn("Status flags before accumulating: ", ctx.statusFlags);
 
 	RackResources & resources = getResources();
 
@@ -139,7 +143,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	}
 
 
-	Composite & composite = getComposite();
+	// Composite & composite = getComposite();
 
 	/// Set default method, if unset.
 	if (!composite.isMethodSet()){
@@ -147,35 +151,11 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 		mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout;
 	}
 
-	/// Set input data selector (typically, by quantity)
-	if (!ctx.select.empty()){
-		// mout.warn() << "Setting selector=" << resources.select << mout.endl;
-		const std::string quantityOrig(composite.dataSelector.quantity);
-
-		//composite.dataSelector.setParameters(resources.baseCtx().select);
-		composite.dataSelector.setParameters(ctx.select);  // consume (clear)?
-
-		mout.warn() << "Adjusted composite input selector=" << ctx.select << " -> " << composite.dataSelector << mout;
-		//resources.select = "quantity=" + composite.dataSelector.quantity;
-		//resources.select.clear(); // PROBLEMS HERE?
-
-		// TODO: selecor.quantity is allowed to be regExp?
-		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
-		if (!quantityOrig.empty() && (quantityOrig != composite.dataSelector.quantity)){
-			mout.warn() << "quantity selector changed, resetting accumulation array" << mout;
-			composite.clear();
-			composite.odim.quantity.clear();
-			composite.odim.scaling.set(0.0, 0.0);
-		}
+	// This was bad for --cCreate / -c , so moved to --cAdd
+	if (updateSelector){
+		composite.updateInputSelector(ctx.select);
 	}
-	else {
-		if (composite.dataSelector.quantity.empty()){
-			mout.info() << "Setting selector quantity=" << composite.odim.quantity << mout;
-			composite.dataSelector.quantity = composite.odim.quantity; // consider "^"+...+"$"
-			//
-		}
-	}
-
+	ctx.select.clear();
 
 
 	/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
@@ -193,7 +173,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	mout.debug() << "Src root /what: " << root.getWhat() << mout;
 
 	//mout.info() << "now: vmap" << mout.endl;
-	mout.special() << "using selector: " << composite.dataSelector << mout; // consider: if composite.dataSelector...?
+	mout.debug() << "using selector: " << composite.dataSelector << mout; // consider: if composite.dataSelector...?
 
 	/// Main
 	//if (ctx.currentHi5 == ctx.currentPolarHi5){
@@ -203,7 +183,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 	if ((object == "COMP") || (object == "IMAGE")){
 		//if ((object == "SCAN") || (object == "PVOL")){
 		mout.info() << "Cartesian input data, ok" << mout.endl;
-		addCartesian(src);
+		addCartesian(composite, src);
 	}
 	else {
 		//else if (ctx.currentHi5 == & ctx.cartesianHi5){
@@ -213,7 +193,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 			mout.warn() << "empty what:object, assuming polar" << mout.endl;
 		else
 			mout.warn() << "suspicious what:object=" << object << ", assuming polar" << mout.endl;
-		addPolar(src);
+		addPolar(composite, src);
 	}
 	/*
 	else {
@@ -229,7 +209,7 @@ void Compositor::add(drain::Flags::value_t inputFilter) const {
 
 
 // Originally crom create
-void Compositor::addPolar(const Hi5Tree & src) const {
+void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -239,7 +219,7 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 
 	RackResources & resources = getResources();
 
-	Composite & composite = getComposite();
+	// Composite & composite = getComposite();
 
 	//if (ctx.currentPolarHi5 == NULL){
 	if (src.isEmpty()){
@@ -388,7 +368,7 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 		else {
 
 
-			w = applyTimeDecay(w, polarSrc.odim);
+			w = applyTimeDecay(composite, w, polarSrc.odim);
 			mout.info() << "final quality weight=" << w << mout.endl;
 
 			if (polarSrc.hasQuality()){
@@ -441,14 +421,13 @@ void Compositor::addPolar(const Hi5Tree & src) const {
 
 
 // Originally crom create
-void Compositor::addCartesian(const Hi5Tree & src) const {
+void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
 
-
-	Composite & composite = getComposite();
+	// Composite & composite = getComposite();
 
 	// NOTE: DATASET path needed for quality selection (below)
 	ODIMPath dataPath;
@@ -506,7 +485,7 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 	// composite.ensureEncoding(cartSrc.odim, resources.targetEncoding);
 	// resources.targetEncoding.clear();
 
-	w = applyTimeDecay(w, cartSrc.odim);
+	w = applyTimeDecay(composite, w, cartSrc.odim);
 
 	mout.debug2() << "input properties:\n" << cartSrc.odim << mout.endl;
 
@@ -576,7 +555,7 @@ void Compositor::addCartesian(const Hi5Tree & src) const {
 
 }
 
-void Compositor::extract(const std::string & channels) const {
+void Compositor::extract(Composite & composite, const std::string & channels) const {
 
 
 	RackContext & ctx = getContext<RackContext>();
@@ -588,7 +567,7 @@ void Compositor::extract(const std::string & channels) const {
 
 	RackResources & resources = getResources();
 
-	Composite & composite = getComposite();
+	//Composite & composite = getComposite();
 
 	// Append results - why not, but Cartesian was typically used for subcompositing
 	// ctx.cartesianHi5.clear();

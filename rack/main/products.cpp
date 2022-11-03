@@ -227,18 +227,38 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
 		mout.timestamp("BEGIN_PRODUCT");
 
-		mout.debug() << "Running: " << this->bean.getName() << mout.endl;
+		mout.info("Computing: ", this->bean.getName(), this->getParameters());
 
-		//op.filter(getResources().inputHi5, getResources().polarHi5);
-		//const Hi5Tree & src = ctx.getCurrentInputHi5();
+		// op.filter(getResources().inputHi5, getResources().polarHi5);
+		// const Hi5Tree & src = ctx.getCurrentInputHi5();
 		// RackContext::CURRENT not ok, it can be another polar product
-		const Hi5Tree & src = ctx.getHi5(RackContext::INPUT); // what about ANDRE processing?
+		//const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
+		const Hi5Tree & src = ctx.getHi5(
+				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
+				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
+		);
+
+		//mout.warn("Private ", ctx.id);
+		// mout.warn("BaseCtx ", getResources().baseCtx().id);
+
+		/*
+		RackContext::h5_role::value_t filter = RackContext::CURRENT;
+		Hi5Tree & dst1  = ctx.getMyHi5(filter);
+		Hi5Tree & dst1b = getResources().baseCtx().getMyHi5(filter);
+		Hi5Tree & dst2  = drain::Static::get<Hdf5Context>().getMyHi5(filter);
+		  mout.warn("local   ", (size_t)&dst1,  '\n');
+		  mout.warn("local.b ", (size_t)&dst1b, '\n');
+		  mout.warn("hdf5.b  ", (size_t)&dst2,  '\n');
+		*/
+
+		if (src.isEmpty())
+			mout.warn("Empty, but proceeding...");
 
 		// if (only if) ctx.append, then ctx? shared?
-		Hi5Tree & dst = ctx.polarHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
+		Hi5Tree & dst = ctx.polarProductHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
 
 		if (&src == &dst){
-			mout.warn() << "src=dst" << mout.endl;
+			mout.warn("src = dst");
 		}
 
 		//mout.warn() << dst << mout.endl;

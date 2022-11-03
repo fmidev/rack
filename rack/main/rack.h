@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.52"
+#define __RACK_VERSION__ "6.6"
 
 /**
+ *   Version 6.6
+ *   -- Thread support for / small / commands /
+ *
  *   Version 6.51
  *   -- Strip single and double quotes in scripting
  *   -- Added inputFileBasename to status

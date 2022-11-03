@@ -61,16 +61,20 @@ public:
 
 	virtual inline
 	void exec() const {
-		extract(channels);
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
+		extract(composite, channels);
 	}
 
 protected:
 
 	std::string channels;
 
-
 };
-/// static RackLetAdapter<CompositeExtract> cExtract("cExtract");
+
 
 /// Creates a single-radar Cartesian data set (2D data of both quantity and quality).
 /**

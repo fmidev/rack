@@ -60,6 +60,92 @@ const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9:_]+");
 // sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
 // const drain::RegExp RackContext::variableMapperSyntax("^(.*)\\$\\{[a-zA-Z0-9:_]+)\\}(.*)$", REG_EXTENDED);
 
+/*
+Hi5Tree & RackContext::getHi5Full(h5_role::value_t filter, h5_role::value_t... filters){
+
+	Hi5Tree & dst = getHi5(filter);
+	if (filter != 0)
+		return dst;
+	else
+		return getHi5(filters);
+};
+*/
+
+/*
+Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
+	filter = 0;
+	return empty;
+}
+*/
+
+Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
+//Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
+
+	drain::Logger mout( __FUNCTION__, __FILE__);
+	// bool emptyOk = (filter & EMPTY)>0;
+	// mout.special("Accept empty:", emptyOk);
+	if ((filter & (PRIVATE|SHARED)) == 0){
+		filter = (filter|PRIVATE|SHARED);
+		mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", h5_role::getShared().getKeys(filter, '|'));
+	}
+
+	if (filter & PRIVATE){
+		Hi5Tree & dst = getMyHi5(filter);
+		if ((filter & EMPTY) || !dst.isEmpty()){
+			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
+			mout.info("Using PRIVATE (", h5_role::getShared().getKeys(filter, '|'),") data [", attr["object"], '/', attr["product"], ']');
+			return dst;
+		}
+	}
+
+	if (filter & SHARED){
+		Hi5Tree & dst = getResources().baseCtx().getMyHi5(filter);
+		if ((filter & EMPTY) || !dst.isEmpty()){
+			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
+			mout.info("Using SHARED (", h5_role::getShared().getKeys(filter, '|'),") data [", attr["object"], '/', attr["product"], ']');
+			return dst;
+		}
+	}
+
+
+	filter = 0;
+	return empty;
+
+}
+
+
+Composite & RackContext::getComposite(h5_role::value_t filter){
+
+	//RackContext & ctx  = this->template getContext<RackContext>();
+	RackContext & baseCtx = getResources().baseCtx();
+
+	drain::Logger mout(log, __FUNCTION__, __FILE__);
+
+	if (filter & SHARED){
+		if (baseCtx.composite.isDefined()){ // raw or product
+			mout.debug() << "shared composite" << mout.endl;
+			return baseCtx.composite;
+		}
+	}
+
+	// Else PRIVATE
+	if (filter & PRIVATE){
+		if (composite.isDefined()){ // raw or product
+			mout.debug() << "private composite" << mout.endl;
+			return composite;
+		}
+	}
+
+	// Undefined, but go on...
+
+	if (filter & SHARED){
+		return baseCtx.composite;
+	}
+
+	return composite;
+
+};
+
 
 const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext & ctx){
 
@@ -118,7 +204,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
-	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
+	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT|RackContext::PRIVATE, RackContext::CURRENT|RackContext::SHARED);
 
 
 	ODIMPath path;

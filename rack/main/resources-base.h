@@ -192,13 +192,10 @@ public:
 
 
 	/// The last input file read, typically a volume. May be concatenated ie. read in incrementally.
-	Hi5Tree inputHi5;
-	// SOURCE inputHi5src;
+	Hi5Tree polarInputHi5;
 
 	/// The polar product that has been generated from the volume.
-	Hi5Tree polarHi5;
-	/// Flag for marking the origin of polarHi5
-	//SOURCE  polarHi5src;
+	Hi5Tree polarProductHi5;
 
 	/// A single-radar Cartesian product or a multi-radar composite (mosaic).
 	Hi5Tree cartesianHi5;
@@ -217,13 +214,19 @@ public:
 
 	static const h5_role::value_t CURRENT; //,    **< Link also external targets *
 	static const h5_role::value_t INPUT; // ,      **< No not link, but add entry (void) *
+	// static const h5_role::value_t PRODUCT;
 	static const h5_role::value_t POLAR; // =4,      **< No action *
 	static const h5_role::value_t CARTESIAN; // =8,  **< Throw exception *
 	static const h5_role::value_t EMPTY; // =16,     **< Also accept empty  *
 	static const h5_role::value_t PRIVATE; // =32,
 	static const h5_role::value_t SHARED; // =64     **< Try shared first  *
 
+
 	/// Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.
+	/**
+	 *  - if CARTESIAN and POLAR are both set, either
+	 *  - if neither CARTESIAN nor POLAR is set,
+	 */
 	Hi5Tree & getMyHi5(h5_role::value_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
 
 	/// Derives the most relevant polar data (input or product) and returns it.
@@ -233,7 +236,7 @@ public:
 	 *  # shared, if non-empty
 	 *  # local (empty)
 	 */
-	Hi5Tree & getHi5(h5_role::value_t filter);
+	Hi5Tree & getHi5Defunct(h5_role::value_t filter);
 
 	/// Derives the most relevant polar input data and returns it.
 	/**
@@ -242,6 +245,7 @@ public:
 	 *  # shared, if non-empty
 	 *  # local (empty)
 	 */
+	/*
 	inline
 	Hi5Tree & getCartesianHi5(h5_role::value_t filter=(PRIVATE|SHARED)){
 		return getHi5(filter | CARTESIAN);
@@ -254,14 +258,15 @@ public:
 
 	static inline
 	Hdf5Context & getStaticContext(){
-		//static drain::Cloner<Hdf5Context> cloner;
 		return drain::Static::get<Hdf5Context>();
 	}
+	*/
 
 protected:
 
 	void updateHdf5Status(drain::VariableMap & statusMap); // Not static, because checks
 
+	static Hi5Tree empty;
 
 };
 

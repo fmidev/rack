@@ -78,6 +78,7 @@ public:
 		aboveSeaLevel = true;
 
 		this->odim.product = "PPROD"; // NEW
+		//this->odim.object  = "PVOL"; // consider!
 	};
 
 

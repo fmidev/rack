@@ -61,11 +61,13 @@ CommandBank & getCommandBank(){
 }
 
 std::set<std::string> & CommandBank::trimWords(){
-	static std::set<std::string> s;
+	static std::set<std::string> s = {"Cmd", "Command"};
+	/*
 	if (s.empty()){
 		s.insert("Cmd");
 		s.insert("Command");
 	}
+	*/
 	return s;
 }
 
@@ -90,10 +92,11 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 		//mout.debug(10) << ' ' << i << '\t' << name.at(i) << mout.endl;
 		size_t len = 0;
 
-		for (std::set<std::string>::const_iterator it=trims.begin(); it!=trims.end(); ++it){
+		//for (std::set<std::string>::const_iterator it=trims.begin(); it!=trims.end(); ++it){
+		for (const std::string & word : trims){
 			// std::cerr << " ..." << *it;
 
-			const std::string & word = *it;
+			// const std::string & word = *it;
 
 			len = word.length(); // = chars to skip, potentially
 
@@ -149,6 +152,21 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 void CommandBank::append(const Script & script, Context & ctx, Program & prog) const {
 
 
+	for (auto & entry: script) {
+		if (entry.first.size()==1){
+			// Non-prefixed single-char commands have a special, dedicated handling.
+			static BasicCommand dummy("Marker", "[marker]");
+			prog.add(entry.first, dummy);
+		}
+		else {
+			command_t & cmd = clone(entry.first);
+			cmd.setExternalContext(ctx);
+			cmd.setParameters(entry.second);
+			prog.add(entry.first, cmd);
+		}
+	}
+
+	/*
 	for (Script::const_iterator it = script.begin(); it!=script.end(); ++it) {
 
 		if (it->first.size()==1){
@@ -162,7 +180,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 			prog.add(it->first, cmd);
 		}
 	}
-
+	*/
 }
 
 
@@ -340,49 +358,72 @@ void CommandBank::run(const std::string & cmdKey, const std::string & params, Co
 	cmd.run(params);
 }
 
-
+// TEST
+/*
+Script & getRoutine(Program & prog, Script task){
+	//return prog.routine;
+	if (threads.empty())
+		threads.add();
+	return threads[0];
+}
+*/
 
 void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	// Which log? Perhaps prog first cmd ctx log?
 	//const drain::Flagger::value_t execScript = drain::Static::get<drain::TriggerSection>().index;
 
-	bool CREATE_THREADS = false;
+	bool THREADS_ENABLED = false;
 
-	//	std::vector<Program> threads;
+	bool CREATING_TASK = false;
+
 	ProgramVector threads;
 
-	// Iterate commandsconst auto& kv : myMap
-	/*
-	for (auto & entry: prog) {
-		const key_t & key = entry.first;
-		value_t & cmd     = entry.second;
-	 */
-	 for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
-		// mout.note() << it->first << mout.endl;
+	Script routine;
+
+	Log & baseLog = contextCloner.getSource().log; // 2022/10
+	Logger mout(baseLog, __FUNCTION__, __FILE__); // warni
+
+	// Iterate commands.
+	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
+	for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
+
 		const key_t & key =  it->first;
 		value_t & cmd     = *it->second;
-		// const std::string & cmdName = cmd.getName();
+
 		Context & ctx = cmd.getContext<>(); //.log;
-		Log & log = ctx.log;
-		const bool TRIGGER = (cmd.section & this->scriptTriggerFlag); // AND
 
-		Logger mout(log, __FUNCTION__, __FILE__); // warni
+		//Log & log = ctx.log;
+		//log.setVerbosity(baseLog.getVerbosity());
 
-		//if (TRIGGER)
-		mout.debug() << "TRIGGER? " << cmd.section << '+' << this->scriptTriggerFlag << '=' << sprinter(TRIGGER) << mout.endl;
+		const bool TRIGGER_CMD = (cmd.section & this->scriptTriggerFlag);
+		// ctx.setStatus("script", !routine.empty());
+
+		mout.debug() << '"' << key << '"' << " ctx=" << ctx.getId() << " cmd.section=" << cmd.section << '/' << this->scriptTriggerFlag;
+
+		if (TRIGGER_CMD)
+			mout << " TRIGGER_CMD,";
+		if (THREADS_ENABLED)
+			mout << " THREADS_ENABLED,";
+		if (CREATING_TASK)
+			mout << " CREATING_TASK";
+		mout << mout.endl;
 
 		if (cmd.getName().empty()){
 			mout.warn() << "Command name empty for key='" << key << "', " << cmd << mout.endl;
 		}
-		else if (cmd.getName() == scriptCmd){ // "script"
+		else if (cmd.getName() == scriptCmd){ // "--script"
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			mout.debug() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
-			scriptify(pit->second.toStr(), prog.routine);
-			//ctx.statusFlags.set(SCRIPT_DEFINED);
+			if (CREATING_TASK){
+				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
+			}
+			scriptify(pit->second.toStr(), routine);
 			ctx.setStatus("script", true);
+			//ctx.statusFlags.set(SCRIPT_DEFINED);
+			// ctx.setStatus("script", true); // For polar read! (To avoid appending sweeps)
 			//ctx.setStatus(key, value)
-			continue;
+			// continue;
 		}
 		// Explicit launch NOT needed, but a passive trigger cmd
 		/*
@@ -395,6 +436,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		*/
 		else if (cmd.getName() == execFileCmd){ // "execFile"
+
+			// TODO: redesign to resemble --script <cmd...>
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			// TODO catch
 			mout.info() << "embedding (inserting commands on-the-fly) from '" << pit->second << "'" << mout;
@@ -414,97 +457,93 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			}
 			// Debug: print resulting program that contains embedded commands
 			// mout.warn() << sprinter(prog) << mout;
-			continue;
+			//continue;
 		}
 		else if (key == "["){
-			mout.note() << "Switching to parallel mode." << mout.endl;
-			mout.warn() << "Step 1: compose threads." << mout.endl;
-			mout.warn() << "Hey, " << log.getVerbosity() << mout.endl;
-			CREATE_THREADS = true;
-			continue;
+			mout.special("Enabling parallel computation / script triggering.");
+			THREADS_ENABLED = true;
+			if (routine.empty())
+				CREATING_TASK = true;
+			ctx.setStatus("script", true); // To prevent appending sequental input sweeps
 		}
-		else if (key == "]"){ 	// All the triggering commands collected, run them
+		else if (TRIGGER_CMD && !THREADS_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
+			mout.debug("Running SCRIPT");
+			Program prog;
+			prog.add(key, cmd).section = 0;
+			append(routine, cmd.getContext<Context>(), prog);
+			run(prog, contextCloner); // Run in this context
+		}
+		else if (TRIGGER_CMD || (key == "/") || (key == "]")) {
 
-			if (!CREATE_THREADS){
-				mout.warn() << "Leading brace '[' missing?" << mout.endl;
+			// NOTE: cloned also for --execScript ?
+			Program & thread = threads.add();
+
+			Context & ctxCloned = contextCloner.getCloned();
+			ctxCloned.statusFlags.reset();
+			ctxCloned.log.setVerbosity(baseLog.getVerbosity());
+
+			if (TRIGGER_CMD){ // ... in a thread.
+				// Include (prepend) the triggering command (typically --inputFile (implicit) )
+				value_t & cmdCloned = clone(key);
+				cmdCloned.section = 0; // Avoid re-triggering...
+				cmdCloned.setParameters(cmd.getParameters());
+				cmdCloned.setExternalContext(ctxCloned);
+				thread.add(key, cmdCloned);
 			}
 
-			CREATE_THREADS = false;
+			append(routine, ctxCloned, thread);
 
-			if (threads.empty()){
-				mout.warn() << "No threads?" << mout.endl;
-				mout.note() << "No thread-triggering commands inside braces [ <cmds> ...].  See --help trigger " << mout.endl;
-				//mout.warn() << "No threads defined? Syntax: --script '<cmd> <cmd2>...' [ <cmds> ...] " << mout.endl;
-				continue;
+			if (!TRIGGER_CMD){
+				routine.clear();
 			}
-			else {
 
-				mout.special() << "Start threads" << log.getVerbosity() << mout.endl;
+			if (key == "]"){ // Run the threads.
+				mout.special("Running ", threads.size(), " thread(s), v=",baseLog.getVerbosity());
+				//mout.special("Running log=", baseLog.id);
 
 				#pragma omp parallel for
 				for (size_t i = 0; i < threads.size(); ++i) {
-					// Keep this minimal. (No variable writes here, unless local.)
+					// Keep this minimal! (No variable writes here, unless local.)
 					run(threads[i], contextCloner);
 				}
 
-				mout.special() << "Threads completed." << mout.endl;
-				prog.routine.clear(); // reconsider
+				mout.special("...Threads completed.");
+				threads.clear();
+
+				THREADS_ENABLED = false;
+				CREATING_TASK = false; //
+
 			}
 
-		}
-		else if (CREATE_THREADS && TRIGGER) {
-
-			//mout.warn() << "Prepare a new thread: " << key << '(' << cmd << ')' <<  mout.endl;
-
-			Context & ctxCloned = contextCloner.getCloned();
-			ctxCloned.log.setVerbosity(log.getVerbosity());
-
-			Program & thread = threads.add();
-
-			// Add at least the current command
-			value_t & cmdCloned = clone(key);
-			cmdCloned.setExternalContext(ctxCloned);
-			cmdCloned.setParameters(cmd.getParameters());
-			thread.add(it->first, cmdCloned);
-
-			mout.ok() << "Thread #" << threads.size() << "-" << ctxCloned.id << ':' << key << '(' << cmd << ')' <<  mout.endl;
-
-			// And also append a script, if defined.
-			if (!prog.routine.empty()){ // Technically unneeded, but for mout...
-				mout.debug() << "routine exists, appending it to thread " <<  mout.endl;
-				append(prog.routine, ctxCloned, thread); // append
-			}
+			// if (key == "/"){
+			//}
 
 		}
-		else if (TRIGGER && !prog.routine.empty()){
-
-			// Check here if routine exists (the current cmd may set the routine, and the it should not be run).
-			// First command (cmd) could be run above, but here in prog for debugging (and clarity?)
-			mout.info() << "script triggering command: '" << cmd << mout.endl;
-
-			Program progSub;
-			progSub.add(key, cmd).section = 0;  // execRoutine = false; // COPIES! .setParameters(it->second);
-			append(prog.routine, cmd.getContext<Context>(), progSub); // append() has access to command registry (Prog does not)
-			//mout.note() << "Exec routine: " << prog.getContext<Context>().id << mout.endl;
-			mout.info() << "running routine: '" << key << ' ' << cmd.getParameters().getValues() << " --" << prog.routine.begin()->first<< " ...'" << mout.endl;
-			//mout.note() << "running routine: "  << prog.routine.begin()->first << "..." << mout.endl;
-			run(progSub, contextCloner);
-			// ? prog.routine.clear();
+		else if (CREATING_TASK){
+			mout.debug("Adding: ", key, " = ", cmd, " ");
+			routine.add(key, cmd.getParameters().getValues()); // kludge... converting ReferenceMap back to string...
 		}
 		else {
+			// This is the default action!
+
 			mout.debug() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
 			//try {
 			cmd.update(); //  --select etc
 			cmd.exec();
 			ctx.setStatus(key, cmd.getParameters().getValues());
+
+			ctx.setStatus("cmd", cmd.getName()); //
+			ctx.setStatus("cmdKey", key); // not getName()
+			ctx.setStatus("cmdParams", cmd.getParameters().getValues());
+
 			/*
-			}
-			catch (const std::exception & e){
-				mout.fail() << e.what() << mout.endl;
-				mout.warn() << "stopping" << mout.endl;
-				return;
-			}
-			*/
+				}
+				catch (const std::exception & e){
+					mout.fail() << e.what() << mout.endl;
+					mout.warn() << "stopping" << mout.endl;
+					return;
+				}
+			 */
 		}
 		// TODO: when to explicitly clear routine?
 

@@ -87,7 +87,7 @@ int process(int argc, const char **argv) {
 	drain::Logger mout(ctx.log, "rack");
 	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
 
-	mout.debug() = "Activate modules";
+	mout.debug("Activate modules");
 
 	MainModule commandMod;
 	FileModule fileMod;
@@ -102,7 +102,7 @@ int process(int argc, const char **argv) {
 	HiddenModule   hiddenMod;
 
 
-	mout.debug() = "Add Rack-specific commands";
+	mout.debug("Add Rack-specific commands");
 
 	drain::CommandBank & cmdBank = drain::getCommandBank();
 	cmdBank.setTitle("Rack - a radar data processing program");
@@ -119,6 +119,7 @@ int process(int argc, const char **argv) {
 	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
+	// cmdBank.get("trigger").section |= TRIGGER;
 
 
 	try {
@@ -138,17 +139,17 @@ int process(int argc, const char **argv) {
 
 		// mout.warn() << "debug-level:" << prog.begin()->second->getContext<drain::Context>().log.getVerbosity() << mout.endl;
 
-		if (ctx.statusFlags == 0){
-			mout.ok() = "Finished.";
+		if (!ctx.statusFlags){
+			mout.ok("Finished.");
 		}
 		else {
 			// std::cerr << ctx.statusFlags.value << ' ' << ctx.statusFlags << " ERROR\n";
-			mout.warn() << "error flags("<< ctx.statusFlags.value << "): " << ctx.statusFlags.getKeys(',') << mout.endl;
+			mout.warn("error flags(", ctx.statusFlags.value , "): " , ctx.statusFlags.getKeys(','));
 		}
 
 	}
 	catch (const std::exception & e) {
-		mout.warn() << e.what() << mout.endl;
+		mout.warn( e.what() );
 		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 	}
 	//mout.note() << "debug-level:" << ctx.log.getVerbosity() << mout.endl;

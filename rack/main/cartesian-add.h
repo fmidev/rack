@@ -62,8 +62,13 @@ public:
 	virtual inline
 	void exec() const {
 		// Accept Cartesian and polar
-		//add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
-		add(RackContext::CURRENT);
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		Composite & composite = ctx.getComposite(RackContext::SHARED);
+		add(composite, RackContext::CURRENT, true);
+		// composite.updateInputSelector(ctx.select);
+		// CHECK ctx.select.clear();
 	}
 
 
@@ -94,8 +99,17 @@ public:
 
 	virtual inline
 	void exec() const {
-		// add(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
-		add(RackContext::CURRENT);
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		Composite & composite = ctx.getComposite(RackContext::SHARED);
+		add(composite, RackContext::CURRENT, true);
+		// RackContext & ctx = getContext<RackContext>();
+		// Composite & composite = getComposite();
+		//add(composite, RackContext::CURRENT);
+		// composite.updateInputSelector(ctx.select);
+		// CHECK ctx.select.clear();
 	}
 };
 

@@ -191,20 +191,14 @@ public:
 	std::ostream & pairToStream(std::ostream & ostr, const std::pair<K,V> & x, const SprinterLayout & layout){
 
 		prefixToStream(ostr, layout.pairChars);
-		//if (layout.pairChars.prefix)
-		//	ostr << layout.pairChars.prefix;
 
 		toStream(ostr, x.first, layout);
 
 		separatorToStream(ostr, layout.pairChars);
-		//if (layout.pairChars.separator)
-		//	ostr << layout.pairChars.separator; // First char
 
 		toStream(ostr, x.second, layout);
 
 		suffixToStream(ostr, layout.pairChars);
-		//if (layout.pairChars.suffix)
-		//	ostr << layout.pairChars.suffix;
 
 		return ostr;
 	}
@@ -225,26 +219,19 @@ public:
 	std::ostream & sequenceToStream(std::ostream & ostr, const T & x, const TypeLayout & myChars, const SprinterLayout & layout){
 
 		prefixToStream(ostr, myChars);
-		// if (myChars.prefix)
-		//	ostr << myChars.prefix;
 
-		//char sep = 0;
-		for (typename T::const_iterator it=x.begin(); it != x.end(); ++it){
+		//for (typename T::const_iterator it=x.begin(); it != x.end(); ++it){
+		bool addSeparator = false;
+		for (const auto & elem: x){
 
-			if (it != x.begin())
+			if (addSeparator)
 				separatorToStream(ostr, myChars);
-			//ostr << '[' << *it << ']';
-			/*
-			if (sep)
-				ostr << sep;
 			else
-				sep = myChars.separator;
-			*/
-			toStream(ostr, *it, layout);
+				addSeparator = true;
+
+			toStream(ostr, elem, layout);
 		}
 
-		// if (myChars.suffix)
-		//	ostr << myChars.suffix;
 		suffixToStream(ostr, myChars);
 
 		return ostr;
@@ -272,12 +259,6 @@ public:
 
 			if (it != keys.begin())
 				separatorToStream(ostr, layout.mapChars);
-			/*
-			if (sep)
-				ostr << sep;
-			else
-				sep = layout.mapChars.separator;
-			*/
 
 			typename M::const_iterator mit = m.find(*it);
 			if (mit != m.end()){
@@ -290,10 +271,7 @@ public:
 		}
 
 		suffixToStream(ostr, layout.mapChars);
-		/*
-		if (layout.mapChars.suffix)
-			ostr << layout.mapChars.suffix;
-		*/
+
 		return ostr;
 
 	}

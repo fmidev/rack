@@ -71,18 +71,20 @@ protected:
 
 protected:
 
-	double applyTimeDecay(double w, const ODIM & odim) const;
+	double applyTimeDecay(Composite & composite,double w, const ODIM & odim) const;
 
 	// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST
-	void add(drain::Flags::value_t inputFilter) const;
 
-	void addPolar(const Hi5Tree & src) const;
-	void addCartesian(const Hi5Tree & src) const;
-	void extract(const std::string & channels) const;
+	void add(Composite & composite, drain::Flags::value_t inputFilter, bool updateSelector = true) const;
+	//void add(drain::Flags::value_t inputFilter, bool updateSelector = true) const;
+
+	void addPolar(Composite & composite, const Hi5Tree & src) const;
+	void addCartesian(Composite & composite, const Hi5Tree & src) const;
+	void extract(Composite & composite, const std::string & channels) const;
 
 	double weight;
 
-	Composite & getComposite() const;
+	Composite & getCompositeOLD() const;
 
 };
 

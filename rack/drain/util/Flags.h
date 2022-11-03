@@ -273,6 +273,16 @@ public:
 
 
 	inline
+	operator value_t() const {
+		return value;
+	}
+
+	inline
+	operator bool() const {
+		return (value > 0);
+	}
+
+	inline
 	operator std::string() const {
 		std::stringstream sstr;
 		keysToStream(sstr);
@@ -280,10 +290,6 @@ public:
 		return sstr.str();
 	}
 
-	inline
-	operator value_t() const {
-		return value;
-	}
 
 
 	/// Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.

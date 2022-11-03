@@ -478,6 +478,38 @@ void Composite::updateGeoData(){
 
 }
 
+void Composite::updateInputSelector(const std::string & select){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (!select.empty()){
+		// mout.warn() << "Setting selector=" << resources.select << mout.endl;
+		const std::string quantityOrig(dataSelector.quantity);
+
+		//composite.dataSelector.setParameters(resources.baseCtx().select);
+		dataSelector.setParameters(select);  // consume (clear)?
+
+		mout.debug("Applied: ", select, " -> ", dataSelector);
+		//resources.select = "quantity=" + composite.dataSelector.quantity;
+		//resources.select.clear(); // PROBLEMS HERE?
+
+		// TODO: selecor.quantity is allowed to be regExp?
+		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
+		if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
+			mout.warn() << "quantity selector changed, resetting accumulation array" << mout;
+			clear();
+			odim.quantity.clear();
+			odim.scaling.set(0.0, 0.0);
+		}
+	}
+	else {
+		if (dataSelector.quantity.empty()){
+			mout.info() << "Setting selector quantity=" << odim.quantity << mout;
+			dataSelector.quantity = odim.quantity; // consider "^"+...+"$"
+			//
+		}
+	}
+}
 
 
 

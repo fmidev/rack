@@ -454,7 +454,7 @@ public:
 
 		mout.info() << "acc.odim Encoding " << EncodingODIM(acc.odim) << mout.endl;
 
-		Hi5Tree & dst = ctx.polarHi5;
+		Hi5Tree & dst = ctx.polarProductHi5;
 		dst.clear();
 
 		Hi5Tree & dstDataSetGroup = dst["dataset1"];

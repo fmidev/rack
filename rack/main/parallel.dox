@@ -4,18 +4,78 @@
 
 \tableofcontents
 
-\note Experimental design - not tested operationally
 
-\section parallel_intro Speed-up through parallel computation
+
+\section scripts Scripts
+
+\b Rack support defining command sequences -- scripts -- that can be invoked repeatedly within one command line.
+The script is then executed automatically for \e each \e input:
+
+\code
+rack --script '<cnd> <cmd2> ...'  <file> <file2> <file3> ...
+\endcode  
+
+So,  \c --inputFile <file> command – or simply \c <file> – implicitly triggers the script. 
+
+One can also invoke the script explicitly with \c --execScript command. 
+
+
+Defining a script also turns on \e variable \e expansion -- see also examples in \ref templates . 
+
+\subsection script_sites Example: product generation for each volume.
+
+In the following example, several measurement volume files are read. For each file, two products (Pseudo CAPPI at 500 meters and Echo Top with 20 dBZ threshold)
+are computed, then converted to Cartesian projections and finally stored to files.
+
+\code
+rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5'  data/pvol_fi*.h5 
+\endcode
+
+In the example, special internal variable \c ${NOD} is derived automatically from compound \c ${what:source} variable of the input. 
+One may likewise use \c ${what:date} and \c ${what:time} , for example. 
+
+\note \b Rack denotes variables \c ${...} like shell environments, so single hyphens are often useful for preventing variable expansion in shell.
+Supported variable values can be listed with \c --status command.
+
+By default, unless \c --append data was used, the resulting meteorological product is kept in the local context. This means
+that data from several radars can be processed and also stored as parallel processes.
+
+Instead of the command line, one may also execute commands stored in a file as follows:
+\code
+rack <file>  --execFile <cmdFile>   
+\endcode  
+
+Remember that plain filenames are implicit <tt>--inputFile \<file\></tt> commands; hence the file can also be a list of input files.
+Using such a file together with  \c --script yields compact command lines especially in compositing.
+
+\~remark
+The functionality is handy for example in running anomaly detection and product generation for a set of files.
+\~
+
+Scripting becomes even more powerful when combined to parallel computations explained next.
+
+\note The commands that automatically run ie. \em trigger the script can be listed with \c --help \c trigger .
+
+
+\section parallel_intro Parallel computation – using multiple threads
+
+
 
 In processing radar data, some computations can be run independently in separate threads. 
 In \b Rack, parallel computation can be enabled flexibly on command line.
 Parallel computing is enabled by putting a desired command sequence inside braces: \c [...] .
-Within braces, the commands that trigger a script - especially \c --inputFile -- will
-start a thread. 
-In each thread the triggering command is run at first. Then, if a script has been defined, it will be run.
 
-Consider a command line invocation of \b Rack 
+\subsection parallel_script Scheme 1: invoking predefined script for every input
+
+This method is best illustrated by adjusting the above example with braces:
+
+\code
+rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
+\endcode
+
+Within braces, <tt>[--inputFile] <file></tt> command will trigger the defined script in a separate, parallel thread.
+
+More schematically, consider a command line invocation of \b Rack 
 \code
 rack --cmd --cmd ...  --sript '--cmd --cmd ...'  [ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ]  --cmd --cmd ...
 \endcode
@@ -32,10 +92,10 @@ A schematic decomposition of such a line is shown below:
   headport="n";
   fontsize=10;
   
-    CMD_INITIAL [ label="Common initialisation |<i>rack --cmd --cmd ..."];
+    CMD_INITIAL [ label="Shared initialisation |<i>rack --cmd --cmd ..."];
     CMD_SCRIPT  [ label="Script definition |<i> --sript '--cmd --cmd...' ", color="red", URL="\ref script" ];
     CMD_ACTIONS [ label="Basic commands (cmd...) and \n script triggering commands (CMD..) |<i>[ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ] ", color="red", URL="\ref productspage" ];
-    CMD_FINAL   [ label="Common final commands |<i> --cmd --cmd ..."];
+    CMD_FINAL   [ label="Shared final commands |<i> --cmd --cmd ..."];
     CMD_INITIAL:i -> CMD_SCRIPT:i -> CMD_ACTIONS:i -> CMD_FINAL:i ;
   
   }
@@ -43,24 +103,26 @@ A schematic decomposition of such a line is shown below:
 
 During execution, \b Rack creates and maintains certain resources in memory for commands to read and write: a polar volume, a polar product,
 Cartesian product and compositing arrays. (See the scheme in \ref intro .)
-A thread has private resources -- its so called \i context -- in addition to shared resources called a \i base  \i context. 
-As a principle in threads, any data loaded or created in the thread overrides the respective data loaded in the main thread.    
-Especially, a composite (accumulation array) initialized in the main thread will serve the threads as a shared resource unless
-a new composite is initialized or loaded in the thread. Commands use internal logic in selecting  
+A thread has private resources -- its so called \e context -- in addition to shared resources called the \e base  \e context. 
+As a principle in threads, any data loaded or created in the thread are used instead of those of the main thread (base context).    
+Especially, a composite (accumulation array) initialized in the main thread will serve the threads as a shared resource unless (until)
+a new composite is initialized or loaded in the thread. Commands use internal logic in selecting data.
+
+The following picture illustrates how the above command line structure is actually computed. 
 
 
 \dot
   digraph parallel2 {
   
   size="14,12";
-  label = "Parallel processing -- Computation scheme";
+  label = "Computation scheme. Commands CMD1, CMD3, and CMD4 are run in parallel threads.";
   rankdir=LR;
   node [shape=record, fontsize=10];
   edge [color=black, fontsize=10];
   headport="n";
   fontsize=10;
   
-    INITIAL	[ label="Common initialisation |<i>rack --cmd --cmd ...  "];
+    INITIAL	[ label="Shared initialisation |<i>rack --cmd --cmd ...  "];
  	FORK	[ label="Start threads |<i> [", color="red" ];
 	MAIN	[ label="{ <CMD1> | --cmd2 | <CMD2> |<CMD3>| --cmd5 | <end>...} "];  
     JOIN	[ label="Join threads |<i>]", color="red" ];
@@ -86,39 +148,28 @@ a new composite is initialized or loaded in the thread. Commands use internal lo
   }
 \enddot
 
+
+\subsection parallel_instant Scheme 2: direct parallel command sequences
+
+Instead of a predefined script, commands can be run parallel by 
+putting them inside braces and separating independent command sequences to threads with a
+slash \c '/' .
+
+\code
+rack <cmd>  [ <cmd> <cmd> ... / <cmd> <cmd> ... / <cmd> <cmd> ... ] <cmd> 
+\endcode
+
+Example:
+
+\code
+rack  volume.h5 [ --cMethod AVERAGE --pCappi 500 --cSize 200 -c -o 'cappi-${NOD}.h5' /  --pEchoTop 20 --cSize 500 -c -o 'echoTop-${NOD}.h5' ] 
+\endcode
+
+
 \section parallel_examples Examples 
 
 
-\subsection parallel_anom Anomaly detection 
 
-\code
-rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 -o vol-anom-paral.h5
-\endcode
-
-\subsection parallel_products Product generation 
-
-Given a single volume as input, generate products to separate \c /dataset groups:
-\code
-rack volume.h5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-prod-paral.h5
-\endcode
-
-\subsection parallel_anom_products Anomaly detection and product generation combined
-
-As anomaly detectors are independent of each other, they can be computed in parallel, each updating the resulting quality field (\c QIND quantity)
-when completed. Finally, the combined detection field can be used for removing the anomalies in the volume. 
-
-\code
-rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-anom-prod-paral.h5
-\endcode
-
-\subsection parallel_sites Product generation for each site
-
-By default, unless \c --append data was used, the resulting meteorological product is kept in the local context. This means
-that data from several radars can be processed and also stored as parallel processes:
-
-\code
-rack --script '--pCappi 500 -o cappi-${NOD}.h5 --pEchoTop 20 -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
-\endcode
 
 
 \subsection parallel_acc Accumulation
@@ -150,6 +201,36 @@ rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 
 (Under construction.) In operational environment, one typically has system-level parallel processes in receiving radar data,
 hence there is less use in designing \i parallel tiled compositing in Rack level.
 See the single-thread \ref tiledcompositing instead.
+
+
+\note Experimental design - not tested operationally
+
+\subsection parallel_future Future extensions
+
+\note Not supported in current version
+
+\subsubsection parallel_anom Anomaly detection 
+
+\code
+rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 -o vol-anom-paral.h5
+\endcode
+
+\subsubsection parallel_products Product generation 
+
+Given a single volume as input, generate products to separate \c /dataset groups:
+\code
+rack volume.h5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-prod-paral.h5
+\endcode
+
+\subsubsection parallel_anom_products Anomaly detection and product generation combined
+
+As anomaly detectors are independent of each other, they can be computed in parallel, each updating the resulting quality field (\c QIND quantity)
+when completed. Finally, the combined detection field can be used for removing the anomalies in the volume. 
+
+\code
+rack volume.h5 [ --aBird '' --aSpeckle '' ] --aRemover 0.5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-anom-prod-paral.h5
+\endcode
+
 
 
 */

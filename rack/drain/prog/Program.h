@@ -95,7 +95,7 @@ public:
 	Command & add(const std::string & key, Command & cmd);
 
 	/// Routine to be repeated automatically after selected commands, or with an explicit call.
-	Script routine;
+	//Script routine;
 
 	/// Main
 	void run() const;

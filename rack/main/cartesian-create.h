@@ -70,18 +70,31 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		//add(RackContext::POLAR|RackContext::CURRENT);
-		add(RackContext::POLAR|RackContext::CURRENT);
+		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
+
+		if (composite.counter > 0){
+			mout.experimental("Clearing previous composite? N=", composite.counter, ")");
+			mout.note("Use --cAdd to add, instead");
+			composite.clear();
+		}
+
+		add(composite, RackContext::POLAR|RackContext::CURRENT, true);
+
+		//ctx.select.clear();
 
 		// 2021/06/23
-		ctx.select.clear();
+		// 2022/10
+		//ctx.composite
 
 		if (ctx.statusFlags.value > 0){
 			mout.warn("errors (", ctx.statusFlags, "), skipping extraction");
 			return;
 		}
 
-		extract("dw");
+		extract(composite, "dw");
+
+		composite.dataSelector.quantity.clear();
+		composite.odim.quantity.clear();
 
 		// better without...
 		// ctx.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source2"] = (*ctx.currentPolarHi5)["what"].data.attributes["source"];
@@ -117,8 +130,9 @@ public:
 			mout.error() << "Projection undefined, cannot create tile" << mout.endl;
 
 		composite.setCropping(true);
-		add(RackContext::POLAR|RackContext::CURRENT);
-		extract("dw");
+		//add(composite, RackContext::POLAR|RackContext::CURRENT);
+		add(composite, RackContext::POLAR|RackContext::CURRENT, true); // updateSelector
+		extract(composite, "dw");
 
 		// "Debugging"
 		if (!composite.isCropping()){

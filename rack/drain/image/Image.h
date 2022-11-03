@@ -233,10 +233,12 @@ public:
 	inline
 	operator const Channel &() const {
 		if (conf.getChannelCount() == 0){
-			throw std::runtime_error("Image: no channels for cast");
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+			mout.error("Image: no channels for cast op");
+			//throw std::runtime_error("Image: no channels for cast");
 		}
 		else if (conf.getChannelCount() > 1){
-			Logger mout(getImgLog(), "Image", __FUNCTION__);
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
 		}
 		return getChannel(0);
@@ -245,10 +247,12 @@ public:
 	inline
 	operator Channel &(){
 		if (conf.getChannelCount() == 0){
-			throw std::runtime_error("Image: no channels for cast");
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+			mout.error("Image: no channels for cast op");
+			// throw std::runtime_error("Image: no channels for cast");
 		}
 		else if (conf.getChannelCount() > 1){
-			Logger mout(getImgLog(), "Image", __FUNCTION__);
+			Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
 		}
 		return getChannel(0);

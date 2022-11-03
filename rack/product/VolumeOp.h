@@ -191,20 +191,20 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::ROOT)){
 		if (!dst.isEmpty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
-			mout.note() << "clearing previous result, use --append [data|dataset] to avoid" <<  mout.endl;
+			mout.info("clearing previous result, use --append [data|dataset] to avoid");
 			dst.clear();
 		}
 	}
 	else {
 		dataSetPath = ProductBase::appendResults;
-		mout.warn() << "non-standard path location '"<< dataSetPath <<"', consider --help append " <<  mout.endl;
+		mout.warn("non-standard path location '", dataSetPath, "', consider --help append ");
 	}
 	//++dataSetPath.index;
 
 	//mout.warn() << "FAILED: "  << dataSetPath << mout.endl;
 	//dataSetPath.push_back(ODIMPathElem(ODIMPathElem::DATASET, 1));
 
-	mout.debug() << "storing product in path: "  << dataSetPath << mout.endl;
+	mout.debug("storing product in path: ", dataSetPath);
 
 	//Hi5Tree & dstProduct = dst[dataSetPath];
 

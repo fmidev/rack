@@ -242,25 +242,25 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		mout.info() << "Polar product [" << object << ']' << mout.endl;
 
-		ctx.currentHi5 =      & ctx.inputHi5;
-		ctx.currentPolarHi5 = & ctx.inputHi5;
+		ctx.currentHi5 =      & ctx.polarInputHi5;
+		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
-		if (ctx.inputHi5.isEmpty() || SCRIPT_DEFINED){
-			ctx.inputHi5.swap(srcTmp);
+		if (ctx.polarInputHi5.isEmpty() || SCRIPT_DEFINED){
+			ctx.polarInputHi5.swap(srcTmp);
 		}
 		else {
-			appendPolarH5(srcTmp, ctx.inputHi5);
+			appendPolarH5(srcTmp, ctx.polarInputHi5);
 		}
 
 		//mout.warn() << "s" << mout.endl;
-		DataTools::updateCoordinatePolicy(ctx.inputHi5, RackResources::polarLeft);
+		DataTools::updateCoordinatePolicy(ctx.polarInputHi5, RackResources::polarLeft);
 
 	}
 
 	DataTools::updateInternalAttributes(*ctx.currentHi5);
 
 
-	mout.debug() << "end" << mout.endl;
+	mout.debug("end");
 
 }
 
@@ -578,8 +578,8 @@ void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
 	drain::Input ifstr(fullFilename);
 
-	hi5::Hi5Base::readText(ctx.inputHi5, ifstr);
-	DataTools::updateInternalAttributes(ctx.inputHi5);
+	hi5::Hi5Base::readText(ctx.polarInputHi5, ifstr);
+	DataTools::updateInternalAttributes(ctx.polarInputHi5);
 
 
 }
@@ -592,19 +592,19 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
-	DataSelector::getLastChild(ctx.inputHi5, dataSetElem);
+	DataSelector::getLastChild(ctx.polarInputHi5, dataSetElem);
 	if (dataSetElem.getIndex() == 0)
 		dataSetElem.index = 1;
 
 	/// Search new data[n] in the dataset found
 	ODIMPathElem dataElem(ODIMPathElem::DATA);
 	// TODO: append cmd?
-	DataSelector::getLastChild(ctx.inputHi5[dataSetElem], dataElem);
+	DataSelector::getLastChild(ctx.polarInputHi5[dataSetElem], dataElem);
 	if (dataElem.getIndex() == 0)
 		dataElem.index = 1;
 
 	mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
-	if (!ctx.inputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.dataSet.isEmpty()){
+	if (!ctx.polarInputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.dataSet.isEmpty()){
 		mout.debug() << "Path " << dataSetElem << '>' << dataElem << "/data contains data already, searching further..." << mout.endl;
 		//DataSelector::getNextOrdinalPath(ctx.inputHi5, pathSearch, dataPath);
 		++dataElem.index;
@@ -612,11 +612,11 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	}
 
 	// Perhaps explicitly set already
-	std::string object = ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"];
+	std::string object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"];
 
-	mout.warn() << ctx.inputHi5[ODIMPathElem::WHAT] << mout;
+	mout.warn() << ctx.polarInputHi5[ODIMPathElem::WHAT] << mout;
 
-	Hi5Tree & dst = ctx.inputHi5[dataSetElem][dataElem];
+	Hi5Tree & dst = ctx.polarInputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.dataSet;
 	//mout.special("WHAT");
 	drain::image::ImageFile::read(dstImage, fullFilename);
@@ -646,7 +646,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	if (object.empty()){
-		object = ctx.inputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
+		object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
 	}
 
 
@@ -676,7 +676,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	*/
 
 
-	DataTools::updateInternalAttributes(ctx.inputHi5); // [dataSetElem] enough?
+	DataTools::updateInternalAttributes(ctx.polarInputHi5); // [dataSetElem] enough?
 	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
 
 	if ((object == "COMP")|| (object == "IMAGE") ){
@@ -684,8 +684,8 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.inputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.inputHi5); // $ odim.copyToRoot(ctx.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 		mout.unimplemented() << "swap HDF5 for Cartesian data" << mout;
 	}
 	else {
@@ -693,17 +693,17 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 			mout.note() << "Polar object (" << object << ") detected" << mout;
 		}
 		else {
-			ctx.inputHi5["what"].data.attributes["object"] = "SCAN";
+			ctx.polarInputHi5["what"].data.attributes["object"] = "SCAN";
 			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout;
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.inputHi5[dataSetElem]); // $odim.copyToDataSet(ctx.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.inputHi5); // $ odim.copyToRoot(ctx.inputHi5);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 	}
 
-	DataTools::updateInternalAttributes(ctx.inputHi5);
+	DataTools::updateInternalAttributes(ctx.polarInputHi5);
 
 
 }

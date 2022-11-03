@@ -212,7 +212,10 @@ public:
 		mout.note() << "AnDRe selector: " << ctx.andreSelect << mout.endl;
 
 		// For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
-		Hi5Tree & dst = ctx.getHi5(RackContext::INPUT);
+		Hi5Tree & dst = ctx.getHi5(
+				RackContext::POLAR|RackContext::INPUT|RackContext::PRIVATE,
+				RackContext::POLAR|RackContext::INPUT|RackContext::SHARED
+		);
 		const Hi5Tree &src = dst;
 		//mout.note() << src << mout.endl;
 

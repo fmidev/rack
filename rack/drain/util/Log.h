@@ -138,6 +138,8 @@ public:
 
 	typedef std::vector<Notification> notif_dict_t;
 
+	// experimental
+	int id = 0;
 
 	///
 	/**
@@ -534,6 +536,7 @@ public:
 
 
 	/// Simple assignment and direct flush
+	/*
 	template <class T>
 	Logger &operator=(const T & x) {
 		message.str();
@@ -541,6 +544,7 @@ public:
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	}
+	*/
 
 	/// Direct
 
