@@ -115,6 +115,11 @@ void Notification::set(const std::string & key, const std::string & vt100color){
 
 void Log::setVerbosity(const std::string & level){
 
+	if (level == "0"){
+		setVerbosity(0);
+		return;
+	}
+
 	// const size_t i = atoi(level.c_str());
 	level_t i=0;
 	std::stringstream sstr(level);
