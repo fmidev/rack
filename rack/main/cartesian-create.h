@@ -196,6 +196,9 @@ public:
 		ctx.composite.metadataMap.clear();
 		// ctx.composite.projR2M.clear() !
 		// ctx.projStr.clear();
+		ctx.composite.odim.clear();
+		//ctx.composite.odim.type.clear();
+		//ctx.composite.odim.scaling.scale = 0.0;
 
 		ctx.unsetCurrentImages();
 

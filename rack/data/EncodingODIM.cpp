@@ -77,8 +77,9 @@ void EncodingODIM::initFromImage(const drain::image::Image & img){  // =""
 
 
 void EncodingODIM::clear(){
-  for (ReferenceMap::iterator it = begin(); it != end(); ++it)
+  for (drain::ReferenceMap::iterator it = begin(); it != end(); ++it)
 	  it->second.clear();
+  // TODO: for (drain::Referencer & ref: *this){ }
 }
 
 
