@@ -102,7 +102,7 @@ public:
 
 		gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
 		gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
-		gtiffConf.link("compression", FileTIFF::defaultCompression, FileTIFF::getCompressionDict().toStr('|'));
+		gtiffConf.link("compression", FileTIFF::defaultCompression, sprinter(FileTIFF::getCompressionDict(),"|").str());
 
 	};
 

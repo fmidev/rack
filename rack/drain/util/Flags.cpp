@@ -95,31 +95,44 @@ FlagResolver::value_t FlagResolver::getValue(const dict_t & dict, const key_t & 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	/*
+	std::stringstream sstr;
 	value_t v = ::atoi(args.c_str()); // Debugging option: numeric bit flag
 	if (v > 0)
 		return v;
+	*/
 
-	typedef std::list<std::string> keylist;
-	keylist keys;
+	value_t v = 0;
+
+	//typedef std::list<std::string> keylist;
+	//keylist keys;
+
+	std::list<std::string> keys;
 
 	if (!separator)
 		separator = dict.separator;
 
-	if (separator)
-		drain::StringTools::split(args, keys, separator);
-	else
-		keys.push_front(args); // single entry, including whatever punctuation...
+	//if (separator)
+	drain::StringTools::split(args, keys, separator);
+	//else keys.push_front(args); // single entry, including whatever punctuation...
+	//mout.warn(args, " contains ", keys.size(), " elems");
 
 	//drain::StringTools::split(args, keys, dict.separator);
 
-	for (keylist::const_iterator it = keys.begin(); it !=keys.end(); ++it) {
+	//for (keylist::const_iterator it = keys.begin(); it !=keys.end(); ++it) {
+	for (const std::string & key: keys){
 
-		if (*it == "0"){
+
+		if (key == ""){
+			continue;
+		}
+		else if (key == "0"){
+			v = 0; // TODO if resets and sets?
 			continue;
 		}
 		// mout.warn() << " '" << *it << "'" << mout.endl;
 
-		dict_t::const_iterator dit = dict.findByKey(*it);
+		dict_t::const_iterator dit = dict.findByKey(key);
 
 		if (dit != dict.end()){ // String key match,
 			// Numeric value for an alphabetic key was found
@@ -128,10 +141,11 @@ FlagResolver::value_t FlagResolver::getValue(const dict_t & dict, const key_t & 
 		else {
 			// Numeric value
 			value_t x;
-			std::stringstream sstr(*it);
-			sstr >> x;
+			std::stringstream sstr(key);
+			sstr >> x; // FIX if empty
 			if (x == 0){
-				throw std::runtime_error(*it + ": key not found in Flags");
+				mout.error("key '", key, "' not found in Flags, dict: ", dict);
+				//throw std::runtime_error(key, ": key not found in Flags, dict: ", dict);
 			}
 			v = v | x;
 			// Nice to know
@@ -172,13 +186,14 @@ std::ostream & FlagResolver::keysToStream(const dict_t &dict, value_t value, std
 
 	char sep = 0;
 
-	for (dict_t::const_iterator it = dict.begin(); it != dict.end(); ++it){
-		if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
+	for (const dict_t::entry_t & entry: dict){
+	//for (dict_t::const_iterator it = dict.begin(); it != dict.end(); ++it){
+		if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
 			if (sep)
 				ostr <<  sep;// "{" << (int)(sep) << "}" <<
 			else
 				sep = separator;
-			ostr << it->first;
+			ostr << entry.first;
 		}
 		else {
 
@@ -188,7 +203,18 @@ std::ostream & FlagResolver::keysToStream(const dict_t &dict, value_t value, std
 	return ostr;
 }
 
+const Flagger::dict_t::keylist_t & Flagger::keys() const {
 
+	#pragma omp critical
+	keyList.clear();
+	for (const dict_t::entry_t & entry: dictionary){
+		if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
+			keyList.push_back(entry.first);
+		}
+	}
+
+	return keyList;
+}
 
 
 /// Set flags
@@ -210,41 +236,7 @@ void Flagger::assign(const key_t & args){
 
 }
 
-
-/*
-std::ostream & Flagger::toStream(std::ostream & ostr, char separator) const {
-
-	if (!separator)
-		separator = this->separator;
-
-	char sep = 0;
-	//for (dict_t::second_type::const_iterator it = dictionary.second.begin(); it != dictionary.second.end(); ++it){
-	for (dict_t::const_iterator it = dictionaryRef.begin(); it != dictionaryRef.end(); ++it){
-		if (sep)
-			ostr << sep;
-		else
-			sep = separator;
-		ostr << it->second; // << '='  << it->first;
-	}
-
-	return ostr;
-
-}
-*/
-
-/*
-Flags::value_t Flags::add(const dict_t::key_t & key, value_t i){
-
-
-	if (!usesOwnDict()){
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.fail() << "could not add " << key << " to external (const) dictionary:" << dictionaryRef << mout.endl;
-		return 0;
-	}
-
-	return Flagger::add(dictionary, key, i);
-};
-*/
+const drain::SprinterLayout Flagger::flagDictLayout(",", ";", "=","");
 
 
 

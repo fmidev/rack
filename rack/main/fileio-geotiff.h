@@ -55,7 +55,7 @@ public:
 	inline
 	CmdGeoTiff() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating?, use --outputConf tif:<width>,<height>") {
 		parameters.link("tile", drain::image::FileTIFF::defaultTile.tuple());
-		parameters.link("compression", compression="", compressionDict.toStr('|'));
+		parameters.link("compression", compression="", drain::sprinter(compressionDict, "|").str());
 		// parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
 
 		//parameters.link("tileheight", drain::image::FileTIFF::defaultTile.height=0);

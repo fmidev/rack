@@ -69,19 +69,32 @@ const ODIMPathElem::flag_t & ODIMPathElem::getFlags(){
 
 const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 
-	static ODIMPathElem::dict_t dict;
+	static ODIMPathElem::dict_t dict = {
+			{"*", NONE},
+			{"", ROOT},
+			{"dataset", DATASET},
+			// NOTE: when searching by key  "data", ARRAY  will be found (first) and returned
+			// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
+			{"data",    ARRAY},
+			{"data",    DATA},
+			{"quality", QUALITY},
+			{"OTHER",   OTHER},
+			{"what",    WHAT},
+			{"where",   WHERE},
+			{"how",     HOW},
+			{"palette", PALETTE},
+			{"legend",  LEGEND}
+	};
 
+	/*
 	if (dict.empty()){
 		dict.add("*", NONE);
 		dict.add("", ROOT);
 		dict.add("dataset", DATASET);
-
 		// NOTE: when searching by key  "data", ARRAY will be found (first) and returned
 		// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
 		dict.add("data",    ARRAY);
 		dict.add("data",    DATA);
-		//dict.add("array",   ARRAY);
-
 		dict.add("quality", QUALITY);
 		dict.add("OTHER",   OTHER);
 		dict.add("what",    WHAT);
@@ -90,6 +103,7 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 		dict.add("palette", PALETTE);
 		dict.add("legend",  LEGEND);
 	}
+	*/
 
 	return dict;
 

@@ -476,10 +476,12 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
 	sweepMap srcPaths;
-	dataSetSelector.getPaths(srcRoot, srcPaths);
+	dataSetSelector.getPathsByTime(srcRoot, srcPaths);
+	//dataSetSelector.getPaths(srcRoot, srcPaths);
 
 	sweepMap dstPaths;
-	dataSetSelector.getPaths(dstRoot, dstPaths);
+	dataSetSelector.getPathsByTime(dstRoot, dstPaths);
+	// dataSetSelector.getPaths(dstRoot, dstPaths);
 
 	for (sweepMap::const_iterator it = dstPaths.begin(); it != dstPaths.end(); ++it){
 		mout.info() << "exists: " << it->second <<  "\t (" << it->first << ')' << mout.endl;

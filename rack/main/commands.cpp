@@ -105,21 +105,9 @@ class CmdBaseSelective : public drain::SimpleCommand<> {
 protected:
 
 	CmdBaseSelective(const std::string & name, const std::string & description) :
-		//drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters().getKeyList()).str()){
 		drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters()).str()){
-
-		//parameters.separator = 0;
-		// DataSelector().getParameters().getKeys()
+		// TODO: "list out" the sub-parameter help. See --help select
 	};
-
-	/*
-	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<>(cmd){
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
-	};
-	*/
-
-protected:
-
 
 };
 

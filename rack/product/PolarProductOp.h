@@ -76,15 +76,16 @@ public:
 		allowedEncoding.link("nbins", odim.area.width);
 
 		aboveSeaLevel = true;
-
 		this->odim.product = "PPROD"; // NEW
 		//this->odim.object  = "PVOL"; // consider!
+		dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 	};
 
 
 	PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(op){
 		//odim.importMap(op.odim);
 		//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
+		aboveSeaLevel = op.aboveSeaLevel;
 		allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
 	}
 

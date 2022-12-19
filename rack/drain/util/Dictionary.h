@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #ifndef DRAIN_DICTIONARY
-#define DRAIN_DICTIONARY "Dictionary v1.0"
+#define DRAIN_DICTIONARY "Dictionary v2.0"
 
 //
 #include <iostream>
@@ -37,7 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <string>
 
-#include "Log.h"
+//#include "Log.h"
+#include "Sprinter.h"
 
 
 
@@ -47,70 +48,16 @@ namespace drain {
 /**
  *  TODO: hide first and second so that an entry cannot be assigned to either of them
  */
-/*
-template <class T>
-class Dictionary : public std::pair<std::map<std::string,T>, std::map<T,std::string> > {
 
-public:
-
-	typedef T value_t;
-	typedef Dictionary<T> dict_t;
-
-
-	inline
-	Dictionary() : separator(',') {
-	}
-
-	inline
-	bool contains(const std::string & entry) const {
-		return (this->first.find(entry) != this->first.end());
-	}
-
-	template <class T2>
-	inline
-	bool contains(const T2 & entry) const {
-		return (this->second.find(entry) != this->second.end());
-	}
-
-	inline
-	void addEntry(const std::string & key, const T &x){
-		this->first[key] = x;
-		this->second[x]  = key;
-	}
-
-	void toOstr(std::ostream & ostr, char separator=0){
-
-		if (!separator)
-			separator = this->separator;
-
-		char sep = 0;
-		for (typename dict_t::first_type::const_iterator it = this->first.begin(); it != this->first.end(); ++it){
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-			ostr << it->first << '=' << it->second;
-		}
-	}
-
-	char separator;
-
-};
-
-
-
-
-template <class T>
-inline
-std::ostream & operator<<(std::ostream & ostr, const Dictionary<T> & d) {
-	return d.toOStr(ostr);
-}
-*/
+// TODO: consider map<K, V> for faster search and order? But no, if still slow...
 
 /** Simple list based container for small dictionaries. Uses brute-force search.
  *
  *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but
  *   appended sequentally.
+ *
+ *   For handling input and output, dictionary has a separator char which is a comma ',' by default.
+ *
  */
 template <class K, class V>
 class Dictionary2 : public std::list<std::pair<K, V> > {
@@ -123,9 +70,17 @@ public:
 	typedef std::pair<K, V> entry_t;
 	typedef std::list<entry_t> container_t;
 
+	typedef std::list<key_t>   keylist_t;
+	typedef std::list<value_t> valuelist_t;
+
+
 	Dictionary2() : separator(','){};
 
 	Dictionary2(const Dictionary2 & d) : separator(d.separator){};
+
+	Dictionary2(std::initializer_list<entry_t> d) : std::list<entry_t>(d), separator(','){
+	};
+
 
 	virtual
 	~Dictionary2(){};
@@ -208,9 +163,10 @@ public:
 		}
 	}
 
-	//static	const K defaultKey = K();
-	//static	const V defaultValue = V();
-	void toStream(std::ostream & ostr = std::cout, char separator=0) const {
+	/*
+	 * REPLACED with Sprinter
+	 *
+	void toStreamOLD(std::ostream & ostr = std::cout, char separator=0) const {
 
 		if (!separator)
 			separator = this->separator;
@@ -229,26 +185,74 @@ public:
 		}
 	}
 
-	std::string toStr(char separator=0) const {
+	std::string toStrOLD(char separator=0) const {
 		std::stringstream sstr;
 		this->toStream(sstr, separator);
 		return sstr.str();
 	}
+	*/
 
+
+protected:
+
+	mutable
+	keylist_t keyList;
+
+	mutable
+	valuelist_t valueList;
+
+public:
+
+	const keylist_t & getKeys() const {
+
+		#pragma omp critical
+		keyList.clear();
+		for (const entry_t & entry: *this){
+			keyList.push_back(entry.first);
+		}
+		return keyList;
+	}
+
+	void getKeys(keylist_t & l) const {
+		for (const entry_t & entry: *this){
+			l.push_back(entry.first);
+		}
+	}
+
+
+	const valuelist_t & getValues() const {
+
+		#pragma omp critical
+		valueList.clear();
+		for (const entry_t & entry: *this){
+			valueList.push_back(entry.second);
+		}
+		return valueList;
+	}
+
+	void getValues(keylist_t & l) const {
+		for (const entry_t & entry: *this){
+			l.push_back(entry.second);
+		}
+	}
+
+	/*
 	void keysToStream(std::ostream & ostr = std::cout, char separator=0) const {
+
 
 		if (!separator)
 			separator = this->separator;
 
 		char sep = 0;
-		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+		for (const entry_t & entry: *this){
 
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
 
-			ostr << it->first; // << '=' << it->second;
+			ostr << entry.first; // << '=' << it->second;
 		}
 	}
 
@@ -258,26 +262,47 @@ public:
 			separator = this->separator;
 
 		char sep = 0;
-		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
-
+		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
+		for (const entry_t & entry: *this){
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
 
-			ostr << it->second;
+			ostr << entry.second;
+			//ostr << it->second;
 		}
 	}
+	*/
 
 	char separator;
 };
 
+/*
 template <class K, class V>
 inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
 	dict.toStream(ostr);
 	return ostr;
 }
+*/
+
+template <class K, class V>
+inline
+std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
+	// SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr)
+	// static drain::SprinterLayout dict_layout("{,}", "{,}", "{,}", "{,}");
+	ostr << drain::sprinter((const typename Dictionary2<K,V>::container_t &)dict, SprinterBase::cppLayout);
+	return ostr;
+}
+
+/*
+template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
+	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+}
+*/
 
 
 

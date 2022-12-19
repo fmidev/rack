@@ -40,13 +40,23 @@ namespace rack {
 
 using namespace hi5;
 
+const drain::Flagger::dict_t DataSelector::orderDict({
+	// {"DEFAULT",       DataSelector::orderEnum::DEFAULT}, // TODO: add FLAGGER support for value, as typically NONE or DEFAULT key
+	{"MIN",       DataSelector::orderEnum::MIN},
+	{"MAX",       DataSelector::orderEnum::MAX},
+	{"DATA",       DataSelector::orderEnum::DATA},
+	{"TIME",       DataSelector::orderEnum::TIME},
+    {"ELANGLE",    DataSelector::orderEnum::ELANGLE}
+});
+
+
 DataSelector::DataSelector(
 		const std::string & path,
 		const std::string & quantity,
 		unsigned int count,
 		drain::Range<double> elangle,
 		int dualPRF
-		) : BeanLike(__FUNCTION__){
+		) : BeanLike(__FUNCTION__), orderFlags(orderDict) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
 
@@ -56,37 +66,41 @@ DataSelector::DataSelector(
 	this->quantity = quantity;
 	this->count = count;
 	this->elangle = elangle;
+	this->order = "";
 	this->dualPRF = dualPRF;
 	//this->elangle.min = elangleMin;
 	//this->elangle.max = elangleMax;
 
 	updateBean();
 
+	drain::Logger mout(__FUNCTION__, getName());
+	// mout.special("xx  selector orderFlags=", orderFlags, ' ', orderFlags.value, '=', orderFlags.ownValue);
 }
 
 
-DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__){ //, groups(ODIMPathElem::getDictionary(), ':') {
+DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__), orderFlags(orderDict,':') { //, groups(ODIMPathElem::getDictionary(), ':') {
 
 	init();
+	drain::Logger mout(__FUNCTION__, getName());
+	//mout.special("y1 selector orderFlags=", orderFlags, ' ', orderFlags.value, '=', orderFlags.ownValue);
+	//mout.special("y1 selector params='", parameters, "'");
+
+	// this->parameters.setValues(parameters, '=', ',');
+	//mout.special("y1 this params='", this->parameters, "'");
+	//mout.special("y2 selector orderFlags=", orderFlags, ' ', orderFlags.value, '=', orderFlags.ownValue);
+	//updateBean();
+
 	setParameters(parameters); // calls updateBean()
 
+	//mout.special("y3 selector orderFlags=", orderFlags, ' ', orderFlags.value, '=', orderFlags.ownValue);
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(selector){ //, groups(ODIMPathElem::getDictionary(), ':') {
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(selector), orderFlags(orderDict,':'){ //, groups(ODIMPathElem::getDictionary(), ':') {
 	init();
 	setParameters(selector.getParameters()); // calls updateBean()!
 	//this->parameters.copyStruct(selector.getParameters(), selector, *this);
 }
-
-
-/// Inits pathmatcher
-/*
-DataSelector::DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2, ODIMPathElem::group_t e3) : BeanLike(__FUNCTION__){
-	init();
-	pathMatcher.setElems(e, e2, e3);
-}
-*/
 
 
 DataSelector::~DataSelector() {
@@ -98,25 +112,12 @@ void DataSelector::init() {
 
 	reset();
 	pathMatcher.separator.acceptTrailing = true;
-
 	parameters.link("path", path, "[/]dataset<i>[/data<j>|/quality<j>]");
 	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
 	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
+	parameters.link("order", order, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
 	parameters.link("dualPRF", dualPRF, "-1|0|1");
-
-	// Deprecating, use "elangle=min:max" instead
-	// parameters.link("elangleMin", elangle.min, "(deprecating)");
-	// parameters.link("elangleMax", elangle.max, "(deprecating)");
-
-	/*
-	groups = ODIMPathElem::ALL_GROUPS;
-	std::stringst	parameters.link("count", count);
-	ream sstr;
-	groups.keysToStream(sstr);
-	parameters.link("groups", groupStr, sstr.str());
-	 */
-	//copy(selector);
 
 }
 
@@ -134,15 +135,12 @@ void DataSelector::reset() {
 	elangle = {-90.0,+90.0}; // unflexible
 
 	dualPRF = 0;
-}
 
-/*
-virtual
-void DataSelector::updateGroups(){
-	drain::Logger mout(__FUNCTION__, getName());
-	mout.warn() << "final flags: " << groups << mout.endl;
+	order = "";
+
+	//orderFlags.value = 0; // needs this... :-(
+
 }
-*/
 
 
 
@@ -212,14 +210,8 @@ void DataSelector::updateBean() const {
 		//path = pathMatcher;
 	}
 
-	/*
-	if (!groupStr.empty()){
-		groups   = groupStr;  // update flags
-		mout.info() << "updating groups flag: '" << groupStr << "' => " << groups.value << " = '" << groups << "'" << mout.endl;
-		groupStr = "";
-	}
-	 */
-
+	orderFlags.set(order);
+	//mout.special(__FILE__, *this);
 }
 
 void DataSelector::ensureDataGroup(){
@@ -270,6 +262,70 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 	return; // groups.value;
 }
+
+
+void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (orderFlags.isSet(TIME)){
+		mout.special(__FUNCTION__, ':', orderFlags);
+		std::map<std::string,ODIMPath> m;
+		getPathsByTime(src, m);
+		//pruneMap(m, orderFlags.isSet(MAX));
+		//return map2list(m, pathContainer, false);
+		for (const auto & entry: m){
+			//mout.special(entry);
+			mout.debug("including: ", entry.first, '\t', entry.second);
+			pathContainer.push_back(entry.second);
+			//addPath4(pathContainer, entry.first, entry.second);
+		}
+	}
+	else if (orderFlags.isSet(ELANGLE)){
+		mout.special(__FUNCTION__, ':', orderFlags);
+		std::map<double,ODIMPath> m;
+		getPathsByElangle(src, m);
+		//pruneMap(m, orderFlags.isSet(MAX));
+		for (const auto & entry: m){
+			mout.debug("including: ", entry.first, '\t', entry.second);
+			pathContainer.push_back(entry.second);
+			//addPath4(pathContainer, entry.first, entry.second);
+		}
+	}
+	else {
+		getMainPaths(src, pathContainer);
+	}
+
+	//return true;
+}
+
+
+
+void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	if (orderFlags.isSet(TIME)){
+		mout.warn("map keys sorted by ELANGLE, yet TIME requested");
+	}
+
+	getMainPaths(src, paths, false);
+	pruneMap(paths, orderFlags.isSet(MAX));
+
+
+}
+
+void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	if (orderFlags.isSet(ELANGLE)){
+		mout.warn("map keys sorted by TIME, yet ELANGLE requested");
+	}
+
+	getMainPaths(src, paths, false);
+	pruneMap(paths, orderFlags.isSet(MAX));
+
+}
+
 
 bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 
@@ -339,7 +395,7 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 	}
 }
 
-bool DataSelector::getPath3(const Hi5Tree & src, ODIMPath & path) const {
+bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 	std::list<ODIMPath> pathContainer;
 	getPaths(src, pathContainer);
 	if (pathContainer.empty()){

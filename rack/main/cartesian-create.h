@@ -29,19 +29,15 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#pragma once
 
 #ifndef RACK_CART_CREATE
 #define RACK_CART_CREATE
 
 
 
-//#include "drain/prog/CommandRegistry.h"
 #include <drain/prog/CommandInstaller.h>
 #include "resources.h"
 
-//#include "cartesian-add.h"
-//#include "cartesian-extract.h"
 #include "composite.h"
 
 namespace rack {
@@ -185,7 +181,7 @@ public:
 
 	inline
 	void exec() const {
-		//RackResources & resources = getResources();
+
 		RackContext & ctx = getContext<RackContext>();
 
 		ctx.composite.reset();
@@ -196,7 +192,8 @@ public:
 		ctx.composite.metadataMap.clear();
 		// ctx.composite.projR2M.clear() !
 		// ctx.projStr.clear();
-		ctx.composite.odim.clear();
+
+		ctx.composite.odim.clear(); // 2022/12
 		//ctx.composite.odim.type.clear();
 		//ctx.composite.odim.scaling.scale = 0.0;
 

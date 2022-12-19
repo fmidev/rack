@@ -54,16 +54,26 @@ namespace drain {
  *
  *  Notice that set() derived from UniTuple<char,3> has argument order: prefix, separator, suffix
  */
-struct TypeLayout : public UniTuple<char,3>{
+struct TypeLayoutBase : public UniTuple<char,3>{
 
 	typedef char cstr_t;
 	cstr_t & prefix;
 	cstr_t & separator;
 	cstr_t & suffix;
 
-	/// Constructor for simple layout using a separator but no parentheses/braces.
-	TypeLayout(cstr_t separator=','):
+	inline
+	TypeLayoutBase():
 		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	}
+
+
+};
+
+struct TypeLayout : public TypeLayoutBase{
+
+
+	/// Constructor for simple layout using a separator but no parentheses/braces.
+	TypeLayout(cstr_t separator=','){
 		set(0, separator, 0);
 	}
 
@@ -71,26 +81,21 @@ struct TypeLayout : public UniTuple<char,3>{
 	/***
 	 *    Notice that arguments (a,b) invoke set(a,0,b), not set(a,b).
 	 */
-	TypeLayout(cstr_t prefix, cstr_t suffix):
-		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	TypeLayout(cstr_t prefix, cstr_t suffix){
 		set(prefix, 0, suffix);
 	}
 
 	/// Constructor.
-	TypeLayout(cstr_t prefix, cstr_t separator, cstr_t suffix):
-		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	TypeLayout(cstr_t prefix, cstr_t separator, cstr_t suffix){
 		set(prefix, separator, suffix);
 	}
 
 	/// Constructor accepting three-letter chars: {prefix,separator,suffix}
-	TypeLayout(const char layout[4]): //  = "{,}"
-		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	TypeLayout(const char layout[4]){ //  = "{,}"
 		setLayout(layout);
 	}
 
-	TypeLayout(const TypeLayout & layout):
-		//UniTuple<char,3>(),
-		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	TypeLayout(const TypeLayout & layout){
 		this->assign(layout);
 	}
 
@@ -108,6 +113,7 @@ struct TypeLayout : public UniTuple<char,3>{
 
 
 };
+
 
 /*   USE: TypeLayout(',')
 struct SimpleTypeLayout : public  TypeLayout{
@@ -149,22 +155,36 @@ struct SprinterLayout{
 
 };
 
+// Mainly for debugging
+inline
+std::ostream & operator<<(std::ostream & ostr, const SprinterLayout & layout){
+	ostr << "arrayChars:  " << layout.arrayChars << '\n';
+	ostr << "mapChars:    " << layout.mapChars << '\n';
+	ostr << "pairChars:   " << layout.pairChars << '\n';
+	ostr << "stringChars: " << layout.stringChars << '\n';
+	return ostr;
+}
+
 
 class SprinterBase {
 
 public:
 
-	/// Displayes objects with {...}, arrays with [...], pairs with (,) and strings without hyphens.
+	/// Displays objects with {...}, arrays with [...], pairs with (,) and strings without hyphens.
 	static const SprinterLayout defaultLayout;
-
-	/// Resembles JSON structure: {"a":1,"b":22,"c":3}
-	static const SprinterLayout jsonLayout;
 
 	/// Simply concatenate values without punctuation.
 	static const SprinterLayout emptyLayout;
 
 	/// Put each array and object element on a separate line
 	static const SprinterLayout lineLayout;
+
+	/// C/C++ layout: all objects with {...}
+	static const SprinterLayout cppLayout;
+
+	/// Resembles JSON structure: {"a":1,"b":22,"c":3}
+	static const SprinterLayout jsonLayout;
+
 
 	static inline
 	void prefixToStream(std::ostream & ostr, const TypeLayout & layout){

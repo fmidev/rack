@@ -613,12 +613,15 @@ void CommandBank::help(std::ostream & ostr){
 	ostr << "  --help <command>\n";
 	ostr << '\n';
 
+	//const static drain::SprinterLayout layout("M", "ABC", "S", "<>");
 	ostr << "For help on command sections, type:\n";
 	ostr << "  --help [";
-	sections.keysToStream(ostr, '|');
+	//ostr << drain::sprinter((const FlagResolver::dict_t::container_t &)sections, "|");
+	ostr << drain::sprinter(sections.getKeys(), "|");
 	if (sections.size() > 2)
 		ostr << '|' << "all";
 	ostr << "]\n";
+
 }
 
 void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
@@ -633,20 +636,21 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 	// Flagger flagger(filter, sections, ',');
 	// flagger.set(sectionFilter);
 	ostr << "Section: " << FlagResolver::getKeys(sections, sectionFilter) << '\n' << '\n';
-	for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
-		Flagger::value_t sec = it->second->getSource().section;
+	//for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
+	for (const auto & entry: *this){ // map_t::value_t
+		Flagger::value_t sec = entry.second->getSource().section;
 		if ((sec == sectionFilter) || (sec & sectionFilter) > 0){ // 1st test for HIDDEN
 			try {
 				if (!TEST){
-					info(it->first, it->second->getSource(), ostr, false);
+					info(entry.first, entry.second->getSource(), ostr, false);
 				}
 				else {
-					ostr << it->first << '\n';
+					ostr << entry.first << '\n';
 					std::stringstream sstr, sstr2;
-					Command & cmdOrig = it->second->getSource();
-					Command & cmdCopy = it->second->getCloned();
-					info(it->first, cmdOrig, sstr, false);
-					info(it->first, cmdCopy, sstr2, false);
+					Command & cmdOrig = entry.second->getSource();
+					Command & cmdCopy = entry.second->getCloned();
+					info(entry.first, cmdOrig, sstr, false);
+					info(entry.first, cmdCopy, sstr2, false);
 					if (sstr.str() != sstr2.str()){
 						ostr << sstr.str()  << '\n';
 						ostr << sstr2.str() << '\n';
@@ -715,14 +719,15 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 
 	ostr << ' ' << ' ';
 	char separator = 0;
-	for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+	//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+	for (const std::string & key: keys){
 
 		if (separator)
 			ostr << separator;
 		else
 			separator = params.separator; //',';
 
-		if (kit->empty()){
+		if (key.empty()){
 			ostr << '<' << params.getKeys() << '>';
 			if (params.size() != 1){
 				mout.warn() << "the first key empty, but not unique" << mout.endl;
@@ -730,7 +735,7 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 			}
 		}
 		else {
-			ostr << '<' << *kit << '>';
+			ostr << '<' << key << '>'; // Like a pseudo parameter, '<value>'
 		}
 	}
 
@@ -745,8 +750,9 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	/// Iterate variable keys
 	if (detailed){
 
-		for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-			const std::string & key = *kit;
+		//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+		//const std::string & key = *kit;
+		for (const std::string & key: keys){
 
 			// special:
 			if (keys.size()==1){

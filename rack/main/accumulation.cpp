@@ -308,7 +308,7 @@ public:
 
 		ODIMPath path;
 		acc.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-		acc.dataSelector.getPath3(src, path);  //, ODIMPathElem::DATASET); //, true);
+		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
 
 		const DataSet<PolarSrc> srcDataSet(src(path));
 		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();

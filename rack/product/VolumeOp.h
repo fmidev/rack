@@ -133,25 +133,20 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	//this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
 
-	this->dataSelector.getPaths(src, dataPaths); // RE2
+	this->dataSelector.getPaths(src, dataPaths);
 
 
 	if (dataPaths.empty()){
 		mout.warn() << "no dataset's selected" << mout.endl;
 	}
+	else {
+		mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	}
 
-	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
-
-	// Removed, NEW 2021/05
-	//drain::Variable elangles(typeid(double));
-
-	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (const ODIMPath & parent: dataPaths){
 
 		// mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
 
-		//const ODIMPath & parent = *it;
-		//parent.pop_back();
 		const Hi5Tree & srcDataSet = src(parent);
 		const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
 

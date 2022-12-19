@@ -216,7 +216,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 		return path;
 	}
 
-	if (imageSelector.getPath3(src, path)){
+	if (imageSelector.getPath(src, path)){
 
 		mout.ok() << "using path: '" << path << "'" << mout.endl;
 

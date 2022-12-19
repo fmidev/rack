@@ -77,6 +77,7 @@ Composite::Composite() :  decay(1.0), cropping(false)
 
 	odim.scaling.scale = 0.0;
 
+	dataSelector.count = 1;
 	//static DataCoder converter;
 	//setConverter(converter);
 

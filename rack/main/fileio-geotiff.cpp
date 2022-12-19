@@ -59,7 +59,7 @@ void CmdGeoTiff::exec() const {
 			drain::image::FileTIFF::defaultCompression = value;
 		}
 		else {
-			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", compressionDict.toStr('|'));
+			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", compressionDict);
 			mout.warn("Keeping:  <= '", compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
 		}
 

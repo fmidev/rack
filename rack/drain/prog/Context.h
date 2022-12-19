@@ -64,7 +64,7 @@ public:
 	Context() : id(++counter){
 		statusMap["ID"] = id;        // constant
 		statusMap["PID"] = getpid(); // constant
-		statusMap["statusFlags.dictionary"] = statusFlags.dictionary.toStr();
+		statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
 	}
 
 	/// Defines unique id.
@@ -72,7 +72,7 @@ public:
 		log.setVerbosity(ctx.log.getVerbosity());
 		statusMap["ID"] = id;        // constant
 		statusMap["PID"] = getpid(); // constant
-		statusMap["statusFlags.dictionary"] = statusFlags.dictionary.toStr();
+		statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
 	}
 
 	long int getId(){

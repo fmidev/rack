@@ -105,7 +105,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	mout.debug() << "selector " << selector << mout.endl; // TODO protect quantity
 
 	//selector.ensureDataGroup();
-	if (selector.getPath3(clutterMap, path)){ //, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+	if (selector.getPath(clutterMap, path)){ //, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 		mout.info() << "found " << path << mout.endl;
 		return clutterMap(path);
 	}

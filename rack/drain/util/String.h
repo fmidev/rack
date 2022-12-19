@@ -125,11 +125,17 @@ public:
 
 	/// Splits and trims a given std::string to a std Sequence.
 	/**
-	 *  The target sequence must implement end() and insert() operators.
 	 *
-	 *   Assumes that T::operator=(std::string) exists.
+	 * \param s – string to be chopped
+	 * \param sequence –  target sequence; must implement end() and insert() operators.
+	 * \param separators – single char, array or string
+	 * \param trimChars – single char, array or string
 	 *
-	 *  Given an empty std::string, returns a list containing an empty std::string.
+	 * Assumes that T::operator=(std::string) exists.
+	 *
+	 * Given an empty std::string, returns a sequence containing an empty std::string. Hence, does not return an empty sequence.
+	 *
+	 * Given a null or empty separator, returns a single-element sequence containing the original string.
 	 */
 	template <class T, class C>
 	static

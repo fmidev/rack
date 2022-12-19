@@ -65,7 +65,7 @@ void CmdHistogram::exec() const {
 	DataSelector selector(ODIMPathElemMatcher::DATA);
 	//selector.setParameters(ctx.select);
 	selector.consumeParameters(ctx.select);
-	selector.getPath3(currentHi5, path);
+	selector.getPath(currentHi5, path);
 	//ctx.select.clear();
 
 	PlainData<BasicDst> dstData(currentHi5(path));

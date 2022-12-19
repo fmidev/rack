@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.7"
+#define __RACK_VERSION__ "6.8"
 
 /**
+ *   Version 6.7
+ *   -- DataSelector: added order: DESCENDING,ASCENDING : ELANGLE|TIME
+ *
  *   Version 6.7
  *   -- Bug fix: cReset
  *

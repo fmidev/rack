@@ -326,9 +326,11 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	//ProductInstaller installer(drain::getCommandBank());
 	//ProductModule & installer = *this;
 
+	// install<PolarProductOp>();
+
 	// Visualization of geometry etc
-	install<BeamAltitudeOp>(); //  beamAltitude;
-	install<DrawingOp>();// draw;
+	install<BeamAltitudeOp>();
+	install<DrawingOp>();
 
 	// Polar coord met.product based on dBZ
 	install<CappiOp>(); //    cappi;

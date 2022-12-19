@@ -127,7 +127,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	mout.special() << "selector: " << selector << mout.endl;
 
 	ODIMPath path;
-	selector.getPath3(src, path);
+	selector.getPath(src, path);
 
 	mout.info() << "Sampling path: " << path << mout.endl;
 

@@ -40,6 +40,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
+#include <typeinfo>
+
+#include "Log.h"
 #include "Dictionary.h"
 
 
@@ -58,15 +61,6 @@ public:
 	static
 	const value_t ALL; // = std::numeric_limits<FlagResolver::value_t>::max();
 
-	/*
-	inline
-	FlagResolver(const dict_t & dict, char separator = 0) : separator(separator?separator:dict.separator), dictionaryRef(dict) {
-	}
-
-	inline
-	FlagResolver(const FlagResolver & flags) : separator(flags.separator), dictionaryRef(flags.dictionaryRef){
-	};
-	*/
 
 	/// Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.
 	/**
@@ -111,47 +105,90 @@ class Flagger :public FlagResolver { // for typedefs
 
 public:
 
-	//typedef FlagResolver:: key_t;
-	//typedef FlagResolver:: value_t;
-	// typedef drain::Dictionary2<key_t,value_t> dict_t;
-
+	value_t ownValue;
+	value_t & value;
 
 	const dict_t & dictionary; // todo open (keep own secret, later)
-
-public:
 
 	virtual inline
 	const dict_t & getDict() const{
 		return dictionary;
 	}
 
-
-
-	value_t & value;
 	char separator;  // needed?
 
+	inline
+	Flagger(const dict_t & dict, char separator = 0) :
+		ownValue(0),
+		value(ownValue),
+		dictionary(dict),
+		separator(separator?separator:dict.separator){
+	};
 
 	inline
 	Flagger(value_t & value, const dict_t & dict, char separator = 0) :
-		dictionary(dict),
+		ownValue(0),
 		value(value),
+		dictionary(dict),
 		separator(separator?separator:dict.separator){
-	}
+	};
 
 	inline
 	Flagger(const Flagger & flags) : //FlagResolver(flags.dictionary, flags.separator), value(flags.value){
+		ownValue(flags.value), // OK init
+		value(flags.value),  // <-- FIX: this will cause error (non-const referencing const). Should be
 		dictionary(flags.dictionary),
-		value(flags.value),
 		separator(flags.separator){
+
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.error("Flagger inits value &= flags.value", flags);
 	};
 
+	/*
+	Flagger(std::initializer_list<dict_t::entry_t> d, char separator = ',') : Flagger(ownValue, ownDictionary, separator) { //, ownDictionary(d){
+		for (const dict_t::entry_t & entry: d){
+			add(entry.first, entry.second);
+		}
+	}
+	*/
 
+	inline virtual
+	~Flagger(){};
+
+
+	// Variadic-argument member set function.
+	// https://en.cppreference.com/w/cpp/language/parameter_pack
+	template <typename T, typename ... TT>
+	inline
+	Flagger & set(const T & arg, const TT &... args) {
+		deepSet(arg);
+		set(args...);
+		return *this;
+	}
+
+	/*
 	/// Set desired flags. Does not reset any flag. \see assign().
 	inline
 	Flagger & set(value_t x){
-		this->value = (this->value | x);
+		deepSet(x); //this->value = (this->value | x);
 		return *this;
 	};
+	*/
+
+
+
+protected:
+
+	inline
+	Flagger & set(){
+		return *this;
+	}
+
+	inline
+	Flagger & deepSet(value_t x){
+		this->value = (this->value | x);
+		return *this;
+	}
 
 
 	/// Set desired flags. Does not reset any flag. \see assign().
@@ -159,30 +196,14 @@ public:
 	 *
 	 */
 	inline
-	Flagger & set(const key_t & key){
-		set(getValue(key, separator));
-		return *this;
-	};
-
-	/*
-
-	/// Set the desired flag(s). If value==false, unset the flag(s).
-	inline
-	Flagger & set(value_t x, bool newValue=true){
-		if (newValue)
-			this->value = (this->value | x);
-		else
-			this->value = (this->value & ~x);
+	Flagger & deepSet(const key_t & key){
+		deepSet(getValue(key, separator));
 		return *this;
 	};
 
 
-	/// Set desired flags. Does not reset any flag.
-	inline
-	Flagger & set(const key_t & key, bool newValue=true){
-		return set(getValue(key, separator), newValue);
-	};
-	 */
+
+public:
 
 
 	/// Unset desired flags. Does not set any flag.
@@ -218,12 +239,12 @@ public:
 
 	/// Unset desired flags. Does not set any flag.
 	inline
-	bool isSet(value_t x){
+	bool isSet(value_t x) const {
 		return (value & x) != 0;
 	};
 
 	inline
-	bool isSet(const key_t & key){
+	bool isSet(const key_t & key) const {
 		return isSet(dictionary.getValue(key));
 	};
 
@@ -247,7 +268,7 @@ public:
 		return *this;
 	}
 
-	/// Sets value, ie. set or unsets all the flags.
+	/// Sets value, ie. set or unsets all the flags. \see set().
 	/**
 	 *   \param x - bit values 1, 2, 4, 8 ... etc combined with \c OR function.
 	 */
@@ -256,7 +277,7 @@ public:
 		value = x;
 	}
 
-	/// Copies flags as an integer \c value. Same dictionary not checked.
+	/// Copies flags as an integer \c value. Same dictionary not checked. \see set().
 	/**
 	 *   \param flags -
 	 */
@@ -316,7 +337,19 @@ public:
 		return FlagResolver::getKeys(dictionary, value, separator ? separator : this->separator);
 	}
 
-	/// Bub risky: value_t ~char !
+	// TODO consider rename
+	const dict_t::keylist_t & keys() const;
+
+protected:
+
+	mutable dict_t::keylist_t keyList;
+
+	//mutable dict_t::valuelist_t valueList;
+
+public:
+
+
+	///  risky: value_t ~char !
 	inline
 	std::ostream & keysToStream(std::ostream & ostr=std::cout, char separator=0) const {
 		return FlagResolver::keysToStream(dictionary, value, ostr, separator ? separator : this->separator);
@@ -334,7 +367,7 @@ public:
 	template <class T>
 	void exportStatus(std::map<std::string, T> & statusMap) const {
 		for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){
-			if ((it->second > 0) && ((it->second & value)) == it->second){ // fully covered in value
+			if ((it->second > 0) && ((it->second & value) == it->second)){ // fully covered in value
 				statusMap[it->first] = 1;
 			}
 			else {
@@ -344,6 +377,8 @@ public:
 	}
 
 
+	static
+	const drain::SprinterLayout flagDictLayout;
 
 
 };
@@ -355,11 +390,11 @@ std::ostream & operator<<(std::ostream & ostr, const drain::Flagger & flags) {
 }
 
 
+/// Flagger that has an own dictionary and value.
 class Flags : public Flagger {
 
 protected:
 
-	value_t ownValue;
 	dict_t  ownDictionary;
 
 public:
@@ -376,14 +411,26 @@ public:
 	}
 
 
-	Flags(char separator = ',') : Flagger(ownValue, ownDictionary, separator){
+	Flags(char separator = ',') : Flagger(ownDictionary, separator){
 	}
 
 	//Flags(dict_t & d, char separator = ',') : Flagger(ownValue, d, separator){	}
 
-	Flags(const Flags & flags) : Flagger(ownValue=flags.ownValue, ownDictionary, flags.separator){
+	Flags(const Flags & flags) : Flagger(ownValue = flags.ownValue, ownDictionary, flags.separator){
 		// Copy dict?
 	}
+
+	/*
+	 * std::initializer_list<entry_t> d
+	 */
+	/// Initialize with {{"first", 123}, {"second", 456}}
+	Flags(std::initializer_list<dict_t::entry_t> d, char separator = ',') : Flagger(ownValue, ownDictionary, separator) { //, ownDictionary(d){
+		for (const dict_t::entry_t & entry: d){
+			add(entry.first, entry.second);
+		}
+	}
+
+
 
 	/// Sets value, ie. set or unsets all the flags.
 	template <class T>
@@ -401,6 +448,13 @@ public:
 	value_t add(const dict_t::key_t & key, value_t i=0){
 		return Flagger::add(ownDictionary, key, i);
 	}
+
+	/*
+	inline
+	value_t add(const dict_t::entry_t & entry){
+		return Flagger::add(ownDictionary, entry.first,  entry.second);
+	}
+	*/
 
 protected:
 

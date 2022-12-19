@@ -138,7 +138,7 @@ public:
 
 		// Source image (original data)
 		ODIMPath path;
-		imageSelector.getPath3(*ctx.currentHi5, path); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
+		imageSelector.getPath(*ctx.currentHi5, path); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
 
 		if (path.empty()){
 			mout.warn() << "no paths with selector: "  << imageSelector << mout.endl;
@@ -1025,7 +1025,7 @@ public:
 			mout.unimplemented() << "note: checking parallel quality unimplemented" << mout.endl;
 			DataSelector qualityDataSelector;
 			qualityDataSelector.pathMatcher.setElems(ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
-			if (qualityDataSelector.getPath3(dst, path)){
+			if (qualityDataSelector.getPath(dst, path)){
 			//if (DataSelector::getQualityPath(*ctx.currentHi5, path)){
 				//path << ODIMPathElem(ODIMPathElem::ARRAY);
 				mout.special() << "associated quality field for ["<< *it << "] found in " << path << mout.endl;

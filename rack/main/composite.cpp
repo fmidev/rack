@@ -114,7 +114,6 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 
 
 
-//void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter) const {
 void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, bool updateSelector) const {
 
 	RackContext & ctx = getContext<RackContext>();
@@ -176,9 +175,6 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	mout.debug() << "using selector: " << composite.dataSelector << mout; // consider: if composite.dataSelector...?
 
 	/// Main
-	//if (ctx.currentHi5 == ctx.currentPolarHi5){
-	// if (ctx.currentPolarHi5 != NULL){  // to get polar AMVU and AMVV data converted
-	// if ((ctx.currentPolarHi5 != NULL) && !ctx.currentPolarHi5->isEmpty()){  // to get polar AMVU and AMVV data converted
 	const drain::Variable & object = root.getWhat()["object"];
 	if ((object == "COMP") || (object == "IMAGE")){
 		//if ((object == "SCAN") || (object == "PVOL")){
@@ -219,9 +215,6 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 	RackResources & resources = getResources();
 
-	// Composite & composite = getComposite();
-
-	//if (ctx.currentPolarHi5 == NULL){
 	if (src.isEmpty()){
 		mout.warn() << "no polar data loaded, skipping" << mout.endl;
 		return;
@@ -236,21 +229,12 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		mout.info() << "Initialising (like) a single-radar Cartesian" << mout.endl;
 
-		// Try to set size. May still remain 0x0, which ok: addPolar() will set it if needed.
-		// composite.setGeometry(composite.getFrameWidth(), composite.getFrameHeight()); // Check - does nothing?
-		/*
-		if (!ctx.projStr.empty())
-			composite.setProjection(ctx.projStr);
-		else
-			isAeqd = true;
-		*/
 		if (!composite.projectionIsSet())
 			isAeqd = true;
 		// see single below
 	}
 
 	// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
-
 
 	try {
 		ctx.statusFlags.reset(); // ALL?
@@ -260,12 +244,18 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
 		// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
 
-
 		composite.dataSelector.updateBean(); // quantity
+
+		if (composite.dataSelector.count != 1){
+			mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
+			//composite.dataSelector.count = 1;
+		}
+
+
 		mout.info() << "composite.dataSelector: " << composite.dataSelector << mout;
 
 		ODIMPath dataPath;
-		composite.dataSelector.getPath3(src, dataPath);
+		composite.dataSelector.getPath(src, dataPath);
 		if (dataPath.empty()){
 			mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout;
 			//resources.inputOk = false; // REMOVE?
@@ -432,7 +422,12 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	// NOTE: DATASET path needed for quality selection (below)
 	ODIMPath dataPath;
 	//composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-	composite.dataSelector.getPath3(src, dataPath);
+	if (composite.dataSelector.count != 1){
+		mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
+		//composite.dataSelector.count = 1;
+	}
+
+	composite.dataSelector.getPath(src, dataPath);
 	if (dataPath.back().is(ODIMPathElem::DATA))
 		dataPath.pop_back();
 	//composite.dataSelector.getPathNEW((ctx.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05

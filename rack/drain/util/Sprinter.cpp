@@ -63,18 +63,28 @@ TypeLayout & TypeLayout::setLayout(const char *layout){
 
 const SprinterLayout SprinterBase::defaultLayout;
 
-/// JSON layout uses std::pair<>(first,second) to display key:value pairs.
-/**
- *   # arrays  as [...]
- *   # objects as {...}, starting from the arg
- *   # key-value pairs as key:value
- *   # strings as "..."
- */
-const SprinterLayout SprinterBase::jsonLayout("[,]", "{,}", ":", "\"\"");
 
 const SprinterLayout SprinterBase::emptyLayout("");
 
 const SprinterLayout SprinterBase::lineLayout("\n", "<\n>", "=", "''");
+
+/// C++ code initializer list layout
+/**
+ *   # arrays  as {...}
+ *   # objects as {...}
+ *   # pairs   as {key,value}
+ *   # strings as "..."
+ */
+const SprinterLayout SprinterBase::cppLayout("{,}", "{,}", "{,}", "\"\"");
+
+/// JSON layout uses std::pair<>(first,second) to display key:value pairs.
+/**
+ *   # arrays  as [...]
+ *   # objects as {...}, starting from the arg
+ *   # pairs   as key:value
+ *   # strings as "..."
+ */
+const SprinterLayout SprinterBase::jsonLayout("[,]", "{,}", ":", "\"\"");
 
 } // namespace drain
 
