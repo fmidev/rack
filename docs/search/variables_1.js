@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['bias_3485',['bias',['../classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5',1,'drain::Functor']]],
-  ['biasfinal_3486',['biasFinal',['../classdrain_1_1Functor.html#af215d623f4a0eca36eaf54b8aab370f5',1,'drain::Functor']]],
-  ['binrange_3487',['binRange',['../classrack_1_1PolarSector.html#a7d431afd24771c47cad0175a29e2b8d5',1,'rack::PolarSector']]],
-  ['bytesize_3488',['byteSize',['../classdrain_1_1Caster.html#ab3671481708018bfed6e89b9cd54affe',1,'drain::Caster']]]
+  ['bias_3513',['bias',['../classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5',1,'drain::Functor']]],
+  ['biasfinal_3514',['biasFinal',['../classdrain_1_1Functor.html#af215d623f4a0eca36eaf54b8aab370f5',1,'drain::Functor']]],
+  ['binrange_3515',['binRange',['../classrack_1_1PolarSector.html#a7d431afd24771c47cad0175a29e2b8d5',1,'rack::PolarSector']]],
+  ['bytesize_3516',['byteSize',['../classdrain_1_1Caster.html#ab3671481708018bfed6e89b9cd54affe',1,'drain::Caster']]]
 ];

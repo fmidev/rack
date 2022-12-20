@@ -69,58 +69,79 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#parallel_intro">Speed-up through parallel computation</a></li>
-<li class="level1"><a href="#parallel_examples">Examples</a><ul><li class="level2"><a href="#parallel_anom">Anomaly detection</a></li>
-<li class="level2"><a href="#parallel_products">Product generation</a></li>
-<li class="level2"><a href="#parallel_anom_products">Anomaly detection and product generation combined</a></li>
-<li class="level2"><a href="#parallel_sites">Product generation for each site</a></li>
-<li class="level2"><a href="#parallel_acc">Accumulation</a></li>
+<ul><li class="level1"><a href="#scripts">Scripts</a><ul><li class="level2"><a href="#script_sites">Example: product generation for each volume.</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#parallel_intro">Parallel computation – using multiple threads</a><ul><li class="level2"><a href="#parallel_script">Scheme 1: invoking predefined script for every input</a></li>
+<li class="level2"><a href="#parallel_instant">Scheme 2: direct parallel command sequences</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#parallel_examples">Examples</a><ul><li class="level2"><a href="#parallel_acc">Accumulation</a></li>
 <li class="level2"><a href="#parallel_compositing">Parallel compositing</a><ul><li class="level3"><a href="#parallel_compositing_full">One-pass scheme</a></li>
 <li class="level3"><a href="#parallel_compositing_tile">Tiled scheme</a></li>
 </ul>
 </li>
+<li class="level2"><a href="#parallel_future">Future extensions</a><ul><li class="level3"><a href="#parallel_anom">Anomaly detection</a></li>
+<li class="level3"><a href="#parallel_products">Product generation</a></li>
+<li class="level3"><a href="#parallel_anom_products">Anomaly detection and product generation combined</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><dl class="section note"><dt>Note</dt><dd>Experimental design - not tested operationally</dd></dl>
+<div class="textblock"><h1><a class="anchor" id="scripts"></a>
+Scripts</h1>
+<p><b>Rack</b> support defining command sequences &ndash; scripts &ndash; that can be invoked repeatedly within one command line. The script is then executed automatically for <em>each</em> <em>input:</em> </p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;&lt;cnd&gt; &lt;cmd2&gt; ...&#39;</span>  &lt;file&gt; &lt;file2&gt; &lt;file3&gt; ...</div>
+</div><!-- fragment --><p>So, <code>&ndash;inputFile</code> &lt;file&gt; command – or simply <code></code> &lt;file&gt; – implicitly triggers the script.</p>
+<p>One can also invoke the script explicitly with <code>&ndash;execScript</code> command.</p>
+<p>Defining a script also turns on <em>variable</em> <em>expansion</em> &ndash; see also examples in <a class="el" href="miscbook.html#templates">Metadata output using text templates</a> .</p>
+<h2><a class="anchor" id="script_sites"></a>
+Example: product generation for each volume.</h2>
+<p>In the following example, several measurement volume files are read. For each file, two products (Pseudo CAPPI at 500 meters and Echo Top with 20 dBZ threshold) are computed, then converted to Cartesian projections and finally stored to files.</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5&#39;</span>  data/pvol_fi*.h5 </div>
+</div><!-- fragment --><p>In the example, special internal variable <code>${NOD}</code> is derived automatically from compound <code>${what:source}</code> variable of the input. One may likewise use <code>${what:date}</code> and <code>${what:time}</code> , for example.</p>
+<dl class="section note"><dt>Note</dt><dd><b>Rack</b> denotes variables <code>${</code>...} like shell environments, so single hyphens are often useful for preventing variable expansion in shell. Supported variable values can be listed with <code>&ndash;status</code> command.</dd></dl>
+<p>By default, unless <code>&ndash;append</code> data was used, the resulting meteorological product is kept in the local context. This means that data from several radars can be processed and also stored as parallel processes.</p>
+<p>Instead of the command line, one may also execute commands stored in a file as follows: </p><div class="fragment"><div class="line">rack &lt;file&gt;  --execFile &lt;cmdFile&gt;   </div>
+</div><!-- fragment --><p>Remember that plain filenames are implicit <code>&ndash;inputFile &lt;file&gt;</code> commands; hence the file can also be a list of input files. Using such a file together with <code>&ndash;script</code> yields compact command lines especially in compositing.</p>
+<p>Scripting becomes even more powerful when combined to parallel computations explained next.</p>
+<dl class="section note"><dt>Note</dt><dd>The commands that automatically run ie. <em>trigger</em> the script can be listed with <code>&ndash;help</code> <code>trigger</code> .</dd></dl>
 <h1><a class="anchor" id="parallel_intro"></a>
-Speed-up through parallel computation</h1>
-<p>In processing radar data, some computations can be run independently in separate threads. In <b>Rack</b>, parallel computation can be enabled flexibly on command line. Parallel computing is enabled by putting a desired command sequence inside braces: <code></code>[...] . Within braces, the commands that trigger a script - especially <code>&ndash;inputFile</code> &ndash; will start a thread. In each thread the triggering command is run at first. Then, if a script has been defined, it will be run.</p>
-<p>Consider a command line invocation of <b>Rack</b> </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --cmd --cmd ...  --sript <span class="stringliteral">&#39;--cmd --cmd ...&#39;</span>  [ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ]  --cmd --cmd ...</div>
+Parallel computation – using multiple threads</h1>
+<p>In processing radar data, some computations can be run independently in separate threads. In <b>Rack</b>, parallel computation can be enabled flexibly on command line. Parallel computing is enabled by putting a desired command sequence inside braces: <code></code>[...] .</p>
+<h2><a class="anchor" id="parallel_script"></a>
+Scheme 1: invoking predefined script for every input</h2>
+<p>This method is best illustrated by adjusting the above example with braces:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5&#39;</span> [ data/pvol_fi*.h5 ]</div>
+</div><!-- fragment --><p>Within braces, <code>[&ndash;inputFile] &lt;file&gt;</code> command will trigger the defined script in a separate, parallel thread.</p>
+<p>More schematically, consider a command line invocation of <b>Rack</b> </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --cmd --cmd ...  --sript <span class="stringliteral">&#39;--cmd --cmd ...&#39;</span>  [ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ]  --cmd --cmd ...</div>
 </div><!-- fragment --><p> marking thread-triggering commands with <code>CMD</code> and other commands with <code>cmd</code>. A schematic decomposition of such a line is shown below: </p><div class="dotgraph">
 <img src="dot_inline_dotgraph_7.png" alt="dot_inline_dotgraph_7.png" border="0" usemap="#dot_inline_dotgraph_7.map"/>
-<map name="dot_inline_dotgraph_7.map" id="dot_inline_dotgraph_7.map"><area shape="rect" href="" title="Script definition |&lt;i&gt; &#45;&#45;sript &#39;&#45;&#45;cmd &#45;&#45;cmd...&#39; " alt="" coords="224,19,393,71"/>
-<area shape="rect" href="productspage.html" title="Basic commands (cmd...) and \n script triggering commands (CMD..) |&lt;i&gt;[ &#45;&#45;CMD1 &#45;&#45;cmd2 &#45;&#45;CMD3 &#45;&#45;CMD4 &#45;cmd5 ... ] " alt="" coords="441,5,761,72"/>
+<map name="dot_inline_dotgraph_7.map" id="dot_inline_dotgraph_7.map"><area shape="rect" href="" title="Script definition |&lt;i&gt; &#45;&#45;sript &#39;&#45;&#45;cmd &#45;&#45;cmd...&#39; " alt="" coords="212,19,381,71"/>
+<area shape="rect" href="productspage.html" title="Basic commands (cmd...) and \n script triggering commands (CMD..) |&lt;i&gt;[ &#45;&#45;CMD1 &#45;&#45;cmd2 &#45;&#45;CMD3 &#45;&#45;CMD4 &#45;cmd5 ... ] " alt="" coords="429,5,749,72"/>
 </map>
 </div>
-<p>During execution, <b>Rack</b> creates and maintains certain resources in memory for commands to read and write: a polar volume, a polar product, Cartesian product and compositing arrays. (See the scheme in <a class="el" href="index.html#intro">Introduction</a> .) A thread has private resources &ndash; its so called \i context &ndash; in addition to shared resources called a \i base \i context. As a principle in threads, any data loaded or created in the thread overrides the respective data loaded in the main thread. <br  />
- Especially, a composite (accumulation array) initialized in the main thread will serve the threads as a shared resource unless a new composite is initialized or loaded in the thread. Commands use internal logic in selecting <br  />
-</p>
+<p>During execution, <b>Rack</b> creates and maintains certain resources in memory for commands to read and write: a polar volume, a polar product, Cartesian product and compositing arrays. (See the scheme in <a class="el" href="index.html#intro">Introduction</a> .) A thread has private resources &ndash; its so called <em>context</em> &ndash; in addition to shared resources called the <em>base</em> <em>context</em>. As a principle in threads, any data loaded or created in the thread are used instead of those of the main thread (base context). <br  />
+ Especially, a composite (accumulation array) initialized in the main thread will serve the threads as a shared resource unless (until) a new composite is initialized or loaded in the thread. Commands use internal logic in selecting data.</p>
+<p>The following picture illustrates how the above command line structure is actually computed.</p>
 <div class="dotgraph">
 <img src="dot_inline_dotgraph_8.png" alt="dot_inline_dotgraph_8.png" border="0" usemap="#dot_inline_dotgraph_8.map"/>
-<map name="dot_inline_dotgraph_8.map" id="dot_inline_dotgraph_8.map"><area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD1|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="684,83,879,132"/>
-<area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD3|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="684,156,879,205"/>
-<area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD4|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="684,229,879,279"/>
+<map name="dot_inline_dotgraph_8.map" id="dot_inline_dotgraph_8.map"><area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD1|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,83,867,132"/>
+<area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD3|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,156,867,205"/>
+<area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD4|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,229,867,279"/>
 </map>
 </div>
-<h1><a class="anchor" id="parallel_examples"></a>
+<h2><a class="anchor" id="parallel_instant"></a>
+Scheme 2: direct parallel command sequences</h2>
+<p>Instead of a predefined script, commands can be run parallel by putting them inside braces and separating independent command sequences to threads with a slash <code>'/'</code> .</p>
+<div class="fragment"><div class="line">rack &lt;cmd&gt;  [ &lt;cmd&gt; &lt;cmd&gt; ... / &lt;cmd&gt; &lt;cmd&gt; ... / &lt;cmd&gt; &lt;cmd&gt; ... ] &lt;cmd&gt; </div>
+</div><!-- fragment --><p>Example:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a>  volume.h5 [ --cMethod AVERAGE --pCappi 500 --cSize 200 -c -o <span class="stringliteral">&#39;cappi-${NOD}.h5&#39;</span> /  --pEchoTop 20 --cSize 500 -c -o <span class="stringliteral">&#39;echoTop-${NOD}.h5&#39;</span> ] </div>
+</div><!-- fragment --><h1><a class="anchor" id="parallel_examples"></a>
 Examples</h1>
-<h2><a class="anchor" id="parallel_anom"></a>
-Anomaly detection</h2>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 [ --aBird <span class="stringliteral">&#39;&#39;</span> --aSpeckle <span class="stringliteral">&#39;&#39;</span> ] --aRemover 0.5 -o vol-anom-paral.h5</div>
-</div><!-- fragment --><h2><a class="anchor" id="parallel_products"></a>
-Product generation</h2>
-<p>Given a single volume as input, generate products to separate <code>/dataset</code> groups: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-prod-paral.h5</div>
-</div><!-- fragment --><h2><a class="anchor" id="parallel_anom_products"></a>
-Anomaly detection and product generation combined</h2>
-<p>As anomaly detectors are independent of each other, they can be computed in parallel, each updating the resulting quality field (<code>QIND</code> quantity) when completed. Finally, the combined detection field can be used for removing the anomalies in the volume.</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 [ --aBird <span class="stringliteral">&#39;&#39;</span> --aSpeckle <span class="stringliteral">&#39;&#39;</span> ] --aRemover 0.5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-anom-prod-paral.h5</div>
-</div><!-- fragment --><h2><a class="anchor" id="parallel_sites"></a>
-Product generation for each site</h2>
-<p>By default, unless <code>&ndash;append</code> data was used, the resulting meteorological product is kept in the local context. This means that data from several radars can be processed and also stored as parallel processes:</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;--pCappi 500 -o cappi-${NOD}.h5 --pEchoTop 20 -o echoTop-${NOD}.h5&#39;</span> [ data/pvol_fi*.h5 ]</div>
-</div><!-- fragment --><h2><a class="anchor" id="parallel_acc"></a>
+<h2><a class="anchor" id="parallel_acc"></a>
 Accumulation</h2>
 <p>For accumulating polar data, Rack uses a shared accumulation array, enabling parallelizing the process in straightforward way:</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a>  --script <span class="stringliteral">&#39;--pAdd&#39;</span> [ data-acc/2017*.h5 ] --encoding C --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated-parallel.h5</div>
@@ -135,8 +156,22 @@ One-pass scheme</h3>
 <div class="line">         --cExtract d  -o composite-parallel.h5</div>
 </div><!-- fragment --><h3><a class="anchor" id="parallel_compositing_tile"></a>
 Tiled scheme</h3>
-<p>(Under construction.) In operational environment, one typically has system-level parallel processes in receiving radar data, hence there is less use in designing \i parallel tiled compositing in Rack level. See the single-thread <a class="el" href="compositespage.html#tiledcompositing">Tiled compositing</a> instead. </p>
-</div></div><!-- contents -->
+<p>(Under construction.) In operational environment, one typically has system-level parallel processes in receiving radar data, hence there is less use in designing \i parallel tiled compositing in Rack level. See the single-thread <a class="el" href="compositespage.html#tiledcompositing">Tiled compositing</a> instead.</p>
+<dl class="section note"><dt>Note</dt><dd>Experimental design - not tested operationally</dd></dl>
+<h2><a class="anchor" id="parallel_future"></a>
+Future extensions</h2>
+<dl class="section note"><dt>Note</dt><dd>Not supported in current version</dd></dl>
+<h3><a class="anchor" id="parallel_anom"></a>
+Anomaly detection</h3>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 [ --aBird <span class="stringliteral">&#39;&#39;</span> --aSpeckle <span class="stringliteral">&#39;&#39;</span> ] --aRemover 0.5 -o vol-anom-paral.h5</div>
+</div><!-- fragment --><h3><a class="anchor" id="parallel_products"></a>
+Product generation</h3>
+<p>Given a single volume as input, generate products to separate <code>/dataset</code> groups: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-prod-paral.h5</div>
+</div><!-- fragment --><h3><a class="anchor" id="parallel_anom_products"></a>
+Anomaly detection and product generation combined</h3>
+<p>As anomaly detectors are independent of each other, they can be computed in parallel, each updating the resulting quality field (<code>QIND</code> quantity) when completed. Finally, the combined detection field can be used for removing the anomalies in the volume.</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 [ --aBird <span class="stringliteral">&#39;&#39;</span> --aSpeckle <span class="stringliteral">&#39;&#39;</span> ] --aRemover 0.5 --append dataset [ --pCappi 500 --pEchoTop 20dBZ ] -o vol-anom-prod-paral.h5</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
 <!-- HTML footer for doxygen 1.8.17-->

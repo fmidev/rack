@@ -1,6 +1,10 @@
 <map id="ODIMPathElemMatcher" name="ODIMPathElemMatcher">
-<area shape="rect" id="node1" title="Element in a chain in testing a path for a match." alt="" coords="5,171,179,197"/>
-<area shape="rect" id="node2" href="$classrack_1_1ODIMPathElem.html" title=" " alt="" coords="11,81,131,108"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="155,81,226,108"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="137,5,244,32"/>
+<area shape="rect" id="node1" title="Element in a chain in testing a path for a match." alt="" coords="5,469,179,496"/>
+<area shape="rect" id="node2" href="$classrack_1_1ODIMPathElem.html" title=" " alt="" coords="11,380,131,407"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="155,380,226,407"/>
+<area shape="rect" id="node4" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="93,291,200,317"/>
+<area shape="rect" id="node5" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="224,291,341,317"/>
+<area shape="rect" id="node6" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="235,157,331,184"/>
+<area shape="rect" id="node7" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="219,81,347,108"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="207,5,359,32"/>
 </map>

@@ -38,16 +38,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-using namespace hi5;
 
-const drain::Flagger::dict_t DataSelector::orderDict({
-	// {"DEFAULT",       DataSelector::orderEnum::DEFAULT}, // TODO: add FLAGGER support for value, as typically NONE or DEFAULT key
-	{"MIN",       DataSelector::orderEnum::MIN},
-	{"MAX",       DataSelector::orderEnum::MAX},
-	{"DATA",       DataSelector::orderEnum::DATA},
-	{"TIME",       DataSelector::orderEnum::TIME},
-    {"ELANGLE",    DataSelector::orderEnum::ELANGLE}
-});
+
+template <>
+const drain::Fladdict<DataOrder::Crit>::dict_t drain::Fladdict<DataOrder::Crit>::dict = {
+		{"DATA",    rack::DataOrder::DATA},
+		{"ELANGLE", rack::DataOrder::ELANGLE},
+		{"TIME",    rack::DataOrder::TIME}
+};
+
+template <>
+const drain::Fladdict<DataOrder::Oper>::dict_t drain::Fladdict<DataOrder::Oper>::dict =  {
+		{"MIN", rack::DataOrder::MIN},
+		{"MAX", rack::DataOrder::MAX}
+};
+
+// using namespace hi5;
 
 
 DataSelector::DataSelector(
@@ -56,7 +62,7 @@ DataSelector::DataSelector(
 		unsigned int count,
 		drain::Range<double> elangle,
 		int dualPRF
-		) : BeanLike(__FUNCTION__), orderFlags(orderDict) {
+		) : BeanLike(__FUNCTION__) { //, orderFlags(orderDict) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
 
@@ -66,7 +72,7 @@ DataSelector::DataSelector(
 	this->quantity = quantity;
 	this->count = count;
 	this->elangle = elangle;
-	this->order = "";
+	this->order.str = "";
 	this->dualPRF = dualPRF;
 	//this->elangle.min = elangleMin;
 	//this->elangle.max = elangleMax;
@@ -78,7 +84,7 @@ DataSelector::DataSelector(
 }
 
 
-DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__), orderFlags(orderDict,':') { //, groups(ODIMPathElem::getDictionary(), ':') {
+DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION__) { //  , orderFlags(orderDict,':') { //, groups(ODIMPathElem::getDictionary(), ':') {
 
 	init();
 	drain::Logger mout(__FUNCTION__, getName());
@@ -96,7 +102,7 @@ DataSelector::DataSelector(const std::string & parameters) : BeanLike(__FUNCTION
 }
 
 
-DataSelector::DataSelector(const DataSelector & selector) : BeanLike(selector), orderFlags(orderDict,':'){ //, groups(ODIMPathElem::getDictionary(), ':') {
+DataSelector::DataSelector(const DataSelector & selector) : BeanLike(selector) { //, orderFlags(orderDict,':'){ //, groups(ODIMPathElem::getDictionary(), ':') {
 	init();
 	setParameters(selector.getParameters()); // calls updateBean()!
 	//this->parameters.copyStruct(selector.getParameters(), selector, *this);
@@ -116,7 +122,12 @@ void DataSelector::init() {
 	parameters.link("quantity", quantity, "DBZH|VRAD|RHOHV|...");
 	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
-	parameters.link("order", order, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
+	//parameters.link("order", order.str, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
+	parameters.link("order", order.str,
+				drain::sprinter(drain::Fladdict<DataOrder::Crit>::dict.getKeys()).str() + ':' +
+				drain::sprinter(drain::Fladdict<DataOrder::Oper>::dict.getKeys()).str()
+				);
+	//parameters.link("order", order.str, drain::sprinter(order.getParameters().getKeyList()).str());
 	parameters.link("dualPRF", dualPRF, "-1|0|1");
 
 }
@@ -136,7 +147,9 @@ void DataSelector::reset() {
 
 	dualPRF = 0;
 
-	order = "";
+	order.str = "";
+	order.criterion = DataOrder::DATA;
+	order.operation = DataOrder::MIN;
 
 	//orderFlags.value = 0; // needs this... :-(
 
@@ -210,7 +223,14 @@ void DataSelector::updateBean() const {
 		//path = pathMatcher;
 	}
 
-	orderFlags.set(order);
+	std::string s1, s2;
+	drain::StringTools::split2(order.str, s1, s2, ':');
+	order.criterion.set(s1);
+	order.operation.set(s2);
+	order.str = order.criterion.str() + ':' + order.operation.str();
+
+		//orderFlags.set(order);
+
 	//mout.special(__FILE__, *this);
 }
 
@@ -268,35 +288,35 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathConta
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	if (orderFlags.isSet(TIME)){
-		mout.special(__FUNCTION__, ':', orderFlags);
+	if (order.criterion == DataOrder::DATA){
+		// = default
+		getMainPaths(src, pathContainer);
+	}
+	else if (order.criterion == DataOrder::TIME){
+		mout.special(__FUNCTION__, ':', order.str);
 		std::map<std::string,ODIMPath> m;
 		getPathsByTime(src, m);
-		//pruneMap(m, orderFlags.isSet(MAX));
-		//return map2list(m, pathContainer, false);
 		for (const auto & entry: m){
 			//mout.special(entry);
 			mout.debug("including: ", entry.first, '\t', entry.second);
 			pathContainer.push_back(entry.second);
-			//addPath4(pathContainer, entry.first, entry.second);
 		}
 	}
-	else if (orderFlags.isSet(ELANGLE)){
-		mout.special(__FUNCTION__, ':', orderFlags);
+	else if (order.criterion == DataOrder::ELANGLE){
+		mout.special(__FUNCTION__, ':', order.str);
 		std::map<double,ODIMPath> m;
 		getPathsByElangle(src, m);
-		//pruneMap(m, orderFlags.isSet(MAX));
 		for (const auto & entry: m){
 			mout.debug("including: ", entry.first, '\t', entry.second);
 			pathContainer.push_back(entry.second);
-			//addPath4(pathContainer, entry.first, entry.second);
 		}
+		// break;
+		// default:
+		// throw std::runtime_error(std::string(__FILE__) + " unimplemented ENUM value: " + order.toStr());
 	}
 	else {
-		getMainPaths(src, pathContainer);
+		throw std::runtime_error(std::string(__FILE__) + " unimplemented ENUM value: " + order.str);
 	}
-
-	//return true;
 }
 
 
@@ -304,12 +324,14 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathConta
 void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	if (orderFlags.isSet(TIME)){
+	if (order.criterion == DataOrder::TIME){
+		//if (orderFlags.isSet(TIME)){
 		mout.warn("map keys sorted by ELANGLE, yet TIME requested");
 	}
 
 	getMainPaths(src, paths, false);
-	pruneMap(paths, orderFlags.isSet(MAX));
+	// pruneMap(paths, orderFlags.isSet(MAX));
+	pruneMap(paths, order.operation == DataOrder::MAX);
 
 
 }
@@ -317,12 +339,14 @@ void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPa
 void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	if (orderFlags.isSet(ELANGLE)){
+	//if (orderFlags.isSet(ELANGLE)){
+	if (order.criterion == DataOrder::ELANGLE){
 		mout.warn("map keys sorted by TIME, yet ELANGLE requested");
 	}
 
 	getMainPaths(src, paths, false);
-	pruneMap(paths, orderFlags.isSet(MAX));
+	//pruneMap(paths, orderFlags.isSet(MAX));
+	pruneMap(paths, order.operation == DataOrder::MAX);
 
 }
 

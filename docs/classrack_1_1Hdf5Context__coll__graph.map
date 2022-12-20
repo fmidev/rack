@@ -1,7 +1,7 @@
 <map id="Hdf5Context" name="Hdf5Context">
-<area shape="rect" id="node1" title=" " alt="" coords="286,1141,390,1168"/>
+<area shape="rect" id="node1" title=" " alt="" coords="290,1141,394,1168"/>
 <area shape="rect" id="node2" href="$classdrain_1_1Tree.html" title=" " alt="" coords="405,993,567,1049"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map." alt="" coords="219,904,339,931"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Tree.html" title="Unordered tree based on std::map." alt="" coords="222,904,342,931"/>
 <area shape="rect" id="node4" href="$structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image)." alt="" coords="447,904,525,931"/>
 <area shape="rect" id="node5" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="379,815,483,841"/>
 <area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="293,739,466,765"/>

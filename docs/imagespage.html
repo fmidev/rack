@@ -74,9 +74,9 @@ $(function() {
 </li>
 <li class="level1"><a href="#palette">Creating coloured images</a></li>
 <li class="level1"><a href="#transparency">Adding transparency</a></li>
-<li class="level1"><a href="#autotoc_md43">A scalar threshold, under which all the values will be transparent.</a></li>
-<li class="level1"><a href="#autotoc_md44">A range \c {min}:{max} inside which full transparency (at \c {min} ) will linearly change to opaque (at \c {max} ).</a></li>
-<li class="level1"><a href="#autotoc_md45">A \e functor for more flexibly defining the transparency (documentation to appear)</a></li>
+<li class="level1"><a href="#autotoc_md47">A scalar threshold, under which all the values will be transparent.</a></li>
+<li class="level1"><a href="#autotoc_md48">A range \c {min}:{max} inside which full transparency (at \c {min} ) will linearly change to opaque (at \c {max} ).</a></li>
+<li class="level1"><a href="#autotoc_md49">A \e functor for more flexibly defining the transparency (documentation to appear)</a></li>
 <li class="level1"><a href="#drainimage">Image processing commands</a><ul><li class="level2"><a href="#howimages">How it works internally</a></li>
 <li class="level2"><a href="#imageOps">List of image operators</a></li>
 </ul>
@@ -197,11 +197,11 @@ Adding transparency</h1>
 <div class="line">    undetect=0 [opacity of &#39;undetect&#39; pixels]</div>
 <div class="line">    nodata=1 [opacity of &#39;nodata&#39; pixels]</div>
 </div><!-- fragment --><p>The first parameter, <code>threshold</code> defines the values to be transparent in the image. It can be one of the following </p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md47"></a>
 A scalar threshold, under which all the values will be transparent.</h1>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 A range \c {min}:{max} inside which full transparency (at \c {min} ) will linearly change to opaque (at \c {max} ).</h1>
-<h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 A \e functor for more flexibly defining the transparency (documentation to appear)</h1>
 <p>By default, it is handled as a physical values, like +5 (dBZ). This can be changed with <code>&ndash;iPhysical false</code> which uses interval [0,1] normalized by actual range of the current storage type, like [0,255] or [0,65535]. Instead of a threshold, a colon-separated range (eg. 5:15) can be given, yielding a smooth transition from transparent to opaque. By default, <code>undetect</code> is transparent and <code>nodata</code> is opaque. The following command creates a Cartesian image, adds palette and transparency to the image and stores the results in image files</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># Using physical threshold of 5dBZ (implicit --iPhysical true)</span></div>
@@ -338,7 +338,7 @@ List of image operators</h2>
 <div class="line">--iMultiThreshold  &lt;range&gt;,&lt;min&gt;,&lt;max&gt;</div>
 <div class="line">  Change values outside given range to target.min and target.max</div>
 <div class="line">--iNegate  </div>
-<div class="line">  ../drain/imageops/ImageOpBank.h</div>
+<div class="line">  /home/mpeura/eclipse-workspace/rack/drain/imageops/ImageOpBank.h</div>
 <div class="line">--iProduct  &lt;functor&gt;</div>
 <div class="line">  Computes the dot product of pixel vectors. Post-scaling with desired functor.</div>
 <div class="line">--iQualityMixer  &lt;coeff&gt;</div>

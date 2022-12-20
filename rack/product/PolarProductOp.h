@@ -78,7 +78,10 @@ public:
 		aboveSeaLevel = true;
 		this->odim.product = "PPROD"; // NEW
 		//this->odim.object  = "PVOL"; // consider!
-		dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
+		//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
+
+		dataSelector.order.criterion = DataOrder::ELANGLE;
+		dataSelector.order.operation = DataOrder::MIN;
 	};
 
 

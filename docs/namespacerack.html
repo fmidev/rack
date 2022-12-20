@@ -160,7 +160,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianSpread.html">CartesianSpread</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianSun.html">CartesianSun</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">static RackLetAdapter&lt;CompositeExtract&gt; cExtract("cExtract");  <a href="classrack_1_1CartesianSun.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a single-radar Cartesian data set (2D data of both quantity and quality).  <a href="classrack_1_1CartesianSun.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianTime.html">CartesianTime</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,6 +198,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdFormatOut.html">CmdFormatOut</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdGeoTiff.html">CmdGeoTiff</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdHdf5Test.html">CmdHdf5Test</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdHelpExample.html">CmdHelpExample</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -327,6 +329,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataMarker.html">DataMarker</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple class marking true data with a given constant value, typically a CLASS label.  <a href="classrack_1_1DataMarker.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1DataOrder.html">DataOrder</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html">DataSelector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1DataSelector.html#details">More...</a><br /></td></tr>
@@ -921,6 +925,9 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
 <p>This file is part of AnoRack, radar data processing utilities for C++.</p>
 <p>Created on: Mar 7, 2011 Author: mpeura</p>
 <p>#include "drain/prog/Command.h"</p>
+<p>Version 6.81 Version 6.8 &ndash; <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>: added order: MIN|MAX:DATA|ELANGLE|TIME</p>
+<p>Version 6.7 &ndash; Bug fix: cReset</p>
+<p>Version 6.6 &ndash; Thread support for / small / commands /</p>
 <p>Version 6.51 &ndash; Strip single and double quotes in scripting &ndash; Added inputFileBasename to status</p>
 <p>Version 6.5 &ndash; More GeoTiff resiliency in metadata errors &ndash; Caster support for std::vector suppressed (resizing may change pointer address)</p>
 <p>Version 6.49 &ndash; Bug fix: H5Aread / variable-length strings</p>

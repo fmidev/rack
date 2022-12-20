@@ -76,12 +76,17 @@ $(function() {
 <div class="title">Flags Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings.">Flagger</a> that has an own dictionary and value.  
+ <a href="classdrain_1_1Flags.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="Flags_8h_source.html">Flags.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Flags:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Flags__inherit__graph.png" border="0" usemap="#Flags_inherit__map" alt="Inheritance graph"/></div>
 <map name="Flags_inherit__map" id="Flags_inherit__map">
-<area shape="rect" title=" " alt="" coords="30,155,87,181"/>
+<area shape="rect" title="Flagger that has an own dictionary and value." alt="" coords="30,155,87,181"/>
 <area shape="rect" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="23,80,94,107"/>
 <area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,5,112,32"/>
 </map>
@@ -91,9 +96,13 @@ Collaboration diagram for Flags:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Flags__coll__graph.png" border="0" usemap="#Flags_coll__map" alt="Collaboration graph"/></div>
 <map name="Flags_coll__map" id="Flags_coll__map">
-<area shape="rect" title=" " alt="" coords="30,155,87,181"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="23,80,94,107"/>
-<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,5,112,32"/>
+<area shape="rect" title="Flagger that has an own dictionary and value." alt="" coords="74,456,131,483"/>
+<area shape="rect" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="67,380,138,407"/>
+<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,291,112,317"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="136,291,253,317"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="147,157,243,184"/>
+<area shape="rect" href="structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="131,81,259,108"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="119,5,271,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -111,6 +120,10 @@ virtual dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDi
 <tr class="memitem:ad17cd16ab2de7a2c2de373c219a27a71"><td class="memItemLeft" align="right" valign="top"><a id="ad17cd16ab2de7a2c2de373c219a27a71"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Flags</b> (const <a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;flags)</td></tr>
 <tr class="separator:ad17cd16ab2de7a2c2de373c219a27a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5966252aa8d2863a2fb78ea88a1cfa7f"><td class="memItemLeft" align="right" valign="top"><a id="a5966252aa8d2863a2fb78ea88a1cfa7f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#a5966252aa8d2863a2fb78ea88a1cfa7f">Flags</a> (std::initializer_list&lt; dict_t::entry_t &gt; d, char separator=',')</td></tr>
+<tr class="memdesc:a5966252aa8d2863a2fb78ea88a1cfa7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize with {{"first", 123}, {"second", 456}}. <br /></td></tr>
+<tr class="separator:a5966252aa8d2863a2fb78ea88a1cfa7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0805c15c0a5317518b21d673cccaae5"><td class="memTemplParams" colspan="2"><a id="ad0805c15c0a5317518b21d673cccaae5"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ad0805c15c0a5317518b21d673cccaae5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flags.html">Flags</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags.html#ad0805c15c0a5317518b21d673cccaae5">operator=</a> (const T &amp;x)</td></tr>
@@ -120,18 +133,19 @@ template&lt;class T &gt; </td></tr>
 <tr class="memdesc:aa6b3c5a83ec4c33dbb3e76487dc43bd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new entry in the dictionary.  <a href="classdrain_1_1Flags.html#aa6b3c5a83ec4c33dbb3e76487dc43bd9">More...</a><br /></td></tr>
 <tr class="separator:aa6b3c5a83ec4c33dbb3e76487dc43bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Flagger"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Flagger')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Flagger.html">Flagger</a></td></tr>
+<tr class="memitem:a3218e9d84e93ec420112f1fd40058333 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a3218e9d84e93ec420112f1fd40058333"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Flagger</b> (const dict_t &amp;dict, char separator=0)</td></tr>
+<tr class="separator:a3218e9d84e93ec420112f1fd40058333 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15956d185a2c1eb23fb09dcd7e27b795 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a15956d185a2c1eb23fb09dcd7e27b795"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Flagger</b> (value_t &amp;value, const dict_t &amp;dict, char separator=0)</td></tr>
 <tr class="separator:a15956d185a2c1eb23fb09dcd7e27b795 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf95682b051fa28f61ccbd5f41471e11 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="aaf95682b051fa28f61ccbd5f41471e11"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Flagger</b> (const <a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;flags)</td></tr>
 <tr class="separator:aaf95682b051fa28f61ccbd5f41471e11 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1342c8429782dcdf755dd52f88390cd inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#aa1342c8429782dcdf755dd52f88390cd">set</a> (value_t x)</td></tr>
-<tr class="memdesc:aa1342c8429782dcdf755dd52f88390cd inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set desired flags. Does not reset any flag.  <a href="classdrain_1_1Flagger.html#aa1342c8429782dcdf755dd52f88390cd">More...</a><br /></td></tr>
-<tr class="separator:aa1342c8429782dcdf755dd52f88390cd inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04a908620220161dda840273ffef4ea3 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#a04a908620220161dda840273ffef4ea3">set</a> (const key_t &amp;key)</td></tr>
-<tr class="memdesc:a04a908620220161dda840273ffef4ea3 inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set desired flags. Does not reset any flag.  <a href="classdrain_1_1Flagger.html#a04a908620220161dda840273ffef4ea3">More...</a><br /></td></tr>
-<tr class="separator:a04a908620220161dda840273ffef4ea3 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a525bb77eef17deef6220954686b83ad9 inherit pub_methods_classdrain_1_1Flagger"><td class="memTemplParams" colspan="2"><a id="a525bb77eef17deef6220954686b83ad9"></a>
+template&lt;typename T , typename ... TT&gt; </td></tr>
+<tr class="memitem:a525bb77eef17deef6220954686b83ad9 inherit pub_methods_classdrain_1_1Flagger"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const T &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="separator:a525bb77eef17deef6220954686b83ad9 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a7c9971853aafd3448f46de97cf8ca inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a87a7c9971853aafd3448f46de97cf8ca"></a>
 <a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#a87a7c9971853aafd3448f46de97cf8ca">unset</a> (value_t x)</td></tr>
 <tr class="memdesc:a87a7c9971853aafd3448f46de97cf8ca inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag. <br /></td></tr>
@@ -143,13 +157,13 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:afad2b6f9dfaf92a6819c0149886df65c inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#afad2b6f9dfaf92a6819c0149886df65c">reset</a> ()</td></tr>
 <tr class="memdesc:afad2b6f9dfaf92a6819c0149886df65c inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag.  <a href="classdrain_1_1Flagger.html#afad2b6f9dfaf92a6819c0149886df65c">More...</a><br /></td></tr>
 <tr class="separator:afad2b6f9dfaf92a6819c0149886df65c inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6052d3e828d958f3199abbbadb77a7c inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="ad6052d3e828d958f3199abbbadb77a7c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#ad6052d3e828d958f3199abbbadb77a7c">isSet</a> (value_t x)</td></tr>
-<tr class="memdesc:ad6052d3e828d958f3199abbbadb77a7c inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag. <br /></td></tr>
-<tr class="separator:ad6052d3e828d958f3199abbbadb77a7c inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab865d03b30fbaa64645600014999a57 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="aab865d03b30fbaa64645600014999a57"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const key_t &amp;key)</td></tr>
-<tr class="separator:aab865d03b30fbaa64645600014999a57 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a7195256a6cc29e07eebac975206ec inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="ab4a7195256a6cc29e07eebac975206ec"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#ab4a7195256a6cc29e07eebac975206ec">isSet</a> (value_t x) const</td></tr>
+<tr class="memdesc:ab4a7195256a6cc29e07eebac975206ec inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unset desired flags. Does not set any flag. <br /></td></tr>
+<tr class="separator:ab4a7195256a6cc29e07eebac975206ec inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3c7d0c2d658d33aec97f085608021c7 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="ae3c7d0c2d658d33aec97f085608021c7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const key_t &amp;key) const</td></tr>
+<tr class="separator:ae3c7d0c2d658d33aec97f085608021c7 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31b72054b72de0183a7d7aba6c06a368 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a31b72054b72de0183a7d7aba6c06a368"></a>
 <a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;x)</td></tr>
 <tr class="separator:a31b72054b72de0183a7d7aba6c06a368 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,12 +180,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const key_
 <tr class="memitem:abe9f33dd1ee753ca61aef2db8a2f3b2e inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#abe9f33dd1ee753ca61aef2db8a2f3b2e">assign</a> (const std::string &amp;params)</td></tr>
 <tr class="memdesc:abe9f33dd1ee753ca61aef2db8a2f3b2e inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set flags, like 'FILEOK=1,WARN=0'.  <a href="classdrain_1_1Flagger.html#abe9f33dd1ee753ca61aef2db8a2f3b2e">More...</a><br /></td></tr>
 <tr class="separator:abe9f33dd1ee753ca61aef2db8a2f3b2e inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3888dcd59dd5acd1ca5b9bee4c2e252a inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a3888dcd59dd5acd1ca5b9bee4c2e252a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> () const</td></tr>
-<tr class="separator:a3888dcd59dd5acd1ca5b9bee4c2e252a inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40e93938c89b3d3ec28eebcc7314a54a inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a40e93938c89b3d3ec28eebcc7314a54a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator value_t</b> () const</td></tr>
 <tr class="separator:a40e93938c89b3d3ec28eebcc7314a54a inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67b76affb3b5d35fa419ac234144038b inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a67b76affb3b5d35fa419ac234144038b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="separator:a67b76affb3b5d35fa419ac234144038b inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3888dcd59dd5acd1ca5b9bee4c2e252a inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a3888dcd59dd5acd1ca5b9bee4c2e252a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> () const</td></tr>
+<tr class="separator:a3888dcd59dd5acd1ca5b9bee4c2e252a inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af974cd1e17796eba71dd4aa608121d71 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top">value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#af974cd1e17796eba71dd4aa608121d71">getValue</a> (const key_t &amp;key, char separator=0) const</td></tr>
 <tr class="memdesc:af974cd1e17796eba71dd4aa608121d71 inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.  <a href="classdrain_1_1Flagger.html#af974cd1e17796eba71dd4aa608121d71">More...</a><br /></td></tr>
 <tr class="separator:af974cd1e17796eba71dd4aa608121d71 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,9 +200,12 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#aa23ecdf1abac9da405d6d818837aa77a">getKeys</a> (char separator=0) const</td></tr>
 <tr class="memdesc:aa23ecdf1abac9da405d6d818837aa77a inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits. <br /></td></tr>
 <tr class="separator:aa23ecdf1abac9da405d6d818837aa77a inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b72a83d80ec872be07fcf18f46d5f6 inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a95b72a83d80ec872be07fcf18f46d5f6"></a>
+const dict_t::keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b> () const</td></tr>
+<tr class="separator:a95b72a83d80ec872be07fcf18f46d5f6 inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22e153da213acaf8852c61ad825866ab inherit pub_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a22e153da213acaf8852c61ad825866ab"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#a22e153da213acaf8852c61ad825866ab">keysToStream</a> (std::ostream &amp;ostr=std::cout, char separator=0) const</td></tr>
-<tr class="memdesc:a22e153da213acaf8852c61ad825866ab inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bub risky: value_t ~char ! <br /></td></tr>
+<tr class="memdesc:a22e153da213acaf8852c61ad825866ab inherit pub_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">risky: value_t ~char ! <br /></td></tr>
 <tr class="separator:a22e153da213acaf8852c61ad825866ab inherit pub_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49571bd761a4485e9414209c5d7d2fc9 inherit pub_methods_classdrain_1_1Flagger"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a49571bd761a4485e9414209c5d7d2fc9 inherit pub_methods_classdrain_1_1Flagger"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#a49571bd761a4485e9414209c5d7d2fc9">exportStatus</a> (std::map&lt; std::string, T &gt; &amp;statusMap) const</td></tr>
@@ -194,12 +214,13 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a427b02c7027610cd055dee2fb8c23f78"><td class="memItemLeft" align="right" valign="top"><a id="a427b02c7027610cd055dee2fb8c23f78"></a>
-value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ownValue</b></td></tr>
-<tr class="separator:a427b02c7027610cd055dee2fb8c23f78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c3650ff55123418b4b1dad3208bbb35"><td class="memItemLeft" align="right" valign="top"><a id="a5c3650ff55123418b4b1dad3208bbb35"></a>
 dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>ownDictionary</b></td></tr>
 <tr class="separator:a5c3650ff55123418b4b1dad3208bbb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Flagger"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Flagger')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Flagger.html">Flagger</a></td></tr>
+<tr class="memitem:aee152fed206ccbe0fa87dcf0e394099f inherit pro_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="aee152fed206ccbe0fa87dcf0e394099f"></a>
+dict_t::keylist_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyList</b></td></tr>
+<tr class="separator:aee152fed206ccbe0fa87dcf0e394099f inherit pro_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -231,21 +252,40 @@ static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a 
 <tr class="memdesc:acd41b9563cddaab78d9ca8dedb3731c2 inherit pub_static_methods_classdrain_1_1FlagResolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new entry in the dictionary.  <a href="classdrain_1_1FlagResolver.html#acd41b9563cddaab78d9ca8dedb3731c2">More...</a><br /></td></tr>
 <tr class="separator:acd41b9563cddaab78d9ca8dedb3731c2 inherit pub_static_methods_classdrain_1_1FlagResolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1Flagger"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1Flagger')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1Flagger.html">Flagger</a></td></tr>
-<tr class="memitem:a8bccdb4bdd6ae3540aba464a9d67ee89 inherit pub_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a8bccdb4bdd6ae3540aba464a9d67ee89"></a>
-const dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dictionary</b></td></tr>
-<tr class="separator:a8bccdb4bdd6ae3540aba464a9d67ee89 inherit pub_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427b02c7027610cd055dee2fb8c23f78 inherit pub_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a427b02c7027610cd055dee2fb8c23f78"></a>
+value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ownValue</b></td></tr>
+<tr class="separator:a427b02c7027610cd055dee2fb8c23f78 inherit pub_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fd9004a5f5ac5493e147e4525f936e4 inherit pub_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a6fd9004a5f5ac5493e147e4525f936e4"></a>
 value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <tr class="separator:a6fd9004a5f5ac5493e147e4525f936e4 inherit pub_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bccdb4bdd6ae3540aba464a9d67ee89 inherit pub_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a8bccdb4bdd6ae3540aba464a9d67ee89"></a>
+const dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>dictionary</b></td></tr>
+<tr class="separator:a8bccdb4bdd6ae3540aba464a9d67ee89 inherit pub_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a6989953791434c8ea982054551c9e154"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classdrain_1_1Flagger"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1Flagger')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1Flagger.html">Flagger</a></td></tr>
+<tr class="memitem:af00ddb1b66a7c57f1fb1c2aefc0ec2ff inherit pub_static_attribs_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="af00ddb1b66a7c57f1fb1c2aefc0ec2ff"></a>
+static const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flagDictLayout</b></td></tr>
+<tr class="separator:af00ddb1b66a7c57f1fb1c2aefc0ec2ff inherit pub_static_attribs_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classdrain_1_1FlagResolver"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1FlagResolver')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1FlagResolver.html">FlagResolver</a></td></tr>
 <tr class="memitem:a944b89b2111c6cd59f475bf1cbecebd6 inherit pub_static_attribs_classdrain_1_1FlagResolver"><td class="memItemLeft" align="right" valign="top"><a id="a944b89b2111c6cd59f475bf1cbecebd6"></a>
 static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</b> = ~FlagResolver::value_t(0)</td></tr>
 <tr class="separator:a944b89b2111c6cd59f475bf1cbecebd6 inherit pub_static_attribs_classdrain_1_1FlagResolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classdrain_1_1Flagger"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1Flagger')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1Flagger.html">Flagger</a></td></tr>
+<tr class="memitem:a08c925da45921940a0919d540979ae5e inherit pro_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="a08c925da45921940a0919d540979ae5e"></a>
+<a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> ()</td></tr>
+<tr class="separator:a08c925da45921940a0919d540979ae5e inherit pro_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc68c8fbcc7b18d316a451124da885a0 inherit pro_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a id="acc68c8fbcc7b18d316a451124da885a0"></a>
+<a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>deepSet</b> (value_t x)</td></tr>
+<tr class="separator:acc68c8fbcc7b18d316a451124da885a0 inherit pro_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884fed97844ec3767a52fd730f5dd87b inherit pro_methods_classdrain_1_1Flagger"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Flagger.html">Flagger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flagger.html#a884fed97844ec3767a52fd730f5dd87b">deepSet</a> (const key_t &amp;key)</td></tr>
+<tr class="memdesc:a884fed97844ec3767a52fd730f5dd87b inherit pro_methods_classdrain_1_1Flagger"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set desired flags. Does not reset any flag.  <a href="classdrain_1_1Flagger.html#a884fed97844ec3767a52fd730f5dd87b">More...</a><br /></td></tr>
+<tr class="separator:a884fed97844ec3767a52fd730f5dd87b inherit pro_methods_classdrain_1_1Flagger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings.">Flagger</a> that has an own dictionary and value. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa6b3c5a83ec4c33dbb3e76487dc43bd9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6b3c5a83ec4c33dbb3e76487dc43bd9">&#9670;&nbsp;</a></span>add()</h2>
 

@@ -120,6 +120,12 @@ typedef std::pair&lt; K, V * &gt;&#160;</td><td class="memItemRight" valign="bot
 <tr class="memitem:a4e6c213264a3475ee0a19f6d226a8acb inherit pub_types_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a4e6c213264a3475ee0a19f6d226a8acb"></a>
 typedef std::list&lt; entry_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>container_t</b></td></tr>
 <tr class="separator:a4e6c213264a3475ee0a19f6d226a8acb inherit pub_types_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff2181543195551948a0190048ab746 inherit pub_types_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a3ff2181543195551948a0190048ab746"></a>
+typedef std::list&lt; key_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>keylist_t</b></td></tr>
+<tr class="separator:a3ff2181543195551948a0190048ab746 inherit pub_types_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89e9dff916c879412f863b803e97aa95 inherit pub_types_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a89e9dff916c879412f863b803e97aa95"></a>
+typedef std::list&lt; value_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>valuelist_t</b></td></tr>
+<tr class="separator:a89e9dff916c879412f863b803e97aa95 inherit pub_types_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -139,6 +145,9 @@ const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKey</b> (
 <tr class="memitem:af6637a2f715177b112bbc63a784d56df inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="af6637a2f715177b112bbc63a784d56df"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Dictionary2</b> (const <a class="el" href="classdrain_1_1Dictionary2.html">Dictionary2</a> &amp;d)</td></tr>
 <tr class="separator:af6637a2f715177b112bbc63a784d56df inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42eb9dab01c503b4f3dc4410a05bfb3a inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a42eb9dab01c503b4f3dc4410a05bfb3a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Dictionary2</b> (std::initializer_list&lt; entry_t &gt; d)</td></tr>
+<tr class="separator:a42eb9dab01c503b4f3dc4410a05bfb3a inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fab103344aa7984409c1ed450585f3b inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a1fab103344aa7984409c1ed450585f3b"></a>
 entry_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const K &amp;key, const V * &amp;value)</td></tr>
 <tr class="separator:a1fab103344aa7984409c1ed450585f3b inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,18 +169,18 @@ const V * &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</
 <tr class="memitem:aae23ad73d13c217eda74c7e6c01c934c inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="aae23ad73d13c217eda74c7e6c01c934c"></a>
 const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKey</b> (const V * &amp;value) const</td></tr>
 <tr class="separator:aae23ad73d13c217eda74c7e6c01c934c inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc48523802bc8972b65bf9dca496e3ca inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="adc48523802bc8972b65bf9dca496e3ca"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout, char separator=0) const</td></tr>
-<tr class="separator:adc48523802bc8972b65bf9dca496e3ca inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbdee19f4ed637e649ab3902e8c07323 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="acbdee19f4ed637e649ab3902e8c07323"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (char separator=0) const</td></tr>
-<tr class="separator:acbdee19f4ed637e649ab3902e8c07323 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52ecff670eb4649927e70ea84a860661 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a52ecff670eb4649927e70ea84a860661"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>keysToStream</b> (std::ostream &amp;ostr=std::cout, char separator=0) const</td></tr>
-<tr class="separator:a52ecff670eb4649927e70ea84a860661 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60f63acfb9a1135b003b3d8e4d8ca4a4 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a60f63acfb9a1135b003b3d8e4d8ca4a4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>valuesToStream</b> (std::ostream &amp;ostr=std::cout, char separator=0) const</td></tr>
-<tr class="separator:a60f63acfb9a1135b003b3d8e4d8ca4a4 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd824e353b25e080dcc4ca54a74884f inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a2dd824e353b25e080dcc4ca54a74884f"></a>
+const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> () const</td></tr>
+<tr class="separator:a2dd824e353b25e080dcc4ca54a74884f inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a273787f0d32b87fd874d1b33c50a454d inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a273787f0d32b87fd874d1b33c50a454d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> (keylist_t &amp;l) const</td></tr>
+<tr class="separator:a273787f0d32b87fd874d1b33c50a454d inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04e372e66858b33270a8b489459c07e2 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a04e372e66858b33270a8b489459c07e2"></a>
+const valuelist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValues</b> () const</td></tr>
+<tr class="separator:a04e372e66858b33270a8b489459c07e2 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a841fbe7c18580cb32177cbc1337ef7f6 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a841fbe7c18580cb32177cbc1337ef7f6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getValues</b> (keylist_t &amp;l) const</td></tr>
+<tr class="separator:a841fbe7c18580cb32177cbc1337ef7f6 inherit pub_methods_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -179,6 +188,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a6989953791434c8ea982054551c9e154"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Dictionary2"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Dictionary2')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Dictionary2.html">Dictionary2&lt; K, V * &gt;</a></td></tr>
+<tr class="memitem:accb7d545cfba167018237fc65b3b50cf inherit pro_attribs_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="accb7d545cfba167018237fc65b3b50cf"></a>
+keylist_t&#160;</td><td class="memItemRight" valign="bottom"><b>keyList</b></td></tr>
+<tr class="separator:accb7d545cfba167018237fc65b3b50cf inherit pro_attribs_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1907a123edee1c59378deba15427f53d inherit pro_attribs_classdrain_1_1Dictionary2"><td class="memItemLeft" align="right" valign="top"><a id="a1907a123edee1c59378deba15427f53d"></a>
+valuelist_t&#160;</td><td class="memItemRight" valign="bottom"><b>valueList</b></td></tr>
+<tr class="separator:a1907a123edee1c59378deba15427f53d inherit pro_attribs_classdrain_1_1Dictionary2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class K, class V&gt;<br />

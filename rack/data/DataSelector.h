@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Range.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/RegExp.h"
+#include "drain/util/Sprinter.h"
 
 #include "drain/util/Variable.h"
 #include "ODIM.h"
@@ -49,6 +50,46 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 namespace rack {
+
+
+//struct DataOrder : public std::pair<drain::Fladdict<Crit>, drain::Fladdict<Oper> > {
+struct DataOrder { //: public drain::BeanLike {
+
+	// typedef std::pair<drain::Fladdict<Crit>, drain::Fladdict<Oper> > pair_t;
+	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
+	enum Oper {MIN, MAX};
+
+	drain::Fladdict<Crit> criterion;
+	drain::Fladdict<Oper> operation;
+
+	/*
+	inline DataOrder() : drain::BeanLike(__FUNCTION__){
+		parameters.separator = ':';
+		parameters.link("criterion", s); // drain::sprinter(drain::Fladdict<Crit>::dict.getKeys()).str()+":"+drain::Fladdict<Oper>::dict.getKeys()).str());
+		//parameters.link("operation", operation., drain::sprinter(drain::Fladdict<Oper>::dict.getKeys()).str());
+	};
+	*/
+
+
+	/*
+	inline
+	std::string toStr() const {
+		//Crit::DATA;
+		return ""; //first.str() + ':' + second.str();
+	}
+	*/
+
+
+	std::string str;
+};
+
+/*
+template <>
+inline
+std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const DataOrder & x, const drain::SprinterLayout & layout){
+        return drain::SprinterBase::toStream(ostr, (const DataOrder::pair_t &)x, layout);
+}
+*/
 
 
 
@@ -71,7 +112,7 @@ public:
 	// DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);
 
 	template<typename ... T>
-	DataSelector(const ODIMPathElem & elem, const T &... rest): BeanLike(__FUNCTION__), orderFlags(orderDict,':') {
+	DataSelector(const ODIMPathElem & elem, const T &... rest): BeanLike(__FUNCTION__){ //, orderFlags(orderDict,':') {
 		init();
 		pathMatcher.setElems(elem, rest...);
 		updateBean();
@@ -79,7 +120,7 @@ public:
 
 	// Either this or previous is unneeded?
 	template<typename ... T>
-	DataSelector(ODIMPathElem::group_t e, const T &... rest): BeanLike(__FUNCTION__), orderFlags(orderDict,':') {
+	DataSelector(ODIMPathElem::group_t e, const T &... rest): BeanLike(__FUNCTION__){ // , orderFlags(orderDict,':') {
 		init();
 		pathMatcher.setElems(e, rest...);
 		updateBean();
@@ -144,18 +185,20 @@ public:
 	/// The minimum and maximum elevation angle (applicable with volume scan data only).
 	drain::Range<double> elangle;
 
+	mutable DataOrder order;
+	/*
 	std::string  order;
-
-	static
-	const drain::Flagger::dict_t orderDict;
+	drain::Fladdict<Oper> orderOper;
+	drain::Fladdict<Crit> orderCrit;
+	*/
 
 // Debugging...
 // protected:
 
-	typedef enum {DEFAULT=0,MIN=1,MAX=2,DATA=4,TIME=8,ELANGLE=16} orderEnum;
+	//typedef enum {DEFAULT=0,MIN=1,MAX=2,DATA=4,TIME=8,ELANGLE=16} orderEnum;
 
-	mutable
-	drain::Flagger orderFlags; //(0, orderDict, ':');
+	//mutable
+	//drain::Flagger orderFlags; //(0, orderDict, ':');
 
 	/// Reject or accept VRAD(VH)
 	int dualPRF;
@@ -679,7 +722,8 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 inline
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 	ostr << selector.getParameters() << ", matcher=" << selector.pathMatcher;
-	ostr << ", orderFlags=" << selector.orderFlags;
+	//ostr << ", orderFlags=" << selector.orderFlags;
+	ostr << ", order=" << selector.order.str;
 	return ostr;
 }
 

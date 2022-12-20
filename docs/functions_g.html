@@ -161,9 +161,6 @@ $(function() {
 <li>getBuffer()
 : <a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a03b7df824bced12df8bf940ab18f0717">ImageFrame</a>
 </li>
-<li>getCartesianHi5()
-: <a class="el" href="classrack_1_1Hdf5Context.html#ae962c05e482c7d0a648eaff3b724cb0f">Hdf5Context</a>
-</li>
 <li>getChannelCount()
 : <a class="el" href="classdrain_1_1image_1_1ChannelGeometry.html#aab5dcc20acc42f6d5aff38120c4538d7">ChannelGeometry</a>
 , <a class="el" href="classdrain_1_1image_1_1Geometry.html#aab5dcc20acc42f6d5aff38120c4538d7">Geometry</a>
@@ -196,6 +193,9 @@ $(function() {
 </li>
 <li>getComplete()
 : <a class="el" href="classdrain_1_1image_1_1ImageOpBank.html#a0ba11b0aeb21ca2bbb767948eed807a3">ImageOpBank</a>
+</li>
+<li>getComposite()
+: <a class="el" href="classrack_1_1RackContext.html#a201eeac6e1fe500cd66158ce304bbccf">RackContext</a>
 </li>
 <li>getContext()
 : <a class="el" href="classdrain_1_1Contextual.html#aad9d40ff731f18d8a1899d52a1fc1cb5">Contextual</a>
@@ -323,7 +323,10 @@ $(function() {
 : <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a1e0117697a26185221539c1f73e043b2">PaletteEntry</a>
 </li>
 <li>getHi5()
-: <a class="el" href="classrack_1_1Hdf5Context.html#a48198e5d2ca0de1aa69b455c1bb50553">Hdf5Context</a>
+: <a class="el" href="classrack_1_1RackContext.html#a7f0f77e62156c0a5d378c6ccc7db47e9">RackContext</a>
+</li>
+<li>getHi5Defunct()
+: <a class="el" href="classrack_1_1Hdf5Context.html#a410752bfe861c9d60fb5c1911897f3f9">Hdf5Context</a>
 </li>
 <li>getHorizontality()
 : <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html#ac0ff990423c4b8d1c0ba86c417be22b7">SegmentStatistics</a>
@@ -337,12 +340,9 @@ $(function() {
 <li>getInMin()
 : <a class="el" href="classdrain_1_1Histogram.html#a2b7fb7c25ff953db521adf413cf18909">Histogram</a>
 </li>
-<li>getInnerPaths()
-: <a class="el" href="classrack_1_1DataSelector.html#aad51b07c7d70efb077db578ac7cadd36">DataSelector</a>
-</li>
 <li>getKey()
 : <a class="el" href="classdrain_1_1Registry.html#a5002a49157c6b94c21cdbb86c4634afc">Registry&lt; T &gt;</a>
-, <a class="el" href="classrack_1_1ODIMPathElem.html#a7fa792978358c8d0fc81add5ccb4cda7">ODIMPathElem</a>
+, <a class="el" href="classrack_1_1ODIMPathElem.html#a4abc4f1bbf3f407499a2e93f40e1832b">ODIMPathElem</a>
 </li>
 <li>getKeyList()
 : <a class="el" href="classdrain_1_1SmartMap.html#a8df04dbdd0242338d5b4aa4cfbcc6d93">SmartMap&lt; T &gt;</a>
@@ -358,8 +358,11 @@ $(function() {
 <li>getLastPath()
 : <a class="el" href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">DataSelector</a>
 </li>
+<li>getMainPaths()
+: <a class="el" href="classrack_1_1DataSelector.html#a79c42c6677e0a2d4ab41d881eb20d091">DataSelector</a>
+</li>
 <li>getMap()
-: <a class="el" href="classdrain_1_1Registry.html#ab9056894a7cc9a645cca06b67252f917">Registry&lt; T &gt;</a>
+: <a class="el" href="classdrain_1_1Registry.html#aec212d2efc6953ef797b2db678e7ec43">Registry&lt; T &gt;</a>
 , <a class="el" href="classdrain_1_1SmartMap.html#aec212d2efc6953ef797b2db678e7ec43">SmartMap&lt; T &gt;</a>
 </li>
 <li>getMax()
@@ -432,15 +435,21 @@ $(function() {
 <li>getParameter()
 : <a class="el" href="classdrain_1_1BeanLike.html#a423e8ba3122be02faded1df37a6e9ab2">BeanLike</a>
 </li>
-<li>getPath3()
-: <a class="el" href="classrack_1_1DataSelector.html#aee6c7d86dfba9692c139623bfffef5a7">DataSelector</a>
+<li>getPath()
+: <a class="el" href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">DataSelector</a>
 </li>
 <li>getPaths()
 : <a class="el" href="classdrain_1_1Tree.html#a1a51ac91339753f82dbf6667d869f854">Tree&lt; T, P, C &gt;</a>
-, <a class="el" href="classrack_1_1DataSelector.html#a92a59e55095358262d181f839b0af151">DataSelector</a>
+, <a class="el" href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">DataSelector</a>
+</li>
+<li>getPathsByElangle()
+: <a class="el" href="classrack_1_1DataSelector.html#a445f0526bbc998a6c06fb6be7498c86a">DataSelector</a>
+</li>
+<li>getPathsByTime()
+: <a class="el" href="classrack_1_1DataSelector.html#afb91dc2abc3eb05d6e122350d3dcb0de">DataSelector</a>
 </li>
 <li>getPhysicalRange()
-: <a class="el" href="classdrain_1_1ValueScaling.html#aba7d8cfdbb026f2b6d295d413bd50cf3">ValueScaling</a>
+: <a class="el" href="classdrain_1_1ValueScaling.html#a4f08a17c4a055cf92d3f45e0727b9cea">ValueScaling</a>
 </li>
 <li>getPixel()
 : <a class="el" href="classdrain_1_1image_1_1Tray.html#ab9d7a96feca79f47ba3edd06e956c2ae">Tray&lt; T &gt;</a>
@@ -494,7 +503,7 @@ $(function() {
 </li>
 <li>getSource()
 : <a class="el" href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">Cloner&lt; B, S &gt;</a>
-, <a class="el" href="structdrain_1_1ClonerBase.html#ab5771b38ce7798d7b4b9442618863718">ClonerBase&lt; T &gt;</a>
+, <a class="el" href="structdrain_1_1ClonerBase.html#a1b53080baee146473d2110ffd654e20b">ClonerBase&lt; T &gt;</a>
 </li>
 <li>getSourceCode()
 : <a class="el" href="classrack_1_1SourceODIM.html#ade38e4ce935570f868ab7d372c2110ac">SourceODIM</a>
@@ -513,18 +522,21 @@ $(function() {
 : <a class="el" href="classdrain_1_1Context.html#ae80b47f203fa88e67a753ca0876a8dda">Context</a>
 , <a class="el" href="classrack_1_1RackContext.html#ae80b47f203fa88e67a753ca0876a8dda">RackContext</a>
 </li>
+<li>getSubPaths()
+: <a class="el" href="classrack_1_1DataSelector.html#a2aa4030bfebdaff9d4090059dca9d66a">DataSelector</a>
+</li>
 <li>getSum()
 : <a class="el" href="classdrain_1_1Histogram.html#a367fbad31d41dd8c520e700f6ce94cb8">Histogram</a>
 </li>
 <li>getSunPos()
-: <a class="el" href="classrack_1_1Sun.html#a17fce6342193c69afe8111069ddbe6b2">Sun</a>
+: <a class="el" href="classrack_1_1Sun.html#a923a347905801212e72cb0851ae00134">Sun</a>
 </li>
 <li>getT()
 : <a class="el" href="classdrain_1_1Caster.html#a6c49124d2bd3982b2b137fefbba426e4">Caster</a>
 </li>
 <li>getTime()
 : <a class="el" href="classdrain_1_1Time.html#af99ebb02f93a5bd33e876806cc01bb9e">Time</a>
-, <a class="el" href="classrack_1_1ODIM.html#a41c8e70649538726af44a33f292fd853">ODIM</a>
+, <a class="el" href="classrack_1_1ODIM.html#a3acaffdc864ce28dc2b1dce3edc12f44">ODIM</a>
 </li>
 <li>getTm()
 : <a class="el" href="classdrain_1_1Time.html#a358390b7e154a894156189c6de59f28e">Time</a>
@@ -537,7 +549,7 @@ $(function() {
 , <a class="el" href="classdrain_1_1Type.html#a5493c0ca86af1b174833c0fbdd126baf">Type</a>
 </li>
 <li>getTypeInfo()
-: <a class="el" href="classdrain_1_1Type.html#ae7914be5ea3f8e525a2f184326c4aed3">Type</a>
+: <a class="el" href="classdrain_1_1Type.html#ad35bc39507f930d5331fbf2dff994245">Type</a>
 </li>
 <li>getTypeMax()
 : <a class="el" href="classdrain_1_1image_1_1Encoding.html#acc56670212102497560caa0e0799dec0">Encoding</a>
@@ -561,7 +573,7 @@ $(function() {
 , <a class="el" href="classrack_1_1RadarDataPicker.html#a199c6ecb0168ab807c926d43954fc846">RadarDataPicker&lt; OD &gt;</a>
 </li>
 <li>getValues()
-: <a class="el" href="classdrain_1_1SmartMap.html#aa01b686e5a02568f77baaeee981665d2">SmartMap&lt; T &gt;</a>
+: <a class="el" href="classdrain_1_1SmartMap.html#aac46d54856697c46a1e49e6567004fc0">SmartMap&lt; T &gt;</a>
 </li>
 <li>getVariance()
 : <a class="el" href="classdrain_1_1Histogram.html#a854f61854751db517700efdd9562b8d6">Histogram</a>

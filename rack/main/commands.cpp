@@ -147,6 +147,8 @@ a comma-separated string without explicit names (keywords), as long as they are 
     - unlike with path selectors, <c>elangle={angle}</c> abbreviates <c>elangle={angle}:90</c> (not <c>elangle={angle}:{angle}</c>)
     - notice that metadata may contain floating point values like 1.000004723, use \c count=1 to pick a single one within a range
 - \c count is the upper limit of accepted indices of \c dataset ; typically used with \c elangle
+- \c order defines criteria \c (DATA|TIME|ELANGLE) and operation \c (MIN|MAX) in selecting data, applied with \c count. Note that the lowest elevations can be measured the latest,
+     appearing as \c dataset 's with highest indices.
 - \c dualPRF determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).
 
 The selection functionality is best explained with examples.

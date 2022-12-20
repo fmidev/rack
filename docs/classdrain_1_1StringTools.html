@@ -550,9 +550,18 @@ template&lt;class T &gt; </td></tr>
 </div><div class="memdoc">
 
 <p>Splits and trims a given std::string to a std Sequence. </p>
-<p>The target sequence must implement end() and insert() operators.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>– string to be chopped </td></tr>
+    <tr><td class="paramname">sequence</td><td>– target sequence; must implement end() and insert() operators. </td></tr>
+    <tr><td class="paramname">separators</td><td>– single char, array or string </td></tr>
+    <tr><td class="paramname">trimChars</td><td>– single char, array or string</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Assumes that T::operator=(std::string) exists.</p>
-<p>Given an empty std::string, returns a list containing an empty std::string. </p>
+<p>Given an empty std::string, returns a sequence containing an empty std::string. Hence, does not return an empty sequence.</p>
+<p>Given a null or empty separator, returns a single-element sequence containing the original string. </p>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Variable-example_8cpp-example.html#a5">Variable-example.cpp</a>.</dd>
 </dl>
 

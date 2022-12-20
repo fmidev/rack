@@ -1,5 +1,9 @@
 <map id="Flags" name="Flags">
-<area shape="rect" id="node1" title=" " alt="" coords="30,155,87,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="23,80,94,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,5,112,32"/>
+<area shape="rect" id="node1" title="Flagger that has an own dictionary and value." alt="" coords="74,456,131,483"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="67,380,138,407"/>
+<area shape="rect" id="node3" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,291,112,317"/>
+<area shape="rect" id="node4" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="136,291,253,317"/>
+<area shape="rect" id="node5" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="147,157,243,184"/>
+<area shape="rect" id="node6" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="131,81,259,108"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="119,5,271,32"/>
 </map>

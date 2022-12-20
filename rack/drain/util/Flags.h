@@ -466,6 +466,72 @@ protected:
 };
 
 
+template <typename E>
+class Fladdict {
+
+public:
+
+	typedef std::string key_t;
+	typedef E value_t;
+	typedef drain::Dictionary2<key_t,value_t> dict_t;
+
+	E value;
+
+	// Rember to add an initialized unit: template<> Fladdict<...>::dict = {{...,...}, ...}
+	static const dict_t dict;
+
+	/*
+	Fladdict(std::initializer_list<dict_t::entry_t> d) : dict(d){
+		// TODO: init value to first value in dict?
+	}
+	*/
+	// Fladdict(const dict_t & d) : dict(d){}
+
+	inline
+	void set(const key_t & key){
+
+		if (key.empty())
+			return;
+
+		if (dict.hasKey(key)){
+			value = (E)dict.getValue(key);
+		}
+		else {
+			throw std::runtime_error(std::string("Dictionary/") + typeid(E).name()+ ": no such key: "+ key);
+		}
+	}
+
+	inline
+	Fladdict<E> & operator=(const value_t & v){
+		value = v;
+		return *this;
+	}
+
+	/// Strin corresponding the current value. Returns empty, if not found.
+	inline
+	const key_t & str() const {
+		return dict.getKey(value);
+	}
+
+	// String
+	operator const key_t & () const {
+		return str();
+	}
+
+	///
+	inline
+	operator const E & () const {
+		return value;
+	}
+
+	inline
+	operator E & () {
+		return value;
+	}
+
+
+};
+
 } // drain::
 
 

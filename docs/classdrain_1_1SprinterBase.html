@@ -91,9 +91,10 @@ Collaboration diagram for SprinterBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1SprinterBase__coll__graph.png" border="0" usemap="#SprinterBase_coll__map" alt="Collaboration graph"/></div>
 <map name="SprinterBase_coll__map" id="SprinterBase_coll__map">
-<area shape="rect" title=" " alt="" coords="29,348,134,375"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,215,140,241"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="33,81,129,108"/>
+<area shape="rect" title=" " alt="" coords="29,439,134,465"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,291,140,317"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,157,129,184"/>
+<area shape="rect" href="structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,81,145,108"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,157,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -210,11 +211,8 @@ template&lt;&gt; </td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a92cfea3e1831f25400edace57a17c2d8"><td class="memItemLeft" align="right" valign="top"><a id="a92cfea3e1831f25400edace57a17c2d8"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a></td></tr>
-<tr class="memdesc:a92cfea3e1831f25400edace57a17c2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displayes objects with {...}, arrays with [...], pairs with (,) and strings without hyphens. <br /></td></tr>
+<tr class="memdesc:a92cfea3e1831f25400edace57a17c2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays objects with {...}, arrays with [...], pairs with (,) and strings without hyphens. <br /></td></tr>
 <tr class="separator:a92cfea3e1831f25400edace57a17c2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8f0689b7a24be4bcde36addd2e0d48a"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">jsonLayout</a></td></tr>
-<tr class="memdesc:af8f0689b7a24be4bcde36addd2e0d48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resembles JSON structure: {"a":1,"b":22,"c":3}.  <a href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">More...</a><br /></td></tr>
-<tr class="separator:af8f0689b7a24be4bcde36addd2e0d48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78be6db45f71ba00c885f330328fc891"><td class="memItemLeft" align="right" valign="top"><a id="a78be6db45f71ba00c885f330328fc891"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#a78be6db45f71ba00c885f330328fc891">emptyLayout</a></td></tr>
 <tr class="memdesc:a78be6db45f71ba00c885f330328fc891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simply concatenate values without punctuation. <br /></td></tr>
@@ -223,6 +221,12 @@ static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLay
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#ac2f0ae63613f2bd33e5da9126a4778c6">lineLayout</a></td></tr>
 <tr class="memdesc:ac2f0ae63613f2bd33e5da9126a4778c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put each array and object element on a separate line. <br /></td></tr>
 <tr class="separator:ac2f0ae63613f2bd33e5da9126a4778c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf838be5191762196b047276f48d176a"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#acf838be5191762196b047276f48d176a">cppLayout</a></td></tr>
+<tr class="memdesc:acf838be5191762196b047276f48d176a"><td class="mdescLeft">&#160;</td><td class="mdescRight">C/C++ layout: all objects with {...}.  <a href="classdrain_1_1SprinterBase.html#acf838be5191762196b047276f48d176a">More...</a><br /></td></tr>
+<tr class="separator:acf838be5191762196b047276f48d176a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f0689b7a24be4bcde36addd2e0d48a"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">jsonLayout</a></td></tr>
+<tr class="memdesc:af8f0689b7a24be4bcde36addd2e0d48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resembles JSON structure: {"a":1,"b":22,"c":3}.  <a href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">More...</a><br /></td></tr>
+<tr class="separator:af8f0689b7a24be4bcde36addd2e0d48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="af0a76d0b5207f13296709cef2c55b553"></a>
@@ -284,6 +288,39 @@ static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLay
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="acf838be5191762196b047276f48d176a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf838be5191762196b047276f48d176a">&#9670;&nbsp;</a></span>cppLayout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> cppLayout</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>C/C++ layout: all objects with {...}. </p>
+<p>C++ code initializer list layout.</p>
+<h1><a class="anchor" id="autotoc_md16"></a>
+arrays  as {...}</h1>
+<h1><a class="anchor" id="autotoc_md17"></a>
+objects as {...}</h1>
+<h1><a class="anchor" id="autotoc_md18"></a>
+pairs   as {key,value}</h1>
+<h1><a class="anchor" id="autotoc_md19"></a>
+strings as "..."</h1>
+
+</div>
+</div>
 <a id="af8f0689b7a24be4bcde36addd2e0d48a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af8f0689b7a24be4bcde36addd2e0d48a">&#9670;&nbsp;</a></span>jsonLayout</h2>
 
@@ -306,13 +343,13 @@ static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLay
 
 <p>Resembles JSON structure: {"a":1,"b":22,"c":3}. </p>
 <p>JSON layout uses std::pair&lt;&gt;(first,second) to display key:value pairs.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 arrays  as [...]</h1>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 objects as {...}, starting from the arg</h1>
-<h1><a class="anchor" id="autotoc_md18"></a>
-key-value pairs as key:value</h1>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
+pairs   as key:value</h1>
+<h1><a class="anchor" id="autotoc_md23"></a>
 strings as "..."</h1>
 
 </div>

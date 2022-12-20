@@ -71,10 +71,10 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classrack_1_1Hdf5Context-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Hdf5Context Class Reference</div>  </div>
@@ -94,9 +94,9 @@ Collaboration diagram for Hdf5Context:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Hdf5Context__coll__graph.png" border="0" usemap="#Hdf5Context_coll__map" alt="Collaboration graph"/></div>
 <map name="Hdf5Context_coll__map" id="Hdf5Context_coll__map">
-<area shape="rect" title=" " alt="" coords="286,1141,390,1168"/>
+<area shape="rect" title=" " alt="" coords="290,1141,394,1168"/>
 <area shape="rect" href="classdrain_1_1Tree.html" title=" " alt="" coords="405,993,567,1049"/>
-<area shape="rect" href="classdrain_1_1Tree.html" title="Unordered tree based on std::map." alt="" coords="219,904,339,931"/>
+<area shape="rect" href="classdrain_1_1Tree.html" title="Unordered tree based on std::map." alt="" coords="222,904,342,931"/>
 <area shape="rect" href="structhi5_1_1NodeHi5.html" title="Rack&#39;s hi5 structure that uses Rack classes (Tree, Data, Image)." alt="" coords="447,904,525,931"/>
 <area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="379,815,483,841"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="293,739,466,765"/>
@@ -141,41 +141,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c387106f10e4637f5aeb376cf5ac649"><td class="memItemLeft" align="right" valign="top"><a id="a3c387106f10e4637f5aeb376cf5ac649"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Hdf5Context</b> (const <a class="el" href="classrack_1_1Hdf5Context.html">Hdf5Context</a> &amp;ctx)</td></tr>
 <tr class="separator:a3c387106f10e4637f5aeb376cf5ac649"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf930f510f3e43f835e7906fac2a44cb"><td class="memItemLeft" align="right" valign="top"><a id="abf930f510f3e43f835e7906fac2a44cb"></a>
-<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#abf930f510f3e43f835e7906fac2a44cb">getMyHi5</a> (h5_role::value_t filter=(CARTESIAN|POLAR|INPUT|CURRENT))</td></tr>
-<tr class="memdesc:abf930f510f3e43f835e7906fac2a44cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product. <br /></td></tr>
+<tr class="memitem:abf930f510f3e43f835e7906fac2a44cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#abf930f510f3e43f835e7906fac2a44cb">getMyHi5</a> (h5_role::value_t filter=(CARTESIAN|POLAR|INPUT|CURRENT))</td></tr>
+<tr class="memdesc:abf930f510f3e43f835e7906fac2a44cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.  <a href="classrack_1_1Hdf5Context.html#abf930f510f3e43f835e7906fac2a44cb">More...</a><br /></td></tr>
 <tr class="separator:abf930f510f3e43f835e7906fac2a44cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48198e5d2ca0de1aa69b455c1bb50553"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a48198e5d2ca0de1aa69b455c1bb50553">getHi5</a> (h5_role::value_t filter)</td></tr>
-<tr class="memdesc:a48198e5d2ca0de1aa69b455c1bb50553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives the most relevant polar data (input or product) and returns it.  <a href="classrack_1_1Hdf5Context.html#a48198e5d2ca0de1aa69b455c1bb50553">More...</a><br /></td></tr>
-<tr class="separator:a48198e5d2ca0de1aa69b455c1bb50553"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae962c05e482c7d0a648eaff3b724cb0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#ae962c05e482c7d0a648eaff3b724cb0f">getCartesianHi5</a> (h5_role::value_t filter=(PRIVATE|SHARED))</td></tr>
-<tr class="memdesc:ae962c05e482c7d0a648eaff3b724cb0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives the most relevant polar input data and returns it.  <a href="classrack_1_1Hdf5Context.html#ae962c05e482c7d0a648eaff3b724cb0f">More...</a><br /></td></tr>
-<tr class="separator:ae962c05e482c7d0a648eaff3b724cb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dc1a347dacd5f12f2000eb14088214c"><td class="memItemLeft" align="right" valign="top"><a id="a0dc1a347dacd5f12f2000eb14088214c"></a>
-<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentInputHi5</b> (h5_role::value_t filter=(PRIVATE|SHARED))</td></tr>
-<tr class="separator:a0dc1a347dacd5f12f2000eb14088214c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a383bbdad54d52ccab7e4888488fb3d3f"><td class="memItemLeft" align="right" valign="top"><a id="a383bbdad54d52ccab7e4888488fb3d3f"></a>
-static <a class="el" href="classrack_1_1Hdf5Context.html">Hdf5Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getStaticContext</b> ()</td></tr>
-<tr class="separator:a383bbdad54d52ccab7e4888488fb3d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a410752bfe861c9d60fb5c1911897f3f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a410752bfe861c9d60fb5c1911897f3f9">getHi5Defunct</a> (h5_role::value_t filter)</td></tr>
+<tr class="memdesc:a410752bfe861c9d60fb5c1911897f3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives the most relevant polar data (input or product) and returns it.  <a href="classrack_1_1Hdf5Context.html#a410752bfe861c9d60fb5c1911897f3f9">More...</a><br /></td></tr>
+<tr class="separator:a410752bfe861c9d60fb5c1911897f3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a64e49054831fa6b66c556d2a21f11f52"><td class="memItemLeft" align="right" valign="top"><a id="a64e49054831fa6b66c556d2a21f11f52"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>select</b></td></tr>
 <tr class="separator:a64e49054831fa6b66c556d2a21f11f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb05595f31db260e2d59c69c24398137"><td class="memItemLeft" align="right" valign="top"><a id="aeb05595f31db260e2d59c69c24398137"></a>
-<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#aeb05595f31db260e2d59c69c24398137">inputHi5</a></td></tr>
-<tr class="memdesc:aeb05595f31db260e2d59c69c24398137"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last input file read, typically a volume. May be concatenated ie. read in incrementally. <br /></td></tr>
-<tr class="separator:aeb05595f31db260e2d59c69c24398137"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61e02b79d0d5408a790aa8f97594c90"><td class="memItemLeft" align="right" valign="top"><a id="aa61e02b79d0d5408a790aa8f97594c90"></a>
-<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#aa61e02b79d0d5408a790aa8f97594c90">polarHi5</a></td></tr>
-<tr class="memdesc:aa61e02b79d0d5408a790aa8f97594c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">The polar product that has been generated from the volume. <br /></td></tr>
-<tr class="separator:aa61e02b79d0d5408a790aa8f97594c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abae3cc07c521ab952e761f319d87320f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#abae3cc07c521ab952e761f319d87320f">cartesianHi5</a></td></tr>
-<tr class="memdesc:abae3cc07c521ab952e761f319d87320f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag for marking the origin of polarHi5.  <a href="classrack_1_1Hdf5Context.html#abae3cc07c521ab952e761f319d87320f">More...</a><br /></td></tr>
+<tr class="memitem:a0d068e64313277f8aad77e8ffa797dcf"><td class="memItemLeft" align="right" valign="top"><a id="a0d068e64313277f8aad77e8ffa797dcf"></a>
+<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a0d068e64313277f8aad77e8ffa797dcf">polarInputHi5</a></td></tr>
+<tr class="memdesc:a0d068e64313277f8aad77e8ffa797dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last input file read, typically a volume. May be concatenated ie. read in incrementally. <br /></td></tr>
+<tr class="separator:a0d068e64313277f8aad77e8ffa797dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6ec7f699e7bc30f5a037079a15e2c03"><td class="memItemLeft" align="right" valign="top"><a id="ad6ec7f699e7bc30f5a037079a15e2c03"></a>
+<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#ad6ec7f699e7bc30f5a037079a15e2c03">polarProductHi5</a></td></tr>
+<tr class="memdesc:ad6ec7f699e7bc30f5a037079a15e2c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">The polar product that has been generated from the volume. <br /></td></tr>
+<tr class="separator:ad6ec7f699e7bc30f5a037079a15e2c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae3cc07c521ab952e761f319d87320f"><td class="memItemLeft" align="right" valign="top"><a id="abae3cc07c521ab952e761f319d87320f"></a>
+<a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#abae3cc07c521ab952e761f319d87320f">cartesianHi5</a></td></tr>
+<tr class="memdesc:abae3cc07c521ab952e761f319d87320f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single-radar Cartesian product or a multi-radar composite (mosaic). <br /></td></tr>
 <tr class="separator:abae3cc07c521ab952e761f319d87320f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add214ce61145c9b11a316ee20bf5d553"><td class="memItemLeft" align="right" valign="top"><a id="add214ce61145c9b11a316ee20bf5d553"></a>
 <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#add214ce61145c9b11a316ee20bf5d553">currentHi5</a></td></tr>
@@ -212,52 +200,24 @@ static const h5_role::value_t&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a383d764e0fe777852d4581e82717b8e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a383d764e0fe777852d4581e82717b8e3">updateHdf5Status</a> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;statusMap)</td></tr>
+<tr class="memdesc:a383d764e0fe777852d4581e82717b8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives the most relevant polar input data and returns it.  <a href="classrack_1_1Hdf5Context.html#a383d764e0fe777852d4581e82717b8e3">More...</a><br /></td></tr>
 <tr class="separator:a383d764e0fe777852d4581e82717b8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a41eca7cc4968ed34e9f918865eaa6bfd"><td class="memItemLeft" align="right" valign="top"><a id="a41eca7cc4968ed34e9f918865eaa6bfd"></a>
+static <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b></td></tr>
+<tr class="separator:a41eca7cc4968ed34e9f918865eaa6bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae962c05e482c7d0a648eaff3b724cb0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae962c05e482c7d0a648eaff3b724cb0f">&#9670;&nbsp;</a></span>getCartesianHi5()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a>&amp; getCartesianHi5 </td>
-          <td>(</td>
-          <td class="paramtype">h5_role::value_t&#160;</td>
-          <td class="paramname"><em>filter</em> = <code>(PRIVATE|SHARED)</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Derives the most relevant polar input data and returns it. </p>
-<p>Returns in order of priority: </p>
-<h1><a class="anchor" id="autotoc_md53"></a>
-local, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md54"></a>
-shared, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md55"></a>
-local (empty)</h1>
-
-</div>
-</div>
-<a id="a48198e5d2ca0de1aa69b455c1bb50553"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48198e5d2ca0de1aa69b455c1bb50553">&#9670;&nbsp;</a></span>getHi5()</h2>
+<a id="a410752bfe861c9d60fb5c1911897f3f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a410752bfe861c9d60fb5c1911897f3f9">&#9670;&nbsp;</a></span>getHi5Defunct()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; getHi5 </td>
+          <td class="memname"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; getHi5Defunct </td>
           <td>(</td>
           <td class="paramtype">h5_role::value_t&#160;</td>
           <td class="paramname"><em>filter</em></td><td>)</td>
@@ -268,12 +228,36 @@ local (empty)</h1>
 
 <p>Derives the most relevant polar data (input or product) and returns it. </p>
 <p>Returns in order of priority: </p>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md55"></a>
 local, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md56"></a>
 shared, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 local (empty)</h1>
+
+</div>
+</div>
+<a id="abf930f510f3e43f835e7906fac2a44cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf930f510f3e43f835e7906fac2a44cb">&#9670;&nbsp;</a></span>getMyHi5()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp; getMyHi5 </td>
+          <td>(</td>
+          <td class="paramtype">h5_role::value_t&#160;</td>
+          <td class="paramname"><em>filter</em> = <code>(CARTESIAN|POLAR|INPUT|CURRENT)</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product. </p>
+<ul>
+<li>if CARTESIAN and POLAR are both set, either</li>
+<li>if neither CARTESIAN nor POLAR is set, </li>
+</ul>
 
 </div>
 </div>
@@ -300,28 +284,20 @@ local (empty)</h1>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Derives the most relevant polar input data and returns it. </p>
+<p>Returns in order of priority: </p>
+<h1><a class="anchor" id="autotoc_md58"></a>
+local, if non-empty</h1>
+<h1><a class="anchor" id="autotoc_md59"></a>
+shared, if non-empty</h1>
+<h1><a class="anchor" id="autotoc_md60"></a>
+local (empty)</h1>
 <p>Split what:source to separate fields</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="abae3cc07c521ab952e761f319d87320f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abae3cc07c521ab952e761f319d87320f">&#9670;&nbsp;</a></span>cartesianHi5</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> cartesianHi5</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Flag for marking the origin of polarHi5. </p>
-<p>A single-radar Cartesian product or a multi-radar composite (mosaic). </p>
-
-</div>
-</div>
 <a id="a6d8c97ce05b14457bc3af62662f2d118"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d8c97ce05b14457bc3af62662f2d118">&#9670;&nbsp;</a></span>currentPolarHi5</h2>
 

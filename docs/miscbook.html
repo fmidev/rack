@@ -71,16 +71,6 @@ $(function() {
 <div class="textblock"><h1><a class="anchor" id="Introduction"></a>
 Introduction</h1>
 <p>This section explains general commands and useful hints in using <b>Rack</b>.</p>
-<h1><a class="anchor" id="scripts"></a>
-Scripts</h1>
-<p>If a fixed set of commands &ndash; a script &ndash; is needed for each input, one may define it with <br  />
- <code>&ndash;script</code> . The script is then executed automatically for each input:</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;&lt;cnd&gt; &lt;cmd2&gt; ...&#39;</span>  &lt;file&gt; &lt;file2&gt; &lt;file3&gt; ...</div>
-</div><!-- fragment --><p>The functionality is handy for example in running anomaly detection and product generation for a set of files &ndash; in which case one may utilize <a class="el" href="parallelpage.html">Parallel computation</a> . Defining a script also turns on <em>variable expansion</em> &ndash; see also examples below in <a class="el" href="miscbook.html#templates">Metadata output using text templates</a> . The commands which automatically run ie. <em>trigger</em> the script can be listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --help trigger</div>
-</div><!-- fragment --><p> For other commands, the script must be executed issuing <code>&ndash;execScript </code>.</p>
-<p>Instead of the command line, one may also execute commands stored in a file as follows:</p>
-<div class="fragment"><div class="line">rack &lt;file&gt;  --execFile &lt;cmdFile&gt;   </div>
-</div><!-- fragment --><p>Remember that plain filenames are implicit <code>&ndash;inputFile &lt;file&gt;</code> commands; hence the file can also be a list of input files. Using such a file together with <code>&ndash;script</code> yields compact command lines especially in compositing.</p>
 <h1><a class="anchor" id="sampling"></a>
 Sampling grid data</h1>
 <p>The input volume as well as the generated polar or Cartesian products can be sampled, producing a text file. The sampling is performed automatically if output file has the extension '.dat'. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o samples.dat</div>

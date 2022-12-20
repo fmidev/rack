@@ -1,5 +1,5 @@
 <map id="CartesianSun" name="CartesianSun">
-<area shape="rect" id="node1" title="static RackLetAdapter&lt;CompositeExtract&gt; cExtract(&quot;cExtract&quot;);" alt="" coords="36,319,144,345"/>
+<area shape="rect" id="node1" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="36,319,144,345"/>
 <area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,175,271"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="28,155,152,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="45,80,135,107"/>
