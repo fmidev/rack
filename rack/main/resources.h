@@ -129,7 +129,7 @@ public:
 	// }
 
 	/**
-	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...)
+	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...) in order of preference
 	 *  \return Requested data object, with properties defined by filter.
 	 */
 	template <typename T, typename ...TT>
@@ -214,7 +214,7 @@ protected:
 /**
  *
  */
-class RackResources : public drain::SuperContextual<RackContext> { // ,drain::SmartContext : public RackContext {
+class RackResources : public drain::SuperContextual<RackContext> {
 
 public:
 

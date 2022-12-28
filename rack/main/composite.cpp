@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "drain/util/Log.h"
+#include "drain/util/Output.h" // debugging threads
 
 ///#include "drain/prog/Command.h"
 ///
@@ -120,7 +121,21 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	mout.debug("add A1 " + ctx.getName());
+
 	mout.timestamp("BEGIN_CART_ADD");
+
+	/*
+	std::ostream & logOrig = std::cerr;
+	std::stringstream sstr;
+	sstr << "thread-" << ctx.getId() << ".log";
+	drain::Output output(sstr.str());
+	ctx.log.setOstr(output);
+	(std::ostream &)output << "# LOG: " << sstr.str() << '\n';
+
+	*/
+
+	mout.attention("add A2 #" + ctx.getName());
 
 	if (ctx.statusFlags)
 		mout.warn("Status flags before accumulating: ", ctx.statusFlags);
@@ -142,31 +157,41 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	}
 
 
-	// Composite & composite = getComposite();
+	// Changed order 2022/12
 
-	/// Set default method, if unset.
-	if (!composite.isMethodSet()){
-		composite.setMethod("MAXIMUM");  // ("LATEST");
-		mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout;
-	}
+	mout.debug("add B #" + ctx.getName());
 
-	// This was bad for --cCreate / -c , so moved to --cAdd
-	if (updateSelector){
-		composite.updateInputSelector(ctx.select);
+	#pragma omp critical
+	{
+		/// Set default method, if unset.
+		if (!composite.isMethodSet()){
+			composite.setMethod("MAXIMUM");  // ("LATEST");
+			mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout;
+		}
+
+		/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
+		//  If needed, initialize with input metadata.
+		if (!resources.baseCtx().targetEncoding.empty()){
+			composite.setTargetEncoding(resources.baseCtx().targetEncoding);
+			resources.baseCtx().targetEncoding.clear(); // OMP?
+		}
+
+		// This was bad for --cCreate/-c , so moved to --cAdd
+		if (updateSelector){
+			composite.updateInputSelector(ctx.select);
+		}
 	}
 	ctx.select.clear();
 
-
-	/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
-	//  If needed, initialize with input metadata.
-	if (!resources.baseCtx().targetEncoding.empty()){
-		composite.setTargetEncoding(resources.baseCtx().targetEncoding);
-		resources.baseCtx().targetEncoding.clear(); // OMP?
-	}
-
+	mout.debug("add C #" + ctx.getName());
 
 	//const Hi5Tree & src = ctx.getHi5(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
+
+	if (src.isEmpty()){
+		mout.warn("thread #", ctx.getName(), ": input data empty? Filter =",  Hdf5Context::h5_role::getShared().getKeys(inputFilter, '|'));
+	}
+
 
 	const RootData<SrcType<ODIM> > root(src);
 	mout.debug() << "Src root /what: " << root.getWhat() << mout;
@@ -197,7 +222,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	}
 	*/
 
-
+	//ctx.log.setOstr(logOrig);
 
 
 }
@@ -213,10 +238,13 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 	mout.timestamp("BEGIN_CART_CREATE");
 
+	mout.debug("CART #" + ctx.getName());
+
+
 	RackResources & resources = getResources();
 
 	if (src.isEmpty()){
-		mout.warn() << "no polar data loaded, skipping" << mout.endl;
+		mout.warn("src data empty – no polar data loaded? Skipping...");
 		return;
 	}
 
@@ -227,7 +255,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	// TODO: prune
 	if (!composite.isDefined()){
 
-		mout.info() << "Initialising (like) a single-radar Cartesian" << mout.endl;
+		mout.info("Initialising (like) a single-radar Cartesian");
 
 		if (!composite.projectionIsSet())
 			isAeqd = true;
@@ -240,19 +268,24 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		ctx.statusFlags.reset(); // ALL?
 		//ctx.statusFlags.unset(RackResources::DATA_ERROR); // resources.dataOk = false; // return if input not ok?
 
-		mout.debug() << "composite.dataSelector: " << composite.dataSelector << mout;
-		// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
-		// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
+		#pragma omp critical
+		{
 
-		composite.dataSelector.updateBean(); // quantity
+			mout.debug("CART CRITICAL-1 " + ctx.getName());
 
-		if (composite.dataSelector.count != 1){
-			mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
-			//composite.dataSelector.count = 1;
+			mout.debug() << "composite.dataSelector: " << composite.dataSelector << mout;
+			// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
+			// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
+
+			composite.dataSelector.updateBean(); // quantity
+
+			if (composite.dataSelector.count != 1){
+				mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
+				//composite.dataSelector.count = 1;
+			}
 		}
 
-
-		mout.info() << "composite.dataSelector: " << composite.dataSelector << mout;
+		mout.info("composite.dataSelector: ", composite.dataSelector );
 
 		ODIMPath dataPath;
 		composite.dataSelector.getPath(src, dataPath);
@@ -276,77 +309,98 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		mout.info() << "Using input path:" << dataPath << " [" << polarSrc.odim.quantity << "] elangle=" << polarSrc.odim.elangle << mout;
 
-		// mout.warn() << "composite: " << composite.odim << mout.endl;
-		// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
-
-		if (!composite.odim.isSet()){
-
-			composite.odim.type = "";
-
-			composite.odim.updateLenient(polarSrc.odim);
-			//composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
-
-			const std::string & encoding = composite.getTargetEncoding();
-			if (encoding.empty()){
-				// This is somewhat disturbing but perhaps worth it.
-				mout.note() << "adapting encoding of first input: " << EncodingODIM(composite.odim) << mout.endl;
-			}
-			mout.debug() << "storing metadata: " << composite.odim << mout.endl;
-			ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""
-		}
-		else {
-			if (!resources.baseCtx().targetEncoding.empty()){
-				mout.warn() << "target encoding request ("<< resources.baseCtx().targetEncoding << ") bypassed, keeping original " << EncodingODIM(composite.odim) << mout.endl;
-			}
-			drain::Time tComp;
-			drain::Time tData;
-
-			composite.odim.getTime(tComp);
-			polarSrc.odim.getTime(tData);
-			int mins = abs(tComp.getTime() - tData.getTime())/60; // why abs?
-			if (mins > 120){ // TODO tunable threshold + varying levels of warnings
-				mout.warn() << "time difference " << mins << " minutes" << mout.endl;
-				mout.note() << "composite: " << tComp.str() << mout.endl;
-				mout.note() << "data:      " << tData.str() << mout.endl;
-			}
-		}
-
-
-
-		//composite.checkInputODIM(polarSrc.odim);
-		// Apply user parameters.
-
-		mout.debug()  << "subComposite defined:\n" << composite.getBoundingBoxD() << ", quantity: " << composite.odim.quantity << mout.endl;
-		mout.debug2() << "subComposite: " << composite << '\n' << composite.odim << mout.endl;
-		mout.debug2() << "accumulating polar data..." << mout.endl;
-
-
-		// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
-		// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 		ODIMPathElem current = dataPath.back();
-		ODIMPath parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
+		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
 		parent.pop_back();
 
-		//mout.warn() << parent << "/HOW" << src(parent)[ODIMPathElem::HOW].data.attributes << mout;
-		//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
-		const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
+		#pragma omp critical
+		{
 
-		//drain::Variable & compositeAngles = composite.metadataMap["how:angles"];
-		//compositeAngles.setType(typeid(double));
-		//if (how.hasKey("angles")){
+			mout.debug("CART CRITICAL-2 #" + ctx.getName());
 
-		if (how["angles"].getElementCount() > 0)
-			how["angles"].toSequence(composite.odim.angles);
-		else if (!polarSrc.odim.angles.empty())
-			composite.odim.angles = polarSrc.odim.angles;
-		else {
-			composite.odim.angles.resize(1, polarSrc.odim.elangle);
-			//compositeAngles = polarSrc.odim.elangle;
-		}
-		//composite.metadataMap["how:angles"] = polarSrc.odim.elangle;
+			// mout.warn() << "composite: " << composite.odim << mout.endl;
+			// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
+			if (!composite.odim.isSet()){
+
+				composite.odim.type = "";
+
+				composite.odim.updateLenient(polarSrc.odim);
+				//composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
+
+				const std::string & encoding = composite.getTargetEncoding();
+				if (encoding.empty()){
+					// This is somewhat disturbing but perhaps worth it.
+					mout.note() << "adapting encoding of first input: " << EncodingODIM(composite.odim) << mout.endl;
+				}
+				mout.debug() << "storing metadata: " << composite.odim << mout.endl;
+				ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""
+			}
+			else {
+				if (!resources.baseCtx().targetEncoding.empty()){
+					mout.warn() << "target encoding request ("<< resources.baseCtx().targetEncoding << ") bypassed, keeping original " << EncodingODIM(composite.odim) << mout.endl;
+				}
+
+				// Compare timestamps
+				drain::Time tComposite;
+				drain::Time tData;
+
+				composite.odim.getTime(tComposite);
+				polarSrc.odim.getTime(tData);
+				int mins = abs(tComposite.getTime() - tData.getTime())/60;
+				if (mins > 5){ // TODO tunable threshold + varying levels of warnings
+
+					if (mins > 1440){ // TODO tunable threshold + varying levels of warnings
+						mout.warn("time difference over ", (mins/1440), " DAYS");
+					}
+					else if (mins > 60){ // TODO tunable threshold + varying levels of warnings
+						mout.warn("time difference over ", (mins/60), " HOURS");
+					}
+					else if (mins > 15){
+						mout.warn("time difference over ", mins, " minutes");
+					}
+					else { // TODO tunable threshold + varying levels of warnings
+						mout.note("time difference ", mins, " minutes");
+					}
+
+					mout.note("composite: ", tComposite.str());
+					mout.note("data:      ", tData.str());
+				}
+			}
+
+			// composite.checkInputODIM(polarSrc.odim);
+			// Apply user parameters.
+			mout.debug()  << "subComposite defined:\n" << composite.getBoundingBoxD() << ", quantity: " << composite.odim.quantity << mout.endl;
+			mout.debug2() << "subComposite: " << composite << '\n' << composite.odim << mout.endl;
+			mout.debug2() << "accumulating polar data..." << mout.endl;
+
+
+			// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
+			// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
+			// ODIMPathElem	current = dataPath.back();
+			// ODIMPath..parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
+			// parent.pop_back();
+
+			//mout.warn() << parent << "/HOW" << src(parent)[ODIMPathElem::HOW].data.attributes << mout;
+			//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
+			const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
+
+			if (how["angles"].getElementCount() > 0)
+				how["angles"].toSequence(composite.odim.angles);
+			else if (!polarSrc.odim.angles.empty())
+				composite.odim.angles = polarSrc.odim.angles;
+			else {
+				composite.odim.angles.resize(1, polarSrc.odim.elangle);
+				//compositeAngles = polarSrc.odim.elangle;
+			}
+			//composite.metadataMap["how:angles"] = polarSrc.odim.elangle;
+
+
+		} // OMP CRITICAL
 
 
 		double w = weight;
+
+		mout.debug("CART MAIN #" + ctx.getName());
 
 		if (current.is(ODIMPathElem::QUALITY)){
 			mout.info()  << "plain quality data, ok (no further quality data)" << mout.endl;  // TODO: fix if quality/quality (BirdOp)
@@ -356,7 +410,6 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			//DATA_ONLY = true;
 		}
 		else {
-
 
 			w = applyTimeDecay(composite, w, polarSrc.odim);
 			mout.info() << "final quality weight=" << w << mout.endl;
@@ -395,8 +448,6 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		//drain::Variable & angles = composite.metadataMap["how:angles"];
 		//mout.warn() << "HOW" << polarSrc.getHow() << mout;
 		//mout.warn() << "HOW" << srcGroup[ODIMPathElem::HOW].data.attributes << mout;
-
-
 		//composite.metadataMap["how:angles"] = polarSrc.odim.angles;
 		// elangles = ;
 
@@ -407,6 +458,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		//std::cerr << e.what() << std::endl;
 		mout.warn() << e.what() << mout.endl;
 	}
+
+
 }
 
 

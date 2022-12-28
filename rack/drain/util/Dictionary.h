@@ -206,9 +206,11 @@ public:
 	const keylist_t & getKeys() const {
 
 		#pragma omp critical
-		keyList.clear();
-		for (const entry_t & entry: *this){
-			keyList.push_back(entry.first);
+		{
+			keyList.clear();
+			for (const entry_t & entry: *this){
+				keyList.push_back(entry.first);
+			}
 		}
 		return keyList;
 	}
@@ -223,9 +225,11 @@ public:
 	const valuelist_t & getValues() const {
 
 		#pragma omp critical
-		valueList.clear();
-		for (const entry_t & entry: *this){
-			valueList.push_back(entry.second);
+		{
+			valueList.clear();
+			for (const entry_t & entry: *this){
+				valueList.push_back(entry.second);
+			}
 		}
 		return valueList;
 	}

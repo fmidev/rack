@@ -99,7 +99,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
-		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
+		if ((acc.accArray.getWidth()==0) || (acc.accArray.getHeight()==0)){
 
 			if (resources.baseCtx().targetEncoding.empty()){
 				mout.error() << "missing --encoding to set polar geometry: " << acc.odim.getKeys() << mout.endl;
@@ -109,8 +109,8 @@ public:
 			acc.odim.addShortKeys();
 			acc.odim.setValues(resources.baseCtx().targetEncoding);
 
-			acc.setGeometry(acc.odim.area.width, acc.odim.area.height);
-			acc.count.fill(1); // no weight, ie "undetect" values.
+			acc.accArray.setGeometry(acc.odim.area.width, acc.odim.area.height);
+			acc.accArray.count.fill(1); // no weight, ie "undetect" values.
 			// mout.warn() << acc.odim  << mout.endl;
 
 		}
@@ -246,7 +246,7 @@ void PolarPlotFile::exec() const {
 					azm += (2.0*M_PI);
 				radarCoord.y = acc.odim.getRayIndex(azm);
 				mout.debug3() << "adding " << geoCoord << " => "<< radarCoord << mout.endl;
-				addr = acc.data.address(radarCoord.x, radarCoord.y);
+				addr = acc.accArray.data.address(radarCoord.x, radarCoord.y);
 				acc.add(addr, d, w);
 			}
 			else {
@@ -329,9 +329,9 @@ public:
 		mout.debug() << "quality: " << srcQuality.odim << mout.endl;
 
 
-		if ((acc.getWidth()==0) || (acc.getHeight()==0)){
+		if ((acc.accArray.getWidth()==0) || (acc.accArray.getHeight()==0)){
 			//acc.odim.update(srcData.odim);
-			acc.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
+			acc.accArray.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
 			acc.odim.type = "S";
 			acc.odim.area.width  = srcData.odim.area.width;
 			acc.odim.area.height  = srcData.odim.area.height;
@@ -339,9 +339,9 @@ public:
 			acc.odim.scaling.scale = 0.0; // !!
 			acc.odim.ACCnum = 0;
 		}
-		else if ((srcData.odim.area.width != acc.getWidth()) || (srcData.odim.area.height != acc.getHeight())){
+		else if ((srcData.odim.area.width != acc.accArray.getWidth()) || (srcData.odim.area.height != acc.accArray.getHeight())){
 			mout.warn() << "Input geometry (" << srcData.odim.area.width << 'x' << srcData.odim.area.height << ')';
-			mout        << " different from: " << acc.getWidth() << 'x' << acc.getHeight() << ", skipping..." << mout.endl;
+			mout        << " different from: " << acc.accArray.getWidth() << 'x' << acc.accArray.getHeight() << ", skipping..." << mout.endl;
 			return;
 		}
 		else if (srcData.odim.rscale != acc.odim.rscale){

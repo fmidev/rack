@@ -127,6 +127,11 @@ public:
 	virtual
 	void setGeometry(unsigned int width, unsigned int height);
 
+	inline
+	const AreaGeometry & getGeometry() const {
+		return geometry;
+	}
+
 	/// Resets the accumulation array values to undetectValue. Does not change the geometry.
 	void clear();
 
@@ -139,12 +144,16 @@ public:
 
 	/// Returns the width of the accumulation array.
 	inline
-	unsigned int getWidth() const { return width; };
+	unsigned int getWidth() const { return geometry.width; };
 
 	/// Returns the height of the accumulation array.
 	inline
-	unsigned int getHeight() const { return height; };
+	unsigned int getHeight() const { return geometry.height; };
 
+	inline
+	const CoordinateHandler2D getCoordinateHandler() const {
+		return coordinateHandler;
+	};
 
 	bool debug;
 
@@ -170,11 +179,13 @@ public:
 	ImageT<double> data2;
 
 
+
 protected:
 
+	AreaGeometry geometry;
 
-	unsigned int width;  // TODO: size_t ?
-	unsigned int height;
+	//unsigned int width;  // TODO: size_t ?
+	//unsigned int height;
 
 	CoordinateHandler2D coordinateHandler;
 

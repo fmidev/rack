@@ -155,7 +155,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	// std::cerr << "coeff: "<< -log(sqrt(2.0)) << '\n';
 
 
-	for (size_t i = 0; i < accumulator.getWidth(); ++i) {
+	for (size_t i = 0; i < accumulator.accArray.getWidth(); ++i) {
 
 		// Ground angle
 		beta = accumulator.odim.getGroundAngle(i); // (static_cast<double>(i)+0.5) * accumulator.rscale / EARTH_RADIUS_43;
@@ -192,9 +192,9 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		// TODO: derive iStart and iEnd instead.
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
-		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
+		for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
+			jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
 			value = sweep.data.get<double>(iSweep, jSweep);
 
@@ -218,7 +218,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 			}
 
-			address = accumulator.data.address(i,j);
+			address = accumulator.accArray.data.address(i,j);
 			accumulator.add(address, value, w);
 			//accumulator.add(address, value, 1.0);
 

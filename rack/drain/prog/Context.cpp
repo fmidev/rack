@@ -37,38 +37,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+/// Defines unique id.
 long int Context::counter(0);
 
-/*
-FlexVariableMap & SmartContext::getStatus(){
+// drain::TypeName<Context>::get(),
 
-	// Assign variables.
-	statusMap["statusKeys"] = statusFlags.getKeys();
-
-	// Expand bits to
-	statusFlags.exportStatus(statusMap);
-	return statusMap;
+Context::Context(const std::string & basename) : basename(basename), id(++counter), name(drain::StringBuilder(basename, '-', id)){
+	init();
 }
-*/
 
+Context::Context(const Context & ctx) : basename(ctx.basename), id(++counter), name(drain::StringBuilder(ctx.name, '.', id)){  //  ++counter + 100*ctx.id
+	log.setVerbosity(ctx.log.getVerbosity());
+	init();
+}
 
-/*
-void SmartContext::linkStatusVariables(){
-
-	/// Context
-
-	/// Link members directly (to avoid repeated updates)
-	//  statusMap.link("ID", this->id);
-	statusMap.link("logFile", logFile);
-	statusMap.link("statusBits", statusFlags.value);
-
-	statusMap["ID"] = id; //const
+void Context::init(){
+	statusMap["ID"] = id;        // constant
 	statusMap["PID"] = getpid(); // constant
-
-	/// SmartContext
-	statusMap.link("expandVariables", this->expandVariables);
-	statusMap.link("formatStr", this->formatStr);
+	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
 }
-*/
 
 }  // drain::

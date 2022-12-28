@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // New design (2020)
 
-#ifndef COMMANDUTILS_H_
-#define COMMANDUTILS_H_
+#ifndef PROGRAM_H_
+#define PROGRAM_H_
 
 #include <iostream>
 
@@ -88,32 +88,40 @@ public:
  *   A program may contain a single routine.
  *
  */
-class Program :  public CommandSequence<std::pair<std::string,Command *> > {
+//class Program :  public CommandSequence<std::pair<std::string,Command *> > {
+class Program :  public CommandSequence<std::pair<std::string,Command *> >, public Contextual {
 
 public:
 
-	Command & add(const std::string & key, Command & cmd);
+	inline
+	Program(){};
 
-	/// Routine to be repeated automatically after selected commands, or with an explicit call.
-	//Script routine;
+	inline
+	Program(const Program &prog){
+		std::cerr << "Program copy ctor: ctx?\n";
+	};
+
+	inline
+	Program(Context & ctx){
+		setExternalContext(ctx);
+	};
+
+
+	Command & add(const std::string & key, Command & cmd);
 
 	/// Main
 	void run() const;
 
-
 };
 
 /// Structure for implementing threads in parallelized OpenMP \c for loop.
-class ProgramVector : public std::vector<Program> {
+//class ProgramVector : public std::vector<Program> {
+class ProgramVector : public std::map<int,Program> {
 
 public:
 
 	/// Adds a new, empty program to thread vector.
-	inline
-	Program & add(){
-		push_back(Program());
-		return back();
-	};
+	Program & add(Context & ctx);
 
 };
 

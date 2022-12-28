@@ -48,13 +48,12 @@ namespace image
 
 void AccumulationArray::setGeometry(unsigned int width, unsigned int height){
 
-	this->width = width;
-	this->height = height;
+	geometry.set(width, height);
 
-	data.setGeometry(width,height);
-	weight.setGeometry(width,height);
-	count.setGeometry(width,height);
-	data2.setGeometry(width,height);
+	data.setGeometry(geometry);
+	weight.setGeometry(geometry);
+	count.setGeometry(geometry);
+	data2.setGeometry(geometry);
 
 	//coordinateHandler.setBounds(width,height);
 	coordinateHandler.setLimits(width,height);
@@ -71,7 +70,7 @@ void AccumulationArray::clear(){
 
 
 std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & cumulator){
-	ostr << "AccumulationArray " << cumulator.getWidth() << 'x' << cumulator.getHeight() << ' ';
+	ostr << "AccumulationArray " << cumulator.getGeometry() << ' ';
 	//ostr << cumulator.getMethodStr() << '['<< cumulator.getP()  << ',' << cumulator.getR() << ']' << " scale,offset:" << cumulator.getGain() << ',' << cumulator.getOffset() << ' ';
 	return ostr;
 }

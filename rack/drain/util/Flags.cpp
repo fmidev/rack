@@ -206,10 +206,12 @@ std::ostream & FlagResolver::keysToStream(const dict_t &dict, value_t value, std
 const Flagger::dict_t::keylist_t & Flagger::keys() const {
 
 	#pragma omp critical
-	keyList.clear();
-	for (const dict_t::entry_t & entry: dictionary){
-		if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
-			keyList.push_back(entry.first);
+	{
+		keyList.clear();
+		for (const dict_t::entry_t & entry: dictionary){
+			if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
+				keyList.push_back(entry.first);
+			}
 		}
 	}
 

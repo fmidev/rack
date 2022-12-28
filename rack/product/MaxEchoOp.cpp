@@ -98,7 +98,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	/// Direct pixel address in the accumulation arrey.
 	size_t address;
 
-	for (size_t i = 0; i < accumulator.getWidth(); ++i) {
+	for (size_t i = 0; i < accumulator.accArray.getWidth(); ++i) {
 
 		// Ground angle
 		beta = accumulator.odim.getGroundAngle(i);
@@ -117,16 +117,16 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.area.width)){
 
-			for (size_t j = 0; j < accumulator.getHeight(); ++j) {
+			for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
 
-				jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
+				jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
 				value = sweep.data.get<double>(iSweep,jSweep);
 
 				//if (i==j) std::cerr << " MaxEcho(" << value << ")\t";
 
 				if (converter.decode(value)){
-					address = accumulator.data.address(i,j);
+					address = accumulator.accArray.data.address(i,j);
 					if (WEIGHTED){
 						w = weight * srcQuality.odim.scaleForward(srcQuality.data.get<double>(iSweep,jSweep));
 						accumulator.add(address, value, w);

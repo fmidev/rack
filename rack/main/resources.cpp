@@ -42,12 +42,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-RackContext::RackContext(){
+RackContext::RackContext() : drain::SmartContext(__FUNCTION__){
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "BASE";
 }
 
-RackContext::RackContext(const RackContext & ctx): SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
+RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "CLONED";
 	inputPrefix = ctx.inputPrefix;
@@ -95,7 +95,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 		Hi5Tree & dst = getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.isEmpty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using PRIVATE (", h5_role::getShared().getKeys(filter, '|'),") data [", attr["object"], '/', attr["product"], ']');
+			mout.info("Using PRIVATE (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}
@@ -104,7 +104,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 		Hi5Tree & dst = getResources().baseCtx().getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.isEmpty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using SHARED (", h5_role::getShared().getKeys(filter, '|'),") data [", attr["object"], '/', attr["product"], ']');
+			mout.info("Using SHARED (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}

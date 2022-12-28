@@ -71,7 +71,7 @@ public:
 		if (composite.counter > 0){
 			mout.experimental("Clearing previous composite? N=", composite.counter, ")");
 			mout.note("Use --cAdd to add, instead");
-			composite.clear();
+			composite.accArray.clear();
 		}
 
 		add(composite, RackContext::POLAR|RackContext::CURRENT, true);

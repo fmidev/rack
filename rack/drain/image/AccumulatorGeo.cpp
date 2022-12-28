@@ -44,7 +44,7 @@ std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo 
 	ostr << "AccumulatorGeo/ ";
 	ostr << (const GeoFrame &)acc;
 	ostr << (const drain::image::AccumulationArray &)acc << '\n';
-	ostr << "   allocated (" << acc.getWidth() << 'x' << acc.getHeight() << ") \n";
+	ostr << "   allocated (" << acc.accArray.getGeometry() << ") \n";
 	return ostr;
 }
 /*

@@ -56,13 +56,23 @@ class Output {
 
 public:
 
+	// Opens with std::open. Can be overridden with open(<filename>);
+	inline
+	Output(){};
+
+	inline
+	Output(const Output & output){};
+
 	/// Opens stdout with "-".
 	Output(const std::string & filename);
+
 
 	// Output(std::ostream & ostr);
 
 	/// Closes upon destruction.
 	~Output();
+
+	void open(const std::string & filename);
 
 	operator std::ostream & ();
 

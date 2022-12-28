@@ -71,8 +71,13 @@ echo -n > $TEST_CMD_FILE
 INCLUDES=( `grep '\\include .*.\(hlp\|exm\|cut\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
 echo "make --always-make ${INCLUDES[*]} " >> $TEST_CMD_FILE
 
-
-grep '^\s*\(rack \|convert \|make \|.*#exec\)' ${DOC_FILES[*]}  | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
+# Join cmd lines split by '\'
+for i in  ${DOC_FILES[*]}; do
+    replace.py -r '(.*)\\\n(.*)' -f '{0}{1}' -i $i -o - | grep '^\s*\(rack \|convert \|make \|.*#exec\)' | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
+    echo $?  $i
+done
+# Good old
+# grep '^\s*\(rack \|convert \|make \|.*#exec\)' ${DOC_FILES[*]}  | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
 
 
 # Append additional cases

@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/Input.h"
+#include "drain/util/Output.h"
 #include "drain/util/Static.h"
 
 #include "CommandBank.h"
@@ -146,6 +147,11 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 	// mout << name << mout.endl;
 
 };
+
+
+void CommandBank::append(const Script & script, Program & prog) const {
+	append(script, prog.getContext<>(), prog);
+}
 
 
 /// Appends program with commands fo the script
@@ -373,16 +379,18 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 	// Which log? Perhaps prog first cmd ctx log?
 	//const drain::Flagger::value_t execScript = drain::Static::get<drain::TriggerSection>().index;
 
-	bool THREADS_ENABLED = false;
+	bool PARALLEL_ENABLED = false;
 
-	bool CREATING_TASK = false;
+	bool INLINE_SCRIPT = false;
+
 
 	ProgramVector threads;
 
 	Script routine;
 
-	Log & baseLog = contextCloner.getSource().log; // 2022/10
-	Logger mout(baseLog, __FUNCTION__, __FILE__); // warni
+	//Log & baseLog = contextCloner.getSource().log; // 2022/10
+	Log & log = prog.getContext<>().log; // 2022/10
+	Logger mout(log, __FUNCTION__, __FILE__); // warni
 
 	// Iterate commands.
 	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
@@ -399,23 +407,23 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		const bool TRIGGER_CMD = (cmd.section & this->scriptTriggerFlag);
 		// ctx.setStatus("script", !routine.empty());
 
-		mout.debug() << '"' << key << '"' << " ctx=" << ctx.getId() << " cmd.section=" << cmd.section << '/' << this->scriptTriggerFlag;
+		mout.debug() << '"' << key << '"' << " ctx=" << ctx.getName() << " cmd.section=" << cmd.section << '/' << this->scriptTriggerFlag;
 
 		if (TRIGGER_CMD)
 			mout << " TRIGGER_CMD,";
-		if (THREADS_ENABLED)
+		if (PARALLEL_ENABLED)
 			mout << " THREADS_ENABLED,";
-		if (CREATING_TASK)
-			mout << " CREATING_TASK";
+		if (INLINE_SCRIPT)
+			mout << " INLINE_SCRIPT";
 		mout << mout.endl;
 
 		if (cmd.getName().empty()){
 			mout.warn() << "Command name empty for key='" << key << "', " << cmd << mout.endl;
 		}
-		else if (cmd.getName() == scriptCmd){ // "--script"
+		else if (cmd.getName() == scriptCmd){ // "--script" by default
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			mout.debug() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
-			if (CREATING_TASK){
+			if (INLINE_SCRIPT){
 				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
 			}
 			scriptify(pit->second.toStr(), routine);
@@ -461,67 +469,100 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (key == "["){
 			mout.special("Enabling parallel computation / script triggering.");
-			THREADS_ENABLED = true;
+			PARALLEL_ENABLED = true;
 			if (routine.empty())
-				CREATING_TASK = true;
+				INLINE_SCRIPT = true;
 			ctx.setStatus("script", true); // To prevent appending sequental input sweeps
 		}
-		else if (TRIGGER_CMD && !THREADS_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
-			mout.debug("Running SCRIPT");
-			Program prog;
-			prog.add(key, cmd).section = 0;
-			append(routine, cmd.getContext<Context>(), prog);
+		else if (TRIGGER_CMD && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
+			mout.debug("Running SCRIPT in main thread: ", ctx.getName());
+			Program prog(cmd.getContext<Context>());
+			//Program prog;
+			prog.add(key, cmd).section = 0; // To not re-trigger?
+			//append(routine, cmd.getContext<Context>(), prog);
+			append(routine, prog);
 			run(prog, contextCloner); // Run in this context
 		}
-		else if (TRIGGER_CMD || (key == "/") || (key == "]")) {
+		else if (TRIGGER_CMD || (key == "/")){ // || (key == "]")) { // Now threads are enabled
+
+			if ((key == "/")  && !INLINE_SCRIPT){
+				mout.fail("thread start '[' missing but separator '/' found");
+			}
 
 			// NOTE: cloned also for --execScript ?
-			Program & thread = threads.add();
 
 			Context & ctxCloned = contextCloner.getCloned();
-			ctxCloned.statusFlags.reset();
-			ctxCloned.log.setVerbosity(baseLog.getVerbosity());
+			//mout.attention("cloned: ", ctxCloned.getId());
+			ctxCloned.log.setVerbosity(log.getVerbosity());
+			Program & thread = threads.add(ctxCloned);
+			// mout.attention("cloned: ", ctxCloned.getId(), " <-> ", thread.getContext<>().getId());
 
 			if (TRIGGER_CMD){ // ... in a thread.
 				// Include (prepend) the triggering command (typically --inputFile (implicit) )
 				value_t & cmdCloned = clone(key);
 				cmdCloned.section = 0; // Avoid re-triggering...
 				cmdCloned.setParameters(cmd.getParameters());
-				cmdCloned.setExternalContext(ctxCloned);
-				thread.add(key, cmdCloned);
+				thread.add(key, cmdCloned); // XXX
 			}
 
-			append(routine, ctxCloned, thread);
+			append(routine, thread);
 
-			if (!TRIGGER_CMD){
+			if (!TRIGGER_CMD){ // flush
 				routine.clear();
 			}
+		}
+		else if (key == "]"){ // Run the threads.
 
-			if (key == "]"){ // Run the threads.
-				mout.special("Running ", threads.size(), " thread(s), v=",baseLog.getVerbosity());
-				//mout.special("Running log=", baseLog.id);
+			mout.special("Running ", threads.size(), " thread(s)");
+			//mout.special("Running log=", baseLog.id);
 
-				#pragma omp parallel for
-				for (size_t i = 0; i < threads.size(); ++i) {
-					// Keep this minimal! (No variable writes here, unless local.)
-					run(threads[i], contextCloner);
+			if (mout.isLevel(LOG_DEBUG+2)){
+
+				for (size_t j = 0; j < threads.size(); ++j) {
+
+					// Display commands briefly
+					const Program & p = threads[j];
+					mout.attention("thread #", j, '=', p.getContext<>().getName(), " vs ", p.getContext<>().getId());
+
+					for (const auto & cmdEntry: p){
+						Context & cmdCtx = cmdEntry.second->getContext<>();
+						std::cerr << cmdEntry.first << ':' << cmdCtx.getName() << '\n';
+					}
+
+					// Direct log to files
+					/*
+					std::stringstream sstr;
+					sstr << "/tmp/thread" << p.getContext<>().getId() << ".log";
+					mout.attention("  thread #", j,  ", separate log: ", sstr.str());
+					p.getContext<>().log.setOstr(sstr.str());
+					*/
 				}
 
-				mout.special("...Threads completed.");
-				threads.clear();
-
-				THREADS_ENABLED = false;
-				CREATING_TASK = false; //
 
 			}
 
-			// if (key == "/"){
+			#pragma omp parallel for
+			for (size_t i = 0; i < threads.size(); ++i) {
+				// Keep this minimal! (No variable writes here, unless local.)
+				run(threads[i], contextCloner);
+			}
+
+			mout.special("...Threads completed.");
+			threads.clear();
+
+			PARALLEL_ENABLED = false;
+			INLINE_SCRIPT = false; //
+
 			//}
 
 		}
-		else if (CREATING_TASK){
+		else if (INLINE_SCRIPT){
 			mout.debug("Adding: ", key, " = ", cmd, " ");
 			routine.add(key, cmd.getParameters().getValues()); // kludge... converting ReferenceMap back to string...
+		}
+		else if (key.size() == 1){
+			mout.warn("Use these characters for parallel computing: [ / ]");
+			mout.error("Unrecognized single-character instruction: ", key);
 		}
 		else {
 			// This is the default action!

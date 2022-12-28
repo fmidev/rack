@@ -115,16 +115,18 @@ void Accumulator::addData(const Image & srcData, const AccumulationConverter & c
 	converter.encodeWeight(priorWeight);  // important
 	//mout.warn() << "converter: " << converter << mout.endl;
 	Point2D<int> p;
+	const CoordinateHandler2D & coordHandler = accArray.getCoordinateHandler();
+
 
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
 			p.setLocation(iOffset+i,jOffset+j);
-			if (coordinateHandler.handle(p.x,p.y) == CoordinateHandler2D::UNCHANGED){
+			if (coordHandler.handle(p.x,p.y) == CoordinateHandler2D::UNCHANGED){
 				a = srcData.address(i,j);
 				value  = srcData.get<double>(a);
 				weight = priorWeight;
 				if (converter.decode(value, weight)){
-					add(data.address(p.x, p.y), value, weight);
+					add(accArray.data.address(p.x, p.y), value, weight);
 				}
 			}
 		}
@@ -139,16 +141,17 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 	double value;
 	double weight;
 	Point2D<int> p;
+	const CoordinateHandler2D & coordHandler = accArray.getCoordinateHandler();
 
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
 			p.setLocation(iOffset+i,jOffset+j);
-			if (coordinateHandler.handle(p.x,p.y) == CoordinateHandler2D::UNCHANGED){
+			if (coordHandler.handle(p.x,p.y) == CoordinateHandler2D::UNCHANGED){
 				a = src.address(i,j);
 				value  = src.get<double>(a);
 				weight = srcQuality.get<double>(a);
 				if (converter.decode(value, weight)){
-					add(data.address(p.x, p.y), value, priorWeight * weight);
+					add(accArray.data.address(p.x, p.y), value, priorWeight * weight);
 				}
 			}
 		}
@@ -185,9 +188,11 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
-	if ((dst.getWidth() != width) || (dst.getHeight() != height)){
-		mout.info() << "resizing " << dst.getWidth() << 'x' << dst.getHeight() << " => " << width << 'x' << height << mout.endl;
-		dst.setGeometry(width, height);
+	if ((dst.getWidth() != accArray.getWidth()) || (dst.getHeight() != accArray.getHeight())){
+		mout.info() << "resizing " << dst.getGeometry() << " [2D] => "
+				<< accArray.getGeometry() << mout.endl;
+		//dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+		dst.setGeometry(accArray.getGeometry());
 	}
 
 
@@ -212,20 +217,20 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	switch (field){
 		case 'd':
 		case 'D':
-			methodPtr->extractValue(*this, coder, dst);
+			methodPtr->extractValue(accArray, coder, dst);
 			break;
 		case 'w':
 		case 'W':
-			methodPtr->extractWeight(*this, coder, dst);
+			methodPtr->extractWeight(accArray, coder, dst);
 			break;
 		case 'c':
 		case 'C':
-			methodPtr->extractCount(*this, coder, dst);
+			methodPtr->extractCount(accArray, coder, dst);
 			break;
 		case 's':
 		case 'S':
 			//mout.warn() << coder << mout.endl;
-			methodPtr->extractDev(*this, coder, dst);
+			methodPtr->extractDev(accArray, coder, dst);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:

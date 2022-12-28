@@ -66,12 +66,14 @@ public:
 			Logger mout(__FUNCTION__, __FILE__);
 			mout.warn() << "allocation requested for empty area" << mout.endl;
 		}
-		AccumulationArray::setGeometry(frameWidth, frameHeight);
+		//AccumulationArray::setGeometry(frameWidth, frameHeight);
+		accArray.setGeometry(frameWidth, frameHeight);
 	};
 
 	inline
 	void reset(){
-		AccumulationArray::reset();
+		accArray.reset();
+		//AccumulationArray::reset();
 		GeoFrame::reset();
 	}
 
@@ -80,8 +82,8 @@ public:
 		int i,j;
 		size_t a;
 		deg2pix(lon,lat, i,j);
-		if ( (i>=0) && (i<static_cast<int>(width)) && (j>=0) && (j< static_cast<int>(height)) ){
-			a = data.address(i, j);
+		if ( (i>=0) && (i<static_cast<int>(accArray.getWidth())) && (j>=0) && (j< static_cast<int>(accArray.getHeight())) ){
+			a = accArray.data.address(i, j);
 			// std::cerr << "addUnprojected:" << i << ',' << j << '\t' << value << '/' << weight << '\n';
 			add(a, value, weight);
 		}

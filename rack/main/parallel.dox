@@ -166,10 +166,11 @@ rack  volume.h5 [ --cMethod AVERAGE --pCappi 500 --cSize 200 -c -o 'cappi-${NOD}
 \endcode
 
 
-\section parallel_examples Examples 
 
 
+\section parallel_future Future extensions
 
+\note Experimental design – not tested operationally
 
 
 \subsection parallel_acc Accumulation
@@ -202,12 +203,6 @@ rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 
 hence there is less use in designing \i parallel tiled compositing in Rack level.
 See the single-thread \ref tiledcompositing instead.
 
-
-\note Experimental design - not tested operationally
-
-\subsection parallel_future Future extensions
-
-\note Not supported in current version
 
 \subsubsection parallel_anom Anomaly detection 
 

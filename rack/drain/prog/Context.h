@@ -61,29 +61,31 @@ class Context {
 
 public:
 
-	Context() : id(++counter){
-		statusMap["ID"] = id;        // constant
-		statusMap["PID"] = getpid(); // constant
-		statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
-	}
+	Context(const std::string & basename = __FUNCTION__);
 
-	/// Defines unique id.
-	Context(const Context & ctx) : id(++counter + 100*ctx.id){
-		log.setVerbosity(ctx.log.getVerbosity());
-		statusMap["ID"] = id;        // constant
-		statusMap["PID"] = getpid(); // constant
-		statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
-	}
+	Context(const Context & ctx);
 
-	long int getId(){
-		return id;
-	}
+
+	/// Used by copy const
+	const std::string basename;
+
 
 
 	virtual
 	~Context(){
-		if (logFileStream.is_open())
-			logFileStream.close();
+		//if (logFileStream.is_open())
+		//	logFileStream.close();
+	}
+
+
+	inline
+	long int getId() const {
+		return id;
+	}
+
+	inline
+	const std::string & getName() const {
+		return name;
 	}
 
 	Log log;
@@ -92,8 +94,8 @@ public:
 	/**
 	 *
 	 */
-	std::string logFile;
-	std::ofstream logFileStream;
+	//std::string logFileSyntax;
+	//std::ofstream logFileStream;
 
 	/// Optional facility for compact bookkeeping of issues, also in running a thread.
 	StatusFlags statusFlags;
@@ -138,11 +140,15 @@ public:
 	}
 
 
-	const long int id;
 
 protected:
 
-	//drain::FlexVariableMap statusMap;
+	const long int id;
+
+	const std::string name;
+
+	void init();
+
 	mutable
 	drain::VariableMap statusMap;
 
@@ -194,7 +200,7 @@ class SmartContext : public Context, public ContextKit {
 
 public:
 
-	SmartContext(){
+	SmartContext(const std::string & basename = __FUNCTION__) : Context(basename){
 		//linkStatusVariables();
 	};
 
@@ -237,7 +243,7 @@ public:
 
 	/// Sets internal contextPtr to NULL.
 	inline
-	Contextual() : contextPtr(NULL) {};
+	Contextual() : contextPtr(nullptr) {};
 
 	/// Copies base context (even null) of the source. Notice that the actual instance may be of derived class.
 	inline
@@ -267,7 +273,7 @@ public:
 	/// True, if contextPtr has been set.
 	inline
 	bool contextIsSet() const {
-		return (contextPtr != NULL);
+		return (contextPtr != nullptr);
 	};
 
 	/// If context has been set, returns it through a  cast to base class Context.
@@ -303,17 +309,17 @@ protected:
 };
 
 /// Adds class-specific convenience functions
-template <class C> //, class BC=Context>
+template <class C>
 class SuperContextual : public Contextual{
 
 public:
 
-	//SuperContextual(){}
-
-	//SuperContextual(const SuperContextual &) : baseCtx(getCloner<T>().get()) {}
-
-
 	typedef drain::Cloner<Context,C> ctx_cloner_t;
+
+	static inline
+	C & baseCtx() {
+		return getContextCloner().getSourceOrig();
+	}
 
 	// Static?
 	static inline
@@ -321,15 +327,7 @@ public:
 		return getCloner<C>();
 	}
 
-	//static
-	//T & baseCtx = getContextCloner().get();
-
-
-	static inline
-	C & baseCtx() {
-		return getContextCloner().getSourceOrig();
-	}
-
+protected:
 
 
 };

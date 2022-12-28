@@ -194,7 +194,8 @@ rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
 
 
 */
-/// NOTE: test is good for checking immediately. But \c value is needed to store
+
+
 class CmdSelect : public  CmdBaseSelective { //drain::BasicCommand {
 
 public:
@@ -214,6 +215,7 @@ public:
 		DataSelector  test;
 
 		try {
+			// NOTE: test is good for checking immediately. But \c value is needed to store
 
 			// ImageSelector itest;
 			if (ctx.log.getVerbosity() > LOG_DEBUG){
@@ -2343,11 +2345,11 @@ public:
 			DataSet<dst_t> dstDataSet(dst("dataset1"));
 			const ODIM & odim = dstDataSet.getFirstData().odim;
 			//std::cout << "\t\t" << odim << '\n';
-			std::cout  << ctx.id << ' ' << "\t" << odim.quantity << ':' << odim.area << '\n';
+			std::cout  << ctx.getId() << ' ' << "\t" << odim.quantity << ':' << odim.area << '\n';
 		}
 		else {
 			for (const auto & entry: dict){
-				std::cout << title << '=' << ctx.id << ' ' << entry.first << ':' << entry.second << '\n';
+				std::cout << title << '=' << ctx.getId() << ' ' << entry.first << ':' << entry.second << '\n';
 				try {
 					Hi5Tree & dst = ctx.getMyHi5(entry.second);
 					DataSet<dst_t> dstDataSet(dst("dataset1"));

@@ -63,6 +63,25 @@ Output::~Output(){
 	ofstr.close();
 }
 
+void Output::open(const std::string & filename){
+
+	if (filename.empty())
+		throw std::runtime_error("drain::Output(...):  filename empty (use '-' for stdout)");
+
+	if (filename == "-"){
+		// if (ofstr.isOpen...)
+		ofstr.close(); // close std?
+		//mout.debug() << "opening standard output" << mout.endl;
+	}
+	else {
+		ofstr.open(filename.c_str(), std::ios::out);
+		if (!ofstr.is_open()){
+			throw std::runtime_error(filename + ": drain::Output(filename) opening failed");
+		}
+	}
+}
+
+
 
 Output::operator std::ostream & (){
 	// drain::Logger mout(__FUNCTION__, __FILE__);

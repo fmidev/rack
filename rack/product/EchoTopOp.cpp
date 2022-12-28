@@ -130,7 +130,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	/// Direct pixel address in the accumulation arrey.
 	size_t address;
 
-	for (size_t i = 0; i < accumulator.getWidth(); ++i) {
+	for (size_t i = 0; i < accumulator.accArray.getWidth(); ++i) {
 
 		// Ground angle
 		beta = accumulator.odim.getGroundAngle(i); // (static_cast<double>(i)+0.5) * accumulator.rscale / EARTH_RADIUS_43;
@@ -150,9 +150,9 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 		wUndetect = 0.10 + 0.40*(1.0-wHeight);
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
-		for (size_t j = 0; j < accumulator.getHeight(); ++j) {
+		for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
 
-			jSweep = (j * sweep.odim.area.height) / accumulator.getHeight();
+			jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
 			x = sweep.data.get<double>(iSweep,jSweep);
 
@@ -183,7 +183,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 				if (USE_QUALITY)
 					w = w * srcQuality.odim.scaleForward(srcQuality.data.get<double>(iSweep,jSweep));
 
-				address = accumulator.data.address(i,j);
+				address = accumulator.accArray.data.address(i,j);
 				//accumulator.add(address, hTop, 255.0 * w);
 				accumulator.add(address, hTop, w);
 
@@ -201,12 +201,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 }
 
-
-
 }
-
-
-
 
 
 // Rack

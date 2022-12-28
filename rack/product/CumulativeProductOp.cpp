@@ -84,7 +84,7 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 	/// Some product generators may have user defined accumulation methods.
 	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":",","));
 	accumulator.checkCompositingMethod(dstData.odim);
-	accumulator.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
+	accumulator.accArray.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
 	mout.debug() << (const Accumulator &) accumulator << mout.endl;

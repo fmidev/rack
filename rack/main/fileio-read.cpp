@@ -149,6 +149,8 @@ void CmdInputFile::exec() const {
 	mout.timestamp("END_FILEREAD");
 	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
 
+	//mout.special("END READ thread #", ctx.getId());
+
 
 }
 
@@ -161,7 +163,9 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); //REPL name, ""); // __FUNCTION__
 
-	mout.debug() << "start: " << fullFilename << mout.endl;
+	//mout.debug() << "start: " << fullFilename << mout.endl;
+
+	mout.debug("thread #", ctx.getId(), ": reading ", fullFilename);
 
 	//RackResources & resources = getResources();
 
@@ -240,7 +244,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	}
 	else {
 
-		mout.info() << "Polar product [" << object << ']' << mout.endl;
+		mout.info("Polar product [", object, "] thread=",  ctx.getId() );
 
 		ctx.currentHi5 =      & ctx.polarInputHi5;
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
@@ -259,6 +263,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	DataTools::updateInternalAttributes(*ctx.currentHi5);
 
+	mout.info("ok thread=",  ctx.getId() );
 
 	mout.debug("end");
 

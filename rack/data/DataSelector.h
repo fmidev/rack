@@ -55,32 +55,14 @@ namespace rack {
 //struct DataOrder : public std::pair<drain::Fladdict<Crit>, drain::Fladdict<Oper> > {
 struct DataOrder { //: public drain::BeanLike {
 
-	// typedef std::pair<drain::Fladdict<Crit>, drain::Fladdict<Oper> > pair_t;
 	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
 	enum Oper {MIN, MAX};
 
 	drain::Fladdict<Crit> criterion;
 	drain::Fladdict<Oper> operation;
 
-	/*
-	inline DataOrder() : drain::BeanLike(__FUNCTION__){
-		parameters.separator = ':';
-		parameters.link("criterion", s); // drain::sprinter(drain::Fladdict<Crit>::dict.getKeys()).str()+":"+drain::Fladdict<Oper>::dict.getKeys()).str());
-		//parameters.link("operation", operation., drain::sprinter(drain::Fladdict<Oper>::dict.getKeys()).str());
-	};
-	*/
-
-
-	/*
-	inline
-	std::string toStr() const {
-		//Crit::DATA;
-		return ""; //first.str() + ':' + second.str();
-	}
-	*/
-
-
 	std::string str;
+
 };
 
 /*
@@ -186,19 +168,6 @@ public:
 	drain::Range<double> elangle;
 
 	mutable DataOrder order;
-	/*
-	std::string  order;
-	drain::Fladdict<Oper> orderOper;
-	drain::Fladdict<Crit> orderCrit;
-	*/
-
-// Debugging...
-// protected:
-
-	//typedef enum {DEFAULT=0,MIN=1,MAX=2,DATA=4,TIME=8,ELANGLE=16} orderEnum;
-
-	//mutable
-	//drain::Flagger orderFlags; //(0, orderDict, ':');
 
 	/// Reject or accept VRAD(VH)
 	int dualPRF;

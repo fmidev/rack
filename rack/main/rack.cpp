@@ -107,15 +107,18 @@ int process(int argc, const char **argv) {
 	drain::CommandBank & cmdBank = drain::getCommandBank();
 	cmdBank.setTitle("Rack - a radar data processing program");
 
-	// If command is not found, it is redirected to \c --setODIM \c <arg>  which checks if it starts with a leading slash
-	cmdBank.setNotFoundHandlerCmdKey("setODIM");
-
-	// If a plain argument <arg> is given, execute it like \c --inputFile \c <arg> .
+	/** If a plain argument <arg> is given, forward it to this command.
+	 *  Hence equivalent to \c --inputFile \c <arg> .
+	 */
 	cmdBank.setDefaultCmdKey("inputFile");
 
+	/**
+	 *  If command is not found, it is redirected to this command.
+	 *  \c --setODIM \c <arg>  which checks if it starts with a leading slash
+	 */
+	cmdBank.setNotFoundHandlerCmdKey("setODIM");
 
-	// Also, add it to the commands taht trigger the script (if defined).
-	//drain::Flags::value_t trigger = cmdBank.sections.getValue("trigger");
+	// Also, mark the commands that trigger a script (if defined).
 	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
@@ -128,8 +131,9 @@ int process(int argc, const char **argv) {
 		drain::Script script;
 		cmdBank.scriptify(argc, argv, script);
 
-		drain::Program prog;
-		cmdBank.append(script, ctx, prog); // ctx is stored in each cmd
+		drain::Program prog(ctx);
+		cmdBank.append(script, prog); // ctx is stored in each cmd
+		// cmdBank.append(script, ctx, prog); // ctx is stored in each cmd
 
 
 

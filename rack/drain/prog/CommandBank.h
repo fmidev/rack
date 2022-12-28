@@ -136,7 +136,12 @@ public:
 	 *   Note: *appends* commands to the end of the program, use prog.clear() if needed.
 	 */
 	//  void append(const Script & script, Program & prog, Context & context) const ;
+	void append(const Script & script, Program & prog) const ;
+
+protected:
 	void append(const Script & script, Context & ctx, Program & prog) const ;
+
+public:
 
 	/// Append routine to program, and clear routine.
 	inline

@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <fstream>
 //#include <stdexcept>
 
 //#include <ctime>
@@ -145,19 +146,58 @@ public:
 	/**
 	 *   \par level - verbosity
 	 */
+	inline
 	Log(std::ostream & ostr=std::cerr, int verbosityLevel=LOG_WARNING) : VT100(true), ostrPtr(&ostr), verbosityLevel(verbosityLevel)
 	{
 		resetTime();
 		//std::cerr << "start monitor, level=" << verbosityLevel << std::endl;
 	};
 
+	inline
 	Log(const Log &m) : VT100(m.VT100), ostrPtr(m.ostrPtr), verbosityLevel(m.verbosityLevel) {
 		resetTime();
 	};
 
 	inline
+	~Log(){
+		close(); // Note: external ofstream will not be closed.
+		/*
+		if (ostrPtr != nullptr){ // it never is...
+			ostrPtr->close();
+		}
+		*/
+	}
+
+
+	inline
 	void setOstr(std::ostream & ostr){
+		/*
+		if (ostrPtr != nullptr){ // it never is...
+			ostrPtr->close();
+		}
+		*/
+		close();
 		ostrPtr = &ostr;
+	}
+
+	inline
+	void setOstr(const std::string & filename){
+		/*
+		if (ostrPtr != nullptr){ // it never is...
+			ostrPtr->close();
+		}
+		*/
+		close();
+		ofstr.open(filename, std::ios::out);
+		ostrPtr = &ofstr;
+	}
+
+	/// Closes internal ofstr, if used. External ofstream will not be closed.
+	void close(){
+		if (ofstr.is_open()){
+			ostrPtr = nullptr; // or what, std::cerr ?
+			ofstr.close();
+		}
 	}
 
 	//
@@ -204,6 +244,8 @@ public:
 protected:
 
 	std::ostream *ostrPtr;
+
+	std::ofstream ofstr;
 
 	level_t verbosityLevel;
 
@@ -386,6 +428,16 @@ public:
 	inline
 	Logger & obsolete(const TT &... args){
 		static const Notification notif(__FUNCTION__, 35);
+		initMessage<LOG_WARNING>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	/// Possible error, but execution can continue. Special type of Logger::warn().
+	template<typename ... TT>
+	inline
+	Logger & attention(const TT &... args){
+		static const Notification notif(__FUNCTION__, 46);
 		initMessage<LOG_WARNING>(notif);
 		flush(args...);
 		return *this;

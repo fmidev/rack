@@ -66,7 +66,13 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		Composite & composite = ctx.getComposite(RackContext::SHARED);
+
+		mout.debug("ADD start thread #", ctx.getName());
+
 		add(composite, RackContext::CURRENT, true);
+
+		mout.debug("ADD end.. thread #", ctx.getName());
+
 		// composite.updateInputSelector(ctx.select);
 		// CHECK ctx.select.clear();
 	}

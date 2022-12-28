@@ -279,7 +279,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	mout.debug();
 	//mout << "Composite" << composite << '\n';
 	mout << "Composite (cropped) " << *this;
-	mout << " geom: " << width << 'x' << height << '\n';
+	mout << " geom: " << accArray.getWidth() << 'x' << accArray.getHeight() << '\n';
 	mout << "Proj:\n" << pRadarToComposite << '\n';
 	mout << "Pix area:\n" << bboxPix << '\n';
 	mout << mout.endl;
@@ -365,7 +365,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 					s = srcData.data.get<double>(b,a);
 
-					address = data.address(pComp.x, pComp.y);
+					address = accArray.data.address(pComp.x, pComp.y);
 
 					if (converter.SKIP_UNDETECT && (s == srcData.odim.undetect)){
 						add(address, 0.0, 0.0); // weight=0.0 => only counter updated, important!
@@ -499,7 +499,7 @@ void Composite::updateInputSelector(const std::string & select){
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
 			mout.warn() << "quantity selector changed, resetting accumulation array" << mout;
-			clear();
+			accArray.clear();
 			odim.quantity.clear();
 			odim.scaling.set(0.0, 0.0);
 		}

@@ -47,7 +47,13 @@ typename Script::entry_t & Script::add(const std::string & cmd, const std::strin
 
 
 Command & Program::add(const list_t::value_type::first_type & key, Command & cmd){ // const std::string & params = ""){
+
 	this->push_back(typename list_t::value_type(key, & cmd));
+
+	if (contextIsSet()){
+		cmd.setExternalContext(getContext<>());
+	}
+
 	return cmd;
 }
 
@@ -57,24 +63,42 @@ void Program::run() const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	for (const_iterator it = this->begin(); it != this->end(); ++it) {
+	//for (const_iterator it = this->begin(); it != this->end(); ++it) {
+	for (const auto & entry: *this) {
 		// String...
-		const typename list_t::value_type::first_type & key = it->first;
-		Command & cmd = *it->second;
+		//const typename list_t::value_type::first_type & key = it->first;
+		//Command & cmd = *it->second;
+		Command & cmd = *entry.second;
 
-		if (key == "script"){
+		if (entry.first == "script"){
 			mout.warn() << "skipping script " << '(' << cmd.getParameters() << ')' << mout.endl;
 			continue;
 		}
 
 		//Command & cmd = *(*it);
-		mout.warn() << "  executing " << key << "-> " <<  cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
+		mout.warn() << "  executing " << entry.first << "-> " <<  cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
 		//mout.note() << "  context: "  << cmd.getContext<>().getId() << mout.endl;
 		cmd.exec();
 	}
 
 }
 
+/// Adds a new, empty program to thread vector.
+Program & ProgramVector::add(Context & ctx){
+
+	if (ctx.statusFlags.value != 0){
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("clearing status flags: ", ctx.statusFlags);
+		ctx.statusFlags.reset();
+	}
+
+	//push_back(Program());
+	//back().setExternalContext(ctx);
+	(*this)[size()] = Program();
+	rbegin()->second.setExternalContext(ctx);
+	return rbegin()->second;
+	//return back();
+};
 
 
 }

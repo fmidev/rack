@@ -99,6 +99,50 @@ size_t sizeGetter::getSize<void>(){
 }
 // todo:: std::string?
 
+
+// default implementation
+template <typename T>
+struct TypeName
+{
+    static const char* get(){
+        return typeid(T).name();
+    }
+};
+
+// a specialization for each type of those you want to support
+// and don't like the string returned by typeid
+template <>
+struct TypeName<void> {
+    static const char* get(){ return "void"; }
+};
+
+template <>
+struct TypeName<bool> {
+    static const char* get(){ return "bool"; }
+};
+
+template <>
+struct TypeName<char> {
+    static const char* get(){ return "char"; }
+};
+
+template <>
+struct TypeName<int> {
+    static const char* get(){ return "int"; }
+};
+
+
+template <>
+struct TypeName<float> {
+    static const char* get(){ return "float"; }
+};
+
+template <>
+struct TypeName<double> {
+    static const char* get(){ return "float"; }
+};
+
+
 /// Returns the basic type (integer, float, bool, string, void) as a string.
 /**
  *  Usage:
@@ -117,6 +161,8 @@ public:
 	template <class S, class T>
 	static
 	T callback(){
+		return TypeName<S>::get();
+		/*
 		const std::type_info & t = typeid(S);
 		if (t == typeid(void))
 			return "void";
@@ -134,6 +180,7 @@ public:
 		}
 		else
 			return "integer";
+		 */
 	}
 
 

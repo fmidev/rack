@@ -75,25 +75,16 @@ namespace image
  *   The methods can be extended user defined methods with addMethod() .
  *
  */
-class Accumulator : public AccumulationArray {
-
+//class Accumulator : public AccumulationArray {
+class Accumulator  {
 public:
 
-	Accumulator() :
-		/*
-		undefinedMethod(*this),
-		overwriteMethod(*this),
-		maximumMethod(*this),
-		minimumMethod(*this),
-		averageMethod(*this),
-		weightedAverageMethod(*this),
-		maximumWeightMethod(*this),
-		*/
-		methodPtr(&undefinedMethod)
-	{
+	/// Todo: export
+	AccumulationArray accArray;
 
-		// setMethod(_overwriteMethod);
+	Accumulator() :	methodPtr(&undefinedMethod) {
 
+		/// TODO: a static map?
 		addMethod(overwriteMethod);
 		addMethod(maximumMethod);
 		addMethod(minimumMethod);
@@ -101,6 +92,7 @@ public:
 		addMethod(weightedAverageMethod);
 		addMethod(maximumWeightMethod);
 
+		// setMethod(_overwriteMethod);
 
 	};
 
@@ -113,7 +105,7 @@ public:
 	//  Does not copy the target (accumulator &).
 	inline
 	void setMethod(const AccumulationMethod & method){
-		//methodPtr = & method;
+		// methodPtr = & method;
 		// std::cerr << "setMethod(const AccumulationMethod & method): " <<  method.name << std::endl;
 		setMethod(method.getName(), method.getParameters().getValues());  // But this limits to those already registered?
 	}
@@ -142,13 +134,13 @@ public:
 	/// Adds decoded data that applies natural scaling.
 	inline
 	void add(const size_t i, double value, double weight) {
-		methodPtr->add(*this, i, value, weight);
+		methodPtr->add(accArray, i, value, weight);
 	}
 
 	/// Adds decoded data that applies natural scaling.
 	inline
 	void add(const size_t i, double value, double weight, unsigned int count) {
-		methodPtr->add(*this, i, value, weight, count);
+		methodPtr->add(accArray, i, value, weight, count);
 	}
 
 
@@ -199,7 +191,7 @@ public:
 
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const {
-		ostr << "Accumulator ("<< width << 'x' << height << ") ";
+		ostr << "Accumulator ("<< accArray.getWidth() << 'x' << accArray.getHeight() << ") ";
 		ostr << " ["<< getMethod() << "] ";
 		/*
 		for (std::map<std::string, AccumulationMethod &>::const_iterator it = methods.begin(); it != methods.end(); it++)

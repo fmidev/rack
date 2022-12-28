@@ -191,7 +191,6 @@ struct Cloner : public ClonerBase<B> {
 	};
 
 
-
 	virtual
 	entry_t getClonerEntry() const {
 		S *ptr = new S(src);  // NOTE: parameterReferences must be done
@@ -294,12 +293,14 @@ protected:
 	// TODO: re-allocate empty slots
 	inline
 	index_t getNewIndex() const {
-		// pragma omp critical
+		// pra gma omp critical
 		{
-		if (this->ptrs.empty())
-			return 1;
-		else
-			return this->ptrs.rbegin()->first + 1;
+			if (this->ptrs.empty())
+				return 1;
+			else {
+				// std::cerr << "getNewIndex: " << this->ptrs.rbegin()->first << '\n';
+				return this->ptrs.rbegin()->first + 1;
+			}
 		}
 	}
 
@@ -309,61 +310,6 @@ protected:
 
 
 };
-
-
-/*
-template <class B>
-class LocalCloner {
-
-public:
-
-	typedef ClonerBase<B> cloner_base_t;
-	typedef typename cloner_base_t::index_t index_t;
-
-	LocalCloner(const cloner_base_t & cb) : idx(0), cloner(cb){
-	};
-
-	LocalCloner(const LocalCloner<B> & loner) : idx(0), cloner(loner.cloner){
-	};
-
-	~LocalCloner(){
-		//cloner.dropUnique();
-		std::cerr << __FILE__ << ':' << __FUNCTION__ << ": dropping " << idx << '\n';
-		cloner.drop(idx);
-	};
-
-	B & getCloned(){
-
-		if (idx){
-			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": already fetched, id=" << idx << " (ok)" << '\n';
-			return cloner.getCloned(idx);
-		}
-		else {
-			typename cloner_base_t::entry_t entry = cloner.getClonerEntry();
-			idx = entry.first;
-			return *entry.second;
-		}
-		//return cloner.cloneUnique();
-	}
-
-	inline
-	index_t getIndex() const{
-		return idx;
-	}
-
-	inline
-	index_t getHostSize() const{
-		return cloner.count();
-	}
-
-protected:
-
-	index_t idx;
-
-	const cloner_base_t & cloner;
-
-};
-*/
 
 
 

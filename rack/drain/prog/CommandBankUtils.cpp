@@ -39,6 +39,9 @@ void CmdLog::exec() const {
 
 	Context & ctx = getContext<Context>();
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	mout.unimplemented("under constr...");
+	/*
 	drain::StringMapper mapper;
 
 	std::string s = mapper.parse(value).toStr(ctx.getStatusMap());
@@ -63,6 +66,7 @@ void CmdLog::exec() const {
 
 	ctx.log.setOstr(std::cerr);
 	mout.error() << "failed in opening log file: " << ctx.logFile << mout.endl;
+	*/
 }
 
 void CmdStatus::exec() const {
