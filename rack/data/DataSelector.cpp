@@ -72,10 +72,9 @@ DataSelector::DataSelector(
 	this->quantity = quantity;
 	this->count = count;
 	this->elangle = elangle;
-	this->order.str = "";
+	//this->order.str = "";
+	this->order.set(DataOrder::DATA, DataOrder::MIN);
 	this->dualPRF = dualPRF;
-	//this->elangle.min = elangleMin;
-	//this->elangle.max = elangleMax;
 
 	updateBean();
 
@@ -223,12 +222,15 @@ void DataSelector::updateBean() const {
 		//path = pathMatcher;
 	}
 
+
+	order.set(order.str);
+	/*
 	std::string s1, s2;
 	drain::StringTools::split2(order.str, s1, s2, ':');
 	order.criterion.set(s1);
 	order.operation.set(s2);
 	order.str = order.criterion.str() + ':' + order.operation.str();
-
+	*/
 		//orderFlags.set(order);
 
 	//mout.special(__FILE__, *this);

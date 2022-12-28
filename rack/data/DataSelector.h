@@ -58,8 +58,37 @@ struct DataOrder { //: public drain::BeanLike {
 	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
 	enum Oper {MIN, MAX};
 
+	const char separator = ':';
+
 	drain::Fladdict<Crit> criterion;
 	drain::Fladdict<Oper> operation;
+
+	template<typename ... TT>
+	void set(Crit crit, const TT &... args) {
+		criterion = crit;
+		set(args...);
+	};
+
+	template<typename ... TT>
+	void set(Oper oper, const TT &... args) {
+		operation = oper;
+		set(args...);
+	};
+
+	/// Expects <crit>[:<oper>]
+	inline
+	void set(const std::string s) {
+		std::string s1, s2;
+		drain::StringTools::split2(s, s1, s2, separator);
+		criterion.set(s1);
+		operation.set(s2);
+		set();
+	};
+
+	void set(){
+		str = criterion.str() + separator + operation.str();
+	}
+
 
 	std::string str;
 

@@ -135,7 +135,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	*/
 
-	mout.attention("add A2 #" + ctx.getName());
+	mout.debug("add A2 #" + ctx.getName());
 
 	if (ctx.statusFlags)
 		mout.warn("Status flags before accumulating: ", ctx.statusFlags);

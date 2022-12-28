@@ -61,36 +61,10 @@ using namespace drain::image;
 class PolarProductOp : public VolumeOp<PolarODIM> {
 public:
 
-	inline
-	PolarProductOp(const std::string & name = __FUNCTION__, const std::string & description = "") : VolumeOp<PolarODIM>(name, description) {
-
-		allowedEncoding.link("type", odim.type = "C");
-		allowedEncoding.link("gain", odim.scaling.scale);
-		allowedEncoding.link("offset", odim.scaling.offset);
-		// 2018
-		allowedEncoding.link("undetect", odim.undetect);
-		allowedEncoding.link("nodata", odim.nodata);
-
-		allowedEncoding.link("rscale", odim.rscale);
-		allowedEncoding.link("nrays", odim.area.height);
-		allowedEncoding.link("nbins", odim.area.width);
-
-		aboveSeaLevel = true;
-		this->odim.product = "PPROD"; // NEW
-		//this->odim.object  = "PVOL"; // consider!
-		//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
-
-		dataSelector.order.criterion = DataOrder::ELANGLE;
-		dataSelector.order.operation = DataOrder::MIN;
-	};
+	PolarProductOp(const std::string & name = __FUNCTION__, const std::string & description = "");
 
 
-	PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(op){
-		//odim.importMap(op.odim);
-		//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
-		aboveSeaLevel = op.aboveSeaLevel;
-		allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
-	}
+	PolarProductOp(const PolarProductOp & op);
 
 	virtual
 	~PolarProductOp(){};

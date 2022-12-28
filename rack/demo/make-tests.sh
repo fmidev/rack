@@ -71,11 +71,17 @@ echo -n > $TEST_CMD_FILE
 INCLUDES=( `grep '\\include .*.\(hlp\|exm\|cut\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
 echo "make --always-make ${INCLUDES[*]} " >> $TEST_CMD_FILE
 
+#echo > $TEST_CMD_FILE.foo
+
 # Join cmd lines split by '\'
 for i in  ${DOC_FILES[*]}; do
     replace.py -r '(.*)\\\n(.*)' -f '{0}{1}' -i $i -o - | grep '^\s*\(rack \|convert \|make \|.*#exec\)' | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
+#    replace.py -r '(.*)\\\n(.*)' -f '{0}{1}' -i $i -o - | grep '^\s*\(rack \|convert \|make \|.*#exec\)' | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE.foo
     echo $?  $i
 done
+
+
+
 # Good old
 # grep '^\s*\(rack \|convert \|make \|.*#exec\)' ${DOC_FILES[*]}  | fgrep -v '<' | fgrep -v '...'  >>  $TEST_CMD_FILE
 
@@ -92,11 +98,13 @@ N=( `wc -l $TEST_CMD_FILE` )
 
 echo "Number of test examples: $N"
 
-mv $TEST_CMD_FILE $TEST_CMD_FILE.tmp
+cp $TEST_CMD_FILE $TEST_CMD_FILE.tmp
 
-# Stript filename 
-cut -d: -f2- $TEST_CMD_FILE.tmp | cat -n  > $TEST_CMD_FILE
-echo
+# ???
+#cut -d: -f2- $TEST_CMD_FILE.tmp | cat -n  > $TEST_CMD_FILE
+cat $TEST_CMD_FILE.tmp | cat -n  > $TEST_CMD_FILE
+#echo
+#exit
 
 rm -f test-*.log
 

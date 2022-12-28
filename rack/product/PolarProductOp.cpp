@@ -48,6 +48,45 @@ using namespace drain::image;
 
 const CoordinatePolicy PolarProductOp::polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
 
+PolarProductOp::PolarProductOp(const std::string & name, const std::string & description) : VolumeOp<PolarODIM>(name, description) {
+
+	allowedEncoding.link("type", odim.type = "C");
+	allowedEncoding.link("gain", odim.scaling.scale);
+	allowedEncoding.link("offset", odim.scaling.offset);
+	// 2018
+	allowedEncoding.link("undetect", odim.undetect);
+	allowedEncoding.link("nodata", odim.nodata);
+
+	allowedEncoding.link("rscale", odim.rscale);
+	allowedEncoding.link("nrays", odim.area.height);
+	allowedEncoding.link("nbins", odim.area.width);
+
+	aboveSeaLevel = true;
+	this->odim.product = "PPROD"; // NEW
+	//this->odim.object  = "PVOL"; // consider!
+	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
+
+	drain::Logger mout(getName().c_str(), __FILE__);
+	//mout.debug(dataSelector);
+	dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
+	//dataSelector.order.criterion = DataOrder::ELANGLE;
+	//dataSelector.order.operation = DataOrder::MIN;
+	dataSelector.updateBean();
+	mout.debug2(dataSelector);
+
+};
+
+
+
+PolarProductOp::PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(op){
+	//odim.importMap(op.odim);
+	//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
+	aboveSeaLevel = op.aboveSeaLevel;
+	allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
+}
+
+
+
 void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
