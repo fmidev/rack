@@ -105,6 +105,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e85b39a019bdbe352ca602e5303044e"><td class="memItemLeft" align="right" valign="top"><a id="a3e85b39a019bdbe352ca602e5303044e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setOstr</b> (std::ostream &amp;ostr)</td></tr>
 <tr class="separator:a3e85b39a019bdbe352ca602e5303044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee354af0bd5a8f21426e58254c392b7b"><td class="memItemLeft" align="right" valign="top"><a id="aee354af0bd5a8f21426e58254c392b7b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setOstr</b> (const std::string &amp;filename)</td></tr>
+<tr class="separator:aee354af0bd5a8f21426e58254c392b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ae591df94fc66ccb85cbb6565368bca"><td class="memItemLeft" align="right" valign="top"><a id="a5ae591df94fc66ccb85cbb6565368bca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Log.html#a5ae591df94fc66ccb85cbb6565368bca">close</a> ()</td></tr>
+<tr class="memdesc:a5ae591df94fc66ccb85cbb6565368bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes internal ofstr, if used. External ofstream will not be closed. <br /></td></tr>
+<tr class="separator:a5ae591df94fc66ccb85cbb6565368bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f1c0d7c3bc7352ac9ae6a31647730da"><td class="memItemLeft" align="right" valign="top"><a id="a0f1c0d7c3bc7352ac9ae6a31647730da"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setVerbosity</b> (<a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a> level)</td></tr>
 <tr class="separator:a0f1c0d7c3bc7352ac9ae6a31647730da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +157,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9344c34c0a2e0b8f954af4db2c482ba6"><td class="memItemLeft" align="right" valign="top"><a id="a9344c34c0a2e0b8f954af4db2c482ba6"></a>
 std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><b>ostrPtr</b></td></tr>
 <tr class="separator:a9344c34c0a2e0b8f954af4db2c482ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07e58a51d19f5b226964a5fa004b9bf"><td class="memItemLeft" align="right" valign="top"><a id="ab07e58a51d19f5b226964a5fa004b9bf"></a>
+std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>ofstr</b></td></tr>
+<tr class="separator:ab07e58a51d19f5b226964a5fa004b9bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf8a68e4a6b210d40b7700e10d2e599e"><td class="memItemLeft" align="right" valign="top"><a id="abf8a68e4a6b210d40b7700e10d2e599e"></a>
 <a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>verbosityLevel</b></td></tr>
 <tr class="separator:abf8a68e4a6b210d40b7700e10d2e599e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +219,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b>
 <li>drain/util/Log.cpp</li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:148</div></div>
+<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:150</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

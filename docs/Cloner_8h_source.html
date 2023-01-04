@@ -241,197 +241,143 @@ $(function() {
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    };</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    entry_t getClonerEntry()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        S *ptr = <span class="keyword">new</span> S(<a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>);  <span class="comment">// NOTE: parameterReferences must be done</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        index_t i = <a class="code" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">getNewIndex</a>();</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        this-&gt;ptrs[i] = ptr; <span class="comment">//.insert(ptr); //push_front(p);</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">return</span> entry_t(i, ptr);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    };</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    entry_t getClonerEntry()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        S *ptr = <span class="keyword">new</span> S(<a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>);  <span class="comment">// NOTE: parameterReferences must be done</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        index_t i = <a class="code" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">getNewIndex</a>();</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        this-&gt;ptrs[i] = ptr; <span class="comment">//.insert(ptr); //push_front(p);</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">return</span> entry_t(i, ptr);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    };</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">/* Consider separating these to &quot;Provider&quot; or &quot;Factory&quot; etc. */</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">  211</a></span>&#160;    <span class="keyword">const</span> B &amp; <a class="code" href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">getSource</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>();</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    };</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">  220</a></span>&#160;    B &amp; <a class="code" href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">getSource</a>() {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>();</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    };</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">  229</a></span>&#160;    <span class="keyword">const</span> S &amp; <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    };</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">  238</a></span>&#160;    S &amp; <a class="code" href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">getSourceOrig</a>() {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    };</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="comment">/* Consider separating these to &quot;Provider&quot; or &quot;Factory&quot; etc. */</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">  210</a></span>&#160;    <span class="keyword">const</span> B &amp; <a class="code" href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">getSource</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>();</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    };</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">  219</a></span>&#160;    B &amp; <a class="code" href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">getSource</a>() {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    };</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">  228</a></span>&#160;    <span class="keyword">const</span> S &amp; <a class="code" href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">getSourceOrig</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    };</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">     *  The returned object is possibly static.</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">  237</a></span>&#160;    S &amp; <a class="code" href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">getSourceOrig</a>() {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    };</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">size_t</span> count()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="keywordflow">return</span> ptrs.size();</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    }</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">size_t</span> count()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">return</span> ptrs.size();</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    }</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span>  <span class="comment">// clear</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">  251</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">drop</a>(<a class="code" href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">index_t</a> i)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keyword">const</span> <span class="keyword">typename</span> ptr_container_t::iterator it = ptrs.find(i);</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordflow">if</span> (it != ptrs.end()){</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <span class="comment">// std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; *ptr &lt;&lt; &quot;, at #&quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="comment">// std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            <span class="keyword">delete</span> it-&gt;second;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            ptrs.erase(it);  <span class="comment">// TODO!</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;already deleted or does not exist: &quot;</span> &lt;&lt; i &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="comment">// warn?</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span>  <span class="comment">// clear</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">  250</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">drop</a>(<a class="code" href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">index_t</a> i)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keyword">const</span> <span class="keyword">typename</span> ptr_container_t::iterator it = ptrs.find(i);</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordflow">if</span> (it != ptrs.end()){</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="comment">// std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; *ptr &lt;&lt; &quot;, at #&quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            <span class="comment">// std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;            <span class="keyword">delete</span> it-&gt;second;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            ptrs.erase(it);  <span class="comment">// TODO!</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;already deleted or does not exist: &quot;</span> &lt;&lt; i &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="comment">// warn?</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">//protected:</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="comment">//static S entry;  // Consider non-static</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">  275</a></span>&#160;    S <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;  <span class="comment">// Consider non-static</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">    void clear(){</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">        for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">            S *ptr = *it;</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">            std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; *ptr &lt;&lt; &quot;, at #&quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">            delete ptr;</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">        ptrs.clear();</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="comment">//protected:</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="comment">//static S entry;  // Consider non-static</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">  274</a></span>&#160;    S <a class="code" href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">src</a>;  <span class="comment">// Consider non-static</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">    void clear(){</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">        for (typename ptr_container_t::iterator it=ptrs.begin(); it!= ptrs.end(); ++it){</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">            S *ptr = *it;</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">            std::cout &lt;&lt; &quot;deleting &quot; &lt;&lt; *ptr &lt;&lt; &quot;, at #&quot; &lt;&lt; (long int)ptr &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">            delete ptr;</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        ptrs.clear();</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="comment">// TODO: re-allocate empty slots</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">  296</a></span>&#160;    <a class="code" href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">index_t</a> <a class="code" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">getNewIndex</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="comment">// pragma omp critical</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        {</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">if</span> (this-&gt;ptrs.empty())</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keywordflow">return</span> this-&gt;ptrs.rbegin()-&gt;first + 1;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    }</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="comment">// Structure for storing pointers until the target objects should be deleted.</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">mutable</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    ptr_container_t ptrs;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="comment">// TODO: re-allocate empty slots</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno"><a class="line" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">  295</a></span>&#160;    <a class="code" href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">index_t</a> <a class="code" href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">getNewIndex</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="comment">// pra gma omp critical</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        {</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;            <span class="keywordflow">if</span> (this-&gt;ptrs.empty())</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;            <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                <span class="comment">// std::cerr &lt;&lt; &quot;getNewIndex: &quot; &lt;&lt; this-&gt;ptrs.rbegin()-&gt;first &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                <span class="keywordflow">return</span> this-&gt;ptrs.rbegin()-&gt;first + 1;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        }</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="comment">// Structure for storing pointers until the target objects should be deleted.</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    ptr_container_t ptrs;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;};</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;};</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">template &lt;class B&gt;</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">class LocalCloner {</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">public:</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">    typedef ClonerBase&lt;B&gt; cloner_base_t;</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">    typedef typename cloner_base_t::index_t index_t;</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">    LocalCloner(const cloner_base_t &amp; cb) : idx(0), cloner(cb){</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">    LocalCloner(const LocalCloner&lt;B&gt; &amp; loner) : idx(0), cloner(loner.cloner){</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">    ~LocalCloner(){</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">        //cloner.dropUnique();</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">        std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot;: dropping &quot; &lt;&lt; idx &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">        cloner.drop(idx);</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">    B &amp; getCloned(){</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">        if (idx){</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">            std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot;: already fetched, id=&quot; &lt;&lt; idx &lt;&lt; &quot; (ok)&quot; &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">            return cloner.getCloned(idx);</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">        else {</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">            typename cloner_base_t::entry_t entry = cloner.getClonerEntry();</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">            idx = entry.first;</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">            return *entry.second;</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">        //return cloner.cloneUnique();</span></div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">    index_t getIndex() const{</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">        return idx;</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">    index_t getHostSize() const{</span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">        return cloner.count();</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">protected:</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">    index_t idx;</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">    const cloner_base_t &amp; cloner;</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; </div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;}</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* Cloner_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;}</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* Cloner_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">// Drain</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructdrain_1_1Cloner_html_aee8360d1db5a0b00f99143ff23c56116"><div class="ttname"><a href="structdrain_1_1Cloner.html#aee8360d1db5a0b00f99143ff23c56116">drain::Cloner::getCloned</a></div><div class="ttdeci">virtual B &amp; getCloned(index_t i) const</div><div class="ttdoc">Returns.</div><div class="ttdef"><b>Definition:</b> Cloner.h:174</div></div>
 <div class="ttc" id="astructdrain_1_1Cloner_html_a2e2347cb59c317b32838f47cecc64df6"><div class="ttname"><a href="structdrain_1_1Cloner.html#a2e2347cb59c317b32838f47cecc64df6">drain::Cloner::Cloner</a></div><div class="ttdeci">Cloner(const S &amp;s)</div><div class="ttdoc">Constructor with source object (copied)</div><div class="ttdef"><b>Definition:</b> Cloner.h:137</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_a156936ecafa98893fed445177bd5e73f"><div class="ttname"><a href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">drain::Cloner::src</a></div><div class="ttdeci">S src</div><div class="ttdoc">Default instance, also the source for cloning.</div><div class="ttdef"><b>Definition:</b> Cloner.h:275</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_a156936ecafa98893fed445177bd5e73f"><div class="ttname"><a href="structdrain_1_1Cloner.html#a156936ecafa98893fed445177bd5e73f">drain::Cloner::src</a></div><div class="ttdeci">S src</div><div class="ttdoc">Default instance, also the source for cloning.</div><div class="ttdef"><b>Definition:</b> Cloner.h:274</div></div>
 <div class="ttc" id="astructdrain_1_1Cloner_html_a71e5e91ae8eb998c3875e50653aae861"><div class="ttname"><a href="structdrain_1_1Cloner.html#a71e5e91ae8eb998c3875e50653aae861">drain::Cloner::getClonedSrc</a></div><div class="ttdeci">S &amp; getClonedSrc() const</div><div class="ttdoc">Returns a object of class S, initialized with the source.</div><div class="ttdef"><b>Definition:</b> Cloner.h:186</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html"><div class="ttname"><a href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a></div><div class="ttdef"><b>Definition:</b> Cloner.h:46</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_a02c619cd6b55e285afc1f9161db85921"><div class="ttname"><a href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">drain::Cloner::getSource</a></div><div class="ttdeci">virtual const B &amp; getSource() const</div><div class="ttdoc">Returns a const reference to a default instance.</div><div class="ttdef"><b>Definition:</b> Cloner.h:211</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_a6e4d84bdf1fde6c7991e9a36554ee0f8"><div class="ttname"><a href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">drain::Cloner::drop</a></div><div class="ttdeci">virtual bool drop(index_t i) const</div><div class="ttdoc">Remove cloned entry.</div><div class="ttdef"><b>Definition:</b> Cloner.h:251</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_a02c619cd6b55e285afc1f9161db85921"><div class="ttname"><a href="structdrain_1_1Cloner.html#a02c619cd6b55e285afc1f9161db85921">drain::Cloner::getSource</a></div><div class="ttdeci">virtual const B &amp; getSource() const</div><div class="ttdoc">Returns a const reference to a default instance.</div><div class="ttdef"><b>Definition:</b> Cloner.h:210</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_a6e4d84bdf1fde6c7991e9a36554ee0f8"><div class="ttname"><a href="structdrain_1_1Cloner.html#a6e4d84bdf1fde6c7991e9a36554ee0f8">drain::Cloner::drop</a></div><div class="ttdeci">virtual bool drop(index_t i) const</div><div class="ttdoc">Remove cloned entry.</div><div class="ttdef"><b>Definition:</b> Cloner.h:250</div></div>
 <div class="ttc" id="astructdrain_1_1Cloner_html"><div class="ttname"><a href="structdrain_1_1Cloner.html">drain::Cloner</a></div><div class="ttdoc">Wrapper for derived class S, returning base class T.</div><div class="ttdef"><b>Definition:</b> Cloner.h:117</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html_a05384666b24e4f096243ebf311436ee5"><div class="ttname"><a href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">drain::ClonerBase::index_t</a></div><div class="ttdeci">size_t index_t</div><div class="ttdoc">Each cloned entry has an index.</div><div class="ttdef"><b>Definition:</b> Cloner.h:52</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_abdc2411b8a7ff496d49d4ab87f3ffe2e"><div class="ttname"><a href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">drain::Cloner::getSourceOrig</a></div><div class="ttdeci">virtual S &amp; getSourceOrig()</div><div class="ttdoc">Returns a reference to a default instance, in actual class.</div><div class="ttdef"><b>Definition:</b> Cloner.h:238</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_abdc2411b8a7ff496d49d4ab87f3ffe2e"><div class="ttname"><a href="structdrain_1_1Cloner.html#abdc2411b8a7ff496d49d4ab87f3ffe2e">drain::Cloner::getSourceOrig</a></div><div class="ttdeci">virtual S &amp; getSourceOrig()</div><div class="ttdoc">Returns a reference to a default instance, in actual class.</div><div class="ttdef"><b>Definition:</b> Cloner.h:237</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html_a6dc2ece479cdbb171f17dba8cc032025"><div class="ttname"><a href="structdrain_1_1ClonerBase.html#a6dc2ece479cdbb171f17dba8cc032025">drain::ClonerBase::drop</a></div><div class="ttdeci">virtual bool drop(index_t i) const =0</div><div class="ttdoc">Remove cloned entry (experimental)</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_a83b273cf3c3404b2f843f2f6d69c5595"><div class="ttname"><a href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">drain::Cloner::getSourceOrig</a></div><div class="ttdeci">virtual const S &amp; getSourceOrig() const</div><div class="ttdoc">Returns a const reference to a default instance, in actual class.</div><div class="ttdef"><b>Definition:</b> Cloner.h:229</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_a00c44b59b5143482b7237125bd4dfed4"><div class="ttname"><a href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">drain::Cloner::getNewIndex</a></div><div class="ttdeci">index_t getNewIndex() const</div><div class="ttdoc">Remove cloned entries.</div><div class="ttdef"><b>Definition:</b> Cloner.h:296</div></div>
-<div class="ttc" id="astructdrain_1_1Cloner_html_ab6e2978af49546abc3fe9dc9cfbd6ec1"><div class="ttname"><a href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">drain::Cloner::getSource</a></div><div class="ttdeci">virtual B &amp; getSource()</div><div class="ttdoc">Returns a reference to a default instance.</div><div class="ttdef"><b>Definition:</b> Cloner.h:220</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_a83b273cf3c3404b2f843f2f6d69c5595"><div class="ttname"><a href="structdrain_1_1Cloner.html#a83b273cf3c3404b2f843f2f6d69c5595">drain::Cloner::getSourceOrig</a></div><div class="ttdeci">virtual const S &amp; getSourceOrig() const</div><div class="ttdoc">Returns a const reference to a default instance, in actual class.</div><div class="ttdef"><b>Definition:</b> Cloner.h:228</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_a00c44b59b5143482b7237125bd4dfed4"><div class="ttname"><a href="structdrain_1_1Cloner.html#a00c44b59b5143482b7237125bd4dfed4">drain::Cloner::getNewIndex</a></div><div class="ttdeci">index_t getNewIndex() const</div><div class="ttdoc">Remove cloned entries.</div><div class="ttdef"><b>Definition:</b> Cloner.h:295</div></div>
+<div class="ttc" id="astructdrain_1_1Cloner_html_ab6e2978af49546abc3fe9dc9cfbd6ec1"><div class="ttname"><a href="structdrain_1_1Cloner.html#ab6e2978af49546abc3fe9dc9cfbd6ec1">drain::Cloner::getSource</a></div><div class="ttdeci">virtual B &amp; getSource()</div><div class="ttdoc">Returns a reference to a default instance.</div><div class="ttdef"><b>Definition:</b> Cloner.h:219</div></div>
 <div class="ttc" id="astructdrain_1_1Cloner_html_a610352c7f3125a5f361d3a559e06ee00"><div class="ttname"><a href="structdrain_1_1Cloner.html#a610352c7f3125a5f361d3a559e06ee00">drain::Cloner::getCloned</a></div><div class="ttdeci">B &amp; getCloned() const</div><div class="ttdoc">Implements interface.</div><div class="ttdef"><b>Definition:</b> Cloner.h:149</div></div>
 <div class="ttc" id="astructdrain_1_1Cloner_html_a5aed860ffb22742ad439d24c0eec2529"><div class="ttname"><a href="structdrain_1_1Cloner.html#a5aed860ffb22742ad439d24c0eec2529">drain::Cloner::Cloner</a></div><div class="ttdeci">Cloner(const Cloner&lt; B, S &gt; &amp;c)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition:</b> Cloner.h:133</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html_ab5771b38ce7798d7b4b9442618863718"><div class="ttname"><a href="structdrain_1_1ClonerBase.html#ab5771b38ce7798d7b4b9442618863718">drain::ClonerBase::getSource</a></div><div class="ttdeci">virtual const T &amp; getSource() const =0</div><div class="ttdoc">Returns a reference to an instance (possibly a static one?).</div></div>

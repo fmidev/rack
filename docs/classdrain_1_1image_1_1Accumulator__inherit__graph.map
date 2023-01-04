@@ -1,8 +1,7 @@
 <map id="Accumulator" name="Accumulator">
-<area shape="rect" id="node1" title=" " alt="" coords="141,80,245,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="35,169,166,196"/>
-<area shape="rect" id="node6" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="191,155,381,211"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing." alt="" coords="119,5,266,32"/>
-<area shape="rect" id="node4" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="5,259,196,315"/>
-<area shape="rect" id="node5" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="55,363,147,389"/>
+<area shape="rect" id="node1" title=" " alt="" coords="141,5,245,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="35,95,166,121"/>
+<area shape="rect" id="node5" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="191,80,381,136"/>
+<area shape="rect" id="node3" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="5,184,196,240"/>
+<area shape="rect" id="node4" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="55,288,147,315"/>
 </map>

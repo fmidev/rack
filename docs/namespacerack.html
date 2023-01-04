@@ -256,6 +256,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdPaletteRefine.html">CmdPaletteRefine</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdPause.html">CmdPause</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdPlot.html">CmdPlot</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdQuantityConf.html">CmdQuantityConf</a></td></tr>
@@ -794,6 +796,9 @@ template&lt;typename DT &gt; </td></tr>
 <tr class="memitem:aaf9fb4c038b66a1fda2fceba6b9a1b17"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#aaf9fb4c038b66a1fda2fceba6b9a1b17">operator&lt;&lt;</a> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;d)</td></tr>
 <tr class="memdesc:aaf9fb4c038b66a1fda2fceba6b9a1b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps quantities and geometry. <br /></td></tr>
 <tr class="separator:aaf9fb4c038b66a1fda2fceba6b9a1b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b81a0bc901c9d0aaa3421369509a49e"><td class="memItemLeft" align="right" valign="top"><a id="a6b81a0bc901c9d0aaa3421369509a49e"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataCoder.html">DataCoder</a> &amp;coder)</td></tr>
+<tr class="separator:a6b81a0bc901c9d0aaa3421369509a49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa02ac1372d0a69c74ebba6eefa5e269e"><td class="memItemLeft" align="right" valign="top"><a id="aa02ac1372d0a69c74ebba6eefa5e269e"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector)</td></tr>
 <tr class="separator:aa02ac1372d0a69c74ebba6eefa5e269e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -925,6 +930,7 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
 <p>This file is part of AnoRack, radar data processing utilities for C++.</p>
 <p>Created on: Mar 7, 2011 Author: mpeura</p>
 <p>#include "drain/prog/Command.h"</p>
+<p>Version 6.82 &ndash; Checks unknown single char instructions, ie. other than [, /, or ] .</p>
 <p>Version 6.81 Version 6.8 &ndash; <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>: added order: MIN|MAX:DATA|ELANGLE|TIME</p>
 <p>Version 6.7 &ndash; Bug fix: cReset</p>
 <p>Version 6.6 &ndash; Thread support for / small / commands /</p>
@@ -1122,6 +1128,8 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43M
       </table>
 </div><div class="memdoc">
 <p>Main program - renamed to facilitate calls from outside, esp. JNI calls. The standard main() will call this directly. </p>
+<p>If a plain argument &lt;arg&gt; is given, forward it to this command. Hence equivalent to <code>&ndash;inputFile</code> <code></code> &lt;arg&gt; .</p>
+<p>If command is not found, it is redirected to this command. <code>&ndash;setODIM</code> <code></code> &lt;arg&gt; which checks if it starts with a leading slash</p>
 
 </div>
 </div>

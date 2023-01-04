@@ -130,8 +130,12 @@ typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 typedef <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cloner_t</b></td></tr>
 <tr class="separator:a223cc1d094989250ac0b97f585cecbfd inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a083b3118c64246c86cdf47a290bc1eae"></a>
-typedef std::map&lt; std::string, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+typedef std::map&lt; std::string, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a></td></tr>
+<tr class="memdesc:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBase.html">Base</a> class. <br /></td></tr>
 <tr class="separator:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a></td></tr>
+<tr class="memdesc:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight">For enumerating keys.  <a href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">More...</a><br /></td></tr>
+<tr class="separator:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -213,11 +217,14 @@ map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <tr class="memdesc:a6e0a4f016008d0220b53472ef8b3ff74 inherit pub_methods_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a map entry: pair&lt;Key,D *&gt;() <br /></td></tr>
 <tr class="separator:a6e0a4f016008d0220b53472ef8b3ff74 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec212d2efc6953ef797b2db678e7ec43 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="aec212d2efc6953ef797b2db678e7ec43"></a>
-const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
+const <a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:aec212d2efc6953ef797b2db678e7ec43 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a1b35461471ece8bcba97c97b0fb7a091"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="separator:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5015a97908f020e7ba8889eed81efb93 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a5015a97908f020e7ba8889eed81efb93"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> ()</td></tr>
+<tr class="separator:a5015a97908f020e7ba8889eed81efb93 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -234,6 +241,10 @@ Protected Attributes</h2></td></tr>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BankSuper.html#ac30fed21fe991cc8475ce543929f8b72">title</a></td></tr>
 <tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">For example, name of the program, to appear in help dumps etc. <br /></td></tr>
 <tr class="separator:ac30fed21fe991cc8475ce543929f8b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Bank"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Bank')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Bank.html">Bank&lt; T, std::string &gt;</a></td></tr>
+<tr class="memitem:a3d5775719e547647a4871d2f8e39cd71 inherit pro_attribs_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a3d5775719e547647a4871d2f8e39cd71"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b></td></tr>
+<tr class="separator:a3d5775719e547647a4871d2f8e39cd71 inherit pro_attribs_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

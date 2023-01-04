@@ -73,6 +73,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1CommandBank-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CommandBank Class Reference</div>  </div>
@@ -99,14 +100,18 @@ Collaboration diagram for CommandBank:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1CommandBank__coll__graph.png" border="0" usemap="#CommandBank_coll__map" alt="Collaboration graph"/></div>
 <map name="CommandBank_coll__map" id="CommandBank_coll__map">
-<area shape="rect" title="Container and execution tools for commands derived from Command." alt="" coords="753,78,876,105"/>
-<area shape="rect" href="classdrain_1_1BankSuper.html" title=" " alt="" coords="515,78,704,105"/>
+<area shape="rect" title="Container and execution tools for commands derived from Command." alt="" coords="848,198,971,225"/>
+<area shape="rect" href="classdrain_1_1BankSuper.html" title=" " alt="" coords="519,111,708,138"/>
 <area shape="rect" href="classdrain_1_1Bank.html" title=" " alt="" coords="236,5,401,47"/>
 <area shape="rect" title=" " alt="" coords="5,5,187,47"/>
 <area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="247,71,391,112"/>
 <area shape="rect" title=" " alt="" coords="17,71,175,112"/>
 <area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="243,136,394,177"/>
 <area shape="rect" title=" " alt="" coords="22,136,170,177"/>
+<area shape="rect" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="559,227,668,254"/>
+<area shape="rect" title=" " alt="" coords="255,202,382,229"/>
+<area shape="rect" href="classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="275,253,362,279"/>
+<area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="283,303,354,330"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -141,8 +146,12 @@ typedef <a class="el" href="classdrain_1_1Command.html">Command</a>&#160;</td><t
 typedef <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Command.html">Command</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cloner_t</b></td></tr>
 <tr class="separator:a223cc1d094989250ac0b97f585cecbfd inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a083b3118c64246c86cdf47a290bc1eae"></a>
-typedef std::map&lt; std::string, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+typedef std::map&lt; std::string, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a></td></tr>
+<tr class="memdesc:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBase.html">Base</a> class. <br /></td></tr>
 <tr class="separator:a083b3118c64246c86cdf47a290bc1eae inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a></td></tr>
+<tr class="memdesc:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight">For enumerating keys.  <a href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">More...</a><br /></td></tr>
+<tr class="separator:aeb4bd802809fd73c5f903f40545648d8 inherit pub_types_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -173,9 +182,9 @@ template&lt;class D , char PREFIX = 0&gt; </td></tr>
 <tr class="memitem:a2824ee1a2fe84688551e8183b2a66edb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a2824ee1a2fe84688551e8183b2a66edb">scriptify</a> (const std::string &amp;arg, const std::string &amp;argNext, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
 <tr class="memdesc:a2824ee1a2fe84688551e8183b2a66edb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Unix/Linux command line to pairs (cmd,params) of strings.  <a href="classdrain_1_1CommandBank.html#a2824ee1a2fe84688551e8183b2a66edb">More...</a><br /></td></tr>
 <tr class="separator:a2824ee1a2fe84688551e8183b2a66edb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e304fae8015d281d7c0d7f43231234a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a4e304fae8015d281d7c0d7f43231234a">append</a> (const <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
-<tr class="memdesc:a4e304fae8015d281d7c0d7f43231234a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts command strings to executable command objects, appending them to a program.  <a href="classdrain_1_1CommandBank.html#a4e304fae8015d281d7c0d7f43231234a">More...</a><br /></td></tr>
-<tr class="separator:a4e304fae8015d281d7c0d7f43231234a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dfb8500ab482604e11ec36d73858b9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a3dfb8500ab482604e11ec36d73858b9d">append</a> (const <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
+<tr class="memdesc:a3dfb8500ab482604e11ec36d73858b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts command strings to executable command objects, appending them to a program.  <a href="classdrain_1_1CommandBank.html#a3dfb8500ab482604e11ec36d73858b9d">More...</a><br /></td></tr>
+<tr class="separator:a3dfb8500ab482604e11ec36d73858b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bb449da4c52eab932fbec35d42770a6"><td class="memItemLeft" align="right" valign="top"><a id="a6bb449da4c52eab932fbec35d42770a6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a6bb449da4c52eab932fbec35d42770a6">flushRoutine</a> (<a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog)</td></tr>
 <tr class="memdesc:a6bb449da4c52eab932fbec35d42770a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append routine to program, and clear routine. <br /></td></tr>
@@ -304,11 +313,14 @@ map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <tr class="memdesc:a6e0a4f016008d0220b53472ef8b3ff74 inherit pub_methods_classdrain_1_1Bank"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a map entry: pair&lt;Key,D *&gt;() <br /></td></tr>
 <tr class="separator:a6e0a4f016008d0220b53472ef8b3ff74 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec212d2efc6953ef797b2db678e7ec43 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="aec212d2efc6953ef797b2db678e7ec43"></a>
-const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
+const <a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:aec212d2efc6953ef797b2db678e7ec43 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a1b35461471ece8bcba97c97b0fb7a091"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="separator:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5015a97908f020e7ba8889eed81efb93 inherit pub_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a5015a97908f020e7ba8889eed81efb93"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> ()</td></tr>
+<tr class="separator:a5015a97908f020e7ba8889eed81efb93 inherit pub_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -327,6 +339,9 @@ static <a class="el" href="structdrain_1_1Cloner.html">Cloner</a>&lt; <a class="
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ac1d5bcd65f2184089baad125695ee896"><td class="memItemLeft" align="right" valign="top"><a id="ac1d5bcd65f2184089baad125695ee896"></a>
+<a class="el" href="classdrain_1_1StringMapper.html">drain::StringMapper</a>&#160;</td><td class="memItemRight" valign="bottom"><b>logFileSyntax</b></td></tr>
+<tr class="separator:ac1d5bcd65f2184089baad125695ee896"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a192b123c48777e70dddd2db027fc7790"><td class="memItemLeft" align="right" valign="top"><a id="a192b123c48777e70dddd2db027fc7790"></a>
 drain::Flagger::value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a192b123c48777e70dddd2db027fc7790">scriptTriggerFlag</a></td></tr>
 <tr class="memdesc:a192b123c48777e70dddd2db027fc7790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member and methods for special commands. <br /></td></tr>
@@ -351,11 +366,18 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classdrain_1_1Dictionary2.html">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sections</b></td></tr>
 <tr class="separator:abe33efd2ef2c18d63225135634b44810 inherit pub_attribs_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4e304fae8015d281d7c0d7f43231234a"><td class="memItemLeft" align="right" valign="top"><a id="a4e304fae8015d281d7c0d7f43231234a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a4e304fae8015d281d7c0d7f43231234a">append</a> (const <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
+<tr class="memdesc:a4e304fae8015d281d7c0d7f43231234a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends program with commands fo the script. <br /></td></tr>
+<tr class="separator:a4e304fae8015d281d7c0d7f43231234a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1Bank"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1Bank')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1Bank.html">Bank&lt; Command, std::string &gt;</a></td></tr>
 <tr class="memitem:a711395fd000d5b91996d79ecd0a383de inherit pro_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Command.html">Command</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a711395fd000d5b91996d79ecd0a383de">set</a> (const std::string &amp;key, <a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Command.html">Command</a> &gt; &amp;cloner)</td></tr>
 <tr class="separator:a711395fd000d5b91996d79ecd0a383de inherit pro_methods_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1BankSuper"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BankSuper')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BankSuper.html">BankSuper&lt; Command &gt;</a></td></tr>
 <tr class="memitem:aea29f7c74bcd43d026fd0d4d368c0ac5 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="aea29f7c74bcd43d026fd0d4d368c0ac5"></a>
 <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; char, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>briefKeys</b></td></tr>
@@ -364,6 +386,10 @@ Additional Inherited Members</h2></td></tr>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BankSuper.html#ac30fed21fe991cc8475ce543929f8b72">title</a></td></tr>
 <tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72 inherit pro_attribs_classdrain_1_1BankSuper"><td class="mdescLeft">&#160;</td><td class="mdescRight">For example, name of the program, to appear in help dumps etc. <br /></td></tr>
 <tr class="separator:ac30fed21fe991cc8475ce543929f8b72 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Bank"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Bank')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Bank.html">Bank&lt; Command, std::string &gt;</a></td></tr>
+<tr class="memitem:a3d5775719e547647a4871d2f8e39cd71 inherit pro_attribs_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a id="a3d5775719e547647a4871d2f8e39cd71"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b></td></tr>
+<tr class="separator:a3d5775719e547647a4871d2f8e39cd71 inherit pro_attribs_classdrain_1_1Bank"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Container and execution tools for commands derived from <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a>. </p>
@@ -372,8 +398,8 @@ Storage for commands, providing list, help and cloning facilities</h1>
 <h1><a class="anchor" id="autotoc_md15"></a>
 Utilities for creating scripts and programs</h1>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e304fae8015d281d7c0d7f43231234a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e304fae8015d281d7c0d7f43231234a">&#9670;&nbsp;</a></span>append()</h2>
+<a id="a3dfb8500ab482604e11ec36d73858b9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dfb8500ab482604e11ec36d73858b9d">&#9670;&nbsp;</a></span>append()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -383,12 +409,6 @@ Utilities for creating scripts and programs</h1>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;&#160;</td>
           <td class="paramname"><em>script</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1Context.html">Context</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -405,7 +425,6 @@ Utilities for creating scripts and programs</h1>
 </div><div class="memdoc">
 
 <p>Converts command strings to executable command objects, appending them to a program. </p>
-<p>Appends program with commands fo the script.</p>
 <p>Note: <em>appends</em> commands to the end of the program, use prog.clear() if needed. </p>
 
 </div>

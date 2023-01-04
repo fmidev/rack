@@ -93,7 +93,7 @@ $(function() {
 <div class="image">
 <img src="rack-logo-384x192.png" alt=""/>
 </div>
- <div class="fragment"><div class="line">Version 6.8</div>
+ <div class="fragment"><div class="line">Version 6.81</div>
 </div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
@@ -154,7 +154,7 @@ Selecting data</h2>
 <p>Selecting data can be done with command <code>&ndash;select</code> .</p>
 <div class="fragment"><div class="line">--select, -s  &lt;selector&gt;  (Section: general)</div>
 <div class="line">  Data selection for the next operation.</div>
-<div class="line">    selector={&quot;path&quot;:&quot;&quot;,&quot;quantity&quot;:&quot;&quot;,&quot;elangle&quot;:[-90,90],&quot;count&quot;:1000,&quot;order&quot;:&quot;&quot;,&quot;dualPRF&quot;:0} </div>
+<div class="line">    selector={&quot;path&quot;:&quot;&quot;,&quot;quantity&quot;:&quot;&quot;,&quot;elangle&quot;:[-90,90],&quot;count&quot;:1000,&quot;order&quot;:&quot;DATA:MIN&quot;,&quot;dualPRF&quot;:0} </div>
 </div><!-- fragment --><p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
 <p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are positional (ordered), meaning that they can be issued as a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:</p>
 <ul>
@@ -234,7 +234,7 @@ Selecting data</h2>
 <p>Often, the first data array matching the criteria are used.</p>
 <p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
 <p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="productspage.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
-<p>Note that some processing commands may not support explicit data selection. NOTE: test is good for checking immediately. But <code>value</code> is needed to store</p>
+<p>Note that some processing commands may not support explicit data selection.</p>
 <h3><a class="anchor" id="selectquantity"></a>
 Selecting by quantity only</h3>
 <p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' .</p>

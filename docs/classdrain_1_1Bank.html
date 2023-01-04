@@ -74,6 +74,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1Bank-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Bank&lt; T, K &gt; Class Template Reference</div>  </div>
@@ -119,8 +120,12 @@ typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 typedef <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cloner_t</b></td></tr>
 <tr class="separator:a223cc1d094989250ac0b97f585cecbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a083b3118c64246c86cdf47a290bc1eae"><td class="memItemLeft" align="right" valign="top"><a id="a083b3118c64246c86cdf47a290bc1eae"></a>
-typedef std::map&lt; K, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+typedef std::map&lt; K, <a class="el" href="structdrain_1_1ClonerBase.html">cloner_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a></td></tr>
+<tr class="memdesc:a083b3118c64246c86cdf47a290bc1eae"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBase.html">Base</a> class. <br /></td></tr>
 <tr class="separator:a083b3118c64246c86cdf47a290bc1eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4bd802809fd73c5f903f40545648d8"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a></td></tr>
+<tr class="memdesc:aeb4bd802809fd73c5f903f40545648d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">For enumerating keys.  <a href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">More...</a><br /></td></tr>
+<tr class="separator:aeb4bd802809fd73c5f903f40545648d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -162,13 +167,16 @@ template&lt;class D &gt; </td></tr>
 <tr class="memdesc:a5294f8e2cc5aa907dde99e999605f0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the internal static entry. <br /></td></tr>
 <tr class="separator:a5294f8e2cc5aa907dde99e999605f0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec212d2efc6953ef797b2db678e7ec43"><td class="memItemLeft" align="right" valign="top"><a id="aec212d2efc6953ef797b2db678e7ec43"></a>
-const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
+const <a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:aec212d2efc6953ef797b2db678e7ec43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a594d1548569bbad5bc4d062f383ba057"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a594d1548569bbad5bc4d062f383ba057">resolve</a> (const K &amp;key) const</td></tr>
 <tr class="separator:a594d1548569bbad5bc4d062f383ba057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b35461471ece8bcba97c97b0fb7a091"><td class="memItemLeft" align="right" valign="top"><a id="a1b35461471ece8bcba97c97b0fb7a091"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="separator:a1b35461471ece8bcba97c97b0fb7a091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5015a97908f020e7ba8889eed81efb93"><td class="memItemLeft" align="right" valign="top"><a id="a5015a97908f020e7ba8889eed81efb93"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> ()</td></tr>
+<tr class="separator:a5015a97908f020e7ba8889eed81efb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -181,6 +189,12 @@ template&lt;class D &gt; </td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a711395fd000d5b91996d79ecd0a383de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a711395fd000d5b91996d79ecd0a383de">set</a> (const std::string &amp;key, <a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; T &gt; &amp;cloner)</td></tr>
 <tr class="separator:a711395fd000d5b91996d79ecd0a383de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a3d5775719e547647a4871d2f8e39cd71"><td class="memItemLeft" align="right" valign="top"><a id="a3d5775719e547647a4871d2f8e39cd71"></a>
+<a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>keys</b></td></tr>
+<tr class="separator:a3d5775719e547647a4871d2f8e39cd71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T, class K = std::string&gt;<br />
@@ -195,7 +209,25 @@ class drain::Bank&lt; T, K &gt;</h3>
   </dd>
 </dl>
 <p>An entry may have several keys. Single-char keys (aliases) are provided by SuperBank </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="aeb4bd802809fd73c5f903f40545648d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb4bd802809fd73c5f903f40545648d8">&#9670;&nbsp;</a></span>key_set_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::set&lt;K&gt; <a class="el" href="classdrain_1_1Bank.html#aeb4bd802809fd73c5f903f40545648d8">key_set_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For enumerating keys. </p>
+<dl class="section see"><dt>See also</dt><dd>getKeys(). </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a170c7576330c7a4e8999c090583f677c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a170c7576330c7a4e8999c090583f677c">&#9670;&nbsp;</a></span>add()</h2>
 

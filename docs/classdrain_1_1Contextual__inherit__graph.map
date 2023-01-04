@@ -1,16 +1,17 @@
 <map id="Contextual" name="Contextual">
 <area shape="rect" id="node1" title=" " alt="" coords="5,537,99,564"/>
 <area shape="rect" id="node2" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="223,309,313,336"/>
-<area shape="rect" id="node47" href="$classdrain_1_1SuperContextual.html" title="Adds class&#45;specific convenience functions." alt="" coords="183,537,353,564"/>
-<area shape="rect" id="node48" href="$classdrain_1_1SuperContextual.html" title=" " alt="" coords="147,943,389,969"/>
+<area shape="rect" id="node46" href="$classdrain_1_1Program.html" title="Sequence consisting of Command:s retrieved from a CommandBank." alt="" coords="229,512,307,539"/>
+<area shape="rect" id="node47" href="$classdrain_1_1SuperContextual.html" title="Adds class&#45;specific convenience functions." alt="" coords="183,563,353,589"/>
+<area shape="rect" id="node48" href="$classdrain_1_1SuperContextual.html" title=" " alt="" coords="147,917,389,944"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="447,11,639,37"/>
 <area shape="rect" id="node5" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="457,67,628,109"/>
 <area shape="rect" id="node7" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="437,143,648,185"/>
 <area shape="rect" id="node9" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="457,229,628,256"/>
 <area shape="rect" id="node13" href="$classdrain_1_1BeanerCommand.html" title=" " alt="" coords="448,302,637,343"/>
-<area shape="rect" id="node15" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="481,968,605,995"/>
-<area shape="rect" id="node45" href="$classdrain_1_1BeanCommand.html" title="Base for derived classes using member BeanLike or referenced BeanLikes." alt="" coords="449,1019,636,1045"/>
-<area shape="rect" id="node46" href="$classdrain_1_1BeanerCommand.html" title="Command stored as a single entry in CommandBank and becomes &quot;renamed&quot; upon setKey() prior to executio..." alt="" coords="455,1069,630,1096"/>
+<area shape="rect" id="node15" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="481,943,605,969"/>
+<area shape="rect" id="node44" href="$classdrain_1_1BeanCommand.html" title="Base for derived classes using member BeanLike or referenced BeanLikes." alt="" coords="449,993,636,1020"/>
+<area shape="rect" id="node45" href="$classdrain_1_1BeanerCommand.html" title="Command stored as a single entry in CommandBank and becomes &quot;renamed&quot; upon setKey() prior to executio..." alt="" coords="455,1044,630,1071"/>
 <area shape="rect" id="node4" href="$classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="700,5,883,32"/>
 <area shape="rect" id="node6" href="$classrack_1_1CmdImageBox.html" title=" " alt="" coords="732,56,851,83"/>
 <area shape="rect" id="node8" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="711,107,872,133"/>
@@ -46,6 +47,5 @@
 <area shape="rect" id="node41" href="$classrack_1_1CmdImageAlphaBase.html" title=" " alt="" coords="710,1627,873,1653"/>
 <area shape="rect" id="node42" href="$classrack_1_1CmdImageQuality.html" title="Quality groups accepted as alpha channels." alt="" coords="721,1677,861,1704"/>
 <area shape="rect" id="node43" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes." alt="" coords="747,1728,835,1755"/>
-<area shape="rect" id="node44" href="$classrack_1_1CmdOutputConf.html" title=" " alt="" coords="728,1779,855,1805"/>
-<area shape="rect" id="node49" href="$classrack_1_1RackResources.html" title="A container for shared resources applied by RackLets." alt="" coords="482,1120,603,1147"/>
+<area shape="rect" id="node49" href="$classrack_1_1RackResources.html" title="A container for shared resources applied by RackLets." alt="" coords="482,1095,603,1121"/>
 </map>
