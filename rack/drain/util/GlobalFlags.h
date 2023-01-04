@@ -48,7 +48,7 @@ namespace drain
 template <class T>
 class GlobalFlags : public Flagger {
 
-	Flagger::value_t ownValue;
+	//Flagger::value_t ownValue;
 
 
 public:
@@ -65,6 +65,9 @@ public:
 		//return Static::get<Flagger::dict_t,Status>();
 	}
 
+
+	// GlobalFlags() : Flagger(ownValue, getSharedDict()){
+	// };
 
 	GlobalFlags() : Flagger(ownValue, getSharedDict()){
 	};

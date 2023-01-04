@@ -68,6 +68,9 @@ public:
 
 		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
 
+		mout.attention("composite*: ", &composite);
+		mout.attention("accArray: ", composite.accArray);
+
 		if (composite.counter > 0){
 			mout.experimental("Clearing previous composite? N=", composite.counter, ")");
 			mout.note("Use --cAdd to add, instead");

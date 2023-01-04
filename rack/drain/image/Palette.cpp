@@ -78,7 +78,12 @@ void PaletteEntry::init(){
 
 void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
 
-	PaletteEntry entry = (*this)[min];
+	Logger mout(__FUNCTION__, __FILE__);
+
+	//mout.warn("probably faulty code");
+
+	// 2023/01 Fixed to reference:
+	PaletteEntry & entry = (*this)[min];
 	entry.value = min;
 	// NOVECT entry.color.resize(3);
 	entry.color[0] = red;

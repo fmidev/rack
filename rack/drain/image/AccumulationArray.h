@@ -115,17 +115,28 @@ public:
 	friend class AccumulationMethod;
 
 	/// Default constructor. The channels are DATA, COUNT, WEIGHT, WEIGHT2
-	AccumulationArray(unsigned int width = 0, unsigned int height = 0){
-		//, const std::string & method="OVERWRITE", double p=1.0, double r=1.0, double gain=1.0, double offset=0.0) {
+	AccumulationArray(size_t width = 0, size_t height = 0){ // : debug(false) {
 		setGeometry(width, height);
+	};
+
+	inline
+	AccumulationArray(const AccumulationArray & accArray){ // : debug(false) {
+		setGeometry(accArray.getGeometry());
 	};
 
 	/// Destructor.
 	virtual ~AccumulationArray(){};
 
-	/// Changes the geometry.
+	/// Changes the geometry of all the layers.
 	virtual
-	void setGeometry(unsigned int width, unsigned int height);
+	void setGeometry(size_t width, size_t height);
+
+	/// Changes the geometry of all the layers.
+	inline
+	void setGeometry(const AreaGeometry & geometry){
+		setGeometry(geometry.getWidth(), geometry.getHeight());
+	}
+
 
 	inline
 	const AreaGeometry & getGeometry() const {
@@ -155,10 +166,7 @@ public:
 		return coordinateHandler;
 	};
 
-	bool debug;
-
-	/// User-defined metadata. Needed?
-	// VariableMap properties;
+	//bool debug;
 
 	inline
 	size_t address(const size_t &i, const size_t &j){ return data.address(i,j); };
@@ -183,9 +191,6 @@ public:
 protected:
 
 	AreaGeometry geometry;
-
-	//unsigned int width;  // TODO: size_t ?
-	//unsigned int height;
 
 	CoordinateHandler2D coordinateHandler;
 

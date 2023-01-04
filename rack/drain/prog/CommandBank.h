@@ -141,7 +141,10 @@ public:
 protected:
 	void append(const Script & script, Context & ctx, Program & prog) const ;
 
+
 public:
+
+	drain::StringMapper logFileSyntax;  // todo:setter
 
 	/// Append routine to program, and clear routine.
 	inline

@@ -472,7 +472,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			PARALLEL_ENABLED = true;
 			if (routine.empty())
 				INLINE_SCRIPT = true;
-			ctx.setStatus("script", true); // To prevent appending sequental input sweeps
+			ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
 		}
 		else if (TRIGGER_CMD && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
 			mout.debug("Running SCRIPT in main thread: ", ctx.getName());
@@ -485,8 +485,14 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (TRIGGER_CMD || (key == "/")){ // || (key == "]")) { // Now threads are enabled
 
-			if ((key == "/")  && !INLINE_SCRIPT){
-				mout.fail("thread start '[' missing but separator '/' found");
+			if ((key == "[") && PARALLEL_ENABLED){
+				mout.error("Parallel section already started with '[' ?");
+				continue;
+			}
+
+			if ((key == "/") && !INLINE_SCRIPT){
+				mout.error("Parallel section not enabled with '[' but separator '/' encountered?");
+				continue;
 			}
 
 			// NOTE: cloned also for --execScript ?
@@ -513,33 +519,50 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (key == "]"){ // Run the threads.
 
+			if (threads.empty()){
+				mout.note("Parallel section ended by ']' but no threads defined?");
+				continue;
+			}
+
 			mout.special("Running ", threads.size(), " thread(s)");
 			//mout.special("Running log=", baseLog.id);
+			if (!logFileSyntax.empty()){
+				mout.note("Log file (syntax): ", logFileSyntax);
+			}
 
-			if (mout.isLevel(LOG_DEBUG+2)){
+			for (size_t j = 0; j < threads.size(); ++j) {
 
-				for (size_t j = 0; j < threads.size(); ++j) {
+				// Display commands briefly
+				const Program & p = threads[j];
+				Context & cmdCtx = p.getContext<>();
+				mout.debug("thread #", j, " CTX=", cmdCtx.getName(), " ID=", cmdCtx.getId());
 
-					// Display commands briefly
-					const Program & p = threads[j];
-					mout.attention("thread #", j, '=', p.getContext<>().getName(), " vs ", p.getContext<>().getId());
+				if (!logFileSyntax.empty()){
+					// mout.attention(cmdCtx.getStatusMap());
+					std::string filename = logFileSyntax.toStr(cmdCtx.getStatusMap());
+					mout.info("Log file: #", j, filename);
+					cmdCtx.log.setOstr(filename);
+				}
 
-					for (const auto & cmdEntry: p){
-						Context & cmdCtx = cmdEntry.second->getContext<>();
-						std::cerr << cmdEntry.first << ':' << cmdCtx.getName() << '\n';
-					}
+				/*
+				for (const auto & cmdEntry: p){
+					Context & cmdCtx = cmdEntry.second->getContext<>();
+					std::cerr << cmdEntry.first << ':' << cmdCtx.getName() << '\n';
+				}
+				*/
 
-					// Direct log to files
-					/*
+				// Direct log to files
+				/*
 					std::stringstream sstr;
 					sstr << "/tmp/thread" << p.getContext<>().getId() << ".log";
 					mout.attention("  thread #", j,  ", separate log: ", sstr.str());
 					p.getContext<>().log.setOstr(sstr.str());
-					*/
-				}
-
-
+				 */
 			}
+
+
+			if (mout.isDebug(2))
+				threads.debug();
 
 			#pragma omp parallel for
 			for (size_t i = 0; i < threads.size(); ++i) {

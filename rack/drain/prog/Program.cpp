@@ -94,12 +94,32 @@ Program & ProgramVector::add(Context & ctx){
 
 	//push_back(Program());
 	//back().setExternalContext(ctx);
-	(*this)[size()] = Program();
-	rbegin()->second.setExternalContext(ctx);
-	return rbegin()->second;
+	Program & program = (*this)[size()];
+	//(*this)[size()] = Program();
+	program.setExternalContext(ctx);
+	return program;
 	//return back();
 };
 
+void ProgramVector::debug(){
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	for (const auto & entry: *this){
+
+		const Program & prog = entry.second;
+		mout.attention(entry.first, '\t', prog.getContext<>().getName(), " vs ", prog.getContext<>().getId());
+
+		for (const auto & cmdEntry: prog){
+			Context & cmdCtx = cmdEntry.second->getContext<>();
+			mout.attention('\t', cmdEntry.first, '\t', *cmdEntry.second, ':', cmdCtx.getName());
+		}
+
+		//for (const auto & line: prog){
+		//	std::cerr << line.first << '\t' << line.second << '\n';
+		//}
+	}
+}
 
 }
 

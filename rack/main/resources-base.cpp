@@ -225,7 +225,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 	const Hi5Tree & src = getMyHi5(CURRENT);
 
 	if (src.isEmpty()){
-		mout.experimental("My CURRENT h5 empty, skipping status update...");
+		mout.debug("My CURRENT h5 empty, skipping status update...");
 		// NOTE: private/shared selection moved to @RackContext
 	}
 	else {

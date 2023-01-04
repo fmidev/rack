@@ -383,13 +383,8 @@ public:
 		return *this;
 	};
 
-	/// Light error, command execution probable. Special type of Logger::warn().
-	/*
-	inline
-	Logger & warn(){
-		return initMessage<LOG_WARNING>();
-	};
-	*/
+
+	// LOG_WARNING
 
 	/// Possible error, but execution can continue.
 	template<typename ... TT>
@@ -443,6 +438,8 @@ public:
 		return *this;
 	};
 
+
+	// LOG_NOTICE
 
 	/// For top-level information
 	template<typename ... TT>
@@ -504,6 +501,26 @@ public:
 
 	template<typename ... TT>
 	inline
+	Logger & advice(const TT &... args){
+		static const Notification notif(__FUNCTION__, 40);
+		initMessage<LOG_NOTICE>(notif);
+		flush(args...);
+		return *this;
+	};
+
+
+	// LOG_INFO
+
+	template<typename ... TT>
+	inline
+	Logger & info(const TT &... args){
+		initMessage<LOG_INFO>();
+		flush(args...);
+		return *this;
+	};
+
+	template<typename ... TT>
+	inline
 	Logger & ok(const TT &... args){
 		static const Notification notif(__FUNCTION__, 32);
 		initMessage<LOG_INFO>(notif);
@@ -520,13 +537,6 @@ public:
 		return *this;
 	};
 
-	template<typename ... TT>
-	inline
-	Logger & info(const TT &... args){
-		initMessage<LOG_INFO>();
-		flush(args...);
-		return *this;
-	};
 
 
 	/// Debug information.

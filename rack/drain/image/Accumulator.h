@@ -82,32 +82,46 @@ public:
 	/// Todo: export
 	AccumulationArray accArray;
 
+	inline
 	Accumulator() :	methodPtr(&undefinedMethod) {
 
 		/// TODO: a static map?
+		/*
 		addMethod(overwriteMethod);
 		addMethod(maximumMethod);
 		addMethod(minimumMethod);
 		addMethod(averageMethod);
 		addMethod(weightedAverageMethod);
 		addMethod(maximumWeightMethod);
-
+		*/
 		// setMethod(_overwriteMethod);
 
 	};
 
-	void setMethod(const std::string & method);
+	inline
+	Accumulator(const Accumulator & acc) : methodPtr(&undefinedMethod) {
+		setMethod(acc.getMethod()); // if unset, sets unset... ie. default method.
+		accArray.setGeometry(acc.accArray.getGeometry());
+	}
 
-	//void setMethod(const std::string & name, const Variable & parameters);
-	void setMethod(const std::string & name, const std::string & params);
+
+
+	inline
+	~Accumulator(){};
+
+	/// Set method to some of the predefined methods
+	AccumulationMethod & setMethod(const std::string & method);
+
+	/// Set method to some of the predefined methods
+	AccumulationMethod & setMethod(const std::string & name, const std::string & params);
 
 	/// Copies the method and its parameters.
-	//  Does not copy the target (accumulator &).
+	/**  That is, does not copy the target (accumulator &).
+	 *   This limits to those already registered in AccMethodBank.
+	 */
 	inline
-	void setMethod(const AccumulationMethod & method){
-		// methodPtr = & method;
-		// std::cerr << "setMethod(const AccumulationMethod & method): " <<  method.name << std::endl;
-		setMethod(method.getName(), method.getParameters().getValues());  // But this limits to those already registered?
+	AccumulationMethod & setMethod(const AccumulationMethod & method){
+		return setMethod(method.getName(), method.getParameters().getValues());
 	}
 
 	inline
@@ -125,11 +139,12 @@ public:
 		return *methodPtr;
 	}
 
-
+	/*
 	void addMethod(AccumulationMethod & method){
 		// std::cerr << "addMethod:" << method.name << '\t' << method << '\n';
 		methods.insert(std::pair<std::string, AccumulationMethod &>(method.getName(), method));
 	}
+	*/
 
 	/// Adds decoded data that applies natural scaling.
 	inline
@@ -182,33 +197,35 @@ public:
 	 */
 	void extractField(char field, const AccumulationConverter & converter, Image & dst) const;
 
+	/*
 	inline
 	std::string toStr() const {
 		std::stringstream sstr;
 		toStream(sstr);
 		return sstr.str();
 	}
+	*/
 
+	/*
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const {
-		ostr << "Accumulator ("<< accArray.getWidth() << 'x' << accArray.getHeight() << ") ";
+		ostr << "Accumulator ("<< this->accArray.getGeometry() << ") ";
 		ostr << " ["<< getMethod() << "] ";
-		/*
-		for (std::map<std::string, AccumulationMethod &>::const_iterator it = methods.begin(); it != methods.end(); it++)
-			ostr << it->second << ',';
-		*/
 		//ostr << '\n';
 		return ostr;
 	};
+	*/
 
 public:
 
 	/// A Some predefined methods, that can be set with setMethod(const std::string & key).
-	std::map<std::string, AccumulationMethod &> methods;
+	//  std::map<std::string, AccumulationMethod &> methods;
 
 protected:
 
+	AccumulationMethod undefinedMethod;
 
+/*
 	AccumulationMethod undefinedMethod;
 	OverwriteMethod overwriteMethod;
 	MaximumMethod   maximumMethod;
@@ -216,6 +233,7 @@ protected:
 	AverageMethod   averageMethod;
 	WeightedAverageMethod weightedAverageMethod;
 	MaximumWeightMethod maximumWeightMethod;
+*/
 
 	AccumulationMethod * methodPtr;
 

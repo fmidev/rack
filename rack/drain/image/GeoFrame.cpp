@@ -387,6 +387,7 @@ std::ostream & GeoFrame::toOStr(std::ostream & ostr) const {
 	ostr << "   bbox, radians:   [" << getBoundingBoxR() << "]\n";
 	ostr << "   bbox, degrees:   [" << getBoundingBoxD() << "]\n";
 	ostr << "   resolution, metres/pix: (" << xScale << ',' << yScale << ")\n";
+
 	return ostr;
 
 }
@@ -397,4 +398,3 @@ std::ostream & GeoFrame::toOStr(std::ostream & ostr) const {
 
 
 
-// Drain

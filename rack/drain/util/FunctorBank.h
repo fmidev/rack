@@ -43,20 +43,6 @@ namespace drain
 typedef BankSuper<UnaryFunctor> FunctorBank;
 
 
-/*
-template <class T, class T2>
-class FunctorCloner : public Cloner<T,T2> {
-public:
-
-	static
-	const std::string & getName(){
-		static T2 ftor;
-		return ftor.getName();
-	}
-
-};
-*/
-
 extern
 FunctorBank & getFunctorBank();
 

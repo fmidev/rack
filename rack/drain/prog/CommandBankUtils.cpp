@@ -38,12 +38,15 @@ namespace drain {
 void CmdLog::exec() const {
 
 	Context & ctx = getContext<Context>();
+
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-	mout.unimplemented("under constr...");
-	/*
-	drain::StringMapper mapper;
+	//mout.warn("under constr...");
 
+	bank.logFileSyntax.parse(value);
+	mout.debug("parsed: ", bank.logFileSyntax);
+
+	/*
 	std::string s = mapper.parse(value).toStr(ctx.getStatusMap());
 
 	if (ctx.logFileStream.is_open()){

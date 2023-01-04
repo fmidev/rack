@@ -142,7 +142,8 @@ public:
 	virtual
 	inline
 	std::ostream & toStream(std::ostream & ostr) const {
-		this->AC::toStream(ostr);
+		//this->AC::toStream(ostr);
+		ostr << (const AC &)*this;
 		ostr << ' ' << rack::EncodingODIM(odim);
 		return ostr;
 	}
@@ -363,7 +364,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;
 		DataCoder dataCoder(odimFinal, odimQuality); // (will use only either odim!)
-		mout.debug()  << "dataCoder: " << dataCoder.toStr() << mout.endl;
+		mout.debug("dataCoder: ", dataCoder);
 		mout.debug2() << "dataCoder: data: " << dataCoder.dataODIM    << mout.endl;
 		mout.debug2() << "dataCoder: qind: " << dataCoder.qualityODIM << mout.endl;
 

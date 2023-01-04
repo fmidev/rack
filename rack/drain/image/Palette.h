@@ -88,6 +88,9 @@ std::ostream & JSONwriter::toStream(const PaletteEntry2 &e, std::ostream &ostr, 
 namespace image
 {
 
+
+// Why beanlike? Overkill..
+
 class PaletteEntry : public LegendEntry, public BeanLike {
 
 public:
@@ -96,7 +99,6 @@ public:
 	typedef double value_t;
 
 	/// Color vector type
-	//typedef std::vector<value_t> color_t;
 	typedef UniTuple<value_t,3> color_t;
 
 
@@ -105,6 +107,22 @@ public:
 
 	/// Copy constructor
 	PaletteEntry(const PaletteEntry & entry);
+
+	/* TODO init list = {255, 68, 29, "id..", "desc"}
+	inline
+	void set(){}
+
+	inline
+	void set(const std::string &id){
+		this->id = id;
+	}
+
+	inline
+	void set(const std::string &id, const std::string &label){
+		this->id = id;
+		this->label = label;
+	}
+	*/
 
 	void checkAlpha();
 

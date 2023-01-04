@@ -51,6 +51,29 @@ namespace drain
 namespace image
 {
 
+AccMethodBank & getAccMethodBank() {
+
+	static AccMethodBank bank;
+
+	if (bank.getMap().empty()){
+
+		// Double: perhaps first retrieved with "", but then cloned with key "IdentityFunctor".
+		bank.add<AccumulationMethod>(); // Unset/undefined
+		bank.add<MaximumMethod>();
+		bank.add<MinimumMethod>();
+		bank.add<AverageMethod>();
+		bank.add<WeightedAverageMethod>();
+		bank.add<MaximumWeightMethod>();
+		bank.add<OverwriteMethod>();
+		bank.add<OverwriteMethod>("OVERWRITE"); // "alias"
+
+	}
+
+	return bank;
+
+}
+
+
 void AccumulationMethod::initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
 
 	if (!dst.typeIsSet()){

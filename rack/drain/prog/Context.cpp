@@ -54,7 +54,8 @@ Context::Context(const Context & ctx) : basename(ctx.basename), id(++counter), n
 void Context::init(){
 	statusMap["ID"] = id;        // constant
 	statusMap["PID"] = getpid(); // constant
-	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str();
+	statusMap["CTX"] = name;     // constant
+	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::SprinterBase::cppLayout).str(); // WHY?
 }
 
 }  // drain::

@@ -64,7 +64,15 @@ public:
 
 	/// Return a brief description.
 	virtual inline
-	const std::string & getDescription() const { return description; };
+	const std::string & getDescription() const {
+		return description;
+	};
+
+	///
+	inline
+	bool hasParameters() const {
+		return !parameters.empty();
+	};
 
 	/// Gets a single parameter
 	template <class F>
@@ -146,12 +154,14 @@ public:
 		return ostr;
 	}
 
+	/*
 	inline
 	std::string toStr() const {
 		std::stringstream sstr;
 		toStream(sstr);
 		return sstr.str();
 	}
+	*/
 
 
 

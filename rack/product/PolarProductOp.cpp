@@ -66,11 +66,10 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 	//this->odim.object  = "PVOL"; // consider!
 	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 
-	drain::Logger mout(getName().c_str(), __FILE__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug(dataSelector);
-	dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
-	//dataSelector.order.criterion = DataOrder::ELANGLE;
-	//dataSelector.order.operation = DataOrder::MIN;
+	//dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
+	dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
 	dataSelector.updateBean();
 	mout.debug2(dataSelector);
 

@@ -4,71 +4,21 @@
 
 \tableofcontents
 
-
-
-\section scripts Scripts
-
-\b Rack support defining command sequences -- scripts -- that can be invoked repeatedly within one command line.
-The script is then executed automatically for \e each \e input:
-
-\code
-rack --script '<cnd> <cmd2> ...'  <file> <file2> <file3> ...
-\endcode  
-
-So,  \c --inputFile <file> command – or simply \c <file> – implicitly triggers the script. 
-
-One can also invoke the script explicitly with \c --execScript command. 
-
-
-Defining a script also turns on \e variable \e expansion -- see also examples in \ref templates . 
-
-\subsection script_sites Example: product generation for each volume.
-
-In the following example, several measurement volume files are read. For each file, two products (Pseudo CAPPI at 500 meters and Echo Top with 20 dBZ threshold)
-are computed, then converted to Cartesian projections and finally stored to files.
-
-\code
-rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5'  data/pvol_fi*.h5 
-\endcode
-
-In the example, special internal variable \c ${NOD} is derived automatically from compound \c ${what:source} variable of the input. 
-One may likewise use \c ${what:date} and \c ${what:time} , for example. 
-
-\note \b Rack denotes variables \c ${...} like shell environments, so single hyphens are often useful for preventing variable expansion in shell.
-Supported variable values can be listed with \c --status command.
-
-By default, unless \c --append data was used, the resulting meteorological product is kept in the local context. This means
-that data from several radars can be processed and also stored as parallel processes.
-
-Instead of the command line, one may also execute commands stored in a file as follows:
-\code
-rack <file>  --execFile <cmdFile>   
-\endcode  
-
-Remember that plain filenames are implicit <tt>--inputFile \<file\></tt> commands; hence the file can also be a list of input files.
-Using such a file together with  \c --script yields compact command lines especially in compositing.
-
-\~remark
-The functionality is handy for example in running anomaly detection and product generation for a set of files.
-\~
-
-Scripting becomes even more powerful when combined to parallel computations explained next.
-
-\note The commands that automatically run ie. \em trigger the script can be listed with \c --help \c trigger .
+\note Experimental design – not tested operationally!
 
 
 \section parallel_intro Parallel computation – using multiple threads
-
-
 
 In processing radar data, some computations can be run independently in separate threads. 
 In \b Rack, parallel computation can be enabled flexibly on command line.
 Parallel computing is enabled by putting a desired command sequence inside braces: \c [...] .
 
+
 \subsection parallel_script Scheme 1: invoking predefined script for every input
 
-This method is best illustrated by adjusting the above example with braces:
-
+Here, a routine to be run for each input is defined as a script, just as explained in \ref scripts .
+Then, the triggering commands – input file arguments – are put in braces. In the following example, for each input 
+Pseudo CAPPI and Echo Top products are generated converted to Cartesian coordinates and stored in a file.
 \code
 rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
 \endcode
@@ -170,7 +120,6 @@ rack  volume.h5 [ --cMethod AVERAGE --pCappi 500 --cSize 200 -c -o 'cappi-${NOD}
 
 \section parallel_future Future extensions
 
-\note Experimental design – not tested operationally
 
 
 \subsection parallel_acc Accumulation

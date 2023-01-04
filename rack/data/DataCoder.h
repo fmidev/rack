@@ -159,6 +159,7 @@ public:
 	ODIM defaultDataODIM;
 	ODIM defaultQualityODIM;
 
+	/*
 	virtual inline
 	void toOStream(std::ostream & ostr) const {
 		ostr << getName() << ':' << parameters.toStr() << '\n';
@@ -167,6 +168,7 @@ public:
 		ostr << "\t q:    " << EncodingODIM(qualityODIM) << '\n';
 		//return ostr;
 	}
+	*/
 
 
 protected:
@@ -182,6 +184,16 @@ protected:
 	double detectionThreshold;
 
 };
+
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const DataCoder & coder) {
+	ostr << coder.getName() << ':' << coder.getParameters() << '\n';
+	//ostr << "DataConverter defaultQuality=" << defaultQuality << ", minDetectableValue=" << undetectValue << ", undetectQualityCoeff=" << undetectQualityCoeff << ", \n";
+	ostr << "\t data: " << EncodingODIM(coder.dataODIM) << '\n';
+	ostr << "\t q:    " << EncodingODIM(coder.qualityODIM) << '\n';
+	return ostr;
+}
 
 
 } // rack::

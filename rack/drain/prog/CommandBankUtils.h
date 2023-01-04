@@ -102,11 +102,15 @@ class CmdLog : public SimpleCommand<> {
 public:
 
 	inline
-	CmdLog() : SimpleCommand<>(__FUNCTION__, "Redirect log to file", "filename", "file.log") {
+	CmdLog(CommandBank & cmdBank) : SimpleCommand<>(__FUNCTION__, "Redirect log to file", "filename", "file.log"), bank(cmdBank) {
 	};
 
 	void exec() const;
 
+protected:
+
+	// Copy constructor should copy this as well. (?)
+	CommandBank & bank;
 };
 
 

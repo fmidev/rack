@@ -41,10 +41,9 @@ namespace image
 {
 
 std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo & acc){
-	ostr << "AccumulatorGeo/ ";
+	ostr << "AccumulatorGeo ";
 	ostr << (const GeoFrame &)acc;
-	ostr << (const drain::image::AccumulationArray &)acc << '\n';
-	ostr << "   allocated (" << acc.accArray.getGeometry() << ") \n";
+	ostr << (const drain::image::AccumulationArray &)acc << " allocated (" << acc.accArray.getGeometry() << ") \n";
 	return ostr;
 }
 /*

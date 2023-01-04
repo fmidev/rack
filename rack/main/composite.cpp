@@ -250,7 +250,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 	bool isAeqd = false;
 	// mout.warn() << composite.getBoundingBoxD().getArea() << mout.endl;
-	mout.debug() << composite  << mout.endl;
+	mout.debug(composite);
 
 	// TODO: prune
 	if (!composite.isDefined()){
@@ -369,9 +369,9 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 			// composite.checkInputODIM(polarSrc.odim);
 			// Apply user parameters.
-			mout.debug()  << "subComposite defined:\n" << composite.getBoundingBoxD() << ", quantity: " << composite.odim.quantity << mout.endl;
-			mout.debug2() << "subComposite: " << composite << '\n' << composite.odim << mout.endl;
-			mout.debug2() << "accumulating polar data..." << mout.endl;
+			mout.debug2("accumulating polar data...");
+			mout.debug( "subComposite defined: BBOX=", composite.getBoundingBoxD(), ", quantity: ", composite.odim.quantity, "'");
+			mout.debug2("subComposite: ", composite, '\n', composite.odim);
 
 
 			// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.

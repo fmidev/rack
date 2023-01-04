@@ -123,6 +123,11 @@ Composite & RackContext::getComposite(h5_role::value_t filter){
 
 	drain::Logger mout(log, __FUNCTION__, __FILE__);
 
+	if ((filter & (PRIVATE|SHARED)) == 0){
+		filter = (filter|PRIVATE|SHARED);
+		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", h5_role::getShared().getKeys(filter, '|'));
+	}
+
 	if (filter & SHARED){
 		if (baseCtx.composite.isDefined()){ // raw or product
 			mout.debug() << "shared composite" << mout.endl;
@@ -428,7 +433,7 @@ void RackContext::updateStatus(){
 	/// Miscellaneous
 	statusMap["select"]      = select;
 	statusMap["andreSelect"] = andreSelect;
-	statusMap["composite"]   = composite.toStr();
+	statusMap["composite"]   = "segFault..."; //drain::sprinter(composite).str();
 	// statusMap["accumulator"] = acc.toStr();
 
 }

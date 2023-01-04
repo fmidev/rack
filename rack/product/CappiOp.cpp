@@ -112,7 +112,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	// In this context decoding only, ie form bytevalues to physical values.
 	DataCoder coder(sweep.odim, sweepQuality.odim);
-	mout.debug() << "decoder: " << coder.toStr() << mout.endl;
+	mout.debug("decoder: ", (const drain::BeanLike &)(coder));
 
 	// Elevation angle
 	const double eta = sweep.odim.getElangleR();

@@ -73,7 +73,11 @@ public:
 	///
 	typedef ClonerBase<T> cloner_t;
 
+	/// Base class
 	typedef std::map<K, cloner_t *> map_t;
+
+	/// For enumerating keys. @see getKeys().
+	typedef std::set<K> key_set_t;
 
 
 	struct bank_id {
@@ -236,15 +240,29 @@ public:
 	}
 
 	void toStream(std::ostream & ostr = std::cout) const {
-		//SprinterBase::sequenceToStream(ostr, getMap(), SprinterBase::lineLayout);
+		/*
+		SprinterBase::sequenceToStream(ostr, getMap(), SprinterBase::lineLayout);
 		for (typename map_t::const_iterator it = this->begin(); it != this->end(); ++it) {
 			ostr << it->first << ':' << it->second->getSource() << '\n';
 		}
+		*/
+		for (const auto & entry: *this) {
+			ostr << entry.first << ':' << entry.second->getSource() << '\n';
+		}
+
+
 		//std::cout << it->first << ' ' << it->second->getSource() << '\n';
+	}
+
+	inline
+	key_set_t & getKeys(){
+		return keys;
 	}
 
 
 protected:
+
+	key_set_t keys;
 
 	/**
 	 *   Raises a warning if cloner is changed from external to internal, or vice versa.
@@ -268,6 +286,7 @@ protected:
 		else {
 			// Create new
 			this->operator [](key) = &cloner;
+			keys.insert(key);
 		}
 
 		return cloner;

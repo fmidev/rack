@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <ostream>
 #include <iomanip>
-
+#include <unistd.h>
 
 
 #include "drain/util/Log.h"
@@ -2213,14 +2213,15 @@ MainModule::MainModule(){ //
 	install<drain::CmdExecScript>();
 
 	drain::CmdExecFile execFile(cmdBank);
-	installExternal<drain::CmdExecFile>(execFile);
+	installExternal<drain::CmdExecFile>(execFile); // T param unneeded?
 
+	drain::CmdLog log(cmdBank);
+	installExternal(log); //  cmdLogFile; // consider abbr. -L ?
 
 
 	// Independent commands
 	install<CmdSelect>('s');
 	install<drain::CmdStatus>();
-	install<drain::CmdLog>(); //  cmdLogFile; // consider abbr. -L ?
 
 	install<CmdEncoding>('e');
 	install<CmdEncoding>("target");  // alias
@@ -2271,6 +2272,53 @@ MainModule::MainModule(){ //
 	install<CmdCreateDefaultQuality>();
 
 }
+
+
+class CmdPause : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdPause() : drain::SimpleCommand<std::string>(__FUNCTION__, "Pause for n or random seconds", "seconds", "random", "[<number>|random]") {
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, getName());
+
+		//double seconds = NAN;
+		int seconds = 0;
+		// drain::StringTools::convert(value, seconds);
+
+		if (value == "random"){
+			seconds = (::rand() & 7);
+		}
+		else if (value == "thread"){
+			seconds = ctx.getId();
+		}
+		else {
+			std::stringstream sstr(value);
+			sstr >> seconds;
+			/*
+			if (std::isnan(seconds)){
+				mout.error("could not interpret argument: ", value);
+				return;
+			}
+			*/
+		}
+
+		if (seconds < 0){
+			seconds = 0;
+		}
+
+		mout.info("Pausing for ", seconds, " s...");
+		//sleep(static_cast<int>(seconds));
+		sleep(seconds);
+
+	}
+
+};
 
 
 class CmdTest2 : public drain::BasicCommand {
@@ -2387,6 +2435,7 @@ HiddenModule::HiddenModule(){ //
 	// drain::HelpCmd help(cmdBank);
 
 	// install<CmdTrigger>();
+	install<CmdPause>();
 
 	install<CmdTest2>("restart", 'R');
 

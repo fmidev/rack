@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "drain/util/ReferenceMap.h"
 //#include "drain/util/DataScaling.h"
 
+#include "drain/util/Bank.h"
 #include "drain/util/BeanLike.h"
 #include "drain/util/Point.h"
 #include "ImageT.h"
@@ -68,8 +69,12 @@ namespace image
 class AccumulationMethod : public BeanLike {
 public:
 
-	//AccumulationMethod(AccumulationArray & c) :  BeanLike("UNDEFINED", __FUNCTION__), accumulationArray(c)  {  //  minValue(std::numeric_limits<double>::min()), minWeight(0.0),
+	inline
 	AccumulationMethod() :  BeanLike("UNDEFINED", __FUNCTION__)  {
+	};
+
+	inline
+	AccumulationMethod(const AccumulationMethod &method) : BeanLike(method.getName(), method.getDescription()){
 	};
 
 	virtual
@@ -262,12 +267,22 @@ class WeightedAverageMethod : public AccumulationMethod {
 
 public:
 
-
-	//WeightedAverageMethod(AccumulationArray & c) : AccumulationMethod("WAVG", c), bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
-	WeightedAverageMethod() : AccumulationMethod("WAVG") { //, bias(0.0), p(1.0), pInv(1.0), r(1.0), rInv(1.0), USE_P(true), USE_R(true) {
+	inline
+	WeightedAverageMethod() : AccumulationMethod("WAVG"), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
 		parameters.link("p", p = 1.0);
 		parameters.link("r", r = 1.0);
 		parameters.link("bias", bias = 0.0);
+		updateBean();
+	};
+
+	inline
+	WeightedAverageMethod(const WeightedAverageMethod & method) : AccumulationMethod(method), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
+		parameters.copyStruct(method.parameters, method, *this);
+		/*
+		parameters.link("p", p = 1.0);
+		parameters.link("r", r = 1.0);
+		parameters.link("bias", bias = 0.0);
+		*/
 		updateBean();
 	};
 
@@ -330,6 +345,11 @@ public:
 
 };
 
+
+typedef drain::Bank<AccumulationMethod> AccMethodBank;
+
+extern
+AccMethodBank & getAccMethodBank();
 
 
 }

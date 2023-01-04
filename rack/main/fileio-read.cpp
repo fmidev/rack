@@ -167,30 +167,19 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	mout.debug("thread #", ctx.getId(), ": reading ", fullFilename);
 
-	//RackResources & resources = getResources();
 
 	// InputSelect needed?
 	Hi5Tree srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
 	if (mout.isDebug(6)){
-		mout.debug3() << "input data:" << mout.endl;
+		mout.debug3("input data: ");
 		hi5::Hi5Base::writeText(srcTmp, std::cerr);
 	}
 
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
-	//mout.warn() << "updateInternal" << mout.endl;
-	//ctx.unsetCurrentImages();
 
-	/// True, if user seems to provide
-	// const drain::CommandRegistry & r = drain::getRegistry();
-	// const std::string &lastCmd = r.getLastCommand();
-	// const bool AUTO_EXEC    = (resources.scriptParser.autoExec > 0);
-	// const bool AUTO_EXEC = this->execRoutine; // NEW
-	// const bool SCRIPT_DEFINED = false; // (lastCmd == this->name) || (lastCmd == "CmdSetODIM") || (lastCmd == "CmdInputPrefix");
-	// const bool APPEND_INPUT = !ctx.statusFlags.isSet(drain::CommandBank::SCRIPT_DEFINED); // TODO: check also if this command is triggering (any more)
-	// static const drain::Flagger::value_t TRIGGER_SECTION = drain::Static::get<drain::TriggerSection>().index;
 	const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
 
 
@@ -246,14 +235,27 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		mout.info("Polar product [", object, "] thread=",  ctx.getId() );
 
+
 		ctx.currentHi5 =      & ctx.polarInputHi5;
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
+		// TODO: force APPEND / REPLACE?
 		if (ctx.polarInputHi5.isEmpty() || SCRIPT_DEFINED){
 			ctx.polarInputHi5.swap(srcTmp);
 		}
 		else {
-			appendPolarH5(srcTmp, ctx.polarInputHi5);
+			// "Automatic" append. Consider timestamp difference limit?
+			const std::string sourceNew =            srcTmp[ODIMPathElem::WHAT].data.attributes["source"];
+			const std::string sourceOld = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["source"]; // Warning: Creates attribute, unless it exists
+			//mout.warn("Input: ", sourceNew, " Previous input: ", sourceOld, " same?: ", sourceNew==sourceOld);
+			if (sourceNew == sourceOld){
+				mout.debug("Unchanged input src '", sourceNew, "' -> update (append) volume");
+				appendPolarH5(srcTmp, ctx.polarInputHi5);
+			}
+			else {
+				mout.debug("New input src '", sourceNew, "' (previous '", sourceOld, "') -> replace previous with new");
+				ctx.polarInputHi5.swap(srcTmp);
+			}
 		}
 
 		//mout.warn() << "s" << mout.endl;

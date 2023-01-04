@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/image/File.h"  // debugging
 
 #include "drain/util/Log.h"
+
 //#include "drain/util/DataScaling.h"
 #include "drain/util/Type.h"
 
@@ -52,31 +53,57 @@ namespace image
 {
 
 
-void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL "Accumulator",__FUNCTION__);
+AccumulationMethod & Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
+
+	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	if (name == "AVG"){
 		mout.deprecating() << "'AVG' => using 'AVERAGE'" << mout.endl;
-		setMethod("AVERAGE", params);
-		return;
+		return setMethod("AVERAGE", params);
+		// return;
 	}
 	else if (name == "MIN"){
 		mout.deprecating() << "'MIN' => using 'MINIMUM'" << mout.endl;
-		setMethod("MINIMUM", params);
-		return;
+		return setMethod("MINIMUM", params);
+		// return;
 	}
 	else if (name == "MAX"){
 		mout.deprecating() << "'MAX' => using 'MAXIMUM'" << mout.endl;
-		setMethod("MAXIMUM", params);
-		return;
+		return setMethod("MAXIMUM", params);
+		//return;
 	}
 	else if (name == "OVERWRITE"){
 		mout.note() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
-		setMethod("LATEST", params);
-		return;
+		return setMethod("LATEST", params);
+
 	}
 
+
+	AccMethodBank & bank = getAccMethodBank();
+
+	try {
+		// Basically, could be cloned every time, but no use if no parameters
+		methodPtr = & bank.get(name);
+		if (methodPtr->hasParameters()){
+			mout.debug("cloning!");
+			mout.debug2("params orig. ", methodPtr->getParameters());
+			methodPtr = & bank.clone(name);
+			mout.debug2("params cloned ", methodPtr->getParameters());
+			methodPtr->setParameters(params);
+			mout.debug2("params modif. ", methodPtr->getParameters());
+		}
+	}
+	catch (const std::exception & e) {
+		//mout.attention(bank.getKeys());
+		mout.note("Use: ", drain::sprinter(bank.getKeys(), "|"));
+		mout.error("unknown method: ", name);
+	}
+
+	return *methodPtr;
+
+	/*
 
 	std::map<std::string, AccumulationMethod &>::iterator it = methods.find(name);
 
@@ -88,17 +115,24 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 		//this->toStream(std::cerr);
 		mout.error("unknown method: ", name);
 	}
+	*/
 
 }
 
-void Accumulator::setMethod(const std::string & method){
+AccumulationMethod & Accumulator::setMethod(const std::string & method){
+
+	/*
+	std::string s1, s2;
+	drain::StringTools::split2(method, s1, s2, ',');
+	return setMethod(s1, s2);
+	*/
 
 	const size_t i = method.find(',');
 
 	if (i == std::string::npos)
-		setMethod(method, "" );  // Variable()
+		return setMethod(method, "" );  // Variable()
 	else
-		setMethod(method.substr(0, i), method.substr(i+1) );  // Variable(method.substr(i+1))
+		return setMethod(method.substr(0, i), method.substr(i+1) );  // Variable(method.substr(i+1))
 
 }
 
@@ -243,7 +277,17 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 
 
 std::ostream & operator<<(std::ostream & ostr, const Accumulator & accumulator){
-	accumulator.toStream(ostr);
+
+	ostr << "Accumulator ("<< accumulator.accArray.getGeometry() << ") ";
+	ostr << " ["<< accumulator.getMethod() << "] ";
+	/*
+	for (std::map<std::string, AccumulationMethod &>::const_iterator it = methods.begin(); it != methods.end(); it++)
+		ostr << it->second << ',';
+	*/
+	//ostr << '\n';
+	//return ostr;
+
+	//accumulator.toStream(ostr);
 	//ostr << cumulator.getMethodStr() << '['<< cumulator.getP()  << ',' << cumulator.getR() << ']' << " gain,offset:" << cumulator.getGain() << ',' << cumulator.getOffset() << ' ';
 	return ostr;
 }

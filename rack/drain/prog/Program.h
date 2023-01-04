@@ -123,6 +123,8 @@ public:
 	/// Adds a new, empty program to thread vector.
 	Program & add(Context & ctx);
 
+	void debug();
+
 };
 
 

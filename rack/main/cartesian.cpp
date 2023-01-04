@@ -180,9 +180,12 @@ public:
 
 	inline
 	void exec() const {
-		RackContext & ctx = getContext<RackContext>(); // %%
-		ctx.composite.setMethod(value);  // method? Or Method obj?
-		getResources().polarAccumulator.setMethod(value);  // method? Or Method obj?
+		RackContext & ctx = getContext<RackContext>(); //
+		AccumulationMethod & method = ctx.composite.setMethod(value);  // method? Or Method obj?
+		#pragma omp critical
+		{
+			getResources().polarAccumulator.setMethod(method);  // Ensures correct (primary) name.
+		}
 	};
 
 };

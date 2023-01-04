@@ -46,7 +46,7 @@ namespace drain
 namespace image
 {
 
-void AccumulationArray::setGeometry(unsigned int width, unsigned int height){
+void AccumulationArray::setGeometry(size_t width, size_t height){
 
 	geometry.set(width, height);
 
@@ -69,9 +69,8 @@ void AccumulationArray::clear(){
 
 
 
-std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & cumulator){
-	ostr << "AccumulationArray " << cumulator.getGeometry() << ' ';
-	//ostr << cumulator.getMethodStr() << '['<< cumulator.getP()  << ',' << cumulator.getR() << ']' << " scale,offset:" << cumulator.getGain() << ',' << cumulator.getOffset() << ' ';
+std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & accArray){
+	ostr << "AccumulationArray geom:" << accArray.getGeometry() << ' ';
 	return ostr;
 }
 
