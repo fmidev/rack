@@ -82,14 +82,9 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	srcODIM["quantity"] = quantity;      // for file path
 	srcODIM["what:quantity"] = quantity; // for data selector
 
-	/*
-	drain::StringMapper filepath;
-	filepath.parse(this->file);
-	const std::string filename = filepath.toStr(srcODIM);
-	*/
 	const std::string filePath = drain::StringMapper(this->file).toStr(srcODIM);
-	mout.note() << "clutter map: '" << filePath << "'" << mout.endl;
-	setClutterMap(filePath); // Note: load new only when needed
+	mout.note("clutter map: '", filePath, "'");
+	setClutterMap(filePath); // Note: loads new only when needed
 
 	if (clutterMap.getChildren().empty()){
 		mout.warn() << "no clutterMap available, problems ahead..." << mout.endl;
@@ -123,14 +118,20 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const Data<PolarSrc> & srcData = src.getFirstData();
-	const size_t cols = srcData.data.getWidth();
-	const size_t rows = srcData.data.getHeight();
 
-	//const Data<PolarSrc> & srcMap = clutterDataSet.getFirstData();
-	const Data<PolarSrc> srcMap(getClutterMap(srcData.odim));
+	const Hi5Tree & clutterMap = getClutterMap(srcData.odim);
 
-	mout.note() << "using quantity: " << srcMap.odim.quantity << mout.endl;
+	if (clutterMap.isEmpty()){
+		mout.fail("clutterMap empty, skipping");
+		return;
+	}
 
+	//const Data<PolarSrc> srcMap(getClutterMap(srcData.odim));
+	const Data<PolarSrc> srcMap(clutterMap);
+
+	mout.note() << "using clutter 'quality quantity': " << srcMap.odim.quantity << mout.endl;
+
+	/*
 	if (srcMap.data.isEmpty()){
 		//clutterMap.dumpContents(std::cerr);
 		//hi5::Hi5Base::writeText(clutterMap);
@@ -139,12 +140,12 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 		// mout.note() << clutterDataSet << mout.endl;
 		mout.warn() << "input clutter map missing, giving up." << mout.endl;
 		return;
-	}
+	}*/
+
+	const size_t cols = srcData.data.getWidth();
+	const size_t rows = srcData.data.getHeight();
 
 
-
-
-	//const
 	dstProb.odim.quantity = "CLUTTER";
 	getQuantityMap().setQuantityDefaults(dstProb, "PROB");
 	dstProb.data.setGeometry(cols, rows);
@@ -179,59 +180,10 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 		//}
 	}
 
-	//@ dstProb.updateTree();
+	// dstProb.updateTree();
 
 	writeHow(dstProb);
 
-	/*
-	const Data<PolarSrc> & srcDBZH = src.getData("DBZH");
-
-
-	const drain::image::Geometry & geometry = srcTH.data.getGeometry();
-
-	if (srcDBZH.data.getGeometry() != geometry){
-		mout.warn() << "different geometry in TH and DBZH (unsupported), giving up." << mout.endl;
-		return;
-	}
-
-
-	//PlainDataDst & dstProb = dst;
-			//dst.getQualityData("AClutterMapD");
-	//dstProb.data.setGeometry(geometry);
-	const double QMAX = dstProb.odim.scaleInverse(1.0);
-
-	/// Main loop
-	double dbzh, th;
-	drain::FuzzyPeak<double, unsigned char> fuzzy(0.0, reflHalfWidth, QMAX);
-	Image::const_iterator ith   = srcTH.data.begin();
-	Image::const_iterator idbzh = srcDBZH.data.begin();
-	Image::const_iterator it = dstProb.data.begin();
-	while (ith != srcTH.data.end()){
-		th = *ith;
-		if (th == srcTH.odim.nodata){
-			*it = 0;
-		}
-		else if (th != srcTH.odim.undetect){
-			dbzh = *idbzh;
-			if (dbzh != srcDBZH.odim.nodata){
-				if (dbzh == srcDBZH.odim.undetect)
-					dbzh = -32.0;
-				else
-					dbzh = srcDBZH.odim.scaleForward(dbzh);
-				th = srcTH.odim.scaleForward(th);
-				*it = QMAX - fuzzy(dbzh - th);
-			}
-		}
-		else {
-			*it = 0;
-		}
-		++ith;
-		++idbzh;
-		++it;
-	}
-
-	writeHow(dstProb);
-	*/
 }
 
 }
