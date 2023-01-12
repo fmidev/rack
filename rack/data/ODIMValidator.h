@@ -53,7 +53,7 @@ class ODIMNodeValidator {
 
 public:
 
-	typedef drain::Dictionary2<H5I_type_t, std::string> h5dict_t;
+	typedef drain::Dictionary<H5I_type_t, std::string> h5dict_t;
 
 
 	ODIMNodeValidator & assign(const std::string & line);

@@ -52,7 +52,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-//struct DataOrder : public std::pair<drain::Fladdict<Crit>, drain::Fladdict<Oper> > {
+//struct DataOrder : public std::pair<drain::SingleFlagger<Crit>, drain::SingleFlagger<Oper> > {
 struct DataOrder { //: public drain::BeanLike {
 
 	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
@@ -60,8 +60,11 @@ struct DataOrder { //: public drain::BeanLike {
 
 	const char separator = ':';
 
-	drain::Fladdict<Crit> criterion;
-	drain::Fladdict<Oper> operation;
+	typedef drain::EnumFlagger<drain::SingleFlagger<Crit> > CritFlagger;
+	typedef drain::EnumFlagger<drain::SingleFlagger<Oper> > OperFlagger;
+
+	CritFlagger criterion;
+	OperFlagger operation;
 
 	template<typename ... TT>
 	void set(Crit crit, const TT &... args) {
@@ -199,7 +202,12 @@ public:
 	mutable DataOrder order;
 
 	/// Reject or accept VRAD(VH)
-	int dualPRF;
+	//int dualPRF;
+	enum Prf {SINGLE=1, DOUBLE=2, ANY=3};
+	std::string prf;
+
+	mutable
+	drain::EnumFlagger<drain::SingleFlagger<Prf> > selectPRF;
 
 protected:
 
@@ -645,11 +653,12 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 						// recursion continues below
 					}
 
-					if (quantityFound && (dualPRF != 0)){
+					//if (quantityFound && (dualPRF != 0)){
+					if (quantityFound && (selectPRF != ANY)){
 						double lowPRF   = props.get("how:lowprf",  0.0);
 						double hightPRF = props.get("how:highprf", lowPRF);
 						bool IS_DUAL_PRF = (lowPRF != hightPRF);
-						if (dualPRF > 0){
+						if (selectPRF == Prf::DOUBLE){
 							if (!IS_DUAL_PRF){
 								mout.experimental() << "dualPRF required, rejecting [" << quantity << "] at " << p << mout;
 								quantityFound = false;

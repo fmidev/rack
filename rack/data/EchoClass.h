@@ -46,7 +46,7 @@ namespace rack {
  *
  */
 
-//typedef drain::Dictionary2<int, std::string> classdict_t;
+//typedef drain::Dictionary<int, std::string> classdict_t;
 typedef drain::image::Palette::dict_t classdict_t;
 
 //classdict_t & getClassDict();

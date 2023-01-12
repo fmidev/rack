@@ -102,7 +102,7 @@ class CmdLog : public SimpleCommand<> {
 public:
 
 	inline
-	CmdLog(CommandBank & cmdBank) : SimpleCommand<>(__FUNCTION__, "Redirect log to file", "filename", "file.log"), bank(cmdBank) {
+	CmdLog(CommandBank & cmdBank) : SimpleCommand<>(__FUNCTION__, "Redirect log to file. Status variables like ${ID}, ${PID} and ${CTX} supported.", "filename", "/tmp/thread-${ID}.log"), bank(cmdBank) {
 	};
 
 	void exec() const;

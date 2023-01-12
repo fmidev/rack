@@ -252,7 +252,7 @@ public:
 	// void refine(size_t n=256);
 	void refine(size_t n=0);
 
-	typedef drain::Dictionary2<key_t, std::string> dict_t;
+	typedef drain::Dictionary<key_t, std::string> dict_t;
 
 	/// Container for special codes
 	dict_t dictionary; // temp?

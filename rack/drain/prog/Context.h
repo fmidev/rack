@@ -139,6 +139,7 @@ public:
 		}
 	}
 
+	bool SCRIPT_DEFINED; // To correctly handle sequential input commands (and other script-triggering commands)
 
 
 protected:

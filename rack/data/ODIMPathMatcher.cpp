@@ -45,19 +45,19 @@ bool ODIMPathMatcher::ensureLimitingSlash(){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.unimplemented() << "implementation postponed/cancelled" << mout.endl;
+	mout.unimplemented("implementation postponed/cancelled");
 
 	/*
 	if (empty()){
 		push_front(ODIMPathElem::ROOT);
-		mout.warn() << "empty matcher, added root -> '" << *this << "'" << mout.endl;
+		mout.warn() << "empty matcher, added root -> '" << *this << "'");
 		return true;
 	}
 
 	if (front().empty() && back().empty()){
-		mout.info() << "no leading or trailing separator char '" << separator.character << "'" << mout.endl;
+		mout.info() << "no leading or trailing separator char '" << separator.character << "'");
 		push_front(ODIMPathElem::ROOT);
-		mout.note() << "added leading (root) -> '" << *this << "'" << mout.endl;
+		mout.note() << "added leading (root) -> '" << *this << "'");
 		return true;
 	}
 	*/
@@ -85,10 +85,9 @@ void ODIMPathElemMatcher::extractIndex(const std::string &s){
 
 
 	if (this->indexMax < this->index){
-		mout.warn() << "indexMax(" << this->indexMax << ") < index(" << this->index << ')';
-		mout << ", adjusting indexMax=" << this->index << mout.endl;
+		mout.warn("indexMax(", this->indexMax, ") < index(", this->index, "), adjusting indexMax=", this->index);
 		this->indexMax = this->index;
-		//mout.warn() << " -> setting " << *this << mout.endl;
+		//mout.warn( << " -> setting " << *this);;
 	}
 
 	//else this->indexMax = this->index;
@@ -99,48 +98,48 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//mout.warn() << "current: " << flags << ", setting prefix=" << prefix << ", indexed=" << indexed << mout.endl;
+	//mout.warn( << "current: " << flags << ", setting prefix=" << prefix << ", indexed=" << indexed);;
 
 	// First, check if it is a simple, single prefix (conforming to base class ODIMPathElem)
 	if (ODIMPathElem::extractPrefix(prefix, indexed)){
 		//flags = this->group;
-		//mout.warn() << " -> setting single-type " << prefix << "=" << group << " => " << flags << mout.endl;
+		//mout.warn( << " -> setting single-type " << prefix << "=" << group << " => " << flags);
 		//flags.keysToStream(std::cout);
 		//flags.valuesToStream(std::cout);
 		return true;
 	}
 
 	try {
-		//mout.warn() << "current: " << flags;
+		//mout.warn( << "current: " << flags;
 		//flags = prefix;
 		//flags.set(prefix);
 		//flags.set(flags.getValue(prefix));
 		flags.assign(flags.getValue(prefix));
-		// mout.warn() << " => flags=" << flags << '=' << flags.value  << mout.endl;
+		// mout.warn( << " => flags=" << flags << '=' << flags.value );
 		if (indexed){
 			if (flags.isSet(ODIMPathElem::ARRAY)){ //  value & ODIMPathElem::ARRAY){
-				mout.debug() << " -> adjusting 'data' to indexed 'data[]'" << mout.endl;
+				mout.debug(" -> adjusting 'data' to indexed 'data[]'");
 				flags.unset(ODIMPathElem::ARRAY);
 				flags.set(ODIMPathElem::DATA);
 			}
 		}
 		else {
 			if (flags.isSet(ODIMPathElem::DATA)){ // if (flags.value & ODIMPathElem::DATA){
-				mout.debug() << " -> adjusting indexed 'data[]' to 'data'" << mout.endl;
+				mout.debug(" -> adjusting indexed 'data[]' to 'data'");
 				flags.unset(ODIMPathElem::DATA);
 				flags.set(ODIMPathElem::ARRAY);
 			}
 		}
 
-		mout.debug() << " -> set " << prefix << " ==> " << flags << '=' << flags.value << mout.endl;
+		mout.debug(" -> set ", prefix, " ==> ", flags, '=', flags.value);
 		return true;
 	}
 	catch (const std::runtime_error & e) {
-		mout.warn() << "could not set '" << prefix << "' ==> ?" << flags << mout.endl;
-		mout.note() << " -> dict: " << flags.getDict() << mout.endl;
-		mout.note() << " -> flag-sep: " << flags.separator << mout.endl;
-		mout.note() << " -> dict-sep: " << flags.getDict().separator << mout.endl;
-		mout.note() << " -> value: " << flags.getValue(prefix, '|') << mout.endl;
+		mout.warn("could not set '", prefix, "' ==> ?", flags);
+		mout.note(" -> dict: ", ODIMPathElem::getDictionary());
+		mout.note(" -> flag-sep: ", flags.separator);
+		mout.note(" -> dict-sep: ",  ODIMPathElem::getDictionary().separator);
+		mout.note(" -> value: ",  flags.getValue(prefix, '|'));
 	return false;
 	}
 
@@ -152,20 +151,20 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 
 	if (!elem.belongsTo(this->flags.value)){
 		//if (elem.group != this->group){
-		//mout.warn() << " elem type of " << elem << '~' << elem.getType() << " not in " << flags << '~' << this->flags.value << mout.endl;
+		//mout.warn(  " elem type of ",  elem,  '~',  elem.getType(),  " not in ",  flags,  '~',  this->flags.value);
 		return false;
 	}
 	else if (elem.isIndexed()){
 		// same group, indexed (DATASET, DATA, QUALITY)
-		mout.debug2();
+		//mout.debug2();
 		//mout.warn();
-		mout <<  this->index  << '(' << elem.index << ')' << this->indexMax << '!';
+		mout.debug2() <<  this->index  << '(' << elem.index <<  ')' <<  this->indexMax << '!';
 		if (elem.index < this->index){
-			mout << "below " <<  this->index  << '!' << mout.endl;
+			mout << "below " << this->index << '!' << mout.endl;
 			return false;
 		}
 		else if (elem.index > this->indexMax){
-			mout << "above " <<  this->indexMax << '!' << mout.endl;
+			mout << "above " << this->indexMax << '!' << mout.endl;
 			return false;
 		}
 		else
@@ -211,7 +210,7 @@ void ODIMPathMatcher::extract(ODIMPath & path) const {
 
 	for (const_iterator it=this->begin(); it!=this->end(); ++it){
 		if (!it->isSingle())
-			mout.warn() << "elem has range: " << *it << ", using min index=" << it->index << mout.endl;
+			mout.warn("elem has range: ", *it, ", using min index=", it->index);
 		path << *it;
 	}
 }
@@ -236,8 +235,8 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug3() << "path:    " << path    << mout.endl;
+	//mout.debug() << "matcher: " << *this);
+	mout.debug3( "path:    ", path   );
 
 	rack::ODIMPathMatcher::const_iterator mit = this->begin();
 	if (mit->isRoot())
@@ -248,9 +247,9 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 		++pit;
 
 	while ((mit!=this->end()) && (pit!=path.end())){
-		mout.debug3() << *mit << ":\t" << *pit;
+		mout.debug3()<<  *mit <<":\t" << *pit;
 		if (!mit->test(*pit)){
-			mout << '*' << mout.endl;
+			mout << '*';
 			return false;
 		}
 		mout << mout.endl;
@@ -264,24 +263,24 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//mout.debug() << "matcher: " << *this << mout.endl;
-	mout.debug3() << "path:    " << path    << mout.endl;
+	//mout.debug() << "matcher: " << *this);
+	mout.debug3("path: ", path);
 
 	rack::ODIMPathMatcher::const_reverse_iterator mit = this->rbegin();
 	rack::ODIMPath::const_reverse_iterator pit = path.rbegin();
 
 	while ((mit!=this->rend()) && (pit!=path.rend())){
-		//mout.debug2() << *mit << ":\t" << *pit;
+		//mout.debug2( *mit, ":\t", *pit;
 		if (!mit->test(*pit)){
-			mout.debug3() << *mit << ":\t no... " << *pit << mout.endl;
-			// mout << '*' << mout.endl;
+			mout.debug3( *mit, ":\t no... ", *pit);
+			// mout, '*');
 			return false;
 		}
-		//mout << '%' << mout.endl;
-		mout.debug3() << *mit << ":\t YES... " << *pit << mout.endl;
+		//mout, '%');
+		mout.debug3(*mit, ":\t YES... ", *pit);
 		++mit, ++pit;
 	}
-	//mout << mout.endl;
+	//mout);
 
 	// return true;
 	return (mit==this->rend());

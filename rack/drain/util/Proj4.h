@@ -59,7 +59,7 @@ public:
 
 	virtual ~Proj4(); 
 
-    typedef drain::Dictionary2<int, std::string> epsg_dict_t;
+    typedef drain::Dictionary<int, std::string> epsg_dict_t;
 
 	/// Sets source projection.
 	inline

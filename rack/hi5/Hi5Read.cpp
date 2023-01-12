@@ -42,9 +42,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace hi5 {
 
 //const
-const int Reader::ATTRIBUTES(1);
+//const int Reader::ATTRIBUTES(1);
 //const
-const int Reader::DATASETS(2);
+//const int Reader::DATASETS(2);Reader::Mode::
+
+//const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
+//const drain::SingleFlagger<Mode>::dict_t dict;
+
+//template <>
+//const Reader::ModeFlagger::dict_t Reader::ModeFlagger::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
+// const drain::SingleFlagger<Reader::Mode>::dict_t drain::SingleFlagger<Reader::Mode>::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
+
+template <>
+const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
 
 
 void Reader::readFile(const std::string & filename, Hi5Tree & tree, int mode) {
@@ -58,15 +68,16 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, int mode) {
 	hid_t fid = H5Fopen(filename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
 	if (fid < 0){
-		mout.error() << "H5Fopen failed for file=" << filename << mout.endl;
+		mout.error("H5Fopen failed for file='", filename, "'");
+		return;
 	}
-	else
-		h5FileToTree(fid, tree, mode);
+
+	h5FileToTree(fid, tree, mode);
 
 	int status = H5Fclose(fid);
 
 	if (status < 0){
-		mout.warn() << "H5Fclose failed for file=" << filename << mout.endl;
+		mout.warn("H5Fclose failed for file='", filename, "'");
 	}
 
 	//tree.dump();
@@ -123,11 +134,12 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 
 	H5G_stat_t info;
 
-	for (Hi5Tree::iterator it = tree.begin(); it != tree.end(); ++it) {
+	//for (Hi5Tree::iterator it = tree.begin(); it != tree.end(); ++it) {
+	for (auto & entry: tree) {
 
-		const Hi5Tree::path_t::elem_t & child = it->first;
+		const Hi5Tree::path_t::elem_t & child = entry.first;
 
-		Hi5Tree &subtree = it->second;
+		Hi5Tree & subtree = entry.second;
 		//const std::string p = path + separator+ child;
 		Hi5Tree::path_t p(path);
 		p << child;
@@ -176,7 +188,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 				}
 				break;
 			default:
-				mout.warn() << "H5Gget_objinfo, no group or dataset, path=" << p << mout.endl;
+				mout.warn("H5Gget_objinfo unknown type – no group or dataset, path=", p);
 				break;
 		}
 		// TODO: read attributes

@@ -97,10 +97,10 @@ public:
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 
+protected:
 
 	mutable Hi5Tree clutterMap;
 
-protected:
 
 
 

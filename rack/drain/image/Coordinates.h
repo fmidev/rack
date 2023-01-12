@@ -53,7 +53,7 @@ namespace image {
 
 typedef unsigned short coord_pol_t;
 
-typedef drain::Dictionary2<std::string,coord_pol_t> coord_policy_dict_t;
+typedef drain::Dictionary<std::string,coord_pol_t> coord_policy_dict_t;
 
 
 //typedef drain::GlobalFlags<coord_pol_t> coord_policy_flags;

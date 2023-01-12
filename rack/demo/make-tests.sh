@@ -87,8 +87,10 @@ done
 
 
 # Append additional cases
-echo ./test-content.sh: ./test-content.sh >> $TEST_CMD_FILE
-echo ./make-plot.sh   : ./make-plot.sh    >> $TEST_CMD_FILE
+#echo ./test-content.sh: ./test-content.sh >> $TEST_CMD_FILE
+#echo ./make-plot.sh   : ./make-plot.sh    >> $TEST_CMD_FILE
+echo ./test-content.sh >> $TEST_CMD_FILE
+echo ./make-plot.sh    >> $TEST_CMD_FILE
 
 #echo METHOD=WAVG,1,1  SIZE=300,300 BBOX=17.6,57.6,29.7,64.0 POLARPRODUCT=' ' ./make-composite.sh data/pvol_fi{kor,ika,van}.h5   >> $TEST_CMD_FILE
 
@@ -193,7 +195,8 @@ while (( $line <= iEnd )); do
     
     echo $cmd > tmp.log
     # PRE='valgrind -v' 
-    eval "$PRE $cmd"
+    #eval "$PRE $cmd"
+    eval "$cmd"
 
     if (( $? != 0 )); then
 	echo $cmd

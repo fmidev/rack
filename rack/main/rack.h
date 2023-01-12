@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "6.82"
+#define __RACK_VERSION__ "6.83"
 
 /**
+ *   Version 6.83
+ *   -- Revised Flagger/Flags design with  enum support
+ *   -- dualPRF selector redesigned
+ *
  *   Version 6.82
  *   -- Checks unknown single char instructions, ie. other than [, /, or ] .
  *

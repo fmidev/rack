@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "drain/util/Tree.h"
+#include "drain/util/Flags.h"
 #include "drain/image/Image.h"
 
 
@@ -62,16 +63,15 @@ class Reader : public Hi5Base {
 
 public:
 
+	enum Mode {ATTRIBUTES=1, DATASETS=2};
+
+	//const drain::SingleFlagger<Mode>::dict_t dict;
+	//drain::SingleFlagger<Mode> koe;
+	typedef drain::EnumFlagger<drain::MultiFlagger<Mode> > ModeFlagger;
+
 
 	static
-	const int ATTRIBUTES; // = 1;
-
-	//extern
-	static
-	const int DATASETS; // = 2;
-
-	static
-	void readFile(const std::string &filename, Hi5Tree &tree, int mode=3); //(ATTRIBUTES|DATASETS));
+	void readFile(const std::string &filename, Hi5Tree &tree, int mode=(ATTRIBUTES | DATASETS)); //(ATTRIBUTES|DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 structure.
 	/**
@@ -81,7 +81,7 @@ public:
 	 *  \param mode - switch for excluding attributes or datasets.
 	 */
 	static  // , const std::string &path,
-	void h5FileToTree(hid_t fid, const Hi5Tree::path_t &path, Hi5Tree &tree, int mode=3); // ATTRIBUTES|DATASETS));
+	void h5FileToTree(hid_t fid, const Hi5Tree::path_t &path, Hi5Tree &tree, int mode=(ATTRIBUTES | DATASETS)); // ATTRIBUTES|DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 structure.
 	/**
@@ -152,9 +152,12 @@ protected:
 };
 
 
-
-
-
+//const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict;
+//const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
+//template <>
+//const Reader::ModeFlagger::dict_t Reader::ModeFlagger::dict;
+template <>
+const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict;
 
 //static
 //void debug(const Hi5Tree &src,int level = 0);

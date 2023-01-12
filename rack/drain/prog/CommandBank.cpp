@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+Copyright (c) 2023 FMI Open Development / Markus Peura, first.last@fmi.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
  
-/*
- * RackLet.cpp
- *
- *  Created on: Nov 17, 2014
- *      Author: mpe
- */
 
 #include <iostream>
 #include <sstream>
-//#include <istream>
-
 
 #include "drain/util/Log.h"
 #include "drain/util/Input.h"
@@ -63,12 +55,6 @@ CommandBank & getCommandBank(){
 
 std::set<std::string> & CommandBank::trimWords(){
 	static std::set<std::string> s = {"Cmd", "Command"};
-	/*
-	if (s.empty()){
-		s.insert("Cmd");
-		s.insert("Command");
-	}
-	*/
 	return s;
 }
 
@@ -154,9 +140,8 @@ void CommandBank::append(const Script & script, Program & prog) const {
 }
 
 
-/// Appends program with commands fo the script
+/// Appends program with commands of the script
 void CommandBank::append(const Script & script, Context & ctx, Program & prog) const {
-
 
 	for (auto & entry: script) {
 		if (entry.first.size()==1){
@@ -172,21 +157,6 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 		}
 	}
 
-	/*
-	for (Script::const_iterator it = script.begin(); it!=script.end(); ++it) {
-
-		if (it->first.size()==1){
-			static BasicCommand dummy("Marker", "[marker]");
-			prog.add(it->first, dummy);
-		}
-		else {
-			command_t & cmd = clone(it->first);
-			cmd.setExternalContext(ctx);
-			cmd.setParameters(it->second);
-			prog.add(it->first, cmd);
-		}
-	}
-	*/
 }
 
 
@@ -388,9 +358,11 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	Script routine;
 
-	//Log & baseLog = contextCloner.getSource().log; // 2022/10
-	Log & log = prog.getContext<>().log; // 2022/10
-	Logger mout(log, __FUNCTION__, __FILE__); // warni
+	Context & ctx = prog.getContext<>(); // 2023/01
+	//Log & log = ctx.log; // 2022/10
+	Logger mout(ctx.log, __FUNCTION__, __FILE__); // Could be thread prefix?
+
+	ctx.SCRIPT_DEFINED = false;
 
 	// Iterate commands.
 	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
@@ -399,7 +371,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		const key_t & key =  it->first;
 		value_t & cmd     = *it->second;
 
-		Context & ctx = cmd.getContext<>(); //.log;
+		// Context & ctx = cmd.getContext<>(); //.log;
 
 		//Log & log = ctx.log;
 		//log.setVerbosity(baseLog.getVerbosity());
@@ -427,11 +399,9 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
 			}
 			scriptify(pit->second.toStr(), routine);
-			ctx.setStatus("script", true);
+			ctx.SCRIPT_DEFINED = true; // For polar read! (To avoid appending sweeps)
+			// ctx.setStatus("script", true);
 			//ctx.statusFlags.set(SCRIPT_DEFINED);
-			// ctx.setStatus("script", true); // For polar read! (To avoid appending sweeps)
-			//ctx.setStatus(key, value)
-			// continue;
 		}
 		// Explicit launch NOT needed, but a passive trigger cmd
 		/*
@@ -465,16 +435,25 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			}
 			// Debug: print resulting program that contains embedded commands
 			// mout.warn() << sprinter(prog) << mout;
-			//continue;
 		}
 		else if (key == "["){
-			mout.special("Enabling parallel computation / script triggering.");
+
+			mout.special("Enabling parallel computation.");
+
+			if (PARALLEL_ENABLED){
+				mout.error("Parallel section already started with '[' ?");
+				continue;
+			}
+
 			PARALLEL_ENABLED = true;
+
 			if (routine.empty())
 				INLINE_SCRIPT = true;
-			ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
+
+			ctx.SCRIPT_DEFINED = true; // IMPORTANT. To prevent appending sequental input sweeps
+			//ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
 		}
-		else if (TRIGGER_CMD && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
+		else if (TRIGGER_CMD && (!routine.empty()) && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
 			mout.debug("Running SCRIPT in main thread: ", ctx.getName());
 			Program prog(cmd.getContext<Context>());
 			//Program prog;
@@ -483,12 +462,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			append(routine, prog);
 			run(prog, contextCloner); // Run in this context
 		}
-		else if (TRIGGER_CMD || (key == "/")){ // || (key == "]")) { // Now threads are enabled
+		else if (PARALLEL_ENABLED && (TRIGGER_CMD || (key == "/"))){ // || (key == "]")) { // Now threads are enabled
 
-			if ((key == "[") && PARALLEL_ENABLED){
-				mout.error("Parallel section already started with '[' ?");
-				continue;
-			}
 
 			if ((key == "/") && !INLINE_SCRIPT){
 				mout.error("Parallel section not enabled with '[' but separator '/' encountered?");
@@ -499,7 +474,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 			Context & ctxCloned = contextCloner.getCloned();
 			//mout.attention("cloned: ", ctxCloned.getId());
-			ctxCloned.log.setVerbosity(log.getVerbosity());
+			ctxCloned.log.setVerbosity(mout.getVerbosity());
 			Program & thread = threads.add(ctxCloned);
 			// mout.attention("cloned: ", ctxCloned.getId(), " <-> ", thread.getContext<>().getId());
 
@@ -513,11 +488,20 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 			append(routine, thread);
 
-			if (!TRIGGER_CMD){ // flush
+			//if (!TRIGGER_CMD){
+			if (INLINE_SCRIPT){// flush
 				routine.clear();
 			}
 		}
 		else if (key == "]"){ // Run the threads.
+
+			if (INLINE_SCRIPT){
+				Context & ctxCloned = contextCloner.getCloned();
+				//mout.attention("cloned: ", ctxCloned.getId());
+				ctxCloned.log.setVerbosity(mout.getVerbosity());
+				Program & thread = threads.add(ctxCloned);
+				append(routine, thread);
+			}
 
 			if (threads.empty()){
 				mout.note("Parallel section ended by ']' but no threads defined?");
@@ -544,26 +528,12 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 					cmdCtx.log.setOstr(filename);
 				}
 
-				/*
-				for (const auto & cmdEntry: p){
-					Context & cmdCtx = cmdEntry.second->getContext<>();
-					std::cerr << cmdEntry.first << ':' << cmdCtx.getName() << '\n';
-				}
-				*/
-
-				// Direct log to files
-				/*
-					std::stringstream sstr;
-					sstr << "/tmp/thread" << p.getContext<>().getId() << ".log";
-					mout.attention("  thread #", j,  ", separate log: ", sstr.str());
-					p.getContext<>().log.setOstr(sstr.str());
-				 */
 			}
-
 
 			if (mout.isDebug(2))
 				threads.debug();
 
+			// mout.attention("Start threads");
 			#pragma omp parallel for
 			for (size_t i = 0; i < threads.size(); ++i) {
 				// Keep this minimal! (No variable writes here, unless local.)
@@ -579,7 +549,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			//}
 
 		}
-		else if (INLINE_SCRIPT){
+		else if (INLINE_SCRIPT){ // In this mode, catch all the commands to current routine.
 			mout.debug("Adding: ", key, " = ", cmd, " ");
 			routine.add(key, cmd.getParameters().getValues()); // kludge... converting ReferenceMap back to string...
 		}

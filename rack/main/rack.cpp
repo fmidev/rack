@@ -78,6 +78,8 @@ int process(int argc, const char **argv) {
 	RackResources::ctx_cloner_t & contextCloner = resources.getContextCloner();
 	RackContext & ctx = contextCloner.getSourceOrig(); // baseCtx
 
+	//resources.
+
 	// NEW
 	ctx.log.setVerbosity(LOG_NOTICE);
 	// OLD
@@ -126,10 +128,13 @@ int process(int argc, const char **argv) {
 
 
 	try {
-		mout.info() << "converting arguments to a script " << mout.endl;
+		mout.info("Converting arguments to a script ");
 
 		drain::Script script;
 		cmdBank.scriptify(argc, argv, script);
+
+		//mout.attention('\n', script);
+
 
 		drain::Program prog(ctx);
 		cmdBank.append(script, prog); // ctx is stored in each cmd

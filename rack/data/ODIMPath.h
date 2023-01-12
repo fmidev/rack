@@ -75,6 +75,11 @@ namespace rack {
 //struct odim_id {};
 //typedef drain::GlobalFlags<odim_id> odim_flags;
 
+class ODIMPathElem;
+
+std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p);
+
+
 class ODIMPathElem  {
 
 public:
@@ -113,8 +118,6 @@ public:
 	/// Abbreviation for linking (referencing) attributes at different levels (tree depths).
 	static const group_t ALL_LEVELS = (ROOT | DATASET | DATA); //  | QUALITY
 
-	/// Group index mask for groups that have an index.
-	static const group_t IS_INDEXED = (DATASET | DATA | QUALITY);
 
 
 
@@ -146,6 +149,14 @@ public:
 	 */
 	//static const group_t OTHER   = 255 ^ IS_INDEXED; // OTHER is not indexed...
 	static const group_t OTHER   = 1024; // OTHER is not indexed...
+
+	//static const group_t _SCAN   = 2048; // Extension
+
+	//static const group_t _MOMENT = 4096; // Extension
+
+
+	/// Group index mask for groups that have an index.
+	static const group_t IS_INDEXED = (DATASET | DATA | QUALITY ); // | _SCAN | _MOMENT);
 
 
 	static inline
@@ -311,13 +322,13 @@ public:
 	}
 
 	/// Writes the name, including the index, to output stream.
-	virtual
-	std::ostream & toStream(std::ostream & sstr) const;
+	// virtual	std::ostream & toStream(std::ostream & sstr) const;
 
 	operator const std::string &() const {
-		if (this->group != OTHER){
+		if (this->group != OTHER){ // for OTHER, its already set.
 			std::stringstream sstr;
-			toStream(sstr);
+			// toStream(sstr);
+			sstr << *this;
 			str = sstr.str();
 		}
 		return str;
@@ -358,7 +369,15 @@ bool operator!=(const ODIMPathElem & e1, const ODIMPathElem & e2){
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p) {
-	return p.toStream(ostr);
+
+	/// Step 1: prefix (by group type)
+	ostr << p.getPrefix();
+
+	/// Step 2: index
+	if (p.isIndexed())
+		ostr << p.getIndex();
+
+	return ostr; // p.toStream(ostr);
 }
 
 inline
@@ -380,39 +399,20 @@ typedef std::vector<ODIMPathElem> ODIMPathElemSeq;
 
 struct ODIMPathLess {
 
-
 	// Main function
 	bool operator()(const ODIMPathElem & p1, const ODIMPathElem & p2) const {
-
 		return (p1<p2);
-		/*
-		if (p1.group < p2.group){
-			return true;
-		}
-		else if (p1.group > p2.group){
-			return false;
-		}
-		else { // p1.group == p2.group
-			if (p1.isIndexed()){
-				return (p1.getIndex() < p2.getIndex());
-			}
-			else if (p1.is(ODIMPathElem::OTHER)){
-				return (const std::string &)p1 < (const std::string &)p2 ;
-			}
-		}
-		// e.g. WHAT == WHAT
-		return false;
-		*/
 	}
 
 };  // end class
 
 
-
+/*
 inline
 std::ostream & operator<<(std::ostream & ostr, const ODIMPath & p) {
 	return p.toStream(ostr);
 }
+*/
 
 
 }  // namespace rack

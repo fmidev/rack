@@ -127,7 +127,7 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	typedef drain::Dictionary2Ptr<hid_t, const std::type_info> dict_t;
+	typedef drain::DictionaryPtr<hid_t, const std::type_info> dict_t;
 
 	static dict_t dict;
 	if (dict.empty()){

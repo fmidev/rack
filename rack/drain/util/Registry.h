@@ -110,7 +110,7 @@ public:
 	};
 
 	inline
-	const drain::Dictionary2<char, std::string> & getAliases() const {
+	const drain::Dictionary<char, std::string> & getAliases() const {
 		return aliasesNew;
 	}
 
@@ -118,7 +118,7 @@ protected:
 
 	map_t entryMap;
 
-	drain::Dictionary2<char, std::string> aliasesNew;
+	drain::Dictionary<char, std::string> aliasesNew;
 
 };
 
@@ -145,7 +145,7 @@ bool Registry<T>::has(const std::string & name) const {
 template <class T>
 const std::string & Registry<T>::getKey(char alias) const{
 
-	Dictionary2<char,std::string>::const_iterator it = aliasesNew.findByKey(alias);
+	Dictionary<char,std::string>::const_iterator it = aliasesNew.findByKey(alias);
 
 	if (it != aliasesNew.end())
 		return it->second;
@@ -161,7 +161,7 @@ const std::string & Registry<T>::getKey(char alias) const{
 template <class T>
 char Registry<T>::getAlias(const std::string &name) const{
 
-	Dictionary2<char,std::string>::const_iterator it = aliasesNew.findByValue(name);
+	Dictionary<char,std::string>::const_iterator it = aliasesNew.findByValue(name);
 
 	if (it != aliasesNew.end()){
 		return it->first;

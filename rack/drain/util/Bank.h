@@ -410,7 +410,7 @@ public:
 
 
 	inline
-	const drain::Dictionary2<char, key_t> & getAliases() const {
+	const drain::Dictionary<char, key_t> & getAliases() const {
 		return briefKeys;
 	}
 
@@ -438,7 +438,7 @@ public:
 
 
 	Flagger::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
-		return FlagResolver::add(sections, title, index);
+		return FlagResolver::addEntry(sections, title, index);
 	}
 
 	/*
@@ -453,7 +453,7 @@ public:
 
 protected:
 
-	drain::Dictionary2<char, std::string> briefKeys;
+	drain::Dictionary<char, std::string> briefKeys;
 
 	/// For example, name of the program, to appear in help dumps etc.
 	std::string title;

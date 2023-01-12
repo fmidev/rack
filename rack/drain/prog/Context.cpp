@@ -42,11 +42,11 @@ long int Context::counter(0);
 
 // drain::TypeName<Context>::get(),
 
-Context::Context(const std::string & basename) : basename(basename), id(++counter), name(drain::StringBuilder(basename, '-', id)){
+Context::Context(const std::string & basename) : basename(basename), SCRIPT_DEFINED(false), id(++counter), name(drain::StringBuilder(basename, '-', id)){
 	init();
 }
 
-Context::Context(const Context & ctx) : basename(ctx.basename), id(++counter), name(drain::StringBuilder(ctx.name, '.', id)){  //  ++counter + 100*ctx.id
+Context::Context(const Context & ctx) : basename(ctx.basename), SCRIPT_DEFINED(false), id(++counter), name(drain::StringBuilder(ctx.name, '.', id)){  //  ++counter + 100*ctx.id
 	log.setVerbosity(ctx.log.getVerbosity());
 	init();
 }

@@ -153,52 +153,48 @@ public:
 
 	inline
 	const drain::VariableMap & getWhat() const {
-		//return getTree()[ODIMPathElem(ODIMPathElem::WHAT)].data.attributes;
 		return getAttr<ODIMPathElem::WHAT>();
 	}
 
 	inline
 	drain::VariableMap & getWhat() {
 		return getAttr<ODIMPathElem::WHAT>();
-		//return getTree()[ODIMPathElem(ODIMPathElem::WHAT)].data.attributes;
 	}
 
 	inline
 	const drain::VariableMap & getWhere() const {
 		return getAttr<ODIMPathElem::WHERE>();
-		//return getTree()[ODIMPathElem(ODIMPathElem::WHERE)].data.attributes;
 	}
 
 	inline
 	drain::VariableMap & getWhere() {
 		return getAttr<ODIMPathElem::WHERE>();
-		//return getTree()[ODIMPathElem(ODIMPathElem::WHERE)].data.attributes;
 	}
 
 
 	inline
 	const drain::VariableMap & getHow() const {
 		return getAttr<ODIMPathElem::HOW>();
-		//return getTree()["how"].data.attributes;
 	}
 
 	inline
 	drain::VariableMap & getHow() { // ODIMPathElem(ODIMPathElem::HOW)
 		return getAttr<ODIMPathElem::HOW>();
-		// return getTree()["how"].data.attributes;
 	}
 
 	// Mark this data temporary so that it will not be save by Hi5::write().
 	inline
-	void setNoSave(bool noSave = true){ this->tree.data.noSave = noSave;};
+	void setNoSave(bool noSave = true){
+		this->tree.data.noSave = noSave;
+	};
 
 
-
-//protected:
+	//typename DT::odim_t odim;
 
 	virtual inline
 	const tree_t & getTree() const { return this->tree; };
 
+	// expected public, at least by DetectorOp::storeDebugData()
 	virtual inline
 	tree_t & getTree(){ return this->tree; } ;
 
@@ -246,7 +242,7 @@ public:
 
 	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) {
 		// experimental
-		odim.copyFrom(tree.data.dataSet);
+		this->odim.copyFrom(tree.data.dataSet);
 	};
 
 	virtual inline
@@ -259,6 +255,8 @@ public:
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?
 	};
 
+	// Metadata structure
+	// odim_t odim;
 	typename DT::odim_t odim;
 
 };
@@ -326,8 +324,8 @@ public:
 	inline
 	void setEncoding(const T & type, const std::string & values = ""){
 		//odim.type = drain::Type::getTypeChar(type);
-		odim.type = drain::Type::getTypeChar(drain::Type(type));
-		odim.setTypeDefaults(type, values);
+		this->odim.type = drain::Type::getTypeChar(drain::Type(type));
+		this->odim.setTypeDefaults(type, values);
 		data.setType(type);
 		// TODO: data.setScaling(odim.scaling); ??
 	}
@@ -337,10 +335,10 @@ public:
 	template <class DT2>
 	inline
 	void copyEncoding(const PlainData<DT2> & srcData){
-		odim.importMap(srcData.odim);
-		data.setType(odim.type);
+		this->odim.importMap(srcData.odim);
+		data.setType(this->odim.type);
 		//data.setScaling(odim.scaling.scale, odim.scaling.offset); // needed?
-		data.setScaling(odim.scaling); // needed?
+		data.setScaling(this->odim.scaling); // needed?
 		//data.setGeometry(data.);
 	}
 
@@ -349,7 +347,7 @@ public:
 		//data.setPhysicalScale(min, max);
 		data.setPhysicalRange(min, max, true);
 		// data.setOptimalScale();
-		odim.scaling.assign(data.getScaling());
+		this->odim.scaling.assign(data.getScaling());
 		// odim.scaling.scale   = data.getScaling().scale; // needed?
 		// odim.scaling.offset = data.getScaling().offset; // needed?
 	}
@@ -358,13 +356,13 @@ public:
 	/// Sets dimensions of data array and metadata.
 	inline
 	void setGeometry(size_t cols, size_t rows){
-		odim.setGeometry(cols, rows);
+		this->odim.setGeometry(cols, rows);
 		data.setGeometry(cols, rows);
 	}
 
 	inline
 	void setGeometry(const drain::image::AreaGeometry & geometry){
-		odim.setGeometry(geometry.getWidth(), geometry.getHeight());
+		this->odim.setGeometry(geometry.getWidth(), geometry.getHeight());
 		data.setGeometry(geometry);
 	}
 
@@ -388,7 +386,7 @@ public:
 	image_t & data;
 
 	// Metadata structure
-	odim_t odim;
+	odim_t odim; // 2023/01 considered ...raising to TreeContainer
 
 	//drain::Legend legend;
 
@@ -410,7 +408,7 @@ public:
 	/// TODO: consider this to destructor
 	inline
 	void updateTree2(){
-		ODIM::copyToH5<ODIMPathElem::DATA>(odim, this->tree);
+		ODIM::copyToH5<ODIMPathElem::DATA>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree);
 	}
 
@@ -445,9 +443,9 @@ void PlainData<DT>::createSimpleQualityData(drain::image::Image & quality, doubl
 	Image::iterator wit = quality.begin();
 	while (it != data.end()){
 		//if ((*it != odim.nodata) && (*it != odim.undetect))
-		if (UNDETECT && (*it == odim.undetect))
+		if (UNDETECT && (*it == this->odim.undetect))
 			*wit = undetectCode;
-		else if (NODATA && (*it == odim.nodata))
+		else if (NODATA && (*it == this->odim.nodata))
 			*wit = nodataCode;
 		else if (DATA)
 			*wit = dataCode;
@@ -496,6 +494,8 @@ std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
 
 /// Something, that contains TreeWrapper and data that can be retrieved by quantity keys.
 /**
+	So, data4/ or quality2/ for example.
+
     \tparam DT - data object type: PlainData<...> or Data<...>
     \tparam G  - the path element of children: ODIMPathElem:: DATASET, DATA, or QUALITY
 
@@ -510,16 +510,27 @@ public:
 	typedef typename DT::datatype_t datatype_t;
 	typedef std::map<std::string, DT > map_t;
 
+
+	//typename DT::odim_t odim;// 2023/01 experimental
+
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+		// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.dataSet) {
 		TreeWrapper<typename DT::datatype_t>(tree) {
 		init(tree, *this, quantityRegExp);
 	}
 
-	DataGroup(const datagroup_t & src) : TreeWrapper<typename DT::datatype_t>(src.tree) {
-		//adapt(src.tree, *this, src);  // ALERT: includes all the quantities, even thoug src contained only some of them
+	/*
+	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+		TreeWrapper<typename DT::datatype_t>(tree) {
+		init(tree, *this, quantityRegExp);
+	}
+	*/
+
+	DataGroup(const datagroup_t & src) :
+		// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.dataSet) {
+		TreeWrapper<typename DT::datatype_t>(src.tree){
 		adapt(src, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
-		//init(src.tree, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
 	}
 
 
@@ -958,46 +969,6 @@ protected:
 };
 
 
-// Well, needs quantity, primarily. So best place perhaps not here.
-/**
- *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
- */
-/*
-template <typename DT>  // PlainData<DT> & quality
-void QualityDataSupport<DT>::createSimpleQualityData(PlainData<DT> & data, drain::image::Image & quality, double dataQuality, double undetectQuality, double nodataQuality) const {
-
-	quality.setPhysicalRange(0.0, 1.0, true);
-
-	const drain::ValueScaling & scaling = quality.getScaling();
-
-	const bool DATA     = !std::isnan(dataQuality);
-	const bool UNDETECT = !std::isnan(undetectQuality);
-	const bool NODATA   = !std::isnan(nodataQuality);
-
-	// Default ie. unset values are non_signaling_NAN's, but maybe more elegant to skip calculations:
-	const double dataCode     = DATA     ? scaling.inv(dataQuality)     : 0.0;
-	const double undetectCode = UNDETECT ? scaling.inv(undetectQuality) : 0.0;
-	const double nodataCode   = NODATA   ? scaling.inv(nodataQuality)   : 0.0;
-
-	quality.setGeometry(data.getWidth(), data.getHeight());
-
-	Image::iterator  it = data.data.begin();
-	Image::iterator wit = quality.begin();
-	while (it != data.data.end()){
-		//if ((*it != odim.nodata) && (*it != odim.undetect))
-		if (UNDETECT && (*it == odim.undetect))
-			*wit = undetectCode;
-		else if (NODATA && (*it == odim.nodata))
-			*wit = nodataCode;
-		else if (DATA)
-			*wit = dataCode;
-		++it;
-		++wit;
-	}
-
-}
-*/
-
 
 /*
  *  Data<PolarSrc> will return
@@ -1120,27 +1091,6 @@ public:
 
 	}
 
-
-	/// Retrieves data containing the given quantity. If not found, returns an empty array.
-	/*
-	inline
-	const data_t & getData(const std::string & quantity) const {  // TODO: simply use original get()?
-		return this->get(quantity);
-	}
-
-	/// Retrieves data containing the given quantity. If not found, creates an array.
-	inline
-	data_t & getData(const std::string & quantity) { // // TODO: simply use original get()?
-		//drain::Logger mout("DataSetDst", __FUNCTION__);
-		return this->get(quantity);
-	}
-
-	/// Retrieves data matching the given quantity. If not found, returns an empty array.
-	inline
-	const data_t & getData(const drain::RegExp & regExp) const { // TODO: simply use original get()?
-		return this->get(regExp);
-	}
-	*/
 
 	plaindata_t & getQualityData2(const std::string & quantity = "QIND", const std::string & dataQuantity = ""){ // , bool tmp = false
 		if (dataQuantity.empty())

@@ -171,6 +171,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	// InputSelect needed?
 	Hi5Tree srcTmp;
 	hi5::Reader::readFile(fullFilename, srcTmp); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
+	//hi5::Reader::readFile(fullFilename, srcTmp, ctx.inputFilter.value); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
 
 	if (mout.isDebug(6)){
 		mout.debug3("input data: ");
@@ -180,8 +181,9 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
 
-	const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
+	//const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
 
+	const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
 	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
@@ -455,7 +457,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start");
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	// mout.warn() << sourceDst << " => " << sourceSrc << mout.endl;
@@ -477,9 +479,8 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	DataSelector dataSetSelector;
 	dataSetSelector.consumeParameters(ctx.select); //??
 	dataSetSelector.pathMatcher = "dataset:"; // <fix
-	//resources.select.clear();
 
-	/// TIMESTAMP-based order ( Consider generalization for Carts)
+	/// TIMESTAMP-based order (Consider generalization for Cartesian?)
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
 	sweepMap srcPaths;
@@ -490,22 +491,23 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	dataSetSelector.getPathsByTime(dstRoot, dstPaths);
 	// dataSetSelector.getPaths(dstRoot, dstPaths);
 
-	for (sweepMap::const_iterator it = dstPaths.begin(); it != dstPaths.end(); ++it){
-		mout.info() << "exists: " << it->second <<  "\t (" << it->first << ')' << mout.endl;
+	for (const auto & entry: dstPaths){
+		mout.info("exists: ", entry.second,"\t (", entry.first, ')');
 	}
 
 
-	mout.debug() << "traverse paths" << mout.endl;
-	/// Traverse the child paths of srcRoot dataset[i]
-	for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
+	mout.debug("traverse paths");
 
-		//const double   & elangle = it->first;
-		const sweepMap::key_type & timestamp = it->first; // rename => key
-		const ODIMPath & srcDataSetPath = it->second;
+	/// Traverse the child paths of srcRoot dataset[i]
+	//for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
+	for (const auto & entry: srcPaths){
+
+		const sweepMap::key_type & timestamp = entry.first; // rename => key
+		const ODIMPath & srcDataSetPath = entry.second;
 
 		Hi5Tree & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
 
-		mout.debug() << " Considering " << srcDataSetPath <<  " (" << timestamp << ')' << mout.endl;
+		mout.debug("Considering ", srcDataSetPath, " (", timestamp, ')');
 
 		sweepMap::const_iterator eit = dstPaths.find(timestamp);
 
@@ -513,7 +515,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 			ODIMPathElem child(ODIMPathElem::DATASET);
 			DataSelector::getNextChild(dstRoot, child);
-			mout.note() << "New timestamp (" << timestamp << "), appending to path=" << child << mout.endl;
+			mout.info() << "New timestamp (" << timestamp << "), appending to path=" << child << mout.endl;
 			// Create empty dstRoot[path] and swap it...
 			Hi5Tree & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
@@ -524,11 +526,10 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 			const ODIMPath & dstDataSetPath = eit->second;
 
-			mout.warn() << "Combining datasets of timestamp ("<< timestamp << "): src:" << srcDataSetPath <<  " => dst:" << dstDataSetPath << "("<< eit->first << ")" << mout.endl;
+			mout.note("Combining datasets having the same timestamp (", timestamp, "): src:", srcDataSetPath, " => dst:", dstDataSetPath); //"("<< eit->first << ")" << mout.endl;
 
 			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
 
-			//typedef std::map<std::string, ODIMPath> quantity_map;
 			typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 			// CONFLICT!? Or ok with ODIMPathElem::DATA to use

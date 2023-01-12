@@ -62,7 +62,14 @@ public:
 	static
 	const drain::FileInfo fileInfo;
 
-	typedef drain::FlagResolver::dict_t dict_t;
+	//enum Compression {ATTRIBUTES=1, DATASETS=2};
+
+
+	//typedef drain::FlagResolver::dict_t dict_t;
+	typedef drain::SingleFlagger<unsigned int>::dict_t dict_t;
+
+
+public:
 
 	static
 	const dict_t & getCompressionDict();

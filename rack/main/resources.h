@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Variable.h"
 
 #include "hi5/Hi5.h"
+#include "hi5/Hi5Read.h"
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
 #include "data/ProductConf.h"
@@ -88,8 +89,10 @@ public:
 	const drain::StringMapper variableMapper;
 
 	//static
-	//const drain::RegExp variableMapperSyntax;
-
+	//const drain::RegExp variableMapperSyntax;inputFilter
+	//drain::SingleFlagger<Reader::Mode>
+	// drain::SingleFlagger<hi5::Reader::Mode>
+	hi5::Reader::ModeFlagger inputFilter;
 
 	/// Path prefix for input files. Move to resources?
 	std::string inputPrefix;

@@ -36,13 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include "drain/util/Log.h"
-/*
-#include "drain/util/Point.h"
-#include "drain/util/Range.h"
-#include "drain/util/StatusFlags.h"
-#include "drain/util/UniTuple.h"
-*/
-
+#include "drain/util/Flags.h"
 #include "drain/util/Frame.h"
 #include "Coordinates.h"
 #include "Geometry.h"
@@ -57,22 +51,26 @@ namespace image {
 
 
 
-//typedef unsigned short coord_pol_t;
 typedef drain::GlobalFlags<CoordinatePolicy> coord_overflow_flagger_t;
 typedef drain::Flags::value_t coord_overflow_t;
+//enum coord_overflow_t {UNCHANGED=0, X_OVERFLOW=1, X_UNDERFLOW=2, Y_OVERFLOW=4, Y_UNDERFLOW=8, IRREVERSIBLE=128};
 
+//template <>
+//const drain::SingleFlagger<coord_overflow_t>::dict_t drain::SingleFlagger<coord_overflow_t>::dict;
 
 class CoordinateHandler2D { //: protected CoordinatePolicy {
 
 public:
 
-	static const coord_overflow_t UNCHANGED; // = 0;
-	static const coord_overflow_t X_OVERFLOW; //  = 1;
-	static const coord_overflow_t X_UNDERFLOW; // = 2;
-	static const coord_overflow_t Y_OVERFLOW; //  = 4;
-	static const coord_overflow_t Y_UNDERFLOW; //  8;
+	static const drain::FlaggerBase<size_t>::dict_t dict;
+
+	static const coord_overflow_t UNCHANGED   = 0; // = 0;
+	static const coord_overflow_t X_OVERFLOW  = 1; //  = 1;
+	static const coord_overflow_t X_UNDERFLOW = 2; // = 2;
+	static const coord_overflow_t Y_OVERFLOW  = 4; //  = 4;
+	static const coord_overflow_t Y_UNDERFLOW = 8; //  8;
 	/// Equal move in inverse direction would not result original position.
-	static const coord_overflow_t IRREVERSIBLE; // = 128;
+	static const coord_overflow_t IRREVERSIBLE = 128; // = 128;
 
 
 
@@ -111,7 +109,7 @@ public:
 		setPolicy(policy);
 	}
 
-	virtual
+	inline virtual
 	~CoordinateHandler2D(){};
 
 
@@ -231,13 +229,6 @@ protected:
 	//CoordinatePolicy policy;
 	drain::Range<int> xRange;
 	drain::Range<int> yRange;
-
-	//int _xMin;
-	//int _xMax;
-	//int _xUpperLimit;
-	//int _yMin;
-	//int _yMax;
-	//int _yUpperLimit;
 
 	coord_overflow_t (CoordinateHandler2D::*handleXUnderFlow)(int &x, int &y) const;
 	coord_overflow_t (CoordinateHandler2D::*handleXOverFlow)(int &x, int &y) const;

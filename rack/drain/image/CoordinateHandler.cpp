@@ -39,51 +39,24 @@ namespace drain {
 
 namespace image {
 
-const coord_overflow_t  CoordinateHandler2D::UNCHANGED  = 0;
-const coord_overflow_t  CoordinateHandler2D::X_OVERFLOW = coord_overflow_flagger_t::add("X_OVERFLOW");
-const coord_overflow_t  CoordinateHandler2D::X_UNDERFLOW= coord_overflow_flagger_t::add("X_UNDERFLOW"); // = 2;
-const coord_overflow_t  CoordinateHandler2D::Y_OVERFLOW = coord_overflow_flagger_t::add("Y_OVERFLOW");  // = 4;
-const coord_overflow_t  CoordinateHandler2D::Y_UNDERFLOW= coord_overflow_flagger_t::add("Y_UNDERFLOW"); //= 8;
-const coord_overflow_t  CoordinateHandler2D::IRREVERSIBLE=coord_overflow_flagger_t::add("IRREVERSIBLE"); //= 128
+
+//template <>
+const drain::FlaggerDict CoordinateHandler2D::dict = {
+		{"X_OVERFLOW",  X_OVERFLOW},
+		{"X_UNDERFLOW", X_UNDERFLOW},
+		{"Y_OVERFLOW",  Y_OVERFLOW},
+		{"Y_UNDERFLOW", Y_UNDERFLOW},
+		{"IRREVERSIBLE", IRREVERSIBLE}
+};
 
 
-/*
-CoordinateHandler2D::CoordinateHandler2D(const drain::image::AreaGeometry & area, const CoordinatePolicy &p){
-	setLimits(area.getWidth(), area.getHeight());
-	setPolicy(p);
-}
+const coord_overflow_t  CoordinateHandler2D::UNCHANGED; // = 0;
+const coord_overflow_t  CoordinateHandler2D::X_OVERFLOW; // = coord_overflow_flagger_t::addEntry("X_OVERFLOW");
+const coord_overflow_t  CoordinateHandler2D::X_UNDERFLOW; //= coord_overflow_flagger_t::addEntry("X_UNDERFLOW"); // = 2;
+const coord_overflow_t  CoordinateHandler2D::Y_OVERFLOW; // = coord_overflow_flagger_t::addEntry("Y_OVERFLOW");  // = 4;
+const coord_overflow_t  CoordinateHandler2D::Y_UNDERFLOW; //= coord_overflow_flagger_t::addEntry("Y_UNDERFLOW"); //= 8;
+const coord_overflow_t  CoordinateHandler2D::IRREVERSIBLE; //=coord_overflow_flagger_t::addEntry("IRREVERSIBLE"); //= 128
 
-CoordinateHandler2D::CoordinateHandler2D(const ImageFrame & src){
-	setLimits(src.getWidth(), src.getHeight());
-	setPolicy(src.getCoordimatePolicy());
-}
-
-
-CoordinateHandler2D::CoordinateHandler2D(int xUpperLimit, int yUpperLimit, const CoordinatePolicy &p){
-	setLimits(xUpperLimit, yUpperLimit);
-	setPolicy(p);
-}
-
-
-CoordinateHandler2D::CoordinateHandler2D(const CoordinateHandler2D &h){
-	setLimits(h.xRange.min, h.yRange.min, h.xRange.max, h.yRange.max);
-	setPolicy(h.getPolicy());
-}
-*/
-
-/// Sets outer upper limits for x and y.
-/*
-void CoordinateHandler2D::setLimits(int xUpperLimit,int yUpperLimit){
-	setLimits(0, 0, xUpperLimit, yUpperLimit);
-}
-
-/// Sets minimum values and outer upper limits for x and y.
-void CoordinateHandler2D::setLimits(int xMin, int yMin, int xUpperLimit, int yUpperLimit){
-	xRange.set(xMin, xUpperLimit - 1);
-	yRange.set(yMin, yUpperLimit - 1);
-	area.set(xUpperLimit, yUpperLimit);
-}
-*/
 
 
 void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy){

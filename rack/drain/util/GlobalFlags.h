@@ -37,6 +37,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/*
+template <class E>
+class MultiFlagger2 : public SingleFlagger<E> {
+
+
+public:
+
+
+	static inline
+	Flags & getShared(){
+		return Static::get<Flags,E>();
+	}
+
+	static inline
+	Flagger::dict_t & getSharedDict(){
+		return getShared().getDict();
+	}
+
+
+	MultiFlagger2() : SingleFlagger<E>(ownValue, getSharedDict()){
+	};
+
+	/// Sets value, ie. set or unsets all the flags.
+	template <class T2>
+	inline
+	MultiFlagger2<T> & operator=(const T2 &x){
+		assign(x);
+		return *this;
+	}
+
+};
+*/
 
 
 // A Flagger with a global dict. Also provides a global Flagger, ie. Flagger with a global value and global dict.
@@ -47,8 +79,6 @@ namespace drain
 //
 template <class T>
 class GlobalFlags : public Flagger {
-
-	//Flagger::value_t ownValue;
 
 
 public:
@@ -62,12 +92,8 @@ public:
 	static inline
 	Flagger::dict_t & getSharedDict(){
 		return getShared().getDict();
-		//return Static::get<Flagger::dict_t,Status>();
 	}
 
-
-	// GlobalFlags() : Flagger(ownValue, getSharedDict()){
-	// };
 
 	GlobalFlags() : Flagger(ownValue, getSharedDict()){
 	};
@@ -89,8 +115,8 @@ public:
 	// Consider adding a warning if value reserved
 	// Consider adding a notif   if key already defined
 	static inline
-	Flagger::value_t add(const Flagger::dict_t::key_t & key, value_t i=0){
-		return Flagger::add(GlobalFlags<T>::getSharedDict(), key, i);
+	Flagger::value_t addEntry(const Flagger::dict_t::key_t & key, value_t i=0){
+		return Flagger::addEntry(GlobalFlags<T>::getSharedDict(), key, i);
 	}
 
 	// System error (Network error, , memory error)

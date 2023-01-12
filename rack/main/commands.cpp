@@ -109,10 +109,47 @@ protected:
 		// TODO: "list out" the sub-parameter help. See --help select
 	};
 
+
 };
 
 
 
+class CmdSelect : public drain::BasicCommand {
+
+public:
+
+	CmdSelect() : drain::BasicCommand(__FUNCTION__, "Data selector for the next computation"){
+		parameters.append(testSelector.getParameters());
+
+	};
+
+	CmdSelect(const CmdSelect & cmd) : drain::BasicCommand(cmd) {
+		parameters.append(testSelector.getParameters());
+		parameters.updateFromMap(cmd.getParameters());
+	};
+
+	/// Actions upon creating Program lines. Should not change anything outsde this command.
+	virtual
+	void setParameters(const std::string & args){
+		// RackContext & ctx = getContext<RackContext>();
+		// drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+		testSelector.setParameters(args); // will alert early
+		value = args;
+	}
+
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		//drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+		ctx.select = value;
+		//mout.warn("ctx.select=", ctx.select, "...");
+	}
+
+private:
+
+	DataSelector testSelector;
+	std::string value;
+
+};
 
 
 
@@ -196,11 +233,11 @@ rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
 */
 
 
-class CmdSelect : public  CmdBaseSelective { //drain::BasicCommand {
+class CmdSelectOld : public  CmdBaseSelective { //drain::BasicCommand {
 
 public:
 
-	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selection for the next operation."){
+	CmdSelectOld() : CmdBaseSelective(__FUNCTION__, "Data selection for the next operation."){
 	};
 
 
@@ -266,15 +303,6 @@ public:
 
 		drain::Logger mout(ctx.log, getName().c_str());
 
-		//const std::string v = StringTools::replace(StringTools::replace(StringTools::replace(value,",","|"), "*",".*"), "?", "[.]");
-		/*
-		std::string v = value;
-		if (v.find('/') != std::string::npos){
-			mout.warn() << "short form -Q  supports no slash '/', use --select quantity=" << v << mout.endl;
-		}
-		StringTools::replace(getTransTable(), v);
-		//mout.warn() << v << mout.endl;
-		 */
 		std::string quantity;
 		std::string qualityQuantity;
 
@@ -711,22 +739,38 @@ public:
 
 		Hi5Tree & dstRoot = *ctx.currentHi5;
 
+		/*
+		ODIMPathMatcher matcher;
+		std::string s;
+		drain::StringTools::split2(pathSrc, matcher, s, ":");
+		mout.experimental("Resolved path:", pathSrc, " => ", matcher);
+		*/
+
+
 		ODIMPath path1;
 		std::string attr1;
 		// std::string attr1value; // debug
 		// std::string attr1type;// debug
-		std::string value;
-		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, value);
+		std::string attrValue;
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
 		mout.debug() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
 
-		if (!value.empty()){
-			mout.warn() << "value (" << value << ") not empty in " << path1 << mout.endl;
+		if (!attrValue.empty()){
+			mout.warn() << "value (" << attrValue << ") not empty in " << path1 << mout.endl;
 		}
+
+		// NEW
+		/*
+		DataSelector selector;
+		selector.consumeParameters(ctx.select);
+		mout.debug(selector);
+		selector.getPaths(src, paths);
+		*/
 
 		/*
 		mout.warn() << "path:  " << path1 << mout.endl;
 		mout.warn() << "attr:  " << attr1 << mout.endl;
-		mout.warn() << "value: " << attr1value << mout.endl;
+		mout.warn() << "value: " << attr1attrValue << mout.endl;
 		mout.warn() << "type:  " << attr1type  << mout.endl;
 		return;
 		 */
@@ -736,9 +780,9 @@ public:
 
 		ODIMPath path2;
 		std::string attr2;
-		hi5::Hi5Base::parsePath(pathDst, path2, attr2, value);
-		if (!value.empty()){
-			mout.warn() << "value (" << value << ") not empty in " << path2 << mout.endl;
+		hi5::Hi5Base::parsePath(pathDst, path2, attr2, attrValue);
+		if (!attrValue.empty()){
+			mout.warn() << "value (" << attrValue << ") not empty in " << path2 << mout.endl;
 		}
 
 
@@ -869,25 +913,29 @@ public:
 		// OD rootODIM(dstH5.data.dataSet.getProperties());
 		// mout.debug() << "Root odim: " << rootODIM << mout.endl;
 
+		//for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 
-		for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
+		for (auto & entry: dstH5){
 
-			mout.debug() << "considering: " << it->first << mout.endl;
 
-			if (!it->first.is(ODIMPathElem::DATASET))  //{ // && selector.dataset.contains(it->first.getIndex())){
+			mout.debug("considering: ", entry.first);
+
+			if (!entry.first.is(ODIMPathElem::DATASET))  //{ // && selector.dataset.contains(it->first.getIndex())){
 				continue;
 
-			for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
+			for (auto & subEntry: entry.second){
 
-				if (!dit->first.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY))
+			// for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
+
+				if (!subEntry.first.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY))
 					continue;
 
 				// DataSet<DT> dstDataSet(it->second);
 
 				//for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
 
-				mout.debug() << dit->first << " :" << dit->second << mout.endl;
-				PlainData<DT> dstData(dit->second);
+				mout.debug(subEntry.first, ":\n", subEntry.second);
+				PlainData<DT> dstData(subEntry.second);
 				//PlainData<DT> & dstData = dit->second;
 
 				//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
@@ -900,7 +948,24 @@ public:
 				if (!dstData.data.isEmpty()){
 					const size_t w = dstData.data.getWidth();
 					const size_t h = dstData.data.getHeight();
-					dstData.odim.type = drain::Type::getTypeChar(dstData.data.getType());
+
+					const std::type_info & t = dstData.data.getType();
+
+					dstData.odim.type = drain::Type::getTypeChar(t);
+
+					;
+
+					if (drain::Type::call<drain::typeIsInteger>(t) && !drain::Type::call<drain::isSigned>(t)){
+						drain::Variable v;
+						if (dstData.odim.nodata < 0){
+							v.setType(t);
+							v = dstData.odim.nodata;
+							//mout.attention(dstData.odim.quantity, ":", EncodingODIM(dstData.odim), ", no data:",  dstData.odim.nodata);
+							mout.note(dstData.odim.quantity, "[", dstData.odim.type, "]: adjusting nodata:", dstData.odim.nodata, " -> ", (double)v);
+							dstData.odim.nodata = v;
+						}
+					}
+
 					dstData.odim.setGeometry(w, h);
 					//rootODIM.setGeometry(w, h);    // for Cartesian root-level xsize,ysize
 					//dataSetODIM.setGeometry(w, h); // for Polar  dataset-level nbins, nrays
@@ -2273,6 +2338,23 @@ MainModule::MainModule(){ //
 
 }
 
+class CmdInputFilter : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdInputFilter() : drain::SimpleCommand<std::string>(__FUNCTION__, "Partial file read", "ATTRIBUTES", "3",
+			sprinter(drain::EnumDict<hi5::Reader::Mode>::dict, "|").str()) {
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, getName());
+
+		ctx.inputFilter.set(value);
+	}
+};
 
 class CmdPause : public drain::SimpleCommand<std::string> {
 
@@ -2436,6 +2518,10 @@ HiddenModule::HiddenModule(){ //
 
 	// install<CmdTrigger>();
 	install<CmdPause>();
+
+	install<CmdInputFilter>();
+
+	install<CmdSelectOld>();
 
 	install<CmdTest2>("restart", 'R');
 

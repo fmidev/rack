@@ -53,18 +53,9 @@ const ODIMPathElem::group_t ODIMPathElem::OTHER;
 const ODIMPathElem::group_t ODIMPathElem::PALETTE; // experimental
 const ODIMPathElem::group_t ODIMPathElem::LEGEND;  // experimental
 const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS; // = ODIMPathElem::ROOT | ODIMPathElem::DATASET | ODIMPathElem::DATA;
-		//odim_flags::getSharedDict().getValue("") (ROOT | DATASET | DATA); // ?
 
-
-/*
-const ODIMPathElem::flag_t & ODIMPathElem::getFlags(){
-
-	static ODIMPathElem::flag_t flags(dict);
-
-	return flags;
-
-}
- */
+// const ODIMPathElem::group_t ODIMPathElem::_SCAN;
+// const ODIMPathElem::group_t ODIMPathElem::_MOMENT;
 
 
 const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
@@ -84,26 +75,9 @@ const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
 			{"how",     HOW},
 			{"palette", PALETTE},
 			{"legend",  LEGEND}
+	//		{"scan",     _SCAN},
+	//		{"moment_",  _MOMENT}
 	};
-
-	/*
-	if (dict.empty()){
-		dict.add("*", NONE);
-		dict.add("", ROOT);
-		dict.add("dataset", DATASET);
-		// NOTE: when searching by key  "data", ARRAY will be found (first) and returned
-		// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
-		dict.add("data",    ARRAY);
-		dict.add("data",    DATA);
-		dict.add("quality", QUALITY);
-		dict.add("OTHER",   OTHER);
-		dict.add("what",    WHAT);
-		dict.add("where",   WHERE);
-		dict.add("how",     HOW);
-		dict.add("palette", PALETTE);
-		dict.add("legend",  LEGEND);
-	}
-	*/
 
 	return dict;
 
@@ -247,6 +221,7 @@ char ODIMPathElem::getCharCode() const { // TODO: make faster?
 }
 
 // Note; ODIMPathElemMatcher redefines
+/*
 std::ostream & ODIMPathElem::toStream(std::ostream & sstr) const {
 
 	/// Step 1: prefix (by group type)
@@ -259,6 +234,7 @@ std::ostream & ODIMPathElem::toStream(std::ostream & sstr) const {
 
 	return sstr;
 }
+*/
 
 
 bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2){

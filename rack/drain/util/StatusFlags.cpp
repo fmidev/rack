@@ -38,12 +38,12 @@ namespace drain
 {
 
 
-const Flagger::value_t StatusFlags::INPUT_ERROR     =  StatusFlags::add("INPUT");
-const Flagger::value_t StatusFlags::DATA_ERROR      =  StatusFlags::add("DATA");
-const Flagger::value_t StatusFlags::METADATA_ERROR  =  StatusFlags::add("METADATA");
-const Flagger::value_t StatusFlags::OUTPUT_ERROR    =  StatusFlags::add("OUTPUT");
-const Flagger::value_t StatusFlags::COMMAND_ERROR   =  StatusFlags::add("COMMAND");
-const Flagger::value_t StatusFlags::PARAMETER_ERROR =  StatusFlags::add("PARAMETER");
+const Flagger::value_t StatusFlags::INPUT_ERROR     =  StatusFlags::addEntry("INPUT");
+const Flagger::value_t StatusFlags::DATA_ERROR      =  StatusFlags::addEntry("DATA");
+const Flagger::value_t StatusFlags::METADATA_ERROR  =  StatusFlags::addEntry("METADATA");
+const Flagger::value_t StatusFlags::OUTPUT_ERROR    =  StatusFlags::addEntry("OUTPUT");
+const Flagger::value_t StatusFlags::COMMAND_ERROR   =  StatusFlags::addEntry("COMMAND");
+const Flagger::value_t StatusFlags::PARAMETER_ERROR =  StatusFlags::addEntry("PARAMETER");
 
 
 /*

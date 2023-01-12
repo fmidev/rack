@@ -96,13 +96,13 @@ Hdf5Context::Hdf5Context(const Hdf5Context &ctx):
 	currentPolarHi5(ctx.currentPolarHi5){
 }
 
-const Hdf5Context::h5_role::value_t Hdf5Context::CURRENT = h5_role::add("CURRENT"); //,    **< Link also external targets *
-const Hdf5Context::h5_role::value_t Hdf5Context::INPUT   = h5_role::add("INPUT"); // ,      **< No not link, but add entry (void) *
-const Hdf5Context::h5_role::value_t Hdf5Context::POLAR   = h5_role::add("POLAR"); // =4,      **< No action *
-const Hdf5Context::h5_role::value_t Hdf5Context::CARTESIAN=h5_role::add("CARTESIAN"); // =8,  **< Throw exception *
-const Hdf5Context::h5_role::value_t Hdf5Context::EMPTY   = h5_role::add("EMPTY"); // =16,     **< Also accept empty  *
-const Hdf5Context::h5_role::value_t Hdf5Context::PRIVATE = h5_role::add("PRIVATE"); // =32,
-const Hdf5Context::h5_role::value_t Hdf5Context::SHARED  = h5_role::add("SHARED"); // =64     **< Try shared first  *
+const Hdf5Context::h5_role::value_t Hdf5Context::CURRENT = h5_role::addEntry("CURRENT"); //,    **< Link also external targets *
+const Hdf5Context::h5_role::value_t Hdf5Context::INPUT   = h5_role::addEntry("INPUT"); // ,      **< No not link, but add entry (void) *
+const Hdf5Context::h5_role::value_t Hdf5Context::POLAR   = h5_role::addEntry("POLAR"); // =4,      **< No action *
+const Hdf5Context::h5_role::value_t Hdf5Context::CARTESIAN=h5_role::addEntry("CARTESIAN"); // =8,  **< Throw exception *
+const Hdf5Context::h5_role::value_t Hdf5Context::EMPTY   = h5_role::addEntry("EMPTY"); // =16,     **< Also accept empty  *
+const Hdf5Context::h5_role::value_t Hdf5Context::PRIVATE = h5_role::addEntry("PRIVATE"); // =32,
+const Hdf5Context::h5_role::value_t Hdf5Context::SHARED  = h5_role::addEntry("SHARED"); // =64     **< Try shared first  *
 
 /* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
  *

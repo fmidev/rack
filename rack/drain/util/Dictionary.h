@@ -60,7 +60,7 @@ namespace drain {
  *
  */
 template <class K, class V>
-class Dictionary2 : public std::list<std::pair<K, V> > {
+class Dictionary : public std::list<std::pair<K, V> > {
 
 public:
 
@@ -74,16 +74,16 @@ public:
 	typedef std::list<value_t> valuelist_t;
 
 
-	Dictionary2() : separator(','){};
+	Dictionary() : separator(','){};
 
-	Dictionary2(const Dictionary2 & d) : separator(d.separator){};
+	Dictionary(const Dictionary & d) : separator(d.separator){};
 
-	Dictionary2(std::initializer_list<entry_t> d) : std::list<entry_t>(d), separator(','){
+	Dictionary(std::initializer_list<entry_t> d) : std::list<entry_t>(d), separator(','){
 	};
 
 
 	virtual
-	~Dictionary2(){};
+	~Dictionary(){};
 
 	//virtual
 	entry_t & add(const K & key, const V & value){
@@ -285,7 +285,7 @@ public:
 /*
 template <class K, class V>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
+std::ostream & operator<<(std::ostream & ostr, const Dictionary<K,V> & dict) {
 	dict.toStream(ostr);
 	return ostr;
 }
@@ -293,10 +293,10 @@ std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
 
 template <class K, class V>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Dictionary2<K,V> & dict) {
+std::ostream & operator<<(std::ostream & ostr, const Dictionary<K,V> & dict) {
 	// SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr)
 	// static drain::SprinterLayout dict_layout("{,}", "{,}", "{,}", "{,}");
-	ostr << drain::sprinter((const typename Dictionary2<K,V>::container_t &)dict, SprinterBase::cppLayout);
+	ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, SprinterBase::cppLayout);
 	return ostr;
 }
 
@@ -312,20 +312,20 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable
 
 /// Associates type info
 template <class K, class V>
-class Dictionary2Ptr : public Dictionary2<K, V*> {
+class DictionaryPtr : public Dictionary<K, V*> {
 
 public:
 
-	typedef Dictionary2<K, V*> parent_t;
+	typedef Dictionary<K, V*> parent_t;
 
-	Dictionary2Ptr(){};
+	DictionaryPtr(){};
 
 	virtual
-	~Dictionary2Ptr(){};
+	~DictionaryPtr(){};
 
 	//virtual
 	void add(const K & key, const V & value){
-		Dictionary2<K, V*>::add(key, &value);
+		Dictionary<K, V*>::add(key, &value);
 	}
 
 	typename parent_t::container_t::const_iterator findByValue(const V & value) const {
@@ -334,12 +334,12 @@ public:
 
 	//virtual
 	const V & getValue(const K & key) const {
-		return *Dictionary2<K, V*>::getValue(key);
+		return *Dictionary<K, V*>::getValue(key);
 	}
 
 	//virtual
 	const K & getKey(const V & value) const {
-		return Dictionary2<K, V*>::getKey(&value);
+		return Dictionary<K, V*>::getKey(&value);
 	}
 
 

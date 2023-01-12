@@ -44,19 +44,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Dictionary.h"
-
+#include "String.h"
 
 namespace drain {
 
 /// Referencing a dictionary of binary values: {"A",1: "B":2, "C": 4, "D": 8, ...} resolves two-way mappings "A,C" <=> 5 .
+/** Static utilities.
+ *
+ */
 class FlagResolver {
 
 public:
 
+	// Definite
 	typedef std::string  key_t;
-	typedef unsigned int value_t;
 
-	typedef drain::Dictionary2<key_t,value_t> dict_t;
+	// "Recommended"
+	typedef long unsigned int value_t;
+
+	// "Recommended"
+	typedef drain::Dictionary<key_t,value_t> dict_t;
 
 	static
 	const value_t ALL; // = std::numeric_limits<FlagResolver::value_t>::max();
@@ -64,43 +71,225 @@ public:
 
 	/// Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.
 	/**
-	 *   \param key - String containing keys ("note,error") or values ("4,8,32") or a mixture of them.
-	 *   \param lenient - If true, bypassed unknown keys silently, otherwise throws exception
+	 *   \param key – A string containing keys ("note,error") or values ("4,8,32") or a mixture of them.
+	 *   \param separator – if given, splits string to several keys
+	 *   \return – A numeric value
 	 */
+	// Consider: lenient: if true, bypasses unknown keys silently, otherwise throws exception
+	// Consider: FLAG for keys only, and for numerics throw exception
+	template <typename T>
 	static
-	value_t getValue(const dict_t & dict, const key_t & key, char separator=',');
+	value_t getValue(const drain::Dictionary<key_t,T> & dict, const std::string & key, char separator=',');
 
 	/// Given an integer, retrieves dictionary keys corresponding to each index of set bits.
+	template <typename T>
 	static
-	std::string getKeys(const dict_t & dict, value_t, char separator=',');
+	std::string getKeys(const drain::Dictionary<key_t,T> & dict, value_t, char separator=',');
 
 	//std::string FlagResolver::keysToStr(const dict_t &dict, value_t v, char separator){
-
+	template <typename T>
 	static
-	std::ostream & keysToStream(const dict_t &dict, value_t value, std::ostream & ostr, char separator=',');
+	std::ostream & keysToStream(const drain::Dictionary<key_t,T> &dict, value_t value, std::ostream & ostr, char separator=',');
+
+	/// Add a new entry in the dictionary
+	/**
+	 *  \param i - if zero, call getFreeBit() to reserve a new, unused bit.
+	 */
+	template <typename T>
+	static
+	value_t addEntry(drain::Dictionary<key_t,T> & dict, const key_t & key, value_t i=0);
 
 
 	/// Return an interger (bit vector) with a new, previously unused value.
 	/**
 	 *   Traverses the values in dict, and determines a new bit corresponding to a new value.
 	 */
+	template <typename T>
 	static
-	value_t getFreeBit(const dict_t & dict);
-
-	/// Add a new entry in the dictionary
-	/**
-	 *  \param i - if zero, call getFreeBit() to reserve a new, unused bit.
-	 */
-	static
-	value_t add(dict_t & dict, const dict_t::key_t & key, value_t i=0);
-
-
-
+	value_t getFreeBit(const drain::Dictionary<key_t,T> & dict);
 
 
 };
 
-/// Bit vector accessible also with integer values associated with strings.
+
+template <typename T>
+typename FlagResolver::value_t FlagResolver::getFreeBit(const drain::Dictionary<key_t,T> & dict){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	// Bit mask containing all the values.
+	value_t currentMask = 0;
+	for (const auto & entry: dict){
+		currentMask = currentMask | entry.second;
+	}
+
+	mout.debug2() << "sum:" << currentMask << mout.endl;
+
+	value_t i = 1;
+	while ((i&currentMask) > 0){
+		mout.debug3() << "checking bit:" << i << " vs.\t" << currentMask << mout.endl;
+		//full = (full>>1);
+		i = (i<<1);
+	}
+	/*
+	while (full>0){
+		mout.debug2() << "checking bit:" << i << " vs.\t" << full << mout.endl;
+		full = (full>>1);
+		i = (i<<1);
+	}
+	*/
+
+	mout.debug() << "released: " << i << mout.endl;
+
+	return i;
+
+}
+
+/*
+template <typename T>
+typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T> &dict, const typename dict_t::key_t & key){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	if (dict.hasKey(key)){
+		mout.info() << key << " already in dict: " << dict << mout.endl;
+		return dict.getValue(key);
+	}
+
+	return addEntry(dict, key, )
+}
+*/
+
+template <typename T>
+typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T> &dict, const typename dict_t::key_t & key, value_t i){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (dict.hasKey(key)){
+		mout.info() << key << " already in dict: " << dict << mout.endl;
+		return dict.getValue(key);
+	}
+
+	if (i==0)
+		i = getFreeBit(dict);
+
+	if (i>0){
+		dict.add(key, i);
+	}
+	else {
+		mout.warn() << key << " could not get a valid (non-zero) bit flag for dict: " << dict << mout.endl;
+	}
+
+	return i;
+};
+
+
+template <typename T>
+typename FlagResolver::value_t FlagResolver::getValue(const drain::Dictionary<key_t,T> & dict, const std::string & args, char separator){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	value_t v = 0;
+
+	std::list<key_t> keys;
+
+	if (!separator)
+		separator = dict.separator;
+
+
+	drain::StringTools::split(args, keys, separator);
+
+	for (const key_t & key: keys){
+
+		if (key == ""){
+			continue;
+		}
+		else if (key == "0"){
+			v = 0; // TODO if resets and sets?
+			continue;
+		}
+		// mout.warn() << " '" << *it << "'" << mout.endl;
+
+		//typename dict_t::const_iterator dit = dict.findByKey(key);
+		typename drain::Dictionary<key_t,T>::const_iterator dit = dict.findByKey(key);
+
+		if (dit != dict.end()){ // String key match,
+			// Numeric value for an alphabetic key was found
+			v = (v | dit->second);
+		}
+		else {
+			// Numeric value
+			value_t x;
+			std::stringstream sstr(key);
+			sstr >> x; // FIX if empty
+			if (x == 0){
+				// String "0" handled already above
+				mout.error("key '", key, "' not found in Flags, dict: ", dict);
+				//throw std::runtime_error(key, ": key not found in Flags, dict: ", dict);
+			}
+			v = v | x;
+			// Nice to know
+			/*
+			dict_t::const_iterator vit = dictionaryRef.findByValue(v);
+			if (vit != dictionaryRef.end()){
+				std::cout << "(assigned key '" << vit->second << "')\n"; // or vit->first?
+			}
+			*/
+		}
+	}
+
+	return v;
+}
+
+
+/// List keys in their numeric order.
+template <typename T>
+std::string FlagResolver::getKeys(const drain::Dictionary<key_t,T> &dict, value_t v, char separator){
+	std::stringstream sstr;
+	keysToStream(dict, v, sstr, separator);
+	return sstr.str();
+}
+
+
+
+//
+
+/// List keys in their numeric order.
+template <typename T>
+std::ostream & FlagResolver::keysToStream(const drain::Dictionary<key_t,T> &dict, value_t value, std::ostream & ostr, char separator) {
+
+	/* note: instead of shifting bits of this->value, traverses the dictionary which can contain
+		- combined values
+		- repeated values (aliases)
+	*/
+
+	if (!separator)
+		separator = dict.separator;
+
+	char sep = 0;
+
+	for (const auto & entry: dict){
+		if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
+			if (sep)
+				ostr <<  sep;// "{" << (int)(sep) << "}" <<
+			else
+				sep = separator;
+			ostr << entry.first;
+		}
+		else {
+
+		}
+	}
+
+	return ostr;
+}
+
+
+
+
+
+
+
+/// A bit vector with external Dictionary mapping from strings to bits and vice versa.
 class Flagger :public FlagResolver { // for typedefs
 
 public:
@@ -110,10 +299,12 @@ public:
 
 	const dict_t & dictionary; // todo open (keep own secret, later)
 
+	/*
 	virtual inline
-	const dict_t & getDict() const{
+	const dict_t & getDict() const {
 		return dictionary;
 	}
+	*/
 
 	char separator;  // needed?
 
@@ -144,20 +335,15 @@ public:
 		mout.error("Flagger inits value &= flags.value", flags);
 	};
 
-	/*
-	Flagger(std::initializer_list<dict_t::entry_t> d, char separator = ',') : Flagger(ownValue, ownDictionary, separator) { //, ownDictionary(d){
-		for (const dict_t::entry_t & entry: d){
-			add(entry.first, entry.second);
-		}
-	}
-	*/
 
 	inline virtual
 	~Flagger(){};
 
 
+	/// Set desired flags. Does not reset any flag (zero value has no effect). \see assign().
 	// Variadic-argument member set function.
 	// https://en.cppreference.com/w/cpp/language/parameter_pack
+	// TODO: should explicit zero reset the value?
 	template <typename T, typename ... TT>
 	inline
 	Flagger & set(const T & arg, const TT &... args) {
@@ -165,16 +351,6 @@ public:
 		set(args...);
 		return *this;
 	}
-
-	/*
-	/// Set desired flags. Does not reset any flag. \see assign().
-	inline
-	Flagger & set(value_t x){
-		deepSet(x); //this->value = (this->value | x);
-		return *this;
-	};
-	*/
-
 
 
 protected:
@@ -184,6 +360,7 @@ protected:
 		return *this;
 	}
 
+	// TODO: should explicit zero reset the value?
 	inline
 	Flagger & deepSet(value_t x){
 		this->value = (this->value | x);
@@ -221,14 +398,6 @@ public:
 		return *this;
 	};
 
-	/// Unset desired flags. Does not set any flag.
-	/*
-	inline
-	void unset(value_t x, value_t & dst){
-		dst = (dst & ~x);
-	};
-	*/
-
 
 	/// Reset all the flags.
 	inline
@@ -237,7 +406,7 @@ public:
 		return *this;
 	}
 
-	/// Unset desired flags. Does not set any flag.
+	/// Checks if a given bit, or any of given bits, is set.
 	inline
 	bool isSet(value_t x) const {
 		return (value & x) != 0;
@@ -255,7 +424,6 @@ public:
 		assign(x);
 		return *this;
 	}
-
 
 	/// Sets value, ie. set or unsets all the flags.
 	/**
@@ -319,7 +487,7 @@ public:
 	 *   \param lenient - If true, bypassed unknown keys silently, otherwise throws exception
 	 */
 	inline
-	value_t getValue(const key_t & key, char separator=0) const {
+	value_t getValue(const std::string & key, char separator=0) const {
 		// important: if sep undefined, use Flags.sep.
 		// Or/consider Flag dict sep => '|'
 		return FlagResolver::getValue(dictionary, key, separator ? separator : this->separator);
@@ -349,17 +517,17 @@ protected:
 public:
 
 
+	/// Display current value as key values of which the value is composed with \c OR function.
+	/**
+	 *   \param ostr
+	 *   \param separator - character appended between keys, if not own separator
+	 */
 	///  risky: value_t ~char !
 	inline
 	std::ostream & keysToStream(std::ostream & ostr=std::cout, char separator=0) const {
 		return FlagResolver::keysToStream(dictionary, value, ostr, separator ? separator : this->separator);
 	}
 
-	/// Display current value as key values of which the value is composed with \c OR function.
-	/**
-	 *   \param ostr
-	 *   \param separator - character appended between keys, if not own separator
-	 */
 	//std::ostream & toStream(std::ostream & ostr=std::cout, char separator=',') const; // PathMatcher '|' !
 	//std::ostream & toStream(std::ostream & ostr=std::cout, char separator=0) const; // PathMatcher '|' !
 
@@ -390,7 +558,7 @@ std::ostream & operator<<(std::ostream & ostr, const drain::Flagger & flags) {
 }
 
 
-/// Flagger that has an own dictionary and value.
+/// Self-contained Flagger – with an own dictionary and value.
 class Flags : public Flagger {
 
 protected:
@@ -426,7 +594,7 @@ public:
 	/// Initialize with {{"first", 123}, {"second", 456}}
 	Flags(std::initializer_list<dict_t::entry_t> d, char separator = ',') : Flagger(ownValue, ownDictionary, separator) { //, ownDictionary(d){
 		for (const dict_t::entry_t & entry: d){
-			add(entry.first, entry.second);
+			addEntry(entry.first, entry.second);
 		}
 	}
 
@@ -445,8 +613,8 @@ public:
 	 *  \param i - if zero, call getFreeBit() to reserve a new, unused bit.
 	 */
 	inline
-	value_t add(const dict_t::key_t & key, value_t i=0){
-		return Flagger::add(ownDictionary, key, i);
+	value_t addEntry(const dict_t::key_t & key, value_t i=0){
+		return Flagger::addEntry(ownDictionary, key, i);
 	}
 
 	/*
@@ -466,71 +634,469 @@ protected:
 };
 
 
-template <typename E>
-class Fladdict {
+
+typedef drain::Dictionary<std::string,unsigned long> FlaggerDict;
+
+/** A Flag mapper designed for global use, also supporting ENUM types. @See
+ *  Perhaps replacing GlobalFlagger later.
+ *
+ *  Example:
+   \code
+   enum Crit {DATA, ELANGLE, TIME};
+    template <>
+    const SingleFlagger<Crit>::dict_t SingleFlagger<Crit>::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}};
+   \endcode
+
+    Inside a class:
+   \code
+    class Reader {
+      public:
+	  enum Mode {ATTRIBUTES=1, DATASETS=2};
+    }
+    // In the same or another header file:
+    template <>
+    const drain::SingleFlagger<Reader::Mode>::dict_t drain::SingleFlagger<Reader::Mode>::dict;
+    // In the definition file:
+    template <>
+    const drain::SingleFlagger<Reader::Mode>::dict_t drain::SingleFlagger<Reader::Mode>::dict =
+          {{"ATTRIBUTES", Reader::ATTRIBUTES}, {"DATASETS", Reader::DATASETS}};
+   \endcode
+ *
+ * \tparam E - enum or integer
+ * \tparam D - dictionary, possibly const
+ */
+template <typename E=std::size_t> //, typename D=drain::Dictionary<std::string,unsigned long> >
+class  FlaggerBase {
 
 public:
 
-	typedef std::string key_t;
+	// Manifested numeric type (enum or unsigned integer)
 	typedef E value_t;
-	typedef drain::Dictionary2<key_t,value_t> dict_t;
 
-	E value;
+	// Practical "storage" value
+	typedef FlaggerDict dict_t;
+	typedef typename dict_t::key_t key_t; // ~string
 
-	// Rember to add an initialized unit: template<> Fladdict<...>::dict = {{...,...}, ...}
-	static const dict_t dict;
+	// Practical "storage" value
+	typedef typename dict_t::value_t dvalue_t;
+	//typedef std::string key_t;
 
-	/*
-	Fladdict(std::initializer_list<dict_t::entry_t> d) : dict(d){
-		// TODO: init value to first value in dict?
+	// Rember to add an initialized unit: template<> SingleFlagger<...>::dict = {{...,...}, ...}
+	// static const dict_t dict;
+
+	inline
+	FlaggerBase(): value(ownValue), separator(','){
+	}
+
+	/// Own value will be unused (and invisible).
+	inline
+	FlaggerBase(value_t & v): value(v), separator(','){
+	}
+
+	/*  Risky? (Ambiguous)
+	inline
+	FlaggerBase(const value_t & v): value(ownValue), ownValue(v) {
 	}
 	*/
-	// Fladdict(const dict_t & d) : dict(d){}
 
+	virtual inline
+	~FlaggerBase(){
+	}
+
+	virtual
+	const dict_t & getDict() const = 0;
+
+	void reset(){
+		this->value = value_t(0);
+	};
+
+	virtual
 	inline
 	void set(const key_t & key){
 
 		if (key.empty())
 			return;
 
-		if (dict.hasKey(key)){
-			value = (E)dict.getValue(key);
+		if (this->getDict().hasKey(key)){
+			this->value = (value_t)this->getDict().getValue(key); // why cast? dvalue_t -> value_t
 		}
 		else {
-			throw std::runtime_error(std::string("Dictionary/") + typeid(E).name()+ ": no such key: "+ key);
+			throw std::runtime_error(std::string("Dictionary[") + typeid(value_t).name()+ "]: no such key: "+ key);
 		}
 	}
 
-	inline
-	Fladdict<E> & operator=(const value_t & v){
-		value = v;
-		return *this;
+	virtual inline
+	void set(const value_t & value){
+		this->value = value;
+	};
+
+	virtual inline
+	void set(const FlaggerBase<E> & flagger){
+		this->value = flagger.value;
 	}
 
-	/// Strin corresponding the current value. Returns empty, if not found.
+
+	virtual
+	void assign(const std::string & s) = 0;
+
+	/// Checks if a given bit, or any of given bits, is set.
 	inline
-	const key_t & str() const {
-		return dict.getKey(value);
+	bool isSet(value_t x) const {
+		return (value & x) != 0;
+	};
+
+	inline
+	bool isSet(const key_t & key) const {
+		return isSet(getDict().getValue(key));
+	};
+
+	inline
+	const value_t & getValue() const {
+		return value;
 	}
+
+	/// Given an integer, retrieves dictionary keys corresponding to each index of set bits.
+	/*
+	inline
+	std::string getKeys(char separator=0) const {
+		return FlagResolver::getKeys(dictionary, value, separator ? separator : this->separator);
+	}
+	*/
+
+
+	///
+	inline
+	operator const value_t & () const {
+		return value;
+	}
+
+	inline
+	operator value_t & () {
+		return value;
+	}
+
+	/// String corresponding the current value. Returns empty, if not found.
+	virtual
+	const key_t & str() const = 0;
 
 	// String
 	operator const key_t & () const {
 		return str();
 	}
 
-	///
-	inline
-	operator const E & () const {
-		return value;
-	}
+	// Own or external value.
+	value_t & value;
 
-	inline
-	operator E & () {
-		return value;
-	}
+	char separator;
+
+private:
+
+	// Own value, discarded if external value referenced.
+	value_t ownValue;
 
 
 };
+
+
+template <typename E>
+inline
+std::ostream & operator<<(std::ostream & ostr, const drain::FlaggerBase<E> & flagger) {
+	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
+}
+
+
+template <typename E>
+class SingleFlagger : public FlaggerBase<E> {
+
+public:
+
+	typedef typename FlaggerBase<E>::value_t value_t;
+
+	typedef FlaggerDict dict_t;
+	typedef typename dict_t::key_t key_t; // ~string
+	typedef typename dict_t::value_t dvalue_t;
+
+	virtual inline
+	~SingleFlagger(){};
+
+	virtual
+	void assign(const std::string & s){
+		this->set(s);
+	};
+
+	template <class T>
+	inline
+	SingleFlagger<E> & operator=(const T & v){
+		this->set(v);
+		return *this;
+	}
+
+	/// String corresponding the current value. Returns empty, if not found.
+	virtual inline
+	const key_t & str() const {
+		return this->getDict().getKey(this->value);
+	}
+
+
+
+};
+
+
+template <typename E>
+class MultiFlagger : public FlaggerBase<E> {
+
+public:
+
+	typedef typename FlaggerBase<E>::value_t value_t;
+	typedef FlaggerDict dict_t;
+	typedef typename dict_t::key_t key_t; // ~string
+	typedef typename dict_t::value_t dvalue_t;
+
+	virtual inline
+	~MultiFlagger(){};
+
+
+	/// Set bits, accepting numeric values or keys.
+	/**
+	 *  Starts with resetting the flags.
+	 *
+	 *  \tparam T – numeric values or strings
+	 *
+	 */
+	template <typename ... T>
+	inline
+	void set(const T &... args) {
+		this->reset();
+		//this->value = 0;
+		add(args...);
+	}
+
+	/// Set bits, accepting keys only.
+	/**
+	 *  Starts with resetting the flags.
+	 *
+	 *  \tparam T – numeric values or strings
+	 *
+	inline
+	void setKeys(const std::string & keys) {
+		this->reset();
+	}
+	 */
+
+	/// Split a string to separate keys and/or values and set them.
+	virtual
+	void assign(const std::string & s) {
+		const dict_t & dict = this->getDict();
+		this->value = (value_t)FlagResolver::getValue(dict, s, this->separator); // uses dict.separator if needed
+	}
+
+
+	/// Add bit values
+	template <typename T, typename ... TT>
+	inline
+	void add(const T & arg, const TT &... args) {
+		//std::cerr << __FUNCTION__ << ':' << arg << std::endl;
+		addOne(arg);
+		add(args...);
+	}
+
+
+	virtual
+	const key_t & str() const {
+		const dict_t & dict = this->getDict();
+		currentStr = FlagResolver::getKeys(dict, this->value, this->separator);
+		return currentStr;
+	}
+
+protected:
+
+	inline
+	void add(){};
+
+	virtual inline
+	void addOne(const value_t & value){
+		this->value = (value_t)((dvalue_t)this->value | (dvalue_t)value);
+	}
+
+	inline
+	void addOne(const key_t & key){
+
+		if (key.empty())
+			return;
+
+		const dict_t & dict = this->getDict();
+		if (dict.hasKey(key)){
+			//this->value |= (value_t)dict.getValue(key); // why cast? dvalue_t -> value_t
+			addOne((value_t)dict.getValue(key));
+		}
+		else {
+			throw std::runtime_error(std::string("Dictionary/") + typeid(value_t).name()+ ": no such key: "+ key);
+		}
+	}
+
+
+	mutable
+	key_t currentStr;
+
+};
+
+
+
+
+
+template <class E>
+struct EnumDict {
+
+	typedef FlaggerDict dict_t;
+
+	static
+	const dict_t dict;
+};
+
+/// Flagger accepting values of enum type E.
+/**
+ *  \tparam F – SingleFlagger<E> or MultiFlagger<E>
+ *
+ *  Enum dictionary should be defined as follows:
+ *
+ *  template <>
+ *  const drain::EnumDict<...>::dict_t  drain::EnumDict<...>::dict = {{"A", A}, {"B", B}, {"C", C}};
+ *
+ */
+template <class F>  // F =SingleFlagger<E>
+class EnumFlagger : public F {
+
+public:
+
+	typedef F fbase_t;
+	typedef typename fbase_t::value_t value_t;
+
+	virtual
+	const typename FlaggerBase<value_t>::dict_t & getDict() const {
+		return EnumDict<value_t>::dict;
+	};
+
+
+	template <class T>
+	inline
+	EnumFlagger<F> & operator=(const T & v){
+		this->set(v);
+		return *this;
+	}
+
+};
+
+/// Flagger accepting values of (integer) type T
+/**
+ *  Designed for local, instantaneous use.
+ *  Should several flaggers use the same dictionary, use Flagger2<F> instead.
+ *
+ *  \tparam F – SingleFlagger<T> or MultiFlagger<T>
+ *
+ */
+template <class F>  // F =SingleFlagger<E>
+class Flagger2 : public F {
+
+public:
+
+	typedef F fbase_t;
+	typedef typename fbase_t::value_t value_t;
+	typedef typename fbase_t::dict_t   dict_t;
+
+	virtual
+	const dict_t & getDict() const {
+		return dict;
+	};
+
+	inline
+	Flagger2(const dict_t & dict) : dict(dict){
+	}
+
+	inline
+	Flagger2(const Flagger2<F> & flagger) : dict(flagger.dict){
+	}
+
+	template <class T>
+	inline
+	Flagger2<F> & operator=(const T & v){
+		this->set(v);
+		return *this;
+	}
+
+protected:
+
+	const dict_t & dict;
+
+
+};
+
+/// Flagger with own dictionary, and accepting values of (integer) type T
+/**
+ *  Designed for local, instantaneous use.
+ *  Should several flaggers use the same dictionary, use Flagger2<F> instead.
+ *
+ *  \tparam F – SingleFlagger<T> or MultiFlagger<T>
+ *
+ */
+template <class F>
+class Flags2 : public F {
+
+public:
+
+	typedef F fbase_t;
+	typedef typename fbase_t::value_t value_t;
+	typedef typename fbase_t::dict_t   dict_t;
+
+
+	virtual
+	const dict_t & getDict() const {
+		return dict;
+	};
+
+	virtual
+	dict_t & getDict(){
+		return dict;
+	};
+
+
+	///
+	/** If the dictionary is small, consider short init:
+	 *  Flags2({"A",1}, {"B",2}}
+	 *
+	 */
+	inline
+	Flags2(){
+	};
+
+	/// Constructor for relatively short dictionaries
+	/**
+	 *  \code
+	 *  Flags2 flags({"A",1}, {"B",2}});
+	 *  \endcode
+	 */
+	inline
+	Flags2(std::initializer_list<typename dict_t::entry_t> list) : dict(list){
+	};
+
+	inline
+	Flags2(const Flags2<F> & flags) : dict(flags.dict){
+	}
+
+	template <class T>
+	inline
+	Flags2<F> & operator=(const T & v){
+		this->set(v);
+		return *this;
+	}
+
+protected:
+
+	dict_t dict;
+
+
+};
+
+
 
 } // drain::
 

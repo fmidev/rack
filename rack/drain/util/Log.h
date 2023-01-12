@@ -251,7 +251,7 @@ protected:
 
 	long millisecondsStart;
 
-	//drain::Dictionary2<int, Notification> dict;
+	//drain::Dictionary<int, Notification> dict;
 
 };
 
@@ -648,7 +648,10 @@ public:
 		return *this;
 	}
 
-
+	inline
+	int getVerbosity() const {
+		return monitor.getVerbosity();
+	};
 
 protected:
 

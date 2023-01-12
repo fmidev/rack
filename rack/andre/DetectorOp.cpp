@@ -68,17 +68,20 @@ unsigned short int DetectorOp::_count(0);
 
 void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.debug2() << "start1" << CLASSNAME << mout.endl;
+	mout.debug2("start1", CLASSNAME);
+
+
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
+
 	while (its != srcDataSets.end()){
 
-		mout.info() << "processing elangle:" << its->first << mout.endl;
+		mout.info("processing elangle:", its->first);  // TODO: waiting for DataSetMap<elangle> renewal..
 
 		if (its->first == itd->first){
 
@@ -86,6 +89,13 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			//return;
 
 			const DataSet<PolarSrc> & srcDataSet = its->second;
+
+			// mout.attention(srcDataSet.odim);
+			const drain::Castable & c = srcDataSet.getWhere()["elangle"];
+			double d = c;
+			mout.debug("elangle: ", d);
+
+
 			DataSet<PolarDst> & dstDataSet = itd->second;
 
 			const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
@@ -122,17 +132,12 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
 			//dstProb.tree.data.noSave = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
-			//dstProb.setNoSave(DetectorOp::STORE == 0);
-			//dstProb.setNoSave(!DetectorOp::STORE);
+			mout.debug("outputDataVerbosity ", outputDataVerbosity);
 			dstProb.setNoSave(outputDataVerbosity==0);
 
 			//mout.warn() << "dstProb: " << dstProb << mout.endl;
-			mout.debug() << "outputDataVerbosity " << outputDataVerbosity << mout.endl;
-
 			/// MAIN COMMAND
-			//if (DetectorOp::STORE) // ???
 			processDataSet(srcDataSet, dstProb,  dstDataSet);
-			// else skip! To collect legends.
 
 			/*
 			File::write(srcProb.data, "srcProb.png");
@@ -156,7 +161,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 		++itd;
 	}
 
-	mout.debug2() << "end" << mout.endl;
+	mout.debug2("end");
 
 }
 

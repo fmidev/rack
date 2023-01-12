@@ -195,6 +195,9 @@ void CmdOutputFile::exec() const {
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	// mout.attention(ctx.getName());
+	// mout.warn("ctx.select=", ctx.select);
+
 	if (value.empty()){
 		mout.error() << "File name missing. (Use '-' for stdout.)" << mout.endl;
 		return;
@@ -212,29 +215,22 @@ void CmdOutputFile::exec() const {
 
 	std::string filename;
 
-	if (value != "-"){
+	const bool STD_OUTPUT = (value == "-");
+
+	if (STD_OUTPUT){
+		filename = "-";
+	}
+	else {
 		//mout.warn() << RackContext::variableMapper << mout.endl;
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
 		filename = mapper.toStr(ctx.getStatusMap());
 		mout.note() << "writing: '" << filename << "'" << mout.endl;
 	}
-	else {
-		filename = "-";
-	}
-
 	// mout.note() << "filename: " << filename << mout.endl;
 
 	// TODO: generalize select
 	// TODO: generalize image pick (current or str) for png/tif
-	//drain::image::FilePng::
-	/*
-	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(value);  //pngFileExtension.test(value);
-	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(value);  // fileNameRegExp.test
-	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(value); //tiffFileExtension.test(value);
-	*/
-	const bool STD_OUTPUT = (value == "-");
-
 	drain::FilePath path(value);
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
@@ -345,10 +341,13 @@ void CmdOutputFile::exec() const {
 
 			ODIMPathList paths;
 
+			//mout.attention(ctx.getName());
+			//mout.warn("ctx.select=", ctx.select);
+
 			if (!ctx.select.empty()){
 				DataSelector selector;
 				selector.consumeParameters(ctx.select);
-				// mout.warn() << selector << mout.endl;
+				mout.debug(selector);
 				selector.getPaths(src, paths);
 			}
 			else {

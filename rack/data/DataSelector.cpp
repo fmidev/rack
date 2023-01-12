@@ -39,18 +39,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+///const drain::FlaggerBase<Crit>::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}};
+
 
 template <>
-const drain::Fladdict<DataOrder::Crit>::dict_t drain::Fladdict<DataOrder::Crit>::dict = {
+const drain::FlaggerDict drain::EnumDict<DataOrder::Crit>::dict = {
 		{"DATA",    rack::DataOrder::DATA},
 		{"ELANGLE", rack::DataOrder::ELANGLE},
 		{"TIME",    rack::DataOrder::TIME}
 };
 
 template <>
-const drain::Fladdict<DataOrder::Oper>::dict_t drain::Fladdict<DataOrder::Oper>::dict =  {
+const drain::FlaggerDict drain::EnumDict<DataOrder::Oper>::dict =  {
 		{"MIN", rack::DataOrder::MIN},
 		{"MAX", rack::DataOrder::MAX}
+};
+
+template <>
+const drain::FlaggerDict drain::EnumDict<DataSelector::Prf>::dict =  {
+		{"ANY", rack::DatasetSelector::ANY},
+		{"SINGLE", rack::DataSelector::SINGLE},
+		{"DOUBLE", rack::DataSelector::DOUBLE}
 };
 
 // using namespace hi5;
@@ -74,7 +83,8 @@ DataSelector::DataSelector(
 	this->elangle = elangle;
 	//this->order.str = "";
 	this->order.set(DataOrder::DATA, DataOrder::MIN);
-	this->dualPRF = dualPRF;
+	//this->dualPRF = dualPRF;
+	this->selectPRF.set(Prf::ANY);
 
 	updateBean();
 
@@ -123,11 +133,12 @@ void DataSelector::init() {
 	parameters.link("count", count);
 	//parameters.link("order", order.str, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
 	parameters.link("order", order.str,
-				drain::sprinter(drain::Fladdict<DataOrder::Crit>::dict.getKeys()).str() + ':' +
-				drain::sprinter(drain::Fladdict<DataOrder::Oper>::dict.getKeys()).str()
+				drain::sprinter(drain::EnumDict<DataOrder::Crit>::dict.getKeys()).str() + ':' +
+				drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
 				);
 	//parameters.link("order", order.str, drain::sprinter(order.getParameters().getKeyList()).str());
-	parameters.link("dualPRF", dualPRF, "-1|0|1");
+	parameters.link("prf", prf, drain::sprinter(drain::EnumDict<DataSelector::Prf>::dict.getKeys()).str());
+	// <-- TODO: develop to: enum PRF {"Single",1}, {"Dual",2}
 
 }
 
@@ -144,11 +155,13 @@ void DataSelector::reset() {
 
 	elangle = {-90.0,+90.0}; // unflexible
 
-	dualPRF = 0;
+	//dualPRF = 0;
+	selectPRF.set(Prf::ANY);
+	prf = selectPRF.str();
 
 	order.str = "";
-	order.criterion = DataOrder::DATA;
-	order.operation = DataOrder::MIN;
+	order.criterion.set(DataOrder::DATA);
+	order.operation.set(DataOrder::MIN);
 
 	//orderFlags.value = 0; // needs this... :-(
 
@@ -222,18 +235,9 @@ void DataSelector::updateBean() const {
 		//path = pathMatcher;
 	}
 
-
 	order.set(order.str);
-	/*
-	std::string s1, s2;
-	drain::StringTools::split2(order.str, s1, s2, ':');
-	order.criterion.set(s1);
-	order.operation.set(s2);
-	order.str = order.criterion.str() + ':' + order.operation.str();
-	*/
-		//orderFlags.set(order);
+	selectPRF.set(prf);
 
-	//mout.special(__FILE__, *this);
 }
 
 void DataSelector::ensureDataGroup(){
