@@ -41,12 +41,7 @@ namespace rack {
 const ODIMPathElemSeq & EncodingODIM::attributeGroups(getAttributeGroups());
 
 const ODIMPathElemSeq & EncodingODIM::getAttributeGroups(){
-	static ODIMPathElemSeq s;
-	if (s.empty()){
-		s.push_back(ODIMPathElem(ODIMPathElem::WHAT));
-		s.push_back(ODIMPathElem(ODIMPathElem::WHERE));
-		s.push_back(ODIMPathElem(ODIMPathElem::HOW));
-	}
+	static ODIMPathElemSeq s = {ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW};
 	return s;
 }
 

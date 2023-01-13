@@ -68,23 +68,7 @@ public:
 	 *  \param weightMin - threshold [0...1] for normalized beam power interpreted as weight; set -1 to include "pseudo" areas
 	 *  \param accumulationMethod - define how dBZ and weight of each bin contributes to the product
 	 */
-	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth = 1.0, double weightMin = 0.0, std::string accumulationMethod="WAVG:1:8:-40") :
-		CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", accumulationMethod)
-		{
-
-		parameters.link("altitude", this->altitude = altitude, "metres");
-		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
-		parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
-		parameters.link("weightMin", this->weightMin = weightMin, "-0.1|0...1");
-		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
-		//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
-
-		odim.product  = "PCAPPI";
-		odim.type = "";
-		dataSelector.quantity = "^DBZH$";
-		odim.quantity = "DBZH";
-
-	};
+	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth = 1.0, double weightMin = 0.0, std::string accumulationMethod="WAVG:1:8:-40");
 
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;

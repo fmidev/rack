@@ -110,18 +110,18 @@ public:
 	~Accumulator(){};
 
 	/// Set method to some of the predefined methods
-	AccumulationMethod & setMethod(const std::string & method);
+	void setMethod(const std::string & method);
 
 	/// Set method to some of the predefined methods
-	AccumulationMethod & setMethod(const std::string & name, const std::string & params);
+	void setMethod(const std::string & name, const std::string & params);
 
 	/// Copies the method and its parameters.
 	/**  That is, does not copy the target (accumulator &).
 	 *   This limits to those already registered in AccMethodBank.
 	 */
 	inline
-	AccumulationMethod & setMethod(const AccumulationMethod & method){
-		return setMethod(method.getName(), method.getParameters().getValues());
+	void setMethod(const AccumulationMethod & method){
+		setMethod(method.getName(), method.getParameters().getValues());
 	}
 
 	inline

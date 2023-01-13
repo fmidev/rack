@@ -78,7 +78,22 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 }
 
+bool ODIM::distinguishNodata(const std::string & quantityPrefix){
 
+	// Accept anything starting with quantity. So, if 'VRAD', hence 'VRADH' or 'VRADV'.
+	//if (quantity.empty() || (this->quantity.find(quantityPrefix)==0)){  // Fix Vaisala IRIS bug
+	if (this->quantity.find(quantityPrefix)==0){  // Fix Vaisala IRIS bug
+		//std::cerr << "setNodata" << quantity << '\n';
+		if (nodata == undetect){
+			drain::Logger mout(__FUNCTION__, __FILE__);
+			nodata = drain::Type::call<drain::typeMax,double>(type);
+			mout.special("setting [", quantity ,"] nodata=", nodata, " to distinguish undetect=", undetect);
+			return true;
+		}
+		//std::cerr << "nodata: " << nodata << '\n';
+	}
+	return false;
+}
 
 
 
@@ -226,7 +241,7 @@ bool ODIM::setTime(const std::string & s){
 		date = s;
 		date.append(nDate - n, '0'); // pad
 		time = "000000";
-		mout.warn() << "suspiciously short date: " << s << " => " << date << mout.endl;
+		mout.warn("suspiciously short date: ", s, " => ", date);
 		return false;
 	}
 	else { // default case
@@ -321,7 +336,3 @@ void ODIM::updateLenient(const ODIM & odim){
 
 }  // namespace rack
 
-
-
-// Rack
- // REP // REP // REP

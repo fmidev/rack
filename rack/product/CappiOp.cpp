@@ -59,7 +59,23 @@ double CappiOp::beamPowerGauss(double r) const {
 
 }
 */
+CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double weightMin, std::string accumulationMethod) :
+	CumulativeProductOp(__FUNCTION__, "Constant-altitude planar position indicator", accumulationMethod)
+{
 
+	parameters.link("altitude", this->altitude = altitude, "metres");
+	parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
+	parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
+	parameters.link("weightMin", this->weightMin = weightMin, "-0.1|0...1");
+	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
+	//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
+
+	odim.product  = "PCAPPI";
+	odim.type = "";
+	dataSelector.quantity = "^DBZH$";
+	odim.quantity = "DBZH";
+
+};
 
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 

@@ -54,30 +54,30 @@ namespace image
 
 
 
-AccumulationMethod & Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
+void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
 	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	Logger mout(__FUNCTION__, __FILE__);
 
 	if (name == "AVG"){
-		mout.deprecating() << "'AVG' => using 'AVERAGE'" << mout.endl;
-		return setMethod("AVERAGE", params);
-		// return;
+		mout.deprecating("'AVG' => using 'AVERAGE'");
+		setMethod("AVERAGE", params);
+		return;
 	}
 	else if (name == "MIN"){
 		mout.deprecating() << "'MIN' => using 'MINIMUM'" << mout.endl;
-		return setMethod("MINIMUM", params);
-		// return;
+		setMethod("MINIMUM", params);
+		return;
 	}
 	else if (name == "MAX"){
 		mout.deprecating() << "'MAX' => using 'MAXIMUM'" << mout.endl;
-		return setMethod("MAXIMUM", params);
-		//return;
+		setMethod("MAXIMUM", params);
+		return;
 	}
 	else if (name == "OVERWRITE"){
 		mout.note() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
-		return setMethod("LATEST", params);
-
+		setMethod("LATEST", params);
+		return;
 	}
 
 
@@ -101,39 +101,27 @@ AccumulationMethod & Accumulator::setMethod(const std::string & name, const std:
 		mout.error("unknown method: ", name);
 	}
 
-	return *methodPtr;
+	//return *methodPtr;
 
-	/*
-
-	std::map<std::string, AccumulationMethod &>::iterator it = methods.find(name);
-
-	if (it != methods.end()){
-		methodPtr = &(it->second);
-		methodPtr->setParameters(params);
-	}
-	else {
-		//this->toStream(std::cerr);
-		mout.error("unknown method: ", name);
-	}
-	*/
 
 }
 
-AccumulationMethod & Accumulator::setMethod(const std::string & method){
+void Accumulator::setMethod(const std::string & method){
 
-	/*
+	if (method.empty())
+		return ;
+
 	std::string s1, s2;
 	drain::StringTools::split2(method, s1, s2, ',');
-	return setMethod(s1, s2);
-	*/
+	setMethod(s1, s2);
 
+	/*
 	const size_t i = method.find(',');
-
 	if (i == std::string::npos)
 		return setMethod(method, "" );  // Variable()
 	else
 		return setMethod(method.substr(0, i), method.substr(i+1) );  // Variable(method.substr(i+1))
-
+	*/
 }
 
 void Accumulator::addData(const Image & srcData, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){

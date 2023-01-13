@@ -222,22 +222,9 @@ public:
 	/**
 	 *  This oddity is needed because some manufactures do not distinguish between undetect and nodata (esp. with VRAD).
 	 *
-	 *  \param quantity - set only if this quantity applies.
+	 *  \param quantity - set only if quantity starts with this string. So "VRAD" covers "VRADH" and "VRADV", for example.
 	 */
-	inline
-	bool distinguishNodata(const std::string & quantity = ""){
-
-		if (quantity.empty() || (quantity == this->quantity)){  // Fix Vaisala IRIS bug
-			//std::cerr << "setNodata" << quantity << '\n';
-			if (nodata == undetect){
-				nodata = drain::Type::call<drain::typeMax,double>(type);
-				return true;
-			}
-			//std::cerr << "nodata: " << nodata << '\n';
-		}
-		return false;
-	}
-
+	bool distinguishNodata(const std::string & quantityPrefix = "");
 
 
 	/// Write ODIM data relevant for data level, eg. \c /dataset2, \c data4, and root.

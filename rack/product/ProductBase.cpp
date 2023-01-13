@@ -72,15 +72,15 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 
 	ostr << "# Parameters:\n";
 	//char separator = '\0';
-	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
-		std::map<std::string, drain::Referencer>::const_iterator pit = parameters.find(*it);
+	for (const std::string & key: keys){
+		std::map<std::string, drain::Referencer>::const_iterator pit = parameters.find(key);
 		if (pit != parameters.end()){
 			//ostr << separator << ' ' << *it;
-			ostr << "#   " << *it << ' ';
+			ostr << "#   " << key << ' ';
 			if (showDescription)
 				if ((static_cast<float>(pit->second) != std::numeric_limits<float>::min()) && (static_cast<double>(pit->second) != std::numeric_limits<double>::min()))
 					ostr << '=' << ' ' << pit->second << ' ';  // *it === pit->first
-			std::map<std::string,std::string>::const_iterator uit = units.find(*it);
+			std::map<std::string,std::string>::const_iterator uit = units.find(key);
 			if ( uit != units.end() ){
 				if (uit->second != "")
 					ostr << '[' << uit->second << ']';
@@ -103,9 +103,9 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 		ostr << "# Supported --target properties:";
 		char separator = ' ';
 		const std::list<std::string> & keys = allowedEncoding.getKeyList();
-		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
-		//for (drain::ReferenceMap::const_iterator it = allowedEncoding.begin(); it != allowedEncoding.end(); ++it){
-			ostr << separator << *it << '(' << allowedEncoding[*it] << ')';
+		for (const std::string & key: keys){
+		//for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+			ostr << separator << key << '(' << allowedEncoding[key] << ')';
 			separator = ',';
 		}
 		ostr << '\n';
@@ -254,11 +254,14 @@ void ProductBase::setAllowedEncoding(const std::string & keys) {
 
 void ProductBase::setODIMspecials(ODIM & dstODIM){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FUNCTION__, __FILE__);
 
+	dstODIM.distinguishNodata("VRAD");
+	/*
 	if (dstODIM.distinguishNodata("VRAD")){
 		mout.note() << "setting nodata=" << dstODIM.nodata << " to distinguish undetect="<< dstODIM.undetect << mout.endl;
 	}
+	*/
 
 	if (dstODIM.product == "SCAN"){
 		dstODIM.product = "PPI";

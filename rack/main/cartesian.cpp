@@ -181,10 +181,10 @@ public:
 	inline
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>(); //
-		AccumulationMethod & method = ctx.composite.setMethod(value);  // method? Or Method obj?
+		ctx.composite.setMethod(value);  // method? Or Method obj?
 		#pragma omp critical
 		{
-			getResources().polarAccumulator.setMethod(method);  // Ensures correct (primary) name.
+			getResources().polarAccumulator.setMethod(value);  // Ensures correct (primary) name.
 		}
 	};
 
