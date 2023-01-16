@@ -530,6 +530,25 @@ public:
 
 	template<typename ... TT>
 	inline
+	Logger & accept(const TT &... args){
+		static const Notification notif(__FUNCTION__, 42);
+		initMessage<LOG_INFO>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	template<typename ... TT>
+	inline
+	Logger & reject(const TT &... args){
+		static const Notification notif(__FUNCTION__, 41);
+		initMessage<LOG_INFO>(notif);
+		flush(args...);
+		return *this;
+	};
+
+
+	template<typename ... TT>
+	inline
 	Logger & success(const TT &... args){
 		static const Notification notif(__FUNCTION__, 92);
 		initMessage<LOG_NOTICE>(notif);

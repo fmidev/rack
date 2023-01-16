@@ -134,15 +134,16 @@ int process(int argc, const char **argv) {
 		cmdBank.scriptify(argc, argv, script);
 
 		//mout.attention('\n', script);
-
+		//mout.attention("Script ok");
 
 		drain::Program prog(ctx);
 		cmdBank.append(script, prog); // ctx is stored in each cmd
 		// cmdBank.append(script, ctx, prog); // ctx is stored in each cmd
 
+		// mout.attention("Running prog");
+		mout.info("running ctx: ", ctx.getName());
 
-
-		mout.info() << "running, ctx.id=" << ctx.getId() << mout.endl;
+		//mout.info("running, ctx.id=", ctx.getId());
 		//cmdBank.run(script, contextCloner);
 		cmdBank.run(prog, contextCloner);
 

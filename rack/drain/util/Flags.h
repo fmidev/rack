@@ -635,6 +635,10 @@ protected:
 
 
 
+
+// NEW 2022/2023
+
+
 typedef drain::Dictionary<std::string,unsigned long> FlaggerDict;
 
 /** A Flag mapper designed for global use, also supporting ENUM types. @See
@@ -789,6 +793,8 @@ public:
 
 	char separator;
 
+	void debug(std::ostream & ostr) const;
+
 private:
 
 	// Own value, discarded if external value referenced.
@@ -797,12 +803,13 @@ private:
 
 };
 
-
 template <typename E>
-inline
-std::ostream & operator<<(std::ostream & ostr, const drain::FlaggerBase<E> & flagger) {
-	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
+void drain::FlaggerBase<E>::debug(std::ostream & ostr) const {
+	ostr << typeid(drain::FlaggerBase<E>).name() << ": value=" << getValue() << ", ";
+	FlagResolver::keysToStream(getDict(), getValue(), ostr) << ", ";
+	ostr <<  " dict: " << getDict();
 }
+
 
 
 template <typename E>
@@ -834,12 +841,21 @@ public:
 	/// String corresponding the current value. Returns empty, if not found.
 	virtual inline
 	const key_t & str() const {
+		//static const key_t SINGLE="SINGLE";
+		//return SINGLE;
 		return this->getDict().getKey(this->value);
 	}
 
 
 
 };
+
+template <typename E>
+inline
+std::ostream & operator<<(std::ostream & ostr, const drain::SingleFlagger<E> & flagger) {
+	ostr << flagger.str();
+	return ostr;
+}
 
 
 template <typename E>
@@ -941,6 +957,12 @@ protected:
 };
 
 
+
+template <typename E>
+inline
+std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E> & flagger) {
+	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
+}
 
 
 

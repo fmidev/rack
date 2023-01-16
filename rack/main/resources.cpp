@@ -190,14 +190,22 @@ const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ct
 }
 
 ODIMPath RackContext::findImage(){ //RackContext & ctx){
-	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // ImageS elector imageS elector;
-	/*
-	std::cerr << __FUNCTION__ << ':' << imageSelector << '\n';
-	std::cerr << __FUNCTION__ << ':' << imageSelector.pathMatcher.front().group << '\n';
-	std::cerr << __FUNCTION__ << ':' << imageSelector.pathMatcher.front().flags << '\n';
-	*/
+
+	drain::Logger mout(this->log, __FUNCTION__, __FILE__);
+
+	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
+	// mout.accept("Image selector", imageSelector);
+
 	imageSelector.consumeParameters(this->select); // ctx.findImage
+	if (imageSelector.count > 1){
+		drain::Logger mout(this->log, __FUNCTION__, __FILE__);
+		mout.debug("Adjusting image selector.count=", imageSelector.count, " to 1");
+		imageSelector.count = 1;
+	}
+	// mout.special("Image selector", imageSelector);
+
 	imageSelector.ensureDataGroup();
+	// mout.accept("Image selector", imageSelector);
 	return findImage(imageSelector); //ctx,
 }
 
@@ -206,7 +214,6 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackContext & ctx,
 
 	RackContext & ctx = *this;
-
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
@@ -250,7 +257,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 	else {
 		path.clear();
 		// if (path.empty()){
-		mout.warn() << "no paths found with " << imageSelector << " (skipping?) " << mout.endl;
+		mout.warn("no paths found with ", imageSelector, " (skipping?)");
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 		//return false;
 	}
@@ -269,9 +276,9 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 
 	// if ctx.select ..
 	if (!ctx.select.empty()){
-		mout.info() << "selector (" << ctx.select <<  ")" << mout.endl;
+		mout.info("selector (", ctx.select, ")");
 		path = findImage();
-		mout.info() << "selected new image ->  " << path << mout.endl;
+		mout.info("selected new image ->  ", path);
 	}
 
 	if (!ctx.targetEncoding.empty()){

@@ -109,7 +109,7 @@ function EXCLUDE(){
 	    echo "Excluded but still present: " $i
 	    exit  1
 	else
-	    echo "OK - deleted: " $i
+	    echo "OK - missing: " $i
 	fi
     done
 }

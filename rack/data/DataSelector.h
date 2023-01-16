@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <list>
 #include <map>
+#include <stdexcept>
 
 #include "drain/util/BeanLike.h"
 #include "drain/util/Range.h"
@@ -394,7 +395,7 @@ protected:
 	 *  \param props - unused (in this variant, for lists)
 	 */
 	static inline
-	void addPath3(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
+	void addPath(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
 		//PolarODIM odim;
 		//odim.updateFromCastableMap(props);
 		l.push_back(path);
@@ -408,7 +409,7 @@ protected:
 	 *  \param props - metadata containing \c where:elangle
 	 */
 	static inline
-	void addPath3(std::map<double,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
+	void addPath(std::map<double,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
 		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only where:elangle needed
 		odim.updateFromCastableMap(props);  // where:elangle
 		m[odim.elangle] = path;
@@ -420,61 +421,97 @@ protected:
 	 *  \param props - metadata containing \c what:startdate + \c what:starttime
 	 */
 	static inline
-	void addPath3(std::map<std::string,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
+	void addPath(std::map<std::string,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
 		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only what:startdate and what:starttime
 		odim.updateFromCastableMap(props); // what:startdate &  what:starttime
 		m[odim.startdate + odim.starttime] = path;
 	}
 
-	/*
-	template <typename C>
-	static inline
-	void addPath4(std::list<ODIMPath> & l, const C & key, const ODIMPath &path){
-		l.push_back(path);
-	}
-
-	static inline
-	void addPath4(std::map<double,ODIMPath> & m, double key, const ODIMPath &path){
-		m[key] = path;
-	}
-
-	static inline
-	void addPath4(std::map<std::string,ODIMPath> & m, const std::string & key, const ODIMPath &path){
-		m[key] = path;
-	}
-	*/
-
 
 	/**
 	 *  \param pathContainer – std::map<double,ODIMPath> or std::map<std::string,ODIMPath> for ELANGLE and TIME, respectively.
 	 *
-	 *  \param MAX_KEYS: use keys with greatest values: latest TIME or highest ELANGLE
+	 *  \param MAX: MIN or MAX use keys with greatest values: latest TIME or highest ELANGLE
 	 */
 	template <class M>
-	void pruneMap(M & pathContainer, bool MIN_KEYS = false) const ;
+	void copyPaths(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & mapList) const ;
+	// void pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper=DataOrder::Oper::MIN) const ;
+
+
 
 };
 
 
+/**
+ *   oper – MIN or MAX, enums of DataOrder::Oper
+ */
 template <class M>
-void DataSelector::pruneMap(M & pathContainer, bool MAX_KEYS) const {
+void DataSelector::copyPaths(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & pathList) const {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	drain::Range<int> range; // (1, pathContainer.size());
+
+	if (order.operation == DataOrder::MIN){
+		range.set(1, count);
+	}
+	else if (order.operation == DataOrder::MAX){
+		range.set(1+ pathMap.size()-count, pathMap.size());
+	}
+
+	mout.attention("range: ", range);
+
+	int i = 1;
+
+	for (const auto & entry: pathMap){
+		if (range.contains(i)){
+			mout.accept(entry.first, '\t', entry.second);
+			pathList.push_back(entry.second);
+		}
+		else {
+			mout.reject(entry.first, '\t', entry.second);
+		}
+		++i;
+	}
+
+
+}
+
+/**
+ *   oper – MIN or MAX, enums of DataOrder::Oper
+ */
+/*
+template <class M>
+void DataSelector::pruneMap(M & pathContainer, DataOrder::Oper oper) const {
 
 	// Number of paths kept.
 	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
 
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
 	typename M::iterator it = pathContainer.begin();
-	if (!MAX_KEYS){
+	if (oper == DataOrder::Oper::MIN){
 		// Jump over n keys.
 		std::advance(it, n);
+		for (typename M::iterator it2 = it; it2 != pathContainer.end(); ++it2){
+			mout.attention("deleting ", it2->first());
+		}
 		pathContainer.erase(it, pathContainer.end());
 	}
-	else {
+	else if (oper == DataOrder::Oper::MAX){
 		// Jump towards end, so that n keys remain
 		std::advance(it, pathContainer.size()-n);
+		for (typename M::iterator it2 = pathContainer.begin(); it2 != it; ++it2){
+			mout.attention("deleting ", it2->first());
+		}
 		pathContainer.erase(pathContainer.begin(), it);
+	}
+	else {
+		throw std::runtime_error("Order oper neither MIN nor MAX: ");
 	}
 
 }
+*/
 
 /*
 template <class T>
@@ -544,6 +581,12 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 		// Check ELANGLE (in datasets) or quantity (in data/quality)
 		if (currentElem.is(ODIMPathElem::DATASET)){
 
+			if (!pathMatcher.matchElem(currentElem, true)){
+				// pathMatcher does not accept this dataset<N> at all
+				mout.reject(currentElem);
+				continue;
+			}
+
 			if ((LIMIT_COUNT) && (dataSetIndices.size() >= count)){
 				mout.debug2() << "dataset count " << dataSetIndices.size() << ">=" << count << ") already completed for " << currentElem << mout.endl;
 				continue;
@@ -561,7 +604,7 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 				// Add this data set path
 				if (pathMatcher.match(path)){
 					mout.debug2() << " path matches (subtree OK) " << path << mout;
-					addPath3(pathContainer, props, path);
+					addPath(pathContainer, props, path);
 				}
 				dataSetIndices.insert(currentElem.index);
 			}
@@ -584,9 +627,9 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 			// Consider policy..
 			//mout.warn() << " skipping ATTRIBUTE_GROUP: /" << currentElem << mout;
 			if (pathMatcher.match(path)){
-				addPath3(pathContainer, props, path);
+				addPath(pathContainer, props, path);
 			}
-			// addPath3(pathContainer, v, path); // ?
+			// addPath(pathContainer, v, path); // ?
 		}
 		else {
 			mout.warn() << " skipping odd group: /" << currentElem << mout;
@@ -688,7 +731,7 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 
 
 			if (quantityFound && pathMatcher.match(p)){
-				addPath3(pathContainer, props, p);
+				addPath(pathContainer, props, p);
 			}
 
 			// Recursion, possibly finding quality quantity
@@ -699,12 +742,12 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 			// mout.warn() << " ATTRIBUTE_GROUP: " << path << " / " << currentElem << mout;
 			if (pathMatcher.match(p)){
 				mout.debug3() << " adding" << path << " / " << currentElem << mout;
-				addPath3(pathContainer, props, p);
+				addPath(pathContainer, props, p);
 			}
 		}
 		else if (currentElem.is(ODIMPathElem::DATASET)){
 			mout.warn() << " NESTING DATASET_GROUP: " << path << " / " << currentElem << mout;
-			// addPath3(pathContainer, v, path); // ?
+			// addPath(pathContainer, v, path); // ?
 		}
 		else {
 			mout.debug() << " skipping special: " << path << " / " << currentElem << mout;
@@ -713,7 +756,7 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 		   else if (currentElem.is(ODIMPathElem::ARRAY)){
 			if (pathMatcher.match(p)){
 				mout.debug3() << " adding" << path << " / " << currentElem << mout;
-				addPath3(pathContainer, props, p);
+				addPath(pathContainer, props, p);
 			}
 		  }
 

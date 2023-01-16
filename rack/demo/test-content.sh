@@ -65,10 +65,40 @@ TEST    --select 'elangle=1.5,quantity=DBZH'
 REQUIRE dataset3/data.
 EXCLUDE dataset1/ data1/
 
+TITLE "For single-image output, select VRAD of the lowest dual-PRF scan "
+OUTFILE='volume-VRAD.png'
+TEST    --select 'quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE'
+REQUIRE dataset7
+EXCLUDE dataset[1-6]/
+
+
+TITLE "For single-image output, select ZDR of the highest single-PRF scan "
+OUTFILE='volume-ZDR.png'
+TEST    --select 'quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE'
+REQUIRE dataset6
+EXCLUDE dataset[1-5]/
+EXCLUDE dataset[7-9]/ 
+
 TITLE "For a Pseudo CAPPI product, change default input selection"
 OUTFILE='pCappi-TH-1500m.h5'
 TEST    --select "'quantity=^TH$,elangle=1.5:10,count=3' --pCappi 1500"
 REQUIRE 'dataset1/data1/what:quantity="TH"'
+
+
+INFILE='volume-test-elangle.h5'
+
+TITLE "For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
+OUTFILE='volume-DBZH2.png'
+TEST    --select 'quantity=DBZH,order=ELANGLE:MIN'
+REQUIRE dataset6
+#EXCLUDE dataset[1-5]
+
+TITLE "For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
+OUTFILE='volume-DBZH3.png'
+TEST    --select 'quantity=DBZH,order=ELANGLE:MAX'
+REQUIRE dataset1
+#EXCLUDE dataset[1-5]
+
 
 
 # rack volume.h5 --select 'dataset=2:5,quantity=DBZH'    
@@ -77,6 +107,7 @@ REQUIRE 'dataset1/data1/what:quantity="TH"'
 # rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
 
 START example-assign.inc
+INFILE='volume.h5'
 OUTFILE='volume-modified.h5'
 
 TITLE "Set beam resolution"

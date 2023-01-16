@@ -288,11 +288,19 @@ bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 
 bool ODIMPathMatcher::matchElem(const rack::ODIMPathElem & elem, bool defaultValue) const {
 
+	for (const ODIMPathElemMatcher & elemMatcher: *this){
+		if (elemMatcher.is(elem.getType())){
+			return elemMatcher.test(elem);
+		}
+	}
+
+	/*
 	for (ODIMPathMatcher::const_iterator it = begin(); it != end(); ++it){
 		if (it->is(elem.getType())){
 			return it->test(elem);
 		}
 	}
+	*/
 
 	return defaultValue;
 }

@@ -159,11 +159,11 @@ void DataSelector::reset() {
 	selectPRF.set(Prf::ANY);
 	prf = selectPRF.str();
 
-	order.str = "";
-	order.criterion.set(DataOrder::DATA);
-	order.operation.set(DataOrder::MIN);
-
-	//orderFlags.value = 0; // needs this... :-(
+	// order.str = "";
+	order.set(DataOrder::DATA, DataOrder::MIN);
+	// order.criterion.set(DataOrder::DATA);
+	// order.operation.set(DataOrder::MIN);
+	// orderFlags.value = 0; // needs this... :-(
 
 }
 
@@ -290,38 +290,33 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 }
 
 
-void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const {
+void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (order.criterion == DataOrder::DATA){
 		// = default
-		getMainPaths(src, pathContainer);
-	}
-	else if (order.criterion == DataOrder::TIME){
-		mout.special(__FUNCTION__, ':', order.str);
-		std::map<std::string,ODIMPath> m;
-		getPathsByTime(src, m);
-		for (const auto & entry: m){
-			//mout.special(entry);
-			mout.debug("including: ", entry.first, '\t', entry.second);
-			pathContainer.push_back(entry.second);
-		}
-	}
-	else if (order.criterion == DataOrder::ELANGLE){
-		mout.special(__FUNCTION__, ':', order.str);
-		std::map<double,ODIMPath> m;
-		getPathsByElangle(src, m);
-		for (const auto & entry: m){
-			mout.debug("including: ", entry.first, '\t', entry.second);
-			pathContainer.push_back(entry.second);
-		}
-		// break;
-		// default:
-		// throw std::runtime_error(std::string(__FILE__) + " unimplemented ENUM value: " + order.toStr());
+		getMainPaths(src, pathList);
 	}
 	else {
-		throw std::runtime_error(std::string(__FILE__) + " unimplemented ENUM value: " + order.str);
+
+		mout.debug2("Special select requested: ", *this);
+
+		if (order.criterion == DataOrder::TIME){
+			mout.debug(__FUNCTION__, ':', order.str);
+			std::map<std::string,ODIMPath> m;
+			getPathsByTime(src, m);
+			copyPaths(m, order.operation, pathList);
+		}
+		else if (order.criterion == DataOrder::ELANGLE){
+			mout.debug(__FUNCTION__, ':', order.str);
+			std::map<double,ODIMPath> m;
+			getPathsByElangle(src, m);
+			copyPaths(m, order.operation, pathList);
+		}
+		else {
+			mout.error(std::string(__FILE__), " unimplemented ENUM value for order.criterion: ", order.criterion.str());
+		}
 	}
 }
 
@@ -330,32 +325,60 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathConta
 void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
+
 	if (order.criterion == DataOrder::TIME){
-		//if (orderFlags.isSet(TIME)){
-		mout.warn("map keys sorted by ELANGLE, yet TIME requested");
+		mout.warn("map keys sorted by ELANGLE (double), yet DataOrder::TIME requested");
 	}
 
 	getMainPaths(src, paths, false);
-	// pruneMap(paths, orderFlags.isSet(MAX));
-	pruneMap(paths, order.operation == DataOrder::MAX);
-
-
+	// pruneMap(paths, order.operation);
+	//	mout.attention("remaining: ", drain::sprinter(paths));
 }
 
 void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	//if (orderFlags.isSet(ELANGLE)){
+
 	if (order.criterion == DataOrder::ELANGLE){
-		mout.warn("map keys sorted by TIME, yet ELANGLE requested");
+		mout.warn("map keys sorted by TIME (string), yet DataOrder::ELANGLE requested");
 	}
 
 	getMainPaths(src, paths, false);
-	//pruneMap(paths, orderFlags.isSet(MAX));
-	pruneMap(paths, order.operation == DataOrder::MAX);
-
+	//pruneMap(paths, order.operation);
+	//mout.attention("remaining: ", drain::sprinter(paths));
 }
 
+/*
+void DataSelector::pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper) const { // default DataOrder::Oper::MIN
+
+	// Number of paths kept.
+	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	auto it = pathContainer.begin();
+	if (oper == DataOrder::Oper::MIN){
+		// Jump over n keys.
+		std::advance(it, n);
+		for (auto it2 = it; it2 != pathContainer.end(); ++it2){
+			mout.attention("deleting ", *it2);
+		}
+		pathContainer.erase(it, pathContainer.end());
+	}
+	else if (oper == DataOrder::Oper::MAX){
+		// Jump towards end, so that n keys remain
+		std::advance(it, pathContainer.size()-n);
+		for (auto it2 = pathContainer.begin(); it2 != it; ++it2){
+			mout.attention("deleting ", *it2);
+		}
+		pathContainer.erase(pathContainer.begin(), it);
+	}
+	else {
+		throw std::runtime_error("Order oper neither MIN nor MAX: ");
+	}
+
+}
+*/
 
 bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 

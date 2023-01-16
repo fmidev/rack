@@ -255,9 +255,13 @@ void CmdOutputFile::exec() const {
 
 		// This is the simple version. See image commands (--iXxxxx)
 
-		mout.info() << "File format: image" << mout.endl;
+		mout.info("File format: image");
 
-		ctx.updateCurrentImage(); // ?
+		if (!ctx.select.empty()){
+			// if (ctx.select.count){			}
+		}
+
+		// ctx.updateCurrentImage(); // ?
 
 		// Use ctx.select and/or ctx.targetEncoding, if defined.
 		const drain::image::Image & src = ctx.updateCurrentImage();
@@ -332,10 +336,10 @@ void CmdOutputFile::exec() const {
 		if (ctx.formatStr.empty()){
 
 			if (textFileExtension.test(filename) || (value == "-")){
-				mout.info() << "Dumping HDF5 structure" << mout.endl;
+				mout.info("Dumping HDF5 structure");
 			}
 			else {
-				mout.error() << "Text formatting --format unset, and unknown file format: " << value << mout.endl;
+				mout.error("Text formatting --format unset, and unknown file format: ", value );
 				return;
 			}
 

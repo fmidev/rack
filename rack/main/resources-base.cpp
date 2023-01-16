@@ -233,12 +233,13 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		mout.debug("(Not empty)");
 
 		DataSelector selector(ODIMPathElem::DATA);
-		mout.debug3("selector orderFlags=", selector.order.str);
+		mout.debug2("selector orderFlags=", selector.order.str);
 		//mout.special("selector orderFlags.value=", selector.orderFlags.value );
 		//mout.special("selector orderFlags.own=",   selector.orderFlags.ownValue );
 
 		// Do not consume (ie. leave value)
 		selector.setParameters(select);
+		selector.count = 1; // Because just one path wanted (below)
 
 		mout.debug("status metadata selector: ", selector, " <- ", select, ", orderFlags=", selector.order.str);
 		// mout.debug("status metadata selector: ", selector, " <- ", select, "orderFlags=", selector.orderFlags);
