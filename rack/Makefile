@@ -24,7 +24,7 @@ install:
 	@echo 'Quick test:'
 	Release/rack --help > /dev/null
 	mkdir -v --parents ${prefix}/bin
-	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1) && cd ${prefix}/bin; ln -s ./rack-$(shell Release/rack --version | head -1) ./rack
+	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1) && cd ${prefix}/bin; ln -s ./rack-$(shell Release/rack --version | head -1) ./rack || ln -si ./rack-$(shell Release/rack --version | head -1) ./rack
 # alpine Linux 'ln' supports no -i
 
 
