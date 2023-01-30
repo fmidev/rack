@@ -177,6 +177,9 @@ public:
 	/// Simply concatenate values without punctuation.
 	static const SprinterLayout emptyLayout;
 
+	/// Display plain values, concatenating them with comma (except for strings).
+	static const SprinterLayout plainLayout;
+
 	/// Put each array and object element on a separate line
 	static const SprinterLayout lineLayout;
 

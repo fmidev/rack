@@ -51,15 +51,12 @@ namespace drain
 
 // Read utils
 
-/**
- *  \return – last char (among accepted chars) read, or null char if no chars read, or end-of-file encountered.
- */
 char TextReader::skipChars(std::istream & istr, const std::string chars){
 
 	char c = '\0';
 	while (istr){
 		if (chars.find(istr.peek()) != std::string::npos)
-			c = istr.get(); // Skip that char
+			c = istr.get(); // Skip that char and continue
 		else
 			return '\0'; //c;
 	}
@@ -87,14 +84,21 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 		// Handle escape - skip detecting endChars
 		if (c == '\\'){
 			istr.get(); // Swallow escape char.
-			mout.warn("escape char (", c, ")"); // todo: interpret \t, \n ?
+			//mout.warn("escape char (", c, ")"); // todo: interpret \t, \n ?
 			if (!istr){
 				//mout.warn() << "str=" << ostr.str() << mout.endl;
-				mout.warn("premature end of file with escape char '\\' (", c, ")"); // , str=" << ostr.str()
+				mout.warn("premature end-of-file after escape char '\\' (", c, ")"); // , str=" << ostr.str()
 				return cPrev;
 			}
+
 			c = istr.get();
+
 			switch (c){
+			// Accept silently
+			case '\\':
+			case '"':
+				break;
+			// Accept standard special chars
 			case 'n':
 				c='\n';
 				break;
@@ -104,7 +108,15 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 			case 'r':
 				c='\r';
 				break;
-			//default:
+			case 'b': // bell
+				c='\b';
+				break;
+			// Conformality to JSON not implemented. https://www.crockford.com/mckeeman.html
+			case 'u':
+				mout.unimplemented("JSON: unsupported escape, unicode '\\u", (char)c, "...'");
+				break;
+			default:
+				mout.unimplemented("JSON: unsupported escape char: '\\", (char)c, "' (",(int)c,")");
 			}
 			ostr.put(c);
 			/*

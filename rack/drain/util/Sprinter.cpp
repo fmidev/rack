@@ -63,6 +63,7 @@ TypeLayout & TypeLayout::setLayout(const char *layout){
 
 const SprinterLayout SprinterBase::defaultLayout;
 
+const SprinterLayout SprinterBase::plainLayout(",", ",", ",", nullptr);
 
 const SprinterLayout SprinterBase::emptyLayout("");
 

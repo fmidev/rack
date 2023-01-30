@@ -178,9 +178,15 @@ public:
 		return *this;
 	}
 
-	/// Clears std::strings or sets numeric values to zero. Does not change type or resize.
+	/// Clears std::strings or sets numeric values to zero. Does not change type. // or resize.
 	// Has been protected, even private. Why? Essentially setting a value.
 	void clear();
+
+	inline
+	void reset(){
+		caster.unsetType();
+		elementCount = 0;
+	}
 
 
 	/// Copies the value referred to by Castable. Notice that if type is unset (void), no operation is performed.
@@ -357,6 +363,8 @@ public:
 			return caster.get<T>(); //caster.get<T>(ptr);
 	}
 
+	// TODO: consider: operator bool() const
+
 	// TODO: PAIR
 	/*
 	template <class T>
@@ -390,33 +398,33 @@ public:
 	 *
 	 */
 	template <class T>
-	bool operator!=(const T &x){
+	bool operator!=(const T &x) const {
 		return (caster.get<T>() != x);
 	}
 
 	/// Compares a value to inner data.
 	// strings?
 	template <class T>
-	bool operator<(const T &x){
+	bool operator<(const T &x) const {
 		return (caster.get<T>() < x);
 	}
 
 	/// Compares a value with inner data.
 	template <class T>
-	bool operator>(const T &x){
+	bool operator>(const T &x) const {
 		return (caster.get<T>() > x);
 	}
 
 	/// Compares a value to inner data.
 	// strings?
 	template <class T>
-	bool operator<=(const T &x){
+	bool operator<=(const T &x) const {
 		return (caster.get<T>() <= x);
 	}
 
 	/// Compares a value with inner data.
 	template <class T>
-	bool operator>=(const T &x){
+	bool operator>=(const T &x) const {
 		return (caster.get<T>() >= x);
 	}
 
@@ -453,18 +461,21 @@ public:
 
 	std::ostream & toStream(std::ostream & ostr = std::cout, char separator='\0') const;
 
+
+	void toJSONold(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
+	std::ostream & valueToJSONold(std::ostream & ostr = std::cout) const;
+
 	std::string toStr() const;
-
-	void toJSON(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
-
-	std::ostream & valueToJSON(std::ostream & ostr = std::cout) const;
 
 	/// Writes a string of type indentifier char and size in bytes, for example [C@8] for unsigned char and [s@16] for signed short int."
 	void typeInfo(std::ostream & ostr) const;
 
-	/// Writes a bit longer type indentifier and size in bytes, for example "unsigned int(8) for char and "signed int(16) for signed short int."
+	/// Print value, type and element count
+	// Writes a bit longer type indentifier and size in bytes, for example "unsigned int(8) for char and "signed int(16) for signed short int."
 	virtual
 	void info(std::ostream & ostr = std::cout) const;
+
+	// void debug(std::ostream & ostr = std::cout) const;
 
 
 	/// Converts data to a STL Sequence, for example std::set, std::list or std::vector .
@@ -558,7 +569,6 @@ public:
 		this->fillArray       = c.fillArray;
 	}
 
-	void debug(std::ostream & ostr);
 
 
 protected:
@@ -721,7 +731,10 @@ protected:
 	void appendToString(const T & x){
 
 		std::stringstream sstr;
-		toStream(sstr);
+
+		drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
+		//toStream(sstr);
+
 		if (inputSeparator && (getElementCount()>1)){
 			sstr << inputSeparator;
 		}
@@ -848,7 +861,8 @@ public:
 		if (isString()){
 			std::stringstream sstr;
 			if (append){
-				toStream(sstr);  // outputsepp?
+				drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
+				//toStream(sstr);  // outputsepp?
 				if (inputSeparator)
 					sstr << inputSeparator;
 			}
@@ -995,8 +1009,8 @@ T & Castable::valueToJSON(T & ostr) const {
 }
 */
 
-template <>
-std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream & ostr, unsigned short);
+//template <>
+//std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream & ostr, unsigned short);
 
 
 /// "Friend class" template implementation
@@ -1007,6 +1021,7 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 inline
 std::ostream & operator<<(std::ostream &ostr, const Castable &c){
 	return c.toStream(ostr);
+	//return SprinterBase::toStream(ostr, c, SprinterBase::plainLayout);
 }
 
 

@@ -45,6 +45,44 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+
+// New 2023 "implementation"
+typedef drain::Tree<drain::Variable,true> JSONtree2;
+
+//template <>
+//const JSONtree2 JSONtree2::dummy;
+
+template <>
+inline
+std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const JSONtree2 & tree, const drain::SprinterLayout & layout){
+	return drain::JSON::treeToStream(ostr, tree, layout);
+	//return drain::SprinterBase::treeToStream(ostr, tree, layout);
+}
+
+template <>
+inline
+void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::string & key){
+
+	drain::Logger log( __FUNCTION__, __FILE__);
+
+	TextReader::skipWhiteSpace(istr) ;
+
+	char c = istr.peek();
+
+	if (c == '{'){
+		// log.warn("Reading object '", key, "'");
+		JSON::readTree(dst[key], istr); /// RECURSION
+	}
+	else {
+		// log.warn("Reading value '", key, "'");
+		JSON::readValue(istr, dst[key].data);
+	}
+
+	return;
+}
+
+
+
 /// A static class, with tree_t providing a partial implementation of JSON. An object consists of attributes (numeric, string, array) and nesting objects (excluding arrays).
 /**
  *

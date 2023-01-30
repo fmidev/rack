@@ -72,17 +72,18 @@ void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 	default: // numeric
 		value = TextReader::scanSegment(istr, "}, \t\n\r"); // 2023/01 re-added ','
 		//value = TextReader::scanSegment(istr, "} \t\n\r"); // 2023/01 dropped ','
-		if (!(v.typeIsSet() && keepType)){
+		if (!(keepType && v.typeIsSet())){
 			const std::type_info & type = Type::guessType(value);
 			v.requestType(type);
 		}
 		v = value;
+		/*
 		mout.warn() << "Numeric: str '" << value <<"' => ";
 		v.debug(mout);
 		mout << " peek:" << (char)istr.peek();
 		mout << mout.endl;
-		//mout.warn("final  type=", Type::call<drain::simpleName>(v.getType()));
-		break;
+		*/
+		//break;
 	}
 	//completed = true;
 

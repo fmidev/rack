@@ -137,9 +137,11 @@ void JSONtree::writeJSON(const drain::JSONtree::tree_t & t, std::ostream & ostr,
 void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
 
 
-	for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
-		ostr << dit->first << '='; // << dit->second;
-		dit->second.valueToJSON(ostr);
+	//for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
+	for (const auto & entry: t.data){
+		ostr << entry.first << '='; // << dit->second;
+		SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
+		// entry.second.valueToJSON(ostr);
 		ostr << '\n';
 	}
 	ostr << '\n';

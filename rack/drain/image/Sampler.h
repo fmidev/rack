@@ -251,17 +251,19 @@ public:
 
 			ostr << commentChar << commentChar << " input properties " << '\n';
 
-			for (FlexVariableMap::const_iterator it = picker.infoMap.begin(); it != picker.infoMap.end(); ++it){
-				ostr << commentChar << ' ' << it->first << '=';
-				it->second.valueToJSON(ostr);
+			for (const auto & entry: picker.infoMap){
+				ostr << commentChar << ' ' << entry.first << '=';
+				//it->second.valueToJSON(ostr);
+				SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
 				ostr << '\n';
 			}
 
 			ostr << commentChar << commentChar << " sampling parameters " << '\n';
 
-			for (ReferenceMap::const_iterator it = parameters.begin(); it != parameters.end(); ++it){
-				ostr << commentChar << ' ' << it->first << '=';
-				it->second.valueToJSON(ostr);
+			for (const auto & entry: parameters){
+				ostr << commentChar << ' ' << entry.first << '=';
+				// it->second.valueToJSON(ostr);
+				SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
 				ostr << '\n';
 			}
 			if (!formatStr.empty())

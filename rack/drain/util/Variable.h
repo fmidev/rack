@@ -348,33 +348,12 @@ protected:
 };
 
 
-/// "Friend class" template implementation
-/*
-template <>
-inline
-std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsigned short indentation){
-	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
-}
-*/
-
-/// "Friend class" template implementation
-//return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
-/*
-template <>
-inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout) {
-	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
-}
-*/
 
 template <>
 inline
 std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
 	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
 }
-
-
-
 
 
 /// FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also relinked to an external target.

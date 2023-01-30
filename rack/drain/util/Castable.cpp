@@ -115,17 +115,18 @@ std::string Castable::toStr() const {
 	}
 	else { // "default"
 		std::stringstream sstr;
-		toStream(sstr);
+		//toStream(sstr);
+		SprinterBase::toStream(sstr, *this, SprinterBase::plainLayout);
 		return sstr.str();
 	}
 	//return caster.get<std::string>(ptr);
 }
 
-void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
+void Castable::toJSONold(std::ostream & ostr, char fill, int verbosity) const {
 
 	ostr << '{' << fill << " \"value\": ";
 
-	valueToJSON(ostr);
+	valueToJSONold(ostr);
 
 	if (verbosity > 1){
 		ostr << ',' << fill << " \"type\": \"";
@@ -150,10 +151,13 @@ void Castable::toJSON(std::ostream & ostr, char fill, int verbosity) const {
 }
 
 
-std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
+std::ostream & Castable::valueToJSONold(std::ostream & ostr) const {
 
+	return SprinterBase::toStream(ostr, *this, SprinterBase::plainLayout);
+	/*
 	if ((getType() == typeid(char)) || isStlString()){
 		ostr << '"';
+		SprinterBase::toStream(ostr, *this, SprinterBase::plainLayout);
 		toStream(ostr, ','); // use JSONtree separator
 		ostr << '"';
 	}
@@ -167,6 +171,7 @@ std::ostream & Castable::valueToJSON(std::ostream & ostr) const {
 			toStream(ostr, ',');  // ... but here
 	}
 	return ostr;
+	*/
 }
 
 
@@ -184,19 +189,38 @@ void Castable::typeInfo(std::ostream & ostr) const {
 
 
 void Castable::info(std::ostream & ostr) const {
+	ostr << *this << " (";
+	if (isString())
+		ostr << "string [" << (getElementCount()-1) << "+1]";
+	else {
+		ostr << drain::Type::call<drain::simpleName>(getType());
+		if (getElementCount() > 1)
+			ostr << '[' << getElementCount() << ']';
+	}
+	ostr << ")";
+
+	//debug(ostr);
+	/*
 	valueToJSON(ostr);
 	ostr << ' ' << Type::call<complexName>(getType()); // << '(' << (getElementSize()*8) << ')';
 	size_t n = getElementCount();
 	if (n > 1)
 		ostr << " * " << n;
 	//ostr << '\n';
+
+	*/
 }
+
 
 
 Castable & Castable::assignCastable(const Castable &c){
 
 	// If this ie. destination is a string, convert input.
-	if (isString()){
+	if (c.getType() == typeid(void)){
+		std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";
+		reset();
+	}
+	else if (isString()){
 		// Should call resize()?
 		assignString(c.toStr());
 	}
@@ -263,7 +287,7 @@ void Castable::assignString(const std::string &s){
 
 }
 
-
+/*
 template <>
 std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ostr, unsigned short indentation){
 
@@ -283,23 +307,23 @@ std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ost
 		return JSONwriter::plainToStream(v, ostr);
 
 }
+*/
 
 /// "Friend class" template implementation
 template <>
 std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout) {
 
 	if (v.isString()){
-		const TypeLayout & l = layout.stringChars;
-		SprinterBase::prefixToStream(ostr, l);
-		ostr << v;
-		SprinterBase::suffixToStream(ostr, l);
+		//const TypeLayout & chars = layout.stringChars;
+		SprinterBase::prefixToStream(ostr, layout.stringChars);
+		v.toStream(ostr, layout.stringChars.separator);
+		SprinterBase::suffixToStream(ostr, layout.stringChars);
 	}
 	else if (v.getElementCount() > 1) {
-		const TypeLayout & l = layout.arrayChars;
-		SprinterBase::prefixToStream(ostr, l);
-		//SprinterBase::sequenceToStream(ostr, v, layout);
-		v.toStream(ostr, l.separator);
-		SprinterBase::suffixToStream(ostr, l);
+		//const TypeLayout & l = layout.arrayChars;
+		SprinterBase::prefixToStream(ostr, layout.arrayChars);
+		v.toStream(ostr, layout.arrayChars.separator);
+		SprinterBase::suffixToStream(ostr, layout.arrayChars);
 	}
 	else if (v.empty()) {
 		ostr << "null"; // TODO: layout.nullString
@@ -325,18 +349,5 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 
 }
 
-void Castable::debug(std::ostream & ostr){
-
-	ostr << *this << " (";
-	if (isString())
-		ostr << "string [" << (getElementCount()-1) << "+1]";
-	else {
-		ostr << drain::Type::call<drain::simpleName>(getType());
-		if (getElementCount() > 1)
-			ostr << '[' << getElementCount() << ']';
-	}
-	ostr << ")";
-
-}
 
 }  // drain

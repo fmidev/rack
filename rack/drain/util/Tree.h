@@ -126,37 +126,6 @@ public:
 	typedef drain::Tree<T,EXCLUSIVE,P,C> tree_t;
 	typedef std::map<key_t,tree_t> map_t;
 
-#ifdef DRAIN_TREE_ADAPTIVE
-
-	struct Adapter {
-
-		inline  //
-		Adapter(tree_t & t, const key_t & k): tree(t), key(k){
-		};
-
-		tree_t & tree;
-		const key_t key;
-
-		inline
-		operator tree_t & (){
-			return tree[key];
-		}
-
-		inline
-		operator node_t & (){
-			return data[key];
-		}
-
-
-	};
-
-	inline
-	Adapter adapt(const key_t & key){
-		return Adapter(*this, key);
-	}
-
-
-#endif
 
 
 	/// Default constructor.
@@ -244,7 +213,7 @@ public:
 			return it->second;
 		}
 		else {
-			/*
+			/*  Check/debug migration from operator(path) => operator(path) and operator[pathElem]
 			if (key.find(separator) != std::string::npos){
 				std::cerr << "op["<<key<<"] with '/', delegating to op()\n";
 				return operator()(key);
@@ -252,7 +221,6 @@ public:
 			*/
 			//children[key].separator = separator;
 			if (EXCLUSIVE){
-				//static const node_t empty; // TODO: make tunable default
 				data = dummy.data;
 			}
 
@@ -344,6 +312,10 @@ public:
 		children.clear();
 	};
 
+	/// Get default tree node, that is, a node with defult data and no children.
+	static inline
+	const tree_t & getDefault() { return dummy; };
+
 	/// Deletes a node (leaf) and its subtrees.
 	/** If an ending slash is included, then groups but no datasets will be erased. (?)
 	 *
@@ -408,7 +380,7 @@ public:
 	}
 
 	/// Debugging utility - dumps the structure of the tree (not the contents).
-	void dump(std::ostream &ostr = std::cout, const std::string &  indent="") const { // int depth = 0) const {
+	void dump(std::ostream &ostr = std::cout, bool nodes=false, const std::string &  indent="") const { // int depth = 0) const {
 
 		/*
 		std::map<std::string, std::string> unicode = {
@@ -419,6 +391,7 @@ public:
 				{"HORZ_DOWN", "┬"},
 		};
 		*/
+
 		static const std::string EMPTY(" ");
 		static const std::string VERT("│");
 		static const std::string VERT_RIGHT("├");
@@ -426,15 +399,11 @@ public:
 		static const std::string HORZ("─");
 		static const std::string HORZ_DOWN("┬");
 
-
-
 		//for (const auto & entry: *this){
 		for (typename map_t::const_iterator it = begin(); it != end(); it++){
 
 			const auto & entry = *it;
 
-			//for (int i = 0; i < depth; ++i)
-			//	ostr << "  ";
 			std::string indent2;
 			if (it == --end()){
 				ostr   << indent << UP_RIGHT << HORZ << HORZ; // "'––";
@@ -445,9 +414,14 @@ public:
 				indent2 = indent +  VERT + EMPTY + EMPTY; // "|  ";
 			}
 			ostr << entry.first; // << '\n'; //' ' << depth << '\n';
+			if (nodes){
+				//if (entry.second.data != NULL){
+				ostr << ':' << entry.second.data;
+				//}
+			}
 			ostr << '\n';
 			//entry.second.dump(ostr, depth+1);
-			entry.second.dump(ostr, indent2);
+			entry.second.dump(ostr, nodes, indent2);
 		};
 
 	};
@@ -546,7 +520,40 @@ protected:
 
 template <class T, bool E,class P, class C>
 const Tree<T,E,P,C> Tree<T,E,P,C>::dummy;
-
 }
+
+#ifdef DRAIN_TREE_ADAPTIVE
+
+	struct Adapter {
+
+		inline  //
+		Adapter(tree_t & t, const key_t & k): tree(t), key(k){
+		};
+
+		tree_t & tree;
+		const key_t key;
+
+		inline
+		operator tree_t & (){
+			return tree[key];
+		}
+
+		inline
+		operator node_t & (){
+			return data[key];
+		}
+
+
+	};
+
+	inline
+	Adapter adapt(const key_t & key){
+		return Adapter(*this, key);
+	}
+
+
+#endif
+
+
 
 #endif /* TREE2_H_ */

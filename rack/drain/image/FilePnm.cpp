@@ -511,9 +511,10 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		ofstr << '\n';
 	}
 	else {
-		for (FlexVariableMap::const_iterator it = vmap.begin(); it != vmap.end(); ++it) {
-			ofstr << '#' << ' ' << it->first << '=';
-			it->second.valueToJSON(ofstr);
+		for (const auto & entry: vmap) {
+			ofstr << '#' << ' ' << entry.first << '=';
+			//it->second.valueToJSON(ofstr);
+			SprinterBase::toStream(ofstr, entry.second, SprinterBase::jsonLayout);
 			ofstr << '\n';
 		}
 	}

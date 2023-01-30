@@ -65,19 +65,11 @@ public:
 	static
 	void readTree(T & tree, std::istream & istr);
 
-	// In reading trees.
-	template <class T>
-	static
-	void handleValue(std::istream & istr, T & tree, const std::string & key){
-		drain::Logger log(__FILE__, __FUNCTION__);
-		log.unimplemented("type:", typeid(T).name());
-	}
 
 	template <class T>
 	static
 	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent=0);
 
-public:
 
 	/// Read value. Read stream until a value has been extracted, with type recognition
 	static
@@ -93,6 +85,16 @@ public:
 	/// Given comma-separated string of values, assign them to variable of minimum compatible type
 	static
 	void readArray(const std::string & s, Variable & v);
+
+protected:
+
+	///  In reading trees.
+	template <class T>
+	static
+	void handleValue(std::istream & istr, T & tree, const std::string & key){
+		drain::Logger log(__FILE__, __FUNCTION__);
+		log.unimplemented("type:", typeid(T).name());
+	}
 
 
 };
@@ -113,7 +115,7 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 
 	if (DATA){
 		drain::SprinterBase::toStream(ostr, tree.data, layout);
-		return ostr;
+		return ostr; // exclusive
 		/*
 		if (CHILDREN)
 			ostr << layout.mapChars.separator;
@@ -147,7 +149,7 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 template <class T>
 void JSON::readTree(T & tree, std::istream & istr){
 
-	drain::Logger log(__FILE__, __FUNCTION__);
+	drain::Logger log(__FUNCTION__, __FILE__);
 
 
 	if (!istr){
@@ -166,7 +168,9 @@ void JSON::readTree(T & tree, std::istream & istr){
 
 	std::string key;
 	std::string value;
-	bool completed = false;
+
+	// Debugging. Incomplete segments raise warnings.
+	bool completed = true; //
 
 	while (istr){
 
@@ -187,7 +191,7 @@ void JSON::readTree(T & tree, std::istream & istr){
 
 			if (c == ':'){
 				handleValue(istr, tree, key);
-				log.note("-- end: ", key);
+				// log.note(" - end: ", key);
 				completed = true;
 			}
 			else {
@@ -196,12 +200,14 @@ void JSON::readTree(T & tree, std::istream & istr){
 			}
 		}
 		else if (c == '}'){
-			log.warn("closing '}' for ", key);
+			if (!completed) // comma encountered after empty segment
+				log.warn("empty section after key=", key);
+			//log.warn("closing '}' for ", key);
 			return;
 		}
 		else if (c == ','){
-			if (!completed) // comma encountered after empty segment
-				log.warn("empty section after key=", key);
+			//if (!completed) // comma encountered after empty segment
+			//	log.warn("empty section after key=", key);
 			completed = false; // trap for subsequent check
 		}
 		else { // TODO: warn if comma encountered after empty
@@ -212,6 +218,9 @@ void JSON::readTree(T & tree, std::istream & istr){
 	}
 
 }
+
+
+
 
 }  // drain
 

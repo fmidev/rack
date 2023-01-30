@@ -1845,11 +1845,14 @@ void CmdValidate::exec() const {
 					// Compose variable info: <path>:<key>=<value> <type>.
 					std::stringstream sstr;
 					sstr << path << ':' << entry.first << '=';
+					entry.second.info(sstr);
+					/*
 					entry.second.valueToJSON(sstr);
 					if (entry.second.isString())
 						sstr << " string";
 					else
 						sstr << ' ' << drain::Type::call<drain::complexName>(aType);
+					*/
 
 					/// Type test
 					if (aType == rType){

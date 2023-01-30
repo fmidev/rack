@@ -70,8 +70,6 @@ public:
 	static
 	char scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
 
-	//static	bool scanSegment(std::istream & istr, const std::string & endChars, std::strin & ostr);
-
 	/**
 	 *  \return - \c end char that was found; else \c null char, esp at \c end-of-file.
 	 */
@@ -81,13 +79,13 @@ public:
 
 	/// Read stream until a char not in \c skipChars or end-of-file is encountered.
 	/**
-	 *  \return - \c end char that was found; else \c null char, esp at \c end-of-file.
+	 *  \return – the last char skipped, else null char.
 	 */
 	static
 	char skipChars(std::istream & istr, const std::string skipChars); //  = " \t\n\r"
 
 	/**
-	 *  \return - space char that was found; else \c null char, esp at \c end-of-file.
+	 *  \return - the last whitespace char skipped, else null char.
 	 */
 	static inline
 	char skipWhiteSpace(std::istream & istr){

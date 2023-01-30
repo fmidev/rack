@@ -226,7 +226,7 @@ public:
 
 	/// Write data to output stream
 	inline
-	std::ostream & toOStream(std::ostream &ostr) const {  // NEW
+	std::ostream & toOStream(std::ostream &ostr) const  {  // NEW
 		//return (this->*toOStreamPtr)(ostr, this->ptr);
 		return (*toOStreamPtr)(ostr, this->ptr);
 	}
