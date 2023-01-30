@@ -480,7 +480,7 @@ void Palette::loadJSON(std::ifstream & ifstr){
 
 	drain::JSONtree::tree_t json;
 
-	drain::JSONtree::readTree(json, ifstr);
+	drain::JSON::readTree(json, ifstr);
 	//drain::JSONtree::read(json, ifstr);
 
 	const drain::JSONtree::node_t & metadata = json["metadata"].data;
@@ -539,7 +539,7 @@ void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
 				entry.alpha = l.back();
 				l.pop_back();
 			case 3:
-				entry.color.fromSequence(l);
+				entry.color.assignSequence(l);
 				break;
 			default:
 				mout.fail("Unsupported number of colours: ", l.size());
@@ -605,10 +605,12 @@ void Palette::write(const std::string & filename){
 		ofstr << svg;
 	}
 	else if (filepath.extension == "json"){
-		mout.debug() << "writing JSON palette/class file" << mout.endl;
 		drain::JSONtree::tree_t json;
+		mout.debug("exporting JSON palette");
 		exportJSON(json);
-		drain::JSONwriter::toStream(json, ofstr);
+		//drain::JSONwriter::toStream(json, ofstr);
+		mout.debug("writing JSON palette/class file");
+		drain::SprinterBase::toStream(ofstr, json);
 		// = drain::JSONwriter::mapToStream(json, ofstr); explicit
 		// = drain::JSONtree::writeJSON(json, ofstr);     old style
 	}
@@ -680,7 +682,7 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
-	VariableMap &metadata = json["metadata"].data;
+	VariableMap & metadata = json["metadata"].data;
 	metadata["title"] = title;
 
 	drain::JSONtree::tree_t & entries =  json["entries"];
@@ -689,10 +691,10 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 	std::stringstream key;
 
 	// Start with special codes (nodata, undetect)
-	for (spec_t::const_iterator it = specialCodes.begin(); it!=specialCodes.end(); ++it){
+	// for (spec_t::const_iterator it = specialCodes.begin(); it!=specialCodes.end(); ++it){
+	// const PaletteEntry & entry = it->second;
 
-		const PaletteEntry & entry = it->second;
-
+	for (const auto & entry: specialCodes){
 		key.str("");
 		key << "special";
 		key.width(2);
@@ -700,24 +702,27 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 		key << ++i;
 
 		drain::JSONtree::tree_t & js = entries[key.str()]; // entries[entry.id];
-		js.data["color"] = entry.color;
-		js.data.importCastableMap(entry.getParameters());
+
+		js.data["color"] = entry.second.color;
+		js.data.importCastableMap(entry.second.getParameters()); // color repeated?
 		Variable & value = js.data["value"];
 		value.reset();
-		value = it->first;
+		value = entry.first;
+		//mout.warn("value", entry.first);
 	}
 
 	i = 0;
-	for (Palette::const_iterator it = begin(); it!=end(); ++it){
-		const PaletteEntry & entry = it->second;
+	for (const auto & entry: *this){
+		//for (Palette::const_iterator it = begin(); it!=end(); ++it){
+		//const PaletteEntry & entry = it->second;
 		key.str("");
 		key << "colour";
 		key.width(3);
 		key.fill('0');
 		key << ++i;
 		VariableMap & m = entries[key.str()].data; // entries[entry.id].data;
-		m["color"] = entry.color;
-		m.importCastableMap(entry.getParameters());
+		m["color"] = entry.second.color;
+		m.importCastableMap(entry.second.getParameters());
 	}
 
 
@@ -748,7 +753,9 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	PaletteEntry entry;
-	entry.id = "test";
+
+	// entry.id = "test";
+
 	// entry.color.resize(3); // NOVECT
 	//entry.getParameters().link("color", entry.color);
 	entry.getParameters().link("color", entry.color.tuple());

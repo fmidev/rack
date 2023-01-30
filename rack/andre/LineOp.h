@@ -101,7 +101,7 @@ protected:
 
 	virtual
 	//void filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const;
-	void processData(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const;
+	void runDetector(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const;
 };
 
 }

@@ -164,7 +164,7 @@ public:
 	 *   \see getElementCount()
 	 */
 	inline
-	size_t isEmpty() const {
+	size_t empty() const {
 		if (!isStlString())
 			return (getElementCount() == 0);
 		else
@@ -558,6 +558,8 @@ public:
 		this->fillArray       = c.fillArray;
 	}
 
+	void debug(std::ostream & ostr);
+
 
 protected:
 
@@ -802,7 +804,7 @@ protected:
 
 		// Extend array.
 		requestSize(getElementCount() + 1);
-		if (isEmpty()){
+		if (empty()){
 			throw std::runtime_error(std::string(__FUNCTION__) + ": still empty after resize request(+1)");
 			return;
 		}
@@ -897,7 +899,7 @@ public:
 		if (!isCharArrayString())
 			throw std::runtime_error("getCharArray: type not char array...");
 
-		if (isEmpty()){
+		if (empty()){
 			static const char * empty = "";
 			return empty;
 			// throw std::runtime_error("getCharArray: empty array, no even null char");
@@ -927,7 +929,7 @@ public:
 
 		if (isCharArrayString()){
 
-			if (isEmpty()){
+			if (empty()){
 				static const char * empty = "";
 				return empty;
 				// throw std::runtime_error("getCharArray: empty array, no even null char");

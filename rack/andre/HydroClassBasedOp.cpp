@@ -38,7 +38,7 @@ using namespace drain::image;
 namespace rack {
 
 // void HydroClassBasedOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
-void HydroClassBasedOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void HydroClassBasedOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 //void HydroClassBasedOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

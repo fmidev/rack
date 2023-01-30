@@ -177,7 +177,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	for (int i = 0; i < num_text; ++i) {
 		mout << text_ptr[i].key << '=' << text_ptr[i].text << '\n';
 		// ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
-		JSONreader::readValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
+		JSON::readValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
 	}
 	mout << mout.endl;
 

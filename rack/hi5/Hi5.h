@@ -113,7 +113,8 @@ struct NodeHi5 {
 /// The most importand and central class for handling HDF5 data in \b Rack .
 //typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, '/', rack::ODIMPathLess> Hi5Tree;
 
-typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
+//typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
+typedef drain::Tree<hi5::NodeHi5, false, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
 
 
 namespace hi5 {

@@ -63,6 +63,11 @@ public:
 	ImageCodeMap() : separator(0) {
 	};
 
+
+	ImageCodeMap(std::initializer_list<entry_t> l) : cont_t(l), separator(0) {
+	};
+
+
 	/// Copy constructor //
 	// ImageCodeMap(const cont_t & v): cont_t(v), separator(0) {
 	ImageCodeMap(const cont_t & map): separator(0) { // COPY?
@@ -131,6 +136,7 @@ public:
 
 		/// Main loop: traverses entries, and fills up lookUp indices between entries.
 		for (typename cont_t::const_iterator it=this->begin(); it!=this->end(); ++it){
+		//for (const auto & entry: *this){
 
 			index = static_cast<int>(scaling.inv(it->first));
 

@@ -147,12 +147,12 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 		//mout.warn() << "productODIM not set above?" << mout.endl;
 
 		if (!productODIM.quantity.empty()){
-			mout.note() << "setting quantity defaults for " << productODIM.quantity << mout.endl;
+			mout.info() << "setting quantity defaults for " << productODIM.quantity << mout.endl;
 			getQuantityMap().setQuantityDefaults(productODIM, productODIM.quantity, productODIM.type);
 			mout.info() << "setQuantityDefaults: quantity=" << productODIM.quantity << ", " << EncodingODIM(productODIM) << mout.endl;
 		}
 		else if (!productODIM.type.empty()){
-			mout.warn() << "type set, but quantity unset?" << mout.endl;
+			mout.warn("type [", productODIM.type,"]set, but quantity unset?");
 			productODIM.setTypeDefaults();
 			mout.info() << "setTypeDefaults: " << EncodingODIM(productODIM) <<mout.endl;
 		}

@@ -64,7 +64,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Precipitation.h"
 
+
+// AnDRe
 #include "andre/BirdOp.h"
+#include "andre/BioMetOp.h"
+#include "andre/ClutterOp.h"
 
 #include "product/FunctorOp.h"
 
@@ -200,7 +204,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
 
-		mout.debug() << "Applying data selector and targetEncoding " << mout.endl;
+		mout.debug("Applying data selector and targetEncoding ");
 
 		if (this->bean.dataSelector.consumeParameters(ctx.select)){
 			mout.special() << "User defined select: " << this->bean.getDataSelector() << mout.endl;
@@ -225,22 +229,21 @@ public:
 		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
 
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
-		mout.timestamp("BEGIN_PRODUCT");
+		// mout.timestamp("BEGIN_PRODUCT");
 
 		mout.info("Computing: ", this->bean.getName(), this->getParameters());
 
 		// op.filter(getResources().inputHi5, getResources().polarHi5);
 		// const Hi5Tree & src = ctx.getCurrentInputHi5();
 		// RackContext::CURRENT not ok, it can be another polar product
-		//const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
+		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
 		const Hi5Tree & src = ctx.getHi5(
 				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
 				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
 		);
 
-		//mout.warn("Private ", ctx.id);
+		// mout.warn("Private ", ctx.id);
 		// mout.warn("BaseCtx ", getResources().baseCtx().id);
-
 		/*
 		RackContext::h5_role::value_t filter = RackContext::CURRENT;
 		Hi5Tree & dst1  = ctx.getMyHi5(filter);
@@ -251,7 +254,7 @@ public:
 		  mout.warn("hdf5.b  ", (size_t)&dst2,  '\n');
 		*/
 
-		if (src.isEmpty())
+		if (src.empty())
 			mout.warn("Empty, but proceeding...");
 
 		// if (only if) ctx.append, then ctx? shared?
@@ -262,6 +265,7 @@ public:
 		}
 
 		//mout.warn() << dst << mout.endl;
+		//mout.warn("Produktsi");
 		this->bean.processVolume(src, dst);
 		// hi5::Writer::writeFile("test1.h5", dst);
 
@@ -270,7 +274,7 @@ public:
 		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		ctx.currentHi5      = & dst;
 
-		mout.timestamp("END_PRODUCT");
+		// mout.timestamp("END_PRODUCT");
 
 		// hi5::Writer::writeFile("test2.h5", dst);
 	};
@@ -364,8 +368,10 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
 
 
-
-	install<BirdOp>(); //  bird;
+	// AnDRe detectors installed as products
+	install<BirdOp>(); //
+	install<BiometOp>(); //  TODO HIDDEN
+	install<ClutterOp>(); //
 
 	install<ConvOp>(); //  conv;
 

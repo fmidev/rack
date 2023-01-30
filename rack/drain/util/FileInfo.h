@@ -61,12 +61,13 @@ public:
 			return checkPath(FilePath(path));
 	}
 
-	/// Accepts or rejects a filename extension.
+	/// Accepts or rejects the extension extracted from file path.
 	inline
 	bool checkPath(const FilePath & filePath) const {
 		return checkExtension(filePath.extension);
 	}
 
+	/// Accepts or rejects a filename extension.
 	inline
 	bool checkExtension(const std::string & ext) const {
 		return extensionRegexp.test(ext);

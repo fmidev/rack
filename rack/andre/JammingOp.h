@@ -145,7 +145,7 @@ public:
 protected:
 
 	virtual
-	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
+	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
 	//void filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const;
 
 	/*

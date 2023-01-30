@@ -101,21 +101,7 @@ void FlexVariable::info(std::ostream & ostr) const {
 	else
 		ostr << " <own>";
 }
-/*
-template <>
-std::ostream & JSONwriter::toStream(const drain::Variable & v, std::ostream &ostr, unsigned short indentation){
 
-	if (v.isCharArrayString()){
-		return JSONwriter::toStream(v.getCharArray(), ostr, indentation);
-	}
-	else if (v.getElementCount() > 1) {
-		return JSONwriter::sequenceToStream(v, ostr);
-	}
-	else
-		return JSONwriter::plainToStream(v, ostr);
-
-}
-*/
 
 
 } // drain

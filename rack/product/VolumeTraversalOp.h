@@ -45,26 +45,14 @@ namespace rack {
 
 using namespace drain::image;
 
-/// Base class for radar data processors.
-
-/// Base class for radar data processors.
-/** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree<NodeH5>.
- *
+/// Class designed for "sequential" "parallel" processing of Sweeps.
+/**
  *  Basically, there are two kinds of polar processing
  *  - Cumulative: the volume is traversed, each sweep contributing to a single accumulation array, out of which the product layer(s) is extracted.
  *  - Sequential: each sweep generates new layer (/dataset) in the product; typically, the lowest only is applied.
  *
- *  TODO: Raise to RackOp
  */
-
-
-
-
-///
-/**
- *   \tparam M - ODIM type corresponding to products type (polar, vertical)
- */
-class VolumeTraversalOp : public PolarProductOp { //VolumeOp<PolarODIM> {
+class VolumeTraversalOp : public PolarProductOp {
 
 public:
 
@@ -73,17 +61,30 @@ public:
 
 	~VolumeTraversalOp(){};
 
+	// For AnDRe, only as quality/ but not as a product!
 	virtual
-	void processVolume(const Hi5Tree &src, Hi5Tree &dst) const;
+	void traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const;
 
-	virtual
-	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
 
+	// Shadowing, because template hereby "specialized" ie limited to (PolarSrc + PolarDst)?
 	virtual
-	inline
+	void computeProducts(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
+
+
+	// Already in PolarProductOp.h
+	/**
+	virtual	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
 		copyPolarGeometry(srcODIM, dstData);
 	}
+	*/
+
+
+protected:
+
+	// Routine for both product and AnDRe param selection
+	void collect(const Hi5Tree &src, Hi5Tree &dst) const;
+
 
 };
 

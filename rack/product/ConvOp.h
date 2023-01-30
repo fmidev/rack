@@ -152,7 +152,7 @@ public:
 
 protected:
 
-	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
+	void computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
 	// virtual
 	// void filter(const Hi5Tree & src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const;
 

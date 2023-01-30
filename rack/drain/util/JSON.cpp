@@ -30,7 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include "TextReader.h"
 
 #include "JSON.h"
 
@@ -38,50 +37,51 @@ namespace drain
 {
 
 
-void JSONreader::readValue(std::istream & istr, Variable & v, bool keepType){
+void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	TextReader::skipChars(istr, " \t\n\r");
+	//TextReader::skipChars(istr, " \t\n\r");
+	TextReader::skipWhiteSpace(istr);
 
 	std::string value;
 
 	int c = istr.peek();
 	switch (c) {
-	// consider:
+	// consider: flag to support:
 	// case '\'': // STRING
 	case '"': // STRING
 		istr.get();
 		v = TextReader::scanSegment(istr, "\"");
-		istr.get(); // swallow '"'
-		// std::cout << "String: " << value << '\n';
-		//mout.warn() << "String value '" << v << "'" << mout.endl;
+		istr.get();
+		break;
+	case '{': // OBject, but yes, as STRING
+		istr.get();
+		v = TextReader::scanSegment(istr, "}");
+		istr.get(); // swallow '}'
 		break;
 	case '[': // ARRAY TODO: chars/integer/float handling
 		istr.get();
 		value = TextReader::scanSegment(istr, "]");
 		istr.get(); // swallow ']'
-		/*
-			if (value.find_first_of("{}") != std::string::npos){
-				mout.warn() << "Arrays of objects not supported (key='" << key << "')" << mout.endl;
-			}
-		 */
 		if (value.find_first_of("[]") != std::string::npos){
 			mout.warn() << "Arrays of arrays not supported (value='" << value << "')" << mout.endl;
 		}
-		JSONreader::readArray(value, v);
+		JSON::readArray(value, v);
 		break;
 	default: // numeric
-		value = TextReader::scanSegment(istr, ",} \t\n\r");
+		value = TextReader::scanSegment(istr, "}, \t\n\r"); // 2023/01 re-added ','
+		//value = TextReader::scanSegment(istr, "} \t\n\r"); // 2023/01 dropped ','
 		if (!(v.typeIsSet() && keepType)){
 			const std::type_info & type = Type::guessType(value);
 			v.requestType(type);
-			//mout.warn() << "Value " << value << ", requested type=" << drain::Type::getTypeChar(type) << mout.endl;
 		}
-		//else // Type::call<drain::simpleName>(t)  // drain::Type::getTypeChar(v.getType())
-		//mout.warn() << "keeping type=" << Type::call<drain::simpleName>(v.getType()) << mout.endl;
-		//mout.debug3() << "Numeric attribute '" << key << "'= " << value << ", type=" << drain::Type::getTypeChar(type) << mout.endl;
 		v = value;
+		mout.warn() << "Numeric: str '" << value <<"' => ";
+		v.debug(mout);
+		mout << " peek:" << (char)istr.peek();
+		mout << mout.endl;
+		//mout.warn("final  type=", Type::call<drain::simpleName>(v.getType()));
 		break;
 	}
 	//completed = true;
@@ -89,7 +89,7 @@ void JSONreader::readValue(std::istream & istr, Variable & v, bool keepType){
 }
 
 
-void JSONreader::readArray(const std::string & s, Variable & v){
+void JSON::readArray(const std::string & s, Variable & v){
 
 	v.clear();
 

@@ -42,7 +42,7 @@ using namespace drain::image;
 
 namespace rack {
 
-void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
+void PrecipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;
@@ -59,7 +59,7 @@ void PrecipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 }
 
 // TODO: join with default quality
-void DefaultOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
+void DefaultOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 

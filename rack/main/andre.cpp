@@ -206,7 +206,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
-		mout.timestamp("BEGIN_ANDRE");
+		//mout.timestamp("BEGIN_ANDRE");
 
 		mout.debug() << "Running:  " << this->bean << mout.endl;
 		mout.note() << "AnDRe selector: " << ctx.andreSelect << mout.endl;
@@ -220,14 +220,14 @@ public:
 		//mout.note() << src << mout.endl;
 
 		//mout.warn() << dst << mout.endl;
-		this->bean.processVolume(src, dst);
+		this->bean.traverseVolume(src, dst);
 
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateInternalAttributes(dst);
 		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		ctx.currentHi5      = & dst;
 
-		mout.timestamp("END_ANDRE");
+		// mout.timestamp("END_ANDRE");
 	};
 
 };
@@ -252,14 +252,13 @@ public:
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
-		this->AnDReCommand<OP>::update();
-
 
 		mout.unimplemented() << "...Applying UNIVERSAL" << mout.endl;
 
+		this->AnDReCommand<OP>::update(); // ? why down here
+
 		// TODO: redesign this...
 		// DetectorOp::SUPPORT_UNIVERSAL = ctx.statusFlags.isSet(AnDReUniversal::ANDRE_UNIVERSAL);
-
 		//this->bean.UNIVERSAL = ctx.statusFlags.isSet(AnDReUniversal::ANDRE_UNIVERSAL);
 
 	}
@@ -381,7 +380,7 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 	detectorInstaller.install<SunOp>(); //   sun;
 	detectorInstaller.install<TimeOp>(); // time;
 
-	detectorInstaller.install<TestOp>(); // time;
+	// detectorInstaller.install<TestOp>(); // time;
 
 
 	// Wrapper for removal ops

@@ -71,7 +71,7 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 	else if (isCharArrayString()){  // char array without outputSeparator
 		ostr << getCharArray();
 	}
-	else if (!isEmpty()) {
+	else if (!empty()) {
 
 		//std::cerr << __FUNCTION__ << " separator: " << this->outputSeparator << '\n';
 
@@ -227,7 +227,7 @@ Castable & Castable::assignCastable(const Castable &c){
 
 void Castable::assignToCharArray(const std::string & s){
 	requestSize(s.size() + 1);
-	if (isEmpty())
+	if (empty())
 		throw std::runtime_error(std::string(__FUNCTION__) + ": array resize failed for: " + s);
 	const size_t n = std::min(s.size(), getElementCount()-1);
 	if (n < s.size()){
@@ -301,7 +301,7 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 		v.toStream(ostr, l.separator);
 		SprinterBase::suffixToStream(ostr, l);
 	}
-	else if (v.isEmpty()) {
+	else if (v.empty()) {
 		ostr << "null"; // TODO: layout.nullString
 	}
 	else if (v.getType() == typeid(bool)) {
@@ -325,6 +325,18 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 
 }
 
+void Castable::debug(std::ostream & ostr){
 
+	ostr << *this << " (";
+	if (isString())
+		ostr << "string [" << (getElementCount()-1) << "+1]";
+	else {
+		ostr << drain::Type::call<drain::simpleName>(getType());
+		if (getElementCount() > 1)
+			ostr << '[' << getElementCount() << ']';
+	}
+	ostr << ")";
+
+}
 
 }  // drain

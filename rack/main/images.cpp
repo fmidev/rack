@@ -575,7 +575,7 @@ public:
 		ctx.select = "";
 
 		if (graySrc.isEmpty()){
-			if (!ctx.currentHi5->isEmpty()){
+			if (!ctx.currentHi5->empty()){
 				mout.fail("hdf5 data exists, but selected gray image is empty, skipping.");
 				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // selector failed
 			}

@@ -51,72 +51,95 @@ namespace drain
 
 // Read utils
 
-void TextReader::skipChars(std::istream & istr, const std::string chars){
+/**
+ *  \return – last char (among accepted chars) read, or null char if no chars read, or end-of-file encountered.
+ */
+char TextReader::skipChars(std::istream & istr, const std::string chars){
 
+	char c = '\0';
 	while (istr){
-		if (chars.find(istr.peek()) == std::string::npos)
-			return;
+		if (chars.find(istr.peek()) != std::string::npos)
+			c = istr.get(); // Skip that char
 		else
-			istr.get();
+			return '\0'; //c;
 	}
 
+	return c;
 }
 
 
 
-bool TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
+char TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//size_t count = 0;
-	int c;
+	int c=0, cPrev=0;
 
 	// NOTE: in case of istringstream, while(!istr.eof()) or while(istr) do not work
 	while (true){
 
-		c = istr.get(); //istr.peek(); // no eof triggered until this
+		//c0 = istr.get(); //istr.peek(); // no eof triggered until this
+		c = istr.peek(); //istr.peek(); // no eof triggered until this
 		if (istr.eof())
-			return false;
+			return cPrev; // previous
 
+
+		// Handle escape - skip detecting endChars
 		if (c == '\\'){
-			mout.warn() << "special char: " << c << mout.endl; // todo: interpret \t, \n ?
-			// ostr << c; // swallowed, hence should be returned in output?
-			//istr.get();
-			c = istr.get();
+			istr.get(); // Swallow escape char.
+			mout.warn("escape char (", c, ")"); // todo: interpret \t, \n ?
 			if (!istr){
 				//mout.warn() << "str=" << ostr.str() << mout.endl;
-				mout.warn() << "premature end of file" << mout.endl; // , str=" << ostr.str()
-				return false; // ostr.str();
+				mout.warn("premature end of file with escape char '\\' (", c, ")"); // , str=" << ostr.str()
+				return cPrev;
+			}
+			c = istr.get();
+			switch (c){
+			case 'n':
+				c='\n';
+				break;
+			case 't':
+				c='\t';
+				break;
+			case 'r':
+				c='\r';
+				break;
+			//default:
 			}
 			ostr.put(c);
-			//++count;
+			/*
+			if (!istr){
+				mout.warn("premature end of file with special char '\\", (char)c, "'"); // , str=" << ostr.str()
+				return cPrev;
+			}
+			*/
+
 			continue;
 		}
 
-		if (endChars.find(c) == std::string::npos){
-			ostr.put(c);
-			//++count;
+		if (endChars.find(c) != std::string::npos){ // end char found.
+			return c;
 		}
-		else // end char found! Note: does not swallow endChars (maybe comma)
-			return true;
 
-		//istr.get();
+		ostr.put(c); // Accept and take char.
+		istr.get();  // Finally, read that char...
+		cPrev = c;
+
 	}
 
-	//mout.warn() << "premature file end, str=" << ostr.str() << mout.endl;
-	mout.warn() << "premature end of file, last char=" << c << mout.endl;
-
-	return false; // ostr.str();
+	// Unreachable code...
+	mout.warn("premature end of file, last char=", c);
+	return 0;
 }
 
 
 // Specified implementation
 template <>
-bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst){
+char TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst){
 	std::stringstream sstr;
-	bool result = scanSegment(istr, endChars, sstr);
+	char c = scanSegment(istr, endChars, sstr);
 	dst.assign(sstr.str());
-	return result;
+	return c;
 }
 
 

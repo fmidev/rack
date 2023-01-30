@@ -33,18 +33,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <fstream>
 #include <stdexcept>
 
-#include "Log.h"
-#include "Type.h"
 #include "FilePath.h"
+#include "Log.h"
+#include "Output.h"
 #include "TextReader.h"
-//#include "ValueReader.h"
+#include "Type.h"
+
 #include "JSONtree.h"
 #include "JSON.h"
 
 namespace drain
 {
 
-
+FileInfo JSONtree::fileInfo("json");
 
 
 /**
@@ -53,36 +54,28 @@ namespace drain
  *
  *
  */
-/*
 
-*/
 
 /// Reads and parses a Windows INI file
 void JSONtree::readINI(tree_t & t, std::istream & istr){
-	drain::Logger mout("JSON", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented() << "unimplemented code" << mout.endl;
 }
 
 
-
-
 void JSONtree::write(const tree_t & json, const std::string & filename){
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL "JSON", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const FilePath path(filename);
 	//mout.error() << "failed in extracting file type of filename: " <<  filename << mout.endl;
 
-	std::ofstream outfile;
-	outfile.open(filename.c_str(), std::ios::out);
+	Output outfile(filename);
 
 	if (!outfile){
 		mout.error() << "failed in opening file: " <<  filename << mout.endl;
 	}
-	// std::vector<std::string> result;
-	//if (!filenameExtension.execute(filename, result)){
-	//const std::string & ext = result[1];
 
+	const FilePath path(filename);
 
 	if (path.extension == "json"){
 		JSONtree::writeJSON(json, outfile);
@@ -94,8 +87,7 @@ void JSONtree::write(const tree_t & json, const std::string & filename){
 		mout.error() << "unknown file type: " << path.extension << mout.endl;
 	}
 
-
-	outfile.close();
+	//outfile.close();
 
 }
 
@@ -105,7 +97,7 @@ template <>
 std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostream &ostr, unsigned short indentation){
 
 	const bool ATTRIBS  = !t.data.empty();
-	const bool CHILDREN = !t.isEmpty();
+	const bool CHILDREN = !t.empty();
 
 	ostr << '{';
 
@@ -132,6 +124,7 @@ std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostr
 
 	return ostr;
 }
+
 
 
 void JSONtree::writeJSON(const drain::JSONtree::tree_t & t, std::ostream & ostr, unsigned short indentation){

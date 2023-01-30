@@ -44,7 +44,7 @@ namespace rack {
 
 
 //void ZDRvarOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
-void ZDRvarOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void ZDRvarOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug() << parameters << mout.endl;

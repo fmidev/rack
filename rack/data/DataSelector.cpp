@@ -153,7 +153,8 @@ void DataSelector::reset() {
 	//index = 0;
 	count = 1000;
 
-	elangle = {-90.0,+90.0}; // unflexible
+	drain::Range<double> e =  {-90.0,+90.0};
+	elangle = e; // {-90.0,+90.0}; // unflexible
 
 	//dualPRF = 0;
 	selectPRF.set(Prf::ANY);

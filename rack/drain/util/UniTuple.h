@@ -61,18 +61,32 @@ public:
 	typedef T* iterator;
 	typedef const T* const_iterator;
 
+	inline
 	UniTuple() : start(this->arr), init(nullptr){
 		fill(0);
 	};
+
+
+	template<typename S>
+	inline
+	UniTuple(std::initializer_list<S> l) : start(this->arr), init(nullptr){
+		set(l);
+	};
+
+
+
 
 	inline
 	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
 		set(t);
 	};
 
+	inline
+	~UniTuple(){};
+
 	/// Proposed for tuples only; derived classes should not shadow this.
 	tuple_t & assign(const tuple_t & t){
-		fromSequence(t);
+		assignSequence(t);
 		return *this;
 	}
 
@@ -92,11 +106,13 @@ public:
 		return *this;
 	}
 
+
 	template<typename S>
 	tuple_t & operator=(std::initializer_list<S> l){
-		fromSequence(l);
+		assignSequence(l);
 		return *this;
 	}
+
 
 	/// Return the number of elements.
 	/**
@@ -127,7 +143,7 @@ public:
 	template<typename S>
 	inline
 	void set(std::initializer_list<S> l){
-		fromSequence(l);
+		assignSequence(l);
 	}
 
 	inline
@@ -225,13 +241,14 @@ public:
 
 	/// Copy elements from a Sequence, like stl::list, stl::set or stl::vector.
 	template <class S>
-	UniTuple<T,N> & fromSequence(S & sequence){
+	UniTuple<T,N> & assignSequence(S & sequence){
 		typename S::const_iterator cit = sequence.begin();
 		iterator it = begin();
 		while (cit != sequence.end()){
 			if (it == end()){
-				std::cerr << __FILE__ << ':' << __FUNCTION__ << " assigning: " << *cit << std::endl;
-				throw std::runtime_error("run out of indices");
+				std::stringstream sstr;
+				sstr << __FILE__ << ':' << __FUNCTION__ << ": run out of indices in assigning: " << *cit;
+				throw std::runtime_error(sstr.str());
 				break;
 			}
 			//	break;

@@ -46,11 +46,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-//void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+//void RemoverOp::runDetector(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 //		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 // Does not use srcData or srcQuality
-// void TestOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+// void TestOp::runDetector(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 // PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstProb) const {
 
 void TestOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {

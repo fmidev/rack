@@ -59,7 +59,7 @@ using namespace drain::image;
 namespace rack {
 
 //void TimeOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
-void TimeOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

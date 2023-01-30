@@ -35,41 +35,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+CmdLog::CmdLog(CommandBank & cmdBank) : BasicCommand(__FUNCTION__, "Redirect log to file. Status variables like ${ID}, ${PID} and ${CTX} supported."), bank(cmdBank){
+	//, "filename", "/tmp/thread-${ID}.log"), bank(cmdBank) {
+	// TODO: change order of params!
+	parameters.link("file", filename);
+	parameters.link("level", level);
+	parameters.link("timing", timing=false); // could be static, directly. (See copyStruct FLAGS?)
+};
+
+CmdLog::CmdLog(const CmdLog & cmd) : BasicCommand(cmd), bank(cmd.bank), timing(false) {
+	parameters.copyStruct(cmd.parameters, cmd, *this);
+}
+
+
 void CmdLog::exec() const {
 
 	Context & ctx = getContext<Context>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-	//mout.warn("under constr...");
-
-	bank.logFileSyntax.parse(value);
-	mout.debug("parsed: ", bank.logFileSyntax);
-
-	/*
-	std::string s = mapper.parse(value).toStr(ctx.getStatusMap());
-
-	if (ctx.logFileStream.is_open()){
-		mout.warn() << "log file '" << ctx.logFile << "' closed by '"<< s << "'" << mout.endl;
-		ctx.log.setOstr(std::cerr);
-		ctx.logFileStream.close();
+	// TODO: change order of params!
+	if (!filename.empty()){
+		bank.logFileSyntax.parse(filename);
+		mout.debug("parsed filename: ", bank.logFileSyntax);
 	}
 
-	ctx.logFile = s;
-
-	ctx.logFileStream.open(ctx.logFile, std::ios::out);
-
-	if (ctx.logFileStream.is_open()){
-		ctx.log.setOstr(ctx.logFileStream);
-		mout.note() << "thread" << ctx.getId() << mout.endl;
-		mout.timestamp("START") << ctx.logFile << mout.endl;
-		mout.warn() << ctx.logFile<< mout.endl;
-		return;
+	if (!level.empty()){
+		mout.unimplemented("level argument...");
+		//mout.warn("under constr...");
 	}
 
-	ctx.log.setOstr(std::cerr);
-	mout.error() << "failed in opening log file: " << ctx.logFile << mout.endl;
-	*/
+	drain::Logger::TIMING = timing;
+
 }
 
 void CmdStatus::exec() const {

@@ -103,17 +103,6 @@ public:
 		// updateTuple();
 	}
 
-	/*
-	inline
-	void setArea(T w, T h){
-		this->set(w, h);
-		//updateTuple();
-	}
-
-	void setArea(const Frame2D & geometry){
-    	setArea(geometry.getWidth(), geometry.getHeight());
-    }
-	*/
 
     inline
     T getWidth() const {
@@ -130,6 +119,10 @@ public:
 		return width*height;
 	};
 
+	inline
+	bool empty() const {
+		return (width==0) || (height==0);
+	};
 
 
 

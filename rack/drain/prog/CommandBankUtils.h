@@ -97,20 +97,28 @@ public:
 
 };
 
-class CmdLog : public SimpleCommand<> {
+//class CmdLog : public SimpleCommand<> {
+class CmdLog : public BasicCommand {
 
 public:
 
-	inline
-	CmdLog(CommandBank & cmdBank) : SimpleCommand<>(__FUNCTION__, "Redirect log to file. Status variables like ${ID}, ${PID} and ${CTX} supported.", "filename", "/tmp/thread-${ID}.log"), bank(cmdBank) {
-	};
+	CmdLog(CommandBank & cmdBank);
+
+	CmdLog(const CmdLog & cmd);
 
 	void exec() const;
 
 protected:
 
-	// Copy constructor should copy this as well. (?)
 	CommandBank & bank;
+
+	std::string filename;
+
+	// For numeric or string keys
+	std::string level;
+
+	bool timing;
+
 };
 
 
@@ -164,12 +172,14 @@ public:
 		cmdBank.scriptCmd = getName(); // mark me special
 	};
 
-	// reconsider exec();
+	inline
+	CmdScript(const CmdScript & cmd) : SimpleCommand<std::string>(cmd), bank(cmd.bank){
+	}
 
 protected:
 
 	// Copy constructor should copy this as well.
-	// FUture versions may store the script in Context!
+	// FUture versions may store the script in Context?
 	CommandBank & bank;
 
 };

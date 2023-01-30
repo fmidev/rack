@@ -72,10 +72,14 @@ public:
 	}
 
 	//std::ostream & toOstr(std::ostream &ostr);
-
+	/*
 	template <class K, class T, class C>
 	static
-	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & t, const std::string & defaultTag = "");
+	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<K,false,T,C> & t, const std::string & defaultTag = "");
+	*/
+	template <class T>
+	static
+	std::ostream & toOStr(std::ostream &ostr, const T & t, const std::string & defaultTag = "");
 
 	std::string ctext;
 
@@ -92,12 +96,15 @@ protected:
 //#define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
 
 //typedef drain::Tree<std::string,NodeXML> TreeXML;
-typedef drain::Tree<NodeXML> TreeXML;
+typedef drain::Tree<NodeXML,false> TreeXML;
 
-template <class K, class T, class C> //, class C>
-std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tree, const std::string & defaultTag){
+//template <class K, boolclass T, class C> //, class C>
+template <class T>
+std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::string & defaultTag){
 
-	const std::map<std::string, Tree<K,T,C> > & children = tree.getChildren();
+	//TreeXML::map_t x;
+	//const std::map<std::string,TreeXML> & children = tree.getChildren();
+	const typename T::map_t & children = tree.getChildren();
 
 	// OPEN TAG
 	ostr << '<';
@@ -139,8 +146,9 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const drain::Tree<K,T,C> & tr
 			ostr << tree->ctext;
 
 		/// iterate children
-		for (typename std::map<std::string, Tree<K,T,C> >::const_iterator it = children.begin(); it != children.end(); it++){
-			toOStr(ostr, it->second, it->first);
+		//for (typename std::map<std::string, TreeXML >::const_iterator it = children.begin(); it != children.end(); it++){
+		for (const auto & entry: children){
+			toOStr(ostr, entry.second, entry.first);
 			//ostr << *it;
 		}
 		// add end </TAG>

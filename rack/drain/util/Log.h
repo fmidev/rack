@@ -310,11 +310,7 @@ public:
 	 */
 	Logger(Log &log, const char *funcName, const std::string & name = ""); //const char *className = NULL);
 
-	~Logger(){
-		// Change absolute start time to elapsed time.
-		time = monitor.getMilliseconds() - time;
-		timestamp();
-	}
+	~Logger();
 
 	/// Returns true, if the log monitor level is at least l.
 	/**
@@ -557,6 +553,21 @@ public:
 	};
 
 
+		/// Public, yet typically used "internally", when TIMING=true.
+	/*
+	template<typename ... TT>
+	inline
+	Logger & timing(const TT &... args){
+		static const Notification notif(__FUNCTION__, 7);
+		if (TIMING){ // ok here (also?)
+			initMessage<LOG_WARNING>(notif); // can be low, say WARNING level, because restricted with TIMING
+			flush(args...);
+			//std::cerr << args...;
+		};
+		return *this;
+	};
+	*/
+
 
 	/// Debug information.
 	/**
@@ -609,23 +620,84 @@ public:
 		//return *this;
 	};
 
+
+	static bool TIMING; // = false;
+	static char MARKER;
+
+	bool timing;
+
 	/// Send a short [INFO] preceded with a time stamp.
-	Logger & timestamp(const std::string & label);
+	//Logger & timestamp(const std::string & label);
+
+	/** Starts, if global TIMING flag is set and my flag unset.
+	 *
+	 */
+	inline
+	void startTiming(){
+		if (TIMING && !timing){
+			initTiming(this->prefix);
+		}
+	};
+
+	/** Starts, if global TIMING flag is set and my flag unset.
+	 *
+	 */
+	template<typename ... TT>
+	void startTiming(const TT &... args){
+		if (TIMING && !timing){  // consider error if already timing?
+			initTiming(args...);
+		}
+	};
+
+	//template<typename ... TT>
+	//void endTiming(const TT &... args){
+	void endTiming(){
+		if (timing){
+			time = monitor.getMilliseconds() - time;
+			std::cerr << "TIMING:" << MARKER << "</div> ";
+			//describeTiming(args...); // STORE timing label?
+			// << ": "
+			std::cerr << "<b>"  << (static_cast<float>(time)/1000.0f) << "</b>" << "<br/>" << '\n';
+			/*
+			std::cerr << "TIMING:" << MARKER << "</ol> ";
+			//describeTiming(args...); // STORE timing label?
+			// << ": "
+			std::cerr << "<b>"  << (static_cast<float>(time)/1000.0f) << "</b>" << "</li>" << '\n';
+			*/
+			timing = false;
+		}
+	}
+
+protected:
+
+	template<typename ... TT>
+	void initTiming(const TT &... args){
+		timing = true; // consider error if already timing?
+		std::cerr << "TIMING:" << MARKER; // << "<li>";
+		describeTiming(args...);
+		// std::cerr << " [" <<  prefix  << "] <ol>" << '\n';
+		//std::cerr << " <ol>" << '\n';
+		std::cerr << " <div>" << '\n';
+		time = monitor.getMilliseconds();
+	};
+
+
+	template<typename T, typename ... TT>
+	void describeTiming(const T & arg, const TT &... args){
+		std::cerr << arg;
+		describeTiming(args...);
+	};
+
+	inline
+	void describeTiming(){
+	};
+
+public:
+
 
 	/// Send a longer [INFO] preceded with a time stamp.
-	Logger & timestamp();
+	// Logger & timestamp();
 
-
-	/// Simple assignment and direct flush
-	/*
-	template <class T>
-	Logger &operator=(const T & x) {
-		message.str();
-		this->operator <<(x);
-		monitor.flush(level, *notif_ptr, prefix, message);
-		return *this;
-	}
-	*/
 
 	/// Direct
 

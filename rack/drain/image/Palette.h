@@ -91,9 +91,12 @@ namespace image
 
 // Why beanlike? Overkill..
 
-class PaletteEntry : public LegendEntry, public BeanLike {
+//class PaletteEntry : public LegendEntry, public BeanLike {
+class PaletteEntry : public BeanLike {
 
 public:
+
+	std::string label;
 
 	/// Intensity type
 	typedef double value_t;
@@ -137,7 +140,7 @@ public:
 	value_t alpha;
 
 
-	/// Unique label (latent)
+	/// Unique label (latent/invisible? for undetected/nodata)
 	std::string id; // was already obsolete?
 
 	/// Description appearing in legends

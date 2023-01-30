@@ -67,7 +67,7 @@ namespace rack {
  *
  */
 //void LineOp::processImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
-void LineOp::processData(const PlainData<PolarSrc> &srcData, PlainData<PolarDst> &dstData) const {
+void LineOp::runDetector(const PlainData<PolarSrc> &srcData, PlainData<PolarDst> &dstData) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

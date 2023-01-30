@@ -91,8 +91,7 @@ protected:
 	};
 
 	// Copy Polar could be enough?
-	virtual
-	inline
+	virtual	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
 		copyPolarGeometry(srcODIM, dstData);
 	}

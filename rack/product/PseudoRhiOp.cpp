@@ -74,7 +74,7 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 
 }
 
-void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const {
+void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const {
 //void PseudoRhiOp::processVolume(const Hi5Tree & src, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -220,10 +220,13 @@ void PseudoRhiOp::processDataSets(const DataSetMap<PolarSrc> & src, DataSet<RhiD
 				/// Traverse the sweeps, derive upper and lower beams.
 				while (true){
 
-					// Virtual elevation angle
-					const double eta0 = it->first*(M_PI/180.0);
+
 					const DataSet<PolarSrc> & srcDataSet = it->second;
 					const Data<PolarSrc>      & srcData = srcDataSet.getFirstData(); // todo 1) what if differs from quantity  2) control quantity?
+
+					// Virtual elevation angle
+					//const double eta0 = it->first*(M_PI/180.0);
+					const double eta0 = srcData.odim.elangle*(M_PI/180.0);
 
 					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta0, beta) / srcData.odim.rscale - srcData.odim.rstart);
 

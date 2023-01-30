@@ -39,15 +39,16 @@ using namespace drain::image;
 
 namespace rack {
 
-void BiometOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
+void BiometOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug() << *this << mout.endl;
+	mout.warn(*this);
 
 	const int width  = srcData.data.getWidth();
 	const int height = srcData.data.getHeight();
 
-	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
+	mout.note("=>srcData.odim: ", srcData.odim);
+	mout.note("=>dstData: \n", dstData);
 
 	/// Descending fuzzy step, located at (max) altitude.
 	//const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);

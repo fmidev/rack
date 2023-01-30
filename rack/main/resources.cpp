@@ -93,7 +93,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 
 	if (filter & PRIVATE){
 		Hi5Tree & dst = getMyHi5(filter);
-		if ((filter & EMPTY) || !dst.isEmpty()){
+		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
 			mout.info("Using PRIVATE (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
@@ -102,7 +102,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 
 	if (filter & SHARED){
 		Hi5Tree & dst = getResources().baseCtx().getMyHi5(filter);
-		if ((filter & EMPTY) || !dst.isEmpty()){
+		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
 			mout.info("Using SHARED (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
@@ -223,7 +223,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 
 	ODIMPath path;
 
-	if (src.isEmpty()){
+	if (src.empty()){
 		mout.debug() << "No HDF5 data" << mout.endl;
 		return path;
 	}

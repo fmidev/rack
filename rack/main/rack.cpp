@@ -87,7 +87,10 @@ int process(int argc, const char **argv) {
 	//drain::image::getImgLog().setVerbosity(imageLevel);
 
 	drain::Logger mout(ctx.log, "rack");
-	mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
+	//mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
+
+	// TODO take time, lapTime()
+	//mout.timestamp
 
 	mout.debug("Activate modules");
 

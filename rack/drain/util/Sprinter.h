@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "UniTuple.h"
 
 
+
 namespace drain {
 
 
@@ -297,6 +298,15 @@ public:
 	}
 
 
+	/// Write drain::Tree's or any trees that have tree::data[] member.
+	//template <class T, bool EXCL>
+	//static
+	//std::ostream & treeToStream(std::ostream & ostr, const Tree<T,EXCL> & tree, const drain::SprinterLayout & layout, short indent){
+	template <class T>
+	static
+	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent=0);
+
+
 	/// Routine for non-sequence types that may like prefix and suffix, anyway.
 	template <class T>
 	static
@@ -384,6 +394,71 @@ public:
 
 
 };
+
+
+
+template <class T>
+std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent){
+// template <class T, bool EXCL>//
+// std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const Tree<T,EXCL> & tree, const drain::SprinterLayout & layout, short indent){
+
+	const bool DATA     = !tree.data.empty();
+	const bool CHILDREN = !tree.empty();
+
+	if (! (DATA||CHILDREN)){
+		// Also empty element should return something, here {}, but could be "" or null ?
+		ostr << layout.mapChars.prefix << layout.mapChars.suffix; // '\n';
+		return ostr;
+	}
+
+	const std::string pad(2*indent, ' ');
+
+
+	if (DATA){
+		drain::SprinterBase::toStream(ostr, tree.data, layout);
+		//return ostr;
+		/*
+		char sep = 0;
+		for (const auto & entry: tree.data){
+			if (sep){
+				ostr << sep;
+				ostr << '\n';
+			}
+			else {
+				sep = layout.mapChars.separator;
+			}
+			ostr << pad << "  " << '"' << entry.first << '"' << layout.pairChars.separator << ' ';
+			drain::SprinterBase::toStream(ostr, entry.second, layout);
+		}
+		*/
+		if (CHILDREN)
+			ostr << layout.mapChars.separator;
+		ostr << '\n';
+	}
+
+	ostr << layout.mapChars.prefix << '\n';
+
+	if (CHILDREN){
+		char sep = 0;
+		for (const auto & entry: tree){
+			if (sep){
+				ostr << sep;
+				ostr << '\n';
+			}
+			else {
+				sep = layout.mapChars.separator;
+			}
+			ostr << pad << "  " << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
+			treeToStream(ostr, entry.second, layout, indent+1); // recursion
+		}
+		ostr << '\n';
+	}
+
+	ostr << pad << layout.mapChars.suffix; //  << '\n';
+
+	return ostr;
+}
+
 
 // MOVE to json files const SprinterLayout SprinterBase::layoutJSON;
 

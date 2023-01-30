@@ -126,7 +126,9 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	if (!image.isEmpty()){  // image or palette
 		// Notice: no attribute conversion supported.
 		//const std::string &name = image.
+		//mout.startTiming("");
 		imageToH5DataSet(image, fid, path);
+
 		//drain::Variable d(typeid(std::string));
 		if (attributes["CLASS"].toStr() == "PALETTE"){
 
@@ -326,10 +328,10 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 
 	// hi5::hi5monitor,
 	drain::Logger mout(__FUNCTION__, __FILE__ );
-
+	// mout.startTiming();
 
 	mout.debug3() << ": starting, path=" << path << mout.endl;
-	mout .debug3() << image << mout.endl;
+	mout.debug3() << image << mout.endl;
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
 	std::vector<hsize_t> dims;

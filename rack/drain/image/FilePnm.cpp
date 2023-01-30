@@ -127,7 +127,7 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 		if (!key.empty()){
 			mout.debug2() << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
 			//ValueReader::scanValue(sstr.str(), properties[key]);
-			JSONreader::readValue(sstr.str(), properties[key]);
+			JSON::readValue(sstr.str(), properties[key]);
 		}
 		else {
 			mout.note() << "Comment:" <<  sstr.str() << mout.endl;
@@ -162,7 +162,7 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 		//properties["coordinatePolicy"].toSequence(policy);
 		//conf.coordinatePolicy.set(policy);
 		properties["coordinatePolicy"].toSequence(policy);
-		conf.coordinatePolicy.fromSequence(policy);
+		conf.coordinatePolicy.assignSequence(policy);
 	}
 
 	conf.setGeometry(width, height, channels);

@@ -123,6 +123,11 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	if (drain::Logger::TIMING){
+		SourceODIM source(srcData.odim.source);
+		mout.startTiming(source.NOD);
+	}
+
 	const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
 
 	if (!projR2M.isSet())
@@ -420,7 +425,12 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const PlainData<CartesianSrc> & srcQuality, double weight, int i0, int j0){
 
-	drain::Logger mout("Composite", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//if (drain::Logger::TIMING){
+		// SourceODIM source(cartSrc.odim);
+	mout.startTiming(cartSrc.odim.source);
+	//}
 
 	checkQuantity(cartSrc.odim.quantity);
 

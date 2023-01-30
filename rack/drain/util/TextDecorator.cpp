@@ -47,7 +47,7 @@ const drain::FlaggerDict drain::EnumDict<TextDecorator::Style>::dict = {
 		{"ITALIC", TextDecorator::ITALIC},
 		{"BOLD", TextDecorator::BOLD},
 		{"DIM", TextDecorator::DIM},
-		{"INVERSE", TextDecorator::INVERSE},
+		{"INVERSE", TextDecorator::REVERSE}, // VT100 8
 //		{"", TextDecorator::},
 };
 

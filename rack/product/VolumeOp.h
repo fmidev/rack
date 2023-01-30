@@ -99,7 +99,7 @@ public:
 	/**
 	 *  This default implementation converts the volume to DataSetMap<PolarSrc>, creates an instance of
 	 *  DataSet<DstType<M> >
-	 *  and calls processDataSets().
+	 *  and calls computeSingleProduct().
 	 */
 	virtual
 	void processVolume(const Hi5Tree &src, Hi5Tree &dst) const;
@@ -125,6 +125,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
 
 	// Step 1: collect sweeps (/datasetN/)
+	//DataSetMap<PolarSrc> sweeps;
 	DataSetMap<PolarSrc> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
@@ -143,18 +144,41 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
 	}
 
-	for (const ODIMPath & parent: dataPaths){
+	for (ODIMPath & path: dataPaths){
+
+		if (!path.front().is(ODIMPathElem::DATASET)){
+			path.pop_front();
+			if (path.empty()){
+				mout.warn("odd 1st path elem (..), with selector: ", this->dataSelector);
+				continue;
+			}
+		}
+
+		const ODIMPathElem & parent = path.front();
+
+		if (!parent.is(ODIMPathElem::DATASET)){
+			mout.warn("path does not start with /dataset.. :", path, ", with selector: ", this->dataSelector);
+			continue;
+		}
 
 		// mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
-
 		const Hi5Tree & srcDataSet = src(parent);
-		const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
 
-		//mout.debug3() << "check elangle of "  << parent << mout.endl;
-		mout.debug() << "testing " << parent << ", elangle=" << elangle << ':' << srcDataSet.data.dataSet << mout.endl;
+		// const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
+		// mout.deprecating("no more testing ", parent, ", elangle=", elangle, ':', srcDataSet.data.dataSet);
 
-		//mout.note() << "src dataset1/data2 QTY = " << srcDataSet["data2"]["data"].data.dataSet << mout.endl;
+		const drain::VariableMap & what = srcDataSet[ODIMPathElem::WHAT].data.attributes;
+		std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
 
+		if (sweeps.find(datetime) == sweeps.end()){
+			mout.debug2("adding time=", datetime, ':', parent);
+			sweeps.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity))));
+		}
+		else {
+			mout.warn("datetime =", datetime, " already added?, skipping ",  parent);
+		}
+
+		/*
 		if (sweeps.find(elangle) == sweeps.end()){
 			mout.debug3() << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
 			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
@@ -164,6 +188,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		else {
 			mout.note() << "elange ="  << elangle << " already added, skipping " << parent << mout.endl;
 		}
+		*/
 	}
 
 	//mout.note() << "first elange =" << sweeps.begin()->first << " DS =" << sweeps.begin()->second << mout.endl;
@@ -185,7 +210,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		//mout.info() << "appending to next available data group in " << dataSetPath <<  mout.endl;
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::ROOT)){
-		if (!dst.isEmpty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
+		if (!dst.empty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
 			mout.info("clearing previous result, use --append [data|dataset] to avoid");
 			dst.clear();
 		}
@@ -245,7 +270,8 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	/// MAIN
-	this->processDataSets(sweeps, dstProductDataset);
+	this->computeSingleProduct(sweeps, dstProductDataset);
+	// this->processSweeps(sweeps, dstProductDataset);
 
 	// mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
 

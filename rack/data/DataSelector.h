@@ -53,7 +53,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-//struct DataOrder : public std::pair<drain::SingleFlagger<Crit>, drain::SingleFlagger<Oper> > {
 struct DataOrder { //: public drain::BeanLike {
 
 	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
@@ -62,9 +61,9 @@ struct DataOrder { //: public drain::BeanLike {
 	const char separator = ':';
 
 	typedef drain::EnumFlagger<drain::SingleFlagger<Crit> > CritFlagger;
-	typedef drain::EnumFlagger<drain::SingleFlagger<Oper> > OperFlagger;
-
 	CritFlagger criterion;
+
+	typedef drain::EnumFlagger<drain::SingleFlagger<Oper> > OperFlagger;
 	OperFlagger operation;
 
 	template<typename ... TT>
@@ -98,13 +97,6 @@ struct DataOrder { //: public drain::BeanLike {
 
 };
 
-/*
-template <>
-inline
-std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const DataOrder & x, const drain::SprinterLayout & layout){
-        return drain::SprinterBase::toStream(ostr, (const DataOrder::pair_t &)x, layout);
-}
-*/
 
 
 

@@ -61,7 +61,7 @@ namespace rack {
  *
  *   This function is called for each desired elevation, typically just the lowest 1-2.
  */
-void ShipOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 	/// For verbose mode (monitoring and debugging the process)
 	drain::Logger mout(__FUNCTION__, __FILE__);

@@ -37,11 +37,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <map>
 
-#include "String.h"
 #include "CastableIterator.h"
 #include "Reference.h"
-//#include "SmartMap.h"
-#include "JSONwriter.h"
+#include "Sprinter.h"
+#include "String.h"
+#include "UniTuple.h" // "Friend class"
+//#include "JSONwriter.h"
 
 
 // // // // using namespace stda;
@@ -225,6 +226,14 @@ public:
 		return *this;
 	}
 
+	template <class T, size_t N>
+	inline
+	Variable &operator=(const UniTuple<T,N> & unituple){
+		// reset();
+		//setType(typeid(T));
+		assignContainer(unituple);
+		return *this;
+	}
 	/* Handler by template, below
 	inline
 	Variable &operator=(const Castable &c){
@@ -340,11 +349,13 @@ protected:
 
 
 /// "Friend class" template implementation
+/*
 template <>
 inline
 std::ostream & JSONwriter::toStream(const Variable & v, std::ostream &ostr, unsigned short indentation){
 	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
 }
+*/
 
 /// "Friend class" template implementation
 //return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());

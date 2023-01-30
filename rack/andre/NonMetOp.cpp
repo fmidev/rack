@@ -45,7 +45,7 @@ namespace rack {
 
 //void NonMetOp::filterImage(const PolarODIM &srcData.odim, const Image &src, Image &dst) const {
 
-void NonMetOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

@@ -123,7 +123,6 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	mout.debug("add A1 " + ctx.getName());
 
-	mout.timestamp("BEGIN_CART_ADD");
 
 	/*
 	std::ostream & logOrig = std::cerr;
@@ -188,7 +187,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	//const Hi5Tree & src = ctx.getHi5(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
 
-	if (src.isEmpty()){
+	if (src.empty()){
 		mout.warn("thread #", ctx.getName(), ": input data empty? Filter =",  Hdf5Context::h5_role::getShared().getKeys(inputFilter, '|'));
 	}
 
@@ -210,7 +209,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 		//else if (ctx.currentHi5 == & ctx.cartesianHi5){
 		if ((object == "SCAN") || (object == "PVOL"))
 			mout.info() << "polar input data, ok" << mout.endl;
-		else if (object.isEmpty())
+		else if (object.empty())
 			mout.warn() << "empty what:object, assuming polar" << mout.endl;
 		else
 			mout.warn() << "suspicious what:object=" << object << ", assuming polar" << mout.endl;
@@ -236,14 +235,14 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-	mout.timestamp("BEGIN_CART_CREATE");
+	//mout.timestamp("BEGIN_CART_CREATE");
 
 	mout.debug("CART #" + ctx.getName());
 
 
 	RackResources & resources = getResources();
 
-	if (src.isEmpty()){
+	if (src.empty()){
 		mout.warn("src data empty – no polar data loaded? Skipping...");
 		return;
 	}
@@ -512,6 +511,9 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 		mout.warn() << "null sized tile, skipping..." << mout.endl;
 		return;
 	}
+
+	//mout.startTiming(cartSrc.odim.source);
+
 
 	// NEW: pick local or global quality field.
 	const PlainData<CartesianSrc> & srcQuality = cartSrc.hasQuality() ? cartSrc.getQualityData("QIND") : cartDataSetSrc.getQualityData("QIND");

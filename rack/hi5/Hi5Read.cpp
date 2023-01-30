@@ -93,6 +93,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	// drain::Logger mout(hi5monitor, "Reader::readFile");
 
+
 	//static const std::string _func = "Reader::h5FileToTree";
 	int status = 0;
 
@@ -183,6 +184,7 @@ void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree &
 						mout.unimplemented() << "skipping legend (group) in path=" << p << mout.endl;
 					}
 					else {
+						//mout.startTiming("h5DatasetToImage");
 						h5DatasetToImage(file_id, p ,((hi5::NodeHi5 &)subtree).dataSet);
 					}
 				}
@@ -376,9 +378,12 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::image::Image &image){
 
 	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
+
+	// mout.startTiming();
+
 	herr_t status = 0;
 
-	mout.debug() << "opening " << path << mout.endl;
+	mout.debug("opening ", path);
 
 	std::string pathStr(path);
 

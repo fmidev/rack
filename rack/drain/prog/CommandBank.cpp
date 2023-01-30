@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/Input.h"
+#include "drain/util/JSONtree.h"
 #include "drain/util/Output.h"
 #include "drain/util/Static.h"
 
@@ -143,11 +144,41 @@ void CommandBank::append(const Script & script, Program & prog) const {
 /// Appends program with commands of the script
 void CommandBank::append(const Script & script, Context & ctx, Program & prog) const {
 
-	for (auto & entry: script) {
+	Logger mout(__FILE__, __FUNCTION__);
+
+	for (const auto & entry: script) {
 		if (entry.first.size()==1){
 			// Non-prefixed single-char commands have a special, dedicated handling.
 			static BasicCommand dummy("Marker", "[marker]");
 			prog.add(entry.first, dummy);
+		}
+		else if (get(entry.first).getName() == execFileCmd){
+			mout.special("handling: ", entry.first, '/', get(entry.first).getName());
+			FilePath path(entry.second);
+			mout.info("inserting commands from path: ", path);
+			if (path.extension == "json"){
+				mout.unimplemented("JSON logic: empty args become (empty) subtrees, hence 'disappear'");
+				mout.unimplemented("JSON logic: ordered keyList!");
+				drain::JSONtree::tree_t cmdTree;
+				drain::Input input(entry.second);
+				drain::JSON::readTree(cmdTree, input);
+				mout.special("TREE: ", drain::sprinter(cmdTree));
+				for (const auto & node: cmdTree){
+					mout.warn("inserting: ", node.first, node.second.data);
+					command_t & cmd = clone(node.first);
+					cmd.setExternalContext(ctx);
+					cmd.setParameters(node.second.data); // OK if empty?
+					prog.add(node.first, cmd);
+				}
+				//scriptify(cmdTree, script);
+				mout.attention("current prog:", prog);
+			}
+			else {
+				Script subScript;
+				readFile(entry.second, subScript);
+				append(subScript, ctx, prog);
+				mout.warn(prog);
+			}
 		}
 		else {
 			command_t & cmd = clone(entry.first);
@@ -288,19 +319,25 @@ void CommandBank::readFile(const std::string & filename, Script & script) const 
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	std::string line;
-	drain::Input ifstr(filename);
+	drain::Input input(filename);
 
 	// mout.note() << "open list: " << filename << mout.endl;
-	// ifstr.open(params.c_str());
+	if (drain::JSONtree::fileInfo.checkPath(filename)){
 
-	while ( std::getline((std::ifstream &)ifstr, line) ){
-		if (!line.empty()){
-			mout.debug2() << line << mout.endl;
-			if (line.at(0) != '#')
-				scriptify(line, script);
+
+	}
+	else {
+		// TEXT file
+		std::string line;
+		while ( std::getline((std::ifstream &)input, line) ){
+			if (!line.empty()){
+				mout.debug2() << line << mout.endl;
+				if (line.at(0) != '#')
+					scriptify(line, script);
+			}
 		}
 	}
+
 
 }
 
@@ -368,11 +405,14 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
 	for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
 
+		if (Logger::TIMING && !mout.timing){
+			mout.startTiming("Program"); // . this->title);
+		}
+
 		const key_t & key =  it->first;
 		value_t & cmd     = *it->second;
 
 		// Context & ctx = cmd.getContext<>(); //.log;
-
 		//Log & log = ctx.log;
 		//log.setVerbosity(baseLog.getVerbosity());
 
@@ -460,6 +500,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			prog.add(key, cmd).section = 0; // To not re-trigger?
 			//append(routine, cmd.getContext<Context>(), prog);
 			append(routine, prog);
+			//Logger mout2(ctx.log, __FUNCTION__, __FILE__);
+			//mout2.startTiming("SCRIPT");
 			run(prog, contextCloner); // Run in this context
 		}
 		else if (PARALLEL_ENABLED && (TRIGGER_CMD || (key == "/"))){ // || (key == "]")) { // Now threads are enabled
@@ -558,10 +600,13 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			mout.error("Unrecognized single-character instruction: ", key);
 		}
 		else {
-			// This is the default action!
 
+			Logger mout2(ctx.log, __FUNCTION__, __FILE__);
+			mout2.startTiming(cmd.getName(), " <tt>", cmd.getParameters().getValues(), "</tt>");
+
+			// This is the default action!
 			mout.debug() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
-			//try {
+
 			cmd.update(); //  --select etc
 			cmd.exec();
 			ctx.setStatus(key, cmd.getParameters().getValues());

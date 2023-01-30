@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef TREE2_H_
-#define TREE2_H_
+#ifndef DRAIN_TREE
+#define DRAIN_TREE "2.0"
 
 #include <iterator>
 #include <string>
@@ -110,27 +110,56 @@ namespace drain {
 
 /// Sorted tree structure.
 /**
- * \tparam T - node type, containing user-designed data. Ideally, only this needed in template implementation.
+ * \tparam T - node type, containing user-designed data.
+ * \tparam E - exclusive: node contains either data or children.
  * \tparam P - applied path structure, essentially works like std::list
  * \tparam C - path element comparison functor, should be compatible with Path<P>::key_t.
  */
-//template <class K, class T, char SEP, class C=std::less<std::string> >
-template <class T, class P=drain::Path<std::string,'/'>, class C=std::less<std::string> >
+template <class T, bool EXCLUSIVE=false, class P=drain::Path<std::string,'/'>, class C=std::less<std::string> >
 class Tree {
 public:
 
-	//typedef K key_t;
 	typedef T node_t;
 	typedef P path_t;
 	typedef typename path_t::elem_t key_t;
-	typedef drain::Tree<T,P,C> tree_t;
+	//typedef drain::Tree<T,P,C> tree_t;
+	typedef drain::Tree<T,EXCLUSIVE,P,C> tree_t;
 	typedef std::map<key_t,tree_t> map_t;
-	//typedef drain::Path<K,SEP> path_t;
-	//typedef drain::Tree<K,T,SEP,C> tree_t;
-	//typedef std::map<K,Tree<K,T,SEP,C>, C> map_t;
+
+#ifdef DRAIN_TREE_ADAPTIVE
+
+	struct Adapter {
+
+		inline  //
+		Adapter(tree_t & t, const key_t & k): tree(t), key(k){
+		};
+
+		tree_t & tree;
+		const key_t key;
+
+		inline
+		operator tree_t & (){
+			return tree[key];
+		}
+
+		inline
+		operator node_t & (){
+			return data[key];
+		}
+
+
+	};
+
+	inline
+	Adapter adapt(const key_t & key){
+		return Adapter(*this, key);
+	}
+
+
+#endif
+
 
 	/// Default constructor.
-	//Tree(char separator = '/') :  separator(separator) {}; //parent(*this),
 	Tree(){}; // :  separator(separator) {}; //parent(*this),
 
 	/// Copy constructor; copy only node data at the root.
@@ -165,6 +194,8 @@ public:
 	inline
 	Tree & operator=(const T &v){
 		data = v;
+		if (EXCLUSIVE)
+			children.clear();
 		return *this;
 	};
 
@@ -173,11 +204,13 @@ public:
 	inline
 	Tree & operator=(const T2 &v){
 		data = v;
+		if (EXCLUSIVE)
+			children.clear();
 		return *this;
 	}
 
 	typedef typename map_t::iterator iterator;
-	typedef typename map_t::reverse_iterator reverse_iterator;
+	// typedef typename map_t::reverse_iterator reverse_iterator;
 	typedef typename map_t::const_iterator  const_iterator;
 
 
@@ -218,6 +251,11 @@ public:
 			}
 			*/
 			//children[key].separator = separator;
+			if (EXCLUSIVE){
+				//static const node_t empty; // TODO: make tunable default
+				data = dummy.data;
+			}
+
 			return children[key];
 		}
 
@@ -225,8 +263,6 @@ public:
 
 	/// Return child of give \c key, or an empty node if noes not exist.
 	const tree_t & operator[](const key_t & key) const {
-
-		//if (key.empty())			return *this;
 
 		const const_iterator it = children.find(key);
 
@@ -277,61 +313,9 @@ public:
 	inline
 	const tree_t & operator()(const S & path) const {
 		return operator()(path_t(path));
-		//return operator()(path_t(path, this->separator));
-		// return get(path.begin(), path.end());
 	}
 
-
-
-
-	/// Returns a descendant.
-	/**
-	 *  \tparam - K2 key type of applied Path class
-	 */
-	//template <class K2>
-	inline
-	tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) {
-
-		// Path empty => self-reference
-		if (it == eit)
-			return *this;
-
-		// Path element is empty => proceed to next element
-		if (it->empty())
-			return get(++it, eit);
-
-
-		tree_t & child = operator[](*it);
-		return child.get(++it, eit);
-
-	}
-
-
-
-	/// Returns a descendant.
-	/**
-	 *  \tparam - K2 key type of applied Path class
-	 */
-	//template <class K2>
-	inline
-	const tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const {
-
-		// Path empty => self-reference
-		if (it == eit)
-			return *this;
-
-		// Path element is empty => proceed to next element
-		if (it->empty())
-			return get(++it, eit);
-
-		if (!hasChild(*it))
-			return dummy;
-
-		const tree_t & child = operator[](*it);
-		return child.get(++it, eit);
-	}
-
-
+	/// Check if an immediate descendant with name \c key exists.
 	bool hasChild(const key_t &key) const {
 		return (children.find(key) != children.end());
 	};
@@ -348,16 +332,16 @@ public:
 	inline
 	const map_t & getChildren() const { return children; };
 
-	/// Clears the children of this node.
+	/// Check if the tree structure is empty. Does not check node (data).
 	inline
-	bool isEmpty() const {
+	bool empty() const {
 		return (children.empty());
 	};
 
-	/// Clears the children of this node.
+	/// Clears the children of this node. Does not clear data.
+	// TODO: full clear, reset?
 	void clear(){
 		children.clear();
-		//value = T();
 	};
 
 	/// Deletes a node (leaf) and its subtrees.
@@ -395,10 +379,10 @@ public:
 	template <class S>
 	void getPaths(S & container) const {
 		//const path_t prefix(separator);
-		for (typename map_t::const_iterator it = begin(); it != end(); ++it){
+		for (const auto & entry: *this){
 			path_t p;
-			p << it->first;
-			it->second.getPaths(container, p); // recursion
+			p << entry.first;
+			entry.second.getPaths(container, p); // recursion
 		};
 	}
 
@@ -409,60 +393,61 @@ public:
 	template <class S>
 	void getPaths(S & container, const path_t & path) const {
 		container.push_back(path);
-		for (typename map_t::const_iterator it = begin(); it != end(); ++it){
+		for (const auto & entry: *this){
+				//for (typename map_t::const_iterator it = begin(); it != end(); ++it){
 			path_t p = path;
-			p << it->first;
-			it->second.getPaths(container, p); // recursion
+			p << entry.first;
+			entry.second.getPaths(container, p); // recursion
 		};
 	}
 
-
-
-
-
-	/// Checks if there is a node with a given path name.
-	/*
-	inline
-	bool hasKey(const path_t & path) const {
-		std::cerr << "obsolete " << __FUNCTION__ << ", forwarding to hasPath() " << std::endl;
-		return hasPath(path);
-	}
-	*/
 
 	inline
 	bool hasPath(const path_t & path) const {
 		return hasPath(path.begin(), path.end());
 	}
 
-
-	/*
-	template <class S>
-	inline
-	bool hasPath(const S & pathStr) const {
-		//return hasPath(path_t(pathStr, this->separator));
-		return hasPath(path_t(pathStr)); // should not be needed? be more automatic
-	}
-	*/
-
-
-	inline
-	char getSeparator() const { return separator; }
-
-	//char separator;
 	/// Debugging utility - dumps the structure of the tree (not the contents).
-	void dump(std::ostream &ostr = std::cout, int depth = 0) const {
-		//if (depth==0)
-		//ostr << ' ' << depth << '\n';
+	void dump(std::ostream &ostr = std::cout, const std::string &  indent="") const { // int depth = 0) const {
+
+		/*
+		std::map<std::string, std::string> unicode = {
+				{"VERT", "│"},
+				{"VERT_RIGHT", "├"},
+				{"UP_RIGHT","└"},
+				{"HORZ", "─"},
+				{"HORZ_DOWN", "┬"},
+		};
+		*/
+		static const std::string EMPTY(" ");
+		static const std::string VERT("│");
+		static const std::string VERT_RIGHT("├");
+		static const std::string UP_RIGHT("└");
+		static const std::string HORZ("─");
+		static const std::string HORZ_DOWN("┬");
+
+
+
+		//for (const auto & entry: *this){
 		for (typename map_t::const_iterator it = begin(); it != end(); it++){
-			for (int i = 0; i < depth; ++i)
-				ostr << "  ";
-			if (it == --end())
-				ostr << "'––";
-			else
-				ostr << "¦––";
-			ostr << it-> first; // << '\n'; //' ' << depth << '\n';
+
+			const auto & entry = *it;
+
+			//for (int i = 0; i < depth; ++i)
+			//	ostr << "  ";
+			std::string indent2;
+			if (it == --end()){
+				ostr   << indent << UP_RIGHT << HORZ << HORZ; // "'––";
+				indent2 = indent +  EMPTY  + EMPTY + EMPTY;   // "   ";
+			}
+			else {
+				ostr   << indent << VERT_RIGHT << HORZ << HORZ; // "¦––";
+				indent2 = indent +  VERT + EMPTY + EMPTY; // "|  ";
+			}
+			ostr << entry.first; // << '\n'; //' ' << depth << '\n';
 			ostr << '\n';
-			it->second.dump(ostr,depth+1);
+			//entry.second.dump(ostr, depth+1);
+			entry.second.dump(ostr, indent2);
 		};
 
 	};
@@ -474,26 +459,66 @@ public:
 
 		ostr << path << '=';
 		ostr << this->data << '\n';
-		for (typename map_t::const_iterator it = begin(); it != end(); it++){
-			ostr << it->first << '\t';
-			it->second.dumpContents(ostr); //, path+"/"+it->first);
+		for (const auto & entry: *this){
+			ostr << entry.first << '\t';
+			entry.second.dumpContents(ostr); //, path+"/"+it->first);
 		};
 	};
 
 
-	// Tree<T,C> & parent;
-
 protected:
-
-	/// Constructor for a child.
-	//Tree(char separator, Tree<T,C> &parent) :   separator(separator) {}; // parent(parent),
-
 
 	static const tree_t dummy;
 
-	char separator;
+	//char separator;
 
 	map_t children;
+
+	/// Returns a descendant.
+	/**
+	 *  \tparam - K2 key type of applied Path class
+	 */
+	//template <class K2>
+	inline
+	tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) {
+
+		// Path empty => self-reference
+		if (it == eit)
+			return *this;
+
+		// Path element is empty => proceed to next element
+		if (it->empty())
+			return get(++it, eit);
+
+		tree_t & child = operator[](*it);
+		return child.get(++it, eit);
+
+	}
+
+
+
+	/// Returns a descendant.
+	/**
+	 *  \tparam - K2 key type of applied Path class
+	 */
+	//template <class K2>
+	inline
+	const tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const {
+
+		// Path empty => self-reference
+		if (it == eit)
+			return *this;
+
+		// Path element is empty => proceed to next element
+		if (it->empty())
+			return get(++it, eit);
+
+		if (!hasChild(*it))
+			return dummy;
+
+		const tree_t & child = operator[](*it);
+		return child.get(++it, eit);
+	}
 
 
 	/// Checks if there is a node with a given path name.
@@ -517,38 +542,10 @@ protected:
 
 	}
 
-	/*
-	bool hasKey(const std::string &path,const std::string &prefix) const {
-
-		for (typename map_t::const_iterator it = begin(); it != end(); it++){
-			std::string p = prefix + separator + it->first;
-			//path.
-
-			if (path.compare(p) == 0){
-				// std::cerr << "Found path: " << p << '\n';
-				return true;
-			}
-			else
-				if (it->first.compare(0,p.length(),p)){ // path starts with p
-					// std::cerr << "Ascending path: " << p << '\n';
-					return it->second.hasKey(path,p);
-				}
-				else { // no hope
-					//std::cerr << "Skipped remaining path: " << p << '\n';
-				}
-		};
-		return false;
-	};
-	*/
-
-	//static char separator;
-	// cooperator[]
 };
 
-//template <class K, class T, char SEP, class C>
-//const Tree<K,T,SEP,C> Tree<K,T,SEP,C>::dummy;
-template <class T, class P, class C>
-const Tree<T,P,C> Tree<T,P,C>::dummy;
+template <class T, bool E,class P, class C>
+const Tree<T,E,P,C> Tree<T,E,P,C>::dummy;
 
 }
 

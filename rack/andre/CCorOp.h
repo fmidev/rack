@@ -67,15 +67,9 @@ public:
 	};
 
 	drain::Range<double> threshold;
-	//bool mode;
 
-
-	/// NEW POLICY
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;  // DataSetDst & dst) const;
-
-
-
+	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 
 
 };

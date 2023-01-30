@@ -48,8 +48,8 @@ namespace rack {
 
 
 
-//void CCorOp::processDataSet(const DataSetSrc & src, DataSetDst & dst) const {
-void CCorOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
+//void CCorOp::runDetection(const DataSetSrc & src, DataSetDst & dst) const {
+void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.debug() << parameters << mout.endl;

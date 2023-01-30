@@ -108,6 +108,11 @@ public:
 
 
 	/// A mini program executed after each cmd until ']' or ')' is encountered
+
+	/// Read commands from a text file and insert them into a string.
+	/**
+	 *
+	 */
 	void readFile(const std::string & filename, Script & script) const;
 
 	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.

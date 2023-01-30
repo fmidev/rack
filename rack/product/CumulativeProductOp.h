@@ -78,7 +78,7 @@ public:
 
 	// Public for ConvOp
 	virtual
-	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
+	void computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const;
 
 
 

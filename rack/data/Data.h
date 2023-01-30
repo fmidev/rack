@@ -1185,9 +1185,15 @@ std::ostream & operator<<(std::ostream & ostr, const DataSet<DT> & d){
 /// Structure for storing sweeps by their elevation angle.
 ///  Note: this approach fails if a volume contains several azimuthal sweeps with a same elevation angle.
 // Becoming DEPRECATED
+//template <typename DT>
+//class DataSetMap : public std::map<double, DataSet<DT> > {
+//};
+
+// TIMESTAMPED (what::date + what::time data) or path?
 template <typename DT>
-class DataSetMap : public std::map<double, DataSet<DT> > {
+class DataSetMap : public std::map<std::string, DataSet<DT> > {
 };
+
 
 
 template <typename DT>

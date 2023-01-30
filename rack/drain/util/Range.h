@@ -74,10 +74,13 @@ public:
 
 
 	/// Default assignment operator
+
 	Range & operator=(const Range<T> & range){
 		this->assign(range);
 		return *this;
 	};
+
+
 
 	Range & operator=(const UniTuple<T,2> & range){
 		this->assign(range);

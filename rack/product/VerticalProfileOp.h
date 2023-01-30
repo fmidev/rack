@@ -100,7 +100,7 @@ protected:
 	//virtual	void setGeometry(Data<VprDst> & dstData) const;
 
 	virtual
-	void processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const;
+	void computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const;
 
 
 

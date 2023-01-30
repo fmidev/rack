@@ -57,7 +57,7 @@ namespace rack {
  *
  */
 
-void EmitterOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
+void EmitterOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;

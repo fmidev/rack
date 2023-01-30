@@ -35,7 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include "drain/util/Functor.h"
 
-#include "product/PolarProductOp.h"
+#include "product/PolarProductOp.h" // why
+#include "AndreOp.h"
 
 
 
@@ -85,12 +86,13 @@ public:
 */
 
 /// A quick QualityCombiner .
-class QualityCombinerOp: public PolarProductOp {  // VolumeOp<PolarODIM>
+class QualityCombinerOp: public AndreOp { // PolarProductOp {
 
 public:
 
 	QualityCombinerOp() :
-		PolarProductOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
+		//PolarProductOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
+		AndreOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
 	{
 		// dataSelector.path = "/da ta[0-9]+$";
 		dataSelector.quantity = "^DBZH$";

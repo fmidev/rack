@@ -71,15 +71,18 @@ void ODIMPathElemMatcher::extractIndex(const std::string &s){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	std::stringstream sstr(s);
-	// sstr >> this->index;
+
+	//mout.warn("str: ", s, "...");
 	this->index = 0;
 	this->indexMax = 0xffff;
-	if (drain::TextReader::scanSegmentToValue(sstr, ":", this->index)){
-		//this->indexMax = this->index;
+	char c = drain::TextReader::scanSegmentToValue(sstr, ":", this->index);
+	if (c == ':'){
+		sstr.get(); // swallow ':'
 		sstr >> this->indexMax; // can this fail? For example with "1:"
-		//std::cout << "KUKKUU: " << this->index << "..." << this->indexMax << std::endl;
+		//mout.warn("extracted maxIndex ", this->indexMax, " c=", c);
 	}
 	else {
+		// mout.warn("max == index == ", this->index);
 		this->indexMax = this->index;
 	}
 

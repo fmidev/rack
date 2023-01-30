@@ -52,6 +52,7 @@ void FileInfo::setExtensionRegExp(const std::string & extRegExp, int flags){
 //const drain::RegExp FileInfo::extensionRegExp("^((.*/)?[\\w]+)$");
 
 
+
 Registry<FileInfo> & getFileInfoRegistry(){
 	static Registry<FileInfo> registry;
 	return registry;

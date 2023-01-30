@@ -68,7 +68,7 @@ void CmdInputFile::exec() const {
 
 	drain::Logger mout(ctx.log, getName().c_str()); // __FILE__
 
-	mout.timestamp("BEGIN_FILEREAD");
+	// mout.timestamp("BEGIN_FILEREAD");
 
 	mout.note() << "reading: "<< value << mout.endl;
 
@@ -146,7 +146,7 @@ void CmdInputFile::exec() const {
 	vmap["inputDir"] = path.str();
 	//mout.note() << path"ctx.getStatusMap() start" << mout;
 
-	mout.timestamp("END_FILEREAD");
+	// mout.timestamp("END_FILEREAD");
 	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
 
 	//mout.special("END READ thread #", ctx.getId());
@@ -187,7 +187,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
 	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
-	if (object.isEmpty()){
+	if (object.empty()){
 		mout.warn() << "/what:object empty, assuming polar volume, 'PVOL'" << mout.endl;
 		object = "PVOL";
 	}
@@ -200,7 +200,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentHi5 = & ctx.cartesianHi5;
 
 		// Move or append srcTmp to ctx.cartesianHi5
-		if (ctx.appendResults.isRoot() || ctx.cartesianHi5.isEmpty()){
+		if (ctx.appendResults.isRoot() || ctx.cartesianHi5.empty()){
 			// Move (replace)
 			ctx.cartesianHi5.swap(srcTmp);
 			//mout.note() << ctx.cartesianHi5 << mout.endl;
@@ -217,7 +217,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		if (!ctx.composite.isMethodSet()){
 			//const std::string m = ctx.cartesianHi5["how"].data.attributes["camethod"];
 			const drain::Variable & m = ctx.cartesianHi5[ODIMPathElem::HOW].data.attributes["camethod"];
-			if (!m.isEmpty()){
+			if (!m.empty()){
 				mout.info() << "adapting compositing method: " << m << mout.endl;
 				ctx.composite.setMethod(m.toStr());  // TODO: try-catch if invalid?
 			}
@@ -242,7 +242,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
 		// TODO: force APPEND / REPLACE?
-		if (ctx.polarInputHi5.isEmpty() || SCRIPT_DEFINED){
+		if (ctx.polarInputHi5.empty() || SCRIPT_DEFINED){
 			ctx.polarInputHi5.swap(srcTmp);
 		}
 		else {
@@ -286,7 +286,7 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 	}
 	else if (ctx.appendResults.isIndexed()){
 
-		if (srcRoot.isEmpty())
+		if (srcRoot.empty())
 			mout.warn() << " srcRoot empty" << mout.endl;
 
 		if (srcRoot.getChildren().size() > 1)
@@ -461,8 +461,8 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	// mout.warn() << sourceDst << " => " << sourceSrc << mout.endl;
-	if (!sourceDst.isEmpty()){
-		if (!sourceSrc.isEmpty()){
+	if (!sourceDst.empty()){
+		if (!sourceSrc.empty()){
 			if (sourceSrc.toStr() != sourceDst.toStr()){
 				mout.warn() << "what:source changed in creating combined volume:" << mout.endl;
 				mout.warn() << "  dst: '" << sourceDst << "'" << mout.endl;
@@ -643,7 +643,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	mout.note() << attr << mout;
 		//mout.warn() << "object empty,: '" <<
 	drain::Variable & obj = attr["what:object"];
-	if (!obj.isEmpty()){
+	if (!obj.empty()){
 		if (object.empty()){
 			if (obj != object){
 				mout.warn() << "overwriting what:object '" << object << "' -> '" << obj << "'" << mout;

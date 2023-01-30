@@ -59,12 +59,16 @@ using namespace drain::image;
 
 
 //template <class M>
-void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
+void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	//drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug2() << "start" << mout.endl;
 
+	/*
+	DataSetMap<PolarSrc> srcDataSets;
+	DataSetMap<PolarDst> dstDataSets;
+	*/
 	DataSetMap<PolarSrc> srcDataSets;
 	DataSetMap<PolarDst> dstDataSets;
 
@@ -79,26 +83,37 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
 
 
-	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	//std::stringstream key;
+
+	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (ODIMPath & path: dataPaths){
 
 
-		if (it->empty()){
-			mout.fail() << "empty path accepted by selector: " <<  this->dataSelector << mout.endl;
+		if (path.empty()){
+			mout.fail("empty path accepted by selector: ", this->dataSelector);
 			continue;
 		}
 
-		mout.ok() << "considering " << *it << mout.endl;
+		mout.ok("considering ", path);
 
-		ODIMPath::const_iterator pit = it->begin();
-
-		/*
-		if (!pit->empty()){
-			mout.warn() << "path starts by '"<< *pit << "' instead of root, with selector: " <<  this->dataSelector << mout.endl;
-		}
-		*/
-
+		//ODIMPath::const_iterator pit = it->begin();
 		// User may have modified dataselector so that odd paths appear
 
+		if (!path.front().is(ODIMPathElem::DATASET)){
+			path.pop_front();
+			if (path.empty()){
+				mout.warn("odd 2nd path elem (...), with selector: ", this->dataSelector);
+				continue;
+			}
+		}
+
+		const ODIMPathElem & parent = path.front();
+
+		if (!parent.is(ODIMPathElem::DATASET)){
+			mout.warn("path does not start with /dataset.. :", path, ", with selector: ", this->dataSelector);
+			continue;
+		}
+		/*
 		if (!pit->is(ODIMPathElem::DATASET)){
 			++pit;
 			if (pit == it->end()){
@@ -109,60 +124,76 @@ void VolumeTraversalOp::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		if (!pit->is(ODIMPathElem::DATASET)){
 			mout.warn() << "path does not start with /dataset.. :" << *it  << ", with selector: "<<  this->dataSelector << mout.endl;
 		}
+		*/
 
 		//const ODIMPath & parent = *it;
 
 
 
-		mout.debug3() << "parent: " << *pit << mout.endl;
+		mout.debug3() << "parent: " << parent << mout.endl;
 
-		const drain::VariableMap & attribs = src[*pit][ODIMPathElem::WHERE].data.attributes;
-		mout.debug3() << "attribs " << attribs << mout.endl;
+		const drain::VariableMap & what = src[parent][ODIMPathElem::WHAT].data.attributes;
+		std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
 
 
-		const double elangle = attribs["elangle"];
+		const drain::VariableMap & where = src[parent][ODIMPathElem::WHERE].data.attributes;
+		mout.debug3() << "attribs " << where << mout.endl;
+		const double elangle = where["elangle"];
 
-		if (srcDataSets.find(elangle) == srcDataSets.end()){
+		//if (srcDataSets.find(elangle) == srcDataSets.end()){
+		if (srcDataSets.find(datetime) == srcDataSets.end()){
 
-			mout.debug2() << "add elangle="  << elangle << ':'  << *pit << mout.endl;
+			mout.debug2() << "add elangle="  << elangle<< " time="  << datetime << ':'  << parent << mout.endl;
 
 			// Something like: sweeps[elangle] = src[parent] .
 
 			/// its and itd for debugging
-			// DataSetMap<PolarSrc>::const_iterator its =
-			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src[*pit], quantityRegExp)));
+			// srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src[*pit], quantityRegExp)));
+			// dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst[*pit], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
-			// DataSetMap<PolarDst>::iterator itd =
-			dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst[*pit], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(src[parent], quantityRegExp)));
+
+			dstDataSets.insert(DataSetMap<PolarDst>::value_type(datetime, DataSet<PolarDst>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
 
 			// elangles << elangle;
 
 		}
 		else {
-			mout.debug3() << "already contains elangle="  << elangle << ':'  << *pit << mout.endl;
+			mout.debug3("already contains datetime=", datetime, ':', parent);
 		}
 
 	}
 
-	mout.debug() << srcDataSets.size() << " datasets, now calling processDataSets() " << mout.endl;
+	mout.debug(srcDataSets.size(), " datasets, now calling computeSingleProduct() ");
 
-	processDataSets(srcDataSets, dstDataSets);
-
+	computeProducts(srcDataSets, dstDataSets);
+	//(srcDataSets, dstDataSets);
 
 }
 
 
-void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
+/*
+void VolumeTraversalOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.unimplemented("TODO...");
+	mout.error("TODO...");
+}
+*/
+
+void VolumeTraversalOp::computeProducts(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
-	mout.debug2() << "start1" << mout.endl;
+	mout.debug2("start1");
 
+	// DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
+	// DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator itd = dstDataSets.begin();
+
 	while (its != srcDataSets.end()){
 
-		mout.info() << "processing elangle:" << its->first << mout.endl;
+		mout.attention("processing: ", its->first);
 
 		itd = dstDataSets.find(its->first);
 
@@ -181,22 +212,17 @@ void VolumeTraversalOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets
 
 		}
 		else {
-			mout.warn() << "something went wrong, src=" << its->first << mout.endl;
+			mout.warn("something went wrong, src=", its->first );
 			return;
 		}
 		++its;
 		//++itd;
 	}
 
-	mout.debug2() << "end" << mout.endl;
+	//mout.debug2() << "end" << mout.endl;
 
 }
 
 
 }  // namespace rack
 
-
-// Rack
- // REP // REP // RE2
- // RE2
- // REP

@@ -52,7 +52,7 @@ namespace rack {
 
 // TODO: implement azSlots
 
-void VerticalProfileOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
+void VerticalProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
 	//void VerticalProfileOp::filterGroups(const Hi5Tree &src, const ODIMPathList & paths, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

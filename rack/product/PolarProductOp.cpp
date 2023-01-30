@@ -110,21 +110,23 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 		double range;
 		//size_t i = 0;
 
-		for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+		//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+		for (const auto & entry: srcSweeps){
 
-			dstOdim.angles.push_back(it->first);
-			//dstOdim.angles[i] = (it->first);
-			//++i;
+			// dstOdim.angles.push_back(it->first);
 
-			const DataSet<PolarSrc> & srcDataSet = it->second;
+			const DataSet<PolarSrc> & srcDataSet = entry.second;
 			const Data<PolarSrc>       & srcData    = srcDataSet.getFirstData();
 			const PolarODIM            & srcOdim    = srcData.odim;
+
 
 			if (srcData.data.isEmpty()){
 				mout.warn() << "srcData empty" << mout.endl;
 				continue; // warning issued later, in the main loop.
 				//mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << mout.endl;
 			}
+
+			dstOdim.angles.push_back(srcOdim.elangle);
 
 			mout.debug2() << "testing: " << srcOdim << mout.endl;
 

@@ -1793,7 +1793,7 @@ void CmdValidate::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
 
-	if (!src.isEmpty()){
+	if (!src.empty()){
 
 		ODIMPathList dataPaths;
 

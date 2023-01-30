@@ -46,42 +46,23 @@ namespace rack {
 
 
 
-/// The base class for  removal operators.
-//  No more for anomaly detection?
+/// The base class for detector and removal operators.
 /**
  *
+ *  \see DetectorOp
+ *  \see RemovalOp
  */
 class AndreOp: public VolumeTraversalOp {
 
 public:
 
-	//AndreOp(){};
-
 	~AndreOp(){};
 
-
-	//static	int getClassCode(const std::string & key);
-
-	//static
-	//int getClassCode(classtree_t & tr, classtree_t::path_t::const_iterator it, classtree_t::path_t::const_iterator eit);
-
-	virtual
-	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;
+	/// Generally, the whole data structure can be traversed
+	//virtual
+	// void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const = 0;
 
 protected:
-
-	virtual
-	inline
-	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		copyPolarGeometry(srcODIM, dstData);
-	}
-
-	/*
-	virtual
-	Hi5Tree & getDst(Hi5Tree & dst) const {
-		return dst;
-	};
-	*/
 
 	/// Constructor for derived classes.
 	/**
@@ -89,6 +70,10 @@ protected:
 	AndreOp(const std::string &name, const std::string & description) : VolumeTraversalOp(name, description){
 	};
 
+	virtual inline
+	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
+		copyPolarGeometry(srcODIM, dstData);
+	}
 
 };
 

@@ -159,9 +159,9 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 			const drain::Variable & p = src.properties["where:BBOX_native"];
 			std::vector<double> v;
 			p.toSequence(v);
-			drain::Rectangle<double> bboxM;
-			bboxM.fromSequence(v);
 			if (v.size() == 4){
+				drain::Rectangle<double> bboxM;
+				bboxM.assignSequence(v);
 				//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
 				frame.setBoundingBoxM(bboxM);
 				mout.special() << "Setting exact (metric) BBOX=";

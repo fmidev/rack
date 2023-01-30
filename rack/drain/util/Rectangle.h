@@ -81,59 +81,6 @@ struct Rectangle : public drain::UniTuple<T,4> {
 		return *this;
 	}
 
-/*
-};
-template <class T>
-class Rectangle : public UniTuple<T,4> {
-public:
-
-	drain::Point2D<T> lowerLeft;
-	drain::Point2D<T> upperRight;
-
-	Rectangle() : lowerLeft(this->arr, 2), upperRight(this->arr, 2){
-		set(0, 0, 0, 0);
-	};
-
-	Rectangle(T xLowerLeft, T yLowerLeft, T xUpperRight, T yUpperRight){
-		set(xLowerLeft, yLowerLeft, xUpperRight, yUpperRight);
-	};
-
-	Rectangle(const Rectangle & r){
-		// consider *this = r;
-		set(r.lowerLeft.x, r.lowerLeft.y, r.upperRight.x, r.upperRight.y);
-	};
-*/
-
-	/*
-	template <class T2>
-	inline
-	void set(){
-
-	}
-
-	template <class T2>
-	inline
-	void set(T2 xLowerLeft, T2 yLowerLeft, T2 xUpperRight, T2 yUpperRight){
-		this->lowerLeft.set(xLowerLeft, yLowerLeft);
-		this->upperRight.set(xUpperRight, yUpperRight);
-		//this->lowerLeft.setLocation(xLowerLeft, yLowerLeft);
-		//this->upperRight.setLocation(xUpperRight, yUpperRight);
-	}
-
-
-	template <class T2>
-	inline
-	void set(const Point2D<T2> & lowerLeft, const Point2D<T2> & upperRight){
-		this->lowerLeft.setLocation(lowerLeft);
-		this->upperRight.setLocation(upperRight);
-	}
-
-
-	inline
-	void set(const Rectangle & r){
-		set(r.lowerLeft, r.upperRight);
-	};
-	*/
 
 	inline
 	T getWidth() const { return (this->upperRight.x - this->lowerLeft.x); };
@@ -155,7 +102,9 @@ public:
 	/**
 	 *   Two way bounds are needed, because cropping max can be lower than this min.
 	 */
-	void crop(const Rectangle<T> & r){
+	void crop(const Rectangle<T> & r);
+	/*
+	{
 		const Rectangle<T> bounds(*this);
 		*this = r;
 		limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
@@ -163,6 +112,7 @@ public:
 		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
 		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
 	}
+	*/
 
 	/// The instance extends to its union with r.
 	void extend(const Rectangle & r);
@@ -188,32 +138,9 @@ public:
 	std::vector<T> toVector() const {
 		std::vector<T> v;
 		UniTuple<T,4>::toSequence(v);
-		/*
-		v.reserve(4);
-		v.push_back(this->lowerLeft.x);
-		v.push_back(this->lowerLeft.y);
-		v.push_back(this->upperRight.x);
-		v.push_back(this->upperRight.y);
-		*/
 		return v;
 	}
 
-	/// Write corner points to a stream
-	/*
-	template <class S>
-	inline
-	void toStream(S & ostr, char separator=',') const {
-		ostr << this->lowerLeft.x << separator << this->lowerLeft.y << separator <<  this->upperRight.x << separator << this->upperRight.y;
-	}
-
-	/// Return corner points to a string
-	inline
-	std::string toStr(char separator=',') const {
-		std::stringstream sstr;
-		toStream(sstr, separator);
-		return sstr.str();
-	}
-	*/
 
 protected:
 
@@ -228,8 +155,19 @@ protected:
 };
 
 
+template <class T>
+void Rectangle<T>::crop(const Rectangle<T> & r){
+	const Rectangle<T> bounds(*this);
+	*this = r;
+	limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
+	limit(bounds.lowerLeft.x, bounds.upperRight.x, this->upperRight.x);
+	limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
+	limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
+}
 
-template<class T> inline void Rectangle<T>::extend(const Rectangle & r)
+
+template <class T>
+void Rectangle<T>::extend(const Rectangle<T> & r)
 {
 	this->lowerLeft.x  = std::min(this->lowerLeft.x,r.lowerLeft.x);
 	this->lowerLeft.y  = std::min(this->lowerLeft.y,r.lowerLeft.y);
@@ -237,7 +175,9 @@ template<class T> inline void Rectangle<T>::extend(const Rectangle & r)
 	this->upperRight.y = std::max(this->upperRight.y,r.upperRight.y);
 }
 
-template<class T> inline void Rectangle<T>::contract(const Rectangle & r)
+
+template <class T>
+void Rectangle<T>::contract(const Rectangle<T> & r)
 {
 	this->lowerLeft.x  = std::max(this->lowerLeft.x,r.lowerLeft.x);
 	this->lowerLeft.y  = std::max(this->lowerLeft.y,r.lowerLeft.y);

@@ -53,7 +53,7 @@ using namespace drain::image;
 namespace rack {
 
 
-void DopplerNoiseOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void DopplerNoiseOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug3() << "start" <<  mout.endl; //

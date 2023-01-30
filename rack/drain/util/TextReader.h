@@ -65,37 +65,46 @@ public:
 
 	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
 	/**
-	 *  \return - \c true if end char was found; \c false at end-of-file
+	 *  \return - \c end char that was found; else \c null char, esp at \c end-of-file.
 	 */
 	static
-	bool scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
+	char scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr);
 
 	//static	bool scanSegment(std::istream & istr, const std::string & endChars, std::strin & ostr);
 
+	/**
+	 *  \return - \c end char that was found; else \c null char, esp at \c end-of-file.
+	 */
 	template <class T>
 	static
-	bool scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst);
+	char scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst);
 
-	/// Read input stream until a char not in \c skipChars is encountered.
+	/// Read stream until a char not in \c skipChars or end-of-file is encountered.
+	/**
+	 *  \return - \c end char that was found; else \c null char, esp at \c end-of-file.
+	 */
 	static
-	void skipChars(std::istream & istr, const std::string skipChars); //  = " \t\n\r"
+	char skipChars(std::istream & istr, const std::string skipChars); //  = " \t\n\r"
 
+	/**
+	 *  \return - space char that was found; else \c null char, esp at \c end-of-file.
+	 */
 	static inline
-	void skipWhiteSpace(std::istream & istr){
-		skipChars(istr, " \t\n\r");
+	char skipWhiteSpace(std::istream & istr){
+		return skipChars(istr, " \t\n\r");
 	}
 
 };
 
 // Specified implementation
 template <>
-bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst);
+char TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, std::string & dst);
 
 // Default implementation for basic (numeric) types
 template <class T>
-bool TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst){
+char TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, T & dst){
 	std::stringstream sstr;
-	bool result = scanSegment(istr, endChars, sstr);
+	char result = scanSegment(istr, endChars, sstr);
 	sstr >> dst;
 	return result;
 }

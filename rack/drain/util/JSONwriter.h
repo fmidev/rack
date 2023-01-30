@@ -39,10 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <limits> // for numeric type recognition
 
-//#include "../util/Tree.h"
 
 namespace drain
 {
+
+/// NOTE: the new SprinterBase::toStream(jsontree) is replacing this.
+
 
 /// A partial implementation of JSON. Basic types
 /**
@@ -52,13 +54,14 @@ namespace drain
  *   - integers (int), floats (double)
  *
  *   Does not support:
- *   - arrays of arrays, arrays of objects
+ *   - arrays of aggregate types (arrays of arrays, arrays of objects)
  *   - boolean
 
     \example examples/JSON-example.inc
 
  */
 
+// What is the relation with JSON tree?
 
 class JSONwriter {
 
@@ -117,13 +120,6 @@ public:
 		return JSONwriter::toStream(*it);
 	}
 
-	// CONTRADICTORY: metadata V ("attributes") should/must be a map?
-	// See: drain::JSONtree::tree_t  implementation instead.
-	/*
-	template <class V>
-	static
-	std::ostream & toStream(const drain::Tree<std::string,V> & t, std::ostream &ostr = std::cout, unsigned short indentation = 0);
-	*/
 
 	/// For forcing (avoiding recursions)
 	// Needed?
@@ -138,10 +134,7 @@ public:
 	static
 	std::ostream & sequenceToStream(const T & x, std::ostream &ostr = std::cout);
 
-	/// Like sequenceToStream() , but skipping elements of empty() == true.
-	/*
-	 *  For example, elements of type std::string or std::map implement empty().
-	 */
+	/// Like sequenceToStream() , but skipping elements of empty() == true. For example, elements of type std::string or std::map implement empty().
 	template <class T>
 	static
 	std::ostream & sparseSequenceToStream(const T & x, std::ostream &ostr = std::cout);
@@ -152,10 +145,7 @@ public:
 	static
 	std::ostream & arrayAsMapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
 
-	/// Implementation for std::map<> and derived classes
-	/**
-	 *   bool empty() must be defined.
-	 */
+	/// Implementation for std::map<> and derived classes. Function bool empty() must be defined.
 	template <class T>
 	static
 	std::ostream & sparseArrayAsMapToStream(const T & m, std::ostream &ostr = std::cout, unsigned short indentation = 0);
@@ -181,7 +171,6 @@ public:
 	unsigned short indentStep;
 
 
-//protected:
 
 	/// Indent output with \c n spaces
 	static inline
@@ -388,6 +377,7 @@ std::ostream & JSONwriter::mapElementsToStream(const T & m, const std::list<type
 
 	return ostr;
 }
+
 
 
 template <class T>

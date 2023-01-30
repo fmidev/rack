@@ -212,19 +212,60 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 }
 
 
+bool Logger::TIMING = false;
+char Logger::MARKER = '@'; // for filtering output
 
 Logger::oper Logger::endl;
 
 Logger::Logger(const char *funcName, const std::string & className):
 				message(*this),
-				monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL){
+				monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL),
+				timing(false){
 	setPrefix(funcName, className.c_str());
+	/*
+	if (TIMING){
+		std::cerr << "TIMING:" << MARKER << "<li>" << this->prefix << "...<ol>" << '\n';
+	}
+	*/
 }
 
 Logger::Logger(Log &log, const char *funcName, const std::string & className):
 				message(*this),
-				monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL){
+				monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL),
+				timing(false){
 	setPrefix(funcName, className.c_str());
+	/*
+	if (timing){
+		// timing("<li>START: ", this->prefix, ':', time, "<ol>");
+		// timing(MARKER, "<li>", this->prefix, "...", "<ol>"); // <ol> possibly empty.
+		std::cerr << "TIMING:" << MARKER << "<li>" << this->prefix << "...<ol>" << '\n';
+		// Note: <ol> will be empty for the leaves of the call hierarchy..
+	}
+	*/
+}
+
+/*
+Logger & Logger::timestamp(const std::string & label){
+	//initMessage(LOG_DEBUG);
+	//*(this) << "TIME#" << label << Logger::endl;
+	timing = TIMING;
+	std::cerr << "TIMING:" << MARKER << "<li>" << label << "...<ol>" << '\n';
+	//std::cerr << << label;
+	return *this;
+}
+
+Logger & Logger::timestamp(){
+	return timestamp(this->prefix);
+	//initMessage(LOG_DEBUG);
+	//*(this) << "TIME# " << time;
+	// return *this;
+}
+*/
+
+Logger::~Logger(){
+	// Change absolute start time to elapsed time.
+	//timestamp(); // ?
+	endTiming();
 }
 
 void Logger::setPrefix(const char *functionName, const char *name){
@@ -270,17 +311,6 @@ void Logger::initMessage(level_t level, const Notification & notif){
 }
 */
 
-Logger & Logger::timestamp(const std::string & label){
-	initMessage(LOG_DEBUG);
-	*(this) << "TIME#" << label << Logger::endl;
-	return *this;
-}
-
-Logger & Logger::timestamp(){
-	initMessage(LOG_DEBUG);
-	*(this) << "TIME# " << time;
-	return *this;
-}
 
 
 }

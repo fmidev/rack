@@ -75,7 +75,7 @@ public:
 protected:
 
 	virtual
-	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
+	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
 
 };
 

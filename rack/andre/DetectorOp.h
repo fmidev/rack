@@ -80,7 +80,7 @@ public:
 	// inline
 	// DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA), UNIVERSAL(op.UNIVERSAL) {}
 	inline
-	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL) {};
+	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
 
 	virtual
 	~DetectorOp(){};
@@ -92,18 +92,40 @@ public:
 	virtual
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const;
 
-	//virtual inline
-	//const std::string & getOutputQuantity() const;
-
 	static bool SUPPORT_UNIVERSAL;
 
 	/// Index applied in the legend of the classification results
 	const unsigned short int classCode;
 
 
-	/// NEW POLICY => DetectorOpNEW
+
+
+	// NEW
+	/**
+	 *   Also source data is non-const, because std data conversions now done in them, not in "aux" data (old, below).
+	 */
+	//virtual
+	//void processProduct(DataSetList<PolarDst> & srcVolume, DataSetList<PolarDst> & dstVolume) const;
+
+
+	virtual inline
+	void computeProducts(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.unimplemented("TODO... redirecting...");
+		runDetection(srcVolume, dstVolume);
+	}
+
+
+	// NEW
+	/**
+	 *   Also source data is non-const, because std data conversions now done in them, not in "aux" data (old, below).
+	 */
 	virtual
-	void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
+	void runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
+
+	///
+	//virtual
+	//void processDataSets(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const;
 
 	/// Process as sweep (data in one elevation angle)
 	/**
@@ -112,18 +134,43 @@ public:
 	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
 	 */
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
+	void runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
+
+	/// Process as sweep (data in one elevation angle)
+	/**
+	 *  \param srcDataSet - input data of one elevation; possibly several quantities (measurement parameters).
+	 *  \param dstProb    - probability field ie. the result of the detection algorithm
+	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
+	 */
+	//virtual
+	//void processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
 
 	/// Process using single data only (no quality "involved", because it is created here...)
 	/**
 	 *  \param srcData - input data of one elevation; possibly several quantities (measurement parameters).
 	 *  \param dstProb - output data, typically in the same dataset as srcData.
 	 */
-	virtual
-	void processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
+	virtual inline
+	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "not implemented" << mout.endl;
+		mout.unimplemented("function ", __FUNCTION__," not implemented for ", getName());
+		mout.error("stopping");
 	}
+	/*
+	 {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.unimplemented("function ", __FUNCTION__," not implemented for ", getName());
+	}*
+	 */
+
+	virtual
+	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.special(__FUNCTION__, " now, here!");
+		//runDetector((const PlainData<PolarSrc> &) srcData, (PlainData<PolarDst> &)dstData);
+		// Default implementation is simple, creates no (2nd order) quality field of the detection
+		runDetector(srcData, dstData);
+	};
 
 	//const unsigned short int CODE;
 	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards.

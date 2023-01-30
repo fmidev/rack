@@ -126,7 +126,7 @@ public:
 	 *  is set by selector.quantity, typically in the constructor of a derived class.
 	 */
 	virtual
-	void processDataSets(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
+	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
 
 	/// Process the data of a single sweep and and write the result to given product
 	/**
@@ -142,7 +142,7 @@ public:
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.warn() << "not implemented" << mout.endl;
+		mout.unimplemented(__FUNCTION__);
 	};
 
 
@@ -323,19 +323,23 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
 
 	// Step 1: collect sweeps (/datasetN/)
+	//DataSetMap<src_t> sweeps;
 	DataSetMap<src_t> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
-	mout.debug3() << "collect the applicable paths"  << mout.endl;
+	mout.debug3("collect the applicable paths");
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	int index = 0;
 
+
+	mout.unimplemented("No index generator defined!");
 	// NEW
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATASET);
 	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
-	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
-		mout.debug3() << "add: " << index << '\t' << *it  << mout.endl;
-		sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(*it), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	for (const ODIMPath & path: dataPaths){
+		mout.debug3() << "add: " << index << '\t' << path  << mout.endl;
+		sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 	}
 
 
@@ -392,7 +396,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 	/// Main operation
-	this->processDataSets(sweeps, dstProductDataset);
+	this->computeSingleProduct(sweeps, dstProductDataset);
 
 	ProductBase::setODIMsoftwareVersion(dstProduct["how"].data.attributes);
 	//drain::VariableMap & how = dstProduct["how"].data.attributes;
@@ -410,7 +414,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 //template <class M>
 template <class MS, class MD>
-void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
+void ProductOp<MS,MD>::computeSingleProduct(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 	mout.debug3() << "start" << mout.endl;
@@ -418,10 +422,10 @@ void ProductOp<MS,MD>::processDataSets(const DataSetMap<src_t > & src, DataSet<D
 	if (src.size() == 0)
 		mout.warn() << "no data" << mout.endl;
 
-	for (typename DataSetMap<src_t >::const_iterator it = src.begin(); it != src.end(); ++it) {
-
-		mout.debug3() << "calling processDataSet for elev=" << it->first << " #datasets=" << it->second.size() << mout.endl;
-		processDataSet(it->second, dstProduct);
+	//for (typename DataSetMap<src_t >::const_iterator it = src.begin(); it != src.end(); ++it) {
+	for (const auto & entry: src) {
+		mout.debug3("calling processDataSet for elev=", entry.first,  " #datasets=", entry.second.size());
+		processDataSet(entry.second, dstProduct);
 		// TODO: detect first init?
 		// mout.warn() << "OK" << mout.endl;
 	}

@@ -78,7 +78,7 @@ protected:
 
 	/*
 	virtual
-	void processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+	void runDetector(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 			PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstProb) const;
 	*/
 	/// NEW POLICY

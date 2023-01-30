@@ -65,23 +65,107 @@ bool DetectorOp::SUPPORT_UNIVERSAL(true);
 unsigned short int DetectorOp::_count(0);
 
 
+/*
+void DetectorOp::processProduct(DataSetList<PolarDst> & srcVolume, DataSetList<PolarDst> & dstVolume) const {
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.unimplemented("TODO...");
+	mout.error("TODO...");
+}
+*/
 
+/*
 void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.unimplemented("TODO...");
+	mout.error("TODO...");
+}
+*/
+
+void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.debug2("start1", CLASSNAME);
+	mout.attention("start1", CLASSNAME);
+
+	/*
+	for (const auto & entry: srcVolume){
+
+		mout.attention("entry: ", entry.first, ':', entry.second);
+
+		const DataSet<PolarSrc> & srcDataSet = entry.second;
+
+		// mout.attention(srcDataSet.odim);
+		const drain::Castable & c = srcDataSet.getWhere()["elangle"];
+		double d = c;
+		mout.debug("metadata: elangle: ", d);
 
 
+		DataSet<PolarDst> & dstDataSet =  dstVolume[entry.first];  //itd->second;
 
-	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
-	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
+		const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
+		if (srcData.data.isEmpty()){
+			mout.warn() << "empty srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+			return;
+		}
+		else if (!srcData.data.typeIsSet()){
+			mout.warn() << "unset type in srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+			return;
+		}
 
-	while (its != srcDataSets.end()){
+		if (srcData.odim.area.empty()){ // width==0) || (srcData.odim.area.height==0)){
+			mout.warn() << "empty geom in odim of srcData [" << srcDataSet.begin()->first << "]: " << srcData.odim << mout.endl;
+			return;
+		}
 
-		mout.info("processing elangle:", its->first);  // TODO: waiting for DataSetMap<elangle> renewal..
+		// Note: if a detector is run like a product, this should CREATE data.
+
+		Data<PolarDst> & dstData = dstDataSet.getFirstData(); // only for appending QIND and CLASS
+
+
+		mout.debug("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
+
+		//const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
+
+		/// TODO: UNIVERSAL and several inputs?
+		// OVERALL QUALITY (PROB.)
+		PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("QIND") : dstData.getQualityData("QIND"); // of first data (eg. TH)
+		initDataDst(srcData, dstQind, "QIND");
+
+		// OVERALL QUALITY FIELD
+		PlainData<PolarDst> & dstClass = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("CLASS") : dstData.getQualityData("CLASS"); // TODO: local (not only univ.)
+		initDataDst(srcData, dstClass, "CLASS");
+
+		// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
+		PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
+		//dstProb.tree.data.noSave = !DetectorOp::STORE;
+		initDataDst(srcData, dstProb);
+		mout.debug("outputDataVerbosity ", outputDataVerbosity);
+		dstProb.setNoSave(outputDataVerbosity==0);
+
+		//mout.warn() << "dstProb: " << dstProb << mout.endl;
+		/// MAIN COMMAND
+		processDataSet(srcDataSet, dstProb,  dstDataSet);
+
+
+		//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
+		QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
+		//File::write(dstQind.data, "dstQind2.png");
+		//File::write(dstClass.data, "dstClass2.png");
+		//mout.note() << dstDataSet << mout.endl;
+
+	}
+	*/
+
+	//DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
+	//DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
+	DataSetMap<PolarSrc>::const_iterator its = srcVolume.begin();
+	DataSetMap<PolarDst>::iterator       itd = dstVolume.begin();
+	while (its != srcVolume.end()){
+
+		//mout.info("processing elangle: ", its->first, "⁰");  // TODO: waiting for DataSetMap<elangle> renewal..
+		mout.info("processing: ", its->first);  // TODO: waiting for DataSetMap<elangle> renewal..
 
 		if (its->first == itd->first){
 
@@ -93,7 +177,7 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			// mout.attention(srcDataSet.odim);
 			const drain::Castable & c = srcDataSet.getWhere()["elangle"];
 			double d = c;
-			mout.debug("elangle: ", d);
+			mout.debug("metadata: elangle: ", d);
 
 
 			DataSet<PolarDst> & dstDataSet = itd->second;
@@ -112,12 +196,12 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 				return;
 			}
 
-			Data<PolarDst>  & dstData = dstDataSet.getFirstData(); // only for QIND and CLASS
+			// Note: if a detector is run like a product, this should CREATE data.
+
+			Data<PolarDst> & dstData = dstDataSet.getFirstData(); // only for appending QIND and CLASS
 
 
 			mout.debug("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
-
-			//const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
 
 			/// TODO: UNIVERSAL and several inputs?
 			// OVERALL QUALITY (PROB.)
@@ -134,18 +218,12 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 			initDataDst(srcData, dstProb);
 			mout.debug("outputDataVerbosity ", outputDataVerbosity);
 			dstProb.setNoSave(outputDataVerbosity==0);
+			// mout.debug2("dstProb: ", dstProb);
 
-			//mout.warn() << "dstProb: " << dstProb << mout.endl;
 			/// MAIN COMMAND
-			processDataSet(srcDataSet, dstProb,  dstDataSet);
+			runDetection(srcDataSet, dstProb,  dstDataSet);
 
-			/*
-			File::write(srcProb.data, "srcProb.png");
-			if (!dstQind.data.isEmpty())
-				File::write(dstQind.data, "dstQind1.png");
-			if (!dstClass.data.isEmpty())
-				File::write(dstClass.data, "dstClass1.png");
-			 */
+
 			//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
 			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
 			//File::write(dstQind.data, "dstQind2.png");
@@ -165,15 +243,15 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 }
 
-void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
+void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.info() << "start" << mout.endl;
+	mout.info("start");
 	//mout.warn() << "start" << mout.endl;
 
 	if (srcDataSet.size() == 0){
-		mout.warn() << "dataset contains no data, skipping" << mout.endl;
+		mout.warn("dataset contains no data, skipping");
 		return;
 	}
 	else {
@@ -183,27 +261,24 @@ void DetectorOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<
 		if (REQUIRE_STANDARD_DATA){
 			//mout.note() << "dstProb (target): " << dstProb << mout.endl;
 			mout.debug() << "requires normalized srcData" << mout.endl;
-			//const Hi5Tree & tree = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity); // srcDataSet.getData(srcData.odim.quantity+'~');
-			//const PlainData<PolarSrc> srcDataNrm(tree);
-			//const PlainData<PolarSrc> & srcDataNorm = dstProb; // kokkeilu
 
 		    const QuantityMap & qmap = getQuantityMap();
 		    if (qmap.isNormalized(srcData.odim)){
-				mout.debug() << "srcData is normalized already, ok" << mout.endl;
-		    	processData(srcData, dstProb);
+				mout.debug("srcData is normalized already, ok");
+		    	runDetector(srcData, dstProb);
 		    }
 		    else {
-		    	mout.info() << "requesting 'normalized' data..." << mout.endl;
+		    	mout.info("using 'normalized' data...");
 		    	PlainData<PolarDst> & srcDataNorm = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity);
 				//mout.debug3() << "got normalized data, now processing" << mout.endl;
-				mout.debug() << "srcDataNorm: " << srcDataNorm << mout.endl;
-				processData(srcDataNorm, dstProb);
+				mout.debug("srcDataNorm: ", srcDataNorm.odim);
+				runDetector(srcDataNorm, dstProb);
 		    }
-			mout.debug2() << "dstProb (result): " << dstProb << " OK?" << mout.endl;
+			mout.debug2("dstProb (result): ", dstProb, " OK?");
 		}
 		else {
-			mout.debug() << "no data normalization needed, ok" << mout.endl;
-			processData(srcData, dstProb);
+			mout.debug("no data normalization needed, ok");
+			runDetector(srcData, dstProb);
 		}
 
 		writeHow(dstProb);

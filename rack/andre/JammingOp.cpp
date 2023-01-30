@@ -56,7 +56,7 @@ namespace rack {
 
 
 
-void JammingOp::processData(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
+void JammingOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 //void JammingOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

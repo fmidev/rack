@@ -63,7 +63,7 @@ using namespace drain::image;
 
 
 // void ConvOp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
-void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
+void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -85,7 +85,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 	maxOp.odim.quantity = "MAX";
 	maxOp.altitude    = 1000; //echoTopThreshold/2;
 	maxOp.devAltitude = 500; //echoTopThreshold/2;
-	maxOp.processDataSets(srcSweeps, dstProduct);
+	maxOp.computeSingleProduct(srcSweeps, dstProduct);
 	Data<PolarDst> & maxEcho = dstProduct.getData(maxOp.odim.quantity); // ensure
 	//mout.warn() << "maxEcho " << maxEcho.odim << mout.endl;
 	//maxEcho.updateTree2();
@@ -97,7 +97,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 		cappiOp.odim.updateFromMap(qm.get("DBZH").get('C'));
 		cappiOp.odim.quantity = "CAPPI";
 		cappiOp.altitude = 2000;
-		cappiOp.processDataSets(srcSweeps, dstProduct);
+		cappiOp.computeSingleProduct(srcSweeps, dstProduct);
 	}
 	Data<PolarDst> & cappi = dstProduct.getData(cappiOp.odim.quantity);
 	dstProduct.updateTree3(cappi.odim); // IMPORTANT
@@ -110,7 +110,7 @@ void ConvOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<Pol
 		//echoTopOp.setEncodingRequest(quantityMap.get("HGHT").get('C').getValues());
 		echoTopOp.odim.quantity = "ETOP";
 		echoTopOp.minDBZ = echoTopDBZ; // maxEchoThreshold; //echoTopDBZ;
-		echoTopOp.processDataSets(srcSweeps, dstProduct);
+		echoTopOp.computeSingleProduct(srcSweeps, dstProduct);
 	}
 	Data<PolarDst> & echoTop = dstProduct.getData(echoTopOp.odim.quantity);
 

@@ -43,7 +43,7 @@ using namespace drain::image;
 
 namespace rack {
 
-void AttenuationOp::processData(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
+void AttenuationOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	mout.debug() << *this << mout.endl;

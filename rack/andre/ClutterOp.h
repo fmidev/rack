@@ -69,10 +69,12 @@ public:
 	ClutterOp(double decay=0.5, double gamma=1.0, const std::string & quantity ="CLUTTER", const std::string & file = "cluttermaps/cluttermap-${NOD}-${quantity}.h5") :
 		DetectorOp(__FUNCTION__, "Reads a ground clutter map and scales it to sweeps.", "nonmet.clutter.ground"){ // Optional postprocessing: morphological closing.
 		// dataSelector.path = ". */da ta[0-9]+/?$";
-		dataSelector.quantity = "";  // or FREQ?
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
+
+		dataSelector.quantity = "";  // or FREQ?
 		dataSelector.count = 1;
+
 		parameters.link("decay", this->decay = decay, "per 1000m");
 		parameters.link("gamma", this->gamma = gamma, "brightness");
 		parameters.link("quantity", this->quantity = quantity, "CLUTTER|OBSTACLE|...");
@@ -95,7 +97,7 @@ public:
 
 
 	virtual
-	void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
+	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;
 
 protected:
 

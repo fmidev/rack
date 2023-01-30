@@ -67,11 +67,14 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 	//}
 
 
-	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
+	for (const auto & entry: attributes){
+
+	//for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
-		ostr << it->first << '=';
-		drain::JSONwriter::toStream(it->second, ostr);
+		ostr << entry.first << '=';
+		//drain::JSONwriter::toStream(it->second, ostr);
+		drain::SprinterBase::toStream(ostr, entry.second, drain::SprinterBase::jsonLayout);
 		//ostr << ' ' << drain::Type::getTypeChar(it->second.getType());
 		ostr << '\n';
 	}
@@ -290,9 +293,10 @@ void Hi5Base::linkPalette(const Hi5Tree & palette, Hi5Tree & dst){
 // const Hi5Tree &src,
 void Hi5Base::writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr) {
 
-	for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
-		const std::string & key = *it;
-		src(key).data.writeText(ostr, key);
+	// for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
+	// const std::string & key = *it;
+	for (const Hi5Tree::path_t & path: paths){
+		src(path).data.writeText(ostr, path);
 	}
 }
 
@@ -366,7 +370,7 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 		n.dataSet.setType<unsigned char>();
 
 		drain::Variable v;
-		drain::JSONreader::readValue(attrValue, v);
+		drain::JSON::readValue(attrValue, v);
 		switch (v.getElementCount()) {
 			case 3:
 				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1), v.get<size_t>(2));
@@ -390,7 +394,7 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 		drain::Variable & a = n.attributes[attrKey];
 		//mout.warn() << "hey " << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
 		if (VALUE_GIVEN){
-			drain::JSONreader::readValue(attrValue, a, true);
+			drain::JSON::readValue(attrValue, a, true);
 			//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
 			if (attrKey == "quantity"){
 				if (n.attributes.get("gain", 0.0) == 0.0){

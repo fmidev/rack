@@ -113,7 +113,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 
 }
 
-void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
+void ClutterOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -121,7 +121,7 @@ void ClutterOp::processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst
 
 	const Hi5Tree & clutterMap = getClutterMap(srcData.odim);
 
-	if (clutterMap.isEmpty()){
+	if (clutterMap.empty()){
 		mout.fail("clutterMap empty, skipping");
 		return;
 	}

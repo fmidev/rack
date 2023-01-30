@@ -48,7 +48,7 @@ using namespace drain::image;
 
 
 
-void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
+void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -100,20 +100,23 @@ void CumulativeProductOp::processDataSets(const DataSetMap<PolarSrc> & srcSweeps
 
 	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
 
-	for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+	//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
+	for (const auto & entry: srcSweeps){
 
-		const Data<PolarSrc> & srcData = it->second.getData(quantity);
+		const Data<PolarSrc> & srcData = entry.second.getData(quantity);
 
 		if (srcData.data.isEmpty()){
-			mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << ", skipping" << mout.endl;
+			mout.warn("selected quantity=", quantity, " not present in index=", entry.first, ", skipping");
 			continue;
 		}
-		mout.debug3() << "elangle=" << it->first << mout.endl;
+		mout.debug3("index: ", entry.first);
 		//mout.warn() << "elangle=" << it->first << mout.endl;
 
 		processData(srcData, accumulator);
 
-		dstData.odim.angles.push_back(it->first);
+		//mout.attention("elangle >> angles");
+		dstData.odim.angles.push_back(srcData.odim.elangle);
+		//dstData.odim.angles.push_back(entry.first);
 
 	}
 
