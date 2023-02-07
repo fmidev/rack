@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/FileInfo.h"
 #include "drain/util/Log.h"
 #include "drain/util/Variable.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 
 #include "data/ODIMPath.h"
 
@@ -85,6 +85,11 @@ struct NodeHi5 {
 
 	drain::image::Image dataSet;
 
+	// Required, but not much needed.
+	bool empty() const {
+		return (dataSet.isEmpty() && attributes.empty());
+	}
+
 	drain::VariableMap  attributes;
 
 	NodeHi5() : noSave(false) {};
@@ -114,7 +119,10 @@ struct NodeHi5 {
 //typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, '/', rack::ODIMPathLess> Hi5Tree;
 
 //typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
-typedef drain::Tree<hi5::NodeHi5, false, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
+//typedef drain::Tree<hi5::NodeHi5, false, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
+typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
+// typedef drain::Tree<std::map<rack::ODIMPath,hi5::NodeHi5>, false> Hi5Tree;
+
 
 
 namespace hi5 {
@@ -163,13 +171,13 @@ public:
 
 	/// Dumps the H5 structure, attributes and data properties.
 	static
-	void writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr = std::cout);
+	void writeText(const Hi5Tree &src, const std::list<typename Hi5Tree::path_t> & paths, std::ostream & ostr = std::cout);
 
 	/// Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src.getKeys(), ostr)).
 	static
 	void writeText(const Hi5Tree &src, std::ostream & ostr = std::cout){
-		std::list<Hi5Tree::path_t> paths;
-		src.getPaths(paths);
+		std::list<typename Hi5Tree::path_t> paths;
+		drain::TreeUtils::getPaths(src, paths);
 		writeText(src, paths, ostr);
 	};
 

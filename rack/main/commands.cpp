@@ -40,8 +40,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/RegExp.h"
 #include "drain/util/Input.h"
 #include "drain/util/Output.h"
-#include "drain/util/JSONwriter.h"
+// #include "drain/util/JSONwriter.h"
+#include "drain/util/JSONtree.h"
 #include "drain/util/Sprinter.h"
+#include "drain/util/TreeUtils.h"
 
 #include "drain/image/Image.h"
 #include "drain/image/TreeSVG.h"
@@ -1353,8 +1355,12 @@ public:
 		std::ostream & ostr = std::cout;
 
 		if (value.empty()){
-			drain::JSONwriter::mapToStream(cmdBank.getMap(), ostr, 2);
-			//reg.toJSON(ostr);
+			//drain::SprinterBase::sequenceToStream(ostr, cmdBank.getMap(), "{,}", drain::SprinterBase::jsonLayout);
+			// drain::SprinterBase::mapToStream(ostr, cmdBank.getMap(), drain::SprinterBase::jsonLayout, cmdBank.getKeys());
+			mout.unimplemented("drain::JSONwriter");
+			// JSON::treeToStream(ostr, cmdBank.getMap());
+			// drain::JSONwriter::mapToStream(cmdBank.getMap(), ostr, 2);
+			// reg.toJSON(ostr);
 		}
 		else {
 			if (!cmdBank.has(value)){
@@ -1365,82 +1371,35 @@ public:
 			const drain::Command & command = cmdBank.get(value);
 			const drain::ReferenceMap & m = command.getParameters();
 
-
 			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
 
-			//ostr << "# " << m << mout.endl;
+			drain::JSONtree2 jsonRoot;
 
+			drain::JSONtree2 & json = jsonRoot[value];
+			json["title"] = command.getDescription();
+			drain::JSONtree2 & variables = json["variables"];
 
-			ostr << "{\n";
-			drain::JSONwriter::indent(ostr, 2);
-			ostr << "\"title\": \"" << command.getDescription() << '"' << ',' << '\n';
-			drain::JSONwriter::indent(ostr, 2);
-			ostr << "\"variables\": {";
-
-			/*
-			JSONwriter::mapElementsToStream(m, m.getKeyList(), ostr, 4);
-			ostr << '\n';
-			JSONwriter::indent(ostr, 2);
-			ostr << "}\n";
-			*/
-			//m.toJSON(ostr, 1);
-
+			// O
 			const drain::ReferenceMap::keylist_t & keys = m.getKeyList();
 
-			char sep=0;
+			for (const drain::ReferenceMap::key_t key: keys){
 
-			//JSONtree::tree_t & vars = tree["variables"];
+				// const drain::Referencer & entry = m[key];
 
-			for (drain::ReferenceMap::keylist_t::const_iterator it = keys.begin(); it!=keys.end(); ++it){
+				drain::JSONtree2 & variable = variables[key];
 
-				const drain::Referencer & entry = m[*it];
+				variable["value"] = m[key]; //entry;
 
-				if (sep)
-					ostr << sep;
-				else
-					sep = ',';
-
-				ostr << '\n';
-
-				drain::JSONwriter::indent(ostr, 4);
-				ostr << "\"" << *it << "\": {\n";
-
-				drain::ReferenceMap::unitmap_t::const_iterator uit = u.find(*it);
+				drain::ReferenceMap::unitmap_t::const_iterator uit = u.find(key);
 				if (uit != u.end()){
-					drain::JSONwriter::indent(ostr, 6);
-					ostr << "\"title\": ";
-					drain::JSONwriter::toStream(uit->second, ostr);
-					ostr << ',' << '\n';
+					variable["unit"] = uit->second;
 				}
 
-				drain::JSONwriter::indent(ostr, 6);
-				ostr << "\"value\": ";
-				drain::JSONwriter::toStream(entry, ostr);
-				ostr << '\n';
-
-				drain::JSONwriter::indent(ostr, 4);
-				ostr << '}';
-
 			}
 
-			//drain::JSONwriter::toStream(tree, ostr);
+			drain::SprinterBase::toStream(ostr, jsonRoot, drain::SprinterBase::jsonLayout);
+			drain::TreeUtils::dump(jsonRoot, ostr, true);
 
-
-			ostr << '\n';
-			drain::JSONwriter::indent(ostr, 2);
-			ostr << '}'; // variables
-
-
-
-			/*
-			if (!command.getType().empty()){
-				ostr << ",\n  \"output\": \"" << command.getType() << "\"";
-			}
-			*/
-			//JSONwriter::indent(ostr, 2);
-			//ostr << "}\n";
-
-			ostr << "\n}\n";
 		}
 
 		//std::cout << std::setw(10) << "Voila!" << std::endl;
@@ -1797,7 +1756,8 @@ void CmdValidate::exec() const {
 
 		ODIMPathList dataPaths;
 
-		src.getPaths(dataPaths); // ALL
+		drain::TreeUtils::getPaths(src, dataPaths);
+		// src.getPaths(dataPaths); // ALL
 
 		//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 		for (ODIMPath & path: dataPaths){

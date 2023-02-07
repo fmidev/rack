@@ -59,7 +59,7 @@ public:
 		open();
 	}
 
-	inline
+	virtual inline
 	~FileGeoTIFF(){
 		//gt_close();
 		close();
@@ -94,7 +94,7 @@ public:
 	void close(){
 		if (isOpen()){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.debug("Closing GeoTIFF...");
+			mout.special("Closing GeoTIFF...");
 			GTIFWriteKeys(gtif);
 			GTIFFree(gtif);
 			gtif = nullptr;
@@ -108,8 +108,12 @@ public:
 		return FileTIFF::isOpen() && (gtif != nullptr);
 	}
 
+	/// Require strict GeoTIFF compliance
+	static
+	bool strictCompliance;
+
 	/// This is between Tiff and GeoTiff?
-	void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);
+	//void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);
 	//void setGdalMetaDataOLD(double nodata, double scale=1.0, double offset=0.0);
 
 	/**

@@ -50,7 +50,7 @@ Proj4::~Proj4(){
 	pj_free( projDst  );
 }
 
-Proj4::epsg_dict_t Proj4::epsgDict;
+// Proj4::epsg_dict_t Proj4::epsgDict;
 
 void Proj4::_setProjection(const std::string & str, projPJ & p){
 
@@ -61,16 +61,17 @@ void Proj4::_setProjection(const std::string & str, projPJ & p){
 	// Check plain number
 	const int EPSG = atoi(str.c_str()); //drain::StringTools::convert<int>(s);
 	if (EPSG > 0){
+		mout.debug2("Detected plain numeric code (", EPSG, "), probably ESPG then.");
 		const epsg_dict_t & d = Proj4::getEpsgDict();
 		epsg_dict_t::const_iterator it = d.findByKey(EPSG);
 		if (it != d.end()){
-			mout.debug() << "Setting predefined EPSG=" << EPSG << mout.endl;
+			mout.info("Found predefined (hard-coded) EPSG=", EPSG);
 			p = pj_init_plus(it->second.c_str());
 		}
 		else {
-			static std::string init = "+init=epsg:";
-			mout.debug() << "Trying " << init << EPSG << mout.endl;
-			p = pj_init_plus((init + str).c_str());
+			std::string init = "+init=epsg:" +  str;
+			mout.debug("Trying ", init);
+			p = pj_init_plus(init.c_str());
 		}
 	}
 	else {
@@ -83,14 +84,27 @@ void Proj4::_setProjection(const std::string & str, projPJ & p){
 	
 }
 
-const Proj4::epsg_dict_t & Proj4::getEpsgDict(){
-	if (Proj4::epsgDict.empty()){
+const Proj4::epsg_dict_t & Proj4::getEpsgDict(){ // Note: perhaps later non-const version needed
+
+	static epsg_dict_t epsgDict;
+
+	if (epsgDict.empty()){
+
+		epsgDict = {
+				{4326, "+proj=longlat +datum=WGS84 +no_defs"},
+				{3067, "+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"},
+				{3844, "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"},
+				{3035, "+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +towgs84=33.4,-146.6,-76.3,-0.359,-0.053,0.844,-0.84 +units=m +no_defs"},
+		};
+
+		/*
 		Proj4::epsgDict.add(4326, "+proj=longlat +datum=WGS84 +no_defs");
 		Proj4::epsgDict.add(3067, "+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 		Proj4::epsgDict.add(3844, "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 		Proj4::epsgDict.add(3035, "+proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +towgs84=33.4,-146.6,-76.3,-0.359,-0.053,0.844,-0.84 +units=m +no_defs");
+		*/
 	}
-	return Proj4::epsgDict;
+	return epsgDict;
 }
 
 std::ostream & operator<<(std::ostream & ostr, const Proj4 &p){

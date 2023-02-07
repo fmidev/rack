@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //
+#include "BeanLike.h"
 #include "FilePath.h"
 #include "Registry.h"
 #include "RegExp.h"
@@ -76,15 +77,21 @@ public:
 	/// Regexp to be set inside parentheses
 	drain::RegExp extensionRegexp;
 
+
 	//static
 	//const drain::RegExp noExtension;
 
 };
 
-class FileHandler {
+class FileHandler { // : public BeanLike {
 
 public:
 
+	/*
+	inline
+	FileHandler(const std::string & name) : BeanLike(name){
+	}
+	*/
 	//static virtual
 	//const FileInfo & getFileInfo() = 0;
 

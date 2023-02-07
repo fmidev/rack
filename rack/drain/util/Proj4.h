@@ -229,8 +229,8 @@ protected:
     projPJ projSrc;
     projPJ projDst;
 
-    static
-    epsg_dict_t epsgDict;
+    // Moved inside getEPSGdict(). Consider non-const, if conf file updates needed?
+    // static    epsg_dict_t epsgDict;
 
 
 private:

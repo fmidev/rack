@@ -97,7 +97,7 @@ struct TypeLayout : public TypeLayoutBase{
 	}
 
 	TypeLayout(const TypeLayout & layout){
-		this->assign(layout);
+		this->assign(layout); // NOTE: copying element by element, not involving strings possibly containing null char (premature end-or-read).
 	}
 
 	/// Set layout with a single string, for example: "{,}" .
@@ -130,6 +130,7 @@ struct SprinterLayout{
 	TypeLayout mapChars = TypeLayout("{,}");
 	TypeLayout pairChars = TypeLayout("(,)");
 	TypeLayout stringChars = TypeLayout('"',0, '"');
+	//TypeLayout stringChars = TypeLayout("\"\"");
 	//std::string boolTrue  = "true";
 	//std::string boolFalse = "false";
 	//std::string nullValue = "null";
@@ -138,11 +139,12 @@ struct SprinterLayout{
 		this->arrayChars.setLayout(arrayChars);
 		this->mapChars.setLayout(mapChars);
 		this->pairChars.setLayout(pairChars);
-
 		if (stringChars)
 			this->stringChars.setLayout(stringChars);
 	}
 
+	SprinterLayout(const SprinterLayout &layout): arrayChars(layout.arrayChars), mapChars(layout.mapChars), pairChars(layout.pairChars), stringChars(layout.stringChars){
+	}
 	//
 	///SprinterLayout(const TypeLayout & style= (), ){
 
@@ -183,11 +185,32 @@ public:
 	/// Put each array and object element on a separate line
 	static const SprinterLayout lineLayout;
 
-	/// C/C++ layout: all objects with {...}
+	/// Resembles JSON structure: {"a":1,"b":22,"c":3}
+	/**
+	 *   # arrays  as [value, ...]
+	 *   # objects as {...}
+	 *   # pairs   as {key:value}
+	 *   # strings with double quotes: "..."
+	 */
+	static const SprinterLayout jsonLayout;
+
+	/// C++ code initializer list style: all objects with {...}, with comma ',' separator.
+	/**
+	 *   # arrays  as {value, ...}
+	 *   # objects as {}
+	 *   # pairs   as {key,value}
+	 *   # strings with double quotes: "..."
+	 */
 	static const SprinterLayout cppLayout;
 
-	/// Resembles JSON structure: {"a":1,"b":22,"c":3}
-	static const SprinterLayout jsonLayout;
+	/// C++ code initializer list style: all objects with {...}, with comma ',' separator.
+	/**
+	 *   # arrays  with [value, ...]
+	 *   # objects with {}
+	 *   # pairs   with (key,value), like tuples (of two elements)
+	 *   # strings with single quotes: '...'
+	 */
+	static const SprinterLayout pythonLayout;
 
 
 	static inline
@@ -373,11 +396,24 @@ public:
 		return basicToStream(ostr, c, layout.stringChars);
 	}
 
+	/// Single char gets styled same way as strings
+	static
+	std::ostream & toStream(std::ostream & ostr, bool b, const SprinterLayout & layout = defaultLayout) { // short int?
+		//return basicToStream(ostr, b?"true":"false", layout.stringChars);
+		return ostr << (b ? "true":"false");
+	}
+
+
 	/// Pointer: redirect to actual target object
 	template <class D>
 	static
 	std::ostream & toStream(std::ostream & ostr, D *x, const SprinterLayout & layout = defaultLayout) {
-		return ostr << *x;
+		if (x == nullptr)
+			return ostr << "null";
+		else if (x == 0)
+			return ostr << "null";
+		else
+			return ostr << *x;
 	}
 
 	/// Pointer: redirect to actual target object

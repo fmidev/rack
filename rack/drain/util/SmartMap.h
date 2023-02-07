@@ -69,8 +69,14 @@ class SmartMap : public std::map<std::string, T> {
 public:
 
 	typedef SmartMap<T> smap_t;
+
 	typedef std::map<std::string, T> map_t;
+	typedef typename map_t::key_type     key_t;
+	typedef typename map_t::mapped_type value_t; // == T
+	typedef typename map_t::value_type 	entry_t; // pair<key_t,value_t>
+
 	typedef std::list<std::string> keylist_t;
+
 	/// Needed?
 	typedef typename map_t::iterator iterator;
 	typedef typename map_t::const_iterator const_iterator;
@@ -399,8 +405,16 @@ public:
 	 */
 	// template <class S>
 	// S & toStream(S & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const;
-	std::ostream & toStream(std::ostream & ostr, char equal='=', char startChar=0, char endChar=0, char separatorChar=0) const {
-		return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
+	std::ostream & toStream(std::ostream & ostr, char equal='=', char startChar='{', char endChar='}', char separatorChar=',') const {
+		//drain::TypeLayout pairLayout(equal);
+		drain::TypeLayout mainLayout(startChar, separatorChar, endChar);
+		SprinterLayout layout(SprinterBase::jsonLayout);
+		//layout.pairChars.separator = equal;
+		layout.pairChars.separator = equal;
+		//layout.arrayChars.setLayout();
+		return SprinterBase::sequenceToStream(ostr, getMap(), mainLayout, layout);
+		//return SprinterBase::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+		//return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
 	}
 
 	//std::string toStr(char equal='=', char start='{', char end='}', char separator=0) const {
@@ -659,7 +673,8 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 					ostr << item;
 					break;
 				default:
-					JSONwriter::toStream(item, ostr); // Better! Forces commas.
+					SprinterBase::toStream(ostr, item, SprinterBase::plainLayout);
+					// JSONwriter::toStream(item, ostr); // Better! Forces commas.
 					// ostr << '[' << item << ']';
 			}
 		}
@@ -742,8 +757,14 @@ std::ostream &operator<<(std::ostream &ostr, const SmartMap<T> & m){
 	return ostr;
 }
 
-
-
+/*
+template <class T>
+//template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const SmartMap<T> & smap, const SprinterLayout & layout){
+	return SprinterBase::mapToStream(ostr, smap.getMap(), layout, smap.getKeys());
+}
+*/
 
 } // drain
 

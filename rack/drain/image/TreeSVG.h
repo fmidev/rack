@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+Copyright (c) 2023 FMI Open Development / Markus Peura, first.last@fmi.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef TREESVG_H_
-#define TREESVG_H_
+#ifndef DRAIN_TREESVG_H_
+#define DRAIN_TREESVG_H_
 
 #include "drain/util/TreeXML.h"
 
@@ -46,7 +46,7 @@ namespace image {
 
 class NodeSVG;
 
-typedef drain::Tree<NodeSVG> TreeSVG;
+typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
 
 
 /// A node for TreeXML

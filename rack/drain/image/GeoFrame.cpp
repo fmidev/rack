@@ -258,7 +258,7 @@ void GeoFrame::setProjection(const std::string &s){
 			// Rescale also to degrees
 			updateBoundingBoxD();
 			*/
-			mout.warn() << "Metric BBox (" << extentNative << ") incompatible with projection '" << s << "'"<< mout;
+			mout.warn("Metric BBox (", extentNative, ") incompatible with the requested LongLat projection: '", s, "'");
 		}
 		else {
 			if (PROJ_SET) {

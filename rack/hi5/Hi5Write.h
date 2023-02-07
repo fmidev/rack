@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "drain/image/Image.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 
 /*
  *

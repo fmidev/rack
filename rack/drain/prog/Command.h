@@ -89,6 +89,11 @@ public:
 		setParameters(vargs);
 	}
 
+	template <class T>
+	void setParameter(const std::string & key, const T & value){
+		getParameters()[key] = value;
+	}
+
 
 	inline
 	Command & addSection(drain::Flagger::value_t i){
@@ -113,6 +118,9 @@ public:
 
 	virtual
 	const ReferenceMap & getParameters() const = 0;
+
+	virtual
+	ReferenceMap & getParameters() = 0;
 
 	inline
 	bool hasArguments() const { // tODO rename
@@ -163,6 +171,9 @@ public:
 
 	/// Future option: single-code Dynamic functions: handle the command string
 	// virtual void setKey(const std::string & key) const {}
+
+protected:
+
 
 };
 
@@ -225,12 +236,18 @@ public:
 		//this->update();
 	}
 
+	/*
 	template <class T>
 	void setParameter(const std::string & key, const T & value) {
 		parameters[key] = value;
 		//this->update();
 	}
+	*/
 
+	virtual inline
+	ReferenceMap & getParameters(){
+		return parameters;
+	};
 
 
 protected:
@@ -240,6 +257,7 @@ protected:
 	const std::string description;
 
 	ReferenceMap parameters;
+
 
 	template <class T>
 	void importParams(const T & cmd){
@@ -396,6 +414,13 @@ public:
 		//this->update();
 	}
 
+	virtual inline
+	ReferenceMap & getParameters(){
+		return getBean().getParameters();
+	};
+
+
+protected:
 
 };
 
@@ -436,8 +461,7 @@ public:
 		return bean.getDescription();
 	};
 
-	virtual
-	inline
+	virtual inline
 	const ReferenceMap & getParameters() const {
 		return bean.getParameters();
 	};  // or getParameters
@@ -459,6 +483,14 @@ public:
 		bean.setParameters(params);
 		// this->update();
 	}
+
+	virtual inline
+	ReferenceMap & getParameters(){
+		return bean.getParameters();
+	};  // or getParameters
+
+protected:
+
 
 
 };

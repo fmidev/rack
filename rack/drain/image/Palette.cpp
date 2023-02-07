@@ -370,6 +370,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		if (i == std::string::npos)
 			continue;
 
+
 		char c = line.at(i);
 
 		if (c == '#'){
@@ -433,8 +434,11 @@ void Palette::loadTXT(std::ifstream & ifstr){
 			}
 		}
 
+		// mout.warn(line, " <- ", label);
+
 		id = "";
 		id << ++index;
+		// mout.warn("id now: ", id);
 		id << entry.label;
 		entry.id = id.toStr();
 
@@ -478,39 +482,42 @@ void Palette::loadJSON(std::ifstream & ifstr){
 
 	reset();
 
-	drain::JSONtree::tree_t json;
+	drain::JSONtree2 json;
 
 	drain::JSON::readTree(json, ifstr);
 	//drain::JSONtree::read(json, ifstr);
 
-	const drain::JSONtree::node_t & metadata = json["metadata"].data;
-
+	//const drain::JSONtree2::node_data_t & metadata = json["metadata"].data;
 	// Consider whole metadata as JSON tree?
-	title = metadata["title"].toStr();
+	//title = metadata["title"]; // .toStr();
+	const drain::JSONtree2 & metadata = json["metadata"];
+	title = metadata["title"].data.toStr();
 
-	mout.info() << "title: " << title << mout.endl;
-	mout.debug() << "metadata: " << metadata << mout.endl;
-
+	mout.info("title: ", title);
+	mout.debug() << "metadata: ";
+	drain::TreeUtils::dump(metadata, mout);
+	mout << mout.endl;
 	importJSON(json["entries"], 0);
 
 }
 
 
-void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
+void Palette::importJSON(const drain::JSONtree2 & entries, int depth){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	//const drain::JSONtree::tree_t & entries = json["entries"];
 
-	for (drain::JSONtree::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
+	//for (drain::JSONtree::tree_t::const_iterator it = entries.begin(); it != entries.end(); ++it){
+	for (const auto & data: entries){
 
 		//const std::string & id         = it->first;
-		const drain::JSONtree::tree_t::key_t & id = it->first;
-		const drain::JSONtree::tree_t & child     = it->second;
+		const drain::JSONtree2::key_t & id = data.first;
+		const drain::JSONtree2 & child     = data.second;
 
-		const VariableMap & attr  = child.data;
+		//const VariableMap & attr  = child.data;
 
-		const Variable &value = attr["value"];
+		const Variable &value = child["value"].data;
 
 		// Special code: dynamically assigned value
 		const bool SPECIAL = value.isString();
@@ -521,19 +528,22 @@ void Palette::importJSON(const drain::JSONtree::tree_t & entries, int depth){
 		}
 
 		//PaletteEntry & entry = SPECIAL ? specialCodes[id] : (*this)[d]; // Create entry?
-		PaletteEntry & entry = SPECIAL ? specialCodes[attr["value"]] : (*this)[d]; // Create entry?
+		//PaletteEntry & entry = SPECIAL ? specialCodes[attr["value"]] : (*this)[d]; // Create entry?
+		PaletteEntry & entry = SPECIAL ? specialCodes[value] : (*this)[d]; // Create entry?
 
 		entry.id = id;
 		// Deprecated, transitory:
-		entry.value = attr["min"];
-		entry.label = attr["en"].toStr();
+		entry.value = child["min"]; //
+		entry.label = child["en"].data.toStr();
 
-		entry.getParameters().updateFromCastableMap(attr);
+		mout.unimplemented("entry.getParameters()");
+		mout.error("stop here");
+		//entry.getParameters().updateFromCastableMap(attr);
 
 		// std::cerr << "keijo" << attr["color"] << std::endl;
 		// NOVECT attr["color"].toSequence(entry.color);
 		std::list<double> l;
-		attr["color"].toSequence(l);
+		child["color"].data.toSequence(l);
 		switch (l.size()) {
 			case 4:
 				entry.alpha = l.back();
@@ -584,9 +594,9 @@ void Palette::write(const std::string & filename){
 		return;
 	}
 
-	mout.info() << "writing: " << *this << mout.endl;
+	mout.info("writing: ", *this);
 
-	drain::Output ofstr(filename.c_str());
+	drain::Output ofstr(filename);
 
 	/*
 	std::ofstream ofstr(filename.c_str(), std::ios::out);
@@ -605,12 +615,14 @@ void Palette::write(const std::string & filename){
 		ofstr << svg;
 	}
 	else if (filepath.extension == "json"){
-		drain::JSONtree::tree_t json;
+		// drain::JSONtree::tree_t json;
+		drain::JSONtree2 json;
 		mout.debug("exporting JSON palette");
 		exportJSON(json);
 		//drain::JSONwriter::toStream(json, ofstr);
 		mout.debug("writing JSON palette/class file");
-		drain::SprinterBase::toStream(ofstr, json);
+		drain::JSON::treeToStream(ofstr, json);
+		// drain::SprinterBase::toStream(ofstr, json);
 		// = drain::JSONwriter::mapToStream(json, ofstr); explicit
 		// = drain::JSONtree::writeJSON(json, ofstr);     old style
 	}
@@ -677,10 +689,64 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 }
 
 
-void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
+//void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
+void Palette::exportJSON(drain::JSONtree2 & json) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+
+	drain::JSONtree2 & metadata = json["metadata"];
+	metadata["title"] = title;
+
+	drain::JSONtree2 & entries =  json["entries"];
+
+	int i = 0;
+	std::stringstream key;
+
+	// Start with special codes (nodata, undetect)
+	// for (spec_t::const_iterator it = specialCodes.begin(); it!=specialCodes.end(); ++it){
+	// const PaletteEntry & entry = it->second;
+
+	for (const auto & entry: specialCodes){
+
+		key.str("");
+		key << "special";
+		key.width(2);
+		key.fill('0');
+		key << ++i;
+
+		//drain::JSONtree::tree_t & js = entries[key.str()]; // entries[entry.id];
+		drain::JSONtree2 & js = entries[key.str()];
+
+		js["color"] = entry.second.color;
+		//js.data.importCastableMap(entry.second.getParameters()); // color repeated?
+		for (const auto & param: entry.second.getParameters()){
+			js[param.first] = param.second;
+		}
+		js["value"] = entry.first;
+		//mout.warn("value", entry.first);
+	}
+
+	i = 0;
+	for (const auto & entry: *this){
+		//for (Palette::const_iterator it = begin(); it!=end(); ++it){
+		//const PaletteEntry & entry = it->second;
+		key.str("");
+		key << "colour";
+		key.width(3);
+		key.fill('0');
+		key << ++i;
+		drain::JSONtree2 & m = entries[key.str()];
+		const drain::image::PaletteEntry & col = entry.second;
+		m["color"] = col.color;
+		mout.warn("id: ", col.id, " = ", col.getParameter<std::string>("id"));
+		for (const auto & param: col.getParameters()){
+			m[param.first] = param.second;
+		}
+		// m.importCastableMap(entry.second.getParameters());
+	}
+
+	/*
 
 	VariableMap & metadata = json["metadata"].data;
 	metadata["title"] = title;
@@ -724,8 +790,7 @@ void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 		m["color"] = entry.second.color;
 		m.importCastableMap(entry.second.getParameters());
 	}
-
-
+	 */
 
 }
 

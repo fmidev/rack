@@ -81,8 +81,14 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst
 			dst.data.put(i, h);
 		else
 			dst.data.put(i, dst.odim.undetect); // quality?
+		std::cerr << i << '\t' << dst.data.get<short>(i) << '\t' << dst.odim.scaleForward(dst.data.get<double>(i)) << '\n';
 	}
 
+	//mout.special()
+	//for (ini i=0; i<dst.odim.area.width; ++i)
+
+	// New 2023/02
+	dst.odim.elangle = src.odim.elangle;
 
 }
 

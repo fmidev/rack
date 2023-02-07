@@ -48,6 +48,9 @@ namespace drain
 FileInfo JSONtree::fileInfo("json");
 
 
+template <>
+const drain::JSONtree2 drain::JSONtree2::emptyNode;
+
 /**
  *
  *  TODO: manual+includes, TypeUtils, Skip escaped \\
@@ -78,7 +81,8 @@ void JSONtree::write(const tree_t & json, const std::string & filename){
 	const FilePath path(filename);
 
 	if (path.extension == "json"){
-		JSONtree::writeJSON(json, outfile);
+		mout.unimplemented("JSONtree::writeJSON OLD");
+		//JSONtree::writeJSON(json, outfile);
 	}
 	else if (path.extension == "ini"){
 		JSONtree::writeINI(json, outfile);
@@ -92,7 +96,7 @@ void JSONtree::write(const tree_t & json, const std::string & filename){
 }
 
 
-
+/*
 template <>
 std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostream &ostr, unsigned short indentation){
 
@@ -124,19 +128,20 @@ std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostr
 
 	return ostr;
 }
+*/
 
-
-
+/*
 void JSONtree::writeJSON(const drain::JSONtree::tree_t & t, std::ostream & ostr, unsigned short indentation){
 	JSONwriter::toStream(t, ostr, indentation);
 }
+*/
 
 
 
 /// Write a Windows INI file
 void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
 
-
+/*
 	//for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
 	for (const auto & entry: t.data){
 		ostr << entry.first << '='; // << dit->second;
@@ -160,6 +165,7 @@ void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::pat
 		ostr << '\n';
 
 	}
+*/
 
 }
 

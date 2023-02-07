@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "UniTuple.h"
 #include "String.h"
 
-#include "JSONwriter.h"
+//#include "JSONwriter.h"
 #include "Sprinter.h" // partially overlapping with JSONwriter?
 
 
@@ -732,8 +732,8 @@ protected:
 
 		std::stringstream sstr;
 
-		drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
-		//toStream(sstr);
+		// drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
+		toStream(sstr);
 
 		if (inputSeparator && (getElementCount()>1)){
 			sstr << inputSeparator;

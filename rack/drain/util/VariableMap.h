@@ -32,14 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_VARIABLEMAP_H
 #define DRAIN_VARIABLEMAP_H
 
-#include <string.h>
+//#include <string.h>
 #include <string>
-#include <vector>
+//#include <vector>
 #include <map>
 
-#include "Castable.h"
-#include "CastableIterator.h"
-#include "String.h"
+//#include "Castable.h"
+//#include "CastableIterator.h"
+//#include "String.h"
 
 #include "Variable.h"
 #include "SmartMap.h"
@@ -116,6 +116,15 @@ public:
 
 
 };
+
+
+template <>
+inline
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const VariableMap & vmap, const SprinterLayout & layout){
+	return SprinterBase::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	//return SprinterBase::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
+}
+
 
 // std::ostream &operator<<(std::ostream &ostr, const VariableMap &m);
 

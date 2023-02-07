@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <ostream>
 #include "ReferenceMap.h"
-#include "Tree.h"
+#include "TreeUnordered.h"
 
 namespace drain {
 
@@ -83,6 +83,11 @@ public:
 
 	std::string ctext;
 
+	inline
+	bool empty() const {
+		return ReferenceMap::empty();
+	}
+
 protected:
 
 	static int nextID;
@@ -96,7 +101,7 @@ protected:
 //#define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
 
 //typedef drain::Tree<std::string,NodeXML> TreeXML;
-typedef drain::Tree<NodeXML,false> TreeXML;
+typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
 
 //template <class K, boolclass T, class C> //, class C>
 template <class T>
@@ -104,7 +109,7 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::st
 
 	//TreeXML::map_t x;
 	//const std::map<std::string,TreeXML> & children = tree.getChildren();
-	const typename T::map_t & children = tree.getChildren();
+	const typename T::container_t & children = tree.getChildren();
 
 	// OPEN TAG
 	ostr << '<';

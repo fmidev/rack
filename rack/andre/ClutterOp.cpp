@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <stddef.h>
 #include "drain/util/Log.h"
 #include "drain/util/StringMapper.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 #include <cmath>
 #include <map>
 #include <stdexcept>

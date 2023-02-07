@@ -179,6 +179,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		mout.note("where:projdef missing, no GeoTIFF projection info written");
 	}
 
+	mout.note("file.setGeoMetaData(frame)");
 
 	file.setGeoMetaData(frame);
 	//file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally

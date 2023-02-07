@@ -55,7 +55,6 @@ public:
 	// virtual consider
 	// typename list_t::value_type & add(key, cmd) = 0;
 
-
 	/// Check if this routine is defined.
 	inline
 	operator bool(){ return !this->empty(); };
@@ -65,7 +64,16 @@ public:
 template <class T>
 inline
 std::ostream & operator<<(std::ostream & ostr, const CommandSequence<T> & commands){
-	static const SprinterLayout layout("\n", "<?>", "<=;", "''");
+
+	/**
+	 *  Array layout: elements (of the Sequence) will be separated by newline.
+	 *  Map layout {,}: unused - or something is going wrong.
+	 *  Pair layout : key=value
+	 *  String layout: plain, because keys are strings but not desired to be hyphenated.
+	 *  (Future extensions of SprinterBase will separate keys and values?)
+	 */
+	static const SprinterLayout layout("\n", "{,}", "=", "");
+
 	SprinterBase::sequenceToStream(ostr, commands, layout);
 	return ostr;
 }

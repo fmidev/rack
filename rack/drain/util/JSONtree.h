@@ -36,10 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "FileInfo.h"
-#include "JSONwriter.h"
+//#include "JSONwriter.h"
 #include "JSON.h"
 #include "TextReader.h"
-#include "Tree.h"
+#include "TreeUnordered.h"
 #include "VariableMap.h"
 
 namespace drain
@@ -47,7 +47,7 @@ namespace drain
 
 
 // New 2023 "implementation"
-typedef drain::Tree<drain::Variable,true> JSONtree2;
+typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree2;
 
 //template <>
 //const JSONtree2 JSONtree2::dummy;
@@ -106,7 +106,7 @@ public:
 
 	/// The "native" drain::JSON tree, yet others can be used in templates.
 	//typedef drain::Tree<std::string, drain::VariableMap> tree_t;
-	typedef drain::Tree<drain::VariableMap> tree_t;
+	typedef drain::UnorderedMultiTree<drain::VariableMap> tree_t;
 
 	/// Must be implement list concept, eg. derived from  std::list<T>
 	typedef tree_t::path_t path_t;
@@ -115,7 +115,7 @@ public:
 	typedef tree_t::key_t key_t;
 
 	/// Must contain attributes
-	typedef tree_t::node_t node_t;
+	typedef tree_t::node_data_t node_data_t;
 
 	static FileInfo fileInfo;
 
@@ -125,12 +125,13 @@ public:
 
 	/// Write a JSON file
 	//  Note: must be implemented only after JSONwriter::toStream<>
-	static //inline // deprecated?
-	void writeJSON(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
+	//static //inline // deprecated?
+	// void writeJSON(const tree_t & t, std::ostream & ostr = std::cout, unsigned short indentation = 0);
 		// TODO use: drain::SprinterBase::treeToStream(ostr, tree, layout);
 
 
 	/// Write a Windows INI file
+	// TODO: move to TreeUtils, Sprinter-like?
 	static
 	void writeINI(const tree_t & t, std::ostream & ostr = std::cout, const tree_t::path_t & prefix = tree_t::path_t());
 
@@ -167,17 +168,20 @@ protected:
 };
 
 // deprecating
+/*
 template <>
 std::ostream & JSONwriter::toStream(const drain::JSONtree::tree_t & t, std::ostream &ostr, unsigned short indentation);
-
+*/
 
 // NEW (recommended)
+/*
 template <>
 inline
 std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const drain::JSONtree::tree_t & tree,
 		const drain::SprinterLayout & layout){
 	return drain::SprinterBase::treeToStream(ostr, tree, layout);
 }
+*/
 
 
 template <>

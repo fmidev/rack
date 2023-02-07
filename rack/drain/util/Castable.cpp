@@ -217,7 +217,7 @@ Castable & Castable::assignCastable(const Castable &c){
 
 	// If this ie. destination is a string, convert input.
 	if (c.getType() == typeid(void)){
-		std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";
+		// std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";
 		reset();
 	}
 	else if (isString()){
@@ -322,6 +322,7 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 	else if (v.getElementCount() > 1) {
 		//const TypeLayout & l = layout.arrayChars;
 		SprinterBase::prefixToStream(ostr, layout.arrayChars);
+		// SprinterBase::sequenceToStream(ostr, v, layout);
 		v.toStream(ostr, layout.arrayChars.separator);
 		SprinterBase::suffixToStream(ostr, layout.arrayChars);
 	}

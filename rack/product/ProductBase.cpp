@@ -35,13 +35,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
+#include <drain/util/Referencer.h>
 #include "data/QuantityMap.h"
 //#include "drain/image/File.h"
 //#include "drain/util/Log.h"
 //#include "drain/util/Variable.h"
 
 #include "drain/util/Castable.h"
-#include "drain/util/Reference.h"
 #include "drain/util/String.h"
 #include "drain/util/Type.h"
 #include "drain/util/TypeUtils.h"

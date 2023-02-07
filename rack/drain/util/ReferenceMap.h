@@ -38,11 +38,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "Log.h"
-#include "String.h"
-#include "Reference.h"
-#include "SmartMap.h"
-
 #include "Range.h"
+#include "Referencer.h"
+#include "String.h"
+#include "SmartMap.h"
 
 
 #ifndef REFERENCE_MAP

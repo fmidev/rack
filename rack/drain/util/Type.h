@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef Drain_Type2_H
-#define Drain_Type2_H
+#ifndef DRAIN_TYPE
+#define DRAIN_TYPE
 
 #include <typeinfo>
 //#include <type_traits>

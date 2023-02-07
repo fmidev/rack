@@ -74,13 +74,14 @@ public:
 
 };
 
-
+/*
 template <>
 inline
 std::ostream & JSONwriter::toStream(const Legend & l, std::ostream &ostr, unsigned short indentation){
 	return JSONwriter::mapToStream(l, ostr, indentation);
 	//return JSONwriter::sparseSequenceToStream(l, ostr);
 }
+*/
 
 
 /*

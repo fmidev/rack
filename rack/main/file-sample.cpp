@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/FilePath.h"
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 #include "drain/util/Variable.h"
 #include "drain/image/File.h"
 #include "drain/image/Image.h"

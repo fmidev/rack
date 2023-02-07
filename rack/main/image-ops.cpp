@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Range.h"
 #include "drain/util/Registry.h"
 #include "drain/util/SmartMap.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 #include "drain/util/ValueScaling.h"
 #include "drain/image/Image.h"
 #include "drain/image/ImageChannel.h"

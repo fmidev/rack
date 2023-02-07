@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef Drain_TypeUtils_H
-#define Drain_TypeUtils_H
+#ifndef DRAIN_TYPE_UTILS
+#define DRAIN_TYPE_UTILS
 
 #include <typeinfo>
 #include <limits>
@@ -142,6 +142,11 @@ struct TypeName<double> {
     static const char* get(){ return "float"; }
 };
 
+template <>
+struct TypeName<std::string> {
+    static const char* get(){ return "string"; }
+};
+
 
 /// Returns the basic type (integer, float, bool, string, void) as a string.
 /**
@@ -162,25 +167,6 @@ public:
 	static
 	T callback(){
 		return TypeName<S>::get();
-		/*
-		const std::type_info & t = typeid(S);
-		if (t == typeid(void))
-			return "void";
-		else if (t == typeid(std::string)){
-			return "string";
-		}
-		else if (t == typeid(char)){
-			return "char"; // NOTE: includes char array string
-		}
-		else if (t == typeid(bool)){
-			return "boolean";
-		}
-		else if ((t == typeid(float))||(t == typeid(double))){
-			return "float";
-		}
-		else
-			return "integer";
-		 */
 	}
 
 

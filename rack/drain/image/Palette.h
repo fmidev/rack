@@ -222,7 +222,8 @@ public:
 
 	void exportTXT(std::ostream & ostr, char separator='\t', char separator2=0) const;
 
-	void exportJSON(drain::JSONtree::tree_t & json) const;
+	//void exportJSON(drain::JSONtree::tree_t & json) const;
+	void exportJSON(drain::JSONtree2 & json) const;
 
 	// Export formatted
 	void exportFMT(std::ostream & ostr, const std::string & format) const;
@@ -279,7 +280,8 @@ protected:
 	// void skipLine(std::ifstream &ifstr) const;
 
 	/// Creates a palette from json object
-	void importJSON(const drain::JSONtree::tree_t & json, int depth);
+	//void importJSON(const drain::JSONtree::tree_t & json, int depth);
+	void importJSON(const drain::JSONtree2 & json, int depth);
 
 };
 

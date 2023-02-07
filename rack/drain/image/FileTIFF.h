@@ -62,34 +62,30 @@ public:
 	static
 	const drain::FileInfo fileInfo;
 
-	//enum Compression {ATTRIBUTES=1, DATASETS=2};
-
-
-	//typedef drain::FlagResolver::dict_t dict_t;
 	typedef drain::SingleFlagger<unsigned int>::dict_t dict_t;
 
 
-public:
-
 	static
 	const dict_t & getCompressionDict();
+	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
+	static dict_t::value_t defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
 
 	static drain::Frame2D<int> defaultTile;
-	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
-	//static int defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
-	static dict_t::value_t defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+
 
 #ifndef USE_GEOTIFF_NO
 
 
-	FileTIFF(const std::string & path = "", const char *mode = "w") : tif(nullptr), tile(defaultTile){
+	inline
+	FileTIFF(const std::string & path = "", const char *mode = "w") : tif(nullptr), tile(defaultTile){ // FileHandler(__FUNCTION__),
 		if (!path.empty())
 			open(path, mode);
 		//tif = XTIFFOpen(path.c_str(), mode);
 	}
 
-	inline
+	virtual inline
 	~FileTIFF(){
+		//mout.special("Closing FileTIFF");
 		close();
 	}
 
@@ -104,7 +100,7 @@ public:
 	void close(){
 		if (isOpen()){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.debug("Closing TIFF...");
+			mout.special("Closing TIFF...");
 			XTIFFClose(tif);
 			tif = nullptr;
 		}

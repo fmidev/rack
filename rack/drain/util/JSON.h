@@ -68,7 +68,7 @@ public:
 
 	template <class T>
 	static
-	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent=0);
+	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout = drain::SprinterBase::jsonLayout, short indent=0);
 
 
 	/// Read value. Read stream until a value has been extracted, with type recognition

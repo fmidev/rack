@@ -121,14 +121,16 @@ void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string 
 }
 
 
-typedef drain::Tree<NodeGDAL> TreeGDAL;
+typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 	return drain::NodeXML::toOStr(ostr, tree);
 }
 
+bool FileGeoTIFF::strictCompliance(false);
 
+/*
 void FileGeoTIFF::setGdalMetaDataOLD(const std::string & nodata, double scale, double offset){
 // TODO: separate code without nodata marker?
 //void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
@@ -148,12 +150,12 @@ void FileGeoTIFF::setGdalMetaDataOLD(const std::string & nodata, double scale, d
 	TreeGDAL gdalInfo;
 	gdalInfo["SCALE"]->set(scale, 0, "scale");
 	gdalInfo["OFFSET"]->set(offset, 0, "offset");
-	/*
+
 	<GDALMetadata >
 	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
 	<Item name="SCALE" role="scale" sample="0" >0.5</Item>
 	</GDALMetadata>
-	 */
+
 
 	std::stringstream gdal;
 	gdal << gdalInfo;
@@ -170,16 +172,16 @@ void FileGeoTIFF::setGdalMetaDataOLD(const std::string & nodata, double scale, d
 	// usr/include/gdal/rawdataset.h
 
 	// Non-standard http://www.gdal.org/frmt_gtiff.html
-	/*
-	std::string nodata = src.properties["what:nodata"];
-	if (!nodata.empty()){
-		mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
-		GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
-	}
-	 */
+
+	//std::string nodata = src.properties["what:nodata"];
+	//if (!nodata.empty()){
+	//	mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
+	//	GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
+	//}
 
 
 }
+*/
 
 void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// TODO: separate code without nodata marker?
@@ -208,7 +210,7 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 
 	std::stringstream gdal;
 	gdal << gdalInfo;
-	mout.debug() << gdal.str() << mout.endl;
+	mout.debug(gdal.str());
 	setField(TIFFTAG_GDAL_METADATA, gdal.str());
 
 }
@@ -364,11 +366,13 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 		//imagePos.setLocation(width/2, height/2);
 		imagePos.setLocation(frame.getFrameWidth()/2, frame.getFrameHeight()/2); // TODO: CHECK
 		frame.pix2LLdeg(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		setProjectionLongLat(); // GeoTIFF, FIXED 2023/02
 	}
 	else { // metric
 		imagePos.setLocation(0, 0); //int(height));
 		frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		setProjection(frame.projR2M); // GeoTIFF, FIXED 2023/02
 	}
 
 	//double tiepoints[6]; // = {0,0,0,0,0,0};
@@ -422,13 +426,13 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!projstr.empty()){
-		mout.info() << "projstr= " << projstr << mout.endl;
+		mout.info("projstr= ", projstr);
 		drain::Proj4 proj;
 		proj.setProjectionDst(projstr);
 		setProjection(proj);
 	}
 	else {
-		mout.warn() << "where:projdef empty, skipping (writing plain TIFF)" << mout.endl;
+		mout.warn("projstr empty: skipping GeoTIFF and writing plain TIFF)");
 	}
 }
 
@@ -437,24 +441,32 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	//mout.attention("start");
+	//mout.attention(proj);
+
 	if (proj.isLongLat()){
-		mout.info() << "Writing EPSG:4326 (longlat)" << mout.endl;
+		mout.info("Writing EPSG:4326 (longlat)");
 		//SetUpGeoKeys_4326_LongLat(gtif);
 		setProjectionLongLat();
 	}
 	else {
-		mout.info() << "Writing metric projection" << mout.endl;
+		mout.info("Writing metric projection");
 		//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-		//int projOK = GTIFSetFromProj4(gtif, projstr.c_str());
 		if (!GTIFSetFromProj4(gtif, proj.getProjectionDst().c_str())){ // CHECK!!
-			mout.warn() << "Failed in setting GeoTIFF projection: " << proj << mout.endl;
-			mout.note() << "Consider: gdal_translate -a_srs '" << proj.getProjectionDst() << "' file.tif out.tif" << mout.endl;
+			mout.warn("Failed in setting GeoTIFF projection: ", proj);
+			mout.note("Consider: gdal_translate -a_srs '", proj.getProjectionDst(), "' file.tif out.tif");
+			if (FileGeoTIFF::strictCompliance){
+				mout.error("GeoTIFF error under strict compliance (requested by user)");
+			}
+		}
+		else {
+			mout.ok("GTIFSetFromProj4");
 		}
 	}
 
 
 	// NEW
-	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea);
+	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // Repeated? Also in setProjectionLongLat?
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
 	/*
 	 */
@@ -462,6 +474,11 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 }
 
 void FileGeoTIFF::setProjectionLongLat(){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.info("Setting Long-Lat projection");
+
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
 	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);

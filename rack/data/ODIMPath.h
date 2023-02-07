@@ -357,6 +357,7 @@ extern ODIMPathElem odimWHERE;
 extern ODIMPathElem odimWHAT;
 extern ODIMPathElem odimARRAY;
 
+/// Important!
 bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2);
 
 bool operator==(const ODIMPathElem & e1, const ODIMPathElem & e2);
@@ -400,8 +401,10 @@ typedef std::vector<ODIMPathElem> ODIMPathElemSeq;
 struct ODIMPathLess {
 
 	// Main function
+	inline
 	bool operator()(const ODIMPathElem & p1, const ODIMPathElem & p2) const {
-		return (p1<p2);
+		// return (p1<p2);
+		return !(p1<p2);
 	}
 
 };  // end class

@@ -93,6 +93,33 @@ void Variable::updateIterators()  {
 
 }
 
+template <>
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & v, const SprinterLayout & layout) {
+
+	if ((v.getElementCount() > 1) && !v.isString()){
+		return SprinterBase::sequenceToStream(ostr, v, layout);
+	}
+	else {
+		return SprinterBase::toStream(ostr, (const Castable &)v, layout); //
+	}
+
+	/*
+	else if (v.getElementCount() > 1) {
+		SprinterBase::sequenceToStream(ostr, v, layout);
+	}
+	else if (v.empty()) {
+		SprinterBase::toStream(ostr, (double *)0, layout);
+	}
+	else if (v.getType() == typeid(bool)) {
+		SprinterBase::toStream(ostr, (bool)v, layout);
+	}
+	else {
+		SprinterBase::basicToStream(ostr, v, ""); // ?
+		// ostr << v; // Infinite loop? SprinterBase::basicToStream(ostr, v, myChars);
+	}
+	*/
+	return ostr;
+}
 
 void FlexVariable::info(std::ostream & ostr) const {
 	Castable::info(ostr);

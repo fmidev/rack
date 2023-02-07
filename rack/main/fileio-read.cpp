@@ -300,7 +300,8 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 		Hi5Tree & dst = dstRoot[parent];
 
-		for (Hi5Tree::map_t::value_type & entry: srcRoot){
+		//for (Hi5Tree::pair_t & entry: srcRoot){
+		for (auto & entry: srcRoot){
 		//for (Hi5Tree::iterator it = srcRoot.begin(); it != srcRoot.end(); ++it){
 
 			const ODIMPathElem & elem = entry.first;

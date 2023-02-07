@@ -32,13 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef VARIABLE_H_
 #define VARIABLE_H_
 
+#include <drain/util/Referencer.h>
 #include <string.h>
 #include <string>
 #include <vector>
 #include <map>
 
 #include "CastableIterator.h"
-#include "Reference.h"
 #include "Sprinter.h"
 #include "String.h"
 #include "UniTuple.h" // "Friend class"
@@ -348,12 +348,17 @@ protected:
 };
 
 
-
+/*
 template <>
 inline
 std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
 	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
 }
+*/
+
+template <>
+std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout);
+
 
 
 /// FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also relinked to an external target.

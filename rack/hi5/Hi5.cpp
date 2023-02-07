@@ -291,7 +291,7 @@ void Hi5Base::linkPalette(const Hi5Tree & palette, Hi5Tree & dst){
 }
 
 // const Hi5Tree &src,
-void Hi5Base::writeText(const Hi5Tree &src, const std::list<Hi5Tree::path_t> & paths, std::ostream & ostr) {
+void Hi5Base::writeText(const Hi5Tree &src, const std::list<typename Hi5Tree::path_t> & paths, std::ostream & ostr) {
 
 	// for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
 	// const std::string & key = *it;
@@ -480,8 +480,8 @@ void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
 
 std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree){
-
-	tree.dump(ostr);
+	drain::TreeUtils::dump(tree, ostr, true);
+	// tree.dump(ostr);
 	return ostr;
 }
 

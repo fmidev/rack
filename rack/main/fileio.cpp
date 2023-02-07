@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/FilePath.h"
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 #include "drain/util/Variable.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
@@ -90,24 +90,30 @@ const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
 
 
 
-class CmdOutputConf : public drain::BasicCommand {
+//class CmdOutputConf : public drain::BasicCommand {
+class CmdOutputConf : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
+//	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
+	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format specific configurations", "value", "<format>:<key>=value>,conf...") {
 
+		/*
 		parameters.separator = ':';
 		parameters.link("format", format, "h5|png|tif");
 		parameters.link("params", params, "<key>=<value>[,<key2>=<value2>,...]");
+		*/
 
-		gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
-		gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
+		//gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
+		//gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
+		gtiffConf.link("tile", FileTIFF::defaultTile.tuple());
 		gtiffConf.link("compression", FileTIFF::defaultCompression, sprinter(FileTIFF::getCompressionDict(),"|").str());
-
+		gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
 	};
 
-	CmdOutputConf(const CmdOutputConf & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	CmdOutputConf(const CmdOutputConf & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
+		//parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
 	}
 
 	std::string format;
@@ -126,26 +132,45 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		mout.warn() << "Redesigned (setParameters dropped). Check results." << mout.endl;
+		std::string format;
+		std::string params;
+
+		drain::StringTools::split2(value, format, params, ":");
+
+		//mout.warn("Redesigned (setParameters dropped). Check results.");
+
+		mout.note("format: ", format);
+		mout.note("params: ", params);
+
+		if (format.empty()){
+			mout.error("Format (h5,png,tif) not given.");
+			return;
+		}
+
 		// mout.warn() << format << mout.endl;
 		// mout.note() << params << mout.endl;
 		// todo: shared resource for output conf:  refMap of refMaps...
 		// todo recognize tif,TIFF
+
+		mout.note("Current conf [", format, "]");
+
 		if (format == "h5"){
-			mout.unimplemented() << "(future extension)" << mout.endl;
+			mout.unimplemented("(future extension)");
 		}
 		else if (format == "png"){
-			mout.unimplemented() << "(future extension)" << mout.endl;
+			mout.unimplemented("(future extension)");
 		}
 		else if (format == "tif"){
-			// mout.note() <<  gtiffConf.getKeys() << mout.endl;
+			mout.note("keys", gtiffConf.getKeys());
 			if (!params.empty())
 				gtiffConf.setValues(params);
-			else
-				mout.info() << gtiffConf << mout;
+			else {
+				//mout.note("Current conf: ", gtiffConf);
+				drain::SprinterBase::toStream(std::cout, gtiffConf, drain::SprinterBase::cppLayout);
+			}
 		}
 		else {
-			mout.warn() << "format '" << format << "' not recognized" << mout.endl;
+			mout.warn("format '", format, "' not recognized");
 		}
 
 	}
@@ -355,7 +380,8 @@ void CmdOutputFile::exec() const {
 				selector.getPaths(src, paths);
 			}
 			else {
-				ctx.getHi5(RackContext::CURRENT).getPaths(paths);
+				drain::TreeUtils::getPaths(ctx.getHi5(RackContext::CURRENT), paths);
+				// ctx.getHi5(RackContext::CURRENT).getPaths(paths);
 				//ctx.currentHi5->getPaths(paths); // ALL
 			}
 

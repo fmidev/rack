@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FilePng.h"
 //#include "drain/util/RegExp.h"
 
-#include "drain/util/JSONwriter.h"
+//#include "drain/util/JSONwriter.h"
 #include "drain/util/Time.h"
 
 
@@ -213,27 +213,29 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	comments["Software"] = "drain/rack Markus.Peura[c]fmi.fi";
 	//for (std::map<std::string,Data>::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 	/// WARNING: for channels/views: getProperties instead?
-	for (FlexVariableMap::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
-		//mout.debug() << "properties:" << it->first << mout.endl;
-		mout.debug3() << "properties:" << it->first << '=' << it->second << mout.endl;
-		std::stringstream sstr;
-		drain::JSONwriter::toStream(it->second, sstr);
-		//it->second.valueToJSON(sstr);
-		comments[it->first] = sstr.str(); //it->second.toStr();
-		//it->second.substr(0,79);
+
+	for (const auto & entry: image.properties){
+		mout.debug3("properties:", entry.first, '=', entry.second);
+		//std::stringstream sstr;
+		//drain::SprinterBase::toStream(sstr, entry.second, drain::SprinterBase::jsonLayout);
+		// std::string s = drain::sprinter((const drain::Castable &)entry.second, drain::SprinterBase::jsonLayout).str();
+		std::string s = drain::sprinter(entry.second, drain::SprinterBase::jsonLayout).str();
+		mout.attention(s);
+		comments[entry.first] = s; //it->second.toStr();
+		//it->second.substr(0,79); MAX SIZE?
 	}
+
 	size_t i = 0;
-	//png_text text_ptr[comments.size()];
 	png_text *text_ptr = new png_text[comments.size()];
-	for (std::map<std::string,std::string>::const_iterator it = comments.begin(); it != comments.end(); it++){
-		// std::cout << "PngFile:" << it->first << ':' << it->second << '\n';
-		if (it->first.empty()){
-			mout.note() << "Skipping comment with zero length keyword" << mout.endl;
+	for (const auto & entry: comments){
+
+		if (entry.first.empty()){
+			mout.note("Skipping comment with zero length keyword");
 			continue;
 		}
-		text_ptr[i].key  = (char *)it->first.c_str();
-		text_ptr[i].text = (char *)it->second.c_str();
-		text_ptr[i].text_length = it->second.length();
+		text_ptr[i].key  = (char *)entry.first.c_str();
+		text_ptr[i].text = (char *)entry.second.c_str();
+		text_ptr[i].text_length = entry.second.length();
 		text_ptr[i].compression = PNG_TEXT_COMPRESSION_NONE;
 		i++;
 	}
@@ -247,7 +249,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	// TODO: consider png_write_row and/or &at(row);
 
 	// Create temporary image array.
-	mout.debug2() << "Create temporary image array: h w C bytes: " << height << 'x' << width << 'x' << channels << 'x' << byte_depth << mout;
+	mout.debug2("Create temporary image array: h w C bytes: ", height, 'x', width, 'x', channels, 'x', byte_depth);
 	png_byte **data;
 	data = new png_byte*[height]; //[width*channels*byte_depth];
 	for (int j = 0; j < height; ++j) {
@@ -257,17 +259,17 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	//std::numeric_limits<int>::is_signed();
 	const int SHIFT_SIGNED = Type::call<drain::isSigned>(image.getType()) ? 1 : 0;
 	if (SHIFT_SIGNED)
-		mout.info() << "signed image data" << mout.endl;
+		mout.info("signed image data");
 
 	// Copy data to png array.
-	mout.debug2() << "Src: " << image << mout.endl;
+	mout.debug2("Src: ", image);
 	//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
-	mout.debug2() << "Copy data to png array, width=" << width << ", height=" << height << " channels=" << channels << mout.endl;
+	mout.debug2("Copy data to png array, width=", width, ", height=", height, " channels=", channels);
 	png_byte *row;
 	for (int k = 0; k < channels; ++k) {
 
 		const Channel & channel = image.getChannel(k);
-		mout.debug3() << " channel " << k << ": " << channel << mout; //.getConf()
+		mout.debug3(" channel ", k, ": ", channel); //.getConf()
 
 		// 8 bit
 		if (byte_depth == 1){
@@ -321,13 +323,13 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 			}
 		}
 	}
-	mout.debug2() << "Setting rows" << mout;
+	mout.debug2("Setting rows");
 	// png_byte row_pointers[height];
 	//png_set_rows(png_ptr, info_ptr, row_pointers);
 	png_set_rows(png_ptr, info_ptr, data);
 
 	// Main operation
-	mout.debug2() << "Writing array" << mout.endl;
+	mout.debug2("Writing array");
 	int png_transforms = PNG_TRANSFORM_IDENTITY  || PNG_TRANSFORM_SHIFT;
 	png_write_png(png_ptr, info_ptr, png_transforms, NULL);
 

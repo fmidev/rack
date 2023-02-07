@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Output.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/SmartMap.h"
-#include "drain/util/Tree.h"
+#include "drain/util/TreeOrdered.h"
 #include "drain/util/Type.h"
 #include "drain/util/Variable.h"
 #include "drain/util/VariableMap.h"
@@ -828,7 +828,6 @@ public:
 
 		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
 
-		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
 		if (ctx.formatStr.empty()){
@@ -836,8 +835,8 @@ public:
 		}
 		else {
 			mout.warn() << "user defined format, extension not checked: " +  ctx.formatStr << mout.endl;
-			drain::Output out(ctx.outputPrefix + value);
-			ctx.palette.exportFMT(out, ctx.formatStr);
+			drain::Output output(ctx.outputPrefix + value);
+			ctx.palette.exportFMT(output, ctx.formatStr);
 		}
 
 	}
