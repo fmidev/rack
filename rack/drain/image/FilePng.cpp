@@ -214,6 +214,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	//for (std::map<std::string,Data>::const_iterator it = image.properties.begin(); it != image.properties.end(); it++){
 	/// WARNING: for channels/views: getProperties instead?
 
+	//
 	for (const auto & entry: image.properties){
 		mout.debug3("properties:", entry.first, '=', entry.second);
 		//std::stringstream sstr;
