@@ -209,7 +209,8 @@ void Palette::load(const std::string & filename, bool flexible){
 	static const drain::RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
 
 	if (labelRE.test(filename)){
-		filePath.set(std::string("palette-") + filename + std::string(".json"));
+		//filePath.set(std::string("palette-") + filename + std::string(".json"));
+		filePath.set(std::string("palette-") + filename + std::string(".txt")); // primary default type..
 		mout.info() << " extending path: " << filename << " => " << filePath << mout.endl;
 	}
 	else {
