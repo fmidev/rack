@@ -219,8 +219,8 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		//std::stringstream sstr;
 		//drain::SprinterBase::toStream(sstr, entry.second, drain::SprinterBase::jsonLayout);
 		// std::string s = drain::sprinter((const drain::Castable &)entry.second, drain::SprinterBase::jsonLayout).str();
-		std::string s = drain::sprinter(entry.second, drain::SprinterBase::jsonLayout).str();
-		mout.attention(s);
+		std::string s = drain::sprinter((const drain::Castable &)entry.second, drain::SprinterBase::jsonLayout).str();
+		mout.debug(s);
 		comments[entry.first] = s; //it->second.toStr();
 		//it->second.substr(0,79); MAX SIZE?
 	}

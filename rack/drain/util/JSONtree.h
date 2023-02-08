@@ -62,20 +62,26 @@ std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const JSONtree
 template <>
 inline
 void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::string & key){
+//void drain::JSON::handleValue(std::istream & istr, JSONtree2 & child){
 
 	drain::Logger log( __FUNCTION__, __FILE__);
 
-	TextReader::skipWhiteSpace(istr) ;
+
+	JSONtree2 & child = dst.addChild(key);
+
+	TextReader::skipWhiteSpace(istr);
 
 	char c = istr.peek();
 
 	if (c == '{'){
 		// log.warn("Reading object '", key, "'");
-		JSON::readTree(dst[key], istr); /// RECURSION
+		//JSON::readTree(dst[key], istr); /// RECURSION
+		JSON::readTree(child, istr); /// RECURSION
 	}
 	else {
 		// log.warn("Reading value '", key, "'");
-		JSON::readValue(istr, dst[key].data);
+		//JSON::readValue(istr, dst[key].data);
+		JSON::readValue(istr, child.data);
 	}
 
 	return;

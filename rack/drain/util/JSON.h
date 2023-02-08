@@ -91,10 +91,13 @@ protected:
 	///  In reading trees.
 	template <class T>
 	static
-	void handleValue(std::istream & istr, T & tree, const std::string & key){
+	void handleValue(std::istream & istr, T & tree, const std::string & key){  // tree + key VariableMap!  (as long as Palette (or others) use JSONtree with that)
 		drain::Logger log(__FILE__, __FUNCTION__);
 		log.unimplemented("type:", typeid(T).name());
+		log.error("stop..");
 	}
+	// To be later replaced with:
+	// void handleValue(std::istream & istr, T & child);
 
 
 };
@@ -190,6 +193,8 @@ void JSON::readTree(T & tree, std::istream & istr){
 			// log.warn() << " then4: " <<  (char)istr.peek() << log.endl;
 
 			if (c == ':'){
+				//handleValue(istr, tree, key);
+
 				handleValue(istr, tree, key);
 				// log.note(" - end: ", key);
 				completed = true;

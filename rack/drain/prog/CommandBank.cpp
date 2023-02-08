@@ -157,12 +157,12 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 			FilePath path(entry.second);
 			mout.info("inserting commands from path: ", path);
 			if (path.extension == "json"){
-				mout.unimplemented("JSON logic: empty args become (empty) subtrees, hence 'disappear'");
-				mout.unimplemented("JSON logic: ordered keyList!");
+				// mout.unimplemented("JSON logic: empty args become (empty) subtrees, hence 'disappear'");
+				// mout.unimplemented("JSON logic: ordered keyList!");
 				drain::JSONtree2 cmdTree;
 				drain::Input input(entry.second);
 				drain::JSON::readTree(cmdTree, input);
-				mout.special("TREE: ", drain::sprinter(cmdTree));
+				mout.experimental("parsed JSON structure:\n", drain::sprinter(cmdTree));
 				for (const auto & node: cmdTree){
 					mout.warn("inserting: ", node.first); //, node.second.data);
 					command_t & cmd = clone(node.first);
@@ -176,7 +176,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 							}
 						}
 						else {
-							mout.experimental("top: ", node.first, '=',  node.second.data);
+							//mout.experimental("top: ", node.first, '=',  node.second.data);
 							cmd.setParameters((const std::string &)node.second.data);
 						}
 					}
@@ -185,13 +185,13 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 					prog.add(node.first, cmd);
 				}
 				//scriptify(cmdTree, script);
-				mout.attention("current prog: \n", prog);
+				mout.special("current prog: \n", prog);
 			}
 			else {
 				Script subScript;
 				readFile(entry.second, subScript);
 				append(subScript, ctx, prog);
-				mout.warn(prog);
+				mout.experimental(prog);
 			}
 		}
 		else {

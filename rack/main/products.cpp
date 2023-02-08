@@ -231,7 +231,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
 		// mout.timestamp("BEGIN_PRODUCT");
 
-		mout.info("Computing: ", this->bean.getName(), this->getParameters());
+		mout.info("Computing: ", this->bean.getName(), ' ', this->getParameters());
 
 		// op.filter(getResources().inputHi5, getResources().polarHi5);
 		// const Hi5Tree & src = ctx.getCurrentInputHi5();
