@@ -37,6 +37,13 @@ namespace drain
 {
 
 
+FileInfo JSON::fileInfo("json");
+
+
+template <>
+const drain::JSONtree2 drain::JSONtree2::emptyNode;
+
+
 void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);

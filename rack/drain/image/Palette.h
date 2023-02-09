@@ -37,7 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/BeanLike.h"
 #include "drain/util/Dictionary.h" // temporary ?
-#include "drain/util/JSONtree.h"
+//#include "drain/util/JSONtree.h"
+#include "drain/util/JSON.h"
 #include "drain/util/UniTuple.h"
 
 #include "Legend.h"
@@ -281,7 +282,7 @@ protected:
 
 	/// Creates a palette from json object
 	//void importJSON(const drain::JSONtree::tree_t & json, int depth);
-	void importJSON(const drain::JSONtree2 & json, int depth);
+	void importJSON(const drain::JSONtree2 & json);
 
 };
 

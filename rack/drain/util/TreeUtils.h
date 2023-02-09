@@ -261,8 +261,61 @@ public:
 		};
 	};
 
+	/// Write a Windows INI file
+	// TODO: move to TreeUtils, Sprinter-like?
+	template <class TR>
+	static inline
+	void writeINI(const TR & t, std::ostream & ostr = std::cout, const typename TR::path_t & prefix = typename TR::path_t()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.unimplemented("future extension");
+	}
+
+
+
+	template <class TR>
+	static inline
+	void readINI(TR & tree, std::istream & istr){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.unimplemented("future extension");
+	}
+
 
 };
+
+
+
+/// Write a Windows INI file
+/*
+
+void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
+
+	//for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
+	for (const auto & entry: t.data){
+		ostr << entry.first << '='; // << dit->second;
+		SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
+		// entry.second.valueToJSON(ostr);
+		ostr << '\n';
+	}
+	ostr << '\n';
+
+
+	// Traverse children (only)
+	for (tree_t::const_iterator it = t.begin(); it != t.end(); ++it){
+
+		tree_t::path_t path(prefix);
+		path << it->first;
+
+		ostr << '[' << path << ']' << '\n';
+
+		writeINI(it->second, ostr, path);
+
+		ostr << '\n';
+
+	}
+
+}
+*/
+
 
 #ifdef DRAIN_TYPE_UTILS
 /*

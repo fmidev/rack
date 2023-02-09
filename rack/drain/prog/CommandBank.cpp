@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/Input.h"
-#include "drain/util/JSONtree.h"
+#include "drain/util/JSON.h"
 #include "drain/util/Output.h"
 #include "drain/util/Static.h"
 
@@ -335,10 +335,11 @@ void CommandBank::readFile(const std::string & filename, Script & script) const 
 
 	drain::Input input(filename);
 
+	mout.deprecating("opening command list: ", filename);
+
 	// mout.note() << "open list: " << filename << mout.endl;
-	if (drain::JSONtree::fileInfo.checkPath(filename)){
-
-
+	if (drain::JSON::fileInfo.checkPath(filename)){
+		mout.error() << "JSON (at least) implemented in direct embedding " << filename << mout.endl;
 	}
 	else {
 		// TEXT file

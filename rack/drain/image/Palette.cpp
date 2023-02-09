@@ -495,15 +495,16 @@ void Palette::loadJSON(std::ifstream & ifstr){
 	title = metadata["title"].data.toStr();
 
 	mout.info("title: ", title);
-	mout.debug() << "metadata: ";
-	drain::TreeUtils::dump(metadata, mout);
+	//mout.isLevel(LOG_INFO)
+	mout.debug(); // << "metadata: ";
+	drain::TreeUtils::dump(json, mout, true);
 	mout << mout.endl;
-	importJSON(json["entries"], 0);
+	importJSON(json["entries"]);
 
 }
 
 
-void Palette::importJSON(const drain::JSONtree2 & entries, int depth){
+void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
@@ -525,7 +526,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries, int depth){
 		const double d = value; // possibly NaN
 
 		if (SPECIAL){
-			mout.debug() << "special code: '" << value << "', id=" << id << mout.endl;
+			mout.debug("special code: '", value, "', id=", id);
 		}
 
 		//PaletteEntry & entry = SPECIAL ? specialCodes[id] : (*this)[d]; // Create entry?
@@ -535,13 +536,17 @@ void Palette::importJSON(const drain::JSONtree2 & entries, int depth){
 		entry.id = id;
 		// Deprecated, transitory:
 		entry.value = child["min"]; //
-		entry.label = child["en"].data.toStr();
+		entry.label = child["label"].data.toStr(); // child["en"].data.toStr();
+		//entry.label = child["label"].data.toStr();
 
-		mout.unimplemented("entry.getParameters()");
-		mout.error("stop here");
-		//entry.getParameters().updateFromCastableMap(attr);
+		mout.debug3("child (id=", id, '\n');
+		// drain::TreeUtils::dump(child, mout);
+		// mout << mout.endl;
 
-		// std::cerr << "keijo" << attr["color"] << std::endl;
+		// mout.unimplemented("entry.getParameters()");
+		// entry.getParameters().updateFromCastableMap(attr); ??
+
+		// std::cerr << "color" << attr["color"] << std::endl;
 		// NOVECT attr["color"].toSequence(entry.color);
 		std::list<double> l;
 		child["color"].data.toSequence(l);
@@ -563,9 +568,8 @@ void Palette::importJSON(const drain::JSONtree2 & entries, int depth){
 			entry.value = NAN;
 		}
 
-		mout.debug() << "entry: " << id << ':' << entry.getParameters() << mout.endl;
-
-		importJSON(child, depth + 1); // recursion not in use, currently
+		mout.debug2() << "entry: " << id << ':' << entry.getParameters() << mout.endl;
+		//importJSON(child, depth + 1); // recursion not in use, currently
 	}
 }
 

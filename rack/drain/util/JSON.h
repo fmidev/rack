@@ -28,14 +28,17 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DRAIN_JSON_READER_H_
-#define DRAIN_JSON_READER_H_
+#ifndef DRAIN_JSON_H_
+#define DRAIN_JSON_H_
 
 #include <string>
 
+#include "FileInfo.h"
 #include "Sprinter.h"
 #include "TextReader.h"
+#include "TreeUnordered.h"
 #include "Variable.h"
+// #include "TreeOrdered.h" // consider?
 
 namespace drain
 {
@@ -56,6 +59,9 @@ namespace drain
 class JSON  {
 
 public:
+
+
+	static FileInfo fileInfo;
 
 	/// NEW. Reads and parses a JSON file
 	/**
@@ -225,6 +231,48 @@ void JSON::readTree(T & tree, std::istream & istr){
 }
 
 
+// New 2023 "implementation"
+typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree2;
+
+//template <>
+//const JSONtree2 JSONtree2::dummy;
+
+template <>
+inline
+void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::string & key){
+//void drain::JSON::handleValue(std::istream & istr, JSONtree2 & child){
+
+	drain::Logger log( __FUNCTION__, __FILE__);
+
+
+	JSONtree2 & child = dst.addChild(key);
+
+	TextReader::skipWhiteSpace(istr);
+
+	char c = istr.peek();
+
+	if (c == '{'){
+		// log.warn("Reading object '", key, "'");
+		//JSON::readTree(dst[key], istr); /// RECURSION
+		JSON::readTree(child, istr); /// RECURSION
+	}
+	else {
+		// log.warn("Reading value '", key, "'");
+		//JSON::readValue(istr, dst[key].data);
+		JSON::readValue(istr, child.data);
+	}
+
+	return;
+}
+
+
+
+template <>
+inline
+std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const JSONtree2 & tree, const drain::SprinterLayout & layout){
+	return drain::JSON::treeToStream(ostr, tree, layout);
+	//return drain::SprinterBase::treeToStream(ostr, tree, layout);
+}
 
 
 }  // drain

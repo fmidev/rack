@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Input.h"
 #include "drain/util/Output.h"
 // #include "drain/util/JSONwriter.h"
-#include "drain/util/JSONtree.h"
+#include "drain/util/JSON.h"
 #include "drain/util/Sprinter.h"
 #include "drain/util/TreeUtils.h"
 

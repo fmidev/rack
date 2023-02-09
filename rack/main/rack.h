@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.0"
+#define __RACK_VERSION__ "7.1"
 
 /**
+ *   Version 7.1
+ *   -- Separate JSONtree class removed
+ *   -- execFile JSON fix
+ *
  *   Version 7.0
  *   -- Revised JSON classes
  *   -- execFile JSON support

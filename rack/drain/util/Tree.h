@@ -164,7 +164,7 @@ public:
 
 	/// True, if data is structured.
 	virtual
-	bool isMultiple() const = 0;
+	bool hasMultipleData() const = 0;
 
 
 	virtual
@@ -220,9 +220,9 @@ public:
 
 	// AMBIVALUED
 	virtual inline
-	bool isMultiple() const {
+	bool hasMultipleData() const {
 		// Reteurn false, if own, local data
-		return !data.empty();
+		return data.empty();
 	};
 
 	virtual inline
@@ -459,7 +459,56 @@ public:
 		return !children.empty();
 	}
 
-	/// Check if an immediate descendant with name \c key exists.
+	/// The number of children with name key.
+	/**
+	 * 	Checks how many immediate descendants with name \c key exist.
+	 *
+	 *  A multiple tree may have more than one children with the same name.
+	 *   \see OrderedMultiTree, UnorderedMultiTree
+	 *
+	 *  With simple trees, use the faster hasChild(const key_t &key).
+	 *   \see OrderedTree
+	 *   \see UnorderedTree.
+	 *
+	 *
+	 *   \return – the number of children with name 'key'.
+	 */
+	virtual inline
+	int hasChildren(const key_t &key) const {
+
+		#ifdef DRAIN_TREE_ORDERED  // map
+
+		if (!isMulti()){
+			return (children.find(key) == children.end()) ? 0 : 1;
+		}
+		// no-break for OrderedMultipleTree
+
+		#endif
+
+		// OrderedMultipleTree (passed through from the above #ifdef-#endif)
+
+		// OrderedMultipleTree
+		// UnorderedMultipleTree
+
+		size_t count = 0;
+		for (const auto & entry: children){
+			if (entry.first == key){
+				++count;
+			}
+		}
+		return count;
+
+	};
+
+	/// Check if the tree node has a direct descendant with name \c key.
+	/**
+	 *   A multiple tree may have more than one children with the same name.
+	 *   With them, consider hasChildren(const key_t &key) .
+	 *   \see OrderedMultiTree
+	 *   \see UnorderedMultiTree
+	 *
+	 *   \return – the number of children with name 'key'.
+	 */
 	virtual inline
 	bool hasChild(const key_t &key) const {
 		#ifdef DRAIN_TREE_ORDERED  // map
@@ -477,6 +526,7 @@ public:
 
 		#endif
 	};
+
 
 	inline
 	bool hasPath(const path_t & path) const {
