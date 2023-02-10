@@ -136,6 +136,9 @@ const typedef char *&#160;</td><td class="memItemRight" valign="bottom"><b>const
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; char, 3 &gt;</a></td></tr>
+<tr class="memitem:ae3f7fdd1222ce1acadb27d4185b43608 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ae3f7fdd1222ce1acadb27d4185b43608"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>UniTuple</b> (std::initializer_list&lt; S &gt; l)</td></tr>
+<tr class="separator:ae3f7fdd1222ce1acadb27d4185b43608 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38e52c5f41cd11d4cb5ebfca3353f59b inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a38e52c5f41cd11d4cb5ebfca3353f59b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>UniTuple</b> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; char, N &gt; &amp;t)</td></tr>
 <tr class="separator:a38e52c5f41cd11d4cb5ebfca3353f59b inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,10 +204,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 S &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#ab05795512c2f99f7747c09ac204c54db">toSequence</a> (S &amp;sequence) const</td></tr>
 <tr class="memdesc:ab05795512c2f99f7747c09ac204c54db inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy elements to a Sequence, like stl::list, stl::set or stl::vector. <br /></td></tr>
 <tr class="separator:ab05795512c2f99f7747c09ac204c54db inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96f5f3685ec814e744e699d216e91d08 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a96f5f3685ec814e744e699d216e91d08"></a>
-<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; char, N &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a96f5f3685ec814e744e699d216e91d08">fromSequence</a> (S &amp;sequence)</td></tr>
-<tr class="memdesc:a96f5f3685ec814e744e699d216e91d08 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy elements from a Sequence, like stl::list, stl::set or stl::vector. <br /></td></tr>
-<tr class="separator:a96f5f3685ec814e744e699d216e91d08 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a108fdc7453a22ae2ce3e6fa1a72bddea inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a108fdc7453a22ae2ce3e6fa1a72bddea"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; char, N &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a108fdc7453a22ae2ce3e6fa1a72bddea">assignSequence</a> (S &amp;sequence)</td></tr>
+<tr class="memdesc:a108fdc7453a22ae2ce3e6fa1a72bddea inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy elements from a Sequence, like stl::list, stl::set or stl::vector. <br /></td></tr>
+<tr class="separator:a108fdc7453a22ae2ce3e6fa1a72bddea inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a95feb0b5d9933a5d3cbf1ca34317a4 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a3a95feb0b5d9933a5d3cbf1ca34317a4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a3a95feb0b5d9933a5d3cbf1ca34317a4">fill</a> (char i)</td></tr>
 <tr class="memdesc:a3a95feb0b5d9933a5d3cbf1ca34317a4 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set all the elements to i. <br /></td></tr>
@@ -256,7 +259,7 @@ const iterator&#160;</td><td class="memItemRight" valign="bottom"><b>start</b></
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Small container for printing style for putting of structured objects (array, maps, pairs). </p>
-<p>Designed for recursive traversal or structures (like JSON trees).</p>
+<p>Designed for recursive traversal or structures (like <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> trees).</p>
 <p>Notice that set() derived from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt;char,3&gt;</a> has argument order: prefix, separator, suffix </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Sprinter_8h_source.html">Sprinter.h</a></li>

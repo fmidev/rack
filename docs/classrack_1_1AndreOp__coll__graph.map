@@ -1,11 +1,11 @@
 <map id="AndreOp" name="AndreOp">
-<area shape="rect" id="node1" title="The base class for removal operators." alt="" coords="1211,53,1289,79"/>
-<area shape="rect" id="node2" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors." alt="" coords="1011,53,1161,79"/>
+<area shape="rect" id="node1" title="The base class for detector and removal operators." alt="" coords="1211,53,1289,79"/>
+<area shape="rect" id="node2" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="1011,53,1161,79"/>
 <area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="839,53,961,79"/>
 <area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="487,21,676,47"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="193,5,409,47"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="515,78,647,105"/>
 <area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="223,71,379,112"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="225,137,378,163"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="229,137,374,163"/>
 <area shape="rect" id="node9" title=" " alt="" coords="5,129,144,171"/>
 </map>

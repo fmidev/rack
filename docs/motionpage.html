@@ -142,16 +142,16 @@ Deriving two-dimensional wind field from Doppler data</h2>
 </div><!-- fragment --><p>The vector field can be stored in text format to as follows: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-widespread.h5 --pDopplerInversion 2500,90 --sample 30,30,skipVoid=1 --format <span class="stringliteral">&#39;${LON} ${LAT} ${AMVU} ${AMVV} ${QIND}&#39;</span> -o amv-polar.dat</div>
 </div><!-- fragment --><p> The filename has to have "dat" as extension. See <a class="el" href="miscbook.html#sampling">Sampling grid data</a> for further instructions of using <code>&ndash;sample</code>. The output (truncated in the middle) is as follows:</p>
 <div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[23.07648301077728803,64.939119032789506036,23.07641660215545798,64.939119032811291277]</div>
+<div class="line"># bbox=23.07648301077728803,64.939119032789506036,23.07641660215545798,64.939119032811291277</div>
 <div class="line"># height=360</div>
 <div class="line"># lat=61.767339985817670822</div>
 <div class="line"># lon=23.076449967920780182</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
-<div class="line"># i=[-1:-1]</div>
+<div class="line"># i=[-1,-1]</div>
 <div class="line"># iStep=30</div>
-<div class="line"># j=[-1:-1]</div>
+<div class="line"># j=[-1,-1]</div>
 <div class="line"># jStep=30</div>
 <div class="line"># skipVoid=true</div>
 <div class="line"># format=&#39;${LON} ${LAT} ${AMVU} ${AMVV} ${QIND}&#39;</div>
@@ -176,15 +176,15 @@ Deriving two-dimensional wind field from Doppler data</h2>
 </div><!-- fragment --><p> The resulting motion fields will be in the last available dataset group, here <code>dataset1</code> . This behaviour can be changed with <code>&ndash;append</code> <code>dataset</code> which puts <code>AMVU</code> and <code>AMVV</code> in separate groups.</p>
 <p>Similarly, cartesian sampling is done basically by changing extension <code></code>.h5 to <code></code>.dat </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-widespread.h5 --pDopplerInversion 2500,90 --append data -Q AMVU -c -Q AMVV -c --sample 30,30,skipVoid=1  --format <span class="stringliteral">&#39;${i} ${j2} ${AMVU} ${AMVV} ${QIND}&#39;</span> -o amv-cart.dat</div>
 </div><!-- fragment --><p> producing: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[18.667213304778499605,59.44803964575351074,28.17543570126461816,63.921691625467055076]</div>
+<div class="line"># bbox=18.667213304778499605,59.44803964575351074,28.17543570126461816,63.921691625467055076</div>
 <div class="line"># height=500</div>
-<div class="line"># proj=&quot; +proj=aeqd +lon_0=23.0764 +lat_0=61.7673 +ellps=WGS84&quot;</div>
+<div class="line"># proj= +proj=aeqd +lon_0=23.0764 +lat_0=61.7673 +ellps=WGS84</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
-<div class="line"># i=[-1:-1]</div>
+<div class="line"># i=[-1,-1]</div>
 <div class="line"># iStep=30</div>
-<div class="line"># j=[-1:-1]</div>
+<div class="line"># j=[-1,-1]</div>
 <div class="line"># jStep=30</div>
 <div class="line"># skipVoid=true</div>
 <div class="line"># format=&#39;${i} ${j2} ${AMVU} ${AMVV} ${QIND}&#39;</div>
@@ -326,7 +326,7 @@ Composites of motion fields</h2>
  </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

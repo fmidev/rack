@@ -1,7 +1,7 @@
 <map id="FlagResolver" name="FlagResolver">
 <area shape="rect" id="node1" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="102,5,209,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="120,80,191,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Flags.html" title="Flagger that has an own dictionary and value." alt="" coords="5,162,63,189"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="120,80,191,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Flags.html" title="Self&#45;contained Flagger – with an own dictionary and value." alt="" coords="5,162,63,189"/>
 <area shape="rect" id="node4" href="$classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="87,162,224,189"/>
 <area shape="rect" id="node5" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="249,155,403,196"/>
 <area shape="rect" id="node6" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="277,244,375,271"/>

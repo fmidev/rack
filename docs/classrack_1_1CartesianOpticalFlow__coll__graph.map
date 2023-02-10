@@ -1,52 +1,52 @@
 <map id="CartesianOpticalFlow" name="CartesianOpticalFlow">
-<area shape="rect" id="node1" title=" " alt="" coords="1067,1523,1229,1549"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="931,1419,1093,1445"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="895,1328,1105,1369"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="1078,1239,1167,1265"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="1127,1155,1220,1182"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="1195,1051,1269,1078"/>
-<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="1063,247,1167,273"/>
-<area shape="rect" id="node42" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="587,403,703,430"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1028,157,1201,184"/>
-<area shape="rect" id="node9" title=" " alt="" coords="1011,81,1219,108"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="1221,955,1267,981"/>
-<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="1291,955,1389,981"/>
-<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="1263,864,1417,905"/>
-<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="1305,779,1375,806"/>
-<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="1260,673,1367,699"/>
-<area shape="rect" id="node15" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="1391,673,1508,699"/>
-<area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="1401,531,1497,557"/>
-<area shape="rect" id="node17" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="1385,403,1513,430"/>
-<area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="1373,247,1525,273"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title=" " alt="" coords="852,1239,1004,1265"/>
-<area shape="rect" id="node20" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="815,1148,1009,1189"/>
-<area shape="rect" id="node21" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="251,1044,448,1085"/>
-<area shape="rect" id="node22" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="141,597,222,624"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="124,403,215,430"/>
-<area shape="rect" id="node24" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="129,247,210,273"/>
-<area shape="rect" id="node38" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="27,403,98,430"/>
-<area shape="rect" id="node25" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="111,157,227,184"/>
-<area shape="rect" id="node26" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="74,81,265,108"/>
-<area shape="rect" id="node27" title=" " alt="" coords="57,5,282,32"/>
-<area shape="rect" id="node28" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title=" " alt="" coords="243,955,456,981"/>
-<area shape="rect" id="node29" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="266,864,433,905"/>
-<area shape="rect" id="node30" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="244,772,455,813"/>
-<area shape="rect" id="node31" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="353,665,565,707"/>
-<area shape="rect" id="node32" href="$classdrain_1_1image_1_1OpticalFlowCore2.html" title=" " alt="" coords="741,531,878,557"/>
-<area shape="rect" id="node33" href="$classdrain_1_1image_1_1OpticalFlowCore.html" title=" " alt="" coords="731,403,861,430"/>
-<area shape="rect" id="node34" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="805,247,899,273"/>
-<area shape="rect" id="node35" href="$classdrain_1_1Range.html" title=" " alt="" coords="307,247,418,273"/>
-<area shape="rect" id="node45" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title=" " alt="" coords="400,403,563,430"/>
-<area shape="rect" id="node36" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="292,157,433,184"/>
-<area shape="rect" id="node43" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="443,247,571,273"/>
-<area shape="rect" id="node44" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="207,531,327,557"/>
-<area shape="rect" id="node37" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="5,531,115,557"/>
-<area shape="rect" id="node39" href="$classdrain_1_1UniCloner.html" title=" " alt="" coords="902,531,1146,557"/>
-<area shape="rect" id="node40" href="$classdrain_1_1Bank.html" title=" " alt="" coords="969,403,1079,430"/>
-<area shape="rect" id="node41" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="575,531,716,557"/>
-<area shape="rect" id="node46" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="595,247,727,273"/>
-<area shape="rect" id="node47" href="$classdrain_1_1Time.html" title="Utility for handling time. Internally, uses tm (C time structure)." alt="" coords="1121,1419,1175,1445"/>
-<area shape="rect" id="node48" title=" " alt="" coords="1129,1335,1169,1362"/>
-<area shape="rect" id="node49" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="1200,1419,1349,1445"/>
-<area shape="rect" id="node50" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="1193,1335,1356,1362"/>
+<area shape="rect" id="node1" title=" " alt="" coords="489,1727,650,1753"/>
+<area shape="rect" id="node2" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="353,1623,514,1649"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="316,1532,527,1573"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="275,937,365,964"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="228,768,321,795"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="206,641,279,667"/>
+<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="276,484,380,511"/>
+<area shape="rect" id="node41" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="586,641,702,667"/>
+<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="241,387,415,414"/>
+<area shape="rect" id="node9" title=" " alt="" coords="224,304,432,331"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="207,484,252,511"/>
+<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="77,484,176,511"/>
+<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="49,380,204,421"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="91,304,162,331"/>
+<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,215,112,241"/>
+<area shape="rect" id="node15" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="136,215,253,241"/>
+<area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="147,81,243,108"/>
+<area shape="rect" id="node17" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="131,5,259,32"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title=" " alt="" coords="461,1443,613,1469"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="464,1352,659,1393"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="491,1261,688,1303"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="1377,819,1458,845"/>
+<area shape="rect" id="node22" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="1444,641,1535,667"/>
+<area shape="rect" id="node23" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1327,484,1409,511"/>
+<area shape="rect" id="node37" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="1211,641,1282,667"/>
+<area shape="rect" id="node24" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="1310,387,1426,414"/>
+<area shape="rect" id="node25" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1273,304,1463,331"/>
+<area shape="rect" id="node26" title=" " alt="" coords="1255,215,1481,241"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title=" " alt="" coords="483,1172,696,1199"/>
+<area shape="rect" id="node28" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="506,1081,673,1123"/>
+<area shape="rect" id="node29" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="484,989,695,1031"/>
+<area shape="rect" id="node30" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="626,871,838,912"/>
+<area shape="rect" id="node31" href="$classdrain_1_1image_1_1OpticalFlowCore2.html" title=" " alt="" coords="913,768,1050,795"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1OpticalFlowCore.html" title=" " alt="" coords="1058,641,1187,667"/>
+<area shape="rect" id="node33" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="1094,484,1189,511"/>
+<area shape="rect" id="node34" href="$classdrain_1_1Range.html" title=" " alt="" coords="455,484,566,511"/>
+<area shape="rect" id="node44" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title=" " alt="" coords="728,641,891,667"/>
+<area shape="rect" id="node35" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="440,387,581,414"/>
+<area shape="rect" id="node42" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="591,484,719,511"/>
+<area shape="rect" id="node43" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="355,768,475,795"/>
+<area shape="rect" id="node36" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="1075,768,1184,795"/>
+<area shape="rect" id="node38" href="$classdrain_1_1UniCloner.html" title=" " alt="" coords="1209,768,1453,795"/>
+<area shape="rect" id="node39" href="$classdrain_1_1Bank.html" title=" " alt="" coords="1306,641,1417,667"/>
+<area shape="rect" id="node40" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="573,768,715,795"/>
+<area shape="rect" id="node45" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="938,484,1070,511"/>
+<area shape="rect" id="node46" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="743,484,913,511"/>
+<area shape="rect" id="node47" href="$classdrain_1_1Time.html" title="Utility for handling time. Internally, uses tm (C time structure)." alt="" coords="542,1623,597,1649"/>
+<area shape="rect" id="node48" title=" " alt="" coords="551,1539,591,1566"/>
+<area shape="rect" id="node49" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="621,1623,771,1649"/>
+<area shape="rect" id="node50" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="615,1539,777,1566"/>
 </map>

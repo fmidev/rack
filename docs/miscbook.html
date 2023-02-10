@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: Miscellaneous commands and scripts</title>
+<title>rack: Miscellaneous commands</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,7 +65,7 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Miscellaneous commands and scripts </div>  </div>
+<div class="title">Miscellaneous commands </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="Introduction"></a>
@@ -75,16 +75,16 @@ Introduction</h1>
 Sampling grid data</h1>
 <p>The input volume as well as the generated polar or Cartesian products can be sampled, producing a text file. The sampling is performed automatically if output file has the extension '.dat'. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o samples.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573]</div>
+<div class="line"># bbox=26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573</div>
 <div class="line"># height=360</div>
 <div class="line"># lat=64.77493012323975563</div>
 <div class="line"># lon=26.318880077451467514</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
-<div class="line"># i=[-1:-1]</div>
+<div class="line"># i=[-1,-1]</div>
 <div class="line"># iStep=10</div>
-<div class="line"># j=[-1:-1]</div>
+<div class="line"># j=[-1,-1]</div>
 <div class="line"># jStep=0</div>
 <div class="line"># skipVoid=false</div>
 <div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${RANGE},${AZM}&#39;</div>
@@ -127,16 +127,16 @@ Sampling grid data</h1>
 <div class="line">    skipVoid=false [skip lines with invalid/missing values]</div>
 </div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j2} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573]</div>
+<div class="line"># bbox=26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573</div>
 <div class="line"># height=360</div>
 <div class="line"># lat=64.77493012323975563</div>
 <div class="line"># lon=26.318880077451467514</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
-<div class="line"># i=[50:200]</div>
+<div class="line"># i=[50,200]</div>
 <div class="line"># iStep=10</div>
-<div class="line"># j=[0:50]</div>
+<div class="line"># j=[0,50]</div>
 <div class="line"># jStep=30</div>
 <div class="line"># skipVoid=false</div>
 <div class="line"># format=&#39;${i},${j2} (${LON},${LAT}) ${DBZH}&#39;</div>
@@ -160,15 +160,15 @@ Sampling grid data</h1>
 <div class="line">200,${j2} (27.403786587525736707,65.549722120116626911) 0 #void data</div>
 </div><!-- fragment --><p>Likewise, one can sample Cartesian data. Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --cSize 500,500 -c --sample 50,50  -o samples-cart.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
-<div class="line"># bbox=[21.473369970467256707,62.446873711034854182,32.036889576527535439,66.915064520295331363]</div>
+<div class="line"># bbox=21.473369970467256707,62.446873711034854182,32.036889576527535439,66.915064520295331363</div>
 <div class="line"># height=500</div>
-<div class="line"># proj=&quot; +proj=aeqd +lon_0=26.3189 +lat_0=64.7749 +ellps=WGS84&quot;</div>
+<div class="line"># proj= +proj=aeqd +lon_0=26.3189 +lat_0=64.7749 +ellps=WGS84</div>
 <div class="line"># width=500</div>
 <div class="line">## sampling parameters </div>
 <div class="line"># commentChar=&quot;#&quot;</div>
-<div class="line"># i=[-1:-1]</div>
+<div class="line"># i=[-1,-1]</div>
 <div class="line"># iStep=50</div>
-<div class="line"># j=[-1:-1]</div>
+<div class="line"># j=[-1,-1]</div>
 <div class="line"># jStep=50</div>
 <div class="line"># skipVoid=false</div>
 <div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${j2}&#39;</div>
@@ -375,7 +375,7 @@ Creating test volumes</h1>
 Test data in its original polar coordinates and Cartesian projection.</div></div>
   </div></div><!-- contents -->
 </div><!-- PageDoc -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

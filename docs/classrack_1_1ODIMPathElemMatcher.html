@@ -98,7 +98,7 @@ Collaboration diagram for ODIMPathElemMatcher:</div>
 <map name="ODIMPathElemMatcher_coll__map" id="ODIMPathElemMatcher_coll__map">
 <area shape="rect" title="Element in a chain in testing a path for a match." alt="" coords="5,469,179,496"/>
 <area shape="rect" href="classrack_1_1ODIMPathElem.html" title=" " alt="" coords="11,380,131,407"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="155,380,226,407"/>
+<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="155,380,226,407"/>
 <area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="93,291,200,317"/>
 <area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="224,291,341,317"/>
 <area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="235,157,331,184"/>
@@ -134,8 +134,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSingle</b> () const
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElemMatcher.html#ae87ed6c5ce24259cd6bbad6c7642ad6c">test</a> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;elem) const</td></tr>
 <tr class="memdesc:ae87ed6c5ce24259cd6bbad6c7642ad6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if the elem has the same group, and elem.index is within [index,indexMax]. <br /></td></tr>
 <tr class="separator:ae87ed6c5ce24259cd6bbad6c7642ad6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6da9a816777c12f788994d17d5a2fc"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a> (std::ostream &amp;sstr) const</td></tr>
-<tr class="memdesc:a6a6da9a816777c12f788994d17d5a2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the name, including the index, to output stream.  <a href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">More...</a><br /></td></tr>
+<tr class="memitem:a6a6da9a816777c12f788994d17d5a2fc"><td class="memItemLeft" align="right" valign="top"><a id="a6a6da9a816777c12f788994d17d5a2fc"></a>
+virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;sstr) const</td></tr>
 <tr class="separator:a6a6da9a816777c12f788994d17d5a2fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1ODIMPathElem"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1ODIMPathElem')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td></tr>
 <tr class="memitem:adfd15fe1d4113c7e4a63e5991a9532d5 inherit pub_methods_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="adfd15fe1d4113c7e4a63e5991a9532d5"></a>
@@ -201,7 +201,8 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <tr class="memdesc:a4abc4f1bbf3f407499a2e93f40e1832b inherit pub_methods_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debugging/logging. Returns standard name. Does not check if type is OTHER. <br /></td></tr>
 <tr class="separator:a4abc4f1bbf3f407499a2e93f40e1832b inherit pub_methods_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac91ebb8fe9956bbc1dfa3a22c9012235 inherit pub_methods_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="ac91ebb8fe9956bbc1dfa3a22c9012235"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator const std::string &amp;</b> () const</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#ac91ebb8fe9956bbc1dfa3a22c9012235">operator const std::string &amp;</a> () const</td></tr>
+<tr class="memdesc:ac91ebb8fe9956bbc1dfa3a22c9012235 inherit pub_methods_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the name, including the index, to output stream. <br /></td></tr>
 <tr class="separator:ac91ebb8fe9956bbc1dfa3a22c9012235 inherit pub_methods_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -237,7 +238,7 @@ Additional Inherited Members</h2></td></tr>
 typedef <a class="el" href="classdrain_1_1Flagger.html">drain::Flagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flag_t</b></td></tr>
 <tr class="separator:aeca4b7146c76b79ff86947b1afe6d651 inherit pub_types_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8278b97585c3191a8044e6c3471c27d5 inherit pub_types_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a8278b97585c3191a8044e6c3471c27d5"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Flagger::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Flagger::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
 <tr class="separator:a8278b97585c3191a8044e6c3471c27d5 inherit pub_types_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c2f7fb3caa4f55a775b942ca5c0946c inherit pub_types_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a6c2f7fb3caa4f55a775b942ca5c0946c"></a>
 typedef drain::Flagger::value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a></td></tr>
@@ -254,7 +255,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isIndexed</b> 
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isQuality</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a> group)</td></tr>
 <tr class="separator:a50d3c21b97bbf95aaa8189a2f5b3f137 inherit pub_static_methods_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb674403dd082ae33c08c81287fffaa6 inherit pub_static_methods_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="aeb674403dd082ae33c08c81287fffaa6"></a>
-static const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDictionary</b> ()</td></tr>
+static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDictionary</b> ()</td></tr>
 <tr class="separator:aeb674403dd082ae33c08c81287fffaa6 inherit pub_static_methods_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fa792978358c8d0fc81add5ccb4cda7 inherit pub_static_methods_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a7fa792978358c8d0fc81add5ccb4cda7"></a>
 static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a7fa792978358c8d0fc81add5ccb4cda7">getKey</a> (<a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a> g)</td></tr>
@@ -291,10 +292,6 @@ static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55
 static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a386b484a2237afe3a4733cd71b588097">ALL_LEVELS</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ROOT</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a>)</td></tr>
 <tr class="memdesc:a386b484a2237afe3a4733cd71b588097 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abbreviation for linking (referencing) attributes at different levels (tree depths). <br /></td></tr>
 <tr class="separator:a386b484a2237afe3a4733cd71b588097 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a1bcf55f2343d69451d57df6c51bfe7cc"></a>
-static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">IS_INDEXED</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">QUALITY</a>)</td></tr>
-<tr class="memdesc:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group index mask for groups that have an index. <br /></td></tr>
-<tr class="separator:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1884541cc245c9e95976459d1694dd70 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a1884541cc245c9e95976459d1694dd70"></a>
 static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">WHAT</a> = 32</td></tr>
 <tr class="memdesc:a1884541cc245c9e95976459d1694dd70 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata group <code>/what</code> , at any depth. <br /></td></tr>
@@ -326,6 +323,10 @@ static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55
 <tr class="memitem:a8428084bc8fde4557384f57f73fe3176 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a8428084bc8fde4557384f57f73fe3176">OTHER</a> = 1024</td></tr>
 <tr class="memdesc:a8428084bc8fde4557384f57f73fe3176 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">User defined group, name stored as a separate string. The string may still contain numbers, but no indices will be extracted.  <a href="classrack_1_1ODIMPathElem.html#a8428084bc8fde4557384f57f73fe3176">More...</a><br /></td></tr>
 <tr class="separator:a8428084bc8fde4557384f57f73fe3176 inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a1bcf55f2343d69451d57df6c51bfe7cc"></a>
+static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">IS_INDEXED</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">QUALITY</a> )</td></tr>
+<tr class="memdesc:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group index mask for groups that have an index. <br /></td></tr>
+<tr class="separator:a1bcf55f2343d69451d57df6c51bfe7cc inherit pub_static_attribs_classrack_1_1ODIMPathElem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1ODIMPathElem"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1ODIMPathElem')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td></tr>
 <tr class="memitem:a5d55e2558544e2ad2ea0b54f8e3d41fc inherit pro_attribs_classrack_1_1ODIMPathElem"><td class="memItemLeft" align="right" valign="top"><a id="a5d55e2558544e2ad2ea0b54f8e3d41fc"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></tr>
@@ -372,38 +373,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></
 <p>Check first if prefix AND index match.</p>
 
 <p>Reimplemented from <a class="el" href="classrack_1_1ODIMPathElem.html#a79b6cdd0b4ef339ae7d787f255d066a5">ODIMPathElem</a>.</p>
-
-</div>
-</div>
-<a id="a6a6da9a816777c12f788994d17d5a2fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a6da9a816777c12f788994d17d5a2fc">&#9670;&nbsp;</a></span>toStream()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream &amp; toStream </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>sstr</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Writes the name, including the index, to output stream. </p>
-<p>Step 1: prefix (by group type)</p>
-<p>Step 2: index</p>
-
-<p>Reimplemented from <a class="el" href="classrack_1_1ODIMPathElem.html#a6a6da9a816777c12f788994d17d5a2fc">ODIMPathElem</a>.</p>
 
 </div>
 </div>

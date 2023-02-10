@@ -106,14 +106,14 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef DRAIN_VARIABLEMAP_H</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define DRAIN_VARIABLEMAP_H</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//#include &lt;string.h&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;Castable.h&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;CastableIterator.h&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;String.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//#include &quot;Castable.h&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//#include &quot;CastableIterator.h&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//#include &quot;String.h&quot;</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;Variable.h&quot;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;SmartMap.h&quot;</span></div>
@@ -184,22 +184,32 @@ $(function() {
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;};</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">// std::ostream &amp;operator&lt;&lt;(std::ostream &amp;ostr, const VariableMap &amp;m);</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;} <span class="comment">// drain</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* VARIABLE_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;std::ostream &amp; SprinterBase::toStream(std::ostream &amp; ostr, <span class="keyword">const</span> VariableMap &amp; vmap, <span class="keyword">const</span> SprinterLayout &amp; layout){</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1SprinterBase.html#a4778fb0448972f170659900aa1b0edb0">SprinterBase::sequenceToStream</a>(ostr, vmap.getMap(), layout.mapChars, layout);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">//return SprinterBase::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">// std::ostream &amp;operator&lt;&lt;(std::ostream &amp;ostr, const VariableMap &amp;m);</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;} <span class="comment">// drain</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* VARIABLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassdrain_1_1FlexVariable_html"><div class="ttname"><a href="classdrain_1_1FlexVariable.html">drain::FlexVariable</a></div><div class="ttdoc">FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also re...</div><div class="ttdef"><b>Definition:</b> Variable.h:370</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_af96c05d0eecedaf1550432f0b74eb304"><div class="ttname"><a href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">drain::SmartMap&lt; Variable &gt;::importMap</a></div><div class="ttdeci">void importMap(const std::map&lt; std::string, S &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, overriding existing entries.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:269</div></div>
+<div class="ttc" id="aclassdrain_1_1SprinterBase_html_a4778fb0448972f170659900aa1b0edb0"><div class="ttname"><a href="classdrain_1_1SprinterBase.html#a4778fb0448972f170659900aa1b0edb0">drain::SprinterBase::sequenceToStream</a></div><div class="ttdeci">static std::ostream &amp; sequenceToStream(std::ostream &amp;ostr, const T &amp;x, const SprinterLayout &amp;layout)</div><div class="ttdoc">Convenience: if sequence type (array, list, set, map) not given, assume array.</div><div class="ttdef"><b>Definition:</b> Sprinter.h:258</div></div>
+<div class="ttc" id="aclassdrain_1_1FlexVariable_html"><div class="ttname"><a href="classdrain_1_1FlexVariable.html">drain::FlexVariable</a></div><div class="ttdoc">FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also re...</div><div class="ttdef"><b>Definition:</b> Variable.h:365</div></div>
+<div class="ttc" id="aclassdrain_1_1SmartMap_html_af96c05d0eecedaf1550432f0b74eb304"><div class="ttname"><a href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">drain::SmartMap&lt; Variable &gt;::importMap</a></div><div class="ttdeci">void importMap(const std::map&lt; std::string, S &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, overriding existing entries.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:275</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html"><div class="ttname"><a href="classdrain_1_1SmartMap.html">drain::SmartMap</a></div><div class="ttdoc">A base class for smart maps providing methods for importing and exporting values, among others.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:67</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html"><div class="ttname"><a href="classdrain_1_1Variable.html">drain::Variable</a></div><div class="ttdef"><b>Definition:</b> Variable.h:104</div></div>
+<div class="ttc" id="aclassdrain_1_1Variable_html"><div class="ttname"><a href="classdrain_1_1Variable.html">drain::Variable</a></div><div class="ttdef"><b>Definition:</b> Variable.h:105</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html_a66cbbd7dcc2296a64ae5c22ff08fa61f"><div class="ttname"><a href="classdrain_1_1VariableMap.html#a66cbbd7dcc2296a64ae5c22ff08fa61f">drain::VariableMap::VariableMap</a></div><div class="ttdeci">VariableMap(char separator=',')</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:57</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
 <div class="ttc" id="aclassdrain_1_1FlexVariableMap_html_ae25be94c8a37fef67a349de7a80d5cad"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html#ae25be94c8a37fef67a349de7a80d5cad">drain::FlexVariableMap::FlexVariableMap</a></div><div class="ttdeci">FlexVariableMap(const FlexVariableMap &amp;m)</div><div class="ttdoc">Copies a map like VariableMap does - creates an own entry for every input entry.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:99</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_a6989953791434c8ea982054551c9e154"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">drain::SmartMap&lt; Variable &gt;::separator</a></div><div class="ttdeci">char separator</div><div class="ttdoc">Default character used for splitting input and output. See setValues.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:80</div></div>
+<div class="ttc" id="aclassdrain_1_1SmartMap_html_a6989953791434c8ea982054551c9e154"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">drain::SmartMap&lt; Variable &gt;::separator</a></div><div class="ttdeci">char separator</div><div class="ttdoc">Default character used for splitting input and output. See setValues.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:86</div></div>
 <div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:86</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html"><div class="ttname"><a href="classdrain_1_1VariableMap.html">drain::VariableMap</a></div><div class="ttdoc">A map of Variables.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:51</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html_ad325a804b5dff42528e797d42fb33de6"><div class="ttname"><a href="classdrain_1_1VariableMap.html#ad325a804b5dff42528e797d42fb33de6">drain::VariableMap::VariableMap</a></div><div class="ttdeci">VariableMap(const VariableMap &amp;v)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:63</div></div>

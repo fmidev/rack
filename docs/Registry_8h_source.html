@@ -174,7 +174,7 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    };</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary2.html">drain::Dictionary2&lt;char, std::string&gt;</a> &amp; getAliases()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">drain::Dictionary&lt;char, std::string&gt;</a> &amp; getAliases()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">return</span> aliasesNew;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
@@ -182,7 +182,7 @@ $(function() {
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    map_t entryMap;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="classdrain_1_1Dictionary2.html">drain::Dictionary2&lt;char, std::string&gt;</a> aliasesNew;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">drain::Dictionary&lt;char, std::string&gt;</a> aliasesNew;</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;};</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
@@ -209,7 +209,7 @@ $(function() {
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classdrain_1_1Registry.html#a5002a49157c6b94c21cdbb86c4634afc">  146</a></span>&#160;<span class="keyword">const</span> std::string &amp; <a class="code" href="classdrain_1_1Registry.html#a5002a49157c6b94c21cdbb86c4634afc">Registry&lt;T&gt;::getKey</a>(<span class="keywordtype">char</span> alias)<span class="keyword"> const</span>{</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="classdrain_1_1Dictionary2.html">Dictionary2&lt;char,std::string&gt;::const_iterator</a> it = aliasesNew.findByKey(alias);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">Dictionary&lt;char,std::string&gt;::const_iterator</a> it = aliasesNew.findByKey(alias);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordflow">if</span> (it != aliasesNew.end())</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keywordflow">return</span> it-&gt;second;</div>
@@ -225,7 +225,7 @@ $(function() {
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classdrain_1_1Registry.html#a13d0558902bbcb3965e376c03361938b">  162</a></span>&#160;<span class="keywordtype">char</span> <a class="code" href="classdrain_1_1Registry.html#a13d0558902bbcb3965e376c03361938b">Registry&lt;T&gt;::getAlias</a>(<span class="keyword">const</span> std::string &amp;name)<span class="keyword"> const</span>{</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="classdrain_1_1Dictionary2.html">Dictionary2&lt;char,std::string&gt;::const_iterator</a> it = aliasesNew.findByValue(name);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">Dictionary&lt;char,std::string&gt;::const_iterator</a> it = aliasesNew.findByValue(name);</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">if</span> (it != aliasesNew.end()){</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordflow">return</span> it-&gt;first;</div>
@@ -258,12 +258,12 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Registry_html_a13d0558902bbcb3965e376c03361938b"><div class="ttname"><a href="classdrain_1_1Registry.html#a13d0558902bbcb3965e376c03361938b">drain::Registry::getAlias</a></div><div class="ttdeci">char getAlias(const std::string &amp;key) const</div><div class="ttdoc">Returns a single-letter abbreviation of a command.</div><div class="ttdef"><b>Definition:</b> Registry.h:162</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_ae3f8f6ead3b7e056bd375474927a57ec"><div class="ttname"><a href="classdrain_1_1Registry.html#ae3f8f6ead3b7e056bd375474927a57ec">drain::Registry::add</a></div><div class="ttdeci">virtual void add(T &amp;r, const std::string &amp;key, char alias=0)</div><div class="ttdoc">Adds entry of (base) class T to current section of registry.</div><div class="ttdef"><b>Definition:</b> Registry.h:127</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_a5002a49157c6b94c21cdbb86c4634afc"><div class="ttname"><a href="classdrain_1_1Registry.html#a5002a49157c6b94c21cdbb86c4634afc">drain::Registry::getKey</a></div><div class="ttdeci">const std::string &amp; getKey(char alias) const</div><div class="ttdoc">Given a single-letter abbreviation, return the command name.</div><div class="ttdef"><b>Definition:</b> Registry.h:146</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html"><div class="ttname"><a href="classdrain_1_1Registry.html">drain::Registry</a></div><div class="ttdoc">A container for storing global objects like functors, operators or commands. Supports aliases.</div><div class="ttdef"><b>Definition:</b> Registry.h:60</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_aab9a57d6a4b127b8e204bda72bfdf273"><div class="ttname"><a href="classdrain_1_1Registry.html#aab9a57d6a4b127b8e204bda72bfdf273">drain::Registry::find</a></div><div class="ttdeci">map_t::iterator find(const std::string &amp;name)</div><div class="ttdoc">Like find(), but handles aliases.</div><div class="ttdef"><b>Definition:</b> Registry.h:107</div></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary2_html"><div class="ttname"><a href="classdrain_1_1Dictionary2.html">drain::Dictionary2&lt; char, std::string &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_ab9056894a7cc9a645cca06b67252f917"><div class="ttname"><a href="classdrain_1_1Registry.html#ab9056894a7cc9a645cca06b67252f917">drain::Registry::getMap</a></div><div class="ttdeci">map_t &amp; getMap()</div><div class="ttdoc">Returns the actual map containig the entries.</div><div class="ttdef"><b>Definition:</b> Registry.h:94</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_ab4b863169dfe28f6712034a6a879a72f"><div class="ttname"><a href="classdrain_1_1Registry.html#ab4b863169dfe28f6712034a6a879a72f">drain::Registry::Registry</a></div><div class="ttdeci">Registry()</div><div class="ttdoc">TODO: reference not recommended.</div><div class="ttdef"><b>Definition:</b> Registry.h:69</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; char, std::string &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_a2a5d06006ff752245b593df4271e6391"><div class="ttname"><a href="classdrain_1_1Registry.html#a2a5d06006ff752245b593df4271e6391">drain::Registry::get</a></div><div class="ttdeci">T &amp; get(const std::string &amp;name) const</div><div class="ttdoc">Given a single-letter abbreviation or full command name, returns the command object.</div><div class="ttdef"><b>Definition:</b> Registry.h:177</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_ac4d828286f3b46fddda807b5fb79a6af"><div class="ttname"><a href="classdrain_1_1Registry.html#ac4d828286f3b46fddda807b5fb79a6af">drain::Registry::has</a></div><div class="ttdeci">bool has(const std::string &amp;key) const</div><div class="ttdoc">Queries whether a command has been added.</div><div class="ttdef"><b>Definition:</b> Registry.h:140</div></div>
 <div class="ttc" id="aclassdrain_1_1Registry_html_aec212d2efc6953ef797b2db678e7ec43"><div class="ttname"><a href="classdrain_1_1Registry.html#aec212d2efc6953ef797b2db678e7ec43">drain::Registry::getMap</a></div><div class="ttdeci">const map_t &amp; getMap() const</div><div class="ttdoc">Returns the actual map containig the entries.</div><div class="ttdef"><b>Definition:</b> Registry.h:97</div></div>

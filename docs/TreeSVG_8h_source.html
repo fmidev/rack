@@ -76,7 +76,7 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">MIT License</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">Copyright (c) 2023 FMI Open Development / Markus Peura, first.last@fmi.fi</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">Permission is hereby granted, free of charge, to any person obtaining a copy</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">of this software and associated documentation files (the &quot;Software&quot;), to deal</span></div>
@@ -109,8 +109,8 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment"> *      Author: mpeura</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef TREESVG_H_</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define TREESVG_H_</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#ifndef DRAIN_TREESVG_H_</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define DRAIN_TREESVG_H_</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;drain/util/TreeXML.h&quot;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">class </span>NodeSVG;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">typedef</span> <a class="code" href="classdrain_1_1Tree.html">drain::Tree&lt;NodeSVG&gt;</a> TreeSVG;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">typedef</span> drain::UnorderedMultiTree&lt;NodeSVG&gt; TreeSVG;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
@@ -136,7 +136,7 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> setType(type t);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    std::ostream &amp; toOStr(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">TreeSVG</a> &amp; t);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    std::ostream &amp; toOStr(std::ostream &amp;ostr, <span class="keyword">const</span> TreeSVG &amp; t);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">static</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">   72</a></span>&#160;    std::string <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">xlink</a>;</div>
@@ -162,7 +162,7 @@ $(function() {
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Tree.html">TreeSVG</a> &amp; t){</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> TreeSVG &amp; t){</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="keywordflow">return</span> NodeSVG::toOStr(ostr, t);</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
@@ -175,11 +175,10 @@ $(function() {
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">// Rack</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a40ed0b401422bc09221099fc05f67b23"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">drain::image::NodeSVG::xlink</a></div><div class="ttdeci">static std::string xlink</div><div class="ttdoc">In opening SVG tag, referred to by attribute &quot;xmlns:xlink&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:72</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html">drain::image::NodeSVG</a></div><div class="ttdef"><b>Definition:</b> TreeSVG.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_affee72ee32ad4718d953331edbc2f833"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">drain::image::NodeSVG::svg</a></div><div class="ttdeci">static std::string svg</div><div class="ttdoc">In opening SVG tag, referred to by attributes &quot;xmlns&quot; and &quot;xmlns:svg&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:76</div></div>
-<div class="ttc" id="aclassdrain_1_1Tree_html"><div class="ttname"><a href="classdrain_1_1Tree.html">drain::Tree&lt; NodeSVG &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html"><div class="ttname"><a href="classdrain_1_1NodeXML.html">drain::NodeXML</a></div><div class="ttdef"><b>Definition:</b> TreeXML.h:50</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

@@ -20,32 +20,32 @@
 <area shape="rect" id="node17" href="$classdrain_1_1CmdDebug.html" title=" " alt="" coords="591,411,685,437"/>
 <area shape="rect" id="node18" href="$classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="578,461,698,488"/>
 <area shape="rect" id="node19" href="$classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="557,512,719,539"/>
-<area shape="rect" id="node20" href="$classdrain_1_1CmdStatus.html" title=" " alt="" coords="591,563,685,589"/>
-<area shape="rect" id="node21" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="552,613,724,640"/>
-<area shape="rect" id="node22" href="$classrack_1_1CartesianBBox.html" title=" " alt="" coords="579,664,697,691"/>
-<area shape="rect" id="node23" href="$classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="561,715,715,741"/>
-<area shape="rect" id="node24" href="$classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="566,765,710,792"/>
-<area shape="rect" id="node25" href="$classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="567,816,709,843"/>
-<area shape="rect" id="node26" href="$classrack_1_1CartesianGrid.html" title=" " alt="" coords="583,867,693,893"/>
-<area shape="rect" id="node27" href="$classrack_1_1CartesianInit.html" title=" " alt="" coords="585,917,691,944"/>
-<area shape="rect" id="node28" href="$classrack_1_1CartesianPlot.html" title=" " alt="" coords="583,968,693,995"/>
-<area shape="rect" id="node29" href="$classrack_1_1CartesianRange.html" title=" " alt="" coords="575,1019,701,1045"/>
-<area shape="rect" id="node30" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="577,1069,699,1096"/>
-<area shape="rect" id="node31" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="583,1120,693,1147"/>
-<area shape="rect" id="node32" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="573,1171,703,1197"/>
-<area shape="rect" id="node33" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="577,1221,699,1248"/>
-<area shape="rect" id="node34" href="$classrack_1_1CmdCompleteODIM.html" title=" " alt="" coords="563,1272,713,1299"/>
-<area shape="rect" id="node35" href="$classrack_1_1CmdConvert.html" title=" " alt="" coords="587,1323,689,1349"/>
-<area shape="rect" id="node36" href="$classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="543,1373,733,1400"/>
-<area shape="rect" id="node37" href="$classrack_1_1CmdDumpMap.html" title=" " alt="" coords="579,1424,697,1451"/>
-<area shape="rect" id="node38" href="$classrack_1_1CmdGeoTiff.html" title=" " alt="" coords="589,1475,687,1501"/>
-<area shape="rect" id="node39" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile." alt="" coords="578,1525,698,1552"/>
-<area shape="rect" id="node40" href="$classrack_1_1CmdImage.html" title=" " alt="" coords="591,1576,685,1603"/>
-<area shape="rect" id="node41" href="$classrack_1_1CmdImageAlphaBase.html" title=" " alt="" coords="557,1627,719,1653"/>
-<area shape="rect" id="node42" href="$classrack_1_1CmdImageQuality.html" title="Quality groups accepted as alpha channels." alt="" coords="568,1677,708,1704"/>
-<area shape="rect" id="node43" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes." alt="" coords="594,1728,682,1755"/>
-<area shape="rect" id="node44" href="$classrack_1_1CmdOutputConf.html" title=" " alt="" coords="575,1779,701,1805"/>
+<area shape="rect" id="node20" href="$classdrain_1_1CmdLog.html" title=" " alt="" coords="601,563,675,589"/>
+<area shape="rect" id="node21" href="$classdrain_1_1CmdStatus.html" title=" " alt="" coords="591,613,685,640"/>
+<area shape="rect" id="node22" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="552,664,724,691"/>
+<area shape="rect" id="node23" href="$classrack_1_1CartesianBBox.html" title=" " alt="" coords="579,715,697,741"/>
+<area shape="rect" id="node24" href="$classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="561,765,715,792"/>
+<area shape="rect" id="node25" href="$classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="566,816,710,843"/>
+<area shape="rect" id="node26" href="$classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="567,867,709,893"/>
+<area shape="rect" id="node27" href="$classrack_1_1CartesianGrid.html" title=" " alt="" coords="583,917,693,944"/>
+<area shape="rect" id="node28" href="$classrack_1_1CartesianInit.html" title=" " alt="" coords="585,968,691,995"/>
+<area shape="rect" id="node29" href="$classrack_1_1CartesianPlot.html" title=" " alt="" coords="583,1019,693,1045"/>
+<area shape="rect" id="node30" href="$classrack_1_1CartesianRange.html" title=" " alt="" coords="575,1069,701,1096"/>
+<area shape="rect" id="node31" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="577,1120,699,1147"/>
+<area shape="rect" id="node32" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="583,1171,693,1197"/>
+<area shape="rect" id="node33" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="573,1221,703,1248"/>
+<area shape="rect" id="node34" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="577,1272,699,1299"/>
+<area shape="rect" id="node35" href="$classrack_1_1CmdCompleteODIM.html" title=" " alt="" coords="563,1323,713,1349"/>
+<area shape="rect" id="node36" href="$classrack_1_1CmdConvert.html" title=" " alt="" coords="587,1373,689,1400"/>
+<area shape="rect" id="node37" href="$classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="543,1424,733,1451"/>
+<area shape="rect" id="node38" href="$classrack_1_1CmdDumpMap.html" title=" " alt="" coords="579,1475,697,1501"/>
+<area shape="rect" id="node39" href="$classrack_1_1CmdGeoTiff.html" title=" " alt="" coords="589,1525,687,1552"/>
+<area shape="rect" id="node40" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile." alt="" coords="578,1576,698,1603"/>
+<area shape="rect" id="node41" href="$classrack_1_1CmdImage.html" title=" " alt="" coords="591,1627,685,1653"/>
+<area shape="rect" id="node42" href="$classrack_1_1CmdImageAlphaBase.html" title=" " alt="" coords="557,1677,719,1704"/>
+<area shape="rect" id="node43" href="$classrack_1_1CmdImageQuality.html" title="Quality groups accepted as alpha channels." alt="" coords="568,1728,708,1755"/>
+<area shape="rect" id="node44" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes." alt="" coords="594,1779,682,1805"/>
 <area shape="rect" id="node45" href="$classrack_1_1CmdQuantityConf.html" title=" " alt="" coords="569,1829,707,1856"/>
-<area shape="rect" id="node46" href="$classrack_1_1CmdSweep.html" title="&quot;Virtual&quot; command extracting one sweep &#45; actually only modifying selector" alt="" coords="591,1880,685,1907"/>
-<area shape="rect" id="node47" href="$classrack_1_1CmdTest2.html" title=" " alt="" coords="595,1931,681,1957"/>
+<area shape="rect" id="node46" href="$classrack_1_1CmdSelect.html" title=" " alt="" coords="592,1880,684,1907"/>
+<area shape="rect" id="node47" href="$classrack_1_1CmdSweep.html" title="&quot;Virtual&quot; command extracting one sweep &#45; actually only modifying selector" alt="" coords="591,1931,685,1957"/>
 </map>

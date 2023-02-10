@@ -537,21 +537,21 @@ typedef drain::Flags::value_t&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="memitem:a50fff2fe910fd0f8078cf7f938e93766"><td class="memItemLeft" align="right" valign="top"><a id="a50fff2fe910fd0f8078cf7f938e93766"></a>
 typedef unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>coord_pol_t</b></td></tr>
 <tr class="separator:a50fff2fe910fd0f8078cf7f938e93766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90906598ce2bff5fa3c2d563e4d211ca"><td class="memItemLeft" align="right" valign="top"><a id="a90906598ce2bff5fa3c2d563e4d211ca"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; std::string, coord_pol_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>coord_policy_dict_t</b></td></tr>
-<tr class="separator:a90906598ce2bff5fa3c2d563e4d211ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a46bb3b3c15670e386d97eacd2df687"><td class="memItemLeft" align="right" valign="top"><a id="a7a46bb3b3c15670e386d97eacd2df687"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; std::string, coord_pol_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>coord_policy_dict_t</b></td></tr>
+<tr class="separator:a7a46bb3b3c15670e386d97eacd2df687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9769efb69b2c2d9fcd2427747b80aaae"><td class="memItemLeft" align="right" valign="top"><a id="a9769efb69b2c2d9fcd2427747b80aaae"></a>
 typedef std::vector&lt; <a class="el" href="classdrain_1_1image_1_1DistanceElement.html">DistanceElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceNeighbourhood</b></td></tr>
 <tr class="separator:a9769efb69b2c2d9fcd2427747b80aaae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11d4ba4789355376958886236a9d1a39"><td class="memItemLeft" align="right" valign="top"><a id="a11d4ba4789355376958886236a9d1a39"></a>
-typedef <a class="el" href="classdrain_1_1Tree.html">drain::Tree</a>&lt; <a class="el" href="classdrain_1_1image_1_1NodeGDAL.html">NodeGDAL</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeGDAL</b></td></tr>
-<tr class="separator:a11d4ba4789355376958886236a9d1a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3c9fa5f7410622456d192b455623dc4"><td class="memItemLeft" align="right" valign="top"><a id="ac3c9fa5f7410622456d192b455623dc4"></a>
+typedef drain::UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1image_1_1NodeGDAL.html">NodeGDAL</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeGDAL</b></td></tr>
+<tr class="separator:ac3c9fa5f7410622456d192b455623dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae16af568c923face69b2ff08e76e94cc"><td class="memItemLeft" align="right" valign="top"><a id="ae16af568c923face69b2ff08e76e94cc"></a>
 typedef <a class="el" href="classdrain_1_1Frame2D.html">Frame2D</a>&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AreaGeometry</b></td></tr>
 <tr class="separator:ae16af568c923face69b2ff08e76e94cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09bda9fbde4fb8589991ca324b135aa6"><td class="memItemLeft" align="right" valign="top"><a id="a09bda9fbde4fb8589991ca324b135aa6"></a>
-typedef <a class="el" href="classdrain_1_1Tree.html">drain::Tree</a>&lt; <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSVG</b></td></tr>
-<tr class="separator:a09bda9fbde4fb8589991ca324b135aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae370f7a09dd1d38581cfd61d91c724"><td class="memItemLeft" align="right" valign="top"><a id="adae370f7a09dd1d38581cfd61d91c724"></a>
+typedef drain::UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSVG</b></td></tr>
+<tr class="separator:adae370f7a09dd1d38581cfd61d91c724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -580,7 +580,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const DistanceNeighbourhood &amp;chain)</td></tr>
 <tr class="separator:a57c8a78fdb23b20c6c00fcdc8b3ca98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7c58b4a55b73895763fe3db94cf1baf"><td class="memItemLeft" align="right" valign="top"><a id="ae7c58b4a55b73895763fe3db94cf1baf"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Tree.html">TreeGDAL</a> &amp;tree)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const TreeGDAL &amp;tree)</td></tr>
 <tr class="separator:ae7c58b4a55b73895763fe3db94cf1baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d9525c9a684f4bb5f7d99c99a2b7904"><td class="memItemLeft" align="right" valign="top"><a id="a9d9525c9a684f4bb5f7d99c99a2b7904"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a> &amp;frame)</td></tr>
@@ -620,7 +620,7 @@ template&lt;class T , class D &gt; </td></tr>
 <tr class="memitem:a4ecf81c9bbf3cb428176e786dadd14b4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html">SegmentStatisticsProber</a>&lt; T, D &gt; &amp;prober)</td></tr>
 <tr class="separator:a4ecf81c9bbf3cb428176e786dadd14b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad09a1016e9d9939ff626a95af3e93991"><td class="memItemLeft" align="right" valign="top"><a id="ad09a1016e9d9939ff626a95af3e93991"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;t)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const TreeSVG &amp;t)</td></tr>
 <tr class="separator:ad09a1016e9d9939ff626a95af3e93991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3fa35fac05f380711eceb28ce7f5fb"><td class="memItemLeft" align="right" valign="top"><a id="ace3fa35fac05f380711eceb28ce7f5fb"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a> &amp;conf)</td></tr>

@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classdrain_1_1FlagResolver-members.html">List of all members</a>  </div>
@@ -88,8 +89,8 @@ Inheritance diagram for FlagResolver:</div>
 <div class="center"><img src="classdrain_1_1FlagResolver__inherit__graph.png" border="0" usemap="#FlagResolver_inherit__map" alt="Inheritance graph"/></div>
 <map name="FlagResolver_inherit__map" id="FlagResolver_inherit__map">
 <area shape="rect" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="102,5,209,32"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="120,80,191,107"/>
-<area shape="rect" href="classdrain_1_1Flags.html" title="Flagger that has an own dictionary and value." alt="" coords="5,162,63,189"/>
+<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="120,80,191,107"/>
+<area shape="rect" href="classdrain_1_1Flags.html" title="Self&#45;contained Flagger – with an own dictionary and value." alt="" coords="5,162,63,189"/>
 <area shape="rect" href="classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="87,162,224,189"/>
 <area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="249,155,403,196"/>
 <area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="277,244,375,271"/>
@@ -101,31 +102,43 @@ Public Types</h2></td></tr>
 <tr class="memitem:abdccfcb65d2691481415572b27902841"><td class="memItemLeft" align="right" valign="top"><a id="abdccfcb65d2691481415572b27902841"></a>
 typedef std::string&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
 <tr class="separator:abdccfcb65d2691481415572b27902841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebc7193d5d83c95f956dbe1bb88ff7f2"><td class="memItemLeft" align="right" valign="top"><a id="aebc7193d5d83c95f956dbe1bb88ff7f2"></a>
-typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
-<tr class="separator:aebc7193d5d83c95f956dbe1bb88ff7f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e9a913837162fe23522ecfc0a2c5da1"><td class="memItemLeft" align="right" valign="top"><a id="a4e9a913837162fe23522ecfc0a2c5da1"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; key_t, value_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:a4e9a913837162fe23522ecfc0a2c5da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac904bd2a2fdc6bcaa913f9c4c7377cc2"><td class="memItemLeft" align="right" valign="top"><a id="ac904bd2a2fdc6bcaa913f9c4c7377cc2"></a>
+typedef long unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
+<tr class="separator:ac904bd2a2fdc6bcaa913f9c4c7377cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f433c365cad35a5e951f01747d5296"><td class="memItemLeft" align="right" valign="top"><a id="a69f433c365cad35a5e951f01747d5296"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, value_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a69f433c365cad35a5e951f01747d5296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a709e6c5b15e397312e182b44f42b1978"><td class="memTemplParams" colspan="2"><a id="a709e6c5b15e397312e182b44f42b1978"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a709e6c5b15e397312e182b44f42b1978"><td class="memTemplItemLeft" align="right" valign="top">FlagResolver::value_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addEntry</b> (<a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, const typename dict_t::key_t &amp;key, value_t i)</td></tr>
+<tr class="separator:a709e6c5b15e397312e182b44f42b1978"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a83307de83baaf518e350e2519f7a3502"><td class="memItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a83307de83baaf518e350e2519f7a3502">getValue</a> (const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dict, const key_t &amp;key, char separator=',')</td></tr>
-<tr class="memdesc:a83307de83baaf518e350e2519f7a3502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.  <a href="classdrain_1_1FlagResolver.html#a83307de83baaf518e350e2519f7a3502">More...</a><br /></td></tr>
-<tr class="separator:a83307de83baaf518e350e2519f7a3502"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c55322ba5fe60893506a9346b9c53f0"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a0c55322ba5fe60893506a9346b9c53f0">getKeys</a> (const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dict, value_t, char separator=',')</td></tr>
-<tr class="memdesc:a0c55322ba5fe60893506a9346b9c53f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits.  <a href="classdrain_1_1FlagResolver.html#a0c55322ba5fe60893506a9346b9c53f0">More...</a><br /></td></tr>
-<tr class="separator:a0c55322ba5fe60893506a9346b9c53f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d787e7aecaa3e74c813b942f5003eb2"><td class="memItemLeft" align="right" valign="top"><a id="a6d787e7aecaa3e74c813b942f5003eb2"></a>
-static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a6d787e7aecaa3e74c813b942f5003eb2">keysToStream</a> (const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dict, value_t value, std::ostream &amp;ostr, char separator=',')</td></tr>
-<tr class="memdesc:a6d787e7aecaa3e74c813b942f5003eb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">List keys in their numeric order. <br /></td></tr>
-<tr class="separator:a6d787e7aecaa3e74c813b942f5003eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c05779e8aec8a9077f3b855e2391f27"><td class="memItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a2c05779e8aec8a9077f3b855e2391f27">getFreeBit</a> (const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dict)</td></tr>
-<tr class="memdesc:a2c05779e8aec8a9077f3b855e2391f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an interger (bit vector) with a new, previously unused value.  <a href="classdrain_1_1FlagResolver.html#a2c05779e8aec8a9077f3b855e2391f27">More...</a><br /></td></tr>
-<tr class="separator:a2c05779e8aec8a9077f3b855e2391f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd41b9563cddaab78d9ca8dedb3731c2"><td class="memItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#acd41b9563cddaab78d9ca8dedb3731c2">add</a> (<a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;dict, const dict_t::key_t &amp;key, value_t i=0)</td></tr>
-<tr class="memdesc:acd41b9563cddaab78d9ca8dedb3731c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new entry in the dictionary.  <a href="classdrain_1_1FlagResolver.html#acd41b9563cddaab78d9ca8dedb3731c2">More...</a><br /></td></tr>
-<tr class="separator:acd41b9563cddaab78d9ca8dedb3731c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae710a2dcbe453b9344843569391d7153"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae710a2dcbe453b9344843569391d7153"><td class="memTemplItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#ae710a2dcbe453b9344843569391d7153">getValue</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, const std::string &amp;key, char separator=',')</td></tr>
+<tr class="memdesc:ae710a2dcbe453b9344843569391d7153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.  <a href="classdrain_1_1FlagResolver.html#ae710a2dcbe453b9344843569391d7153">More...</a><br /></td></tr>
+<tr class="separator:ae710a2dcbe453b9344843569391d7153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60a28cf2a6cf8c784cce23761308af86"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a60a28cf2a6cf8c784cce23761308af86"><td class="memTemplItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a60a28cf2a6cf8c784cce23761308af86">getKeys</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, value_t, char separator=',')</td></tr>
+<tr class="memdesc:a60a28cf2a6cf8c784cce23761308af86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits.  <a href="classdrain_1_1FlagResolver.html#a60a28cf2a6cf8c784cce23761308af86">More...</a><br /></td></tr>
+<tr class="separator:a60a28cf2a6cf8c784cce23761308af86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774c5b974f0a6fb7dc1960e04b5066f3"><td class="memTemplParams" colspan="2"><a id="a774c5b974f0a6fb7dc1960e04b5066f3"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a774c5b974f0a6fb7dc1960e04b5066f3"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a774c5b974f0a6fb7dc1960e04b5066f3">keysToStream</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, value_t value, std::ostream &amp;ostr, char separator=',')</td></tr>
+<tr class="memdesc:a774c5b974f0a6fb7dc1960e04b5066f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">List keys in their numeric order. <br /></td></tr>
+<tr class="separator:a774c5b974f0a6fb7dc1960e04b5066f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a0087d3fff110fd256f73fdc688a1d3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a8a0087d3fff110fd256f73fdc688a1d3"><td class="memTemplItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a8a0087d3fff110fd256f73fdc688a1d3">addEntry</a> (<a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, const key_t &amp;key, value_t i=0)</td></tr>
+<tr class="memdesc:a8a0087d3fff110fd256f73fdc688a1d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new entry in the dictionary.  <a href="classdrain_1_1FlagResolver.html#a8a0087d3fff110fd256f73fdc688a1d3">More...</a><br /></td></tr>
+<tr class="separator:a8a0087d3fff110fd256f73fdc688a1d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2abe02fcdb1a6ce592790f175b0bbe36"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2abe02fcdb1a6ce592790f175b0bbe36"><td class="memTemplItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a2abe02fcdb1a6ce592790f175b0bbe36">getFreeBit</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict)</td></tr>
+<tr class="memdesc:a2abe02fcdb1a6ce592790f175b0bbe36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an interger (bit vector) with a new, previously unused value.  <a href="classdrain_1_1FlagResolver.html#a2abe02fcdb1a6ce592790f175b0bbe36">More...</a><br /></td></tr>
+<tr class="separator:a2abe02fcdb1a6ce592790f175b0bbe36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -135,9 +148,10 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Referencing a dictionary of binary values: {"A",1: "B":2, "C": 4, "D": 8, ...} resolves two-way mappings "A,C" &lt;=&gt; 5 . </p>
+<p><a class="el" href="classdrain_1_1Static.html">Static</a> utilities. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="acd41b9563cddaab78d9ca8dedb3731c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd41b9563cddaab78d9ca8dedb3731c2">&#9670;&nbsp;</a></span>add()</h2>
+<a id="a8a0087d3fff110fd256f73fdc688a1d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0087d3fff110fd256f73fdc688a1d3">&#9670;&nbsp;</a></span>addEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,15 +160,15 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">FlagResolver::value_t add </td>
+          <td class="memname">static value_t addEntry </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
           <td class="paramname"><em>dict</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const dict_t::key_t &amp;&#160;</td>
+          <td class="paramtype">const key_t &amp;&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
@@ -179,15 +193,15 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
 <p>Add a new entry in the dictionary. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td>- if zero, call <a class="el" href="classdrain_1_1FlagResolver.html#a2c05779e8aec8a9077f3b855e2391f27" title="Return an interger (bit vector) with a new, previously unused value.">getFreeBit()</a> to reserve a new, unused bit. </td></tr>
+    <tr><td class="paramname">i</td><td>- if zero, call <a class="el" href="classdrain_1_1FlagResolver.html#a2abe02fcdb1a6ce592790f175b0bbe36" title="Return an interger (bit vector) with a new, previously unused value.">getFreeBit()</a> to reserve a new, unused bit. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a2c05779e8aec8a9077f3b855e2391f27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c05779e8aec8a9077f3b855e2391f27">&#9670;&nbsp;</a></span>getFreeBit()</h2>
+<a id="a2abe02fcdb1a6ce592790f175b0bbe36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2abe02fcdb1a6ce592790f175b0bbe36">&#9670;&nbsp;</a></span>getFreeBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +212,7 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
         <tr>
           <td class="memname">FlagResolver::value_t getFreeBit </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
           <td class="paramname"><em>dict</em></td><td>)</td>
           <td></td>
         </tr>
@@ -215,8 +229,8 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
 
 </div>
 </div>
-<a id="a0c55322ba5fe60893506a9346b9c53f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c55322ba5fe60893506a9346b9c53f0">&#9670;&nbsp;</a></span>getKeys()</h2>
+<a id="a60a28cf2a6cf8c784cce23761308af86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60a28cf2a6cf8c784cce23761308af86">&#9670;&nbsp;</a></span>getKeys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +241,7 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
         <tr>
           <td class="memname">std::string getKeys </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
           <td class="paramname"><em>dict</em>, </td>
         </tr>
         <tr>
@@ -260,8 +274,8 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
 
 </div>
 </div>
-<a id="a83307de83baaf518e350e2519f7a3502"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83307de83baaf518e350e2519f7a3502">&#9670;&nbsp;</a></span>getValue()</h2>
+<a id="ae710a2dcbe453b9344843569391d7153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae710a2dcbe453b9344843569391d7153">&#9670;&nbsp;</a></span>getValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,13 +286,13 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
         <tr>
           <td class="memname">FlagResolver::value_t getValue </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
           <td class="paramname"><em>dict</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const key_t &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
@@ -303,11 +317,12 @@ static const value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL</
 <p>Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key</td><td>- String containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
-    <tr><td class="paramname">lenient</td><td>- If true, bypassed unknown keys silently, otherwise throws exception </td></tr>
+    <tr><td class="paramname">key</td><td>– A string containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
+    <tr><td class="paramname">separator</td><td>– if given, splits string to several keys </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>– A numeric value </dd></dl>
 
 </div>
 </div>

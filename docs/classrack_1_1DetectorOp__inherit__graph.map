@@ -19,8 +19,8 @@
 <area shape="rect" id="node25" href="$classrack_1_1TestOp.html" title=" " alt="" coords="1191,816,1257,843"/>
 <area shape="rect" id="node26" href="$classrack_1_1TimeOp.html" title="A radio interference detector." alt="" coords="1188,867,1260,893"/>
 <area shape="rect" id="node27" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="1179,917,1269,944"/>
-<area shape="rect" id="node2" href="$classrack_1_1AndreOp.html" title="The base class for removal operators." alt="" coords="876,461,955,488"/>
-<area shape="rect" id="node3" href="$classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors." alt="" coords="677,461,828,488"/>
+<area shape="rect" id="node2" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="876,461,955,488"/>
+<area shape="rect" id="node3" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="677,461,828,488"/>
 <area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="507,461,629,488"/>
 <area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="269,461,459,488"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="5,454,221,495"/>

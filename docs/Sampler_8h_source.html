@@ -285,111 +285,113 @@ $(function() {
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; input properties &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">for</span> (FlexVariableMap::const_iterator it = picker.infoMap.begin(); it != picker.infoMap.end(); ++it){</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="charliteral">&#39;=&#39;</span>;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                it-&gt;second.valueToJSON(ostr);</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            }</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; sampling parameters &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">for</span> (ReferenceMap::const_iterator it = parameters.begin(); it != parameters.end(); ++it){</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="charliteral">&#39;=&#39;</span>;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                it-&gt;second.valueToJSON(ostr);</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordflow">if</span> (!formatStr.empty())</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; format=&#39;&quot;</span> &lt;&lt; formatStr &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>; <span class="comment">// formatStr instead of format, to save double slash \\n \\t</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; format=&#39;&quot;</span> &lt;&lt; format &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; resulting geometry &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> iN = picker.width/iStep;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> jN = picker.height/jStep;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; rows=&quot;</span> &lt;&lt; iN &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; rols=&quot;</span> &lt;&lt; jN &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; samples=&quot;</span> &lt;&lt; (iN*jN) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        }</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: picker.infoMap){</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; entry.first &lt;&lt; <span class="charliteral">&#39;=&#39;</span>;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="comment">//it-&gt;second.valueToJSON(ostr);</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                SprinterBase::toStream(ostr, entry.second, <a class="code" href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">SprinterBase::jsonLayout</a>);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            }</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; sampling parameters &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: parameters){</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; entry.first &lt;&lt; <span class="charliteral">&#39;=&#39;</span>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                <span class="comment">// it-&gt;second.valueToJSON(ostr);</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                SprinterBase::toStream(ostr, entry.second, <a class="code" href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">SprinterBase::jsonLayout</a>);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="keywordflow">if</span> (!formatStr.empty())</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; format=&#39;&quot;</span> &lt;&lt; formatStr &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>; <span class="comment">// formatStr instead of format, to save double slash \\n \\t</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; format=&#39;&quot;</span> &lt;&lt; format &lt;&lt; <span class="stringliteral">&quot;&#39;\n&quot;</span>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; resulting geometry &quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> iN = picker.width/iStep;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">int</span> jN = picker.height/jStep;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; rows=&quot;</span> &lt;&lt; iN &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; rols=&quot;</span> &lt;&lt; jN &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;            ostr &lt;&lt; commentChar &lt;&lt; <span class="stringliteral">&quot; samples=&quot;</span> &lt;&lt; (iN*jN) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keywordtype">int</span> iStart = this-&gt;iRange.min; <span class="comment">// this-&gt;iStart;</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">if</span> (iStart &lt; 0)</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            iStart = iStep/2;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <span class="keywordtype">int</span> jStart = this-&gt;jRange.min; <span class="comment">//jStart;</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">if</span> (jStart &lt; 0)</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            jStart = jStep/2;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordtype">int</span> iEnd   = this-&gt;iRange.max; <span class="comment">// iEnd;</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keywordflow">if</span> (iEnd &lt; iStart)</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            iEnd = picker.width-1;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordtype">int</span> jEnd   = this-&gt;jRange.max; <span class="comment">// jEnd;</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">if</span> (jEnd &lt; jStart)</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            jEnd = picker.height-1;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="comment">// Main loop: traverse image area with (i,j)</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="comment">// SamplePicker has set variableMap references (ie. geographical coords j2=(height-1-j) ).</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordtype">double</span> x;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordtype">bool</span> dataOk;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = jStart; j&lt;=jEnd; j+=jStep){</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = iStart; i&lt;=iEnd; i+=iStep){</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                picker.setPosition(i, j);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordtype">int</span> iStart = this-&gt;iRange.min; <span class="comment">// this-&gt;iStart;</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordflow">if</span> (iStart &lt; 0)</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            iStart = iStep/2;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordtype">int</span> jStart = this-&gt;jRange.min; <span class="comment">//jStart;</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="keywordflow">if</span> (jStart &lt; 0)</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;            jStart = jStep/2;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="keywordtype">int</span> iEnd   = this-&gt;iRange.max; <span class="comment">// iEnd;</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">if</span> (iEnd &lt; iStart)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            iEnd = picker.width-1;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="keywordtype">int</span> jEnd   = this-&gt;jRange.max; <span class="comment">// jEnd;</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="keywordflow">if</span> (jEnd &lt; jStart)</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            jEnd = picker.height-1;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="comment">// Main loop: traverse image area with (i,j)</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="comment">// SamplePicker has set variableMap references (ie. geographical coords j2=(height-1-j) ).</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordtype">double</span> x;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keywordtype">bool</span> dataOk;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = jStart; j&lt;=jEnd; j+=jStep){</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = iStart; i&lt;=iEnd; i+=iStep){</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <span class="comment">// SLOW, but works... // TODO speedup with iterator</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                dataOk = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::map&lt;std::string, D&gt;::const_iterator it = images.begin(); it != images.end(); ++it){</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    <span class="keyword">const</span> std::string &amp; quantity = it-&gt;first;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                    <span class="keyword">const</span> D &amp; data = it-&gt;second;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    <span class="keywordflow">if</span> (!picker.getValue(data, x)){</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                        dataOk = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    }</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    <span class="comment">//else if (x != 0) std::cerr &lt;&lt; x &lt;&lt; &#39;\t&#39;;</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    values[quantity] = x;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    values[minusStr+quantity] = -x;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                }</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                <span class="keywordflow">if</span> (dataOk || (<a class="code" href="classdrain_1_1image_1_1Sampler.html#a6314bacae8db5c06ea36a9663e6813aa">skipVoid</a>==0)){</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                    <span class="comment">//formatter.toStream(ostr, variableMap, true);</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                    formatter.<a class="code" href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">toStream</a>(ostr, <a class="code" href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">variableMap</a>, -1); <span class="comment">// leaves ${variable} ?</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">if</span>  ((!dataOk) &amp;&amp; (commentChar))</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                        ostr &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; commentChar &lt;&lt;  voidMarker;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                    ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            }</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <span class="comment">// formatter.expand(map, true);</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        }</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>() &lt;&lt; <span class="stringliteral">&quot;last values: &quot;</span> &lt;&lt; <a class="code" href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">variableMap</a> &lt;&lt; mout.endl;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="comment">//mout.warn() &lt;&lt; &quot;formatter &quot; &lt;&lt; formatter &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                picker.setPosition(i, j);</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                <span class="comment">// SLOW, but works... // TODO speedup with iterator</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                dataOk = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::map&lt;std::string, D&gt;::const_iterator it = images.begin(); it != images.end(); ++it){</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    <span class="keyword">const</span> std::string &amp; quantity = it-&gt;first;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                    <span class="keyword">const</span> D &amp; data = it-&gt;second;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                    <span class="keywordflow">if</span> (!picker.getValue(data, x)){</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                        dataOk = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                    }</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    <span class="comment">//else if (x != 0) std::cerr &lt;&lt; x &lt;&lt; &#39;\t&#39;;</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    values[quantity] = x;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    values[minusStr+quantity] = -x;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                }</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                <span class="keywordflow">if</span> (dataOk || (<a class="code" href="classdrain_1_1image_1_1Sampler.html#a6314bacae8db5c06ea36a9663e6813aa">skipVoid</a>==0)){</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="comment">//formatter.toStream(ostr, variableMap, true);</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                    formatter.<a class="code" href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">toStream</a>(ostr, <a class="code" href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">variableMap</a>, -1); <span class="comment">// leaves ${variable} ?</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                    <span class="keywordflow">if</span>  ((!dataOk) &amp;&amp; (commentChar))</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                        ostr &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; commentChar &lt;&lt;  voidMarker;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                    ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                }</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;            }</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <span class="comment">// formatter.expand(map, true);</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        }</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>() &lt;&lt; <span class="stringliteral">&quot;last values: &quot;</span> &lt;&lt; <a class="code" href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">variableMap</a> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <span class="comment">//mout.warn() &lt;&lt; &quot;formatter &quot; &lt;&lt; formatter &lt;&lt; mout.endl;</span></div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;};</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;};</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;}</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*POINT_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;}</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*POINT_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">// Drain</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassdrain_1_1StringMapper_html"><div class="ttname"><a href="classdrain_1_1StringMapper.html">drain::StringMapper</a></div><div class="ttdoc">A tool for expanding variables embedded in a std::string to literals.</div><div class="ttdef"><b>Definition:</b> StringMapper.h:110</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:288</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:555</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:585</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_ad43b04198a1c919fdcc0194beaf55ddf"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#ad43b04198a1c919fdcc0194beaf55ddf">drain::image::ImageFrame::getScaled</a></div><div class="ttdeci">double getScaled(size_t i, size_t j) const</div><div class="ttdoc">Get intensity in original physical scale.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:285</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_a57ff6015080a29b1f76f45dd9a5d327d"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#a57ff6015080a29b1f76f45dd9a5d327d">drain::image::Sampler::getFormat</a></div><div class="ttdeci">std::string getFormat(const std::string &amp;formatStr) const</div><div class="ttdoc">Use given format or generate default &quot;${var},${var2}, ...&quot;.</div><div class="ttdef"><b>Definition:</b> Sampler.cpp:76</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageReader_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageReader.html">drain::image::ImageReader</a></div><div class="ttdoc">Reads image channels, returning scaled (physical) values.</div><div class="ttdef"><b>Definition:</b> Sampler.h:121</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_a3aa5e052b73b911d46c54052e9dc0a16"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#a3aa5e052b73b911d46c54052e9dc0a16">drain::image::SamplePicker::variableMap</a></div><div class="ttdeci">ReferenceMap &amp; variableMap</div><div class="ttdef"><b>Definition:</b> Sampler.h:113</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:228</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> EM-example.cpp:42</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:227</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_acdcfed065f00c724f18ee8fde76d0a52"><div class="ttname"><a href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">drain::BeanLike::getName</a></div><div class="ttdeci">virtual const std::string &amp; getName() const</div><div class="ttdoc">Return the name of an instance.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:62</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_ac488a2d8b170e246436e7a30bb246e3b"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#ac488a2d8b170e246436e7a30bb246e3b">drain::image::Sampler::variableMap</a></div><div class="ttdeci">ReferenceMap variableMap</div><div class="ttdoc">Interface that links coordinates and image data.</div><div class="ttdef"><b>Definition:</b> Sampler.h:179</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_a090291a591bf3600f578845f42eb6080"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#a090291a591bf3600f578845f42eb6080">drain::image::SamplePicker::current_j2</a></div><div class="ttdeci">int current_j2</div><div class="ttdoc">Vertical inversed coordinate.</div><div class="ttdef"><b>Definition:</b> Sampler.h:103</div></div>
@@ -398,15 +400,16 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:86</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_a4186e3417816ebb8c0e4a7f1a5e1417f"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#a4186e3417816ebb8c0e4a7f1a5e1417f">drain::image::SamplePicker::current_i</a></div><div class="ttdeci">int current_i</div><div class="ttdoc">Optional utility. Called prior to writing the actual data to output stream.</div><div class="ttdef"><b>Definition:</b> Sampler.h:97</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_aae23e8d0830199e66aff534f97e233d5"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#aae23e8d0830199e66aff534f97e233d5">drain::image::SamplePicker::infoMap</a></div><div class="ttdeci">FlexVariableMap infoMap</div><div class="ttdoc">Information to be should in output file header.</div><div class="ttdef"><b>Definition:</b> Sampler.h:109</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:564</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:594</div></div>
+<div class="ttc" id="aclassdrain_1_1SprinterBase_html_af8f0689b7a24be4bcde36addd2e0d48a"><div class="ttname"><a href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">drain::SprinterBase::jsonLayout</a></div><div class="ttdeci">static const SprinterLayout jsonLayout</div><div class="ttdoc">Resembles JSON structure: {&quot;a&quot;:1,&quot;b&quot;:22,&quot;c&quot;:3}.</div><div class="ttdef"><b>Definition:</b> Sprinter.h:195</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_afeb551068433a948182d0491d139dd72"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#afeb551068433a948182d0491d139dd72">drain::image::SamplePicker::setPosition</a></div><div class="ttdeci">virtual void setPosition(int i, int j) const</div><div class="ttdoc">Sets current position in image coordinates. To be redefined to compute also geographical projections,...</div><div class="ttdef"><b>Definition:</b> Sampler.h:82</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1SamplePicker_html_a3e62de720ed519f20a95eb496da3bb31"><div class="ttname"><a href="structdrain_1_1image_1_1SamplePicker.html#a3e62de720ed519f20a95eb496da3bb31">drain::image::SamplePicker::SamplePicker</a></div><div class="ttdeci">SamplePicker(ReferenceMap &amp;variableMap)</div><div class="ttdef"><b>Definition:</b> Sampler.h:66</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:65</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:62</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:61</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_a065897cd7adc944dda8446a9e7ac38cd"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#a065897cd7adc944dda8446a9e7ac38cd">drain::image::Sampler::getCommentChar</a></div><div class="ttdeci">char getCommentChar() const</div><div class="ttdoc">Returns character, also supporting numeric ASCII values between 32 and 128.</div><div class="ttdef"><b>Definition:</b> Sampler.cpp:56</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMapper_html_af332cacd232281cb44d7a1bb83782e2d"><div class="ttname"><a href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">drain::StringMapper::toStream</a></div><div class="ttdeci">std::ostream &amp; toStream(std::ostream &amp;ostr) const</div><div class="ttdoc">Output a concatenated chain of stringlets: literals as such and variables surrounded with &quot;${&quot; and &quot;}...</div><div class="ttdef"><b>Definition:</b> StringMapper.h:179</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_a6314bacae8db5c06ea36a9663e6813aa"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#a6314bacae8db5c06ea36a9663e6813aa">drain::image::Sampler::skipVoid</a></div><div class="ttdeci">bool skipVoid</div><div class="ttdoc">Skip lines, if contain missing values.</div><div class="ttdef"><b>Definition:</b> Sampler.h:174</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:379</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:375</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_a10bc5602b68078f6f924128b36d6b219"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#a10bc5602b68078f6f924128b36d6b219">drain::image::Sampler::commentPrefix</a></div><div class="ttdeci">std::string commentPrefix</div><div class="ttdoc">Escape std::string for prefixing text no to be handled as data values.</div><div class="ttdef"><b>Definition:</b> Sampler.h:171</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMapper_html_a69f517d97293b70a2d996d084a5d55e3"><div class="ttname"><a href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">drain::StringMapper::parse</a></div><div class="ttdeci">StringMapper &amp; parse(const std::string &amp;s, bool convertEscaped=false)</div><div class="ttdoc">Converts a std::string containing variables like in &quot;Hello, ${NAME}!&quot; to a list of StringLet's.</div><div class="ttdef"><b>Definition:</b> StringMapper.cpp:41</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Sampler_html_a919e9cdcffd6e81e2d7cbe5779d3e7aa"><div class="ttname"><a href="classdrain_1_1image_1_1Sampler.html#a919e9cdcffd6e81e2d7cbe5779d3e7aa">drain::image::Sampler::sample</a></div><div class="ttdeci">void sample(const std::map&lt; std::string, D &gt; &amp;images, const P &amp;picker, const std::string &amp;formatStr, std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Main function.</div><div class="ttdef"><b>Definition:</b> Sampler.h:201</div></div>

@@ -81,8 +81,6 @@ $(function() {
 <div class="title">ODIMPathElem Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="ODIMPath_8h_source.html">ODIMPath.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ODIMPathElem:</div>
 <div class="dyncontent">
@@ -99,7 +97,7 @@ Public Types</h2></td></tr>
 typedef <a class="el" href="classdrain_1_1Flagger.html">drain::Flagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flag_t</b></td></tr>
 <tr class="separator:aeca4b7146c76b79ff86947b1afe6d651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8278b97585c3191a8044e6c3471c27d5"><td class="memItemLeft" align="right" valign="top"><a id="a8278b97585c3191a8044e6c3471c27d5"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Flagger::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Flagger::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
 <tr class="separator:a8278b97585c3191a8044e6c3471c27d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c2f7fb3caa4f55a775b942ca5c0946c"><td class="memItemLeft" align="right" valign="top"><a id="a6c2f7fb3caa4f55a775b942ca5c0946c"></a>
 typedef drain::Flagger::value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a></td></tr>
@@ -173,11 +171,9 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>getCharCode</b> () co
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a4abc4f1bbf3f407499a2e93f40e1832b">getKey</a> () const</td></tr>
 <tr class="memdesc:a4abc4f1bbf3f407499a2e93f40e1832b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debugging/logging. Returns standard name. Does not check if type is OTHER. <br /></td></tr>
 <tr class="separator:a4abc4f1bbf3f407499a2e93f40e1832b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6da9a816777c12f788994d17d5a2fc"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a> (std::ostream &amp;sstr) const</td></tr>
-<tr class="memdesc:a6a6da9a816777c12f788994d17d5a2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the name, including the index, to output stream.  <a href="classrack_1_1ODIMPathElem.html#a6a6da9a816777c12f788994d17d5a2fc">More...</a><br /></td></tr>
-<tr class="separator:a6a6da9a816777c12f788994d17d5a2fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memItemLeft" align="right" valign="top"><a id="ac91ebb8fe9956bbc1dfa3a22c9012235"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator const std::string &amp;</b> () const</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#ac91ebb8fe9956bbc1dfa3a22c9012235">operator const std::string &amp;</a> () const</td></tr>
+<tr class="memdesc:ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the name, including the index, to output stream. <br /></td></tr>
 <tr class="separator:ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79b6cdd0b4ef339ae7d787f255d066a5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a79b6cdd0b4ef339ae7d787f255d066a5">extractPrefix</a> (const std::string &amp;s, bool indexed)</td></tr>
 <tr class="memdesc:a79b6cdd0b4ef339ae7d787f255d066a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given the non-numeric prefix of a group, like "dataset" or "data", set the group.  <a href="classrack_1_1ODIMPathElem.html#a79b6cdd0b4ef339ae7d787f255d066a5">More...</a><br /></td></tr>
@@ -192,7 +188,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isIndexed</b> 
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isQuality</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a> group)</td></tr>
 <tr class="separator:a50d3c21b97bbf95aaa8189a2f5b3f137"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb674403dd082ae33c08c81287fffaa6"><td class="memItemLeft" align="right" valign="top"><a id="aeb674403dd082ae33c08c81287fffaa6"></a>
-static const <a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDictionary</b> ()</td></tr>
+static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDictionary</b> ()</td></tr>
 <tr class="separator:aeb674403dd082ae33c08c81287fffaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fa792978358c8d0fc81add5ccb4cda7"><td class="memItemLeft" align="right" valign="top"><a id="a7fa792978358c8d0fc81add5ccb4cda7"></a>
 static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a7fa792978358c8d0fc81add5ccb4cda7">getKey</a> (<a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a> g)</td></tr>
@@ -240,10 +236,6 @@ static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55
 static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a386b484a2237afe3a4733cd71b588097">ALL_LEVELS</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ROOT</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a>)</td></tr>
 <tr class="memdesc:a386b484a2237afe3a4733cd71b588097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abbreviation for linking (referencing) attributes at different levels (tree depths). <br /></td></tr>
 <tr class="separator:a386b484a2237afe3a4733cd71b588097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="memItemLeft" align="right" valign="top"><a id="a1bcf55f2343d69451d57df6c51bfe7cc"></a>
-static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">IS_INDEXED</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">QUALITY</a>)</td></tr>
-<tr class="memdesc:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group index mask for groups that have an index. <br /></td></tr>
-<tr class="separator:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1884541cc245c9e95976459d1694dd70"><td class="memItemLeft" align="right" valign="top"><a id="a1884541cc245c9e95976459d1694dd70"></a>
 static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">WHAT</a> = 32</td></tr>
 <tr class="memdesc:a1884541cc245c9e95976459d1694dd70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata group <code>/what</code> , at any depth. <br /></td></tr>
@@ -275,6 +267,10 @@ static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55
 <tr class="memitem:a8428084bc8fde4557384f57f73fe3176"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a8428084bc8fde4557384f57f73fe3176">OTHER</a> = 1024</td></tr>
 <tr class="memdesc:a8428084bc8fde4557384f57f73fe3176"><td class="mdescLeft">&#160;</td><td class="mdescRight">User defined group, name stored as a separate string. The string may still contain numbers, but no indices will be extracted.  <a href="classrack_1_1ODIMPathElem.html#a8428084bc8fde4557384f57f73fe3176">More...</a><br /></td></tr>
 <tr class="separator:a8428084bc8fde4557384f57f73fe3176"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="memItemLeft" align="right" valign="top"><a id="a1bcf55f2343d69451d57df6c51bfe7cc"></a>
+static const <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">group_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">IS_INDEXED</a> = (<a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">DATASET</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">DATA</a> | <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">QUALITY</a> )</td></tr>
+<tr class="memdesc:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group index mask for groups that have an index. <br /></td></tr>
+<tr class="separator:a1bcf55f2343d69451d57df6c51bfe7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -289,23 +285,7 @@ Protected Attributes</h2></td></tr>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></tr>
 <tr class="separator:a5d55e2558544e2ad2ea0b54f8e3d41fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Within each <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> class, each variable should have</p>
-<ol type="1">
-<li>name</li>
-<li>type</li>
-<li>group/name</li>
-<li>dataset/group/name</li>
-</ol>
-<p>The scope for variables is "down to the data array". Ie.</p>
-<p>Common interface:</p>
-<ol type="1">
-<li>operator[](toStr)</li>
-<li>Class specific members:</li>
-<li>native variables (double, long int, std::string)</li>
-</ol>
-<p>Typically used in creating and writing a product. See also: LinearScaling (could be used as base class?) </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a79b6cdd0b4ef339ae7d787f255d066a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79b6cdd0b4ef339ae7d787f255d066a5">&#9670;&nbsp;</a></span>extractPrefix()</h2>
 
@@ -482,38 +462,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></
 </dl>
 <p>Note that path separator is not recognized; instead, it will be assigned as a part of the string.</p>
 <dl class="section return"><dt>Returns</dt><dd>- true if a valid <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> path element was created </dd></dl>
-
-</div>
-</div>
-<a id="a6a6da9a816777c12f788994d17d5a2fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a6da9a816777c12f788994d17d5a2fc">&#9670;&nbsp;</a></span>toStream()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream &amp; toStream </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>sstr</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Writes the name, including the index, to output stream. </p>
-<p>Step 1: prefix (by group type)</p>
-<p>Step 2: index</p>
-
-<p>Reimplemented in <a class="el" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">ODIMPathElemMatcher</a>.</p>
 
 </div>
 </div>

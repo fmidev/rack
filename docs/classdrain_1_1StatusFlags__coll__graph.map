@@ -1,7 +1,7 @@
 <map id="StatusFlags" name="StatusFlags">
 <area shape="rect" id="node1" title=" " alt="" coords="53,547,152,573"/>
 <area shape="rect" id="node2" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="25,456,180,497"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="67,380,138,407"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="67,380,138,407"/>
 <area shape="rect" id="node4" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,291,112,317"/>
 <area shape="rect" id="node5" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="136,291,253,317"/>
 <area shape="rect" id="node6" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="147,157,243,184"/>

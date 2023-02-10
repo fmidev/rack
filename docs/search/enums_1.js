@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scalingmode_3801',['scalingMode',['../classdrain_1_1image_1_1Intensity.html#a5bfd72be6595077d2b4a6d662c08c335',1,'drain::image::Intensity']]]
+  ['prf_3870',['Prf',['../classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5',1,'rack::DataSelector']]]
 ];

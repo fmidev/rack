@@ -93,7 +93,7 @@ $(function() {
 <div class="image">
 <img src="rack-logo-384x192.png" alt=""/>
 </div>
- <div class="fragment"><div class="line">Version 6.81</div>
+ <div class="fragment"><div class="line">Version 7.0</div>
 </div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
@@ -152,90 +152,15 @@ Data remapped with <code>--cCreate</code> , further coloured with <code>--palett
 <h2><a class="anchor" id="selecting"></a>
 Selecting data</h2>
 <p>Selecting data can be done with command <code>&ndash;select</code> .</p>
-<div class="fragment"><div class="line">--select, -s  &lt;selector&gt;  (Section: general)</div>
-<div class="line">  Data selection for the next operation.</div>
-<div class="line">    selector={&quot;path&quot;:&quot;&quot;,&quot;quantity&quot;:&quot;&quot;,&quot;elangle&quot;:[-90,90],&quot;count&quot;:1000,&quot;order&quot;:&quot;DATA:MIN&quot;,&quot;dualPRF&quot;:0} </div>
-</div><!-- fragment --><p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
-<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are positional (ordered), meaning that they can be issued as a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:</p>
-<ul>
-<li><code>path</code> is a string of path elements, separated by slash '/' and consisting of:<ul>
-<li>a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts</li>
-<li><code>what</code> , <code>where</code>, <code>how</code> - ie. the groups containing attributes</li>
-<li><code> dataset{min}:{max} </code>, <code> data{min}:{max}</code> , <code> quality{min}:{max}</code> - indexed groups containing subgroups for actual data and attributes</li>
-<li><code>data</code> - unindexed groups containing actual data arrays</li>
-<li><em>combined</em> <em>selection</em> <em>elements</em> created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)<ul>
-<li>example: <code>what|where|dataset1:3</code></li>
-</ul>
-</li>
-<li>in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:<ul>
-<li><code>data:</code> equals <code>data1:65535</code>; further the colon ':' can be omitted for <code>dataset</code> and <code>quality</code> (but not for <code>data:</code> , to bypass naming conflict inherent in ODIM )</li>
-<li><code>data{index}</code> equals <code> data{index}:{index}</code> (ie. exact match)</li>
-<li><code>data{index}:</code> equals <code> data{index}:65535</code></li>
-<li><code>data:{index}</code> equals <code> data1:{index}</code></li>
-</ul>
-</li>
-<li>in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment<ul>
-<li>example: <code>what|data|quality1:5</code> matches <code>what</code>, <code>data1:5</code> and <code>quality1:5</code></li>
-<li>example: <code>what|where|dataset1:3/what|data1:8</code> &ndash; index ranges <em>can</em> <em>vary</em> on different levels, ie. in slash-separated elements</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>quantity</code> is a regular expression<ul>
-<li>example: <code>^DBZH$</code>, accepting <code>DBZH</code> only</li>
-<li>example: <code>(DBZH|TH)</code> accepts <code>DBZH</code> and <code>TH</code> , but also <code>DBZHC</code> and <code>WIDTH</code> ...</li>
-<li>future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities</li>
-</ul>
-</li>
-<li><code>elangle</code> defines the range of antenna elevations accepted, range limits included<ul>
-<li>unlike with path selectors, <code>elangle={angle}</code> abbreviates <code>elangle={angle}:90</code> (not <code>elangle={angle}:{angle}</code>)</li>
-<li>notice that metadata may contain floating point values like 1.000004723, use <code>count=1</code> to pick a single one within a range</li>
-</ul>
-</li>
-<li><code>count</code> is the upper limit of accepted indices of <code>dataset</code> ; typically used with <code>elangle</code> </li>
-<li><code>order</code> defines criteria <code></code>(DATA|TIME|ELANGLE) and operation <code></code>(MIN|MAX) in selecting data, applied with <code>count</code>. Note that the lowest elevations can be measured the latest, appearing as <code>dataset</code> 's with highest indices.</li>
-<li><code>dualPRF</code> determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).</li>
-</ul>
-<p>The selection functionality is best explained with examples.</p>
-<div class="fragment"><div class="line"><span class="preprocessor"># Index range: select dataset3, including its subgroups. </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select /dataset3 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># Index range: select DATASET groups with index 2...5, including subgroups. </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select /dataset2:5 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># Index range test: select DATASET groups with index 3 at least.</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select /dataset3: -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># Index range test: select DATASET groups with index 3 at largest. </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select /dataset:3 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select paths ENDING with &#39;what&#39;, &#39;where&#39;, or &#39;how&#39;. </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where|how&#39;</span> -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select paths of elevations of at least 6.0 degrees </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=6.0 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select paths of elevations up to 6.0 degrees </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=:6.0 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select &#39;where&#39; groups of 3 lowest elevations from 0.5 degrees upwards </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select where,elangle=0.5:90.0,count=3 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select &#39;what&#39; and &#39;where&#39; groups of elevations from 0.5 to 6.0 degrees</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where,elangle=0.5:6&#39;</span> -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For single-image output, select DBZH  </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=1.5,quantity=DBZH -o volume-DBZH.png</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=^TH$,elangle=1.5:10,count=3&#39;</span> --pCappi 1500 -o pCappi-TH-1500m.h5</div>
-<div class="line"> </div>
-</div><!-- fragment --><p> Note that escaping special characters like '|' is often required on command line.</p>
-<p>Often, the first data array matching the criteria are used.</p>
-<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
-<p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="productspage.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
-<p>Note that some processing commands may not support explicit data selection.</p>
-<h3><a class="anchor" id="selectquantity"></a>
+<div class="fragment"><div class="line">--select, -s  &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;  (Section: general)</div>
+<div class="line">  Data selector for the next computation</div>
+<div class="line">    path= [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
+<div class="line">    quantity= [DBZH|VRAD|RHOHV|...]</div>
+<div class="line">    elangle=-90:90 [min[:max]]</div>
+<div class="line">    count=1000 </div>
+<div class="line">    order=DATA:MIN [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
+<div class="line">    prf=ANY [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
+</div><!-- fragment --><h3><a class="anchor" id="selectquantity"></a>
 Selecting by quantity only</h3>
 <p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' .</p>
 <div class="image">
@@ -371,8 +296,8 @@ Default encoding of quantities</h1>
 </div><!-- fragment --><p>The arguments can be named explicitly, as in the case of <code>&ndash;select</code> and <code>&ndash;encoding</code> . The encoding of a given quantity is displayed if the quantity is issued without type specifier character. A quantity can be also assigned <code>zero</code>, a "virtual" physical small value to be applied instead of <code>undetect</code> marker.</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --quantityConf <span class="stringliteral">&#39;DBZH&#39;</span></div>
 </div><!-- fragment --><p>yelding </p><div class="fragment"><div class="line">DBZH</div>
-<div class="line">  *C,{<span class="stringliteral">&quot;what:type&quot;</span>:<span class="stringliteral">&quot;C&quot;</span>,<span class="stringliteral">&quot;what:gain&quot;</span>:0.5,<span class="stringliteral">&quot;what:offset&quot;</span>:-32,<span class="stringliteral">&quot;what:undetect&quot;</span>:0,<span class="stringliteral">&quot;what:nodata&quot;</span>:255} (min=-31.5)</div>
-<div class="line">   S,{<span class="stringliteral">&quot;what:type&quot;</span>:<span class="stringliteral">&quot;S&quot;</span>,<span class="stringliteral">&quot;what:gain&quot;</span>:0.01,<span class="stringliteral">&quot;what:offset&quot;</span>:-327.68,<span class="stringliteral">&quot;what:undetect&quot;</span>:0,<span class="stringliteral">&quot;what:nodata&quot;</span>:65535} (min=-327.67)</div>
+<div class="line">  *C,<span class="stringliteral">&quot;what:gain&quot;</span>=0.5,<span class="stringliteral">&quot;what:nodata&quot;</span>=255,<span class="stringliteral">&quot;what:offset&quot;</span>=-32,<span class="stringliteral">&quot;what:type&quot;</span>=<span class="stringliteral">&quot;C&quot;</span>,<span class="stringliteral">&quot;what:undetect&quot;</span>=0 (min=-31.5)</div>
+<div class="line">   S,<span class="stringliteral">&quot;what:gain&quot;</span>=0.01,<span class="stringliteral">&quot;what:nodata&quot;</span>=65535,<span class="stringliteral">&quot;what:offset&quot;</span>=-327.68,<span class="stringliteral">&quot;what:type&quot;</span>=<span class="stringliteral">&quot;S&quot;</span>,<span class="stringliteral">&quot;what:undetect&quot;</span>=0 (min=-327.67)</div>
 <div class="line">    <span class="keyword">virtual</span> zero=-32</div>
 </div><!-- fragment --><p> where asterisk <code>*</code> marks the current default storage type and scaling.</p>
 <p>The full list of predefined quantity encodings are listed with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --quantityConf <span class="stringliteral">&#39;&#39;</span></div>
@@ -380,7 +305,7 @@ Default encoding of quantities</h1>
 <dl class="section author"><dt>Author</dt><dd>Markus Peura, Seppo Pulkkinen (HDF5 support), Joonas Karjalainen </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

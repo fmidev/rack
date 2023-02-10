@@ -1,5 +1,5 @@
 <map id="GlobalFlags&lt; T &gt;" name="GlobalFlags&lt; T &gt;">
 <area shape="rect" id="node1" title="Flags using a global dictionary." alt="" coords="5,155,143,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="Bit vector accessible also with integer values associated with strings." alt="" coords="39,80,109,107"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="39,80,109,107"/>
 <area shape="rect" id="node3" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="21,5,127,32"/>
 </map>

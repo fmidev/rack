@@ -144,7 +144,7 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">/*</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">    virtual</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">    void processData(const PlainData&lt;PolarSrc&gt; &amp; srcData, const PlainData&lt;PolarSrc&gt; &amp; srcQuality,</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">    void runDetector(const PlainData&lt;PolarSrc&gt; &amp; srcData, const PlainData&lt;PolarSrc&gt; &amp; srcQuality,</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">            PlainData&lt;PolarDst&gt; &amp; dstData, PlainData&lt;PolarDst&gt; &amp; dstProb) const;</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// virtual void processDataSet(const DataSet&lt;PolarSrc&gt; &amp; src, PlainData&lt;PolarDst&gt; &amp; dst, DataSet&lt;PolarDst&gt; &amp; aux) const;  // DataSetDst &amp; dst) const;</span></div>
@@ -157,13 +157,13 @@ $(function() {
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">// Rack</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <div class="ttc" id="aclassrack_1_1DetectorOp_html"><div class="ttname"><a href="classrack_1_1DetectorOp.html">rack::DetectorOp</a></div><div class="ttdoc">Base class for anomaly detectors.</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:48</div></div>
 <div class="ttc" id="aclassrack_1_1TestOp_html_a74cf41f8380035be3b6f03e505051bd5"><div class="ttname"><a href="classrack_1_1TestOp.html#a74cf41f8380035be3b6f03e505051bd5">rack::TestOp::TestOp</a></div><div class="ttdeci">TestOp(double value=0.0, double prob=1.0)</div><div class="ttdoc">Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob)</div><div class="ttdef"><b>Definition:</b> TestOp.h:55</div></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1087</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1058</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range&lt; int &gt;</a></div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:46</div></div>
-<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:272</div></div>
+<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:270</div></div>
 <div class="ttc" id="aclassrack_1_1TestOp_html"><div class="ttname"><a href="classrack_1_1TestOp.html">rack::TestOp</a></div><div class="ttdef"><b>Definition:</b> TestOp.h:44</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

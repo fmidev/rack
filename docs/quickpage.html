@@ -135,8 +135,6 @@ Anomaly detection and removal</h2>
 <div class="line">  Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.</div>
 <div class="line">--aSun  &lt;beamWidth&gt;,&lt;sensitivity&gt;</div>
 <div class="line">  Draw the sun beam</div>
-<div class="line">--aTest  &lt;value&gt;,&lt;prob&gt;,&lt;i&gt;,&lt;j&gt;</div>
-<div class="line">  Create rectangular fake anomaly (value) and &#39;detect&#39; it with desired probability (prob).</div>
 <div class="line">--aTime  &lt;time&gt;,&lt;decayPast&gt;,&lt;decayFuture&gt;</div>
 <div class="line">  Created quality field based on measurement time for each beam.</div>
 <div class="line">--aUniversal  &lt;unversal&gt;</div>
@@ -155,10 +153,14 @@ Meteorological products</h2>
 <div class="line"> </div>
 <div class="line">--pBeamAltitude  &lt;aboveSeaLevel&gt;</div>
 <div class="line">  Computes the altitude at each bin</div>
+<div class="line">--pBiomet  &lt;reflMax&gt;,&lt;maxAltitude&gt;,&lt;reflDev&gt;,&lt;devAltitude&gt;</div>
+<div class="line">  Detects birds and insects.</div>
 <div class="line">--pBird  &lt;dbzPeak&gt;,&lt;vradDevMin&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
 <div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
 <div class="line">--pCappi  &lt;altitude&gt;,&lt;aboveSeaLevel&gt;,&lt;beamWidth&gt;,&lt;weightMin&gt;,&lt;accumulationMethod&gt;</div>
 <div class="line">  Constant-altitude planar position indicator</div>
+<div class="line">--pClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;file&gt;</div>
+<div class="line">  Reads a ground clutter map and scales it to sweeps.</div>
 <div class="line">--pConv  &lt;maxEchoThreshold&gt;,&lt;cellDiameter&gt;,&lt;echoTopThreshold&gt;,&lt;echoTopDBZ&gt;,&lt;smoothAzm&gt;,&lt;smoothRad&gt;</div>
 <div class="line">  Computes the probability of convection based on fuzzy cell intensity, area and height.</div>
 <div class="line">--pDopplerAvg  &lt;width&gt;,&lt;height&gt;,&lt;threshold&gt;,&lt;compensate&gt;,&lt;relativeScale&gt;</div>

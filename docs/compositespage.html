@@ -110,7 +110,7 @@ Compositing methods</h2>
 <p>In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product (like pseudo CAPPI or echo height) can be computed.</p>
 <h2><a class="anchor" id="cprojections"></a>
 Projections</h2>
-<p>Projection definition command &ndash;cProj uses <b>Proj4</b> syntax. Its also accepts EPSG codes like <code>'+init=epsg:4326'</code> if the local installation of <b>Proj4</b> supports it. Some examples of EPSG codes:</p>
+<p>Projection definition command &ndash;cProj uses <b>Proj4</b> syntax. Its also accepts EPSG codes like <code>'+init=epsg:4326'</code> if the local installation of <b>Proj4</b> supports it. Some examples of EPSG codes and their respective Proj4 definition strings:</p>
 <div class="fragment"><div class="line"><span class="comment">// LAT-LON (no projection)</span></div>
 <div class="line">4326: +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</div>
 <div class="line"> </div>
@@ -263,7 +263,7 @@ Adding lat-lon grid to Cartesian images</h2>
 </div><!-- fragment --><p> The input data &ndash; a Cartesian product &ndash; can be read as a file as in this example or generated from polar data with <code>&ndash;cCreate</code> . </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

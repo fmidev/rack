@@ -104,9 +104,9 @@ Collaboration diagram for CommandBank:</div>
 <area shape="rect" href="classdrain_1_1BankSuper.html" title=" " alt="" coords="519,111,708,138"/>
 <area shape="rect" href="classdrain_1_1Bank.html" title=" " alt="" coords="236,5,401,47"/>
 <area shape="rect" title=" " alt="" coords="5,5,187,47"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="247,71,391,112"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title=" " alt="" coords="239,71,399,112"/>
 <area shape="rect" title=" " alt="" coords="17,71,175,112"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="243,136,394,177"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title=" " alt="" coords="247,136,390,177"/>
 <area shape="rect" title=" " alt="" coords="22,136,170,177"/>
 <area shape="rect" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="559,227,668,254"/>
 <area shape="rect" title=" " alt="" coords="255,202,382,229"/>
@@ -170,9 +170,12 @@ template&lt;class D &gt; </td></tr>
 template&lt;class D , char PREFIX = 0&gt; </td></tr>
 <tr class="memitem:a4331e8a13b4a614322c4b4fb2173e688"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addExternal</b> (const D &amp;entry, const std::string &amp;key, char alias=0)</td></tr>
 <tr class="separator:a4331e8a13b4a614322c4b4fb2173e688"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9160b69dd1b7615002cf47a3dc5aa5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#ae9160b69dd1b7615002cf47a3dc5aa5f">readFile</a> (const std::string &amp;filename, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
-<tr class="memdesc:ae9160b69dd1b7615002cf47a3dc5aa5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Include commands from file, inserting them before iterator.  <a href="classdrain_1_1CommandBank.html#ae9160b69dd1b7615002cf47a3dc5aa5f">More...</a><br /></td></tr>
-<tr class="separator:ae9160b69dd1b7615002cf47a3dc5aa5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc5666ebd1812a1e773d4ddd009e3a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#accc5666ebd1812a1e773d4ddd009e3a1">readFileTXT</a> (const std::string &amp;filename, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
+<tr class="memdesc:accc5666ebd1812a1e773d4ddd009e3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Include commands from file, inserting them before iterator.  <a href="classdrain_1_1CommandBank.html#accc5666ebd1812a1e773d4ddd009e3a1">More...</a><br /></td></tr>
+<tr class="separator:accc5666ebd1812a1e773d4ddd009e3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d30ea0dc8fad979b1949f35d7e5c431"><td class="memItemLeft" align="right" valign="top"><a id="a9d30ea0dc8fad979b1949f35d7e5c431"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>readFile</b> (const std::string &amp;filename, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
+<tr class="separator:a9d30ea0dc8fad979b1949f35d7e5c431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c91999a3155475b553dc86fd821ce81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a3c91999a3155475b553dc86fd821ce81">scriptify</a> (int argc, const char **argv, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
 <tr class="memdesc:a3c91999a3155475b553dc86fd821ce81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert program arguments a script. Like in main(), actual command arguments start from 1.  <a href="classdrain_1_1CommandBank.html#a3c91999a3155475b553dc86fd821ce81">More...</a><br /></td></tr>
 <tr class="separator:a3c91999a3155475b553dc86fd821ce81"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,9 +267,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasAlias</b> (char br
 <tr class="memitem:a8b5ccce390a50cd9c66084b67922e22e inherit pub_methods_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="a8b5ccce390a50cd9c66084b67922e22e"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>getAlias</b> (const std::string &amp;value) const</td></tr>
 <tr class="separator:a8b5ccce390a50cd9c66084b67922e22e inherit pub_methods_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ec67bdb0312fdeed6e6b1f4f264df1 inherit pub_methods_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="a92ec67bdb0312fdeed6e6b1f4f264df1"></a>
-const <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; char, <a class="el" href="classdrain_1_1Bank.html#a6ac57648ea0aa85a63ab67abe97aa4c1">key_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAliases</b> () const</td></tr>
-<tr class="separator:a92ec67bdb0312fdeed6e6b1f4f264df1 inherit pub_methods_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aace0c81134c3fe2201b7d68d2e27c97a inherit pub_methods_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="aace0c81134c3fe2201b7d68d2e27c97a"></a>
+const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; char, <a class="el" href="classdrain_1_1Bank.html#a6ac57648ea0aa85a63ab67abe97aa4c1">key_t</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAliases</b> () const</td></tr>
+<tr class="separator:aace0c81134c3fe2201b7d68d2e27c97a inherit pub_methods_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af03ffe541c68ffd1501a24dacec7dbea inherit pub_methods_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="af03ffe541c68ffd1501a24dacec7dbea"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BankSuper.html#af03ffe541c68ffd1501a24dacec7dbea">resolve</a> (const <a class="el" href="classdrain_1_1Bank.html#a6ac57648ea0aa85a63ab67abe97aa4c1">key_t</a> &amp;value) const</td></tr>
 <tr class="memdesc:af03ffe541c68ffd1501a24dacec7dbea inherit pub_methods_classdrain_1_1BankSuper"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given brief or long key, returns the long key . <br /></td></tr>
@@ -363,14 +366,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:a649e460631f0e524039e98c89886cf53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1BankSuper"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1BankSuper')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1BankSuper.html">BankSuper&lt; Command &gt;</a></td></tr>
 <tr class="memitem:abe33efd2ef2c18d63225135634b44810 inherit pub_attribs_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="abe33efd2ef2c18d63225135634b44810"></a>
-<a class="el" href="classdrain_1_1Dictionary2.html">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sections</b></td></tr>
+<a class="el" href="classdrain_1_1Dictionary.html">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sections</b></td></tr>
 <tr class="separator:abe33efd2ef2c18d63225135634b44810 inherit pub_attribs_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a4e304fae8015d281d7c0d7f43231234a"><td class="memItemLeft" align="right" valign="top"><a id="a4e304fae8015d281d7c0d7f43231234a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a4e304fae8015d281d7c0d7f43231234a">append</a> (const <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
-<tr class="memdesc:a4e304fae8015d281d7c0d7f43231234a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends program with commands fo the script. <br /></td></tr>
+<tr class="memdesc:a4e304fae8015d281d7c0d7f43231234a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends program with commands of the script. <br /></td></tr>
 <tr class="separator:a4e304fae8015d281d7c0d7f43231234a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1Bank"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1Bank')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1Bank.html">Bank&lt; Command, std::string &gt;</a></td></tr>
 <tr class="memitem:a711395fd000d5b91996d79ecd0a383de inherit pro_methods_classdrain_1_1Bank"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Command.html">Command</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Bank.html#a711395fd000d5b91996d79ecd0a383de">set</a> (const std::string &amp;key, <a class="el" href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Command.html">Command</a> &gt; &amp;cloner)</td></tr>
@@ -379,9 +382,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1BankSuper"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BankSuper')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BankSuper.html">BankSuper&lt; Command &gt;</a></td></tr>
-<tr class="memitem:aea29f7c74bcd43d026fd0d4d368c0ac5 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="aea29f7c74bcd43d026fd0d4d368c0ac5"></a>
-<a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; char, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>briefKeys</b></td></tr>
-<tr class="separator:aea29f7c74bcd43d026fd0d4d368c0ac5 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d733426f1144fe26b16e903598d763 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="a90d733426f1144fe26b16e903598d763"></a>
+<a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; char, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>briefKeys</b></td></tr>
+<tr class="separator:a90d733426f1144fe26b16e903598d763 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac30fed21fe991cc8475ce543929f8b72 inherit pro_attribs_classdrain_1_1BankSuper"><td class="memItemLeft" align="right" valign="top"><a id="ac30fed21fe991cc8475ce543929f8b72"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BankSuper.html#ac30fed21fe991cc8475ce543929f8b72">title</a></td></tr>
 <tr class="memdesc:ac30fed21fe991cc8475ce543929f8b72 inherit pro_attribs_classdrain_1_1BankSuper"><td class="mdescLeft">&#160;</td><td class="mdescRight">For example, name of the program, to appear in help dumps etc. <br /></td></tr>
@@ -472,14 +475,14 @@ Utilities for creating scripts and programs</h1>
 
 </div>
 </div>
-<a id="ae9160b69dd1b7615002cf47a3dc5aa5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9160b69dd1b7615002cf47a3dc5aa5f">&#9670;&nbsp;</a></span>readFile()</h2>
+<a id="accc5666ebd1812a1e773d4ddd009e3a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accc5666ebd1812a1e773d4ddd009e3a1">&#9670;&nbsp;</a></span>readFileTXT()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void readFile </td>
+          <td class="memname">void readFileTXT </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
@@ -499,7 +502,7 @@ Utilities for creating scripts and programs</h1>
 </div><div class="memdoc">
 
 <p>Include commands from file, inserting them before iterator. </p>
-<p>A mini program executed after each cmd until ']' or ')' is encountered </p>
+<p>A mini program executed after each cmd until ']' or ')' is encountered Read commands from a text file and insert them into a string. </p>
 
 </div>
 </div>

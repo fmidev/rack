@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
+<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
 <tr class="memdesc:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">More...</a><br /></td></tr>
 <tr class="separator:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -121,8 +121,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa2b8e0aa37cf3197444bf10bfb2043a0"><td class="memItemLeft" align="right" valign="top"><a id="aa2b8e0aa37cf3197444bf10bfb2043a0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a26d75ad7b8adc4e11abe1c8faa28a591">VprDst</a> &gt; &amp;dstData) const</td></tr>
 <tr class="separator:aa2b8e0aa37cf3197444bf10bfb2043a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8596f614fb7c9c489d966b75958e819"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VerticalProfileOp.html#aa8596f614fb7c9c489d966b75958e819">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a26d75ad7b8adc4e11abe1c8faa28a591">VprDst</a> &gt; &amp;dstProduct) const</td></tr>
-<tr class="separator:aa8596f614fb7c9c489d966b75958e819"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7139729883d4b9bba3bce9812cf96054"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VerticalProfileOp.html#a7139729883d4b9bba3bce9812cf96054">computeSingleProduct</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a26d75ad7b8adc4e11abe1c8faa28a591">VprDst</a> &gt; &amp;dstProduct) const</td></tr>
+<tr class="separator:a7139729883d4b9bba3bce9812cf96054"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -134,8 +134,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>interval</b></td></
 <div class="textblock"><p>Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity. </p>
 <p>The resulting image is oriented "naturally", ie. minHeight and maxHeight mapped to the bottom and top rows, respectively. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa8596f614fb7c9c489d966b75958e819"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8596f614fb7c9c489d966b75958e819">&#9670;&nbsp;</a></span>processDataSets()</h2>
+<a id="a7139729883d4b9bba3bce9812cf96054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7139729883d4b9bba3bce9812cf96054">&#9670;&nbsp;</a></span>computeSingleProduct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>interval</b></td></
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void processDataSets </td>
+          <td class="memname">void computeSingleProduct </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>srcSweeps</em>, </td>

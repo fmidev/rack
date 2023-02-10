@@ -104,7 +104,7 @@ Collaboration diagram for ConvOp:</div>
 <area shape="rect" href="classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="193,5,409,47"/>
 <area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="515,78,647,105"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="223,71,379,112"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="225,137,378,163"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="229,137,374,163"/>
 <area shape="rect" title=" " alt="" coords="5,129,144,171"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
+<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
 <tr class="memdesc:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">More...</a><br /></td></tr>
 <tr class="separator:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -155,8 +155,8 @@ const bool&#160;</td><td class="memItemRight" valign="bottom"><b>top</b></td></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a2eebc5179c3af9a444034d4674168cf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ConvOp.html#a2eebc5179c3af9a444034d4674168cf4">processDataSets</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstProduct) const</td></tr>
-<tr class="separator:a2eebc5179c3af9a444034d4674168cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b53bd83486c71ea59f152087c61569d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ConvOp.html#a8b53bd83486c71ea59f152087c61569d">computeSingleProduct</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstProduct) const</td></tr>
+<tr class="separator:a8b53bd83486c71ea59f152087c61569d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a93ffe6cefe38ac0e1480737fe6f8c175 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a93ffe6cefe38ac0e1480737fe6f8c175"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
@@ -281,8 +281,8 @@ Parameters of the convection product.</div></div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2eebc5179c3af9a444034d4674168cf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2eebc5179c3af9a444034d4674168cf4">&#9670;&nbsp;</a></span>processDataSets()</h2>
+<a id="a8b53bd83486c71ea59f152087c61569d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b53bd83486c71ea59f152087c61569d">&#9670;&nbsp;</a></span>computeSingleProduct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,7 +291,7 @@ Parameters of the convection product.</div></div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void processDataSets </td>
+          <td class="memname">void computeSingleProduct </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>srcSweeps</em>, </td>

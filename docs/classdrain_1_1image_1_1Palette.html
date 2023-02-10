@@ -94,15 +94,15 @@ Collaboration diagram for Palette:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1Palette__coll__graph.png" border="0" usemap="#Palette_coll__map" alt="Collaboration graph"/></div>
 <map name="Palette_coll__map" id="Palette_coll__map">
-<area shape="rect" title=" " alt="" coords="895,123,963,149"/>
+<area shape="rect" title=" " alt="" coords="895,129,963,156"/>
 <area shape="rect" href="classdrain_1_1ImageCodeMap.html" title=" " alt="" coords="543,64,777,91"/>
 <area shape="rect" title=" " alt="" coords="231,5,444,32"/>
 <area shape="rect" href="classdrain_1_1LookUp.html" title=" " alt="" coords="245,57,429,98"/>
 <area shape="rect" title=" " alt="" coords="5,57,181,98"/>
-<area shape="rect" href="classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="590,123,730,149"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="256,123,419,149"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="585,174,735,215"/>
-<area shape="rect" title=" " alt="" coords="263,174,411,215"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title=" " alt="" coords="589,122,731,163"/>
+<area shape="rect" title=" " alt="" coords="263,122,411,163"/>
+<area shape="rect" href="classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="590,188,730,215"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="256,188,419,215"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -111,9 +111,9 @@ Public Types</h2></td></tr>
 <tr class="memitem:a550c0674e51a45d86b0bcc8ab049163c"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a></td></tr>
 <tr class="memdesc:a550c0674e51a45d86b0bcc8ab049163c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some kind of identity key for the palette, typically filename to avoid reloading.  <a href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">More...</a><br /></td></tr>
 <tr class="separator:a550c0674e51a45d86b0bcc8ab049163c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77eee4a29d47d3bc4dba721556ee5c03"><td class="memItemLeft" align="right" valign="top"><a id="a77eee4a29d47d3bc4dba721556ee5c03"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary2.html">drain::Dictionary2</a>&lt; key_t, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:a77eee4a29d47d3bc4dba721556ee5c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab99cb634b79d2ceb0a1eb468dc629e4c"><td class="memItemLeft" align="right" valign="top"><a id="ab99cb634b79d2ceb0a1eb468dc629e4c"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:ab99cb634b79d2ceb0a1eb468dc629e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classdrain_1_1ImageCodeMap"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1ImageCodeMap')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap&lt; PaletteEntry &gt;</a></td></tr>
 <tr class="memitem:acc76091aa5be55ccca142b143c4cdbe2 inherit pub_types_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a id="acc76091aa5be55ccca142b143c4cdbe2"></a>
 typedef std::map&lt; double, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>cont_t</b></td></tr>
@@ -154,14 +154,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const std:
 <tr class="memitem:ae73d0ef13ab74e0651c0e67b0662295a"><td class="memItemLeft" align="right" valign="top"><a id="ae73d0ef13ab74e0651c0e67b0662295a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportTXT</b> (std::ostream &amp;ostr, char separator='\t', char separator2=0) const</td></tr>
 <tr class="separator:ae73d0ef13ab74e0651c0e67b0662295a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68690b7f7e3080ce2a04e62c464fa35a"><td class="memItemLeft" align="right" valign="top"><a id="a68690b7f7e3080ce2a04e62c464fa35a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (<a class="el" href="classdrain_1_1JSONtree.html#ae945a25e61b20f8aa1d857925f9a4da5">drain::JSONtree::tree_t</a> &amp;json) const</td></tr>
-<tr class="separator:a68690b7f7e3080ce2a04e62c464fa35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66665cabd17c1a56ed6fafa03317fca6"><td class="memItemLeft" align="right" valign="top"><a id="a66665cabd17c1a56ed6fafa03317fca6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>exportJSON</b> (drain::JSONtree2 &amp;json) const</td></tr>
+<tr class="separator:a66665cabd17c1a56ed6fafa03317fca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1c4daa87c9cf3826bfa87b7f67f4081"><td class="memItemLeft" align="right" valign="top"><a id="ad1c4daa87c9cf3826bfa87b7f67f4081"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportFMT</b> (std::ostream &amp;ostr, const std::string &amp;format) const</td></tr>
 <tr class="separator:ad1c4daa87c9cf3826bfa87b7f67f4081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f526f15c83eacd4f693b6c117aec1cb"><td class="memItemLeft" align="right" valign="top"><a id="a0f526f15c83eacd4f693b6c117aec1cb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a0f526f15c83eacd4f693b6c117aec1cb">exportSVGLegend</a> (<a class="el" href="classdrain_1_1Tree.html">TreeSVG</a> &amp;svg, bool up=true) const</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a0f526f15c83eacd4f693b6c117aec1cb">exportSVGLegend</a> (TreeSVG &amp;svg, bool up=true) const</td></tr>
 <tr class="memdesc:a0f526f15c83eacd4f693b6c117aec1cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a legend as an SVG graphic. <br /></td></tr>
 <tr class="separator:a0f526f15c83eacd4f693b6c117aec1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdbb85879409ae7ba2c710f1d0c82649"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1image_1_1ChannelGeometry.html">ChannelGeometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#acdbb85879409ae7ba2c710f1d0c82649">getChannels</a> () const</td></tr>
@@ -178,6 +178,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>updateDictionary</b> 
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a40b294d8d640ab11ab52b14613fcfd9c">ImageCodeMap</a> ()</td></tr>
 <tr class="memdesc:a40b294d8d640ab11ab52b14613fcfd9c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a40b294d8d640ab11ab52b14613fcfd9c inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1717988ed0209c14bbd0dbb6cd94be8d inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a id="a1717988ed0209c14bbd0dbb6cd94be8d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ImageCodeMap</b> (std::initializer_list&lt; entry_t &gt; l)</td></tr>
+<tr class="separator:a1717988ed0209c14bbd0dbb6cd94be8d inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6e75b9c8da25338e3d9d7b4199ffd4 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="memItemLeft" align="right" valign="top"><a id="a9b6e75b9c8da25338e3d9d7b4199ffd4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ImageCodeMap.html#a9b6e75b9c8da25338e3d9d7b4199ffd4">ImageCodeMap</a> (const cont_t &amp;map)</td></tr>
 <tr class="memdesc:a9b6e75b9c8da25338e3d9d7b4199ffd4 inherit pub_methods_classdrain_1_1ImageCodeMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor //. <br /></td></tr>
@@ -202,7 +205,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>specialCodes</b></td></tr>
 <tr class="separator:ae42338d9abd438b27e5a56d22202d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7665eab93f7f63a944893e7a5238a181"><td class="memItemLeft" align="right" valign="top"><a id="a7665eab93f7f63a944893e7a5238a181"></a>
-<a class="el" href="classdrain_1_1Dictionary2.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a7665eab93f7f63a944893e7a5238a181">dictionary</a></td></tr>
+<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a7665eab93f7f63a944893e7a5238a181">dictionary</a></td></tr>
 <tr class="memdesc:a7665eab93f7f63a944893e7a5238a181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for special codes. <br /></td></tr>
 <tr class="separator:a7665eab93f7f63a944893e7a5238a181"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a035cc4acd17a4350b30ff127f3c09a08"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">refinement</a></td></tr>
@@ -221,10 +224,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae124d51d9d3050b2f6c4a4f3f632cecc"><td class="memItemLeft" align="right" valign="top"><a id="ae124d51d9d3050b2f6c4a4f3f632cecc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> () const</td></tr>
 <tr class="separator:ae124d51d9d3050b2f6c4a4f3f632cecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd73443bbc9e4cabe348fed0206279d8"><td class="memItemLeft" align="right" valign="top"><a id="abd73443bbc9e4cabe348fed0206279d8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#abd73443bbc9e4cabe348fed0206279d8">importJSON</a> (const <a class="el" href="classdrain_1_1JSONtree.html#ae945a25e61b20f8aa1d857925f9a4da5">drain::JSONtree::tree_t</a> &amp;json, int depth)</td></tr>
-<tr class="memdesc:abd73443bbc9e4cabe348fed0206279d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
-<tr class="separator:abd73443bbc9e4cabe348fed0206279d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a8185bb336886166c722fa96d2d2f9"><td class="memItemLeft" align="right" valign="top"><a id="ab4a8185bb336886166c722fa96d2d2f9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html#ab4a8185bb336886166c722fa96d2d2f9">importJSON</a> (const drain::JSONtree2 &amp;json)</td></tr>
+<tr class="memdesc:ab4a8185bb336886166c722fa96d2d2f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a palette from json object. <br /></td></tr>
+<tr class="separator:ab4a8185bb336886166c722fa96d2d2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -277,7 +280,7 @@ Protected Attributes</h2></td></tr>
 <p>Creates a palette from json object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">json</td><td>- JSON structure combining optional <code>metadata</code> and compulsory <code>entries</code> section. </td></tr>
+    <tr><td class="paramname">json</td><td>- <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> structure combining optional <code>metadata</code> and compulsory <code>entries</code> section. </td></tr>
   </table>
   </dd>
 </dl>

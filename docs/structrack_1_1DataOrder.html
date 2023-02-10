@@ -82,11 +82,13 @@ Collaboration diagram for DataOrder:</div>
 <div class="dyncontent">
 <div class="center"><img src="structrack_1_1DataOrder__coll__graph.png" border="0" usemap="#DataOrder_coll__map" alt="Collaboration graph"/></div>
 <map name="DataOrder_coll__map" id="DataOrder_coll__map">
-<area shape="rect" title=" " alt="" coords="100,289,189,316"/>
-<area shape="rect" href="classdrain_1_1Fladdict.html" title=" " alt="" coords="5,200,132,227"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title=" " alt="" coords="69,96,220,137"/>
-<area shape="rect" href="classdrain_1_1Fladdict.html" title=" " alt="" coords="156,200,291,227"/>
-<area shape="rect" title=" " alt="" coords="71,5,219,47"/>
+<area shape="rect" title=" " alt="" coords="749,46,839,73"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="440,5,635,47"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="219,13,391,39"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,13,169,39"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="444,71,631,112"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="223,78,387,105"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="9,78,165,105"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -101,6 +103,12 @@ Public Types</h2></td></tr>
 <b>MAX</b>
  }</td></tr>
 <tr class="separator:a3ac4348b7dd46236700db59232988ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4bf268dd94c0b4b4e66913bc2238225"><td class="memItemLeft" align="right" valign="top"><a id="aa4bf268dd94c0b4b4e66913bc2238225"></a>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Crit &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CritFlagger</b></td></tr>
+<tr class="separator:aa4bf268dd94c0b4b4e66913bc2238225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memItemLeft" align="right" valign="top"><a id="a3257a49d9dfd6a906c929ca60c0b5ec5"></a>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Oper &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OperFlagger</b></td></tr>
+<tr class="separator:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -125,12 +133,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad41c3c3c94312099c3f91a539621391e"><td class="memItemLeft" align="right" valign="top"><a id="ad41c3c3c94312099c3f91a539621391e"></a>
 const char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b> = ':'</td></tr>
 <tr class="separator:ad41c3c3c94312099c3f91a539621391e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fbe7a618e05da903313d4058cd23f94"><td class="memItemLeft" align="right" valign="top"><a id="a7fbe7a618e05da903313d4058cd23f94"></a>
-<a class="el" href="classdrain_1_1Fladdict.html">drain::Fladdict</a>&lt; Crit &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>criterion</b></td></tr>
-<tr class="separator:a7fbe7a618e05da903313d4058cd23f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeccfc488697775d2d6a17377db0afd2"><td class="memItemLeft" align="right" valign="top"><a id="aeeccfc488697775d2d6a17377db0afd2"></a>
-<a class="el" href="classdrain_1_1Fladdict.html">drain::Fladdict</a>&lt; Oper &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>operation</b></td></tr>
-<tr class="separator:aeeccfc488697775d2d6a17377db0afd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395734ea9c4aced9ad86512a643b7970"><td class="memItemLeft" align="right" valign="top"><a id="a395734ea9c4aced9ad86512a643b7970"></a>
+<a class="el" href="classdrain_1_1EnumFlagger.html">CritFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>criterion</b></td></tr>
+<tr class="separator:a395734ea9c4aced9ad86512a643b7970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399036381ad7a47b63c99dbd90878a16"><td class="memItemLeft" align="right" valign="top"><a id="a399036381ad7a47b63c99dbd90878a16"></a>
+<a class="el" href="classdrain_1_1EnumFlagger.html">OperFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operation</b></td></tr>
+<tr class="separator:a399036381ad7a47b63c99dbd90878a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d55e2558544e2ad2ea0b54f8e3d41fc"><td class="memItemLeft" align="right" valign="top"><a id="a5d55e2558544e2ad2ea0b54f8e3d41fc"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></tr>
 <tr class="separator:a5d55e2558544e2ad2ea0b54f8e3d41fc"><td class="memSeparator" colspan="2">&#160;</td></tr>

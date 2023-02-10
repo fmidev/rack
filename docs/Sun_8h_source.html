@@ -119,29 +119,29 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">struct </span>Equatorial {</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structrack_1_1Equatorial.html">   48</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1Equatorial.html">Equatorial</a> {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> RA;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">double</span> dec;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;};</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">struct </span>Geographical {</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="structrack_1_1Geographical.html">   54</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1Geographical.html">Geographical</a> {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">double</span> lat;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> lon;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">struct </span>Horizontal {</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structrack_1_1Horizontal.html">   59</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1Horizontal.html">Horizontal</a> {</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> azm;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">double</span> elev;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">//class Sun : public Geographical, public Equatorial, public Horizontal {</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">class </span>Sun : <span class="keyword">public</span> Horizontal {</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classrack_1_1Sun.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1Sun.html">Sun</a> : <span class="keyword">public</span> <a class="code" href="structrack_1_1Horizontal.html">Horizontal</a> {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    Sun(<span class="keyword">const</span> std::string &amp; datestr = <span class="stringliteral">&quot;197001010000&quot;</span>, <span class="keywordtype">double</span> lon=0.0, <span class="keywordtype">double</span> lat=0.0){</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="classrack_1_1Sun.html">Sun</a>(<span class="keyword">const</span> std::string &amp; datestr = <span class="stringliteral">&quot;197001010000&quot;</span>, <span class="keywordtype">double</span> lon=0.0, <span class="keywordtype">double</span> lat=0.0){</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        setStarTime(datestr);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        setLocation(lon, lat);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    };</div>
@@ -174,7 +174,7 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        Solar_pos(starTime, geo, equ, *<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    Geographical geo;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="structrack_1_1Geographical.html">Geographical</a> geo;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">private</span>:</div>
@@ -182,7 +182,7 @@ $(function() {
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">/* Tähtiaika radiaaneina auringon tuntikulman laskentaa varten */</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">double</span> starTime;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    Equatorial equ;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="structrack_1_1Equatorial.html">Equatorial</a> equ;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">//static double DEG_TO_RAD,RAD_TO_DEG;</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
@@ -215,13 +215,13 @@ $(function() {
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">/* equatoriali coords */</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="comment">//static Equatorial Solar_coords(double JD);</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> Solar_coords(<span class="keywordtype">double</span> JD, Equatorial &amp; equ);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> Solar_coords(<span class="keywordtype">double</span> JD, <a class="code" href="structrack_1_1Equatorial.html">Equatorial</a> &amp; equ);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">/* Horizontal coords without refraction */</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">/* Auringon horisontaalikoordinaatit (ei refraktiota) */</span></div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">static</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="comment">//Horizontal Solar_pos(double Sd0,</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">void</span> Solar_pos(<span class="keywordtype">double</span> Sd0, <span class="keyword">const</span> Geographical &amp; geo, <span class="keyword">const</span> Equatorial &amp; equ, Horizontal &amp; hor);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">void</span> Solar_pos(<span class="keywordtype">double</span> Sd0, <span class="keyword">const</span> <a class="code" href="structrack_1_1Geographical.html">Geographical</a> &amp; geo, <span class="keyword">const</span> <a class="code" href="structrack_1_1Equatorial.html">Equatorial</a> &amp; equ, <a class="code" href="structrack_1_1Horizontal.html">Horizontal</a> &amp; hor);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;};</div>
@@ -232,7 +232,11 @@ $(function() {
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">// Rack</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="astructrack_1_1Geographical_html"><div class="ttname"><a href="structrack_1_1Geographical.html">rack::Geographical</a></div><div class="ttdef"><b>Definition:</b> Sun.h:54</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="astructrack_1_1Equatorial_html"><div class="ttname"><a href="structrack_1_1Equatorial.html">rack::Equatorial</a></div><div class="ttdef"><b>Definition:</b> Sun.h:48</div></div>
+<div class="ttc" id="astructrack_1_1Horizontal_html"><div class="ttname"><a href="structrack_1_1Horizontal.html">rack::Horizontal</a></div><div class="ttdef"><b>Definition:</b> Sun.h:59</div></div>
+<div class="ttc" id="aclassrack_1_1Sun_html"><div class="ttname"><a href="classrack_1_1Sun.html">rack::Sun</a></div><div class="ttdef"><b>Definition:</b> Sun.h:66</div></div>
 <div class="ttc" id="aclassrack_1_1Sun_html_a923a347905801212e72cb0851ae00134"><div class="ttname"><a href="classrack_1_1Sun.html#a923a347905801212e72cb0851ae00134">rack::Sun::getSunPos</a></div><div class="ttdeci">static void getSunPos(const std::string &amp;datestr, double lonDeg, double latDeg, double &amp;azmRad, double &amp;elevRad)</div><div class="ttdoc">Returns the sun azimuth and elevation angle at a given time in a geographical position.</div><div class="ttdef"><b>Definition:</b> Sun.cpp:55</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

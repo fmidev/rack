@@ -84,14 +84,15 @@ Collaboration diagram for CoordinateHandler2D:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1CoordinateHandler2D__coll__graph.png" border="0" usemap="#CoordinateHandler2D_coll__map" alt="Collaboration graph"/></div>
 <map name="CoordinateHandler2D_coll__map" id="CoordinateHandler2D_coll__map">
-<area shape="rect" title=" " alt="" coords="123,304,286,331"/>
+<area shape="rect" title=" " alt="" coords="201,304,363,331"/>
 <area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="5,200,116,227"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="67,103,209,130"/>
 <area shape="rect" href="classdrain_1_1Frame2D.html" title=" " alt="" coords="141,200,269,227"/>
 <area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="293,200,425,227"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="253,96,409,137"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="433,103,587,130"/>
-<area shape="rect" title=" " alt="" coords="441,5,579,47"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="433,103,579,130"/>
+<area shape="rect" title=" " alt="" coords="437,5,575,47"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="450,200,621,227"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -134,8 +135,9 @@ const <a class="el" href="classdrain_1_1Range.html">Range</a>&lt; int &gt; &amp;
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#ac501cd169b5492df5c1d0b170e319d11">setPolicy</a> (const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a> &amp;p)</td></tr>
 <tr class="memdesc:ac501cd169b5492df5c1d0b170e319d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns internal function pointers. <br /></td></tr>
 <tr class="separator:ac501cd169b5492df5c1d0b170e319d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0b609c1ada9f64881dcfd10bda27315"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#ab0b609c1ada9f64881dcfd10bda27315">setPolicy</a> (coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy)</td></tr>
-<tr class="memdesc:ab0b609c1ada9f64881dcfd10bda27315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns internal function pointers.  <a href="classdrain_1_1image_1_1CoordinateHandler2D.html#ab0b609c1ada9f64881dcfd10bda27315">More...</a><br /></td></tr>
+<tr class="memitem:ab0b609c1ada9f64881dcfd10bda27315"><td class="memItemLeft" align="right" valign="top"><a id="ab0b609c1ada9f64881dcfd10bda27315"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#ab0b609c1ada9f64881dcfd10bda27315">setPolicy</a> (coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy)</td></tr>
+<tr class="memdesc:ab0b609c1ada9f64881dcfd10bda27315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns internal function pointers. <br /></td></tr>
 <tr class="separator:ab0b609c1ada9f64881dcfd10bda27315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b713fb26b598fd76d04a90852b8be64"><td class="memItemLeft" align="right" valign="top"><a id="a6b713fb26b598fd76d04a90852b8be64"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#a6b713fb26b598fd76d04a90852b8be64">setPolicy</a> (coord_pol_t p)</td></tr>
@@ -171,23 +173,25 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a9f8d7f3cc474a45a8588adae20503113"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1FlaggerBase.html">drain::FlaggerBase</a>&lt; size_t &gt;::dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a9f8d7f3cc474a45a8588adae20503113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96c60822dab722c3780c5332b1775b31"><td class="memItemLeft" align="right" valign="top"><a id="a96c60822dab722c3780c5332b1775b31"></a>
 static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>UNCHANGED</b> = 0</td></tr>
 <tr class="separator:a96c60822dab722c3780c5332b1775b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f5b77b36cdff260655e7b58807d9838"><td class="memItemLeft" align="right" valign="top"><a id="a9f5b77b36cdff260655e7b58807d9838"></a>
-static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>X_OVERFLOW</b> = <a class="el" href="classdrain_1_1GlobalFlags.html#a9c0458e55d88ef01abbfd12df0e9703d">coord_overflow_flagger_t::add</a>(&quot;X_OVERFLOW&quot;)</td></tr>
+static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>X_OVERFLOW</b> = 1</td></tr>
 <tr class="separator:a9f5b77b36cdff260655e7b58807d9838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f5f10a8830e66ad4fa6a26601218d4"><td class="memItemLeft" align="right" valign="top"><a id="a32f5f10a8830e66ad4fa6a26601218d4"></a>
-static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>X_UNDERFLOW</b> = <a class="el" href="classdrain_1_1GlobalFlags.html#a9c0458e55d88ef01abbfd12df0e9703d">coord_overflow_flagger_t::add</a>(&quot;X_UNDERFLOW&quot;)</td></tr>
+static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>X_UNDERFLOW</b> = 2</td></tr>
 <tr class="separator:a32f5f10a8830e66ad4fa6a26601218d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46bfdd627008428345642003a7e88ed"><td class="memItemLeft" align="right" valign="top"><a id="aa46bfdd627008428345642003a7e88ed"></a>
-static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y_OVERFLOW</b> = <a class="el" href="classdrain_1_1GlobalFlags.html#a9c0458e55d88ef01abbfd12df0e9703d">coord_overflow_flagger_t::add</a>(&quot;Y_OVERFLOW&quot;)</td></tr>
+static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y_OVERFLOW</b> = 4</td></tr>
 <tr class="separator:aa46bfdd627008428345642003a7e88ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42220321ad653c1c0c126e9547bd2144"><td class="memItemLeft" align="right" valign="top"><a id="a42220321ad653c1c0c126e9547bd2144"></a>
-static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y_UNDERFLOW</b> = <a class="el" href="classdrain_1_1GlobalFlags.html#a9c0458e55d88ef01abbfd12df0e9703d">coord_overflow_flagger_t::add</a>(&quot;Y_UNDERFLOW&quot;)</td></tr>
+static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y_UNDERFLOW</b> = 8</td></tr>
 <tr class="separator:a42220321ad653c1c0c126e9547bd2144"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20a4071c27825eba8510b79483c091cc"><td class="memItemLeft" align="right" valign="top"><a id="a20a4071c27825eba8510b79483c091cc"></a>
-static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#a20a4071c27825eba8510b79483c091cc">IRREVERSIBLE</a> =<a class="el" href="classdrain_1_1GlobalFlags.html#a9c0458e55d88ef01abbfd12df0e9703d">coord_overflow_flagger_t::add</a>(&quot;IRREVERSIBLE&quot;)</td></tr>
+static const coord_overflow_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html#a20a4071c27825eba8510b79483c091cc">IRREVERSIBLE</a> = 128</td></tr>
 <tr class="memdesc:a20a4071c27825eba8510b79483c091cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equal move in inverse direction would not result original position. <br /></td></tr>
 <tr class="separator:a20a4071c27825eba8510b79483c091cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -429,47 +433,34 @@ coord_overflow_t(CoordinateHandler2D::*&#160;</td><td class="memItemRight" valig
 
 </div>
 </div>
-<a id="ab0b609c1ada9f64881dcfd10bda27315"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0b609c1ada9f64881dcfd10bda27315">&#9670;&nbsp;</a></span>setPolicy()</h2>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9f8d7f3cc474a45a8588adae20503113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f8d7f3cc474a45a8588adae20503113">&#9670;&nbsp;</a></span>dict</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setPolicy </td>
-          <td>(</td>
-          <td class="paramtype">coord_pol_t&#160;</td>
-          <td class="paramname"><em>xUnderFlowPolicy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">coord_pol_t&#160;</td>
-          <td class="paramname"><em>yUnderFlowPolicy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">coord_pol_t&#160;</td>
-          <td class="paramname"><em>xOverFlowPolicy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">coord_pol_t&#160;</td>
-          <td class="paramname"><em>yOverFlowPolicy</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">const <a class="el" href="classdrain_1_1Dictionary.html">drain::FlaggerDict</a> dict</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-
-<p>Assigns internal function pointers. </p>
-<p>Sets outer upper limits for x and y. </p>
-
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        {<span class="stringliteral">&quot;X_OVERFLOW&quot;</span>,  X_OVERFLOW},</div>
+<div class="line">        {<span class="stringliteral">&quot;X_UNDERFLOW&quot;</span>, X_UNDERFLOW},</div>
+<div class="line">        {<span class="stringliteral">&quot;Y_OVERFLOW&quot;</span>,  Y_OVERFLOW},</div>
+<div class="line">        {<span class="stringliteral">&quot;Y_UNDERFLOW&quot;</span>, Y_UNDERFLOW},</div>
+<div class="line">        {<span class="stringliteral">&quot;IRREVERSIBLE&quot;</span>, <a class="code" href="classdrain_1_1image_1_1CoordinateHandler2D.html#a20a4071c27825eba8510b79483c091cc">IRREVERSIBLE</a>}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -477,6 +468,7 @@ coord_overflow_t(CoordinateHandler2D::*&#160;</td><td class="memItemRight" valig
 <li>drain/image/CoordinateHandler.cpp</li>
 </ul>
 </div><!-- contents -->
+<div class="ttc" id="aclassdrain_1_1image_1_1CoordinateHandler2D_html_a20a4071c27825eba8510b79483c091cc"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinateHandler2D.html#a20a4071c27825eba8510b79483c091cc">drain::image::CoordinateHandler2D::IRREVERSIBLE</a></div><div class="ttdeci">static const coord_overflow_t IRREVERSIBLE</div><div class="ttdoc">Equal move in inverse direction would not result original position.</div><div class="ttdef"><b>Definition:</b> CoordinateHandler.h:73</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

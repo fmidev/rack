@@ -90,8 +90,8 @@ Inheritance diagram for GapFillOp:</div>
 <area shape="rect" title="A simple gap filler based on distance transformation." alt="" coords="71,543,155,569"/>
 <area shape="rect" href="classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="55,468,171,495"/>
 <area shape="rect" href="classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="64,393,163,420"/>
-<area shape="rect" href="classrack_1_1AndreOp.html" title="The base class for removal operators." alt="" coords="74,319,153,345"/>
-<area shape="rect" href="classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors." alt="" coords="38,244,189,271"/>
+<area shape="rect" href="classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="74,319,153,345"/>
+<area shape="rect" href="classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="38,244,189,271"/>
 <area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="52,169,175,196"/>
 <area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="19,95,208,121"/>
 <area shape="rect" href="classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="5,5,221,47"/>
@@ -105,14 +105,14 @@ Collaboration diagram for GapFillOp:</div>
 <area shape="rect" title="A simple gap filler based on distance transformation." alt="" coords="1652,53,1736,79"/>
 <area shape="rect" href="classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="1487,53,1603,79"/>
 <area shape="rect" href="classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="1339,53,1437,79"/>
-<area shape="rect" href="classrack_1_1AndreOp.html" title="The base class for removal operators." alt="" coords="1211,53,1289,79"/>
-<area shape="rect" href="classrack_1_1VolumeTraversalOp.html" title="Base class for radar data processors." alt="" coords="1011,53,1161,79"/>
+<area shape="rect" href="classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="1211,53,1289,79"/>
+<area shape="rect" href="classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="1011,53,1161,79"/>
 <area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="839,53,961,79"/>
 <area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="487,21,676,47"/>
 <area shape="rect" href="classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="193,5,409,47"/>
 <area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="515,78,647,105"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="223,71,379,112"/>
-<area shape="rect" href="classdrain_1_1Dictionary2.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="225,137,378,163"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="229,137,374,163"/>
 <area shape="rect" title=" " alt="" coords="5,129,144,171"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -134,9 +134,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3cb5cd7aa5118402c16ba3607b691fbc inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top"><a id="a3cb5cd7aa5118402c16ba3607b691fbc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeTraversalOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a3cb5cd7aa5118402c16ba3607b691fbc inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;src, <a class="el" href="classdrain_1_1Tree.html">Hi5Tree</a> &amp;dst) const</td></tr>
-<tr class="memdesc:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBase.html">Base</a> class for radar data processors.  <a href="classrack_1_1VolumeTraversalOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">More...</a><br /></td></tr>
-<tr class="separator:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9689400b89e9acd77107a36734c34952 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#a9689400b89e9acd77107a36734c34952">traverseVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
+<tr class="memdesc:a9689400b89e9acd77107a36734c34952 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classBase.html">Base</a> class for radar data processors.  <a href="classrack_1_1VolumeTraversalOp.html#a9689400b89e9acd77107a36734c34952">More...</a><br /></td></tr>
+<tr class="separator:a9689400b89e9acd77107a36734c34952 inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad58894855eaed6432d64f7ad5a4c071a inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ad58894855eaed6432d64f7ad5a4c071a">computeProducts</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcVolume, <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstVolume) const</td></tr>
+<tr class="separator:ad58894855eaed6432d64f7ad5a4c071a inherit pub_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a70cee512e9ca4028df8cc01032137669 inherit pub_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a70cee512e9ca4028df8cc01032137669"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -148,6 +150,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
+<tr class="memdesc:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">More...</a><br /></td></tr>
+<tr class="separator:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -166,13 +171,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:af8be2d531609fdae4bbcde57bc77ca0f inherit pro_methods_classrack_1_1RemoverOp"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RemoverOp.html#af8be2d531609fdae4bbcde57bc77ca0f">RemoverOp</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
 <tr class="separator:af8be2d531609fdae4bbcde57bc77ca0f inherit pro_methods_classrack_1_1RemoverOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1AndreOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1AndreOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1AndreOp.html">AndreOp</a></td></tr>
+<tr class="memitem:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AndreOp.html#a9c8e6c369e8b686f1dbcbd0bc72b5d51">AndreOp</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
+<tr class="memdesc:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generally, the whole data structure can be traversed.  <a href="classrack_1_1AndreOp.html#a9c8e6c369e8b686f1dbcbd0bc72b5d51">More...</a><br /></td></tr>
+<tr class="separator:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4fad069cd8f280261fc9e3de91b1cf0 inherit pro_methods_classrack_1_1AndreOp"><td class="memItemLeft" align="right" valign="top"><a id="ad4fad069cd8f280261fc9e3de91b1cf0"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
 <tr class="separator:ad4fad069cd8f280261fc9e3de91b1cf0 inherit pro_methods_classrack_1_1AndreOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="memItemLeft" align="right" valign="top"><a id="a9c8e6c369e8b686f1dbcbd0bc72b5d51"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AndreOp.html#a9c8e6c369e8b686f1dbcbd0bc72b5d51">AndreOp</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
-<tr class="memdesc:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for derived classes. <br /></td></tr>
-<tr class="separator:a9c8e6c369e8b686f1dbcbd0bc72b5d51 inherit pro_methods_classrack_1_1AndreOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classrack_1_1VolumeTraversalOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1VolumeTraversalOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1VolumeTraversalOp.html">VolumeTraversalOp</a></td></tr>
+<tr class="memitem:ad5e14cdbd3939b5ab3a24caf7fbddcb9 inherit pro_methods_classrack_1_1VolumeTraversalOp"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeTraversalOp.html#ad5e14cdbd3939b5ab3a24caf7fbddcb9">collect</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
+<tr class="separator:ad5e14cdbd3939b5ab3a24caf7fbddcb9 inherit pro_methods_classrack_1_1VolumeTraversalOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a93ffe6cefe38ac0e1480737fe6f8c175 inherit pro_methods_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a93ffe6cefe38ac0e1480737fe6f8c175"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>

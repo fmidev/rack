@@ -83,9 +83,8 @@ Inheritance diagram for PaletteEntry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1PaletteEntry__inherit__graph.png" border="0" usemap="#PaletteEntry_inherit__map" alt="Inheritance graph"/></div>
 <map name="PaletteEntry_inherit__map" id="PaletteEntry_inherit__map">
-<area shape="rect" title=" " alt="" coords="63,80,165,107"/>
-<area shape="rect" href="classdrain_1_1LegendEntry.html" title=" " alt="" coords="5,5,108,32"/>
-<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="132,5,213,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,108,107"/>
+<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="16,5,97,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -93,13 +92,12 @@ Collaboration diagram for PaletteEntry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1PaletteEntry__coll__graph.png" border="0" usemap="#PaletteEntry_coll__map" alt="Collaboration graph"/></div>
 <map name="PaletteEntry_coll__map" id="PaletteEntry_coll__map">
-<area shape="rect" title=" " alt="" coords="121,336,224,363"/>
-<area shape="rect" href="classdrain_1_1LegendEntry.html" title=" " alt="" coords="5,247,108,273"/>
-<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="132,247,213,273"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="115,157,231,184"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="77,81,268,108"/>
-<area shape="rect" title=" " alt="" coords="60,5,285,32"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="237,247,409,273"/>
+<area shape="rect" title=" " alt="" coords="179,336,281,363"/>
+<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="77,247,159,273"/>
+<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
+<area shape="rect" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="183,247,355,273"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -185,6 +183,9 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a1dd28f5ea7b5b0780013e960944ddaa0"><td class="memItemLeft" align="right" valign="top"><a id="a1dd28f5ea7b5b0780013e960944ddaa0"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>label</b></td></tr>
+<tr class="separator:a1dd28f5ea7b5b0780013e960944ddaa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee90379adb0307effb138f4871edbc5c"><td class="memItemLeft" align="right" valign="top"><a id="aee90379adb0307effb138f4871edbc5c"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aee90379adb0307effb138f4871edbc5c">value</a></td></tr>
 <tr class="memdesc:aee90379adb0307effb138f4871edbc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index or threshold value. Must be signed, as images may generally have negative values. <br /></td></tr>
@@ -198,15 +199,11 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="separator:ae2d28b585b5fcf3544f3769c51ed121b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd0d68c6d31ff249f3ae8662162663c3"><td class="memItemLeft" align="right" valign="top"><a id="afd0d68c6d31ff249f3ae8662162663c3"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#afd0d68c6d31ff249f3ae8662162663c3">id</a></td></tr>
-<tr class="memdesc:afd0d68c6d31ff249f3ae8662162663c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique label (latent) <br /></td></tr>
+<tr class="memdesc:afd0d68c6d31ff249f3ae8662162663c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique label (latent/invisible? for undetected/nodata) <br /></td></tr>
 <tr class="separator:afd0d68c6d31ff249f3ae8662162663c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aefc4965852492e2f02de00f05e6698"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4aefc4965852492e2f02de00f05e6698">hidden</a></td></tr>
 <tr class="memdesc:a4aefc4965852492e2f02de00f05e6698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description appearing in legends.  <a href="classdrain_1_1image_1_1PaletteEntry.html#a4aefc4965852492e2f02de00f05e6698">More...</a><br /></td></tr>
 <tr class="separator:a4aefc4965852492e2f02de00f05e6698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_classdrain_1_1LegendEntry"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1LegendEntry')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1LegendEntry.html">LegendEntry</a></td></tr>
-<tr class="memitem:a1dd28f5ea7b5b0780013e960944ddaa0 inherit pub_attribs_classdrain_1_1LegendEntry"><td class="memItemLeft" align="right" valign="top"><a id="a1dd28f5ea7b5b0780013e960944ddaa0"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>label</b></td></tr>
-<tr class="separator:a1dd28f5ea7b5b0780013e960944ddaa0 inherit pub_attribs_classdrain_1_1LegendEntry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>

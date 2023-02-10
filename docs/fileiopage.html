@@ -187,11 +187,15 @@ Remarks on GeoTIFF images</h2>
 <li>support of geodetic data is minimal; use utilities like <code>gdalinfo</code> to check output</li>
 <li>some projections (e.g. <code>epsg:3844</code>, <code>epsg:3035</code>, and <code>epsg:3995</code>) raise errors – see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> for details.</li>
 <li>tiling is supported</li>
-<li>producing 16-bit output having width not multiple of tile width causes errors, for unknown reasons</li>
+<li>some image viewing programs (ex. ImageMagick's <code>display</code> ) produce rendering errors of <em>16-bit</em> images having width not multiple of tile width</li>
 </ul>
+ <div class="image">
+<img src="composite-geotiff-error.png" alt=""/>
+<div class="caption">
+Correctly (8-bit) and incorrectly (16-bit) rendered images.</div></div>
 <div class="fragment"><div class="line">--geoTiff  &lt;tile&gt;,&lt;compression&gt;  (Section: general,images)</div>
 <div class="line">  GeoTIFF tile size. Deprecating?, use --outputConf tif:&lt;width&gt;,&lt;height&gt;</div>
-<div class="line">    tile=256:0 </div>
+<div class="line">    tile=256:256 </div>
 <div class="line">    compression= [{{&quot;NONE&quot;,1},{&quot;LZW&quot;,5},{&quot;DEFLATE&quot;,32946},{&quot;PACKBITS&quot;,32773}}]</div>
 </div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
@@ -319,7 +323,7 @@ Reading and combining quality data</h1>
 </div><!-- fragment --><p>Just like after running several <em>detection</em> processes, after reading files containing detection fields, global ie. elevation-specific quality data (<code>QIND</code> and <code>CLASS</code> ) are not implictly combined to local ie. quantity-specific quality data. As explained in detection , this combination takes place automatically if any removal command or <code>&ndash;c</code> &ndash;aQualityCombiner command is issued. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.cpp:46</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
