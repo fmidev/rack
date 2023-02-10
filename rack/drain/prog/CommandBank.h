@@ -113,7 +113,9 @@ public:
 	/**
 	 *
 	 */
-	void readFile(const std::string & filename, Script & script) const;
+	void readFileTXT(const std::string & filename, Script & script) const;
+
+	void readFile(const std::string & filename, Program & prog) const;
 
 	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.
 	/**

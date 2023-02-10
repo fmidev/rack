@@ -165,10 +165,14 @@ public:
 	 */
 	inline
 	size_t empty() const {
-		if (!isStlString())
-			return (getElementCount() == 0);
-		else
+		if (isStlString()){
+			// Use native std::string::empty()
 			return ((const std::string *)caster.ptr)->empty();
+		}
+		else {
+			// consider assert type == void ?
+			return (getElementCount() == 0);
+		}
 	}
 
 	/// Set or unset filling (padding) an array if input set is smaller

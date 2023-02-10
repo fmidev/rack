@@ -4,10 +4,12 @@
 
 \tableofcontents
 
-\section scripts Scripts
+\section scripts Defining scripts
 
-\b Rack support defining command sequences -- scripts -- that can be invoked repeatedly within one command line.
-The script is then executed automatically for \e each \e input:
+In operational radar product generation, a frequent need is to repeat a routine to several inputs, say tens or even hundreds of input volumes.  
+\b Rack supports defining such routines as \e scripts that can be invoked repeatedly using a single command line.
+A script is command sequence that is then executed automatically for \e each \e input:
+
 
 \code
 rack --script '<cnd> <cmd2> ...'  <file> <file2> <file3> ...
@@ -16,8 +18,6 @@ rack --script '<cnd> <cmd2> ...'  <file> <file2> <file3> ...
 So,  \c --inputFile <file> command – or simply \c <file> – implicitly triggers the script. 
 
 One can also invoke the script explicitly with \c --execScript command. 
-
-
 Defining a script also turns on \e variable \e expansion -- see also examples in \ref templates . 
 
 \subsection script_sites Example: product generation for each volume.
@@ -38,20 +38,55 @@ Supported variable values can be listed with \c --status command.
 By default, unless \c --append data was used, the resulting meteorological product is kept in the local context. This means
 that data from several radars can be processed and also stored as parallel processes.
 
-Instead of the command line, one may also execute commands stored in a file as follows:
-\code
-rack <file>  --execFile <cmdFile>   
-\endcode  
-
-Remember that plain filenames are implicit <tt>--inputFile \<file\></tt> commands; hence the file can also be a list of input files.
-Using such a file together with  \c --script yields compact command lines especially in compositing.
 
 Scripting becomes even more powerful when combined with \ref parallelpage .
 
 \~remark
 The functionality is handy for example in running anomaly detection and product generation for a set of files.
 \note The commands that automatically run ie. \em trigger the script can be listed with \c --help \c trigger .
+Actually, one can Instead of the command line, one may also execute commands stored in a file as follows:
 \~
+
+\section embedCommands Inserting commands directly
+
+
+An alternative to predefined scripts is to read commands from a file and insert them directly, equivalently to inserting them among command line arguments.
+
+\subsection embedCommandsTXT Commands as text files
+
+An example illustrates this. Assume that file \c cmdExample.txt contains: 
+
+
+\include cmdExample.txt
+
+Then, consider the following command line:
+\code
+rack volume.h5  --execFile cmdExample.txt -o result.h5   
+\endcode
+As a result, the program will run as if the command in the file had been inserted on command line.
+
+\subsection embedCommandsJSON Commands as JSON files
+
+The latest versions of \c Rack support also JSON files, which are useful in environments involving, say, graphical user interfaces – for example, 
+a user may adjust a single product parameter at a time using dedicated widgets, and the system stores the values in a JSON structure. 
+The above commands are equivalently defined in JSON as follows. 
+\include cmdExample.json
+
+In the above JSON code, layout style varies on purpose; a group can be set on a single line or several lines, with indentation. For \b Rack, parameters can be set as a single element
+(string or number) or as a group, as illustrated. 
+Note that commands that have no parameters must still have a value (empty string \c "" or empty group \c {} ). 
+
+\~exec
+rack volume.h5 --execFile cmdExample.txt  -o cmdExample-check-txt.txt
+rack volume.h5 --execFile cmdExample.json -o cmdExample-check-json.txt
+diff cmdExample-check-txt.txt cmdExample-check-json.txt #exec
+rack volume.h5 --execFile cmdTest.json -o cmdExample-check-json.txt  # crash test
+diff cmdExample-check-txt.txt cmdExample-check-json.txt #exec
+\~
+
+Hint: Remember that plain filenames are implicit <tt>--inputFile \<file\></tt> commands; hence the file can also be a list of input files 
+(in above line format only, so excluding JSON).
+Using such a file together with  \c --script yields compact command lines especially in compositing.
 
 
 

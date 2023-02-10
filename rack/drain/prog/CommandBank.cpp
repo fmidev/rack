@@ -153,7 +153,10 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 			prog.add(entry.first, dummy);
 		}
 		else if (get(entry.first).getName() == execFileCmd){
-			mout.special("handling: ", entry.first, '/', get(entry.first).getName());
+			mout.special("pre-processing execFileCmd: ", entry.first, '/', get(entry.first).getName());
+			readFile(entry.second, prog);
+			mout.experimental(prog);
+			/*
 			FilePath path(entry.second);
 			mout.info("inserting commands from path: ", path);
 			if (path.extension == "json"){
@@ -164,7 +167,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 				drain::JSON::readTree(cmdTree, input);
 				mout.experimental("parsed JSON structure:\n", drain::sprinter(cmdTree));
 				for (const auto & node: cmdTree){
-					mout.warn("inserting: ", node.first); //, node.second.data);
+					mout.debug("inserting: ", node.first); //, node.second.data);
 					command_t & cmd = clone(node.first);
 					cmd.setExternalContext(ctx);
 					//cmd.setParameters(node.second.data)
@@ -180,6 +183,18 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 							cmd.setParameters((const std::string &)node.second.data);
 						}
 					}
+					else {
+						if (node.second.hasChildren()){
+							mout.warn("cmd '", node.first, "' takes no args, but was provided named arg(s): ");
+							for (const auto & subNode: node.second){
+								mout.warn('\t', subNode.first, '=', subNode.second.data);
+								//cmd.setParameter();
+							}
+						}
+						if (!node.second.data.empty()){
+							mout.warn("cmd '", node.first, "' takes no args, but was provided one: ", node.second.data);
+						}
+					}
 
 					//cmd.setParameters(node.second.data); // OK if empty?
 					prog.add(node.first, cmd);
@@ -188,11 +203,15 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 				mout.special("current prog: \n", prog);
 			}
 			else {
+				// TEXT file
+
 				Script subScript;
+				// EMBEDDED
 				readFile(entry.second, subScript);
 				append(subScript, ctx, prog);
-				mout.experimental(prog);
 			}
+			*/
+
 		}
 		else {
 			command_t & cmd = clone(entry.first);
@@ -329,17 +348,75 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 }
 
 
-void CommandBank::readFile(const std::string & filename, Script & script) const {
+void CommandBank::readFile(const std::string & filename, Program & prog) const {
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	FilePath path(filename);
+
+	mout.info("inserting commands from path: ", path);
+
+	drain::Context & ctx = prog.getContext<>();
+
+	if (path.extension != "json"){
+		Script subScript;
+		readFileTXT(filename, subScript);
+		append(subScript, ctx, prog);
+	}
+	else {
+
+		drain::JSONtree2 cmdTree;
+		drain::Input input(filename);
+
+		drain::JSON::readTree(cmdTree, input);
+		mout.experimental("parsed JSON structure:\n", drain::sprinter(cmdTree));
+
+		for (const auto & node: cmdTree){
+			mout.debug("inserting: ", node.first); //, node.second.data);
+			command_t & cmd = clone(node.first);
+			cmd.setExternalContext(ctx);
+			if (cmd.hasArguments()){
+				if (node.second.hasChildren()){
+					for (const auto & subNode: node.second){
+						cmd.setParameter(subNode.first, subNode.second.data);
+					}
+				}
+				else {
+					cmd.setParameters((const std::string &)node.second.data);
+				}
+			}
+			else {
+				if (node.second.hasChildren()){
+					mout.warn("cmd '", node.first, "' takes no args, but was provided named arg(s): ");
+					for (const auto & subNode: node.second){
+						mout.warn('\t', subNode.first, '=', subNode.second.data);
+						//cmd.setParameter();
+					}
+				}
+				if (!node.second.data.empty()){
+					mout.warn("cmd '", node.first, "' takes no args, but was provided one: ", node.second.data);
+				}
+			}
+			prog.add(node.first, cmd);
+		}
+
+	}
+
+
+}
+
+
+void CommandBank::readFileTXT(const std::string & filename, Script & script) const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 
 	drain::Input input(filename);
 
-	mout.deprecating("opening command list: ", filename);
+	mout.note("opening command list: ", filename);
 
 	// mout.note() << "open list: " << filename << mout.endl;
 	if (drain::JSON::fileInfo.checkPath(filename)){
-		mout.error() << "JSON (at least) implemented in direct embedding " << filename << mout.endl;
+		mout.error("Reading: ", filename, ": JSON not supported for SCRIPT read ");
 	}
 	else {
 		// TEXT file
@@ -473,7 +550,9 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// TODO: redesign to resemble --script <cmd...>
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
 			// TODO catch
-			mout.info() << "embedding (inserting commands on-the-fly) from '" << pit->second << "'" << mout;
+			mout.attention("embedding (inserting commands on-the-fly) from '", pit->second, "' (should have been preprocessed?)");
+			mout.error("mislocated: inserting commands on-the-fly, ", pit->second);
+			/*
 			Script script;
 			readFile(pit->second, script);
 			mout.debug() << script << mout.endl;
@@ -488,6 +567,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				prog.insert(itNext, Program::value_type(subCmd.first, &cmd));
 				//run(subCmd.first, subCmd.second, ctx);
 			}
+			*/
 			// Debug: print resulting program that contains embedded commands
 			// mout.warn() << sprinter(prog) << mout;
 		}
