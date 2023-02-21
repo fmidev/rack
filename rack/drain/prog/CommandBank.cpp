@@ -156,64 +156,8 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 			mout.special("pre-processing execFileCmd: ", entry.first, '/', get(entry.first).getName());
 			readFile(entry.second, prog);
 			mout.experimental(prog);
-			/*
-			FilePath path(entry.second);
-			mout.info("inserting commands from path: ", path);
-			if (path.extension == "json"){
-				// mout.unimplemented("JSON logic: empty args become (empty) subtrees, hence 'disappear'");
-				// mout.unimplemented("JSON logic: ordered keyList!");
-				drain::JSONtree2 cmdTree;
-				drain::Input input(entry.second);
-				drain::JSON::readTree(cmdTree, input);
-				mout.experimental("parsed JSON structure:\n", drain::sprinter(cmdTree));
-				for (const auto & node: cmdTree){
-					mout.debug("inserting: ", node.first); //, node.second.data);
-					command_t & cmd = clone(node.first);
-					cmd.setExternalContext(ctx);
-					//cmd.setParameters(node.second.data)
-					if (cmd.hasArguments()){
-						if (node.second.hasChildren()){
-							for (const auto & subNode: node.second){
-								//mout.experimental("sub: ", subNode.first, '=',  subNode.second.data);
-								cmd.setParameter(subNode.first, subNode.second.data);
-							}
-						}
-						else {
-							//mout.experimental("top: ", node.first, '=',  node.second.data);
-							cmd.setParameters((const std::string &)node.second.data);
-						}
-					}
-					else {
-						if (node.second.hasChildren()){
-							mout.warn("cmd '", node.first, "' takes no args, but was provided named arg(s): ");
-							for (const auto & subNode: node.second){
-								mout.warn('\t', subNode.first, '=', subNode.second.data);
-								//cmd.setParameter();
-							}
-						}
-						if (!node.second.data.empty()){
-							mout.warn("cmd '", node.first, "' takes no args, but was provided one: ", node.second.data);
-						}
-					}
-
-					//cmd.setParameters(node.second.data); // OK if empty?
-					prog.add(node.first, cmd);
-				}
-				//scriptify(cmdTree, script);
-				mout.special("current prog: \n", prog);
-			}
-			else {
-				// TEXT file
-
-				Script subScript;
-				// EMBEDDED
-				readFile(entry.second, subScript);
-				append(subScript, ctx, prog);
-			}
-			*/
-
 		}
-		else {
+		else { // default
 			command_t & cmd = clone(entry.first);
 			cmd.setExternalContext(ctx);
 			cmd.setParameters(entry.second);
@@ -290,7 +234,7 @@ void CommandBank::scriptify(const std::string & line, Script & script) const{
 
 bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, Script & script) const {
 
-	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
+	Logger mout(__FUNCTION__, __FILE__); // warning, not initialized
 
 	if (arg.empty()){
 		mout.debug() << "empty arg" <<  mout.endl;
@@ -337,8 +281,13 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 	else if (arg.length() == 1){ // instructions '(', ')' (more in future)
 		script.add(arg);
 	}
-	// Plain argument
+	else if ((arg.at(0) == '[') || (arg.at(arg.size()-1) == ']')){
+		mout.warn("check argument: ", arg);
+		mout.error("parallel processing markers '[' and ']' must separated from other args");
+		return false;
+	}
 	else if (!defaultCmdKey.empty()){
+		// Plain argument
 		script.add(defaultCmdKey, arg);
 	}
 	else {
@@ -473,6 +422,7 @@ Script & getRoutine(Program & prog, Script task){
 }
 */
 
+// MAIN
 void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	// Which log? Perhaps prog first cmd ctx log?
@@ -491,7 +441,9 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 	//Log & log = ctx.log; // 2022/10
 	Logger mout(ctx.log, __FUNCTION__, __FILE__); // Could be thread prefix?
 
-	ctx.SCRIPT_DEFINED = false;
+	mout.debug(ctx.getName());
+
+	//ctx.SCRIPT_DEFINED = false;
 
 	// Iterate commands.
 	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
@@ -526,7 +478,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (cmd.getName() == scriptCmd){ // "--script" by default
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
-			mout.debug() << "'" <<  scriptCmd << "' -> storing routine: '" << pit->second << "'" << mout.endl;
+			mout.debug("'", scriptCmd, "' -> storing routine: '", pit->second, "'");
 			if (INLINE_SCRIPT){
 				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
 			}
