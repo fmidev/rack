@@ -343,13 +343,12 @@ class CmdConvert : public  drain::BasicCommand {
 
 public:
 
-	CmdConvert() :  drain::BasicCommand(__FUNCTION__, "Convert --select'ed data to scaling and markers set by --encoding") {
+	CmdConvert() :  drain::BasicCommand(__FUNCTION__, "Convert --select:ed data to scaling and markers set by --encoding") {
 	};
 
 
 	void exec() const {
 
-		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
@@ -361,10 +360,10 @@ public:
 			convertCurrentH5<PolarODIM>();
 		}
 		else {
-			mout.warn() << " currentHi5 neither Polar nor Cartesian " << mout.endl;
+			mout.warn("currentHi5 neither Polar nor Cartesian ");
 		}
-		ctx.currentImage = NULL;
-		ctx.currentGrayImage = NULL;
+		ctx.currentImage = nullptr;
+		ctx.currentGrayImage = nullptr;
 
 	};
 
@@ -373,16 +372,18 @@ protected:
 	template <class OD>
 	void convertCurrentH5() const {
 
-		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
 
 		DataConversionOp<OD> op;
 		op.setEncodingRequest(ctx.targetEncoding);
 		ctx.targetEncoding.clear();
 
-		// mout.debug() << op.encodingRequest << mout.endl;
+		mout.debug(op.targetEncoding);
 		// mout.warn() << op << mout.endl;
 		op.dataSelector.consumeParameters(ctx.select);
+		mout.debug(op.dataSelector);
 
 		op.processH5(*ctx.currentHi5, *ctx.currentHi5);
 		DataTools::updateInternalAttributes(*ctx.currentHi5);
@@ -1112,10 +1113,17 @@ public:
 
 		if (value.empty()){
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
-			mout.error() << "empty command" << mout.endl;
-			//throw std::runtime_error();
+			mout.error("empty command");
 			return;
 		}
+
+		/*
+		if ((value.at(0) == '[') || (value.at(value.size()-1) == ']')){
+			mout.error("parallel processing markers '[' and ']' must be given as separate args");
+			return;
+		}
+		*/
+
 
 		if (value.at(0) != '/'){
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);

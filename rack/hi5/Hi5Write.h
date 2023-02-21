@@ -142,6 +142,10 @@ public:
 	// deprecated (exclude from save marker)
 	//static char tempPathSuffix;
 
+	static
+	unsigned short compressionLevel;
+
+
 protected:
 
 	///

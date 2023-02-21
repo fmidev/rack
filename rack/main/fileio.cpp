@@ -96,24 +96,31 @@ class CmdOutputConf : public drain::SimpleCommand<std::string> {
 public:
 
 //	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
-	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format specific configurations", "value", "<format>:<key>=value>,conf...") {
-
+	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png) specific configurations", "value", "<format>:<key>=value>,conf...") {
 		/*
 		parameters.separator = ':';
 		parameters.link("format", format, "h5|png|tif");
 		parameters.link("params", params, "<key>=<value>[,<key2>=<value2>,...]");
 		*/
-
 		//gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
 		//gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
+		hdf5Conf.link("compression", hi5::Writer::compressionLevel);
+
+		pngConf.link("compression", drain::image::FilePng::compressionLevel);
+
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple());
 		gtiffConf.link("compression", FileTIFF::defaultCompression, sprinter(FileTIFF::getCompressionDict(),"|").str());
 		gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
+
+
 	};
 
 	CmdOutputConf(const CmdOutputConf & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
 		//parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
+		pngConf.copyStruct(cmd.pngConf,   cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
+
 	}
 
 	std::string format;
@@ -139,11 +146,11 @@ public:
 
 		//mout.warn("Redesigned (setParameters dropped). Check results.");
 
-		mout.note("format: ", format);
-		mout.note("params: ", params);
+		// mout.note("format: ", format);
+		// mout.note("params: ", params);
 
 		if (format.empty()){
-			mout.error("Format (h5,png,tif) not given.");
+			mout.error("no format (h5,png,tif) given");
 			return;
 		}
 
@@ -154,18 +161,34 @@ public:
 
 		mout.note("Current conf [", format, "]");
 
-		if (format == "h5"){
-			mout.unimplemented("(future extension)");
+		//hi5::fileInfo.checkExtension(ext);
+		if (hi5::fileInfo.checkExtension(format)){ // "h5", "hdf", "hdf5"
+			//mout.unimplemented("(future extension)");
+			if (!params.empty())
+				hdf5Conf.setValues(params);
+			else {
+				drain::SprinterBase::toStream(std::cout, hdf5Conf, drain::SprinterBase::cppLayout);
+			}
 		}
-		else if (format == "png"){
-			mout.unimplemented("(future extension)");
+		else if (drain::image::FilePng::fileInfo.checkExtension(format)){
+			if (!params.empty()){
+				pngConf.setValues(params);
+				// could check values, here -1 or 0...9
+			}
+			else {
+				//mout.note("Current conf: ", gtiffConf);
+				drain::SprinterBase::toStream(std::cout, pngConf, drain::SprinterBase::cppLayout);
+			}
 		}
-		else if (format == "tif"){
+		else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
+			mout.unimplemented("(no parameters supported for PPM/PGM )");
+		}
+		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
 			mout.note("keys", gtiffConf.getKeys());
 			if (!params.empty())
 				gtiffConf.setValues(params);
 			else {
-				//mout.note("Current conf: ", gtiffConf);
+				mout.note("Current conf: ", gtiffConf);
 				drain::SprinterBase::toStream(std::cout, gtiffConf, drain::SprinterBase::cppLayout);
 			}
 		}
@@ -176,7 +199,14 @@ public:
 	}
 
 	mutable
+	drain::ReferenceMap hdf5Conf;
+
+	mutable
+	drain::ReferenceMap pngConf;
+
+	mutable
 	drain::ReferenceMap gtiffConf;
+
 
 };
 

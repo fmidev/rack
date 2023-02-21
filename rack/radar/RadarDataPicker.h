@@ -167,7 +167,7 @@ public:
 
 
 	/// Sets image position and calculates corresponding geographical coordinates.
-	inline
+	virtual inline
 	void setPosition(int i, int j) const {
 
 		this->current_i = i;

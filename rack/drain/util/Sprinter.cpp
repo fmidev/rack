@@ -36,6 +36,29 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain
 {
+
+/*
+SimpleLayout & SimpleLayout::setLayout(const char *layout){
+
+	switch (::strlen(layout)){
+	case 2: // ("") =  prefix,suffix
+		set(layout[0], layout[1]);
+		break;
+	case 1: // (")
+		set(layout[0], layout[0]);
+		break;
+	case 0: // NOT A DEFAULT
+		set(0, 0);
+		break;
+	default:
+		throw std::runtime_error("TypeLayout unsupported layout");
+	}
+
+	// std::cout << layout << '(' << ::strlen(layout) << ')' << *this << '\n';
+	return *this;
+}
+*/
+
 TypeLayout & TypeLayout::setLayout(const char *layout){
 
 	switch (::strlen(layout)){
@@ -80,7 +103,7 @@ const SprinterLayout SprinterBase::pythonLayout("[,]", "{,}",  "(,)", "''");
  *   # pairs   as key:value
  *   # strings as "..."
  */
-const SprinterLayout SprinterBase::jsonLayout("[,]", "{,}", ":", "\"\"");
+const SprinterLayout SprinterBase::jsonLayout("[,]", "{,}", ":", "\"\"", "\"\"");
 
 } // namespace drain
 

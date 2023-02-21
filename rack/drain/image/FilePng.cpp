@@ -42,13 +42,29 @@ namespace drain
 namespace image
 {
 
-/// Syntax for recognising image files
-//const drain::RegExp FilePng::fileNameRegExp("^((.*/)?([^/]+))\\.(png)$", REG_EXTENDED | REG_ICASE);
 
+// http://www.libpng.org/
+// zlib.h
+
+/* compression levels */
+/*
+#define Z_NO_COMPRESSION         0
+#define Z_BEST_SPEED             1
+#define Z_BEST_COMPRESSION       9
+#define Z_DEFAULT_COMPRESSION  (-1)
+*/
+
+//Default value for png_set_compression_level(png_ptr, ...);
+#ifdef PNG_1_2_X
+	short int FilePng::compressionLevel = Z_DEFAULT_COMPRESSION;
+#else
+	short int FilePng::compressionLevel = 5; // should be changed -1 = ffff?
+#endif
+
+/// Syntax for recognising image files
 FileInfo FilePng::fileInfo("png");
 
-//FilePng::initFileInfo(getFileInfoRegistry().add(FilePng::fileInfo, "PNG"));
-FileInfo & FilePng::initFileInfo(FilePng::fileInfo);
+FileInfo & FilePng::initFileInfo(FilePng::fileInfo); // ???
 
 
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.
@@ -143,13 +159,16 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	// Optional.
 	/// ? png_set_traverseFrame(png_ptr, 0,PNG_FILTER_HEURISTIC_DEFAULT);
 
-	// Optional
+	/*
 #ifdef PNG_1_2_X
 	png_set_compression_level(png_ptr, Z_DEFAULT_COMPRESSION);
 #else
 	png_set_compression_level(png_ptr, 5);
 #endif
+	*/
 
+	// Currently, only a global variable used.
+	png_set_compression_level(png_ptr, FilePng::compressionLevel);
 
 
 	const int byte_depth = image.getConf().getElementSize(); //sizeof(T);

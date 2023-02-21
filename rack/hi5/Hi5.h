@@ -68,7 +68,7 @@ extern drain::Logger hi5mout;
 //const drain::RegExp fileNameRegExp;
 
 extern
-drain::FileInfo fileInfo;
+const drain::FileInfo fileInfo;
 
 /// Rack's hi5 structure that uses Rack classes (Tree, Data, Image).
 /**

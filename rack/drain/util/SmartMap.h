@@ -223,29 +223,7 @@ public:
 	template <class V,bool STRICT=false> // TODO: true...
 	//void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
 	void importEntry(const std::string & key, const V & value){ //, bool updateOnly = true) { //, unsigned int criticality = LOG_DEBUG){
-
-		// SmartMapTools::setValue<map_t,V,STRICT>(*this, key, value);
-		SmartMapTools::setValue<smap_t,V,STRICT>(*this, key, value);
-    */
-		/* //new
-		iterator rit = this->find(key);
-
-		if (rit != this->end()){
-			rit->second = value;  // ? Castable = Variable  (T &)
-		}
-		else {
-			if (updateOnly){
-				// skip!
-			}
-			else {
-				// This test cannot be here, because VariableMap supports and ReferenceMap rejects assigning new values directly.
-				// Logger mout(__FUNCTION__, __FILE__);
-				// mout.log(criticality) << " No key for "<< key << separator << value << " (new) " << criticality << mout.endl;
-				(*this)[key] = value;  // throws exception in derived classes
-			}
-		}
-		*/
-	//  }
+	*/
 
 	/**
 	 *   \param entries - string containing key=value pairs separated by separator
@@ -340,6 +318,7 @@ public:
 		importEntries<true>(entries, assignmentSymbol, separatorSymbol); //, false); //, LOG_ERR);
 	}
 
+	// status?
 	template <class S>
 	void setValuesSEQ(const S & sequence);
 
@@ -425,10 +404,10 @@ public:
 	}
 
 	/// Write map as a JSON code
-	void toJSON(std::ostream & ostr = std::cout, size_t indent = 0) const;
+	//void toJSON(std::ostream & ostr = std::cout, size_t indent = 0) const;
 
 	/// Write map as a JSON code (array or scalar)
-	void valuesToJSON(std::ostream & ostr = std::cout) const;
+	// void valuesToJSON(std::ostream & ostr = std::cout) const;
 
 	/// Debugging
 	void dump(std::ostream & ostr = std::cout) const;
@@ -624,7 +603,7 @@ std::ostream & SmartMap<T>::toStream(std::ostream & ostr, char equal, char start
 }
  */
 
-
+/*
 template <class T>
 void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 
@@ -738,6 +717,8 @@ void SmartMap<T>::valuesToJSON(std::ostream & ostr) const {
 		ostr << "]";
 
 }
+*/
+
 
 template <class T>
 void SmartMap<T>::dump(std::ostream & ostr) const {

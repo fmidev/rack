@@ -48,6 +48,43 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
+struct SimpleLayout : public UniTuple<char,2>{
+
+	typedef char cstr_t;
+	cstr_t & prefix;
+	cstr_t & suffix;
+
+	inline
+	SimpleLayout():
+		prefix(this->next()), suffix(this->next()){
+	}
+
+	SimpleLayout(cstr_t fix):
+		prefix(this->next()), suffix(this->next()){
+		set(fix, fix);
+	}
+
+	SimpleLayout(cstr_t prefix, cstr_t suffix):
+		prefix(this->next()), suffix(this->next()){
+		set(prefix, suffix);
+	}
+
+	/// Constructor accepting TWO-letter chars: {prefix,suffix}
+	SimpleLayout(const char layout[3]):
+		prefix(this->next()), suffix(this->next()) { //  = "{,}"
+		setLayout(layout);
+	}
+
+	SimpleLayout(const SimpleLayout & layout):
+		prefix(this->next()), suffix(this->next()){
+		this->assign(layout); // NOTE: copying element by element, not involving strings possibly containing null char (premature end-or-read).
+	}
+
+	SimpleLayout & setLayout(const char *layout);
+
+};
+*/
 
 /// Small container for printing style for putting of structured objects (array, maps, pairs).
 /**
@@ -128,25 +165,29 @@ struct SprinterLayout{
 	//char itemSeparator = ',';  // consider as equal sign:  KEY:VALUE
 	TypeLayout arrayChars = TypeLayout("[,]");
 	TypeLayout mapChars = TypeLayout("{,}");
-	TypeLayout pairChars = TypeLayout("(,)");
-	TypeLayout stringChars = TypeLayout('"',0, '"');
+	TypeLayout pairChars = TypeLayout("(,)"); // layout for (key,value), see keyChars
+	TypeLayout stringChars = TypeLayout('"',0,'"'); // TODO: Separate value and sequence layouts?
+	TypeLayout keyChars    = TypeLayout(0,0,0); // given a pair = (key,value), defined how the key is .
+
 	//TypeLayout stringChars = TypeLayout("\"\"");
 	//std::string boolTrue  = "true";
 	//std::string boolFalse = "false";
 	//std::string nullValue = "null";
 
-	SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr){
+	SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr, const char *keyChars=nullptr){
 		this->arrayChars.setLayout(arrayChars);
 		this->mapChars.setLayout(mapChars);
 		this->pairChars.setLayout(pairChars);
 		if (stringChars)
 			this->stringChars.setLayout(stringChars);
+		if (keyChars)
+			this->keyChars.setLayout(keyChars);
+
 	}
 
-	SprinterLayout(const SprinterLayout &layout): arrayChars(layout.arrayChars), mapChars(layout.mapChars), pairChars(layout.pairChars), stringChars(layout.stringChars){
+	SprinterLayout(const SprinterLayout &layout):
+		arrayChars(layout.arrayChars), mapChars(layout.mapChars), pairChars(layout.pairChars), stringChars(layout.stringChars), keyChars(layout.keyChars){
 	}
-	//
-	///SprinterLayout(const TypeLayout & style= (), ){
 
 
 	SprinterLayout(char itemSeparator){ // ','
@@ -165,6 +206,7 @@ std::ostream & operator<<(std::ostream & ostr, const SprinterLayout & layout){
 	ostr << "mapChars:    " << layout.mapChars << '\n';
 	ostr << "pairChars:   " << layout.pairChars << '\n';
 	ostr << "stringChars: " << layout.stringChars << '\n';
+	ostr << "keyChars:    " << layout.keyChars << '\n';
 	return ostr;
 }
 
@@ -239,7 +281,11 @@ public:
 
 		prefixToStream(ostr, layout.pairChars);
 
-		toStream(ostr, x.first, layout);
+		// EXPERIMENTAL
+		prefixToStream(ostr, layout.keyChars);
+		//toStream(ostr, x.first, layout);
+		ostr << x.first;
+		suffixToStream(ostr, layout.keyChars);
 
 		separatorToStream(ostr, layout.pairChars);
 

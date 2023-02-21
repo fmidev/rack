@@ -97,8 +97,12 @@ public:
 
 	static FileInfo fileInfo;
 
+	/// Default compression level for png_set_compression_level(png_ptr, ...);
+	static
+	short int compressionLevel;
+
 protected:
-	static FileInfo & initFileInfo;
+	static FileInfo & initFileInfo;  //???
 
 };
 

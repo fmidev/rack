@@ -219,8 +219,11 @@ Logger::oper Logger::endl;
 
 Logger::Logger(const char *funcName, const std::string & className):
 				message(*this),
-				monitor(getLog()), level(LOG_NOTICE), time(getLog().getMilliseconds()), notif_ptr(NULL),
-				timing(false){
+				timing(false),
+				monitor(getLog()),
+				level(LOG_NOTICE),
+				time(getLog().getMilliseconds()),
+				notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
 	/*
 	if (TIMING){
@@ -231,8 +234,11 @@ Logger::Logger(const char *funcName, const std::string & className):
 
 Logger::Logger(Log &log, const char *funcName, const std::string & className):
 				message(*this),
-				monitor(log), level(LOG_NOTICE), time(log.getMilliseconds()), notif_ptr(NULL),
-				timing(false){
+				timing(false),
+				monitor(log),
+				level(LOG_NOTICE),
+				time(log.getMilliseconds()),
+				notif_ptr(NULL){
 	setPrefix(funcName, className.c_str());
 	/*
 	if (timing){
@@ -247,7 +253,7 @@ Logger::Logger(Log &log, const char *funcName, const std::string & className):
 /*
 Logger & Logger::timestamp(const std::string & label){
 	//initMessage(LOG_DEBUG);
-	//*(this) << "TIME#" << label << Logger::endl;
+	// *(this) << "TIME#" << label << Logger::endl;
 	timing = TIMING;
 	std::cerr << "TIMING:" << MARKER << "<li>" << label << "...<ol>" << '\n';
 	//std::cerr << << label;
@@ -257,7 +263,7 @@ Logger & Logger::timestamp(const std::string & label){
 Logger & Logger::timestamp(){
 	return timestamp(this->prefix);
 	//initMessage(LOG_DEBUG);
-	//*(this) << "TIME# " << time;
+	//  *(this) << "TIME# " << time;
 	// return *this;
 }
 */

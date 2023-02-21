@@ -74,7 +74,7 @@ namespace rack {
  *
  */
 template <class M>
-class DataConversionOp: public ProductOp<M, M> {
+class DataConversionOp: public ProductOp<M,M> {
 
 public:
 
@@ -91,22 +91,22 @@ public:
 		this->allowedEncoding.link("what:undetect", this->odim.undetect = undetect);
 		this->allowedEncoding.link("what:nodata", this->odim.nodata = nodata);
 
+		this->dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+
 	}
 
 	virtual ~DataConversionOp(){};
 
 	/// Ensures data to be in standard type and scaling. Makes a converted copy if needed.
-	//static	const Hi5Tree & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
+	//  static	const Hi5Tree & getNormalizedDataOLD(const DataSet< src_t> & srcDataSet, DataSet<dst_t> & dstDataSet, const std::string & quantity){}:
 
-
+	/// Converts src to dst such that dst applies desired gain, offset, undetect and nodata values.
+	virtual
 	void processH5(const Hi5Tree &src, Hi5Tree &dst) const;
 
 	virtual
-	void processDataSet(const DataSet< src_t> & srcSweep, DataSet<dst_t> & dstProduct) const;
+	void processDataSet(const DataSet<src_t> & srcSweep, DataSet<dst_t> & dstProduct) const;
 
-	/// Converts src to dst such that dst applies desired gain, offset, undetect and nodata values.
-	//inline
-	//void processPlainData(const PlainData< src_t> & src, PlainData<dst_t> & dst) const;
 
 	inline
 	void processImage(const PlainData< src_t> & src, drain::image::Image & dst) const {
@@ -145,7 +145,7 @@ template <class M> //
 PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<src_t> & srcDataSet, DataSet<dst_t> & normDataSet,
 		const std::string & quantity) { // , const PlainData< src_t> & mika
 
-	drain::Logger mout("DataConversionOp<>", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const std::string quantityExt = quantity+"_norm";  // std::string("~") +
 
@@ -190,45 +190,48 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug() << "start" << mout.endl;
 	mout.debug3() << *this << mout.endl;
-	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
+	mout.debug("DataSelector: ", this->dataSelector);
 
-	/// Usually, the operator does not need groups sorted by elevation.
-	mout.debug3() << "collect the applicable paths"  << mout.endl;
+	/// The operator does not need groups sorted by elevation.
 	ODIMPathList dataPaths;
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATA);
 
-	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	mout.special("obtained ", dataPaths.size(), " paths.");
+
 	// Parents are needed because converted data are stored in parallel.
 	std::set<ODIMPathElem> parents;
 
 	const drain::RegExp quantityRegExp(this->dataSelector.quantity);
 
-	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
+	mout.special("quantityRegExp: ", quantityRegExp);
 
-		//mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
-		//mout.debug() << *it << mout.endl;
+	// copy
+	for (ODIMPath & path: dataPaths){
 
-		const ODIMPath & parentPath = *it;
-		//parentPath.pop_back();
-		const ODIMPathElem & parent = parentPath.back();
+		if (path.front().is(ODIMPathElem::ROOT)){
+			// is this needed?
+			path.pop_front();
+		}
+		//const ODIMPathElem & parent = path.back();
+		const ODIMPathElem & parent = path.front();
 
-		mout.debug() << "check " << parent << '<' << *it << mout.endl;
+		mout.special("handling: ", parent, '<', path);
 
 		if (parents.find(parent) == parents.end()){
 			if (parent.getType() != ODIMPathElem::DATASET){
 				mout.note() << "non-dataset group: " << parent << mout.endl;
 			}
-			mout.note() << "append " <<  parent << mout.endl;
+			mout.note("append ", parent);
 			parents.insert(parent);
-			//const
-			DataSet<src_t> srcDataSet(src(parentPath), quantityRegExp);
-			DataSet<dst_t> dstDataSet(dst(parentPath));
+			// DataSet<src_t> srcDataSet(src(path), quantityRegExp);
+			// DataSet<dst_t> dstDataSet(dst(path));
+			DataSet<src_t> srcDataSet(src[parent], quantityRegExp);
+			DataSet<dst_t> dstDataSet(dst[parent]);
 			processDataSet(srcDataSet, dstDataSet);
 		}
 		else {
-			mout.note() << "already exists" << parent << mout.endl;
+			mout.note("already exists: ", parent);
 		}
 
 	}
@@ -241,28 +244,31 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 	std::set<std::string> convertedQuantities;
 
-	const std::string extension("_X");
+	//const std::string extension("_X");
+
+	mout.attention("number of layers: ", srcSweep.size());
 
 	// Traverse quantities
-	for (typename DataSet<src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
+	//for (typename DataSet<src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
+	for (const auto & entry: srcSweep){
 
-		const std::string & quantity = it->first;
+		const std::string & quantity = entry.first;
 
 		if (quantity.empty()){
-			mout.warn() << "empty quantity for data, skipping" << mout.endl;
+			mout.warn("empty quantity for data, skipping");
 			continue;
 		}
 
-		//std::stringstream sstr; //quantity); //+"-tmp");
-		//sstr << "data0." << quantity;
+		// Rescaled quantity, temporary name
+		const std::string quantityTmp =  quantity+'*';
 
-		mout.debug() << "quantity: " << quantity << mout.endl;
+		mout.debug("quantity: ", quantity);
 
-		const Data< src_t> & srcData = it->second;
-		Data<dst_t>       & dstData = dstProduct.getData(quantity + extension); // todo: getNewData
+		const Data< src_t> & srcData = entry.second;
+		Data<dst_t>       & dstData = dstProduct.getData(quantityTmp); // todo: getNewData
 		//dstProduct.getData(quantity).setNoSave(true);
 
-		mout.debug2() << EncodingODIM(this->odim) << mout.endl;
+		mout.debug2(EncodingODIM(this->odim));
 		//mout.toOStr() << "src " << (long int) &(srcData.data) << EncodingODIM(srcData.odim) << mout.endl;
 		//mout.warn() << "dst " << (long int) &(dstData.data) << EncodingODIM(dstData.odim) << mout.endl;
 
@@ -273,12 +279,12 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 		if (IN_PLACE){
 
 			if (ODIM::haveSimilarEncoding(srcData.odim, this->odim)){
-				mout.info() << "already similar encoding, no need to convert" << mout.endl;
+				mout.info("already similar encoding – no need to convert (1)");
 				continue; // to next quantity
 			}
 
-			mout.unimplemented("not implemented");
-			mout.debug() << "in-place" << mout.endl;
+			mout.unimplemented("in-place: not implemented");
+			mout.debug("in-place");
 			//processData(srcData, dstData);
 			//processImage(srcData.odim, srcData.data, dstData.odim, dstData.data);
 			//@ dstData.updateTree();
@@ -286,14 +292,16 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 		}
 		else {
 
-			mout.info() << "using tmp data (in-place computation not possible)" << mout.endl;
+			mout.info("using tmp data – in-place computation not possible");
 
-			convertedQuantities.insert(it->first);
+			// convertedQuantities.insert(entry.first);
 
 			if (ODIM::haveSimilarEncoding(srcData.odim, this->odim)){
-				mout.info() << "already similar encoding, no need to convert" << mout.endl;
+				mout.info("already similar encoding – no need to convert (2)");
 				continue; // to next quantity
 			}
+
+			convertedQuantities.insert(entry.first); // CHECK: was first abovw - ?
 
 			const M srcODIM(srcData.odim); // copy, because src may be modified next
 			dstData.odim.quantity = quantity;
@@ -302,24 +310,24 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			//processData(srcData, dstData2);
 			processImage(srcODIM, srcData.data, dstData.odim, dstData.data);
 
-
-
 		}
 
 	}
 
 	/// SWAP & delete
-	mout.debug3() << "Swap & mark for delete" << mout.endl;
-	for (std::set<std::string>::const_iterator qit = convertedQuantities.begin(); qit != convertedQuantities.end(); ++qit){
+	mout.debug("Swap & mark for deletion: ", drain::sprinter(convertedQuantities));
+	for (const std::string & quantity: convertedQuantities){
 
-		mout.debug() << "Swapping quantity: " << *qit << '/' << extension << mout.endl;
+		const std::string quantityTmp = quantity + '*';
 
-		Data<dst_t> & dstDataOrig = dstProduct.getData(*qit);
-		Data<dst_t> & dstDataConv = dstProduct.getData(*qit + extension);
+		mout.special("Swapping quantity: ", quantity, " <-> ", quantityTmp);
+
+		Data<dst_t> & dstDataOrig = dstProduct.getData(quantity);
+		Data<dst_t> & dstDataConv = dstProduct.getData(quantityTmp);
 
 		dstDataOrig.swap(dstDataConv); // calls updateTree2 (consider what:quantity)
 
-		dstDataConv.odim.quantity = *qit+extension;
+		dstDataConv.odim.quantity = quantityTmp;
 		dstDataConv.setNoSave(true);
 	}
 

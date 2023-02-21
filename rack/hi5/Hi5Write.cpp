@@ -49,6 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace hi5 {
 
+unsigned short Writer::compressionLevel = 6;
 
 void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
@@ -362,7 +363,8 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	if (status < 0)
 		mout.warn() << ": H5Pset_chunk failed, path=" << path << mout.endl;
 
-	status = H5Pset_deflate(pid,6);  // ZLib compression level
+	//status = H5Pset_deflate(pid,6);  // ZLib compression level
+	status = H5Pset_deflate(pid, compressionLevel);  // ZLib compression level
 	if (status < 0)
 		mout.warn() << ": H5Pset_deflate failed, path=" << path << mout.endl;
 
