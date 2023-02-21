@@ -183,7 +183,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	//const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
 
-	const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
+	//const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
+
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;
 	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
@@ -241,8 +242,12 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentHi5 =      & ctx.polarInputHi5;
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
+
 		// TODO: force APPEND / REPLACE?
-		if (ctx.polarInputHi5.empty() || SCRIPT_DEFINED){
+		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){
+			if (ctx.SCRIPT_DEFINED)
+				mout.info("script defined, reseting previous inputs (if exist)");
+				//mout.info("SCRIPT_DEFINED: ", ctx.SCRIPT_DEFINED, " thread:", ctx.getName());
 			ctx.polarInputHi5.swap(srcTmp);
 		}
 		else {
