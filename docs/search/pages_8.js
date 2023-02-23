@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quick_20reference_3889',['Quick reference',['../quickpage.html',1,'']]]
+  ['quick_20reference_3880',['Quick reference',['../quickpage.html',1,'']]]
 ];

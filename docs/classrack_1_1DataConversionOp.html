@@ -116,14 +116,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a231a8a98c95b819d868f2cab552e9ac9"><td class="memItemLeft" align="right" valign="top"><a id="a231a8a98c95b819d868f2cab552e9ac9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataConversionOp</b> (const std::string &amp;type=&quot;C&quot;, double gain=1.0, double offset=0.0, double undetect=0.0, double nodata=255.0, std::string <a class="el" href="classrack_1_1DataConversionOp.html#a38897de0e9d9a487a3186b8b6cd4f864">copyGroupSuffix</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a231a8a98c95b819d868f2cab552e9ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a292f36764891e35659716068deabedb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a292f36764891e35659716068deabedb6">processH5</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
+<tr class="memitem:a292f36764891e35659716068deabedb6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a292f36764891e35659716068deabedb6">processH5</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
 <tr class="memdesc:a292f36764891e35659716068deabedb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensures data to be in standard type and scaling. Makes a converted copy if needed.  <a href="classrack_1_1DataConversionOp.html#a292f36764891e35659716068deabedb6">More...</a><br /></td></tr>
 <tr class="separator:a292f36764891e35659716068deabedb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c147cc9753dc906685f6ac57c5b8132"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a1c147cc9753dc906685f6ac57c5b8132">processDataSet</a> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;srcSweep, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">dst_t</a> &gt; &amp;dstProduct) const</td></tr>
 <tr class="separator:a1c147cc9753dc906685f6ac57c5b8132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89a8ee45f3f3ad2c1a4986797f2fae0a"><td class="memItemLeft" align="right" valign="top"><a id="a89a8ee45f3f3ad2c1a4986797f2fae0a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a89a8ee45f3f3ad2c1a4986797f2fae0a">processImage</a> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;dst) const</td></tr>
-<tr class="memdesc:a89a8ee45f3f3ad2c1a4986797f2fae0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts src to dst such that dst applies desired gain, offset, undetect and nodata values. <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>processImage</b> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="structrack_1_1SrcType.html">src_t</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;dst) const</td></tr>
 <tr class="separator:a89a8ee45f3f3ad2c1a4986797f2fae0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63824e632f2a75fda57219042389a988"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataConversionOp.html#a63824e632f2a75fda57219042389a988">processImage</a> (const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;odimSrc, const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;src, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;odimDst, <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;dst) const</td></tr>
 <tr class="memdesc:a63824e632f2a75fda57219042389a988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts src to dst such that dst applies desired gain, offset, undetect and nodata values.  <a href="classrack_1_1DataConversionOp.html#a63824e632f2a75fda57219042389a988">More...</a><br /></td></tr>
@@ -202,6 +201,9 @@ class rack::DataConversionOp&lt; M &gt;</h3>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void processH5 </td>
@@ -221,10 +223,16 @@ class rack::DataConversionOp&lt; M &gt;</h3>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Ensures data to be in standard type and scaling. Makes a converted copy if needed. </p>
-<p>Usually, the operator does not need groups sorted by elevation.</p>
+<p>Converts src to dst such that dst applies desired gain, offset, undetect and nodata values. </p>
+<p>The operator does not need groups sorted by elevation.</p>
 
 </div>
 </div>

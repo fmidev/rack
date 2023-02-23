@@ -81,7 +81,7 @@ Collaboration diagram for SprinterLayout:</div>
 <div class="dyncontent">
 <div class="center"><img src="structdrain_1_1SprinterLayout__coll__graph.png" border="0" usemap="#SprinterLayout_coll__map" alt="Collaboration graph"/></div>
 <map name="SprinterLayout_coll__map" id="SprinterLayout_coll__map">
-<area shape="rect" title=" " alt="" coords="23,291,140,317"/>
+<area shape="rect" title=" " alt="" coords="23,305,140,332"/>
 <area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,157,129,184"/>
 <area shape="rect" href="structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,81,145,108"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,157,32"/>
@@ -90,15 +90,14 @@ Collaboration diagram for SprinterLayout:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a240ef234275ae75134281cee5cd4bfca"><td class="memItemLeft" align="right" valign="top"><a id="a240ef234275ae75134281cee5cd4bfca"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SprinterLayout</b> (const char *arrayChars=&quot;[,]&quot;, const char *mapChars=&quot;{,}&quot;, const char *pairChars=&quot;(,)&quot;, const char *stringChars=nullptr)</td></tr>
-<tr class="separator:a240ef234275ae75134281cee5cd4bfca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae920f9316f4a08e51c8fe1fd280d928b"><td class="memItemLeft" align="right" valign="top"><a id="ae920f9316f4a08e51c8fe1fd280d928b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SprinterLayout</b> (const char *arrayChars=&quot;[,]&quot;, const char *mapChars=&quot;{,}&quot;, const char *pairChars=&quot;(,)&quot;, const char *stringChars=nullptr, const char *keyChars=nullptr)</td></tr>
+<tr class="separator:ae920f9316f4a08e51c8fe1fd280d928b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5d3c8d4309730e7d1fc3b39530258e3"><td class="memItemLeft" align="right" valign="top"><a id="aa5d3c8d4309730e7d1fc3b39530258e3"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SprinterLayout</b> (const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout)</td></tr>
 <tr class="separator:aa5d3c8d4309730e7d1fc3b39530258e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae08d63df81908527400b3c182ffdda1a"><td class="memItemLeft" align="right" valign="top"><a id="ae08d63df81908527400b3c182ffdda1a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1SprinterLayout.html#ae08d63df81908527400b3c182ffdda1a">SprinterLayout</a> (char itemSeparator)</td></tr>
-<tr class="memdesc:ae08d63df81908527400b3c182ffdda1a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>(const <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a> &amp; style= (), ){. <br /></td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SprinterLayout</b> (char itemSeparator)</td></tr>
 <tr class="separator:ae08d63df81908527400b3c182ffdda1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -113,8 +112,11 @@ Public Attributes</h2></td></tr>
 <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pairChars</b> = <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>(&quot;(,)&quot;)</td></tr>
 <tr class="separator:a819839b98cf0c397debc5c3d76e55d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bb65e3df00b707856baca70d5082171"><td class="memItemLeft" align="right" valign="top"><a id="a4bb65e3df00b707856baca70d5082171"></a>
-<a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>stringChars</b> = <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>('&quot;',0, '&quot;')</td></tr>
+<a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>stringChars</b> = <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>('&quot;',0,'&quot;')</td></tr>
 <tr class="separator:a4bb65e3df00b707856baca70d5082171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623297ffa0d59939151d446d2da6f1ad"><td class="memItemLeft" align="right" valign="top"><a id="a623297ffa0d59939151d446d2da6f1ad"></a>
+<a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>keyChars</b> = <a class="el" href="structdrain_1_1TypeLayout.html">TypeLayout</a>(0,0,0)</td></tr>
+<tr class="separator:a623297ffa0d59939151d446d2da6f1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Sprinter_8h_source.html">Sprinter.h</a></li>

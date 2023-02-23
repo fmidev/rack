@@ -1,27 +1,27 @@
 <map id="CmdImageBox" name="CmdImageBox">
-<area shape="rect" id="node1" title=" " alt="" coords="291,1009,410,1036"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="265,919,436,960"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="250,829,339,856"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="237,725,331,752"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Context.html" title=" " alt="" coords="210,636,283,663"/>
-<area shape="rect" id="node6" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,547,161,573"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,463,196,490"/>
-<area shape="rect" id="node8" title=" " alt="" coords="5,380,213,407"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="188,547,233,573"/>
-<area shape="rect" id="node10" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="257,547,356,573"/>
-<area shape="rect" id="node11" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="224,456,379,497"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="266,380,337,407"/>
-<area shape="rect" id="node13" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="203,291,309,317"/>
-<area shape="rect" id="node14" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="333,291,451,317"/>
+<area shape="rect" id="node1" title=" " alt="" coords="291,1024,410,1051"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="265,933,436,975"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="250,844,339,871"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="237,740,331,767"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Context.html" title=" " alt="" coords="210,651,283,677"/>
+<area shape="rect" id="node6" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,561,161,588"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,478,196,505"/>
+<area shape="rect" id="node8" title=" " alt="" coords="5,395,213,421"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="188,561,233,588"/>
+<area shape="rect" id="node10" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="257,561,356,588"/>
+<area shape="rect" id="node11" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="224,471,379,512"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="266,395,337,421"/>
+<area shape="rect" id="node13" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="203,305,309,332"/>
+<area shape="rect" id="node14" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="333,305,451,332"/>
 <area shape="rect" id="node15" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="344,157,440,184"/>
 <area shape="rect" id="node16" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="328,81,456,108"/>
 <area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="316,5,468,32"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="372,829,460,856"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="371,725,461,752"/>
-<area shape="rect" id="node20" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="375,636,457,663"/>
-<area shape="rect" id="node21" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="411,547,527,573"/>
-<area shape="rect" id="node22" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="403,463,594,490"/>
-<area shape="rect" id="node23" title=" " alt="" coords="386,380,611,407"/>
-<area shape="rect" id="node24" href="$classdrain_1_1Range.html" title=" " alt="" coords="491,725,602,752"/>
-<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="481,636,623,663"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="372,844,460,871"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="371,740,461,767"/>
+<area shape="rect" id="node20" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="375,651,457,677"/>
+<area shape="rect" id="node21" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="411,561,527,588"/>
+<area shape="rect" id="node22" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="403,478,594,505"/>
+<area shape="rect" id="node23" title=" " alt="" coords="386,395,611,421"/>
+<area shape="rect" id="node24" href="$classdrain_1_1Range.html" title=" " alt="" coords="491,740,602,767"/>
+<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="481,651,623,677"/>
 </map>

@@ -93,7 +93,7 @@ $(function() {
 <div class="line"><span class="comment">/*</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">  pikamake.sh drain/examples/ReferenceMap-example.cpp</span></div>
-<div class="line"><span class="comment">  REQUIRE: drain/util/{Caster,Castable,JSONwriter,Sprinter,String,RegExp,Type,Log}.cpp</span></div>
+<div class="line"><span class="comment">  REQUIRE: drain/util/{Caster,Castable,Sprinter,String,RegExp,Type,Log}.cpp</span></div>
 <div class="line"><span class="comment">  g++ -I. drain/examples/ReferenceMap-example.cpp drain/util/{Caster,Castable,JSONwriter,String,RegExp,Type,Log}.cpp -o ReferenceMap-example</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">*/</span></div>
@@ -204,21 +204,21 @@ $(function() {
 <div class="line">    r.link(<span class="stringliteral">&quot;vect&quot;</span>, p.vect); <span class="comment">// what if resize changes address?</span></div>
 <div class="line">    r.link(<span class="stringliteral">&quot;range&quot;</span>,p.range.tuple());</div>
 <div class="line"> </div>
-<div class="line">    r.<a name="a5"></a><a class="code" href="classdrain_1_1SmartMap.html#a6ee6f4170909a5a214dfd44ab218e3ff">toJSON</a>();</div>
+<div class="line">    <span class="comment">//r.toJSON();</span></div>
 <div class="line">    p.vect.resize(257, 5.12);</div>
-<div class="line">    r.<a class="code" href="classdrain_1_1SmartMap.html#a6ee6f4170909a5a214dfd44ab218e3ff">toJSON</a>();</div>
-<div class="line">    r[<span class="stringliteral">&quot;vect&quot;</span>].<a class="code" href="classdrain_1_1SmartMap.html#a6ee6f4170909a5a214dfd44ab218e3ff">toJSON</a>();</div>
+<div class="line">    <span class="comment">//r.toJSON();</span></div>
+<div class="line">    <span class="comment">//r[&quot;vect&quot;].toJSON();</span></div>
 <div class="line">    <span class="comment">//std::cerr &lt;&lt; drain::Type::getTypeChar(r[&quot;i&quot;].getType()) &lt;&lt; std::endl;</span></div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;ReferenceMap rCopy\n&quot;</span>;</div>
 <div class="line">    person pCopy;</div>
 <div class="line">    pCopy.vect.resize(3, 333);</div>
 <div class="line">    <a class="code" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a> rCopy;</div>
-<div class="line">    rCopy.<a name="a6"></a><a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(r, p, pCopy);</div>
-<div class="line">    rCopy.<a class="code" href="classdrain_1_1SmartMap.html#a6ee6f4170909a5a214dfd44ab218e3ff">toJSON</a>();</div>
+<div class="line">    rCopy.<a name="a5"></a><a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(r, p, pCopy);</div>
+<div class="line">    <span class="comment">//rCopy.toJSON();</span></div>
 <div class="line"> </div>
-<div class="line">    <a name="_a7"></a><a class="code" href="classdrain_1_1Referencer.html">drain::Referencer</a> ref;</div>
-<div class="line">    ref.<a name="a8"></a><a class="code" href="classdrain_1_1Referencer.html#afd886d98699e729812393eb58cfde25a">link</a>(p.range.tuple()); <span class="comment">//</span></div>
+<div class="line">    <a name="_a6"></a><a class="code" href="classdrain_1_1Referencer.html">drain::Referencer</a> ref;</div>
+<div class="line">    ref.<a name="a7"></a><a class="code" href="classdrain_1_1Referencer.html#afd886d98699e729812393eb58cfde25a">link</a>(p.range.tuple()); <span class="comment">//</span></div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;ReferenceMap rCopy\n&quot;</span>;</div>
 <div class="line">    std::cout &lt;&lt; ref &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"> </div>
@@ -254,7 +254,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">        record copy;</div>
 <div class="line">        <a class="code" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a> refCopy;</div>
-<div class="line">        refCopy.<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(refOrig, orig, copy, <a name="a9"></a><a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a>);</div>
+<div class="line">        refCopy.<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(refOrig, orig, copy, <a name="a8"></a><a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a>);</div>
 <div class="line">        refCopy[<span class="stringliteral">&quot;outlier&quot;</span>] = 129; <span class="comment">// shared</span></div>
 <div class="line"> </div>
 <div class="line">        std::cout &lt;&lt; copy.s &lt;&lt; <span class="charliteral">&#39;,&#39;</span> &lt;&lt; copy.i &lt;&lt; <span class="charliteral">&#39;,&#39;</span>&lt;&lt; copy.f &lt;&lt; <span class="charliteral">&#39;,&#39;</span>&lt;&lt; copy.flag &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
@@ -268,7 +268,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"> </div>
-<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;keys: &quot;</span> &lt;&lt; r.<a name="a10"></a>getKeys() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;keys: &quot;</span> &lt;&lt; r.<a name="a9"></a>getKeys() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"> </div>
 <div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"> </div>
@@ -297,7 +297,7 @@ $(function() {
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;assign:&quot;</span> &lt;&lt; argv[i] &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">        <span class="keywordflow">try</span> {</div>
 <div class="line">            <span class="keyword">const</span> <span class="keywordtype">char</span> * v = argv[i];</div>
-<div class="line">            r.<a name="a11"></a><a class="code" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">setValues</a>(v);</div>
+<div class="line">            r.<a name="a10"></a><a class="code" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">setValues</a>(v);</div>
 <div class="line">            <span class="comment">// r[&quot;nonexistent&quot;] = 456.789;        // Throws std::exception</span></div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">catch</span> (std::runtime_error &amp; e) {</div>
@@ -309,14 +309,14 @@ $(function() {
 <div class="line">        std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a name="_a12"></a><a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FUNCTION__, __FILE__);</div>
-<div class="line">    drain::getLog().<a name="a13"></a>setVerbosity(i);</div>
-<div class="line">    mout.<a name="a14"></a>debug3() &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.<a name="a15"></a>endl;</div>
-<div class="line">    mout.<a name="a16"></a><a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>() &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
-<div class="line">    mout.<a name="a17"></a><a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
-<div class="line">    mout.<a name="a18"></a>info()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
-<div class="line">    mout.<a name="a19"></a><a class="code" href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">note</a>()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
-<div class="line">    mout.<a name="a20"></a><a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
+<div class="line">    <a name="_a11"></a><a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FUNCTION__, __FILE__);</div>
+<div class="line">    drain::getLog().<a name="a12"></a>setVerbosity(i);</div>
+<div class="line">    mout.<a name="a13"></a>debug3() &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.<a name="a14"></a>endl;</div>
+<div class="line">    mout.<a name="a15"></a><a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>() &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
+<div class="line">    mout.<a name="a16"></a><a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
+<div class="line">    mout.<a name="a17"></a>info()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
+<div class="line">    mout.<a name="a18"></a><a class="code" href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">note</a>()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
+<div class="line">    mout.<a name="a19"></a><a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()   &lt;&lt; <span class="stringliteral">&quot;map: &quot;</span> &lt;&lt; r &lt;&lt; mout.endl;</div>
 <div class="line">    <span class="comment">/*</span></div>
 <div class="line"><span class="comment">    mout.error()  &lt;&lt; &quot;map: &quot; &lt;&lt; r &lt;&lt; mout.endl;</span></div>
 <div class="line"><span class="comment">    mout.fatal()  &lt;&lt; &quot;map: &quot; &lt;&lt; r &lt;&lt; mout.endl;</span></div>
@@ -371,9 +371,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:594</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html_aa5891ba7dc473f6bb0ae6682e15cde69"><div class="ttname"><a href="classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69">drain::Castable::fillArray</a></div><div class="ttdeci">bool fillArray</div><div class="ttdoc">If array, assigning a scalar will fill up the current array.</div><div class="ttdef"><b>Definition:</b> Castable.h:566</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:61</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_a73dcba50de9c1b71d3daf5d10dbd30de"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">drain::SmartMap::setValues</a></div><div class="ttdeci">void setValues(const std::string &amp;entries, char assignmentSymbol='=', char separatorSymbol=0)</div><div class="ttdoc">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...</div><div class="ttdef"><b>Definition:</b> SmartMap.h:334</div></div>
+<div class="ttc" id="aclassdrain_1_1SmartMap_html_a73dcba50de9c1b71d3daf5d10dbd30de"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">drain::SmartMap::setValues</a></div><div class="ttdeci">void setValues(const std::string &amp;entries, char assignmentSymbol='=', char separatorSymbol=0)</div><div class="ttdoc">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...</div><div class="ttdef"><b>Definition:</b> SmartMap.h:312</div></div>
 <div class="ttc" id="aclassdrain_1_1Referencer_html"><div class="ttname"><a href="classdrain_1_1Referencer.html">drain::Referencer</a></div><div class="ttdoc">Extends Castable's interface with link()</div><div class="ttdef"><b>Definition:</b> Referencer.h:67</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_a6ee6f4170909a5a214dfd44ab218e3ff"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a6ee6f4170909a5a214dfd44ab218e3ff">drain::SmartMap::toJSON</a></div><div class="ttdeci">void toJSON(std::ostream &amp;ostr=std::cout, size_t indent=0) const</div><div class="ttdoc">Write map as a JSON code.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:629</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a></div><div class="ttdeci">@ LINK</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:212</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
