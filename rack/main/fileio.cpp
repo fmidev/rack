@@ -108,8 +108,10 @@ public:
 
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
-		gtiffConf.link("tile", FileTIFF::defaultTile.tuple());
-		gtiffConf.link("compression", FileTIFF::defaultCompression, sprinter(FileTIFF::getCompressionDict(),"|").str());
+		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
+		// Compression METHOD
+		gtiffConf.link("compress", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
+		//gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
 		gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
 
 
@@ -158,44 +160,48 @@ public:
 		// mout.note() << params << mout.endl;
 		// todo: shared resource for output conf:  refMap of refMaps...
 		// todo recognize tif,TIFF
+		mout.debug("Current conf [", format, "]");
 
-		mout.note("Current conf [", format, "]");
+		// const drain::SprinterLayout & layout = drain::Sprinter::lineLayout; // cppLayout;
 
 		//hi5::fileInfo.checkExtension(ext);
 		if (hi5::fileInfo.checkExtension(format)){ // "h5", "hdf", "hdf5"
-			//mout.unimplemented("(future extension)");
-			if (!params.empty())
-				hdf5Conf.setValues(params);
-			else {
-				drain::SprinterBase::toStream(std::cout, hdf5Conf, drain::SprinterBase::cppLayout);
-			}
+			handleParams(hdf5Conf, params);
 		}
 		else if (drain::image::FilePng::fileInfo.checkExtension(format)){
-			if (!params.empty()){
-				pngConf.setValues(params);
-				// could check values, here -1 or 0...9
-			}
-			else {
-				//mout.note("Current conf: ", gtiffConf);
-				drain::SprinterBase::toStream(std::cout, pngConf, drain::SprinterBase::cppLayout);
-			}
+			handleParams(pngConf, params);
 		}
 		else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
 		}
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
-			mout.note("keys", gtiffConf.getKeys());
-			if (!params.empty())
-				gtiffConf.setValues(params);
-			else {
-				mout.note("Current conf: ", gtiffConf);
-				drain::SprinterBase::toStream(std::cout, gtiffConf, drain::SprinterBase::cppLayout);
-			}
+			handleParams(gtiffConf, params);
+			//gtiff mika;
+			//mout.note("keys", gtiffConf.getKeys());
 		}
 		else {
 			mout.warn("format '", format, "' not recognized");
 		}
 
+	}
+
+
+	void handleParams(drain::ReferenceMap & rmap, const std::string & params) const {
+		if (!params.empty())
+			rmap.setValues(params);
+		else {
+			const drain::ReferenceMap::unitmap_t & umap = rmap.getUnitMap();
+			// drain::Sprinter::toStream(std::cout, gtiffConf, layout);
+			for (const auto & entry: rmap){
+				std::cout << entry.first << '=' << entry.second;
+				// if (rmap) UNITMAP
+				drain::ReferenceMap::unitmap_t::const_iterator it = umap.find(entry.first);
+				if (it != umap.end()){
+					std::cout << ' ' << '(' << it->second << ')';
+				}
+				std::cout << '\n';
+			}
+		}
 	}
 
 	mutable

@@ -71,7 +71,7 @@ namespace image {
 
 
 void FileTIFF::setTime(const drain::Time & datetime){
-	setField(TIFFTAG_DATETIME,datetime.str("%Y:%m:%d %H:%M:%S") );
+	setField(TIFFTAG_DATETIME, datetime.str("%Y:%m:%d %H:%M:%S") );
 }
 
 void FileTIFF::setDefaults(){ //const drain::image::ImageConf & src){ // int tileWidth, int tileHeight){

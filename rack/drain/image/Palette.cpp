@@ -593,56 +593,52 @@ void Palette::write(const std::string & filename){
 
 	drain::FilePath filepath(filename);
 
+	/*
 	if ((filepath.extension != "txt") && (filepath.extension != "json") &&
 			(filepath.extension != "svg") && (filepath.extension != "pal")){
 		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
 		return;
 	}
+	*/
 
 	mout.info("writing: ", *this);
 
 	drain::Output ofstr(filename);
 
-	/*
-	std::ofstream ofstr(filename.c_str(), std::ios::out);
-	if (!ofstr.good()){
-		ofstr.close();
-		mout.error() << "could not open file: " << filename << mout.endl;
-		return;
-	}
-	*/
-
-
-	if (filepath.extension == "svg"){
+	if (NodeSVG::fileinfo.checkExtension(filepath.extension)){
+	//if (filepath.extension == "svg"){
 		mout.debug() << "writing SVG legend" << mout.endl;
 		TreeSVG svg;
 		exportSVGLegend(svg, true);
 		ofstr << svg;
 	}
-	else if (filepath.extension == "json"){
-		// drain::JSONtree::tree_t json;
-		drain::JSONtree2 json;
+	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){
+	//else if (filepath.extension == "json"){
 		mout.debug("exporting JSON palette");
+		drain::JSONtree2 json;
 		exportJSON(json);
-		//drain::JSONwriter::toStream(json, ofstr);
 		mout.debug("writing JSON palette/class file");
 		drain::JSON::treeToStream(ofstr, json);
-		// drain::SprinterBase::toStream(ofstr, json);
-		// = drain::JSONwriter::mapToStream(json, ofstr); explicit
-		// = drain::JSONtree::writeJSON(json, ofstr);     old style
+	}
+	else if (filepath.extension == "cpp"){
+		mout.debug("writing C++ palette struct");
+		drain::JSONtree2 json;
+		exportJSON(json);
+		static const drain::SprinterLayout myCpp("[,]", "{:}", "(=)", "\"\"");
+		drain::Sprinter::toStream(ofstr, json, myCpp); // drain::Sprinter::pythonLayout);
 	}
 	else if (filepath.extension == "txt"){
-		mout.debug() << "writing plain txt palette file" << mout.endl;
+		mout.debug("writing plain txt palette file");
 		exportTXT(ofstr,'\t', '\t');
 	}
 	else if (filepath.extension == "pal"){
-		mout.debug() << "writing formatted .pal file" << mout.endl;
+		mout.debug("writing formatted .pal file");
 		exportFMT(ofstr, "# ${label}\nset style line ${value} lt rgb '#${colorHex}' lw 5  \n");
 		//exportFMT(ofstr, "#${label}\n set color ${color}\n");
 	}
 	else {
-		//ofstr.close();
-		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
+		//
+		mout.error("unknown file type, extension: ", filepath.extension);
 	}
 
 	//ofstr.close();

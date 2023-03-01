@@ -53,7 +53,7 @@ namespace drain
  *	Applies TextReader::scanSegment in reading character streams.
  *	Uses Type::guessArrayType() for deriving compatible storage type for arrays.
  *
- *  For writing, the new SprinterBase::toStream is preferred to JSONwriter, which is deprecating.
+ *  For writing, the new Sprinter::toStream is preferred to JSONwriter, which is deprecating.
  *
  */
 class JSON  {
@@ -63,7 +63,7 @@ public:
 
 	static FileInfo fileInfo;
 
-	/// NEW. Reads and parses a JSON file
+	/// Reads and parses a JSON file
 	/**
 	 *  \tparam - tree type, especially drain::Tree<K,V>
 	 */
@@ -71,22 +71,28 @@ public:
 	static
 	void readTree(T & tree, std::istream & istr);
 
-
+	/// Write a tree into an output stream using JSON layout by default.
+	/**
+	 *   SprinterLayout offers flexibility in formatting. JSON layout is the default.
+	 */
 	template <class T>
 	static
-	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout = drain::SprinterBase::jsonLayout, short indent=0);
+	std::ostream & treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout = drain::Sprinter::jsonLayout, short indent=0);
 
 
-	/// Read value. Read stream until a value has been extracted, with type recognition
+	/// Read a value (JSON syntax). Read stream until a value has been extracted, with type recognition
 	static
 	void readValue(std::istream & istr, Variable & v, bool keepType = false);
 
-	/// Read value. Read stream until a value has been extracted, with type recognition
-	static inline
-	void readValue(const std::string & s, Variable & v, bool keepType = false){
-		std::istringstream istr(s);
-		readValue(istr, v, keepType);
-	};
+	/// Read value (JSON syntax). Read stream until a value has been extracted, with type recognition
+	/**
+	 *   Allowed syntax:
+	 *   - string: "<value>"
+	 *   - scalar:  <value>
+	 *   - array:  [<value>,<value>,<value>,<...>]
+	 */
+	static
+	void readValue(const std::string & s, Variable & v, bool keepType = false);
 
 	/// Given comma-separated string of values, assign them to variable of minimum compatible type
 	static
@@ -110,6 +116,7 @@ protected:
 
 template <class T>
 std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent){
+
 	const bool DATA     = !tree.data.empty();
 	const bool CHILDREN = !tree.empty();
 
@@ -123,8 +130,9 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 
 
 	if (DATA){
-		drain::SprinterBase::toStream(ostr, tree.data, layout);
-		return ostr; // exclusive
+		drain::Sprinter::toStream(ostr, tree.data, layout);
+		//ostr << layout.pairChars.suffix;
+		return ostr; // = pratically exclusive
 		/*
 		if (CHILDREN)
 			ostr << layout.mapChars.separator;
@@ -132,7 +140,9 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 		*/
 	}
 
-	ostr << layout.mapChars.prefix << '\n';
+	ostr << layout.mapChars.prefix; // << '\n';
+	//ostr << layout.pairChars.prefix;
+	ostr << '\n';
 
 	if (CHILDREN){
 		char sep = 0;
@@ -144,13 +154,20 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 			else {
 				sep = layout.mapChars.separator;
 			}
-			ostr << pad << "  " << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
+			//ostr << pad << "  " << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
+			ostr << pad << "  ";  // if empty?
+			// if (layout.pairChars.prefix)
+			ostr << layout.pairChars.prefix;
+			ostr << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
 			treeToStream(ostr, entry.second, layout, indent+1); // recursion
+			// if (layout.pairChars.suffix)
+			ostr << layout.pairChars.suffix;
 		}
 		ostr << '\n';
 	}
 
-	ostr << pad << layout.mapChars.suffix; //  << '\n';
+	// if (layout.mapChars.suffix)
+	ostr << pad << layout.mapChars.suffix; // << '\n';
 
 	return ostr;
 }
@@ -269,9 +286,9 @@ void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::s
 
 template <>
 inline
-std::ostream & drain::SprinterBase::toStream(std::ostream & ostr, const JSONtree2 & tree, const drain::SprinterLayout & layout){
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const JSONtree2 & tree, const drain::SprinterLayout & layout){
 	return drain::JSON::treeToStream(ostr, tree, layout);
-	//return drain::SprinterBase::treeToStream(ostr, tree, layout);
+	//return drain::Sprinter::treeToStream(ostr, tree, layout);
 }
 
 

@@ -84,17 +84,17 @@ TypeLayout & TypeLayout::setLayout(const char *layout){
 }
 
 
-const SprinterLayout SprinterBase::defaultLayout  = {"[,]", "{,}", "(,)", ""};
+const SprinterLayout Sprinter::defaultLayout  = {"[,]", "{,}", "(,)", ""};
 
-const SprinterLayout SprinterBase::plainLayout = {",", ",", ",", ""};
+const SprinterLayout Sprinter::plainLayout = {",", ",", ",", ""};
 
-const SprinterLayout SprinterBase::emptyLayout = {"","","",""};
+const SprinterLayout Sprinter::emptyLayout = {"","","",""};
 
-const SprinterLayout SprinterBase::lineLayout = {",", "\n", "=", ""};
+const SprinterLayout Sprinter::lineLayout = {",", "\n", "=", ""};
 
-const SprinterLayout SprinterBase::cppLayout("{,}", "{,}", "{,}", "\"\"");
+const SprinterLayout Sprinter::cppLayout("{,}", "{,}", "{,}", "\"\""); // cppLayout("{,}", "{,}", "{,}", "\"\"");
 
-const SprinterLayout SprinterBase::pythonLayout("[,]", "{,}",  "(,)", "''");
+const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "''");
 
 /// JSON layout uses std::pair<>(first,second) to display key:value pairs.
 /**
@@ -103,7 +103,7 @@ const SprinterLayout SprinterBase::pythonLayout("[,]", "{,}",  "(,)", "''");
  *   # pairs   as key:value
  *   # strings as "..."
  */
-const SprinterLayout SprinterBase::jsonLayout("[,]", "{,}", ":", "\"\"", "\"\"");
+const SprinterLayout Sprinter::jsonLayout("[,]", "{,}", ":", "\"\"", "\"\"");
 
 } // namespace drain
 

@@ -50,6 +50,8 @@ void CmdGeoTiff::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	mout.deprecating("Use --outputConf instead");
+
 	/// TODO. develop FileTIFF::dict_t as Single-Flagger etc
 	if (compression.empty()){
 
@@ -87,8 +89,8 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// t.setTime(prop.get("what:time", "000000"), "%H%M%S");
 	file.setTime(t);
 
-	mout.debug() << "orig ODIM angles: " << drain::sprinter(odim.angles) << mout.endl;
-	mout.debug() << "src.properties map: " << src.properties << mout.endl;
+	mout.debug("orig ODIM angles: ",   drain::sprinter(odim.angles) );
+	mout.debug("src.properties map: ", src.properties);
 
 	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
 	const std::string desc = drain::StringBuilder(
@@ -105,7 +107,6 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 			prop["what:quantity"],':',
 			prop["how:angles"]);
 		*/
-	//TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
 	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc);
 
 	// http://www.gdal.org/frmt_gtiff.html
@@ -114,8 +115,6 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	//file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
 
 	file.setDefaults();
-	//file.setField(, value)
-	// file.setField(TIFFTAG_COMPRESSION, FileTIFF::getCompressionDict().getKey(value));
 	file.useDefaultTileSize();
 
 	// GDALMetadata etc
@@ -125,18 +124,13 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	//file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
 	std::string nodata;
 	drain::StringTools::import(odim.nodata, nodata);
-	//file.setGdalMetaData(nodata, odim.scaling.scale, odim.scaling.offset);
 	file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
 	file.setGdalNoData(nodata);
 
 	drain::image::GeoFrame frame;
 
-	//std::string projdef = prop["where:projdef"];
-
-	//if (!projdef.empty()){
 	if (!odim.projdef.empty()){
 
-		//drain::image::GeoFrame frame;
 		frame.setGeometry(src.getWidth(), src.getHeight());
 		frame.setProjection(odim.projdef);
 
@@ -169,7 +163,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 				mout << frame.getBoundingBoxM() << mout;
 			}
 			else {
-				mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
+				mout.warn("where:BBOX_native (", p, ") missing or invalid, using bbox in degrees (approximative)");
 				// frame.setBoundingBoxD(bboxD);
 				frame.setBoundingBoxD(odim.getBoundingBoxD());
 			}
@@ -179,8 +173,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		mout.note("where:projdef missing, no GeoTIFF projection info written");
 	}
 
-	mout.note("file.setGeoMetaData(frame)");
-
+	mout.debug("file.setGeoMetaData(frame)");
 	file.setGeoMetaData(frame);
 	//file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 	file.writeImageData(src);

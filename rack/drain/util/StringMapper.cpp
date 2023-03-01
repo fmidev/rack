@@ -111,7 +111,7 @@ std::ostream &  StringMapper::toStream(std::ostream & ostr) const {
 	SprinterLayout layout;
 	layout.arrayCaps.set(0, separator.character,0);
 	layout.stringCaps.fill(0);
-	SprinterBase::sequenceToStream(ostr, *this, layout.arrayCaps, layout);
+	Sprinter::sequenceToStream(ostr, *this, layout.arrayCaps, layout);
 	return ostr;
 }
 */

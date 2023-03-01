@@ -34,7 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 #include <iomanip>
 #include <unistd.h>
-
+#ifndef  USE_GEOTIFF_NO
+#include <geotiff.h>
+#endif
 
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
@@ -1134,7 +1136,7 @@ public:
 		}
 
 
-		mout.debug() << "value: " << value << mout.endl;
+		mout.debug("value: ", value );
 
 		Hi5Tree & src = *(ctx.currentHi5);
 
@@ -1171,14 +1173,15 @@ public:
 			paths.push_back(path);
 		}
 
-		for (ODIMPathList::const_iterator it=paths.begin(); it!= paths.end(); ++it) {
-			Hi5Tree & d = src(*it);
+		for (ODIMPath path: paths) {
+			Hi5Tree & d = src(path);
 			if (assignment.empty()){
-				mout.debug() << *it << mout.endl;
+				mout.debug() << path << mout.endl;
 			}
 			else {
-				mout.info() << *it << '=' << assignment << mout.endl;
+				mout.debug("path: ", path, " assignment:'", assignment, "'");
 				hi5::Hi5Base::assignAttribute(d, assignment);
+				// mout.info("retrieved: '", d, "'");
 			}
 		}
 
@@ -1363,8 +1366,8 @@ public:
 		std::ostream & ostr = std::cout;
 
 		if (value.empty()){
-			//drain::SprinterBase::sequenceToStream(ostr, cmdBank.getMap(), "{,}", drain::SprinterBase::jsonLayout);
-			// drain::SprinterBase::mapToStream(ostr, cmdBank.getMap(), drain::SprinterBase::jsonLayout, cmdBank.getKeys());
+			//drain::Sprinter::sequenceToStream(ostr, cmdBank.getMap(), "{,}", drain::Sprinter::jsonLayout);
+			// drain::Sprinter::mapToStream(ostr, cmdBank.getMap(), drain::Sprinter::jsonLayout, cmdBank.getKeys());
 			mout.unimplemented("drain::JSONwriter");
 			// JSON::treeToStream(ostr, cmdBank.getMap());
 			// drain::JSONwriter::mapToStream(cmdBank.getMap(), ostr, 2);
@@ -1405,7 +1408,7 @@ public:
 
 			}
 
-			drain::SprinterBase::toStream(ostr, jsonRoot, drain::SprinterBase::jsonLayout);
+			drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
 			drain::TreeUtils::dump(jsonRoot, ostr, true);
 
 		}
@@ -1885,8 +1888,8 @@ public:
 		std::cout << "HDF5 " << majnum << '.' << minnum << '.' << relnum << '\n';
 
 		std::cout << "GeoTIFF support: ";
-#ifdef  USE_GEOTIFF
-		std::cout << "yes" <<  '\n';
+#ifndef  USE_GEOTIFF_NO
+		std::cout << "version " << LIBGEOTIFF_VERSION <<  '\n';
 #else
 		std::cout << "no"<< '\n';
 #endif

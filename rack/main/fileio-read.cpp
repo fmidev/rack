@@ -87,26 +87,44 @@ void CmdInputFile::exec() const {
 	// mout.warn() << "inputComplete: " << (int)inputComplete << mout.endl;
 	// mout.warn() << "autoExec:      " << (int)cmdAutoExec.exec << mout.endl;
 	drain::FilePath path(value);
+	const bool NO_EXTENSION = path.extension.empty();
+	/*
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
-	const bool NO_EXTENSION = path.extension.empty();
-
+	*/
 
 	try {
 
+		/*
+		if (hi5::fileInfo.checkExtension(format)){ // "h5", "hdf", "hdf5"
+				handleParams(hdf5Conf, params);
+			}
+			else if (drain::image::FilePng::fileInfo.checkExtension(format)){
+				handleParams(pngConf, params);
+			}
+			else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
+				mout.unimplemented("(no parameters supported for PPM/PGM )");
+			}
+			else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
+				handleParams(gtiffConf, params);
+				//mout.note("keys", gtiffConf.getKeys());
+			}
+		*/
 
-		if (hi5::fileInfo.checkPath(value) || NO_EXTENSION){
+		if (hi5::fileInfo.checkExtension(path.extension) || NO_EXTENSION){
 			if (NO_EXTENSION){
 				mout.discouraged("No file extension! Assuming HDF5...");
 			}
-			// if (h5FileExtension.test(this->value)){
 			readFileH5(fullFilename);
 		}
-		else if (IMAGE_TIF){
+		else if (drain::image::FileTIFF::fileInfo.checkExtension(path.extension)){
 			mout.error("Reading TIFF files not supported");
 		}
-		else if (IMAGE_PNG || IMAGE_PNM){
+		else if (drain::image::FilePng::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
+			readImageFile(fullFilename);
+		}
+		else if (drain::image::FilePnm::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
 			readImageFile(fullFilename);
 		}
 		else if (textFileExtension.test(this->value))
@@ -181,9 +199,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
 
-	//const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
-
-	//const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
+	// const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
+	// const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
 
 
 	mout.debug() << "Derive file type (what:object)" << mout.endl;

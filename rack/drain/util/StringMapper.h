@@ -177,7 +177,7 @@ public:
 	 */
 	inline
 	std::ostream &  toStream(std::ostream & ostr) const {
-		SprinterBase::sequenceToStream(ostr, *this, SprinterBase::emptyLayout);
+		Sprinter::sequenceToStream(ostr, *this, Sprinter::emptyLayout);
 		return ostr;
 	}
 

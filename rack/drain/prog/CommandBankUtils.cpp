@@ -86,8 +86,8 @@ void CmdStatus::exec() const {
 	layout.stringChars.separator = '\0';
 	//layout.stringChars.prefix = '"';
 	//layout.stringChars.suffix = '"';
-	SprinterBase::mapToStream(ostr, statusMap, layout, statusMap.getKeyList());
-	// SprinterBase::sequenceToStream(ostr, statusMap, layout);
+	Sprinter::mapToStream(ostr, statusMap, layout, statusMap.getKeyList());
+	// Sprinter::sequenceToStream(ostr, statusMap, layout);
 	ostr << '\n';
 	//ostr << drain::sprinter(statusMap, layout) << '\n';
 

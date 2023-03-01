@@ -67,8 +67,11 @@ public:
 
 	static
 	const dict_t & getCompressionDict();
+
 	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
-	static dict_t::value_t defaultCompression; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+	// https://gdal.org/drivers/raster/cog.html
+	static dict_t::value_t defaultCompression;      // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+	static int defaultCompressionLevel; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
 
 	static drain::Frame2D<int> defaultTile;
 
@@ -77,7 +80,7 @@ public:
 
 
 	inline
-	FileTIFF(const std::string & path = "", const char *mode = "w") : tif(nullptr), tile(defaultTile){ // FileHandler(__FUNCTION__),
+	FileTIFF(const std::string & path = "", const std::string & mode = "w") : tif(nullptr), tile(defaultTile){ // FileHandler(__FUNCTION__),
 		if (!path.empty())
 			open(path, mode);
 		//tif = XTIFFOpen(path.c_str(), mode);
@@ -89,29 +92,25 @@ public:
 		close();
 	}
 
-	inline
-	virtual
-	void open(const std::string & path, const char *mode = "w"){
-		tif = XTIFFOpen(path.c_str(), mode);
+	virtual inline
+	void open(const std::string & path, const std::string & mode = "w"){
+		tif = XTIFFOpen(path.c_str(), mode.c_str());
 	}
 
-	inline
-	virtual
-	void close(){
-		if (isOpen()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.special("Closing TIFF...");
-			XTIFFClose(tif);
-			tif = nullptr;
-		}
-	}
-
-	inline virtual
+	virtual inline
 	bool isOpen() const {
 		return (tif != nullptr);
 	}
 
-
+	virtual	inline
+	void close(){
+		if (isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.debug("Closing TIFF...");
+			XTIFFClose(tif);
+			tif = nullptr;
+		}
+	}
 
 	inline
 	int setField(int tag, const std::string & value){

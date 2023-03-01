@@ -350,10 +350,10 @@ public:
 			// SprinterLayout layout;
 			// layout.arrayChars.set(0, separator.character,0);
 			// layout.stringChars.fill(0);
-			SprinterBase::sequenceToStream(ostr, *this, layout);
+			Sprinter::sequenceToStream(ostr, *this, layout);
 		}
 
-		//SprinterBase::toStream(ostr, *this, layout);
+		//Sprinter::toStream(ostr, *this, layout);
 		return ostr;
 	}
 

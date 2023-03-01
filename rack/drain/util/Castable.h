@@ -736,7 +736,7 @@ protected:
 
 		std::stringstream sstr;
 
-		// drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
+		// drain::Sprinter::toStream(sstr, *this, drain::Sprinter::plainLayout);
 		toStream(sstr);
 
 		if (inputSeparator && (getElementCount()>1)){
@@ -865,7 +865,7 @@ public:
 		if (isString()){
 			std::stringstream sstr;
 			if (append){
-				drain::SprinterBase::toStream(sstr, *this, drain::SprinterBase::plainLayout);
+				drain::Sprinter::toStream(sstr, *this, drain::Sprinter::plainLayout);
 				//toStream(sstr);  // outputsepp?
 				if (inputSeparator)
 					sstr << inputSeparator;
@@ -1019,13 +1019,13 @@ T & Castable::valueToJSON(T & ostr) const {
 
 /// "Friend class" template implementation
 template <>
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout);
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout);
 
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const Castable &c){
 	return c.toStream(ostr);
-	//return SprinterBase::toStream(ostr, c, SprinterBase::plainLayout);
+	//return Sprinter::toStream(ostr, c, Sprinter::plainLayout);
 }
 
 

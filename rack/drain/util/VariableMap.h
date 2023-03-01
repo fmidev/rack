@@ -120,9 +120,9 @@ public:
 
 template <>
 inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const VariableMap & vmap, const SprinterLayout & layout){
-	return SprinterBase::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
-	//return SprinterBase::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
+std::ostream & Sprinter::toStream(std::ostream & ostr, const VariableMap & vmap, const SprinterLayout & layout){
+	return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	//return Sprinter::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
 }
 
 

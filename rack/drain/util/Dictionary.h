@@ -296,15 +296,15 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary<K,V> & dict) {
 	// SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr)
 	// static drain::SprinterLayout dict_layout("{,}", "{,}", "{,}", "{,}");
-	ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, SprinterBase::cppLayout);
+	ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, Sprinter::cppLayout);
 	return ostr;
 }
 
 /*
 template <>
 inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
-	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
 }
 */
 

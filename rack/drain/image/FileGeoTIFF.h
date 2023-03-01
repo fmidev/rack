@@ -28,12 +28,13 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DRAIN_GEO_TIFF_H
-#define DRAIN_GEO_TIFF_H
+#ifndef DRAIN_GEO_TIFF
+#define DRAIN_GEO_TIFF
 
 #include "FileTIFF.h"
 
 #ifndef USE_GEOTIFF_NO
+
 
 #include <geotiff.h>
 #include <geotiffio.h>
@@ -51,12 +52,16 @@ namespace image
  *  https://gdal.org/drivers/raster/gtiff.html
  *
  */
-class FileGeoTIFF : public FileTIFF{
+class FileGeoTIFF : public FileTIFF {
 public:
 
 
-	FileGeoTIFF(const std::string & path = "", const char *mode = "w") : FileTIFF(path, mode), gtif(nullptr){
-		open();
+	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
+	}
+
+	FileGeoTIFF(const std::string & path, const std::string & mode = "w") : FileTIFF(), gtif(nullptr){
+		//open();
+		open(path, mode);
 	}
 
 	virtual inline
@@ -65,42 +70,15 @@ public:
 		close();
 	}
 
-	inline
+	/// Opens a GeoTIFF file.
 	virtual
-	void open(const std::string & path, const char *mode = "w"){
-		if (isOpen()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.warn("GeoTIFF already open?");
-		}
-		else {
-			FileTIFF::open(path, mode);
-			open();
-		}
-	}
-
+	void open(const std::string & path, const std::string & mode = "w");
 
 	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
-	virtual inline
-	void open(){
-		gtif = GTIFNew(tif);
-		if (!isOpen()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.error("failed creating GeoTIFF file from TIFF object");
-			//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
-		}
-	}
+	//virtual void open();
 
-	inline virtual
-	void close(){
-		if (isOpen()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.special("Closing GeoTIFF...");
-			GTIFWriteKeys(gtif);
-			GTIFFree(gtif);
-			gtif = nullptr;
-		}
-		FileTIFF::close(); // ?
-	}
+	virtual
+	void close();
 
 	/// Todo: subclass
 	inline virtual

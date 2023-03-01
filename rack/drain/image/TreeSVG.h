@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREESVG_H_
 #define DRAIN_TREESVG_H_
 
+#include "drain/util/FileInfo.h"
 #include "drain/util/TreeXML.h"
 
 namespace drain {
@@ -74,6 +75,10 @@ public:
 	/// In opening SVG tag, referred to by attributes "xmlns" and "xmlns:svg"
 	static
 	std::string svg;
+
+
+	static
+	const drain::FileInfo fileinfo;
 
 protected:
 

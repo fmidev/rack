@@ -107,16 +107,16 @@ void NodeGDAL::setType(type t){
 }
 
 void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string & role){
+
 	setType(ITEM);
 	this->ctext  = ctext.toStr();
 	this->sample = sample;
 	this->role   = role;
-
 	/*
 	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
 		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
 	};
-	 */
+	*/
 
 }
 
@@ -130,66 +130,60 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 
 bool FileGeoTIFF::strictCompliance(false);
 
-/*
-void FileGeoTIFF::setGdalMetaDataOLD(const std::string & nodata, double scale, double offset){
-// TODO: separate code without nodata marker?
-//void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
-
+void FileGeoTIFF::open(const std::string & path, const std::string & mode){
 	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	//const int TIFFTAG_KOE = 65001;
-	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
-	// "gdal-metadata"
-	static
-	const TIFFFieldInfo xtiffFieldInfo[] = {
-			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
-			{ TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
-	};
-	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 2);
-
-	TreeGDAL gdalInfo;
-	gdalInfo["SCALE"]->set(scale, 0, "scale");
-	gdalInfo["OFFSET"]->set(offset, 0, "offset");
-
-	<GDALMetadata >
-	<Item name="OFFSET" role="offset" sample="0" >-32</Item>
-	<Item name="SCALE" role="scale" sample="0" >0.5</Item>
-	</GDALMetadata>
-
-
-	std::stringstream gdal;
-	gdal << gdalInfo;
-	mout.debug() << gdal.str() << mout.endl;
-	setField(TIFFTAG_GDAL_METADATA, gdal.str());
-
-	// std::string nodata = prop["what:nodata"];
-	if (!nodata.empty()){
-		// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
-		mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
-		// TODO: separate code without nodata marker?
-		setField(TIFFTAG_GDAL_NODATA, nodata); // or should be string?
+	if (isOpen()){
+		// drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("GeoTIFF already open?");
 	}
-	// usr/include/gdal/rawdataset.h
+	else {
+		FileTIFF::open(path, mode);
+		gtif = GTIFNew(tif);
+		if (!isOpen()){
+			mout.error("failed creating GeoTIFF file from TIFF object");
+			//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
+		}
+		//mout.attention("GeoTIFF version: ", gtif->hdr_version, '.', gtif->hdr_rev_major,  '.', gtif->hdr_rev_minor,  '.', gtif->hdr_num_keys);
+		//open();
+	}
+}
 
-	// Non-standard http://www.gdal.org/frmt_gtiff.html
-
-	//std::string nodata = src.properties["what:nodata"];
-	//if (!nodata.empty()){
-	//	mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
-	//	GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
-	//}
-
-
+/// "Opens" a GeoTIFF structure inside an opened TIFF file.
+/*
+virtual
+void FileGeoTIFF::open(){
+	gtif = GTIFNew(tif);
+	if (!isOpen()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.error("failed creating GeoTIFF file from TIFF object");
+		//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
+	}
+	else {
+		// gtif
+	}
 }
 */
 
+void FileGeoTIFF::close(){
+	if (isOpen()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.debug("Closing GeoTIFF...");
+		GTIFWriteKeys(gtif);
+		GTIFFree(gtif);
+		gtif = nullptr;
+	}
+	FileTIFF::close(); // ?
+}
+
+
 void FileGeoTIFF::setGdalScale(double scale, double offset){
+
 	// TODO: separate code without nodata marker?
-	//void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
+	// void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//const int TIFFTAG_KOE = 65001;
+	// const int TIFFTAG_KOE = 65001;
 	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
 	// "gdal-metadata"
 	static
@@ -206,7 +200,7 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	    <Item name="OFFSET" role="offset" sample="0" >-32</Item>
 	    <Item name="SCALE"  role="scale" sample="0" >0.5</Item>
 	    </GDALMetadata>
-	 */
+	*/
 
 	std::stringstream gdal;
 	gdal << gdalInfo;
@@ -247,108 +241,11 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 		mout.toOStr() << "registering what:nodata => nodata=" << nodata << mout.endl;
 		GTIFKeySet(gtif, (geokey_t)TIFFTAG_GDAL_NODATA, TYPE_ASCII, nodata.length()+1, nodata.c_str());  // yes, ascii
 	}
-	 */
+	*/
 
 
 }
 
-/*
-void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	const drain::FlexVariableMap & prop = src.properties;
-
-	std::string projdef = prop["where:projdef"];
-
-	if (!projdef.empty()){
-
-		//drain::image::GeoFrame frame;
-		frame.setGeometry(src.getWidth(), src.getHeight());
-		frame.setProjection(projdef);
-
-	    drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
-		if (frame.isLongLat()){
-			frame.setBoundingBoxD(bboxD);
-		}
-		else {
-			// Debug
-			frame.setBoundingBoxD(bboxD);
-			mout.special("BBOX deg: ", frame.getBoundingBoxD());
-			mout.special() << "BBOX m  : ";
-			mout.precision(20);
-			mout << frame.getBoundingBoxM() << mout;
-
-
-			const drain::Variable & p = prop["where:BBOX_native"];
-			std::vector<double> v;
-			//drain::Rectangle<double> v;
-			p.toSequence(v);
-			drain::Rectangle<double> bboxM;
-			bboxM.fromSequence(v);
-			if (v.size() == 4){
-				//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
-				frame.setBoundingBoxM(bboxM);
-				mout.note() << "Setting exact (metric) BBOX=";
-				//char sep = ' ';
-				//v = frame.getBoundingBoxM().toVector(); // Back!
-				mout.special() << "BBOX m  : ";
-				mout.precision(20);
-				mout << frame.getBoundingBoxM() << mout;
-			}
-			else {
-				mout.warn() << "where:BBOX_native (" << p << ") missing or invalid, using bbox in degrees (approximative)" << mout.endl;
-				frame.setBoundingBoxD(bboxD);
-			}
-		}
-	}
-	else {
-		mout.note("where:projdef missing, no GeoTIFF projection info written");
-	}
-
-}
- */
-
-/*
-void FileGeoTIFF::setUpTIFFDirectory_rack(const drain::image::Image & src){ // int tileWidth, int tileHeight){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	const drain::FlexVariableMap & prop = src.properties;
-
-	// http://www.gdal.org/frmt_gtiff.html
-	// Optional
-	//const std::string software = std::string(__RACK__) + " " + std::string(__RACK_VERSION__);
-	//TIFFSetField(tif,TIFFTAG_SOFTWARE, software.c_str());
-	//std::string s = drain::StringBuilder(__RACK__," ",__RACK_VERSION__);
-	setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
-
-	drain::Time datetime;
-	datetime.setTime(prop.get("what:date", "19700101"), "%Y%m%d");
-	datetime.setTime(prop.get("what:time", "000000"), "%H%M%S");
-	setTime(datetime);
-
-	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.str("%Y:%m:%d %H:%M:%S").c_str() );
-	// const std::string datetime = prop.get("what:date", "") + prop.get("what:time", "");
-	//TIFFSetField(tif, TIFFTAG_DATETIME, datetime.c_str() );
-
-
-	const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
-	//TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, desc.c_str());
-	setField(TIFFTAG_IMAGEDESCRIPTION,desc);
-
-	// GDALMetadata etc
-	// usr/include/gdal/rawdataset.h
-	// Non-standard http://www.gdal.org/frmt_gtiff.html
-
-	setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
-
-	drain::image::GeoFrame frame;
-	adjustGeoFrame_rack(src, frame);
-	setGeoMetaData(frame);
-
-}
- */
 
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
@@ -412,7 +309,7 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
 
 	//TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3, pixscale);
-	setField(TIFFTAG_GEOPIXELSCALE,pixscale);
+	setField(TIFFTAG_GEOPIXELSCALE, pixscale);
 
 
 }

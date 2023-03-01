@@ -514,7 +514,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		for (const auto & entry: vmap) {
 			ofstr << '#' << ' ' << entry.first << '=';
 			//it->second.valueToJSON(ofstr);
-			SprinterBase::toStream(ofstr, entry.second, SprinterBase::jsonLayout);
+			Sprinter::toStream(ofstr, entry.second, Sprinter::jsonLayout);
 			ofstr << '\n';
 		}
 	}

@@ -74,7 +74,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 			ostr << prefix << ':'; //'\t';
 		ostr << entry.first << '=';
 		//drain::JSONwriter::toStream(it->second, ostr);
-		drain::SprinterBase::toStream(ostr, entry.second, drain::SprinterBase::jsonLayout);
+		drain::Sprinter::toStream(ostr, entry.second, drain::Sprinter::jsonLayout);
 		//ostr << ' ' << drain::Type::getTypeChar(it->second.getType());
 		ostr << '\n';
 	}
@@ -398,7 +398,7 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 			//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
 			if (attrKey == "quantity"){
 				if (n.attributes.get("gain", 0.0) == 0.0){
-					mout.debug() << "Consider --completeODIM to proceed" << mout.endl;
+					mout.debug("Consider --completeODIM to proceed");
 				}
 			}
 		}

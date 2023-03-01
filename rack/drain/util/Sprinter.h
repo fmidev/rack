@@ -211,7 +211,7 @@ std::ostream & operator<<(std::ostream & ostr, const SprinterLayout & layout){
 }
 
 
-class SprinterBase {
+class Sprinter {
 
 public:
 
@@ -483,9 +483,9 @@ public:
 
 
 template <class T>
-std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent){
+std::ostream & Sprinter::treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent){
 // template <class T, bool EXCL>//
-// std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const Tree<T,EXCL> & tree, const drain::SprinterLayout & layout, short indent){
+// std::ostream & Sprinter::treeToStream(std::ostream & ostr, const Tree<T,EXCL> & tree, const drain::SprinterLayout & layout, short indent){
 
 	const bool DATA     = !tree.data.empty();
 	const bool CHILDREN = !tree.empty();
@@ -500,7 +500,7 @@ std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const T & tree, c
 
 
 	if (DATA){
-		drain::SprinterBase::toStream(ostr, tree.data, layout);
+		drain::Sprinter::toStream(ostr, tree.data, layout);
 		//return ostr;
 		/*
 		char sep = 0;
@@ -513,7 +513,7 @@ std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const T & tree, c
 				sep = layout.mapChars.separator;
 			}
 			ostr << pad << "  " << '"' << entry.first << '"' << layout.pairChars.separator << ' ';
-			drain::SprinterBase::toStream(ostr, entry.second, layout);
+			drain::Sprinter::toStream(ostr, entry.second, layout);
 		}
 		*/
 		if (CHILDREN)
@@ -545,42 +545,42 @@ std::ostream & SprinterBase::treeToStream(std::ostream & ostr, const T & tree, c
 }
 
 
-// MOVE to json files const SprinterLayout SprinterBase::layoutJSON;
+// MOVE to json files const SprinterLayout Sprinter::layoutJSON;
 
-
+///
 /**
- *   Examples
+ *   Examples.
+ *
+ *   Templated class, because references an external object of any type.
  */
 template <class T>
-class Sprinter : public SprinterBase {
+class Sprintlet : public Sprinter {
 
 public:
 
 	const T & src;
 	SprinterLayout layout;
 
-	Sprinter(const T & x, const SprinterLayout & layout) : src(x), layout(layout) {
+	Sprintlet(const T & x, const SprinterLayout & layout) : src(x), layout(layout) {
 	}
 	// Dangerous? Sprinter(const Sprinter<T> & x) : src(x.src){}
 
 	std::ostream & toStream(std::ostream & ostr) const {
-		return SprinterBase::toStream(ostr, src, layout);
+		return Sprinter::toStream(ostr, src, layout);
 	}
 
 	std::string str() const {
 		std::stringstream sstr;
-		SprinterBase::toStream(sstr, src, layout);
+		Sprinter::toStream(sstr, src, layout);
 		return sstr.str();
 	}
-
-
 
 };
 
 
 template <class T>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Sprinter<T> & sp){
+std::ostream & operator<<(std::ostream & ostr, const Sprintlet<T> & sp){
 	return sp.toStream(ostr);
 }
 
@@ -589,21 +589,18 @@ std::ostream & operator<<(std::ostream & ostr, const Sprinter<T> & sp){
 
 template <class T>
 inline
-Sprinter<T> sprinter(const T & x, const char *arrayCaps, const char *mapCaps="{,}", const char *pairCaps="(:)", const char *stringCaps="\""){
-	//SprinterLayout layout(arrayCaps,mapCaps,pairCaps,stringCaps);
-	return Sprinter<T>(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); // copy const
+Sprintlet<T> sprinter(const T & x, const char *arrayCaps, const char *mapCaps="{,}", const char *pairCaps="(:)", const char *stringCaps="\""){
+	return Sprintlet<T>(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); // copy const
 }
 
 template <class T>
 inline
-Sprinter<T> sprinter(const T & x, const SprinterLayout & layout = SprinterLayout()){
-	return Sprinter<T>(x, layout); // copy const
+Sprintlet<T> sprinter(const T & x, const SprinterLayout & layout = SprinterLayout()){
+	return Sprintlet<T>(x, layout); // copy const
 }
 
 
-
-
-}// Drain
+} // drain
 
 
 #endif

@@ -269,7 +269,7 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 }  // image::
 
 template <>
-std::ostream & drain::SprinterBase::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout) {
+std::ostream & drain::Sprinter::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout) {
 	src.toOStr(ostr); // consider using something from the layout
 	return ostr;
 }

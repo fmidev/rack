@@ -365,7 +365,7 @@ void CommandBank::readFileTXT(const std::string & filename, Script & script) con
 
 	// mout.note() << "open list: " << filename << mout.endl;
 	if (drain::JSON::fileInfo.checkPath(filename)){
-		mout.error("Reading: ", filename, ": JSON not supported for SCRIPT read ");
+		mout.error("Reading: ", filename, ": JSON not supported for ", __FUNCTION__, ",use readFile()");
 	}
 	else {
 		// TEXT file

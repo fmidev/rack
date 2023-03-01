@@ -119,7 +119,7 @@ protected:
 				//std::cerr << unicloner.bank
 				mout.note() << "Available functors:\n" << unicloner.bank << mout.endl;
 				//static const SprinterLayout layout("\n", "<?>", "\0=;", "''");
-				//SprinterBase::sequenceToStream(std::cerr, unicloner.bank, layout);
+				//Sprinter::sequenceToStream(std::cerr, unicloner.bank, layout);
 				mout.warn() << "using default ftor: " << this->functor << mout.endl;
 				return this->functor;
 			}

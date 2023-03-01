@@ -351,13 +351,13 @@ protected:
 /*
 template <>
 inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
-	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
 }
 */
 
 template <>
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout);
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout);
 
 
 

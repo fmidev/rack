@@ -254,7 +254,7 @@ public:
 			for (const auto & entry: picker.infoMap){
 				ostr << commentChar << ' ' << entry.first << '=';
 				//it->second.valueToJSON(ostr);
-				SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
+				Sprinter::toStream(ostr, entry.second, Sprinter::jsonLayout);
 				ostr << '\n';
 			}
 
@@ -263,7 +263,7 @@ public:
 			for (const auto & entry: parameters){
 				ostr << commentChar << ' ' << entry.first << '=';
 				// it->second.valueToJSON(ostr);
-				SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
+				Sprinter::toStream(ostr, entry.second, Sprinter::jsonLayout);
 				ostr << '\n';
 			}
 			if (!formatStr.empty())

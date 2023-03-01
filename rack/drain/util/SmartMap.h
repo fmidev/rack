@@ -387,13 +387,13 @@ public:
 	std::ostream & toStream(std::ostream & ostr, char equal='=', char startChar='{', char endChar='}', char separatorChar=',') const {
 		//drain::TypeLayout pairLayout(equal);
 		drain::TypeLayout mainLayout(startChar, separatorChar, endChar);
-		SprinterLayout layout(SprinterBase::jsonLayout);
+		SprinterLayout layout(Sprinter::jsonLayout);
 		//layout.pairChars.separator = equal;
 		layout.pairChars.separator = equal;
 		//layout.arrayChars.setLayout();
-		return SprinterBase::sequenceToStream(ostr, getMap(), mainLayout, layout);
-		//return SprinterBase::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
-		//return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
+		return Sprinter::sequenceToStream(ostr, getMap(), mainLayout, layout);
+		//return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+		//return Sprinter::mapToStream(ostr, *this, Sprinter::jsonLayout, this->getKeyList());
 	}
 
 	//std::string toStr(char equal='=', char start='{', char end='}', char separator=0) const {
@@ -572,8 +572,8 @@ void SmartMap<T>::setValuesSEQ(const S & sequence){
 template <class T>
 std::ostream & SmartMap<T>::toStream(std::ostream & ostr, char equal, char startChar, char endChar, char separatorChar) const {
 
-	// Otherways ok, but key order not used: SprinterBase::sequenceToStream(ostr, *this, SprinterBase::jsonLayout);
-	//return SprinterBase::mapToStream(ostr, *this, SprinterBase::jsonLayout, this->getKeyList());
+	// Otherways ok, but key order not used: Sprinter::sequenceToStream(ostr, *this, Sprinter::jsonLayout);
+	//return Sprinter::mapToStream(ostr, *this, Sprinter::jsonLayout, this->getKeyList());
 
 
 	const std::list<std::string> & keys = this->getKeyList();
@@ -652,7 +652,7 @@ void SmartMap<T>::toJSON(std::ostream & ostr, size_t indent) const {
 					ostr << item;
 					break;
 				default:
-					SprinterBase::toStream(ostr, item, SprinterBase::plainLayout);
+					Sprinter::toStream(ostr, item, Sprinter::plainLayout);
 					// JSONwriter::toStream(item, ostr); // Better! Forces commas.
 					// ostr << '[' << item << ']';
 			}
@@ -742,8 +742,8 @@ std::ostream &operator<<(std::ostream &ostr, const SmartMap<T> & m){
 template <class T>
 //template <>
 inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const SmartMap<T> & smap, const SprinterLayout & layout){
-	return SprinterBase::mapToStream(ostr, smap.getMap(), layout, smap.getKeys());
+std::ostream & Sprinter::toStream(std::ostream & ostr, const SmartMap<T> & smap, const SprinterLayout & layout){
+	return Sprinter::mapToStream(ostr, smap.getMap(), layout, smap.getKeys());
 }
 */
 

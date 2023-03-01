@@ -53,7 +53,7 @@ class CmdGeoTiff : public drain::BasicCommand {
 public:
 
 	inline
-	CmdGeoTiff() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating?, use --outputConf tif:<width>,<height>") {
+	CmdGeoTiff() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=<width>:<height>,compression=LZW") {
 		parameters.link("tile", drain::image::FileTIFF::defaultTile.tuple());
 		parameters.link("compression", compression="", drain::sprinter(compressionDict, "|").str());
 		// parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);

@@ -292,7 +292,7 @@ void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::pat
 	//for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
 	for (const auto & entry: t.data){
 		ostr << entry.first << '='; // << dit->second;
-		SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);
+		Sprinter::toStream(ostr, entry.second, Sprinter::jsonLayout);
 		// entry.second.valueToJSON(ostr);
 		ostr << '\n';
 	}

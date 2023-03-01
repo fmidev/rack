@@ -241,7 +241,7 @@ public:
 
 	void toStream(std::ostream & ostr = std::cout) const {
 		/*
-		SprinterBase::sequenceToStream(ostr, getMap(), SprinterBase::lineLayout);
+		Sprinter::sequenceToStream(ostr, getMap(), Sprinter::lineLayout);
 		for (typename map_t::const_iterator it = this->begin(); it != this->end(); ++it) {
 			ostr << it->first << ':' << it->second->getSource() << '\n';
 		}

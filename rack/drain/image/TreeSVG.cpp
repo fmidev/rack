@@ -42,6 +42,8 @@ namespace drain {
 
 namespace image {
 
+const drain::FileInfo NodeSVG::fileinfo("svg");
+
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
 std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 

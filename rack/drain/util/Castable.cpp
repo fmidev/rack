@@ -116,7 +116,7 @@ std::string Castable::toStr() const {
 	else { // "default"
 		std::stringstream sstr;
 		//toStream(sstr);
-		SprinterBase::toStream(sstr, *this, SprinterBase::plainLayout);
+		Sprinter::toStream(sstr, *this, Sprinter::plainLayout);
 		return sstr.str();
 	}
 	//return caster.get<std::string>(ptr);
@@ -153,11 +153,11 @@ void Castable::toJSONold(std::ostream & ostr, char fill, int verbosity) const {
 
 std::ostream & Castable::valueToJSONold(std::ostream & ostr) const {
 
-	return SprinterBase::toStream(ostr, *this, SprinterBase::plainLayout);
+	return Sprinter::toStream(ostr, *this, Sprinter::plainLayout);
 	/*
 	if ((getType() == typeid(char)) || isStlString()){
 		ostr << '"';
-		SprinterBase::toStream(ostr, *this, SprinterBase::plainLayout);
+		Sprinter::toStream(ostr, *this, Sprinter::plainLayout);
 		toStream(ostr, ','); // use JSONtree separator
 		ostr << '"';
 	}
@@ -311,20 +311,20 @@ std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ost
 
 /// "Friend class" template implementation
 template <>
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout) {
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout) {
 
 	if (v.isString()){
 		//const TypeLayout & chars = layout.stringChars;
-		SprinterBase::prefixToStream(ostr, layout.stringChars);
+		Sprinter::prefixToStream(ostr, layout.stringChars);
 		v.toStream(ostr, layout.stringChars.separator);
-		SprinterBase::suffixToStream(ostr, layout.stringChars);
+		Sprinter::suffixToStream(ostr, layout.stringChars);
 	}
 	else if (v.getElementCount() > 1) {
 		//const TypeLayout & l = layout.arrayChars;
-		SprinterBase::prefixToStream(ostr, layout.arrayChars);
-		// SprinterBase::sequenceToStream(ostr, v, layout);
+		Sprinter::prefixToStream(ostr, layout.arrayChars);
+		// Sprinter::sequenceToStream(ostr, v, layout);
 		v.toStream(ostr, layout.arrayChars.separator);
-		SprinterBase::suffixToStream(ostr, layout.arrayChars);
+		Sprinter::suffixToStream(ostr, layout.arrayChars);
 	}
 	else if (v.empty()) {
 		ostr << "null"; // TODO: layout.nullString
@@ -333,18 +333,18 @@ std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Castable
 		ostr << ((bool)v ? "true" : "false"); // Pythonic: "True", "False"
 	}
 	else {
-		ostr << v; //SprinterBase::basicToStream(ostr, v, myChars);
+		ostr << v; //Sprinter::basicToStream(ostr, v, myChars);
 	}
 
 	return ostr;
 	/*
 	// Semi-kludge: imitate intended layout
-	if (&layout == &SprinterBase::jsonLayout){
+	if (&layout == &Sprinter::jsonLayout){
 		x.valueToJSON(ostr);
 		return ostr;
 	}
 	else {
-		return drain::SprinterBase::basicToStream(ostr, x, "");
+		return drain::Sprinter::basicToStream(ostr, x, "");
 	}
 	*/
 

@@ -70,11 +70,11 @@ std::ostream & operator<<(std::ostream & ostr, const CommandSequence<T> & comman
 	 *  Map layout {,}: unused - or something is going wrong.
 	 *  Pair layout : key=value
 	 *  String layout: plain, because keys are strings but not desired to be hyphenated.
-	 *  (Future extensions of SprinterBase will separate keys and values?)
+	 *  (Future extensions of Sprinter will separate keys and values?)
 	 */
 	static const SprinterLayout layout("\n", "{,}", "=", "");
 
-	SprinterBase::sequenceToStream(ostr, commands, layout);
+	Sprinter::sequenceToStream(ostr, commands, layout);
 	return ostr;
 }
 

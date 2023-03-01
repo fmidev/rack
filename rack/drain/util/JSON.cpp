@@ -43,15 +43,28 @@ FileInfo JSON::fileInfo("json");
 template <>
 const drain::JSONtree2 drain::JSONtree2::emptyNode;
 
+void JSON::readValue(const std::string & s, Variable & v, bool keepType){
+	std::istringstream istr(s);
+	readValue(istr, v, keepType);
+};
 
 void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//TextReader::skipChars(istr, " \t\n\r");
-	TextReader::skipWhiteSpace(istr);
-
 	std::string value;
+
+	/*
+	if ((keepType && v.isString()) || !v.typeIsSet()){
+		std::getline(istr, value);
+		value = StringTools::trim(value, "'\" \t\r\n");
+		mout.warn("istr.readline: ", value);
+		v = value;
+		return;
+	}
+	*/
+
+	TextReader::skipWhiteSpace(istr);
 
 	int c = istr.peek();
 	switch (c) {
@@ -72,12 +85,13 @@ void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 		value = TextReader::scanSegment(istr, "]");
 		istr.get(); // swallow ']'
 		if (value.find_first_of("[]") != std::string::npos){
-			mout.warn() << "Arrays of arrays not supported (value='" << value << "')" << mout.endl;
+			mout.warn("Arrays of arrays not supported (value='", value, "')");
 		}
 		JSON::readArray(value, v);
 		break;
 	default: // numeric
-		value = TextReader::scanSegment(istr, "}, \t\n\r"); // 2023/01 re-added ','
+		value = TextReader::scanSegment(istr, "},\t\n\r"); // 2023/03 dropped space ' '
+		//value = TextReader::scanSegment(istr, "}, \t\n\r"); // 2023/01 re-added ','
 		//value = TextReader::scanSegment(istr, "} \t\n\r"); // 2023/01 dropped ','
 		if (!(keepType && v.typeIsSet())){
 			const std::type_info & type = Type::guessType(value);

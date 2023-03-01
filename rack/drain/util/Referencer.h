@@ -198,8 +198,8 @@ std::ostream & JSONwriter::toStream(const Referencer & v, std::ostream &ostr, un
 /// "Friend class" template implementation
 template <>
 inline
-std::ostream & SprinterBase::toStream(std::ostream & ostr, const drain::Referencer & x, const SprinterLayout & layout) {
-	return SprinterBase::toStream(ostr, (const drain::Castable &)x, layout);
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Referencer & x, const SprinterLayout & layout) {
+	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
 }
 
 
