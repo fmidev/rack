@@ -76,6 +76,16 @@ public:
 
 	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
 	//virtual void open();
+	inline
+	void writeMetadata(){
+		if (isOpen()){
+			GTIFWriteKeys(gtif);
+		}
+		else {
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("File not open");
+		}
+	}
 
 	virtual
 	void close();

@@ -130,7 +130,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 	setField(TIFFTAG_IMAGELENGTH,height);
 
 	const drain::Type t(src.getType());
-	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
+	mout.debug(" bytes=", drain::Type::call<drain::sizeGetter>(t));
 	switch ((const char)t) {
 		case 'C':
 			// no break
@@ -141,10 +141,11 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 		default:
 			bitspersample = 8;
 			//TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
-			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
+			mout.warn("unsupported storage type=", drain::Type::getTypeChar(t), ", trying 8 bit mode");
 	}
 
-	TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, bitspersample);
+	// TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, bitspersample);
+	setField(TIFFTAG_BITSPERSAMPLE, bitspersample);
 
 	int tileWidth  = tile.getWidth();
 	int tileHeight = tile.getHeight();
@@ -300,23 +301,10 @@ void FileTIFF::write(const std::string &path, const drain::image::Image & src){
 
 	FileTIFF file(path, "w");
 	file.setDefaults();
-	//file.setDefaultTileSize();
-	//file.setTileSize(tileWidth, tileHeight);
-	//file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
+
 	file.writeImageData(src); //, tileSize, tileSitileWidthze/2);
 
-	//GTIF *gtif = GTIFNew(tif);
-	// file.open();
-	std::string projstr = src.properties["where:projdef"];
-
-	// file.setProjection(projstr);
-	//GTIFWriteKeys(file.gtif);
-
-	//GTIFFree(gtif);
-		//file.close();
-
-		//XTIFFClose(tif);
-		//file.close();
+	// std::string projstr = src.properties["where:projdef"];
 
 
 }

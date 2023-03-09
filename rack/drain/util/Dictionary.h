@@ -49,12 +49,12 @@ namespace drain {
  *  TODO: hide first and second so that an entry cannot be assigned to either of them
  */
 
-// TODO: consider map<K, V> for faster search and order? But no, if still slow...
+// TODO: consider map<K, V> for faster search and order? But no, if still slow.
 
-/** Simple list based container for small dictionaries. Uses brute-force search.
+/** Simple list based container for small dictionaries. Uses brute-force linear search.
  *
- *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but
- *   appended sequentally.
+ *   In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not in
+ *   order but appended sequentially.
  *
  *   For handling input and output, dictionary has a separator char which is a comma ',' by default.
  *
@@ -85,7 +85,11 @@ public:
 	virtual
 	~Dictionary(){};
 
-	//virtual
+	inline
+	const container_t & getContainer() const {
+		return *this;
+	}
+
 	entry_t & add(const K & key, const V & value){
 		this->push_back(entry_t(key, value));
 		return this->back();
@@ -109,38 +113,19 @@ public:
 	}
 
 
-	/*
-	typename container_t & findByKeyNew(const K & key) {
-		for (auto & entry: *this){
-			if (entry.first == key)
-				return entry;
-		}
-		return this->front(); // todo: dummy
-	}
-	*/
-
-
 	inline
 	bool hasKey(const K & key) const {
 		return (findByKey(key) != this->end());
 	}
 
+	/// Given a key, return the first value associated with it.
 	inline
 	bool hasValue(const V & value) const {
 		return (findByValue(value) != this->end());
 	}
 
-	/*
-	typename container_t::iterator findByValue(const V & value){
-		for (typename container_t::iterator it = this->begin(); it != this->end(); ++it){
-			if (it->second == value)
-				return it;
-		}
-		return this->end();
-	}
-	*/
 
-	//virtual
+	/// Given a key, return the first value associated with it.
 	const V & getValue(const K & key) const {
 		typename container_t::const_iterator it = findByKey(key);
 		if (it != this->end())
@@ -152,7 +137,7 @@ public:
 
 	}
 
-	// virtual
+	/// Given a value, return the first key associated with it.
 	const K & getKey(const V & value) const {
 		typename container_t::const_iterator it = findByValue(value);
 		if (it != this->end())
@@ -163,45 +148,6 @@ public:
 		}
 	}
 
-	/*
-	 * REPLACED with Sprinter
-	 *
-	void toStreamOLD(std::ostream & ostr = std::cout, char separator=0) const {
-
-		if (!separator)
-			separator = this->separator;
-
-		char sep = 0;
-		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
-		for (const auto & entry: *this){
-
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-
-			ostr << entry.first << '=' << entry.second;
-			//ostr << it->first << '=' << it->second;
-		}
-	}
-
-	std::string toStrOLD(char separator=0) const {
-		std::stringstream sstr;
-		this->toStream(sstr, separator);
-		return sstr.str();
-	}
-	*/
-
-
-protected:
-
-	mutable
-	keylist_t keyList;
-
-	mutable
-	valuelist_t valueList;
-
-public:
 
 	const keylist_t & getKeys() const {
 
@@ -240,46 +186,17 @@ public:
 		}
 	}
 
-	/*
-	void keysToStream(std::ostream & ostr = std::cout, char separator=0) const {
-
-
-		if (!separator)
-			separator = this->separator;
-
-		char sep = 0;
-		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
-		for (const entry_t & entry: *this){
-
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-
-			ostr << entry.first; // << '=' << it->second;
-		}
-	}
-
-	void valuesToStream(std::ostream & ostr = std::cout, char separator=0) const {
-
-		if (!separator)
-			separator = this->separator;
-
-		char sep = 0;
-		//for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){
-		for (const entry_t & entry: *this){
-			if (sep)
-				ostr << sep;
-			else
-				sep = separator;
-
-			ostr << entry.second;
-			//ostr << it->second;
-		}
-	}
-	*/
-
 	char separator;
+
+protected:
+
+	mutable
+	keylist_t keyList;
+
+	mutable
+	valuelist_t valueList;
+
+
 };
 
 /*
@@ -296,7 +213,9 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary<K,V> & dict) {
 	// SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr)
 	// static drain::SprinterLayout dict_layout("{,}", "{,}", "{,}", "{,}");
-	ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, Sprinter::cppLayout);
+	// Note: the following cast is (also) the only way to apply layout on a Dictionary
+	ostr << drain::sprinter(dict.getContainer(), Sprinter::cppLayout);
+	//ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, Sprinter::cppLayout);
 	return ostr;
 }
 

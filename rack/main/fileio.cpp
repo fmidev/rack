@@ -387,6 +387,11 @@ void CmdOutputFile::exec() const {
 		writeDotGraph(src, filename, ODIMPathElem::ALL_GROUPS);
 
 	}
+	else if (path.extension == "tre"){
+		drain::Output output(path.str());
+		//drain::TreeUtils::dumpContents(src, output);
+		drain::TreeUtils::dump(src, output);
+	}
 	else {
 
 

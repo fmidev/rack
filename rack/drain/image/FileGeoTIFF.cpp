@@ -168,7 +168,12 @@ void FileGeoTIFF::close(){
 	if (isOpen()){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.debug("Closing GeoTIFF...");
-		GTIFWriteKeys(gtif);
+		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
+		enum {VERSION=0,MAJOR,MINOR};
+		int version[3] = {0,0,0};
+		int keycount = 0;
+		GTIFDirectoryInfo(gtif, version, &keycount);
+		mout.special("GTIFDirectoryInfo: version:", version[VERSION], '.', version[MAJOR], '.', version[MINOR], " keycount:", keycount);
 		GTIFFree(gtif);
 		gtif = nullptr;
 	}
@@ -280,7 +285,7 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 	tiepoints[3] = geoPos.x;
 	tiepoints[4] = geoPos.y;
 	tiepoints[5] = 0.0;
-	mout.debug() << "Tiepoint: " << imagePos << " => " << geoPos << mout.endl;
+	mout.debug("Tiepoint: ", imagePos, " => ", geoPos);
 
 	// consider
 	//TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
@@ -288,11 +293,9 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
 	//double pixscale[3]; // = {1,1,0};
 	std::vector<double> pixscale(3);
-	//std::cerr << "frame: " << frame.getProjection() << '\n';
-	//const drain::Rectangle<double> & bbox = frame.isLongLat() ? bboxD : frame.getBoundingBoxM();
+
 	const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxD() : frame.getBoundingBoxM();
-	//mout.experimental("check", )
-	//frame.getXScale()?
+
 	mout.debug() << "Scale: " << frame.getXScale() << ", " << frame.getYScale() << mout.endl;
 
 	pixscale[0] = bbox.getWidth()  / static_cast<double>(frame.getFrameWidth()); // upperRight.x - bbox.lowerLeft.x
@@ -304,11 +307,9 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 	mout.debug() << "ScaleY: " << pixscale[1] << mout.endl;
 
 	//printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
-
 	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
 	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
 
-	//TIFFSetField(tif,TIFFTAG_GEOPIXELSCALE, 3, pixscale);
 	setField(TIFFTAG_GEOPIXELSCALE, pixscale);
 
 
