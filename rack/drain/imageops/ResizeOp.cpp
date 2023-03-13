@@ -38,8 +38,8 @@ namespace image {
 void ResizeOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.warn() << "src:  " << src << mout;
-	mout.warn() << "dst0: " << dst << mout;
+	mout.debug("src:  ", src);
+	mout.debug("dst0: ", dst);
 
 	const size_t w = this->width  ? this->width  : dst.getWidth();
 	const size_t h = this->height ? this->height : dst.getHeight();
@@ -49,7 +49,7 @@ void ResizeOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 	if (!dst.typeIsSet())
 		dst.setEncoding(src.getEncoding());
 	//dst.initialize(src.getType(), w, h, src.getImageChannelCount(), src.getAlphaChannelCount());
-	mout.warn() << "dst1: " << dst << mout;
+	mout.debug("dst1: ", dst);
 }
 
 void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
@@ -74,15 +74,17 @@ void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 	drain::typeLimiter<double>::value_t limit = dst.getConf().getLimiter<double>();
 
 	//const ValueScaling conv(dst.getScaling(), src.getScaling());
-	mout.warn() << "relative scaling: " << conv << mout;
+	mout.debug("relative scaling: ", conv);
 	if (scale != 1.0)
-		mout.obsolete() << "discarding scale (" << scale << "), using relative scaling: " << conv << mout;
+		mout.obsolete("discarding scale parameter scale (", scale, "), using relative scaling: ", conv);
 
-	std::list<int> l = {0,1,10,100};
-	l.push_back(src.getConf().getTypeMin<int>());
-	l.push_back(src.getConf().getTypeMax<int>());
-	for (int i : l){
-		mout.warn() << i << '\t' << conv.inv(i) << '\t' << limit(conv.inv(i)) << mout;
+	if (mout.isDebug(1)){
+		std::list<int> l = {0,1,10,100};
+		l.push_back(src.getConf().getTypeMin<int>());
+		l.push_back(src.getConf().getTypeMax<int>());
+		for (int i : l){
+			mout.warn() << i << '\t' << conv.inv(i) << '\t' << limit(conv.inv(i)) << mout;
+		}
 	}
 
 

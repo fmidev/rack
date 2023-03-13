@@ -151,14 +151,25 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	drain::Logger mout(ctx.log, __FUNCTION__, bean.getName()+"[ImageOpExec]"); // = resources.mout;
 
-
-
 	DataSelector datasetSelector(ODIMPathElem::DATASET); // -> ends with DATASET
-	datasetSelector.count = 1;
+	// datasetSelector.count = 1; OLD
+	datasetSelector.count = 0; // NEW 2023
 	datasetSelector.consumeParameters(ctx.select);
-	mout.info() << "selector: " << datasetSelector << mout.endl;
-	//const std::string quantityRegExpStr(datasetSelector.quantity); // note: might be regexp
+	mout.debug("selector init: ", datasetSelector);
 
+
+	while ((!datasetSelector.pathMatcher.empty()) && datasetSelector.pathMatcher.front().isRoot()){
+		datasetSelector.pathMatcher.pop_front();
+		mout.note("stripped pathMatcher root: /", datasetSelector.pathMatcher, " -> ", datasetSelector.pathMatcher);
+	}
+
+	const bool USE_DEFAULT_DATASET_COUNT = (datasetSelector.count == 0);
+	if (USE_DEFAULT_DATASET_COUNT){
+		datasetSelector.count = 100; // Arbitrary? Consider --iResize 500,360 for a full volume, easily over 100 data arrays.
+		// mout.attention("setting  datasetSelector.count = ", datasetSelector.count);
+	}
+
+	mout.info("final image data selector: ", datasetSelector);
 
 	Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
@@ -166,31 +177,45 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	datasetSelector.getPaths(dst, paths);
 
 	if (paths.empty()){
-		mout.warn() << "no paths found with selector: " << datasetSelector << mout.endl;
+		mout.warn("no paths found with selector: ", datasetSelector);
 		return;
 	}
 
+	if ((USE_DEFAULT_DATASET_COUNT) && (paths.size() == datasetSelector.count)){
+		mout.attention("maximum number (", datasetSelector.count, ") of paths retrieved using default limit, consider explicit --select count=<n>,..." );
+	}
 
 	// DST properties
 	// Check if dst quantity has been set explicitly
-	std::string dstQuantitySyntax;
-	bool USER_SCALING = false;
+	// OLD std::string dstQuantitySyntax;
+	std::string dstQuantitySyntax = ImageContext::outputQuantitySyntax;
+
+	bool CHANGE_SCALING = false;
+	// bool USER_TYPE    = false;
+
+	EncodingODIM superOdim;
+
 	if (!ctx.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
-		EncodingODIM superOdim;
+
 		superOdim.scaling.scale = 0.0;
+		superOdim.type = "";
 		superOdim.link("what:quantity", dstQuantitySyntax); // consider "${what:quantity}_FILT"
 		superOdim.addShortKeys();
-		superOdim.updateValues(ctx.targetEncoding); // do not clear yet
+		superOdim.updateValues(ctx.targetEncoding); // do not clear yet. But risk: quantity(Syntax) causes scaling effors below.
 		//mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
-		USER_SCALING = (superOdim.scaling.scale != 0.0);
+		CHANGE_SCALING = (superOdim.scaling.scale != 0.0);
+		//USER_TYPE    = (!superOdim.type.empty());
 	}
 
-	if (dstQuantitySyntax.empty())
-		dstQuantitySyntax = ImageContext::outputQuantitySyntax;
+	if (dstQuantitySyntax.empty()){ // == explicitly cleared by user
+		// NEW
+		dstQuantitySyntax="${what:quantity}";
+		//dstQuantitySyntax = ImageContext::outputQuantitySyntax;
+	}
 
-	mout.experimental() << "output quantity (syntax): " << dstQuantitySyntax << mout.endl;
+	mout.experimental("output quantity (syntax): ", dstQuantitySyntax);
 
-
+	/*
 	const bool USER_QUANTITY = true; // !!! !dstQuantitySyntax.empty();
 
 	if (!USER_QUANTITY){
@@ -202,12 +227,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			mout.warn() << "Found several paths - using first path only" << mout;
 		}
 	}
+	*/
 
 	//mout.debug() << "Selector results: " << mout.endl;
 	for (const ODIMPath & path: paths)
-		mout.info() << "Selector results: " << '\t' << path << mout.endl;
+		mout.attention("Selector results: ", path);
 
-	mout.note() << "Use physical scale? " << ctx.imagePhysical << mout;
+	mout.note("Use physical scale? ", ctx.imagePhysical);
 
 	// For derived quantity:
 	drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
@@ -223,24 +249,25 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	for (ODIMPath & path: paths){ // non-const (for stripping leading root)
 
 		if (path.empty()){
-			mout.warn()  << "selector: " << datasetSelector << mout.endl;
-			mout.error() << "empty path?" << mout.endl;
+			mout.warn("selector: ", datasetSelector);
+			mout.error("empty path?");
 			continue;
 		}
 
-		if (path.begin()->isRoot()){
+		// if (path.begin()->isRoot()){
+		if (path.front().isRoot()){
 			path.pop_front();
-			mout.debug() << "path started with root, trimmed it to: " << path << mout.endl;
+			mout.debug("path started with root, trimmed it to: ", path);
 			if (path.empty()){
-				mout.error() << "empty path, skipping..." << mout.endl;
+				mout.error("empty path, skipping...");
 				continue;
 			}
 		}
 
-		const ODIMPathElem & datasetElem = *path.begin();
+		const ODIMPathElem & datasetElem = path.front(); // *path.begin();
 
 		/// This makes using QIND difficult...
-		mout.info() << "using: " << datasetElem << " / [" << datasetSelector.quantity << "]"<< mout.endl;
+		mout.attention("using: ", datasetElem, " / [", datasetSelector.quantity, "]");
 
 		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.quantity);
 
@@ -258,14 +285,14 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		mout.debug2() << "path: " << path << " contains " << QUANTITY_COUNT << " quantities, and... " << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
 
 		if (QUANTITY_COUNT == 0){
-			mout.warn() << "no quantities with regExp " << datasetSelector.quantity  << " to process, skipping" << mout.endl;
+			mout.warn("no quantities with quantity regExp ", datasetSelector.quantity, " to process, skipping");
 			if (DATASET_QUALITY)
-				mout.warn() << "yet dataset-level quality exists... '" << dstDataSet.getQuality() << "'" << mout.endl;
+				mout.warn("yet dataset-level quality exists... '", dstDataSet.getQuality(), "'");
 			return;
 		}
 
 		if ((QUANTITY_COUNT > 1) && quantitySyntaxMapper.isLiteral()){
-			mout.warn() << "several quantities, but single output quantity: " << quantitySyntaxMapper << mout.endl;
+			mout.warn("several quantities, but single output quantity: ", quantitySyntaxMapper);
 		}
 
 
@@ -278,11 +305,17 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		qlist_t quantityList;
 		qlist_t quantityListNew;
 
+		/*
 		for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
 			quantityList.insert(dit->second.odim.quantity);
 		}
+		*/
 
-		mout.debug() << "current quantities: " << drain::sprinter(quantityList) << mout;
+		for (const auto & entry: dstDataSet){
+			quantityList.insert(entry.first); // == entry.second.odim.quantity
+		}
+
+		mout.attention("current quantities: ", drain::sprinter(quantityList));
 
 
 		for (const std::string & quantity: quantityList){
@@ -333,60 +366,81 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				SPECIFIC_QUALITY_MISSING = true;  // consider  && ctx.qualityGroupMatcher.test(ODIMPathElem::DATA)
 			}
 
-			mout.special() << "srcTray: " << srcTray << mout;
+			// mout.special("srcTray: ", srcTray);
 
 			/// Target:
 			if (true) {
 
 				ImageConf srcConf(srcData.data.getConf());
 				srcConf.setChannelCount(1, (DATASET_QUALITY||SPECIFIC_QUALITY_FOUND) ? 1 : 0);
-				mout.special() << "src conf: " << srcConf << mout;
+				mout.special("src conf: ", srcConf);
 
 				statusVariables["what:quantity"] = srcData.odim.quantity;
 
 				const std::string dstQuantity = quantitySyntaxMapper.toStr(statusVariables);
 
 				if (quantityListNew.find(dstQuantity) != quantityListNew.end()){
-					mout.fail() << "output " << quantitySyntaxMapper << "='" << dstQuantity << "' exists already for input: " << quantity << mout.endl;
+					mout.fail("output ", quantitySyntaxMapper, "='", dstQuantity, "' exists already for input: ", quantity);
 					break;
 				}
 				else {
 					quantityListNew.insert(dstQuantity);
 				}
 
-				mout.note() << quantity << '/' << srcData.odim.quantity <<  " -> " << dstQuantity << mout.endl;
+				mout.note(quantity, '/', srcData.odim.quantity, " -> ", dstQuantity);
+
+				// Type is explicitly set, and differs from
+				const bool CHANGE_TYPE = (!superOdim.type.empty()) && (superOdim.type != srcData.odim.type);
 
 				Data<dst_t> & dstData = dstDataSet.getData(dstQuantity); // USER_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 				dstData.data.setName(dstQuantity);
 
 				// This replaces: bean.makeCompatible(srcConf, dstData.data);
 
+
 				dstData.odim.updateFromMap(srcData.odim);
-				dstData.odim.quantity = dstQuantity;
+				// dstData.odim.quantity = dstQuantity; Must be done below (override)
 
 				ImageConf dstConf;
 				//dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
 
 				if (!ctx.targetEncoding.empty()){
 					// mout.special() << "trying: " << dstQuantity << '/' << ctx.targetEncoding << mout;
-					const QuantityMap & qmap = getQuantityMap();
-					if (qmap.hasQuantity(dstQuantity)){
-						mout.special() << "conf exists for: " << dstQuantity << mout;
-						qmap.setQuantityDefaults(dstData.odim, dstQuantity, ctx.targetEncoding);
-					}
-					else {
-						dstData.odim.updateValues(ctx.targetEncoding);
-						dstData.odim.quantity = dstQuantity; // replace syntax pattern
-						if ((dstData.odim.type != srcData.odim.type) && ! USER_SCALING){
-							mout.warn() << "type changed from: " << srcData.odim.type << " to " << dstData.odim.type << mout;
-							mout.warn() << "but no scaling set "  << mout;
+
+					if (CHANGE_TYPE || CHANGE_SCALING){
+
+						if (CHANGE_TYPE)
+							mout.attention("data storage TYPE change requested by user");
+
+						if (CHANGE_SCALING)
+							mout.attention("data SCALING change requested by user");
+
+
+						const QuantityMap & qmap = getQuantityMap();
+						if (qmap.hasQuantity(dstQuantity)){
+							mout.special("conf exists for: ", dstQuantity);
+							qmap.setQuantityDefaults(dstData.odim, dstQuantity, ctx.targetEncoding); // if only quantity?
+							// NOTE: dstData.odim.quantity may NOW contain variable syntax,  "${what:quantity}_X"
+						}
+						else {
+							dstData.odim.updateValues(ctx.targetEncoding);
+							// dstData.odim.quantity = dstQuantity; // replace syntax pattern
+							if (CHANGE_TYPE && ! CHANGE_SCALING){
+								mout.attention("no conf for: ", dstQuantity);
+								mout.warn("type changed from: ", srcData.odim.type, " to ", dstData.odim.type, ", but no scaling set ");
+							}
+
 						}
 					}
-					// ProductBase::completeEncoding(dstData.odim, ctx.targetEncoding);
+
+					// dstData.odim.quantity = dstQuantity;
 					dstConf.setType(drain::Type::getTypeInfo(dstData.odim.type));
 					dstConf.setScaling(dstData.odim);
-					mout.special() << "user conf: " << dstConf << mout;
+					mout.special("user conf: ", dstConf);
 				}
+
+				dstData.odim.quantity = dstQuantity;
+
 
 				mout.debug2() << "dst dataset: " << dstDataSet << mout;
 
@@ -402,7 +456,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 				// REALLY NEW
 				bean.makeCompatible(dstConf, dstData.data);
-				mout.special() << "dst (after makeCompatible):" << dstData.data << mout;
+				mout.special("dst (after makeCompatible):", dstData.data);
 
 				// NEWISH dstData.data.setConf(dstConf);
 				// TODO: alpha channel should be filled?
@@ -422,8 +476,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 				*/
 
-				mout.warn() << "dst:    " << dstData.data << " <- " << EncodingODIM(dstData.odim) << mout.endl;
-				mout.warn() << "dst[0]: " << dstData.data.getChannel(0) << mout.endl;
+				mout.debug("dst:    ", dstData.data, " <- ", EncodingODIM(dstData.odim));
+				mout.debug("dst[0]: ", dstData.data.getChannel(0));
 
 				// dstTray.setChannels(dstData.data); // sets all the channels
 				dstTray.appendImage(dstData.data);
@@ -437,10 +491,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 		}
 
-		mout.debug() << "new quantities: " << drain::sprinter(quantityListNew) << mout;
+		mout.debug("resulting (new) quantities: ", drain::sprinter(quantityListNew));
 
 
-		mout.debug2() << "Add src quality, if found" << mout.endl;
+		mout.debug2("Add src quality, if found");
 		/// dstData was fully added already above (all the channels)
 
 		//  Case 1: at least some specific quality is used (and dataset-level )
@@ -454,7 +508,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Loop again (add specific)
 			for (const qlist_t::value_type & srcQuantity: quantityList){
 
-				mout.debug() << "considering quantity [" << srcQuantity << ']' << mout.endl;
+				mout.debug("considering quantity [", srcQuantity, ']');
 
 				Data<dst_t> & srcData = dstDataSet.getData(srcQuantity);
 
@@ -462,10 +516,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 				const std::string dstQuantity = quantitySyntaxMapper.toStr(statusVariables);
 
-				mout.info() << "dst quantity: " << dstQuantity << mout.endl;
+				mout.info("dst quantity: ", dstQuantity);
 
 				if ((dstQuantity != srcQuantity) && dstDataSet.has(dstQuantity)){
-					mout.warn() << "Dst quantity [" << dstQuantity << "] exists already... " << mout.endl;
+					mout.warn("New dst quantity [", dstQuantity, "] exists already in src");
 				}
 
 				//Data<dst_t> & dstData = NEW_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
@@ -520,8 +574,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//mout.note() << "name NOW: " << srcQuality.data.getName() << mout.endl;
 
 
-				if (USER_QUANTITY){
-					mout.note() << "discarding quality data (associated with only some data), exiting loop"  << mout.endl;
+				if (true){  // (USER_QUANTITY / CHANGE_QUANTITY){
+					mout.note("discarding quality data (associated with only some data), exiting loop");
 					break;
 				}
 
@@ -529,7 +583,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		}
 		else if (DATASET_QUALITY){ // ...only.
 
-			mout.info() << path << " has dataset-level quality data (only)"  << mout.endl;
+			mout.info(path, " has dataset-level quality data (only)");
 
 			PlainData<dst_t> & srcQuality = dstDataSet.getQualityData();
 
@@ -555,9 +609,9 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		}
 		else {
 			if (SPECIFIC_QUALITY_FOUND && SPECIFIC_QUALITY_MISSING)
-				mout.note() << "discarding quality data (associated with only some data)"  << mout.endl;
+				mout.note("discarding quality data (associated with only some data)");
 			else
-				mout.info() << "no associated quality data"  << mout.endl;
+				mout.info("no associated quality data");
 		}
 
 
@@ -627,7 +681,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	// Has served
 	ctx.targetEncoding.clear();
 
-	//return;
+
 }
 
 

@@ -662,9 +662,7 @@ public:
 		ODIM encoding;
 		//encoding.type = "C";
 		encoding.setTypeDefaults("C");
-		//std::string dstQuantity;
 		if (!ctx.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
-			//encoding.link("quantity", dstQuantity);
 			encoding.addShortKeys();
 			encoding.updateValues(ctx.targetEncoding); // do not clear yet
 			mout.note() << "target quantity: " << encoding.quantity << mout.endl;
@@ -685,17 +683,36 @@ public:
 		drain::VariableMap & statusMap = ctx.getStatusMap();
 		statusMap["command"] = op.getName();
 
-		if (encoding.quantity.empty()){
-			std::string quantity;
-			retrieveQuantity(ctx, quantity);
-			// New ...
-			drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
+		// NOTE: this should be similar with imageOps remapping. Consider shared function?
+		std::string dstQuantity; // NEW 2023
+		std::string srcQuantity;
+		retrieveQuantity(ctx, srcQuantity);
+		// NEW 2023
+		drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
+		if (!encoding.quantity.empty()){
+			quantitySyntaxMapper.parse(encoding.quantity); // Can be literal ("DBZH") or variable ("{what:quantity}_NEW")
+		}
+		else {
 			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax);
-			statusMap["what:quantity"] = quantity; // override...
+		}
+		statusMap["what:quantity"] = srcQuantity; // override...
+		dstQuantity = quantitySyntaxMapper.toStr(statusMap);
+		if (srcQuantity != dstQuantity)
+			mout.special("src[", srcQuantity, "] -> dst[", dstQuantity, "]");
+
+		/*
+		if (encoding.quantity.empty()){
+			std::string srcQuantity;
+			retrieveQuantity(ctx, srcQuantity);
+			// New ...
+			drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper); // copy constr, ensures accepting variables with ':', like {what:quantity}
+			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax);
+			statusMap["what:quantity"] = srcQuantity; // override...
 			encoding.quantity = quantitySyntaxMapper.toStr(statusMap);
 			mout.special() << "automatic quantity: " <<  encoding.quantity << mout;
 			//dstQuantity = quantity + "/Palette";
 		}
+		 */
 
 		//if (encoding.quantity.empty()){ // NOW: never true
 		if (false){
@@ -717,11 +734,11 @@ public:
 			ODIMPathElem elem;
 			ctx.guessDatasetGroup(dst, elem);
 
-			mout.note() << "saving image in HDF5 structure: " << elem << '[' << encoding.quantity << ']' << mout.endl;
+			mout.note("saving image in HDF5 structure: ", elem, '[', dstQuantity, ']'); // NEW 2023
 
 			DataSet<BasicDst> dstProduct(dst[elem]);
-			Data<BasicDst> & data = dstProduct.getData(encoding.quantity);
-			//dstProduct.setNoSave(NO_SAVE);
+			//Data<BasicDst> & data = dstProduct.getData(encoding.quantity);
+			Data<BasicDst> & data = dstProduct.getData(dstQuantity); // NEW 2023/03 !
 			data.setNoSave(NO_SAVE);
 
 			if (NO_SAVE){
@@ -732,7 +749,7 @@ public:
 
 			data.odim.updateFromMap(graySrc.getProperties());
 			// data.odim.updateFromCastableMap(encoding);
-			data.odim.quantity = encoding.quantity;
+			data.odim.quantity = dstQuantity; // NEW 2023 encoding.quantity;
 			data.odim.type = "C";
 			data.setEncoding("C");
 			//data.odim.scaling.setScale(1, 0);

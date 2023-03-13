@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+Copyright (c) 2017– FMI Open Development / Markus Peura, first.last@fmi.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -134,7 +134,7 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 		mout.debug2() << "passed overlap test (directly or using tmp)" << mout.endl;
 	}
 
-	mout.special() << "srcFrame:     " << srcFrame << mout;
+	mout.debug() << "srcFrame:     " << srcFrame << mout;
 	mout.debug()   << "srcFrame Conf: " << srcFrame.getConf() << mout;
 	//mout.special() << "srcFrame Enc:  " << srcFrame.getEncoding() << mout;
 	mout.debug()   << "srcFrame Sca:  " << srcFrame.getScaling() << mout;

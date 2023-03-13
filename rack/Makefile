@@ -4,7 +4,7 @@ prefix=/opt
 
 USE_GEOTIFF=NO
 
-#VERSION := $(shell Release/rack --version | head -1)
+VERSION := $(shell Release/rack --version | head -1)
 
 help:
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z\-\.]\+:' | cut -d' ' -f1 | tr ':' '|' `"; echo make \[ $$X \]
@@ -12,46 +12,35 @@ help:
 
 release: #unpack
 	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
-#tar xzf make.tgz --keep-newer-files
 	tar xzf make.tgz 
 	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
-#unpack:
-#	unzip -o make.zip
-#	tar xvzf make.tgz
 
 install:
 	@echo 'Quick test:'
 	Release/rack --help > /dev/null
 	mkdir -v --parents ${prefix}/bin
 	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1) && cd ${prefix}/bin; ln -s ./rack-$(shell Release/rack --version | head -1) ./rack || ln -si ./rack-$(shell Release/rack --version | head -1) ./rack
-# alpine Linux 'ln' supports no -i
+# alpine Linux 'ln' does not support -i
 
 
 make.tgz: Release/
 	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
-
-BASE_IMAGE=alpine
-BASE_IMAGE=ubuntu18
 #tests:
 #	cd demo; ./make-tests.sh
 
-# make docker-ubuntu18
-# docker-%: Dockerfile-%
+# BASE_IMAGE=alpine
+BASE_IMAGE=ubuntu18
+
+# make rack7.20_ubuntu18
 docker: Dockerfile.${BASE_IMAGE}
-#	docker build . --tag rack6_full:latest
-#	echo LABEL=$* FILE1=$< TARGET=$@
-#docker build . --tag rack6_ubuntu18:latest
-	docker build . --file $<  --tag rack6_${BASE_IMAGE}
+	docker build . --file $<  --tag rack${VERSION}_${BASE_IMAGE}
 
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
 
-
-#PROJECT_LOGO=demo/rack-logo-110x55.png
-#PROJECT_NAME=' '
 include Makefile-doxygen
 
 
