@@ -187,22 +187,21 @@ bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::strin
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-
 	try {
 		if (!dateStr.empty())
 			t.setTime(dateStr, ODIM::dateformat);
 		else
-			mout.note() << "empty date string" << mout;
+			mout.note("empty date string");
 
 		if (!timeStr.empty())
 			t.setTime(timeStr, ODIM::timeformat);
 		else
-			mout.note() << "empty date string" << mout;
+			mout.note("empty time string");
 
 	}
 	catch (const std::exception &e) {
-		drain::Logger mout(__FUNCTION__, __FILE__);
-		mout.fail() << e.what() << mout;
+		// drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.fail(e.what());
 		return false;
 	}
 
@@ -259,6 +258,16 @@ bool ODIM::setTime(const std::string & s){
 	return n >= (nDate+nTime);
 
 }
+
+void ODIM::adjustGeometry(size_t cols, size_t rows){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	const drain::image::AreaGeometry a(area);
+	setGeometry(cols, rows);
+	mout.note(a, " => ", area);
+	mout.unimplemented("resolution adjustment");
+}
+
 
 void ODIM::updateLenient(const ODIM & odim){
 

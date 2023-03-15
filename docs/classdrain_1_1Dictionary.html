@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62fa86c46659932b13f14e05c2325cdc"><td class="memItemLeft" align="right" valign="top"><a id="a62fa86c46659932b13f14e05c2325cdc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Dictionary</b> (std::initializer_list&lt; entry_t &gt; d)</td></tr>
 <tr class="separator:a62fa86c46659932b13f14e05c2325cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8043e7a2529734727993092c02196f52"><td class="memItemLeft" align="right" valign="top"><a id="a8043e7a2529734727993092c02196f52"></a>
+const container_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getContainer</b> () const</td></tr>
+<tr class="separator:a8043e7a2529734727993092c02196f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fab103344aa7984409c1ed450585f3b"><td class="memItemLeft" align="right" valign="top"><a id="a1fab103344aa7984409c1ed450585f3b"></a>
 entry_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const K &amp;key, const V &amp;value)</td></tr>
 <tr class="separator:a1fab103344aa7984409c1ed450585f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,13 +147,16 @@ container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasKey</b> (const K &amp;key) const</td></tr>
 <tr class="separator:aab839cef7d1cf2f21de5afe257fe15de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5d54be78f001c1a8ae86c10b75d69df"><td class="memItemLeft" align="right" valign="top"><a id="ac5d54be78f001c1a8ae86c10b75d69df"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasValue</b> (const V &amp;value) const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#ac5d54be78f001c1a8ae86c10b75d69df">hasValue</a> (const V &amp;value) const</td></tr>
+<tr class="memdesc:ac5d54be78f001c1a8ae86c10b75d69df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a key, return the first value associated with it. <br /></td></tr>
 <tr class="separator:ac5d54be78f001c1a8ae86c10b75d69df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78bdbe5403c7a9be36c922b6041cb954"><td class="memItemLeft" align="right" valign="top"><a id="a78bdbe5403c7a9be36c922b6041cb954"></a>
-const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (const K &amp;key) const</td></tr>
+const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">getValue</a> (const K &amp;key) const</td></tr>
+<tr class="memdesc:a78bdbe5403c7a9be36c922b6041cb954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a key, return the first value associated with it. <br /></td></tr>
 <tr class="separator:a78bdbe5403c7a9be36c922b6041cb954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae23ad73d13c217eda74c7e6c01c934c"><td class="memItemLeft" align="right" valign="top"><a id="aae23ad73d13c217eda74c7e6c01c934c"></a>
-const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKey</b> (const V &amp;value) const</td></tr>
+const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#aae23ad73d13c217eda74c7e6c01c934c">getKey</a> (const V &amp;value) const</td></tr>
+<tr class="memdesc:aae23ad73d13c217eda74c7e6c01c934c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a value, return the first key associated with it. <br /></td></tr>
 <tr class="separator:aae23ad73d13c217eda74c7e6c01c934c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd824e353b25e080dcc4ca54a74884f"><td class="memItemLeft" align="right" valign="top"><a id="a2dd824e353b25e080dcc4ca54a74884f"></a>
 const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> () const</td></tr>
@@ -185,8 +191,8 @@ valuelist_t&#160;</td><td class="memItemRight" valign="bottom"><b>valueList</b><
 class drain::Dictionary&lt; K, V &gt;</h3>
 
 <p>Two-way mapping between strings and objects of template class T. </p>
-<p>TODO: hide first and second so that an entry cannot be assigned to either of them Simple list based container for small dictionaries. Uses brute-force search.</p>
-<p>In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not order but appended sequentally.</p>
+<p>TODO: hide first and second so that an entry cannot be assigned to either of them Simple list based container for small dictionaries. Uses brute-force linear search.</p>
+<p>In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not in order but appended sequentially.</p>
 <p>For handling input and output, dictionary has a separator char which is a comma ',' by default. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>drain/util/<a class="el" href="Dictionary_8h_source.html">Dictionary.h</a></li>

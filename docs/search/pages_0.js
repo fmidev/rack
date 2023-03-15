@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['accumulation_20products_3867',['Accumulation products',['../accumulationpage.html',1,'']]],
-  ['anomaly_20detection_20and_20removal_20_28andre_29_3868',['Anomaly Detection and Removal (AnDRe)',['../andrepage.html',1,'']]]
+  ['accumulation_20products_3875',['Accumulation products',['../accumulationpage.html',1,'']]],
+  ['anomaly_20detection_20and_20removal_20_28andre_29_3876',['Anomaly Detection and Removal (AnDRe)',['../andrepage.html',1,'']]]
 ];

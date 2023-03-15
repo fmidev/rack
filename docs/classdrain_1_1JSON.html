@@ -104,20 +104,19 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad33482cca5b833f5cfeb8147ea7348d0"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ad33482cca5b833f5cfeb8147ea7348d0"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#ad33482cca5b833f5cfeb8147ea7348d0">readTree</a> (T &amp;tree, std::istream &amp;istr)</td></tr>
-<tr class="memdesc:ad33482cca5b833f5cfeb8147ea7348d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW. Reads and parses a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> file.  <a href="classdrain_1_1JSON.html#ad33482cca5b833f5cfeb8147ea7348d0">More...</a><br /></td></tr>
+<tr class="memdesc:ad33482cca5b833f5cfeb8147ea7348d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads and parses a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> file.  <a href="classdrain_1_1JSON.html#ad33482cca5b833f5cfeb8147ea7348d0">More...</a><br /></td></tr>
 <tr class="separator:ad33482cca5b833f5cfeb8147ea7348d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b0524cd8a18b9197085bbf72b6a756d"><td class="memTemplParams" colspan="2"><a id="a0b0524cd8a18b9197085bbf72b6a756d"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a0b0524cd8a18b9197085bbf72b6a756d"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>treeToStream</b> (std::ostream &amp;ostr, const T &amp;tree, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1SprinterBase.html#af8f0689b7a24be4bcde36addd2e0d48a">drain::SprinterBase::jsonLayout</a>, short indent=0)</td></tr>
-<tr class="separator:a0b0524cd8a18b9197085bbf72b6a756d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b9d62d0572b7bd00ce7b7df1ab35ab"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a90b9d62d0572b7bd00ce7b7df1ab35ab"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#a90b9d62d0572b7bd00ce7b7df1ab35ab">treeToStream</a> (std::ostream &amp;ostr, const T &amp;tree, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">drain::Sprinter::jsonLayout</a>, short indent=0)</td></tr>
+<tr class="memdesc:a90b9d62d0572b7bd00ce7b7df1ab35ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a tree into an output stream using <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> layout by default.  <a href="classdrain_1_1JSON.html#a90b9d62d0572b7bd00ce7b7df1ab35ab">More...</a><br /></td></tr>
+<tr class="separator:a90b9d62d0572b7bd00ce7b7df1ab35ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99f0490132dcfa395ca51e2e5aa20477"><td class="memItemLeft" align="right" valign="top"><a id="a99f0490132dcfa395ca51e2e5aa20477"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#a99f0490132dcfa395ca51e2e5aa20477">readValue</a> (std::istream &amp;istr, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
-<tr class="memdesc:a99f0490132dcfa395ca51e2e5aa20477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
+<tr class="memdesc:a99f0490132dcfa395ca51e2e5aa20477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a value (<a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> syntax). Read stream until a value has been extracted, with type recognition. <br /></td></tr>
 <tr class="separator:a99f0490132dcfa395ca51e2e5aa20477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b52a789570aaccc2484ca6082735143"><td class="memItemLeft" align="right" valign="top"><a id="a8b52a789570aaccc2484ca6082735143"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#a8b52a789570aaccc2484ca6082735143">readValue</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
-<tr class="memdesc:a8b52a789570aaccc2484ca6082735143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value. Read stream until a value has been extracted, with type recognition. <br /></td></tr>
-<tr class="separator:a8b52a789570aaccc2484ca6082735143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a829422675a9c88fd193b3f20ecc1cbda"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#a829422675a9c88fd193b3f20ecc1cbda">readValue</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v, bool keepType=false)</td></tr>
+<tr class="memdesc:a829422675a9c88fd193b3f20ecc1cbda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read value (<a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> syntax). Read stream until a value has been extracted, with type recognition.  <a href="classdrain_1_1JSON.html#a829422675a9c88fd193b3f20ecc1cbda">More...</a><br /></td></tr>
+<tr class="separator:a829422675a9c88fd193b3f20ecc1cbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8a9ddb7ea0105ffc1e646590887aa3c"><td class="memItemLeft" align="right" valign="top"><a id="af8a9ddb7ea0105ffc1e646590887aa3c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1JSON.html#af8a9ddb7ea0105ffc1e646590887aa3c">readArray</a> (const std::string &amp;s, <a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;v)</td></tr>
 <tr class="memdesc:af8a9ddb7ea0105ffc1e646590887aa3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given comma-separated string of values, assign them to variable of minimum compatible type. <br /></td></tr>
@@ -217,13 +216,118 @@ template&lt;class T &gt; </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>NEW. Reads and parses a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> file. </p>
+<p>Reads and parses a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> file. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">-</td><td>tree type, especially drain::Tree&lt;K,V&gt; </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a829422675a9c88fd193b3f20ecc1cbda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a829422675a9c88fd193b3f20ecc1cbda">&#9670;&nbsp;</a></span>readValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readValue </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Variable.html">Variable</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>keepType</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read value (<a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> syntax). Read stream until a value has been extracted, with type recognition. </p>
+<p>Allowed syntax:</p><ul>
+<li>string: "&lt;value&gt;"</li>
+<li>scalar: </li>
+</ul>
+<ul>
+<li>array: [</li>
+</ul>
+<p>,</p>
+<p>,</p>
+<p>,&lt;...&gt;] </p>
+
+</div>
+</div>
+<a id="a90b9d62d0572b7bd00ce7b7df1ab35ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b9d62d0572b7bd00ce7b7df1ab35ab">&#9670;&nbsp;</a></span>treeToStream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; treeToStream </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;&#160;</td>
+          <td class="paramname"><em>layout</em> = <code><a class="el" href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">drain::Sprinter::jsonLayout</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>indent</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write a tree into an output stream using <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> layout by default. </p>
+<p><a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> offers flexibility in formatting. <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> layout is the default. </p>
 
 </div>
 </div>

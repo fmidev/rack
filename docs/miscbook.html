@@ -117,7 +117,15 @@ Sampling grid data</h1>
 </li>
 </ul>
 <p>Sampling steps, start, and end can be changed with <code>&ndash;sample</code> command. One may also skip lines containing <code>undetect</code> or <code>nodata</code> samples. If a comment char is defined some metadata, including applied format, appears as comments in the start of the output.</p>
-<div class="fragment"></div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
+<div class="fragment"><div class="line">--sample  &lt;iStep&gt;,&lt;jStep&gt;,&lt;i&gt;,&lt;j&gt;,&lt;commentChar&gt;,&lt;skipVoid&gt;  (Section: general)</div>
+<div class="line">  Extract samples. See --format.</div>
+<div class="line">    iStep=10 [horz coord step]</div>
+<div class="line">    jStep=0 [vert coord step]</div>
+<div class="line">    i=-1:-1 [horz index or range]</div>
+<div class="line">    j=-1:-1 [vert index or range]</div>
+<div class="line">    commentChar=# [comment prefix (char or bytevalue)]</div>
+<div class="line">    skipVoid=false [skip lines with invalid/missing values]</div>
+</div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
 <div class="line"># bbox=26.318993630447291565,67.945427638870782516,26.318918726089457039,67.945427638895992573</div>
 <div class="line"># height=360</div>
@@ -131,25 +139,25 @@ Sampling grid data</h1>
 <div class="line"># j=[0,50]</div>
 <div class="line"># jStep=30</div>
 <div class="line"># skipVoid=false</div>
-<div class="line"># format=&#39;${i},${j},${LON},${LAT},${X},${Y},${RANGE},${AZM}&#39;</div>
+<div class="line"># format=&#39;${i},${j} (${LON},${LAT}) ${DBZH}&#39;</div>
 <div class="line">## resulting geometry </div>
 <div class="line"># rows=50</div>
 <div class="line"># rols=12</div>
 <div class="line"># samples=600</div>
-<div class="line">60,0,26.318899999999999295,65.046221712276846461,0,30250,30250,0 #void data</div>
-<div class="line">50,0,26.318899999999999295,65.001375835002960457,0,25250,25250,0</div>
-<div class="line">90,0,26.318899999999999295,65.18075771873881763,0,45250,45250,0</div>
-<div class="line">60,30,26.639625849983946893,65.009528367473237154,15124.999999999998181,26197.268464479271643,30250,30</div>
-<div class="line">70,30,26.693180601515052786,65.048242271160603423,17624.999999999996362,30527.395483401465754,35250,30</div>
-<div class="line">80,30,26.74689089797000463,65.08693674805789442,20124.999999999996362,34857.522502323656227,40250,30</div>
+<div class="line">60,0 (26.318899999999999295,65.046221712276846461) 0 #void data</div>
+<div class="line">50,0 (26.318899999999999295,65.001375835002960457) -13.990000000000009095</div>
+<div class="line">90,0 (26.318899999999999295,65.18075771873881763) -10.790000000000020464</div>
+<div class="line">60,30 (26.639625849983946893,65.009528367473237154) -11.709999999999979536</div>
+<div class="line">70,30 (26.693180601515052786,65.048242271160603423) -5.8199999999999931788</div>
+<div class="line">80,30 (26.74689089797000463,65.08693674805789442) -10.649999999999977263</div>
 <div class="line">...</div>
 <div class="line">    ...</div>
 <div class="line">        ...</div>
-<div class="line">160,30,27.182251512133280613,65.395782362396388976,40124.999999999992724,69498.538653701209114,80250,30 #void data</div>
-<div class="line">170,30,27.237391325265114972,65.434297913009174863,42624.999999999992724,73828.665672623406863,85250,30 #void data</div>
-<div class="line">180,30,27.292693320975406124,65.472793119374756543,45124.999999999992724,78158.79269154559006,90250,30</div>
-<div class="line">190,30,27.348158180313880905,65.511267886817819317,47624.999999999992724,82488.919710467787809,95250,30</div>
-<div class="line">200,30,27.403786587525736707,65.549722120116626911,50124.999999999992724,86819.046729389985558,100250,30 #void data</div>
+<div class="line">160,30 (27.182251512133280613,65.395782362396388976) 0 #void data</div>
+<div class="line">170,30 (27.237391325265114972,65.434297913009174863) 0 #void data</div>
+<div class="line">180,30 (27.292693320975406124,65.472793119374756543) 6.7400000000000090949</div>
+<div class="line">190,30 (27.348158180313880905,65.511267886817819317) 19.959999999999979536</div>
+<div class="line">200,30 (27.403786587525736707,65.549722120116626911) 0 #void data</div>
 </div><!-- fragment --><p>Likewise, one can sample Cartesian data. Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --cSize 500,500 -c --sample 50,50  -o samples-cart.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
 <div class="line"># bbox=21.473369970467256707,62.446873711034854182,32.036889576527535439,66.915064520295331363</div>

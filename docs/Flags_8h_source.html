@@ -225,7 +225,7 @@ $(function() {
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">if</span> (dict.hasKey(key)){</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        mout.info() &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot; already in dict: &quot;</span> &lt;&lt; dict &lt;&lt; mout.endl;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span> dict.getValue(key);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span> dict.<a class="code" href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">getValue</a>(key);</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">if</span> (i==0)</div>
@@ -462,7 +462,7 @@ $(function() {
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1Flagger.html#ab4a7195256a6cc29e07eebac975206ec">isSet</a>(<span class="keyword">const</span> key_t &amp; key)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Flagger.html#ab4a7195256a6cc29e07eebac975206ec">isSet</a>(dictionary.getValue(key));</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Flagger.html#ab4a7195256a6cc29e07eebac975206ec">isSet</a>(dictionary.<a class="code" href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">getValue</a>(key));</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    };</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160; </div>
@@ -587,18 +587,18 @@ $(function() {
 <div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160; </div>
 <div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160; </div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">dict_t</a>  ownDictionary;</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    dict_t  ownDictionary;</div>
 <div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160; </div>
 <div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160; </div>
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">dict_t</a> &amp; getDict()<span class="keyword"> const</span>{</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    <span class="keyword">const</span> dict_t &amp; getDict()<span class="keyword"> const</span>{</div>
 <div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;        <span class="keywordflow">return</span> ownDictionary;</div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    }</div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160; </div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160; </div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">dict_t</a> &amp; getDict(){</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    dict_t &amp; getDict(){</div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        <span class="keywordflow">return</span> ownDictionary;</div>
 <div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    }</div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160; </div>
@@ -712,7 +712,7 @@ $(function() {
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160; </div>
 <div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        <span class="keywordflow">if</span> (this-&gt;getDict().hasKey(key)){</div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;            this-&gt;value = (value_t)this-&gt;getDict().getValue(key); <span class="comment">// why cast? dvalue_t -&gt; value_t</span></div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;            this-&gt;value = (value_t)this-&gt;getDict().<a class="code" href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">getValue</a>(key); <span class="comment">// why cast? dvalue_t -&gt; value_t</span></div>
 <div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        }</div>
 <div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;        <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;            <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;Dictionary[&quot;</span>) + <span class="keyword">typeid</span>(value_t).name()+ <span class="stringliteral">&quot;]: no such key: &quot;</span>+ key);</div>
@@ -828,7 +828,7 @@ $(function() {
 <div class="line"><a name="l00843"></a><span class="lineno"><a class="line" href="classdrain_1_1SingleFlagger.html#a4f1053d6f7fa0ebc029e218fc4e0be86">  843</a></span>&#160;    <span class="keyword">const</span> key_t &amp; <a class="code" href="classdrain_1_1SingleFlagger.html#a4f1053d6f7fa0ebc029e218fc4e0be86">str</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        <span class="comment">//static const key_t SINGLE=&quot;SINGLE&quot;;</span></div>
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;        <span class="comment">//return SINGLE;</span></div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        <span class="keywordflow">return</span> this-&gt;getDict().getKey(this-&gt;value);</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        <span class="keywordflow">return</span> this-&gt;getDict().<a class="code" href="classdrain_1_1Dictionary.html#aae23ad73d13c217eda74c7e6c01c934c">getKey</a>(this-&gt;value);</div>
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    }</div>
 <div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160; </div>
 <div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160; </div>
@@ -1072,6 +1072,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Flagger_html_a50f2163c687c02a4e992ca987247ef21"><div class="ttname"><a href="classdrain_1_1Flagger.html#a50f2163c687c02a4e992ca987247ef21">drain::Flagger::unset</a></div><div class="ttdeci">Flagger &amp; unset(const key_t &amp;key)</div><div class="ttdoc">Unset desired flags. Does not set any flag.</div><div class="ttdef"><b>Definition:</b> Flags.h:395</div></div>
 <div class="ttc" id="aclassdrain_1_1Flags_html_a22dd079847969a4ac4d412286a154826"><div class="ttname"><a href="classdrain_1_1Flags.html#a22dd079847969a4ac4d412286a154826">drain::Flags::addEntry</a></div><div class="ttdeci">value_t addEntry(const dict_t::key_t &amp;key, value_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div><div class="ttdef"><b>Definition:</b> Flags.h:616</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_a8a0087d3fff110fd256f73fdc688a1d3"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#a8a0087d3fff110fd256f73fdc688a1d3">drain::FlagResolver::addEntry</a></div><div class="ttdeci">static value_t addEntry(drain::Dictionary&lt; key_t, T &gt; &amp;dict, const key_t &amp;key, value_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html_a78bdbe5403c7a9be36c922b6041cb954"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">drain::Dictionary::getValue</a></div><div class="ttdeci">const V &amp; getValue(const K &amp;key) const</div><div class="ttdoc">Given a key, return the first value associated with it.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:129</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
 <div class="ttc" id="aclassdrain_1_1StringTools_html_ab4a1b2ba4284410cccce2bf6839306c2"><div class="ttname"><a href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">drain::StringTools::split</a></div><div class="ttdeci">static void split(const std::string &amp;s, T &amp;sequence, const C &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</div><div class="ttdoc">Splits and trims a given std::string to a std Sequence.</div><div class="ttdef"><b>Definition:</b> String.h:274</div></div>
 <div class="ttc" id="aclassdrain_1_1Flagger_html_ab4a7195256a6cc29e07eebac975206ec"><div class="ttname"><a href="classdrain_1_1Flagger.html#ab4a7195256a6cc29e07eebac975206ec">drain::Flagger::isSet</a></div><div class="ttdeci">bool isSet(value_t x) const</div><div class="ttdoc">Checks if a given bit, or any of given bits, is set.</div><div class="ttdef"><b>Definition:</b> Flags.h:411</div></div>
@@ -1100,6 +1101,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Flagger_html_a84d92751a363c7e64374cab18605920d"><div class="ttname"><a href="classdrain_1_1Flagger.html#a84d92751a363c7e64374cab18605920d">drain::Flagger::assign</a></div><div class="ttdeci">void assign(value_t x)</div><div class="ttdoc">Sets value, ie. set or unsets all the flags.</div><div class="ttdef"><b>Definition:</b> Flags.h:444</div></div>
 <div class="ttc" id="aclassdrain_1_1MultiFlagger_html"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:862</div></div>
 <div class="ttc" id="aclassdrain_1_1Flagger_html_a8cff01d4c841d9de73297327541cc6a2"><div class="ttname"><a href="classdrain_1_1Flagger.html#a8cff01d4c841d9de73297327541cc6a2">drain::Flagger::operator=</a></div><div class="ttdeci">Flagger &amp; operator=(const T &amp;x)</div><div class="ttdoc">Sets value, ie. set or unsets all the flags.</div><div class="ttdef"><b>Definition:</b> Flags.h:434</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html_aae23ad73d13c217eda74c7e6c01c934c"><div class="ttname"><a href="classdrain_1_1Dictionary.html#aae23ad73d13c217eda74c7e6c01c934c">drain::Dictionary::getKey</a></div><div class="ttdeci">const K &amp; getKey(const V &amp;value) const</div><div class="ttdoc">Given a value, return the first key associated with it.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:141</div></div>
 <div class="ttc" id="astructdrain_1_1EnumDict_html"><div class="ttname"><a href="structdrain_1_1EnumDict.html">drain::EnumDict</a></div><div class="ttdef"><b>Definition:</b> Flags.h:970</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:375</div></div>
 <div class="ttc" id="aclassdrain_1_1MultiFlagger_html_a457b499a153175803e07c87abe758489"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html#a457b499a153175803e07c87abe758489">drain::MultiFlagger::assign</a></div><div class="ttdeci">virtual void assign(const std::string &amp;s)</div><div class="ttdoc">Set bits, accepting keys only.</div><div class="ttdef"><b>Definition:</b> Flags.h:904</div></div>
