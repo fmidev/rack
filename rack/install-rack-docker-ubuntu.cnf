@@ -9,7 +9,7 @@ CCFLAGS='-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial
 LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
 
 # Directory prefix for binary executable: ${prefix}/bin/
-prefix='/usr'
+prefix='/usr/local'
  
 # GeoTiff support (optional)
 USE_GEOTIFF=YES

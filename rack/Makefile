@@ -35,7 +35,7 @@ BASE_IMAGE=ubuntu18
 
 # make rack7.20_ubuntu18
 docker: Dockerfile.${BASE_IMAGE}
-	docker build . --file $<  --tag rack${VERSION}_${BASE_IMAGE}
+	docker build . --file $<  --tag rack_${BASE_IMAGE}:${VERSION}
 
 
 clean:

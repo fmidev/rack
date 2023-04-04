@@ -24,16 +24,26 @@ RUN apt-get update && \
     ./build.sh clean && \
     ./build.sh
 
-#FROM ubuntu:18_04
+
+#RUN ls /usr/local/bin/rack*
+
 FROM ubuntu:18.04
 
 RUN apt update && \
     apt -y install \
+       	libgomp1 \
         libhdf5-100 \
         libproj12 \
         libpng16-16 \
         libtiff5 \
         libgeotiff2 && \
     apt clean
+
+# RUN ls /usr/local/bin/rack*
+
+RUN date
+
 COPY --from=builder /usr/local/bin /usr/local/bin
+
+RUN ls /usr/local/bin/rack*
 
