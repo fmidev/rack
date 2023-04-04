@@ -72,26 +72,37 @@ void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & qua
 	// OD odim;
 	typedef DstType<OD> dst_t;
 
-	DataSet<dst_t> dstDataSet(dstGroup, quantity);
+
+	//DataSet<dst_t> dstDataSet(dstGroup, quantity);
+	DataSet<dst_t> dstDataSet(dstGroup);
+
+	//mout.attention("check: ");
 
 
-	for (typename DataSet<dst_t>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
+	for (auto & entry: dstDataSet){
 
-		Data<dst_t> & d = dit->second;
-		const drain::image::Geometry & g = d.data.getGeometry();
+		// mout.note("check: ", entry.first, '=', entry.second);
+
+		Data<dst_t> & dstData = entry.second;
+		const drain::image::Geometry & g = dstData.data.getGeometry();
 
 		if (geometry.getArea() == 0){
 			geometry.setArea(g.getWidth(), g.getHeight());
 		}
 		else if (geometry.area != g.area) {
-			mout.warn() << "nominal geom: " << geometry << ", found dataset with: "<< g << mout.endl;
-			// mout.warn() << "dataset group contains different geometries" << d.odim << mout.endl;
+			mout.warn("nominal geom: ", geometry, ", found dataset with: ", g );
 		}
 		else if (geometry.channels != g.channels){
-			mout.note() << "varying channel geometry: " << geometry.channels << ", dataset with: "<< g.channels << mout.endl;
+			mout.note("varying channel geometry: ", geometry.channels, ", dataset with: ", g.channels);
 		}
 
-		d.odim.setGeometry(d.data.getWidth(), d.data.getHeight());
+
+		if (!g.isEmpty()){
+			//dstDataSet.odim.setGeometry(g);
+			dstData.odim.setGeometry(g.getWidth(), g.getHeight());
+			 // Actually it's more complicated. a1gate, rscale etc. are dependent.
+		}
+
 		//d.odim.setArea(d.data.getWidth(), d.data.getHeight());
 		//mout.note() << "modified odim geom " << d.odim << mout.endl;
 
@@ -655,25 +666,38 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		}
 		*/
 
+		drain::image::Geometry geometryOrig;
 		drain::image::Geometry geometry(0,0);
-		// Consider later DataSet<BasicDst> basic(dst);
-		// basic.getWhat()["object"]....
-		// updateGeometryODIM<ODIM>(dst(path), quantity, geometry);
 
 		drain::Variable & object = dst[ODIMPathElem::WHAT].data.attributes["object"];
 		if (object.toStr() == "COMP"){
 			updateGeometryODIM<CartesianODIM>(dst(path), datasetSelector.quantity, geometry);
 			// Non-standard (ODYSSEY) (ODIM suggests dataset1-level xsize, ysize)
-			drain::VariableMap & vmap = dst[ODIMPathElem::WHAT].data.attributes;
-			vmap["xsize"] = geometry.getWidth();
-			vmap["ysize"] = geometry.getHeight();
+			drain::VariableMap & where = dst[ODIMPathElem::WHAT].data.attributes;
+			geometryOrig.setArea(where["xsize"], where["ysize"]);
+			where["xsize"] = geometry.getWidth();
+			where["ysize"] = geometry.getHeight();
+			if (!geometryOrig.isEmpty()){
+				where["xscale"] = static_cast<int>(where["xscale"]) * geometryOrig.getWidth()  / geometry.getWidth();
+				where["yscale"] = static_cast<int>(where["yscale"]) * geometryOrig.getHeight() / geometry.getHeight();
+			}
 		}
 		else {
-			// mout.special() << "vmap0: " << path << mout;
-			// drain::VariableMap & vmap = dst(path)[ODIMPathElem::WHERE].data.attributes;
-			// mout.warn() << "vmap0: " << vmap << mout;
-			updateGeometryODIM<PolarODIM>(dst(path)[ODIMPathElem::WHERE], datasetSelector.quantity, geometry);
-			//mout.warn() << "vmap1: " << vmap << mout;
+			//Hi5Tree & dstWhere = dst(path)[ODIMPathElem::WHERE];
+			drain::VariableMap & where = dst(path)[ODIMPathElem::WHERE].data.attributes;
+			geometryOrig.setArea(where["nbins"], where["nrays"]);
+			mout.debug2("where0: ", where);
+			updateGeometryODIM<PolarODIM>(dst(path), datasetSelector.quantity, geometry);
+			mout.warn("geom: ", geometry);
+			where["nbins"] = geometry.getWidth();
+			where["nrays"] = geometry.getHeight();
+			if (!geometryOrig.isEmpty()){
+				where["rscale"] = static_cast<int>(where["rscale"])   * geometryOrig.getWidth() / geometry.getWidth();
+				where["a1gate"] = static_cast<int>(where["a1gate"])   * geometry.getWidth()     / geometryOrig.getWidth();
+				where["startaz"] = static_cast<int>(where["startaz"]) * geometry.getHeight()    / geometryOrig.getHeight();
+				where["stopaz"] = static_cast<int>(where["stopaz"])   * geometry.getHeight()    / geometryOrig.getHeight();
+			}
+			mout.debug("where1: ", where);
 		}
 
 	}

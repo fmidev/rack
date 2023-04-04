@@ -291,7 +291,7 @@ $(function() {
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">    //for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){</span></div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    for (const auto &amp; entry: t.data){</span></div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">        ostr &lt;&lt; entry.first &lt;&lt; &#39;=&#39;; // &lt;&lt; dit-&gt;second;</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        SprinterBase::toStream(ostr, entry.second, SprinterBase::jsonLayout);</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        Sprinter::toStream(ostr, entry.second, Sprinter::jsonLayout);</span></div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">        // entry.second.valueToJSON(ostr);</span></div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        ostr &lt;&lt; &#39;\n&#39;;</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    }</span></div>

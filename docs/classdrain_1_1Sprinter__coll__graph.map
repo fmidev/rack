@@ -1,8 +1,7 @@
-<map id="Sprinter&lt; T &gt;" name="Sprinter&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="21,559,131,585"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SprinterBase.html" title=" " alt="" coords="130,483,235,509"/>
-<area shape="rect" id="node3" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,305,140,332"/>
-<area shape="rect" id="node4" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,157,129,184"/>
-<area shape="rect" id="node5" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,81,145,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,157,32"/>
+<map id="Sprinter" name="Sprinter">
+<area shape="rect" id="node1" title=" " alt="" coords="45,483,118,509"/>
+<area shape="rect" id="node2" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,305,140,332"/>
+<area shape="rect" id="node3" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,157,129,184"/>
+<area shape="rect" id="node4" href="$structdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,81,145,108"/>
+<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,157,32"/>
 </map>

@@ -166,16 +166,22 @@ public:
 	// Number of images used in precipitation accumulation (lenient, not linked)
 	long ACCnum;
 
-	/// Sets number of bins (nbins) and number of rays (nrays)
+	/// Sets number of columns (nbins) and number of rows (nrays). Does not change resolution.
 	virtual inline
 	void setGeometry(size_t cols, size_t rows){
 		area.set(cols, rows);
 	};
 
+
 	virtual
 	void setGeometry(const drain::image::AreaGeometry & g){
 		setGeometry(g.getWidth(), g.getHeight());
 	};
+
+	/// Change geometry and adjust spatial resolution respectively.
+	virtual
+	void adjustGeometry(size_t cols, size_t rows);
+
 
 
 	/// Updates object, quantity, product and time information.
