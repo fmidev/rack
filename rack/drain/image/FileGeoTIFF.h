@@ -55,6 +55,11 @@ namespace image
 class FileGeoTIFF : public FileTIFF {
 public:
 
+	//typedef drain::Dictionary<int, std::string> gtiff_epsg_dict_t;
+	//typedef std::map<short, std::map<short, short> > epsg_map_t;
+	typedef std::map<short, std::list<std::pair<geokey_t, short> > > epsg_map_t;
+
+	static epsg_map_t epsgConf;
 
 	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
 	}
@@ -73,6 +78,10 @@ public:
 	/// Opens a GeoTIFF file.
 	virtual
 	void open(const std::string & path, const std::string & mode = "w");
+
+	/// If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
+	// Will replace latLon (EPSG=4326) as well?
+	bool setProjectionEPSG(short epsg);
 
 	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
 	//virtual void open();
@@ -99,6 +108,10 @@ public:
 	/// Require strict GeoTIFF compliance
 	static
 	bool strictCompliance;
+
+	/// Use EPSG specific support only, if found. Else use also fromProj4Str().
+	static
+	bool plainEPSG;
 
 	/// This is between Tiff and GeoTiff?
 	//void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);
@@ -158,6 +171,8 @@ public:
 
 
 protected:
+
+
 
 	GTIF *gtif;
 	// TIFF *tif = XTIFFOpen(path.c_str(), "w");

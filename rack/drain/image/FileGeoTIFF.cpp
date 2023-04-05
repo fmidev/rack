@@ -130,6 +130,33 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 
 bool FileGeoTIFF::strictCompliance(false);
 
+// bool FileGeoTIFF::plainEPSG(false);
+bool FileGeoTIFF::plainEPSG(true);
+
+
+/*
+GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
+GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
+*/
+FileGeoTIFF::epsg_map_t FileGeoTIFF::epsgConf = {
+		{3067, {
+				{ProjectedCSTypeGeoKey, 3067},
+				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
+		}},
+		{0000, {
+				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
+		}
+		}
+};
+
+/*
+typedef std::map<int, std::string > mydict_t;
+
+const mydict_t MD = {
+		{3067, "MIKA"}
+};
+*/
+
 void FileGeoTIFF::open(const std::string & path, const std::string & mode){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (isOpen()){
@@ -335,6 +362,45 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 }
 
 
+bool FileGeoTIFF::setProjectionEPSG(short epsg){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	epsg_map_t::const_iterator it = epsgConf.find(epsg);
+	if (it !=  epsgConf.end()){
+		//mout.experimental("detected epsg:", epsg, ", using additional support");
+
+		for (const auto & entry: it->second){
+			mout.experimental("setting (EPSG: ", epsg, "): ", entry.first, '=' , entry.second);
+			GTIFKeySet(gtif, entry.first,   TYPE_SHORT,  1, entry.second);
+			//GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
+		}
+
+		return true;
+	}
+	else {
+		mout.warn("No support configured for epsg:", epsg);
+		return false;
+	}
+
+	/*
+	typedef std::map<std::string, std::string> map_t;
+	map_t projArgMap;
+	for (const std::string & arg: projArgs){
+		drain::MapReader<std::string, std::string>::read(arg, projArgMap);
+	}
+
+	for (const auto & entry: projArgMap){
+		mout.warn(entry.first, entry.second);
+	}
+
+	map_t::const_iterator it = projArgMap.find("+init");
+	if (it != projArgMap)
+	*/
+
+}
+
+
 void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -348,17 +414,43 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 		setProjectionLongLat();
 	}
 	else {
-		mout.info("Writing metric projection");
+		const std::string & dstProj = proj.getProjectionDst();
+		//const std::string dstProj = "+init=epsg:3067";
+
+		const short epsg = drain::Proj4::pickEpsgCode(dstProj);
+
+		bool USE_EPSG = (epsg>0) && (epsgConf.find(epsg) != epsgConf.end());
+
+		mout.info("Writing metric projection: ", dstProj);
+		//ProjectedCSTypeGeoKey();
 		//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-		if (!GTIFSetFromProj4(gtif, proj.getProjectionDst().c_str())){ // CHECK!!
-			mout.warn("Failed in setting GeoTIFF projection: ", proj);
-			mout.note("Consider: gdal_translate -a_srs '", proj.getProjectionDst(), "' file.tif out.tif");
+		// https://github.com/OSGeo/libgeotiff/issues/53
+		if (plainEPSG && USE_EPSG){
+			mout.experimental("using only: EPSG:", epsg);
+			setProjectionEPSG(epsg);
+		}
+		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
+
+			mout.ok("GTIFSetFromProj4: ", dstProj);
+
+			if (USE_EPSG){
+				mout.experimental("complementing with EPSG:", epsg);
+				setProjectionEPSG(epsg);
+			}
+
+
+			/*
+			GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
+			GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
+			*/
+		}
+		else {
+			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
+			mout.note("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
 			if (FileGeoTIFF::strictCompliance){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");
 			}
-		}
-		else {
-			mout.ok("GTIFSetFromProj4");
+
 		}
 	}
 

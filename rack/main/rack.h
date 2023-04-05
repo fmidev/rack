@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.22"
+#define __RACK_VERSION__ "7.3"
 
 /**
+ *   Version 7.3
+ *   -- GeoTIFF EPSG support: plainEPSG output option
+ *   -- GeoTIFF EPSG:3067 support
+ *
  *   Version 7.22
  *   -- Changed --iResize adjusts ODIM (rscale, startaz, ...)
  *

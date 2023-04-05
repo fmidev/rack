@@ -219,8 +219,27 @@ public:
     	return ((projSrc != NULL) && (projDst != NULL));
     }
 
-    static const epsg_dict_t & getEpsgDict();
+    /// A collection of prefefined projections. Experimental.
+    /**
+     *
+     */
+    static
+	const epsg_dict_t & getEpsgDict();
 
+    /// Detect EPSG code from "+init=epsg:EPSG" argument.
+    /**
+     *  \param projDef – PROJ.4 projection definition string
+     *  \return – EPSG code, if found, else 0.
+     *
+     *  \see getEpsgDict()
+     */
+    static
+	short int pickEpsgCode(const std::string & projDef);
+    /*
+    template <class T=std::string, class T=std::string>
+    static
+	void projStrToMap(const std::string & s, std::map<K,V> & m);
+	*/
 
 protected:
 

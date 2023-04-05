@@ -30,8 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "Log.h"
-
 #include "Proj4.h"
+#include "String.h"
 
 namespace drain
 {
@@ -105,6 +105,40 @@ const Proj4::epsg_dict_t & Proj4::getEpsgDict(){ // Note: perhaps later non-cons
 		*/
 	}
 	return epsgDict;
+}
+
+short int Proj4::pickEpsgCode(const std::string & projDef){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::set<std::string> projArgs;
+	drain::StringTools::split(projDef, projArgs, ' ');
+
+	// short epsg = 0;
+	for (const std::string & arg: projArgs){
+		std::string key;
+		std::string value;
+		StringTools::split2(arg, key, value, '=');
+		if (key == "+init"){
+			mout.debug("+init detected");
+
+			std::string k;
+			short epsg;
+			StringTools::split2(value, k, epsg, ':');
+			if (k == "epsg"){
+				mout.debug("detected EPSG: ", epsg);
+				//break;
+				return epsg;
+			}
+			else {
+				mout.warn("+init detected,  but without EPSG setting, arg=", arg);
+			}
+
+		}
+	}
+
+	return 0;
+
 }
 
 std::ostream & operator<<(std::ostream & ostr, const Proj4 &p){
