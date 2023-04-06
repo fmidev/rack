@@ -55,11 +55,8 @@ namespace image
 class FileGeoTIFF : public FileTIFF {
 public:
 
-	//typedef drain::Dictionary<int, std::string> gtiff_epsg_dict_t;
-	//typedef std::map<short, std::map<short, short> > epsg_map_t;
-	typedef std::map<short, std::list<std::pair<geokey_t, short> > > epsg_map_t;
-
-	static epsg_map_t epsgConf;
+	// typedef std::map<short, std::list<std::pair<geokey_t, drain::Variable> > > epsg_map_t;
+	// static epsg_map_t epsgConf;
 
 	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
 	}
@@ -79,9 +76,30 @@ public:
 	virtual
 	void open(const std::string & path, const std::string & mode = "w");
 
-	/// If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
-	// Will replace latLon (EPSG=4326) as well?
-	bool setProjectionEPSG(short epsg);
+
+	/// Specialize only for strings
+	/*
+	template <typename T>
+	int setGeoTiffField(int tag, T value){
+
+		if (!isOpen()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("GeoTIFF file not open");
+			return -1;
+		}
+
+		tagtype_t tag_type = getTagType<T>();
+		switch (tag_type) {
+			case TYPE_ASCII:
+				// GTIFKeySet(gtif, tag, TYPE_ASCII, 7, "WGS 84");
+				break;
+			default:
+				break;
+		}
+		return 0;
+	}
+	*/
+
 
 	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
 	//virtual void open();
@@ -140,8 +158,15 @@ public:
 
 	void setProjection(const drain::Proj4 & proj);
 
+	//inline
 	void setProjectionLongLat();
 
+	/// If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
+	// Will replace latLon (EPSG=4326) as well?
+	inline
+	void setProjectionEPSG(short epsg){
+		GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
+	}
 
 	/// Writes image to a TIIF (GeoTIFF) file.
 	/**
@@ -169,16 +194,77 @@ public:
 
 	//void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
 
+	/*
+	template <typename T>
+	inline
+	tagtype_t getTagType(){
+		const typename tagtype_map_t::const_iterator it = tagtype_map.find(&typeid(T));
+		if (it != tagtype_map.end()){
+			return it->second;
+		}
+		else {
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.warn("unknown/unsupported GTIFF tag basetype: ", typeid(T).name());
+			return TYPE_UNKNOWN;
+		}
+	}
+	*/
 
 protected:
 
+	/*
+	typedef std::map<const std::type_info *,tagtype_t> tagtype_map_t;
 
+	static
+	const tagtype_map_t tagtype_map;
+	*/
 
 	GTIF *gtif;
 	// TIFF *tif = XTIFFOpen(path.c_str(), "w");
 	// GTIF *gtif = GTIFNew(tif);
 
 };
+
+/*
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<unsigned char>(){ return TYPE_BYTE;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<unsigned short>(){ return TYPE_SHORT;}
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<unsigned long>(){ return TYPE_LONG;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<std::string>(){ return TYPE_ASCII;};
+
+template  <>
+inline
+tagtype_t FileGeoTIFF::getTagType<float>(){ return TYPE_FLOAT;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<double>(){ return TYPE_DOUBLE;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<signed char>(){ return TYPE_SBYTE;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<signed short>(){ return TYPE_SSHORT;};
+
+template <>
+inline
+tagtype_t  FileGeoTIFF::getTagType<signed long>(){ return TYPE_SLONG;};
+//inline getTagType<>(){ return TYPE_UNKNOWN);
+//inline getTagType<>(){ return TYPE_RATIONAL);
+*/
 
 } // image::
 

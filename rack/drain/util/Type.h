@@ -260,9 +260,12 @@ public:
 		else if (t == typeid(std::string)) {
 			return F::template callback<std::string,T>();
 		}
+		else if (Type::call<isEnum>(t)){ // NEW 2023
+			return F::template callback<int,T>();
+		}
 		else {
 			Logger mout(__FUNCTION__, __FILE__);
-			mout.error() << "unimplemented type: ..." << t.name() << mout.endl;
+			mout.error("unimplemented type: ...", t.name());
 			//return T(); //F::template callback<char,T>();
 			// Problem with ref types
 			return F::template callback<char,T>();
@@ -350,6 +353,9 @@ public:
 			F::template callback<std::string>(target);
 		else if (t == typeid(void)) {
 			F::template callback<void>(target);
+		}
+		else if (Type::call<isEnum>(t)){
+			F::template callback<int>(target);
 		}
 		else {
 			throw std::runtime_error(std::string(": unimplemented type: ") + t.name());
@@ -452,6 +458,23 @@ public:
 		*/
 		return ostr;
 	}
+
+	struct isEnum {
+
+		typedef bool value_t;
+
+		/**
+		 *  \tparam S - type to be analyzed (argument)
+		 *  \tparam T - return type  (practically value_t)
+		 */
+		template <class S, class T>
+		static
+		T callback(){
+			return std::is_enum<S>::value;
+		}
+
+
+	};
 
 protected:
 

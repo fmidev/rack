@@ -130,25 +130,70 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 
 bool FileGeoTIFF::strictCompliance(false);
 
-// bool FileGeoTIFF::plainEPSG(false);
-bool FileGeoTIFF::plainEPSG(true);
+bool FileGeoTIFF::plainEPSG(false);
+//bool FileGeoTIFF::plainEPSG(true);
 
+// Save this for now. Future option: external conf.
+/*
+const FileGeoTIFF::tagtype_map_t FileGeoTIFF::tagtype_map = {
+   {&typeid(unsigned short), TYPE_SHORT},
+   {&typeid(  signed short), TYPE_SSHORT}
+};
+typedef enum {
+   TYPE_BYTE=1,
+   TYPE_SHORT=2,
+   TYPE_LONG=3,
+   TYPE_RATIONAL=4,
+   TYPE_ASCII=5,
+   TYPE_FLOAT=6,
+   TYPE_DOUBLE=7,
+   TYPE_SBYTE=8,
+   TYPE_SSHORT=9,
+   TYPE_SLONG=10,
+   TYPE_UNKNOWN=11
+} tagtype_t;
+*/
 
 /*
 GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
 GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
 */
+
+// Save this for now. Future option: external conf.
+/*
 FileGeoTIFF::epsg_map_t FileGeoTIFF::epsgConf = {
-		{3067, {
+		{4326, { // https://epsg.io/4326
+				{GTModelTypeGeoKey, ModelGeographic},
+				{GeographicTypeGeoKey,GCS_WGS_84},
+				{GeogCitationGeoKey, "WGS 84"},
+				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
+		}},
+		{303500, { // https://epsg.io/3035
+				{ProjectedCSTypeGeoKey, 3035},
+				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
+		}},
+		{3067, { // https://epsg.io/3067
 				{ProjectedCSTypeGeoKey, 3067},
 				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
 		}},
-		{0000, {
-				{GeogGeodeticDatumGeoKey, Datum_European_Reference_System_1989}
+		{3035, {
+				{ProjectedCSTypeGeoKey, 3067},
+				{GeogGeodeticDatumGeoKey, "Test"}
 		}
 		}
 };
+*/
 
+/*
+GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
+GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
+//GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
+
+// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84); <= WRONG! GCS_WGS_84
+GTIFKeySet(gtif, GeographicTypeGeoKey,    TYPE_SHORT,  1, GCS_WGS_84); // 4326 correct!
+GTIFKeySet(gtif, GeogCitationGeoKey,      TYPE_ASCII,  7, "WGS 84");
+GTIFKeySet(gtif, GeogAngularUnitsGeoKey,  TYPE_SHORT,  1, Angular_Degree);
+*/
 /*
 typedef std::map<int, std::string > mydict_t;
 
@@ -343,9 +388,6 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 }
 
 
-
-
-
 void FileGeoTIFF::setProjection(const std::string & projstr){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -361,91 +403,137 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 	}
 }
 
-
+/*
 bool FileGeoTIFF::setProjectionEPSG(short epsg){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	epsg_map_t::const_iterator it = epsgConf.find(epsg);
-	if (it !=  epsgConf.end()){
-		//mout.experimental("detected epsg:", epsg, ", using additional support");
+	switch (epsg) {
+		case 4326:
+			mout.info("Setting Long-Lat projection");
+			GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
+			GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
+			// GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
+			// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84); <= WRONG! GCS_WGS_84
+			GTIFKeySet(gtif, GeographicTypeGeoKey,    TYPE_SHORT,  1, GCS_WGS_84); // 4326 correct!
+			GTIFKeySet(gtif, GeogCitationGeoKey,      TYPE_ASCII,  7, "WGS 84");
+			GTIFKeySet(gtif, GeogAngularUnitsGeoKey,  TYPE_SHORT,  1, Angular_Degree);
+			break;
+		case 3844:
+		case 3067:
+		case 3035:
+		case 3995:
+			// 2393 3067 5125   3844 3035 3995
+			//mout.experimental("found EPGS:", epsg);
+			GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, epsg);
+			return true;
+			//mout.experimental("ETRS89 / TM35FIN(E,N) -- Finland");
+			GEOGCS["GCS_ETRS_1989",
+        		DATUM["D_ETRS_1989",
+            		SPHEROID["GRS_1980",6378137.0,298.257222101]],
+        		PRIMEM["Greenwich",0.0],
+        		UNIT["Degree",0.0174532925199433]],
+    		PROJECTION["Transverse_Mercator"],
+    		PARAMETER["False_Easting",500000.0],
+    		PARAMETER["False_Northing",0.0],
+    		PARAMETER["Central_Meridian",27.0],
+    		PARAMETER["Scale_Factor",0.9996],
+    		PARAMETER["Latitude_Of_Origin",0.0],
+    		UNIT["Meter",1.0]]
+			// GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
+			// GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
 
-		for (const auto & entry: it->second){
-			mout.experimental("setting (EPSG: ", epsg, "): ", entry.first, '=' , entry.second);
-			GTIFKeySet(gtif, entry.first,   TYPE_SHORT,  1, entry.second);
-			//GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
-		}
-
-		return true;
+			GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_SHORT,  1, PM_Greenwich);
+			GTIFKeySet(gtif, ProjFalseEastingGeoKey,  TYPE_DOUBLE, 1, 500000.0);
+			GTIFKeySet(gtif, ProjFalseNorthingGeoKey, TYPE_DOUBLE, 1, 0.0);
+			GTIFKeySet(gtif, ProjOriginLatGeoKey, 	  TYPE_DOUBLE, 1, 0.0);
+			GTIFKeySet(gtif, GeogPrimeMeridianLongGeoKey, TYPE_DOUBLE, 1, 27.0);
+			GTIFKeySet(gtif, GeogLinearUnitsGeoKey,   TYPE_SHORT,  1, Linear_Meter);
+			// GTIFKeySet(gtif, GeogPrimeMeridianGeoKey,
+			// GTIFKeySet(gtif, ProjCenterEastingGeoKey, TYPE_DOUBLE, 1, 359705.51);
+			//GTIFKeySet(gtif, ProjCenterNorthingGeoKey,TYPE_DOUBLE, 1, 6615192.09);
+			break;
+		default:
+			return false;
 	}
-	else {
-		mout.warn("No support configured for epsg:", epsg);
-		return false;
-	}
 
-	/*
-	typedef std::map<std::string, std::string> map_t;
-	map_t projArgMap;
-	for (const std::string & arg: projArgs){
-		drain::MapReader<std::string, std::string>::read(arg, projArgMap);
-	}
-
-	for (const auto & entry: projArgMap){
-		mout.warn(entry.first, entry.second);
-	}
-
-	map_t::const_iterator it = projArgMap.find("+init");
-	if (it != projArgMap)
-	*/
-
+	return true;
 }
-
+*/
 
 void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
 	//mout.attention("start");
 	//mout.attention(proj);
 
 	if (proj.isLongLat()){
 		mout.info("Writing EPSG:4326 (longlat)");
 		//SetUpGeoKeys_4326_LongLat(gtif);
-		setProjectionLongLat();
+		//setProjectionLongLat();
+		setProjectionEPSG(4326);
 	}
 	else {
+
 		const std::string & dstProj = proj.getProjectionDst();
 		//const std::string dstProj = "+init=epsg:3067";
 
-		const short epsg = drain::Proj4::pickEpsgCode(dstProj);
-
-		bool USE_EPSG = (epsg>0) && (epsgConf.find(epsg) != epsgConf.end());
-
 		mout.info("Writing metric projection: ", dstProj);
-		//ProjectedCSTypeGeoKey();
-		//GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
+
+		const short epsg = drain::Proj4::pickEpsgCode(dstProj);
+		mout.debug("Extracted EPSG:", epsg);
+
+		// bool USE_EPSG = (epsg>0) && (epsgConf.find(epsg) != epsgConf.end());
+		// ProjectedCSTypeGeoKey();
+		// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
 		// https://github.com/OSGeo/libgeotiff/issues/53
-		if (plainEPSG && USE_EPSG){
+
+		if (plainEPSG){
+
 			mout.experimental("using only: EPSG:", epsg);
+
+			if (epsg <= 0){
+				mout.error("Projection requested by EPSG only, but value unset");
+				return;
+			}
+
 			setProjectionEPSG(epsg);
+			/*
+			if (setProjectionEPSG(epsg)){
+				mout.attention("Applied experimental projection conf for EPSG:", epsg);
+				return;
+			}
+			else {
+				mout.error("Projection requested by EPSG:", epsg," only, but no configuration found");
+				return;
+			}*/
+			return;
 		}
-		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
 
+
+
+		if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
 			mout.ok("GTIFSetFromProj4: ", dstProj);
-
-			if (USE_EPSG){
-				mout.experimental("complementing with EPSG:", epsg);
+			if (epsg>0){
 				setProjectionEPSG(epsg);
+				//if (setProjectionEPSG(epsg))
+				mout.experimental("complemented PROJ.4 def with specific EPSG:", epsg, " configuration");
+			}
+		}
+		else {
+
+			if (epsg>0){
+				mout.warn("Setting GeoTIFF projection as PROJ.4 def failed: ", dstProj, ", using EPSG:", epsg);
+				setProjectionEPSG(epsg);
+				//if (setProjectionEPSG(epsg)){
+				//mout.experimental("... but succeeded with EPSG:", epsg, " configuration");
 			}
 
 
-			/*
-			GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
-			GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
-			*/
-		}
-		else {
 			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
+
 			mout.note("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
 			if (FileGeoTIFF::strictCompliance){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");
@@ -456,12 +544,13 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 
 	// NEW
-	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // Repeated? Also in setProjectionLongLat?
+	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // Repeated? Also in setProjectionLongLat?
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
 	/*
 	 */
 
 }
+
 
 void FileGeoTIFF::setProjectionLongLat(){
 
@@ -480,7 +569,6 @@ void FileGeoTIFF::setProjectionLongLat(){
 	//GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);  //6377298.556);
 	//GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257223563);// 300.8017);
 }
-
 
 
 } // image::
