@@ -130,7 +130,7 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 
 bool FileGeoTIFF::strictCompliance(false);
 
-bool FileGeoTIFF::plainEPSG(false);
+//bool FileGeoTIFF::plainEPSG(false);
 //bool FileGeoTIFF::plainEPSG(true);
 
 // Save this for now. Future option: external conf.
@@ -245,7 +245,7 @@ void FileGeoTIFF::close(){
 		int version[3] = {0,0,0};
 		int keycount = 0;
 		GTIFDirectoryInfo(gtif, version, &keycount);
-		mout.special("GTIFDirectoryInfo: version:", version[VERSION], '.', version[MAJOR], '.', version[MINOR], " keycount:", keycount);
+		mout.info("GTIFDirectoryInfo: version:", version[VERSION], '.', version[MAJOR], '.', version[MINOR], " keycount:", keycount);
 		GTIFFree(gtif);
 		gtif = nullptr;
 	}
@@ -490,6 +490,8 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 		// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
 		// https://github.com/OSGeo/libgeotiff/issues/53
 
+
+		/*
 		if (plainEPSG){
 
 			mout.experimental("using only: EPSG:", epsg);
@@ -500,41 +502,36 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 			}
 
 			setProjectionEPSG(epsg);
-			/*
-			if (setProjectionEPSG(epsg)){
-				mout.attention("Applied experimental projection conf for EPSG:", epsg);
-				return;
-			}
-			else {
-				mout.error("Projection requested by EPSG:", epsg," only, but no configuration found");
-				return;
-			}*/
 			return;
 		}
+		*/
 
-
-
-		if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
+		if (epsg > 0){
+			mout.info("using EPSG:", epsg);
+			setProjectionEPSG(epsg);
+		}
+		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
 			mout.ok("GTIFSetFromProj4: ", dstProj);
+			/*
 			if (epsg>0){
 				setProjectionEPSG(epsg);
 				//if (setProjectionEPSG(epsg))
 				mout.experimental("complemented PROJ.4 def with specific EPSG:", epsg, " configuration");
 			}
+			*/
 		}
 		else {
-
+			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
+			mout.advice("Consider EPSG codes for projections in GeoTIFF, eg. PROJ.4 string '+init=epsg:3035'");
+			/*
 			if (epsg>0){
 				mout.warn("Setting GeoTIFF projection as PROJ.4 def failed: ", dstProj, ", using EPSG:", epsg);
 				setProjectionEPSG(epsg);
 				//if (setProjectionEPSG(epsg)){
 				//mout.experimental("... but succeeded with EPSG:", epsg, " configuration");
 			}
-
-
-			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
-
-			mout.note("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
+			*/
+			mout.advice("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
 			if (FileGeoTIFF::strictCompliance){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");
 			}
@@ -557,7 +554,9 @@ void FileGeoTIFF::setProjectionLongLat(){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.info("Setting Long-Lat projection");
+	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 4326);
 
+	/*
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
 	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
@@ -568,6 +567,7 @@ void FileGeoTIFF::setProjectionLongLat(){
 	GTIFKeySet(gtif, GeogAngularUnitsGeoKey,  TYPE_SHORT,  1, Angular_Degree);
 	//GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);  //6377298.556);
 	//GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257223563);// 300.8017);
+	 */
 }
 
 

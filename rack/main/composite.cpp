@@ -729,8 +729,8 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 			drain::VariableMap & prodHow = dstProduct.getHow();
 			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
 			//if (composite.metadataMap.hasKey("how:angles"))
-			prodHow["anglesYY"].setType(typeid(double));
-			prodHow["anglesYY"] = composite.odim.angles; //composite.metadataMap["how:angles"];
+			prodHow["angles"].setType(typeid(double));
+			prodHow["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
 			ctx.setCurrentImages(dstData.data);
 			ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
 		}

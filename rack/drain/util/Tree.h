@@ -53,7 +53,7 @@ namespace drain {
 
 
 
-/// A group of directed rooted trees.
+/// A templated class for directed rooted trees.
 /**
  *  This file provides templates of for basic types of trees (directed rooted trees):
  *
@@ -62,59 +62,68 @@ namespace drain {
  *   - UnorderedTree – std::list
  *   - UnorderedMultiTree – std::list
  *
- *   The nodes in a tree contain user defined data, the type of which is given as template T.
+ * \tparam T - node type, containing user-designed data implementing clear(), size() and empty() for future compatibility.
+ * \tparam EXCLUSIVE - node can contains either data or children but not both (JSON-like convention)
+ * \tparam P - applied path structure, like std::list – must implement empty() both for path and keys (path elements)
+ *
+ * Data:
+ *
+ * The nodes in a tree contain user defined data, the type of which is given as template T.
  *
  *   Currenty, data Concept is requires the following methods:
  *   - clear() – resetting the data to default initial (empty) value.
- *   - empty() – returning true if the data is empty (or can be identified empty).
+ *   - empty() – returning true if the data is empty, or can be identified with empty.
  *
- *   Further, each type listed above have two variants
- *   - inclusive (implicit, default) – each node may contain non-empty data and child nodes.
- *   - exclusive – each node may contain non-empty data or child nodes, but not both.
+ *  A tree is EXCLUSIVE, if a node contains either data or children. For example, a JSON tree is EXCLUSIVE and an XML tree is not (a tag can containg attributes (data) and
+ *  inner tages (children).
  *
- *   In exclusive trees, data is automatically cleared if children are added and iversely, chilren are cleared (removed) is data is assigned.
+ *   Further, each type listed above has two variants:
+ *   - inclusive (implicit, default) – each node may contain data and child nodes.
+ *   - exclusive – each node may contain data or child nodes, but not both.
+ *   In the code, both data and children exist as members but in
+ *   exclusive trees data is automatically cleared if children are added, and
+ *   inversely, chilren are cleared (removed) if data is assigned.
  *
+ *  Limitation: in OrderedTree the children are in a std::map, and threrefore each child
+ *  of a node has a unique key.
+ *  In UnorderedTree there may be children having the same key.
  *
- *  \tparam K - key type, implementing method empty() and cast from/to std::string.
- *  \tparam T - value type
- *  \tparam C - comparison functor, implementing less-than relation
+ *  Addressing:
  *
- *  tree[] returns childs only (complains separators, for some time)
- *  tree() returns descendants, allows deep paths.
+ *  tree(<path>) return a descendant
+ *  tree[<path_element>] returns childs only (complains separators, for some time)
  *
  *  Child nodes can be addressed with operator[] with std::string valued keys:
  *  \code
- *  Tree<float> t;
- *  t["firstChild"];
- *  \endcode
- *  The keys can be retrieved to a list with getKeys().
- *
- *  Alternatively, one may iterate the children directly:
- *  \code
- *  std::map<std::string,Tree<int> >::iterator it = tree.begin();
- *  while (it != tree.end()){
- *    std::cout << it->first << ' ' << it->second << '\n';
- *    ++it;
- *  }
+ *  OrderedTree<std::string> tree;
+ *  t["first"] = "Hello!";
+ *  t["second"] = "Another greeting...";
  *  \endcode
  *
  *  As the operator[] returns a reference, it may be used recursively:
  *  \code
- *  t["firstChild"]["a"]["bb"];
+ *  OrderedTree<std::string> & subTree1 = t["first"]["child"]["grandChild"];
  *  \endcode
  *
  *  Tree also recognizes a path separator, which is '/' by default.
  *  Hence, the node created in the above example could be likewise
  *  created or addressed as:
  *  \code
- *  t("firstChild/a/bb")
+ *  OrderedTree<std::string> & subTree = t("first/child/grandChild");        // equivalent
+ *  \endcode
+ *
+ *  One may iterate the children directly:
+ *  \code
+ *  for (auto & entry: tree){
+ *    std::cout << entry.first << ':' << entry.second << '\n';
+ *  }
  *  \endcode
  *
  *
  *  Each node contains data of type T. It may be unused (empty), that is, a node can be used only as a branching point.
  *
  *  \code
- *  Tree<std::string> t;
+ *  OrderedTree<std::string> t;
  *  t.data = "Hello world";
  *  std::string s = t;  // Now contains "Hello world".
  *  \endcode
@@ -129,31 +138,16 @@ namespace drain {
  *  std::string &s = t;       // Refers to data, "Hello world".
  *  \endcode
  *
- *  A tree is EXCLUSIVE, if a node contains either data or children. For example, a JSON tree is EXCLUSIVE and an XML tree is not (a tag can containg attributes (data) and
- *  inner tages (children).
- *
- *  A tree is UNIQUE, if each child of a node has a unique key. A key does not have to be unique in the tree.
- *
- *
- *
- * \tparam T - node type, containing user-designed data implementing clear(), size() and empty() for future compatibility.
- * \tparam EXCLUSIVE - node can contains either data or children but not both (JSON convention)
- * \tparam UNIQUE - node contains either data or children.
- * \tparam P - applied path structure, like std::list – must implement empty() both for path and keys (path elements)
  *
  *
  * Obsolete: template C - path element comparison functor, should be compatible with Path<P>::key_t.
  */
 
-
+/**
 #ifndef DRAIN_AMBIVALUE
 #define DRAIN_AMBIVALUE "0.1beta"
-/**
- *  \tparam K – key type
- *  \tparam K – key type
- */
 template <class T, class K>
-class AmbiValue {
+class CombiValue {
 public:
 
 	typedef T data_t;
@@ -162,7 +156,7 @@ public:
 	// T data; CONSIDER! But Hi5Node heavy?
 
 	inline
-	~AmbiValue(){};
+	~CombiValue(){};
 
 	/// True, if data is structured.
 	virtual
@@ -183,9 +177,12 @@ public:
 
 };
 #endif
+ *  \tparam K – key type
+ *  \tparam K – key type
+ */
 
 template <class T, bool EXCLUSIVE=false, class P=drain::Path<std::string,'/'> > // , class C=std::less<std::string>
-class DRAIN_TREE_NAME : public AmbiValue<T,typename P::elem_t> { //: public TreeBase {
+class DRAIN_TREE_NAME { // : public AmbiValue<T,typename P::elem_t> { //: public TreeBase {
 public:
 
 	typedef drain::DRAIN_TREE_NAME<T,EXCLUSIVE,P> tree_t; //,C
@@ -417,12 +414,22 @@ public:
 
 
 	/// Clear children and node data.
+	/**
+	 *  \see erase()
+	 *  \see clearChildren()
+	 *  \see clearData()
+	 */
 	inline
 	void clear(){
 		clearData();
 		clearChildren();
 	};
 
+	/**
+	 *  \see clear()
+	 *  \see clearChildren()
+	 *  \see erase()
+	 */
 	inline
 	void clearData(){
 		// Future option: data.clear() (applies to many stl classes, like strings and containers)
@@ -430,11 +437,53 @@ public:
 	};
 
 	/// Clears the children of this node. Does not clear data.
-	// TODO: full clear, reset?
+	/**
+x	 *  \see clearData()
+	 *  \see clear()
+	 *  \see erase()
+	 */
 	inline
 	void clearChildren(){ // RAISE/virtualize
 		children.clear();
 	};
+
+	/// Deletes a descendant node and hence its subtrees.
+	/**
+	 *  As opposite of clear() which focuses on a (current) node, this function refers to a descendant.
+	 *
+	 *  \see clear()
+	 */
+	// ??-> If an ending slash is included, then groups but no datasets will be erased. (?)
+	void erase(const path_t & path){ // RAISE/virtualize
+
+		// drain::Logger mout(__FUNCTION__, __FILE__);
+
+		// Idea: first assign the leaf, and step one back.
+		typename path_t::const_iterator it = path.end();
+		if (it == path.begin())
+			return;
+		else {
+			--it;
+			// Now 'it' points to the leaf.
+
+			// Safe (identity) if it == path.begin():
+			tree_t & parent = this->get(path.begin(), it);
+			parent.children.erase(*it);
+
+			/*
+			if (it == path.begin()){ // path size = 1 (direct child path)
+				children.erase(*it); // native STL container method
+			}
+			else { // path size > 1
+				mout.deprecating("consider: tree(", path, ").clear()");
+				//mout.error("use: tree(", path, ").clear()");
+				tree_t & parent = this->get(path.begin(), it);
+				parent.children.erase(*it); // native STL container method
+			}
+			*/
+		}
+
+	}
 
 	/// GENERAL (independent from container type)
 	/// Empty "default" node; typically initialized with empty data as well.
@@ -662,34 +711,6 @@ public:
 	inline
 	const container_t & getChildren() const { return children; };
 
-	/// Deletes a node (leaf) and its subtrees.
-	/** If an ending slash is included, then groups but no datasets will be erased. (?)
-	 *
-	 */
-	void erase(const path_t & path){ // RAISE/virtualize
-
-		drain::Logger mout(__FUNCTION__, __FILE__);
-
-		// Idea: start from the lead, and step one back.
-		typename path_t::const_iterator it = path.end();
-		if (it == path.begin())
-			return;
-		else {
-			--it;
-			// Now 'it' points to the leaf
-
-			if (it == path.begin()){ // path size = 1 (direct child path)
-				children.erase(*it); // native STL container method
-			}
-			else { // path size > 1
-				mout.deprecating("consider: tree(", path, ").clear()");
-				//mout.error("use: tree(", path, ").clear()");
-				tree_t & parent = this->get(path.begin(), it);
-				parent.children.erase(*it); // native STL container method
-			}
-		}
-
-	}
 
 
 	/// New
@@ -763,27 +784,35 @@ protected:
 
 
 
-	/// Returns a descendant.
+	/// Given the descendant pointed to by a given path segment.
 	/**
-	 *  \tparam - K2 key type of applied Path class
+	 *  \return – descendant node, or the node itself if the path is empty.
 	 */
-	//template <class K2>
 	inline
 	const tree_t & get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const {
 
 		// Path empty => self-reference
-		if (it == eit)
+		if (eit == it) // order, 2023/04
 			return *this;
 
-		// Path element is empty => proceed to next element
+		// Path element is empty => skip it (proceed to next element)
 		if (it->empty())
 			return get(++it, eit);
 
+		typename tree_t::const_iterator child_it = this->children.find(*it);
+		if (child_it == this->children.end())
+			return getEmpty();
+		else
+			return child_it->second.get(++it, eit);
+
+		/*
 		if (!hasChild(*it))
 			return getEmpty();
-
 		const tree_t & child = operator[](*it); // use find? Or better, direct child[key]
+		//const tree_t & child = this->children[*it]; // use find? Or better, direct child[key] 2023/04
+
 		return child.get(++it, eit);
+		*/
 	}
 
 

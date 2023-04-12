@@ -166,10 +166,10 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 			mout.warn("invalid tile height=", tile, ", using 256");
 			setField(TIFFTAG_TILELENGTH, 256);
 		}
-		mout.special("Using tiling: ", tileWidth, 'x', tileHeight);
+		mout.info("Using tiling: ", tileWidth, 'x', tileHeight);
 	}
 	else {
-		mout.special("No tiling, writing row by row");
+		mout.info("No tiling, writing row by row");
 		setField(TIFFTAG_ROWSPERSTRIP, 20L);
 	}
 

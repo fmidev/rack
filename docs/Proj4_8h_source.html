@@ -274,34 +274,41 @@ $(function() {
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">return</span> ((projSrc != NULL) &amp;&amp; (projDst != NULL));</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    }</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> epsg_dict_t &amp; getEpsgDict();</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">void</span> _setProjection(<span class="keyword">const</span> std::string &amp;src, projPJ &amp;p);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    projPJ projSrc;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    projPJ projDst;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// Moved inside getEPSGdict(). Consider non-const, if conf file updates needed?</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">// static    epsg_dict_t epsgDict;</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keyword">mutable</span> std::string projStrSrc;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">mutable</span> std::string projStrDst;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;};</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a1f453f1e21192fa20c4f000d41b42caa">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> Proj4 &amp;p);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;} <span class="comment">// drain</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*PROJ4_H_*/</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">short</span> <span class="keywordtype">int</span> <a class="code" href="classdrain_1_1Proj4.html#a70eaff2cbe71237f7a48ef95b41938d5">pickEpsgCode</a>(<span class="keyword">const</span> std::string &amp; projDef);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">    template &lt;class T=std::string, class T=std::string&gt;</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">    static</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment">    void projStrToMap(const std::string &amp; s, std::map&lt;K,V&gt; &amp; m);</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordtype">void</span> _setProjection(<span class="keyword">const</span> std::string &amp;src, projPJ &amp;p);</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    projPJ projSrc;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    projPJ projDst;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="comment">// Moved inside getEPSGdict(). Consider non-const, if conf file updates needed?</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// static    epsg_dict_t epsgDict;</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">mutable</span> std::string projStrSrc;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">mutable</span> std::string projStrDst;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;};</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a1f453f1e21192fa20c4f000d41b42caa">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> Proj4 &amp;p);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;} <span class="comment">// drain</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*PROJ4_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassdrain_1_1Proj4_html_a73e356e5115411d4bbf1297581f82558"><div class="ttname"><a href="classdrain_1_1Proj4.html#a73e356e5115411d4bbf1297581f82558">drain::Proj4::setProjectionSrc</a></div><div class="ttdeci">void setProjectionSrc(const std::string &amp;str)</div><div class="ttdoc">Sets source projection.</div><div class="ttdef"><b>Definition:</b> Proj4.h:66</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj4_html_ad2581449ce148c4aaaf0965254daf77a"><div class="ttname"><a href="classdrain_1_1Proj4.html#ad2581449ce148c4aaaf0965254daf77a">drain::Proj4::projectFwd</a></div><div class="ttdeci">void projectFwd(double &amp;x, double &amp;y) const</div><div class="ttdoc">Forward projection.</div><div class="ttdef"><b>Definition:</b> Proj4.h:79</div></div>
@@ -316,6 +323,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Proj4_html_a67f9e5ee6c5321332e622d7c1547de5f"><div class="ttname"><a href="classdrain_1_1Proj4.html#a67f9e5ee6c5321332e622d7c1547de5f">drain::Proj4::projectInv</a></div><div class="ttdeci">void projectInv(double &amp;x, double &amp;y) const</div><div class="ttdoc">Inverse projection.</div><div class="ttdef"><b>Definition:</b> Proj4.h:130</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj4_html"><div class="ttname"><a href="classdrain_1_1Proj4.html">drain::Proj4</a></div><div class="ttdef"><b>Definition:</b> Proj4.h:52</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj4_html_a43b4fb8de5a21b5d5ace9300f750ab97"><div class="ttname"><a href="classdrain_1_1Proj4.html#a43b4fb8de5a21b5d5ace9300f750ab97">drain::Proj4::projectInv</a></div><div class="ttdeci">void projectInv(const double &amp;x2, const double &amp;y2, double &amp;x, double &amp;y) const</div><div class="ttdoc">Inverse projection from (x2,y2) to (x,y).</div><div class="ttdef"><b>Definition:</b> Proj4.h:144</div></div>
+<div class="ttc" id="aclassdrain_1_1Proj4_html_a70eaff2cbe71237f7a48ef95b41938d5"><div class="ttname"><a href="classdrain_1_1Proj4.html#a70eaff2cbe71237f7a48ef95b41938d5">drain::Proj4::pickEpsgCode</a></div><div class="ttdeci">static short int pickEpsgCode(const std::string &amp;projDef)</div><div class="ttdoc">A collection of prefefined projections. Experimental.</div><div class="ttdef"><b>Definition:</b> Proj4.cpp:108</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

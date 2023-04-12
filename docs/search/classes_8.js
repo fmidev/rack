@@ -53,5 +53,6 @@ var searchData=
   ['insectop_2330',['InsectOp',['../classrack_1_1InsectOp.html',1,'rack']]],
   ['intensity_2331',['Intensity',['../classdrain_1_1image_1_1Intensity.html',1,'drain::image']]],
   ['iosformat_2332',['IosFormat',['../classdrain_1_1IosFormat.html',1,'drain']]],
-  ['issigned_2333',['isSigned',['../classdrain_1_1isSigned.html',1,'drain']]]
+  ['isenum_2333',['isEnum',['../structdrain_1_1Type_1_1isEnum.html',1,'drain::Type']]],
+  ['issigned_2334',['isSigned',['../classdrain_1_1isSigned.html',1,'drain']]]
 ];

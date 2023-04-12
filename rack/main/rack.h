@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.3"
+#define __RACK_VERSION__ "7.31"
 
 /**
+ *   Version 7.31
+ *   -- Revised EPSG vs Proj.4 projstr handling
+ *   -- Revised TIFFTAG_IMAGEDESCRIPTION, example: COMP:DBZH:PCAPPI(1500,true,1,0,WAVG:1:8:-40):elangles(0.3,0.7,1.5,3,5,9,2,7,11,15,25,45,0.4)
+ *
  *   Version 7.3
  *   -- GeoTIFF EPSG support: plainEPSG output option
  *   -- GeoTIFF EPSG:3067 support

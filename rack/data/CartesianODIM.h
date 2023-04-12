@@ -91,10 +91,9 @@ public:
 
 	/// WHERE
 	std::string projdef;
-	// long xs ize;
-	// long ys ize;
 	double xscale;
 	double yscale;
+
 	//drain::Rectangle<double> bboxD ?
 	double LL_lat;
 	double LL_lon;
@@ -127,7 +126,7 @@ public:
 private:
 
 	virtual // must
-	void init(group_t initialize =ODIMPathElem::ALL_LEVELS);
+	void init(group_t initialize = ODIMPathElem::ALL_LEVELS);
 
 	mutable drain::Rectangle<double> bboxD;
 

@@ -128,8 +128,7 @@ public:
 	bool strictCompliance;
 
 	/// Use EPSG specific support only, if found. Else use also fromProj4Str().
-	static
-	bool plainEPSG;
+	// static	bool plainEPSG;
 
 	/// This is between Tiff and GeoTiff?
 	//void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);

@@ -222,9 +222,9 @@ public:
     /// A collection of prefefined projections. Experimental.
     /**
      *
-     */
     static
 	const epsg_dict_t & getEpsgDict();
+     */
 
     /// Detect EPSG code from "+init=epsg:EPSG" argument.
     /**

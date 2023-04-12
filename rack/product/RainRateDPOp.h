@@ -122,6 +122,10 @@ public:
 
 protected:
 
+	void addDebugFuzzy(
+			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
+			Data<PolarDst> & dstData) const;
+
 	void addDebugProduct(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 			const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;

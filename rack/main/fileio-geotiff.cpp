@@ -79,9 +79,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	drain::image::FileGeoTIFF file(filename, "w");
 
 	CartesianODIM odim(src);
-	//mout.note(odim);
-
-	//const drain::FlexVariableMap & prop = src.properties;
+	src.properties["how:angles"].toSequence(odim.angles); // std::vector cannot be linked
 
 	drain::Time t;
 	odim.getTime(t);
@@ -89,25 +87,19 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// t.setTime(prop.get("what:time", "000000"), "%H%M%S");
 	file.setTime(t);
 
-	mout.debug("orig ODIM angles: ",   drain::sprinter(odim.angles) );
-	mout.debug("src.properties map: ", src.properties);
+	//mout.attention("orig ODIM angles: ",   drain::sprinter(odim.angles) );
+	//mout.attention("src.properties map: ", src.properties);
 
 	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
-	const std::string desc = drain::StringBuilder(
-			odim.object,':',
-			odim.product,':',
-			odim.prodpar,':',
-			odim.quantity,':',
-			drain::sprinter(odim.angles).str()
-			);
-		/*
-			prop["what:object"],':',
-			prop["what:product"],':',
-			prop["what:prodpar"],':',
-			prop["what:quantity"],':',
-			prop["how:angles"]);
-		*/
-	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc);
+	//const std::string desc = drain::StringBuilder(
+	std::stringstream desc;
+	desc << odim.object << ':' << odim.quantity << ':' << odim.product;
+	if (!odim.prodpar.empty()){
+		desc << '(' << odim.prodpar << ')';
+	}
+	if (!src.properties["how:angles"].empty())
+		desc << ':' << "elangles(" << src.properties["how:angles"] << ')';
+	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc.str());
 
 	// http://www.gdal.org/frmt_gtiff.html
 	// Optional
@@ -158,7 +150,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 				bboxM.assignSequence(v);
 				//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
 				frame.setBoundingBoxM(bboxM);
-				mout.special() << "Setting exact (metric) BBOX=";
+				mout.note() << "Setting exact (metric) BBOX=";
 				mout.precision(20);
 				mout << frame.getBoundingBoxM() << mout;
 			}
@@ -170,7 +162,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		}
 	}
 	else {
-		mout.note("where:projdef missing, no GeoTIFF projection info written");
+		mout.note("where:projdef missing, cannot write GeoTIFF projection definitions");
 	}
 
 	// mout.attention("file.setGeoMetaData(frame)");

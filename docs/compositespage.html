@@ -110,19 +110,41 @@ Compositing methods</h2>
 <p>In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product (like pseudo CAPPI or echo height) can be computed.</p>
 <h2><a class="anchor" id="cprojections"></a>
 Projections</h2>
-<p>Projection definition command &ndash;cProj uses <b>Proj4</b> syntax. Its also accepts EPSG codes like <code>'+init=epsg:4326'</code> if the local installation of <b>Proj4</b> supports it. Some examples of EPSG codes and their respective Proj4 definition strings:</p>
-<div class="fragment"><div class="line"><span class="comment">// LAT-LON (no projection)</span></div>
-<div class="line">4326: +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</div>
+<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax, supporting also EPSG codes given like <code>'+init=epsg:4326'</code> . When writing GeoTIFF files, using EPSG codes is recommended because not all <b>Proj.4</b> project definition strings are supported by the GeoTIFF library.</p>
+<div class="fragment"><div class="line">4326</div>
+<div class="line">+init=epsg:4326</div>
+<div class="line">+proj=longlat +datum=WGS84 +no_defs</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Cartographic projections:</span></div>
-<div class="line">2393: +proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl +towgs84=-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496 +units=m +no_defs</div>
-<div class="line">3067: +proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</div>
-<div class="line">5125: +proj=tmerc +lat_0=58 +lon_0=25.5 +k=1 +x_0=100000 +y_0=1000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</div>
+<div class="line">2393</div>
+<div class="line">+init=epsg:2393</div>
+<div class="line">+proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl +towgs84=-96.062,-82.428,-121.753,4.801,0.345,-1.376,1.496 +units=m +no_defs</div>
+<div class="line"><span class="preprocessor"># Note: mapping EPSG:2393 to PROJ.4 string not reversible </span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// No GeoTIFF support in Rack:</span></div>
-<div class="line">3844: +proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +towgs84=33.4,-146.6,-76.3,-0.359,-0.053,0.844,-0.84 +units=m +no_defs</div>
-<div class="line">3035: +proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</div>
-<div class="line">3995: +proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0</div>
+<div class="line">3067</div>
+<div class="line">+init=epsg:3067</div>
+<div class="line">+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</div>
+<div class="line"><span class="preprocessor"># Note: mapping EPSG:3067 to PROJ.4 string not reversible </span></div>
+<div class="line"> </div>
+<div class="line">5125</div>
+<div class="line">+init=epsg:5125</div>
+<div class="line">+proj=tmerc +lat_0=58 +lon_0=25.5 +k=1 +x_0=100000 +y_0=1000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</div>
+<div class="line"><span class="preprocessor"># Note: mapping EPSG:5125 to PROJ.4 string not reversible </span></div>
+<div class="line"> </div>
+<div class="line">3844</div>
+<div class="line">+init=epsg:3844</div>
+<div class="line"><span class="preprocessor"># LibGTIF fails in writing PROJ.4 string (corresponding to EPSG:3844):</span></div>
+<div class="line"><span class="preprocessor">#  +proj=sterea +lat_0=46 +lon_0=25 +k=0.99975 +x_0=500000 +y_0=500000 +ellps=krass +towgs84=33.4,-146.6,-76.3,-0.359,-0.053,0.844,-0.84 +units=m +no_defs  </span></div>
+<div class="line"> </div>
+<div class="line">3035</div>
+<div class="line">+init=epsg:3035</div>
+<div class="line"><span class="preprocessor"># LibGTIF fails in writing PROJ.4 string (corresponding to EPSG:3035):</span></div>
+<div class="line"><span class="preprocessor">#  +proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs  </span></div>
+<div class="line"> </div>
+<div class="line">3995</div>
+<div class="line">+init=epsg:3995</div>
+<div class="line"><span class="preprocessor"># LibGTIF fails in writing PROJ.4 string (corresponding to EPSG:3995):</span></div>
+<div class="line"><span class="preprocessor">#  +proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs  </span></div>
+<div class="line"> </div>
 </div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
 Handling special codes</h2>
 <p>Radar data complying the ODIM standard applies special marker codes <code>undetect</code> and <code>nodata</code> . These codes have to be handled carefully in product generation and compositing. In <b>Rack</b> , pixel values with <code>nodata</code> are simply skipped; they are not accumulated in the composite array, for example.</p>

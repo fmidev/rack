@@ -353,6 +353,7 @@ public:
 	}
 
 
+
 	/// Sets dimensions of data array and metadata.
 	inline
 	void setGeometry(size_t cols, size_t rows){
@@ -360,10 +361,24 @@ public:
 		data.setGeometry(cols, rows);
 	}
 
+	/// Sets dimensions of data array and metadata.
 	inline
 	void setGeometry(const drain::image::AreaGeometry & geometry){
 		this->odim.setGeometry(geometry.getWidth(), geometry.getHeight());
 		data.setGeometry(geometry);
+	}
+
+	/// Copy dimensions of data array and resolution (rscale or xscale,yscale)
+	/**
+	 *   Although templated, makes sense only across the Src and Dst types of same ODIM class.
+	 */
+	template <class DT2>
+	inline
+	void copyGeometry(const PlainData<DT2> & srcData){
+		this->odim.setGeometry(srcData.odim.area);
+		data.setGeometry(srcData.odim.area);
+		// Note:
+		this->odim.resolution = srcData.odim.resolution;
 	}
 
 	/// Calls setEncoding() and setGeometry().

@@ -113,9 +113,8 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a54e3221e62ac01411e4d8016c621b3db">open</a> (const std::string &amp;path, const std::string &amp;mode=&quot;w&quot;)</td></tr>
 <tr class="memdesc:a54e3221e62ac01411e4d8016c621b3db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a GeoTIFF file. <br /></td></tr>
 <tr class="separator:a54e3221e62ac01411e4d8016c621b3db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab899ee24af4d1d30d65a9e72b36f2e75"><td class="memItemLeft" align="right" valign="top"><a id="ab899ee24af4d1d30d65a9e72b36f2e75"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#ab899ee24af4d1d30d65a9e72b36f2e75">writeMetadata</a> ()</td></tr>
-<tr class="memdesc:ab899ee24af4d1d30d65a9e72b36f2e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Opens" a GeoTIFF structure inside an opened TIFF file. <br /></td></tr>
+<tr class="memitem:ab899ee24af4d1d30d65a9e72b36f2e75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#ab899ee24af4d1d30d65a9e72b36f2e75">writeMetadata</a> ()</td></tr>
+<tr class="memdesc:ab899ee24af4d1d30d65a9e72b36f2e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialize only for strings.  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#ab899ee24af4d1d30d65a9e72b36f2e75">More...</a><br /></td></tr>
 <tr class="separator:ab899ee24af4d1d30d65a9e72b36f2e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ae591df94fc66ccb85cbb6565368bca"><td class="memItemLeft" align="right" valign="top"><a id="a5ae591df94fc66ccb85cbb6565368bca"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a5ae591df94fc66ccb85cbb6565368bca">close</a> ()</td></tr>
@@ -126,7 +125,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:acc895ccf445d83efedc2f74d78152781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Todo: subclass. <br /></td></tr>
 <tr class="separator:acc895ccf445d83efedc2f74d78152781"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">setGdalScale</a> (double scale=1.0, double offset=0.0)</td></tr>
-<tr class="memdesc:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff?  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">More...</a><br /></td></tr>
+<tr class="memdesc:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use EPSG specific support only, if found. Else use also fromProj4Str().  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#a2f61ccc7c9536029e5323dfcf19d91ef">More...</a><br /></td></tr>
 <tr class="separator:a2f61ccc7c9536029e5323dfcf19d91ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30280a2454d72fdff47f496da96f4758"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">setGdalNoData</a> (const std::string &amp;nodata)</td></tr>
 <tr class="memdesc:a30280a2454d72fdff47f496da96f4758"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff?  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">More...</a><br /></td></tr>
@@ -144,6 +143,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjection</b> (co
 <tr class="memitem:a54f1fcadbe2e761220074ebcd57c05a9"><td class="memItemLeft" align="right" valign="top"><a id="a54f1fcadbe2e761220074ebcd57c05a9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjectionLongLat</b> ()</td></tr>
 <tr class="separator:a54f1fcadbe2e761220074ebcd57c05a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b18964babc2517632cd077ae9938802"><td class="memItemLeft" align="right" valign="top"><a id="a6b18964babc2517632cd077ae9938802"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a6b18964babc2517632cd077ae9938802">setProjectionEPSG</a> (short epsg)</td></tr>
+<tr class="memdesc:a6b18964babc2517632cd077ae9938802"><td class="mdescLeft">&#160;</td><td class="mdescRight">If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly. <br /></td></tr>
+<tr class="separator:a6b18964babc2517632cd077ae9938802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1FileTIFF"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1FileTIFF')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a></td></tr>
 <tr class="memitem:a56b4ba7381ef7b036d950b1b7629275d inherit pub_methods_classdrain_1_1image_1_1FileTIFF"><td class="memItemLeft" align="right" valign="top"><a id="a56b4ba7381ef7b036d950b1b7629275d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>FileTIFF</b> (const std::string &amp;path=&quot;&quot;, const std::string &amp;mode=&quot;w&quot;)</td></tr>
@@ -277,13 +280,41 @@ static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;
       </table>
 </div><div class="memdoc">
 
-<p>This is between Tiff and GeoTiff? </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Use EPSG specific support only, if found. Else use also fromProj4Str(). </p>
+<p>This is between Tiff and GeoTiff? </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodata</td><td>- yes, string... </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ab899ee24af4d1d30d65a9e72b36f2e75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab899ee24af4d1d30d65a9e72b36f2e75">&#9670;&nbsp;</a></span>writeMetadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeMetadata </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Specialize only for strings. </p>
+<p>"Opens" a GeoTIFF structure inside an opened TIFF file. </p>
 
 </div>
 </div>

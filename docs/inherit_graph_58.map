@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classrack_1_1Geometry.html" title=" " alt="" coords="5,5,92,32"/>
+<area shape="rect" id="node1" href="$classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities." alt="" coords="5,31,81,57"/>
+<area shape="rect" id="node2" href="$classhi5_1_1Reader.html" title=" " alt="" coords="129,5,197,32"/>
+<area shape="rect" id="node3" href="$classhi5_1_1Writer.html" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output." alt="" coords="132,56,195,83"/>
 </map>

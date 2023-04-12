@@ -149,9 +149,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> () const</t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac2042d1896498258a41fce4ab6d0ca63"><td class="memItemLeft" align="right" valign="top"><a id="ac2042d1896498258a41fce4ab6d0ca63"></a>
-static const <a class="el" href="classdrain_1_1Dictionary.html">epsg_dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEpsgDict</b> ()</td></tr>
-<tr class="separator:ac2042d1896498258a41fce4ab6d0ca63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70eaff2cbe71237f7a48ef95b41938d5"><td class="memItemLeft" align="right" valign="top">static short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj4.html#a70eaff2cbe71237f7a48ef95b41938d5">pickEpsgCode</a> (const std::string &amp;projDef)</td></tr>
+<tr class="memdesc:a70eaff2cbe71237f7a48ef95b41938d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A collection of prefefined projections. Experimental.  <a href="classdrain_1_1Proj4.html#a70eaff2cbe71237f7a48ef95b41938d5">More...</a><br /></td></tr>
+<tr class="separator:a70eaff2cbe71237f7a48ef95b41938d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -196,6 +196,42 @@ projPJ&#160;</td><td class="memItemRight" valign="bottom"><b>projDst</b></td></t
 
 <p>Returns the projection std::string applied by the last setProjection call. </p>
 <p>! Hence, does not reconstruct it from the allocated proj structure. </p>
+
+</div>
+</div>
+<a id="a70eaff2cbe71237f7a48ef95b41938d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70eaff2cbe71237f7a48ef95b41938d5">&#9670;&nbsp;</a></span>pickEpsgCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">short int pickEpsgCode </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>projDef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A collection of prefefined projections. Experimental. </p>
+<p>static const epsg_dict_t &amp; getEpsgDict(); Detect EPSG code from "+init=epsg:EPSG" argument. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projDef</td><td>– PROJ.4 projection definition string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>– EPSG code, if found, else 0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>getEpsgDict() </dd></dl>
 
 </div>
 </div>

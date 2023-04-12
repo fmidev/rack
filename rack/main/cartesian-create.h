@@ -93,6 +93,7 @@ public:
 
 		composite.dataSelector.quantity.clear();
 		composite.odim.quantity.clear();
+		// mout.attention("angles: ", drain::sprinter(composite.odim.angles, "<>"));
 
 		// better without...
 		// ctx.cartesianHi5[ODIMPathElem::WHAT].data.attributes["source2"] = (*ctx.currentPolarHi5)["what"].data.attributes["source"];
