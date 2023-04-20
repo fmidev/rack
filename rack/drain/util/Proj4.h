@@ -233,15 +233,18 @@ public:
      *
      *  \see getEpsgDict()
      */
+    static inline
+	short int pickEpsgCode(const std::string & projDef){
+    	std::list<std::string> projArgs;
+    	return pickEpsgCode(projDef, projArgs);
+    }
+
     static
-	short int pickEpsgCode(const std::string & projDef);
-    /*
-    template <class T=std::string, class T=std::string>
-    static
-	void projStrToMap(const std::string & s, std::map<K,V> & m);
-	*/
+	short int pickEpsgCode(const std::string & projDef, std::list<std::string> & projArgs);
 
 protected:
+
+
 
     void _setProjection(const std::string &src, projPJ &p);
 	

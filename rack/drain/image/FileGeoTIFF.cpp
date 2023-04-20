@@ -43,7 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
-#include "drain/util/TreeXML.h"
 #include "drain/image/AccumulatorGeo.h"
 
 //int rack::FileGeoTIFF::compression(1); // = NONE, but see below
@@ -64,29 +63,6 @@ namespace drain
 namespace image
 {
 
-
-
-
-// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
-class NodeGDAL: public drain::NodeXML {
-public:
-
-	enum type { ROOT, ITEM }; // check CTEXT, maybe implement in XML
-
-	NodeGDAL(type t = ROOT);
-
-	void set(const drain::Variable & ctext, int sample=0, const std::string & role = "");
-
-protected:
-
-	void setType(type t);
-
-	int sample;
-
-	std::string role;
-
-};
-
 NodeGDAL::NodeGDAL(type t){
 	setType(t);
 	this->id = -1;
@@ -98,20 +74,26 @@ void NodeGDAL::setType(type t){
 	if (t == ROOT){
 		tag = "GDALMetadata";
 	}
-	else {
+	else if (t == ITEM){
 		tag = "Item";
 		link("sample", sample = 0);
-		link("role",   role = "");
+		link("role",   role   = "");
+	}
+	else { // USER
+		tag = "Item";
+		// link("name", name);
+		// link("role",   role = "");
 	}
 
 }
 
-void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string & role){
+void NodeGDAL::setGDAL(const drain::Variable & ctext, int sample, const std::string & role){
 
 	setType(ITEM);
 	this->ctext  = ctext.toStr();
 	this->sample = sample;
 	this->role   = role;
+
 	/*
 	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
 		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
@@ -120,15 +102,38 @@ void NodeGDAL::set(const drain::Variable & ctext, int sample, const std::string 
 
 }
 
-
-typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	return drain::NodeXML::toOStr(ostr, tree);
+void NodeGDAL::setText(const drain::Variable & value){
+	this->ctext  = value.toStr();
 }
 
+void NodeGDAL::setText(const std::string & text){
+	this->ctext  = text;
+}
+
+
+
+
+
 bool FileGeoTIFF::strictCompliance(false);
+
+//FileGeoTIFF::TiffCompliance FileGeoTIFF::compliance = GEOTIFF_EXT;
+int FileGeoTIFF::compliance = GEOTIFF_EXT;
+
+template <>
+const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict = {
+		{"TIFF",        drain::image::FileGeoTIFF::TiffCompliance::TIFF},
+		{"GEOTIFF",     drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF},
+		{"GEOTIFF_EXT", drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF_EXT}
+};
+
+
+const drain::FlaggerDict & FileGeoTIFF::getComplianceDict(){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	mout.error("design");
+
+	return drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
+}
 
 //bool FileGeoTIFF::plainEPSG(false);
 //bool FileGeoTIFF::plainEPSG(true);
@@ -203,7 +208,7 @@ const mydict_t MD = {
 */
 
 void FileGeoTIFF::open(const std::string & path, const std::string & mode){
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	if (isOpen()){
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn("GeoTIFF already open?");
@@ -236,11 +241,49 @@ void FileGeoTIFF::open(){
 }
 */
 
+void FileGeoTIFF::writeMetadata(){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	if (isOpen()){
+
+		//if (!gdalInfo.empty()){
+
+		static
+		const TIFFFieldInfo xtiffFieldInfo[] = {
+				{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
+		};
+		TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
+
+		/*
+			TreeGDAL & gdalSubTree = gdalInfo["test"];
+			gdalSubTree.data.setType(NodeGDAL::USER);
+			gdalSubTree.data.ctext = "free text";
+		 */
+		//gdalInfo["TITLE"]
+		//TITLE, IMAGETYPE, UNITS.
+
+		std::stringstream sstr;
+		sstr << gdalInfo;
+		mout.debug(sstr.str());
+		setField(TIFFTAG_GDAL_METADATA, sstr.str());
+
+
+		GTIFWriteKeys(gtif);
+	}
+	else {
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.error("File not open");
+	}
+}
+
 void FileGeoTIFF::close(){
 	if (isOpen()){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.debug("Closing GeoTIFF...");
 		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
+
+
 		enum {VERSION=0,MAJOR,MINOR};
 		int version[3] = {0,0,0};
 		int keycount = 0;
@@ -263,15 +306,6 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// const int TIFFTAG_KOE = 65001;
 	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
 	// "gdal-metadata"
-	static
-	const TIFFFieldInfo xtiffFieldInfo[] = {
-			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
-	};
-	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
-
-	TreeGDAL gdalInfo;
-	gdalInfo["SCALE"]->set(scale, 0, "scale");
-	gdalInfo["OFFSET"]->set(offset, 0, "offset");
 	/*
 	    <GDALMetadata >
 	    <Item name="OFFSET" role="offset" sample="0" >-32</Item>
@@ -279,11 +313,22 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	    </GDALMetadata>
 	*/
 
+	/*
+	static
+	const TIFFFieldInfo xtiffFieldInfo[] = {
+			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
+	};
+	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
+	*/
+	//TreeGDAL gdalInfo;
+	gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
+	gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
+	/*
 	std::stringstream gdal;
 	gdal << gdalInfo;
 	mout.debug(gdal.str());
 	setField(TIFFTAG_GDAL_METADATA, gdal.str());
-
+	*/
 }
 
 void FileGeoTIFF::setGdalNoData(const std::string & nodata){
@@ -294,12 +339,9 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 		return;
 	}
 
-	// const int TIFFTAG_KOE = 65001;
-	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
-	// "gdal-metadata"
 	static
 	const TIFFFieldInfo xtiffFieldInfo[] = {
-			{ TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
+			{TIFFTAG_GDAL_NODATA,    1,  1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("nodata-marker") },
 	};
 	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
 
@@ -361,7 +403,7 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
 	// consider
 	//TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
-	setField(TIFFTAG_GEOTIEPOINTS,tiepoints);
+	setField(TIFFTAG_GEOTIEPOINTS, tiepoints);
 
 	//double pixscale[3]; // = {1,1,0};
 	std::vector<double> pixscale(3);
@@ -403,67 +445,10 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 	}
 }
 
-/*
-bool FileGeoTIFF::setProjectionEPSG(short epsg){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	switch (epsg) {
-		case 4326:
-			mout.info("Setting Long-Lat projection");
-			GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
-			GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function
-			// GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsPoint);
-			// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84); <= WRONG! GCS_WGS_84
-			GTIFKeySet(gtif, GeographicTypeGeoKey,    TYPE_SHORT,  1, GCS_WGS_84); // 4326 correct!
-			GTIFKeySet(gtif, GeogCitationGeoKey,      TYPE_ASCII,  7, "WGS 84");
-			GTIFKeySet(gtif, GeogAngularUnitsGeoKey,  TYPE_SHORT,  1, Angular_Degree);
-			break;
-		case 3844:
-		case 3067:
-		case 3035:
-		case 3995:
-			// 2393 3067 5125   3844 3035 3995
-			//mout.experimental("found EPGS:", epsg);
-			GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, epsg);
-			return true;
-			//mout.experimental("ETRS89 / TM35FIN(E,N) -- Finland");
-			GEOGCS["GCS_ETRS_1989",
-        		DATUM["D_ETRS_1989",
-            		SPHEROID["GRS_1980",6378137.0,298.257222101]],
-        		PRIMEM["Greenwich",0.0],
-        		UNIT["Degree",0.0174532925199433]],
-    		PROJECTION["Transverse_Mercator"],
-    		PARAMETER["False_Easting",500000.0],
-    		PARAMETER["False_Northing",0.0],
-    		PARAMETER["Central_Meridian",27.0],
-    		PARAMETER["Scale_Factor",0.9996],
-    		PARAMETER["Latitude_Of_Origin",0.0],
-    		UNIT["Meter",1.0]]
-			// GTIFKeySet(gtif, ProjectedCSTypeGeoKey,   TYPE_SHORT,  1, 3067);
-			// GTIFKeySet(gtif, GeogGeodeticDatumGeoKey, TYPE_SHORT,  1, Datum_European_Reference_System_1989);
-
-			GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_SHORT,  1, PM_Greenwich);
-			GTIFKeySet(gtif, ProjFalseEastingGeoKey,  TYPE_DOUBLE, 1, 500000.0);
-			GTIFKeySet(gtif, ProjFalseNorthingGeoKey, TYPE_DOUBLE, 1, 0.0);
-			GTIFKeySet(gtif, ProjOriginLatGeoKey, 	  TYPE_DOUBLE, 1, 0.0);
-			GTIFKeySet(gtif, GeogPrimeMeridianLongGeoKey, TYPE_DOUBLE, 1, 27.0);
-			GTIFKeySet(gtif, GeogLinearUnitsGeoKey,   TYPE_SHORT,  1, Linear_Meter);
-			// GTIFKeySet(gtif, GeogPrimeMeridianGeoKey,
-			// GTIFKeySet(gtif, ProjCenterEastingGeoKey, TYPE_DOUBLE, 1, 359705.51);
-			//GTIFKeySet(gtif, ProjCenterNorthingGeoKey,TYPE_DOUBLE, 1, 6615192.09);
-			break;
-		default:
-			return false;
-	}
-
-	return true;
-}
-*/
 
 void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
 	//mout.attention("start");
@@ -507,7 +492,7 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 		*/
 
 		if (epsg > 0){
-			mout.info("using EPSG:", epsg);
+			mout.note("using EPSG:", epsg);
 			setProjectionEPSG(epsg);
 		}
 		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
@@ -548,10 +533,54 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 }
 
+void FileGeoTIFF::setProjectionEPSG(short epsg){
+
+	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	/*
+	if (compliance != GEOTIFF_EXT){
+		return;
+	}
+	*/
+
+	switch (epsg) {
+	case 3067:
+		/*
+				 GTModelTypeGeoKey (Short,1): ModelTypeProjected
+				 GTCitationGeoKey (Ascii,22): "ETRS89 / TM35FIN(E,N)"
+				 GeogCitationGeoKey (Ascii,7): "ETRS89"
+				 GeogAngularUnitsGeoKey (Short,1): Angular_Degree
+			     ProjLinearUnitsGeoKey (Short,1): Linear_Meter
+		 */
+		mout.experimental("Extended configuration");
+		setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
+		setGeoTiffField(GTCitationGeoKey,   "ETRS89 / TM35FIN(E,N)");
+		setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+		setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
+		setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
+		// setGeoTiffField();
+		/*
+		GTIFKeySet(gtif, GTModelTypeGeoKey,      TYPE_SHORT, 1,  ModelTypeProjected);
+		GTIFKeySet(gtif, GTCitationGeoKey,       TYPE_ASCII, 22, "ETRS89 / TM35FIN(E,N)");
+		GTIFKeySet(gtif, GeogCitationGeoKey,     TYPE_ASCII, 7,  "ETRS89");
+		GTIFKeySet(gtif, GeogAngularUnitsGeoKey, TYPE_SHORT, 1,  Angular_Degree);
+		GTIFKeySet(gtif, ProjLinearUnitsGeoKey,  TYPE_SHORT, 1,  Linear_Meter);
+		*/
+		break;
+	default:
+		return;
+	}
+
+	mout.special("Applied special configuration for EPSG:", epsg);
+
+}
+
 
 void FileGeoTIFF::setProjectionLongLat(){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.info("Setting Long-Lat projection");
 	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 4326);

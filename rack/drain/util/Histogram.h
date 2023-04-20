@@ -428,7 +428,7 @@ void Histogram::compute(const T & dst, const std::type_info & type){
 
 	const std::size_t s = getSize();
 
-	//mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
+	mout.note(getSize(), " bins, storage type resolution ", s, " ");
 
 	if ((s == 256) && (type == typeid(unsigned char))){
 		mout.note() << "direct 256-mode: u char (fast)" << mout.endl;
@@ -450,7 +450,7 @@ void Histogram::compute(const T & dst, const std::type_info & type){
 		}
 	}
 
-	//mout.note() << "finito" << mout.endl;
+	mout.note("finito");
 
 }
 

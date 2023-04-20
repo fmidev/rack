@@ -78,14 +78,14 @@ public:
 
 	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : drain::BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
-		parameters.link("count", count = 256);
+		parameters.link("count", count = 0);  // = 256
 		parameters.link("range", range.tuple());
 		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
 		parameters.link("filename", filename="", "<filename>.txt|-");
 		parameters.link("attribute", attribute="histogram", "<attribute_key>");
 	};
 
-	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd) {
+	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd), count(0) {
 		parameters.copyStruct(cmd.getParameters(), cmd, *this);
 	};
 	// virtual	inline const std::string & getDescription() const { return description; };

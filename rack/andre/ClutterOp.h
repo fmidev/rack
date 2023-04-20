@@ -49,7 +49,7 @@ namespace rack {
  *    of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed
  *    from accumulated dBZ values as described in \ref cluttermaps .
  *
- *    - alpha \f$ \alpha = \angle(b,c)\f$: "sky angle",
+ *    - alpha \f$ \alpha = \angle(b,c)\f$ : "sky angle",
  *
  */
 class ClutterOp: public DetectorOp {

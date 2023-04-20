@@ -706,6 +706,18 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 	where["BBOX_overlap"].setType(typeid(double));
 	where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
 
+	// std::list<std::string> projArgs;
+	// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
+	short epsg = drain::Proj4::pickEpsgCode(composite.getProjection());
+	if (epsg > 0){
+		where["EPSG"] = epsg;
+		/*
+		where["projdef2"] = " ";
+		where["projdef2"].setInputSeparator(' ');
+		where["projdef2"] << projArgs;
+		*/
+	}
+
 
 	DataTools::updateCoordinatePolicy(ctx.cartesianHi5, RackResources::limit);
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);

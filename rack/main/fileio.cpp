@@ -95,6 +95,8 @@ class CmdOutputConf : public drain::SimpleCommand<std::string> {
 
 public:
 
+	//typedef drain::EnumFlagger<drain::SingleFlagger<drain::image::FileGeoTIFF::TiffCompliance> > tiffComplianceFlagger;
+
 //	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
 	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png) specific configurations", "value", "<format>:<key>=value>,conf...") {
 		/*
@@ -113,6 +115,8 @@ public:
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
 		gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
+		gtiffConf.link("compliance", FileGeoTIFF::compliance, "TIFF,GEOTIFF,..."); //drain::sprinter(FileGeoTIFF::getComplianceDict(), "|", "<>").str());
+		// gtiffConf.link("compliance", FileGeoTIFF::compliance, drain::sprinter(drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict, "|", "<>").str()); // "raw" object (segfaul risk)
 		// gtiffConf.link("plainEPSG", FileGeoTIFF::plainEPSG, "use EPSG only, if code supported");
 
 	};

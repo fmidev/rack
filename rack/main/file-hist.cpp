@@ -77,9 +77,13 @@ void CmdHistogram::exec() const {
 	// NO resources.setCurrentImage(selector);
 	// drain::image::Image & img = *ctx.currentImage;
 	// mout.warn() << "computing hist"  << mout.endl;
+	const std::type_info & type = dstData.data.getType();
+	unsigned short bitCount = 8 * drain::Type::call<drain::sizeGetter>(type);
+	mout.warn("bitCount: " , bitCount);
 
-	//( TODO: Histogram2 based on ImageCodeMap/Book (HistEntry)
-	drain::Histogram histogram(count);
+	//( TODO: Histogram2 based on ImageCodeMap/Book (HistEntry);
+	const int finalCount = count ? count : 1 << bitCount;
+	drain::Histogram histogram(finalCount);
 	mout.note("Initial histogram 0: ", histogram);
 	//histogram.setSize(count);
 	if (range.span() > 0.0){
@@ -93,9 +97,10 @@ void CmdHistogram::exec() const {
 		mout.note("No range given, using scaling of data: ", s);
 		histogram.setScale(s);
 	}
+
 	mout.note("Initial histogram 1: ", histogram);
 
-	histogram.compute(dstData.data, dstData.data.getType());
+	histogram.compute(dstData.data, type);
 
 	if (!filename.empty()){
 

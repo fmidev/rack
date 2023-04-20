@@ -62,8 +62,8 @@ public:
 	static
 	const drain::FileInfo fileInfo;
 
+	// Weak
 	typedef drain::SingleFlagger<unsigned int>::dict_t dict_t;
-
 
 	static
 	const dict_t & getCompressionDict();
@@ -71,7 +71,7 @@ public:
 	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
 	// https://gdal.org/drivers/raster/cog.html
 	static dict_t::value_t defaultCompression;      // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
-	static int defaultCompressionLevel; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
+	// static int defaultCompressionLevel; // COMPRESSION_NONE = 1; COMPRESSION_LZW = 5;
 
 	static drain::Frame2D<int> defaultTile;
 

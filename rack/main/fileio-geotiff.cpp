@@ -168,6 +168,15 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	// mout.attention("file.setGeoMetaData(frame)");
 	file.setGeoMetaData(frame);
 
+	drain::Variable imagetype("Weather Radar");
+	if (odim.ACCnum > 1)
+		imagetype << "Composite (" <<  odim.source << ')';
+	else
+		imagetype <<  odim.source;
+	file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
+	file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
+	file.gdalInfo["UNITS"].data.setText(odim.quantity);
+
 	// file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 	file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.

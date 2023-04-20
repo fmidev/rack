@@ -105,37 +105,47 @@ const Proj4::epsg_dict_t & Proj4::getEpsgDict(){ // Note: perhaps later non-cons
 }
 */
 
-short int Proj4::pickEpsgCode(const std::string & projDef){
+short int Proj4::pickEpsgCode(const std::string & projDef, std::list<std::string> & projArgs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	std::set<std::string> projArgs;
+	//std::list<std::string> projArgs;
 	drain::StringTools::split(projDef, projArgs, ' ');
 
-	// short epsg = 0;
-	for (const std::string & arg: projArgs){
+	typedef std::list<std::string>::iterator iter_t;
+
+	iter_t init = projArgs.end();
+
+	short epsg = 0;
+	// for (const std::string & arg: projArgs){
+	for (iter_t it=projArgs.begin(); it!=projArgs.end(); ++it){
 		std::string key;
 		std::string value;
-		StringTools::split2(arg, key, value, '=');
+		StringTools::split2(*it, key, value, '=');
 		if (key == "+init"){
 			mout.debug("+init detected");
 
 			std::string k;
-			short epsg;
+			//short epsg;
 			StringTools::split2(value, k, epsg, ':');
 			if (k == "epsg"){
 				mout.debug("detected EPSG: ", epsg);
 				//break;
-				return epsg;
+				//return epsg;
+				init = it;
 			}
 			else {
-				mout.warn("+init detected,  but without EPSG setting, arg=", arg);
+				mout.warn("+init detected,  but without EPSG setting, arg=", *it);
 			}
 
 		}
 	}
 
-	return 0;
+	if (epsg > 0){
+		projArgs.erase(init);
+	}
+
+	return epsg;
 
 }
 

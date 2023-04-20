@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #ifndef USE_GEOTIFF_NO
 
+#include "drain/util/Flags.h"
+#include "drain/util/TreeXML.h"
+
 
 #include <geotiff.h>
 #include <geotiffio.h>
@@ -46,6 +49,48 @@ namespace drain
 
 namespace image
 {
+
+// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
+class NodeGDAL: public drain::NodeXML {
+public:
+
+	enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
+
+	NodeGDAL(type t = USER);
+
+	void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
+
+	// Set user attribute
+	void setText(const drain::Variable & value);
+
+	// Set user attribute
+	void setText(const std::string & value);
+
+	void setType(type t);
+
+protected:
+
+	/// Standard GDAL attribute
+	int sample;
+
+	/// Standard GDAL attribute
+	std::string role;
+
+	// Multi-purpose key
+	// std::string value;
+
+
+};
+
+
+
+typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
+	return drain::NodeXML::toOStr(ostr, tree);
+}
+
 
 /** Extends TIFF by adding geo information in the metadata
  *
@@ -59,10 +104,11 @@ public:
 	// static epsg_map_t epsgConf;
 
 	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
+		gdalInfo.data.setType(NodeGDAL::ROOT);
 	}
 
 	FileGeoTIFF(const std::string & path, const std::string & mode = "w") : FileTIFF(), gtif(nullptr){
-		//open();
+		gdalInfo.data.setType(NodeGDAL::ROOT);
 		open(path, mode);
 	}
 
@@ -76,6 +122,39 @@ public:
 	virtual
 	void open(const std::string & path, const std::string & mode = "w");
 
+	/*
+	inline
+	void setGeoTiffField(geokey_t tag, short int value){
+		GTIFKeySet(gtif, tag, TYPE_SHORT, 1, value);
+	}
+
+	inline
+	void setGeoTiffField(geokey_t tag, int value){
+		GTIFKeySet(gtif, tag, TYPE_SHORT, 1, value);
+	}
+	*/
+
+	inline
+	void setGeoTiffField(geokey_t tag, const char *value){
+		GTIFKeySet(gtif, tag, TYPE_ASCII, strlen(value)+1, value);
+	}
+
+	inline
+	void setGeoTiffField(geokey_t tag, const std::string & value){
+		GTIFKeySet(gtif, tag, TYPE_ASCII, value.size()+1, value.c_str());
+	}
+
+	template <typename T>
+	void setGeoTiffField(geokey_t tag, T value){
+		if ((std::is_enum<T>::value) || (std::is_integral<T>::value)){
+			GTIFKeySet(gtif, tag, TYPE_SHORT, 1, static_cast<short int>(value));
+		}
+		else {
+			drain::Logger mout(__FUNCTION__, __FILE__);
+			mout.warn("TAG: ", tag, ", value:", value, ", type=", typeid(T).name()); // , drain::Type::call<drain::nameGetter>(typeid(T)));
+			mout.error("Not implemented");
+		}
+	}
 
 	/// Specialize only for strings
 	/*
@@ -101,18 +180,8 @@ public:
 	*/
 
 
-	/// "Opens" a GeoTIFF structure inside an opened TIFF file.
-	//virtual void open();
-	inline
-	void writeMetadata(){
-		if (isOpen()){
-			GTIFWriteKeys(gtif);
-		}
-		else {
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.error("File not open");
-		}
-	}
+	/// Completes GeoTIFF structure
+	void writeMetadata();
 
 	virtual
 	void close();
@@ -124,16 +193,26 @@ public:
 	}
 
 	/// Require strict GeoTIFF compliance
+	/**
+	 *  TODO: consider TIFF,default,GTIFF,StrictGTIFF
+	 */
 	static
 	bool strictCompliance;
 
+	typedef enum {TIFF=1, GEOTIFF=2, GEOTIFF_EXT=3} TiffCompliance;
+
+	typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
+
+	static
+	const drain::FlaggerDict & getComplianceDict();
+
+	static
+	int compliance;
+	//TiffCompliance compliance;
 	/// Use EPSG specific support only, if found. Else use also fromProj4Str().
 	// static	bool plainEPSG;
 
-	/// This is between Tiff and GeoTiff?
-	//void setGdalMetaDataOLD(const std::string & nodata, double scale=1.0, double offset=0.0);
-	//void setGdalMetaDataOLD(double nodata, double scale=1.0, double offset=0.0);
-
+	TreeGDAL gdalInfo;
 	/**
 	 *  \param nodata - yes, string...
 	 */
@@ -162,10 +241,8 @@ public:
 
 	/// If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
 	// Will replace latLon (EPSG=4326) as well?
-	inline
-	void setProjectionEPSG(short epsg){
-		GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
-	}
+	//inline
+	void setProjectionEPSG(short epsg);
 
 	/// Writes image to a TIIF (GeoTIFF) file.
 	/**

@@ -19,7 +19,8 @@ function TEST_TIFF(){
     if [ $? == 0 ]; then
 	echo $projdef >> rack-geotiff-supported.inc
     else
-	echo "# LibGTIF fails in writing PROJ.4 string (corresponding to EPSG:$epsg):" >> rack-geotiff-supported.inc
+	echo "# LibGTIF fails with (plain) Proj.4 definition string:" >> rack-geotiff-supported.inc
+	# (corresponding to EPSG:$epsg)
 	echo "# $projdef" >> rack-geotiff-supported.inc
 	echo $projdef >> rack-geotiff-unsupported.inc
 	# echo "ERROR"
@@ -86,8 +87,9 @@ function TEST_TIFF(){
 
 INFILE='volume.h5'
 EPSGFILE='/opt/venison/products/maps/wms/epsg'
-ARGS=$*
+ARGS=( $* )
 ARGS=${ARGS:-4326  2393 3067 5125   3844 3035 3995 }
+
 
 rm -vf rack-geotiff-supported.inc rack-geotiff-unsupported.inc
 
@@ -118,7 +120,8 @@ done
 
 echo
 
-if [ ${#ARGS[*]} == 0 ]; then
+#if [ ${#ARGS[*]} == 0 ]; then
+if [ $# == 0 ]; then
 
     echo "# Generate example image with tiling failure"
 

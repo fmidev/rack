@@ -320,7 +320,7 @@ public:
 			ctx.select = "quantity=^(" + quantity + ")$";
 		}
 		else {
-			mout.warn() << "quantity-specific quality ["<< qualityQuantity << "]: strict check unimplemented for ["<< quantity << "]" << mout.endl;
+			mout.warn("quantity-specific quality [", qualityQuantity, "]: strict check unimplemented for [", quantity, "]");
 			ctx.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
 		}
 
@@ -1882,6 +1882,8 @@ public:
 		std::cout << __RACK__ << ' ' << __RACK_VERSION__ << ' ' << __DATE__ << '\n';
 
 		std::cout << DRAIN_IMAGE << '\n';
+		std::cout << "Proj " << PJ_VERSION << '\n';
+
 
 		unsigned int majnum=0, minnum=0, relnum=0;
 		H5get_libversion(&majnum, &minnum, &relnum);  // error messages
