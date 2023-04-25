@@ -677,22 +677,26 @@ public:
 	// Manifested numeric type (enum or unsigned integer)
 	typedef E value_t;
 
-	// Practical "storage" value
 	typedef FlaggerDict dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
 
 	// Practical "storage" value
 	typedef typename dict_t::value_t dvalue_t;
-	//typedef std::string key_t;
 
 	// Rember to add an initialized unit: template<> SingleFlagger<...>::dict = {{...,...}, ...}
 	// static const dict_t dict;
 
+	/**
+	 *
+	 */
 	inline
-	FlaggerBase(): value(ownValue), separator(','){
+	FlaggerBase(): value(ownValue), separator(','), ownValue((value_t)0){
 	}
 
 	/// Own value will be unused (and invisible).
+	/**
+	 *   Reconsider design. Should the value ever be referenced?
+	 */
 	inline
 	FlaggerBase(value_t & v): value(v), separator(','){
 	}
@@ -823,6 +827,15 @@ public:
 	typedef typename dict_t::key_t key_t; // ~string
 	typedef typename dict_t::value_t dvalue_t;
 
+	inline
+	SingleFlagger(){
+	};
+
+	inline
+	SingleFlagger(value_t v){
+		this->value = v;
+	};
+
 	virtual inline
 	~SingleFlagger(){};
 
@@ -867,6 +880,15 @@ public:
 	typedef FlaggerDict dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
 	typedef typename dict_t::value_t dvalue_t;
+
+	inline
+	MultiFlagger(){
+	};
+
+	inline
+	MultiFlagger(value_t v){
+		this->value = v;
+	};
 
 	virtual inline
 	~MultiFlagger(){};
@@ -992,6 +1014,15 @@ public:
 
 	typedef F fbase_t;
 	typedef typename fbase_t::value_t value_t;
+
+	inline
+	EnumFlagger(){
+	}
+
+	inline
+	EnumFlagger(value_t v): fbase_t(v) {
+	}
+
 
 	virtual
 	const typename FlaggerBase<value_t>::dict_t & getDict() const {

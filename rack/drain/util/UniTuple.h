@@ -55,8 +55,9 @@ class UniTuple {
 
 public:
 
-	typedef T  value_type;
+	typedef T  value_type;   // why value_type, not value_t (ok, STL also )
 	typedef UniTuple<T,N> tuple_t;
+	static const size_t tuple_size = N;
 
 	typedef T* iterator;
 	typedef const T* const_iterator;
@@ -74,14 +75,12 @@ public:
 	};
 
 
-
-
 	inline
 	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
 		set(t);
 	};
 
-	inline
+	virtual inline
 	~UniTuple(){};
 
 	/// Proposed for tuples only; derived classes should not shadow this.
@@ -282,6 +281,10 @@ public:
 		return *this;
 	}
 
+	/**
+	 *   Derived classes may change the layout.
+	 */
+	virtual
 	std::ostream & toStream(std::ostream & ostr, char separator=',') const {
 		char sep = 0;
 		for (const_iterator it = begin(); it != end(); ++it){
@@ -336,7 +339,7 @@ protected:
 
 	// Parasite
 	template <size_t N2>
-	UniTuple(UniTuple<T,N2> &tuple, size_t i=0): start(tuple.begin()+i), init(nullptr){
+	UniTuple(UniTuple<T,N2> &tuple, size_t i): start(tuple.begin()+i), init(nullptr){ // 2023/04/24
 		if ((i+N)> N2){
 			std::stringstream sstr;
 			debug(sstr);

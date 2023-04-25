@@ -40,34 +40,63 @@ namespace drain
 /*
 */
 Histogram::Histogram(size_t size){
-	initialize(size);
+	//initialize(size);
 }
 
 Histogram::Histogram(const Histogram & histogram){
-	initialize(histogram.getSize());
+	setSize(histogram.getSize());
+	scaling.set(histogram.scaling);
+	//initialize(histogram.getSize());
 }
 
-//	virtual ~Histogram(){};
-void Histogram::initialize(size_t size){
+void Histogram::initialize(){
 	delimiter = ", ";
-	//setScale(0, size);
-	setSize(size);
-	//setMedianPosition(0.5);
 	sampleCount = 0;
 	weight = 0.5;
 	sampleCountMedian = 0;
 	setValueFunc('a');
 }
 
-void Histogram::setSize(size_t s){
-	bins = s;
-	//resize(bins,0);
-	resize(bins);
-	//setScale(inMin,inMax,outMin,outMax);
-	if (scaling.physRange.span() == 0)
-		setScale(0, bins-1);
+void Histogram::setSize(size_t n){
+
+	resize(n);
+
+	if (!scaling.physRange.empty()){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		Range<double> histRange(0, size());
+		scaling.setConversionScale(histRange, scaling.physRange);
+		mout.warn("tuned also scaling: ", scaling);
+	}
+	// if (!scaling.isPhysical())
+	//	setRange(0, bins-1);
 }
 
+void Histogram::setRange(double dataMin, double dataMax){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	scaling.setPhysicalRange(dataMin, dataMax);
+
+	Range<double> histRange(0, size());
+
+	if (scaling.physRange.empty()){
+		mout.warn("Empty physRange: ", scaling.physRange, ", setting equal to histRange: ", histRange);
+		//return;
+	}
+
+	scaling.setConversionScale(histRange, scaling.physRange);
+
+	mout.warn("scale NOW: ", scaling);
+
+	/*
+	if (size()>0){
+		scaling.set(dataMax/static_cast<double>(size()), 0.0);
+		mout.warn("scale2 ", scaling);
+	}
+	*/
+	//scaling.s
+	// scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
+};
 
 std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::size_t value){
 
@@ -76,11 +105,11 @@ std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::si
 	if (drain::Type::call<drain::typeIsSmallInt>(type)){
 		const size_t s = drain::Type::call<drain::sizeGetter>(type);
 		const size_t bits = (s*8);
-		mout.debug() << bits << " bits => setting " << (1<<bits) << " bins " << mout.endl;
 		value = (1<<bits);
+		mout.debug(bits, " bits => setting ", value, " bins ");
 	}
 	else {
-		mout.note() << "assuming " << value << " bins" << mout.endl;
+		mout.note("assuming ", value, " bins");
 	}
 
 	//setSize(value);
@@ -89,11 +118,13 @@ std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::si
 }
 
 
+/*
 void Histogram::clearBins(){
-	for (size_type i = 0; i < bins; i++)
+	for (size_type i = 0; i < size(); i++)
 		(*this)[i] = 0;
 	sampleCount = 0;
 }
+*/
 
 Histogram::stat_ptr_t Histogram::getStatisticPtr(char c){
 
@@ -131,7 +162,7 @@ Histogram::stat_ptr_t Histogram::getStatisticPtr(char c){
 
 void Histogram::dump(std::ostream & ostr){
 	ostr << "# i\tvalue \tcount\n";
-	for (size_type i = 0; i < bins; i++){
+	for (size_type i = 0; i < size(); i++){
 		ostr << i << '\t' << scaleOut<double>(i) << '\t' << (*this)[i] << '\n';
 	}
 }

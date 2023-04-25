@@ -70,7 +70,7 @@ void AccumulationArray::clear(){
 
 
 std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & accArray){
-	ostr << "AccumulationArray geom:" << accArray.getGeometry() << ' ';
+	ostr << "AccumulationArray geom: " << accArray.getGeometry() << ' ';
 	return ostr;
 }
 

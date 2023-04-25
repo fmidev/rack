@@ -9,11 +9,11 @@ function TEST_TIFF(){
     local outfile=$2
     local epsg=$3
     local filebase=${outfile%.*}
-    local inffile=${filebase}.inf
+    local file_gdal=${filebase}.gdal
     local cmd
 
     echo "# RACK"
-    cmd="rack $INFILE --cProj '$projdef' -c --outputConf tif:strict=true -o $outfile"
+    cmd="rack $INFILE --cProj '$projdef' -c --outputConf tif:compliancy=EPSG:STRICT -o $outfile"
     echo $cmd
     eval $cmd
     if [ $? == 0 ]; then
@@ -37,15 +37,15 @@ function TEST_TIFF(){
     if [ $? != 0 ]; then
 	echo "GDAL error with projdef='$projdef' ($outfile)"
     fi
-    cat $filebase.tmp | fgrep -v 'Files:' > $inffile
-    #echo $cmd
+    cat $filebase.tmp | fgrep -v 'Files:' > $file_gdal
+
 
     
     
     if [ -v LAST_INFFILE ]; then
 	echo
-	echo "# DIFF check"
-	cmd="diff $LAST_INFFILE $inffile"
+	echo "# DIFF check for gdalinfo"
+	cmd="diff $LAST_INFFILE $file_gdal"
 	echo $cmd
 	eval $cmd 
 	if [ $? != 0 ]; then
@@ -57,7 +57,7 @@ function TEST_TIFF(){
 	fi
     fi
     
-    LAST_INFFILE=$inffile
+    LAST_INFFILE=$file_gdal
 
     if [ "$epsg" != '' ]; then
 
@@ -111,6 +111,12 @@ for EPSG in ${ARGS[*]}; do
 
     TEST_TIFF "$PROJDEF"         test-projdef-$EPSG.tif   $EPSG
 
+    echo "# LISTGEO check"
+    gdal_translate -co TILED=YES -co BLOCKXSIZE=512 -co BLOCKYSIZE=512 -co COMPRESS=LZW test-$EPSG.tif  test-$EPSG-gdal.tif
+    listgeo test-$EPSG.tif      > orig-$EPSG.lgeo
+    listgeo test-$EPSG-gdal.tif > gdal-$EPSG.lgeo
+    diff {orig,gdal}-$EPSG.lgeo > diff-$EPSG.lgeo
+    
     
     echo >> rack-geotiff-supported.inc
     echo >> rack-geotiff-unsupported.inc

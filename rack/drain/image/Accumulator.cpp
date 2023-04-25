@@ -263,11 +263,11 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 }
 
 
+std::ostream & Accumulator::toStream(std::ostream & ostr) const {
+//std::ostream & operator<<(std::ostream & ostr, const Accumulator & accumulator){
 
-std::ostream & operator<<(std::ostream & ostr, const Accumulator & accumulator){
-
-	ostr << "Accumulator ("<< accumulator.accArray.getGeometry() << ") ";
-	ostr << " ["<< accumulator.getMethod() << "] ";
+	ostr << "Accumulator ("<< accArray.getGeometry() << ") ";
+	ostr << " ["<< getMethod() << "] ";
 	/*
 	for (std::map<std::string, AccumulationMethod &>::const_iterator it = methods.begin(); it != methods.end(); it++)
 		ostr << it->second << ',';

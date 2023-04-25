@@ -35,6 +35,40 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+Quantity::Quantity(const std::string & name,
+		const drain::Range<double> & range,
+		char defaultType,
+		const list_t & l,
+		double undetectValue):
+			name(name),
+			defaultType(defaultType),
+			physicalRange(range),
+			undetectValue(undetectValue) {
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	for (const typename list_t::value_type & entry: l){
+		if (entry.type.empty()){
+			// WARN
+			mout.warn("...");
+		}
+		else {
+			const char type = entry.type.at(0);
+			//list_t::value_type & newEntry = this->insert(this->end, list_t::value_type(ODIMPathElem::OTHER)); // (*this)[type];
+			//this->insert({type, EncodingODIM(ODIMPathElem::OTHER)}); //(*this)[type];
+			EncodingODIM & newEntry = (*this)[type];
+
+			newEntry = entry;
+			if (!this->defaultType)
+				this->defaultType = type;
+			if (newEntry.scaling.physRange.empty() && !range.empty()){
+				//std::cout << name << ": empty range " << entry.scaling.physRange << " <-- " << range << '\n';
+				newEntry.scaling.physRange.set(range); // also to floats?
+			}
+		}
+	}
+
+}
 
 
 EncodingODIM & Quantity::set(char typecode) {

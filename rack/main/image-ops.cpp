@@ -242,7 +242,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	//mout.debug() << "Selector results: " << mout.endl;
 	for (const ODIMPath & path: paths)
-		mout.attention("Selector results: ", path);
+		mout.info("Selector results: ", path);
 
 	mout.note("Use physical scale? ", ctx.imagePhysical);
 
@@ -278,7 +278,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		const ODIMPathElem & datasetElem = path.front(); // *path.begin();
 
 		/// This makes using QIND difficult...
-		mout.attention("using: ", datasetElem, " / [", datasetSelector.quantity, "]");
+		mout.info("using: ", datasetElem, " / [", datasetSelector.quantity, "]");
 
 		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.quantity);
 
@@ -326,7 +326,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			quantityList.insert(entry.first); // == entry.second.odim.quantity
 		}
 
-		mout.attention("current quantities: ", drain::sprinter(quantityList));
+		mout.info("current src quantities: ", drain::sprinter(quantityList));
 
 
 		for (const std::string & quantity: quantityList){
@@ -334,14 +334,12 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Yes, of dst type, but used as src
 			Data<dst_t> & srcData = dstDataSet.getData(quantity);
 
-			// size_t dstAlphaChannels = 0;
-			// mout.warn() << "srcData: " << srcData << mout;
-
 			/// SOURCE: Add src data (always from h5 struct)
 			srcData.data.setScaling(srcData.odim.scaling);
 			drain::ValueScaling & scaling = srcData.data.getScaling();
 			scaling.setScaling(srcData.odim.scaling);
 			/// TODO: clarify those...
+			mout.attention("Src SCALING: ", srcData.odim.scaling);
 
 			if (ctx.imagePhysical){ // user wants to give thresholds etc params in phys units
 				if (!scaling.isPhysical()){
@@ -350,11 +348,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					//srcData.data.
 					range.min = encoding.requestPhysicalMin(0.0);
 					range.max = encoding.requestPhysicalMax(100.0);
-					mout.special() << "guessing physical range: " << range << mout;
+					mout.special("guessing physical range: ", range);
 					scaling.setPhysicalRange(range);
 					//srcData.data.setPhysicalScale(srcData.odim.getMin(), srcData.odim.getMax());
 				}
-				mout.info() << "src scaling: " << srcData.data.getScaling() << mout;
+				mout.info("src scaling: ", srcData.data.getScaling());
 			}
 			else {
 
@@ -362,14 +360,14 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//mout.warn() << "src scaling: " << srcData.data.getScaling() << mout;
 			}
 
-			mout.debug() << "src :" << srcData.data << ' ' << EncodingODIM(srcData.odim) << mout.endl;
+			mout.debug("src :", srcData.data, ' ', EncodingODIM(srcData.odim));
 
 			srcTray.appendImage(srcData.data);
 
 			// ctx.qualitySelector.pathMatcher.
 			//if (ctx.qualityGroups.test(ODIMPathElem::DATA) && srcData.hasQuality()){
 			if ((ctx.qualityGroups & ODIMPathElem::DATA) && srcData.hasQuality()){
-				mout.debug() << path << "/[" << quantity <<  "] has quality data" << mout.endl;
+				mout.debug(path,  "/[", quantity, "] has quality data");
 				SPECIFIC_QUALITY_FOUND = true;
 			}
 			else {
@@ -463,8 +461,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 
 				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
-				mout.info() << "initial dstConf: " << dstConf << mout;
-
+				mout.info("initial dstConf: ", dstConf);
+				dstData.data.setType(dstConf.getType()); // NEW 2023/04/21
 				// REALLY NEW
 				bean.makeCompatible(dstConf, dstData.data);
 				mout.special("dst (after makeCompatible):", dstData.data);

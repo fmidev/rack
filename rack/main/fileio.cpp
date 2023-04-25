@@ -114,8 +114,8 @@ public:
 		// Compression METHOD
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
-		gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
-		gtiffConf.link("compliance", FileGeoTIFF::compliance, "TIFF,GEOTIFF,..."); //drain::sprinter(FileGeoTIFF::getComplianceDict(), "|", "<>").str());
+		// gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
+		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
 		// gtiffConf.link("compliance", FileGeoTIFF::compliance, drain::sprinter(drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict, "|", "<>").str()); // "raw" object (segfaul risk)
 		// gtiffConf.link("plainEPSG", FileGeoTIFF::plainEPSG, "use EPSG only, if code supported");
 
@@ -124,7 +124,7 @@ public:
 	CmdOutputConf(const CmdOutputConf & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
 		//parameters.copyStruct(cmd.getParameters(), cmd, *this);
 		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
-		pngConf.copyStruct(cmd.pngConf,   cmd, *this, drain::ReferenceMap::LINK);
+		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
 
 	}
@@ -179,7 +179,11 @@ public:
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
 		}
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
+			//FileGeoTIFF::compliance = FileGeoTIFF::flagger.str();
 			handleParams(gtiffConf, params);
+			drain::StringTools::replace(FileGeoTIFF::compliancy, ":", ",", FileGeoTIFF::compliancy);
+			// FileGeoTIFF::compliance.replace("")
+			FileGeoTIFF::compliancyFlagger.assign(FileGeoTIFF::compliancy);
 			//gtiff mika;
 			//mout.note("keys", gtiffConf.getKeys());
 		}

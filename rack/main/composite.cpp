@@ -208,11 +208,11 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	else {
 		//else if (ctx.currentHi5 == & ctx.cartesianHi5){
 		if ((object == "SCAN") || (object == "PVOL"))
-			mout.info() << "polar input data, ok" << mout.endl;
+			mout.info("polar input data, ok");
 		else if (object.empty())
-			mout.warn() << "empty what:object, assuming polar" << mout.endl;
+			mout.warn("empty what:object, assuming polar");
 		else
-			mout.warn() << "suspicious what:object=" << object << ", assuming polar" << mout.endl;
+			mout.warn("suspicious what:object=", object, ", assuming polar");
 		addPolar(composite, src);
 	}
 	/*
@@ -248,8 +248,10 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	}
 
 	bool isAeqd = false;
-	// mout.warn() << composite.getBoundingBoxD().getArea() << mout.endl;
+	//mout.warn() << composite.getBoundingBoxD().getArea() << mout.endl;
+	//composite.toStream(std::cerr);
 	mout.debug(composite);
+	//mout.warn("checkb");
 
 	// TODO: prune
 	if (!composite.isDefined()){

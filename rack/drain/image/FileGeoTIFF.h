@@ -122,32 +122,14 @@ public:
 	virtual
 	void open(const std::string & path, const std::string & mode = "w");
 
-	/*
-	inline
-	void setGeoTiffField(geokey_t tag, short int value){
-		GTIFKeySet(gtif, tag, TYPE_SHORT, 1, value);
-	}
-
-	inline
-	void setGeoTiffField(geokey_t tag, int value){
-		GTIFKeySet(gtif, tag, TYPE_SHORT, 1, value);
-	}
-	*/
-
-	inline
-	void setGeoTiffField(geokey_t tag, const char *value){
-		GTIFKeySet(gtif, tag, TYPE_ASCII, strlen(value)+1, value);
-	}
-
-	inline
-	void setGeoTiffField(geokey_t tag, const std::string & value){
-		GTIFKeySet(gtif, tag, TYPE_ASCII, value.size()+1, value.c_str());
-	}
 
 	template <typename T>
 	void setGeoTiffField(geokey_t tag, T value){
 		if ((std::is_enum<T>::value) || (std::is_integral<T>::value)){
 			GTIFKeySet(gtif, tag, TYPE_SHORT, 1, static_cast<short int>(value));
+		}
+		else if (std::is_floating_point<T>::value){
+			GTIFKeySet(gtif, tag, TYPE_FLOAT, 1, value);
 		}
 		else {
 			drain::Logger mout(__FUNCTION__, __FILE__);
@@ -156,32 +138,10 @@ public:
 		}
 	}
 
-	/// Specialize only for strings
-	/*
-	template <typename T>
-	int setGeoTiffField(int tag, T value){
-
-		if (!isOpen()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.error("GeoTIFF file not open");
-			return -1;
-		}
-
-		tagtype_t tag_type = getTagType<T>();
-		switch (tag_type) {
-			case TYPE_ASCII:
-				// GTIFKeySet(gtif, tag, TYPE_ASCII, 7, "WGS 84");
-				break;
-			default:
-				break;
-		}
-		return 0;
-	}
-	*/
-
 
 	/// Completes GeoTIFF structure
 	void writeMetadata();
+
 
 	virtual
 	void close();
@@ -196,18 +156,19 @@ public:
 	/**
 	 *  TODO: consider TIFF,default,GTIFF,StrictGTIFF
 	 */
-	static
-	bool strictCompliance;
+	// static
+	// bool strictCompliance;
 
-	typedef enum {TIFF=1, GEOTIFF=2, GEOTIFF_EXT=3} TiffCompliance;
+	typedef enum {UNDEFINED=0, TIFF=1, GEOTIFF=2, EPSG=6, STRICT=10} TiffCompliance;
 
-	typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
-
-	static
-	const drain::FlaggerDict & getComplianceDict();
+	//typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
+	typedef drain::EnumFlagger<drain::MultiFlagger<TiffCompliance> > complianceFlagger;
 
 	static
-	int compliance;
+	complianceFlagger compliancyFlagger;
+
+	static
+	std::string compliancy;
 	//TiffCompliance compliance;
 	/// Use EPSG specific support only, if found. Else use also fromProj4Str().
 	// static	bool plainEPSG;
@@ -217,8 +178,6 @@ public:
 	 *  \param nodata - yes, string...
 	 */
 	void setGdalScale(double scale=1.0, double offset=0.0);
-
-	//void setGdalMetaData(double scale=1.0, double offset=0.0);
 
 	/// This is between Tiff and GeoTiff?
 	/**
@@ -232,43 +191,25 @@ public:
 	 */
 	void setGeoMetaData(const drain::image::GeoFrame & frame);
 
-	void setProjection(const std::string & proj);
-
-	void setProjection(const drain::Proj4 & proj);
-
-	//inline
-	void setProjectionLongLat();
-
-	/// If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
-	// Will replace latLon (EPSG=4326) as well?
-	//inline
+	/// Set projection using EPSG code. This is the recommended way.
+	/**
+	 *   See also:
+	 */
 	void setProjectionEPSG(short epsg);
 
-	/// Writes image to a TIIF (GeoTIFF) file.
+	/// Sets projection given in Proj.4 string format.
 	/**
-	 *  Writes drain::Image to a tif image.
-	 *  Writes in 8 or 16 bits.
-	 *  Floating point images will be scaled as 16 bit integral (unsigned short int).
-	*/
-	//static void write(const Image &image,const std::string &path);
+	 *  If EPSG is detected (currently by +init=epsg:EPSG) and support configured for EPSG code, set it directly.
+	 */
+	void setProjection(const std::string & proj);
 
-	//static
-	//void write(const std::string & path, const drain::image::Image & src, int tileWidth, int tileHeight=0);
+	/// Sets projection, primarily using EPSG if found, else Proj.4 string format.
+	void setProjection(const drain::Proj4 & proj);
 
-	/*
-	static inline
-	void write(const std::string & path, const drain::image::Image & src, int defaultTileWidth, int defaultTileHeight=0){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("binary compiled without TIFF/GeoTIFF support, skipping");
-	};
-	*/
+	/// Sets projection to plain longitude-latitude mapping.
+	void setProjectionLongLat();
 
 
-
-
-	//void setUpTIFFDirectory_rack(const drain::image::Image & src); //, int tileWidth=0, int tileHeight = 0);
-
-	//void adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame);
 
 	/*
 	template <typename T>
@@ -288,6 +229,9 @@ public:
 
 protected:
 
+
+	GTIF *gtif;
+
 	/*
 	typedef std::map<const std::type_info *,tagtype_t> tagtype_map_t;
 
@@ -295,11 +239,22 @@ protected:
 	const tagtype_map_t tagtype_map;
 	*/
 
-	GTIF *gtif;
-	// TIFF *tif = XTIFFOpen(path.c_str(), "w");
-	// GTIF *gtif = GTIFNew(tif);
-
 };
+
+template <>
+inline
+void FileGeoTIFF::setGeoTiffField(geokey_t tag, const char *value){
+	GTIFKeySet(gtif, tag, TYPE_ASCII, strlen(value)+1, value);
+}
+
+template <>
+inline
+void FileGeoTIFF::setGeoTiffField(geokey_t tag, const std::string & value){
+	GTIFKeySet(gtif, tag, TYPE_ASCII, value.size()+1, value.c_str());
+}
+
+template <>
+const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
 
 /*
 

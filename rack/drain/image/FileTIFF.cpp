@@ -144,8 +144,14 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 			mout.warn("unsupported storage type=", drain::Type::getTypeChar(t), ", trying 8 bit mode");
 	}
 
-	// TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, bitspersample);
-	setField(TIFFTAG_BITSPERSAMPLE, bitspersample);
+	setField(TIFFTAG_BITSPERSAMPLE,   bitspersample);
+
+	/** The number of components per pixel.
+	 *  SamplesPerPixel is usually 1 for bilevel, grayscale, and palette-color images.
+	 *  SamplesPerPixel is usually 3 for RGB images.
+	 *  https://www.awaresystems.be/imaging/tiff/tifftags/samplesperpixel.html
+	 */
+	setField(TIFFTAG_SAMPLESPERPIXEL, 1);
 
 	int tileWidth  = tile.getWidth();
 	int tileHeight = tile.getHeight();

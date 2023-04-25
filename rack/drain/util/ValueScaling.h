@@ -75,11 +75,21 @@ public:
 
 
 	inline
-	ValueScaling(double scale=1.0, double offset = 0.0, double scaleOut=1.0, double offsetOut=0.0) :
+	ValueScaling(double scale=1.0, double offset = 0.0) : //, double scaleOut=1.0, double offsetOut=0.0) :
 		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
 	{
-		setConversionScale(scale, offset, scaleOut, offsetOut);
+		//setConversionScale(scale, offset, scaleOut, offsetOut);
+		setConversionScale(scale, offset, 1.0, 0);
 		physRange.set(0,0);
+	};
+
+	inline
+	ValueScaling(double scale, double offset, const drain::Range<double> & range) : //, double scaleOut=1.0, double offsetOut=0.0) :
+		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+	{
+		//setConversionScale(scale, offset, scaleOut, offsetOut);
+		setConversionScale(scale, offset, 1.0, 0);
+		physRange.set(range); // TODO tune: scaleOut, offsetOut
 	};
 
 	inline
@@ -97,7 +107,15 @@ public:
 		//this->assign(scaling);
 	};
 
+	virtual inline
+	~ValueScaling(){};
 
+
+	inline
+	ValueScaling & operator=(const drain::ValueScaling & scaling){
+		this->assign(scaling);
+		return *this;
+	}
 
 	/// Set linear scaling
 	virtual inline
@@ -123,10 +141,6 @@ public:
 	}
 
 
-	ValueScaling & operator=(const ValueScaling & scaling){
-		this->assign(scaling);
-		return *this;
-	}
 
 	/// If the intensities of the image correspond to an absolute value (like count) then the scale should be reset to unity with this function.
 	inline
@@ -159,6 +173,12 @@ public:
 	inline
 	void setConversionScale(const drain::ValueScaling & s1, const drain::ValueScaling & s2){
 		set(s2.scale/s1.scale, (s2.offset-s1.offset) / s1.scale);
+	}
+
+	//template <typename T>
+	inline
+	void setConversionScale(const Range<double> & r1, const Range<double> & r2){
+		set(r2.width()/r1.width(), r2.min - r2.width()/r1.width()*r1.min);
 	}
 
 	/// If storage type is integer, adjust scale such that resolution is maximized.
@@ -245,7 +265,7 @@ public:
 	/// Returns true, physical intensity range has been set.
 	inline
 	bool isPhysical() const {
-		return (physRange.min != physRange.max);
+		return (!physRange.empty());
 	}
 
 	/// Sets scale and offset according to physical range and current type.
@@ -278,7 +298,7 @@ public:
 	}
 
 	inline
-	std::string toStr() const{
+	std::string str() const{
 		std::stringstream sstr;
 		toStream(sstr);
 		return sstr.str();

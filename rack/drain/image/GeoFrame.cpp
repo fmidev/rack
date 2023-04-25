@@ -377,16 +377,21 @@ void GeoFrame::updateDataExtent(const drain::Rectangle<double> & inputExtentD)
 	}
 }
 
-std::ostream & GeoFrame::toOStr(std::ostream & ostr) const {
+std::ostream & GeoFrame::toStream(std::ostream & ostr) const {
 
 	ostr << "frame " << this->getFrameWidth() << 'x' << this->getFrameHeight() << "\n";
 	ostr << "   input coords: " << getCoordinateSystem() << '\n';
-	ostr << "   projection:   " << getProjection() << '\n';
+	const std::string & projStr = getProjection();
+	const short int EPSG = projR2M.pickEpsgCode(projStr);
+	if (EPSG)
+		ostr << "   projection:   " << getProjection() << '\n';
+	else
+		ostr << "   projection:   EPSG:" << EPSG << '\n';
 
-	ostr << "   bbox, nat.units: [" << getBoundingBoxM() << "]\n";
-	ostr << "   bbox, radians:   [" << getBoundingBoxR() << "]\n";
-	ostr << "   bbox, degrees:   [" << getBoundingBoxD() << "]\n";
-	ostr << "   resolution, metres/pix: (" << xScale << ',' << yScale << ")\n";
+	ostr << "   bbox[nat]:   [" << getBoundingBoxM() << "]\n";
+	ostr << "   bbox[rad]:   [" << getBoundingBoxR() << "]\n";
+	ostr << "   bbox[deg]:   [" << getBoundingBoxD() << "]\n";
+	ostr << "   resolution[m/pix]: (" << xScale << ',' << yScale << ")\n";
 
 	return ostr;
 

@@ -70,7 +70,6 @@ public:
 
 	virtual ~Histogram(){};
 
-	//LinearScaling scaling;
 	ValueScaling scaling;
 
 	/// Sets the number of bins; the resolution of the histogram.
@@ -80,14 +79,32 @@ public:
 	std::size_t recommendSizeByType(const std::type_info & type, std::size_t defaultValue = 256);
 
 	inline
-	int getSize() const { return bins; };
+	int getSize() const { return size(); };
+
+	inline
+	int autoSize(const std::type_info & type){
+		if (empty()){
+			resize(recommendSizeByType(type, 256));
+		}
+		return size();
+	};
+
+	/// Does not change the size of the histogram.
+	inline
+	void clearBins(){
+		std::fill(begin(), end(), 0);
+	}
 
 	/// Collect distribution.
+	/**
+	 *  \param src - source data
+	 *  \tparam T - something iterable, has begin() and end() for example.
+	 */
 	template <class T>
 	void compute(const T & src, const std::type_info & type = typeid(double));
 
 	/// Does not change the size of the histogram.
-	void clearBins();
+	//void clearBins();
 
 
 	/// Sets the expected sample count. Deprecating.
@@ -103,18 +120,26 @@ public:
 
 
 	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
+	void setRange(double dataMin, double dataMax);
+
+	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
 	inline
-	void setScale(double dataMin, double dataMax){
-		scaling.setPhysicalRange(dataMin, dataMax);
-		if (bins>0)
-			scaling.set(dataMax/static_cast<double>(bins), 0.0);
-		//scaling.s
-		// scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
-	};
+	void setRange(const Range<double> & range){
+		setRange(range.min, range.max);
+	}
 
 	inline
-	void setScale(const ValueScaling & s){
-		scaling.assign(s);
+	void deriveScaling(const ValueScaling & s, const Type & type){
+		setRange(s.fwd(0.0), s.fwd(1 << (8*drain::Type::call<drain::sizeGetter>(type))));
+	}
+
+	inline
+	void setScale(const ValueScaling & scaling){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.discouraged("use setRange instead (scaling=", scaling, ")");
+		mout.advice("range perhaps: [", this->scaling.getPhysicalRange());
+		this->scaling.assign(scaling);
+		//int s = 1 << (8*drain::Type::call<drain::sizeGetter>(type));
 	}
 
 	/// Set range of original (physical) values to be mapped on the limited number of bins. Note: max refers to open upper limit.
@@ -130,7 +155,7 @@ public:
 
 	/// Returns the upperLimit (exclusive)
 	inline
-	int getUpperBoundIn() const { return bins; };
+	int getUpperBoundIn() const { return size(); };
 
 
 	inline
@@ -138,7 +163,7 @@ public:
 
 	/// Returns the upperLimit (exclusive)
 	inline
-	int getUpperBoundOut() const { return scaling.fwd(bins); };
+	int getUpperBoundOut() const { return scaling.fwd(size()); };
 
 
 
@@ -236,7 +261,7 @@ public:
 	template <class T>
 	inline
 	T getMax() const {
-		for (size_type i = bins-1; i > 0; --i)
+		for (size_type i = size()-1; i > 0; --i)
 			if ((*this)[i] > 0)
 				return scaleOut<T>(i);
 		// cerr << "Warning: Histogram empty.\n";
@@ -247,25 +272,32 @@ public:
 	template <class T>
 	inline
 	T getMin() const {
-		for (size_type i = 0; i < bins; ++i)
+		for (size_type i = 0; i < size(); ++i)
 			if ((*this)[i] > 0)
 				return scaleOut<T>(i);
 		//cerr << "Warning: Histogram empty.\n";
 		return  getUpperBoundOut(); //static_cast<T>(outMax);
 	}
 
-	/// Unscaled sum.
+	/// Sum of the samples
+	/**
+	 *   TODO: handle somehow no-data and other markers - with a different function?
+	 */
 	template <class T>
-	inline
+	//inline
 	T getSum() const {
-		size_type sum = 0;
-		for (size_type i = 0; i < bins; i++){
-			sum += (*this)[i] * scaleOut<T>(i); // count * nominal (should be scaled to middle)
+		double sum = 0;
+		//std::cout << __FUNCTION__ << ':' << sum << std::endl;
+		for (size_type i = 0; i < size(); i++){
+			sum += ((*this)[i] * scaleOut<T>(i)); // count * nominal (should be scaled to middle)
+			//if ((*this)[i])
+			//	std::cout << i << '\t' << (*this)[i] << '\t' << scaleOut<T>(i) << '\t' << sum << '\n';
 		}
 		return sum;
 	}
 
-	//template <class T2>
+
+	/// Unscaled mean
 	template <class T>
 	inline
 	T getMean() const {
@@ -284,7 +316,7 @@ public:
 		const size_type limit = static_cast<size_t>(weight*sampleCount);
 
 		sum = 0;
-		for (size_type i = 0; i < bins; ++i){
+		for (size_type i = 0; i < size(); ++i){
 			sum += (*this)[i];
 			if (sum >= limit){
 				return scaleOut<T>(i);
@@ -303,13 +335,13 @@ public:
 		}
 		const size_t limit =  sampleCountMedian; //   static_cast<size_t>(p * sampleCount);
 		_sum = 0;
-		for (size_type i = 0; i < bins; i++){
+		for (size_type i = 0; i < size(); i++){
 			_sum += (*this)[i];
 			if (_sum >= limit){
 				return static_cast<T>(i);
 			}
 		}
-		return static_cast<T>(bins);
+		return static_cast<T>(size());
 	}
 
 
@@ -326,7 +358,7 @@ public:
 
 		sum = 0;
 		sum2 = 0;
-		for (size_type i = 0; i < bins; i++){
+		for (size_type i = 0; i < size(); i++){
 			f = scaleOut<T>(i);
 			n = (*this)[i];
 			sum  += n * f;
@@ -378,9 +410,10 @@ public:
 		statisticPtr = getStatisticPtr(c);
 	}
 
+
 protected:
 
-	void initialize(size_t size);
+	void initialize();
 
 	typedef double (Histogram::*stat_ptr_t)() const;
 
@@ -393,7 +426,7 @@ protected:
 
 private:
 	/// Resolution of the histogram.
-	size_t bins;
+	// size_t bins;
 
 	/// The expected sample count in the histogram.
 	//size_type sampleCount;
@@ -424,12 +457,47 @@ void Histogram::compute(const T & dst, const std::type_info & type){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	//const std::type_info & type = dst.getType();
+	const std::size_t s = autoSize(type);
 
-	const std::size_t s = getSize();
+	mout.note(s, " bins");
 
-	mout.note(getSize(), " bins, storage type resolution ", s, " ");
+	initialize();
 
+	if (s == 0){
+		mout.error("0 bins, something went wrong");
+		return;
+	}
+
+	if (s > 0x10000){
+		mout.error(s, " bins exceeds Histogram size limit: ", 0x10000);
+		return;
+	}
+
+
+	const bool IS_SMALL_INT = (type == typeid(unsigned char)) || (type == typeid(unsigned short int));
+
+	int histBits = 0;
+	for (int i=0; (s>>i)>0; ++i){
+		histBits=i;
+	}
+
+	if (IS_SMALL_INT && (s == (1<<histBits))){
+		int dataBits = 8*drain::Type::call<drain::sizeGetter>(type);
+		int bitShift = dataBits - histBits;
+		mout.note("Fast mode (bitShift=", bitShift, ": data ", dataBits, "b int, histogram ", histBits, "b <=", s, " bins)");
+		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			this->incrementRaw(static_cast<unsigned short int>(*it) >> bitShift);
+		}
+	}
+	else {
+		mout.warn("Size ", s, " not 2^N (slow mode)");
+		mout.advice("Consider histogram size of 2^N, e.g.", (1<<histBits));
+		mout.unimplemented("(slow mode)");
+		mout.error("(slow mode)");
+		// ValueScaling only here!
+	}
+
+	/*
 	if ((s == 256) && (type == typeid(unsigned char))){
 		mout.note() << "direct 256-mode: u char (fast)" << mout.endl;
 		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
@@ -443,12 +511,19 @@ void Histogram::compute(const T & dst, const std::type_info & type){
 		}
 	}
 	else {
-		mout.note() << "scaled mode (slow)" << mout.endl;
-		this->setScale(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
+		mout.note("scaled mode (slow)");
+
+		if (dst.getScaling().isPhysical()){
+			this->setRange(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
+		}
+		//this->setRange(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
+		mout.note("range:   ", scaling.physRange);
+		mout.note("scaling: ", scaling);
 		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
-			this->increment(*it);
+			this->increment(static_cast<unsigned int>(*it));
 		}
 	}
+	*/
 
 	mout.note("finito");
 

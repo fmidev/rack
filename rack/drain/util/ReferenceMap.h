@@ -86,6 +86,7 @@ public:
 	}
 
 
+
 	/// Associates a map entry with a variable
 	/**
 	 *  \param key - variable name in a map

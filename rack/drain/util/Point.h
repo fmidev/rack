@@ -101,27 +101,17 @@ struct Point3D : public drain::UniTuple<T,3> {
 	Point3D(const Point3D & p) : x(this->at(0)=p.x), y(this->at(1)=p.y), z(this->at(2)=p.z){
 	};
 
+	Point3D & operator=(const Point3D & p){
+		this->set(p.tuple());
+		return *this;
+	}
 
-
-
-
-//-----------------------------------------
-
-/*
-template <class T>
-class Point3D : public Point2D<T>
-{
-public:
-
-	Point3D() : Point2D<T>(), z(0)
-	{
-    };
-
-    Point3D(const T &x, const T &y, const T &z) : Point2D<T>(x,y), z(z) 
-    {
-    };
-    
- */
+	// Consider generalized (for smaller tuples?)
+	template <class T2>
+	Point3D & operator=(const drain::UniTuple<T2,3> & p){
+		this->set(p.tuple());
+		return *this;
+	}
 
 	template <class T2>
     void setLocation(const T2 & x, const T2 & y,  const T2 & z){

@@ -197,24 +197,9 @@ public:
 	 */
 	void extractField(char field, const AccumulationConverter & converter, Image & dst) const;
 
-	/*
-	inline
-	std::string toStr() const {
-		std::stringstream sstr;
-		toStream(sstr);
-		return sstr.str();
-	}
-	*/
 
-	/*
 	virtual
-	std::ostream & toStream(std::ostream & ostr) const {
-		ostr << "Accumulator ("<< this->accArray.getGeometry() << ") ";
-		ostr << " ["<< getMethod() << "] ";
-		//ostr << '\n';
-		return ostr;
-	};
-	*/
+	std::ostream & toStream(std::ostream & ostr) const;
 
 public:
 
@@ -240,8 +225,10 @@ protected:
 
 };
 
-
-std::ostream & operator<<(std::ostream &ostr, const Accumulator & cumulator);
+inline
+std::ostream & operator<<(std::ostream &ostr, const Accumulator & accumulator){
+	return accumulator.Accumulator::toStream(ostr);
+}
 
 
 }  // image::

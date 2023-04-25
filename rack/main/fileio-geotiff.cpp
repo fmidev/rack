@@ -109,77 +109,85 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	file.setDefaults();
 	file.useDefaultTileSize();
 
-	// GDALMetadata etc
-	// usr/include/gdal/rawdataset.h
-	// Non-standard http://www.gdal.org/frmt_gtiff.html
-
-	//file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
-	std::string nodata;
-	drain::StringTools::import(odim.nodata, nodata);
-	file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
-	file.setGdalNoData(nodata);
-
-	drain::image::GeoFrame frame;
-
-	if (!odim.projdef.empty()){
-
-		frame.setGeometry(src.getWidth(), src.getHeight());
-		frame.setProjection(odim.projdef);
-
-		//drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
-		if (frame.isLongLat()){
-			//frame.setBoundingBoxD(bboxD);
-			frame.setBoundingBoxD(odim.getBoundingBoxD());
-		}
-		else {
-			// Debug
-			/*
-			frame.setBoundingBoxD(bboxD);
-			mout.special("BBOX deg: ", frame.getBoundingBoxD());
-			mout.special() << "BBOX m  : ";
-			mout.precision(20);
-			mout << frame.getBoundingBoxM() << mout;
-			*/
-
-
-			const drain::Variable & p = src.properties["where:BBOX_native"];
-			std::vector<double> v;
-			p.toSequence(v);
-			if (v.size() == 4){
-				drain::Rectangle<double> bboxM;
-				bboxM.assignSequence(v);
-				//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
-				frame.setBoundingBoxM(bboxM);
-				mout.note() << "Setting exact (metric) BBOX=";
-				mout.precision(20);
-				mout << frame.getBoundingBoxM() << mout;
-			}
-			else {
-				mout.warn("where:BBOX_native (", p, ") missing or invalid, using bbox in degrees (approximative)");
-				// frame.setBoundingBoxD(bboxD);
-				frame.setBoundingBoxD(odim.getBoundingBoxD());
-			}
-		}
+	if (!FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::GEOTIFF)){
+		mout.advice("--outputConf tif");
+		mout.advice("--outputConf tif:compliancy=GEOTIFF");
+		mout.advice("--outputConf tif:compliancy=GEOTIFF:EPSG");
+		mout.warn("Compliancy set to ", FileGeoTIFF::compliancyFlagger, ": writing plain TIFF (not GeoTIFF).");
 	}
 	else {
-		mout.note("where:projdef missing, cannot write GeoTIFF projection definitions");
+		// GDALMetadata etc
+		// usr/include/gdal/rawdataset.h
+		// Non-standard http://www.gdal.org/frmt_gtiff.html
+
+		//file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
+		std::string nodata;
+		drain::StringTools::import(odim.nodata, nodata);
+		file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
+		file.setGdalNoData(nodata);
+
+		drain::image::GeoFrame frame;
+
+		if (!odim.projdef.empty()){
+
+			frame.setGeometry(src.getWidth(), src.getHeight());
+			frame.setProjection(odim.projdef);
+
+			//drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
+			if (frame.isLongLat()){
+				//frame.setBoundingBoxD(bboxD);
+				frame.setBoundingBoxD(odim.getBoundingBoxD());
+			}
+			else {
+				// Debug
+				/*
+				frame.setBoundingBoxD(bboxD);
+				mout.special("BBOX deg: ", frame.getBoundingBoxD());
+				mout.special() << "BBOX m  : ";
+				mout.precision(20);
+				mout << frame.getBoundingBoxM() << mout;
+				*/
+
+
+				const drain::Variable & p = src.properties["where:BBOX_native"];
+				std::vector<double> v;
+				p.toSequence(v);
+				if (v.size() == 4){
+					drain::Rectangle<double> bboxM;
+					bboxM.assignSequence(v);
+					//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
+					frame.setBoundingBoxM(bboxM);
+					mout.note() << "Setting exact (metric) BBOX=";
+					mout.precision(20);
+					mout << frame.getBoundingBoxM() << mout;
+				}
+				else {
+					mout.warn("where:BBOX_native (", p, ") missing or invalid, using bbox in degrees (approximative)");
+					// frame.setBoundingBoxD(bboxD);
+					frame.setBoundingBoxD(odim.getBoundingBoxD());
+				}
+			}
+		}
+		else {
+			mout.note("where:projdef missing, cannot write GeoTIFF projection definitions");
+		}
+
+		// mout.attention("file.setGeoMetaData(frame)");
+		file.setGeoMetaData(frame);
+
+		drain::Variable imagetype("Weather Radar");
+		if (odim.ACCnum > 1)
+			imagetype << "Composite (" <<  odim.source << ')';
+		else
+			imagetype <<  odim.source;
+		file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
+		file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
+		file.gdalInfo["UNITS"].data.setText(odim.quantity);
+		// file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
+		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
+		file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	}
 
-	// mout.attention("file.setGeoMetaData(frame)");
-	file.setGeoMetaData(frame);
-
-	drain::Variable imagetype("Weather Radar");
-	if (odim.ACCnum > 1)
-		imagetype << "Composite (" <<  odim.source << ')';
-	else
-		imagetype <<  odim.source;
-	file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
-	file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
-	file.gdalInfo["UNITS"].data.setText(odim.quantity);
-
-	// file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
-	// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
-	file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	file.writeImageData(src);
 
 }

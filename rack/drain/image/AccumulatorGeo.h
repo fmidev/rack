@@ -72,7 +72,7 @@ public:
 
 	inline
 	void reset(){
-		accArray.reset();
+		accArray.AccumulationArray::reset();
 		//AccumulationArray::reset();
 		GeoFrame::reset();
 	}
@@ -94,11 +94,15 @@ public:
 		*/
 	};
 
+	virtual
+	std::ostream & toStream(std::ostream & ostr) const;
 
 };
 
-
-std::ostream & operator<<(std::ostream &ostr, const AccumulatorGeo &cumulatorGeo);
+inline
+std::ostream & operator<<(std::ostream &ostr, const AccumulatorGeo & accumulator){
+	return accumulator.AccumulatorGeo::toStream(ostr);
+}
 
 } // ::image
 } // ::drain

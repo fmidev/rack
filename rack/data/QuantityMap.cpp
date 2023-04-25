@@ -39,6 +39,11 @@ namespace rack {
 
 void QuantityMap::initialize(){
 
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	// OLD
+
 	Quantity & DBZH = add("DBZH");
 	DBZH.set('C').setScaling(0.5, -32);
 	DBZH.set('S').setScaling(0.01, -0.01*(128*256));
@@ -108,6 +113,255 @@ void QuantityMap::initialize(){
 	Quantity & CLASS = add("CLASS");
 	CLASS.set('C');
 	CLASS.set('S');
+
+	// NEw
+
+	if (false){
+
+		map_t & m = *this;
+
+		m["AMVU"] = {"Atmospheric motion, lateral component", {0,0}, 'C',
+			{
+				{'C', {-100,100} } /* range */ ,
+				{'S', {-327.68,327.68} } /* range */ ,
+				{'c', {-127,127}} /* range */ ,
+				{'d'},
+				{'s', 0.01,-0.01}
+			}
+		};
+
+		m["AMVV"] = {"Atmospheric motion, lateral component", {0,0}, 'C',
+				{
+						{'C', {-100,100} } /* range */ ,
+						{'S', {-327.68,327.68} } /* range */ ,
+						{'c', {-127,127}} /* range */ ,
+						{'d'},
+						{'s', 0.01,-0.01}
+				}
+		};
+
+		m["CLASS"] = {"Classification", {0,0}, 'C',
+			{
+				{'C', 1},
+				{'S', 1},
+				{'c', 1},
+				{'s', 1}
+			}
+		};
+
+		m["COUNT"] = {"Count", {}, 'C',
+			{
+				{'C', 1},
+				{'I', 1},
+				{'L', 1},
+				{'S', 1},
+				{'d', 1.0},
+				{'f', 1.0}
+			}
+		};
+
+		m["DBZH"] = {"Radar reflectivity, horz component", {-32.0, +64.0}, 'C',
+			{
+				{'C', 0.5,-32},
+				{'S', 0.01,-327.68}
+			},
+			-32
+		};
+
+		m["DBZHC"] = {"Radar reflectivity, horz component, corrected", {-32.0, +64.0}, 'C',
+			{
+				{'C', 0.5,-32},
+				{'S', 0.01,-327.68}
+			},
+			-32
+		};
+
+		m["DBZHDEV"] = {"Radar reflectivity, horz component, deviation", {0,0}, 'C',
+			{
+				{'C', 1,-128},
+				{'S', {-100,100}}, /* range */
+				{'f'}
+			},
+			0
+		};
+
+		m["HGHT"] = {"Height", {0,0}, 'C',
+			{
+				{'C', 0.05,-0.05},
+				{'S', 0.0002,-0.0002}
+			}
+		};
+
+		m["PROB"] = {"Probability", {0.0,1.0}, 'C',
+			{
+				{'C', 0.004,-0.004},
+				{'S'}
+			},
+			0.0
+		};
+
+		m["QIND"] = {"Quality index", {0,0}, 'C',
+			{
+				{'C', 0.004,-0.004},
+				{'S'}
+			},
+			0.0
+		};
+
+		m["RATE"] = {"Precipitation rate (mm)", {0,0}, 'C',
+			{
+				{'C', 0.05,-0.05},
+				{'S', 0.0005,-0.0005}
+			},
+			0.0
+		};
+
+		m["RHOHV"] = {"Rho HV", {0.0,1.0}, 'C',
+			{
+				{'C', 0.004,-0.004},
+				{'S', 0.0001,-0.0001}
+			}
+		};
+
+		m["TH"] = {"Total radar reflecticity", {-32.0,+64.0}, 'C',
+			{
+				{'C', 0.5,-32},
+				{'S', 0.01,-327.68}
+			},
+			-32.0
+		};
+
+		m["VRAD"] = {"Doppler velocity", {-64.0,+64.0}, 'C',
+			{
+				{'C', 0.5,-64},
+				{'S', {-100.0,+100.0} } /* range */
+			}
+		};
+
+		m["VRADDH"] = {"Doppler velocity", {-64.0,+64.0}, 'C',
+				{
+						{'C', 0.5,-64},
+						{'S', {-100.0,+100.0} } /* range */
+				}
+		};
+
+		m["VRADDV"] = {"Doppler velocity", {0,0}, 'C',
+				{
+						{'C', 0.5,-64},
+						{'S', {-100.0,+100.0} } /* range */
+				}
+		};
+
+		m["VRADH"] = {"Doppler velocity", {0,0}, 'C',
+				{
+						{'C', 0.5,-64},
+						{'S', {-100.0,+100.0} } /* range */
+				}
+		};
+
+		m["VRADV"] = {"Doppler velocity", {0,0}, 'C',
+				{
+						{'C', 0.5,-64},
+						{'S', {-100.0,+100.0} } /* range */
+				}
+		};
+
+		m["VRAD_DEV"] = {"Doppler velocity", {0,0}, 'C',
+				{
+						{'C', {0.0, 64}} /* range */ ,
+						{'S', {0.0, 128}} /* range */
+				}
+		};
+
+		m["VRAD_DIFF"] = {"VRAD_DIFFdesc", {0,0}, 'C',
+			{
+				{'C', {-32,32}, 255, 0, 0.252964,-32.253 } /* range */ ,
+				{'S', {-256,256}, 65535, 0, 0.00781286,-256.008 } /* range */
+			}
+		};
+
+		m["ZDR"] = {"ZDRdesc", {-10.0,+10.0}, 'C',
+			{
+				{'C', 0.1,-12.8},
+				{'S', 0.01,-327.68}
+			}
+		};
+
+	}
+
+
+	// mout.attention(drain::sprinter(*this, drain::Sprinter::cppLayout));
+	/*
+	Quantity quantity = {"dBZ", {-32.0, 64.0}, 'C',
+			{
+					{'s', {1.2, 3.4}, 0.0, 255.0, {1.1, 2.2}}
+					//			{'C', {'C', {0.5,  -32.0},  0.0, 255.0}},
+					//			{'S', {'S', {0.01, -324.6}}}
+			},
+			-33.0
+	};
+	*/
+	//typedef drain::EnumFlagger<drain::MultiFlagger<EncodingODIM::ExplicitSetting> > AdaptionFlagger;
+
+
+	// typedef EncodingODIM ;
+	if (false){
+
+		for (auto & entry: *this){
+
+			Quantity & q = entry.second;
+			//std::cout << "// Quantity " << entry.first << " " << q.name << "\n";
+			if (q.name.empty()){
+				q.name = "Description...";
+			}
+			std::cout << "m[\"" << entry.first << "\"] = {";
+			// std::cout << " {";
+
+			std::cout << '"' << q.name << '"' << ", {";
+			if (!q.physicalRange.empty())
+				std::cout << q.physicalRange;
+			std::cout << "}, '" << q.defaultType << "',\n";
+
+			std::cout << "\t{";
+			char sep = 0;
+			for (const auto & entry2: entry.second){
+				std::cout << sep; sep = ',';
+				std::cout << "\n\t\t{";
+				std::cout << "'" << entry2.first << "', ";
+				const EncodingODIM & e2 = entry2.second;
+				if (e2.explicitSettings & EncodingODIM::RANGE)
+					std::cout << "{"<< e2.scaling.physRange << "}, " ;
+				else
+					std::cout << e2.scaling.scale << ',' << e2.scaling.offset << ", "; // << ' ';
+				//std::cout << ", {"<< e2.scaling.scale << ',' << e2.scaling.offset << "}, " << e2.nodata << ", " << e2.undetect; // << ' ';
+				std::cout << e2.nodata << ", " << e2.undetect; // << ' ';
+				if (e2.explicitSettings & EncodingODIM::RANGE){
+					std::cout << ", " << e2.scaling.scale << ',' << e2.scaling.offset; // << ' ';
+				}
+				else {
+					if (!e2.scaling.physRange.empty())
+						std::cout << ", {"<< e2.scaling.physRange << "} ";
+				}
+				std::cout << " }";
+
+				if (e2.explicitSettings){
+					std::cout << " /* " << drain::FlagResolver::getKeys(EncodingODIM::settingDict,e2.explicitSettings) << " */";
+				}
+				/*
+				if (e2.explicitSettings & EncodingODIM::SCALING)
+					std::cout << " / * scale * / ";
+				if (e2.explicitSettings & EncodingODIM::RANGE)
+					std::cout << " / * range * / ";
+				*/
+			}
+			std::cout << "\n\t}";
+			if (q.hasUndetectValue()){
+				std::cout << ",\n\t" << q.undetectValue;
+			}
+			std::cout << "\n};\n\n";
+		}
+
+	}
 
 }
 

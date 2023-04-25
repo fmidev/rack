@@ -398,7 +398,9 @@ public:
 	/// Radial to metric
 	drain::Proj4 projR2M;
 
-	std::ostream & toOStr(std::ostream & ostr) const ;
+	//std::ostream & toOStr(std::ostream & ostr) const ;
+	virtual
+	std::ostream & toStream(std::ostream & ostr) const;
 
 
 protected:
@@ -438,7 +440,7 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const GeoFrame & frame){
-	frame.toOStr(ostr);
+	frame.GeoFrame::toStream(ostr);
 	ostr << '\n';
 	return ostr;
 }

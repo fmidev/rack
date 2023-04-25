@@ -628,6 +628,9 @@ protected:
 	/// Stores the pointer and its storage type F.
 	template <class F>
 	void setPtr(F &p){
+		if ((!std::is_arithmetic<F>::value) && (typeid(F)!=typeid(std::string))){
+			throw std::runtime_error(std::string(__FUNCTION__) + ": unsupported type: " + typeid(F).name());
+		}
 		caster.link(p); // could use setPtr(void *p, const std::type_info &t) ?
 		elementCount = 1;
 	}

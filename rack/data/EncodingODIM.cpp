@@ -45,6 +45,90 @@ const ODIMPathElemSeq & EncodingODIM::getAttributeGroups(){
 	return s;
 }
 
+const drain::FlaggerDict EncodingODIM::settingDict = {
+		{"NONE", NONE},
+		{"SCALING", SCALING},
+		{"RANGE", RANGE}
+};
+
+EncodingODIM::EncodingODIM(const EncodingODIM & odim) : scaling(ownScaling), scalingConst(ownScaling), explicitSettings(odim.explicitSettings){
+	init(ODIMPathElem::ALL_LEVELS); //2023/04/24
+	//copyStruct(odim, odim, *this); // 2023/04/24
+	//keyList = odim.keyList; // Otherways order comes back to default (std::map key order)
+	updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
+	scaling.physRange.set(odim.scaling.physRange);
+};
+
+
+/// Scale driven encoding for brace inits. RISK: group_t confusion?
+EncodingODIM::EncodingODIM(char type, double scale, double offset, double nodata, double undetect, const drain::Range<double> & range) :
+	scaling(ownScaling),
+	scalingConst(ownScaling),
+	explicitSettings(NONE)
+	{
+
+	init(ODIMPathElem::ALL_LEVELS); // Note: clears values
+	//init(ODIMPathElem::OTHER);
+
+	this->type.assign(1, type);
+	setTypeDefaults();
+
+	if (scale == 0.0){
+		explicitSettings |= SCALING;
+	}
+	else {
+		this->scaling.set(scale, offset);
+	}
+
+	if (!std::isnan(nodata)){
+		this->nodata = nodata;
+	}
+
+	if (!std::isnan(undetect)){
+		this->undetect = undetect;
+	}
+
+	if (range.empty()){
+		explicitSettings |= RANGE;
+	}
+	else {
+		// Override those of type defaults?
+		this->scaling.setPhysicalRange(range); // does not change scaling
+	}
+
+};
+
+/// Range-driven encoding for brace inits.
+EncodingODIM::EncodingODIM(char type, const drain::Range<double> & range, double scale, double offset, double nodata, double undetect) :
+	scaling(ownScaling),
+	scalingConst(ownScaling),
+	explicitSettings(NONE)
+	{
+
+	init(ODIMPathElem::ALL_LEVELS); // Note: clears values
+	// init(ODIMPathElem::OTHER);
+
+	this->type.assign(1, type);
+	//setTypeDefaults();
+	setRange(range.min, range.max); // sets scaling
+
+	if (scale != 0.0){
+		explicitSettings |= SCALING;
+		this->scaling.set(scale, offset);
+	}
+
+	if (!std::isnan(nodata)){
+		this->nodata = nodata;
+	}
+
+	if (!std::isnan(undetect)){
+		this->undetect = undetect;
+	}
+
+	//std::cerr << type << " ERROR DANGERED\n";
+
+};
+
 void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	if (initialize & ODIMPathElem::ROOT){
@@ -59,7 +143,21 @@ void EncodingODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("what:offset", scaling.offset = 0.0);
 		link("what:undetect", undetect = 0.0);
 		link("what:nodata", nodata = 0.0);
+		// Experimental
+		// link("how:physRange", scaling.physRange.tuple());
+		// link("how:physRange", scaling.physRange);
 	}
+
+	/*
+	if (initialize & ODIMPathElem::OTHER){
+		link("type", type = "C");
+		link("physRange", scaling.physRange.tuple());
+		link("gain",   scaling.scale = 0.0);
+		link("offset", scaling.offset = 0.0);
+		link("undetect", undetect = 0.0);
+		link("nodata", nodata = 0.0);
+	}
+	*/
 
 }
 
@@ -81,6 +179,9 @@ void EncodingODIM::clear(){
 
 EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
 
+	if (gain != 0.0)
+		explicitSettings |= SCALING;
+
 	if (type.empty())
 		type = "C";
 
@@ -97,6 +198,9 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset){
 }
 
 EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undetect, double nodata) {
+
+	if (gain != 0.0)
+		explicitSettings |= SCALING;
 
 	if (type.empty())
 		type = "C";
@@ -175,30 +279,47 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 
 void EncodingODIM::setRange(double min, double max) {
 
-		if (type.empty())
-			type = "C";
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
-		//const drain::Type t(type.at(0));
-		const drain::Type t(type);
+	if (min != max)
+		explicitSettings |= RANGE;
 
-		const double minData = drain::Type::call<drain::typeMin, double>(t); // getMin<double>(type);
-		const double maxData = drain::Type::call<drain::typeMax, double>(t); // drain::Type::call<drain::typeMax,double>(t);
+	if (type.empty())
+		type = "C";
 
-		undetect = minData;
-		nodata   = maxData;
+	//const drain::Type t(type.at(0));
+	const drain::Type t(type);
 
-		if (drain::Type::call<drain::typeIsInteger>(t)){
-			scaling.scale = (max-min) / static_cast<double>((maxData-1) - (minData+1));
-			scaling.offset = min - scaling.scale*(minData+1);
-			//drain::Logger mout("QuantityMap", __FUNCTION__);
-		}
-		else {
-			scaling.set(1.0, 0.0);
-			//scaling.scale = 1.0;
-			//scaling.offset = 0.0;
-		}
+	const double minData = drain::Type::call<drain::typeMin, double>(t); // getMin<double>(type);
+	const double maxData = drain::Type::call<drain::typeMax, double>(t); // drain::Type::call<drain::typeMax,double>(t);
 
-		//if (!defaultType)			defaultType = typecode;
+	undetect = minData;
+	nodata   = maxData;
+
+
+	if (drain::Type::call<drain::typeIsInteger>(t)){
+		scaling.scale = (max-min) / static_cast<double>((maxData-1) - (minData+1));
+		scaling.offset = min - scaling.scale*(minData+1);
+		//drain::Logger mout("QuantityMap", __FUNCTION__);
+	}
+	else {
+		scaling.set(1.0, 0.0);
+		//scaling.scale = 1.0;
+		//scaling.offset = 0.0;
+	}
+
+	/*
+	if (!scaling.physRange.empty()){
+		mout.warn("resetting range: ", scaling.physRange, " -> ", min, ',',  max);
+	}
+	else {
+		//mout.special(" phys range:", min, ',',  max);
+	}
+	*/
+
+	scaling.physRange.set(min, max);
+
+	//if (!defaultType)			defaultType = typecode;
 
 }
 

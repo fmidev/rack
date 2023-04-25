@@ -54,11 +54,15 @@ class Quantity : public std::map<char,EncodingODIM> {
 
 public:
 
+	typedef std::map<char,EncodingODIM> map_t;
+	typedef std::list<EncodingODIM> list_t;
+
+	std::string name;
+
 	/// Default storage type
 	char defaultType;
 
-	/// True, if a value corresponding a very small (unmeasurable) value has been defined.
-	//bool hasUndetectValue;
+	drain::Range<double> physicalRange;
 
 	/// A physical value corresponding a very small (unmeasurable) value has been defined.
 	/*
@@ -66,10 +70,38 @@ public:
 	 */
 	double undetectValue;
 
+
 	/// Default constructor
+	inline
 	Quantity(): defaultType('\0'), undetectValue(std::numeric_limits<double>::signaling_NaN()) {
-		//undetectValue = std::numeric_limits<double>::signaling_NaN();
 	}
+
+	/// Copy constructor
+	inline
+	Quantity(const Quantity & quantity):
+		map_t(quantity),
+		name(quantity.name),
+		defaultType('\0'),
+		physicalRange(quantity.physicalRange),
+		undetectValue(quantity.undetectValue) {
+
+	}
+
+	/// Constructor for brace initializer.
+	Quantity(const std::string & name,
+			const drain::Range<double> & range = {},
+			char defaultType='\0',
+			const list_t & l = {},
+			double undetectValue = std::numeric_limits<double>::signaling_NaN());
+	/*
+				//map_t(m),
+				name(name),
+				defaultRange(range),
+				defaultType(defaultType),
+				undetectValue(undetectValue) {
+	}
+	*/
+
 
 	/// Declare encoding (a storage type and scaling) for this quantity.
 	/*
@@ -148,7 +180,6 @@ public:
 	/// Print declared encodings (storage types and scalings)
 	std::ostream & toStream(std::ostream & ostr) const;
 
-	drain::Range<double> physicalRange;
 
 };
 

@@ -86,8 +86,8 @@ void CmdHistogram::exec() const {
 	drain::Histogram histogram(finalCount);
 	mout.note("Initial histogram 0: ", histogram);
 	//histogram.setSize(count);
-	if (range.span() > 0.0){
-		histogram.setScale(range.min, range.max);
+	if (!range.empty()){
+		histogram.setRange(range.min, range.max);
 	}
 	else {
 		const drain::ValueScaling & s = dstData.data.getScaling();

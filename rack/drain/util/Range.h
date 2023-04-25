@@ -95,6 +95,12 @@ public:
 	};
 
 	inline
+	bool empty() const {
+		return (this->min == this->max);
+	}
+
+
+	inline
 	bool contains(T x) const {
 		return (this->min <= x) && (x <= this->max);
 	}

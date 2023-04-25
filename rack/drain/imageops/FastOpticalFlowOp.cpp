@@ -223,7 +223,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		mout.warn() << weightTray.get() << mout.endl;
 		mout.debug2() << scale << mout.endl;
 		Histogram histogram(256);
-		histogram.setScale(0.0, scale);
+		histogram.setRange(0.0, scale);
 		//hist.setParameter
 		ImageHistogram histOp;
 		histogram.compute(w, w.getType());

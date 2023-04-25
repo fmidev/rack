@@ -52,10 +52,25 @@ class QuantityMap : public std::map<std::string, Quantity> {
 
 public:
 
+	typedef std::map<std::string, Quantity> map_t;
 
+	inline
 	QuantityMap(){
 		initialize();
 	}
+
+	inline
+	QuantityMap(const QuantityMap & m) : map_t(m){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.attention("? copy const <QuantityMap>");
+	}
+
+	inline
+	QuantityMap(const map_t & m) : map_t(m){
+		drain::Logger mout(__FUNCTION__, __FILE__);
+		mout.attention("? copy const <map>");
+	}
+
 
 	void initialize();
 

@@ -99,7 +99,7 @@ public:
 		histogram.setSize(this->conf.bins);
 		histogram.setSampleCount(this->getArea());
 		//histogram.setScale(src.getMin<int>(), src.getMax<int>(), dst.getMin<int>(), dst.getMax<int>());
-		histogram.setScale(this->src.getConf().template getTypeMin<int>(), this->src.getConf().template getTypeMax<int>());
+		histogram.setRange(this->src.getConf().template getTypeMin<int>(), this->src.getConf().template getTypeMax<int>());
 
 		if (!this->conf.valueFunc.empty())
 			histogram.setValueFunc(this->conf.valueFunc.at(0));

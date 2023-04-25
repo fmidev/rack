@@ -114,19 +114,29 @@ void NodeGDAL::setText(const std::string & text){
 
 
 
-bool FileGeoTIFF::strictCompliance(false);
+//bool FileGeoTIFF::strictCompliance(false);
 
 //FileGeoTIFF::TiffCompliance FileGeoTIFF::compliance = GEOTIFF_EXT;
-int FileGeoTIFF::compliance = GEOTIFF_EXT;
+
+
+FileGeoTIFF::complianceFlagger FileGeoTIFF::compliancyFlagger(EPSG);
+//int FileGeoTIFF::compliance = (GEOTIFF|EPSG);
+std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str();
+
+// TODO: compare with
+// https://gdal.org/drivers/raster/gtiff.html#creation-options :
+// PROFILE=[GDALGeoTIFF/GeoTIFF/BASELINE]: Control what non-baseline tags are emitted by GDAL.
 
 template <>
 const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict = {
+		{"UNDEFINED",   drain::image::FileGeoTIFF::TiffCompliance::UNDEFINED},
 		{"TIFF",        drain::image::FileGeoTIFF::TiffCompliance::TIFF},
-		{"GEOTIFF",     drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF},
-		{"GEOTIFF_EXT", drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF_EXT}
+		{"GEOTIFF",     drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF},  // consider PROJ4 ?
+		{"EPSG",        drain::image::FileGeoTIFF::TiffCompliance::EPSG},
+		{"STRICT",      drain::image::FileGeoTIFF::TiffCompliance::STRICT}
 };
 
-
+/*
 const drain::FlaggerDict & FileGeoTIFF::getComplianceDict(){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -134,6 +144,7 @@ const drain::FlaggerDict & FileGeoTIFF::getComplianceDict(){
 
 	return drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
 }
+*/
 
 //bool FileGeoTIFF::plainEPSG(false);
 //bool FileGeoTIFF::plainEPSG(true);
@@ -297,38 +308,11 @@ void FileGeoTIFF::close(){
 
 
 void FileGeoTIFF::setGdalScale(double scale, double offset){
-
 	// TODO: separate code without nodata marker?
 	// void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	// const int TIFFTAG_KOE = 65001;
-	// { TIFFTAG_KOE,           -1, -1, TIFF_DOUBLE, FIELD_CUSTOM, true, 0, const_cast<char*>("koe") },
-	// "gdal-metadata"
-	/*
-	    <GDALMetadata >
-	    <Item name="OFFSET" role="offset" sample="0" >-32</Item>
-	    <Item name="SCALE"  role="scale" sample="0" >0.5</Item>
-	    </GDALMetadata>
-	*/
-
-	/*
-	static
-	const TIFFFieldInfo xtiffFieldInfo[] = {
-			{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
-	};
-	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
-	*/
-	//TreeGDAL gdalInfo;
+	// drain::Logger mout(__FUNCTION__, __FILE__);
 	gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
 	gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
-	/*
-	std::stringstream gdal;
-	gdal << gdalInfo;
-	mout.debug(gdal.str());
-	setField(TIFFTAG_GDAL_METADATA, gdal.str());
-	*/
 }
 
 void FileGeoTIFF::setGdalNoData(const std::string & nodata){
@@ -517,7 +501,8 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 			}
 			*/
 			mout.advice("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
-			if (FileGeoTIFF::strictCompliance){
+			//if (FileGeoTIFF::strictCompliance){
+			if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::STRICT)){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");
 			}
 
@@ -535,45 +520,60 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 void FileGeoTIFF::setProjectionEPSG(short epsg){
 
-	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
-
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	/*
-	if (compliance != GEOTIFF_EXT){
-		return;
-	}
-	*/
-
-	switch (epsg) {
-	case 3067:
-		/*
-				 GTModelTypeGeoKey (Short,1): ModelTypeProjected
-				 GTCitationGeoKey (Ascii,22): "ETRS89 / TM35FIN(E,N)"
-				 GeogCitationGeoKey (Ascii,7): "ETRS89"
-				 GeogAngularUnitsGeoKey (Short,1): Angular_Degree
-			     ProjLinearUnitsGeoKey (Short,1): Linear_Meter
-		 */
-		mout.experimental("Extended configuration");
-		setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
-		setGeoTiffField(GTCitationGeoKey,   "ETRS89 / TM35FIN(E,N)");
-		setGeoTiffField(GeogCitationGeoKey, "ETRS89");
-		setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
-		setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
-		// setGeoTiffField();
-		/*
-		GTIFKeySet(gtif, GTModelTypeGeoKey,      TYPE_SHORT, 1,  ModelTypeProjected);
-		GTIFKeySet(gtif, GTCitationGeoKey,       TYPE_ASCII, 22, "ETRS89 / TM35FIN(E,N)");
-		GTIFKeySet(gtif, GeogCitationGeoKey,     TYPE_ASCII, 7,  "ETRS89");
-		GTIFKeySet(gtif, GeogAngularUnitsGeoKey, TYPE_SHORT, 1,  Angular_Degree);
-		GTIFKeySet(gtif, ProjLinearUnitsGeoKey,  TYPE_SHORT, 1,  Linear_Meter);
-		*/
-		break;
-	default:
+	if (epsg == 4326){
+		setProjectionLongLat();
 		return;
 	}
 
-	mout.special("Applied special configuration for EPSG:", epsg);
+	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
+
+	if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::EPSG)){
+
+		mout.special("Applying extended configuration for EPSG:", epsg);
+
+		//if (epsg != 4326){
+			setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
+			setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
+			setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
+		//}
+
+		switch (epsg) {
+		case 3035:
+			setGeoTiffField(GTCitationGeoKey,   "ETRS89-extended / LAEA Europe");
+			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+			break;
+		case 2393:
+			setGeoTiffField(GTCitationGeoKey,   "KKJ / Finland Uniform Coordinate System");
+			setGeoTiffField(GeogCitationGeoKey, "KKJ");
+			break;
+		case 3067:
+			setGeoTiffField(GTCitationGeoKey,   "ETRS89 / TM35FIN(E,N)");
+			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+			break;
+		case 3844:
+			setGeoTiffField(GTCitationGeoKey,   "Pulkovo 1942(58) / Stereo70");
+			setGeoTiffField(GeogCitationGeoKey, "Pulkovo 1942(58)");
+			break;
+		case 3995:
+			setGeoTiffField(GTCitationGeoKey,   "WGS 84 / Arctic Polar Stereographic");
+			setGeoTiffField(GeogCitationGeoKey, "WGS 84");
+			break;
+		case 5125:
+			setGeoTiffField(GTCitationGeoKey,   "ETRS89 / NTM zone 25");
+			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+			break;
+		default:
+			/*
+			setGeoTiffField(GTCitationGeoKey,   "");
+			setGeoTiffField(GeogCitationGeoKey, "");
+			*/
+			mout.info("No extended configuration found for EPSG:", epsg);
+		}
+
+	}
+
 
 }
 
@@ -583,8 +583,14 @@ void FileGeoTIFF::setProjectionLongLat(){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.info("Setting Long-Lat projection");
-	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 4326);
-
+	// GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 4326);
+	setGeoTiffField(GTModelTypeGeoKey,       ModelTypeGeographic);
+	setGeoTiffField(GTRasterTypeGeoKey,      RasterPixelIsArea);
+	setGeoTiffField(GeographicTypeGeoKey,    GCS_WGS_84);
+	setGeoTiffField(GeogCitationGeoKey,      "WGS 84");
+	setGeoTiffField(GeogAngularUnitsGeoKey,  Angular_Degree);
+	setGeoTiffField(GeogSemiMajorAxisGeoKey, 6378137.0);
+	setGeoTiffField(GeogInvFlatteningGeoKey, 298.257223563);
 	/*
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
 	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function

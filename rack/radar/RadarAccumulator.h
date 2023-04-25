@@ -139,12 +139,15 @@ public:
 		return targetEncoding;
 	}
 
-	virtual
-	inline
+	virtual inline
 	std::ostream & toStream(std::ostream & ostr) const {
-		//this->AC::toStream(ostr);
-		ostr << (const AC &)*this;
-		ostr << ' ' << rack::EncodingODIM(odim);
+
+		// std::cerr << __FILE__ << '@' << __LINE__ << std::endl;
+		this->AC::toStream(ostr);
+		ostr << ' ';
+		// std::cerr << __FILE__ << '@' << __LINE__ << std::endl;
+		odim.toStream(ostr);
+		// std::cerr << __FILE__ << '@' << __LINE__ << " (end)" << std::endl;
 		return ostr;
 	}
 

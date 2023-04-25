@@ -84,33 +84,39 @@ public:
 
 	drain::ValueScaling ownScaling;
 
+	typedef enum {NONE=0, SCALING=1, RANGE=2} ExplicitSetting;
+
+	static
+	const drain::FlaggerDict settingDict;
+
+	//typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
+	//typedef drain::EnumFlagger<drain::MultiFlagger<Adaption> > AdaptionFlagger;
+
+	int explicitSettings;
+
 	/// Default constructor.
 	inline
-	EncodingODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : scaling(ownScaling), scalingConst(ownScaling){
+	EncodingODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : scaling(ownScaling), scalingConst(ownScaling), explicitSettings(NONE){
 		init(initialize);
 	};
 
 	/// Copy constructor.
-	inline  // todo raise initFromMap (was: FromODIM)
-	EncodingODIM(const EncodingODIM & odim) : scaling(ownScaling), scalingConst(ownScaling){
-		init(ODIMPathElem::ALL_LEVELS);
-		updateFromMap(odim); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
-	};
+	EncodingODIM(const EncodingODIM & odim);
 
-	/*
-	inline
-	EncodingODIM(const drain::image::Image & image) : scaling(image.getScaling()){
-		initFromImage(image);
-	};
-	*/
+	/// Scale driven encoding for brace inits. RISK: group_t confusion?
+	EncodingODIM(char type, double scale=1.0, double offset=0.0, double nodata = NAN, double undetect = NAN, const drain::Range<double> & range = {0,0});
+
+	/// Range-driven encoding for brace inits.
+	EncodingODIM(char type, const drain::Range<double> & range, double scale=0.0, double offset=0.0, double nodata = NAN, double undetect = NAN);
+
 
 	inline
-	EncodingODIM(const drain::image::Image & image) : scaling(ownScaling), scalingConst(image.getScaling()){
+	EncodingODIM(const drain::image::Image & image) : scaling(ownScaling), scalingConst(image.getScaling()), explicitSettings(NONE) {
 		initFromImage(image);
 	};
 
 	inline
-	EncodingODIM(drain::image::Image & image) : scaling(image.getScaling()), scalingConst(image.getScaling()){
+	EncodingODIM(drain::image::Image & image) : scaling(image.getScaling()), scalingConst(image.getScaling()), explicitSettings(NONE) {
 		initFromImage(image);
 	};
 
@@ -119,6 +125,7 @@ public:
 	EncodingODIM & operator=(const EncodingODIM & odim) {
 		// std::cerr << "EncodingODIM & operator=" << std::endl;
 		updateFromMap(odim);
+		explicitSettings = odim.explicitSettings;
 		return *this;
 	}
 
@@ -311,10 +318,9 @@ public:
 
 	/// A set containing "what", "where" and "how".
 	static
-	//const std::set<std::string> & attributeGroups;
 	const ODIMPathElemSeq & attributeGroups;
 
-
+	//bool RANGE_DRIVEN;
 
 protected:
 

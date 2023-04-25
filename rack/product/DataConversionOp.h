@@ -412,8 +412,8 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	mout.debug2() << "dst props: " << dstImage.properties << mout.endl;
 	//std::cerr << dst.properties << std::endl;
 
-	// const drain::LinearScaling scaling(srcOdim.scaling.scale, srcOdim.scaling.offset, dstOdim.scaling.scale, dstOdim.scaling.offset);
-	const drain::ValueScaling scaling(srcOdim.scaling.scale, srcOdim.scaling.offset, dstOdim.scaling.scale, dstOdim.scaling.offset);
+	// const drain::ValueScaling scaling(srcOdim.scaling.scale, srcOdim.scaling.offset, dstOdim.scaling.scale, dstOdim.scaling.offset);
+	const drain::ValueScaling scaling(srcOdim.scaling, dstOdim.scaling); // 2023/04/21
 
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dstOdim.type);
