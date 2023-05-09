@@ -1,1 +1,1 @@
-Dockerfile.ubuntu18
+Dockerfile.ubuntu20

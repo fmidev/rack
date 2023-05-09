@@ -4,8 +4,8 @@ prefix=/opt
 
 USE_GEOTIFF=NO
 
-# 
-#VERSION := 
+# Change to acrual Rack version?
+VERSION=7.x 
 
 help:
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z\-\.]\+:' | cut -d' ' -f1 | tr ':' '|' `"; echo make \[ $$X \]
@@ -32,7 +32,8 @@ make.tgz: Release/
 #	cd demo; ./make-tests.sh
 
 # BASE_IMAGE=alpine
-BASE_IMAGE=ubuntu18
+# BASE_IMAGE=ubuntu18
+BASE_IMAGE=ubuntu20
 
 # make rack7.20_ubuntu18
 docker: Dockerfile.${BASE_IMAGE}
