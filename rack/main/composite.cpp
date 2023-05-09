@@ -247,7 +247,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		return;
 	}
 
-	bool isAeqd = false;
+	bool projectAEQD = false;
 	//mout.warn() << composite.getBoundingBoxD().getArea() << mout.endl;
 	//composite.toStream(std::cerr);
 	mout.debug(composite);
@@ -259,7 +259,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		mout.info("Initialising (like) a single-radar Cartesian");
 
 		if (!composite.projectionIsSet())
-			isAeqd = true;
+			projectAEQD = true;
 		// see single below
 	}
 
@@ -272,9 +272,9 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		#pragma omp critical
 		{
 
-			mout.debug("CART CRITICAL-1 " + ctx.getName());
+			mout.debug("CART CRITICAL-1 ", ctx.getName());
 
-			mout.debug() << "composite.dataSelector: " << composite.dataSelector << mout;
+			mout.debug("composite.dataSelector: ", composite.dataSelector);
 			// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
 			// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
 
@@ -291,7 +291,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		ODIMPath dataPath;
 		composite.dataSelector.getPath(src, dataPath);
 		if (dataPath.empty()){
-			mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout;
+			mout.warn("create composite: no group found with selector:", composite.dataSelector);
 			//resources.inputOk = false; // REMOVE?
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
@@ -303,12 +303,13 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		/// GET INPUT DATA
 
 		if (polarSrc.data.isEmpty() ){
-			mout.warn() << "skipping empty input data: quantity=" << polarSrc.odim.quantity << ", path:" << dataPath << "/data" << mout;  // was: dataSetPath
+			mout.warn(composite.dataSelector);
+			mout.warn("skipping empty input data: quantity=", polarSrc.odim.quantity, ", path:", dataPath, "(/data?)");  // was: dataSetPath
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false; // REMOVE?
 			return;
 		}
 
-		mout.info() << "Using input path:" << dataPath << " [" << polarSrc.odim.quantity << "] elangle=" << polarSrc.odim.elangle << mout;
+		mout.info("Using input path:", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
@@ -317,7 +318,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		#pragma omp critical
 		{
 
-			mout.debug("CART CRITICAL-2 #" + ctx.getName());
+			mout.debug("CART CRITICAL-2 #", ctx.getName());
 
 			// mout.warn() << "composite: " << composite.odim << mout.endl;
 			// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
@@ -375,7 +376,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			mout.debug2("subComposite: ", composite, '\n', composite.odim);
 
 
-			// subComposite.addPolar(polarSrc, 1.0, isAeqd); // Subcomposite: always 1.0.
+			// subComposite.addPolar(polarSrc, 1.0, projectAEQD); // Subcomposite: always 1.0.
 			// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 			// ODIMPathElem	current = dataPath.back();
 			// ODIMPath..parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
@@ -403,21 +404,21 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		mout.debug("CART MAIN #" + ctx.getName());
 
-		if (current.is(ODIMPathElem::QUALITY)){
-			mout.info()  << "plain quality data, ok (no further quality data)" << mout.endl;  // TODO: fix if quality/quality (BirdOp)
+		if (current.is(ODIMPathElem::QUALITY)){ // rare
+			mout.info("plain quality data, ok (no further quality data)");  // TODO: fix if quality/quality (BirdOp)
 			static const Hi5Tree t;
 			static const PlainData<PolarSrc> empty(t);
-			composite.addPolar(polarSrc, empty, 1.0, isAeqd); // Subcomposite: always 1.0.
+			composite.addPolar(polarSrc, empty, 1.0, projectAEQD); // Subcomposite: always 1.0.
 			//DATA_ONLY = true;
 		}
 		else {
 
 			w = applyTimeDecay(composite, w, polarSrc.odim);
-			mout.info() << "final quality weight=" << w << mout.endl;
+			mout.info("final quality weight=", w);
 
 			if (polarSrc.hasQuality()){
-				mout.info() << "using local qualitydata" << mout.endl;
-				composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), w, isAeqd); // Subcomposite: always 1.0.
+				mout.info("using local qualitydata");
+				composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), w, projectAEQD); // Subcomposite: always 1.0.
 			}
 			else {
 				DataSet<PolarSrc> dataSetSrc((*ctx.currentPolarHi5)(parent));
@@ -429,18 +430,18 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				else {
 					mout.info() << "no quality data (QIND) found under path=" << parent << mout.endl;
 				}
-				composite.addPolar(polarSrc, srcDataSetQuality, w, isAeqd); // Subcomposite: always 1.0.
+				composite.addPolar(polarSrc, srcDataSetQuality, w, projectAEQD); // Subcomposite: always 1.0.
 			}
 		}
 		//mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
 		//drain::Point2D<>
-		//composite.projR2M.projectFwd(polarSrc.odim.lon, polarSrc.odim.lat, x, y);
+		//composite.projGeo2Native.projectFwd(polarSrc.odim.lon, polarSrc.odim.lat, x, y);
 
-		mout.debug2() << "finished" << mout.endl;
+		mout.debug2("finished");
 
 		//ctx.setStatus("lonPx", polarSrc.odim.lat);
 
-		if (isAeqd){
+		if (projectAEQD){
 			ctx.setStatus("RANGE", polarSrc.odim.getMaxRange());
 			// ctx.getStatus()["RANGE"] = polarSrc.odim.getMaxRange();
 			// drain::getRegistry().getStatusMap(false)["RANGE"] = polarSrc.odim.getMaxRange();
@@ -452,7 +453,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		//composite.metadataMap["how:angles"] = polarSrc.odim.angles;
 		// elangles = ;
 
-		ctx.unsetCurrentImages();
+		ctx.unsetCurrentImages(); //?
 
 	}
 	catch (std::exception & e) {
@@ -553,7 +554,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 		mout.note() << "Using input properties: " << mout.endl;
 		mout.note() << "\t --cProj '" << cartSrc.odim.projdef << "'" << mout.endl;
-		composite.setProjection(cartSrc.odim.projdef);
+		composite.setProjection(cartSrc.odim.projdef); // Projector::FORCE_CRS
 
 		if (composite.getFrameWidth()*composite.getFrameHeight() == 0){
 			composite.setGeometry(cartSrc.odim.area.width, cartSrc.odim.area.height);
@@ -563,7 +564,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 		mout.note() << "\t --cBBox '" << composite.getBoundingBoxD() << "'" << mout.endl;
-		if (!composite.projR2M.isLongLat())
+		if (!composite.projGeo2Native.isLongLat())
 			mout.note() << "\t --cBBox '" << composite.getBoundingBoxM() << "'" << mout.endl;
 				//mout.note() << "Using bounding box of the input: " << composite.getBoundingBoxD() << mout.endl;
 
@@ -696,7 +697,7 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 	where["BBOX_native"] = composite.getBoundingBoxM().toVector();
 
 	where["BBOX_data"].setType(typeid(double));
-	const drain::Rectangle<double> & bboxDataD = composite.getDataExtentD();
+	const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
 	where["BBOX_data"] = bboxDataD.toVector();
 
 	drain::Rectangle<int> bboxDataPix;
@@ -710,7 +711,8 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 
 	// std::list<std::string> projArgs;
 	// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
-	short epsg = drain::Proj4::pickEpsgCode(composite.getProjection());
+	// short epsg = drain::Proj6::pickEpsgCode(composite.getProjection());
+	short epsg = composite.projGeo2Native.getDst().getEPSG();
 	if (epsg > 0){
 		where["EPSG"] = epsg;
 		/*

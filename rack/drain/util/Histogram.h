@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 
+#include "TypeUtils.h"
 #include "ValueScaling.h"
 
 
@@ -97,11 +98,13 @@ public:
 
 	/// Collect distribution.
 	/**
+	 *  \tparam T - an iterable type (implements begin() and end())
+	 *
 	 *  \param src - source data
-	 *  \tparam T - something iterable, has begin() and end() for example.
+	 *  \param scaling - linear scaling
 	 */
 	template <class T>
-	void compute(const T & src, const std::type_info & type = typeid(double));
+	void compute(const T & src, const std::type_info & type = typeid(double), const UniTuple<double,2>  & scaling = {1.0, 0.0});
 
 	/// Does not change the size of the histogram.
 	//void clearBins();
@@ -440,6 +443,25 @@ private:
 	// weight for weighted median;
 	float weight;
 
+	/// Check is type is unsigned char (8bit) or unsigned short (16bit).
+	static inline
+	bool isSmallInt(const std::type_info & type){
+		return (type == typeid(unsigned char)) || (type == typeid(unsigned short int));
+	}
+
+	/// Given a binary value, compute least significant zeros.
+	/**
+	 *
+	 */
+	static inline
+	short getBitShift(unsigned int value){
+		short i = 0;
+		while ((value = (value>>1)) > 0){
+			++i;
+		}
+		return i;
+	}
+
 	/*
 	int inMax;
 	int inMin;
@@ -453,79 +475,59 @@ private:
 
 
 template <class T>
-void Histogram::compute(const T & dst, const std::type_info & type){
+void Histogram::compute(const T & dst, const std::type_info & type, const UniTuple<double,2>  & scaling){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	const std::size_t s = autoSize(type);
+	const int size = autoSize(type);
 
-	mout.note(s, " bins");
+	if (size <= 0){
+		mout.error(size, " bins, something went wrong");
+		return;
+	}
+
+	if (size > 0x10000){
+		mout.error(size, " bins exceeds Histogram size limit: ", 0x10000);
+		return;
+	}
+
 
 	initialize();
 
-	if (s == 0){
-		mout.error("0 bins, something went wrong");
+	ValueScaling inputScaling(scaling);
+
+	const bool SAME_SCALING = (inputScaling == this->scaling);
+
+	mout.attention("scalings: ", this->scaling, ", ", inputScaling, " same? ", SAME_SCALING);
+	if (inputScaling == this->scaling){
+
+	}
+
+	if (isSmallInt(type)){
+		const unsigned short histBits = getBitShift(size);
+		if (size == (1<<histBits)){ //
+			const signed short dataBits = (8*drain::Type::call<drain::sizeGetter>(type));
+			const short int bitShift = dataBits - histBits;
+
+			mout.note("Small int (", dataBits, "b) data, histogram[", size,"] ", histBits, " b, computing with bit shift ", bitShift);
+			// setRange(inputScaling.fwd(0), inputScaling.fwd(size -1));
+			mout.info("Physical range of the histogram: ", this->scaling.getPhysicalRange());
+			// mout.warn("Histogram size ", size, "=2^N, using bitShift=", bitShift, ", computing raw values.");
+			for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+				this->incrementRaw(static_cast<unsigned short int>(*it) >> bitShift);
+			}
+		}
+		else {
+			mout.advice("Consider histogram size of 2^N, e.g.", (1<<histBits));
+		}
 		return;
 	}
 
-	if (s > 0x10000){
-		mout.error(s, " bins exceeds Histogram size limit: ", 0x10000);
-		return;
-	}
+	//mout.warn("Data range: ", range, ", mapped (physical) Range: ", rangeOut);
+	//mout.warn("Size ", s, " != 2^N (slow mode)");
+	//mout.advice("Consider histogram size of 2^N, e.g.", (1<<histBits));
+	mout.error("Skipping...");
 
-
-	const bool IS_SMALL_INT = (type == typeid(unsigned char)) || (type == typeid(unsigned short int));
-
-	int histBits = 0;
-	for (int i=0; (s>>i)>0; ++i){
-		histBits=i;
-	}
-
-	if (IS_SMALL_INT && (s == (1<<histBits))){
-		int dataBits = 8*drain::Type::call<drain::sizeGetter>(type);
-		int bitShift = dataBits - histBits;
-		mout.note("Fast mode (bitShift=", bitShift, ": data ", dataBits, "b int, histogram ", histBits, "b <=", s, " bins)");
-		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
-			this->incrementRaw(static_cast<unsigned short int>(*it) >> bitShift);
-		}
-	}
-	else {
-		mout.warn("Size ", s, " not 2^N (slow mode)");
-		mout.advice("Consider histogram size of 2^N, e.g.", (1<<histBits));
-		mout.unimplemented("(slow mode)");
-		mout.error("(slow mode)");
-		// ValueScaling only here!
-	}
-
-	/*
-	if ((s == 256) && (type == typeid(unsigned char))){
-		mout.note() << "direct 256-mode: u char (fast)" << mout.endl;
-		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
-			this->incrementRaw(static_cast<unsigned short int>(*it));
-		}
-	}
-	else if ((s == 256) && (type == typeid(unsigned short int))){
-		mout.note() << "direct 256-mode: u short (fast)" << mout.endl;
-		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
-			this->incrementRaw(static_cast<unsigned short int>(*it) >> 8);
-		}
-	}
-	else {
-		mout.note("scaled mode (slow)");
-
-		if (dst.getScaling().isPhysical()){
-			this->setRange(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
-		}
-		//this->setRange(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
-		mout.note("range:   ", scaling.physRange);
-		mout.note("scaling: ", scaling);
-		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
-			this->increment(static_cast<unsigned int>(*it));
-		}
-	}
-	*/
-
-	mout.note("finito");
 
 }
 

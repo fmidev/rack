@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Geometry.h"
 #include "drain/util/Rectangle.h"
 #include "drain/util/Geo.h"
-#include "drain/util/Proj4.h"  // for geographical projection of radar data bins
+#include "drain/util/Proj6.h"  // for geographical projection of radar data bins
 
 
 namespace drain
@@ -70,7 +70,7 @@ public:
 	void reset(){
 		setGeometry(0, 0);
 		setBoundingBoxD(0,0,0,0);
-		//extentD.set(+180.0, +90.0, -180.0, -90.0);
+		//bBoxD.set(+180.0, +90.0, -180.0, -90.0);
 	}
 
 	/// Returns true, if the geographical extent has been set.
@@ -79,7 +79,7 @@ public:
 	 */
 	inline
 	bool projectionIsSet() const {
-		return projR2M.isSet();
+		return projGeo2Native.isSet();
 	};
 
 	/// Return true, if array area is greater than zero.
@@ -95,7 +95,7 @@ public:
 	 */
 	inline
 	bool bboxIsSet() const {
-		return (extentD.getArea() > 0.0);
+		return (bBoxD.getArea() > 0.0);
 	};
 
 	/// Returns true, if the projection, array area and geographical extent bounding box has been set.
@@ -139,10 +139,9 @@ public:
 
 
 	/// Sets bounding box in degrees in the target coordinate system.
-	inline
-	void setBoundingBoxD(double lonLL, double latLL, double lonUR, double latUR){
-		setBoundingBoxR(DEG2RAD*lonLL, DEG2RAD*latLL, DEG2RAD*lonUR, DEG2RAD*latUR);
-	}
+	//inline
+	void setBoundingBoxD(double lonLL, double latLL, double lonUR, double latUR);
+	// { setBoundingBoxR(DEG2RAD*lonLL, DEG2RAD*latLL, DEG2RAD*lonUR, DEG2RAD*latUR);}
 
 	/// Sets bounding box in degrees in the target coordinate system.
 	inline
@@ -152,7 +151,10 @@ public:
 
 
 	/// Sets bounding box in radians in the target coordinate system.
-	void setBoundingBoxR(double lonLL, double latLL, double lonUR, double latUR);
+	inline
+	void setBoundingBoxR(double lonLL, double latLL, double lonUR, double latUR){
+		setBoundingBoxD(RAD2DEG*lonLL, RAD2DEG*latLL, RAD2DEG*lonUR, RAD2DEG*latUR);
+	}
 
 	/// Sets bounding box in radians in the target coordinate system.
 	inline
@@ -176,6 +178,9 @@ public:
 
 protected:
 
+	/// Proj 6 NEW: Given BBox in geo coords [deg], adjust geo coords [rad]
+	void updateBoundingBoxR(); //double lonLL, double latLL, double lonUR, double latUR);
+
 	/// Given BBox in geo coords [rad], adjust geo coords [deg]
 	void updateBoundingBoxD(); //double lonLL, double latLL, double lonUR, double latUR);
 
@@ -192,15 +197,15 @@ public:
 
 	/// Returns the geographical scope in Degrees.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxD() const { return extentD; };
+	const drain::Rectangle<double> & getBoundingBoxD() const { return bBoxD; };
 
 	/// Returns the geographical scope in Meters.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxM() const { return extentNative; };
+	const drain::Rectangle<double> & getBoundingBoxM() const { return bBoxNative; };
 
 	/// Returns the geographical scope in Radians.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxR() const { return extentR; };
+	const drain::Rectangle<double> & getBoundingBoxR() const { return bBoxR; };
 
 	void getCenterPixel(drain::Rectangle<double> & pixelD) const;
 
@@ -234,7 +239,9 @@ public:
 	/// Projects geographic coordinates to image coordinates.
 	virtual inline
 	void deg2pix(double lon, double lat, int & i, int & j) const {
-		projR2M.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat);
+		projGeo2Native.projectFwd(lon, lat, lon, lat); // PROJ6-CRS uses degrees
+		// ...Now (lon,lat) are metric
+		//projGeo2Native.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat); // PROJ6-CRS uses degrees
 		m2pix(lon, lat, i,j);
 	}
 
@@ -247,17 +254,22 @@ public:
 	virtual inline
 	void pix2deg(int i, int j, double & lon, double & lat) const {
 		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
-		projR2M.projectInv(lon,lat, lon,lat);
-		lon *= RAD2DEG;
-		lat *= RAD2DEG;
+		projGeo2Native.projectInv(lon,lat, lon,lat);
+		// lon *= RAD2DEG; // PROJ6-CRS uses degrees
+		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
 	/// Calculates the geographic coordinates [rad] of the center of a pixel at (i,j).
 	virtual inline
 	void pix2rad(int i, int j, double & lon, double & lat) const {
 		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
-		projR2M.projectInv(lon,lat, lon,lat);
+		//projGeo2Native.projectInv(lon,lat, lon,lat);
+		projGeo2Native.projectInv(lon,lat, lon,lat);
+		// PROJ6-CRS uses degrees:
+		lon *= DEG2RAD;
+		lat *= DEG2RAD;
 	}
+
 
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
 	inline
@@ -270,30 +282,30 @@ public:
 	void pix2LLdeg(int i,int j, double & lon, double & lat) const {
 		double x, y; // metric
 		pix2LLm(i,j, x,y);
-		projR2M.projectInv(x,y, lon,lat);
-		lon *= RAD2DEG;
-		lat *= RAD2DEG;
+		projGeo2Native.projectInv(x,y, lon,lat);
+		// lon *= RAD2DEG; // PROJ6-CRS uses degrees
+		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
 
 	virtual inline
 	void m2deg(double x, double y, double & lon, double & lat) const {
-		projR2M.projectInv(x,y, lon,lat);
-		lon *= RAD2DEG;
-		lat *= RAD2DEG;
+		projGeo2Native.projectInv(x,y, lon,lat);
+		// lon *= RAD2DEG; // PROJ6-CRS uses degrees
+		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
 	virtual inline
 	void m2deg(const drain::Point2D<double> & pMetric, drain::Point2D<double> & pDeg) const {
-		projR2M.projectInv(pMetric.x, pMetric.y, pDeg.x, pDeg.y); // lon, lat);
-		pDeg.x *= RAD2DEG;
-		pDeg.y *= RAD2DEG;
+		projGeo2Native.projectInv(pMetric.x, pMetric.y, pDeg.x, pDeg.y); // lon, lat);
+		//pDeg.x *= RAD2DEG; // PROJ6-CRS uses degrees
+		//pDeg.y *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
 	/* UNTESTED
 	inline virtual
 	void LLdeg2m(const double & lon, const double & lat, double & x, double & y) const {
-			projR2M.projectFwd(lon,lat, x,y);
+			projGeo2Native.projectFwd(lon,lat, x,y);
 	}
 	*/
 
@@ -308,16 +320,16 @@ public:
 	 */
 	inline virtual
 	void m2pix(double x, double y, int & i, int & j) const {
-		i = static_cast<int>(0.5+ (x - extentNative.lowerLeft.x) / xScale); //  xOffset
-		//j = frameHeight-1 - static_cast<int>(0.5+ (y - extentNative.lowerLeft.y) / yScale);
-		j = frameHeight-1 - static_cast<int>(0.5+ (y - extentNative.lowerLeft.y) / yScale);
+		i = static_cast<int>(0.5+ (x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		//j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
+		j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
 	}
 
 	inline virtual
 	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
-		pImage.x = static_cast<int>(0.5+ (pMetric.x - extentNative.lowerLeft.x) / xScale); //  xOffset
-		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentNative.lowerLeft.y) / yScale);
-		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - extentNative.lowerLeft.y) / yScale);
+		pImage.x = static_cast<int>(0.5+ (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
 
 	}
 
@@ -335,17 +347,17 @@ public:
 	inline
 	virtual
 	void pix2m(int i, int j, double & x, double & y) const {
-		x = (static_cast<double>(i)+0.5)*xScale + extentNative.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentNative.lowerLeft.y;
-		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + extentNative.lowerLeft.y;
+		x = (static_cast<double>(i)+0.5)*xScale + bBoxNative.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
+		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	inline
 	virtual
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
-		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + extentNative.lowerLeft.x;
-		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentNative.lowerLeft.y;
-		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + extentNative.lowerLeft.y;
+		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + bBoxNative.lowerLeft.x;
+		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
+		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.
@@ -359,9 +371,9 @@ public:
 	inline
 	virtual
 	void pix2LLm(int i, int j, double & x, double & y) const {
-		x = (static_cast<double>(i))*xScale + extentNative.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j))*yScale + extentNative.lowerLeft.y;
-		// y = (static_cast<double>(frameHeight-1 - j))*yScale + extentNative.lowerLeft.y;
+		x = (static_cast<double>(i))*xScale + bBoxNative.lowerLeft.x;
+		y = (static_cast<double>(frameHeight-1 - j))*yScale + bBoxNative.lowerLeft.y;
+		// y = (static_cast<double>(frameHeight-1 - j))*yScale + bBoxNative.lowerLeft.y;
 	}
 
 
@@ -373,16 +385,17 @@ public:
 
 	/// Returns the projection of the composite image as a proj4 std::string.
 	inline
-	const std::string & getProjection() const { return projR2M.getProjectionDst();};
+	const std::string & getProjection() const { return projGeo2Native.getProjectionDst();};
 
 	/// Returns the source projection (should be radian array, lon & lat).
+	//  Consider: rename src/input projection coord system
 	inline
-	const std::string & getCoordinateSystem() const { return projR2M.getProjectionSrc();};
+	const std::string & getCoordinateSystem() const { return projGeo2Native.getProjectionSrc();};
 
 
-	/// Return the actual geographical extent suggested by implied by input data.
+	/// Return the actual geographical boundingBox suggested by implied by input data.
 	inline
-	const drain::Rectangle<double> & getDataExtentD() const { return dataExtentD; };
+	const drain::Rectangle<double> & getDataBBoxD() const { return dataBBoxD; };
 
 	/// Return the common overlapping geographical area (intersection) implied by input data.
 	inline
@@ -392,11 +405,11 @@ public:
 
 	inline
 	bool isLongLat() const {
-		return projR2M.isLongLat();
+		return projGeo2Native.isLongLat();
 	}
 
 	/// Radial to metric
-	drain::Proj4 projR2M;
+	drain::Proj6 projGeo2Native;
 
 	//std::ostream & toOStr(std::ostream & ostr) const ;
 	virtual
@@ -410,13 +423,13 @@ protected:
 	int frameHeight;
 
 	/// Geographical scope in Radians.
-	drain::Rectangle<double> extentR;
+	drain::Rectangle<double> bBoxR;
 
 	/// Geographical scope in Degrees.
-	drain::Rectangle<double> extentD;
+	drain::Rectangle<double> bBoxD;
 
-	/// Geographical scope in Meters.
-	drain::Rectangle<double> extentNative;
+	/// Geographical scope in meters, or degrees in case of long/lat
+	drain::Rectangle<double> bBoxNative;
 
 
 	// ... needed in mapping...
@@ -425,7 +438,7 @@ protected:
 
 
 	/// Utility for deriving extent (degrees) required by input data
-	drain::Rectangle<double> dataExtentD;
+	drain::Rectangle<double> dataBBoxD;
 
 	/// Utility for deriving extent (degrees) required by input data
 	drain::Rectangle<double> dataOverlapD;

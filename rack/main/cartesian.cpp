@@ -80,7 +80,10 @@ public:
 		mout.debug("Setting projection to local composite");
 
 		ctx.composite.setProjection(value);
-		ctx.composite.odim.projdef = value; // ?? + "     ";
+		ctx.composite.odim.projdef = value;
+		// NOTE: could be :
+		//ctx.composite.odim.projdef = ctx.composite.projR2M.getProjectionDst().getProjStr(drain::Projector::SIMPLE);
+
 	};
 
 };

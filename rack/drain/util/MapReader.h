@@ -63,9 +63,10 @@ public:
 	// If "limited", does not allow adding new entries but changes only.
 	bool limited;
 
-	MapReader() : m(defaultMap) {};
-	//MapReader(const MapReader &mr) : m(mr.m) {};
-	MapReader(std::map<K,V> &target) : m(&target) {
+
+	MapReader() : limited(false), m(defaultMap) {};
+
+	MapReader(std::map<K,V> &target) : limited(false), m(&target) {
 
 		trimChars = " \t";
 		// WAS lazy hyphen in the leading characters
@@ -121,7 +122,7 @@ public:
 	 * 
 	 * 
 	 */
-	void read(const std::string &filename){
+	void read(const std::string &filename){ // replace with "readFile" or drain::InputFile()
 		std::ifstream ifstr;
 		ifstr.open(filename.c_str());
 		read(ifstr);

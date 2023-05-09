@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "product/ProductOp.h"
-#include "radar/Coordinates.h"
+#include "radar/RadarProj.h"
 
 #include "resources.h"
 #include "accumulation.h"

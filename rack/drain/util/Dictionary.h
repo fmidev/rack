@@ -95,6 +95,18 @@ public:
 		return this->back();
 	}
 
+	/// Replaces existing or adds
+	entry_t & set(const K & key, const V & value){
+		for (entry_t & entry: *this){
+			if (entry.first == key){
+				entry.second = value;
+				return entry;
+			}
+		}
+		this->push_back(entry_t(key, value));
+		return this->back();
+	}
+
 
 	typename container_t::const_iterator findByKey(const K & key) const {
 		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){

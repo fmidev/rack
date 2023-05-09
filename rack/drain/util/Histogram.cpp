@@ -75,27 +75,18 @@ void Histogram::setRange(double dataMin, double dataMax){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	scaling.setPhysicalRange(dataMin, dataMax);
+	const Range<double> histRange(0, size());
 
-	Range<double> histRange(0, size());
+	scaling.setPhysicalRange(dataMin, dataMax);
 
 	if (scaling.physRange.empty()){
 		mout.warn("Empty physRange: ", scaling.physRange, ", setting equal to histRange: ", histRange);
-		//return;
 	}
 
 	scaling.setConversionScale(histRange, scaling.physRange);
 
 	mout.warn("scale NOW: ", scaling);
 
-	/*
-	if (size()>0){
-		scaling.set(dataMax/static_cast<double>(size()), 0.0);
-		mout.warn("scale2 ", scaling);
-	}
-	*/
-	//scaling.s
-	// scaling.setRange(0.0, bins-1.0, dataMin, dataMax);
 };
 
 std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::size_t value){
@@ -119,6 +110,7 @@ std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::si
 
 
 /*
+ *
 void Histogram::clearBins(){
 	for (size_type i = 0; i < size(); i++)
 		(*this)[i] = 0;

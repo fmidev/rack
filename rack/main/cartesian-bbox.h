@@ -58,10 +58,10 @@ public:
 		parameters.link("urLon", resources.bbox.upperRight.x = 0.0, "deg");
 		parameters.link("urLat", resources.bbox.upperRight.y = 0.0, "deg");
 		*/
-		parameters.link("llLon", bbox.lowerLeft.x  = 0.0, "deg");
-		parameters.link("llLat", bbox.lowerLeft.y  = 0.0, "deg");
-		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg");
-		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg");
+		parameters.link("llLon", bbox.lowerLeft.x  = 0.0, "deg|m");
+		parameters.link("llLat", bbox.lowerLeft.y  = 0.0, "deg|m");
+		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg|m");
+		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg|m");
 	};
 
 	CartesianBBox(const CartesianBBox & cmd) : drain::BasicCommand(cmd) {

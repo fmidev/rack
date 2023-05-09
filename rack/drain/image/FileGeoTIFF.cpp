@@ -372,7 +372,7 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 		imagePos.setLocation(0, 0); //int(height));
 		frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
-		setProjection(frame.projR2M); // GeoTIFF, FIXED 2023/02
+		setProjection(frame.projGeo2Native); // GeoTIFF, FIXED 2023/02
 	}
 
 	//double tiepoints[6]; // = {0,0,0,0,0,0};
@@ -420,7 +420,7 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 
 	if (!projstr.empty()){
 		mout.info("projstr= ", projstr);
-		drain::Proj4 proj;
+		drain::Proj6 proj;
 		proj.setProjectionDst(projstr);
 		setProjection(proj);
 	}
@@ -430,7 +430,7 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 }
 
 
-void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
+void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -451,7 +451,8 @@ void FileGeoTIFF::setProjection(const drain::Proj4 & proj){
 
 		mout.info("Writing metric projection: ", dstProj);
 
-		const short epsg = drain::Proj4::pickEpsgCode(dstProj);
+		//const short epsg = drain::Proj6::pickEpsgCode(dstProj);
+		const short epsg = proj.getDst().getEPSG(); //rain::Proj6::extractEPSG(dstProj);
 		mout.debug("Extracted EPSG:", epsg);
 
 		// bool USE_EPSG = (epsg>0) && (epsgConf.find(epsg) != epsgConf.end());

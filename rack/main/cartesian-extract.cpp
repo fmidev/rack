@@ -29,20 +29,13 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-
-
-//#include "drain/util/Fuzzy.h"
-
 #include <drain/image/ImageFile.h>
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
-//#include "hi5/Hi5Read.h"
 
-#include "radar/Coordinates.h"
+//#include "radar/Coordinates.h"
 #include "radar/Composite.h"
-
 #include "radar/Sun.h"
-
 
 #include "cartesian-extract.h"
 

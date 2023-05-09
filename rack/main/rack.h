@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.33"
+#define __RACK_VERSION__ "7.4"
 
 /**
+ *   Version 7.4
+ *   -- Proj 6.3.1
+ *
  *   Version 7.32
  *   -- Extended EPSG handling for selected codes (now 3067)
  *

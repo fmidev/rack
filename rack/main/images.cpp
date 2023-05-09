@@ -717,7 +717,7 @@ public:
 		//if (encoding.quantity.empty()){ // NOW: never true
 		if (false){
 
-			mout.warn() << "Using separate image (ctx.colorImage)" << mout.endl;
+			mout.warn("Using separate image (ctx.colorImage)");
 
 			/// MAIN
 			op.process(graySrc, ctx.colorImage);
@@ -742,10 +742,10 @@ public:
 			data.setNoSave(NO_SAVE);
 
 			if (NO_SAVE){
-				mout.note() << "use explicit --encoding quantity={...} (before) or --keep " << elem << ":/data: (after) to include colour image in saving HDF5." << mout.endl;
+				mout.advice("use explicit --encoding quantity={...} (before) or --keep ", elem, ":/data: (after) to include colour image in saving HDF5.");
 			}
 
-			mout.debug() << "target encoding: " << EncodingODIM(encoding) << mout.endl;
+			mout.debug("target encoding: ", EncodingODIM(encoding));
 
 			data.odim.updateFromMap(graySrc.getProperties());
 			// data.odim.updateFromCastableMap(encoding);

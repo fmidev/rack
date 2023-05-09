@@ -42,10 +42,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/SourceODIM.h"
 #include "product/ProductOp.h"
 
-#include "Geometry.h"
+//#include "Geometry.h"
 #include "Composite.h"
-#include "Coordinates.h"
-
+//#include "Coordinates.h"
+#include "RadarProj.h"
 
 using namespace drain::image;
 
@@ -130,8 +130,12 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
 
-	if (!projR2M.isSet())
+	if (!projGeo2Native.isSet()){
+		mout.special("projR2M src: ", projGeo2Native.getProjectionSrc());
+		//mout.special("projR2M dst: ", projR2M.getProjectionDst());
+		mout.special("projR2M dst: unset, using AEQD");
 		projAEQD = true;
+	}
 
 	odim.object = "COMP";
 
@@ -162,30 +166,30 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	}
 
 	/// GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR
-	RadarProj pRadarToComposite;
-	pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
-
-	drain::Rectangle<double> bboxInput;
+	RadarProj pRadarToComposite(srcData.odim.lon, srcData.odim.lat);
+	// pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
 
 	if (odim.source.empty())
 		odim.source = srcData.odim.source; // for tile (single-radar "composite")
 
 	if (! geometryIsSet()){
 		setGeometry(500, 500);
-		mout.info() << "Size not given, using default: " << this->getFrameWidth() << ',' << this->getFrameHeight() << mout.endl;
+		mout.info("Size not given, using default: ", this->getFrameWidth(), ',', this->getFrameHeight() );
 	}
 
-	mout.debug2() << "Info: \"" << *this << '"' << mout.endl;
+	mout.info("Info: \"", *this, '"');
 	//mout.debug2() << "undetectValue=" << undetectValue << mout.endl;
 
 	// Defined here, because later used for data update.
 	//drain::Rectangle<double> bboxM;
 
+	drain::Rectangle<double> bboxInput;
+
 
 	if (projAEQD || !isDefined()){
 
 		if (projAEQD){
-			mout.info() << "Using default projection aeqd (azimuthal equidistant)." << mout.endl;
+			mout.info("Using default projection AEQD (azimuthal equidistant).");
 			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
 			// mout.debug() << aeqdStr << mout.endl;
 			setProjection(aeqdStr);
@@ -200,16 +204,16 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		}
 		else {
 			range = srcData.odim.getMaxRange(false);
-			mout.info() << "Using maximum range: " << range << mout.endl;
+			mout.info("Using maximum range: ", range);
 			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
 		}
 
-		mout.debug() << "Range:" << range << " (max: "<< srcData.odim.getMaxRange(true) << ')' << mout.endl;
+		mout.debug("Range:", range, " (max: ", srcData.odim.getMaxRange(true), ')');
 
 		//drain::Rectangle<double> bboxNat;
 		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
 
-		mout.debug() << "Detected 'native' bbox " << bboxInput << mout.endl;
+		mout.attention("Detected 'native' input BBOX: ", bboxInput);
 
 		setBoundingBoxM(bboxInput);
 
@@ -245,13 +249,27 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		return;
 	}
 
-	if (mout.isDebug(2)){
+	if (mout.isDebug(1)){
 		/// Check mapping for the origin (= location of the radar)?
-		double _x,_y;
-		pRadarToComposite.projectFwd(0.0, 0.0, _x,_y);
-		mout.debug3() << "Test origin mapping: " << _x << ' ' << _y << mout.endl;
+		drain::Point2D<double> aeqd;
+		drain::Point2D<double> dest;
+
+		aeqd   = {0,0};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test origin", aeqd, "mapping: ", dest);
+
+		aeqd   = {0, 100000};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test ", aeqd, " (100km North) : ", dest);
+
+		aeqd   = {-50000,0};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test ", aeqd, " (50km West) : ", dest);
 	}
 
+
+	//std::cout << "pRadarToComposite:\n";
+	//pRadarToComposite.debug(std::cout);
 
 	/// Limit to data extent
 	//drain::Rectangle<double> bboxNatCommon(bboxInput);
@@ -275,8 +293,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	drain::Rectangle<int> bboxPix;
 	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
 	m2pix(bboxInput.upperRight, bboxPix.upperRight);
-	mout.debug() << "cropped, data:" << bboxInput << ", pix area: " << bboxPix << mout.endl;
-
+	mout.debug("cropped, data:", bboxInput, ", pix area: ", bboxPix);
 
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 
@@ -289,14 +306,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	mout << "Pix area:\n" << bboxPix << '\n';
 	mout << mout.endl;
 
-	mout.debug() << "allocating" << mout.endl;
+	mout.debug("allocating");
 	allocate();
 	//mout.debug2() << "allocated" << mout.endl;
 	//std::cerr << count << std::endl;
 
 	/// -------------------------------------------------------
 	/// DATA PROEJCTION (MAIN LOOP)
-	mout.debug() << "projecting" << mout.endl;
+	mout.debug("projecting");
 	const int bins  = srcData.data.getWidth();  // TODO odimize
 	const int beams = srcData.data.getHeight(); // TODO odimize
 	const float RAD2J = 1.0/srcData.odim.getBeamWidth();
@@ -333,8 +350,20 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	drain::Point2D<int> pComp;
 	drain::Point2D<double> pMetric;
 
+	/*
+	const int WIDTH = bboxPix.getWidth();
+	std::vector<double> xLookUp(WIDTH);
+	pComp.y = bboxPix.lowerLeft.y;
+	for (pComp.x = bboxPix.lowerLeft.x; pComp.x<bboxPix.upperRight.x; ++pComp.x){
+		pix2m(pComp, pMetric);
+		xLookUp[pComp.x - bboxPix.lowerLeft.x] = pMetric.x;
+	}
+	*/
+
 	size_t address;
 	for (pComp.y = bboxPix.lowerLeft.y; pComp.y>bboxPix.upperRight.y; --pComp.y){ // notice negative
+
+
 
 		// Beam index (azimuthal coordinate of polar input data)
 		int a;
@@ -345,11 +374,17 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		for (pComp.x = bboxPix.lowerLeft.x; pComp.x<bboxPix.upperRight.x; ++pComp.x){
 
 			pix2m(pComp, pMetric);
+			//pMetric.x = xLookUp[pComp.x - bboxPix.lowerLeft.x];
+			/**
+			if (((pComp.y%15)==0) && ((pComp.x % 15) ==0)){
+				std::cerr << pMetric.x << ' ';
+			};
+			*/
+
 			pRadarToComposite.projectInv(pMetric.x, pMetric.y);
 			range = ::sqrt(pMetric.x*pMetric.x + pMetric.y*pMetric.y);
 			b = srcData.odim.getBinIndex(range);
 
-			//if (i==j)
 			//	std::cerr << " Pix (" << i << ',' << j << "),\t=>(" << x << ',' << y << "),\t range=" << range << ",\t bin=" << b << "\n";
 
 			/// TODO: check nodata
@@ -393,6 +428,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 			// else add(data.address(i, j), 20.0, converter.defaultQuality);
 
 		}
+		// if (((pComp.y % 15) ==0)) std::cerr << "#\n";
 	}
 		// TODO: interpolation (for INJECTION)
 
@@ -414,7 +450,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		odim.NI = srcData.odim.getNyquist();
 	++odim.ACCnum;
 
-	mout.debug() << "completed" << mout.endl;
+	mout.debug("completed");
 
 	// drain::image::File::write(data,"compD.png");
 	// drain::image::File::write(weight,"compQ.png");
@@ -450,7 +486,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 
 	// odim.update(cartSrc.odim); // moved to add Data
 
-	mout.debug() << "completed" << mout.endl;
+	mout.debug("completed");
 }
 
 void Composite::updateNodeMap(const std::string & node, int i, int j){
@@ -527,13 +563,13 @@ void Composite::updateInputSelector(const std::string & select){
 
 double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 
-	drain::Logger mout("Composite", __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 	//mout.note(2) << "Tile time: " << tileTime.toStr("%Y/%m/%d %H:%M.%S") << mout.endl;
 
 	drain::Time compositeTime;
 	if (!odim.getTime(compositeTime)){
-		mout.warn() << "time:" << odim.time << mout.endl;
-		mout.warn() << "composite date/time=(" <<  odim.date << '/' << odim.time << ") not set, but requested" << mout.endl;
+		mout.warn("time:", odim.time);
+		mout.warn("composite date/time=(", odim.date, '/', odim.time, ") not set, but requested");
 		return 0.0;
 	}
 	//compositeTime.setTime(odim.date, "%Y%m%d");
@@ -541,7 +577,7 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 
 	drain::Time tileTime;
 	if (!odimIn.getTime(tileTime)){
-		mout.warn() << "tile date/time not set, but requested" << mout.endl;
+		mout.warn("tile date/time not set, but requested");
 		return 0.0;
 	}
 	// tileTime.setTime(odimIn.date, "%Y%m%d");

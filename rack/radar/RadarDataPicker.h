@@ -36,11 +36,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "drain/image/Sampler.h"
-#include "drain/util/Proj4.h"
+#include "drain/util/Proj6.h"
 #include "drain/image/AccumulatorGeo.h"
 #include "data/ODIM.h"
 #include "data/Data.h"
-#include "Geometry.h"
+
+// ##include "Geometry.h"
+#include "RadarProj.h"
 
 // // using namespace std;
 
@@ -147,8 +149,9 @@ public:
 
 		// drain::Logger mout(__FUNCTION__, __FUNCTION__);
 
-		proj.setLocation(odim.lon, odim.lat);
-		proj.setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84");
+		proj.setSiteLocationDeg(odim.lon, odim.lat);
+		//proj.setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84"); // +type=crs ?
+		proj.setProjectionDst("EPSG:4326");
 
 		variableMap.link("RANGE", current_range = 0.0);
 		variableMap.link("AZM", current_azm = 0.0);
@@ -187,7 +190,7 @@ public:
 	}
 
 	inline
-	const RadarProj4 & getProjection() const { return proj; };
+	const RadarProj & getProjection() const { return proj; };
 
 	/*
 	virtual inline
@@ -197,7 +200,8 @@ public:
  protected:
 
 	///  Converts the polar coordinates for a radar to geographical coordinates.
-	RadarProj4 proj;
+	//RadarProj4 proj;
+	RadarProj proj;
 
 	/// Conversion from
 	const double J2AZMDEG;
@@ -282,8 +286,8 @@ public:
 		this->current_j  = j;
 		this->current_j2 = this->height-1 - j;
 
-		//if (!frame.projR2M.isSet()){ // odim.projdef.empty()
-		if (frame.projR2M.isSet()){ // odim.projdef.empty()
+		//if (!frame.projGeo2Native.isSet()){ // odim.projdef.empty()
+		if (frame.projGeo2Native.isSet()){ // odim.projdef.empty()
 			frame.pix2m(i,j, x,y);
 			frame.pix2deg(i, j, lon, lat);
 		}

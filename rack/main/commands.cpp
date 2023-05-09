@@ -39,11 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #endif
 
 #include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+#include "drain/util/JSON.h"
 #include "drain/util/Input.h"
 #include "drain/util/Output.h"
 // #include "drain/util/JSONwriter.h"
-#include "drain/util/JSON.h"
+#include "drain/util/Proj6.h"
+#include "drain/util/RegExp.h"
 #include "drain/util/Sprinter.h"
 #include "drain/util/TreeUtils.h"
 
@@ -1881,8 +1882,8 @@ public:
 		std::cout << __RACK_VERSION__ << '\n';
 		std::cout << __RACK__ << ' ' << __RACK_VERSION__ << ' ' << __DATE__ << '\n';
 
-		std::cout << DRAIN_IMAGE << '\n';
-		std::cout << "Proj " << PJ_VERSION << '\n';
+		//std::cout << DRAIN_IMAGE << '\n';
+		std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n';
 
 
 		unsigned int majnum=0, minnum=0, relnum=0;

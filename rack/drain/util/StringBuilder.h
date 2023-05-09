@@ -53,7 +53,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+// TODO:
+// template <char SEP>
 class StreamBuilder : public std::stringstream {
 
 public:
@@ -98,14 +99,6 @@ public:
 		create(args...);
 		//assign(streamBuilder.str());
 	}
-
-	/*
-	template<typename ... TT>
-	StringBuilder(const char *arg, const TT &... args){
-		create(arg, args...);
-		//assign(streamBuilder.str());
-	}
-	*/
 
 
 	template<typename ... TT>

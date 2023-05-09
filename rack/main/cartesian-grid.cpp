@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataCoder.h"
 #include "hi5/Hi5.h"
 
-#include "radar/Coordinates.h"
+// #include "radar/Coordinates.h"
 #include "radar/Composite.h"
 
 #include "cartesian-grid.h"

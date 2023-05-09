@@ -101,6 +101,9 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		desc << ':' << "elangles(" << src.properties["how:angles"] << ')';
 	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc.str());
 
+	// Consider:
+	// https://www.awaresystems.be/imaging/tiff/tifftags/minsamplevalue.html
+
 	// http://www.gdal.org/frmt_gtiff.html
 	// Optional
 	file.setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder(__RACK__," ",__RACK_VERSION__));

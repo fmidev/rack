@@ -204,7 +204,7 @@ public:
 	void setProjection(const std::string & proj);
 
 	/// Sets projection, primarily using EPSG if found, else Proj.4 string format.
-	void setProjection(const drain::Proj4 & proj);
+	void setProjection(const drain::Proj6 & proj);
 
 	/// Sets projection to plain longitude-latitude mapping.
 	void setProjectionLongLat();

@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <vector>
-#include "drain/util/Proj4.h"
+//#include "drain/util/Proj4.h"
 #include "drain/image/GeoFrame.h"
 
 // // using namespace std;
@@ -45,7 +45,7 @@ namespace rack
 
 // See also RadarProj @ Coordinates?
 
-class RadarProj4 : public drain::Proj4 {
+class RadarProj4 : public drain::Proj6 {
 
 public:
 
@@ -66,7 +66,7 @@ public:
 	inline
 	void setLocation(double lon, double lat){
 		std::stringstream sstr;
-		sstr << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84";
+		sstr << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84 +type=crs";
 		setProjectionSrc(sstr.str());
 	};
 

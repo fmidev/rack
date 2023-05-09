@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "drain/image/Sampler.h"
-#include "drain/util/Proj4.h"
+//#include "drain/util/Proj4.h"
 #include "drain/image/AccumulatorGeo.h"
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
@@ -324,8 +324,8 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				//const QuantityMap & qm = getQuantityMap();
 				if (qm.hasQuantity(odimQuality.quantity)){
 					qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
-					mout.note() << "found quantyConf[" << odimQuality.quantity << "], OK" << mout.endl;
-					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
+					mout.note("found quantyConf[", odimQuality.quantity, "], OK");
+					mout.special("Quality: ", EncodingODIM(odimQuality));
 				}
 				else {
 					odimQuality.scaling.scale *= 20.0;  // ?
@@ -333,15 +333,15 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 					odimQuality.scaling.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
 					//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
 					mout.warn() << "quantyConf[" << odimQuality.quantity << "] not found, using somewhat arbitary scaling:" << mout.endl;
-					mout.warn() << EncodingODIM(odimQuality) << mout.endl;
+					mout.special("Quality: ", EncodingODIM(odimQuality));
 				}
 				break;
 			default:
-				mout.error() << "Unsupported field code: '" << field << "'" << mout.endl;
+				mout.error("Unsupported field code: '", field, "'");
 				break;
 		}
 
-		mout.debug() << "extracting field " << field << mout.endl;
+		mout.debug("extracting field ", field);
 
 
 		if (type == DATA){
@@ -415,7 +415,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 	}
 
 
-	mout.debug()  << "updating local tree attributes" << mout.endl;
+	//mout.debug()  << "updating local tree attributes" << mout.endl;
 
 
 	//mout.debug() << "Finished " << accumulator.getMethod().name << mout.endl;

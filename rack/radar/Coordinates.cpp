@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+/*
 void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
 
 
@@ -74,19 +74,12 @@ void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, 
 
 	}
 
-	/*
-	if (isLongLat()){
-		xLL *= drain::RAD2DEG;
-		yLL *= drain::RAD2DEG;
-		xUR *= drain::RAD2DEG;
-		yUR *= drain::RAD2DEG;
-	}
-	*/
 
 	mout.debug2() << xLL << ',' << yLL << ':' << xUR << ',' << yUR << mout.endl;
 
 
 }
+*/
 
 /* Makes no sense
 void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {

@@ -61,7 +61,7 @@ namespace drain
  *  \see drain::typeLimits
  *
  */
-class ValueScaling : public UniTuple<double,4>{
+class ValueScaling : public UniTuple<double,2> {  // UniTuple<double,4>{
 public:
 
 	/// Multiplicative coefficient \i a in: y = ax + b
@@ -75,8 +75,8 @@ public:
 
 
 	inline
-	ValueScaling(double scale=1.0, double offset = 0.0) : //, double scaleOut=1.0, double offsetOut=0.0) :
-		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+	ValueScaling(double scale=1.0, double offset = 0.0) : // RANGE ok? double scaleOut=1.0, double offsetOut=0.0) :
+		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
 		//setConversionScale(scale, offset, scaleOut, offsetOut);
 		setConversionScale(scale, offset, 1.0, 0);
@@ -85,7 +85,7 @@ public:
 
 	inline
 	ValueScaling(double scale, double offset, const drain::Range<double> & range) : //, double scaleOut=1.0, double offsetOut=0.0) :
-		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
 		//setConversionScale(scale, offset, scaleOut, offsetOut);
 		setConversionScale(scale, offset, 1.0, 0);
@@ -94,17 +94,28 @@ public:
 
 	inline
 	ValueScaling(const drain::ValueScaling & scaling) :
-		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
 		this->assign(scaling);
+		physRange.set(scaling.physRange);
 	};
 
+	//
+	inline
+	ValueScaling(const drain::UniTuple<double,2> & scaling) :
+		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
+	{
+		setScaling(scaling[0], scaling[1]);
+	};
+
+
+	// Conversion scaling
 	inline
 	ValueScaling(const drain::ValueScaling & scalingIn, const drain::ValueScaling & scalingOut) :
-		scale(this->next()), offset(this->next()), physRange(this->tuple(), 2)
+		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
 		setConversionScale(scalingIn, scalingOut);
-		//this->assign(scaling);
+		// physRange??? intersection / union
 	};
 
 	virtual inline
@@ -114,6 +125,7 @@ public:
 	inline
 	ValueScaling & operator=(const drain::ValueScaling & scaling){
 		this->assign(scaling);
+		physRange.set(scaling.physRange);
 		return *this;
 	}
 

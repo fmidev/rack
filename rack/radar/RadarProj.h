@@ -22,14 +22,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-#ifndef RADAR__COORDINATES_ 
-#define RADAR__COORDINATES_ "radar__coordinates 0.2, May 16 2011 Markus.Peura@fmi.fi"
+ */
+#ifndef RADAR_PROJ_
+#define RADAR_PROJ_ "RadarProj 2023 Markus Peura fmi.fi"
 
 #include <math.h>
 
@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 #include <sstream>
 
-//#include "drain/util/Proj6.h"
+#include "drain/util/Proj6.h"
 #include "drain/util/Rectangle.h"
 
 #include "Constants.h"
@@ -47,22 +47,70 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/*
-class RadarProj : public drain::Proj4 {
+class RadarProj : public drain::Proj6 {
 
 public:
 
+	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
+	/*
+	 *  \param lon - longitude of the location, in degrees
+	 *  \param lat - longitude of the location, in degrees
+	 */
+	RadarProj(double lonDeg=0.0, double latDeg=0.0){
+		setSiteLocationDeg(lonDeg, latDeg);
+	}
+
+	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
+	/*
+	 *  \param lon - longitude of the location, in degrees
+	 *  \param lat - longitude of the location, in degrees
+	inline
+	void setLocation(double lon, double lat){
+		std::stringstream sstr;
+		sstr << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84 +type=crs"; //
+		setProjectionSrc(sstr.str());
+	};
+	*/
+
+	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
+	/*
+	 *  \param lon - longitude of the location, in degrees
+	 *  \param lat - longitude of the location, in degrees
+	 */
 	inline
 	void setSiteLocationDeg(double lon, double lat){
 		std::stringstream s;
-		s << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84 +type=crs";
+		s << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84 +type=crs"; //  +type=crs
 		setProjectionSrc(s.str());
 	}
 
-	/// Sets the site in radians.
-	void setSiteLocation(double lon, double lat){
+	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
+	/*
+	 *  \param lon - longitude of the location in radians
+	 *  \param lat - longitude of the location in degrees
+	 */
+	inline
+	void setSiteLocationRad(double lon, double lat){
 		setSiteLocationDeg(lon*drain::RAD2DEG, lat*drain::RAD2DEG);
 	}
+
+	/// Bounding box in radians
+	inline
+	void getBoundingBox(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
+		projectFwd(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);
+		projectFwd(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);
+	}
+
+	/// Bounding box in degrees
+	inline
+	void getBoundingBoxD(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
+		getBoundingBox(range, lonLL, latLL, lonUR, latUR);
+		lonLL *= drain::RAD2DEG;
+		latLL *= drain::RAD2DEG;
+		lonUR *= drain::RAD2DEG;
+		latUR *= drain::RAD2DEG;
+	}
+
 
 	inline
 	void setLatLonProjection(){
@@ -78,37 +126,36 @@ public:
 		determineBoundingBoxM(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 	}
 
-
-
 	/// Given radar's range, returns the metric bounding box using the current projection.
 	//void determineBoundingBoxD(double range, double & xLL, double & yLL, double & xUR, double & yUR) const;
 
 
 	/// Given radar's range, returns the metric bounding box using the current projection.
+	/*
 	inline
-	void XXdetermineBoundingBoxD(double range, drain::Rectangle<double> & bbox) const {
+	void determineBoundingBoxD(double range, drain::Rectangle<double> & bbox) const {
 		determineBoundingBoxD(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 	}
+	 */
 
 
 };
 
-*/
 
 /// Simple spherical coordinate computation. Does not handle projections, but earth coords.
 //  DEPRECATED
 /*!
      \image latex radar-coordinates-fig.pdf
      \image html  radar-coordinates-fig.png
-    
+
     \section Variablenames Variable names
-   
+
       - \f$\phi\f$, phi:  longitude of radar site (in radians)
       - \f$\theta\f$, theta: latitude of radar site (in radians)
       - \f$\alpha\f$, alpha: azimuth angle of the radar beam, \f$+\pi/2\f$=North
       - \f$r\f$:  distance to the surface point
       - \f$\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})\f$: unit vectors at the site
-     
+
 
      Note. This is a model for ideal sphere, defined as
      \code
@@ -120,85 +167,7 @@ public:
      \code
      EPSG:4326 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
      \endcode
-   */
-  class Coordinates {
-  public:
-
-
-	  Coordinates();
-
-	  virtual
-	 ~Coordinates(){};
-
-    //    coordinator();
-
-    /// Radar site latitude and longitude in radians.
-    void setOrigin(const double &theta,const double &phi); 
-
-    /// Set target projection.
-    void setProjection(const std::string &s);
-
-    // inline
-    void setOriginDeg(const double &lat,const double &lon);
-      //      origin(lat*M_PI/180.0 , lon*M_PI/180.0);
-      //    }; 
-  //const double &lat,const double &lon);
-
-    /// \param alpha is azimuth in radians, \param range in metres.
-    void setBinPosition(const double &alpha, const float &range);
-   
-    // \param alpha is azimuth in radians, \param range in metres.
-    //void setBinPosition(double alpha, float range);
-   
-	/// Determines the bounding box (in degrees) of the circular radar measurement area.
-    void getBoundingBox(float range,double &latMin,double &lonMin,double &latMax,double &lonMax);
-
-    /// Info
-    void info(std::ostream &ostr = std::cout);
-
-    // site positional
-    // double cos_theta;
- 
-    /// Radar position vector (from Earth center to surface
-    // (Site normal unit vector not needed as such)
-    double p01, p02, p03;
-
-    /// Earth centered coordinates [p_1 p_2 p_3] of the current bin position.
-    double p1, p2, p3;
-
-    /// Elelements of the East pointing site unit vector [e11 e12 e13].
-    double e11, e12, e13;
-
-    ///  Elelements of the North pointing site unit vector [e21 e22 e23].
-    double e21, e22, e23;
-
-    /// Bin latitude in radians after calling bin_position().
-    mutable double thetaBin;
-
-    /// Bin longitude in radians after calling bin_position().
-    mutable double phiBin;
-
-    ///  Bin latitude in degrees after calling bin_position().
-    inline
-    double binLatitudeDeg(){ return thetaBin/M_PI*180.0;};
-				//phi_bin/M_PI*180.0;};
-				//
-
-    ///  Bin longitude in degrees after calling bin_position().
-    inline
-    double binLongitudeDeg(){ return phiBin/M_PI*180.0;};
-    //    theta_bin/M_PI*180.0;};;
-    //
-    drain::Proj6 proj;
-
-
-    inline
-    virtual std::string getProjectionString(){
-    	std::stringstream sstr;
-    	sstr << "+proj=longlat +R=" << EARTH_RADIUS << std::string(" +no_defs");
-    	return sstr.str();
-    };
-  };
+ */
 
 } // ::rack
 

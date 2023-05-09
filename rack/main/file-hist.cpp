@@ -78,29 +78,37 @@ void CmdHistogram::exec() const {
 	// drain::image::Image & img = *ctx.currentImage;
 	// mout.warn() << "computing hist"  << mout.endl;
 	const std::type_info & type = dstData.data.getType();
+
+	const drain::ValueScaling & scaling = dstData.data.getScaling();
+	/*
 	unsigned short bitCount = 8 * drain::Type::call<drain::sizeGetter>(type);
 	mout.warn("bitCount: " , bitCount);
 
 	//( TODO: Histogram2 based on ImageCodeMap/Book (HistEntry);
 	const int finalCount = count ? count : 1 << bitCount;
 	drain::Histogram histogram(finalCount);
-	mout.note("Initial histogram 0: ", histogram);
+	// mout.note("Initial histogram 0: ", histogram);
 	//histogram.setSize(count);
+	*/
+
+	drain::Histogram histogram;
+
 	if (!range.empty()){
-		histogram.setRange(range.min, range.max);
+		histogram.setRange(range);
 	}
 	else {
-		const drain::ValueScaling & s = dstData.data.getScaling();
-		if (s.isPhysical()){
-			mout.warn("Physical range: ", s.getPhysicalRange());
+
+		if (scaling.isPhysical()){
+			mout.note("Image: physical range: ", scaling.getPhysicalRange());
 		}
-		mout.note("No range given, using scaling of data: ", s);
-		histogram.setScale(s);
+		mout.note("No range given, using scaling of data: ", scaling);
+		histogram.deriveScaling(scaling, type);
+		//histogram.setScale(s);
 	}
 
 	mout.note("Initial histogram 1: ", histogram);
 
-	histogram.compute(dstData.data, type);
+	histogram.compute(dstData.data, type, scaling);
 
 	if (!filename.empty()){
 
