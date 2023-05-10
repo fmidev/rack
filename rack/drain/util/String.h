@@ -334,20 +334,34 @@ bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S
 
 	if (i != std::string::npos){ // input of type "key=value" found
 
+		std::string srcFirst(s, 0, i);
+		++i;
+		std::string srcSecond(s, std::min(s.size(), i));
+
 		// std::stringstream sstr1;
 		// std::cerr << "eka " << s.substr(0, i) << '\n';
 		if (!trimChars.empty()){
 			// sstr1 << StringTools::trim(s.substr(0, i), trimChars);
 			// sstr1 >> first;
-			first = lazyConvert(StringTools::trim(s.substr(0, i), trimChars), first);
+			first = lazyConvert(StringTools::trim(srcFirst, trimChars), first);
 		}
 		else {
 			// sstr1 << s.substr(0, i);
 			// sstr1 >> first;
-			first = lazyConvert(s.substr(0, i), first);
+			first = lazyConvert(srcFirst, first);
 		}
 
 		//std::stringstream sstr2;
+		if (!srcSecond.empty()){
+			if (!trimChars.empty()){
+				second = lazyConvert(StringTools::trim(srcSecond), second);
+			}
+			else {
+				second = lazyConvert(srcSecond, second);
+			}
+		}
+
+		/*
 		++i;
 		if (i<s.size()){
 			//std::cerr << "toka " << s.substr(i) << '\n';
@@ -362,6 +376,7 @@ bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S
 				second = lazyConvert(s.substr(i), second);
 			}
 		}
+		*/
 		return true;
 	}
 	else {

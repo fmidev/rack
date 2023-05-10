@@ -53,7 +53,12 @@ ImageContext::ImageContext(const ImageContext & ctx):
 		currentGrayImage(ctx.currentGrayImage) {
 }
 
-std::string ImageContext::outputQuantitySyntax("${what:quantity}_${command}");
+// Note: for example Palette uses this to extract actual quantity
+/**
+ *  Note: for example Palette uses this to extract actual quantity
+ *
+ */
+std::string ImageContext::outputQuantitySyntax("${what:quantity}|${cmdKey}(${cmdArgs})");
 
 
 void ImageContext::getImageInfo(const drain::image::Image *ptr, Variable & entry) {

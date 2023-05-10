@@ -654,13 +654,28 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// This is the default action!
 			mout.debug() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
 
-			cmd.update(); //  --select etc
-			cmd.exec();
-			ctx.setStatus(key, cmd.getParameters().getValues());
-
+			// NEW 2023/05/10
 			ctx.setStatus("cmd", cmd.getName()); //
 			ctx.setStatus("cmdKey", key); // not getName()
+			ctx.setStatus("cmdArgs", cmd.getParameters().getValues());
+
+			/// MAIN
+			cmd.update(); //  --select etc
+			cmd.exec();
+
+			ctx.setStatus(key, cmd.getParameters().getValues()); // make earlier?
+			/*
+			ctx.setStatus("cmd", cmd.getName()); //
+			ctx.setStatus("cmdKey", key); // not getName()
+			*/
+
+			// Obsolete:
 			ctx.setStatus("cmdParams", cmd.getParameters().getValues());
+
+			// NEW
+			ctx.setStatus("prevCmd", cmd.getName()); //
+			ctx.setStatus("prevCmdKey", key); // not getName()
+			ctx.setStatus("prevCmdArgs", cmd.getParameters().getValues());
 
 			/*
 				}

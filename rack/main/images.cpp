@@ -538,6 +538,12 @@ public:
 				/// Minimum total effort... try selecting image already.
 				retrieveQuantity(ctx, quantity);
 
+				// NEW 2023/05/10 : consider DBZH:RESIZE
+				std::string processing;
+				drain::StringTools::split2(quantity, quantity, processing, "|:>");
+				// if ..
+				mout.special("src [", quantity, "] : processing(", processing, ")");
+
 				if (!quantity.empty()){
 					mout.info() << "loading palette: " << quantity << mout.endl;
 					ctx.palette.load(quantity, true);
@@ -675,18 +681,28 @@ public:
 		}
 
 
-		mout.note() << "params: " << op.getParameters() << mout.endl;
+		mout.note("params: ", op.getParameters());
 
 		// If user has not explicitly set a quantity, assume RGB image temporary. (Excluded in HDF write)
 		const bool NO_SAVE = encoding.quantity.empty();
 
 		drain::VariableMap & statusMap = ctx.getStatusMap();
-		statusMap["command"] = op.getName();
+		//statusMap["command"] = op.getName();
+		//ctx.lastCmd? args?
+		//statusMap["commandArgs"] = ctx.palette.title; // would better be: bevalue;
 
 		// NOTE: this should be similar with imageOps remapping. Consider shared function?
 		std::string dstQuantity; // NEW 2023
 		std::string srcQuantity;
 		retrieveQuantity(ctx, srcQuantity);
+
+		// NEW 2023/05/10
+		/*
+		std::string processing;
+		drain::StringTools::split2(srcQuantity, srcQuantity, processing,':');
+		mout.special("src [", srcQuantity, "] : processing(", processing, ")");
+		*/
+
 		// NEW 2023
 		drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
 		if (!encoding.quantity.empty()){
@@ -734,12 +750,19 @@ public:
 			ODIMPathElem elem;
 			ctx.guessDatasetGroup(dst, elem);
 
-			mout.note("saving image in HDF5 structure: ", elem, '[', dstQuantity, ']'); // NEW 2023
 
 			DataSet<BasicDst> dstProduct(dst[elem]);
 			//Data<BasicDst> & data = dstProduct.getData(encoding.quantity);
+			const size_t origSize = dstProduct.size();
 			Data<BasicDst> & data = dstProduct.getData(dstQuantity); // NEW 2023/03 !
 			data.setNoSave(NO_SAVE);
+
+			if (origSize == dstProduct.size()){
+				mout.note("Storing processed image in: ", elem, "/data?/ [", dstQuantity, ']'); // NEW 2023
+			}
+			else {
+				mout.note("Storing processed image in: ", elem, "/data", dstProduct.size(),"/ [", dstQuantity, ']'); // NEW 2023
+			}
 
 			if (NO_SAVE){
 				mout.advice("use explicit --encoding quantity={...} (before) or --keep ", elem, ":/data: (after) to include colour image in saving HDF5.");

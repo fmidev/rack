@@ -251,7 +251,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	quantitySyntaxMapper.parse(dstQuantitySyntax);
 
 	drain::VariableMap & statusVariables = ctx.getStatusMap();
+	/*
 	statusVariables["command"] = bean.getName();
+	if (bean.hasParameters())
+		statusVariables["commandArgs"] = bean.getParameters().getValues();
+	else
+		statusVariables["commandArgs"] = "";
+	*/
 
 	// const QuantityMap & qmap = getQuantityMap();
 
@@ -396,14 +402,22 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					quantityListNew.insert(dstQuantity);
 				}
 
-				mout.note(quantity, '/', srcData.odim.quantity, " -> ", dstQuantity);
+				mout.info("Processing quantity: ", quantity, '(', srcData.odim.quantity, ") -> ", dstQuantity);
 
 				// Type is explicitly set, and differs from
 				const bool CHANGE_TYPE = (!superOdim.type.empty()) && (superOdim.type != srcData.odim.type);
 
+				const size_t origSize = dstDataSet.size();
 				Data<dst_t> & dstData = dstDataSet.getData(dstQuantity); // USER_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 				dstData.data.setName(dstQuantity);
 
+
+				if (origSize == dstDataSet.size()){
+					mout.note("Image processing result: ", datasetElem, "/data?/ [", dstQuantity, "]");
+				}
+				else {
+					mout.note("Image processing result: ", datasetElem, "/data", dstDataSet.size(), " [", dstQuantity, "]");
+				}
 				// This replaces: bean.makeCompatible(srcConf, dstData.data);
 
 
@@ -462,7 +476,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
 				mout.info("initial dstConf: ", dstConf);
-				dstData.data.setType(dstConf.getType()); // NEW 2023/04/21
+				// Problems: if quantity remains same for dst, src image is modified here!
+
+				//dstData.data.setType(dstConf.getType()); // NEW     2023/04/21
+				//dstData.data.setType(dstConf.getType()); // REMOVED 2023/05/10 is in conf!
 				// REALLY NEW
 				bean.makeCompatible(dstConf, dstData.data);
 				mout.special("dst (after makeCompatible):", dstData.data);
