@@ -35,6 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "7.41"
 
 /**
+ *   Version 7.41
+ *   -- Image processing result quantity: ${what:quantity}|${cmdKey}(${cmdArgs} (esp. for iResize & palette)
+ *   -- Proj 7 compatibility
+ *
  *   Version 7.4
  *   -- Proj 6.3.1
  *

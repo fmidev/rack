@@ -966,8 +966,9 @@ public:
 		//ctx.qualitySelector.pathMatcher.setElems(matcher);
 		//mout.warn() << ctx.qualitySelector << mout;
 
-
-		for (const std::string & s: {"", "dataset1", "dataset5", "data2", "data5"}) {
+		// DEBUG
+		//for (const std::string & s: {"", "dataset1", "dataset5", "data2", "data5"}) {
+		for (const char *s: {"", "dataset1", "dataset5", "data2", "data5"}) {
 			//mout.special() << s << "?\t" << ctx.quality....Matcher.match(s) << mout;
 			ODIMPathElem elem(s);
 			mout.special() << s << "?\t" << elem.belongsTo(ctx.qualityGroups) << mout;
