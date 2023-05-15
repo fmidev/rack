@@ -27,7 +27,7 @@ apt install libhdf5-dev libpng-dev libproj-dev libtiff-dev libgeotiff-dev libgom
 ```
 
 Hints:
-# Take a look Dockerfiles in ./src for applicable library versions
+# Take a look Dockerfiles in [./src directory](./src) for applicable library versions
 
 
 Download (clone) the Rack software in a temporary directory, for example:
