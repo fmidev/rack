@@ -25,8 +25,8 @@ install:
 # alpine Linux 'ln' does not support -i
 
 
-make.tgz: Release/
-	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+#make.tgz: Release/
+#	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 #tests:
 #	cd demo; ./make-tests.sh
@@ -45,7 +45,7 @@ docker: Dockerfile.${BASE_IMAGE}
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
 
-include Makefile-doxygen
+#include Makefile-doxygen
 
 
 
