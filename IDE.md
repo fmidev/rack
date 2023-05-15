@@ -1,4 +1,5 @@
 
+===============================
 Using an IDE in developing Rack
 ===============================
 
@@ -26,8 +27,7 @@ Install the libraries required by Rack. For example:
 apt install libhdf5-dev libpng-dev libproj-dev libtiff-dev libgeotiff-dev libgomp1 
 ```
 
-Hints:
-# Take a look Dockerfiles in [./src directory](./src) for applicable library versions
+Hint: take a look at the Docker files in [./src directory](./src) for applicable library versions
 
 
 Download (clone) the Rack software in a temporary directory, for example:
@@ -35,38 +35,37 @@ Download (clone) the Rack software in a temporary directory, for example:
 clone https://github.com/fmidev/rack.git ~/rack-git
 ```
 
-Importing the code to Eclipse
------------------------------
+Initial set-up
+--------------
 
 Here, it will be assumed that `$ECLIPSE_DIR` is the workspace directory used by Eclipse – typically `~/eclipse-workspace`.
 
-* Create: New Project "rack": C++ Managed Build, Executable, Empty
-* Create: Source Folder "src"
+* Create: New Project named `rack` (C++ managed build, executable, empty)
+* Create: Source Folder `src`
 * Exit Eclipse
 * In shell, *remove* the just created subdirectory `$ECLIPSE_DIR/rack/src` .
-* Move the downloaded Rack code to Eclipse project dir. For example: `mv ~/rack-git/* ~/rack-git/.git $ECLIPSE_DIR/rack`
+* Move the downloaded Rack code to the workspace dir. For example: `mv ~/rack-git/* ~/rack-git/.git $ECLIPSE_DIR/rack`
 * Now directory `$ECLIPSE_DIR/rack/src` should appear again. 
-* Restart Eclipse and refresh (F5) "rack" project dir.
+* Restart Eclipse and refresh (F5) project directory `rack`.
 
-Important settings in Eclipse
------------------------------
-
-* Exclude examples and tests. For directory `examples`, select Properties (with right mouse button) and click `Exclude from build`.
+Main settings
+-------------
 
 In all the following settings, apply them globally (ie. for both Debug and Release) by selecting `Configuration: All configurations` in applicable dialog boxes.
 
+Create variables
+................
+
+
 '-std=gnu++11 -fopenmp'
 
-Variable (example)
 CCFLAGS -I/usr/include/geotiff -I/usr/include/hdf5/serial   -I/usr/include/libpng12
 LDFLAGS -lproj -lpng12 -ltiff -lgeotiff -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5
 
+|CCFLAGS|-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial   -I/usr/include/libpng12   -I/usr/include/x86_64-linux-gnu  -I/usr/include/geotiff|
+|LDFLAGS|-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng12 -L/usr/lib/x86_64-linux-gnu -ltiff  -lgeotiff|
+|USE_GEOTIFF|YES| 
 
-Settings
-========
-
-In all the following settings, apply them for
-Configuration: All configurations
 
 
 C++ Compiler 
@@ -86,3 +85,8 @@ Add `LDFLAGS` variable in the **end**:
 ```
 ${COMMAND} ...   ${LDFLAGS}
 ```
+
+Exclude appropriate dirs 
+------------------------
+
+Exclude examples and tests. For directory `examples`, select Properties (with right mouse button) and click `Exclude from build`.
