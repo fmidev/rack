@@ -21,8 +21,9 @@ RUN apt-get update && \
         libtiff-dev \
         libgeotiff-dev \
         libgomp1 && \
-    ./build.sh clean && \
     ./build.sh
+
+#    ./build.sh clean && \
 
 
 #RUN ls /usr/local/bin/rack*

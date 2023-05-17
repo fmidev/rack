@@ -19,7 +19,8 @@ COPY install-rack-docker-alpine.cnf /rack/install-rack.cnf
 
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 # (Clean is needed to remove *.o ubuntu objects, they may have been)
-RUN cd /rack && ./build.sh clean && ./build.sh
+# RUN cd /rack && ./build.sh clean && ./build.sh
+RUN cd /rack && ./build.sh 
 
 # Remove some build dependencies
 RUN apk del g++ make
