@@ -25,7 +25,17 @@ fi
 VERSION=$( $TARGET --version | head -1 )
 RACK="rack-${VERSION}"
 echo "# Installing $RACK..."
-prefix=${prefix:-"/usr/local/bin"}
+
+CONF='install-rack.cnf'
+if [ -f $CONF ]; then
+    source $CONF
+else
+    echo "# Config file $CONF missing?"
+fi
+
+prefix=${prefix:-"/usr/local"}
+echo "# Using prefix=$prefix"
+
 
 mkdir -v --parents ${prefix}/bin
 cp -vi $TARGET ${prefix}/bin/${RACK} && pushd ${prefix}/bin; ln -s ${RACK} rack || ln -si ${RACK} rack; popd
