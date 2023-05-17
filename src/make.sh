@@ -53,8 +53,8 @@ for SRC in {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/
     OBJ=$DST_DIR/${SRC_FILE%.*}.o
     
     if [ -v CLEAN ] || [ ! -f $OBJ ] || [ $SRC -nt $OBJ ] ; then
-	# echo "# Building file: $SRC -> $OBJ"
-	cmd="$CC $OPTS $CCFLAGS -c -o $OBJ $SRC"
+	echo "# Building file: $SRC -> $OBJ"
+	cmd="$CC $OPTS $CCFLAGS -I. -c -o $OBJ $SRC"
 	echo "$cmd"
 	eval "$cmd"
 	RESULT=$?
