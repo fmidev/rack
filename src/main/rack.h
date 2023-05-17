@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.41"
+#define __RACK_VERSION__ "7.5"
 
 /**
+ *   Version 7.5
+ *   -- Revised build.sh and make.sh
+ *
  *   Version 7.41
  *   -- Image processing result quantity: ${what:quantity}|${cmdKey}(${cmdArgs} (esp. for iResize & palette)
  *   -- Proj 7 compatibility

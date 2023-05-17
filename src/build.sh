@@ -22,9 +22,11 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-VERSION=$( $TARGET --version | head -1 )
+
+#VERSION=$( $TARGET --version | head -1 )
+VERSION=$( fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
 RACK="rack-${VERSION}"
-echo "# Installing $RACK..."
+echo "# Installing '$RACK' "
 
 CONF='install-rack.cnf'
 if [ -f $CONF ]; then

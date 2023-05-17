@@ -7,7 +7,7 @@
 
 OBJ_DIR=${OBJ_DIR:-'Build'}
 CC=g++
-TARGET=${TARGET:-'rack'}
+TARGET=${TARGET:-'./rack'}
 
 if [ "$1" == 'clean' ]; then
     CLEAN=YES
@@ -40,7 +40,15 @@ fi
 CCFLAGS=${CCFLAGS:-"-std=c++11 -I. -I/usr/include/geotiff -I/usr/include/hdf5/serial -I/usr/include/libpng12"}
 LDFLAGS=${LDFLAGS:-"-std=c++11 -lproj -lpng12 -ltiff -lgeotiff -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5"}
 
+echo "# CCFLAGS=$CCFLAGS"
+echo "# LDFLAGS=$LDFLAGS"
+
 OBJS=()
+
+# if [ ! -f sources.lst ]; then
+#    echo {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp | tr ' ' '\n' > sources.lst
+# fi
+
 
 for SRC in {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp ; do
 
