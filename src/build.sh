@@ -13,10 +13,10 @@ export OBJ_DIR=Build
 # Excutable to be created. Must contain path or be callable using $PATH.
 export TARGET=./rack
 
-if [ ! -f $TARGET ] || [ "$1" == 'clean' ]; then
-    # echo "# Target '$TARGET' exists."
-    ./make.sh $* -DUSE_GEOTIFF_${USE_GEOTIFF}  -g2 -O2 -Wall -fmessage-length=0
-fi
+#if [ ! -f $TARGET ] || [ "$1" == 'clean' ]; then
+# echo "# Target '$TARGET' exists."
+./make.sh $* -DUSE_GEOTIFF_${USE_GEOTIFF}  -g2 -O2 -Wall -fmessage-length=0
+#fi
 
 if [ $? != 0 ]; then
     exit 1
