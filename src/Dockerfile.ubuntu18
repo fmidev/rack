@@ -6,7 +6,7 @@
 FROM ubuntu:18.04 as builder
 
 COPY . /rack
-COPY install-rack-docker-ubuntu.cnf /rack/install-rack.cnf
+COPY install-rack-docker-ubuntu18.cnf /rack/install-rack.cnf
 
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 WORKDIR /rack
@@ -21,7 +21,7 @@ RUN apt-get update && \
         libtiff-dev \
         libgeotiff-dev \
         libgomp1 && \
-    ./build.sh
+    ./build.sh clean
 
 #    ./build.sh clean && \
 
