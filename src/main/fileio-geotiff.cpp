@@ -76,6 +76,10 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	#ifdef USE_GEOTIFF_NO
+	mout.attention("No GeoTIFF support in this build");
+	#else
+
 	drain::image::FileGeoTIFF file(filename, "w");
 
 	CartesianODIM odim(src);
@@ -193,6 +197,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	file.writeImageData(src);
 
+	#endif
 }
 
 

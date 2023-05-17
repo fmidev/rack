@@ -110,6 +110,7 @@ public:
 
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
+#ifndef USE_GEOTIFF_NO
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
 		// Compression METHOD
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
@@ -118,6 +119,7 @@ public:
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
 		// gtiffConf.link("compliance", FileGeoTIFF::compliance, drain::sprinter(drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict, "|", "<>").str()); // "raw" object (segfaul risk)
 		// gtiffConf.link("plainEPSG", FileGeoTIFF::plainEPSG, "use EPSG only, if code supported");
+#endif
 
 	};
 
@@ -178,6 +180,7 @@ public:
 		else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
 		}
+#ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
 			//FileGeoTIFF::compliance = FileGeoTIFF::flagger.str();
 			handleParams(gtiffConf, params);
@@ -187,6 +190,7 @@ public:
 			//gtiff mika;
 			//mout.note("keys", gtiffConf.getKeys());
 		}
+#endif
 		else {
 			mout.warn("format '", format, "' not recognized");
 		}

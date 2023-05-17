@@ -1,51 +1,36 @@
-#!/bin/sh
-
-# Installation script for 'Drain' and 'Rack'
+#!/bin/bash
 #
 # markus peura  fmi.fi
 
+echo "# Building Rack..."
+echo
 
-
-# Exit on fail
-set -o errexit
-
-# Current dir './' must be explicit
-CONF_FILE="./install-rack.cnf"  
-
-if [ ! -f $CONF_FILE ]; then
-  ./configure.sh
-fi
-
-#source $CONF_FILE # bash
-. $CONF_FILE
-
-#USE_GEOTIFF=${GEOTIFF:+'YES'}
-#USE_GEOTIFF=${USE_GEOTIFF:-'NO'}
+USE_GEOTIFF=${USE_GEOTIFF:-'YES'}
 echo "Using GeoTIFF: ${USE_GEOTIFF}"
 
-#pushd rack
-if [ $# != 0 ]; then
-    make $*
-    exit
+export OBJ_DIR=Build
+export TARGET=rack
+
+if [ ! -f $TARGET ] || [ "$1" == 'clean' ]; then
+    # echo "# Target '$TARGET' exists."
+    ./make.sh $* -DUSE_GEOTIFF_${USE_GEOTIFF}  -g2 -O2 -Wall -fmessage-length=0
 fi
 
-
-#make drainroot=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
-make RACK_DIR=$PWD  USE_GEOTIFF=${USE_GEOTIFF} CCFLAGS="$CCFLAGS" LDFLAGS="$LDFLAGS" release
 if [ $? != 0 ]; then
-    echo "ERROR: Compiling rack failed"
     exit 1
 fi
 
+VERSION=$( $TARGET --version | head -1 )
+RACK="rack-${VERSION}"
+echo "# Installing $RACK..."
+prefix=${prefix:-"/usr/local/bin"}
 
-make prefix=$prefix install
+mkdir -v --parents ${prefix}/bin
+cp -vi $TARGET ${prefix}/bin/${RACK} && pushd ${prefix}/bin; ln -s ${RACK} rack || ln -si ${RACK} rack; popd
+
 if [ $? != 0 ]; then
-    echo "ERROR: Installing rack failed. Consider: $0 clean"
     exit 1
 fi
-
-#popd
-
 
 echo "Success."
 # echo "Consider creating documentation by calling 'make doc' in ./rack ."
