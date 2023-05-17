@@ -45,10 +45,10 @@ RUN apt update && \
 
 # RUN ls /usr/local/bin/rack*
 
-RUN date
-
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 RUN ls /usr/local/bin/rack*
+
+CMD ["rack","--version"]
 
 
