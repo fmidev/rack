@@ -16,7 +16,8 @@ fi
 
 # -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP  
 OPTS=${OPTS:-$*}
-OPTS=${OPTS:-'-g2 -O2 -Wall -fmessage-length=0 -fopenmp'}
+OPTS=${OPTS:-'-O3 -Wall -fmessage-length=0 -fopenmp'}
+#OPTS=${OPTS:-'-g2 -O3 -Wall -fmessage-length=0 -fopenmp'}
 # -O0 -g3 -Wall -c -fmessage-length=0
 # -MMD -MP -MF"src/andre/AndreOp.d" -MT"src/andre/AndreOp.o" -o "src/andre/AndreOp.o" "../src/andre/AndreOp.cpp"
 
@@ -37,8 +38,8 @@ else
 fi
 
 
-CCFLAGS=${CCFLAGS:-"-std=c++11 -I. -I/usr/include/geotiff -I/usr/include/hdf5/serial -I/usr/include/libpng12"}
-LDFLAGS=${LDFLAGS:-"-std=c++11 -lproj -lpng12 -ltiff -lgeotiff -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5"}
+CCFLAGS=${CCFLAGS:-"-I. -I/usr/include/geotiff -I/usr/include/hdf5/serial -I/usr/include/libpng12"}
+LDFLAGS=${LDFLAGS:-"-lproj -lpng12 -ltiff -lgeotiff -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5"}
 
 echo "# CCFLAGS=$CCFLAGS"
 echo "# LDFLAGS=$LDFLAGS"
@@ -62,7 +63,7 @@ for SRC in {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/
     
     if [ -v CLEAN ] || [ ! -f $OBJ ] || [ main/rack.h -nt $OBJ ] || [ $SRC -nt $OBJ ]  ; then
 	echo "# Building file: $SRC -> $OBJ"
-	cmd="$CC $OPTS $CCFLAGS -I. -c -o $OBJ $SRC"
+	cmd="$CC -std=c++11 $OPTS $CCFLAGS -I. -c -o $OBJ $SRC"
 	echo "$cmd"
 	eval "$cmd"
 	RESULT=$?
@@ -84,7 +85,7 @@ echo
 
 
 echo "# Building target: $TARGET"
-cmd="$CC $OPTS -o '${TARGET}' ${OBJS[*]} ${LDFLAGS}"
+cmd="$CC -std=c++11 $OPTS -o '${TARGET}' ${OBJS[*]} ${LDFLAGS}"
 echo "$cmd"
 eval "$cmd"
 
