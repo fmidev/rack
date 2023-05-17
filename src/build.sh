@@ -15,7 +15,7 @@ export TARGET=./rack
 
 #if [ ! -f $TARGET ] || [ "$1" == 'clean' ]; then
 # echo "# Target '$TARGET' exists."
-./make.sh $* -DUSE_GEOTIFF_${USE_GEOTIFF}  -g2 -O2 -Wall -fmessage-length=0
+./make.sh $* -DUSE_GEOTIFF_${USE_GEOTIFF} -fopenmp -O3 -Wall -fmessage-length=0
 #fi
 
 if [ $? != 0 ]; then
