@@ -9,7 +9,9 @@ USE_GEOTIFF=${USE_GEOTIFF:-'YES'}
 echo "Using GeoTIFF: ${USE_GEOTIFF}"
 
 export OBJ_DIR=Build
-export TARGET=rack
+
+# Excutable to be created. Must contain path or be callable using $PATH.
+export TARGET=./rack
 
 if [ ! -f $TARGET ] || [ "$1" == 'clean' ]; then
     # echo "# Target '$TARGET' exists."
