@@ -353,8 +353,6 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//const int width/2;
-	//const int j = height/2;
 
 	// Image coords
 	drain::Point2D<int>    imagePos;
@@ -369,9 +367,10 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 		setProjectionLongLat(); // GeoTIFF, FIXED 2023/02
 	}
 	else { // metric
-		imagePos.setLocation(0, 0); //int(height));
-		frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		imagePos.setLocation(0, -1); //int(height));
 		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		frame.pix2LLm(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		imagePos.setLocation(0, 0);
 		setProjection(frame.projGeo2Native); // GeoTIFF, FIXED 2023/02
 	}
 
@@ -435,7 +434,6 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
-	//mout.attention("start");
 	//mout.attention(proj);
 
 	if (proj.isLongLat()){
@@ -453,28 +451,7 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
 		//const short epsg = drain::Proj6::pickEpsgCode(dstProj);
 		const short epsg = proj.getDst().getEPSG(); //rain::Proj6::extractEPSG(dstProj);
-		mout.debug("Extracted EPSG:", epsg);
-
-		// bool USE_EPSG = (epsg>0) && (epsgConf.find(epsg) != epsgConf.end());
-		// ProjectedCSTypeGeoKey();
-		// GTIFKeySet(gtif, GeographicTypeGeoKey, TYPE_SHORT,  1, GCSE_WGS84);
-		// https://github.com/OSGeo/libgeotiff/issues/53
-
-
-		/*
-		if (plainEPSG){
-
-			mout.experimental("using only: EPSG:", epsg);
-
-			if (epsg <= 0){
-				mout.error("Projection requested by EPSG only, but value unset");
-				return;
-			}
-
-			setProjectionEPSG(epsg);
-			return;
-		}
-		*/
+		mout.note("Read EPSG:", epsg);
 
 		if (epsg > 0){
 			mout.note("using EPSG:", epsg);
@@ -482,41 +459,19 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 		}
 		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
 			mout.ok("GTIFSetFromProj4: ", dstProj);
-			/*
-			if (epsg>0){
-				setProjectionEPSG(epsg);
-				//if (setProjectionEPSG(epsg))
-				mout.experimental("complemented PROJ.4 def with specific EPSG:", epsg, " configuration");
-			}
-			*/
 		}
 		else {
 			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
 			mout.advice("Consider EPSG codes for projections in GeoTIFF, eg. PROJ.4 string '+init=epsg:3035'");
-			/*
-			if (epsg>0){
-				mout.warn("Setting GeoTIFF projection as PROJ.4 def failed: ", dstProj, ", using EPSG:", epsg);
-				setProjectionEPSG(epsg);
-				//if (setProjectionEPSG(epsg)){
-				//mout.experimental("... but succeeded with EPSG:", epsg, " configuration");
-			}
-			*/
 			mout.advice("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
-			//if (FileGeoTIFF::strictCompliance){
 			if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::STRICT)){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");
 			}
-
 		}
 	}
 
-
-	// NEW
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // Repeated? Also in setProjectionLongLat?
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
-	/*
-	 */
-
 }
 
 void FileGeoTIFF::setProjectionEPSG(short epsg){

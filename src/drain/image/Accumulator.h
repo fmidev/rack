@@ -36,14 +36,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-//#include "drain/util/Data.h"
+#include "drain/util/Point.h"
+#include "drain/util/Rectangle.h"
 #include "drain/util/Variable.h"
-//#include "drain/util/DataScaling.h"
 
-#include "../util/Point.h"
 #include "ImageT.h"
 #include "Coordinates.h"
-//#include "Cumulator.h"
 #include "AccumulationArray.h"
 #include "AccumulationMethods.h"
 #include "AccumulationConverter.h"
@@ -195,7 +193,7 @@ public:
 	 *  - s = standard deviation, unscaled
 	 *
 	 */
-	void extractField(char field, const AccumulationConverter & converter, Image & dst) const;
+	void extractField(char field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop) const;
 
 
 	virtual

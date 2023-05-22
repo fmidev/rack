@@ -32,13 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GEOFRAME_H_
 
 #include "Geometry.h"
-#include "drain/util/Rectangle.h"
+#include "drain/util/BoundingBox.h"
 #include "drain/util/Geo.h"
 #include "drain/util/Proj6.h"  // for geographical projection of radar data bins
 
 
 namespace drain
 {
+
+
 
 namespace image
 {
@@ -380,8 +382,22 @@ public:
 
 
 
-	/// Sets the projection of the composite image as a proj4 std::string.
-	void setProjection(const std::string & projDef);
+	/// Sets the projection of the image as a Proj string.
+	inline
+	void setProjection(const std::string & projDef){
+		projGeo2Native.setProjectionDst(projDef);
+		updateProjection();
+	}
+
+	/// Sets the projection of the image as a EPSG code.
+	inline
+	void setProjectionEPSG(int epsg){
+		projGeo2Native.dst.setProjection(epsg);
+		updateProjection();
+	}
+
+	/// Updates bboxex, if needed.
+	void updateProjection();
 
 	/// Returns the projection of the composite image as a proj4 std::string.
 	inline
@@ -443,11 +459,15 @@ protected:
 	/// Utility for deriving extent (degrees) required by input data
 	drain::Rectangle<double> dataOverlapD;
 
-	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
+
+	/*
+	template <double LIMIT>
 	static inline
-	bool isMetric(double x, double limit){
-		return (x < -limit) || (x > limit);
+	bool isMetric(double x){
+		return (x < -LIMIT) || (x > LIMIT);
 	}
+	*/
+
 
 };
 

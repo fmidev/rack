@@ -205,20 +205,25 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 }
 
 
-void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst) const {
+void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
+	mout.attention("Resizing dst suppressed from here.");
+
+	/*
 	if ((dst.getWidth() != accArray.getWidth()) || (dst.getHeight() != accArray.getHeight())){
-		mout.info() << "resizing " << dst.getGeometry() << " [2D] => "
-				<< accArray.getGeometry() << mout.endl;
+		mout.attention("Deprecating code - resize handled better by initDst");
+		mout.info("resizing ", dst.getGeometry(), " [2D] => ", accArray.getGeometry());
 		//dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+
 		dst.setGeometry(accArray.getGeometry());
 	}
+	*/
 
 
-	// Storage type selection for fields str than 'data'.
+	// Storage type selection for fields str than 'data'. (???)
 	if (!dst.typeIsSet()){
 		if ((field >= 'a') && (field <= 'z'))
 			dst.setType<unsigned char>();
@@ -239,24 +244,24 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	switch (field){
 		case 'd':
 		case 'D':
-			methodPtr->extractValue(accArray, coder, dst);
+			methodPtr->extractValue(accArray, coder, dst, crop);
 			break;
 		case 'w':
 		case 'W':
-			methodPtr->extractWeight(accArray, coder, dst);
+			methodPtr->extractWeight(accArray, coder, dst, crop);
 			break;
 		case 'c':
 		case 'C':
-			methodPtr->extractCount(accArray, coder, dst);
+			methodPtr->extractCount(accArray, coder, dst, crop);
 			break;
 		case 's':
 		case 'S':
 			//mout.warn() << coder << mout.endl;
-			methodPtr->extractDev(accArray, coder, dst);
+			methodPtr->extractDev(accArray, coder, dst, crop);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:
-			mout.error() << "unknown (unimplemented) field " << field << mout.endl;
+			mout.error("unknown (unimplemented) field ", field);
 			//throw std::runtime_error(std::string("Accumulator::extractField: unknown field code '") + field + "'");
 	}
 

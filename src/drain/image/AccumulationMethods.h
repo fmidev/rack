@@ -36,19 +36,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-// #include "drain/util/ReferenceMap.h"
-//#include "drain/util/DataScaling.h"
-
 #include "drain/util/Bank.h"
 #include "drain/util/BeanLike.h"
 #include "drain/util/Point.h"
+#include "drain/util/Rectangle.h"
 #include "ImageT.h"
 #include "Coordinates.h"
 #include "AccumulationArray.h"
 
-
-
-// TODO: image/
 /** See also radar::Compositor
  * 
  */
@@ -117,17 +112,17 @@ public:
 	 *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
 	 */
 	virtual
-	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 
 	/// Retrieves the (average) weight of the accumulated values.
 	/**
-	 *  \par dst - target array in which the values are stored.
-	 *  \par gain - scaling coefficient applied to each retrived value
-	 *  \par offset - additive coefficient applied to each retrieved value
+	 * 	\param accArray - data source
+	 * 	\param coder    - logic for scaling and encoding the result
+	 *  \pararm dst - target array in which the data are stored.
 	 */
 	virtual
-	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/// Retrieves the count of values accumulated.
 	/**
@@ -136,7 +131,7 @@ public:
 	 *  \par offset - additive coefficient applied to each retrieved value
 	 */
 	virtual
-	void extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/// Retrieves the standard deviation of the accumulated values.
 	/**
@@ -146,7 +141,7 @@ public:
 	 *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
 	 */
 	virtual
-	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	//virtual
 	//void extractDevInv(const AccumulationConverter & coder, Image & dst) const;
@@ -169,7 +164,7 @@ protected:
 	//virtual
 	//void updateInternalParameters(){};
 
-	void initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const ;
+	void initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const ;
 
 
 	// AccumulationMethod(const std::string & name, AccumulationArray & c) :  BeanLike(name, __FUNCTION__), accumulationArray(c)  {
@@ -202,8 +197,9 @@ public:
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
 
+	/// Special defimition: difference
 	virtual
-	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 
 };
@@ -250,13 +246,13 @@ public:
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
-	void extractValue(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	virtual
-	void extractWeight(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	virtual
-	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 };
 
@@ -298,13 +294,13 @@ public:
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual
-	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	virtual
-	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	virtual
-	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/*
 	virtual

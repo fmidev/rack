@@ -73,8 +73,19 @@ AccMethodBank & getAccMethodBank() {
 
 }
 
+// TODO 2023; crop
+void AccumulationMethod::initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-void AccumulationMethod::initDst(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+	Logger mout(getImgLog(), __FUNCTION__, getName());
+
+	if (crop.upperRight.x < crop.lowerLeft.x){
+		mout.error("Negative direction in crop image i coordinates: ", crop);
+	}
+
+	if (crop.upperRight.y < crop.lowerLeft.y){
+		mout.error("Negative direction in crop image j coordinates: ", crop);
+	}
+
 
 	if (!dst.typeIsSet()){
 		if (!coder.type.empty())
@@ -82,17 +93,25 @@ void AccumulationMethod::initDst(const AccumulationArray & accArray, const Accum
 		else
 			throw std::runtime_error(name + "::(AccumulationMethod::_initDst): default output type and image type unset.");
 	}
-	dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+
+	if (crop.empty()){
+		//mout.unimplemented("Crop");
+		dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+	}
+	else {
+		mout.experimental("applying cropped (", crop ,") view of ", accArray.getGeometry());
+		dst.setGeometry(crop.getWidth(), crop.getHeight());
+	}
 
 }
 
-void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	mout.debug() << name <<  " extracting..." << mout.endl;
+	mout.debug(name, " extracting...");
 
-	initDst(accArray, coder, dst);
+	initDst(accArray, coder, dst, crop);
 
 
 	// Marker for bins having data (count > 0), but unusable value,
@@ -102,32 +121,37 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 	// Marker for bins without data (count = 0)
 	const double noDataMarker    = coder.getNoDataMarker();
 
+	//const drain::image::AreaGeometry & area = dst.getGeometry();
+	const drain::image::AreaGeometry & area = accArray.getGeometry();
+	if (area.height == 0){
+
+	}
 
 	double value;
 	double weight;
 	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
-		if (accArray.count.at(i) > 0){
-			weight = accArray.weight.at(i);
+	for (size_t addr = 0; addr < s; ++addr) {
+		if (accArray.count.at(addr) > 0){
+			weight = accArray.weight.at(addr);
 			if (weight > 0.0){
-				value  = accArray.data.at(i);
+				value  = accArray.data.at(addr);
 				coder.encode(value, weight);
-				dst.put(i, value);
+				dst.put(addr, value);
 			}
 			else
-				dst.put(i, noReadingMarker);
+				dst.put(addr, noReadingMarker);
 		}
 		else
-			dst.put(i, noDataMarker);
+			dst.put(addr, noDataMarker);
 
 	}
 }
 
 
 
-void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	initDst(accArray, coder, dst);
+	initDst(accArray, coder, dst, crop);
 
 	//double value = 0.0;
 	double weight;
@@ -143,9 +167,10 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 }
 
 
-void AccumulationMethod::extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	//LinearScaling scaling(gain, offset);
+	initDst(accArray, coder, dst, crop);
 
 	double count;
 	const size_t s = dst.getVolume();
@@ -157,7 +182,7 @@ void AccumulationMethod::extractCount(const AccumulationArray & accArray, const 
 
 }
 
-void AccumulationMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AccumulationMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	double stdDev;
 	const size_t s = dst.getVolume();
@@ -188,7 +213,9 @@ void OverwriteMethod::add(AccumulationArray & accArray, const size_t i, double v
 
 }
 
-void OverwriteMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void OverwriteMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	initDst(accArray, coder, dst, crop);
 
 	double diff;
 	const double noData   = coder.getNoDataMarker();
@@ -281,9 +308,9 @@ void AverageMethod::add(AccumulationArray & accArray, const size_t i, double val
 }
 
 
-void AverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	initDst(accArray, coder, dst);
+	initDst(accArray, coder, dst, crop);
 
 	unsigned int count;
 	double value;
@@ -319,9 +346,9 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 	}
 }
 
-void AverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	//const LinearScaling scaling(gain, offset);
+	initDst(accArray, coder, dst, crop);
 
 	double count;
 	double weight = 0.0;
@@ -346,7 +373,9 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 }
 
 
-void AverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void AverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	initDst(accArray, coder, dst, crop);
 
 	double count; // actually weight!
 	double x = 0.0;
@@ -445,12 +474,12 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 
 
 
-void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	// mout.warn() << " start..." << mout.endl;
 
-	initDst(accArray, coder, dst);
+	initDst(accArray, coder, dst, crop);
 
 	double value;
 	double weight;
@@ -504,7 +533,9 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 
 
 
-void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	initDst(accArray, coder, dst, crop);
 
 	double weight;
 
@@ -534,7 +565,9 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 }
 
 
-void WeightedAverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst) const {
+void WeightedAverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	initDst(accArray, coder, dst, crop);
 
 	double count;
 	double weight;

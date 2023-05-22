@@ -92,20 +92,20 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 	Logger mout(__FUNCTION__, __FILE__);
 
 	// FIX: 2022/03: from AND to OR
-	if (isMetric(lonLL, 180.0) || isMetric(latLL, 90.0) || isMetric(lonUR, 180.0) || isMetric(latUR, 90.0)){
+	if (BBox::isMetric({lonLL, latLL}) || BBox::isMetric({lonUR, latUR})){
+	// if (isMetric(lonLL, 180.0) || isMetric(latLL, 90.0) || isMetric(lonUR, 180.0) || isMetric(latUR, 90.0)){
 
 		//mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
 		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
 
 		if (!projectionIsSet()){
-			mout.warn() << "for best accuracy, set projection before metric bbox" << mout.endl;
+			mout.advice("For best accuracy, set projection before metric bbox");
 			//mout.error() << "projection must be set prior to setting metric bbox (" << ")" << mout.endl;
 			//return;
 		}
 
 		if (projectionIsSet() && projGeo2Native.isLongLat()){
-			mout.error() << "trying to set metric bbox (" << ") on long-lat proj: "; // << resources.bbox
-			mout         <<  getProjection() << mout.endl;
+			mout.error("trying to set metric bbox (", ") on long-lat proj: ", getProjection());
 			return;
 		}
 
@@ -278,16 +278,19 @@ void GeoFrame::updateBoundingBoxM(){
 
 
 
-
+/*
 void GeoFrame::setProjection(const std::string &s){
+	// const bool PROJ_SET = projectionIsSet();
+	//mout.special() << "(metric) Area: " << bBoxNative.getArea() << mout;
+	projGeo2Native.setProjectionDst(s);
+}
+*/
+
+void GeoFrame::updateProjection(){
 
 	Logger mout(__FUNCTION__, __FILE__);
 
 	const bool METRIC_BBOX = (bBoxNative.getArea() > 40000);
-	const bool PROJ_SET = projectionIsSet();
-	//mout.special() << "(metric) Area: " << bBoxNative.getArea() << mout;
-
-	projGeo2Native.setProjectionDst(s);
 
 	if (METRIC_BBOX){
 		if (isLongLat()){
@@ -297,14 +300,16 @@ void GeoFrame::setProjection(const std::string &s){
 			// Rescale also to degrees
 			updateBoundingBoxD();
 			*/
-			mout.warn("Metric BBox (", bBoxNative, ") incompatible with the requested LongLat projection: '", s, "'");
+			mout.warn("Metric BBox (", bBoxNative, ") incompatible with the requested LongLat projection: '"); //, s, "'");
 		}
 		else {
+			/*
 			if (PROJ_SET) {
 				// Problem: if proj is changed, which bbox should be used as a basis for adjusting the others?
 				//mout.warn() << "Re-adjusting Metric Bounding Box (" << bBoxNative << "), risk of loosing precision" << mout;
 				mout.warn("Using previous metric BBox (", bBoxNative, ") as reference");
 			}
+			*/
 			projGeo2Native.projectInv(bBoxNative.lowerLeft.x,  bBoxNative.lowerLeft.y,  bBoxD.lowerLeft.x,  bBoxD.lowerLeft.y);
 			projGeo2Native.projectInv(bBoxNative.upperRight.x, bBoxNative.upperRight.y, bBoxD.upperRight.x, bBoxD.upperRight.y);
 			updateBoundingBoxR();
