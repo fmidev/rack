@@ -28,9 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef CART_ODIM_STRUCT
-#define CART_ODIM_STRUCT
+#ifndef RACK_CART_ODIM_H
+#define RACK_CART_ODIM_H
 
+#include "drain/util/BoundingBox.h"
 #include "drain/image/GeoFrame.h"
 
 #include "ODIM.h"
@@ -95,14 +96,15 @@ public:
 	double yscale;
 
 	//drain::Rectangle<double> bboxD ?
-	double LL_lat;
-	double LL_lon;
+	drain::BBox bboxD;
+	// double LL_lat;
+	// double LL_lon;
+	// double UR_lat;
+	// double UR_lon;
 	double UL_lat;
 	double UL_lon;
 	double LR_lat;
 	double LR_lon;
-	double UR_lat;
-	double UR_lon;
 
 	/// How cartesian data are processed, according to Table 12
 	std::string camethod;
@@ -113,13 +115,18 @@ public:
 	/// This is needed for palette operations (of single-radar Cartesian products).
 	//double NI;
 
+	/// HOW, for compatibility (should be WHERE)
+	int epsg;
+
 
 	inline
 	const drain::Rectangle<double> & getBoundingBoxD() const {
+		/*
 		bboxD.lowerLeft.x  = LL_lon;
 		bboxD.lowerLeft.y  = LL_lat;
 		bboxD.upperRight.x = UR_lon;
 		bboxD.upperRight.y = UR_lat;
+		*/
 		return bboxD;
 	}
 
@@ -128,7 +135,7 @@ private:
 	virtual // must
 	void init(group_t initialize = ODIMPathElem::ALL_LEVELS);
 
-	mutable drain::Rectangle<double> bboxD;
+	//mutable drain::Rectangle<double> bboxD;
 
 };
 

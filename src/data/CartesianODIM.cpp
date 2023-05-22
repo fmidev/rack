@@ -57,17 +57,19 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		UR_lon = bboxD.upperRight.x;
 		UR_lat = bboxD.upperRight.y;
 		 */
-		link("where:UR_lon", UR_lon = 0.0);
-		link("where:UR_lat", UR_lat = 0.0);
+		link("where:UR_lon", bboxD.upperRight.x = 0.0);
+		link("where:UR_lat", bboxD.upperRight.y = 0.0);
+		link("where:LL_lon", bboxD.lowerLeft.x = 0.0);
+		link("where:LL_lat", bboxD.lowerLeft.y = 0.0);
 		link("where:UL_lon", UL_lon = 0.0);
 		link("where:UL_lat", UL_lat = 0.0);
 		link("where:LR_lon", LR_lon = 0.0);
 		link("where:LR_lat", LR_lat = 0.0);
-		link("where:LL_lon", LL_lon = 0.0);
-		link("where:LL_lat", LL_lat = 0.0);
 		link("how:camethod", camethod = "");
 
 		link("how:nodes", nodes = "");
+
+		link("how:EPSG", epsg = 0);
 	}
 
 
@@ -113,13 +115,16 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 	area.height = geoFrame.getFrameHeight();
 
 	projdef = geoFrame.getProjection();
+	epsg = geoFrame.projGeo2Native.getDst().getEPSG();
 
-
+	bboxD = geoFrame.getBoundingBoxD();
+	/*
 	const drain::Rectangle<double> &bboxD = geoFrame.getBoundingBoxD();
 	LL_lon = bboxD.lowerLeft.x;
 	LL_lat = bboxD.lowerLeft.y;
 	UR_lon = bboxD.upperRight.x;
 	UR_lat = bboxD.upperRight.y;
+	*/
 
 	/// Complete other cornerpoints (non-ODIM)
 	double x2,y2;
