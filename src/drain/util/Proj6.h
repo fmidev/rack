@@ -145,11 +145,20 @@ public:
 		epsg = 0;
 	}
 
-	/// Sets projection.
+	/// Sets projection defined as Proj string.
 	/**
 	 *
 	 */
 	void setProjection(const std::string &str, CRS_mode crs=FORCE_CRS);
+
+	/// Sets projection defined as EPSG code.
+	/**
+	 *
+	 */
+	void setProjection(int epsg, CRS_mode crs=FORCE_CRS);
+
+	// protect
+	void updateProjectionDefs(CRS_mode crs);
 
 	/// Returns true, if PJ object has been set.
 	inline

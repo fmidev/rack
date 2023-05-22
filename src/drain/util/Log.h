@@ -447,6 +447,17 @@ public:
 		return *this;
 	};
 
+
+	///  Feature to be done. Special type of Logger::note(). \see Logger::obsolete().
+	template<typename ... TT>
+	inline
+	Logger & unimplemented(const TT &... args){
+		static const Notification notif(__FUNCTION__, 35);
+		initMessage<LOG_NOTICE>(notif);
+		flush(args...);
+		return *this;
+	};
+
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	template<typename ... TT>
 	inline
@@ -457,17 +468,7 @@ public:
 		return *this;
 	};
 
-	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
-	template<typename ... TT>
-	inline
-	Logger & unimplemented(const TT &... args){
-		static const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_NOTICE>(notif);
-		flush(args...);
-		return *this;
-	};
-
-
+	/// Other useful information
 	template<typename ... TT>
 	inline
 	Logger & special(const TT &... args){
@@ -548,6 +549,17 @@ public:
 	Logger & success(const TT &... args){
 		static const Notification notif(__FUNCTION__, 92);
 		initMessage<LOG_NOTICE>(notif);
+		flush(args...);
+		return *this;
+	};
+
+
+	/// Like advice, but weaker.
+	template<typename ... TT>
+	inline
+	Logger & hint(const TT &... args){
+		static const Notification notif(__FUNCTION__, 40);
+		initMessage<LOG_INFO>(notif);
 		flush(args...);
 		return *this;
 	};

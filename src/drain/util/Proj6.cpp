@@ -40,11 +40,35 @@ namespace drain
 const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separated, =, no hypens
 
 
-void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
+void Projector::setProjection(int epsg, CRS_mode crs){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	projDefs[ORIG] = projDefStr;
+	mout.info("Setting epsg: ", epsg, ", expanding projDef");
+
+
+	std::stringstream sstr;
+	sstr << "EPSG:" << epsg;
+
+	this->epsg = epsg;
+	projDefs[ORIG] = sstr.str();
+
+	PJ *pjTmp = proj_create(0, sstr.str().c_str()); // pjContext: better with or without?
+
+	const char *projStr = proj_as_proj_string(pjContext, pjTmp, PJ_PROJ_4, nullptr);
+	mout.attention("Converted 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
+
+	projDefDict.clear();
+	getProjDefDict(projStr, projDefDict);
+	proj_destroy(pjTmp);
+
+	updateProjectionDefs(crs);
+}
+
+
+void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	getProjDefDict(projDefStr, projDefDict);
 
@@ -53,6 +77,8 @@ void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
 	epsg = extractEPSG(projDefDict);
 
 	if (epsg > 0){
+		setProjection(epsg);
+		/*
 		mout.info("Read epsg: ", epsg, ", expanding projDef");
 		projDefDict.clear();
 		std::stringstream sstr;
@@ -62,7 +88,19 @@ void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
 		mout.attention("Converted 'EPSG:", epsg, "' to non-(x,y)-swapping '", projDefStrNew,"'");
 		getProjDefDict(projDefStrNew, projDefDict);
 		proj_destroy(pjTmp);
+		*/
 	}
+	else {
+		updateProjectionDefs(crs);
+	}
+
+	projDefs[ORIG] = projDefStr;
+
+}
+
+void Projector::updateProjectionDefs(CRS_mode crs){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	std::set<std::string> excludeKeys = {"+init"};
 	switch (crs) {

@@ -86,10 +86,20 @@ struct Rectangle : public drain::UniTuple<T,4> {
 	T getWidth() const { return (this->upperRight.x - this->lowerLeft.x); };
 
 	inline
-	T getHeight() const { return (this->upperRight.y - this->lowerLeft.y); };
+	T getHeight() const {
+		return (this->upperRight.y - this->lowerLeft.y);
+	};
 
 	inline
-	T getArea() const { return std::abs(getWidth()*getHeight()); };
+	T getArea() const {
+		return std::abs(getWidth()*getHeight());
+	};
+
+	inline
+	bool empty() const {
+		return (getWidth()==0) || (getHeight()==0);
+	};
+
 
 	inline
 	void getCenter(drain::Point2D<T> &p) const {
