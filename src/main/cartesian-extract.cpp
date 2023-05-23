@@ -42,6 +42,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void CartesianExtract::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+	//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+	Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
+	extract(composite, channels, bbox);
+}
 
 
 void CartesianSun::exec() const {

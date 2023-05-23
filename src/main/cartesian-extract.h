@@ -29,49 +29,45 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-//#pragma once
-
 #ifndef RACK_CART_EXTRACT
 #define RACK_CART_EXTRACT
 
 
-
-
-//#include "drain/prog/CommandAdapter.h"
-
 #include "resources.h"
-
 #include "composite.h"
-
 
 
 namespace rack {
 
-class CartesianExtract : public Compositor { // drain::SimpleCommand<std::string> {
+class CartesianExtract : public Compositor {
 
 public:
 
 	CartesianExtract() : Compositor(__FUNCTION__,"Extract data that has been composited on the accumulation array"){
 		parameters.link("channels", channels="dw", "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
+		parameters.link("bbox", bbox.tuple(), "Optional cropping"); // Accumulation layers to be extracted
 	};
 
 	CartesianExtract(const CartesianExtract & cmd) : Compositor(__FUNCTION__, cmd.getDescription()){
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
 
-	virtual inline
-	void exec() const {
+	virtual // inline
+	void exec() const; /* {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
-		extract(composite, channels);
+		Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
+		extract(composite, channels, bbox);
 	}
+	*/
 
 protected:
 
 	std::string channels;
+	drain::Rectangle<double> bbox;
 
 };
 

@@ -71,12 +71,13 @@ void CartesianGrid::exec() const {
 	}
 	geoFrame.setProjection(odim.projdef);
 
-	drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
-	if (bboxD.getArea() == 0.0){
+	//drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+	// const drain::Rectangle<double> bboxD(odim.bboxD);
+	if (odim.bboxD.getArea() == 0.0){
 		mout.warn() << "empty bbox, returning" << mout.endl;
 		return;
 	}
-	geoFrame.setBoundingBoxD(bboxD);
+	geoFrame.setBoundingBoxD(odim.bboxD);
 
 	geoFrame.setGeometry(odim.area.width, odim.area.height);
 
@@ -112,12 +113,11 @@ void CartesianGrid::exec() const {
 	ImageFrame & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0); // Latter dummy
 
 	//const drain::Rectangle<double> & bboxD = geoFrame.getBoundingBoxD();
-	/*
-	const double lonResolution = static_cast<double>(geoFrame.getFrameWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
-	const double latResolution = static_cast<double>(geoFrame.getFrameHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
-	*/
-	const double lonResolution = static_cast<double>(img.getWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
-	const double latResolution = static_cast<double>(img.getHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
+	// const double lonResolution = static_cast<double>(img.getWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
+	// const double latResolution = static_cast<double>(img.getHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
+
+	const double lonResolution = static_cast<double>(img.getWidth())  / odim.bboxD.getWidth()  / width ;
+	const double latResolution = static_cast<double>(img.getHeight()) / odim.bboxD.getHeight() / width ; // linewidth
 
 	drain::FuzzyBell2<double> peak(0.0, width);
 	double lat, lon;

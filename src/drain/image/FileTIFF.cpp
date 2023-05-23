@@ -114,10 +114,10 @@ void FileTIFF::setDefaults(){ //const drain::image::ImageConf & src){ // int til
 void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth = 0, int tileHeight = 0)
 {
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	if (!isOpen()){
-		drain::Logger mout(__FILE__, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.error("TIFF file not open");
 		//return 0;
 	}
@@ -302,12 +302,11 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 //void FileGeoTIFF::write(const std::string &filePath, const Hi5Tree & src, const ODIMPathList & paths){
 void FileTIFF::write(const std::string &path, const drain::image::Image & src){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.note() << src.properties << mout.endl;
+	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// mout.note() << src.properties << mout.endl;
 
 	FileTIFF file(path, "w");
 	file.setDefaults();
-
 	file.writeImageData(src); //, tileSize, tileSitileWidthze/2);
 
 	// std::string projstr = src.properties["where:projdef"];

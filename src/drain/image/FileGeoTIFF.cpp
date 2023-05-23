@@ -110,18 +110,8 @@ void NodeGDAL::setText(const std::string & text){
 	this->ctext  = text;
 }
 
-
-
-
-
-//bool FileGeoTIFF::strictCompliance(false);
-
-//FileGeoTIFF::TiffCompliance FileGeoTIFF::compliance = GEOTIFF_EXT;
-
-
 FileGeoTIFF::complianceFlagger FileGeoTIFF::compliancyFlagger(EPSG);
-//int FileGeoTIFF::compliance = (GEOTIFF|EPSG);
-std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str();
+std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str()
 
 // TODO: compare with
 // https://gdal.org/drivers/raster/gtiff.html#creation-options :
@@ -258,27 +248,16 @@ void FileGeoTIFF::writeMetadata(){
 
 	if (isOpen()){
 
-		//if (!gdalInfo.empty()){
-
 		static
 		const TIFFFieldInfo xtiffFieldInfo[] = {
 				{ TIFFTAG_GDAL_METADATA, -1, -1, TIFF_ASCII,  FIELD_CUSTOM, true, 0, const_cast<char*>("GDAL_METADATA") },
 		};
 		TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
 
-		/*
-			TreeGDAL & gdalSubTree = gdalInfo["test"];
-			gdalSubTree.data.setType(NodeGDAL::USER);
-			gdalSubTree.data.ctext = "free text";
-		 */
-		//gdalInfo["TITLE"]
-		//TITLE, IMAGETYPE, UNITS.
-
 		std::stringstream sstr;
 		sstr << gdalInfo;
 		mout.debug(sstr.str());
 		setField(TIFFTAG_GDAL_METADATA, sstr.str());
-
 
 		GTIFWriteKeys(gtif);
 	}
@@ -329,10 +308,9 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 	};
 	TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
 
-
 	// std::string nodata = prop["what:nodata"];
 	// http://stackoverflow.com/questions/24059421/adding-custom-tags-to-a-tiff-file
-	mout.info() << "registering what:nodata => nodata=" << nodata << mout.endl;
+	mout.info("registering what:nodata => nodata=", nodata);
 	// TODO: separate code without nodata marker?
 	setField(TIFFTAG_GDAL_NODATA, nodata); // or should be string?
 	// usr/include/gdal/rawdataset.h
@@ -346,69 +324,74 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 	}
 	*/
 
-
 }
 
 
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	// mout.special("NOW");
 
 	// Image coords
-	drain::Point2D<int>    imagePos;
+	drain::Point2D<int> imageCoord;
 
 	// Geographical coords (degrees or meters)
-	drain::Point2D<double>   geoPos;
+	drain::Point2D<double> mapCoord;
 
-	if (frame.isLongLat()){
+	imageCoord.setLocation(0, -1); //int(height));
+	//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+	frame.pix2LLm(imageCoord.x, imageCoord.y, mapCoord.x, mapCoord.y);
+	imageCoord.setLocation(0, 0);
+	setProjection(frame.projGeo2Native); // GeoTIFF, FIXED 2023/02
+
+	/*
+	//if (frame.isLongLat()){
+	if (false){
 		//imagePos.setLocation(width/2, height/2);
-		imagePos.setLocation(frame.getFrameWidth()/2, frame.getFrameHeight()/2); // TODO: CHECK
-		frame.pix2LLdeg(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
+		imageCoord.setLocation(frame.getFrameWidth()/2, frame.getFrameHeight()/2); // TODO: CHECK
+		frame.pix2LLdeg(imageCoord.x, imageCoord.y, mapCoord.x, mapCoord.y);
 		setProjectionLongLat(); // GeoTIFF, FIXED 2023/02
 	}
 	else { // metric
-		imagePos.setLocation(0, -1); //int(height));
+		imageCoord.setLocation(0, -1); //int(height));
 		//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
-		frame.pix2LLm(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
-		imagePos.setLocation(0, 0);
+		frame.pix2LLm(imageCoord.x, imageCoord.y, mapCoord.x, mapCoord.y);
+		imageCoord.setLocation(0, 0);
 		setProjection(frame.projGeo2Native); // GeoTIFF, FIXED 2023/02
 	}
+	*/
 
-	//double tiepoints[6]; // = {0,0,0,0,0,0};
-	std::vector<double> tiepoints(6); // = {0,0,0,0,0,0};
-	tiepoints[0] = static_cast<double>(imagePos.x);
-	tiepoints[1] = static_cast<double>(imagePos.y);
+	std::vector<double> tiepoints(6);
+	tiepoints[0] = static_cast<double>(imageCoord.x);
+	tiepoints[1] = static_cast<double>(imageCoord.y);
 	tiepoints[2] = 0.0;
-	tiepoints[3] = geoPos.x;
-	tiepoints[4] = geoPos.y;
+	tiepoints[3] = mapCoord.x;
+	tiepoints[4] = mapCoord.y;
 	tiepoints[5] = 0.0;
-	mout.debug("Tiepoint: ", imagePos, " => ", geoPos);
-
-	// consider
-	//TIFFSetField(tif,TIFFTAG_GEOTIEPOINTS, 6,tiepoints);
+	mout.debug("Tiepoint: ", imageCoord, " => ", mapCoord);
 	setField(TIFFTAG_GEOTIEPOINTS, tiepoints);
 
-	//double pixscale[3]; // = {1,1,0};
 	std::vector<double> pixscale(3);
 
-	const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxD() : frame.getBoundingBoxM();
+	const drain::Rectangle<double> & bbox = frame.getBoundingBoxM();
+	//const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxD() : frame.getBoundingBoxM();
+	// mout.attention("Bbox: ", bbox, " Nat:", frame.getBoundingBoxM());
 
-	mout.debug() << "Scale: " << frame.getXScale() << ", " << frame.getYScale() << mout.endl;
+	mout.debug("Scale: ", frame.getXScale(), ", ", frame.getYScale());
 
 	pixscale[0] = bbox.getWidth()  / static_cast<double>(frame.getFrameWidth()); // upperRight.x - bbox.lowerLeft.x
 	pixscale[1] = bbox.getHeight() / static_cast<double>(frame.getFrameHeight()); // bbox.upperRight.y - bbox.lowerLeft.y
 	pixscale[2] = 0.0;
 
-	mout.debug() << "BBox: " << bbox << mout.endl;
-	mout.debug() << "ScaleX: " << pixscale[0] << ' ' << bbox.getWidth() << ' ' << frame.getFrameWidth()  << mout.endl; // << ' ' << width
-	mout.debug() << "ScaleY: " << pixscale[1] << mout.endl;
-
-	//printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
+	mout.debug("BBox: ", bbox);
+	mout.debug("ScaleX: ", pixscale[0], ' ', bbox.getWidth(), ' ', frame.getFrameWidth()); // << ' ' << width
+	mout.debug("ScaleY: ", pixscale[1]);
+	// printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
 	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
 	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
 
 	setField(TIFFTAG_GEOPIXELSCALE, pixscale);
-
 
 }
 
@@ -433,7 +416,8 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
+	setGeoTiffField(GTRasterTypeGeoKey, RasterPixelIsArea);
+	// GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
 	//mout.attention(proj);
 
 	if (proj.isLongLat()){
@@ -483,17 +467,17 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 		return;
 	}
 
-	GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
+	//  GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
+	setGeoTiffField(ProjectedCSTypeGeoKey, epsg);
+	// =GTIFKeySet(gtif, tag, TYPE_SHORT, 1, static_cast<short int>(value));
 
 	if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::EPSG)){
 
 		mout.special("Applying extended configuration for EPSG:", epsg);
 
-		//if (epsg != 4326){
-			setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
-			setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
-			setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
-		//}
+		setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
+		setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
+		setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
 
 		switch (epsg) {
 		case 3035:
@@ -538,15 +522,29 @@ void FileGeoTIFF::setProjectionLongLat(){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	/* compare with:
+	setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
+	setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
+	setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
+	setGeoTiffField(GTCitationGeoKey,   "ETRS89-extended / LAEA Europe");
+	setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+	*/
+
 	mout.info("Setting Long-Lat projection");
 	// GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 4326);
+	// setGeoTiffField(ProjectedCSTypeGeoKey,   4326); // ?
+	// setGeoTiffField(GTRasterTypeGeoKey,      RasterPixelIsArea);
 	setGeoTiffField(GTModelTypeGeoKey,       ModelTypeGeographic);
-	setGeoTiffField(GTRasterTypeGeoKey,      RasterPixelIsArea);
 	setGeoTiffField(GeographicTypeGeoKey,    GCS_WGS_84);
 	setGeoTiffField(GeogCitationGeoKey,      "WGS 84");
 	setGeoTiffField(GeogAngularUnitsGeoKey,  Angular_Degree);
+	/* GeogSemiMajorAxisGeoKey (Double,1): 6378137
+	 * GeogInvFlatteningGeoKey (Double,1): 298.257223563
+	 *
+	*/
 	setGeoTiffField(GeogSemiMajorAxisGeoKey, 6378137.0);
 	setGeoTiffField(GeogInvFlatteningGeoKey, 298.257223563);
+
 	/*
 	GTIFKeySet(gtif, GTModelTypeGeoKey,       TYPE_SHORT,  1, ModelGeographic);
 	GTIFKeySet(gtif, GTRasterTypeGeoKey,      TYPE_SHORT,  1, RasterPixelIsArea); // Also in main function

@@ -74,7 +74,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	//void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	#ifdef USE_GEOTIFF_NO
 	mout.attention("No GeoTIFF support in this build");
@@ -134,11 +134,21 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		file.setGdalNoData(nodata);
 
 		drain::image::GeoFrame frame;
+		// frame.setGeometry(src.getWidth(), src.getHeight());
 
-		if (!odim.projdef.empty()){
+		// mout.special("GDAL info start");
+
+		if ((odim.epsg>0) || !odim.projdef.empty()){
 
 			frame.setGeometry(src.getWidth(), src.getHeight());
-			frame.setProjection(odim.projdef);
+			if (odim.epsg > 0){
+				mout.info("Using ODIM how:epsg=", odim.epsg);
+				frame.setProjectionEPSG(odim.epsg);
+			}
+			else {
+				mout.info("Using plain proj string (not EPSG)");
+				frame.setProjection(odim.projdef);
+			}
 
 			//drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
 			if (frame.isLongLat()){
@@ -154,7 +164,6 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 				mout.precision(20);
 				mout << frame.getBoundingBoxM() << mout;
 				*/
-
 
 				const drain::Variable & p = src.properties["where:BBOX_native"];
 				std::vector<double> v;
@@ -180,17 +189,18 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		}
 
 		// mout.attention("file.setGeoMetaData(frame)");
-		file.setGeoMetaData(frame);
+		file.setGeoMetaData(frame); // OR SKIP, if empty?
+
+		//mout.special("GDAL info end");
 
 		drain::Variable imagetype("Weather Radar");
 		if (odim.ACCnum > 1)
-			imagetype << "Composite (" <<  odim.source << ')';
+			imagetype << "Composite (" <<  odim.source << ')'; // todo: check commas
 		else
 			imagetype <<  odim.source;
 		file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
 		file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
 		file.gdalInfo["UNITS"].data.setText(odim.quantity);
-		// file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 		file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	}

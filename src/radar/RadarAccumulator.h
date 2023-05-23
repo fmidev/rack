@@ -84,7 +84,12 @@ public:
 	/// Adds data that is in the same coordinate system as the accumulator. Weighted with quality and count.
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount);
 
-	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const;
+	/**
+	 *  \param odimOut - metadata container (PolarODIM or CartesianODIM)
+	 *  \param quantities - layers (d=data, w=weight, ...)
+	 */
+	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
+			const std::string & quantities, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/// Input data selector.
 	DataSelector dataSelector;
@@ -240,7 +245,9 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 
 template  <class AC, class OD>
-void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct, const std::string & quantities) const {
+void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
+		const std::string & quantities, const drain::Rectangle<int> & crop) const {
+	// , const drain::Rectangle<double> & bbox) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
@@ -343,6 +350,9 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		mout.debug("extracting field ", field);
 
+		if (!crop.empty()){
+			mout.experimental("Applying cropping: bbox=", crop, " [pix]");
+		}
 
 		if (type == DATA){
 			dataPath << "data" << ++dCounter;
@@ -356,7 +366,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		if (odimFinal.quantity.empty()){
 			odimFinal.quantity = "UNKNOWN"; // for example --cPlotFile carries no information on quantity
-			mout.note() << "quantity=" << odimFinal.quantity << mout.endl;
+			mout.note("quantity=", odimFinal.quantity);
 		}
 
 		//PlainData<DstType<OD> >
@@ -371,6 +381,11 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		mout.debug2() << "dataCoder: data: " << dataCoder.dataODIM    << mout.endl;
 		mout.debug2() << "dataCoder: qind: " << dataCoder.qualityODIM << mout.endl;
 
+		if (!crop.empty()){
+			mout.unimplemented("dstData.data resize + Accumulator::extractField");
+		}
+		//dstData.data
+
 		if (type == DATA){
 
 			mout.debug() << "DATA/" << field << mout.endl;
@@ -380,7 +395,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			dstData.data.setType(odimFinal.type);
 			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//mout.debug()  << "quantity=" << dstData.odim.quantity << mout.endl;
-			this->Accumulator::extractField(field, dataCoder, dstData.data);
+			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
 		}
 		else {
 			mout.debug() << "QUALITY/" << field << mout.endl;
@@ -391,7 +406,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			dstData.odim.updateFromMap(odimQuality);
 			mout.debug3() << "dstData: " << dstData << mout.endl;
 			//dstData.odim.importMap(odimQuality);
-			this->Accumulator::extractField(field, dataCoder, dstData.data);
+			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
 		}
 
 		/*

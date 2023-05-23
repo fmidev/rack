@@ -481,8 +481,9 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	//mout.warn() << "nodemap keys: " << nodeMap << mout.endl;
 
 	// Update geographical extent (optional information)
-	const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
-	updateDataExtent(srcExtent);
+	// const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
+	// updateDataExtent(srcExtent);
+	updateDataExtent(cartSrc.odim.bboxD);
 
 	// odim.update(cartSrc.odim); // moved to add Data
 

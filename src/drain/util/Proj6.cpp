@@ -177,7 +177,7 @@ void Projector::getProjDefDict(const std::string & src, ProjDef & projDef){ // ,
 		mout.debug(key, " - ", value);
 
 		if (key == "+init"){
-			mout.discouraged("Use of +init, here ", entry);
+			mout.discouraged("Use of +init (", entry, ')');
 		}
 		else if (key == "+type"){
 			if (value != "crs"){
@@ -185,10 +185,10 @@ void Projector::getProjDefDict(const std::string & src, ProjDef & projDef){ // ,
 			}
 		}
 		projDef.set(key, value);
-		//ostr << entry << ' ';
+
 	}
 
-	return; //  epsg;
+	return;
 }
 
 

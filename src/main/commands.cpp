@@ -1394,7 +1394,7 @@ public:
 			// O
 			const drain::ReferenceMap::keylist_t & keys = m.getKeyList();
 
-			for (const drain::ReferenceMap::key_t key: keys){
+			for (const drain::ReferenceMap::key_t & key: keys){
 
 				// const drain::Referencer & entry = m[key];
 

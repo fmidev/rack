@@ -80,7 +80,7 @@ protected:
 
 	void addPolar(Composite & composite, const Hi5Tree & src) const;
 	void addCartesian(Composite & composite, const Hi5Tree & src) const;
-	void extract(Composite & composite, const std::string & channels) const;
+	void extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox = {0,0,0,0}) const;
 
 	double weight;
 

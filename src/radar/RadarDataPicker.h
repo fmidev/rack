@@ -238,14 +238,19 @@ public:
 			mout.warn() << "Array geometry undefined?" << mout.endl;
 		}
 
-		frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+		//frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
+		frame.setBoundingBoxD(odim.bboxD);
 		if (!frame.bboxIsSet()){
 			mout.warn() << "Bounding box undefined?" << mout.endl;
 		}
 
+		/* TODO: if (odim.epsg)
+			frame.setProjection(odim.epsg)
+		else
+		*/
 		frame.setProjection(odim.projdef);
 		if (!frame.projectionIsSet()){
-			mout.warn() << "Projection undefined?" << mout.endl;
+			mout.warn("Projection undefined?");
 		}
 		/* keep for a while
 		if (!odim.projdef.empty()){
@@ -259,21 +264,21 @@ public:
 
 		if (!frame.isDefined()){
 			//mout.warn() << "Geo frame properties undefined, incomplete metadata?" << mout.endl;
-			mout.note() << odim << mout.endl;
-			mout.note() << frame << mout.endl;
-			mout.note() << frame.getBoundingBoxR() << mout.endl;
-			mout.warn() << "frame could not be defined, incomplete metadata? (above)" << mout.endl;
+			mout.note(odim);
+			mout.note(frame);
+			mout.note(frame.getBoundingBoxR());
+			mout.warn("frame could not be defined, incomplete metadata? (above)");
 		}
 
 		variableMap.link("j2", this->current_j2 = 0);
 
 		variableMap.separator = ','; // bug? Was not initialized
-		mout.debug() << "variableMap: " << variableMap << mout.endl;
-		mout.debug() << "frame: " << frame << mout.endl;
+		mout.debug("variableMap: ", variableMap);
+		mout.debug("frame: ", frame);
 
 		infoMap["bbox"] = frame.getBoundingBoxD().toVector();
 		infoMap["proj"] = frame.getProjection();
-		//infoMap["bbox"] = frame.getBoundingBoxD();
+		infoMap["epsg"] = frame.projGeo2Native.getDst().getEPSG(); // NOTE probably unset...
 
 	}
 

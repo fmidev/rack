@@ -15,6 +15,7 @@ function TEST_TIFF(){
     echo "# RACK"
     cmd="rack $INFILE --cProj '$projdef' -c --outputConf tif:compliancy=EPSG:STRICT -o $outfile"
     echo $cmd
+    echo $cmd > ${filebase}.cmd
     eval $cmd
     if [ $? == 0 ]; then
 	echo $projdef >> rack-geotiff-supported.inc
@@ -49,7 +50,7 @@ function TEST_TIFF(){
 	echo $cmd
 	eval $cmd 
 	if [ $? != 0 ]; then
-	    echo "# Note: mapping EPSG:$epsg to PROJ.4 string not reversible " >> rack-geotiff-supported.inc
+	    echo "# Note: mapping EPSG:$epsg to PROJ.4 string not reversible " >> rack-geotiff-unsupported.inc
 	    #echo "# Note: diff " >> rack-geotiff-supported.inc
 	    echo
 	    # echo
@@ -61,16 +62,19 @@ function TEST_TIFF(){
 
     if [ "$epsg" != '' ]; then
 
-	WKT_VERSION='WKT2:2019'	
+	# WKT_VERSION='WKT2:2015'
+	WKT_VERSION='WKT2:2019'
+	# WKT_VERSION='WKT1:GDAL'
 	echo "# WKT metadata test ($WKT_VERSION) for EPSG:$epsg"
 
-	WKT_FILE=$epsg.wkt
+	#WKT_FILE=$epsg.wkt
+	WKT_FILE=$epsg.${WKT_VERSION/:/-}
 	if [ ! -f $WKT_FILE ]; then
 	    projinfo "epsg:$epsg" -o $WKT_VERSION | tail +2 > $WKT_FILE
 	fi
-	grep '\(\[\|\]\)' test-init-$epsg.inf > test-init-$epsg.wkt
+	grep '\(\[\|\]\)' test-init-$epsg.gdal > test-init-$epsg.wkt
 
-	diff --text  $epsg.wkt test-init-$epsg.wkt
+	diff --text  $WKT_FILE test-init-$epsg.wkt
 	if [ $? != 0 ]; then
 	    #echo "# Note: $WKT_VERSION test failed for:  $EPSG $PROJDEF"
 	    echo "NOTE: diff2 failed..."
@@ -98,25 +102,25 @@ rm -vf rack-geotiff-supported.inc rack-geotiff-unsupported.inc
 OUTFILES=( )
 for EPSG in ${ARGS[*]}; do
 
-    PROJDEF=`cat $EPSGFILE | fgrep "<$EPSG>" | tr -d '<' | cut -d'>' -f2`
-
+    # PROJDEF=`cat $EPSGFILE | fgrep "<$EPSG>" | tr -d '<' | cut -d'>' -f2`
+    PROJDEF=`projinfo "epsg:$EPSG" -o PROJ | tail -1`
+    
     echo $EPSG $PROJDEF
 
     
     unset LAST_INFFILE
     
-    TEST_TIFF $EPSG              test-$EPSG.tif
+    TEST_TIFF $EPSG              rack-$EPSG.tif
 
-    TEST_TIFF "+init=epsg:$EPSG" test-init-$EPSG.tif      $EPSG
+    TEST_TIFF "+init=epsg:$EPSG" rack-init-$EPSG.tif      $EPSG
 
-    TEST_TIFF "$PROJDEF"         test-projdef-$EPSG.tif   $EPSG
+    TEST_TIFF "$PROJDEF"         rack-projdef-$EPSG.tif   $EPSG
 
     echo "# LISTGEO check"
-    gdal_translate -co TILED=YES -co BLOCKXSIZE=512 -co BLOCKYSIZE=512 -co COMPRESS=LZW test-$EPSG.tif  test-$EPSG-gdal.tif
-    listgeo test-$EPSG.tif      > orig-$EPSG.lgeo
-    listgeo test-$EPSG-gdal.tif > gdal-$EPSG.lgeo
+    gdal_translate -co TILED=YES -co BLOCKXSIZE=512 -co BLOCKYSIZE=512 -co COMPRESS=LZW rack-$EPSG.tif  rack-gdal-$EPSG.tif
+    listgeo rack-$EPSG.tif      > orig-$EPSG.lgeo
+    listgeo rack-gdal-$EPSG.tif > gdal-$EPSG.lgeo
     diff {orig,gdal}-$EPSG.lgeo > diff-$EPSG.lgeo
-    
     
     echo >> rack-geotiff-supported.inc
     echo >> rack-geotiff-unsupported.inc
@@ -142,3 +146,6 @@ if [ $# == 0 ]; then
     convert +append -frame 3 -fill green  composite-fi-C.tif  composite-fi-S.tif composite-geotiff-error.png
 
 fi
+
+ls -ltr diff-????.lgeo
+

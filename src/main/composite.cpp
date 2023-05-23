@@ -608,23 +608,19 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 }
 
-void Compositor::extract(Composite & composite, const std::string & channels) const {
+void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
 
 
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-	//mout.note("MIKA") << "MÄKI" << mout;
-	//mout.error() << "MÄKI" << mout;
-
 	RackResources & resources = getResources();
 
-	//Composite & composite = getComposite();
-
+	// Composite & composite = getComposite();
 	// Append results - why not, but Cartesian was typically used for subcompositing
 	// ctx.cartesianHi5.clear();
-	//resources.setSource(ctx.cartesianHi5, *this);
+	// resources.setSource(ctx.cartesianHi5, *this);
 
 	//ODIMPath path("dataset1");
 	ODIMPath path;
@@ -642,12 +638,12 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 		ctx.cartesianHi5.clear(); // don't append, overwrite...
 
 	path << parent; // ?
-	mout.debug() << "dst path: " << path << mout.endl;
+	mout.debug("dst path: ", path );
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);
 
-	mout .debug3() << "update geodata " << mout.endl;
+	mout .debug3("update geodata ");
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
 	// NEW 2020/06
@@ -670,9 +666,46 @@ void Compositor::extract(Composite & composite, const std::string & channels) co
 	//mout.warn() << "composite: " << composite.odim << mout.endl;
 	//mout.warn() << "composite: " << composite << mout.endl;
 	//mout.note() << "dst odim: " << odim << mout.endl;
-	mout.debug2() << "Extracting..." << mout.endl;
+	mout.debug2("Extracting...");
 
-	composite.extract(rootOdim, dstProduct, channels);
+	//drain::Rectangle
+	drain::BBox cropping(bbox);
+	drain::Rectangle<int> cropCoords;
+	if (!cropping.empty()){
+		mout.special("Cropping: ", cropping, cropping.isMetric() ? " [meters]": " [degrees]");
+		if (cropping.isMetric()){
+			if (composite.isLongLat()){
+				mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
+				return;
+			}
+			// NOTE: vert coord swap
+			composite.m2pix(cropping.lowerLeft.x,  cropping.lowerLeft.y,   cropCoords.lowerLeft.x,  cropCoords.upperRight.y);
+			composite.m2pix(cropping.upperRight.x, cropping.upperRight.x,  cropCoords.upperRight.x, cropCoords.lowerLeft.y );
+
+			// composite.m2pix(cropping.lowerLeft,  cropCoords.lowerLeft);
+			// composite.m2pix(cropping.upperRight, cropCoords.upperRight);
+		}
+		else {
+			composite.deg2pix(cropping.lowerLeft.x,  cropping.lowerLeft.y,   cropCoords.lowerLeft.x,  cropCoords.upperRight.y);
+			composite.deg2pix(cropping.upperRight.x, cropping.upperRight.x,  cropCoords.upperRight.x, cropCoords.lowerLeft.y );
+			// composite.deg2pix(cropping.lowerLeft,  cropCoords.lowerLeft);
+			// composite.deg2pix(cropping.upperRight, cropCoords.upperRight);
+
+			mout.special("Degrees: ", cropping);
+
+		}
+
+
+	}
+	mout.attention("Crop coords: ", cropCoords);
+	if (cropCoords.isInside(-1, 0) || cropCoords.isInside(0, -1)){
+		mout.error("Crop area ", cropCoords, " exceeds composite ");
+	}
+	if (cropCoords.isInside(composite.getFrameWidth(), 0) || cropCoords.isInside(0, composite.getFrameHeight())){
+		mout.error("Crop area ", cropCoords, " exceeds composite ");
+	}
+
+	composite.extract(rootOdim, dstProduct, channels, cropCoords);
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
 
 	/// Final step: write metadata
